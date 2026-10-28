@@ -1,0 +1,14 @@
+# Sanaro's NanoMelee census (tools/sanaro_fields.py, 1 passes, seed 117): the leaders d414.nano.Quantum 1.0.0 and sheldor.melee.nano.NaturalScience 1.2.1
+F01 | --set nanomelee-census/f01.txt --melee true --field 1000x1000
+F02 | --set nanomelee-census/f02.txt --melee true --field 1000x1000
+F03 | --set nanomelee-census/f03.txt --melee true --field 1000x1000
+F04 | --set nanomelee-census/f04.txt --melee true --field 1000x1000
+F05 | --set nanomelee-census/f05.txt --melee true --field 1000x1000
+F06 | --set nanomelee-census/f06.txt --melee true --field 1000x1000
+F07 | --set nanomelee-census/f07.txt --melee true --field 1000x1000
+F08 | --set nanomelee-census/f08.txt --melee true --field 1000x1000
+F09 | --set nanomelee-census/f09.txt --melee true --field 1000x1000
+F10 | --set nanomelee-census/f10.txt --melee true --field 1000x1000
+F11 | --set nanomelee-census/f11.txt --melee true --field 1000x1000
+F12 | --set nanomelee-census/f12.txt --melee true --field 1000x1000
+F13 | --set nanomelee-census/f13.txt --melee true --field 1000x1000

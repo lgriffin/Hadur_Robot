@@ -1,0 +1,10 @@
+# NanoMelee census field f12 (see nanomelee-census.txt)
+d414.nano.Quantum 1.0.0 | nanomelee-1 | d414.nano.Quantum_1.0.0.jar
+sheldor.melee.nano.NaturalScience 1.2.1 | nanomelee-2 | sheldor.melee.nano.NaturalScience_1.2.1.jar
+sample.SpinBot 1.0 | nanomelee-70 | sample.SpinBot_1.0.jar
+myl.nano.KomoriNinja 1.1 | nanomelee-18 | myl.nano.KomoriNinja_1.1.jar
+sam.Samspin 1.0 | nanomelee-55 | sam.Samspin_1.0.jar
+cvt.Firsty 1.0 | nanomelee-74 | cvt.Firsty_1.0.jar
+sul.Lunar 1.1 | nanomelee-23 | sul.Lunar_1.1.jar
+spinnercat.Omen 1.0 | nanomelee-54 | spinnercat.Omen_1.0.jar
+maribo.melee.BMV 0.1 | nanomelee-29 | maribo.melee.BMV_0.1.jar

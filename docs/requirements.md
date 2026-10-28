@@ -1952,6 +1952,35 @@ are E0 to E3 (D is the DrussGT route's letter).
   DEISE-13's field builder (`saor_live.py` with Deise's options) and `deise_fields.py` by
   `test_saor_live.py`.
 
+## Sanaro, a NanoMelee entry (SANARO-1 to SANARO-12, stages N0 to N5)
+
+`hadur117.nano.Sanaro`, a separate robot in the `sanaro` module, built to outrank
+d414.nano.Quantum and sheldor.melee.nano.NaturalScience in NanoMelee (Leigh, 2026-10-28, from his
+design doc "Nano Melee: Beating NaturalScience & Quantum"). Design, the dissection and the stages:
+docs/sanaro.md. It depends on nothing of Hadur's, Saor's, TwinSaor's or Deise's, and they on
+nothing of it. The design doc's N-1 to N-12 are SANARO-1 to SANARO-12 here.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| SANARO-1 | Unwanted | If Robocode's codesize tool reports more than NanoMelee's 249 bytes for the shipped jar, or more than one class in it, then the build shall fail. | N0 |
+| SANARO-2 | Unwanted | If the class declares a static initialiser, or its power table has no cell at an index the bot can reach for own and enemy energy 0 to 400, then the build shall fail. | N0 |
+| SANARO-3 | Event | When a robot is scanned, the bot shall decay its force field by DECAY (0.9), add a push of 1 over the distance away from that robot's hedged lead position, and turn its body to the field plus the wall push, turned SPIRAL (0.6 rad) further. | N0 |
+| SANARO-4 | State | While the body turn still to make exceeds AHEAD (120) degrees, the bot shall drive backwards. | N0 |
+| SANARO-5 | Event | When a scanned robot is closer than the target threshold, which creeps out CREEP (25) px every scan, the bot shall take it as the target and snap the threshold to its distance. | N0 |
+| SANARO-6 | Event | When the target is scanned, the bot shall turn its radar by its gun heat less LOCK (0.9) times the radar turn remaining: a sweep while the gun is hot, a flip on the target once it is nearly cool. | N0 |
+| SANARO-7 | Event | When the target is scanned, the bot shall turn its gun to the bearing plus its lateral velocity over LEAD (10) plus LEAD_GROWTH (1.008) to the distance. | N0 |
+| SANARO-8 | Event | When the target is scanned, the bot shall fire the table's power for (own energy, target energy) times the integer BAND (640) over the distance; a table cell is the lesser of 0.1 plus a sixteenth of its own energy (at most 2.5, and 3.0 from 120 energy) and the least power that kills the target. | N0 |
+| SANARO-9 | Ubiquitous | The shipped jar shall carry the robot's properties at the release version and its source. | N0 |
+| SANARO-10 | Ubiquitous | The NanoMelee census shall run ten NanoMelee robots a battle, both leaders in every battle, and the shipped build shall read an APS above NaturalScience 1.2.1's in the same battles by more than its 95% interval over at least 20 battles. | N2 |
+| SANARO-11 | Ubiquitous | In the same battles the shipped build shall outsurvive both leaders more often than not. | N2 |
+| SANARO-12 | Ubiquitous | One on one with each leader over 35 rounds, the shipped build shall win more than 55% of rounds. | N2 |
+
+- **Coverage.** SANARO-1, SANARO-2 (no `<clinit>`) and SANARO-9 by `SanaroJarIT` (failsafe) on the
+  shipped jar; SANARO-2 (table reach) and SANARO-8 (cells) by `SanaroTableTest`, which holds the
+  table to `sanaro/table.py`'s formula; SANARO-3 to SANARO-8 by `SanaroTest`, scan by scan on a
+  probe subclass. SANARO-10 to SANARO-12 are bench reads (`tools/sanaro_read.py`; fields by
+  `tools/sanaro_fields.py`, both by `test_sanaro.py`), not build gates.
+
 ## Allocation and the engine's stop path (TIME-9)
 
 The engine disables a robot that skips more than 30 turns in a row and then tries to stop its
