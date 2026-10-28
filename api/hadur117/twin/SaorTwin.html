@@ -165,6 +165,17 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>(package private) static double</code></div>
 <div class="col-second even-row-color"><code><a href="#mateY" class="member-name-link">mateY</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static int</code></div>
+<div class="col-second odd-row-color"><code><a href="#mode" class="member-name-link">mode</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The OR of the table's entries at the slots of the enemies seen this battle (TWIN-13).</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#MODES" class="member-name-link">MODES</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The mode table (TWIN-13, docs/twinsaor.md sections 9 and 11): one char a slot, keyed like the
+ records by name hash.</div>
+</div>
 <div class="col-first odd-row-color"><code>(package private) static double[][]</code></div>
 <div class="col-second odd-row-color"><code><a href="#seen" class="member-name-link">seen</a></code></div>
 <div class="col-last odd-row-color">
@@ -453,6 +464,31 @@ loadScripts(document, 'script');</script>
 <h3>seen</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double[][]</span>&nbsp;<span class="element-name">seen</span></div>
 <div class="block">The latest record of each enemy this round.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="MODES">
+<h3>MODES</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">MODES</span></div>
+<div class="block">The mode table (TWIN-13, docs/twinsaor.md sections 9 and 11): one char a slot, keyed like the
+ records by name hash. Bit 1: no leg flip on the target's shot; bit 2: range 180 with two
+ enemies. A slot two teams share holds the AND of their modes, so the OR over a team's slots
+ is its own. Written by hadur-bench/tools/twin_table.py from the W4 picks.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../constant-values.html#hadur117.twin.SaorTwin.MODES">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="mode">
+<h3>mode</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">mode</span></div>
+<div class="block">The OR of the table's entries at the slots of the enemies seen this battle (TWIN-13).</div>
 </section>
 </li>
 <li>
