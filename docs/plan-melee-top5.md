@@ -341,6 +341,9 @@ just above 0 on 6 seeds, held back. 3.18.1 reads 13th live at 67.92, beating its
 (3211-3218) with the same read; a pass turns it on in master. Firepower widening is otherwise spent:
 the rest of the gap to 5th (+2.19 to Diamond's 70.11) needs Stage 3 or a bigger idea.
 
+**MGUN-16 ships in 3.19 (2026-10-28).** Leigh chose to ship it in 3.19 on the power2 result alone
+before `pc-melee-wide` ran; the card is retired and 3.19's live melee page is the read.
+
 ### Stage 3: crowd survival
 
 The largest lever and the riskiest: M4's path scoring cost 3 to 5 APS, and the team's port of

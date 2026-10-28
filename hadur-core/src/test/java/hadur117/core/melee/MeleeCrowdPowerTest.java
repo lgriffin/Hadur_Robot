@@ -50,13 +50,15 @@ class MeleeCrowdPowerTest {
     @Tag("MGUN-14")
     @Tag("MGUN-15")
     @Tag("MGUN-16")
-    @DisplayName("MGUN-14..16 ship off, so MGUN-13 plays as banked")
+    @DisplayName("MGUN-14 and MGUN-15 ship off; MGUN-16 ships on, so the shipped MGUN-13 fires 3 out to 300 px")
     void wideningShipsOff() {
         assertFalse(MeleeEnergyPolicy.OGI_TWO);
         assertFalse(MeleeEnergyPolicy.OGI_LOW);
-        assertFalse(MeleeEnergyPolicy.OGI_WIDE);
+        assertTrue(MeleeEnergyPolicy.OGI_WIDE);
         assertEquals(MeleeEnergyPolicy.crowdPower(1.95, 250, 15, 80, 2, false, true),
             MeleeEnergyPolicy.crowdPower(1.95, 250, 15, 80, 2), 1e-9);
+        assertEquals(3.0, MeleeEnergyPolicy.crowdPower(1.95, 250, 60, 80, 3), 1e-9, "within 300 px");
+        assertEquals(1.92, MeleeEnergyPolicy.crowdPower(1.95, 350, 60, 80, 3), 1e-9, "beyond 300 px");
     }
 
     @Test

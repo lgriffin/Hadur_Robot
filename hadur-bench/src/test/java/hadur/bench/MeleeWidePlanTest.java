@@ -61,14 +61,12 @@ class MeleeWidePlanTest {
 
     @Test
     @Tag("BENCH-127")
-    @DisplayName("the ow arm edits exactly MGUN-16, which ships off on top of MGUN-13")
+    @DisplayName("the ow arm edits exactly MGUN-16, which shipped on in 3.19 before the card ran")
     void ablations() throws IOException {
         String build = Files.readString(Path.of("build-ablation.sh"));
         assertTrue(build.contains("ogi300) flag=OGI_WIDE; suffix=ow ;;"));
         String policy = Files.readString(Path.of("../hadur-core/src/main/java/hadur117/core/melee/MeleeEnergyPolicy.java"));
         assertTrue(policy.contains("public static final boolean CROWD_OGI = true;"));
-        for (String f : List.of("OGI_WIDE")) {
-            assertTrue(policy.contains("public static final boolean " + f + " = false;"), f + " ships off");
-        }
+        assertTrue(policy.contains("public static final boolean OGI_WIDE = true;"), "OGI_WIDE ships on in 3.19, ahead of this card");
     }
 }

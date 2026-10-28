@@ -56,8 +56,8 @@ public final class MeleeEnergyPolicy {
     /** MGUN-15: MGUN-13 from {@link #OGI_LOW_ENERGY} own energy, not 20. Off (arm ogie10). */
     public static final boolean OGI_LOW = false;
     static final double OGI_LOW_ENERGY = 10.0;
-    /** MGUN-16: MGUN-13's power 3 out to {@link #OGI_WIDE_CLOSE} px, not 200. Off (arm ogi300). */
-    public static final boolean OGI_WIDE = false;
+    /** MGUN-16: MGUN-13's power 3 out to {@link #OGI_WIDE_CLOSE} px, not 200. On for 3.19 (power2 card +0.15 +- 0.15, PR #349). */
+    public static final boolean OGI_WIDE = true;
     static final double OGI_WIDE_CLOSE = 300;
 
     private MeleeEnergyPolicy() {}
