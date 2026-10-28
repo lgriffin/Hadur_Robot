@@ -531,6 +531,15 @@ class TeamModesTest {
         assertEquals(0, MinimumRiskMovement.pathDamage(pt(600, 700), pt(300, 700), 100, b), 0);
         assertEquals(0, MinimumRiskMovement.pathDamage(pt(600, 700), pt(600, 1000), 100, b), 0);
         assertEquals(0, MinimumRiskMovement.pathDamage(pt(600, 700), pt(600, 700), 100, List.of()), 0);
+        // The pick is a candidate whose drive leaves the line; Hadur's own spot is never one (its
+        // risk counts only bullets due now, so it would under-score standing under fire).
+        List<EnemyInfo> far = enemies(pt(100, 1100)).alive();
+        MinimumRiskMovement.View v = move.view(pt(600, 700), 100, 100, 3, far, MeleeStrategy.Plan.normal(), mates(pt(600, 300)));
+        v.pathBullets = b;
+        List<Point2D.Double> candidates = List.of(pt(600, 400), pt(300, 700));
+        Point2D.Double pick = move.pathBest(candidates, v);
+        assertTrue(candidates.contains(pick));
+        assertEquals(pt(300, 700), pick);
     }
 
     @Test

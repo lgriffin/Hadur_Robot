@@ -1153,7 +1153,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | TMODE-22 | Optional | Where the team mode table names LINEAR against a team, while Hadur has a living teammate, each shot by that team shall make one linear virtual bullet of weight 2, and no head-on one. | T7 |
 | TMODE-23 | Optional | Where the team mode table names FAR against a team, the HUNT place shall be 500 px from the prey. | T7 |
 | TMODE-24 | Optional | Where the team mode table names FARTHER against a team, the HUNT place shall be 650 px from the prey. | T7 |
-| TMODE-25 | Optional | Where the PATH mode is played against a team, while Hadur has a living teammate with a bullet in flight, the destination shall be chosen among the 8 lowest-risk candidates and Hadur's own spot by their risk plus the damage of each teammate bullet that, on Hadur's straight drive there (accelerating 1 px a tick to 8) over the next 15 ticks, crosses Hadur's box 18 px each side; a held destination not yet reached shall be kept unless another scores below 0.9 times its risk plus its own path damage. | T7 |
+| TMODE-25 | Optional | Where the PATH mode is played against a team, while Hadur has a living teammate with a bullet in flight, the destination shall be chosen among the 8 lowest-risk candidates by their risk plus the damage of each teammate bullet that, on Hadur's straight drive there (accelerating 1 px a tick to 8) over the next 15 ticks, crosses Hadur's box 18 px each side; a held destination not yet reached shall be kept unless another scores below 0.9 times its risk plus its own path damage. | T7 |
 | TMODE-26 | Optional | Where the team mode table names NEAR against a team, the HUNT place shall be 250 px from the prey. | T7 |
 
 ### T1 notes

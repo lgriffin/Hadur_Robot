@@ -130,8 +130,8 @@ public class MinimumRiskMovement {
     /** TMODE-19: the engine's default gun cooling, heat a tick; a stated heat over it is ticks to fire. */
     static final double GUNLINE_COOLING = 0.1;
     /**
-     * TMODE-25: the {@link #PATH_RERANK} lowest-risk candidates, the destination held and
-     * staying put are each driven to for {@link #PATH_TICKS} ticks; every teammate bullet whose
+     * TMODE-25: the {@link #PATH_RERANK} lowest-risk candidates and the destination held are
+     * each driven to for {@link #PATH_TICKS} ticks; every teammate bullet whose
      * flight on some tick crosses Hadur's box ({@link #PATH_HALF} px each side) there adds
      * {@link #PATH_K} times its damage to that candidate's risk.
      */
@@ -931,8 +931,8 @@ public class MinimumRiskMovement {
     }
 
     /**
-     * TMODE-25, Firestarter's path check: the {@link #PATH_RERANK} lowest-risk candidates, the
-     * destination held if not reached, and Hadur's own spot (stay) are each scored as their risk
+     * TMODE-25, Firestarter's path check: the {@link #PATH_RERANK} lowest-risk candidates and the
+     * destination held if not reached are each scored as their risk
      * plus {@link #PATH_K} times the damage of the teammates' bullets their drive would meet in
      * {@link #PATH_TICKS} ticks. The held destination keeps its place as in the plain choice:
      * another wins only below {@link #SWITCH_GAIN} times its risk, both with their bullet damage.
@@ -953,9 +953,6 @@ public class MinimumRiskMovement {
             picked.add(pool.get(order[i]));
             pickedRisk.add(risk[order[i]]);
         }
-        Point2D.Double stay = new Point2D.Double(v.me.x, v.me.y);
-        picked.add(stay);
-        pickedRisk.add(risk(stay, v));
         Point2D.Double best = null;
         double bestScore = Double.POSITIVE_INFINITY;
         for (int k = 0; k < picked.size(); k++) {

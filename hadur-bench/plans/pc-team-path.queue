@@ -1,8 +1,8 @@
 # Team path check and Troodon at 250 px (TMODE-25/26, BENCH-124; docs/plan-team-top5.md section 12),
 # team thread: team-only, duel and melee fixtures bit for bit. Per opponent: each arm is screened
 # against every team it can reach, and only the teams where it clearly pays get a table entry.
-#   PATH (TMODE-25), Firestarter's path check: the 8 lowest-risk destinations, the one held and
-#        staying put are each driven tick by tick for 15 ticks against our teammates' bullets in
+#   PATH (TMODE-25), Firestarter's path check: the 8 lowest-risk destinations and the one held
+#        are each driven tick by tick for 15 ticks against our teammates' bullets in
 #        flight, and a drive that would meet one pays its damage. Screened on all 46 teams.
 #   NEAR (TMODE-26): the shipped TroodonPack entry hunts at 250 px, not 350 (cloud smoke +4.3 at
 #        250 px, +3.7 at 200 px on 6 seeds; closer hunting lost on the field as a whole).

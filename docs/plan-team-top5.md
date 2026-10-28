@@ -542,7 +542,7 @@ the same for team: read each costly team's code, then give it a counter that exp
 ## 12. Firestarter's path check, and Troodon at 250 px (2026-10-28)
 
 - **PATH (TMODE-25).** Firestarter (2nd) drives each candidate move tick by tick against its own
-  team's bullets in flight. Ours: the 8 lowest-risk destinations, the one held and staying put are
+  team's bullets in flight. Ours: the 8 lowest-risk destinations and the one held are
   each driven straight (accelerating to 8 px a tick) for 15 ticks; each teammate bullet whose flight
   that tick crosses our box (18 px each side) adds its damage. MATEFIRE already scores a point's
   distance to those bullets; PATH scores the drive there.
