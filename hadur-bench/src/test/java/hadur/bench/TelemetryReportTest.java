@@ -116,9 +116,9 @@ class TelemetryReportTest {
         Map<Opponent, List<BattleResult>> results = new LinkedHashMap<>();
         Opponent o = Opponent.load(Path.of("reference-set.txt")).get(0);
         results.put(o, List.of(sample()));
-        hadur2.core.memory.ProfileLibrary lib = new hadur2.core.memory.ProfileLibrary(
-            new hadur2.core.port.MemoryProfileStore(200_000));
-        hadur2.core.memory.OpponentProfile p = lib.load(o.name).profile();
+        hadur117.core.memory.ProfileLibrary lib = new hadur117.core.memory.ProfileLibrary(
+            new hadur117.core.port.MemoryProfileStore(200_000));
+        hadur117.core.memory.OpponentProfile p = lib.load(o.name).profile();
         String report = Report.render(results, Map.of(o, p), "hadur2.Hadur 2.1", true, 35, 1,
             800, 600, "cpu");
         assertTrue(report.contains("## Opponent memory"), report);

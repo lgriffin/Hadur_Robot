@@ -89,9 +89,9 @@ def panel(set_path, names):
 
 def candidate_arms(base, suffix):
     return ["# 1v1 plan to 3rd, dodge verify (pc-1v1-third): c is %s, aa its A/A copy, t4 the candidate.\n" % base,
-            "c | hadur2.Hadur %s | bisect/hadur2.Hadur_%s.jar\n" % (base, base),
-            "aa | hadur2.Hadur %saa | bisect/hadur2.Hadur_%saa.jar\n" % (base, base),
-            "t4 | hadur2.Hadur %s%s | bisect/hadur2.Hadur_%s%s.jar\n" % (base, suffix, base, suffix)]
+            "c | hadur117.Hadur %s | bisect/hadur117.Hadur_%s.jar\n" % (base, base),
+            "aa | hadur117.Hadur %saa | bisect/hadur117.Hadur_%saa.jar\n" % (base, base),
+            "t4 | hadur117.Hadur %s%s | bisect/hadur117.Hadur_%s%s.jar\n" % (base, suffix, base, suffix)]
 
 
 def main(argv=None):
@@ -114,7 +114,7 @@ def main(argv=None):
         if not lines:
             print("nothing to build: t4 is the base")
             shield_s2.write(a.out, candidate_arms(a.base, "aa")[:3]
-                            + ["t4 | hadur2.Hadur %saa | bisect/hadur2.Hadur_%saa.jar\n" % (a.base, a.base)])
+                            + ["t4 | hadur117.Hadur %saa | bisect/hadur117.Hadur_%saa.jar\n" % (a.base, a.base)])
             return 0
         bench = os.path.dirname(HERE)
         rel = os.path.relpath(os.path.abspath(a.lines), bench).replace(os.sep, "/")

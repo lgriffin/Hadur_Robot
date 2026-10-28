@@ -1,5 +1,5 @@
-# pc-1v1-ram (BENCH-132): xp = 3.18.1 with SHIELD-19's per-opponent exits for the 7 robots pc-shield-exit picked
+# pc-1v1-ram (BENCH-132): xp = 3.19 with SHIELD-19's per-opponent exits for the 7 robots pc-shield-exit picked
 # (plans/exit-late.txt at 400 damage, plans/exit-off.txt with none).
-c | hadur2.Hadur 3.18.1 | bisect/hadur2.Hadur_3.18.1.jar
-aa | hadur2.Hadur 3.18.1aa | bisect/hadur2.Hadur_3.18.1aa.jar
-xp | hadur2.Hadur 3.18.1x4x0 | bisect/hadur2.Hadur_3.18.1x4x0.jar
+c | hadur117.Hadur 3.19 | bisect/hadur117.Hadur_3.19.jar
+aa | hadur117.Hadur 3.19aa | bisect/hadur117.Hadur_3.19aa.jar
+xp | hadur117.Hadur 3.19x4x0 | bisect/hadur117.Hadur_3.19x4x0.jar

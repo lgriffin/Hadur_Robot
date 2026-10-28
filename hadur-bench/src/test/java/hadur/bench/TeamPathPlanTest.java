@@ -36,7 +36,7 @@ class TeamPathPlanTest {
         }
         assertTrue(queue.contains("--report PATH=../docs/bench/local/team-path-mp.md --control PATH=../docs/bench/local/team-path-bb.md"));
         assertTrue(queue.contains("--report NEAR=../docs/bench/local/team-path-tn.md --control NEAR=../docs/bench/local/team-path-tnbb.md"));
-        assertTrue(queue.contains("--min-mean 3.0 --low-end 0 --base MATEFIRE,HUNT --shipped ../hadur-core/src/main/java/hadur2/core/melee/TeamModes.java"),
+        assertTrue(queue.contains("--min-mean 3.0 --low-end 0 --base MATEFIRE,HUNT --shipped ../hadur-core/src/main/java/hadur117/core/melee/TeamModes.java"),
             "picks keep the shipped modes, and a named team keeps its entry's");
         assertTrue(queue.contains("--set work/team-path-gate.txt --seeds 16 --teams 46 --min-aps 0.3"), "gate needs every team fully paired");
         assertTrue(queue.contains("grep -q '\\*\\*PASS\\*\\*' ${OUT}/team-path-verdict.md; then cp work/team-path-picked.java"),
@@ -69,8 +69,8 @@ class TeamPathPlanTest {
             String args = Files.readString(Path.of("plans/team-path-" + a[0] + ".args"));
             assertTrue(args.contains("--set\n" + a[2] + "\n"), a[0]);
             assertTrue(args.contains("--seeds\n" + a[3] + "\n") && args.contains("--seed-base\n" + a[4] + "\n"), a[0]);
-            assertTrue(args.contains("bisect/hadur2.HadurTeam_@V@" + a[1] + ".jar"), a[0]);
-            assertTrue(args.contains("--baseline\nbisect/hadur2.HadurTeam_@V@aa.jar\n"), a[0]);
+            assertTrue(args.contains("bisect/hadur117.HadurTeam_@V@" + a[1] + ".jar"), a[0]);
+            assertTrue(args.contains("--baseline\nbisect/hadur117.HadurTeam_@V@aa.jar\n"), a[0]);
             assertTrue(args.contains("--report\n../docs/bench/local/team-path-" + a[0] + ".md\n"), a[0]);
             assertTrue(args.contains("--out\nwork/team-path-@V@-" + a[0] + "\n"), a[0]);
             assertTrue(args.contains("--parallel\nauto\n") && args.contains("--cpu-constant\nauto\n"), a[0]);

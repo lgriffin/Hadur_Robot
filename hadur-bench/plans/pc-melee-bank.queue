@@ -29,7 +29,7 @@
 
 set OUT = ../docs/bench/local
 
-bankprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb g4ef g4efpo; do rm -f bisect/hadur2.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh g24,e3far && bash ./build-ablation.sh g24,e3far,pogi && mkdir -p work && for a in aa bb g4ef g4efpo; do test -f bisect/hadur2.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-bank.args > work/melee-bank-$a.args || exit 1; done && rm -f ${OUT}/melee-bank-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+bankprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb g4ef g4efpo; do rm -f bisect/hadur117.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh g24,e3far && bash ./build-ablation.sh g24,e3far,pogi && mkdir -p work && for a in aa bb g4ef g4efpo; do test -f bisect/hadur117.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-bank.args > work/melee-bank-$a.args || exit 1; done && rm -f ${OUT}/melee-bank-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
 bankaa   | mvn -q exec:java "-Dexec.args=@work/melee-bank-aa.args"
   after: bankprep
 bankbb   | mvn -q exec:java "-Dexec.args=@work/melee-bank-bb.args"

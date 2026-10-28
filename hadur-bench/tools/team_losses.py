@@ -30,7 +30,10 @@ import os
 import statistics
 import sys
 
-OURS = 'hadur2.'
+# Our members' name prefixes: hadur117.Hadur since the 2026-10-27 rename, hadur2.Hadur before it,
+# so historical runs still read as ours.
+DEFAULT_OURS = ('hadur117.Hadur', 'hadur2.Hadur')
+OURS = DEFAULT_OURS
 # --candidate-only: skip the baseline (aa) battles, so an arm's read is that arm's alone.
 CANDIDATE_ONLY = False
 MID = {'rz.HOFSwarm', 'gh.nano.GrofGroup', 'davidalves.PhoenixTeam', 'myl.micro.TroodonPack',
@@ -162,6 +165,12 @@ def line(name, s):
             '| {dmg_them:.0f} | {hit_us:.1f} | {hit_them:.1f} | {focus:.0f} | {mates:.0f} |').format(name, **s)
 
 
+def hadur_subject():
+    """Whether the subject is HadurTeam (either package), whose runs' baseline battles count too."""
+    prefixes = OURS if isinstance(OURS, tuple) else (OURS,)
+    return all(any(h.startswith(p) or p.startswith(h) for h in DEFAULT_OURS) for p in prefixes)
+
+
 def report(runs, title='How HadurTeam loses rounds'):
     per = collections.defaultdict(list)
     battles = collections.Counter()
@@ -169,7 +178,7 @@ def report(runs, title='How HadurTeam loses rounds'):
     for run in runs:
         for d in sorted(glob.glob(os.path.join(run, 'battles', '*'))):
             # Another subject is only the candidate: a run's baseline battles are HadurTeam's.
-            if (OURS != 'hadur2.' or CANDIDATE_ONLY) and d.endswith('-baseline'):
+            if (not hadur_subject() or CANDIDATE_ONLY) and d.endswith('-baseline'):
                 continue
             rows = battle(d)
             if rows:
@@ -180,7 +189,7 @@ def report(runs, title='How HadurTeam loses rounds'):
     if not any(per.values()):
         sys.exit('team_losses.py: no team battles under ' + ', '.join(runs))
     counts = sorted(set(battles.values()))
-    out = ['# ' + title, '', 'Subject: ' + OURS + '*', '', 'Runs: ' + ', '.join(runs), '',
+    out = ['# ' + title, '', 'Subject: ' + ' or '.join(p + '*' for p in (OURS if isinstance(OURS, tuple) else (OURS,))), '', 'Runs: ' + ', '.join(runs), '',
            'Battles read: {} over {} opponents ({} per opponent); incomplete directories left out: {}.'.format(
                sum(battles.values()), len(battles), ' or '.join(map(str, counts)),
                ', '.join(skipped) if skipped else 'none'), '',

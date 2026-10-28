@@ -30,7 +30,7 @@ class ArchitectureTest {
     @Tag("TWIN-3")
     @DisplayName("nothing of Hadur's or Saor's is used")
     void isolated() {
-        noClasses().should().dependOnClassesThat().resideInAnyPackage("hadur2..", "hadur117.micro..")
+        noClasses().should().dependOnClassesThat().resideInAnyPackage("hadur2..", "hadur117", "hadur117.core..", "hadur117.micro..")
             .check(CLASSES);
     }
 }

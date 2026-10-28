@@ -114,6 +114,13 @@ class LiveToolsTest {
         assertEquals(0, unittest("test_live_client.ClientsTest"));
     }
 
+    @Test
+    @Tag("BENCH-124")
+    @DisplayName("the live tools know Hadur by both packages, hadur2 and hadur117, and keep Saor apart")
+    void packageNames() throws Exception {
+        assertEquals(0, unittest("test_live_client.PackageNamesTest"));
+    }
+
     private static int unittest(String target) throws IOException, InterruptedException {
         assumeTrue(python(), "python3 is not on the PATH");
         Path log = Files.createTempFile("literumble", ".log");

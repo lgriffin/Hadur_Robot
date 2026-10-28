@@ -36,9 +36,9 @@ class RamPlanTest {
         assertEquals(List.of("c", "aa", "rk"), ram.stream().map(Arms.Arm::label).toList());
         List<Arms.Arm> exit = Arms.parse(Path.of("plans/exit-pick.arms"), here);
         assertEquals(List.of("c", "aa", "xp"), exit.stream().map(Arms.Arm::label).toList());
-        for (Arms.Arm a : ram) assertTrue(a.robot().startsWith("hadur2.Hadur " + v), a.robot());
-        for (Arms.Arm a : exit) assertTrue(a.robot().startsWith("hadur2.Hadur " + v), a.robot());
-        assertTrue(queue.contains("cp ../hadur-robot/target/hadur2.Hadur_" + v + ".jar bisect/"));
+        for (Arms.Arm a : ram) assertTrue(a.robot().startsWith("hadur117.Hadur " + v), a.robot());
+        for (Arms.Arm a : exit) assertTrue(a.robot().startsWith("hadur117.Hadur " + v), a.robot());
+        assertTrue(queue.contains("cp ../hadur-robot/target/hadur117.Hadur_" + v + ".jar bisect/"));
         for (String b : new String[] {"aa", "rambrk", "sx4list,sx0list"}) {
             assertTrue(queue.contains("build-ablation.sh " + b + " "), b);
         }

@@ -52,7 +52,7 @@ class MeleeBankPlanTest {
         assertTrue(args.contains("--suite\nmelee-census-317.txt\n"));
         assertTrue(args.contains("--seeds\n8\n") && args.contains("--seed-base\n3182\n"));
         assertTrue(args.contains("--parallel\n@C@\n") && args.contains("--cpu-constant\nauto\n"));
-        assertTrue(args.contains("bisect/hadur2.Hadur_@V@@A@.jar") && args.contains("work/melee-bank-@V@-@A@"));
+        assertTrue(args.contains("bisect/hadur117.Hadur_@V@@A@.jar") && args.contains("work/melee-bank-@V@-@A@"));
         assertFalse(args.contains("--baseline"), "arms pair in the read, not in the run");
         assertFalse(args.matches("(?s).*3\\.1\\d.*"), "names no version");
     }

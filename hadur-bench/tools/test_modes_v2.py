@@ -47,7 +47,7 @@ class ModesV2Test(unittest.TestCase):
         self.assertEqual(("sgolist,sdodgelist", "wldg"), modes_v2.candidate_spec(["a"], [], ["b"]))
         self.assertEqual(("", ""), modes_v2.candidate_spec([], [], []))
         arms = "".join(modes_v2.candidate_arms("3.16", "wlwm"))
-        self.assertIn("t3 | hadur2.Hadur 3.16wlwm | bisect/hadur2.Hadur_3.16wlwm.jar", arms)
+        self.assertIn("t3 | hadur117.Hadur 3.16wlwm | bisect/hadur117.Hadur_3.16wlwm.jar", arms)
 
     def test_panel(self):
         s1 = self.file("p1.txt", "# x\na.One 1 | rank5-band1 | a.One_1.jar\nb.Two 2 | rank9-band1 | b.Two_2.jar\n")

@@ -16,7 +16,7 @@
 
 set OUT = ../docs/bench/local
 
-gnprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur2.HadurTeam_"$V"aa.jar bisect/hadur2.HadurTeam_"$V"bb.jar bisect/hadur2.HadurTeam_"$V"mgl.jar bisect/hadur2.HadurTeam_"$V"mglw.jar && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmgunline && bash ./build-ablation.sh tmgunlinew && mkdir -p work && for a in bb mgl mglw; do sed "s/@V@/$V/g" plans/team-gunline-$a.args > work/team-gunline-$a.args && test -f bisect/hadur2.HadurTeam_"$V"$a.jar || exit 1; done && test -f bisect/hadur2.HadurTeam_"$V"aa.jar && rm -f ../docs/bench/local/team-gunline-*.md && ./fetch-opponents.sh --set team-census46.txt && mvn -q compile
+gnprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur117.HadurTeam_"$V"aa.jar bisect/hadur117.HadurTeam_"$V"bb.jar bisect/hadur117.HadurTeam_"$V"mgl.jar bisect/hadur117.HadurTeam_"$V"mglw.jar && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmgunline && bash ./build-ablation.sh tmgunlinew && mkdir -p work && for a in bb mgl mglw; do sed "s/@V@/$V/g" plans/team-gunline-$a.args > work/team-gunline-$a.args && test -f bisect/hadur117.HadurTeam_"$V"$a.jar || exit 1; done && test -f bisect/hadur117.HadurTeam_"$V"aa.jar && rm -f ../docs/bench/local/team-gunline-*.md && ./fetch-opponents.sh --set team-census46.txt && mvn -q compile
 gnbb   | mvn -q exec:java "-Dexec.args=@work/team-gunline-bb.args"
   after: gnprep
 gngl   | mvn -q exec:java "-Dexec.args=@work/team-gunline-mgl.args"

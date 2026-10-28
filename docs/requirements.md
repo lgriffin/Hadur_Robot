@@ -1624,7 +1624,7 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
 | BENCH-131 | Event | When a stop rule trips or a watched step fails and the plan sets `ALERT`, the queue runner shall open a GitHub issue assigned to that login carrying the progress file. | T7 |
 | BENCH-132 | Ubiquitous | The bench shall carry the `pc-1v1-ram` card, which builds RAM-5 on (`rambrk`) and SHIELD-19's exits for pc-shield-exit's 7 per-robot picks (`sx4list,sx0list`) beside an aa A/A copy, runs RAM-5 against the 45 rammers and perfect-prediction robots and the exits against the 7 robots at 6 fresh seeds each (from 3600 and 3700), gates RAM-5 at +0.05 APS and the exits at +0.01 APS with the 95% low end above zero, writes every robot's difference with losses, and stops before the results PR if any analysis fails. | T7 |
 | RAM-4 | State | While the rammer-heat switch is on, in a duel, once RAM-2 has confirmed the opponent as a rammer, the surf shall offer MOVE-11's gun-heat wave with MOVE-13's hold off (as heatjit plays) for the rest of the battle, whatever those switches are set to; before the confirmation, and in melee or team, the switches are as their own requirements state. Off by default. | R9 |
-| RAM-5 | State | While the rammer-dodge switch is on, in a duel, while RAM-2's escape drives, each enemy shot read shall be kept with two aims, head-on at our position on the tick before it left and linear along our heading and speed then, and each candidate path the escape plays shall lose 60 px of its closest approach for every kept aim whose bullet would come within 22 px of us on both axes on that path; with the switch off, or in melee or team, the escape chooses as RAM-2 states. Off by default. | R9 |
+| RAM-5 | State | While the rammer-dodge switch is on, in a duel, while RAM-2's escape drives, each enemy shot read shall be kept with two aims, head-on at our position on the tick before it left and linear along our heading and speed then, and each candidate path the escape plays shall lose 60 px of its closest approach for every kept aim whose bullet would come within 22 px of us on both axes on that path; with the switch off, or in melee or team, the escape chooses as RAM-2 states. On by default since pc-1v1-ram (PR #394). | R9 |
 
 - **TIME-8.** `Hadur.setupRecord`, printed once in round 0. The PC's round-0 read
   (`docs/bench/local/2026-10-21_round0-skips.md`) found 39 of 4,848 battles disabled at start-up,
@@ -2104,3 +2104,15 @@ changing a single decision.
 | ID | Pattern | Requirement | Stage |
 |---|---|---|---|
 | TIME-9 | Ubiquitous | The core's surf, bullet-shadow and wave hit-box code shall reuse arrays and plain coordinates instead of building a map, point or line per neighbour, bullet or corner on every tick, with the same arithmetic in the same order, so that every duel, melee and team fixture replays bit for bit. | R9 |
+
+## The hadur117 package (NAME-1, BENCH-124)
+
+Leigh's package is `hadur117`, Saor's from the start (`hadur117.micro.Saor`); Hadur had shipped as
+`hadur2` through 3.18. From 3.19 the whole family is in `hadur117`. Robocode lets a robot read
+only its own package's data folder, so the first pass of a renamed entry starts with no stored
+profiles, and the rumbles list it as a new participant.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| NAME-1 | Ubiquitous | The solo robot, the team, the recorder and the core shall be in package `hadur117` (`hadur117.Hadur`, `hadur117.HadurTeam` of five `hadur117.Hadur`, `hadur117.core`), with jars named `hadur117.Hadur_<release>.jar` and `hadur117.HadurTeam_<release>.jar`, and the rename shall change no decision: every duel, melee and team fixture replays bit for bit. | R9 |
+| BENCH-124 | Ubiquitous | The bench, the ablation builder, the shield probe and the live client shall read a robot jar or name from before the rename as `hadur2` and a new one as `hadur117`: the jar name and properties in either package, a team's member from its own package, the shield list repacked in the jar's own package, the data folder of the robot's package, and Hadur's battles, console lines and data folders under either name, never counting Saor (`hadur117.micro.Saor`) as Hadur. | T7 |

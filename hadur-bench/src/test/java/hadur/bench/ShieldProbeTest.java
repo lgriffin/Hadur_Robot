@@ -34,12 +34,17 @@ class ShieldProbeTest {
     Path tmp;
 
     private Path fakeRobotJar(boolean withList) throws IOException {
-        Path jar = tmp.resolve("hadur2.Hadur_3.8.jar");
+        return fakeRobotJar(withList, "hadur117");
+    }
+
+    /** A robot jar in {@code pkg}: hadur2 for a build from before the rename. */
+    private Path fakeRobotJar(boolean withList, String pkg) throws IOException {
+        Path jar = tmp.resolve(pkg + ".Hadur_3.8.jar");
         try (JarOutputStream out = new JarOutputStream(Files.newOutputStream(jar))) {
-            put(out, "hadur2/Hadur.class", "classbytes");
-            put(out, "hadur2/Hadur.properties",
-                "#Robocode Robot Properties\nrobot.classname=hadur2.Hadur\nrobot.version=3.8\nrobocode.version=1.9.3.0\n");
-            if (withList) put(out, ShieldProbe.LIST_ENTRY, "oldlist");
+            put(out, pkg + "/Hadur.class", "classbytes");
+            put(out, pkg + "/Hadur.properties",
+                "#Robocode Robot Properties\nrobot.classname=" + pkg + ".Hadur\nrobot.version=3.8\nrobocode.version=1.9.3.0\n");
+            if (withList) put(out, pkg + "/ShieldListData.class", "oldlist");
         }
         return jar;
     }
@@ -56,20 +61,24 @@ class ShieldProbeTest {
         }
     }
 
-    /** The entries the repacked jar's {@code hadur2.ShieldListData} returns, loaded as the robot would. */
+    /** The entries the repacked jar's {@code hadur117.ShieldListData} returns, loaded as the robot would. */
     private static List<String> listOf(Path jar) throws Exception {
+        return listOf(jar, "hadur117");
+    }
+
+    private static List<String> listOf(Path jar, String pkg) throws Exception {
         byte[] bytes;
         try (JarFile f = new JarFile(jar.toFile())) {
-            bytes = f.getInputStream(f.getEntry(ShieldProbe.LIST_ENTRY)).readAllBytes();
+            bytes = f.getInputStream(f.getEntry(pkg + "/ShieldListData.class")).readAllBytes();
         }
         ClassLoader loader = new ClassLoader(null) {
             @Override
             protected Class<?> findClass(String name) throws ClassNotFoundException {
-                if (!name.equals("hadur2.ShieldListData")) throw new ClassNotFoundException(name);
+                if (!name.equals(pkg + ".ShieldListData")) throw new ClassNotFoundException(name);
                 return defineClass(name, bytes, 0, bytes.length);
             }
         };
-        java.lang.reflect.Method m = loader.loadClass("hadur2.ShieldListData").getDeclaredMethod("lines");
+        java.lang.reflect.Method m = loader.loadClass(pkg + ".ShieldListData").getDeclaredMethod("lines");
         m.setAccessible(true);
         return List.of((String[]) m.invoke(null));
     }
@@ -92,8 +101,8 @@ class ShieldProbeTest {
         String props = read(target, ShieldProbe.PROPERTIES_ENTRY);
         assertTrue(props.contains("robot.version=3.8-on\n"), props);
         assertFalse(props.contains("robot.version=3.8\n"));
-        assertTrue(props.contains("robot.classname=hadur2.Hadur\n"), "the rest of the properties stay");
-        assertEquals("classbytes", read(target, "hadur2/Hadur.class"));
+        assertTrue(props.contains("robot.classname=hadur117.Hadur\n"), "the rest of the properties stay");
+        assertEquals("classbytes", read(target, "hadur117/Hadur.class"));
     }
 
     @Test
@@ -131,8 +140,8 @@ class ShieldProbeTest {
         opts.put("out", tmp.resolve("out").toString());
         ShieldProbe.prepare(opts, tmp);
 
-        assertEquals("hadur2.Hadur 3.8-on", opts.get("robot"));
-        assertEquals("hadur2.Hadur 3.8-off", opts.get("baseline-robot"));
+        assertEquals("hadur117.Hadur 3.8-on", opts.get("robot"));
+        assertEquals("hadur117.Hadur 3.8-off", opts.get("baseline-robot"));
         assertEquals(set.toString(), opts.get("set"));
         Path on = Path.of(opts.get("robot-jar"));
         Path off = Path.of(opts.get("baseline"));
@@ -150,8 +159,8 @@ class ShieldProbeTest {
         opts.put("robot-jar", fakeRobotJar(true).toString());
         opts.put("out", tmp.resolve("out2").toString());
         new Bench(opts); // does not throw
-        assertEquals("hadur2.Hadur 3.8-on", opts.get("robot"));
-        assertEquals("hadur2.Hadur 3.8-off", opts.get("baseline-robot"));
+        assertEquals("hadur117.Hadur 3.8-on", opts.get("robot"));
+        assertEquals("hadur117.Hadur 3.8-off", opts.get("baseline-robot"));
         assertTrue(Files.isRegularFile(Path.of(opts.get("baseline"))));
     }
 
@@ -222,8 +231,8 @@ class ShieldProbeTest {
         on.put(open, List.of(share(0.70), share(0.90), share(0.60), share(0.85)));
         off.put(open, List.of(share(0.80), share(0.70), share(0.75), share(0.78)));
 
-        String report = ShieldProbe.render(on, off, tmp.resolve("battles"), "hadur2.Hadur 3.8-on",
-            "hadur2.Hadur 3.8-off");
+        String report = ShieldProbe.render(on, off, tmp.resolve("battles"), "hadur117.Hadur 3.8-on",
+            "hadur117.Hadur 3.8-off");
 
         assertTrue(report.contains("Shield probe (BENCH-11)"), report);
         assertTrue(report.contains("| a.Wins 1.0 |") && report.contains("| wins |"), report);
@@ -240,5 +249,16 @@ class ShieldProbeTest {
         assertEquals("loses", ShieldProbe.verdict(Stats.pairedDiff(List.of(0.5, 0.51, 0.52), List.of(0.8, 0.8, 0.8))));
         assertEquals("open", ShieldProbe.verdict(Stats.pairedDiff(List.of(0.9), List.of(0.8))));
         assertEquals("n/a", ShieldProbe.verdict(Stats.pairedDiff(new ArrayList<>(), new ArrayList<>())));
+    }
+
+    @Test
+    @Tag("BENCH-124")
+    @DisplayName("a jar from before the rename is repacked in its own package, hadur2")
+    void repacksAnOldJar() throws Exception {
+        Path source = fakeRobotJar(true, "hadur2");
+        Path target = tmp.resolve("old-on.jar");
+        ShieldProbe.repack(source, target, "3.8-on", "a.Bot\nb.Bot\n");
+        assertEquals(List.of("a.Bot", "b.Bot"), listOf(target, "hadur2"));
+        assertTrue(read(target, "hadur2/Hadur.properties").contains("robot.version=3.8-on"));
     }
 }

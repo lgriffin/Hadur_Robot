@@ -40,22 +40,22 @@ jobs:
       - name: Check the jar name and version match the tag
         run: |
           version="${TAG#v}"
-          jar="hadur-robot/target/hadur2.Hadur_${version}.jar"
+          jar="hadur-robot/target/hadur117.Hadur_${version}.jar"
           test -f "$jar" || { echo "missing $jar"; exit 1; }
-          unzip -p "$jar" hadur2/Hadur.properties | grep -qx "robot.version=${version}" \
+          unzip -p "$jar" hadur117/Hadur.properties | grep -qx "robot.version=${version}" \
             || { echo "robot.version in $jar is not ${version}"; exit 1; }
           # A5: a source with a team file builds the team jar, which ships beside the solo
           # jar at the same version; a missing one fails the release rather than dropping it.
-          team="hadur-robot/target/hadur2.HadurTeam_${version}.jar"
+          team="hadur-robot/target/hadur117.HadurTeam_${version}.jar"
           if [ -f hadur-robot/src/team/HadurTeam.team ] && [ ! -f "$team" ]; then
-            echo "missing $team"; ls hadur-robot/target/hadur2.HadurTeam_*.jar 2>/dev/null; exit 1
+            echo "missing $team"; ls hadur-robot/target/hadur117.HadurTeam_*.jar 2>/dev/null; exit 1
           fi
           if [ -f "$team" ]; then
-            unzip -p "$team" hadur2/HadurTeam.team | grep -qx "team.version=${version}" \
+            unzip -p "$team" hadur117/HadurTeam.team | grep -qx "team.version=${version}" \
               || { echo "team.version in $team is not ${version}"; exit 1; }
-            unzip -p "$team" hadur2/HadurTeam.team | grep -q "^team.members=hadur2.Hadur ${version}," \
-              || { echo "the members in $team are not hadur2.Hadur ${version}"; exit 1; }
-            unzip -p "$team" hadur2/Hadur.properties | grep -qx "robot.version=${version}" \
+            unzip -p "$team" hadur117/HadurTeam.team | grep -q "^team.members=hadur117.Hadur ${version}," \
+              || { echo "the members in $team are not hadur117.Hadur ${version}"; exit 1; }
+            unzip -p "$team" hadur117/Hadur.properties | grep -qx "robot.version=${version}" \
               || { echo "robot.version in $team is not ${version}"; exit 1; }
           else
             team=""

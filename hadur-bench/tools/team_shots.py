@@ -10,7 +10,8 @@ how often a single enemy shot was inferred, split by what else happened to that 
 window; then, for every enemy bullet that hit a member, whether that member inferred the shot.
 """
 import sys, os, glob, collections, bisect
-OURS = 'hadur2.'
+# Our members: hadur2 before the 2026-10-27 rename, hadur117.Hadur after it.
+OURS = ('hadur2.', 'hadur117.Hadur')
 def load(d):
     fires = collections.defaultdict(list)   # (round, owner) -> [turn]
     hits = collections.defaultdict(list)    # (round, victim) -> [(turn, owner, power)]

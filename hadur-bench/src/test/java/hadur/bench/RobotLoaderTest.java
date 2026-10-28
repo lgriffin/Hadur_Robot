@@ -85,12 +85,12 @@ class RobotLoaderTest {
 
     private static Path robotJar(Path target) throws Exception {
         try (Stream<Path> files = Files.list(target)) {
-            return files.filter(f -> f.getFileName().toString().matches("hadur2\\.Hadur_[0-9.]+\\.jar"))
+            return files.filter(f -> f.getFileName().toString().matches(RobotJar.PACKAGE + "\\.Hadur_[0-9.]+\\.jar"))
                 .findFirst().orElseThrow(() -> new IllegalStateException("no robot jar in " + target + "; run mvn package"));
         }
     }
 
-    /** {@code hadur2.Hadur_3.5.1.jar} is the robot {@code hadur2.Hadur 3.5.1}. */
+    /** {@code hadur117.Hadur_3.5.1.jar} is the robot {@code hadur117.Hadur 3.5.1}. */
     static String robotName(Path jar) {
         String n = jar.getFileName().toString();
         return n.substring(0, n.length() - 4).replace('_', ' ');

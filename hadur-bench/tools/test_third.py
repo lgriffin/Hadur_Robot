@@ -45,7 +45,7 @@ class ThirdTest(unittest.TestCase):
 
     def test_candidate_arms(self):
         arms = third.candidate_arms("3.17.1", "dp")
-        self.assertIn("t4 | hadur2.Hadur 3.17.1dp | bisect/hadur2.Hadur_3.17.1dp.jar\n", arms)
+        self.assertIn("t4 | hadur117.Hadur 3.17.1dp | bisect/hadur117.Hadur_3.17.1dp.jar\n", arms)
 
 
 if __name__ == "__main__":

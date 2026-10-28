@@ -16,16 +16,16 @@ auto
 --set
 work/team-table-gate.txt
 --robot-jar
-bisect/hadur2.HadurTeam_@V@mk.jar
+bisect/hadur117.HadurTeam_@V@mk.jar
 --robot
-hadur2.HadurTeam @V@mk
+hadur117.HadurTeam @V@mk
 --member
-hadur2.Hadur
+hadur117.Hadur
 --out
 work/team-table-@V@-gate
 --report
 ../docs/bench/local/team-table-gate.md
 --baseline
-bisect/hadur2.HadurTeam_@V@aa.jar
+bisect/hadur117.HadurTeam_@V@aa.jar
 --baseline-robot
-hadur2.HadurTeam @V@aa
+hadur117.HadurTeam @V@aa

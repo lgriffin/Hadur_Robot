@@ -23,7 +23,7 @@
 
 set OUT = ../docs/bench/local
 
-ogiprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb po; do rm -f bisect/hadur2.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh pogi && mkdir -p work && for a in aa bb po; do test -f bisect/hadur2.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-ogi.args > work/melee-ogi-$a.args || exit 1; done && rm -f ${OUT}/melee-ogi-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+ogiprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb po; do rm -f bisect/hadur117.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh pogi && mkdir -p work && for a in aa bb po; do test -f bisect/hadur117.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-ogi.args > work/melee-ogi-$a.args || exit 1; done && rm -f ${OUT}/melee-ogi-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
 ogiaa   | mvn -q exec:java "-Dexec.args=@work/melee-ogi-aa.args"
   after: ogiprep
 ogibb   | mvn -q exec:java "-Dexec.args=@work/melee-ogi-bb.args"

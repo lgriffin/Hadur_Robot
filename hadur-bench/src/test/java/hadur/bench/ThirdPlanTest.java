@@ -34,8 +34,8 @@ class ThirdPlanTest {
         String queue = Files.readString(QUEUE);
         List<Arms.Arm> arms = Arms.parse(Path.of("plans/third-dodge.arms"), Path.of("").toAbsolutePath());
         assertEquals(List.of("c", "aa", "sp"), arms.stream().map(Arms.Arm::label).toList());
-        for (Arms.Arm a : arms) assertTrue(a.robot().startsWith("hadur2.Hadur " + v), a.robot());
-        assertTrue(queue.contains("cp ../hadur-robot/target/hadur2.Hadur_" + v + ".jar bisect/"));
+        for (Arms.Arm a : arms) assertTrue(a.robot().startsWith("hadur117.Hadur " + v), a.robot());
+        assertTrue(queue.contains("cp ../hadur-robot/target/hadur117.Hadur_" + v + ".jar bisect/"));
         assertTrue(queue.contains("build-ablation.sh aa ") && queue.contains("build-ablation.sh sdplan "));
         assertTrue(queue.contains("--base " + v + " "));
         assertTrue(queue.contains("fetch-opponents.sh --set panel-third-dodge.txt"));

@@ -16,16 +16,16 @@ auto
 --set
 plans/team-path-troodon.txt
 --robot-jar
-bisect/hadur2.HadurTeam_@V@tn.jar
+bisect/hadur117.HadurTeam_@V@tn.jar
 --robot
-hadur2.HadurTeam @V@tn
+hadur117.HadurTeam @V@tn
 --member
-hadur2.Hadur
+hadur117.Hadur
 --out
 work/team-path-@V@-tn
 --report
 ../docs/bench/local/team-path-tn.md
 --baseline
-bisect/hadur2.HadurTeam_@V@aa.jar
+bisect/hadur117.HadurTeam_@V@aa.jar
 --baseline-robot
-hadur2.HadurTeam @V@aa
+hadur117.HadurTeam @V@aa

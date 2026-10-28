@@ -20,10 +20,11 @@ class LiveWatchPlanTest {
         assertTrue(queue.contains("set V1 = ") && queue.contains("set VT = "));
         assertTrue(queue.contains("live_client.py watch --root ${CLIENTS} $(for d in ${ONES}; do printf -- '--launch %s:roborumble.bat ' \"$d\"; done)"));
         assertTrue(queue.contains("set ONES = rr01 rr02 rr03 rr04\n"), "four 1v1 clients, so the PC is not starved");
-        assertTrue(queue.contains("--page \"roborumble:hadur2.Hadur ${V1}\""));
-        assertTrue(queue.contains("--page \"meleerumble:hadur2.Hadur ${V1}\""));
-        assertTrue(queue.contains("--page \"teamrumble:hadur2.HadurTeam ${VT}\""));
-        assertTrue(queue.contains("--robot \"hadur2.Hadur ${V1}\" --robot \"hadur2.HadurTeam ${VT}\""),
+        assertTrue(queue.contains("set PKG = "), "the release's package: hadur2 through 3.18, hadur117 from 3.19");
+        assertTrue(queue.contains("--page \"roborumble:${PKG}.Hadur ${V1}\""));
+        assertTrue(queue.contains("--page \"meleerumble:${PKG}.Hadur ${V1}\""));
+        assertTrue(queue.contains("--page \"teamrumble:${PKG}.HadurTeam ${VT}\""));
+        assertTrue(queue.contains("--robot \"${PKG}.Hadur ${V1}\" --robot \"${PKG}.HadurTeam ${VT}\""),
                 "only the released versions' battles enter the report");
         assertTrue(queue.contains("--new-only --stop-collapses ${COLLAPSES} --stop-battles ${DUELS} --hours ${HOURS}"),
                 "the watch stops on what it caught, with a time cap");

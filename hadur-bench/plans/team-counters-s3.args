@@ -16,16 +16,16 @@ auto
 --set
 work/team-counters-s3.txt
 --robot-jar
-bisect/hadur2.HadurTeam_@V@kc.jar
+bisect/hadur117.HadurTeam_@V@kc.jar
 --robot
-hadur2.HadurTeam @V@kc
+hadur117.HadurTeam @V@kc
 --member
-hadur2.Hadur
+hadur117.Hadur
 --out
 work/team-counters-@V@-s3
 --report
 ../docs/bench/local/team-counters-s3.md
 --baseline
-bisect/hadur2.HadurTeam_@V@aa.jar
+bisect/hadur117.HadurTeam_@V@aa.jar
 --baseline-robot
-hadur2.HadurTeam @V@aa
+hadur117.HadurTeam @V@aa
