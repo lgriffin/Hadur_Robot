@@ -6,7 +6,7 @@
 #   bash tools/deise_arms.sh live SEEDS SEED_BASE [ARMS]
 # An arm line is `NAME | what | FILE | sed`: FILE (DeiseLab.java, Gun.java or Move.java) takes the
 # sed, empty for the control; more `| FILE | sed` pairs change more files (stage E1's stacks). An arm `NAME | what | @robot name` seats that robot (its jar from
-# opponents/) instead. An arm `NAME | what | =deise-arms/e2/FIT3.java` builds that one flat class
+# opponents/) instead. An arm `NAME | what | =deise-arms/e2/FIT3F.java` builds that one flat class
 # (stage E2's fitted candidates, benched as they would ship). Other arms are built from the bench
 # adapter DeiseLab over the core, which the shipped one-class Deise is held to (DEISE-16). Each build is javac-only, with its class renamed
 # Deise<NAME> and its core package hadur117.mini.c<name>, so no two arms share a class; the
@@ -39,6 +39,9 @@ grep -v '^#' deise-arms/arms.txt | while IFS='|' read -r name what rest; do
     [ "${file#@}" != "$file" ] && seat="${file#@}"
     flat=""
     [ "${file#=}" != "$file" ] && flat="${file#=}"
+    if [ -n "$flat" ] && { [ ${#files[@]} -gt 1 ] || [ -n "${exprs[0]}" ]; }; then
+        echo "deise_arms: arm $name: a flat class (=FILE) takes no sed pairs" >&2; exit 3
+    fi
     suite=$(python3 tools/saor_live.py --counted minimelee-field.txt --own "$own" --own-key deise \
         --resident "$resident" --seat "$seat" --out "$out/live" | sed -n 's/^.*: \(.*suite.txt\) (.*$/\1/p')
     if [ "$seat" != deise ]; then
