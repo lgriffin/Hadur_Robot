@@ -1,68 +1,72 @@
-# TwinSaor stage W3 (docs/twinsaor.md section 6): the first screen of TwinSaor's arms on the whole Twin
-# Duel field. Leigh, 2026-10-27: no PC bench until TwinSaor has had a live run, so this card waits for
-# 0.1's first live pass; it is designed, not queued.
+# TwinSaor stage W3 (docs/twinsaor.md sections 6 and 9): the per-team mode screen. Every arm is
+# TwinSaor 0.1 with one change for every team; the reader then picks, team by team, the arm that
+# beats the control there (Leigh 2026-10-27, after 0.1's first live pass: "tailor this to a per
+# opponent basis"). 0.1 has had its live run, so this card may run; Leigh starts it.
 #   ./queue.sh run pc-twin-w3        (or  .\queue.ps1 run pc-twin-w3)
 # Run it from master:
 #   git checkout master && git pull
 # One bench queue, RoboRumble workers at 0, unpinned. Every step resumes; no step needs a decision.
 # Nothing here touches Hadur or Saor.
 #
-# Field: twinduel-field.txt, the 27 ranked teams (LunarTwins to SuperSittingDuckTwins),
-# 800x800, 35 rounds, 10 seeds a team = 270 battles an arm. The cloud box ran 20 such battles in
-# about 2 minutes at parallel 3, so an arm is roughly 5-10 min at the PC's width; 11 arms, about 1.5 h.
+# Field: twinduel-tailor.txt, the 24 ranked teams less the three sitting-duck teams (0.1 scores
+# 97 to 100 on them live). 800x800, 35 rounds, 16 seeds a team = 384 battles an arm, 4,224 in all.
+# The cloud box runs about 10 such battles a minute at parallel 3; the PC, about 40: roughly 1 h 50.
 #
 # Arms (twin-arms/arms.txt):
-#   C     TwinSaor 0.1, the control          A     C again, the A/A check
-#   R2W   range 300 with two enemies         R2N   range 180 with two enemies
-#   R1N   range 60 with one enemy left       R1W   range 160 with one enemy left
-#   P180  a 180-degree pincer: diagnostic only, never ships (Saor's uniqueness rule)
-#   KL    kill the enemy leader first        NF    no leg flip on the target's shot
-#   LEG   a 100 px leg                       FF    wider fire hold (0.1 shot its own twin 467 times
-#                                                  in 700 rounds against LunarTwins on the cloud)
-# Pass (tools/twin_read.py): +0.5 share points of APS over C and more than 2 paired standard errors,
-# with A inside 2 standard errors of C. A passing arm goes into 0.2 only if it still fits 1,999 bytes.
+#   C     TwinSaor 0.1, the control          A     C again, the A/A check and the pick's false-pick count
+#   R2W   range 300 with two enemies         R2X   range 400 with two enemies
+#   R2N   range 180 with two enemies         R1N   range 60 with one enemy left
+#   R1W   range 160 with one enemy left      KL    kill the enemy leader first
+#   NF    no leg flip on the target's shot   LEG   a 100 px leg
+#   FF    wider fire hold (0.1 shot its own twin 467 times in 700 rounds against LunarTwins on the cloud)
+# Reads:
+#   twin-w3.md        the whole-field read (tools/twin_read.py): an arm that wins everywhere.
+#   twin-w3-picks.md  the per-team picks (tools/twin_pick.py): per team, the best arm with +3.0 share
+#                     points and a low end above zero over 16 paired seeds; twin-w3-picks.tsv lists them.
+# The picks are an upper bound (best of 10 arms). They become 0.2's mode table only after the table
+# build passes a fresh-seed gate (docs/twinsaor.md section 9).
 
 set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
 set OUT = ../docs/bench/local
-set ARMS = C,A,R2W,R2N,R1N,R1W,P180,KL,NF,LEG,FF
+set ARMS = C,A,R2W,R2X,R2N,R1N,R1W,KL,NF,LEG,FF
 
-prep | (cd .. && mvn -q -DskipTests install -pl twinsaor -am) && ./fetch-opponents.sh --set twinduel-field.txt && TWIN_RUN=w3 bash tools/twin_arms.sh twinduel-field.txt 10 3100 ${ARMS}
+prep | (cd .. && mvn -q -DskipTests install -pl twinsaor -am) && ./fetch-opponents.sh --set twinduel-tailor.txt && TWIN_RUN=w3 bash tools/twin_arms.sh twinduel-tailor.txt 16 3100 ${ARMS}
 
-arm-C | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-C.args"
+arm-C | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-tailor-C.args"
   after: prep
 
-arm-A | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-A.args"
+arm-A | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-tailor-A.args"
   after: arm-C
 
-arm-R2W | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-R2W.args"
+arm-R2W | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-tailor-R2W.args"
   after: arm-A
 
-arm-R2N | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-R2N.args"
+arm-R2X | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-tailor-R2X.args"
   after: arm-R2W
 
-arm-R1N | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-R1N.args"
+arm-R2N | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-tailor-R2N.args"
+  after: arm-R2X
+
+arm-R1N | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-tailor-R1N.args"
   after: arm-R2N
 
-arm-R1W | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-R1W.args"
+arm-R1W | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-tailor-R1W.args"
   after: arm-R1N
 
-arm-P180 | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-P180.args"
+arm-KL | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-tailor-KL.args"
   after: arm-R1W
 
-arm-KL | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-KL.args"
-  after: arm-P180
-
-arm-NF | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-NF.args"
+arm-NF | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-tailor-NF.args"
   after: arm-KL
 
-arm-LEG | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-LEG.args"
+arm-LEG | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-tailor-LEG.args"
   after: arm-NF
 
-arm-FF | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-FF.args"
+arm-FF | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-tailor-FF.args"
   after: arm-LEG
 
-read | python3 tools/twin_read.py --run w3 --arms ${ARMS} --control C > ${OUT}/twin-w3.md
+read | python3 tools/twin_read.py --run w3 --label twinduel-tailor --arms ${ARMS} --control C > ${OUT}/twin-w3.md && python3 tools/twin_pick.py --run w3 --label twinduel-tailor --arms ${ARMS} --control C --picks ${OUT}/twin-w3-picks.tsv > ${OUT}/twin-w3-picks.md
   after: arm-FF
 
-pr | bash tools/open_results_pr.sh claude/pc-twin-w3-results "TwinSaor W3: first arm screen on the Twin Duel field" ${OUT}/twin-w3.md ${OUT}/twin-w3-twinduel-field-*.md
+pr | bash tools/open_results_pr.sh claude/pc-twin-w3-results "TwinSaor W3: per-team mode screen" ${OUT}/twin-w3.md ${OUT}/twin-w3-picks.md ${OUT}/twin-w3-picks.tsv ${OUT}/twin-w3-twinduel-tailor-*.md
   after: read

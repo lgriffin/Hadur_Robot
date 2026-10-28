@@ -33,6 +33,15 @@ public class SaorTwin extends TeamRobot {
     static char[][][] markov = new char[SLOTS][Gun.STATES][Gun.ROW + 1];
     /** The latest record of each enemy this round. */
     static double[][] seen = new double[SLOTS][8];
+    /**
+     * The mode table (TWIN-13, docs/twinsaor.md sections 9 and 11): one char a slot, keyed like the
+     * records by name hash. Bit 1: no leg flip on the target's shot; bit 2: range 180 with two
+     * enemies. A slot two teams share holds the AND of their modes, so the OR over a team's slots
+     * is its own. Written by hadur-bench/tools/twin_table.py from the W4 picks.
+     */
+    static final String MODES = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\2\0\0\0\0\0\0\0\1\0\0\0\0\0\0\0\0\0\2\0\0\0\0\0\0\0\0\0\0\0\0\0\0\2\0\0\0\0\0\0\0\0\0\1\0\0\0\0\0\2\0\0\0\0\0\0\0\0\1\0\0\0\0\1\0\0\0\0\0\0\0\0\0\0\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\1\0\0\0\0\0\0\0\0\0\1\0\0\0\1\0\0\1\0\0\0\0\0";
+    /** The OR of the table's entries at the slots of the enemies seen this battle (TWIN-13). */
+    static int mode;
     static int target;
     static boolean leader;
     static boolean mateAlive;
@@ -120,12 +129,9 @@ public class SaorTwin extends TeamRobot {
             double bearing = mateAlive
                 ? Team.stationBearing(t[X], t[Y], (x + mateX) / 2, (y + mateY) / 2, leader)
                 : Math.atan2(x - t[X], y - t[Y]);
-            double[] p = Team.point(t[X], t[Y], bearing, mateAlive ? Team.range(enemies) : Team.RANGE_TWO, side);
+            double[] p = Team.point(t[X], t[Y], bearing, mateAlive ? Team.range(enemies, mode) : Team.RANGE_TWO, side);
             px = p[0];
             py = p[1];
-            if (Point2D.distance(x, y, px, py) < 20) {
-                side = -side;
-            }
         } else {
             // TWIN-12: the last twin against two plays Saor's corner oscillation.
             if (getDistanceRemaining() == 0) {
@@ -134,9 +140,14 @@ public class SaorTwin extends TeamRobot {
             px = Team.corner(axis == 0, distance, x);
             py = Team.corner(axis != 0, distance, y);
         }
+        // At the end of the leg, turn back; the corner ignores the side, so its flips do nothing.
+        double go = Point2D.distance(x, y, px, py);
+        if (go < 20) {
+            side = -side;
+        }
         double turn;
         setTurnRightRadians(Math.tan(turn = Math.atan2(px - x, py - y) - getHeadingRadians()));
-        setAhead(Math.cos(turn) * Point2D.distance(x, y, px, py));
+        setAhead(Math.cos(turn) * go);
     }
 
     /** Sends a message to the partner, ignoring a send the engine refuses. */
@@ -185,6 +196,8 @@ public class SaorTwin extends TeamRobot {
         if (m[6] <= r[TIME]) {
             return;
         }
+        // TWIN-13: the team faced is known from its robots' names.
+        mode |= MODES.charAt(s);
         int state = (int) r[STATE];
         if (m[6] == r[TIME] + 1) {
             state = Gun.state(m[4], r[VELOCITY], r[HEADING], m[3]);
@@ -193,7 +206,7 @@ public class SaorTwin extends TeamRobot {
             } catch (RuntimeException ex) {
                 state = (int) r[STATE];
             }
-            if (s == target && Team.fired(r[ENERGY], m[5])) {
+            if (s == target && (mode & 1) == 0 && Team.fired(r[ENERGY], m[5])) {
                 side = -side;
             }
         } else if (r[TIME] < 0) {
