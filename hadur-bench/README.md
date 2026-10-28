@@ -45,6 +45,7 @@ mvn exec:java -Dexec.args="--mode cold --rounds 35 --seeds 5"
 | `--shard K/N` | | (BENCH-107) fight every N-th opponent of the set from the K-th, so two machines split one duel or team set; refused with `--melee` |
 | `--child-cpus N` | 2 when `--parallel` > 1, else off | (all modes) tell each battle JVM to size its JIT and GC thread pools for N processors (`-XX:ActiveProcessorCount=N`), so twenty children do not each start a 48-core machine's worth of threads; 0 leaves the JVM to itself |
 | `--child-heap SIZE` | | (all modes) cap each battle JVM's heap (`-Xmx`), e.g. `512M`, the rumble client's |
+| `--job-order shuffled` | | (BENCH-128) with `--arms`, fight the (opponent, seed) jobs in an order seeded from the seed base, so a run cut short is a fair sample of the panel; `bench-top20.sh --shuffle-jobs` passes it. Needed by a queue step's `futility` stop rule |
 | `--truth-log false` | on | (BENCH-97) duel battles write no `truth.log.gz` (the per-tick ground truth only the offline `data/tools` scripts read): about 10% faster on strong pairings and 5 to 6 MB less disk a battle; the report's counts, wave fidelity included, are unchanged. `bench-top20.sh --no-truth-log` passes it |
 | `--per-opponent DIR` | | besides the main report, write one report per opponent to `DIR/<slug>.md` (slug: the opponent name with non `[A-Za-z0-9.]` runs replaced by `_`), with a per-seed battle table (and the baseline and paired difference when `--baseline` ran) followed by that opponent's full diagnostics. With `--team`: one report per opposing team in the same style, with the team records (T) by member; with `--melee`: one per opponent in `DIR/<label>/`, one field's battles each (pooling fields stays `data/tools/melee_pairwise.py`'s job) |
 | `--record DIR` | | capture replay fixtures instead (see below) |
@@ -227,6 +228,51 @@ Start it in the background on Windows with `(nohup ./queue.sh run overnight-385 
 - **Concurrency.** Off by default. `set CONCURRENCY = 2` in a plan, or `--concurrency 2` (which wins), lets up to that many steps run side by side: each time a slot is free the first step in plan order whose `after:` step is done (or that has none) starts, and a step after one that is still running waits for it. A timeout kills only that step, a stop kills every running step, `ALLDONE` is logged when the last one ends, and `status` lists each running step. Resume is unchanged.
 
 Concurrency spends the host's width twice. The width a run uses is `--parallel` x `--child-cpus` cores, so two steps need each step's `--parallel` halved to stay inside the same budget (the parallel ladder, `docs/bench/local/2026-10-06_parallel-ladder.md`, found about 24 cores workable in total, and 12 wide with `--child-cpus 2` leaves room for the rumble clients). Each step also sees the other's battle JVMs as "other Robocode JVMs" in `conditions.json`, which the trust gate counts, so a concurrent run reads CAUTION on that account even when the load was fine; read its skipped-turn and duress figures before relying on it. Use it for steps that are each too narrow to fill the host (a few opponents, or a single-threaded prep and fetch), not to run two full-width benches at once.
+
+#### Watching a run and stopping it early (BENCH-128 to BENCH-131)
+
+A long PC card no longer has to be read only at the end. A step can carry a `watch:` line and pre-declared
+`stop:` lines; the runner reads the step's battles as they land (every multi-arm battle already leaves its
+row in `battles/<job>-<arm>/arm-row.tsv`) and checks the rules every minute:
+
+```
+screen | ./bench-top20.sh ${C} ${P} --set panel.txt --seeds 3 --arms plans/x.arms --out work/x --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30                          # 30 failed battles: crash, broken jar             -> halt
+  stop: dead 8                            # an arm scoring nothing in 8+ battles: bad/stale jar -> halt
+  stop: skips 40 over 200                 # skipped-turn build-up (PR #331)                    -> halt
+  stop: stall 30m                         # no battle finished for 30 minutes                  -> halt
+  stop: aa after 20%                      # A/A outside its band at z 3: bench defect          -> halt
+  stop: futility s4,s0 below 0.10 after 30%   # no arm can still reach the gate's bar          -> finish
+```
+
+- **Progress.** `work/queue-<plan>.progress.md` (and `.json`), rewritten every minute: each step's state;
+  for a watched step battles done of the run's size, battles/h, ETA, failures, skipped turns (first and
+  last 100), each arm's share and running difference from the pooled control (APS with `field=`, as the
+  gates read it) with its 95% interval and the stop rule's z 3 bound, and every rule's state.
+  `./queue.sh status PLAN` prints it. Every `PROGRESS_MINUTES` (15) and at once on a stop it is pushed,
+  with the log's tail, to the branch `PROGRESS_BRANCH` (default `claude/<plan>-progress` when a step is
+  watched; `off` for none) by git plumbing on a private index, so the working tree, the checkout and the
+  run are never touched; a failed push is logged once and ignored. `set ALERT = lgriffin` opens a GitHub
+  issue assigned to that login when a rule trips or a watched step fails (needs `gh`).
+- **halt** (fails, dead, skips, stall, aa) kills the step and stops the queue. Nothing fought is lost:
+  each battle's row stays and BENCH-95 reads it back, so fixing the cause and rerunning resumes where
+  it stopped. **finish** (futility) kills the step and records it as done, early: the rows so far
+  become its `arms.tsv` and `EARLY-STOP.md`, so the gate and results-PR steps run on them and the PR
+  carries the progress file first.
+- **Statistics.** Interim looks use z 3 (about 0.3% two-sided a look), not the gates' 95%, so a check
+  every minute does not turn noise into a stop. `futility` needs `--shuffle-jobs` (BENCH-128: the
+  (opponent, seed) jobs in a seeded random order), otherwise a partial run is only the set's first
+  robots; the runner refuses the card without it. `after` needs the run's size, from `--set`, `--seeds`
+  and `--arms` (or `battles=N`).
+- **Overrides.** `--no-stop-rules` shows the rules and logs a "would trip" line but never acts;
+  `--continue-early` reruns a step a finish rule ended (its rules shown only); `--no-publish` keeps the
+  progress local. The card's rules, like everything else on it, are fixed before the run.
+- **Steps without arms** (team, melee, census) can take `watch:` with `fails` and `stall`: battles,
+  failures and skipped turns are counted from the step's log.
+- `plans/watch-smoke.queue` is a 72-battle run with an arm built to lose (a weak nano), about 10 minutes
+  on a 4-core box: the futility rule stops it at 30% and the gate reads what was fought.
 
 The runner is `benchqueue.py` (Python 3 standard library only; it is not called `queue.py` because that would shadow the standard `queue` module). Its tests run in CI: `python3 -m unittest discover -s hadur-bench -p "test_benchqueue.py"`.
 

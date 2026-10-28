@@ -1,0 +1,25 @@
+# Watch smoke (BENCH-129..131): a small multi-arm run that shows the queue's live progress and stop rules
+# on any machine, about 10 minutes on the 4-core cloud box, 2 on the PC:
+#   ./queue.sh run watch-smoke --fresh        (or  .\queue.ps1 run watch-smoke --fresh)
+# 12 weak nanos x c, aa, dz x 2 seeds x 10 rounds = 72 battles. dz is a weak nano (Derp) standing in
+# for an arm that clearly loses: the futility rule stops the screen once 30% of the battles are in
+# (about 22, so about 50 battles are left unrun), the gate reads the rows so far and says so.
+# Progress: work/queue-watch-smoke.progress.md every minute; pushed to claude/watch-smoke-progress
+# every PROGRESS_MINUTES and at once on a stop (PROGRESS_BRANCH = off for no push).
+set PROGRESS_MINUTES = 2
+set C = --skip-build --skip-fetch --rounds 10 --parallel auto --child-heap 512M --no-truth-log
+
+prep | mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && cp ../hadur-robot/target/hadur2.Hadur_"$V".jar bisect/ && bash ./build-ablation.sh aa && ./fetch-opponents.sh --set watch-smoke.txt && ./fetch-opponents.sh --set plans/watch-smoke-arm.txt && sed "s/@V@/$V/g" plans/watch-smoke.arms > work/watch-smoke.arms && mvn -q compile
+
+screen | bash ./bench-top20.sh ${C} --set watch-smoke.txt --seeds 2 --seed-base 9100 --arms work/watch-smoke.arms --out work/watch-smoke --label watch-smoke --shuffle-jobs
+  after: prep
+  watch:
+  stop: fails 6
+  stop: dead 6
+  stop: skips 60 over 30
+  stop: stall 20m
+  stop: aa after 30%
+  stop: futility dz below 0 after 30%
+
+gate | python3 ../data/tools/multiarm.py work/watch-smoke/arms.tsv --out work/watch-smoke/gate.md && cat work/watch-smoke/gate.md && { [ ! -f work/watch-smoke/EARLY-STOP.md ] || cat work/watch-smoke/EARLY-STOP.md; }
+  after: screen

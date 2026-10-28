@@ -36,10 +36,13 @@ class TeamTest {
 
     @Test
     @Tag("TWIN-9")
-    @DisplayName("range closes from 250 to 100 once one enemy is left")
+    @DisplayName("range closes from 250 to 160 once one enemy is left, and mode bit 2 closes 250 to 180")
     void range() {
-        assertEquals(250, Team.range(2));
-        assertEquals(100, Team.range(1));
+        assertEquals(250, Team.range(2, 0));
+        assertEquals(160, Team.range(1, 0));
+        assertEquals(180, Team.range(2, 2), "mode bit 2 closes the two-enemy range");
+        assertEquals(160, Team.range(1, 2), "but not the one-enemy range");
+        assertEquals(250, Team.range(2, 1), "the flip bit leaves the range alone");
     }
 
     @Test

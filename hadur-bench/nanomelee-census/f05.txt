@@ -1,0 +1,10 @@
+# NanoMelee census field f05 (see nanomelee-census.txt)
+d414.nano.Quantum 1.0.0 | nanomelee-1 | d414.nano.Quantum_1.0.0.jar
+sheldor.melee.nano.NaturalScience 1.2.1 | nanomelee-2 | sheldor.melee.nano.NaturalScience_1.2.1.jar
+sp.Nanos.Ember 1.1 | nanomelee-64 | sp.Nanos.Ember_1.1.jar
+simonton.nano.WeekendObsession_Melee 1.0 | nanomelee-20 | simonton.nano.WeekendObsession_Melee_1.0.jar
+js.PinBall 1.6 | nanomelee-15 | js.PinBall_1.6.jar
+ntc.Opposite 1.5 | nanomelee-22 | ntc.Opposite_1.5.jar
+PSW.Relentless 0.1 | nanomelee-80 | PSW.Relentless_0.1.jar
+sample.Fire 1.0 | nanomelee-83 | sample.Fire_1.0.jar
+sample.Target 1.0 | nanomelee-86 | sample.Target_1.0.jar

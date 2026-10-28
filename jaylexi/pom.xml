@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.lgriffin</groupId>
+        <artifactId>hadur-parent</artifactId>
+        <version>2.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>jaylexi</artifactId>
+    <name>JayLexi</name>
+    <description>hadur117.mini.JayLexi, a MiniRumble (1v1) entry: its classes within 1499 bytes (docs/kitlab.md).
+        Separate from Hadur, Saor, TwinSaor, Deise and Sanaro.</description>
+
+    <properties>
+        <!-- The robot's version: the jar is named for it and JayLexi.properties takes it by filtering. -->
+        <jaylexi.release>0.1</jaylexi.release>
+        <!-- MiniRumble's limit, as Robocode's codesize tool counts the shipped jar (JAYLEXI-1). -->
+        <jaylexi.codesize.limit>1499</jaylexi.codesize.limit>
+        <!-- Rating clients still run Java 8; the shipped class targets it. -->
+        <maven.compiler.release>8</maven.compiler.release>
+        <jaylexi.jar>${project.build.directory}/hadur117.mini.JayLexi_${jaylexi.release}.jar</jaylexi.jar>
+        <codesize.version>1.3.1</codesize.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>codesize</artifactId>
+            <version>${codesize.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <!-- The jar the rumble takes: the robot's classes as javac wrote them, its properties and its source. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>robot-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <jar destfile="${jaylexi.jar}">
+                                    <fileset dir="${project.build.outputDirectory}">
+                                        <include name="hadur117/mini/JayLexi.class"/>
+                                        <include name="hadur117/mini/JayLexi$*.class"/>
+                                        <include name="hadur117/mini/JayLexi.properties"/>
+                                    </fileset>
+                                    <fileset dir="${project.basedir}/src/main/java">
+                                        <include name="hadur117/mini/JayLexi.java"/>
+                                    </fileset>
+                                </jar>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- The gate on the shipped jar (JAYLEXI-1, JAYLEXI-9). -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.5.2</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <jaylexi.jar>${jaylexi.jar}</jaylexi.jar>
+                        <jaylexi.release>${jaylexi.release}</jaylexi.release>
+                        <jaylexi.codesize.limit>${jaylexi.codesize.limit}</jaylexi.codesize.limit>
+                    </systemPropertyVariables>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

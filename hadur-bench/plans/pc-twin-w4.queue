@@ -1,0 +1,51 @@
+# TwinSaor stage W4 (docs/twinsaor.md section 10): W3 (PR #381) found R1W, range 160 with one enemy
+# left, +3.08 APS over 0.1 on all 27 teams (positive on 21), and big per-team swings in NF, R2N and
+# KL. W4 confirms R1W on fresh seeds and screens those three knobs team by team on top of it.
+#   ./queue.sh run pc-twin-w4        (or  .\queue.ps1 run pc-twin-w4)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned. Every step resumes; no step needs a decision.
+# Nothing here touches Hadur or Saor.
+#
+# Field: twinduel-tailor.txt (24 teams, the sitting ducks left out), 800x800, 35 rounds,
+# 16 fresh seeds a team (base 3300; W3 used 3100) = 384 battles an arm, 2,304 in all, about 1 h on the PC.
+#
+# Arms (twin-arms/arms.txt):
+#   C      TwinSaor 0.1, for the fresh-seed confirmation of W1
+#   W1     R1W, the W4 base           W1A   W1 again, the A/A check and the false-pick count
+#   W1NF   W1 + no leg flip on shot   W1N2  W1 + range 180 with two enemies
+#   W1KL   W1 + enemy leader first
+# Reads:
+#   twin-w4.md        whole field against C: W1 is confirmed at +1.0 share points and over 2 SE.
+#   twin-w4-picks.md  per team against W1: the best of W1NF, W1N2, W1KL with +3.0 share points and a low
+#                     end above zero over 16 paired seeds; twin-w4-picks.tsv lists them for 0.2's table.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ARMS = C,W1,W1A,W1NF,W1N2,W1KL
+
+prep | (cd .. && mvn -q -DskipTests install -pl twinsaor -am) && ./fetch-opponents.sh --set twinduel-tailor.txt && TWIN_RUN=w4 bash tools/twin_arms.sh twinduel-tailor.txt 16 3300 ${ARMS}
+
+arm-C | ${MVN} "-Dexec.args=@work/twin-w4/twinduel-tailor-C.args"
+  after: prep
+
+arm-W1 | ${MVN} "-Dexec.args=@work/twin-w4/twinduel-tailor-W1.args"
+  after: arm-C
+
+arm-W1A | ${MVN} "-Dexec.args=@work/twin-w4/twinduel-tailor-W1A.args"
+  after: arm-W1
+
+arm-W1NF | ${MVN} "-Dexec.args=@work/twin-w4/twinduel-tailor-W1NF.args"
+  after: arm-W1A
+
+arm-W1N2 | ${MVN} "-Dexec.args=@work/twin-w4/twinduel-tailor-W1N2.args"
+  after: arm-W1NF
+
+arm-W1KL | ${MVN} "-Dexec.args=@work/twin-w4/twinduel-tailor-W1KL.args"
+  after: arm-W1N2
+
+read | python3 tools/twin_read.py --run w4 --label twinduel-tailor --arms C,W1 --control C --gate 1.0 --aa none > ${OUT}/twin-w4.md && python3 tools/twin_pick.py --run w4 --label twinduel-tailor --arms W1,W1A,W1NF,W1N2,W1KL --control W1 --aa W1A --picks ${OUT}/twin-w4-picks.tsv > ${OUT}/twin-w4-picks.md
+  after: arm-W1KL
+
+pr | bash tools/open_results_pr.sh claude/pc-twin-w4-results "TwinSaor W4: R1W confirmation and per-team screen" ${OUT}/twin-w4.md ${OUT}/twin-w4-picks.md ${OUT}/twin-w4-picks.tsv ${OUT}/twin-w4-twinduel-tailor-*.md
+  after: read

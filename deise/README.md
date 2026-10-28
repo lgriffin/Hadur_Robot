@@ -2,8 +2,8 @@
 
 `hadur117.mini.Deise` is Hadur's MiniMelee robot, built to take MiniMelee 1st from
 kc.mini.Mirage 0.2: Saor's graded Markov gun, learning every robot it scans, over a least-risk
-movement that holds the corners while the field is crowded. The design, the Mirage analysis and
-the stages are in [docs/deise.md](../docs/deise.md); the requirements are DEISE-1 to DEISE-15 in
+movement that steps off the lines of the shots it sees fired (since 0.3). The design, the Mirage analysis and
+the stages are in [docs/deise.md](../docs/deise.md); the requirements are DEISE-1 to DEISE-16 in
 [docs/requirements.md](../docs/requirements.md).
 
 ## Standing
@@ -23,6 +23,11 @@ MeleeRumble it is 16th, three places above Saor. The live-shaped MiniMelee censu
 transfers. On that census the seen-shot waves (arm W) add +0.48 ± 0.25, and the rest of the
 stage E0 arms are within noise; the waves do not fit in the 9 bytes left, so stage E1 measures
 what can pay for them. The pages are archived in `data/rumble/pages/` under 2026-10-27T2345Z*.
+
+**Deise 0.3** (released 2026-10-28) fits the waves into one class at 1,494 bytes. It adds 200
+playouts, and drops the across term, the hold, the corners, the kill cap and the hit correction
+to make room. Stage E1b measured those parts at +0.48 to +0.83 over 0.2 on the census;
+`pc-deise-e04` measures the fitted class as a whole. Its live pass is still to come.
 
 0.2 is MiniMelee sized: one class, 1,490 bytes of 1,499, the core flattened by hand and held to it
 order for order (DEISE-16). 0.1 went out unfitted at 2,303 bytes by mistake and is not listed.

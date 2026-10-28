@@ -1,0 +1,10 @@
+# NanoMelee census field f08 (see nanomelee-census.txt)
+d414.nano.Quantum 1.0.0 | nanomelee-1 | d414.nano.Quantum_1.0.0.jar
+sheldor.melee.nano.NaturalScience 1.2.1 | nanomelee-2 | sheldor.melee.nano.NaturalScience_1.2.1.jar
+baal.nano.N 1.42 | nanomelee-31 | baal.nano.N_1.42.jar
+dmh.robocode.robot.RedDwarf 0.4 | nanomelee-38 | dmh.robocode.robot.RedDwarf_0.4.jar
+djdjdj.NanoSkunk10 1.0 | nanomelee-49 | djdjdj.NanoSkunk10_1.0.jar
+cli.WasteOfAmmo 1.0 | nanomelee-89 | cli.WasteOfAmmo_1.0.jar
+gh.nano.Grofvuil 0.2 | nanomelee-12 | gh.nano.Grofvuil_0.2.jar
+bwbaugh.nano.Tirunculus 0.0.0a | nanomelee-76 | bwbaugh.nano.Tirunculus_0.0.0a.jar
+donjezza.Muncho 1.0 | nanomelee-73 | donjezza.Muncho_1.0.jar

@@ -1,0 +1,10 @@
+# NanoMelee census field f04 (see nanomelee-census.txt)
+d414.nano.Quantum 1.0.0 | nanomelee-1 | d414.nano.Quantum_1.0.0.jar
+sheldor.melee.nano.NaturalScience 1.2.1 | nanomelee-2 | sheldor.melee.nano.NaturalScience_1.2.1.jar
+maribo.FollowFire 1 | nanomelee-66 | maribo.FollowFire_1.jar
+jangs.ns51 1.0 | nanomelee-71 | jangs.ns51_1.0.jar
+kurios.DOSexe .9b | nanomelee-65 | kurios.DOSexe_.9b.jar
+drd.Dreadknoght 0.9 | nanomelee-85 | drd.Dreadknoght_0.9.jar
+sample.VelociRobot 1.0 | nanomelee-79 | sample.VelociRobot_1.0.jar
+wompi.Quokka 1.6 | nanomelee-25 | wompi.Quokka_1.6.jar
+sample.MyFirstJuniorRobot 1.0 | nanomelee-77 | sample.MyFirstJuniorRobot_1.0.jar

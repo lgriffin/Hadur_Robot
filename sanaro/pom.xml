@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.lgriffin</groupId>
+        <artifactId>hadur-parent</artifactId>
+        <version>2.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>sanaro</artifactId>
+    <name>Sanaro</name>
+    <description>hadur117.nano.Sanaro, a NanoMelee entry: one class within 249 bytes (docs/sanaro.md).
+        Separate from Hadur, Saor, TwinSaor and Deise.</description>
+
+    <properties>
+        <!-- The robot's version: the jar is named for it and Sanaro.properties takes it by filtering. -->
+        <sanaro.release>0.1</sanaro.release>
+        <!-- NanoMelee's limit, as Robocode's codesize tool counts the shipped jar (SANARO-1). -->
+        <sanaro.codesize.limit>249</sanaro.codesize.limit>
+        <!-- Rating clients still run Java 8; the shipped class targets it. -->
+        <maven.compiler.release>8</maven.compiler.release>
+        <sanaro.jar>${project.build.directory}/hadur117.nano.Sanaro_${sanaro.release}.jar</sanaro.jar>
+        <codesize.version>1.3.1</codesize.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>codesize</artifactId>
+            <version>${codesize.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <!-- The jar the rumble takes: the one class as javac wrote it (ProGuard's peephole pass
+                 saves nothing on it), its properties and its source. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>robot-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <jar destfile="${sanaro.jar}">
+                                    <fileset dir="${project.build.outputDirectory}">
+                                        <include name="hadur117/nano/Sanaro.class"/>
+                                        <include name="hadur117/nano/Sanaro.properties"/>
+                                    </fileset>
+                                    <fileset dir="${project.basedir}/src/main/java">
+                                        <include name="hadur117/nano/Sanaro.java"/>
+                                    </fileset>
+                                </jar>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- The gate on the shipped jar (SANARO-1, SANARO-2, SANARO-9). -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.5.2</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <sanaro.jar>${sanaro.jar}</sanaro.jar>
+                        <sanaro.release>${sanaro.release}</sanaro.release>
+                        <sanaro.codesize.limit>${sanaro.codesize.limit}</sanaro.codesize.limit>
+                    </systemPropertyVariables>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

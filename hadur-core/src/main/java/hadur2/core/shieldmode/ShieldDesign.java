@@ -49,6 +49,8 @@ public final class ShieldDesign {
     public static final int KEPT_ERRORS = 500;
     /** SHIELD-11: the enemy's bullet damage in a battle after which the mode is off for it. */
     public static final double STAY_DAMAGE = 150;
+    /** SHIELD-19: the later exit the shield list can give an opponent. */
+    public static final double STAY_DAMAGE_LATE = 400;
     /** SHIELD-11: a round tick by which an enemy that has not fired turns the mode off. */
     public static final long SILENT_TICKS = 300;
     /** SHIELD-15: the bullet damage an unlisted opponent may do before the trial fails ... */

@@ -1,0 +1,59 @@
+# Every Twin Duel robot's name as the engine gives it in a battle with TwinSaor (probed 2026-10-27 on the
+# cloud box, Robocode 1.11.1, one round per team), with the hash slots: slot0 = hashCode & 127 (0.1's
+# Markov slot), slot5 = hashCode >> 5 & 127 (the mode table's key, docs/twinsaor.md section 9).
+# shared = another team's robot has the same slot5.
+team	name	slot0	slot5	shared
+EH.twin.OlympusTwins 1.1	EH.twin.Hades 1.1	18	84	yes
+EH.twin.OlympusTwins 1.1	EH.twin.Jupiter 1.1	118	127	no
+ags.lunartwins.LunarTwins 1.4a	ags.lunartwins.LunarLeader 1.4a	35	61	no
+ags.lunartwins.LunarTwins 1.4a	ags.lunartwins.LunarRover 1.4a	2	60	no
+bvh.two.Ravens 0.2	bvh.two.Huginn 0.2	31	116	no
+bvh.two.Ravens 0.2	bvh.two.Muninn 0.2	83	114	no
+bvh.two.Valkiries 0.44tmk3b	bvh.two.Valkirie 0.44tmk3 (1)	116	119	no
+bvh.two.Valkiries 0.44tmk3b	bvh.two.Valkirie 0.44tmk3 (2)	19	120	no
+chase.twin.SurroundingTeam 1.0	chase.twin.SurroundOne [1.0]	103	51	no
+chase.twin.SurroundingTeam 1.0	chase.twin.SurroundTwo [1.0]	77	46	no
+davidalves.twin.YinYang 1.2	davidalves.twin.Yang [1.2]	33	53	yes
+davidalves.twin.YinYang 1.2	davidalves.twin.Yin [1.2]	36	101	no
+dsekercioglu.LordMantis 1.0repackaged	dsekercioglu.MantisLord 1.0	49	109	no
+dsekercioglu.LordMantis 1.0repackaged	dsekercioglu.MantisServant 1.0	91	54	no
+gh.GruwelTwins 0.1	gh.GruwelTwin [0.1] (1)	110	99	no
+gh.GruwelTwins 0.1	gh.GruwelTwin [0.1] (2)	13	100	no
+gh.twin.GrauwuarG 0.41	gh.twin.FirstBorn [0.41]	71	2	no
+gh.twin.GrauwuarG 0.41	gh.twin.TheOther [0.41]	47	73	no
+jeremyreeder.collective.DuoLedByDroid 1.0fix	jeremyreeder.collective.BlindMan 1.0	35	49	yes
+jeremyreeder.collective.DuoLedByDroid 1.0fix	jeremyreeder.collective.Prophet 1.0	60	45	no
+jeremyreeder.collective.TwoProphets 5	jeremyreeder.collective.Prophet 5 (1)	30	124	no
+jeremyreeder.collective.TwoProphets 5	jeremyreeder.collective.Prophet 5 (2)	61	125	no
+jk.team.NightAndDay 1.6	jk.team.Day [1.6]	119	103	yes
+jk.team.NightAndDay 1.6	jk.team.Night [1.6]	115	75	no
+kawigi.micro.ShizPair 1.1c	kawigi.micro.Shiz 1.1c (1)	59	49	yes
+kawigi.micro.ShizPair 1.1c	kawigi.micro.Shiz 1.1c (2)	90	50	no
+kawigi.twin.MarioBros 1.0	kawigi.twin.Luigi [1.0]	101	71	no
+kawigi.twin.MarioBros 1.0	kawigi.twin.Mario [1.0]	7	76	yes
+kc.twins.GeminiTeam 2.1	kc.twins.Gemini 2.1 (1)	99	103	yes
+kc.twins.GeminiTeam 2.1	kc.twins.Gemini 2.1 (2)	2	104	no
+kinsen.twin.SelcouthTeam 1.1	kinsen.twin.Selcouth 1.1 (1)	91	30	no
+kinsen.twin.SelcouthTeam 1.1	kinsen.twin.Selcouth 1.1 (2)	122	31	no
+krillr.mini.JointStrikeForce 2.0c	krillr.mini.JointStrike 2.0.0c (1)	74	22	no
+krillr.mini.JointStrikeForce 2.0c	krillr.mini.JointStrike 2.0.0c (2)	105	23	no
+logiblocs.SittingDroidPair 1.0	logiblocs.SittingDroid 1.0 (1)	1	84	yes
+logiblocs.SittingDroidPair 1.0	logiblocs.SittingDroid 1.0 (2)	32	85	no
+madness.Dyn4sty 1.0	madness.Ninj4 1.0	73	62	no
+madness.Dyn4sty 1.0	madness.Samur4i 1.0	29	28	no
+mn.SuperSittingDuckTwins 1.0.2	mn.SuperSittingDuck 1.0.2 (1)	110	67	no
+mn.SuperSittingDuckTwins 1.0.2	mn.SuperSittingDuck 1.0.2 (2)	13	68	no
+mn.nano.perceptual.ImpactTwins 1.3.0	mn.nano.perceptual.Impact 1.3.0 (1)	34	97	no
+mn.nano.perceptual.ImpactTwins 1.3.0	mn.nano.perceptual.Impact 1.3.0 (2)	65	98	no
+voidious.twin.LuminariousDuo 1.13	voidious.twin.BarrissOffius [1.13]	113	107	no
+voidious.twin.LuminariousDuo 1.13	voidious.twin.Luminarious [1.13]	21	76	yes
+wcsv.Coyote.CoyotePair .1	wcsv.Coyote.Coyote [.1] (1)	16	76	yes
+wcsv.Coyote.CoyotePair .1	wcsv.Coyote.Coyote [.1] (2)	47	77	no
+whind.TwintelligenceTeam 1.0	whind.TwintelligenceOne [1.0]	105	3	no
+whind.TwintelligenceTeam 1.0	whind.TwintelligenceTwo [1.0]	79	126	no
+wiki.twin.InevitableTeam 0.1	wiki.twin.InevitableAlpha [0.1]	32	37	no
+wiki.twin.InevitableTeam 0.1	wiki.twin.InevitableBeta [0.1]	24	92	no
+wiki.twin.KomariousTeam 1.0	wiki.twin.KomariLeader [1.0]	5	20	no
+wiki.twin.KomariousTeam 1.0	wiki.twin.KomariTrooper [1.0]	109	19	no
+wompi.TassieDevils 1.8	wompi.TassieDevil 1.8 (1)	10	52	no
+wompi.TassieDevils 1.8	wompi.TassieDevil 1.8 (2)	41	53	yes

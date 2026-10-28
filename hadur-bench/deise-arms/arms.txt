@@ -2,20 +2,11 @@
 #   NAME | what it changes | FILE | sed [| FILE | sed ...]   a Deise build (sed over deise/src/main/java/.../FILE)
 #   NAME | what | @robot name                                a seated robot
 # Built by tools/deise_arms.sh as hadur117.mini.Deise<NAME>. D is Deise's source unchanged.
-# Stage E1 (pc-deise-e02): E0 (pc-deise-e01, PR #371) found the seen-shot waves worth +0.48 (arm W),
-# but they cost about 255 bytes in the 1,490-byte class even cut down, and 9 are free. These arms
-# measure the cut-down waves (WH) and what each part that could pay for them is worth on top of
-# WH without the across term (WHP), then the one stack that fits (FIT). Byte costs in the shipped
-# class are in docs/deise.md section 8.
-D | Deise 0.2 (the core-driven DeiseLab, which the shipped 1,490-byte class matches order for order) | |
-MIR | kc.mini.Mirage 0.2 in the seat (1st, 71.30 live) | @kc.mini.Mirage 0.2
+# Stage E2 (pc-deise-e04): E1b (pc-deise-e03, PR #388) found both wave lines and the aim weight
+# needed (WL -2.23, WA -0.43 against D) and the hit correction safe to drop (WB +0.48 to W's +0.59),
+# with the across term and the hold better gone (WPN +0.83). Deise 0.3 is that build fitted into
+# one class (FIT3, 1,494 B); D is now 0.3. 0.2 read 0.73 over SAOR by field in pc-deise-e03.
+D | Deise 0.3 (the core-driven DeiseLab, which the shipped 1,494-byte class matches order for order) | |
+MIR | kc.mini.Mirage 0.2 in the seat (1st, 71.20 live) | @kc.mini.Mirage 0.2
 SAOR | hadur117.micro.Saor 0.2 in the seat (68.79 live in MiniMelee): the control | @hadur117.micro.Saor 0.2
-W | seen-shot waves on, as E0's W: both lines, weighed by aim, hits corrected (about 450 B) | Move.java | s#WAVES = 0;#WAVES = 1;#
-WH | waves cut down: head-on line only, every wave weight 1, no hit correction (about 255 B) | Move.java | s#WAVES = 0;#WAVES = 1;#; s#LINES = 2;#LINES = 1;# | DeiseLab.java | s#AIMED = true;#AIMED = false;#; s#HITS = true;#HITS = false;#
-WHP | WH without the across term (DEISE-3, frees 131 B) | Move.java | s#WAVES = 0;#WAVES = 1;#; s#LINES = 2;#LINES = 1;#; s#ACROSS = true;#ACROSS = false;# | DeiseLab.java | s#AIMED = true;#AIMED = false;#; s#HITS = true;#HITS = false;#
-WHPC | WHP without the corners (DEISE-4, frees 47 B) | Move.java | s#WAVES = 0;#WAVES = 1;#; s#LINES = 2;#LINES = 1;#; s#ACROSS = true;#ACROSS = false;#; s#CROWD = 4;#CROWD = 99;# | DeiseLab.java | s#AIMED = true;#AIMED = false;#; s#HITS = true;#HITS = false;#
-WHPK | WHP without the kill cap on power (DEISE-10, frees 39 B) | Move.java | s#WAVES = 0;#WAVES = 1;#; s#LINES = 2;#LINES = 1;#; s#ACROSS = true;#ACROSS = false;# | DeiseLab.java | s#AIMED = true;#AIMED = false;#; s#HITS = true;#HITS = false;# | Gun.java | s#KILL = true;#KILL = false;#
-WHPT | WHP without the thin-row and off-field vote weights (DEISE-8, frees 52 B) | Move.java | s#WAVES = 0;#WAVES = 1;#; s#LINES = 2;#LINES = 1;#; s#ACROSS = true;#ACROSS = false;# | DeiseLab.java | s#AIMED = true;#AIMED = false;#; s#HITS = true;#HITS = false;# | Gun.java | s#WALLS = true;#WALLS = false;#; s#WARM = 8;#WARM = 0;#
-WHPH | WHP without the 10% hold on the destination (DEISE-1, frees 46 B) | Move.java | s#WAVES = 0;#WAVES = 1;#; s#LINES = 2;#LINES = 1;#; s#ACROSS = true;#ACROSS = false;# | DeiseLab.java | s#AIMED = true;#AIMED = false;#; s#HITS = true;#HITS = false;#; s#HOLD = 0.9;#HOLD = 1e9;#
-WHPF | WHP with a flat push (E0 FL, frees 9 B) and 200 playouts (E0 P200, 1 B) | Move.java | s#WAVES = 0;#WAVES = 1;#; s#LINES = 2;#LINES = 1;#; s#ACROSS = true;#ACROSS = false;#; s#(50000 + bot\[ENERGY\] \* 500)#80000# | DeiseLab.java | s#AIMED = true;#AIMED = false;#; s#HITS = true;#HITS = false;#; s#PLAYOUTS = 64;#PLAYOUTS = 200;#
-FIT | the stack that fits 1,499: WHP without corners, kill cap and vote weights, flat push, 200 playouts | Move.java | s#WAVES = 0;#WAVES = 1;#; s#LINES = 2;#LINES = 1;#; s#ACROSS = true;#ACROSS = false;#; s#CROWD = 4;#CROWD = 99;#; s#(50000 + bot\[ENERGY\] \* 500)#80000# | DeiseLab.java | s#AIMED = true;#AIMED = false;#; s#HITS = true;#HITS = false;#; s#PLAYOUTS = 64;#PLAYOUTS = 200;# | Gun.java | s#KILL = true;#KILL = false;#; s#WALLS = true;#WALLS = false;#; s#WARM = 8;#WARM = 0;#
+FIT3F | Deise 0.3 without the field cap on power; 1,480 B flat class | =deise-arms/e2/FIT3F.java

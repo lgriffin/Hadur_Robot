@@ -62,10 +62,17 @@ public final class ShieldList {
     public static final String HEAT_JIT_PREFIX = "heat-jit:";
     /** GUN-11: a line starting with this names an opponent the duel gun aims at with GUN-8 to GUN-10 on. */
     public static final String GUN_STACK_PREFIX = "gun-stack:";
+    /** SHIELD-19: a line starting with this names an opponent SHIELD-11 leaves the battle against at 400 damage. */
+    public static final String EXIT_LATE_PREFIX = "shield-exit4:";
+    /** SHIELD-19: a line starting with this names an opponent SHIELD-11 takes no damage exit against. */
+    public static final String EXIT_OFF_PREFIX = "shield-exit0:";
     /** MOVE-28: the per-opponent switch's bit in {@link #switches}. */
     static final int HEAT_JIT = 1;
     /** GUN-11: the per-opponent switch's bit in {@link #switches}. */
     static final int GUN_STACK = 2;
+    /** SHIELD-19: the per-opponent switches' bits in {@link #switches}. */
+    static final int EXIT_LATE = 4;
+    static final int EXIT_OFF = 8;
 
     private final Set<String> entries;
     /** MOVE-23: the stack off-list, matched as the shield entries are. */
@@ -119,11 +126,12 @@ public final class ShieldList {
                     if (!name.isEmpty() && stackOff.size() < MAX_ENTRIES) stackOff.add(name);
                     continue;
                 }
-                if (entry.startsWith(HEAT_JIT_PREFIX) || entry.startsWith(GUN_STACK_PREFIX)) {
-                    boolean jit = entry.startsWith(HEAT_JIT_PREFIX);
-                    String name = entry.substring((jit ? HEAT_JIT_PREFIX : GUN_STACK_PREFIX).length()).trim();
+                int bit = entry.startsWith(HEAT_JIT_PREFIX) ? HEAT_JIT : entry.startsWith(GUN_STACK_PREFIX) ? GUN_STACK
+                    : entry.startsWith(EXIT_LATE_PREFIX) ? EXIT_LATE : entry.startsWith(EXIT_OFF_PREFIX) ? EXIT_OFF : 0;
+                if (bit != 0) {
+                    String name = entry.substring(entry.indexOf(':') + 1).trim();
                     if (!name.isEmpty() && (switches.containsKey(name) || switches.size() < MAX_ENTRIES)) {
-                        switches.merge(name, jit ? HEAT_JIT : GUN_STACK, (a, b) -> a | b);
+                        switches.merge(name, bit, (a, b) -> a | b);
                     }
                     continue;
                 }
@@ -303,6 +311,21 @@ public final class ShieldList {
      */
     public boolean gunStack(String robotName) {
         return (switchBits(robotName) & GUN_STACK) != 0;
+    }
+
+    /**
+     * SHIELD-19: the damage the enemy's bullets must pass before SHIELD-11 leaves the battle against
+     * {@code robotName}, by the rule of {@link #matches}: no damage exit for an {@code shield-exit0:}
+     * entry, 400 for an {@code shield-exit4:} entry (the former when both), else {@code standard}.
+     *
+     * @param robotName the scanned robot's name, or null
+     * @param standard the exit for an opponent not named
+     */
+    public double stayDamage(String robotName, double standard) {
+        int bits = switchBits(robotName);
+        if ((bits & EXIT_OFF) != 0) return Double.MAX_VALUE;
+        if ((bits & EXIT_LATE) != 0) return ShieldDesign.STAY_DAMAGE_LATE;
+        return standard;
     }
 
     private int switchBits(String robotName) {

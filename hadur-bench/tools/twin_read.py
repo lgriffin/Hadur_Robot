@@ -76,8 +76,10 @@ def main(argv=None):
     p.add_argument("--arms", required=True)
     p.add_argument("--control", default="C")
     p.add_argument("--gate", type=float, default=0.5, help="share points over the control an arm needs")
-    p.add_argument("--aa", default="A", help="the A/A arm: the control again; '' for none")
+    p.add_argument("--aa", default="A", help="the A/A arm: the control again; 'none' (or '') for none")
     a = p.parse_args(argv)
+    if a.aa == "none":
+        a.aa = ""
     path = lambda arm: os.path.join(a.reports, "twin-%s-%s-%s.md" % (a.run, a.label, arm))
     control_rows = rows(path(a.control))
     control = {t: share for t, (_, share) in control_rows.items()}

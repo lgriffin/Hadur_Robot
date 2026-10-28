@@ -6,8 +6,9 @@
 #   bash tools/deise_arms.sh live SEEDS SEED_BASE [ARMS]
 # An arm line is `NAME | what | FILE | sed`: FILE (DeiseLab.java, Gun.java or Move.java) takes the
 # sed, empty for the control; more `| FILE | sed` pairs change more files (stage E1's stacks). An arm `NAME | what | @robot name` seats that robot (its jar from
-# opponents/) instead. Arms are built from the bench adapter DeiseLab over the core, which the
-# shipped one-class Deise is held to (DEISE-16). Each build is javac-only, with its class renamed
+# opponents/) instead. An arm `NAME | what | =deise-arms/e2/FIT3F.java` builds that one flat class
+# (stage E2's fitted candidates, benched as they would ship). Other arms are built from the bench
+# adapter DeiseLab over the core, which the shipped one-class Deise is held to (DEISE-16). Each build is javac-only, with its class renamed
 # Deise<NAME> and its core package hadur117.mini.c<name>, so no two arms share a class; the
 # shipped Deise is the field's resident, from opponents/.
 set -euo pipefail
@@ -36,6 +37,11 @@ grep -v '^#' deise-arms/arms.txt | while IFS='|' read -r name what rest; do
     if [ -n "$only" ] && ! echo ",$only," | grep -q ",$name,"; then continue; fi
     seat=deise
     [ "${file#@}" != "$file" ] && seat="${file#@}"
+    flat=""
+    [ "${file#=}" != "$file" ] && flat="${file#=}"
+    if [ -n "$flat" ] && { [ ${#files[@]} -gt 1 ] || [ -n "${exprs[0]}" ]; }; then
+        echo "deise_arms: arm $name: a flat class (=FILE) takes no sed pairs" >&2; exit 3
+    fi
     suite=$(python3 tools/saor_live.py --counted minimelee-field.txt --own "$own" --own-key deise \
         --resident "$resident" --seat "$seat" --out "$out/live" | sed -n 's/^.*: \(.*suite.txt\) (.*$/\1/p')
     if [ "$seat" != deise ]; then
@@ -44,7 +50,14 @@ grep -v '^#' deise-arms/arms.txt | while IFS='|' read -r name what rest; do
     else
         lname=$(echo "$name" | tr 'A-Z' 'a-z'); cls="Deise$name"; dir="$out/build/$cls"
         rm -rf "$dir"; mkdir -p "$dir/src/hadur117/mini/c$lname" "$dir/classes/hadur117/mini"
+        if [ -n "$flat" ]; then
+            [ -f "$flat" ] || { echo "deise_arms: arm $name's class $flat is missing" >&2; exit 2; }
+            sed -e "s/public class Deise /public class $cls /" "$flat" > "$dir/src/hadur117/mini/$cls.java"
+            grep -q "public class $cls " "$dir/src/hadur117/mini/$cls.java" \
+                || { echo "deise_arms: $flat has no 'public class Deise '" >&2; exit 3; }
+        fi
         for f in "$src"/hadur117/mini/DeiseLab.java "$src"/hadur117/mini/core/*.java; do
+            [ -n "$flat" ] && break
             base_name=$(basename "$f"); to="$dir/src/hadur117/mini/c$lname/$base_name"
             [ "$base_name" = DeiseLab.java ] && to="$dir/src/hadur117/mini/$cls.java"
             sed -e "s/hadur117\\.mini\\.core/hadur117.mini.c$lname/g" -e "s/class DeiseLab /class $cls /" "$f" > "$to"

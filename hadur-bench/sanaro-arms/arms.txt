@@ -1,0 +1,15 @@
+# Sanaro's arms (docs/sanaro.md, stage N3: pc-sanaro-n02). One arm a line:
+#   NAME | what it changes | sed over sanaro/src/main/java/hadur117/nano/Sanaro.java (empty: none)
+#   NAME | what | sed (may be empty) | sanaro/table.py options: the arm plays that power table
+#   NAME | what | @robot name     a seated robot (live census only)
+# Built by tools/sanaro_arms.sh as hadur117.nano.Sanaro<NAME>, javac only: the screen measures play,
+# SanaroJarIT measures bytes. S0 is Sanaro 0.1 as it ships (no spiral, 247 B). pc-sanaro-n01 ran
+# the first set (S06 = spiral 0.6 base; git history of this file) and picked S0 on the live-shaped
+# census, +0.88 ± 0.45 over 0.6.
+S0 | Sanaro 0.1: straight anti-gravity, the shipped table (247 B) |
+S02 | a small spiral, 0.2 rad (249 B) | s#SPIRAL = 0;#SPIRAL = 0.2;#
+Q7 | Quantum's curve: base power own energy / 7, at most 2.5, 3.0 from 120 (247 B) | | --floor 0 --div 7
+D10 | a steeper curve: 0.1 + energy / 10, at most 2.5 (247 B) | | --div 10
+L20 | a thriftier curve: 0.1 + energy / 20, at most 2.0, 3.0 from 120 (247 B) | | --div 20 --cap 2.0
+T60 | 3.0 from 60 own energy instead of 120 (247 B) | | --top-at 60
+B800 | the power band at 800 px: full table power out to 400 px (247 B) | s#BAND = 640;#BAND = 800;#

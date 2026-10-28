@@ -1342,6 +1342,7 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
 | SHIELD-16 | Optional | Where the prior switch is on, the core shall add a fifth head-on base to the shield predictors: the bearing from where the enemy stood on the tick before it fired to where Hadur stood then, turned by the enemy's body turn on the firing tick. | R9 |
 | SHIELD-17 | Optional | Where the move switch is on, or the shield list names the opponent for the opening drive, when a round of shield mode opens, the core shall drive away from the walls and the enemy, each pushing by the inverse square of its distance and the enemy three times a wall, until the enemy's first shot or 5 ticks before the enemy's gun is ready, whichever comes first, and shall then stand still as SHIELD-5 does. | R9 |
 | SHIELD-18 | Optional | When the shield list gives a shipped aim for the opponent (a predictor and its offset), the core shall start that predictor with three exact matches and that offset as its base's learned offset. Where the rec switch is on, at each round's end of shield mode the core shall write the best predictor, its offset, its exact matches, the bullets learned from and the round's opening-drive ticks as an `SP` record. | R9 |
+| SHIELD-19 | Optional | Where the shield list names the opponent with a `shield-exit4:` line, SHIELD-11 shall leave the battle once the enemy's bullets have done more than 400 damage instead of 150; with a `shield-exit0:` line (which wins when both name it), SHIELD-11 shall take no damage exit and SHIELD-6's budget alone shall end the mode. Other opponents shall play as before. | R9 |
 | DODGE-1 | Event-driven | When the duel makes a movement wave while the simple-aim dodge is on, the core shall record on it our position, heading, velocity, last turn and average velocity of the last 10 ticks and the enemy's position and heading, for the wave's tick and the two ticks before, and the wave shall give from them, per tick, where six simple aims send its bullet at its current power (head-on; linear, circular and averaged linear predicted tick by tick with paths stopped 18 px inside the walls; the one-line linear aim of bearing plus lateral velocity over bullet speed; and its arcsine), each aimed from the enemy's position on that tick, with our lateral velocity seen from the enemy and the enemy's body turn to the next tick. | R9 |
 | DODGE-2 | State | While the simple-aim dodge is on for the opponent, the core shall count, across the battle's rounds, the enemy bullets whose heading it learns (a hit on us, a bullet meeting ours) and, per expert, those within 0.002 rad of it; the experts per tick being the six aims, the six with the enemy's body turn to the next tick added, and the one-line linear aim with a divisor learned from the bullets read (running mean decayed by 0.85 a bullet, samples between 4 and 30) with and without that turn. While one expert matches at least 3 of them and at least 60% of those read, the surf's danger for a wave shall be 1 when that expert's bullet falls inside the option's hit range (with a 0.005 rad margin) and 0 otherwise, plus a floor of 0.1 (so the distancing and escape factors still rank the safe options) and 0.05 of the views' score, without the hit-rate term; otherwise the views decide as before. At each round's end it shall write `SD,round,tick,best,bestMatches,read,active`, best being the expert's index (tick lag times 14 plus its place). | R9 |
 | DODGE-3 | State | While in a duel, the simple-aim dodge shall be on against an opponent the table's `shot-dodge:` lines name (matched as the shield list is), or against every opponent with the dodge switch on (off by default); in melee and team, and against any other opponent, it shall be off and the duel play exactly as before. | R9 |
@@ -1612,7 +1613,15 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
 | BENCH-122 | Ubiquitous | The bench shall carry the `pc-melee-power2` card, which builds MGUN-14, MGUN-15 and MGUN-16 each alone and all three together beside an aa baseline and a bb A/A copy, runs each alone on the melee census at 6 seeds after the Ogi card's, and reads it with `tools/melee_s0.py screen --base2` at a 0 bar with the 95% low end above 0 and Hadur's share of the others it outlives no more than 1 point lower. | R9 |
 | BENCH-123 | Ubiquitous | The bench shall carry the `pc-team-counters` card, which builds one table jar per screen of plans/team-counters.tsv (each team's counters, TMODE-20 to TMODE-24, played only against that team), runs each against aa on its teams at 16 seeds from 4600 beside a bb A/A, picks per team the screen at +3.0 points or more with the 95% low end above zero, and gates the picked table on 16 fresh seeds from 4700 at +0.30 APS with the low end above zero; only a passed gate writes that table, as benched, as the table to ship. | T7 |
 | BENCH-125 | Event | When the PC qualification card (`pc-qualify`) runs, it shall set `UPLOAD=NOT` in each named 1v1 client's `roborumble.txt`, run those clients the old way for `HOURS`, put each config back and set the results files aside so no test battle is uploaded, and score each 1v1 battle of the release against the opponent's pairing on a clean page: QUALIFIED within ±0.5 over at least 40 battles, else NOT QUALIFIED. | T7 |
+| BENCH-126 | Ubiquitous | The bench shall carry the `pc-shield-exit` card, which builds SHIELD-11's battle exit at 400 damage (`sdmg400`) and with no damage exit (`sdmgoff`) beside an aa A/A copy, runs them against all robots on the shield list at 3 seeds from 3400 and gates each at +0.10 APS with the 95% low end above zero, writes the per-robot pick and every robot's difference with losses (`tools/per_robot.py`), stops before the results PR if any analysis fails, and verifies the three stop-and-go re-picks (`slistdrop,sgolist,sgo2list`) on 6 fresh seeds from 3500. | T7 |
+| BENCH-127 | Ubiquitous | The bench shall carry the `pc-melee-wide` card, which builds MGUN-16 alone beside an aa baseline and a bb A/A copy, runs each alone on the melee census at 8 fresh seeds after the firepower part 2 card's, and reads it with `tools/melee_s0.py screen --base2` at a 0 bar with the 95% low end above 0 and Hadur's share of the others it outlives no more than 1 point lower. | R9 |
+| BENCH-128 | Optional | Where a multi-arm run is given `--job-order shuffled`, the bench shall fight its (opponent, seed) jobs in an order seeded from the seed base; and when a stopped multi-arm run is resumed, the bench shall read back every finished battle's row, a clean battle's empty errors column included. | T7 |
+| BENCH-129 | Event | When a queue step with a `watch:` line runs, the queue runner shall rewrite the plan's progress file every minute with each step's state and, for the watched step, its battles done of the run's size, battles an hour, ETA, failed battles, skipped turns a battle (first and last 100), and each arm's running difference from the pooled control with its 95% interval and the stop rules' z 3 bound, and shall push the progress, without touching the working tree, to the plan's progress branch every `PROGRESS_MINUTES` and at once on a stop. | T7 |
+| BENCH-130 | Event | When a step's pre-declared `stop:` rule trips (fails, dead, skips, stall, aa or futility), the queue runner shall kill that step, log the rule, the battles fought and kept and the battles left unrun; for a halt rule stop the queue with the step resumable, and for a finish rule record the step as done early with its rows so far written as its `arms.tsv`, so the steps after it run. | T7 |
+| BENCH-131 | Event | When a stop rule trips or a watched step fails and the plan sets `ALERT`, the queue runner shall open a GitHub issue assigned to that login carrying the progress file. | T7 |
+| BENCH-132 | Ubiquitous | The bench shall carry the `pc-1v1-ram` card, which builds RAM-5 on (`rambrk`) and SHIELD-19's exits for pc-shield-exit's 7 per-robot picks (`sx4list,sx0list`) beside an aa A/A copy, runs RAM-5 against the 45 rammers and perfect-prediction robots and the exits against the 7 robots at 6 fresh seeds each (from 3600 and 3700), gates RAM-5 at +0.05 APS and the exits at +0.01 APS with the 95% low end above zero, writes every robot's difference with losses, and stops before the results PR if any analysis fails. | T7 |
 | RAM-4 | State | While the rammer-heat switch is on, in a duel, once RAM-2 has confirmed the opponent as a rammer, the surf shall offer MOVE-11's gun-heat wave with MOVE-13's hold off (as heatjit plays) for the rest of the battle, whatever those switches are set to; before the confirmation, and in melee or team, the switches are as their own requirements state. Off by default. | R9 |
+| RAM-5 | State | While the rammer-dodge switch is on, in a duel, while RAM-2's escape drives, each enemy shot read shall be kept with two aims, head-on at our position on the tick before it left and linear along our heading and speed then, and each candidate path the escape plays shall lose 60 px of its closest approach for every kept aim whose bullet would come within 22 px of us on both axes on that path; with the switch off, or in melee or team, the escape chooses as RAM-2 states. Off by default. | R9 |
 
 - **TIME-8.** `Hadur.setupRecord`, printed once in round 0. The PC's round-0 read
   (`docs/bench/local/2026-10-21_round0-skips.md`) found 39 of 4,848 battles disabled at start-up,
@@ -1829,6 +1838,55 @@ A retired requirement keeps its ID; no new requirement reuses it.
 - **BENCH-123.** `tools/team_modes.py screens`, `pick --counters --low-end`; build-ablation `tmtab`
   takes `$TEAM_MODE_SUFFIX`; card plans/pc-team-counters.queue.
 
+## 1v1 gap to 2nd: shield exit and re-picks (BENCH-126)
+
+- **Why.** Leigh 2026-10-28: 3.18.1 is 4th, 1.28 behind DrussGT; find the opponents to tailor for.
+  The live read (docs/bench/gap-to-2nd.md) puts the largest tailorable pool on shield robots where both
+  rivals score 90-98 and Hadur 70-85. A cloud read on 8 of them shows shield mode leaving the battle at
+  SHIELD-11's 150-damage exit around round 15, after which the surf takes 3-5x Saguaro's damage.
+- **BENCH-126.** build-ablation `sdmg400` (SHIELD-11 exit at 400 damage, suffix s4), `sdmgoff` (no damage
+  exit, SHIELD-6's budget alone, suffix s0), `slistdrop` (`$SHIELD_DROP` robots leave the shield list,
+  suffix md). Card plans/pc-shield-exit.queue: the 276 listed robots x c/aa/s4/s0 x 3 seeds, gates at
+  +0.10 APS; the three cloud re-picks (Wolverine stop-and-go, Hikari and Melody stop-and-go shift)
+  verified on 6 fresh seeds. Nothing ships until a gate passes; 3.18.1 plays bit for bit.
+  Test: `ShieldExitPlanTest`.
+- **SHIELD-19.** The PC card's global exits failed (s4 +0.04 ± 0.09, s0 -0.01 ± 0.10 APS), but its per-robot
+  pick locked 7 robots (2 at 400, 5 with no exit, +0.06 APS in sample). `ShieldList.stayDamage` reads
+  `shield-exit4:` / `shield-exit0:` lines (switch bits beside MOVE-28's and GUN-11's); `ShieldMode` takes the
+  opponent's exit at its first scan. `ShieldTableData.exitLates()` / `exitOffs()` ship empty; build-ablation
+  `sx4list` / `sx0list` fill them from `$SHIELD_EXIT4` / `$SHIELD_EXIT0` (suffixes x4, x0). Tests:
+  `ShieldListTest`, `ShieldDesignTest` (SHIELD-19).
+- **RAM-5.** A cloud read of 12 nano rammers (2 seeds, `local/2026-10-28_cloud-ram-read.md`): Saguaro 82.1% vs
+  Hadur 71.5%, ram damage level, but their bullets hit Hadur on about 58% of shots and Saguaro on 34%. Replaying
+  each shot from the truth log, a linear aim would hit Hadur's escape on 52% and a head-on aim on 16%; against
+  Saguaro both 35%. No mode we have helps (`local/2026-10-28_cloud-ram-screen.md`: no escape 67.5, stop-and-go
+  69.8 / 70.6, simple-aim dodge 72.2, A/A 72.4). A first cut, slowing to 4 px/tick while a shot led for full
+  speed flew, lost 2.6 points (more rams, and head-on aim then hit 49%). RAM-5 instead weighs the escape's
+  candidate paths against the shots in flight: `RamEscape.onEnemyShot` keeps the shot with its head-on and
+  linear aims, `move(..., true)` scores them. `MoveDesign.RAM_BREAK` (off), build-ablation `rambrk` (suffix rk).
+  Test: `RamEscapeTest` (RAM-5).
+  Smoke of RAM-5 (12 rammers x 2 seeds, `local/2026-10-28_cloud-ram-rk.md`): 71.2 -> 78.3 points a robot, 11 of
+  12 up, bullet damage taken 2,200 -> 1,445, linear exposure 51% -> 24%.
+- **BENCH-132.** Card plans/pc-1v1-ram.queue: `panel-ram-318.txt` (the live read's rammer / perfect-prediction
+  group plus every robot named for ramming, 45) x c/aa/rk x 6 seeds, `panel-exit-pick.txt` x c/aa/xp x 6 seeds;
+  gates +0.05 and +0.01 APS. Results branch `claude/pc-1v1-ram-results`. Both steps are watched with halt rules
+  (fails, dead, skips, stall, A/A) and `ALERT`; the ram step also finishes early once rk cannot reach +0.05
+  APS after 30% (at most 567 battles left unrun). Test: `RamPlanTest`.
+
+## Watching a PC card as it runs (BENCH-128 to BENCH-131)
+
+- **Why.** Leigh 2026-10-28: "Why can't the harness do what you have done in the cloud there and monitor
+  as it runs? Instead I'm doing 6 hour runs that have clear failures." A PC card was read only from its
+  results PR at the end, so a losing arm, a crash, a skipped-turn build-up or a broken jar cost the
+  whole card.
+- **BENCH-128.** Bench `--job-order shuffled` (`bench-top20.sh --shuffle-jobs`). `Arms.resumed` read
+  rows with `strip()`, which also removed the tab before an empty errors column, so no clean battle was
+  ever resumed; it now strips only the line break. Test: `ArmsTest`.
+- **BENCH-129..131.** `benchwatch.py` (rules, reading rows, progress Markdown), `benchqueue.py` (`watch:`
+  and `stop:` step lines, the progress file and branch, the alert issue, `--no-stop-rules`,
+  `--continue-early`, `--no-publish`), `tools/open_results_pr.sh` puts the progress file first in a
+  results PR. Card `plans/watch-smoke.queue`. Tests: `test_benchwatch.py`.
+
 ## Saor, a MicroMelee entry (SAOR-1 to SAOR-17, stages U0 to U6)
 
 `hadur117.micro.Saor`, a separate robot in the `saor` module, built from the spec "MicroMelee
@@ -1877,7 +1935,7 @@ docs/saor.md. Nothing in Hadur's modules depends on it, and it on nothing of Had
   (docs/plan-saor-first.md): its field builder `tools/saor_live.py` and the micro-only read in
   `saor_arms.py` are covered by `test_saor_live.py` and `test_saor_arms.py`.
 
-## TwinSaor, a Twin Duel team (TWIN-1 to TWIN-12, stages W0 to W3)
+## TwinSaor, a Twin Duel team (TWIN-1 to TWIN-14, stages W0 to W3)
 
 `hadur117.twin.TwinSaor`, a separate team in the `twinsaor` module: one class,
 `hadur117.twin.SaorTwin`, listed twice. Design, the LunarTwins analysis, the 0.1 build and the
@@ -1893,15 +1951,19 @@ bench card: docs/twinsaor.md. It depends on nothing of Hadur's or Saor's, and th
 | TWIN-6 | Event | When a twin handles two scans of one enemy by one scanner one tick apart, it shall record that transition in its table for that enemy. | W0 |
 | TWIN-7 | State | While two enemies live, both twins shall target the enemy with the least energy, switching only when the other is lower by 20 or more. | W0 |
 | TWIN-8 | State | While both twins and both enemies live, the leader shall hold its radar on the target and the other twin on the other enemy. | W1 |
-| TWIN-9 | State | While both twins live, each shall drive to a station 45 degrees either side of the team's bearing from the target, at 250 px with two enemies and 100 px with one. | W0 |
+| TWIN-9 | State | While both twins live, each shall drive to a station 45 degrees either side of the team's bearing from the target, at 250 px with two enemies and 160 px with one (0.1: 100). | W0 |
 | TWIN-10 | Event | When the target's energy drops by 0.1 to 3 between scans, a twin on its station shall reverse its leg. | W0 |
 | TWIN-11 | Unwanted | If the partner is nearer than the target and within 0.15 rad of the gun heading, then the twin shall not fire. | W0 |
 | TWIN-12 | State | While a twin is the last of its team against two enemies, it shall play Saor's corner oscillation on the 800 field. | W0 |
+| TWIN-13 | Event | When a twin handles a scan of an enemy, it shall OR into its mode the mode table's entry at that enemy's name-hash slot; mode bit 1 shall stop the leg reversing on the target's shot (TWIN-10) and mode bit 2 shall set the two-enemy station range to 180 px. | W3 |
+| TWIN-14 | Unwanted | If a team's mode table entry reads below zero on a fresh-seed gate against both the release before it and the default without the entry, then the entry shall not ship. | W3 |
 
 - **Coverage.** TWIN-3 by `ArchitectureTest`; TWIN-6 by `GunTest`; TWIN-7, TWIN-9 to TWIN-12 by
   `TeamTest` on the core; TWIN-1 and TWIN-2 on the built jar by `TwinSaorJarIT` (failsafe). TWIN-4,
   TWIN-5 and TWIN-8 are the robot's wiring in `SaorTwin`, stage W1: exercised by the cloud
-  head-to-head (docs/twinsaor.md section 8), with a test due before W1. Stages compare with
+  head-to-head (docs/twinsaor.md section 8), with a test due before W1. TWIN-13's range bit by
+  `TeamTest`, its table by `hadur-bench/tools/test_twin_table.py` (the robot's string is the one the
+  W4 picks write); TWIN-14 is the release process (docs/twinsaor.md section 11). Stages compare with
   `hadur.twin.stage` in the root pom (W0); W, because T is the Team plan's letter.
 
 ## Deise, a MiniMelee entry (DEISE-1 to DEISE-16, stages E0 to E3)
@@ -1913,16 +1975,16 @@ are E0 to E3 (D is the DrussGT route's letter).
 
 | ID | Pattern | Requirement | Stage |
 |---|---|---|---|
-| DEISE-1 | Ubiquitous | Each tick the bot shall drive toward the least-risk of 36 points on a ring of radius 0.45 of the target's distance, within 36 to 160 px, that keep 18 px off the walls, and keep its destination unless a ring point is 10% safer or the destination is within 16 px. | E0 |
-| DEISE-2 | Ubiquitous | The risk of a point shall include, for each live opponent, 50,000 plus 500 times its energy over the squared distance to it. | E0 |
-| DEISE-3 | State | While no other robot is within 0.9 of the bot's distance from an opponent, the risk of a point shall include the absolute cosine between the heading to the point and the bearing from the point to that opponent. | E0 |
-| DEISE-4 | State | While 4 or more opponents remain, the risk of a point shall include the number of opponents times its distance to the nearest corner over 5,000. | E0 |
-| DEISE-5 | Event | When a scanned opponent's energy has dropped by 0.1 to 3, the bench build (`DeiseLab`) shall record a wave with a head-on and a linear line, weighed 1 if that opponent likely aims at the bot (DEISE-3) and 0.25 otherwise, whose danger at a point not yet passed is 4,000 over 800 plus the squared distance from the point to each line's bullet at the point's range, counted in the risk times the wave weight (0 since the E0 smoke, docs/deise.md section 4, so the shipped class leaves the waves out). | E0 |
+| DEISE-1 | Ubiquitous | Each tick the bot shall drive toward the least-risk of 36 points on a ring of radius 0.45 of the target's distance, within 36 to 160 px, that keep 18 px off the walls (0.2 also kept its destination unless a ring point was 10% safer or the destination was within 16 px; off since 0.3). | E2 |
+| DEISE-2 | Ubiquitous | The risk of a point shall include, for each live opponent, 80,000 over the squared distance to it (0.2: 50,000 plus 500 times its energy). | E2 |
+| DEISE-3 | State | While no other robot is within 0.9 of the bot's distance from an opponent, the risk of a point shall include the absolute cosine between the heading to the point and the bearing from the point to that opponent (0.2 only; off since 0.3, `Move.ACROSS`). | E2 |
+| DEISE-4 | State | While 4 or more opponents remain, the risk of a point shall include the number of opponents times its distance to the nearest corner over 5,000 (0.2 only; off since 0.3, `Move.CORNERS`). | E2 |
+| DEISE-5 | Event | When a scanned opponent's energy has dropped by 0.1 to 3 since its last scan, the bot shall record a wave, fired halfway back to that scan (at most 8 ticks), with a head-on and a linear line, weighed 1 if no other robot is within 0.9 of the bot's distance from that opponent and 0.25 otherwise, in a ring of 64 slots; its danger at a point not yet passed is, for each line, the weight times 4,000 over 800 plus the squared distance from the point to that line's bullet at the point's range, added to the risk (in the shipped class since 0.3; 0.2 left the waves out). | E2 |
 | DEISE-6 | Event | When any opponent is scanned 1 to 8 ticks after its last scan, the bot shall record the transition from its last state to its present one, the turn spread over the gap, in that opponent's table, kept across rounds; a full row shall replace a random sample. | E0 |
 | DEISE-7 | State | While the target's present Markov row holds no sample, the gun shall play the target on with that state held, which is circular projection. | E0 |
-| DEISE-8 | State | While it holds a sample, the gun shall play the target out by sampling its Markov chain, 64 playouts, where a playout through a row of fewer than 8 samples votes at most 5 plus 12 for each sample of that row. | E0 |
+| DEISE-8 | State | While it holds a sample, the gun shall play the target out by sampling its Markov chain, 200 playouts (64 in 0.2), where a playout through a row of fewer than 8 samples votes at most 5 plus 12 for each sample of that row. | E0 |
 | DEISE-9 | Ubiquitous | A playout's vote shall cover the 1,024-bin circle over the target's width at its distance, atan(18 / distance) either side, and a playout that leaves the field shall vote 1. | E0 |
-| DEISE-10 | Ubiquitous | Bullet power shall be log10(energy) times 325 over the distance, capped at 1.9 plus one for every 3 opponents left and at the power that kills the target, and at least 0.1. | E0 |
+| DEISE-10 | Ubiquitous | Bullet power shall be log10(energy) times 325 over the distance, capped at 3 and at 1.9 plus one for every 3 opponents left (0.2 also at the power that kills the target), and at least 0.1. | E2 |
 | DEISE-11 | Unwanted | If gun turn remaining is non-zero, or the bot's energy is not above the power, then the bot shall not fire. | E2 |
 | DEISE-12 | Unwanted | If Robocode's codesize tool reports more than MiniMelee's 1,499 bytes for the shipped jar, or more than one class in it, then the build shall fail. | E0 |
 | DEISE-13 | Ubiquitous | The live-shaped MiniMelee census shall run fields drawn from the whole MeleeRumble list and score the seated robot only on its pairings against MiniMelee robots, with Deise in the field in place of a seated robot. | E0 |
@@ -1937,6 +1999,82 @@ are E0 to E3 (D is the DrussGT route's letter).
   shipped class to `DeiseLab`, and a robot-level test of DEISE-11 is due by E2.
   DEISE-13's field builder (`saor_live.py` with Deise's options) and `deise_fields.py` by
   `test_saor_live.py`.
+
+## Sanaro, a NanoMelee entry (SANARO-1 to SANARO-12, stages N0 to N5)
+
+`hadur117.nano.Sanaro`, a separate robot in the `sanaro` module, built to outrank
+d414.nano.Quantum and sheldor.melee.nano.NaturalScience in NanoMelee (Leigh, 2026-10-28, from his
+design doc "Nano Melee: Beating NaturalScience & Quantum"). Design, the dissection and the stages:
+docs/sanaro.md. It depends on nothing of Hadur's, Saor's, TwinSaor's or Deise's, and they on
+nothing of it. The design doc's N-1 to N-12 are SANARO-1 to SANARO-12 here. SANARO-13 is the
+bench's own, added after pc-sanaro-n01 showed the NanoMelee-only census picks against the
+live-shaped one (docs/sanaro.md section 6).
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| SANARO-1 | Unwanted | If Robocode's codesize tool reports more than NanoMelee's 249 bytes for the shipped jar, or more than one class in it, then the build shall fail. | N0 |
+| SANARO-2 | Unwanted | If the class declares a static initialiser, or its power table has no cell at an index the bot can reach for own and enemy energy 0 to 400, then the build shall fail. | N0 |
+| SANARO-3 | Event | When a robot is scanned, the bot shall decay its force field by DECAY (0.9), add a push of 1 over the distance away from that robot's hedged lead position, and turn its body to the field plus the wall push, turned SPIRAL (0 as it ships; 0.6 first) further. | N0 |
+| SANARO-4 | State | While the body turn still to make exceeds AHEAD (120) degrees, the bot shall drive backwards. | N0 |
+| SANARO-5 | Event | When a scanned robot is closer than the target threshold, which creeps out CREEP (25) px every scan, the bot shall take it as the target and snap the threshold to its distance. | N0 |
+| SANARO-6 | Event | When the target is scanned, the bot shall turn its radar by its gun heat less LOCK (0.9) times the radar turn remaining: a sweep while the gun is hot, a flip on the target once it is nearly cool. | N0 |
+| SANARO-7 | Event | When the target is scanned, the bot shall turn its gun to the bearing plus its lateral velocity over LEAD (10) plus LEAD_GROWTH (1.008) to the distance. | N0 |
+| SANARO-8 | Event | When the target is scanned, the bot shall fire the table's power for (own energy, target energy) times the integer BAND (640) over the distance; a table cell is the lesser of 0.1 plus a sixteenth of its own energy (at most 2.5, and 3.0 from 120 energy) and the least power that kills any energy the target's truncated energy stands for (up to one more); a target at 128 energy or more reads energy / 128 rows on at its energy mod 128, a limit of the 128 stride. | N0 |
+| SANARO-9 | Ubiquitous | The shipped jar shall carry the robot's properties at the release version and its source. | N0 |
+| SANARO-10 | Ubiquitous | The NanoMelee census shall run ten NanoMelee robots a battle, both leaders in every battle, and the shipped build shall read an APS above NaturalScience 1.2.1's in the same battles by more than its 95% interval over at least 20 battles. | N2 |
+| SANARO-11 | Ubiquitous | In the same battles the shipped build shall outsurvive both leaders more often than not. | N2 |
+| SANARO-12 | Ubiquitous | One on one with each leader over 35 rounds, the shipped build shall win more than 55% of rounds. | N2 |
+| SANARO-13 | Ubiquitous | A change to the shipped build shall read above the shipped build on the live-shaped census (the MeleeRumble fields that hold a NanoMelee robot, NanoMelee pairings counted) by more than its 95% interval. | N3 |
+
+- **Coverage.** SANARO-1, SANARO-2 (no `<clinit>`) and SANARO-9 by `SanaroJarIT` (failsafe) on the
+  shipped jar; SANARO-2 (table reach) and SANARO-8 (cells) by `SanaroTableTest`, which holds the
+  table to `sanaro/table.py`'s formula; SANARO-3 to SANARO-8 by `SanaroTest`, scan by scan on a
+  probe subclass. SANARO-10 to SANARO-13 are bench reads (`tools/sanaro_read.py`; fields by
+  `tools/sanaro_fields.py`, both by `test_sanaro.py`), not build gates.
+
+## JayLexi and Eveimear, the MiniRumble and MicroRumble 1v1 entries (JAYLEXI-1 to JAYLEXI-10, EVEIMEAR-1 to EVEIMEAR-12)
+
+`hadur117.mini.JayLexi` (module `jaylexi`, MiniRumble: 1v1 under 1500 bytes) and
+`hadur117.micro.Eveimear` (module `eveimear`, MicroRumble: 1v1 under 750 bytes), built from Leigh's
+design plan "JayLexi & Eveimear — MiniRumble and MicroRumble 1v1 Design Plan" (2026-10-28) and its
+kitlab drafts. Design, bench and results: docs/kitlab.md. Neither depends on Hadur, Saor, TwinSaor,
+Deise or Sanaro, nor they on it; Hadur's 1v1 build is untouched. The plan's K1 to K6, J1 to J6 and
+E1 to E6 map onto these as the last column says.
+
+| ID | Pattern | Requirement | Plan |
+|---|---|---|---|
+| JAYLEXI-1 | Unwanted | If Robocode's codesize tool reports more than 1,496 bytes for the shipped jar (MiniRumble's 1,499 less 3 spare), then the build shall fail. | K6 |
+| JAYLEXI-2 | Event | When the enemy is scanned, the bot shall turn its radar twice the turn to the enemy, so it scans it every tick. | K1 |
+| JAYLEXI-3 | Event | When the enemy's energy drops by more than 0.09 and at most 3, after our hits on it (less their damage) and its hits on us (plus three times their power) are booked, the bot shall launch an enemy wave from where the enemy was a tick earlier at that bullet's speed. | K3 |
+| JAYLEXI-4 | Event | When the enemy is scanned, the bot shall launch a gun wave segmented on velocity history, lateral speed, walls ahead and distance, aim at its most visited of 47 bins, and log the enemy's bin, weighted 5 for a fired wave, when the wave passes it. | K2, J6 |
+| JAYLEXI-5 | State | While an enemy wave is in flight, the bot shall predict back and forward to the wave's arrival and orbit the less dangerous way, danger being the logged bin over the distance to the enemy to the fourth; while none is, it shall drive straight away from the enemy. (The plan's stop option measured 2 APS worse, docs/kitlab.md.) | J1 |
+| JAYLEXI-6 | Event | When hit by a bullet, or when bullets collide, the bot shall log the guess factor of the hit, smoothed over the neighbouring bins, on the enemy wave that was passing it, and stop surfing that wave. | J2 |
+| JAYLEXI-7 | Ubiquitous | The bot shall turn its drive until a 140 px stick from it stays inside the field. | J3 |
+| JAYLEXI-8 | Event | When the gun is within 3 degrees of its aim, the bot shall fire 3 inside 150 px and 2 beyond, at most a fifteenth of its own energy and at most what finishes the enemy. | J4, K4 |
+| JAYLEXI-9 | Ubiquitous | The shipped jar shall carry the robot's properties at the release version and its source. | plan S5 |
+| JAYLEXI-10 | Ubiquitous | On the MiniRumble bench sample, paired against Komarious 1.88, the build shall predict at least 87.7 APS before it is submitted. | plan S4 |
+| EVEIMEAR-1 | Unwanted | If Robocode's codesize tool reports more than 746 bytes for the shipped jar (MicroRumble's 749 less 3 spare), then the build shall fail. | K6 |
+| EVEIMEAR-2 | Event | While in stop-and-go, when the enemy fires, the bot shall step (3 + (int) (drop x 1.999999)) << 3 px along its orbit. | E1 |
+| EVEIMEAR-3 | Event | When the energy the enemy has won back by hitting it (three times each bullet's power, Épéeist's measure) exceeds 40 + 23 x round, the bot shall move every tick and reverse at random for the rest of the battle. | E2 |
+| EVEIMEAR-4 | Event | When hit by a bullet, the bot shall keep its orbit direction (the plan's reversal measured 1.65 APS worse on the bench, docs/kitlab.md). | E3 |
+| EVEIMEAR-5 | Ubiquitous | The bot shall close its drive angle off the enemy until a 160 px stick stays inside the field, and reverse when the angle has closed under 0.9 rad. | E4 |
+| EVEIMEAR-6 | Event | When the enemy is scanned, the bot shall launch a gun wave segmented on velocity history, lateral speed and distance, aim at its most visited of 25 bins, and count the enemy's bin when the wave passes it. | K2 |
+| EVEIMEAR-7 | State | While the enemy is inside 100 px, the bot shall fire 3, move every tick and retreat. | E5 |
+| EVEIMEAR-8 | Ubiquitous | The bot shall fire 2, at most what finishes the enemy, and never more than its energy less 0.1. | K4 |
+| EVEIMEAR-9 | Ubiquitous | The shipped jar shall carry the robot's properties at the release version and its source. | plan S5 |
+| EVEIMEAR-10 | Event | When the enemy is scanned, the bot shall turn its radar back by the turn it had left. | K1 |
+| EVEIMEAR-11 | Event | When we hit the enemy, the bot shall take the bullet's damage off the enemy's energy, and when hit, add three times the bullet's power, so neither reads as a shot. | K3 |
+| EVEIMEAR-12 | Ubiquitous | On the MicroRumble bench sample, paired against Épéeist 3.7, the build shall predict at least 85.3 APS before it is submitted. | plan S4 |
+
+- **Coverage.** JAYLEXI-1, JAYLEXI-9, EVEIMEAR-1 and EVEIMEAR-9 by `JayLexiJarIT` and
+  `EveimearJarIT` (failsafe) on the shipped jars; JAYLEXI-2 to JAYLEXI-8 by `JayLexiTest` and
+  EVEIMEAR-2 to EVEIMEAR-8, EVEIMEAR-10 and EVEIMEAR-11 by `EveimearTest`, scan by scan on probe
+  subclasses. JAYLEXI-10 and EVEIMEAR-12 are bench reads (`tools/kitlab_read.py`; samples by
+  `tools/kitlab_fields.py`, both by `test_kitlab.py`), not build gates. Like Sanaro's rows, these carry the
+  plan's own IDs in the last column, not a stage, so `RequirementsTraceabilityTest` does not track
+  them; the module tests named here are their coverage. The plan's per-tick evidence
+  (K5 zero skipped turns, J5 and E6 survival, J1 and J6 on MC2K7 and TCRM) is read from the bench
+  report, not gated.
 
 ## Allocation and the engine's stop path (TIME-9)
 

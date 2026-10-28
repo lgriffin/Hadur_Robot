@@ -711,6 +711,15 @@ public final class DuelController {
             }
             enemyGunHeat(in).shot(fireTime, reading.corrected());
             roundEnemyShot = fireTime;
+            // RAM-5: the escape keeps each shot, aimed at us as we were the tick before it left; a
+            // shot from before the logs begin (the round's first scans) has no such state and is left out.
+            if (duelOnly(MoveDesign.RAM_BREAK, enemiesTotal)) {
+                RobotState aimedAt = myStateLog.getState(fireTime - 1);
+                RobotState from = enemyStateLog.getState(fireTime);
+                if (aimedAt != null && from != null) {
+                    ramEscape.onEnemyShot(fireTime, from.location.x, from.location.y, reading.corrected(), aimedAt);
+                }
+            }
             if (folder != null) folder.enemyShot(e.distance(), reading.corrected(), myVel != 0);
             // EW,round,tick,waveId,fireTick,rawDrop,correctedDrop,power,distance: the wave is
             // named by its fire tick, and its power is the corrected drop.
@@ -787,7 +796,7 @@ public final class DuelController {
             }
             if (!planned) {
                 stats.ramEscapeTicks++;
-                ramEscape.move(orders, currentState(in), lastEnemyState);
+                ramEscape.move(orders, currentState(in), lastEnemyState, duelOnly(MoveDesign.RAM_BREAK, enemiesTotal));
             }
         } else if (stopAndGo != null) {
             // POISON-1: stop while the enemy's gun cools, go once it has fired; the waves still teach the views.

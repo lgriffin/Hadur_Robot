@@ -1,0 +1,7 @@
+bvh.fnr.Fenrir 0.36l | rank336-band4 | bvh.fnr.Fenrir_0.36l.jar
+lrem.magic.TormentedAngel Antiquitie | rank456-band5 | lrem.magic.TormentedAngel_Antiquitie.jar
+ad.Quest 0.10 | rank167-band3 | ad.Quest_0.10.jar
+chase.pm.Pytko 1.0 | rank224-band4 | chase.pm.Pytko_1.0.jar
+ers.nano.meroka.Meroka 1.8a | rank327-band4 | ers.nano.meroka.Meroka_1.8a.jar
+myl.micro.NekoNinja 1.30 | rank493-band5 | myl.micro.NekoNinja_1.30.jar
+nz.jdc.nano.PralDeGuerre 1.2 | rank275-band4 | nz.jdc.nano.PralDeGuerre_1.2.jar

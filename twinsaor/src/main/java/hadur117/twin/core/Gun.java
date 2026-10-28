@@ -139,7 +139,7 @@ public final class Gun {
                 if (Math.max(Math.abs(px - HALF), Math.abs(py - HALF)) > MARGIN) {
                     weight = 1;
                 }
-            } while (++ticks * speed < Math.hypot(px - x, py - y) && ticks < 200);
+            } while (++ticks * speed < Math.hypot(px - x, py - y));
             int centre = (int) Math.floor(Math.atan2(px - x, py - y) * (BINS / 2 / Math.PI));
             for (int k = -4; k <= 4; k++) {
                 int b = centre + k & (BINS - 1);

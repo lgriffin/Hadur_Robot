@@ -14,8 +14,8 @@ public final class Team {
     public static final double SWITCH_MARGIN = 20;
     /** Station range with two enemies alive (TWIN-9). */
     public static final double RANGE_TWO = 250;
-    /** Station range with one enemy alive (TWIN-9). */
-    public static final double RANGE_ONE = 100;
+    /** Station range with one enemy alive (TWIN-9): 160 since 0.2, W3's R1W (0.1: 100). */
+    public static final double RANGE_ONE = 160;
     /** Half the leg a twin shuttles along, across its line to the target. */
     public static final double LEG = 60;
     /** The arc either side of the gun inside which a nearer partner holds fire (TWIN-11). */
@@ -39,11 +39,14 @@ public final class Team {
     /**
      * The range a twin keeps from the target while its partner lives (TWIN-9).
      *
+     * With two enemies, mode bit 2 (TWIN-13) closes it from {@link #RANGE_TWO} to 180.
+     *
      * @param enemiesAlive enemies alive
+     * @param mode the mode for the team faced (TWIN-13)
      * @return px
      */
-    public static double range(int enemiesAlive) {
-        return enemiesAlive > 1 ? RANGE_TWO : RANGE_ONE;
+    public static double range(int enemiesAlive, int mode) {
+        return enemiesAlive > 1 ? RANGE_TWO - (mode & 2) * 35 : RANGE_ONE;
     }
 
     /**
@@ -74,9 +77,10 @@ public final class Team {
      * @return {x, y}
      */
     public static double[] point(double tx, double ty, double bearing, double range, int side) {
-        double x = tx + Math.sin(bearing) * range + Math.sin(bearing + Math.PI / 2) * LEG * side;
-        double y = ty + Math.cos(bearing) * range + Math.cos(bearing + Math.PI / 2) * LEG * side;
-        return new double[] {clamp(x), clamp(y)};
+        double s = Math.sin(bearing);
+        double c = Math.cos(bearing);
+        double leg = LEG * side;
+        return new double[] {clamp(tx + s * range + c * leg), clamp(ty + c * range - s * leg)};
     }
 
     /**
