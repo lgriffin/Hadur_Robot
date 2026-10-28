@@ -125,34 +125,54 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>(package private) static final double[]</code></div>
-<div class="col-second even-row-color"><code><a href="#BASE" class="member-name-link">BASE</a></code></div>
+<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#AIMED" class="member-name-link">AIMED</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">Whether a wave from a robot unlikely to aim at us weighs 0.25, not 1 (DEISE-5); false for arm WH.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final double[]</code></div>
+<div class="col-second odd-row-color"><code><a href="#BASE" class="member-name-link">BASE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Per opponent: the energy the next drop is measured from (DEISE-5).</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static double[][]</code></div>
-<div class="col-second odd-row-color"><code><a href="#bots" class="member-name-link">bots</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) static double[]</code></div>
-<div class="col-second even-row-color"><code><a href="#destination" class="member-name-link">destination</a></code></div>
+<div class="col-first even-row-color"><code>(package private) static double[][]</code></div>
+<div class="col-second even-row-color"><code><a href="#bots" class="member-name-link">bots</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#GAP" class="member-name-link">GAP</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first odd-row-color"><code>(package private) static double[]</code></div>
+<div class="col-second odd-row-color"><code><a href="#destination" class="member-name-link">destination</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#GAP" class="member-name-link">GAP</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Scans further apart than this are not learned (DEISE-6).</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final int[]</code></div>
-<div class="col-second even-row-color"><code><a href="#IDS" class="member-name-link">IDS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static final double[][]</code></div>
-<div class="col-second odd-row-color"><code><a href="#LAST" class="member-name-link">LAST</a></code></div>
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#HITS" class="member-name-link">HITS</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Whether our hits move the energy a shot drop is measured from (DEISE-5); false for arm WH.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#HOLD" class="member-name-link">HOLD</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">A point must be this much safer than the destination to replace it (DEISE-1); arm H drops it.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final int[]</code></div>
+<div class="col-second odd-row-color"><code><a href="#IDS" class="member-name-link">IDS</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static final double[][]</code></div>
+<div class="col-second even-row-color"><code><a href="#LAST" class="member-name-link">LAST</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Per opponent: last scan time, heading, velocity, state.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#MAX" class="member-name-link">MAX</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#MAX" class="member-name-link">MAX</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Opponents a battle can hold; ids are handed out in the order robots are first seen.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#PLAYOUTS" class="member-name-link">PLAYOUTS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Playouts an aim (DEISE-7); 200 for arm P200.</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Random.html" title="class or interface in java.util" class="external-link">Random</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#RANDOM" class="member-name-link">RANDOM</a></code></div>
@@ -298,6 +318,66 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../constant-values.html#hadur117.mini.DeiseLab.RECKON">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="PLAYOUTS">
+<h3>PLAYOUTS</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">PLAYOUTS</span></div>
+<div class="block">Playouts an aim (DEISE-7); 200 for arm P200.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../constant-values.html#hadur117.mini.DeiseLab.PLAYOUTS">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="HOLD">
+<h3>HOLD</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">HOLD</span></div>
+<div class="block">A point must be this much safer than the destination to replace it (DEISE-1); arm H drops it.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../constant-values.html#hadur117.mini.DeiseLab.HOLD">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="AIMED">
+<h3>AIMED</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">AIMED</span></div>
+<div class="block">Whether a wave from a robot unlikely to aim at us weighs 0.25, not 1 (DEISE-5); false for arm WH.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../constant-values.html#hadur117.mini.DeiseLab.AIMED">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="HITS">
+<h3>HITS</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">HITS</span></div>
+<div class="block">Whether our hits move the energy a shot drop is measured from (DEISE-5); false for arm WH.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../constant-values.html#hadur117.mini.DeiseLab.HITS">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>

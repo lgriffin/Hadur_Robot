@@ -119,18 +119,28 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Battlefield size and the margin a robot's centre keeps from a wall.</div>
 </div>
-<div class="col-first even-row-color"><code>static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#MARGIN" class="member-name-link">MARGIN</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#ROW" class="member-name-link">ROW</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#KILL" class="member-name-link">KILL</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Whether power is capped at what kills the target (DEISE-10); false for arm K.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#MARGIN" class="member-name-link">MARGIN</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#ROW" class="member-name-link">ROW</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Successors kept per state; a row's count is at index ROW.</div>
 </div>
-<div class="col-first even-row-color"><code>static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#STATES" class="member-name-link">STATES</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#STATES" class="member-name-link">STATES</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Packed states: acceleration 0-2, speed 0-16 shifted 2, turn 0-4 shifted 7.</div>
+</div>
+<div class="col-first even-row-color"><code>static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#WALLS" class="member-name-link">WALLS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Whether a playout that leaves the field votes 1 (DEISE-8); false for arm T.</div>
 </div>
 <div class="col-first odd-row-color"><code>static final int</code></div>
 <div class="col-second odd-row-color"><code><a href="#WARM" class="member-name-link">WARM</a></code></div>
@@ -297,6 +307,36 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur117.mini.core.Gun.MARGIN">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="WALLS">
+<h3>WALLS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">WALLS</span></div>
+<div class="block">Whether a playout that leaves the field votes 1 (DEISE-8); false for arm T.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.mini.core.Gun.WALLS">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="KILL">
+<h3>KILL</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">KILL</span></div>
+<div class="block">Whether power is capped at what kills the target (DEISE-10); false for arm K.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.mini.core.Gun.KILL">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
