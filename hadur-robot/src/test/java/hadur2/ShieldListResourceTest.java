@@ -46,7 +46,8 @@ class ShieldListResourceTest {
     @DisplayName("the list holds the 14 robots of the D5 probe and nobody the probe lost against since")
     void listHoldsTheProbedRobots() {
         ShieldList list = ShieldList.parse(Arrays.asList(ShieldListData.lines()));
-        assertEquals(14 + 83 + 103 + 49 + 16 + 11, list.size());
+        // BENCH-126 (PR #376): Wolverine, Hikari and Melody moved to stop-and-go, off the list.
+        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
@@ -151,16 +152,16 @@ class ShieldListResourceTest {
 
     @Test
     @Tag("POISON-2")
-    @DisplayName("stop-and-go entries, mode table v2 and pass 2 (PRs #263, #276): 18 + 8 variant 1, 35 + 12 variant 2")
+    @DisplayName("stop-and-go entries, mode table v2, pass 2 and the gap-to-2nd re-pick (PRs #263, #276, #376): 18 + 8 + 1 variant 1, 35 + 12 + 2 variant 2")
     void listHoldsModeTableV2() {
         List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
         for (String name : ShieldTableData.stopGos()) lines.add(ShieldList.STOP_GO_PREFIX + " " + name);
         for (String name : ShieldTableData.stopGoShifts()) lines.add(ShieldList.STOP_GO_SHIFT_PREFIX + " " + name);
         ShieldList list = ShieldList.parse(lines);
-        assertEquals(18 + 8, ShieldTableData.stopGos().length);
-        assertEquals(35 + 12, ShieldTableData.stopGoShifts().length);
-        assertEquals(18 + 8, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGos())).size(), "no duplicates");
-        assertEquals(35 + 12, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGoShifts())).size(), "no duplicates");
+        assertEquals(18 + 8 + 1, ShieldTableData.stopGos().length);
+        assertEquals(35 + 12 + 2, ShieldTableData.stopGoShifts().length);
+        assertEquals(18 + 8 + 1, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGos())).size(), "no duplicates");
+        assertEquals(35 + 12 + 2, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGoShifts())).size(), "no duplicates");
         // DuelistMicroMkII (PR #263) and Vanessa03 (PR #276) are on both: their verify gates measured
         // them that way, so they stay as measured.
         java.util.Set<String> both = java.util.Set.of("davidalves.net.DuelistMicroMkII 1.1", "rcb.Vanessa03 0");

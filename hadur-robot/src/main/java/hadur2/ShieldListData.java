@@ -125,7 +125,6 @@ final class ShieldListData {
             "arthord.KostyaTszyu Beta2",
             "stelo.Randomness 1.1",
             "pe.mini.SandboxMini 1.2",
-            "nat.Hikari dev0001",
             "ags.micro.Carpet 1.1",
             // Ranks 401 to 700. Shield mode loses on most of these (-2.40 over all 91), so only the
             // robots it beats are here.
@@ -243,7 +242,6 @@ final class ShieldListData {
             "simonton.GFNano_D 3.1b",
             "theo.simple.Lucid 1.0",
             "lrem.quickhack.QuickHack 1.0",
-            "gg.Wolverine 2.0",
             "mz.Adept 2.65",
             "bvh.fnr.Fenrir 0.36l",
             "racso.Frog 0.9",
@@ -265,7 +263,6 @@ final class ShieldListData {
             "PkKillers.PkAssassin 1.0",
             "apv.NanoLauLectrik 1.0",
             "ary.Help 1.0",
-            "bing2.Melody 1.3.1",
             "cs.s2.Seraphim 2.3.1",
             "cuoq.Kakera 1.0",
             "dz.Caedo 1.4",
