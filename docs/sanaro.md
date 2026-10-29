@@ -236,7 +236,7 @@ and its name lock on the target.
 ## 9. The next card: pc-sanaro-n03 (stage N4)
 
 `hadur-bench/plans/pc-sanaro-n03.queue`, Leigh starts it from master:
-`.\queue.ps1 run pc-sanaro-n03`. About 3.3 h at 12 workers, with stop rules and ALERT. Live-shaped
+`.\queue.ps1 run pc-sanaro-n03`. About 2.4 h at 12 workers, with stop rules and ALERT. Live-shaped
 census, 43 fields x 10 fresh seeds (base 14000), read against S0 (`sanaro-n03-live.md` on
 `claude/pc-sanaro-n03-results`):
 
@@ -247,19 +247,62 @@ census, 43 fields x 10 fresh seeds (base 14000), read against S0 (`sanaro-n03-li
 | L10 | radar flip below gun heat 1.0, not 0.9 | 245 |
 | G18 | fire gate 18 / d rad | 277 as written (measure only) |
 | G36 | fire gate 36 / d rad | 277 as written (measure only) |
-| EN | Sanaro's own: push weighted by energy, (energy + 50) / 150 / d, so a strong robot pushes harder and a spent one a third as hard | 273 (measure only) |
-| D2 | Sanaro's own: inverse-square push 250 / d^2, level with 1 / d at 250 px | 261 (measure only) |
-
-Leigh, 2026-10-29, on hearing that Sanaro's movement, lead and radar are the same math as
-Quantum's (the DustBunny and NaturalScience line both share): "do both". The card measures
-Quantum's remaining parts and, beside them, movements of Sanaro's own; the cloud then screens
-more of Sanaro's own ideas.
 
 The cloud screen read a gate at -1.6, but on the NanoMelee-only census, which n01 showed picks
 against the scored field; this card measures it where it counts. A gate worth +0.5 or more is
 worth finding the bytes for (N5: about 11 once fitted). T60 and L10 ship in 0.2 if they pass.
 
-## 10. Stages
+## 10. pc-sanaro-n03 results and the cloud fit (stage N4, 2026-10-29, PR #423)
+
+430 battles an arm, live-shaped census, against S0 (64.92 ± 0.23):
+
+| Arm | vs S0 | Read |
+|---|---|---|
+| G18 | +0.99 ± 0.32 | passes: Quantum's fire gate is most of the 1.23 gap, but 277 bytes |
+| G36 | +0.66 ± 0.32 | passes, less than G18 |
+| T60 | +0.06 ± 0.33 | flat |
+| L10 | -1.72 ± 0.33 | Sanaro's radar flip at gun heat 0.9 beats Quantum's 1.0 |
+
+The cloud then fitted the gate (live-shaped census, 2 seeds, 86 battles an arm, read against the
+gate at 264 bytes, G; one cloud read is about ±0.65):
+
+| Arm | Bytes | vs G | What it gives up |
+|---|---|---|---|
+| GK | 248 | -2.69 | the power table by enemy energy only, no adjust-gun |
+| GE | 248 | -1.62 | the power table by own energy only, no adjust-gun |
+| GA | 257 | -2.66 | adjust-gun alone: the gun must not turn with the body |
+| GN | 247 | -8.84 | angle normalising: Sanaro spins |
+| Z0 | 256 | -1.61 | Sanaro's own settled-gun gate (fire when last tick's turn finished) |
+| GG | 258 | +0.88 | nothing: the same gate, golfed |
+| CL | 249 | +0.00 | Quantum's lead v / (10 + 1.008^d) for a flat v / 16 |
+| A | 245 | -0.41 | CL plus power c / (d / 16), smooth with range |
+
+The golf: the gun's error is kept in `aim` and tested as `(int) (aim * d) / 18 == 0`, which is
+|aim| < 18 / d in 14 bytes, and the spiral term (always 0) goes. The two-energy table, adjust-gun and
+angle normalising all have to stay. The lead was the one place with bytes to spare, and changing it
+gives Sanaro a lead of its own.
+
+## 11. The next card: pc-sanaro-n04 (stage N5)
+
+`hadur-bench/plans/pc-sanaro-n04.queue`, Leigh starts it from master:
+`.\queue.ps1 run pc-sanaro-n04`. About 3.7 h at 12 workers, with stop rules and ALERT. Live-shaped
+census, 43 fields x 10 fresh seeds (base 18000), read against S0 (`sanaro-n04-live.md` on
+`claude/pc-sanaro-n04-results`):
+
+| Arm | Change | Bytes |
+|---|---|---|
+| S0 | 0.1 as it ships (control) | 247 |
+| GG | G18's gate golfed, same play (reference) | 258 |
+| CL | GG + Sanaro's own flat lead v / 16 | 249 |
+| CL12 | CL with lead v / 12 | 249 |
+| CL22 | CL with lead v / 22 | 249 |
+| A | CL + power c / (d / 16) | 245 |
+| EN | Sanaro's own: push weighted by energy, (energy + 50) / 150 / d | 273 (measure only) |
+| D2 | Sanaro's own: inverse-square push 250 / d^2 | 261 (measure only) |
+
+The best passing arm at 249 bytes or under ships as 0.2. GG against CL says what the lead costs.
+
+## 12. Stages
 
 | Stage | What | Gate |
 |---|---|---|
@@ -267,16 +310,18 @@ worth finding the bytes for (N5: about 11 once fitted). T60 and L10 ship in 0.2 
 | N1 | the cloud screen (section 4) | a spiral beats S0 or the leaders in the same battles |
 | N2 | pc-sanaro-n01 (section 6): S0 picked, +0.88 over 0.6 on the live-shaped census | as section 5 |
 | N3 | pc-sanaro-n02 (section 7, results section 8): flat, nothing passes | an arm over S0 on the live-shaped census |
-| N4 | pc-sanaro-n03 (section 9): the fire gate, the radar threshold, T60 again | an arm over S0 on the live-shaped census |
-| N5 | fit what N4 picks into 249 bytes, then stack the winners toward Quantum | the live-shaped census over the seated Quantum's 66.58 |
+| N4 | pc-sanaro-n03 (section 9, results section 10): the gate passes (+0.99), 277 bytes | an arm over S0 on the live-shaped census |
+| N5 | pc-sanaro-n04 (section 11): the gate in 249 bytes with Sanaro's own lead | an arm at 249 bytes or under over S0 on the live-shaped census |
 | N6 | release 0.2, first rumble read after 500 battles | SANARO-13 on the final jar (0.1 released 2026-10-28, live 2nd at 65.21) |
 
-## 11. Uniqueness
+## 13. Uniqueness
 
 Leigh's rule for Saor holds here: inspired by others, never a copy. Sanaro shares the open
 DustBunny line's anti-gravity and lead, which every bot at the top of NanoMelee shares, and
 differs in behaviour where it counts: the power table (its own formula, not NaturalScience's
 4,991-character table), the creeping target in place of a name lock, the radar threshold and no
-fire gate. N4 measures Quantum's gate and its radar threshold; if 0.2 takes both, what stays
-Sanaro's own is the table and the creeping target, and Leigh decides whether that is unique enough.
+fire gate. N4 found Quantum's gate pays and its radar threshold does not (Sanaro's 0.9 stays). To
+fit the gate, 0.2 trades Quantum's lead for a flat lead of Sanaro's own, so a 0.2 from N5 shares the
+anti-gravity and the gate and differs in lead, radar, power table and target. Leigh decides whether
+that is unique enough.
 The seated leaders are references only and never ship.

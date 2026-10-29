@@ -1,10 +1,11 @@
+# RAN 2026-10-29 (results PR #423, docs/sanaro.md section 10): G18 +0.99 ± 0.32 and G36 +0.66 passed
+# but do not fit 249 bytes; T60 +0.06 and L10 -1.72 did not pass. N5 is pc-sanaro-n04.
 # Sanaro's stage N4 (docs/sanaro.md section 8): the gun's fire gate, the radar's threshold and n02's
 # best arm on fresh seeds, on the live-shaped census. Sanaro 0.1 is live 2nd in NanoMelee at 65.21
 # (bench 65.17), 1.23 under Quantum 1.0.0. pc-sanaro-n02 (PR #408) found the power curve flat: every
 # curve, Quantum's own E/7 among them, reads within ±0.32 of S0. Quantum's remaining differences in
 # play are its fire gate (fire only when the gun has under 18 / d rad left to turn), its radar lock at
-# gun heat 1.0, and its name lock on the target; this card measures the first two, and beside them
-# two movement ideas of Sanaro's own (Leigh 2026-10-29: "do both"): EN and D2.
+# gun heat 1.0, and its name lock on the target; this card measures the first two.
 #   ./queue.sh run pc-sanaro-n03        (or  .\queue.ps1 run pc-sanaro-n03)
 # Run it from master:
 #   git checkout master && git pull
@@ -17,24 +18,21 @@
 #   L10   radar flip below gun heat 1.0, not 0.9 (245 B: frees 2 bytes)
 #   G18   fire gate 18 / d rad (Quantum's)   G36   fire gate 36 / d rad   (277 B as written; measure
 #         only: a gate that pays needs about 11 bytes found before it can ship)
-#   EN    Sanaro's own: push weighted by energy, (energy + 50) / 150 / d, the strong fled and the weak
-#         ignored (273 B, measure only)
-#   D2    Sanaro's own: inverse-square push 250 / d^2, the near robot dominates (261 B, measure only)
 # Live-shaped census: 43 fields x 10 fresh seeds (base 14000) = 430 battles an arm, about 28 min an
-# arm (n02 ran 28-30). About 3.3 h in all.
+# arm (n02 ran 28-30). About 2.4 h in all.
 # Read against S0. An arm passes when its difference's low end is above zero (SANARO-13). A gate that
 # reads +0.5 or more is worth the byte hunt (N5); T60 and L10 ship in 0.2 if they pass.
 # Stop rules on every census step (docs/bench/watch.md; halt, every battle fought is kept and a
 # rerun resumes): 20 failed battles (a broken jar), no battle in 30 minutes (a hung step), or 40+
 # skipped turns a battle over the last 100 (the PR #331 build-up). A halt at worst leaves the rest
-# of that arm and the arms after it unrun, at most 3,010 battles (about 3.3 h). There is no early
+# of that arm and the arms after it unrun, at most 2,150 battles (about 2.4 h). There is no early
 # finish on score: a census step is one robot, so there is no arm to call futile mid-step. ALERT
 # opens an issue for Leigh on a stop.
 
 set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
-set ARMS = S0,T60,L10,G18,G36,EN,D2
+set ARMS = S0,T60,L10,G18,G36
 
 prep | (cd .. && mvn -q -DskipTests install -pl sanaro -am) && cp ../sanaro/target/hadur117.nano.Sanaro_0.1.jar opponents/ && ./fetch-opponents.sh --set nanomelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && SANARO_RUN=n03 bash tools/sanaro_arms.sh live 10 14000 ${ARMS}
 
@@ -73,22 +71,8 @@ live-G36 | ${MVN} "-Dexec.args=@work/sanaro-n03/live-G36.args"
   stop: stall 30m
   stop: skips 40 over 100
 
-live-EN | ${MVN} "-Dexec.args=@work/sanaro-n03/live-EN.args"
-  after: live-G36
-  watch: battles=430
-  stop: fails 20
-  stop: stall 30m
-  stop: skips 40 over 100
-
-live-D2 | ${MVN} "-Dexec.args=@work/sanaro-n03/live-D2.args"
-  after: live-EN
-  watch: battles=430
-  stop: fails 20
-  stop: stall 30m
-  stop: skips 40 over 100
-
 read-live | python3 tools/sanaro_read.py --work-root work/sanaro-n03 --field live --arms ${ARMS} --control S0 --only work/sanaro-n03/live/micro.txt --live 66.44 > ${OUT}/sanaro-n03-live.md
-  after: live-D2
+  after: live-G36
 
-pr | bash tools/open_results_pr.sh claude/pc-sanaro-n03-results "Sanaro stage N4: fire gate, radar threshold, T60 and two own movements on the live-shaped census" ${OUT}/sanaro-n03-live.md ${OUT}/sanaro-n03-live-*.md
+pr | bash tools/open_results_pr.sh claude/pc-sanaro-n03-results "Sanaro stage N4: fire gate, radar threshold and T60 on the live-shaped census" ${OUT}/sanaro-n03-live.md ${OUT}/sanaro-n03-live-*.md
   after: read-live
