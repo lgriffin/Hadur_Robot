@@ -1,12 +1,16 @@
 {
  "plan": "pc-team-dodge",
- "updated": 1793301311.9313588,
+ "updated": 1793302220.431813,
  "steps": {
   "tdprep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 101,
+   "end": "2026-10-29T19:16:53"
   },
   "tdbb": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-10-29T19:16:53"
   },
   "tddg": {
    "status": "pending"
@@ -30,5 +34,49 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "tdbb",
+   "started": 1793301413.0878968,
+   "updated": 1793302220.425038,
+   "elapsed": 807.3371412754059,
+   "expected": 1104,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 115,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 512.7969206841838,
+   "eta": 6943.099414968491,
+   "fraction": 0.10416666666666667,
+   "last_battle_age": 2.695953845977783,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 115"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "ok",
+     "detail": "9.1 a battle over the last 100 (first 100: 9.2)"
+    }
+   ],
+   "skips_mean": 9.234782608695653,
+   "skips_last100": 9.11
+  }
+ ]
 }
