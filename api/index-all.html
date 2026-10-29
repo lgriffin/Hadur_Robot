@@ -2631,6 +2631,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#AES-1">AES-1</a>: the records made since the last call, oldest first; the list is then emptied.</div>
 </dd>
+<dt><a href="hadur117/core/move/SurfMover.html#drainOracleRecords()" class="member-name-link">drainOracleRecords()</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/SurfMover.html" title="class in hadur117.core.move">SurfMover</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#ORACLE-1">ORACLE-1</a>: the records made since the last call, oldest first; the list is then emptied.</div>
+</dd>
 <dt><a href="hadur117/core/move/ShotDodgePlanner.html#DRIFT" class="member-name-link">DRIFT</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/ShotDodgePlanner.html" title="class in hadur117.core.move">ShotDodgePlanner</a></dt>
 <dd>
 <div class="block">A replan is forced when we are this far from the path, px.</div>
@@ -6364,6 +6368,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The record's line, without the <code>AES,round,tick,</code> prefix.</div>
 </dd>
+<dt><a href="hadur117/core/move/OracleRecord.html#line(hadur117.core.model.Wave,int,hadur117.core.move.PlanInterval%5B%5D,int,double%5B%5D)" class="member-name-link">line(Wave, int, PlanInterval[], int, double[])</a> - Static method in class hadur117.core.move.<a href="hadur117/core/move/OracleRecord.html" title="class in hadur117.core.move">OracleRecord</a></dt>
+<dd>
+<div class="block">The record's line, without the <code>ORC,round,tick,</code> prefix.</div>
+</dd>
 <dt><a href="hadur117/core/memory/LineageKey.html" class="type-name-link" title="class in hadur117.core.memory">LineageKey</a> - Class in <a href="hadur117/core/memory/package-summary.html">hadur117.core.memory</a></dt>
 <dd>
 <div class="block">Turns the name the radar reports into the key a profile is filed under, so that every
@@ -9015,6 +9023,27 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/move/SurfMover.Mode.html#OPTIONS" class="member-name-link">OPTIONS</a> - Enum constant in enum class hadur117.core.move.<a href="hadur117/core/move/SurfMover.Mode.html" title="enum class in hadur117.core.move">SurfMover.Mode</a></dt>
 <dd>
 <div class="block">1.20's three options: orbit counter-clockwise, stop, orbit clockwise.</div>
+</dd>
+<dt><a href="hadur117/core/duel/MoveDesign.html#ORACLE_RECORD" class="member-name-link">ORACLE_RECORD</a> - Static variable in class hadur117.core.duel.<a href="hadur117/core/duel/MoveDesign.html" title="class in hadur117.core.duel">MoveDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#ORACLE-1">ORACLE-1</a> (measurement, K0 of the road to king): each wave's first three-option rating also
+ prints an <code>ORC</code> record with every danger view's neighbours on the wave, for the offline
+ enemy-gun oracle (<code>data/tools/gun_oracle.py</code>).</div>
+</dd>
+<dt><a href="hadur117/core/move/MoveController.html#oracleNeighbours(hadur117.core.model.Wave)" class="member-name-link">oracleNeighbours(Wave)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/MoveController.html" title="class in hadur117.core.move">MoveController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#ORACLE-1">ORACLE-1</a> (K0, measurement): what each danger view would say about wave <code>w</code>, as the
+ <a href="hadur117/core/move/OracleRecord.html" title="class in hadur117.core.move"><code>OracleRecord</code></a> line carries it: per view, whether it is on with data, its weight in the
+ danger average, how many neighbours it found, then each neighbour's guess factor and scan
+ weight (its decay over the square root of its distance, times its seed weight), exactly as
+ <a href="hadur117/core/move/MoveController.html#getDangerScore(hadur117.core.model.Wave,hadur117.core.model.Wave.Intersection,int)"><code>MoveController.getDangerScore(hadur117.core.model.Wave, hadur117.core.model.Wave.Intersection, int)</code></a> weighs them.</div>
+</dd>
+<dt><a href="hadur117/core/move/OracleRecord.html" class="type-name-link" title="class in hadur117.core.move">OracleRecord</a> - Class in <a href="hadur117/core/move/package-summary.html">hadur117.core.move</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#ORACLE-1">ORACLE-1</a> (K0 of the road to king): the oracle record, one line per wave at the three-option
+ surf's first rating of it, with every danger view's neighbours on the wave, so models of the
+ enemy's gun can be scored offline against the bullet the engine says was fired
+ (<code>data/tools/gun_oracle.py</code>, docs/requirements.md <a class="req" href="../requirements.html#ORACLE-1">ORACLE-1</a>).</div>
 </dd>
 <dt><a href="hadur117/mini/JayLexi.html#ORBIT" class="member-name-link">ORBIT</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/JayLexi.html" title="class in hadur117.mini">JayLexi</a></dt>
 <dd>&nbsp;</dd>
@@ -12121,6 +12150,11 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../requirements.html#ADAPT-1">ADAPT-1</a>: the gun to use from the first firing wave, until the live virtual-gun ratings
  disagree by more than their margin of error.</div>
 </dd>
+<dt><a href="hadur117/core/move/SurfMover.html#setOracleRecord(boolean)" class="member-name-link">setOracleRecord(boolean)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/SurfMover.html" title="class in hadur117.core.move">SurfMover</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#ORACLE-1">ORACLE-1</a> (K0): whether each wave's first three-option rating also prints an <a href="hadur117/core/move/OracleRecord.html" title="class in hadur117.core.move"><code>OracleRecord</code></a>
+ with every danger view's neighbours on the wave, for the enemy-gun oracle.</div>
+</dd>
 <dt><a href="hadur117/core/model/Wave.html#setOrbitChanges40(int)" class="member-name-link">setOrbitChanges40(int)</a> - Method in class hadur117.core.model.<a href="hadur117/core/model/Wave.html" title="class in hadur117.core.model">Wave</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#GUN-2">GUN-2</a>: sets <a href="hadur117/core/model/Wave.html#targetOrbitChanges40"><code>Wave.targetOrbitChanges40</code></a>.</div>
@@ -15140,6 +15174,10 @@ the order they are declared.</div>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.View.html#%3Cinit%3E(java.awt.geom.Point2D.Double,double,long,int,java.util.List,java.util.List,hadur117.core.melee.MeleeStrategy.Plan,java.util.List)" class="member-name-link">View(Point2D.Double, double, long, int, List&lt;EnemyInfo&gt;, List&lt;VirtualBullet&gt;, MeleeStrategy.Plan, List&lt;Roster.Mate&gt;)</a> - Constructor for class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.View.html" title="class in hadur117.core.melee">MinimumRiskMovement.View</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/move/OracleRecord.html#VIEW_HEAD" class="member-name-link">VIEW_HEAD</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/OracleRecord.html" title="class in hadur117.core.move">OracleRecord</a></dt>
+<dd>
+<div class="block">Fields per view before its neighbours: on, weight, count.</div>
+</dd>
 <dt><a href="hadur117/core/move/AesRecord.html#VIEW_SCORE" class="member-name-link">VIEW_SCORE</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/AesRecord.html" title="class in hadur117.core.move">AesRecord</a></dt>
 <dd>
 <div class="block">The views' score, the first n parts over the next n (or the fallback).</div>
