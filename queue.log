@@ -20,3 +20,13 @@
 21:56:59 skip prep (already exit=0)
 21:56:59 skip w1-J01 (already exit=0)
 21:56:59 skip w1-J02 (already exit=0)
+21:56:59 start w1-KOM
+21:56:59 watching w1-KOM: 3 stop rule(s)
+21:57:02 progress pushed to origin claude/pc-jaylexi-w1-progress (every 15 min)
+21:57:59 progress w1-KOM: 108/672 (16%) battles, 6420/h, ETA 5 min, 0 failed, skips 0.0/battle (last 100)
+22:00:08 w1-KOM exit=0 in 189 s
+22:00:08 start read
+22:00:26 read exit=0 in 18 s
+22:00:26 start pr
+22:00:31 pr exit=0 in 5 s
+22:00:31 ALLDONE
