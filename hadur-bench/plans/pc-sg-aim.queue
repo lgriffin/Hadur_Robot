@@ -1,0 +1,50 @@
+# 1v1 plan to 3rd, the simple-gun gap (BENCH-140, docs/bench/simple-gun-gap.md). Leigh starts it:
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-sg-aim        (or  ./queue.sh run pc-sg-aim)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes;
+# no step needs a decision. About 1 h of battles (pc-k1-aim ran 1,296 in 56 min) and seconds of analysis.
+#
+# Why: Saguaro leads 3.19 by +0.45 APS on the simple guns. A cloud bench on 40 of them (Saguaro's jar as
+# an arm) found the lead is dodging: the same round length, shots and survival, but Hadur takes 0.60
+# damage an enemy shot against Saguaro's 0.34, two to three times the hits at every distance. Of
+# Hadur's switches only the aim members (MOVE-29) closed part of it: +1.05 +- 0.64 pp, a third of the
+# damage gap (the shot-dodge planner -0.9, stop-and-go -8.3; standing weights 0.3 and 1.0 the same as
+# 0.1). On the 432 learning guns the same arm read +0.07 +- 0.15 APS (pc-k1-aim, PR #432).
+#
+# aim:    the 434 simple-gun robots (simple-guns.txt) x c, aa, km x 1 fresh seed from 4800 = 1,302
+#         battles, 35 rounds.
+# gate:   km at +0.05 APS, minus pooled c and aa over the 434 / 1,217 pairings, 95% low end above 0, A/A
+#         inside its band; per-robot differences with losses. With pc-k1-aim's +0.07 this decides
+#         MOVE-29 on for every duel opponent.
+# Stop rules (docs/bench/watch.md): the aim step halts on 30 failed battles, an arm scoring nothing in 8,
+# 40+ skipped turns a battle over the last 200, no battle in 30 minutes, or an A/A outside its z 3 band
+# after 20%; every battle fought is kept and a rerun resumes. It also finishes early once km cannot reach
+# +0.05 APS at z 3 after 30% (391 of 1,302 battles): that leaves at most 911 battles (about 40 min) unrun,
+# the gate reads the rows so far and the results PR says it stopped early. ALERT opens an issue for Leigh
+# on any stop.
+# Nothing here ships: on a pass a PR turns MOVE-29 on for the 3.20 census; Leigh's release rule stands.
+
+set V = 3.19
+set P = --parallel 12 --no-truth-log
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G --engine 1.11.1
+set W = work/sg-aim
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh aimmem && test -f bisect/hadur117.Hadur_${V}km.jar && ./fetch-opponents.sh --set simple-guns.txt && mvn -q compile
+
+aim | ./bench-top20.sh ${C} ${P} --set simple-guns.txt --seeds 1 --seed-base 4800 --arms plans/k1-aim.arms --out ${W} --label sg-aim --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 40 over 200
+  stop: stall 30m
+  stop: aa after 20%
+  stop: futility km below 0.05 after 30%
+
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_sg-aim.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm km --panel simple-guns.txt --bar 0.05 --out ${OUT}/$(date +%Y-%m-%d)_sg-aim-gate.md && python3 tools/per_robot.py ${W}/arms.tsv --arms km --out ${OUT}/$(date +%Y-%m-%d)_sg-aim-per-robot.md --out-tsv ${OUT}/sg-aim-per-robot.tsv
+  after: aim
+
+pr | bash tools/open_results_pr.sh claude/pc-sg-aim-results "1v1 plan to 3rd: the aim members (MOVE-29) on the 434 simple-gun robots" ${OUT}/*_sg-aim*.md ${OUT}/sg-aim-per-robot.tsv $(find ${W} -maxdepth 1 -name EARLY-STOP.md)
+  after: gate
