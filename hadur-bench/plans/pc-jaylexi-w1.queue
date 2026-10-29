@@ -9,6 +9,10 @@
 # One bench queue, RoboRumble workers at 0, unpinned (--parallel auto: the host profile's width). Every step
 # resumes; no step needs a decision. Nothing here touches Hadur or the other small bots.
 #
+# RERUN 2026-10-29 (issue #433): the first w1-KOM failed with 6 failed battles, Komarious facing its own
+# jar. It now runs on kitlab/mini-wide-ref-field.txt (the field less Komarious) under the label KOM2;
+# J01 and J02 are done and are not rerun. Rerun with the same command; only w1-KOM, read and pr run.
+#
 # Arms, each a released jar fetched from its GitHub release:
 #   J01   JayLexi 0.1 (control)   J02   JayLexi 0.2   KOM   Komarious 1.88 (reference, live 87.54)
 # 112 bots x 6 seeds = 672 battles an arm, 35 rounds each; about 20 min an arm on the PC, about 1 h
@@ -42,14 +46,14 @@ w1-J02 | ${MVN} "-Dexec.args=@work/kitlab-w1-J02.args"
   stop: stall 30m
   stop: skips 40 over 100
 
-w1-KOM | ${MVN} "-Dexec.args=@work/kitlab-w1-KOM.args"
+w1-KOM | bash kitlab/args.sh mini-wide-ref opponents/voidious.mini.Komarious_1.88.jar "voidious.mini.Komarious 1.88" w1-KOM2 6 && ${MVN} "-Dexec.args=@work/kitlab-w1-KOM2.args"
   after: w1-J02
   watch: battles=672
   stop: fails 20
   stop: stall 30m
   stop: skips 40 over 100
 
-read | (echo "# JayLexi 0.1 and 0.2 on the wide MiniRumble sample (pc-jaylexi-w1)" && echo && echo '## 0.2 against 0.1' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide-field.txt work/kitlab-w1-J02 --ref work/kitlab-w1-J01 && echo '```' && echo && echo '## 0.2 against Komarious 1.88 (live 87.54)' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide-field.txt work/kitlab-w1-J02 --ref work/kitlab-w1-KOM --ref-aps 87.54 && echo '```' && echo && echo '## 0.1 against Komarious 1.88 (live 87.54)' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide-field.txt work/kitlab-w1-J01 --ref work/kitlab-w1-KOM --ref-aps 87.54 && echo '```') > ${OUT}/jaylexi-w1.md
+read | (echo "# JayLexi 0.1 and 0.2 on the wide MiniRumble sample (pc-jaylexi-w1)" && echo && echo '## 0.2 against 0.1' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide-field.txt work/kitlab-w1-J02 --ref work/kitlab-w1-J01 && echo '```' && echo && echo '## 0.2 against Komarious 1.88 (live 87.54)' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide-field.txt work/kitlab-w1-J02 --ref work/kitlab-w1-KOM2 --ref-aps 87.54 && echo '```' && echo && echo '## 0.1 against Komarious 1.88 (live 87.54)' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide-field.txt work/kitlab-w1-J01 --ref work/kitlab-w1-KOM2 --ref-aps 87.54 && echo '```') > ${OUT}/jaylexi-w1.md
   after: w1-KOM
 
 pr | bash tools/open_results_pr.sh claude/pc-jaylexi-w1-results "JayLexi 0.1 and 0.2 on the wide MiniRumble sample" ${OUT}/jaylexi-w1.md
