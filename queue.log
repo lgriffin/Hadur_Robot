@@ -15,3 +15,9 @@
 16:24:24 progress tqmp: 367/1472 (25%) battles, 562/h, ETA 2.0 h, 0 failed, skips 9.2/battle (last 100)
 16:54:39 progress tqmp: 745/1472 (51%) battles, 644/h, ETA 1.1 h, 0 failed, skips 7.2/battle (last 100)
 17:24:54 progress tqmp: 1218/1472 (83%) battles, 733/h, ETA 21 min, 0 failed, skips 7.1/battle (last 100)
+17:39:48 tqmp exit=0 in 6875 s
+17:39:48 start tqsum
+17:39:48 tqsum exit=0 in 0 s
+17:39:48 start tqpr
+17:39:55 tqpr exit=0 in 6 s
+17:39:55 ALLDONE
