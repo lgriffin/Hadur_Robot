@@ -6,9 +6,15 @@
 # SanaroJarIT measures bytes. S0 is Sanaro 0.1 as it ships (no spiral, 247 B). pc-sanaro-n01 ran
 # the first set (S06 = spiral 0.6 base; git history of this file) and picked S0 on the live-shaped
 # census, +0.88 ± 0.45 over 0.6. pc-sanaro-n02 (PR #408) ran the power curves (Q7, D10, L20, T60),
-# a 0.2 spiral and the 800 px band: all inside ±0.32 of S0 but B800 (-0.39); git history holds them.
+# a 0.2 spiral and the 800 px band: all inside ±0.32 of S0 but B800 (-0.39); their rows stay below.
 S0 | Sanaro 0.1: straight anti-gravity, the shipped table (247 B) |
 T60 | 3.0 from 60 own energy instead of 120, n02's best (+0.23 ± 0.32), on fresh seeds (247 B) | | --top-at 60
 L10 | the radar flips below gun heat 1.0 instead of 0.9: dconst_1, 2 bytes less (245 B) | s#LOCK = 0.9;#LOCK = 1.0;#
 G18 | a fire gate: fire only when the gun has under 18 / d rad left to turn (277 B as written, about 260 fitted; measure only) | s#^            setFire(BAND / (range = d)#            setTurnGunRightRadians(Utils.normalRelativeAngle(aim - getGunHeadingRadians()));\n            range = d;\n            if (Math.abs(getGunTurnRemainingRadians()) < 18.0 / d) setFire(BAND / d#
 G36 | a looser fire gate, 36 / d rad (277 B as written, about 260 fitted; measure only) | s#^            setFire(BAND / (range = d)#            setTurnGunRightRadians(Utils.normalRelativeAngle(aim - getGunHeadingRadians()));\n            range = d;\n            if (Math.abs(getGunTurnRemainingRadians()) < 36.0 / d) setFire(BAND / d#
+# N3 (pc-sanaro-n02, PR #408), kept so that card still reruns:
+S02 | a small spiral, 0.2 rad (249 B) | s#SPIRAL = 0;#SPIRAL = 0.2;#
+Q7 | Quantum's curve: base power own energy / 7, at most 2.5, 3.0 from 120 (247 B) | | --floor 0 --div 7
+D10 | a steeper curve: 0.1 + energy / 10, at most 2.5 (247 B) | | --div 10
+L20 | a thriftier curve: 0.1 + energy / 20, at most 2.0, 3.0 from 120 (247 B) | | --div 20 --cap 2.0
+B800 | the power band at 800 px: full table power out to 400 px (247 B) | s#BAND = 640;#BAND = 800;#
