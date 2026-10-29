@@ -544,18 +544,23 @@ def visit_knn(z, weights=KNN_WEIGHTS, k=KNN_K):
     w = np.array(weights)
     wb, wr, wp, wg = z["w_battle"], z["w_round"], z["w_pass"], z["w_gf"]
     grid = np.linspace(-1.0, 1.0, SAMPLES)
+    # join writes each battle's waves together, battles in order: a row searches its battle's slice only.
+    starts = np.searchsorted(wb, np.arange(int(wb.max()) + 2 if len(wb) else 1))
     for i in range(n):
         j = int(z["wave"][i])
         if j < 0:
             continue
-        cand = np.nonzero((wb == z["battle"][i]) & np.isfinite(wg)
-                          & ((wr < z["round"][i]) | ((wr == z["round"][i]) & (wp <= z["fire"][i]))))[0]
+        lo, hi = starts[z["battle"][i]], starts[z["battle"][i] + 1]
+        cand = lo + np.nonzero(np.isfinite(wg[lo:hi])
+                               & ((wr[lo:hi] < z["round"][i]) | ((wr[lo:hi] == z["round"][i]) & (wp[lo:hi] <= z["fire"][i]))))[0]
         if len(cand) < 3:
             continue
         d = (((feat[cand] - feat[j]) * w) ** 2).sum(axis=1)
         kk = min(k, len(cand))
         nn = np.argpartition(d, kk - 1)[:kk]
         wn = 1.0 / (1.0 + d[nn] / (d[nn].mean() + 1e-9))
+        # A guess-factor gun replays a past wave's guess factor in the wave it is firing now: the rated
+        # wave's own frame (wave j, from the truth log), moved to the ORC record's bearing.
         off = wg[cand[nn]] * z["w_dir"][j] * z["w_mea"][j] + cc.norm(float(z["w_bearing"][j] - z["bearing"][i]))
         at = np.append(grid, z["gf"][i]) * z["dir"][i] * z["mea"][i]
         half = math.atan(HALF_WIDTH / max(float(z["dist"][i]), HALF_WIDTH))

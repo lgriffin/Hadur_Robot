@@ -144,7 +144,7 @@ scored, on the 36 learning-flat robots and on 50 simple-gun robots (every 7th of
 linear, mixed, linear+learning and head-on+learning guns, rammers and sitters out;
 `hadur-bench/k1-simple-cloud.txt`, 3.19 `aesrec,oracle`, 1 seed, 35 rounds).
 
-| Model | learning-flat cal. bits | safe | rank | simple-gun bits | safe | rank |
+| Model | learning-flat cal. bits | safe | rank | simple-gun cal. bits | safe | rank |
 |---|---|---|---|---|---|---|
 | shipped blend | +0.319 | 0.081 | 0.695 | +1.474 | 0.025 | 0.867 |
 | rolling blend (step 1) | +0.342 | 0.080 | 0.696 | +1.489 | 0.026 | 0.869 |
