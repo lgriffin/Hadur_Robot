@@ -5,9 +5,15 @@ plan "JayLexi & Eveimear — MiniRumble and MicroRumble 1v1 Design Plan" and its
 a true wave surfer that weighs back and forward with precise prediction, over a GuessFactor
 gun segmented on velocity history, lateral speed, walls ahead and distance. The design, the bench
 and the results are in [docs/kitlab.md](../docs/kitlab.md); the requirements are JAYLEXI-1 to
-JAYLEXI-10 in [docs/requirements.md](../docs/requirements.md).
+JAYLEXI-11 in [docs/requirements.md](../docs/requirements.md).
 
 0.1 is 1,496 bytes of 1,499 (two classes; 3 spare, as plan K6 asks). Released 2026-10-28 (tag `jaylexi-v0.1`).
+
+0.2 (on master, not released) also surfs the second nearest wave at a quarter weight, about +0.3 APS
+on the bench. That costs 41 bytes in readable code, so the shipped source is the same play written
+tighter, 1,485 bytes. The readable version is kept with the tests (`hadur117.mini.ref.JayLexi`), and
+`JayLexiReplayTest` (JAYLEXI-11) checks the two give the same orders bit for bit. Change the readable
+one first, bench it, then write the shipped one to match.
 
 ## Standing
 

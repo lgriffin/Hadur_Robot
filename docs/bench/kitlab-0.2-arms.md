@@ -59,3 +59,29 @@ than reading both against the reference. 0.1 re-read on 4 seeds on sample 2 at 8
 
 Surfing the second wave is worth about +0.36, but every cut that pays for its 41 bytes gives the
 gain back. Only a rewrite that saves bytes without changing behaviour can bank it.
+
+## Round 5: the second wave, fitted (29 Oct, evening)
+
+J2w's play rewritten in 1,485 bytes without changing a single order: the prediction made static
+(the robot reached through a static field), the wall segment counted as an int product instead of
+nested conditions, a `wave(k)` helper for the list reads, Wave.log taking the bin rather than the
+point, `test()` without a negation, and fewer locals. `JayLexiReplayTest` drives the shipped code and
+the readable J2w (kept in the tests as `hadur117.mini.ref.JayLexi`) through seeded scripts of scans,
+hits, collisions and shots, and every order matches bit for bit (5 seeds x 10 rounds x 2,000 ticks
+by hand; 3 x 6 x 1,500 in the build). Changing the second wave's quarter to a third fails it at the
+first tick that has two waves, so it does tell builds apart. Battles on the bench are not
+repeatable even with a fixed seed (the same jar matched itself in only 264 of 840 rounds), so the
+proof is the replay, not a battle.
+
+The fitted build (J2g) was benched on 4 more seeds per sample. Since it plays as J2w, the two
+4-seed runs pool to 8 seeds:
+
+| Build | Bytes | Sample 1 against 0.1 | Sample 2 against 0.1 |
+|---|---|---|---|
+| J2w (4 seeds) | 1,537 | +0.17 ± 0.33 | +0.55 ± 0.35 |
+| J2g (4 more seeds) | 1,485 | +0.06 ± 0.21 | +0.41 ± 0.34 |
+| Pooled (8 seeds) | | +0.11 | +0.48 |
+
+About +0.3 across both samples, which on 0.1's live 86.95 projects about 87.25, still short of
+WeeksOnEnd's 87.35 for 5th. 11 bytes are spare for the next change.
+
