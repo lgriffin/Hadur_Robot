@@ -37,6 +37,8 @@ class TeamPath2PlanTest {
         assertTrue(queue.contains("gate --report ${OUT}/team-path2-mp.md --control ${OUT}/team-path2-bb.md --set team-census46.txt --seeds 16 --teams 46 --min-aps 0.3"),
             "the gate pools every team, each fully paired");
         assertTrue(queue.contains("rm -f ${OUT}/team-path2-*.md"), "a rerun never carries an old verdict");
+        assertTrue(queue.contains("rm -rf work/team-path2-\"$V\"-bb work/team-path2-\"$V\"-mp"),
+            "a fresh run never resumes battles an earlier build fought");
         assertFalse(queue.contains("; true"), "a failed step stops the queue");
         assertTrue(queue.contains("open_results_pr.sh claude/pc-team-path2-results"));
         for (String step : List.of("tqbb", "tqmp")) {

@@ -24,7 +24,7 @@
 set OUT = ../docs/bench/local
 set T = python3 tools/team_modes.py
 
-tqprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur117.HadurTeam_"$V"aa.jar bisect/hadur117.HadurTeam_"$V"bb.jar bisect/hadur117.HadurTeam_"$V"mp.jar && rm -f ${OUT}/team-path2-*.md && ./fetch-opponents.sh --set team-census46.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmpath && mkdir -p work && for a in bb mp; do sed "s/@V@/$V/g" plans/team-path2-$a.args > work/team-path2-$a.args || exit 1; done && for j in aa bb mp; do test -f bisect/hadur117.HadurTeam_"$V"$j.jar || exit 1; done && mvn -q compile
+tqprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur117.HadurTeam_"$V"aa.jar bisect/hadur117.HadurTeam_"$V"bb.jar bisect/hadur117.HadurTeam_"$V"mp.jar && rm -f ${OUT}/team-path2-*.md && ./fetch-opponents.sh --set team-census46.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmpath && mkdir -p work && rm -rf work/team-path2-"$V"-bb work/team-path2-"$V"-mp && for a in bb mp; do sed "s/@V@/$V/g" plans/team-path2-$a.args > work/team-path2-$a.args || exit 1; done && for j in aa bb mp; do test -f bisect/hadur117.HadurTeam_"$V"$j.jar || exit 1; done && mvn -q compile
 tqbb   | mvn -q exec:java "-Dexec.args=@work/team-path2-bb.args"
   after: tqprep
   watch: battles=1472
