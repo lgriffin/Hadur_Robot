@@ -43,6 +43,11 @@ opponents both met: **+0.27 ± 0.23 APS**. The bench projected +0.13.
 | Simple guns | 383 | +0.006 | ±0.069 |
 | Other scoreMax | 173 | -0.001 | ±0.074 |
 | Rivals shield, we surf | 136 | -0.021 | ±0.062 |
+| Unlabelled: DrussGT and Saguaro themselves | 2 | +0.011 | ±0.011 |
+
+The groups come from the gap-to-2nd table, which labels every opponent except the two rivals it
+compares against. Those two are the last row, so the groups sum to the +0.27 total over 1,219.
+JayLexi and Eveimear joined after 3.18.1's pass, so they are not in the comparison.
 
 - **RAM-5 carries live at full size.** The rammer group gains +0.115 ± 0.045. The PC gate read +0.11 ± 0.04
   (pc-1v1-ram, PR #394). It is the only group clear of noise.
