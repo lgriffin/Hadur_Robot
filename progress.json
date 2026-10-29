@@ -1,0 +1,19 @@
+{
+ "plan": "pc-sg-aim",
+ "updated": 1793311281.904108,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "aim": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
