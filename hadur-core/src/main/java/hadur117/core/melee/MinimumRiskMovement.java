@@ -799,7 +799,7 @@ public class MinimumRiskMovement {
         }
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.DODGE)) {
             v.pathBullets = mateBullets(me, now);
-            if (!TeamDodge.RANK_BULLETS) v.mateBullets = List.of();
+            if (!TeamDodge.RANK_BULLETS && !TeamDodge.OWN_FIRE) v.mateBullets = List.of();
             destination = dodgeBest(candidates, v, dodge.waves());
             return destination;
         }
@@ -1138,7 +1138,7 @@ public class MinimumRiskMovement {
      * can make risks negative), times {@link #SWITCH_GAIN} for the held destination.
      */
     Point2D.Double waveBest(List<Point2D.Double> candidates, View v) {
-        return rerankBest(candidates, v, WAVE_RERANK, Wave.of(v.bullets), List.of());
+        return rerankBest(candidates, v, WAVE_RERANK, Wave.of(v.bullets), List.of(), false);
     }
 
     /**
@@ -1149,17 +1149,19 @@ public class MinimumRiskMovement {
      * {@link #SWITCH_GAIN}.
      */
     Point2D.Double dodgeBest(List<Point2D.Double> candidates, View v, List<Wave> waves) {
-        return rerankBest(candidates, v, TeamDodge.RERANK, waves, v.pathBullets);
+        return rerankBest(candidates, v, TeamDodge.RERANK, waves, v.pathBullets, TeamDodge.OWN_FIRE);
     }
 
     /**
      * TMODE-11, TMODE-27: the {@code rerank} lowest-risk candidates, and the destination held if
      * not reached, each driven to through the {@code waves} for {@link #WAVE_TICKS} ticks and
      * through the teammates' {@code bullets} for {@link #PATH_TICKS}; scored as
-     * {@link #waveScores}, the held destination times {@link #SWITCH_GAIN}.
+     * {@link #waveScores}, the held destination times {@link #SWITCH_GAIN}. With
+     * {@code ownFire} the teammates' bullets add {@link #PATH_K} times their damage to the
+     * risk, as PATH scores them, instead of joining the waves' damage.
      */
     Point2D.Double rerankBest(List<Point2D.Double> candidates, View v, int rerank, List<Wave> waves,
-                              List<VirtualBullet> mateBullets) {
+                              List<VirtualBullet> mateBullets, boolean ownFire) {
         List<Point2D.Double> pool = new ArrayList<>(candidates);
         boolean hold = destination != null && destination.distance(v.me) > REACHED;
         if (hold) pool.add(destination);
@@ -1179,7 +1181,10 @@ public class MinimumRiskMovement {
             Point2D.Double p = pool.get(picked.get(k));
             r[k] = risk[picked.get(k)];
             damage[k] = waveDamage(v.me, p, v.now, waves);
-            if (!mateBullets.isEmpty()) damage[k] += pathDamage(v.me, p, v.now, mateBullets);
+            if (mateBullets.isEmpty()) continue;
+            double own = pathDamage(v.me, p, v.now, mateBullets);
+            if (ownFire) r[k] += PATH_K * own;
+            else damage[k] += own;
         }
         double[] score = waveScores(r, damage);
         Point2D.Double best = null;

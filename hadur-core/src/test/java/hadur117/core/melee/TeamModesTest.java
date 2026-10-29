@@ -545,6 +545,22 @@ class TeamModesTest {
     }
 
     @Test
+    @Tag("TMODE-29")
+    @DisplayName("TMODE-29: DODGE's re-rank with its own-fire switch adds the teammates' bullets to the risk and drives out of their line")
+    void dodgeOwnFire() {
+        MinimumRiskMovement move = new MinimumRiskMovement(field(1200, 1200));
+        move.newRound();
+        move.mateShot("m0", pt(600, 300), 75, 0, 3.0);
+        List<VirtualBullet> b = move.mateBullets(pt(600, 700), 100);
+        List<EnemyInfo> far = enemies(pt(100, 1100)).alive();
+        MinimumRiskMovement.View v = move.view(pt(600, 700), 100, 100, 3, far, MeleeStrategy.Plan.normal(), mates(pt(600, 300)));
+        List<Point2D.Double> candidates = List.of(pt(600, 400), pt(300, 700));
+        assertEquals(pt(300, 700), move.rerankBest(candidates, v, 12, List.of(), b, true));
+        assertEquals(pt(300, 700), move.rerankBest(candidates, v, 12, List.of(), b, false));
+        assertFalse(TeamDodge.OWN_FIRE, "an ablation switch, off in the shipped build");
+    }
+
+    @Test
     @Tag("TMODE-23")
     @Tag("TMODE-24")
     @Tag("TMODE-26")
