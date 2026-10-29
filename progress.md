@@ -1,12 +1,12 @@
 # Queue pc-1to1: progress
 
-Updated 2026-10-29 04:29:31 PC time (04:29 UTC), runner pid 61632.
+Updated 2026-10-29 04:29:44 PC time (04:29 UTC), runner pid 61632.
 
 - `prep` done, exit 0 in 4 min
 - `shield` done, exit 0 in 54 min
-- `learn` running
-- `gate` pending
-- `pr` pending
+- `learn` done, exit 0 in 33 min
+- `gate` done, exit 0 in 0 min
+- `pr` done, exit 0 in 0 min
 
 ### shield
 
@@ -36,7 +36,7 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### learn
 
-**3090 of 3090 battles** (100%), 0 failed. Running 33 min, 5678 battles/h, about 0 min left (ends ~04:29 PC time). Last battle 0 min ago.
+**3090 of 3090 battles** (100%), 0 failed. Running 33 min, 5668 battles/h, about 0 min left (ends ~04:29 PC time). Last battle 0 min ago.
 Skipped turns a battle: 13.9 overall, first 100 16.1, last 100 13.6; engine disables 21.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
@@ -63,9 +63,6 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 ### Queue log (last lines)
 
 ```
-02:59:04 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
-02:59:04 start prep
-02:59:07 progress pushed to origin claude/pc-1to1-progress (every 15 min)
 03:02:50 prep exit=0 in 225 s
 03:02:50 start shield
 03:02:50 watching shield: 5 stop rule(s)
@@ -75,4 +72,10 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 03:56:46 start learn
 03:56:46 watching learn: 5 stop rule(s)
 04:03:24 progress learn: 615/3090 (20%) battles, 5572/h, ETA 27 min, 0 failed, skips 14.5/battle (last 100), aa +0.03, wp -1.61, ws -1.52, sp -0.01
+04:29:35 learn exit=0 in 1969 s
+04:29:35 start gate
+04:29:37 gate exit=0 in 2 s
+04:29:37 start pr
+04:29:44 pr exit=0 in 6 s
+04:29:44 ALLDONE
 ```

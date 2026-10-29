@@ -10,3 +10,9 @@
 03:56:46 start learn
 03:56:46 watching learn: 5 stop rule(s)
 04:03:24 progress learn: 615/3090 (20%) battles, 5572/h, ETA 27 min, 0 failed, skips 14.5/battle (last 100), aa +0.03, wp -1.61, ws -1.52, sp -0.01
+04:29:35 learn exit=0 in 1969 s
+04:29:35 start gate
+04:29:37 gate exit=0 in 2 s
+04:29:37 start pr
+04:29:44 pr exit=0 in 6 s
+04:29:44 ALLDONE

@@ -1,6 +1,6 @@
 {
  "plan": "pc-1to1",
- "updated": 1793248171.3129385,
+ "updated": 1793248184.4291873,
  "steps": {
   "prep": {
    "status": "done",
@@ -15,14 +15,22 @@
    "end": "2026-10-29T03:56:46"
   },
   "learn": {
-   "status": "running",
-   "start": "2026-10-29T03:56:46"
+   "status": "done",
+   "exit": 0,
+   "seconds": 1969,
+   "end": "2026-10-29T04:29:35"
   },
   "gate": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 2,
+   "end": "2026-10-29T04:29:37"
   },
   "pr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 6,
+   "end": "2026-10-29T04:29:44"
   }
  },
  "watched": [
@@ -158,8 +166,8 @@
   {
    "step": "learn",
    "started": 1793246206.5273387,
-   "updated": 1793248170.8973556,
-   "elapsed": 1964.3700168132782,
+   "updated": 1793248175.440132,
+   "elapsed": 1968.9127931594849,
    "expected": 3090,
    "panel": 103,
    "field": 1217,
@@ -245,10 +253,10 @@
    "resumed": 0,
    "failed": 0,
    "disables": 21,
-   "rate": 5678.0,
+   "rate": 5668.0,
    "eta": 0.0,
    "fraction": 1.0,
-   "last_battle_age": 7.701734304428101,
+   "last_battle_age": 12.244510650634766,
    "rules": [
     {
      "rule": "fails 30",
