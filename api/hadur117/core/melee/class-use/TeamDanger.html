@@ -123,6 +123,17 @@ loadScripts(document, 'script');</script>
 <div class="block">As above, where with <code>only</code> (TMODE-21 HEADON, TMODE-22 LINEAR) each shot makes one
  virtual bullet, on that aim, at <a href="../MinimumRiskMovement.html#ONE_AIM_WEIGHT"><code>MinimumRiskMovement.ONE_AIM_WEIGHT</code></a>: the team's code aims no other way.</div>
 </div>
+<div class="col-first odd-row-color"><code>void</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#updateMeleeBullets(java.util.List,hadur117.core.model.RobotStateLog,java.awt.geom.Point2D.Double,long,java.util.List,hadur117.core.melee.TeamDanger)" class="member-name-link">updateMeleeBullets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../world/EnemyShot.html" title="class in hadur117.core.world">EnemyShot</a>&gt;&nbsp;shots,
+ <a href="../../model/RobotStateLog.html" title="class in hadur117.core.model">RobotStateLog</a>&nbsp;myPath,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ long&nbsp;now,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;&nbsp;enemies,
+ <a href="../TeamDanger.html" title="class in hadur117.core.melee">TeamDanger</a>&nbsp;danger)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">As above, where with <a class="req" href="../../../../../requirements.html#MMOVE-15">MMOVE-15</a> each shot also weighs by <a class="req" href="../../../../../requirements.html#MMOVE-11">MMOVE-11</a>'s crowd weight and a
+ shooter whose log in <code>danger</code> is deep enough makes its learned aims.</div>
+</div>
 </div>
 </section>
 </li>

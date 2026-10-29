@@ -622,6 +622,22 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">One-line linear with the arcsine.</div>
 </dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#ASSUMED_FIRST_TICK" class="member-name-link">ASSUMED_FIRST_TICK</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#ASSUMED_KEEP" class="member-name-link">ASSUMED_KEEP</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-13">MMOVE-13</a>: how long an assumed shot is kept for a seen one to replace: past any bullet's flight.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#ASSUMED_POWER" class="member-name-link">ASSUMED_POWER</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#ASSUMED_WEIGHT" class="member-name-link">ASSUMED_WEIGHT</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#assumeShots(java.awt.geom.Point2D.Double,long,java.util.List,hadur117.core.model.RobotStateLog)" class="member-name-link">assumeShots(Point2D.Double, long, List&lt;EnemyInfo&gt;, RobotStateLog)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-13">MMOVE-13</a>: each living opponent with energy that Hadur is nearer than any other opponent,
+ whose gun could be cool by <code>now</code>, is taken to fire at Hadur now; its next possible
+ shot is a cooling later.</div>
+</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.Pull.html#at" class="member-name-link">at</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.Pull.html" title="class in hadur117.core.melee">MinimumRiskMovement.Pull</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/gun/ShadowAim.Mass.html#at(double)" class="member-name-link">at(double)</a> - Method in class hadur117.core.gun.<a href="hadur117/core/gun/ShadowAim.Mass.html" title="class in hadur117.core.gun">ShadowAim.Mass</a></dt>
@@ -1909,6 +1925,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/shieldmode/ShieldMode.Situation.html#coolingRate" class="member-name-link">coolingRate</a> - Variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldMode.Situation.html" title="class in hadur117.core.shieldmode">ShieldMode.Situation</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#coolTicks(double)" class="member-name-link">coolTicks(double)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">Ticks a gun takes to cool after a shot of <code>power</code>, at the engine's default cooling.</div>
+</dd>
 <dt><a href="hadur117/micro/core/Movement.html#coordinate(boolean,int,double)" class="member-name-link">coordinate(boolean, int, double)</a> - Static method in class hadur117.micro.core.<a href="hadur117/micro/core/Movement.html" title="class in hadur117.micro.core">Movement</a></dt>
 <dd>
 <div class="block">One coordinate of the point the robot drives to, mirrored into the half of the field the
@@ -2042,6 +2062,10 @@ loadScripts(document, 'script');</script>
  at <code>p1</code>: along the straight line from its previous scan (<code>p0</code> at <code>t0</code>)
  if the wave had not yet reached it there, else <code>p0</code>; <code>p1</code> with no previous scan.</div>
 </dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#crowd(boolean,boolean,boolean,boolean)" class="member-name-link">crowd(boolean, boolean, boolean, boolean)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-11">MMOVE-11</a>..14: sets the crowd switches, for tests and the bench's arms.</div>
+</dd>
 <dt><a href="hadur117/core/melee/EnemyHistory.html#crowd(double%5B%5D,double,double,double,double,java.awt.geom.Point2D,int)" class="member-name-link">crowd(double[], double, double, double, double, Point2D, int)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/EnemyHistory.html" title="class in hadur117.core.melee">EnemyHistory</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MGUN-11">MGUN-11</a>: <code>base</code> with the crowd's three attributes: the nearest robot's distance
@@ -2087,6 +2111,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/melee/MeleeEnergyPolicy.html#crowdPower(double,double,double,double,int,boolean,boolean,boolean,boolean,boolean)" class="member-name-link">crowdPower(double, double, double, double, int, boolean, boolean, boolean, boolean, boolean)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeEnergyPolicy.html" title="class in hadur117.core.melee">MeleeEnergyPolicy</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MGUN-14">MGUN-14</a>..16 widen <a class="req" href="../requirements.html#MGUN-13">MGUN-13</a> only: with it off they do nothing.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#crowdWeight(hadur117.core.world.EnemyShot,java.awt.geom.Point2D.Double,java.util.List)" class="member-name-link">crowdWeight(EnemyShot, Point2D.Double, List&lt;EnemyInfo&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-11">MMOVE-11</a>: the share of <code>shot</code> aimed at Hadur, standing at <code>me</code> when it was
+ fired: 1/(1+k)^2 for the k living opponents other than its shooter nearer its source.</div>
 </dd>
 <dt><a href="hadur117/core/melee/EnemyHistory.html#current()" class="member-name-link">current()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/EnemyHistory.html" title="class in hadur117.core.melee">EnemyHistory</a></dt>
 <dd>
@@ -4553,6 +4582,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Gun tier boundaries on the normalised hit rate: T0 below the first, T3 from the last.</div>
 </dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#GUN_COOLING" class="member-name-link">GUN_COOLING</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">The engine's default gun cooling, heat a tick.</div>
+</dd>
 <dt><a href="hadur117/core/duel/MoveDesign.html#GUN_GATE" class="member-name-link">GUN_GATE</a> - Static variable in class hadur117.core.duel.<a href="hadur117/core/duel/MoveDesign.html" title="class in hadur117.core.duel">MoveDesign</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MOVE-17">MOVE-17</a>: the gun-heat wave (meant to be built with <a href="hadur117/core/duel/MoveDesign.html#HEAT_WAVE"><code>MoveDesign.HEAT_WAVE</code></a> and
@@ -5484,6 +5517,12 @@ loadScripts(document, 'script');</script>
 <div class="block">END-4 for a shot that does not go through the main gun's own hold: shield mode's attack
  shots.</div>
 </dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#HOP_INNER" class="member-name-link">HOP_INNER</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#HOP_MIN" class="member-name-link">HOP_MIN</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#HOP_SHARE" class="member-name-link">HOP_SHARE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/EnemyHistory.html#HORIZON" class="member-name-link">HORIZON</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/EnemyHistory.html" title="class in hadur117.core.melee">EnemyHistory</a></dt>
 <dd>
 <div class="block">Ticks of movement a situation records: a slow bullet's flight across 1000 px.</div>
@@ -6315,6 +6354,10 @@ loadScripts(document, 'script');</script>
 <div class="block">MMOVE-10: the shot of <code>name</code> that this hit ended, found among the shots the World
  inferred: the same power, its bullet's flight from its source to <code>me</code> matching the
  ticks since it was fired.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MeleeController.html#learn(java.lang.String,double,double,java.awt.geom.Point2D.Double,long,boolean)" class="member-name-link">learn(String, double, double, Point2D.Double, long, boolean)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeController.html" title="class in hadur117.core.melee">MeleeController</a></dt>
+<dd>
+<div class="block">As above; off a team (<code>report</code> false) the sample is logged, not kept for a report.</div>
 </dd>
 <dt><a href="hadur117/core/melee/TeamModes.Mode.html#LEARN" class="member-name-link">LEARN</a> - Enum constant in enum class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a></dt>
 <dd>
@@ -7366,9 +7409,39 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The melee strand: sweep radar, minimum-risk movement, the field gun.</div>
 </dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#MELEE_AIMED" class="member-name-link">MELEE_AIMED</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-11">MMOVE-11</a> (pc-melee-crowd, arm maim): off a team, a seen shot's bullets weigh
+ 1/(1+k)^2 for the k other opponents nearer its shooter than Hadur was, and none under
+ <a href="hadur117/core/melee/MinimumRiskMovement.html#SOFT_FLOOR"><code>MinimumRiskMovement.SOFT_FLOOR</code></a>: in a crowd most shots are aimed at someone else.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#MELEE_CLOSER" class="member-name-link">MELEE_CLOSER</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-14">MMOVE-14</a> (arm mcloser): off a team with three or more opponents left, an opponent's term
+ is divided by one plus the number of other opponents nearer it than the point: a robot
+ with closer prey is less likely to come for Hadur.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#MELEE_HEAT" class="member-name-link">MELEE_HEAT</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-13">MMOVE-13</a> (arm mheat): off a team, an opponent Hadur is the nearest robot to is assumed to
+ fire at Hadur on the tick its gun could next be cool (from its last seen shot, else
+ <a href="hadur117/core/melee/MinimumRiskMovement.html#ASSUMED_FIRST_TICK"><code>MinimumRiskMovement.ASSUMED_FIRST_TICK</code></a>) unless a real shot shows first: head-on and linear bullets at
+ the power of its last seen shot (else <a href="hadur117/core/melee/MinimumRiskMovement.html#ASSUMED_POWER"><code>MinimumRiskMovement.ASSUMED_POWER</code></a>), weighing
+ <a href="hadur117/core/melee/MinimumRiskMovement.html#ASSUMED_WEIGHT"><code>MinimumRiskMovement.ASSUMED_WEIGHT</code></a>.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#MELEE_HOPS" class="member-name-link">MELEE_HOPS</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-12">MMOVE-12</a> (arm mhop): off a team with three or more opponents left, short hops: the
+ rings run from <a href="hadur117/core/melee/MinimumRiskMovement.html#HOP_INNER"><code>MinimumRiskMovement.HOP_INNER</code></a> to <a href="hadur117/core/melee/MinimumRiskMovement.html#HOP_SHARE"><code>MinimumRiskMovement.HOP_SHARE</code></a> of the nearest fresh opponent's
+ distance, at least <a href="hadur117/core/melee/MinimumRiskMovement.html#HOP_MIN"><code>MinimumRiskMovement.HOP_MIN</code></a> and at most <a href="hadur117/core/melee/MinimumRiskMovement.html#RING_MAX"><code>MinimumRiskMovement.RING_MAX</code></a> px.</div>
+</dd>
 <dt><a href="hadur117/core/melee/FieldGun.html#MELEE_K" class="member-name-link">MELEE_K</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MGUN-7">MGUN-7</a>: the kNN depth off a team.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#MELEE_SURF" class="member-name-link">MELEE_SURF</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-15">MMOVE-15</a> (arm msurf), the melee surfer: off a team, the top three's way.</div>
 </dd>
 <dt><a href="hadur117/core/melee/MeleeController.html" class="type-name-link" title="class in hadur117.core.melee">MeleeController</a> - Class in <a href="hadur117/core/melee/package-summary.html">hadur117.core.melee</a></dt>
 <dd>
@@ -13445,6 +13518,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/mini/JayLexi.html#surf" class="member-name-link">surf</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/JayLexi.html" title="class in hadur117.mini">JayLexi</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#surf(boolean)" class="member-name-link">surf(boolean)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-15">MMOVE-15</a>: sets the melee surfer, for tests.</div>
+</dd>
 <dt><a href="hadur117/core/memory/Seeds.html#surf(double%5B%5D)" class="member-name-link">surf(double[])</a> - Static method in class hadur117.core.memory.<a href="hadur117/core/memory/Seeds.html" title="class in hadur117.core.memory">Seeds</a></dt>
 <dd>
 <div class="block">Quantises a surf sample for storage; every value uses the fine scale.</div>
@@ -13461,6 +13538,14 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/move/ShotDodgePlanner.html#surf(hadur117.core.model.BotOrders.Builder,hadur117.core.model.RobotState,hadur117.core.move.MoveController,hadur117.core.physics.ShotDodger,hadur117.core.model.RobotState,double)" class="member-name-link">surf(BotOrders.Builder, RobotState, MoveController, ShotDodger, RobotState, double)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/ShotDodgePlanner.html" title="class in hadur117.core.move">ShotDodgePlanner</a></dt>
 <dd>
 <div class="block">Drives the tick when the dodger has an expert and a surfable wave has its bullet.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#SURF_AIMS" class="member-name-link">SURF_AIMS</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-15">MMOVE-15</a>: the learned aims a melee shot keeps, its nearest samples'.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#surfing()" class="member-name-link">surfing()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-15">MMOVE-15</a>: whether this movement surfs off a team.</div>
 </dd>
 <dt><a href="hadur117/core/duel/DuelController.html#surfMode()" class="member-name-link">surfMode()</a> - Method in class hadur117.core.duel.<a href="hadur117/core/duel/DuelController.html" title="class in hadur117.core.duel">DuelController</a></dt>
 <dd>
@@ -14873,6 +14958,17 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/move/MoveController.html#updateFiringWave(long,long,double,boolean)" class="member-name-link">updateFiringWave(long, long, double, boolean)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/MoveController.html" title="class in hadur117.core.move">MoveController</a></dt>
 <dd>
 <div class="block">Marks the wave the enemy fired as a real bullet of <code>bulletPower</code>.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#updateMeleeBullets(java.util.List,hadur117.core.model.RobotStateLog,java.awt.geom.Point2D.Double,long,java.util.List)" class="member-name-link">updateMeleeBullets(List&lt;EnemyShot&gt;, RobotStateLog, Point2D.Double, long, List&lt;EnemyInfo&gt;)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">Off a team: <a href="hadur117/core/melee/MinimumRiskMovement.html#updateBullets(java.util.List,hadur117.core.model.RobotStateLog,java.awt.geom.Point2D.Double,long)"><code>MinimumRiskMovement.updateBullets(List, RobotStateLog, Point2D.Double, long)</code></a>, then with
+ <a class="req" href="../requirements.html#MMOVE-11">MMOVE-11</a> each new shot's bullets weigh by the opponents nearer its shooter, and with
+ <a class="req" href="../requirements.html#MMOVE-13">MMOVE-13</a> the opponents Hadur is nearest to fire assumed shots when their guns could be cool.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#updateMeleeBullets(java.util.List,hadur117.core.model.RobotStateLog,java.awt.geom.Point2D.Double,long,java.util.List,hadur117.core.melee.TeamDanger)" class="member-name-link">updateMeleeBullets(List&lt;EnemyShot&gt;, RobotStateLog, Point2D.Double, long, List&lt;EnemyInfo&gt;, TeamDanger)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">As above, where with <a class="req" href="../requirements.html#MMOVE-15">MMOVE-15</a> each shot also weighs by <a class="req" href="../requirements.html#MMOVE-11">MMOVE-11</a>'s crowd weight and a
+ shooter whose log in <code>danger</code> is deep enough makes its learned aims.</div>
 </dd>
 <dt><a href="hadur117/core/move/MoveController.html#updateShadows(long)" class="member-name-link">updateShadows(long)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/MoveController.html" title="class in hadur117.core.move">MoveController</a></dt>
 <dd>
