@@ -1,14 +1,14 @@
 # Queue pc-deise-e05: progress
 
-Updated 2026-10-29 12:53:20 PC time (12:53 UTC), runner pid 42820.
+Updated 2026-10-29 13:08:27 PC time (13:08 UTC), runner pid 42820.
 
 - `prep` done, exit 0 in 0 min
 - `live-D` done, exit 0 in 17 min
 - `live-AIM2` done, exit 0 in 17 min
 - `live-P2` done, exit 0 in 17 min
 - `live-W10` done, exit 0 in 17 min
-- `live-W50` running
-- `live-REACH` pending
+- `live-W50` done, exit 0 in 16 min
+- `live-REACH` running
 - `live-R72` pending
 - `live-SAOR` pending
 - `read` pending
@@ -68,23 +68,33 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-W50
 
-**126 of 276 battles** (46%), 0 failed. Running 7 min, 1015 battles/h, about 9 min left (ends ~13:02 PC time). Last battle 0 min ago.
+**276 of 276 battles** (100%), 0 failed. Running 17 min, 1004 battles/h, about 0 min left (ends ~13:02 PC time). Last battle 0 min ago.
 Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 126 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 | `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
 
-Stopping now would leave 150 battles unrun (about 9 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### live-REACH
+
+**114 of 276 battles** (41%), 0 failed. Running 6 min, 1128 battles/h, about 9 min left (ends ~13:17 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 114 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
+
+Stopping now would leave 162 battles unrun (about 9 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-11:38:43 progress live-D: 6/276 (2%) battles, 563/h, ETA 29 min, 0 failed, skips 0.0/battle (last 100)
-11:54:40 live-D exit=0 in 994 s
-11:54:40 start live-AIM2
 11:54:40 watching live-AIM2: 3 stop rule(s)
 12:08:57 progress live-AIM2: 223/276 (81%) battles, 936/h, ETA 3 min, 0 failed, skips 0.0/battle (last 100)
 12:11:44 live-AIM2 exit=0 in 1024 s
@@ -97,4 +107,7 @@ Stopping now would leave 150 battles unrun (about 9 min); every battle already f
 12:45:53 live-W10 exit=0 in 1010 s
 12:45:53 start live-W50
 12:45:53 watching live-W50: 3 stop rule(s)
+13:02:23 live-W50 exit=0 in 990 s
+13:02:23 start live-REACH
+13:02:23 watching live-REACH: 3 stop rule(s)
 ```
