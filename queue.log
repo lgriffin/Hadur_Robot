@@ -42,3 +42,6 @@
 01:03:13 start live-D10
 01:03:13 watching live-D10: 3 stop rule(s)
 01:07:23 progress live-D10: 61/430 (14%) battles, 878/h, ETA 25 min, 0 failed
+01:31:25 live-D10 exit=0 in 1692 s
+01:31:25 start live-L20
+01:31:25 watching live-L20: 3 stop rule(s)

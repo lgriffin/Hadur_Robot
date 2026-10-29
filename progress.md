@@ -1,13 +1,13 @@
 # Queue pc-sanaro-n02: progress
 
-Updated 2026-10-29 01:21:29 PC time (01:21 UTC), runner pid 55936.
+Updated 2026-10-29 01:36:37 PC time (01:36 UTC), runner pid 55936.
 
 - `prep` done, exit 0 in 0 min
 - `live-S0` done, exit 0 in 28 min
 - `live-S02` done, exit 0 in 29 min
 - `live-Q7` done, exit 0 in 28 min
-- `live-D10` running
-- `live-L20` skipped
+- `live-D10` done, exit 0 in 28 min
+- `live-L20` running
 - `live-T60` skipped
 - `live-B800` skipped
 - `read-live` skipped
@@ -39,22 +39,31 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-D10
 
-**220 of 430 battles** (51%), 0 failed. Running 18 min, 722 battles/h, about 17 min left (ends ~01:38 PC time). Last battle 0 min ago.
+**430 of 430 battles** (100%), 0 failed. Running 28 min, 915 battles/h, about 0 min left (ends ~01:31 PC time). Last battle 0 min ago.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 220 |
+| `fails 20` | halt | ok | 0 failed of 430 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 | `skips 40 over 100` | halt | waiting | 0 of 100 battles to read |
 
-Stopping now would leave 210 battles unrun (about 17 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### live-L20
+
+**70 of 430 battles** (16%), 0 failed. Running 5 min, 809 battles/h, about 27 min left (ends ~02:03 PC time). Last battle 0 min ago.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 70 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | waiting | 0 of 100 battles to read |
+
+Stopping now would leave 360 battles unrun (about 27 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-00:05:52 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
-00:05:52 skip prep (already exit=0)
-00:05:52 skip live-S0 (already exit=0)
 00:05:52 start live-S02
 00:05:52 watching live-S02: 3 stop rule(s)
 00:05:54 progress pushed to origin claude/pc-sanaro-n02-progress (every 15 min)
@@ -67,4 +76,7 @@ Stopping now would leave 210 battles unrun (about 17 min); every battle already 
 01:03:13 start live-D10
 01:03:13 watching live-D10: 3 stop rule(s)
 01:07:23 progress live-D10: 61/430 (14%) battles, 878/h, ETA 25 min, 0 failed
+01:31:25 live-D10 exit=0 in 1692 s
+01:31:25 start live-L20
+01:31:25 watching live-L20: 3 stop rule(s)
 ```
