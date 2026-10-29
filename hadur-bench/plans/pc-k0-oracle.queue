@@ -1,0 +1,50 @@
+# K0 of the road to king: the enemy-gun oracle's data set (BENCH-134, docs/bench/gun-oracle.md). Leigh starts it:
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-k0-oracle        (or  ./queue.sh run pc-k0-oracle)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, TRUTH LOG ON (the oracle needs every bullet's
+# heading). About 2.5 h of battles (pc-aes-class ran the same 864 at that rate) and minutes of analysis.
+#
+# Why: king is the 431 learning guns on flat movers, where damage taken is the whole gap and no table mode applies
+# (the 1:1 map, docs/bench/local/2026-10-28_one-to-one-map.md). The plan is a better model of the enemy's gun,
+# built and scored offline against recorded bullets before any PC battles. This card records the data set: 3.19
+# with ORACLE-1 (every danger view's neighbours at each wave's first rating) and AES-1 (each option's terms) on, the
+# 432 flat-mover x learning-gun opponents of aes-flat-learning.txt, 2 fresh seeds. The cloud read on 48 of them
+# (docs/bench/local/2026-10-29_k0-oracle-cloud.md) passed the gate: the views' score rebuilt offline equals the
+# surf's on 99.99% of options and the surf's choice is reproduced on 99.96% of waves.
+#
+# record: aesrec,oracle build (suffix aror; behaviour unchanged, ORACLE-1 and AES-1 are measurement only) x 432 x 2
+#         seeds = 864 battles, 35 rounds. Disk: about 10-20 MB of hadur.log a battle (13 GB at most) plus truth logs.
+# join:   gun_oracle.py join: each record on a real wave matched to its bullet, the views' surfaces rebuilt with the
+#         surf's own kernel, the simple aims from the truth log, the gate terms. work/k0-oracle/oracle.npz, kept on
+#         the PC for K1 (about 1.5-2 GB; not in the PR).
+# score:  the baselines (uniform, each view, the shipped blend, head-on, linear, circular) in bits per bullet and
+#         safe-third share, per census class and per robot, and the gate. Any analysis error stops the card before
+#         the results PR.
+# Stop rules (docs/bench/watch.md): record halts on 30 failed battles, 40+ skipped turns a battle over the last 200,
+# or no battle in 30 minutes; every battle fought is kept and a rerun resumes. One arm, so no A/A or dead-arm rule.
+# Nothing here ships: no release, no table line. K1 (new members scored in the oracle) reads oracle.npz next.
+
+set V = 3.19
+set JAR = bisect/hadur117.Hadur_${V}aror.jar
+set C = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 --child-heap 2G --engine 1.11.1
+set W = work/k0-oracle
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests install) && bash ./build-ablation.sh aesrec,oracle && test -f ${JAR} && ./fetch-opponents.sh --set aes-flat-learning.txt && mvn -q compile && (python3 -c "import numpy" || python3 -m pip install numpy)
+
+record | ./bench-top20.sh ${C} --set aes-flat-learning.txt --seeds 2 --seed-base 4200 --robot-jar ${JAR} --robot "hadur117.Hadur ${V}aror" --label k0-oracle --out ${W}
+  after: prep
+  watch: battles=864
+  stop: fails 30
+  stop: skips 40 over 200
+  stop: stall 30m
+
+join | python3 ../data/tools/gun_oracle.py join ${W} --out ${W}/oracle.npz --jobs 12
+  after: record
+
+score | python3 ../data/tools/gun_oracle.py score ${W}/oracle.npz --out ${OUT}/$(date +%Y-%m-%d)_k0-oracle.md --tsv ${OUT}/k0-oracle-per-robot.tsv
+  after: join
+
+pr | bash tools/open_results_pr.sh claude/pc-k0-oracle-results "K0: the enemy-gun oracle's baselines on the 432 learning guns on flat movers (864 battles, truth log on)" ${OUT}/*_k0-oracle.md ${OUT}/k0-oracle-per-robot.tsv
+  after: score
