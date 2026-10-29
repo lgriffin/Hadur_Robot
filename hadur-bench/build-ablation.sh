@@ -749,7 +749,8 @@ for a in "${list[@]}"; do
         tmnopath)
             version="${version}nmp"
             edit "$modes" "public static final boolean FORCE_PATH = true;" "public static final boolean FORCE_PATH = false;"
-            sed -i -E 's/, Mode\.PATH\)\);$/));/' "$modes"
+            # Wherever an earlier ablation (tmtnear) left PATH in a named entry.
+            sed -i -E '/^        t\.put\(/s/, Mode\.PATH([,)])/\1/' "$modes"
             ;;
         tmdodge)
             version="${version}dg"
