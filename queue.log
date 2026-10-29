@@ -21,3 +21,9 @@
 11:08:09 start live-G36
 11:08:09 watching live-G36: 3 stop rule(s)
 11:15:20 progress live-G36: 110/430 (26%) battles, 919/h, ETA 21 min, 0 failed, skips 0.0/battle (last 100)
+11:37:12 live-G36 exit=0 in 1742 s
+11:37:12 start read-live
+11:37:21 read-live exit=0 in 8 s
+11:37:21 start pr
+11:37:28 pr exit=0 in 7 s
+11:37:28 ALLDONE
