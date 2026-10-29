@@ -344,6 +344,19 @@ the rest of the gap to 5th (+2.19 to Diamond's 70.11) needs Stage 3 or a bigger 
 **MGUN-16 ships in 3.19 (2026-10-28).** Leigh chose to ship it in 3.19 on the power2 result alone
 before `pc-melee-wide` ran; the card is retired and 3.19's live melee page is the read.
 
+**3.19 live and Stage 3 (2026-10-29).** 3.19 reads 14th at 67.77; 10th is kc.mini.Mirage at 68.23
+(+0.46), a 1,479-byte MiniMelee robot. On their 416 shared opponents Hadur is level with Mirage
+against the top 10 (+0.14) and the weakest 216 (+0.18) but 1 to 1.6 APS behind against ranks 11-200,
+with survival 4 to 6 points lower in every band: the crowd, as Deise's bench found against Mirage
+(same damage, same final duels, last two reached 64% against 76%). Mirage's movement is Hadur's
+family: least risk with virtual head-on and linear bullets. It differs in four choices, and
+`pc-melee-crowd` (BENCH-137) screens one Hadur switch for each, with Hadur's own knowledge where
+it has more: MMOVE-11 weighs a seen shot by the robots nearer its shooter (Mirage counts only
+likely aimers; this is m-closer's bullet half), MMOVE-12 short hops (Mirage reaches 0.4 of its
+target's distance, 30 to 150 px; Hadur 100 to 300), MMOVE-13 assumed shots from whoever Hadur is
+nearest to, on the tick its gun could be cool by its last seen shot (Mirage assumes every tick),
+and MMOVE-14 m-closer's push half. Gate +0.30, low end above 0, CPU guard by hand.
+
 ### Stage 3: crowd survival
 
 The largest lever and the riskiest: M4's path scoring cost 3 to 5 APS, and the team's port of
@@ -363,6 +376,21 @@ Ogi's wave check alone was flat. Arms, in this order, each melee-only:
 Expected: cutting crowd deaths by a quarter (2.6 a battle) turns about 1.7 of them into wins and
 raises survival points: about +0.9, range +0.5 to +2.0. **Gate** as Stage 2. If m-closer and
 m-danger are both flat, stop Stage 3 there (section 6).
+
+**Melee surfer (MMOVE-15, 2026-10-29).** The top three (ScalarR, Neuromancer, Firestarter) all surf
+learned enemy waves in melee; Hadur's melee movement only ever dodges head-on and linear guesses.
+Leigh chose to build that before more single-knob arms. MMOVE-15 (`MELEE_SURF`, arm `msurf`/`ms`)
+is m-closer's shot weight, m-danger and m-wave in one switch, our own build from Hadur's team
+pieces: each seen shot is a wave weighed `1/(1+k)^2`; once Hadur has 5 hits from a shooter, that
+shooter's bullets are its learned aims (the team's kNN log, fed off a team by Hadur's own hits);
+the destination is the wave check (TMODE-11). Card `pc-melee-surf` (BENCH-136): aa, bb, ms on the
+census at seeds 3225-3230, the Stage 3 gate and CPU guard.
+Cloud smokes (12 census fields x 2 seeds, builds run side by side): the first build, every learned
+aim of a shot as a bullet, read +0.13 ± 0.66 against the first aa run (+0.25 ± 0.64 against the
+rerun) with skipped turns +50% (24 to 36 a battle), which the
+CPU guard would fail. Keeping each shot's 4 nearest aims at the shot's whole weight, within MMOVE-3's
+bullet cap: +0.56 ± 0.73 against an aa rerun (aa vs aa +0.12 ± 0.53), skips 24 vs 26, others
+outlived +2.3 points, deaths with two left -2.4 points. Level to positive and CPU-clean: carded.
 
 ### Stage 4: stack, tailor, confirm
 

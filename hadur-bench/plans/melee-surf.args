@@ -1,0 +1,23 @@
+# PC card pc-melee-surf (docs/plan-melee-top5.md Stage 3, MMOVE-15, BENCH-136): one build alone on today's whole melee field, 46 fields x 6 seeds (3225-3230, after the crowd card's 3219-3224), at the machine's melee width (@C@, fixed at prep) and CPU constant. Template: msprep writes work/melee-surf-<arm>.args with @V@ = the robot.release in hadur-robot/pom.xml and @A@ = the arm's suffix (aa, bb, ms); every arm fights the same fields and seeds, so the read pairs them battle for battle.
+--suite
+melee-census-317.txt
+--seeds
+6
+--seed-base
+3224
+--rounds
+35
+--parallel
+@C@
+--child-heap
+2G
+--cpu-constant
+auto
+--robot-jar
+bisect/hadur117.Hadur_@V@@A@.jar
+--robot
+hadur117.Hadur @V@@A@
+--out
+work/melee-surf-@V@-@A@
+--report
+../docs/bench/local/melee-surf-@A@.md
