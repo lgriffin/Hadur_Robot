@@ -8,3 +8,7 @@
 11:54:40 live-D exit=0 in 994 s
 11:54:40 start live-AIM2
 11:54:40 watching live-AIM2: 3 stop rule(s)
+12:08:57 progress live-AIM2: 223/276 (81%) battles, 936/h, ETA 3 min, 0 failed, skips 0.0/battle (last 100)
+12:11:44 live-AIM2 exit=0 in 1024 s
+12:11:44 start live-P2
+12:11:44 watching live-P2: 3 stop rule(s)
