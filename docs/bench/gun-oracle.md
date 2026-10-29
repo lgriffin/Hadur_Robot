@@ -175,11 +175,32 @@ simple-gun battles ([2026-10-29_k1-simple-cloud-battles.md](local/2026-10-29_k1-
 So the candidate for a battle test is the aims as danger members. It is cheap in the robot: three
 predictions a wave and three more scores in the rolling blend.
 
+## K1 step 2 in the robot: the cloud bench (MOVE-29)
+
+The aim members are ported into the duel surf behind `MoveDesign.AIM_MEMBERS` (off in shipped jars;
+ablation `aimmem`, suffix km): danger where the views have data is the weighted mean of the views'
+score and a kernel on each simple aim, with prior 0.1 an aim and rolling weights learned from hits.
+Cloud bench 2026-10-29 (`hadur-bench/k1-aim-cloud.txt`, the 36 surfed learning-gun robots of the
+oracle's cloud sample; 2 seeds from 4300, 35 rounds, 3.19aa control vs 3.19km; report
+`docs/bench/local/2026-10-29_k1aim.md`):
+
+| Arm | Battles | Score share | Damage taken a battle | Skips a battle |
+|---|---:|---:|---:|---:|
+| aa (3.19) | 72 | 78.64% | 708 | 5.4 |
+| km (aim members) | 72 | 78.67% | +13 ± 19 | 6.4 |
+
+Paired difference +0.03 ± 0.64 pp (one standard error) over 72 pairs: flat at this resolution.
+Robot spread is wide in both directions (abc.Shadow +16, ags.Glacier +7, rz.GlowBlowAPM -8,
+cw.megas.Gridd -7), as two seeds give. The offline gain was small too (calibrated +0.07 bits,
+rank +0.006), so the battle effect, if any, is below what a cloud bench can see. No skip or fault cost.
+
+Known defect (Qodo, PR #421): a hit near GF ±1 undercounts an aim whose kernel runs past the escape
+angle (up to 1 bit); the fix is to divide by the kernel's share inside the reachable range.
+
 ## Next
 
-- **Port the aim members behind a switch** (off in shipped jars): the three simple aims as danger
-  members of the surf, with the rolling weights learning from hits. Then a cloud bench on the
-  learning-flat sample for a first read, and a PC card on the 432 for the real measure (Leigh starts it).
+- **Aim members**: fix the edge undercount, then measure on the PC only as an arm folded into a
+  card that runs anyway (the 432 at 2 seeds resolves about ±0.15); Leigh decides.
 - **PC re-join**: `oracle.npz` from pc-k0-oracle (PR #410) predates ORACLE-3 and ORACLE-4; a re-join
   (minutes, no battles) scores every K1 model on the 432, and fits on the same card.
 
