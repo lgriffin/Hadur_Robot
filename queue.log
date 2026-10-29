@@ -10,3 +10,7 @@
 18:38:40 start gate
 18:38:41 gate exit=0 in 0 s
 18:38:41 start rejoin
+18:45:55 rejoin exit=0 in 433 s
+18:45:55 start pr
+18:46:01 pr exit=0 in 6 s
+18:46:01 ALLDONE

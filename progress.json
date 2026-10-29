@@ -1,6 +1,6 @@
 {
  "plan": "pc-k1-aim",
- "updated": 1793299287.4854088,
+ "updated": 1793299561.8779871,
  "steps": {
   "prep": {
    "status": "done",
@@ -21,11 +21,16 @@
    "end": "2026-10-29T18:38:41"
   },
   "rejoin": {
-   "status": "running",
-   "start": "2026-10-29T18:38:41"
+   "status": "done",
+   "exit": 0,
+   "seconds": 433,
+   "end": "2026-10-29T18:45:55"
   },
   "pr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 6,
+   "end": "2026-10-29T18:46:01"
   }
  },
  "watched": [

@@ -1,12 +1,12 @@
 # Queue pc-k1-aim: progress
 
-Updated 2026-10-29 18:41:27 PC time (18:41 UTC), runner pid 40284.
+Updated 2026-10-29 18:46:01 PC time (18:46 UTC), runner pid 40284.
 
 - `prep` done, exit 0 in 1 min
 - `aim` done, exit 0 in 56 min
 - `gate` done, exit 0 in 0 min
-- `rejoin` running
-- `pr` pending
+- `rejoin` done, exit 0 in 7 min
+- `pr` done, exit 0 in 0 min
 
 ### aim
 
@@ -36,7 +36,6 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 ### Queue log (last lines)
 
 ```
-17:40:52 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
 17:40:52 start prep
 17:40:55 progress pushed to origin claude/pc-k1-aim-progress (every 15 min)
 17:42:15 prep exit=0 in 83 s
@@ -48,4 +47,8 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 18:38:40 start gate
 18:38:41 gate exit=0 in 0 s
 18:38:41 start rejoin
+18:45:55 rejoin exit=0 in 433 s
+18:45:55 start pr
+18:46:01 pr exit=0 in 6 s
+18:46:01 ALLDONE
 ```
