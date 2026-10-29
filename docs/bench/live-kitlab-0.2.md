@@ -3,7 +3,11 @@
 Released 2026-10-29 17:15 UTC (tag `jaylexi-v0.2`). A cloud client ran JayLexi's pairings first from
 18:45 UTC and was halted at 20:12 UTC on Leigh's word. The pages were saved at 20:10 UTC and are in
 `data/rumble/pages/` under `2026-10-29T2010Z_*`. The per-opponent rows for 0.1 (retired), FoilistMC
-and Komarious come from the LiteRumble API (`BotDetails?api=true`), read at 20:20 UTC.
+and Komarious come from the LiteRumble API (`BotDetails?api=true`), read at 20:20 UTC after the
+client had stopped, and are saved in `data/rumble/parsed/2026-10-29T2020Z_*.json`. The table and the
+groups use those rows (JayLexi 0.2 at 788 battles, 87.43); the saved rankings page caught it a few
+battles earlier (783 battles, 87.42). `python3 data/tools/kitlab_live_gap.py` with the JayLexi 0.2,
+FoilistMC, JayLexi 0.1 and Komarious files, in that order, prints the groups below.
 
 | Bot | Rank | APS | Survival | Pairings | Battles |
 |---|---|---|---|---|---|
