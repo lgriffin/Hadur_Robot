@@ -1,0 +1,22 @@
+{
+ "plan": "pc-k1-aim",
+ "updated": 1793295652.3205047,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "aim": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "rejoin": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
