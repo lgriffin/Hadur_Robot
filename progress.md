@@ -1,11 +1,11 @@
 # Queue pc-deise-e06: progress
 
-Updated 2026-10-29 22:50:38 PC time (22:50 UTC), runner pid 55780.
+Updated 2026-10-29 23:05:44 PC time (23:05 UTC), runner pid 55780.
 
 - `prep` done, exit 0 in 0 min
 - `live-D` done, exit 0 in 17 min
-- `live-FA` running
-- `live-FAP` pending
+- `live-FA` done, exit 0 in 17 min
+- `live-FAP` running
 - `live-FAW` pending
 - `live-FAPW` pending
 - `live-PW` pending
@@ -29,16 +29,29 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-FA
 
-**192 of 276 battles** (70%), 0 failed. Running 13 min, 884 battles/h, about 6 min left (ends ~22:56 PC time). Last battle 0 min ago.
-Skipped turns a battle: 0.1 overall, first 100 0.1, last 100 0.1.
+**276 of 276 battles** (100%), 0 failed. Running 17 min, 963 battles/h, about 0 min left (ends ~22:54 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.1 overall, first 100 0.1, last 100 0.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 192 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 0.1 a battle over the last 100 (first 100: 0.1) |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.1) |
 
-Stopping now would leave 84 battles unrun (about 6 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### live-FAP
+
+**150 of 276 battles** (54%), 0 failed. Running 11 min, 822 battles/h, about 9 min left (ends ~23:14 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.1 overall, first 100 0.2, last 100 0.1.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 150 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | ok | 0.1 a battle over the last 100 (first 100: 0.2) |
+
+Stopping now would leave 126 battles unrun (about 9 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -53,4 +66,8 @@ Stopping now would leave 84 battles unrun (about 6 min); every battle already fo
 22:37:36 live-D exit=0 in 1008 s
 22:37:36 start live-FA
 22:37:36 watching live-FA: 3 stop rule(s)
+22:51:38 progress live-FA: 222/276 (80%) battles, 949/h, ETA 3 min, 0 failed, skips 0.0/battle (last 100)
+22:54:48 live-FA exit=0 in 1031 s
+22:54:48 start live-FAP
+22:54:48 watching live-FAP: 3 stop rule(s)
 ```
