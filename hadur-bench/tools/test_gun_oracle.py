@@ -88,8 +88,9 @@ class JoinTest(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.dir)
 
-    def battle(self, name, waves):
-        """Per wave (round, fire, power, true gf): an ORC and an AES record, and the bullet in the truth log."""
+    def battle(self, name, waves, hits=()):
+        """Per wave (round, fire, power, true gf): an ORC and an AES record, and the bullet in the truth log;
+        `hits` are (round, tick, gf, power) HF records."""
         d = os.path.join(self.dir, "battles", name)
         os.makedirs(d)
         views = [(True, 1.0, [(0.3, 1.0), (0.35, 0.5)]), (True, 2.0, [(-0.2, 1.0)]), (False, 1.0, [])]
@@ -101,6 +102,9 @@ class JoinTest(unittest.TestCase):
                 f.write(line)
                 f.write(aes_line(rnd, fire, power, views, rec, go.surf_choice(totals)))
             f.write(orc_line(0, 900, 1.0, views, firing=0))
+            for rnd, tick, gf, power in hits:
+                f.write("%d,%d,HF,%d,%d,learned,%.3f,0.000,0.500,480.0,%.2f,1,NaN,NaN,-1,---,-1\n"
+                        % (rnd, tick, rnd, tick, gf, power))
         with gzip.open(os.path.join(d, "truth.log.gz"), "wt") as f:
             f.write("V,1\n")
             for rnd, fire, power, gf in waves:
@@ -138,6 +142,28 @@ class JoinTest(unittest.TestCase):
         self.assertIn("| blend (shipped) |", text)
         self.assertIn("100.00%", text)
 
+    # @Tag("ORACLE-3")
+    def test_join_keeps_order_and_marks_hits(self):
+        # 500 px at power 1.9 is 35 ticks: the hit at 66 is the wave fired at 30, not the one at 60
+        # (wrong power) nor round 1's (wrong round); a hit far off every wave's guess factor matches none.
+        self.battle("x.Bot_1.0-1", [(0, 30, 1.9, 0.3), (0, 60, 2.5, 0.31), (1, 30, 1.9, -0.6)],
+                    hits=[(0, 66, 0.3, 1.9), (1, 66, 0.4, 1.9)])
+        self.battle("y.Bot_1.0-1", [(0, 30, 1.9, 0.1)])
+        out = os.path.join(self.dir, "d.npz")
+        go.join([self.dir], out, 1)
+        z = dict(np.load(out))
+        self.assertEqual(sorted(set(z["battle"].tolist())), [0, 1])
+        x = z["bot"] == list(z["bots"]).index("x.Bot_1.0")
+        self.assertEqual(z["fire"][x].tolist(), [30, 60, 30])
+        self.assertEqual(z["seen"][x].tolist(), [1, 0, 0])
+        self.assertEqual(int(z["seen"].sum()), 1)
+        report = os.path.join(self.dir, "r.md")
+        go.score(out, report, None, None)
+        with open(report) as f:
+            text = f.read()
+        self.assertIn("| blend (rolling, K1) |", text)
+        self.assertIn("| ceiling: best fixed mix (hindsight) |", text)
+
     # @Tag("ORACLE-2")
     def test_classes_key_by_the_battle_slug(self):
         # Opponent.slug turns a dash into _, so the census name must be keyed the same way.
@@ -153,6 +179,42 @@ class JoinTest(unittest.TestCase):
         self.assertEqual(go.surf_choice([2.0, 3.0, 1.0]), 2)
         self.assertEqual(go.surf_choice([1.0, 3.0, 1.0]), 0, "counter-clockwise over clockwise on a tie")
         self.assertEqual(go.surf_choice([1.0, float("inf"), 2.0]), 0)
+
+
+@unittest.skipIf(np is None, "numpy is not installed")
+class RollingBlendTest(unittest.TestCase):
+
+    @staticmethod
+    def data(rows):
+        """rows: (battle, round, fire, seen); every bullet 140 px away at power 2 (10 ticks of flight)."""
+        n = len(rows)
+        z = {k: np.array([r[i] for r in rows]) for i, k in enumerate(("battle", "round", "fire", "seen"))}
+        z.update(bot=np.zeros(n, dtype=int), dist=np.full(n, 140.0), power=np.full(n, 2.0))
+        return z
+
+    # @Tag("ORACLE-3")
+    def test_weights_learn_only_from_landed_hits(self):
+        # View 0 put 4x the uniform's density on every bullet, view 1 a quarter: log2 +2 and -2.
+        like = np.tile([4.0, 0.25], (6, 1))
+        z = self.data([(0, 0, 0, 1), (0, 0, 5, 1), (0, 0, 20, 0), (0, 0, 40, 1), (1, 0, 50, 1), (0, 1, 0, 1)])
+        w = go.rolling_weights(z, like, decay=0.5, power=1.0)
+        self.assertEqual(w[0].tolist(), [1.0, 1.0], "nothing learnt before the first bullet lands")
+        self.assertEqual(w[1].tolist(), [1.0, 1.0], "the bullet fired at 0 is still in flight at 5")
+        # By 20 both hits have landed: score 0 -> 1 -> 1.5 for view 0, its mirror for view 1.
+        self.assertAlmostEqual(w[2][0], 2 ** 1.5)
+        self.assertAlmostEqual(w[2][1], 2 ** -1.5)
+        self.assertAlmostEqual(w[3][0], 2 ** 1.5, msg="a bullet that missed teaches nothing")
+        self.assertEqual(w[4].tolist(), [1.0, 1.0], "a new battle starts from nothing")
+        self.assertAlmostEqual(w[5][0], 2 ** 1.75, msg="a new round keeps the battle's learning, and its flights end")
+
+    # @Tag("ORACLE-3")
+    def test_a_silent_view_keeps_its_score_and_the_ceiling_finds_the_good_view(self):
+        like = np.array([[4.0, np.nan], [4.0, np.nan], [4.0, 0.25]])
+        z = self.data([(0, 0, 0, 1), (0, 0, 20, 1), (0, 0, 40, 1)])
+        w = go.rolling_weights(z, like, decay=0.5, power=1.0)
+        self.assertAlmostEqual(w[2][1], 1.0)
+        mix = go.hindsight_mix(z, np.tile([4.0, 0.25], (3, 1)))
+        self.assertGreater(mix[0][0], 0.99)
 
 
 if __name__ == "__main__":
