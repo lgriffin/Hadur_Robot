@@ -22,3 +22,7 @@
 13:02:23 live-W50 exit=0 in 990 s
 13:02:23 start live-REACH
 13:02:23 watching live-REACH: 3 stop rule(s)
+13:09:27 progress live-REACH: 120/276 (43%) battles, 1018/h, ETA 9 min, 0 failed, skips 0.0/battle (last 100)
+13:18:53 live-REACH exit=0 in 990 s
+13:18:53 start live-R72
+13:18:53 watching live-R72: 3 stop rule(s)
