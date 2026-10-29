@@ -1,6 +1,6 @@
 # Queue pc-sanaro-n02: progress
 
-Updated 2026-10-29 02:37:05 PC time (02:37 UTC), runner pid 55936.
+Updated 2026-10-29 02:52:12 PC time (02:52 UTC), runner pid 55936.
 
 - `prep` done, exit 0 in 0 min
 - `live-S0` done, exit 0 in 28 min
@@ -75,20 +75,19 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-B800
 
-**120 of 430 battles** (28%), 0 failed. Running 7 min, 1050 battles/h, about 18 min left (ends ~02:54 PC time). Last battle 0 min ago.
+**300 of 430 battles** (70%), 0 failed. Running 22 min, 819 battles/h, about 10 min left (ends ~03:01 PC time). Last battle 0 min ago.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 120 |
+| `fails 20` | halt | ok | 0 failed of 300 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 | `skips 40 over 100` | halt | waiting | 0 of 100 battles to read |
 
-Stopping now would leave 310 battles unrun (about 18 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 130 battles unrun (about 10 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-01:03:13 live-Q7 exit=0 in 1703 s
 01:03:13 start live-D10
 01:03:13 watching live-D10: 3 stop rule(s)
 01:07:23 progress live-D10: 61/430 (14%) battles, 878/h, ETA 25 min, 0 failed
@@ -103,4 +102,5 @@ Stopping now would leave 310 battles unrun (about 18 min); every battle already 
 02:30:14 live-T60 exit=0 in 1741 s
 02:30:14 start live-B800
 02:30:14 watching live-B800: 3 stop rule(s)
+02:38:06 progress live-B800: 140/430 (33%) battles, 1068/h, ETA 16 min, 0 failed
 ```
