@@ -37,8 +37,10 @@ is +0.18 over 0.2, inside one pass's noise. Its survival rose from 42.4% to 45.8
 the 20 strongest opponents (34.8% to 36.5%) and the rest (43.2% to 46.8%), so the waves do what
 they were built for. Survival is still the gap, though: Mirage survives 55.6%. The bench's
 nearest arms promised about +0.8 over 0.2, so the score gained less than the survival did.
-`pc-deise-e04` will show whether the bench overstates the gain or the fitted class is worth less
-than its parts ([docs/deise.md](../docs/deise.md)). Each pairing has only about three
+`pc-deise-e04` (PR #411) holds 0.3 on the bench (+1.33 over Saor, bar +1.1) and puts Mirage 1.46
+ahead, close to live's 1.38. There, damage and final duels are level with Mirage, and the gap is
+reaching the final duel (64% of rounds to Mirage's 76%). Stage E3a (`pc-deise-e05`) screens
+crowd-survival arms ([docs/deise.md](../docs/deise.md)). Each pairing has only about three
 battles, so single pairings are too noisy to read (Mirage 48.8, Saor 53.8, Figment 55.3).
 In the full MeleeRumble it is 15th, one place above 0.2. The pages are archived in
 `data/rumble/pages/` under 2026-10-28T2322Z* and 2026-10-28T2323Z*.
