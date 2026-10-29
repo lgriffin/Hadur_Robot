@@ -377,6 +377,15 @@ Expected: cutting crowd deaths by a quarter (2.6 a battle) turns about 1.7 of th
 raises survival points: about +0.9, range +0.5 to +2.0. **Gate** as Stage 2. If m-closer and
 m-danger are both flat, stop Stage 3 there (section 6).
 
+**Melee surfer (MMOVE-15, 2026-10-29).** The top three (ScalarR, Neuromancer, Firestarter) all surf
+learned enemy waves in melee; Hadur's melee movement only ever dodges head-on and linear guesses.
+Leigh chose to build that before more single-knob arms. MMOVE-15 (`MELEE_SURF`, arm `msurf`/`ms`)
+is m-closer's shot weight, m-danger and m-wave in one switch, our own build from Hadur's team
+pieces: each seen shot is a wave weighed `1/(1+k)^2`; once Hadur has 5 hits from a shooter, that
+shooter's bullets are its learned aims (the team's kNN log, fed off a team by Hadur's own hits);
+the destination is the wave check (TMODE-11). Card `pc-melee-surf` (BENCH-136): aa, bb, ms on the
+census at seeds 3225-3230, the Stage 3 gate and CPU guard.
+
 ### Stage 4: stack, tailor, confirm
 
 - **Stack census** on master's defaults (all passed stages) against 3.17 on fresh seeds, 8 seeds

@@ -1,0 +1,56 @@
+# Melee surfer (docs/plan-melee-top5.md Stage 3, MMOVE-15, BENCH-136). 3.19 reads 14th in the
+# MeleeRumble at 67.77, 0.46 behind 10th; the gap is survival in the crowd against ranks 11-200.
+# The top three (ScalarR, Neuromancer, Firestarter) all surf learned enemy waves in melee; Hadur's
+# melee movement only dodges head-on and linear guesses. ms is the melee surfer, our own build
+# from Hadur's team pieces: each seen shot is a wave weighed by who else is nearer its shooter,
+# a shooter's bullets become its learned aims once Hadur has 5 of its hits, and the destination
+# is picked by driving the 8 least risky points and scoring the waves' damage on the way.
+#   aa      the baseline (master)
+#   bb      its A/A copy
+#   ms      msurf, MMOVE-15: the melee surfer
+# Each build fights the 46 census fields x 6 fresh seeds alone (3225-3230; 276 battles, 828 in
+# all) at the machine's melee width and CPU constant. The read pairs bb with aa (A/A, within
+# +-0.25) and ms with the mean of aa and bb (--base2), battle for battle. Melee only: the switch
+# acts off a team, so the duel and team play are untouched.
+# Verdict: ms passes at +0.30 or more with the 95% low end above 0 (--gain 0.3), Hadur's share of
+# others outlived no more than 1 point lower and the 1-30 endgame wins no more than 3 points lower;
+# if its skipped turns a battle rise more than 20% over aa's it fails whatever its APS (read from
+# the arm reports). The card ends in a results PR on claude/pc-melee-surf-results whatever the
+# verdict; the melee thread reads it.
+#   ./queue.sh run pc-melee-surf        (or  .\queue.ps1 run pc-melee-surf)
+# Run it from master, one bench queue at a time:
+#   git checkout master && git pull
+# msprep reads the version from hadur-robot/pom.xml, so a bump cannot point the card at stale
+# jars, and fixes the width and version in work/, so a resumed card never mixes host profiles or
+# reads another version's battles. Prep clears the arms' battle folders, since it rebuilds their jars.
+# Stop rules (docs/bench/watch.md), halts only, each keeping every battle fought: fails 20, dead 8,
+# stall 30m on each arm. A halt leaves that arm's remaining battles (up to 276) and every later arm
+# unrun (ms runs last, so any halt loses the arm under test until the cause is fixed and the card
+# resumed). No futility or skips rule: the paired read needs all three arms whole, and melee skips
+# are read from the arm reports against aa's.
+
+set OUT = ../docs/bench/local
+
+msprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb ms; do rm -f bisect/hadur117.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh msurf && mkdir -p work && rm -rf work/melee-surf-"$V"-aa work/melee-surf-"$V"-bb work/melee-surf-"$V"-ms && echo "$V" > work/melee-surf.version && for a in aa bb ms; do test -f bisect/hadur117.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-surf.args > work/melee-surf-$a.args || exit 1; done && rm -f ${OUT}/melee-surf-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+msaa   | mvn -q exec:java "-Dexec.args=@work/melee-surf-aa.args"
+  after: msprep
+  watch: battles=276
+  stop: fails 20
+  stop: dead 8
+  stop: stall 30m
+msbb   | mvn -q exec:java "-Dexec.args=@work/melee-surf-bb.args"
+  after: msaa
+  watch: battles=276
+  stop: fails 20
+  stop: dead 8
+  stop: stall 30m
+msms   | mvn -q exec:java "-Dexec.args=@work/melee-surf-ms.args"
+  after: msbb
+  watch: battles=276
+  stop: fails 20
+  stop: dead 8
+  stop: stall 30m
+msread | V=$(cat work/melee-surf.version) && test -n "$V" && W=work/melee-surf-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm ms="$W"-ms --census melee-census-317.txt --seeds 6 --gain 0.3 --survival-slack 1 --out ${OUT}/melee-surf-read.md --title "Melee surfer on $V" || true; } && test -s ${OUT}/melee-surf-read.md
+  after: msms
+mspr   | bash tools/open_results_pr.sh claude/pc-melee-surf-results "Melee surfer (MMOVE-15)" ${OUT}/melee-surf-read.md $(ls ${OUT}/melee-surf-aa.md ${OUT}/melee-surf-bb.md ${OUT}/melee-surf-ms.md 2>/dev/null)
+  after: msread
