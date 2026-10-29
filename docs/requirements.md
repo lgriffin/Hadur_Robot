@@ -1545,7 +1545,7 @@ checks the re-blend picks what the surf picked, and fits.
   * 2.5^distQuotient / 2.5 * escape`; the total adds the cheapest next-wave danger. Ablation
   `aesrec` (suffix ar) in `build-ablation.sh`; `MoveDesign.AES_RECORD` is off in every shipped jar.
 
-## The enemy-gun oracle (ORACLE-1 to ORACLE-4, MOVE-29, BENCH-134, BENCH-138)
+## The enemy-gun oracle (ORACLE-1 to ORACLE-4, MOVE-29, BENCH-134, BENCH-138, BENCH-140)
 
 K0 of the road to king (Leigh's doc "Hadur: the 1:1 map, tonight's card, and the road to 1v1 king",
 2026-10-28; docs/bench/gun-oracle.md). The king's lead is the 431 learning guns on flat movers, where
@@ -1565,6 +1565,7 @@ blends its terms; the oracle measures what each model predicts.
 | BENCH-135 | Ubiquitous | The bench shall carry the `pc-team-path2` card, which runs PATH (TMODE-25) forced on for every team (`mp`) and a bb A/A against aa on all 46 teams at 16 fresh seeds from 5100, and gates the pooled gain (each team's mp gain less half its bb gain, summed over 46) at +0.30 APS with the 95% low end above zero; the card changes no robot code. | T7 |
 | BENCH-139 | Ubiquitous | The bench shall carry the `pc-team-dodge` card, which screens DODGE (TMODE-27) forced on (`dg`) beside a bb A/A against aa on all 46 teams at 12 seeds from 5400; gates DODGE as every team's default on the pooled gain (each team's dg gain less half its bb gain, summed over 46) at +0.30 APS with the 95% low end above zero; picks per team DODGE at +3.0 points or more over both baselines with the low end above zero (a team the shipped table names keeps its entry's modes); and gates the picked table on 16 fresh seeds from 5500 at +0.30 APS; only a passed per-team gate writes that table as the table to ship. | T7 |
 | BENCH-138 | Ubiquitous | The bench shall carry the `pc-k1-aim` card: the current release (c), its A/A copy (aa) and the aim members on (km, MOVE-29) on `aes-flat-learning.txt` (the 432 learning guns on flat movers), 1 fresh seed from 4400, 12 workers, truth log off, stopping on 30 failed battles, an arm scoring nothing in 8, 40+ skipped turns a battle over the last 200, no battle in 30 minutes or an A/A outside its band after 20%, and finishing early once km cannot reach +0.05 APS at z 3 after 30%; then the gate (km minus pooled c and aa over the 432 / 1,217 pairings at +0.05 APS, 95% low end above 0), per-robot losses, the oracle re-joined on the pc-k0-oracle battles when they are on the PC, and a results PR only after the gate passes its analysis. | T7 |
+| BENCH-140 | Ubiquitous | The bench shall carry the `pc-sg-aim` card: the current release (c), its A/A copy (aa) and the aim members on (km, MOVE-29) on `simple-guns.txt` (the 434 census opponents with head-on, linear, linear+learning, head-on+learning or mixed guns), 1 fresh seed from 4800, 12 workers, truth log off, with pc-k1-aim's stop rules and futility at +0.05 APS after 30%; then the gate (km minus pooled c and aa over the 434 / 1,217 pairings at +0.05 APS, 95% low end above 0), per-robot losses and a results PR. | T7 |
 
 - **ORC record**: `ORC,round,tick,fireTime,power,firing,sourceX,sourceY,absBearing,orbitDirection,maxEscapeAngle,distance,chosen,`
   then `low,high` per option (counter-clockwise, stop, clockwise; `nan,nan` for no plan), then `views`, then per view

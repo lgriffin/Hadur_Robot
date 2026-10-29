@@ -120,6 +120,7 @@
 #         Suffix gm (surfb,mimics -> sbgm).
 #   aimmem  MOVE-29 (K1 of the road to king): the three-option surf mixes the views' danger with the head-on, linear
 #         and circular aims', each weighted by its rolling score at the bullets that hit us. Sets only AIM_MEMBERS.
+#   aimp3, aimp1  (with aimmem) MOVE-29's standing weight of each aim 0.1 -> 0.3 or 1.0. Suffix q3, q1.
 #         Suffix km.
 #   pressure  POW-12 (the plan's POW-11): while our rolling hit rate less its margin is at least 12%, theirs plus its margin at
 #         most 9%, and our energy is above 12, the duel gun skips the cubic power-down and fires a base power of 2.5
@@ -329,6 +330,7 @@ book="$src/hadur-core/src/main/java/$pkg/core/adapt/OpeningBook.java"
 shields="$src/hadur-core/src/main/java/$pkg/core/shieldmode/ShieldList.java"
 design="$src/hadur-core/src/main/java/$pkg/core/shieldmode/ShieldDesign.java"
 movedesign="$src/hadur-core/src/main/java/$pkg/core/duel/MoveDesign.java"
+aimmembers="$src/hadur-core/src/main/java/$pkg/core/move/AimMembers.java"
 gundesign="$src/hadur-core/src/main/java/$pkg/core/duel/GunDesign.java"
 powerdesign="$src/hadur-core/src/main/java/$pkg/core/duel/PowerDesign.java"
 protean="$src/hadur-core/src/main/java/$pkg/core/move/ProteanPick.java"
@@ -503,6 +505,12 @@ for a in "${list[@]}"; do
         aimmem)
             edit "$movedesign" "static final boolean AIM_MEMBERS = false;" "static final boolean AIM_MEMBERS = true;"
             version="${version}km" ;;
+        aimp3)
+            edit "$aimmembers" "static final double AIM_PRIOR = 0.1;" "static final double AIM_PRIOR = 0.3;"
+            version="${version}q3" ;;
+        aimp1)
+            edit "$aimmembers" "static final double AIM_PRIOR = 0.1;" "static final double AIM_PRIOR = 1.0;"
+            version="${version}q1" ;;
         aesrec)
             edit "$movedesign" "static final boolean AES_RECORD = false;" "static final boolean AES_RECORD = true;"
             version="${version}ar" ;;
