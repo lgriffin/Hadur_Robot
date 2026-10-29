@@ -1,0 +1,22 @@
+{
+ "plan": "pc-team-path2",
+ "updated": 1793281870.406041,
+ "steps": {
+  "tqprep": {
+   "status": "pending"
+  },
+  "tqbb": {
+   "status": "pending"
+  },
+  "tqmp": {
+   "status": "pending"
+  },
+  "tqsum": {
+   "status": "pending"
+  },
+  "tqpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
