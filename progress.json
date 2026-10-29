@@ -1,0 +1,28 @@
+{
+ "plan": "pc-deise-e04",
+ "updated": 1793250565.4446745,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "live-D": {
+   "status": "pending"
+  },
+  "live-FIT3F": {
+   "status": "pending"
+  },
+  "live-MIR": {
+   "status": "pending"
+  },
+  "live-SAOR": {
+   "status": "pending"
+  },
+  "read": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
