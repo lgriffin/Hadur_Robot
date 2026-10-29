@@ -5,3 +5,12 @@
 04:30:37 start record
 04:30:37 watching record: 3 stop rule(s)
 04:30:53 progress record: 0/864 (0%) battles, 0 failed
+05:01:09 progress record: 722/864 (84%) battles, 1418/h, ETA 6 min, 0 failed, skips 29.9/battle (last 100)
+05:05:56 record exit=0 in 2119 s
+05:05:56 start join
+05:08:38 join exit=0 in 161 s
+05:08:38 start score
+05:09:13 score exit=0 in 35 s
+05:09:13 start pr
+05:09:19 pr exit=0 in 5 s
+05:09:19 ALLDONE
