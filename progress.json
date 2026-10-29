@@ -1,6 +1,6 @@
 {
  "plan": "pc-sg-aim",
- "updated": 1793312188.2880292,
+ "updated": 1793312405.343772,
  "steps": {
   "prep": {
    "status": "done",
@@ -9,22 +9,30 @@
    "end": "2026-10-29T22:02:56"
   },
   "aim": {
-   "status": "running",
-   "start": "2026-10-29T22:02:56"
+   "status": "done",
+   "exit": 0,
+   "seconds": 1022,
+   "end": "2026-10-29T22:19:58"
   },
   "gate": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-10-29T22:19:59"
   },
   "pr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 6,
+   "end": "2026-10-29T22:20:05"
   }
  },
  "watched": [
   {
    "step": "aim",
    "started": 1793311376.1877785,
-   "updated": 1793312187.6782756,
-   "elapsed": 811.4904971122742,
+   "updated": 1793312398.1623201,
+   "elapsed": 1021.9745416641235,
    "expected": 1302,
    "panel": 434,
    "field": 1217,
@@ -32,66 +40,66 @@
    "arms": [
     {
      "arm": "c",
-     "battles": 357,
+     "battles": 434,
      "failed": 0,
-     "level": 95.75641456582633,
-     "skips": 21.745098039215687,
-     "fresh": 357,
-     "scored": 357,
+     "level": 95.57055299539171,
+     "skips": 21.17511520737327,
+     "fresh": 434,
+     "scored": 434,
      "diff": null
     },
     {
      "arm": "aa",
-     "battles": 357,
+     "battles": 434,
      "failed": 0,
-     "level": 95.83980392156863,
-     "skips": 23.15126050420168,
-     "fresh": 357,
-     "scored": 357,
-     "diff": 0.007966101694915356,
-     "n": 354,
-     "ci95": 0.19489254878207335,
-     "half_stop": 0.2983049216052143,
+     "level": 95.61467741935483,
+     "skips": 22.320276497695854,
+     "fresh": 434,
+     "scored": 434,
+     "diff": 0.04412442396313382,
+     "n": 434,
+     "ci95": 0.18360250510125348,
+     "half_stop": 0.2810242425019186,
      "scale": 0.35661462612982747
     },
     {
      "arm": "km",
-     "battles": 359,
+     "battles": 434,
      "failed": 0,
-     "level": 96.17743732590529,
-     "skips": 24.905292479108635,
-     "fresh": 359,
-     "scored": 359,
-     "diff": 0.4100566572237959,
-     "n": 353,
-     "ci95": 0.19767569353929573,
-     "half_stop": 0.30256483704994247,
+     "level": 95.95845622119816,
+     "skips": 24.108294930875577,
+     "fresh": 434,
+     "scored": 434,
+     "diff": 0.36584101382488465,
+     "n": 434,
+     "ci95": 0.19371860721610917,
+     "half_stop": 0.2965080722695549,
      "scale": 0.35661462612982747
     }
    ],
    "aa": {
-    "diff": 0.007966101694915356,
-    "ci": 0.19489254878207335,
-    "n": 354,
-    "band": 0.6205589607191356,
+    "diff": 0.04412442396313382,
+    "ci": 0.18360250510125348,
+    "n": 434,
+    "band": 0.5604537990142391,
     "ok": true,
-    "band_stop": 0.7215801868827157
+    "band_stop": 0.6516904639700454
    },
    "warnings": [],
-   "battles": 1073,
+   "battles": 1302,
    "resumed": 0,
    "failed": 0,
-   "disables": 116,
-   "rate": 4760.129679578442,
-   "eta": 173.18855902955337,
-   "fraction": 0.8241167434715821,
-   "last_battle_age": 0.4412860870361328,
+   "disables": 130,
+   "rate": 4586.415618893635,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 7.4594361782073975,
    "rules": [
     {
      "rule": "fails 30",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 1073"
+     "detail": "0 failed of 1302"
     },
     {
      "rule": "dead 8",
@@ -103,7 +111,7 @@
      "rule": "skips 40 over 200",
      "action": "halt",
      "state": "ok",
-     "detail": "16.8 a battle over the last 200 (first 200: 30.9)"
+     "detail": "18.4 a battle over the last 200 (first 200: 30.9)"
     },
     {
      "rule": "stall 30m",
@@ -115,17 +123,17 @@
      "rule": "aa after 20%",
      "action": "halt",
      "state": "ok",
-     "detail": "aa - c +0.01 pts over 354 robots, stop band \u00b10.72"
+     "detail": "aa - c +0.04 pts over 434 robots, stop band \u00b10.65"
     },
     {
      "rule": "futility km below 0.05 after 30%",
      "action": "finish",
      "state": "ok",
-     "detail": "km +0.15, best case +0.25 APS vs bar +0.05"
+     "detail": "km +0.13, best case +0.24 APS vs bar +0.05"
     }
    ],
-   "skips_mean": 23.27027027027027,
-   "skips_last100": 16.43
+   "skips_mean": 22.534562211981566,
+   "skips_last100": 20.69
   }
  ]
 }

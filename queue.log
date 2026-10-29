@@ -5,3 +5,9 @@
 22:02:56 start aim
 22:02:56 watching aim: 6 stop rule(s)
 22:03:22 progress aim: 11/1302 (1%) battles, 1512/h, ETA 51 min, 0 failed, skips 19.2/battle (last 100)
+22:19:58 aim exit=0 in 1022 s
+22:19:58 start gate
+22:19:59 gate exit=0 in 0 s
+22:19:59 start pr
+22:20:05 pr exit=0 in 6 s
+22:20:05 ALLDONE
