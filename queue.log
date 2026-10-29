@@ -6,3 +6,7 @@
 19:16:53 watching tdbb: 3 stop rule(s)
 19:17:13 progress tdbb: 0/1104 (0%) battles, 0 failed
 19:47:30 progress tdbb: 368/1104 (33%) battles, 721/h, ETA 1.0 h, 0 failed, skips 12.6/battle (last 100)
+20:17:47 progress tdbb: 850/1104 (77%) battles, 837/h, ETA 18 min, 0 failed, skips 10.7/battle (last 100)
+20:30:36 tdbb exit=0 in 4423 s
+20:30:36 start tddg
+20:30:36 watching tddg: 3 stop rule(s)
