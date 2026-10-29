@@ -1056,11 +1056,12 @@ loadScripts(document, 'script');</script>
  worth the time it takes to score (<a class="req" href="../../../../requirements.html#TIME-1">TIME-1</a>).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#rerankBest(java.util.List,hadur117.core.melee.MinimumRiskMovement.View,int,java.util.List,java.util.List)" class="member-name-link">rerankBest</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&gt;&nbsp;candidates,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#rerankBest(java.util.List,hadur117.core.melee.MinimumRiskMovement.View,int,java.util.List,java.util.List,boolean)" class="member-name-link">rerankBest</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&gt;&nbsp;candidates,
  <a href="MinimumRiskMovement.View.html" title="class in hadur117.core.melee">MinimumRiskMovement.View</a>&nbsp;v,
  int&nbsp;rerank,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a>&gt;&nbsp;waves,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="VirtualBullet.html" title="class in hadur117.core.melee">VirtualBullet</a>&gt;&nbsp;mateBullets)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="VirtualBullet.html" title="class in hadur117.core.melee">VirtualBullet</a>&gt;&nbsp;mateBullets,
+ boolean&nbsp;ownFire)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">TMODE-11, TMODE-27: the <code>rerank</code> lowest-risk candidates, and the destination held if
  not reached, each driven to through the <code>waves</code> for <a href="#WAVE_TICKS"><code>WAVE_TICKS</code></a> ticks and
@@ -3520,17 +3521,20 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="rerankBest(java.util.List,hadur117.core.melee.MinimumRiskMovement.View,int,java.util.List,java.util.List)">
+<section class="detail" id="rerankBest(java.util.List,hadur117.core.melee.MinimumRiskMovement.View,int,java.util.List,java.util.List,boolean)">
 <h3>rerankBest</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></span>&nbsp;<span class="element-name">rerankBest</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&gt;&nbsp;candidates,
  <a href="MinimumRiskMovement.View.html" title="class in hadur117.core.melee">MinimumRiskMovement.View</a>&nbsp;v,
  int&nbsp;rerank,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a>&gt;&nbsp;waves,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="VirtualBullet.html" title="class in hadur117.core.melee">VirtualBullet</a>&gt;&nbsp;mateBullets)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="VirtualBullet.html" title="class in hadur117.core.melee">VirtualBullet</a>&gt;&nbsp;mateBullets,
+ boolean&nbsp;ownFire)</span></div>
 <div class="block">TMODE-11, TMODE-27: the <code>rerank</code> lowest-risk candidates, and the destination held if
  not reached, each driven to through the <code>waves</code> for <a href="#WAVE_TICKS"><code>WAVE_TICKS</code></a> ticks and
  through the teammates' <code>bullets</code> for <a href="#PATH_TICKS"><code>PATH_TICKS</code></a>; scored as
- <a href="#waveScores(double%5B%5D,double%5B%5D)"><code>waveScores(double[], double[])</code></a>, the held destination times <a href="#SWITCH_GAIN"><code>SWITCH_GAIN</code></a>.</div>
+ <a href="#waveScores(double%5B%5D,double%5B%5D)"><code>waveScores(double[], double[])</code></a>, the held destination times <a href="#SWITCH_GAIN"><code>SWITCH_GAIN</code></a>. With
+ <code>ownFire</code> the teammates' bullets add <a href="#PATH_K"><code>PATH_K</code></a> times their damage to the
+ risk, as PATH scores them, instead of joining the waves' damage.</div>
 </section>
 </li>
 <li>
