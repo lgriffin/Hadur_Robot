@@ -1,6 +1,6 @@
 {
  "plan": "pc-jaylexi-w1",
- "updated": 1793300157.331841,
+ "updated": 1793300159.7258756,
  "steps": {
   "prep": {
    "status": "done",
@@ -27,10 +27,12 @@
    "end": "2026-10-29T18:55:57"
   },
   "read": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after w1-KOM"
   },
   "pr": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after read"
   }
  },
  "watched": [

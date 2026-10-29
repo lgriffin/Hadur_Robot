@@ -1,13 +1,13 @@
 # Queue pc-jaylexi-w1: progress
 
-Updated 2026-10-29 18:55:57 PC time (18:55 UTC), runner pid 20984.
+Updated 2026-10-29 18:55:59 PC time (18:55 UTC), runner pid 20984.
 
 - `prep` done, exit 0 in 0 min
 - `w1-J01` done, exit 0 in 3 min
 - `w1-J02` done, exit 0 in 3 min
 - `w1-KOM` failed, exit 1 in 3 min
-- `read` pending
-- `pr` pending
+- `read` skipped
+- `pr` skipped
 
 ### w1-J01
 
@@ -51,9 +51,6 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 ### Queue log (last lines)
 
 ```
-18:46:14 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
-18:46:14 start prep
-18:46:16 prep exit=0 in 2 s
 18:46:16 start w1-J01
 18:46:16 watching w1-J01: 3 stop rule(s)
 18:46:17 progress pushed to origin claude/pc-jaylexi-w1-progress (every 15 min)
@@ -65,4 +62,8 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 18:52:51 start w1-KOM
 18:52:51 watching w1-KOM: 3 stop rule(s)
 18:55:57 w1-KOM exit=1 in 186 s
+18:55:59 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/433
+18:55:59 skip read (after w1-KOM, which has not finished exit=0)
+18:55:59 skip pr (after read, which has not finished exit=0)
+18:55:59 ALLDONE
 ```
