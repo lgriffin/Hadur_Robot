@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 275 of 278 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 275 of 279 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -1251,6 +1251,11 @@ traceability check reads. 275 of 278 live requirements have a tagged test. The r
 <article class="req-card" id="ORACLE-3">
 <div class="req-head"><span class="rid">ORACLE-3</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
 <p><code>gun_oracle.py join</code> shall keep each joined wave&#x27;s battle, fire time and whether its bullet hit Hadur and when (matched to the battle&#x27;s <code>HF</code> records; a hit with no guess factor matches none), and <code>score</code> shall rate, beside the K0 models, the rolling blend of K1: the views&#x27; normalised surfaces mixed with weights 2^(power x score), a view&#x27;s score being a decaying mean of log2 of its density at the bullet&#x27;s guess factor over the uniform&#x27;s, updated along the battle in fire order only from bullets that hit Hadur and had hit by the rated wave&#x27;s fire time; and, for reference, each opponent&#x27;s best fixed mix of the views fitted in hindsight to the scored objective. A data set joined without those columns shall score the K0 models only.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><span class="none">no tagged test</span></dd></dl>
+</article>
+<article class="req-card" id="ORACLE-4">
+<div class="req-head"><span class="rid">ORACLE-4</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p><code>gun_oracle.py join</code> shall keep every enemy bullet of the truth log as a wave: its fire tick, power, absolute bearing from the shooter to Hadur, Hadur&#x27;s orbit direction and maximum escape angle, Hadur&#x27;s state when the enemy aimed (lateral and advancing velocity, acceleration, ticks since reversing and since slowing, distance, wall room ahead and behind, flight time) and the tick the wave passed Hadur with Hadur&#x27;s guess factor then; and <code>score</code> shall rate the visit member (each rated wave&#x27;s nearest already-passed waves of the battle by those features, a kernel where Hadur was when each passed), the shipped blend with a quarter of it, the rolling blend over the views and the head-on, linear and circular aims (each aim a member whose likelihood is learnt as a view&#x27;s, its weight scaled by a standing 0.3 against a view&#x27;s), each model&#x27;s bits after its best further uniform mix, and each model&#x27;s mean danger percentile of the bullet.</p>
 <dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><span class="none">no tagged test</span></dd></dl>
 </article>
 <h2 id="group-PHYS">PHYS</h2>
