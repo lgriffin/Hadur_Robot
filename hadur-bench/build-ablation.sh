@@ -118,6 +118,9 @@
 #   mimics  MOVE-27 (with surfb): the stop-point surf rates waves on the enemy-gun ensemble, the views blended with
 #         visit-trained mimics of learning guns weighted by their score at real bullets cubed. Sets only MIMICS.
 #         Suffix gm (surfb,mimics -> sbgm).
+#   aimmem  MOVE-29 (K1 of the road to king): the three-option surf mixes the views' danger with the head-on, linear
+#         and circular aims', each weighted by its rolling score at the bullets that hit us. Sets only AIM_MEMBERS.
+#         Suffix km.
 #   pressure  POW-12 (the plan's POW-11): while our rolling hit rate less its margin is at least 12%, theirs plus its margin at
 #         most 9%, and our energy is above 12, the duel gun skips the cubic power-down and fires a base power of 2.5
 #         beyond 150 px (2.95 inside stays); the lead-aware regime wins where it holds. Sets PRESSURE only; combines
@@ -491,6 +494,9 @@ for a in "${list[@]}"; do
         mimics)
             edit "$movedesign" "static final boolean MIMICS = false;" "static final boolean MIMICS = true;"
             version="${version}gm" ;;
+        aimmem)
+            edit "$movedesign" "static final boolean AIM_MEMBERS = false;" "static final boolean AIM_MEMBERS = true;"
+            version="${version}km" ;;
         aesrec)
             edit "$movedesign" "static final boolean AES_RECORD = false;" "static final boolean AES_RECORD = true;"
             version="${version}ar" ;;
