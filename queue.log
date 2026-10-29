@@ -12,3 +12,10 @@
 20:30:36 watching tddg: 3 stop rule(s)
 20:48:04 progress tddg: 157/1104 (14%) battles, 539/h, ETA 1.8 h, 0 failed, skips 13.0/battle (last 100)
 21:18:21 progress tddg: 600/1104 (54%) battles, 754/h, ETA 40 min, 0 failed, skips 8.1/battle (last 100)
+21:44:27 tddg exit=0 in 4431 s
+21:44:27 start tdglob
+21:44:28 tdglob exit=0 in 0 s
+21:44:28 start tdpick
+21:45:21 tdpick exit=0 in 52 s
+21:45:21 start tdgate
+21:45:21 watching tdgate: 3 stop rule(s)
