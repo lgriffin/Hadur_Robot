@@ -12,3 +12,6 @@
 05:43:30 live-FIT3F exit=0 in 1031 s
 05:43:30 start live-MIR
 05:43:30 watching live-MIR: 3 stop rule(s)
+06:00:01 live-MIR exit=0 in 990 s
+06:00:01 start live-SAOR
+06:00:01 watching live-SAOR: 3 stop rule(s)
