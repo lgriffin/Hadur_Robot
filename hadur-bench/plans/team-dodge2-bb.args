@@ -1,0 +1,31 @@
+# PC card team-dodge2 (docs/plan-team-top5.md section 15, TMODE-27, TMODE-29, BENCH-141): arm bb (A/A, master again under another name), all 46 teams on fresh seeds against master (the aa build). Template: d2prep writes work/team-dodge2-bb.args with @V@ = the robot.release in hadur-robot/pom.xml
+--team
+true
+--seeds
+16
+--seed-base
+5600
+--rounds
+12
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+team-census46.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@bb.jar
+--robot
+hadur117.HadurTeam @V@bb
+--member
+hadur117.Hadur
+--out
+work/team-dodge2-@V@-bb
+--report
+../docs/bench/local/team-dodge2-bb.md
+--baseline
+bisect/hadur117.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur117.HadurTeam @V@aa

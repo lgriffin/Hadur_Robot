@@ -41,6 +41,12 @@ final class TeamDodge {
      * and the teammates' bullets, as the shipped movement scores them, under the re-rank.
      */
     static final boolean RANK_BULLETS = false;
+    /**
+     * Ablation switch (tmdodgef): our own fire as PATH weighs it. The base ranking keeps
+     * MATEFIRE's teammate-bullet risk, and the teammates' bullets crossed on each drive add to
+     * the risk at {@link MinimumRiskMovement#PATH_K} rather than to the median-scaled damage.
+     */
+    static final boolean OWN_FIRE = false;
     /** Candidates driven through the waves: more than WAVES' 8, since the base ranking no longer sees bullets. */
     static final int RERANK = 12;
     /** Past this, px, beyond Hadur a wave is gone. */
