@@ -89,15 +89,55 @@ What the baselines say:
    says (learning: 60%+ of shots match no simple aim). They stay as members for the robots that mix in
    simple aims, not as a fix.
 
+## K1 step 1: the rolling blend
+
+The first K1 member re-weights the eleven views by how well each has predicted this opponent's bullets
+so far: a view's score is a decaying mean of log2 of its density at each bullet's guess factor over the
+uniform's, its weight 2^(power x score) (exponential weights, the log form of BeepBoop's rolling score),
+and the model is the weighted mix of the views' normalised surfaces (ORACLE-3). It learns only what the
+robot could learn: bullets that hit Hadur (9% of them, from the HF records), from the tick they hit.
+
+Cloud read, 36 robots ([2026-10-29_k1-rolling-cloud.md](local/2026-10-29_k1-rolling-cloud.md), per robot
+[k1-rolling-cloud-per-robot.tsv](local/k1-rolling-cloud-per-robot.tsv)):
+
+| Model | bits | safe |
+|---|---|---|
+| shipped blend | +0.288 | 0.081 |
+| rolling blend, decay 0.8, power 2 (learns from hits) | +0.320 | 0.080 |
+| the same rule learning from every bullet (not playable) | +0.346 | 0.077 |
+| each robot's best fixed mix, fitted in hindsight | +0.373 | 0.075 |
+| each robot's best mix per round, fitted in hindsight (overfits: ~35 bullets a round, 11 weights) | +0.492 | 0.066 |
+
+What it says:
+
+1. **It passes the bits gate, barely.** +0.032 bits over the shipped blend, worse by more than 0.02
+   bits on 2 of 36 robots, tuned on the same robots. The safe third moves from 8.1% to 8.0% of bullets:
+   on the measure the surf drives by, it is level.
+2. **No fixed weighting is worth much.** Knowing the whole battle in advance, the best fixed mix per
+   robot is +0.373 bits, 0.085 over the shipped blend: the shipped scan-weight average is already most
+   of the way to the best single weighting of these views. Weights that change during the battle can
+   do better in principle (fitting each round in hindsight gives +0.49, though 11 weights on about 35
+   bullets a round flatters it), so this is not a bound on adaptive weighting.
+3. **What holds the robot back is how little it sees.** The same rule learning from every bullet gets
+   +0.346; from hits alone, +0.320. 91% of the bullets on this class miss and are never seen, so any
+   rule that learns from the enemy's bullets learns slowly. A member that learns from something the
+   robot sees on every wave (where it was when each wave passed) does not have that limit.
+
+So step 1 does not earn a Java port or a PC card on its own. The ORACLE-3 columns stay: every later
+member needs the battle order and the hit marks.
+
 ## Next
 
-- **pc-k0-oracle** (`hadur-bench/plans/pc-k0-oracle.queue`, BENCH-134), Leigh starts it: the 432 at 2 seeds,
-  truth log on, about 2.5 h, after pc-1to1. Its `oracle.npz` stays on the PC (about 1.5-2 GB) as K1's data
-  set; the results PR carries the report and the per-robot sheet. Stops on 30 failed battles, 40+ skipped
-  turns a battle over the last 200, or no battle in 30 minutes.
-- **K1 members**, cloud, against the cloud data now and the PC data when it lands: the accuracy-weighted
-  blend of the eleven views (rolling 0.98, cubed), visit-count buffers over a few segmentations, and k-NN
-  on other feature sets, each needing the wave's features from the truth log (the next addition to
-  `join`). Gate as the doc sets it: better bits than the shipped blend on learning-flat, no class worse.
+- **K1 step 2, new members.** The room is in members that learn from every wave. The ones worth scoring
+  first model the enemy's gun from what Hadur does know, its own movement: a k-NN over Hadur's past
+  guess factors at each wave's passing (every wave, not only hits), on the features learning guns
+  segment on (lateral velocity, acceleration, distance to wall ahead, time since direction change,
+  bullet flight time), in a few weightings. That needs the wave's features from the truth log in
+  `join` (Hadur's state at fire time and its guess factor when the wave passes). Gate as the doc sets
+  it: better bits than the shipped blend on learning-flat, no class worse; the rolling blend then mixes
+  the new members with the views.
+- **PC**: `oracle.npz` from pc-k0-oracle (PR #410) predates ORACLE-3, so the PC data needs a re-join
+  (minutes, no battles) before it can score K1. That goes on one card with step 2, if the battle
+  directories are still on the PC.
 
 Nothing here ships: no release, no table line, and 1v1 behaviour is unchanged with the switches off.
