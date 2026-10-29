@@ -1,0 +1,76 @@
+# Sanaro's stage N4 (docs/sanaro.md section 8): the gun's fire gate, the radar's threshold and n02's
+# best arm on fresh seeds, on the live-shaped census. Sanaro 0.1 is live 2nd in NanoMelee at 65.21
+# (bench 65.17), 1.23 under Quantum 1.0.0. pc-sanaro-n02 (PR #408) found the power curve flat: every
+# curve, Quantum's own E/7 among them, reads within ±0.32 of S0. Quantum's remaining differences in
+# play are its fire gate (fire only when the gun has under 18 / d rad left to turn), its radar lock at
+# gun heat 1.0, and its name lock on the target; this card measures the first two.
+#   ./queue.sh run pc-sanaro-n03        (or  .\queue.ps1 run pc-sanaro-n03)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers. Every step resumes; no step needs
+# a decision. Nothing here touches Hadur, Saor, TwinSaor or Deise.
+#
+# Arms (sanaro-arms/arms.txt), each one change on S0:
+#   S0    Sanaro 0.1 as it ships (control, 247 B)
+#   T60   3.0 from 60 energy (n02 +0.23 ± 0.32), fresh seeds (247 B)
+#   L10   radar flip below gun heat 1.0, not 0.9 (245 B: frees 2 bytes)
+#   G18   fire gate 18 / d rad (Quantum's)   G36   fire gate 36 / d rad   (277 B as written; measure
+#         only: a gate that pays needs about 11 bytes found before it can ship)
+# Live-shaped census: 43 fields x 10 fresh seeds (base 14000) = 430 battles an arm, about 28 min an
+# arm (n02 ran 28-30). About 2.4 h in all.
+# Read against S0. An arm passes when its difference's low end is above zero (SANARO-13). A gate that
+# reads +0.5 or more is worth the byte hunt (N5); T60 and L10 ship in 0.2 if they pass.
+# Stop rules on every census step (docs/bench/watch.md; halt, every battle fought is kept and a
+# rerun resumes): 20 failed battles (a broken jar), no battle in 30 minutes (a hung step), or 40+
+# skipped turns a battle over the last 100 (the PR #331 build-up). A halt at worst leaves the rest
+# of that arm and the arms after it unrun, at most 2,150 battles (about 2.4 h). There is no early
+# finish on score: a census step is one robot, so there is no arm to call futile mid-step. ALERT
+# opens an issue for Leigh on a stop.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set ARMS = S0,T60,L10,G18,G36
+
+prep | (cd .. && mvn -q -DskipTests install -pl sanaro -am) && cp ../sanaro/target/hadur117.nano.Sanaro_0.1.jar opponents/ && ./fetch-opponents.sh --set nanomelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && SANARO_RUN=n03 bash tools/sanaro_arms.sh live 10 14000 ${ARMS}
+
+live-S0 | ${MVN} "-Dexec.args=@work/sanaro-n03/live-S0.args"
+  after: prep
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-T60 | ${MVN} "-Dexec.args=@work/sanaro-n03/live-T60.args"
+  after: live-S0
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-L10 | ${MVN} "-Dexec.args=@work/sanaro-n03/live-L10.args"
+  after: live-T60
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-G18 | ${MVN} "-Dexec.args=@work/sanaro-n03/live-G18.args"
+  after: live-L10
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-G36 | ${MVN} "-Dexec.args=@work/sanaro-n03/live-G36.args"
+  after: live-G18
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+read-live | python3 tools/sanaro_read.py --work-root work/sanaro-n03 --field live --arms ${ARMS} --control S0 --only work/sanaro-n03/live/micro.txt --live 66.44 > ${OUT}/sanaro-n03-live.md
+  after: live-G36
+
+pr | bash tools/open_results_pr.sh claude/pc-sanaro-n03-results "Sanaro stage N4: fire gate, radar threshold and T60 on the live-shaped census" ${OUT}/sanaro-n03-live.md ${OUT}/sanaro-n03-live-*.md
+  after: read-live
