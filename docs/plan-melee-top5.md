@@ -385,6 +385,11 @@ pieces: each seen shot is a wave weighed `1/(1+k)^2`; once Hadur has 5 hits from
 shooter's bullets are its learned aims (the team's kNN log, fed off a team by Hadur's own hits);
 the destination is the wave check (TMODE-11). Card `pc-melee-surf` (BENCH-136): aa, bb, ms on the
 census at seeds 3225-3230, the Stage 3 gate and CPU guard.
+Cloud smokes (12 census fields x 2 seeds, builds run side by side): the first build, every learned
+aim of a shot as a bullet, read +0.13 ± 0.66 with skipped turns +50% (24 to 36 a battle), which the
+CPU guard would fail. Keeping each shot's 4 nearest aims at the shot's whole weight, within MMOVE-3's
+bullet cap: +0.56 ± 0.73 against an aa rerun (aa vs aa +0.12 ± 0.53), skips 24 vs 26, others
+outlived +2.3 points, deaths with two left -2.4 points. Level to positive and CPU-clean: carded.
 
 ### Stage 4: stack, tailor, confirm
 
