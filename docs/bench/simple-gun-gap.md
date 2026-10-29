@@ -51,7 +51,15 @@ score decides). Those cloud jars carried the suffixes p3 and p1; the ablations n
 p3 was already pdw3's. The shot-dodge planner, built from Saguaro's ShotDodger ideas, does not help here, and
 stop-and-go is for learning guns only.
 
-## Next
+## Verdict: pc-sg-aim PASS (2026-10-29, PR #439)
+
+km minus pooled c and aa = **+0.13 ± 0.07 APS** over the 434 simple-gun robots (A/A +0.04 ± 0.18 pts,
+1,302 battles, 0 failed; 286 robots up, 133 down). With pc-k1-aim's +0.07 ± 0.15 on the 432 learning
+guns the field projection is about +0.2 APS. **MOVE-29 ships on from 3.20** (`MoveDesign.AIM_MEMBERS`;
+ablation `noaim`, suffix kx, turns it off). Turning it on also exposed a crash on a scan at tick 0 (the
+simple-aim ring read slot -1), which only the warm-up hit; fixed in the same change.
+
+## Next (as planned before the card)
 
 - **pc-sg-aim** (BENCH-140): c, aa and km on all 434 simple-gun robots, 1 fresh seed, about 1 h on the PC,
   gate km at +0.05 APS. With pc-k1-aim's +0.07 ± 0.15 on the learning guns, a pass turns MOVE-29 on for

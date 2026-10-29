@@ -120,6 +120,7 @@
 #         Suffix gm (surfb,mimics -> sbgm).
 #   aimmem  MOVE-29 (K1 of the road to king): the three-option surf mixes the views' danger with the head-on, linear
 #         and circular aims', each weighted by its rolling score at the bullets that hit us. Sets only AIM_MEMBERS.
+#   noaim  MOVE-29 off (it ships on from 3.20): the three-option surf rates on the views alone. Suffix kx.
 #   aimp3, aimp1  (with aimmem) MOVE-29's standing weight of each aim 0.1 -> 0.3 or 1.0. Suffix q3, q1.
 #         Suffix km.
 #   pressure  POW-12 (the plan's POW-11): while our rolling hit rate less its margin is at least 12%, theirs plus its margin at
@@ -503,8 +504,13 @@ for a in "${list[@]}"; do
             edit "$movedesign" "static final boolean MIMICS = false;" "static final boolean MIMICS = true;"
             version="${version}gm" ;;
         aimmem)
-            edit "$movedesign" "static final boolean AIM_MEMBERS = false;" "static final boolean AIM_MEMBERS = true;"
+            # Ships on from 3.20; the arm stays buildable for the older cards.
+            grep -qF "static final boolean AIM_MEMBERS = true;" "$movedesign" \
+                || edit "$movedesign" "static final boolean AIM_MEMBERS = false;" "static final boolean AIM_MEMBERS = true;"
             version="${version}km" ;;
+        noaim)
+            edit "$movedesign" "static final boolean AIM_MEMBERS = true;" "static final boolean AIM_MEMBERS = false;"
+            version="${version}kx" ;;
         aimp3)
             edit "$aimmembers" "static final double AIM_PRIOR = 0.1;" "static final double AIM_PRIOR = 0.3;"
             version="${version}q3" ;;
