@@ -1,8 +1,8 @@
 # JayLexi 0.1 and Eveimear 0.1: the first live pass
 
-Released 2026-10-28 20:55 UTC (tags `jaylexi-v0.1`, `eveimear-v0.1`). The pages were read on
-2026-10-29 at 07:23 UTC, with every pairing filled. They are saved in `data/rumble/pages/` under
-`2026-10-29T0723Z_*`. The reference bots' per-opponent rows come from the LiteRumble API
+Released 2026-10-28 20:55 UTC (tags `jaylexi-v0.1`, `eveimear-v0.1`). The pages hold
+every pairing up to the latest battle at 07:23 UTC on 2026-10-29. They were saved at 08:38 UTC and
+are in `data/rumble/pages/` under `2026-10-29T0838Z_*`. The reference bots' per-opponent rows come from the LiteRumble API
 (`BotDetails?api=true`), read at 08:45 UTC.
 
 | Bot | Rumble | Rank | APS | Pairings | Battles | 5th place | Cloud bench said |
@@ -10,16 +10,18 @@ Released 2026-10-28 20:55 UTC (tags `jaylexi-v0.1`, `eveimear-v0.1`). The pages 
 | JayLexi 0.1 | MiniRumble | **6th of 671** | **86.95** ± 0.29 | 670 | 742 | WeeksOnEnd 1.10.4, 87.35 (+0.40) | 87.05 ± 0.45 |
 | Eveimear 0.1 | MicroRumble | **9th of 516** | **83.36** ± 0.33 | 515 | 608 | HedgehogGF 1.5, 84.93 (+1.57) | 84.28 ± 0.46 |
 
-- **JayLexi's bench was right.** It read 87.05 and the live score is 86.95. Against the same 668
-  opponents it is 0.47 under Komarious 1.88 (4th, 87.45) and 0.33 under WeeksOnEnd.
+- **JayLexi's bench was right.** It read 87.05 and the live score is 86.95. On the 668 opponents
+  all three pages share, it is 0.47 under Komarious 1.88 (4th, 87.45) and 0.33 under WeeksOnEnd.
 - **Eveimear's bench was 0.9 high.** The bench put it 0.78 under Épéeist 3.7. Live, it is 1.66
-  under Épéeist (84.99, 4th) and 1.63 under HedgehogGF on the same 513 opponents. The 48-bot
+  under Épéeist (84.99, 4th) and 1.63 under HedgehogGF on the 513 opponents all three
+  pages share. The 48-bot
   sample flattered it, so 0.2 is read on a second sample as well (below).
 
 ## Where the points go
 
 Each pairing is mostly one battle (601 of 669 for JayLexi, 429 of 514 for Eveimear), so single rows
-are noisy (about ±7). The groups below are what to trust. They split the opponents by how well the
+are noisy (about ±7). The groups compare against the reference alone, over 669 and 514 shared
+opponents. The groups below are what to trust. They split the opponents by how well the
 reference survives against them, and "share" is the group's part of the APS gap.
 
 | Opponents (reference survival) | JayLexi n | JayLexi vs Komarious | share | Eveimear n | Eveimear vs Épéeist | share |

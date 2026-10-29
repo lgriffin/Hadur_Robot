@@ -17,12 +17,12 @@ JAYLEXI-10 in [docs/requirements.md](../docs/requirements.md).
 
 **JayLexi 0.1 is 6th in MiniRumble** on its first full pass, 0.40 behind WeeksOnEnd for 5th and 0.50
 under Komarious (4th, 87.45). The cloud bench predicted 87.05, so it transfers. Against Komarious on
-the same 668 opponents it is 0.47 short. A third of that gap comes from close-range bots that
+the 668 opponents the pages share it is 0.47 short. A third of that gap comes from close-range bots that
 Komarious beats almost every round (JayLexi survives less: NanoDeath 80% against 97%), and the
 rest from learning guns (Jen, Aristocles, Raiko, Cotillion). 0.2 is being built in the cloud
 around power by energy, a nearer-distance danger and a reverse-wall gun segment. The full read, by opponent group, is in
 [docs/bench/live-kitlab-0.1.md](../docs/bench/live-kitlab-0.1.md); the pages are saved in
-`data/rumble/pages/` under 2026-10-29T0723Z*.
+`data/rumble/pages/` under 2026-10-29T0838Z* (saved 08:38 UTC).
 
 ## Build
 
