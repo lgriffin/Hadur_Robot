@@ -19,3 +19,13 @@
 21:45:21 tdpick exit=0 in 52 s
 21:45:21 start tdgate
 21:45:21 watching tdgate: 3 stop rule(s)
+21:48:36 progress tdgate: 36 battles, 663/h, 0 failed, skips 7.4/battle (last 100)
+21:50:35 tdgate exit=0 in 314 s
+21:50:35 start tdgbb
+21:50:35 watching tdgbb: 3 stop rule(s)
+21:55:45 tdgbb exit=0 in 309 s
+21:55:45 start tdsum
+21:55:45 tdsum exit=0 in 0 s
+21:55:45 start tdpr
+21:55:53 tdpr exit=0 in 7 s
+21:55:53 ALLDONE
