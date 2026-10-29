@@ -385,6 +385,10 @@ public class MinimumRiskMovement {
     /** MMOVE-13: per opponent, the tick its gun could next fire, and its last seen shot's power. */
     private final java.util.Map<String, Long> nextFire = new java.util.HashMap<>();
     private final java.util.Map<String, Double> lastPower = new java.util.HashMap<>();
+    /** MMOVE-13: how long an assumed shot is kept for a seen one to replace: past any bullet's flight. */
+    static final long ASSUMED_KEEP = 150;
+    /** MMOVE-13: the assumed shots whose bullets are still in the air. */
+    private final List<EnemyShot> assumed = new ArrayList<>();
     private int lastCandidates;
     /** MMOVE-8: this member's place in the team's roster, or -1 off a team. */
     private int teamIndex = -1;
@@ -427,6 +431,7 @@ public class MinimumRiskMovement {
         past.clear();
         nextFire.clear();
         lastPower.clear();
+        assumed.clear();
         round++;
     }
 
@@ -479,6 +484,7 @@ public class MinimumRiskMovement {
                 long cool = s.fireTime + coolTicks(s.power);
                 if (cool > nextFire.getOrDefault(s.shooter, Long.MIN_VALUE)) nextFire.put(s.shooter, cool);
                 lastPower.put(s.shooter, s.power);
+                dropAssumed(s);
             }
             double w = aimed || learn ? crowdWeight(s, target, enemies) : 1.0;
             if (w < SOFT_FLOOR) continue;
@@ -501,6 +507,7 @@ public class MinimumRiskMovement {
             addGuesses(s, at, target, w);
         }
         if (heat) assumeShots(me, now, enemies, myPath);
+        assumed.removeIf(x -> now - x.fireTime > ASSUMED_KEEP);
         double reach = Math.hypot(field.width, field.height);
         for (Iterator<VirtualBullet> it = bullets.iterator(); it.hasNext(); ) {
             if (it.next().passed(me, now, reach)) it.remove();
@@ -514,6 +521,23 @@ public class MinimumRiskMovement {
             at.heading, at.velocity, s.speed(), field.width, field.height);
         add(new VirtualBullet(s, VirtualBullet.Aim.HEAD_ON, hot, w));
         add(new VirtualBullet(s, VirtualBullet.Aim.LINEAR, linear, w));
+    }
+
+    /**
+     * MMOVE-13: a seen shot replaces the shots assumed of its shooter in the same cooling
+     * window (fired no earlier than a cooling before it), so one shot is not counted twice.
+     */
+    private void dropAssumed(EnemyShot seen) {
+        long from = seen.fireTime - coolTicks(seen.power);
+        java.util.Set<EnemyShot> gone = java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
+        for (Iterator<EnemyShot> it = assumed.iterator(); it.hasNext(); ) {
+            EnemyShot a = it.next();
+            if (a.shooter.equals(seen.shooter) && a.fireTime >= from) {
+                gone.add(a);
+                it.remove();
+            }
+        }
+        if (!gone.isEmpty()) bullets.removeIf(b -> gone.contains(b.shot));
     }
 
     /** Ticks a gun takes to cool after a shot of {@code power}, at the engine's default cooling. */
@@ -547,7 +571,7 @@ public class MinimumRiskMovement {
             double mine = e.location.distance(me);
             boolean nearest = true;
             for (EnemyInfo o : enemies) {
-                if (o != e && o.location != null && o.location.distance(e.location) < mine) {
+                if (o != e && o.location != null && !o.isStale(now) && o.location.distance(e.location) < mine) {
                     nearest = false;
                     break;
                 }
@@ -557,6 +581,7 @@ public class MinimumRiskMovement {
             if (power < 0.1) continue;
             EnemyShot s = new EnemyShot(e.name, new Point2D.Double(e.location.x, e.location.y), now, power);
             addGuesses(s, myPath.getState(now), me, ASSUMED_WEIGHT);
+            assumed.add(s);
             nextFire.put(e.name, now + coolTicks(power));
         }
     }
@@ -1504,7 +1529,8 @@ public class MinimumRiskMovement {
             double mine = p.distance(e.location);
             int n = 0;
             for (int j = 0; j < v.enemies.size(); j++) {
-                if (j != i && v.enemies.get(j).location.distance(e.location) < mine) n++;
+                EnemyInfo o = v.enemies.get(j);
+                if (j != i && !o.isStale(v.now) && o.location.distance(e.location) < mine) n++;
             }
             r /= 1 + n;
         }

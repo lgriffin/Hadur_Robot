@@ -132,6 +132,9 @@ class MeleeCrowdMovementTest {
         EnemyShot seen = new EnemyShot("a", pt(500, 700), 33, 1.0);
         move.updateMeleeBullets(List.of(seen), log, me, 33, tracker.alive());
         int withSeen = move.bullets().size();
+        // The seen shot replaces the shot assumed at tick 30, in the same cooling window.
+        assertTrue(move.bullets().stream().noneMatch(b -> b.shot.fireTime == 30), "one shot is not counted twice");
+        assertEquals(2, withSeen);
         move.updateMeleeBullets(List.of(seen), log, me, 44, tracker.alive());
         assertEquals(withSeen, move.bullets().size());
         move.updateMeleeBullets(List.of(seen), log, me, 45, tracker.alive());
@@ -165,12 +168,19 @@ class MeleeCrowdMovementTest {
         List<EnemyInfo> alive = tracker.alive();
         int ia = index(alive, "a"), ic = index(alive, "c");
         MinimumRiskMovement plain = new MinimumRiskMovement(field(1000, 1000));
-        MinimumRiskMovement.View v = move.view(me, 100, 100, 3, alive, normal);
+        MinimumRiskMovement.View v = move.view(me, 100, 5, 3, alive, normal);
         move.crowd(false, false, false, true);
         assertEquals(plain.enemyRisk(p, v, ia) / 2, move.enemyRisk(p, v, ia), 1e-12, "b is nearer a than the point");
         assertEquals(plain.enemyRisk(p, v, ic), move.enemyRisk(p, v, ic), 1e-12, "none nearer c than the point");
-        MinimumRiskMovement.View two = move.view(me, 100, 100, 2, alive, normal);
+        MinimumRiskMovement.View two = move.view(me, 100, 5, 2, alive, normal);
         assertEquals(plain.enemyRisk(p, two, ia), move.enemyRisk(p, two, ia), 1e-12, "two left: unchanged");
+        // b's scan gone stale: its old place is no evidence of nearer prey.
+        scan(tracker, "a", 800, 500, 100, 60);
+        scan(tracker, "c", 100, 100, 100, 60);
+        List<EnemyInfo> later = tracker.alive();
+        MinimumRiskMovement.View late = move.view(me, 100, 60, 3, later, normal);
+        int la = index(later, "a");
+        assertEquals(plain.enemyRisk(p, late, la), move.enemyRisk(p, late, la), 1e-12, "a stale b is not counted");
     }
 
     @Test
