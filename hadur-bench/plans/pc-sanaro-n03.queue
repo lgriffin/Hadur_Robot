@@ -17,8 +17,8 @@
 #   L10   radar flip below gun heat 1.0, not 0.9 (245 B: frees 2 bytes)
 #   G18   fire gate 18 / d rad (Quantum's)   G36   fire gate 36 / d rad   (277 B as written; measure
 #         only: a gate that pays needs about 11 bytes found before it can ship)
-#   EN    Sanaro's own: push 1 / (d + 100 - energy), the strong fled and the weak ignored (263 B,
-#         measure only)
+#   EN    Sanaro's own: push weighted by energy, (energy + 50) / 150 / d, the strong fled and the weak
+#         ignored (273 B, measure only)
 #   D2    Sanaro's own: inverse-square push 250 / d^2, the near robot dominates (261 B, measure only)
 # Live-shaped census: 43 fields x 10 fresh seeds (base 14000) = 430 battles an arm, about 28 min an
 # arm (n02 ran 28-30). About 3.3 h in all.
