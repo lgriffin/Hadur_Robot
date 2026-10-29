@@ -37,3 +37,25 @@ at their best values already, and so do Eveimear's gun segments and movement set
 builds are a local optimum for changes this small. What the live read asks for (survival against
 learning guns for JayLexi, and against even and strong bots for Eveimear) needs bigger changes,
 which cost bytes and have to be traded for.
+
+## Round 4: JayLexi surfs the second wave (29 Oct, afternoon)
+
+Reading an arm against 0.1's own runs on the same sample (4 seeds each) is tighter (about ±0.3)
+than reading both against the reference. 0.1 re-read on 4 seeds on sample 2 at 87.50, against
+86.81 on 2 seeds, which shows how far one 2-seed read can drift.
+
+| Arm | Change | Bytes | Against 0.1, sample 1 | Against 0.1, sample 2 |
+|---|---|---|---|---|
+| J2w | the second wave in flight adds a quarter of its danger | 1,537 | +0.17 ± 0.33 | +0.55 ± 0.35 |
+| J2l | predict on from the first wave into the second (a fifth) | 1,538 | -0.08 ± 0.27 | -0.62 ± 0.51 |
+| Jnw | gun without the wall segment | 1,454 | about -1.3 | |
+| Jnb | no bullet-hit-bullet logging | 1,470 | about -1.7 | |
+| J2w C1 | J2w, surf stats without the distance segment (-17 B) | 1,520 | -0.20 | -0.47 |
+| J2w C3 | J2w, gun history by ticks / 10 (-10 B) | 1,527 | -0.55 | -0.08 |
+| J2w C5 | J2w, no energy cap on power (-11 B) | 1,526 | -0.49 | -0.22 |
+| J2w C2 | J2w, gun lateral speed / 3 (-9 B) | 1,528 | -0.39 | -0.51 |
+| J2w C4 | J2w, no kill cap on power (-8 B) | 1,529 | -0.57 | -0.33 |
+| J02 | J2w with C1, C3 and C5 (fits, 1,496 B) | 1,496 | -0.05 ± 0.29 | -0.04 ± 0.34 |
+
+Surfing the second wave is worth about +0.36, but every cut that pays for its 41 bytes gives the
+gain back. Only a rewrite that saves bytes without changing behaviour can bank it.
