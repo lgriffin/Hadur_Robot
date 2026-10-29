@@ -13,3 +13,6 @@
 10:10:39 start live-L10
 10:10:39 watching live-L10: 3 stop rule(s)
 10:14:50 progress live-L10: 65/430 (15%) battles, 932/h, ETA 23 min, 0 failed, skips 0.0/battle (last 100)
+10:39:02 live-L10 exit=0 in 1702 s
+10:39:02 start live-G18
+10:39:02 watching live-G18: 3 stop rule(s)
