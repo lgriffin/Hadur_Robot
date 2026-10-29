@@ -78,3 +78,65 @@ use simple aim:
 
 Bytes: 0.2 is 1,485 of 1,499 with 3 to keep spare, so 11 bytes are free. Any of the above needs
 golfing elsewhere first.
+
+## Cloud run: what the gap is made of (2026-10-29 21:10 UTC)
+
+A sample of the gap, `hadur-bench/kitlab/gap-field.txt` (seed 29), has 64 bots:
+
+- 24 nanos FoilistMC survives 97%+ against (`weak-nano`);
+- 24 other bots it survives 97%+ against (`weak`);
+- 16 it survives 90 to 97% against (`easy`).
+
+JayLexi 0.2, FoilistMC 1.0 and Komarious 1.88 each fought all of it: 2 seeds, 35 rounds, 128 battles each, all of them ok. `python3 tools/kitlab_gap.py kitlab/gap-field.txt work/kitlab-gap-J02 work/kitlab-gap-FMC work/kitlab-gap-KOM` (from `hadur-bench`) prints the tables. All values are per round, averaged over the group's bots.
+
+| Group | Share JayLexi / FoilistMC / Komarious | Gap | Live gap | Rounds won JL / FMC | Damage taken JL / FMC | Damage dealt JL / FMC | Ticks JL / FMC |
+|---|---|---|---|---|---|---|---|
+| weak-nano | 91.20 / 93.99 / 92.33 | -2.79 | -2.34 | 98.5 / 99.8 | 14.0 / 11.0 | 60.9 / 60.8 | 489 / 480 |
+| weak | 95.41 / 96.61 / 95.88 | -1.20 | -1.5 (all weak) | 99.6 / 99.8 | 7.1 / 5.6 | 63.3 / 64.9 | 488 / 478 |
+| easy | 79.18 / 82.21 / 80.59 | -3.03 | -3.25 | 91.7 / 94.4 | 22.9 / 19.6 | 47.1 / 45.7 | 629 / 643 |
+| all 64 | 89.77 / 92.03 / 90.73 | -2.25 | | 97.2 / 98.4 | 13.6 / 11.1 | 58.3 / 58.6 | 524 / 520 |
+
+- **The bench reproduces the live gap** group by group, so this sample can judge 0.3 arms. One arm
+  takes about 8 minutes on the cloud box.
+- **The gap is being hit, not killing slower.**
+  - JayLexi deals the same damage per round as FoilistMC (58.3 against 58.6), and its rounds are as
+    long (524 ticks against 520).
+  - Ramming is level (0.5 a round each).
+  - JayLexi takes 2.5 more damage a round (13.6 against 11.1, +23%).
+  - Of the 2.25 share gap, the opponent's extra score (+3.5 a round, nearly all of it bullet
+    damage) is three quarters. JayLexi's lower score (-1.1, the survival points of the extra rounds
+    it loses) is the rest.
+  - The lost rounds follow from the hits: 1.3 more rounds in 100 against nanos, 2.7 more against
+    the easy group.
+- **The guns that learn are where the hits come from.** A keyword read of the opponents' sources
+  is approximate: one movement comment put Squirrel among the pattern matchers, and 25 bots ship
+  no source. On that read:
+  - pattern matchers (11 bots: LigMA, Moebius, Pugio and others) cost **3.63** share each;
+  - head-on, linear and circular aim (24 bots) cost only 1.00 each;
+  - the bots without source cost 2.44 each, among them VirginSteele, ColorNanoP and AceSurf.
+
+  The worst rows: LigMA 78.7 against 90.7 (a pattern matcher), Moebius 77.3 against 87.1 (a pattern
+  matcher), Freya 70.6 against 80.0, VirginSteele 81.4 against 90.6, Pugio 70.7 against 79.0 (a
+  pattern matcher).
+- **When in the battle the extra hits land** (damage taken per 1,000 ticks, JayLexi against
+  FoilistMC):
+  - Against nanos the excess is largest in rounds 0 to 2 (37.5 against 28.8) and shrinks to 28.3
+    against 26.0 by rounds 20 to 34. The first waves arrive before the surf has data, and JayLexi's
+    unlearned movement is easy to hit.
+  - Against the weak and easy groups it is the other way round. Level in rounds 0 to 2, FoilistMC
+    keeps getting harder to hit (weak 20.4 down to 10.3; easy 36.6 down to 27.8), while JayLexi
+    flattens out (13.5 and 34.0) at Komarious's level.
+  - JayLexi's movement settles into something a pattern matcher or a learning gun keeps hitting.
+
+### What this says for 0.3
+
+1. **Make the surf harder to learn.** Pattern matchers and learning guns cost the most, and the
+   excess grows late in the battle. Candidates:
+   - a little noise in the danger, so equal choices do not repeat;
+   - a varied preferred distance;
+   - a flattener that marks where JayLexi itself went (its own visits), turned on when it is hit
+     often.
+2. **Start safer before the surf has data**: seed the danger with where head-on and linear aim
+   would hit, for the first rounds against nanos.
+3. Each arm is judged on `gap-field` first, about 8 minutes, then on the two 48-bot samples, so a
+   gain on the weak field does not cost the strong one.
