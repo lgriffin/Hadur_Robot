@@ -1,0 +1,37 @@
+{
+ "plan": "pc-team-path",
+ "updated": 1793254542.90563,
+ "steps": {
+  "tpprep": {
+   "status": "pending"
+  },
+  "tpbb": {
+   "status": "pending"
+  },
+  "tpmp": {
+   "status": "pending"
+  },
+  "tptn": {
+   "status": "pending"
+  },
+  "tptnbb": {
+   "status": "pending"
+  },
+  "tppick": {
+   "status": "pending"
+  },
+  "tpgate": {
+   "status": "pending"
+  },
+  "tpgbb": {
+   "status": "pending"
+  },
+  "tpsum": {
+   "status": "pending"
+  },
+  "tppr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
