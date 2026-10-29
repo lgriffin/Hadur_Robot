@@ -1,0 +1,31 @@
+{
+ "plan": "pc-sanaro-n03",
+ "updated": 1793265200.2787933,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "live-S0": {
+   "status": "pending"
+  },
+  "live-T60": {
+   "status": "pending"
+  },
+  "live-L10": {
+   "status": "pending"
+  },
+  "live-G18": {
+   "status": "pending"
+  },
+  "live-G36": {
+   "status": "pending"
+  },
+  "read-live": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
