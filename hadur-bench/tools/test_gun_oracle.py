@@ -164,6 +164,8 @@ class JoinTest(unittest.TestCase):
             text = f.read()
         self.assertIn("| blend (rolling, K1) |", text)
         self.assertIn("| hindsight: best fixed mix per opponent |", text)
+        self.assertIn("| blend (rolling, views + aims, K1) |", text)
+        self.assertIn("| visits (k-NN, K1) |", text)
 
     # @Tag("ORACLE-3")
     def test_a_hit_goes_to_the_wave_due_nearest_it(self):
@@ -242,6 +244,61 @@ class RollingBlendTest(unittest.TestCase):
         z["hit"] = np.array([18.0, np.nan])  # due at 10 by flight time, but it hit at 18
         w = go.rolling_weights(z, like, decay=0.5, power=1.0)
         self.assertEqual(w[1].tolist(), [1.0, 1.0])
+
+
+@unittest.skipIf(np is None, "numpy is not installed")
+class VisitMemberTest(unittest.TestCase):
+
+    @staticmethod
+    def ticks(n, x0=400.0, vx=8.0):
+        """Hadur driving east at 8 px a tick from (x0, 450), the shooter still at (400, 100)."""
+        return [(t, x0 + vx * t, 450.0, 400.0, 100.0, 0.0, 0.0, 100.0, 100.0, 0, math.pi / 2, vx) for t in range(n)]
+
+    # @Tag("ORACLE-4")
+    def test_an_enemy_wave_sees_where_hadur_went(self):
+        # Fired at 10 on Hadur's state at 9 (x 472): bearing atan2(72, 350), Hadur orbiting clockwise.
+        (w,) = go.enemy_waves(self.ticks(80), [(11, 2.0, 400.0, 114.0, 0.0)])
+        self.assertEqual((w["fire"], w["dir"]), (10, 1))
+        self.assertAlmostEqual(w["bearing"], math.atan2(72.0, 350.0))
+        self.assertAlmostEqual(w["feat"][0], 8.0 * math.cos(w["bearing"]), places=6)
+        self.assertEqual(w["feat"][3], 9, "driving one way on every tick back to the round's first")
+        self.assertGreater(w["gf"], 0.0, "it went on clockwise")
+        self.assertLess(w["gf"], 1.1, "about as far as the escape angle allows (a straight line closes in, so a little past 1)")
+        self.assertGreater(w["pass"], 10)
+
+    # @Tag("ORACLE-4")
+    def test_the_member_puts_density_where_like_waves_saw_hadur_and_waits_for_them_to_pass(self):
+        n = 6
+        z = {"w_battle": np.zeros(n, dtype=int), "w_round": np.zeros(n, dtype=int),
+             "w_pass": np.array([20.0, 30, 40, 50, 60, 90]), "w_gf": np.array([0.5, 0.5, 0.5, 0.5, -0.5, 0.5]),
+             "w_feat": np.tile(np.array([8, 0, 0, 10, 10, 400, 1, 1, 30], dtype=np.float32), (n, 1)),
+             "w_dir": np.ones(n, dtype=int), "w_mea": np.full(n, 0.6), "w_bearing": np.zeros(n)}
+        z["w_feat"][4, 0] = 0.0  # the wave that saw Hadur at -0.5 was fired going slowly
+        z.update(gf=np.array([0.5, 0.5]), wave=np.array([5, 2]), battle=np.zeros(2, dtype=int),
+                 round=np.zeros(2, dtype=int), fire=np.array([70, 25]), bearing=np.zeros(2),
+                 dir=np.ones(2, dtype=int), mea=np.full(2, 0.6), dist=np.full(2, 400.0))
+        surface, value = go.visit_knn(z, k=4)
+        grid = np.linspace(-1, 1, go.SAMPLES)
+        self.assertAlmostEqual(grid[int(np.argmax(surface[0]))], 0.5, places=6)
+        self.assertGreater(value[0], surface[0][int(np.argmin(np.abs(grid + 0.5)))])
+        self.assertTrue(np.isnan(value[1]), "fired at 25 only one wave had passed")
+
+
+@unittest.skipIf(np is None, "numpy is not installed")
+class RankAndCalibrationTest(unittest.TestCase):
+
+    # @Tag("ORACLE-4")
+    def test_rank_reads_the_ordering_and_calibration_takes_out_overconfidence(self):
+        flat = np.ones((2, go.SAMPLES))
+        _, _, rank = go.rate(flat, np.ones(2), rank=True)
+        self.assertTrue(np.allclose(rank, 0.5))
+        peak = np.zeros((2, go.SAMPLES))
+        peak[:, 40] = 100.0
+        bits, _, rank = go.rate(peak, np.array([100.0, 0.0]), rank=True)
+        self.assertGreater(rank[0], 0.98)
+        cb, mix = go.calibrated(bits, np.array([0, 0]), 1)
+        self.assertGreater(mix, 0.0, "a confident miss is worth mixing out")
+        self.assertGreater(cb, float(np.mean(bits)))
 
 
 if __name__ == "__main__":
