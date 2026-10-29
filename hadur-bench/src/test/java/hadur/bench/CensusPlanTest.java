@@ -30,6 +30,7 @@ class CensusPlanTest {
         assertTrue(queue.contains("--set census-312.txt --seeds 1 --seed-base 4900 --arms plans/census-320.arms"));
         assertTrue(queue.contains("build-ablation.sh aa ") && queue.contains("build-ablation.sh noaim ")
             && queue.contains("build-ablation.sh noaim,aa "));
+        assertTrue(queue.contains("multiarm.py ${W}/arms.tsv --census census-312.txt "), "the census-weighted field column");
         assertTrue(queue.contains("--arm km --panel census-312.txt --bar 0.18"));
         assertTrue(queue.contains("tools/per_robot.py ${W}/arms.tsv --arms km"));
         String[] steps = {"prep", "census", "gate", "pr"};

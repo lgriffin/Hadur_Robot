@@ -39,7 +39,7 @@ census | ./bench-top20.sh ${C} ${P} --set census-312.txt --seeds 1 --seed-base 4
   stop: stall 30m
   stop: aa after 20%
 
-gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_census-320.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm km --panel census-312.txt --bar 0.18 --out ${OUT}/$(date +%Y-%m-%d)_census-320-gate.md && python3 tools/per_robot.py ${W}/arms.tsv --arms km --out ${OUT}/$(date +%Y-%m-%d)_census-320-per-robot.md --out-tsv ${OUT}/census-320-per-robot.tsv
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --census census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_census-320.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm km --panel census-312.txt --bar 0.18 --out ${OUT}/$(date +%Y-%m-%d)_census-320-gate.md && python3 tools/per_robot.py ${W}/arms.tsv --arms km --out ${OUT}/$(date +%Y-%m-%d)_census-320-per-robot.md --out-tsv ${OUT}/census-320-per-robot.tsv
   after: census
 
 pr | bash tools/open_results_pr.sh claude/pc-census-320-results "The 3.20 census: master (MOVE-29 on) against 3.19's duel play on the whole field" ${OUT}/*_census-320*.md ${OUT}/census-320-per-robot.tsv
