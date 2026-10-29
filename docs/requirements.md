@@ -1562,6 +1562,7 @@ blends its terms; the oracle measures what each model predicts.
 | MOVE-29 | State | While the aim-member switch is on, in a duel, the three-option surf's danger where the views have data shall be the weighted mean of the views' score and the head-on, linear and circular simple aims' (one tick back, each the surf's kernel on the aim's angle over the intersection), each member weighted by its standing weight (1 for the views, 0.1 for an aim) times 2^(2 x its rolling score), the score a mean decayed by 0.8 a bullet of log2 of the member's probability at each bullet that hit us over a uniform guess's (mixed with 5% uniform), learnt before the views learn the bullet. With the switch off the danger is the views'. | R9 |
 | BENCH-134 | Ubiquitous | The bench shall carry the `pc-k0-oracle` card: the current release with `aesrec,oracle` on `aes-flat-learning.txt` (the 432 learning guns on flat movers), 2 fresh seeds from 4200, truth log on, 12 workers, stopping on 30 failed battles, 40+ skipped turns a battle over the last 200 or no battle in 30 minutes; then the oracle's join and score, and a results PR only after both pass. | T7 |
 | BENCH-135 | Ubiquitous | The bench shall carry the `pc-team-path2` card, which runs PATH (TMODE-25) forced on for every team (`mp`) and a bb A/A against aa on all 46 teams at 16 fresh seeds from 5100, and gates the pooled gain (each team's mp gain less half its bb gain, summed over 46) at +0.30 APS with the 95% low end above zero; the card changes no robot code. | T7 |
+| BENCH-139 | Ubiquitous | The bench shall carry the `pc-team-dodge` card, which screens DODGE (TMODE-27) forced on (`dg`) beside a bb A/A against aa on all 46 teams at 12 seeds from 5400; gates DODGE as every team's default on the pooled gain (each team's dg gain less half its bb gain, summed over 46) at +0.30 APS with the 95% low end above zero; picks per team DODGE at +3.0 points or more over both baselines with the low end above zero (a team the shipped table names keeps its entry's modes); and gates the picked table on 16 fresh seeds from 5500 at +0.30 APS; only a passed per-team gate writes that table as the table to ship. | T7 |
 | BENCH-138 | Ubiquitous | The bench shall carry the `pc-k1-aim` card: the current release (c), its A/A copy (aa) and the aim members on (km, MOVE-29) on `aes-flat-learning.txt` (the 432 learning guns on flat movers), 1 fresh seed from 4400, 12 workers, truth log off, stopping on 30 failed battles, an arm scoring nothing in 8, 40+ skipped turns a battle over the last 200, no battle in 30 minutes or an A/A outside its band after 20%, and finishing early once km cannot reach +0.05 APS at z 3 after 30%; then the gate (km minus pooled c and aa over the 432 / 1,217 pairings at +0.05 APS, 95% low end above 0), per-robot losses, the oracle re-joined on the pc-k0-oracle battles when they are on the PC, and a results PR only after the gate passes its analysis. | T7 |
 
 - **ORC record**: `ORC,round,tick,fireTime,power,firing,sourceX,sourceY,absBearing,orbitDirection,maxEscapeAngle,distance,chosen,`
@@ -2161,3 +2162,19 @@ profiles, and the rumbles list it as a new participant.
 - **BENCH-135.** Card plans/pc-team-path2.queue: aa, bb, mp (build-ablation `tmpath`); bb and mp on
   team-census46.txt at 16 seeds from 5100 (16, not 10, to narrow the pooled interval); `team_modes.py
   gate` over all 46 teams at +0.30 APS. A PASS is followed by a PR that sets FORCE_PATH = true.
+
+## Ogi's dodge as one piece (TMODE-27, BENCH-139)
+
+- **Why.** Leigh 2026-10-29: OgiTeam leads the team rumble by about 6.4 APS on survival (97.6%).
+  Its parts ported one switch at a time (SOFT, SCREEN, POOL, LEARN, WAVES, radar) read zero; its
+  dodge only works whole: shot detection, a learned per-class danger model with simple-aim
+  experts, and a path check over the safest spots. Leigh: "If it makes sense to do a parallel full
+  rebuild of the teams core do so".
+- **TMODE-27.** `TeamModes.Mode.DODGE` (FORCE_DODGE off), `melee.TeamDodge` and
+  `melee.AimExperts`: a parallel team movement path that stands in for the virtual bullets and
+  the SOFT/LEARN/POOL/WAVES switches. Profiles are made once a shot (the CPU that sank WAVES with
+  learning); experts' errors travel with link samples (LinkCodec version 4, written only when a
+  dodge carries them). Ablations `tmdodge` (dg) and `tmdodgeb` (db, the ranking keeps the simple
+  bullets). Forced on, every duel and melee fixture replays bit for bit.
+- **BENCH-139.** Card plans/pc-team-dodge.queue: global gate and per-team pick from one screen.
+
