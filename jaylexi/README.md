@@ -7,7 +7,22 @@ gun segmented on velocity history, lateral speed, walls ahead and distance. The 
 and the results are in [docs/kitlab.md](../docs/kitlab.md); the requirements are JAYLEXI-1 to
 JAYLEXI-10 in [docs/requirements.md](../docs/requirements.md).
 
-0.1 is 1,496 bytes of 1,499 (two classes; 3 spare, as plan K6 asks). Not yet released or submitted.
+0.1 is 1,496 bytes of 1,499 (two classes; 3 spare, as plan K6 asks). Released 2026-10-28 (tag `jaylexi-v0.1`).
+
+## Standing
+
+| Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | 5th place | Gap to 5th |
+|---|---|---|---|---|---|---|---|---|
+| 0.1 | 2026-10-29 07:23 | **MiniRumble** | **6th of 671** | **86.95 ± 0.29** | 670 | 742 | simonton.mini.WeeksOnEnd 1.10.4, 87.35 | +0.40 |
+
+**JayLexi 0.1 is 6th in MiniRumble** on its first full pass, 0.40 behind WeeksOnEnd for 5th and 0.50
+under Komarious (4th, 87.45). The cloud bench predicted 87.05, so it transfers. Against Komarious on
+the 668 opponents the pages share it is 0.47 short. A third of that gap comes from close-range bots that
+Komarious beats almost every round (JayLexi survives less: NanoDeath 80% against 97%), and the
+rest from learning guns (Jen, Aristocles, Raiko, Cotillion). 0.2 is being built in the cloud
+around power by energy, a nearer-distance danger and a reverse-wall gun segment. The full read, by opponent group, is in
+[docs/bench/live-kitlab-0.1.md](../docs/bench/live-kitlab-0.1.md); the pages are saved in
+`data/rumble/pages/` under 2026-10-29T0838Z* (saved 08:38 UTC).
 
 ## Build
 
