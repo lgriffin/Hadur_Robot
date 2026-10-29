@@ -1,0 +1,22 @@
+{
+ "plan": "pc-k0-oracle",
+ "updated": 1793248193.2330208,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "record": {
+   "status": "pending"
+  },
+  "join": {
+   "status": "pending"
+  },
+  "score": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
