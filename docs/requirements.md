@@ -1538,6 +1538,27 @@ checks the re-blend picks what the surf picked, and fits.
   * 2.5^distQuotient / 2.5 * escape`; the total adds the cheapest next-wave danger. Ablation
   `aesrec` (suffix ar) in `build-ablation.sh`; `MoveDesign.AES_RECORD` is off in every shipped jar.
 
+## The enemy-gun oracle (ORACLE-1, ORACLE-2, BENCH-134)
+
+K0 of the road to king (Leigh's doc "Hadur: the 1:1 map, tonight's card, and the road to 1v1 king",
+2026-10-28; docs/bench/gun-oracle.md). The king's lead is the 431 learning guns on flat movers, where
+damage taken is the whole gap and no table mode applies, so the work is a better model of the enemy's
+gun. The oracle scores any model of it offline against the bullets the engine says were fired, with
+the surf's own views as the baseline, before a model costs a PC battle. AES-1 measured how the surf
+blends its terms; the oracle measures what each model predicts.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| ORACLE-1 | State | While the oracle-record switch is on, in a duel, at the first tick the three-option surf publishes its options on a wave (MOVE-10), the duel shall emit one `ORC` telemetry record holding the wave's fire time, power, whether a real bullet rides it, its source, absolute bearing, orbit direction, maximum escape angle and distance, the option taken, each option's plan interval, and for each danger view whether it is on with data, its weight in the danger average and every neighbour it finds for the wave (guess factor and scan weight, as the views' score weighs them); the neighbours shall be searched in a cache slot of their own, so the option taken is the one the surf takes with the switch off. With the switch off no record is made. | R9 |
+| ORACLE-2 | Ubiquitous | `data/tools/gun_oracle.py` shall join each `ORC` record on a real wave to the enemy bullet fired on it, rebuild every view's surface with the surf's own kernel, and rate each model (uniform, each view, the shipped blend, the head-on, linear and circular aims from the truth log) by log2 density at the bullet's guess factor over the uniform's and by the share of bullets from the third of the wave the model rated least dangerous, each opponent weighted equally; with AES records in the same battles it shall report the share of options whose views' score it rebuilds to 0.1% and of waves on which the rebuilt scores pick the option the surf took. | R9 |
+| BENCH-134 | Ubiquitous | The bench shall carry the `pc-k0-oracle` card: the current release with `aesrec,oracle` on `aes-flat-learning.txt` (the 432 learning guns on flat movers), 2 fresh seeds from 4200, truth log on, 12 workers, stopping on 30 failed battles, 40+ skipped turns a battle over the last 200 or no battle in 30 minutes; then the oracle's join and score, and a results PR only after both pass. | T7 |
+
+- **ORC record**: `ORC,round,tick,fireTime,power,firing,sourceX,sourceY,absBearing,orbitDirection,maxEscapeAngle,distance,chosen,`
+  then `low,high` per option (counter-clockwise, stop, clockwise; `nan,nan` for no plan), then `views`, then per view
+  `on,weight,count` and `count` pairs `guessFactor,scanWeight`. A guess factor `g` is the angle
+  `absBearing + g * orbitDirection * maxEscapeAngle`. Ablation `oracle` (suffix or) in `build-ablation.sh`;
+  `MoveDesign.ORACLE_RECORD` is off in every shipped jar.
+
 ## The melee gun in the crowd (MGUN-7, M7)
 
 The melee gap read (docs/bench/melee-gap-3.13.md) found Hadur 3.13 17th in the MeleeRumble with

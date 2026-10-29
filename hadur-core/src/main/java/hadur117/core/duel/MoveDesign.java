@@ -123,6 +123,13 @@ final class MoveDesign {
     static final boolean AES_RECORD = false;
 
     /**
+     * ORACLE-1 (measurement, K0 of the road to king): each wave's first three-option rating also
+     * prints an {@code ORC} record with every danger view's neighbours on the wave, for the offline
+     * enemy-gun oracle ({@code data/tools/gun_oracle.py}). Behaviour unchanged.
+     */
+    static final boolean ORACLE_RECORD = false;
+
+    /**
      * MOVE-25: the duel surfs with the stop-point surf (StopPointSurf, docs/bench/surf-b-rivals-read.md):
      * dozens of stop points both ways rated on a smoothed probability histogram of the same views,
      * BeepBoop's 1 / sqrt(4 + t) time weight, two waves, and a plan kept until the waves or the

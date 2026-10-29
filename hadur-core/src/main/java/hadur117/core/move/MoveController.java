@@ -943,6 +943,60 @@ public class MoveController {
         return sum;
     }
 
+    /**
+     * ORACLE-1 (K0, measurement): what each danger view would say about wave {@code w}, as the
+     * {@link OracleRecord} line carries it: per view, whether it is on with data, its weight in the
+     * danger average, how many neighbours it found, then each neighbour's guess factor and scan
+     * weight (its decay over the square root of its distance, times its seed weight), exactly as
+     * {@link #getDangerScore} weighs them. Any kernel can then be rebuilt offline, the surf's own
+     * included. Read-only on the views: it uses {@link #dangerPercentile}'s cache slot and empties
+     * it after, so the surf's cached neighbours and its choices are untouched.
+     *
+     * @param w the wave
+     * @return the numbers, view after view
+     */
+    public double[] oracleNeighbours(Wave w) {
+        int n = views.size();
+        double[] estimate = viewEstimate();
+        double[][] parts = new double[n][];
+        int total = 0;
+        try {
+            validateCache(w, FORENSICS_CACHE);
+            for (int i = 0; i < n; i++) {
+                KnnView<TimestampedGuessFactor> view = views.get(i);
+                if (view.effectiveSize() == 0 || !viewOn(view, estimate)) {
+                    parts[i] = new double[] {0, effectiveWeight(i), 0};
+                } else {
+                    List<KdTree.Entry<TimestampedGuessFactor>> neighbors =
+                        getNearestNeighbors(view, w, FORENSICS_CACHE);
+                    double[] decay = view.getDecayWeights(neighbors);
+                    double[] p = new double[3 + 2 * decay.length];
+                    p[0] = 1;
+                    p[1] = effectiveWeight(i);
+                    p[2] = decay.length;
+                    for (int k = 0; k < decay.length; k++) {
+                        KdTree.Entry<TimestampedGuessFactor> entry = neighbors.get(k);
+                        p[3 + 2 * k] = entry.value.guessFactor;
+                        p[4 + 2 * k] = decay[k]
+                            / Math.sqrt(Math.max(entry.distance, MIN_DISTANCE)) * entry.value.weight();
+                    }
+                    parts[i] = p;
+                }
+                total += parts[i].length;
+            }
+        } finally {
+            for (KnnView<TimestampedGuessFactor> view : views) view.cachedNeighbors.remove(FORENSICS_CACHE);
+            cacheOwners.remove(FORENSICS_CACHE);
+        }
+        double[] out = new double[total];
+        int at = 0;
+        for (double[] p : parts) {
+            System.arraycopy(p, 0, out, at, p.length);
+            at += p.length;
+        }
+        return out;
+    }
+
     /** MOVE-9: the neighbour-cache key the HF danger reading uses, apart from every surf index. */
     private static final int FORENSICS_CACHE = -1;
 

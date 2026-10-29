@@ -89,6 +89,10 @@ public class SurfMover {
     private double[] aesCapture;
     /** AES-1: records made since the last {@link #drainAesRecords}. */
     private final List<String> aesRecords = new ArrayList<>();
+    /** ORACLE-1: whether each wave's first three-option rating also records the views' neighbours (bench builds only; off by default). */
+    private boolean oracleRecord;
+    /** ORACLE-1: records made since the last {@link #drainOracleRecords}. */
+    private final List<String> oracleRecords = new ArrayList<>();
     /** MOVE-14: whether the protean pick may replace the least-danger option (off by default). */
     private boolean proteanOn;
     /** MOVE-14: the mean dwell of a protean pick, in ticks. */
@@ -216,6 +220,23 @@ public class SurfMover {
         if (aesRecords.isEmpty()) return List.of();
         List<String> out = new ArrayList<>(aesRecords);
         aesRecords.clear();
+        return out;
+    }
+
+    /**
+     * ORACLE-1 (K0): whether each wave's first three-option rating also prints an {@link OracleRecord}
+     * with every danger view's neighbours on the wave, for the enemy-gun oracle. Read-only on the
+     * views and on the surf: the option taken is the same with it on or off.
+     */
+    public void setOracleRecord(boolean on) {
+        this.oracleRecord = on;
+    }
+
+    /** ORACLE-1: the records made since the last call, oldest first; the list is then emptied. */
+    public List<String> drainOracleRecords() {
+        if (oracleRecords.isEmpty()) return List.of();
+        List<String> out = new ArrayList<>(oracleRecords);
+        oracleRecords.clear();
         return out;
     }
 
@@ -571,6 +592,12 @@ public class SurfMover {
             }
             aesRecords.add(AesRecord.line(surfWave, chosen.ordinal(), moveCtrl.viewCount(),
                 present, totals, captures));
+        }
+
+        // ORACLE-1: the views' neighbours on the wave, once, at the same first rating.
+        if (first && oracleRecord) {
+            oracleRecords.add(OracleRecord.line(surfWave, chosen.ordinal(), firsts,
+                moveCtrl.viewCount(), moveCtrl.oracleNeighbours(surfWave)));
         }
 
         // Drive the same way the prediction did: toward the destination, wall-smoothed on

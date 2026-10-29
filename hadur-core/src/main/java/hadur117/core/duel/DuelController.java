@@ -326,6 +326,7 @@ public final class DuelController {
         this.surfMover.setDistancingToEnemy(duelOnly(MoveDesign.DISTANCING_TO_ENEMY, enemiesTotal));
         this.surfMover.setProtean(MoveDesign.PROTEAN, MoveDesign.PROTEAN_DWELL);
         this.surfMover.setAesRecord(MoveDesign.AES_RECORD);
+        this.surfMover.setOracleRecord(MoveDesign.ORACLE_RECORD);
         this.surfMover.setStopPointSurf(duelOnly(MoveDesign.STOP_POINT_SURF, enemiesTotal));
         this.surfMover.setStopPointAimMix(MoveDesign.AIM_MIX);
         this.shadowAvoidance = new ShadowAvoidance(fieldWidth, fieldHeight);
@@ -827,6 +828,10 @@ public final class DuelController {
             // AES-1: the decision records the surf made this tick (none unless the switch is on).
             for (String r : surfMover.drainAesRecords()) {
                 telemetry.emit("AES," + round + "," + in.time() + "," + r);
+            }
+            // ORACLE-1: the views' neighbours the surf recorded this tick (none unless the switch is on).
+            for (String r : surfMover.drainOracleRecords()) {
+                telemetry.emit("ORC," + round + "," + in.time() + "," + r);
             }
         }
         // GUN-7: the next aim may read this plan, one tick on, if the surf published one.
