@@ -49,7 +49,7 @@ aim | ./bench-top20.sh ${C} ${P} --set aes-flat-learning.txt --seeds 1 --seed-ba
 gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_k1-aim.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm km --panel aes-flat-learning.txt --bar 0.05 --out ${OUT}/$(date +%Y-%m-%d)_k1-aim-gate.md && python3 tools/per_robot.py ${W}/arms.tsv --arms km --out ${OUT}/$(date +%Y-%m-%d)_k1-aim-per-robot.md --out-tsv ${OUT}/k1-aim-per-robot.tsv
   after: aim
 
-rejoin | if [ -d ${K0}/battles ]; then python3 ../data/tools/gun_oracle.py join ${K0} --out ${K0}/oracle-k1.npz --jobs 12 && python3 ../data/tools/gun_oracle.py score ${K0}/oracle-k1.npz --out ${OUT}/$(date +%Y-%m-%d)_k1-oracle-432.md --tsv ${OUT}/k1-oracle-432-per-robot.tsv; else echo "pc-k0-oracle battles not on this PC: the 432 re-join was skipped" > ${OUT}/$(date +%Y-%m-%d)_k1-oracle-432.md; fi
+rejoin | if [ -d ${K0}/battles ]; then python3 ../data/tools/gun_oracle.py join ${K0} --out ${K0}/oracle-k1.npz --jobs 12 && python3 ../data/tools/gun_oracle.py score ${K0}/oracle-k1.npz --out ${OUT}/$(date +%Y-%m-%d)_k1-oracle-432.md --tsv ${OUT}/k1-oracle-432-per-robot.tsv; else rm -f ${OUT}/k1-oracle-432-per-robot.tsv && echo "pc-k0-oracle battles not on this PC: the 432 re-join was skipped" > ${OUT}/$(date +%Y-%m-%d)_k1-oracle-432.md; fi
   after: gate
 
 pr | bash tools/open_results_pr.sh claude/pc-k1-aim-results "K1: the aim members (MOVE-29) on the 432 learning guns on flat movers, and the oracle re-scored on the 432" ${OUT}/*_k1-aim*.md ${OUT}/k1-aim-per-robot.tsv ${OUT}/*_k1-oracle-432.md $(find ${OUT} -maxdepth 1 -name k1-oracle-432-per-robot.tsv) $(find ${W} -maxdepth 1 -name EARLY-STOP.md)
