@@ -17,7 +17,7 @@
 
     <properties>
         <!-- The robot's version: the jar is named for it and JayLexi.properties takes it by filtering. -->
-        <jaylexi.release>0.1</jaylexi.release>
+        <jaylexi.release>0.2</jaylexi.release>
         <!-- MiniRumble's limit, as Robocode's codesize tool counts the shipped jar (JAYLEXI-1). -->
         <jaylexi.codesize.limit>1499</jaylexi.codesize.limit>
         <!-- Rating clients still run Java 8; the shipped class targets it. -->
