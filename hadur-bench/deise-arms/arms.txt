@@ -20,3 +20,13 @@ W10 | a wave from a robot unlikely to aim at Deise weighs 0.1, not 0.25 | DeiseL
 W50 | a wave from a robot unlikely to aim at Deise weighs 0.5, not 0.25 | DeiseLab.java | s/? 1 : 0.25)/? 1 : 0.5)/
 REACH | the ring reaches 0.6 of the target's distance, up to 220 px, not 0.45 and 160 | Move.java | s/Math.min(160, targetDistance \* 0.45)/Math.min(220, targetDistance * 0.6)/
 R72 | 72 candidate headings, not 36 | Move.java | s/CANDIDATES = 36;/CANDIDATES = 72;/
+# Stage E3b (pc-deise-e06): E3a (pc-deise-e05, PR #424) passed AIM2 (+0.42 ± 0.23 over D) and
+# left P2 (+0.30) and W10 (+0.14) as stack partners; W50 (-0.54) and REACH (-0.70) lose, R72 is
+# level. The stacks are benched as the classes they would ship, built on FIT3F (14 bytes freed):
+# AIM2 fitted keeps each opponent's aim weight from its last scan (1, or the stray weight), which
+# sets its push and weighs its waves. FA, FAP, FAW and FAPW are 1,499 bytes, PW 1,480.
+FA | AIM2 fitted: a likely shooter's push 160,000, others 80,000 (1,499 B flat class) | =deise-arms/e3/FA.java
+FAP | FA with every push doubled (P2) | =deise-arms/e3/FAP.java
+FAW | FA with a stray wave and push weighing 0.1 (W10) | =deise-arms/e3/FAW.java
+FAPW | FA with both P2 and W10 | =deise-arms/e3/FAPW.java
+PW | FIT3F with P2 and W10, no aim push (1,480 B flat class) | =deise-arms/e3/PW.java
