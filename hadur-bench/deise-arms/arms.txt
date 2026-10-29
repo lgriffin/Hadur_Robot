@@ -10,3 +10,13 @@ D | Deise 0.3 (the core-driven DeiseLab, which the shipped 1,494-byte class matc
 MIR | kc.mini.Mirage 0.2 in the seat (1st, 71.20 live) | @kc.mini.Mirage 0.2
 SAOR | hadur117.micro.Saor 0.2 in the seat (68.79 live in MiniMelee): the control | @hadur117.micro.Saor 0.2
 FIT3F | Deise 0.3 without the field cap on power; 1,480 B flat class | =deise-arms/e2/FIT3F.java
+# Stage E3a (pc-deise-e05): crowd survival. pc-deise-e04 (PR #411) put Mirage 1.46 ahead (live 1.38)
+# with damage level (143.5 to 144.9 a round) and final duels level (71.4% to 70.9% won): the gap is
+# reaching them, 64.1% of rounds to Mirage's 75.8%. Each arm changes one thing the crowd sees, on
+# DeiseLab (unfitted); a winner is fitted afterwards into FIT3F's 14 freed bytes plus 0.3's 5 spare.
+AIM2 | the push from an opponent likely aiming at Deise counts double | Move.java | s/: 80000) \/ sq/: aimsAtUs(bot, Math.sqrt(sq(bot[X] - myX, bot[Y] - myY)), bots) ? 160000 : 80000) \/ sq/
+P2 | every opponent's push doubled, against the waves | Move.java | s/: 80000) \/ sq/: 160000) \/ sq/
+W10 | a wave from a robot unlikely to aim at Deise weighs 0.1, not 0.25 | DeiseLab.java | s/? 1 : 0.25)/? 1 : 0.1)/
+W50 | a wave from a robot unlikely to aim at Deise weighs 0.5, not 0.25 | DeiseLab.java | s/? 1 : 0.25)/? 1 : 0.5)/
+REACH | the ring reaches 0.6 of the target's distance, up to 220 px, not 0.45 and 160 | Move.java | s/Math.min(160, targetDistance \* 0.45)/Math.min(220, targetDistance * 0.6)/
+R72 | 72 candidate headings, not 36 | Move.java | s/CANDIDATES = 36;/CANDIDATES = 72;/

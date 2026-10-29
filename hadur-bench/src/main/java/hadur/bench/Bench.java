@@ -1383,9 +1383,10 @@ public final class Bench {
                 say("  melee battle " + seed + "/" + runs + (candidate ? "" : " baseline")
                     + " FAILED; see " + dir.resolve("engine.log"));
             } else {
-                say(String.format(Locale.ROOT, "  melee battle %d/%d%s: Hadur placed %.0f, APS %.1f, survival %.1f",
+                // The skipped turns let benchwatch's `skips` rule read a melee step (BENCH-130).
+                say(String.format(Locale.ROOT, "  melee battle %d/%d%s: Hadur placed %.0f, APS %.1f, survival %.1f, skipped turns %d",
                     seed, runs, candidate ? "" : " baseline", us[1],
-                    MeleeReport.aps(b, robotName, sentries), MeleeReport.survival(b)));
+                    MeleeReport.aps(b, robotName, sentries), MeleeReport.survival(b), MeleeReport.skipped(b)));
             }
             return b;
         } catch (IOException | RuntimeException e) {

@@ -187,6 +187,17 @@ class SummaryTest(unittest.TestCase):
         self.assertEqual(s["resumed"], len(rows))
         self.assertEqual([r["state"] for r in s["rules"]], ["ok", "ok"])
 
+    def test_a_melee_step_log_counts_failures_and_skips(self):
+        # The lines Bench's melee path prints: a failed battle has no colon after its count.
+        log = self.home / "melee.log"
+        log.write_text(
+            "  melee battle 1/6: Hadur placed 2, APS 66.5, survival 84.0, skipped turns 3\n"
+            "  melee battle 2/6 FAILED; see battles/f01-2/engine.log\n"
+            "  melee battle 3/6 baseline FAILED; see battles/f01-3/engine.log\n"
+            "  melee battle 4/6 FAILED: bench error: java.io.IOException\n"
+            "  melee battle 5/6: Hadur placed 1, APS 71.1, survival 93.9, skipped turns 0\n")
+        self.assertEqual(benchwatch.read_log(log), (5, 3, [3, 0]))
+
     def test_write_arms_tsv_matches_the_bench_header(self):
         rows = self.field(3, 0.0)
         p = self.home / "arms.tsv"
