@@ -1,0 +1,4 @@
+# 3.20 census (pc-census-320): c is master with MOVE-29 off (3.19's duel play), aa its A/A copy, km master as it ships (MOVE-29 on).
+c | hadur117.Hadur 3.19kx | bisect/hadur117.Hadur_3.19kx.jar
+aa | hadur117.Hadur 3.19kxaa | bisect/hadur117.Hadur_3.19kxaa.jar
+km | hadur117.Hadur 3.19aa | bisect/hadur117.Hadur_3.19aa.jar
