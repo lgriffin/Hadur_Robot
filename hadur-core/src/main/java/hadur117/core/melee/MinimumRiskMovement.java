@@ -1138,38 +1138,7 @@ public class MinimumRiskMovement {
      * can make risks negative), times {@link #SWITCH_GAIN} for the held destination.
      */
     Point2D.Double waveBest(List<Point2D.Double> candidates, View v) {
-        List<Point2D.Double> pool = new ArrayList<>(candidates);
-        boolean hold = destination != null && destination.distance(v.me) > REACHED;
-        if (hold) pool.add(destination);
-        double[] risk = new double[pool.size()];
-        Integer[] order = new Integer[pool.size()];
-        for (int i = 0; i < pool.size(); i++) {
-            risk[i] = risk(pool.get(i), v);
-            order[i] = i;
-        }
-        java.util.Arrays.sort(order, (a, b) -> Double.compare(risk[a], risk[b]));
-        List<Integer> picked = new ArrayList<>();
-        for (int i = 0; i < order.length && picked.size() < WAVE_RERANK; i++) picked.add(order[i]);
-        if (hold && !picked.contains(pool.size() - 1)) picked.add(pool.size() - 1);
-        List<Wave> waves = Wave.of(v.bullets);
-        double[] damage = new double[picked.size()];
-        double[] r = new double[picked.size()];
-        for (int k = 0; k < picked.size(); k++) {
-            r[k] = risk[picked.get(k)];
-            damage[k] = waveDamage(v.me, pool.get(picked.get(k)), v.now, waves);
-        }
-        double[] score = waveScores(r, damage);
-        Point2D.Double best = null;
-        double bestScore = Double.POSITIVE_INFINITY;
-        for (int k = 0; k < picked.size(); k++) {
-            double sc = score[k];
-            if (hold && picked.get(k) == pool.size() - 1) sc *= SWITCH_GAIN;
-            if (sc < bestScore) {
-                bestScore = sc;
-                best = pool.get(picked.get(k));
-            }
-        }
-        return best;
+        return rerankBest(candidates, v, WAVE_RERANK, Wave.of(v.bullets), List.of());
     }
 
     /**
@@ -1180,6 +1149,17 @@ public class MinimumRiskMovement {
      * {@link #SWITCH_GAIN}.
      */
     Point2D.Double dodgeBest(List<Point2D.Double> candidates, View v, List<Wave> waves) {
+        return rerankBest(candidates, v, TeamDodge.RERANK, waves, v.pathBullets);
+    }
+
+    /**
+     * TMODE-11, TMODE-27: the {@code rerank} lowest-risk candidates, and the destination held if
+     * not reached, each driven to through the {@code waves} for {@link #WAVE_TICKS} ticks and
+     * through the teammates' {@code bullets} for {@link #PATH_TICKS}; scored as
+     * {@link #waveScores}, the held destination times {@link #SWITCH_GAIN}.
+     */
+    Point2D.Double rerankBest(List<Point2D.Double> candidates, View v, int rerank, List<Wave> waves,
+                              List<VirtualBullet> mateBullets) {
         List<Point2D.Double> pool = new ArrayList<>(candidates);
         boolean hold = destination != null && destination.distance(v.me) > REACHED;
         if (hold) pool.add(destination);
@@ -1191,14 +1171,15 @@ public class MinimumRiskMovement {
         }
         java.util.Arrays.sort(order, (a, b) -> Double.compare(risk[a], risk[b]));
         List<Integer> picked = new ArrayList<>();
-        for (int i = 0; i < order.length && picked.size() < TeamDodge.RERANK; i++) picked.add(order[i]);
+        for (int i = 0; i < order.length && picked.size() < rerank; i++) picked.add(order[i]);
         if (hold && !picked.contains(pool.size() - 1)) picked.add(pool.size() - 1);
         double[] damage = new double[picked.size()];
         double[] r = new double[picked.size()];
         for (int k = 0; k < picked.size(); k++) {
             Point2D.Double p = pool.get(picked.get(k));
             r[k] = risk[picked.get(k)];
-            damage[k] = waveDamage(v.me, p, v.now, waves) + pathDamage(v.me, p, v.now, v.pathBullets);
+            damage[k] = waveDamage(v.me, p, v.now, waves);
+            if (!mateBullets.isEmpty()) damage[k] += pathDamage(v.me, p, v.now, mateBullets);
         }
         double[] score = waveScores(r, damage);
         Point2D.Double best = null;

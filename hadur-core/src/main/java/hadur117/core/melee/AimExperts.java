@@ -142,7 +142,8 @@ public final class AimExperts {
      * (or NaN).
      */
     static double[] errors(EnemyShot shot, RobotState at, double[] predicted, double heading) {
-        double width = DiaUtils.botWidthAimAngle(shot.source.distance(at.location));
+        // botWidthAimAngle is the half-width (18 px); errors are in whole bot widths (36 px).
+        double width = 2 * DiaUtils.botWidthAimAngle(shot.source.distance(at.location));
         double[] err = new double[COUNT];
         for (int e = 0; e < COUNT; e++) {
             err[e] = Double.isNaN(predicted[e]) ? Double.NaN
