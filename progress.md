@@ -1,6 +1,6 @@
 # Queue pc-team-path: progress
 
-Updated 2026-10-29 07:46:26 PC time (07:46 UTC), runner pid 79320.
+Updated 2026-10-29 08:01:33 PC time (08:01 UTC), runner pid 79320.
 
 - `tpprep` done, exit 0 in 2 min
 - `tpbb` done, exit 0 in 52 min
@@ -28,16 +28,16 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### tpmp
 
-**569 of 920 battles** (62%), 0 failed. Running 37 min, 927 battles/h, about 23 min left (ends ~08:09 PC time). Last battle 0 min ago.
-Skipped turns a battle: 8.9 overall, first 100 8.1, last 100 8.0.
+**868 of 920 battles** (94%), 0 failed. Running 52 min, 1003 battles/h, about 3 min left (ends ~08:04 PC time). Last battle 0 min ago.
+Skipped turns a battle: 8.4 overall, first 100 8.1, last 100 8.4.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 569 |
+| `fails 20` | halt | ok | 0 failed of 868 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 8.0 a battle over the last 100 (first 100: 8.1) |
+| `skips 40 over 100` | halt | ok | 8.4 a battle over the last 100 (first 100: 8.1) |
 
-Stopping now would leave 351 battles unrun (about 23 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 52 battles unrun (about 3 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -54,4 +54,5 @@ Stopping now would leave 351 battles unrun (about 23 min); every battle already 
 07:09:37 start tpmp
 07:09:37 watching tpmp: 3 stop rule(s)
 07:19:12 progress tpmp: 96/920 (10%) battles, 601/h, ETA 1.4 h, 0 failed, skips 7.9/battle (last 100)
+07:49:27 progress tpmp: 618/920 (67%) battles, 931/h, ETA 19 min, 0 failed, skips 7.0/battle (last 100)
 ```
