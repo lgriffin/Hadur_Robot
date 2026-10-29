@@ -83,6 +83,8 @@ public class MinimumRiskMovement {
     static final int MAX_BULLETS = 128;
     /** MMOVE-10: a learned shot makes up to {@link TeamDanger#K} bullets, so the cap is three times MMOVE-3's. */
     static final int LEARNED_MAX_BULLETS = 3 * MAX_BULLETS;
+    /** MMOVE-15: the learned aims a melee shot keeps, its nearest samples'. */
+    static final int SURF_AIMS = 4;
 
     static final double CENTRE_K = 0.25;
     static final double WALL_K = 0.3;
@@ -188,6 +190,50 @@ public class MinimumRiskMovement {
     static final int HUNT_MAX_GROUP = 3;
     static final double SWITCH_GAIN = 0.9;
     static final double REACHED = 20;
+
+    /**
+     * MMOVE-11 (pc-melee-crowd, arm maim): off a team, a seen shot's bullets weigh
+     * 1/(1+k)^2 for the k other opponents nearer its shooter than Hadur was, and none under
+     * {@link #SOFT_FLOOR}: in a crowd most shots are aimed at someone else. Off.
+     */
+    public static final boolean MELEE_AIMED = false;
+    /**
+     * MMOVE-12 (arm mhop): off a team with three or more opponents left, short hops: the
+     * rings run from {@link #HOP_INNER} to {@link #HOP_SHARE} of the nearest fresh opponent's
+     * distance, at least {@link #HOP_MIN} and at most {@link #RING_MAX} px. Off.
+     */
+    public static final boolean MELEE_HOPS = false;
+    static final double HOP_SHARE = 0.45;
+    static final double HOP_MIN = 80;
+    static final double HOP_INNER = 40;
+    /**
+     * MMOVE-13 (arm mheat): off a team, an opponent Hadur is the nearest robot to is assumed to
+     * fire at Hadur on the tick its gun could next be cool (from its last seen shot, else
+     * {@link #ASSUMED_FIRST_TICK}) unless a real shot shows first: head-on and linear bullets at
+     * the power of its last seen shot (else {@link #ASSUMED_POWER}), weighing
+     * {@link #ASSUMED_WEIGHT}. Off.
+     */
+    public static final boolean MELEE_HEAT = false;
+    static final double ASSUMED_WEIGHT = 0.5;
+    static final double ASSUMED_POWER = 2.0;
+    static final long ASSUMED_FIRST_TICK = 30;
+    /** The engine's default gun cooling, heat a tick. */
+    static final double GUN_COOLING = 0.1;
+    /**
+     * MMOVE-14 (arm mcloser): off a team with three or more opponents left, an opponent's term
+     * is divided by one plus the number of other opponents nearer it than the point: a robot
+     * with closer prey is less likely to come for Hadur. Off.
+     */
+    public static final boolean MELEE_CLOSER = false;
+    /**
+     * MMOVE-15 (arm msurf), the melee surfer: off a team, the top three's way. Each seen shot is
+     * a wave weighed by who else is nearer its shooter (MMOVE-11's weight); once Hadur's log of
+     * that shooter's hits holds {@link TeamDanger#MIN_SAMPLES}, its bullets are the learned aims
+     * (MMOVE-10's log, fed off a team by Hadur's own hits) in place of head-on and linear; and the
+     * destination is chosen by the wave check (TMODE-11): the {@link #WAVE_RERANK} least risky
+     * candidates driven to, scored by risk and the waves' damage on the way. Off.
+     */
+    public static final boolean MELEE_SURF = false;
 
     static final double PERIPHERY_K = 0.2;
     static final double CUTOFF_K = 0.4;
@@ -332,6 +378,17 @@ public class MinimumRiskMovement {
     private Point2D.Double destination;
     private Point2D.Double openingSpot;
     private long round = -1;
+    /** MMOVE-11..14: the crowd switches this movement plays; the shipped ones unless a test sets them. */
+    private boolean aimed = MELEE_AIMED, hops = MELEE_HOPS, heat = MELEE_HEAT, closer = MELEE_CLOSER;
+    /** MMOVE-15: whether this movement surfs off a team. */
+    private boolean surf = MELEE_SURF;
+    /** MMOVE-13: per opponent, the tick its gun could next fire, and its last seen shot's power. */
+    private final java.util.Map<String, Long> nextFire = new java.util.HashMap<>();
+    private final java.util.Map<String, Double> lastPower = new java.util.HashMap<>();
+    /** MMOVE-13: how long an assumed shot is kept for a seen one to replace: past any bullet's flight. */
+    static final long ASSUMED_KEEP = 150;
+    /** MMOVE-13: the assumed shots whose bullets are still in the air. */
+    private final List<EnemyShot> assumed = new ArrayList<>();
     private int lastCandidates;
     /** MMOVE-8: this member's place in the team's roster, or -1 off a team. */
     private int teamIndex = -1;
@@ -339,10 +396,24 @@ public class MinimumRiskMovement {
     private String teamName;
     /** MMOVE-8: XORed into the noise field's hash; 0 off a team, so the field is MMOVE-1's. */
     private long salt;
+    /** TMODE-27: Ogi's dodge, its shot profiles and aim experts; read only while it plays. */
+    private final TeamDodge dodge;
 
     public MinimumRiskMovement(BattleField field) {
         this.field = field;
         this.centre = new Point2D.Double(field.width / 2, field.height / 2);
+        this.dodge = new TeamDodge(field);
+    }
+
+    /** TMODE-27: the dodge's profiles and experts. */
+    TeamDodge dodge() {
+        return dodge;
+    }
+
+    /** TMODE-27: drops every virtual bullet, when the dodge's profiles stand in for them. */
+    void clearBullets() {
+        bullets.clear();
+        seenShots.clear();
     }
 
     /**
@@ -372,7 +443,162 @@ public class MinimumRiskMovement {
         mateBullets.clear();
         seenShots.clear();
         past.clear();
+        nextFire.clear();
+        lastPower.clear();
+        assumed.clear();
+        dodge.newRound();
         round++;
+    }
+
+    /** MMOVE-15: sets the melee surfer, for tests. */
+    void surf(boolean on) {
+        this.surf = on;
+    }
+
+    /** MMOVE-15: whether this movement surfs off a team. */
+    public boolean surfing() {
+        return surf;
+    }
+
+    /** MMOVE-11..14: sets the crowd switches, for tests and the bench's arms. */
+    void crowd(boolean aimed, boolean hops, boolean heat, boolean closer) {
+        this.aimed = aimed;
+        this.hops = hops;
+        this.heat = heat;
+        this.closer = closer;
+    }
+
+    /**
+     * Off a team: {@link #updateBullets(List, RobotStateLog, Point2D.Double, long)}, then with
+     * MMOVE-11 each new shot's bullets weigh by the opponents nearer its shooter, and with
+     * MMOVE-13 the opponents Hadur is nearest to fire assumed shots when their guns could be cool.
+     * {@code enemies} are the living opponents. With both off this is MMOVE-3 bit for bit.
+     */
+    public void updateMeleeBullets(List<EnemyShot> shots, RobotStateLog myPath, Point2D.Double me,
+                                   long now, List<EnemyInfo> enemies) {
+        updateMeleeBullets(shots, myPath, me, now, enemies, null);
+    }
+
+    /**
+     * As above, where with MMOVE-15 each shot also weighs by MMOVE-11's crowd weight and a
+     * shooter whose log in {@code danger} is deep enough makes its learned aims.
+     */
+    public void updateMeleeBullets(List<EnemyShot> shots, RobotStateLog myPath, Point2D.Double me,
+                                   long now, List<EnemyInfo> enemies, TeamDanger danger) {
+        boolean learn = surf && danger != null;
+        if (!aimed && !heat && !learn) {
+            updateBullets(shots, myPath, me, now);
+            return;
+        }
+        for (EnemyShot s : shots) {
+            if (!seenShots.add(s)) continue;
+            RobotState at = myPath.getState(s.fireTime);
+            if (at == null) at = myPath.getState(s.fireTime + 1);
+            Point2D.Double target = at == null ? me : at.location;
+            if (heat) {
+                long cool = s.fireTime + coolTicks(s.power);
+                if (cool > nextFire.getOrDefault(s.shooter, Long.MIN_VALUE)) nextFire.put(s.shooter, cool);
+                lastPower.put(s.shooter, s.power);
+                dropAssumed(s);
+            }
+            double w = aimed || learn ? crowdWeight(s, target, enemies) : 1.0;
+            if (w < SOFT_FLOOR) continue;
+            List<TeamDanger.Aim> aims = learn && at != null ? danger.aims(s, at) : null;
+            if (aims != null) {
+                // The SURF_AIMS nearest aims carry the shot's whole weight: melee has many shots
+                // in flight, and every bullet costs each candidate's risk sum.
+                int n = Math.min(SURF_AIMS, aims.size());
+                double all = 0, top = 0;
+                for (int i = 0; i < aims.size(); i++) {
+                    all += aims.get(i).weight;
+                    if (i < n) top += aims.get(i).weight;
+                }
+                for (int i = 0; i < n; i++) {
+                    TeamDanger.Aim a = aims.get(i);
+                    add(new VirtualBullet(s, VirtualBullet.Aim.LEARNED, a.heading, w * a.weight * all / top));
+                }
+                continue;
+            }
+            addGuesses(s, at, target, w);
+        }
+        if (heat) assumeShots(me, now, enemies, myPath);
+        assumed.removeIf(x -> now - x.fireTime > ASSUMED_KEEP);
+        double reach = Math.hypot(field.width, field.height);
+        for (Iterator<VirtualBullet> it = bullets.iterator(); it.hasNext(); ) {
+            if (it.next().passed(me, now, reach)) it.remove();
+        }
+        seenShots.retainAll(shots);
+    }
+
+    private void addGuesses(EnemyShot s, RobotState at, Point2D.Double target, double w) {
+        double hot = DiaUtils.absoluteBearing(s.source, target);
+        double linear = at == null ? hot : VirtualBullet.linearHeading(s.source, target,
+            at.heading, at.velocity, s.speed(), field.width, field.height);
+        add(new VirtualBullet(s, VirtualBullet.Aim.HEAD_ON, hot, w));
+        add(new VirtualBullet(s, VirtualBullet.Aim.LINEAR, linear, w));
+    }
+
+    /**
+     * MMOVE-13: a seen shot replaces the shots assumed of its shooter in the same cooling
+     * window (fired no earlier than a cooling before it), so one shot is not counted twice.
+     */
+    private void dropAssumed(EnemyShot seen) {
+        long from = seen.fireTime - coolTicks(seen.power);
+        java.util.Set<EnemyShot> gone = java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
+        for (Iterator<EnemyShot> it = assumed.iterator(); it.hasNext(); ) {
+            EnemyShot a = it.next();
+            if (a.shooter.equals(seen.shooter) && a.fireTime >= from) {
+                gone.add(a);
+                it.remove();
+            }
+        }
+        if (!gone.isEmpty()) bullets.removeIf(b -> gone.contains(b.shot));
+    }
+
+    /** Ticks a gun takes to cool after a shot of {@code power}, at the engine's default cooling. */
+    static long coolTicks(double power) {
+        return (long) Math.ceil((1 + power / 5) / GUN_COOLING);
+    }
+
+    /**
+     * MMOVE-11: the share of {@code shot} aimed at Hadur, standing at {@code me} when it was
+     * fired: 1/(1+k)^2 for the k living opponents other than its shooter nearer its source.
+     */
+    static double crowdWeight(EnemyShot shot, Point2D.Double me, List<EnemyInfo> enemies) {
+        double mine = shot.source.distance(me);
+        int k = 0;
+        for (EnemyInfo e : enemies) {
+            if (e.location == null || e.name.equals(shot.shooter)) continue;
+            if (shot.source.distance(e.location) < mine) k++;
+        }
+        return 1.0 / ((1 + k) * (1 + k));
+    }
+
+    /**
+     * MMOVE-13: each living opponent with energy that Hadur is nearer than any other opponent,
+     * whose gun could be cool by {@code now}, is taken to fire at Hadur now; its next possible
+     * shot is a cooling later.
+     */
+    void assumeShots(Point2D.Double me, long now, List<EnemyInfo> enemies, RobotStateLog myPath) {
+        for (EnemyInfo e : enemies) {
+            if (e.location == null || e.isStale(now)) continue;
+            if (now < nextFire.getOrDefault(e.name, ASSUMED_FIRST_TICK)) continue;
+            double mine = e.location.distance(me);
+            boolean nearest = true;
+            for (EnemyInfo o : enemies) {
+                if (o != e && o.location != null && !o.isStale(now) && o.location.distance(e.location) < mine) {
+                    nearest = false;
+                    break;
+                }
+            }
+            if (!nearest) continue;
+            double power = Math.min(lastPower.getOrDefault(e.name, ASSUMED_POWER), e.energy);
+            if (power < 0.1) continue;
+            EnemyShot s = new EnemyShot(e.name, new Point2D.Double(e.location.x, e.location.y), now, power);
+            addGuesses(s, myPath.getState(now), me, ASSUMED_WEIGHT);
+            assumed.add(s);
+            nextFire.put(e.name, now + coolTicks(power));
+        }
     }
 
     /**
@@ -566,6 +792,17 @@ public class MinimumRiskMovement {
         v.gunLines = !mates.isEmpty() && modes.contains(TeamModes.Mode.GUNLINE);
         List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
         lastCandidates = candidates.size();
+        if (surf && !onTeam(mates)) {
+            // MMOVE-15: the melee surfer picks by the wave check.
+            destination = waveBest(candidates, v);
+            return destination;
+        }
+        if (!mates.isEmpty() && modes.contains(TeamModes.Mode.DODGE)) {
+            v.pathBullets = mateBullets(me, now);
+            if (!TeamDodge.RANK_BULLETS) v.mateBullets = List.of();
+            destination = dodgeBest(candidates, v, dodge.waves());
+            return destination;
+        }
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.WAVES)) {
             destination = waveBest(candidates, v);
             return destination;
@@ -628,6 +865,11 @@ public class MinimumRiskMovement {
             nearest = Math.min(nearest, e.location.distance(me));
         }
         for (Roster.Mate m : mates) nearest = Math.min(nearest, m.at(now).distance(me));
+        if (hops && !onTeam(mates) && others >= 3 && nearest < Double.POSITIVE_INFINITY) {
+            // MMOVE-12: short hops through the crowd.
+            min = HOP_INNER;
+            max = Math.min(RING_MAX, Math.max(HOP_MIN, HOP_SHARE * nearest));
+        }
         double cap = Math.max(MIN_RING, NEAREST_FRACTION * nearest);
         List<Point2D.Double> out = new ArrayList<>(CANDIDATES);
         for (int ring = 0; ring < RINGS; ring++) {
@@ -896,6 +1138,28 @@ public class MinimumRiskMovement {
      * can make risks negative), times {@link #SWITCH_GAIN} for the held destination.
      */
     Point2D.Double waveBest(List<Point2D.Double> candidates, View v) {
+        return rerankBest(candidates, v, WAVE_RERANK, Wave.of(v.bullets), List.of());
+    }
+
+    /**
+     * TMODE-27, Ogi's dodge: the {@link TeamDodge#RERANK} lowest-risk candidates, and the
+     * destination held if not reached, are each driven to through the shot profiles
+     * {@code waves} for {@link #WAVE_TICKS} ticks and through the teammates' bullets for
+     * {@link #PATH_TICKS}; scored as {@link #waveScores}, the held destination times
+     * {@link #SWITCH_GAIN}.
+     */
+    Point2D.Double dodgeBest(List<Point2D.Double> candidates, View v, List<Wave> waves) {
+        return rerankBest(candidates, v, TeamDodge.RERANK, waves, v.pathBullets);
+    }
+
+    /**
+     * TMODE-11, TMODE-27: the {@code rerank} lowest-risk candidates, and the destination held if
+     * not reached, each driven to through the {@code waves} for {@link #WAVE_TICKS} ticks and
+     * through the teammates' {@code bullets} for {@link #PATH_TICKS}; scored as
+     * {@link #waveScores}, the held destination times {@link #SWITCH_GAIN}.
+     */
+    Point2D.Double rerankBest(List<Point2D.Double> candidates, View v, int rerank, List<Wave> waves,
+                              List<VirtualBullet> mateBullets) {
         List<Point2D.Double> pool = new ArrayList<>(candidates);
         boolean hold = destination != null && destination.distance(v.me) > REACHED;
         if (hold) pool.add(destination);
@@ -907,14 +1171,15 @@ public class MinimumRiskMovement {
         }
         java.util.Arrays.sort(order, (a, b) -> Double.compare(risk[a], risk[b]));
         List<Integer> picked = new ArrayList<>();
-        for (int i = 0; i < order.length && picked.size() < WAVE_RERANK; i++) picked.add(order[i]);
+        for (int i = 0; i < order.length && picked.size() < rerank; i++) picked.add(order[i]);
         if (hold && !picked.contains(pool.size() - 1)) picked.add(pool.size() - 1);
-        List<Wave> waves = Wave.of(v.bullets);
         double[] damage = new double[picked.size()];
         double[] r = new double[picked.size()];
         for (int k = 0; k < picked.size(); k++) {
+            Point2D.Double p = pool.get(picked.get(k));
             r[k] = risk[picked.get(k)];
-            damage[k] = waveDamage(v.me, pool.get(picked.get(k)), v.now, waves);
+            damage[k] = waveDamage(v.me, p, v.now, waves);
+            if (!mateBullets.isEmpty()) damage[k] += pathDamage(v.me, p, v.now, mateBullets);
         }
         double[] score = waveScores(r, damage);
         Point2D.Double best = null;
@@ -1119,6 +1384,23 @@ public class MinimumRiskMovement {
             escape = Math.asin(Math.min(1.0, MAX_SPEED / speed));
         }
 
+        /**
+         * TMODE-27: a shot's profile given outright: {@code headings} with their {@code shares}
+         * (summing to 1), {@code aimed} the share of the shot meant for Hadur, and the uniform
+         * part centred on {@code centre}, the head-on heading.
+         */
+        Wave(EnemyShot shot, double aimed, double[] headings, double[] shares, double centre) {
+            source = shot.source;
+            fireTime = shot.fireTime;
+            speed = shot.speed();
+            damage = 4 * shot.power + Math.max(0, 2 * (shot.power - 1));
+            this.aimed = Math.min(1.0, aimed);
+            this.headings = headings.clone();
+            this.shares = shares.clone();
+            this.centre = centre;
+            escape = Math.asin(Math.min(1.0, MAX_SPEED / speed));
+        }
+
         /** The waves of {@code bullets}, one for each shot, in the order first seen. */
         static List<Wave> of(List<VirtualBullet> bullets) {
             IdentityHashMap<EnemyShot, List<VirtualBullet>> by = new IdentityHashMap<>();
@@ -1303,6 +1585,16 @@ public class MinimumRiskMovement {
         double energy = Math.min(Math.max(e.energy, 1.0) / Math.max(v.energy, 1.0), ENERGY_RATIO_CAP);
         double r = UNIT * e.freshness(v.now) * energy / (d * d);
         r *= closestFactor(p, e, v.nearestOther[i], v.now, v.others, onTeam(v.mates));
+        if (closer && v.others >= 3 && !onTeam(v.mates)) {
+            // MMOVE-14: each other opponent nearer e than the point is prey e would sooner take.
+            double mine = p.distance(e.location);
+            int n = 0;
+            for (int j = 0; j < v.enemies.size(); j++) {
+                EnemyInfo o = v.enemies.get(j);
+                if (j != i && !o.isStale(v.now) && o.location.distance(e.location) < mine) n++;
+            }
+            r /= 1 + n;
+        }
         if (p.distance(v.me) > 1) {
             double lateral = MeleeEndgame.endgameRing(v.others, onTeam(v.mates), MeleeEndgame.THREE_RING)
                 ? ENDGAME_LATERAL : LATERAL;

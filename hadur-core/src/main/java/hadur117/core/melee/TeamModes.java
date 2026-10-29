@@ -80,7 +80,13 @@ public final class TeamModes {
         /** TMODE-25: each candidate's drive is checked tick by tick against the teammates' bullets in flight (Firestarter). */
         PATH,
         /** TMODE-26: the team only lands its shots up close: hunt at 250 px, not 350. Only through the table. */
-        NEAR
+        NEAR,
+        /**
+         * TMODE-27: Ogi's dodge as one piece ({@link TeamDodge}): shot profiles from aim experts
+         * weighted per enemy class, driven through on the safest candidates. It stands in for
+         * the virtual bullets and SOFT, LEARN, POOL and WAVES while it plays.
+         */
+        DODGE
     }
 
     /**
@@ -103,6 +109,7 @@ public final class TeamModes {
     public static final boolean FORCE_LINES = false;
     public static final boolean FORCE_GUNLINE = false;
     public static final boolean FORCE_PATH = false;
+    public static final boolean FORCE_DODGE = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -114,7 +121,8 @@ public final class TeamModes {
         FORCE_POOL ? Mode.POOL : null, FORCE_DISABLED ? Mode.DISABLED : null,
         FORCE_MATEFIRE ? Mode.MATEFIRE : null, FORCE_REAR ? Mode.REAR : null,
         FORCE_WAVES ? Mode.WAVES : null, FORCE_HUNT ? Mode.HUNT : null, FORCE_LINES ? Mode.LINES : null,
-        FORCE_GUNLINE ? Mode.GUNLINE : null, FORCE_PATH ? Mode.PATH : null);
+        FORCE_GUNLINE ? Mode.GUNLINE : null, FORCE_PATH ? Mode.PATH : null,
+        FORCE_DODGE ? Mode.DODGE : null);
 
     /** Opposing member class to its team's modes; filled from the per-team screens. */
     static final Map<String, Set<Mode>> TABLE = table();

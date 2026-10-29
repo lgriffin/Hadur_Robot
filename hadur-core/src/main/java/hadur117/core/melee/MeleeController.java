@@ -113,6 +113,7 @@ public class MeleeController {
      * leader is the same member every round, so a fault's recovery mid-round does not ask again.
      */
     private boolean leaderKnown;
+    private final BattleField field;
 
     public MeleeController(BattleField field) {
         this(field, new EnemyTracker(field));
@@ -126,6 +127,7 @@ public class MeleeController {
      */
     public MeleeController(BattleField field, EnemyTracker world) {
         this.tracker = world;
+        this.field = field;
         this.mover = new MinimumRiskMovement(field);
         this.gun = new FieldGun(field);
         this.danger = new TeamDanger(field);
@@ -260,8 +262,12 @@ public class MeleeController {
         double headOn = DiaUtils.absoluteBearing(shooter.location, atFire.location);
         double botWidth = DiaUtils.botWidthAimAngle(distance);
         stats.recordDamageReceived(damage, heading - headOn, botWidth);
-        if (onTeam && (TeamDanger.LEARNED || modes.contains(TeamModes.Mode.LEARN) || modes.contains(TeamModes.Mode.POOL))) {
+        if (onTeam && (TeamDanger.LEARNED || modes.contains(TeamModes.Mode.LEARN) || modes.contains(TeamModes.Mode.POOL)
+                || modes.contains(TeamModes.Mode.DODGE))) {
             learn(name, power, heading, me, now);
+        } else if (!onTeam && mover.surfing()) {
+            // MMOVE-15: the melee surfer learns each shooter's aim from the hits on Hadur.
+            learn(name, power, heading, me, now, false);
         }
         // The same test OpponentStats uses: within Hadur's width of head-on, else led.
         profiles.hitOnHadur(name, Math.abs(Angles.normalRelativeAngle(heading - headOn)) <= botWidth
@@ -275,6 +281,11 @@ public class MeleeController {
      * explains teaches nothing.
      */
     void learn(String name, double power, double heading, Point2D.Double me, long now) {
+        learn(name, power, heading, me, now, true);
+    }
+
+    /** As above; off a team ({@code report} false) the sample is logged, not kept for a report. */
+    void learn(String name, double power, double heading, Point2D.Double me, long now, boolean report) {
         EnemyShot best = null;
         double bestErr = Double.POSITIVE_INFINITY;
         for (EnemyShot shot : tracker.shots(now)) {
@@ -289,7 +300,17 @@ public class MeleeController {
         if (best == null) return;
         RobotState at = myPath.getState(best.fireTime);
         if (at == null) return;
-        danger.own(danger.sample(best, at, heading));
+        TeamDanger.Sample sample = danger.sample(best, at, heading);
+        if (report && modes.contains(TeamModes.Mode.DODGE)) {
+            // TMODE-27: score every aim expert on this hit, the learned one before it learns it.
+            double[] predicted = AimExperts.headings(best, at, myPath, field);
+            predicted[AimExperts.Expert.LEARNED.ordinal()] = AimExperts.strongest(danger.aims(best, at));
+            double[] errors = AimExperts.errors(best, at, predicted, heading);
+            mover.dodge().experts().observe(name, errors);
+            sample = sample.withExperts(errors);
+        }
+        if (report) danger.own(sample);
+        else danger.add(sample);
     }
 
     /** MMOVE-10: how far, px, a hit may be from where its shot's bullet should be: a robot's reach and a tick's flight. */
@@ -298,6 +319,8 @@ public class MeleeController {
     /** MMOVE-10: a teammate's sample, from its report. */
     public void mateSample(TeamDanger.Sample s) {
         danger.add(s);
+        // TMODE-27: a teammate's hit scores the aim experts here too.
+        if (s.experts.length == AimExperts.COUNT) mover.dodge().experts().observe(s.shooter, s.experts);
     }
 
     /** TMODE-9: a teammate's bullet, from its report. */
@@ -373,20 +396,34 @@ public class MeleeController {
         if (onTeam) {
             // T7 (TMODE-1): the modes against this team.
             modes = TeamModes.against(alive);
-            // TMODE-7: POOL is LEARN with one log per enemy class.
-            danger.pool(modes.contains(TeamModes.Mode.POOL));
+            // TMODE-7: POOL is LEARN with one log per enemy class; TMODE-27's dodge reads the class logs too.
+            boolean dodging = modes.contains(TeamModes.Mode.DODGE);
+            danger.pool(modes.contains(TeamModes.Mode.POOL) || dodging);
             // T6 (MMOVE-9, MMOVE-10): where each teammate stands, for whom a shot was aimed at.
             List<Point2D.Double> mates = new ArrayList<>(s.teammates.size());
             for (Roster.Mate m : s.teammates) mates.add(m.at(s.time));
-            // TMODE-20..22: shot ownership and the one aim, for a team whose code is read.
-            mover.updateBullets(tracker.shots(s.time), myPath, s.me, s.time, mates, danger,
-                TeamDanger.NEAREST || TeamModes.owns(modes),
-                TeamDanger.LEARNED || modes.contains(TeamModes.Mode.LEARN)
-                    || modes.contains(TeamModes.Mode.POOL),
-                modes.contains(TeamModes.Mode.SOFT), TeamModes.onlyAim(modes));
+            if (dodging) {
+                // TMODE-27: each shot profiled once; the virtual bullets stand down unless ranked.
+                List<EnemyShot> shots = tracker.shots(s.time);
+                mover.dodge().update(shots, myPath, s.me, s.time, mates, danger,
+                    TeamModes.owns(modes), TeamModes.onlyAim(modes));
+                if (TeamDodge.RANK_BULLETS) {
+                    mover.updateBullets(shots, myPath, s.me, s.time, mates, danger,
+                        TeamModes.owns(modes), false, false, TeamModes.onlyAim(modes));
+                } else {
+                    mover.clearBullets();
+                }
+            } else {
+                // TMODE-20..22: shot ownership and the one aim, for a team whose code is read.
+                mover.updateBullets(tracker.shots(s.time), myPath, s.me, s.time, mates, danger,
+                    TeamDanger.NEAREST || TeamModes.owns(modes),
+                    TeamDanger.LEARNED || modes.contains(TeamModes.Mode.LEARN)
+                        || modes.contains(TeamModes.Mode.POOL),
+                    modes.contains(TeamModes.Mode.SOFT), TeamModes.onlyAim(modes));
+            }
         } else {
             modes = TeamModes.NONE;
-            mover.updateBullets(tracker.shots(s.time), myPath, s.me, s.time);
+            mover.updateMeleeBullets(tracker.shots(s.time), myPath, s.me, s.time, alive, danger);
         }
         c.destination = alive.isEmpty() ? null
             : mover.chooseDestination(s.me, s.energy, s.others, alive, s.time, plan, s.teammates, modes);
