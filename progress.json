@@ -1,6 +1,6 @@
 {
  "plan": "pc-k0-oracle",
- "updated": 1793249100.7753136,
+ "updated": 1793250009.2803557,
  "steps": {
   "prep": {
    "status": "done",
@@ -26,8 +26,8 @@
   {
    "step": "record",
    "started": 1793248237.1060104,
-   "updated": 1793249100.7607312,
-   "elapsed": 863.6547207832336,
+   "updated": 1793250009.247871,
+   "elapsed": 1772.141860485077,
    "expected": 864,
    "panel": 432,
    "field": null,
@@ -35,26 +35,26 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 306,
+   "battles": 692,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 1275.509730324843,
-   "eta": 1574.8997849576615,
-   "fraction": 0.3541666666666667,
-   "last_battle_age": 0.8678016662597656,
+   "rate": 1405.756534252907,
+   "eta": 440.47456647894967,
+   "fraction": 0.8009259259259259,
+   "last_battle_age": 0.4697554111480713,
    "rules": [
     {
      "rule": "fails 30",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 306"
+     "detail": "0 failed of 692"
     },
     {
      "rule": "skips 40 over 200",
      "action": "halt",
      "state": "ok",
-     "detail": "24.6 a battle over the last 200 (first 200: 22.2)"
+     "detail": "29.1 a battle over the last 200 (first 200: 22.2)"
     },
     {
      "rule": "stall 30m",
@@ -63,8 +63,8 @@
      "detail": "last battle 0 min ago"
     }
    ],
-   "skips_mean": 24.04901960784314,
-   "skips_last100": 28.11
+   "skips_mean": 26.88150289017341,
+   "skips_last100": 30.79
   }
  ]
 }
