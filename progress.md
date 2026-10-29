@@ -1,25 +1,38 @@
 # Queue pc-team-path2: progress
 
-Updated 2026-10-29 15:37:02 PC time (15:37 UTC), runner pid 31840.
+Updated 2026-10-29 15:52:09 PC time (15:52 UTC), runner pid 31840.
 
 - `tqprep` done, exit 0 in 2 min
-- `tqbb` running
-- `tqmp` pending
+- `tqbb` done, exit 0 in 1.9 h
+- `tqmp` running
 - `tqsum` pending
 - `tqpr` pending
 
 ### tqbb
 
-**1328 of 1472 battles** (90%), 0 failed. Running 1.7 h, 764 battles/h, about 11 min left (ends ~15:48 PC time). Last battle 0 min ago.
-Skipped turns a battle: 9.3 overall, first 100 7.8, last 100 11.1.
+**1472 of 1472 battles** (100%), 0 failed. Running 1.9 h, 786 battles/h, about 0 min left (ends ~15:45 PC time). Last battle 0 min ago.
+Skipped turns a battle: 8.8 overall, first 100 7.8, last 100 4.7.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 1328 |
+| `fails 20` | halt | ok | 0 failed of 1472 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 11.1 a battle over the last 100 (first 100: 7.8) |
+| `skips 40 over 100` | halt | ok | 4.7 a battle over the last 100 (first 100: 7.8) |
 
-Stopping now would leave 144 battles unrun (about 11 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### tqmp
+
+**37 of 1472 battles** (3%), 0 failed. Running 7 min, 319 battles/h, about 4.5 h left (ends ~20:21 PC time). Last battle 0 min ago.
+Skipped turns a battle: 7.5 overall, first 37 7.5, last 37 7.5.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 37 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | waiting | 37 of 100 battles to read |
+
+Stopping now would leave 1435 battles unrun (about 4.5 h); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -34,4 +47,7 @@ Stopping now would leave 144 battles unrun (about 11 min); every battle already 
 14:23:25 progress tqbb: 275/1472 (19%) battles, 539/h, ETA 2.2 h, 0 failed, skips 12.1/battle (last 100)
 14:53:40 progress tqbb: 657/1472 (45%) battles, 648/h, ETA 1.3 h, 0 failed, skips 8.4/battle (last 100)
 15:23:55 progress tqbb: 1096/1472 (74%) battles, 722/h, ETA 31 min, 0 failed, skips 9.8/battle (last 100)
+15:45:12 tqbb exit=0 in 6744 s
+15:45:12 start tqmp
+15:45:12 watching tqmp: 3 stop rule(s)
 ```
