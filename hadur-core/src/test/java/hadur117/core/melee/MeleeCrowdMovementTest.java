@@ -198,6 +198,9 @@ class MeleeCrowdMovementTest {
         double learned = move.bullets().stream().filter(b -> b.aim == VirtualBullet.Aim.LEARNED)
             .mapToDouble(b -> b.weight).sum();
         assertEquals(0.25 * TeamDanger.SHOT_WEIGHT, learned, 1e-9);
+        // Five samples, but only the SURF_AIMS nearest are kept, with the shot's whole weight.
+        assertEquals(MinimumRiskMovement.SURF_AIMS,
+            move.bullets().stream().filter(b -> b.aim == VirtualBullet.Aim.LEARNED).count());
         // Off, or with no log given, the same shots are MMOVE-3's.
         MinimumRiskMovement off = new MinimumRiskMovement(field(1000, 1000));
         off.newRound();

@@ -83,6 +83,8 @@ public class MinimumRiskMovement {
     static final int MAX_BULLETS = 128;
     /** MMOVE-10: a learned shot makes up to {@link TeamDanger#K} bullets, so the cap is three times MMOVE-3's. */
     static final int LEARNED_MAX_BULLETS = 3 * MAX_BULLETS;
+    /** MMOVE-15: the learned aims a melee shot keeps, its nearest samples'. */
+    static final int SURF_AIMS = 4;
 
     static final double CENTRE_K = 0.25;
     static final double WALL_K = 0.3;
@@ -482,8 +484,17 @@ public class MinimumRiskMovement {
             if (w < SOFT_FLOOR) continue;
             List<TeamDanger.Aim> aims = learn && at != null ? danger.aims(s, at) : null;
             if (aims != null) {
-                for (TeamDanger.Aim a : aims) {
-                    add(new VirtualBullet(s, VirtualBullet.Aim.LEARNED, a.heading, w * a.weight), LEARNED_MAX_BULLETS);
+                // The SURF_AIMS nearest aims carry the shot's whole weight: melee has many shots
+                // in flight, and every bullet costs each candidate's risk sum.
+                int n = Math.min(SURF_AIMS, aims.size());
+                double all = 0, top = 0;
+                for (int i = 0; i < aims.size(); i++) {
+                    all += aims.get(i).weight;
+                    if (i < n) top += aims.get(i).weight;
+                }
+                for (int i = 0; i < n; i++) {
+                    TeamDanger.Aim a = aims.get(i);
+                    add(new VirtualBullet(s, VirtualBullet.Aim.LEARNED, a.heading, w * a.weight * all / top));
                 }
                 continue;
             }
