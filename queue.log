@@ -15,3 +15,7 @@
 23:12:09 live-FAP exit=0 in 1041 s
 23:12:09 start live-FAW
 23:12:09 watching live-FAW: 3 stop rule(s)
+23:21:52 progress live-FAW: 132/276 (48%) battles, 816/h, ETA 11 min, 0 failed, skips 0.1/battle (last 100)
+23:29:49 live-FAW exit=0 in 1059 s
+23:29:49 start live-FAPW
+23:29:49 watching live-FAPW: 3 stop rule(s)
