@@ -65,4 +65,19 @@ class AimMembersTest {
             assertTrue(members.score(a) > 0, "aim " + a + " predicted it: " + members.score(a));
         }
     }
+
+    @Test
+    @Tag("MOVE-29")
+    @DisplayName("an aim on the escape angle keeps half its kernel, one in the middle all of it")
+    void reachableShareAtTheEdge() {
+        Wave w = new Wave("enemy", new Point2D.Double(400, 100), new Point2D.Double(400, 500),
+            0, 10, 2.0, 0, 0, 1, FIELD, new MovementPredictor(FIELD));
+        double b = 0.045;
+        assertTrue(w.maxEscapeAngle() > 10 * b);
+        assertEquals(1.0, MoveController.reachableShare(w, w.firingAngle(0), b), 1e-3);
+        assertEquals(0.5, MoveController.reachableShare(w, w.firingAngle(1), b), 1e-3);
+        assertEquals(0.5, MoveController.reachableShare(w, w.firingAngle(-1), b), 1e-3);
+        assertEquals(0.25, MoveController.reachableShare(w, w.firingAngle(3), b), 1e-12,
+            "an aim far outside is floored");
+    }
 }

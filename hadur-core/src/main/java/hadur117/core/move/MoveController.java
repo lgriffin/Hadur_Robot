@@ -1318,6 +1318,21 @@ public class MoveController {
     }
 
     /**
+     * MOVE-29: the share of the kernel on {@code angle} that lies between the wave's escape
+     * angles, at least a quarter so an aim far outside cannot blow up its score.
+     */
+    static double reachableShare(Wave w, double angle, double bandwidth) {
+        double lo = DiaUtils.normalizeAngle(w.firingAngle(-1), angle);
+        double hi = DiaUtils.normalizeAngle(w.firingAngle(1), angle);
+        if (lo > hi) {
+            double t = lo;
+            lo = hi;
+            hi = t;
+        }
+        return Math.max(0.25, (kernelCdf(hi, angle, bandwidth) - kernelCdf(lo, angle, bandwidth)) / 2.0);
+    }
+
+    /**
      * MOVE-29: teaches the aim members a bullet fired at {@code hitGf} on {@code w}: every
      * member's score over a robot's width at that angle, the views' read in the forensics cache
      * slot, which is emptied after, as {@link #updateReplicator} does.
@@ -1334,6 +1349,12 @@ public class MoveController {
             }
             scores[0] = viewsHaveData ? getDangerScore(w, at, FORENSICS_CACHE, null, false) : Double.NaN;
             double[] aims = aimScores(w, at.angle, bandwidth, w.transmission(at));
+            double[] aimAngles = w.simpleAims();
+            for (int a = 0; a < aims.length; a++) {
+                // An aim's kernel is a probability over the reachable angles only, so a kernel
+                // running past an escape angle is scaled up by the share it keeps inside.
+                if (!Double.isNaN(aims[a])) aims[a] /= reachableShare(w, aimAngles[AimMembers.AIMS[a]], bandwidth);
+            }
             System.arraycopy(aims, 0, scores, 1, aims.length);
             double escape = w.maxEscapeAngle();
             aimMembers.learn(scores, escape > 0 ? bandwidth / escape : Double.NaN);
