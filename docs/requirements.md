@@ -1543,7 +1543,7 @@ checks the re-blend picks what the surf picked, and fits.
   * 2.5^distQuotient / 2.5 * escape`; the total adds the cheapest next-wave danger. Ablation
   `aesrec` (suffix ar) in `build-ablation.sh`; `MoveDesign.AES_RECORD` is off in every shipped jar.
 
-## The enemy-gun oracle (ORACLE-1 to ORACLE-4, MOVE-29, BENCH-134)
+## The enemy-gun oracle (ORACLE-1 to ORACLE-4, MOVE-29, BENCH-134, BENCH-138)
 
 K0 of the road to king (Leigh's doc "Hadur: the 1:1 map, tonight's card, and the road to 1v1 king",
 2026-10-28; docs/bench/gun-oracle.md). The king's lead is the 431 learning guns on flat movers, where
@@ -1561,6 +1561,7 @@ blends its terms; the oracle measures what each model predicts.
 | MOVE-29 | State | While the aim-member switch is on, in a duel, the three-option surf's danger where the views have data shall be the weighted mean of the views' score and the head-on, linear and circular simple aims' (one tick back, each the surf's kernel on the aim's angle over the intersection), each member weighted by its standing weight (1 for the views, 0.1 for an aim) times 2^(2 x its rolling score), the score a mean decayed by 0.8 a bullet of log2 of the member's probability at each bullet that hit us over a uniform guess's (mixed with 5% uniform), learnt before the views learn the bullet. With the switch off the danger is the views'. | R9 |
 | BENCH-134 | Ubiquitous | The bench shall carry the `pc-k0-oracle` card: the current release with `aesrec,oracle` on `aes-flat-learning.txt` (the 432 learning guns on flat movers), 2 fresh seeds from 4200, truth log on, 12 workers, stopping on 30 failed battles, 40+ skipped turns a battle over the last 200 or no battle in 30 minutes; then the oracle's join and score, and a results PR only after both pass. | T7 |
 | BENCH-135 | Ubiquitous | The bench shall carry the `pc-team-path2` card, which runs PATH (TMODE-25) forced on for every team (`mp`) and a bb A/A against aa on all 46 teams at 16 fresh seeds from 5100, and gates the pooled gain (each team's mp gain less half its bb gain, summed over 46) at +0.30 APS with the 95% low end above zero; the card changes no robot code. | T7 |
+| BENCH-138 | Ubiquitous | The bench shall carry the `pc-k1-aim` card: the current release (c), its A/A copy (aa) and the aim members on (km, MOVE-29) on `aes-flat-learning.txt` (the 432 learning guns on flat movers), 1 fresh seed from 4400, 12 workers, truth log off, stopping on 30 failed battles, an arm scoring nothing in 8, 40+ skipped turns a battle over the last 200, no battle in 30 minutes or an A/A outside its band after 20%, and finishing early once km cannot reach +0.05 APS at z 3 after 30%; then the gate (km minus pooled c and aa over the 432 / 1,217 pairings at +0.05 APS, 95% low end above 0), per-robot losses, the oracle re-joined on the pc-k0-oracle battles when they are on the PC, and a results PR only after the gate passes its analysis. | T7 |
 
 - **ORC record**: `ORC,round,tick,fireTime,power,firing,sourceX,sourceY,absBearing,orbitDirection,maxEscapeAngle,distance,chosen,`
   then `low,high` per option (counter-clockwise, stop, clockwise; `nan,nan` for no plan), then `views`, then per view

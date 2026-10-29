@@ -199,9 +199,10 @@ angle (up to 1 bit); the fix is to divide by the kernel's share inside the reach
 
 ## Next
 
-- **Aim members**: fix the edge undercount, then measure on the PC only as an arm folded into a
-  card that runs anyway (the 432 at 2 seeds resolves about ±0.15); Leigh decides.
-- **PC re-join**: `oracle.npz` from pc-k0-oracle (PR #410) predates ORACLE-3 and ORACLE-4; a re-join
-  (minutes, no battles) scores every K1 model on the 432, and fits on the same card.
+- **Aim members on the PC**: card `pc-k1-aim` (BENCH-138; edge undercount fixed in PR #421): c, aa and km
+  on the 432 learning guns on flat movers, 1 fresh seed from 4400, 1,296 battles (about 3.75 h), gate km
+  at +0.05 APS with the 95% low end above 0, futility stop after 30%. Leigh starts it.
+- **PC re-join**: `oracle.npz` from pc-k0-oracle (PR #410) predates ORACLE-3 and ORACLE-4; pc-k1-aim's
+  `rejoin` step re-joins those battles into `oracle-k1.npz` and scores every K1 model on the 432.
 
 Nothing here ships: no release, no table line, and 1v1 behaviour is unchanged with the switches off.

@@ -1,0 +1,56 @@
+# K1 of the road to king: the aim members in battle (BENCH-138, docs/bench/gun-oracle.md). Leigh starts it:
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-k1-aim        (or  ./queue.sh run pc-k1-aim)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes;
+# no step needs a decision. About 3.75 h of battles (pc-k0-oracle ran 864 of these robots in 2.5 h) and
+# minutes of analysis.
+#
+# Why: in the gun oracle (ORACLE-4) the rolling blend of the surf's views with the head-on, linear and
+# circular aims as members beat the shipped blend on the learning guns on flat movers: calibrated +0.386
+# bits against +0.319, safe third 0.081 -> 0.077, 0 of 36 robots worse. MOVE-29 ports it into the duel
+# surf (switch off in shipped jars). The cloud bench was flat, +0.03 +- 0.64 pp over 72 pairs, too coarse
+# for an effect this size; this card measures it on the whole group, where king's gap is.
+#
+# aim:    the 432 learning guns on flat movers (aes-flat-learning.txt) x c, aa, km x 1 fresh seed from
+#         4400 = 1,296 battles, 35 rounds. One seed and the pooled c+aa control resolve about +-0.15 APS
+#         at 95% over 1,217 pairings.
+# gate:   km at +0.05 APS, minus pooled c and aa over the 432 / 1,217 pairings, 95% low end above 0, A/A
+#         inside its band; per-robot differences with losses.
+# rejoin: if the pc-k0-oracle battles are still in work/k0-oracle, the oracle re-joined and re-scored with
+#         ORACLE-3 and ORACLE-4 (every K1 model on the 432, minutes, no battles); skipped with a note if not.
+# Stop rules (docs/bench/watch.md): the aim step halts on 30 failed battles, an arm scoring nothing in 8,
+# 40+ skipped turns a battle over the last 200, no battle in 30 minutes, or an A/A outside its z 3 band
+# after 20%; every battle fought is kept and a rerun resumes. It also finishes early once km cannot reach
+# +0.05 APS at z 3 after 30% (389 of 1,296 battles): that leaves at most 907 battles (about 2.6 h) unrun,
+# the gate reads the rows so far and the results PR says it stopped early. ALERT opens an issue for Leigh
+# on any stop.
+# Nothing here ships: on a pass a PR turns MOVE-29 on for the 3.20 census; Leigh's release rule stands.
+
+set V = 3.19
+set P = --parallel 12 --no-truth-log
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G --engine 1.11.1
+set W = work/k1-aim
+set K0 = work/k0-oracle
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh aimmem && test -f bisect/hadur117.Hadur_${V}km.jar && ./fetch-opponents.sh --set aes-flat-learning.txt && mvn -q compile && (python3 -c "import numpy" || python3 -m pip install numpy)
+
+aim | ./bench-top20.sh ${C} ${P} --set aes-flat-learning.txt --seeds 1 --seed-base 4400 --arms plans/k1-aim.arms --out ${W} --label k1-aim --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 40 over 200
+  stop: stall 30m
+  stop: aa after 20%
+  stop: futility km below 0.05 after 30%
+
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_k1-aim.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm km --panel aes-flat-learning.txt --bar 0.05 --out ${OUT}/$(date +%Y-%m-%d)_k1-aim-gate.md && python3 tools/per_robot.py ${W}/arms.tsv --arms km --out ${OUT}/$(date +%Y-%m-%d)_k1-aim-per-robot.md --out-tsv ${OUT}/k1-aim-per-robot.tsv
+  after: aim
+
+rejoin | if [ -d ${K0}/battles ]; then python3 ../data/tools/gun_oracle.py join ${K0} --out ${K0}/oracle-k1.npz --jobs 12 && python3 ../data/tools/gun_oracle.py score ${K0}/oracle-k1.npz --out ${OUT}/$(date +%Y-%m-%d)_k1-oracle-432.md --tsv ${OUT}/k1-oracle-432-per-robot.tsv; else echo "pc-k0-oracle battles not on this PC: the 432 re-join was skipped" > ${OUT}/$(date +%Y-%m-%d)_k1-oracle-432.md; fi
+  after: gate
+
+pr | bash tools/open_results_pr.sh claude/pc-k1-aim-results "K1: the aim members (MOVE-29) on the 432 learning guns on flat movers, and the oracle re-scored on the 432" ${OUT}/*_k1-aim*.md ${OUT}/k1-aim-per-robot.tsv ${OUT}/*_k1-oracle-432.md $(find ${OUT} -maxdepth 1 -name k1-oracle-432-per-robot.tsv) $(find ${W} -maxdepth 1 -name EARLY-STOP.md)
+  after: rejoin
