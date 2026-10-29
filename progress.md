@@ -1,6 +1,6 @@
 # Queue pc-team-dodge: progress
 
-Updated 2026-10-29 20:30:53 PC time (20:30 UTC), runner pid 64500.
+Updated 2026-10-29 20:46:03 PC time (20:46 UTC), runner pid 64500.
 
 - `tdprep` done, exit 0 in 2 min
 - `tdbb` done, exit 0 in 1.2 h
@@ -27,15 +27,16 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### tddg
 
-**0 of 1104 battles** (0%), 0 failed. Running 0 min. Last battle 0 min ago.
+**134 of 1104 battles** (12%), 0 failed. Running 15 min, 520 battles/h, about 1.9 h left (ends ~22:37 PC time). Last battle 0 min ago.
+Skipped turns a battle: 13.5 overall, first 100 13.3, last 100 12.8.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 0 |
+| `fails 20` | halt | ok | 0 failed of 134 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | waiting | 0 of 100 battles to read |
+| `skips 40 over 100` | halt | ok | 12.8 a battle over the last 100 (first 100: 13.3) |
 
-Stopping now would leave 1104 battles unrun; every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 970 battles unrun (about 1.9 h); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
