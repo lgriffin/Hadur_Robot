@@ -1,6 +1,6 @@
 # Queue pc-team-path2: progress
 
-Updated 2026-10-29 15:06:47 PC time (15:06 UTC), runner pid 31840.
+Updated 2026-10-29 15:21:54 PC time (15:21 UTC), runner pid 31840.
 
 - `tqprep` done, exit 0 in 2 min
 - `tqbb` running
@@ -10,16 +10,16 @@ Updated 2026-10-29 15:06:47 PC time (15:06 UTC), runner pid 31840.
 
 ### tqbb
 
-**849 of 1472 battles** (58%), 0 failed. Running 1.2 h, 689 battles/h, about 54 min left (ends ~16:01 PC time). Last battle 0 min ago.
-Skipped turns a battle: 9.5 overall, first 100 7.8, last 100 9.2.
+**1064 of 1472 battles** (72%), 0 failed. Running 1.5 h, 716 battles/h, about 34 min left (ends ~15:56 PC time). Last battle 0 min ago.
+Skipped turns a battle: 9.3 overall, first 100 7.8, last 100 8.1.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 849 |
+| `fails 20` | halt | ok | 0 failed of 1064 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 9.2 a battle over the last 100 (first 100: 7.8) |
+| `skips 40 over 100` | halt | ok | 8.1 a battle over the last 100 (first 100: 7.8) |
 
-Stopping now would leave 623 battles unrun (about 54 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 408 battles unrun (about 34 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
