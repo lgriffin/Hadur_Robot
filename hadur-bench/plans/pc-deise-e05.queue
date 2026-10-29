@@ -9,8 +9,9 @@
 #   ./queue.sh run pc-deise-e05        (or  .\queue.ps1 run pc-deise-e05)
 # Run it from master:
 #   git checkout master && git pull
-# One bench queue, RoboRumble workers at 0, unpinned, 12 workers. Every step resumes; no step needs
-# a decision. Nothing here touches Hadur, Saor or the shipped Deise class.
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers. A rerun skips every seat that
+# finished; a seat that was stopped part-way is fought again from its start (the melee path has no
+# per-battle resume, unlike multi-arm and team runs). No step needs a decision. Nothing here touches Hadur, Saor or the shipped Deise class.
 #
 # Arms (deise-arms/arms.txt):
 #   D      Deise 0.3 (DeiseLab)                     SAOR   Saor 0.2 seated, the control
@@ -26,10 +27,13 @@
 # +0.40 or more over D with the low end above 0; it then goes to E3b (fresh seeds, the passing
 # arms stacked, and the fitted byte cost). An arm from +0.20 to +0.40 rides to E3b only as a
 # stack partner. R72 doubles the ring's work: its skipped turns are read beside its score.
-# Stop rules on every census step (halt; every battle fought is kept and a rerun resumes): 20 failed
-# battles (a broken jar), no battle in 30 minutes (a hung step), or 40+ skipped turns a battle over
-# the last 100 (the PR #331 build-up; R72 is the arm most likely to trip it). A halt at worst
-# leaves the rest of that seat and the seats after it unrun, at most 2,208 battles (about 2.3 h).
+# Stop rules on every census step (halt; finished seats are kept, the stopped seat reruns from its
+# start): 20 failed battles (a broken jar), no battle in 30 minutes (a hung step), or 40+ skipped
+# turns a battle over the last 100 (the PR #331 build-up; R72 is the arm most likely to trip it).
+# Since this card, the watcher counts failed melee battles and Bench's melee line carries each
+# battle's skipped turns, so `fails` and `skips` act on melee seats; before, they could not. A halt
+# at worst leaves the rest of that seat and the seats after it unrun, at most 2,208 battles
+# (about 2.3 h).
 # There is no early finish on score: a census seat is one robot, so there is no arm to call futile
 # mid-step.
 
