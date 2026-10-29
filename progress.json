@@ -1,0 +1,22 @@
+{
+ "plan": "pc-1to1",
+ "updated": 1793242744.8186946,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "shield": {
+   "status": "pending"
+  },
+  "learn": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
