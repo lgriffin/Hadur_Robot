@@ -354,6 +354,45 @@ arms on fresh seeds and measures their fitted bytes against the 19 available (FI
 0.3's 5). Mirage's own crowd terms (the centre push, perpendicular to likely shooters, virtual
 bullets every tick) are left out under the uniqueness rule (section 9).
 
+### E3a's result (pc-deise-e05, PR #424)
+
+D 70.70 ± 0.17 and SAOR 69.33 (the run reads 0.54 high). Against D, field by field:
+
+| Arm | vs D | Reached the last two | Those duels won |
+|---|---|---|---|
+| D | 0 | 65.4% | 71.7% |
+| AIM2 | **+0.42 ± 0.23** | 69.5% | 72.8% |
+| P2 | +0.30 ± 0.23 | 69.9% | 72.1% |
+| W10 | +0.14 ± 0.24 | 69.2% | 71.9% |
+| R72 | +0.04 ± 0.23 | 66.0% | 71.8% |
+| W50 | -0.54 ± 0.25 | | |
+| REACH | -0.70 ± 0.23 | | |
+
+AIM2 passes E3a. P2 and W10 ride to E3b as stack partners. A heavier stray wave (W50) and a longer
+step (REACH) lose. The crowd arms do what they were built for: Deise reaches the final duel about
+four rounds in a hundred more often, against Mirage's lead of about eleven. The skip rule read every
+seat (0.0 a battle), the first card on which it could.
+
+### Stage E3b: the stacks, fitted (card pc-deise-e06)
+
+The stacks are benched as the classes they would ship, built on FIT3F (`deise-arms/e3/`). AIM2
+fitted moves the aim test from the shot to every scan. Each opponent keeps the weight of its last
+scan (1, or the stray weight when another robot is nearer it), and that weight scales both its waves
+and its push, `a + b x weight`, so a shooter's push is twice a stray one's. P2 and W10 are only
+constants, so they cost no bytes:
+
+| Arm | What | Bytes |
+|---|---|---|
+| FA | AIM2 | 1,499 |
+| FAP | AIM2 + P2 | 1,499 |
+| FAW | AIM2 + W10 | 1,499 |
+| FAPW | AIM2 + P2 + W10 | 1,499 |
+| PW | P2 + W10, no aim push | 1,480 |
+
+With D, MIR and SAOR, on fresh seeds (from 3600), it runs about 2.3 h. The best arm that reads
++0.30 or more over D, with the low end above 0, becomes 0.4: the core and DeiseLab are matched to it
+(DEISE-16), and it ships on Leigh's go.
+
 ## 9. Uniqueness
 
 Leigh's rule for Saor holds here: inspired by others, never a copy. Deise's gun is Saor's own
