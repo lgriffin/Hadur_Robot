@@ -151,6 +151,13 @@ final class MoveDesign {
      */
     static final boolean MIMICS = false;
 
+    /**
+     * MOVE-29 (K1 of the road to king, docs/bench/gun-oracle.md): the three-option surf's danger
+     * mixes the views' score with the head-on, linear and circular aims' (AimMembers), each member
+     * weighted by how well it predicted the bullets that hit us. Duel only.
+     */
+    static final boolean AIM_MEMBERS = false;
+
     private MoveDesign() { }
 
     /**

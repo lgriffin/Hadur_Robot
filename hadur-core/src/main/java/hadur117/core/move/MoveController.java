@@ -168,6 +168,19 @@ public class MoveController {
     /** DODGE-2: the simple-aim dodger the surf asks, or null when it is off (duel only). */
     private ShotDodger shotDodger;
 
+    /** MOVE-29: the simple aims as danger members beside the views, or null when off (duel only). */
+    private AimMembers aimMembers;
+
+    /** MOVE-29: sets the aim members; null turns them off. */
+    public void setAimMembers(AimMembers members) {
+        this.aimMembers = members;
+    }
+
+    /** MOVE-29: the aim members, or null when off. */
+    public AimMembers aimMembers() {
+        return aimMembers;
+    }
+
     /** DODGE-2: sets the dodger the surf asks for each wave's danger; null turns it off. */
     public void setShotDodger(ShotDodger dodger) {
         this.shotDodger = dodger;
@@ -874,6 +887,8 @@ public class MoveController {
         if (replicator) updateReplicator(hitWave, hitGF);
         // MOVE-27: score the ensemble's models on this bullet before anything learns it.
         if (gunMimics != null) scoreMimics(hitWave, hitGF);
+        // MOVE-29: score the aim members on this bullet before the views learn it.
+        if (aimMembers != null) learnAimMembers(hitWave, hitGF);
         for (KnnView<TimestampedGuessFactor> view : views) {
             if (!view.logBulletHits) continue;
             view.logWave(hitWave, new TimestampedGuessFactor(
@@ -1215,6 +1230,16 @@ public class MoveController {
      */
     double getDangerScore(Wave w, Wave.Intersection intersection, int surfWaveIndex,
                           double[] parts) {
+        return getDangerScore(w, intersection, surfWaveIndex, parts, true);
+    }
+
+    /**
+     * The danger, and with {@code mixAims} and MOVE-29 on, the views' score mixed with the
+     * simple aims' as {@link AimMembers#danger} weighs them (only where the views have data;
+     * the no-data fallback is left as it is). {@code parts} keeps the views' own sums.
+     */
+    private double getDangerScore(Wave w, Wave.Intersection intersection, int surfWaveIndex,
+                                  double[] parts, boolean mixAims) {
         if (parts != null) Arrays.fill(parts, 0, 2 * views.size(), 0.0);
         double dangerAngle = intersection.angle;
         double bandwidth = intersection.bandwidth;
@@ -1272,7 +1297,50 @@ public class MoveController {
             return fallback;
         }
         if (parts != null) parts[2 * views.size()] = Double.NaN;
-        return totalDanger / totalScanWeight;
+        double viewScore = totalDanger / totalScanWeight;
+        if (!mixAims || aimMembers == null) return viewScore;
+        return aimMembers.danger(viewScore, aimScores(w, dangerAngle, bandwidth, segments));
+    }
+
+    /**
+     * MOVE-29: each aim member's score at an intersection: the surf's kernel on the aim's angle
+     * over the intersection's segments; NaN for an aim the wave has no angle for.
+     */
+    private double[] aimScores(Wave w, double dangerAngle, double bandwidth, List<double[]> segments) {
+        double[] aims = w.simpleAims();
+        double[] out = new double[AimMembers.AIMS.length];
+        for (int a = 0; a < out.length; a++) {
+            double angle = aims == null ? Double.NaN : aims[AimMembers.AIMS[a]];
+            out[a] = Double.isNaN(angle) ? Double.NaN
+                : kernel(DiaUtils.normalizeAngle(angle, dangerAngle), bandwidth, segments);
+        }
+        return out;
+    }
+
+    /**
+     * MOVE-29: teaches the aim members a bullet fired at {@code hitGf} on {@code w}: every
+     * member's score over a robot's width at that angle, the views' read in the forensics cache
+     * slot, which is emptied after, as {@link #updateReplicator} does.
+     */
+    private void learnAimMembers(Wave w, double hitGf) {
+        double bandwidth = Math.atan(HitForensics.HALF_WIDTH / Math.max(w.targetDistance, HitForensics.HALF_WIDTH));
+        Wave.Intersection at = new Wave.Intersection(w.firingAngle(hitGf), bandwidth);
+        try {
+            double[] scores = new double[AimMembers.MEMBERS];
+            boolean viewsHaveData = false;
+            double[] estimate = viewEstimate();
+            for (KnnView<TimestampedGuessFactor> view : views) {
+                if (view.effectiveSize() > 0 && viewOn(view, estimate)) viewsHaveData = true;
+            }
+            scores[0] = viewsHaveData ? getDangerScore(w, at, FORENSICS_CACHE, null, false) : Double.NaN;
+            double[] aims = aimScores(w, at.angle, bandwidth, w.transmission(at));
+            System.arraycopy(aims, 0, scores, 1, aims.length);
+            double escape = w.maxEscapeAngle();
+            aimMembers.learn(scores, escape > 0 ? bandwidth / escape : Double.NaN);
+        } finally {
+            for (KnnView<TimestampedGuessFactor> view : views) view.cachedNeighbors.remove(FORENSICS_CACHE);
+            cacheOwners.remove(FORENSICS_CACHE);
+        }
     }
 
     /**

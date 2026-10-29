@@ -15,6 +15,7 @@ import hadur117.core.memory.ProfileLibrary;
 import hadur117.core.memory.Tiers;
 import hadur117.core.model.*;
 import hadur117.core.move.GunClassifier;
+import hadur117.core.move.AimMembers;
 import hadur117.core.move.GunMimics;
 import hadur117.core.move.StopAndGo;
 import hadur117.core.physics.ShotDodger;
@@ -321,6 +322,7 @@ public final class DuelController {
         this.moveController.setPointKernel(duelOnly(MoveDesign.POINT_KERNEL, enemiesTotal));
         this.moveController.setGunMimics(duelOnly(MoveDesign.STOP_POINT_SURF && MoveDesign.MIMICS,
             enemiesTotal) ? new GunMimics() : null);
+        this.moveController.setAimMembers(duelOnly(MoveDesign.AIM_MEMBERS, enemiesTotal) ? new AimMembers() : null);
         this.surfMover = new SurfMover(battleField, predictor);
         this.surfMover.setEscapeRoomTerm(MoveDesign.ESCAPE_ROOM);
         this.surfMover.setDistancingToEnemy(duelOnly(MoveDesign.DISTANCING_TO_ENEMY, enemiesTotal));
@@ -683,7 +685,9 @@ public final class DuelController {
             .setSourceEnergy(e.energy());
         moveWave.setWallDistances();
         // DODGE-1: what the simple aims read, only while the dodge is on.
-        if (moveController.shotDodger() != null) moveWave.aimStates = aimStates(time, myPos, myHead, myVel, enemyPos, enemyHead);
+        if (moveController.shotDodger() != null || moveController.aimMembers() != null) {
+            moveWave.aimStates = aimStates(time, myPos, myHead, myVel, enemyPos, enemyHead);
+        }
         moveController.addWave(moveWave);
 
         // WAVE-1, WAVE-2: only the part of the drop the ledger can't explain is a shot.
