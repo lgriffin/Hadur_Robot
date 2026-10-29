@@ -1,13 +1,13 @@
 # Queue pc-sanaro-n03: progress
 
-Updated 2026-10-29 10:59:11 PC time (10:59 UTC), runner pid 44076.
+Updated 2026-10-29 11:14:19 PC time (11:14 UTC), runner pid 44076.
 
 - `prep` done, exit 0 in 0 min
 - `live-S0` done, exit 0 in 29 min
 - `live-T60` done, exit 0 in 28 min
 - `live-L10` done, exit 0 in 28 min
-- `live-G18` running
-- `live-G36` pending
+- `live-G18` done, exit 0 in 29 min
+- `live-G36` running
 - `read-live` pending
 - `pr` pending
 
@@ -52,23 +52,33 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-G18
 
-**250 of 430 battles** (58%), 0 failed. Running 20 min, 744 battles/h, about 15 min left (ends ~11:13 PC time). Last battle 0 min ago.
+**430 of 430 battles** (100%), 0 failed. Running 29 min, 886 battles/h, about 0 min left (ends ~11:08 PC time). Last battle 0 min ago.
 Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 250 |
+| `fails 20` | halt | ok | 0 failed of 430 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 | `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
 
-Stopping now would leave 180 battles unrun (about 15 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### live-G36
+
+**90 of 430 battles** (21%), 0 failed. Running 6 min, 875 battles/h, about 23 min left (ends ~11:37 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 90 0.0, last 90 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 90 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | waiting | 90 of 100 battles to read |
+
+Stopping now would leave 340 battles unrun (about 23 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-09:13:33 start live-S0
-09:13:33 watching live-S0: 3 stop rule(s)
-09:14:20 progress live-S0: 7/430 (2%) battles, 531/h, ETA 48 min, 0 failed, skips 0.0/battle (last 100)
 09:42:13 live-S0 exit=0 in 1720 s
 09:42:13 start live-T60
 09:42:13 watching live-T60: 3 stop rule(s)
@@ -81,4 +91,7 @@ Stopping now would leave 180 battles unrun (about 15 min); every battle already 
 10:39:02 start live-G18
 10:39:02 watching live-G18: 3 stop rule(s)
 10:45:05 progress live-G18: 100/430 (23%) battles, 992/h, ETA 20 min, 0 failed, skips 0.0/battle (last 100)
+11:08:09 live-G18 exit=0 in 1747 s
+11:08:09 start live-G36
+11:08:09 watching live-G36: 3 stop rule(s)
 ```
