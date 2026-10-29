@@ -771,7 +771,7 @@ for a in "${list[@]}"; do
             edit "$dodge" "static final boolean RANK_BULLETS = false;" "static final boolean RANK_BULLETS = true;"
             ;;
         tmdodgef)
-            version="${version}df"
+            version="${version}of"
             edit "$dodge" "static final boolean OWN_FIRE = false;" "static final boolean OWN_FIRE = true;"
             ;;
         tmtnear)

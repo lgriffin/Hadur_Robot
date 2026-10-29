@@ -614,6 +614,6 @@ the same for team: read each costly team's code, then give it a counter that exp
 - **Own fire.** Our bullets on our own members +13% (80.5 vs 71.2 a battle), giving back most of
   PATH's -15%. DODGE dropped MATEFIRE's risk term and scaled teammates' bullets with the waves.
   TMODE-29 `OWN_FIRE` keeps both as PATH has them.
-- **Card** plans/pc-team-dodge2.queue (BENCH-140): bb, dg and dgdf, 46 teams x 16 fresh seeds from
+- **Card** plans/pc-team-dodge2.queue (BENCH-141): bb, dg and dgof, 46 teams x 16 fresh seeds from
   5600, 12 rounds, about 5 h; a gate per arm. On a pass, the better passing arm ships in a PR (a global
   switch, which Leigh decides).

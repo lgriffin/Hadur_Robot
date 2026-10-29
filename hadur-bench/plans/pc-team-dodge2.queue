@@ -1,10 +1,10 @@
 # Confirm DODGE as every team's default, as built and with our own fire weighed as PATH weighs it
-# (TMODE-27, TMODE-29, BENCH-140; docs/plan-team-top5.md section 15). Team thread: team-only, duel and
+# (TMODE-27, TMODE-29, BENCH-141; docs/plan-team-top5.md section 15). Team thread: team-only, duel and
 # melee fixtures bit for bit. pc-team-dodge (PR #437), on top of PATH: DODGE for every team +0.55 ± 0.50
 # APS (gate PASS, low end +0.05), the per-team table +0.24 ± 0.17 (FAIL), and our bullets on our own
 # members up 13% (80.5 vs 71.2 a battle): DODGE drops MATEFIRE's teammate-bullet risk from its base
-# ranking and folds the teammates' bullets into the median-scaled wave damage. df keeps both as PATH has them.
-#   d2prep  build aa, bb, dg (DODGE forced on) and dgdf (DODGE with OWN_FIRE)
+# ranking and folds the teammates' bullets into the median-scaled wave damage. of keeps both as PATH has them.
+#   d2prep  build aa, bb, dg (DODGE forced on) and dgof (DODGE with OWN_FIRE)
 #   d2bb    bb vs aa, 46 teams x 16 fresh seeds (base 5600), 12 rounds as pc-team-dodge; d2dg and d2df the same for each arm
 #   d2sdg, d2sdf  projected team APS change for each arm = sum of its per-team gain less half of bb's / 46
 #           (gate: +0.30 with the 95% low end above zero). The card changes nothing: on a PASS the
@@ -25,7 +25,7 @@
 set OUT = ../docs/bench/local
 set T = python3 tools/team_modes.py
 
-d2prep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur117.HadurTeam_"$V"aa.jar bisect/hadur117.HadurTeam_"$V"bb.jar bisect/hadur117.HadurTeam_"$V"dg.jar bisect/hadur117.HadurTeam_"$V"dgdf.jar && rm -f ${OUT}/team-dodge2-*.md && ./fetch-opponents.sh --set team-census46.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmdodge && bash ./build-ablation.sh tmdodge,tmdodgef && mkdir -p work && rm -rf work/team-dodge2-"$V"-bb work/team-dodge2-"$V"-dg work/team-dodge2-"$V"-df && for a in bb dg df; do sed "s/@V@/$V/g" plans/team-dodge2-$a.args > work/team-dodge2-$a.args || exit 1; done && for j in aa bb dg dgdf; do test -f bisect/hadur117.HadurTeam_"$V"$j.jar || exit 1; done && mvn -q compile
+d2prep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur117.HadurTeam_"$V"aa.jar bisect/hadur117.HadurTeam_"$V"bb.jar bisect/hadur117.HadurTeam_"$V"dg.jar bisect/hadur117.HadurTeam_"$V"dgof.jar && rm -f ${OUT}/team-dodge2-*.md && ./fetch-opponents.sh --set team-census46.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmdodge && bash ./build-ablation.sh tmdodge,tmdodgef && mkdir -p work && rm -rf work/team-dodge2-"$V"-bb work/team-dodge2-"$V"-dg work/team-dodge2-"$V"-df && for a in bb dg df; do sed "s/@V@/$V/g" plans/team-dodge2-$a.args > work/team-dodge2-$a.args || exit 1; done && for j in aa bb dg dgof; do test -f bisect/hadur117.HadurTeam_"$V"$j.jar || exit 1; done && mvn -q compile
 d2bb   | mvn -q exec:java "-Dexec.args=@work/team-dodge2-bb.args"
   after: d2prep
   watch: battles=1472

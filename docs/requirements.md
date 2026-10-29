@@ -1565,7 +1565,7 @@ blends its terms; the oracle measures what each model predicts.
 | BENCH-134 | Ubiquitous | The bench shall carry the `pc-k0-oracle` card: the current release with `aesrec,oracle` on `aes-flat-learning.txt` (the 432 learning guns on flat movers), 2 fresh seeds from 4200, truth log on, 12 workers, stopping on 30 failed battles, 40+ skipped turns a battle over the last 200 or no battle in 30 minutes; then the oracle's join and score, and a results PR only after both pass. | T7 |
 | BENCH-135 | Ubiquitous | The bench shall carry the `pc-team-path2` card, which runs PATH (TMODE-25) forced on for every team (`mp`) and a bb A/A against aa on all 46 teams at 16 fresh seeds from 5100, and gates the pooled gain (each team's mp gain less half its bb gain, summed over 46) at +0.30 APS with the 95% low end above zero; the card changes no robot code. | T7 |
 | BENCH-139 | Ubiquitous | The bench shall carry the `pc-team-dodge` card, which screens DODGE (TMODE-27) forced on (`dg`) beside a bb A/A against aa on all 46 teams at 12 seeds from 5400; gates DODGE as every team's default on the pooled gain (each team's dg gain less half its bb gain, summed over 46) at +0.30 APS with the 95% low end above zero; picks per team DODGE at +3.0 points or more over both baselines with the low end above zero (a team the shipped table names keeps its entry's modes); and gates the picked table on 16 fresh seeds from 5500 at +0.30 APS; only a passed per-team gate writes that table as the table to ship. | T7 |
-| BENCH-140 | Ubiquitous | The bench shall carry the `pc-team-dodge2` card, which runs DODGE (TMODE-27) forced on (`dg`) and DODGE with its own-fire switch (TMODE-29, `dgdf`) beside a bb A/A against aa on all 46 teams at 16 fresh seeds from 5600 and 12 rounds, and gates each arm's pooled gain (each team's gain less half its bb gain, summed over 46) at +0.30 APS with the 95% low end above zero; the card changes no robot code. | T7 |
+| BENCH-141 | Ubiquitous | The bench shall carry the `pc-team-dodge2` card, which runs DODGE (TMODE-27) forced on (`dg`) and DODGE with its own-fire switch (TMODE-29, `dgof`) beside a bb A/A against aa on all 46 teams at 16 fresh seeds from 5600 and 12 rounds, and gates each arm's pooled gain (each team's gain less half its bb gain, summed over 46) at +0.30 APS with the 95% low end above zero; the card changes no robot code. | T7 |
 | BENCH-138 | Ubiquitous | The bench shall carry the `pc-k1-aim` card: the current release (c), its A/A copy (aa) and the aim members on (km, MOVE-29) on `aes-flat-learning.txt` (the 432 learning guns on flat movers), 1 fresh seed from 4400, 12 workers, truth log off, stopping on 30 failed battles, an arm scoring nothing in 8, 40+ skipped turns a battle over the last 200, no battle in 30 minutes or an A/A outside its band after 20%, and finishing early once km cannot reach +0.05 APS at z 3 after 30%; then the gate (km minus pooled c and aa over the 432 / 1,217 pairings at +0.05 APS, 95% low end above 0), per-robot losses, the oracle re-joined on the pc-k0-oracle battles when they are on the PC, and a results PR only after the gate passes its analysis. | T7 |
 | BENCH-140 | Ubiquitous | The bench shall carry the `pc-sg-aim` card: the current release (c), its A/A copy (aa) and the aim members on (km, MOVE-29) on `simple-guns.txt` (the 434 census opponents with head-on, linear, linear+learning, head-on+learning or mixed guns), 1 fresh seed from 4800, 12 workers, truth log off, with pc-k1-aim's stop rules and futility at +0.05 APS after 30%; then the gate (km minus pooled c and aa over the 434 / 1,217 pairings at +0.05 APS, 95% low end above 0), per-robot losses and a results PR. | T7 |
 
@@ -2195,7 +2195,7 @@ profiles, and the rumbles list it as a new participant.
 - Solo play is untouched: the modes act only while a teammate lives. Only the two team replay
   fixtures were re-recorded; the duel and melee fixtures replay bit for bit.
 
-## DODGE's own fire and its confirm (TMODE-29, BENCH-140)
+## DODGE's own fire and its confirm (TMODE-29, BENCH-141)
 
 - **Why.** pc-team-dodge (PR #437), measured on top of PATH: DODGE for every team +0.55 +- 0.50 APS
   (global gate PASS, low end +0.05); the per-team table (Firestarter, HOFSwarm, TeamDeathTeam)
@@ -2204,7 +2204,7 @@ profiles, and the rumbles list it as a new participant.
   its base ranking and folded teammates' bullets into the median-scaled wave damage.
 - **TMODE-29.** `TeamDodge.OWN_FIRE` (off): keeps `v.mateBullets` in the base ranking and adds
   `PATH_K` x `pathDamage` to each re-ranked risk in `MinimumRiskMovement.rerankBest(..., ownFire)`.
-  Ablation `tmdodgef` (suffix df), built with `tmdodge`.
-- **BENCH-140.** Card plans/pc-team-dodge2.queue: bb, dg and dgdf on 46 teams x 16 seeds from 5600 at
+  Ablation `tmdodgef` (suffix of), built with `tmdodge`.
+- **BENCH-141.** Card plans/pc-team-dodge2.queue: bb, dg and dgof on 46 teams x 16 seeds from 5600 at
   12 rounds (4,416 battles, about 5 h); one pooled gate per arm. Results claude/pc-team-dodge2-results.
 - Both switches off: no replay fixture moves.

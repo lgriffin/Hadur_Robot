@@ -1,4 +1,4 @@
-# PC card team-dodge2 (docs/plan-team-top5.md section 15, TMODE-27, TMODE-29, BENCH-140): arm df (DODGE forced on with TMODE-29 OWN_FIRE), all 46 teams on fresh seeds against master (the aa build). Template: d2prep writes work/team-dodge2-df.args with @V@ = the robot.release in hadur-robot/pom.xml
+# PC card team-dodge2 (docs/plan-team-top5.md section 15, TMODE-27, TMODE-29, BENCH-141): arm df (DODGE forced on with TMODE-29 OWN_FIRE), all 46 teams on fresh seeds against master (the aa build). Template: d2prep writes work/team-dodge2-df.args with @V@ = the robot.release in hadur-robot/pom.xml
 --team
 true
 --seeds
@@ -16,9 +16,9 @@ auto
 --set
 team-census46.txt
 --robot-jar
-bisect/hadur117.HadurTeam_@V@dgdf.jar
+bisect/hadur117.HadurTeam_@V@dgof.jar
 --robot
-hadur117.HadurTeam @V@dgdf
+hadur117.HadurTeam @V@dgof
 --member
 hadur117.Hadur
 --out
