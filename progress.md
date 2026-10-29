@@ -1,6 +1,6 @@
 # Queue pc-team-dodge: progress
 
-Updated 2026-10-29 19:45:29 PC time (19:45 UTC), runner pid 64500.
+Updated 2026-10-29 20:00:37 PC time (20:00 UTC), runner pid 64500.
 
 - `tdprep` done, exit 0 in 2 min
 - `tdbb` running
@@ -14,16 +14,16 @@ Updated 2026-10-29 19:45:29 PC time (19:45 UTC), runner pid 64500.
 
 ### tdbb
 
-**334 of 1104 battles** (30%), 0 failed. Running 29 min, 701 battles/h, about 1.1 h left (ends ~20:51 PC time). Last battle 0 min ago.
-Skipped turns a battle: 11.0 overall, first 100 9.2, last 100 11.4.
+**550 of 1104 battles** (50%), 0 failed. Running 44 min, 754 battles/h, about 44 min left (ends ~20:44 PC time). Last battle 0 min ago.
+Skipped turns a battle: 12.5 overall, first 100 9.2, last 100 9.6.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 334 |
+| `fails 20` | halt | ok | 0 failed of 550 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 11.4 a battle over the last 100 (first 100: 9.2) |
+| `skips 40 over 100` | halt | ok | 9.6 a battle over the last 100 (first 100: 9.2) |
 
-Stopping now would leave 770 battles unrun (about 1.1 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 554 battles unrun (about 44 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -35,4 +35,5 @@ Stopping now would leave 770 battles unrun (about 1.1 h); every battle already f
 19:16:53 start tdbb
 19:16:53 watching tdbb: 3 stop rule(s)
 19:17:13 progress tdbb: 0/1104 (0%) battles, 0 failed
+19:47:30 progress tdbb: 368/1104 (33%) battles, 721/h, ETA 1.0 h, 0 failed, skips 12.6/battle (last 100)
 ```
