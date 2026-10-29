@@ -312,6 +312,48 @@ the gain. Survival remains the gap: Mirage 55.6%.
 Pages: `data/rumble/pages/2026-10-28T2322Z_minimeleerumble_botdetails_hadur117.mini.Deise_0.3.mht`,
 `2026-10-28T2323Z_minimeleerumble_rankings.mht`.
 
+### E2's result (pc-deise-e04, PR #411)
+
+D (0.3) 70.58 ± 0.19, FIT3F 70.66 ± 0.17, MIR 72.04 ± 0.15, SAOR 69.21 ± 0.20. D reads
++1.33 ± 0.27 over SAOR, so **0.3 holds E2** (bar +1.1). FIT3F is level with D (+0.03), so it does
+not replace 0.3, but its 14 bytes are free whenever a fit needs them. The bench puts Mirage 1.46
+ahead, against 1.38 live, so the bench now agrees with live on the gap. On the rule above, +1.33 sits
+between the two readings: 0.3 gains about +0.6 over 0.2 on the bench and +0.18 on the first live
+pass, which is within that pass's noise.
+
+The 46 fields split the gap cleanly:
+
+| | D (0.3) | MIR | SAOR |
+|---|---|---|---|
+| Bullet damage a round | 143.5 | 144.9 | 139.7 |
+| Rounds died in | 54.4% | 46.6% | 63.1% |
+| Mean death tick | 887 | 922 | 853 |
+| Rounds reaching the last two | 64.1% | 75.8% | 60.6% |
+| Those final duels won | 71.4% | 70.9% | 61.1% |
+
+The damage is level and so are the final duels. Mirage's lead is getting to the duel: Deise dies
+in the crowd about one round in eight more often. Field by field, the APS gap follows the survival gap
+(r = 0.96; damage r = 0.48). This refutes the live pass's guess that 0.3's cuts cost damage.
+
+### Stage E3a: crowd survival (card pc-deise-e05)
+
+One change an arm, unfitted (DeiseLab over the core), each aimed at what the crowd does to Deise:
+
+| Arm | What |
+|---|---|
+| AIM2 | the push from an opponent likely aiming at Deise (DEISE-3's test) counts double |
+| P2 | every opponent's push doubled, against the waves |
+| W10, W50 | a wave from a robot unlikely to aim at Deise weighs 0.1 or 0.5, not 0.25 (WA, weight 1 for all, read -0.43) |
+| REACH | the ring reaches 0.6 of the target's distance, up to 220 px, not 0.45 and 160 |
+| R72 | 72 candidate headings, not 36 |
+
+D and SAOR sit on the same census (46 fields x 6 seeds, seeds from 3500), about 2.3 h. Each arm
+is read against SAOR, as e04 was, and against D. An arm passes at +0.40 or more over D with the low
+end above 0. Arms from +0.20 to +0.40 go to E3b only as stack partners. E3b stacks the passing
+arms on fresh seeds and measures their fitted bytes against the 19 available (FIT3F's 14 plus
+0.3's 5). Mirage's own crowd terms (the centre push, perpendicular to likely shooters, virtual
+bullets every tick) are left out under the uniqueness rule (section 9).
+
 ## 9. Uniqueness
 
 Leigh's rule for Saor holds here: inspired by others, never a copy. Deise's gun is Saor's own

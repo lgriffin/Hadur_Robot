@@ -233,7 +233,9 @@ def read_rows(run_dir, since=0.0):
     return rows
 
 
-LOG_BATTLE = re.compile(r"score share [\d.]+%|battle \d+/\d+: |placed \d")
+# A battle's line in a step log: duel (score share), melee or team (`battle N/M: `, or the
+# melee path's `battle N/M[ baseline] FAILED`, which has no colon after the count).
+LOG_BATTLE = re.compile(r"score share [\d.]+%|battle \d+/\d+(?: baseline)?(?:: | FAILED)|placed \d")
 LOG_SKIPS = re.compile(r"skipped (?:turns )?(\d+)")
 
 

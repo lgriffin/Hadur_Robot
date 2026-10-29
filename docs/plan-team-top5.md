@@ -556,3 +556,21 @@ the same for team: read each costly team's code, then give it a counter that exp
   every battle step: 20 failures, 30 min stall, 40+ skips a battle over 100 (halt, resumable). Results claude/pc-team-path-results.
 - **Expected:** PATH +0 to +0.4 APS, on the teams where own fire still costs us after MATEFIRE;
   NEAR about +0.08 (one team, ~+4 points over 46).
+
+## 13. PATH on every team (2026-10-29)
+
+- **pc-team-path result (PR #414).** No team cleared the per-team screen: ShadowTeam +4.0 ± 7.7,
+  AlephTeam +3.7 ± 5.3, Firestarter +0.8, Ogi -0.3, Combat -1.4 at 10 seeds. Pooled over 46 teams PATH
+  read +0.5 ± 0.5 share points over aa (bb -0.0 ± 0.5); our bullets hit our own members 15% less
+  often (32,102 to 27,221) and teammates collided 26% less (1,803 to 1,339). NEAR on TroodonPack
+  -0.1 ± 2.6: closed.
+- **Why global here.** The mechanism fixes our own fire, which costs us against every team, and the
+  gain is too small for any one team to show at affordable seeds. Leigh chose the confirm
+  (2026-10-29), knowing it is one switch rather than a per-opponent pick.
+- **Card** plans/pc-team-path2.queue (BENCH-135): bb and mp on 46 teams x 16 fresh seeds from 5100,
+  2,944 battles, about 3.4 h; pooled gate +0.30 APS with the low end above zero. Stop rules on both
+  battle steps: 20 failures, 30 min stall, 40+ skips a battle over 100 (halt, resumable). Results
+  claude/pc-team-path2-results. On PASS, a PR sets FORCE_PATH = true (fixtures re-recorded for team
+  only; duel and melee bit for bit).
+- **Expected:** about +0.5 APS if the pooled read holds; 2nd needs +2.28.
+
