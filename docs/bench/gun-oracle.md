@@ -95,7 +95,7 @@ The first K1 member re-weights the eleven views by how well each has predicted t
 so far: a view's score is a decaying mean of log2 of its density at each bullet's guess factor over the
 uniform's, its weight 2^(power x score) (exponential weights, the log form of BeepBoop's rolling score),
 and the model is the weighted mix of the views' normalised surfaces (ORACLE-3). It learns only what the
-robot could learn: bullets that hit Hadur (9% of them, from the HF records), once they have arrived.
+robot could learn: bullets that hit Hadur (9% of them, from the HF records), from the tick they hit.
 
 Cloud read, 36 robots ([2026-10-29_k1-rolling-cloud.md](local/2026-10-29_k1-rolling-cloud.md), per robot
 [k1-rolling-cloud-per-robot.tsv](local/k1-rolling-cloud-per-robot.tsv)):
@@ -105,26 +105,30 @@ Cloud read, 36 robots ([2026-10-29_k1-rolling-cloud.md](local/2026-10-29_k1-roll
 | shipped blend | +0.288 | 0.081 |
 | rolling blend, decay 0.8, power 2 (learns from hits) | +0.320 | 0.080 |
 | the same rule learning from every bullet (not playable) | +0.346 | 0.077 |
-| ceiling: each robot's best fixed mix, in hindsight | +0.355 | 0.075 |
+| each robot's best fixed mix, fitted in hindsight | +0.373 | 0.075 |
+| each robot's best mix per round, fitted in hindsight (overfits: ~35 bullets a round, 11 weights) | +0.492 | 0.066 |
 
 What it says:
 
 1. **It passes the bits gate, barely.** +0.032 bits over the shipped blend, worse by more than 0.02
    bits on 2 of 36 robots, tuned on the same robots. The safe third moves from 8.1% to 8.0% of bullets:
    on the measure the surf drives by, it is level.
-2. **Re-weighting these views is nearly spent.** Even knowing the whole battle in advance, the best
-   fixed mix per robot is +0.355 bits, 0.07 over the shipped blend. The weights are not where the
-   king's gap is; the views are. The shipped scan-weight average is already most of the way to the best
-   any weighting of them can do.
-3. **The robot sees too few bullets to learn fast.** The same rule learning from every bullet gets
-   +0.346; from hits alone, +0.320. 91% of the bullets on this class miss and are never seen.
+2. **No fixed weighting is worth much.** Knowing the whole battle in advance, the best fixed mix per
+   robot is +0.373 bits, 0.085 over the shipped blend: the shipped scan-weight average is already most
+   of the way to the best single weighting of these views. Weights that change during the battle can
+   do better in principle (fitting each round in hindsight gives +0.49, though 11 weights on about 35
+   bullets a round flatters it), so this is not a bound on adaptive weighting.
+3. **What holds the robot back is how little it sees.** The same rule learning from every bullet gets
+   +0.346; from hits alone, +0.320. 91% of the bullets on this class miss and are never seen, so any
+   rule that learns from the enemy's bullets learns slowly. A member that learns from something the
+   robot sees on every wave (where it was when each wave passed) does not have that limit.
 
 So step 1 does not earn a Java port or a PC card on its own. The ORACLE-3 columns stay: every later
 member needs the battle order and the hit marks.
 
 ## Next
 
-- **K1 step 2, new members.** The room is in the members, not the weights. The ones worth scoring
+- **K1 step 2, new members.** The room is in members that learn from every wave. The ones worth scoring
   first model the enemy's gun from what Hadur does know, its own movement: a k-NN over Hadur's past
   guess factors at each wave's passing (every wave, not only hits), on the features learning guns
   segment on (lateral velocity, acceleration, distance to wall ahead, time since direction change,

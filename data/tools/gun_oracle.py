@@ -268,7 +268,8 @@ def join_battle(dirpath):
         out.append({"gf": gf, "power": power, "dist": rec["dist"], "mea": rec["mea"], "round": rec["round"],
                     "fire": rec["fire"],
                     "on": rec["on"], "weight": rec["weight"], "scan": scan_sum, "dens": dens, "aims": aims,
-                    "gate": gate_terms(rec, a) if a is not None else None, "seen": 0})
+                    "gate": gate_terms(rec, a) if a is not None else None, "seen": 0,
+                    "hit": float("nan")})
     stats["hits"], stats["hits_matched"] = len(hits), mark_seen(out, hits)
     return out, stats
 
@@ -286,9 +287,12 @@ def parse_hf(line):
 def mark_seen(rows, hits):
     """Mark the rows whose bullet hit us: the only bullets whose guess factor the robot learns in battle
     (bar the rare bullet that hits one of ours). A hit is the row in its round at its power, fired before
-    it and due to arrive within a few ticks of it, nearest the hit's guess factor. Returns hits matched."""
+    it and due to arrive within a few ticks of it, nearest the hit's guess factor, then nearest its tick;
+    a hit with no guess factor (no wave) matches none. Keeps the hit's tick. Returns hits matched."""
     matched = 0
     for rnd, tick, gf, power in hits:
+        if not math.isfinite(gf):
+            continue
         best = None
         for k, r in enumerate(rows):
             if r["round"] != rnd or r["seen"] or abs(r["power"] - power) > 0.01 or r["fire"] >= tick:
@@ -296,11 +300,12 @@ def mark_seen(rows, hits):
             due = r["fire"] + r["dist"] / (20 - 3 * r["power"])
             if abs(due - tick) > 12:
                 continue
-            d = abs(r["gf"] - gf) if math.isfinite(gf) else 0.0
-            if d < 0.1 and (best is None or d < best[0]):
-                best = (d, k)
+            key = (round(abs(r["gf"] - gf), 3), abs(due - tick))
+            if key[0] < 0.1 and (best is None or key < best[0]):
+                best = (key, k)
         if best is not None:
             rows[best[1]]["seen"] = 1
+            rows[best[1]]["hit"] = float(tick)
             matched += 1
     return matched
 
@@ -336,7 +341,7 @@ def join(workdirs, out, jobs):
                     continue
                 cols["bot"].append(bi)
                 cols["battle"].append(battle)
-                for key in ("gf", "power", "dist", "mea", "round", "fire", "seen", "on", "weight", "scan", "aims"):
+                for key in ("gf", "power", "dist", "mea", "round", "fire", "seen", "hit", "on", "weight", "scan", "aims"):
                     cols[key].append(r[key])
                 # Half precision: the surfaces are most of the data set, and a density needs 3 digits.
                 cols["surface"].append(r["dens"][:, :SAMPLES].astype(np.float16))
@@ -349,7 +354,7 @@ def join(workdirs, out, jobs):
     if not cols["bot"]:
         sys.exit("no matched records: is this a run of an oracle build with the truth log on?")
     names = sorted(bots, key=bots.get)
-    f32 = ("at", "scan", "weight", "dist", "mea", "aims", "gf")
+    f32 = ("at", "scan", "weight", "dist", "mea", "aims", "gf", "hit")
     arrays = {k: np.array(v, dtype=np.float16 if k == "surface" else np.float32 if k in f32 else None)
               for k, v in cols.items()}
     np.savez_compressed(out, bots=np.array(names), **arrays)
@@ -388,11 +393,15 @@ def view_likelihoods(z):
 
 def rolling_weights(z, like, decay=DECAY, power=POWER):
     """(waves x views) the rolling blend's view weights at each wave (K1 step 1), learnt along each battle
-    in fire order from the seen bullets that had arrived by the wave's fire time; scores start at 0."""
+    in fire order from the seen bullets that had hit by the wave's fire time (the HF tick; the estimated
+    arrival where the data set has no hit ticks); scores start at 0."""
     import numpy as np
     battle, rnd = z["battle"].astype(int), z["round"].astype(int)
     fire = z["fire"].astype(np.float64)
     due = fire + z["dist"].astype(np.float64) / (20 - 3 * z["power"].astype(np.float64))
+    if "hit" in z:
+        hit = z["hit"].astype(np.float64)
+        due = np.where(np.isfinite(hit), hit, due)
     seen = z["seen"].astype(bool)
     log_like = np.log2(like)
     out = np.empty(like.shape)
@@ -414,22 +423,30 @@ def rolling_weights(z, like, decay=DECAY, power=POWER):
     return out
 
 
-def hindsight_mix(z, like, rounds=200):
-    """(views,) per opponent: the fixed view weights that best predict all its bullets, by EM. Not a
-    model the robot can play (it knows the future); the ceiling of any re-weighting of these views."""
+def hindsight_mix(z, like, steps=400, rate_=0.5):
+    """(views,) per opponent: the fixed view weights that best predict all its bullets, fitted to the
+    scored objective (mean log of the mix renormalised over each wave's views present) by gradient
+    ascent on softmax weights. Not a model the robot can play (it knows the future), and weights that
+    change during a battle can beat it: it is the best fixed re-weighting, not a bound on adaptive ones."""
     import numpy as np
     bot = z["bot"].astype(int)
     out = np.full((int(bot.max()) + 1, like.shape[1]), np.nan)
     for b in np.unique(bot):
         lk = like[bot == b]
         have = np.isfinite(lk)
-        pi = np.ones(lk.shape[1]) / lk.shape[1]
-        for _ in range(rounds):
-            num = np.where(have, pi, 0.0) * np.nan_to_num(lk)
-            tot = num.sum(axis=1, keepdims=True)
-            pi = (num / np.where(tot > 0, tot, 1.0)).sum(axis=0) + 1e-9
+        lk0 = np.nan_to_num(lk)
+        use = have.any(axis=1)
+        lk0, have = lk0[use], have[use].astype(float)
+        theta = np.zeros(lk.shape[1])
+        for _ in range(steps):
+            pi = np.exp(theta - theta.max())
             pi /= pi.sum()
-        out[b] = pi
+            a = lk0 @ pi
+            c = have @ pi
+            g_pi = (lk0 / a[:, None] - have / c[:, None]).mean(axis=0)
+            theta += rate_ * pi * (g_pi - pi @ g_pi) * len(pi)
+        pi = np.exp(theta - theta.max())
+        out[b] = pi / pi.sum()
     return out
 
 
@@ -451,7 +468,7 @@ def mixture(z, weights):
 
 def models(z, rolling=None, ceiling=None):
     """{name: (surface waves x SAMPLES, value at the bullet's gf)}; NaN rows where the model is silent.
-    `rolling` and `ceiling` are this part's rows of the rolling weights and of the hindsight mix."""
+    `rolling` and `ceiling` are this part's rows of the rolling weights and of the hindsight fixed mix."""
     import numpy as np
     on = z["on"].astype(bool)
     surf = z["surface"].astype(np.float64)
@@ -472,7 +489,7 @@ def models(z, rolling=None, ceiling=None):
     if rolling is not None:
         out["blend (rolling, K1)"] = mixture(z, rolling)
     if ceiling is not None:
-        out["ceiling: best fixed mix (hindsight)"] = mixture(z, ceiling)
+        out["hindsight: best fixed mix per opponent"] = mixture(z, ceiling)
     return out
 
 

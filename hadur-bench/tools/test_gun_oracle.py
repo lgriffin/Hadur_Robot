@@ -147,7 +147,7 @@ class JoinTest(unittest.TestCase):
         # 500 px at power 1.9 is 35 ticks: the hit at 66 is the wave fired at 30, not the one at 60
         # (wrong power) nor round 1's (wrong round); a hit far off every wave's guess factor matches none.
         self.battle("x.Bot_1.0-1", [(0, 30, 1.9, 0.3), (0, 60, 2.5, 0.31), (1, 30, 1.9, -0.6)],
-                    hits=[(0, 66, 0.3, 1.9), (1, 66, 0.4, 1.9)])
+                    hits=[(0, 66, 0.3, 1.9), (1, 66, 0.4, 1.9), (1, 64, float("nan"), 1.9)])
         self.battle("y.Bot_1.0-1", [(0, 30, 1.9, 0.1)])
         out = os.path.join(self.dir, "d.npz")
         go.join([self.dir], out, 1)
@@ -155,14 +155,23 @@ class JoinTest(unittest.TestCase):
         self.assertEqual(sorted(set(z["battle"].tolist())), [0, 1])
         x = z["bot"] == list(z["bots"]).index("x.Bot_1.0")
         self.assertEqual(z["fire"][x].tolist(), [30, 60, 30])
-        self.assertEqual(z["seen"][x].tolist(), [1, 0, 0])
+        self.assertEqual(z["seen"][x].tolist(), [1, 0, 0], "a hit with no wave (NaN gf) teaches nothing")
+        self.assertEqual(z["hit"][x][0], 66.0)
         self.assertEqual(int(z["seen"].sum()), 1)
         report = os.path.join(self.dir, "r.md")
         go.score(out, report, None, None)
         with open(report) as f:
             text = f.read()
         self.assertIn("| blend (rolling, K1) |", text)
-        self.assertIn("| ceiling: best fixed mix (hindsight) |", text)
+        self.assertIn("| hindsight: best fixed mix per opponent |", text)
+
+    # @Tag("ORACLE-3")
+    def test_a_hit_goes_to_the_wave_due_nearest_it(self):
+        # Two waves at the same power and guess factor 4 ticks apart: the hit belongs to the one due then.
+        rows = [{"round": 0, "fire": f, "power": 2.0, "dist": 140.0, "gf": 0.3, "seen": 0, "hit": float("nan")}
+                for f in (20, 24)]
+        self.assertEqual(go.mark_seen(rows, [(0, 34, 0.3, 2.0)]), 1)
+        self.assertEqual([r["seen"] for r in rows], [0, 1])
 
     # @Tag("ORACLE-2")
     def test_classes_key_by_the_battle_slug(self):
@@ -215,6 +224,24 @@ class RollingBlendTest(unittest.TestCase):
         self.assertAlmostEqual(w[2][1], 1.0)
         mix = go.hindsight_mix(z, np.tile([4.0, 0.25], (3, 1)))
         self.assertGreater(mix[0][0], 0.99)
+
+    # @Tag("ORACLE-3")
+    def test_the_hindsight_mix_ignores_waves_its_weights_cannot_change(self):
+        # Waves where only view 1 speaks score the same whatever the weights, so they must not pull the
+        # fit towards view 1 (the scored mix renormalises over the views present).
+        both = np.tile([4.0, 0.25], (3, 1))
+        alone = np.tile([np.nan, 8.0], (30, 1))
+        z = self.data([(0, 0, t, 1) for t in range(33)])
+        mix = go.hindsight_mix(z, np.vstack([both, alone]))
+        self.assertGreater(mix[0][0], 0.95)
+
+    # @Tag("ORACLE-3")
+    def test_learning_waits_for_the_hit_tick(self):
+        like = np.tile([4.0, 0.25], (2, 1))
+        z = self.data([(0, 0, 0, 1), (0, 0, 15, 1)])
+        z["hit"] = np.array([18.0, np.nan])  # due at 10 by flight time, but it hit at 18
+        w = go.rolling_weights(z, like, decay=0.5, power=1.0)
+        self.assertEqual(w[1].tolist(), [1.0, 1.0])
 
 
 if __name__ == "__main__":
