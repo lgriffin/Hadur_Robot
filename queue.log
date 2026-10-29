@@ -11,3 +11,23 @@
 07:09:37 watching tpmp: 3 stop rule(s)
 07:19:12 progress tpmp: 96/920 (10%) battles, 601/h, ETA 1.4 h, 0 failed, skips 7.9/battle (last 100)
 07:49:27 progress tpmp: 618/920 (67%) battles, 931/h, ETA 19 min, 0 failed, skips 7.0/battle (last 100)
+08:03:07 tpmp exit=0 in 3209 s
+08:03:07 start tptn
+08:03:07 watching tptn: 3 stop rule(s)
+08:04:49 tptn exit=0 in 102 s
+08:04:49 start tptnbb
+08:04:49 watching tptnbb: 3 stop rule(s)
+08:06:30 tptnbb exit=0 in 101 s
+08:06:30 start tppick
+08:06:31 tppick exit=0 in 0 s
+08:06:31 start tpgate
+08:06:31 watching tpgate: 3 stop rule(s)
+08:06:31 tpgate exit=0 in 0 s
+08:06:31 start tpgbb
+08:06:31 watching tpgbb: 3 stop rule(s)
+08:06:31 tpgbb exit=0 in 0 s
+08:06:31 start tpsum
+08:06:31 tpsum exit=0 in 0 s
+08:06:31 start tppr
+08:06:37 tppr exit=0 in 5 s
+08:06:37 ALLDONE
