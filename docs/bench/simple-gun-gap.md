@@ -41,13 +41,14 @@ share as a sign that dodging was not the gap.)
 |---|---:|---:|
 | Saguaro 1.0 | +2.75 ± 0.81 | -164 |
 | aim members (MOVE-29, km) | **+1.05 ± 0.64** | -55 |
-| aim members, standing weight 0.3 (p3) | +0.84 ± 0.67 | -50 |
-| aim members, standing weight 1.0 (p1) | +1.02 ± 0.63 | -61 |
+| aim members, standing weight 0.3 (ablation aimp3, then built as kmp3) | +0.84 ± 0.67 | -50 |
+| aim members, standing weight 1.0 (aimp1, built as kmp1) | +1.02 ± 0.63 | -61 |
 | shot-dodge planner (DODGE-6, sp) | -0.92 ± 1.13 | -26 |
 | stop-and-go (POISON-1, wp) | -8.32 ± 4.02 | +320 |
 
 The aim members close about a third of the damage gap; their standing weight does not matter (the rolling
-score decides). The shot-dodge planner, built from Saguaro's ShotDodger ideas, does not help here, and
+score decides). Those cloud jars carried the suffixes p3 and p1; the ablations now build q3 and q1, as
+p3 was already pdw3's. The shot-dodge planner, built from Saguaro's ShotDodger ideas, does not help here, and
 stop-and-go is for learning guns only.
 
 ## Next
