@@ -6,7 +6,7 @@
 #   ./queue.sh run pc-jaylexi-w1        (or  .\queue.ps1 run pc-jaylexi-w1)
 # Run it from master:
 #   git checkout master && git pull
-# One bench queue, RoboRumble workers at 0, unpinned (the bench sizes its workers). Every step
+# One bench queue, RoboRumble workers at 0, unpinned (--parallel auto: the host profile's width). Every step
 # resumes; no step needs a decision. Nothing here touches Hadur or the other small bots.
 #
 # Arms, each a released jar fetched from its GitHub release:
@@ -49,7 +49,7 @@ w1-KOM | ${MVN} "-Dexec.args=@work/kitlab-w1-KOM.args"
   stop: stall 30m
   stop: skips 40 over 100
 
-read | (echo "# JayLexi 0.1 and 0.2 on the wide MiniRumble sample (pc-jaylexi-w1)"; echo; echo '## 0.2 against 0.1'; echo '```'; python3 tools/kitlab_read.py kitlab/mini-wide-field.txt work/kitlab-w1-J02 --ref work/kitlab-w1-J01; echo '```'; echo; echo '## 0.2 against Komarious 1.88 (live 87.54)'; echo '```'; python3 tools/kitlab_read.py kitlab/mini-wide-field.txt work/kitlab-w1-J02 --ref work/kitlab-w1-KOM --ref-aps 87.54; echo '```'; echo; echo '## 0.1 against Komarious 1.88 (live 87.54)'; echo '```'; python3 tools/kitlab_read.py kitlab/mini-wide-field.txt work/kitlab-w1-J01 --ref work/kitlab-w1-KOM --ref-aps 87.54; echo '```') > ${OUT}/jaylexi-w1.md
+read | (echo "# JayLexi 0.1 and 0.2 on the wide MiniRumble sample (pc-jaylexi-w1)" && echo && echo '## 0.2 against 0.1' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide-field.txt work/kitlab-w1-J02 --ref work/kitlab-w1-J01 && echo '```' && echo && echo '## 0.2 against Komarious 1.88 (live 87.54)' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide-field.txt work/kitlab-w1-J02 --ref work/kitlab-w1-KOM --ref-aps 87.54 && echo '```' && echo && echo '## 0.1 against Komarious 1.88 (live 87.54)' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide-field.txt work/kitlab-w1-J01 --ref work/kitlab-w1-KOM --ref-aps 87.54 && echo '```') > ${OUT}/jaylexi-w1.md
   after: w1-KOM
 
 pr | bash tools/open_results_pr.sh claude/pc-jaylexi-w1-results "JayLexi 0.1 and 0.2 on the wide MiniRumble sample" ${OUT}/jaylexi-w1.md
