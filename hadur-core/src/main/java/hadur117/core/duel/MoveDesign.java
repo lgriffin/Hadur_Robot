@@ -154,9 +154,11 @@ final class MoveDesign {
     /**
      * MOVE-29 (K1 of the road to king, docs/bench/gun-oracle.md): the three-option surf's danger
      * mixes the views' score with the head-on, linear and circular aims' (AimMembers), each member
-     * weighted by how well it predicted the bullets that hit us. Duel only.
+     * weighted by how well it predicted the bullets that hit us. Duel only. On from 3.20:
+     * pc-sg-aim +0.13 +- 0.07 APS on the 434 simple guns, pc-k1-aim +0.07 +- 0.15 on the 432
+     * learning guns (docs/bench/simple-gun-gap.md).
      */
-    static final boolean AIM_MEMBERS = false;
+    static final boolean AIM_MEMBERS = true;
 
     private MoveDesign() { }
 
