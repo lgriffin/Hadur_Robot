@@ -1161,6 +1161,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | TMODE-25 | Optional | Where the PATH mode is played against a team, while Hadur has a living teammate with a bullet in flight, the destination shall be chosen among the 8 lowest-risk candidates by their risk plus the damage of each teammate bullet that, on Hadur's straight drive there (accelerating 1 px a tick to 8) over the next 15 ticks, crosses Hadur's box 18 px each side; a held destination not yet reached shall be kept unless another scores below 0.9 times its risk plus its own path damage. | T7 |
 | TMODE-26 | Optional | Where the team mode table names NEAR against a team, the HUNT place shall be 250 px from the prey. | T7 |
 | TMODE-27 | Optional | Where the DODGE mode is played against a team, while Hadur has a living teammate, each detected enemy shot shall be turned once, when first seen, into a profile: the simple aims (head-on, linear, circular, linear at the 16-tick average velocity, linear at half speed) at Hadur's state when it was fired and the team's learned aims pooled by enemy class, each carrying its expert's weight exp(-loss) against that class, where an expert's loss decays by 0.95 a hit and grows by 0 within one bot width of each enemy bullet that hit a member and up to 1 at three, the hit member's errors travelling with its link sample; the shot shall count for Hadur by 1/(1+k)^2 for the k teammates nearer its source (by the nearest rule where the table names OWN); the destination shall be the best of the 12 lowest-risk candidates and the held one by risk/median + 3 x damage/median, the damage being the profiles crossed driving there for 30 ticks plus the teammates' bullets crossed in 15, the held one times 0.9; the base risk then counts no bullet. | T7 |
+| TMODE-28 | Ubiquitous | The team mode table's default, for a team it does not name, shall include the PATH mode, and every team the table names shall play PATH on top of its entry. | T7 |
 
 ### T1 notes
 
@@ -1882,7 +1883,7 @@ A retired requirement keeps its ID; no new requirement reuses it.
 - **Why.** Leigh 2026-10-28: proceed with the next team step. Firestarter (2nd) checks each move
   against its own team's bullets in flight; the cloud closer-hunt smoke lost on the field (250 px
   -0.6 +- 1.3, 200 px -2.0 +- 1.3, 22 teams x 6 seeds) but TroodonPack gained at both (+4.3, +3.7).
-- **TMODE-25.** `TeamModes.Mode.PATH` (FORCE_PATH, off): `MinimumRiskMovement.pathBest`,
+- **TMODE-25.** `TeamModes.Mode.PATH` (FORCE_PATH, on since TMODE-28): `MinimumRiskMovement.pathBest`,
   `pathDamage`, `crossesBox`; `PATH_K` 1, `PATH_HALF` 18, `PATH_TICKS` 15, `PATH_RERANK` 8.
 - **TMODE-26.** `TeamModes.Mode.NEAR`, table-only: `huntRadius` gives `HUNT_RADIUS_NEAR` 250.
 - With PATH and NEAR both forced into the default, only the three team replay fixtures move; the
@@ -2178,3 +2179,15 @@ profiles, and the rumbles list it as a new participant.
   bullets). Forced on, every duel and melee fixture replays bit for bit.
 - **BENCH-139.** Card plans/pc-team-dodge.queue: global gate and per-team pick from one screen.
 
+## PATH on every team (TMODE-28)
+
+- **Why.** pc-team-path2 (BENCH-135, PR #430), 46 teams x 16 fresh seeds from 5100: PATH forced on
+  `mp` +0.7 +- 0.3 share points against aa, bb A/A -0.2 +- 0.3, projected **+0.77 +- 0.36 APS**
+  (gate +0.30, low end above zero: PASS). Our bullets on our own members fell 81,824 to 69,429.
+  Aleph +3.8, Slartibartfass, ArmyOfShiz and DemoniacNimrods +3.0, Firestarter +2.8, HOFSwarm +2.4;
+  Polylunar -2.5, Ogi -0.2. A global switch, not a per-team pick: Leigh chose the confirm knowing so.
+- **TMODE-28.** `TeamModes.FORCE_PATH` is true and the three named entries (GrofGroup, Troodon,
+  TroodonDroid) carry `Mode.PATH`, as the measured `tmpath` arm played them. Ablation `tmnopath`
+  turns both off; `tmpath` keeps working on older source.
+- Solo play is untouched: the modes act only while a teammate lives. Only the two team replay
+  fixtures were re-recorded; the duel and melee fixtures replay bit for bit.
