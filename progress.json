@@ -1,6 +1,6 @@
 {
  "plan": "pc-sanaro-n02",
- "updated": 1793227275.1237025,
+ "updated": 1793232352.1025631,
  "steps": {
   "prep": {
    "status": "done",
@@ -49,92 +49,5 @@
    "reason": "after read-live"
   }
  },
- "watched": [
-  {
-   "step": "live-S0",
-   "started": 1793223971.0514731,
-   "updated": 1793225679.946369,
-   "elapsed": 1708.8948957920074,
-   "expected": 430,
-   "panel": null,
-   "field": null,
-   "multiarm": false,
-   "arms": [],
-   "aa": null,
-   "warnings": [],
-   "battles": 430,
-   "resumed": 0,
-   "failed": 0,
-   "disables": null,
-   "rate": 905.8485713848196,
-   "eta": 0.0,
-   "fraction": 1.0,
-   "last_battle_age": 0.1962568759918213,
-   "rules": [
-    {
-     "rule": "fails 20",
-     "action": "halt",
-     "state": "ok",
-     "detail": "0 failed of 430"
-    },
-    {
-     "rule": "stall 30m",
-     "action": "halt",
-     "state": "ok",
-     "detail": "last battle 0 min ago"
-    },
-    {
-     "rule": "skips 40 over 100",
-     "action": "halt",
-     "state": "waiting",
-     "detail": "0 of 100 battles to read"
-    }
-   ],
-   "skips_mean": null,
-   "skips_last100": null
-  },
-  {
-   "step": "live-S02",
-   "started": 1793225679.9583592,
-   "updated": 1793227275.1111279,
-   "elapsed": 1595.152768611908,
-   "expected": 430,
-   "panel": null,
-   "field": null,
-   "multiarm": false,
-   "arms": [],
-   "aa": null,
-   "warnings": [],
-   "battles": 400,
-   "resumed": 0,
-   "failed": 0,
-   "disables": null,
-   "rate": 902.7348529464542,
-   "eta": 119.63645764589309,
-   "fraction": 0.9302325581395349,
-   "last_battle_age": 12.354567050933838,
-   "rules": [
-    {
-     "rule": "fails 20",
-     "action": "halt",
-     "state": "ok",
-     "detail": "0 failed of 400"
-    },
-    {
-     "rule": "stall 30m",
-     "action": "halt",
-     "state": "ok",
-     "detail": "last battle 0 min ago"
-    },
-    {
-     "rule": "skips 40 over 100",
-     "action": "halt",
-     "state": "waiting",
-     "detail": "0 of 100 battles to read"
-    }
-   ],
-   "skips_mean": null,
-   "skips_last100": null
-  }
- ]
+ "watched": []
 }

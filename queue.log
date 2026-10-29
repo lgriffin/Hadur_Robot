@@ -27,3 +27,6 @@
 22:17:26 progress live-S02: 50/430 (12%) battles, 1081/h, ETA 21 min, 0 failed
 22:41:15 live-S02 exit=130 in 1595 s (stopped)
 22:41:15 stopped; rerun to resume from the interrupted steps
+00:05:52 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
+00:05:52 skip prep (already exit=0)
+00:05:52 skip live-S0 (already exit=0)
