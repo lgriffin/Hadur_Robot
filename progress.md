@@ -1,6 +1,6 @@
 # Queue pc-team-path2: progress
 
-Updated 2026-10-29 17:22:53 PC time (17:22 UTC), runner pid 31840.
+Updated 2026-10-29 17:38:00 PC time (17:38 UTC), runner pid 31840.
 
 - `tqprep` done, exit 0 in 2 min
 - `tqbb` done, exit 0 in 1.9 h
@@ -23,21 +23,20 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### tqmp
 
-**1185 of 1472 battles** (81%), 0 failed. Running 1.6 h, 728 battles/h, about 24 min left (ends ~17:46 PC time). Last battle 0 min ago.
-Skipped turns a battle: 9.5 overall, first 100 8.1, last 100 8.0.
+**1414 of 1472 battles** (96%), 0 failed. Running 1.9 h, 752 battles/h, about 5 min left (ends ~17:42 PC time). Last battle 0 min ago.
+Skipped turns a battle: 9.4 overall, first 100 8.1, last 100 6.3.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 1185 |
+| `fails 20` | halt | ok | 0 failed of 1414 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 8.0 a battle over the last 100 (first 100: 8.1) |
+| `skips 40 over 100` | halt | ok | 6.3 a battle over the last 100 (first 100: 8.1) |
 
-Stopping now would leave 287 battles unrun (about 24 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 58 battles unrun (about 5 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-13:51:10 start tqprep
 13:51:12 progress pushed to origin claude/pc-team-path2-progress (every 15 min)
 13:52:48 tqprep exit=0 in 97 s
 13:52:48 start tqbb
@@ -52,4 +51,5 @@ Stopping now would leave 287 battles unrun (about 24 min); every battle already 
 15:54:10 progress tqmp: 48/1472 (3%) battles, 321/h, ETA 4.4 h, 0 failed, skips 7.8/battle (last 100)
 16:24:24 progress tqmp: 367/1472 (25%) battles, 562/h, ETA 2.0 h, 0 failed, skips 9.2/battle (last 100)
 16:54:39 progress tqmp: 745/1472 (51%) battles, 644/h, ETA 1.1 h, 0 failed, skips 7.2/battle (last 100)
+17:24:54 progress tqmp: 1218/1472 (83%) battles, 733/h, ETA 21 min, 0 failed, skips 7.1/battle (last 100)
 ```
