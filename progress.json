@@ -1,6 +1,6 @@
 {
  "plan": "pc-deise-e05",
- "updated": 1793274770.6088843,
+ "updated": 1793275677.461327,
  "steps": {
   "prep": {
    "status": "done",
@@ -9,11 +9,14 @@
    "end": "2026-10-29T11:38:05"
   },
   "live-D": {
-   "status": "running",
-   "start": "2026-10-29T11:38:05"
+   "status": "done",
+   "exit": 0,
+   "seconds": 994,
+   "end": "2026-10-29T11:54:40"
   },
   "live-AIM2": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-10-29T11:54:40"
   },
   "live-P2": {
    "status": "pending"
@@ -44,8 +47,8 @@
   {
    "step": "live-D",
    "started": 1793273885.5518818,
-   "updated": 1793274770.600221,
-   "elapsed": 885.0483391284943,
+   "updated": 1793274880.0549283,
+   "elapsed": 994.5030465126038,
    "expected": 276,
    "panel": null,
    "field": null,
@@ -53,20 +56,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 243,
+   "battles": 276,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 988.4205882600878,
-   "eta": 120.19174975819058,
-   "fraction": 0.8804347826086957,
-   "last_battle_age": 0.017417430877685547,
+   "rate": 999.0919620449928,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 0.19537639617919922,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 243"
+     "detail": "0 failed of 276"
     },
     {
      "rule": "stall 30m",
@@ -81,8 +84,51 @@
      "detail": "0.0 a battle over the last 100 (first 100: 0.0)"
     }
    ],
-   "skips_mean": 0.0205761316872428,
+   "skips_mean": 0.018115942028985508,
    "skips_last100": 0
+  },
+  {
+   "step": "live-AIM2",
+   "started": 1793274880.0662978,
+   "updated": 1793275677.4545932,
+   "elapsed": 797.3882954120636,
+   "expected": 276,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 195,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 880.3740963331169,
+   "eta": 331.2228304019342,
+   "fraction": 0.7065217391304348,
+   "last_battle_age": 0.020722389221191406,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 195"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0.0 a battle over the last 100 (first 100: 0.0)"
+    }
+   ],
+   "skips_mean": 0.041025641025641026,
+   "skips_last100": 0.04
   }
  ]
 }
