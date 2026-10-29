@@ -1,0 +1,31 @@
+# PC card team-path2 (docs/plan-team-top5.md section 13, TMODE-25, BENCH-135): arm mp (TMODE-25 PATH forced on for every team; the named teams play it on top of their entry), all 46 teams on fresh seeds against master (the aa build). Template: tqprep writes work/team-path2-mp.args with @V@ = the robot.release in hadur-robot/pom.xml
+--team
+true
+--seeds
+16
+--seed-base
+5100
+--rounds
+16
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+team-census46.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@mp.jar
+--robot
+hadur117.HadurTeam @V@mp
+--member
+hadur117.Hadur
+--out
+work/team-path2-@V@-mp
+--report
+../docs/bench/local/team-path2-mp.md
+--baseline
+bisect/hadur117.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur117.HadurTeam @V@aa
