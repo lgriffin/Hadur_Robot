@@ -208,21 +208,68 @@ that table into the arm's source. **N3 passes** for an arm whose difference over
 end above zero; the best passing arm becomes 0.1's default, and a second read on fresh seeds
 stacks the winners before the release (N5).
 
-## 8. Stages
+## 8. pc-sanaro-n02 results and the live read (stage N3, 2026-10-29, PR #408)
+
+Sanaro 0.1 (S0) was released as `sanaro-v0.1` on 2026-10-28 and read **2nd in NanoMelee at
+65.21 ± 0.56** after 246 battles (2026-10-29 00:04 UTC). The live-shaped census had said 65.17,
+so the census carries to live one for one. Quantum 1.0.0 read 66.44 (1.23 ahead),
+NaturalScience 64.74 and DustBunny 64.70. Against each of the top four on its own (Quantum,
+NaturalScience, DustBunny and DuelistNanoMelee) Sanaro scored 47-48, from 2-3 battles each.
+
+pc-sanaro-n02, 430 battles an arm on fresh seeds, against S0 (64.97 ± 0.22):
+
+| Arm | APS | vs S0 | Survival |
+|---|---|---|---|
+| T60 (3.0 from 60 energy) | 65.11 | +0.23 ± 0.32 | 15.7 |
+| L20 (0.1 + E / 20, at most 2.0) | 65.02 | +0.13 ± 0.32 | 16.4 |
+| S02 (spiral 0.2) | 64.87 | -0.04 ± 0.31 | 15.8 |
+| Q7 (Quantum's E / 7) | 64.92 | -0.05 ± 0.34 | 15.7 |
+| D10 (0.1 + E / 10) | 64.92 | -0.09 ± 0.33 | 16.1 |
+| B800 (band at 800 px) | 64.53 | -0.39 ± 0.33 | 11.7 |
+
+**N3 does not pass**: no arm's low end is above zero. The power curve is flat, Quantum's own
+among the curves, so Quantum's 14% damage edge is not how hard it fires. Full power further out
+loses (B800, and B1000 in n01). What Quantum still does that Sanaro does not is its **fire gate**
+(it fires only when the gun has under 18 / d rad left to turn), its radar lock at gun heat 1.0,
+and its name lock on the target.
+
+## 9. The next card: pc-sanaro-n03 (stage N4)
+
+`hadur-bench/plans/pc-sanaro-n03.queue`, Leigh starts it from master:
+`.\queue.ps1 run pc-sanaro-n03`. About 2.4 h at 12 workers, with stop rules and ALERT. Live-shaped
+census, 43 fields x 10 fresh seeds (base 14000), read against S0 (`sanaro-n03-live.md` on
+`claude/pc-sanaro-n03-results`):
+
+| Arm | Change | Bytes |
+|---|---|---|
+| S0 | 0.1 as it ships (control) | 247 |
+| T60 | n02's best, on fresh seeds | 247 |
+| L10 | radar flip below gun heat 1.0, not 0.9 | 245 |
+| G18 | fire gate 18 / d rad | 277 as written (measure only) |
+| G36 | fire gate 36 / d rad | 277 as written (measure only) |
+
+The cloud screen read a gate at -1.6, but on the NanoMelee-only census, which n01 showed picks
+against the scored field; this card measures it where it counts. A gate worth +0.5 or more is
+worth finding the bytes for (N5: about 11 once fitted). T60 and L10 ship in 0.2 if they pass.
+
+## 10. Stages
 
 | Stage | What | Gate |
 |---|---|---|
 | N0 | the bench: nano field, census and duel suites, arms, read; Sanaro 0.1 built and gated | 249 bytes, tests green |
 | N1 | the cloud screen (section 4) | a spiral beats S0 or the leaders in the same battles |
 | N2 | pc-sanaro-n01 (section 6): S0 picked, +0.88 over 0.6 on the live-shaped census | as section 5 |
-| N3 | pc-sanaro-n02 (section 7): the power curve, a small spiral, the band | an arm over S0 on the live-shaped census |
-| N4 | the Quantum gap: stack N3's winners, then the end game one on one (bytes) | the live-shaped census over the seated Quantum's 66.58 |
-| N5 | release `hadur117.nano.Sanaro`, first rumble read after 500 battles | SANARO-10, SANARO-11 on the final jar |
+| N3 | pc-sanaro-n02 (section 7, results section 8): flat, nothing passes | an arm over S0 on the live-shaped census |
+| N4 | pc-sanaro-n03 (section 9): the fire gate, the radar threshold, T60 again | an arm over S0 on the live-shaped census |
+| N5 | fit what N4 picks into 249 bytes, then stack the winners toward Quantum | the live-shaped census over the seated Quantum's 66.58 |
+| N6 | release 0.2, first rumble read after 500 battles | SANARO-13 on the final jar (0.1 released 2026-10-28, live 2nd at 65.21) |
 
-## 9. Uniqueness
+## 11. Uniqueness
 
 Leigh's rule for Saor holds here: inspired by others, never a copy. Sanaro shares the open
 DustBunny line's anti-gravity and lead, which every bot at the top of NanoMelee shares, and
-differs in behaviour where it counts: the power table (its own formula, not
-NaturalScience's 4,991-character table), the radar threshold, and no name lock or fire gate.
+differs in behaviour where it counts: the power table (its own formula, not NaturalScience's
+4,991-character table), the creeping target in place of a name lock, the radar threshold and no
+fire gate. N4 measures Quantum's gate and its radar threshold; if 0.2 takes both, what stays
+Sanaro's own is the table and the creeping target, and Leigh decides whether that is unique enough.
 The seated leaders are references only and never ship.
