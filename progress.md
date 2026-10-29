@@ -1,11 +1,11 @@
 # Queue pc-deise-e04: progress
 
-Updated 2026-10-29 05:39:39 PC time (05:39 UTC), runner pid 48840.
+Updated 2026-10-29 05:54:46 PC time (05:54 UTC), runner pid 48840.
 
 - `prep` done, exit 0 in 0 min
 - `live-D` done, exit 0 in 17 min
-- `live-FIT3F` running
-- `live-MIR` pending
+- `live-FIT3F` done, exit 0 in 17 min
+- `live-MIR` running
 - `live-SAOR` pending
 - `read` pending
 - `pr` pending
@@ -24,15 +24,27 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-FIT3F
 
-**192 of 276 battles** (70%), 0 failed. Running 13 min, 864 battles/h, about 6 min left (ends ~05:45 PC time). Last battle 0 min ago.
+**276 of 276 battles** (100%), 0 failed. Running 17 min, 963 battles/h, about 0 min left (ends ~05:43 PC time). Last battle 0 min ago.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 192 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 | `skips 40 over 100` | halt | waiting | 0 of 100 battles to read |
 
-Stopping now would leave 84 battles unrun (about 6 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### live-MIR
+
+**169 of 276 battles** (61%), 0 failed. Running 11 min, 901 battles/h, about 7 min left (ends ~06:01 PC time). Last battle 0 min ago.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 169 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | waiting | 0 of 100 battles to read |
+
+Stopping now would leave 107 battles unrun (about 7 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -47,4 +59,8 @@ Stopping now would leave 84 battles unrun (about 6 min); every battle already fo
 05:26:18 live-D exit=0 in 1001 s
 05:26:18 start live-FIT3F
 05:26:19 watching live-FIT3F: 3 stop rule(s)
+05:40:39 progress live-FIT3F: 222/276 (80%) battles, 929/h, ETA 3 min, 0 failed
+05:43:30 live-FIT3F exit=0 in 1031 s
+05:43:30 start live-MIR
+05:43:30 watching live-MIR: 3 stop rule(s)
 ```
