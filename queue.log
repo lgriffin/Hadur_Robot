@@ -15,3 +15,7 @@
 12:29:03 live-P2 exit=0 in 1038 s
 12:29:03 start live-W10
 12:29:03 watching live-W10: 3 stop rule(s)
+12:39:13 progress live-W10: 144/276 (52%) battles, 850/h, ETA 9 min, 0 failed, skips 0.0/battle (last 100)
+12:45:53 live-W10 exit=0 in 1010 s
+12:45:53 start live-W50
+12:45:53 watching live-W50: 3 stop rule(s)
