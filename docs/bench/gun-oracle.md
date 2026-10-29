@@ -126,18 +126,61 @@ What it says:
 So step 1 does not earn a Java port or a PC card on its own. The ORACLE-3 columns stay: every later
 member needs the battle order and the hit marks.
 
+## Two fixes to the measure
+
+- **Calibrated bits.** Bits reward confidence as well as knowledge: mixing the shipped blend with 20%
+  uniform alone takes it from +0.288 to +0.319, which is most of step 1's +0.032. Each model is now also
+  reported at its best further uniform mix ("calibrated"), so models compare on what they know.
+- **Rank.** The surf acts on the views' ranking of its options, not on their scale. `rank` is the share
+  of the wave a model rated safer than where the bullet went (0.5 knows nothing). On the step 1 models
+  it moved 0.695 to 0.696: step 1 changed the scale, not the ranking.
+
+## K1 step 2: new members (ORACLE-4)
+
+`join` now keeps every enemy bullet of the truth log as a wave with Hadur's state when the enemy aimed
+(lateral and advancing velocity, acceleration, ticks since reversing and since slowing, distance, wall
+room ahead and behind, flight time) and where Hadur was when the wave passed. Two kinds of member were
+scored, on the 36 learning-flat robots and on 50 simple-gun robots (every 7th of the census's head-on,
+linear, mixed, linear+learning and head-on+learning guns, rammers and sitters out;
+`hadur-bench/k1-simple-cloud.txt`, 3.19 `aesrec,oracle`, 1 seed, 35 rounds).
+
+| Model | learning-flat cal. bits | safe | rank | simple-gun bits | safe | rank |
+|---|---|---|---|---|---|---|
+| shipped blend | +0.319 | 0.081 | 0.695 | +1.474 | 0.025 | 0.867 |
+| rolling blend (step 1) | +0.342 | 0.080 | 0.696 | +1.489 | 0.026 | 0.869 |
+| visits: k-NN over where Hadur went | +0.138 | 0.131 | 0.631 | -0.249 | 0.551 | 0.340 |
+| blend + 25% visits | +0.340 | 0.081 | 0.694 | +1.222 | 0.046 | 0.851 |
+| **rolling over the views and the three simple aims** | **+0.386** | **0.077** | **0.701** | **+1.621** | 0.024 | **0.895** |
+| hindsight: best fixed mix of the views | +0.387 | 0.075 | 0.706 | +1.543 | 0.024 | 0.874 |
+
+Reports: [learning-flat](local/2026-10-29_k1-step2-learning-flat-cloud.md),
+[simple guns](local/2026-10-29_k1-step2-simple-cloud.md) (per robot: the matching `.tsv`), and the
+simple-gun battles ([2026-10-29_k1-simple-cloud-battles.md](local/2026-10-29_k1-simple-cloud-battles.md)).
+
+1. **The visit member does not help.** A k-NN over where Hadur went, the way a learning gun
+   learns, ranks worse than the views on both classes and adds nothing in the blend. The enemy guns do
+   not aim where Hadur has been on these features; or not in a way this member reproduces.
+2. **The simple aims do, as members.** Head-on, linear and circular aims from the enemy's position at
+   Hadur's state a tick before it fired, each one more member of the rolling blend (standing weight 0.3
+   of a view's, learning from hits like the views), give the first change in ranking: on learning-flat
+   bullets from the safest third fall from 8.1% to 7.7%, rank 0.695 to 0.701, calibrated bits +0.067,
+   and no robot worse in bits (0 of 36). It matches the best fixed view weighting in hindsight, which
+   the robot cannot have. Learning guns that fire some simple shots, or aim close to a simple aim
+   early, are the likely source.
+3. **Simple guns: dodging is not the gap.** Hadur takes 2.6% of these bullets, 2.4% come from the
+   third it drives into, and 47 of 50 battles are near-perfect survival; the members raise bits
+   (+0.15) and rank, but 16 of 43 robots score lower in bits and safe does not move. Saguaro's +0.45 on
+   this group is more likely kill speed or damage dealt than the danger model.
+
+So the candidate for a battle test is the aims as danger members. It is cheap in the robot: three
+predictions a wave and three more scores in the rolling blend.
+
 ## Next
 
-- **K1 step 2, new members.** The room is in members that learn from every wave. The ones worth scoring
-  first model the enemy's gun from what Hadur does know, its own movement: a k-NN over Hadur's past
-  guess factors at each wave's passing (every wave, not only hits), on the features learning guns
-  segment on (lateral velocity, acceleration, distance to wall ahead, time since direction change,
-  bullet flight time), in a few weightings. That needs the wave's features from the truth log in
-  `join` (Hadur's state at fire time and its guess factor when the wave passes). Gate as the doc sets
-  it: better bits than the shipped blend on learning-flat, no class worse; the rolling blend then mixes
-  the new members with the views.
-- **PC**: `oracle.npz` from pc-k0-oracle (PR #410) predates ORACLE-3, so the PC data needs a re-join
-  (minutes, no battles) before it can score K1. That goes on one card with step 2, if the battle
-  directories are still on the PC.
+- **Port the aim members behind a switch** (off in shipped jars): the three simple aims as danger
+  members of the surf, with the rolling weights learning from hits. Then a cloud bench on the
+  learning-flat sample for a first read, and a PC card on the 432 for the real measure (Leigh starts it).
+- **PC re-join**: `oracle.npz` from pc-k0-oracle (PR #410) predates ORACLE-3 and ORACLE-4; a re-join
+  (minutes, no battles) scores every K1 model on the 432, and fits on the same card.
 
 Nothing here ships: no release, no table line, and 1v1 behaviour is unchanged with the switches off.

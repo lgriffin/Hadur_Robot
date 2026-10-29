@@ -60,6 +60,7 @@ HALF_WIDTH = 18.0  # HitForensics.HALF_WIDTH: a robot's half width, px
 VIEWS = ar.VIEWS
 EPS = 0.05         # the uniform mixed into every model
 AIMS = ("headon", "linear", "circular")
+AIM_PRIOR = 0.3          # the simple aims' standing weight against a view's in the rolling blend with aims
 DECAY, POWER = 0.8, 2.0  # the rolling blend (K1): a view's score decays 20% a seen bullet; weight 2^(2 x score)
 SLUG_RUN = re.compile(r"[^A-Za-z0-9.]+")  # Opponent.slug, the battle directory's name: a dash becomes _
 
@@ -119,6 +120,64 @@ def simple_aims(ticks, k, speed):
     return {"headon": cc.bearing(ox, oy, hx, hy),
             "linear": cc.predict(hx, hy, hh, hv, 0.0, ox, oy, speed),
             "circular": cc.predict(hx, hy, hh, hv, dh, ox, oy, speed)}
+
+
+WAVE_FEATURES = ("lat", "adv", "accel", "since_turn", "since_decel", "dist", "wall_ahead", "wall_behind", "flight")
+
+
+def enemy_waves(ticks, spawns_r):
+    """Every enemy wave of one round as the robot sees it (K1 step 2): for each bullet of `spawns_r`, its
+    fire tick, power, the wave's frame (absolute bearing from the shooter to Hadur, Hadur's orbit
+    direction, maximum escape angle), Hadur's state when the enemy aimed (the features learning guns
+    segment on, WAVE_FEATURES), and where Hadur was when the wave passed it: the tick and its guess
+    factor in the wave's frame (NaN when the round ended first). Hadur knows all of it in battle: it
+    sees the enemy fire, and its own position on every tick."""
+    at = {tk[0]: k for k, tk in enumerate(ticks)}
+    out = []
+    for sp in spawns_r:
+        k = at.get(sp[0])
+        if k is None or k < 3:
+            out.append(None)
+            continue
+        kf = k - 1  # the fire tick: the shooter's position; it aimed at Hadur's state a tick before
+        ox, oy = ticks[kf][3], ticks[kf][4]
+        q = ticks[k - 2]
+        hx, hy, hh, hv = q[1], q[2], q[10], q[11]
+        speed = 20 - 3 * sp[1]
+        b0 = cc.bearing(ox, oy, hx, hy)
+        dist = math.hypot(hx - ox, hy - oy)
+        lat = hv * math.sin(hh - b0)
+        adv = -hv * math.cos(hh - b0)
+        direction = 1 if lat >= 0 else -1
+        accel = abs(hv) - abs(ticks[k - 3][11])
+        since_turn = since_decel = 0
+        for j in range(k - 2, max(0, k - 62), -1):
+            if ticks[j][11] * hv < 0 or (hv == 0 and ticks[j][11] != 0):
+                break
+            since_turn += 1
+        for j in range(k - 2, max(0, k - 62), -1):
+            if abs(ticks[j][11]) < abs(ticks[j - 1][11]):
+                break
+            since_decel += 1
+        mea = math.asin(min(1.0, 8.0 / speed))
+
+        def wall(sign):
+            for step in range(31):
+                a = b0 + sign * direction * step * 0.05 * mea
+                x, y = ox + dist * math.sin(a), oy + dist * math.cos(a)
+                if not (cc.HALF_BOT <= x <= cc.FIELD_W - cc.HALF_BOT and cc.HALF_BOT <= y <= cc.FIELD_H - cc.HALF_BOT):
+                    return step * 0.05
+            return 1.5
+        passed, gf = float("nan"), float("nan")
+        for j in range(kf + 1, len(ticks)):
+            if math.hypot(ticks[j][1] - ox, ticks[j][2] - oy) <= (j - kf) * speed:
+                passed = float(ticks[j][0])
+                gf = cc.norm(cc.bearing(ox, oy, ticks[j][1], ticks[j][2]) - b0) / (direction * mea)
+                break
+        out.append({"fire": ticks[kf][0], "power": sp[1], "bearing": b0, "dir": direction, "mea": mea,
+                    "feat": [abs(lat), adv, accel, since_turn, since_decel, dist, wall(1), wall(-1), dist / speed],
+                    "pass": passed, "gf": gf})
+    return out
 
 
 def kernel_mass(angles, low, high):
@@ -219,7 +278,7 @@ def join_battle(dirpath):
     out = []
     log = os.path.join(dirpath, "hadur.log")
     if not os.path.exists(log):
-        return out, stats
+        return out, stats, []
     aes, orcs, hits = {}, [], []
     with open(log, encoding="utf-8", errors="replace") as f:
         for line in f:
@@ -237,6 +296,13 @@ def join_battle(dirpath):
                     aes[(a["round"], a["tick"], a["fire"])] = a
     grid_gf = np.linspace(-1.0, 1.0, SAMPLES)
     used = set()
+    waves, wave_at = [], {}
+    for r in sorted(spawns):
+        for k, w in enumerate(enemy_waves(ticks_by_round.get(r, []), spawns[r])):
+            if w is not None:
+                wave_at[(r, k)] = len(waves)
+                w["round"] = r
+                waves.append(w)
     for rec in orcs:
         stats["records"] += 1
         if not rec["firing"]:
@@ -264,14 +330,15 @@ def join_battle(dirpath):
             a = simple_aims(ticks_by_round[rec["round"]], k, 20 - 3 * power)
             if a is not None:
                 aims = [gf_of(rec, a[name]) for name in AIMS]
+        wave = wave_at.get((rec["round"], best[1]), -1)
         a = aes.get((rec["round"], rec["tick"], rec["fire"]))
         out.append({"gf": gf, "power": power, "dist": rec["dist"], "mea": rec["mea"], "round": rec["round"],
-                    "fire": rec["fire"],
+                    "fire": rec["fire"], "bearing": rec["bearing"], "dir": rec["dir"], "wave": wave,
                     "on": rec["on"], "weight": rec["weight"], "scan": scan_sum, "dens": dens, "aims": aims,
                     "gate": gate_terms(rec, a) if a is not None else None, "seen": 0,
                     "hit": float("nan")})
     stats["hits"], stats["hits_matched"] = len(hits), mark_seen(out, hits)
-    return out, stats
+    return out, stats, waves
 
 
 def parse_hf(line):
@@ -312,8 +379,8 @@ def mark_seen(rows, hits):
 
 def _join_job(args):
     dirpath, name = args
-    rows, stats = join_battle(dirpath)
-    return name, rows, stats
+    rows, stats, waves = join_battle(dirpath)
+    return name, rows, stats, waves
 
 
 def join(workdirs, out, jobs):
@@ -326,22 +393,28 @@ def join(workdirs, out, jobs):
             if bid is None or bid[2]:
                 continue
             tasks.append((os.path.join(base, name), name))
-    bots, cols, totals = {}, defaultdict(list), defaultdict(int)
+    bots, cols, totals, wcols = {}, defaultdict(list), defaultdict(int), defaultdict(list)
     views, battle = None, -1
     nan3 = [float("nan")] * 3
     with Pool(max(1, jobs)) as pool:
-        for name, rows, stats in pool.imap_unordered(_join_job, tasks, chunksize=1):
+        for name, rows, stats, waves in pool.imap_unordered(_join_job, tasks, chunksize=1):
             for k, v in stats.items():
                 totals[k] += v
             bi = bots.setdefault(ar.battle_id(name)[0], len(bots))
             battle += 1  # a battle's rows are in the log's order (round, then fire time): K1 learns along it
+            base = len(wcols["fire"])
+            for w in waves:
+                wcols["battle"].append(battle)
+                for key in ("round", "fire", "power", "bearing", "dir", "mea", "feat", "pass", "gf"):
+                    wcols[key].append(w[key])
             for r in rows:
                 views = views or len(r["on"])
                 if len(r["on"]) != views:
                     continue
                 cols["bot"].append(bi)
                 cols["battle"].append(battle)
-                for key in ("gf", "power", "dist", "mea", "round", "fire", "seen", "hit", "on", "weight", "scan", "aims"):
+                cols["wave"].append(base + r["wave"] if r["wave"] >= 0 else -1)
+                for key in ("gf", "power", "dist", "mea", "round", "fire", "bearing", "dir", "seen", "hit", "on", "weight", "scan", "aims"):
                     cols[key].append(r[key])
                 # Half precision: the surfaces are most of the data set, and a density needs 3 digits.
                 cols["surface"].append(r["dens"][:, :SAMPLES].astype(np.float16))
@@ -357,6 +430,8 @@ def join(workdirs, out, jobs):
     f32 = ("at", "scan", "weight", "dist", "mea", "aims", "gf", "hit")
     arrays = {k: np.array(v, dtype=np.float16 if k == "surface" else np.float32 if k in f32 else None)
               for k, v in cols.items()}
+    arrays.update({"w_" + k: np.array(v, dtype=np.float64 if k in ("bearing", "mea", "gf", "pass") else
+                                     np.float32 if k == "feat" else None) for k, v in wcols.items()})
     np.savez_compressed(out, bots=np.array(names), **arrays)
     print("battles %d, records %d, on real waves %d, matched to a bullet %d of %d bullets; %d opponents -> %s"
           % (len(tasks), totals["records"], totals["real"], totals["matched"], totals["bullets"], len(names), out))
@@ -450,6 +525,85 @@ def hindsight_mix(z, like, steps=400, rate_=0.5):
     return out
 
 
+KNN_SCALE = (8.0, 16.0, 2.0, 60.0, 60.0, 800.0, 1.5, 1.5, 80.0)  # WAVE_FEATURES' rough spans
+KNN_WEIGHTS = (1.0, 0.0, 0.5, 0.0, 0.5, 0.0, 1.0, 0.0, 1.0)       # lateral velocity, acceleration, time
+#   since deceleration, wall ahead, flight time: the dimensions learning guns segment on most
+KNN_K = 40
+
+
+def visit_knn(z, weights=KNN_WEIGHTS, k=KNN_K):
+    """The visit member (K1 step 2): a model of a learning gun from what Hadur sees on every wave. For
+    each rated wave, the k enemy waves of the battle already passed by its fire time whose features
+    (WAVE_FEATURES at their fire times) are nearest its own; each puts the surf's kernel where Hadur was
+    when that wave passed, weight 1/(1 + d/mean d). (surface, value at the bullet's gf); NaN with fewer
+    than 3 waves passed."""
+    import numpy as np
+    n = len(z["gf"])
+    surface, value = np.full((n, SAMPLES), np.nan, dtype=np.float32), np.full(n, np.nan)
+    feat = z["w_feat"].astype(np.float64) / np.array(KNN_SCALE)
+    w = np.array(weights)
+    wb, wr, wp, wg = z["w_battle"], z["w_round"], z["w_pass"], z["w_gf"]
+    grid = np.linspace(-1.0, 1.0, SAMPLES)
+    for i in range(n):
+        j = int(z["wave"][i])
+        if j < 0:
+            continue
+        cand = np.nonzero((wb == z["battle"][i]) & np.isfinite(wg)
+                          & ((wr < z["round"][i]) | ((wr == z["round"][i]) & (wp <= z["fire"][i]))))[0]
+        if len(cand) < 3:
+            continue
+        d = (((feat[cand] - feat[j]) * w) ** 2).sum(axis=1)
+        kk = min(k, len(cand))
+        nn = np.argpartition(d, kk - 1)[:kk]
+        wn = 1.0 / (1.0 + d[nn] / (d[nn].mean() + 1e-9))
+        off = wg[cand[nn]] * z["w_dir"][j] * z["w_mea"][j] + cc.norm(float(z["w_bearing"][j] - z["bearing"][i]))
+        at = np.append(grid, z["gf"][i]) * z["dir"][i] * z["mea"][i]
+        half = math.atan(HALF_WIDTH / max(float(z["dist"][i]), HALF_WIDTH))
+        v = wn @ kernel_mass(off[:, None], at[None, :] - half, at[None, :] + half)
+        surface[i], value[i] = v[:SAMPLES], v[SAMPLES]
+    return surface, value
+
+
+def aim_likelihoods(z):
+    """(waves x 3) each simple aim's density at the bullet's guess factor over the uniform's, as
+    view_likelihoods reads a view's."""
+    import numpy as np
+    out = []
+    for i in range(len(AIMS)):
+        s, v = aim_values(z, i)
+        s = np.clip(s, 0.0, None)
+        mass = (s.sum(axis=1) - 0.5 * (s[:, 0] + s[:, -1])) * (2.0 / (SAMPLES - 1))
+        ok = np.isfinite(mass) & (mass > 0) & np.isfinite(v)
+        dens = (1 - EPS) * np.clip(np.nan_to_num(v), 0.0, None) / np.where(ok, mass, 1.0) + EPS * 0.5
+        out.append(np.where(ok, dens / 0.5, np.nan))
+    return np.stack(out, axis=1)
+
+
+def mixture_with_aims(z, weights):
+    """mixture() over the views and then the three simple aims: `weights` is (waves x views + 3)."""
+    import numpy as np
+    n = z["surface"].shape[1]
+    comps = [mixture_part(z["surface"][:, v, :], z["at"][:, v], z["on"][:, v]) for v in range(n)]
+    comps += [mixture_part(*aim_values(z, i), np.ones(len(z["gf"]), dtype=bool)) for i in range(len(AIMS))]
+    wm = np.stack([np.where(c[2], weights[:, i], 0.0) for i, c in enumerate(comps)], axis=1)
+    den = wm.sum(axis=1)
+    den = np.where(den > 0, den, np.nan)
+    surface = sum(wm[:, i, None] * c[0] for i, c in enumerate(comps)) / den[:, None]
+    value = sum(wm[:, i] * c[1] for i, c in enumerate(comps)) / den
+    return surface, value
+
+
+def mixture_part(surface, at, on):
+    """One member normalised to a density: (surface, value at the bullet, defined), zeros where not."""
+    import numpy as np
+    s = np.clip(surface.astype(np.float64), 0.0, None)
+    at = at.astype(np.float64)
+    mass = (s.sum(axis=1) - 0.5 * (s[:, 0] + s[:, -1])) * (2.0 / (SAMPLES - 1))
+    ok = on.astype(bool) & np.isfinite(mass) & (mass > 0) & np.isfinite(at)
+    m = np.where(ok, mass, 1.0)
+    return (np.where(ok[:, None], s / m[:, None], 0.0), np.where(ok, np.clip(np.nan_to_num(at), 0.0, None) / m, 0.0), ok)
+
+
 def mixture(z, weights):
     """A mixture of the views' normalised surfaces: (surface, value at the bullet's gf) for rate()."""
     import numpy as np
@@ -466,7 +620,7 @@ def mixture(z, weights):
     return surface, value
 
 
-def models(z, rolling=None, ceiling=None):
+def models(z, rolling=None, ceiling=None, visits=None, rolling_aims=None):
     """{name: (surface waves x SAMPLES, value at the bullet's gf)}; NaN rows where the model is silent.
     `rolling` and `ceiling` are this part's rows of the rolling weights and of the hindsight fixed mix."""
     import numpy as np
@@ -490,14 +644,39 @@ def models(z, rolling=None, ceiling=None):
         out["blend (rolling, K1)"] = mixture(z, rolling)
     if ceiling is not None:
         out["hindsight: best fixed mix per opponent"] = mixture(z, ceiling)
+    if rolling_aims is not None:
+        out["blend (rolling, views + aims, K1)"] = mixture_with_aims(z, rolling_aims)
+    if visits is not None:
+        out["visits (k-NN, K1)"] = visits
+        out["blend + 25% visits"] = blend_with(out["blend (shipped)"], visits, 0.25)
     return out
 
 
-def rate(surface, value):
-    """(bits, safe) per wave for one model; NaN where the model has no surface.
+def blend_with(base, member, share):
+    """(1 - share) of `base` and `share` of `member`, each normalised to a density; `base` alone where the
+    member is silent."""
+    import numpy as np
+    def dens(sv):
+        s = np.clip(sv[0].astype(np.float64), 0.0, None)
+        mass = (s.sum(axis=1) - 0.5 * (s[:, 0] + s[:, -1])) * (2.0 / (SAMPLES - 1))
+        ok = np.isfinite(mass) & (mass > 0) & np.isfinite(sv[1])
+        m = np.where(ok, mass, 1.0)
+        return np.where(ok[:, None], s / m[:, None], np.nan), np.where(ok, np.clip(np.nan_to_num(sv[1]), 0, None) / m, np.nan)
+    bs, bv = dens(base)
+    ms, mv = dens(member)
+    have = np.isfinite(mv)
+    return (np.where(have[:, None], (1 - share) * bs + share * np.nan_to_num(ms), bs),
+            np.where(have, (1 - share) * bv + share * np.nan_to_num(mv), bv))
+
+
+def rate(surface, value, rank=False):
+    """(bits, safe) per wave for one model, and with `rank` the bullet's danger percentile; NaN where
+    the model has no surface.
 
     The surface is normalised over the grid, mixed with EPS uniform; `value` is read on the same scale.
-    Safe is the expected share of the bullet in the model's safest third, ties broken at random.
+    Safe is the expected share of the bullet in the model's safest third, ties broken at random. The
+    percentile is the share of the wave the model rated safer than where the bullet went (ties at half):
+    0.5 knows nothing, higher is better, and like safe it reads only the model's ranking.
     """
     import numpy as np
     s = np.clip(surface, 0.0, None)
@@ -515,7 +694,28 @@ def rate(surface, value):
     safe = np.clip((cut - below) / ties, 0.0, 1.0)
     bits[~ok] = np.nan
     safe[~ok] = np.nan
+    if rank:
+        pct = (below + 0.5 * ties) / SAMPLES
+        pct[~ok] = np.nan
+        return bits, safe, pct
     return bits, safe
+
+
+MIXES = (0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7)
+
+
+def calibrated(bits, bot, n_bots):
+    """(mean per opponent, mix): bits after the further uniform mix in MIXES that scores best. Bits
+    reward a model's confidence as well as its knowledge; mixing in the uniform takes out
+    overconfidence, so models compare on what they know. One number fitted per model, in sample."""
+    import numpy as np
+    best = (-np.inf, 0.0)
+    for a in MIXES:
+        pb = per_bot(np.log2((1 - a) * np.power(2.0, bits) + a), bot, n_bots)
+        m = np.nanmean(pb) if np.isfinite(pb).any() else -np.inf
+        if m > best[0]:
+            best = (m, a)
+    return best
 
 
 def per_bot(values, bot, n_bots):
@@ -567,40 +767,55 @@ def score(path, out, classes_path, tsv):
     gf = z["gf"].astype(np.float64)
     classes = read_classes(classes_path)
     per, rows = {}, []
-    rated = defaultdict(lambda: (np.full(len(gf), np.nan), np.full(len(gf), np.nan)))
+    rated = defaultdict(lambda: (np.full(len(gf), np.nan), np.full(len(gf), np.nan), np.full(len(gf), np.nan)))
 
     def part_of(lo):
         return {k: (v[lo:lo + CHUNK] if getattr(v, "shape", ()) and v.shape[0] == len(gf) else v) for k, v in z.items()}
-    rolling = ceiling = None
+    rolling = ceiling = visits = rolling_aims = None
     if "seen" in z:  # a data set joined before K1 has no fire order or hits: the K0 models only
         like = np.concatenate([view_likelihoods(part_of(lo)) for lo in range(0, len(gf), CHUNK)])
         rolling = rolling_weights(z, like)
         ceiling = hindsight_mix(z, like)[bot]
+        both = np.concatenate([like, np.concatenate([aim_likelihoods(part_of(lo)) for lo in range(0, len(gf), CHUNK)])],
+                              axis=1)
+        rolling_aims = rolling_weights(z, both) * np.array([1.0] * like.shape[1] + [AIM_PRIOR] * len(AIMS))
+    if "w_feat" in z:  # the visit member needs the enemy waves (K1 step 2)
+        visits = visit_knn(z)
     for lo in range(0, len(gf), CHUNK):
         part = part_of(lo)
         sl = slice(lo, lo + CHUNK)
         for name, (surface, value) in models(part, None if rolling is None else rolling[sl],
-                                             None if ceiling is None else ceiling[sl]).items():
-            b, s = rate(surface, value)
+                                             None if ceiling is None else ceiling[sl],
+                                             None if visits is None else (visits[0][sl], visits[1][sl]),
+                                             None if rolling_aims is None else rolling_aims[sl]).items():
+            b, s, r = rate(surface, value, rank=True)
             rated[name][0][lo:lo + CHUNK] = b
             rated[name][1][lo:lo + CHUNK] = s
-    for name, (bits, safe) in rated.items():
-        pb, ps = per_bot(bits, bot, len(bots)), per_bot(safe, bot, len(bots))
+            rated[name][2][lo:lo + CHUNK] = r
+    for name, (bits, safe, pct) in rated.items():
+        pb, ps, pr = per_bot(bits, bot, len(bots)), per_bot(safe, bot, len(bots)), per_bot(pct, bot, len(bots))
         per[name] = (pb, ps)
         cover = float(np.mean(np.isfinite(bits)))
-        rows.append((name, np.nanmean(pb) if np.isfinite(pb).any() else float("nan"),
-                     np.nanmean(ps) if np.isfinite(ps).any() else float("nan"), cover))
+        nanmean = (lambda v: np.nanmean(v) if np.isfinite(v).any() else float("nan"))
+        cb, mix = calibrated(bits, bot, len(bots))
+        rows.append((name, nanmean(pb), cb if np.isfinite(cb) else float("nan"), mix, nanmean(ps), nanmean(pr), cover))
     lines = ["# Gun oracle: every model scored on the same bullets", "",
              "Data: `%s`, %d enemy bullets matched to the wave the surf rated, %d opponents. Means per "
              "opponent, each opponent weighted equally. **bits**: log2 of the model's density at the bullet's "
              "guess factor over the uniform's, after a 5%% uniform mix (higher is better). **safe**: the share "
              "of bullets from the third of the wave the model rated least dangerous, the third the surf drives "
-             "into (lower is better; 0.333 knows nothing). **coverage**: the share of bullets on which the model "
-             "had a surface (a view off or empty has none)." % (os.path.basename(path), len(gf), len(bots)), "",
-             "| Model | bits | safe | coverage |", "|---|---|---|---|"]
-    for name, b, s, c in rows:
-        lines.append("| %s | %s | %s | %.0f%% |" % (name, "-" if np.isnan(b) else "%+.3f" % b,
-                                                    "-" if np.isnan(s) else "%.3f" % s, 100 * c))
+             "into (lower is better; 0.333 knows nothing). **calibrated**: bits after the further uniform mix "
+             "(in brackets) that scores best, which takes out overconfidence, so models compare on what they "
+             "know. **rank**: the share of the wave the model rated safer than where the bullet went (0.5 knows "
+             "nothing, higher is better); safe and rank read only the model's ranking, which is what the surf "
+             "acts on. **coverage**: the share of bullets on which the model had a surface (a view off or empty "
+             "has none)." % (os.path.basename(path), len(gf), len(bots)), "",
+             "| Model | bits | calibrated | safe | rank | coverage |", "|---|---|---|---|---|---|"]
+    fmt = (lambda v, f: "-" if np.isnan(v) else f % v)
+    for name, b, cb, mix, s, r, c in rows:
+        lines.append("| %s | %s | %s | %s | %s | %.0f%% |" % (
+            name, fmt(b, "%+.3f"), "-" if np.isnan(cb) else "%+.3f (%.2f)" % (cb, mix), fmt(s, "%.3f"),
+            fmt(r, "%.3f"), 100 * c))
     lines += ["", "Bullets outside the classic escape angle (|gf| > 1, scored where they were fired, normalised "
               "over [-1, 1]): %.1f%%." % (100 * float(np.mean(np.abs(gf) > 1.0)))]
     g = gate(z)
