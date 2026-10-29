@@ -1,6 +1,6 @@
 # Queue pc-k1-aim: progress
 
-Updated 2026-10-29 17:56:01 PC time (17:56 UTC), runner pid 40284.
+Updated 2026-10-29 18:11:10 PC time (18:11 UTC), runner pid 40284.
 
 - `prep` done, exit 0 in 1 min
 - `aim` running
@@ -10,28 +10,28 @@ Updated 2026-10-29 17:56:01 PC time (17:56 UTC), runner pid 40284.
 
 ### aim
 
-**328 of 1296 battles** (25%), 0 failed. Running 14 min, 1431 battles/h, about 41 min left (ends ~18:36 PC time). Last battle 0 min ago.
-Skipped turns a battle: 30.3 overall, first 100 31.3, last 100 33.8; engine disables 66.
+**714 of 1296 battles** (55%), 0 failed. Running 29 min, 1482 battles/h, about 24 min left (ends ~18:34 PC time). Last battle 0 min ago.
+Skipped turns a battle: 30.5 overall, first 100 31.3, last 100 33.7; engine disables 147.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 109 | 0 | 81.39 | - | - | - | 35.6 |
-| aa | 110 | 0 | 81.64 | +0.22 (105 robots) | ±0.41 | -0.40 .. +0.84 | 32.1 |
-| km | 109 | 0 | 81.27 | +0.12 (105 robots) | ±0.27 | -0.29 .. +0.53 | 23.3 |
+| c | 238 | 0 | 83.83 | - | - | - | 33.1 |
+| aa | 237 | 0 | 84.31 | +0.09 (235 robots) | ±0.26 | -0.30 .. +0.49 | 29.6 |
+| km | 239 | 0 | 84.03 | -0.06 (234 robots) | ±0.21 | -0.38 .. +0.27 | 28.8 |
 
 APS = mean difference over the robots read x 432 panel robots / 1217 pairings.
-A/A: aa - c +0.62 pts over 105 robots; 1% band ±1.14 (inside).
+A/A: aa - c +0.26 pts over 235 robots; 1% band ±0.76 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 328 |
+| `fails 30` | halt | ok | 0 failed of 714 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 40 over 200` | halt | ok | 29.1 a battle over the last 200 (first 200: 29.2) |
+| `skips 40 over 200` | halt | ok | 29.3 a battle over the last 200 (first 200: 29.2) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `aa after 20%` | halt | ok | aa - c +0.62 pts over 105 robots, stop band ±1.32 |
-| `futility km below 0.05 after 30%` | finish | waiting | checks from 30% of the battles (now 25%) |
+| `aa after 20%` | halt | ok | aa - c +0.26 pts over 235 robots, stop band ±0.89 |
+| `futility km below 0.05 after 30%` | finish | ok | km -0.06, best case +0.27 APS vs bar +0.05 |
 
-Stopping now would leave 968 battles unrun (about 41 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 582 battles unrun (about 24 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
