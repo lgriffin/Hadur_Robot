@@ -98,15 +98,28 @@ public final class Report {
         public final double advancing;
         public final double wallAhead;
         public final double gf;
+        /** TMODE-27: how far off each aim expert was, in bot widths; empty when the member scored none. */
+        private final double[] experts;
 
         public Dodge(String shooter, double distance, double lateral, double advancing, double wallAhead,
                      double gf) {
+            this(shooter, distance, lateral, advancing, wallAhead, gf, new double[0]);
+        }
+
+        public Dodge(String shooter, double distance, double lateral, double advancing, double wallAhead,
+                     double gf, double[] experts) {
             this.shooter = Objects.requireNonNull(shooter);
             this.distance = distance;
             this.lateral = lateral;
             this.advancing = advancing;
             this.wallAhead = wallAhead;
             this.gf = gf;
+            this.experts = experts.clone();
+        }
+
+        /** TMODE-27: the aim experts' errors, a copy; empty when none were scored. */
+        public double[] experts() {
+            return experts.clone();
         }
 
         @Override
@@ -115,12 +128,13 @@ public final class Report {
             Dodge d = (Dodge) o;
             return shooter.equals(d.shooter) && Double.compare(distance, d.distance) == 0
                 && Double.compare(lateral, d.lateral) == 0 && Double.compare(advancing, d.advancing) == 0
-                && Double.compare(wallAhead, d.wallAhead) == 0 && Double.compare(gf, d.gf) == 0;
+                && Double.compare(wallAhead, d.wallAhead) == 0 && Double.compare(gf, d.gf) == 0
+                && java.util.Arrays.equals(experts, d.experts);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(shooter, distance, lateral, advancing, wallAhead, gf);
+            return 31 * Objects.hash(shooter, distance, lateral, advancing, wallAhead, gf) + java.util.Arrays.hashCode(experts);
         }
 
         @Override

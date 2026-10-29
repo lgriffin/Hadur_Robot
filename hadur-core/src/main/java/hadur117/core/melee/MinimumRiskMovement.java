@@ -396,10 +396,24 @@ public class MinimumRiskMovement {
     private String teamName;
     /** MMOVE-8: XORed into the noise field's hash; 0 off a team, so the field is MMOVE-1's. */
     private long salt;
+    /** TMODE-27: Ogi's dodge, its shot profiles and aim experts; read only while it plays. */
+    private final TeamDodge dodge;
 
     public MinimumRiskMovement(BattleField field) {
         this.field = field;
         this.centre = new Point2D.Double(field.width / 2, field.height / 2);
+        this.dodge = new TeamDodge(field);
+    }
+
+    /** TMODE-27: the dodge's profiles and experts. */
+    TeamDodge dodge() {
+        return dodge;
+    }
+
+    /** TMODE-27: drops every virtual bullet, when the dodge's profiles stand in for them. */
+    void clearBullets() {
+        bullets.clear();
+        seenShots.clear();
     }
 
     /**
@@ -432,6 +446,7 @@ public class MinimumRiskMovement {
         nextFire.clear();
         lastPower.clear();
         assumed.clear();
+        dodge.newRound();
         round++;
     }
 
@@ -782,6 +797,12 @@ public class MinimumRiskMovement {
             destination = waveBest(candidates, v);
             return destination;
         }
+        if (!mates.isEmpty() && modes.contains(TeamModes.Mode.DODGE)) {
+            v.pathBullets = mateBullets(me, now);
+            if (!TeamDodge.RANK_BULLETS) v.mateBullets = List.of();
+            destination = dodgeBest(candidates, v, dodge.waves());
+            return destination;
+        }
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.WAVES)) {
             destination = waveBest(candidates, v);
             return destination;
@@ -1117,6 +1138,28 @@ public class MinimumRiskMovement {
      * can make risks negative), times {@link #SWITCH_GAIN} for the held destination.
      */
     Point2D.Double waveBest(List<Point2D.Double> candidates, View v) {
+        return rerankBest(candidates, v, WAVE_RERANK, Wave.of(v.bullets), List.of());
+    }
+
+    /**
+     * TMODE-27, Ogi's dodge: the {@link TeamDodge#RERANK} lowest-risk candidates, and the
+     * destination held if not reached, are each driven to through the shot profiles
+     * {@code waves} for {@link #WAVE_TICKS} ticks and through the teammates' bullets for
+     * {@link #PATH_TICKS}; scored as {@link #waveScores}, the held destination times
+     * {@link #SWITCH_GAIN}.
+     */
+    Point2D.Double dodgeBest(List<Point2D.Double> candidates, View v, List<Wave> waves) {
+        return rerankBest(candidates, v, TeamDodge.RERANK, waves, v.pathBullets);
+    }
+
+    /**
+     * TMODE-11, TMODE-27: the {@code rerank} lowest-risk candidates, and the destination held if
+     * not reached, each driven to through the {@code waves} for {@link #WAVE_TICKS} ticks and
+     * through the teammates' {@code bullets} for {@link #PATH_TICKS}; scored as
+     * {@link #waveScores}, the held destination times {@link #SWITCH_GAIN}.
+     */
+    Point2D.Double rerankBest(List<Point2D.Double> candidates, View v, int rerank, List<Wave> waves,
+                              List<VirtualBullet> mateBullets) {
         List<Point2D.Double> pool = new ArrayList<>(candidates);
         boolean hold = destination != null && destination.distance(v.me) > REACHED;
         if (hold) pool.add(destination);
@@ -1128,14 +1171,15 @@ public class MinimumRiskMovement {
         }
         java.util.Arrays.sort(order, (a, b) -> Double.compare(risk[a], risk[b]));
         List<Integer> picked = new ArrayList<>();
-        for (int i = 0; i < order.length && picked.size() < WAVE_RERANK; i++) picked.add(order[i]);
+        for (int i = 0; i < order.length && picked.size() < rerank; i++) picked.add(order[i]);
         if (hold && !picked.contains(pool.size() - 1)) picked.add(pool.size() - 1);
-        List<Wave> waves = Wave.of(v.bullets);
         double[] damage = new double[picked.size()];
         double[] r = new double[picked.size()];
         for (int k = 0; k < picked.size(); k++) {
+            Point2D.Double p = pool.get(picked.get(k));
             r[k] = risk[picked.get(k)];
-            damage[k] = waveDamage(v.me, pool.get(picked.get(k)), v.now, waves);
+            damage[k] = waveDamage(v.me, p, v.now, waves);
+            if (!mateBullets.isEmpty()) damage[k] += pathDamage(v.me, p, v.now, mateBullets);
         }
         double[] score = waveScores(r, damage);
         Point2D.Double best = null;
@@ -1337,6 +1381,23 @@ public class MinimumRiskMovement {
                 if (b.aim == VirtualBullet.Aim.HEAD_ON || Double.isNaN(c)) c = b.heading;
             }
             centre = c;
+            escape = Math.asin(Math.min(1.0, MAX_SPEED / speed));
+        }
+
+        /**
+         * TMODE-27: a shot's profile given outright: {@code headings} with their {@code shares}
+         * (summing to 1), {@code aimed} the share of the shot meant for Hadur, and the uniform
+         * part centred on {@code centre}, the head-on heading.
+         */
+        Wave(EnemyShot shot, double aimed, double[] headings, double[] shares, double centre) {
+            source = shot.source;
+            fireTime = shot.fireTime;
+            speed = shot.speed();
+            damage = 4 * shot.power + Math.max(0, 2 * (shot.power - 1));
+            this.aimed = Math.min(1.0, aimed);
+            this.headings = headings.clone();
+            this.shares = shares.clone();
+            this.centre = centre;
             escape = Math.asin(Math.min(1.0, MAX_SPEED / speed));
         }
 

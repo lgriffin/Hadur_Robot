@@ -574,3 +574,23 @@ the same for team: read each costly team's code, then give it a counter that exp
   only; duel and melee bit for bit).
 - **Expected:** about +0.5 APS if the pooled read holds; 2nd needs +2.28.
 
+## 14. Ogi's dodge, built whole (2026-10-29)
+
+- **Why Ogi leads.** Its members survive 97.6% of rounds; ours survive 10 to 35% against the top
+  four. Its dodge has three parts that feed each other: clean shot detection, a per-enemy-class
+  danger model mixing a learner with simple aims weighted by which call the bullets, and a
+  tick-by-tick drive of the safest spots through every wave. We ported parts as separate switches
+  on our movement (modes card +0.2 ± 0.8, S2 null, WAVES -0.3, and -4.4 with learning from CPU),
+  and only its narrow fire lane paid (+2.2 in 3.17).
+- **DODGE (TMODE-27).** A parallel team movement path: each shot profiled once from six experts
+  (head-on, linear, circular, averaged, half speed, learned kNN pooled by class), weighted
+  exp(-loss) per enemy class by the team's hits, shared over the link; the base ranking without
+  bullets; the 12 safest spots driven 30 ticks through the profiles and 15 through teammates'
+  bullets. Not built yet: shared hit events (teammates' hits hide about 2.5% of shots) and Ogi's
+  gun.
+- **Card** plans/pc-team-dodge.queue (BENCH-139): bb and dg on 46 teams x 12 seeds from 5400
+  (2,208 battles, about 2.6 h); a global gate (+0.30 APS pooled) and a per-team pick (+3.0, low
+  end above zero) gated on 16 fresh seeds from 5500. Results claude/pc-team-dodge-results.
+- **Expected:** a guess of +1 to +3 APS, most of it against the 9 top teams that hold 46% of our
+  lost points.
+
