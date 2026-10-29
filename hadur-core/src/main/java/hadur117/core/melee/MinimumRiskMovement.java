@@ -189,6 +189,41 @@ public class MinimumRiskMovement {
     static final double SWITCH_GAIN = 0.9;
     static final double REACHED = 20;
 
+    /**
+     * MMOVE-11 (pc-melee-crowd, arm maim): off a team, a seen shot's bullets weigh
+     * 1/(1+k)^2 for the k other opponents nearer its shooter than Hadur was, and none under
+     * {@link #SOFT_FLOOR}: in a crowd most shots are aimed at someone else. Off.
+     */
+    public static final boolean MELEE_AIMED = false;
+    /**
+     * MMOVE-12 (arm mhop): off a team with three or more opponents left, short hops: the
+     * rings run from {@link #HOP_INNER} to {@link #HOP_SHARE} of the nearest fresh opponent's
+     * distance, at least {@link #HOP_MIN} and at most {@link #RING_MAX} px. Off.
+     */
+    public static final boolean MELEE_HOPS = false;
+    static final double HOP_SHARE = 0.45;
+    static final double HOP_MIN = 80;
+    static final double HOP_INNER = 40;
+    /**
+     * MMOVE-13 (arm mheat): off a team, an opponent Hadur is the nearest robot to is assumed to
+     * fire at Hadur on the tick its gun could next be cool (from its last seen shot, else
+     * {@link #ASSUMED_FIRST_TICK}) unless a real shot shows first: head-on and linear bullets at
+     * the power of its last seen shot (else {@link #ASSUMED_POWER}), weighing
+     * {@link #ASSUMED_WEIGHT}. Off.
+     */
+    public static final boolean MELEE_HEAT = false;
+    static final double ASSUMED_WEIGHT = 0.5;
+    static final double ASSUMED_POWER = 2.0;
+    static final long ASSUMED_FIRST_TICK = 30;
+    /** The engine's default gun cooling, heat a tick. */
+    static final double GUN_COOLING = 0.1;
+    /**
+     * MMOVE-14 (arm mcloser): off a team with three or more opponents left, an opponent's term
+     * is divided by one plus the number of other opponents nearer it than the point: a robot
+     * with closer prey is less likely to come for Hadur. Off.
+     */
+    public static final boolean MELEE_CLOSER = false;
+
     static final double PERIPHERY_K = 0.2;
     static final double CUTOFF_K = 0.4;
     static final double FIGHT_K = 0.4;
@@ -332,6 +367,11 @@ public class MinimumRiskMovement {
     private Point2D.Double destination;
     private Point2D.Double openingSpot;
     private long round = -1;
+    /** MMOVE-11..14: the crowd switches this movement plays; the shipped ones unless a test sets them. */
+    private boolean aimed = MELEE_AIMED, hops = MELEE_HOPS, heat = MELEE_HEAT, closer = MELEE_CLOSER;
+    /** MMOVE-13: per opponent, the tick its gun could next fire, and its last seen shot's power. */
+    private final java.util.Map<String, Long> nextFire = new java.util.HashMap<>();
+    private final java.util.Map<String, Double> lastPower = new java.util.HashMap<>();
     private int lastCandidates;
     /** MMOVE-8: this member's place in the team's roster, or -1 off a team. */
     private int teamIndex = -1;
@@ -372,7 +412,104 @@ public class MinimumRiskMovement {
         mateBullets.clear();
         seenShots.clear();
         past.clear();
+        nextFire.clear();
+        lastPower.clear();
         round++;
+    }
+
+    /** MMOVE-11..14: sets the crowd switches, for tests and the bench's arms. */
+    void crowd(boolean aimed, boolean hops, boolean heat, boolean closer) {
+        this.aimed = aimed;
+        this.hops = hops;
+        this.heat = heat;
+        this.closer = closer;
+    }
+
+    /**
+     * Off a team: {@link #updateBullets(List, RobotStateLog, Point2D.Double, long)}, then with
+     * MMOVE-11 each new shot's bullets weigh by the opponents nearer its shooter, and with
+     * MMOVE-13 the opponents Hadur is nearest to fire assumed shots when their guns could be cool.
+     * {@code enemies} are the living opponents. With both off this is MMOVE-3 bit for bit.
+     */
+    public void updateMeleeBullets(List<EnemyShot> shots, RobotStateLog myPath, Point2D.Double me,
+                                   long now, List<EnemyInfo> enemies) {
+        if (!aimed && !heat) {
+            updateBullets(shots, myPath, me, now);
+            return;
+        }
+        for (EnemyShot s : shots) {
+            if (!seenShots.add(s)) continue;
+            RobotState at = myPath.getState(s.fireTime);
+            if (at == null) at = myPath.getState(s.fireTime + 1);
+            Point2D.Double target = at == null ? me : at.location;
+            if (heat) {
+                long cool = s.fireTime + coolTicks(s.power);
+                if (cool > nextFire.getOrDefault(s.shooter, Long.MIN_VALUE)) nextFire.put(s.shooter, cool);
+                lastPower.put(s.shooter, s.power);
+            }
+            double w = aimed ? crowdWeight(s, target, enemies) : 1.0;
+            if (w < SOFT_FLOOR) continue;
+            addGuesses(s, at, target, w);
+        }
+        if (heat) assumeShots(me, now, enemies, myPath);
+        double reach = Math.hypot(field.width, field.height);
+        for (Iterator<VirtualBullet> it = bullets.iterator(); it.hasNext(); ) {
+            if (it.next().passed(me, now, reach)) it.remove();
+        }
+        seenShots.retainAll(shots);
+    }
+
+    private void addGuesses(EnemyShot s, RobotState at, Point2D.Double target, double w) {
+        double hot = DiaUtils.absoluteBearing(s.source, target);
+        double linear = at == null ? hot : VirtualBullet.linearHeading(s.source, target,
+            at.heading, at.velocity, s.speed(), field.width, field.height);
+        add(new VirtualBullet(s, VirtualBullet.Aim.HEAD_ON, hot, w));
+        add(new VirtualBullet(s, VirtualBullet.Aim.LINEAR, linear, w));
+    }
+
+    /** Ticks a gun takes to cool after a shot of {@code power}, at the engine's default cooling. */
+    static long coolTicks(double power) {
+        return (long) Math.ceil((1 + power / 5) / GUN_COOLING);
+    }
+
+    /**
+     * MMOVE-11: the share of {@code shot} aimed at Hadur, standing at {@code me} when it was
+     * fired: 1/(1+k)^2 for the k living opponents other than its shooter nearer its source.
+     */
+    static double crowdWeight(EnemyShot shot, Point2D.Double me, List<EnemyInfo> enemies) {
+        double mine = shot.source.distance(me);
+        int k = 0;
+        for (EnemyInfo e : enemies) {
+            if (e.location == null || e.name.equals(shot.shooter)) continue;
+            if (shot.source.distance(e.location) < mine) k++;
+        }
+        return 1.0 / ((1 + k) * (1 + k));
+    }
+
+    /**
+     * MMOVE-13: each living opponent with energy that Hadur is nearer than any other opponent,
+     * whose gun could be cool by {@code now}, is taken to fire at Hadur now; its next possible
+     * shot is a cooling later.
+     */
+    void assumeShots(Point2D.Double me, long now, List<EnemyInfo> enemies, RobotStateLog myPath) {
+        for (EnemyInfo e : enemies) {
+            if (e.location == null || e.isStale(now)) continue;
+            if (now < nextFire.getOrDefault(e.name, ASSUMED_FIRST_TICK)) continue;
+            double mine = e.location.distance(me);
+            boolean nearest = true;
+            for (EnemyInfo o : enemies) {
+                if (o != e && o.location != null && o.location.distance(e.location) < mine) {
+                    nearest = false;
+                    break;
+                }
+            }
+            if (!nearest) continue;
+            double power = Math.min(lastPower.getOrDefault(e.name, ASSUMED_POWER), e.energy);
+            if (power < 0.1) continue;
+            EnemyShot s = new EnemyShot(e.name, new Point2D.Double(e.location.x, e.location.y), now, power);
+            addGuesses(s, myPath.getState(now), me, ASSUMED_WEIGHT);
+            nextFire.put(e.name, now + coolTicks(power));
+        }
     }
 
     /**
@@ -628,6 +765,11 @@ public class MinimumRiskMovement {
             nearest = Math.min(nearest, e.location.distance(me));
         }
         for (Roster.Mate m : mates) nearest = Math.min(nearest, m.at(now).distance(me));
+        if (hops && !onTeam(mates) && others >= 3 && nearest < Double.POSITIVE_INFINITY) {
+            // MMOVE-12: short hops through the crowd.
+            min = HOP_INNER;
+            max = Math.min(RING_MAX, Math.max(HOP_MIN, HOP_SHARE * nearest));
+        }
         double cap = Math.max(MIN_RING, NEAREST_FRACTION * nearest);
         List<Point2D.Double> out = new ArrayList<>(CANDIDATES);
         for (int ring = 0; ring < RINGS; ring++) {
@@ -1303,6 +1445,15 @@ public class MinimumRiskMovement {
         double energy = Math.min(Math.max(e.energy, 1.0) / Math.max(v.energy, 1.0), ENERGY_RATIO_CAP);
         double r = UNIT * e.freshness(v.now) * energy / (d * d);
         r *= closestFactor(p, e, v.nearestOther[i], v.now, v.others, onTeam(v.mates));
+        if (closer && v.others >= 3 && !onTeam(v.mates)) {
+            // MMOVE-14: each other opponent nearer e than the point is prey e would sooner take.
+            double mine = p.distance(e.location);
+            int n = 0;
+            for (int j = 0; j < v.enemies.size(); j++) {
+                if (j != i && v.enemies.get(j).location.distance(e.location) < mine) n++;
+            }
+            r /= 1 + n;
+        }
         if (p.distance(v.me) > 1) {
             double lateral = MeleeEndgame.endgameRing(v.others, onTeam(v.mates), MeleeEndgame.THREE_RING)
                 ? ENDGAME_LATERAL : LATERAL;

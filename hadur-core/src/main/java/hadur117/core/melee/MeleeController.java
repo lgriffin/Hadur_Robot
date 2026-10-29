@@ -386,7 +386,7 @@ public class MeleeController {
                 modes.contains(TeamModes.Mode.SOFT), TeamModes.onlyAim(modes));
         } else {
             modes = TeamModes.NONE;
-            mover.updateBullets(tracker.shots(s.time), myPath, s.me, s.time);
+            mover.updateMeleeBullets(tracker.shots(s.time), myPath, s.me, s.time, alive);
         }
         c.destination = alive.isEmpty() ? null
             : mover.chooseDestination(s.me, s.energy, s.others, alive, s.time, plan, s.teammates, modes);

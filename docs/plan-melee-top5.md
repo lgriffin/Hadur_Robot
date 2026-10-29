@@ -344,6 +344,19 @@ the rest of the gap to 5th (+2.19 to Diamond's 70.11) needs Stage 3 or a bigger 
 **MGUN-16 ships in 3.19 (2026-10-28).** Leigh chose to ship it in 3.19 on the power2 result alone
 before `pc-melee-wide` ran; the card is retired and 3.19's live melee page is the read.
 
+**3.19 live and Stage 3 (2026-10-29).** 3.19 reads 14th at 67.77; 10th is kc.mini.Mirage at 68.23
+(+0.46), a 1,479-byte MiniMelee robot. On their 416 shared opponents Hadur is level with Mirage
+against the top 10 (+0.14) and the weakest 216 (+0.18) but 1 to 1.6 APS behind against ranks 11-200,
+with survival 4 to 6 points lower in every band: the crowd, as Deise's bench found against Mirage
+(same damage, same final duels, last two reached 64% against 76%). Mirage's movement is Hadur's
+family: least risk with virtual head-on and linear bullets. It differs in four choices, and
+`pc-melee-crowd` (BENCH-128) screens one Hadur switch for each, with Hadur's own knowledge where
+it has more: MMOVE-11 weighs a seen shot by the robots nearer its shooter (Mirage counts only
+likely aimers; this is m-closer's bullet half), MMOVE-12 short hops (Mirage reaches 0.4 of its
+target's distance, 30 to 150 px; Hadur 100 to 300), MMOVE-13 assumed shots from whoever Hadur is
+nearest to, on the tick its gun could be cool by its last seen shot (Mirage assumes every tick),
+and MMOVE-14 m-closer's push half. Gate +0.30, low end above 0, CPU guard by hand.
+
 ### Stage 3: crowd survival
 
 The largest lever and the riskiest: M4's path scoring cost 3 to 5 APS, and the team's port of

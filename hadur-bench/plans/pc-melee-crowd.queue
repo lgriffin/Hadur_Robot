@@ -1,0 +1,48 @@
+# Melee crowd survival (docs/plan-melee-top5.md Stage 3, MMOVE-11..14, BENCH-128). 3.19 reads 14th
+# in the MeleeRumble at 67.77; 10th (kc.mini.Mirage, 1,479 bytes) is 68.23, +0.46 away. Live, Hadur is
+# level with Mirage against the top 10 and the weakest 216 but 1 to 1.6 APS behind against ranks
+# 11-200, where its survival is 4 to 6 points lower: the gun is not the gap, dying in the crowd is.
+# Mirage's movement is the same family as Hadur's (least risk, virtual bullets); each arm moves one
+# of Hadur's choices toward what Mirage does, with Hadur's own knowledge where it has more:
+#   aa      the baseline (master)
+#   bb      its A/A copy
+#   ma      maim, MMOVE-11: a seen shot weighs 1/(1+k)^2 for the k robots nearer its shooter
+#   mh      mhop, MMOVE-12: short hops, 40 px to 0.45 of the nearest opponent (80-300 px)
+#   mt      mheat, MMOVE-13: whoever Hadur is nearest to fires an assumed shot when its gun is cool
+#   mc      mcloser, MMOVE-14: an opponent's push divides by 1 + the robots nearer it than the point
+# Each build fights the 46 census fields x 6 fresh seeds alone (3219-3224; 276 battles, 1,656 in
+# all) at the machine's melee width and CPU constant. The read pairs bb with aa (A/A, within +-0.25)
+# and each arm with the mean of aa and bb (--base2), battle for battle. Melee only: every switch
+# acts off a team, the hops and the push only with three or more opponents left, so the duel and
+# team play are untouched.
+# Verdict: an arm passes at +0.30 or more with the 95% low end above 0 (--gain 0.3), Hadur's share
+# of others outlived no more than 1 point lower and the 1-30 endgame wins no more than 3 points
+# lower; an arm whose skipped turns a battle rise more than 20% over aa's fails whatever its APS
+# (read from the arm reports). Passing arms stack on fresh seeds next. The card ends in a results
+# PR on claude/pc-melee-crowd-results whatever the verdict; the melee thread reads it.
+#   ./queue.sh run pc-melee-crowd        (or  .\queue.ps1 run pc-melee-crowd)
+# Run it from master, one bench queue at a time:
+#   git checkout master && git pull
+# mcprep reads the version from hadur-robot/pom.xml, so a bump cannot point the card at stale
+# jars, and fixes the width and version in work/, so a resumed card never mixes host profiles or
+# reads another version's battles. Prep clears the arms' battle folders, since it rebuilds their jars.
+
+set OUT = ../docs/bench/local
+
+mcprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb ma mh mt mc; do rm -f bisect/hadur117.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh maim && bash ./build-ablation.sh mhop && bash ./build-ablation.sh mheat && bash ./build-ablation.sh mcloser && mkdir -p work && rm -rf work/melee-crowd-"$V"-aa work/melee-crowd-"$V"-bb work/melee-crowd-"$V"-ma work/melee-crowd-"$V"-mh work/melee-crowd-"$V"-mt work/melee-crowd-"$V"-mc && echo "$V" > work/melee-crowd.version && for a in aa bb ma mh mt mc; do test -f bisect/hadur117.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-crowd.args > work/melee-crowd-$a.args || exit 1; done && rm -f ${OUT}/melee-crowd-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+mcaa   | mvn -q exec:java "-Dexec.args=@work/melee-crowd-aa.args"
+  after: mcprep
+mcbb   | mvn -q exec:java "-Dexec.args=@work/melee-crowd-bb.args"
+  after: mcaa
+mcma   | mvn -q exec:java "-Dexec.args=@work/melee-crowd-ma.args"
+  after: mcbb
+mcmh   | mvn -q exec:java "-Dexec.args=@work/melee-crowd-mh.args"
+  after: mcma
+mcmt   | mvn -q exec:java "-Dexec.args=@work/melee-crowd-mt.args"
+  after: mcmh
+mcmc   | mvn -q exec:java "-Dexec.args=@work/melee-crowd-mc.args"
+  after: mcmt
+mcread | V=$(cat work/melee-crowd.version) && test -n "$V" && W=work/melee-crowd-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm ma="$W"-ma --arm mh="$W"-mh --arm mt="$W"-mt --arm mc="$W"-mc --census melee-census-317.txt --seeds 6 --gain 0.3 --survival-slack 1 --out ${OUT}/melee-crowd-read.md --title "Melee crowd survival on $V" || true; } && test -s ${OUT}/melee-crowd-read.md
+  after: mcmc
+mcpr   | bash tools/open_results_pr.sh claude/pc-melee-crowd-results "Melee crowd survival (MMOVE-11..14)" ${OUT}/melee-crowd-read.md $(ls ${OUT}/melee-crowd-aa.md ${OUT}/melee-crowd-bb.md ${OUT}/melee-crowd-ma.md ${OUT}/melee-crowd-mh.md ${OUT}/melee-crowd-mt.md ${OUT}/melee-crowd-mc.md 2>/dev/null)
+  after: mcread
