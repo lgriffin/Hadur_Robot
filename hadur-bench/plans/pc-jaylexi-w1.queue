@@ -1,0 +1,56 @@
+# JayLexi 0.1 and 0.2 on a wide MiniRumble sample (docs/kitlab.md, docs/bench/kitlab-0.2-arms.md).
+# The cloud reads 0.2 (second-wave surfing) at about +0.3 over 0.1 on two 48-bot samples; this card
+# reads both released jars, and Komarious 1.88 as the reference, on 112 bots (top 12 by name and 100
+# rank bands, seed 3: kitlab/mini-wide-field.txt), so the projection for 5th (WeeksOnEnd 87.35 live)
+# rests on more of the division. JayLexi 0.1 is live 6th at 86.95.
+#   ./queue.sh run pc-jaylexi-w1        (or  .\queue.ps1 run pc-jaylexi-w1)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned (the bench sizes its workers). Every step
+# resumes; no step needs a decision. Nothing here touches Hadur or the other small bots.
+#
+# Arms, each a released jar fetched from its GitHub release:
+#   J01   JayLexi 0.1 (control)   J02   JayLexi 0.2   KOM   Komarious 1.88 (reference, live 87.54)
+# 112 bots x 6 seeds = 672 battles an arm, 35 rounds each; about 20 min an arm on the PC, about 1 h
+# in all.
+# Read: J02 against J01 on the same battles' opponents (the paired gain), and each against KOM for a
+# predicted APS. 0.2 holds when its gain's low end is above zero.
+# Stop rules on every step (docs/bench/watch.md; halt, every battle fought is kept and a rerun
+# resumes): 20 failed battles (a broken jar), no battle in 30 minutes (a hung step), or 40+ skipped
+# turns a battle over the last 100 (the PR #331 build-up). A halt at worst leaves the rest of that
+# arm and the arms after it unrun, at most 2,016 battles (about 1 h). No early finish on score:
+# each step is one robot. ALERT opens an issue for Leigh on a stop.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set REL = https://github.com/lgriffin/Hadur_Robot/releases/download
+
+prep | ./fetch-opponents.sh --set kitlab/mini-wide-field.txt && curl -fsSL -o opponents/hadur117.mini.JayLexi_0.1.jar ${REL}/jaylexi-v0.1/hadur117.mini.JayLexi_0.1.jar && curl -fsSL -o opponents/hadur117.mini.JayLexi_0.2.jar ${REL}/jaylexi-v0.2/hadur117.mini.JayLexi_0.2.jar && bash kitlab/args.sh mini-wide opponents/hadur117.mini.JayLexi_0.1.jar "hadur117.mini.JayLexi 0.1" w1-J01 6 && bash kitlab/args.sh mini-wide opponents/hadur117.mini.JayLexi_0.2.jar "hadur117.mini.JayLexi 0.2" w1-J02 6 && bash kitlab/args.sh mini-wide opponents/voidious.mini.Komarious_1.88.jar "voidious.mini.Komarious 1.88" w1-KOM 6
+
+w1-J01 | ${MVN} "-Dexec.args=@work/kitlab-w1-J01.args"
+  after: prep
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+w1-J02 | ${MVN} "-Dexec.args=@work/kitlab-w1-J02.args"
+  after: w1-J01
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+w1-KOM | ${MVN} "-Dexec.args=@work/kitlab-w1-KOM.args"
+  after: w1-J02
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+read | (echo "# JayLexi 0.1 and 0.2 on the wide MiniRumble sample (pc-jaylexi-w1)"; echo; echo '## 0.2 against 0.1'; echo '```'; python3 tools/kitlab_read.py kitlab/mini-wide-field.txt work/kitlab-w1-J02 --ref work/kitlab-w1-J01; echo '```'; echo; echo '## 0.2 against Komarious 1.88 (live 87.54)'; echo '```'; python3 tools/kitlab_read.py kitlab/mini-wide-field.txt work/kitlab-w1-J02 --ref work/kitlab-w1-KOM --ref-aps 87.54; echo '```'; echo; echo '## 0.1 against Komarious 1.88 (live 87.54)'; echo '```'; python3 tools/kitlab_read.py kitlab/mini-wide-field.txt work/kitlab-w1-J01 --ref work/kitlab-w1-KOM --ref-aps 87.54; echo '```') > ${OUT}/jaylexi-w1.md
+  after: w1-KOM
+
+pr | bash tools/open_results_pr.sh claude/pc-jaylexi-w1-results "JayLexi 0.1 and 0.2 on the wide MiniRumble sample" ${OUT}/jaylexi-w1.md
+  after: read
