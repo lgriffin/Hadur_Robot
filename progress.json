@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-path2",
- "updated": 1793290036.637177,
+ "updated": 1793290943.5200698,
  "steps": {
   "tqprep": {
    "status": "done",
@@ -72,8 +72,8 @@
   {
    "step": "tqmp",
    "started": 1793288712.5990088,
-   "updated": 1793290036.627424,
-   "elapsed": 1324.0284152030945,
+   "updated": 1793290943.5095813,
+   "elapsed": 2230.910572528839,
    "expected": 1472,
    "panel": null,
    "field": null,
@@ -81,20 +81,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 168,
+   "battles": 343,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 456.787779669539,
-   "eta": 10276.982460862113,
-   "fraction": 0.11413043478260869,
-   "last_battle_age": 9.784376859664917,
+   "rate": 553.4959649235503,
+   "eta": 7343.142963221747,
+   "fraction": 0.23301630434782608,
+   "last_battle_age": 2.9061102867126465,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 168"
+     "detail": "0 failed of 343"
     },
     {
      "rule": "stall 30m",
@@ -106,11 +106,11 @@
      "rule": "skips 40 over 100",
      "action": "halt",
      "state": "ok",
-     "detail": "9.2 a battle over the last 100 (first 100: 8.1)"
+     "detail": "10.4 a battle over the last 100 (first 100: 8.1)"
     }
    ],
-   "skips_mean": 8.75,
-   "skips_last100": 9.17
+   "skips_mean": 10.253644314868804,
+   "skips_last100": 10.38
   }
  ]
 }
