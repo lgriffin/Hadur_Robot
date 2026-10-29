@@ -1,18 +1,30 @@
 {
  "plan": "pc-jaylexi-w1",
- "updated": 1793299574.6037302,
+ "updated": 1793300157.331841,
  "steps": {
   "prep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 2,
+   "end": "2026-10-29T18:46:16"
   },
   "w1-J01": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 198,
+   "end": "2026-10-29T18:49:35"
   },
   "w1-J02": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 195,
+   "end": "2026-10-29T18:52:51"
   },
   "w1-KOM": {
-   "status": "pending"
+   "status": "failed",
+   "exit": 1,
+   "seconds": 186,
+   "end": "2026-10-29T18:55:57"
   },
   "read": {
    "status": "pending"
@@ -21,5 +33,135 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "w1-J01",
+   "started": 1793299576.9760253,
+   "updated": 1793299775.4641142,
+   "elapsed": 198.48808884620667,
+   "expected": 672,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 672,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 12188.136900620038,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 1.6498417854309082,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 672"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0.0 a battle over the last 100 (first 100: 0.0)"
+    }
+   ],
+   "skips_mean": 0,
+   "skips_last100": 0
+  },
+  {
+   "step": "w1-J02",
+   "started": 1793299775.4774983,
+   "updated": 1793299971.0850198,
+   "elapsed": 195.60752153396606,
+   "expected": 672,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 672,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 12367.622579277559,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 1.623326063156128,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 672"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0.0 a battle over the last 100 (first 100: 0.0)"
+    }
+   ],
+   "skips_mean": 0,
+   "skips_last100": 0
+  },
+  {
+   "step": "w1-KOM",
+   "started": 1793299971.0966723,
+   "updated": 1793300157.3206124,
+   "elapsed": 186.22394013404846,
+   "expected": 672,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 672,
+   "resumed": 0,
+   "failed": 6,
+   "disables": null,
+   "rate": 12990.810946533522,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 0.2068030834197998,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "6 failed of 672"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0.0 a battle over the last 100 (first 100: 0.0)"
+    }
+   ],
+   "skips_mean": 0.001488095238095238,
+   "skips_last100": 0
+  }
+ ]
 }
