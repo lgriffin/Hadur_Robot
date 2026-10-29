@@ -85,3 +85,15 @@ The fitted build (J2g) was benched on 4 more seeds per sample. Since it plays as
 About +0.3 across both samples, which on 0.1's live 86.95 projects about 87.25, still short of
 WeeksOnEnd's 87.35 for 5th. 11 bytes are spare for the next change.
 
+## Round 6: surf the wave that arrives first (29 Oct, evening)
+
+J2a swaps the first two waves when the second will arrive sooner (a faster bullet overtaking a slower
+one), so the full weight goes to the wave that lands first. Readable, 1,537 bytes, 4 seeds a sample:
+
+| Build | Against J2g, sample 1 | Against J2g, sample 2 |
+|---|---|---|
+| J2a | -0.21 ± 0.28 | -0.13 ± 0.38 |
+
+No gain, so 0.2 ships with the waves in firing order. Released 2026-10-29 (tag `jaylexi-v0.2`);
+`plans/pc-jaylexi-w1.queue` reads 0.1, 0.2 and Komarious on a 112-bot sample on the PC.
+
