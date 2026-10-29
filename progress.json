@@ -1,12 +1,16 @@
 {
  "plan": "pc-team-path",
- "updated": 1793254542.90563,
+ "updated": 1793255449.8208237,
  "steps": {
   "tpprep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 129,
+   "end": "2026-10-29T06:17:52"
   },
   "tpbb": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-10-29T06:17:52"
   },
   "tpmp": {
    "status": "pending"
@@ -33,5 +37,49 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "tpbb",
+   "started": 1793254672.837963,
+   "updated": 1793255449.8127203,
+   "elapsed": 776.974757194519,
+   "expected": 920,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 154,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 713.5366945533901,
+   "eta": 3864.692623448062,
+   "fraction": 0.1673913043478261,
+   "last_battle_age": 3.2283291816711426,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 154"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "ok",
+     "detail": "9.4 a battle over the last 100 (first 100: 7.8)"
+    }
+   ],
+   "skips_mean": 8.727272727272727,
+   "skips_last100": 9.38
+  }
+ ]
 }
