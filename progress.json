@@ -1,0 +1,40 @@
+{
+ "plan": "pc-deise-e06",
+ "updated": 1793312424.4784172,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "live-D": {
+   "status": "pending"
+  },
+  "live-FA": {
+   "status": "pending"
+  },
+  "live-FAP": {
+   "status": "pending"
+  },
+  "live-FAW": {
+   "status": "pending"
+  },
+  "live-FAPW": {
+   "status": "pending"
+  },
+  "live-PW": {
+   "status": "pending"
+  },
+  "live-MIR": {
+   "status": "pending"
+  },
+  "live-SAOR": {
+   "status": "pending"
+  },
+  "read": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
