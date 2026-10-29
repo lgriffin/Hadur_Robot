@@ -50,3 +50,6 @@
 02:01:13 start live-T60
 02:01:13 watching live-T60: 3 stop rule(s)
 02:07:51 progress live-T60: 110/430 (26%) battles, 994/h, ETA 19 min, 0 failed
+02:30:14 live-T60 exit=0 in 1741 s
+02:30:14 start live-B800
+02:30:14 watching live-B800: 3 stop rule(s)
