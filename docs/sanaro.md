@@ -236,7 +236,7 @@ and its name lock on the target.
 ## 9. The next card: pc-sanaro-n03 (stage N4)
 
 `hadur-bench/plans/pc-sanaro-n03.queue`, Leigh starts it from master:
-`.\queue.ps1 run pc-sanaro-n03`. About 2.4 h at 12 workers, with stop rules and ALERT. Live-shaped
+`.\queue.ps1 run pc-sanaro-n03`. About 3.3 h at 12 workers, with stop rules and ALERT. Live-shaped
 census, 43 fields x 10 fresh seeds (base 14000), read against S0 (`sanaro-n03-live.md` on
 `claude/pc-sanaro-n03-results`):
 
@@ -247,6 +247,13 @@ census, 43 fields x 10 fresh seeds (base 14000), read against S0 (`sanaro-n03-li
 | L10 | radar flip below gun heat 1.0, not 0.9 | 245 |
 | G18 | fire gate 18 / d rad | 277 as written (measure only) |
 | G36 | fire gate 36 / d rad | 277 as written (measure only) |
+| EN | Sanaro's own: push 1 / (d + 100 - energy), so a strong robot feels nearer and a weak one farther | 263 (measure only) |
+| D2 | Sanaro's own: inverse-square push 250 / d^2, level with 1 / d at 250 px | 261 (measure only) |
+
+Leigh, 2026-10-29, on hearing that Sanaro's movement, lead and radar are the same math as
+Quantum's (the DustBunny and NaturalScience line both share): "do both". The card measures
+Quantum's remaining parts and, beside them, movements of Sanaro's own; the cloud then screens
+more of Sanaro's own ideas.
 
 The cloud screen read a gate at -1.6, but on the NanoMelee-only census, which n01 showed picks
 against the scored field; this card measures it where it counts. A gate worth +0.5 or more is
