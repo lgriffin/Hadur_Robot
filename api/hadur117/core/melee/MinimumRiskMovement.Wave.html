@@ -149,9 +149,19 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(hadur117.core.world.EnemyShot,java.util.List)" class="member-name-link">Wave</a><wbr>(<a href="../world/EnemyShot.html" title="class in hadur117.core.world">EnemyShot</a>&nbsp;shot,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(hadur117.core.world.EnemyShot,double,double%5B%5D,double%5B%5D,double)" class="member-name-link">Wave</a><wbr>(<a href="../world/EnemyShot.html" title="class in hadur117.core.world">EnemyShot</a>&nbsp;shot,
+ double&nbsp;aimed,
+ double[]&nbsp;headings,
+ double[]&nbsp;shares,
+ double&nbsp;centre)</code></div>
+<div class="col-last even-row-color">
+<div class="block">TMODE-27: a shot's profile given outright: <code>headings</code> with their <code>shares</code>
+ (summing to 1), <code>aimed</code> the share of the shot meant for Hadur, and the uniform
+ part centred on <code>centre</code>, the head-on heading.</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(hadur117.core.world.EnemyShot,java.util.List)" class="member-name-link">Wave</a><wbr>(<a href="../world/EnemyShot.html" title="class in hadur117.core.world">EnemyShot</a>&nbsp;shot,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="VirtualBullet.html" title="class in hadur117.core.melee">VirtualBullet</a>&gt;&nbsp;bullets)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -262,6 +272,19 @@ loadScripts(document, 'script');</script>
 <h3>Wave</h3>
 <div class="member-signature"><span class="element-name">Wave</span><wbr><span class="parameters">(<a href="../world/EnemyShot.html" title="class in hadur117.core.world">EnemyShot</a>&nbsp;shot,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="VirtualBullet.html" title="class in hadur117.core.melee">VirtualBullet</a>&gt;&nbsp;bullets)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(hadur117.core.world.EnemyShot,double,double[],double[],double)">
+<h3>Wave</h3>
+<div class="member-signature"><span class="element-name">Wave</span><wbr><span class="parameters">(<a href="../world/EnemyShot.html" title="class in hadur117.core.world">EnemyShot</a>&nbsp;shot,
+ double&nbsp;aimed,
+ double[]&nbsp;headings,
+ double[]&nbsp;shares,
+ double&nbsp;centre)</span></div>
+<div class="block">TMODE-27: a shot's profile given outright: <code>headings</code> with their <code>shares</code>
+ (summing to 1), <code>aimed</code> the share of the shot meant for Hadur, and the uniform
+ part centred on <code>centre</code>, the head-on heading.</div>
 </section>
 </li>
 </ul>

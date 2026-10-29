@@ -99,21 +99,44 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>(package private) double</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#enemyRisk(java.awt.geom.Point2D.Double,hadur117.core.melee.MinimumRiskMovement.View,int)" class="member-name-link">enemyRisk</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p,
+<div class="col-first even-row-color"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#dodgeBest(java.util.List,hadur117.core.melee.MinimumRiskMovement.View,java.util.List)" class="member-name-link">dodgeBest</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&gt;&nbsp;candidates,
+ <a href="../MinimumRiskMovement.View.html" title="class in hadur117.core.melee">MinimumRiskMovement.View</a>&nbsp;v,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a>&gt;&nbsp;waves)</code></div>
+<div class="col-last even-row-color">
+<div class="block">TMODE-27, Ogi's dodge: the <a href="../TeamDodge.html#RERANK"><code>TeamDodge.RERANK</code></a> lowest-risk candidates, and the
+ destination held if not reached, are each driven to through the shot profiles
+ <code>waves</code> for <a href="../MinimumRiskMovement.html#WAVE_TICKS"><code>MinimumRiskMovement.WAVE_TICKS</code></a> ticks and through the teammates' bullets for
+ <a href="../MinimumRiskMovement.html#PATH_TICKS"><code>MinimumRiskMovement.PATH_TICKS</code></a>; scored as <a href="../MinimumRiskMovement.html#waveScores(double%5B%5D,double%5B%5D)"><code>MinimumRiskMovement.waveScores(double[], double[])</code></a>, the held destination times
+ <a href="../MinimumRiskMovement.html#SWITCH_GAIN"><code>MinimumRiskMovement.SWITCH_GAIN</code></a>.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) double</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#enemyRisk(java.awt.geom.Point2D.Double,hadur117.core.melee.MinimumRiskMovement.View,int)" class="member-name-link">enemyRisk</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p,
  <a href="../MinimumRiskMovement.View.html" title="class in hadur117.core.melee">MinimumRiskMovement.View</a>&nbsp;v,
  int&nbsp;i)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">Opponent <code>i</code>'s term: energy over distance squared, with the closest-robot factor (<a class="req" href="../../../../../requirements.html#MMOVE-2">MMOVE-2</a>).</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#pathBest(java.util.List,hadur117.core.melee.MinimumRiskMovement.View)" class="member-name-link">pathBest</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&gt;&nbsp;candidates,
+<div class="col-first even-row-color"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#pathBest(java.util.List,hadur117.core.melee.MinimumRiskMovement.View)" class="member-name-link">pathBest</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&gt;&nbsp;candidates,
  <a href="../MinimumRiskMovement.View.html" title="class in hadur117.core.melee">MinimumRiskMovement.View</a>&nbsp;v)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block">TMODE-25, Firestarter's path check: the <a href="../MinimumRiskMovement.html#PATH_RERANK"><code>MinimumRiskMovement.PATH_RERANK</code></a> lowest-risk candidates and the
  destination held if not reached are each scored as their risk
  plus <a href="../MinimumRiskMovement.html#PATH_K"><code>MinimumRiskMovement.PATH_K</code></a> times the damage of the teammates' bullets their drive would meet in
  <a href="../MinimumRiskMovement.html#PATH_TICKS"><code>MinimumRiskMovement.PATH_TICKS</code></a> ticks.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#rerankBest(java.util.List,hadur117.core.melee.MinimumRiskMovement.View,int,java.util.List,java.util.List)" class="member-name-link">rerankBest</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&gt;&nbsp;candidates,
+ <a href="../MinimumRiskMovement.View.html" title="class in hadur117.core.melee">MinimumRiskMovement.View</a>&nbsp;v,
+ int&nbsp;rerank,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a>&gt;&nbsp;waves,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../VirtualBullet.html" title="class in hadur117.core.melee">VirtualBullet</a>&gt;&nbsp;mateBullets)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">TMODE-11, TMODE-27: the <code>rerank</code> lowest-risk candidates, and the destination held if
+ not reached, each driven to through the <code>waves</code> for <a href="../MinimumRiskMovement.html#WAVE_TICKS"><code>MinimumRiskMovement.WAVE_TICKS</code></a> ticks and
+ through the teammates' <code>bullets</code> for <a href="../MinimumRiskMovement.html#PATH_TICKS"><code>MinimumRiskMovement.PATH_TICKS</code></a>; scored as
+ <a href="../MinimumRiskMovement.html#waveScores(double%5B%5D,double%5B%5D)"><code>MinimumRiskMovement.waveScores(double[], double[])</code></a>, the held destination times <a href="../MinimumRiskMovement.html#SWITCH_GAIN"><code>MinimumRiskMovement.SWITCH_GAIN</code></a>.</div>
 </div>
 <div class="col-first even-row-color"><code>double</code></div>
 <div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#risk(java.awt.geom.Point2D.Double,hadur117.core.melee.MinimumRiskMovement.View)" class="member-name-link">risk</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p,

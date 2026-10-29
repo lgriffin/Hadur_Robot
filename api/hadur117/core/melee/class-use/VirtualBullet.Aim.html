@@ -103,6 +103,29 @@ the order they are declared.</div>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>(package private) <a href="../MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">TeamDodge.</span><code><a href="../TeamDodge.html#profile(hadur117.core.world.EnemyShot,hadur117.core.model.RobotStateLog,java.awt.geom.Point2D.Double,java.util.List,hadur117.core.melee.TeamDanger,boolean,hadur117.core.melee.VirtualBullet.Aim)" class="member-name-link">profile</a><wbr>(<a href="../../world/EnemyShot.html" title="class in hadur117.core.world">EnemyShot</a>&nbsp;s,
+ <a href="../../model/RobotStateLog.html" title="class in hadur117.core.model">RobotStateLog</a>&nbsp;path,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&gt;&nbsp;mates,
+ <a href="../TeamDanger.html" title="class in hadur117.core.melee">TeamDanger</a>&nbsp;danger,
+ boolean&nbsp;own,
+ <a href="../VirtualBullet.Aim.html" title="enum class in hadur117.core.melee">VirtualBullet.Aim</a>&nbsp;only)</code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) void</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">TeamDodge.</span><code><a href="../TeamDodge.html#update(java.util.List,hadur117.core.model.RobotStateLog,java.awt.geom.Point2D.Double,long,java.util.List,hadur117.core.melee.TeamDanger,boolean,hadur117.core.melee.VirtualBullet.Aim)" class="member-name-link">update</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../world/EnemyShot.html" title="class in hadur117.core.world">EnemyShot</a>&gt;&nbsp;shots,
+ <a href="../../model/RobotStateLog.html" title="class in hadur117.core.model">RobotStateLog</a>&nbsp;path,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ long&nbsp;now,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&gt;&nbsp;mates,
+ <a href="../TeamDanger.html" title="class in hadur117.core.melee">TeamDanger</a>&nbsp;danger,
+ boolean&nbsp;own,
+ <a href="../VirtualBullet.Aim.html" title="enum class in hadur117.core.melee">VirtualBullet.Aim</a>&nbsp;only)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Profiles the shots not seen before and drops those gone past Hadur: <code>mates</code> where
+ the teammates stand, <code>own</code> for the nearest rule, <code>only</code> the one aim a team
+ whose code is read takes (or null).</div>
+</div>
 <div class="col-first even-row-color"><code>void</code></div>
 <div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#updateBullets(java.util.List,hadur117.core.model.RobotStateLog,java.awt.geom.Point2D.Double,long,java.util.List,hadur117.core.melee.TeamDanger,boolean,boolean,boolean,hadur117.core.melee.VirtualBullet.Aim)" class="member-name-link">updateBullets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../world/EnemyShot.html" title="class in hadur117.core.world">EnemyShot</a>&gt;&nbsp;shots,
  <a href="../../model/RobotStateLog.html" title="class in hadur117.core.model">RobotStateLog</a>&nbsp;myPath,

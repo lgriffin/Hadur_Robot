@@ -124,12 +124,32 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">+1 when the target moved clockwise round the shooter, -1 counter-clockwise; +1 when still.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) double[]</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">TeamDanger.</span><code><a href="../../melee/TeamDanger.html#features(hadur117.core.world.EnemyShot,hadur117.core.model.RobotState)" class="member-name-link">features</a><wbr>(<a href="../../world/EnemyShot.html" title="class in hadur117.core.world">EnemyShot</a>&nbsp;shot,
- <a href="../RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;t)</code></div>
+<div class="col-first even-row-color"><code>(package private) static double[]</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">AimExperts.</span><code><a href="../../melee/AimExperts.html#errors(hadur117.core.world.EnemyShot,hadur117.core.model.RobotState,double%5B%5D,double)" class="member-name-link">errors</a><wbr>(<a href="../../world/EnemyShot.html" title="class in hadur117.core.world">EnemyShot</a>&nbsp;shot,
+ <a href="../RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;at,
+ double[]&nbsp;predicted,
+ double&nbsp;heading)</code></div>
 <div class="col-last even-row-color">
+<div class="block">How far each expert was, in bot widths at the shot's range, from the <code>heading</code> the
+ bullet took; <code>predicted</code> from <a href="../../melee/AimExperts.html#headings(hadur117.core.world.EnemyShot,hadur117.core.model.RobotState,hadur117.core.model.RobotStateLog,hadur117.core.physics.BattleField)"><code>AimExperts.headings(hadur117.core.world.EnemyShot, hadur117.core.model.RobotState, hadur117.core.model.RobotStateLog, hadur117.core.physics.BattleField)</code></a> with the learned slot filled in
+ (or NaN).</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) double[]</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">TeamDanger.</span><code><a href="../../melee/TeamDanger.html#features(hadur117.core.world.EnemyShot,hadur117.core.model.RobotState)" class="member-name-link">features</a><wbr>(<a href="../../world/EnemyShot.html" title="class in hadur117.core.world">EnemyShot</a>&nbsp;shot,
+ <a href="../RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;t)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">The situation: distance, the speed across and towards the shooter, and how much of the
  escape angle ahead is clear of the walls.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static double[]</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">AimExperts.</span><code><a href="../../melee/AimExperts.html#headings(hadur117.core.world.EnemyShot,hadur117.core.model.RobotState,hadur117.core.model.RobotStateLog,hadur117.core.physics.BattleField)" class="member-name-link">headings</a><wbr>(<a href="../../world/EnemyShot.html" title="class in hadur117.core.world">EnemyShot</a>&nbsp;shot,
+ <a href="../RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;at,
+ <a href="../RobotStateLog.html" title="class in hadur117.core.model">RobotStateLog</a>&nbsp;path,
+ <a href="../../physics/BattleField.html" title="class in hadur117.core.physics">BattleField</a>&nbsp;field)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Where each simple expert aims <code>shot</code> at the member, in state <code>at</code> at its fire
+ tick, with <code>path</code> the member's own track; the learned slot is NaN (its aims come
+ from <a href="../../melee/TeamDanger.html#aims(hadur117.core.world.EnemyShot,hadur117.core.model.RobotState)"><code>TeamDanger.aims(hadur117.core.world.EnemyShot, hadur117.core.model.RobotState)</code></a>).</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="../../melee/TeamDanger.Sample.html" title="class in hadur117.core.melee">TeamDanger.Sample</a></code></div>
 <div class="col-second odd-row-color"><span class="type-name-label">TeamDanger.</span><code><a href="../../melee/TeamDanger.html#sample(hadur117.core.world.EnemyShot,hadur117.core.model.RobotState,double)" class="member-name-link">sample</a><wbr>(<a href="../../world/EnemyShot.html" title="class in hadur117.core.world">EnemyShot</a>&nbsp;shot,

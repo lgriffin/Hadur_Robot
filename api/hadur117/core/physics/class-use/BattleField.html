@@ -128,6 +128,27 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>(package private) static double</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">AimExperts.</span><code><a href="../../melee/AimExperts.html#circularHeading(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,double,double,double,double,hadur117.core.physics.BattleField)" class="member-name-link">circularHeading</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;source,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;target,
+ double&nbsp;heading,
+ double&nbsp;velocity,
+ double&nbsp;turn,
+ double&nbsp;bulletSpeed,
+ <a href="../BattleField.html" title="class in hadur117.core.physics">BattleField</a>&nbsp;field)</code></div>
+<div class="col-last even-row-color">
+<div class="block">The heading a circular-aiming shooter fires at a target turning <code>turn</code> a tick, kept inside the walls.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static double[]</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">AimExperts.</span><code><a href="../../melee/AimExperts.html#headings(hadur117.core.world.EnemyShot,hadur117.core.model.RobotState,hadur117.core.model.RobotStateLog,hadur117.core.physics.BattleField)" class="member-name-link">headings</a><wbr>(<a href="../../world/EnemyShot.html" title="class in hadur117.core.world">EnemyShot</a>&nbsp;shot,
+ <a href="../../model/RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;at,
+ <a href="../../model/RobotStateLog.html" title="class in hadur117.core.model">RobotStateLog</a>&nbsp;path,
+ <a href="../BattleField.html" title="class in hadur117.core.physics">BattleField</a>&nbsp;field)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Where each simple expert aims <code>shot</code> at the member, in state <code>at</code> at its fire
+ tick, with <code>path</code> the member's own track; the learned slot is NaN (its aims come
+ from <a href="../../melee/TeamDanger.html#aims(hadur117.core.world.EnemyShot,hadur117.core.model.RobotState)"><code>TeamDanger.aims(hadur117.core.world.EnemyShot, hadur117.core.model.RobotState)</code></a>).</div>
+</div>
 <div class="col-first even-row-color"><code>void</code></div>
 <div class="col-second even-row-color"><span class="type-name-label">EnemyHistory.</span><code><a href="../../melee/EnemyHistory.html#onScan(long,double,double,double,double,double,double,hadur117.core.physics.BattleField)" class="member-name-link">onScan</a><wbr>(long&nbsp;time,
  double&nbsp;x,
@@ -188,6 +209,9 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code>&nbsp;</code></div>
 <div class="col-second odd-row-color"><code><a href="../../melee/TeamDanger.html#%3Cinit%3E(hadur117.core.physics.BattleField)" class="member-name-link">TeamDanger</a><wbr>(<a href="../BattleField.html" title="class in hadur117.core.physics">BattleField</a>&nbsp;field)</code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private)</code></div>
+<div class="col-second even-row-color"><code><a href="../../melee/TeamDodge.html#%3Cinit%3E(hadur117.core.physics.BattleField)" class="member-name-link">TeamDodge</a><wbr>(<a href="../BattleField.html" title="class in hadur117.core.physics">BattleField</a>&nbsp;field)</code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>

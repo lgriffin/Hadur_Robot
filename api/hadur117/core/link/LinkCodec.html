@@ -103,12 +103,14 @@ loadScripts(document, 'script');</script>
  shots:u8 { tick:i64 x y heading power:f64 }
  [version 2 and 3] dodges:u8 { name distance lateral advancing wallAhead gf:f64 }
  [version 3 only] gunHeading gunHeat:f64
+ [version 4] dodges:u8 { name distance lateral advancing wallAhead gf:f64 experts:u8 { error:f64 } }
+             aim:u8 (0 or 1) [gunHeading gunHeat:f64 when 1]
  crc:i32                      CRC-32 of every byte before it
  name = length:u8 then that many UTF-16 chars:u16
  </pre>
 
  <p><a class="req" href="../../../../requirements.html#LINK-2">LINK-2</a>: <a href="#decode(byte%5B%5D)"><code>decode(byte[])</code></a> refuses a message whose checksum fails, whose version is neither
- <a href="#VERSION"><code>VERSION</code></a>, <a href="#VERSION_DODGES"><code>VERSION_DODGES</code></a> nor <a href="#VERSION_AIM"><code>VERSION_AIM</code></a>, or that is cut short or runs long, by throwing <a href="LinkFormatException.html" title="class in hadur117.core.link"><code>LinkFormatException</code></a>;
+ <a href="#VERSION"><code>VERSION</code></a>, <a href="#VERSION_DODGES"><code>VERSION_DODGES</code></a>, <a href="#VERSION_AIM"><code>VERSION_AIM</code></a> nor <a href="#VERSION_EXPERTS"><code>VERSION_EXPERTS</code></a>, or that is cut short or runs long, by throwing <a href="LinkFormatException.html" title="class in hadur117.core.link"><code>LinkFormatException</code></a>;
  the caller ignores it and counts it. Pure byte work: no I/O (<a class="req" href="../../../../requirements.html#RES-6">RES-6</a>).</p></div>
 </section>
 <section class="summary">
@@ -147,6 +149,12 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color"><code><a href="#VERSION_DODGES" class="member-name-link">VERSION_DODGES</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">The format of a report that carries dodges: <a href="#VERSION"><code>VERSION</code></a> with the dodges list after the shots.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#VERSION_EXPERTS" class="member-name-link">VERSION_EXPERTS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">TMODE-27: dodges that carry their aim experts' errors, the aim flagged after them;
+ written only when a dodge carries them, so a team without the dodge sends what it did.</div>
 </div>
 </div>
 </section>
@@ -226,6 +234,22 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur117.core.link.LinkCodec.VERSION_AIM">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="VERSION_EXPERTS">
+<h3>VERSION_EXPERTS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">VERSION_EXPERTS</span></div>
+<div class="block">TMODE-27: dodges that carry their aim experts' errors, the aim flagged after them;
+ written only when a dodge carries them, so a team without the dodge sends what it did.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.link.LinkCodec.VERSION_EXPERTS">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
