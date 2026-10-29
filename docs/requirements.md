@@ -1160,6 +1160,8 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | TMODE-24 | Optional | Where the team mode table names FARTHER against a team, the HUNT place shall be 650 px from the prey. | T7 |
 | TMODE-25 | Optional | Where the PATH mode is played against a team, while Hadur has a living teammate with a bullet in flight, the destination shall be chosen among the 8 lowest-risk candidates by their risk plus the damage of each teammate bullet that, on Hadur's straight drive there (accelerating 1 px a tick to 8) over the next 15 ticks, crosses Hadur's box 18 px each side; a held destination not yet reached shall be kept unless another scores below 0.9 times its risk plus its own path damage. | T7 |
 | TMODE-26 | Optional | Where the team mode table names NEAR against a team, the HUNT place shall be 250 px from the prey. | T7 |
+| TMODE-27 | Optional | Where the DODGE mode is played against a team, while Hadur has a living teammate, each detected enemy shot shall be turned once, when first seen, into a profile: the simple aims (head-on, linear, circular, linear at the 16-tick average velocity, linear at half speed) at Hadur's state when it was fired and the team's learned aims pooled by enemy class, each carrying its expert's weight exp(-loss) against that class, where an expert's loss decays by 0.95 a hit and grows by 0 within one bot width of each enemy bullet that hit a member and up to 1 at three, the hit member's errors travelling with its link sample; the shot shall count for Hadur by 1/(1+k)^2 for the k teammates nearer its source (by the nearest rule where the table names OWN); the destination shall be the best of the 12 lowest-risk candidates and the held one by risk/median + 3 x damage/median, the damage being the profiles crossed driving there for 30 ticks plus the teammates' bullets crossed in 15, the held one times 0.9; the base risk then counts no bullet. | T7 |
+| TMODE-28 | Ubiquitous | The team mode table's default, for a team it does not name, shall include the PATH mode, and every team the table names shall play PATH on top of its entry. | T7 |
 
 ### T1 notes
 
@@ -1561,6 +1563,7 @@ blends its terms; the oracle measures what each model predicts.
 | MOVE-29 | State | While the aim-member switch is on, in a duel, the three-option surf's danger where the views have data shall be the weighted mean of the views' score and the head-on, linear and circular simple aims' (one tick back, each the surf's kernel on the aim's angle over the intersection), each member weighted by its standing weight (1 for the views, 0.1 for an aim) times 2^(2 x its rolling score), the score a mean decayed by 0.8 a bullet of log2 of the member's probability at each bullet that hit us over a uniform guess's (mixed with 5% uniform), learnt before the views learn the bullet. With the switch off the danger is the views'. | R9 |
 | BENCH-134 | Ubiquitous | The bench shall carry the `pc-k0-oracle` card: the current release with `aesrec,oracle` on `aes-flat-learning.txt` (the 432 learning guns on flat movers), 2 fresh seeds from 4200, truth log on, 12 workers, stopping on 30 failed battles, 40+ skipped turns a battle over the last 200 or no battle in 30 minutes; then the oracle's join and score, and a results PR only after both pass. | T7 |
 | BENCH-135 | Ubiquitous | The bench shall carry the `pc-team-path2` card, which runs PATH (TMODE-25) forced on for every team (`mp`) and a bb A/A against aa on all 46 teams at 16 fresh seeds from 5100, and gates the pooled gain (each team's mp gain less half its bb gain, summed over 46) at +0.30 APS with the 95% low end above zero; the card changes no robot code. | T7 |
+| BENCH-139 | Ubiquitous | The bench shall carry the `pc-team-dodge` card, which screens DODGE (TMODE-27) forced on (`dg`) beside a bb A/A against aa on all 46 teams at 12 seeds from 5400; gates DODGE as every team's default on the pooled gain (each team's dg gain less half its bb gain, summed over 46) at +0.30 APS with the 95% low end above zero; picks per team DODGE at +3.0 points or more over both baselines with the low end above zero (a team the shipped table names keeps its entry's modes); and gates the picked table on 16 fresh seeds from 5500 at +0.30 APS; only a passed per-team gate writes that table as the table to ship. | T7 |
 | BENCH-138 | Ubiquitous | The bench shall carry the `pc-k1-aim` card: the current release (c), its A/A copy (aa) and the aim members on (km, MOVE-29) on `aes-flat-learning.txt` (the 432 learning guns on flat movers), 1 fresh seed from 4400, 12 workers, truth log off, stopping on 30 failed battles, an arm scoring nothing in 8, 40+ skipped turns a battle over the last 200, no battle in 30 minutes or an A/A outside its band after 20%, and finishing early once km cannot reach +0.05 APS at z 3 after 30%; then the gate (km minus pooled c and aa over the 432 / 1,217 pairings at +0.05 APS, 95% low end above 0), per-robot losses, the oracle re-joined on the pc-k0-oracle battles when they are on the PC, and a results PR only after the gate passes its analysis. | T7 |
 
 - **ORC record**: `ORC,round,tick,fireTime,power,firing,sourceX,sourceY,absBearing,orbitDirection,maxEscapeAngle,distance,chosen,`
@@ -1880,7 +1883,7 @@ A retired requirement keeps its ID; no new requirement reuses it.
 - **Why.** Leigh 2026-10-28: proceed with the next team step. Firestarter (2nd) checks each move
   against its own team's bullets in flight; the cloud closer-hunt smoke lost on the field (250 px
   -0.6 +- 1.3, 200 px -2.0 +- 1.3, 22 teams x 6 seeds) but TroodonPack gained at both (+4.3, +3.7).
-- **TMODE-25.** `TeamModes.Mode.PATH` (FORCE_PATH, off): `MinimumRiskMovement.pathBest`,
+- **TMODE-25.** `TeamModes.Mode.PATH` (FORCE_PATH, on since TMODE-28): `MinimumRiskMovement.pathBest`,
   `pathDamage`, `crossesBox`; `PATH_K` 1, `PATH_HALF` 18, `PATH_TICKS` 15, `PATH_RERANK` 8.
 - **TMODE-26.** `TeamModes.Mode.NEAR`, table-only: `huntRadius` gives `HUNT_RADIUS_NEAR` 250.
 - With PATH and NEAR both forced into the default, only the three team replay fixtures move; the
@@ -2083,7 +2086,7 @@ live-shaped one (docs/sanaro.md section 6).
   probe subclass. SANARO-10 to SANARO-13 are bench reads (`tools/sanaro_read.py`; fields by
   `tools/sanaro_fields.py`, both by `test_sanaro.py`), not build gates.
 
-## JayLexi and Eveimear, the MiniRumble and MicroRumble 1v1 entries (JAYLEXI-1 to JAYLEXI-10, EVEIMEAR-1 to EVEIMEAR-12)
+## JayLexi and Eveimear, the MiniRumble and MicroRumble 1v1 entries (JAYLEXI-1 to JAYLEXI-11, EVEIMEAR-1 to EVEIMEAR-12)
 
 `hadur117.mini.JayLexi` (module `jaylexi`, MiniRumble: 1v1 under 1500 bytes) and
 `hadur117.micro.Eveimear` (module `eveimear`, MicroRumble: 1v1 under 750 bytes), built from Leigh's
@@ -2098,12 +2101,13 @@ E1 to E6 map onto these as the last column says.
 | JAYLEXI-2 | Event | When the enemy is scanned, the bot shall turn its radar twice the turn to the enemy, so it scans it every tick. | K1 |
 | JAYLEXI-3 | Event | When the enemy's energy drops by more than 0.09 and at most 3, after our hits on it (less their damage) and its hits on us (plus three times their power) are booked, the bot shall launch an enemy wave from where the enemy was a tick earlier at that bullet's speed. | K3 |
 | JAYLEXI-4 | Event | When the enemy is scanned, the bot shall launch a gun wave segmented on velocity history, lateral speed, walls ahead and distance, aim at its most visited of 47 bins, and log the enemy's bin, weighted 5 for a fired wave, when the wave passes it. | K2, J6 |
-| JAYLEXI-5 | State | While an enemy wave is in flight, the bot shall predict back and forward to the wave's arrival and orbit the less dangerous way, danger being the logged bin over the distance to the enemy to the fourth; while none is, it shall drive straight away from the enemy. (The plan's stop option measured 2 APS worse, docs/kitlab.md.) | J1 |
+| JAYLEXI-5 | State | While an enemy wave is in flight, the bot shall predict back and forward to the wave's arrival and orbit the less dangerous way, danger being the logged bin over the distance to the enemy to the fourth, plus a quarter of the same for the second nearest wave when there is one (0.2); while none is, it shall drive straight away from the enemy. (The plan's stop option measured 2 APS worse, docs/kitlab.md.) | J1 |
 | JAYLEXI-6 | Event | When hit by a bullet, or when bullets collide, the bot shall log the guess factor of the hit, smoothed over the neighbouring bins, on the enemy wave that was passing it, and stop surfing that wave. | J2 |
 | JAYLEXI-7 | Ubiquitous | The bot shall turn its drive until a 140 px stick from it stays inside the field. | J3 |
 | JAYLEXI-8 | Event | When the gun is within 3 degrees of its aim, the bot shall fire 3 inside 150 px and 2 beyond, at most a fifteenth of its own energy and at most what finishes the enemy. | J4, K4 |
 | JAYLEXI-9 | Ubiquitous | The shipped jar shall carry the robot's properties at the release version and its source. | plan S5 |
 | JAYLEXI-10 | Ubiquitous | On the MiniRumble bench sample, paired against Komarious 1.88, the build shall predict at least 87.7 APS before it is submitted. | plan S4 |
+| JAYLEXI-11 | Ubiquitous | The shipped code shall give the same orders, bit for bit, as the readable reference kept with the tests, on seeded replays of scans, hits and shots, so bytes are saved without changing play. | 0.2 |
 | EVEIMEAR-1 | Unwanted | If Robocode's codesize tool reports more than 746 bytes for the shipped jar (MicroRumble's 749 less 3 spare), then the build shall fail. | K6 |
 | EVEIMEAR-2 | Event | While in stop-and-go, when the enemy fires, the bot shall step (3 + (int) (drop x 1.999999)) << 3 px along its orbit. | E1 |
 | EVEIMEAR-3 | Event | When the energy the enemy has won back by hitting it (three times each bullet's power, Épéeist's measure) exceeds 40 + 23 x round, the bot shall move every tick and reverse at random for the rest of the battle. | E2 |
@@ -2118,7 +2122,7 @@ E1 to E6 map onto these as the last column says.
 | EVEIMEAR-12 | Ubiquitous | On the MicroRumble bench sample, paired against Épéeist 3.7, the build shall predict at least 85.3 APS before it is submitted. | plan S4 |
 
 - **Coverage.** JAYLEXI-1, JAYLEXI-9, EVEIMEAR-1 and EVEIMEAR-9 by `JayLexiJarIT` and
-  `EveimearJarIT` (failsafe) on the shipped jars; JAYLEXI-2 to JAYLEXI-8 by `JayLexiTest` and
+  `EveimearJarIT` (failsafe) on the shipped jars; JAYLEXI-2 to JAYLEXI-8 by `JayLexiTest`, JAYLEXI-11 by `JayLexiReplayTest`, and
   EVEIMEAR-2 to EVEIMEAR-8, EVEIMEAR-10 and EVEIMEAR-11 by `EveimearTest`, scan by scan on probe
   subclasses. JAYLEXI-10 and EVEIMEAR-12 are bench reads (`tools/kitlab_read.py`; samples by
   `tools/kitlab_fields.py`, both by `test_kitlab.py`), not build gates. Like Sanaro's rows, these carry the
@@ -2159,3 +2163,31 @@ profiles, and the rumbles list it as a new participant.
 - **BENCH-135.** Card plans/pc-team-path2.queue: aa, bb, mp (build-ablation `tmpath`); bb and mp on
   team-census46.txt at 16 seeds from 5100 (16, not 10, to narrow the pooled interval); `team_modes.py
   gate` over all 46 teams at +0.30 APS. A PASS is followed by a PR that sets FORCE_PATH = true.
+
+## Ogi's dodge as one piece (TMODE-27, BENCH-139)
+
+- **Why.** Leigh 2026-10-29: OgiTeam leads the team rumble by about 6.4 APS on survival (97.6%).
+  Its parts ported one switch at a time (SOFT, SCREEN, POOL, LEARN, WAVES, radar) read zero; its
+  dodge only works whole: shot detection, a learned per-class danger model with simple-aim
+  experts, and a path check over the safest spots. Leigh: "If it makes sense to do a parallel full
+  rebuild of the teams core do so".
+- **TMODE-27.** `TeamModes.Mode.DODGE` (FORCE_DODGE off), `melee.TeamDodge` and
+  `melee.AimExperts`: a parallel team movement path that stands in for the virtual bullets and
+  the SOFT/LEARN/POOL/WAVES switches. Profiles are made once a shot (the CPU that sank WAVES with
+  learning); experts' errors travel with link samples (LinkCodec version 4, written only when a
+  dodge carries them). Ablations `tmdodge` (dg) and `tmdodgeb` (db, the ranking keeps the simple
+  bullets). Forced on, every duel and melee fixture replays bit for bit.
+- **BENCH-139.** Card plans/pc-team-dodge.queue: global gate and per-team pick from one screen.
+
+## PATH on every team (TMODE-28)
+
+- **Why.** pc-team-path2 (BENCH-135, PR #430), 46 teams x 16 fresh seeds from 5100: PATH forced on
+  `mp` +0.7 +- 0.3 share points against aa, bb A/A -0.2 +- 0.3, projected **+0.77 +- 0.36 APS**
+  (gate +0.30, low end above zero: PASS). Our bullets on our own members fell 81,824 to 69,429.
+  Aleph +3.8, Slartibartfass, ArmyOfShiz and DemoniacNimrods +3.0, Firestarter +2.8, HOFSwarm +2.4;
+  Polylunar -2.5, Ogi -0.2. A global switch, not a per-team pick: Leigh chose the confirm knowing so.
+- **TMODE-28.** `TeamModes.FORCE_PATH` is true and the three named entries (GrofGroup, Troodon,
+  TroodonDroid) carry `Mode.PATH`, as the measured `tmpath` arm played them. Ablation `tmnopath`
+  turns both off; `tmpath` keeps working on older source.
+- Solo play is untouched: the modes act only while a teammate lives. Only the two team replay
+  fixtures were re-recorded; the duel and melee fixtures replay bit for bit.

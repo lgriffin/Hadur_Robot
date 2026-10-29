@@ -16,6 +16,10 @@ class Probe extends JayLexi {
     final List<Condition> events = new ArrayList<>();
     Double turn, ahead, gunTurn, radarRight, fired;
 
+    Probe() {
+        bot = this;
+    }
+
     static void reset() {
         enemyEnergy = 0;
         distance = 0;

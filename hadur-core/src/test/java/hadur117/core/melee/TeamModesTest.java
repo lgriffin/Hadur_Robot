@@ -51,7 +51,8 @@ class TeamModesTest {
     @Tag("TMODE-1")
     @Tag("TMODE-12")
     @Tag("TMODE-14")
-    @DisplayName("TMODE-1: a team's modes are its first member's entry, by class without version or duplicate marker; else the default, MATEFIRE and HUNT in the shipped build (TMODE-12, TMODE-14)")
+    @Tag("TMODE-28")
+    @DisplayName("TMODE-1: a team's modes are its first member's entry, by class without version or duplicate marker; else the default, MATEFIRE, HUNT and PATH in the shipped build (TMODE-12, TMODE-14, TMODE-28), and every named team plays PATH too")
     void tableLookup() {
         EnemyTracker t = new EnemyTracker(field(1200, 1200));
         scan(t, "x.Other 2.0 (1)", 100, 100, 100, 1);
@@ -60,10 +61,11 @@ class TeamModesTest {
         Map<String, Set<TeamModes.Mode>> table = Map.of("cz.libors.Ogi", gang);
         assertSame(gang, TeamModes.against(t.alive(), table, TeamModes.NONE));
         assertSame(TeamModes.NONE, TeamModes.against(List.of(t.get("x.Other 2.0 (1)")), table, TeamModes.NONE));
-        assertEquals(EnumSet.of(TeamModes.Mode.MATEFIRE, TeamModes.Mode.HUNT), TeamModes.DEFAULT);
+        assertEquals(EnumSet.of(TeamModes.Mode.MATEFIRE, TeamModes.Mode.HUNT, TeamModes.Mode.PATH), TeamModes.DEFAULT);
         // The table names only the teams whose counters passed on fresh seeds (PR #370).
         assertEquals(java.util.Set.of("gh.nano.GrofGroupMember", "myl.micro.Troodon", "myl.micro.TroodonDroid"),
             TeamModes.TABLE.keySet());
+        for (Set<TeamModes.Mode> entry : TeamModes.TABLE.values()) assertTrue(entry.contains(TeamModes.Mode.PATH));
     }
 
     @Test

@@ -1,0 +1,98 @@
+# Sanaro's stage N5 (docs/sanaro.md section 11): Quantum's fire gate inside 249 bytes, and Sanaro's
+# own lead and movements, on the live-shaped census. pc-sanaro-n03 (PR #423) read the gate at
+# +0.99 ± 0.32 (G18) but at 277 bytes. The cloud (2 seeds, docs/sanaro.md section 10) golfed it to
+# 258 bytes with the same play (GG) and found 9 more by giving Sanaro a lead of its own: CL, v / 16
+# at every range in place of Quantum's v / (10 + 1.008^d), 249 bytes, level with the gate there.
+#   ./queue.sh run pc-sanaro-n04        (or  .\queue.ps1 run pc-sanaro-n04)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers. Every step resumes; no step needs
+# a decision. Nothing here touches Hadur, Saor, TwinSaor or Deise.
+#
+# Arms (sanaro-arms/arms.txt):
+#   S0    Sanaro 0.1 as it ships (control, 247 B)
+#   GG    G18's gate golfed, same play as n03's G18 (258 B: reference, does not fit)
+#   CL    GG + Sanaro's own flat lead v / 16 (249 B: the 0.2 candidate)
+#   CL12  CL with lead v / 12 (249 B)      CL22  CL with lead v / 22 (249 B)
+#   A     CL + power c / (d / 16), smooth with range in place of the 640 / d bands (245 B)
+#   EN    Sanaro's own: push weighted by energy, (energy + 50) / 150 / d (273 B, measure only)
+#   D2    Sanaro's own: inverse-square push 250 / d^2 (261 B, measure only)
+# Live-shaped census: 43 fields x 10 fresh seeds (base 18000) = 430 battles an arm, about 28 min an
+# arm (n03 ran 26-30). About 3.7 h in all.
+# Read against S0. An arm passes when its difference's low end is above zero (SANARO-13). The best
+# passing arm at 249 bytes or under ships as 0.2; GG says how much of the gate CL keeps.
+# Stop rules on every census step (docs/bench/watch.md; halt, every battle fought is kept and a
+# rerun resumes): 20 failed battles (a broken jar), no battle in 30 minutes (a hung step), or 40+
+# skipped turns a battle over the last 100 (the PR #331 build-up). A halt at worst leaves the rest
+# of that arm and the arms after it unrun, at most 3,440 battles (about 3.7 h). There is no early
+# finish on score: a census step is one robot, so there is no arm to call futile mid-step. ALERT
+# opens an issue for Leigh on a stop.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set ARMS = S0,GG,CL,CL12,CL22,A,EN,D2
+
+prep | (cd .. && mvn -q -DskipTests install -pl sanaro -am) && cp ../sanaro/target/hadur117.nano.Sanaro_0.1.jar opponents/ && ./fetch-opponents.sh --set nanomelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && SANARO_RUN=n04 bash tools/sanaro_arms.sh live 10 18000 ${ARMS}
+
+live-S0 | ${MVN} "-Dexec.args=@work/sanaro-n04/live-S0.args"
+  after: prep
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-GG | ${MVN} "-Dexec.args=@work/sanaro-n04/live-GG.args"
+  after: live-S0
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-CL | ${MVN} "-Dexec.args=@work/sanaro-n04/live-CL.args"
+  after: live-GG
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-CL12 | ${MVN} "-Dexec.args=@work/sanaro-n04/live-CL12.args"
+  after: live-CL
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-CL22 | ${MVN} "-Dexec.args=@work/sanaro-n04/live-CL22.args"
+  after: live-CL12
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-A | ${MVN} "-Dexec.args=@work/sanaro-n04/live-A.args"
+  after: live-CL22
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-EN | ${MVN} "-Dexec.args=@work/sanaro-n04/live-EN.args"
+  after: live-A
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-D2 | ${MVN} "-Dexec.args=@work/sanaro-n04/live-D2.args"
+  after: live-EN
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+read-live | python3 tools/sanaro_read.py --work-root work/sanaro-n04 --field live --arms ${ARMS} --control S0 --only work/sanaro-n04/live/micro.txt --live 66.44 > ${OUT}/sanaro-n04-live.md
+  after: live-D2
+
+pr | bash tools/open_results_pr.sh claude/pc-sanaro-n04-results "Sanaro stage N5: the fire gate in 249 bytes with Sanaro's own lead, on the live-shaped census" ${OUT}/sanaro-n04-live.md ${OUT}/sanaro-n04-live-*.md
+  after: read-live

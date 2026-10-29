@@ -60,12 +60,24 @@ public final class TeamDanger {
         public final String shooter;
         public final double[] features;
         public final double gf;
+        /** TMODE-27: how far off each aim expert was, in bot widths ({@link AimExperts}); empty when not scored. */
+        public final double[] experts;
 
         public Sample(String shooter, double[] features, double gf) {
+            this(shooter, features, gf, new double[0]);
+        }
+
+        public Sample(String shooter, double[] features, double gf, double[] experts) {
             if (features.length != FEATURES) throw new IllegalArgumentException(features.length + " features");
             this.shooter = shooter;
             this.features = features.clone();
             this.gf = gf;
+            this.experts = experts.clone();
+        }
+
+        /** This sample with the experts' errors attached (TMODE-27). */
+        public Sample withExperts(double[] errors) {
+            return new Sample(shooter, features, gf, errors);
         }
     }
 

@@ -16,12 +16,14 @@ import java.util.zip.CRC32;
  * shots:u8 { tick:i64 x y heading power:f64 }
  * [version 2 and 3] dodges:u8 { name distance lateral advancing wallAhead gf:f64 }
  * [version 3 only] gunHeading gunHeat:f64
+ * [version 4] dodges:u8 { name distance lateral advancing wallAhead gf:f64 experts:u8 { error:f64 } }
+ *             aim:u8 (0 or 1) [gunHeading gunHeat:f64 when 1]
  * crc:i32                      CRC-32 of every byte before it
  * name = length:u8 then that many UTF-16 chars:u16
  * </pre>
  *
  * <p>LINK-2: {@link #decode} refuses a message whose checksum fails, whose version is neither
- * {@link #VERSION}, {@link #VERSION_DODGES} nor {@link #VERSION_AIM}, or that is cut short or runs long, by throwing {@link LinkFormatException};
+ * {@link #VERSION}, {@link #VERSION_DODGES}, {@link #VERSION_AIM} nor {@link #VERSION_EXPERTS}, or that is cut short or runs long, by throwing {@link LinkFormatException};
  * the caller ignores it and counts it. Pure byte work: no I/O (RES-6).</p>
  */
 public final class LinkCodec {
@@ -35,6 +37,11 @@ public final class LinkCodec {
     public static final int VERSION_DODGES = 2;
     /** TMODE-19: {@link #VERSION_DODGES} with the member's gun heading and heat last; written only when it states its aim. */
     public static final int VERSION_AIM = 3;
+    /**
+     * TMODE-27: dodges that carry their aim experts' errors, the aim flagged after them;
+     * written only when a dodge carries them, so a team without the dodge sends what it did.
+     */
+    public static final int VERSION_EXPERTS = 4;
     /** The engine's limit on one serialized message. */
     public static final int MAX_BYTES = 32_768;
     /** More than any battle holds, so a list's count fits a byte. */
@@ -51,7 +58,10 @@ public final class LinkCodec {
         Out o = new Out();
         boolean aim = r.aim() != null;
         boolean dodges = aim || !r.dodges().isEmpty();
-        o.u8('H').u8('L').u8(aim ? VERSION_AIM : dodges ? VERSION_DODGES : VERSION).u16(r.round()).i64(r.tick());
+        boolean experts = false;
+        for (Report.Dodge d : r.dodges()) experts |= d.experts().length > 0;
+        int version = experts ? VERSION_EXPERTS : aim ? VERSION_AIM : dodges ? VERSION_DODGES : VERSION;
+        o.u8('H').u8('L').u8(version).u16(r.round()).i64(r.tick());
         o.f64(r.x()).f64(r.y()).f64(r.heading()).f64(r.velocity()).f64(r.energy());
         o.count(r.sightings().size());
         for (Report.Sighting s : r.sightings()) {
@@ -65,8 +75,14 @@ public final class LinkCodec {
             o.count(r.dodges().size());
             for (Report.Dodge d : r.dodges()) {
                 o.name(d.shooter).f64(d.distance).f64(d.lateral).f64(d.advancing).f64(d.wallAhead).f64(d.gf);
+                if (experts) {
+                    double[] e = d.experts();
+                    o.count(e.length);
+                    for (double x : e) o.f64(x);
+                }
             }
         }
+        if (experts) o.u8(aim ? 1 : 0);
         if (aim) o.f64(r.aim().gunHeading).f64(r.aim().gunHeat);
         byte[] body = o.bytes();
         byte[] all = new byte[body.length + 4];
@@ -90,7 +106,9 @@ public final class LinkCodec {
             | ((bytes[n + 2] & 0xff) << 8) | (bytes[n + 3] & 0xff);
         if (stored != crc(bytes, n)) throw new LinkFormatException("checksum");
         int version = bytes[2] & 0xff;
-        if (version != VERSION && version != VERSION_DODGES && version != VERSION_AIM) throw new LinkFormatException("version " + version);
+        if (version != VERSION && version != VERSION_DODGES && version != VERSION_AIM && version != VERSION_EXPERTS) {
+            throw new LinkFormatException("version " + version);
+        }
         In in = new In(bytes, 3, n);
         int round = in.u16();
         long tick = in.i64();
@@ -109,8 +127,22 @@ public final class LinkCodec {
             for (int i = in.u8(); i > 0; i--) {
                 dodges.add(new Report.Dodge(in.name(), in.f64(), in.f64(), in.f64(), in.f64(), in.f64()));
             }
+        } else if (version == VERSION_EXPERTS) {
+            for (int i = in.u8(); i > 0; i--) {
+                String name = in.name();
+                double distance = in.f64(), lateral = in.f64(), advancing = in.f64(), wallAhead = in.f64(), gf = in.f64();
+                double[] e = new double[in.u8()];
+                for (int j = 0; j < e.length; j++) e[j] = in.f64();
+                dodges.add(new Report.Dodge(name, distance, lateral, advancing, wallAhead, gf, e));
+            }
         }
-        Report.Aim aim = version == VERSION_AIM ? new Report.Aim(in.f64(), in.f64()) : null;
+        boolean hasAim = version == VERSION_AIM;
+        if (version == VERSION_EXPERTS) {
+            int flag = in.u8();
+            if (flag > 1) throw new LinkFormatException("aim flag " + flag);
+            hasAim = flag == 1;
+        }
+        Report.Aim aim = hasAim ? new Report.Aim(in.f64(), in.f64()) : null;
         if (in.pos != n) throw new LinkFormatException("trailing bytes");
         return new Report(round, tick, x, y, heading, velocity, energy, sightings, deaths, shots, dodges, aim);
     }

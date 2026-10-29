@@ -1,3 +1,5 @@
+# RAN 2026-10-29 (results PR #423, docs/sanaro.md section 10): G18 +0.99 ± 0.32 and G36 +0.66 passed
+# but do not fit 249 bytes; T60 +0.06 and L10 -1.72 did not pass. N5 is pc-sanaro-n04.
 # Sanaro's stage N4 (docs/sanaro.md section 8): the gun's fire gate, the radar's threshold and n02's
 # best arm on fresh seeds, on the live-shaped census. Sanaro 0.1 is live 2nd in NanoMelee at 65.21
 # (bench 65.17), 1.23 under Quantum 1.0.0. pc-sanaro-n02 (PR #408) found the power curve flat: every

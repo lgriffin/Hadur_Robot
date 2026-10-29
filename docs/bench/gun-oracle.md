@@ -197,12 +197,28 @@ rank +0.006), so the battle effect, if any, is below what a cloud bench can see.
 Known defect (Qodo, PR #421): a hit near GF ±1 undercounts an aim whose kernel runs past the escape
 angle (up to 1 bit); the fix is to divide by the kernel's share inside the reachable range.
 
+## K1 on the PC: pc-k1-aim (2026-10-29, PR #432)
+
+c, aa and km on the 432 learning guns on flat movers, 1 fresh seed, 1,296 battles in 56 minutes, 0 failed,
+A/A inside its band (+0.13 ± 0.53 pts). Reports `docs/bench/local/2026-10-29_k1-aim*.md`.
+
+- **Gate FAIL**: km minus pooled c and aa = **+0.07 ± 0.15 APS** (bar +0.05, low end above 0). Leaning
+  positive, not resolved. By band: the top 39 robots (bands 1-2) -2.4 and -0.7 pts, bands 3-6 +0.5, +0.6,
+  -0.1, +0.4 (all inside noise). No skip or fault cost (27.7 skips a battle vs 30.2 for c).
+- **The oracle on all 432** (pc-k0-oracle's 779,545 bullets re-joined): views + aims rolling blend calibrated
+  +0.377 vs shipped +0.331 and step 1's rolling +0.350; safe third 0.085 -> 0.082; rank 0.696 -> 0.703.
+  The hindsight best fixed mix per opponent, the ceiling of any re-weighting of these members, is +0.387.
+  The cloud sample (+0.386 vs +0.319) overstated the gain about 1.5x.
+
+Read: re-weighting the existing members is spent. The whole space between the shipped blend and its
+ceiling is +0.056 calibrated bits, and the best of it plays at about +0.07 APS, under one pass's noise.
+King's gap on these robots needs a member that knows something the views and simple aims don't.
+MOVE-29 stays off; it is not worth a confirm card on its own.
+
 ## Next
 
-- **Aim members on the PC**: card `pc-k1-aim` (BENCH-138; edge undercount fixed in PR #421): c, aa and km
-  on the 432 learning guns on flat movers, 1 fresh seed from 4400, 1,296 battles (about 3.75 h), gate km
-  at +0.05 APS with the 95% low end above 0, futility stop after 30%. Leigh starts it.
-- **PC re-join**: `oracle.npz` from pc-k0-oracle (PR #410) predates ORACLE-3 and ORACLE-4; pc-k1-aim's
-  `rejoin` step re-joins those battles into `oracle-k1.npz` and scores every K1 model on the 432.
+- **Aim members**: measured (above), off. K1 by re-weighting is done.
+- **New information, not new weights**: the next oracle candidates are members built on features no view
+  uses yet, scored on `oracle-k1.npz` (on the PC) before any battle.
 
 Nothing here ships: no release, no table line, and 1v1 behaviour is unchanged with the switches off.

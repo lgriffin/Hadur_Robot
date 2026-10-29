@@ -164,7 +164,7 @@ final class MeleeSeam implements Role {
     void mateDodges(List<Report.Dodge> dodges) {
         for (Report.Dodge d : dodges) {
             guard(() -> melee.mateSample(new TeamDanger.Sample(d.shooter,
-                new double[] {d.distance, d.lateral, d.advancing, d.wallAhead}, d.gf)));
+                new double[] {d.distance, d.lateral, d.advancing, d.wallAhead}, d.gf, d.experts())));
         }
     }
 
@@ -182,7 +182,8 @@ final class MeleeSeam implements Role {
         if (own.isEmpty()) return List.of();
         List<Report.Dodge> out = new ArrayList<>(own.size());
         for (TeamDanger.Sample s : own) {
-            out.add(new Report.Dodge(s.shooter, s.features[0], s.features[1], s.features[2], s.features[3], s.gf));
+            out.add(new Report.Dodge(s.shooter, s.features[0], s.features[1], s.features[2], s.features[3], s.gf,
+                s.experts));
         }
         return out;
     }
