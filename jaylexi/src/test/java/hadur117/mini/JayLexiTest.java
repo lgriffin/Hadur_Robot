@@ -93,7 +93,7 @@ class JayLexiTest {
         JayLexi.Wave w = wave(0, 0, 0, 14);
         Point2D.Double atOne = new Point2D.Double(Math.sin(Math.asin(8 / 14.0)) * 300, Math.cos(Math.asin(8 / 14.0)) * 300);
         assertEquals(JayLexi.BINS - 1, w.index(atOne));
-        w.log(atOne, 600);
+        w.log(w.index(atOne), 600);
         for (int i = 0; i < JayLexi.BINS - 1; i++) {
             assertTrue(w.bins[i] < w.bins[JayLexi.BINS - 1]);
         }
@@ -112,9 +112,31 @@ class JayLexiTest {
         for (int i = JayLexi.MID + 1; i < JayLexi.BINS; i++) {
             s.bins[i] = 1;
         }
-        double back = p.danger(s, -1), ahead = p.danger(s, 1);
+        double back = JayLexi.danger(s, -1), ahead = JayLexi.danger(s, 1);
         // Clockwise round the source (+1) from due south of it is positive GF for dir 1: the hot side.
         assertTrue(ahead > back, "ahead " + ahead + " back " + back);
+    }
+
+    @Test
+    @Tag("JAYLEXI-5")
+    @DisplayName("the second nearest wave adds a quarter of its danger; with one wave only the first counts")
+    void secondWaveAtAQuarter() {
+        new Probe();
+        JayLexi.me = new Point2D.Double(400, 300);
+        JayLexi.enemy = new Point2D.Double(400, 600);
+        JayLexi.Wave s = wave(400, 600, Math.PI, 14), t = wave(400, 600, Math.PI, 11);
+        s.travelled = 100;
+        t.travelled = 0;
+        for (int i = 0; i < JayLexi.BINS; i++) {
+            s.bins[i] = i;
+            t.bins[i] = JayLexi.BINS - i;
+        }
+        JayLexi.waves.add(s);
+        assertEquals(JayLexi.danger(s, 1), JayLexi.both(1));
+        JayLexi.waves.add(t);
+        for (double dir : new double[] {-1, 1}) {
+            assertEquals(JayLexi.danger(s, dir) + JayLexi.danger(t, dir) / 4, JayLexi.both(dir));
+        }
     }
 
     @Test
