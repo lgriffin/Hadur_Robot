@@ -1,0 +1,25 @@
+{
+ "plan": "pc-jaylexi-w1",
+ "updated": 1793299574.6037302,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "w1-J01": {
+   "status": "pending"
+  },
+  "w1-J02": {
+   "status": "pending"
+  },
+  "w1-KOM": {
+   "status": "pending"
+  },
+  "read": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
