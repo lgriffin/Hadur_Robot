@@ -139,6 +139,15 @@ class JoinTest(unittest.TestCase):
         self.assertIn("100.00%", text)
 
     # @Tag("ORACLE-2")
+    def test_classes_key_by_the_battle_slug(self):
+        # Opponent.slug turns a dash into _, so the census name must be keyed the same way.
+        path = os.path.join(self.dir, "classes.tsv")
+        with open(path, "w") as f:
+            f.write("opponent\trank\tmove_class\tgun_class\n")
+            f.write("aaa.r.ScalarR 0.005h.053-noshield\t5\tflat\tlearning\n")
+        self.assertEqual(go.read_classes(path), {"aaa.r.ScalarR_0.005h.053_noshield": "learning-flat"})
+
+    # @Tag("ORACLE-2")
     def test_surf_choice_rule(self):
         self.assertEqual(go.surf_choice([1.0, 1.0, 2.0]), 1, "the stop wins ties")
         self.assertEqual(go.surf_choice([2.0, 3.0, 1.0]), 2)

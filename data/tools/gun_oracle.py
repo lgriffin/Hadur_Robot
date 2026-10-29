@@ -53,7 +53,7 @@ HALF_WIDTH = 18.0  # HitForensics.HALF_WIDTH: a robot's half width, px
 VIEWS = ar.VIEWS
 EPS = 0.05         # the uniform mixed into every model
 AIMS = ("headon", "linear", "circular")
-SLUG_RUN = re.compile(r"[^A-Za-z0-9._-]+")
+SLUG_RUN = re.compile(r"[^A-Za-z0-9.]+")  # Opponent.slug, the battle directory's name: a dash becomes _
 
 
 # ----------------------------------------------------------------------------- parsing (stdlib)

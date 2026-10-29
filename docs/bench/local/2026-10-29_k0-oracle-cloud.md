@@ -34,5 +34,4 @@ Bullets outside the classic escape angle (|gf| > 1, scored where they were fired
 
 | Class | Bots | blend bits | blend safe | best simple aim bits |
 |---|---|---|---|---|
-| learning-flat | 47 | +0.286 | 0.082 | -0.830 |
-| unclassed | 1 | +0.367 | 0.075 | -0.829 |
+| learning-flat | 48 | +0.288 | 0.081 | -0.830 |

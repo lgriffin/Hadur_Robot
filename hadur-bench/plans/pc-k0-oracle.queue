@@ -10,7 +10,7 @@
 # with ORACLE-1 (every danger view's neighbours at each wave's first rating) and AES-1 (each option's terms) on, the
 # 432 flat-mover x learning-gun opponents of aes-flat-learning.txt, 2 fresh seeds. The cloud read on 48 of them
 # (docs/bench/local/2026-10-29_k0-oracle-cloud.md) passed the gate: the views' score rebuilt offline equals the
-# surf's on 99.99% of options and the surf's choice is reproduced on 99.96% of waves.
+# surf's on 99.99% of options and the surf's choice is reproduced on 99.99% of waves.
 #
 # record: aesrec,oracle build (suffix aror; behaviour unchanged, ORACLE-1 and AES-1 are measurement only) x 432 x 2
 #         seeds = 864 battles, 35 rounds. Disk: about 10-20 MB of hadur.log a battle (13 GB at most) plus truth logs.
