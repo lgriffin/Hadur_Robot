@@ -109,9 +109,10 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">JayLexi</span>
 <span class="extends-implements">extends robocode.AdvancedRobot</span></div>
 <div class="block">JayLexi, a MiniRumble 1v1 robot (docs/kitlab.md): a true wave surfer that weighs back and forward
- with precise prediction and flees straight away while no wave is in flight, over a GuessFactor
- gun segmented on velocity history, lateral velocity, walls and distance. One wave class serves
- the gun and the surfing.
+ with precise prediction on the two nearest waves and flees straight away while no wave is in
+ flight, over a GuessFactor gun segmented on velocity history, lateral velocity, walls and
+ distance. One wave class serves the gun and the surfing. The code is written tight to stay under
+ the 1,500 byte MiniRumble limit (docs/bench/kitlab-0.2-arms.md).
 
  Ideas taken, with thanks, from open RoboWiki bots: Komarious (Voidious, RWPCL) for the mini
  precise prediction, the danger weighting and the gun's segments; RaikoMicro (Jamougha) for the
@@ -149,54 +150,57 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>(package private) static final int</code></div>
 <div class="col-second even-row-color"><code><a href="#BINS" class="member-name-link">BINS</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color"><code><a href="#distance" class="member-name-link">distance</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
-<div class="col-second even-row-color"><code><a href="#enemy" class="member-name-link">enemy</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color"><code><a href="#enemyEnergy" class="member-name-link">enemyEnergy</a></code></div>
+<div class="col-first odd-row-color"><code>(package private) static <a href="JayLexi.html" title="class in hadur117.mini">JayLexi</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#bot" class="member-name-link">bot</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>(package private) static double</code></div>
-<div class="col-second even-row-color"><code><a href="#enemySpeed" class="member-name-link">enemySpeed</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Rectangle2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Rectangle2D.Double</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#FIELD" class="member-name-link">FIELD</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) static double[][][][][]</code></div>
-<div class="col-second even-row-color"><code><a href="#gun" class="member-name-link">gun</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color"><code><a href="#lastBearing" class="member-name-link">lastBearing</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) static double</code></div>
-<div class="col-second even-row-color"><code><a href="#lastLateral" class="member-name-link">lastLateral</a></code></div>
+<div class="col-second even-row-color"><code><a href="#distance" class="member-name-link">distance</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#me" class="member-name-link">me</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#enemy" class="member-name-link">enemy</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#MID" class="member-name-link">MID</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static <a href="JayLexi.Wave.html" title="class in hadur117.mini">JayLexi.Wave</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#next" class="member-name-link">next</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#ORBIT" class="member-name-link">ORBIT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#STICK" class="member-name-link">STICK</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) static double[][][]</code></div>
-<div class="col-second even-row-color"><code><a href="#surf" class="member-name-link">surf</a></code></div>
+<div class="col-first even-row-color"><code>(package private) static double</code></div>
+<div class="col-second even-row-color"><code><a href="#enemyEnergy" class="member-name-link">enemyEnergy</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color"><code><a href="#vChangeTime" class="member-name-link">vChangeTime</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#enemySpeed" class="member-name-link">enemySpeed</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/ArrayList.html" title="class or interface in java.util" class="external-link">ArrayList</a><wbr>&lt;<a href="JayLexi.Wave.html" title="class in hadur117.mini">JayLexi.Wave</a>&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#waves" class="member-name-link">waves</a></code></div>
+<div class="col-first even-row-color"><code>(package private) static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Rectangle2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Rectangle2D.Double</a></code></div>
+<div class="col-second even-row-color"><code><a href="#FIELD" class="member-name-link">FIELD</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static double[][][][][]</code></div>
+<div class="col-second odd-row-color"><code><a href="#gun" class="member-name-link">gun</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static double</code></div>
+<div class="col-second even-row-color"><code><a href="#lastBearing" class="member-name-link">lastBearing</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static double</code></div>
+<div class="col-second odd-row-color"><code><a href="#lastLateral" class="member-name-link">lastLateral</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second even-row-color"><code><a href="#me" class="member-name-link">me</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#MID" class="member-name-link">MID</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static <a href="JayLexi.Wave.html" title="class in hadur117.mini">JayLexi.Wave</a></code></div>
+<div class="col-second even-row-color"><code><a href="#next" class="member-name-link">next</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#ORBIT" class="member-name-link">ORBIT</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#STICK" class="member-name-link">STICK</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static double[][][]</code></div>
+<div class="col-second odd-row-color"><code><a href="#surf" class="member-name-link">surf</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static double</code></div>
+<div class="col-second even-row-color"><code><a href="#vChangeTime" class="member-name-link">vChangeTime</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/ArrayList.html" title="class or interface in java.util" class="external-link">ArrayList</a><wbr>&lt;<a href="JayLexi.Wave.html" title="class in hadur117.mini">JayLexi.Wave</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#waves" class="member-name-link">waves</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-robocode._RobotBase">Fields inherited from class&nbsp;robocode._RobotBase</h3>
@@ -227,52 +231,62 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#danger(hadur117.mini.JayLexi.Wave,double)" class="member-name-link">danger</a><wbr>(<a href="JayLexi.Wave.html" title="class in hadur117.mini">JayLexi.Wave</a>&nbsp;s,
- double&nbsp;dir)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Where the robot would be when wave s reaches it, orbiting dir, and how dangerous that is.</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#both(double)" class="member-name-link">both</a><wbr>(double&nbsp;dir)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">The danger of orbiting dir: the nearest wave in full, the next one at a quarter (JAYLEXI-5).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#log(java.awt.geom.Point2D.Double)" class="member-name-link">log</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Log a hit at p on the enemy wave that was passing it (JAYLEXI-6), and drop that wave.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onBulletHit(robocode.BulletHitEvent)" class="member-name-link">onBulletHit</a><wbr>(robocode.BulletHitEvent&nbsp;e)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onBulletHitBullet(robocode.BulletHitBulletEvent)" class="member-name-link">onBulletHitBullet</a><wbr>(robocode.BulletHitBulletEvent&nbsp;e)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onCustomEvent(robocode.CustomEvent)" class="member-name-link">onCustomEvent</a><wbr>(robocode.CustomEvent&nbsp;e)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onHitByBullet(robocode.HitByBulletEvent)" class="member-name-link">onHitByBullet</a><wbr>(robocode.HitByBulletEvent&nbsp;e)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onScannedRobot(robocode.ScannedRobotEvent)" class="member-name-link">onScannedRobot</a><wbr>(robocode.ScannedRobotEvent&nbsp;e)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#project(java.awt.geom.Point2D.Double,double,double)" class="member-name-link">project</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p,
- double&nbsp;angle,
- double&nbsp;length)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#run()" class="member-name-link">run</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#smooth(java.awt.geom.Point2D.Double,double,double)" class="member-name-link">smooth</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p,
- double&nbsp;angle,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#danger(hadur117.mini.JayLexi.Wave,double)" class="member-name-link">danger</a><wbr>(<a href="JayLexi.Wave.html" title="class in hadur117.mini">JayLexi.Wave</a>&nbsp;s,
  double&nbsp;dir)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Where the robot would be when wave s reaches it, orbiting dir, and how dangerous that is.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#log(java.awt.geom.Point2D.Double)" class="member-name-link">log</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Log a hit at p on the enemy wave that was passing it (JAYLEXI-6), and drop that wave.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onBulletHit(robocode.BulletHitEvent)" class="member-name-link">onBulletHit</a><wbr>(robocode.BulletHitEvent&nbsp;e)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onBulletHitBullet(robocode.BulletHitBulletEvent)" class="member-name-link">onBulletHitBullet</a><wbr>(robocode.BulletHitBulletEvent&nbsp;e)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onCustomEvent(robocode.CustomEvent)" class="member-name-link">onCustomEvent</a><wbr>(robocode.CustomEvent&nbsp;e)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onHitByBullet(robocode.HitByBulletEvent)" class="member-name-link">onHitByBullet</a><wbr>(robocode.HitByBulletEvent&nbsp;e)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onScannedRobot(robocode.ScannedRobotEvent)" class="member-name-link">onScannedRobot</a><wbr>(robocode.ScannedRobotEvent&nbsp;e)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#project(java.awt.geom.Point2D.Double,double,double)" class="member-name-link">project</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p,
+ double&nbsp;angle,
+ double&nbsp;length)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#run()" class="member-name-link">run</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#smooth(java.awt.geom.Point2D.Double,double,double)" class="member-name-link">smooth</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p,
+ double&nbsp;angle,
+ double&nbsp;dir)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Turn the angle away from the wall until a STICK ahead stays inside the field (JAYLEXI-7).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#wall(hadur117.mini.JayLexi.Wave,double)" class="member-name-link">wall</a><wbr>(<a href="JayLexi.Wave.html" title="class in hadur117.mini">JayLexi.Wave</a>&nbsp;w,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#wall(hadur117.mini.JayLexi.Wave,double)" class="member-name-link">wall</a><wbr>(<a href="JayLexi.Wave.html" title="class in hadur117.mini">JayLexi.Wave</a>&nbsp;w,
  double&nbsp;fraction)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">1 if the point a fraction of the escape angle along the enemy's way is still in the field.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="JayLexi.Wave.html" title="class in hadur117.mini">JayLexi.Wave</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#wave(int)" class="member-name-link">wave</a><wbr>(int&nbsp;k)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Is the point a fraction of the escape angle along the enemy's way still in the field?</div>
+<div class="block">The k-th nearest enemy wave; throws when there are fewer.</div>
 </div>
 </div>
 </div>
@@ -432,6 +446,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="bot">
+<h3>bot</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="JayLexi.html" title="class in hadur117.mini">JayLexi</a></span>&nbsp;<span class="element-name">bot</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="surf">
 <h3>surf</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double[][][]</span>&nbsp;<span class="element-name">surf</span></div>
@@ -492,9 +512,23 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="danger(hadur117.mini.JayLexi.Wave,double)">
 <h3>danger</h3>
-<div class="member-signature"><span class="return-type">double</span>&nbsp;<span class="element-name">danger</span><wbr><span class="parameters">(<a href="JayLexi.Wave.html" title="class in hadur117.mini">JayLexi.Wave</a>&nbsp;s,
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">danger</span><wbr><span class="parameters">(<a href="JayLexi.Wave.html" title="class in hadur117.mini">JayLexi.Wave</a>&nbsp;s,
  double&nbsp;dir)</span></div>
 <div class="block">Where the robot would be when wave s reaches it, orbiting dir, and how dangerous that is.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="wave(int)">
+<h3>wave</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="JayLexi.Wave.html" title="class in hadur117.mini">JayLexi.Wave</a></span>&nbsp;<span class="element-name">wave</span><wbr><span class="parameters">(int&nbsp;k)</span></div>
+<div class="block">The k-th nearest enemy wave; throws when there are fewer.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="both(double)">
+<h3>both</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">both</span><wbr><span class="parameters">(double&nbsp;dir)</span></div>
+<div class="block">The danger of orbiting dir: the nearest wave in full, the next one at a quarter (JAYLEXI-5).</div>
 </section>
 </li>
 <li>
@@ -573,9 +607,9 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="wall(hadur117.mini.JayLexi.Wave,double)">
 <h3>wall</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">wall</span><wbr><span class="parameters">(<a href="JayLexi.Wave.html" title="class in hadur117.mini">JayLexi.Wave</a>&nbsp;w,
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">wall</span><wbr><span class="parameters">(<a href="JayLexi.Wave.html" title="class in hadur117.mini">JayLexi.Wave</a>&nbsp;w,
  double&nbsp;fraction)</span></div>
-<div class="block">Is the point a fraction of the escape angle along the enemy's way still in the field?</div>
+<div class="block">1 if the point a fraction of the escape angle along the enemy's way is still in the field.</div>
 </section>
 </li>
 </ul>

@@ -1030,6 +1030,8 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../requirements.html#BENCH-39">BENCH-39</a>: a percentile bootstrap interval (95%) for <code>mean(a) - mean(b)</code>, the two
  samples resampled independently, <code>resamples</code> times, from a fixed <code>seed</code>.</div>
 </dd>
+<dt><a href="hadur117/mini/JayLexi.html#bot" class="member-name-link">bot</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/JayLexi.html" title="class in hadur117.mini">JayLexi</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/model/RobotState.html#BOT_HALF_WIDTH" class="member-name-link">BOT_HALF_WIDTH</a> - Static variable in class hadur117.core.model.<a href="hadur117/core/model/RobotState.html" title="class in hadur117.core.model">RobotState</a></dt>
 <dd>
 <div class="block">Half the side of a robot's square hit box, pixels: Robocode robots are 36 by 36.</div>
@@ -1087,6 +1089,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">How long the core's previous tick took, measured by the adapter, and the allowance it
  assumes per turn (<a class="req" href="../requirements.html#TIME-1">TIME-1</a>).</div>
+</dd>
+<dt><a href="hadur117/mini/JayLexi.html#both(double)" class="member-name-link">both(double)</a> - Static method in class hadur117.mini.<a href="hadur117/mini/JayLexi.html" title="class in hadur117.mini">JayLexi</a></dt>
+<dd>
+<div class="block">The danger of orbiting dir: the nearest wave in full, the next one at a quarter (JAYLEXI-5).</div>
 </dd>
 <dt><a href="hadur117/core/model/BotInput.html" class="type-name-link" title="class in hadur117.core.model">BotInput</a> - Class in <a href="hadur117/core/model/package-summary.html">hadur117.core.model</a></dt>
 <dd>
@@ -2195,7 +2201,7 @@ loadScripts(document, 'script');</script>
  <code>viewScore</code> as member 0 and each aim's <code>aimScore</code>; an aim that is NaN (no
  angle on this wave) is left out.</div>
 </dd>
-<dt><a href="hadur117/mini/JayLexi.html#danger(hadur117.mini.JayLexi.Wave,double)" class="member-name-link">danger(JayLexi.Wave, double)</a> - Method in class hadur117.mini.<a href="hadur117/mini/JayLexi.html" title="class in hadur117.mini">JayLexi</a></dt>
+<dt><a href="hadur117/mini/JayLexi.html#danger(hadur117.mini.JayLexi.Wave,double)" class="member-name-link">danger(JayLexi.Wave, double)</a> - Static method in class hadur117.mini.<a href="hadur117/mini/JayLexi.html" title="class in hadur117.mini">JayLexi</a></dt>
 <dd>
 <div class="block">Where the robot would be when wave s reaches it, orbiting dir, and how dangerous that is.</div>
 </dd>
@@ -5916,8 +5922,9 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/mini/JayLexi.html" class="type-name-link" title="class in hadur117.mini">JayLexi</a> - Class in <a href="hadur117/mini/package-summary.html">hadur117.mini</a></dt>
 <dd>
 <div class="block">JayLexi, a MiniRumble 1v1 robot (docs/kitlab.md): a true wave surfer that weighs back and forward
- with precise prediction and flees straight away while no wave is in flight, over a GuessFactor
- gun segmented on velocity history, lateral velocity, walls and distance.</div>
+ with precise prediction on the two nearest waves and flees straight away while no wave is in
+ flight, over a GuessFactor gun segmented on velocity history, lateral velocity, walls and
+ distance.</div>
 </dd>
 <dt><a href="hadur117/mini/JayLexi.html#%3Cinit%3E()" class="member-name-link">JayLexi()</a> - Constructor for class hadur117.mini.<a href="hadur117/mini/JayLexi.html" title="class in hadur117.mini">JayLexi</a></dt>
 <dd>&nbsp;</dd>
@@ -6702,12 +6709,12 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/nano/Sanaro.html#LOCK" class="member-name-link">LOCK</a> - Static variable in class hadur117.nano.<a href="hadur117/nano/Sanaro.html" title="class in hadur117.nano">Sanaro</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/mini/JayLexi.Wave.html#log(int,double)" class="member-name-link">log(int, double)</a> - Method in class hadur117.mini.<a href="hadur117/mini/JayLexi.Wave.html" title="class in hadur117.mini">JayLexi.Wave</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/mini/JayLexi.html#log(java.awt.geom.Point2D.Double)" class="member-name-link">log(Point2D.Double)</a> - Method in class hadur117.mini.<a href="hadur117/mini/JayLexi.html" title="class in hadur117.mini">JayLexi</a></dt>
 <dd>
 <div class="block">Log a hit at p on the enemy wave that was passing it (JAYLEXI-6), and drop that wave.</div>
 </dd>
-<dt><a href="hadur117/mini/JayLexi.Wave.html#log(java.awt.geom.Point2D.Double,double)" class="member-name-link">log(Point2D.Double, double)</a> - Method in class hadur117.mini.<a href="hadur117/mini/JayLexi.Wave.html" title="class in hadur117.mini">JayLexi.Wave</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/move/MoveController.html#logBulletHit(hadur117.core.model.Wave,java.awt.geom.Point2D.Double,int,long)" class="member-name-link">logBulletHit(Wave, Point2D.Double, int, long)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/MoveController.html" title="class in hadur117.core.move">MoveController</a></dt>
 <dd>
 <div class="block">An enemy bullet hit us: teaches every hit view the guess factor it was fired at, and
@@ -15455,7 +15462,7 @@ the order they are declared.</div>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/mini/JayLexi.html#wall(hadur117.mini.JayLexi.Wave,double)" class="member-name-link">wall(JayLexi.Wave, double)</a> - Static method in class hadur117.mini.<a href="hadur117/mini/JayLexi.html" title="class in hadur117.mini">JayLexi</a></dt>
 <dd>
-<div class="block">Is the point a fraction of the escape angle along the enemy's way still in the field?</div>
+<div class="block">1 if the point a fraction of the escape angle along the enemy's way is still in the field.</div>
 </dd>
 <dt><a href="hadur117/core/move/GunMimics.Feature.html#WALL" class="member-name-link">WALL</a> - Enum constant in enum class hadur117.core.move.<a href="hadur117/core/move/GunMimics.Feature.html" title="enum class in hadur117.core.move">GunMimics.Feature</a></dt>
 <dd>&nbsp;</dd>
@@ -15562,6 +15569,10 @@ the order they are declared.</div>
 <dd>
 <div class="block">A wave fired at Deise from (ox, oy) at <code>time</code> with <code>power</code>, its bullet on Deise's
  head-on line or on the line that leads Deise's present motion (DEISE-5).</div>
+</dd>
+<dt><a href="hadur117/mini/JayLexi.html#wave(int)" class="member-name-link">wave(int)</a> - Static method in class hadur117.mini.<a href="hadur117/mini/JayLexi.html" title="class in hadur117.mini">JayLexi</a></dt>
+<dd>
+<div class="block">The k-th nearest enemy wave; throws when there are fewer.</div>
 </dd>
 <dt><a href="hadur117/core/model/Wave.html" class="type-name-link" title="class in hadur117.core.model">Wave</a> - Class in <a href="hadur117/core/model/package-summary.html">hadur117.core.model</a></dt>
 <dd>
