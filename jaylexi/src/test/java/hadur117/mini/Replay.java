@@ -24,6 +24,9 @@ import robocode.util.Utils;
  */
 final class Replay {
 
+    // Shots fired and waves finished over the last run's rounds.
+    static int shots, passed;
+
     private Replay() {
     }
 
@@ -70,6 +73,7 @@ final class Replay {
         zeroStatics(robot);
         Random r = new Random(seed);
         StringBuilder out = new StringBuilder();
+        shots = passed = 0;
         for (int round = 0; round < rounds; round++) {
             ReplayBody b = new ReplayBody(out, r);
             AdvancedRobot s = make.apply(b);
@@ -89,6 +93,7 @@ final class Replay {
                 for (Condition c : new ArrayList<>(b.conditions)) {
                     if (c.test()) {
                         out.append("ce ");
+                        passed++;
                         s.onCustomEvent(new CustomEvent(c));
                     }
                 }

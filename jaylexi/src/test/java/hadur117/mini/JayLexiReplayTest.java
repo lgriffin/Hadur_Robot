@@ -35,16 +35,21 @@ class JayLexiReplayTest {
     @DisplayName("the shipped code gives the readable reference's orders, bit for bit, on seeded scripts")
     void sameOrders() throws Exception {
         for (long seed = 1; seed <= 3; seed++) {
-            String a = shipped(seed), b = readable(seed);
-            assertTrue(a.contains("f") && a.contains("ce"), "the script fires and passes waves");
+            String b = readable(seed);
+            int shots = Replay.shots, passed = Replay.passed;
+            String a = shipped(seed);
+            assertTrue(shots > 0 && passed > 0, "the script fires and passes waves");
+            assertEquals(shots, Replay.shots);
+            assertEquals(passed, Replay.passed);
             assertEquals(-1, firstDifference(a, b), "seed " + seed + ": first tick whose orders differ");
         }
     }
 
     @Test
     @Tag("JAYLEXI-11")
-    @DisplayName("the replay tells builds apart: another seed gives other orders")
+    @DisplayName("the replay tells builds apart: the second wave at a third instead of a quarter gives other orders")
     void replayDiscriminates() throws Exception {
-        assertNotEquals(-1, firstDifference(shipped(1), shipped(2)));
+        String third = Replay.run(hadur117.mini.ref.JayLexi.class, hadur117.mini.ref.ReplayBot.Third::new, 1, 6, 1500);
+        assertNotEquals(-1, firstDifference(readable(1), third));
     }
 }

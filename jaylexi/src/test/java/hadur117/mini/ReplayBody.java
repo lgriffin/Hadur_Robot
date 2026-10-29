@@ -30,6 +30,7 @@ public class ReplayBody {
 
     public Bullet fire(double power) {
         put("f", power);
+        Replay.shots++;
         return random.nextInt(3) == 0 ? null : new Bullet(0, x, y, power, "me", null, true, 1);
     }
 

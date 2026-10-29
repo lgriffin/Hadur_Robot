@@ -27,4 +27,21 @@ public class ReplayBot extends JayLexi {
     @Override public Bullet setFireBullet(double p) { return b.fire(p); }
     @Override public void addCustomEvent(Condition c) { b.add(c); }
     @Override public void removeCustomEvent(Condition c) { b.remove(c); }
+
+    /** The readable JayLexi with the second wave at a third, to show the replay sees a play change. */
+    public static class Third extends ReplayBot {
+        public Third(ReplayBody b) {
+            super(b);
+        }
+
+        @Override
+        double both(double dir) {
+            double r = danger(waves.get(0), dir);
+            try {
+                r += danger(waves.get(1), dir) / 3;
+            } catch (Exception ex) {
+            }
+            return r;
+        }
+    }
 }
