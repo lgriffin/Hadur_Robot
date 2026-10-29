@@ -262,6 +262,9 @@ public class MeleeController {
         stats.recordDamageReceived(damage, heading - headOn, botWidth);
         if (onTeam && (TeamDanger.LEARNED || modes.contains(TeamModes.Mode.LEARN) || modes.contains(TeamModes.Mode.POOL))) {
             learn(name, power, heading, me, now);
+        } else if (!onTeam && mover.surfing()) {
+            // MMOVE-15: the melee surfer learns each shooter's aim from the hits on Hadur.
+            learn(name, power, heading, me, now, false);
         }
         // The same test OpponentStats uses: within Hadur's width of head-on, else led.
         profiles.hitOnHadur(name, Math.abs(Angles.normalRelativeAngle(heading - headOn)) <= botWidth
@@ -275,6 +278,11 @@ public class MeleeController {
      * explains teaches nothing.
      */
     void learn(String name, double power, double heading, Point2D.Double me, long now) {
+        learn(name, power, heading, me, now, true);
+    }
+
+    /** As above; off a team ({@code report} false) the sample is logged, not kept for a report. */
+    void learn(String name, double power, double heading, Point2D.Double me, long now, boolean report) {
         EnemyShot best = null;
         double bestErr = Double.POSITIVE_INFINITY;
         for (EnemyShot shot : tracker.shots(now)) {
@@ -289,7 +297,9 @@ public class MeleeController {
         if (best == null) return;
         RobotState at = myPath.getState(best.fireTime);
         if (at == null) return;
-        danger.own(danger.sample(best, at, heading));
+        TeamDanger.Sample sample = danger.sample(best, at, heading);
+        if (report) danger.own(sample);
+        else danger.add(sample);
     }
 
     /** MMOVE-10: how far, px, a hit may be from where its shot's bullet should be: a robot's reach and a tick's flight. */
@@ -386,7 +396,7 @@ public class MeleeController {
                 modes.contains(TeamModes.Mode.SOFT), TeamModes.onlyAim(modes));
         } else {
             modes = TeamModes.NONE;
-            mover.updateMeleeBullets(tracker.shots(s.time), myPath, s.me, s.time, alive);
+            mover.updateMeleeBullets(tracker.shots(s.time), myPath, s.me, s.time, alive, danger);
         }
         c.destination = alive.isEmpty() ? null
             : mover.chooseDestination(s.me, s.energy, s.others, alive, s.time, plan, s.teammates, modes);

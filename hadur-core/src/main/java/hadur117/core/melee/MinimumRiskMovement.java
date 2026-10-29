@@ -223,6 +223,15 @@ public class MinimumRiskMovement {
      * with closer prey is less likely to come for Hadur. Off.
      */
     public static final boolean MELEE_CLOSER = false;
+    /**
+     * MMOVE-15 (arm msurf), the melee surfer: off a team, the top three's way. Each seen shot is
+     * a wave weighed by who else is nearer its shooter (MMOVE-11's weight); once Hadur's log of
+     * that shooter's hits holds {@link TeamDanger#MIN_SAMPLES}, its bullets are the learned aims
+     * (MMOVE-10's log, fed off a team by Hadur's own hits) in place of head-on and linear; and the
+     * destination is chosen by the wave check (TMODE-11): the {@link #WAVE_RERANK} least risky
+     * candidates driven to, scored by risk and the waves' damage on the way. Off.
+     */
+    public static final boolean MELEE_SURF = false;
 
     static final double PERIPHERY_K = 0.2;
     static final double CUTOFF_K = 0.4;
@@ -369,6 +378,8 @@ public class MinimumRiskMovement {
     private long round = -1;
     /** MMOVE-11..14: the crowd switches this movement plays; the shipped ones unless a test sets them. */
     private boolean aimed = MELEE_AIMED, hops = MELEE_HOPS, heat = MELEE_HEAT, closer = MELEE_CLOSER;
+    /** MMOVE-15: whether this movement surfs off a team. */
+    private boolean surf = MELEE_SURF;
     /** MMOVE-13: per opponent, the tick its gun could next fire, and its last seen shot's power. */
     private final java.util.Map<String, Long> nextFire = new java.util.HashMap<>();
     private final java.util.Map<String, Double> lastPower = new java.util.HashMap<>();
@@ -417,6 +428,16 @@ public class MinimumRiskMovement {
         round++;
     }
 
+    /** MMOVE-15: sets the melee surfer, for tests. */
+    void surf(boolean on) {
+        this.surf = on;
+    }
+
+    /** MMOVE-15: whether this movement surfs off a team. */
+    public boolean surfing() {
+        return surf;
+    }
+
     /** MMOVE-11..14: sets the crowd switches, for tests and the bench's arms. */
     void crowd(boolean aimed, boolean hops, boolean heat, boolean closer) {
         this.aimed = aimed;
@@ -433,7 +454,17 @@ public class MinimumRiskMovement {
      */
     public void updateMeleeBullets(List<EnemyShot> shots, RobotStateLog myPath, Point2D.Double me,
                                    long now, List<EnemyInfo> enemies) {
-        if (!aimed && !heat) {
+        updateMeleeBullets(shots, myPath, me, now, enemies, null);
+    }
+
+    /**
+     * As above, where with MMOVE-15 each shot also weighs by MMOVE-11's crowd weight and a
+     * shooter whose log in {@code danger} is deep enough makes its learned aims.
+     */
+    public void updateMeleeBullets(List<EnemyShot> shots, RobotStateLog myPath, Point2D.Double me,
+                                   long now, List<EnemyInfo> enemies, TeamDanger danger) {
+        boolean learn = surf && danger != null;
+        if (!aimed && !heat && !learn) {
             updateBullets(shots, myPath, me, now);
             return;
         }
@@ -447,8 +478,15 @@ public class MinimumRiskMovement {
                 if (cool > nextFire.getOrDefault(s.shooter, Long.MIN_VALUE)) nextFire.put(s.shooter, cool);
                 lastPower.put(s.shooter, s.power);
             }
-            double w = aimed ? crowdWeight(s, target, enemies) : 1.0;
+            double w = aimed || learn ? crowdWeight(s, target, enemies) : 1.0;
             if (w < SOFT_FLOOR) continue;
+            List<TeamDanger.Aim> aims = learn && at != null ? danger.aims(s, at) : null;
+            if (aims != null) {
+                for (TeamDanger.Aim a : aims) {
+                    add(new VirtualBullet(s, VirtualBullet.Aim.LEARNED, a.heading, w * a.weight), LEARNED_MAX_BULLETS);
+                }
+                continue;
+            }
             addGuesses(s, at, target, w);
         }
         if (heat) assumeShots(me, now, enemies, myPath);
@@ -703,6 +741,11 @@ public class MinimumRiskMovement {
         v.gunLines = !mates.isEmpty() && modes.contains(TeamModes.Mode.GUNLINE);
         List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
         lastCandidates = candidates.size();
+        if (surf && !onTeam(mates)) {
+            // MMOVE-15: the melee surfer picks by the wave check.
+            destination = waveBest(candidates, v);
+            return destination;
+        }
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.WAVES)) {
             destination = waveBest(candidates, v);
             return destination;

@@ -172,4 +172,52 @@ class MeleeCrowdMovementTest {
         MinimumRiskMovement.View two = move.view(me, 100, 100, 2, alive, normal);
         assertEquals(plain.enemyRisk(p, two, ia), move.enemyRisk(p, two, ia), 1e-12, "two left: unchanged");
     }
+
+    @Test
+    @Tag("MMOVE-15")
+    @DisplayName("MMOVE-15: the melee surfer ships off, weighs shots by the crowd and plays a shooter's learned aims")
+    void surf() {
+        assertFalse(MinimumRiskMovement.MELEE_SURF);
+        Point2D.Double me = pt(500, 500);
+        scan(tracker, "a", 500, 900, 100, 1);
+        scan(tracker, "b", 500, 800, 100, 1);
+        RobotStateLog log = still(me, 8, 9, 10, 20, 21, 22);
+        TeamDanger danger = new TeamDanger(field(1000, 1000));
+        move.surf(true);
+        // Before the log is deep enough: head-on and linear, at the crowd weight (b is nearer a).
+        EnemyShot first = new EnemyShot("a", pt(500, 900), 9, 2.0);
+        move.updateMeleeBullets(List.of(first), log, me, 10, tracker.alive(), danger);
+        assertEquals(2, move.bullets().size());
+        for (VirtualBullet b : move.bullets()) assertEquals(0.25, b.weight, 1e-12);
+        // Five hits logged at guess factor 0.5: the next shot's bullets are learned aims.
+        for (int i = 0; i < TeamDanger.MIN_SAMPLES; i++) {
+            danger.add(danger.sample(first, log.getState(9), Math.PI + 0.2));
+        }
+        EnemyShot next = new EnemyShot("a", pt(500, 900), 21, 2.0);
+        move.updateMeleeBullets(List.of(next), log, me, 22, tracker.alive(), danger);
+        double learned = move.bullets().stream().filter(b -> b.aim == VirtualBullet.Aim.LEARNED)
+            .mapToDouble(b -> b.weight).sum();
+        assertEquals(0.25 * TeamDanger.SHOT_WEIGHT, learned, 1e-9);
+        // Off, or with no log given, the same shots are MMOVE-3's.
+        MinimumRiskMovement off = new MinimumRiskMovement(field(1000, 1000));
+        off.newRound();
+        off.updateMeleeBullets(List.of(first, next), log, me, 22, tracker.alive(), danger);
+        assertEquals(4, off.bullets().size());
+        for (VirtualBullet b : off.bullets()) assertEquals(1.0, b.weight, 1e-12);
+    }
+
+    @Test
+    @Tag("MMOVE-15")
+    @DisplayName("MMOVE-15: off a team the surfer chooses by the wave check; on a team it changes nothing")
+    void surfChoosesByWaves() {
+        scan(tracker, "a", 300, 300, 100, 1);
+        scan(tracker, "b", 700, 700, 100, 1);
+        scan(tracker, "c", 900, 100, 100, 1);
+        MinimumRiskMovement plain = new MinimumRiskMovement(field(1000, 1000));
+        plain.newRound();
+        move.surf(true);
+        Point2D.Double surfed = move.chooseDestination(pt(500, 500), 100, 3, tracker.alive(), 5, normal);
+        // With no wave in the air the wave check's damage is level, so its pick is the least risk.
+        assertEquals(plain.chooseDestination(pt(500, 500), 100, 3, tracker.alive(), 5, normal), surfed);
+    }
 }
