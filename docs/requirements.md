@@ -2083,7 +2083,7 @@ live-shaped one (docs/sanaro.md section 6).
   probe subclass. SANARO-10 to SANARO-13 are bench reads (`tools/sanaro_read.py`; fields by
   `tools/sanaro_fields.py`, both by `test_sanaro.py`), not build gates.
 
-## JayLexi and Eveimear, the MiniRumble and MicroRumble 1v1 entries (JAYLEXI-1 to JAYLEXI-10, EVEIMEAR-1 to EVEIMEAR-12)
+## JayLexi and Eveimear, the MiniRumble and MicroRumble 1v1 entries (JAYLEXI-1 to JAYLEXI-11, EVEIMEAR-1 to EVEIMEAR-12)
 
 `hadur117.mini.JayLexi` (module `jaylexi`, MiniRumble: 1v1 under 1500 bytes) and
 `hadur117.micro.Eveimear` (module `eveimear`, MicroRumble: 1v1 under 750 bytes), built from Leigh's
@@ -2098,12 +2098,13 @@ E1 to E6 map onto these as the last column says.
 | JAYLEXI-2 | Event | When the enemy is scanned, the bot shall turn its radar twice the turn to the enemy, so it scans it every tick. | K1 |
 | JAYLEXI-3 | Event | When the enemy's energy drops by more than 0.09 and at most 3, after our hits on it (less their damage) and its hits on us (plus three times their power) are booked, the bot shall launch an enemy wave from where the enemy was a tick earlier at that bullet's speed. | K3 |
 | JAYLEXI-4 | Event | When the enemy is scanned, the bot shall launch a gun wave segmented on velocity history, lateral speed, walls ahead and distance, aim at its most visited of 47 bins, and log the enemy's bin, weighted 5 for a fired wave, when the wave passes it. | K2, J6 |
-| JAYLEXI-5 | State | While an enemy wave is in flight, the bot shall predict back and forward to the wave's arrival and orbit the less dangerous way, danger being the logged bin over the distance to the enemy to the fourth; while none is, it shall drive straight away from the enemy. (The plan's stop option measured 2 APS worse, docs/kitlab.md.) | J1 |
+| JAYLEXI-5 | State | While an enemy wave is in flight, the bot shall predict back and forward to the wave's arrival and orbit the less dangerous way, danger being the logged bin over the distance to the enemy to the fourth, plus a quarter of the same for the second nearest wave when there is one (0.2); while none is, it shall drive straight away from the enemy. (The plan's stop option measured 2 APS worse, docs/kitlab.md.) | J1 |
 | JAYLEXI-6 | Event | When hit by a bullet, or when bullets collide, the bot shall log the guess factor of the hit, smoothed over the neighbouring bins, on the enemy wave that was passing it, and stop surfing that wave. | J2 |
 | JAYLEXI-7 | Ubiquitous | The bot shall turn its drive until a 140 px stick from it stays inside the field. | J3 |
 | JAYLEXI-8 | Event | When the gun is within 3 degrees of its aim, the bot shall fire 3 inside 150 px and 2 beyond, at most a fifteenth of its own energy and at most what finishes the enemy. | J4, K4 |
 | JAYLEXI-9 | Ubiquitous | The shipped jar shall carry the robot's properties at the release version and its source. | plan S5 |
 | JAYLEXI-10 | Ubiquitous | On the MiniRumble bench sample, paired against Komarious 1.88, the build shall predict at least 87.7 APS before it is submitted. | plan S4 |
+| JAYLEXI-11 | Ubiquitous | The shipped code shall give the same orders, bit for bit, as the readable reference kept with the tests, on seeded replays of scans, hits and shots, so bytes are saved without changing play. | 0.2 |
 | EVEIMEAR-1 | Unwanted | If Robocode's codesize tool reports more than 746 bytes for the shipped jar (MicroRumble's 749 less 3 spare), then the build shall fail. | K6 |
 | EVEIMEAR-2 | Event | While in stop-and-go, when the enemy fires, the bot shall step (3 + (int) (drop x 1.999999)) << 3 px along its orbit. | E1 |
 | EVEIMEAR-3 | Event | When the energy the enemy has won back by hitting it (three times each bullet's power, Épéeist's measure) exceeds 40 + 23 x round, the bot shall move every tick and reverse at random for the rest of the battle. | E2 |
@@ -2118,7 +2119,7 @@ E1 to E6 map onto these as the last column says.
 | EVEIMEAR-12 | Ubiquitous | On the MicroRumble bench sample, paired against Épéeist 3.7, the build shall predict at least 85.3 APS before it is submitted. | plan S4 |
 
 - **Coverage.** JAYLEXI-1, JAYLEXI-9, EVEIMEAR-1 and EVEIMEAR-9 by `JayLexiJarIT` and
-  `EveimearJarIT` (failsafe) on the shipped jars; JAYLEXI-2 to JAYLEXI-8 by `JayLexiTest` and
+  `EveimearJarIT` (failsafe) on the shipped jars; JAYLEXI-2 to JAYLEXI-8 by `JayLexiTest`, JAYLEXI-11 by `JayLexiReplayTest`, and
   EVEIMEAR-2 to EVEIMEAR-8, EVEIMEAR-10 and EVEIMEAR-11 by `EveimearTest`, scan by scan on probe
   subclasses. JAYLEXI-10 and EVEIMEAR-12 are bench reads (`tools/kitlab_read.py`; samples by
   `tools/kitlab_fields.py`, both by `test_kitlab.py`), not build gates. Like Sanaro's rows, these carry the
