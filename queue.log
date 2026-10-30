@@ -8,3 +8,17 @@
 20:37:02 lgbb exit=0 in 913 s
 20:37:02 start lgld
 20:37:02 watching lgld: 3 stop rule(s)
+20:52:11 lgld exit=0 in 908 s
+20:52:11 start lgpick
+20:52:12 lgpick exit=0 in 0 s
+20:52:12 start lggate
+20:52:12 watching lggate: 3 stop rule(s)
+20:52:12 lggate exit=0 in 0 s
+20:52:12 start lggbb
+20:52:12 watching lggbb: 3 stop rule(s)
+20:52:12 lggbb exit=0 in 0 s
+20:52:12 start lgsum
+20:52:12 lgsum exit=0 in 0 s
+20:52:12 start lgpr
+20:52:18 lgpr exit=0 in 5 s
+20:52:18 ALLDONE

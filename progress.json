@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-lead",
- "updated": 1793393417.624335,
+ "updated": 1793393538.3370256,
  "steps": {
   "lgprep": {
    "status": "done",
@@ -15,23 +15,40 @@
    "end": "2026-10-30T20:37:02"
   },
   "lgld": {
-   "status": "running",
-   "start": "2026-10-30T20:37:02"
+   "status": "done",
+   "exit": 0,
+   "seconds": 908,
+   "end": "2026-10-30T20:52:11"
   },
   "lgpick": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-10-30T20:52:12"
   },
   "lggate": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-10-30T20:52:12"
   },
   "lggbb": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-10-30T20:52:12"
   },
   "lgsum": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-10-30T20:52:12"
   },
   "lgpr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 5,
+   "end": "2026-10-30T20:52:18"
   }
  },
  "watched": [
@@ -81,8 +98,8 @@
   {
    "step": "lgld",
    "started": 1793392622.9907894,
-   "updated": 1793393417.617302,
-   "elapsed": 794.6265125274658,
+   "updated": 1793393531.5928547,
+   "elapsed": 908.6020653247833,
    "expected": 288,
    "panel": null,
    "field": null,
@@ -90,20 +107,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 249,
+   "battles": 288,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 1128.077135444202,
-   "eta": 124.45957425128982,
-   "fraction": 0.8645833333333334,
-   "last_battle_age": 0.2784144878387451,
+   "rate": 1141.093598141219,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 1.6463754177093506,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 249"
+     "detail": "0 failed of 288"
     },
     {
      "rule": "stall 30m",
@@ -115,11 +132,97 @@
      "rule": "skips 40 over 100",
      "action": "halt",
      "state": "ok",
-     "detail": "11.5 a battle over the last 100 (first 100: 12.1)"
+     "detail": "12.6 a battle over the last 100 (first 100: 12.1)"
     }
    ],
-   "skips_mean": 11.076305220883533,
-   "skips_last100": 11.51
+   "skips_mean": 11.20138888888889,
+   "skips_last100": 12.63
+  },
+  {
+   "step": "lggate",
+   "started": 1793393532.0109222,
+   "updated": 1793393532.2083602,
+   "elapsed": 0.19743800163269043,
+   "expected": null,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 0,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": null,
+   "eta": null,
+   "fraction": null,
+   "last_battle_age": 0.19743800163269043,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 0"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "0 of 100 battles to read"
+    }
+   ],
+   "skips_mean": null,
+   "skips_last100": null
+  },
+  {
+   "step": "lggbb",
+   "started": 1793393532.2183406,
+   "updated": 1793393532.4082432,
+   "elapsed": 0.18990254402160645,
+   "expected": null,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 0,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": null,
+   "eta": null,
+   "fraction": null,
+   "last_battle_age": 0.18990254402160645,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 0"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "0 of 100 battles to read"
+    }
+   ],
+   "skips_mean": null,
+   "skips_last100": null
   }
  ]
 }
