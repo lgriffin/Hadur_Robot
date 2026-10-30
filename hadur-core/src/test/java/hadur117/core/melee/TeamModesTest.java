@@ -53,7 +53,7 @@ class TeamModesTest {
     @Tag("TMODE-14")
     @Tag("TMODE-28")
     @Tag("TMODE-30")
-    @DisplayName("TMODE-1: a team's modes are its first member's entry, by class without version or duplicate marker; else the default, MATEFIRE, HUNT, PATH and DODGE in the shipped build (TMODE-12, TMODE-14, TMODE-28, TMODE-30), and every named team plays PATH and DODGE too")
+    @DisplayName("TMODE-1: a team's modes are its first member's entry, by class without version or duplicate marker; else the default, MATEFIRE, HUNT, PATH and DODGE in the shipped build (TMODE-12, TMODE-14, TMODE-28, TMODE-30), every named team plays PATH, and DODGE unless it lost there (PR #465)")
     void tableLookup() {
         EnemyTracker t = new EnemyTracker(field(1200, 1200));
         scan(t, "x.Other 2.0 (1)", 100, 100, 100, 1);
@@ -64,11 +64,15 @@ class TeamModesTest {
         assertSame(TeamModes.NONE, TeamModes.against(List.of(t.get("x.Other 2.0 (1)")), table, TeamModes.NONE));
         assertEquals(EnumSet.of(TeamModes.Mode.MATEFIRE, TeamModes.Mode.HUNT, TeamModes.Mode.PATH, TeamModes.Mode.DODGE),
             TeamModes.DEFAULT);
-        // The table names only the teams whose counters passed on fresh seeds (PR #370).
-        assertEquals(java.util.Set.of("gh.nano.GrofGroupMember", "myl.micro.Troodon", "myl.micro.TroodonDroid"),
+        // The table names only the teams whose counters passed on fresh seeds (PR #370), and the two
+        // teams DODGE lost to, confirmed on fresh seeds (PR #465).
+        Set<String> dodgeOff = Set.of("ustimaw.Nightmare", "ustimaw.NigitmareDroid", "mn.nano.perceptual.Impact");
+        assertEquals(java.util.Set.of("gh.nano.GrofGroupMember", "myl.micro.Troodon", "myl.micro.TroodonDroid",
+                "ustimaw.Nightmare", "ustimaw.NigitmareDroid", "mn.nano.perceptual.Impact"),
             TeamModes.TABLE.keySet());
-        for (Set<TeamModes.Mode> entry : TeamModes.TABLE.values()) {
-            assertTrue(entry.contains(TeamModes.Mode.PATH) && entry.contains(TeamModes.Mode.DODGE));
+        for (Map.Entry<String, Set<TeamModes.Mode>> entry : TeamModes.TABLE.entrySet()) {
+            assertTrue(entry.getValue().contains(TeamModes.Mode.PATH), entry.getKey());
+            assertEquals(!dodgeOff.contains(entry.getKey()), entry.getValue().contains(TeamModes.Mode.DODGE), entry.getKey());
         }
     }
 

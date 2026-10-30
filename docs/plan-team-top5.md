@@ -639,6 +639,11 @@ MATEFIRE, HUNT and PATH, every shipped mode but DODGE) on the three teams at 24 
 288 battles, about 20 minutes. Gate: projected +0.15 APS over 46 teams, low end above zero; on a
 pass the entries of the teams whose own gain is positive go into `TeamModes.TABLE`.
 
+**Result (PR #465, 2026-10-30): PASS, +0.15 ± 0.08 APS.** NightmareTeam +3.9 ± 3.2 and ImpactTeam
++3.1 ± 1.4 share points with DODGE off; ImWithStupidTeam -0.0 ± 1.3, so it keeps DODGE. The two
+teams' member classes (Nightmare, NigitmareDroid, Impact) now carry MATEFIRE, HUNT and PATH in
+`TeamModes.TABLE`.
+
 The second idea from the same talk, sharing every hit across the team, already ships: each
 member's report carries every enemy hit's sample and DODGE's expert errors (`Report.Dodge`), so
 all five learn enemy aim from the whole team's hits. A cloud read of how our members die against
