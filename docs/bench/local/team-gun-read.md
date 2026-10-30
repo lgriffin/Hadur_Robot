@@ -72,3 +72,11 @@ Cloud, HadurTeam master (3.20 team code) against Ogi, Firestarter and Combat, 6 
 - Firestarter fires low power at short range and hits 34-40% inside 400 px, where we hit 15-19%.
 - Their guns hit our members near guess factor 0 more than half the time: our movement is read
   as close to head-on at their ranges.
+
+## SWIFT smoke (TMODE-32, cloud, 2026-10-30)
+
+sf (SWIFT forced on, power at most 1.9) against aa, OgiTeam, 8 seeds from 6400, 12 rounds:
+score share -1.4 ± 8.0, rounds won +1.0 ± 4.5. Our hits rose only from 12.3 to 13.0 per 100
+shots, damage per energy from 0.59 to 0.63 (mean power 2.09 to 1.53). Bullet speed explains
+little of the power-3 gap: those shots are fired in harder spots (full energy, early, crowded),
+not missed for being slow. SWIFT stays off and gets no PC card on this evidence.
