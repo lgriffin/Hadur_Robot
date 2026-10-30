@@ -49,9 +49,9 @@ class QualifyPcTest(unittest.TestCase):
             self.assertIn("| rr01 | 20 | -1.00 |", open(os.path.join(d, "qualify.md")).read())
 
 
-# @Tag("BENCH-144")
+# @Tag("BENCH-147")
 class PriorityTest(unittest.TestCase):
-    """BENCH-144: with uploads off, the clients are kept fighting Hadur pairings from the clean page."""
+    """BENCH-147: with uploads off, the clients are kept fighting Hadur pairings from the clean page."""
 
     def test_the_plan_pairs_the_robot_with_every_opponent_it_has_a_jar_for(self):
         lines = q.priority_plan("hadur117.Hadur 3.19", ["a.A 1.0", "b.B 2", "hadur117.Hadur 3.19", "c.C 3"],

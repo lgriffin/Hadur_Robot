@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fence the bench and the RoboRumble clients onto separate cores (BENCH-142, BENCH-143).
+"""Fence the bench and the RoboRumble clients onto separate cores (BENCH-145, BENCH-146).
 
     python3 tools/fence.py show
     python3 tools/fence.py run bench -- COMMAND ...
@@ -31,7 +31,7 @@ of the physical cores (whole cores, both threads). `show` prints the topology an
 The queue (benchqueue.py) fences itself, and so every card, to the bench side when host.local says
 FENCE = on (or HADUR_BENCH_FENCE=on). Without it nothing changes.
 
-`clients` (BENCH-143) is the everyday launcher: it fences itself to the client side at below-normal priority and
+`clients` (BENCH-146) is the everyday launcher: it fences itself to the client side at below-normal priority and
 runs live_client.py watch over the given clients (console logs, Hadur's stall lines, restarts every 15
 minutes between battles). It refuses any client whose config uploads (UPLOAD not NOT) unless --live is
 given: live uploads need Leigh's go at the time, and the PC is not qualified (plans/live-watch.queue).

@@ -105,7 +105,7 @@ def priority_plan(robot, opponents, have, seed=0):
 
 
 def keep_priority(folders, robot, clean_csv, until, batch=30, every=20.0, hours=4.0, log=print):
-    """BENCH-144: keeps each client's priority battles file stocked with Hadur pairings while uploads are off.
+    """BENCH-147: keeps each client's priority battles file stocked with Hadur pairings while uploads are off.
 
     A settled robot fights in about 1 of 600 random rumble battles, so a qualifying hour would give a
     handful. The client reads PRIORITYBATTLESFILE at each iteration, fights those first and deletes the

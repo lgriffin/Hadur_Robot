@@ -50,7 +50,7 @@ HADUR_BENCH_WORK, or WORK_DIR in host.local) puts the work folder on another dis
 hadur-bench/work does not exist yet it is made a link (a junction on Windows) to DIR; an
 existing work folder is never moved.
 
-Fence (BENCH-142): with FENCE = on in host.local (or HADUR_BENCH_FENCE=on) the runner binds itself, and
+Fence (BENCH-145): with FENCE = on in host.local (or HADUR_BENCH_FENCE=on) the runner binds itself, and
 so every step and battle JVM, to the bench's side of tools/fence.py's split (on the PC every L3 group
 but the last), so RoboRumble clients started with `tools/fence.py clients` on the last group never
 share a core or cache with a battle. Off by default.
@@ -981,7 +981,7 @@ def cmd_run(args):
 
 
 def fence_bench():
-    """BENCH-142: with FENCE = on in host.local, the runner binds itself, and so every step, to the bench's
+    """BENCH-145: with FENCE = on in host.local, the runner binds itself, and so every step, to the bench's
     side of the fence (tools/fence.py), leaving the last L3 group to RoboRumble clients."""
     sys.path.insert(0, str(HERE / "tools"))
     import fence

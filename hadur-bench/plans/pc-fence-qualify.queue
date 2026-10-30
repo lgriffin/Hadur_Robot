@@ -1,4 +1,4 @@
-# Fenced clients beside the bench (BENCH-144, Leigh 2026-10-30: "On my high end PC if we containerised
+# Fenced clients beside the bench (BENCH-147, Leigh 2026-10-30: "On my high end PC if we containerised
 # robocode would that protect the bench? I'd like to be able to run rumbles as needed" ... "Lets build it
 # and I'll be restarting the PC today to see can we get it qualified").
 #   .\queue.ps1 run pc-fence-qualify --fresh        (or  ./queue.sh run pc-fence-qualify --fresh)

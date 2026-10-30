@@ -1,4 +1,4 @@
-"""Tests for fence.py and the pc-fence-qualify card (BENCH-142 to BENCH-144). No battles, no clients.
+"""Tests for fence.py and the pc-fence-qualify card (BENCH-145 to BENCH-147). No battles, no clients.
 
     python3 -m unittest discover -s hadur-bench/tools -p "test_fence.py"
 """
@@ -18,9 +18,9 @@ PC = {"l3": [list(range(12 * g, 12 * g + 12)) for g in range(4)],
 ONE_L3 = {"l3": [list(range(16))], "cores": [[2 * c, 2 * c + 1] for c in range(8)], "logical": 16, "source": "test"}
 
 
-# @Tag("BENCH-142")
+# @Tag("BENCH-145")
 class SplitTest(unittest.TestCase):
-    """BENCH-142: the bench and the clients get disjoint whole cores, cut along the L3 groups."""
+    """BENCH-145: the bench and the clients get disjoint whole cores, cut along the L3 groups."""
 
     def test_the_pc_gives_the_last_chiplet_to_the_clients(self):
         s = fence.split(PC, env={}, local={})
@@ -108,9 +108,9 @@ class SplitTest(unittest.TestCase):
         self.assertEqual(eval(r.stdout.strip().splitlines()[-1]), [mine[-1]])
 
 
-# @Tag("BENCH-143")
+# @Tag("BENCH-146")
 class ClientLauncherTest(unittest.TestCase):
-    """BENCH-143: the everyday launcher never starts an uploading client without --live."""
+    """BENCH-146: the everyday launcher never starts an uploading client without --live."""
 
     def client(self, root, name, upload):
         os.makedirs(os.path.join(root, name, "roborumble"))
@@ -135,9 +135,9 @@ class ClientLauncherTest(unittest.TestCase):
             self.assertFalse(os.path.exists(os.path.join(d, "w")), "nothing was started")
 
 
-# @Tag("BENCH-144")
+# @Tag("BENCH-147")
 class CardTest(unittest.TestCase):
-    """BENCH-144: the pc-fence-qualify card keeps uploads off and runs both sides at once."""
+    """BENCH-147: the pc-fence-qualify card keeps uploads off and runs both sides at once."""
 
     def setUp(self):
         self.text = (Path(__file__).resolve().parent.parent / "plans" / "pc-fence-qualify.queue").read_text()
