@@ -12,6 +12,10 @@ SANARO-14 in [docs/requirements.md](../docs/requirements.md).
 Quantum's 66.44. 0.2 is one class of 249 bytes (NanoMelee's limit): it adds the fire gate and
 Sanaro's flat lead, +0.55 ± 0.32 over 0.1 on the live-shaped census (pc-sanaro-n04), so about 65.8.
 
+0.2 (released 2026-10-30, tag `sanaro-v0.2`) is live 2nd in NanoMelee at 65.15 (89 pairings, API read
+2026-10-30 21:50 UTC), 1.26 behind Quantum's 66.41. It is 11th in MicroMelee (64.14), 21st in MiniMelee
+(63.56) and 79th in MeleeRumble (59.98).
+
 ## Build
 
     mvn -pl sanaro verify

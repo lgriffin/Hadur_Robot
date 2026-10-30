@@ -19,6 +19,7 @@ one first, bench it, then write the shipped one to match.
 
 | Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | Next up | Gap |
 |---|---|---|---|---|---|---|---|---|
+| 0.2 | 2026-10-30 21:50 (API) | **MiniRumble** | **5th of 671** | **87.34** | 670 | 2,040 | 1st sheldor.mini.FoilistMC 1.0, 89.01 | +1.67 |
 | 0.2 | 2026-10-30 19:50 (settled) | **MiniRumble** | **5th of 671** | **87.34** | 670 | 1,965 | 4th voidious.mini.Komarious 1.88, 87.44 | +0.10 |
 | 0.2 | 2026-10-29 20:10 (first pass, API) | **MiniRumble** | **5th of 671** | **87.43 ± 0.29** | 670 | 788 | 1st sheldor.mini.FoilistMC 1.0, 88.99 | +1.57 |
 | 0.1 | 2026-10-29 07:23 | **MiniRumble** | **6th of 671** | **86.95 ± 0.29** | 670 | 742 | simonton.mini.WeeksOnEnd 1.10.4, 87.35 | +0.40 |
