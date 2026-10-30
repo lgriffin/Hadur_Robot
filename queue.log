@@ -1,1 +1,7 @@
 00:40:05 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
+00:40:05 start prep
+00:40:09 progress pushed to origin claude/pc-census-320-progress (every 15 min)
+00:42:25 prep exit=0 in 140 s
+00:42:25 start census
+00:42:25 watching census: 5 stop rule(s)
+00:43:07 progress census: 0/3636 (0%) battles, 0 failed
