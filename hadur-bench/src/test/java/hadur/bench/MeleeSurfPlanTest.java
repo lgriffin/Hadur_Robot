@@ -76,10 +76,10 @@ class MeleeSurfPlanTest {
 
     @Test
     @Tag("BENCH-136")
-    @DisplayName("the arm edits exactly MMOVE-15, which ships off")
+    @DisplayName("the arm edits exactly MMOVE-15, which ships on from 3.21")
     void ablation() throws IOException {
         assertTrue(Files.readString(Path.of("build-ablation.sh")).contains("msurf) flag=MELEE_SURF; suffix=ms ;;"));
         String move = Files.readString(Path.of("../hadur-core/src/main/java/hadur117/core/melee/MinimumRiskMovement.java"));
-        assertTrue(move.contains("public static final boolean MELEE_SURF = false;"), "MELEE_SURF ships off");
+        assertTrue(move.contains("public static final boolean MELEE_SURF = true;"), "MELEE_SURF ships on from 3.21, after this card passed (PR #462)");
     }
 }

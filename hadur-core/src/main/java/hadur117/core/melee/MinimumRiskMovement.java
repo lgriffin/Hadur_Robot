@@ -231,9 +231,10 @@ public class MinimumRiskMovement {
      * that shooter's hits holds {@link TeamDanger#MIN_SAMPLES}, its bullets are the learned aims
      * (MMOVE-10's log, fed off a team by Hadur's own hits) in place of head-on and linear; and the
      * destination is chosen by the wave check (TMODE-11): the {@link #WAVE_RERANK} least risky
-     * candidates driven to, scored by risk and the waves' damage on the way. Off.
+     * candidates driven to, scored by risk and the waves' damage on the way. On from 3.21
+     * (pc-melee-surf: +0.99 +- 0.19 census APS, PR #462).
      */
-    public static final boolean MELEE_SURF = false;
+    public static final boolean MELEE_SURF = true;
     /**
      * MMOVE-16 (arm mmix), inspired by ScalarR: with the surfer on, a shot's share aimed at Hadur
      * is Hadur's 1/d^2 from its source over the sum of 1/d^2 for every robot alive but the shooter,

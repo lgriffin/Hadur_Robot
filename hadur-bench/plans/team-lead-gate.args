@@ -1,0 +1,31 @@
+# PC card team-lead (docs/plan-team-top5.md section 18, TMODE-31, BENCH-145): the picked table (mk) against aa on the picked teams, 16 fresh seeds from 6200. Template: lgprep writes work/team-lead-gate.args with @V@ = the robot.release in hadur-robot/pom.xml
+--team
+true
+--seeds
+16
+--seed-base
+6200
+--rounds
+10
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+work/team-lead-gate.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@mk.jar
+--robot
+hadur117.HadurTeam @V@mk
+--member
+hadur117.Hadur
+--out
+work/team-lead-@V@-gate
+--report
+../docs/bench/local/team-lead-gate.md
+--baseline
+bisect/hadur117.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur117.HadurTeam @V@aa

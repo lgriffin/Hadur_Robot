@@ -86,7 +86,13 @@ public final class TeamModes {
          * weighted per enemy class, driven through on the safest candidates. It stands in for
          * the virtual bullets and SOFT, LEARN, POOL and WAVES while it plays.
          */
-        DODGE
+        DODGE,
+        /**
+         * TMODE-31: for a team run by its leader or fed by droids: the gun leans on the leader
+         * (first seen above 150 energy) and, with droids about (first seen near 120), on the
+         * robots that scan for them, so the team loses its orders and its eyes first ({@link FieldGun#lead}).
+         */
+        LEAD
     }
 
     /**
@@ -110,6 +116,7 @@ public final class TeamModes {
     public static final boolean FORCE_GUNLINE = false;
     public static final boolean FORCE_PATH = true;
     public static final boolean FORCE_DODGE = true;
+    public static final boolean FORCE_LEAD = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -122,7 +129,7 @@ public final class TeamModes {
         FORCE_MATEFIRE ? Mode.MATEFIRE : null, FORCE_REAR ? Mode.REAR : null,
         FORCE_WAVES ? Mode.WAVES : null, FORCE_HUNT ? Mode.HUNT : null, FORCE_LINES ? Mode.LINES : null,
         FORCE_GUNLINE ? Mode.GUNLINE : null, FORCE_PATH ? Mode.PATH : null,
-        FORCE_DODGE ? Mode.DODGE : null);
+        FORCE_DODGE ? Mode.DODGE : null, FORCE_LEAD ? Mode.LEAD : null);
 
     /** Opposing member class to its team's modes; filled from the per-team screens. */
     static final Map<String, Set<Mode>> TABLE = table();

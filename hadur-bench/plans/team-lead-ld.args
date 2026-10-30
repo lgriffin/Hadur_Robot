@@ -1,0 +1,31 @@
+# PC card team-lead (docs/plan-team-top5.md section 18, TMODE-31, BENCH-145): arm ld (TMODE-31 LEAD forced on; the named teams play it on top of their entry) on the nine leader and droid teams of plans/team-lead-set.txt, 16 seeds from 6100, against master (the aa build). Template: lgprep writes work/team-lead-ld.args with @V@ = the robot.release in hadur-robot/pom.xml
+--team
+true
+--seeds
+16
+--seed-base
+6100
+--rounds
+10
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+plans/team-lead-set.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@ld.jar
+--robot
+hadur117.HadurTeam @V@ld
+--member
+hadur117.Hadur
+--out
+work/team-lead-@V@-ld
+--report
+../docs/bench/local/team-lead-ld.md
+--baseline
+bisect/hadur117.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur117.HadurTeam @V@aa

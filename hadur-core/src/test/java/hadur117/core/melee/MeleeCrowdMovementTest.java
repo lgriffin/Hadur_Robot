@@ -185,9 +185,9 @@ class MeleeCrowdMovementTest {
 
     @Test
     @Tag("MMOVE-15")
-    @DisplayName("MMOVE-15: the melee surfer ships off, weighs shots by the crowd and plays a shooter's learned aims")
+    @DisplayName("MMOVE-15: the melee surfer ships on (3.21), weighs shots by the crowd and plays a shooter's learned aims")
     void surf() {
-        assertFalse(MinimumRiskMovement.MELEE_SURF);
+        assertTrue(MinimumRiskMovement.MELEE_SURF, "on from 3.21 (PR #462)");
         Point2D.Double me = pt(500, 500);
         scan(tracker, "a", 500, 900, 100, 1);
         scan(tracker, "b", 500, 800, 100, 1);
@@ -213,6 +213,7 @@ class MeleeCrowdMovementTest {
             move.bullets().stream().filter(b -> b.aim == VirtualBullet.Aim.LEARNED).count());
         // Off, or with no log given, the same shots are MMOVE-3's.
         MinimumRiskMovement off = new MinimumRiskMovement(field(1000, 1000));
+        off.surf(false);
         off.newRound();
         off.updateMeleeBullets(List.of(first, next), log, me, 22, tracker.alive(), danger);
         assertEquals(4, off.bullets().size());
