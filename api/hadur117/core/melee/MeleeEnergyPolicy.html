@@ -183,6 +183,28 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>(package private) static final double</code></div>
 <div class="col-second even-row-color"><code><a href="#OGI_WIDE_CLOSE" class="member-name-link">OGI_WIDE_CLOSE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#SCAL_FAR" class="member-name-link">SCAL_FAR</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#SCAL_FAR_SHARE" class="member-name-link">SCAL_FAR_SHARE</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#SCAL_POWER" class="member-name-link">SCAL_POWER</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-22">MGUN-22</a> (arm mscal), inspired by ScalarR's melee power: off a team with two or more
+ opponents, power falls with the distance to the nearest robot and in a line with Hadur's own
+ energy rather than stepping at <a href="#CROWD_RULE_ENERGY"><code>CROWD_RULE_ENERGY</code></a>.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#SCAL_REACH" class="member-name-link">SCAL_REACH</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#SCAL_RESERVE" class="member-name-link">SCAL_RESERVE</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#SCAL_SHARE" class="member-name-link">SCAL_SHARE</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>static final double</code></div>
 <div class="col-second odd-row-color"><code><a href="#TEAM_FULL_POWER_ENERGY" class="member-name-link">TEAM_FULL_POWER_ENERGY</a></code></div>
 <div class="col-last odd-row-color">
@@ -202,6 +224,27 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#crowdPower(double,double,double,double,double,int)" class="member-name-link">crowdPower</a><wbr>(double&nbsp;tablePower,
+ double&nbsp;distance,
+ double&nbsp;nearest,
+ double&nbsp;ownEnergy,
+ double&nbsp;targetEnergy,
+ int&nbsp;others)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">As <a href="#crowdPower(double,double,double,double,int)"><code>crowdPower(double, double, double, double, int)</code></a>, where with <a class="req" href="../../../../requirements.html#MGUN-22">MGUN-22</a> on and two or
+ more opponents the power is <a href="#scalPower(double,double,double)"><code>scalPower(double, double, double)</code></a> from the nearest robot's distance
+ <code>nearest</code>.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#crowdPower(double,double,double,double,double,int,boolean)" class="member-name-link">crowdPower</a><wbr>(double&nbsp;tablePower,
+ double&nbsp;distance,
+ double&nbsp;nearest,
+ double&nbsp;ownEnergy,
+ double&nbsp;targetEnergy,
+ int&nbsp;others,
+ boolean&nbsp;scal)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#crowdPower(double,double,double,double,int)" class="member-name-link">crowdPower</a><wbr>(double&nbsp;tablePower,
  double&nbsp;distance,
@@ -256,11 +299,21 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The power to fire at a target <code>distance</code> away with <code>targetEnergy</code>, or 0 to hold.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#teamPower(double,double,double)" class="member-name-link">teamPower</a><wbr>(double&nbsp;tablePower,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#scalPower(double,double,double)" class="member-name-link">scalPower</a><wbr>(double&nbsp;nearest,
  double&nbsp;ownEnergy,
  double&nbsp;targetEnergy)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-22">MGUN-22</a>: <a href="#SCAL_REACH"><code>SCAL_REACH</code></a>/<code>nearest</code>, capped at own energy/<a href="#SCAL_SHARE"><code>SCAL_SHARE</code></a>, at
+ own energy/<a href="#SCAL_FAR_SHARE"><code>SCAL_FAR_SHARE</code></a> beyond <a href="#SCAL_FAR"><code>SCAL_FAR</code></a> px, at what kills the target and
+ <a href="#SCAL_RESERVE"><code>SCAL_RESERVE</code></a> short of Hadur's own energy and at the lead over the target, as the table
+ is (a lead under the lightest shot holds, 0); 0.1 to 3.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#teamPower(double,double,double)" class="member-name-link">teamPower</a><wbr>(double&nbsp;tablePower,
+ double&nbsp;ownEnergy,
+ double&nbsp;targetEnergy)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">MGUN-6: the power a member on a team fires, given the table's <code>tablePower</code>.</div>
 </div>
 </div>
@@ -518,6 +571,93 @@ loadScripts(document, 'script');</script>
 </dl>
 </section>
 </li>
+<li>
+<section class="detail" id="SCAL_POWER">
+<h3>SCAL_POWER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">SCAL_POWER</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-22">MGUN-22</a> (arm mscal), inspired by ScalarR's melee power: off a team with two or more
+ opponents, power falls with the distance to the nearest robot and in a line with Hadur's own
+ energy rather than stepping at <a href="#CROWD_RULE_ENERGY"><code>CROWD_RULE_ENERGY</code></a>. Off.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.melee.MeleeEnergyPolicy.SCAL_POWER">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="SCAL_REACH">
+<h3>SCAL_REACH</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">SCAL_REACH</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.melee.MeleeEnergyPolicy.SCAL_REACH">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="SCAL_FAR">
+<h3>SCAL_FAR</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">SCAL_FAR</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.melee.MeleeEnergyPolicy.SCAL_FAR">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="SCAL_SHARE">
+<h3>SCAL_SHARE</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">SCAL_SHARE</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.melee.MeleeEnergyPolicy.SCAL_SHARE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="SCAL_FAR_SHARE">
+<h3>SCAL_FAR_SHARE</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">SCAL_FAR_SHARE</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.melee.MeleeEnergyPolicy.SCAL_FAR_SHARE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="SCAL_RESERVE">
+<h3>SCAL_RESERVE</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">SCAL_RESERVE</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.melee.MeleeEnergyPolicy.SCAL_RESERVE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -589,6 +729,44 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;low,
  boolean&nbsp;wide)</span></div>
 <div class="block"><a class="req" href="../../../../requirements.html#MGUN-14">MGUN-14</a>..16 widen <a class="req" href="../../../../requirements.html#MGUN-13">MGUN-13</a> only: with it off they do nothing.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="crowdPower(double,double,double,double,double,int)">
+<h3>crowdPower</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">crowdPower</span><wbr><span class="parameters">(double&nbsp;tablePower,
+ double&nbsp;distance,
+ double&nbsp;nearest,
+ double&nbsp;ownEnergy,
+ double&nbsp;targetEnergy,
+ int&nbsp;others)</span></div>
+<div class="block">As <a href="#crowdPower(double,double,double,double,int)"><code>crowdPower(double, double, double, double, int)</code></a>, where with <a class="req" href="../../../../requirements.html#MGUN-22">MGUN-22</a> on and two or
+ more opponents the power is <a href="#scalPower(double,double,double)"><code>scalPower(double, double, double)</code></a> from the nearest robot's distance
+ <code>nearest</code>. A hold (0) and a finisher stand.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="crowdPower(double,double,double,double,double,int,boolean)">
+<h3>crowdPower</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">crowdPower</span><wbr><span class="parameters">(double&nbsp;tablePower,
+ double&nbsp;distance,
+ double&nbsp;nearest,
+ double&nbsp;ownEnergy,
+ double&nbsp;targetEnergy,
+ int&nbsp;others,
+ boolean&nbsp;scal)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="scalPower(double,double,double)">
+<h3>scalPower</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">scalPower</span><wbr><span class="parameters">(double&nbsp;nearest,
+ double&nbsp;ownEnergy,
+ double&nbsp;targetEnergy)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-22">MGUN-22</a>: <a href="#SCAL_REACH"><code>SCAL_REACH</code></a>/<code>nearest</code>, capped at own energy/<a href="#SCAL_SHARE"><code>SCAL_SHARE</code></a>, at
+ own energy/<a href="#SCAL_FAR_SHARE"><code>SCAL_FAR_SHARE</code></a> beyond <a href="#SCAL_FAR"><code>SCAL_FAR</code></a> px, at what kills the target and
+ <a href="#SCAL_RESERVE"><code>SCAL_RESERVE</code></a> short of Hadur's own energy and at the lead over the target, as the table
+ is (a lead under the lightest shot holds, 0); 0.1 to 3.</div>
 </section>
 </li>
 <li>
