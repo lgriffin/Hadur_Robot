@@ -144,6 +144,7 @@ class TeamPairedTest {
 
     @Test
     @Tag("BENCH-42")
+    @Tag("BENCH-147")
     @DisplayName("the harvester writes the share of our bullet damage that landed on the most-hit enemy, and a dash with none")
     void harvesterFocusFire() throws IOException {
         IRobotSnapshot m1 = robot(0, 0, MEMBER + " 1", true), m2 = robot(1, 0, MEMBER + " 2", true);

@@ -93,6 +93,12 @@ public class FieldGun {
     static final double LEAD_BOOST = 4.0;
     /** TMODE-31: a scanner's weight under LEAD while droids are about. */
     static final double EYES_BOOST = 2.5;
+    /**
+     * TMODE-32: the most a member fires under SWIFT: Ogi's own power, 14.3 px a tick. The team gun
+     * read (docs/bench/local/team-gun-read.md) has our power-3 shots at Ogi hitting 12.1% against
+     * 17-18% at Combat and Firestarter, and Ogi's 1.9 hitting us 24.9% at 200-400 px.
+     */
+    public static final double SWIFT_POWER = 1.9;
     /** TMODE-31: a robot first seen in a round with more than this, up to {@link #LEADER_SEEN}, is a droid (120). */
     static final double DROID_SEEN = 110;
 
@@ -148,6 +154,8 @@ public class FieldGun {
     private final Map<String, Double> firstEnergy = new LinkedHashMap<>();
     /** TMODE-31: whether the team modes this tick carry LEAD. */
     private boolean lead;
+    /** TMODE-32: whether the team modes this tick carry SWIFT. */
+    private boolean swift;
     /** MGUN-17: true while a wave reads the field gun's own aim, which the experts must not steer. */
     private boolean pure;
 
@@ -236,6 +244,7 @@ public class FieldGun {
             if (power <= 0) continue;
             if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);
             else power = MeleeEnergyPolicy.crowdPower(power, distance, nearest, energy, e.energy, others);
+            if (onTeam && swift) power = Math.min(power, SWIFT_POWER);
             if (power <= 0) continue;
             double weight = weight(e, me, alive, now);
             int first = out.size();
@@ -324,6 +333,11 @@ public class FieldGun {
         if (isolated(e, alive)) w *= ISOLATED_BOOST;
         if (e.hitsOnHadur(now, SHOOTER_WINDOW) >= 2) w *= SHOOTER_BOOST;
         return w;
+    }
+
+    /** TMODE-32: whether this tick's team modes carry SWIFT; set before any aim of the tick. */
+    public void swift(boolean swift) {
+        this.swift = swift;
     }
 
     /** TMODE-31: whether this tick's team modes carry LEAD; set before any aim of the tick. */

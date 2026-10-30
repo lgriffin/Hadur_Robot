@@ -1171,6 +1171,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | TMODE-29 | Optional | Where DODGE's own-fire switch is on, DODGE's base ranking shall keep MATEFIRE's teammate-bullet risk, and each re-ranked destination's risk shall gain PATH's factor times the damage of the teammates' bullets crossed on its 15-tick drive, those bullets no longer counting in its wave damage. | T7 |
 | TMODE-30 | Ubiquitous | The team mode table's default, for a team it does not name, shall include the DODGE mode, every team the table names shall play DODGE on top of its entry, and DODGE's own-fire switch shall be on. | T7 |
 | TMODE-31 | Optional | Where the team mode table names LEAD for the enemy team (or the `FORCE_LEAD` switch is on), the field gun shall multiply by 4 the weight of the enemy first seen that round above 150 energy, and, while an enemy first seen above 110 and at most 150 energy (a droid) is alive, by 2.5 the weight of every other enemy that is not such a droid. | T7 |
+| TMODE-32 | Optional | Where the team modes against the opposing team carry SWIFT, the field gun shall fire no harder than 1.9 at any target, a killing shot under that standing; SWIFT shall ship table-only and off, and the `tmswift` ablation (suffix sf) shall force it on with duel and melee play unchanged. | T7 |
 
 ### T1 notes
 
