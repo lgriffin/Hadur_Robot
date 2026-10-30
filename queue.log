@@ -5,3 +5,6 @@
 00:42:25 start census
 00:42:25 watching census: 5 stop rule(s)
 00:43:07 progress census: 0/3636 (0%) battles, 0 failed
+01:13:25 progress census: 331/3636 (9%) battles, 662/h, ETA 5.0 h, 0 failed, skips 40.7/battle (last 100), aa -0.48, km +0.50
+01:14:26 STOP census by rule skips 40 over 200: 40.9 a battle over the last 200 (first 200: 37.2); 342 battles fought and kept, 3294 battles left unrun (about 5.0 h)
+01:14:26 census exit=75 in 1920 s (halted, skips 40 over 200)
