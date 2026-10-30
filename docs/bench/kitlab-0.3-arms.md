@@ -129,3 +129,67 @@ loop, the radar and the power rule.
 - So k3X's -2.14 was these cuts together, not the single-feature k-NN alone.
 - Every part of 0.2 is earning its bytes. k3KE fits only through a play-preserving re-golf, or by
   giving up something already priced at -0.16 or worse.
+
+### Round 7: the bullet-hit-bullet log alone
+
+| Arm | Change from k3KEg | Bytes | gap-field | mini | mini2 | Division mean |
+|---|---|---|---|---|---|---|
+| k3x1 | no bullet-hit-bullet log | 1,616 | -0.74 ± 0.26 | -0.60 | -1.41 | **-1.01** |
+| k3T | not k-NN: 0.2's surf table with the three features as its segments, rolling depth 20 | 1,514 | -0.09 ± 0.26 | -0.80 | -0.37 | -0.58 |
+
+- The bullet-hit-bullet log is the most valuable thing the k-NN surf has: dropping it alone costs
+  about 1.5 against k3KE, as much as all of k3N1's cuts together. Each bullet we shoot down is a
+  sample of the enemy's aim that a hit would only give us at a cost, and the k-NN surf feeds on
+  samples. The losses are against the even and strong bots, which shoot the most bullets down.
+- k3T asked whether the features alone carry the gain, in a table that would be cheaper than the
+  k-NN loop. They do not: the table loses 0.58, most of it to the even and strong bots. The gain is
+  the k-NN's, keeping every hit and weighing it by likeness.
+- That corrects round 6: the energy update was not the likeliest cause. The bullet-hit-bullet log
+  was.
+- The log stays. The shipped re-golf (1,641 to 1,598 B, same play bit for bit) is short by 102
+  bytes, so round 8 benches two bundles of small play changes that fit with the log kept.
+
+### Round 8: small play changes that fit, and the one that broke them
+
+The shipped re-golf of k3KE keeps its play bit for bit and is 1,598 B. These play changes each save
+bytes (measured on the shipped build):
+
+| Key | Change | Bytes saved |
+|---|---|---|
+| radar | the radar lock trick (reverse the remaining radar turn on each scan) | 7 |
+| sgn | no 1e-9 before Math.signum, for both the surf's and the gun's direction | 8 |
+| gsgn | the same for the gun's direction only | 4 |
+| keep | a wave that hit us is not dropped at once; it passes on its own a tick later | 13 |
+| hbb | no energy update when the enemy hits us | 15 |
+| capfin | power 3 inside 150 px, else 2, with no energy/15 cap and no finishing cap | 25 |
+| decel | the surf's prediction brakes at 1 a tick, not 2 | 19 |
+| gdist | no distance segment in the gun | 10 |
+| tr | our gun waves start at the gun, not 1.5 ticks behind it | 9 |
+| p3b | power 2 always (with capfin) | 16 |
+
+| Arm | Changes | Bytes | gap-field | mini | mini2 | Division mean |
+|---|---|---|---|---|---|---|
+| k3gC | radar, sgn, keep, hbb, capfin, decel, gdist, tr | 1,492 | -4.21 ± 1.57 | -3.55 | -6.19 | -4.87 |
+| k3gE | radar, sgn, keep, hbb, capfin, gdist, tr, p3b | 1,495 | -3.99 ± 1.54 | -4.15 | -6.26 | -5.20 |
+
+- Both collapsed, -17 to -22 against the even and strong bots, so one change had to be broken.
+- Each change alone against Cotillion and Foilist (2 battles each, against about 31 to 39% for k3KE):
+  only **sgn** collapses, 8% against Cotillion. With no wave in flight JayLexi drives straight away,
+  so its lateral speed is exactly 0 and every wave the enemy fires then has direction 0. Every
+  guess factor on such a wave is 0, so every hit lands at 0 and both surf options look the same.
+  The epsilon is there for that reason; it stays on the surf's direction.
+- The other changes are within the noise of two battles there.
+
+| Arm | Changes | Bytes | gap-field | mini | mini2 | Division mean |
+|---|---|---|---|---|---|---|
+| k3gF | radar, gsgn, keep, hbb, capfin, decel, gdist, tr | 1,496 | -4.32 ± 1.61 | -3.55 | -6.20 | -4.88 |
+| k3gG | radar, keep, hbb, capfin, decel, gdist, tr, p3b | 1,484 | -1.86 ± 0.45 | -2.55 | -2.22 | **-2.39** |
+
+- The gun's epsilon matters as much as the surf's: k3gF, with only the gun's taken out, collapses
+  like k3gC. An enemy that stops dead (lateral speed exactly 0) gives gun waves direction 0, so the
+  gun aims head-on at it and logs every pass in the middle bin.
+- With both epsilons kept, k3gG still loses 2.39 against 0.2, about 2.9 against k3KE. So more than
+  one of the other changes costs real APS, and two battles a bot were too few to see which.
+- **Bundles hide which change is bad.** Each change has to be priced on its own on all three
+  fields, like the cuts in rounds 5 to 7.
+- The shipped re-golf at 1,598 B is kept as `kitlab/arms/JayLexi-k3KEs.java`.

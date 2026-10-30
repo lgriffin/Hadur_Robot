@@ -1,0 +1,4 @@
+# kitlab_fields.py: 48 of 669 bots (top 12 by name, 36 rank bands), seed 1
+# name | role (top:weight or band:weight) | jar | weight; the weighted mean of score share estimates APS
+sheldor.mini.Foilist 1.3.1 | top:1 | sheldor.mini.Foilist_1.3.1.jar | 1.0000
+jk.micro.Cotillion 0.8 | top:1 | jk.micro.Cotillion_0.8.jar | 1.0000
