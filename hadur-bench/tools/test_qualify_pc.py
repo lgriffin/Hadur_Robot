@@ -49,5 +49,50 @@ class QualifyPcTest(unittest.TestCase):
             self.assertIn("| rr01 | 20 | -1.00 |", open(os.path.join(d, "qualify.md")).read())
 
 
+# @Tag("BENCH-144")
+class PriorityTest(unittest.TestCase):
+    """BENCH-144: with uploads off, the clients are kept fighting Hadur pairings from the clean page."""
+
+    def test_the_plan_pairs_the_robot_with_every_opponent_it_has_a_jar_for(self):
+        lines = q.priority_plan("hadur117.Hadur 3.19", ["a.A 1.0", "b.B 2", "hadur117.Hadur 3.19", "c.C 3"],
+                                lambda o: o != "b.B 2", seed=1)
+        self.assertEqual(sorted(lines), ["hadur117.Hadur 3.19,a.A 1.0,SERVER", "hadur117.Hadur 3.19,c.C 3,SERVER"])
+        self.assertEqual(q.jar_name("hadur117.Hadur 3.19"), "hadur117.Hadur_3.19.jar")
+
+    def test_the_file_is_written_when_the_client_has_taken_it_and_stops_on_stop(self):
+        with tempfile.TemporaryDirectory() as d:
+            os.makedirs(os.path.join(d, "roborumble"))
+            os.makedirs(os.path.join(d, "robots"))
+            with open(q.config(d), "w") as f:
+                f.write("BOTSREP=./robots/\nPRIORITYBATTLESFILE=./roborumble/temp/priority.txt\n")
+            for jar in ("hadur117.Hadur_3.19.jar", "a.A_1.0.jar"):
+                open(os.path.join(d, "robots", jar), "w").close()
+            clean = os.path.join(d, "clean.csv")
+            with open(clean, "w") as f:
+                f.write("name,aps\na.A 1.0,80\nb.B 2,70\n")
+            stop = os.path.join(d, "STOP")
+            seen = []
+            import threading
+            t = threading.Timer(0.3, lambda: open(stop, "w").close())
+            t.start()
+            q.keep_priority([d], "hadur117.Hadur 3.19", clean, stop, batch=3, every=0.05, hours=0.01, log=seen.append)
+            t.join()
+            text = open(os.path.join(d, "roborumble", "temp", "priority.txt")).read()
+            self.assertEqual(text, "hadur117.Hadur 3.19,a.A 1.0,SERVER\n" * 3)
+            self.assertIn("1 of 2 opponents have a jar", seen[0])
+            self.assertIn("STOP file", seen[-1])
+
+    def test_a_client_without_the_robot_is_refused(self):
+        with tempfile.TemporaryDirectory() as d:
+            os.makedirs(os.path.join(d, "roborumble"))
+            with open(q.config(d), "w") as f:
+                f.write("PRIORITYBATTLESFILE=./p.txt\n")
+            clean = os.path.join(d, "clean.csv")
+            with open(clean, "w") as f:
+                f.write("name,aps\na.A 1.0,80\n")
+            with self.assertRaises(SystemExit):
+                q.keep_priority([d], "hadur117.Hadur 3.19", clean, os.path.join(d, "STOP"), hours=0.001)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,103 @@
+# Fenced clients beside the bench (BENCH-144, Leigh 2026-10-30: "On my high end PC if we containerised
+# robocode would that protect the bench? I'd like to be able to run rumbles as needed" ... "Lets build it
+# and I'll be restarting the PC today to see can we get it qualified").
+#   .\queue.ps1 run pc-fence-qualify --fresh        (or  ./queue.sh run pc-fence-qualify --fresh)
+# CLOSE EVERY ROBORUMBLE CLIENT WINDOW FIRST and run no other queue: this card runs the bench AND two
+# clients, each on its own side of the fence (tools/fence.py show prints it: on the PC the bench gets three
+# L3 groups, 18 cores, still 12 workers; the clients the fourth, 6 cores, at below-normal priority).
+# About 1 to 1.5 hours. UPLOADS STAY OFF THE WHOLE TIME: nothing this card fights reaches the live pages.
+#
+# It answers two questions at once, under the load Leigh wants to run every day:
+#   1. Is the bench untouched? The host check's battles (tools/host_check.py) on the bench side while the
+#      clients fight: duel (208-bot panel, Hadur 3.15, seed 2501; PC d12 0.465 skips a round, level 83.32),
+#      team (46 teams, t12 0.119), and the duel block again (duel2) to keep the clients' load on the bench
+#      for the whole client window and give a second level read. VALID per block = the bench is protected.
+#   2. Do the fenced clients play clean? Two 1v1 clients (rr01, rr02) with UPLOAD=NOT, their battles kept
+#      by live_client.py and scored by tools/qualify_pc.py against the clean cloud first pass of ${V1}
+#      (91.58, 1,221 pairings): QUALIFIED within ±0.5 points. A settled robot is in about 1 battle in 600,
+#      so `prio` keeps each client's priority battles file stocked with Hadur pairings (shuffled field).
+#
+# Steps:
+# prep: the host check's jars and opponents, a build, and the fence (fence.md, from fence.py show).
+# off: UPLOAD=NOT in each client's roborumble/roborumble.txt (a .qualify-bak copy is kept).
+# clients: fence.py run clients: live_client.py watch starts both clients on the client side, restarts each
+#   every 15 minutes between battles, keeps their Hadur battles, consoles and stall lines, and ends on the
+#   STOP file the last bench step writes (or after HOURS).
+# prio: qualify_pc.py priority, the Hadur pairings, until the same STOP file.
+# duel, team, duel2: the bench on the bench side (fence.py run bench), one after another; duel waits a
+#   minute so the clients are already fighting. stopclients: writes ${W}/STOP once duel2 ends.
+# on: puts each roborumble.txt back and sets the test battles aside (<file>.qualify-<n>), so none is ever
+#   uploaded. IF THE CARD STOPS BEFORE THIS STEP, rerun it without --fresh: it resumes and restores.
+# score, check: the client verdict (qualify.md) and the bench verdict (host-check.md).
+# report (after check; it waits up to 10 minutes for score, which follows the clients' last battle), pr: one page (fence-qualify.md) and a results PR.
+#
+# stop: the bench steps are single-arm runs, which the progress watcher (benchwatch.py) cannot read, so
+#   there are no machine-read stop rules. The stops are the timeout: lines (a stuck step is killed, the
+#   rest of the card goes on) and the STOP file: to finish early, create ${W}/STOP by hand; the clients
+#   and prio end, on/score run, and any bench block not yet fought is left unrun (duel2 is the one most
+#   likely to be cut: 208 battles). Every battle already fought is kept. If a bench step fails, stopclients
+#   never runs and the clients end at HOURS instead.
+#
+# After it: QUALIFIED + every bench block VALID = Leigh can run fenced clients beside any card with
+# `python tools\fence.py clients rr01:roborumble.bat rr02:roborumble.bat` and FENCE = on in
+# hadur-bench\host.local (docs/bench/fence.md). Uploading again (--live) is Leigh's go at the time, and
+# QUALIFIED in plans/live-watch.queue changes only in its own PR. TOO LOADED on the bench = one client
+# fewer, or fewer bench workers. NOT QUALIFIED = the fence does not fix the clients' scores.
+
+set CONCURRENCY = 3
+set PY = $(command -v python3 || command -v python)
+set PKG = hadur117
+set V1 = 3.19
+set CLIENTS = C:/RoboRumbleWorkers
+set ONES = rr01 rr02
+set HOURS = 2.5
+set CLEAN = ../data/rumble/parsed/2026-10-29T0857Z_roborumble_botdetails_hadur117.Hadur_3.19.csv
+set HEAP = --child-heap 2G
+set REL = https://github.com/lgriffin/Hadur_Robot/releases/download/v3.15
+# RUN: raise it to repeat the card in a fresh folder, bench output and results branch.
+set RUN = 1
+set W = ../data/live/fence-qualify-${V1}-run${RUN}
+set B = work/fence-check-${RUN}
+
+prep | mkdir -p bisect ${W} && for j in Hadur HadurTeam; do f=bisect/hadur2."$j"_3.15.jar; ${PY} -c "import sys,zipfile; sys.exit(zipfile.ZipFile(sys.argv[1]).testzip() is not None)" "$f" 2>/dev/null || { curl -fsSL -o "$f.part" "${REL}/hadur2.$j"_3.15.jar && ${PY} -c "import sys,zipfile; sys.exit(zipfile.ZipFile(sys.argv[1]).testzip() is not None)" "$f.part" && mv "$f.part" "$f"; } || exit 1; done && ./fetch-opponents.sh --set top5-s0-panel.txt && ./fetch-opponents.sh --set team-census46.txt && (cd .. && mvn -q -DskipTests install -pl hadur-core -am) && mvn -q compile && sed "s#work/host-check-team#${B}-team#" plans/host-check-team.args > work/fence-check-team.args && rm -f ${W}/STOP && { echo '```'; ${PY} tools/fence.py show; echo '```'; } > ${W}/fence.md && cat ${W}/fence.md
+
+off | ${PY} tools/qualify_pc.py upload off $(for d in ${ONES}; do printf '%s/%s ' "${CLIENTS}" "$d"; done)
+  after: prep
+
+clients | ${PY} tools/fence.py run clients -- ${PY} ../data/tools/live_client.py watch --root ${CLIENTS} $(for d in ${ONES}; do printf -- '--launch %s:roborumble.bat ' "$d"; done) --restart-minutes 15 --out ${W} --robot "${PKG}.Hadur ${V1}" --new-only --hours ${HOURS}
+  after: off
+  timeout: 3h
+
+prio | ${PY} tools/qualify_pc.py priority $(for d in ${ONES}; do printf '%s/%s ' "${CLIENTS}" "$d"; done) --robot "${PKG}.Hadur ${V1}" --clean ${CLEAN} --until ${W}/STOP --hours ${HOURS}
+  after: off
+  timeout: 3h
+
+duel | sleep 60 && ${PY} tools/fence.py run bench -- bash ./bench-top20.sh --skip-build --skip-fetch --rounds 35 ${HEAP} --engine 1.11.1 ${CPU} --parallel ${WORKERS} --force-memory --set top5-s0-panel.txt --seeds 1 --seed-base 2500 --robot-jar bisect/hadur2.Hadur_3.15.jar --robot "hadur2.Hadur 3.15" --out ${B}-duel --label fence-check-duel
+  after: off
+  timeout: 2h
+
+team | ${PY} tools/fence.py run bench -- bash -c 'mvn -q exec:java "-Dexec.args=@work/fence-check-team.args"'
+  after: duel
+  timeout: 1h
+
+duel2 | ${PY} tools/fence.py run bench -- bash ./bench-top20.sh --skip-build --skip-fetch --rounds 35 ${HEAP} --engine 1.11.1 ${CPU} --parallel ${WORKERS} --force-memory --set top5-s0-panel.txt --seeds 1 --seed-base 2500 --robot-jar bisect/hadur2.Hadur_3.15.jar --robot "hadur2.Hadur 3.15" --out ${B}-duel2 --label fence-check-duel2
+  after: team
+  timeout: 2h
+
+stopclients | touch ${W}/STOP
+  after: duel2
+
+on | ${PY} tools/qualify_pc.py upload on $(for d in ${ONES}; do printf '%s/%s ' "${CLIENTS}" "$d"; done)
+  after: clients
+
+score | ${PY} tools/qualify_pc.py score ${W} --clean ${CLEAN} --robot "${PKG}.Hadur ${V1}"
+  after: on
+
+check | ${PY} tools/host_check.py duel=${B}-duel team=${B}-team duel2=${B}-duel2 --out ${W}/host-check.md; test -s ${W}/host-check.md
+  after: stopclients
+
+report | for i in $(seq 120); do test -s ${W}/qualify.md && break; sleep 5; done; { echo "# Fenced clients beside the bench: run ${RUN}"; echo; echo "## The fence"; echo; cat ${W}/fence.md; echo; echo "## Bench (host-check battles on the bench side while the clients fight)"; echo; sed '1s/^# /### /' ${W}/host-check.md; echo; echo "## Clients (uploads off, against the clean cloud first pass)"; echo; sed '1s/^# /### /' ${W}/qualify.md; } > ${W}/fence-qualify.md && cat ${W}/fence-qualify.md
+  after: check
+
+pr | bash tools/open_results_pr.sh claude/pc-fence-qualify-run${RUN}-results "Fenced clients beside the bench: run ${RUN} (uploads off)" ${W}/fence-qualify.md $(ls ${W}/*.tsv ${W}/watch.log 2>/dev/null)
+  after: report

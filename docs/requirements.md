@@ -2211,3 +2211,17 @@ profiles, and the rumbles list it as a new participant.
 - **BENCH-141.** Card plans/pc-team-dodge2.queue: bb, dg and dgof on 46 teams x 16 seeds from 5600 at
   12 rounds (4,416 battles, about 5 h); one pooled gate per arm. Results claude/pc-team-dodge2-results.
 - Both switches off: no replay fixture moves.
+
+## Rumble clients beside the bench: the core fence (BENCH-142 to BENCH-144)
+
+- **Why.** Leigh, 2026-10-30: "On my high end PC if we containerised robocode would that protect the
+  bench? I'd like to be able to run rumbles as needed." A container caps CPU amount, not placement
+  (Docker on Windows is a WSL2 VM whose virtual CPUs float over every host thread), so clients would
+  still share cores and L3 with battle JVMs. Processor affinity on both sides, cut along the L3
+  groups, does separate them. Notes docs/bench/fence.md.
+
+| ID | Type | Requirement | Stage |
+|---|---|---|---|
+| BENCH-142 | Optional feature | Where `FENCE = on` is set in `hadur-bench/host.local` (or `HADUR_BENCH_FENCE=on`), the queue runner shall bind itself, and so every step it starts, to the bench side of `tools/fence.py`'s split: `FENCE_BENCH_CPUS` / `FENCE_CLIENT_CPUS` when given (one alone makes the other the rest), else every L3 cache group but the last (the last quarter of the cores, whole, on a one-group host); it shall refuse overlapping or empty sides, and without the setting it shall change nothing. | T7 |
+| BENCH-143 | Unwanted behaviour | If a client given to `tools/fence.py clients` has a config that uploads (`UPLOAD` not `NOT`, or no config), then the launcher shall refuse to start any client unless `--live` is given; otherwise it shall bind itself to the client side of the split at below-normal priority and run `live_client.py watch` over the clients, restarting each every 15 minutes between battles. | T7 |
+| BENCH-144 | Ubiquitous | The bench shall carry the `pc-fence-qualify` card: two 1v1 clients with UPLOAD=NOT on the client side, their priority battles file kept stocked with Hadur pairings from the clean cloud first pass (`qualify_pc.py priority`) and their battles scored against it (QUALIFIED within ±0.5), while the host check's duel, team and duel blocks run on the bench side and are judged against PC d12 and t12; the configs are restored and the test battles set aside after the clients stop, and nothing the card fights is uploaded. | T7 |

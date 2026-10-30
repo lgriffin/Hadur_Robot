@@ -50,6 +50,11 @@ HADUR_BENCH_WORK, or WORK_DIR in host.local) puts the work folder on another dis
 hadur-bench/work does not exist yet it is made a link (a junction on Windows) to DIR; an
 existing work folder is never moved.
 
+Fence (BENCH-142): with FENCE = on in host.local (or HADUR_BENCH_FENCE=on) the runner binds itself, and
+so every step and battle JVM, to the bench's side of tools/fence.py's split (on the PC every L3 group
+but the last), so RoboRumble clients started with `tools/fence.py clients` on the last group never
+share a core or cache with a battle. Off by default.
+
 Every step is run in its own process group (POSIX) or job object (Windows) and only
 that tree is killed on stop, timeout or runner exit; no other java is touched. A timeout kills
 that one step; a stop kills every running step.
@@ -971,8 +976,21 @@ def cmd_run(args):
     profile_file.write_text(json.dumps(prof, indent=1))
     args.step_env = {**os.environ, **hostprofile.step_environment(prof, profile_file)}
     args.host_lines = ([linked] if linked else []) + [f"host {hostprofile.summary(prof)}"] + \
-        [f"host warning: {w}" for w in prof["warnings"]]
+        [f"host warning: {w}" for w in prof["warnings"]] + fence_bench()
     return Runner(paths, steps, args).run()
+
+
+def fence_bench():
+    """BENCH-142: with FENCE = on in host.local, the runner binds itself, and so every step, to the bench's
+    side of the fence (tools/fence.py), leaving the last L3 group to RoboRumble clients."""
+    sys.path.insert(0, str(HERE / "tools"))
+    import fence
+    if not fence.fence_on():
+        return []
+    try:
+        return [fence.fence_role("bench")]
+    except (fence.FenceError, OSError) as e:
+        raise PlanError(f"FENCE = on but the fence could not be set: {e}")
 
 
 def cmd_status(args):
