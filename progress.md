@@ -1,6 +1,6 @@
 # Queue pc-deise-e07: progress
 
-Updated 2026-10-30 19:36:30 PC time (19:36 UTC), runner pid 69032.
+Updated 2026-10-30 19:51:38 PC time (19:51 UTC), runner pid 69032.
 
 - `prep` done, exit 0 in 0 min
 - `live-D` done, exit 0 in 17 min
@@ -10,8 +10,8 @@ Updated 2026-10-30 19:36:30 PC time (19:36 UTC), runner pid 69032.
 - `live-WV2` done, exit 0 in 17 min
 - `live-CONS` done, exit 0 in 18 min
 - `live-SCAL` done, exit 0 in 17 min
-- `live-RS` running
-- `live-SAOR` pending
+- `live-RS` done, exit 0 in 18 min
+- `live-SAOR` running
 - `read` pending
 - `pr` pending
 
@@ -108,23 +108,33 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-RS
 
-**198 of 276 battles** (72%), 0 failed. Running 14 min, 877 battles/h, about 5 min left (ends ~19:41 PC time). Last battle 0 min ago.
+**276 of 276 battles** (100%), 0 failed. Running 18 min, 946 battles/h, about 0 min left (ends ~19:40 PC time). Last battle 0 min ago.
 Skipped turns a battle: 0.0 overall, first 100 0.1, last 100 0.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 198 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 | `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.1) |
 
-Stopping now would leave 78 battles unrun (about 5 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### live-SAOR
+
+**179 of 276 battles** (65%), 0 failed. Running 11 min, 961 battles/h, about 6 min left (ends ~19:57 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 179 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
+
+Stopping now would leave 97 battles unrun (about 6 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-18:21:52 progress live-SHARP: 129/276 (47%) battles, 878/h, ETA 10 min, 0 failed, skips 0.1/battle (last 100)
-18:30:41 live-SHARP exit=0 in 1058 s
-18:30:41 start live-WV2
 18:30:41 watching live-WV2: 3 stop rule(s)
 18:47:55 live-WV2 exit=0 in 1033 s
 18:47:55 start live-CONS
@@ -137,4 +147,7 @@ Stopping now would leave 78 battles unrun (about 5 min); every battle already fo
 19:22:58 live-SCAL exit=0 in 1028 s
 19:22:58 start live-RS
 19:22:58 watching live-RS: 3 stop rule(s)
+19:40:28 live-RS exit=0 in 1050 s
+19:40:28 start live-SAOR
+19:40:28 watching live-SAOR: 3 stop rule(s)
 ```

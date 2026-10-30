@@ -30,3 +30,6 @@
 19:22:58 live-SCAL exit=0 in 1028 s
 19:22:58 start live-RS
 19:22:58 watching live-RS: 3 stop rule(s)
+19:40:28 live-RS exit=0 in 1050 s
+19:40:28 start live-SAOR
+19:40:28 watching live-SAOR: 3 stop rule(s)
