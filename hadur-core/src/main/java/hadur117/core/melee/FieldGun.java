@@ -224,6 +224,8 @@ public class FieldGun {
     public List<Solution> solutions(Point2D.Double me, double energy, int others,
                                     List<EnemyInfo> alive, long now) {
         List<Solution> out = new ArrayList<>();
+        double nearest = Double.POSITIVE_INFINITY;
+        for (EnemyInfo e : alive) if (e.age(now) <= MAX_AGE) nearest = Math.min(nearest, e.distance(me));
         for (EnemyInfo e : alive) {
             if (e.age(now) > MAX_AGE) continue;
             double distance = e.distance(me);
@@ -233,7 +235,8 @@ public class FieldGun {
                 MeleeEndgame.powerOthers(others, onTeam, MeleeEndgame.THREE_POWER));
             if (power <= 0) continue;
             if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);
-            else power = MeleeEnergyPolicy.crowdPower(power, distance, energy, e.energy, others);
+            else power = MeleeEnergyPolicy.crowdPower(power, distance, nearest, energy, e.energy, others);
+            if (power <= 0) continue;
             double weight = weight(e, me, alive, now);
             int first = out.size();
             EnemyHistory h = history(e.name);

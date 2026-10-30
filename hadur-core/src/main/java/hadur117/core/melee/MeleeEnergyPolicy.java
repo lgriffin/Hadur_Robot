@@ -59,6 +59,17 @@ public final class MeleeEnergyPolicy {
     /** MGUN-16: MGUN-13's power 3 out to {@link #OGI_WIDE_CLOSE} px, not 200. On for 3.19 (power2 card +0.15 +- 0.15, PR #349). */
     public static final boolean OGI_WIDE = true;
     static final double OGI_WIDE_CLOSE = 300;
+    /**
+     * MGUN-22 (arm mscal), inspired by ScalarR's melee power: off a team with two or more
+     * opponents, power falls with the distance to the nearest robot and in a line with Hadur's own
+     * energy rather than stepping at {@link #CROWD_RULE_ENERGY}. Off.
+     */
+    public static final boolean SCAL_POWER = false;
+    static final double SCAL_REACH = 1300;
+    static final double SCAL_FAR = 325;
+    static final double SCAL_SHARE = 6;
+    static final double SCAL_FAR_SHARE = 15;
+    static final double SCAL_RESERVE = 0.02;
 
     private MeleeEnergyPolicy() {}
 
@@ -135,6 +146,44 @@ public final class MeleeEnergyPolicy {
         if (ownEnergy > targetEnergy) p = Math.min(p, ownEnergy - targetEnergy);
         p = Math.max(p, MIN_POWER);
         return Math.min(p, ownEnergy);
+    }
+
+    /**
+     * As {@link #crowdPower(double, double, double, double, int)}, where with MGUN-22 on and two or
+     * more opponents the power is {@link #scalPower} from the nearest robot's distance
+     * {@code nearest}. A hold (0) and a finisher stand.
+     */
+    public static double crowdPower(double tablePower, double distance, double nearest, double ownEnergy,
+                                    double targetEnergy, int others) {
+        return crowdPower(tablePower, distance, nearest, ownEnergy, targetEnergy, others, SCAL_POWER);
+    }
+
+    static double crowdPower(double tablePower, double distance, double nearest, double ownEnergy,
+                             double targetEnergy, int others, boolean scal) {
+        if (scal && tablePower > 0 && others >= 2 && targetEnergy > FINISHER_ENERGY) {
+            return scalPower(nearest, ownEnergy, targetEnergy);
+        }
+        return crowdPower(tablePower, distance, ownEnergy, targetEnergy, others);
+    }
+
+    /**
+     * MGUN-22: {@link #SCAL_REACH}/{@code nearest}, capped at own energy/{@link #SCAL_SHARE}, at
+     * own energy/{@link #SCAL_FAR_SHARE} beyond {@link #SCAL_FAR} px, at what kills the target and
+     * {@link #SCAL_RESERVE} short of Hadur's own energy and at the lead over the target, as the table
+     * is (a lead under the lightest shot holds, 0); 0.1 to 3.
+     */
+    static double scalPower(double nearest, double ownEnergy, double targetEnergy) {
+        double p = SCAL_REACH / Math.max(1, nearest);
+        if (nearest > SCAL_FAR) p = Math.min(p, ownEnergy / SCAL_FAR_SHARE);
+        p = Math.min(p, ownEnergy / SCAL_SHARE);
+        p = Math.min(p, killPower(targetEnergy));
+        p = Math.min(p, ownEnergy - SCAL_RESERVE);
+        if (ownEnergy > targetEnergy) {
+            double lead = ownEnergy - targetEnergy;
+            if (lead < MIN_POWER) return 0;
+            p = Math.min(p, lead);
+        }
+        return Math.max(MIN_POWER, Math.min(MAX_POWER, p));
     }
 
     /** The duel gun's 1v1 table, mirrored here: melee code does not reach into the duel. */

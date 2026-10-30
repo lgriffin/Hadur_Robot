@@ -331,6 +331,8 @@ class MinimumRiskMovementTest {
     @Tag("MMOVE-1")
     @DisplayName("MMOVE-1: the destination is kept until a clearly safer point appears")
     void hysteresis() {
+        // The base mechanism; the MMOVE-15 surfer re-picks by its own wave check.
+        move.surf(false);
         scan(tracker, "a", 800, 500, 100, 1);
         Point2D.Double me = pt(500, 500);
         Point2D.Double first = move.chooseDestination(me, 100, 3, tracker.alive(), 100, normal);

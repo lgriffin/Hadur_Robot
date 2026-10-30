@@ -185,9 +185,9 @@ class MeleeCrowdMovementTest {
 
     @Test
     @Tag("MMOVE-15")
-    @DisplayName("MMOVE-15: the melee surfer ships off, weighs shots by the crowd and plays a shooter's learned aims")
+    @DisplayName("MMOVE-15: the melee surfer ships on (3.21), weighs shots by the crowd and plays a shooter's learned aims")
     void surf() {
-        assertFalse(MinimumRiskMovement.MELEE_SURF);
+        assertTrue(MinimumRiskMovement.MELEE_SURF, "on from 3.21 (PR #462)");
         Point2D.Double me = pt(500, 500);
         scan(tracker, "a", 500, 900, 100, 1);
         scan(tracker, "b", 500, 800, 100, 1);
@@ -213,6 +213,7 @@ class MeleeCrowdMovementTest {
             move.bullets().stream().filter(b -> b.aim == VirtualBullet.Aim.LEARNED).count());
         // Off, or with no log given, the same shots are MMOVE-3's.
         MinimumRiskMovement off = new MinimumRiskMovement(field(1000, 1000));
+        off.surf(false);
         off.newRound();
         off.updateMeleeBullets(List.of(first, next), log, me, 22, tracker.alive(), danger);
         assertEquals(4, off.bullets().size());
@@ -232,5 +233,76 @@ class MeleeCrowdMovementTest {
         Point2D.Double surfed = move.chooseDestination(pt(500, 500), 100, 3, tracker.alive(), 5, normal);
         // With no wave in the air the wave check's damage is level, so its pick is the least risk.
         assertEquals(plain.chooseDestination(pt(500, 500), 100, 3, tracker.alive(), 5, normal), surfed);
+    }
+
+    @Test
+    @Tag("MMOVE-16")
+    @DisplayName("MMOVE-16: with the mix on, a shot's share at Hadur is 1/d^2 over every robot but the shooter")
+    void mix() {
+        assertFalse(MinimumRiskMovement.MELEE_MIX);
+        Point2D.Double me = pt(500, 500);
+        scan(tracker, "a", 500, 900, 100, 1);
+        scan(tracker, "b", 500, 700, 100, 1);
+        EnemyShot shot = new EnemyShot("a", pt(500, 900), 9, 2.0);
+        // Hadur 400 px from a, b 200 px: (1/400^2) / (1/400^2 + 1/200^2) = 0.2.
+        assertEquals(0.2, MinimumRiskMovement.mixWeight(shot, me, tracker.alive()), 1e-12);
+        RobotStateLog log = still(me, 8, 9, 10);
+        move.surf(true);
+        move.scalar(true, false, false);
+        move.updateMeleeBullets(List.of(shot), log, me, 10, tracker.alive(), new TeamDanger(field(1000, 1000)));
+        assertEquals(2, move.bullets().size());
+        for (VirtualBullet b : move.bullets()) assertEquals(0.2, b.weight, 1e-12);
+    }
+
+    @Test
+    @Tag("MMOVE-17")
+    @DisplayName("MMOVE-17: a crowd both adds and multiplies; with no wave the least risk still wins")
+    void pathDanger() {
+        assertFalse(MinimumRiskMovement.MELEE_PATH_DANGER);
+        // Risk measured from the least (1): c = 0, 1, 3 over a base of here - least = 1.
+        double[] s = MinimumRiskMovement.pathDangerScores(new double[] {1, 2, 4}, new double[] {0, 0, 0}, 2, 10);
+        assertArrayEquals(new double[] {0, 2, 12}, s, 1e-9);
+        // Damage: 20 x 1/10 = 2 on a quiet point still loses to a point one risk step higher.
+        double[] d = MinimumRiskMovement.pathDangerScores(new double[] {1, 2}, new double[] {1, 0}, 2, 10);
+        assertArrayEquals(new double[] {2, 2}, d, 1e-9);
+        // Where Hadur stands is the least: the median keeps the scale.
+        double[] m = MinimumRiskMovement.pathDangerScores(new double[] {1, 3}, new double[] {0, 0}, 1, 10);
+        assertArrayEquals(new double[] {0, 6}, m, 1e-9);
+        scan(tracker, "a", 300, 300, 100, 1);
+        scan(tracker, "b", 700, 700, 100, 1);
+        scan(tracker, "c", 900, 100, 100, 1);
+        MinimumRiskMovement plain = new MinimumRiskMovement(field(1000, 1000));
+        plain.newRound();
+        move.surf(true);
+        move.scalar(false, true, false);
+        assertEquals(plain.chooseDestination(pt(500, 500), 100, 3, tracker.alive(), 5, normal),
+            move.chooseDestination(pt(500, 500), 100, 3, tracker.alive(), 5, normal), "no wave: least risk");
+    }
+
+    @Test
+    @Tag("MMOVE-18")
+    @DisplayName("MMOVE-18: a robot nearer a wave's source shades the angles behind it")
+    void shade() {
+        assertFalse(MinimumRiskMovement.MELEE_SHADE);
+        double half = Math.asin(18.0 / 200);
+        double[][] behind = {{0, half, 200}};
+        assertEquals(1.0, MinimumRiskMovement.shaded(0, half / 2, 400, behind), 1e-12, "fully behind b");
+        assertEquals(0.0, MinimumRiskMovement.shaded(0, half / 2, 100, behind), 1e-12, "in front of b");
+        assertEquals(0.0, MinimumRiskMovement.shaded(1.0, half / 2, 400, behind), 1e-12, "off to the side");
+        assertEquals(0.5, MinimumRiskMovement.shaded(half, half, 400, behind), 1e-9, "half covered");
+        double[][] twice = {{0, half, 200}, {0, half, 250}};
+        assertEquals(0.5, MinimumRiskMovement.shaded(half, half, 400, twice), 1e-9, "overlaps count once");
+        // A wave from a at (500, 900): b at (500, 700) shades Hadur at (500, 500) from it, c does not.
+        scan(tracker, "a", 500, 900, 100, 1);
+        scan(tracker, "b", 500, 700, 100, 1);
+        scan(tracker, "c", 100, 100, 100, 1);
+        EnemyShot shot = new EnemyShot("a", pt(500, 900), 0, 2.0);
+        VirtualBullet hot = new VirtualBullet(shot, VirtualBullet.Aim.HEAD_ON, Math.PI);
+        List<MinimumRiskMovement.Wave> waves = MinimumRiskMovement.Wave.of(List.of(hot));
+        List<double[][]> sh = MinimumRiskMovement.shadows(waves, tracker.alive());
+        assertEquals(2, sh.get(0).length, "b and c, not the shooter");
+        double open = MinimumRiskMovement.waveDamage(pt(500, 500), pt(500, 500), 20, waves);
+        assertTrue(open > 0);
+        assertEquals(0.0, MinimumRiskMovement.waveDamage(pt(500, 500), pt(500, 500), 20, waves, sh), 1e-9);
     }
 }

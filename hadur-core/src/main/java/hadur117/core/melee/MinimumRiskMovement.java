@@ -231,9 +231,32 @@ public class MinimumRiskMovement {
      * that shooter's hits holds {@link TeamDanger#MIN_SAMPLES}, its bullets are the learned aims
      * (MMOVE-10's log, fed off a team by Hadur's own hits) in place of head-on and linear; and the
      * destination is chosen by the wave check (TMODE-11): the {@link #WAVE_RERANK} least risky
-     * candidates driven to, scored by risk and the waves' damage on the way. Off.
+     * candidates driven to, scored by risk and the waves' damage on the way. On from 3.21
+     * (pc-melee-surf: +0.99 +- 0.19 census APS, PR #462).
      */
-    public static final boolean MELEE_SURF = false;
+    public static final boolean MELEE_SURF = true;
+    /**
+     * MMOVE-16 (arm mmix), inspired by ScalarR: with the surfer on, a shot's share aimed at Hadur
+     * is Hadur's 1/d^2 from its source over the sum of 1/d^2 for every robot alive but the shooter,
+     * in place of MMOVE-11's 1/(1+k)^2; shares under {@link #MIX_FLOOR} make no bullets. Off.
+     */
+    public static final boolean MELEE_MIX = false;
+    static final double MIX_FLOOR = 0.02;
+    /**
+     * MMOVE-17 (arm mwpath), inspired by ScalarR: with the surfer on, each destination of the wave
+     * check scores (20 x its wave damage / all the damage in the air + c) x (1 + c), c its risk
+     * over the risk where Hadur stands, so a crowd both adds and multiplies. Off.
+     */
+    public static final boolean MELEE_PATH_DANGER = false;
+    static final double PATH_DANGER_K = 20;
+    /**
+     * MMOVE-18 (arm mshade), inspired by ScalarR: with the surfer on, a wave's danger at Hadur is
+     * cut by the share of Hadur's width that another robot nearer its source covers (each robot
+     * over {@link #SHADE_MIN} px from the source, +-asin(18/d) wide). Off.
+     */
+    public static final boolean MELEE_SHADE = false;
+    static final double SHADE_MIN = 36;
+    static final double SHADE_HALF = 18;
 
     static final double PERIPHERY_K = 0.2;
     static final double CUTOFF_K = 0.4;
@@ -382,6 +405,8 @@ public class MinimumRiskMovement {
     private boolean aimed = MELEE_AIMED, hops = MELEE_HOPS, heat = MELEE_HEAT, closer = MELEE_CLOSER;
     /** MMOVE-15: whether this movement surfs off a team. */
     private boolean surf = MELEE_SURF;
+    /** MMOVE-16..18: the ScalarR-inspired switches on the surfer. */
+    private boolean mix = MELEE_MIX, pathDanger = MELEE_PATH_DANGER, shade = MELEE_SHADE;
     /** MMOVE-13: per opponent, the tick its gun could next fire, and its last seen shot's power. */
     private final java.util.Map<String, Long> nextFire = new java.util.HashMap<>();
     private final java.util.Map<String, Double> lastPower = new java.util.HashMap<>();
@@ -450,6 +475,13 @@ public class MinimumRiskMovement {
         round++;
     }
 
+    /** MMOVE-16..18: sets the ScalarR-inspired switches, for tests. */
+    void scalar(boolean mix, boolean pathDanger, boolean shade) {
+        this.mix = mix;
+        this.pathDanger = pathDanger;
+        this.shade = shade;
+    }
+
     /** MMOVE-15: sets the melee surfer, for tests. */
     void surf(boolean on) {
         this.surf = on;
@@ -501,8 +533,9 @@ public class MinimumRiskMovement {
                 lastPower.put(s.shooter, s.power);
                 dropAssumed(s);
             }
-            double w = aimed || learn ? crowdWeight(s, target, enemies) : 1.0;
-            if (w < SOFT_FLOOR) continue;
+            double w = learn && mix ? mixWeight(s, target, enemies)
+                : aimed || learn ? crowdWeight(s, target, enemies) : 1.0;
+            if (w < (learn && mix ? MIX_FLOOR : SOFT_FLOOR)) continue;
             List<TeamDanger.Aim> aims = learn && at != null ? danger.aims(s, at) : null;
             if (aims != null) {
                 // The SURF_AIMS nearest aims carry the shot's whole weight: melee has many shots
@@ -558,6 +591,20 @@ public class MinimumRiskMovement {
     /** Ticks a gun takes to cool after a shot of {@code power}, at the engine's default cooling. */
     static long coolTicks(double power) {
         return (long) Math.ceil((1 + power / 5) / GUN_COOLING);
+    }
+
+    /**
+     * MMOVE-16: the share of {@code shot} aimed at Hadur, standing at {@code me} when it was
+     * fired: 1/d^2 to Hadur over the sum of 1/d^2 to Hadur and every living opponent but the shooter.
+     */
+    static double mixWeight(EnemyShot shot, Point2D.Double me, List<EnemyInfo> enemies) {
+        double mine = 1 / Math.max(1, shot.source.distanceSq(me));
+        double sum = mine;
+        for (EnemyInfo e : enemies) {
+            if (e.location == null || e.name.equals(shot.shooter)) continue;
+            sum += 1 / Math.max(1, shot.source.distanceSq(e.location));
+        }
+        return mine / sum;
     }
 
     /**
@@ -794,7 +841,7 @@ public class MinimumRiskMovement {
         lastCandidates = candidates.size();
         if (surf && !onTeam(mates)) {
             // MMOVE-15: the melee surfer picks by the wave check.
-            destination = waveBest(candidates, v);
+            destination = surfBest(candidates, v);
             return destination;
         }
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.DODGE)) {
@@ -1141,6 +1188,12 @@ public class MinimumRiskMovement {
         return rerankBest(candidates, v, WAVE_RERANK, Wave.of(v.bullets), List.of(), false);
     }
 
+    /** MMOVE-15: the melee surfer's wave check, with MMOVE-17's scores and MMOVE-18's shadows when on. */
+    Point2D.Double surfBest(List<Point2D.Double> candidates, View v) {
+        if (!pathDanger && !shade) return waveBest(candidates, v);
+        return rerankBest(candidates, v, WAVE_RERANK, Wave.of(v.bullets), List.of(), false, true);
+    }
+
     /**
      * TMODE-27, Ogi's dodge: the {@link TeamDodge#RERANK} lowest-risk candidates, and the
      * destination held if not reached, are each driven to through the shot profiles
@@ -1162,6 +1215,13 @@ public class MinimumRiskMovement {
      */
     Point2D.Double rerankBest(List<Point2D.Double> candidates, View v, int rerank, List<Wave> waves,
                               List<VirtualBullet> mateBullets, boolean ownFire) {
+        return rerankBest(candidates, v, rerank, waves, mateBullets, ownFire, false);
+    }
+
+    /** As above; with {@code scalar} the surfer's MMOVE-17 scores and MMOVE-18 shadows apply when on. */
+    Point2D.Double rerankBest(List<Point2D.Double> candidates, View v, int rerank, List<Wave> waves,
+                              List<VirtualBullet> mateBullets, boolean ownFire, boolean scalar) {
+        List<double[][]> shadows = scalar && shade ? shadows(waves, v.enemies) : null;
         List<Point2D.Double> pool = new ArrayList<>(candidates);
         boolean hold = destination != null && destination.distance(v.me) > REACHED;
         if (hold) pool.add(destination);
@@ -1180,13 +1240,14 @@ public class MinimumRiskMovement {
         for (int k = 0; k < picked.size(); k++) {
             Point2D.Double p = pool.get(picked.get(k));
             r[k] = risk[picked.get(k)];
-            damage[k] = waveDamage(v.me, p, v.now, waves);
+            damage[k] = waveDamage(v.me, p, v.now, waves, shadows);
             if (mateBullets.isEmpty()) continue;
             double own = pathDamage(v.me, p, v.now, mateBullets);
             if (ownFire) r[k] += PATH_K * own;
             else damage[k] += own;
         }
-        double[] score = waveScores(r, damage);
+        double[] score = scalar && pathDanger ? pathDangerScores(r, damage, risk(v.me, v), inAir(waves))
+            : waveScores(r, damage);
         Point2D.Double best = null;
         double bestScore = Double.POSITIVE_INFINITY;
         for (int k = 0; k < picked.size(); k++) {
@@ -1310,6 +1371,75 @@ public class MinimumRiskMovement {
         return out;
     }
 
+    /**
+     * MMOVE-17: (K x damage / all the damage in the air + c) x (1 + c), c each destination's risk
+     * over the risk {@code here} (or the median, if more), all measured from the least (as {@link #waveScores}).
+     */
+    static double[] pathDangerScores(double[] risk, double[] damage, double here, double inAir) {
+        double least = here;
+        for (double x : risk) least = Math.min(least, x);
+        double[] shifted = new double[risk.length];
+        for (int k = 0; k < risk.length; k++) shifted[k] = risk[k] - least;
+        // Where Hadur stands is the least risk, the median keeps the scale.
+        double base = Math.max(1e-9, Math.max(here - least, median(shifted)));
+        double total = Math.max(1e-9, inAir);
+        double[] out = new double[risk.length];
+        for (int k = 0; k < risk.length; k++) {
+            double c = (risk[k] - least) / base;
+            out[k] = (PATH_DANGER_K * damage[k] / total + c) * (1 + c);
+        }
+        return out;
+    }
+
+    /** MMOVE-17: the most damage the {@code waves} in the air could do. */
+    static double inAir(List<Wave> waves) {
+        double sum = 0;
+        for (Wave w : waves) sum += w.aimed * w.damage;
+        return sum;
+    }
+
+    /**
+     * MMOVE-18: for each wave, the robots other than its shooter over {@link #SHADE_MIN} px from its
+     * source, each as {bearing from the source, half width +-asin(18/d), distance}.
+     */
+    static List<double[][]> shadows(List<Wave> waves, List<EnemyInfo> enemies) {
+        List<double[][]> out = new ArrayList<>(waves.size());
+        for (Wave w : waves) {
+            List<double[]> one = new ArrayList<>();
+            for (EnemyInfo e : enemies) {
+                if (e.location == null || e.name.equals(w.shooter)) continue;
+                double d = w.source.distance(e.location);
+                if (d <= SHADE_MIN) continue;
+                one.add(new double[] {Math.atan2(e.location.x - w.source.x, e.location.y - w.source.y),
+                    Math.asin(Math.min(1, SHADE_HALF / d)), d});
+            }
+            out.add(one.toArray(new double[0][]));
+        }
+        return out;
+    }
+
+    /**
+     * MMOVE-18: the share of [bearing +- half] that the shadows nearer the source than {@code d}
+     * cover, counting overlapping shadows once.
+     */
+    static double shaded(double bearing, double half, double d, double[][] shadows) {
+        List<double[]> parts = new ArrayList<>();
+        for (double[] sh : shadows) {
+            if (sh[2] >= d) continue;
+            double off = Angles.normalRelativeAngle(sh[0] - bearing);
+            double lo = Math.max(-half, off - sh[1]), hi = Math.min(half, off + sh[1]);
+            if (hi > lo) parts.add(new double[] {lo, hi});
+        }
+        parts.sort((a, b) -> Double.compare(a[0], b[0]));
+        double covered = 0, end = -half;
+        for (double[] p : parts) {
+            if (p[1] <= end) continue;
+            covered += p[1] - Math.max(p[0], end);
+            end = p[1];
+        }
+        return Math.min(1, covered / (2 * half));
+    }
+
     static double median(double[] xs) {
         double[] s = xs.clone();
         java.util.Arrays.sort(s);
@@ -1324,6 +1454,12 @@ public class MinimumRiskMovement {
      * {@link #WAVE_TICKS} ticks. Each wave counts once, on the tick its front crosses the box.
      */
     static double waveDamage(Point2D.Double me, Point2D.Double to, long now, List<Wave> waves) {
+        return waveDamage(me, to, now, waves, null);
+    }
+
+    /** As above, each wave's mass cut by the share of Hadur its {@code shadows} cover (MMOVE-18), if given. */
+    static double waveDamage(Point2D.Double me, Point2D.Double to, long now, List<Wave> waves,
+                             List<double[][]> shadows) {
         if (waves.isEmpty()) return 0;
         boolean[] done = new boolean[waves.size()];
         double total = 0;
@@ -1344,7 +1480,11 @@ public class MinimumRiskMovement {
                 if (front < d - WAVE_HALF) continue;
                 done[i] = true;
                 if (front - w.speed > d + WAVE_HALF) continue;
-                total += w.mass(Math.atan2(x - w.source.x, y - w.source.y), Math.atan(WAVE_HALF / Math.max(d, WAVE_HALF)));
+                double bearing = Math.atan2(x - w.source.x, y - w.source.y);
+                double half = Math.atan(WAVE_HALF / Math.max(d, WAVE_HALF));
+                double m = w.mass(bearing, half);
+                if (shadows != null) m *= 1 - shaded(bearing, half, d, shadows.get(i));
+                total += m;
             }
         }
         return total;
@@ -1353,6 +1493,7 @@ public class MinimumRiskMovement {
     /** TMODE-11: one shot in flight as a profile over its headings. */
     static final class Wave {
         final Point2D.Double source;
+        final String shooter;
         final long fireTime;
         final double speed;
         final double damage;
@@ -1365,6 +1506,7 @@ public class MinimumRiskMovement {
 
         Wave(EnemyShot shot, List<VirtualBullet> bullets) {
             source = shot.source;
+            shooter = shot.shooter;
             fireTime = shot.fireTime;
             speed = shot.speed();
             damage = 4 * shot.power + Math.max(0, 2 * (shot.power - 1));
@@ -1396,6 +1538,7 @@ public class MinimumRiskMovement {
          */
         Wave(EnemyShot shot, double aimed, double[] headings, double[] shares, double centre) {
             source = shot.source;
+            shooter = shot.shooter;
             fireTime = shot.fireTime;
             speed = shot.speed();
             damage = 4 * shot.power + Math.max(0, 2 * (shot.power - 1));
