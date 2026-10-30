@@ -77,6 +77,25 @@ public class FieldGun {
      */
     public static final boolean SOFT_MATCH = false;
 
+    /**
+     * MGUN-21: on a team, the enemy leader (Robocode starts a team's leader with 200 energy,
+     * every other member with 100 and a droid with 120) weighs {@link #DECAP_BOOST} times more
+     * once killing it pays: its energy is no more than the 30 its death drains from each living
+     * teammate of its, summed over them (each capped at its own energy).
+     */
+    public static final boolean DECAP = false;
+    static final double DECAP_BOOST = 3.0;
+    /** MGUN-21: a robot first seen in a round above this energy is its team's leader. */
+    static final double LEADER_SEEN = 150;
+    /** MGUN-21: what a leader's death drains from each living teammate. */
+    static final double LEADER_DRAIN = 30;
+    /** TMODE-31: the leader's weight under LEAD. */
+    static final double LEAD_BOOST = 4.0;
+    /** TMODE-31: a scanner's weight under LEAD while droids are about. */
+    static final double EYES_BOOST = 2.5;
+    /** TMODE-31: a robot first seen in a round with more than this, up to {@link #LEADER_SEEN}, is a droid (120). */
+    static final double DROID_SEEN = 110;
+
     /** MGUN-17: the aims a wave scores; FIELD is the field gun's own. */
     public static final int FIELD = 0, HEAD_ON = 1, LINEAR = 2, CIRCULAR = 3, EXPERT_COUNT = 4;
     /** MGUN-17: waves an opponent needs before a simple aim can take it. */
@@ -125,6 +144,10 @@ public class FieldGun {
     private boolean onTeam;
     /** MGUN-17: each opponent's decayed hits per aim, then its decayed wave count last. */
     private final Map<String, double[]> expertScores = new LinkedHashMap<>();
+    /** MGUN-21: each robot's energy when first seen this round, kept from its first scan on whatever switches are on. */
+    private final Map<String, Double> firstEnergy = new LinkedHashMap<>();
+    /** TMODE-31: whether the team modes this tick carry LEAD. */
+    private boolean lead;
     /** MGUN-17: true while a wave reads the field gun's own aim, which the experts must not steer. */
     private boolean pure;
 
@@ -135,6 +158,7 @@ public class FieldGun {
 
     /** Ends the round's logs; the situations learned stay for the battle. */
     public void newRound() {
+        firstEnergy.clear();
         for (EnemyHistory h : histories.values()) h.newRound();
     }
 
@@ -172,6 +196,7 @@ public class FieldGun {
      * opponents alive, which MGUN-11's crowd attributes read.
      */
     public void onScan(EnemyInfo e, double distance, long time, Point2D.Double nearest, int alive) {
+        firstEnergy.putIfAbsent(e.name, e.energy);
         EnemyHistory h = history(e.name);
         if (h != null) {
             h.onScan(time, e.location.x, e.location.y, e.heading, e.velocity, distance,
@@ -289,11 +314,48 @@ public class FieldGun {
         double w = 100.0 / Math.max(50.0, e.distance(me));
         if (FLAT_DISTANCE && !onTeam) w = Math.pow(w, 0.7);
         if (HIT_TARGET && !onTeam) w *= hitFactor(e.name);
+        if (DECAP && onTeam && decapitates(e, alive)) w *= DECAP_BOOST;
+        if (lead && onTeam) w *= leadFactor(e, alive);
         w *= 1 + 0.5 * (100 - Math.min(100, e.energy)) / 100.0;
         if (e.energy <= MeleeEnergyPolicy.FINISHER_ENERGY) w *= FINISHER_BOOST;
         if (isolated(e, alive)) w *= ISOLATED_BOOST;
         if (e.hitsOnHadur(now, SHOOTER_WINDOW) >= 2) w *= SHOOTER_BOOST;
         return w;
+    }
+
+    /** TMODE-31: whether this tick's team modes carry LEAD; set before any aim of the tick. */
+    public void lead(boolean lead) {
+        this.lead = lead;
+    }
+
+    /**
+     * TMODE-31: {@link #LEAD_BOOST} for the enemy leader; {@link #EYES_BOOST} for any other
+     * robot that is not a droid while a droid is alive; else 1.
+     */
+    double leadFactor(EnemyInfo e, List<EnemyInfo> alive) {
+        for (EnemyInfo o : alive) firstEnergy.putIfAbsent(o.name, o.energy);
+        double first = firstEnergy.getOrDefault(e.name, 0.0);
+        if (first > LEADER_SEEN) return LEAD_BOOST;
+        if (first > DROID_SEEN) return 1;
+        for (EnemyInfo o : alive) {
+            double f = firstEnergy.getOrDefault(o.name, 0.0);
+            if (o != e && f > DROID_SEEN && f <= LEADER_SEEN) return EYES_BOOST;
+        }
+        return 1;
+    }
+
+    /**
+     * MGUN-21: whether {@code e} is the enemy leader and killing it now pays: its energy is no
+     * more than what its death drains from its living teammates.
+     */
+    boolean decapitates(EnemyInfo e, List<EnemyInfo> alive) {
+        for (EnemyInfo o : alive) firstEnergy.putIfAbsent(o.name, o.energy);
+        if (firstEnergy.getOrDefault(e.name, 0.0) <= LEADER_SEEN) return false;
+        double drain = 0;
+        for (EnemyInfo o : alive) {
+            if (o != e) drain += Math.min(LEADER_DRAIN, Math.max(0, o.energy));
+        }
+        return e.energy <= drain;
     }
 
     private boolean expertsOn() {

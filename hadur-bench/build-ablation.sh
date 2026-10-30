@@ -24,6 +24,8 @@
 #   gexp    MGUN-17: after 20 waves, a head-on, linear or circular aim that out-hits the field gun 1.25x takes that opponent. Suffix gx.
 #   grate   MGUN-18: an opponent's weight leans toward the ones the aim it fires has been hitting. Suffix gr.
 #   gdist   MGUN-19: the distance weight (100/d)^0.7, not 100/d. Suffix gd.
+#   tmlead  (team only) TMODE-31: LEAD on every team: the gun leans on the leader and, with droids about, the scanners. Suffix ld.
+#   tdecap  (team only) MGUN-21: the gun leans 3x on the enemy leader once its death drains more than it costs. Suffix dc.
 #   gsoft   MGUN-20: a situation's weight 1/(distance + mean distance), not 1/(0.01 + distance). Suffix gv.
 #   e3ring  MEND-1: with two opponents left off a team, the crowd's ring and lateral weight (no MMOVE-4). Suffix er.
 #   e3pow  MEND-2: with two opponents left off a team, the crowd's power table (not the duel's). Suffix ep.
@@ -1029,6 +1031,18 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
+        tmlead)
+            # TMODE-31 (team only): LEAD for every team; the named teams play it on top of their entry.
+            # Duel and melee fixtures bit for bit. Suffix ld.
+            version="${version}ld"
+            edit "$modes" "public static final boolean FORCE_LEAD = false;" "public static final boolean FORCE_LEAD = true;"
+            sed -i -E 's/^(        t\.put\("[^"]+", of\(.*)\)\);$/\1, Mode.LEAD));/' "$modes"
+            ;;
+        tdecap)
+            # MGUN-21 (team only): the field gun leans 3x on the enemy leader once its death pays;
+            # duel and melee fixtures bit for bit. Suffix dc.
+            edit "$fgun" "public static final boolean DECAP = false;" "public static final boolean DECAP = true;"
+            version="${version}dc" ;;
         gexp|grate|gdist|gsoft)
             # Melee gun, inspired by Ogi (docs/plan-melee-top5.md, MGUN-17..20): one FieldGun switch
             # on, off a team only; duel and team fixtures bit for bit.
@@ -1051,7 +1065,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgeb, tmdodgef, tmnododge, tmnoof, tmtnear, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf, gexp, grate, gdist, gsoft)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgeb, tmdodgef, tmnododge, tmnoof, tmtnear, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf, gexp, grate, gdist, gsoft, tdecap, tmlead)" >&2; exit 2 ;;
     esac
 done
 
