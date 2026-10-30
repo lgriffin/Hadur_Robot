@@ -418,6 +418,15 @@ weight, the weight set at every scan) and `Gun.CAP` off, and DeiseLab sets each 
 at every scan, so the shipped class and the adapter give the same orders (DEISE-16). E3a's
 `AIM2` and `P2` sed lines no longer apply to the core, which has both.
 
+### Stage E4: tuning 0.4's crowd terms (card pc-deise-e07)
+
+0.4 is at 1,499 bytes, so E4 tunes constants, which cost nothing to ship. Each arm is one sed on
+DeiseLab over the core (D is 0.4): the push 1.5 times (P3) and 0.75 times (P075) 0.4's, a sharper
+split between a likely shooter's push and a stray one's (SHARP: 320,000 and 120,000), the waves
+counted double (WV2) or half (WV05), and a shorter ring (RS: 0.35 of the target's distance, up to
+120 px, since REACH's longer one lost). With SAOR, on fresh seeds (from 3700), about 2.3 h. An arm
+at +0.30 or more over D, low end above 0, ships as 0.4.1 on Leigh's go.
+
 ## 9. Uniqueness
 
 Leigh's rule for Saor holds here: inspired by others, never a copy. Deise's gun is Saor's own
