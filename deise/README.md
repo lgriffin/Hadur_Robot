@@ -11,9 +11,9 @@ the stages are in [docs/deise.md](../docs/deise.md); the requirements are DEISE-
 LiteRumble scores the size rumbles from the same MeleeRumble battles. MiniMelee is the target.
 
 | Version | Date (UTC) | Rumble | Rank | APS | Battles | 1st | Gap to 1st |
+|---|---|---|---|---|---|---|---|
 | 0.4 | 2026-10-30 21:50 (API) | **MiniMelee** | **2nd of 206** | **70.57** | 726 | kc.mini.Mirage 0.2, 71.15 | +0.58 |
 | 0.4 | 2026-10-30 21:50 (API) | MeleeRumble | 15th of 418 | 67.60 | 1,585 | aaa.r.ScalarR 0.005g.047, 72.72 | +5.12 |
-|---|---|---|---|---|---|---|---|
 | 0.4 | 2026-10-30 14:02 | **MiniMelee** | **2nd of 206** | **70.54 ± 0.36** | 559 | kc.mini.Mirage 0.2, 71.15 | +0.61 |
 | 0.3 | 2026-10-28 23:22 | MiniMelee | 2nd of 206 | 69.81 ± 0.33 | 641 | kc.mini.Mirage 0.2, 71.19 | +1.38 |
 | 0.3 | 2026-10-28 23:35 | MeleeRumble | 15th of 418 | 66.59 | 1,282 | aaa.r.ScalarR 0.005g.047, 72.71 | +6.12 |

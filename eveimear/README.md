@@ -14,8 +14,8 @@ EVEIMEAR-12 in [docs/requirements.md](../docs/requirements.md).
 ## Standing
 
 | Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | 5th place | Gap to 5th |
-| 0.1 | 2026-10-30 21:50 (API) | **MicroRumble** | **9th of 516** | **83.28** | 515 | 2,362 | nz.jdc.micro.HedgehogGF 1.5, 84.96 | +1.68 |
 |---|---|---|---|---|---|---|---|---|
+| 0.1 | 2026-10-30 21:50 (API) | **MicroRumble** | **9th of 516** | **83.28** | 515 | 2,362 | nz.jdc.micro.HedgehogGF 1.5, 84.96 | +1.68 |
 | 0.1 | 2026-10-29 07:23 | **MicroRumble** | **9th of 516** | **83.36 ± 0.33** | 515 | 608 | nz.jdc.micro.HedgehogGF 1.5, 84.93 | +1.57 |
 
 **Eveimear 0.1 is 9th in MicroRumble** on its first full pass, 1.57 behind HedgehogGF for 5th and

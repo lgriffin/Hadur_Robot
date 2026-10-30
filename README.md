@@ -79,12 +79,12 @@ round-end profile save that grew with every opponent on disk, fixed in 3.4
 
 Hadur has siblings, one for each size class and format it can win. Each is a separate robot with
 its own folder, build, requirements and README, and none shares code with Hadur.
-Best live results as of 2026-10-30 21:50 UTC:
+Live results as of 2026-10-30 21:50 UTC (each robot's README keeps its full history):
 
-| Robot | Rumble | Size | Best live result | |
+| Robot | Rumble | Size | Live result | |
 |---|---|---|---|---|
 | [**Hadur**](hadur-robot/) `hadur117.Hadur` | RoboRumble (1v1) | megabot | **3rd of 1,222**, 91.82 ± 0.22 (3.20, 2026-10-30) | [standing](#standing) |
-| | MeleeRumble | | **13th of 417**, 67.92 ± 0.24 (3.18.1, 2026-10-28) | |
+| | MeleeRumble | | 14th of 418, 67.76 (3.20, 2026-10-30) | |
 | [**HadurTeam**](hadur-robot/) `hadur117.HadurTeam` | TeamRumble | five Hadurs | **3rd of 48**, 81.51 (3.20, 2026-10-30, 45 of 47 pairings) | [standing](#standing) |
 | [**TwinSaor**](twinsaor/) `hadur117.twin.TwinSaor` | Twin Duel (2v2) | 1,995 B of 1,999 | **1st of 28**, 70.28 ± 0.50 (0.2, 2026-10-28) | [README](twinsaor/README.md) |
 | [**Saor**](saor/) `hadur117.micro.Saor` | MicroMelee | 723 B of 749 | **1st of 158**, 69.73 (0.3, 2026-10-30), 0.45 ahead of kc.micro.Figment | [README](saor/README.md) |

@@ -11,10 +11,10 @@ LiteRumble scores the size rumbles from the same MeleeRumble battles, so Saor sh
 every melee table it is small enough for. MicroMelee is the target.
 
 | Version | Date (UTC) | Rumble | Rank | APS | Battles | 1st | Gap to 1st |
+|---|---|---|---|---|---|---|---|
 | 0.3 | 2026-10-30 21:50 (API) | **MicroMelee** | **1st of 158** | **69.73** | 594 | Saor, 2nd kc.micro.Figment 1.0 69.28 | -0.45 (leads) |
 | 0.3 | 2026-10-30 21:50 (API) | MiniMelee | 3rd of 206 | 69.09 | 785 | kc.mini.Mirage 0.2, 71.15 | +2.06 |
 | 0.3 | 2026-10-30 21:50 (API) | MeleeRumble | 19th of 418 | 65.54 | 1,741 | aaa.r.ScalarR 0.005g.047, 72.72 | +7.18 |
-|---|---|---|---|---|---|---|---|
 | 0.3 | 2026-10-27 23:45 | **MicroMelee** | **1st of 157** | **69.80 ± 0.43** | 415 | Saor, 2nd kc.micro.Figment 1.0 69.36 | -0.44 (leads) |
 | 0.3 | 2026-10-27 23:45 | MiniMelee | 3rd of 205 | 69.20 ± 0.38 | 534 | kc.mini.Mirage 0.2, 71.20 | +2.00 |
 | 0.3 | 2026-10-27 23:45 | MeleeRumble | 19th of 417 | 65.68 ± 0.26 | 1,167 | aaa.r.ScalarR 0.005g.047, 72.75 | +7.07 |
