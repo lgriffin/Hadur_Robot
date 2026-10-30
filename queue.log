@@ -5,3 +5,7 @@
 15:43:05 start msaa
 15:43:05 watching msaa: 2 stop rule(s)
 15:43:25 progress msaa: 0/276 (0%) battles, 0 failed
+16:10:34 msaa exit=0 in 1649 s
+16:10:34 start msbb
+16:10:34 watching msbb: 2 stop rule(s)
+16:13:40 progress msbb: 30/276 (11%) battles, 581/h, ETA 25 min, 0 failed, skips 71.6/battle (last 100)

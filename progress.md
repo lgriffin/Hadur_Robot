@@ -1,25 +1,37 @@
 # Queue pc-melee-surf: progress
 
-Updated 2026-10-30 16:08:37 PC time (16:08 UTC), runner pid 30060.
+Updated 2026-10-30 16:23:45 PC time (16:23 UTC), runner pid 30060.
 
 - `msprep` done, exit 0 in 5 min
-- `msaa` running
-- `msbb` pending
+- `msaa` done, exit 0 in 27 min
+- `msbb` running
 - `msms` pending
 - `msread` pending
 - `mspr` pending
 
 ### msaa
 
-**252 of 276 battles** (91%), 0 failed. Running 26 min, 592 battles/h, about 2 min left (ends ~16:11 PC time). Last battle 0 min ago.
-Skipped turns a battle: 88.4 overall, first 100 98.4, last 100 80.8.
+**276 of 276 battles** (100%), 0 failed. Running 27 min, 602 battles/h, about 0 min left (ends ~16:10 PC time). Last battle 0 min ago.
+Skipped turns a battle: 86.9 overall, first 100 98.4, last 100 73.2.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 252 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 24 battles unrun (about 2 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### msbb
+
+**132 of 276 battles** (48%), 0 failed. Running 13 min, 601 battles/h, about 14 min left (ends ~16:38 PC time). Last battle 0 min ago.
+Skipped turns a battle: 67.8 overall, first 100 66.2, last 100 65.4.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 132 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 144 battles unrun (about 14 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -31,4 +43,8 @@ Stopping now would leave 24 battles unrun (about 2 min); every battle already fo
 15:43:05 start msaa
 15:43:05 watching msaa: 2 stop rule(s)
 15:43:25 progress msaa: 0/276 (0%) battles, 0 failed
+16:10:34 msaa exit=0 in 1649 s
+16:10:34 start msbb
+16:10:34 watching msbb: 2 stop rule(s)
+16:13:40 progress msbb: 30/276 (11%) battles, 581/h, ETA 25 min, 0 failed, skips 71.6/battle (last 100)
 ```
