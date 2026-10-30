@@ -11,11 +11,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-146: the pc-melee-scal card (MGUN-22, MMOVE-16..19) is complete before it reaches the PC. */
+/** BENCH-146: the pc-melee-scal card (MGUN-22, MMOVE-16..21) is complete before it reaches the PC. */
 class MeleeScalPlanTest {
 
     private static final Path QUEUE = Path.of("plans/pc-melee-scal.queue");
-    private static final List<String> ARMS = List.of("aa", "bb", "wm", "xh", "ec", "wq", "bs");
+    private static final List<String> ARMS = List.of("aa", "bb", "wm", "xh", "wq", "bw", "fv", "ec", "bs");
 
     @Test
     @Tag("BENCH-146")
@@ -35,7 +35,7 @@ class MeleeScalPlanTest {
         }
         assertTrue(queue.contains("<robot.release>"), "the version comes from the pom");
         assertFalse(queue.matches("(?s).*Hadur_3\\.\\d.*"), "no robot version is hard-coded");
-        for (String a : List.of("aa", "bb", "mmix", "mcross", "mscal", "mwpath", "mshade")) {
+        for (String a : List.of("aa", "bb", "mmix", "mcross", "mwpath", "mbshade", "msearch", "mscal", "mshade")) {
             assertTrue(queue.contains("bash ./build-ablation.sh " + a + " "), a + " is built");
         }
         for (String a : ARMS) {
@@ -87,12 +87,14 @@ class MeleeScalPlanTest {
         assertTrue(abl.contains("mmix) flag=MELEE_MIX; suffix=wm ;;"));
         assertTrue(abl.contains("mwpath) flag=MELEE_PATH_DANGER; suffix=wq ;;"));
         assertTrue(abl.contains("mshade) flag=MELEE_SHADE; suffix=bs ;;"));
+        assertTrue(abl.contains("mbshade) flag=MELEE_BULLET_SHADE; suffix=bw ;;"));
+        assertTrue(abl.contains("msearch) flag=MELEE_SEARCH; suffix=fv ;;"));
         assertTrue(abl.contains("\"public static final boolean MELEE_CROSS = false;\" \"public static final boolean MELEE_CROSS = true;\""));
         assertTrue(abl.contains("\"public static final boolean SCAL_POWER = false;\" \"public static final boolean SCAL_POWER = true;\""));
         String melee = "../hadur-core/src/main/java/hadur117/core/melee/";
         String move = Files.readString(Path.of(melee + "MinimumRiskMovement.java"));
         assertTrue(move.contains("public static final boolean MELEE_SURF = true;"), "the arms sit on the surfer");
-        for (String f : List.of("MELEE_MIX", "MELEE_PATH_DANGER", "MELEE_SHADE")) {
+        for (String f : List.of("MELEE_MIX", "MELEE_PATH_DANGER", "MELEE_SHADE", "MELEE_BULLET_SHADE", "MELEE_SEARCH")) {
             assertTrue(move.contains("public static final boolean " + f + " = false;"), f + " ships off");
         }
         assertTrue(Files.readString(Path.of(melee + "MeleeController.java")).contains("public static final boolean MELEE_CROSS = false;"));
