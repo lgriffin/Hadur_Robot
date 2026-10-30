@@ -81,7 +81,7 @@ Best live results as of 2026-10-30:
 | Robot | Rumble | Size | Best live result | |
 |---|---|---|---|---|
 | [**Hadur**](hadur-robot/) `hadur117.Hadur` | RoboRumble (1v1) | megabot | **4th of 1,222**, 91.58 ± 0.20 (3.19, 2026-10-29) | [standing](#standing) |
-| | MeleeRumble | | 14th of 418, 67.77 ± 0.18 (3.20, 2026-10-30), 0.45 behind 10th | [live read](docs/bench/live-3.20-melee.md) |
+| | MeleeRumble | | **13th of 417**, 67.92 ± 0.24 (3.18.1, 2026-10-28); now 14th, 67.77 (3.20) | [live read](docs/bench/live-3.20-melee.md) |
 | [**HadurTeam**](hadur-robot/) `hadur117.HadurTeam` | TeamRumble | five Hadurs | **4th of 48**, 79.41 ± 0.71 (3.19, 2026-10-28) | [live notes](docs/bench/live-3.19-team.md) |
 | [**TwinSaor**](twinsaor/) `hadur117.twin.TwinSaor` | Twin Duel (2v2) | 1,995 B of 1,999 | **1st of 28**, 70.28 ± 0.50 (0.2, 2026-10-28) | [README](twinsaor/README.md) |
 | [**Saor**](saor/) `hadur117.micro.Saor` | MicroMelee | 723 B of 749 | **1st of 157**, 69.80 ± 0.43 (0.3, 2026-10-27) | [README](saor/README.md) |
