@@ -100,3 +100,15 @@ copied arrays, saved 15 (`k3KEg`, 1,626). Three further cuts were measured on to
 The gun's wall segment is worth more than the bytes it costs, and so is the advancing feature. The
 bytes for the k-NN surf have to come from elsewhere: a tighter wave and hit layout, the prediction
 loop, the radar and the power rule.
+
+### Round 5: pricing the cuts that fit
+
+| Arm | Change from k3KEg | Bytes | gap-field | mini | mini2 | Division mean |
+|---|---|---|---|---|---|---|
+| k3x2 | no advancing feature | 1,586 | +0.66 ± 0.27 | -0.02 | -0.29 | -0.16 |
+| k3X | lateral speed as the only feature, nearest wave only, no bullet-hit-bullet log, power without the energy/15 cap, no prior | **1,493** | -1.12 ± 0.33 | -1.53 | -2.75 | **-2.14** |
+
+- The k-NN surf is only as good as its features. Dropping the advancing speed alone costs about 0.7
+  of k3KE's +0.52.
+- Cutting everything that fits in the budget loses badly.
+- Fitting k3KE needs a full re-golf of the whole robot that keeps its play, not cuts.
