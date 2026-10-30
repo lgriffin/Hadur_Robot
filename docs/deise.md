@@ -431,7 +431,8 @@ left of Mirage's lead is not reaching the final duel.
 0.4 is at 1,499 bytes, so E4 tunes constants, which cost nothing to ship. Each arm is one sed on
 DeiseLab over the core (D is 0.4): the push 1.5 times (P3) and 0.75 times (P075) 0.4's, a sharper
 split between a likely shooter's push and a stray one's (SHARP: 320,000 and 120,000), the waves
-counted double (WV2) or half (WV05), and a shorter ring (RS: 0.35 of the target's distance, up to
+counted double (WV2), conservative power (CONS: log10(energy) x 240 over the distance, not 325;
+ScalarR's two biggest melee survival jumps came from energy management), and a shorter ring (RS: 0.35 of the target's distance, up to
 120 px, since REACH's longer one lost). With SAOR, on fresh seeds (from 3700), about 2.3 h. An arm
 at +0.30 or more over D, low end above 0, ships as 0.4.1 on Leigh's go.
 
