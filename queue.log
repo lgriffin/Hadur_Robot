@@ -33,3 +33,9 @@
 04:47:24 start live-D2
 04:47:24 watching live-D2: 3 stop rule(s)
 04:55:09 progress live-D2: 120/430 (28%) battles, 929/h, ETA 20 min, 0 failed, skips 0.0/battle (last 100)
+05:15:47 live-D2 exit=0 in 1702 s
+05:15:47 start read-live
+05:16:10 read-live exit=0 in 22 s
+05:16:10 start pr
+05:16:20 pr exit=0 in 10 s
+05:16:20 ALLDONE
