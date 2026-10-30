@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 288 of 292 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 289 of 293 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -1186,6 +1186,11 @@ traceability check reads. 288 of 292 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">BENCH-143</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
 <p>The bench shall carry the <code>pc-melee-gun</code> card, which builds <a class="req" href="requirements.html#MGUN-17">MGUN-17</a>, <a class="req" href="requirements.html#MGUN-18">MGUN-18</a>, <a class="req" href="requirements.html#MGUN-19">MGUN-19</a> and <a class="req" href="requirements.html#MGUN-20">MGUN-20</a> each alone beside an aa baseline and a bb A/A copy, runs each alone on the melee census at 6 seeds (3234-3239), halts any arm on 20 failed battles or 30 minutes without one, and reads it with <code>tools/melee_s0.py screen --base2</code> at a +0.30 bar with the 95% low end above 0 and Hadur&#x27;s share of the others it outlives no more than 1 point lower.</p>
 <dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleeGunPlanTest.java">MeleeGunPlanTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-144">
+<div class="req-head"><span class="rid">BENCH-144</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall carry the <code>pc-team-nododge</code> card, which builds TeamModes table entries without DODGE for NightmareTeam, ImpactTeam and ImWithStupidTeam (<code>xd</code>, tmtab with plans/team-nododge-table.java) beside an aa baseline and a bb A/A copy, runs each against aa on those three teams at 24 fresh seeds from 5900 and 12 rounds, halts a battle step on 20 failed battles, 30 minutes without one or 40 skipped turns a battle over the last 100, and gates the projected change over 46 teams at +0.15 APS with the 95% low end above zero.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/TeamNoDodgePlanTest.java">TeamNoDodgePlanTest.java</a></dd></dl>
 </article>
 <h2 id="group-DODGE">DODGE</h2>
 <article class="req-card" id="DODGE-1">
