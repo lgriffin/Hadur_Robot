@@ -15,3 +15,7 @@
 18:13:03 live-P075 exit=0 in 1030 s
 18:13:03 start live-SHARP
 18:13:03 watching live-SHARP: 3 stop rule(s)
+18:21:52 progress live-SHARP: 129/276 (47%) battles, 878/h, ETA 10 min, 0 failed, skips 0.1/battle (last 100)
+18:30:41 live-SHARP exit=0 in 1058 s
+18:30:41 start live-WV2
+18:30:41 watching live-WV2: 3 stop rule(s)
