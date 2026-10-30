@@ -80,4 +80,44 @@ class AimMembersTest {
         assertEquals(0.25, MoveController.reachableShare(w, w.firingAngle(3), b), 1e-12,
             "an aim far outside is floored");
     }
+
+    @Test
+    @Tag("MOVE-31")
+    @DisplayName("the wide set reads every simple angle at every lag, sharing the narrow set's standing weight")
+    void wideSet() {
+        int[] wide = AimMembers.wideAims();
+        assertEquals(hadur117.core.physics.SimpleAims.LAGS * hadur117.core.physics.SimpleAims.ANGLES, wide.length);
+        java.util.Set<Integer> seen = new java.util.HashSet<>();
+        for (int a : wide) {
+            assertTrue(a % hadur117.core.physics.SimpleAims.TYPES < hadur117.core.physics.SimpleAims.ANGLES,
+                "an angle, not a helper entry: " + a);
+            assertTrue(seen.add(a), "no aim twice: " + a);
+        }
+        assertEquals(AimMembers.AIMS.length + 1, AimMembers.MEMBERS);
+        assertEquals(0.3, AimMembers.PRIOR * AimMembers.AIMS.length, 1e-12, "aims' total standing weight");
+    }
+
+    @Test
+    @Tag("MOVE-30")
+    @DisplayName("an intercepted bullet on the head-on angle scores the aim members and teaches no view")
+    void interceptScoresMembers() {
+        MoveController mc = new MoveController(FIELD, new MovementPredictor(FIELD));
+        AimMembers members = new AimMembers();
+        mc.setAimMembers(members);
+        Point2D.Double enemy = new Point2D.Double(400, 100);
+        Point2D.Double me = new Point2D.Double(400, 500);
+        Wave w = new Wave("enemy", enemy, me, 0, 10, 2.0, 0, 0, 1, FIELD, new MovementPredictor(FIELD));
+        double[] still = {me.x, me.y, 0, 0, 0, 0, enemy.x, enemy.y, 0};
+        w.aimStates = new double[][] {still, still, still};
+        w.targetDistance = 400;
+        mc.scoreInterceptAims(w, new Point2D.Double(400, 300));
+        assertEquals(1, members.bullets());
+        for (int a = 1; a < AimMembers.MEMBERS; a++) {
+            assertTrue(members.score(a) > 0, "aim " + a + " predicted it: " + members.score(a));
+        }
+        mc.scoreInterceptAims(null, new Point2D.Double(400, 300));
+        assertEquals(1, members.bullets(), "no wave, nothing learnt");
+        MoveController off = new MoveController(FIELD, new MovementPredictor(FIELD));
+        off.scoreInterceptAims(w, new Point2D.Double(400, 300));
+    }
 }
