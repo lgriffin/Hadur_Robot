@@ -26,3 +26,7 @@
 00:06:02 live-PW exit=0 in 1083 s
 00:06:02 start live-MIR
 00:06:02 watching live-MIR: 3 stop rule(s)
+00:22:23 progress live-MIR: 264/276 (96%) battles, 969/h, ETA 1 min, 0 failed, skips 0.2/battle (last 100)
+00:22:54 live-MIR exit=0 in 1012 s
+00:22:54 start live-SAOR
+00:22:54 watching live-SAOR: 3 stop rule(s)
