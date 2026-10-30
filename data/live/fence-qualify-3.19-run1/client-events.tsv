@@ -1,0 +1,25 @@
+utc	client	event	detail
+2026-10-30T19:57:28Z	rr01-roborumble	start	rr01-roborumble-2026-10-30T195728Z.log
+2026-10-30T19:57:28Z	rr02-roborumble	start	rr02-roborumble-2026-10-30T195728Z.log
+2026-10-30T20:06:33Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:06:33Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:07:05Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:07:05Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:07:13Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:07:13Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:08:51Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:08:51Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:09:08Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:09:08Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:09:56Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:09:56Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:10:21Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:10:21Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:10:29Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:10:29Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:14:35Z	rr01-roborumble	stop after battle	up 1027 s
+2026-10-30T20:14:35Z	rr01-roborumble	restart	rr01-roborumble-2026-10-30T201435Z.log
+2026-10-30T20:14:41Z	rr02-roborumble	stop after battle	up 1033 s
+2026-10-30T20:14:41Z	rr02-roborumble	restart	rr02-roborumble-2026-10-30T201441Z.log
+2026-10-30T20:18:38Z	rr01-roborumble	stop at end	up 243 s
+2026-10-30T20:18:38Z	rr02-roborumble	stop at end	up 237 s
