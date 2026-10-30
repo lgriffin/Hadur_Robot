@@ -76,7 +76,7 @@ round-end profile save that grew with every opponent on disk, fixed in 3.4
 
 Hadur has siblings, one for each size class and format it can win. Each is a separate robot with
 its own folder, build, requirements and README, and none shares code with Hadur.
-Best live results as of 2026-10-29:
+Best live results as of 2026-10-30:
 
 | Robot | Rumble | Size | Best live result | |
 |---|---|---|---|---|
