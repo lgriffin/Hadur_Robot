@@ -112,3 +112,20 @@ loop, the radar and the power rule.
   of k3KE's +0.52.
 - Cutting everything that fits in the budget loses badly.
 - Fitting k3KE needs a full re-golf of the whole robot that keeps its play, not cuts.
+
+### Round 6: the "cheap" cuts are not cheap
+
+| Arm | Change from k3KEg | Bytes | gap-field | mini | mini2 | Division mean |
+|---|---|---|---|---|---|---|
+| k3N1 | no bullet-hit-bullet log, no energy update on our hits, power without the energy/15 cap, no head-on prior | 1,560 | -1.24 ± 0.30 | -1.31 | -1.96 | -1.64 |
+| k3N2 | the same, prior kept | 1,572 | -1.27 ± 0.36 | -1.03 | -1.37 | -1.20 |
+
+- The head-on prior is worth about 0.4. It breaks the tie between the two options before the first
+  hit.
+- Most of the loss is elsewhere: in the energy update on our own hits, the bullet-hit-bullet log or
+  the power cap.
+  - Without the energy update, the enemy's energy reads high after we hit it, so a real shot on the
+    same tick goes unseen. That is the likeliest cause.
+- So k3X's -2.14 was these cuts together, not the single-feature k-NN alone.
+- Every part of 0.2 is earning its bytes. k3KE fits only through a play-preserving re-golf, or by
+  giving up something already priced at -0.16 or worse.
