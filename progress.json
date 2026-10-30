@@ -1,6 +1,6 @@
 {
  "plan": "pc-sanaro-n05",
- "updated": 1793396310.50951,
+ "updated": 1793397218.2381663,
  "steps": {
   "prep": {
    "status": "done",
@@ -84,8 +84,8 @@
   {
    "step": "live-LQ",
    "started": 1793395401.4461312,
-   "updated": 1793396310.5017302,
-   "elapsed": 909.0555989742279,
+   "updated": 1793397218.228428,
+   "elapsed": 1816.7822966575623,
    "expected": 430,
    "panel": null,
    "field": null,
@@ -93,20 +93,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 200,
+   "battles": 422,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 792.0307633685366,
-   "eta": 1045.4139388203623,
-   "fraction": 0.46511627906976744,
-   "last_battle_age": 0.8683648109436035,
+   "rate": 836.2036567589627,
+   "eta": 34.441370552749994,
+   "fraction": 0.9813953488372092,
+   "last_battle_age": 0.28064417839050293,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 200"
+     "detail": "0 failed of 422"
     },
     {
      "rule": "stall 30m",
