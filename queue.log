@@ -9,3 +9,6 @@
 16:10:34 start msbb
 16:10:34 watching msbb: 2 stop rule(s)
 16:13:40 progress msbb: 30/276 (11%) battles, 581/h, ETA 25 min, 0 failed, skips 71.6/battle (last 100)
+16:35:17 msbb exit=0 in 1482 s
+16:35:17 start msms
+16:35:17 watching msms: 2 stop rule(s)
