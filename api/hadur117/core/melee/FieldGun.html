@@ -283,6 +283,11 @@ loadScripts(document, 'script');</script>
  the opponent's chosen situations), not 1/(0.01 + its distance), so one very close match
  cannot take the whole opponent (Ogi's 1/(match + 1.6), scaled to our distances).</div>
 </div>
+<div class="col-first even-row-color"><code>static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#SWIFT_POWER" class="member-name-link">SWIFT_POWER</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">TMODE-32: the most a member fires under SWIFT: Ogi's own power, 14.3 px a tick.</div>
+</div>
 </div>
 </section>
 </li>
@@ -472,16 +477,21 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Every firing solution this tick, for every opponent fresh enough to shoot at.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#tolerance(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double)" class="member-name-link">tolerance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#swift(boolean)" class="member-name-link">swift</a><wbr>(boolean&nbsp;swift)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">TMODE-32: whether this tick's team modes carry SWIFT; set before any aim of the tick.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#tolerance(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double)" class="member-name-link">tolerance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#weight(hadur117.core.world.EnemyInfo,java.awt.geom.Point2D.Double,java.util.List,long)" class="member-name-link">weight</a><wbr>(<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#weight(hadur117.core.world.EnemyInfo,java.awt.geom.Point2D.Double,java.util.List,long)" class="member-name-link">weight</a><wbr>(<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;&nbsp;alive,
  long&nbsp;now)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">An opponent's weight: 1/distance, leaning toward weak opponents, boosted for a finisher
  (<a class="req" href="../../../../requirements.html#MGUN-2">MGUN-2</a>), an isolated opponent and a recent shooter.</div>
 </div>
@@ -824,6 +834,23 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="SWIFT_POWER">
+<h3>SWIFT_POWER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">SWIFT_POWER</span></div>
+<div class="block">TMODE-32: the most a member fires under SWIFT: Ogi's own power, 14.3 px a tick. The team gun
+ read (docs/bench/local/team-gun-read.md) has our power-3 shots at Ogi hitting 12.1% against
+ about 17% at Combat and Firestarter, and Ogi's lighter shots hitting us 23.6% at 200-400 px.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.melee.FieldGun.SWIFT_POWER">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="DROID_SEEN">
 <h3>DROID_SEEN</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">DROID_SEEN</span></div>
@@ -1097,6 +1124,13 @@ loadScripts(document, 'script');</script>
  long&nbsp;now)</span></div>
 <div class="block">An opponent's weight: 1/distance, leaning toward weak opponents, boosted for a finisher
  (<a class="req" href="../../../../requirements.html#MGUN-2">MGUN-2</a>), an isolated opponent and a recent shooter.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="swift(boolean)">
+<h3>swift</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">swift</span><wbr><span class="parameters">(boolean&nbsp;swift)</span></div>
+<div class="block">TMODE-32: whether this tick's team modes carry SWIFT; set before any aim of the tick.</div>
 </section>
 </li>
 <li>

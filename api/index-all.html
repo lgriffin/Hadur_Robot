@@ -4338,6 +4338,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Ablation switches: the mode for every team the table does not name.</div>
 </dd>
+<dt><a href="hadur117/core/melee/TeamModes.html#FORCE_SWIFT" class="member-name-link">FORCE_SWIFT</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/TeamModes.html#FORCE_WAVES" class="member-name-link">FORCE_WAVES</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/role/Tick.html#forDrive(hadur117.core.role.RoleId,boolean,int,boolean)" class="member-name-link">forDrive(RoleId, boolean, int, boolean)</a> - Method in class hadur117.core.role.<a href="hadur117/core/role/Tick.html" title="class in hadur117.core.role">Tick</a></dt>
@@ -14160,6 +14162,20 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/MeleeSeam.html#sweepGap" class="member-name-link">sweepGap</a> - Variable in class hadur117.core.<a href="hadur117/core/MeleeSeam.html" title="class in hadur117.core">MeleeSeam</a></dt>
 <dd>
 <div class="block">Per-round counters for the M record.</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#swift(boolean)" class="member-name-link">swift(boolean)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">TMODE-32: whether this tick's team modes carry SWIFT; set before any aim of the tick.</div>
+</dd>
+<dt><a href="hadur117/core/melee/TeamModes.Mode.html#SWIFT" class="member-name-link">SWIFT</a> - Enum constant in enum class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a></dt>
+<dd>
+<div class="block">TMODE-32: for a team that dodges waves (Ogi): the gun fires no harder than
+ <a href="hadur117/core/melee/FieldGun.html#SWIFT_POWER"><code>FieldGun.SWIFT_POWER</code></a>, a faster bullet that leaves the dodge less time
+ (<code>FieldGun.swift</code>); a killing shot under it stands.</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#SWIFT_POWER" class="member-name-link">SWIFT_POWER</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">TMODE-32: the most a member fires under SWIFT: Ogi's own power, 14.3 px a tick.</div>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#SWITCH_GAIN" class="member-name-link">SWITCH_GAIN</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
