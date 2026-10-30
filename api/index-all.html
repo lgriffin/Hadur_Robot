@@ -2327,6 +2327,20 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/link/Report.html#deaths()" class="member-name-link">deaths()</a> - Method in class hadur117.core.link.<a href="hadur117/core/link/Report.html" title="class in hadur117.core.link">Report</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#DECAP" class="member-name-link">DECAP</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">MGUN-21: on a team, the enemy leader (Robocode starts a team's leader with 200 energy,
+ every other member with 100 and a droid with 120) weighs <a href="hadur117/core/melee/FieldGun.html#DECAP_BOOST"><code>FieldGun.DECAP_BOOST</code></a> times more
+ once killing it pays: its energy is no more than the 30 its death drains from each living
+ teammate of its, summed over them (each capped at its own energy).</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#DECAP_BOOST" class="member-name-link">DECAP_BOOST</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#decapitates(hadur117.core.world.EnemyInfo,java.util.List)" class="member-name-link">decapitates(EnemyInfo, List&lt;EnemyInfo&gt;)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">MGUN-21: whether <code>e</code> is the enemy leader and killing it now pays: its energy is no
+ more than what its death drains from its living teammates.</div>
+</dd>
 <dt><a href="hadur117/core/melee/MeleeProfile.html#decay()" class="member-name-link">decay()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeProfile.html" title="class in hadur117.core.melee">MeleeProfile</a></dt>
 <dd>
 <div class="block">Halves each group of counts that has grown past its limit.</div>
@@ -2818,6 +2832,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/role/Tick.html#driving()" class="member-name-link">driving()</a> - Method in class hadur117.core.role.<a href="hadur117/core/role/Tick.html" title="class in hadur117.core.role">Tick</a></dt>
 <dd>
 <div class="block">The role that drives this tick.</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#DROID_SEEN" class="member-name-link">DROID_SEEN</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">TMODE-31: a robot first seen in a round with more than this, up to <a href="hadur117/core/melee/FieldGun.html#LEADER_SEEN"><code>FieldGun.LEADER_SEEN</code></a>, is a droid (120).</div>
 </dd>
 <dt><a href="hadur117/core/memory/OpponentProfile.html#dropSeeds()" class="member-name-link">dropSeeds()</a> - Method in class hadur117.core.memory.<a href="hadur117/core/memory/OpponentProfile.html" title="class in hadur117.core.memory">OpponentProfile</a></dt>
 <dd>
@@ -3673,6 +3691,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur/bench/MeleeHarvester.html#EXPOSURE_HEADER" class="member-name-link">EXPOSURE_HEADER</a> - Static variable in class hadur.bench.<a href="hadur/bench/MeleeHarvester.html" title="class in hadur.bench">MeleeHarvester</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#EYES_BOOST" class="member-name-link">EYES_BOOST</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">TMODE-31: a scanner's weight under LEAD while droids are about.</div>
+</dd>
 </dl>
 <h2 class="title" id="I:F">F</h2>
 <dl class="index">
@@ -4242,6 +4264,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/melee/TeamModes.html#FORCE_GUNLINE" class="member-name-link">FORCE_GUNLINE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/TeamModes.html#FORCE_HUNT" class="member-name-link">FORCE_HUNT</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/TeamModes.html#FORCE_LEAD" class="member-name-link">FORCE_LEAD</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/TeamModes.html#FORCE_LEARN" class="member-name-link">FORCE_LEARN</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
 <dd>&nbsp;</dd>
@@ -6457,12 +6481,26 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Returns the value of the <code>latestBattleUtc</code> record component.</div>
 </dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#lead(boolean)" class="member-name-link">lead(boolean)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">TMODE-31: whether this tick's team modes carry LEAD; set before any aim of the tick.</div>
+</dd>
 <dt><a href="hadur117/core/policy/PowerPolicy.html#lead(boolean,double,double)" class="member-name-link">lead(boolean, double, double)</a> - Static method in class hadur117.core.policy.<a href="hadur117/core/policy/PowerPolicy.html" title="class in hadur117.core.policy">PowerPolicy</a></dt>
 <dd>
 <div class="block">POW-7 to POW-9: what the regime asks of the power, given whether it is in force.</div>
 </dd>
+<dt><a href="hadur117/core/melee/TeamModes.Mode.html#LEAD" class="member-name-link">LEAD</a> - Enum constant in enum class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a></dt>
+<dd>
+<div class="block">TMODE-31: for a team run by its leader or fed by droids: the gun leans on the leader
+ (first seen above 150 energy) and, with droids about (first seen near 120), on the
+ robots that scan for them, so the team loses its orders and its eyes first (<code>FieldGun.lead</code>).</div>
+</dd>
 <dt><a href="hadur117/nano/Sanaro.html#LEAD" class="member-name-link">LEAD</a> - Static variable in class hadur117.nano.<a href="hadur117/nano/Sanaro.html" title="class in hadur117.nano">Sanaro</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#LEAD_BOOST" class="member-name-link">LEAD_BOOST</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">TMODE-31: the leader's weight under LEAD.</div>
+</dd>
 <dt><a href="hadur117/core/policy/PowerPolicy.html#LEAD_MARGIN" class="member-name-link">LEAD_MARGIN</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/PowerPolicy.html" title="class in hadur117.core.policy">PowerPolicy</a></dt>
 <dd>
 <div class="block">POW-7, POW-8: how far behind the enemy our energy may be before the regime stops chaffing.</div>
@@ -6498,9 +6536,22 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">TMODE-10: whether this member is its team's leader; set on the battle's first tick.</div>
 </dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#LEADER_DRAIN" class="member-name-link">LEADER_DRAIN</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">MGUN-21: what a leader's death drains from each living teammate.</div>
+</dd>
 <dt><a href="hadur117/core/model/BattleFacts.html#LEADER_ENERGY" class="member-name-link">LEADER_ENERGY</a> - Static variable in class hadur117.core.model.<a href="hadur117/core/model/BattleFacts.html" title="class in hadur117.core.model">BattleFacts</a></dt>
 <dd>
 <div class="block">A team leader starts each round with 200 energy, every other robot with 100.</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#LEADER_SEEN" class="member-name-link">LEADER_SEEN</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">MGUN-21: a robot first seen in a round above this energy is its team's leader.</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#leadFactor(hadur117.core.world.EnemyInfo,java.util.List)" class="member-name-link">leadFactor(EnemyInfo, List&lt;EnemyInfo&gt;)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">TMODE-31: <a href="hadur117/core/melee/FieldGun.html#LEAD_BOOST"><code>FieldGun.LEAD_BOOST</code></a> for the enemy leader; <a href="hadur117/core/melee/FieldGun.html#EYES_BOOST"><code>FieldGun.EYES_BOOST</code></a> for any other
+ robot that is not a droid while a droid is alive; else 1.</div>
 </dd>
 <dt><a href="hadur117/core/melee/OpponentStats.GunType.html#LEADING" class="member-name-link">LEADING</a> - Enum constant in enum class hadur117.core.melee.<a href="hadur117/core/melee/OpponentStats.GunType.html" title="enum class in hadur117.core.melee">OpponentStats.GunType</a></dt>
 <dd>&nbsp;</dd>

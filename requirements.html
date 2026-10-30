@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 289 of 293 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 290 of 294 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -1191,6 +1191,11 @@ traceability check reads. 289 of 293 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">BENCH-144</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
 <p>The bench shall carry the <code>pc-team-nododge</code> card, which builds TeamModes table entries without DODGE for NightmareTeam, ImpactTeam and ImWithStupidTeam (<code>xd</code>, tmtab with plans/team-nododge-table.java) beside an aa baseline and a bb A/A copy, runs each against aa on those three teams at 24 fresh seeds from 5900 and 12 rounds, halts a battle step on 20 failed battles, 30 minutes without one or 40 skipped turns a battle over the last 100, and gates the projected change over 46 teams at +0.15 APS with the 95% low end above zero.</p>
 <dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/TeamNoDodgePlanTest.java">TeamNoDodgePlanTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-145">
+<div class="req-head"><span class="rid">BENCH-145</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall carry the <code>pc-team-lead</code> card, which builds LEAD on every team (<code>ld</code>, tmlead, TMODE-31) beside an aa baseline and a bb A/A copy, screens each against aa on the nine leader and droid teams of plans/team-lead-set.txt at 16 seeds from 6100 and 10 rounds, picks a team only at +3.0 points with the 95% low end above zero over both baselines, gates the picked table (mk) against aa and bb at 16 fresh seeds from 6200, halts a battle step on 20 failed battles, 30 minutes without one or 40 skipped turns a battle over the last 100, and passes at +0.15 APS projected over 46 teams with the low end above zero.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/TeamLeadPlanTest.java">TeamLeadPlanTest.java</a></dd></dl>
 </article>
 <h2 id="group-DODGE">DODGE</h2>
 <article class="req-card" id="DODGE-1">
