@@ -4,8 +4,8 @@
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-census-320        (or  ./queue.sh run pc-census-320)
 # One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes;
-# no step needs a decision. About 2 h of battles (the field mixes pc-k1-aim's 1,290 an hour and
-# pc-sg-aim's 4,700) and seconds of analysis.
+# no step needs a decision. About 5.5 h of battles (the first run fought 660 an hour on the whole field)
+# and seconds of analysis.
 #
 # Why: master's only 1v1 change since v3.19 is MOVE-29, the aim members (PR #441): pc-sg-aim +0.13 +- 0.07
 # APS on the 434 simple guns, pc-k1-aim +0.07 +- 0.15 on the 432 learning guns. This reads it on the whole
@@ -16,8 +16,10 @@
 # gate:   km minus pooled c and aa over the field / 1,217 pairings at +0.18 APS (3.19 live + the gain
 #         reaches Saguaro's 91.76), 95% low end above 0, A/A inside its band; per-robot losses. The gate
 #         is a reading for Leigh's release call: it opens no release by itself.
-# Stop rules (docs/bench/watch.md): halts on 30 failed battles, an arm scoring nothing in 8, 40+ skipped
-# turns a battle over the last 200, no battle in 30 minutes, or an A/A outside its z 3 band after 20%;
+# Stop rules (docs/bench/watch.md): halts on 30 failed battles, an arm scoring nothing in 8, 60+ skipped
+# turns a battle over the last 200 (the whole field skips 31 to 40 a battle on a healthy PC: top5-s2,
+# top5-s4, table-v1 and surf-b censuses; 40 halted the first run, issue #444, at 40.9 against 37.2 in its
+# first 200), no battle in 30 minutes, or an A/A outside its z 3 band after 20%;
 # every battle fought is kept and a rerun resumes. No futility rule: a census reads every robot. ALERT
 # opens an issue for Leigh on any stop.
 
@@ -35,7 +37,7 @@ census | ./bench-top20.sh ${C} ${P} --set census-312.txt --seeds 1 --seed-base 4
   watch: field=1217
   stop: fails 30
   stop: dead 8
-  stop: skips 40 over 200
+  stop: skips 60 over 200
   stop: stall 30m
   stop: aa after 20%
 
