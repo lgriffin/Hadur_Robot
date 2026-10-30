@@ -16,3 +16,4 @@
 10:10:38 watching census: 5 stop rule(s)
 10:10:40 progress pushed to origin claude/pc-census-320-progress (every 15 min)
 10:11:38 progress census: 342/3636 (9%) battles, 0 failed, aa -0.42, km +0.62
+10:41:57 progress census: 760/3636 (21%) battles, 836/h, ETA 3.4 h, 0 failed, skips 37.1/battle (last 100), aa -0.40, km +0.46
