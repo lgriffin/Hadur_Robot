@@ -82,4 +82,38 @@ class MeleeEnergyPolicyTest {
         assertEquals(0.5, MeleeEnergyPolicy.teamPower(0.5, 9, 80), 1e-9);
         assertEquals(0, MeleeEnergyPolicy.teamPower(0, 100, 99.95));
     }
+
+    @Test
+    @Tag("MGUN-22")
+    @DisplayName("MGUN-22: ScalarR-shaped power falls with the nearest robot's distance and Hadur's own energy")
+    void scalPower() {
+        assertFalse(MeleeEnergyPolicy.SCAL_POWER);
+        // Full energy: 3 within 433 px of the nearest robot, 1300/d beyond.
+        assertEquals(3.0, MeleeEnergyPolicy.scalPower(300, 100, 100), 1e-9);
+        assertEquals(1300.0 / 600, MeleeEnergyPolicy.scalPower(600, 100, 100), 1e-9);
+        // 30 energy: E/15 = 2 beyond 325 px; inside it E/6 = 5 does not bite.
+        assertEquals(2.0, MeleeEnergyPolicy.scalPower(400, 30, 100), 1e-9);
+        assertEquals(3.0, MeleeEnergyPolicy.scalPower(200, 30, 100), 1e-9);
+        // 15 energy: E/6 = 2.5 near, E/15 = 1 far; 6 energy: 1.0 near, 0.4 far.
+        assertEquals(2.5, MeleeEnergyPolicy.scalPower(200, 15, 100), 1e-9);
+        assertEquals(1.0, MeleeEnergyPolicy.scalPower(600, 15, 100), 1e-9);
+        assertEquals(0.4, MeleeEnergyPolicy.scalPower(600, 6, 100), 1e-9);
+        // Never more than kills the target.
+        assertEquals(MeleeEnergyPolicy.killPower(10), MeleeEnergyPolicy.scalPower(200, 100, 10), 1e-9);
+    }
+
+    @Test
+    @Tag("MGUN-22")
+    @DisplayName("MGUN-22: only off a team with two or more opponents; a hold and a finisher stand")
+    void scalOnlyInTheCrowd() {
+        double table = MeleeEnergyPolicy.power(600, 15, 100, 5);
+        assertEquals(1.0, MeleeEnergyPolicy.crowdPower(table, 600, 600, 15, 100, 5, true), 1e-9);
+        assertEquals(MeleeEnergyPolicy.crowdPower(table, 600, 15, 100, 5),
+            MeleeEnergyPolicy.crowdPower(table, 600, 600, 15, 100, 5, false), 1e-12, "off: today's rule");
+        assertEquals(MeleeEnergyPolicy.crowdPower(table, 600, 15, 100, 1),
+            MeleeEnergyPolicy.crowdPower(table, 600, 600, 15, 100, 1, true), 1e-12, "one left: the duel");
+        assertEquals(0, MeleeEnergyPolicy.crowdPower(0, 600, 600, 15, 100, 5, true), "a hold stands");
+        assertEquals(MeleeEnergyPolicy.crowdPower(0.51, 600, 100, 2, 5),
+            MeleeEnergyPolicy.crowdPower(0.51, 600, 600, 100, 2, 5, true), 1e-12, "a finisher stands");
+    }
 }
