@@ -228,3 +228,24 @@ change. Division mean and gap-field are against 0.2, as in every round.
 `kitlab/arms/JayLexi-k3KEs.java`, and the matching readable build and test changes are saved as
 `jaylexi-0.3-knn-golf-1598.patch` in the project's shared files.
 
+
+### Round 10: fitted with ecj + ProGuard (2026-10-30 evening)
+
+Leigh asked whether compression could help. Codesize counts method bytecode, so zipping does
+nothing, but the ecj compiler and ProGuard's optimizer shrink the bytecode itself. The k-NN build
+goes from 1,598 to 1,574 B (javac 1,598, ecj 1,593, then ProGuard), and 0.2 from 1,485 to 1,471.
+JayLexiReplayTest passes on the ProGuard classes, bit for bit. One source rewrite, reusing `f` for
+the squared guess-factor gap, is exact and saves 4 B after ProGuard.
+
+| Arm | Build | Bytes | gap-field | mini | mini2 | Division mean |
+|---|---|---|---|---|---|---|
+| k3P | k3KEs + gdist, hbb, keep, cap, tr + no finishing cap, ecj + ProGuard | **1,496** | -0.12 ± 0.39 | -0.77 | -0.37 | **-0.57** |
+| k3Pc | k3P with the energy/15 cap back | 1,507 | +0.64 ± 0.30 | -0.39 | -0.04 | -0.22 |
+
+- k3P fits but loses. With both power caps gone, JayLexi fires 2 or 3 with nothing to stop it
+  disabling itself, and the losses are in the long rounds against even and strong bots.
+- Putting the energy cap back recovers 0.35 and the whole weak-field gain (+0.64). But k3Pc still
+  loses 0.22 against 0.2, about 0.5 below the unfitted k-NN, all of it against the strong bots (-6
+  to -8). The five changes that were free one at a time are not free together.
+- **The k-NN surf does not fit a Mini with its gain intact, even with ProGuard.** Its weak-field
+  gain survives fitting; its gain overall does not.
