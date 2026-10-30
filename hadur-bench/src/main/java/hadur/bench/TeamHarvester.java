@@ -39,7 +39,8 @@ import robocode.control.snapshot.ITurnSnapshot;
  * <li>{@code bullets.log}: every bullet in the battle, ours and the enemies', as
  *     {@code round,turn,F,id,owner,power,x,y,heading,members} when the engine first shows it
  *     (for an enemy bullet, {@code members} lists each living member of ours as
- *     {@code name:x:y:heading:velocity}, ';'-separated; {@code -} for ours) and
+ *     {@code name:x:y:heading:velocity}, ';'-separated; {@code -} for ours, which add an 11th
+ *     field listing the living enemies the same way, BENCH-148) and
  *     {@code round,turn,H,id,owner,victim,power} when it hits a robot, so the shots members
  *     infer from energy drops can be matched to the engine's truth.</li>
  * </ul>
@@ -254,9 +255,22 @@ public class TeamHarvester extends BattleAdaptor {
                         r.getBodyHeading(), r.getVelocity()));
                 }
             }
-            write(bulletLog, String.format(Locale.ROOT, "%d,%d,F,%d,%s,%.2f,%.1f,%.1f,%.4f,%s%n", round, turn,
+            // BENCH-148: for our bullet, the living enemies the same way, as an 11th field ("-" with
+            // none alive), so our aim can be read as theirs is (tools/team_gun.py); field 10 stays
+            // "-" for older readers.
+            boolean ours = o >= 0 && o < robots.length && robots[o].getTeamIndex() == ourTeam;
+            StringBuilder enemies = new StringBuilder();
+            if (ours) {
+                for (IRobotSnapshot r : robots) {
+                    if (r.getTeamIndex() == ourTeam || !r.getState().isAlive()) continue;
+                    if (enemies.length() > 0) enemies.append(';');
+                    enemies.append(String.format(Locale.ROOT, "%s:%.1f:%.1f:%.4f:%.2f", r.getName(), r.getX(), r.getY(),
+                        r.getBodyHeading(), r.getVelocity()));
+                }
+            }
+            write(bulletLog, String.format(Locale.ROOT, "%d,%d,F,%d,%s,%.2f,%.1f,%.1f,%.4f,%s%s%n", round, turn,
                 b.getBulletId(), owner, b.getPower(), b.getX(), b.getY(), b.getHeading(),
-                members.length() > 0 ? members : "-"));
+                members.length() > 0 ? members : "-", ours ? "," + (enemies.length() > 0 ? enemies : "-") : ""));
         }
         int v = b.getVictimIndex();
         if (b.getState() == BulletState.HIT_VICTIM && v >= 0 && v < robots.length && hits.add(b.getBulletId())) {

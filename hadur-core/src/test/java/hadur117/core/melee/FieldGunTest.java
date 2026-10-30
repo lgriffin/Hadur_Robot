@@ -54,6 +54,21 @@ class FieldGunTest {
     }
 
     @Test
+    @Tag("TMODE-32")
+    @DisplayName("TMODE-32: on a team, SWIFT caps every solution at 1.9; off it, a member with energy fires 3")
+    void swiftCapsTeamPower() {
+        for (long t = 0; t <= 200; t++) scanned("a", 500, 800, 100, Math.PI / 2, 8, t);
+        gun.onTeam(true);
+        assertEquals(3.0, gun.solutions(me, 100, 5, tracker.alive(), 200).get(0).power, 1e-9);
+        gun.swift(true);
+        for (FieldGun.Solution x : gun.solutions(me, 100, 5, tracker.alive(), 200)) {
+            assertEquals(FieldGun.SWIFT_POWER, x.power, 1e-9);
+        }
+        assertFalse(TeamModes.FORCE_SWIFT);
+        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.SWIFT));
+    }
+
+    @Test
     @Tag("MGUN-8")
     @DisplayName("MGUN-8: a teammate's sighting joins the opponent's history as Hadur's own scan would")
     void teammateSightingsJoinTheHistory() {

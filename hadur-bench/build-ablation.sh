@@ -24,6 +24,7 @@
 #   gexp    MGUN-17: after 20 waves, a head-on, linear or circular aim that out-hits the field gun 1.25x takes that opponent. Suffix gx.
 #   grate   MGUN-18: an opponent's weight leans toward the ones the aim it fires has been hitting. Suffix gr.
 #   gdist   MGUN-19: the distance weight (100/d)^0.7, not 100/d. Suffix gd.
+#   tmswift (team only) TMODE-32: SWIFT on every team: the gun fires no harder than 1.9. Suffix sf.
 #   tmlead  (team only) TMODE-31: LEAD on every team: the gun leans on the leader and, with droids about, the scanners. Suffix ld.
 #   tdecap  (team only) MGUN-21: the gun leans 3x on the enemy leader once its death drains more than it costs. Suffix dc.
 #   gsoft   MGUN-20: a situation's weight 1/(distance + mean distance), not 1/(0.01 + distance). Suffix gv.
@@ -1068,6 +1069,13 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             version="${version}ld"
             edit "$modes" "public static final boolean FORCE_LEAD = false;" "public static final boolean FORCE_LEAD = true;"
             sed -i -E 's/^(        t\.put\("[^"]+", of\(.*)\)\);$/\1, Mode.LEAD));/' "$modes"
+            ;;
+        tmswift)
+            # TMODE-32 (team only): SWIFT for every team; the named teams play it on top of their entry.
+            # Duel and melee fixtures bit for bit. Suffix sf.
+            version="${version}sf"
+            edit "$modes" "public static final boolean FORCE_SWIFT = false;" "public static final boolean FORCE_SWIFT = true;"
+            sed -i -E 's/^(        t\.put\("[^"]+", of\(.*)\)\);$/\1, Mode.SWIFT));/' "$modes"
             ;;
         tdecap)
             # MGUN-21 (team only): the field gun leans 3x on the enemy leader once its death pays;
