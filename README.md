@@ -76,7 +76,7 @@ round-end profile save that grew with every opponent on disk, fixed in 3.4
 
 Hadur has siblings, one for each size class and format it can win. Each is a separate robot with
 its own folder, build, requirements and README, and none shares code with Hadur.
-Best live results as of 2026-10-29:
+Best live results as of 2026-10-30:
 
 | Robot | Rumble | Size | Best live result | |
 |---|---|---|---|---|
@@ -85,7 +85,7 @@ Best live results as of 2026-10-29:
 | [**HadurTeam**](hadur-robot/) `hadur117.HadurTeam` | TeamRumble | five Hadurs | **4th of 48**, 79.41 ± 0.71 (3.19, 2026-10-28) | [live notes](docs/bench/live-3.19-team.md) |
 | [**TwinSaor**](twinsaor/) `hadur117.twin.TwinSaor` | Twin Duel (2v2) | 1,995 B of 1,999 | **1st of 28**, 70.28 ± 0.50 (0.2, 2026-10-28) | [README](twinsaor/README.md) |
 | [**Saor**](saor/) `hadur117.micro.Saor` | MicroMelee | 723 B of 749 | **1st of 157**, 69.80 ± 0.43 (0.3, 2026-10-27) | [README](saor/README.md) |
-| [**Deise**](deise/) `hadur117.mini.Deise` | MiniMelee | 1,499 B of 1,499 (0.4) | **2nd of 206**, 69.81 ± 0.33 (0.3, 2026-10-28), 1.38 behind kc.mini.Mirage; 0.4 released 2026-10-30, +0.39 over 0.3 on the bench | [README](deise/README.md) |
+| [**Deise**](deise/) `hadur117.mini.Deise` | MiniMelee | 1,499 B of 1,499 | **2nd of 206**, 70.54 ± 0.36 (0.4, 2026-10-30), 0.61 behind kc.mini.Mirage | [README](deise/README.md) |
 | [**Sanaro**](sanaro/) `hadur117.nano.Sanaro` | NanoMelee | 249 B of 249 | 0.1 live 2nd of 90 at 65.21 (Quantum 66.44); 0.2 (fire gate, bench +0.55) built | [README](sanaro/README.md) |
 | [**JayLexi**](jaylexi/) `hadur117.mini.JayLexi` | MiniRumble (1v1) | 1,496 B of 1,499 | **6th of 671**, 86.95 ± 0.29 (0.1, 2026-10-29), 0.40 behind 5th | [README](jaylexi/README.md) |
 | [**Eveimear**](eveimear/) `hadur117.micro.Eveimear` | MicroRumble (1v1) | 722 B of 749 | **9th of 516**, 83.36 ± 0.33 (0.1, 2026-10-29), 1.57 behind 5th | [README](eveimear/README.md) |

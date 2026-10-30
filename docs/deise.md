@@ -418,6 +418,14 @@ weight, the weight set at every scan) and `Gun.CAP` off, and DeiseLab sets each 
 at every scan, so the shipped class and the adapter give the same orders (DEISE-16). E3a's
 `AIM2` and `P2` sed lines no longer apply to the core, which has both.
 
+### 0.4's live first pass (2026-10-30)
+
+2nd in MiniMelee at 70.54 ± 0.36 over all 205 pairings (559 battles), 0.61 behind Mirage (71.15);
+0.3 was 1.38 behind. On the 204 opponents both met, 0.4 is +0.71 over 0.3 (the bench read +0.39)
+and survives 54.7% of battles to 0.3's 45.8%, level with Mirage. Against the 20 strongest
+opponents it gains +2.6 APS and 11 points of survival. The survival gap E2 found is closed; what is
+left of Mirage's lead is not reaching the final duel.
+
 ### Stage E4: tuning 0.4's crowd terms (card pc-deise-e07)
 
 0.4 is at 1,499 bytes, so E4 tunes constants, which cost nothing to ship. Each arm is one sed on
