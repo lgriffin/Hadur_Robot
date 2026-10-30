@@ -22,3 +22,7 @@
 23:47:58 live-FAPW exit=0 in 1089 s
 23:47:58 start live-PW
 23:47:58 watching live-PW: 3 stop rule(s)
+23:52:07 progress live-PW: 60/276 (22%) battles, 866/h, ETA 15 min, 0 failed, skips 0.1/battle (last 100)
+00:06:02 live-PW exit=0 in 1083 s
+00:06:02 start live-MIR
+00:06:02 watching live-MIR: 3 stop rule(s)
