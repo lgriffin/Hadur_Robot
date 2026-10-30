@@ -433,7 +433,10 @@ DeiseLab over the core (D is 0.4): the push 1.5 times (P3) and 0.75 times (P075)
 split between a likely shooter's push and a stray one's (SHARP: 320,000 and 120,000), the waves
 counted double (WV2), conservative power (CONS: log10(energy) x 240 over the distance, not 325;
 ScalarR's two biggest melee survival jumps came from energy management), and a shorter ring (RS: 0.35 of the target's distance, up to
-120 px, since REACH's longer one lost). With SAOR, on fresh seeds (from 3700), about 2.3 h. An arm
+120 px, since REACH's longer one lost). SCAL tries ScalarR's actual energy shape, from the decompile in PR #459: range power capped at
+energy / 6, and at energy / 15 with the target beyond 325 px, so power falls only as Deise's
+energy does (CONS lowers it at every energy). SCAL adds about 10 bytes, so a winner needs a cut.
+With SAOR, on fresh seeds (from 3700), 9 seats, about 2.6 h. An arm
 at +0.30 or more over D, low end above 0, ships as 0.4.1 on Leigh's go.
 
 ## 9. Uniqueness
