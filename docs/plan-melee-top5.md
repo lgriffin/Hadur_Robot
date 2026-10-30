@@ -419,6 +419,13 @@ Forced on together, the duel and team replay fixtures play bit for bit; only the
 change. Card `pc-melee-gun` (BENCH-143): aa, bb and the four arms on the census at seeds 3234-3239,
 the Stage 3 gate and CPU guard. A passing arm stacks with the melee surfer (if it passes) on fresh seeds.
 
+**Result: parked (2026-10-30).** Cloud smokes on 8 census fields (docs/bench/local/melee-gun-smoke*-read.md):
+on 1 seed every arm read below aa (gx -1.47 ± 1.01, gr -0.24, gd -0.91, gv -0.87); on 2 more seeds with an
+A/A copy (bb -0.13 ± 0.86, clean) gx read -0.88 ± 0.53 and gr +0.18 ± 0.57; the v2 experts above
+read -0.36 ± 0.50. Both expert builds entered the endgame about 6 energy lower. The parts of Ogi's gun
+that pay (depth, power 3 close in) are already in Hadur. Leigh chose to park the line: the switches
+stay on master, off, and `pc-melee-gun` is retired before it ran.
+
 ### Stage 4: stack, tailor, confirm
 
 - **Stack census** on master's defaults (all passed stages) against 3.17 on fresh seeds, 8 seeds
