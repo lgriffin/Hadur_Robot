@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-dodge2",
- "updated": 1793341926.5287988,
+ "updated": 1793342833.5487342,
  "steps": {
   "d2prep": {
    "status": "done",
@@ -32,8 +32,8 @@
   {
    "step": "d2bb",
    "started": 1793337546.2561393,
-   "updated": 1793341926.5207155,
-   "elapsed": 4380.2645761966705,
+   "updated": 1793342833.5397837,
+   "elapsed": 5287.28364443779,
    "expected": 1472,
    "panel": null,
    "field": null,
@@ -41,20 +41,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 1022,
+   "battles": 1318,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 839.9492624243725,
-   "eta": 1928.6879249398257,
-   "fraction": 0.6942934782608695,
-   "last_battle_age": 0.39748406410217285,
+   "rate": 897.3984221541658,
+   "eta": 617.7857976050225,
+   "fraction": 0.8953804347826086,
+   "last_battle_age": 4.6844868659973145,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 1022"
+     "detail": "0 failed of 1318"
     },
     {
      "rule": "stall 30m",
@@ -66,11 +66,11 @@
      "rule": "skips 40 over 100",
      "action": "halt",
      "state": "ok",
-     "detail": "6.3 a battle over the last 100 (first 100: 7.8)"
+     "detail": "10.7 a battle over the last 100 (first 100: 7.8)"
     }
    ],
-   "skips_mean": 8.683953033268102,
-   "skips_last100": 6.26
+   "skips_mean": 8.737481031866464,
+   "skips_last100": 10.71
   }
  ]
 }
