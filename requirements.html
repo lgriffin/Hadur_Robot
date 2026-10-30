@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 294 of 298 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 296 of 300 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -623,6 +623,11 @@ traceability check reads. 294 of 298 live requirements have a tagged test. The r
 <p>Where the <code>MELEE_SHADE</code> switch is on with the melee surfer, while in melee off a team, a wave&#x27;s damage at Hadur in the wave check shall be cut by the share of Hadur&#x27;s width that robots other than the shooter, over 36 px from its source and nearer it than Hadur, cover at +-asin(18/d).</p>
 <dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/melee/MinimumRiskMovement.html" title="hadur117.core.melee.MinimumRiskMovement">MinimumRiskMovement</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/melee/MeleeCrowdMovementTest.java">MeleeCrowdMovementTest.java</a></dd></dl>
 </article>
+<article class="req-card" id="MMOVE-19">
+<div class="req-head"><span class="rid">MMOVE-19</span><span class="badge">Optional</span><span class="badge stage">M7</span></div>
+<p>Where the <code>MELEE_CROSS</code> switch is on with the melee surfer, while in melee off a team, when a scan shows an opponent&#x27;s energy loss to someone other than Hadur that one other opponent&#x27;s shot explains (its damage within 0.02, its wave at the victim between the victim&#x27;s last two scans, and no other shot explaining it too), Hadur shall learn that shooter&#x27;s aim from the hit as from a hit on itself (inspired by ScalarR; ships off).</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/melee/MeleeController.html" title="hadur117.core.melee.MeleeController">MeleeController</a>, <a href="api/hadur117/core/world/EnemyInfo.html" title="hadur117.core.world.EnemyInfo">EnemyInfo</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/melee/MeleeCrossTest.java">MeleeCrossTest.java</a></dd></dl>
+</article>
 <h2 id="group-MGUN">Melee gun</h2>
 <article class="req-card" id="MGUN-1">
 <div class="req-head"><span class="rid">MGUN-1</span><span class="badge">State</span><span class="badge stage">M4</span></div>
@@ -1216,6 +1221,11 @@ traceability check reads. 294 of 298 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">BENCH-145</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
 <p>The bench shall carry the <code>pc-team-lead</code> card, which builds LEAD on every team (<code>ld</code>, tmlead, TMODE-31) beside an aa baseline and a bb A/A copy, screens each against aa on the nine leader and droid teams of plans/team-lead-set.txt at 16 seeds from 6100 and 10 rounds, picks a team only at +3.0 points with the 95% low end above zero over both baselines, gates the picked table (mk) against aa and bb at 16 fresh seeds from 6200, halts a battle step on 20 failed battles, 30 minutes without one or 40 skipped turns a battle over the last 100, and passes at +0.15 APS projected over 46 teams with the low end above zero.</p>
 <dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/TeamLeadPlanTest.java">TeamLeadPlanTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-146">
+<div class="req-head"><span class="rid">BENCH-146</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall carry the <code>pc-melee-scal</code> card, which builds <a class="req" href="requirements.html#MMOVE-16">MMOVE-16</a>, <a class="req" href="requirements.html#MMOVE-19">MMOVE-19</a>, <a class="req" href="requirements.html#MGUN-22">MGUN-22</a>, <a class="req" href="requirements.html#MMOVE-17">MMOVE-17</a> and <a class="req" href="requirements.html#MMOVE-18">MMOVE-18</a> each alone on the melee surfer beside an aa baseline and a bb A/A copy, runs each alone on the melee census at 6 fresh seeds after the retired gun card&#x27;s, and reads it with <code>tools/melee_s0.py screen --base2</code> at a +0.30 bar with the 95% low end above 0 and Hadur&#x27;s share of the others it outlives no more than 1 point lower.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleeScalPlanTest.java">MeleeScalPlanTest.java</a></dd></dl>
 </article>
 <h2 id="group-DODGE">DODGE</h2>
 <article class="req-card" id="DODGE-1">

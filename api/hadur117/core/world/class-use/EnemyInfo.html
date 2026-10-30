@@ -186,115 +186,124 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">As above with <code>others</code> opponents left; <a class="req" href="../../../../../requirements.html#MEND-3">MEND-3</a> may raise the factor off a team.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../../melee/MinimumRiskMovement.html#cutOffPoint(hadur117.core.world.EnemyInfo)" class="member-name-link">cutOffPoint</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;target)</code></div>
+<div class="col-first odd-row-color"><code>(package private) void</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">MeleeController.</span><code><a href="../../melee/MeleeController.html#crossHit(hadur117.core.world.EnemyInfo,long)" class="member-name-link">crossHit</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;victim,
+ long&nbsp;now)</code></div>
 <div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../../requirements.html#MMOVE-19">MMOVE-19</a>: logs <code>victim</code>'s scan and, when it shows a loss to someone other than Hadur,
+ learns the aim of the one other opponent's shot that explains it: the shot whose damage the
+ loss matches and whose wave reached the victim between its last two scans; with two or more
+ such shots it learns nothing.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../../melee/MinimumRiskMovement.html#cutOffPoint(hadur117.core.world.EnemyInfo)" class="member-name-link">cutOffPoint</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;target)</code></div>
+<div class="col-last even-row-color">
 <div class="block">The spot between <code>target</code> and open space: holding it pins the target to the walls.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) boolean</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#decapitates(hadur117.core.world.EnemyInfo,java.util.List)" class="member-name-link">decapitates</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
+<div class="col-first odd-row-color"><code>(package private) boolean</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#decapitates(hadur117.core.world.EnemyInfo,java.util.List)" class="member-name-link">decapitates</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;&nbsp;alive)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">MGUN-21: whether <code>e</code> is the enemy leader and killing it now pays: its energy is no
  more than what its death drains from its living teammates.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#expertAim(java.awt.geom.Point2D.Double,hadur117.core.world.EnemyInfo,int,double,long)" class="member-name-link">expertAim</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first even-row-color"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#expertAim(java.awt.geom.Point2D.Double,hadur117.core.world.EnemyInfo,int,double,long)" class="member-name-link">expertAim</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  <a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
  int&nbsp;x,
  double&nbsp;power,
  long&nbsp;now)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../../requirements.html#MGUN-17">MGUN-17</a>: where aim <code>x</code> (HEAD_ON, LINEAR or CIRCULAR) puts <code>e</code> for a bullet of <code>power</code>.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) <a href="../../melee/FieldGun.Aim.html" title="class in hadur117.core.melee">FieldGun.Aim</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#fieldAim(java.awt.geom.Point2D.Double,double,int,hadur117.core.world.EnemyInfo,long)" class="member-name-link">fieldAim</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first odd-row-color"><code>(package private) <a href="../../melee/FieldGun.Aim.html" title="class in hadur117.core.melee">FieldGun.Aim</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#fieldAim(java.awt.geom.Point2D.Double,double,int,hadur117.core.world.EnemyInfo,long)" class="member-name-link">fieldAim</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  double&nbsp;energy,
  int&nbsp;others,
  <a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
  long&nbsp;now)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../../requirements.html#MGUN-4">MGUN-4</a>/17: the field gun's own aim at one opponent, which a targeting wave carries; with
  <a class="req" href="../../../../../requirements.html#MGUN-17">MGUN-17</a> on, the simple aims are left out so the wave reads the field gun alone.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static boolean</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#isolated(hadur117.core.world.EnemyInfo,java.util.List)" class="member-name-link">isolated</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
+<div class="col-first even-row-color"><code>(package private) static boolean</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#isolated(hadur117.core.world.EnemyInfo,java.util.List)" class="member-name-link">isolated</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;&nbsp;alive)</code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) double</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#leadFactor(hadur117.core.world.EnemyInfo,java.util.List)" class="member-name-link">leadFactor</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) double</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#leadFactor(hadur117.core.world.EnemyInfo,java.util.List)" class="member-name-link">leadFactor</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;&nbsp;alive)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">TMODE-31: <a href="../../melee/FieldGun.html#LEAD_BOOST"><code>FieldGun.LEAD_BOOST</code></a> for the enemy leader; <a href="../../melee/FieldGun.html#EYES_BOOST"><code>FieldGun.EYES_BOOST</code></a> for any other
  robot that is not a droid while a droid is alive; else 1.</div>
 </div>
-<div class="col-first odd-row-color"><code>void</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#onScan(hadur117.core.world.EnemyInfo,double,long)" class="member-name-link">onScan</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
+<div class="col-first even-row-color"><code>void</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#onScan(hadur117.core.world.EnemyInfo,double,long)" class="member-name-link">onScan</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
  double&nbsp;distance,
  long&nbsp;time)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block">An opponent was scanned <code>distance</code> from Hadur.</div>
 </div>
-<div class="col-first even-row-color"><code>void</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#onScan(hadur117.core.world.EnemyInfo,double,long,java.awt.geom.Point2D.Double,int)" class="member-name-link">onScan</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
+<div class="col-first odd-row-color"><code>void</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#onScan(hadur117.core.world.EnemyInfo,double,long,java.awt.geom.Point2D.Double,int)" class="member-name-link">onScan</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
  double&nbsp;distance,
  long&nbsp;time,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;nearest,
  int&nbsp;alive)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">As above, with the robot nearest it (<code>nearest</code>, Hadur included, or null) and the
  opponents alive, which <a class="req" href="../../../../../requirements.html#MGUN-11">MGUN-11</a>'s crowd attributes read.</div>
 </div>
-<div class="col-first odd-row-color"><code>void</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">MeleeWaves.</span><code><a href="../../melee/MeleeWaves.html#onScan(hadur117.core.world.EnemyInfo,long)" class="member-name-link">onScan</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
+<div class="col-first even-row-color"><code>void</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MeleeWaves.</span><code><a href="../../melee/MeleeWaves.html#onScan(hadur117.core.world.EnemyInfo,long)" class="member-name-link">onScan</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
  long&nbsp;now)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block">Scores the waves that have reached <code>e</code> by its latest scan, each at where the
  opponent was when the wave crossed it: between two scans the opponent is taken to move
  in a straight line, and the crossing is found along that segment.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#playForward(java.awt.geom.Point2D.Double,hadur117.core.world.EnemyInfo,float%5B%5D,double,long)" class="member-name-link">playForward</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first odd-row-color"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#playForward(java.awt.geom.Point2D.Double,hadur117.core.world.EnemyInfo,float%5B%5D,double,long)" class="member-name-link">playForward</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  <a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
  float[]&nbsp;t,
  double&nbsp;power,
  long&nbsp;now)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">Plays trajectory <code>t</code> forward from <code>e</code>'s last scan until a bullet of
  <code>power</code> fired from <code>me</code> now would reach it; stays inside the walls.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">MeleeGun.</span><code><a href="../../melee/MeleeGun.html#predict(java.awt.geom.Point2D.Double,hadur117.core.world.EnemyInfo,double,long,double)" class="member-name-link">predict</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MeleeGun.</span><code><a href="../../melee/MeleeGun.html#predict(java.awt.geom.Point2D.Double,hadur117.core.world.EnemyInfo,double,long,double)" class="member-name-link">predict</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  <a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
  double&nbsp;power,
  long&nbsp;now,
  double&nbsp;turnRate)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block">Where <code>e</code> will be when a bullet of <code>power</code> fired from <code>me</code> now
  reaches it, assuming constant velocity and turn rate.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static boolean</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#rams(hadur117.core.world.EnemyInfo,java.awt.geom.Point2D.Double)" class="member-name-link">rams</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
+<div class="col-first odd-row-color"><code>(package private) static boolean</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#rams(hadur117.core.world.EnemyInfo,java.awt.geom.Point2D.Double)" class="member-name-link">rams</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">Coming at Hadur inside <a href="../../melee/FieldGun.html#RAMMER_RANGE"><code>FieldGun.RAMMER_RANGE</code></a>.</div>
 </div>
-<div class="col-first odd-row-color"><code>void</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">MeleeController.</span><code><a href="../../melee/MeleeController.html#scanned(hadur117.core.world.EnemyInfo,hadur117.core.world.EnemyShot,double,double,long)" class="member-name-link">scanned</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;info,
+<div class="col-first even-row-color"><code>void</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MeleeController.</span><code><a href="../../melee/MeleeController.html#scanned(hadur117.core.world.EnemyInfo,hadur117.core.world.EnemyShot,double,double,long)" class="member-name-link">scanned</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;info,
  <a href="../EnemyShot.html" title="class in hadur117.core.world">EnemyShot</a>&nbsp;shot,
  double&nbsp;distance,
  double&nbsp;velocity,
  long&nbsp;time)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block">The World has taken a scan (<code>info</code>, and the shot it inferred, or null); the
  melee's own books take it now.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) double</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#weight(hadur117.core.world.EnemyInfo,java.awt.geom.Point2D.Double,java.util.List,long)" class="member-name-link">weight</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
+<div class="col-first odd-row-color"><code>(package private) double</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#weight(hadur117.core.world.EnemyInfo,java.awt.geom.Point2D.Double,java.util.List,long)" class="member-name-link">weight</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;&nbsp;alive,
  long&nbsp;now)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">An opponent's weight: 1/distance, leaning toward weak opponents, boosted for a finisher
  (<a class="req" href="../../../../../requirements.html#MGUN-2">MGUN-2</a>), an isolated opponent and a recent shooter.</div>
 </div>

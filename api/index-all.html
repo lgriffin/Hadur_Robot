@@ -2110,9 +2110,24 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/nano/Sanaro.html#CREEP" class="member-name-link">CREEP</a> - Static variable in class hadur117.nano.<a href="hadur117/nano/Sanaro.html" title="class in hadur117.nano">Sanaro</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/MeleeController.html#cross(boolean)" class="member-name-link">cross(boolean)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeController.html" title="class in hadur117.core.melee">MeleeController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-19">MMOVE-19</a>: sets the switch, for tests.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MeleeController.html#CROSS_SLACK" class="member-name-link">CROSS_SLACK</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeController.html" title="class in hadur117.core.melee">MeleeController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-19">MMOVE-19</a>: how far, energy, a loss may be from a shot's damage (losses are kept to 0.01).</div>
+</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#crossesBox(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,double,double,double)" class="member-name-link">crossesBox(Point2D.Double, Point2D.Double, double, double, double)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>
 <div class="block">Whether the segment <code>a</code>-<code>b</code> meets the square of half-side <code>half</code> round (<code>cx</code>, <code>cy</code>).</div>
+</dd>
+<dt><a href="hadur117/core/melee/MeleeController.html#crossHit(hadur117.core.world.EnemyInfo,long)" class="member-name-link">crossHit(EnemyInfo, long)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeController.html" title="class in hadur117.core.melee">MeleeController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-19">MMOVE-19</a>: logs <code>victim</code>'s scan and, when it shows a loss to someone other than Hadur,
+ learns the aim of the one other opponent's shot that explains it: the shot whose damage the
+ loss matches and whose wave reached the victim between its last two scans; with two or more
+ such shots it learns nothing.</div>
 </dd>
 <dt><a href="hadur117/core/melee/MeleeWaves.html#crossing(hadur117.core.melee.MeleeWaves.Wave,java.awt.geom.Point2D.Double,long,java.awt.geom.Point2D.Double,long)" class="member-name-link">crossing(MeleeWaves.Wave, Point2D.Double, long, Point2D.Double, long)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeWaves.html" title="class in hadur117.core.melee">MeleeWaves</a></dt>
 <dd>
@@ -3699,6 +3714,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur/bench/MeleeHarvester.html#EXPOSURE_HEADER" class="member-name-link">EXPOSURE_HEADER</a> - Static variable in class hadur.bench.<a href="hadur/bench/MeleeHarvester.html" title="class in hadur.bench">MeleeHarvester</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/world/EnemyInfo.html#externalLossAt(long)" class="member-name-link">externalLossAt(long)</a> - Method in class hadur117.core.world.<a href="hadur117/core/world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-19">MMOVE-19</a>: the energy lost to robots other than Hadur that the scan at <code>now</code> showed, or 0.</div>
+</dd>
 <dt><a href="hadur117/core/melee/FieldGun.html#EYES_BOOST" class="member-name-link">EYES_BOOST</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
 <dd>
 <div class="block">TMODE-31: a scanner's weight under LEAD while droids are about.</div>
@@ -7676,6 +7695,13 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../requirements.html#MMOVE-14">MMOVE-14</a> (arm mcloser): off a team with three or more opponents left, an opponent's term
  is divided by one plus the number of other opponents nearer it than the point: a robot
  with closer prey is less likely to come for Hadur.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MeleeController.html#MELEE_CROSS" class="member-name-link">MELEE_CROSS</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeController.html" title="class in hadur117.core.melee">MeleeController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-19">MMOVE-19</a> (arm mcross), inspired by ScalarR: with the surfer on, off a team, an opponent's
+ energy loss to someone other than Hadur that one other opponent's shot explains (its damage,
+ its wave at the victim between the victim's last two scans) teaches that shooter's aim, as a
+ hit on Hadur does (<a class="req" href="../requirements.html#MMOVE-15">MMOVE-15</a>).</div>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#MELEE_HEAT" class="member-name-link">MELEE_HEAT</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>
