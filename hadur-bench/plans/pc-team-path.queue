@@ -1,3 +1,5 @@
+# RETIRED 2026-10-30 after it ran (PR #414): PATH ships on master (PR #431), so tmpath is a no-op on master.
+# To re-measure, build tmnopath as the control.
 # Team path check and Troodon at 250 px (TMODE-25/26, BENCH-124; docs/plan-team-top5.md section 12),
 # team thread: team-only, duel and melee fixtures bit for bit. Per opponent: each arm is screened
 # against every team it can reach, and only the teams where it clearly pays get a table entry.

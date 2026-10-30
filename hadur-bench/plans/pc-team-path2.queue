@@ -1,3 +1,5 @@
+# RETIRED 2026-10-30 after it ran (PR #430): PATH ships on master (PR #431), so tmpath is a no-op on master.
+# To re-measure, build tmnopath as the control.
 # Confirm PATH as every team's default (TMODE-25, BENCH-135; docs/plan-team-top5.md section 13),
 # team thread: team-only, duel and melee fixtures bit for bit. pc-team-path (PR #414) found no team
 # where PATH paid +3.0 on its own, but pooled over the 46 it read +0.5 ± 0.5 share points over aa
