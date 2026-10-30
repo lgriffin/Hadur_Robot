@@ -65,7 +65,7 @@ public class FieldGun {
     public static final boolean EXPERTS = false;
     /**
      * MGUN-18: off a team, an opponent's weight also leans toward the ones the gun has been
-     * hitting: times 5 (hits + 1) / (waves + 5) of its best aim, 1 with no waves read.
+     * hitting: times 5 (hits + 1) / (waves + 5) of the aim it fires at it, 1 with no waves read.
      */
     public static final boolean HIT_TARGET = false;
     /** MGUN-19: off a team, an opponent's distance weight is (100/d)^0.7, not 100/d (Ogi's flatter d^-0.686). */
@@ -379,13 +379,16 @@ public class FieldGun {
             Math.min(weight, peak * pick[1]), power, p));
     }
 
-    /** MGUN-18: 5 (hits + 1) / (waves + 5) of the opponent's best aim, decayed; 1 with none read. */
+    /**
+     * MGUN-18: 5 (hits + 1) / (waves + 5) of the aim the gun fires at the opponent (MGUN-17's
+     * pick, else the field gun's own), decayed; 1 with none read.
+     */
     double hitFactor(String name) {
         double[] s = expertScores.get(name);
         if (s == null) return 1;
-        double best = 0;
-        for (int x = 0; x < EXPERT_COUNT; x++) best = Math.max(best, s[x]);
-        return 5 * (best + 1) / (s[EXPERT_COUNT] + 5);
+        double[] pick = expertsOn() ? pick(name) : null;
+        double hits = s[pick == null ? FIELD : (int) pick[0]];
+        return 5 * (hits + 1) / (s[EXPERT_COUNT] + 5);
     }
 
     static boolean isolated(EnemyInfo e, List<EnemyInfo> alive) {

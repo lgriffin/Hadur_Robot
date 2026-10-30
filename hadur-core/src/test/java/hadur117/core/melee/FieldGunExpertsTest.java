@@ -91,5 +91,8 @@ class FieldGunExpertsTest {
         }
         assertTrue(gun.hitFactor("a") > 2);
         assertTrue(gun.hitFactor("b") < 0.5);
+        // With MGUN-17 off the gun fires the field gun's aim, so a simple aim's hits do not count.
+        for (int i = 0; i < 20; i++) gun.scoreExperts("c", hits(false, true, true, true));
+        assertTrue(gun.hitFactor("c") < 0.5);
     }
 }

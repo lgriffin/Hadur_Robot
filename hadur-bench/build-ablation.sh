@@ -21,8 +21,8 @@
 #   ogi2    MGUN-14: MGUN-13 also with two opponents left. Suffix o2.
 #   ogie10  MGUN-15: MGUN-13 from 10 own energy, not 20. Suffix oe.
 #   ogi300  MGUN-16: MGUN-13's power 3 out to 300 px, not 200. Suffix ow.
-#   gexp    MGUN-17: each opponent's aim shared among the field gun, head-on, linear and circular by virtual hits. Suffix gx.
-#   grate   MGUN-18: an opponent's weight leans toward the ones the gun has been hitting. Suffix gr.
+#   gexp    MGUN-17: after 20 waves, a head-on, linear or circular aim that out-hits the field gun 1.25x takes that opponent. Suffix gx.
+#   grate   MGUN-18: an opponent's weight leans toward the ones the aim it fires has been hitting. Suffix gr.
 #   gdist   MGUN-19: the distance weight (100/d)^0.7, not 100/d. Suffix gd.
 #   gsoft   MGUN-20: a situation's weight 1/(distance + mean distance), not 1/(0.01 + distance). Suffix gv.
 #   e3ring  MEND-1: with two opponents left off a team, the crowd's ring and lateral weight (no MMOVE-4). Suffix er.

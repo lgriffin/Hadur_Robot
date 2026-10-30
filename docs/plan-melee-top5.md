@@ -409,7 +409,9 @@ each a switch off a team only:
   the field gun's spread ones at the crowd peak, and two cloud smokes read -1.47 ± 1.01 and
   -0.88 ± 0.53 with 6 less energy entering the endgame.
 - **MGUN-18 hit-rate targeting** (`HIT_TARGET`, `grate`/`gr`): weight times 5 (hits + 1)/(waves + 5) of
-  the opponent's best aim, so the density peak leans toward robots we actually hit.
+  the aim the gun fires at the opponent, so the density peak leans toward robots we actually hit. (The
+  smoked build used the best of all four aims' hits, which also favoured robots only an unused simple
+  aim would hit; fixed after review, not re-smoked.)
 - **MGUN-19 flatter distance** (`FLAT_DISTANCE`, `gdist`/`gd`): (100/d)^0.7, Ogi's d^-0.686 in our units;
   far robots in a dense line count for more.
 - **MGUN-20 softer matches** (`SOFT_MATCH`, `gsoft`/`gv`): 1/(distance + mean distance), Ogi's

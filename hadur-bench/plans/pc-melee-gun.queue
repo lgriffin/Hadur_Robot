@@ -7,8 +7,8 @@
 # idea from Ogi's gun further in Hadur's own way, off a team only:
 #   aa      the baseline (master)
 #   bb      its A/A copy
-#   gx      gexp, MGUN-17: every targeting wave also scores head-on, linear and circular aims, and
-#           each opponent's weight is shared among the four aims by how well each has been hitting it
+#   gx      gexp, MGUN-17: every targeting wave also scores head-on, linear and circular aims; after
+#           20 waves one that out-hits the field gun 1.25x takes that opponent
 #   gr      grate, MGUN-18: an opponent's weight leans toward the ones the gun has been hitting
 #   gd      gdist, MGUN-19: the distance weight (100/d)^0.7, not 100/d (Ogi's flatter d^-0.686)
 #   gv      gsoft, MGUN-20: a situation's weight 1/(distance + the mean distance), not 1/(0.01 + distance)
