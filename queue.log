@@ -9,3 +9,7 @@
 21:23:21 start live-LQ
 21:23:21 watching live-LQ: 3 stop rule(s)
 21:24:23 progress live-LQ: 8/430 (2%) battles, 467/h, ETA 54 min, 0 failed, skips 0.0/battle (last 100)
+21:53:44 live-LQ exit=0 in 1822 s
+21:53:44 start live-LL
+21:53:44 watching live-LL: 3 stop rule(s)
+21:54:38 progress live-LL: 10/430 (2%) battles, 661/h, ETA 38 min, 0 failed, skips 0.0/battle (last 100)
