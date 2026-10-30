@@ -1162,6 +1162,8 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | TMODE-26 | Optional | Where the team mode table names NEAR against a team, the HUNT place shall be 250 px from the prey. | T7 |
 | TMODE-27 | Optional | Where the DODGE mode is played against a team, while Hadur has a living teammate, each detected enemy shot shall be turned once, when first seen, into a profile: the simple aims (head-on, linear, circular, linear at the 16-tick average velocity, linear at half speed) at Hadur's state when it was fired and the team's learned aims pooled by enemy class, each carrying its expert's weight exp(-loss) against that class, where an expert's loss decays by 0.95 a hit and grows by 0 within one bot width of each enemy bullet that hit a member and up to 1 at three, the hit member's errors travelling with its link sample; the shot shall count for Hadur by 1/(1+k)^2 for the k teammates nearer its source (by the nearest rule where the table names OWN); the destination shall be the best of the 12 lowest-risk candidates and the held one by risk/median + 3 x damage/median, the damage being the profiles crossed driving there for 30 ticks plus the teammates' bullets crossed in 15, the held one times 0.9; the base risk then counts no bullet. | T7 |
 | TMODE-28 | Ubiquitous | The team mode table's default, for a team it does not name, shall include the PATH mode, and every team the table names shall play PATH on top of its entry. | T7 |
+| TMODE-29 | Optional | Where DODGE's own-fire switch is on, DODGE's base ranking shall keep MATEFIRE's teammate-bullet risk, and each re-ranked destination's risk shall gain PATH's factor times the damage of the teammates' bullets crossed on its 15-tick drive, those bullets no longer counting in its wave damage. | T7 |
+| TMODE-30 | Ubiquitous | The team mode table's default, for a team it does not name, shall include the DODGE mode, every team the table names shall play DODGE on top of its entry, and DODGE's own-fire switch shall be on. | T7 |
 
 ### T1 notes
 
@@ -1545,7 +1547,7 @@ checks the re-blend picks what the surf picked, and fits.
   * 2.5^distQuotient / 2.5 * escape`; the total adds the cheapest next-wave danger. Ablation
   `aesrec` (suffix ar) in `build-ablation.sh`; `MoveDesign.AES_RECORD` is off in every shipped jar.
 
-## The enemy-gun oracle (ORACLE-1 to ORACLE-4, MOVE-29, BENCH-134, BENCH-138)
+## The enemy-gun oracle (ORACLE-1 to ORACLE-4, MOVE-29, BENCH-134, BENCH-138, BENCH-140, BENCH-141)
 
 K0 of the road to king (Leigh's doc "Hadur: the 1:1 map, tonight's card, and the road to 1v1 king",
 2026-10-28; docs/bench/gun-oracle.md). The king's lead is the 431 learning guns on flat movers, where
@@ -1564,7 +1566,10 @@ blends its terms; the oracle measures what each model predicts.
 | BENCH-134 | Ubiquitous | The bench shall carry the `pc-k0-oracle` card: the current release with `aesrec,oracle` on `aes-flat-learning.txt` (the 432 learning guns on flat movers), 2 fresh seeds from 4200, truth log on, 12 workers, stopping on 30 failed battles, 40+ skipped turns a battle over the last 200 or no battle in 30 minutes; then the oracle's join and score, and a results PR only after both pass. | T7 |
 | BENCH-135 | Ubiquitous | The bench shall carry the `pc-team-path2` card, which runs PATH (TMODE-25) forced on for every team (`mp`) and a bb A/A against aa on all 46 teams at 16 fresh seeds from 5100, and gates the pooled gain (each team's mp gain less half its bb gain, summed over 46) at +0.30 APS with the 95% low end above zero; the card changes no robot code. | T7 |
 | BENCH-139 | Ubiquitous | The bench shall carry the `pc-team-dodge` card, which screens DODGE (TMODE-27) forced on (`dg`) beside a bb A/A against aa on all 46 teams at 12 seeds from 5400; gates DODGE as every team's default on the pooled gain (each team's dg gain less half its bb gain, summed over 46) at +0.30 APS with the 95% low end above zero; picks per team DODGE at +3.0 points or more over both baselines with the low end above zero (a team the shipped table names keeps its entry's modes); and gates the picked table on 16 fresh seeds from 5500 at +0.30 APS; only a passed per-team gate writes that table as the table to ship. | T7 |
+| BENCH-142 | Ubiquitous | The bench shall carry the `pc-team-dodge2` card, which runs DODGE (TMODE-27) forced on (`dg`) and DODGE with its own-fire switch (TMODE-29, `dgof`) beside a bb A/A against aa on all 46 teams at 16 fresh seeds from 5600 and 12 rounds, and gates each arm's pooled gain (each team's gain less half its bb gain, summed over 46) at +0.30 APS with the 95% low end above zero; the card changes no robot code. | T7 |
 | BENCH-138 | Ubiquitous | The bench shall carry the `pc-k1-aim` card: the current release (c), its A/A copy (aa) and the aim members on (km, MOVE-29) on `aes-flat-learning.txt` (the 432 learning guns on flat movers), 1 fresh seed from 4400, 12 workers, truth log off, stopping on 30 failed battles, an arm scoring nothing in 8, 40+ skipped turns a battle over the last 200, no battle in 30 minutes or an A/A outside its band after 20%, and finishing early once km cannot reach +0.05 APS at z 3 after 30%; then the gate (km minus pooled c and aa over the 432 / 1,217 pairings at +0.05 APS, 95% low end above 0), per-robot losses, the oracle re-joined on the pc-k0-oracle battles when they are on the PC, and a results PR only after the gate passes its analysis. | T7 |
+| BENCH-140 | Ubiquitous | The bench shall carry the `pc-sg-aim` card: the current release (c), its A/A copy (aa) and the aim members on (km, MOVE-29) on `simple-guns.txt` (the 434 census opponents with head-on, linear, linear+learning, head-on+learning or mixed guns), 1 fresh seed from 4800, 12 workers, truth log off, with pc-k1-aim's stop rules and futility at +0.05 APS after 30%; then the gate (km minus pooled c and aa over the 434 / 1,217 pairings at +0.05 APS, 95% low end above 0), per-robot losses and a results PR. | T7 |
+| BENCH-141 | Ubiquitous | The bench shall carry the `pc-census-320` card: master with MOVE-29 off (c, ablation noaim), its A/A copy (aa) and master as it stands (km) on the 1,212 census robots of `census-312.txt`, 1 fresh seed from 4900, 12 workers, truth log off, with pc-k1-aim's stop rules except skipped turns at 60 a battle over the last 200 (the whole field's healthy level is 31 to 40) and no futility rule; then the gate (km minus pooled c and aa over the field / 1,217 pairings at +0.18 APS, the gap from 3.19 live to 3rd, 95% low end above 0), per-robot losses and a results PR. | T7 |
 
 - **ORC record**: `ORC,round,tick,fireTime,power,firing,sourceX,sourceY,absBearing,orbitDirection,maxEscapeAngle,distance,chosen,`
   then `low,high` per option (counter-clockwise, stop, clockwise; `nan,nan` for no plan), then `views`, then per view
@@ -1593,6 +1598,10 @@ gun as it was (docs/bench/melee-gun-3.13.md).
 | MGUN-14 | Optional | Where the `OGI_TWO` switch is on, MGUN-13 shall also apply off a team with two opponents alive, in place of the duel's table. | M7 |
 | MGUN-15 | Optional | Where the `OGI_LOW` switch is on, MGUN-13 shall apply from 10 own energy in place of 20. | M7 |
 | MGUN-16 | State | While MGUN-13 applies, it shall fire power 3 at a target within 300 px in place of 200. | M7 |
+| MGUN-17 | Optional | Where the `EXPERTS` switch is on, while in melee off a team, each targeting wave (MGUN-4) shall also score head-on, linear and circular aims at its opponent beside the field gun's own, decayed 0.95 a wave, and once twenty waves have reached an opponent a simple aim whose smoothed hit rate is at least 1.25 times the field gun's shall replace that opponent's solutions with one solution weighted by the field gun's own peak share of the opponent times that ratio, capped at the opponent's weight. | M7 |
+| MGUN-18 | Optional | Where the `HIT_TARGET` switch is on, while in melee off a team, the field gun shall multiply an opponent's weight by 5 (h + 1) / (n + 5), with h the decayed virtual hits of the aim the gun fires at it (MGUN-17's pick when that applies, else the field gun's own) and n its decayed waves, and by 1 before any wave has reached it. | M7 |
+| MGUN-19 | Optional | Where the `FLAT_DISTANCE` switch is on, while in melee off a team, the field gun's distance weight shall be (100 / max(50, d))^0.7 in place of 100 / max(50, d). | M7 |
+| MGUN-20 | Optional | Where the `SOFT_MATCH` switch is on, while in melee off a team, the field gun shall weight each of an opponent's situations by 1 / (its distance + the mean distance of the situations chosen), in place of 1 / (0.01 + its distance). | M7 |
 
 - **MGUN-7.** `FieldGun.MELEE_K` (12) beside `FieldGun.K` (3), chosen by `FieldGun.k()` from
   `onTeam`. More situations spread each opponent over the angles it is likely to reach, so the
@@ -1654,6 +1663,7 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
 | BENCH-127 | Ubiquitous | The bench shall carry the `pc-melee-wide` card, which builds MGUN-16 alone beside an aa baseline and a bb A/A copy, runs each alone on the melee census at 8 fresh seeds after the firepower part 2 card's, and reads it with `tools/melee_s0.py screen --base2` at a 0 bar with the 95% low end above 0 and Hadur's share of the others it outlives no more than 1 point lower. | R9 |
 | BENCH-136 | Ubiquitous | The bench shall carry the `pc-melee-surf` card, which builds MMOVE-15 beside an aa baseline and a bb A/A copy, runs each alone on the melee census at 6 fresh seeds after the crowd card's, and reads it with `tools/melee_s0.py screen --base2` at a +0.30 bar with the 95% low end above 0 and Hadur's share of the others it outlives no more than 1 point lower. | R9 |
 | BENCH-137 | Ubiquitous | The bench shall carry the `pc-melee-crowd` card, which builds MMOVE-11, MMOVE-12, MMOVE-13 and MMOVE-14 each alone beside an aa baseline and a bb A/A copy, runs each alone on the melee census at 6 fresh seeds after the wide card's, and reads it with `tools/melee_s0.py screen --base2` at a +0.30 bar with the 95% low end above 0 and Hadur's share of the others it outlives no more than 1 point lower. | R9 |
+| BENCH-143 | Ubiquitous | The bench shall carry the `pc-melee-gun` card, which builds MGUN-17, MGUN-18, MGUN-19 and MGUN-20 each alone beside an aa baseline and a bb A/A copy, runs each alone on the melee census at 6 seeds (3234-3239), halts any arm on 20 failed battles or 30 minutes without one, and reads it with `tools/melee_s0.py screen --base2` at a +0.30 bar with the 95% low end above 0 and Hadur's share of the others it outlives no more than 1 point lower. | R9 |
 | BENCH-128 | Optional | Where a multi-arm run is given `--job-order shuffled`, the bench shall fight its (opponent, seed) jobs in an order seeded from the seed base; and when a stopped multi-arm run is resumed, the bench shall read back every finished battle's row, a clean battle's empty errors column included. | T7 |
 | BENCH-129 | Event | When a queue step with a `watch:` line runs, the queue runner shall rewrite the plan's progress file every minute with each step's state and, for the watched step, its battles done of the run's size, battles an hour, ETA, failed battles, skipped turns a battle (first and last 100), and each arm's running difference from the pooled control with its 95% interval and the stop rules' z 3 bound, and shall push the progress, without touching the working tree, to the plan's progress branch every `PROGRESS_MINUTES` and at once on a stop. | T7 |
 | BENCH-130 | Event | When a step's pre-declared `stop:` rule trips (fails, dead, skips, stall, aa or futility), the queue runner shall kill that step, log the rule, the battles fought and kept and the battles left unrun; for a halt rule stop the queue with the step resumable, and for a finish rule record the step as done early with its rows so far written as its `arms.tsv`, so the steps after it run. | T7 |
@@ -2030,15 +2040,15 @@ are E0 to E3 (D is the DrussGT route's letter).
 | ID | Pattern | Requirement | Stage |
 |---|---|---|---|
 | DEISE-1 | Ubiquitous | Each tick the bot shall drive toward the least-risk of 36 points on a ring of radius 0.45 of the target's distance, within 36 to 160 px, that keep 18 px off the walls (0.2 also kept its destination unless a ring point was 10% safer or the destination was within 16 px; off since 0.3). | E2 |
-| DEISE-2 | Ubiquitous | The risk of a point shall include, for each live opponent, 80,000 over the squared distance to it (0.2: 50,000 plus 500 times its energy). | E2 |
+| DEISE-2 | Ubiquitous | The risk of a point shall include, for each live opponent, 106,667 plus 213,333 times its weight (DEISE-5's, set at every scan), over the squared distance to it (0.3: a flat 80,000; 0.2: 50,000 plus 500 times its energy). | E3 |
 | DEISE-3 | State | While no other robot is within 0.9 of the bot's distance from an opponent, the risk of a point shall include the absolute cosine between the heading to the point and the bearing from the point to that opponent (0.2 only; off since 0.3, `Move.ACROSS`). | E2 |
 | DEISE-4 | State | While 4 or more opponents remain, the risk of a point shall include the number of opponents times its distance to the nearest corner over 5,000 (0.2 only; off since 0.3, `Move.CORNERS`). | E2 |
-| DEISE-5 | Event | When a scanned opponent's energy has dropped by 0.1 to 3 since its last scan, the bot shall record a wave, fired halfway back to that scan (at most 8 ticks), with a head-on and a linear line, weighed 1 if no other robot is within 0.9 of the bot's distance from that opponent and 0.25 otherwise, in a ring of 64 slots; its danger at a point not yet passed is, for each line, the weight times 4,000 over 800 plus the squared distance from the point to that line's bullet at the point's range, added to the risk (in the shipped class since 0.3; 0.2 left the waves out). | E2 |
+| DEISE-5 | Event | When an opponent is scanned, the bot shall set its weight to 1 if no other robot is within 0.9 of the bot's distance from it and 0.25 otherwise (since 0.4; 0.3 weighed only its shots). When its energy has dropped by 0.1 to 3 since its last scan, the bot shall record a wave, fired halfway back to that scan (at most 8 ticks), with a head-on and a linear line, weighed by that weight, in a ring of 64 slots; its danger at a point not yet passed is, for each line, the weight times 4,000 over 800 plus the squared distance from the point to that line's bullet at the point's range, added to the risk (in the shipped class since 0.3; 0.2 left the waves out). | E3 |
 | DEISE-6 | Event | When any opponent is scanned 1 to 8 ticks after its last scan, the bot shall record the transition from its last state to its present one, the turn spread over the gap, in that opponent's table, kept across rounds; a full row shall replace a random sample. | E0 |
 | DEISE-7 | State | While the target's present Markov row holds no sample, the gun shall play the target on with that state held, which is circular projection. | E0 |
 | DEISE-8 | State | While it holds a sample, the gun shall play the target out by sampling its Markov chain, 200 playouts (64 in 0.2), where a playout through a row of fewer than 8 samples votes at most 5 plus 12 for each sample of that row. | E0 |
 | DEISE-9 | Ubiquitous | A playout's vote shall cover the 1,024-bin circle over the target's width at its distance, atan(18 / distance) either side, and a playout that leaves the field shall vote 1. | E0 |
-| DEISE-10 | Ubiquitous | Bullet power shall be log10(energy) times 325 over the distance, capped at 3 and at 1.9 plus one for every 3 opponents left (0.2 also at the power that kills the target), and at least 0.1. | E2 |
+| DEISE-10 | Ubiquitous | Bullet power shall be log10(energy) times 325 over the distance, capped at 3, and at least 0.1 (0.3 also capped it at 1.9 plus one for every 3 opponents left, and 0.2 at the power that kills the target). | E3 |
 | DEISE-11 | Unwanted | If gun turn remaining is non-zero, or the bot's energy is not above the power, then the bot shall not fire. | E2 |
 | DEISE-12 | Unwanted | If Robocode's codesize tool reports more than MiniMelee's 1,499 bytes for the shipped jar, or more than one class in it, then the build shall fail. | E0 |
 | DEISE-13 | Ubiquitous | The live-shaped MiniMelee census shall run fields drawn from the whole MeleeRumble list and score the seated robot only on its pairings against MiniMelee robots, with Deise in the field in place of a seated robot. | E0 |
@@ -2054,7 +2064,7 @@ are E0 to E3 (D is the DrussGT route's letter).
   DEISE-13's field builder (`saor_live.py` with Deise's options) and `deise_fields.py` by
   `test_saor_live.py`.
 
-## Sanaro, a NanoMelee entry (SANARO-1 to SANARO-12, stages N0 to N5)
+## Sanaro, a NanoMelee entry (SANARO-1 to SANARO-14, stages N0 to N6)
 
 `hadur117.nano.Sanaro`, a separate robot in the `sanaro` module, built to outrank
 d414.nano.Quantum and sheldor.melee.nano.NaturalScience in NanoMelee (Leigh, 2026-10-28, from his
@@ -2062,28 +2072,30 @@ design doc "Nano Melee: Beating NaturalScience & Quantum"). Design, the dissecti
 docs/sanaro.md. It depends on nothing of Hadur's, Saor's, TwinSaor's or Deise's, and they on
 nothing of it. The design doc's N-1 to N-12 are SANARO-1 to SANARO-12 here. SANARO-13 is the
 bench's own, added after pc-sanaro-n01 showed the NanoMelee-only census picks against the
-live-shaped one (docs/sanaro.md section 6).
+live-shaped one (docs/sanaro.md section 6). SANARO-14 is 0.2's fire gate (pc-sanaro-n04,
+docs/sanaro.md section 12).
 
 | ID | Pattern | Requirement | Stage |
 |---|---|---|---|
 | SANARO-1 | Unwanted | If Robocode's codesize tool reports more than NanoMelee's 249 bytes for the shipped jar, or more than one class in it, then the build shall fail. | N0 |
 | SANARO-2 | Unwanted | If the class declares a static initialiser, or its power table has no cell at an index the bot can reach for own and enemy energy 0 to 400, then the build shall fail. | N0 |
-| SANARO-3 | Event | When a robot is scanned, the bot shall decay its force field by DECAY (0.9), add a push of 1 over the distance away from that robot's hedged lead position, and turn its body to the field plus the wall push, turned SPIRAL (0 as it ships; 0.6 first) further. | N0 |
+| SANARO-3 | Event | When a robot is scanned, the bot shall decay its force field by DECAY (0.9), add a push of 1 over the distance away from that robot's hedged lead position, and turn its body to the field plus the wall push (0.1 first turned SPIRAL 0.6 further, then 0; 0.2 has no spiral term). | N0 |
 | SANARO-4 | State | While the body turn still to make exceeds AHEAD (120) degrees, the bot shall drive backwards. | N0 |
 | SANARO-5 | Event | When a scanned robot is closer than the target threshold, which creeps out CREEP (25) px every scan, the bot shall take it as the target and snap the threshold to its distance. | N0 |
 | SANARO-6 | Event | When the target is scanned, the bot shall turn its radar by its gun heat less LOCK (0.9) times the radar turn remaining: a sweep while the gun is hot, a flip on the target once it is nearly cool. | N0 |
-| SANARO-7 | Event | When the target is scanned, the bot shall turn its gun to the bearing plus its lateral velocity over LEAD (10) plus LEAD_GROWTH (1.008) to the distance. | N0 |
+| SANARO-7 | Event | When the target is scanned, the bot shall turn its gun to the bearing plus its lateral velocity over LEAD (16) at every range (0.1: over 10 plus 1.008 to the distance). | N5 |
 | SANARO-8 | Event | When the target is scanned, the bot shall fire the table's power for (own energy, target energy) times the integer BAND (640) over the distance; a table cell is the lesser of 0.1 plus a sixteenth of its own energy (at most 2.5, and 3.0 from 120 energy) and the least power that kills any energy the target's truncated energy stands for (up to one more); a target at 128 energy or more reads energy / 128 rows on at its energy mod 128, a limit of the 128 stride. | N0 |
 | SANARO-9 | Ubiquitous | The shipped jar shall carry the robot's properties at the release version and its source. | N0 |
 | SANARO-10 | Ubiquitous | The NanoMelee census shall run ten NanoMelee robots a battle, both leaders in every battle, and the shipped build shall read an APS above NaturalScience 1.2.1's in the same battles by more than its 95% interval over at least 20 battles. | N2 |
 | SANARO-11 | Ubiquitous | In the same battles the shipped build shall outsurvive both leaders more often than not. | N2 |
 | SANARO-12 | Ubiquitous | One on one with each leader over 35 rounds, the shipped build shall win more than 55% of rounds. | N2 |
 | SANARO-13 | Ubiquitous | A change to the shipped build shall read above the shipped build on the live-shaped census (the MeleeRumble fields that hold a NanoMelee robot, NanoMelee pairings counted) by more than its 95% interval. | N3 |
+| SANARO-14 | Event | When the target is scanned, the bot shall fire only if the gun's angle to the lead, before this scan's gun turn, is under GATE (18) over the distance in radians, and shall order the gun turn before the shot. | N5 |
 
 - **Coverage.** SANARO-1, SANARO-2 (no `<clinit>`) and SANARO-9 by `SanaroJarIT` (failsafe) on the
   shipped jar; SANARO-2 (table reach) and SANARO-8 (cells) by `SanaroTableTest`, which holds the
   table to `sanaro/table.py`'s formula; SANARO-3 to SANARO-8 by `SanaroTest`, scan by scan on a
-  probe subclass. SANARO-10 to SANARO-13 are bench reads (`tools/sanaro_read.py`; fields by
+  probe subclass, SANARO-14 too. SANARO-10 to SANARO-13 are bench reads (`tools/sanaro_read.py`; fields by
   `tools/sanaro_fields.py`, both by `test_sanaro.py`), not build gates.
 
 ## JayLexi and Eveimear, the MiniRumble and MicroRumble 1v1 entries (JAYLEXI-1 to JAYLEXI-11, EVEIMEAR-1 to EVEIMEAR-12)
@@ -2171,7 +2183,7 @@ profiles, and the rumbles list it as a new participant.
   dodge only works whole: shot detection, a learned per-class danger model with simple-aim
   experts, and a path check over the safest spots. Leigh: "If it makes sense to do a parallel full
   rebuild of the teams core do so".
-- **TMODE-27.** `TeamModes.Mode.DODGE` (FORCE_DODGE off), `melee.TeamDodge` and
+- **TMODE-27.** `TeamModes.Mode.DODGE` (FORCE_DODGE on since TMODE-30), `melee.TeamDodge` and
   `melee.AimExperts`: a parallel team movement path that stands in for the virtual bullets and
   the SOFT/LEARN/POOL/WAVES switches. Profiles are made once a shot (the CPU that sank WAVES with
   learning); experts' errors travel with link samples (LinkCodec version 4, written only when a
@@ -2191,3 +2203,30 @@ profiles, and the rumbles list it as a new participant.
   turns both off; `tmpath` keeps working on older source.
 - Solo play is untouched: the modes act only while a teammate lives. Only the two team replay
   fixtures were re-recorded; the duel and melee fixtures replay bit for bit.
+
+## DODGE's own fire and its confirm (TMODE-29, BENCH-142)
+
+- **Why.** pc-team-dodge (PR #437), measured on top of PATH: DODGE for every team +0.55 +- 0.50 APS
+  (global gate PASS, low end +0.05); the per-team table (Firestarter, HOFSwarm, TeamDeathTeam)
+  +0.24 +- 0.17 on fresh seeds (FAIL). Ogi -2.4, Nightmare -4.8, ImpactTeam -4.3. Our bullets on our
+  own members rose 13% (80.5 vs 71.2 a battle): DODGE cleared MATEFIRE's teammate-bullet risk from
+  its base ranking and folded teammates' bullets into the median-scaled wave damage.
+- **TMODE-29.** `TeamDodge.OWN_FIRE` (on since TMODE-30): keeps `v.mateBullets` in the base ranking and adds
+  `PATH_K` x `pathDamage` to each re-ranked risk in `MinimumRiskMovement.rerankBest(..., ownFire)`.
+  Ablation `tmdodgef` (suffix of), built with `tmdodge`.
+- **BENCH-142.** Card plans/pc-team-dodge2.queue: bb, dg and dgof on 46 teams x 16 seeds from 5600 at
+  12 rounds (4,416 battles, about 5 h); one pooled gate per arm. Results claude/pc-team-dodge2-results.
+- Both switches off: no replay fixture moves.
+
+## DODGE with own fire on every team (TMODE-30)
+
+- **Why.** pc-team-dodge2 (BENCH-142, PR #450), 46 teams x 16 fresh seeds from 5600, on top of PATH:
+  DODGE with OWN_FIRE (`dgof`) **+0.85 +- 0.42 APS** (gate +0.30, low end +0.43: PASS); plain DODGE
+  +0.45 +- 0.42; bb A/A -0.2 +- 0.4. Own-member hits +2.6 a battle (plain DODGE +9.2). Firestarter
+  +5.5, Combat +4.2, HOFSwarm +6.7, TeamDeathTeam +5.9, ArmyOfShiz +5.5, Ogi +2.8; Nightmare -3.5,
+  ImpactTeam -4.2, ImWithStupid -2.5. A global switch: Leigh decides the ship.
+- **TMODE-30.** `TeamModes.FORCE_DODGE` and `TeamDodge.OWN_FIRE` are true, and the three named entries
+  carry `Mode.DODGE`, as the measured `tmdodge,tmdodgef` arm played them. Ablations `tmnododge` (DODGE
+  off everywhere) and `tmnoof` (own fire off); `tmdodge` and `tmdodgef` keep working on older source.
+- Solo play is untouched: DODGE acts only while a teammate lives. Only the two team replay fixtures
+  were re-recorded; the duel and melee fixtures replay bit for bit.

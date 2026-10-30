@@ -1,0 +1,44 @@
+sg battles 80 share 94.70 ticks/round 499 enemy shots/round 20.75 enemy power 1.73 taken/round 6.97 dealt/round 65.2 taken per enemy shot 0.336 survived 0.986
+h battles 80 share 91.94 ticks/round 483 enemy shots/round 19.33 enemy power 1.83 taken/round 11.64 dealt/round 67.9 taken per enemy shot 0.602 survived 0.984
+
+opponent | share h-sg | taken/round h-sg | ticks h sg | enemy shots h sg | taken per shot h sg
+step.nanoPri 1.0                          -5.7 | +20.40 |  288  273 |   7.4   6.3 | 6.445 4.337
+jab.micro.Sanguijuela 0.8                 -3.9 | +15.80 |  289  273 |   7.2   6.4 | 6.771 5.096
+janm.Jammy 1.0                           -10.8 | +14.03 |  457  353 |  17.2  11.2 | 0.881 0.102
+et.Predator 1.8                          -10.4 | +13.31 |  600  865 |  26.5  41.3 | 0.609 0.068
+supersample.SuperRamFire 1.0              -6.9 | +11.03 |  332  326 |  10.0   9.6 | 2.152 1.088
+elloco.Flower 0.1r1                       -6.9 | +10.51 |  378  370 |  12.5  11.9 | 0.844 0.000
+GarmBox.Oranges 1.0.1                     -5.4 |  +8.51 |  414  442 |  16.6  18.1 | 0.686 0.159
+ghent.ArthurPanzergon 1.0.0               -5.6 |  +7.96 |  350  364 |  10.9  11.6 | 1.380 0.616
+conscience.Electron 1.3g                  -4.6 |  +7.53 |  303  327 |   8.1   9.6 | 0.986 0.048
+evd.X1 0.01                               -5.0 |  +6.76 |  371  395 |  12.2  13.7 | 0.611 0.051
+marcinek.TopGun 1.3                       -5.4 |  +6.57 |  487  491 |  21.3  21.5 | 0.430 0.120
+TCMI.Enyo 0.4                             -5.4 |  +6.14 |  707  641 |  37.7  32.9 | 0.166 0.004
+com.syncleus.robocode.Dreadnaught 0.1     -2.7 |  +6.07 |  300  305 |   7.3   8.1 | 2.671 1.650
+maribo.Omicron 1.0                        -4.1 |  +5.69 |  428  432 |  16.6  16.8 | 0.380 0.037
+demetrix.nano.SledgeHammer 0.22           -1.0 |  +5.49 |  296  276 |   8.0   6.7 | 5.071 5.259
+Polkwane.Piyane 0.7b                      -5.8 |  +5.44 |  558  552 |  23.7  21.8 | 0.419 0.206
+sos.SOS 1.0                               -4.6 |  +5.36 |  819  416 |  48.0  17.5 | 0.305 0.529
+jp.Perpy 16.0                             +0.7 |  +5.27 |  783 1935 |  42.4 134.1 | 0.430 0.097
+gh.GrypRepetyf 0.13                       -3.0 |  +4.87 |  713  732 |  39.0  40.4 | 0.221 0.093
+Fenix.FenixTrack 1.0                      -4.3 |  +4.66 |  439  415 |  14.7  12.0 | 0.474 0.190
+hapiel.Spiral 0.1                         -3.6 |  +4.49 |  538  442 |  29.3  20.9 | 0.289 0.190
+fala.robocode.FalaRobot 1.0               -2.6 |  +4.30 |  304  305 |   8.3   8.3 | 0.743 0.225
+mbh.Mbh 0.1                               -2.1 |  +3.20 |  325  331 |   9.2   9.5 | 0.396 0.048
+stelo.Lifestealer 1.0                     -1.4 |  +3.01 |  305  287 |   7.7   6.5 | 2.721 2.766
+csm.NthGeneration 0.04                    -1.9 |  +2.60 |  542  592 |  25.9  30.1 | 0.242 0.123
+blir.nano.Cabbage R1.0.1                  -1.4 |  +2.14 |  302  315 |   7.9   8.6 | 0.299 0.027
+uccc.MilkyWay 1.01                        -1.8 |  +2.00 |  470  551 |  21.0  26.6 | 0.142 0.037
+kawigi.sbf.Barracuda 1.0                  -1.6 |  +1.83 |  545  579 |  23.9  26.3 | 0.082 0.005
+nat.micro.Reepicheep 0.1a                 -0.6 |  +0.80 |  439  451 |  17.6  18.3 | 0.564 0.498
+suh.nano.CrossH 1.00                      -0.2 |  +0.29 |  387  423 |  15.5  18.0 | 0.018 0.000
+nexus.Prototype 1.0                       -0.5 |  +0.21 |  327  334 |   9.6   8.1 | 0.811 0.931
+el.JumpShoot 0.2                          -0.1 |  +0.09 |  503  615 |   5.0   6.4 | 0.063 0.036
+yabot.YaBot 0.1                           +0.1 |  -0.11 |  352  465 |   4.5   7.3 | 0.038 0.039
+pak.Dargon 1.0b                           +0.1 |  -0.17 |  326  331 |   9.1   9.1 | 0.131 0.150
+slugzilla.ButtHead 2.0                    +0.5 |  -0.29 |  800  854 |  42.3  47.6 | 0.022 0.026
+fowl3628800.StopAndGo 1.0.0               +0.4 |  -0.61 |  415  465 |  17.8  18.9 | 0.054 0.083
+jeremyreeder.Bully 1                      +0.6 |  -1.00 |  268  273 |   5.8   5.3 | 0.495 0.731
+wiki.WaveRammer 1.0                       -1.9 |  -1.54 |  430  410 |  18.3  16.6 | 2.050 2.354
+dragonbyte.Neutrino 4                     +6.5 |  -2.36 | 1950 1278 |  89.1  68.0 | 0.002 0.037
+ar.TheoryOfEverything 1.2.1               +2.2 |  -3.26 |  473  476 |  18.3  18.5 | 0.510 0.683

@@ -52,7 +52,8 @@ class TeamModesTest {
     @Tag("TMODE-12")
     @Tag("TMODE-14")
     @Tag("TMODE-28")
-    @DisplayName("TMODE-1: a team's modes are its first member's entry, by class without version or duplicate marker; else the default, MATEFIRE, HUNT and PATH in the shipped build (TMODE-12, TMODE-14, TMODE-28), and every named team plays PATH too")
+    @Tag("TMODE-30")
+    @DisplayName("TMODE-1: a team's modes are its first member's entry, by class without version or duplicate marker; else the default, MATEFIRE, HUNT, PATH and DODGE in the shipped build (TMODE-12, TMODE-14, TMODE-28, TMODE-30), and every named team plays PATH and DODGE too")
     void tableLookup() {
         EnemyTracker t = new EnemyTracker(field(1200, 1200));
         scan(t, "x.Other 2.0 (1)", 100, 100, 100, 1);
@@ -61,11 +62,14 @@ class TeamModesTest {
         Map<String, Set<TeamModes.Mode>> table = Map.of("cz.libors.Ogi", gang);
         assertSame(gang, TeamModes.against(t.alive(), table, TeamModes.NONE));
         assertSame(TeamModes.NONE, TeamModes.against(List.of(t.get("x.Other 2.0 (1)")), table, TeamModes.NONE));
-        assertEquals(EnumSet.of(TeamModes.Mode.MATEFIRE, TeamModes.Mode.HUNT, TeamModes.Mode.PATH), TeamModes.DEFAULT);
+        assertEquals(EnumSet.of(TeamModes.Mode.MATEFIRE, TeamModes.Mode.HUNT, TeamModes.Mode.PATH, TeamModes.Mode.DODGE),
+            TeamModes.DEFAULT);
         // The table names only the teams whose counters passed on fresh seeds (PR #370).
         assertEquals(java.util.Set.of("gh.nano.GrofGroupMember", "myl.micro.Troodon", "myl.micro.TroodonDroid"),
             TeamModes.TABLE.keySet());
-        for (Set<TeamModes.Mode> entry : TeamModes.TABLE.values()) assertTrue(entry.contains(TeamModes.Mode.PATH));
+        for (Set<TeamModes.Mode> entry : TeamModes.TABLE.values()) {
+            assertTrue(entry.contains(TeamModes.Mode.PATH) && entry.contains(TeamModes.Mode.DODGE));
+        }
     }
 
     @Test
@@ -542,6 +546,23 @@ class TeamModesTest {
         Point2D.Double pick = move.pathBest(candidates, v);
         assertTrue(candidates.contains(pick));
         assertEquals(pt(300, 700), pick);
+    }
+
+    @Test
+    @Tag("TMODE-29")
+    @Tag("TMODE-30")
+    @DisplayName("TMODE-29: DODGE's re-rank with its own-fire switch adds the teammates' bullets to the risk and drives out of their line")
+    void dodgeOwnFire() {
+        MinimumRiskMovement move = new MinimumRiskMovement(field(1200, 1200));
+        move.newRound();
+        move.mateShot("m0", pt(600, 300), 75, 0, 3.0);
+        List<VirtualBullet> b = move.mateBullets(pt(600, 700), 100);
+        List<EnemyInfo> far = enemies(pt(100, 1100)).alive();
+        MinimumRiskMovement.View v = move.view(pt(600, 700), 100, 100, 3, far, MeleeStrategy.Plan.normal(), mates(pt(600, 300)));
+        List<Point2D.Double> candidates = List.of(pt(600, 400), pt(300, 700));
+        assertEquals(pt(300, 700), move.rerankBest(candidates, v, 12, List.of(), b, true));
+        assertEquals(pt(300, 700), move.rerankBest(candidates, v, 12, List.of(), b, false));
+        assertTrue(TeamDodge.OWN_FIRE, "on in the shipped build since TMODE-30");
     }
 
     @Test

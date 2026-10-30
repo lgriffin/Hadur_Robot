@@ -54,9 +54,10 @@ class MeleeSurfPlanTest {
             int at = queue.indexOf("\n" + step + " ");
             int next = queue.indexOf("\nms", at + 1);
             String body = queue.substring(at, next);
-            for (String rule : List.of("watch: battles=276", "stop: fails 20", "stop: dead 8", "stop: stall 30m")) {
+            for (String rule : List.of("watch: battles=276", "stop: fails 20", "stop: stall 30m")) {
                 assertTrue(body.contains(rule), step + " " + rule);
             }
+            assertFalse(body.contains("stop: dead"), step + ": dead needs a multi-arm step, so the runner would refuse the card");
         }
     }
 

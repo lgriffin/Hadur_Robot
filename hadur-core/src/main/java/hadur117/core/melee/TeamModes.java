@@ -109,7 +109,7 @@ public final class TeamModes {
     public static final boolean FORCE_LINES = false;
     public static final boolean FORCE_GUNLINE = false;
     public static final boolean FORCE_PATH = true;
-    public static final boolean FORCE_DODGE = false;
+    public static final boolean FORCE_DODGE = true;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -142,9 +142,9 @@ public final class TeamModes {
     private static Map<String, Set<Mode>> table() {
         Map<String, Set<Mode>> t = new HashMap<>();
         // pc-team-counters (PR #370), 16 fresh seeds: TroodonPack +4.7 ± 3.8, GrofGroup +2.5 ± 3.0.
-        t.put("gh.nano.GrofGroupMember", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.LINEAR, Mode.PATH));
-        t.put("myl.micro.Troodon", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.PATH));
-        t.put("myl.micro.TroodonDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.PATH));
+        t.put("gh.nano.GrofGroupMember", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.LINEAR, Mode.PATH, Mode.DODGE));
+        t.put("myl.micro.Troodon", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.PATH, Mode.DODGE));
+        t.put("myl.micro.TroodonDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.PATH, Mode.DODGE));
         return Collections.unmodifiableMap(t);
     }
 

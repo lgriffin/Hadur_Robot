@@ -1,0 +1,48 @@
+# The 3.20 census (BENCH-141, docs/bench/simple-gun-gap.md). Leigh's release rule: no 1v1 release until the
+# bench census projects the target, now 3rd (Saguaro 91.76 against 3.19's live 91.58, a gap of 0.18 APS).
+# Leigh starts it:
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-census-320        (or  ./queue.sh run pc-census-320)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes;
+# no step needs a decision. About 5.5 h of battles (the first run fought 660 an hour on the whole field)
+# and seconds of analysis.
+#
+# Why: master's only 1v1 change since v3.19 is MOVE-29, the aim members (PR #441): pc-sg-aim +0.13 +- 0.07
+# APS on the 434 simple guns, pc-k1-aim +0.07 +- 0.15 on the 432 learning guns. This reads it on the whole
+# census field, every robot once, against master with MOVE-29 off (ablation noaim), which is 3.19's duel play.
+#
+# census: the 1,212 census robots (census-312.txt) x c (noaim), aa (noaim,aa) and km (master) x 1 fresh
+#         seed from 4900 = 3,636 battles, 35 rounds.
+# gate:   km minus pooled c and aa over the field / 1,217 pairings at +0.18 APS (3.19 live + the gain
+#         reaches Saguaro's 91.76), 95% low end above 0, A/A inside its band; per-robot losses. The gate
+#         is a reading for Leigh's release call: it opens no release by itself.
+# Stop rules (docs/bench/watch.md): halts on 30 failed battles, an arm scoring nothing in 8, 60+ skipped
+# turns a battle over the last 200 (the whole field skips 31 to 40 a battle on a healthy PC: top5-s2,
+# top5-s4, table-v1 and surf-b censuses; 40 halted the first run, issue #444, at 40.9 against 37.2 in its
+# first 200), no battle in 30 minutes, or an A/A outside its z 3 band after 20%;
+# every battle fought is kept and a rerun resumes. No futility rule: a census reads every robot. ALERT
+# opens an issue for Leigh on any stop.
+
+set V = 3.19
+set P = --parallel 12 --no-truth-log
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G --engine 1.11.1
+set W = work/census-320
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && bash ./build-ablation.sh aa && bash ./build-ablation.sh noaim && bash ./build-ablation.sh noaim,aa && test -f bisect/hadur117.Hadur_${V}kxaa.jar && ./fetch-opponents.sh --set census-312.txt && mvn -q compile
+
+census | ./bench-top20.sh ${C} ${P} --set census-312.txt --seeds 1 --seed-base 4900 --arms plans/census-320.arms --out ${W} --label census-320 --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --census census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_census-320.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm km --panel census-312.txt --bar 0.18 --out ${OUT}/$(date +%Y-%m-%d)_census-320-gate.md && python3 tools/per_robot.py ${W}/arms.tsv --arms km --out ${OUT}/$(date +%Y-%m-%d)_census-320-per-robot.md --out-tsv ${OUT}/census-320-per-robot.tsv
+  after: census
+
+pr | bash tools/open_results_pr.sh claude/pc-census-320-results "The 3.20 census: master (MOVE-29 on) against 3.19's duel play on the whole field" ${OUT}/*_census-320*.md ${OUT}/census-320-per-robot.tsv
+  after: gate

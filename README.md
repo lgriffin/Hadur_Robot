@@ -76,7 +76,7 @@ round-end profile save that grew with every opponent on disk, fixed in 3.4
 
 Hadur has siblings, one for each size class and format it can win. Each is a separate robot with
 its own folder, build, requirements and README, and none shares code with Hadur.
-Best live results as of 2026-10-29:
+Best live results as of 2026-10-30:
 
 | Robot | Rumble | Size | Best live result | |
 |---|---|---|---|---|
@@ -95,8 +95,8 @@ Best live results as of 2026-10-29:
 - **Saor** is a Markov-gun micro melee bot that learns from every scan ([docs/saor.md](docs/saor.md)).
 - **Deise** is a least-risk mini melee bot with seen-shot waves, built to take 1st from
   kc.mini.Mirage ([docs/deise.md](docs/deise.md)).
-- **Sanaro** is a nano melee bot: anti-gravity turned off the push, a branch-free radar and a table of
-  bullet power by both robots' energy ([docs/sanaro.md](docs/sanaro.md)).
+- **Sanaro** is a nano melee bot: anti-gravity, a branch-free radar, a gun that fires only on its lead
+  and a table of bullet power by both robots' energy ([docs/sanaro.md](docs/sanaro.md)).
 - **JayLexi** (a wave surfer with a GuessFactor gun) and **Eveimear** (stop-and-go movement over a
   GuessFactor gun) are 1v1 size bots from Leigh's kitlab design ([docs/kitlab.md](docs/kitlab.md)).
 

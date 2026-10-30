@@ -21,6 +21,10 @@
 #   ogi2    MGUN-14: MGUN-13 also with two opponents left. Suffix o2.
 #   ogie10  MGUN-15: MGUN-13 from 10 own energy, not 20. Suffix oe.
 #   ogi300  MGUN-16: MGUN-13's power 3 out to 300 px, not 200. Suffix ow.
+#   gexp    MGUN-17: after 20 waves, a head-on, linear or circular aim that out-hits the field gun 1.25x takes that opponent. Suffix gx.
+#   grate   MGUN-18: an opponent's weight leans toward the ones the aim it fires has been hitting. Suffix gr.
+#   gdist   MGUN-19: the distance weight (100/d)^0.7, not 100/d. Suffix gd.
+#   gsoft   MGUN-20: a situation's weight 1/(distance + mean distance), not 1/(0.01 + distance). Suffix gv.
 #   e3ring  MEND-1: with two opponents left off a team, the crowd's ring and lateral weight (no MMOVE-4). Suffix er.
 #   e3pow  MEND-2: with two opponents left off a team, the crowd's power table (not the duel's). Suffix ep.
 #   e3far  MEND-3: with two opponents left off a team, the closest-robot factor 4 (not 2). Suffix ef.
@@ -120,6 +124,8 @@
 #         Suffix gm (surfb,mimics -> sbgm).
 #   aimmem  MOVE-29 (K1 of the road to king): the three-option surf mixes the views' danger with the head-on, linear
 #         and circular aims', each weighted by its rolling score at the bullets that hit us. Sets only AIM_MEMBERS.
+#   noaim  MOVE-29 off (it ships on from 3.20): the three-option surf rates on the views alone. Suffix kx.
+#   aimp3, aimp1  (with aimmem) MOVE-29's standing weight of each aim 0.1 -> 0.3 or 1.0. Suffix q3, q1.
 #         Suffix km.
 #   pressure  POW-12 (the plan's POW-11): while our rolling hit rate less its margin is at least 12%, theirs plus its margin at
 #         most 9%, and our energy is above 12, the duel gun skips the cubic power-down and fires a base power of 2.5
@@ -329,6 +335,7 @@ book="$src/hadur-core/src/main/java/$pkg/core/adapt/OpeningBook.java"
 shields="$src/hadur-core/src/main/java/$pkg/core/shieldmode/ShieldList.java"
 design="$src/hadur-core/src/main/java/$pkg/core/shieldmode/ShieldDesign.java"
 movedesign="$src/hadur-core/src/main/java/$pkg/core/duel/MoveDesign.java"
+aimmembers="$src/hadur-core/src/main/java/$pkg/core/move/AimMembers.java"
 gundesign="$src/hadur-core/src/main/java/$pkg/core/duel/GunDesign.java"
 powerdesign="$src/hadur-core/src/main/java/$pkg/core/duel/PowerDesign.java"
 protean="$src/hadur-core/src/main/java/$pkg/core/move/ProteanPick.java"
@@ -501,8 +508,19 @@ for a in "${list[@]}"; do
             edit "$movedesign" "static final boolean MIMICS = false;" "static final boolean MIMICS = true;"
             version="${version}gm" ;;
         aimmem)
-            edit "$movedesign" "static final boolean AIM_MEMBERS = false;" "static final boolean AIM_MEMBERS = true;"
+            # Ships on from 3.20; the arm stays buildable for the older cards.
+            grep -qF "static final boolean AIM_MEMBERS = true;" "$movedesign" \
+                || edit "$movedesign" "static final boolean AIM_MEMBERS = false;" "static final boolean AIM_MEMBERS = true;"
             version="${version}km" ;;
+        noaim)
+            edit "$movedesign" "static final boolean AIM_MEMBERS = true;" "static final boolean AIM_MEMBERS = false;"
+            version="${version}kx" ;;
+        aimp3)
+            edit "$aimmembers" "static final double AIM_PRIOR = 0.1;" "static final double AIM_PRIOR = 0.3;"
+            version="${version}q3" ;;
+        aimp1)
+            edit "$aimmembers" "static final double AIM_PRIOR = 0.1;" "static final double AIM_PRIOR = 1.0;"
+            version="${version}q1" ;;
         aesrec)
             edit "$movedesign" "static final boolean AES_RECORD = false;" "static final boolean AES_RECORD = true;"
             version="${version}ar" ;;
@@ -754,13 +772,32 @@ for a in "${list[@]}"; do
             ;;
         tmdodge)
             version="${version}dg"
+            # TMODE-30 ships DODGE; on older source (--ref) force it on.
+            if ! grep -qF "public static final boolean FORCE_DODGE = true;" "$modes"; then
             edit "$modes" "public static final boolean FORCE_DODGE = false;" "public static final boolean FORCE_DODGE = true;"
             # The teams the table already names play DODGE on top of their entry.
             sed -i -E 's/^(        t\.put\("[^"]+", of\(.*)\)\);$/\1, Mode.DODGE));/' "$modes"
+            fi
+            ;;
+        tmnododge)
+            version="${version}ndg"
+            edit "$modes" "public static final boolean FORCE_DODGE = true;" "public static final boolean FORCE_DODGE = false;"
+            # Wherever an earlier ablation left DODGE in a named entry.
+            sed -i -E '/^        t\.put\(/s/, Mode\.DODGE([,)])/\1/' "$modes"
             ;;
         tmdodgeb)
             version="${version}db"
             edit "$dodge" "static final boolean RANK_BULLETS = false;" "static final boolean RANK_BULLETS = true;"
+            ;;
+        tmdodgef)
+            version="${version}of"
+            # TMODE-30 ships OWN_FIRE; on older source force it on.
+            grep -qF "static final boolean OWN_FIRE = true;" "$dodge" \
+                || edit "$dodge" "static final boolean OWN_FIRE = false;" "static final boolean OWN_FIRE = true;"
+            ;;
+        tmnoof)
+            version="${version}nof"
+            edit "$dodge" "static final boolean OWN_FIRE = true;" "static final boolean OWN_FIRE = false;"
             ;;
         tmtnear)
             version="${version}tn"
@@ -992,6 +1029,17 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
+        gexp|grate|gdist|gsoft)
+            # Melee gun, inspired by Ogi (docs/plan-melee-top5.md, MGUN-17..20): one FieldGun switch
+            # on, off a team only; duel and team fixtures bit for bit.
+            case "$a" in
+                gexp) flag=EXPERTS; suffix=gx ;;
+                grate) flag=HIT_TARGET; suffix=gr ;;
+                gdist) flag=FLAT_DISTANCE; suffix=gd ;;
+                gsoft) flag=SOFT_MATCH; suffix=gv ;;
+            esac
+            edit "$fgun" "public static final boolean $flag = false;" "public static final boolean $flag = true;"
+            version="${version}${suffix}" ;;
         e3ring|e3pow|e3far)
             # Melee Stage 1 (docs/plan-melee-top5.md, MEND-1..3): one melee.MeleeEndgame switch on,
             # acting only with two opponents left off a team; duel and team fixtures bit for bit.
@@ -1003,7 +1051,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgeb, tmtnear, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgeb, tmdodgef, tmnododge, tmnoof, tmtnear, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf, gexp, grate, gdist, gsoft)" >&2; exit 2 ;;
     esac
 done
 

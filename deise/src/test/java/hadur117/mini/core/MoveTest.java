@@ -31,7 +31,7 @@ class MoveTest {
     @Tag("DEISE-1")
     @DisplayName("every candidate keeps off the walls")
     void candidatesKeepOffTheWalls() {
-        double[] p = Move.best(20, 20, 160, bots(new double[] {500, 500, 100}), NO_WAVES, 0, 1);
+        double[] p = Move.best(20, 20, 160, bots(new double[] {500, 500, 100, 1}), NO_WAVES, 0, 1);
         assertTrue(p[0] >= Gun.MARGIN && p[1] >= Gun.MARGIN && p[0] <= Gun.FIELD - Gun.MARGIN);
     }
 
@@ -39,7 +39,7 @@ class MoveTest {
     @Tag("DEISE-2")
     @DisplayName("away from a lone opponent")
     void awayFromAnOpponent() {
-        double[] p = Move.best(500, 500, 100, bots(new double[] {500, 600, 100}), NO_WAVES, 0, 1);
+        double[] p = Move.best(500, 500, 100, bots(new double[] {500, 600, 100, 1}), NO_WAVES, 0, 1);
         assertTrue(p[1] < 500, "moved to " + p[1]);
     }
 
@@ -47,7 +47,7 @@ class MoveTest {
     @Tag("DEISE-2")
     @DisplayName("a strong opponent pushes harder than a weak one, while the push weighs energy")
     void strongPushesHarder() {
-        double[][] b = bots(new double[] {500, 650, 100}, new double[] {500, 350, 5});
+        double[][] b = bots(new double[] {500, 650, 100, 1}, new double[] {500, 350, 5, 1});
         if (Move.ENERGY_PUSH) {
             double[] p = Move.best(500, 500, 60, b, NO_WAVES, 0, 2);
             assertTrue(p[1] < 500, "moved to " + p[1]);
@@ -55,6 +55,23 @@ class MoveTest {
             // Flat since 0.3: two opponents equally far push equally, whatever their energy.
             assertEquals(Move.risk(500, 560, 0, 500, 500, b, NO_WAVES, 0, 2),
                 Move.risk(500, 440, Math.PI, 500, 500, b, NO_WAVES, 0, 2), 1e-12);
+        }
+    }
+
+    @Test
+    @Tag("DEISE-2")
+    @DisplayName("an opponent likely aiming at us pushes twice as hard as one aiming elsewhere, while the push weighs aim")
+    void aimingPushesHarder() {
+        double[][] b = bots(new double[] {500, 650, 100, 1}, new double[] {500, 350, 100, 0.25});
+        double toShooter = Move.risk(500, 560, 0, 500, 500, b, NO_WAVES, 0, 2);
+        double toOther = Move.risk(500, 440, Math.PI, 500, 500, b, NO_WAVES, 0, 2);
+        if (Move.AIM_PUSH) {
+            // 320,000 against 160,000.25 at the same distance.
+            assertEquals(320000 / 8100.0 + 160000.25 / 44100.0, toShooter, 1e-9);
+            assertEquals(320000 / 44100.0 + 160000.25 / 8100.0, toOther, 1e-9);
+            assertTrue(Move.best(500, 500, 60, b, NO_WAVES, 0, 2)[1] < 500);
+        } else {
+            assertEquals(toShooter, toOther, 1e-12);
         }
     }
 
@@ -73,7 +90,7 @@ class MoveTest {
     @Tag("DEISE-3")
     @DisplayName("across the line of a shooter is safer than along it, while the across term is on")
     void acrossNotAlong() {
-        double[][] b = bots(new double[] {500, 900, 100});
+        double[][] b = bots(new double[] {500, 900, 100, 1});
         if (Move.ACROSS) {
             double along = Move.risk(500, 420, Math.PI, 500, 500, b, NO_WAVES, 0, 1);
             double across = Move.risk(580, 500, Math.PI / 2, 500, 500, b, NO_WAVES, 0, 1);

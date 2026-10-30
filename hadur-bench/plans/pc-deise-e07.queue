@@ -1,0 +1,99 @@
+# Deise's stage E4 (docs/deise.md section 8): tuning 0.4's crowd terms.
+# pc-deise-e06 (PR #443, seeds from 3600) shipped FAP as Deise 0.4: +0.39 ± 0.22 over 0.3, every
+# stack within noise of the others, Mirage still about 0.85 ahead on the bench. 0.4 is at 1,499
+# bytes, so every arm here changes constants only: a winner ships at no cost in bytes, as 0.4.1.
+#   ./queue.sh run pc-deise-e07        (or  .\queue.ps1 run pc-deise-e07)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers. A rerun skips every seat that
+# finished; a seat that was stopped part-way is fought again from its start (the melee path has no
+# per-battle resume). No step needs a decision. Nothing here touches Hadur, Saor or the shipped
+# Deise class.
+#
+# Arms (deise-arms/arms.txt, each one sed on DeiseLab over the core, 0.4):
+#   D      Deise 0.4 (DeiseLab), the reference      SAOR  Saor 0.2 seated, the control
+#   P3     every push 1.5 times 0.4's (160,000 + 320,000 x weight)
+#   P075   every push 0.75 times 0.4's (80,000 + 160,000 x weight): which way the push pays
+#   SHARP  a likely shooter's push kept at 320,000, a stray one's cut to 120,000 from 160,000
+#   WV2    the seen-shot waves count double
+#   WV05   the seen-shot waves count half
+#   RS     a shorter ring: 0.35 of the target's distance, up to 120 px (REACH's longer one lost 0.70)
+# Live-shaped census: 46 fields x 6 seeds a seat (276 battles, about 17 min on the PC), 8 seats,
+# about 2.3 h, fresh seeds from 3700.
+# Reads: each arm against SAOR and against D, field by field. An arm that reads +0.30 or more over
+# D with the low end above 0 goes into the shipped class (constants only, so it fits) and the core,
+# matched (DEISE-16), as 0.4.1 on Leigh's go. Two passing arms that pull the same constant (P3 and
+# SHARP) are stacked on a later card, not guessed.
+# Stop rules on every census step (halt; finished seats are kept, the stopped seat reruns from its
+# start): 20 failed battles (a broken jar), no battle in 30 minutes (a hung step), or 40+ skipped
+# turns a battle over the last 100. A halt at worst leaves the rest of that seat and the seats
+# after it unrun, at most 2,208 battles (about 2.3 h). There is no early finish on score: a census
+# seat is one robot, so there is no arm to call futile mid-step.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ARMS = D,P3,P075,SHARP,WV2,WV05,RS,SAOR
+
+prep | (cd .. && mvn -q -DskipTests install -pl deise -am) && cp ../deise/target/hadur117.mini.Deise_0.4.jar opponents/ && curl -fsSLo opponents/hadur117.micro.Saor_0.2.jar https://github.com/lgriffin/Hadur_Robot/releases/download/saor-v0.2/hadur117.micro.Saor_0.2.jar && ./fetch-opponents.sh --set minimelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && DEISE_RUN=e07 bash tools/deise_arms.sh live 6 3700 ${ARMS}
+
+live-D | ${MVN} "-Dexec.args=@work/deise-e07/live-D.args"
+  after: prep
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-P3 | ${MVN} "-Dexec.args=@work/deise-e07/live-P3.args"
+  after: live-D
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-P075 | ${MVN} "-Dexec.args=@work/deise-e07/live-P075.args"
+  after: live-P3
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-SHARP | ${MVN} "-Dexec.args=@work/deise-e07/live-SHARP.args"
+  after: live-P075
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-WV2 | ${MVN} "-Dexec.args=@work/deise-e07/live-WV2.args"
+  after: live-SHARP
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-WV05 | ${MVN} "-Dexec.args=@work/deise-e07/live-WV05.args"
+  after: live-WV2
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-RS | ${MVN} "-Dexec.args=@work/deise-e07/live-RS.args"
+  after: live-WV05
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-SAOR | ${MVN} "-Dexec.args=@work/deise-e07/live-SAOR.args"
+  after: live-RS
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+read | python3 tools/saor_arms.py --work-root work/deise-e07 --field live --arms ${ARMS} --control SAOR --only work/deise-e07/live/micro.txt --top5 71.20 --control-live 68.79 --pairings 203 --robot-prefix hadur117.mini.Deise --arms-file deise-arms/arms.txt > ${OUT}/deise-e07-live.md && python3 tools/saor_arms.py --work-root work/deise-e07 --field live --arms ${ARMS} --control D --only work/deise-e07/live/micro.txt --pairings 203 --robot-prefix hadur117.mini.Deise --arms-file deise-arms/arms.txt > ${OUT}/deise-e07-vs-d.md
+  after: live-SAOR
+
+pr | bash tools/open_results_pr.sh claude/pc-deise-e07-results "Deise stage E4: tuning 0.4's crowd terms" ${OUT}/deise-e07-live.md ${OUT}/deise-e07-vs-d.md ${OUT}/deise-e07-live-*.md
+  after: read

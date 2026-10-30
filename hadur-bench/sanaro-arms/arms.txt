@@ -1,4 +1,6 @@
-# Sanaro's arms (docs/sanaro.md, stage N5: pc-sanaro-n04; N4 was pc-sanaro-n03). One arm a line:
+# Sanaro's arms (docs/sanaro.md, stage N5: pc-sanaro-n04; N4 was pc-sanaro-n03). The seds below were
+# written against 0.1's source (git tag sanaro-v0.1); 0.2 is CL, so a new card rebases its arms on
+# 0.2 (sanaro_arms.sh stops on an arm that changes nothing). One arm a line:
 #   NAME | what it changes | sed over sanaro/src/main/java/hadur117/nano/Sanaro.java (empty: none)
 #   NAME | what | sed (may be empty) | sanaro/table.py options: the arm plays that power table
 #   NAME | what | @robot name     a seated robot (live census only)

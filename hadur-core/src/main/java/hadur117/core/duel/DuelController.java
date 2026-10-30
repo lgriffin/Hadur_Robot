@@ -859,8 +859,9 @@ public final class DuelController {
     private double[][] aimStates(long time, Point2D.Double myPos, double myHead, double myVel,
                                  Point2D.Double enemyPos, double enemyHead) {
         int slot = (int) (time % SimpleAims.LAGS);
-        int prev = (int) ((time - 1) % SimpleAims.LAGS);
-        double turn = aimRingTime[prev] == time - 1
+        // A scan on tick 0 has no tick before it: floorMod keeps the slot in the ring.
+        int prev = (int) Math.floorMod(time - 1, (long) SimpleAims.LAGS);
+        double turn = time > 0 && aimRingTime[prev] == time - 1
             ? Angles.normalRelativeAngle(myHead - aimRing[prev][2]) : 0;
         aimVelocities[aimVelocityCount % AIM_AVERAGE_TICKS] = myVel;
         aimVelocityCount++;

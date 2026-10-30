@@ -605,3 +605,25 @@ the same for team: read each costly team's code, then give it a counter that exp
   (56.8), HOFSwarm 78.4 (66.3). No faults, 7.2 skipped turns a battle (path2 mp about 9), so it runs
   in time. Ogi survival 2.5% (aa 6.6%): no sign yet of the Ogi gain the port was for.
 
+## 15. DODGE result and its own-fire fix (2026-10-29)
+
+- **pc-team-dodge (PR #437), on top of PATH.** DODGE for every team **+0.55 ± 0.50 APS** (global gate
+  PASS, low end +0.05). Per-team picks Firestarter +7.6, HOFSwarm +7.9, TeamDeathTeam +3.9 held at
+  +1.5, +6.2, +3.3 on fresh seeds: table gate +0.24 ± 0.17, FAIL. Ogi -2.4: the port does not close the
+  Ogi gap. Losers Nightmare -4.8, ImpactTeam -4.3, Xmen -3.5, ImWithDroid -2.9.
+- **Own fire.** Our bullets on our own members +13% (80.5 vs 71.2 a battle), giving back most of
+  PATH's -15%. DODGE dropped MATEFIRE's risk term and scaled teammates' bullets with the waves.
+  TMODE-29 `OWN_FIRE` keeps both as PATH has them.
+- **Card** plans/pc-team-dodge2.queue (BENCH-142): bb, dg and dgof, 46 teams x 16 fresh seeds from
+  5600, 12 rounds, about 5 h; a gate per arm. On a pass, the better passing arm ships in a PR (a global
+  switch, which Leigh decides).
+
+## 16. DODGE with own fire ships (2026-10-30)
+
+- **pc-team-dodge2 (PR #450), on top of PATH.** dgof **+0.85 ± 0.42 APS** (PASS, low end +0.43), dg
+  +0.45 ± 0.42; own-member hits +4% (plain DODGE +13%). Firestarter +5.5, Combat +4.2, HOFSwarm +6.7,
+  Ogi +2.8; Nightmare -3.5, Impact -4.2, ImWithStupid -2.5.
+- **Ship (TMODE-30), on Leigh's word:** FORCE_DODGE and OWN_FIRE on, named entries included. Bench
+  projection about 79.4 + 0.8 (PATH) + 0.85 = 81.0, against Firestarter 81.69 and Combat 81.57.
+- **Next:** the losers (Nightmare, ImpactTeam, ImWithStupid) are per-team table candidates for
+  `tmnododge`-style entries; Ogi is still 7 points clear.
