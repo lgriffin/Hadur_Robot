@@ -22,3 +22,7 @@
 18:47:55 live-WV2 exit=0 in 1033 s
 18:47:55 start live-CONS
 18:47:55 watching live-CONS: 3 stop rule(s)
+18:52:08 progress live-CONS: 65/276 (24%) battles, 928/h, ETA 14 min, 0 failed, skips 0.0/battle (last 100)
+19:05:49 live-CONS exit=0 in 1073 s
+19:05:49 start live-SCAL
+19:05:49 watching live-SCAL: 3 stop rule(s)
