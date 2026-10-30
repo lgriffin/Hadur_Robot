@@ -5,3 +5,7 @@
 01:22:51 start live-S0
 01:22:51 watching live-S0: 3 stop rule(s)
 01:23:31 progress live-S0: 0/430 (0%) battles, 0 failed
+01:53:40 progress live-S0: 420/430 (98%) battles, 818/h, ETA 1 min, 0 failed, skips 0.0/battle (last 100)
+01:54:13 live-S0 exit=0 in 1881 s
+01:54:13 start live-GG
+01:54:13 watching live-GG: 3 stop rule(s)
