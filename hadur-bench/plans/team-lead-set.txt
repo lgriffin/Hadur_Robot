@@ -1,0 +1,10 @@
+# pc-team-lead (BENCH-145, docs/plan-team-top5.md section 18): the nine teams run by a leader's orders or by droids fed by scanners (jar read 2026-10-30).
+ustimaw.NightmareTeam 3.3 | team-5 | ustimaw.NightmareTeam_3.3.jar
+myl.micro.TroodonPack 1.10 | team-15 | myl.micro.TroodonPack_1.10.jar
+Krabb.sliNk.SlartibartfassTeam 0.5 | team-16 | Krabb.sliNk.SlartibartfassTeam_0.5.jar
+jab.Enjambre 3 | team | jab.Enjambre_3.jar
+vuen.Bakery 2.51 | team | vuen.Bakery_2.51.jar
+pedersen.ImWithDroidTeam 1.3 | team | pedersen.ImWithDroidTeam_1.3.jar
+jeremyreeder.collective.FourProphetsAndADiscliple 5 | team | jeremyreeder.collective.FourProphetsAndADiscliple_5.jar
+ntc.slippery.Slippery 1.0 | team | ntc.slippery.Slippery_1.0.jar
+bugger.BuggerHive 1.0 | team | bugger.BuggerHive_1.0.jar

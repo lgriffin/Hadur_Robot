@@ -644,3 +644,32 @@ member's report carries every enemy hit's sample and DODGE's expert errors (`Rep
 all five learn enemy aim from the whole team's hits. A cloud read of how our members die against
 Ogi, Firestarter and Combat comes next, to find the survival lever with evidence.
 
+
+## 18. Death read, and leaning on the enemy leader (2026-10-30)
+
+A cloud read of how we die against the top three (docs/bench/local/team-death-read.md, master, 10
+seeds from 5800, 12 rounds) puts the gap to Ogi in gun accuracy, not in our own leader or how close
+we stand: their hit rate on us is 16.0% (Ogi), 14.8% (Firestarter) and 16.1% (Combat) against ours
+of 12.2%, 12.4% and 13.7%; against Ogi we take 329 damage a round and deal 262. Our leader dies first
+in 1% of rounds, and a member that is hit has a teammate within 200 px only 5% of the time. Theirs
+dies in 56% (Firestarter), 23% (Combat) and 12% (Ogi) of rounds. Own fire still costs 29-32 a
+round, 54% of it on lines with no enemy near. Team gun accuracy is the next study.
+
+The top three play leaderless (every member the same code); only NightmareTeam's leader gives
+orders. Leigh pointed at the rest of the field: "our scores can come against mid and lower teams.
+Teams that play a leader control wise. Where killing it effectively ends the game." A read of the
+jars finds nine: four run on a leader's orders (Nightmare, Enjambre, BuggerHive, Slippery) and
+five on droids, which have no radar, fed by scanners (TroodonPack, Slartibartfass, Bakery,
+FourProphetsAndADiscliple, ImWithDroidTeam). The engine starts a leader at 200 energy and a droid at
+120, so both are known from the first scan, and a leader's death drains 30 from each living mate.
+
+- MGUN-21 DECAP (off): the field gun leans 3x on the enemy leader once its death drains more than
+  its remaining energy costs. Ablation tdecap (dc); a cloud smoke on the top six teams reads it.
+- TMODE-31 LEAD (table mode, off): the gun leans 4x on the leader, and with droids about 2.5x on
+  the members that still see. Ablation tmlead (ld) forces it on for every team.
+
+`pc-team-lead` (BENCH-145) screens LEAD per team on the nine (16 seeds from 6100, 10 rounds, 576
+battles), picks a team at +3.0 points with the low end above zero (the counters rule), and gates the
+picked table on 16 fresh seeds from 6200 at +0.15 APS over 46 teams. Our share against those nine
+runs from 44% (Nightmare) to 96% (Slippery), about 144 share points short of a clean sweep, so a
+gain of +0.3 to +0.6 APS is the plausible range. Run it after pc-team-nododge (both name Nightmare).
