@@ -1,0 +1,40 @@
+{
+ "plan": "pc-sanaro-n04",
+ "updated": 1793323344.359265,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "live-S0": {
+   "status": "pending"
+  },
+  "live-GG": {
+   "status": "pending"
+  },
+  "live-CL": {
+   "status": "pending"
+  },
+  "live-CL12": {
+   "status": "pending"
+  },
+  "live-CL22": {
+   "status": "pending"
+  },
+  "live-A": {
+   "status": "pending"
+  },
+  "live-EN": {
+   "status": "pending"
+  },
+  "live-D2": {
+   "status": "pending"
+  },
+  "read-live": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
