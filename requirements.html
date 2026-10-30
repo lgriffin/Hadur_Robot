@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 283 of 287 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 288 of 292 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -627,7 +627,7 @@ traceability check reads. 283 of 287 live requirements have a tagged test. The r
 <article class="req-card" id="MGUN-4">
 <div class="req-head"><span class="rid">MGUN-4</span><span class="badge">State</span><span class="badge stage">M4</span></div>
 <p>While in melee, the core shall emit a targeting wave at every opponent on every gun-heat cycle.</p>
-<dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/HadurCore.html" title="hadur117.core.HadurCore">HadurCore</a>, <a href="api/hadur117/core/MeleeSeam.html" title="hadur117.core.MeleeSeam">MeleeSeam</a>, <a href="api/hadur117/core/melee/MeleeController.html" title="hadur117.core.melee.MeleeController">MeleeController</a>, <a href="api/hadur117/core/melee/MeleeWaves.html" title="hadur117.core.melee.MeleeWaves">MeleeWaves</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/melee/MeleeWavesTest.java">MeleeWavesTest.java</a></dd></dl>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/HadurCore.html" title="hadur117.core.HadurCore">HadurCore</a>, <a href="api/hadur117/core/MeleeSeam.html" title="hadur117.core.MeleeSeam">MeleeSeam</a>, <a href="api/hadur117/core/melee/FieldGun.html" title="hadur117.core.melee.FieldGun">FieldGun</a>, <a href="api/hadur117/core/melee/MeleeController.html" title="hadur117.core.melee.MeleeController">MeleeController</a>, <a href="api/hadur117/core/melee/MeleeWaves.html" title="hadur117.core.melee.MeleeWaves">MeleeWaves</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/melee/MeleeWavesTest.java">MeleeWavesTest.java</a></dd></dl>
 </article>
 <article class="req-card" id="MGUN-5">
 <div class="req-head"><span class="rid">MGUN-5</span><span class="badge">Ubiquitous</span><span class="badge stage">M6</span></div>
@@ -668,6 +668,26 @@ traceability check reads. 283 of 287 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">MGUN-16</span><span class="badge">State</span><span class="badge stage">M7</span></div>
 <p>While <a class="req" href="requirements.html#MGUN-13">MGUN-13</a> applies, it shall fire power 3 at a target within 300 px in place of 200.</p>
 <dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/melee/MeleeEnergyPolicy.html" title="hadur117.core.melee.MeleeEnergyPolicy">MeleeEnergyPolicy</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/melee/MeleeCrowdPowerTest.java">MeleeCrowdPowerTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="MGUN-17">
+<div class="req-head"><span class="rid">MGUN-17</span><span class="badge">Optional</span><span class="badge stage">M7</span></div>
+<p>Where the <code>EXPERTS</code> switch is on, while in melee off a team, each targeting wave (<a class="req" href="requirements.html#MGUN-4">MGUN-4</a>) shall also score head-on, linear and circular aims at its opponent beside the field gun&#x27;s own, decayed 0.95 a wave, and once twenty waves have reached an opponent a simple aim whose smoothed hit rate is at least 1.25 times the field gun&#x27;s shall replace that opponent&#x27;s solutions with one solution weighted by the field gun&#x27;s own peak share of the opponent times that ratio, capped at the opponent&#x27;s weight.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/melee/FieldGun.html" title="hadur117.core.melee.FieldGun">FieldGun</a>, <a href="api/hadur117/core/melee/MeleeWaves.html" title="hadur117.core.melee.MeleeWaves">MeleeWaves</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/melee/FieldGunExpertsTest.java">FieldGunExpertsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="MGUN-18">
+<div class="req-head"><span class="rid">MGUN-18</span><span class="badge">Optional</span><span class="badge stage">M7</span></div>
+<p>Where the <code>HIT_TARGET</code> switch is on, while in melee off a team, the field gun shall multiply an opponent&#x27;s weight by 5 (h + 1) / (n + 5), with h the decayed virtual hits of the aim the gun fires at it (<a class="req" href="requirements.html#MGUN-17">MGUN-17</a>&#x27;s pick when that applies, else the field gun&#x27;s own) and n its decayed waves, and by 1 before any wave has reached it.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/melee/FieldGun.html" title="hadur117.core.melee.FieldGun">FieldGun</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/melee/FieldGunExpertsTest.java">FieldGunExpertsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="MGUN-19">
+<div class="req-head"><span class="rid">MGUN-19</span><span class="badge">Optional</span><span class="badge stage">M7</span></div>
+<p>Where the <code>FLAT_DISTANCE</code> switch is on, while in melee off a team, the field gun&#x27;s distance weight shall be (100 / max(50, d))^0.7 in place of 100 / max(50, d).</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/melee/FieldGun.html" title="hadur117.core.melee.FieldGun">FieldGun</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/melee/FieldGunExpertsTest.java">FieldGunExpertsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="MGUN-20">
+<div class="req-head"><span class="rid">MGUN-20</span><span class="badge">Optional</span><span class="badge stage">M7</span></div>
+<p>Where the <code>SOFT_MATCH</code> switch is on, while in melee off a team, the field gun shall weight each of an opponent&#x27;s situations by 1 / (its distance + the mean distance of the situations chosen), in place of 1 / (0.01 + its distance).</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/melee/FieldGun.html" title="hadur117.core.melee.FieldGun">FieldGun</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/melee/FieldGunExpertsTest.java">FieldGunExpertsTest.java</a></dd></dl>
 </article>
 <h2 id="group-MMEM">Melee memory</h2>
 <article class="req-card" id="MMEM-1">
@@ -1161,6 +1181,11 @@ traceability check reads. 283 of 287 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">BENCH-137</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
 <p>The bench shall carry the <code>pc-melee-crowd</code> card, which builds <a class="req" href="requirements.html#MMOVE-11">MMOVE-11</a>, <a class="req" href="requirements.html#MMOVE-12">MMOVE-12</a>, <a class="req" href="requirements.html#MMOVE-13">MMOVE-13</a> and <a class="req" href="requirements.html#MMOVE-14">MMOVE-14</a> each alone beside an aa baseline and a bb A/A copy, runs each alone on the melee census at 6 fresh seeds after the wide card&#x27;s, and reads it with <code>tools/melee_s0.py screen --base2</code> at a +0.30 bar with the 95% low end above 0 and Hadur&#x27;s share of the others it outlives no more than 1 point lower.</p>
 <dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleeCrowdPlanTest.java">MeleeCrowdPlanTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-143">
+<div class="req-head"><span class="rid">BENCH-143</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall carry the <code>pc-melee-gun</code> card, which builds <a class="req" href="requirements.html#MGUN-17">MGUN-17</a>, <a class="req" href="requirements.html#MGUN-18">MGUN-18</a>, <a class="req" href="requirements.html#MGUN-19">MGUN-19</a> and <a class="req" href="requirements.html#MGUN-20">MGUN-20</a> each alone beside an aa baseline and a bb A/A copy, runs each alone on the melee census at 6 seeds (3234-3239), halts any arm on 20 failed battles or 30 minutes without one, and reads it with <code>tools/melee_s0.py screen --base2</code> at a +0.30 bar with the 95% low end above 0 and Hadur&#x27;s share of the others it outlives no more than 1 point lower.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleeGunPlanTest.java">MeleeGunPlanTest.java</a></dd></dl>
 </article>
 <h2 id="group-DODGE">DODGE</h2>
 <article class="req-card" id="DODGE-1">

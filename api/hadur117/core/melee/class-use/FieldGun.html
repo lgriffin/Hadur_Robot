@@ -81,15 +81,20 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">MeleeWaves.</span><code><a href="../MeleeWaves.html#tick(java.awt.geom.Point2D.Double,long,double,java.util.List,hadur117.core.melee.FieldGun,double,int)" class="member-name-link">tick</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first even-row-color"><code>(package private) static boolean</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MeleeWaves.</span><code><a href="../MeleeWaves.html#scoring(hadur117.core.melee.FieldGun)" class="member-name-link">scoring</a><wbr>(<a href="../FieldGun.html" title="class in hadur117.core.melee">FieldGun</a>&nbsp;gun)</code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../../requirements.html#MGUN-17">MGUN-17</a>/18: whether the waves score every aim, off a team with either switch on.</div>
+</div>
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">MeleeWaves.</span><code><a href="../MeleeWaves.html#tick(java.awt.geom.Point2D.Double,long,double,java.util.List,hadur117.core.melee.FieldGun,double,int)" class="member-name-link">tick</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  long&nbsp;now,
  double&nbsp;gunHeat,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;&nbsp;alive,
  <a href="../FieldGun.html" title="class in hadur117.core.melee">FieldGun</a>&nbsp;gun,
  double&nbsp;energy,
  int&nbsp;others)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">Emits this tick's waves if a gun-heat cycle starts, each carrying <code>gun</code>'s aim at
  its opponent.</div>
 </div>

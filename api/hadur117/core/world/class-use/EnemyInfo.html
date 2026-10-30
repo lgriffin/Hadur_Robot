@@ -191,6 +191,25 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">The spot between <code>target</code> and open space: holding it pins the target to the walls.</div>
 </div>
+<div class="col-first even-row-color"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#expertAim(java.awt.geom.Point2D.Double,hadur117.core.world.EnemyInfo,int,double,long)" class="member-name-link">expertAim</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ <a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
+ int&nbsp;x,
+ double&nbsp;power,
+ long&nbsp;now)</code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../../requirements.html#MGUN-17">MGUN-17</a>: where aim <code>x</code> (HEAD_ON, LINEAR or CIRCULAR) puts <code>e</code> for a bullet of <code>power</code>.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) <a href="../../melee/FieldGun.Aim.html" title="class in hadur117.core.melee">FieldGun.Aim</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#fieldAim(java.awt.geom.Point2D.Double,double,int,hadur117.core.world.EnemyInfo,long)" class="member-name-link">fieldAim</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ double&nbsp;energy,
+ int&nbsp;others,
+ <a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
+ long&nbsp;now)</code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../../requirements.html#MGUN-4">MGUN-4</a>/17: the field gun's own aim at one opponent, which a targeting wave carries; with
+ <a class="req" href="../../../../../requirements.html#MGUN-17">MGUN-17</a> on, the simple aims are left out so the wave reads the field gun alone.</div>
+</div>
 <div class="col-first even-row-color"><code>(package private) static boolean</code></div>
 <div class="col-second even-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#isolated(hadur117.core.world.EnemyInfo,java.util.List)" class="member-name-link">isolated</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;&nbsp;alive)</code></div>

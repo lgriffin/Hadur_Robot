@@ -399,6 +399,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/move/AimMembers.html#%3Cinit%3E()" class="member-name-link">AimMembers()</a> - Constructor for class hadur117.core.move.<a href="hadur117/core/move/AimMembers.html" title="class in hadur117.core.move">AimMembers</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/MeleeWaves.Wave.html#aims" class="member-name-link">aims</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeWaves.Wave.html" title="class in hadur117.core.melee">MeleeWaves.Wave</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-17">MGUN-17</a>: every aim's angle, the field gun's first; null with the experts off.</div>
+</dd>
 <dt><a href="hadur117/ShieldTableData.html#aims()" class="member-name-link">aims()</a> - Static method in class hadur117.<a href="hadur117/ShieldTableData.html" title="class in hadur117">ShieldTableData</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#SHIELD-18">SHIELD-18</a>: the shipped aims, one <code>"predictor offset name"</code> line each.</div>
@@ -1680,6 +1684,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/OpponentStats.MovementType.html#CIRCULAR" class="member-name-link">CIRCULAR</a> - Enum constant in enum class hadur117.core.melee.<a href="hadur117/core/melee/OpponentStats.MovementType.html" title="enum class in hadur117.core.melee">OpponentStats.MovementType</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#CIRCULAR" class="member-name-link">CIRCULAR</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-17">MGUN-17</a>: the aims a wave scores; FIELD is the field gun's own.</div>
+</dd>
 <dt><a href="hadur117/core/physics/SimpleAims.html#CIRCULAR" class="member-name-link">CIRCULAR</a> - Static variable in class hadur117.core.physics.<a href="hadur117/core/physics/SimpleAims.html" title="class in hadur117.core.physics">SimpleAims</a></dt>
 <dd>
 <div class="block">Circular: as linear, turning by our last turn every tick.</div>
@@ -3621,6 +3629,26 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Expert <code>k</code>'s absolute angle for a wave's aims; NaN when it has none.</div>
 </dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#EXPERT_COUNT" class="member-name-link">EXPERT_COUNT</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-17">MGUN-17</a>: the aims a wave scores; FIELD is the field gun's own.</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#EXPERT_DECAY" class="member-name-link">EXPERT_DECAY</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-17">MGUN-17</a>: each read's weight decays by this per newer read, so the scores follow a robot that changes.</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#EXPERT_EDGE" class="member-name-link">EXPERT_EDGE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-17">MGUN-17</a>: how far a simple aim's smoothed hit rate must beat the field gun's to take the opponent.</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#EXPERT_MIN" class="member-name-link">EXPERT_MIN</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-17">MGUN-17</a>: waves an opponent needs before a simple aim can take it.</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#expertAim(java.awt.geom.Point2D.Double,hadur117.core.world.EnemyInfo,int,double,long)" class="member-name-link">expertAim(Point2D.Double, EnemyInfo, int, double, long)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-17">MGUN-17</a>: where aim <code>x</code> (HEAD_ON, LINEAR or CIRCULAR) puts <code>e</code> for a bullet of <code>power</code>.</div>
+</dd>
 <dt><a href="hadur117/core/melee/TeamDanger.Sample.html#experts" class="member-name-link">experts</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamDanger.Sample.html" title="class in hadur117.core.melee">TeamDanger.Sample</a></dt>
 <dd>
 <div class="block">TMODE-27: how far off each aim expert was, in bot widths (<a href="hadur117/core/melee/AimExperts.html" title="class in hadur117.core.melee"><code>AimExperts</code></a>); empty when not scored.</div>
@@ -3631,6 +3659,14 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/melee/TeamDodge.html#experts()" class="member-name-link">experts()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamDodge.html" title="class in hadur117.core.melee">TeamDodge</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#EXPERTS" class="member-name-link">EXPERTS</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-17">MGUN-17</a>: off a team, each opponent's virtual waves (<a class="req" href="../requirements.html#MGUN-4">MGUN-4</a>) also score three simple aims
+ beside the field gun's own (head-on, linear, circular), and once <a href="hadur117/core/melee/FieldGun.html#EXPERT_MIN"><code>FieldGun.EXPERT_MIN</code></a> waves
+ have reached it, a simple aim whose hit rate beats the field gun's by
+ <a href="hadur117/core/melee/FieldGun.html#EXPERT_EDGE"><code>FieldGun.EXPERT_EDGE</code></a> takes that opponent, so a robot the situations miss but a simple
+ aim reads gets that aim.</div>
+</dd>
 <dt><a href="hadur117/core/physics/ShotDodger.html#EXPERTS" class="member-name-link">EXPERTS</a> - Static variable in class hadur117.core.physics.<a href="hadur117/core/physics/ShotDodger.html" title="class in hadur117.core.physics">ShotDodger</a></dt>
 <dd>
 <div class="block">Experts in all.</div>
@@ -3760,6 +3796,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">WEAVE-8: drives the teammate fence replaced this round.</div>
 </dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#FIELD" class="member-name-link">FIELD</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-17">MGUN-17</a>: the aims a wave scores; FIELD is the field gun's own.</div>
+</dd>
 <dt><a href="hadur117/micro/core/Movement.html#FIELD" class="member-name-link">FIELD</a> - Static variable in class hadur117.micro.core.<a href="hadur117/micro/core/Movement.html" title="class in hadur117.micro.core">Movement</a></dt>
 <dd>
 <div class="block">The battlefield's side; Saor enters MeleeRumble only, whose field is 1000 x 1000.</div>
@@ -3775,6 +3815,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/twin/core/Team.html#FIELD" class="member-name-link">FIELD</a> - Static variable in class hadur117.twin.core.<a href="hadur117/twin/core/Team.html" title="class in hadur117.twin.core">Team</a></dt>
 <dd>
 <div class="block">Twin Duel's field side.</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#fieldAim(java.awt.geom.Point2D.Double,double,int,hadur117.core.world.EnemyInfo,long)" class="member-name-link">fieldAim(Point2D.Double, double, int, EnemyInfo, long)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-4">MGUN-4</a>/17: the field gun's own aim at one opponent, which a targeting wave carries; with
+ <a class="req" href="../requirements.html#MGUN-17">MGUN-17</a> on, the simple aims are left out so the wave reads the field gun alone.</div>
 </dd>
 <dt><a href="hadur117/core/melee/FieldGun.html" class="type-name-link" title="class in hadur117.core.melee">FieldGun</a> - Class in <a href="hadur117/core/melee/package-summary.html">hadur117.core.melee</a></dt>
 <dd>
@@ -4044,6 +4089,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/move/GunMimics.Mimic.html#flat" class="member-name-link">flat</a> - Variable in class hadur117.core.move.<a href="hadur117/core/move/GunMimics.Mimic.html" title="class in hadur117.core.move">GunMimics.Mimic</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#FLAT_DISTANCE" class="member-name-link">FLAT_DISTANCE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-19">MGUN-19</a>: off a team, an opponent's distance weight is (100/d)^0.7, not 100/d (Ogi's flatter d^-0.686).</div>
+</dd>
 <dt><a href="hadur117/core/move/GunMimics.html#FLAT_SHARE" class="member-name-link">FLAT_SHARE</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/GunMimics.html" title="class in hadur117.core.move">GunMimics</a></dt>
 <dd>
 <div class="block">The weight of a mimic's unsegmented buffer in its profile, so a fresh segment is not empty.</div>
@@ -5243,6 +5292,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/VirtualBullet.Aim.html#HEAD_ON" class="member-name-link">HEAD_ON</a> - Enum constant in enum class hadur117.core.melee.<a href="hadur117/core/melee/VirtualBullet.Aim.html" title="enum class in hadur117.core.melee">VirtualBullet.Aim</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#HEAD_ON" class="member-name-link">HEAD_ON</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-17">MGUN-17</a>: the aims a wave scores; FIELD is the field gun's own.</div>
+</dd>
 <dt><a href="hadur117/core/physics/SimpleAims.html#HEAD_ON" class="member-name-link">HEAD_ON</a> - Static variable in class hadur117.core.physics.<a href="hadur117/core/physics/SimpleAims.html" title="class in hadur117.core.physics">SimpleAims</a></dt>
 <dd>
 <div class="block">Head-on: straight at where we stood.</div>
@@ -5476,6 +5529,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The enemy's normalised hit rate, the term added to the views' score.</div>
 </dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#HIT_TARGET" class="member-name-link">HIT_TARGET</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-18">MGUN-18</a>: off a team, an opponent's weight also leans toward the ones the gun has been
+ hitting: times 5 (hits + 1) / (waves + 5) of the aim it fires at it, 1 with no waves read.</div>
+</dd>
 <dt><a href="hadur117/core/melee/AimExperts.html#HIT_WIDTHS" class="member-name-link">HIT_WIDTHS</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/AimExperts.html" title="class in hadur117.core.melee">AimExperts</a></dt>
 <dd>
 <div class="block">An expert within this many bot widths of the bullet called it: no loss.</div>
@@ -5502,6 +5560,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/memory/ProfileFolder.html#hitByEnemy(double,boolean,double)" class="member-name-link">hitByEnemy(double, boolean, double)</a> - Method in class hadur117.core.memory.<a href="hadur117/core/memory/ProfileFolder.html" title="class in hadur117.core.memory">ProfileFolder</a></dt>
 <dd>
 <div class="block">One of their bullets hit us.</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#hitFactor(java.lang.String)" class="member-name-link">hitFactor(String)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-18">MGUN-18</a>: 5 (hits + 1) / (waves + 5) of the aim the gun fires at the opponent (<a class="req" href="../requirements.html#MGUN-17">MGUN-17</a>'s
+ pick, else the field gun's own), decayed; 1 with none read.</div>
 </dd>
 <dt><a href="hadur117/core/move/HitForensics.html" class="type-name-link" title="class in hadur117.core.move">HitForensics</a> - Class in <a href="hadur117/core/move/package-summary.html">hadur117.core.move</a></dt>
 <dd>
@@ -6601,6 +6664,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/melee/VirtualBullet.Aim.html#LINEAR" class="member-name-link">LINEAR</a> - Enum constant in enum class hadur117.core.melee.<a href="hadur117/core/melee/VirtualBullet.Aim.html" title="enum class in hadur117.core.melee">VirtualBullet.Aim</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#LINEAR" class="member-name-link">LINEAR</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-17">MGUN-17</a>: the aims a wave scores; FIELD is the field gun's own.</div>
+</dd>
 <dt><a href="hadur117/core/physics/SimpleAims.html#LINEAR" class="member-name-link">LINEAR</a> - Static variable in class hadur117.core.physics.<a href="hadur117/core/physics/SimpleAims.html" title="class in hadur117.core.physics">SimpleAims</a></dt>
 <dd>
 <div class="block">Linear: along our heading at our velocity, until the bullet catches us.</div>
@@ -9077,6 +9144,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/micro/SaorLab.html#onStatus(robocode.StatusEvent)" class="member-name-link">onStatus(StatusEvent)</a> - Method in class hadur117.micro.<a href="hadur117/micro/SaorLab.html" title="class in hadur117.micro">SaorLab</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#onTeam()" class="member-name-link">onTeam()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">MGUN-6: whether Hadur had a living teammate at the latest <a href="hadur117/core/melee/FieldGun.html#onTeam(boolean)"><code>FieldGun.onTeam(boolean)</code></a>.</div>
+</dd>
 <dt><a href="hadur117/core/melee/FieldGun.html#onTeam(boolean)" class="member-name-link">onTeam(boolean)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
 <dd>
 <div class="block">MGUN-6: whether Hadur has a living teammate this tick, set before any aim of the tick.</div>
@@ -9831,6 +9902,12 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Which of <code>n</code> equally weighted neighbours the phase picks: <code>floor(phase * n)</code>,
  the last at most.</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#pick(java.lang.String)" class="member-name-link">pick(String)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-17">MGUN-17</a>: the simple aim that has beaten the field gun on <code>name</code> by
+ <a href="hadur117/core/melee/FieldGun.html#EXPERT_EDGE"><code>FieldGun.EXPERT_EDGE</code></a>, with its smoothed hit rate over the field gun's, or null: before
+ <a href="hadur117/core/melee/FieldGun.html#EXPERT_MIN"><code>FieldGun.EXPERT_MIN</code></a> waves, or with no aim that far ahead.</div>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#pincerSlot(java.awt.geom.Point2D.Double,java.util.List,long,java.util.List)" class="member-name-link">pincerSlot(Point2D.Double, List&lt;EnemyInfo&gt;, long, List&lt;Roster.Mate&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>
@@ -11976,6 +12053,10 @@ loadScripts(document, 'script');</script>
 <div class="block">A real bullet on wave <code>w</code> was fired at <code>gf</code>: scores every model on the profile
  it gave the wave, before anything learns the bullet.</div>
 </dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#scoreExperts(java.lang.String,boolean%5B%5D)" class="member-name-link">scoreExperts(String, boolean[])</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-17">MGUN-17</a>: a wave at <code>name</code> reached it; <code>hit[x]</code> is whether aim x would have hit.</div>
+</dd>
 <dt><a href="hadur117/core/move/MoveController.html#scoreIntercept(hadur117.core.model.Wave,java.awt.geom.Point2D.Double)" class="member-name-link">scoreIntercept(Wave, Point2D.Double)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/MoveController.html" title="class in hadur117.core.move">MoveController</a></dt>
 <dd>
 <div class="block">MOVE-27: an enemy bullet our bullet met at <code>bulletLocation</code>, when the views do not learn
@@ -11994,6 +12075,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur/bench/RepeatStudy.Row.html#scoreShare()" class="member-name-link">scoreShare()</a> - Method in record class hadur.bench.<a href="hadur/bench/RepeatStudy.Row.html" title="class in hadur.bench">RepeatStudy.Row</a></dt>
 <dd>
 <div class="block">Returns the value of the <code>scoreShare</code> record component.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MeleeWaves.html#scoring(hadur117.core.melee.FieldGun)" class="member-name-link">scoring(FieldGun)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeWaves.html" title="class in hadur117.core.melee">MeleeWaves</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-17">MGUN-17</a>/18: whether the waves score every aim, off a team with either switch on.</div>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#screen(hadur117.core.melee.MinimumRiskMovement.View,long)" class="member-name-link">screen(MinimumRiskMovement.View, long)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>
@@ -13279,6 +13364,12 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#SOFT_FLOOR" class="member-name-link">SOFT_FLOOR</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>
 <div class="block">TMODE-2: a shot's weight is 1/(1+k)^2 for k teammates nearer its shooter; under this it makes no bullets.</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#SOFT_MATCH" class="member-name-link">SOFT_MATCH</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-20">MGUN-20</a>: off a team, a situation's weight is 1/(its distance + the mean distance of
+ the opponent's chosen situations), not 1/(0.01 + its distance), so one very close match
+ cannot take the whole opponent (Ogi's 1/(match + 1.6), scaled to our distances).</div>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#softWeight(hadur117.core.world.EnemyShot,java.awt.geom.Point2D.Double,java.util.List)" class="member-name-link">softWeight(EnemyShot, Point2D.Double, List&lt;Point2D.Double&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>
@@ -15780,6 +15871,8 @@ the order they are declared.</div>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.Wave.html#%3Cinit%3E(hadur117.core.world.EnemyShot,java.util.List)" class="member-name-link">Wave(EnemyShot, List&lt;VirtualBullet&gt;)</a> - Constructor for class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/MeleeWaves.Wave.html#%3Cinit%3E(java.lang.String,java.awt.geom.Point2D.Double,long,double,double)" class="member-name-link">Wave(String, Point2D.Double, long, double, double)</a> - Constructor for class hadur117.core.melee.<a href="hadur117/core/melee/MeleeWaves.Wave.html" title="class in hadur117.core.melee">MeleeWaves.Wave</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/MeleeWaves.Wave.html#%3Cinit%3E(java.lang.String,java.awt.geom.Point2D.Double,long,double,double,double%5B%5D)" class="member-name-link">Wave(String, Point2D.Double, long, double, double, double[])</a> - Constructor for class hadur117.core.melee.<a href="hadur117/core/melee/MeleeWaves.Wave.html" title="class in hadur117.core.melee">MeleeWaves.Wave</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/model/Wave.html#%3Cinit%3E(java.lang.String,java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,int,long,double,double,double,int,hadur117.core.physics.BattleField,hadur117.core.physics.MovementPredictor)" class="member-name-link">Wave(String, Point2D.Double, Point2D.Double, int, long, double, double, double, int, BattleField, MovementPredictor)</a> - Constructor for class hadur117.core.model.<a href="hadur117/core/model/Wave.html" title="class in hadur117.core.model">Wave</a></dt>
 <dd>
