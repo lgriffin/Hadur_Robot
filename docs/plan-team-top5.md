@@ -627,3 +627,20 @@ the same for team: read each costly team's code, then give it a counter that exp
   projection about 79.4 + 0.8 (PATH) + 0.85 = 81.0, against Firestarter 81.69 and Combat 81.57.
 - **Next:** the losers (Nightmare, ImpactTeam, ImWithStupid) are per-team table candidates for
   `tmnododge`-style entries; Ogi is still 7 points clear.
+
+## 17. DODGE off where it lost (2026-10-30)
+
+pc-team-dodge2 (PR #450) shipped DODGE with own fire on every team (+0.85 ± 0.42 APS, PR #451), but
+three teams read worse with it: ImpactTeam -4.2 ± 1.5, ImWithStupidTeam -2.5 ± 1.6, NightmareTeam
+-3.5 ± 3.7 share points. Per-team picks are the only kind that has carried live, so Leigh chose to
+try turning DODGE off for those three. They were picked after the fact from 46 teams, so
+`pc-team-nododge` (BENCH-144) confirms on fresh seeds first: aa, bb and xd (their member classes get
+MATEFIRE, HUNT and PATH, every shipped mode but DODGE) on the three teams at 24 seeds from 5900,
+288 battles, about 20 minutes. Gate: projected +0.15 APS over 46 teams, low end above zero; on a
+pass the entries of the teams whose own gain is positive go into `TeamModes.TABLE`.
+
+The second idea from the same talk, sharing every hit across the team, already ships: each
+member's report carries every enemy hit's sample and DODGE's expert errors (`Report.Dodge`), so
+all five learn enemy aim from the whole team's hits. A cloud read of how our members die against
+Ogi, Firestarter and Combat comes next, to find the survival lever with evidence.
+
