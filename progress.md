@@ -1,6 +1,6 @@
 # Queue pc-melee-surf: progress
 
-Updated 2026-10-30 16:38:52 PC time (16:38 UTC), runner pid 30060.
+Updated 2026-10-30 16:53:59 PC time (16:53 UTC), runner pid 30060.
 
 - `msprep` done, exit 0 in 5 min
 - `msaa` done, exit 0 in 27 min
@@ -35,15 +35,15 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### msms
 
-**36 of 276 battles** (13%), 0 failed. Running 4 min, 603 battles/h, about 24 min left (ends ~17:02 PC time). Last battle 0 min ago.
-Skipped turns a battle: 47.7 overall, first 36 47.7, last 36 47.7.
+**192 of 276 battles** (70%), 0 failed. Running 19 min, 616 battles/h, about 8 min left (ends ~17:02 PC time). Last battle 0 min ago.
+Skipped turns a battle: 55.3 overall, first 100 47.1, last 100 62.8.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 36 |
+| `fails 20` | halt | ok | 0 failed of 192 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 240 battles unrun (about 24 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 84 battles unrun (about 8 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -62,4 +62,5 @@ Stopping now would leave 240 battles unrun (about 24 min); every battle already 
 16:35:17 msbb exit=0 in 1482 s
 16:35:17 start msms
 16:35:17 watching msms: 2 stop rule(s)
+16:43:54 progress msms: 96/276 (35%) battles, 668/h, ETA 16 min, 0 failed, skips 48.3/battle (last 100)
 ```
