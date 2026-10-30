@@ -1,6 +1,6 @@
 # Queue pc-sanaro-n04: progress
 
-Updated 2026-10-30 04:54:09 PC time (04:54 UTC), runner pid 66564.
+Updated 2026-10-30 05:09:16 PC time (05:09 UTC), runner pid 66564.
 
 - `prep` done, exit 0 in 0 min
 - `live-S0` done, exit 0 in 31 min
@@ -107,21 +107,20 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-D2
 
-**110 of 430 battles** (26%), 0 failed. Running 7 min, 979 battles/h, about 20 min left (ends ~05:13 PC time). Last battle 0 min ago.
+**300 of 430 battles** (70%), 0 failed. Running 22 min, 823 battles/h, about 9 min left (ends ~05:18 PC time). Last battle 0 min ago.
 Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 110 |
+| `fails 20` | halt | ok | 0 failed of 300 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 | `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
 
-Stopping now would leave 320 battles unrun (about 20 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 130 battles unrun (about 9 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-03:21:40 live-CL12 exit=0 in 1752 s
 03:21:40 start live-CL22
 03:21:40 watching live-CL22: 3 stop rule(s)
 03:24:25 progress live-CL22: 50/430 (12%) battles, 1088/h, ETA 21 min, 0 failed, skips 0.0/battle (last 100)
@@ -136,4 +135,5 @@ Stopping now would leave 320 battles unrun (about 20 min); every battle already 
 04:47:24 live-EN exit=0 in 1732 s
 04:47:24 start live-D2
 04:47:24 watching live-D2: 3 stop rule(s)
+04:55:09 progress live-D2: 120/430 (28%) battles, 929/h, ETA 20 min, 0 failed, skips 0.0/battle (last 100)
 ```
