@@ -81,11 +81,14 @@ class SplitTest(unittest.TestCase):
     def test_a_fenced_process_starts_children_inside_the_fence(self):
         import subprocess
         mine = sorted(os.sched_getaffinity(0))
+        if len(mine) < 2:
+            self.skipTest("one processor: nothing to fence")
+        # The split is given, so the test does not depend on the host's topology (a 2-thread CI runner).
+        env = dict(os.environ, HADUR_BENCH_FENCE_CLIENT_CPUS=str(mine[-1]))
         r = subprocess.run([sys.executable, fence.__file__, "run", "clients", "--", sys.executable, "-c",
-                            "import os; print(sorted(os.sched_getaffinity(0)))"], capture_output=True, text=True)
+                            "import os; print(sorted(os.sched_getaffinity(0)))"], capture_output=True, text=True, env=env)
         self.assertEqual(r.returncode, 0, r.stderr)
-        child = eval(r.stdout.strip().splitlines()[-1])
-        self.assertTrue(child and set(child) < set(mine) or len(mine) == 1, (child, mine))
+        self.assertEqual(eval(r.stdout.strip().splitlines()[-1]), [mine[-1]])
 
 
 # @Tag("BENCH-143")
