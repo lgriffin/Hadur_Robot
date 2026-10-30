@@ -1163,6 +1163,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | TMODE-27 | Optional | Where the DODGE mode is played against a team, while Hadur has a living teammate, each detected enemy shot shall be turned once, when first seen, into a profile: the simple aims (head-on, linear, circular, linear at the 16-tick average velocity, linear at half speed) at Hadur's state when it was fired and the team's learned aims pooled by enemy class, each carrying its expert's weight exp(-loss) against that class, where an expert's loss decays by 0.95 a hit and grows by 0 within one bot width of each enemy bullet that hit a member and up to 1 at three, the hit member's errors travelling with its link sample; the shot shall count for Hadur by 1/(1+k)^2 for the k teammates nearer its source (by the nearest rule where the table names OWN); the destination shall be the best of the 12 lowest-risk candidates and the held one by risk/median + 3 x damage/median, the damage being the profiles crossed driving there for 30 ticks plus the teammates' bullets crossed in 15, the held one times 0.9; the base risk then counts no bullet. | T7 |
 | TMODE-28 | Ubiquitous | The team mode table's default, for a team it does not name, shall include the PATH mode, and every team the table names shall play PATH on top of its entry. | T7 |
 | TMODE-29 | Optional | Where DODGE's own-fire switch is on, DODGE's base ranking shall keep MATEFIRE's teammate-bullet risk, and each re-ranked destination's risk shall gain PATH's factor times the damage of the teammates' bullets crossed on its 15-tick drive, those bullets no longer counting in its wave damage. | T7 |
+| TMODE-30 | Ubiquitous | The team mode table's default, for a team it does not name, shall include the DODGE mode, every team the table names shall play DODGE on top of its entry, and DODGE's own-fire switch shall be on. | T7 |
 
 ### T1 notes
 
@@ -2177,7 +2178,7 @@ profiles, and the rumbles list it as a new participant.
   dodge only works whole: shot detection, a learned per-class danger model with simple-aim
   experts, and a path check over the safest spots. Leigh: "If it makes sense to do a parallel full
   rebuild of the teams core do so".
-- **TMODE-27.** `TeamModes.Mode.DODGE` (FORCE_DODGE off), `melee.TeamDodge` and
+- **TMODE-27.** `TeamModes.Mode.DODGE` (FORCE_DODGE on since TMODE-30), `melee.TeamDodge` and
   `melee.AimExperts`: a parallel team movement path that stands in for the virtual bullets and
   the SOFT/LEARN/POOL/WAVES switches. Profiles are made once a shot (the CPU that sank WAVES with
   learning); experts' errors travel with link samples (LinkCodec version 4, written only when a
@@ -2205,9 +2206,22 @@ profiles, and the rumbles list it as a new participant.
   +0.24 +- 0.17 on fresh seeds (FAIL). Ogi -2.4, Nightmare -4.8, ImpactTeam -4.3. Our bullets on our
   own members rose 13% (80.5 vs 71.2 a battle): DODGE cleared MATEFIRE's teammate-bullet risk from
   its base ranking and folded teammates' bullets into the median-scaled wave damage.
-- **TMODE-29.** `TeamDodge.OWN_FIRE` (off): keeps `v.mateBullets` in the base ranking and adds
+- **TMODE-29.** `TeamDodge.OWN_FIRE` (on since TMODE-30): keeps `v.mateBullets` in the base ranking and adds
   `PATH_K` x `pathDamage` to each re-ranked risk in `MinimumRiskMovement.rerankBest(..., ownFire)`.
   Ablation `tmdodgef` (suffix of), built with `tmdodge`.
 - **BENCH-141.** Card plans/pc-team-dodge2.queue: bb, dg and dgof on 46 teams x 16 seeds from 5600 at
   12 rounds (4,416 battles, about 5 h); one pooled gate per arm. Results claude/pc-team-dodge2-results.
 - Both switches off: no replay fixture moves.
+
+## DODGE with own fire on every team (TMODE-30)
+
+- **Why.** pc-team-dodge2 (BENCH-141, PR #450), 46 teams x 16 fresh seeds from 5600, on top of PATH:
+  DODGE with OWN_FIRE (`dgof`) **+0.85 +- 0.42 APS** (gate +0.30, low end +0.43: PASS); plain DODGE
+  +0.45 +- 0.42; bb A/A -0.2 +- 0.4. Own-member hits +2.6 a battle (plain DODGE +9.2). Firestarter
+  +5.5, Combat +4.2, HOFSwarm +6.7, TeamDeathTeam +5.9, ArmyOfShiz +5.5, Ogi +2.8; Nightmare -3.5,
+  ImpactTeam -4.2, ImWithStupid -2.5. A global switch: Leigh decides the ship.
+- **TMODE-30.** `TeamModes.FORCE_DODGE` and `TeamDodge.OWN_FIRE` are true, and the three named entries
+  carry `Mode.DODGE`, as the measured `tmdodge,tmdodgef` arm played them. Ablations `tmnododge` (DODGE
+  off everywhere) and `tmnoof` (own fire off); `tmdodge` and `tmdodgef` keep working on older source.
+- Solo play is untouched: DODGE acts only while a teammate lives. Only the two team replay fixtures
+  were re-recorded; the duel and melee fixtures replay bit for bit.

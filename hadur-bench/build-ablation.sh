@@ -768,9 +768,18 @@ for a in "${list[@]}"; do
             ;;
         tmdodge)
             version="${version}dg"
+            # TMODE-30 ships DODGE; on older source (--ref) force it on.
+            if ! grep -qF "public static final boolean FORCE_DODGE = true;" "$modes"; then
             edit "$modes" "public static final boolean FORCE_DODGE = false;" "public static final boolean FORCE_DODGE = true;"
             # The teams the table already names play DODGE on top of their entry.
             sed -i -E 's/^(        t\.put\("[^"]+", of\(.*)\)\);$/\1, Mode.DODGE));/' "$modes"
+            fi
+            ;;
+        tmnododge)
+            version="${version}ndg"
+            edit "$modes" "public static final boolean FORCE_DODGE = true;" "public static final boolean FORCE_DODGE = false;"
+            # Wherever an earlier ablation left DODGE in a named entry.
+            sed -i -E '/^        t\.put\(/s/, Mode\.DODGE([,)])/\1/' "$modes"
             ;;
         tmdodgeb)
             version="${version}db"
@@ -778,7 +787,13 @@ for a in "${list[@]}"; do
             ;;
         tmdodgef)
             version="${version}of"
-            edit "$dodge" "static final boolean OWN_FIRE = false;" "static final boolean OWN_FIRE = true;"
+            # TMODE-30 ships OWN_FIRE; on older source force it on.
+            grep -qF "static final boolean OWN_FIRE = true;" "$dodge" \
+                || edit "$dodge" "static final boolean OWN_FIRE = false;" "static final boolean OWN_FIRE = true;"
+            ;;
+        tmnoof)
+            version="${version}nof"
+            edit "$dodge" "static final boolean OWN_FIRE = true;" "static final boolean OWN_FIRE = false;"
             ;;
         tmtnear)
             version="${version}tn"
@@ -1021,7 +1036,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgeb, tmdodgef, tmtnear, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgeb, tmdodgef, tmnododge, tmnoof, tmtnear, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf)" >&2; exit 2 ;;
     esac
 done
 

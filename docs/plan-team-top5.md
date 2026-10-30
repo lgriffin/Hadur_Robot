@@ -617,3 +617,13 @@ the same for team: read each costly team's code, then give it a counter that exp
 - **Card** plans/pc-team-dodge2.queue (BENCH-141): bb, dg and dgof, 46 teams x 16 fresh seeds from
   5600, 12 rounds, about 5 h; a gate per arm. On a pass, the better passing arm ships in a PR (a global
   switch, which Leigh decides).
+
+## 16. DODGE with own fire ships (2026-10-30)
+
+- **pc-team-dodge2 (PR #450), on top of PATH.** dgof **+0.85 ± 0.42 APS** (PASS, low end +0.43), dg
+  +0.45 ± 0.42; own-member hits +4% (plain DODGE +13%). Firestarter +5.5, Combat +4.2, HOFSwarm +6.7,
+  Ogi +2.8; Nightmare -3.5, Impact -4.2, ImWithStupid -2.5.
+- **Ship (TMODE-30), on Leigh's word:** FORCE_DODGE and OWN_FIRE on, named entries included. Bench
+  projection about 79.4 + 0.8 (PATH) + 0.85 = 81.0, against Firestarter 81.69 and Combat 81.57.
+- **Next:** the losers (Nightmare, ImpactTeam, ImWithStupid) are per-team table candidates for
+  `tmnododge`-style entries; Ogi is still 7 points clear.
