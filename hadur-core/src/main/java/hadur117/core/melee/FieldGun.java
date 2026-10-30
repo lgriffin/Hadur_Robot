@@ -7,6 +7,7 @@ import hadur117.core.physics.BattleField;
 import hadur117.core.physics.DiaUtils;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +54,37 @@ public class FieldGun {
     static final double RAMMER_CLOSING = 2.0;
     static final int MAX_OPPONENTS = 64;
 
+    /**
+     * MGUN-17: off a team, each opponent's virtual waves (MGUN-4) also score three simple aims
+     * beside the field gun's own (head-on, linear, circular), and once {@link #EXPERT_MIN} waves
+     * have reached it the opponent's solutions are shared among the four by how well each has
+     * been hitting it, so a robot the situations miss but a simple aim reads gets that aim.
+     * Inspired by Ogi's aim experts, scored on our own waves rather than copied.
+     */
+    public static final boolean EXPERTS = false;
+    /**
+     * MGUN-18: off a team, an opponent's weight also leans toward the ones the gun has been
+     * hitting: times 5 (hits + 1) / (waves + 5) of its best aim, 1 with no waves read.
+     */
+    public static final boolean HIT_TARGET = false;
+    /** MGUN-19: off a team, an opponent's distance weight is (100/d)^0.7, not 100/d (Ogi's flatter d^-0.686). */
+    public static final boolean FLAT_DISTANCE = false;
+    /**
+     * MGUN-20: off a team, a situation's weight is 1/(its distance + the mean distance of
+     * the opponent's chosen situations), not 1/(0.01 + its distance), so one very close match
+     * cannot take the whole opponent (Ogi's 1/(match + 1.6), scaled to our distances).
+     */
+    public static final boolean SOFT_MATCH = false;
+
+    /** MGUN-17: the aims a wave scores; FIELD is the field gun's own. */
+    public static final int FIELD = 0, HEAD_ON = 1, LINEAR = 2, CIRCULAR = 3, EXPERT_COUNT = 4;
+    /** MGUN-17: waves an opponent needs before its aims are shared by score. */
+    static final int EXPERT_MIN = 10;
+    /** MGUN-17: each read's weight decays by this per newer read, so the scores follow a robot that changes. */
+    static final double EXPERT_DECAY = 0.95;
+    /** MGUN-17: sharpens the shares: an aim's share goes with its smoothed hit rate to this power. */
+    static final double EXPERT_SHARPNESS = 4;
+
     /** One firing solution. */
     public static final class Solution {
         public final String target;
@@ -90,6 +122,10 @@ public class FieldGun {
     private final Map<String, EnemyHistory> histories = new LinkedHashMap<>();
     /** MGUN-6: whether Hadur has a living teammate this tick; false off a team. */
     private boolean onTeam;
+    /** MGUN-17: each opponent's decayed hits per aim, then its decayed wave count last. */
+    private final Map<String, double[]> expertScores = new LinkedHashMap<>();
+    /** MGUN-17: true while a wave reads the field gun's own aim, which the experts must not steer. */
+    private boolean pure;
 
     public FieldGun(BattleField field) {
         this.field = field;
@@ -113,6 +149,11 @@ public class FieldGun {
     /** MGUN-6: whether Hadur has a living teammate this tick, set before any aim of the tick. */
     public void onTeam(boolean onTeam) {
         this.onTeam = onTeam;
+    }
+
+    /** MGUN-6: whether Hadur had a living teammate at the latest {@link #onTeam(boolean)}. */
+    public boolean onTeam() {
+        return onTeam;
     }
 
     /** MGUN-7: the kNN depth this tick, {@link #K} on a team and {@link #MELEE_K} off one. */
@@ -168,6 +209,17 @@ public class FieldGun {
             if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);
             else power = MeleeEnergyPolicy.crowdPower(power, distance, energy, e.energy, others);
             double weight = weight(e, me, alive, now);
+            double[] share = expertsOn() ? shares(e.name) : null;
+            if (share != null) {
+                for (int x = HEAD_ON; x < EXPERT_COUNT; x++) {
+                    if (share[x] <= 0) continue;
+                    Point2D.Double p = expertAim(me, e, x, power, now);
+                    out.add(new Solution(e.name, DiaUtils.absoluteBearing(me, p), tolerance(me, p),
+                        weight * share[x], power, p));
+                }
+                weight *= share[FIELD];
+                if (weight <= 0) continue;
+            }
             EnemyHistory h = history(e.name);
             double[] attributes = h == null ? null : h.current();
             List<KdTree.Entry<float[]>> near = attributes == null || h.size() < k()
@@ -180,8 +232,14 @@ public class FieldGun {
             }
             double total = 0;
             double[] w = new double[near.size()];
+            double soft = 0.01;
+            if (SOFT_MATCH && !onTeam) {
+                soft = 0;
+                for (KdTree.Entry<float[]> n : near) soft += n.distance;
+                soft = Math.max(0.01, soft / near.size());
+            }
             for (int i = 0; i < near.size(); i++) {
-                w[i] = 1.0 / (0.01 + near.get(i).distance);
+                w[i] = 1.0 / (soft + near.get(i).distance);
                 total += w[i];
             }
             for (int i = 0; i < near.size(); i++) {
@@ -236,11 +294,73 @@ public class FieldGun {
      */
     double weight(EnemyInfo e, Point2D.Double me, List<EnemyInfo> alive, long now) {
         double w = 100.0 / Math.max(50.0, e.distance(me));
+        if (FLAT_DISTANCE && !onTeam) w = Math.pow(w, 0.7);
+        if (HIT_TARGET && !onTeam) w *= hitFactor(e.name);
         w *= 1 + 0.5 * (100 - Math.min(100, e.energy)) / 100.0;
         if (e.energy <= MeleeEnergyPolicy.FINISHER_ENERGY) w *= FINISHER_BOOST;
         if (isolated(e, alive)) w *= ISOLATED_BOOST;
         if (e.hitsOnHadur(now, SHOOTER_WINDOW) >= 2) w *= SHOOTER_BOOST;
         return w;
+    }
+
+    private boolean expertsOn() {
+        return EXPERTS && !onTeam && !pure;
+    }
+
+    /**
+     * MGUN-4/17: the field gun's own aim at one opponent, which a targeting wave carries; with
+     * MGUN-17 on, the experts' shares are left out so the wave reads the field gun alone.
+     */
+    Aim fieldAim(Point2D.Double me, double energy, int others, EnemyInfo e, long now) {
+        pure = true;
+        try {
+            return aim(me, energy, others, Collections.singletonList(e), now);
+        } finally {
+            pure = false;
+        }
+    }
+
+    /** MGUN-17: where aim {@code x} (HEAD_ON, LINEAR or CIRCULAR) puts {@code e} for a bullet of {@code power}. */
+    Point2D.Double expertAim(Point2D.Double me, EnemyInfo e, int x, double power, long now) {
+        if (x == HEAD_ON) return e.location;
+        double turnRate = x == CIRCULAR && !Double.isNaN(e.turnRate()) ? e.turnRate() : 0.0;
+        return fallback.predict(me, e, power, now, turnRate);
+    }
+
+    /** MGUN-17: a wave at {@code name} reached it; {@code hit[x]} is whether aim x would have hit. */
+    public void scoreExperts(String name, boolean[] hit) {
+        double[] s = expertScores.get(name);
+        if (s == null) {
+            if (expertScores.size() >= MAX_OPPONENTS) return;
+            s = new double[EXPERT_COUNT + 1];
+            expertScores.put(name, s);
+        }
+        for (int x = 0; x <= EXPERT_COUNT; x++) s[x] *= EXPERT_DECAY;
+        for (int x = 0; x < EXPERT_COUNT; x++) if (hit[x]) s[x] += 1;
+        s[EXPERT_COUNT] += 1;
+    }
+
+    /** MGUN-17: each aim's share of the opponent, or null before {@link #EXPERT_MIN} waves. */
+    double[] shares(String name) {
+        double[] s = expertScores.get(name);
+        if (s == null || s[EXPERT_COUNT] < (1 - Math.pow(EXPERT_DECAY, EXPERT_MIN)) / (1 - EXPERT_DECAY) - 1e-9) return null;
+        double[] share = new double[EXPERT_COUNT];
+        double total = 0;
+        for (int x = 0; x < EXPERT_COUNT; x++) {
+            share[x] = Math.pow((s[x] + 1) / (s[EXPERT_COUNT] + 2), EXPERT_SHARPNESS);
+            total += share[x];
+        }
+        for (int x = 0; x < EXPERT_COUNT; x++) share[x] /= total;
+        return share;
+    }
+
+    /** MGUN-18: 5 (hits + 1) / (waves + 5) of the opponent's best aim, decayed; 1 with none read. */
+    double hitFactor(String name) {
+        double[] s = expertScores.get(name);
+        if (s == null) return 1;
+        double best = 0;
+        for (int x = 0; x < EXPERT_COUNT; x++) best = Math.max(best, s[x]);
+        return 5 * (best + 1) / (s[EXPERT_COUNT] + 5);
     }
 
     static boolean isolated(EnemyInfo e, List<EnemyInfo> alive) {

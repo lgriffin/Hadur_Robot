@@ -5,7 +5,6 @@ import hadur117.core.physics.Angles;
 import hadur117.core.physics.DiaUtils;
 import java.awt.geom.Point2D;
 import java.util.ArrayDeque;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
@@ -31,13 +30,20 @@ public final class MeleeWaves {
         public final Point2D.Double source;
         public final long time;
         public final double speed, aim;
+        /** MGUN-17: every aim's angle, the field gun's first; null with the experts off. */
+        final double[] aims;
 
         Wave(String target, Point2D.Double source, long time, double speed, double aim) {
+            this(target, source, time, speed, aim, null);
+        }
+
+        Wave(String target, Point2D.Double source, long time, double speed, double aim, double[] aims) {
             this.target = target;
             this.source = source;
             this.time = time;
             this.speed = speed;
             this.aim = aim;
+            this.aims = aims;
         }
     }
 
@@ -45,6 +51,8 @@ public final class MeleeWaves {
     private double lastHeat = Double.NaN;
     private long lastEmit = Long.MIN_VALUE;
     private long emitted, resolved, hits;
+    /** MGUN-17/18: the gun the waves score their aims into; set by {@link #tick}. */
+    private FieldGun scored;
 
     public void newRound() {
         waves.clear();
@@ -67,13 +75,27 @@ public final class MeleeWaves {
             if (e.age(now) > FieldGun.MAX_AGE) continue;
             // The gun's own choice for this opponent: the density peak over its solutions.
             // With none (a rammer it leaves alone, too little energy) there is no aim to score.
-            FieldGun.Aim a = gun.aim(me, energy, others, Collections.singletonList(e), now);
+            FieldGun.Aim a = gun.fieldAim(me, energy, others, e, now);
             if (a == null) continue;
+            double[] aims = null;
+            if (scoring(gun)) {
+                aims = new double[FieldGun.EXPERT_COUNT];
+                aims[FieldGun.FIELD] = a.angle;
+                for (int x = FieldGun.HEAD_ON; x < FieldGun.EXPERT_COUNT; x++) {
+                    aims[x] = DiaUtils.absoluteBearing(me, gun.expertAim(me, e, x, a.power, now));
+                }
+                scored = gun;
+            }
             if (waves.size() >= MAX_WAVES) waves.removeFirst();
-            waves.addLast(new Wave(e.name, new Point2D.Double(me.x, me.y), now, 20 - 3 * a.power, a.angle));
+            waves.addLast(new Wave(e.name, new Point2D.Double(me.x, me.y), now, 20 - 3 * a.power, a.angle, aims));
             emitted++;
         }
         return true;
+    }
+
+    /** MGUN-17/18: whether the waves score every aim, off a team with either switch on. */
+    static boolean scoring(FieldGun gun) {
+        return (FieldGun.EXPERTS || FieldGun.HIT_TARGET) && !gun.onTeam();
     }
 
     /**
@@ -88,9 +110,17 @@ public final class MeleeWaves {
             if ((now - w.time) * w.speed < w.source.distance(e.location)) continue;
             Point2D.Double at = crossing(w, e.previousLocation(), e.previousScanTime(), e.location, now);
             double d = w.source.distance(at);
-            double off = Math.abs(Angles.normalRelativeAngle(
-                DiaUtils.absoluteBearing(w.source, at) - w.aim));
-            if (off <= DiaUtils.botWidthAimAngle(Math.max(18.0, d))) hits++;
+            double bearing = DiaUtils.absoluteBearing(w.source, at);
+            double width = DiaUtils.botWidthAimAngle(Math.max(18.0, d));
+            double off = Math.abs(Angles.normalRelativeAngle(bearing - w.aim));
+            if (off <= width) hits++;
+            if (w.aims != null && scored != null) {
+                boolean[] hit = new boolean[w.aims.length];
+                for (int x = 0; x < hit.length; x++) {
+                    hit[x] = Math.abs(Angles.normalRelativeAngle(bearing - w.aims[x])) <= width;
+                }
+                scored.scoreExperts(w.target, hit);
+            }
             resolved++;
             it.remove();
         }
