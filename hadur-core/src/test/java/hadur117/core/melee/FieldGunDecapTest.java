@@ -80,4 +80,15 @@ class FieldGunDecapTest {
         // The droids gone: a scanner is just a robot again.
         assertEquals(1.0, gun.leadFactor(scanner, List.of(leader, scanner)), 1e-12);
     }
+
+    @Test
+    @Tag("TMODE-31")
+    @DisplayName("TMODE-31: a leader scanned at 200 stays the leader when LEAD first weighs it after it is worn down")
+    void leaderFromFirstScan() {
+        EnemyInfo leader = scan(tracker, "a.Lead (1)", 300, 300, 200, 1);
+        gun.onScan(leader, 500, 1);
+        leader = scan(tracker, "a.Lead (1)", 300, 300, 80, 400);
+        EnemyInfo m = scan(tracker, "a.M (2)", 600, 300, 100, 400);
+        assertEquals(FieldGun.LEAD_BOOST, gun.leadFactor(leader, List.of(leader, m)), 1e-12);
+    }
 }

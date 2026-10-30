@@ -144,7 +144,7 @@ public class FieldGun {
     private boolean onTeam;
     /** MGUN-17: each opponent's decayed hits per aim, then its decayed wave count last. */
     private final Map<String, double[]> expertScores = new LinkedHashMap<>();
-    /** MGUN-21: each robot's energy when first seen this round. */
+    /** MGUN-21: each robot's energy when first seen this round, kept from its first scan on whatever switches are on. */
     private final Map<String, Double> firstEnergy = new LinkedHashMap<>();
     /** TMODE-31: whether the team modes this tick carry LEAD. */
     private boolean lead;
@@ -196,6 +196,7 @@ public class FieldGun {
      * opponents alive, which MGUN-11's crowd attributes read.
      */
     public void onScan(EnemyInfo e, double distance, long time, Point2D.Double nearest, int alive) {
+        firstEnergy.putIfAbsent(e.name, e.energy);
         EnemyHistory h = history(e.name);
         if (h != null) {
             h.onScan(time, e.location.x, e.location.y, e.heading, e.velocity, distance,
