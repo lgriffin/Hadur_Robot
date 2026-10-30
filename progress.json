@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-nododge",
- "updated": 1793380584.4647923,
+ "updated": 1793380752.7599657,
  "steps": {
   "ndprep": {
    "status": "done",
@@ -15,14 +15,22 @@
    "end": "2026-10-30T17:11:13"
   },
   "ndxd": {
-   "status": "running",
-   "start": "2026-10-30T17:11:13"
+   "status": "done",
+   "exit": 0,
+   "seconds": 472,
+   "end": "2026-10-30T17:19:06"
   },
   "ndsum": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-10-30T17:19:06"
   },
   "ndpr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 6,
+   "end": "2026-10-30T17:19:12"
   }
  },
  "watched": [
@@ -72,8 +80,8 @@
   {
    "step": "ndxd",
    "started": 1793380273.5529711,
-   "updated": 1793380584.4574258,
-   "elapsed": 310.90445470809937,
+   "updated": 1793380746.0126667,
+   "elapsed": 472.45969557762146,
    "expected": 144,
    "panel": null,
    "field": null,
@@ -81,20 +89,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 108,
+   "battles": 144,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 1250.5449636128078,
-   "eta": 103.63481823603313,
-   "fraction": 0.75,
-   "last_battle_age": 2.425497055053711,
+   "rate": 1097.236451812493,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 1.6503868103027344,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 108"
+     "detail": "0 failed of 144"
     },
     {
      "rule": "stall 30m",
@@ -106,11 +114,11 @@
      "rule": "skips 40 over 100",
      "action": "halt",
      "state": "ok",
-     "detail": "13.1 a battle over the last 100 (first 100: 13.5)"
+     "detail": "9.6 a battle over the last 100 (first 100: 13.5)"
     }
    ],
-   "skips_mean": 13,
-   "skips_last100": 13.05
+   "skips_mean": 12.01388888888889,
+   "skips_last100": 9.57
   }
  ]
 }

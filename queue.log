@@ -8,3 +8,9 @@
 17:11:13 ndbb exit=0 in 483 s
 17:11:13 start ndxd
 17:11:13 watching ndxd: 3 stop rule(s)
+17:19:06 ndxd exit=0 in 472 s
+17:19:06 start ndsum
+17:19:06 ndsum exit=0 in 0 s
+17:19:06 start ndpr
+17:19:12 ndpr exit=0 in 6 s
+17:19:12 ALLDONE
