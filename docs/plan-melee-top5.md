@@ -392,6 +392,42 @@ CPU guard would fail. Keeping each shot's 4 nearest aims at the shot's whole wei
 bullet cap: +0.56 ± 0.73 against an aa rerun (aa vs aa +0.12 ± 0.53), skips 24 vs 26, others
 outlived +2.3 points, deaths with two left -2.4 points. Level to positive and CPU-clean: carded.
 
+**Melee gun inspired by Ogi (MGUN-17..20, 2026-10-30).** Leigh: "Lets explore its gun for melee its
+clearly working for it. Our goal is not to beat Ogi 1:1 its to beat the field. Lets not copy it
+directly lets be inspired by it." Hadur's field gun already has Ogi's depth (24 situations) and power
+(3 inside 300 px); the crowd features read null (MGUN-11). Four further ideas, each Hadur's own take,
+each a switch off a team only:
+
+- **MGUN-17 aim experts** (`EXPERTS`, arm `gexp`/`gx`). Ogi blends simple aims by how well each has
+  been doing. Hadur already sends a virtual wave at every opponent on every gun cycle (MGUN-4); each
+  wave now also scores head-on, linear and circular aims, decayed 0.95 a wave. After 20 waves, a simple
+  aim that hits an opponent 1.25 times as often as the field gun takes it, as one solution weighted by
+  what the field gun's own peak held of that opponent times the hit-rate edge, so the opponent pulls
+  on the crowd peak by how likely a shot is to hit it. A robot the situations miss but a simple aim
+  reads (oscillators, wall-huggers, sitting ducks) gets that aim. The first build shared every
+  opponent among the four aims by hit rate to the fourth power; its single-angle solutions outweighed
+  the field gun's spread ones at the crowd peak, and two cloud smokes read -1.47 ± 1.01 and
+  -0.88 ± 0.53 with 6 less energy entering the endgame.
+- **MGUN-18 hit-rate targeting** (`HIT_TARGET`, `grate`/`gr`): weight times 5 (hits + 1)/(waves + 5) of
+  the aim the gun fires at the opponent, so the density peak leans toward robots we actually hit. (The
+  smoked build used the best of all four aims' hits, which also favoured robots only an unused simple
+  aim would hit; fixed after review, not re-smoked.)
+- **MGUN-19 flatter distance** (`FLAT_DISTANCE`, `gdist`/`gd`): (100/d)^0.7, Ogi's d^-0.686 in our units;
+  far robots in a dense line count for more.
+- **MGUN-20 softer matches** (`SOFT_MATCH`, `gsoft`/`gv`): 1/(distance + mean distance), Ogi's
+  1/(match + 1.6) scaled to our distances, so one near-identical situation cannot take an opponent.
+
+Forced on together, the duel and team replay fixtures play bit for bit; only the melee fixtures
+change. Card `pc-melee-gun` (BENCH-143): aa, bb and the four arms on the census at seeds 3234-3239,
+the Stage 3 gate and CPU guard. A passing arm stacks with the melee surfer (if it passes) on fresh seeds.
+
+**Result: parked (2026-10-30).** Cloud smokes on 8 census fields (docs/bench/local/melee-gun-smoke*-read.md):
+on 1 seed every arm read below aa (gx -1.47 ± 1.01, gr -0.24, gd -0.91, gv -0.87); on 2 more seeds with an
+A/A copy (bb -0.13 ± 0.86, clean) gx read -0.88 ± 0.53 and gr +0.18 ± 0.57; the v2 experts above
+read -0.36 ± 0.50. Both expert builds entered the endgame about 6 energy lower. The parts of Ogi's gun
+that pay (depth, power 3 close in) are already in Hadur. Leigh chose to park the line: the switches
+stay on master, off, and `pc-melee-gun` is retired before it ran.
+
 ### Stage 4: stack, tailor, confirm
 
 - **Stack census** on master's defaults (all passed stages) against 3.17 on fresh seeds, 8 seeds
