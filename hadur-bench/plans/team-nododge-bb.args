@@ -1,0 +1,31 @@
+# PC card team-nododge (docs/plan-team-top5.md section 17, TMODE-30, BENCH-144): arm bb (A/A, master again under another name), on the three teams of plans/team-nododge-set.txt, 24 fresh seeds from 5900, against master (the aa build). Template: ndprep writes work/team-nododge-bb.args with @V@ = the robot.release in hadur-robot/pom.xml.
+--team
+true
+--seeds
+24
+--seed-base
+5900
+--rounds
+12
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+plans/team-nododge-set.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@bb.jar
+--robot
+hadur117.HadurTeam @V@bb
+--member
+hadur117.Hadur
+--out
+work/team-nododge-@V@-bb
+--report
+../docs/bench/local/team-nododge-bb.md
+--baseline
+bisect/hadur117.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur117.HadurTeam @V@aa

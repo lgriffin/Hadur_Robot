@@ -37,5 +37,12 @@ P3 | every push 1.5 times 0.4's: 160,000 + 320,000 x weight | Move.java | s/1066
 P075 | every push 0.75 times 0.4's: 80,000 + 160,000 x weight | Move.java | s/106667 + 213333 \* bot\[AIM\]/80000 + 160000 * bot[AIM]/
 SHARP | a likely shooter's push as 0.4's (320,000), a stray one's 120,000, not 160,000 | Move.java | s/106667 + 213333 \* bot\[AIM\]/53333 + 266667 * bot[AIM]/
 WV2 | the seen-shot waves count double against the push | Move.java | s/WAVES = 1;/WAVES = 2;/
-WV05 | the seen-shot waves count half | Move.java | s/WAVES = 1;/WAVES = 0.5;/
+# WV05 (the waves at half) gave its seat to CONS on Leigh's word (2026-10-30): ScalarR's two biggest
+# survival jumps were energy management (robowiki ScalarR/Version_History).
+CONS | conservative power, after ScalarR's energy management: range power log10(energy) x 240 / distance, not 325 (about a quarter less) | Gun.java | s/Math.log10(energy) \* 325 \/ distance/Math.log10(energy) * 240 \/ distance/
 RS | the ring reaches 0.35 of the target's distance, up to 120 px, not 0.45 and 160 | Move.java | s/Math.min(160, targetDistance \* 0.45)/Math.min(120, targetDistance * 0.35)/
+# SCAL (coordinator, 2026-10-30, from the ScalarR decompile in PR #459): ScalarR's energy rule is a
+# cap that falls with its own energy (energy / 6, energy / 15 when no robot is within 325 px), not
+# lighter power at full health. Deise's target is the nearest robot, so its distance stands in for
+# "anyone within 325". Unlike the other E4 arms it adds code (about 10 bytes), so a winner needs a cut.
+SCAL | ScalarR-shaped energy cap: range power capped at energy / 6, energy / 15 with the target beyond 325 px | Gun.java | s/Math.log10(energy) \* 325 \/ distance)/Math.min(Math.log10(energy) * 325 \/ distance, energy \/ (distance > 325 ? 15 : 6)))/

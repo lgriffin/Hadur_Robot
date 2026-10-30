@@ -17,18 +17,22 @@ one first, bench it, then write the shipped one to match.
 
 ## Standing
 
-| Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | 5th place | Gap to 5th |
+| Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | Next up | Gap |
 |---|---|---|---|---|---|---|---|---|
+| 0.2 | 2026-10-29 20:10 (final, API) | **MiniRumble** | **5th of 671** | **87.43 ± 0.29** | 670 | 788 | 1st sheldor.mini.FoilistMC 1.0, 88.99 | +1.57 |
 | 0.1 | 2026-10-29 07:23 | **MiniRumble** | **6th of 671** | **86.95 ± 0.29** | 670 | 742 | simonton.mini.WeeksOnEnd 1.10.4, 87.35 | +0.40 |
 
-**JayLexi 0.1 is 6th in MiniRumble** on its first full pass, 0.40 behind WeeksOnEnd for 5th and 0.50
-under Komarious (4th, 87.45). The cloud bench predicted 87.05, so it transfers. Against Komarious on
-the 668 opponents the pages share it is 0.47 short. A third of that gap comes from close-range bots that
-Komarious beats almost every round (JayLexi survives less: NanoDeath 80% against 97%), and the
-rest from learning guns (Jen, Aristocles, Raiko, Cotillion). 0.2 is being built in the cloud
-around power by energy, a nearer-distance danger and a reverse-wall gun segment. The full read, by opponent group, is in
-[docs/bench/live-kitlab-0.1.md](../docs/bench/live-kitlab-0.1.md); the pages are saved in
-`data/rumble/pages/` under 2026-10-29T0838Z* (saved 08:38 UTC).
+**JayLexi 0.2 is 5th in MiniRumble**, level with Komarious (4th) on two decimals and past
+WeeksOnEnd. On the 668 opponents the pages share it is +0.47 over 0.1 (the bench said about +0.3).
+It is 1.57 behind FoilistMC for 1st. Seven tenths of that gap is the weak field, the 477 bots
+FoilistMC beats almost every round: about half from rounds JayLexi loses to them (99.08% survival
+against 99.68%) and half from damage taken in rounds it wins, worst against nanobots (2.34 short
+each). Even and strong opponents cost only 0.09. So 0.3 aims at simple-gun dodging and lost rounds
+to rammers. The full read is in [docs/bench/live-kitlab-0.2.md](../docs/bench/live-kitlab-0.2.md);
+the pages are saved in `data/rumble/pages/` under 2026-10-29T2010Z* (they caught it 5 battles early, at 87.42), and the final API rows in `data/rumble/parsed/2026-10-29T2020Z_*.json`.
+
+0.1 was 6th on its first pass (86.95, 0.40 behind 5th); its read is in
+[docs/bench/live-kitlab-0.1.md](../docs/bench/live-kitlab-0.1.md).
 
 ## Build
 

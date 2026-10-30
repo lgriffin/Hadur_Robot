@@ -16,10 +16,14 @@
 #   P075   every push 0.75 times 0.4's (80,000 + 160,000 x weight): which way the push pays
 #   SHARP  a likely shooter's push kept at 320,000, a stray one's cut to 120,000 from 160,000
 #   WV2    the seen-shot waves count double
-#   WV05   the seen-shot waves count half
+#   CONS   conservative power: log10(energy) x 240 / distance, not 325. ScalarR's two biggest
+#          melee survival jumps were energy management (robowiki ScalarR/Version_History).
+#   SCAL   ScalarR's energy shape (PR #459's decompile): range power capped at energy / 6, and at
+#          energy / 15 with the target beyond 325 px, so power falls only as Deise's energy does
+#          (about 10 bytes: a winner needs a cut to ship)
 #   RS     a shorter ring: 0.35 of the target's distance, up to 120 px (REACH's longer one lost 0.70)
-# Live-shaped census: 46 fields x 6 seeds a seat (276 battles, about 17 min on the PC), 8 seats,
-# about 2.3 h, fresh seeds from 3700.
+# Live-shaped census: 46 fields x 6 seeds a seat (276 battles, about 17 min on the PC), 9 seats,
+# about 2.6 h, fresh seeds from 3700.
 # Reads: each arm against SAOR and against D, field by field. An arm that reads +0.30 or more over
 # D with the low end above 0 goes into the shipped class (constants only, so it fits) and the core,
 # matched (DEISE-16), as 0.4.1 on Leigh's go. Two passing arms that pull the same constant (P3 and
@@ -27,12 +31,12 @@
 # Stop rules on every census step (halt; finished seats are kept, the stopped seat reruns from its
 # start): 20 failed battles (a broken jar), no battle in 30 minutes (a hung step), or 40+ skipped
 # turns a battle over the last 100. A halt at worst leaves the rest of that seat and the seats
-# after it unrun, at most 2,208 battles (about 2.3 h). There is no early finish on score: a census
+# after it unrun, at most 2,484 battles (about 2.6 h). There is no early finish on score: a census
 # seat is one robot, so there is no arm to call futile mid-step.
 
 set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
 set OUT = ../docs/bench/local
-set ARMS = D,P3,P075,SHARP,WV2,WV05,RS,SAOR
+set ARMS = D,P3,P075,SHARP,WV2,CONS,SCAL,RS,SAOR
 
 prep | (cd .. && mvn -q -DskipTests install -pl deise -am) && cp ../deise/target/hadur117.mini.Deise_0.4.jar opponents/ && curl -fsSLo opponents/hadur117.micro.Saor_0.2.jar https://github.com/lgriffin/Hadur_Robot/releases/download/saor-v0.2/hadur117.micro.Saor_0.2.jar && ./fetch-opponents.sh --set minimelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && DEISE_RUN=e07 bash tools/deise_arms.sh live 6 3700 ${ARMS}
 
@@ -71,15 +75,22 @@ live-WV2 | ${MVN} "-Dexec.args=@work/deise-e07/live-WV2.args"
   stop: stall 30m
   stop: skips 40 over 100
 
-live-WV05 | ${MVN} "-Dexec.args=@work/deise-e07/live-WV05.args"
+live-CONS | ${MVN} "-Dexec.args=@work/deise-e07/live-CONS.args"
   after: live-WV2
   watch: battles=276
   stop: fails 20
   stop: stall 30m
   stop: skips 40 over 100
 
+live-SCAL | ${MVN} "-Dexec.args=@work/deise-e07/live-SCAL.args"
+  after: live-CONS
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
 live-RS | ${MVN} "-Dexec.args=@work/deise-e07/live-RS.args"
-  after: live-WV05
+  after: live-SCAL
   watch: battles=276
   stop: fails 20
   stop: stall 30m

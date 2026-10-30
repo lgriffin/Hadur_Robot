@@ -418,13 +418,25 @@ weight, the weight set at every scan) and `Gun.CAP` off, and DeiseLab sets each 
 at every scan, so the shipped class and the adapter give the same orders (DEISE-16). E3a's
 `AIM2` and `P2` sed lines no longer apply to the core, which has both.
 
+### 0.4's live first pass (2026-10-30)
+
+2nd in MiniMelee at 70.54 ± 0.36 over all 205 pairings (559 battles), 0.61 behind Mirage (71.15);
+0.3 was 1.38 behind. On the 204 opponents both met, 0.4 is +0.71 over 0.3 (the bench read +0.39)
+and survives 54.7% of battles to 0.3's 45.8%, level with Mirage. Against the 20 strongest
+opponents it gains +2.6 APS and 11 points of survival. The survival gap E2 found is closed; what is
+left of Mirage's lead is not reaching the final duel.
+
 ### Stage E4: tuning 0.4's crowd terms (card pc-deise-e07)
 
 0.4 is at 1,499 bytes, so E4 tunes constants, which cost nothing to ship. Each arm is one sed on
 DeiseLab over the core (D is 0.4): the push 1.5 times (P3) and 0.75 times (P075) 0.4's, a sharper
 split between a likely shooter's push and a stray one's (SHARP: 320,000 and 120,000), the waves
-counted double (WV2) or half (WV05), and a shorter ring (RS: 0.35 of the target's distance, up to
-120 px, since REACH's longer one lost). With SAOR, on fresh seeds (from 3700), about 2.3 h. An arm
+counted double (WV2), conservative power (CONS: log10(energy) x 240 over the distance, not 325;
+ScalarR's two biggest melee survival jumps came from energy management), and a shorter ring (RS: 0.35 of the target's distance, up to
+120 px, since REACH's longer one lost). SCAL tries ScalarR's actual energy shape, from the decompile in PR #459: range power capped at
+energy / 6, and at energy / 15 with the target beyond 325 px, so power falls only as Deise's
+energy does (CONS lowers it at every energy). SCAL adds about 10 bytes, so a winner needs a cut.
+With SAOR, on fresh seeds (from 3700), 9 seats, about 2.6 h. An arm
 at +0.30 or more over D, low end above 0, ships as 0.4.1 on Leigh's go.
 
 ## 9. Uniqueness

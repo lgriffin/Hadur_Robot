@@ -1,5 +1,7 @@
+# RETIRED 2026-10-30 after it ran (PR #450): DODGE and OWN_FIRE ship on master (PR #451), so tmdodge and
+# tmdodgef are no-ops on master. To re-measure, use tmnododge (no dodge) and tmnoof (dodge without own fire).
 # Confirm DODGE as every team's default, as built and with our own fire weighed as PATH weighs it
-# (TMODE-27, TMODE-29, BENCH-141; docs/plan-team-top5.md section 15). Team thread: team-only, duel and
+# (TMODE-27, TMODE-29, BENCH-142; docs/plan-team-top5.md section 15). Team thread: team-only, duel and
 # melee fixtures bit for bit. pc-team-dodge (PR #437), on top of PATH: DODGE for every team +0.55 ± 0.50
 # APS (gate PASS, low end +0.05), the per-team table +0.24 ± 0.17 (FAIL), and our bullets on our own
 # members up 13% (80.5 vs 71.2 a battle): DODGE drops MATEFIRE's teammate-bullet risk from its base

@@ -1,3 +1,5 @@
+# RETIRED 2026-10-30 after it ran (PR #432): MOVE-29 ships on from 3.20 (PR #441), so aimmem is a no-op on
+# master and c, aa and km all play the same aim; the 3.20 census (PR #454) read it against noaim.
 # K1 of the road to king: the aim members in battle (BENCH-138, docs/bench/gun-oracle.md). Leigh starts it:
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-k1-aim        (or  ./queue.sh run pc-k1-aim)
@@ -26,7 +28,7 @@
 # on any stop.
 # Nothing here ships: on a pass a PR turns MOVE-29 on for the 3.20 census; Leigh's release rule stands.
 
-set V = 3.19
+set V = 3.20
 set P = --parallel 12 --no-truth-log
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G --engine 1.11.1
 set W = work/k1-aim
