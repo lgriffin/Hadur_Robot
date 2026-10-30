@@ -49,7 +49,7 @@ class CensusPlanTest {
         assertTrue(queue.contains("set ALERT = lgriffin") && queue.contains("set P = --parallel 12 --no-truth-log"));
         String census = queue.substring(queue.indexOf("\ncensus | "), queue.indexOf("\n\ngate | "));
         assertTrue(census.contains("--shuffle-jobs") && census.contains("watch: field=1217"), census);
-        for (String rule : new String[] {"fails 30", "dead 8", "skips 40 over 200", "stall 30m", "aa after 20%"}) {
+        for (String rule : new String[] {"fails 30", "dead 8", "skips 60 over 200", "stall 30m", "aa after 20%"}) {
             assertTrue(census.contains("stop: " + rule), rule);
         }
         assertTrue(!census.contains("futility"), "a census reads every robot");
