@@ -110,14 +110,15 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends robocode.AdvancedRobot</span></div>
 <div class="block">Deise (the Déise, Waterford's people), a MiniMelee entry: Saor's graded Markov gun, learning
  every robot it scans, over a least-risk movement that steps off the lines of the shots it sees
- fired (docs/deise.md).
+ fired and keeps furthest from the robots likely aiming at it (docs/deise.md).
 
  <p>This is the class that ships: the core (<code>hadur117.mini.core</code>) flattened by hand into
  one class to fit MiniMelee's 1,499 bytes, as Saor is. <code>DeiseEquivalenceTest</code> drives it
  and the bench adapter <a href="DeiseLab.html" title="class in hadur117.mini"><code>DeiseLab</code></a>, which calls the core, with the same events and
- requires the same orders (DEISE-16). 0.3 is stage E2's FIT3: 0.2 with the seen-shot waves and
- 200 playouts, without the across term, the hold, the corners, the kill cap and the hit
- correction, its push flat (docs/deise.md section 8).</p></div>
+ requires the same orders (DEISE-16). 0.4 is stage E3b's FAP: 0.3 without the field cap on
+ power, the test of whether an opponent likely aims at Deise made at every scan and kept as its
+ weight (1, or 0.25 when another robot is nearer it), which weighs its waves and its push,
+ 106,667 + 213,333 x weight (docs/deise.md section 8).</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -133,7 +134,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>(package private) static double[][]</code></div>
 <div class="col-second even-row-color"><code><a href="#bots" class="member-name-link">bots</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Live opponents this round, {x, y, energy}.</div>
+<div class="block">Live opponents this round, {x, y, energy, weight}.</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static int[]</code></div>
 <div class="col-second odd-row-color"><code><a href="#ids" class="member-name-link">ids</a></code></div>
@@ -274,7 +275,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="bots">
 <h3>bots</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double[][]</span>&nbsp;<span class="element-name">bots</span></div>
-<div class="block">Live opponents this round, {x, y, energy}.</div>
+<div class="block">Live opponents this round, {x, y, energy, weight}.</div>
 </section>
 </li>
 <li>

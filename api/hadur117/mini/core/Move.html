@@ -97,9 +97,9 @@ loadScripts(document, 'script');</script>
  straight at or away from an opponent that is likely aiming at Deise, and the danger of the
  waves it was seen to fire (weighed by <a href="#WAVES"><code>WAVES</code></a>); with <a href="#CORNERS"><code>CORNERS</code></a>, while the field is
  crowded, the distance to the nearest corner, so Deise holds Saor's corners early and comes out
- of them as the field thins. Since 0.3 the across term and the corners are off and the push is
- flat (docs/deise.md section 8). Pure: opponents are
- rows {x, y, energy} (null when unseen or dead), waves rows {x, y, fire time, speed, head-on
+ of them as the field thins. Since 0.3 the across term and the corners are off; since 0.4 the
+ push weighs whether the opponent likely aims at Deise (docs/deise.md section 8). Pure: opponents are
+ rows {x, y, energy, weight} (null when unseen or dead), waves rows {x, y, fire time, speed, head-on
  angle, linear angle, weight} (null when free).</div>
 </section>
 <section class="summary">
@@ -117,6 +117,19 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color"><code><a href="#ACROSS" class="member-name-link">ACROSS</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Whether the across term counts (DEISE-3); false for arm P, which frees its bytes for the waves.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#AIM" class="member-name-link">AIM</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The opponent's weight, set at each scan: 1 when it likely aims at Deise, 0.25 when another
+ robot is nearer it (DEISE-3, DEISE-5).</div>
+</div>
+<div class="col-first even-row-color"><code>static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#AIM_PUSH" class="member-name-link">AIM_PUSH</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Whether the push weighs the opponent's aim (DEISE-2): since 0.4 (arm FAP, E3a's AIM2 and P2),
+ 106,667 + 213,333 x its weight, so 320,000 from a likely shooter and 160,000 from the rest;
+ off, a flat 80,000.</div>
 </div>
 <div class="col-first odd-row-color"><code>static final int</code></div>
 <div class="col-second odd-row-color"><code><a href="#CANDIDATES" class="member-name-link">CANDIDATES</a></code></div>
@@ -324,6 +337,22 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="AIM">
+<h3>AIM</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">AIM</span></div>
+<div class="block">The opponent's weight, set at each scan: 1 when it likely aims at Deise, 0.25 when another
+ robot is nearer it (DEISE-3, DEISE-5). It weighs its push and its waves.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.mini.core.Move.AIM">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="TIME">
 <h3>TIME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">TIME</span></div>
@@ -449,6 +478,23 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur117.mini.core.Move.ENERGY_PUSH">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="AIM_PUSH">
+<h3>AIM_PUSH</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">AIM_PUSH</span></div>
+<div class="block">Whether the push weighs the opponent's aim (DEISE-2): since 0.4 (arm FAP, E3a's AIM2 and P2),
+ 106,667 + 213,333 x its weight, so 320,000 from a likely shooter and 160,000 from the rest;
+ off, a flat 80,000.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.mini.core.Move.AIM_PUSH">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>

@@ -295,6 +295,11 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/MeleeGun.Aim.html#%3Cinit%3E(double,hadur117.core.melee.MeleeGun.Strategy,java.awt.geom.Point2D.Double)" class="member-name-link">Aim(double, MeleeGun.Strategy, Point2D.Double)</a> - Constructor for class hadur117.core.melee.<a href="hadur117/core/melee/MeleeGun.Aim.html" title="class in hadur117.core.melee">MeleeGun.Aim</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/mini/core/Move.html#AIM" class="member-name-link">AIM</a> - Static variable in class hadur117.mini.core.<a href="hadur117/mini/core/Move.html" title="class in hadur117.mini.core">Move</a></dt>
+<dd>
+<div class="block">The opponent's weight, set at each scan: 1 when it likely aims at Deise, 0.25 when another
+ robot is nearer it (DEISE-3, DEISE-5).</div>
+</dd>
 <dt><a href="hadur117/core/duel/DuelController.html#AIM_AVERAGE_TICKS" class="member-name-link">AIM_AVERAGE_TICKS</a> - Static variable in class hadur117.core.duel.<a href="hadur117/core/duel/DuelController.html" title="class in hadur117.core.duel">DuelController</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#DODGE-1">DODGE-1</a>: ticks the averaged linear aim averages our velocity over.</div>
@@ -322,6 +327,12 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/shieldmode/ShieldDesign.html#AIM_PRIOR" class="member-name-link">AIM_PRIOR</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldDesign.html" title="class in hadur117.core.shieldmode">ShieldDesign</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#SHIELD-18">SHIELD-18</a>: the exact matches a shipped aim starts its predictor with.</div>
+</dd>
+<dt><a href="hadur117/mini/core/Move.html#AIM_PUSH" class="member-name-link">AIM_PUSH</a> - Static variable in class hadur117.mini.core.<a href="hadur117/mini/core/Move.html" title="class in hadur117.mini.core">Move</a></dt>
+<dd>
+<div class="block">Whether the push weighs the opponent's aim (DEISE-2): since 0.4 (arm FAP, E3a's AIM2 and P2),
+ 106,667 + 213,333 x its weight, so 320,000 from a likely shooter and 160,000 from the rest;
+ off, a flat 80,000.</div>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.Wave.html#aimed" class="member-name-link">aimed</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a></dt>
 <dd>
@@ -1151,7 +1162,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/mini/Deise.html#bots" class="member-name-link">bots</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/Deise.html" title="class in hadur117.mini">Deise</a></dt>
 <dd>
-<div class="block">Live opponents this round, {x, y, energy}.</div>
+<div class="block">Live opponents this round, {x, y, energy, weight}.</div>
 </dd>
 <dt><a href="hadur117/mini/DeiseLab.html#bots" class="member-name-link">bots</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/DeiseLab.html" title="class in hadur117.mini">DeiseLab</a></dt>
 <dd>&nbsp;</dd>
@@ -1485,6 +1496,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/MeleeMemory.html#CAP" class="member-name-link">CAP</a> - Static variable in class hadur117.core.<a href="hadur117/core/MeleeMemory.html" title="class in hadur117.core">MeleeMemory</a></dt>
 <dd>
 <div class="block">All melee blocks together take at most this many bytes.</div>
+</dd>
+<dt><a href="hadur117/mini/core/Gun.html#CAP" class="member-name-link">CAP</a> - Static variable in class hadur117.mini.core.<a href="hadur117/mini/core/Gun.html" title="class in hadur117.mini.core">Gun</a></dt>
+<dd>
+<div class="block">Whether power is capped at 1.9 plus one for every three opponents left (DEISE-10): off since 0.4 (arm FIT3F).</div>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#CAP_MAX_AGE" class="member-name-link">CAP_MAX_AGE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>
@@ -2409,7 +2424,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Deise (the Déise, Waterford's people), a MiniMelee entry: Saor's graded Markov gun, learning
  every robot it scans, over a least-risk movement that steps off the lines of the shots it sees
- fired (docs/deise.md).</div>
+ fired and keeps furthest from the robots likely aiming at it (docs/deise.md).</div>
 </dd>
 <dt><a href="hadur117/mini/Deise.html#%3Cinit%3E()" class="member-name-link">Deise()</a> - Constructor for class hadur117.mini.<a href="hadur117/mini/Deise.html" title="class in hadur117.mini">Deise</a></dt>
 <dd>&nbsp;</dd>
@@ -10038,7 +10053,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/mini/core/Gun.html#power(double,double,double,int)" class="member-name-link">power(double, double, double, int)</a> - Static method in class hadur117.mini.core.<a href="hadur117/mini/core/Gun.html" title="class in hadur117.mini.core">Gun</a></dt>
 <dd>
 <div class="block">Bullet power (DEISE-10): Saor's range power, log10(energy) * 325 / distance, capped at 1.9
- plus one for every three opponents left, at what kills the target, and within Robocode's 0.1
+ plus one for every three opponents left (with <a href="hadur117/mini/core/Gun.html#CAP"><code>Gun.CAP</code></a>), at what kills the target (with
+ <a href="hadur117/mini/core/Gun.html#KILL"><code>Gun.KILL</code></a>), and within Robocode's 0.1
  to 3, so the speed the aim plays out is the speed the bullet flies.</div>
 </dd>
 <dt><a href="hadur117/core/policy/PowerPolicy.html#power(hadur117.core.policy.PowerPolicy.Reason,double,double)" class="member-name-link">power(PowerPolicy.Reason, double, double)</a> - Static method in class hadur117.core.policy.<a href="hadur117/core/policy/PowerPolicy.html" title="class in hadur117.core.policy">PowerPolicy</a></dt>

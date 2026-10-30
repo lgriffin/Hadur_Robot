@@ -114,37 +114,42 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Aim bins over the circle.</div>
 </div>
-<div class="col-first odd-row-color"><code>static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#FIELD" class="member-name-link">FIELD</a></code></div>
+<div class="col-first odd-row-color"><code>static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#CAP" class="member-name-link">CAP</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Whether power is capped at 1.9 plus one for every three opponents left (DEISE-10): off since 0.4 (arm FIT3F).</div>
+</div>
+<div class="col-first even-row-color"><code>static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#FIELD" class="member-name-link">FIELD</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Battlefield size and the margin a robot's centre keeps from a wall.</div>
 </div>
-<div class="col-first even-row-color"><code>static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#KILL" class="member-name-link">KILL</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#KILL" class="member-name-link">KILL</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Whether power is capped at what kills the target (DEISE-10): off since 0.3 (arm WHPK +0.14).</div>
 </div>
-<div class="col-first odd-row-color"><code>static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#MARGIN" class="member-name-link">MARGIN</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#ROW" class="member-name-link">ROW</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first even-row-color"><code>static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#MARGIN" class="member-name-link">MARGIN</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#ROW" class="member-name-link">ROW</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Successors kept per state; a row's count is at index ROW.</div>
 </div>
-<div class="col-first odd-row-color"><code>static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#STATES" class="member-name-link">STATES</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#STATES" class="member-name-link">STATES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Packed states: acceleration 0-2, speed 0-16 shifted 2, turn 0-4 shifted 7.</div>
 </div>
-<div class="col-first even-row-color"><code>static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#WALLS" class="member-name-link">WALLS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#WALLS" class="member-name-link">WALLS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Whether a playout that leaves the field votes 1 (DEISE-8); false for arm T.</div>
 </div>
-<div class="col-first odd-row-color"><code>static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#WARM" class="member-name-link">WARM</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#WARM" class="member-name-link">WARM</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">A row with fewer samples than this votes less (DEISE-8).</div>
 </div>
 </div>
@@ -192,7 +197,8 @@ loadScripts(document, 'script');</script>
  int&nbsp;others)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Bullet power (DEISE-10): Saor's range power, log10(energy) * 325 / distance, capped at 1.9
- plus one for every three opponents left, at what kills the target, and within Robocode's 0.1
+ plus one for every three opponents left (with <a href="#CAP"><code>CAP</code></a>), at what kills the target (with
+ <a href="#KILL"><code>KILL</code></a>), and within Robocode's 0.1
  to 3, so the speed the aim plays out is the speed the bullet flies.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
@@ -329,6 +335,21 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="CAP">
+<h3>CAP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">CAP</span></div>
+<div class="block">Whether power is capped at 1.9 plus one for every three opponents left (DEISE-10): off since 0.4 (arm FIT3F).</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.mini.core.Gun.CAP">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="KILL">
 <h3>KILL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">KILL</span></div>
@@ -407,7 +428,8 @@ loadScripts(document, 'script');</script>
  double&nbsp;distance,
  int&nbsp;others)</span></div>
 <div class="block">Bullet power (DEISE-10): Saor's range power, log10(energy) * 325 / distance, capped at 1.9
- plus one for every three opponents left, at what kills the target, and within Robocode's 0.1
+ plus one for every three opponents left (with <a href="#CAP"><code>CAP</code></a>), at what kills the target (with
+ <a href="#KILL"><code>KILL</code></a>), and within Robocode's 0.1
  to 3, so the speed the aim plays out is the speed the bullet flies.</div>
 </section>
 </li>
