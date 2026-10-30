@@ -6,7 +6,7 @@
 # needed (WL -2.23, WA -0.43 against D) and the hit correction safe to drop (WB +0.48 to W's +0.59),
 # with the across term and the hold better gone (WPN +0.83). Deise 0.3 is that build fitted into
 # one class (FIT3, 1,494 B); D is now 0.3. 0.2 read 0.73 over SAOR by field in pc-deise-e03.
-D | Deise 0.3 (the core-driven DeiseLab, which the shipped 1,494-byte class matches order for order) | |
+D | Deise as master builds it (the core-driven DeiseLab, which the shipped class matches order for order): 0.4 since pc-deise-e07 | |
 MIR | kc.mini.Mirage 0.2 in the seat (1st, 71.20 live) | @kc.mini.Mirage 0.2
 SAOR | hadur117.micro.Saor 0.2 in the seat (68.79 live in MiniMelee): the control | @hadur117.micro.Saor 0.2
 FIT3F | Deise 0.3 without the field cap on power; 1,480 B flat class | =deise-arms/e2/FIT3F.java
@@ -30,3 +30,12 @@ FAP | FA with every push doubled (P2) | =deise-arms/e3/FAP.java
 FAW | FA with a stray wave and push weighing 0.1 (W10) | =deise-arms/e3/FAW.java
 FAPW | FA with both P2 and W10 | =deise-arms/e3/FAPW.java
 PW | FIT3F with P2 and W10, no aim push (1,480 B flat class) | =deise-arms/e3/PW.java
+# Stage E4 (pc-deise-e07): tuning 0.4's crowd terms. pc-deise-e06 (PR #443) shipped FAP as 0.4
+# (+0.39 over 0.3), with every stack within noise and Mirage still about 0.85 ahead on the bench.
+# 0.4 is at 1,499 bytes, so each arm changes constants only and costs no bytes if it wins. D is 0.4.
+P3 | every push 1.5 times 0.4's: 160,000 + 320,000 x weight | Move.java | s/106667 + 213333 \* bot\[AIM\]/160000 + 320000 * bot[AIM]/
+P075 | every push 0.75 times 0.4's: 80,000 + 160,000 x weight | Move.java | s/106667 + 213333 \* bot\[AIM\]/80000 + 160000 * bot[AIM]/
+SHARP | a likely shooter's push as 0.4's (320,000), a stray one's 120,000, not 160,000 | Move.java | s/106667 + 213333 \* bot\[AIM\]/53333 + 266667 * bot[AIM]/
+WV2 | the seen-shot waves count double against the push | Move.java | s/WAVES = 1;/WAVES = 2;/
+WV05 | the seen-shot waves count half | Move.java | s/WAVES = 1;/WAVES = 0.5;/
+RS | the ring reaches 0.35 of the target's distance, up to 120 px, not 0.45 and 160 | Move.java | s/Math.min(160, targetDistance \* 0.45)/Math.min(120, targetDistance * 0.35)/

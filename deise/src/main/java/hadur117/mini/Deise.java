@@ -10,14 +10,15 @@ import robocode.util.Utils;
 /**
  * Deise (the Déise, Waterford's people), a MiniMelee entry: Saor's graded Markov gun, learning
  * every robot it scans, over a least-risk movement that steps off the lines of the shots it sees
- * fired (docs/deise.md).
+ * fired and keeps furthest from the robots likely aiming at it (docs/deise.md).
  *
  * <p>This is the class that ships: the core ({@code hadur117.mini.core}) flattened by hand into
  * one class to fit MiniMelee's 1,499 bytes, as Saor is. {@code DeiseEquivalenceTest} drives it
  * and the bench adapter {@link DeiseLab}, which calls the core, with the same events and
- * requires the same orders (DEISE-16). 0.3 is stage E2's FIT3: 0.2 with the seen-shot waves and
- * 200 playouts, without the across term, the hold, the corners, the kill cap and the hit
- * correction, its push flat (docs/deise.md section 8).</p>
+ * requires the same orders (DEISE-16). 0.4 is stage E3b's FAP: 0.3 without the field cap on
+ * power, the test of whether an opponent likely aims at Deise made at every scan and kept as its
+ * weight (1, or 0.25 when another robot is nearer it), which weighs its waves and its push,
+ * 106,667 + 213,333 x weight (docs/deise.md section 8).</p>
  */
 public class Deise extends AdvancedRobot {
 
@@ -30,7 +31,7 @@ public class Deise extends AdvancedRobot {
     static double[][] last = new double[17][4];
     static int[] ids = new int[1 << 18];
     static int seen;
-    /** Live opponents this round, {x, y, energy}. */
+    /** Live opponents this round, {x, y, energy, weight}. */
     static double[][] bots;
     static double[][] waves;
     static int wave;
@@ -65,7 +66,7 @@ public class Deise extends AdvancedRobot {
                     r = 0;
                     for (double[] bot : bots) {
                         if (bot != null) {
-                            r += 80000 / Point2D.distanceSq(px, py, bot[0], bot[1]);
+                            r += (106667 + 213333 * bot[3]) / Point2D.distanceSq(px, py, bot[0], bot[1]);
                         }
                     }
                     for (double[] w : waves) {
@@ -114,24 +115,25 @@ public class Deise extends AdvancedRobot {
         dt = t - (l = last[id = ids[code]])[0];
         table = markov[id];
         double[] old = bots[id];
-        bots[id] = new double[] {
+        double[] me = bots[id] = new double[] {
             x = (mx = getX()) + Math.sin(bearing = getHeadingRadians() + e.getBearingRadians()) * (distance = e.getDistance()),
             y = (my = getY()) + Math.cos(bearing) * distance,
-            en};
+            en, 1};
+        // Weighed 0.25 when another robot is nearer the shooter than we are (DEISE-3, DEISE-5): its
+        // push and its waves.
+        for (double[] other : bots) {
+            if (other != null && Point2D.distanceSq(x, y, other[0], other[1]) < 0.81 * distance * distance && other != me) {
+                me[3] = 0.25;
+            }
+        }
         // A drop of 0.1 to 3 is a shot: a wave at us, fired halfway back to the last scan, weighed
         // 0.25 when another robot is nearer the shooter than we are (DEISE-5).
         if (old != null && (gap = old[2] - en) > 0.09 && gap < 3.01) {
-            double h = 1;
-            for (double[] other : bots) {
-                if (other != null && Point2D.distanceSq(x, y, other[0], other[1]) < 0.81 * distance * distance && other != bots[id]) {
-                    h = 0.25;
-                }
-            }
             double speed;
             double head;
             waves[wave++ & 63] = new double[] {x, y, t - Math.min(dt, 8) / 2, speed = 20 - 3 * gap,
                 head = bearing + Math.PI,
-                head + Math.asin(getVelocity() * Math.sin(e.getBearingRadians()) / speed), h};
+                head + Math.asin(getVelocity() * Math.sin(e.getBearingRadians()) / speed), me[3]};
         }
         // Every robot scanned is learned, its turn spread over a gap of up to 8 ticks (DEISE-6).
         lastVelocity = velocity = e.getVelocity();
@@ -159,8 +161,8 @@ public class Deise extends AdvancedRobot {
             if (getGunHeat() < 1) {
                 setTurnRadarRightRadians(Double.POSITIVE_INFINITY * Math.sin(bearing - getRadarHeadingRadians()));
             }
-            // Range power, capped by the field (DEISE-10).
-            double power = Math.max(0.1, Math.min(Math.min(3, getOthers() / 3 + 1.9),
+            // Range power, within 0.1 to 3 (DEISE-10).
+            double power = Math.max(0.1, Math.min(3,
                 Math.log10(getEnergy()) * 325 / distance));
             if (getGunTurnRemaining() == 0 && getEnergy() > power) {
                 setFire(power);

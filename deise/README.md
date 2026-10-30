@@ -2,7 +2,7 @@
 
 `hadur117.mini.Deise` is Hadur's MiniMelee robot, built to take MiniMelee 1st from
 kc.mini.Mirage 0.2: Saor's graded Markov gun, learning every robot it scans, over a least-risk
-movement that steps off the lines of the shots it sees fired (since 0.3). The design, the Mirage analysis and
+movement that steps off the lines of the shots it sees fired (since 0.3) and keeps furthest from the robots likely aiming at it (since 0.4). The design, the Mirage analysis and
 the stages are in [docs/deise.md](../docs/deise.md); the requirements are DEISE-1 to DEISE-16 in
 [docs/requirements.md](../docs/requirements.md).
 
@@ -44,6 +44,13 @@ crowd-survival arms ([docs/deise.md](../docs/deise.md)). Each pairing has only a
 battles, so single pairings are too noisy to read (Mirage 48.8, Saor 53.8, Figment 55.3).
 In the full MeleeRumble it is 15th, one place above 0.2. The pages are archived in
 `data/rumble/pages/` under 2026-10-28T2322Z* and 2026-10-28T2323Z*.
+
+**Deise 0.4** (released 2026-10-30) is stage E3b's FAP, still one class at 1,499 bytes. It
+tests at every scan whether each opponent is likely aiming at it, and that weight now scales
+the opponent's push as well as its waves: a likely shooter pushes twice as hard as one aiming
+elsewhere, and every push is stronger against the waves. The field cap on power is gone. On the
+bench (`pc-deise-e06`, PR #443) it reads +0.39 ± 0.22 over 0.3, and Mirage's lead there falls from
+1.21 to about 0.85.
 
 0.2 is MiniMelee sized: one class, 1,490 bytes of 1,499, the core flattened by hand and held to it
 order for order (DEISE-16). 0.1 went out unfitted at 2,303 bytes by mistake and is not listed.

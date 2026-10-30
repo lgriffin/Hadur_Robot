@@ -393,6 +393,40 @@ With D, MIR and SAOR, on fresh seeds (from 3600), it runs about 2.3 h. The best 
 +0.30 or more over D, with the low end above 0, becomes 0.4: the core and DeiseLab are matched to it
 (DEISE-16), and it ships on Leigh's go.
 
+### E3b's result (pc-deise-e06, PR #443): Deise 0.4
+
+D 70.70 ± 0.16, MIR 71.99, SAOR 69.11. Against D, field by field (46 fields, 276 battles a seat):
+
+| Arm | Census APS | vs D |
+|---|---|---|
+| D (0.3) | 70.70 | 0 |
+| FA | 71.11 | +0.29 ± 0.23 |
+| **FAP** | **71.14** | **+0.39 ± 0.22** |
+| FAW | 71.02 | +0.27 ± 0.22 |
+| FAPW | 71.11 | +0.31 ± 0.22 |
+| PW | 71.05 | +0.33 ± 0.22 |
+| MIR | 71.99 | +1.21 ± 0.22 |
+
+FAP passes the gate (+0.39, low end +0.17) and is Deise 0.4. Every stack reads within noise of
+the others: the fitted AIM2 alone holds most of E3a's +0.42, a doubled push adds a little, and the
+lighter stray wave (W10) adds nothing once the push weighs aim. FIT3F's dropped field cap rides in
+all of them. On the bench, Mirage's lead falls from 1.21 to about 0.85. Every seat ran 276 of 276,
+with 0 failed and at most 0.4 skipped turns a battle.
+
+0.4 ships FAP as the class (1,499 bytes); the core takes `Move.AIM_PUSH` (106,667 + 213,333 x
+weight, the weight set at every scan) and `Gun.CAP` off, and DeiseLab sets each opponent's weight
+at every scan, so the shipped class and the adapter give the same orders (DEISE-16). E3a's
+`AIM2` and `P2` sed lines no longer apply to the core, which has both.
+
+### Stage E4: tuning 0.4's crowd terms (card pc-deise-e07)
+
+0.4 is at 1,499 bytes, so E4 tunes constants, which cost nothing to ship. Each arm is one sed on
+DeiseLab over the core (D is 0.4): the push 1.5 times (P3) and 0.75 times (P075) 0.4's, a sharper
+split between a likely shooter's push and a stray one's (SHARP: 320,000 and 120,000), the waves
+counted double (WV2) or half (WV05), and a shorter ring (RS: 0.35 of the target's distance, up to
+120 px, since REACH's longer one lost). With SAOR, on fresh seeds (from 3700), about 2.3 h. An arm
+at +0.30 or more over D, low end above 0, ships as 0.4.1 on Leigh's go.
+
 ## 9. Uniqueness
 
 Leigh's rule for Saor holds here: inspired by others, never a copy. Deise's gun is Saor's own

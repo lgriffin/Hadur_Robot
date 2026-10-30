@@ -24,6 +24,8 @@ public final class Gun {
     public static final double MARGIN = 18;
     /** Whether a playout that leaves the field votes 1 (DEISE-8); false for arm T. */
     public static final boolean WALLS = true;
+    /** Whether power is capped at 1.9 plus one for every three opponents left (DEISE-10): off since 0.4 (arm FIT3F). */
+    public static final boolean CAP = false;
     /** Whether power is capped at what kills the target (DEISE-10): off since 0.3 (arm WHPK +0.14). */
     public static final boolean KILL = false;
 
@@ -99,11 +101,12 @@ public final class Gun {
 
     /**
      * Bullet power (DEISE-10): Saor's range power, log10(energy) * 325 / distance, capped at 1.9
-     * plus one for every three opponents left, at what kills the target, and within Robocode's 0.1
+     * plus one for every three opponents left (with {@link #CAP}), at what kills the target (with
+     * {@link #KILL}), and within Robocode's 0.1
      * to 3, so the speed the aim plays out is the speed the bullet flies.
      */
     public static double power(double energy, double targetEnergy, double distance, int others) {
-        return Math.max(0.1, Math.min(Math.min(Math.min(3, others / 3 + 1.9), Math.log10(energy) * 325 / distance),
+        return Math.max(0.1, Math.min(Math.min(CAP ? Math.min(3, others / 3 + 1.9) : 3, Math.log10(energy) * 325 / distance),
             !KILL ? 3 : targetEnergy > 4 ? (targetEnergy + 2) / 6 : targetEnergy / 4));
     }
 }
