@@ -25,3 +25,6 @@
 03:50:55 start live-A
 03:50:55 watching live-A: 3 stop rule(s)
 03:54:40 progress live-A: 60/430 (14%) battles, 960/h, ETA 23 min, 0 failed, skips 0.0/battle (last 100)
+04:18:32 live-A exit=0 in 1656 s
+04:18:32 start live-EN
+04:18:32 watching live-EN: 3 stop rule(s)
