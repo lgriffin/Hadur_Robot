@@ -1,6 +1,6 @@
 # Queue pc-team-dodge2: progress
 
-Updated 2026-10-30 09:03:17 PC time (09:03 UTC), runner pid 85768.
+Updated 2026-10-30 09:18:24 PC time (09:18 UTC), runner pid 85768.
 
 - `d2prep` done, exit 0 in 3 min
 - `d2bb` done, exit 0 in 1.6 h
@@ -38,16 +38,16 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### d2df
 
-**350 of 1472 battles** (24%), 0 failed. Running 31 min, 669 battles/h, about 1.7 h left (ends ~10:43 PC time). Last battle 0 min ago.
-Skipped turns a battle: 10.6 overall, first 100 10.1, last 100 10.1.
+**562 of 1472 battles** (38%), 0 failed. Running 47 min, 725 battles/h, about 1.3 h left (ends ~10:33 PC time). Last battle 0 min ago.
+Skipped turns a battle: 10.8 overall, first 100 10.1, last 100 12.6.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 350 |
+| `fails 20` | halt | ok | 0 failed of 562 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 10.1 a battle over the last 100 (first 100: 10.1) |
+| `skips 40 over 100` | halt | ok | 12.6 a battle over the last 100 (first 100: 10.1) |
 
-Stopping now would leave 1122 battles unrun (about 1.7 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 910 battles unrun (about 1.3 h); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
