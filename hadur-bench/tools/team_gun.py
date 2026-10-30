@@ -1,6 +1,6 @@
-"""Our team gun against theirs, read the same way from the same battles (BENCH-147).
+"""Our team gun against theirs, read the same way from the same battles (BENCH-148).
 
-Needs bullets.log from TeamHarvester with BENCH-147's 11th field (the living enemies at each of our
+Needs bullets.log from TeamHarvester with BENCH-148's 11th field (the living enemies at each of our
 shots). Usage:
     python3 tools/team_gun.py [--ours PREFIX] work/RUN [work/RUN2 ...]
 
@@ -136,7 +136,7 @@ def report(roots, ours=OURS):
                     if hit:
                         s['gf'][max(-1.0, min(1.0, round(gf * 5) / 5))] += 1
     if not stats:
-        sys.exit('team_gun.py: no bullets with positions under ' + ', '.join(roots) + ' (needs BENCH-147 logs)')
+        sys.exit('team_gun.py: no bullets with positions under ' + ', '.join(roots) + ' (needs BENCH-148 logs)')
     out = ['# Our team gun against theirs', '', 'Runs: ' + ', '.join(roots), '']
 
     def rate(s, k, i):

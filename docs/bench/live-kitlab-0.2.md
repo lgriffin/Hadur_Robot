@@ -28,6 +28,11 @@ FoilistMC, JayLexi 0.1 and Komarious files, in that order, prints the groups bel
   below average hundreds of rows and are what to trust; the standard error on the biggest group is
   about 0.3.
 
+**Settled, 2026-10-30 19:50 UTC.** After other clients ran it, 0.2 is **5th of 671 with 87.34** on
+1,965 battles. That puts it level with WeeksOnEnd (87.34) and 0.10 behind Komarious (87.44), and
+FoilistMC leads on 89.01, so the gap to 1st is 1.67. Leigh saved the pages, which are in
+`data/rumble/pages/` under `2026-10-30T1950Z_*`.
+
 ## Where the 1.57 goes
 
 The opponents split by how well FoilistMC survives against them. "Share" is the group's part of the

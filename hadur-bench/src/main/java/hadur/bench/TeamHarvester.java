@@ -40,7 +40,7 @@ import robocode.control.snapshot.ITurnSnapshot;
  *     {@code round,turn,F,id,owner,power,x,y,heading,members} when the engine first shows it
  *     (for an enemy bullet, {@code members} lists each living member of ours as
  *     {@code name:x:y:heading:velocity}, ';'-separated; {@code -} for ours, which add an 11th
- *     field listing the living enemies the same way, BENCH-147) and
+ *     field listing the living enemies the same way, BENCH-148) and
  *     {@code round,turn,H,id,owner,victim,power} when it hits a robot, so the shots members
  *     infer from energy drops can be matched to the engine's truth.</li>
  * </ul>
@@ -255,7 +255,7 @@ public class TeamHarvester extends BattleAdaptor {
                         r.getBodyHeading(), r.getVelocity()));
                 }
             }
-            // BENCH-147: for our bullet, the living enemies the same way, as an 11th field, so our
+            // BENCH-148: for our bullet, the living enemies the same way, as an 11th field, so our
             // aim can be read as theirs is (tools/team_gun.py); field 10 stays "-" for older readers.
             StringBuilder enemies = new StringBuilder();
             if (o >= 0 && o < robots.length && robots[o].getTeamIndex() == ourTeam) {
