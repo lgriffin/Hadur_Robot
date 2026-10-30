@@ -46,3 +46,12 @@ RS | the ring reaches 0.35 of the target's distance, up to 120 px, not 0.45 and 
 # lighter power at full health. Deise's target is the nearest robot, so its distance stands in for
 # "anyone within 325". Unlike the other E4 arms it adds code (about 10 bytes), so a winner needs a cut.
 SCAL | ScalarR-shaped energy cap: range power capped at energy / 6, energy / 15 with the target beyond 325 px | Gun.java | s/Math.log10(energy) \* 325 \/ distance)/Math.min(Math.log10(energy) * 325 \/ distance, energy \/ (distance > 325 ? 15 : 6)))/
+# Stage E5 (pc-deise-e08): harder power at range. pc-deise-e07 (PR #469) passed no arm: 0.4's crowd
+# constants sit at an optimum, and CONS (lighter power, -0.37) lost. ScalarR fires about 1300 / d at
+# full energy (PR #459), about twice Deise's log10(energy) x 325 / d (650 / d at 100 energy). These
+# arms walk the coefficient up; constants only, no bytes, except the SCAL-capped pair.
+H500 | range power log10(energy) x 500 / distance, not 325 (1.5 times) | Gun.java | s/Math.log10(energy) \* 325 \/ distance/Math.log10(energy) * 500 \/ distance/
+H650 | range power log10(energy) x 650 / distance (twice 0.4's; 1300 / d at full energy) | Gun.java | s/Math.log10(energy) \* 325 \/ distance/Math.log10(energy) * 650 \/ distance/
+H900 | range power log10(energy) x 900 / distance (power 3 out to 600 px at full energy) | Gun.java | s/Math.log10(energy) \* 325 \/ distance/Math.log10(energy) * 900 \/ distance/
+HS650 | H650 with SCAL's energy cap (energy / 6, energy / 15 with the target beyond 325 px) | Gun.java | s/Math.log10(energy) \* 325 \/ distance)/Math.min(Math.log10(energy) * 650 \/ distance, energy \/ (distance > 325 ? 15 : 6)))/
+SR | measured only, to learn its worth: 1300 / distance with no energy term, under SCAL's cap | Gun.java | s/Math.log10(energy) \* 325 \/ distance)/Math.min(1300 \/ distance, energy \/ (distance > 325 ? 15 : 6)))/

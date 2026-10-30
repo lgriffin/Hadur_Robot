@@ -439,6 +439,20 @@ energy does (CONS lowers it at every energy). SCAL adds about 10 bytes, so a win
 With SAOR, on fresh seeds (from 3700), 9 seats, about 2.6 h. An arm
 at +0.30 or more over D, low end above 0, ships as 0.4.1 on Leigh's go.
 
+E4's result (PR #469, 2026-10-30): no arm passes. D read 71.28 ± 0.16; against it RS +0.02,
+P3 -0.05, SCAL -0.08, P075 -0.09, SHARP -0.13, WV2 -0.29 ± 0.22 and CONS -0.37 ± 0.23, all seats
+276 of 276 battles clean. 0.4's push, wave and ring constants sit at an optimum. Lighter power
+loses, which fits the decompile: ScalarR fires harder at full energy, not softer.
+
+### Stage E5: harder power at range (card pc-deise-e08)
+
+ScalarR fires about 1300 / d at full energy, about twice Deise's log10(energy) x 325 / d (650 / d
+at 100 energy). E5 walks the coefficient up: H500 (1.5 times), H650 (twice), H900 (power 3 out to
+600 px at full energy), HS650 (H650 under SCAL's energy cap) and SR (1300 / d with no energy term,
+under the cap; measured only, to learn its worth). With D and SAOR, fresh seeds from 3800, 7 seats,
+about 2 h. H500, H650 and H900 change one constant and ship at no cost in bytes; the capped pair
+add about 10. An arm at +0.30 or more over D, low end above 0, ships as 0.4.1 on Leigh's go.
+
 ## 9. Uniqueness
 
 Leigh's rule for Saor holds here: inspired by others, never a copy. Deise's gun is Saor's own
