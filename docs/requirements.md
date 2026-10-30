@@ -1602,6 +1602,7 @@ gun as it was (docs/bench/melee-gun-3.13.md).
 | MGUN-18 | Optional | Where the `HIT_TARGET` switch is on, while in melee off a team, the field gun shall multiply an opponent's weight by 5 (h + 1) / (n + 5), with h the decayed virtual hits of the aim the gun fires at it (MGUN-17's pick when that applies, else the field gun's own) and n its decayed waves, and by 1 before any wave has reached it. | M7 |
 | MGUN-19 | Optional | Where the `FLAT_DISTANCE` switch is on, while in melee off a team, the field gun's distance weight shall be (100 / max(50, d))^0.7 in place of 100 / max(50, d). | M7 |
 | MGUN-20 | Optional | Where the `SOFT_MATCH` switch is on, while in melee off a team, the field gun shall weight each of an opponent's situations by 1 / (its distance + the mean distance of the situations chosen), in place of 1 / (0.01 + its distance). | M7 |
+| MGUN-21 | Optional | Where the `DECAP` switch is on, while on a team, the field gun shall multiply by 3 the weight of the enemy first seen that round above 150 energy (the enemy team's leader) while its energy is no more than the sum, over its living teammates, of the lesser of 30 and each one's energy. | T7 |
 
 - **MGUN-7.** `FieldGun.MELEE_K` (12) beside `FieldGun.K` (3), chosen by `FieldGun.k()` from
   `onTeam`. More situations spread each opponent over the angles it is likely to reach, so the

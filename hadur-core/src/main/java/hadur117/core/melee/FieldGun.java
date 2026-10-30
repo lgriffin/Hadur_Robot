@@ -77,6 +77,19 @@ public class FieldGun {
      */
     public static final boolean SOFT_MATCH = false;
 
+    /**
+     * MGUN-21: on a team, the enemy leader (Robocode starts a team's leader with 200 energy,
+     * every other member with 100 and a droid with 120) weighs {@link #DECAP_BOOST} times more
+     * once killing it pays: its energy is no more than the 30 its death drains from each living
+     * teammate of its, summed over them (each capped at its own energy).
+     */
+    public static final boolean DECAP = false;
+    static final double DECAP_BOOST = 3.0;
+    /** MGUN-21: a robot first seen in a round above this energy is its team's leader. */
+    static final double LEADER_SEEN = 150;
+    /** MGUN-21: what a leader's death drains from each living teammate. */
+    static final double LEADER_DRAIN = 30;
+
     /** MGUN-17: the aims a wave scores; FIELD is the field gun's own. */
     public static final int FIELD = 0, HEAD_ON = 1, LINEAR = 2, CIRCULAR = 3, EXPERT_COUNT = 4;
     /** MGUN-17: waves an opponent needs before a simple aim can take it. */
@@ -125,6 +138,8 @@ public class FieldGun {
     private boolean onTeam;
     /** MGUN-17: each opponent's decayed hits per aim, then its decayed wave count last. */
     private final Map<String, double[]> expertScores = new LinkedHashMap<>();
+    /** MGUN-21: each robot's energy when first seen this round. */
+    private final Map<String, Double> firstEnergy = new LinkedHashMap<>();
     /** MGUN-17: true while a wave reads the field gun's own aim, which the experts must not steer. */
     private boolean pure;
 
@@ -135,6 +150,7 @@ public class FieldGun {
 
     /** Ends the round's logs; the situations learned stay for the battle. */
     public void newRound() {
+        firstEnergy.clear();
         for (EnemyHistory h : histories.values()) h.newRound();
     }
 
@@ -289,11 +305,26 @@ public class FieldGun {
         double w = 100.0 / Math.max(50.0, e.distance(me));
         if (FLAT_DISTANCE && !onTeam) w = Math.pow(w, 0.7);
         if (HIT_TARGET && !onTeam) w *= hitFactor(e.name);
+        if (DECAP && onTeam && decapitates(e, alive)) w *= DECAP_BOOST;
         w *= 1 + 0.5 * (100 - Math.min(100, e.energy)) / 100.0;
         if (e.energy <= MeleeEnergyPolicy.FINISHER_ENERGY) w *= FINISHER_BOOST;
         if (isolated(e, alive)) w *= ISOLATED_BOOST;
         if (e.hitsOnHadur(now, SHOOTER_WINDOW) >= 2) w *= SHOOTER_BOOST;
         return w;
+    }
+
+    /**
+     * MGUN-21: whether {@code e} is the enemy leader and killing it now pays: its energy is no
+     * more than what its death drains from its living teammates.
+     */
+    boolean decapitates(EnemyInfo e, List<EnemyInfo> alive) {
+        for (EnemyInfo o : alive) firstEnergy.putIfAbsent(o.name, o.energy);
+        if (firstEnergy.getOrDefault(e.name, 0.0) <= LEADER_SEEN) return false;
+        double drain = 0;
+        for (EnemyInfo o : alive) {
+            if (o != e) drain += Math.min(LEADER_DRAIN, Math.max(0, o.energy));
+        }
+        return e.energy <= drain;
     }
 
     private boolean expertsOn() {
