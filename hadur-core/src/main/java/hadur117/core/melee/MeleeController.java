@@ -203,8 +203,8 @@ public class MeleeController {
     /**
      * MMOVE-19: logs {@code victim}'s scan and, when it shows a loss to someone other than Hadur,
      * learns the aim of the one other opponent's shot that explains it: the shot whose damage the
-     * loss matches and whose wave reached the victim between its last two scans, the nearest such
-     * if several. The aim is the heading from the shot's source to where the victim is now.
+     * loss matches and whose wave reached the victim between its last two scans; with two or more
+     * such shots it learns nothing. The aim is the heading from the shot's source to where the victim is now.
      */
     void crossHit(EnemyInfo victim, long now) {
         RobotStateLog path = paths.computeIfAbsent(victim.name, k -> new RobotStateLog());
@@ -214,7 +214,6 @@ public class MeleeController {
         if (loss <= 0) return;
         long since = victim.previousScanTime() < 0 ? 1 : Math.max(1, now - victim.previousScanTime());
         EnemyShot best = null;
-        double bestErr = Double.POSITIVE_INFINITY;
         for (EnemyShot shot : tracker.shots(now)) {
             if (shot.shooter.equals(victim.name)) continue;
             if (Math.abs(Rules.getBulletDamage(shot.power) - loss) > CROSS_SLACK) continue;
@@ -222,11 +221,9 @@ public class MeleeController {
             double slack = LEARN_SLACK + shot.window * shot.speed();
             double far = shot.travelled(now), near = far - (since - 1) * shot.speed();
             if (d > far + slack || d < near - slack) continue;
-            double err = Math.abs(d - (far + near) / 2);
-            if (err < bestErr) {
-                bestErr = err;
-                best = shot;
-            }
+            // Two shots that could both explain the loss teach nothing: either may be wrong.
+            if (best != null) return;
+            best = shot;
         }
         if (best == null) return;
         RobotState at = path.getState(best.fireTime);
