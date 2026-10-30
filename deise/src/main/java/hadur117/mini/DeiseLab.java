@@ -106,7 +106,7 @@ public class DeiseLab extends AdvancedRobot {
         double[] last = LAST[id];
         char[][] table = TABLES[id] == null ? (TABLES[id] = new char[Gun.STATES][Gun.ROW + 1]) : TABLES[id];
         if (bot == null) {
-            bot = bots[id] = new double[] {x, y, BASE[id] = e.getEnergy()};
+            bot = bots[id] = new double[] {x, y, BASE[id] = e.getEnergy(), 1};
         }
         // A drop of 0.1 to 3 is a shot: a wave at us, weighed by whether it likely aims at us (DEISE-5).
         double drop = BASE[id] - e.getEnergy();
@@ -114,9 +114,11 @@ public class DeiseLab extends AdvancedRobot {
         bot[Move.X] = x;
         bot[Move.Y] = y;
         bot[Move.ENERGY] = e.getEnergy();
+        // Whether it likely aims at us, at every scan: it weighs its push and its waves (DEISE-3, DEISE-5).
+        bot[Move.AIM] = Move.aimsAtUs(bot, distance, bots) ? 1 : 0.25;
         if (drop > 0.09 && drop < 3.01) {
             waves[wave++ & 63] = Move.wave(x, y, (time + Math.max(last[0], time - GAP)) / 2, drop, bearing,
-                getVelocity() * Math.sin(e.getBearingRadians()), !AIMED || Move.aimsAtUs(bot, distance, bots) ? 1 : 0.25);
+                getVelocity() * Math.sin(e.getBearingRadians()), AIMED ? bot[Move.AIM] : 1);
         }
         // Learn every robot scanned, one transition per scan, its turn spread over the gap (DEISE-6).
         double gap = time - last[0];

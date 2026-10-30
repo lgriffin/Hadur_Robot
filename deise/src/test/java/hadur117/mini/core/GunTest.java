@@ -110,10 +110,11 @@ class GunTest {
 
     @Test
     @Tag("DEISE-10")
-    @DisplayName("power: range power, the crowd cap, and no more than kills the target while the kill cap is on")
+    @DisplayName("power: range power, the crowd cap while it is on, and no more than kills the target while the kill cap is on")
     void power() {
         assertEquals(Math.log10(100) * 325 / 400, Gun.power(100, 100, 400, 9), 1e-9);
-        assertEquals(1.9, Gun.power(100, 100, 100, 2), 1e-9);
+        // Two opponents left: the crowd cap holds power to 1.9 while it is on; off since 0.4, Robocode's 3.
+        assertEquals(Gun.CAP ? 1.9 : 3, Gun.power(100, 100, 100, 2), 1e-9);
         if (Gun.KILL) {
             assertEquals(0.5, Gun.power(100, 2, 100, 9), 1e-9);
             assertEquals(2, Gun.power(100, 10, 100, 9), 1e-9);

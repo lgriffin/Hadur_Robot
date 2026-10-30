@@ -6,9 +6,9 @@ package hadur117.mini.core;
  * straight at or away from an opponent that is likely aiming at Deise, and the danger of the
  * waves it was seen to fire (weighed by {@link #WAVES}); with {@link #CORNERS}, while the field is
  * crowded, the distance to the nearest corner, so Deise holds Saor's corners early and comes out
- * of them as the field thins. Since 0.3 the across term and the corners are off and the push is
- * flat (docs/deise.md section 8). Pure: opponents are
- * rows {x, y, energy} (null when unseen or dead), waves rows {x, y, fire time, speed, head-on
+ * of them as the field thins. Since 0.3 the across term and the corners are off; since 0.4 the
+ * push weighs whether the opponent likely aims at Deise (docs/deise.md section 8). Pure: opponents are
+ * rows {x, y, energy, weight} (null when unseen or dead), waves rows {x, y, fire time, speed, head-on
  * angle, linear angle, weight} (null when free).
  */
 public final class Move {
@@ -17,6 +17,11 @@ public final class Move {
     public static final int X = 0;
     public static final int Y = 1;
     public static final int ENERGY = 2;
+    /**
+     * The opponent's weight, set at each scan: 1 when it likely aims at Deise, 0.25 when another
+     * robot is nearer it (DEISE-3, DEISE-5). It weighs its push and its waves.
+     */
+    public static final int AIM = 3;
     /** Wave row fields. */
     public static final int TIME = 2;
     public static final int SPEED = 3;
@@ -31,6 +36,12 @@ public final class Move {
     public static final boolean CORNERS = false;
     /** Whether the push grows with an opponent's energy (DEISE-2): flat since 0.3 (arm WF). */
     public static final boolean ENERGY_PUSH = false;
+    /**
+     * Whether the push weighs the opponent's aim (DEISE-2): since 0.4 (arm FAP, E3a's AIM2 and P2),
+     * 106,667 + 213,333 x its weight, so 320,000 from a likely shooter and 160,000 from the rest;
+     * off, a flat 80,000.
+     */
+    public static final boolean AIM_PUSH = true;
     /**
      * How much the seen-shot waves count (DEISE-5): 1 since 0.3 (E0 to E1b's arm W, +0.44 to +0.59);
      * 0 turns them off.
@@ -76,8 +87,9 @@ public final class Move {
         double r = 0;
         for (double[] bot : bots) {
             if (bot != null) {
-                // Away from every opponent, harder from strong ones (DEISE-2).
-                r += (ENERGY_PUSH ? 50000 + bot[ENERGY] * 500 : 80000) / sq(px - bot[X], py - bot[Y]);
+                // Away from every opponent, harder from one likely aiming at us (DEISE-2).
+                r += (ENERGY_PUSH ? 50000 + bot[ENERGY] * 500 : AIM_PUSH ? 106667 + 213333 * bot[AIM] : 80000)
+                    / sq(px - bot[X], py - bot[Y]);
                 // Across, not along, the line of an opponent likely aiming at us (DEISE-3).
                 if (ACROSS && aimsAtUs(bot, Math.sqrt(sq(bot[X] - myX, bot[Y] - myY)), bots)) {
                     r += Math.abs(Math.cos(Math.atan2(bot[X] - px, bot[Y] - py) - heading));
