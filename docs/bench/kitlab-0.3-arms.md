@@ -193,3 +193,30 @@ bytes (measured on the shipped build):
 - **Bundles hide which change is bad.** Each change has to be priced on its own on all three
   fields, like the cuts in rounds 5 to 7.
 - The shipped re-golf at 1,598 B is kept as `kitlab/arms/JayLexi-k3KEs.java`.
+
+### Round 9: each play change on its own, and k3KE run again
+
+Each arm is the shipped k-NN build (k3KEs, 1,598 B, the same play as k3KE bit for bit) with one
+change. Division mean and gap-field are against 0.2, as in every round.
+
+| Arm | Change | Bytes saved | gap-field | mini | mini2 | Division mean | vs k3KEs |
+|---|---|---|---|---|---|---|---|
+| **k3KEs** | **none: k3KE run again** | 0 | +0.69 ± 0.24 | +0.14 | +0.36 | **+0.25** | |
+| k3sgdist | no distance segment in the gun | 10 | +0.65 ± 0.27 | +0.24 | +0.54 | +0.39 | +0.14 |
+| k3shbb | no energy update when the enemy hits us | 15 | +0.51 ± 0.23 | +0.08 | +0.55 | +0.32 | +0.07 |
+| k3skeep | a wave that hit us passes on its own a tick later | 13 | +0.88 ± 0.29 | +0.05 | +0.38 | +0.21 | -0.04 |
+| k3scap | no energy/15 power cap | 11 | +0.45 ± 0.29 | +0.11 | +0.30 | +0.20 | -0.05 |
+| k3str | gun waves start at the gun | 9 | +0.45 ± 0.31 | -0.36 | +0.76 | +0.20 | -0.05 |
+| k3sfin | no finishing power cap | 14 | +0.77 ± 0.23 | +0.03 | +0.15 | +0.09 | -0.16 |
+| k3sdecel | the prediction brakes at 1 a tick | 19 | +0.21 ± 0.23 | -0.43 | +0.29 | -0.07 | -0.32 |
+| k3sradar | the radar lock trick | 7 | +0.37 ± 0.26 | -0.19 | -0.44 | -0.31 | -0.56 |
+
+- **k3KE's +0.52 read high.** The same play run again gives +0.25. It was the best of about twenty
+  arms, so some of its lead was luck. The two runs together put the k-NN surf at about +0.4 on the
+  division samples. The gap-field (+0.69) held in both runs.
+- Five changes cost nothing measurable (gdist, hbb, keep, cap, tr): 58 bytes, 1,598 to 1,540.
+  - The rest cost: the finishing cap 0.16 (14 B), braking 0.32 (19 B), the radar trick 0.56 (7 B).
+    Even all three would leave the build at 1,507 B, still 11 over, at a cost of about 1.0, more than
+    the k-NN surf is worth.
+- So the k-NN surf does not fit in a Mini with its gain intact. The changes that come free reach
+  1,540 B, 44 over the 1,496 target. No other cut priced in rounds 5 to 9 is free.
