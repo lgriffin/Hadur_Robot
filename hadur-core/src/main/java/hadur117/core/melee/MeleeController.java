@@ -506,6 +506,10 @@ public class MeleeController {
             || s.energy < MeleeEnergyPolicy.MIN_OWN_ENERGY
             || s.energy <= power + 0.1;
         c.firePower = hold ? 0 : power;
+        // MMOVE-20: a shot that leaves this tick is kept for the shadows it casts.
+        if (c.firePower > 0 && s.gunHeat == 0 && !onTeam && mover.bulletShading()) {
+            mover.ownShot(s.me, s.time, s.gunHeading, c.firePower);
+        }
         return c;
     }
 }

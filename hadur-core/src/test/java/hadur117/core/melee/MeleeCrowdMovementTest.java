@@ -305,4 +305,57 @@ class MeleeCrowdMovementTest {
         assertTrue(open > 0);
         assertEquals(0.0, MinimumRiskMovement.waveDamage(pt(500, 500), pt(500, 500), 20, waves, sh), 1e-9);
     }
+
+    @Test
+    @Tag("MMOVE-20")
+    @DisplayName("MMOVE-20: Hadur's own bullet shades the stretch of a wave from where it crosses it, outward")
+    void bulletShade() {
+        assertFalse(MinimumRiskMovement.MELEE_BULLET_SHADE);
+        assertFalse(move.bulletShading(), "off: no own bullets are kept");
+        // a at (500, 900) fires power 2 (14 px/tick) at tick 0; Hadur at (500, 500) fires power 3 (11 px/tick)
+        // straight back at it: the front (14t) meets the bullet (400 - 11t from a) at tick 16.
+        MinimumRiskMovement.Wave w = MinimumRiskMovement.Wave.of(List.of(new VirtualBullet(
+            new EnemyShot("a", pt(500, 900), 0, 2.0), VirtualBullet.Aim.HEAD_ON, Math.PI))).get(0);
+        VirtualBullet mine = new VirtualBullet(new EnemyShot("", pt(500, 500), 0, 3.0, 0), VirtualBullet.Aim.HEAD_ON, 0);
+        double[] sh = MinimumRiskMovement.bulletShadow(w, mine);
+        assertNotNull(sh);
+        assertEquals(Math.PI, Math.abs(sh[0]), 1e-9, "on the line from a to Hadur");
+        assertEquals(14 * 15, sh[2], 1e-9, "from the front's radius the tick before the crossing");
+        // A bullet fired across, from (300, 500) eastward, shades a wider stretch.
+        VirtualBullet across = new VirtualBullet(new EnemyShot("", pt(300, 520), 0, 3.0, 0), VirtualBullet.Aim.HEAD_ON, Math.PI / 2);
+        double[] wide = MinimumRiskMovement.bulletShadow(w, across);
+        assertNotNull(wide);
+        assertTrue(wide[1] > sh[1]);
+        List<double[][]> merged = MinimumRiskMovement.withBulletShadows(null, List.of(w), List.of(mine, across));
+        assertEquals(2, merged.get(0).length);
+        MinimumRiskMovement on = new MinimumRiskMovement(field(1000, 1000));
+        on.scalar2(true, false);
+        assertTrue(on.bulletShading());
+    }
+
+    @Test
+    @Tag("MMOVE-21")
+    @DisplayName("MMOVE-21: the surfer weighs five 140 px steps, two waves deep, when the switch is on")
+    void search() {
+        assertFalse(MinimumRiskMovement.MELEE_SEARCH);
+        scan(tracker, "a", 800, 500, 100, 1);
+        MinimumRiskMovement.View v = new MinimumRiskMovement.View(pt(500, 500), 100, 5, 1, tracker.alive(), List.of(), normal);
+        List<Point2D.Double> steps = move.steps(pt(500, 500), v);
+        assertEquals(5, steps.size());
+        for (Point2D.Double p : steps) assertEquals(MinimumRiskMovement.SEARCH_STEP, p.distance(500, 500), 1e-6);
+        assertTrue(steps.get(0).x < 500, "the first step is away from a");
+        // Near a wall the steps stay inside it.
+        for (Point2D.Double p : move.steps(pt(30, 30), v)) {
+            assertTrue(p.x >= MinimumRiskMovement.WALL_MARGIN && p.y >= MinimumRiskMovement.WALL_MARGIN);
+        }
+        assertEquals(1, MinimumRiskMovement.arrival(pt(0, 0), pt(0, 0)));
+        assertTrue(MinimumRiskMovement.arrival(pt(0, 0), pt(0, 140)) > 140 / 8);
+        // On, the surfer's pick is one of the steps; off, it is one of the candidates it was given.
+        MinimumRiskMovement on = new MinimumRiskMovement(field(1000, 1000));
+        on.newRound();
+        on.scalar2(false, true);
+        List<Point2D.Double> given = List.of(pt(200, 200), pt(800, 800));
+        assertTrue(on.steps(pt(500, 500), v).contains(on.surfBest(given, v)));
+        assertTrue(given.contains(move.surfBest(given, v)));
+    }
 }
