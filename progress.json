@@ -1,0 +1,28 @@
+{
+ "plan": "pc-team-dodge2",
+ "updated": 1793337389.5279634,
+ "steps": {
+  "d2prep": {
+   "status": "pending"
+  },
+  "d2bb": {
+   "status": "pending"
+  },
+  "d2dg": {
+   "status": "pending"
+  },
+  "d2df": {
+   "status": "pending"
+  },
+  "d2sdg": {
+   "status": "pending"
+  },
+  "d2sdf": {
+   "status": "pending"
+  },
+  "d2pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
