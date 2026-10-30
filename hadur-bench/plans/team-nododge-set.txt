@@ -1,0 +1,4 @@
+# pc-team-nododge (BENCH-144, docs/plan-team-top5.md section 17): the three teams where DODGE lost in pc-team-dodge2 (PR #450).
+ustimaw.NightmareTeam 3.3 | team-5 | ustimaw.NightmareTeam_3.3.jar
+mn.nano.perceptual.ImpactTeam 1.3.0 | team | mn.nano.perceptual.ImpactTeam_1.3.0.jar
+pedersen.ImWithStupidTeam 1.3 | team | pedersen.ImWithStupidTeam_1.3.jar
