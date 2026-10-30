@@ -1,6 +1,6 @@
 # Queue pc-census-320: progress
 
-Updated 2026-10-30 01:14:26 PC time (01:14 UTC), runner pid 87472.
+Updated 2026-10-30 01:14:28 PC time (01:14 UTC), runner pid 87472.
 
 - `prep` done, exit 0 in 2 min
 - `census` halted, exit 75 in 32 min, HALTED by skips 40 over 200: 40.9 a battle over the last 200 (first 200: 37.2)
@@ -44,4 +44,6 @@ Stopping now would leave 3294 battles unrun (about 5.0 h); every battle already 
 01:13:25 progress census: 331/3636 (9%) battles, 662/h, ETA 5.0 h, 0 failed, skips 40.7/battle (last 100), aa -0.48, km +0.50
 01:14:26 STOP census by rule skips 40 over 200: 40.9 a battle over the last 200 (first 200: 37.2); 342 battles fought and kept, 3294 battles left unrun (about 5.0 h)
 01:14:26 census exit=75 in 1920 s (halted, skips 40 over 200)
+01:14:28 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/444
+01:14:28 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 ```
