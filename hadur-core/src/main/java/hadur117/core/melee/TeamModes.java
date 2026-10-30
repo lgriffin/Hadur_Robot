@@ -152,6 +152,10 @@ public final class TeamModes {
         t.put("gh.nano.GrofGroupMember", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.LINEAR, Mode.PATH, Mode.DODGE));
         t.put("myl.micro.Troodon", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.PATH, Mode.DODGE));
         t.put("myl.micro.TroodonDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.PATH, Mode.DODGE));
+        // pc-team-nododge (PR #465), 24 fresh seeds: DODGE off, NightmareTeam +3.9 ± 3.2, ImpactTeam +3.1 ± 1.4.
+        t.put("ustimaw.Nightmare", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH));
+        t.put("ustimaw.NigitmareDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH));
+        t.put("mn.nano.perceptual.Impact", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH));
         return Collections.unmodifiableMap(t);
     }
 
