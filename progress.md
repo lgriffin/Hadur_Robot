@@ -1,11 +1,11 @@
 # Queue pc-team-dodge2: progress
 
-Updated 2026-10-30 08:17:55 PC time (08:17 UTC), runner pid 85768.
+Updated 2026-10-30 08:33:02 PC time (08:33 UTC), runner pid 85768.
 
 - `d2prep` done, exit 0 in 3 min
 - `d2bb` done, exit 0 in 1.6 h
-- `d2dg` running
-- `d2df` pending
+- `d2dg` done, exit 0 in 1.6 h
+- `d2df` running
 - `d2sdg` pending
 - `d2sdf` pending
 - `d2pr` pending
@@ -25,24 +25,32 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### d2dg
 
-**1197 of 1472 battles** (81%), 0 failed. Running 1.4 h, 861 battles/h, about 19 min left (ends ~08:37 PC time). Last battle 0 min ago.
-Skipped turns a battle: 9.1 overall, first 100 9.3, last 100 6.3.
+**1472 of 1472 battles** (100%), 0 failed. Running 1.6 h, 907 battles/h, about 0 min left (ends ~08:31 PC time). Last battle 0 min ago.
+Skipped turns a battle: 8.8 overall, first 100 9.3, last 100 4.9.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 1197 |
+| `fails 20` | halt | ok | 0 failed of 1472 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 6.3 a battle over the last 100 (first 100: 9.3) |
+| `skips 40 over 100` | halt | ok | 4.9 a battle over the last 100 (first 100: 9.3) |
 
-Stopping now would leave 275 battles unrun (about 19 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### d2df
+
+**0 of 1472 battles** (0%), 0 failed. Running 1 min. Last battle 1 min ago.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 0 |
+| `stall 30m` | halt | ok | last battle 1 min ago |
+| `skips 40 over 100` | halt | waiting | 0 of 100 battles to read |
+
+Stopping now would leave 1472 battles unrun; every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-05:16:29 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
-05:16:29 start d2prep
-05:16:33 progress pushed to origin claude/pc-team-dodge2-progress (every 15 min)
-05:19:06 d2prep exit=0 in 156 s
 05:19:06 start d2bb
 05:19:06 watching d2bb: 3 stop rule(s)
 05:19:31 progress d2bb: 0/1472 (0%) battles, 0 failed
@@ -54,4 +62,8 @@ Stopping now would leave 275 battles unrun (about 19 min); every battle already 
 06:54:31 watching d2dg: 3 stop rule(s)
 07:20:28 progress d2dg: 273/1472 (19%) battles, 631/h, ETA 1.9 h, 0 failed, skips 12.8/battle (last 100)
 07:50:42 progress d2dg: 707/1472 (48%) battles, 755/h, ETA 1.0 h, 0 failed, skips 8.8/battle (last 100)
+08:20:57 progress d2dg: 1254/1472 (85%) battles, 871/h, ETA 15 min, 0 failed, skips 6.4/battle (last 100)
+08:31:52 d2dg exit=0 in 5840 s
+08:31:52 start d2df
+08:31:52 watching d2df: 3 stop rule(s)
 ```
