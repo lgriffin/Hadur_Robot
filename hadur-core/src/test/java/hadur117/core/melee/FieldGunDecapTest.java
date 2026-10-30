@@ -10,7 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** MGUN-21: aiming at the enemy leader once its death pays. */
+/** MGUN-21 and TMODE-31: aiming at the enemy leader, and at the eyes of a droid team. */
 class FieldGunDecapTest {
 
     private final FieldGun gun = new FieldGun(field(1200, 1200));
@@ -56,5 +56,28 @@ class FieldGunDecapTest {
         a = scan(tracker, "a.Lead (1)", 300, 300, 10, 2);
         b = scan(tracker, "a.M (2)", 600, 300, 100, 2);
         assertFalse(gun.decapitates(a, List.of(a, b)), "first seen at 10 this round");
+    }
+
+    @Test
+    @Tag("TMODE-31")
+    @DisplayName("TMODE-31: LEAD ships table-only and off by default")
+    void leadOff() {
+        assertFalse(TeamModes.FORCE_LEAD);
+        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.LEAD));
+    }
+
+    @Test
+    @Tag("TMODE-31")
+    @DisplayName("TMODE-31: the leader weighs 4x; with a droid alive, every scanner weighs 2.5x and the droids 1x")
+    void leadFactor() {
+        EnemyInfo leader = scan(tracker, "a.Lead (1)", 300, 300, 200, 1);
+        EnemyInfo scanner = scan(tracker, "a.Eye (2)", 600, 300, 100, 1);
+        EnemyInfo droid = scan(tracker, "a.Droid (3)", 900, 300, 120, 1);
+        List<EnemyInfo> all = List.of(leader, scanner, droid);
+        assertEquals(FieldGun.LEAD_BOOST, gun.leadFactor(leader, all), 1e-12);
+        assertEquals(FieldGun.EYES_BOOST, gun.leadFactor(scanner, all), 1e-12);
+        assertEquals(1.0, gun.leadFactor(droid, all), 1e-12);
+        // The droids gone: a scanner is just a robot again.
+        assertEquals(1.0, gun.leadFactor(scanner, List.of(leader, scanner)), 1e-12);
     }
 }

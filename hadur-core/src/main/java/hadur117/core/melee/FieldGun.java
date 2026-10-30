@@ -89,6 +89,12 @@ public class FieldGun {
     static final double LEADER_SEEN = 150;
     /** MGUN-21: what a leader's death drains from each living teammate. */
     static final double LEADER_DRAIN = 30;
+    /** TMODE-31: the leader's weight under LEAD. */
+    static final double LEAD_BOOST = 4.0;
+    /** TMODE-31: a scanner's weight under LEAD while droids are about. */
+    static final double EYES_BOOST = 2.5;
+    /** TMODE-31: a robot first seen in a round with more than this, up to {@link #LEADER_SEEN}, is a droid (120). */
+    static final double DROID_SEEN = 110;
 
     /** MGUN-17: the aims a wave scores; FIELD is the field gun's own. */
     public static final int FIELD = 0, HEAD_ON = 1, LINEAR = 2, CIRCULAR = 3, EXPERT_COUNT = 4;
@@ -140,6 +146,8 @@ public class FieldGun {
     private final Map<String, double[]> expertScores = new LinkedHashMap<>();
     /** MGUN-21: each robot's energy when first seen this round. */
     private final Map<String, Double> firstEnergy = new LinkedHashMap<>();
+    /** TMODE-31: whether the team modes this tick carry LEAD. */
+    private boolean lead;
     /** MGUN-17: true while a wave reads the field gun's own aim, which the experts must not steer. */
     private boolean pure;
 
@@ -306,11 +314,33 @@ public class FieldGun {
         if (FLAT_DISTANCE && !onTeam) w = Math.pow(w, 0.7);
         if (HIT_TARGET && !onTeam) w *= hitFactor(e.name);
         if (DECAP && onTeam && decapitates(e, alive)) w *= DECAP_BOOST;
+        if (lead && onTeam) w *= leadFactor(e, alive);
         w *= 1 + 0.5 * (100 - Math.min(100, e.energy)) / 100.0;
         if (e.energy <= MeleeEnergyPolicy.FINISHER_ENERGY) w *= FINISHER_BOOST;
         if (isolated(e, alive)) w *= ISOLATED_BOOST;
         if (e.hitsOnHadur(now, SHOOTER_WINDOW) >= 2) w *= SHOOTER_BOOST;
         return w;
+    }
+
+    /** TMODE-31: whether this tick's team modes carry LEAD; set before any aim of the tick. */
+    public void lead(boolean lead) {
+        this.lead = lead;
+    }
+
+    /**
+     * TMODE-31: {@link #LEAD_BOOST} for the enemy leader; {@link #EYES_BOOST} for any other
+     * robot that is not a droid while a droid is alive; else 1.
+     */
+    double leadFactor(EnemyInfo e, List<EnemyInfo> alive) {
+        for (EnemyInfo o : alive) firstEnergy.putIfAbsent(o.name, o.energy);
+        double first = firstEnergy.getOrDefault(e.name, 0.0);
+        if (first > LEADER_SEEN) return LEAD_BOOST;
+        if (first > DROID_SEEN) return 1;
+        for (EnemyInfo o : alive) {
+            double f = firstEnergy.getOrDefault(o.name, 0.0);
+            if (o != e && f > DROID_SEEN && f <= LEADER_SEEN) return EYES_BOOST;
+        }
+        return 1;
     }
 
     /**
