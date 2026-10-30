@@ -1,0 +1,13 @@
+# ScalarR switches cloud smoke: every 4th melee-census-317 field (12 of 46)
+F01 | --set melee-census-317/f01.txt --melee true --field 1000x1000
+F05 | --set melee-census-317/f05.txt --melee true --field 1000x1000
+F09 | --set melee-census-317/f09.txt --melee true --field 1000x1000
+F13 | --set melee-census-317/f13.txt --melee true --field 1000x1000
+F17 | --set melee-census-317/f17.txt --melee true --field 1000x1000
+F21 | --set melee-census-317/f21.txt --melee true --field 1000x1000
+F25 | --set melee-census-317/f25.txt --melee true --field 1000x1000
+F29 | --set melee-census-317/f29.txt --melee true --field 1000x1000
+F33 | --set melee-census-317/f33.txt --melee true --field 1000x1000
+F37 | --set melee-census-317/f37.txt --melee true --field 1000x1000
+F41 | --set melee-census-317/f41.txt --melee true --field 1000x1000
+F45 | --set melee-census-317/f45.txt --melee true --field 1000x1000
