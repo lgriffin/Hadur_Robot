@@ -73,20 +73,20 @@ simple-aim ring read slot -1), which only the warm-up hit; fixed in the same cha
 3.20 went live 3rd, 0.06 over Saguaro, with MOVE-29 on: +0.14 APS live on these robots. Saguaro still
 leads by +0.31 APS on them (docs/bench/live-3.20.md). Same 40 robots, 2 seeds from 4500, 35 rounds, 3.20
 and Saguaro 1.0 each on the same battles (`docs/bench/local/2026-10-30_sggap320.md`,
-`2026-10-30_sggapsag.md`). Bullet damage a round from the truth logs (each rise in the enemy's energy is one of
-its bullets hitting us; `2026-10-30_sg-range.py`, table `2026-10-30_sg-range.tsv`):
+`2026-10-30_sggapsag.md`). Bullet damage a round from the truth logs (each rise in the enemy's energy, plus what it spent firing that tick,
+is one of its bullets hitting us; `2026-10-30_sg-range.py`, table `2026-10-30_sg-range.tsv`):
 
 | Distance | 3.20 ticks a round | 3.20 damage | Saguaro ticks | Saguaro damage | 3.20 per 1,000 ticks | Saguaro per 1,000 |
 |---|---:|---:|---:|---:|---:|---:|
-| under 100 px | 36.9 | 4.22 | 25.5 | 3.39 | 114 | 133 |
-| 100-150 | 14.5 | 0.77 | 24.4 | 0.57 | 53 | 23 |
-| 150-200 | 37.5 | 0.60 | 56.7 | 0.37 | 16 | 6.5 |
-| 200-300 | 68.0 | 1.03 | 102.0 | 0.55 | 15 | 5.4 |
-| 300-450 | 205.2 | 1.79 | 157.9 | 0.57 | 8.7 | 3.6 |
-| 450 and beyond | 122.8 | 0.94 | 130.5 | 0.31 | 7.7 | 2.4 |
-| all | | 9.35 | | 5.76 | | |
+| under 100 px | 36.9 | 4.24 | 25.5 | 3.42 | 115 | 134 |
+| 100-150 | 14.5 | 0.79 | 24.4 | 0.58 | 54 | 24 |
+| 150-200 | 37.5 | 0.63 | 56.7 | 0.39 | 17 | 6.8 |
+| 200-300 | 68.0 | 1.05 | 102.0 | 0.58 | 15 | 5.6 |
+| 300-450 | 205.2 | 1.83 | 157.9 | 0.59 | 8.9 | 3.7 |
+| 450 and beyond | 122.8 | 0.96 | 130.5 | 0.32 | 7.8 | 2.4 |
+| all | | 9.49 | | 5.87 | | |
 
-- **Two thirds of the gap is at 200 px and beyond** (+2.3 of +3.6 a round). There Hadur takes 2.5 to 3 times
+- **Two thirds of the gap is at 200 px and beyond** (+2.35 of +3.6 a round). There Hadur takes 2.5 to 3 times
   Saguaro's hits a tick. Close in, the rate a tick is level: Hadur just spends more time there.
 - **What drove when we were hit** (HF records, MOVE-9): 46% of 3.20's damage came while the rammer escape
   (RAM-2/RAM-5) drove, against the close-range nanos (nanoPri, SledgeHammer, Sanguijuela, WaveRammer).

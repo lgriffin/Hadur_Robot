@@ -1,4 +1,11 @@
-"""Per run: ticks and damage taken by distance band, per opponent. Subject = first robot of T."""
+"""Per run: ticks and bullet damage taken by distance band, per opponent. Subject = first robot of T.
+
+A hit on the subject refunds the shooter 3x the bullet's power, so each rise in the shooter's energy,
+plus whatever it spent firing on that tick (its F,E records), is read as one bullet that hit.
+Our own hits on the shooter in the same tick still hide a refund, so this is a slight undercount.
+
+    python3 2026-10-30_sg-range.py WORKDIR OUT.json
+"""
 import gzip,os,sys,math,collections,json
 BANDS=[0,100,150,200,300,450,9999]
 def band(d):
@@ -13,7 +20,7 @@ def run(work):
         for l in lines:
             if l.startswith('F,'):
                 p=l.split(','); 
-                if p[3]=='S': fires[(p[1],int(p[2]))]+=float(p[4])
+                if p[3]=='E': fires[(p[1],int(p[2]))]+=float(p[4])
         rounds=set()
         for l in lines:
             if not l.startswith('T,'): continue
@@ -22,7 +29,7 @@ def run(work):
             dist=math.hypot(x1-x2,y1-y2); b=band(dist)
             o['ticks'][b]+=1
             if r in prev:
-                pe=prev[r]; rise=e2-pe
+                pe=prev[r]; rise=e2-pe+fires.get((r,t),0.0)
                 if rise>0.2:
                     pw=min(3.0,rise/3); o['dmg'][b]+=4*pw+max(0,2*(pw-1))
             prev={r:e2}
