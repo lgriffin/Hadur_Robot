@@ -1,6 +1,6 @@
 {
  "plan": "pc-deise-e06",
- "updated": 1793318775.2679095,
+ "updated": 1793319682.5712519,
  "steps": {
   "prep": {
    "status": "done",
@@ -320,8 +320,8 @@
   {
    "step": "live-MIR",
    "started": 1793318762.1235747,
-   "updated": 1793318775.255186,
-   "elapsed": 13.131611347198486,
+   "updated": 1793319682.561828,
+   "elapsed": 920.4382531642914,
    "expected": 276,
    "panel": null,
    "field": null,
@@ -329,20 +329,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 0,
+   "battles": 247,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": null,
-   "eta": null,
-   "fraction": 0.0,
-   "last_battle_age": 13.131611347198486,
+   "rate": 966.061543990702,
+   "eta": 108.06764915694109,
+   "fraction": 0.894927536231884,
+   "last_battle_age": 5.634862899780273,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 0"
+     "detail": "0 failed of 247"
     },
     {
      "rule": "stall 30m",
@@ -353,12 +353,12 @@
     {
      "rule": "skips 40 over 100",
      "action": "halt",
-     "state": "waiting",
-     "detail": "0 of 100 battles to read"
+     "state": "ok",
+     "detail": "0.1 a battle over the last 100 (first 100: 0.2)"
     }
    ],
-   "skips_mean": null,
-   "skips_last100": null
+   "skips_mean": 0.1659919028340081,
+   "skips_last100": 0.13
   }
  ]
 }
