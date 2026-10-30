@@ -21,3 +21,6 @@
 03:21:40 start live-CL22
 03:21:40 watching live-CL22: 3 stop rule(s)
 03:24:25 progress live-CL22: 50/430 (12%) battles, 1088/h, ETA 21 min, 0 failed, skips 0.0/battle (last 100)
+03:50:55 live-CL22 exit=0 in 1755 s
+03:50:55 start live-A
+03:50:55 watching live-A: 3 stop rule(s)
