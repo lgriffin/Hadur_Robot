@@ -1,0 +1,85 @@
+# Sanaro's stage N6 (docs/sanaro.md section 13): a growing lead inside 249 bytes, on Sanaro 0.2,
+# on the live-shaped census. pc-sanaro-n04 (PR #445) shipped 0.2 with a flat lead, v / 16, which
+# reads about 0.5 under Quantum's growing v / (10 + 1.008^d) (GG +1.06 against CL +0.55). The cloud
+# (2 seeds, ±0.7, docs/sanaro.md section 13) read Quantum's lead +0.75 over 0.2 and a linear
+# v / (8 + d / 32) +0.56, then fitted the latter as v / sqrt(d), the same curve within a unit from
+# 100 to 500 px, at 249 bytes (LR, +0.25 there: 2 seeds cannot separate them; this card can).
+#   ./queue.sh run pc-sanaro-n05        (or  .\queue.ps1 run pc-sanaro-n05)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers. Every step resumes; no step needs
+# a decision. Nothing here touches Hadur, Saor, TwinSaor, Deise, JayLexi or Eveimear.
+#
+# Arms (sanaro-arms/arms.txt, written against 0.2's source):
+#   S2    Sanaro 0.2 as it ships (control, 249 B)
+#   LQ    Quantum's lead v / (10 + 1.008^d) (258 B: reference, does not fit)
+#   LL    linear lead v / (8 + d / 32) (253 B: reference, does not fit)
+#   LR    lead v / sqrt(d), bearing kept in aim's slot (249 B: the 0.3 candidate)
+#   L18   flat lead v / 18 (249 B; cloud +0.30)
+#   SC    ScalarR's energy cap, Leigh 2026-10-30: base power own energy / 15 at range, about
+#         E / 7.5 inside 320 px through the band (249 B, a table only; cloud -0.08)
+# Live-shaped census: 43 fields x 10 fresh seeds (base 20000) = 430 battles an arm, about 28 min an
+# arm (n04 ran 26-30). About 2.8 h in all.
+# Read against S2. An arm passes when its difference's low end is above zero (SANARO-13). The best
+# passing arm at 249 bytes or under ships as 0.3; LQ and LL say how much of the growing lead LR keeps.
+# Stop rules on every census step (docs/bench/watch.md; halt, every battle fought is kept and a
+# rerun resumes): 20 failed battles (a broken jar), no battle in 30 minutes (a hung step), or 40+
+# skipped turns a battle over the last 100 (the PR #331 build-up). A halt at worst leaves the rest
+# of that arm and the arms after it unrun, at most 2,580 battles (about 2.8 h). There is no early
+# finish on score: a census step is one robot, so there is no arm to call futile mid-step. ALERT
+# opens an issue for Leigh on a stop.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set ARMS = S2,LQ,LL,LR,L18,SC
+
+prep | (cd .. && mvn -q -DskipTests install -pl sanaro -am) && cp ../sanaro/target/hadur117.nano.Sanaro_0.2.jar opponents/ && ./fetch-opponents.sh --set nanomelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && SANARO_RUN=n05 bash tools/sanaro_arms.sh live 10 20000 ${ARMS}
+
+live-S2 | ${MVN} "-Dexec.args=@work/sanaro-n05/live-S2.args"
+  after: prep
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-LQ | ${MVN} "-Dexec.args=@work/sanaro-n05/live-LQ.args"
+  after: live-S2
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-LL | ${MVN} "-Dexec.args=@work/sanaro-n05/live-LL.args"
+  after: live-LQ
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-LR | ${MVN} "-Dexec.args=@work/sanaro-n05/live-LR.args"
+  after: live-LL
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-L18 | ${MVN} "-Dexec.args=@work/sanaro-n05/live-L18.args"
+  after: live-LR
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-SC | ${MVN} "-Dexec.args=@work/sanaro-n05/live-SC.args"
+  after: live-L18
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+read-live | python3 tools/sanaro_read.py --work-root work/sanaro-n05 --field live --arms ${ARMS} --control S2 --only work/sanaro-n05/live/micro.txt --live 66.41 > ${OUT}/sanaro-n05-live.md
+  after: live-SC
+
+pr | bash tools/open_results_pr.sh claude/pc-sanaro-n05-results "Sanaro stage N6: a growing lead in 249 bytes and ScalarR's energy cap on the live-shaped census" ${OUT}/sanaro-n05-live.md ${OUT}/sanaro-n05-live-*.md
+  after: read-live

@@ -1,3 +1,5 @@
+# RAN 2026-10-29/30 (results PR #445, docs/sanaro.md section 12): CL +0.55 ± 0.32 at 249 B passed
+# and shipped as Sanaro 0.2. N6 is pc-sanaro-n05.
 # Sanaro's stage N5 (docs/sanaro.md section 11): Quantum's fire gate inside 249 bytes, and Sanaro's
 # own lead and movements, on the live-shaped census. pc-sanaro-n03 (PR #423) read the gate at
 # +0.99 ± 0.32 (G18) but at 277 bytes. The cloud (2 seeds, docs/sanaro.md section 10) golfed it to
