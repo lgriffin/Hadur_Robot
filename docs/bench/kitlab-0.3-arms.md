@@ -56,3 +56,47 @@ JayLexi's surf is a small segmented table (distance × our lateral speed) that f
 fits the read: FoilistMC keeps learning through a battle and JayLexi plateaus, at Komarious's level,
 which uses a table too. The lever for 0.3 is the surf model, not its settings. A k-NN surf over
 logged hits, in the bytes the present surf table and its logging take.
+
+## Round 4: a k-NN surf (2026-10-30, overnight)
+
+`k3K` replaces the surf table with FoilistMC-style surfing:
+
+- Each enemy wave records our lateral speed, our advancing speed / 2 and the distance / 100 at fire
+  time.
+- A bullet that hits us (or hits one of ours) keeps that wave and its guess factor in a list for
+  the rest of the battle.
+- An option's danger is the sum over the kept hits of
+  `weight / ((1 + f²) × (0.02 + (gf − hit gf)²))`, where f is the L1 distance between the
+  features, plus a small head-on prior, over the enemy distance to the fourth power, as in 0.2.
+
+The "division mean" column is the mean of the two 48-bot samples, each paired against 0.2 run in the
+same session (± about 0.3 each).
+
+| Arm | Recency weight | Bytes | gap-field | mini-field | mini2-field | Division mean |
+|---|---|---|---|---|---|---|
+| k3K | none | 1,630 | +0.76 ± 0.30 | -0.34 | +0.51 | +0.09 |
+| k3KL | 20, 21, 22 … (linear) | 1,641 | **+1.04 ± 0.26** | +0.40 | +0.39 | +0.39 |
+| **k3KE** | 1.05 per hit (exponential) | 1,641 | +0.69 ± 0.30 | +0.27 | +0.77 | **+0.52** |
+| k3KE2 | 1.1 per hit | 1,641 | +0.56 ± 0.20 | -0.08 | +0.29 | +0.11 |
+
+- **The k-NN surf works.** k3KE takes 1.2 less damage a round on the gap sample.
+- Without recency it loses to strong and even bots: -9.4 and -4.0 a bot on mini-field. Their guns
+  adapt, and an old hit then misleads.
+- k3KE is the best on the division. It still gives up a few points to the top 12, but each of them
+  weighs only 1 in 670.
+
+### Fitting it in 1,499 bytes
+
+k3KE is **145 bytes over** what 0.2 leaves spare. Storing hits as the waves themselves, instead of
+copied arrays, saved 15 (`k3KEg`, 1,626). Three further cuts were measured on top of it:
+
+| Cut | Bytes saved | Read |
+|---|---|---|
+| no head-on prior | 12 | (in c123) |
+| no advancing feature | 40 | (in c123) |
+| no walls segment in the gun (`k3c3`, 1,562) | 64 | division +0.01, gap +0.44 |
+| all three (`k3c123`, 1,510) | 116 | division **-0.45**, gap +0.28 |
+
+The gun's wall segment is worth more than the bytes it costs, and so is the advancing feature. The
+bytes for the k-NN surf have to come from elsewhere: a tighter wave and hit layout, the prediction
+loop, the radar and the power rule.
