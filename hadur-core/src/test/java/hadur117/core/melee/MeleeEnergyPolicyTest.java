@@ -100,6 +100,9 @@ class MeleeEnergyPolicyTest {
         assertEquals(0.4, MeleeEnergyPolicy.scalPower(600, 6, 100), 1e-9);
         // Never more than kills the target.
         assertEquals(MeleeEnergyPolicy.killPower(10), MeleeEnergyPolicy.scalPower(200, 100, 10), 1e-9);
+        // Never more than the lead over the target; a lead under the lightest shot holds.
+        assertEquals(1.0, MeleeEnergyPolicy.scalPower(200, 51, 50), 1e-9);
+        assertEquals(0.0, MeleeEnergyPolicy.scalPower(200, 50.05, 50), 1e-9);
     }
 
     @Test

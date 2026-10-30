@@ -169,7 +169,8 @@ public final class MeleeEnergyPolicy {
     /**
      * MGUN-22: {@link #SCAL_REACH}/{@code nearest}, capped at own energy/{@link #SCAL_SHARE}, at
      * own energy/{@link #SCAL_FAR_SHARE} beyond {@link #SCAL_FAR} px, at what kills the target and
-     * {@link #SCAL_RESERVE} short of Hadur's own energy; 0.1 to 3.
+     * {@link #SCAL_RESERVE} short of Hadur's own energy and at the lead over the target, as the table
+     * is (a lead under the lightest shot holds, 0); 0.1 to 3.
      */
     static double scalPower(double nearest, double ownEnergy, double targetEnergy) {
         double p = SCAL_REACH / Math.max(1, nearest);
@@ -177,6 +178,11 @@ public final class MeleeEnergyPolicy {
         p = Math.min(p, ownEnergy / SCAL_SHARE);
         p = Math.min(p, killPower(targetEnergy));
         p = Math.min(p, ownEnergy - SCAL_RESERVE);
+        if (ownEnergy > targetEnergy) {
+            double lead = ownEnergy - targetEnergy;
+            if (lead < MIN_POWER) return 0;
+            p = Math.min(p, lead);
+        }
         return Math.max(MIN_POWER, Math.min(MAX_POWER, p));
     }
 

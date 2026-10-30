@@ -1039,7 +1039,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
         maim|mhop|mheat|mcloser|msurf)
             # Melee crowd survival (docs/plan-melee-top5.md Stage 3, MMOVE-11..14): one
             # MinimumRiskMovement crowd switch on, off a team only; duel and team fixtures bit for bit.
-            # MMOVE-15 ships on from 3.21, so msurf no longer applies on master.
+            # MMOVE-15 ships on from 3.21, so on master msurf builds the robot as it is.
             case "$a" in
                 maim) flag=MELEE_AIMED; suffix=ma ;;
                 mhop) flag=MELEE_HOPS; suffix=mh ;;
@@ -1047,6 +1047,8 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
                 mcloser) flag=MELEE_CLOSER; suffix=mc ;;
                 msurf) flag=MELEE_SURF; suffix=ms ;;
             esac
+            grep -q "public static final boolean $flag = true;" \
+                "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" ||
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;

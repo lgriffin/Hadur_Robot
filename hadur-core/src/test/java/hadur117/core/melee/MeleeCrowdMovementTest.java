@@ -290,6 +290,8 @@ class MeleeCrowdMovementTest {
         assertEquals(0.0, MinimumRiskMovement.shaded(0, half / 2, 100, behind), 1e-12, "in front of b");
         assertEquals(0.0, MinimumRiskMovement.shaded(1.0, half / 2, 400, behind), 1e-12, "off to the side");
         assertEquals(0.5, MinimumRiskMovement.shaded(half, half, 400, behind), 1e-9, "half covered");
+        double[][] twice = {{0, half, 200}, {0, half, 250}};
+        assertEquals(0.5, MinimumRiskMovement.shaded(half, half, 400, twice), 1e-9, "overlaps count once");
         // A wave from a at (500, 900): b at (500, 700) shades Hadur at (500, 500) from it, c does not.
         scan(tracker, "a", 500, 900, 100, 1);
         scan(tracker, "b", 500, 700, 100, 1);

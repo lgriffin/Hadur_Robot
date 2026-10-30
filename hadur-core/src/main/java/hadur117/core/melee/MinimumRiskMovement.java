@@ -1418,14 +1418,24 @@ public class MinimumRiskMovement {
         return out;
     }
 
-    /** MMOVE-18: the share of [bearing +- half] that the shadows nearer the source than {@code d} cover. */
+    /**
+     * MMOVE-18: the share of [bearing +- half] that the shadows nearer the source than {@code d}
+     * cover, counting overlapping shadows once.
+     */
     static double shaded(double bearing, double half, double d, double[][] shadows) {
-        double covered = 0;
+        List<double[]> parts = new ArrayList<>();
         for (double[] sh : shadows) {
             if (sh[2] >= d) continue;
             double off = Angles.normalRelativeAngle(sh[0] - bearing);
             double lo = Math.max(-half, off - sh[1]), hi = Math.min(half, off + sh[1]);
-            if (hi > lo) covered += hi - lo;
+            if (hi > lo) parts.add(new double[] {lo, hi});
+        }
+        parts.sort((a, b) -> Double.compare(a[0], b[0]));
+        double covered = 0, end = -half;
+        for (double[] p : parts) {
+            if (p[1] <= end) continue;
+            covered += p[1] - Math.max(p[0], end);
+            end = p[1];
         }
         return Math.min(1, covered / (2 * half));
     }
