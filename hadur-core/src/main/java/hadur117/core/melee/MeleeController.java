@@ -204,7 +204,9 @@ public class MeleeController {
      * MMOVE-19: logs {@code victim}'s scan and, when it shows a loss to someone other than Hadur,
      * learns the aim of the one other opponent's shot that explains it: the shot whose damage the
      * loss matches and whose wave reached the victim between its last two scans; with two or more
-     * such shots it learns nothing. The aim is the heading from the shot's source to where the victim is now.
+     * such shots it learns nothing. The aim is the heading from the shot's source to where the victim
+     * was as the wave reached it. Only losses over 3 energy are seen: a smaller one cannot be told
+     * from the victim's own shot.
      */
     void crossHit(EnemyInfo victim, long now) {
         RobotStateLog path = paths.computeIfAbsent(victim.name, k -> new RobotStateLog());
@@ -228,7 +230,12 @@ public class MeleeController {
         if (best == null) return;
         RobotState at = path.getState(best.fireTime);
         if (at == null) return;
-        danger.add(danger.sample(best, at, DiaUtils.absoluteBearing(best.source, victim.location)));
+        // Where the victim was as the wave reached it, between its last two scans.
+        long arrival = Math.max(now - since, Math.min(now,
+            best.fireTime + Math.round(best.source.distance(victim.location) / best.speed())));
+        RobotState hit = path.getState(arrival);
+        Point2D.Double struck = hit == null ? victim.location : hit.location;
+        danger.add(danger.sample(best, at, DiaUtils.absoluteBearing(best.source, struck)));
     }
 
     /**
