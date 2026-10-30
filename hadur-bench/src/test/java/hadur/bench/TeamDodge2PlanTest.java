@@ -11,13 +11,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-141: the pc-team-dodge2 card (DODGE on every team, with and without own fire, fresh-seed confirm) is complete before it reaches the PC. */
+/** BENCH-142: the pc-team-dodge2 card (DODGE on every team, with and without own fire, fresh-seed confirm) is complete before it reaches the PC. */
 class TeamDodge2PlanTest {
 
     private static final Path QUEUE = Path.of("plans/pc-team-dodge2.queue");
 
     @Test
-    @Tag("BENCH-141")
+    @Tag("BENCH-142")
     @DisplayName("the steps chain from prep through bb, dg and df to a pooled gate per arm and a results PR, on the version the pom names")
     void stepsChain() throws IOException {
         String queue = Files.readString(QUEUE);
@@ -54,7 +54,7 @@ class TeamDodge2PlanTest {
     }
 
     @Test
-    @Tag("BENCH-141")
+    @Tag("BENCH-142")
     @DisplayName("dg, df and their A/A share 16 fresh seeds from 5600 at 12 rounds on all 46 teams against aa")
     void args() throws IOException {
         for (String[] a : List.of(new String[] {"bb", "bb"}, new String[] {"dg", "dg"}, new String[] {"df", "dgof"})) {

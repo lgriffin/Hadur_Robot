@@ -1,0 +1,73 @@
+# Melee gun inspired by Ogi (docs/plan-melee-top5.md "Melee gun inspired by Ogi", MGUN-17..20,
+# BENCH-143). Leigh 2026-10-30: "Lets explore its gun for melee its clearly working for it. Our goal is
+# not to beat Ogi 1:1 its to beat the field. Lets not copy it directly lets be inspired by it."
+# Hadur's melee gun is already Ogi-shaped (24 situations, power 3 inside 300 px); each arm takes one
+# idea from Ogi's gun further in Hadur's own way, off a team only:
+#   aa      the baseline (master)
+#   bb      its A/A copy
+#   gx      gexp, MGUN-17: every targeting wave also scores head-on, linear and circular aims, and
+#           each opponent's weight is shared among the four aims by how well each has been hitting it
+#   gr      grate, MGUN-18: an opponent's weight leans toward the ones the gun has been hitting
+#   gd      gdist, MGUN-19: the distance weight (100/d)^0.7, not 100/d (Ogi's flatter d^-0.686)
+#   gv      gsoft, MGUN-20: a situation's weight 1/(distance + the mean distance), not 1/(0.01 + distance)
+# Each build fights the 46 census fields x 6 fresh seeds alone (3234-3239; 276 battles, 1,656 in
+# all) at the machine's melee width and CPU constant. The read pairs bb with aa (A/A, within +-0.25)
+# and each arm with the mean of aa and bb (--base2), battle for battle. Melee only: every switch
+# acts off a team, so the duel and team play are untouched (forced on, the duel and team replay
+# fixtures play bit for bit).
+# Verdict: an arm passes at +0.30 or more with the 95% low end above 0 (--gain 0.3), Hadur's share
+# of others outlived no more than 1 point lower and the 1-30 endgame wins no more than 3 points
+# lower; an arm whose skipped turns a battle rise more than 20% over aa's fails whatever its APS
+# (read from the arm reports). Passing arms stack on fresh seeds next, with the melee surfer if it
+# passes too. The card ends in a results PR on claude/pc-melee-gun-results whatever the verdict;
+# the team thread reads it.
+#   ./queue.sh run pc-melee-gun        (or  .\queue.ps1 run pc-melee-gun)
+# Run it from master, one bench queue at a time:
+#   git checkout master && git pull
+# mgprep reads the version from hadur-robot/pom.xml, so a bump cannot point the card at stale
+# jars, and fixes the width and version in work/, so a resumed card never mixes host profiles or
+# reads another version's battles. Prep clears the arms' battle folders, since it rebuilds their jars.
+# Stop rules (docs/bench/watch.md), halts only, each keeping every battle fought: fails 20 and
+# stall 30m on each arm (each arm is its own single-arm step, so `dead` cannot be read). A halt in
+# mgaa leaves the rest of aa and all 1,380 battles of the five later arms unrun; a halt in a later
+# arm leaves the rest of that arm (up to 276) and every arm after it (276 each; gv runs last). No
+# futility or skips rule: the paired read needs aa and bb whole, and melee skips are read from the
+# arm reports against aa's.
+
+set OUT = ../docs/bench/local
+
+mgprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb gx gr gd gv; do rm -f bisect/hadur117.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh gexp && bash ./build-ablation.sh grate && bash ./build-ablation.sh gdist && bash ./build-ablation.sh gsoft && mkdir -p work && rm -rf work/melee-gun-"$V"-aa work/melee-gun-"$V"-bb work/melee-gun-"$V"-gx work/melee-gun-"$V"-gr work/melee-gun-"$V"-gd work/melee-gun-"$V"-gv && echo "$V" > work/melee-gun.version && for a in aa bb gx gr gd gv; do test -f bisect/hadur117.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-gun.args > work/melee-gun-$a.args || exit 1; done && rm -f ${OUT}/melee-gun-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+mgaa   | mvn -q exec:java "-Dexec.args=@work/melee-gun-aa.args"
+  after: mgprep
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+mgbb   | mvn -q exec:java "-Dexec.args=@work/melee-gun-bb.args"
+  after: mgaa
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+mggx   | mvn -q exec:java "-Dexec.args=@work/melee-gun-gx.args"
+  after: mgbb
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+mggr   | mvn -q exec:java "-Dexec.args=@work/melee-gun-gr.args"
+  after: mggx
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+mggd   | mvn -q exec:java "-Dexec.args=@work/melee-gun-gd.args"
+  after: mggr
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+mggv   | mvn -q exec:java "-Dexec.args=@work/melee-gun-gv.args"
+  after: mggd
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+mgread | V=$(cat work/melee-gun.version) && test -n "$V" && W=work/melee-gun-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm gx="$W"-gx --arm gr="$W"-gr --arm gd="$W"-gd --arm gv="$W"-gv --census melee-census-317.txt --seeds 6 --gain 0.3 --survival-slack 1 --out ${OUT}/melee-gun-read.md --title "Melee gun on $V" || true; } && test -s ${OUT}/melee-gun-read.md
+  after: mggv
+mgpr   | bash tools/open_results_pr.sh claude/pc-melee-gun-results "Melee gun inspired by Ogi (MGUN-17..20)" ${OUT}/melee-gun-read.md $(ls ${OUT}/melee-gun-aa.md ${OUT}/melee-gun-bb.md ${OUT}/melee-gun-gx.md ${OUT}/melee-gun-gr.md ${OUT}/melee-gun-gd.md ${OUT}/melee-gun-gv.md 2>/dev/null)
+  after: mgread
