@@ -33,7 +33,8 @@
 # Stop rules (docs/bench/watch.md), halts only, each keeping every battle fought: fails 20 and
 # stall 30m on each arm (each arm is its own single-arm step, so `dead` cannot be read). A halt
 # leaves that arm's remaining battles (up to 276) and every later arm unrun (up to 1,656 if aa
-# halts); the cause is fixed and the card resumed. No futility or skips rule: the paired read needs
+# halts); the cause is fixed and the card resumed, and the halted arm refights all its 276
+# battles (a single-arm run does not read back a stopped run's; up to ~27 min). No futility or skips rule: the paired read needs
 # the baselines whole, and melee skips are read from the arm reports against aa's.
 
 set OUT = ../docs/bench/local
