@@ -1,0 +1,34 @@
+{
+ "plan": "pc-sanaro-n05",
+ "updated": 1793393586.7889943,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "live-S2": {
+   "status": "pending"
+  },
+  "live-LQ": {
+   "status": "pending"
+  },
+  "live-LL": {
+   "status": "pending"
+  },
+  "live-LR": {
+   "status": "pending"
+  },
+  "live-L18": {
+   "status": "pending"
+  },
+  "live-SC": {
+   "status": "pending"
+  },
+  "read-live": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
