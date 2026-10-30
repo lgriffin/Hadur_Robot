@@ -1,15 +1,22 @@
 {
  "plan": "pc-team-nododge",
- "updated": 1793379676.9413848,
+ "updated": 1793380584.4647923,
  "steps": {
   "ndprep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 112,
+   "end": "2026-10-30T17:03:09"
   },
   "ndbb": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 483,
+   "end": "2026-10-30T17:11:13"
   },
   "ndxd": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-10-30T17:11:13"
   },
   "ndsum": {
    "status": "pending"
@@ -18,5 +25,92 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "ndbb",
+   "started": 1793379789.8698676,
+   "updated": 1793380273.5411267,
+   "elapsed": 483.6712591648102,
+   "expected": 144,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 144,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 1071.8023661260304,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 1.6772794723510742,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 144"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "ok",
+     "detail": "7.5 a battle over the last 100 (first 100: 14.1)"
+    }
+   ],
+   "skips_mean": 11.23611111111111,
+   "skips_last100": 7.55
+  },
+  {
+   "step": "ndxd",
+   "started": 1793380273.5529711,
+   "updated": 1793380584.4574258,
+   "elapsed": 310.90445470809937,
+   "expected": 144,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 108,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 1250.5449636128078,
+   "eta": 103.63481823603313,
+   "fraction": 0.75,
+   "last_battle_age": 2.425497055053711,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 108"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "ok",
+     "detail": "13.1 a battle over the last 100 (first 100: 13.5)"
+    }
+   ],
+   "skips_mean": 13,
+   "skips_last100": 13.05
+  }
+ ]
 }
