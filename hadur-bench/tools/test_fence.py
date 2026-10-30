@@ -135,6 +135,26 @@ class ClientLauncherTest(unittest.TestCase):
             self.assertFalse(os.path.exists(os.path.join(d, "w")), "nothing was started")
 
 
+# @Tag("BENCH-146")
+class ClientKindsTest(unittest.TestCase):
+    """BENCH-146: --oneone/--melee/--team pick the PC's client folders, within the client side's cores."""
+
+    def test_kinds_map_to_the_pc_folders(self):
+        self.assertEqual(fence.launches_for(2, 1, 1),
+                         ["rr01:roborumble.bat", "rr02:roborumble.bat", "C:/robocode:meleerumble.bat",
+                          "C:/robocode:teamrumble.bat"])
+        self.assertEqual(fence.launches_for(0, 0, 1, main="D:/rc"), ["D:/rc:teamrumble.bat"])
+        with self.assertRaises(fence.FenceError):
+            fence.launches_for(0, 2, 0)
+
+    def test_the_load_is_held_to_the_client_cores(self):
+        self.assertEqual(fence.client_load(2, 1, 0), 4.5)
+        self.assertTrue(fence.budget_line(fence.client_load(2, 1, 0), 6, False)[0])
+        self.assertTrue(fence.budget_line(fence.client_load(4, 0, 0), 6, False)[0], "four 1v1 fit")
+        self.assertFalse(fence.budget_line(fence.client_load(2, 1, 1), 6, False)[0], "6.5 cores do not")
+        self.assertTrue(fence.budget_line(fence.client_load(2, 1, 1), 6, True)[0], "unless forced")
+
+
 # @Tag("BENCH-147")
 class CardTest(unittest.TestCase):
     """BENCH-147: the pc-fence-qualify card keeps uploads off and runs both sides at once."""

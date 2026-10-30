@@ -4,8 +4,9 @@
     python3 tools/fence.py show
     python3 tools/fence.py run bench -- COMMAND ...
     python3 tools/fence.py run clients [--priority below] -- COMMAND ...
-    python3 tools/fence.py clients rr01:roborumble.bat rr02:roborumble.bat [--root C:/RoboRumbleWorkers]
-                                   [--out DIR] [--hours 0] [--restart-minutes 15] [--live]
+    python3 tools/fence.py clients --oneone 2 [--melee 1] [--team 1] [--root C:/RoboRumbleWorkers]
+                                   [--main C:/robocode] [--out DIR] [--hours 0] [--restart-minutes 15] [--live]
+    python3 tools/fence.py clients rr01:roborumble.bat C:/robocode:meleerumble.bat    (the same, by folder)
 
 Leigh, 2026-10-30: "On my high end PC if we containerised robocode would that protect the bench? I'd like
 to be able to run rumbles as needed." A container caps how much CPU the clients take but not where it
@@ -31,7 +32,10 @@ of the physical cores (whole cores, both threads). `show` prints the topology an
 The queue (benchqueue.py) fences itself, and so every card, to the bench side when host.local says
 FENCE = on (or HADUR_BENCH_FENCE=on). Without it nothing changes.
 
-`clients` (BENCH-146) is the everyday launcher: it fences itself to the client side at below-normal priority and
+`clients` (BENCH-146) is the everyday launcher. --oneone N starts rr01..rrNN (roborumble.bat), --melee 1
+and --team 1 the melee and team clients in C:/robocode. It counts a 1v1 client as about 1.25 cores and a
+melee or team client as about 2, and refuses a set heavier than the client side's cores (6 on the PC)
+unless --force. Then it fences itself to the client side at below-normal priority and
 runs live_client.py watch over the given clients (console logs, Hadur's stall lines, restarts every 15
 minutes between battles). It refuses any client whose config uploads (UPLOAD not NOT) unless --live is
 given: live uploads need Leigh's go at the time, and the PC is not qualified (plans/live-watch.queue).
@@ -298,13 +302,59 @@ def uploading_clients(launches, root):
     return out
 
 
+# Cores one client keeps busy (docs/bench/fence.md): a duel battle about 1.25 (bench throughput study,
+# 2026-10-23), a melee or team battle about 2. The PC's client side has 6.
+CLIENT_CORES = {"oneone": 1.25, "melee": 2.0, "team": 2.0}
+MAIN = "C:/robocode"
+
+
+def launches_for(oneone=0, melee=0, team=0, main=MAIN):
+    """--oneone N --melee N --team N -> launch specs: rr01..rrNN under --root, melee and team in `main`."""
+    if melee > 1 or team > 1:
+        raise FenceError(f"one melee and one team client at most: both run from {main}, which has one config each")
+    specs = [f"rr{i:02d}:roborumble.bat" for i in range(1, oneone + 1)]
+    specs += [f"{main}:meleerumble.bat"] * melee + [f"{main}:teamrumble.bat"] * team
+    return specs
+
+
+def client_load(oneone=0, melee=0, team=0):
+    return oneone * CLIENT_CORES["oneone"] + melee * CLIENT_CORES["melee"] + team * CLIENT_CORES["team"]
+
+
+def budget_line(load, cores, force):
+    """(ok, text): the clients' cores against the client side's whole cores."""
+    text = f"client load about {load:g} of {cores} cores on the client side"
+    if load <= cores:
+        return True, text
+    if force:
+        return True, text + " (over, --force)"
+    return False, text + ": over the fence, so the clients would skip turns among themselves. Fewer clients, or --force"
+
+
 def cmd_clients(a):
+    try:
+        a.launch = list(a.launch) + launches_for(a.oneone, a.melee, a.team, a.main)
+    except FenceError as e:
+        print(f"fence: {e}", file=sys.stderr)
+        return 2
+    if not a.launch:
+        print("no clients: give --oneone N, --melee 1, --team 1 or FOLDER:LAUNCHER", file=sys.stderr)
+        return 2
     bad = uploading_clients(a.launch, a.root)
     if bad and not a.live:
         for spec, path, value in bad:
             print(f"{spec}: {path} has UPLOAD={value if value is not None else '(file missing)'}", file=sys.stderr)
         print("refused: these clients would upload live. Set UPLOAD=NOT (tools/qualify_pc.py upload off FOLDER) "
               "or pass --live once Leigh has said to upload.", file=sys.stderr)
+        return 2
+    kinds = {"oneone": sum(x.endswith("roborumble.bat") for x in a.launch),
+             "melee": sum(x.endswith("meleerumble.bat") for x in a.launch),
+             "team": sum(x.endswith("teamrumble.bat") for x in a.launch)}
+    sides = split(topology())
+    cores = {i for i, core in enumerate(topology()["cores"]) if set(core) & set(sides["clients"])}
+    ok, text = budget_line(client_load(**kinds), len(cores) or len(sides["clients"]) // 2 or 1, a.force)
+    print(text, file=sys.stdout if ok else sys.stderr, flush=True)
+    if not ok:
         return 2
     print(fence_role("clients"), flush=True)
     out = a.out or str(BENCH_HOME.parent / "data" / "live" / ("fenced-" + dt.datetime.utcnow().strftime("%Y-%m-%dT%H%MZ")))
@@ -327,7 +377,12 @@ def main(argv):
     r.add_argument("--priority", choices=("normal", "below"))
     r.add_argument("command", nargs=argparse.REMAINDER)
     c = sub.add_parser("clients")
-    c.add_argument("launch", nargs="+", help="FOLDER:LAUNCHER under --root, e.g. rr01:roborumble.bat")
+    c.add_argument("launch", nargs="*", help="FOLDER:LAUNCHER under --root, e.g. rr01:roborumble.bat")
+    c.add_argument("--oneone", type=int, default=0, help="1v1 clients rr01..rrNN under --root")
+    c.add_argument("--melee", type=int, default=0, choices=(0, 1), help="the melee client in --main")
+    c.add_argument("--team", type=int, default=0, choices=(0, 1), help="the team client in --main")
+    c.add_argument("--main", default=MAIN, help="the Robocode folder holding meleerumble.bat and teamrumble.bat")
+    c.add_argument("--force", action="store_true", help="start clients beyond the client side's cores")
     c.add_argument("--root", default="C:/RoboRumbleWorkers")
     c.add_argument("--out")
     c.add_argument("--hours", type=float, default=0.0)

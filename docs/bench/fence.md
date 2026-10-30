@@ -30,7 +30,7 @@ Windows processor affinity on both sides, cut along the L3 cache groups (the Thr
 - `python tools/fence.py show` prints the topology it read and the split. Override it in
   `hadur-bench/host.local` with `FENCE_BENCH_CPUS = 0-35` and/or `FENCE_CLIENT_CPUS = 36-47` (one alone means
   the other side is the rest). With one L3 group (the laptop), the clients get the last quarter of the cores.
-- About 2 or 3 clients fit on 6 cores (for example two 1v1 and one melee). A melee client takes about 2 cores.
+- About 2 or 3 clients fit on 6 cores (see How many, below).
 
 ## How to use it
 
@@ -39,13 +39,29 @@ Windows processor affinity on both sides, cut along the L3 cache groups (the Thr
 2. Clients, whenever Leigh likes, from `hadur-bench`:
 
    ```
-   python tools\fence.py clients rr01:roborumble.bat rr02:roborumble.bat
+   python tools\fence.py clients --oneone 2 --melee 1
    ```
 
-   That fences itself to the client side at below-normal priority and runs `live_client.py watch` over the
-   clients. You get console logs, Hadur's stall lines, and a restart every 15 minutes between battles,
-   written to `data/live/fenced-<UTC>`. Ctrl-C stops them all. `--root` defaults to `C:/RoboRumbleWorkers`.
-   A client outside `--root` takes its full path: `C:/robocode:meleerumble.bat`.
+   `--oneone N` starts rr01..rrNN in `C:/RoboRumbleWorkers` (roborumble.bat); `--melee 1` and `--team 1`
+   start the melee and team clients in `C:/robocode` (one of each at most, since they share that folder's
+   configs). Folders can still be named directly, e.g. `rr03:roborumble.bat` or `C:/robocode:teamrumble.bat`.
+   The launcher fences itself to the client side at below-normal priority and runs `live_client.py watch`
+   over the clients: console logs, Hadur's stall lines, and a restart every 15 minutes between battles,
+   written to `data/live/fenced-<UTC>`. Ctrl-C stops them all.
+
+   **How many.** A 1v1 client keeps about 1.25 cores busy, a melee or team client about 2. The launcher
+   refuses a set heavier than the client side's 6 cores unless `--force`:
+
+   | Set | Cores | |
+   |---|---:|---|
+   | `--oneone 2 --melee 1` | 4.5 | recommended: headroom for JIT and GC |
+   | `--oneone 2` | 2.5 | what pc-fence-qualify measures |
+   | `--oneone 1 --melee 1 --team 1` | 5.25 | all three rumbles, the most that fits |
+   | `--oneone 4` | 5.0 | fits |
+   | `--oneone 2 --melee 1 --team 1` | 6.5 | refused: over the fence |
+
+   The fence protects the bench whatever the set; the limit protects the clients' own scores, since an
+   oversubscribed client side skips turns among its own robots.
 3. **Uploads.** The launcher refuses any client whose config uploads (`UPLOAD` not `NOT`, or no config)
    unless `--live` is given. Live uploads need Leigh's go at the time, and the PC is still not qualified
    (`QUALIFIED = no` in plans/live-watch.queue).
