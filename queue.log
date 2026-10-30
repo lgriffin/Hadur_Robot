@@ -1,1 +1,7 @@
 20:53:06 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
+20:53:06 start prep
+20:53:09 progress pushed to origin claude/pc-sanaro-n05-progress (every 15 min)
+20:53:27 prep exit=0 in 21 s
+20:53:27 start live-S2
+20:53:27 watching live-S2: 3 stop rule(s)
+20:54:07 progress live-S2: 4/430 (1%) battles, 365/h, ETA 1.2 h, 0 failed, skips 0.0/battle (last 100)
