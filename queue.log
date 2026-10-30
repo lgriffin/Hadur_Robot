@@ -9,3 +9,7 @@
 01:54:13 live-S0 exit=0 in 1881 s
 01:54:13 start live-GG
 01:54:13 watching live-GG: 3 stop rule(s)
+02:23:26 live-GG exit=0 in 1752 s
+02:23:26 start live-CL
+02:23:26 watching live-CL: 3 stop rule(s)
+02:23:55 progress live-CL: 0/430 (0%) battles, 0 failed
