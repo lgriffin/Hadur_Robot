@@ -1,0 +1,81 @@
+# ScalarR-inspired melee switches (docs/plan-melee-top5.md, MGUN-22, MMOVE-16..19, BENCH-146).
+# Leigh 2026-10-30: "Let's look at this for both Hadur and Deise" (ScalarR findings, PR #459), then
+# "Hold and let's keep exploring the Scala options to improve" (3.21 held). Master now surfs in melee
+# (MMOVE-15, pc-melee-surf +0.99, PR #462/#466), so every arm is one ScalarR idea, in Hadur's own
+# way, on top of the surfer, off a team only:
+#   aa      the baseline (master, surfer on)
+#   bb      its A/A copy
+#   wm      mmix, MMOVE-16: each seen shot weighs by the share of its shooter's aim on Hadur (1/d^2
+#           over every robot but the shooter) instead of the crowd count
+#   ec      mscal, MGUN-22: power from the nearest robot's distance and own energy
+#   wq      mwpath, MMOVE-17: the surfer's wave damage and risk scored together, risk normalised
+#   bs      mshade, MMOVE-18: robots nearer a shooter than Hadur shade the wave behind them
+#   xh      mcross, MMOVE-19: the surfer also learns each shooter's aim from its hits on other
+#           opponents (a loss its shot's damage and wave explain), not only from hits on Hadur
+# Cloud smokes (12 census fields x 2 seeds): wm +0.48 +- 0.43 over the surfer, ec +0.30 +- 0.84
+# (before its lead cap), wq +0.53 +- 0.70 and bs +0.45 +- 0.49 (21 of 24 battles); xh not smoked. wm and xh, the
+# arms Leigh named ("2 and 6 build on top of it"), run first.
+# Each build fights the 46 census fields x 6 fresh seeds alone (3240-3245; 276 battles, 1,932 in
+# all, about 3.2 h at ~620 battles/h) at the machine's melee width and CPU constant. The read pairs
+# bb with aa (A/A, within +-0.25) and each arm with the mean of aa and bb (--base2), battle for
+# battle. Melee only: the switches act off a team, so the duel and team play are untouched.
+# Verdict: an arm passes at +0.30 or more with the 95% low end above 0 (--gain 0.3), Hadur's share
+# of others outlived no more than 1 point lower and the 1-30 endgame wins no more than 3 points
+# lower; if its skipped turns a battle rise more than 20% over aa's it fails whatever its APS (read
+# from the arm reports). The card ends in a results PR on claude/pc-melee-scal-results whatever the
+# verdict; the melee thread reads it.
+#   ./queue.sh run pc-melee-scal        (or  .\queue.ps1 run pc-melee-scal)
+# Run it from master, one bench queue at a time:
+#   git checkout master && git pull
+# scprep reads the version from hadur-robot/pom.xml, so a bump cannot point the card at stale
+# jars, and fixes the width and version in work/, so a resumed card never mixes host profiles or
+# reads another version's battles. Prep clears the arms' battle folders, since it rebuilds their jars.
+# Stop rules (docs/bench/watch.md), halts only, each keeping every battle fought: fails 20 and
+# stall 30m on each arm (each arm is its own single-arm step, so `dead` cannot be read). A halt
+# leaves that arm's remaining battles (up to 276) and every later arm unrun (up to 1,656 if aa
+# halts); the cause is fixed and the card resumed, and the halted arm refights all its 276
+# battles (a single-arm run does not read back a stopped run's; up to ~27 min). No futility or skips rule: the paired read needs
+# the baselines whole, and melee skips are read from the arm reports against aa's.
+
+set OUT = ../docs/bench/local
+
+scprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb wm xh ec wq bs; do rm -f bisect/hadur117.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh mmix && bash ./build-ablation.sh mcross && bash ./build-ablation.sh mscal && bash ./build-ablation.sh mwpath && bash ./build-ablation.sh mshade && mkdir -p work && rm -rf work/melee-scal-"$V"-aa work/melee-scal-"$V"-bb work/melee-scal-"$V"-wm work/melee-scal-"$V"-xh work/melee-scal-"$V"-ec work/melee-scal-"$V"-wq work/melee-scal-"$V"-bs && echo "$V" > work/melee-scal.version && for a in aa bb wm xh ec wq bs; do test -f bisect/hadur117.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-scal.args > work/melee-scal-$a.args || exit 1; done && rm -f ${OUT}/melee-scal-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+scaa   | mvn -q exec:java "-Dexec.args=@work/melee-scal-aa.args"
+  after: scprep
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+scbb   | mvn -q exec:java "-Dexec.args=@work/melee-scal-bb.args"
+  after: scaa
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+scwm   | mvn -q exec:java "-Dexec.args=@work/melee-scal-wm.args"
+  after: scbb
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+scxh   | mvn -q exec:java "-Dexec.args=@work/melee-scal-xh.args"
+  after: scwm
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+scec   | mvn -q exec:java "-Dexec.args=@work/melee-scal-ec.args"
+  after: scxh
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+scwq   | mvn -q exec:java "-Dexec.args=@work/melee-scal-wq.args"
+  after: scec
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+scbs   | mvn -q exec:java "-Dexec.args=@work/melee-scal-bs.args"
+  after: scwq
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+scread | V=$(cat work/melee-scal.version) && test -n "$V" && W=work/melee-scal-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm wm="$W"-wm --arm xh="$W"-xh --arm ec="$W"-ec --arm wq="$W"-wq --arm bs="$W"-bs --census melee-census-317.txt --seeds 6 --gain 0.3 --survival-slack 1 --out ${OUT}/melee-scal-read.md --title "ScalarR-inspired melee switches on $V" || true; } && test -s ${OUT}/melee-scal-read.md
+  after: scbs
+scpr   | bash tools/open_results_pr.sh claude/pc-melee-scal-results "ScalarR-inspired melee switches (MGUN-22, MMOVE-16..19)" ${OUT}/melee-scal-read.md $(ls ${OUT}/melee-scal-aa.md ${OUT}/melee-scal-bb.md ${OUT}/melee-scal-wm.md ${OUT}/melee-scal-xh.md ${OUT}/melee-scal-ec.md ${OUT}/melee-scal-wq.md ${OUT}/melee-scal-bs.md 2>/dev/null)
+  after: scread
