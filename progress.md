@@ -1,6 +1,6 @@
 # Queue pc-team-dodge2: progress
 
-Updated 2026-10-30 09:48:38 PC time (09:48 UTC), runner pid 85768.
+Updated 2026-10-30 10:03:45 PC time (10:03 UTC), runner pid 85768.
 
 - `d2prep` done, exit 0 in 3 min
 - `d2bb` done, exit 0 in 1.6 h
@@ -38,21 +38,20 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### d2df
 
-**1053 of 1472 battles** (72%), 0 failed. Running 1.3 h, 823 battles/h, about 31 min left (ends ~10:19 PC time). Last battle 0 min ago.
-Skipped turns a battle: 9.6 overall, first 100 10.1, last 100 6.5.
+**1340 of 1472 battles** (91%), 0 failed. Running 1.5 h, 875 battles/h, about 9 min left (ends ~10:12 PC time). Last battle 0 min ago.
+Skipped turns a battle: 9.5 overall, first 100 10.1, last 100 11.9.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 1053 |
+| `fails 20` | halt | ok | 0 failed of 1340 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 6.5 a battle over the last 100 (first 100: 10.1) |
+| `skips 40 over 100` | halt | ok | 11.9 a battle over the last 100 (first 100: 10.1) |
 
-Stopping now would leave 419 battles unrun (about 31 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 132 battles unrun (about 9 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-05:19:31 progress d2bb: 0/1472 (0%) battles, 0 failed
 05:49:46 progress d2bb: 350/1472 (24%) battles, 685/h, ETA 1.6 h, 0 failed, skips 9.6/battle (last 100)
 06:20:01 progress d2bb: 814/1472 (55%) battles, 802/h, ETA 49 min, 0 failed, skips 8.3/battle (last 100)
 06:50:14 progress d2bb: 1359/1472 (92%) battles, 895/h, ETA 8 min, 0 failed, skips 10.5/battle (last 100)
@@ -67,4 +66,5 @@ Stopping now would leave 419 battles unrun (about 31 min); every battle already 
 08:31:52 watching d2df: 3 stop rule(s)
 08:51:11 progress d2df: 181/1472 (12%) battles, 562/h, ETA 2.3 h, 0 failed, skips 10.6/battle (last 100)
 09:21:25 progress d2df: 609/1472 (41%) battles, 737/h, ETA 1.2 h, 0 failed, skips 10.0/battle (last 100)
+09:51:40 progress d2df: 1106/1472 (75%) battles, 832/h, ETA 26 min, 0 failed, skips 8.5/battle (last 100)
 ```
