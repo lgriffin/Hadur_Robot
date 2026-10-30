@@ -1,6 +1,6 @@
 # Queue pc-team-dodge2: progress
 
-Updated 2026-10-30 07:47:41 PC time (07:47 UTC), runner pid 85768.
+Updated 2026-10-30 08:02:48 PC time (08:02 UTC), runner pid 85768.
 
 - `d2prep` done, exit 0 in 3 min
 - `d2bb` done, exit 0 in 1.6 h
@@ -25,16 +25,16 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### d2dg
 
-**662 of 1472 battles** (45%), 0 failed. Running 53 min, 747 battles/h, about 1.1 h left (ends ~08:52 PC time). Last battle 0 min ago.
-Skipped turns a battle: 10.3 overall, first 100 9.3, last 100 9.4.
+**930 of 1472 battles** (63%), 0 failed. Running 1.1 h, 817 battles/h, about 40 min left (ends ~08:42 PC time). Last battle 0 min ago.
+Skipped turns a battle: 9.7 overall, first 100 9.3, last 100 8.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 662 |
+| `fails 20` | halt | ok | 0 failed of 930 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 9.4 a battle over the last 100 (first 100: 9.3) |
+| `skips 40 over 100` | halt | ok | 8.0 a battle over the last 100 (first 100: 9.3) |
 
-Stopping now would leave 810 battles unrun (about 1.1 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 542 battles unrun (about 40 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -53,4 +53,5 @@ Stopping now would leave 810 battles unrun (about 1.1 h); every battle already f
 06:54:31 start d2dg
 06:54:31 watching d2dg: 3 stop rule(s)
 07:20:28 progress d2dg: 273/1472 (19%) battles, 631/h, ETA 1.9 h, 0 failed, skips 12.8/battle (last 100)
+07:50:42 progress d2dg: 707/1472 (48%) battles, 755/h, ETA 1.0 h, 0 failed, skips 8.8/battle (last 100)
 ```
