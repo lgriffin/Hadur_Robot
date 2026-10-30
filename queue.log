@@ -26,3 +26,9 @@
 14:14:05 progress census: 2783/3636 (77%) battles, 582/h, ETA 1.5 h, 0 failed, skips 42.1/battle (last 100), aa -0.01, km +0.52
 14:44:24 progress census: 3098/3636 (85%) battles, 624/h, ETA 52 min, 0 failed, skips 41.0/battle (last 100), aa +0.00, km +0.50
 15:14:42 progress census: 3416/3636 (94%) battles, 636/h, ETA 21 min, 0 failed, skips 38.2/battle (last 100), aa +0.07, km +0.47
+15:36:45 census exit=0 in 19567 s
+15:36:45 start gate
+15:36:46 gate exit=0 in 1 s
+15:36:46 start pr
+15:36:58 pr exit=0 in 12 s
+15:36:58 ALLDONE
