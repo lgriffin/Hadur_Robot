@@ -30,3 +30,9 @@
 00:22:54 live-MIR exit=0 in 1012 s
 00:22:54 start live-SAOR
 00:22:54 watching live-SAOR: 3 stop rule(s)
+00:39:10 live-SAOR exit=0 in 975 s
+00:39:10 start read
+00:39:25 read exit=0 in 14 s
+00:39:25 start pr
+00:39:36 pr exit=0 in 11 s
+00:39:36 ALLDONE

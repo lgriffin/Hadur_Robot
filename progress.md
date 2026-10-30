@@ -1,6 +1,6 @@
 # Queue pc-deise-e06: progress
 
-Updated 2026-10-30 00:36:30 PC time (00:36 UTC), runner pid 55780.
+Updated 2026-10-30 00:39:36 PC time (00:39 UTC), runner pid 55780.
 
 - `prep` done, exit 0 in 0 min
 - `live-D` done, exit 0 in 17 min
@@ -10,9 +10,9 @@ Updated 2026-10-30 00:36:30 PC time (00:36 UTC), runner pid 55780.
 - `live-FAPW` done, exit 0 in 18 min
 - `live-PW` done, exit 0 in 18 min
 - `live-MIR` done, exit 0 in 17 min
-- `live-SAOR` running
-- `read` pending
-- `pr` pending
+- `live-SAOR` done, exit 0 in 16 min
+- `read` done, exit 0 in 0 min
+- `pr` done, exit 0 in 0 min
 
 ### live-D
 
@@ -107,26 +107,20 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-SAOR
 
-**222 of 276 battles** (80%), 0 failed. Running 14 min, 979 battles/h, about 3 min left (ends ~00:39 PC time). Last battle 0 min ago.
+**276 of 276 battles** (100%), 0 failed. Running 16 min, 1018 battles/h, about 0 min left (ends ~00:39 PC time). Last battle 0 min ago.
 Skipped turns a battle: 0.1 overall, first 100 0.1, last 100 0.1.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 222 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 | `skips 40 over 100` | halt | ok | 0.1 a battle over the last 100 (first 100: 0.1) |
 
-Stopping now would leave 54 battles unrun (about 3 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-23:21:52 progress live-FAW: 132/276 (48%) battles, 816/h, ETA 11 min, 0 failed, skips 0.1/battle (last 100)
-23:29:49 live-FAW exit=0 in 1059 s
-23:29:49 start live-FAPW
-23:29:49 watching live-FAPW: 3 stop rule(s)
-23:47:58 live-FAPW exit=0 in 1089 s
-23:47:58 start live-PW
 23:47:58 watching live-PW: 3 stop rule(s)
 23:52:07 progress live-PW: 60/276 (22%) battles, 866/h, ETA 15 min, 0 failed, skips 0.1/battle (last 100)
 00:06:02 live-PW exit=0 in 1083 s
@@ -136,4 +130,10 @@ Stopping now would leave 54 battles unrun (about 3 min); every battle already fo
 00:22:54 live-MIR exit=0 in 1012 s
 00:22:54 start live-SAOR
 00:22:54 watching live-SAOR: 3 stop rule(s)
+00:39:10 live-SAOR exit=0 in 975 s
+00:39:10 start read
+00:39:25 read exit=0 in 14 s
+00:39:25 start pr
+00:39:36 pr exit=0 in 11 s
+00:39:36 ALLDONE
 ```

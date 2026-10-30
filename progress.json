@@ -1,6 +1,6 @@
 {
  "plan": "pc-deise-e06",
- "updated": 1793320590.5557961,
+ "updated": 1793320776.8052433,
  "steps": {
   "prep": {
    "status": "done",
@@ -51,14 +51,22 @@
    "end": "2026-10-30T00:22:54"
   },
   "live-SAOR": {
-   "status": "running",
-   "start": "2026-10-30T00:22:54"
+   "status": "done",
+   "exit": 0,
+   "seconds": 975,
+   "end": "2026-10-30T00:39:10"
   },
   "read": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 14,
+   "end": "2026-10-30T00:39:25"
   },
   "pr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 11,
+   "end": "2026-10-30T00:39:36"
   }
  },
  "watched": [
@@ -366,8 +374,8 @@
   {
    "step": "live-SAOR",
    "started": 1793319774.527995,
-   "updated": 1793320590.546194,
-   "elapsed": 816.01819896698,
+   "updated": 1793320750.4088159,
+   "elapsed": 975.8808207511902,
    "expected": 276,
    "panel": null,
    "field": null,
@@ -375,20 +383,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 222,
+   "battles": 276,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 979.3899217097478,
-   "eta": 198.4909132622384,
-   "fraction": 0.8043478260869565,
-   "last_battle_age": 22.275546312332153,
+   "rate": 1018.1571139344355,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 0.22602009773254395,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 222"
+     "detail": "0 failed of 276"
     },
     {
      "rule": "stall 30m",
@@ -403,8 +411,8 @@
      "detail": "0.1 a battle over the last 100 (first 100: 0.1)"
     }
    ],
-   "skips_mean": 0.11711711711711711,
-   "skips_last100": 0.08
+   "skips_mean": 0.12318840579710146,
+   "skips_last100": 0.12
   }
  ]
 }
