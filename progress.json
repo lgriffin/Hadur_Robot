@@ -1,12 +1,16 @@
 {
  "plan": "pc-deise-e07",
- "updated": 1793380820.743732,
+ "updated": 1793381728.5632856,
  "steps": {
   "prep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 28,
+   "end": "2026-10-30T17:20:49"
   },
   "live-D": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-10-30T17:20:49"
   },
   "live-P3": {
    "status": "pending"
@@ -39,5 +43,49 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "live-D",
+   "started": 1793380849.1092076,
+   "updated": 1793381728.5546138,
+   "elapsed": 879.4454061985016,
+   "expected": 276,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 228,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 933.315467014601,
+   "eta": 185.1464013049477,
+   "fraction": 0.8260869565217391,
+   "last_battle_age": 16.43260431289673,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 228"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0.0 a battle over the last 100 (first 100: 0.0)"
+    }
+   ],
+   "skips_mean": 0.043859649122807015,
+   "skips_last100": 0.02
+  }
+ ]
 }
