@@ -1,0 +1,50 @@
+# 1v1, simple-gun dodge part 2 (BENCH-148, docs/bench/simple-gun-gap.md). Leigh starts it:
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-sg-wide        (or  ./queue.sh run pc-sg-wide)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes;
+# no step needs a decision. About 1.4 h of battles (pc-k1-aim ran 1,296 in 56 min) and seconds of analysis.
+#
+# Why: 3.20 is 3rd by 0.06 over Saguaro, which still leads us by +0.31 APS on the simple guns. A cloud
+# read on 40 of them (3.20 and Saguaro on the same battles) puts two thirds of the damage gap at 200 px
+# and beyond, where Hadur takes 2.5 to 3 times Saguaro's hits a tick. The aim members (MOVE-29) only read
+# three aims, and only learn from bullets that hit us. Two switches widen that: MOVE-31 reads all 18
+# simple aims (six angles at three lags), MOVE-30 also scores the members on bullets our bullets meet.
+# Cloud screen, 40 robots x 2 seeds, paired with 3.20: kw +0.34 +- 0.58 pp, kikw +0.51 +- 0.57, ki alone
+# -0.07 +- 0.57 (dropped). MOVE-29 read +1.05 +- 0.64 on the same screen and +0.13 APS on this card's set.
+#
+# aim:    the 434 simple-gun robots (simple-guns.txt) x c, aa, kw, kikw x 1 fresh seed from 5000 = 1,736
+#         battles, 35 rounds.
+# gate:   kikw and kw each at +0.05 APS, minus pooled c and aa over the 434 / 1,217 pairings, 95% low end
+#         above 0, A/A inside its band; per-robot differences with losses.
+# Stop rules (docs/bench/watch.md): the aim step halts on 30 failed battles, an arm scoring nothing in 8,
+# 40+ skipped turns a battle over the last 200, no battle in 30 minutes, or an A/A outside its z 3 band
+# after 20%; every battle fought is kept and a rerun resumes. It also finishes early once kikw cannot reach
+# +0.05 APS at z 3 after 30% (521 of 1,736 battles): that leaves at most 1,215 battles (about 55 min)
+# unrun, the gate reads the rows so far and the results PR says it stopped early. ALERT opens an issue for
+# Leigh on any stop.
+# Nothing here ships: on a pass a PR turns the passing switch on for the next census; the release rule stands.
+
+set V = 3.20
+set P = --parallel 12 --no-truth-log
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G --engine 1.11.1
+set W = work/sg-wide
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh aimwide && bash ./build-ablation.sh aimbhb,aimwide && test -f bisect/hadur117.Hadur_${V}kikw.jar && ./fetch-opponents.sh --set simple-guns.txt && mvn -q compile
+
+aim | ./bench-top20.sh ${C} ${P} --set simple-guns.txt --seeds 1 --seed-base 5000 --arms plans/sg-wide.arms --out ${W} --label sg-wide --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 40 over 200
+  stop: stall 30m
+  stop: aa after 20%
+  stop: futility kikw below 0.05 after 30%
+
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_sg-wide.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm kikw --panel simple-guns.txt --bar 0.05 --out ${OUT}/$(date +%Y-%m-%d)_sg-wide-gate-kikw.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm kw --panel simple-guns.txt --bar 0.05 --out ${OUT}/$(date +%Y-%m-%d)_sg-wide-gate-kw.md && python3 tools/per_robot.py ${W}/arms.tsv --arms kw kikw --out ${OUT}/$(date +%Y-%m-%d)_sg-wide-per-robot.md --out-tsv ${OUT}/sg-wide-per-robot.tsv
+  after: aim
+
+pr | bash tools/open_results_pr.sh claude/pc-sg-wide-results "1v1 simple-gun dodge part 2: wide aim members (MOVE-31) and intercepts (MOVE-30) on the 434 simple guns" ${OUT}/*_sg-wide*.md ${OUT}/sg-wide-per-robot.tsv $(find ${W} -maxdepth 1 -name EARLY-STOP.md)
+  after: gate
