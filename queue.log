@@ -21,3 +21,7 @@
 22:53:21 start live-L18
 22:53:21 watching live-L18: 3 stop rule(s)
 22:55:08 progress live-L18: 30/430 (7%) battles, 1009/h, ETA 24 min, 0 failed, skips 0.0/battle (last 100)
+23:25:18 live-L18 exit=0 in 1916 s
+23:25:18 start live-SC
+23:25:18 watching live-SC: 3 stop rule(s)
+23:25:23 progress live-SC: 0/430 (0%) battles, 0 failed
