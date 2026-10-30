@@ -23,8 +23,8 @@
 # msprep reads the version from hadur-robot/pom.xml, so a bump cannot point the card at stale
 # jars, and fixes the width and version in work/, so a resumed card never mixes host profiles or
 # reads another version's battles. Prep clears the arms' battle folders, since it rebuilds their jars.
-# Stop rules (docs/bench/watch.md), halts only, each keeping every battle fought: fails 20, dead 8,
-# stall 30m on each arm. A halt leaves that arm's remaining battles (up to 276) and every later arm
+# Stop rules (docs/bench/watch.md), halts only, each keeping every battle fought: fails 20 and
+# stall 30m on each arm (each arm is its own single-arm step, so `dead` cannot be read). A halt leaves that arm's remaining battles (up to 276) and every later arm
 # unrun (ms runs last, so any halt loses the arm under test until the cause is fixed and the card
 # resumed). No futility or skips rule: the paired read needs all three arms whole, and melee skips
 # are read from the arm reports against aa's.
@@ -36,19 +36,16 @@ msaa   | mvn -q exec:java "-Dexec.args=@work/melee-surf-aa.args"
   after: msprep
   watch: battles=276
   stop: fails 20
-  stop: dead 8
   stop: stall 30m
 msbb   | mvn -q exec:java "-Dexec.args=@work/melee-surf-bb.args"
   after: msaa
   watch: battles=276
   stop: fails 20
-  stop: dead 8
   stop: stall 30m
 msms   | mvn -q exec:java "-Dexec.args=@work/melee-surf-ms.args"
   after: msbb
   watch: battles=276
   stop: fails 20
-  stop: dead 8
   stop: stall 30m
 msread | V=$(cat work/melee-surf.version) && test -n "$V" && W=work/melee-surf-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm ms="$W"-ms --census melee-census-317.txt --seeds 6 --gain 0.3 --survival-slack 1 --out ${OUT}/melee-surf-read.md --title "Melee surfer on $V" || true; } && test -s ${OUT}/melee-surf-read.md
   after: msms

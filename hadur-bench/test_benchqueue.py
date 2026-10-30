@@ -527,3 +527,13 @@ class ShippedPlanTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PlansOnMasterTest(unittest.TestCase):
+    def test_every_card_binds_its_watch_and_stop_rules(self):
+        """A card the runner refuses at start (a bad stop rule, say) fails here, not on the PC."""
+        home = Path(__file__).resolve().parent
+        prof = benchqueue.host_profile(None, home)
+        for plan in sorted((home / "plans").glob("*.queue")):
+            with self.subTest(plan=plan.name):
+                benchqueue.bind_watches(benchqueue.read_plan(plan, prof), home)
