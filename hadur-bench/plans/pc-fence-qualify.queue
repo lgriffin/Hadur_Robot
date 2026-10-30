@@ -29,7 +29,8 @@
 # on: puts each roborumble.txt back and sets the test battles aside (<file>.qualify-<n>), so none is ever
 #   uploaded. IF THE CARD STOPS BEFORE THIS STEP, rerun it without --fresh: it resumes and restores.
 # score, check: the client verdict (qualify.md) and the bench verdict (host-check.md).
-# report (after check; it waits up to 10 minutes for score, which follows the clients' last battle), pr: one page (fence-qualify.md) and a results PR.
+# report (after check; it waits up to 10 minutes for score, which follows the clients' last battle, and fails
+#   without it, so no results PR lacks the client verdict), pr: one page (fence-qualify.md) and a results PR.
 #
 # stop: the bench steps are single-arm runs, which the progress watcher (benchwatch.py) cannot read, so
 #   there are no machine-read stop rules. The stops are the timeout: lines (a stuck step is killed, the
@@ -96,7 +97,7 @@ score | ${PY} tools/qualify_pc.py score ${W} --clean ${CLEAN} --robot "${PKG}.Ha
 check | ${PY} tools/host_check.py duel=${B}-duel team=${B}-team duel2=${B}-duel2 --out ${W}/host-check.md; test -s ${W}/host-check.md
   after: stopclients
 
-report | for i in $(seq 120); do test -s ${W}/qualify.md && break; sleep 5; done; { echo "# Fenced clients beside the bench: run ${RUN}"; echo; echo "## The fence"; echo; cat ${W}/fence.md; echo; echo "## Bench (host-check battles on the bench side while the clients fight)"; echo; sed '1s/^# /### /' ${W}/host-check.md; echo; echo "## Clients (uploads off, against the clean cloud first pass)"; echo; sed '1s/^# /### /' ${W}/qualify.md; } > ${W}/fence-qualify.md && cat ${W}/fence-qualify.md
+report | for i in $(seq 120); do test -s ${W}/qualify.md && break; sleep 5; done; test -s ${W}/qualify.md || { echo "report: no client verdict (${W}/qualify.md); rerun without --fresh once score is done" >&2; exit 1; }; { echo "# Fenced clients beside the bench: run ${RUN}"; echo; echo "## The fence"; echo; cat ${W}/fence.md; echo; echo "## Bench (host-check battles on the bench side while the clients fight)"; echo; sed '1s/^# /### /' ${W}/host-check.md; echo; echo "## Clients (uploads off, against the clean cloud first pass)"; echo; sed '1s/^# /### /' ${W}/qualify.md; } > ${W}/fence-qualify.md && cat ${W}/fence-qualify.md
   after: check
 
 pr | bash tools/open_results_pr.sh claude/pc-fence-qualify-run${RUN}-results "Fenced clients beside the bench: run ${RUN} (uploads off)" ${W}/fence-qualify.md $(ls ${W}/*.tsv ${W}/watch.log 2>/dev/null)

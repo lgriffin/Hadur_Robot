@@ -143,10 +143,12 @@ def topology_windows():
     cores = _win_records(0)
     groups = sorted({tuple(cpus_of_mask(r["mask"])) for r in l3 if r["group"] == 0 and r["mask"]})
     core_sets = sorted({tuple(cpus_of_mask(r["mask"])) for r in cores if r["group"] == 0 and r["mask"]})
-    return {"l3": [list(g) for g in groups], "cores": [list(c) for c in core_sets], "source": "GetLogicalProcessorInformationEx"}
+    return {"l3": [list(g) for g in groups], "cores": [list(c) for c in core_sets],
+            "groups": len({r["group"] for r in l3 + cores}) or 1, "source": "GetLogicalProcessorInformationEx"}
 
 
-def topology_linux(root="/sys/devices/system/cpu"):
+def topology_linux(root="/sys/devices/system/cpu", allowed=None):
+    """L3 groups and cores from sysfs, cut to `allowed` (this process's affinity or container cpuset)."""
     root = Path(root)
     l3, cores = set(), set()
     for cpu in root.glob("cpu[0-9]*"):
@@ -160,12 +162,16 @@ def topology_linux(root="/sys/devices/system/cpu"):
             cores.add(tuple(parse_cpus((cpu / "topology" / "thread_siblings_list").read_text().strip())))
         except (OSError, FenceError):
             pass
-    return {"l3": [list(g) for g in sorted(l3)], "cores": [list(c) for c in sorted(cores)], "source": str(root)}
+    if allowed is not None:
+        allowed = set(allowed)
+        l3 = {tuple(c for c in g if c in allowed) for g in l3}
+        cores = {tuple(c for c in g if c in allowed) for g in cores}
+    return {"l3": [list(g) for g in sorted(l3) if g], "cores": [list(c) for c in sorted(cores) if c], "source": str(root)}
 
 
 def topology():
     try:
-        topo = topology_windows() if IS_WIN else topology_linux()
+        topo = topology_windows() if IS_WIN else topology_linux(allowed=os.sched_getaffinity(0))
     except (AttributeError, OSError, ValueError):
         topo = {"l3": [], "cores": [], "source": "unreadable"}
     topo["logical"] = os.cpu_count() or 1
@@ -182,6 +188,10 @@ def split(topo, env=None, local=None):
     """{"bench": [...], "clients": [...], "why": text} for this host."""
     env = os.environ if env is None else env
     local = hostprofile.read_local(BENCH_HOME) if local is None else local
+    if topo.get("groups", 1) > 1:
+        # Affinity masks here hold one processor group (64 processors); a split of group 0 alone would
+        # leave the other groups to neither side.
+        raise FenceError(f"{topo['groups']} Windows processor groups: the fence handles one (64 processors)")
     every = sorted({c for g in topo["l3"] for c in g} | {c for g in topo["cores"] for c in g}) \
         or list(range(topo.get("logical") or 1))
     bench_set, client_set = setting("FENCE_BENCH_CPUS", env, local), setting("FENCE_CLIENT_CPUS", env, local)

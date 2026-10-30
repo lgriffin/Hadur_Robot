@@ -47,6 +47,23 @@ class SplitTest(unittest.TestCase):
         with self.assertRaises(fence.FenceError):
             fence.split({"l3": [], "cores": [], "logical": 2, "source": "test"}, env={}, local={})
 
+    def test_a_host_with_several_processor_groups_is_refused(self):
+        with self.assertRaises(fence.FenceError):
+            fence.split(dict(PC, groups=2), env={}, local={})
+
+    def test_linux_topology_keeps_only_the_cpus_this_process_may_use(self):
+        with tempfile.TemporaryDirectory() as d:
+            for cpu in range(4):
+                base = Path(d, f"cpu{cpu}")
+                (base / "cache" / "index3").mkdir(parents=True)
+                (base / "cache" / "index3" / "level").write_text("3\n")
+                (base / "cache" / "index3" / "shared_cpu_list").write_text("0-1\n" if cpu < 2 else "2-3\n")
+                (base / "topology").mkdir()
+                (base / "topology" / "thread_siblings_list").write_text(f"{cpu}\n")
+            topo = fence.topology_linux(d, allowed={0, 1, 2})
+            self.assertEqual(topo["l3"], [[0, 1], [2]])
+            self.assertEqual(topo["cores"], [[0], [1], [2]])
+
     def test_cpu_lists_and_masks_round_trip(self):
         self.assertEqual(fence.parse_cpus("0-3,8, 10-11"), [0, 1, 2, 3, 8, 10, 11])
         self.assertEqual(fence.format_cpus([11, 10, 8, 3, 2, 1, 0]), "0-3,8,10-11")
