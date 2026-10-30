@@ -6,23 +6,23 @@ import robocode.util.Utils;
 
 /**
  * Sanaro, a NanoMelee robot (docs/sanaro.md): anti-gravity from where each robot is about to be,
- * turned SPIRAL off the field's direction (none as it ships: straight away, which reads best where
- * NanoMelee is scored), with a radar that sweeps while the gun cools and flips on the target once
- * it is nearly ready, a hedged lead and a table of bullet power by both robots' energy. The
- * anti-gravity and the hedge come from the open DustBunny, Quantum and NaturalScience line; the
- * table and the radar's threshold are Sanaro's. One class within NanoMelee's 249 bytes (SANARO-1).
+ * with a radar that sweeps while the gun cools and flips on the target once it is nearly ready, a
+ * flat lead of its own, a gun that fires only once it is on the lead, and a table of bullet power
+ * by both robots' energy. The anti-gravity and the fire gate come from the open DustBunny, Quantum
+ * and NaturalScience line; the lead, the table and the radar's threshold are Sanaro's. One class
+ * within NanoMelee's 249 bytes (SANARO-1).
  */
 public class Sanaro extends AdvancedRobot {
     // The field's memory from one scan to the next (SANARO-3).
     static final double DECAY = 0.9;
     // Drive: ahead this far less the turn still to make, in degrees; backwards past it (SANARO-4).
     static final double AHEAD = 120;
-    // The spiral: the drive's angle off the anti-gravity direction, radians (SANARO-3). 0.6 read
-    // best on the NanoMelee-only census, but no spiral reads +0.88 over 0.6 on the live-shaped census,
-    // the one LiteRumble scores (pc-sanaro-n01, docs/sanaro.md section 6); 0 is also 2 bytes less.
-    static final double SPIRAL = 0;
-    // The hedged lead: lateral velocity over (LEAD + LEAD_GROWTH ^ distance) (SANARO-7).
-    static final double LEAD = 10, LEAD_GROWTH = 1.008;
+    // The lead: lateral velocity over LEAD at every range (SANARO-7), Sanaro's own. It reads about
+    // 0.5 under Quantum's v / (10 + 1.008^d) but frees the 9 bytes the fire gate needs, and the gate
+    // pays +1.06 (pc-sanaro-n04, docs/sanaro.md section 12).
+    static final double LEAD = 16;
+    // The fire gate: fire only when the gun is within GATE / distance radians of the lead (SANARO-14).
+    static final int GATE = 18;
     // Below this gun heat each scan of the target flips the radar (SANARO-6).
     static final double LOCK = 0.9;
     // The target threshold creeps out this far every scan (SANARO-5).
@@ -43,15 +43,17 @@ public class Sanaro extends AdvancedRobot {
         double aim, bearing;
         setTurnRightRadians(Utils.normalRelativeAngle(Math.atan2(
             (fx = fx * DECAY - Math.sin(aim = (bearing = e.getBearingRadians() + getHeadingRadians())
-                + e.getVelocity() / (LEAD + Math.pow(LEAD_GROWTH, d = (int) e.getDistance()))
-                * Math.sin(e.getHeadingRadians() - bearing)) / d) + wall(getX()),
+                + e.getVelocity() / LEAD
+                * Math.sin(e.getHeadingRadians() - bearing)) / (d = (int) e.getDistance())) + wall(getX()),
             (fy = fy * DECAY - Math.cos(aim) / d) + wall(getY()))
-            - getHeadingRadians() + SPIRAL));
+            - getHeadingRadians()));
         setAhead(AHEAD - Math.abs(getTurnRemaining()));
         if (d < (range += CREEP)) {
             setTurnRadarRight((getGunHeat() - LOCK) * getRadarTurnRemaining());
-            setFire(BAND / (range = d) * POWER.charAt(((int) getEnergy() << 7) + (int) e.getEnergy()) / 40.0);
-            setTurnGunRightRadians(Utils.normalRelativeAngle(aim - getGunHeadingRadians()));
+            setTurnGunRightRadians(aim = Utils.normalRelativeAngle(aim - getGunHeadingRadians()));
+            // |aim| < GATE / d in integers: the shot leaves along the gun as it stands (SANARO-14).
+            if ((int) (aim * (range = d)) / GATE == 0)
+                setFire(BAND / d * POWER.charAt(((int) getEnergy() << 7) + (int) e.getEnergy()) / 40.0);
         }
     }
 

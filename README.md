@@ -86,7 +86,7 @@ Best live results as of 2026-10-29:
 | [**TwinSaor**](twinsaor/) `hadur117.twin.TwinSaor` | Twin Duel (2v2) | 1,995 B of 1,999 | **1st of 28**, 70.28 ± 0.50 (0.2, 2026-10-28) | [README](twinsaor/README.md) |
 | [**Saor**](saor/) `hadur117.micro.Saor` | MicroMelee | 723 B of 749 | **1st of 157**, 69.80 ± 0.43 (0.3, 2026-10-27) | [README](saor/README.md) |
 | [**Deise**](deise/) `hadur117.mini.Deise` | MiniMelee | 1,494 B of 1,499 | **2nd of 206**, 69.81 ± 0.33 (0.3, 2026-10-28), 1.38 behind kc.mini.Mirage | [README](deise/README.md) |
-| [**Sanaro**](sanaro/) `hadur117.nano.Sanaro` | NanoMelee | 247 B of 249 | 0.1 released 2026-10-28; first pass filling, 2nd of 90 at 65.02 (80 of 89 pairings) | [README](sanaro/README.md) |
+| [**Sanaro**](sanaro/) `hadur117.nano.Sanaro` | NanoMelee | 249 B of 249 | 0.1 live 2nd of 90 at 65.21 (Quantum 66.44); 0.2 (fire gate, bench +0.55) built | [README](sanaro/README.md) |
 | [**JayLexi**](jaylexi/) `hadur117.mini.JayLexi` | MiniRumble (1v1) | 1,496 B of 1,499 | **6th of 671**, 86.95 ± 0.29 (0.1, 2026-10-29), 0.40 behind 5th | [README](jaylexi/README.md) |
 | [**Eveimear**](eveimear/) `hadur117.micro.Eveimear` | MicroRumble (1v1) | 722 B of 749 | **9th of 516**, 83.36 ± 0.33 (0.1, 2026-10-29), 1.57 behind 5th | [README](eveimear/README.md) |
 
@@ -95,8 +95,8 @@ Best live results as of 2026-10-29:
 - **Saor** is a Markov-gun micro melee bot that learns from every scan ([docs/saor.md](docs/saor.md)).
 - **Deise** is a least-risk mini melee bot with seen-shot waves, built to take 1st from
   kc.mini.Mirage ([docs/deise.md](docs/deise.md)).
-- **Sanaro** is a nano melee bot: anti-gravity turned off the push, a branch-free radar and a table of
-  bullet power by both robots' energy ([docs/sanaro.md](docs/sanaro.md)).
+- **Sanaro** is a nano melee bot: anti-gravity, a branch-free radar, a gun that fires only on its lead
+  and a table of bullet power by both robots' energy ([docs/sanaro.md](docs/sanaro.md)).
 - **JayLexi** (a wave surfer with a GuessFactor gun) and **Eveimear** (stop-and-go movement over a
   GuessFactor gun) are 1v1 size bots from Leigh's kitlab design ([docs/kitlab.md](docs/kitlab.md)).
 

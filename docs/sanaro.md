@@ -302,7 +302,30 @@ census, 43 fields x 10 fresh seeds (base 18000), read against S0 (`sanaro-n04-li
 
 The best passing arm at 249 bytes or under ships as 0.2. GG against CL says what the lead costs.
 
-## 12. Stages
+## 12. pc-sanaro-n04 results (stage N5, 2026-10-30, PR #445)
+
+430 battles an arm, live-shaped census, fresh seeds (base 18000), against S0 (64.85 ± 0.23):
+
+| Arm | Bytes | vs S0 | Read |
+|---|---|---|---|
+| GG | 258 | +1.06 ± 0.32 | the gate golfed, same play: n03's +0.99 again, but does not fit |
+| CL | 249 | +0.55 ± 0.32 | **passes, fits: ships as 0.2** |
+| CL22 | 249 | +0.45 ± 0.32 | passes, a little under CL |
+| A | 245 | +0.28 ± 0.32 | the smooth power band gives back a quarter |
+| CL12 | 249 | -0.44 ± 0.34 | too much lead |
+| EN | 273 | -0.56 ± 0.33 | energy-weighted push loses |
+| D2 | 261 | -1.67 ± 0.35 | inverse-square push loses |
+
+The flat lead costs about 0.5 against Quantum's growing one (GG less CL), so the gate keeps half its
+gain inside 249 bytes. Lead 16 and 22 read level and 12 loses, so the optimum sits at or above 16.
+The live-shaped census transfers 1:1 (0.1: bench 65.17, live 65.21), so 0.2 projects about 65.8,
+still 2nd behind Quantum's 66.44. The remaining 0.5 is the growing lead's: 9 bytes found anywhere
+else buys it back.
+
+0.2 (`Sanaro.java`): CL as written for the bench, with LEAD = 16 and GATE = 18 as constants;
+249 bytes by SanaroJarIT. SANARO-7 now states the flat lead; SANARO-14 is the gate.
+
+## 13. Stages
 
 | Stage | What | Gate |
 |---|---|---|
@@ -311,10 +334,10 @@ The best passing arm at 249 bytes or under ships as 0.2. GG against CL says what
 | N2 | pc-sanaro-n01 (section 6): S0 picked, +0.88 over 0.6 on the live-shaped census | as section 5 |
 | N3 | pc-sanaro-n02 (section 7, results section 8): flat, nothing passes | an arm over S0 on the live-shaped census |
 | N4 | pc-sanaro-n03 (section 9, results section 10): the gate passes (+0.99), 277 bytes | an arm over S0 on the live-shaped census |
-| N5 | pc-sanaro-n04 (section 11): the gate in 249 bytes with Sanaro's own lead | an arm at 249 bytes or under over S0 on the live-shaped census |
+| N5 | pc-sanaro-n04 (section 11, results section 12): CL passes, +0.55 at 249 bytes | an arm at 249 bytes or under over S0 on the live-shaped census |
 | N6 | release 0.2, first rumble read after 500 battles | SANARO-13 on the final jar (0.1 released 2026-10-28, live 2nd at 65.21) |
 
-## 13. Uniqueness
+## 14. Uniqueness
 
 Leigh's rule for Saor holds here: inspired by others, never a copy. Sanaro shares the open
 DustBunny line's anti-gravity and lead, which every bot at the top of NanoMelee shares, and
