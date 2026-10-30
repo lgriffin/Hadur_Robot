@@ -1,10 +1,10 @@
 # Queue pc-sanaro-n05: progress
 
-Updated 2026-10-30 21:08:14 PC time (21:08 UTC), runner pid 46788.
+Updated 2026-10-30 21:23:22 PC time (21:23 UTC), runner pid 46788.
 
 - `prep` done, exit 0 in 0 min
-- `live-S2` running
-- `live-LQ` pending
+- `live-S2` done, exit 0 in 30 min
+- `live-LQ` running
 - `live-LL` pending
 - `live-LR` pending
 - `live-L18` pending
@@ -14,16 +14,28 @@ Updated 2026-10-30 21:08:14 PC time (21:08 UTC), runner pid 46788.
 
 ### live-S2
 
-**200 of 430 battles** (47%), 0 failed. Running 15 min, 812 battles/h, about 17 min left (ends ~21:25 PC time). Last battle 1 min ago.
+**430 of 430 battles** (100%), 0 failed. Running 30 min, 863 battles/h, about 0 min left (ends ~21:23 PC time). Last battle 0 min ago.
 Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 200 |
-| `stall 30m` | halt | ok | last battle 1 min ago |
+| `fails 20` | halt | ok | 0 failed of 430 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
 | `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
 
-Stopping now would leave 230 battles unrun (about 17 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### live-LQ
+
+**0 of 430 battles** (0%), 0 failed. Running 0 min. Last battle 0 min ago.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 0 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | waiting | 0 of 100 battles to read |
+
+Stopping now would leave 430 battles unrun; every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -35,4 +47,7 @@ Stopping now would leave 230 battles unrun (about 17 min); every battle already 
 20:53:27 start live-S2
 20:53:27 watching live-S2: 3 stop rule(s)
 20:54:07 progress live-S2: 4/430 (1%) battles, 365/h, ETA 1.2 h, 0 failed, skips 0.0/battle (last 100)
+21:23:21 live-S2 exit=0 in 1793 s
+21:23:21 start live-LQ
+21:23:21 watching live-LQ: 3 stop rule(s)
 ```
