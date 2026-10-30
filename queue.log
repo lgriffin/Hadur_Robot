@@ -1,1 +1,7 @@
 05:16:29 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
+05:16:29 start d2prep
+05:16:33 progress pushed to origin claude/pc-team-dodge2-progress (every 15 min)
+05:19:06 d2prep exit=0 in 156 s
+05:19:06 start d2bb
+05:19:06 watching d2bb: 3 stop rule(s)
+05:19:31 progress d2bb: 0/1472 (0%) battles, 0 failed

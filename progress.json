@@ -1,12 +1,16 @@
 {
  "plan": "pc-team-dodge2",
- "updated": 1793337389.5279634,
+ "updated": 1793338297.3177211,
  "steps": {
   "d2prep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 156,
+   "end": "2026-10-30T05:19:06"
   },
   "d2bb": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-10-30T05:19:06"
   },
   "d2dg": {
    "status": "pending"
@@ -24,5 +28,49 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "d2bb",
+   "started": 1793337546.2561393,
+   "updated": 1793338297.3105452,
+   "elapsed": 751.0544059276581,
+   "expected": 1472,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 95,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 455.3598212070693,
+   "eta": 10886.335968025107,
+   "fraction": 0.06453804347826086,
+   "last_battle_age": 5.819116115570068,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 95"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "95 of 100 battles to read"
+    }
+   ],
+   "skips_mean": 7.88421052631579,
+   "skips_last100": 7.88421052631579
+  }
+ ]
 }
