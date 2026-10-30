@@ -1,3 +1,5 @@
+# RETIRED 2026-10-30 after it ran (PR #439): MOVE-29 ships on from 3.20 (PR #441), so aimmem is a no-op on
+# master and c, aa and km all play the same aim; the 3.20 census (PR #454) read it against noaim.
 # 1v1 plan to 3rd, the simple-gun gap (BENCH-140, docs/bench/simple-gun-gap.md). Leigh starts it:
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-sg-aim        (or  ./queue.sh run pc-sg-aim)
