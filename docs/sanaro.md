@@ -325,7 +325,39 @@ else buys it back.
 0.2 (`Sanaro.java`): CL as written for the bench, with LEAD = 16 and GATE = 18 as constants;
 249 bytes by SanaroJarIT. SANARO-7 now states the flat lead; SANARO-14 is the gate.
 
-## 13. Stages
+## 13. 0.2 live, the lead screen and the next card: pc-sanaro-n05 (stage N6)
+
+**0.2 live (2026-10-30, 271 battles):** NanoMelee 2nd at 65.18 ± 0.53, Quantum 66.41. Pairing by
+pairing against 0.1's page it reads -0.03 ± 0.41 (one standard error), so the first pass cannot yet
+tell 0.2 from 0.1; the bench's +0.55 sits inside it. Survival rose from 14.97 to 18.90, as the bench
+said (15.9 to 19.6).
+
+**The cloud lead screen** (on 0.2, live-shaped census, 2 seeds, 86 battles an arm, about ±0.7):
+
+| Arm | Bytes | vs 0.2 |
+|---|---|---|
+| LQ: Quantum's lead v / (10 + 1.008^d) | 258 | +0.75 |
+| LL: linear lead v / (8 + d / 32) | 253 | +0.56 |
+| L18: flat v / 18 | 249 | +0.30 |
+| LR: v / sqrt(d), bearing in aim's slot | 249 | +0.25 |
+| LS: linear v / (6 + d / 16) | 253 | +0.18 |
+| L20: flat v / 20 | 249 | +0.13 |
+| SC: ScalarR's energy cap, own energy / 15 at range | 249 | -0.08 |
+| S6: own energy / 6 inside 320 px | 249 | -0.41 |
+
+The fit: v / sqrt(d) is within a unit of v / (8 + d / 32) from 100 to 500 px and costs 2 bytes
+less, and the bearing can live in aim's slot, which aim only takes after the lead has read it: 2
+more. Two seeds cannot tell LR from LL; ten can. SC and S6 test ScalarR's cap (power falls with its
+own energy, Leigh 2026-10-30); Sanaro's table already falls as own energy / 16, which is why they
+read flat.
+
+`hadur-bench/plans/pc-sanaro-n05.queue`, Leigh starts it from master:
+`.\queue.ps1 run pc-sanaro-n05`. About 2.8 h at 12 workers, with stop rules and ALERT; 43 fields x
+10 fresh seeds (base 20000), read against S2 (`sanaro-n05-live.md` on
+`claude/pc-sanaro-n05-results`). Arms S2, LQ, LL, LR, L18, SC. The best passing arm at 249 bytes or
+under ships as 0.3.
+
+## 14. Stages
 
 | Stage | What | Gate |
 |---|---|---|
@@ -335,9 +367,9 @@ else buys it back.
 | N3 | pc-sanaro-n02 (section 7, results section 8): flat, nothing passes | an arm over S0 on the live-shaped census |
 | N4 | pc-sanaro-n03 (section 9, results section 10): the gate passes (+0.99), 277 bytes | an arm over S0 on the live-shaped census |
 | N5 | pc-sanaro-n04 (section 11, results section 12): CL passes, +0.55 at 249 bytes | an arm at 249 bytes or under over S0 on the live-shaped census |
-| N6 | release 0.2, first rumble read after 500 battles | SANARO-13 on the final jar (0.1 released 2026-10-28, live 2nd at 65.21) |
+| N6 | release 0.2 (2026-10-30, live 2nd at 65.18 after 271 battles); pc-sanaro-n05 (section 13): a growing lead in 249 bytes | an arm at 249 bytes or under over 0.2 on the live-shaped census |
 
-## 14. Uniqueness
+## 15. Uniqueness
 
 Leigh's rule for Saor holds here: inspired by others, never a copy. Sanaro shares the open
 DustBunny line's anti-gravity and lead, which every bot at the top of NanoMelee shares, and

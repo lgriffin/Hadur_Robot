@@ -1,6 +1,6 @@
-# Sanaro's arms (docs/sanaro.md, stage N5: pc-sanaro-n04; N4 was pc-sanaro-n03). The seds below were
-# written against 0.1's source (git tag sanaro-v0.1); 0.2 is CL, so a new card rebases its arms on
-# 0.2 (sanaro_arms.sh stops on an arm that changes nothing). One arm a line:
+# Sanaro's arms (docs/sanaro.md). N6's arms (pc-sanaro-n05) come first and are written against 0.2's
+# source; the rows after them were written against 0.1's (git tag sanaro-v0.1) and no longer apply
+# (sanaro_arms.sh stops on an arm that changes nothing). One arm a line:
 #   NAME | what it changes | sed over sanaro/src/main/java/hadur117/nano/Sanaro.java (empty: none)
 #   NAME | what | sed (may be empty) | sanaro/table.py options: the arm plays that power table
 #   NAME | what | @robot name     a seated robot (live census only)
@@ -9,6 +9,16 @@
 # the first set (S06 = spiral 0.6 base; git history of this file) and picked S0 on the live-shaped
 # census, +0.88 ± 0.45 over 0.6. pc-sanaro-n02 (PR #408) ran the power curves (Q7, D10, L20, T60),
 # a 0.2 spiral and the 800 px band: all inside ±0.32 of S0 but B800 (-0.39); their rows stay below.
+# N6 (pc-sanaro-n05): a growing lead in 249 bytes, on 0.2. v / sqrt(d) is v / (8 + d / 32) within
+# a unit from 100 to 500 px and 2 bytes cheaper; keeping the bearing in aim's slot (aim is assigned
+# after the lead reads it) saves 2 more with the same play.
+S2 | Sanaro 0.2 as it ships (control, 249 B) |
+LQ | Quantum's lead v / (10 + 1.008^d) (258 B, reference) | s#e.getVelocity() / LEAD#e.getVelocity() / (10 + Math.pow(1.008, d = (int) e.getDistance()))#;s#/ (d = (int) e.getDistance())) + wall(getX())#/ d) + wall(getX())#
+LL | linear lead v / (8 + d / 32) (253 B, reference) | s#e.getVelocity() / LEAD#e.getVelocity() / (8 + ((d = (int) e.getDistance()) >> 5))#;s#/ (d = (int) e.getDistance())) + wall(getX())#/ d) + wall(getX())#
+LR | lead v / sqrt(d) (about v / (8 + d / 32) from 100 to 500 px); bearing kept in aim's slot (249 B) | s#e.getVelocity() / LEAD#e.getVelocity() / Math.sqrt(d = (int) e.getDistance())#;s#/ (d = (int) e.getDistance())) + wall(getX())#/ d) + wall(getX())#;s#Math.sin(aim = (bearing = e.getBearingRadians()#Math.sin(aim = (aim = e.getBearingRadians()#;s#Math.sin(e.getHeadingRadians() - bearing)#Math.sin(e.getHeadingRadians() - aim)#;s#double aim, bearing;#double aim;#
+L18 | flat lead v / 18 (249 B) | s#LEAD = 16;#LEAD = 18;#
+SC | ScalarR's far cap: base power own energy / 15 (no 0.1 floor); the 640 / d band doubles it inside 320 px, about E / 7.5 | | --floor 0 --div 15
+# 0.1's arms (N2 to N5):
 S0 | Sanaro 0.1: straight anti-gravity, the shipped table (247 B) |
 T60 | 3.0 from 60 own energy instead of 120, n02's best (+0.23 ± 0.32), on fresh seeds (247 B) | | --top-at 60
 L10 | the radar flips below gun heat 1.0 instead of 0.9: dconst_1, 2 bytes less (245 B) | s#LOCK = 0.9;#LOCK = 1.0;#
