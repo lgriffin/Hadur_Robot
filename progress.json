@@ -1,6 +1,6 @@
 {
  "plan": "pc-melee-surf",
- "updated": 1793375610.0951612,
+ "updated": 1793376517.8311713,
  "steps": {
   "msprep": {
    "status": "done",
@@ -29,8 +29,8 @@
   {
    "step": "msaa",
    "started": 1793374985.4865794,
-   "updated": 1793375610.0860415,
-   "elapsed": 624.5994620323181,
+   "updated": 1793376517.8228083,
+   "elapsed": 1532.3362288475037,
    "expected": 276,
    "panel": null,
    "field": null,
@@ -38,30 +38,30 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 72,
+   "battles": 252,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 414.9859482052971,
-   "eta": 1769.6984757582345,
-   "fraction": 0.2608695652173913,
-   "last_battle_age": 49.926406145095825,
+   "rate": 592.0371671185511,
+   "eta": 145.93678369976226,
+   "fraction": 0.9130434782608695,
+   "last_battle_age": 0.26151609420776367,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 72"
+     "detail": "0 failed of 252"
     },
     {
      "rule": "stall 30m",
      "action": "halt",
      "state": "ok",
-     "detail": "last battle 1 min ago"
+     "detail": "last battle 0 min ago"
     }
    ],
-   "skips_mean": 117.43055555555556,
-   "skips_last100": 117.43055555555556
+   "skips_mean": 88.36111111111111,
+   "skips_last100": 80.77
   }
  ]
 }
