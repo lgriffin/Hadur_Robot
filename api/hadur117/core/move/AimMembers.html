@@ -121,7 +121,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>(package private) static final double</code></div>
 <div class="col-second even-row-color"><code><a href="#AIM_PRIOR" class="member-name-link">AIM_PRIOR</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">An aim's standing weight against the views' 1.</div>
+<div class="block">An aim's standing weight against the views' 1, for the three narrow aims.</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static final int[]</code></div>
 <div class="col-second odd-row-color"><code><a href="#AIMS" class="member-name-link">AIMS</a></code></div>
@@ -148,6 +148,19 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">The power of 2 on the score in a member's weight.</div>
 </div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#PRIOR" class="member-name-link">PRIOR</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Each aim's standing weight: <a href="#AIM_PRIOR">0.1</a> for the three narrow aims, and the same
+ total (0.3) shared out over the wide set, so the views' head start is the same.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#WIDE" class="member-name-link">WIDE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-31">MOVE-31</a>: the wide set, every simple angle <a href="../physics/SimpleAims.html" title="class in hadur117.core.physics"><code>SimpleAims</code></a> gives
+ (head-on, linear, circular, averaged linear and the two one-line linear aims) at each of
+ its three lags, in place of the three aims one tick back.</div>
+</div>
 </div>
 </section>
 </li>
@@ -169,7 +182,7 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
@@ -207,6 +220,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Each member's weight now: its standing weight times 2^(POWER x score).</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static int[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#wideAims()" class="member-name-link">wideAims</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-31">MOVE-31</a>: every angle type at every lag, lag-major.</div>
+</div>
 </div>
 </div>
 </div>
@@ -225,18 +243,27 @@ loadScripts(document, 'script');</script>
 <h2>Field Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="MEMBERS">
-<h3>MEMBERS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">MEMBERS</span></div>
-<div class="block">The members: the views, then the aims.</div>
+<section class="detail" id="WIDE">
+<h3>WIDE</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">WIDE</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-31">MOVE-31</a>: the wide set, every simple angle <a href="../physics/SimpleAims.html" title="class in hadur117.core.physics"><code>SimpleAims</code></a> gives
+ (head-on, linear, circular, averaged linear and the two one-line linear aims) at each of
+ its three lags, in place of the three aims one tick back. Off unless an ablation turns it on.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
 <ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.move.AimMembers.MEMBERS">Constant Field Values</a></li>
+<li><a href="../../../constant-values.html#hadur117.core.move.AimMembers.WIDE">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="MEMBERS">
+<h3>MEMBERS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">MEMBERS</span></div>
+<div class="block">The members: the views, then the aims.</div>
 </section>
 </li>
 <li>
@@ -273,7 +300,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="AIM_PRIOR">
 <h3>AIM_PRIOR</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">AIM_PRIOR</span></div>
-<div class="block">An aim's standing weight against the views' 1.</div>
+<div class="block">An aim's standing weight against the views' 1, for the three narrow aims.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -306,6 +333,14 @@ loadScripts(document, 'script');</script>
 <div class="block">The simple aims the members read: head-on, linear, circular, one tick back.</div>
 </section>
 </li>
+<li>
+<section class="detail" id="PRIOR">
+<h3>PRIOR</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">PRIOR</span></div>
+<div class="block">Each aim's standing weight: <a href="#AIM_PRIOR">0.1</a> for the three narrow aims, and the same
+ total (0.3) shared out over the wide set, so the views' head start is the same.</div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -328,6 +363,13 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="wideAims()">
+<h3>wideAims</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">int[]</span>&nbsp;<span class="element-name">wideAims</span>()</div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-31">MOVE-31</a>: every angle type at every lag, lag-major.</div>
+</section>
+</li>
 <li>
 <section class="detail" id="weight(int)">
 <h3>weight</h3>

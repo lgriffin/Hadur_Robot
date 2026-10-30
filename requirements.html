@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 299 of 303 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 301 of 305 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -385,6 +385,16 @@ traceability check reads. 299 of 303 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">MOVE-29</span><span class="badge">State</span><span class="badge stage">R9</span></div>
 <p>While the aim-member switch is on, in a duel, the three-option surf&#x27;s danger where the views have data shall be the weighted mean of the views&#x27; score and the head-on, linear and circular simple aims&#x27; (one tick back, each the surf&#x27;s kernel on the aim&#x27;s angle over the intersection), each member weighted by its standing weight (1 for the views, 0.1 for an aim) times 2^(2 x its rolling score), the score a mean decayed by 0.8 a bullet of log2 of the member&#x27;s probability at each bullet that hit us over a uniform guess&#x27;s (mixed with 5% uniform), learnt before the views learn the bullet. With the switch off the danger is the views&#x27;.</p>
 <dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/duel/MoveDesign.html" title="hadur117.core.duel.MoveDesign">MoveDesign</a>, <a href="api/hadur117/core/move/AimMembers.html" title="hadur117.core.move.AimMembers">AimMembers</a>, <a href="api/hadur117/core/move/MoveController.html" title="hadur117.core.move.MoveController">MoveController</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/move/AimMembersTest.java">AimMembersTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="MOVE-30">
+<div class="req-head"><span class="rid">MOVE-30</span><span class="badge">Optional</span><span class="badge stage">R9</span></div>
+<p>Where the aim-member and intercept switches are on, in a duel, when one of our bullets meets an enemy bullet whose wave is found and the bullet-hit-bullet log is off, the aim members (the views included, as member 0) shall be scored on the intercepted bullet&#x27;s angle as for a bullet that hit us, and the views shall not learn it. With the switch off an intercept scores no member.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/duel/DuelController.html" title="hadur117.core.duel.DuelController">DuelController</a>, <a href="api/hadur117/core/duel/MoveDesign.html" title="hadur117.core.duel.MoveDesign">MoveDesign</a>, <a href="api/hadur117/core/move/MoveController.html" title="hadur117.core.move.MoveController">MoveController</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/move/AimMembersTest.java">AimMembersTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="MOVE-31">
+<div class="req-head"><span class="rid">MOVE-31</span><span class="badge">Optional</span><span class="badge stage">R9</span></div>
+<p>Where the wide aim switch is on, the aim members shall be every simple angle (head-on, linear, circular, averaged linear and the two one-line linear aims) at each of the three lags, 18 aims, each with a standing weight of 0.3 / 18 so the aims&#x27; total standing weight stays 0.3. With the switch off the members are <a class="req" href="requirements.html#MOVE-29">MOVE-29</a>&#x27;s three.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/move/AimMembers.html" title="hadur117.core.move.AimMembers">AimMembers</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/move/AimMembersTest.java">AimMembersTest.java</a></dd></dl>
 </article>
 <article class="req-card" id="MOVE-24">
 <div class="req-head"><span class="rid">MOVE-24</span><span class="badge">State</span><span class="badge stage">R9</span></div>
@@ -1240,7 +1250,7 @@ traceability check reads. 299 of 303 live requirements have a tagged test. The r
 <article class="req-card" id="BENCH-148">
 <div class="req-head"><span class="rid">BENCH-148</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
 <p>When a team battle shows one of our bullets for the first time, the team harvester shall append to its bullets.log line an eleventh field listing each living enemy as name:x:y:heading:velocity, leaving the tenth field <code>-</code>, and tools/team_gun.py shall read our bullets and the enemy&#x27;s the same way: hits per 100 shots, mean power, damage per energy fired, and hit rate by distance, power and the target&#x27;s speed across the line.</p>
-<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/TeamHarvester.java" title="hadur.bench.TeamHarvester">TeamHarvester</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/TeamPairedTest.java">TeamPairedTest.java</a></dd></dl>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/TeamHarvester.java" title="hadur.bench.TeamHarvester">TeamHarvester</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/SimpleGunWidePlanTest.java">SimpleGunWidePlanTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/TeamPairedTest.java">TeamPairedTest.java</a></dd></dl>
 </article>
 <h2 id="group-DODGE">DODGE</h2>
 <article class="req-card" id="DODGE-1">

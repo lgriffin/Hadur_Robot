@@ -304,6 +304,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#DODGE-1">DODGE-1</a>: ticks the averaged linear aim averages our velocity over.</div>
 </dd>
+<dt><a href="hadur117/core/duel/MoveDesign.html#AIM_INTERCEPTS" class="member-name-link">AIM_INTERCEPTS</a> - Static variable in class hadur117.core.duel.<a href="hadur117/core/duel/MoveDesign.html" title="class in hadur117.core.duel">MoveDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-30">MOVE-30</a>: with the aim members on, an enemy bullet our bullet met also scores the members
+ (the views included, as member 0), as a hit does, without teaching the views.</div>
+</dd>
 <dt><a href="hadur117/core/duel/MoveDesign.html#AIM_MEMBERS" class="member-name-link">AIM_MEMBERS</a> - Static variable in class hadur117.core.duel.<a href="hadur117/core/duel/MoveDesign.html" title="class in hadur117.core.duel">MoveDesign</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MOVE-29">MOVE-29</a> (K1 of the road to king, docs/bench/gun-oracle.md): the three-option surf's danger
@@ -322,7 +327,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/move/AimMembers.html#AIM_PRIOR" class="member-name-link">AIM_PRIOR</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/AimMembers.html" title="class in hadur117.core.move">AimMembers</a></dt>
 <dd>
-<div class="block">An aim's standing weight against the views' 1.</div>
+<div class="block">An aim's standing weight against the views' 1, for the three narrow aims.</div>
 </dd>
 <dt><a href="hadur117/core/shieldmode/ShieldDesign.html#AIM_PRIOR" class="member-name-link">AIM_PRIOR</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldDesign.html" title="class in hadur117.core.shieldmode">ShieldDesign</a></dt>
 <dd>
@@ -10600,6 +10605,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#SHIELD-16">SHIELD-16</a>: the body-turn base from the enemy's position on the tick before it fired.</div>
 </dd>
+<dt><a href="hadur117/core/move/AimMembers.html#PRIOR" class="member-name-link">PRIOR</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/AimMembers.html" title="class in hadur117.core.move">AimMembers</a></dt>
+<dd>
+<div class="block">Each aim's standing weight: <a href="hadur117/core/move/AimMembers.html#AIM_PRIOR">0.1</a> for the three narrow aims, and the same
+ total (0.3) shared out over the wide set, so the views' head start is the same.</div>
+</dd>
 <dt><a href="hadur117/core/physics/ShotDodger.html#PRIOR" class="member-name-link">PRIOR</a> - Static variable in class hadur117.core.physics.<a href="hadur117/core/physics/ShotDodger.html" title="class in hadur117.core.physics">ShotDodger</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#DODGE-4">DODGE-4</a>: a shipped expert's prior, in bullets read.</div>
@@ -12283,6 +12293,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">MOVE-27: an enemy bullet our bullet met at <code>bulletLocation</code>, when the views do not learn
  it (<a class="req" href="../requirements.html#MOVE-19">MOVE-19</a> off): its angle still scores the ensemble's models.</div>
+</dd>
+<dt><a href="hadur117/core/move/MoveController.html#scoreInterceptAims(hadur117.core.model.Wave,java.awt.geom.Point2D.Double)" class="member-name-link">scoreInterceptAims(Wave, Point2D.Double)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/MoveController.html" title="class in hadur117.core.move">MoveController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-30">MOVE-30</a>: an enemy bullet our bullet met at <code>bulletLocation</code> scores the aim members, as
+ <a href="hadur117/core/move/MoveController.html#logBulletHit(hadur117.core.model.Wave,java.awt.geom.Point2D.Double,int,long)"><code>MoveController.logBulletHit(hadur117.core.model.Wave, java.awt.geom.Point2D.Double, int, long)</code></a> does for a hit, and teaches nothing else.</div>
 </dd>
 <dt><a href="hadur117/core/move/GunMimics.html#scores" class="member-name-link">scores</a> - Variable in class hadur117.core.move.<a href="hadur117/core/move/GunMimics.html" title="class in hadur117.core.move">GunMimics</a></dt>
 <dd>
@@ -16360,6 +16375,16 @@ the order they are declared.</div>
 <dt><a href="hadur/bench/Bench.Failure.html#why()" class="member-name-link">why()</a> - Method in record class hadur.bench.<a href="hadur/bench/Bench.Failure.html" title="class in hadur.bench">Bench.Failure</a></dt>
 <dd>
 <div class="block">Returns the value of the <code>why</code> record component.</div>
+</dd>
+<dt><a href="hadur117/core/move/AimMembers.html#WIDE" class="member-name-link">WIDE</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/AimMembers.html" title="class in hadur117.core.move">AimMembers</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-31">MOVE-31</a>: the wide set, every simple angle <a href="hadur117/core/physics/SimpleAims.html" title="class in hadur117.core.physics"><code>SimpleAims</code></a> gives
+ (head-on, linear, circular, averaged linear and the two one-line linear aims) at each of
+ its three lags, in place of the three aims one tick back.</div>
+</dd>
+<dt><a href="hadur117/core/move/AimMembers.html#wideAims()" class="member-name-link">wideAims()</a> - Static method in class hadur117.core.move.<a href="hadur117/core/move/AimMembers.html" title="class in hadur117.core.move">AimMembers</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-31">MOVE-31</a>: every angle type at every lag, lag-major.</div>
 </dd>
 <dt><a href="hadur117/core/TeamLink.html#wideLaneClear(hadur117.core.model.BotInput)" class="member-name-link">wideLaneClear(BotInput)</a> - Method in class hadur117.core.<a href="hadur117/core/TeamLink.html" title="class in hadur117.core">TeamLink</a></dt>
 <dd>
