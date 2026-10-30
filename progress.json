@@ -1,0 +1,31 @@
+{
+ "plan": "pc-team-lead",
+ "updated": 1793391602.5984645,
+ "steps": {
+  "lgprep": {
+   "status": "pending"
+  },
+  "lgbb": {
+   "status": "pending"
+  },
+  "lgld": {
+   "status": "pending"
+  },
+  "lgpick": {
+   "status": "pending"
+  },
+  "lggate": {
+   "status": "pending"
+  },
+  "lggbb": {
+   "status": "pending"
+  },
+  "lgsum": {
+   "status": "pending"
+  },
+  "lgpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
