@@ -1,10 +1,10 @@
 # Queue pc-deise-e07: progress
 
-Updated 2026-10-30 17:35:28 PC time (17:35 UTC), runner pid 69032.
+Updated 2026-10-30 17:50:36 PC time (17:50 UTC), runner pid 69032.
 
 - `prep` done, exit 0 in 0 min
-- `live-D` running
-- `live-P3` pending
+- `live-D` done, exit 0 in 17 min
+- `live-P3` running
 - `live-P075` pending
 - `live-SHARP` pending
 - `live-WV2` pending
@@ -17,16 +17,29 @@ Updated 2026-10-30 17:35:28 PC time (17:35 UTC), runner pid 69032.
 
 ### live-D
 
-**228 of 276 battles** (83%), 0 failed. Running 15 min, 933 battles/h, about 3 min left (ends ~17:38 PC time). Last battle 0 min ago.
+**276 of 276 battles** (100%), 0 failed. Running 17 min, 962 battles/h, about 0 min left (ends ~17:38 PC time). Last battle 0 min ago.
 Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 228 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 | `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
 
-Stopping now would leave 48 battles unrun (about 3 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### live-P3
+
+**174 of 276 battles** (63%), 0 failed. Running 13 min, 830 battles/h, about 7 min left (ends ~17:57 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 174 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
+
+Stopping now would leave 102 battles unrun (about 7 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -38,4 +51,7 @@ Stopping now would leave 48 battles unrun (about 3 min); every battle already fo
 17:20:49 start live-D
 17:20:49 watching live-D: 3 stop rule(s)
 17:21:21 progress live-D: 6/276 (2%) battles, 668/h, ETA 24 min, 0 failed, skips 0.0/battle (last 100)
+17:38:01 live-D exit=0 in 1032 s
+17:38:01 start live-P3
+17:38:01 watching live-P3: 3 stop rule(s)
 ```
