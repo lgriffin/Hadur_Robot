@@ -13,3 +13,6 @@
 21:53:44 start live-LL
 21:53:44 watching live-LL: 3 stop rule(s)
 21:54:38 progress live-LL: 10/430 (2%) battles, 661/h, ETA 38 min, 0 failed, skips 0.0/battle (last 100)
+22:23:21 live-LL exit=0 in 1777 s
+22:23:21 start live-LR
+22:23:21 watching live-LR: 3 stop rule(s)
