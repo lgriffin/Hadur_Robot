@@ -400,9 +400,14 @@ each a switch off a team only:
 
 - **MGUN-17 aim experts** (`EXPERTS`, arm `gexp`/`gx`). Ogi blends simple aims by how well each has
   been doing. Hadur already sends a virtual wave at every opponent on every gun cycle (MGUN-4); each
-  wave now also scores head-on, linear and circular aims, decayed 0.95 a wave, and after 10 waves an
-  opponent's weight is shared among the four aims by smoothed hit rate to the fourth power. A robot
-  the situations miss but a simple aim reads (oscillators, wall-huggers, sitting ducks) gets that aim.
+  wave now also scores head-on, linear and circular aims, decayed 0.95 a wave. After 20 waves, a simple
+  aim that hits an opponent 1.25 times as often as the field gun takes it, as one solution weighted by
+  what the field gun's own peak held of that opponent times the hit-rate edge, so the opponent pulls
+  on the crowd peak by how likely a shot is to hit it. A robot the situations miss but a simple aim
+  reads (oscillators, wall-huggers, sitting ducks) gets that aim. The first build shared every
+  opponent among the four aims by hit rate to the fourth power; its single-angle solutions outweighed
+  the field gun's spread ones at the crowd peak, and two cloud smokes read -1.47 ± 1.01 and
+  -0.88 ± 0.53 with 6 less energy entering the endgame.
 - **MGUN-18 hit-rate targeting** (`HIT_TARGET`, `grate`/`gr`): weight times 5 (hits + 1)/(waves + 5) of
   the opponent's best aim, so the density peak leans toward robots we actually hit.
 - **MGUN-19 flatter distance** (`FLAT_DISTANCE`, `gdist`/`gd`): (100/d)^0.7, Ogi's d^-0.686 in our units;

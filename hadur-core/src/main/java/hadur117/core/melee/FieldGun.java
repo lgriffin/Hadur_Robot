@@ -57,8 +57,9 @@ public class FieldGun {
     /**
      * MGUN-17: off a team, each opponent's virtual waves (MGUN-4) also score three simple aims
      * beside the field gun's own (head-on, linear, circular), and once {@link #EXPERT_MIN} waves
-     * have reached it the opponent's solutions are shared among the four by how well each has
-     * been hitting it, so a robot the situations miss but a simple aim reads gets that aim.
+     * have reached it, a simple aim whose hit rate beats the field gun's by
+     * {@link #EXPERT_EDGE} takes that opponent, so a robot the situations miss but a simple
+     * aim reads gets that aim.
      * Inspired by Ogi's aim experts, scored on our own waves rather than copied.
      */
     public static final boolean EXPERTS = false;
@@ -78,12 +79,12 @@ public class FieldGun {
 
     /** MGUN-17: the aims a wave scores; FIELD is the field gun's own. */
     public static final int FIELD = 0, HEAD_ON = 1, LINEAR = 2, CIRCULAR = 3, EXPERT_COUNT = 4;
-    /** MGUN-17: waves an opponent needs before its aims are shared by score. */
-    static final int EXPERT_MIN = 10;
+    /** MGUN-17: waves an opponent needs before a simple aim can take it. */
+    static final int EXPERT_MIN = 20;
     /** MGUN-17: each read's weight decays by this per newer read, so the scores follow a robot that changes. */
     static final double EXPERT_DECAY = 0.95;
-    /** MGUN-17: sharpens the shares: an aim's share goes with its smoothed hit rate to this power. */
-    static final double EXPERT_SHARPNESS = 4;
+    /** MGUN-17: how far a simple aim's smoothed hit rate must beat the field gun's to take the opponent. */
+    static final double EXPERT_EDGE = 1.25;
 
     /** One firing solution. */
     public static final class Solution {
@@ -209,17 +210,7 @@ public class FieldGun {
             if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);
             else power = MeleeEnergyPolicy.crowdPower(power, distance, energy, e.energy, others);
             double weight = weight(e, me, alive, now);
-            double[] share = expertsOn() ? shares(e.name) : null;
-            if (share != null) {
-                for (int x = HEAD_ON; x < EXPERT_COUNT; x++) {
-                    if (share[x] <= 0) continue;
-                    Point2D.Double p = expertAim(me, e, x, power, now);
-                    out.add(new Solution(e.name, DiaUtils.absoluteBearing(me, p), tolerance(me, p),
-                        weight * share[x], power, p));
-                }
-                weight *= share[FIELD];
-                if (weight <= 0) continue;
-            }
+            int first = out.size();
             EnemyHistory h = history(e.name);
             double[] attributes = h == null ? null : h.current();
             List<KdTree.Entry<float[]>> near = attributes == null || h.size() < k()
@@ -228,6 +219,7 @@ public class FieldGun {
                 MeleeGun.Aim a = fallback.aim(me, e, power, now);
                 out.add(new Solution(e.name, a.angle, tolerance(me, a.predicted), weight, power,
                     a.predicted));
+                if (expertsOn()) expert(out, first, me, e, weight, power, now);
                 continue;
             }
             double total = 0;
@@ -247,6 +239,7 @@ public class FieldGun {
                 out.add(new Solution(e.name, DiaUtils.absoluteBearing(me, p), tolerance(me, p),
                     weight * w[i] / total, power, p));
             }
+            if (expertsOn()) expert(out, first, me, e, weight, power, now);
         }
         return out;
     }
@@ -309,7 +302,7 @@ public class FieldGun {
 
     /**
      * MGUN-4/17: the field gun's own aim at one opponent, which a targeting wave carries; with
-     * MGUN-17 on, the experts' shares are left out so the wave reads the field gun alone.
+     * MGUN-17 on, the simple aims are left out so the wave reads the field gun alone.
      */
     Aim fieldAim(Point2D.Double me, double energy, int others, EnemyInfo e, long now) {
         pure = true;
@@ -340,18 +333,50 @@ public class FieldGun {
         s[EXPERT_COUNT] += 1;
     }
 
-    /** MGUN-17: each aim's share of the opponent, or null before {@link #EXPERT_MIN} waves. */
-    double[] shares(String name) {
+    /**
+     * MGUN-17: the simple aim that has beaten the field gun on {@code name} by
+     * {@link #EXPERT_EDGE}, with its smoothed hit rate over the field gun's, or null: before
+     * {@link #EXPERT_MIN} waves, or with no aim that far ahead.
+     */
+    double[] pick(String name) {
         double[] s = expertScores.get(name);
         if (s == null || s[EXPERT_COUNT] < (1 - Math.pow(EXPERT_DECAY, EXPERT_MIN)) / (1 - EXPERT_DECAY) - 1e-9) return null;
-        double[] share = new double[EXPERT_COUNT];
-        double total = 0;
-        for (int x = 0; x < EXPERT_COUNT; x++) {
-            share[x] = Math.pow((s[x] + 1) / (s[EXPERT_COUNT] + 2), EXPERT_SHARPNESS);
-            total += share[x];
+        double field = (s[FIELD] + 1) / (s[EXPERT_COUNT] + 2);
+        int best = -1;
+        double top = field * EXPERT_EDGE;
+        for (int x = HEAD_ON; x < EXPERT_COUNT; x++) {
+            double rate = (s[x] + 1) / (s[EXPERT_COUNT] + 2);
+            if (rate > top) {
+                top = rate;
+                best = x;
+            }
         }
-        for (int x = 0; x < EXPERT_COUNT; x++) share[x] /= total;
-        return share;
+        return best < 0 ? null : new double[] {best, top / field};
+    }
+
+    /**
+     * MGUN-17: replaces {@code e}'s field-gun solutions ({@code out} from {@code first}) with
+     * its picked aim's single solution. The solution carries what the field gun's own peak
+     * held of the opponent's weight, times the aim's edge in hit rate, so the opponent pulls
+     * on the crowd peak by how likely a shot is to hit it, not by how narrow the aim is.
+     */
+    private void expert(List<Solution> out, int first, Point2D.Double me, EnemyInfo e, double weight,
+                        double power, long now) {
+        double[] pick = pick(e.name);
+        if (pick == null || weight <= 0) return;
+        List<Solution> mine = out.subList(first, out.size());
+        double peak = 0;
+        for (Solution a : mine) {
+            double d = 0;
+            for (Solution o : mine) {
+                if (Math.abs(Angles.normalRelativeAngle(a.angle - o.angle)) <= o.tolerance) d += o.weight;
+            }
+            peak = Math.max(peak, d);
+        }
+        mine.clear();
+        Point2D.Double p = expertAim(me, e, (int) pick[0], power, now);
+        out.add(new Solution(e.name, DiaUtils.absoluteBearing(me, p), tolerance(me, p),
+            Math.min(weight, peak * pick[1]), power, p));
     }
 
     /** MGUN-18: 5 (hits + 1) / (waves + 5) of the opponent's best aim, decayed; 1 with none read. */

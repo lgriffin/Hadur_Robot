@@ -36,28 +36,35 @@ class FieldGunExpertsTest {
 
     @Test
     @Tag("MGUN-17")
-    @DisplayName("MGUN-17: no shares before ten waves; then the aim that hits takes most of the opponent")
-    void sharesFollowHits() {
+    @DisplayName("MGUN-17: no pick before twenty waves; then the simple aim that beats the field gun takes the opponent")
+    void pickFollowsHits() {
         for (int i = 0; i < FieldGun.EXPERT_MIN - 1; i++) gun.scoreExperts("a", hits(false, false, true, false));
-        assertNull(gun.shares("a"));
+        assertNull(gun.pick("a"));
         gun.scoreExperts("a", hits(false, false, true, false));
-        double[] share = gun.shares("a");
-        assertNotNull(share);
-        double total = 0;
-        for (double x : share) total += x;
-        assertEquals(1.0, total, 1e-9);
-        assertTrue(share[FieldGun.LINEAR] > 0.9, "linear " + share[FieldGun.LINEAR]);
-        assertTrue(share[FieldGun.FIELD] < 0.05);
+        double[] pick = gun.pick("a");
+        assertNotNull(pick);
+        assertEquals(FieldGun.LINEAR, (int) pick[0]);
+        assertTrue(pick[1] > FieldGun.EXPERT_EDGE);
     }
 
     @Test
     @Tag("MGUN-17")
-    @DisplayName("MGUN-17: older reads decay, so a robot that changes how it moves changes the pick")
-    void sharesDecay() {
+    @DisplayName("MGUN-17: the field gun keeps an opponent unless a simple aim is well ahead of it")
+    void fieldKeepsTies() {
+        for (int i = 0; i < 40; i++) gun.scoreExperts("a", hits(i % 3 == 0, i % 3 == 0 || i % 13 == 0, false, false));
+        assertNull(gun.pick("a"), "head-on only slightly ahead");
+        for (int i = 0; i < 40; i++) gun.scoreExperts("b", hits(true, true, true, true));
+        assertNull(gun.pick("b"), "level");
+    }
+
+    @Test
+    @Tag("MGUN-17")
+    @DisplayName("MGUN-17: older reads decay, so a robot that changes how it moves hands back to the field gun")
+    void pickDecays() {
         for (int i = 0; i < 30; i++) gun.scoreExperts("a", hits(false, true, false, false));
-        for (int i = 0; i < 30; i++) gun.scoreExperts("a", hits(true, false, false, false));
-        double[] share = gun.shares("a");
-        assertTrue(share[FieldGun.FIELD] > share[FieldGun.HEAD_ON]);
+        assertNotNull(gun.pick("a"));
+        for (int i = 0; i < 60; i++) gun.scoreExperts("a", hits(true, false, false, false));
+        assertNull(gun.pick("a"));
     }
 
     @Test
