@@ -69,30 +69,43 @@ Windows processor affinity on both sides, cut along the L3 cache groups (the Thr
 ## Qualifying it: plans/pc-fence-qualify.queue
 
 `.\queue.ps1 run pc-fence-qualify --fresh` (close every client window first, no other queue). This takes
-about 1 to 1.5 hours, and uploads are off throughout. It runs both sides at once:
+about 1 hour, and uploads are off throughout.
 
-- **Bench:** the host check's battles on the bench side while the clients fight. The duel block (208-bot
-  panel, Hadur 3.15, seed 2501) is compared with PC d12 (0.465 skips a round, level 83.32). The team block is
-  compared with t12 (0.119). The duel block then runs again so the client load covers the whole window.
-  VALID on every block means the bench is protected.
-- **Clients:** rr01 and rr02 with UPLOAD=NOT. `qualify_pc.py priority` keeps their priority battles file
-  stocked with Hadur 3.19 pairings, because a settled robot is in about 1 battle in 600. The battles are
-  scored against the clean cloud first pass (91.58, 1,221 pairings), and the verdict is QUALIFIED within
-  ±0.5 points.
-- The report is `data/live/fence-qualify-3.19-run1/fence-qualify.md`, delivered as a results PR.
+### Run 1 (PR #471, 2026-10-30 19:57-20:18 GMT)
 
-| Bench | Clients | Next |
-|---|---|---|
-| all VALID | QUALIFIED | Run fenced clients beside any card. Going live is Leigh's call, and QUALIFIED changes in its own PR |
-| all VALID | NOT QUALIFIED | The bench is safe, but the clients still lose points: keep them uploads-off and look at their skips |
-| TOO LOADED | either | One client fewer, or set FENCE_CLIENT_CPUS to a narrower range, then rerun with RUN = 2 |
+- **Fence:** the PC reported four L3 groups (0-11, 12-23, 24-35, 36-47), so the bench got 0-35 and the
+  clients got 36-47, as planned. The Windows code works.
+- **Clients:** 253 Hadur battles in 21 minutes, at 7.6 skipped turns a battle (0.22 a round). For
+  comparison, the 8-client watch skipped 57 a battle. None were scored, because the clients were already
+  on 3.20 and the card named 3.19. The priority step also failed, because the 3.19 jar was gone.
+- **Bench:**
 
-The clients play more Hadur battles here than in a normal live run (every battle is a Hadur pairing),
-which is the heavier case for both sides.
+  | Block | Skips a round (PC 0.465) | Disables /100 (PC 3.1) | Level (PC 83.32) | Verdict |
+  |---|---:|---:|---:|---|
+  | duel | 0.898 | 18.8 | 82.57 | TOO LOADED |
+  | team | 0.146 (0.119) | 0.0 | - | VALID |
+  | duel2 | 0.706 | 6.2 | 82.65 | TOO LOADED |
 
-## Not tested here
+  This does not say whether the clients reached the bench, or whether 12 workers on 18 cores is simply
+  narrower than the 24-core reference.
 
-The Windows calls (`GetLogicalProcessorInformationEx` for the L3 groups, `SetProcessAffinityMask`,
-`SetPriorityClass`) have only been checked against their documented layouts. The Linux path and the
-whole card logic are covered by `tools/test_fence.py`. The card's first step writes `fence.md` with what
-the PC really reported, so a wrong read shows before any battle.
+### Run 2 (the card as it stands)
+
+- **Bench:** the duel block three times on the bench side. **solo** runs with no clients, which shows the
+  cost of 18 cores on its own. **duel** runs at 12 workers beside the clients. **duel10** runs at 10
+  workers beside the clients.
+  - solo TOO LOADED: the narrower bench is the cause.
+  - duel worse than solo: the clients reach the bench.
+  - duel10 VALID: use `WORKERS = 10` beside clients.
+- **Clients:** rr01 and rr02 with UPLOAD=NOT, scoring their Hadur 3.20 battles. There is no clean 3.20 page
+  yet, so they are scored against 3.19's cloud first pass (91.58, 1,221 pairings). 3.20 adds MOVE-29, about
+  +0.1 on the census, so a small positive mean reads as clean. The verdict is QUALIFIED within ±0.5.
+- The report is `data/live/fence-qualify-3.20-run2/fence-qualify.md`, delivered as a results PR.
+
+The clients play more Hadur battles here than in a normal live run, which is the heavier case for both
+sides.
+
+## Tests
+
+`tools/test_fence.py` covers the Linux path and the card logic. Run 1 showed that the Windows calls work
+on the PC: `GetLogicalProcessorInformationEx` read the four L3 groups, and affinity and priority were set.

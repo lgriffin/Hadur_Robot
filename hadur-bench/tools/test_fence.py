@@ -174,9 +174,9 @@ class CardTest(unittest.TestCase):
 
     def test_uploads_go_off_first_and_come_back_only_after_the_clients_stop(self):
         self.assertIn("qualify_pc.py upload off", self.step("off"))
-        self.assertIn("after: prep", self.step("off"))
         for s in ("clients", "prio", "duel"):
             self.assertIn("after: off", self.step(s), s)
+        self.assertIn("after: solo", self.step("off"), "the solo block runs before any client")
         self.assertIn("qualify_pc.py upload on", self.step("on"))
         self.assertIn("after: clients", self.step("on"))
         commands = [l for l in self.text.splitlines() if " | " in l and not l.startswith("#")]
@@ -185,22 +185,23 @@ class CardTest(unittest.TestCase):
 
     def test_each_side_runs_inside_its_fence_and_side_by_side(self):
         self.assertIn("fence.py run clients", self.step("clients"))
-        for s in ("duel", "team", "duel2"):
+        for s in ("solo", "duel", "duel10"):
             self.assertIn("fence.py run bench", self.step(s), s)
+        self.assertIn("--parallel 10", self.step("duel10"))
         self.assertIn("set CONCURRENCY = 3", self.text)
         self.assertIn("touch ${W}/STOP", self.step("stopclients"))
-        self.assertIn("after: duel2", self.step("stopclients"))
+        self.assertIn("after: duel10", self.step("stopclients"))
         self.assertIn("--until ${W}/STOP", self.step("prio"))
 
     def test_the_bench_blocks_match_the_host_check_references(self):
-        for s in ("duel", "duel2"):
+        for s in ("solo", "duel", "duel10"):
             self.assertIn("--set top5-s0-panel.txt --seeds 1 --seed-base 2500", self.step(s))
             self.assertIn("bisect/hadur2.Hadur_3.15.jar", self.step(s))
-        self.assertIn("host_check.py duel=${B}-duel team=${B}-team duel2=${B}-duel2", self.step("check"))
+        self.assertIn("host_check.py solo=${B}-solo duel=${B}-duel duel10=${B}-duel10", self.step("check"))
 
     def test_stops_are_declared(self):
         self.assertIn("# stop:", self.text)
-        for s in ("clients", "prio", "duel", "team", "duel2"):
+        for s in ("clients", "prio", "solo", "duel", "duel10"):
             self.assertIn("timeout:", self.step(s), s)
 
 
