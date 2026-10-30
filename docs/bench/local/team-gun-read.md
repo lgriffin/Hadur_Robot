@@ -7,13 +7,13 @@ Runs: work/gun-read
 | Opponent | Side | Shots | Hits/100 | Mean power | Damage per energy fired | No target | Hits near GF 0 |
 |---|---|---|---|---|---|---|---|
 | cb.fire.FirestarterTeam | ours | 17417 | 12.9 | 1.82 | 0.77 | 1% | 78% within ±0.2 |
-| cb.fire.FirestarterTeam | theirs | 13396 | 15.9 | 2.04 | 0.88 | 0% | 58% within ±0.2 |
+| cb.fire.FirestarterTeam | theirs | 13659 | 15.6 | 2.00 | 0.88 | 2% | 58% within ±0.2 |
 | cz.libors.OgiTeam | ours | 14909 | 12.8 | 2.04 | 0.63 | 0% | 49% within ±0.2 |
-| cz.libors.OgiTeam | theirs | 16798 | 15.7 | 1.78 | 0.79 | 0% | 46% within ±0.2 |
+| cz.libors.OgiTeam | theirs | 16815 | 15.7 | 1.78 | 0.79 | 0% | 46% within ±0.2 |
 | mn.CombatTeam | ours | 17821 | 14.2 | 1.83 | 0.80 | 1% | 76% within ±0.2 |
-| mn.CombatTeam | theirs | 15221 | 16.1 | 1.74 | 0.86 | 0% | 53% within ±0.2 |
+| mn.CombatTeam | theirs | 15228 | 16.1 | 1.74 | 0.86 | 0% | 53% within ±0.2 |
 | all | ours | 50147 | 13.3 | 1.89 | 0.73 | 1% | 69% within ±0.2 |
-| all | theirs | 45415 | 15.9 | 1.85 | 0.84 | 0% | 52% within ±0.2 |
+| all | theirs | 45702 | 15.8 | 1.83 | 0.84 | 1% | 52% within ±0.2 |
 
 ## Hit rate by distance to the target
 
@@ -59,19 +59,21 @@ Runs: work/gun-read
 Cloud, HadurTeam master (3.20 team code) against Ogi, Firestarter and Combat, 6 seeds from 6300,
 12 rounds, 18 battles, both guns read from the same battles.
 
-- Our gun hits 13.3 per 100 shots against their 15.9, and deals 0.73 damage per energy fired
+- Our gun hits 13.3 per 100 shots against their 15.8, and deals 0.73 damage per energy fired
   against their 0.84. The gap is widest against Ogi: 12.8 against 15.7 hits, 0.63 against 0.79
   damage per energy.
-- **Power 3 against Ogi is the leak.** We fire power 3 on 54% of our shots at Ogi and they hit
-  12.1%, against 17-18% for the same shots at Combat and Firestarter. Ogi dodges waves, and a
-  power-3 bullet (11 px a tick) gives it the most time. Ogi fires about 1.9 (14.3 px a tick) and
-  hits 24.9% at 200-400 px, where our power-3 shots hit 13.7% and our lower-power ones 23-24%.
+- **Power 3 against Ogi is the leak.** We fire power 3 on 54% of our shots at Ogi (8,070 of 14,909)
+  and they hit 12.1%, against about 17% for the same shots at Combat (17.1%) and Firestarter
+  (16.8%). Ogi dodges waves, and a power-3 bullet (11 px a tick) gives it the most time. Ogi fires
+  about 1.8 on average (14.6 px a tick) and hits us 23.6% at 200-400 px, where our shots at it hit
+  17.0%.
 - At equal damage per tick, a power of about 1.9 would cost Ogi's dodge more time and us less
   energy: power 3 at 12% deals about 0.12 damage a tick for 3 energy a shot; 1.9 at 17% about the
   same for 1.9 a shot.
-- Firestarter fires low power at short range and hits 34-40% inside 400 px, where we hit 15-19%.
-- Their guns hit our members near guess factor 0 more than half the time: our movement is read
-  as close to head-on at their ranges.
+- Firestarter hits 45.5% inside 200 px (of only 55 shots) and 25.8% at 200-400 px, where we hit
+  17.4% and 18.1%.
+- Their guns hit our members near guess factor 0 on 46-58% of their hits (Ogi 46%, Combat 53%,
+  Firestarter 58%): our movement is often read as close to head-on.
 
 ## SWIFT smoke (TMODE-32, cloud, 2026-10-30)
 

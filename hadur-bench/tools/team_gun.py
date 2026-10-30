@@ -2,13 +2,18 @@
 
 Needs bullets.log from TeamHarvester with BENCH-148's 11th field (the living enemies at each of our
 shots). Usage:
-    python3 tools/team_gun.py [--ours PREFIX] work/RUN [work/RUN2 ...]
+    python3 tools/team_gun.py [--ours PREFIX] [--baseline] work/RUN [work/RUN2 ...]
+
+A paired run's baseline battles (directories ending -baseline) are left out; --baseline reads
+only them instead, so each arm is read on its own.
 
 Each bullet, ours or the enemy's, is read against the robots of the side it was fired at, as they
 stood when the bullet first showed. Its target is the robot it hit, or, for a miss, the robot whose
 bearing is nearest the bullet's heading within the escape angle (asin(8 / bullet speed)) widened by
 a bot's half-width at that range; a bullet with none is "no target" (fired at nobody in particular,
-or at a robot that has gone). Prints, per side, per opponent team:
+or at a robot that has gone, or with nobody of the other side alive). A hit counts whenever the
+bullet hit a robot of the other side; a hit whose victim was already off the first-seen list has
+no geometry and is left out of the hit-rate tables. Prints, per side, per opponent team:
 
 - shots, hits on a robot of the other side, hits per 100 shots, mean power, and the bullet damage
   dealt per point of energy fired;
@@ -60,7 +65,8 @@ def robots(field):
 
 
 def read(d, ours):
-    """(side, power, bx, by, heading, robots, victim) for every bullet with positions, side 'ours' or 'theirs'."""
+    """(side, power, bx, by, heading, robots, victim) for every bullet, side 'ours' or 'theirs'; our bullets
+    only from logs with the 11th field."""
     fires, victims = {}, {}
     with open(os.path.join(d, 'bullets.log')) as f:
         for line in f:
@@ -69,11 +75,10 @@ def read(d, ours):
                 victims[(c[0], c[3])] = c[5]
             elif len(c) >= 10 and c[2] == 'F':
                 mine = c[4].startswith(ours)
-                field = (c[10] if len(c) > 10 else '-') if mine else c[9]
-                listed = robots(field)
-                if listed:
-                    fires[(c[0], c[3])] = ('ours' if mine else 'theirs', float(c[5]), float(c[6]), float(c[7]),
-                                           float(c[8]), listed)
+                if mine and len(c) <= 10:
+                    continue
+                fires[(c[0], c[3])] = ('ours' if mine else 'theirs', float(c[5]), float(c[6]), float(c[7]),
+                                       float(c[8]), robots(c[10] if mine else c[9]))
     return [v + (victims.get(k),) for k, v in fires.items()]
 
 
@@ -100,12 +105,15 @@ def shot(power, bx, by, bh, listed, victim):
 
 
 def opponent(d):
+    """The opposing team's class from a battle directory, as Opponent.slug() wrote it then -SEED[-baseline]:
+    cb.fire.FirestarterTeam_2.0-3 to cb.fire.FirestarterTeam; only the version after the last underscore goes."""
     name = os.path.basename(d)
     name = name[:-len('-baseline')] if name.endswith('-baseline') else name
-    return name.rsplit('-', 1)[0].split('_', 1)[0]
+    name = name.rsplit('-', 1)[0]
+    return name.rsplit('_', 1)[0]
 
 
-def report(roots, ours=OURS):
+def report(roots, ours=OURS, baseline=False):
     stats = collections.defaultdict(lambda: {'shots': 0, 'hits': 0, 'none': 0, 'spent': 0.0, 'dealt': 0.0,
                                              'dist': collections.Counter(), 'dist_hit': collections.Counter(),
                                              'pow': collections.Counter(), 'pow_hit': collections.Counter(),
@@ -113,7 +121,7 @@ def report(roots, ours=OURS):
                                              'gf': collections.Counter()})
     for root in roots:
         for d in sorted(glob.glob(os.path.join(root, 'battles', '*'))):
-            if not os.path.exists(os.path.join(d, 'bullets.log')):
+            if not os.path.exists(os.path.join(d, 'bullets.log')) or d.endswith('-baseline') != baseline:
                 continue
             opp = opponent(d)
             for side, power, bx, by, bh, listed, victim in read(d, ours):
@@ -121,10 +129,13 @@ def report(roots, ours=OURS):
                     s = stats[key]
                     s['shots'] += 1
                     s['spent'] += power
-                    r = shot(power, bx, by, bh, listed, victim)
-                    if victim in listed:
+                    hit = victim is not None and (side == 'ours') != victim.startswith(ours)
+                    if hit:
                         s['hits'] += 1
                         s['dealt'] += 4 * power + (2 * (power - 1) if power > 1 else 0)
+                        if victim not in listed:
+                            continue
+                    r = shot(power, bx, by, bh, listed, victim)
                     if r is None:
                         s['none'] += 1
                         continue
@@ -137,7 +148,7 @@ def report(roots, ours=OURS):
                         s['gf'][max(-1.0, min(1.0, round(gf * 5) / 5))] += 1
     if not stats:
         sys.exit('team_gun.py: no bullets with positions under ' + ', '.join(roots) + ' (needs BENCH-148 logs)')
-    out = ['# Our team gun against theirs', '', 'Runs: ' + ', '.join(roots), '']
+    out = ['# Our team gun against theirs', '', 'Runs: ' + ', '.join(roots) + (' (baseline battles)' if baseline else ''), '']
 
     def rate(s, k, i):
         n = s[k][i]
@@ -172,9 +183,14 @@ def report(roots, ours=OURS):
 
 if __name__ == '__main__':
     args = sys.argv[1:]
-    ours = OURS
-    if len(args) > 1 and args[0] == '--ours':
-        ours, args = (args[1],), args[2:]
+    ours, baseline = OURS, False
+    while args and args[0].startswith('--'):
+        if args[0] == '--ours' and len(args) > 1:
+            ours, args = (args[1],), args[2:]
+        elif args[0] == '--baseline':
+            baseline, args = True, args[1:]
+        else:
+            sys.exit(__doc__)
     if not args:
         sys.exit(__doc__)
-    sys.stdout.write(report(args, ours))
+    sys.stdout.write(report(args, ours, baseline))

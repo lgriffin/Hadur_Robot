@@ -255,10 +255,12 @@ public class TeamHarvester extends BattleAdaptor {
                         r.getBodyHeading(), r.getVelocity()));
                 }
             }
-            // BENCH-148: for our bullet, the living enemies the same way, as an 11th field, so our
-            // aim can be read as theirs is (tools/team_gun.py); field 10 stays "-" for older readers.
+            // BENCH-148: for our bullet, the living enemies the same way, as an 11th field ("-" with
+            // none alive), so our aim can be read as theirs is (tools/team_gun.py); field 10 stays
+            // "-" for older readers.
+            boolean ours = o >= 0 && o < robots.length && robots[o].getTeamIndex() == ourTeam;
             StringBuilder enemies = new StringBuilder();
-            if (o >= 0 && o < robots.length && robots[o].getTeamIndex() == ourTeam) {
+            if (ours) {
                 for (IRobotSnapshot r : robots) {
                     if (r.getTeamIndex() == ourTeam || !r.getState().isAlive()) continue;
                     if (enemies.length() > 0) enemies.append(';');
@@ -268,7 +270,7 @@ public class TeamHarvester extends BattleAdaptor {
             }
             write(bulletLog, String.format(Locale.ROOT, "%d,%d,F,%d,%s,%.2f,%.1f,%.1f,%.4f,%s%s%n", round, turn,
                 b.getBulletId(), owner, b.getPower(), b.getX(), b.getY(), b.getHeading(),
-                members.length() > 0 ? members : "-", enemies.length() > 0 ? "," + enemies : ""));
+                members.length() > 0 ? members : "-", ours ? "," + (enemies.length() > 0 ? enemies : "-") : ""));
         }
         int v = b.getVictimIndex();
         if (b.getState() == BulletState.HIT_VICTIM && v >= 0 && v < robots.length && hits.add(b.getBulletId())) {

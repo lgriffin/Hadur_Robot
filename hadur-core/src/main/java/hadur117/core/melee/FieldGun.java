@@ -96,7 +96,7 @@ public class FieldGun {
     /**
      * TMODE-32: the most a member fires under SWIFT: Ogi's own power, 14.3 px a tick. The team gun
      * read (docs/bench/local/team-gun-read.md) has our power-3 shots at Ogi hitting 12.1% against
-     * 17-18% at Combat and Firestarter, and Ogi's 1.9 hitting us 24.9% at 200-400 px.
+     * about 17% at Combat and Firestarter, and Ogi's lighter shots hitting us 23.6% at 200-400 px.
      */
     public static final double SWIFT_POWER = 1.9;
     /** TMODE-31: a robot first seen in a round with more than this, up to {@link #LEADER_SEEN}, is a droid (120). */
