@@ -1552,6 +1552,16 @@ public class MoveController {
     }
 
     /**
+     * MOVE-30: an enemy bullet our bullet met at {@code bulletLocation} scores the aim members, as
+     * {@link #logBulletHit} does for a hit, and teaches nothing else. Does nothing with the
+     * members off.
+     */
+    public void scoreInterceptAims(Wave w, Point2D.Double bulletLocation) {
+        if (aimMembers == null || w == null) return;
+        learnAimMembers(w, w.guessFactor(bulletLocation));
+    }
+
+    /**
      * MOVE-27: scores the ensemble's models on a bullet fired at {@code hitGf}, the views on
      * their profile of the wave. It uses the HF cache slot and empties it after, as
      * {@link #updateReplicator} does, so the surf's cached neighbours are untouched.

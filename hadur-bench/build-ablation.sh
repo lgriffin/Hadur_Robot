@@ -128,6 +128,10 @@
 #         and circular aims', each weighted by its rolling score at the bullets that hit us. Sets only AIM_MEMBERS.
 #   noaim  MOVE-29 off (it ships on from 3.20): the three-option surf rates on the views alone. Suffix kx.
 #   aimp3, aimp1  (with aimmem) MOVE-29's standing weight of each aim 0.1 -> 0.3 or 1.0. Suffix q3, q1.
+#   aimbhb  MOVE-30: an enemy bullet ours met also scores the aim members, as a hit does. Sets only AIM_INTERCEPTS.
+#         Suffix ki.
+#   aimwide  MOVE-31: the aim members read all six simple angles at all three lags (18 aims, the same 0.3 total
+#         standing weight) in place of head-on, linear and circular one tick back. Sets only WIDE. Suffix kw.
 #         Suffix km.
 #   pressure  POW-12 (the plan's POW-11): while our rolling hit rate less its margin is at least 12%, theirs plus its margin at
 #         most 9%, and our energy is above 12, the duel gun skips the cubic power-down and fires a base power of 2.5
@@ -523,6 +527,12 @@ for a in "${list[@]}"; do
         aimp1)
             edit "$aimmembers" "static final double AIM_PRIOR = 0.1;" "static final double AIM_PRIOR = 1.0;"
             version="${version}q1" ;;
+        aimbhb)
+            edit "$movedesign" "static final boolean AIM_INTERCEPTS = false;" "static final boolean AIM_INTERCEPTS = true;"
+            version="${version}ki" ;;
+        aimwide)
+            edit "$aimmembers" "static final boolean WIDE = false;" "static final boolean WIDE = true;"
+            version="${version}kw" ;;
         aesrec)
             edit "$movedesign" "static final boolean AES_RECORD = false;" "static final boolean AES_RECORD = true;"
             version="${version}ar" ;;
