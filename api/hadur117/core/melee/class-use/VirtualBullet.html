@@ -102,15 +102,36 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">TMODE-9: the teammates' bullets that have not yet passed <code>me</code>; the rest are dropped.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../VirtualBullet.html" title="class in hadur117.core.melee">VirtualBullet</a>&gt;</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#relevant(java.util.List,java.awt.geom.Point2D.Double,long)" class="member-name-link">relevant</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../VirtualBullet.html" title="class in hadur117.core.melee">VirtualBullet</a>&gt;&nbsp;bullets,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first even-row-color"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../VirtualBullet.html" title="class in hadur117.core.melee">VirtualBullet</a>&gt;</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#ownBullets(java.awt.geom.Point2D.Double,long)" class="member-name-link">ownBullets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  long&nbsp;now)</code></div>
 <div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../../requirements.html#MMOVE-20">MMOVE-20</a>: Hadur's own bullets still in the field at <code>now</code>.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../VirtualBullet.html" title="class in hadur117.core.melee">VirtualBullet</a>&gt;</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#relevant(java.util.List,java.awt.geom.Point2D.Double,long)" class="member-name-link">relevant</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../VirtualBullet.html" title="class in hadur117.core.melee">VirtualBullet</a>&gt;&nbsp;bullets,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ long&nbsp;now)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">The bullets that can come near any candidate: every candidate and every point on the way
  to it is within <a href="../MinimumRiskMovement.html#RING_MAX"><code>MinimumRiskMovement.RING_MAX</code></a> of Hadur, so a bullet that stays further than that
  plus three hit radii from Hadur until the furthest candidate is reached adds nothing
  worth the time it takes to score (<a class="req" href="../../../../../requirements.html#TIME-1">TIME-1</a>).</div>
+</div>
+</div>
+<div class="caption"><span>Methods in <a href="../package-summary.html">hadur117.core.melee</a> with parameters of type <a href="../VirtualBullet.html" title="class in hadur117.core.melee">VirtualBullet</a></span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Method</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>(package private) static double[]</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#bulletShadow(hadur117.core.melee.MinimumRiskMovement.Wave,hadur117.core.melee.VirtualBullet,double)" class="member-name-link">bulletShadow</a><wbr>(<a href="../MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a>&nbsp;w,
+ <a href="../VirtualBullet.html" title="class in hadur117.core.melee">VirtualBullet</a>&nbsp;b,
+ double&nbsp;reach)</code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../../requirements.html#MMOVE-20">MMOVE-20</a>: the shadow {bearing, half, radius} that <code>b</code> casts on <code>w</code>: the first tick
+ the bullet crosses the wave's front, either way, the angles between where it was and where it
+ is; null if it never crosses before it has flown <code>reach</code>.</div>
 </div>
 </div>
 <div class="caption"><span>Method parameters in <a href="../package-summary.html">hadur117.core.melee</a> with type arguments of type <a href="../VirtualBullet.html" title="class in hadur117.core.melee">VirtualBullet</a></span></div>

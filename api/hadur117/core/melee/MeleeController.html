@@ -343,20 +343,34 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">An opponent was scanned at <code>location</code>, <code>distance</code> from Hadur.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MeleeProfileFolder.html" title="class in hadur117.core.melee">MeleeProfileFolder</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#profiles()" class="member-name-link">profiles</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ownBulletGone(double,double)" class="member-name-link">ownBulletGone</a><wbr>(double&nbsp;power,
+ double&nbsp;heading)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MMOVE-20">MMOVE-20</a>: one of Hadur's bullets hit a robot or a bullet, so it casts no more shadows.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MeleeProfileFolder.html" title="class in hadur117.core.melee">MeleeProfileFolder</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#profiles()" class="member-name-link">profiles</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This round's observations for the melee profile blocks (<a class="req" href="../../../../requirements.html#MMEM-1">MMEM-1</a>).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#scanned(hadur117.core.world.EnemyInfo,hadur117.core.world.EnemyShot,double,double,long)" class="member-name-link">scanned</a><wbr>(<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;info,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#scanned(hadur117.core.world.EnemyInfo,hadur117.core.world.EnemyShot,double,double,long)" class="member-name-link">scanned</a><wbr>(<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;info,
  <a href="../world/EnemyShot.html" title="class in hadur117.core.world">EnemyShot</a>&nbsp;shot,
  double&nbsp;distance,
  double&nbsp;velocity,
  long&nbsp;time)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The World has taken a scan (<code>info</code>, and the shot it inferred, or null); the
  melee's own books take it now.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shotFired(java.awt.geom.Point2D.Double,long,double,double)" class="member-name-link">shotFired</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;at,
+ long&nbsp;time,
+ double&nbsp;gunHeading,
+ double&nbsp;power)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MMOVE-20">MMOVE-20</a>: a shot left from <code>at</code> on <code>time</code> along <code>gunHeading</code>; kept for the shadows it casts.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MeleeStrategy.html" title="class in hadur117.core.melee">MeleeStrategy</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#strategy()" class="member-name-link">strategy</a>()</code></div>
@@ -782,6 +796,24 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="tick(hadur117.core.melee.MeleeController.Situation)">
 <h3>tick</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MeleeController.Command.html" title="class in hadur117.core.melee">MeleeController.Command</a></span>&nbsp;<span class="element-name">tick</span><wbr><span class="parameters">(<a href="MeleeController.Situation.html" title="class in hadur117.core.melee">MeleeController.Situation</a>&nbsp;s)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="shotFired(java.awt.geom.Point2D.Double,long,double,double)">
+<h3>shotFired</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">shotFired</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;at,
+ long&nbsp;time,
+ double&nbsp;gunHeading,
+ double&nbsp;power)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MMOVE-20">MMOVE-20</a>: a shot left from <code>at</code> on <code>time</code> along <code>gunHeading</code>; kept for the shadows it casts.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ownBulletGone(double,double)">
+<h3>ownBulletGone</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">ownBulletGone</span><wbr><span class="parameters">(double&nbsp;power,
+ double&nbsp;heading)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MMOVE-20">MMOVE-20</a>: one of Hadur's bullets hit a robot or a bullet, so it casts no more shadows.</div>
 </section>
 </li>
 </ul>

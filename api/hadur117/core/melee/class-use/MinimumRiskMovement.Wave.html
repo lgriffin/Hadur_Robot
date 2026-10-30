@@ -98,41 +98,78 @@ loadScripts(document, 'script');</script>
 <div class="block">The waves in flight that may still reach Hadur.</div>
 </div>
 </div>
+<div class="caption"><span>Methods in <a href="../package-summary.html">hadur117.core.melee</a> with parameters of type <a href="../MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a></span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Method</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>(package private) static double[]</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#bulletShadow(hadur117.core.melee.MinimumRiskMovement.Wave,hadur117.core.melee.VirtualBullet,double)" class="member-name-link">bulletShadow</a><wbr>(<a href="../MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a>&nbsp;w,
+ <a href="../VirtualBullet.html" title="class in hadur117.core.melee">VirtualBullet</a>&nbsp;b,
+ double&nbsp;reach)</code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../../requirements.html#MMOVE-20">MMOVE-20</a>: the shadow {bearing, half, radius} that <code>b</code> casts on <code>w</code>: the first tick
+ the bullet crosses the wave's front, either way, the angles between where it was and where it
+ is; null if it never crosses before it has flown <code>reach</code>.</div>
+</div>
+</div>
 <div class="caption"><span>Method parameters in <a href="../package-summary.html">hadur117.core.melee</a> with type arguments of type <a href="../MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a></span></div>
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>(package private) static double</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#inAir(java.util.List)" class="member-name-link">inAir</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a>&gt;&nbsp;waves)</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#drive(double%5B%5D,java.awt.geom.Point2D.Double,long,int,java.util.List,java.util.List,boolean%5B%5D)" class="member-name-link">drive</a><wbr>(double[]&nbsp;state,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;to,
+ long&nbsp;now,
+ int&nbsp;ticks,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a>&gt;&nbsp;waves,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;double[][]&gt;&nbsp;shadows,
+ boolean[]&nbsp;done)</code></div>
 <div class="col-last even-row-color">
+<div class="block">The drive behind <a href="../MinimumRiskMovement.html#waveDamage(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,long,java.util.List)"><code>MinimumRiskMovement.waveDamage(java.awt.geom.Point2D.Double, java.awt.geom.Point2D.Double, long, java.util.List&lt;hadur117.core.melee.MinimumRiskMovement.Wave&gt;)</code></a>: from <code>state</code> {x, y, speed} toward <code>to</code>, from
+ tick <code>now</code> for <code>ticks</code> ticks, skipping the waves <code>done</code> marks.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static double</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#inAir(java.util.List)" class="member-name-link">inAir</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a>&gt;&nbsp;waves)</code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../../requirements.html#MMOVE-17">MMOVE-17</a>: the most damage the <code>waves</code> in the air could do.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;double[][]&gt;</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#shadows(java.util.List,java.util.List)" class="member-name-link">shadows</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a>&gt;&nbsp;waves,
+<div class="col-first even-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;double[][]&gt;</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#shadows(java.util.List,java.util.List)" class="member-name-link">shadows</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a>&gt;&nbsp;waves,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;&nbsp;enemies)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../../requirements.html#MMOVE-18">MMOVE-18</a>: for each wave, the robots other than its shooter over <a href="../MinimumRiskMovement.html#SHADE_MIN"><code>MinimumRiskMovement.SHADE_MIN</code></a> px from its
  source, each as {bearing from the source, half width +-asin(18/d), distance}.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static double</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#waveDamage(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,long,java.util.List)" class="member-name-link">waveDamage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first odd-row-color"><code>(package private) static double</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#waveDamage(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,long,java.util.List)" class="member-name-link">waveDamage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;to,
  long&nbsp;now,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a>&gt;&nbsp;waves)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">TMODE-11: the damage the <code>waves</code> are expected to do Hadur driving from <code>me</code>
  straight to <code>to</code> (accelerating 1 px a tick to 8, stopping there) for
  <a href="../MinimumRiskMovement.html#WAVE_TICKS"><code>MinimumRiskMovement.WAVE_TICKS</code></a> ticks.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#waveDamage(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,long,java.util.List,java.util.List)" class="member-name-link">waveDamage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first even-row-color"><code>(package private) static double</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#waveDamage(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,long,java.util.List,java.util.List)" class="member-name-link">waveDamage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;to,
  long&nbsp;now,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a>&gt;&nbsp;waves,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;double[][]&gt;&nbsp;shadows)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block">As above, each wave's mass cut by the share of Hadur its <code>shadows</code> cover (<a class="req" href="../../../../../requirements.html#MMOVE-18">MMOVE-18</a>), if given.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static double</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#waveDamage(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,long,java.util.List,java.util.List,int)" class="member-name-link">waveDamage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;to,
+ long&nbsp;now,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a>&gt;&nbsp;waves,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;double[][]&gt;&nbsp;shadows,
+ int&nbsp;ticks)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">As above, over the first <code>ticks</code> ticks only (<a class="req" href="../../../../../requirements.html#MMOVE-21">MMOVE-21</a>).</div>
 </div>
 </div>
 </section>
