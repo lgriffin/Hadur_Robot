@@ -1,4 +1,4 @@
-# PC card pc-melee-scal (docs/plan-melee-top5.md, MGUN-22, MMOVE-16..19, BENCH-146): one build alone on today's whole melee field, 46 fields x 6 seeds (3240-3245, after the retired gun card's 3234-3239), at the machine's melee width (@C@, fixed at prep) and CPU constant. Template: scprep writes work/melee-scal-<arm>.args with @V@ = the robot.release in hadur-robot/pom.xml and @A@ = the arm's suffix (aa, bb, wm, xh, ec, wq, bs); every arm fights the same fields and seeds, so the read pairs them battle for battle.
+# PC card pc-melee-scal (docs/plan-melee-top5.md, MGUN-22, MMOVE-16..21, BENCH-146): one build alone on today's whole melee field, 46 fields x 6 seeds (3240-3245, after the retired gun card's 3234-3239), at the machine's melee width (@C@, fixed at prep) and CPU constant. Template: scprep writes work/melee-scal-<arm>.args with @V@ = the robot.release in hadur-robot/pom.xml and @A@ = the arm's suffix (aa, bb, wm, xh, wq, bw, fv, ec, bs); every arm fights the same fields and seeds, so the read pairs them battle for battle.
 --suite
 melee-census-317.txt
 --seeds
