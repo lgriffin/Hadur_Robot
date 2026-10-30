@@ -12,7 +12,9 @@ import hadur117.core.physics.DiaUtils;
 import hadur117.core.physics.Rules;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -114,6 +116,18 @@ public class MeleeController {
      */
     private boolean leaderKnown;
     private final BattleField field;
+    /**
+     * MMOVE-19 (arm mcross), inspired by ScalarR: with the surfer on, off a team, an opponent's
+     * energy loss to someone other than Hadur that one other opponent's shot explains (its damage,
+     * its wave at the victim between the victim's last two scans) teaches that shooter's aim, as a
+     * hit on Hadur does (MMOVE-15). Off.
+     */
+    public static final boolean MELEE_CROSS = false;
+    /** MMOVE-19: how far, energy, a loss may be from a shot's damage (losses are kept to 0.01). */
+    static final double CROSS_SLACK = 0.02;
+    private boolean cross = MELEE_CROSS;
+    /** MMOVE-19: each opponent's scanned path this round; empty with the switch off. */
+    private final Map<String, RobotStateLog> paths = new HashMap<>();
 
     public MeleeController(BattleField field) {
         this(field, new EnemyTracker(field));
@@ -141,6 +155,7 @@ public class MeleeController {
         waves.newRound();
         lastTarget = null;
         myPath.clear();
+        paths.clear();
         lastMe = null;
     }
 
@@ -177,6 +192,46 @@ public class MeleeController {
             gun.onScan(info, distance, time);
         }
         waves.onScan(info, time);
+        if (cross && !onTeam && mover.surfing()) crossHit(info, time);
+    }
+
+    /** MMOVE-19: sets the switch, for tests. */
+    void cross(boolean on) {
+        this.cross = on;
+    }
+
+    /**
+     * MMOVE-19: logs {@code victim}'s scan and, when it shows a loss to someone other than Hadur,
+     * learns the aim of the one other opponent's shot that explains it: the shot whose damage the
+     * loss matches and whose wave reached the victim between its last two scans, the nearest such
+     * if several. The aim is the heading from the shot's source to where the victim is now.
+     */
+    void crossHit(EnemyInfo victim, long now) {
+        RobotStateLog path = paths.computeIfAbsent(victim.name, k -> new RobotStateLog());
+        path.addState(RobotState.newBuilder().setLocation(victim.location).setHeading(victim.heading)
+            .setVelocity(victim.velocity).setTime(now).build());
+        double loss = victim.externalLossAt(now);
+        if (loss <= 0) return;
+        long since = victim.previousScanTime() < 0 ? 1 : Math.max(1, now - victim.previousScanTime());
+        EnemyShot best = null;
+        double bestErr = Double.POSITIVE_INFINITY;
+        for (EnemyShot shot : tracker.shots(now)) {
+            if (shot.shooter.equals(victim.name)) continue;
+            if (Math.abs(Rules.getBulletDamage(shot.power) - loss) > CROSS_SLACK) continue;
+            double d = shot.source.distance(victim.location);
+            double slack = LEARN_SLACK + shot.window * shot.speed();
+            double far = shot.travelled(now), near = far - (since - 1) * shot.speed();
+            if (d > far + slack || d < near - slack) continue;
+            double err = Math.abs(d - (far + near) / 2);
+            if (err < bestErr) {
+                bestErr = err;
+                best = shot;
+            }
+        }
+        if (best == null) return;
+        RobotState at = path.getState(best.fireTime);
+        if (at == null) return;
+        danger.add(danger.sample(best, at, DiaUtils.absoluteBearing(best.source, victim.location)));
     }
 
     /**

@@ -135,6 +135,12 @@ public class EnemyInfo {
         return sum;
     }
 
+    /** MMOVE-19: the energy lost to robots other than Hadur that the scan at {@code now} showed, or 0. */
+    public double externalLossAt(long now) {
+        long[] last = externalLosses.peekLast();
+        return last != null && last[0] == now ? last[1] / 100.0 : 0;
+    }
+
     /** Drops losses older than the window, so the list stays bounded (RES-2). */
     private void pruneLosses(long now) {
         while (!externalLosses.isEmpty() && now - externalLosses.peekFirst()[0] > LOSS_WINDOW) {
