@@ -19,3 +19,6 @@
 18:30:41 live-SHARP exit=0 in 1058 s
 18:30:41 start live-WV2
 18:30:41 watching live-WV2: 3 stop rule(s)
+18:47:55 live-WV2 exit=0 in 1033 s
+18:47:55 start live-CONS
+18:47:55 watching live-CONS: 3 stop rule(s)
