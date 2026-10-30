@@ -20,3 +20,11 @@
 08:51:11 progress d2df: 181/1472 (12%) battles, 562/h, ETA 2.3 h, 0 failed, skips 10.6/battle (last 100)
 09:21:25 progress d2df: 609/1472 (41%) battles, 737/h, ETA 1.2 h, 0 failed, skips 10.0/battle (last 100)
 09:51:40 progress d2df: 1106/1472 (75%) battles, 832/h, ETA 26 min, 0 failed, skips 8.5/battle (last 100)
+10:09:47 d2df exit=0 in 5875 s
+10:09:47 start d2sdg
+10:09:47 d2sdg exit=0 in 0 s
+10:09:47 start d2sdf
+10:09:47 d2sdf exit=0 in 0 s
+10:09:47 start d2pr
+10:09:55 d2pr exit=0 in 7 s
+10:09:55 ALLDONE

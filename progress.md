@@ -1,14 +1,14 @@
 # Queue pc-team-dodge2: progress
 
-Updated 2026-10-30 10:03:45 PC time (10:03 UTC), runner pid 85768.
+Updated 2026-10-30 10:09:55 PC time (10:09 UTC), runner pid 85768.
 
 - `d2prep` done, exit 0 in 3 min
 - `d2bb` done, exit 0 in 1.6 h
 - `d2dg` done, exit 0 in 1.6 h
-- `d2df` running
-- `d2sdg` pending
-- `d2sdf` pending
-- `d2pr` pending
+- `d2df` done, exit 0 in 1.6 h
+- `d2sdg` done, exit 0 in 0 min
+- `d2sdf` done, exit 0 in 0 min
+- `d2pr` done, exit 0 in 0 min
 
 ### d2bb
 
@@ -38,28 +38,20 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### d2df
 
-**1340 of 1472 battles** (91%), 0 failed. Running 1.5 h, 875 battles/h, about 9 min left (ends ~10:12 PC time). Last battle 0 min ago.
-Skipped turns a battle: 9.5 overall, first 100 10.1, last 100 11.9.
+**1472 of 1472 battles** (100%), 0 failed. Running 1.6 h, 902 battles/h, about 0 min left (ends ~10:09 PC time). Last battle 0 min ago.
+Skipped turns a battle: 9.0 overall, first 100 10.1, last 100 4.3.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 1340 |
+| `fails 20` | halt | ok | 0 failed of 1472 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 11.9 a battle over the last 100 (first 100: 10.1) |
+| `skips 40 over 100` | halt | ok | 4.3 a battle over the last 100 (first 100: 10.1) |
 
-Stopping now would leave 132 battles unrun (about 9 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-05:49:46 progress d2bb: 350/1472 (24%) battles, 685/h, ETA 1.6 h, 0 failed, skips 9.6/battle (last 100)
-06:20:01 progress d2bb: 814/1472 (55%) battles, 802/h, ETA 49 min, 0 failed, skips 8.3/battle (last 100)
-06:50:14 progress d2bb: 1359/1472 (92%) battles, 895/h, ETA 8 min, 0 failed, skips 10.5/battle (last 100)
-06:54:31 d2bb exit=0 in 5725 s
-06:54:31 start d2dg
-06:54:31 watching d2dg: 3 stop rule(s)
-07:20:28 progress d2dg: 273/1472 (19%) battles, 631/h, ETA 1.9 h, 0 failed, skips 12.8/battle (last 100)
-07:50:42 progress d2dg: 707/1472 (48%) battles, 755/h, ETA 1.0 h, 0 failed, skips 8.8/battle (last 100)
 08:20:57 progress d2dg: 1254/1472 (85%) battles, 871/h, ETA 15 min, 0 failed, skips 6.4/battle (last 100)
 08:31:52 d2dg exit=0 in 5840 s
 08:31:52 start d2df
@@ -67,4 +59,12 @@ Stopping now would leave 132 battles unrun (about 9 min); every battle already f
 08:51:11 progress d2df: 181/1472 (12%) battles, 562/h, ETA 2.3 h, 0 failed, skips 10.6/battle (last 100)
 09:21:25 progress d2df: 609/1472 (41%) battles, 737/h, ETA 1.2 h, 0 failed, skips 10.0/battle (last 100)
 09:51:40 progress d2df: 1106/1472 (75%) battles, 832/h, ETA 26 min, 0 failed, skips 8.5/battle (last 100)
+10:09:47 d2df exit=0 in 5875 s
+10:09:47 start d2sdg
+10:09:47 d2sdg exit=0 in 0 s
+10:09:47 start d2sdf
+10:09:47 d2sdf exit=0 in 0 s
+10:09:47 start d2pr
+10:09:55 d2pr exit=0 in 7 s
+10:09:55 ALLDONE
 ```
