@@ -1,12 +1,16 @@
 {
  "plan": "pc-team-lead",
- "updated": 1793391602.5984645,
+ "updated": 1793392510.2826498,
  "steps": {
   "lgprep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 106,
+   "end": "2026-10-30T20:21:49"
   },
   "lgbb": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-10-30T20:21:49"
   },
   "lgld": {
    "status": "pending"
@@ -27,5 +31,49 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "lgbb",
+   "started": 1793391709.5689647,
+   "updated": 1793392510.2754712,
+   "elapsed": 800.7065064907074,
+   "expected": 288,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 251,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 1128.503381295412,
+   "eta": 118.03243322771382,
+   "fraction": 0.8715277777777778,
+   "last_battle_age": 0.277313232421875,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 251"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "ok",
+     "detail": "12.1 a battle over the last 100 (first 100: 11.2)"
+    }
+   ],
+   "skips_mean": 11.00796812749004,
+   "skips_last100": 12.13
+  }
+ ]
 }
