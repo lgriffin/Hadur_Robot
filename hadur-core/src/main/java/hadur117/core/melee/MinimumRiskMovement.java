@@ -522,6 +522,25 @@ public class MinimumRiskMovement {
             VirtualBullet.Aim.HEAD_ON, heading));
     }
 
+    /**
+     * MMOVE-20: one of Hadur's bullets of {@code power} hit a robot or a bullet, so it casts no more
+     * shadows: of the kept bullets of that power, the one whose heading is nearest {@code heading}
+     * (the oldest when the heading is unknown) is dropped.
+     */
+    public void ownBulletGone(double power, double heading) {
+        VirtualBullet gone = null;
+        double best = Double.POSITIVE_INFINITY;
+        for (VirtualBullet b : ownBullets) {
+            if (Math.abs(b.shot.power - power) > 0.001) continue;
+            double off = Double.isNaN(heading) ? 0 : Math.abs(Angles.normalRelativeAngle(b.heading - heading));
+            if (off < best) {
+                best = off;
+                gone = b;
+            }
+        }
+        if (gone != null) ownBullets.remove(gone);
+    }
+
     /** MMOVE-15: sets the melee surfer, for tests. */
     void surf(boolean on) {
         this.surf = on;
@@ -1295,7 +1314,7 @@ public class MinimumRiskMovement {
     Point2D.Double rerankBest(List<Point2D.Double> candidates, View v, int rerank, List<Wave> waves,
                               List<VirtualBullet> mateBullets, boolean ownFire, boolean scalar) {
         List<double[][]> shadows = scalar && shade ? shadows(waves, v.enemies) : null;
-        if (scalar && bulletShade) shadows = withBulletShadows(shadows, waves, ownBullets(v.me, v.now));
+        if (scalar && bulletShade) shadows = withBulletShadows(shadows, waves, ownBullets(v.me, v.now), reach(field));
         List<Point2D.Double> pool = new ArrayList<>(candidates);
         boolean hold = destination != null && destination.distance(v.me) > REACHED;
         if (hold) pool.add(destination);
@@ -1316,12 +1335,19 @@ public class MinimumRiskMovement {
             r[k] = risk[picked.get(k)];
             if (scalar && search) {
                 // MMOVE-21: the waves met until the step ends, then the best of the next five steps.
+                // The second leg starts where and as fast as the first ended, and a wave met on the
+                // first leg is not met again.
                 int t = arrival(v.me, p);
+                double[] end = {v.me.x, v.me.y, 0};
+                boolean[] met = new boolean[waves.size()];
+                double first = drive(end, p, v.now, t, waves, shadows, met);
                 double next = Double.POSITIVE_INFINITY;
                 for (Point2D.Double q : steps(p, v)) {
-                    next = Math.min(next, waveDamage(p, q, v.now + t, waves, shadows, WAVE_TICKS));
+                    double[] from = end.clone();
+                    from[2] = carried(v.me, from, q);
+                    next = Math.min(next, drive(from, q, v.now + t, WAVE_TICKS, waves, shadows, met.clone()));
                 }
-                damage[k] = waveDamage(v.me, p, v.now, waves, shadows, t) + next;
+                damage[k] = first + next;
             } else {
                 damage[k] = waveDamage(v.me, p, v.now, waves, shadows);
             }
@@ -1551,15 +1577,27 @@ public class MinimumRiskMovement {
     static double waveDamage(Point2D.Double me, Point2D.Double to, long now, List<Wave> waves,
                              List<double[][]> shadows, int ticks) {
         if (waves.isEmpty()) return 0;
-        boolean[] done = new boolean[waves.size()];
+        return drive(new double[] {me.x, me.y, 0}, to, now, ticks, waves, shadows, new boolean[waves.size()]);
+    }
+
+    /**
+     * The drive behind {@link #waveDamage}: from {@code state} {x, y, speed} toward {@code to}, from
+     * tick {@code now} for {@code ticks} ticks, skipping the waves {@code done} marks. On return
+     * {@code state} holds where and how fast the drive ended and {@code done} the waves it met
+     * (MMOVE-21 carries both into its second leg).
+     */
+    static double drive(double[] state, Point2D.Double to, long now, int ticks, List<Wave> waves,
+                        List<double[][]> shadows, boolean[] done) {
         double total = 0;
-        double x = me.x, y = me.y, speed = 0;
+        double x = state[0], y = state[1], speed = state[2];
         for (int t = 1; t <= ticks; t++) {
             double left = Math.hypot(to.x - x, to.y - y);
             if (left > 0.5) {
                 speed = Math.min(MAX_SPEED, Math.min(speed + 1, left));
                 x += (to.x - x) / left * speed;
                 y += (to.y - y) / left * speed;
+            } else {
+                speed = 0;
             }
             long tick = now + t;
             for (int i = 0; i < waves.size(); i++) {
@@ -1577,7 +1615,21 @@ public class MinimumRiskMovement {
                 total += m;
             }
         }
+        state[0] = x;
+        state[1] = y;
+        state[2] = speed;
         return total;
+    }
+
+    /**
+     * MMOVE-21: the speed a drive that left {@code me} and is at {@code end} {x, y, speed} keeps
+     * heading on to {@code to}: its speed along the new line, none if that turns back.
+     */
+    static double carried(Point2D.Double me, double[] end, Point2D.Double to) {
+        double ax = end[0] - me.x, ay = end[1] - me.y, bx = to.x - end[0], by = to.y - end[1];
+        double la = Math.hypot(ax, ay), lb = Math.hypot(bx, by);
+        if (la == 0 || lb == 0) return 0;
+        return Math.max(0, end[2] * (ax * bx + ay * by) / (la * lb));
     }
 
     /** MMOVE-21: the ticks the wave check's drive takes from {@code me} to {@code to}, at most {@link #WAVE_TICKS}. */
@@ -1595,8 +1647,7 @@ public class MinimumRiskMovement {
 
     /** MMOVE-20: Hadur's own bullets still in the field at {@code now}. */
     List<VirtualBullet> ownBullets(Point2D.Double me, long now) {
-        double reach = Math.hypot(field.width, field.height);
-        ownBullets.removeIf(b -> (now - b.shot.fireTime) * b.shot.speed() > reach);
+        ownBullets.removeIf(b -> (now - b.shot.fireTime) * b.shot.speed() > reach(field));
         return new ArrayList<>(ownBullets);
     }
 
@@ -1605,14 +1656,15 @@ public class MinimumRiskMovement {
      * {@code bullets} added: where a bullet's flight in one tick crosses the wave's front, the
      * angles from the wave's source between its two ends, held from that radius outward.
      */
-    static List<double[][]> withBulletShadows(List<double[][]> shadows, List<Wave> waves, List<VirtualBullet> bullets) {
+    static List<double[][]> withBulletShadows(List<double[][]> shadows, List<Wave> waves, List<VirtualBullet> bullets,
+                                              double reach) {
         List<double[][]> out = new ArrayList<>(waves.size());
         for (int i = 0; i < waves.size(); i++) {
             Wave w = waves.get(i);
             List<double[]> one = new ArrayList<>();
             if (shadows != null) one.addAll(java.util.Arrays.asList(shadows.get(i)));
             for (VirtualBullet b : bullets) {
-                double[] sh = bulletShadow(w, b);
+                double[] sh = bulletShadow(w, b, reach);
                 if (sh != null) one.add(sh);
             }
             out.add(one.toArray(new double[0][]));
@@ -1620,33 +1672,35 @@ public class MinimumRiskMovement {
         return out;
     }
 
+    /** MMOVE-20: the farthest a bullet flies in {@code field}, its diagonal. */
+    static double reach(BattleField field) {
+        return Math.hypot(field.width, field.height);
+    }
+
     /**
      * MMOVE-20: the shadow {bearing, half, radius} that {@code b} casts on {@code w}: the first tick
-     * the bullet is inside the wave's front having been outside it, the angles between where it was
-     * and where it is; null if it never crosses within {@link #OWN_SHADOW_TICKS} ticks of both flying.
+     * the bullet crosses the wave's front, either way, the angles between where it was and where it
+     * is; null if it never crosses before it has flown {@code reach}.
      */
-    static double[] bulletShadow(Wave w, VirtualBullet b) {
+    static double[] bulletShadow(Wave w, VirtualBullet b, double reach) {
         long start = Math.max(w.fireTime, b.shot.fireTime);
+        long end = b.shot.fireTime + (long) Math.ceil(reach / b.shot.speed());
         Point2D.Double before = b.position(start);
         boolean outside = w.source.distance(before) > w.speed * (start - w.fireTime);
-        for (long t = start + 1; t <= start + OWN_SHADOW_TICKS; t++) {
+        for (long t = start + 1; t <= end; t++) {
             Point2D.Double at = b.position(t);
             double r = w.speed * (t - w.fireTime);
             boolean in = w.source.distance(at) <= r;
-            if (in && outside) {
+            if (in == outside) {
                 double a0 = Math.atan2(before.x - w.source.x, before.y - w.source.y);
                 double a1 = Math.atan2(at.x - w.source.x, at.y - w.source.y);
                 double half = Math.abs(Angles.normalRelativeAngle(a1 - a0)) / 2;
                 return new double[] {a0 + Angles.normalRelativeAngle(a1 - a0) / 2, half, r - w.speed};
             }
-            outside = !in;
             before = at;
         }
         return null;
     }
-
-    /** MMOVE-20: how far ahead, ticks, a bullet's crossing of a wave is looked for. */
-    static final int OWN_SHADOW_TICKS = 150;
 
     /** TMODE-11: one shot in flight as a profile over its headings. */
     static final class Wave {

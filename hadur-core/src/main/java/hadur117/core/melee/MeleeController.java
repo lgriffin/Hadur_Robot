@@ -506,10 +506,16 @@ public class MeleeController {
             || s.energy < MeleeEnergyPolicy.MIN_OWN_ENERGY
             || s.energy <= power + 0.1;
         c.firePower = hold ? 0 : power;
-        // MMOVE-20: a shot that leaves this tick is kept for the shadows it casts.
-        if (c.firePower > 0 && s.gunHeat == 0 && !onTeam && mover.bulletShading()) {
-            mover.ownShot(s.me, s.time, s.gunHeading, c.firePower);
-        }
         return c;
+    }
+
+    /** MMOVE-20: a shot left from {@code at} on {@code time} along {@code gunHeading}; kept for the shadows it casts. */
+    public void shotFired(Point2D.Double at, long time, double gunHeading, double power) {
+        if (!onTeam && mover.bulletShading()) mover.ownShot(at, time, gunHeading, power);
+    }
+
+    /** MMOVE-20: one of Hadur's bullets hit a robot or a bullet, so it casts no more shadows. */
+    public void ownBulletGone(double power, double heading) {
+        if (mover.bulletShading()) mover.ownBulletGone(power, heading);
     }
 }

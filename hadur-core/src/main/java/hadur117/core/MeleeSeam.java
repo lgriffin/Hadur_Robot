@@ -211,6 +211,10 @@ final class MeleeSeam implements Role {
         } else if (event instanceof BotEvent.BulletHit) {
             BotEvent.BulletHit e = (BotEvent.BulletHit) event;
             if (!tick.foreign(e.name())) guard(() -> melee.bulletHit(e.name(), e.power()));
+            guard(() -> melee.ownBulletGone(e.power(), e.bulletHeading()));
+        } else if (event instanceof BotEvent.BulletHitBullet) {
+            BotEvent.BulletHitBullet e = (BotEvent.BulletHitBullet) event;
+            guard(() -> melee.ownBulletGone(e.power(), e.bulletHeading()));
         } else if (event instanceof BotEvent.HitByBullet) {
             BotEvent.HitByBullet e = (BotEvent.HitByBullet) event;
             guard(() -> melee.hitByBullet(e.name(), e.power(), e.heading(), in.location(), in.time()));
@@ -325,6 +329,7 @@ final class MeleeSeam implements Role {
             orders.fire(previous.firePower);
             stats.shotsFired++;
             core.meleeShotFired();
+            melee.shotFired(in.location(), in.time(), in.gunHeading(), previous.firePower);
         }
 
         MeleeController.Command c = melee.tick(new MeleeController.Situation(

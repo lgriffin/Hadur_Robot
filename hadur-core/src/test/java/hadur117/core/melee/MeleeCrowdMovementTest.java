@@ -317,20 +317,48 @@ class MeleeCrowdMovementTest {
         MinimumRiskMovement.Wave w = MinimumRiskMovement.Wave.of(List.of(new VirtualBullet(
             new EnemyShot("a", pt(500, 900), 0, 2.0), VirtualBullet.Aim.HEAD_ON, Math.PI))).get(0);
         VirtualBullet mine = new VirtualBullet(new EnemyShot("", pt(500, 500), 0, 3.0, 0), VirtualBullet.Aim.HEAD_ON, 0);
-        double[] sh = MinimumRiskMovement.bulletShadow(w, mine);
+        double[] sh = MinimumRiskMovement.bulletShadow(w, mine, 1414);
         assertNotNull(sh);
         assertEquals(Math.PI, Math.abs(sh[0]), 1e-9, "on the line from a to Hadur");
         assertEquals(14 * 15, sh[2], 1e-9, "from the front's radius the tick before the crossing");
         // A bullet fired across, from (300, 500) eastward, shades a wider stretch.
         VirtualBullet across = new VirtualBullet(new EnemyShot("", pt(300, 520), 0, 3.0, 0), VirtualBullet.Aim.HEAD_ON, Math.PI / 2);
-        double[] wide = MinimumRiskMovement.bulletShadow(w, across);
+        double[] wide = MinimumRiskMovement.bulletShadow(w, across, 1414);
         assertNotNull(wide);
         assertTrue(wide[1] > sh[1]);
-        List<double[][]> merged = MinimumRiskMovement.withBulletShadows(null, List.of(w), List.of(mine, across));
+        List<double[][]> merged = MinimumRiskMovement.withBulletShadows(null, List.of(w), List.of(mine, across), 1414);
         assertEquals(2, merged.get(0).length);
+        // A faster bullet that starts inside a slower wave shades where it crosses the front outward:
+        // a speed-11 wave from (0, 500) at tick -5 has a 55 px front when Hadur's power-1 bullet
+        // (17 px/tick) leaves (50, 500) eastward; it is outside the 66 px front at tick 1.
+        MinimumRiskMovement.Wave slow = MinimumRiskMovement.Wave.of(List.of(new VirtualBullet(
+            new EnemyShot("a", pt(0, 500), -5, 3.0), VirtualBullet.Aim.HEAD_ON, Math.PI / 2))).get(0);
+        VirtualBullet out = new VirtualBullet(new EnemyShot("", pt(50, 500), 0, 1.0, 0), VirtualBullet.Aim.HEAD_ON, Math.PI / 2);
+        double[] outward = MinimumRiskMovement.bulletShadow(slow, out, 1414);
+        assertNotNull(outward);
+        assertEquals(55, outward[2], 1e-9);
+        // The crossing is looked for as long as the bullet flies, not a fixed horizon: on a 4000 px
+        // field a power-3 bullet from (906, 2000) eastward is caught by a power-1 wave from (0, 2000) at tick 151.
+        MinimumRiskMovement.Wave fast = MinimumRiskMovement.Wave.of(List.of(new VirtualBullet(
+            new EnemyShot("a", pt(0, 2000), 0, 1.0), VirtualBullet.Aim.HEAD_ON, Math.PI / 2))).get(0);
+        VirtualBullet far = new VirtualBullet(new EnemyShot("", pt(906, 2000), 0, 3.0, 0), VirtualBullet.Aim.HEAD_ON, Math.PI / 2);
+        assertNotNull(MinimumRiskMovement.bulletShadow(fast, far, Math.hypot(4000, 4000)));
+        assertNull(MinimumRiskMovement.bulletShadow(fast, far, 1414), "flown out of a 1000 px field first");
+
         MinimumRiskMovement on = new MinimumRiskMovement(field(1000, 1000));
         on.scalar2(true, false);
         assertTrue(on.bulletShading());
+        // A bullet that hit something casts no more shadows: of those of its power, the nearest heading goes.
+        on.ownShot(pt(500, 500), 0, 0, 3.0);
+        on.ownShot(pt(500, 500), 1, Math.PI / 2, 3.0);
+        on.ownShot(pt(500, 500), 2, Math.PI / 2, 2.0);
+        on.ownBulletGone(3.0, Math.PI / 2 + 0.01);
+        List<VirtualBullet> kept = on.ownBullets(pt(500, 500), 3);
+        assertEquals(2, kept.size());
+        assertEquals(0, kept.get(0).heading, 1e-9);
+        assertEquals(2.0, kept.get(1).shot.power, 1e-9);
+        on.ownBulletGone(1.0, Double.NaN);
+        assertEquals(2, on.ownBullets(pt(500, 500), 3).size(), "no bullet of that power: none goes");
     }
 
     @Test
@@ -349,6 +377,18 @@ class MeleeCrowdMovementTest {
             assertTrue(p.x >= MinimumRiskMovement.WALL_MARGIN && p.y >= MinimumRiskMovement.WALL_MARGIN);
         }
         assertEquals(1, MinimumRiskMovement.arrival(pt(0, 0), pt(0, 0)));
+        // The second leg keeps the first's speed along its line, and none turning back.
+        assertEquals(6, MinimumRiskMovement.carried(pt(0, 0), new double[] {0, 100, 6}, pt(0, 300)), 1e-9);
+        assertEquals(0, MinimumRiskMovement.carried(pt(0, 0), new double[] {0, 100, 6}, pt(0, 0)), 1e-9);
+        // A wave met on the first leg is not met again on the second: a speed-14 wave from (0, 0)
+        // fired at tick -40 reaches a robot driving from (786, 0) to (998, 0) at the end of the leg.
+        MinimumRiskMovement.Wave east = MinimumRiskMovement.Wave.of(List.of(new VirtualBullet(
+            new EnemyShot("a", pt(0, 0), -40, 2.0), VirtualBullet.Aim.HEAD_ON, Math.PI / 2))).get(0);
+        double[] end = {786, 0, 0};
+        boolean[] met = new boolean[1];
+        double first = MinimumRiskMovement.drive(end, pt(998, 0), 0, 30, List.of(east), null, met);
+        assertTrue(first > 0 && met[0]);
+        assertEquals(0, MinimumRiskMovement.drive(end.clone(), pt(998, 140), 30, 30, List.of(east), null, met.clone()), 1e-9);
         assertTrue(MinimumRiskMovement.arrival(pt(0, 0), pt(0, 140)) > 140 / 8);
         // On, the surfer's pick is one of the steps; off, it is one of the candidates it was given.
         MinimumRiskMovement on = new MinimumRiskMovement(field(1000, 1000));
