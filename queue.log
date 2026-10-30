@@ -8,3 +8,7 @@
 17:38:01 live-D exit=0 in 1032 s
 17:38:01 start live-P3
 17:38:01 watching live-P3: 3 stop rule(s)
+17:51:36 progress live-P3: 192/276 (70%) battles, 848/h, ETA 6 min, 0 failed, skips 0.0/battle (last 100)
+17:55:53 live-P3 exit=0 in 1071 s
+17:55:53 start live-P075
+17:55:53 watching live-P075: 3 stop rule(s)
