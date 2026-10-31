@@ -1,12 +1,12 @@
 # Queue pc-melee-hand: progress
 
-Updated 2026-10-31 23:18:51 PC time (23:18 UTC), runner pid 39612.
+Updated 2026-10-31 23:34:00 PC time (23:34 UTC), runner pid 39612.
 
 - `haprep` done, exit 0 in 3 min
 - `haaa` done, exit 0 in 24 min
 - `habb` done, exit 0 in 24 min
-- `haet` running
-- `haed` pending
+- `haet` done, exit 0 in 25 min
+- `haed` running
 - `haes` pending
 - `haread` pending
 - `hapr` pending
@@ -25,22 +25,31 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### haet
 
-**234 of 276 battles** (85%), 0 failed. Running 21 min, 663 battles/h, about 4 min left (ends ~23:22 PC time). Last battle 0 min ago.
-Skipped turns a battle: 66.9 overall, first 100 60.0, last 100 68.0.
+**276 of 276 battles** (100%), 0 failed. Running 25 min, 674 battles/h, about 0 min left (ends ~23:22 PC time). Last battle 0 min ago.
+Skipped turns a battle: 71.0 overall, first 100 60.0, last 100 80.7.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 234 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 42 battles unrun (about 4 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### haed
+
+**127 of 276 battles** (46%), 0 failed. Running 12 min, 649 battles/h, about 14 min left (ends ~23:47 PC time). Last battle 0 min ago.
+Skipped turns a battle: 46.7 overall, first 100 42.4, last 100 48.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 127 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 149 battles unrun (about 14 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-22:07:05 haaa exit=0 in 1460 s
-22:07:05 start habb
-22:07:05 watching habb: 2 stop rule(s)
 22:12:58 habb exit=130 in 353 s (stopped)
 22:33:27 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
 22:33:27 skip haprep (already exit=0)
@@ -53,4 +62,7 @@ Stopping now would leave 42 battles unrun (about 4 min); every battle already fo
 22:57:42 start haet
 22:57:42 watching haet: 2 stop rule(s)
 23:04:43 progress haet: 73/276 (26%) battles, 623/h, ETA 20 min, 0 failed, skips 60.5/battle (last 100)
+23:22:15 haet exit=0 in 1473 s
+23:22:15 start haed
+23:22:15 watching haed: 2 stop rule(s)
 ```
