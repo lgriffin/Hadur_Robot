@@ -19,3 +19,7 @@
 17:33:37 live-PNS exit=0 in 1154 s
 17:33:37 start live-PNS6
 17:33:37 watching live-PNS6: 3 stop rule(s)
+17:49:55 progress live-PNS6: 210/276 (76%) battles, 773/h, ETA 5 min, 0 failed, skips 2.2/battle (last 100)
+17:54:17 live-PNS6 exit=0 in 1239 s
+17:54:17 start live-MIR
+17:54:17 watching live-MIR: 3 stop rule(s)
