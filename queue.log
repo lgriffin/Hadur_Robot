@@ -22,3 +22,7 @@
 05:34:34 live-HS650 exit=0 in 975 s
 05:34:34 start live-SR
 05:34:34 watching live-SR: 3 stop rule(s)
+05:43:49 progress live-SR: 131/276 (47%) battles, 850/h, ETA 10 min, 0 failed, skips 0.0/battle (last 100)
+05:51:26 live-SR exit=0 in 1011 s
+05:51:26 start live-SAOR
+05:51:26 watching live-SAOR: 3 stop rule(s)
