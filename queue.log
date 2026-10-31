@@ -18,3 +18,10 @@
 18:52:07 still exit=0 in 1460 s
 18:52:07 start add
 18:52:07 watching add: 5 stop rule(s), shown only
+18:59:06 progress add: 571/576 (99%) battles, 4900/h, ETA 0 min, 0 failed, skips 12.5/battle (last 100), aa -0.00, szmt +0.01
+18:59:30 add exit=0 in 443 s
+18:59:30 start gate
+18:59:31 gate exit=0 in 1 s
+18:59:31 start pr
+18:59:37 pr exit=0 in 6 s
+18:59:37 ALLDONE
