@@ -8,3 +8,7 @@
 04:29:49 live-D exit=0 in 1043 s
 04:29:49 start live-H500
 04:29:49 watching live-H500: 3 stop rule(s)
+04:43:18 progress live-H500: 222/276 (80%) battles, 988/h, ETA 3 min, 0 failed, skips 0.0/battle (last 100)
+04:46:15 live-H500 exit=0 in 985 s
+04:46:15 start live-H650
+04:46:15 watching live-H650: 3 stop rule(s)
