@@ -1,6 +1,6 @@
 # Queue pc-melee-hand: progress
 
-Updated 2026-10-31 23:03:43 PC time (23:03 UTC), runner pid 39612.
+Updated 2026-10-31 23:18:51 PC time (23:18 UTC), runner pid 39612.
 
 - `haprep` done, exit 0 in 3 min
 - `haaa` done, exit 0 in 24 min
@@ -25,20 +25,19 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### haet
 
-**72 of 276 battles** (26%), 0 failed. Running 6 min, 717 battles/h, about 17 min left (ends ~23:20 PC time). Last battle 0 min ago.
-Skipped turns a battle: 61.1 overall, first 72 61.1, last 72 61.1.
+**234 of 276 battles** (85%), 0 failed. Running 21 min, 663 battles/h, about 4 min left (ends ~23:22 PC time). Last battle 0 min ago.
+Skipped turns a battle: 66.9 overall, first 100 60.0, last 100 68.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 72 |
+| `fails 20` | halt | ok | 0 failed of 234 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 204 battles unrun (about 17 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 42 battles unrun (about 4 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-21:43:26 progress haaa: 0/276 (0%) battles, 0 failed
 22:07:05 haaa exit=0 in 1460 s
 22:07:05 start habb
 22:07:05 watching habb: 2 stop rule(s)
@@ -53,4 +52,5 @@ Stopping now would leave 204 battles unrun (about 17 min); every battle already 
 22:57:42 habb exit=0 in 1454 s
 22:57:42 start haet
 22:57:42 watching haet: 2 stop rule(s)
+23:04:43 progress haet: 73/276 (26%) battles, 623/h, ETA 20 min, 0 failed, skips 60.5/battle (last 100)
 ```

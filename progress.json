@@ -1,6 +1,6 @@
 {
  "plan": "pc-melee-hand",
- "updated": 1793487823.4226043,
+ "updated": 1793488731.99712,
  "steps": {
   "haprep": {
    "status": "done",
@@ -78,8 +78,8 @@
   {
    "step": "haet",
    "started": 1793487462.1303978,
-   "updated": 1793487823.4156556,
-   "elapsed": 361.2852578163147,
+   "updated": 1793488731.987507,
+   "elapsed": 1269.8571093082428,
    "expected": 276,
    "panel": null,
    "field": null,
@@ -87,20 +87,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 72,
+   "battles": 234,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 717.4386288736501,
-   "eta": 1023.6415638128916,
-   "fraction": 0.2608695652173913,
-   "last_battle_age": 0.8022503852844238,
+   "rate": 663.3817252548196,
+   "eta": 227.92307090147946,
+   "fraction": 0.8478260869565217,
+   "last_battle_age": 5.947840690612793,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 72"
+     "detail": "0 failed of 234"
     },
     {
      "rule": "stall 30m",
@@ -109,8 +109,8 @@
      "detail": "last battle 0 min ago"
     }
    ],
-   "skips_mean": 61.125,
-   "skips_last100": 61.125
+   "skips_mean": 66.92735042735043,
+   "skips_last100": 68.03
   }
  ]
 }
