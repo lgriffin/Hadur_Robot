@@ -34,6 +34,8 @@
 # PT0 too). An arm passes when its gain's low end is above 0 (Deise's +0.30
 # bar is for a ship; a pass here first goes to the Deise thread, which fits it beside its rows).
 # Caveat (as n06): the teach run and the bench share the census fields, on different seeds.
+# The teach step's skip rule is 120, not 40: Hadur skips about 65 turns a battle in melee as a
+# matter of course (pc-melee-dia's aa 66.6; the first run of this card halted at 64.7, issue #522).
 # Stop rules on every census step (docs/bench/watch.md; halt, finished seats are kept, the stopped
 # seat reruns from its start): 20 failed battles (a broken jar), no battle in 30 minutes (a hung
 # step), or 40+ skipped turns a battle over the last 100 (the PR #331 build-up). A halt at worst
@@ -52,7 +54,7 @@ live-TEACH | ${MVN} "-Dexec.args=@work/deise-pt1/live-TEACH.args"
   watch: battles=276
   stop: fails 20
   stop: stall 30m
-  stop: skips 40 over 100
+  stop: skips 120 over 100
 
 build | python3 tools/deise_power.py 'work/deise-pt1/live-TEACH/*/battles/*/shots.csv' --own-step 2 --dist-step 2 --min 20 --out work/deise-pt1/PTS.java && python3 tools/deise_power.py 'work/deise-pt1/live-TEACH/*/battles/*/shots.csv' --own-step 4 --dist-step 4 --min 10 --out work/deise-pt1/PTB.java && python3 tools/deise_power.py 'work/deise-pt1/live-TEACH/*/battles/*/shots.csv' --min 1000000000 --out work/deise-pt1/PT0.java && DEISE_RUN=pt1 bash tools/deise_arms.sh live 6 5200 ${ARMS} && python3 tools/kitlab_codesize.py work/deise-pt1/hadur117.mini.DeisePTS_0.4.jar | tail -1 && python3 tools/kitlab_codesize.py work/deise-pt1/hadur117.mini.DeisePTB_0.4.jar | tail -1
   after: live-TEACH
