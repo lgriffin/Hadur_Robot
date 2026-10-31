@@ -1,6 +1,6 @@
 # Queue pc-sanaro-n06: progress
 
-Updated 2026-10-31 20:46:39 PC time (20:46 UTC), runner pid 58568.
+Updated 2026-10-31 21:01:46 PC time (21:01 UTC), runner pid 58568.
 
 - `prep` done, exit 0 in 0 min
 - `teach` done, exit 0 in 15 min
@@ -8,8 +8,8 @@ Updated 2026-10-31 20:46:39 PC time (20:46 UTC), runner pid 58568.
 - `arms` done, exit 0 in 0 min
 - `live-S2` done, exit 0 in 30 min
 - `live-HT` done, exit 0 in 30 min
-- `live-HD` running
-- `live-HS` pending
+- `live-HD` done, exit 0 in 32 min
+- `live-HS` running
 - `read-live` pending
 - `pr` pending
 
@@ -54,23 +54,33 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-HD
 
-**410 of 430 battles** (95%), 0 failed. Running 30 min, 812 battles/h, about 1 min left (ends ~20:48 PC time). Last battle 0 min ago.
+**430 of 430 battles** (100%), 0 failed. Running 32 min, 817 battles/h, about 0 min left (ends ~20:47 PC time). Last battle 0 min ago.
 Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 410 |
+| `fails 20` | halt | ok | 0 failed of 430 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 | `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
 
-Stopping now would leave 20 battles unrun (about 1 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### live-HS
+
+**190 of 430 battles** (44%), 0 failed. Running 14 min, 824 battles/h, about 17 min left (ends ~21:19 PC time). Last battle 1 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 190 |
+| `stall 30m` | halt | ok | last battle 1 min ago |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
+
+Stopping now would leave 240 battles unrun (about 17 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-19:15:55 start distill-report
-19:15:58 distill-report exit=0 in 2 s
-19:15:58 start arms
 19:16:07 arms exit=0 in 9 s
 19:16:07 start live-S2
 19:16:07 watching live-S2: 3 stop rule(s)
@@ -83,4 +93,7 @@ Stopping now would leave 20 battles unrun (about 1 min); every battle already fo
 20:16:21 start live-HD
 20:16:21 watching live-HD: 3 stop rule(s)
 20:32:33 progress live-HD: 200/430 (47%) battles, 741/h, ETA 19 min, 0 failed, skips 0.0/battle (last 100)
+20:47:56 live-HD exit=0 in 1895 s
+20:47:56 start live-HS
+20:47:56 watching live-HS: 3 stop rule(s)
 ```
