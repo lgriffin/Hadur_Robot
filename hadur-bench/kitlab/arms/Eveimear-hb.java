@@ -104,8 +104,9 @@ public class Eveimear extends AdvancedRobot {
         double gain;
         enemyEnergy += gain = 3 * e.getPower();
         // Once their hits have won back more than 40 + 23 per round, move at random for good (EVEIMEAR-3);
-        // the table moves that line by -1000 (the first hit), 0 or +1000 (never) for this robot.
-        if ((won += gain) > 40 + 23 * getRoundNum() + (MODES.charAt(e.getName().hashCode() >>> SHIFT & MASK) - 1) * 1000) {
+        // the table moves that line by -100000 (the first hit), 0 or +100000 (never: won is kept across
+        // rounds, and 35 rounds of hits at 9 energy a hit stay far below it) for this robot.
+        if ((won += gain) > 40 + 23 * getRoundNum() + (MODES.charAt(e.getName().hashCode() >>> SHIFT & MASK) - 1) * 100000) {
             mode = -1;
         }
     }

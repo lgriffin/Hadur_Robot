@@ -1,5 +1,7 @@
 """Tests for tools/distill.py (BENCH-156): Hadur's decisions into nano string tables."""
+import contextlib
 import csv
+import io
 import os
 import sys
 import tempfile
@@ -148,6 +150,35 @@ class OracleTest(unittest.TestCase):
         self.assertEqual("1", distill.oracle_pick({"1": {}, "0": a}, "1")[0])
         self.assertEqual("1", distill.oracle_pick({"1": base, "0": {"1": 99.0}}, "1")[0])
 
+    def test_field_refuses_an_empty_set(self):
+        d = tempfile.mkdtemp()
+        parts = os.path.join(d, "p.txt")
+        with open(parts, "w", encoding="utf-8") as f:
+            f.write("a.A 1.0\n")
+        with self.assertRaises(SystemExit):
+            distill.main(["field", parts, "--present", d, "--out", os.path.join(d, "f.txt")])
+
+    def test_oracle_report_is_weighted(self):
+        d = tempfile.mkdtemp()
+        rows = [("a.A 1.0", 3.0), ("b.B 1.0", 1.0)]
+        with open(os.path.join(d, "set.txt"), "w") as f:
+            for n, w in rows:
+                f.write("%s | band:%s | %s | %s\n" % (n, w, distill.jar_of(n), w))
+        for arm, gain in (("base", {"a.A_1.0": 0, "b.B_1.0": 0}), ("win", {"a.A_1.0": 10, "b.B_1.0": 0})):
+            for stem, g in gain.items():
+                for seed, wob in enumerate((0.4, -0.4, 0.2, -0.2)):
+                    p = os.path.join(d, arm, "battles", "%s-%d" % (stem, seed))
+                    os.makedirs(p)
+                    share = 50 + g + (wob if arm == "win" else 0)
+                    with open(os.path.join(p, "result.csv"), "w") as f:
+                        f.write("ok,score,theirScore\ntrue,%f,%f\n" % (share, 100 - share))
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            distill.main(["oracle", os.path.join(d, "set.txt"), "--arm", "1=" + os.path.join(d, "base"),
+                          "--arm", "0=" + os.path.join(d, "win"), "--default", "1", "--report"])
+        # a gains 10 at weight 3, b nothing at weight 1: 7.5 weighted, not 5.0 flat.
+        self.assertIn("+7.50", out.getvalue())
+
     def test_jar_of(self):
         self.assertEqual("kc.micro.Thorn_1.252.jar", distill.jar_of("kc.micro.Thorn 1.252"))
 
@@ -234,6 +265,21 @@ class HashTest(unittest.TestCase):
             f.write("a 1.0\n")
         with self.assertRaises(SystemExit):
             distill.main(["hash", self.parts, "--raw", "--min-bits", "15", "--src", self.src])
+
+    def test_unlisted_robots_play_the_default_in_a_shared_cell(self):
+        names = ["a", "q"]  # one cell under a 4-bit mask; q is not in the modes file
+        for resolve in ("first", "default", "high"):
+            s = distill.modes_string(names, {"a": "0"}, 15, "1", 0, resolve)
+            self.assertEqual("0" if resolve == "first" else "1", s[distill.cell("a", 15)], resolve)
+        s = distill.modes_string(["q", "a"], {"a": "0"}, 15, "1", 0, "first")
+        self.assertEqual("1", s[distill.cell("a", 15)])
+
+    def test_modified_utf8_length(self):
+        self.assertEqual(3, distill.modified_utf8_len("abc"))
+        self.assertEqual(2, distill.modified_utf8_len("\0"))
+        self.assertEqual(2, distill.modified_utf8_len("\u00e9"))
+        self.assertEqual(3, distill.modified_utf8_len("\u20ac"))
+        self.assertEqual(6, distill.modified_utf8_len("\U0001F600"))
 
     def test_hash_writes_the_constant(self):
         modes = os.path.join(self.dir, "modes.tsv")

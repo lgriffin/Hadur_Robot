@@ -265,6 +265,17 @@ def conflicts(names, modes, default, mask, shift):
     return bad
 
 
+def modified_utf8_len(s):
+    """Bytes of a Java string constant in the class file: modified UTF-8 over UTF-16 code units,
+    NUL as two bytes, a supplementary character as two three-byte surrogates."""
+    units = s.encode("utf-16-le")
+    total = 0
+    for i in range(0, len(units), 2):
+        u = units[i] | units[i + 1] << 8
+        total += 1 if 0 < u < 0x80 else 2 if u < 0x800 else 3
+    return total
+
+
 def find_key(names, modes, default, min_bits=4, max_bits=15, strict=False, protect=None, max_conflicts=0,
              shifts=None):
     """The smallest 2^k - 1 (min_bits <= k <= max_bits) and the unsigned shift under which no two
@@ -303,9 +314,8 @@ def modes_string(names, modes, mask, default, shift=0, resolve="first"):
     taken = set()
     for n in names:
         k = cell(n, mask, shift)
-        c = modes.get(n)
-        if c is None:
-            continue
+        # A robot the modes file does not list plays the default, here as in conflicts().
+        c = modes.get(n, default)
         if k in taken:
             if resolve == "high":
                 out[k] = max(out[k], c)
@@ -353,7 +363,7 @@ def hash_main(a):
     else:
         value = s.replace("\\", "\\\\").replace('"', '\\"')
     # A class-file constant is at most 65,535 bytes of modified UTF-8, where NUL takes two.
-    size = sum(2 if (a.raw and c == "0") or (not a.raw and c == "\0") else 1 for c in s)
+    size = modified_utf8_len("".join(chr(int(c)) for c in s) if a.raw else s)
     if size > 65535:
         raise SystemExit("MODES would be %d bytes as a class-file constant (limit 65,535): lower --max-bits "
                          "or pick a --default that is not 0" % size)
@@ -444,6 +454,9 @@ def field_main(a):
             gone.append(n)
         else:
             kept.append(n)
+    if not kept:
+        raise SystemExit("distill field: no robots left%s; nothing to fight"
+                         % (" (no jar in %s: did the fetch fail?)" % a.present if a.present else ""))
     with open(a.out, "w", encoding="utf-8", newline="\n") as f:
         f.write("# tools/distill.py field: %d of %d names from %s, weight 1 each (the flat mean is the APS)%s\n"
                 % (len(kept), len(names), os.path.basename(a.participants),
@@ -490,17 +503,21 @@ def oracle_main(a):
         arms[c] = kitlab_read.by_seed(run)
     if a.default not in arms:
         raise SystemExit("--default %s names no --arm" % a.default)
-    picks, gain, var = collections.Counter(), 0.0, 0.0
+    if not rows:
+        raise SystemExit("distill oracle: %s lists no robots" % a.set)
+    picks, gain, var, weight = collections.Counter(), 0.0, 0.0, 0.0
     out = []
     for name, w, stem in rows:
         c, m, se = oracle_pick({k: v.get(stem, {}) for k, v in arms.items()}, a.default, a.z, a.min_gain)
         picks[c] += 1
-        gain += m
-        var += se * se
+        # Weighted as kitlab_read.weighted weighs a run, so the gain reads in the set's APS.
+        gain += w * m
+        var += (w * se) ** 2
+        weight += w
         out.append((name, c, m, se))
     n = len(rows)
     print("%d robots: %s; picked gain over the default %+.2f +- %.2f APS (in sample: an upper bound, "
-          "read it on fresh seeds)" % (n, dict(sorted(picks.items())), gain / n, math.sqrt(var) / n))
+          "read it on fresh seeds)" % (n, dict(sorted(picks.items())), gain / weight, math.sqrt(var) / weight))
     if a.report:
         for name, c, m, se in sorted(out, key=lambda t: -t[2]):
             if c != a.default:
