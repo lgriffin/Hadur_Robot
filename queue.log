@@ -9,3 +9,5 @@
 16:02:32 still exit=75 in 713 s (halted, aa after 20%)
 16:02:35 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/505
 16:02:35 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
+18:27:47 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
+18:27:47 skip prep (already exit=0)
