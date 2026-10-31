@@ -66,6 +66,8 @@ public final class ShieldList {
     public static final String EXIT_LATE_PREFIX = "shield-exit4:";
     /** SHIELD-19: a line starting with this names an opponent SHIELD-11 takes no damage exit against. */
     public static final String EXIT_OFF_PREFIX = "shield-exit0:";
+    /** SHIELD-21: a line starting with this names an opponent shield mode plans its shots still against (SHIELD-20). */
+    public static final String STILL_PREFIX = "shield-still:";
     /** MOVE-28: the per-opponent switch's bit in {@link #switches}. */
     static final int HEAT_JIT = 1;
     /** GUN-11: the per-opponent switch's bit in {@link #switches}. */
@@ -73,6 +75,8 @@ public final class ShieldList {
     /** SHIELD-19: the per-opponent switches' bits in {@link #switches}. */
     static final int EXIT_LATE = 4;
     static final int EXIT_OFF = 8;
+    /** SHIELD-21: the per-opponent still switch's bit in {@link #switches}. */
+    static final int STILL = 16;
 
     private final Set<String> entries;
     /** MOVE-23: the stack off-list, matched as the shield entries are. */
@@ -127,7 +131,8 @@ public final class ShieldList {
                     continue;
                 }
                 int bit = entry.startsWith(HEAT_JIT_PREFIX) ? HEAT_JIT : entry.startsWith(GUN_STACK_PREFIX) ? GUN_STACK
-                    : entry.startsWith(EXIT_LATE_PREFIX) ? EXIT_LATE : entry.startsWith(EXIT_OFF_PREFIX) ? EXIT_OFF : 0;
+                    : entry.startsWith(EXIT_LATE_PREFIX) ? EXIT_LATE : entry.startsWith(EXIT_OFF_PREFIX) ? EXIT_OFF
+                    : entry.startsWith(STILL_PREFIX) ? STILL : 0;
                 if (bit != 0) {
                     String name = entry.substring(entry.indexOf(':') + 1).trim();
                     if (!name.isEmpty() && (switches.containsKey(name) || switches.size() < MAX_ENTRIES)) {
@@ -326,6 +331,16 @@ public final class ShieldList {
         if ((bits & EXIT_OFF) != 0) return Double.MAX_VALUE;
         if ((bits & EXIT_LATE) != 0) return ShieldDesign.STAY_DAMAGE_LATE;
         return standard;
+    }
+
+    /**
+     * SHIELD-21: whether shield mode plans its shots still (SHIELD-20) against {@code robotName},
+     * by the rule of {@link #matches}.
+     *
+     * @param robotName the scanned robot's name, or null
+     */
+    public boolean still(String robotName) {
+        return (switchBits(robotName) & STILL) != 0;
     }
 
     private int switchBits(String robotName) {

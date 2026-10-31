@@ -1,0 +1,41 @@
+# 2026-10-31 SHIELD-21 confirm: the 40 robots plans/shield-still-picks.txt names, for pc-shield-still2.
+chase.pm.Pytko 1.0 | rank224-band4 | chase.pm.Pytko_1.0.jar
+davidalves.Firebird 0.25 | rank30-band2 | davidalves.Firebird_0.25.jar
+theo.simple.Lucid 1.0 | rank175-band3 | theo.simple.Lucid_1.0.jar
+kid.Toa .0.5 | rank149-band3 | kid.Toa_.0.5.jar
+synapse.rsim.GeomancyBS 0.11 | rank84-band3 | synapse.rsim.GeomancyBS_0.11.jar
+rsk1.RSK1 4.0 | rank518-band5 | rsk1.RSK1_4.0.jar
+bvh.fnr.Fenrir 0.36l | rank336-band4 | bvh.fnr.Fenrir_0.36l.jar
+cx.micro.Smoke 0.96 | rank233-band4 | cx.micro.Smoke_0.96.jar
+rsim.mini.BulletCatcher 0.4 | rank243-band4 | rsim.mini.BulletCatcher_0.4.jar
+oog.micro.MagicD3 0.41 | rank235-band4 | oog.micro.MagicD3_0.41.jar
+cf.proto.Shiva 2.2 | rank75-band3 | cf.proto.Shiva_2.2.jar
+supersample.SuperMercutio 1.0 | rank447-band5 | supersample.SuperMercutio_1.0.jar
+ary.Help 1.0 | rank69-band3 | ary.Help_1.0.jar
+stelo.MatchupWS 1.2c | rank107-band3 | stelo.MatchupWS_1.2c.jar
+kawigi.nano.FunkyChicken 1.1 | rank444-band5 | kawigi.nano.FunkyChicken_1.1.jar
+theo.avenge.Pequod 1.0 | rank146-band3 | theo.avenge.Pequod_1.0.jar
+ad.Quest 0.10 | rank167-band3 | ad.Quest_0.10.jar
+ers.micro.speusippus.Speusippus 0.3 | rank172-band3 | ers.micro.speusippus.Speusippus_0.3.jar
+mue.Hyperion 0.8 | rank112-band3 | mue.Hyperion_0.8.jar
+darkcanuck.Holden 1.13a | rank54-band3 | darkcanuck.Holden_1.13a.jar
+myl.micro.NekoNinja 1.30 | rank493-band5 | myl.micro.NekoNinja_1.30.jar
+dft.Cyprus 3.0 | rank337-band4 | dft.Cyprus_3.0.jar
+dft.Cyanide 1.90 | rank55-band3 | dft.Cyanide_1.90.jar
+zen.Lindada 0.2 | rank401-band5 | zen.Lindada_0.2.jar
+ags.micro.Carpet 1.1 | rank333-band4 | ags.micro.Carpet_1.1.jar
+nat.nano.OcnirpPM 1.0 | rank432-band5 | nat.nano.OcnirpPM_1.0.jar
+robar.nano.BlackWidow 1.3 | rank395-band4 | robar.nano.BlackWidow_1.3.jar
+theo.simple.Bones 1.0 | rank208-band4 | theo.simple.Bones_1.0.jar
+pez.gloom.GloomyDark 0.9.2 | rank230-band4 | pez.gloom.GloomyDark_0.9.2.jar
+shinh.Entangled 0.3 | rank339-band4 | shinh.Entangled_0.3.jar
+pez.mako.Mako 1.5 | rank371-band4 | pez.mako.Mako_1.5.jar
+cx.micro.Spark 0.6 | beep-gap 7.82 | cx.micro.Spark_0.6.jar
+et.Predator 1.8 | beep-gap 8.18 | et.Predator_1.8.jar
+fnc.bandit2002.Bandit2002 4.0.2 | beep-gap 11.20 | fnc.bandit2002.Bandit2002_4.0.2.jar
+lechu.Ala 0.0.4 | beep-gap 3.82 | lechu.Ala_0.0.4.jar
+rdt199.Warlord 0.73 | beep-gap 14.62 | rdt199.Warlord_0.73.jar
+rz.GlowBlowMelee 1.4 | beep-gap 10.22 | rz.GlowBlowMelee_1.4.jar
+stelo.UnfoolableNano 1.0 | beep-gap 9.81 | stelo.UnfoolableNano_1.0.jar
+theo.Hydrogen 2.1r | beep-gap 19.46 | theo.Hydrogen_2.1r.jar
+wompi.Numbat 1.9 | beep-gap 13.67 | wompi.Numbat_1.9.jar

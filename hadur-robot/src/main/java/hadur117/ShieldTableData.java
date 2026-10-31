@@ -475,4 +475,15 @@ final class ShieldTableData {
         return new String[] {
         };
     }
+
+    /**
+     * SHIELD-21: the opponents shield mode plans its shots still against (SHIELD-20). Empty:
+     * candidate builds add lines here (build-ablation.sh szlist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] stills() {
+        return new String[] {
+        };
+    }
 }

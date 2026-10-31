@@ -284,6 +284,8 @@ public final class ShieldMode {
     private String decidedFor;
     /** SHIELD-11, SHIELD-19: this opponent's battle exit, from the shield list. */
     private double stayDamage = ShieldDesign.STAY_DAMAGE;
+    /** SHIELD-20, SHIELD-21: whether shot plans from where we stand come first against this opponent. */
+    private boolean still;
     private boolean listed;
     private boolean battleOff;
     private boolean roundOff;
@@ -546,6 +548,7 @@ public final class ShieldMode {
             listed = onList || onTrial;
             opening = listed && (design.move || list.moves(name));
             stayDamage = list.stayDamage(name, ShieldDesign.STAY_DAMAGE);
+            still = design.still || list.still(name);
             if (listed) seedAim(list.aimFor(name));
         }
         if (!listed) return;
@@ -1071,9 +1074,9 @@ public final class ShieldMode {
         // SHIELD-20: an enemy that aims a few ticks before it fires sees the step aside, and its
         // next bullet is head-on to where we stood mid-step, which no predictor holds. With the
         // still switch, a plan from where we stand wins whenever there is one.
-        double[] wiggles = design.still ? new double[] {0, wiggleSide * WIGGLE} : new double[] {wiggleSide * WIGGLE, 0};
+        double[] wiggles = still ? new double[] {0, wiggleSide * WIGGLE} : new double[] {wiggleSide * WIGGLE, 0};
         for (double wiggle : wiggles) {
-            if (design.still && best != null) break;
+            if (still && best != null) break;
             double x = s.x + Math.sin(s.heading) * wiggle;
             double y = s.y + Math.cos(s.heading) * wiggle;
             for (int i = 0; i < POWER_SAMPLES; i++) {

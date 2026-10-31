@@ -60,3 +60,23 @@ If the random 16 are typical of the 273 listed robots, sz is worth about +0.27 A
 (`panel-shield-listed-320.txt`) x 2 fresh seeds, then SHIELD-20 with BeepBoop's 64 extra robots on the list
 (`panel-beep-shield-only.txt`, `plans/beep-shield-add.txt`) x 3 fresh seeds, each beside c and aa, gated at
 +0.05 APS with a per-robot pick of the 64.
+
+## PC result (pc-shield-still, PR #510, 2026-10-31)
+
+Halted once by its A/A rule at the band edge (#505), resumed without stop rules on Leigh's call.
+
+| Arm | APS vs pooled c and aa | Gate | Verdict |
+|---|---:|---:|---|
+| sz, 273 listed robots | +0.09 +- 0.12 | +0.05, low end above 0 | FAIL |
+| szmt, BeepBoop's 64 added | +0.01 +- 0.08 | +0.05, low end above 0 | FAIL |
+
+By robot it splits: 31 listed robots gain over 5 points (+0.24 APS in sample: Pytko +21, Firebird +17, Lucid +15,
+Toa +15, all four also up in the cloud on other seeds), 23 lose over 5 (-0.16: LigMA -20, Blade -12, AHEB -11). The
+szmt pick locks 9 of BeepBoop's 64 at a 5-point margin (+0.09 APS in sample, Hydrogen +21).
+
+## SHIELD-21: still plans per opponent
+
+A `shield-still:` line on the shield list turns SHIELD-20 on for that robot only (build-ablation `szlist`, suffix
+zl). `plans/pc-shield-still2.queue` (BENCH-153, about 12 min) re-measures the 40 picks
+(`plans/shield-still-picks.txt`, the 9 added to the list from `plans/shield-still-add-picks.txt`) at 4 fresh seeds,
+gated at +0.05 APS, with a 5-point per-robot pick for the lines to ship.
