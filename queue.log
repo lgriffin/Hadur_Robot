@@ -23,3 +23,6 @@
 17:54:17 live-PNS6 exit=0 in 1239 s
 17:54:17 start live-MIR
 17:54:17 watching live-MIR: 3 stop rule(s)
+18:11:02 live-MIR exit=0 in 1004 s
+18:11:02 start live-SAOR
+18:11:02 watching live-SAOR: 3 stop rule(s)

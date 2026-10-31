@@ -1,6 +1,6 @@
 # Queue pc-deise-e10: progress
 
-Updated 2026-10-31 18:04:02 PC time (18:04 UTC), runner pid 65080.
+Updated 2026-10-31 18:19:10 PC time (18:19 UTC), runner pid 65080.
 
 - `prep` done, exit 0 in 0 min
 - `live-D` done, exit 0 in 18 min
@@ -8,8 +8,8 @@ Updated 2026-10-31 18:04:02 PC time (18:04 UTC), runner pid 65080.
 - `live-PN` done, exit 0 in 19 min
 - `live-PNS` done, exit 0 in 19 min
 - `live-PNS6` done, exit 0 in 21 min
-- `live-MIR` running
-- `live-SAOR` pending
+- `live-MIR` done, exit 0 in 17 min
+- `live-SAOR` running
 - `read` pending
 - `pr` pending
 
@@ -80,23 +80,33 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-MIR
 
-**144 of 276 battles** (52%), 0 failed. Running 10 min, 886 battles/h, about 9 min left (ends ~18:12 PC time). Last battle 0 min ago.
-Skipped turns a battle: 0.2 overall, first 100 0.2, last 100 0.2.
+**276 of 276 battles** (100%), 0 failed. Running 17 min, 989 battles/h, about 0 min left (ends ~18:11 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.2 overall, first 100 0.2, last 100 0.1.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 144 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 0.2 a battle over the last 100 (first 100: 0.2) |
+| `skips 40 over 100` | halt | ok | 0.1 a battle over the last 100 (first 100: 0.2) |
 
-Stopping now would leave 132 battles unrun (about 9 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### live-SAOR
+
+**132 of 276 battles** (48%), 0 failed. Running 8 min, 973 battles/h, about 9 min left (ends ~18:28 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 132 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
+
+Stopping now would leave 144 battles unrun (about 9 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-16:49:24 progress live-PL400: 174/276 (63%) battles, 793/h, ETA 8 min, 0 failed, skips 0.2/battle (last 100)
-16:54:57 live-PL400 exit=0 in 1123 s
-16:54:57 start live-PN
 16:54:57 watching live-PN: 3 stop rule(s)
 17:14:22 live-PN exit=0 in 1165 s
 17:14:22 start live-PNS
@@ -109,4 +119,7 @@ Stopping now would leave 132 battles unrun (about 9 min); every battle already f
 17:54:17 live-PNS6 exit=0 in 1239 s
 17:54:17 start live-MIR
 17:54:17 watching live-MIR: 3 stop rule(s)
+18:11:02 live-MIR exit=0 in 1004 s
+18:11:02 start live-SAOR
+18:11:02 watching live-SAOR: 3 stop rule(s)
 ```
