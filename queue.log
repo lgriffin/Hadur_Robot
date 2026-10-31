@@ -12,3 +12,6 @@
 11:54:36 live-SAME exit=0 in 1044 s
 11:54:36 start live-PL400
 11:54:36 watching live-PL400: 3 stop rule(s)
+12:13:38 live-PL400 exit=0 in 1142 s
+12:13:38 start live-WARM4
+12:13:38 watching live-WARM4: 3 stop rule(s)
