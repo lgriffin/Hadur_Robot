@@ -25,6 +25,7 @@ def shots(path, rows):
             w.writerow([0, i, alive, own, "a.Alpha 1.0", enemy, distance, power])
 
 
+# @Tag("BENCH-156")
 class PowerTest(unittest.TestCase):
     def setUp(self):
         self.dir = tempfile.mkdtemp()
@@ -90,6 +91,7 @@ class PowerTest(unittest.TestCase):
         self.assertEqual(distill.CELLS, how["formula"])
 
 
+# @Tag("BENCH-156")
 class HashTest(unittest.TestCase):
     def setUp(self):
         self.dir = tempfile.mkdtemp()
