@@ -12,7 +12,7 @@
 #
 # Teach: Hadur 3.20 in the 13 NanoMelee census fields (nanomelee-census.txt, both leaders in every
 # field) x 10 seeds (base 21000) = 130 battles, about 20 min at 12 wide; melee reads the nano field
-# at Hadur's own width. Its only product is work/sanaro-n06/teach/battles/*/shots.csv; the report is
+# at Hadur's own width. Its only product is work/sanaro-n06/teach/*/battles/*/shots.csv; the report is
 # kept for the record (Hadur in a nano field is not a result).
 # Arms (sanaro-arms/arms.txt, written against 0.2's source, each 249 B: a table changes no code):
 #   S2    Sanaro 0.2 as it ships (control)
@@ -47,7 +47,7 @@ teach | ${MVN} "-Dexec.args=@work/sanaro-n06/teach.args"
   stop: stall 30m
   stop: skips 40 over 100
 
-distill-report | python3 tools/distill.py power work/sanaro-n06/teach/battles/*/shots.csv --own-step 4 --enemy-step 2 --min 5 --reach 3 --report && python3 tools/distill.py power work/sanaro-n06/teach/battles/*/shots.csv --alive 3 --own-step 4 --enemy-step 4 --min 5 --reach 4 --report && python3 tools/distill.py power work/sanaro-n06/teach/battles/*/shots.csv --own-step 2 --enemy-step 2 --min 20 --reach 0 --report
+distill-report | python3 tools/distill.py power work/sanaro-n06/teach/*/battles/*/shots.csv --own-step 4 --enemy-step 2 --min 5 --reach 3 --report && python3 tools/distill.py power work/sanaro-n06/teach/*/battles/*/shots.csv --alive 3 --own-step 4 --enemy-step 4 --min 5 --reach 4 --report && python3 tools/distill.py power work/sanaro-n06/teach/*/battles/*/shots.csv --own-step 2 --enemy-step 2 --min 20 --reach 0 --report
   after: teach
 
 arms | SANARO_RUN=n06 bash tools/sanaro_arms.sh live 10 22000 ${ARMS}

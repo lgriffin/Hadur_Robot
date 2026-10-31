@@ -61,9 +61,14 @@ CELLS = TOP * STRIDE + TOP + 1
 # ---------------------------------------------------------------- power
 
 def read_shots(paths, alive=None):
-    """Yields (own energy, enemy energy, distance, power) from shots.csv files; globs allowed."""
+    """Yields (own energy, enemy energy, distance, power) from shots.csv files; globs allowed.
+    A pattern that matches nothing is an error: a table silently built from no shots would be the
+    shipped one, and the arm would measure nothing."""
     for pattern in paths:
-        for path in sorted(glob.glob(pattern)) or [pattern]:
+        files = sorted(glob.glob(pattern)) or ([pattern] if os.path.exists(pattern) else [])
+        if not files:
+            raise SystemExit("distill: no shots.csv matches %s" % pattern)
+        for path in files:
             with open(path, newline="", encoding="utf-8") as f:
                 for row in csv.DictReader(f):
                     if alive is not None and int(row["alive"]) > alive:
@@ -83,9 +88,11 @@ def fortieths(power):
 
 
 def block(own, enemy, own_step=1, enemy_step=1):
-    """The cell a shot (or a table cell) pools into: energies quantised to the steps, then the
-    robot's own index, where an enemy at 128 or more lands rows on, as table.py describes."""
-    return (int(own) // own_step * own_step) * STRIDE + int(enemy) // enemy_step * enemy_step
+    """The cell a shot (or a table cell) pools into. The robot's own index comes first (an enemy
+    at 128 or more lands rows on, as table.py describes), then that index's row and column are
+    quantised to the steps, so a shot and the cells that read it always agree on the block."""
+    row, col = divmod(int(own) * STRIDE + int(enemy), STRIDE)
+    return (row // own_step * own_step) * STRIDE + col // enemy_step * enemy_step
 
 
 def observed(shots, own_step=1, enemy_step=1):
@@ -115,7 +122,7 @@ def distil(cells, minimum=3, reach=4, own_step=1, enemy_step=1, **curve):
     out, how = [], collections.Counter()
     for i in range(CELLS):
         own, enemy = divmod(i, STRIDE)
-        home = block(own, enemy, own_step, enemy_step)
+        home = block(own, enemy, own_step, enemy_step)  # own * STRIDE + enemy == i
         if home in filled:
             out.append(filled[home])
             how["data"] += 1
