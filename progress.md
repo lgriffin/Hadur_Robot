@@ -1,12 +1,12 @@
 # Queue pc-deise-e10: progress
 
-Updated 2026-10-31 17:03:31 PC time (17:03 UTC), runner pid 65080.
+Updated 2026-10-31 17:18:39 PC time (17:18 UTC), runner pid 65080.
 
 - `prep` done, exit 0 in 0 min
 - `live-D` done, exit 0 in 18 min
 - `live-PL400` done, exit 0 in 19 min
-- `live-PN` running
-- `live-PNS` pending
+- `live-PN` done, exit 0 in 19 min
+- `live-PNS` running
 - `live-PNS6` pending
 - `live-MIR` pending
 - `live-SAOR` pending
@@ -41,22 +41,33 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-PN
 
-**120 of 276 battles** (43%), 0 failed. Running 9 min, 841 battles/h, about 11 min left (ends ~17:14 PC time). Last battle 0 min ago.
-Skipped turns a battle: 0.3 overall, first 100 0.3, last 100 0.3.
+**276 of 276 battles** (100%), 0 failed. Running 19 min, 853 battles/h, about 0 min left (ends ~17:14 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.2 overall, first 100 0.3, last 100 0.1.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 120 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 0.3 a battle over the last 100 (first 100: 0.3) |
+| `skips 40 over 100` | halt | ok | 0.1 a battle over the last 100 (first 100: 0.3) |
 
-Stopping now would leave 156 battles unrun (about 11 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### live-PNS
+
+**60 of 276 battles** (22%), 0 failed. Running 4 min, 843 battles/h, about 15 min left (ends ~17:34 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.2 overall, first 60 0.2, last 60 0.2.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 60 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | waiting | 60 of 100 battles to read |
+
+Stopping now would leave 216 battles unrun (about 15 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-16:18:06 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
-16:18:06 start prep
 16:18:09 progress pushed to origin claude/pc-deise-e10-progress (every 15 min)
 16:18:33 prep exit=0 in 26 s
 16:18:33 start live-D
@@ -69,4 +80,7 @@ Stopping now would leave 156 battles unrun (about 11 min); every battle already 
 16:54:57 live-PL400 exit=0 in 1123 s
 16:54:57 start live-PN
 16:54:57 watching live-PN: 3 stop rule(s)
+17:14:22 live-PN exit=0 in 1165 s
+17:14:22 start live-PNS
+17:14:22 watching live-PNS: 3 stop rule(s)
 ```
