@@ -490,6 +490,20 @@ full rather than 1. With SAOR, fresh seeds from 3900, 8 seats, about 2.3 h. Each
 against D with melee_split (an aim arm should lift damage a round without costing survival). An arm
 at +0.30 or more over D, low end above 0, is fitted into the freed bytes as 0.5 on Leigh's go.
 
+E6's result (PR #498, 2026-10-31): no arm alone passes, but three point the right way. D read
+71.13 ± 0.14; against it PL400 +0.23 ± 0.21, NARROW +0.21 ± 0.20, SAME +0.14 ± 0.20, WARM4 +0.02,
+WARM16 -0.02 and WSTOP -0.64. The split says the three gain as aim should: damage a round 135.0 to
+136.9 (PL400), 136.6 (NARROW) and 135.4 (SAME), reach to the last two up, survival level or better.
+WSTOP loses damage and survival both; a wall-crossing playout's vote of 1 stays. PL400 costs CPU:
+0.14 skipped turns a battle to D's 0.02.
+
+### Stage E6b: stacking the aim arms (card pc-deise-e10)
+
+PN (PL400 and NARROW, constants, 0 B), PNS (with SAME, about 8 B) and PNS6 (PNS at 600 playouts),
+with PL400 again, D, Mirage and SAOR, fresh seeds from 4000, 7 seats, about 2 h. The best stack at
++0.30 or more over D, low end above 0, is fitted as 0.5 on Leigh's go; MIR's seat reads what is left
+of Mirage's lead on the bench.
+
 ## 9. Uniqueness
 
 Leigh's rule for Saor holds here: inspired by others, never a copy. Deise's gun is Saor's own
