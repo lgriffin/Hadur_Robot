@@ -5,3 +5,9 @@
 00:05:58 start aim
 00:05:58 watching aim: 6 stop rule(s)
 00:06:41 progress aim: 0/1736 (0%) battles, 0 failed
+00:30:19 aim exit=0 in 1460 s
+00:30:19 start gate
+00:30:20 gate exit=0 in 1 s
+00:30:20 start pr
+00:30:28 pr exit=0 in 8 s
+00:30:28 ALLDONE
