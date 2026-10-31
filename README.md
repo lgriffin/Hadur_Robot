@@ -1,6 +1,6 @@
 # Hadur 2
 
-**Hadur** (the Hungarian god of war) is a [Robocode](https://robocode.sourceforge.io/) robot:
+**Hadur** (named, like the rest of the family, after one of Leigh's World of Warcraft characters) is a [Robocode](https://robocode.sourceforge.io/) robot:
 a 1v1 duelist that remembers each opponent across battles, with a melee brain for
 free-for-alls, a five-robot team entry, and a core that has no idea it is inside Robocode.
 
