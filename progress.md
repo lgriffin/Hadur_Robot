@@ -1,6 +1,6 @@
 # Queue pc-sanaro-n06: progress
 
-Updated 2026-10-31 20:16:25 PC time (20:16 UTC), runner pid 58568.
+Updated 2026-10-31 20:31:32 PC time (20:31 UTC), runner pid 58568.
 
 - `prep` done, exit 0 in 0 min
 - `teach` done, exit 0 in 15 min
@@ -54,15 +54,16 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-HD
 
-**0 of 430 battles** (0%), 0 failed. Running 0 min. Last battle 0 min ago.
+**200 of 430 battles** (47%), 0 failed. Running 15 min, 790 battles/h, about 17 min left (ends ~20:49 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 0 |
+| `fails 20` | halt | ok | 0 failed of 200 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | waiting | 0 of 100 battles to read |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
 
-Stopping now would leave 430 battles unrun; every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 230 battles unrun (about 17 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
