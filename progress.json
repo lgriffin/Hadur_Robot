@@ -1,0 +1,31 @@
+{
+ "plan": "pc-melee-hand",
+ "updated": 1793482764.5602188,
+ "steps": {
+  "haprep": {
+   "status": "pending"
+  },
+  "haaa": {
+   "status": "pending"
+  },
+  "habb": {
+   "status": "pending"
+  },
+  "haet": {
+   "status": "pending"
+  },
+  "haed": {
+   "status": "pending"
+  },
+  "haes": {
+   "status": "pending"
+  },
+  "haread": {
+   "status": "pending"
+  },
+  "hapr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
