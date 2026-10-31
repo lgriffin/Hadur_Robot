@@ -23,3 +23,6 @@
 12:48:45 start live-NARROW
 12:48:45 watching live-NARROW: 3 stop rule(s)
 12:51:05 progress live-NARROW: 36/276 (13%) battles, 924/h, ETA 16 min, 0 failed, skips 0.0/battle (last 100)
+13:06:16 live-NARROW exit=0 in 1051 s
+13:06:16 start live-WSTOP
+13:06:16 watching live-WSTOP: 3 stop rule(s)

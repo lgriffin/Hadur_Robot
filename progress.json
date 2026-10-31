@@ -1,6 +1,6 @@
 {
  "plan": "pc-deise-e09",
- "updated": 1793451912.75072,
+ "updated": 1793452820.8370438,
  "steps": {
   "prep": {
    "status": "done",
@@ -39,11 +39,14 @@
    "end": "2026-10-31T12:48:45"
   },
   "live-NARROW": {
-   "status": "running",
-   "start": "2026-10-31T12:48:45"
+   "status": "done",
+   "exit": 0,
+   "seconds": 1051,
+   "end": "2026-10-31T13:06:16"
   },
   "live-WSTOP": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-10-31T13:06:16"
   },
   "live-SAOR": {
    "status": "pending"
@@ -274,8 +277,8 @@
   {
    "step": "live-NARROW",
    "started": 1793450925.5660908,
-   "updated": 1793451912.7419212,
-   "elapsed": 987.1758303642273,
+   "updated": 1793451976.7117388,
+   "elapsed": 1051.1456480026245,
    "expected": 276,
    "panel": null,
    "field": null,
@@ -283,20 +286,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 258,
+   "battles": 276,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 940.8658229175962,
-   "eta": 68.87273235099259,
-   "fraction": 0.9347826086956522,
-   "last_battle_age": 0.7606759071350098,
+   "rate": 945.254353559878,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 0.1898670196533203,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 258"
+     "detail": "0 failed of 276"
     },
     {
      "rule": "stall 30m",
@@ -311,8 +314,51 @@
      "detail": "0.0 a battle over the last 100 (first 100: 0.0)"
     }
    ],
-   "skips_mean": 0.023255813953488372,
-   "skips_last100": 0.01
+   "skips_mean": 0.025362318840579712,
+   "skips_last100": 0.02
+  },
+  {
+   "step": "live-WSTOP",
+   "started": 1793451976.7235692,
+   "updated": 1793452820.828018,
+   "elapsed": 844.1044487953186,
+   "expected": 276,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 228,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 972.391510519133,
+   "eta": 177.70619974638285,
+   "fraction": 0.8260869565217391,
+   "last_battle_age": 0.1526782512664795,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 228"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0.0 a battle over the last 100 (first 100: 0.0)"
+    }
+   ],
+   "skips_mean": 0.02631578947368421,
+   "skips_last100": 0.02
   }
  ]
 }
