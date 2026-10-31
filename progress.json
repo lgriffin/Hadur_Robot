@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-concord",
- "updated": 1793443498.8983808,
+ "updated": 1793443928.5948956,
  "steps": {
   "ccprep": {
    "status": "done",
@@ -39,14 +39,22 @@
    "end": "2026-10-31T10:43:20"
   },
   "ccgbb": {
-   "status": "running",
-   "start": "2026-10-31T10:43:20"
+   "status": "done",
+   "exit": 0,
+   "seconds": 521,
+   "end": "2026-10-31T10:52:01"
   },
   "ccsum": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-10-31T10:52:02"
   },
   "ccpr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 6,
+   "end": "2026-10-31T10:52:08"
   }
  },
  "watched": [
@@ -182,8 +190,8 @@
   {
    "step": "ccgbb",
    "started": 1793443400.0851195,
-   "updated": 1793443498.8899138,
-   "elapsed": 98.80479431152344,
+   "updated": 1793443921.9094067,
+   "elapsed": 521.8242871761322,
    "expected": null,
    "panel": null,
    "field": null,
@@ -191,36 +199,36 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 12,
+   "battles": 160,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 437.22574699962365,
+   "rate": 1103.8198377408635,
    "eta": null,
    "fraction": null,
-   "last_battle_age": 35.5357232093811,
+   "last_battle_age": 1.6599445343017578,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 12"
+     "detail": "0 failed of 160"
     },
     {
      "rule": "stall 30m",
      "action": "halt",
      "state": "ok",
-     "detail": "last battle 1 min ago"
+     "detail": "last battle 0 min ago"
     },
     {
      "rule": "skips 40 over 100",
      "action": "halt",
-     "state": "waiting",
-     "detail": "12 of 100 battles to read"
+     "state": "ok",
+     "detail": "8.7 a battle over the last 100 (first 100: 10.2)"
     }
    ],
-   "skips_mean": 11.333333333333334,
-   "skips_last100": 11.333333333333334
+   "skips_mean": 9.3125,
+   "skips_last100": 8.7
   }
  ]
 }

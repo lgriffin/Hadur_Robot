@@ -1,6 +1,6 @@
 # Queue pc-team-concord: progress
 
-Updated 2026-10-31 10:44:58 PC time (10:44 UTC), runner pid 21584.
+Updated 2026-10-31 10:52:08 PC time (10:52 UTC), runner pid 21584.
 
 - `ccprep` done, exit 0 in 2 min
 - `ccbb` done, exit 0 in 1.1 h
@@ -8,9 +8,9 @@ Updated 2026-10-31 10:44:58 PC time (10:44 UTC), runner pid 21584.
 - `ccglob` done, exit 0 in 0 min
 - `ccpick` done, exit 0 in 1 min
 - `ccgate` done, exit 0 in 9 min
-- `ccgbb` running
-- `ccsum` pending
-- `ccpr` pending
+- `ccgbb` done, exit 0 in 9 min
+- `ccsum` done, exit 0 in 0 min
+- `ccpr` done, exit 0 in 0 min
 
 ### ccbb
 
@@ -51,25 +51,18 @@ Skipped turns a battle: 10.0 overall, first 100 11.3, last 100 8.4.
 
 ### ccgbb
 
-**12 battles**, 0 failed. Running 2 min, 437 battles/h. Last battle 1 min ago.
-Skipped turns a battle: 11.3 overall, first 12 11.3, last 12 11.3.
+**160 battles**, 0 failed. Running 9 min, 1104 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 9.3 overall, first 100 10.2, last 100 8.7.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 12 |
-| `stall 30m` | halt | ok | last battle 1 min ago |
-| `skips 40 over 100` | halt | waiting | 12 of 100 battles to read |
+| `fails 20` | halt | ok | 0 failed of 160 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | ok | 8.7 a battle over the last 100 (first 100: 10.2) |
 
 ### Queue log (last lines)
 
 ```
-09:23:15 ccbb exit=0 in 4063 s
-09:23:15 start cccn
-09:23:15 watching cccn: 3 stop rule(s)
-09:46:28 progress cccn: 274/1104 (25%) battles, 708/h, ETA 1.2 h, 0 failed, skips 10.7/battle (last 100)
-10:16:44 progress cccn: 760/1104 (69%) battles, 852/h, ETA 24 min, 0 failed, skips 14.5/battle (last 100)
-10:33:37 cccn exit=0 in 4222 s
-10:33:37 start ccglob
 10:33:38 ccglob exit=0 in 0 s
 10:33:38 start ccpick
 10:34:19 ccpick exit=0 in 40 s
@@ -78,4 +71,11 @@ Skipped turns a battle: 11.3 overall, first 12 11.3, last 12 11.3.
 10:43:20 ccgate exit=0 in 540 s
 10:43:20 start ccgbb
 10:43:20 watching ccgbb: 3 stop rule(s)
+10:46:59 progress ccgbb: 45 battles, 737/h, 0 failed, skips 10.4/battle (last 100)
+10:52:01 ccgbb exit=0 in 521 s
+10:52:01 start ccsum
+10:52:02 ccsum exit=0 in 0 s
+10:52:02 start ccpr
+10:52:08 ccpr exit=0 in 6 s
+10:52:08 ALLDONE
 ```

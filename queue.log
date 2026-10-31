@@ -22,3 +22,10 @@
 10:43:20 ccgate exit=0 in 540 s
 10:43:20 start ccgbb
 10:43:20 watching ccgbb: 3 stop rule(s)
+10:46:59 progress ccgbb: 45 battles, 737/h, 0 failed, skips 10.4/battle (last 100)
+10:52:01 ccgbb exit=0 in 521 s
+10:52:01 start ccsum
+10:52:02 ccsum exit=0 in 0 s
+10:52:02 start ccpr
+10:52:08 ccpr exit=0 in 6 s
+10:52:08 ALLDONE
