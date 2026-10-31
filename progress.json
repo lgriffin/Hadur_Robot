@@ -1,0 +1,31 @@
+{
+ "plan": "pc-jaylexi-po",
+ "updated": 1793443985.3928583,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "harvest": {
+   "status": "pending"
+  },
+  "build": {
+   "status": "pending"
+  },
+  "G": {
+   "status": "pending"
+  },
+  "PO300": {
+   "status": "pending"
+  },
+  "PO2000": {
+   "status": "pending"
+  },
+  "read": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
