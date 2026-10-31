@@ -45,6 +45,11 @@ public class Deise extends AdvancedRobot {
         bots = new double[17][];
         waves = new double[64][];
         setTurnRadarRightRadians(targetDistance = Double.POSITIVE_INFINITY);
+        // Declared first so they take local slots 1 to 4, which have one-byte loads and stores:
+        // the risk loops read them most (docs/bench/kitlab-priors.md).
+        double[] o;
+        int k;
+        double r;
         while (true) {
             double myX = getX();
             double myY = getY();
@@ -55,7 +60,6 @@ public class Deise extends AdvancedRobot {
             double best = Double.POSITIVE_INFINITY;
             double px;
             double py;
-            double r;
             double h;
             double t = getTime();
             int i = 0;
@@ -64,15 +68,15 @@ public class Deise extends AdvancedRobot {
                         py = myY + Math.cos(r) * reach)) {
                     // Away from every opponent (DEISE-2), off the lines of shots seen fired (DEISE-5).
                     r = 0;
-                    for (double[] bot : bots) {
-                        if (bot != null) {
-                            r += (106667 + 213333 * bot[3]) / Point2D.distanceSq(px, py, bot[0], bot[1]);
+                    for (k = 0; k < 17; k++) {
+                        if ((o = bots[k]) != null) {
+                            r += (106667 + 213333 * o[3]) / Point2D.distanceSq(px, py, o[0], o[1]);
                         }
                     }
-                    for (double[] w : waves) {
-                        if (w != null && (t - w[2]) * w[3] < (h = Point2D.distance(px, py, w[0], w[1])) + 30) {
+                    for (k = 0; k < 64; k++) {
+                        if ((o = waves[k]) != null && (t - o[2]) * o[3] < (h = Point2D.distance(px, py, o[0], o[1])) + 30) {
                             for (int j = 4; j < 6; j++) {
-                                r += w[6] * 4000 / (800 + Point2D.distanceSq(px, py, w[0] + Math.sin(w[j]) * h, w[1] + Math.cos(w[j]) * h));
+                                r += o[6] * 4000 / (800 + Point2D.distanceSq(px, py, o[0] + Math.sin(o[j]) * h, o[1] + Math.cos(o[j]) * h));
                             }
                         }
                     }
@@ -121,7 +125,8 @@ public class Deise extends AdvancedRobot {
             en, 1};
         // Weighed 0.25 when another robot is nearer the shooter than we are (DEISE-3, DEISE-5): its
         // push and its waves.
-        for (double[] other : bots) {
+        for (int k = 0; k < 17; k++) {
+            double[] other = bots[k];
             if (other != null && Point2D.distanceSq(x, y, other[0], other[1]) < 0.81 * distance * distance && other != me) {
                 me[3] = 0.25;
             }
