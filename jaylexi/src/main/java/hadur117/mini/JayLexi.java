@@ -35,6 +35,14 @@ public class JayLexi extends AdvancedRobot {
     static final double STICK = 140;
     static final Rectangle2D.Double FIELD = new Rectangle2D.Double(18, 18, 764, 564);
 
+    // Lookup tables in place of three pieces of segment maths: they sit in the constant pool, which
+    // Robocode's codesize does not count (docs/bench/kitlab-priors.md). BAND is min((d + 50) / 200, 3)
+    // by d / 50; LOG2 is log2(v + 1.5) by v; CLAMP is max(0, min(46, x)) by (int) x + 160, where
+    // |x - 23| stays under 176 at any bullet speed (pi / asin(8 / 20) x 23).
+    static final String BAND = "\0\0\0\1\1\1\1\2\2\2\2\3\3\3\3\3\3\3\3\3\3\3\3\3",
+            LOG2 = "\0\1\1\2\2\2\2\3\3",
+            CLAMP = "\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\001\002\003\004\005\006\007\010\011\012\013\014\015\016\017\020\021\022\023\024\025\026\027\030\031\032\033\034\035\036\037\040\041\042\043\044\045\046\047\050\051\052\053\054\055\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056\056";
+
     static Point2D.Double me, enemy;
     static double enemyEnergy, distance, lastBearing, lastLateral, vChangeTime, enemySpeed;
     static ArrayList<Wave> waves;
@@ -67,7 +75,7 @@ public class JayLexi extends AdvancedRobot {
             waves.add(w);
         }
         (next = w = new Wave()).bearing = lastBearing;
-        w.bins = surf[(int) Math.min((distance + 50) / 200, 3)][(int) ((Math.abs(lastLateral) + 1) / 2)];
+        w.bins = surf[BAND.charAt((int) (distance / 50))][(int) ((Math.abs(lastLateral) + 1) / 2)];
         direction = w.dir = Math.signum(lastLateral + 1e-9);
         w.source = enemy = project(me = new Point2D.Double(getX(), getY()),
                 absBearing = getHeadingRadians() + e.getBearingRadians(), distance = e.getDistance());
@@ -97,7 +105,7 @@ public class JayLexi extends AdvancedRobot {
             vChangeTime = 0;
         }
         enemySpeed = lateral;
-        double[] b = w.bins = gun[history][(int) (1.4427 * Math.log(lateral + 1.5))]
+        double[] b = w.bins = gun[history][LOG2.charAt((int) lateral)]
                 [wall(w, 0.18) * (1 + wall(w, 0.36) * (1 + wall(w, 0.64)))]
                 [(int) (distance / 250)];
         int best = MID;
@@ -215,8 +223,7 @@ public class JayLexi extends AdvancedRobot {
         }
 
         int index(Point2D.Double p) {
-            return (int) Math.max(0, Math.min(BINS - 1,
-                    Utils.normalRelativeAngle(angle(p) - bearing) * dir / Math.asin(8 / speed) * MID + MID));
+            return CLAMP.charAt((int) (Utils.normalRelativeAngle(angle(p) - bearing) * dir / Math.asin(8 / speed) * MID + MID) + 160);
         }
 
         void log(int at, double depth) {

@@ -1,0 +1,78 @@
+# JayLexi with per-opponent aim rows baked into its constant pool (docs/bench/kitlab-priors.md).
+# Robocode's codesize counts method bytecode only, so a string table costs nothing but the read. Arm
+# PO keeps, for each opponent JayLexi has a record of, where that opponent's bullets were aimed at
+# it (47 bins), keyed by a char of the opponent's name hash; an opponent not in the table gets the
+# field's row. The rows add a never-fading danger to each bin, weighed 0.03 (PO300) or 0.2 (PO2000)
+# at the peak against 0.01 for the head-on term 0.2 has. On the cloud's 48-bot mini field
+# (4 seeds) PO300 read +0.31 +- 0.27 and PO2000 +0.37 +- 0.30 over 0.2, with an A/A of -0.41 +- 0.27:
+# not proven. This card reads them on 112 bots at 6 seeds, with rows learned from separate battles.
+#   ./queue.sh run pc-jaylexi-po        (or  .\queue.ps1 run pc-jaylexi-po)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned (--parallel auto: the host profile's width). Every
+# step resumes; no step needs a decision. Nothing here touches Hadur or the other small bots, and
+# nothing is uploaded anywhere.
+#
+# Steps:
+#   harvest  JayLexi 0.2 (the released jar) on kitlab/mini-wide-field.txt, 3 seeds, truth log on:
+#            336 battles, about 350 MB of truth logs. The rows are learned from these.
+#   build    tools/kitlab_priors.py reads the truth logs; tools/kitlab_prior_arm.py writes PO300 and
+#            PO2000 from kitlab/arms/JayLexi-PO.tmpl; kitlab/build_arm_pg.sh builds them and G
+#            (kitlab/arms/JayLexi-G.java: 0.2 with three lookup-table golfs, the same orders bit for
+#            bit by JayLexiReplayTest) with ecj + ProGuard, so all three arms are built alike.
+#   G        the control: 112 bots x 6 seeds = 672 battles, 35 rounds each.
+#   PO300    672 battles.
+#   PO2000   672 battles.
+# About 1.3 h in all on the PC (the harvest about 15 min, each arm about 20 min).
+# Read: each PO against G on the same opponents (the paired gain). A PO arm holds when its gain's low
+# end is above zero; Leigh decides any release.
+# Stop rules on every bench step (docs/bench/watch.md; halt, every battle fought is kept and a rerun
+# resumes): 20 failed battles (a broken jar), no battle in 30 minutes (a hung step), or 40+ skipped
+# turns a battle over the last 100 (the PR #331 build-up). A halt at worst leaves the rest of that
+# step and the steps after it unrun, at most 2,352 battles (about 1.3 h). No early finish on score:
+# each step is one robot. ALERT opens an issue for Leigh on a stop.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set REL = https://github.com/lgriffin/Hadur_Robot/releases/download
+set J02 = opponents/hadur117.mini.JayLexi_0.2.jar
+
+prep | ./fetch-opponents.sh --set kitlab/mini-wide-field.txt && curl -fsSL -o ${J02} ${REL}/jaylexi-v0.2/hadur117.mini.JayLexi_0.2.jar && (python3 -c "import numpy" || python3 -m pip install numpy) && mvn -q dependency:get -Dartifact=org.eclipse.jdt:ecj:3.33.0 && mvn -q dependency:get -Dartifact=com.guardsquare:proguard-base:7.8.2 && mkdir -p work && printf '%s\n' --set kitlab/mini-wide-field.txt --seeds 3 --rounds 35 --parallel auto --unseeded true --robot-jar ${J02} --robot "hadur117.mini.JayLexi 0.2" --truth-log true --child-heap 512M --out work/kitlab-po-harvest > work/kitlab-po-harvest.args
+
+harvest | ${MVN} "-Dexec.args=@work/kitlab-po-harvest.args"
+  after: prep
+  watch: battles=336
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+build | python3 tools/kitlab_priors.py kitlab/mini-wide-field.txt work/kitlab-po-harvest --out work/priors-po.json && python3 tools/kitlab_prior_arm.py work/priors-po.json kitlab/arms/JayLexi-PO.tmpl work/JayLexi-PO300.java --opp-max 300 && python3 tools/kitlab_prior_arm.py work/priors-po.json kitlab/arms/JayLexi-PO.tmpl work/JayLexi-PO2000.java --opp-max 2000 && bash kitlab/build_arm_pg.sh kitlab/arms/JayLexi-G.java hadur117.mini.JayLexi g && bash kitlab/build_arm_pg.sh work/JayLexi-PO300.java hadur117.mini.JayLexi po300 && bash kitlab/build_arm_pg.sh work/JayLexi-PO2000.java hadur117.mini.JayLexi po2000 && bash kitlab/args.sh mini-wide kitlab/jars/hadur117.mini.JayLexi_g.jar "hadur117.mini.JayLexi g" po-G 6 && bash kitlab/args.sh mini-wide kitlab/jars/hadur117.mini.JayLexi_po300.jar "hadur117.mini.JayLexi po300" po-PO300 6 && bash kitlab/args.sh mini-wide kitlab/jars/hadur117.mini.JayLexi_po2000.jar "hadur117.mini.JayLexi po2000" po-PO2000 6
+  after: harvest
+
+G | ${MVN} "-Dexec.args=@work/kitlab-po-G.args"
+  after: build
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+PO300 | ${MVN} "-Dexec.args=@work/kitlab-po-PO300.args"
+  after: G
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+PO2000 | ${MVN} "-Dexec.args=@work/kitlab-po-PO2000.args"
+  after: PO300
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+read | (echo "# JayLexi per-opponent aim rows on the wide MiniRumble sample (pc-jaylexi-po)" && echo && echo '## PO300 against G (0.2 play)' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide-field.txt work/kitlab-po-PO300 --ref work/kitlab-po-G --ref-aps 87.34 && echo '```' && echo && echo '## PO2000 against G (0.2 play)' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide-field.txt work/kitlab-po-PO2000 --ref work/kitlab-po-G --ref-aps 87.34 && echo '```') > ${OUT}/jaylexi-po.md
+  after: PO2000
+
+pr | bash tools/open_results_pr.sh claude/pc-jaylexi-po-results "JayLexi per-opponent aim rows on the wide MiniRumble sample" ${OUT}/jaylexi-po.md
+  after: read
