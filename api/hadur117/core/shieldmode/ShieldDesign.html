@@ -130,6 +130,8 @@ loadScripts(document, 'script');</script>
      offset, from the shield list) needs no switch: it starts the battle's predictors with
      <a href="#AIM_PRIOR"><code>AIM_PRIOR</code></a> exact matches on it, so the shield aims right from the first bullet.
      Not part of <code>all</code>.</li>
+ <li><code>still</code> (<a class="req" href="../../../../requirements.html#SHIELD-20">SHIELD-20</a>): a shot plan that needs no step aside is taken whenever one
+     exists; the step is kept only for a bullet no still plan can meet. Not part of <code>all</code>.</li>
  </ul></div>
 </section>
 <section class="summary">
@@ -221,48 +223,53 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../../../../requirements.html#SHIELD-19">SHIELD-19</a>: the later exit the shield list can give an opponent.</div>
 </div>
 <div class="col-first odd-row-color"><code>final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#trial" class="member-name-link">trial</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#still" class="member-name-link">still</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-15">SHIELD-15</a>: shield mode on trial against every unlisted duel opponent.</div>
-</div>
-<div class="col-first even-row-color"><code>static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#TRIAL_BLANK_HITS" class="member-name-link">TRIAL_BLANK_HITS</a></code></div>
-<div class="col-last even-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-15">SHIELD-15</a>: hits on us with none shot down after which the trial fails.</div>
-</div>
-<div class="col-first odd-row-color"><code>static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#TRIAL_DAMAGE" class="member-name-link">TRIAL_DAMAGE</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-15">SHIELD-15</a>: the bullet damage an unlisted opponent may do before the trial fails ...</div>
-</div>
-<div class="col-first even-row-color"><code>static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#TRIAL_DAMAGE_PER_SHOT" class="member-name-link">TRIAL_DAMAGE_PER_SHOT</a></code></div>
-<div class="col-last even-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-15">SHIELD-15</a>: ... plus this much for every shot it has fired.</div>
-</div>
-<div class="col-first odd-row-color"><code>static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#TRIAL_DOWN_SHARE" class="member-name-link">TRIAL_DOWN_SHARE</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-15">SHIELD-15</a>: the least share of ended bullets shot down for the trial to go on.</div>
-</div>
-<div class="col-first even-row-color"><code>static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#TRIAL_JUDGE_BULLETS" class="member-name-link">TRIAL_JUDGE_BULLETS</a></code></div>
-<div class="col-last even-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-15">SHIELD-15</a>: the ended enemy bullets (shot down or hit us) after which the shot-down share is judged.</div>
-</div>
-<div class="col-first odd-row-color"><code>static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#TRIAL_LOST_ROUNDS" class="member-name-link">TRIAL_LOST_ROUNDS</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-15">SHIELD-15</a>: rounds lost in shield mode after which the trial fails.</div>
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-20">SHIELD-20</a>: a plan without the step aside first.</div>
 </div>
 <div class="col-first even-row-color"><code>final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#turn" class="member-name-link">turn</a></code></div>
+<div class="col-second even-row-color"><code><a href="#trial" class="member-name-link">trial</a></code></div>
 <div class="col-last even-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-12">SHIELD-12</a>: the body-turn base.</div>
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-15">SHIELD-15</a>: shield mode on trial against every unlisted duel opponent.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#TRIAL_BLANK_HITS" class="member-name-link">TRIAL_BLANK_HITS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-15">SHIELD-15</a>: hits on us with none shot down after which the trial fails.</div>
+</div>
+<div class="col-first even-row-color"><code>static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#TRIAL_DAMAGE" class="member-name-link">TRIAL_DAMAGE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-15">SHIELD-15</a>: the bullet damage an unlisted opponent may do before the trial fails ...</div>
+</div>
+<div class="col-first odd-row-color"><code>static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#TRIAL_DAMAGE_PER_SHOT" class="member-name-link">TRIAL_DAMAGE_PER_SHOT</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-15">SHIELD-15</a>: ... plus this much for every shot it has fired.</div>
+</div>
+<div class="col-first even-row-color"><code>static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#TRIAL_DOWN_SHARE" class="member-name-link">TRIAL_DOWN_SHARE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-15">SHIELD-15</a>: the least share of ended bullets shot down for the trial to go on.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#TRIAL_JUDGE_BULLETS" class="member-name-link">TRIAL_JUDGE_BULLETS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-15">SHIELD-15</a>: the ended enemy bullets (shot down or hit us) after which the shot-down share is judged.</div>
+</div>
+<div class="col-first even-row-color"><code>static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#TRIAL_LOST_ROUNDS" class="member-name-link">TRIAL_LOST_ROUNDS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-15">SHIELD-15</a>: rounds lost in shield mode after which the trial fails.</div>
 </div>
 <div class="col-first odd-row-color"><code>final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#wall" class="member-name-link">wall</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#turn" class="member-name-link">turn</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-12">SHIELD-12</a>: the body-turn base.</div>
+</div>
+<div class="col-first even-row-color"><code>final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#wall" class="member-name-link">wall</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#SHIELD-14">SHIELD-14</a>: an uncertain shot (a wall hit inferred on its interval) builds a wave at the ledger's best-guess power.</div>
 </div>
 </div>
@@ -288,7 +295,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#parse(java.lang.String)" class="member-name-link">parse</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;flags)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The design a comma-separated list of switch names turns on (<code>hold</code>, <code>learn</code>,
- <code>mode</code>, <code>stay</code>, <code>turn</code>, <code>wall</code>, <code>trial</code>, <code>prior</code>, <code>move</code>, <code>rec</code>, or <code>all</code>); blank
+ <code>mode</code>, <code>stay</code>, <code>turn</code>, <code>wall</code>, <code>trial</code>, <code>prior</code>, <code>move</code>, <code>rec</code>, <code>still</code>, or <code>all</code>); blank
  is <a href="#NONE"><code>NONE</code></a>.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
@@ -591,6 +598,13 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../../../../requirements.html#SHIELD-18">SHIELD-18</a>: the round's <code>SP</code> record.</div>
 </section>
 </li>
+<li>
+<section class="detail" id="still">
+<h3>still</h3>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">still</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-20">SHIELD-20</a>: a plan without the step aside first.</div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -604,7 +618,7 @@ loadScripts(document, 'script');</script>
 <h3>parse</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="ShieldDesign.html" title="class in hadur117.core.shieldmode">ShieldDesign</a></span>&nbsp;<span class="element-name">parse</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;flags)</span></div>
 <div class="block">The design a comma-separated list of switch names turns on (<code>hold</code>, <code>learn</code>,
- <code>mode</code>, <code>stay</code>, <code>turn</code>, <code>wall</code>, <code>trial</code>, <code>prior</code>, <code>move</code>, <code>rec</code>, or <code>all</code>); blank
+ <code>mode</code>, <code>stay</code>, <code>turn</code>, <code>wall</code>, <code>trial</code>, <code>prior</code>, <code>move</code>, <code>rec</code>, <code>still</code>, or <code>all</code>); blank
  is <a href="#NONE"><code>NONE</code></a>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
