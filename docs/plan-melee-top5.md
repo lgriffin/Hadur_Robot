@@ -480,7 +480,7 @@ lines), **the melee-learned dodge** (`ENDGAME_LEARNED_DODGE`, `edge`/`ed`: the m
 survivor's gun as head-on from its hits on Hadur this battle, so the dodge planner is on against it,
 primed head-on) and **the melee-learned shield** (`ENDGAME_LEARNED_SHIELD`, `eshd`/`es`: the same verdict
 starts shield mode on SHIELD-15's trial, listed or not). Per-opponent play only, the one kind of change
-that has shown live. Card `pc-melee-hand` (BENCH-155): aa, bb, et, ed, es on the census at seeds
+that has shown live. Card `pc-melee-hand` (BENCH-157): aa, bb, et, ed, es on the census at seeds
 3259-3264, about 2.2 h, under the melee gate; the arm reports' "Rounds that ended as a duel" tables say
 where the endgame wins moved. Left for later: handing the melee gun's aim experts to the duel gun, and
 the duel's own learned stats per survivor across rounds.

@@ -390,6 +390,20 @@ public final class DuelController {
     }
 
     /**
+     * The movement's live per-opponent modes, for tests: which of the dodger, the dodge
+     * planner, stop-and-go, heat-jit and shield mode are on now, comma-separated, "-" for none.
+     */
+    public String liveModes() {
+        List<String> on = new ArrayList<>();
+        if (moveController.shotDodger() != null) on.add("dodger");
+        if (dodgePlanOn) on.add("plan");
+        if (stopAndGo != null) on.add("stopgo");
+        if (heatJitOn) on.add("heatjit");
+        if (shield != null && shield.active()) on.add("shield");
+        return on.isEmpty() ? "-" : String.join(",", on);
+    }
+
+    /**
      * A new round: transient state goes, what was learned stays.
      *
      * @param round the round number, from 0
@@ -1427,7 +1441,7 @@ public final class DuelController {
             set.add("learned-shield");
         }
         endgameSetting = set.isEmpty() ? "plain" : String.join("+", set);
-        emitPolicy(round, in.time(), "endgame", Double.NaN, Double.NaN, endgameSetting);
+        emitPolicy(round, in.time(), "handoff", Double.NaN, Double.NaN, endgameSetting);
     }
 
     /** DODGE-4: the dodge planner on, primed with expert {@code k} (-1 to learn it). */
@@ -1487,6 +1501,33 @@ public final class DuelController {
         int gunSeed = 0;
         int surfSeed = 0;
         opponentName = name;
+        // The per-opponent switches are a duel's: every one is duel-only, so in a melee the block
+        // would only write their off values over what the hand-off just set (HAND-1 to HAND-3;
+        // the first duel scan of a melee battle follows its first hand-off on the same tick).
+        if (enemiesTotal == 1) duelModes(name);
+        // Without memory the B record still goes out, with '-' for what memory would say.
+        if (library != null) {
+            // MEM-4: a missing or damaged profile loads as a stranger; load never throws.
+            ProfileLibrary.Loaded loaded = library.load(name);
+            folder = new ProfileFolder(loaded.profile(), fieldWidth, fieldHeight);
+            profileFound = loaded.found();
+            battle = String.valueOf(loaded.profile().lastFought());
+            tiers = Tiers.label(loaded.profile());
+            gunSeed = loaded.profile().gunSeedSize();
+            surfSeed = loaded.profile().surfSeedSize();
+            stats.profileLoadFailures = library.loadFailures();
+            if (loaded.failure() != null) {
+                telemetry.emit("MEM," + round + "," + time + ",load-failed," + clean(loaded.failure()));
+            }
+        }
+        telemetry.emit("B," + round + "," + time + "," + battle + "," + clean(name) + ","
+            + clean(key) + "," + (profileFound ? 1 : 0) + "," + tiers + "," + gunSeed + ","
+            + surfSeed + "," + stats.computationLevel);
+        if (folder != null) open(round, time, name);
+    }
+
+    /** The duel's per-opponent switches, decided now the opponent is named (MOVE-23, DODGE-3 to DODGE-6, MOVE-28, GUN-11, POISON-2). */
+    private void duelModes(String name) {
         // MOVE-23: the stack's per-opponent switches, decided now the opponent is named.
         stackOn = stackApplies(duelOnly(MoveDesign.STACK_LIST, enemiesTotal), stackList, name);
         moveController.setPointKernel(duelOnly(MoveDesign.POINT_KERNEL && stackOn, enemiesTotal));
@@ -1513,25 +1554,6 @@ public final class DuelController {
         // POISON-2: stop-and-go, forced or by the table's entry and its variant.
         int prefire = MoveDesign.STOP_AND_GO ? MoveDesign.STOP_AND_GO_PREFIRE : stackList.stopGo(name);
         stopAndGo = duelOnly(prefire > 0, enemiesTotal) ? new StopAndGo(battleField, prefire) : null;
-        // Without memory the B record still goes out, with '-' for what memory would say.
-        if (library != null) {
-            // MEM-4: a missing or damaged profile loads as a stranger; load never throws.
-            ProfileLibrary.Loaded loaded = library.load(name);
-            folder = new ProfileFolder(loaded.profile(), fieldWidth, fieldHeight);
-            profileFound = loaded.found();
-            battle = String.valueOf(loaded.profile().lastFought());
-            tiers = Tiers.label(loaded.profile());
-            gunSeed = loaded.profile().gunSeedSize();
-            surfSeed = loaded.profile().surfSeedSize();
-            stats.profileLoadFailures = library.loadFailures();
-            if (loaded.failure() != null) {
-                telemetry.emit("MEM," + round + "," + time + ",load-failed," + clean(loaded.failure()));
-            }
-        }
-        telemetry.emit("B," + round + "," + time + "," + battle + "," + clean(name) + ","
-            + clean(key) + "," + (profileFound ? 1 : 0) + "," + tiers + "," + gunSeed + ","
-            + surfSeed + "," + stats.computationLevel);
-        if (folder != null) open(round, time, name);
     }
 
     /**

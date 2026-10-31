@@ -83,7 +83,8 @@ class HandOffSwitchesCoreTest {
         assertFalse(HandOffDesign.ENDGAME_LEARNED_SHIELD);
         HadurCore core = meleeToDuel(listNamingA(), false, false, false, 0, false);
         assertEquals("-", core.duel().endgameSetting());
-        assertFalse(has("P,0,30,endgame"), telemetry.toString());
+        assertEquals("-", core.duel().liveModes(), "the plain duel");
+        assertFalse(has("P,0,30,handoff"), telemetry.toString());
         assertFalse(has("SH,"), telemetry.toString());
         assertTrue(has("H,0,30," + A), "the hand-off itself still happens");
     }
@@ -94,8 +95,13 @@ class HandOffSwitchesCoreTest {
     void tableApplies() {
         HadurCore core = meleeToDuel(listNamingA(), true, false, false, Double.NaN, false);
         assertEquals("shield+stopgo", core.duel().endgameSetting());
-        assertTrue(has("P,0,30,endgame,-,-,shield+stopgo"), telemetry.toString());
+        assertTrue(has("P,0,30,handoff,-,-,shield+stopgo"), telemetry.toString());
         assertTrue(has("SH,0,30,on"), telemetry.toString());
+        // Live state after the survivor's scan (the battle's first duel scan announces the
+        // opponent on the same tick and must not write its duel-only modes over the hand-off's).
+        assertEquals("stopgo,shield", core.duel().liveModes());
+        core.tick(input(31, 1, List.of(scan(A, 0))));
+        assertEquals("stopgo,shield", core.duel().liveModes(), "and on the next tick");
     }
 
     @Test
@@ -113,6 +119,7 @@ class HandOffSwitchesCoreTest {
     void learnedDodge() {
         HadurCore core = meleeToDuel(ShieldList.NONE, false, true, false, 0, false);
         assertEquals("learned-dodge", core.duel().endgameSetting());
+        assertEquals("dodger,plan", core.duel().liveModes(), "live after the first duel scan");
         telemetry.clear();
         core = meleeToDuel(ShieldList.NONE, false, true, false, 0.3, false);
         assertEquals("plain", core.duel().endgameSetting());
@@ -128,6 +135,12 @@ class HandOffSwitchesCoreTest {
         HadurCore core = meleeToDuel(ShieldList.NONE, false, false, true, 0, false);
         assertEquals("learned-shield", core.duel().endgameSetting());
         assertTrue(has("SH,0,30,on"), telemetry.toString());
+        assertEquals("shield", core.duel().liveModes());
+        telemetry.clear();
+        // A listed survivor with HAND-3 alone still starts on the trial (HAND-3 says listed or not).
+        core = meleeToDuel(listNamingA(), false, false, true, 0, false);
+        assertEquals("learned-shield", core.duel().endgameSetting());
+        assertEquals("shield", core.duel().liveModes());
         telemetry.clear();
         core = meleeToDuel(ShieldList.NONE, false, false, true, 0.3, false);
         assertEquals("plain", core.duel().endgameSetting());
@@ -152,6 +165,6 @@ class HandOffSwitchesCoreTest {
         HadurCore core = meleeToDuel(listNamingA(), true, true, true, 0, true);
         assertEquals("-", core.duel().endgameSetting());
         assertFalse(has("SH,"), telemetry.toString());
-        assertFalse(has("P,0,30,endgame"), telemetry.toString());
+        assertFalse(has("P,0,30,handoff"), telemetry.toString());
     }
 }

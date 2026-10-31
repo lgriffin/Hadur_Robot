@@ -11,14 +11,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-155: the pc-melee-hand card (HAND-1 to HAND-3) is complete before it reaches the PC. */
+/** BENCH-157: the pc-melee-hand card (HAND-1 to HAND-3) is complete before it reaches the PC. */
 class MeleeHandPlanTest {
 
     private static final Path QUEUE = Path.of("plans/pc-melee-hand.queue");
     private static final List<String> ARMS = List.of("aa", "bb", "et", "ed", "es");
 
     @Test
-    @Tag("BENCH-155")
+    @Tag("BENCH-157")
     @DisplayName("the steps chain from prep through every arm to a results PR, on the version the pom names")
     void stepsChain() throws IOException {
         String queue = Files.readString(QUEUE);
@@ -51,7 +51,7 @@ class MeleeHandPlanTest {
     }
 
     @Test
-    @Tag("BENCH-155")
+    @Tag("BENCH-157")
     @DisplayName("every arm step declares its stop rules")
     void stopRules() throws IOException {
         String queue = Files.readString(QUEUE);
@@ -67,7 +67,7 @@ class MeleeHandPlanTest {
     }
 
     @Test
-    @Tag("BENCH-155")
+    @Tag("BENCH-157")
     @DisplayName("every arm runs alone on the census at 6 fresh seeds after pc-melee-dia's")
     void args() throws IOException {
         String args = Files.readString(Path.of("plans/melee-hand.args"));
@@ -80,7 +80,7 @@ class MeleeHandPlanTest {
     }
 
     @Test
-    @Tag("BENCH-155")
+    @Tag("BENCH-157")
     @DisplayName("each arm edits exactly its switch in HandOffDesign, all shipped off, on master's melee")
     void ablation() throws IOException {
         String abl = Files.readString(Path.of("build-ablation.sh"));

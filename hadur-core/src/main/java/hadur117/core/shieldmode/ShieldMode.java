@@ -401,8 +401,9 @@ public final class ShieldMode {
     }
 
     /**
-     * HAND-3: asks for SHIELD-15's trial against an unlisted opponent whatever the trial switch
-     * says, with the trial's exits. Set before the opponent's first scan decides the mode.
+     * HAND-3: asks for SHIELD-15's trial against the next opponent decided for, listed or not,
+     * whatever the trial switch says, with the trial's exits. Set before that opponent's first
+     * scan decides the mode.
      *
      * @param on whether the next opponent decided for starts on trial when unlisted
      */
@@ -541,7 +542,7 @@ public final class ShieldMode {
         if (decidedFor == null || !decidedFor.equals(name)) {
             decidedFor = name;
             boolean onList = list.matches(name);
-            onTrial = (design.trial || forcedTrial) && !onList;
+            onTrial = forcedTrial || (design.trial && !onList);
             listed = onList || onTrial;
             opening = listed && (design.move || list.moves(name));
             stayDamage = list.stayDamage(name, ShieldDesign.STAY_DAMAGE);
