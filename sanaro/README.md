@@ -22,7 +22,9 @@ Sanaro's flat lead, +0.55 ± 0.32 over 0.1 on the live-shaped census (pc-sanaro-
 
 The shipped jar is `sanaro/target/hadur117.nano.Sanaro_<version>.jar` (one class, its properties and
 source); `SanaroJarIT` prints its codesize. The power table is written into `Sanaro.java` by
-`python3 sanaro/table.py`; `SanaroTableTest` holds it to the formula.
+`python3 sanaro/table.py`; `SanaroTableTest` holds it to the formula. A table distilled from Hadur's own
+shots instead (`hadur-bench/tools/distill.py power`, BENCH-156) goes into an arm's source, never here
+until the census has measured it.
 
 ## Bench
 
