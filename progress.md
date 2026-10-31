@@ -1,6 +1,6 @@
 # Queue pc-melee-dia: progress
 
-Updated 2026-10-31 14:34:01 PC time (14:34 UTC), runner pid 63404.
+Updated 2026-10-31 14:49:08 PC time (14:49 UTC), runner pid 63404.
 
 - `diprep` done, exit 0 in 2 min
 - `diaa` done, exit 0 in 25 min
@@ -24,15 +24,15 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### dibb
 
-**30 of 276 battles** (11%), 0 failed. Running 3 min, 595 battles/h, about 25 min left (ends ~14:58 PC time). Last battle 0 min ago.
-Skipped turns a battle: 85.9 overall, first 30 85.9, last 30 85.9.
+**186 of 276 battles** (67%), 0 failed. Running 18 min, 615 battles/h, about 9 min left (ends ~14:57 PC time). Last battle 0 min ago.
+Skipped turns a battle: 84.5 overall, first 100 85.2, last 100 83.3.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 30 |
+| `fails 20` | halt | ok | 0 failed of 186 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 246 battles unrun (about 25 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 90 battles unrun (about 9 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -47,4 +47,5 @@ Stopping now would leave 246 battles unrun (about 25 min); every battle already 
 14:30:59 diaa exit=0 in 1487 s
 14:30:59 start dibb
 14:30:59 watching dibb: 2 stop rule(s)
+14:37:03 progress dibb: 60/276 (22%) battles, 595/h, ETA 22 min, 0 failed, skips 94.4/battle (last 100)
 ```
