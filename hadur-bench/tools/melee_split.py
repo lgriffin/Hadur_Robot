@@ -10,7 +10,10 @@ the survival gap (rounds lived) and with the damage gap, which says which one th
   python3 tools/melee_split.py --ref D ../docs/bench/local/deise-e09-live-D.md \\
       ../docs/bench/local/deise-e09-live-MIR.md ../docs/bench/local/deise-e09-live-SAOR.md
 
-Each file's arm is the name after "-live-". Standard library only.
+Each file's arm is the name after "-live-". The reports give each final duel opponent's win rate
+as a whole percent, so "final duels won" is rebuilt from rounded rates (within half a point). A
+field missing from any seat's report is left out of every column, and the header counts the fields
+used. Standard library only.
 """
 
 import argparse
@@ -21,7 +24,7 @@ import sys
 
 SECTION = re.compile(r"^## Melee bench: (F\d+)")
 SUMMARY = re.compile(r"^\| ([\d.]+) \| ([\d.]+) \| (\d+) / (\d+) \| [\d.]+ \| [\d.]+% \| (\d+) \|$")
-DIED = re.compile(r"^Hadur died in (\d+) of (\d+) rounds, at a mean tick of (\d+)")
+DIED = re.compile(r"^Hadur died in (\d+) of (\d+) rounds, at a mean tick of (\d+|n/a)")
 DUEL = re.compile(r"^\| (\S.*?) \| (\d+) \| (\d+)% \|$")
 
 
@@ -45,7 +48,8 @@ def parse(path):
                 in_duels = False
                 m = DIED.match(line)
                 if m:
-                    cur["died"], cur["tick"] = int(m.group(1)), int(m.group(3))
+                    cur["died"] = int(m.group(1))
+                    cur["tick"] = 0 if m.group(3) == "n/a" else int(m.group(3))
                 continue
             if "aps" not in cur:
                 m = SUMMARY.match(line)
@@ -105,6 +109,9 @@ def main(argv=None):
     arms = [a for a in seats if a != args.ref]
     ref = seats[args.ref]
     common = sorted(set(ref).intersection(*(set(seats[a]) for a in arms)))
+    for a in seats:
+        if len(seats[a]) != len(common):
+            print("melee_split: %s has %d fields, %d used" % (a, len(seats[a]), len(common)), file=sys.stderr)
     sub = {a: {k: seats[a][k] for k in common} for a in seats}
     tot = {a: totals(sub[a]) for a in seats}
     order = [args.ref] + arms
@@ -117,7 +124,7 @@ def main(argv=None):
                             ("died", "Rounds died in", "%.1f%%"),
                             ("tick", "Mean death tick", "%.0f"),
                             ("last_two", "Rounds reaching the last two", "%.1f%%"),
-                            ("duels_won", "Those final duels won", "%.1f%%")):
+                            ("duels_won", "Those final duels won (from whole-percent rates)", "%.1f%%")):
         out.append("| %s | " % label + " | ".join(fmt % tot[a][key] for a in order) + " |")
     out.append("")
     out.append("Field by field against %s: how the APS gap follows the survival gap (rounds lived) "

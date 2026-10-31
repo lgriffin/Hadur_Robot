@@ -471,7 +471,7 @@ that shipped as 0.4, beside Mirage on the same 276 battles, so no new card is ne
 | Rounds died in | 47.8% | 47.4% |
 | Mean death tick | 990 | 930 |
 | Rounds reaching the last two | 71.6% | 75.7% |
-| Those final duels won | 73.3% | 69.8% |
+| Those final duels won (from whole-percent rates) | 73.3% | 69.8% |
 
 Survival is level and 0.4 wins its final duels more often. **The gap is now damage**: Mirage lands
 about 8% more a round (11 points), and 0.4's crowd terms bought survival partly by shooting less.
