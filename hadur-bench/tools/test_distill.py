@@ -12,7 +12,7 @@ import table  # noqa: E402
 SRC = '''public class Bot {
     static final String POWER = "\\1\\2";
     static final String MODES = "";
-    static final int MASK = 1;
+    static final int MASK = 1, SHIFT = 0;
 }
 '''
 
@@ -166,6 +166,24 @@ class HashTest(unittest.TestCase):
         self.assertIn(mask, (3, 7))
         self.assertIsNone(distill.find_mask(names, None, min_bits=2, max_bits=3))
 
+    def test_shared_cells_only_matter_between_differing_chars(self):
+        # Two names the same cell under the plain 4-bit hash: with the same char that is fine, with
+        # different chars the key moves on (a wider mask or a shift).
+        names = ["a.A 1.0", "b.B 1.0", "c.C 1.0"]
+        c = {n: distill.cell(n, 15) for n in names}
+        twin = [n for n in names if sum(1 for m in names if c[m] == c[n]) > 1]
+        same = {n: "1" for n in names}
+        self.assertEqual((15, 0), distill.find_key(names, same, "0", 4, 15))
+        self.assertEqual((15, 0), distill.find_key(names, same, "0", 4, 15, max_conflicts=0))
+        if twin:
+            differ = dict(same)
+            differ[twin[0]] = "2"
+            key = distill.find_key(names, differ, "0", 4, 15)
+            self.assertNotEqual((15, 0), key)
+            self.assertEqual((15, 0), distill.find_key(names, differ, "0", 4, 15, max_conflicts=1, shifts=[0]))
+            s = distill.modes_string(names, differ, 15, "0", 0, "high")
+            self.assertEqual("2", s[c[twin[0]]])
+
     def test_hash_writes_the_constant(self):
         modes = os.path.join(self.dir, "modes.tsv")
         with open(modes, "w", encoding="utf-8") as f:
@@ -176,7 +194,7 @@ class HashTest(unittest.TestCase):
         body = text.split('MODES = "')[1].split('";')[0]
         self.assertEqual(1, body.count("2"))
         self.assertTrue(len(body) >= 16 and (len(body) & (len(body) - 1)) == 0, "a power of two")
-        self.assertIn("static final int MASK = %d;" % (len(body) - 1), text)
+        self.assertIn("MASK = %d, SHIFT = " % (len(body) - 1), text)
 
 
 if __name__ == "__main__":

@@ -25,14 +25,25 @@ Two subcommands:
             python3 distill.py power work/pc-melee-*/battle-*/shots.csv --src path/to/Robot.java
             python3 distill.py power ... --report          (prints coverage, writes nothing)
 
-  hash    Finds the smallest power-of-two mask under which the Java String.hashCode() of every name
-          in a participants file (RoboRumble "name version,url" lines, or bare names) lands on its
-          own cell, and writes a MODES constant of that length: one char per robot from a
-          name<TAB>char TSV (--modes), --default for robots not listed. In the robot that is
-          MODES.charAt(e.getName().hashCode() & MASK), about 17 bytes, the nano form of Hadur's
-          per-opponent profile. --protect keeps only the listed names free of collisions and lets the
-          rest share cells (the default char), when the whole field will not fit a mask the string
-          can afford (TOP mask bits are capped by --max-bits).
+  hash    Finds the smallest power-of-two mask, and the unsigned shift, under which no two names in
+          a participants file (RoboRumble "name version,url" lines, or bare names) that need
+          different chars share a cell of the Java String.hashCode(), and writes a MODES constant of
+          that length: one char per robot from a name<TAB>char TSV (--modes), --default for robots
+          not listed. In the robot that is MODES.charAt(e.getName().hashCode() >>> SHIFT & MASK),
+          about 17 bytes (3 fewer when SHIFT is 0), the nano form of Hadur's per-opponent profile.
+          Two robots with the same char may share a cell, which is what lets 515 names fit 16,384
+          cells; --strict wants every name alone (a table of per-robot values, not modes).
+          --protect counts only the listed names. --max-bits 15 keeps the string under Java's
+          65,535-byte constant limit.
+
+  tiers   Reads the bench's cold census TSVs (data/bench/*_cold.tsv, Hadur builds, rows that ran)
+          and writes a modes TSV for hash: each robot's median hit rate on Hadur as one char, '2' a
+          rammer (--ram-at), '1' a gun worth moving at random against from round 1 (--random-at),
+          '0' a gun stop-and-go beats. Names come from --names (the rumble's current names, with
+          versions); the census is matched without the version, so a rival's new release keeps its
+          reading until Hadur has fought it.
+
+            python3 distill.py tiers ../data/bench/*_cold.tsv --names kitlab/micro-participants.txt --out kitlab/micro-modes.tsv
 
             python3 distill.py hash participants.txt --modes modes.tsv --src path/to/Robot.java
             python3 distill.py hash participants.txt --report
@@ -47,6 +58,7 @@ import glob
 import math
 import os
 import re
+import statistics
 import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "sanaro"))
@@ -150,9 +162,10 @@ def literal(values):
     return "".join("\\%o" % v for v in values)
 
 
-def write_constant(src, name, value, mask=None):
-    """Rewrites `static final String <name> = "...";` and, when mask is given and the source
-    declares `static final int MASK = <n>;`, that too, so the string and its mask never drift."""
+def write_constant(src, name, value, mask=None, shift=None):
+    """Rewrites `static final String <name> = "...";` and, when mask (and shift) are given and the
+    source declares `static final int MASK = <n>;` (`SHIFT = <n>;`), those too, so the string and
+    its key never drift."""
     with open(src, encoding="utf-8") as f:
         text = f.read()
     out, n = re.subn(r'(static final String %s = ")[^"]*(";)' % name,
@@ -160,9 +173,14 @@ def write_constant(src, name, value, mask=None):
     if n != 1:
         raise SystemExit("%s: one 'static final String %s' expected, found %d" % (src, name, n))
     if mask is not None:
-        out, m = re.subn(r'(static final int MASK = )\d+(;)', lambda x: x.group(1) + str(mask) + x.group(2), out)
+        # `static final int MASK = 1;` or `..., MASK = 1, SHIFT = 0;`: the declaration's shape is the arm's.
+        out, m = re.subn(r'(\bMASK = )\d+\b', lambda x: x.group(1) + str(mask), out)
         if m == 0:
-            print("warning: %s declares no 'static final int MASK'; set it to %d by hand" % (src, mask))
+            print("warning: %s declares no 'MASK = <n>'; set it to %d by hand" % (src, mask))
+    if shift is not None:
+        out, m = re.subn(r'(\bSHIFT = )\d+\b', lambda x: x.group(1) + str(shift), out)
+        if m == 0 and shift:
+            print("warning: %s declares no 'SHIFT = <n>'; the lookup needs >>> %d" % (src, shift))
     with open(src, "w", encoding="utf-8", newline="\n") as f:
         f.write(out)
 
@@ -221,29 +239,68 @@ def read_modes(path):
     return modes
 
 
-def find_mask(names, protect=None, min_bits=4, max_bits=14):
-    """The smallest 2^k - 1 (min_bits <= k <= max_bits) under which the protected names (all names
-    by default) land on distinct cells; None when none does."""
+def cell(name, mask, shift=0):
+    """The robot's cell: (getName().hashCode() >>> shift) & mask, in Java's int arithmetic."""
+    return ((java_hash(name) & 0xFFFFFFFF) >> shift) & mask
+
+
+def conflicts(names, modes, default, mask, shift):
+    """Robots whose cell another robot with a different char already holds."""
+    held, bad = {}, []
+    for n in names:
+        c = modes.get(n, default)
+        k = cell(n, mask, shift)
+        if held.setdefault(k, c) != c:
+            bad.append(n)
+    return bad
+
+
+def find_key(names, modes, default, min_bits=4, max_bits=15, strict=False, protect=None, max_conflicts=0,
+             shifts=None):
+    """The smallest 2^k - 1 (min_bits <= k <= max_bits) and the unsigned shift under which no two
+    robots that need different chars share a cell (two robots with the same char may: the lookup
+    cannot tell them apart and does not need to). strict=True needs every name on its own cell;
+    protect limits the names that count to those. Returns (mask, shift) or None.
+
+    An odd multiplier never helps here: (h * m) & mask is a permutation of h & mask. A shift does,
+    because it brings the hash's high bits, which depend on the whole name, into the masked low
+    ones; it costs the robot 3 bytes (bipush, iushr) and is 0 when the plain hash already serves."""
     keep = names if protect is None else [n for n in names if n in protect]
     for bits in range(min_bits, max_bits + 1):
         mask = (1 << bits) - 1
-        cells = [java_hash(n) & mask for n in keep]
-        if len(set(cells)) == len(cells):
-            return mask
+        for shift in (range(0, 33 - bits) if shifts is None else shifts):
+            if strict:
+                cells = [cell(n, mask, shift) for n in keep]
+                ok = len(set(cells)) == len(cells)
+            else:
+                ok = len(conflicts(keep, modes, default, mask, shift)) <= max_conflicts
+            if ok:
+                return mask, shift
     return None
 
 
-def modes_string(names, modes, mask, default):
-    """One char per cell; a cell two unprotected robots share takes the first in file order."""
+def find_mask(names, protect=None, min_bits=4, max_bits=14):
+    """Every name on its own cell, plain hash: (mask) or None. Kept for callers of the first cut."""
+    key = find_key(names, {}, "0", min_bits, max_bits, strict=True, protect=protect)
+    return key[0] if key and key[1] == 0 else None
+
+
+def modes_string(names, modes, mask, default, shift=0, resolve="first"):
+    """One char per cell. A cell two robots share takes the first in file order, or with
+    resolve="high" the higher char (the cautious mode, when a conflict was allowed)."""
     out = [default] * (mask + 1)
     taken = set()
     for n in names:
-        cell = java_hash(n) & mask
-        if cell in taken:
+        k = cell(n, mask, shift)
+        c = modes.get(n)
+        if c is None:
             continue
-        if n in modes:
-            out[cell] = modes[n]
-            taken.add(cell)
+        if k in taken:
+            if resolve == "high":
+                out[k] = max(out[k], c)
+            continue
+        out[k] = c
+        taken.add(k)
     return "".join(out)
 
 
@@ -254,20 +311,101 @@ def hash_main(a):
     if unknown:
         print("warning: %d mode names are not in the participants file: %s" % (len(unknown), ", ".join(unknown[:5])))
     protect = set(modes) if a.protect else None
-    mask = find_mask(names, protect, a.min_bits, a.max_bits)
-    if mask is None:
-        raise SystemExit("no mask up to %d bits separates the %s names; try --protect or more --max-bits"
-                         % (a.max_bits, "listed" if a.protect else "%d" % len(names)))
-    s = modes_string(names, modes, mask, a.default)
-    print("mask 0x%x (%d cells) separates %d names; %d cells set from %s"
-          % (mask, mask + 1, len(names) if protect is None else len(protect), sum(c != a.default for c in s),
-             a.modes or "nothing"))
+    key = find_key(names, modes, a.default, a.min_bits, a.max_bits, a.strict, protect, a.max_conflicts,
+                   None if a.shift is None else [a.shift])
+    if key is None:
+        raise SystemExit("no mask up to %d bits and shift separates the names; try --protect, no --strict, "
+                         "--max-conflicts or more --max-bits" % a.max_bits)
+    mask, shift = key
+    bad = conflicts(names if protect is None else [n for n in names if n in protect], modes, a.default, mask, shift)
+    if bad:
+        print("%d conflicts resolved by %s: %s" % (len(bad), a.resolve, ", ".join(bad)))
+    s = modes_string(names, modes, mask, a.default, shift, a.resolve)
+    print("mask 0x%x (%d cells), shift %d: %d names, %d cells set from %s, %d chars not the default"
+          % (mask, mask + 1, shift, len(names), sum(c != a.default for c in s), a.modes or "nothing",
+             sum(1 for n in names if modes.get(n, a.default) != a.default)))
     if a.report:
         for n in names:
-            print("  %5d  %s  %s" % (java_hash(n) & mask, modes.get(n, a.default), n))
+            print("  %5d  %s  %s" % (cell(n, mask, shift), modes.get(n, a.default), n))
         return
-    write_constant(a.src, a.name, s.replace("\\", "\\\\").replace('"', '\\"'), mask)
-    print("%s: %d chars, MASK = %d -> %s" % (a.name, len(s), mask, a.src))
+    if a.raw:
+        # Digits become the chars 0..9 themselves (octal escapes), so the robot reads the value with no
+        # '0' subtraction: charAt is the number. Two bytes of code.
+        if any(not c.isdigit() for c in s):
+            raise SystemExit("--raw needs every char to be a digit")
+        value = "".join("\\%o" % int(c) for c in s)
+    else:
+        value = s.replace("\\", "\\\\").replace('"', '\\"')
+    write_constant(a.src, a.name, value, mask, shift)
+    print("%s: %d chars%s, MASK = %d, SHIFT = %d -> %s" % (a.name, len(s), " (raw digits)" if a.raw else "", mask, shift, a.src))
+
+
+# ---------------------------------------------------------------- tiers
+
+def read_census(paths, build_prefix="hadur"):
+    """Opponent key (name without its version) -> list of their hit rate on Hadur, from the bench's
+    cold census TSVs (data/bench/*_cold.tsv): rows the teacher won cleanly (ok) in a Hadur build."""
+    rates = collections.defaultdict(list)
+    for pattern in paths:
+        files = sorted(glob.glob(pattern)) or ([pattern] if os.path.exists(pattern) else [])
+        if not files:
+            raise SystemExit("distill: no census file matches %s" % pattern)
+        for path in files:
+            with open(path, newline="", encoding="utf-8") as f:
+                r = csv.DictReader(f, delimiter="\t")
+                if not r.fieldnames or "theirHitRate" not in r.fieldnames or "opponent" not in r.fieldnames:
+                    continue
+                for row in r:
+                    if row.get("ok") != "true" or not (row.get("build") or "").startswith(build_prefix):
+                        continue
+                    try:
+                        h = float(row["theirHitRate"])
+                    except ValueError:
+                        continue
+                    if h == h:
+                        rates[key_of(row["opponent"])].append(h)
+    return rates
+
+
+def key_of(name):
+    """A rumble name without its version: 'sheldor.micro.Epeeist 3.7' -> 'sheldor.micro.Epeeist'."""
+    return name.rsplit(" ", 1)[0] if " " in name else name
+
+
+def tier_char(rate, random_at, ram_at):
+    """Hadur's reading of a gun as one char: '2' a rammer (point-blank hits), '1' a gun worth
+    moving at random against from round 1, '0' a gun stop-and-go beats."""
+    if rate >= ram_at:
+        return "2"
+    return "1" if rate >= random_at else "0"
+
+
+def tiers_main(a):
+    rates = read_census(a.census)
+    names = read_names(a.names)
+    rows, missing = [], []
+    for n in names:
+        k = key_of(n)
+        if k not in rates:
+            missing.append(n)
+            continue
+        r = statistics.median(rates[k])
+        rows.append((n, r, len(rates[k]), tier_char(r, a.random_at, a.ram_at)))
+    chars = collections.Counter(c for _, _, _, c in rows)
+    print("%d names, %d with Hadur census data (%d battles), %d missing; chars %s"
+          % (len(names), len(rows), sum(n for _, _, n, _ in rows), len(missing), dict(sorted(chars.items()))))
+    if a.report:
+        for n, r, k, c in sorted(rows, key=lambda t: -t[1]):
+            print("  %s  %.3f  %4d  %s" % (c, r, k, n))
+        for n in missing:
+            print("  ?  -      -  %s" % n)
+        return
+    with open(a.out, "w", encoding="utf-8", newline="\n") as f:
+        f.write("# tools/distill.py tiers: their hit rate on Hadur over %d census battles; '2' >= %.3f (rammer), "
+                "'1' >= %.3f (random from round 1), '0' otherwise\n" % (sum(n for _, _, n, _ in rows), a.ram_at, a.random_at))
+        for n, r, k, c in rows:
+            f.write("%s\t%s\n" % (n, c))
+    print("%d modes -> %s" % (len(rows), a.out))
 
 
 # ---------------------------------------------------------------- cli
@@ -292,16 +430,33 @@ def main(argv=None):
     hs.add_argument("participants", help="RoboRumble participants file or one name per line")
     hs.add_argument("--modes", help="name<TAB>char TSV of each robot's mode")
     hs.add_argument("--default", default="0", help="the char for robots with no mode (default 0)")
-    hs.add_argument("--protect", action="store_true", help="only the --modes names need their own cell")
+    hs.add_argument("--protect", action="store_true", help="only the --modes names count for collisions")
+    hs.add_argument("--strict", action="store_true", help="every counted name on its own cell, not only differing chars")
     hs.add_argument("--min-bits", type=int, default=4)
-    hs.add_argument("--max-bits", type=int, default=14)
+    hs.add_argument("--max-bits", type=int, default=15, help="15 keeps the string under the 65,535-byte constant limit")
     hs.add_argument("--src", help="the robot source whose constant is rewritten")
     hs.add_argument("--name", default="MODES")
+    hs.add_argument("--raw", action="store_true", help="write digit chars as the values 0..9, so charAt needs no '0' subtraction")
+    hs.add_argument("--shift", type=int, help="use this unsigned shift only (0 saves the robot 3 bytes)")
+    hs.add_argument("--max-conflicts", type=int, default=0, help="accept up to this many robots on a cell with a different char")
+    hs.add_argument("--resolve", choices=["first", "high"], default="first", help="an accepted conflict takes the first robot's char, or the higher")
     hs.add_argument("--report", action="store_true", help="print each robot's cell, write nothing")
     hs.set_defaults(run=hash_main)
 
+    tr = sub.add_parser("tiers", help="a modes TSV from Hadur's census: their hit rate on Hadur as one char a robot")
+    tr.add_argument("census", nargs="+", help="data/bench/*_cold.tsv paths or globs")
+    tr.add_argument("--names", required=True, help="the rumble's names (with versions), one a line or participants lines")
+    tr.add_argument("--random-at", type=float, default=0.05, help="their hit rate from which the char is '1'")
+    tr.add_argument("--ram-at", type=float, default=0.25, help="their hit rate from which the char is '2' (a rammer)")
+    tr.add_argument("--out", help="the modes TSV to write")
+    tr.add_argument("--report", action="store_true", help="print every robot's rate and char, write nothing")
+    tr.set_defaults(run=tiers_main)
+
     a = p.parse_args(argv)
-    if not a.report and not a.src:
+    if a.cmd == "tiers":
+        if not a.report and not a.out:
+            p.error("--out is needed unless --report")
+    elif not a.report and not a.src:
         p.error("--src is needed unless --report")
     a.run(a)
 

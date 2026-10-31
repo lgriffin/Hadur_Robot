@@ -446,8 +446,10 @@ aimed at, that robot's energy and distance). `tools/distill.py power work/<card>
 <Arm>.java` turns a pile of them into a Sanaro-shaped `POWER` constant (modal power per energy cell,
 the row's nearest data for thin cells, `sanaro/table.py`'s formula for the rest; `--report` prints the
 coverage first), and `tools/distill.py hash participants.txt --modes modes.tsv --src <Arm>.java` writes a
-`MODES` string keyed by `getName().hashCode() & MASK` with a mask that keeps every participant on its
-own cell. Both write into an arm's source only; the arm is then measured like any other.
+`MODES` string keyed by `getName().hashCode() >>> SHIFT & MASK`, with the smallest mask and shift under
+which no two robots needing different chars share a cell; `tools/distill.py tiers ../data/bench/*_cold.tsv
+--names <participants> --out modes.tsv` writes that modes file from Hadur's census (their hit rate on
+Hadur as one char a robot). Both write into an arm's source only; the arm is then measured like any other.
 
 ## Analysing the rows (BENCH-38, BENCH-39)
 
