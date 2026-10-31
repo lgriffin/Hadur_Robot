@@ -19,11 +19,11 @@
 #          276 battles, about 20 min. Its only product is work/deise-pt1/live-TEACH/*/battles/*/
 #          shots.csv (BENCH-155: own energy, distance and power at every shot).
 #   build  tools/deise_power.py writes two flat classes on 0.4's shipped Deise.java, the power line
-#          read from POWER.charAt((energy << 7) + distance / 16) in fortieths, each printing how many
-#          of its 32,768 cells came from Hadur:
+#          read from POWER.charAt((energy << 7) + distance / 16) in fortieths (511 energy rows), each printing how many
+#          of its 65,408 cells came from Hadur:
 #            PTS  2 x 2 blocks (2 energy x 32 px) with 20+ shots (Sanaro's HS shape)
 #            PTB  4 x 4 blocks with 10+ shots (wider reach, coarser)
-#          Every other cell keeps 0.4's formula at the cell's centre, so an arm differs from D
+#          Every other cell keeps 0.4's formula averaged over the cell, so an arm differs from D
 #          only where Hadur's shots agree, plus the table's rounding (16 px, fortieths):
 #            PT0  the table with no Hadur cells at all, the rounding alone (a control for it)
 #          Then tools/deise_arms.sh builds D, PT0, PTS and PTB.

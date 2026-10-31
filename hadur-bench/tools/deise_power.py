@@ -25,7 +25,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from distill import read_shots  # noqa: E402
 from kitlab_prior_arm import java, unjava  # noqa: E402
 
-ROWS = 256      # own energy 0..255
+ROWS = 511      # own energy 0..510: past any energy a robot reaches, and 65,408 one-byte chars fit
+                # the class file's 65,535-byte string limit (every char is 4..120)
 STRIDE = 128    # distance / 16: 0..127 covers 2,048 px, past the 1,414 px corner-to-corner
 DIST = 16.0
 SRC = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "deise", "src", "main",
@@ -34,11 +35,17 @@ OLD = "Math.log10(getEnergy()) * 325 / distance));"
 NEW = "POWER.charAt(((int) getEnergy() << 7) + (int) (distance / 16)) / 40.0));"
 
 
-def formula(own, dcell):
-    """Deise 0.4's power at this cell's centre, in fortieths, as the robot would clamp it."""
-    d = (dcell + 0.5) * DIST
-    p = max(0.1, min(3, math.log10(max(own, 1e-9)) * 325 / d)) if own >= 1 else 0.1
-    return fortieths(p)
+def power04(energy, distance):
+    """Deise 0.4's power line, as the robot clamps it."""
+    return max(0.1, min(3, math.log10(max(energy, 1e-9)) * 325 / max(distance, 1e-9)))
+
+
+def formula(own, dcell, n=8):
+    """Deise 0.4's power over the cell (own energy own..own+1, distance dcell*16..+16), in
+    fortieths: the mean over an n x n grid of points inside it, so a cell holds what 0.4 fires
+    across it, not at one corner (energy 1.9 at 200 px is 0.45, not row 1's 0.1)."""
+    total = sum(power04(own + (i + 0.5) / n, (dcell + (j + 0.5) / n) * DIST) for i in range(n) for j in range(n))
+    return fortieths(total / (n * n))
 
 
 def fortieths(power):
