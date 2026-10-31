@@ -12,3 +12,7 @@
 22:33:27 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
 22:33:27 skip haprep (already exit=0)
 22:33:27 skip haaa (already exit=0)
+22:33:27 start habb
+22:33:27 watching habb: 2 stop rule(s)
+22:33:29 progress pushed to origin claude/pc-melee-hand-progress (every 15 min)
+22:34:28 progress habb: 6/276 (2%) battles, 357/h, ETA 45 min, 0 failed, skips 23.0/battle (last 100)

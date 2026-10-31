@@ -1,6 +1,6 @@
 {
  "plan": "pc-melee-hand",
- "updated": 1793486007.6904917,
+ "updated": 1793486915.2926702,
  "steps": {
   "haprep": {
    "status": "done",
@@ -16,7 +16,7 @@
   },
   "habb": {
    "status": "running",
-   "start": "2026-10-31T22:07:05"
+   "start": "2026-10-31T22:33:27"
   },
   "haet": {
    "status": "pending"
@@ -34,5 +34,43 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "habb",
+   "started": 1793486007.6954129,
+   "updated": 1793486915.285153,
+   "elapsed": 907.5897400379181,
+   "expected": 276,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 151,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 598.9490361330979,
+   "eta": 751.3160099651641,
+   "fraction": 0.5471014492753623,
+   "last_battle_age": 31.58004856109619,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 151"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 1 min ago"
+    }
+   ],
+   "skips_mean": 56.80132450331126,
+   "skips_last100": 50.21
+  }
+ ]
 }
