@@ -36,6 +36,16 @@ Two subcommands:
           --protect counts only the listed names. --max-bits 15 keeps the string under Java's
           65,535-byte constant limit.
 
+  field   Writes a kitlab set file of a whole rumble from its participants (weight 1 each, so the
+          flat mean is the APS), leaving out --skip prefixes and, with --present DIR, robots whose
+          jar did not download.
+
+  oracle  The robot as its own teacher. Reads kitlab runs of several arms on one set (--arm
+          CHAR=RUN_DIR) and, per opponent, keeps the --default arm unless another arm's paired gain
+          over it, seed by seed, clears --z standard errors and --min-gain points; writes the chosen
+          char per robot as a modes TSV for hash. The printed total gain is in-sample, an upper
+          bound: read the built robot on fresh seeds.
+
   tiers   Reads the bench's cold census TSVs (data/bench/*_cold.tsv, Hadur builds, rows that ran)
           and writes a modes TSV for hash: each robot's median hit rate on Hadur as one char, '2' a
           rammer (--ram-at), '1' a gun worth moving at random against from round 1 (--random-at),
@@ -287,7 +297,8 @@ def find_mask(names, protect=None, min_bits=4, max_bits=14):
 
 def modes_string(names, modes, mask, default, shift=0, resolve="first"):
     """One char per cell. A cell two robots share takes the first in file order, or with
-    resolve="high" the higher char (the cautious mode, when a conflict was allowed)."""
+    resolve="high" the higher char, or with resolve="default" the default (the cautious choice
+    for whichever char means "as before", when a conflict was allowed)."""
     out = [default] * (mask + 1)
     taken = set()
     for n in names:
@@ -298,6 +309,8 @@ def modes_string(names, modes, mask, default, shift=0, resolve="first"):
         if k in taken:
             if resolve == "high":
                 out[k] = max(out[k], c)
+            elif resolve == "default" and out[k] != c:
+                out[k] = default
             continue
         out[k] = c
         taken.add(k)
@@ -339,6 +352,11 @@ def hash_main(a):
         value = "".join("\\%o" % int(c) for c in s)
     else:
         value = s.replace("\\", "\\\\").replace('"', '\\"')
+    # A class-file constant is at most 65,535 bytes of modified UTF-8, where NUL takes two.
+    size = sum(2 if (a.raw and c == "0") or (not a.raw and c == "\0") else 1 for c in s)
+    if size > 65535:
+        raise SystemExit("MODES would be %d bytes as a class-file constant (limit 65,535): lower --max-bits "
+                         "or pick a --default that is not 0" % size)
     write_constant(a.src, a.name, value, mask, shift)
     print("%s: %d chars%s, MASK = %d, SHIFT = %d -> %s" % (a.name, len(s), " (raw digits)" if a.raw else "", mask, shift, a.src))
 
@@ -411,6 +429,91 @@ def tiers_main(a):
     print("%d modes -> %s" % (len(rows), a.out))
 
 
+# ---------------------------------------------------------------- field / oracle
+
+def jar_of(name):
+    """The archive's jar for a rumble name: 'kc.micro.Thorn 1.252' -> 'kc.micro.Thorn_1.252.jar'."""
+    return name.replace(" ", "_") + ".jar"
+
+
+def field_main(a):
+    names = [n for n in read_names(a.participants) if not any(n.startswith(p) for p in a.skip)]
+    kept, gone = [], []
+    for n in names:
+        if a.present and not os.path.exists(os.path.join(a.present, jar_of(n))):
+            gone.append(n)
+        else:
+            kept.append(n)
+    with open(a.out, "w", encoding="utf-8", newline="\n") as f:
+        f.write("# tools/distill.py field: %d of %d names from %s, weight 1 each (the flat mean is the APS)%s\n"
+                % (len(kept), len(names), os.path.basename(a.participants),
+                   "; %d left out with no jar in %s" % (len(gone), a.present) if gone else ""))
+        f.write("# name | role (all:weight) | jar | weight\n")
+        for n in kept:
+            f.write("%s | all:1 | %s | 1.0000\n" % (n, jar_of(n)))
+    print("%d robots -> %s%s" % (len(kept), a.out, "; no jar for: " + ", ".join(gone) if gone else ""))
+
+
+def oracle_pick(per_arm, default, z=1.0, min_gain=0.0):
+    """One opponent's mode: per_arm maps a char to {seed: score share}. The default arm stands
+    unless another arm's paired gain over it (seeds both ran) clears both z standard errors and
+    min_gain; then the best such arm. Returns (char, gain, se)."""
+    base = per_arm.get(default)
+    best = (default, 0.0, 0.0)
+    if not base:
+        return best
+    for c, runs in sorted(per_arm.items()):
+        if c == default or not runs:
+            continue
+        seeds = sorted(set(runs) & set(base))
+        if len(seeds) < 2:
+            continue
+        d = [runs[x] - base[x] for x in seeds]
+        m = sum(d) / len(d)
+        se = math.sqrt(sum((x - m) ** 2 for x in d) / (len(d) - 1) / len(d))
+        if m - z * se > 0 and m > min_gain and m > best[1]:
+            best = (c, m, se)
+    return best
+
+
+def oracle_main(a):
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import kitlab_read
+    rows = kitlab_read.load_set(a.set)
+    arms = {}
+    for spec in a.arm:
+        c, run = spec.split("=", 1)
+        if len(c) != 1:
+            raise SystemExit("--arm CHAR=RUN_DIR: one char, got %r" % c)
+        if not os.path.isdir(os.path.join(run, "battles")):
+            raise SystemExit("distill: no battles under %s" % run)
+        arms[c] = kitlab_read.by_seed(run)
+    if a.default not in arms:
+        raise SystemExit("--default %s names no --arm" % a.default)
+    picks, gain, var = collections.Counter(), 0.0, 0.0
+    out = []
+    for name, w, stem in rows:
+        c, m, se = oracle_pick({k: v.get(stem, {}) for k, v in arms.items()}, a.default, a.z, a.min_gain)
+        picks[c] += 1
+        gain += m
+        var += se * se
+        out.append((name, c, m, se))
+    n = len(rows)
+    print("%d robots: %s; picked gain over the default %+.2f +- %.2f APS (in sample: an upper bound, "
+          "read it on fresh seeds)" % (n, dict(sorted(picks.items())), gain / n, math.sqrt(var) / n))
+    if a.report:
+        for name, c, m, se in sorted(out, key=lambda t: -t[2]):
+            if c != a.default:
+                print("  %s  %+6.1f +- %4.1f  %s" % (c, m, se, name))
+        return
+    with open(a.out, "w", encoding="utf-8", newline="\n") as f:
+        f.write("# tools/distill.py oracle: per robot the arm whose paired gain over arm %s clears %.1f SE "
+                "and %.1f APS; arms %s\n" % (a.default, a.z, a.min_gain, ", ".join(a.arm)))
+        for name, c, m, se in out:
+            f.write("%s\t%s\n" % (name, c))
+    print("%d modes -> %s" % (n, a.out))
+
+
 # ---------------------------------------------------------------- cli
 
 def main(argv=None):
@@ -442,7 +545,8 @@ def main(argv=None):
     hs.add_argument("--raw", action="store_true", help="write digit chars as the values 0..9, so charAt needs no '0' subtraction")
     hs.add_argument("--shift", type=int, help="use this unsigned shift only (0 saves the robot 3 bytes)")
     hs.add_argument("--max-conflicts", type=int, default=0, help="accept up to this many robots on a cell with a different char")
-    hs.add_argument("--resolve", choices=["first", "high"], default="first", help="an accepted conflict takes the first robot's char, or the higher")
+    hs.add_argument("--resolve", choices=["first", "high", "default"], default="first",
+                    help="an accepted conflict takes the first robot's char, the higher, or the default")
     hs.add_argument("--report", action="store_true", help="print each robot's cell, write nothing")
     hs.set_defaults(run=hash_main)
 
@@ -455,8 +559,30 @@ def main(argv=None):
     tr.add_argument("--report", action="store_true", help="print every robot's rate and char, write nothing")
     tr.set_defaults(run=tiers_main)
 
+    fd = sub.add_parser("field", help="a kitlab set file of a whole rumble, weight 1 a robot")
+    fd.add_argument("participants")
+    fd.add_argument("--skip", action="append", default=[], help="leave out names starting with this (repeatable)")
+    fd.add_argument("--present", help="keep only robots whose jar is in this directory")
+    fd.add_argument("--out", required=True)
+    fd.set_defaults(run=field_main, report=False)
+
+    oc = sub.add_parser("oracle", help="per robot, the arm that beat the default on the bench: a modes TSV")
+    oc.add_argument("set", help="the kitlab set file the arms ran on")
+    oc.add_argument("--arm", action="append", required=True, help="CHAR=RUN_DIR, one per arm (repeatable)")
+    oc.add_argument("--default", required=True, help="the char of the arm that stands unless beaten")
+    oc.add_argument("--z", type=float, default=1.0, help="standard errors the paired gain must clear")
+    oc.add_argument("--min-gain", type=float, default=0.0, help="APS points the paired gain must clear")
+    oc.add_argument("--out", help="the modes TSV to write")
+    oc.add_argument("--report", action="store_true", help="print the robots that leave the default, write nothing")
+    oc.set_defaults(run=oracle_main)
+
     a = p.parse_args(argv)
-    if a.cmd == "tiers":
+    if a.cmd in ("field",):
+        pass
+    elif a.cmd == "oracle":
+        if not a.report and not a.out:
+            p.error("--out is needed unless --report")
+    elif a.cmd == "tiers":
         if not a.report and not a.out:
             p.error("--out is needed unless --report")
     elif not a.report and not a.src:

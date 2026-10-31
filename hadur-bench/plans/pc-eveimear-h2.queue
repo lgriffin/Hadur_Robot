@@ -1,0 +1,87 @@
+# Eveimear as its own teacher (docs/kitlab.md section 7). pc-eveimear-h1 (PR #516) failed: Hadur's
+# census told the arms which guns are good, not which guns beat stop-and-go. Every big loss was a
+# robot the table called "stop-and-go" (Thorn, RaikoMicro, GFMicro, Ant: weak on a surfer, lethal to
+# a stop-and-go bot), every "random from round 1" call it got right beat 0.1, and NanoSatanMelee
+# wanted neither (HM7, never switching, +2.4 there). So the modes are three, and the teacher is
+# Eveimear's own battles:
+#   h2  three arms on every MicroRumble robot, 4 battles each:
+#       E01  0.1 as released: stop-and-go until their hits win back 40 + 23 a round, then random
+#       RN   random from the first hit taken                                         (712 B)
+#       NV   stop-and-go for the whole battle                                        (714 B)
+#   oracle  per robot, keep E01 unless RN or NV beat it by 2 SE and 2 APS seed by seed
+#       (tools/distill.py oracle); hash the result into HB, which moves 0.1's threshold by
+#       -1000 / 0 / +1000 per robot inside onHitByBullet: one lookup, 0.1's play unchanged for
+#       robots the oracle left alone (745-748 B by the key's constants)
+#   h3  HB against E01 on 4 fresh battles a robot: the oracle's in-sample gain is an upper bound,
+#       this is the read.
+#   ./queue.sh run pc-eveimear-h2        (or  .\queue.ps1 run pc-eveimear-h2)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned (--parallel auto). Every step resumes; no step
+# needs a decision. Nothing here touches Hadur, Saor, Sanaro, JayLexi or Deise.
+#
+# Field: kitlab/micro-all-field.txt, the 515 robots Eveimear 0.1 met live, weight 1 each (the flat
+# mean is the APS); prep drops any whose jar does not download (work/eveimear-h2/field.txt). 4
+# battles a robot, unseeded as the rumble is: about 2,060 battles a step, five steps, about 10,300
+# battles; pc-eveimear-h1 ran 288 in a minute, so about 50 min in all.
+# Read: HB against E01 on h3's battles (kitlab_read.py --ref), the paired gain over the whole
+# division. HB ships as 0.2 when the gain's low end is above zero; read-out also carries the
+# oracle's picks and its in-sample gain, and the per-opponent table.
+# Stop rules on every battle step (docs/bench/watch.md; halt, every battle fought is kept and a
+# rerun resumes): 60 failed battles (a whole-division field carries a few robots that will not
+# load; 60 is fifteen of them, four battles each), no battle in 30 minutes, or 40+ skipped turns a
+# battle over the last 100. A halt at worst leaves that step and the ones after it unrun, at most
+# 10,300 battles (about 50 min). ALERT opens an issue for Leigh on a stop.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set REL = https://github.com/lgriffin/Hadur_Robot/releases/download
+set DISTILL = python3 tools/distill.py
+set W = work/eveimear-h2
+
+prep | mkdir -p ${W} && (./fetch-opponents.sh --set kitlab/micro-all-field.txt || true) && ${DISTILL} field kitlab/micro-participants.txt --skip hadur117. --present opponents --out ${W}/field.txt && curl -fsSL -o opponents/hadur117.micro.Eveimear_0.1.jar ${REL}/eveimear-v0.1/hadur117.micro.Eveimear_0.1.jar && bash kitlab/build_arm.sh kitlab/arms/Eveimear-rn.java hadur117.micro.Eveimear 0.1rn && bash kitlab/build_arm.sh kitlab/arms/Eveimear-nv.java hadur117.micro.Eveimear 0.1nv && bash kitlab/args.sh ${W}/field.txt opponents/hadur117.micro.Eveimear_0.1.jar "hadur117.micro.Eveimear 0.1" h2-E01 4 && bash kitlab/args.sh ${W}/field.txt kitlab/jars/hadur117.micro.Eveimear_0.1rn.jar "hadur117.micro.Eveimear 0.1rn" h2-RN 4 && bash kitlab/args.sh ${W}/field.txt kitlab/jars/hadur117.micro.Eveimear_0.1nv.jar "hadur117.micro.Eveimear 0.1nv" h2-NV 4
+
+h2-E01 | ${MVN} "-Dexec.args=@work/kitlab-h2-E01.args"
+  after: prep
+  watch: battles=2060
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 40 over 100
+
+h2-RN | ${MVN} "-Dexec.args=@work/kitlab-h2-RN.args"
+  after: h2-E01
+  watch: battles=2060
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 40 over 100
+
+h2-NV | ${MVN} "-Dexec.args=@work/kitlab-h2-NV.args"
+  after: h2-RN
+  watch: battles=2060
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 40 over 100
+
+oracle | ${DISTILL} oracle ${W}/field.txt --arm 1=work/kitlab-h2-E01 --arm 0=work/kitlab-h2-RN --arm 2=work/kitlab-h2-NV --default 1 --z 2 --min-gain 2 --out ${W}/modes.tsv && ${DISTILL} oracle ${W}/field.txt --arm 1=work/kitlab-h2-E01 --arm 0=work/kitlab-h2-RN --arm 2=work/kitlab-h2-NV --default 1 --z 2 --min-gain 2 --report > ${W}/oracle.txt && cp kitlab/arms/Eveimear-hb.java ${W}/Eveimear-HB.java && (${DISTILL} hash kitlab/micro-participants.txt --modes ${W}/modes.tsv --default 1 --raw --src ${W}/Eveimear-HB.java || ${DISTILL} hash kitlab/micro-participants.txt --modes ${W}/modes.tsv --default 1 --raw --max-conflicts 10 --resolve default --src ${W}/Eveimear-HB.java) && bash kitlab/build_arm.sh ${W}/Eveimear-HB.java hadur117.micro.Eveimear 0.1hb && bash kitlab/args.sh ${W}/field.txt opponents/hadur117.micro.Eveimear_0.1.jar "hadur117.micro.Eveimear 0.1" h3-E01 4 && bash kitlab/args.sh ${W}/field.txt kitlab/jars/hadur117.micro.Eveimear_0.1hb.jar "hadur117.micro.Eveimear 0.1hb" h3-HB 4
+  after: h2-NV
+
+h3-E01 | ${MVN} "-Dexec.args=@work/kitlab-h3-E01.args"
+  after: oracle
+  watch: battles=2060
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 40 over 100
+
+h3-HB | ${MVN} "-Dexec.args=@work/kitlab-h3-HB.args"
+  after: h3-E01
+  watch: battles=2060
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 40 over 100
+
+read | (echo "# Eveimear as its own teacher (pc-eveimear-h2)" && echo && echo '## HB against 0.1 on fresh battles (the read)' && echo '```' && python3 tools/kitlab_read.py ${W}/field.txt work/kitlab-h3-HB --ref work/kitlab-h3-E01 && echo '```' && echo && echo '## The oracle (in sample, an upper bound): robots that left 0.1, 0 random from the first hit, 2 never switch' && echo '```' && cat ${W}/oracle.txt && echo '```' && echo && echo '## RN and NV against 0.1 on the teaching battles' && echo '```' && python3 tools/kitlab_read.py ${W}/field.txt work/kitlab-h2-RN --ref work/kitlab-h2-E01 && python3 tools/kitlab_read.py ${W}/field.txt work/kitlab-h2-NV --ref work/kitlab-h2-E01 && echo '```' && echo && echo '## HB against 0.1 by opponent (fresh battles)' && echo '```' && python3 tools/kitlab_read.py ${W}/field.txt work/kitlab-h3-HB --ref work/kitlab-h3-E01 --pairs && echo '```') > ${OUT}/eveimear-h2.md
+  after: h3-HB
+
+pr | bash tools/open_results_pr.sh claude/pc-eveimear-h2-results "Eveimear as its own teacher: per-robot mode on the whole MicroRumble" ${OUT}/eveimear-h2.md
+  after: read

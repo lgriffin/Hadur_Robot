@@ -2328,3 +2328,10 @@ profiles, and the rumbles list it as a new participant.
   trades a few cautious cells for the shift's 3 bytes. Eveimear arms HM (714 B), HP (749 B) and HM7
   play the table in place of, or before, EVEIMEAR-3's detection; `plans/pc-eveimear-h1.queue`
   measures them against 0.1 (docs/kitlab.md section 6).
+- **Eveimear as its own teacher (2026-10-31).** pc-eveimear-h1 failed (PR #516): a gun's hit rate on
+  Hadur is the wrong signal for a stop-and-go robot. `tools/distill.py field` writes a whole-rumble
+  set, `oracle` picks per robot the arm that beat the default seed by seed (`--z`, `--min-gain`),
+  `hash --resolve default` sends an allowed conflict back to the default, and a constant over
+  65,535 bytes of modified UTF-8 is refused. Arm HB biases EVEIMEAR-3's threshold by -1000 / 0 /
+  +1000 per robot; `plans/pc-eveimear-h2.queue` teaches on 515 robots and reads HB on fresh battles
+  (docs/kitlab.md section 7).

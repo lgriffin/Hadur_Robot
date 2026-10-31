@@ -167,3 +167,32 @@ What the same lookup can carry next, at a few bytes each once a mode char is in 
 by opponent, the orbit distance, head-on against the robots Hadur rates M0, aim jitter against the
 shielders Hadur has flagged, and, for the mini, GuessFactor bins seeded by opponent class so the gun
 does not spend the first rounds learning what Hadur already knows. The nano gets one bit of it.
+
+## 7. pc-eveimear-h1 results, and Eveimear as its own teacher (pc-eveimear-h2)
+
+pc-eveimear-h1 (PR #516) failed every arm against 0.1 on 48 bots x 6 seeds: HM -4.78 ± 0.30, HP
+-0.93 ± 0.30, HM7 -5.40 ± 0.27. Leigh's per-opponent read (`kitlab_read.py --pairs`) put the loss
+on a few robots, and the table's own modes explain all of it:
+
+| Robots | Hit rate on Hadur | Table | HM | HP |
+|---|---|---|---|---|
+| Ant, SleepingGoat, RaikoMicro, GFMicro, Thorn, UnfoolableNano, MirrorPM | 0.008-0.049 | 0, stop-and-go | -13 to -52 | about 0 |
+| HedgehogGF, WaveShark, EpeeistDC | 0.058-0.069 | 1, random | +7.2, +5.5, +2.9 | |
+| NanoSatanMelee, Capulet | 0.056, 0.080 | 1, random | -11.6, -7.1 | -13.9, -8.2 |
+
+Every large loss is a robot the table called a weak gun. Hit rate on Hadur, a top surfer, measures
+how good a gun is, not whether it beats stop-and-go: Thorn hits Hadur 1.6% of the time and is
+lethal to a robot that stops. HM had no detection to fall back on and stopped for 35 rounds; HP
+kept 0.1's detection and recovered those robots. The table's random calls were right (HM7, which
+moved HedgehogGF, WaveShark and EpeeistDC back to stop-and-go, lost 39, 21 and 30 on them), and a
+third case wants neither: NanoSatanMelee was +2.4 under HM7, which never switched.
+
+So the modes are three, 0 random from the first hit, 1 0.1's detection, 2 never switch, and the
+teacher is Eveimear. `plans/pc-eveimear-h2.queue` plays three arms on every MicroRumble robot (E01,
+RN, NV; `kitlab/micro-all-field.txt`, 515 robots x 4 battles), `tools/distill.py oracle` keeps
+0.1's mode for a robot unless RN or NV beat it by 2 SE and 2 APS battle by battle, and arm HB
+carries the result as a bias on 0.1's threshold inside `onHitByBullet`: `won > 40 + 23 * round +
+(MODES.charAt(e.getName().hashCode() >>> SHIFT & MASK) - 1) * 1000`, -1000 trips on the first hit,
++1000 never. A robot the oracle left alone plays 0.1 exactly, so HB cannot lose where the data is
+thin. 745-748 bytes by the key's constants. The oracle's own gain is in sample and an upper bound;
+the card reads HB against E01 on four fresh battles a robot over the whole division.

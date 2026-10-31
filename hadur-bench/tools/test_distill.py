@@ -124,6 +124,35 @@ class PowerTest(unittest.TestCase):
 
 
 # @Tag("BENCH-156")
+class OracleTest(unittest.TestCase):
+    def test_default_stands_unless_beaten_clearly(self):
+        base = {"1": 50.0, "2": 52.0, "3": 48.0, "4": 50.0}
+        # Arm 0 gains about 10 on every seed: picked.
+        win = {k: v + 10 + (0.5 if k in "13" else -0.5) for k, v in base.items()}
+        c, m, se = distill.oracle_pick({"1": base, "0": win}, "1")
+        self.assertEqual("0", c)
+        self.assertAlmostEqual(10.0, m)
+        # Arm 2 gains 1 on average but noisily: inside one SE, the default stands.
+        noisy = {"1": 41.0, "2": 62.0, "3": 47.0, "4": 54.0}
+        self.assertEqual("1", distill.oracle_pick({"1": base, "2": noisy}, "1")[0])
+        # A clear gain under --min-gain stands down too.
+        small = {k: v + 0.5 for k, v in base.items()}
+        self.assertEqual("1", distill.oracle_pick({"1": base, "2": small}, "1", min_gain=1.0)[0])
+        self.assertEqual("2", distill.oracle_pick({"1": base, "2": small}, "1")[0])
+
+    def test_best_of_several_and_missing_runs(self):
+        base = {"1": 50.0, "2": 50.0, "3": 50.0}
+        a = {k: v + 5 + int(k) * 0.1 for k, v in base.items()}
+        b = {k: v + 8 + int(k) * 0.1 for k, v in base.items()}
+        self.assertEqual("2", distill.oracle_pick({"1": base, "0": a, "2": b}, "1")[0])
+        self.assertEqual("1", distill.oracle_pick({"1": {}, "0": a}, "1")[0])
+        self.assertEqual("1", distill.oracle_pick({"1": base, "0": {"1": 99.0}}, "1")[0])
+
+    def test_jar_of(self):
+        self.assertEqual("kc.micro.Thorn_1.252.jar", distill.jar_of("kc.micro.Thorn 1.252"))
+
+
+# @Tag("BENCH-156")
 class HashTest(unittest.TestCase):
     def setUp(self):
         self.dir = tempfile.mkdtemp()
@@ -195,6 +224,16 @@ class HashTest(unittest.TestCase):
             distill.main(["hash", self.parts, "--shift", "32", "--report"])
         with self.assertRaises(SystemExit):
             distill.main(["hash", self.parts, "--shift", "-1", "--report"])
+
+    def test_resolve_default_and_constant_limit(self):
+        names = ["a", "q"]  # one cell under a 4-bit mask
+        s = distill.modes_string(names, {"a": "0", "q": "2"}, 15, "1", 0, "default")
+        self.assertEqual("1", s[distill.cell("a", 15)])
+        # 32,768 raw NULs are 65,536 bytes of modified UTF-8: refused.
+        with open(self.parts, "w", encoding="utf-8") as f:
+            f.write("a 1.0\n")
+        with self.assertRaises(SystemExit):
+            distill.main(["hash", self.parts, "--raw", "--min-bits", "15", "--src", self.src])
 
     def test_hash_writes_the_constant(self):
         modes = os.path.join(self.dir, "modes.tsv")
