@@ -26,3 +26,10 @@
 18:11:02 live-MIR exit=0 in 1004 s
 18:11:02 start live-SAOR
 18:11:02 watching live-SAOR: 3 stop rule(s)
+18:20:11 progress live-SAOR: 144/276 (52%) battles, 944/h, ETA 8 min, 0 failed, skips 0.0/battle (last 100)
+18:26:30 live-SAOR exit=0 in 928 s
+18:26:30 start read
+18:26:41 read exit=0 in 11 s
+18:26:41 start pr
+18:26:48 pr exit=0 in 6 s
+18:26:48 ALLDONE
