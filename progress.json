@@ -1,0 +1,43 @@
+{
+ "plan": "pc-melee-scal",
+ "updated": 1793406651.0424469,
+ "steps": {
+  "scprep": {
+   "status": "pending"
+  },
+  "scaa": {
+   "status": "pending"
+  },
+  "scbb": {
+   "status": "pending"
+  },
+  "scwm": {
+   "status": "pending"
+  },
+  "scxh": {
+   "status": "pending"
+  },
+  "scwq": {
+   "status": "pending"
+  },
+  "scbw": {
+   "status": "pending"
+  },
+  "scfv": {
+   "status": "pending"
+  },
+  "scec": {
+   "status": "pending"
+  },
+  "scbs": {
+   "status": "pending"
+  },
+  "scread": {
+   "status": "pending"
+  },
+  "scpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
