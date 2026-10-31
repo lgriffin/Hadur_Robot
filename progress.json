@@ -1,0 +1,28 @@
+{
+ "plan": "pc-melee-dia",
+ "updated": 1793455425.6744225,
+ "steps": {
+  "diprep": {
+   "status": "pending"
+  },
+  "diaa": {
+   "status": "pending"
+  },
+  "dibb": {
+   "status": "pending"
+  },
+  "didm": {
+   "status": "pending"
+  },
+  "dila": {
+   "status": "pending"
+  },
+  "diread": {
+   "status": "pending"
+  },
+  "dipr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
