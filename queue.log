@@ -35,3 +35,10 @@
 03:47:19 scec exit=0 in 1405 s
 03:47:19 start scbs
 03:47:19 watching scbs: 2 stop rule(s)
+04:09:37 progress scbs: 258/276 (93%) battles, 694/h, ETA 2 min, 0 failed, skips 69.3/battle (last 100)
+04:10:54 scbs exit=0 in 1415 s
+04:10:54 start scread
+04:11:11 scread exit=0 in 16 s
+04:11:11 start scpr
+04:11:19 scpr exit=0 in 7 s
+04:11:19 ALLDONE
