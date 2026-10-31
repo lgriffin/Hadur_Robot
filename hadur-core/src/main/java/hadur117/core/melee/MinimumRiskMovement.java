@@ -282,9 +282,11 @@ public class MinimumRiskMovement {
      * term weighs by the damage its bullets have done to Hadur over the whole battle, plus
      * {@link #DAMAGE_BASE}, times its mean distance from Hadur (a gun that hits from afar is the
      * more dangerous), the weights scaled to average 1 over the living opponents. Without it a hit
-     * is remembered for {@link #RECENT_HIT_TICKS} ticks only. Off.
+     * is remembered for {@link #RECENT_HIT_TICKS} ticks only. On from 3.21: pc-melee-dia dm
+     * +0.43 ± 0.17 with the low end +0.26, endgame wins +0.7, others outlived +0.5, skips +8%
+     * (PR #503).
      */
-    public static final boolean MELEE_DAMAGE_MEMORY = false;
+    public static final boolean MELEE_DAMAGE_MEMORY = true;
     static final double DAMAGE_BASE = 10;
     /** MMOVE-22: the mean distance taken for an opponent never scanned. */
     static final double DAMAGE_DISTANCE_START = 500;
