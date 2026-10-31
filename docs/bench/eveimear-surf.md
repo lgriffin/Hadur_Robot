@@ -76,5 +76,5 @@ At 743 B the surfer moves better than 0.1: it takes 22.9 a round against 26.5. I
 
 ## What would reopen it
 
-- **Bytes for the GF gun.** About 100 to 180 B, which is s6 (82.55) or s6g (80.36) minus s10. The string-constant table work in the codesize thread might find some of it.
+- **Bytes for the GF gun.** About 205 to 270 B, which is s6g (948 B, 80.36) or s6 (1,013 B, 82.55) minus s10 (743 B). The string-constant table work in the codesize thread might find some of it.
 - **Better surf prediction.** The time-to-arrival term alone is worth 5.9. More exact prediction is the biggest movement lever left.

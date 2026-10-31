@@ -12,9 +12,7 @@ import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 
 /**
- * Eveimear arm s1: 0.1's gun with a wave-surfing movement in place of stop-and-go and random orbit.
- * Each enemy shot is a wave; on the nearest one it weighs going on, reversing and stopping by where
- * each would put it when the wave arrives, and picks the guess factor its hits have visited least.
+ * Eveimear arm s4: s2 without surfing (plain orbit); the on/back values are computed but not used.
  */
 public class Eveimear extends AdvancedRobot {
     static final int MID = 12;
