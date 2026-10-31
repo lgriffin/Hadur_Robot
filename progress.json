@@ -1,0 +1,37 @@
+{
+ "plan": "pc-sanaro-n06",
+ "updated": 1793473248.170116,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "teach": {
+   "status": "pending"
+  },
+  "distill-report": {
+   "status": "pending"
+  },
+  "arms": {
+   "status": "pending"
+  },
+  "live-S2": {
+   "status": "pending"
+  },
+  "live-HT": {
+   "status": "pending"
+  },
+  "live-HD": {
+   "status": "pending"
+  },
+  "live-HS": {
+   "status": "pending"
+  },
+  "read-live": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
