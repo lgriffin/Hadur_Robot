@@ -1,0 +1,70 @@
+# Per robot: szmt minus control
+
+Every opponent, wins and losses, sorted by szmt. Points of score share.
+
+| Opponent | Control | szmt |
+|---|---:|---:|
+| theo.Hydrogen 2.1r | 76.0 | +20.9 |
+| fnc.bandit2002.Bandit2002 4.0.2 | 86.1 | +13.4 |
+| wompi.Numbat 1.9 | 84.5 | +13.0 |
+| cx.micro.Spark 0.6 | 77.6 | +11.6 |
+| rz.GlowBlowMelee 1.4 | 78.8 | +10.3 |
+| rdt199.Warlord 0.73 | 87.4 | +9.9 |
+| stelo.UnfoolableNano 1.0 | 86.8 | +9.4 |
+| et.Predator 1.8 | 90.0 | +9.3 |
+| lechu.Ala 0.0.4 | 83.0 | +8.6 |
+| tobe.Saturn lambda | 83.4 | +3.6 |
+| zeze2.OperatorZeze 1.05 | 86.2 | +3.1 |
+| dmh.robocode.robot.YellowBird 0.12 | 95.6 | +2.7 |
+| dmp.nano.Eve 3.41 | 93.1 | +2.6 |
+| codemojo.nano.Woot 1.0 | 96.6 | +2.4 |
+| cjm.Che 1.2 | 80.1 | +2.1 |
+| tkt.RedShift 1.1.CS.0 | 97.2 | +2.0 |
+| pfvicm.Sobieski 7.2.3b | 97.5 | +2.0 |
+| apv.Aspid 1.7 | 77.7 | +2.0 |
+| rz.SmallDevil 1.502 | 94.6 | +1.7 |
+| mrm.MightyMoose .2 | 97.8 | +1.6 |
+| krzysiek.robbo2.Robbo 1.0.0 | 88.4 | +1.1 |
+| robar.micro.Topaz 0.25 | 75.1 | +1.0 |
+| bayen.UbaMicro 1.4 | 97.7 | +1.0 |
+| robar.nano.Scytodes 0.3 | 95.4 | +0.8 |
+| maribo.Omicron 1.0 | 98.0 | +0.8 |
+| tobe.calypso.Calypso 4.1 | 86.6 | +0.1 |
+| wiki.SuperSampleBot.SuperSittingDuck 1.0 | 99.8 | +0.1 |
+| cli.WasteOfAmmo 1.0 | 100.0 | +0.0 |
+| Noran.RandomTargeting 0.02 | 99.9 | -0.1 |
+| fcr.First 1.0 | 98.7 | -0.1 |
+| pez.mini.Gouldingi 1.5 | 92.3 | -0.2 |
+| ncj.MoxieBot 1.0 | 99.9 | -0.4 |
+| dmp.micro.Aurora 1.41 | 85.7 | -0.4 |
+| m3thos.mini.Eva01 0.5.5 | 95.6 | -0.5 |
+| slugzilla.SNGPattern 1.0 | 94.9 | -0.7 |
+| step.NanoBidu 1.0 | 96.7 | -1.2 |
+| ary.nano.ColorNanoP 1.1 | 88.2 | -1.4 |
+| slugzilla.SNGGF 1.0 | 95.8 | -1.4 |
+| winamp32.micro.MicroMacro 1.0 | 97.4 | -1.5 |
+| sheldor.nano.PointInLineRRAL 1.0.0 | 89.6 | -2.0 |
+| lrem.micro.FalseProphet Alpha | 86.5 | -2.3 |
+| apv.LauLectrik 1.2 | 89.7 | -2.6 |
+| cx.Princess 1.0 | 67.9 | -3.1 |
+| rz.GlowBlow 2.31 | 77.4 | -3.1 |
+| axeBots.Musashi 2.18 | 77.9 | -3.1 |
+| pez.rumble.CassiusClay 2rho.02no | 59.9 | -3.5 |
+| ICS4U1.Patrick_White_Schrodinger 1.1 | 98.0 | -3.5 |
+| mld.Wisdom 1.0 | 98.4 | -3.6 |
+| cx.mini.Cigaret 1.31 | 72.1 | -3.6 |
+| nz.jdc.nano.NeophyteSRAL 1.3 | 98.1 | -3.7 |
+| gg.Wolverine 2.0 | 97.4 | -3.9 |
+| nz.jdc.nano.NeophytePRAL 1.4 | 89.9 | -4.2 |
+| conscience.Electron 1.3g | 96.6 | -4.3 |
+| zyx.micro.Ant 1.1 | 97.4 | -4.3 |
+| nat.Hikari dev0001 | 96.2 | -4.3 |
+| pkdeken.Paladin 1.0 | 98.4 | -4.4 |
+| jaybot.adv.bots.JayBot 2.0 | 97.2 | -4.5 |
+| cx.mini.BlackSwans 0.60 | 75.0 | -4.5 |
+| fala.robocode.FalaRobot 1.0 | 97.8 | -5.0 |
+| ry.LightningBug 1.0 | 93.6 | -5.5 |
+| mb.Monte 0.1.0 | 90.8 | -5.5 |
+| cx.CigaretBH 1.03 | 75.0 | -9.1 |
+| pez.micro.Aristocles 0.3.9 | 96.8 | -9.1 |
+| stelo.MatchupMicro 1.2 | 82.4 | -13.5 |
