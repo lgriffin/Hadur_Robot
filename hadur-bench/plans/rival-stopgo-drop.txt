@@ -1,0 +1,17 @@
+# pc-rival-picks: list C, the 16 stop-and-go candidates on master's shield list; SHIELD_DROP for slistdrop, so stop-and-go drives (the shield drives first when both are on).
+theo.Hydrogen 2.1r
+wiki.Wolverine 2.1
+EE.LittleBig 1.0
+whind.Constitution 0.7.1
+rcb.Vanessa03 0
+bayen.nut.Squirrel 1.621
+synapse.rsim.GeomancyBS 0.11
+simonton.micro.GFMicro 1.0
+wiki.mini.BlackDestroyer 0.9.0
+davidalves.net.DuelistMicroMkII 1.1
+learn.ISmart 2.0s
+nz.jdc.micro.HedgehogGF 1.5
+rc.yoda.Yoda 1.0.6c.fix
+oog.mini.AlphaDragon 0.1
+sm.Devil 7.3
+cf.mini.Chiva 1.0
