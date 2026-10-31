@@ -1,0 +1,34 @@
+{
+ "plan": "pc-deise-pt1",
+ "updated": 1793484810.855778,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "live-TEACH": {
+   "status": "pending"
+  },
+  "build": {
+   "status": "pending"
+  },
+  "live-D": {
+   "status": "pending"
+  },
+  "live-PT0": {
+   "status": "pending"
+  },
+  "live-PTS": {
+   "status": "pending"
+  },
+  "live-PTB": {
+   "status": "pending"
+  },
+  "read": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
