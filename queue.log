@@ -30,3 +30,9 @@
 13:23:09 live-WSTOP exit=0 in 1013 s
 13:23:09 start live-SAOR
 13:23:09 watching live-SAOR: 3 stop rule(s)
+13:38:26 live-SAOR exit=0 in 916 s
+13:38:26 start read
+13:38:37 read exit=0 in 11 s
+13:38:37 start pr
+13:38:44 pr exit=0 in 6 s
+13:38:44 ALLDONE
