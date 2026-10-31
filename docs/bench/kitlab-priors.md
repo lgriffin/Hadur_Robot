@@ -16,9 +16,13 @@ string table costs only its read, `TABLE.charAt(i)`, which is about 6 to 8 bytes
 - **Priors learned for the whole field do not pay.** A gun prior loses 1.2 APS. A danger profile
   of where the field aims is flat. A pattern library baked into Eveimear's gun lowers its offline
   hit rate.
-- **Per-opponent rows are the open lead.** Each row holds where that opponent's bullets go, keyed
-  by its name hash. They read +0.31 and +0.37 on the cloud, inside the noise. PC card
-  `pc-jaylexi-po` reads them on 112 bots.
+- **Per-opponent rows pay.** Each row holds where that opponent's bullets go, keyed by its name
+  hash. On the PC (`pc-jaylexi-po`, PR #500: 112 bots x 6 seeds, rows learned from separate
+  battles) PO300 reads **+0.77 +- 0.14** and PO2000 **+0.88 +- 0.15** over G, the 0.2 control.
+  Those are the bots the rows were learned on. Live, the other 557 bots of the division would get
+  the field's row, so card `pc-jaylexi-po-all` learns a row for all 669 and reads the 112-bot and
+  669-bot tables on a fresh sample (`kitlab/mini-wide2-field.txt`). A synthetic 669-row table
+  builds to 1,493 B and fits the constant pool.
 
 ## Where the bytes are
 
@@ -47,6 +51,26 @@ whole input range.
 The replay test caught the first CLAMP. It assumed bullet speeds of 11 and up, but JayLexi's own
 weak shots are faster than that. The fixed table is in `jaylexi/` (12 B saved). The arm builder
 `hadur-bench/kitlab/build_arm_pg.sh` (ecj plus ProGuard) saves 14 B more.
+
+## Local slots (Deise)
+
+Only local variable slots 0 to 3 have one-byte loads and stores (`dload_1`, `aload_3`). Every
+other slot costs two bytes per access. `codesize_methods.py` together with `javap -c` shows which
+locals each method touches most.
+
+Deise's risk ring (`run`) reads the loop element (14 times), the risk sum (11) and the loop index
+(6) from slots 26 to 28. The source now declares those three before anything else in `run`, so
+javac and ProGuard place them in slots 1 to 4. The two `for (double[] x : arr)` loops become
+indexed loops over the arrays' fixed lengths (17 and 64), which drops the hidden array-copy and
+length locals. The robot-weight loop in `onScannedRobot` gets the same change.
+
+**Result:** Deise goes from 1,499 B to 1,452 B: `run` drops from 424 to 385 B, `onScannedRobot`
+from 975 to 967 B. The orders are unchanged: `DeiseEquivalenceTest` (DEISE-16) and `DeiseJarIT`
+pass (PR #491). That leaves 47 B for aim, which the Deise thread names as the gap to Mirage (8%
+less bullet damage a round).
+
+In `onScannedRobot`, slots 2 and 3 are already the method's busiest locals, so reordering there
+gains nothing.
 
 ## Learned tables
 

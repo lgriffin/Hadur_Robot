@@ -1,0 +1,74 @@
+# Eveimear 0.2's first arms: Hadur as the teacher (docs/kitlab.md section 6). A per-opponent mode
+# char keyed by the name's hash, about 17 bytes, replaces 0.1's detection (stop-and-go until the
+# enemy's gun has won back 40 + 23 energy a round, EVEIMEAR-3): Hadur's census (data/bench, 34,065
+# cold battles, 514 of the 515 MicroRumble robots) says which guns find a stop-and-go robot, so
+# the arm moves at random from round 1 against those and stop-and-go against the rest, with no
+# energy spent finding out. 0.1's live pairings split the same way: 89.95 APS / 95.2 survival on the
+# 317 robots the table calls 0, 72.68 / 81.7 on the 173 it calls 1, 71.58 / 98.0 on the 24 rammers.
+#   ./queue.sh run pc-eveimear-h1        (or  .\queue.ps1 run pc-eveimear-h1)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned (--parallel auto: the host profile's width). Every
+# step resumes; no step needs a decision. Nothing here touches Hadur, Saor, Sanaro, JayLexi or Deise.
+#
+# Arms (kitlab/arms, built by prep from the teacher data in the repo; the jars are not committed):
+#   E01   Eveimear 0.1 as released (control, 722 B)
+#   HM    the table instead of the detection: mode = -MODES.charAt(hash >>> 18 & 16383), 0 / -1 / -2
+#         (-2 for a rammer: every tick, reverses twice as often); the won counter is gone (714 B)
+#   HP    the table as a prior: min(table, detection), so a gun the table missed is still found;
+#         no shift, four shared cells take the cautious reading (749 B, the limit)
+#   HM7   HM with the random line at their hit rate 0.07 on Hadur instead of 0.05: 69 robots
+#         random, 421 stop-and-go (714 B)
+# Field kitlab/micro-field.txt (48 bots: the top 12 by name, 36 rank bands) x 6 seeds = 288 battles
+# an arm, 35 rounds; about 10 min an arm on the PC, under an hour in all.
+# Read: each arm against E01 on the same opponents (kitlab_read.py --ref), the paired gain. An arm
+# holds when its gain's low end is above zero. HM against HP says whether the detection is worth
+# keeping at all; HM against HM7 places the line. The winner is 0.2's base; the cloud could not run
+# battles for this card (no Robocode engine or opponent jars reach it), so this is the first read.
+# Stop rules on every step (docs/bench/watch.md; halt, every battle fought is kept and a rerun
+# resumes): 20 failed battles (a broken jar), no battle in 30 minutes (a hung step), or 40+ skipped
+# turns a battle over the last 100 (the PR #331 build-up). A halt at worst leaves the rest of that
+# arm and the arms after it unrun, at most 1,152 battles (about 40 min). No early finish on score:
+# each step is one robot. ALERT opens an issue for Leigh on a stop.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set REL = https://github.com/lgriffin/Hadur_Robot/releases/download
+set DISTILL = python3 tools/distill.py
+
+prep | ./fetch-opponents.sh --set kitlab/micro-field.txt && mkdir -p work/eveimear-h1 && curl -fsSL -o opponents/hadur117.micro.Eveimear_0.1.jar ${REL}/eveimear-v0.1/hadur117.micro.Eveimear_0.1.jar && ${DISTILL} tiers "../data/bench/*_cold.tsv" --names kitlab/micro-participants.txt --out work/eveimear-h1/modes-05.tsv && ${DISTILL} tiers "../data/bench/*_cold.tsv" --names kitlab/micro-participants.txt --random-at 0.07 --out work/eveimear-h1/modes-07.tsv && cp kitlab/arms/Eveimear-hm.java work/eveimear-h1/Eveimear-HM.java && ${DISTILL} hash kitlab/micro-participants.txt --modes work/eveimear-h1/modes-05.tsv --raw --src work/eveimear-h1/Eveimear-HM.java && cp kitlab/arms/Eveimear-hm.java work/eveimear-h1/Eveimear-HM7.java && ${DISTILL} hash kitlab/micro-participants.txt --modes work/eveimear-h1/modes-07.tsv --raw --src work/eveimear-h1/Eveimear-HM7.java && cp kitlab/arms/Eveimear-hp.java work/eveimear-h1/Eveimear-HP.java && ${DISTILL} hash kitlab/micro-participants.txt --modes work/eveimear-h1/modes-05.tsv --raw --shift 0 --max-conflicts 8 --resolve high --src work/eveimear-h1/Eveimear-HP.java && bash kitlab/build_arm.sh work/eveimear-h1/Eveimear-HM.java hadur117.micro.Eveimear 0.1hm && bash kitlab/build_arm.sh work/eveimear-h1/Eveimear-HM7.java hadur117.micro.Eveimear 0.1hm7 && bash kitlab/build_arm.sh work/eveimear-h1/Eveimear-HP.java hadur117.micro.Eveimear 0.1hp && bash kitlab/args.sh micro opponents/hadur117.micro.Eveimear_0.1.jar "hadur117.micro.Eveimear 0.1" h1-E01 6 && bash kitlab/args.sh micro kitlab/jars/hadur117.micro.Eveimear_0.1hm.jar "hadur117.micro.Eveimear 0.1hm" h1-HM 6 && bash kitlab/args.sh micro kitlab/jars/hadur117.micro.Eveimear_0.1hp.jar "hadur117.micro.Eveimear 0.1hp" h1-HP 6 && bash kitlab/args.sh micro kitlab/jars/hadur117.micro.Eveimear_0.1hm7.jar "hadur117.micro.Eveimear 0.1hm7" h1-HM7 6
+
+h1-E01 | ${MVN} "-Dexec.args=@work/kitlab-h1-E01.args"
+  after: prep
+  watch: battles=288
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+h1-HM | ${MVN} "-Dexec.args=@work/kitlab-h1-HM.args"
+  after: h1-E01
+  watch: battles=288
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+h1-HP | ${MVN} "-Dexec.args=@work/kitlab-h1-HP.args"
+  after: h1-HM
+  watch: battles=288
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+h1-HM7 | ${MVN} "-Dexec.args=@work/kitlab-h1-HM7.args"
+  after: h1-HP
+  watch: battles=288
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+read | (echo "# Eveimear: Hadur's mode table against 0.1 on the MicroRumble sample (pc-eveimear-h1)" && echo && for a in HM HP HM7; do echo "## $a against 0.1" && echo '```' && python3 tools/kitlab_read.py kitlab/micro-field.txt work/kitlab-h1-$a --ref work/kitlab-h1-E01 && echo '```' && echo; done) > ${OUT}/eveimear-h1.md
+  after: h1-HM7
+
+pr | bash tools/open_results_pr.sh claude/pc-eveimear-h1-results "Eveimear: Hadur's mode table against 0.1 on the MicroRumble sample" ${OUT}/eveimear-h1.md
+  after: read

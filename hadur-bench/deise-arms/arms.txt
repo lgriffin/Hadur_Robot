@@ -65,3 +65,9 @@ WARM4 | a row votes in full from 4 samples, not 8 | Gun.java | s/WARM = 8;/WARM 
 WARM16 | a row votes in full from 16 samples, not 8 | Gun.java | s/WARM = 8;/WARM = 16;/
 NARROW | a vote spreads over half the target's width (9 px, not 18) | Gun.java | s/Math.atan(18 \/ distance)/Math.atan(9 \/ distance)/
 WSTOP | a playout that reaches a wall stops there and votes in full, not 1 | Gun.java | s/weight = 1;/break;/
+# Stage E6b (pc-deise-e10): stacking E6's aim arms. pc-deise-e09 (PR #498) read PL400 +0.23,
+# NARROW +0.21 and SAME +0.14 over D, each lifting damage a round and reach to the last two without
+# costing survival; none alone made +0.30. PL400 and NARROW are constants (0 B), SAME about 8 B.
+PN | PL400 and NARROW together (constants only) | DeiseLab.java | s/PLAYOUTS = 200;/PLAYOUTS = 400;/ | Gun.java | s/Math.atan(18 \/ distance)/Math.atan(9 \/ distance)/
+PNS | PL400, NARROW and SAME together (about 8 B) | DeiseLab.java | s/PLAYOUTS = 200;/PLAYOUTS = 400;/ | Gun.java | s/Math.atan(18 \/ distance)/Math.atan(9 \/ distance)/ | DeiseLab.java | s/static int target;/static int target, aimed = -1;/ | DeiseLab.java | s/getEnergy() > power) {/getEnergy() > power \&\& id == aimed) {/ | DeiseLab.java | s/^            setTurnGunRightRadians(Utils.normalRelativeAngle(/            aimed = id;\n            setTurnGunRightRadians(Utils.normalRelativeAngle(/
+PNS6 | PNS with 600 playouts: whether more keep paying (CPU: the skip rule watches it) | DeiseLab.java | s/PLAYOUTS = 200;/PLAYOUTS = 600;/ | Gun.java | s/Math.atan(18 \/ distance)/Math.atan(9 \/ distance)/ | DeiseLab.java | s/static int target;/static int target, aimed = -1;/ | DeiseLab.java | s/getEnergy() > power) {/getEnergy() > power \&\& id == aimed) {/ | DeiseLab.java | s/^            setTurnGunRightRadians(Utils.normalRelativeAngle(/            aimed = id;\n            setTurnGunRightRadians(Utils.normalRelativeAngle(/

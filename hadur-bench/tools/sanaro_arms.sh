@@ -44,7 +44,12 @@ grep -v '^#' sanaro-arms/arms.txt | while IFS='|' read -r name what expr table; 
         rm -rf "$dir"; mkdir -p "$dir/hadur117/nano"
         sed -e "s/class Sanaro /class $cls /" ${expr:+-e "$expr"} "$src" > "$dir/$cls.java"
         # shellcheck disable=SC2086
-        [ -z "$table" ] || python3 ../sanaro/table.py $table --src "$dir/$cls.java" > /dev/null
+        if [ "${table#distill }" != "$table" ]; then
+            # A distilled table (BENCH-156): `distill <shots.csv globs and distill.py power options>`.
+            python3 tools/distill.py power ${table#distill } --src "$dir/$cls.java"
+        elif [ -n "$table" ]; then
+            python3 ../sanaro/table.py $table --src "$dir/$cls.java" > /dev/null
+        fi
         if [ -n "$expr$table" ] && cmp -s <(sed "s/class Sanaro /class $cls /" "$src") "$dir/$cls.java"; then
             echo "sanaro_arms: arm $name changed nothing" >&2; exit 3
         fi

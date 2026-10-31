@@ -368,6 +368,7 @@ under ships as 0.3.
 | N4 | pc-sanaro-n03 (section 9, results section 10): the gate passes (+0.99), 277 bytes | an arm over S0 on the live-shaped census |
 | N5 | pc-sanaro-n04 (section 11, results section 12): CL passes, +0.55 at 249 bytes | an arm at 249 bytes or under over S0 on the live-shaped census |
 | N6 | release 0.2 (2026-10-30, live 2nd at 65.18 after 271 battles); pc-sanaro-n05 (section 13): a growing lead in 249 bytes | an arm at 249 bytes or under over 0.2 on the live-shaped census |
+| N7 | pc-sanaro-n06 (section 16): Hadur's power tables, distilled from its shots, on 0.2's body | a table over 0.2 on the live-shaped census |
 
 ## 15. Uniqueness
 
@@ -380,3 +381,24 @@ fit the gate, 0.2 trades Quantum's lead for a flat lead of Sanaro's own, so a 0.
 anti-gravity and the gate and differs in lead, radar, power table and target. Leigh decides whether
 that is unique enough.
 The seated leaders are references only and never ship.
+
+## 16. The next card: pc-sanaro-n06 (stage N7), Hadur as the teacher
+
+Leigh 2026-10-31: the string tricks do not shrink a nano (a `charAt` is about 15 bytes, so a table
+pays only for branches and modes, never for a formula), but they let a nano carry any policy that
+fits an index it already pays for. Sanaro's power table is indexed by both energies and the
+`640 / d` band; Hadur, 14th in the MeleeRumble, has a learned energy policy a nano cannot run.
+PR #504 (BENCH-155, BENCH-156) records Hadur's bullet-power decision at every melee shot
+(`shots.csv`: own energy, the target's energy and distance, robots alive, all from the snapshot
+the decision was made on) and distils those rows into a Sanaro-shaped table, the modal power per
+energy block, the row's nearest block where a block is thin and 0.2's formula elsewhere, so a table
+with no data is 0.2's table byte for byte.
+
+The card (`plans/pc-sanaro-n06.queue`) seats Hadur 3.20 as the tenth robot of the NanoMelee census
+(13 fields x 10 seeds, about 130 battles), prints each table's coverage, then measures three
+tables on 0.2's body on the live-shaped census against S2: HT (every shot, 4 x 2 blocks), HD
+(shots with three or fewer alive, Hadur's endgame policy played always, 4 x 4 blocks) and HS (only
+2 x 2 blocks that caught twenty or more shots). Each is 249 bytes: a table changes no code. The
+gate is SANARO-13 as before; HT against HD says whether Hadur's crowd power or its endgame power is
+the one worth carrying, and a passing table can ship beside n05's lead, since they change different
+lines. The teach run's report is kept for the record only: Hadur in a nano field is not a result.

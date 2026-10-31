@@ -70,6 +70,17 @@ public final class MeleeEnergyPolicy {
     static final double SCAL_SHARE = 6;
     static final double SCAL_FAR_SHARE = 15;
     static final double SCAL_RESERVE = 0.02;
+    /**
+     * MGUN-23 (arm mavg), inspired by Diamond's melee power: off a team with three or more
+     * opponents and {@link #CROWD_RULE_ENERGY}, while Hadur's energy is at or above the living
+     * opponents' mean it fires 3 at any range up to {@link #AVG_FAR} px once four or more are
+     * left (with three, MGUN-13 stands), and {@link #AVG_WEAK_POWER} beyond; below the mean it
+     * fires {@link #AVG_WEAK_POWER} beyond {@link #AVG_FAR_WEAK} px. Off.
+     */
+    public static final boolean AVG_POWER = false;
+    static final double AVG_FAR = 700;
+    static final double AVG_FAR_WEAK = 300;
+    static final double AVG_WEAK_POWER = 1.0;
 
     private MeleeEnergyPolicy() {}
 
@@ -156,6 +167,41 @@ public final class MeleeEnergyPolicy {
     public static double crowdPower(double tablePower, double distance, double nearest, double ownEnergy,
                                     double targetEnergy, int others) {
         return crowdPower(tablePower, distance, nearest, ownEnergy, targetEnergy, others, SCAL_POWER);
+    }
+
+    /**
+     * As above, with MGUN-23 on also read against {@code averageEnergy}, the living opponents'
+     * mean energy (NaN when unknown: the rule stands down).
+     */
+    public static double crowdPower(double tablePower, double distance, double nearest, double ownEnergy,
+                                    double targetEnergy, int others, double averageEnergy) {
+        double p = crowdPower(tablePower, distance, nearest, ownEnergy, targetEnergy, others);
+        return avgPower(p, distance, ownEnergy, targetEnergy, others, averageEnergy, AVG_POWER);
+    }
+
+    /**
+     * MGUN-23: {@code p} (the rules so far) replaced by Diamond's crowd power where the switch
+     * {@code on} and the crowd conditions hold; a hold (0) and a finisher stand, and the kill,
+     * lead and own-energy caps apply as the table's do.
+     */
+    static double avgPower(double p, double distance, double ownEnergy, double targetEnergy, int others,
+                           double averageEnergy, boolean on) {
+        if (!on || p <= 0 || others < 3 || ownEnergy < CROWD_RULE_ENERGY || targetEnergy <= FINISHER_ENERGY
+            || Double.isNaN(averageEnergy)) {
+            return p;
+        }
+        double q;
+        if (ownEnergy >= averageEnergy) {
+            if (others < 4) return p;
+            q = distance > AVG_FAR ? AVG_WEAK_POWER : MAX_POWER;
+        } else {
+            if (distance <= AVG_FAR_WEAK) return p;
+            q = AVG_WEAK_POWER;
+        }
+        q = Math.min(q, killPower(targetEnergy));
+        if (ownEnergy > targetEnergy) q = Math.min(q, ownEnergy - targetEnergy);
+        q = Math.max(q, MIN_POWER);
+        return Math.min(q, ownEnergy);
     }
 
     static double crowdPower(double tablePower, double distance, double nearest, double ownEnergy,

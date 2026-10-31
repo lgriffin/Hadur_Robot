@@ -29,9 +29,16 @@
 #   tmconcordr / tmconcordm / tmconcordg: one part of it alone (radar cnr, movement cnm, gun cng);
 #   tmconcordp: the gun's pooling alone, power as shipped (cnp); tmconcordh: the movement with the hunt dropped (cnh).
 #   The brain's shipped parts (TeamConcord): movement and gun on, group radar off, hunt kept.
+#   tmnoconcord (team only) TMODE-34 off: CONCORD on no team, as before it shipped. Suffix ncn.
 #   tmlead  (team only) TMODE-31: LEAD on every team: the gun leans on the leader and, with droids about, the scanners. Suffix ld.
 #   tdecap  (team only) MGUN-21: the gun leans 3x on the enemy leader once its death drains more than it costs. Suffix dc.
 #   gsoft   MGUN-20: a situation's weight 1/(distance + mean distance), not 1/(0.01 + distance). Suffix gv.
+#   mdmg   MMOVE-22: each opponent's risk weighs by the damage it has done to Hadur this battle x its mean distance (Diamond). Suffix dm. Ships on from 3.21, so on master dm is the robot as it is.
+#   mlat   MMOVE-23: the crowd's lateral weight 1.0, not 0.5 (Diamond's 1 + |cos|). Suffix la.
+#   mavg   MGUN-23: at or above the field's mean energy, 3 at any range with four or more left; below it, 1 beyond 300 px (Diamond). Suffix ea.
+#   etab   HAND-1: in a melee endgame off a team the survivor's 1v1 table entries apply (shield list, dodges, stop-go, heat-jit, gun stack). Suffix et.
+#   edge   HAND-2: a survivor whose gun the melee's book read as head-on gets the dodge planner, primed head-on. Suffix ed.
+#   eshd   HAND-3: that survivor gets shield mode on SHIELD-15's trial, listed or not. Suffix es.
 #   e3ring  MEND-1: with two opponents left off a team, the crowd's ring and lateral weight (no MMOVE-4). Suffix er.
 #   e3pow  MEND-2: with two opponents left off a team, the crowd's power table (not the duel's). Suffix ep.
 #   e3far  MEND-3: with two opponents left off a team, the closest-robot factor 4 (not 2). Suffix ef.
@@ -1071,6 +1078,37 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
+        etab|edge|eshd)
+            # The endgame hand-off (HAND-1 to HAND-3, docs/plan-melee-top5.md): what the duel plays
+            # when it takes over from the melee with one opponent left, off a team only; the duel
+            # never takes a hand-off in a 1v1, so the duel and team fixtures are bit for bit.
+            case "$a" in
+                etab) flag=ENDGAME_TABLE; suffix=et ;;
+                edge) flag=ENDGAME_LEARNED_DODGE; suffix=ed ;;
+                eshd) flag=ENDGAME_LEARNED_SHIELD; suffix=es ;;
+            esac
+            edit "$src/hadur-core/src/main/java/$pkg/core/duel/HandOffDesign.java" \
+                "public static final boolean $flag = false;" "public static final boolean $flag = true;"
+            version="${version}${suffix}" ;;
+        mdmg|mlat)
+            # Diamond-inspired crowd movement (MMOVE-22 damage memory, MMOVE-23 full lateral weight), off
+            # a team only; duel and team fixtures bit for bit. MMOVE-22 ships on from 3.21 (pc-melee-dia
+            # dm +0.43 +- 0.17, PR #503), so on master mdmg builds the robot as it is.
+            case "$a" in
+                mdmg) flag=MELEE_DAMAGE_MEMORY; suffix=dm ;;
+                mlat) flag=MELEE_FULL_LATERAL; suffix=la ;;
+            esac
+            grep -q "public static final boolean $flag = true;" \
+                "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" ||
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
+                "public static final boolean $flag = false;" "public static final boolean $flag = true;"
+            version="${version}${suffix}" ;;
+        mavg)
+            # Diamond-inspired melee power (MGUN-23): off a team with three or more opponents, 3 at any
+            # range while at or above the field's mean energy; duel and team fixtures bit for bit.
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEnergyPolicy.java" \
+                "public static final boolean AVG_POWER = false;" "public static final boolean AVG_POWER = true;"
+            version="${version}ea" ;;
         mcross)
             # ScalarR-inspired learning (docs/bench/scalarr-melee-decompile.md, MMOVE-19): the melee
             # surfer also learns each shooter's aim from its hits on other opponents, off a team
@@ -1130,8 +1168,17 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
                     edit "$concord" "MOVE = true, RADAR = false, GUN = true;" "MOVE = true, RADAR = false, GUN = false;"
                     edit "$concord" "NO_HUNT = false, RISK = true," "NO_HUNT = true, RISK = true," ;;
             esac
+            # TMODE-34 ships CONCORD; on older source (--ref) force it on.
+            if ! grep -qF "public static final boolean FORCE_CONCORD = true;" "$modes"; then
             edit "$modes" "public static final boolean FORCE_CONCORD = false;" "public static final boolean FORCE_CONCORD = true;"
             sed -i -E 's/^(        t\.put\("[^"]+", of\(.*)\)\);$/\1, Mode.CONCORD));/' "$modes"
+            fi
+            ;;
+        tmnoconcord)
+            # TMODE-34 off: CONCORD on no team, the build before it shipped. Suffix ncn.
+            version="${version}ncn"
+            edit "$modes" "public static final boolean FORCE_CONCORD = true;" "public static final boolean FORCE_CONCORD = false;"
+            sed -i -E '/^        t\.put\(/s/, Mode\.CONCORD([,)])/\1/' "$modes"
             ;;
         tdecap)
             # MGUN-21 (team only): the field gun leans 3x on the enemy leader once its death pays;
@@ -1160,7 +1207,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, absurf, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgeb, tmdodgef, tmnododge, tmnoof, tmtnear, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf, gexp, grate, gdist, gsoft, tdecap, tmlead, mscal, mmix, mwpath, mshade, mcross, mbshade, msearch)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, absurf, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgeb, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmtnear, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf, gexp, grate, gdist, gsoft, tdecap, tmlead, mscal, mmix, mwpath, mshade, mcross, mbshade, msearch, mdmg, mlat, mavg, etab, edge, eshd)" >&2; exit 2 ;;
     esac
 done
 

@@ -445,6 +445,46 @@ end above 0 with the endgame, survival and skip bars held passes. **MMOVE-19 shi
 bw, wq and fv are inside noise. The line is closed; nothing further goes on the PC until the surfer
 and xh are live and read per opponent on ranks 11-100.
 
+**Diamond-inspired switches (MMOVE-22, MMOVE-23, MGUN-23, 2026-10-31).** Leigh: "what can we explore in
+the cloud today to add to these? We have exceptionally strong reference bots to be inspired by, I'd like
+something to move us even 0.5 APS"; "Survival helps so this is a good line". Diamond (5th) ships its source
+under a zlib-style licence; three of its ideas, each our own build, each a switch off a team only:
+**damage memory** (`MELEE_DAMAGE_MEMORY`, arm `mdmg`/`dm`: each opponent's risk term weighs by the damage it
+has done to Hadur over the battle plus 10, times its mean distance, the weights averaging 1; Hadur otherwise
+remembers a hit for 100 ticks), **full lateral weight** (`MELEE_FULL_LATERAL`, `mlat`/`la`: Diamond's
+1 + |cos| in place of our 1 + 0.5 |cos| in the crowd) and **average-energy power** (`AVG_POWER`, `mavg`/`ea`:
+at or above the field's mean energy with four or more left, 3 at any range to 700 px; below it, 1 beyond
+300 px). Cloud smoke, 12 fields x 2 seeds against the same commit's aa (`docs/bench/local/dia-smoke.md`):
+dm +0.44 ± 0.58 (energy entering the endgame +3.9, skips -5%), la +0.20 ± 0.75, ea -0.11 ± 0.49 with skips
++26% and 4 less energy at the endgame. Card `pc-melee-dia` (BENCH-154) screens dm and la on the census at
+seeds 3253-3258 (clear of the smoke's) under the melee gate; ea stays off and uncarded. **pc-melee-dia read (PR #503,
+2026-10-31): dm PASSED +0.43 ± 0.17 (low end +0.26; 1-30 endgame wins +0.7, others outlived +0.5, energy
+entering the endgame +1.8, deaths with two left -0.2, skips +8%), la FAILED +0.00 ± 0.16, bb clean +0.08.
+MMOVE-22 ships on from 3.21 (melee fixtures re-recorded, duel and team bit for bit); the melee stack for
+3.21 is surfer + cross-learning + damage memory, about +1.6 on the census over 3.20.** Also weighed and left: the endgame duel's
+clean slate (MELEE-2; 23% of rounds are lost there, 46% won against ranks 1-30), the biggest pool but a
+larger build; Diamond's radar and melee gun do what Hadur's already do; ScalarR's energy caps (E/6, E/15
+beyond 325 px) hardly bite under Hadur's crowd rule, so they were not built.
+
+**The endgame hand-off (HAND-1, HAND-2, HAND-3, 2026-10-31).** Leigh: "What do you need? Make a card". The
+biggest pool after the Diamond switches: live, 23% of rounds are lost in the endgame duel and only 46% of
+them are won against the top 30. There the duel plays plain, by construction: every per-opponent switch in
+the duel is duel-only (`duelOnly`), the shield list never reaches a melee charter's duel, and nothing the
+melee learned about the survivor's gun crosses the hand-off (MMEM-2 hands over the waves in flight and
+the survivor's 1v1 profile, which a melee client rarely holds). Three hand-off settings, each off a team
+only (the duel never takes a hand-off in a 1v1, so the duel and team play are untouched; every fixture
+replays bit for bit with them off): **the table in the endgame** (`ENDGAME_TABLE`, arm `etab`/`et`: the
+survivor's 1v1 mode table entries apply as in a duel: shield list, dodge, dodge planner, stop-and-go,
+heat-jit, gun stack; 40 of the 412 census robots are on the shield list and 22 in the table's other
+lines), **the melee-learned dodge** (`ENDGAME_LEARNED_DODGE`, `edge`/`ed`: the melee's book read the
+survivor's gun as head-on from its hits on Hadur this battle, so the dodge planner is on against it,
+primed head-on) and **the melee-learned shield** (`ENDGAME_LEARNED_SHIELD`, `eshd`/`es`: the same verdict
+starts shield mode on SHIELD-15's trial, listed or not). Per-opponent play only, the one kind of change
+that has shown live. Card `pc-melee-hand` (BENCH-157): aa, bb, et, ed, es on the census at seeds
+3259-3264, about 2.2 h, under the melee gate; the arm reports' "Rounds that ended as a duel" tables say
+where the endgame wins moved. Left for later: handing the melee gun's aim experts to the duel gun, and
+the duel's own learned stats per survivor across rounds.
+
 ### Stage 4: stack, tailor, confirm
 
 - **Stack census** on master's defaults (all passed stages) against 3.17 on fresh seeds, 8 seeds

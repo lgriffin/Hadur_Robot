@@ -10,6 +10,7 @@ import hadur117.core.world.EnemyShot;
 import hadur117.core.world.EnemyTracker;
 import java.awt.geom.Point2D;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -397,5 +398,78 @@ class MeleeCrowdMovementTest {
         List<Point2D.Double> given = List.of(pt(200, 200), pt(800, 800));
         assertTrue(on.steps(pt(500, 500), v).contains(on.surfBest(given, v)));
         assertTrue(given.contains(move.surfBest(given, v)));
+    }
+
+    @Test
+    @Tag("MMOVE-22")
+    @Tag("MMOVE-23")
+    @DisplayName("MMOVE-22 ships on from 3.21, MMOVE-23 off")
+    void diamondShip() {
+        assertTrue(MinimumRiskMovement.MELEE_DAMAGE_MEMORY, "pc-melee-dia dm +0.43 ± 0.17, low end +0.26 (PR #503)");
+        assertFalse(MinimumRiskMovement.MELEE_FULL_LATERAL, "pc-melee-dia la +0.00 ± 0.16");
+        assertTrue(move.damageMemory());
+    }
+
+    @Test
+    @Tag("MMOVE-22")
+    @DisplayName("MMOVE-22: weights are (damage + 10) x mean distance, averaging 1; an unscanned opponent takes 500 px")
+    void damageWeights() {
+        scan(tracker, "a", 800, 500, 100, 1);
+        scan(tracker, "b", 100, 100, 100, 1);
+        List<EnemyInfo> alive = tracker.alive();
+        Map<String, Double> w = MinimumRiskMovement.damageWeights(alive,
+            n -> n.equals("a") ? 30.0 : 0.0, n -> n.equals("a") ? 400.0 : 0.0);
+        // a: 40 x 400 = 16,000; b: 10 x 500 = 5,000; mean 10,500.
+        assertEquals(16000.0 / 10500, w.get("a"), 1e-12);
+        assertEquals(5000.0 / 10500, w.get("b"), 1e-12);
+        assertEquals(1.0, (w.get("a") + w.get("b")) / 2, 1e-12, "the weights average 1");
+        assertTrue(MinimumRiskMovement.damageWeights(List.of(), n -> 0, n -> 0).isEmpty());
+        Map<String, Double> even = MinimumRiskMovement.damageWeights(alive, n -> 0, n -> 300);
+        assertEquals(1.0, even.get("a"), 1e-12, "no damage anywhere: every opponent weighs 1");
+    }
+
+    @Test
+    @Tag("MMOVE-22")
+    @DisplayName("MMOVE-22: switched on, an opponent's term carries its weight; off a team only")
+    void damageMemory() {
+        scan(tracker, "a", 800, 500, 100, 1);
+        scan(tracker, "c", 100, 100, 100, 1);
+        Point2D.Double me = pt(500, 500);
+        Point2D.Double p = pt(600, 500);
+        List<EnemyInfo> alive = tracker.alive();
+        int ia = index(alive, "a"), ic = index(alive, "c");
+        MinimumRiskMovement plain = new MinimumRiskMovement(field(1000, 1000));
+        MinimumRiskMovement.View v = move.view(me, 100, 5, 5, alive, normal);
+        move.diamond(true, false);
+        move.damageWeights(Map.of("a", 1.6, "c", 0.4));
+        assertEquals(plain.enemyRisk(p, v, ia) * 1.6, move.enemyRisk(p, v, ia), 1e-12, "a has hurt Hadur: 1.6x");
+        assertEquals(plain.enemyRisk(p, v, ic) * 0.4, move.enemyRisk(p, v, ic), 1e-12, "c has not: 0.4x");
+        move.damageWeights(Map.of());
+        assertEquals(plain.enemyRisk(p, v, ia), move.enemyRisk(p, v, ia), 1e-12, "no weights yet: unchanged");
+        move.damageWeights(null);
+        assertEquals(plain.enemyRisk(p, v, ic), move.enemyRisk(p, v, ic), 1e-12, "null weights: unchanged");
+    }
+
+    @Test
+    @Tag("MMOVE-23")
+    @DisplayName("MMOVE-23: switched on, a point straight at an opponent counts double, not half again; three or more only")
+    void fullLateral() {
+        scan(tracker, "a", 800, 500, 100, 1);
+        scan(tracker, "b", 100, 100, 100, 1);
+        scan(tracker, "c", 500, 900, 100, 1);
+        Point2D.Double me = pt(500, 500);
+        Point2D.Double p = pt(600, 500);
+        List<EnemyInfo> alive = tracker.alive();
+        int ia = index(alive, "a");
+        MinimumRiskMovement plain = new MinimumRiskMovement(field(1000, 1000));
+        MinimumRiskMovement.View v = move.view(me, 100, 5, 3, alive, normal);
+        move.diamond(false, true);
+        // p is straight at a: cos = 1, so the term is 2.0x the base against the shipped 1.5x.
+        assertEquals(plain.enemyRisk(p, v, ia) * 2.0 / 1.5, move.enemyRisk(p, v, ia), 1e-9);
+        Point2D.Double across = pt(500, 600);
+        double rise = move.enemyRisk(across, v, ia) / plain.enemyRisk(across, v, ia);
+        assertTrue(rise > 1.0 && rise < 2.0 / 1.5 - 1e-6, "nearly square to a: a smaller rise, " + rise);
+        MinimumRiskMovement.View two = move.view(me, 100, 5, 2, alive, normal);
+        assertEquals(plain.enemyRisk(p, two, ia), move.enemyRisk(p, two, ia), 1e-12, "two left: the endgame weight stands");
     }
 }

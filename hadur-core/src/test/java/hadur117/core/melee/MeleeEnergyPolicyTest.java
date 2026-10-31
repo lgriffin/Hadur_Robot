@@ -119,4 +119,27 @@ class MeleeEnergyPolicyTest {
         assertEquals(MeleeEnergyPolicy.crowdPower(0.51, 600, 100, 2, 5),
             MeleeEnergyPolicy.crowdPower(0.51, 600, 600, 100, 2, 5, true), 1e-12, "a finisher stands");
     }
+
+    @Test
+    @Tag("MGUN-23")
+    @DisplayName("MGUN-23: ships off; on, 3 at any range to 700 px at or above the field's mean, 1 beyond 300 px below it")
+    void avgPower() {
+        assertFalse(MeleeEnergyPolicy.AVG_POWER);
+        assertEquals(1.92, MeleeEnergyPolicy.crowdPower(1.5, 600, 400, 60, 80, 5, 70), 1e-9, "off: MGUN-13 stands");
+        // On, at or above the mean, four or more left.
+        assertEquals(3.0, MeleeEnergyPolicy.avgPower(1.92, 600, 70, 80, 5, 70, true), 1e-9);
+        assertEquals(3.0, MeleeEnergyPolicy.avgPower(1.92, 700, 70, 80, 5, 70, true), 1e-9, "to 700 px");
+        assertEquals(1.0, MeleeEnergyPolicy.avgPower(1.92, 701, 70, 80, 5, 70, true), 1e-9, "beyond 700 px");
+        assertEquals(1.92, MeleeEnergyPolicy.avgPower(1.92, 600, 70, 80, 3, 70, true), 1e-9, "three left: MGUN-13 stands");
+        // Below the mean.
+        assertEquals(1.0, MeleeEnergyPolicy.avgPower(1.92, 301, 40, 80, 5, 70, true), 1e-9);
+        assertEquals(3.0, MeleeEnergyPolicy.avgPower(3.0, 250, 40, 80, 5, 70, true), 1e-9, "within 300 px the rules so far stand");
+        // The crowd conditions and caps.
+        assertEquals(1.0, MeleeEnergyPolicy.avgPower(1.0, 600, 19, 80, 5, 70, true), 1e-9, "under 20 energy the table stands");
+        assertEquals(0.0, MeleeEnergyPolicy.avgPower(0.0, 600, 70, 80, 5, 70, true), 1e-9, "a hold stands");
+        assertEquals(2.0, MeleeEnergyPolicy.avgPower(2.0, 600, 70, 12, 5, 70, true), 1e-9, "a finisher keeps its power");
+        assertEquals(1.92, MeleeEnergyPolicy.avgPower(1.92, 600, 70, 80, 5, Double.NaN, true), 1e-9, "no mean known");
+        assertEquals(2.0, MeleeEnergyPolicy.avgPower(1.92, 600, 82, 80, 5, 70, true), 1e-9, "the lead cap");
+        assertEquals(1.92, MeleeEnergyPolicy.avgPower(1.92, 600, 70, 80, 5, 70, false), 1e-9, "switched off: unchanged");
+    }
 }

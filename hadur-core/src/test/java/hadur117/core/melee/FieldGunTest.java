@@ -90,8 +90,9 @@ class FieldGunTest {
         close.onTeam(true);
         close.concord(true);
         assertEquals(3.0, close.solutions(me, 100, 5, near.alive(), 200).get(0).power, 1e-9);
-        assertFalse(TeamModes.FORCE_CONCORD);
-        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.CONCORD));
+        // On every team since TMODE-34.
+        assertTrue(TeamModes.FORCE_CONCORD);
+        assertTrue(TeamModes.DEFAULT.contains(TeamModes.Mode.CONCORD));
     }
 
     @Test

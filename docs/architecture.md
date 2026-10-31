@@ -1,5 +1,9 @@
 # Hadur 2 architecture
 
+> The current C4 view of all three styles (1v1, melee, team), with the switch and mode-table
+> catalogue and the isolation rule, is [architecture-c4.md](architecture-c4.md). This page keeps
+> the detailed narrative of each subsystem; some names here predate the hadur117 rename.
+
 Hadur 2 is hexagonal: the strategy lives in a core that only sees plain values, and a
 thin adapter connects it to Robocode. That split is what makes the rest of the plan
 testable: the core can be replayed, fuzzed and fault-injected without an engine.
