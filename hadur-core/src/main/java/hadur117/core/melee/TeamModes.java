@@ -98,7 +98,16 @@ public final class TeamModes {
          * {@link FieldGun#SWIFT_POWER}, a faster bullet that leaves the dodge less time
          * ({@link FieldGun#swift}); a killing shot under it stands.
          */
-        SWIFT
+        SWIFT,
+        /**
+         * TMODE-33, the team brain after Ogi's design, in our own code ({@link TeamConcord}): the
+         * whole team plays one picture instead of switches laid on the free-for-all movement. Its
+         * enemy risk counts every robot, teammates included, between an enemy and the point; the
+         * pack hunt stands down for FINISH and a GANG that turns itself on once the battle shows
+         * ganging; the radar splits the enemies among the members; the gun pools its situations
+         * by enemy class and fires lighter unless close or reading that class well.
+         */
+        CONCORD
     }
 
     /**
@@ -124,6 +133,7 @@ public final class TeamModes {
     public static final boolean FORCE_DODGE = true;
     public static final boolean FORCE_LEAD = false;
     public static final boolean FORCE_SWIFT = false;
+    public static final boolean FORCE_CONCORD = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -136,7 +146,8 @@ public final class TeamModes {
         FORCE_MATEFIRE ? Mode.MATEFIRE : null, FORCE_REAR ? Mode.REAR : null,
         FORCE_WAVES ? Mode.WAVES : null, FORCE_HUNT ? Mode.HUNT : null, FORCE_LINES ? Mode.LINES : null,
         FORCE_GUNLINE ? Mode.GUNLINE : null, FORCE_PATH ? Mode.PATH : null,
-        FORCE_DODGE ? Mode.DODGE : null, FORCE_LEAD ? Mode.LEAD : null, FORCE_SWIFT ? Mode.SWIFT : null);
+        FORCE_DODGE ? Mode.DODGE : null, FORCE_LEAD ? Mode.LEAD : null, FORCE_SWIFT ? Mode.SWIFT : null,
+        FORCE_CONCORD ? Mode.CONCORD : null);
 
     /** Opposing member class to its team's modes; filled from the per-team screens. */
     static final Map<String, Set<Mode>> TABLE = table();
