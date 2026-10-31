@@ -14,10 +14,13 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.ToDoubleFunction;
 
 /**
  * Melee movement: minimum risk (MMOVE-1..4), the HawkOnFire and Diamond shape.
@@ -274,6 +277,24 @@ public class MinimumRiskMovement {
      */
     public static final boolean MELEE_SEARCH = false;
     static final double SEARCH_STEP = 140;
+    /**
+     * MMOVE-22 (arm mdmg), inspired by Diamond's melee movement: off a team, each opponent's risk
+     * term weighs by the damage its bullets have done to Hadur over the whole battle, plus
+     * {@link #DAMAGE_BASE}, times its mean distance from Hadur (a gun that hits from afar is the
+     * more dangerous), the weights scaled to average 1 over the living opponents. Without it a hit
+     * is remembered for {@link #RECENT_HIT_TICKS} ticks only. Off.
+     */
+    public static final boolean MELEE_DAMAGE_MEMORY = false;
+    static final double DAMAGE_BASE = 10;
+    /** MMOVE-22: the mean distance taken for an opponent never scanned. */
+    static final double DAMAGE_DISTANCE_START = 500;
+    /**
+     * MMOVE-23 (arm mlat), inspired by Diamond: off a team with three or more opponents, the
+     * lateral weight is {@link #FULL_LATERAL} in place of {@link #LATERAL}: a point reached
+     * straight at or away from an opponent counts double, not half again. Off.
+     */
+    public static final boolean MELEE_FULL_LATERAL = false;
+    static final double FULL_LATERAL = 1.0;
 
     static final double PERIPHERY_K = 0.2;
     static final double CUTOFF_K = 0.4;
@@ -428,6 +449,47 @@ public class MinimumRiskMovement {
     private boolean mix = MELEE_MIX, pathDanger = MELEE_PATH_DANGER, shade = MELEE_SHADE;
     /** MMOVE-20, MMOVE-21: the further ScalarR-inspired switches on the surfer. */
     private boolean bulletShade = MELEE_BULLET_SHADE, search = MELEE_SEARCH;
+    /** MMOVE-22, MMOVE-23: the Diamond-inspired switches. */
+    private boolean damageMemory = MELEE_DAMAGE_MEMORY, fullLateral = MELEE_FULL_LATERAL;
+    /** MMOVE-22: this tick's weight per opponent, averaging 1; empty when the switch is off. */
+    private Map<String, Double> damageWeight = Map.of();
+    public boolean damageMemory() {
+        return damageMemory;
+    }
+
+    /** MMOVE-22, MMOVE-23: sets the Diamond-inspired switches, for tests and the bench's arms. */
+    void diamond(boolean damageMemory, boolean fullLateral) {
+        this.damageMemory = damageMemory;
+        this.fullLateral = fullLateral;
+    }
+
+    /** MMOVE-22: the weights this decision's enemy terms carry, from {@link #damageWeights}. */
+    public void damageWeights(Map<String, Double> weights) {
+        this.damageWeight = weights == null ? Map.of() : weights;
+    }
+
+    /**
+     * MMOVE-22: each living opponent's weight, (its damage to Hadur + {@link #DAMAGE_BASE}) x its
+     * mean distance, scaled so the weights average 1; an opponent without a scan takes
+     * {@link #DAMAGE_DISTANCE_START}.
+     */
+    public static Map<String, Double> damageWeights(List<EnemyInfo> alive, ToDoubleFunction<String> damage,
+                                                    ToDoubleFunction<String> meanDistance) {
+        if (alive.isEmpty()) return Map.of();
+        Map<String, Double> raw = new HashMap<>();
+        double sum = 0;
+        for (EnemyInfo e : alive) {
+            double d = meanDistance.applyAsDouble(e.name);
+            if (!(d > 0)) d = DAMAGE_DISTANCE_START;
+            double w = (Math.max(0, damage.applyAsDouble(e.name)) + DAMAGE_BASE) * d;
+            raw.put(e.name, w);
+            sum += w;
+        }
+        double mean = sum / alive.size();
+        Map<String, Double> out = new HashMap<>();
+        for (Map.Entry<String, Double> x : raw.entrySet()) out.put(x.getKey(), x.getValue() / mean);
+        return out;
+    }
     /** MMOVE-20: Hadur's own bullets in flight; filled only with the switch on. */
     private final Deque<VirtualBullet> ownBullets = new ArrayDeque<>();
     /** MMOVE-13: per opponent, the tick its gun could next fire, and its last seen shot's power. */
@@ -1948,6 +2010,8 @@ public class MinimumRiskMovement {
         double energy = Math.min(Math.max(e.energy, 1.0) / Math.max(v.energy, 1.0), ENERGY_RATIO_CAP);
         double r = UNIT * e.freshness(v.now) * energy / (d * d);
         r *= v.concord ? concordFactor(p, e, v, i) : closestFactor(p, e, v.nearestOther[i], v.now, v.others, onTeam(v.mates));
+        // MMOVE-22: the guns that have hurt Hadur this battle weigh more, the harmless ones less.
+        if (damageMemory && !onTeam(v.mates)) r *= damageWeight.getOrDefault(e.name, 1.0);
         if (closer && v.others >= 3 && !onTeam(v.mates)) {
             // MMOVE-14: each other opponent nearer e than the point is prey e would sooner take.
             double mine = p.distance(e.location);
@@ -1960,7 +2024,7 @@ public class MinimumRiskMovement {
         }
         if (p.distance(v.me) > 1) {
             double lateral = MeleeEndgame.endgameRing(v.others, onTeam(v.mates), MeleeEndgame.THREE_RING)
-                ? ENDGAME_LATERAL : LATERAL;
+                ? ENDGAME_LATERAL : fullLateral && v.others >= 3 && !onTeam(v.mates) ? FULL_LATERAL : LATERAL;
             double a = DiaUtils.absoluteBearing(p, e.location) - DiaUtils.absoluteBearing(v.me, p);
             r *= 1.0 + lateral * Math.abs(Math.cos(a));
         }

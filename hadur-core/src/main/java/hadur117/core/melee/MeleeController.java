@@ -499,6 +499,11 @@ public class MeleeController {
                 false, s.gunHeat, lastTarget);
             mover.updateMeleeBullets(tracker.shots(s.time), myPath, s.me, s.time, alive, danger);
         }
+        if (!onTeam && mover.damageMemory()) {
+            // MMOVE-22: the battle's book of who has hit Hadur, and from how far, weighs the enemy terms.
+            mover.damageWeights(MinimumRiskMovement.damageWeights(alive,
+                n -> book.get(n).damageReceivedFrom(), n -> book.get(n).averageDistance()));
+        }
         c.destination = alive.isEmpty() ? null
             : mover.chooseDestination(s.me, s.energy, s.others, alive, s.time, plan, s.teammates, modes);
         gun.onTeam(!s.teammates.isEmpty());

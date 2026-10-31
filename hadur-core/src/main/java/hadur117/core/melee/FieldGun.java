@@ -247,7 +247,16 @@ public class FieldGun {
                                     List<EnemyInfo> alive, long now) {
         List<Solution> out = new ArrayList<>();
         double nearest = Double.POSITIVE_INFINITY;
-        for (EnemyInfo e : alive) if (e.age(now) <= MAX_AGE) nearest = Math.min(nearest, e.distance(me));
+        double energySum = 0;
+        int fresh = 0;
+        for (EnemyInfo e : alive) {
+            if (e.age(now) > MAX_AGE) continue;
+            nearest = Math.min(nearest, e.distance(me));
+            energySum += e.energy;
+            fresh++;
+        }
+        // MGUN-23: the living opponents' mean energy, Hadur's standing in the field.
+        double average = fresh == 0 ? Double.NaN : energySum / fresh;
         for (EnemyInfo e : alive) {
             if (e.age(now) > MAX_AGE) continue;
             double distance = e.distance(me);
@@ -257,7 +266,7 @@ public class FieldGun {
                 MeleeEndgame.powerOthers(others, onTeam, MeleeEndgame.THREE_POWER));
             if (power <= 0) continue;
             if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);
-            else power = MeleeEnergyPolicy.crowdPower(power, distance, nearest, energy, e.energy, others);
+            else power = MeleeEnergyPolicy.crowdPower(power, distance, nearest, energy, e.energy, others, average);
             if (onTeam && swift) power = Math.min(power, SWIFT_POWER);
             if (onTeam && concord && TeamConcord.POWER && power > CONCORD_POWER && distance > CONCORD_CLOSE && !readsWell(e.name)) {
                 power = CONCORD_POWER;
