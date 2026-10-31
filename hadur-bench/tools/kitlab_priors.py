@@ -98,22 +98,24 @@ def battle(path):
             elif line[0] == 'F':
                 p = line.rstrip('\n').split(',')
                 fires.append((int(p[1]), int(p[2]), float(p[4])))
-    # Surf: each enemy shot, in the wave from where the enemy was the tick before it showed.
+    # Surf: each enemy shot, in the wave JayLexi builds for it. The drop shows on the scan of turn
+    # t; the wave is the one made on the scan before (t - 1), from where the enemy was then, with the
+    # bearing, distance and our lateral speed that scan kept from the one before it (t - 2).
     for r, t, power in fires:
         turns = rounds.get(r, {})
         if t - 1 not in turns or t not in turns:
             continue
-        me, en, _ = turns[t - 1]
-        prev = turns.get(t - 2, turns[t - 1])[0]
+        _, en, _ = turns[t - 1]
+        me2, en2, _ = turns.get(t - 2, turns[t - 1])
         # The bullet that appeared at t: the one nearest the enemy's position.
         cands = turns[t][2]
         if not cands:
             continue
         b = min(cands, key=lambda b: (b[0] - en[0]) ** 2 + (b[1] - en[1]) ** 2)
-        bearing = math.atan2(me[0] - en[0], me[1] - en[1])
-        dist = math.hypot(me[0] - en[0], me[1] - en[1])
-        abs_to_enemy = bearing + math.pi
-        lateral = prev[3] * math.sin(abs_to_enemy - prev[2])
+        abs_to_enemy = math.atan2(en2[0] - me2[0], en2[1] - me2[1])
+        bearing = abs_to_enemy + math.pi
+        dist = math.hypot(me2[0] - en2[0], me2[1] - en2[1])
+        lateral = me2[3] * math.sin(abs_to_enemy - me2[2])
         direction = 1.0 if lateral + 1e-9 > 0 else -1.0
         db = int(min((dist + 50) / 200, 3))
         lb = int((abs(lateral) + 1) / 2)

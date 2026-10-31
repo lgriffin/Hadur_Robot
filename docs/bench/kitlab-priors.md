@@ -90,6 +90,10 @@ which is how they would be used live.
   for an opponent nothing is known about.
 - **Per-opponent rows are the one arm above the A/A on both weights.** They are not proven at this
   sample size. Card `pc-jaylexi-po` reads them on 112 bots at 6 seeds.
+- **These cloud rows were learned one scan off.** The extractor took each shot's wave bearing,
+  distance and our lateral speed from the scan just before the shot. JayLexi takes them from the
+  scan before that (review on PR #483). The extractor is fixed. The card learns its rows with the
+  fixed code, so it also reads the corrected rows.
 
 ## Eveimear
 

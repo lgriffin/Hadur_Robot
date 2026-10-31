@@ -4,7 +4,7 @@ library of other robots' movement baked in (docs/bench/kitlab-priors.md).
 
   python3 tools/kitlab_pm_eval.py SET RUN_DIR [--train-half 0] [--library-chars 20000]
 
-The gun (kitlab/arms/Eveimear-s10.java) keeps the enemy's lateral speed each tick as a char
+The gun (Eveimear s10, the parked surfer: hadur-bench/kitlab/arms/Eveimear-s10.java in PR #481) keeps the enemy's lateral speed each tick as a char
 (int + 64), newest first, after 120 blank chars; it finds the longest recent run (up to 29)
 that also occurs at least 80 chars back, and walks forward from that match for the bullet's
 flight at 14 px a tick. A library variant starts the history with the training robots'

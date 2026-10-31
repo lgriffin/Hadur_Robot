@@ -13,6 +13,7 @@ and @AIMK@ the divisor that makes the peak 0.01, as large as the head-on term it
 """
 import argparse
 import json
+import sys
 
 import numpy as np
 
@@ -60,6 +61,8 @@ def main():
     ap.add_argument('--profile-max', type=int, default=120, help='the whole-profile template (JayLexi-PF.tmpl): a peak char')
     a = ap.parse_args()
     d = json.load(open(a.priors))
+    if not np.any(d['surf']) or not np.any(d['gun']):
+        sys.exit('%s holds no enemy shots or no gun waves: harvest with --truth-log true' % a.priors)
     gun = np.array(d['gun']).reshape(-1, BINS) @ KERNEL
     overall = int(np.argmax(gun.sum(axis=0)))
     peaks = [int(np.argmax(r)) if r.max() > 0 else overall for r in gun]

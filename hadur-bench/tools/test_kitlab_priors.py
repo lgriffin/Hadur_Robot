@@ -51,5 +51,37 @@ class HarvestTest(unittest.TestCase):
             self.assertEqual([(1, 0, 23)], shots)
 
 
+    def test_the_wave_takes_the_bearing_kept_from_two_scans_back(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = os.path.join(d, 'truth.log.gz')
+            # The enemy fires straight down from (400, 500) at turn 3. Two scans back (turn 1) we
+            # were at (300, 300), so the wave's bearing is from (400, 500) to (300, 300) and the
+            # straight-down bullet sits off guess factor zero; from turn 2 (us at (400, 300)) it
+            # would be at zero.
+            with gzip.open(path, 'wt') as f:
+                f.write('V,1\n')
+                rows = {1: '300.00,300.00', 2: '400.00,300.00', 3: '400.00,300.00'}
+                for t in (1, 2, 3):
+                    bullets = 'E:400.00:480.00:3.1416:2.00' if t == 3 else ''
+                    f.write(f'T,0,{t},{rows[t]},0.00,0.00,100.00,400.00,500.00,0.00,0.00,98.00,{bullets}\n')
+                f.write('F,0,3,E,2.00\n')
+            shots, _ = kitlab_priors.battle(path)
+            self.assertEqual(1, len(shots))
+            self.assertNotEqual(23, shots[0][2])
+            self.assertEqual(1, shots[0][0])  # distance 224 at turn 1: band 1
+
+
+class EmptyHarvestTest(unittest.TestCase):
+    def test_no_shots_stops_with_a_reason(self):
+        with tempfile.TemporaryDirectory() as d:
+            p = os.path.join(d, 'p.json')
+            import json
+            json.dump({'surf': [[[0] * 47] * 5] * 4, 'gun': [0], 'per_bot': {}}, open(p, 'w'))
+            sys.argv = ['x', p, 'tmpl', os.path.join(d, 'out.java')]
+            with self.assertRaises(SystemExit) as e:
+                kitlab_prior_arm.main()
+            self.assertIn('no enemy shots', str(e.exception.code))
+
+
 if __name__ == '__main__':
     unittest.main()
