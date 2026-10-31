@@ -19,8 +19,8 @@
 #           end above zero); only on PASS is the gated table written as the table to ship
 # Each seed is a pair (the arm and aa): screens 2 x 46 x 12 x 2 = 2,208 battles, plus 64 per picked team
 # for the gate, about 2 h 30 to 3 h 30 at 12 workers (sizes itself to the host). Every step resumes
-# where it stopped. cn skips about twice the turns aa does on the cloud (9 vs 4 a battle): well under
-# the skips rule.
+# where it stopped. With one class tree per enemy class (PR #482 review) cn skips about as aa does on
+# the cloud (5.5 a battle against Ogi, aa 3 to 8): well under the skips rule.
 # Stop rules on every battle step (halt; every battle fought is kept and a rerun resumes): 20 failed
 # battles (a broken jar), no battle in 30 minutes (a hung step), or 40+ skipped turns a battle over the
 # last 100 (the PR #331 build-up). A halt at the very start leaves the whole card unrun (2,208 screen

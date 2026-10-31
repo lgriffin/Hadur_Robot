@@ -36,3 +36,7 @@ Cloud, 4 cores, parallel 2, 12 rounds, the top 9 teams by our lost points (work/
 
 Reports: work/concord-top9.md (all parts, paired), work/concord2-top9.md (second cut, candidate only,
 same seeds as the first run's aa).
+
+After the review fix that gives each enemy class one tree (one kNN query, not one per copy), cn against
+Ogi at seeds 6500-6501 skips 5.5 turns a battle (aa 3 to 8 on these seeds; before the fix 9 to 10) and
+scores 32.4 and 34.6 (aa 40.3 and 42.3).
