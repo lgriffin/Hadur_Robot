@@ -21,8 +21,11 @@ string table costs only its read, `TABLE.charAt(i)`, which is about 6 to 8 bytes
   battles) PO300 reads **+0.77 +- 0.14** and PO2000 **+0.88 +- 0.15** over G, the 0.2 control.
   Those are the bots the rows were learned on. Live, the other 557 bots of the division would get
   the field's row, so card `pc-jaylexi-po-all` learns a row for all 669 and reads the 112-bot and
-  669-bot tables on a fresh sample (`kitlab/mini-wide2-field.txt`). A synthetic 669-row table
-  builds to 1,493 B and fits the constant pool.
+  669-bot tables on a fresh sample (`kitlab/mini-wide2-field.txt`). The 669-row table builds to
+  1,493 B. **Cloud result** (`docs/bench/local/jaylexi-po-all.md`, fresh sample mini-wide2, 672
+  battles an arm): the 112-row table reads **-0.10 +- 0.15** (most of these bots have no row),
+  and the 669-row table **+0.44 +- 0.16** over G. Rows pay only for bots they were learned on, so
+  a release needs the whole division's table.
 
 ## Where the bytes are
 
