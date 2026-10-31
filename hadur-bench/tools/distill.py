@@ -281,8 +281,8 @@ def find_key(names, modes, default, min_bits=4, max_bits=15, strict=False, prote
 
 def find_mask(names, protect=None, min_bits=4, max_bits=14):
     """Every name on its own cell, plain hash: (mask) or None. Kept for callers of the first cut."""
-    key = find_key(names, {}, "0", min_bits, max_bits, strict=True, protect=protect)
-    return key[0] if key and key[1] == 0 else None
+    key = find_key(names, {}, "0", min_bits, max_bits, strict=True, protect=protect, shifts=[0])
+    return key[0] if key else None
 
 
 def modes_string(names, modes, mask, default, shift=0, resolve="first"):
@@ -311,6 +311,9 @@ def hash_main(a):
     if unknown:
         print("warning: %d mode names are not in the participants file: %s" % (len(unknown), ", ".join(unknown[:5])))
     protect = set(modes) if a.protect else None
+    if a.shift is not None and not 0 <= a.shift <= 31:
+        # Java masks a shift distance to five bits: >>> 32 is >>> 0, and the table would not match.
+        raise SystemExit("--shift must be 0 to 31 (Java's >>> keeps five bits of the distance)")
     key = find_key(names, modes, a.default, a.min_bits, a.max_bits, a.strict, protect, a.max_conflicts,
                    None if a.shift is None else [a.shift])
     if key is None:
