@@ -1,0 +1,34 @@
+{
+ "plan": "pc-team-concord",
+ "updated": 1793434421.7173986,
+ "steps": {
+  "ccprep": {
+   "status": "pending"
+  },
+  "ccbb": {
+   "status": "pending"
+  },
+  "cccn": {
+   "status": "pending"
+  },
+  "ccglob": {
+   "status": "pending"
+  },
+  "ccpick": {
+   "status": "pending"
+  },
+  "ccgate": {
+   "status": "pending"
+  },
+  "ccgbb": {
+   "status": "pending"
+  },
+  "ccsum": {
+   "status": "pending"
+  },
+  "ccpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
