@@ -1,6 +1,6 @@
 # Queue pc-shield-still: progress
 
-Updated 2026-10-31 16:02:32 PC time (16:02 UTC), runner pid 58600.
+Updated 2026-10-31 16:02:35 PC time (16:02 UTC), runner pid 58600.
 
 - `prep` done, exit 0 in 2 min
 - `still` halted, exit 75 in 12 min, HALTED by aa after 20%: aa - c +1.00 pts over 150 robots, stop band ±1.00
@@ -45,4 +45,6 @@ Stopping now would leave 1076 battles unrun (about 23 min); every battle already
 15:51:23 progress still: 28/1638 (2%) battles, 2271/h, ETA 43 min, 0 failed, skips 16.2/battle (last 100), aa +0.00, sz -0.87
 16:02:32 STOP still by rule aa after 20%: aa - c +1.00 pts over 150 robots, stop band ±1.00; 562 battles fought and kept, 1076 battles left unrun (about 23 min)
 16:02:32 still exit=75 in 713 s (halted, aa after 20%)
+16:02:35 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/505
+16:02:35 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 ```
