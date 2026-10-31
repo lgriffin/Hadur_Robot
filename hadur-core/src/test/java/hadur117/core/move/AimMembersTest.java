@@ -18,13 +18,15 @@ class AimMembersTest {
 
     @Test
     @Tag("MOVE-29")
-    @DisplayName("before any bullet the views count ten times each aim")
+    @DisplayName("before any bullet each aim counts its standing share of the views' weight")
     void freshWeights() {
         AimMembers m = new AimMembers();
         assertEquals(1.0, m.weight(0), 1e-12);
-        assertEquals(AimMembers.AIM_PRIOR, m.weight(1), 1e-12);
-        assertEquals((0.4 + 0.1 * 1.0) / 1.1, m.danger(0.4, new double[] {1.0, Double.NaN, Double.NaN}), 1e-12);
-        assertEquals(0.4, m.danger(0.4, new double[] {Double.NaN, Double.NaN, Double.NaN}), 1e-12,
+        assertEquals(AimMembers.PRIOR, m.weight(1), 1e-12);
+        double[] one = nans(AimMembers.AIMS.length);
+        one[0] = 1.0;
+        assertEquals((0.4 + AimMembers.PRIOR * 1.0) / (1 + AimMembers.PRIOR), m.danger(0.4, one), 1e-12);
+        assertEquals(0.4, m.danger(0.4, nans(AimMembers.AIMS.length)), 1e-12,
             "an aim with no angle is left out");
     }
 
@@ -35,13 +37,23 @@ class AimMembersTest {
         AimMembers m = new AimMembers();
         // Window probability 0.05 by a uniform guess; the views had half of it, the head-on aim
         // a kernel on the window (score 1, probability 0.5), the linear aim nothing.
-        m.learn(new double[] {0.05, 1.0, 0.0, Double.NaN}, 0.05);
+        double[] say = nans(AimMembers.MEMBERS);
+        say[0] = 0.05;
+        say[1] = 1.0;
+        say[2] = 0.0;
+        m.learn(say, 0.05);
         assertTrue(m.score(1) > 0 && m.score(2) < 0 && m.score(0) < 0);
         assertEquals(0.0, m.score(3), 1e-12, "a member with no say keeps its score");
         double ratio = (1 - AimMembers.EPS) * 0.5 / 0.05 + AimMembers.EPS;
         assertEquals((1 - AimMembers.DECAY) * Math.log(ratio) / Math.log(2), m.score(1), 1e-12);
-        assertTrue(m.weight(1) > AimMembers.AIM_PRIOR);
+        assertTrue(m.weight(1) > AimMembers.PRIOR);
         assertEquals(1, m.bullets());
+    }
+
+    static double[] nans(int n) {
+        double[] a = new double[n];
+        java.util.Arrays.fill(a, Double.NaN);
+        return a;
     }
 
     @Test

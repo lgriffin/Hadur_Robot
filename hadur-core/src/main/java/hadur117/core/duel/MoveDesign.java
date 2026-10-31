@@ -162,10 +162,10 @@ final class MoveDesign {
 
     /**
      * MOVE-30: with the aim members on, an enemy bullet our bullet met also scores the members
-     * (the views included, as member 0), as a hit does, without teaching the views. Off unless an
-     * ablation turns it on (simple-gun dodge part 2, docs/bench/simple-gun-gap.md).
+     * (the views included, as member 0), as a hit does, without teaching the views. On for the
+     * next census (simple-gun dodge part 2, pc-sg-wide passed, PR #480); the ablation sgoff turns it off.
      */
-    static final boolean AIM_INTERCEPTS = false;
+    static final boolean AIM_INTERCEPTS = true;
 
     private MoveDesign() { }
 
