@@ -16,3 +16,7 @@
 01:51:13 scwm exit=0 in 1507 s
 01:51:13 start scxh
 01:51:13 watching scxh: 2 stop rule(s)
+02:08:36 progress scxh: 174/276 (63%) battles, 601/h, ETA 10 min, 0 failed, skips 63.3/battle (last 100)
+02:15:28 scxh exit=0 in 1455 s
+02:15:28 start scwq
+02:15:28 watching scwq: 2 stop rule(s)
