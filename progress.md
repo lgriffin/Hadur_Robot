@@ -1,12 +1,12 @@
 # Queue pc-deise-e08: progress
 
-Updated 2026-10-31 04:57:26 PC time (04:57 UTC), runner pid 42972.
+Updated 2026-10-31 05:12:33 PC time (05:12 UTC), runner pid 42972.
 
 - `prep` done, exit 0 in 0 min
 - `live-D` done, exit 0 in 17 min
 - `live-H500` done, exit 0 in 16 min
-- `live-H650` running
-- `live-H900` pending
+- `live-H650` done, exit 0 in 16 min
+- `live-H900` running
 - `live-HS650` pending
 - `live-SR` pending
 - `live-SAOR` pending
@@ -41,22 +41,33 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-H650
 
-**171 of 276 battles** (62%), 0 failed. Running 11 min, 918 battles/h, about 7 min left (ends ~05:04 PC time). Last battle 0 min ago.
+**276 of 276 battles** (100%), 0 failed. Running 16 min, 1025 battles/h, about 0 min left (ends ~05:02 PC time). Last battle 0 min ago.
 Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 171 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 | `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
 
-Stopping now would leave 105 battles unrun (about 7 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### live-H900
+
+**156 of 276 battles** (57%), 0 failed. Running 10 min, 922 battles/h, about 8 min left (ends ~05:20 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 156 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
+
+Stopping now would leave 120 battles unrun (about 8 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-04:12:02 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
-04:12:02 start prep
 04:12:04 progress pushed to origin claude/pc-deise-e08-progress (every 15 min)
 04:12:26 prep exit=0 in 23 s
 04:12:26 start live-D
@@ -69,4 +80,7 @@ Stopping now would leave 105 battles unrun (about 7 min); every battle already f
 04:46:15 live-H500 exit=0 in 985 s
 04:46:15 start live-H650
 04:46:15 watching live-H650: 3 stop rule(s)
+05:02:24 live-H650 exit=0 in 968 s
+05:02:24 start live-H900
+05:02:24 watching live-H900: 3 stop rule(s)
 ```
