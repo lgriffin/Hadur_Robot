@@ -24,3 +24,7 @@
 02:39:04 scwq exit=0 in 1415 s
 02:39:04 start scbw
 02:39:04 watching scbw: 2 stop rule(s)
+03:02:51 scbw exit=0 in 1426 s
+03:02:51 start scfv
+03:02:51 watching scfv: 2 stop rule(s)
+03:09:06 progress scfv: 79/276 (29%) battles, 758/h, ETA 16 min, 0 failed, skips 65.6/battle (last 100)
