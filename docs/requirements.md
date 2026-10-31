@@ -2314,3 +2314,10 @@ profiles, and the rumbles list it as a new participant.
   carry the version, so a rival's new release is a new cell. `tools/test_distill.py`.
 - Neither tool changes a shipped robot: the constants it writes go into an arm's source under
   `--src`, and the arm earns its place on the census like any other (SANARO-10, SAOR-12).
+- **1v1 (2026-10-31).** `tools/distill.py tiers` reads the bench's cold census TSVs (their hit rate on
+  Hadur, 514 of the 515 MicroRumble robots) into a modes TSV, and `hash` keys it with an unsigned
+  shift so that only robots needing different chars must not share a cell (515 names in 16,384
+  cells); `--raw` writes digit values so `charAt` needs no subtraction, `--shift 0 --resolve high`
+  trades a few cautious cells for the shift's 3 bytes. Eveimear arms HM (714 B), HP (749 B) and HM7
+  play the table in place of, or before, EVEIMEAR-3's detection; `plans/pc-eveimear-h1.queue`
+  measures them against 0.1 (docs/kitlab.md section 6).

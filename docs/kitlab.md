@@ -130,3 +130,40 @@ Neither meets the plan's submission gate yet. Next, in the order the arms point:
 3. The plan's full-field PC bench (S1 calibration on all 669 and 515 bots) before any submission,
    as a card with stop rules (docs/bench/watch.md); not written here, since the cloud sample
    answers the arm questions and the gate is not met yet.
+
+## 6. Hadur as the teacher: Eveimear's mode table (pc-eveimear-h1)
+
+Leigh 2026-10-31: the string tricks shrink nothing (a `charAt` is about 15 bytes), but they let a
+small robot carry any policy that fits an index it already pays for, and in 1v1 the cheapest index
+is the opponent's name. `MODES.charAt(e.getName().hashCode() >>> SHIFT & MASK)` is one 17-byte lookup
+that returns, from the first scan, what Hadur knows about that robot (BENCH-156, `tools/distill.py
+hash`). Hadur's census (`data/bench/*_cold.tsv`, 34,065 cold battles) covers 514 of the 515
+MicroRumble robots with each gun's hit rate on Hadur; `tools/distill.py tiers` turns that into one
+char a robot: 0 a gun stop-and-go beats (317 robots), 1 a gun worth moving at random against from
+round 1 (173, hit rate 0.05 or more), 2 a rammer (24, 0.25 or more). The 515 names fit 16,384 cells
+with no two robots of different chars on one cell (shift 18), under the 65,535-byte constant limit.
+
+Eveimear 0.1 finds the strong guns itself: stop-and-go until their hits have won back 40 + 23 energy
+a round (EVEIMEAR-3). That is energy paid against exactly the robots it loses to. 0.1's live
+pairings, split by the table before any battle was run:
+
+| Table says | Robots | Eveimear 0.1 APS | Survival |
+|---|---|---|---|
+| 0, stop-and-go | 317 | 89.95 | 95.2 |
+| 1, random from round 1 | 173 | 72.68 | 81.7 |
+| 2, rammer | 24 | 71.58 | 98.0 |
+
+Three arms in `kitlab/arms`, each built by the card's prep from the teacher data in the repo, so no
+table is committed: HM (714 B) plays the table instead of the detection and drops the won counter;
+HP (749 B, the limit) keeps the detection and takes the lower of the two modes, so a gun the table
+missed is still found, with no shift (four shared cells take the cautious reading, which saves 3
+bytes); HM7 moves the random line to 0.07 (69 robots). Against a rammer the table's -2 makes
+Eveimear move every tick and reverse twice as often, 0.1's anti-ram term unchanged.
+`plans/pc-eveimear-h1.queue` reads the three against 0.1 on `kitlab/micro-field.txt` (48 bots x 6
+seeds, about an hour). The cloud could not run battles for this card: no Robocode engine or
+opponent jar reaches it, so the PC read is the first.
+
+What the same lookup can carry next, at a few bytes each once a mode char is in hand: a power row
+by opponent, the orbit distance, head-on against the robots Hadur rates M0, aim jitter against the
+shielders Hadur has flagged, and, for the mini, GuessFactor bins seeded by opponent class so the gun
+does not spend the first rounds learning what Hadur already knows. The nano gets one bit of it.
