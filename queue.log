@@ -31,3 +31,7 @@
 03:23:54 scfv exit=0 in 1262 s
 03:23:54 start scec
 03:23:54 watching scec: 2 stop rule(s)
+03:39:21 progress scec: 162/276 (59%) battles, 629/h, ETA 11 min, 0 failed, skips 77.3/battle (last 100)
+03:47:19 scec exit=0 in 1405 s
+03:47:19 start scbs
+03:47:19 watching scbs: 2 stop rule(s)
