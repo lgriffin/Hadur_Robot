@@ -1,0 +1,19 @@
+{
+ "plan": "pc-sg-wide",
+ "updated": 1793404959.590454,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "aim": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
