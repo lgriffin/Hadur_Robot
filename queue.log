@@ -25,3 +25,9 @@
 20:47:56 start live-HS
 20:47:56 watching live-HS: 3 stop rule(s)
 21:02:47 progress live-HS: 196/430 (46%) battles, 792/h, ETA 18 min, 0 failed, skips 0.0/battle (last 100)
+21:19:59 live-HS exit=0 in 1922 s
+21:19:59 start read-live
+21:20:07 read-live exit=0 in 8 s
+21:20:07 start pr
+21:20:17 pr exit=0 in 9 s
+21:20:17 ALLDONE
