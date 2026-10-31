@@ -1,0 +1,31 @@
+# PC card team-concord2 (TMODE-34 CONCORD on every team, BENCH-153): , all 46 teams, 16 fresh seeds from 6900, against the build before CONCORD shipped (ncn, tmnoconcord). Template: c2prep writes work/team-concord2-bb.args with @V@ = the robot.release in hadur-robot/pom.xml
+--team
+true
+--seeds
+16
+--seed-base
+6900
+--rounds
+10
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+team-census46.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@bbncn.jar
+--robot
+hadur117.HadurTeam @V@bbncn
+--member
+hadur117.Hadur
+--out
+work/team-concord2-@V@-bb
+--report
+../docs/bench/local/team-concord2-bb.md
+--baseline
+bisect/hadur117.HadurTeam_@V@ncn.jar
+--baseline-robot
+hadur117.HadurTeam @V@ncn
