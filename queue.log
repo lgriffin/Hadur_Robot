@@ -17,3 +17,21 @@
 13:39:10 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
 13:39:10 skip prep (already exit=0)
 13:39:10 skip harvest (already exit=0)
+13:39:10 start build
+13:39:12 progress pushed to origin claude/pc-jaylexi-po-progress (every 15 min)
+13:40:54 build exit=0 in 104 s
+13:40:54 start G
+13:40:54 watching G: 3 stop rule(s)
+13:41:11 progress G: 0/672 (0%) battles, 0 failed
+13:44:09 G exit=0 in 195 s
+13:44:09 start PO300
+13:44:09 watching PO300: 3 stop rule(s)
+13:47:25 PO300 exit=0 in 195 s
+13:47:25 start PO2000
+13:47:25 watching PO2000: 3 stop rule(s)
+13:50:40 PO2000 exit=0 in 195 s
+13:50:40 start read
+13:50:47 read exit=0 in 6 s
+13:50:47 start pr
+13:50:52 pr exit=0 in 5 s
+13:50:52 ALLDONE

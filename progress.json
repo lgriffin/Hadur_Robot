@@ -1,6 +1,6 @@
 {
  "plan": "pc-jaylexi-po",
- "updated": 1793453950.672102,
+ "updated": 1793454652.4291494,
  "steps": {
   "prep": {
    "status": "done",
@@ -15,31 +15,171 @@
    "end": "2026-10-31T10:55:17"
   },
   "build": {
-   "status": "failed",
-   "exit": 1,
-   "seconds": 134,
-   "end": "2026-10-31T10:57:32"
+   "status": "done",
+   "exit": 0,
+   "seconds": 104,
+   "end": "2026-10-31T13:40:54"
   },
   "G": {
-   "status": "skipped",
-   "reason": "after build"
+   "status": "done",
+   "exit": 0,
+   "seconds": 195,
+   "end": "2026-10-31T13:44:09"
   },
   "PO300": {
-   "status": "skipped",
-   "reason": "after G"
+   "status": "done",
+   "exit": 0,
+   "seconds": 195,
+   "end": "2026-10-31T13:47:25"
   },
   "PO2000": {
-   "status": "skipped",
-   "reason": "after PO300"
+   "status": "done",
+   "exit": 0,
+   "seconds": 195,
+   "end": "2026-10-31T13:50:40"
   },
   "read": {
-   "status": "skipped",
-   "reason": "after PO2000"
+   "status": "done",
+   "exit": 0,
+   "seconds": 6,
+   "end": "2026-10-31T13:50:47"
   },
   "pr": {
-   "status": "skipped",
-   "reason": "after read"
+   "status": "done",
+   "exit": 0,
+   "seconds": 5,
+   "end": "2026-10-31T13:50:52"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "G",
+   "started": 1793454054.7043502,
+   "updated": 1793454249.7722895,
+   "elapsed": 195.06793928146362,
+   "expected": 672,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 672,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 12401.832966048485,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 1.6500189304351807,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 672"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0.0 a battle over the last 100 (first 100: 0.0)"
+    }
+   ],
+   "skips_mean": 0.001488095238095238,
+   "skips_last100": 0
+  },
+  {
+   "step": "PO300",
+   "started": 1793454249.784908,
+   "updated": 1793454445.1552017,
+   "elapsed": 195.37029361724854,
+   "expected": 672,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 672,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 12382.639935728783,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 1.659451961517334,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 672"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0.0 a battle over the last 100 (first 100: 0.0)"
+    }
+   ],
+   "skips_mean": 0.001488095238095238,
+   "skips_last100": 0
+  },
+  {
+   "step": "PO2000",
+   "started": 1793454445.1675105,
+   "updated": 1793454640.6410153,
+   "elapsed": 195.47350478172302,
+   "expected": 672,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 672,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 12376.101828743585,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 1.6328177452087402,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 672"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0.0 a battle over the last 100 (first 100: 0.0)"
+    }
+   ],
+   "skips_mean": 0.001488095238095238,
+   "skips_last100": 0
+  }
+ ]
 }
