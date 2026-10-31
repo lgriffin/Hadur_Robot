@@ -23,6 +23,8 @@
 # all, about 4.1 h at ~620 battles/h) at the machine's melee width and CPU constant. The read pairs
 # bb with aa (A/A, within +-0.25) and each arm with the mean of aa and bb (--base2), battle for
 # battle. Melee only: the switches act off a team, so the duel and team play are untouched.
+# DONE 2026-10-31 (PR #484). MMOVE-19 now ships on, so on master the xh build is the aa robot: a fresh
+# run of this card reads xh as an A/A copy, not as an arm (as ms on pc-melee-surf since PR #466).
 # Verdict: an arm passes with its 95% low end above 0 (--gain 0; the card ran at --gain 0.3 and Leigh
 # lowered the bar on its read, 2026-10-31: xh +0.19 +- 0.14 passes, PR #484), Hadur's share
 # of others outlived no more than 1 point lower and the 1-30 endgame wins no more than 3 points
