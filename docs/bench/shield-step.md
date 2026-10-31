@@ -80,3 +80,16 @@ A `shield-still:` line on the shield list turns SHIELD-20 on for that robot only
 zl). `plans/pc-shield-still2.queue` (BENCH-158, about 12 min) re-measures the 40 picks
 (`plans/shield-still-picks.txt`, the 9 added to the list from `plans/shield-still-add-picks.txt`) at 4 fresh seeds,
 gated at +0.05 APS, with a 5-point per-robot pick for the lines to ship.
+
+## PC confirm (pc-shield-still2, PR #515, 2026-10-31)
+
+40 picks x c / aa / mtzl x 4 fresh seeds (480 battles, 9 min). mtzl - pooled c and aa: **+0.17 +- 0.07 APS** over
+the 40 (bar +0.05); +5.19 +- 2.16 points a robot against c, +4.6 against aa. The gate reads FAIL only because its
+A/A drifted outside the band (aa - c +1.15 +- 1.03 points, band +-0.92), a quarter of the effect. The 5-point pick
+locks 17 robots (+11.3 points where locked, +0.16 APS in sample): Lucid +22.6, Pytko +17.0, Numbat +16.2, Hydrogen
++13.9, Bandit2002 +13.3, UnfoolableNano +12.9, Toa +12.5, Warlord +12.2, Bones +11.6, Predator +10.6, GeomancyBS
++8.6, Pequod +7.9, Shiva +7.5, Fenrir +7.5, Spark +7.3, Hyperion +5.4, Carpet +5.1. Losers among the 40: Holden -8.2,
+RSK1 -7.7, Lindada -6.0, GloomyDark -5.4 (they keep the step).
+
+Shipped on master for the next census: the 17 as `shield-still:` lines (`ShieldTableData.stills()`), and the 7 of
+them from BeepBoop's list (Spark, Predator, Bandit2002, Warlord, UnfoolableNano, Hydrogen, Numbat) on the shield list.
