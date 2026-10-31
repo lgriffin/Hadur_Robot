@@ -1,10 +1,10 @@
 # Queue pc-melee-scal: progress
 
-Updated 2026-10-31 01:01:06 PC time (01:01 UTC), runner pid 64324.
+Updated 2026-10-31 01:16:13 PC time (01:16 UTC), runner pid 64324.
 
 - `scprep` done, exit 0 in 6 min
-- `scaa` running
-- `scbb` pending
+- `scaa` done, exit 0 in 25 min
+- `scbb` running
 - `scwm` pending
 - `scxh` pending
 - `scwq` pending
@@ -17,15 +17,27 @@ Updated 2026-10-31 01:01:06 PC time (01:01 UTC), runner pid 64324.
 
 ### scaa
 
-**264 of 276 battles** (96%), 0 failed. Running 24 min, 666 battles/h, about 1 min left (ends ~01:02 PC time). Last battle 0 min ago.
-Skipped turns a battle: 55.7 overall, first 100 47.1, last 100 63.3.
+**276 of 276 battles** (100%), 0 failed. Running 25 min, 665 battles/h, about 0 min left (ends ~01:02 PC time). Last battle 0 min ago.
+Skipped turns a battle: 57.2 overall, first 100 47.1, last 100 63.1.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 264 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 12 battles unrun (about 1 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### scbb
+
+**138 of 276 battles** (50%), 0 failed. Running 14 min, 592 battles/h, about 14 min left (ends ~01:30 PC time). Last battle 1 min ago.
+Skipped turns a battle: 52.4 overall, first 100 47.3, last 100 58.3.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 138 |
+| `stall 30m` | halt | ok | last battle 1 min ago |
+
+Stopping now would leave 138 battles unrun (about 14 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -37,4 +49,8 @@ Stopping now would leave 12 battles unrun (about 1 min); every battle already fo
 00:37:18 start scaa
 00:37:18 watching scaa: 2 stop rule(s)
 00:37:54 progress scaa: 0/276 (0%) battles, 0 failed
+01:02:13 scaa exit=0 in 1494 s
+01:02:13 start scbb
+01:02:13 watching scbb: 2 stop rule(s)
+01:08:09 progress scbb: 72/276 (26%) battles, 728/h, ETA 17 min, 0 failed, skips 53.4/battle (last 100)
 ```
