@@ -462,9 +462,12 @@ public class MeleeController {
             List<Point2D.Double> mates = new ArrayList<>(s.teammates.size());
             for (Roster.Mate m : s.teammates) mates.add(m.at(s.time));
             if (modes.contains(TeamModes.Mode.CONCORD)) {
-                // TMODE-33: the team brain's modes, its gang watch and its radar group.
+                // TMODE-33: the team brain's gang watch and modes.
                 concord.watch(s.me, mates, alive, s.time);
                 modes = concord.modes(modes);
+            }
+            if (modes.contains(TeamModes.Mode.CONCORD) && TeamConcord.RADAR) {
+                // TMODE-33: the team brain's modes, its gang watch and its radar group.
                 c.radarTurn = radar.groupTurn(s.me, s.radarHeading, tracker, s.others, finisher, s.time,
                     TeamConcord.group(s.me, mates, alive));
             } else {
@@ -501,7 +504,7 @@ public class MeleeController {
         gun.onTeam(!s.teammates.isEmpty());
         gun.lead(modes.contains(TeamModes.Mode.LEAD));
         gun.swift(modes.contains(TeamModes.Mode.SWIFT));
-        gun.concord(modes.contains(TeamModes.Mode.CONCORD));
+        gun.concord(TeamConcord.GUN && modes.contains(TeamModes.Mode.CONCORD));
         waves.tick(s.me, s.time, s.gunHeat, alive, gun, s.energy, s.others);
 
         // MGUN-1: the peak of every opponent's firing solutions.

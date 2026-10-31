@@ -898,7 +898,7 @@ public class MinimumRiskMovement {
         v.linesWide = modes.contains(TeamModes.Mode.LINESW);
         v.lines = !mates.isEmpty() && (modes.contains(TeamModes.Mode.LINES) || v.linesWide);
         v.gunLines = !mates.isEmpty() && modes.contains(TeamModes.Mode.GUNLINE);
-        v.concord = !mates.isEmpty() && modes.contains(TeamModes.Mode.CONCORD);
+        v.concord = TeamConcord.MOVE && !mates.isEmpty() && modes.contains(TeamModes.Mode.CONCORD);
         List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
         lastCandidates = candidates.size();
         if (surf && !onTeam(mates)) {

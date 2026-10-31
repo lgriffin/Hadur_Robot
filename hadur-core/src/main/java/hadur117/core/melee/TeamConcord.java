@@ -26,6 +26,9 @@ import java.util.Set;
  */
 final class TeamConcord {
 
+    /** Its parts, each on with the brain; the {@code tmconcord} ablation's variants turn one off to weigh it. */
+    static final boolean MOVE = true, RADAR = true, GUN = true;
+
     /** Member-turns the gang watch needs before it may turn GANG on. */
     static final int GANG_TURNS = 200;
     /** The share of ganged member-turns from which GANG plays. */
@@ -36,6 +39,7 @@ final class TeamConcord {
     /** The modes this tick: {@code table}'s without the pack hunt, with FINISH, and GANG once the watch says so. */
     Set<TeamModes.Mode> modes(Set<TeamModes.Mode> table) {
         EnumSet<TeamModes.Mode> m = table.isEmpty() ? EnumSet.noneOf(TeamModes.Mode.class) : EnumSet.copyOf(table);
+        if (!MOVE) return m;
         m.remove(TeamModes.Mode.HUNT);
         m.remove(TeamModes.Mode.PACK);
         m.remove(TeamModes.Mode.FAR);
