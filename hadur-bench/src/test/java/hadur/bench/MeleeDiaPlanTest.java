@@ -11,14 +11,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-152: the pc-melee-dia card (MMOVE-22, MMOVE-23, MGUN-23) is complete before it reaches the PC. */
+/** BENCH-154: the pc-melee-dia card (MMOVE-22, MMOVE-23, MGUN-23) is complete before it reaches the PC. */
 class MeleeDiaPlanTest {
 
     private static final Path QUEUE = Path.of("plans/pc-melee-dia.queue");
     private static final List<String> ARMS = List.of("aa", "bb", "dm", "la");
 
     @Test
-    @Tag("BENCH-152")
+    @Tag("BENCH-154")
     @DisplayName("the steps chain from prep through every arm to a results PR, on the version the pom names")
     void stepsChain() throws IOException {
         String queue = Files.readString(QUEUE);
@@ -51,7 +51,7 @@ class MeleeDiaPlanTest {
     }
 
     @Test
-    @Tag("BENCH-152")
+    @Tag("BENCH-154")
     @DisplayName("every arm step declares its stop rules")
     void stopRules() throws IOException {
         String queue = Files.readString(QUEUE);
@@ -67,7 +67,7 @@ class MeleeDiaPlanTest {
     }
 
     @Test
-    @Tag("BENCH-152")
+    @Tag("BENCH-154")
     @DisplayName("every arm runs alone on the census at 6 fresh seeds after pc-melee-scal's and the smoke's")
     void args() throws IOException {
         String args = Files.readString(Path.of("plans/melee-dia.args"));
@@ -80,7 +80,7 @@ class MeleeDiaPlanTest {
     }
 
     @Test
-    @Tag("BENCH-152")
+    @Tag("BENCH-154")
     @DisplayName("each arm edits exactly its switch, all shipped off, on top of the shipped surfer and cross-learning")
     void ablation() throws IOException {
         String abl = Files.readString(Path.of("build-ablation.sh"));

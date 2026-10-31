@@ -1,7 +1,7 @@
 <!-- Cloud smoke, 2026-10-31 (4-core box, parallel 1): the three Diamond-inspired switches (docs/bench/local/../../plan-melee-top5.md,
 MMOVE-22 dm, MMOVE-23 la, MGUN-23 ea), each alone on master (surfer + cross-learning on), against the aa build of the same
 commit (b9dcd7c70). 12 census fields x 2 seeds (scal-smoke-suite.txt, seeds 3251-3252), 24 battles an arm, no A/A arm:
-a sanity check only, the pc-melee-dia card (BENCH-152) decides. Skipped turns over the 24 battles: aa 392, dm 373, la 409,
+a sanity check only, the pc-melee-dia card (BENCH-154) decides. Skipped turns over the 24 battles: aa 392, dm 373, la 409,
 ea 494 (+26%, which the card's skip bar would fail). Read: dm is the arm worth the PC (energy entering the endgame +3.9,
 skips down); la is inside noise either way; ea loses energy before the endgame and skips more, so it is dropped from the card. -->
 

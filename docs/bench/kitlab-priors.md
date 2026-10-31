@@ -48,6 +48,26 @@ The replay test caught the first CLAMP. It assumed bullet speeds of 11 and up, b
 weak shots are faster than that. The fixed table is in `jaylexi/` (12 B saved). The arm builder
 `hadur-bench/kitlab/build_arm_pg.sh` (ecj plus ProGuard) saves 14 B more.
 
+## Local slots (Deise)
+
+Only local variable slots 0 to 3 have one-byte loads and stores (`dload_1`, `aload_3`). Every
+other slot costs two bytes per access. `codesize_methods.py` together with `javap -c` shows which
+locals each method touches most.
+
+Deise's risk ring (`run`) reads the loop element (14 times), the risk sum (11) and the loop index
+(6) from slots 26 to 28. The source now declares those three before anything else in `run`, so
+javac and ProGuard place them in slots 1 to 4. The two `for (double[] x : arr)` loops become
+indexed loops over the arrays' fixed lengths (17 and 64), which drops the hidden array-copy and
+length locals. The robot-weight loop in `onScannedRobot` gets the same change.
+
+**Result:** Deise goes from 1,499 B to 1,452 B: `run` drops from 424 to 385 B, `onScannedRobot`
+from 975 to 967 B. The orders are unchanged: `DeiseEquivalenceTest` (DEISE-16) and `DeiseJarIT`
+pass (PR #491). That leaves 47 B for aim, which the Deise thread names as the gap to Mirage (8%
+less bullet damage a round).
+
+In `onScannedRobot`, slots 2 and 3 are already the method's busiest locals, so reordering there
+gains nothing.
+
 ## Learned tables
 
 `tools/kitlab_priors.py` reads bench truth logs and learns two things:

@@ -470,4 +470,42 @@ class ShieldDesignTest {
         mode.onIntercepted(31, 1.0, MY_X, MY_Y, Math.PI);
         assertEquals(List.of(), records);
     }
+
+    // ---- SHIELD-20: no step aside when a plan works from where we stand
+
+    /**
+     * The largest step aside ordered from a shot at tick 10 until the shield bullet leaves, or NaN
+     * if none left. We stood {@code lead} px west until the firing tick, so the head-on predictor
+     * aims that far off our centre.
+     */
+    private double stepUntilShield(String flags, double enemyX, double lead) {
+        mode(flags);
+        for (long t = 1; t <= 10; t++) {
+            mode.onScan(ENEMY, t, MY_X - (t < 10 ? lead : 0), MY_Y, Math.PI / 2, 0, enemyX, ENEMY_Y, Math.PI, 0);
+        }
+        mode.onEnemyShot(10, 1.0);
+        double gun = 0, x = MY_X, step = 0;
+        for (long t = 11; t < 50; t++) {
+            ShieldMode.Command c = mode.tick(new ShieldMode.Situation(t, x, MY_Y, Math.PI / 2, gun, 0, 0.1,
+                100, enemyX, ENEMY_Y, 100, 0, 1.9, false, true));
+            if (c == null) return Double.NaN;
+            step = Math.max(step, Math.abs(c.ahead));
+            if (c.firePower > 0 && !c.attack) return step;
+            gun += c.gunTurn;
+            x += c.ahead;
+        }
+        return Double.NaN;
+    }
+
+    @Test
+    @Tag("SHIELD-20")
+    @DisplayName("the shipped shield steps 0.1 px aside to shoot; with still it shoots from where it stands when it can")
+    void stillTakesThePlanWithoutTheStep() {
+        assertEquals(ShieldMode.WIGGLE, stepUntilShield("", 520, 5), 1e-9, "3.20 takes the wider shadow, a step away");
+        assertEquals(0, stepUntilShield("still", 520, 5), 0, "still: no step aside");
+        assertEquals(ShieldMode.WIGGLE, stepUntilShield("still", 520, 0), 1e-9,
+            "a bullet dead on our centre casts no shadow from where we stand, so still keeps the step");
+        assertEquals("still", ShieldDesign.parse("still").toString());
+        assertFalse(ShieldDesign.SHIPPED.still);
+    }
 }

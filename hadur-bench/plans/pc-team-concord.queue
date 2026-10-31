@@ -1,3 +1,5 @@
+# RETIRED 2026-10-31 after it ran (PR #494): CONCORD ships on every team (TMODE-34), so tmconcord is a no-op on master.
+# To re-measure, use tmnoconcord (CONCORD on no team); the fresh-seed confirm is pc-team-concord2.
 # The team brain after Ogi's design, in our own code (TMODE-33 CONCORD, BENCH-150). Team thread:
 # team-only, duel and melee fixtures bit for bit. Leigh 2026-10-30: "I want a meaningful shift APS wise.
 # We have the Ogi code and we have taken baby steps. Let's be bold", "I don't want bytes for byte
