@@ -477,13 +477,31 @@ final class ShieldTableData {
     }
 
     /**
-     * SHIELD-21: the opponents shield mode plans its shots still against (SHIELD-20). Empty:
-     * candidate builds add lines here (build-ablation.sh szlist).
+     * SHIELD-21: the opponents shield mode plans its shots still against (SHIELD-20): the 17 that
+     * pc-shield-still2 locked (PR #515). Candidate builds add lines here (build-ablation.sh szlist).
      *
      * @return a fresh array of names
      */
     static String[] stills() {
         return new String[] {
+            // pc-shield-still2 (PR #515): the 17 robots the still plans lock at a 5-point margin, 4 fresh seeds.
+            "ags.micro.Carpet 1.1",
+            "bvh.fnr.Fenrir 0.36l",
+            "cf.proto.Shiva 2.2",
+            "chase.pm.Pytko 1.0",
+            "cx.micro.Spark 0.6",
+            "et.Predator 1.8",
+            "fnc.bandit2002.Bandit2002 4.0.2",
+            "kid.Toa .0.5",
+            "mue.Hyperion 0.8",
+            "rdt199.Warlord 0.73",
+            "stelo.UnfoolableNano 1.0",
+            "synapse.rsim.GeomancyBS 0.11",
+            "theo.Hydrogen 2.1r",
+            "theo.avenge.Pequod 1.0",
+            "theo.simple.Bones 1.0",
+            "theo.simple.Lucid 1.0",
+            "wompi.Numbat 1.9",
         };
     }
 }

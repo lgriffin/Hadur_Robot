@@ -333,6 +333,15 @@ final class ShieldListData {
             "stelo.MatchupWS 1.2c",
             "usa.nano.Nemo 2.0",
             "wiki.mako.MakoHT 1.2.2.1",
+            // 3.21 (SHIELD-21, pc-shield-still2 PR #515): BeepBoop 2.0's shield robots that the still shot
+            // plans lock at a 5-point margin on fresh seeds; they also carry shield-still lines.
+            "cx.micro.Spark 0.6",
+            "et.Predator 1.8",
+            "fnc.bandit2002.Bandit2002 4.0.2",
+            "rdt199.Warlord 0.73",
+            "stelo.UnfoolableNano 1.0",
+            "theo.Hydrogen 2.1r",
+            "wompi.Numbat 1.9",
         };
     }
 }
