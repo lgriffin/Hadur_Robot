@@ -4,10 +4,10 @@
 a 1v1 duelist that remembers each opponent across battles, with a melee brain for
 free-for-alls, a five-robot team entry, and a core that has no idea it is inside Robocode.
 
-**Hadur 3.19 is ranked 4th of 1,222 in the RoboRumble 1v1** (91.58 APS, its best ever), 4th of 48 in the
-TeamRumble (HadurTeam 3.19, 79.41, its best ever) and 14th of 418 in the MeleeRumble (67.75), the highest-ranked
+**Hadur 3.20 is ranked 3rd of 1,222 in the RoboRumble 1v1** (91.82 APS, its best ever), 3rd of 48 in the
+TeamRumble (HadurTeam 3.20, 81.51, its best ever) and 14th of 418 in the MeleeRumble (67.76), the highest-ranked
 robot flying the Irish flag. Around it is a [family of smaller robots](#family-of-robots), two of
-them 1st in their rumbles. All of it was designed, written, tested and tuned by Claude agents
+them 1st in their rumbles and two more 2nd. All of it was designed, written, tested and tuned by Claude agents
 working in a shared project with one human, Leigh Griffin, who set the goals and ran the live
 entries.
 
@@ -21,23 +21,25 @@ learned Java, and it was the original inspiration for everything on this page.
 
 ## Standing
 
-**3.19 was released on 2026-10-28**, under the family's package `hadur117`. The live rankings read on 2026-10-29 at 08:57 UTC (1v1) and 09:00 UTC (melee); team on 2026-10-28 at 23:49 UTC:
+**3.20 was released on 2026-10-30.** The live rankings read on 2026-10-30 at 21:41 UTC (1v1 pages) and
+21:50 UTC (team and melee, from the LiteRumble API):
 
 | Rumble | Entry | Rank | APS | Pairings | Battles |
 |---|---|---|---|---|---|
-| 1v1 | `hadur117.Hadur 3.19` | **4th of 1,222** | **91.58** ± 0.20 | 1,221 | 1,643 |
-| Team | `hadur117.HadurTeam 3.19` | **4th of 48** | **79.41** ± 0.71 | 47 | 120 |
-| Melee | `hadur117.Hadur 3.20` | 14th of 418 | 67.77 ± 0.18 | 417 | 6,029 |
+| 1v1 | `hadur117.Hadur 3.20` | **3rd of 1,222** | **91.82** ± 0.22 | 1,221 | 1,403 |
+| Team | `hadur117.HadurTeam 3.20` | **3rd of 48** | **81.51** | 45 of 47 | 172 |
+| Melee | `hadur117.Hadur 3.20` | 14th of 418 | 67.76 | 417 | 6,109 |
 
-- **1v1 4th at 91.58, its best score ever**, 0.18 behind Saguaro for 3rd (inside one error bar);
-  5th is ScalarR at 91.24. +0.27 ± 0.23 over 3.18.1 on the same 1,219 opponents. The rammer dodge
-  (RAM-5) gave +0.115 ± 0.045 on 36 rammers, matching its +0.11 PC gate, and the stop-and-go re-picks
-  gave +0.02 ([1v1 live notes](docs/bench/live-3.19.md), [3.19 notes](docs/releases/v3.19.md)).
-- **Melee 14th at 67.75**, level with 3.18.1's 13th at 67.92 within noise; power 3 out to 300 px
-  screened at +0.14 ± 0.17.
-- **Team 4th at 79.41, its best ever** (3.19, first pass): 3.17.1's play plus counters against TroodonPack
-  (+5.1 live, +4.7 benched) and GrofGroup (+1.7 live, +2.5 benched). 3rd is CombatTeam at 81.57, 2nd
-  Firestarter at 81.69; ShadowTeam is 5th at 79.25 ([team notes](docs/bench/live-3.19-team.md)).
+- **1v1 3rd at 91.82, its best score ever**, past Saguaro (91.76) by 0.06, inside one error bar.
+  DrussGT, 2nd, is 0.74 ahead and BeepBoop, 1st, 3.16. +0.24 ± 0.23 over 3.19 on the same 1,220
+  opponents. The aim members (MOVE-29) gained +0.14 on the 383 simple guns and +0.12 on the 136 surfers
+  the rivals shield, the two groups where Saguaro led 3.19. PWIN 99.18% (10 pairings lost, all single
+  battles), vote 12.05, 2nd to BeepBoop ([1v1 live notes](docs/bench/live-3.20.md),
+  [3.20 notes](docs/releases/v3.20.md)).
+- **Team 3rd at 81.51, its best ever** (first pass, 2 pairings to go): 3.19 plus Ogi-style dodging with an
+  own-fire check and a path that keeps teammates out of the line of fire. CombatTeam is 2nd at 81.65,
+  FirestarterTeam 4th at 81.47 and OgiTeam 1st at 88.09.
+- **Melee 14th at 67.76**, unchanged play from 3.19 (67.75). 10th is 68.22.
 - **Why 3.18 read 10th first.** 3.18 read 87.73 on code that plays bit for bit as 3.17: 98.6% of its
   1v1 battles came from one PC client that scored about 3 points under clean pairings. 3.18.1
   restarted the pages with that client off the live rumble.
@@ -66,7 +68,8 @@ Each release's live notes are in [docs/bench/](docs/bench/) (`live-*.md`) and it
 | 3.17 | 2026-10-25 | 90.91 | 99.0% | 7th (16th melee, 4th team) | Mode table v2 (stop-and-go), shield parts 2 and 3, team step C ([live notes](docs/bench/live-3.17.md)) |
 | 3.18 | 2026-10-27 | 87.73 | | 10th | TIME-9 (a third less garbage, bit for bit), melee MGUN-7, MEND-3 and MGUN-13; first pass came 98.6% from the PC release watch |
 | 3.18.1 | 2026-10-27 | 91.34 | 96.7% | 4th (13th melee, 5th team) | 3.18's code on a clean page, PC clients off the live rumble ([notes](docs/releases/v3.18.1.md)) |
-| 3.19 | 2026-10-28 | **91.58** | 96.9% | **4th** (14th melee, 4th team) | Package `hadur117`; the rammer dodge (RAM-5), stop-and-go re-picks, team counters, melee power 3 to 300 px ([live notes](docs/bench/live-3.19.md)) |
+| 3.19 | 2026-10-28 | 91.58 | 96.9% | 4th (14th melee, 4th team) | Package `hadur117`; the rammer dodge (RAM-5), stop-and-go re-picks, team counters, melee power 3 to 300 px ([live notes](docs/bench/live-3.19.md)) |
+| 3.20 | 2026-10-30 | **91.82** | 96.9% | **3rd** (14th melee, **3rd team**) | MOVE-29, the aim members: the surf also rates head-on, linear and circular aims; team PATH and DODGE with own fire ([live notes](docs/bench/live-3.20.md)) |
 
 3.0 and 3.1 slid 5 to 8 APS within hours on live clients; a one-JVM session bench traced it to a
 round-end profile save that grew with every opponent on disk, fixed in 3.4
@@ -76,19 +79,19 @@ round-end profile save that grew with every opponent on disk, fixed in 3.4
 
 Hadur has siblings, one for each size class and format it can win. Each is a separate robot with
 its own folder, build, requirements and README, and none shares code with Hadur.
-Best live results as of 2026-10-30:
+Live results as of 2026-10-30 21:50 UTC (each robot's README keeps its full history):
 
-| Robot | Rumble | Size | Best live result | |
+| Robot | Rumble | Size | Live result | |
 |---|---|---|---|---|
-| [**Hadur**](hadur-robot/) `hadur117.Hadur` | RoboRumble (1v1) | megabot | **4th of 1,222**, 91.58 ± 0.20 (3.19, 2026-10-29) | [standing](#standing) |
-| | MeleeRumble | | **13th of 417**, 67.92 ± 0.24 (3.18.1, 2026-10-28); now 14th, 67.77 (3.20) | [live read](docs/bench/live-3.20-melee.md) |
-| [**HadurTeam**](hadur-robot/) `hadur117.HadurTeam` | TeamRumble | five Hadurs | **4th of 48**, 79.41 ± 0.71 (3.19, 2026-10-28) | [live notes](docs/bench/live-3.19-team.md) |
+| [**Hadur**](hadur-robot/) `hadur117.Hadur` | RoboRumble (1v1) | megabot | **3rd of 1,222**, 91.82 ± 0.22 (3.20, 2026-10-30) | [standing](#standing) |
+| | MeleeRumble | | 14th of 418, 67.76 (3.20, 2026-10-30) | |
+| [**HadurTeam**](hadur-robot/) `hadur117.HadurTeam` | TeamRumble | five Hadurs | **3rd of 48**, 81.51 (3.20, 2026-10-30, 45 of 47 pairings) | [standing](#standing) |
 | [**TwinSaor**](twinsaor/) `hadur117.twin.TwinSaor` | Twin Duel (2v2) | 1,995 B of 1,999 | **1st of 28**, 70.28 ± 0.50 (0.2, 2026-10-28) | [README](twinsaor/README.md) |
-| [**Saor**](saor/) `hadur117.micro.Saor` | MicroMelee | 723 B of 749 | **1st of 157**, 69.80 ± 0.43 (0.3, 2026-10-27) | [README](saor/README.md) |
-| [**Deise**](deise/) `hadur117.mini.Deise` | MiniMelee | 1,494 B of 1,499 | **2nd of 206**, 69.81 ± 0.33 (0.3, 2026-10-28), 1.38 behind kc.mini.Mirage | [README](deise/README.md) |
-| [**Sanaro**](sanaro/) `hadur117.nano.Sanaro` | NanoMelee | 247 B of 249 | 0.1 released 2026-10-28; first pass filling, 2nd of 90 at 65.02 (80 of 89 pairings) | [README](sanaro/README.md) |
-| [**JayLexi**](jaylexi/) `hadur117.mini.JayLexi` | MiniRumble (1v1) | 1,485 B of 1,499 | **5th of 671**, 87.43 ± 0.29 (0.2, 2026-10-29), level with 4th, 1.57 behind 1st | [README](jaylexi/README.md) |
-| [**Eveimear**](eveimear/) `hadur117.micro.Eveimear` | MicroRumble (1v1) | 722 B of 749 | **9th of 516**, 83.36 ± 0.33 (0.1, 2026-10-29), 1.57 behind 5th | [README](eveimear/README.md) |
+| [**Saor**](saor/) `hadur117.micro.Saor` | MicroMelee | 723 B of 749 | **1st of 158**, 69.73 (0.3, 2026-10-30), 0.45 ahead of kc.micro.Figment | [README](saor/README.md) |
+| [**Deise**](deise/) `hadur117.mini.Deise` | MiniMelee | 1,494 B of 1,499 | **2nd of 206**, 70.57 (0.4, 2026-10-30), 0.58 behind kc.mini.Mirage | [README](deise/README.md) |
+| [**Sanaro**](sanaro/) `hadur117.nano.Sanaro` | NanoMelee | 247 B of 249 | **2nd of 90**, 65.15 (0.2, 2026-10-30), 1.26 behind d414.nano.Quantum | [README](sanaro/README.md) |
+| [**JayLexi**](jaylexi/) `hadur117.mini.JayLexi` | MiniRumble (1v1) | 1,485 B of 1,499 | **5th of 671**, 87.34 (0.2, settled 2026-10-30), 0.10 behind 4th, 1.67 behind sheldor.mini.FoilistMC | [README](jaylexi/README.md) |
+| [**Eveimear**](eveimear/) `hadur117.micro.Eveimear` | MicroRumble (1v1) | 722 B of 749 | **9th of 516**, 83.28 (0.1, 2026-10-30), 2.32 behind 1st | [README](eveimear/README.md) |
 
 - **TwinSaor** is two copies of one Saor-derived robot sharing radar and targets, with a range and
   mode table per opposing team ([docs/twinsaor.md](docs/twinsaor.md)).
