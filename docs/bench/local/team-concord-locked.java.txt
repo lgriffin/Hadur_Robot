@@ -1,0 +1,5 @@
+        t.put("abc.Shadow", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CONCORD));
+        t.put("amz.TeamDeath", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CONCORD));
+        t.put("kawigi.micro.Shiz", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CONCORD));
+        t.put("rz.GHMember", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CONCORD));
+        t.put("rz.HOFMember", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CONCORD));
