@@ -1,1 +1,9 @@
 22:13:30 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
+22:13:30 start prep
+22:13:32 progress pushed to origin claude/pc-deise-pt1-progress (every 15 min)
+22:13:47 prep exit=0 in 16 s
+22:13:47 start live-TEACH
+22:13:47 watching live-TEACH: 3 stop rule(s)
+22:14:31 progress live-TEACH: 0/276 (0%) battles, 0 failed
+22:22:36 STOP live-TEACH by rule skips 40 over 100: 64.7 a battle over the last 100 (first 100: 62.7); 108 battles fought and kept, 168 battles left unrun (about 14 min)
+22:22:36 live-TEACH exit=75 in 529 s (halted, skips 40 over 100)
