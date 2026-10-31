@@ -15,3 +15,7 @@
 17:14:22 live-PN exit=0 in 1165 s
 17:14:22 start live-PNS
 17:14:22 watching live-PNS: 3 stop rule(s)
+17:19:39 progress live-PNS: 72/276 (26%) battles, 818/h, ETA 15 min, 0 failed, skips 0.1/battle (last 100)
+17:33:37 live-PNS exit=0 in 1154 s
+17:33:37 start live-PNS6
+17:33:37 watching live-PNS6: 3 stop rule(s)

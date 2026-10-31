@@ -1,13 +1,13 @@
 # Queue pc-deise-e10: progress
 
-Updated 2026-10-31 17:18:39 PC time (17:18 UTC), runner pid 65080.
+Updated 2026-10-31 17:33:46 PC time (17:33 UTC), runner pid 65080.
 
 - `prep` done, exit 0 in 0 min
 - `live-D` done, exit 0 in 18 min
 - `live-PL400` done, exit 0 in 19 min
 - `live-PN` done, exit 0 in 19 min
-- `live-PNS` running
-- `live-PNS6` pending
+- `live-PNS` done, exit 0 in 19 min
+- `live-PNS6` running
 - `live-MIR` pending
 - `live-SAOR` pending
 - `read` pending
@@ -54,24 +54,32 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-PNS
 
-**60 of 276 battles** (22%), 0 failed. Running 4 min, 843 battles/h, about 15 min left (ends ~17:34 PC time). Last battle 0 min ago.
-Skipped turns a battle: 0.2 overall, first 60 0.2, last 60 0.2.
+**276 of 276 battles** (100%), 0 failed. Running 19 min, 860 battles/h, about 0 min left (ends ~17:33 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.2 overall, first 100 0.1, last 100 0.4.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 60 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | waiting | 60 of 100 battles to read |
+| `skips 40 over 100` | halt | ok | 0.4 a battle over the last 100 (first 100: 0.1) |
 
-Stopping now would leave 216 battles unrun (about 15 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### live-PNS6
+
+**0 of 276 battles** (0%), 0 failed. Running 0 min. Last battle 0 min ago.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 0 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | waiting | 0 of 100 battles to read |
+
+Stopping now would leave 276 battles unrun; every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-16:18:09 progress pushed to origin claude/pc-deise-e10-progress (every 15 min)
-16:18:33 prep exit=0 in 26 s
-16:18:33 start live-D
-16:18:33 watching live-D: 3 stop rule(s)
 16:19:07 progress live-D: 6/276 (2%) battles, 630/h, ETA 26 min, 0 failed, skips 0.0/battle (last 100)
 16:36:14 live-D exit=0 in 1060 s
 16:36:14 start live-PL400
@@ -83,4 +91,8 @@ Stopping now would leave 216 battles unrun (about 15 min); every battle already 
 17:14:22 live-PN exit=0 in 1165 s
 17:14:22 start live-PNS
 17:14:22 watching live-PNS: 3 stop rule(s)
+17:19:39 progress live-PNS: 72/276 (26%) battles, 818/h, ETA 15 min, 0 failed, skips 0.1/battle (last 100)
+17:33:37 live-PNS exit=0 in 1154 s
+17:33:37 start live-PNS6
+17:33:37 watching live-PNS6: 3 stop rule(s)
 ```
