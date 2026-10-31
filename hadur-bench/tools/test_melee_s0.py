@@ -252,6 +252,20 @@ class ScreenTest(unittest.TestCase):
             self.assertIn("skipped turns a battle no more than 20%\nover aa's", text)
             self.assertIn("| 30.0 (+50%) | **FAIL** |", text)
             self.assertIn("| 20.0 | - |", text)
+            # Over a baseline that never skipped, any skip is over the line; none is level. A battle
+            # without round records is left out of the mean, not counted as zero skips.
+            none, some, blind = (os.path.join(tmp, x) for x in ("none", "some", "blind"))
+            self.run_of(none, {"F01": [100, 102], "F02": [98, 100]}, [won % 0, fifth % 0])
+            self.run_of(some, {"F01": [103, 104], "F02": [101, 103]}, [won % 1, fifth % 0])
+            self.run_of(blind, {"F01": [103, 104], "F02": [101, 103]}, [won % 0, fifth % 0])
+            os.remove(os.path.join(blind, "F01", "battles", "melee-1", "rounds.csv"))
+            rows, zero = ms.screen(none, [("some", some), ("blind", blind)],
+                                   ms.census_ranks(os.path.join(sets, "suite.txt")))
+            by = {r["name"]: r for r in rows}
+            self.assertEqual(ms.verdict(by["some"], zero), "FAIL", "skips where the baseline had none")
+            self.assertEqual(ms.skips_over(by["blind"], zero), 0.0)
+            self.assertAlmostEqual(ms.skips_a_battle(blind), 0.0)
+            self.assertIn("(over none)", ms.render_screen(rows, zero, "t"))
 
 
 if __name__ == "__main__":

@@ -457,7 +457,9 @@ def skips_a_battle(work):
     for _field, _key, baseline, _robots, rounds in battles(work):
         if baseline:
             continue
-        per_battle.append(sum(int(r["skippedTurns"]) for r in rounds if r.get("skippedTurns", "").isdigit()))
+        skips = [int(r["skippedTurns"]) for r in rounds if r.get("skippedTurns", "").isdigit()]
+        if skips:
+            per_battle.append(sum(skips))
     return statistics.mean(per_battle) if per_battle else float("nan")
 
 
@@ -466,8 +468,10 @@ def skips_over(arm, base_phase):
     if len(arm["phase"]) < 6 or len(base_phase) < 6:
         return float("nan")
     a, b = arm["phase"][5], base_phase[5]
-    if math.isnan(a) or math.isnan(b) or b == 0:
+    if math.isnan(a) or math.isnan(b):
         return float("nan")
+    if b == 0:
+        return float("inf") if a > 0 else 0.0
     return a / b - 1
 
 
@@ -501,6 +505,8 @@ def skips_cell(skips, over=None):
         return "-"
     if over is None or math.isnan(over):
         return "%.1f" % skips
+    if math.isinf(over):
+        return "%.1f (over none)" % skips
     return "%.1f (%+.0f%%)" % (skips, 100 * over)
 
 
