@@ -1,6 +1,6 @@
 {
  "plan": "pc-deise-e09",
- "updated": 1793451005.326347,
+ "updated": 1793451912.75072,
  "steps": {
   "prep": {
    "status": "done",
@@ -274,8 +274,8 @@
   {
    "step": "live-NARROW",
    "started": 1793450925.5660908,
-   "updated": 1793451005.3187726,
-   "elapsed": 79.75268173217773,
+   "updated": 1793451912.7419212,
+   "elapsed": 987.1758303642273,
    "expected": 276,
    "panel": null,
    "field": null,
@@ -283,20 +283,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 18,
+   "battles": 258,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 812.5118628312558,
-   "eta": 1143.1217714945476,
-   "fraction": 0.06521739130434782,
-   "last_battle_age": 8.028249740600586,
+   "rate": 940.8658229175962,
+   "eta": 68.87273235099259,
+   "fraction": 0.9347826086956522,
+   "last_battle_age": 0.7606759071350098,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 18"
+     "detail": "0 failed of 258"
     },
     {
      "rule": "stall 30m",
@@ -307,12 +307,12 @@
     {
      "rule": "skips 40 over 100",
      "action": "halt",
-     "state": "waiting",
-     "detail": "18 of 100 battles to read"
+     "state": "ok",
+     "detail": "0.0 a battle over the last 100 (first 100: 0.0)"
     }
    ],
-   "skips_mean": 0,
-   "skips_last100": 0
+   "skips_mean": 0.023255813953488372,
+   "skips_last100": 0.01
   }
  ]
 }

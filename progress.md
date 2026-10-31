@@ -1,6 +1,6 @@
 # Queue pc-deise-e09: progress
 
-Updated 2026-10-31 12:50:05 PC time (12:50 UTC), runner pid 20700.
+Updated 2026-10-31 13:05:12 PC time (13:05 UTC), runner pid 20700.
 
 - `prep` done, exit 0 in 1 min
 - `live-D` done, exit 0 in 17 min
@@ -81,21 +81,20 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-NARROW
 
-**18 of 276 battles** (7%), 0 failed. Running 1 min, 813 battles/h, about 19 min left (ends ~13:09 PC time). Last battle 0 min ago.
-Skipped turns a battle: 0.0 overall, first 18 0.0, last 18 0.0.
+**258 of 276 battles** (93%), 0 failed. Running 16 min, 941 battles/h, about 1 min left (ends ~13:06 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 18 |
+| `fails 20` | halt | ok | 0 failed of 258 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | waiting | 18 of 100 battles to read |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
 
-Stopping now would leave 258 battles unrun (about 19 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 18 battles unrun (about 1 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-11:37:12 watching live-SAME: 3 stop rule(s)
 11:50:34 progress live-SAME: 198/276 (72%) battles, 889/h, ETA 5 min, 0 failed, skips 0.0/battle (last 100)
 11:54:36 live-SAME exit=0 in 1044 s
 11:54:36 start live-PL400
@@ -110,4 +109,5 @@ Stopping now would leave 258 battles unrun (about 19 min); every battle already 
 12:48:45 live-WARM16 exit=0 in 1075 s
 12:48:45 start live-NARROW
 12:48:45 watching live-NARROW: 3 stop rule(s)
+12:51:05 progress live-NARROW: 36/276 (13%) battles, 924/h, ETA 16 min, 0 failed, skips 0.0/battle (last 100)
 ```
