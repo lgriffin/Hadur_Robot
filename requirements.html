@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 311 of 316 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 313 of 318 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -263,6 +263,11 @@ traceability check reads. 311 of 316 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">POW-13</span><span class="badge">Optional</span><span class="badge stage">M7</span></div>
 <p>Where the close-power switch is on (ablation <code>close200</code>), in a duel, the gun shall fire power 3 inside 200 px (Ogi&#x27;s melee rule, <a class="req" href="requirements.html#MGUN-13">MGUN-13</a>), in place of 2.95 inside 150 px, under the same caps; off, the duel keeps 2.95 inside 150 px.</p>
 <dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/gun/GunController.html" title="hadur117.core.gun.GunController">GunController</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/gun/ClosePowerTest.java">ClosePowerTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="POW-14">
+<div class="req-head"><span class="rid">POW-14</span><span class="badge">Optional</span><span class="badge stage">R9</span></div>
+<p>Where the anti-BasicSurfer switch is on, in a duel, in a battle&#x27;s first round and while this battle&#x27;s hit rate is above 20%, the core shall lower the gun&#x27;s power, before the full-power, shielder, kill and ram rules, to the highest of 2.45 (less one ulp), 1.95, 1.45, 0.95, 0.65, 0.45 and 0.15 at or below it, keeping a power below 0.15.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/duel/DuelController.html" title="hadur117.core.duel.DuelController">DuelController</a>, <a href="api/hadur117/core/duel/PowerDesign.html" title="hadur117.core.duel.PowerDesign">PowerDesign</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/duel/PowerDesignTest.java">PowerDesignTest.java</a></dd></dl>
 </article>
 <h2 id="group-END">Endgame</h2>
 <article class="req-card" id="END-1">
@@ -516,7 +521,12 @@ traceability check reads. 311 of 316 live requirements have a tagged test. The r
 <article class="req-card" id="SHIELD-20">
 <div class="req-head"><span class="rid">SHIELD-20</span><span class="badge">Optional</span><span class="badge stage">R9</span></div>
 <p>Where the still switch is on, when the core plans a shield shot, it shall take a plan fired from where it stands whenever one casts a shadow on the predicted bullet, and shall step aside only when none does. Off, the plan casting the widest shadow, with or without the step, shall win as before.</p>
-<dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/shieldmode/ShieldDesign.html" title="hadur117.core.shieldmode.ShieldDesign">ShieldDesign</a>, <a href="api/hadur117/core/shieldmode/ShieldMode.html" title="hadur117.core.shieldmode.ShieldMode">ShieldMode</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/shieldmode/ShieldDesignTest.java">ShieldDesignTest.java</a></dd></dl>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/Hadur.html" title="hadur117.Hadur">Hadur</a>, <a href="api/hadur117/ShieldTableData.html" title="hadur117.ShieldTableData">ShieldTableData</a>, <a href="api/hadur117/core/shieldmode/ShieldDesign.html" title="hadur117.core.shieldmode.ShieldDesign">ShieldDesign</a>, <a href="api/hadur117/core/shieldmode/ShieldList.html" title="hadur117.core.shieldmode.ShieldList">ShieldList</a>, <a href="api/hadur117/core/shieldmode/ShieldMode.html" title="hadur117.core.shieldmode.ShieldMode">ShieldMode</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/shieldmode/ShieldDesignTest.java">ShieldDesignTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="SHIELD-21">
+<div class="req-head"><span class="rid">SHIELD-21</span><span class="badge">Optional</span><span class="badge stage">R9</span></div>
+<p>Where the shield list names the opponent with a <code>shield-still:</code> line, shield mode shall plan its shots against it as <a class="req" href="requirements.html#SHIELD-20">SHIELD-20</a> does with the still switch on; other opponents shall play as the switch says.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/Hadur.html" title="hadur117.Hadur">Hadur</a>, <a href="api/hadur117/ShieldTableData.html" title="hadur117.ShieldTableData">ShieldTableData</a>, <a href="api/hadur117/core/shieldmode/ShieldList.html" title="hadur117.core.shieldmode.ShieldList">ShieldList</a>, <a href="api/hadur117/core/shieldmode/ShieldMode.html" title="hadur117.core.shieldmode.ShieldMode">ShieldMode</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/shieldmode/ShieldDesignTest.java">ShieldDesignTest.java</a></dd></dl>
 </article>
 <h2 id="group-MELEE">Melee (2.1)</h2>
 <article class="req-card" id="MELEE-2">

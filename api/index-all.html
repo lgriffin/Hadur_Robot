@@ -62,6 +62,14 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Whether this role sits above <code>other</code> on the ladder.</div>
 </dd>
+<dt><a href="hadur117/core/duel/PowerDesign.html#ABS_HIT_RATE" class="member-name-link">ABS_HIT_RATE</a> - Static variable in class hadur117.core.duel.<a href="hadur117/core/duel/PowerDesign.html" title="class in hadur117.core.duel">PowerDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#POW-14">POW-14</a>: the battle hit rate above which the anti-BasicSurfer powers hold after round 0.</div>
+</dd>
+<dt><a href="hadur117/core/duel/PowerDesign.html#ABS_POWERS" class="member-name-link">ABS_POWERS</a> - Static variable in class hadur117.core.duel.<a href="hadur117/core/duel/PowerDesign.html" title="class in hadur117.core.duel">PowerDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#POW-14">POW-14</a>: BeepBoop's anti-BasicSurfer powers, highest first.</div>
+</dd>
 <dt><a href="hadur117/core/model/Wave.html#absBearing" class="member-name-link">absBearing</a> - Variable in class hadur117.core.model.<a href="hadur117/core/model/Wave.html" title="class in hadur117.core.model">Wave</a></dt>
 <dd>
 <div class="block">The bearing from source to target at fire time, radians, in (-pi, pi]: guess factor
@@ -545,12 +553,24 @@ loadScripts(document, 'script');</script>
  again with the four host columns filled in (the battle's own JVM cannot know them), so
  the battle's <code>result.csv</code> carries them for the exporter.</div>
 </dd>
+<dt><a href="hadur117/core/duel/PowerDesign.html#ANTI_BASIC_SURFER" class="member-name-link">ANTI_BASIC_SURFER</a> - Static variable in class hadur117.core.duel.<a href="hadur117/core/duel/PowerDesign.html" title="class in hadur117.core.duel">PowerDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#POW-14">POW-14</a> anti-BasicSurfer powers: in a battle's first round, and while this battle's hit rate
+ is above <a href="hadur117/core/duel/PowerDesign.html#ABS_HIT_RATE"><code>PowerDesign.ABS_HIT_RATE</code></a>, the duel's power is lowered to the nearest of
+ <a href="hadur117/core/duel/PowerDesign.html#ABS_POWERS"><code>PowerDesign.ABS_POWERS</code></a> (BeepBoop 2.0's set, which exploits a bug in BasicSurfer that many
+ rumble surfers inherit).</div>
+</dd>
 <dt><a href="hadur117/core/adapt/Opening.Gun.html#ANTI_SURFER" class="member-name-link">ANTI_SURFER</a> - Enum constant in enum class hadur117.core.adapt.<a href="hadur117/core/adapt/Opening.Gun.html" title="enum class in hadur117.core.adapt">Opening.Gun</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#ADAPT-1">ADAPT-1</a>: movement tier M2 or M3, the anti-surfer gun from the first firing wave.</div>
 </dd>
 <dt><a href="hadur117/core/gun/GunController.Opening.html#ANTI_SURFER" class="member-name-link">ANTI_SURFER</a> - Enum constant in enum class hadur117.core.gun.<a href="hadur117/core/gun/GunController.Opening.html" title="enum class in hadur117.core.gun">GunController.Opening</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/duel/PowerDesign.html#antiBasicSurfer(double)" class="member-name-link">antiBasicSurfer(double)</a> - Static method in class hadur117.core.duel.<a href="hadur117/core/duel/PowerDesign.html" title="class in hadur117.core.duel">PowerDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#POW-14">POW-14</a>: the highest anti-BasicSurfer power at or below <code>power</code>; a power below the
+ lowest is kept.</div>
+</dd>
 <dt><a href="hadur117/core/gun/AntiSurferFormula.html" class="type-name-link" title="class in hadur117.core.gun">AntiSurferFormula</a> - Class in <a href="hadur117/core/gun/package-summary.html">hadur117.core.gun</a></dt>
 <dd>
 <div class="block">The anti-surfer views' feature space: the first nine features of <a href="hadur117/core/gun/GunFormula.html" title="class in hadur117.core.gun"><code>GunFormula</code></a>,
@@ -14128,6 +14148,19 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#SHIELD-20">SHIELD-20</a>: a plan without the step aside first.</div>
 </dd>
+<dt><a href="hadur117/core/shieldmode/ShieldList.html#still(java.lang.String)" class="member-name-link">still(String)</a> - Method in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-21">SHIELD-21</a>: whether shield mode plans its shots still (<a class="req" href="../requirements.html#SHIELD-20">SHIELD-20</a>) against <code>robotName</code>,
+ by the rule of <a href="hadur117/core/shieldmode/ShieldList.html#matches(java.lang.String)"><code>ShieldList.matches(java.lang.String)</code></a>.</div>
+</dd>
+<dt><a href="hadur117/core/shieldmode/ShieldList.html#STILL" class="member-name-link">STILL</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-21">SHIELD-21</a>: the per-opponent still switch's bit in <code>ShieldList.switches</code>.</div>
+</dd>
+<dt><a href="hadur117/core/shieldmode/ShieldList.html#STILL_PREFIX" class="member-name-link">STILL_PREFIX</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-21">SHIELD-21</a>: a line starting with this names an opponent shield mode plans its shots still against (<a class="req" href="../requirements.html#SHIELD-20">SHIELD-20</a>).</div>
+</dd>
 <dt><a href="hadur117/core/shield/EnemyStillness.html#STILL_TICKS" class="member-name-link">STILL_TICKS</a> - Static variable in class hadur117.core.shield.<a href="hadur117/core/shield/EnemyStillness.html" title="class in hadur117.core.shield">EnemyStillness</a></dt>
 <dd>
 <div class="block">SHIELD-4: the enemy must have been still for this many ticks.</div>
@@ -14135,6 +14168,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/shield/EnemyStillness.html#stillForTenTicks(long)" class="member-name-link">stillForTenTicks(long)</a> - Method in class hadur117.core.shield.<a href="hadur117/core/shield/EnemyStillness.html" title="class in hadur117.core.shield">EnemyStillness</a></dt>
 <dd>
 <div class="block">SHIELD-4: whether the enemy has not moved in the last <a href="hadur117/core/shield/EnemyStillness.html#STILL_TICKS"><code>EnemyStillness.STILL_TICKS</code></a> ticks.</div>
+</dd>
+<dt><a href="hadur117/ShieldTableData.html#stills()" class="member-name-link">stills()</a> - Static method in class hadur117.<a href="hadur117/ShieldTableData.html" title="class in hadur117">ShieldTableData</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-21">SHIELD-21</a>: the opponents shield mode plans its shots still against (<a class="req" href="../requirements.html#SHIELD-20">SHIELD-20</a>).</div>
 </dd>
 <dt><a href="hadur117/core/move/StopAndGo.Phase.html#STOP" class="member-name-link">STOP</a> - Enum constant in enum class hadur117.core.move.<a href="hadur117/core/move/StopAndGo.Phase.html" title="enum class in hadur117.core.move">StopAndGo.Phase</a></dt>
 <dd>&nbsp;</dd>

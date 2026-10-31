@@ -105,27 +105,45 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#PRESSURE" class="member-name-link">PRESSURE</a></code></div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#ABS_HIT_RATE" class="member-name-link">ABS_HIT_RATE</a></code></div>
 <div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#POW-14">POW-14</a>: the battle hit rate above which the anti-BasicSurfer powers hold after round 0.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final double[]</code></div>
+<div class="col-second odd-row-color"><code><a href="#ABS_POWERS" class="member-name-link">ABS_POWERS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#POW-14">POW-14</a>: BeepBoop's anti-BasicSurfer powers, highest first.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#ANTI_BASIC_SURFER" class="member-name-link">ANTI_BASIC_SURFER</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#POW-14">POW-14</a> anti-BasicSurfer powers: in a battle's first round, and while this battle's hit rate
+ is above <a href="#ABS_HIT_RATE"><code>ABS_HIT_RATE</code></a>, the duel's power is lowered to the nearest of
+ <a href="#ABS_POWERS"><code>ABS_POWERS</code></a> (BeepBoop 2.0's set, which exploits a bug in BasicSurfer that many
+ rumble surfers inherit).</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#PRESSURE" class="member-name-link">PRESSURE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#POW-12">POW-12</a> pressure power: while <code>PowerPolicy.pressure</code> holds in a duel, the gun skips the
  cubic power-down and fires a base power of 2.5 beyond 150 px.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#PRESSURE_ALWAYS" class="member-name-link">PRESSURE_ALWAYS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#PRESSURE_ALWAYS" class="member-name-link">PRESSURE_ALWAYS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#POW-12">POW-12</a>, gate variant "pwall" (meant with <a href="#PRESSURE"><code>PRESSURE</code></a>): no rate gate at all; pressure power on every
  duel aim, keeping only the energy floor and the yield to the lead-aware regime.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#PRESSURE_BASE_ONLY_POWERDOWN" class="member-name-link">PRESSURE_BASE_ONLY_POWERDOWN</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#PRESSURE_BASE_ONLY_POWERDOWN" class="member-name-link">PRESSURE_BASE_ONLY_POWERDOWN</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#POW-12">POW-12</a>, weaker form (meant with <a href="#PRESSURE"><code>PRESSURE</code></a>): under the same gate only the power-down is
  skipped and the base power stays 1.95.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#PRESSURE_CENTRES" class="member-name-link">PRESSURE_CENTRES</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#PRESSURE_CENTRES" class="member-name-link">PRESSURE_CENTRES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#POW-12">POW-12</a>, gate variant "pwc" (meant with <a href="#PRESSURE"><code>PRESSURE</code></a>): the gate reads the window centres only (ours at
  least 12%, theirs at most 9%, both windows holding at least 30 outcomes), no margins.</div>
 </div>
@@ -143,17 +161,23 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#pressureHolds(boolean,double,hadur117.core.policy.HitWindow,hadur117.core.policy.HitWindow)" class="member-name-link">pressureHolds</a><wbr>(boolean&nbsp;leadHolds,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#antiBasicSurfer(double)" class="member-name-link">antiBasicSurfer</a><wbr>(double&nbsp;power)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#POW-14">POW-14</a>: the highest anti-BasicSurfer power at or below <code>power</code>; a power below the
+ lowest is kept.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#pressureHolds(boolean,double,hadur117.core.policy.HitWindow,hadur117.core.policy.HitWindow)" class="member-name-link">pressureHolds</a><wbr>(boolean&nbsp;leadHolds,
  double&nbsp;ourEnergy,
  <a href="../policy/HitWindow.html" title="class in hadur117.core.policy">HitWindow</a>&nbsp;ours,
  <a href="../policy/HitWindow.html" title="class in hadur117.core.policy">HitWindow</a>&nbsp;theirs)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The pressure gate in force: ALWAYS wins over CENTRES, which wins over the margin gate.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="../gun/GunController.Stakes.html" title="enum class in hadur117.core.gun">GunController.Stakes</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#pressureStakes()" class="member-name-link">pressureStakes</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="../gun/GunController.Stakes.html" title="enum class in hadur117.core.gun">GunController.Stakes</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#pressureStakes()" class="member-name-link">pressureStakes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The gun's reading of the pressure gate.</div>
 </div>
 </div>
@@ -239,6 +263,46 @@ loadScripts(document, 'script');</script>
 </dl>
 </section>
 </li>
+<li>
+<section class="detail" id="ANTI_BASIC_SURFER">
+<h3>ANTI_BASIC_SURFER</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">ANTI_BASIC_SURFER</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#POW-14">POW-14</a> anti-BasicSurfer powers: in a battle's first round, and while this battle's hit rate
+ is above <a href="#ABS_HIT_RATE"><code>ABS_HIT_RATE</code></a>, the duel's power is lowered to the nearest of
+ <a href="#ABS_POWERS"><code>ABS_POWERS</code></a> (BeepBoop 2.0's set, which exploits a bug in BasicSurfer that many
+ rumble surfers inherit).</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.duel.PowerDesign.ANTI_BASIC_SURFER">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="ABS_HIT_RATE">
+<h3>ABS_HIT_RATE</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">ABS_HIT_RATE</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#POW-14">POW-14</a>: the battle hit rate above which the anti-BasicSurfer powers hold after round 0.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.duel.PowerDesign.ABS_HIT_RATE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="ABS_POWERS">
+<h3>ABS_POWERS</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double[]</span>&nbsp;<span class="element-name">ABS_POWERS</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#POW-14">POW-14</a>: BeepBoop's anti-BasicSurfer powers, highest first.</div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -247,6 +311,14 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="antiBasicSurfer(double)">
+<h3>antiBasicSurfer</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">antiBasicSurfer</span><wbr><span class="parameters">(double&nbsp;power)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#POW-14">POW-14</a>: the highest anti-BasicSurfer power at or below <code>power</code>; a power below the
+ lowest is kept. Pure.</div>
+</section>
+</li>
 <li>
 <section class="detail" id="pressureHolds(boolean,double,hadur117.core.policy.HitWindow,hadur117.core.policy.HitWindow)">
 <h3>pressureHolds</h3>

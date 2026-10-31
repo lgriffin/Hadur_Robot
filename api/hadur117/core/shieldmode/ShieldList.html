@@ -203,6 +203,16 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-23">MOVE-23</a>: a line starting with this names an opponent on the stack off-list, not a shield-mode one.</div>
 </div>
+<div class="col-first even-row-color"><code>(package private) static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#STILL" class="member-name-link">STILL</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-21">SHIELD-21</a>: the per-opponent still switch's bit in <code>switches</code>.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#STILL_PREFIX" class="member-name-link">STILL_PREFIX</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-21">SHIELD-21</a>: a line starting with this names an opponent shield mode plans its shots still against (<a class="req" href="../../../../requirements.html#SHIELD-20">SHIELD-20</a>).</div>
+</div>
 <div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#STOP_GO_PREFIX" class="member-name-link">STOP_GO_PREFIX</a></code></div>
 <div class="col-last even-row-color">
@@ -299,15 +309,21 @@ loadScripts(document, 'script');</script>
  <code>robotName</code>, by the rule of <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>: no damage exit for an <code>shield-exit0:</code>
  entry, 400 for an <code>shield-exit4:</code> entry (the former when both), else <code>standard</code>.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stopGo(java.lang.String)" class="member-name-link">stopGo</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#still(java.lang.String)" class="member-name-link">still</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-21">SHIELD-21</a>: whether shield mode plans its shots still (<a class="req" href="../../../../requirements.html#SHIELD-20">SHIELD-20</a>) against <code>robotName</code>,
+ by the rule of <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stopGo(java.lang.String)" class="member-name-link">stopGo</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#POISON-2">POISON-2</a>: the stop-and-go variant for <code>robotName</code>, by the rule of <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>: the
  reverse crawl's ticks before the enemy's gun is ready, 1 or 2; 0 when it is not listed.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#withoutVersion(java.lang.String)" class="member-name-link">withoutVersion</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#withoutVersion(java.lang.String)" class="member-name-link">withoutVersion</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The name before its first space: Robocode's class names hold none, so what follows is the version.</div>
 </div>
 </div>
@@ -517,6 +533,21 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="STILL_PREFIX">
+<h3>STILL_PREFIX</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">STILL_PREFIX</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-21">SHIELD-21</a>: a line starting with this names an opponent shield mode plans its shots still against (<a class="req" href="../../../../requirements.html#SHIELD-20">SHIELD-20</a>).</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.shieldmode.ShieldList.STILL_PREFIX">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="HEAT_JIT">
 <h3>HEAT_JIT</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">HEAT_JIT</span></div>
@@ -570,6 +601,21 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur117.core.shieldmode.ShieldList.EXIT_OFF">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="STILL">
+<h3>STILL</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">STILL</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-21">SHIELD-21</a>: the per-opponent still switch's bit in <code>switches</code>.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.shieldmode.ShieldList.STILL">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
@@ -742,6 +788,18 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>robotName</code> - the scanned robot's name, or null</dd>
 <dd><code>standard</code> - the exit for an opponent not named</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="still(java.lang.String)">
+<h3>still</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">still</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-21">SHIELD-21</a>: whether shield mode plans its shots still (<a class="req" href="../../../../requirements.html#SHIELD-20">SHIELD-20</a>) against <code>robotName</code>,
+ by the rule of <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>robotName</code> - the scanned robot's name, or null</dd>
 </dl>
 </section>
 </li>
