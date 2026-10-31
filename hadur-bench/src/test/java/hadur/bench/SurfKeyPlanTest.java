@@ -34,8 +34,8 @@ class SurfKeyPlanTest {
     void cardIsComplete() throws IOException {
         String queue = Files.readString(QUEUE);
         List<String> panel = names("panel-surf-key-200.txt");
-        assertEquals(200, panel.size());
-        assertEquals(names("panel-surf-key.txt"), panel.subList(0, 60), "the cloud's 60 are the first 60");
+        assertEquals(198, panel.size());
+        assertEquals(names("panel-surf-key.txt"), panel.subList(0, 58), "the cloud panel is the first 58");
         String prep = step(queue, "prep", "record");
         assertTrue(prep.contains("bash ./build-ablation.sh aa ") && prep.contains("bash ./build-ablation.sh oracle,skrec "));
         String record = step(queue, "record", "fit");

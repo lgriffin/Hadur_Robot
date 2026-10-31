@@ -2,23 +2,23 @@
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-surf-key        (or  ./queue.sh run pc-surf-key)
 # One bench queue, RoboRumble workers at 0, unpinned, 12 workers. TRUTH LOG ON for the record step (the fit needs every
-# enemy bullet), off for the confirm. Every step resumes; no step needs a decision. About 1.5 h of battles (800 record
-# + 2,400 confirm; pc-shield-still ran 2,834 an hour) and ~15 min of fitting.
+# enemy bullet), off for the confirm. Every step resumes; no step needs a decision. About 1.5 h of battles (792 record
+# + 2,376 confirm; pc-shield-still ran 2,834 an hour) and ~15 min of fitting.
 #
 # Why: the new 2nd-place rival fits its surf's k-NN key weights and kernel width per opponent (247 names, +0.20 on its full
 # field). The 775 robots we and it both play in normal mode hold +0.91 of its +2.07 lead (docs/bench/rival-2nd-read.md);
-# this panel is the 200 of them where it leads most (+0.87). Our hit views search the nine MoveFormula values with fixed
+# this panel is the 200 of them where it leads most (+0.87), less two zen jars that do not load (198). Our hit views search the nine MoveFormula values with fixed
 # weights for everyone. The cloud read (docs/bench/surf-key.md) fitted keys that explain a held-out battle's bullets better.
 #
-# record:  oracle,skrec build (ORC + SKN records; behaviour unchanged) x the 200 x 4 seeds from 5800, truth log on.
+# record:  oracle,skrec build (ORC + SKN records; behaviour unchanged) x the 198 x 4 seeds from 5800, truth log on.
 # fit:     surf_key_fit.py: per robot, coordinate descent on 2 seeds scored on the other 2 both ways; a key ships when both
 #          folds gain 0.02 bits a bullet and the robot has 30 hits. Twice: weights + width, and weights only.
-# confirm: the 200 x c, aa, kl (weights + width), klbb (weights only) x 3 fresh seeds from 5900 = 2,400 battles.
-# gate:    kl and klbb at +0.05 APS over the 200 / 1,217 pairings, 95% low end above 0, A/A inside its band; a per-robot
+# confirm: the 198 x c, aa, kl (weights + width), klbb (weights only) x 3 fresh seeds from 5900 = 2,376 battles.
+# gate:    kl and klbb at +0.05 APS over the 198 / 1,217 pairings, 95% low end above 0, A/A inside its band; a per-robot
 #          pick at a 3-point margin (mode_table.py) for the keys to ship; per-robot differences with losses.
 # Stop rules (docs/bench/watch.md): record and confirm halt on 30 failed battles, an arm scoring nothing in 8 (confirm),
 # 40+ skipped turns a battle over the last 200, or no battle in 30 minutes; every battle fought is kept and a rerun
-# resumes. A record halt leaves the fit and the 2,400 confirm battles unrun. No A/A or futility rule: the keys act on
+# resumes. A record halt leaves the fit and the 2,376 confirm battles unrun. No A/A or futility rule: the keys act on
 # only the robots the fit shipped, too few for an interim read; the gate judges the A/A at the end. ALERT opens an issue
 # for Leigh on any stop. Nothing here ships: on a pass a PR adds the picked robots' surf-key lines for the next census;
 # the release rule stands.
@@ -34,7 +34,7 @@ prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -Dskip
 
 record | ./bench-top20.sh ${C} --set panel-surf-key-200.txt --seeds 4 --seed-base 5800 --robot-jar ${REC} --robot "hadur117.Hadur ${V}orkr" --label surf-key-rec --out ${W}/rec
   after: prep
-  watch: battles=800
+  watch: battles=792
   stop: fails 30
   stop: skips 40 over 200
   stop: stall 30m

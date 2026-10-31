@@ -1,4 +1,4 @@
-# 2026-10-31 SKEY: the 60 robots the rival plays in normal mode (no table entry of ours) where its live score leads Hadur 3.20 most (docs/bench/rival-2nd-read.md); rows from census-311.
+# 2026-10-31 SKEY: 58 robots the rival plays in normal mode (no table entry of ours) where its live score leads Hadur 3.20 most, less the two zen jars that do not load (docs/bench/rival-2nd-read.md); rows from census-311.
 rampancy.Durandal 2.2d | rank216-band4 | rampancy.Durandal_2.2d.jar
 dmh.robocode.robot.PinkPanther 1.1 | rank385-band4 | dmh.robocode.robot.PinkPanther_1.1.jar
 kc.serpent.WaveSerpent 2.11 | rank15-band2 | kc.serpent.WaveSerpent_2.11.jar
@@ -37,7 +37,6 @@ EH.Fusion 0.32 | rank705-band6 | EH.Fusion_0.32.jar
 am.Miedzix 3.0 | rank756-band6 | am.Miedzix_3.0.jar
 dsekercioglu.mini.Partial 0.1.3 | rank165-band3 | dsekercioglu.mini.Partial_0.1.3.jar
 lrem.Spectre 0.4.4 | rank474-band5 | lrem.Spectre_0.4.4.jar
-zen.Ronin 1.0.0 | rank61-band3 | zen.Ronin_1.0.0.jar
 ne.Chimera 1.2 | rank562-band5 | ne.Chimera_1.2.jar
 dummy.mini.Parakeet 2.40 | rank407-band5 | dummy.mini.Parakeet_2.40.jar
 doka.KillerRabbit 1.0 | rank563-band5 | doka.KillerRabbit_1.0.jar
@@ -54,7 +53,6 @@ arthord.NanoSatanMelee Beta | rank891-band6 | arthord.NanoSatanMelee_Beta.jar
 voidious.Diamond 1.8.22 | rank6-band1 | voidious.Diamond_1.8.22.jar
 ags.Glacier 0.3.2 | rank83-band3 | ags.Glacier_0.3.2.jar
 paulk.PaulV3 1.7 | rank170-band3 | paulk.PaulV3_1.7.jar
-zen.Mirage 0.9.5 | rank34-band2 | zen.Mirage_0.9.5.jar
 cre.Karolos 0.32 | rank464-band5 | cre.Karolos_0.32.jar
 catcat20.helios.Helios 1.5 | rank150-band3 | catcat20.helios.Helios_1.5.jar
 bzdp.BoxCar 2.0 | rank865-band6 | bzdp.BoxCar_2.0.jar
