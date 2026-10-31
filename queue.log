@@ -30,3 +30,11 @@
 22:00:26 start pr
 22:00:31 pr exit=0 in 5 s
 22:00:31 ALLDONE
+11:18:16 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
+11:18:16 skip prep (already exit=0)
+11:18:16 skip w1-J01 (already exit=0)
+11:18:16 skip w1-J02 (already exit=0)
+11:18:16 skip w1-KOM (already exit=0)
+11:18:16 skip read (already exit=0)
+11:18:16 skip pr (already exit=0)
+11:18:16 ALLDONE
