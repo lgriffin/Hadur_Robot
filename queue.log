@@ -13,3 +13,6 @@
 19:16:07 start live-S2
 19:16:07 watching live-S2: 3 stop rule(s)
 19:32:03 progress live-S2: 200/430 (47%) battles, 754/h, ETA 18 min, 0 failed, skips 0.0/battle (last 100)
+19:46:17 live-S2 exit=0 in 1809 s
+19:46:17 start live-HT
+19:46:17 watching live-HT: 3 stop rule(s)
