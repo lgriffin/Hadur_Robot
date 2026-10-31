@@ -81,7 +81,7 @@ class MeleeDiaPlanTest {
 
     @Test
     @Tag("BENCH-154")
-    @DisplayName("each arm edits exactly its switch, all shipped off, on top of the shipped surfer and cross-learning")
+    @DisplayName("each arm edits exactly its switch on top of the shipped surfer and cross-learning; dm ships on from 3.21, la and ea off")
     void ablation() throws IOException {
         String abl = Files.readString(Path.of("build-ablation.sh"));
         assertTrue(abl.contains("mdmg) flag=MELEE_DAMAGE_MEMORY; suffix=dm ;;"));
@@ -90,9 +90,9 @@ class MeleeDiaPlanTest {
         String melee = "../hadur-core/src/main/java/hadur117/core/melee/";
         String move = Files.readString(Path.of(melee + "MinimumRiskMovement.java"));
         assertTrue(move.contains("public static final boolean MELEE_SURF = true;"), "the arms sit on the surfer");
-        for (String f : List.of("MELEE_DAMAGE_MEMORY", "MELEE_FULL_LATERAL")) {
-            assertTrue(move.contains("public static final boolean " + f + " = false;"), f + " ships off");
-        }
+        assertTrue(move.contains("public static final boolean MELEE_DAMAGE_MEMORY = true;"),
+            "MMOVE-22 ships on from 3.21 (pc-melee-dia dm +0.43 ± 0.17, PR #503)");
+        assertTrue(move.contains("public static final boolean MELEE_FULL_LATERAL = false;"), "MMOVE-23 ships off");
         assertTrue(Files.readString(Path.of(melee + "MeleeController.java")).contains("public static final boolean MELEE_CROSS = true;"),
             "MMOVE-19 ships on from 3.21");
         assertTrue(Files.readString(Path.of(melee + "MeleeEnergyPolicy.java")).contains("public static final boolean AVG_POWER = false;"));

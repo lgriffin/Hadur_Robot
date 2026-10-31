@@ -37,6 +37,10 @@
 # battles (a single-arm run does not read back a stopped run's; up to ~27 min). No futility or skips rule: the paired read needs
 # the baselines whole, and melee skips are read from the arm reports against aa's.
 
+# DONE 2026-10-31 (PR #503): dm PASSED +0.43 +- 0.17 (low end +0.26; endgame wins +0.7, others outlived
+# +0.5, energy at the endgame +1.8, skips +8%), la FAILED +0.00 +- 0.16, bb clean +0.08. MMOVE-22 now
+# ships on, so on master the dm build is the aa robot: a fresh run of this card reads dm as an A/A
+# copy, not as an arm (as xh on pc-melee-scal).
 set OUT = ../docs/bench/local
 
 diprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb dm la; do rm -f bisect/hadur117.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh mdmg && bash ./build-ablation.sh mlat && mkdir -p work && rm -rf work/melee-dia-"$V"-aa work/melee-dia-"$V"-bb work/melee-dia-"$V"-dm work/melee-dia-"$V"-la && echo "$V" > work/melee-dia.version && for a in aa bb dm la; do test -f bisect/hadur117.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-dia.args > work/melee-dia-$a.args || exit 1; done && rm -f ${OUT}/melee-dia-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile

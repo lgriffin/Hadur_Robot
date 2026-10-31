@@ -403,11 +403,11 @@ class MeleeCrowdMovementTest {
     @Test
     @Tag("MMOVE-22")
     @Tag("MMOVE-23")
-    @DisplayName("MMOVE-22, MMOVE-23 ship off")
-    void diamondShipOff() {
-        assertFalse(MinimumRiskMovement.MELEE_DAMAGE_MEMORY);
-        assertFalse(MinimumRiskMovement.MELEE_FULL_LATERAL);
-        assertFalse(move.damageMemory());
+    @DisplayName("MMOVE-22 ships on from 3.21, MMOVE-23 off")
+    void diamondShip() {
+        assertTrue(MinimumRiskMovement.MELEE_DAMAGE_MEMORY, "pc-melee-dia dm +0.43 ± 0.17, low end +0.26 (PR #503)");
+        assertFalse(MinimumRiskMovement.MELEE_FULL_LATERAL, "pc-melee-dia la +0.00 ± 0.16");
+        assertTrue(move.damageMemory());
     }
 
     @Test

@@ -457,7 +457,11 @@ at or above the field's mean energy with four or more left, 3 at any range to 70
 300 px). Cloud smoke, 12 fields x 2 seeds against the same commit's aa (`docs/bench/local/dia-smoke.md`):
 dm +0.44 ± 0.58 (energy entering the endgame +3.9, skips -5%), la +0.20 ± 0.75, ea -0.11 ± 0.49 with skips
 +26% and 4 less energy at the endgame. Card `pc-melee-dia` (BENCH-154) screens dm and la on the census at
-seeds 3253-3258 (clear of the smoke's) under the melee gate; ea stays off and uncarded. Also weighed and left: the endgame duel's
+seeds 3253-3258 (clear of the smoke's) under the melee gate; ea stays off and uncarded. **pc-melee-dia read (PR #503,
+2026-10-31): dm PASSED +0.43 ± 0.17 (low end +0.26; 1-30 endgame wins +0.7, others outlived +0.5, energy
+entering the endgame +1.8, deaths with two left -0.2, skips +8%), la FAILED +0.00 ± 0.16, bb clean +0.08.
+MMOVE-22 ships on from 3.21 (melee fixtures re-recorded, duel and team bit for bit); the melee stack for
+3.21 is surfer + cross-learning + damage memory, about +1.6 on the census over 3.20.** Also weighed and left: the endgame duel's
 clean slate (MELEE-2; 23% of rounds are lost there, 46% won against ranks 1-30), the biggest pool but a
 larger build; Diamond's radar and melee gun do what Hadur's already do; ScalarR's energy caps (E/6, E/15
 beyond 325 px) hardly bite under Hadur's crowd rule, so they were not built.

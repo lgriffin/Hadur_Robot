@@ -33,7 +33,7 @@
 #   tmlead  (team only) TMODE-31: LEAD on every team: the gun leans on the leader and, with droids about, the scanners. Suffix ld.
 #   tdecap  (team only) MGUN-21: the gun leans 3x on the enemy leader once its death drains more than it costs. Suffix dc.
 #   gsoft   MGUN-20: a situation's weight 1/(distance + mean distance), not 1/(0.01 + distance). Suffix gv.
-#   mdmg   MMOVE-22: each opponent's risk weighs by the damage it has done to Hadur this battle x its mean distance (Diamond). Suffix dm.
+#   mdmg   MMOVE-22: each opponent's risk weighs by the damage it has done to Hadur this battle x its mean distance (Diamond). Suffix dm. Ships on from 3.21, so on master dm is the robot as it is.
 #   mlat   MMOVE-23: the crowd's lateral weight 1.0, not 0.5 (Diamond's 1 + |cos|). Suffix la.
 #   mavg   MGUN-23: at or above the field's mean energy, 3 at any range with four or more left; below it, 1 beyond 300 px (Diamond). Suffix ea.
 #   e3ring  MEND-1: with two opponents left off a team, the crowd's ring and lateral weight (no MMOVE-4). Suffix er.
@@ -1072,11 +1072,14 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             version="${version}${suffix}" ;;
         mdmg|mlat)
             # Diamond-inspired crowd movement (MMOVE-22 damage memory, MMOVE-23 full lateral weight), off
-            # a team only; duel and team fixtures bit for bit.
+            # a team only; duel and team fixtures bit for bit. MMOVE-22 ships on from 3.21 (pc-melee-dia
+            # dm +0.43 +- 0.17, PR #503), so on master mdmg builds the robot as it is.
             case "$a" in
                 mdmg) flag=MELEE_DAMAGE_MEMORY; suffix=dm ;;
                 mlat) flag=MELEE_FULL_LATERAL; suffix=la ;;
             esac
+            grep -q "public static final boolean $flag = true;" \
+                "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" ||
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
