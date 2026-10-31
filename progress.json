@@ -1,0 +1,22 @@
+{
+ "plan": "pc-shield-still",
+ "updated": 1793461701.774833,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "still": {
+   "status": "pending"
+  },
+  "add": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
