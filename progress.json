@@ -1,12 +1,16 @@
 {
  "plan": "pc-melee-scal",
- "updated": 1793406651.0424469,
+ "updated": 1793407558.6862519,
  "steps": {
   "scprep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 387,
+   "end": "2026-10-31T00:37:18"
   },
   "scaa": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-10-31T00:37:18"
   },
   "scbb": {
    "status": "pending"
@@ -39,5 +43,43 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "scaa",
+   "started": 1793407038.9825406,
+   "updated": 1793407558.6772718,
+   "elapsed": 519.6947312355042,
+   "expected": 276,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 96,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 665.0057797938082,
+   "eta": 974.4276210665704,
+   "fraction": 0.34782608695652173,
+   "last_battle_age": 19.025468587875366,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 96"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    }
+   ],
+   "skips_mean": 47.104166666666664,
+   "skips_last100": 47.104166666666664
+  }
+ ]
 }
