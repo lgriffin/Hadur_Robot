@@ -28,6 +28,8 @@ final class TeamConcord {
 
     /** Its parts, each on with the brain; the {@code tmconcord} ablation's variants turn one off to weigh it. */
     static final boolean MOVE = true, RADAR = true, GUN = true;
+    /** Finer parts, for the same weighing: the hunt standing down, the risk's robot count, the gun's power and its pooling. */
+    static final boolean NO_HUNT = true, RISK = true, POWER = true, POOL = true;
 
     /** Member-turns the gang watch needs before it may turn GANG on. */
     static final int GANG_TURNS = 200;
@@ -40,7 +42,7 @@ final class TeamConcord {
     Set<TeamModes.Mode> modes(Set<TeamModes.Mode> table) {
         EnumSet<TeamModes.Mode> m = table.isEmpty() ? EnumSet.noneOf(TeamModes.Mode.class) : EnumSet.copyOf(table);
         if (!MOVE) return m;
-        m.remove(TeamModes.Mode.HUNT);
+        if (NO_HUNT) m.remove(TeamModes.Mode.HUNT);
         m.remove(TeamModes.Mode.PACK);
         m.remove(TeamModes.Mode.FAR);
         m.remove(TeamModes.Mode.FARTHER);

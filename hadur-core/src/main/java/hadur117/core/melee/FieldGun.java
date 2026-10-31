@@ -257,7 +257,7 @@ public class FieldGun {
             if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);
             else power = MeleeEnergyPolicy.crowdPower(power, distance, nearest, energy, e.energy, others);
             if (onTeam && swift) power = Math.min(power, SWIFT_POWER);
-            if (onTeam && concord && power > CONCORD_POWER && distance > CONCORD_CLOSE && !readsWell(e.name)) {
+            if (onTeam && concord && TeamConcord.POWER && power > CONCORD_POWER && distance > CONCORD_CLOSE && !readsWell(e.name)) {
                 power = CONCORD_POWER;
             }
             if (power <= 0) continue;
@@ -266,7 +266,7 @@ public class FieldGun {
             EnemyHistory h = history(e.name);
             double[] attributes = h == null ? null : h.current();
             List<KdTree.Entry<float[]>> near;
-            if (onTeam && concord && attributes != null) {
+            if (onTeam && concord && TeamConcord.POOL && attributes != null) {
                 near = pooled(e.name, attributes, k());
             } else {
                 near = attributes == null || h.size() < k()
