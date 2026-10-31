@@ -57,13 +57,27 @@ def parse_skn(line):
         return None
 
 
+def opponent_of(line):
+    """The opponent's robot name in a B record (the duel's battle-start line), or None."""
+    p = line.rstrip("\n").split(",")
+    try:
+        i = p.index("B")
+        return p[i + 4] if p[i + 4] else None
+    except (ValueError, IndexError):
+        return None
+
+
 def join_battle(dirpath):
+    """(opponent name from the B record or None, rows)."""
     rows, _, _ = go.join_battle(dirpath)
     keys = {}
+    opponent = None
     log = os.path.join(dirpath, "hadur.log")
     if os.path.exists(log):
         with open(log, encoding="utf-8", errors="replace") as f:
             for line in f:
+                if opponent is None and ",B," in line:
+                    opponent = opponent_of(line)
                 if "SKN," in line:
                     r = parse_skn(line)
                     if r is not None:
@@ -74,7 +88,7 @@ def join_battle(dirpath):
         if k is None or len(k) != DIMS:
             continue
         out.append((r["round"], r["fire"], r["gf"], r["dist"], r["mea"], r["seen"], r["hit"], k))
-    return out
+    return opponent, out
 
 
 def _job(args):
@@ -96,8 +110,9 @@ def join(workdirs, out, jobs):
     cols = {k: [] for k in fields}
     bots = {}
     with Pool(max(1, jobs)) as pool:
-        for b, (name, rows) in enumerate(pool.imap(_job, tasks, chunksize=1)):
-            bi = bots.setdefault(ar.battle_id(name)[0], len(bots))
+        for b, (name, (opponent, rows)) in enumerate(pool.imap(_job, tasks, chunksize=1)):
+            # the key is the robot's name as Robocode gives it (the B record); the directory's slug only if none
+            bi = bots.setdefault(opponent or ar.battle_id(name)[0], len(bots))
             for rnd, fire, gf, dist, mea, seen, hit, k in rows:
                 for c, v in zip(fields, (bi, b, rnd, fire, gf, dist, mea, seen, hit, k)):
                     cols[c].append(v)

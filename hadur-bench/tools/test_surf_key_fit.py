@@ -36,6 +36,11 @@ class SurfKeyFitTest(unittest.TestCase):
         self.assertAlmostEqual(key[1], 0.1)
         self.assertIsNone(sk.parse_skn("0,1,ORC,0,1"))
 
+    def test_opponent_is_the_robot_name(self):
+        line = "0,4,B,0,4,1,japs.Sjonniebot 0.9.1,japs.Sjonniebot,0,T?/M?,0,0,0\n"
+        self.assertEqual(sk.opponent_of(line), "japs.Sjonniebot 0.9.1", "the key line must carry the name sklist matches")
+        self.assertIsNone(sk.opponent_of("0,4,ORC,0,4"))
+
     @unittest.skipIf(np is None, "numpy")
     def test_only_known_hits_count(self):
         b = battle(1, n=30)
