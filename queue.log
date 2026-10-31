@@ -19,3 +19,6 @@
 05:18:19 live-H900 exit=0 in 954 s
 05:18:19 start live-HS650
 05:18:19 watching live-HS650: 3 stop rule(s)
+05:34:34 live-HS650 exit=0 in 975 s
+05:34:34 start live-SR
+05:34:34 watching live-SR: 3 stop rule(s)
