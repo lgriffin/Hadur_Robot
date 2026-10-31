@@ -122,26 +122,37 @@ loadScripts(document, 'script');</script>
  long&nbsp;now)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>double</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">MeleeRadar.</span><code><a href="../../melee/MeleeRadar.html#radarTurn(java.awt.geom.Point2D.Double,double,hadur117.core.world.EnemyTracker,int)" class="member-name-link">radarTurn</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-second odd-row-color"><span class="type-name-label">MeleeRadar.</span><code><a href="../../melee/MeleeRadar.html#groupTurn(java.awt.geom.Point2D.Double,double,hadur117.core.world.EnemyTracker,int,java.lang.String,long,java.util.List)" class="member-name-link">groupTurn</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ double&nbsp;radarHeading,
+ <a href="../EnemyTracker.html" title="class in hadur117.core.world">EnemyTracker</a>&nbsp;tracker,
+ int&nbsp;others,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;finisher,
+ long&nbsp;now,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;&nbsp;group)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">TMODE-33: the team brain's radar.</div>
+</div>
+<div class="col-first even-row-color"><code>double</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MeleeRadar.</span><code><a href="../../melee/MeleeRadar.html#radarTurn(java.awt.geom.Point2D.Double,double,hadur117.core.world.EnemyTracker,int)" class="member-name-link">radarTurn</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  double&nbsp;radarHeading,
  <a href="../EnemyTracker.html" title="class in hadur117.core.world">EnemyTracker</a>&nbsp;tracker,
  int&nbsp;others)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block">Radar turn for this tick, in radians (infinite: keep sweeping that way).</div>
 </div>
-<div class="col-first even-row-color"><code>double</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">MeleeRadar.</span><code><a href="../../melee/MeleeRadar.html#radarTurn(java.awt.geom.Point2D.Double,double,hadur117.core.world.EnemyTracker,int,java.lang.String,long)" class="member-name-link">radarTurn</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first odd-row-color"><code>double</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">MeleeRadar.</span><code><a href="../../melee/MeleeRadar.html#radarTurn(java.awt.geom.Point2D.Double,double,hadur117.core.world.EnemyTracker,int,java.lang.String,long)" class="member-name-link">radarTurn</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  double&nbsp;radarHeading,
  <a href="../EnemyTracker.html" title="class in hadur117.core.world">EnemyTracker</a>&nbsp;tracker,
  int&nbsp;others,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;finisher,
  long&nbsp;now)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">Radar turn for this tick at <code>now</code>, with <code>finisher</code> the opponent the gun
  wants to finish (or null).</div>
 </div>
-<div class="col-first odd-row-color"><code>double</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">MeleeRadar.</span><code><a href="../../melee/MeleeRadar.html#radarTurn(java.awt.geom.Point2D.Double,double,hadur117.core.world.EnemyTracker,int,java.lang.String,long,boolean,double,java.lang.String)" class="member-name-link">radarTurn</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first even-row-color"><code>double</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MeleeRadar.</span><code><a href="../../melee/MeleeRadar.html#radarTurn(java.awt.geom.Point2D.Double,double,hadur117.core.world.EnemyTracker,int,java.lang.String,long,boolean,double,java.lang.String)" class="member-name-link">radarTurn</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  double&nbsp;radarHeading,
  <a href="../EnemyTracker.html" title="class in hadur117.core.world">EnemyTracker</a>&nbsp;tracker,
  int&nbsp;others,
@@ -150,7 +161,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;team,
  double&nbsp;gunHeat,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;target)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block">Radar turn for this tick at <code>now</code>; <code>team</code> says whether a teammate lives, and
  <code>gunHeat</code> and <code>target</code> are the gun's heat and its last target, for MRADAR-3.</div>
 </div>

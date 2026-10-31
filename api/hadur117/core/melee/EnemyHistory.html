@@ -129,35 +129,40 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#CROWD" class="member-name-link">CROWD</a></code></div>
+<div class="col-first even-row-color"><code>(package private) static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#CLASS_TREE_LIMIT" class="member-name-link">CLASS_TREE_LIMIT</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">TMODE-33: a class tree holds up to five robots' worth of situations.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#CROWD" class="member-name-link">CROWD</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MGUN-11">MGUN-11</a> (melee Stage 2, docs/plan-melee-top5.md): three more attributes that see the crowd,
  as Ogi's melee gun has: the distance from the opponent to its nearest robot (Hadur
  included), whether it is moving toward or away from that robot, and how many opponents
  are alive.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#DIMENSIONS" class="member-name-link">DIMENSIONS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>(package private) static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#HORIZON" class="member-name-link">HORIZON</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-second even-row-color"><code><a href="#DIMENSIONS" class="member-name-link">DIMENSIONS</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#HORIZON" class="member-name-link">HORIZON</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Ticks of movement a situation records: a slow bullet's flight across 1000 px.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#MAX_SCANS" class="member-name-link">MAX_SCANS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#MAX_SCANS" class="member-name-link">MAX_SCANS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Scans kept per round (<a class="req" href="../../../../requirements.html#RES-2">RES-2</a>).</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#TREE_LIMIT" class="member-name-link">TREE_LIMIT</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#TREE_LIMIT" class="member-name-link">TREE_LIMIT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Situations kept per opponent (<a class="req" href="../../../../requirements.html#RES-2">RES-2</a>).</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final double[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#WEIGHTS" class="member-name-link">WEIGHTS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final double[]</code></div>
+<div class="col-second even-row-color"><code><a href="#WEIGHTS" class="member-name-link">WEIGHTS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Attribute weights: distance, speed, turn rate, time since reversing, wall distance; with
  <a href="#CROWD"><code>CROWD</code></a> also nearest-robot distance, heading to it, opponents alive.</div>
 </div>
@@ -174,6 +179,10 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">EnemyHistory</a>()</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(hadur117.core.knn.KdTree)" class="member-name-link">EnemyHistory</a><wbr>(<a href="../knn/KdTree.html" title="class in hadur117.core.knn">KdTree</a>&lt;float[]&gt;&nbsp;pool)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">As above, where each committed situation also joins <code>pool</code>, its class's tree (TMODE-33).</div>
+</div>
 </div>
 </section>
 </li>
@@ -195,45 +204,50 @@ loadScripts(document, 'script');</script>
  long&nbsp;sinceReverse,
  double&nbsp;wallDistance)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#crowd(double%5B%5D,double,double,double,double,java.awt.geom.Point2D,int)" class="member-name-link">crowd</a><wbr>(double[]&nbsp;base,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="../knn/KdTree.html" title="class in hadur117.core.knn">KdTree</a><wbr>&lt;float[]&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#classTree()" class="member-name-link">classTree</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">TMODE-33: a tree for a class of robots, weighted as each robot's own.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#crowd(double%5B%5D,double,double,double,double,java.awt.geom.Point2D,int)" class="member-name-link">crowd</a><wbr>(double[]&nbsp;base,
  double&nbsp;x,
  double&nbsp;y,
  double&nbsp;heading,
  double&nbsp;velocity,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.html" title="class or interface in java.awt.geom" class="external-link">Point2D</a>&nbsp;nearest,
  int&nbsp;alive)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MGUN-11">MGUN-11</a>: <code>base</code> with the crowd's three attributes: the nearest robot's distance
  (capped at 800 px), the cosine of the angle between the opponent's motion and the bearing
  to that robot mapped to 0..1 (1 heading straight at it, 0.5 when stopped or none is
  known), and the opponents alive out of nine.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#current()" class="member-name-link">current</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#current()" class="member-name-link">current</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The attributes of the latest scan, or null before any.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../knn/KdTree.Entry.html" title="class in hadur117.core.knn">KdTree.Entry</a>&lt;float[]&gt;&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#neighbours(double%5B%5D,int)" class="member-name-link">neighbours</a><wbr>(double[]&nbsp;attributes,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../knn/KdTree.Entry.html" title="class in hadur117.core.knn">KdTree.Entry</a>&lt;float[]&gt;&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#neighbours(double%5B%5D,int)" class="member-name-link">neighbours</a><wbr>(double[]&nbsp;attributes,
  int&nbsp;k)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The <code>k</code> situations most like <code>attributes</code>, nearest first.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newRound()" class="member-name-link">newRound</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newRound()" class="member-name-link">newRound</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Commits every situation that has any future, and forgets the round's scans.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#offset(float%5B%5D,double)" class="member-name-link">offset</a><wbr>(float[]&nbsp;t,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#offset(float%5B%5D,double)" class="member-name-link">offset</a><wbr>(float[]&nbsp;t,
  double&nbsp;dt)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Offset (forward, sideways) <code>dt</code> ticks into trajectory <code>t</code>, interpolated
  between its samples; past the last sample it holds the last offset.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onScan(long,double,double,double,double,double,double,hadur117.core.physics.BattleField)" class="member-name-link">onScan</a><wbr>(long&nbsp;time,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onScan(long,double,double,double,double,double,double,hadur117.core.physics.BattleField)" class="member-name-link">onScan</a><wbr>(long&nbsp;time,
  double&nbsp;x,
  double&nbsp;y,
  double&nbsp;heading,
@@ -241,12 +255,12 @@ loadScripts(document, 'script');</script>
  double&nbsp;distance,
  double&nbsp;turnRate,
  <a href="../physics/BattleField.html" title="class in hadur117.core.physics">BattleField</a>&nbsp;field)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Takes a scan at <code>time</code>; <code>distance</code> is to Hadur and <code>turnRate</code> the
  opponent's heading change per tick (NaN while unknown).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onScan(long,double,double,double,double,double,double,hadur117.core.physics.BattleField,java.awt.geom.Point2D,int)" class="member-name-link">onScan</a><wbr>(long&nbsp;time,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onScan(long,double,double,double,double,double,double,hadur117.core.physics.BattleField,java.awt.geom.Point2D,int)" class="member-name-link">onScan</a><wbr>(long&nbsp;time,
  double&nbsp;x,
  double&nbsp;y,
  double&nbsp;heading,
@@ -256,20 +270,20 @@ loadScripts(document, 'script');</script>
  <a href="../physics/BattleField.html" title="class in hadur117.core.physics">BattleField</a>&nbsp;field,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.html" title="class or interface in java.awt.geom" class="external-link">Point2D</a>&nbsp;nearest,
  int&nbsp;alive)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">As above, where <code>nearest</code> is the robot nearest the opponent (Hadur included), or
  null when none is known, and <code>alive</code> the opponents alive; <a class="req" href="../../../../requirements.html#MGUN-11">MGUN-11</a> reads them.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#size()" class="member-name-link">size</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#size()" class="member-name-link">size</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Situations with a known future.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#wallDistance(double,double,hadur117.core.physics.BattleField)" class="member-name-link">wallDistance</a><wbr>(double&nbsp;x,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#wallDistance(double,double,hadur117.core.physics.BattleField)" class="member-name-link">wallDistance</a><wbr>(double&nbsp;x,
  double&nbsp;y,
  <a href="../physics/BattleField.html" title="class in hadur117.core.physics">BattleField</a>&nbsp;field)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -372,6 +386,21 @@ loadScripts(document, 'script');</script>
  <a href="#CROWD"><code>CROWD</code></a> also nearest-robot distance, heading to it, opponents alive.</div>
 </section>
 </li>
+<li>
+<section class="detail" id="CLASS_TREE_LIMIT">
+<h3>CLASS_TREE_LIMIT</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">CLASS_TREE_LIMIT</span></div>
+<div class="block">TMODE-33: a class tree holds up to five robots' worth of situations.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.melee.EnemyHistory.CLASS_TREE_LIMIT">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -386,6 +415,13 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">EnemyHistory</span>()</div>
 </section>
 </li>
+<li>
+<section class="detail" id="&lt;init&gt;(hadur117.core.knn.KdTree)">
+<h3>EnemyHistory</h3>
+<div class="member-signature"><span class="element-name">EnemyHistory</span><wbr><span class="parameters">(<a href="../knn/KdTree.html" title="class in hadur117.core.knn">KdTree</a>&lt;float[]&gt;&nbsp;pool)</span></div>
+<div class="block">As above, where each committed situation also joins <code>pool</code>, its class's tree (TMODE-33).</div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -394,6 +430,13 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="classTree()">
+<h3>classTree</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="../knn/KdTree.html" title="class in hadur117.core.knn">KdTree</a>&lt;float[]&gt;</span>&nbsp;<span class="element-name">classTree</span>()</div>
+<div class="block">TMODE-33: a tree for a class of robots, weighted as each robot's own.</div>
+</section>
+</li>
 <li>
 <section class="detail" id="size()">
 <h3>size</h3>

@@ -1724,6 +1724,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">A coordinate kept <a href="hadur117/twin/core/Team.html#WALL"><code>Team.WALL</code></a> px inside the field.</div>
 </dd>
+<dt><a href="hadur117/core/melee/EnemyHistory.html#CLASS_TREE_LIMIT" class="member-name-link">CLASS_TREE_LIMIT</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/EnemyHistory.html" title="class in hadur117.core.melee">EnemyHistory</a></dt>
+<dd>
+<div class="block">TMODE-33: a class tree holds up to five robots' worth of situations.</div>
+</dd>
 <dt><a href="hadur117/core/policy/BattleHitRates.html#CLASSES" class="member-name-link">CLASSES</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/BattleHitRates.html" title="class in hadur117.core.policy">BattleHitRates</a></dt>
 <dd>
 <div class="block">The number of power classes.</div>
@@ -1737,6 +1741,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/policy/BattleHitRates.html#classOf(double)" class="member-name-link">classOf(double)</a> - Static method in class hadur117.core.policy.<a href="hadur117/core/policy/BattleHitRates.html" title="class in hadur117.core.policy">BattleHitRates</a></dt>
 <dd>
 <div class="block">The class of a bullet power.</div>
+</dd>
+<dt><a href="hadur117/core/melee/EnemyHistory.html#classTree()" class="member-name-link">classTree()</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/EnemyHistory.html" title="class in hadur117.core.melee">EnemyHistory</a></dt>
+<dd>
+<div class="block">TMODE-33: a tree for a class of robots, weighted as each robot's own.</div>
 </dd>
 <dt><a href="hadur117/core/HadurCore.html#clean(java.lang.String)" class="member-name-link">clean(String)</a> - Static method in class hadur117.core.<a href="hadur117/core/HadurCore.html" title="class in hadur117.core">HadurCore</a></dt>
 <dd>
@@ -1937,6 +1945,40 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/HadurCore.html#computationLevel()" class="member-name-link">computationLevel()</a> - Method in class hadur117.core.<a href="hadur117/core/HadurCore.html" title="class in hadur117.core">HadurCore</a></dt>
 <dd>
 <div class="block">S6: the tick budget's computation level for the next tick (<a class="req" href="../requirements.html#TIME-1">TIME-1</a>, <a class="req" href="../requirements.html#TIME-2">TIME-2</a>).</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.View.html#concord" class="member-name-link">concord</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.View.html" title="class in hadur117.core.melee">MinimumRiskMovement.View</a></dt>
+<dd>
+<div class="block">TMODE-33: whether the enemy terms count every robot between an enemy and the point; only on a team.</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#concord(boolean)" class="member-name-link">concord(boolean)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">TMODE-33: whether this tick's team modes carry CONCORD; set before any aim of the tick.</div>
+</dd>
+<dt><a href="hadur117/core/melee/TeamModes.Mode.html#CONCORD" class="member-name-link">CONCORD</a> - Enum constant in enum class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a></dt>
+<dd>
+<div class="block">TMODE-33, the team brain after Ogi's design, in our own code (<a href="hadur117/core/melee/TeamConcord.html" title="class in hadur117.core.melee"><code>TeamConcord</code></a>): the
+ whole team plays one picture instead of switches laid on the free-for-all movement.</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#CONCORD_CLOSE" class="member-name-link">CONCORD_CLOSE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">TMODE-33: within this, px, the team brain fires full power.</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#CONCORD_POWER" class="member-name-link">CONCORD_POWER</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">TMODE-33: the team brain's power, from Ogi's 1.92: a faster bullet than 3 that still pays.</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#CONCORD_RATE" class="member-name-link">CONCORD_RATE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">TMODE-33: the team brain fires full power at a class it hits this often...</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#CONCORD_SHOTS" class="member-name-link">CONCORD_SHOTS</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">TMODE-33: ...once this many shots at it have ended.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#concordFactor(java.awt.geom.Point2D.Double,hadur117.core.world.EnemyInfo,hadur117.core.melee.MinimumRiskMovement.View,int)" class="member-name-link">concordFactor(Point2D.Double, EnemyInfo, MinimumRiskMovement.View, int)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">TMODE-33: enemy <code>i</code>'s factor in the team brain: 1/(1 + n) for the n robots, the other
+ enemies seen lately and the teammates, nearer that enemy than <code>p</code>.</div>
 </dd>
 <dt><a href="hadur/bench/ClientConditions.Condition.html#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.Long,int,java.lang.String,java.lang.String)" class="member-name-link">Condition(String, String, Long, int, String, String)</a> - Constructor for record class hadur.bench.<a href="hadur/bench/ClientConditions.Condition.html" title="class in hadur.bench">ClientConditions.Condition</a></dt>
 <dd>
@@ -3170,6 +3212,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/melee/EnemyHistory.html#%3Cinit%3E()" class="member-name-link">EnemyHistory()</a> - Constructor for class hadur117.core.melee.<a href="hadur117/core/melee/EnemyHistory.html" title="class in hadur117.core.melee">EnemyHistory</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/EnemyHistory.html#%3Cinit%3E(hadur117.core.knn.KdTree)" class="member-name-link">EnemyHistory(KdTree&lt;float[]&gt;)</a> - Constructor for class hadur117.core.melee.<a href="hadur117/core/melee/EnemyHistory.html" title="class in hadur117.core.melee">EnemyHistory</a></dt>
+<dd>
+<div class="block">As above, where each committed situation also joins <code>pool</code>, its class's tree (TMODE-33).</div>
+</dd>
 <dt><a href="hadur117/core/melee/EnemyHistory.Scan.html" class="type-name-link" title="class in hadur117.core.melee">EnemyHistory.Scan</a> - Class in <a href="hadur117/core/melee/package-summary.html">hadur117.core.melee</a></dt>
 <dd>
 <div class="block">One scan of the opponent.</div>
@@ -4309,6 +4355,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Calls <code>listener</code> with every wave in flight, oldest first.</div>
 </dd>
+<dt><a href="hadur117/core/melee/TeamModes.html#FORCE_CONCORD" class="member-name-link">FORCE_CONCORD</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/TeamModes.html#FORCE_DISABLED" class="member-name-link">FORCE_DISABLED</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/TeamModes.html#FORCE_DODGE" class="member-name-link">FORCE_DODGE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
@@ -4442,8 +4490,20 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">TMODE-3: an enemy within this of a robot counts toward ganging it; two make a gang.</div>
 </dd>
+<dt><a href="hadur117/core/melee/TeamConcord.html#GANG_SHARE" class="member-name-link">GANG_SHARE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamConcord.html" title="class in hadur117.core.melee">TeamConcord</a></dt>
+<dd>
+<div class="block">The share of ganged member-turns from which GANG plays.</div>
+</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#GANG_SIZE" class="member-name-link">GANG_SIZE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/TeamConcord.html#GANG_TURNS" class="member-name-link">GANG_TURNS</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamConcord.html" title="class in hadur117.core.melee">TeamConcord</a></dt>
+<dd>
+<div class="block">Member-turns the gang watch needs before it may turn GANG on.</div>
+</dd>
+<dt><a href="hadur117/core/melee/TeamConcord.html#gangOn()" class="member-name-link">gangOn()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamConcord.html" title="class in hadur117.core.melee">TeamConcord</a></dt>
+<dd>
+<div class="block">Whether the battle has shown ganging: once the watch turns GANG on, it stays on.</div>
+</dd>
 <dt><a href="hadur117/core/policy/DistancePolicy.html#GAP" class="member-name-link">GAP</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/DistancePolicy.html" title="class in hadur117.core.policy">DistancePolicy</a></dt>
 <dd>
 <div class="block">The hit-rate gap, as a rate, that moves the target.</div>
@@ -4717,9 +4777,18 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">One tick of driving to <code>point</code> and stopping there, front or back first.</div>
 </dd>
+<dt><a href="hadur117/core/melee/TeamConcord.html#group(java.awt.geom.Point2D.Double,java.util.List,java.util.List)" class="member-name-link">group(Point2D.Double, List&lt;Point2D.Double&gt;, List&lt;EnemyInfo&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamConcord.html" title="class in hadur117.core.melee">TeamConcord</a></dt>
+<dd>
+<div class="block">The enemies seen lately whose nearest member, of Hadur at <code>me</code> and <code>mates</code>, is
+ Hadur: the group its radar keeps fresh.</div>
+</dd>
 <dt><a href="hadur/bench/RepeatStudy.html#group(java.util.List)" class="member-name-link">group(List&lt;RepeatStudy.Row&gt;)</a> - Static method in class hadur.bench.<a href="hadur/bench/RepeatStudy.html" title="class in hadur.bench">RepeatStudy</a></dt>
 <dd>
 <div class="block">Groups the ok rows' score shares by build, then opponent, then seed.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MeleeRadar.html#groupTurn(java.awt.geom.Point2D.Double,double,hadur117.core.world.EnemyTracker,int,java.lang.String,long,java.util.List)" class="member-name-link">groupTurn(Point2D.Double, double, EnemyTracker, int, String, long, List&lt;EnemyInfo&gt;)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeRadar.html" title="class in hadur117.core.melee">MeleeRadar</a></dt>
+<dd>
+<div class="block">TMODE-33: the team brain's radar.</div>
 </dd>
 <dt><a href="hadur117/core/MeleeSeam.html#guard(java.lang.Runnable)" class="member-name-link">guard(Runnable)</a> - Method in class hadur117.core.<a href="hadur117/core/MeleeSeam.html" title="class in hadur117.core">MeleeSeam</a></dt>
 <dd>
@@ -4810,6 +4879,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/policy/PowerPolicy.Reason.html#GUN" class="member-name-link">GUN</a> - Enum constant in enum class hadur117.core.policy.<a href="hadur117/core/policy/PowerPolicy.Reason.html" title="enum class in hadur117.core.policy">PowerPolicy.Reason</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/TeamConcord.html#GUN" class="member-name-link">GUN</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamConcord.html" title="class in hadur117.core.melee">TeamConcord</a></dt>
+<dd>
+<div class="block">Its parts; the <code>tmconcord</code> ablation's variants change one to weigh it.</div>
+</dd>
 <dt><a href="hadur117/core/memory/Tiers.html#GUN_BOUNDS" class="member-name-link">GUN_BOUNDS</a> - Static variable in class hadur117.core.memory.<a href="hadur117/core/memory/Tiers.html" title="class in hadur117.core.memory">Tiers</a></dt>
 <dd>
 <div class="block">Gun tier boundaries on the normalised hit rate: T0 below the first, T3 from the last.</div>
@@ -5652,6 +5725,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MOVE-9">MOVE-9</a>: why an enemy bullet that hit us got through, for the HF record (plan-top3 stage 0,
  docs/plan-top3.md).</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#hitOn(java.lang.String)" class="member-name-link">hitOn(String)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">TMODE-33: one of Hadur's bullets hit <code>name</code>; a hit on its class.</div>
 </dd>
 <dt><a href="hadur117/core/melee/MeleeProfileFolder.html#hitOnHadur(java.lang.String,hadur117.core.melee.MeleeProfile.AimClass)" class="member-name-link">hitOnHadur(String, MeleeProfile.AimClass)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeProfileFolder.html" title="class in hadur117.core.melee">MeleeProfileFolder</a></dt>
 <dd>
@@ -8266,6 +8343,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">TMODE-17, TMODE-18: the modes against the living enemies, from the team mode table; a test may name its own.</div>
 </dd>
+<dt><a href="hadur117/core/melee/TeamConcord.html#modes(java.util.Set)" class="member-name-link">modes(Set&lt;TeamModes.Mode&gt;)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamConcord.html" title="class in hadur117.core.melee">TeamConcord</a></dt>
+<dd>
+<div class="block">The modes this tick: <code>table</code>'s without the pack hunt, with FINISH, and GANG once the watch says so.</div>
+</dd>
 <dt><a href="hadur117/twin/SaorTwin.html#MODES" class="member-name-link">MODES</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
 <dd>
 <div class="block">The mode table (TWIN-13, docs/twinsaor.md sections 9 and 11): one char a slot, keyed like the
@@ -8328,6 +8409,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/mini/core/Move.html" class="type-name-link" title="class in hadur117.mini.core">Move</a> - Class in <a href="hadur117/mini/core/package-summary.html">hadur117.mini.core</a></dt>
 <dd>
 <div class="block">Deise's movement (DEISE-1 to DEISE-5): a least-risk point each tick from a ring of candidates.</div>
+</dd>
+<dt><a href="hadur117/core/melee/TeamConcord.html#MOVE" class="member-name-link">MOVE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamConcord.html" title="class in hadur117.core.melee">TeamConcord</a></dt>
+<dd>
+<div class="block">Its parts; the <code>tmconcord</code> ablation's variants change one to weigh it.</div>
 </dd>
 <dt><a href="hadur117/core/shieldmode/ShieldMode.html#MOVE_AHEAD" class="member-name-link">MOVE_AHEAD</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldMode.html" title="class in hadur117.core.shieldmode">ShieldMode</a></dt>
 <dd>
@@ -8732,6 +8817,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/shieldmode/ShieldList.html#NO_DODGE_PLAN" class="member-name-link">NO_DODGE_PLAN</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#DODGE-4">DODGE-4</a>: <a href="hadur117/core/shieldmode/ShieldList.html#dodgePlan(java.lang.String)"><code>ShieldList.dodgePlan(java.lang.String)</code></a> for an opponent not listed.</div>
+</dd>
+<dt><a href="hadur117/core/melee/TeamConcord.html#NO_HUNT" class="member-name-link">NO_HUNT</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamConcord.html" title="class in hadur117.core.melee">TeamConcord</a></dt>
+<dd>
+<div class="block">Finer parts, for the same weighing: the hunt standing down, the risk's robot count, the gun's power and its pooling.</div>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#noise(java.awt.geom.Point2D.Double)" class="member-name-link">noise(Point2D.Double)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>
@@ -10209,6 +10298,15 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">TMODE-7: MMOVE-10's learned aims from one log per enemy class, fed by all its copies.</div>
 </dd>
+<dt><a href="hadur117/core/melee/TeamConcord.html#POOL" class="member-name-link">POOL</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamConcord.html" title="class in hadur117.core.melee">TeamConcord</a></dt>
+<dd>
+<div class="block">Finer parts, for the same weighing: the hunt standing down, the risk's robot count, the gun's power and its pooling.</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#pooled(java.lang.String,double%5B%5D,int)" class="member-name-link">pooled(String, double[], int)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">TMODE-33: the <code>k</code> situations most like <code>attributes</code> from every history of
+ <code>name</code>'s class, so each copy of a team's robot teaches the gun about the others.</div>
+</dd>
 <dt><a href="hadur/bench/RepeatStudy.html#pooledSd(java.util.Collection)" class="member-name-link">pooledSd(Collection&lt;List&lt;Double&gt;&gt;)</a> - Static method in class hadur.bench.<a href="hadur/bench/RepeatStudy.html" title="class in hadur.bench">RepeatStudy</a></dt>
 <dd>
 <div class="block">The within-group standard deviation pooled over groups of repeats (each group one seed
@@ -10326,6 +10424,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The power to fire: <code>gunPower</code> unless a reason applies, then <a href="hadur117/core/policy/PowerPolicy.html#FULL_POWER"><code>PowerPolicy.FULL_POWER</code></a>
  capped at a quarter of their energy, never below the gun's own choice.</div>
+</dd>
+<dt><a href="hadur117/core/melee/TeamConcord.html#POWER" class="member-name-link">POWER</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamConcord.html" title="class in hadur117.core.melee">TeamConcord</a></dt>
+<dd>
+<div class="block">Finer parts, for the same weighing: the hunt standing down, the risk's robot count, the gun's power and its pooling.</div>
 </dd>
 <dt><a href="hadur117/core/move/AimMembers.html#POWER" class="member-name-link">POWER</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/AimMembers.html" title="class in hadur117.core.move">AimMembers</a></dt>
 <dd>
@@ -10858,6 +10960,10 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:R">R</h2>
 <dl class="index">
+<dt><a href="hadur117/core/melee/TeamConcord.html#RADAR" class="member-name-link">RADAR</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamConcord.html" title="class in hadur117.core.melee">TeamConcord</a></dt>
+<dd>
+<div class="block">Its parts; the <code>tmconcord</code> ablation's variants change one to weigh it.</div>
+</dd>
 <dt><a href="hadur117/core/world/EnemyTracker.html#RADAR_RANGE" class="member-name-link">RADAR_RANGE</a> - Static variable in class hadur117.core.world.<a href="hadur117/core/world/EnemyTracker.html" title="class in hadur117.core.world">EnemyTracker</a></dt>
 <dd>
 <div class="block">The engine's radar range.</div>
@@ -11120,6 +11226,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The battle's result as its child wrote it: a failed battle when there is none, it is
  cut short, or it cannot be read (an old format, say).</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#readsWell(java.lang.String)" class="member-name-link">readsWell(String)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">TMODE-33: whether Hadur hits <code>name</code>'s class <a href="hadur117/core/melee/FieldGun.html#CONCORD_RATE"><code>FieldGun.CONCORD_RATE</code></a> of <a href="hadur117/core/melee/FieldGun.html#CONCORD_SHOTS"><code>FieldGun.CONCORD_SHOTS</code></a> or more shots.</div>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.View.html#rear" class="member-name-link">rear</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.View.html" title="class in hadur117.core.melee">MinimumRiskMovement.View</a></dt>
 <dd>
@@ -11658,6 +11768,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#risk(java.awt.geom.Point2D.Double,hadur117.core.melee.MinimumRiskMovement.View)" class="member-name-link">risk(Point2D.Double, MinimumRiskMovement.View)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>
 <div class="block">The whole risk of <code>p</code>.</div>
+</dd>
+<dt><a href="hadur117/core/melee/TeamConcord.html#RISK" class="member-name-link">RISK</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamConcord.html" title="class in hadur117.core.melee">TeamConcord</a></dt>
+<dd>
+<div class="block">Finer parts, for the same weighing: the hunt standing down, the risk's robot count, the gun's power and its pooling.</div>
 </dd>
 <dt><a href="hadur117/package-summary.html#robocode-s-sandbox-and-the-profile-files-res-3--heading" class="search-tag-link">Robocode's sandbox and the profile files (RES-3)</a> - Search tag in package hadur117</dt>
 <dd>Section</dd>
@@ -13281,6 +13395,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The total weight a shot's learned bullets carry: the two <a class="req" href="../requirements.html#MMOVE-3">MMOVE-3</a> guesses carried 1 each.</div>
 </dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#shotAt(java.lang.String)" class="member-name-link">shotAt(String)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">TMODE-33: one of Hadur's bullets left, aimed at <code>target</code>; counted against its class.</div>
+</dd>
 <dt><a href="hadur117/core/move/ShotDodgePlanner.html" class="type-name-link" title="class in hadur117.core.move">ShotDodgePlanner</a> - Class in <a href="hadur117/core/move/package-summary.html">hadur117.core.move</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#DODGE-6">DODGE-6</a>: Hadur's own shot-dodge planner, inspired by Saguaro's ShotDodger (its ideas: score a
@@ -13317,6 +13435,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/melee/MeleeController.html#shotFired(java.awt.geom.Point2D.Double,long,double,double)" class="member-name-link">shotFired(Point2D.Double, long, double, double)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeController.html" title="class in hadur117.core.melee">MeleeController</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MMOVE-20">MMOVE-20</a>: a shot left from <code>at</code> on <code>time</code> along <code>gunHeading</code>; kept for the shadows it casts.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MeleeController.html#shotFired(java.awt.geom.Point2D.Double,long,double,double,java.lang.String)" class="member-name-link">shotFired(Point2D.Double, long, double, double, String)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeController.html" title="class in hadur117.core.melee">MeleeController</a></dt>
+<dd>
+<div class="block">As above, the shot aimed at <code>target</code> by the command that fired it (or null).</div>
 </dd>
 <dt><a href="hadur117/core/melee/MeleeProfileFolder.html#shotInferred(java.lang.String,double)" class="member-name-link">shotInferred(String, double)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeProfileFolder.html" title="class in hadur117.core.melee">MeleeProfileFolder</a></dt>
 <dd>
@@ -14524,6 +14646,13 @@ loadScripts(document, 'script');</script>
 <div class="block">MRADAR-3 (team step E): on a team, with four or more enemies alive, a member whose gun
  is about to fire looks at its own target when the team's freshest scan of it is stale.</div>
 </dd>
+<dt><a href="hadur117/core/melee/TeamConcord.html" class="type-name-link" title="class in hadur117.core.melee">TeamConcord</a> - Class in <a href="hadur117/core/melee/package-summary.html">hadur117.core.melee</a></dt>
+<dd>
+<div class="block">TMODE-33, the team brain after Ogi's design, written our own way: the parts of
+ <a href="hadur117/core/melee/TeamModes.Mode.html#CONCORD"><code>TeamModes.Mode.CONCORD</code></a> that keep state across ticks.</div>
+</dd>
+<dt><a href="hadur117/core/melee/TeamConcord.html#%3Cinit%3E()" class="member-name-link">TeamConcord()</a> - Constructor for class hadur117.core.melee.<a href="hadur117/core/melee/TeamConcord.html" title="class in hadur117.core.melee">TeamConcord</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/TeamDanger.html" class="type-name-link" title="class in hadur117.core.melee">TeamDanger</a> - Class in <a href="hadur117/core/melee/package-summary.html">hadur117.core.melee</a></dt>
 <dd>
 <div class="block">T6, learned team danger (MMOVE-9, MMOVE-10): what the team has learnt of each enemy's gun.</div>
@@ -16115,6 +16244,10 @@ the order they are declared.</div>
 <div class="block"><a class="req" href="../requirements.html#TIME-5">TIME-5</a>: runs one tick for each role of the charter through a throwaway core and guard
  before the real battle begins, so that class loading and JIT warm-up land here rather
  than on the first real tick a role drives.</div>
+</dd>
+<dt><a href="hadur117/core/melee/TeamConcord.html#watch(java.awt.geom.Point2D.Double,java.util.List,java.util.List,long)" class="member-name-link">watch(Point2D.Double, List&lt;Point2D.Double&gt;, List&lt;EnemyInfo&gt;, long)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamConcord.html" title="class in hadur117.core.melee">TeamConcord</a></dt>
+<dd>
+<div class="block">Counts this tick's member-turns: Hadur at <code>me</code> and each teammate at <code>mates</code>.</div>
 </dd>
 <dt><a href="hadur117/core/move/PlanInterval.html#wave" class="member-name-link">wave</a> - Variable in class hadur117.core.move.<a href="hadur117/core/move/PlanInterval.html" title="class in hadur117.core.move">PlanInterval</a></dt>
 <dd>

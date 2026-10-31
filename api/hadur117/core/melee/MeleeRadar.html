@@ -171,30 +171,41 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newRound()" class="member-name-link">newRound</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#radarTurn(java.awt.geom.Point2D.Double,double,hadur117.core.world.EnemyTracker,int)" class="member-name-link">radarTurn</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#groupTurn(java.awt.geom.Point2D.Double,double,hadur117.core.world.EnemyTracker,int,java.lang.String,long,java.util.List)" class="member-name-link">groupTurn</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ double&nbsp;radarHeading,
+ <a href="../world/EnemyTracker.html" title="class in hadur117.core.world">EnemyTracker</a>&nbsp;tracker,
+ int&nbsp;others,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;finisher,
+ long&nbsp;now,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;&nbsp;group)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">TMODE-33: the team brain's radar.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newRound()" class="member-name-link">newRound</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#radarTurn(java.awt.geom.Point2D.Double,double,hadur117.core.world.EnemyTracker,int)" class="member-name-link">radarTurn</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  double&nbsp;radarHeading,
  <a href="../world/EnemyTracker.html" title="class in hadur117.core.world">EnemyTracker</a>&nbsp;tracker,
  int&nbsp;others)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Radar turn for this tick, in radians (infinite: keep sweeping that way).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#radarTurn(java.awt.geom.Point2D.Double,double,hadur117.core.world.EnemyTracker,int,java.lang.String,long)" class="member-name-link">radarTurn</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#radarTurn(java.awt.geom.Point2D.Double,double,hadur117.core.world.EnemyTracker,int,java.lang.String,long)" class="member-name-link">radarTurn</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  double&nbsp;radarHeading,
  <a href="../world/EnemyTracker.html" title="class in hadur117.core.world">EnemyTracker</a>&nbsp;tracker,
  int&nbsp;others,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;finisher,
  long&nbsp;now)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Radar turn for this tick at <code>now</code>, with <code>finisher</code> the opponent the gun
  wants to finish (or null).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#radarTurn(java.awt.geom.Point2D.Double,double,hadur117.core.world.EnemyTracker,int,java.lang.String,long,boolean,double,java.lang.String)" class="member-name-link">radarTurn</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#radarTurn(java.awt.geom.Point2D.Double,double,hadur117.core.world.EnemyTracker,int,java.lang.String,long,boolean,double,java.lang.String)" class="member-name-link">radarTurn</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  double&nbsp;radarHeading,
  <a href="../world/EnemyTracker.html" title="class in hadur117.core.world">EnemyTracker</a>&nbsp;tracker,
  int&nbsp;others,
@@ -203,7 +214,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;team,
  double&nbsp;gunHeat,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;target)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Radar turn for this tick at <code>now</code>; <code>team</code> says whether a teammate lives, and
  <code>gunHeat</code> and <code>target</code> are the gun's heat and its last target, for MRADAR-3.</div>
 </div>
@@ -381,6 +392,23 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;target)</span></div>
 <div class="block">Radar turn for this tick at <code>now</code>; <code>team</code> says whether a teammate lives, and
  <code>gunHeat</code> and <code>target</code> are the gun's heat and its last target, for MRADAR-3.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="groupTurn(java.awt.geom.Point2D.Double,double,hadur117.core.world.EnemyTracker,int,java.lang.String,long,java.util.List)">
+<h3>groupTurn</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">groupTurn</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ double&nbsp;radarHeading,
+ <a href="../world/EnemyTracker.html" title="class in hadur117.core.world">EnemyTracker</a>&nbsp;tracker,
+ int&nbsp;others,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;finisher,
+ long&nbsp;now,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;&nbsp;group)</span></div>
+<div class="block">TMODE-33: the team brain's radar. Each member keeps its own <code>group</code> fresh (the
+ enemies nearest it, <a href="TeamConcord.html#group(java.awt.geom.Point2D.Double,java.util.List,java.util.List)"><code>TeamConcord.group(java.awt.geom.Point2D.Double, java.util.List&lt;java.awt.geom.Point2D.Double&gt;, java.util.List&lt;hadur117.core.world.EnemyInfo&gt;)</code></a>): it turns toward the stalest of them, or the
+ gun's <code>finisher</code> among them once its scan is <a href="#FINISHER_RESCAN"><code>FINISHER_RESCAN</code></a> old. It spins,
+ as <a class="req" href="../../../../requirements.html#MRADAR-1">MRADAR-1</a>, until every living enemy has been seen, while any enemy's freshest scan by
+ any member is <a href="#OVERDUE"><code>OVERDUE</code></a> old, and with an empty group.</div>
 </section>
 </li>
 </ul>
