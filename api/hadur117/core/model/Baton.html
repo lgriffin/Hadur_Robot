@@ -111,9 +111,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>static final class&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="Baton.Shot.html" class="type-name-link" title="class in hadur117.core.model">Baton.Shot</a></code></div>
+<div class="col-first even-row-color"><code>static enum&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="Baton.Gun.html" class="type-name-link" title="enum class in hadur117.core.model">Baton.Gun</a></code></div>
 <div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#HAND-2">HAND-2</a>, <a class="req" href="../../../../requirements.html#HAND-3">HAND-3</a>: what the giving role's book says of a robot's gun.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final class&nbsp;</code></div>
+<div class="col-second odd-row-color"><code><a href="Baton.Shot.html" class="type-name-link" title="class in hadur117.core.model">Baton.Shot</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">One shot the giving role saw fired.</div>
 </div>
 </div>
@@ -147,6 +152,10 @@ loadScripts(document, 'script');</script>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.util.List,hadur117.core.model.RobotStateLog)" class="member-name-link">Baton</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Baton.Shot.html" title="class in hadur117.core.model">Baton.Shot</a>&gt;&nbsp;shots,
  <a href="RobotStateLog.html" title="class in hadur117.core.model">RobotStateLog</a>&nbsp;path)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.util.List,hadur117.core.model.RobotStateLog,hadur117.core.model.Baton.Gun)" class="member-name-link">Baton</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Baton.Shot.html" title="class in hadur117.core.model">Baton.Shot</a>&gt;&nbsp;shots,
+ <a href="RobotStateLog.html" title="class in hadur117.core.model">RobotStateLog</a>&nbsp;path,
+ <a href="Baton.Gun.html" title="enum class in hadur117.core.model">Baton.Gun</a>&nbsp;gun)</code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -161,14 +170,19 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="RobotStateLog.html" title="class in hadur117.core.model">RobotStateLog</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#path()" class="member-name-link">path</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Baton.Gun.html" title="enum class in hadur117.core.model">Baton.Gun</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#gun()" class="member-name-link">gun</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#HAND-2">HAND-2</a>, <a class="req" href="../../../../requirements.html#HAND-3">HAND-3</a>: the survivor's gun as the giving role's book classed it.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="RobotStateLog.html" title="class in hadur117.core.model">RobotStateLog</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#path()" class="member-name-link">path</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Hadur's path while the giving role drove; null for none.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="Baton.Shot.html" title="class in hadur117.core.model">Baton.Shot</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shots()" class="member-name-link">shots</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="Baton.Shot.html" title="class in hadur117.core.model">Baton.Shot</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shots()" class="member-name-link">shots</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The shots seen, oldest first as the giver keeps them.</div>
 </div>
 </div>
@@ -215,6 +229,21 @@ loadScripts(document, 'script');</script>
 </dl>
 </section>
 </li>
+<li>
+<section class="detail" id="&lt;init&gt;(java.util.List,hadur117.core.model.RobotStateLog,hadur117.core.model.Baton.Gun)">
+<h3>Baton</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">Baton</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Baton.Shot.html" title="class in hadur117.core.model">Baton.Shot</a>&gt;&nbsp;shots,
+ <a href="RobotStateLog.html" title="class in hadur117.core.model">RobotStateLog</a>&nbsp;path,
+ <a href="Baton.Gun.html" title="enum class in hadur117.core.model">Baton.Gun</a>&nbsp;gun)</span></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>shots</code> - the shots seen, in the order the giving role keeps them</dd>
+<dd><code>path</code> - Hadur's path while the giving role drove, or null for none</dd>
+<dd><code>gun</code> - <a class="req" href="../../../../requirements.html#HAND-2">HAND-2</a>, <a class="req" href="../../../../requirements.html#HAND-3">HAND-3</a>: the survivor's gun as the giving role's book classed it, from
+     its hits on Hadur this battle; <a href="Baton.Gun.html#UNKNOWN"><code>Baton.Gun.UNKNOWN</code></a> with no survivor or too few hits</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -223,6 +252,13 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="gun()">
+<h3>gun</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Baton.Gun.html" title="enum class in hadur117.core.model">Baton.Gun</a></span>&nbsp;<span class="element-name">gun</span>()</div>
+<div class="block"><a class="req" href="../../../../requirements.html#HAND-2">HAND-2</a>, <a class="req" href="../../../../requirements.html#HAND-3">HAND-3</a>: the survivor's gun as the giving role's book classed it.</div>
+</section>
+</li>
 <li>
 <section class="detail" id="shots()">
 <h3>shots</h3>

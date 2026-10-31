@@ -852,6 +852,12 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/model/Baton.html#%3Cinit%3E(java.util.List,hadur117.core.model.RobotStateLog)" class="member-name-link">Baton(List&lt;Baton.Shot&gt;, RobotStateLog)</a> - Constructor for class hadur117.core.model.<a href="hadur117/core/model/Baton.html" title="class in hadur117.core.model">Baton</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/model/Baton.html#%3Cinit%3E(java.util.List,hadur117.core.model.RobotStateLog,hadur117.core.model.Baton.Gun)" class="member-name-link">Baton(List&lt;Baton.Shot&gt;, RobotStateLog, Baton.Gun)</a> - Constructor for class hadur117.core.model.<a href="hadur117/core/model/Baton.html" title="class in hadur117.core.model">Baton</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/model/Baton.Gun.html" class="type-name-link" title="enum class in hadur117.core.model">Baton.Gun</a> - Enum Class in <a href="hadur117/core/model/package-summary.html">hadur117.core.model</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#HAND-2">HAND-2</a>, <a class="req" href="../requirements.html#HAND-3">HAND-3</a>: what the giving role's book says of a robot's gun.</div>
+</dd>
 <dt><a href="hadur117/core/model/Baton.Shot.html" class="type-name-link" title="class in hadur117.core.model">Baton.Shot</a> - Class in <a href="hadur117/core/model/package-summary.html">hadur117.core.model</a></dt>
 <dd>
 <div class="block">One shot the giving role saw fired.</div>
@@ -3182,10 +3188,27 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#ENDGAME_LATERAL" class="member-name-link">ENDGAME_LATERAL</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/duel/HandOffDesign.html#ENDGAME_LEARNED_DODGE" class="member-name-link">ENDGAME_LEARNED_DODGE</a> - Static variable in class hadur117.core.duel.<a href="hadur117/core/duel/HandOffDesign.html" title="class in hadur117.core.duel">HandOffDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#HAND-2">HAND-2</a> (arm edge): when the melee's book says the survivor's gun is head-on (at least 3
+ hits on Hadur this battle, 60% of them within Hadur's width of head-on), the dodge planner
+ is on against it for the endgame, primed with the head-on expert.</div>
+</dd>
+<dt><a href="hadur117/core/duel/HandOffDesign.html#ENDGAME_LEARNED_SHIELD" class="member-name-link">ENDGAME_LEARNED_SHIELD</a> - Static variable in class hadur117.core.duel.<a href="hadur117/core/duel/HandOffDesign.html" title="class in hadur117.core.duel">HandOffDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#HAND-3">HAND-3</a> (arm eshd): the same verdict starts shield mode against the survivor on <a class="req" href="../requirements.html#SHIELD-15">SHIELD-15</a>'s
+ trial, listed or not; the trial's exits leave it for the battle once it fails.</div>
+</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#ENDGAME_RING_MAX" class="member-name-link">ENDGAME_RING_MAX</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#ENDGAME_RING_MIN" class="member-name-link">ENDGAME_RING_MIN</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/duel/HandOffDesign.html#ENDGAME_TABLE" class="member-name-link">ENDGAME_TABLE</a> - Static variable in class hadur117.core.duel.<a href="hadur117/core/duel/HandOffDesign.html" title="class in hadur117.core.duel">HandOffDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#HAND-1">HAND-1</a> (arm etab): the survivor's entries in the 1v1 mode table apply in the endgame as
+ in a duel: the shield list (shield mode, with the list's opening drive, shipped aims and
+ exits), the simple-aim dodge, the dodge planner, stop-and-go, heat-jit and the gun stack.</div>
+</dd>
 <dt><a href="hadur117/core/policy/Endgame.State.html" class="type-name-link" title="enum class in hadur117.core.policy">Endgame.State</a> - Enum Class in <a href="hadur117/core/policy/package-summary.html">hadur117.core.policy</a></dt>
 <dd>
 <div class="block">The endgame state for one tick.</div>
@@ -3193,6 +3216,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/melee/MeleeEndgame.html#endgameRing(int,boolean,boolean)" class="member-name-link">endgameRing(int, boolean, boolean)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeEndgame.html" title="class in hadur117.core.melee">MeleeEndgame</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MMOVE-4">MMOVE-4</a>'s endgame ring and lateral weight apply; <a class="req" href="../requirements.html#MEND-1">MEND-1</a> (<code>keepCrowd</code>) holds them off.</div>
+</dd>
+<dt><a href="hadur117/core/duel/DuelController.html#endgameSetting()" class="member-name-link">endgameSetting()</a> - Method in class hadur117.core.duel.<a href="hadur117/core/duel/DuelController.html" title="class in hadur117.core.duel">DuelController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#HAND-1">HAND-1</a> to <a class="req" href="../requirements.html#HAND-3">HAND-3</a>: what the last hand-off set ("plain" for nothing; "-" before any).</div>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.View.html#enemies" class="member-name-link">enemies</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.View.html" title="class in hadur117.core.melee">MinimumRiskMovement.View</a></dt>
 <dd>&nbsp;</dd>
@@ -4907,6 +4934,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/melee/MeleeController.html#gun()" class="member-name-link">gun()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeController.html" title="class in hadur117.core.melee">MeleeController</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/model/Baton.html#gun()" class="member-name-link">gun()</a> - Method in class hadur117.core.model.<a href="hadur117/core/model/Baton.html" title="class in hadur117.core.model">Baton</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#HAND-2">HAND-2</a>, <a class="req" href="../requirements.html#HAND-3">HAND-3</a>: the survivor's gun as the giving role's book classed it.</div>
+</dd>
 <dt><a href="hadur117/core/memory/Seeds.html#gun(double%5B%5D)" class="member-name-link">gun(double[])</a> - Static method in class hadur117.core.memory.<a href="hadur117/core/memory/Seeds.html" title="class in hadur117.core.memory">Seeds</a></dt>
 <dd>
 <div class="block">Quantises a gun sample for storage.</div>
@@ -5362,9 +5393,18 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../requirements.html#MMEM-2">MMEM-2</a>: the melee's survivor, scanned by the duel for the first time, after the Duel
  has switched to it and before it logs the scan.</div>
 </dd>
+<dt><a href="hadur117/core/duel/HandOffDesign.html" class="type-name-link" title="class in hadur117.core.duel">HandOffDesign</a> - Class in <a href="hadur117/core/duel/package-summary.html">hadur117.core.duel</a></dt>
+<dd>
+<div class="block">The endgame hand-off switches (<a class="req" href="../requirements.html#HAND-1">HAND-1</a> to <a class="req" href="../requirements.html#HAND-3">HAND-3</a>): what the duel plays when it takes over
+ from the melee with one opponent left, off a team.</div>
+</dd>
 <dt><a href="hadur117/core/HadurCore.html#handOffPending()" class="member-name-link">handOffPending()</a> - Method in class hadur117.core.<a href="hadur117/core/HadurCore.html" title="class in hadur117.core">HadurCore</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MMEM-2">MMEM-2</a>: whether the next duel scan hands a melee's survivor over.</div>
+</dd>
+<dt><a href="hadur117/core/duel/DuelController.html#handOffSwitches(boolean,boolean,boolean)" class="member-name-link">handOffSwitches(boolean, boolean, boolean)</a> - Method in class hadur117.core.duel.<a href="hadur117/core/duel/DuelController.html" title="class in hadur117.core.duel">DuelController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#HAND-1">HAND-1</a> to <a class="req" href="../requirements.html#HAND-3">HAND-3</a>: sets the hand-off switches, for tests and the bench's arms.</div>
 </dd>
 <dt><a href="hadur117/core/role/Charter.html#has(hadur117.core.role.RoleId)" class="member-name-link">has(RoleId)</a> - Method in enum class hadur117.core.role.<a href="hadur117/core/role/Charter.html" title="enum class in hadur117.core.role">Charter</a></dt>
 <dd>
@@ -5499,6 +5539,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/melee/OpponentStats.GunType.html#HEAD_ON" class="member-name-link">HEAD_ON</a> - Enum constant in enum class hadur117.core.melee.<a href="hadur117/core/melee/OpponentStats.GunType.html" title="enum class in hadur117.core.melee">OpponentStats.GunType</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/VirtualBullet.Aim.html#HEAD_ON" class="member-name-link">HEAD_ON</a> - Enum constant in enum class hadur117.core.melee.<a href="hadur117/core/melee/VirtualBullet.Aim.html" title="enum class in hadur117.core.melee">VirtualBullet.Aim</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/model/Baton.Gun.html#HEAD_ON" class="member-name-link">HEAD_ON</a> - Enum constant in enum class hadur117.core.model.<a href="hadur117/core/model/Baton.Gun.html" title="enum class in hadur117.core.model">Baton.Gun</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/FieldGun.html#HEAD_ON" class="member-name-link">HEAD_ON</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
 <dd>
@@ -6747,6 +6789,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/melee/OpponentStats.GunType.html#LEADING" class="member-name-link">LEADING</a> - Enum constant in enum class hadur117.core.melee.<a href="hadur117/core/melee/OpponentStats.GunType.html" title="enum class in hadur117.core.melee">OpponentStats.GunType</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/model/Baton.Gun.html#LEADING" class="member-name-link">LEADING</a> - Enum constant in enum class hadur117.core.model.<a href="hadur117/core/model/Baton.Gun.html" title="enum class in hadur117.core.model">Baton.Gun</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/model/BattleFacts.html#leads()" class="member-name-link">leads()</a> - Method in class hadur117.core.model.<a href="hadur117/core/model/BattleFacts.html" title="class in hadur117.core.model">BattleFacts</a></dt>
 <dd>
 <div class="block">Whether we lead our team: only the leader starts with <a href="hadur117/core/model/BattleFacts.html#LEADER_ENERGY"><code>BattleFacts.LEADER_ENERGY</code></a>, so each
@@ -7057,6 +7101,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur/bench/LiveDetails.Pairing.html" class="type-name-link" title="class in hadur.bench">LiveDetails.Pairing</a> - Record Class in <a href="hadur/bench/package-summary.html">hadur.bench</a></dt>
 <dd>
 <div class="block">One row of the BotDetails table: one live pairing against one opponent.</div>
+</dd>
+<dt><a href="hadur117/core/duel/DuelController.html#liveModes()" class="member-name-link">liveModes()</a> - Method in class hadur117.core.duel.<a href="hadur117/core/duel/DuelController.html" title="class in hadur117.core.duel">DuelController</a></dt>
+<dd>
+<div class="block">The movement's live per-opponent modes, for tests: which of the dodger, the dodge
+ planner, stop-and-go, heat-jit and shield mode are on now, comma-separated, "-" for none.</div>
 </dd>
 <dt><a href="hadur117/core/gun/GunController.html#liveVerdict(java.lang.String)" class="member-name-link">liveVerdict(String)</a> - Method in class hadur117.core.gun.<a href="hadur117/core/gun/GunController.html" title="class in hadur117.core.gun">GunController</a></dt>
 <dd>
@@ -14674,6 +14723,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Sums over the members' <code>T</code> records: teammate hits, teammate bullet hits, collisions, blocked shots, reports merged, drives fenced (T1).</div>
 </dd>
+<dt><a href="hadur117/core/duel/DuelController.html#team(boolean)" class="member-name-link">team(boolean)</a> - Method in class hadur117.core.duel.<a href="hadur117/core/duel/DuelController.html" title="class in hadur117.core.duel">DuelController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#HAND-1">HAND-1</a> to <a class="req" href="../requirements.html#HAND-3">HAND-3</a>: tells the duel it is on a team, where the hand-off switches never act.</div>
+</dd>
 <dt><a href="hadur117/core/melee/MeleeController.html#team(int)" class="member-name-link">team(int)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeController.html" title="class in hadur117.core.melee">MeleeController</a></dt>
 <dd>
 <div class="block">MMOVE-8: this member's place in its team's roster (negative off a team).</div>
@@ -15405,6 +15458,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#SHIELD-15">SHIELD-15</a>: shield mode on trial against every unlisted duel opponent.</div>
 </dd>
+<dt><a href="hadur117/core/shieldmode/ShieldMode.html#trial(boolean)" class="member-name-link">trial(boolean)</a> - Method in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldMode.html" title="class in hadur117.core.shieldmode">ShieldMode</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#HAND-3">HAND-3</a>: asks for <a class="req" href="../requirements.html#SHIELD-15">SHIELD-15</a>'s trial against the next opponent decided for, listed or not,
+ whatever the trial switch says, with the trial's exits.</div>
+</dd>
 <dt><a href="hadur117/core/shieldmode/ShieldDesign.html#TRIAL_BLANK_HITS" class="member-name-link">TRIAL_BLANK_HITS</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldDesign.html" title="class in hadur117.core.shieldmode">ShieldDesign</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#SHIELD-15">SHIELD-15</a>: hits on us with none shot down after which the trial fails.</div>
@@ -15646,6 +15704,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/memory/Tiers.Move.html#UNKNOWN" class="member-name-link">UNKNOWN</a> - Enum constant in enum class hadur117.core.memory.<a href="hadur117/core/memory/Tiers.Move.html" title="enum class in hadur117.core.memory">Tiers.Move</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/model/Baton.Gun.html#UNKNOWN" class="member-name-link">UNKNOWN</a> - Enum constant in enum class hadur117.core.model.<a href="hadur117/core/model/Baton.Gun.html" title="enum class in hadur117.core.model">Baton.Gun</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/memory/LineageKey.html#UNKNOWN" class="member-name-link">UNKNOWN</a> - Static variable in class hadur117.core.memory.<a href="hadur117/core/memory/LineageKey.html" title="class in hadur117.core.memory">LineageKey</a></dt>
 <dd>
 <div class="block">The key for a null or blank name, and for the library's warm-up profile.</div>
@@ -15811,6 +15871,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </dd>
+<dt><a href="hadur117/core/model/Baton.Gun.html#valueOf(java.lang.String)" class="member-name-link">valueOf(String)</a> - Static method in enum class hadur117.core.model.<a href="hadur117/core/model/Baton.Gun.html" title="enum class in hadur117.core.model">Baton.Gun</a></dt>
+<dd>
+<div class="block">Returns the enum constant of this class with the specified name.</div>
+</dd>
 <dt><a href="hadur117/core/model/Wave.WavePosition.html#valueOf(java.lang.String)" class="member-name-link">valueOf(String)</a> - Static method in enum class hadur117.core.model.<a href="hadur117/core/model/Wave.WavePosition.html" title="enum class in hadur117.core.model">Wave.WavePosition</a></dt>
 <dd>
 <div class="block">Returns the enum constant of this class with the specified name.</div>
@@ -15937,6 +16001,11 @@ the order they are declared.</div>
 the order they are declared.</div>
 </dd>
 <dt><a href="hadur117/core/memory/Tiers.Move.html#values()" class="member-name-link">values()</a> - Static method in enum class hadur117.core.memory.<a href="hadur117/core/memory/Tiers.Move.html" title="enum class in hadur117.core.memory">Tiers.Move</a></dt>
+<dd>
+<div class="block">Returns an array containing the constants of this enum class, in
+the order they are declared.</div>
+</dd>
+<dt><a href="hadur117/core/model/Baton.Gun.html#values()" class="member-name-link">values()</a> - Static method in enum class hadur117.core.model.<a href="hadur117/core/model/Baton.Gun.html" title="enum class in hadur117.core.model">Baton.Gun</a></dt>
 <dd>
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
