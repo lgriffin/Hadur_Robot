@@ -24,8 +24,10 @@ string table costs only its read, `TABLE.charAt(i)`, which is about 6 to 8 bytes
   669-bot tables on a fresh sample (`kitlab/mini-wide2-field.txt`). The 669-row table builds to
   1,493 B. **Cloud result** (`docs/bench/local/jaylexi-po-all.md`, fresh sample mini-wide2, 672
   battles an arm): the 112-row table reads **-0.10 +- 0.15** (most of these bots have no row),
-  and the 669-row table **+0.44 +- 0.16** over G. Rows pay only for bots they were learned on, so
-  a release needs the whole division's table.
+  and the 669-row table **+0.44 +- 0.16** over G. The two tables also differ in their field row
+  and first-shot gun table (each is learned from its own set of bots), so this compares whole
+  tables, not row coverage alone. Still, the 669-row table is the one that holds, so it is the
+  release candidate.
 
 ## Where the bytes are
 
