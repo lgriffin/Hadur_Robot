@@ -46,7 +46,7 @@ class MeleeScalPlanTest {
             "the read uses the version prep built, not the pom at read time");
         assertTrue(queue.contains("C=${MELEE_WORKERS}"), "the width is the host's melee width, fixed at prep");
         assertTrue(queue.contains("screen \"$W\"-aa --base2 \"$W\"-bb"), "each arm against both baselines");
-        assertTrue(queue.contains("--seeds 6 --gain 0.3 --survival-slack 1"), "an arm passes at +0.30 with the low end above 0");
+        assertTrue(queue.contains("--seeds 6 --gain 0 --survival-slack 1"), "an arm passes with the low end above 0");
         assertTrue(queue.contains("open_results_pr.sh claude/pc-melee-scal-results"));
     }
 
@@ -97,7 +97,8 @@ class MeleeScalPlanTest {
         for (String f : List.of("MELEE_MIX", "MELEE_PATH_DANGER", "MELEE_SHADE", "MELEE_BULLET_SHADE", "MELEE_SEARCH")) {
             assertTrue(move.contains("public static final boolean " + f + " = false;"), f + " ships off");
         }
-        assertTrue(Files.readString(Path.of(melee + "MeleeController.java")).contains("public static final boolean MELEE_CROSS = false;"));
+        assertTrue(Files.readString(Path.of(melee + "MeleeController.java")).contains("public static final boolean MELEE_CROSS = true;"),
+            "MMOVE-19 ships on from 3.21 (pc-melee-scal xh +0.19 +- 0.14, PR #484)");
         assertTrue(Files.readString(Path.of(melee + "MeleeEnergyPolicy.java")).contains("public static final boolean SCAL_POWER = false;"));
     }
 }

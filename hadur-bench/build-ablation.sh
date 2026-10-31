@@ -1066,7 +1066,10 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
         mcross)
             # ScalarR-inspired learning (docs/bench/scalarr-melee-decompile.md, MMOVE-19): the melee
             # surfer also learns each shooter's aim from its hits on other opponents, off a team
-            # only; duel and team fixtures bit for bit. Suffix xh.
+            # only; duel and team fixtures bit for bit. Suffix xh. Ships on from 3.21 (pc-melee-scal
+            # +0.19 +- 0.14, PR #484), so on master xh builds the robot as it is.
+            grep -q "public static final boolean MELEE_CROSS = true;" \
+                "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeController.java" ||
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeController.java" \
                 "public static final boolean MELEE_CROSS = false;" "public static final boolean MELEE_CROSS = true;"
             version="${version}xh" ;;

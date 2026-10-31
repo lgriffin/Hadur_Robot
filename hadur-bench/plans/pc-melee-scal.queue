@@ -23,7 +23,10 @@
 # all, about 4.1 h at ~620 battles/h) at the machine's melee width and CPU constant. The read pairs
 # bb with aa (A/A, within +-0.25) and each arm with the mean of aa and bb (--base2), battle for
 # battle. Melee only: the switches act off a team, so the duel and team play are untouched.
-# Verdict: an arm passes at +0.30 or more with the 95% low end above 0 (--gain 0.3), Hadur's share
+# DONE 2026-10-31 (PR #484). MMOVE-19 now ships on, so on master the xh build is the aa robot: a fresh
+# run of this card reads xh as an A/A copy, not as an arm (as ms on pc-melee-surf since PR #466).
+# Verdict: an arm passes with its 95% low end above 0 (--gain 0; the card ran at --gain 0.3 and Leigh
+# lowered the bar on its read, 2026-10-31: xh +0.19 +- 0.14 passes, PR #484), Hadur's share
 # of others outlived no more than 1 point lower and the 1-30 endgame wins no more than 3 points
 # lower; if its skipped turns a battle rise more than 20% over aa's it fails whatever its APS (read
 # from the arm reports). The card ends in a results PR on claude/pc-melee-scal-results whatever the
@@ -89,7 +92,7 @@ scbs   | mvn -q exec:java "-Dexec.args=@work/melee-scal-bs.args"
   watch: battles=276
   stop: fails 20
   stop: stall 30m
-scread | V=$(cat work/melee-scal.version) && test -n "$V" && W=work/melee-scal-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm wm="$W"-wm --arm xh="$W"-xh --arm wq="$W"-wq --arm bw="$W"-bw --arm fv="$W"-fv --arm ec="$W"-ec --arm bs="$W"-bs --census melee-census-317.txt --seeds 6 --gain 0.3 --survival-slack 1 --out ${OUT}/melee-scal-read.md --title "ScalarR-inspired melee switches on $V" || true; } && test -s ${OUT}/melee-scal-read.md
+scread | V=$(cat work/melee-scal.version) && test -n "$V" && W=work/melee-scal-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm wm="$W"-wm --arm xh="$W"-xh --arm wq="$W"-wq --arm bw="$W"-bw --arm fv="$W"-fv --arm ec="$W"-ec --arm bs="$W"-bs --census melee-census-317.txt --seeds 6 --gain 0 --survival-slack 1 --out ${OUT}/melee-scal-read.md --title "ScalarR-inspired melee switches on $V" || true; } && test -s ${OUT}/melee-scal-read.md
   after: scbs
 scpr   | bash tools/open_results_pr.sh claude/pc-melee-scal-results "ScalarR-inspired melee switches (MGUN-22, MMOVE-16..21)" ${OUT}/melee-scal-read.md $(ls ${OUT}/melee-scal-aa.md ${OUT}/melee-scal-bb.md ${OUT}/melee-scal-wm.md ${OUT}/melee-scal-xh.md ${OUT}/melee-scal-wq.md ${OUT}/melee-scal-bw.md ${OUT}/melee-scal-fv.md ${OUT}/melee-scal-ec.md ${OUT}/melee-scal-bs.md 2>/dev/null)
   after: scread

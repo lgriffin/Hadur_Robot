@@ -221,7 +221,8 @@ never takes the new path. Arms, each a melee-only switch:
 
 Expected: lifting endgame wins against ranks 1-60 from 52% to about 63% is +1.2 rounds a battle,
 about +0.35; e-carry and e-mode can do more against the top 30, where 3.4 duels a battle are lost.
-**Gate**: +0.3 census APS with the 95% interval above 0, the 1-30 survivor band no worse,
+**Gate**: census APS with the 95% interval above 0 (from 2026-10-31; the +0.3 cut the stages first
+carried is now only the mark of a gain worth a release alone), the 1-30 survivor band no worse,
 A/A clean. The arms can share one card with Stage 2's first arms.
 
 ### Stage 2: a play-it-forward melee gun
@@ -427,6 +428,22 @@ A/A copy (bb -0.13 ± 0.86, clean) gx read -0.88 ± 0.53 and gr +0.18 ± 0.57; t
 read -0.36 ± 0.50. Both expert builds entered the endgame about 6 energy lower. The parts of Ogi's gun
 that pay (depth, power 3 close in) are already in Hadur. Leigh chose to park the line: the switches
 stay on master, off, and `pc-melee-gun` is retired before it ran.
+
+**ScalarR-inspired switches (MGUN-22, MMOVE-16..21, 2026-10-31).** Seven ideas from ScalarR's movement
+and gun, each our own build on the melee surfer, each a switch off a team only (card `pc-melee-scal`,
+BENCH-146; results PR #484, read `docs/bench/local/melee-scal-read.md`): aim-share wave weights (wm),
+distance-and-energy power (ec), path danger (wq), robot shade (bs), cross-learning from hits on
+others (xh), own-bullet shade (bw) and a two-wave step search (fv). On 46 fields x 6 seeds (276
+battles an arm, bb -0.03 ± 0.21 clean): xh +0.19 ± 0.14 (low end +0.05, endgame level, skips +18%),
+ec +0.18 ± 0.15 (endgame -4.8, skips +43%), bw +0.10 ± 0.15, wm +0.08 (skips +93%), bs +0.06
+(endgame -3.7), wq 0.00, fv -0.20 ± 0.21. The cloud smokes (+0.45 to +0.94) did not repeat. No arm
+cleared the +0.3 cut; Leigh (2026-10-31): "Where is the .3 coming from? It seems excessively high
+and we are leaving .19 on the table." The cut was this plan's, set above the early A/A noise
+(±0.3 at 4 seeds), and 6-seed screens resolve ±0.15, so the gate above drops the APS cut: the low
+end above 0 with the endgame, survival and skip bars held passes. **MMOVE-19 ships on from 3.21**
+(cross-learning, the one arm that passes that gate); ec, bs and wm fail their endgame or skip bars,
+bw, wq and fv are inside noise. The line is closed; nothing further goes on the PC until the surfer
+and xh are live and read per opponent on ranks 11-100.
 
 ### Stage 4: stack, tailor, confirm
 

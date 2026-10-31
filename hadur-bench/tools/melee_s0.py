@@ -61,8 +61,10 @@ AA_MEAN = 0.2
 AA_HALF = 0.3
 # Stage 1 screen (BENCH-109): the A/A copy's paired mean within this; an arm passes at GAIN or
 # more with its 95% low end above 0 and the 1-30 endgame wins at most BAND_SLACK points lower.
+# GAIN is 0 since 2026-10-31 (Leigh on pc-melee-scal's +0.19: "we are leaving .19 on the table"):
+# the low end above 0 is the cut; +0.3 is only the mark of a gain worth a release alone.
 SCREEN_AA = 0.25
-GAIN = 0.3
+GAIN = 0.0
 BAND_SLACK = 3.0
 # BENCH-146: an arm whose skipped turns a battle rise more than this share over the baseline's fails
 # whatever its APS (the card's rule; the live client counts skips against Hadur).

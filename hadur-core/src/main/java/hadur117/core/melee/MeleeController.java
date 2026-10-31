@@ -124,7 +124,7 @@ public class MeleeController {
      * its wave at the victim between the victim's last two scans) teaches that shooter's aim, as a
      * hit on Hadur does (MMOVE-15). Off.
      */
-    public static final boolean MELEE_CROSS = false;
+    public static final boolean MELEE_CROSS = true;
     /** MMOVE-19: how far, energy, a loss may be from a shot's damage (losses are kept to 0.01). */
     static final double CROSS_SLACK = 0.02;
     private boolean cross = MELEE_CROSS;
