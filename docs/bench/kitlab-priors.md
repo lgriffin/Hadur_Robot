@@ -16,9 +16,13 @@ string table costs only its read, `TABLE.charAt(i)`, which is about 6 to 8 bytes
 - **Priors learned for the whole field do not pay.** A gun prior loses 1.2 APS. A danger profile
   of where the field aims is flat. A pattern library baked into Eveimear's gun lowers its offline
   hit rate.
-- **Per-opponent rows are the open lead.** Each row holds where that opponent's bullets go, keyed
-  by its name hash. They read +0.31 and +0.37 on the cloud, inside the noise. PC card
-  `pc-jaylexi-po` reads them on 112 bots.
+- **Per-opponent rows pay.** Each row holds where that opponent's bullets go, keyed by its name
+  hash. On the PC (`pc-jaylexi-po`, PR #500: 112 bots x 6 seeds, rows learned from separate
+  battles) PO300 reads **+0.77 +- 0.14** and PO2000 **+0.88 +- 0.15** over G, the 0.2 control.
+  Those are the bots the rows were learned on. Live, the other 557 bots of the division would get
+  the field's row, so card `pc-jaylexi-po-all` learns a row for all 669 and reads the 112-bot and
+  669-bot tables on a fresh sample (`kitlab/mini-wide2-field.txt`). A synthetic 669-row table
+  builds to 1,493 B and fits the constant pool.
 
 ## Where the bytes are
 

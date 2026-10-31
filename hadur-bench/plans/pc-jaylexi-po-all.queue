@@ -1,0 +1,77 @@
+# JayLexi with per-opponent aim rows for the whole MiniRumble division (docs/bench/kitlab-priors.md).
+# pc-jaylexi-po (PR #500) proved the rows on the 112 bots they were learned on: PO300 +0.77 +- 0.14,
+# PO2000 +0.88 +- 0.15 over G. Live, only those 112 of 669 bots would have a row; the rest get the
+# field's row. This card learns a row for every bot in the division and reads both tables on a fresh
+# stratified sample (kitlab/mini-wide2-field.txt, seed 4: the same top 12, mostly other band bots),
+# so it shows what each table is worth on the division, as it would be live.
+#   ./queue.sh run pc-jaylexi-po-all        (or  .\queue.ps1 run pc-jaylexi-po-all)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned (--parallel auto: the host profile's width). Every
+# step resumes; no step needs a decision. Nothing here touches Hadur or the other small bots, and
+# nothing is uploaded anywhere.
+#
+# Steps:
+#   harvest  JayLexi 0.2 (the released jar) on kitlab/mini-all-field.txt (all 669 bots of the
+#            division but our own, weight 1 each), 3 seeds, truth log on: 2,007 battles, about 2 GB
+#            of truth logs. The rows are learned from these.
+#   build    P112: PO2000 rows for mini-wide's 112 bots only (the PR #500 table), learned from this
+#            harvest. PALL: PO2000 rows for all 669 (about 31,000 chars, 1,493 B: checked on a
+#            synthetic table). G as before. All three with ecj + ProGuard.
+#   G2       the control on mini-wide2: 112 bots x 6 seeds = 672 battles, 35 rounds each.
+#   P112     672 battles.
+#   PALL     672 battles.
+# About 40 min in all on the PC (harvest about 12 min, build about 8, each arm about 3 at PR #500's rate).
+# Read: P112 and PALL against G2 on the same opponents (the paired gain). PALL holds when its gain's
+# low end is above zero; it should read above P112 if the rows carry to bots outside mini-wide.
+# Leigh decides any release.
+# Stop rules on every bench step (docs/bench/watch.md; halt, every battle fought is kept and a rerun
+# resumes): 20 failed battles (a broken or missing jar), no battle in 30 minutes (a hung step), or 40+
+# skipped turns a battle over the last 100 (the PR #331 build-up). A halt at worst leaves the rest of
+# that step and the steps after it unrun, at most 4,023 battles (about 40 min). No early finish on
+# score: each step is one robot. ALERT opens an issue for Leigh on a stop.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set REL = https://github.com/lgriffin/Hadur_Robot/releases/download
+set J02 = opponents/hadur117.mini.JayLexi_0.2.jar
+
+prep | ./fetch-opponents.sh --set kitlab/mini-all-field.txt && ./fetch-opponents.sh --set kitlab/mini-wide2-field.txt && curl -fsSL -o ${J02} ${REL}/jaylexi-v0.2/hadur117.mini.JayLexi_0.2.jar && (python3 -c "import numpy" || python3 -m pip install numpy) && mvn -q dependency:get -Dartifact=org.eclipse.jdt:ecj:3.33.0 && mvn -q dependency:get -Dartifact=com.guardsquare:proguard-base:7.8.2 && mkdir -p work && printf '%s\n' --set kitlab/mini-all-field.txt --seeds 3 --rounds 35 --parallel auto --unseeded true --robot-jar ${J02} --robot "hadur117.mini.JayLexi 0.2" --truth-log true --child-heap 512M --out work/kitlab-poall-harvest > work/kitlab-poall-harvest.args
+
+harvest | ${MVN} "-Dexec.args=@work/kitlab-poall-harvest.args"
+  after: prep
+  watch: battles=2007
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+build | python3 tools/kitlab_priors.py kitlab/mini-wide-field.txt work/kitlab-poall-harvest --out work/priors-p112.json && python3 tools/kitlab_priors.py kitlab/mini-all-field.txt work/kitlab-poall-harvest --out work/priors-pall.json && python3 tools/kitlab_prior_arm.py work/priors-p112.json kitlab/arms/JayLexi-PO.tmpl work/JayLexi-P112.java --opp-max 2000 && python3 tools/kitlab_prior_arm.py work/priors-pall.json kitlab/arms/JayLexi-PO.tmpl work/JayLexi-PALL.java --opp-max 2000 && bash kitlab/build_arm_pg.sh kitlab/arms/JayLexi-G.java hadur117.mini.JayLexi g && bash kitlab/build_arm_pg.sh work/JayLexi-P112.java hadur117.mini.JayLexi p112 && bash kitlab/build_arm_pg.sh work/JayLexi-PALL.java hadur117.mini.JayLexi pall && bash kitlab/args.sh mini-wide2 kitlab/jars/hadur117.mini.JayLexi_g.jar "hadur117.mini.JayLexi g" poall-G2 6 && bash kitlab/args.sh mini-wide2 kitlab/jars/hadur117.mini.JayLexi_p112.jar "hadur117.mini.JayLexi p112" poall-P112 6 && bash kitlab/args.sh mini-wide2 kitlab/jars/hadur117.mini.JayLexi_pall.jar "hadur117.mini.JayLexi pall" poall-PALL 6
+  after: harvest
+
+G2 | ${MVN} "-Dexec.args=@work/kitlab-poall-G2.args"
+  after: build
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+P112 | ${MVN} "-Dexec.args=@work/kitlab-poall-P112.args"
+  after: G2
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+PALL | ${MVN} "-Dexec.args=@work/kitlab-poall-PALL.args"
+  after: P112
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+read | (echo "# JayLexi per-opponent aim rows for the whole MiniRumble division (pc-jaylexi-po-all)" && echo && echo '## P112 (rows for mini-wide only) against G2, on mini-wide2' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide2-field.txt work/kitlab-poall-P112 --ref work/kitlab-poall-G2 --ref-aps 87.34 && echo '```' && echo && echo '## PALL (rows for all 669) against G2, on mini-wide2' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide2-field.txt work/kitlab-poall-PALL --ref work/kitlab-poall-G2 --ref-aps 87.34 && echo '```') > ${OUT}/jaylexi-po-all.md
+  after: PALL
+
+pr | bash tools/open_results_pr.sh claude/pc-jaylexi-po-all-results "JayLexi per-opponent aim rows for the whole MiniRumble division" ${OUT}/jaylexi-po-all.md
+  after: read
