@@ -12,3 +12,13 @@
 09:23:15 watching cccn: 3 stop rule(s)
 09:46:28 progress cccn: 274/1104 (25%) battles, 708/h, ETA 1.2 h, 0 failed, skips 10.7/battle (last 100)
 10:16:44 progress cccn: 760/1104 (69%) battles, 852/h, ETA 24 min, 0 failed, skips 14.5/battle (last 100)
+10:33:37 cccn exit=0 in 4222 s
+10:33:37 start ccglob
+10:33:38 ccglob exit=0 in 0 s
+10:33:38 start ccpick
+10:34:19 ccpick exit=0 in 40 s
+10:34:19 start ccgate
+10:34:19 watching ccgate: 3 stop rule(s)
+10:43:20 ccgate exit=0 in 540 s
+10:43:20 start ccgbb
+10:43:20 watching ccgbb: 3 stop rule(s)

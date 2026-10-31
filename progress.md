@@ -1,14 +1,14 @@
 # Queue pc-team-concord: progress
 
-Updated 2026-10-31 10:29:51 PC time (10:29 UTC), runner pid 21584.
+Updated 2026-10-31 10:44:58 PC time (10:44 UTC), runner pid 21584.
 
 - `ccprep` done, exit 0 in 2 min
 - `ccbb` done, exit 0 in 1.1 h
-- `cccn` running
-- `ccglob` pending
-- `ccpick` pending
-- `ccgate` pending
-- `ccgbb` pending
+- `cccn` done, exit 0 in 1.2 h
+- `ccglob` done, exit 0 in 0 min
+- `ccpick` done, exit 0 in 1 min
+- `ccgate` done, exit 0 in 9 min
+- `ccgbb` running
 - `ccsum` pending
 - `ccpr` pending
 
@@ -27,32 +27,55 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### cccn
 
-**1011 of 1104 battles** (92%), 0 failed. Running 1.1 h, 911 battles/h, about 6 min left (ends ~10:35 PC time). Last battle 0 min ago.
-Skipped turns a battle: 10.7 overall, first 100 11.3, last 100 11.3.
+**1104 of 1104 battles** (100%), 0 failed. Running 1.2 h, 941 battles/h, about 0 min left (ends ~10:33 PC time). Last battle 0 min ago.
+Skipped turns a battle: 10.2 overall, first 100 11.3, last 100 4.6.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 1011 |
+| `fails 20` | halt | ok | 0 failed of 1104 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 11.3 a battle over the last 100 (first 100: 11.3) |
+| `skips 40 over 100` | halt | ok | 4.6 a battle over the last 100 (first 100: 11.3) |
 
-Stopping now would leave 93 battles unrun (about 6 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### ccgate
+
+**160 battles**, 0 failed. Running 9 min, 1065 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 10.0 overall, first 100 11.3, last 100 8.4.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 160 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | ok | 8.4 a battle over the last 100 (first 100: 11.3) |
+
+### ccgbb
+
+**12 battles**, 0 failed. Running 2 min, 437 battles/h. Last battle 1 min ago.
+Skipped turns a battle: 11.3 overall, first 12 11.3, last 12 11.3.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 12 |
+| `stall 30m` | halt | ok | last battle 1 min ago |
+| `skips 40 over 100` | halt | waiting | 12 of 100 battles to read |
 
 ### Queue log (last lines)
 
 ```
-08:13:41 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
-08:13:41 start ccprep
-08:13:44 progress pushed to origin claude/pc-team-concord-progress (every 15 min)
-08:15:31 ccprep exit=0 in 109 s
-08:15:31 start ccbb
-08:15:31 watching ccbb: 3 stop rule(s)
-08:15:42 progress ccbb: 0/1104 (0%) battles, 0 failed
-08:45:58 progress ccbb: 398/1104 (36%) battles, 784/h, ETA 54 min, 0 failed, skips 11.2/battle (last 100)
-09:16:14 progress ccbb: 950/1104 (86%) battles, 939/h, ETA 10 min, 0 failed, skips 6.3/battle (last 100)
 09:23:15 ccbb exit=0 in 4063 s
 09:23:15 start cccn
 09:23:15 watching cccn: 3 stop rule(s)
 09:46:28 progress cccn: 274/1104 (25%) battles, 708/h, ETA 1.2 h, 0 failed, skips 10.7/battle (last 100)
 10:16:44 progress cccn: 760/1104 (69%) battles, 852/h, ETA 24 min, 0 failed, skips 14.5/battle (last 100)
+10:33:37 cccn exit=0 in 4222 s
+10:33:37 start ccglob
+10:33:38 ccglob exit=0 in 0 s
+10:33:38 start ccpick
+10:34:19 ccpick exit=0 in 40 s
+10:34:19 start ccgate
+10:34:19 watching ccgate: 3 stop rule(s)
+10:43:20 ccgate exit=0 in 540 s
+10:43:20 start ccgbb
+10:43:20 watching ccgbb: 3 stop rule(s)
 ```

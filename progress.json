@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-concord",
- "updated": 1793442591.2806835,
+ "updated": 1793443498.8983808,
  "steps": {
   "ccprep": {
    "status": "done",
@@ -15,20 +15,32 @@
    "end": "2026-10-31T09:23:15"
   },
   "cccn": {
-   "status": "running",
-   "start": "2026-10-31T09:23:15"
+   "status": "done",
+   "exit": 0,
+   "seconds": 4222,
+   "end": "2026-10-31T10:33:37"
   },
   "ccglob": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-10-31T10:33:38"
   },
   "ccpick": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 40,
+   "end": "2026-10-31T10:34:19"
   },
   "ccgate": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 540,
+   "end": "2026-10-31T10:43:20"
   },
   "ccgbb": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-10-31T10:43:20"
   },
   "ccsum": {
    "status": "pending"
@@ -84,8 +96,8 @@
   {
    "step": "cccn",
    "started": 1793438595.011314,
-   "updated": 1793442591.2707758,
-   "elapsed": 3996.25946187973,
+   "updated": 1793442817.9884524,
+   "elapsed": 4222.977138519287,
    "expected": 1104,
    "panel": null,
    "field": null,
@@ -93,20 +105,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 1011,
+   "battles": 1104,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 910.751675339927,
-   "eta": 367.6084371462067,
-   "fraction": 0.9157608695652174,
-   "last_battle_age": 6.663872480392456,
+   "rate": 941.1369916611847,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 6.51312780380249,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 1011"
+     "detail": "0 failed of 1104"
     },
     {
      "rule": "stall 30m",
@@ -118,11 +130,97 @@
      "rule": "skips 40 over 100",
      "action": "halt",
      "state": "ok",
-     "detail": "11.3 a battle over the last 100 (first 100: 11.3)"
+     "detail": "4.6 a battle over the last 100 (first 100: 11.3)"
     }
    ],
-   "skips_mean": 10.677546983184966,
-   "skips_last100": 11.28
+   "skips_mean": 10.160326086956522,
+   "skips_last100": 4.6
+  },
+  {
+   "step": "ccgate",
+   "started": 1793442859.3925815,
+   "updated": 1793443400.0731225,
+   "elapsed": 540.6805410385132,
+   "expected": null,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 160,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 1065.3240800818296,
+   "eta": null,
+   "fraction": null,
+   "last_battle_age": 1.6694409847259521,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 160"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "ok",
+     "detail": "8.4 a battle over the last 100 (first 100: 11.3)"
+    }
+   ],
+   "skips_mean": 9.99375,
+   "skips_last100": 8.38
+  },
+  {
+   "step": "ccgbb",
+   "started": 1793443400.0851195,
+   "updated": 1793443498.8899138,
+   "elapsed": 98.80479431152344,
+   "expected": null,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 12,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 437.22574699962365,
+   "eta": null,
+   "fraction": null,
+   "last_battle_age": 35.5357232093811,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 12"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 1 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "12 of 100 battles to read"
+    }
+   ],
+   "skips_mean": 11.333333333333334,
+   "skips_last100": 11.333333333333334
   }
  ]
 }
