@@ -16,3 +16,10 @@
 15:21:27 didm exit=0 in 1536 s
 15:21:27 start dila
 15:21:27 watching dila: 2 stop rule(s)
+15:37:32 progress dila: 154/276 (56%) battles, 575/h, ETA 13 min, 0 failed, skips 60.5/battle (last 100)
+15:47:04 dila exit=0 in 1536 s
+15:47:04 start diread
+15:47:19 diread exit=0 in 14 s
+15:47:19 start dipr
+15:47:26 dipr exit=0 in 7 s
+15:47:26 ALLDONE

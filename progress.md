@@ -1,14 +1,14 @@
 # Queue pc-melee-dia: progress
 
-Updated 2026-10-31 15:34:31 PC time (15:34 UTC), runner pid 63404.
+Updated 2026-10-31 15:47:26 PC time (15:47 UTC), runner pid 63404.
 
 - `diprep` done, exit 0 in 2 min
 - `diaa` done, exit 0 in 25 min
 - `dibb` done, exit 0 in 25 min
 - `didm` done, exit 0 in 26 min
-- `dila` running
-- `diread` pending
-- `dipr` pending
+- `dila` done, exit 0 in 26 min
+- `diread` done, exit 0 in 0 min
+- `dipr` done, exit 0 in 0 min
 
 ### diaa
 
@@ -48,26 +48,19 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### dila
 
-**132 of 276 battles** (48%), 0 failed. Running 13 min, 607 battles/h, about 14 min left (ends ~15:48 PC time). Last battle 0 min ago.
-Skipped turns a battle: 55.5 overall, first 100 52.8, last 100 59.5.
+**276 of 276 battles** (100%), 0 failed. Running 26 min, 646 battles/h, about 0 min left (ends ~15:47 PC time). Last battle 0 min ago.
+Skipped turns a battle: 69.2 overall, first 100 52.8, last 100 82.8.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 132 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 144 battles unrun (about 14 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-14:06:11 diprep exit=0 in 146 s
-14:06:11 start diaa
-14:06:11 watching diaa: 2 stop rule(s)
-14:06:47 progress diaa: 0/276 (0%) battles, 0 failed
-14:30:59 diaa exit=0 in 1487 s
-14:30:59 start dibb
-14:30:59 watching dibb: 2 stop rule(s)
 14:37:03 progress dibb: 60/276 (22%) battles, 595/h, ETA 22 min, 0 failed, skips 94.4/battle (last 100)
 14:55:51 dibb exit=0 in 1491 s
 14:55:51 start didm
@@ -76,4 +69,11 @@ Stopping now would leave 144 battles unrun (about 14 min); every battle already 
 15:21:27 didm exit=0 in 1536 s
 15:21:27 start dila
 15:21:27 watching dila: 2 stop rule(s)
+15:37:32 progress dila: 154/276 (56%) battles, 575/h, ETA 13 min, 0 failed, skips 60.5/battle (last 100)
+15:47:04 dila exit=0 in 1536 s
+15:47:04 start diread
+15:47:19 diread exit=0 in 14 s
+15:47:19 start dipr
+15:47:26 dipr exit=0 in 7 s
+15:47:26 ALLDONE
 ```
