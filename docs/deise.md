@@ -453,6 +453,43 @@ under the cap; measured only, to learn its worth). With D and SAOR, fresh seeds 
 about 2 h. H500, H650 and H900 change one constant and ship at no cost in bytes; the capped pair
 add about 10. An arm at +0.30 or more over D, low end above 0, ships as 0.4.1 on Leigh's go.
 
+E5's result (PR #485, 2026-10-31): harder power loses, and loses more the harder it goes. D read
+71.23 ± 0.15; against it H500 -0.42, HS650 -0.60, H650 -0.69, SR -0.84 and H900 -1.15 (each
+± 0.23). With CONS's -0.37, 325 is the peak from both sides. H500 shows why: damage a round rises
+from 136 to 148, but Deise dies in 56.7% of rounds, not 48.3%, and reaches the last two in 65.5%,
+not 72.2%. Every constant of 0.4 (push, waves, ring, power) has now been tried.
+
+### Where 0.4's points go against Mirage (from pc-deise-e06)
+
+`tools/melee_split.py` splits a seat's score the way E2's table did, from the per-seat reports
+(it reproduces E2's table from e04's reports to the decimal). pc-deise-e06 seated FAP, the class
+that shipped as 0.4, beside Mirage on the same 276 battles, so no new card is needed:
+
+| | 0.4 (FAP) | MIR |
+|---|---|---|
+| Bullet damage a round | 134.3 | 145.5 |
+| Rounds died in | 47.8% | 47.4% |
+| Mean death tick | 990 | 930 |
+| Rounds reaching the last two | 71.6% | 75.7% |
+| Those final duels won (from whole-percent rates) | 73.3% | 69.8% |
+
+Survival is level and 0.4 wins its final duels more often. **The gap is now damage**: Mirage lands
+about 8% more a round (11 points), and 0.4's crowd terms bought survival partly by shooting less.
+Firing harder is not the fix (E5): it spends the energy that keeps Deise alive. The next stage is the
+gun's hit rate, not its power: aim, which needs bytes Deise does not have at 1,499, so it starts with
+freeing them (the constant-pool tables in docs/bench/kitlab-priors.md).
+
+### Stage E6: aim (card pc-deise-e09)
+
+PR #491 frees 47 bytes in the shipped class (local slots, same orders), so E6 tries where the shot
+goes. One sed an arm on DeiseLab (D is 0.4): SAME fires only at the robot the gun was last aimed at
+(after a switch of target the first shot used to go down the old target's line), PL400 doubles the
+playouts, WARM4 and WARM16 move how many samples a row needs to vote in full, NARROW spreads a vote
+over half the target's width, and WSTOP lets a playout that reaches a wall stop there and vote in
+full rather than 1. With SAOR, fresh seeds from 3900, 8 seats, about 2.3 h. Each seat is also split
+against D with melee_split (an aim arm should lift damage a round without costing survival). An arm
+at +0.30 or more over D, low end above 0, is fitted into the freed bytes as 0.5 on Leigh's go.
+
 ## 9. Uniqueness
 
 Leigh's rule for Saor holds here: inspired by others, never a copy. Deise's gun is Saor's own

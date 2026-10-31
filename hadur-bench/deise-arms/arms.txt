@@ -55,3 +55,13 @@ H650 | range power log10(energy) x 650 / distance (twice 0.4's; 1300 / d at full
 H900 | range power log10(energy) x 900 / distance (power 3 out to 600 px at full energy) | Gun.java | s/Math.log10(energy) \* 325 \/ distance/Math.log10(energy) * 900 \/ distance/
 HS650 | H650 with SCAL's energy cap (energy / 6, energy / 15 with the target beyond 325 px) | Gun.java | s/Math.log10(energy) \* 325 \/ distance)/Math.min(Math.log10(energy) * 650 \/ distance, energy \/ (distance > 325 ? 15 : 6)))/
 SR | measured only, to learn its worth: 1300 / distance with no energy term, under SCAL's cap | Gun.java | s/Math.log10(energy) \* 325 \/ distance)/Math.min(1300 \/ distance, energy \/ (distance > 325 ? 15 : 6)))/
+# Stage E6 (pc-deise-e09): aim. tools/melee_split.py on pc-deise-e06 (PR #490) put 0.4 level with
+# Mirage on survival (died 47.8% to 47.4%) and behind on damage (134.3 to 145.5 a round); E5 (PR #485)
+# showed harder power buys damage only by dying more. So these arms change where the shot goes, not
+# how hard. PR #491 frees 47 bytes in the shipped class for a winner.
+SAME | fire only at the robot the gun was last aimed at: after a target switch, wait for the new aim | DeiseLab.java | s/static int target;/static int target, aimed = -1;/ | DeiseLab.java | s/getEnergy() > power) {/getEnergy() > power \&\& id == aimed) {/ | DeiseLab.java | s/^            setTurnGunRightRadians(Utils.normalRelativeAngle(/            aimed = id;\n            setTurnGunRightRadians(Utils.normalRelativeAngle(/
+PL400 | 400 playouts an aim, not 200 | DeiseLab.java | s/PLAYOUTS = 200;/PLAYOUTS = 400;/
+WARM4 | a row votes in full from 4 samples, not 8 | Gun.java | s/WARM = 8;/WARM = 4;/
+WARM16 | a row votes in full from 16 samples, not 8 | Gun.java | s/WARM = 8;/WARM = 16;/
+NARROW | a vote spreads over half the target's width (9 px, not 18) | Gun.java | s/Math.atan(18 \/ distance)/Math.atan(9 \/ distance)/
+WSTOP | a playout that reaches a wall stops there and votes in full, not 1 | Gun.java | s/weight = 1;/break;/
