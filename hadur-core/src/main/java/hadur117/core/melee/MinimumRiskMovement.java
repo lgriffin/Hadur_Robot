@@ -373,6 +373,8 @@ public class MinimumRiskMovement {
         boolean gunLines;
         /** TMODE-25: the teammates' bullets in flight each candidate's drive is checked against; empty unless PATH. */
         List<VirtualBullet> pathBullets = List.of();
+        /** TMODE-33: whether the enemy terms count every robot between an enemy and the point; only on a team. */
+        boolean concord;
 
         View(Point2D.Double me, double energy, long now, int others, List<EnemyInfo> enemies,
              List<VirtualBullet> bullets, MeleeStrategy.Plan plan) {
@@ -896,6 +898,7 @@ public class MinimumRiskMovement {
         v.linesWide = modes.contains(TeamModes.Mode.LINESW);
         v.lines = !mates.isEmpty() && (modes.contains(TeamModes.Mode.LINES) || v.linesWide);
         v.gunLines = !mates.isEmpty() && modes.contains(TeamModes.Mode.GUNLINE);
+        v.concord = TeamConcord.MOVE && TeamConcord.RISK && !mates.isEmpty() && modes.contains(TeamModes.Mode.CONCORD);
         List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
         lastCandidates = candidates.size();
         if (surf && !onTeam(mates)) {
@@ -1944,7 +1947,7 @@ public class MinimumRiskMovement {
         double d = Math.max(1.0, p.distance(e.location));
         double energy = Math.min(Math.max(e.energy, 1.0) / Math.max(v.energy, 1.0), ENERGY_RATIO_CAP);
         double r = UNIT * e.freshness(v.now) * energy / (d * d);
-        r *= closestFactor(p, e, v.nearestOther[i], v.now, v.others, onTeam(v.mates));
+        r *= v.concord ? concordFactor(p, e, v, i) : closestFactor(p, e, v.nearestOther[i], v.now, v.others, onTeam(v.mates));
         if (closer && v.others >= 3 && !onTeam(v.mates)) {
             // MMOVE-14: each other opponent nearer e than the point is prey e would sooner take.
             double mine = p.distance(e.location);
@@ -1970,6 +1973,27 @@ public class MinimumRiskMovement {
      */
     double closestFactor(Point2D.Double p, EnemyInfo e, double nearestOther, long now) {
         return closestFactor(p, e, nearestOther, now, 0, false);
+    }
+
+    /**
+     * TMODE-33: enemy {@code i}'s factor in the team brain: 1/(1 + n) for the n robots, the other
+     * enemies seen lately and the teammates, nearer that enemy than {@code p}. A point with robots
+     * between it and an enemy is one that enemy would sooner not shoot at; there is no closest-robot
+     * doubling. A recent shooter keeps {@link #RECENT_HIT_FACTOR}.
+     */
+    static double concordFactor(Point2D.Double p, EnemyInfo e, View v, int i) {
+        double mine = p.distance(e.location);
+        int n = 0;
+        for (int j = 0; j < v.enemies.size(); j++) {
+            EnemyInfo o = v.enemies.get(j);
+            if (j != i && o.age(v.now) < CAP_MAX_AGE && o.location.distance(e.location) < mine) n++;
+        }
+        for (Roster.Mate m : v.mates) {
+            if (m.at(v.now).distance(e.location) < mine) n++;
+        }
+        double c = 1.0 / (1 + n);
+        if (e.lastHitHadur >= 0 && v.now - e.lastHitHadur <= RECENT_HIT_TICKS) c *= RECENT_HIT_FACTOR;
+        return c;
     }
 
     /** As above with {@code others} opponents left; MEND-3 may raise the factor off a team. */

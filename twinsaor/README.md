@@ -12,6 +12,7 @@ the LunarTwins analysis, the build and the bench card are in [docs/twinsaor.md](
 
 | Version | Date (UTC) | Rumble | Rank | APS | Survival | Battles | 1st | Gap to 1st / 5th |
 |---|---|---|---|---|---|---|---|---|
+| 0.2 | 2026-10-30 21:50 (API) | **Twin Duel** | **1st of 28** | **70.28** | 77.07 | 148 | TwinSaor 0.2 (2nd LunarTwins 1.4a, 69.37) | +0.91 over 2nd |
 | 0.2 | 2026-10-28 17:40 | **Twin Duel** | **1st of 28** | **70.28 ± 0.50** | 77.07 | 148 | TwinSaor 0.2 (2nd LunarTwins 1.4a, 69.37 ± 0.26) | +0.91 over 2nd |
 | 0.2 | 2026-10-28 16:58 | **Twin Duel** | **1st of 28** | **69.95 ± 1.10** | 75.98 | 51 | TwinSaor 0.2 (2nd LunarTwins 1.4a, 69.29) | +0.66 over 2nd |
 | 0.1 | 2026-10-27 18:46 | **Twin Duel** | **7th of 28** | **64.28 ± 1.16** | 67.21 | 51 | ags.lunartwins.LunarTwins 1.4a, 69.48 | +5.20 / +3.72 (MarioBros 68.00) |

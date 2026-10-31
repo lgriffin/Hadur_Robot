@@ -19,11 +19,14 @@ one first, bench it, then write the shipped one to match.
 
 | Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | Next up | Gap |
 |---|---|---|---|---|---|---|---|---|
-| 0.2 | 2026-10-29 20:10 (final, API) | **MiniRumble** | **5th of 671** | **87.43 ± 0.29** | 670 | 788 | 1st sheldor.mini.FoilistMC 1.0, 88.99 | +1.57 |
+| 0.2 | 2026-10-30 21:50 (API) | **MiniRumble** | **5th of 671** | **87.34** | 670 | 2,040 | 1st sheldor.mini.FoilistMC 1.0, 89.01 | +1.67 |
+| 0.2 | 2026-10-30 19:50 (settled) | **MiniRumble** | **5th of 671** | **87.34** | 670 | 1,965 | 4th voidious.mini.Komarious 1.88, 87.44 | +0.10 |
+| 0.2 | 2026-10-29 20:10 (first pass, API) | **MiniRumble** | **5th of 671** | **87.43 ± 0.29** | 670 | 788 | 1st sheldor.mini.FoilistMC 1.0, 88.99 | +1.57 |
 | 0.1 | 2026-10-29 07:23 | **MiniRumble** | **6th of 671** | **86.95 ± 0.29** | 670 | 742 | simonton.mini.WeeksOnEnd 1.10.4, 87.35 | +0.40 |
 
-**JayLexi 0.2 is 5th in MiniRumble**, level with Komarious (4th) on two decimals and past
-WeeksOnEnd. On the 668 opponents the pages share it is +0.47 over 0.1 (the bench said about +0.3).
+**JayLexi 0.2 is 5th in MiniRumble.** It settled at 87.34 on 1,965 battles (2026-10-30), 0.10
+behind Komarious and level with WeeksOnEnd; 1st is FoilistMC on 89.01, 1.67 ahead. At its first
+pass (788 battles) it read 87.43, level with Komarious and past WeeksOnEnd. On the 668 opponents the pages share it is +0.47 over 0.1 (the bench said about +0.3).
 It is 1.57 behind FoilistMC for 1st. Seven tenths of that gap is the weak field, the 477 bots
 FoilistMC beats almost every round: about half from rounds JayLexi loses to them (99.08% survival
 against 99.68%) and half from damage taken in rounds it wins, worst against nanobots (2.34 short

@@ -54,6 +54,65 @@ class FieldGunTest {
     }
 
     @Test
+    @Tag("TMODE-32")
+    @DisplayName("TMODE-32: on a team, SWIFT caps every solution at 1.9; off it, a member with energy fires 3")
+    void swiftCapsTeamPower() {
+        for (long t = 0; t <= 200; t++) scanned("a", 500, 800, 100, Math.PI / 2, 8, t);
+        gun.onTeam(true);
+        assertEquals(3.0, gun.solutions(me, 100, 5, tracker.alive(), 200).get(0).power, 1e-9);
+        gun.swift(true);
+        for (FieldGun.Solution x : gun.solutions(me, 100, 5, tracker.alive(), 200)) {
+            assertEquals(FieldGun.SWIFT_POWER, x.power, 1e-9);
+        }
+        assertFalse(TeamModes.FORCE_SWIFT);
+        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.SWIFT));
+    }
+
+    @Test
+    @Tag("TMODE-33")
+    @DisplayName("TMODE-33: on a team, CONCORD fires 1.9 beyond 200 px until it hits a class 55% of 20 shots, and 3 within 200 px")
+    void concordPower() {
+        for (long t = 0; t <= 200; t++) scanned("a 1.0 (1)", 500, 800, 100, Math.PI / 2, 8, t);
+        gun.onTeam(true);
+        gun.concord(true);
+        assertEquals(FieldGun.CONCORD_POWER, gun.solutions(me, 100, 5, tracker.alive(), 200).get(0).power, 1e-9);
+        for (int i = 0; i < 20; i++) gun.shotAt("a 1.0 (2)");
+        for (int i = 0; i < 10; i++) gun.hitOn("a 1.0 (3)");
+        assertEquals(FieldGun.CONCORD_POWER, gun.solutions(me, 100, 5, tracker.alive(), 200).get(0).power, 1e-9);
+        gun.hitOn("a 1.0 (1)");
+        assertEquals(3.0, gun.solutions(me, 100, 5, tracker.alive(), 200).get(0).power, 1e-9);
+        EnemyTracker near = new EnemyTracker();
+        FieldGun close = new FieldGun(field(1000, 1000));
+        for (long t = 0; t <= 200; t++) {
+            EnemyInfo e = scan(near, "b", 500, 650, 100, Math.PI / 2, 0, t);
+            close.onScan(e, e.distance(me), t);
+        }
+        close.onTeam(true);
+        close.concord(true);
+        assertEquals(3.0, close.solutions(me, 100, 5, near.alive(), 200).get(0).power, 1e-9);
+        assertFalse(TeamModes.FORCE_CONCORD);
+        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.CONCORD));
+    }
+
+    @Test
+    @Tag("TMODE-33")
+    @DisplayName("TMODE-33: on a team, CONCORD draws a robot's situations from every copy of its class")
+    void concordPoolsByClass() {
+        FieldGun g = new FieldGun(field(1000, 1000));
+        for (long t = 0; t <= 200; t++) {
+            g.onSighting("x.Foo 1.0 (1)", t, 300, 300 + t, 0, 8, 300, 0);
+            g.onSighting("x.Foo 1.0 (2)", t, 700, 300 + t, 0, 8, 300, 0);
+            g.onSighting("y.Bar 1.0 (1)", t, 500, 300 + t, 0, 8, 300, 0);
+        }
+        double[] now = g.history("x.Foo 1.0 (1)").current();
+        int own = g.history("x.Foo 1.0 (1)").size();
+        assertTrue(own > 0);
+        List<hadur117.core.knn.KdTree.Entry<float[]>> pooled = g.pooled("x.Foo 1.0 (1)", now, 2 * own);
+        assertEquals(2 * own, pooled.size());
+        assertTrue(g.pooled("x.Foo 1.0 (1)", now, 3 * own).isEmpty());
+    }
+
+    @Test
     @Tag("MGUN-8")
     @DisplayName("MGUN-8: a teammate's sighting joins the opponent's history as Hadur's own scan would")
     void teammateSightingsJoinTheHistory() {

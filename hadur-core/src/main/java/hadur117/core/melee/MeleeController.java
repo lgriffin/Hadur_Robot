@@ -110,6 +110,8 @@ public class MeleeController {
     private boolean onTeam;
     /** T7: the team's modes against this team (TMODE-1) as of the last tick; none off a team. */
     private Set<TeamModes.Mode> modes = TeamModes.NONE;
+    /** TMODE-33: the team brain's battle-long state; read only while CONCORD plays. */
+    private final TeamConcord concord = new TeamConcord();
     /**
      * TMODE-10: whether the battle's first tick has told whether Hadur leads its team. A team's
      * leader is the same member every round, so a fault's recovery mid-round does not ask again.
@@ -286,6 +288,7 @@ public class MeleeController {
     /** The World has booked Hadur's hit on {@code name}; the melee's own books take it. */
     public void bulletHit(String name, double power) {
         book.get(name).recordDamageDealt(Rules.getBulletDamage(power));
+        gun.hitOn(name);
     }
 
     /**
@@ -440,9 +443,6 @@ public class MeleeController {
         ghostsDropped += tracker.pruneGhosts(s.others, s.time, s.me);
         EnemyInfo last = tracker.get(lastTarget);
         String finisher = last != null && last.energy <= FINISHER_ENERGY ? last.name : null;
-        c.radarTurn = radar.radarTurn(s.me, s.radarHeading, tracker, s.others, finisher, s.time,
-            !s.teammates.isEmpty(), s.gunHeat, lastTarget);
-
         List<EnemyInfo> alive = tracker.alive();
         MeleeStrategy.Plan plan = strategy.evaluate(tracker, s.me, s.energy, s.others, s.time);
         c.posture = plan.posture;
@@ -461,6 +461,19 @@ public class MeleeController {
             // T6 (MMOVE-9, MMOVE-10): where each teammate stands, for whom a shot was aimed at.
             List<Point2D.Double> mates = new ArrayList<>(s.teammates.size());
             for (Roster.Mate m : s.teammates) mates.add(m.at(s.time));
+            if (modes.contains(TeamModes.Mode.CONCORD)) {
+                // TMODE-33: the team brain's gang watch and modes.
+                concord.watch(s.me, mates, alive, s.time);
+                modes = concord.modes(modes);
+            }
+            if (modes.contains(TeamModes.Mode.CONCORD) && TeamConcord.RADAR) {
+                // TMODE-33: the team brain's modes, its gang watch and its radar group.
+                c.radarTurn = radar.groupTurn(s.me, s.radarHeading, tracker, s.others, finisher, s.time,
+                    TeamConcord.group(s.me, mates, alive));
+            } else {
+                c.radarTurn = radar.radarTurn(s.me, s.radarHeading, tracker, s.others, finisher, s.time,
+                    true, s.gunHeat, lastTarget);
+            }
             if (dodging) {
                 // TMODE-27: each shot profiled once; the virtual bullets stand down unless ranked.
                 List<EnemyShot> shots = tracker.shots(s.time);
@@ -482,12 +495,16 @@ public class MeleeController {
             }
         } else {
             modes = TeamModes.NONE;
+            c.radarTurn = radar.radarTurn(s.me, s.radarHeading, tracker, s.others, finisher, s.time,
+                false, s.gunHeat, lastTarget);
             mover.updateMeleeBullets(tracker.shots(s.time), myPath, s.me, s.time, alive, danger);
         }
         c.destination = alive.isEmpty() ? null
             : mover.chooseDestination(s.me, s.energy, s.others, alive, s.time, plan, s.teammates, modes);
         gun.onTeam(!s.teammates.isEmpty());
         gun.lead(modes.contains(TeamModes.Mode.LEAD));
+        gun.swift(modes.contains(TeamModes.Mode.SWIFT));
+        gun.concord(TeamConcord.GUN && modes.contains(TeamModes.Mode.CONCORD));
         waves.tick(s.me, s.time, s.gunHeat, alive, gun, s.energy, s.others);
 
         // MGUN-1: the peak of every opponent's firing solutions.
@@ -511,6 +528,13 @@ public class MeleeController {
 
     /** MMOVE-20: a shot left from {@code at} on {@code time} along {@code gunHeading}; kept for the shadows it casts. */
     public void shotFired(Point2D.Double at, long time, double gunHeading, double power) {
+        shotFired(at, time, gunHeading, power, lastTarget);
+    }
+
+    /** As above, the shot aimed at {@code target} by the command that fired it (or null). */
+    public void shotFired(Point2D.Double at, long time, double gunHeading, double power, String target) {
+        // TMODE-33: counted for the team brain's power, whatever plays.
+        gun.shotAt(target);
         if (!onTeam && mover.bulletShading()) mover.ownShot(at, time, gunHeading, power);
     }
 

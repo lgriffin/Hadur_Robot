@@ -93,6 +93,20 @@ public class FieldGun {
     static final double LEAD_BOOST = 4.0;
     /** TMODE-31: a scanner's weight under LEAD while droids are about. */
     static final double EYES_BOOST = 2.5;
+    /**
+     * TMODE-32: the most a member fires under SWIFT: Ogi's own power, 14.3 px a tick. The team gun
+     * read (docs/bench/local/team-gun-read.md) has our power-3 shots at Ogi hitting 12.1% against
+     * about 17% at Combat and Firestarter, and Ogi's lighter shots hitting us 23.6% at 200-400 px.
+     */
+    public static final double SWIFT_POWER = 1.9;
+    /** TMODE-33: the team brain's power, from Ogi's 1.92: a faster bullet than 3 that still pays. */
+    public static final double CONCORD_POWER = 1.9;
+    /** TMODE-33: within this, px, the team brain fires full power. */
+    static final double CONCORD_CLOSE = 200;
+    /** TMODE-33: the team brain fires full power at a class it hits this often... */
+    static final double CONCORD_RATE = 0.55;
+    /** TMODE-33: ...once this many shots at it have ended. */
+    static final int CONCORD_SHOTS = 20;
     /** TMODE-31: a robot first seen in a round with more than this, up to {@link #LEADER_SEEN}, is a droid (120). */
     static final double DROID_SEEN = 110;
 
@@ -148,6 +162,14 @@ public class FieldGun {
     private final Map<String, Double> firstEnergy = new LinkedHashMap<>();
     /** TMODE-31: whether the team modes this tick carry LEAD. */
     private boolean lead;
+    /** TMODE-32: whether the team modes this tick carry SWIFT. */
+    private boolean swift;
+    /** TMODE-33: whether the team modes this tick carry CONCORD. */
+    private boolean concord;
+    /** TMODE-33: per enemy class, the tree every copy's situations join. */
+    private final Map<String, KdTree<float[]>> classTrees = new LinkedHashMap<>();
+    /** TMODE-33: per enemy class, the shots fired at it and the hits on it, this battle. */
+    private final Map<String, int[]> classShots = new LinkedHashMap<>();
     /** MGUN-17: true while a wave reads the field gun's own aim, which the experts must not steer. */
     private boolean pure;
 
@@ -165,7 +187,7 @@ public class FieldGun {
     public EnemyHistory history(String name) {
         EnemyHistory h = histories.get(name);
         if (h == null && histories.size() < MAX_OPPONENTS) {
-            h = new EnemyHistory();
+            h = new EnemyHistory(classTrees.computeIfAbsent(TeamModes.key(name), k -> EnemyHistory.classTree()));
             histories.put(name, h);
         }
         return h;
@@ -236,13 +258,22 @@ public class FieldGun {
             if (power <= 0) continue;
             if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);
             else power = MeleeEnergyPolicy.crowdPower(power, distance, nearest, energy, e.energy, others);
+            if (onTeam && swift) power = Math.min(power, SWIFT_POWER);
+            if (onTeam && concord && TeamConcord.POWER && power > CONCORD_POWER && distance > CONCORD_CLOSE && !readsWell(e.name)) {
+                power = CONCORD_POWER;
+            }
             if (power <= 0) continue;
             double weight = weight(e, me, alive, now);
             int first = out.size();
             EnemyHistory h = history(e.name);
             double[] attributes = h == null ? null : h.current();
-            List<KdTree.Entry<float[]>> near = attributes == null || h.size() < k()
-                ? new ArrayList<KdTree.Entry<float[]>>() : h.neighbours(attributes, k());
+            List<KdTree.Entry<float[]>> near;
+            if (onTeam && concord && TeamConcord.POOL && attributes != null) {
+                near = pooled(e.name, attributes, k());
+            } else {
+                near = attributes == null || h.size() < k()
+                    ? new ArrayList<KdTree.Entry<float[]>>() : h.neighbours(attributes, k());
+            }
             if (near.isEmpty()) {
                 MeleeGun.Aim a = fallback.aim(me, e, power, now);
                 out.add(new Solution(e.name, a.angle, tolerance(me, a.predicted), weight, power,
@@ -324,6 +355,51 @@ public class FieldGun {
         if (isolated(e, alive)) w *= ISOLATED_BOOST;
         if (e.hitsOnHadur(now, SHOOTER_WINDOW) >= 2) w *= SHOOTER_BOOST;
         return w;
+    }
+
+    /** TMODE-33: whether this tick's team modes carry CONCORD; set before any aim of the tick. */
+    public void concord(boolean concord) {
+        this.concord = concord;
+    }
+
+    /** TMODE-33: one of Hadur's bullets left, aimed at {@code target}; counted against its class. */
+    public void shotAt(String target) {
+        if (target == null) return;
+        int[] c = classShots.get(TeamModes.key(target));
+        if (c == null) {
+            if (classShots.size() >= MAX_OPPONENTS) return;
+            c = new int[2];
+            classShots.put(TeamModes.key(target), c);
+        }
+        c[0]++;
+    }
+
+    /** TMODE-33: one of Hadur's bullets hit {@code name}; a hit on its class. */
+    public void hitOn(String name) {
+        int[] c = classShots.get(TeamModes.key(name));
+        if (c != null) c[1]++;
+    }
+
+    /** TMODE-33: whether Hadur hits {@code name}'s class {@link #CONCORD_RATE} of {@link #CONCORD_SHOTS} or more shots. */
+    boolean readsWell(String name) {
+        int[] c = classShots.get(TeamModes.key(name));
+        return c != null && c[0] >= CONCORD_SHOTS && c[1] >= CONCORD_RATE * c[0];
+    }
+
+    /**
+     * TMODE-33: the {@code k} situations most like {@code attributes} from every history of
+     * {@code name}'s class, so each copy of a team's robot teaches the gun about the others.
+     * Nearest first; with fewer than {@code k} in all, none.
+     */
+    List<KdTree.Entry<float[]>> pooled(String name, double[] attributes, int k) {
+        KdTree<float[]> t = classTrees.get(TeamModes.key(name));
+        if (t == null || t.size() < k) return new ArrayList<>();
+        return t.nearestNeighbor(attributes, k, true);
+    }
+
+    /** TMODE-32: whether this tick's team modes carry SWIFT; set before any aim of the tick. */
+    public void swift(boolean swift) {
+        this.swift = swift;
     }
 
     /** TMODE-31: whether this tick's team modes carry LEAD; set before any aim of the tick. */

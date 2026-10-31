@@ -24,6 +24,11 @@
 #   gexp    MGUN-17: after 20 waves, a head-on, linear or circular aim that out-hits the field gun 1.25x takes that opponent. Suffix gx.
 #   grate   MGUN-18: an opponent's weight leans toward the ones the aim it fires has been hitting. Suffix gr.
 #   gdist   MGUN-19: the distance weight (100/d)^0.7, not 100/d. Suffix gd.
+#   tmswift (team only) TMODE-32: SWIFT on every team: the gun fires no harder than 1.9. Suffix sf.
+#   tmconcord (team only) TMODE-33: the team brain after Ogi's design on every team. Suffix cn.
+#   tmconcordr / tmconcordm / tmconcordg: one part of it alone (radar cnr, movement cnm, gun cng);
+#   tmconcordp: the gun's pooling alone, power as shipped (cnp); tmconcordh: the movement with the hunt dropped (cnh).
+#   The brain's shipped parts (TeamConcord): movement and gun on, group radar off, hunt kept.
 #   tmlead  (team only) TMODE-31: LEAD on every team: the gun leans on the leader and, with droids about, the scanners. Suffix ld.
 #   tdecap  (team only) MGUN-21: the gun leans 3x on the enemy leader once its death drains more than it costs. Suffix dc.
 #   gsoft   MGUN-20: a situation's weight 1/(distance + mean distance), not 1/(0.01 + distance). Suffix gv.
@@ -128,6 +133,10 @@
 #         and circular aims', each weighted by its rolling score at the bullets that hit us. Sets only AIM_MEMBERS.
 #   noaim  MOVE-29 off (it ships on from 3.20): the three-option surf rates on the views alone. Suffix kx.
 #   aimp3, aimp1  (with aimmem) MOVE-29's standing weight of each aim 0.1 -> 0.3 or 1.0. Suffix q3, q1.
+#   aimbhb  MOVE-30: an enemy bullet ours met also scores the aim members, as a hit does. Sets only AIM_INTERCEPTS.
+#         Suffix ki.
+#   aimwide  MOVE-31: the aim members read all six simple angles at all three lags (18 aims, the same 0.3 total
+#         standing weight) in place of head-on, linear and circular one tick back. Sets only WIDE. Suffix kw.
 #         Suffix km.
 #   pressure  POW-12 (the plan's POW-11): while our rolling hit rate less its margin is at least 12%, theirs plus its margin at
 #         most 9%, and our energy is above 12, the duel gun skips the cubic power-down and fires a base power of 2.5
@@ -523,6 +532,12 @@ for a in "${list[@]}"; do
         aimp1)
             edit "$aimmembers" "static final double AIM_PRIOR = 0.1;" "static final double AIM_PRIOR = 1.0;"
             version="${version}q1" ;;
+        aimbhb)
+            edit "$movedesign" "static final boolean AIM_INTERCEPTS = false;" "static final boolean AIM_INTERCEPTS = true;"
+            version="${version}ki" ;;
+        aimwide)
+            edit "$aimmembers" "static final boolean WIDE = false;" "static final boolean WIDE = true;"
+            version="${version}kw" ;;
         aesrec)
             edit "$movedesign" "static final boolean AES_RECORD = false;" "static final boolean AES_RECORD = true;"
             version="${version}ar" ;;
@@ -1068,6 +1083,35 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             version="${version}ld"
             edit "$modes" "public static final boolean FORCE_LEAD = false;" "public static final boolean FORCE_LEAD = true;"
             sed -i -E 's/^(        t\.put\("[^"]+", of\(.*)\)\);$/\1, Mode.LEAD));/' "$modes"
+            ;;
+        tmswift)
+            # TMODE-32 (team only): SWIFT for every team; the named teams play it on top of their entry.
+            # Duel and melee fixtures bit for bit. Suffix sf.
+            version="${version}sf"
+            edit "$modes" "public static final boolean FORCE_SWIFT = false;" "public static final boolean FORCE_SWIFT = true;"
+            sed -i -E 's/^(        t\.put\("[^"]+", of\(.*)\)\);$/\1, Mode.SWIFT));/' "$modes"
+            ;;
+        tmconcord|tmconcordr|tmconcordm|tmconcordg|tmconcordp|tmconcordh)
+            # TMODE-33 (team only): CONCORD for every team; the named teams play it on top of their entry.
+            # Duel and melee fixtures bit for bit. Suffix cn; one part alone: radar cnr, movement cnm, gun cng.
+            concord="$src/hadur-core/src/main/java/$pkg/core/melee/TeamConcord.java"
+            case "$a" in
+                tmconcord) version="${version}cn" ;;
+                tmconcordr) version="${version}cnr"
+                    edit "$concord" "MOVE = true, RADAR = false, GUN = true;" "MOVE = false, RADAR = true, GUN = false;" ;;
+                tmconcordm) version="${version}cnm"
+                    edit "$concord" "MOVE = true, RADAR = false, GUN = true;" "MOVE = true, RADAR = false, GUN = false;" ;;
+                tmconcordg) version="${version}cng"
+                    edit "$concord" "MOVE = true, RADAR = false, GUN = true;" "MOVE = false, RADAR = false, GUN = true;" ;;
+                tmconcordp) version="${version}cnp"
+                    edit "$concord" "MOVE = true, RADAR = false, GUN = true;" "MOVE = false, RADAR = false, GUN = true;"
+                    edit "$concord" "POWER = true, POOL = true;" "POWER = false, POOL = true;" ;;
+                tmconcordh) version="${version}cnh"
+                    edit "$concord" "MOVE = true, RADAR = false, GUN = true;" "MOVE = true, RADAR = false, GUN = false;"
+                    edit "$concord" "NO_HUNT = false, RISK = true," "NO_HUNT = true, RISK = true," ;;
+            esac
+            edit "$modes" "public static final boolean FORCE_CONCORD = false;" "public static final boolean FORCE_CONCORD = true;"
+            sed -i -E 's/^(        t\.put\("[^"]+", of\(.*)\)\);$/\1, Mode.CONCORD));/' "$modes"
             ;;
         tdecap)
             # MGUN-21 (team only): the field gun leans 3x on the enemy leader once its death pays;

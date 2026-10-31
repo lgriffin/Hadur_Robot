@@ -329,7 +329,7 @@ final class MeleeSeam implements Role {
             orders.fire(previous.firePower);
             stats.shotsFired++;
             core.meleeShotFired();
-            melee.shotFired(in.location(), in.time(), in.gunHeading(), previous.firePower);
+            melee.shotFired(in.location(), in.time(), in.gunHeading(), previous.firePower, previous.target);
         }
 
         MeleeController.Command c = melee.tick(new MeleeController.Situation(

@@ -5,6 +5,7 @@ import hadur117.core.world.EnemyInfo;
 import hadur117.core.physics.Angles;
 import hadur117.core.physics.DiaUtils;
 import java.awt.geom.Point2D;
+import java.util.List;
 
 /**
  * Melee radar. With four or more opponents alive it spins one way without stopping, so the
@@ -92,6 +93,35 @@ public class MeleeRadar {
                 && stalest.age(now) < OVERDUE) {
             aim = f;
         }
+        return toward(aim, me, radarHeading, now);
+    }
+
+    /**
+     * TMODE-33: the team brain's radar. Each member keeps its own {@code group} fresh (the
+     * enemies nearest it, {@link TeamConcord#group}): it turns toward the stalest of them, or the
+     * gun's {@code finisher} among them once its scan is {@link #FINISHER_RESCAN} old. It spins,
+     * as MRADAR-1, until every living enemy has been seen, while any enemy's freshest scan by
+     * any member is {@link #OVERDUE} old, and with an empty group.
+     */
+    public double groupTurn(Point2D.Double me, double radarHeading, EnemyTracker tracker, int others,
+                            String finisher, long now, List<EnemyInfo> group) {
+        EnemyInfo stalest = tracker.stalest();
+        boolean allSeen = stalest != null && tracker.alive().size() == others;
+        if (!allSeen || stalest.age(now) >= OVERDUE || group.isEmpty()) {
+            return direction * Double.POSITIVE_INFINITY;
+        }
+        EnemyInfo aim = null;
+        for (EnemyInfo e : group) {
+            if (aim == null || e.lastScanTime < aim.lastScanTime) aim = e;
+        }
+        for (EnemyInfo e : group) {
+            if (e.name.equals(finisher) && e != aim && e.age(now) >= FINISHER_RESCAN) aim = e;
+        }
+        return toward(aim, me, radarHeading, now);
+    }
+
+    /** Turns toward {@code aim}, or sweeps on the same way while still looking for it. */
+    private double toward(EnemyInfo aim, Point2D.Double me, double radarHeading, long now) {
         if (aim.name.equals(chasing) && aim.lastScanTime < chaseStart) {
             // Still looking for it: it has moved off its last bearing, so sweep on the same
             // way rather than wobble about where it was.

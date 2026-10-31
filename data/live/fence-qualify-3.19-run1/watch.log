@@ -1,0 +1,282 @@
+2026-10-30T19:57:27Z client C:\RoboRumbleWorkers\rr01: results ['C:\\RoboRumbleWorkers\\rr01\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr01\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr01\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr01\\roborumble\\files\\resultsmelee.txt'], data ['C:\\RoboRumbleWorkers\\rr01\\robots\\.data\\hadur2\\Hadur.data']
+2026-10-30T19:57:28Z client C:\RoboRumbleWorkers\rr02: results ['C:\\RoboRumbleWorkers\\rr02\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr02\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr02\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr02\\roborumble\\files\\resultsmelee.txt'], data ['C:\\RoboRumbleWorkers\\rr02\\robots\\.data\\hadur2\\Hadur.data']
+2026-10-30T19:57:28Z client rr01-roborumble: start, console ../data/live/fence-qualify-3.19-run1\consoles\rr01-roborumble-2026-10-30T195728Z.log
+2026-10-30T19:57:28Z client rr02-roborumble: start, console ../data/live/fence-qualify-3.19-run1\consoles\rr02-roborumble-2026-10-30T195728Z.log
+2026-10-30T19:57:29Z profiles rr01_robots_.data_hadur2_Hadur.data: 574 files, 233 shield verdicts stored
+2026-10-30T19:57:29Z profiles rr02_robots_.data_hadur2_Hadur.data: 472 files, 192 shield verdicts stored
+2026-10-30T19:57:36Z health ajs.Solveit: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T19:57:43Z health kvk.HebusLeTroll: 33/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T19:57:45Z health tobe.mini.Charon: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T19:57:50Z health rsalesc.roborio.Roborio: 35/35 survived, 7 skipped, 0 faults, shield verdict 1
+2026-10-30T19:57:48Z health ags.Glacier: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T19:58:06Z health krillr.mega.Psyche: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T19:58:12Z health dmh.robocode.robot.GreenDragon: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T19:58:20Z health jcs.AutoBot: 35/35 survived, 6 skipped, 0 faults, shield verdict 1
+2026-10-30T19:58:30Z health cf.proto.Shiva: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T19:58:37Z health rz.GlowBlowAPM: 30/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-30T19:58:45Z health xander.cat.XanderCat: 34/35 survived, 5 skipped, 0 faults, shield verdict 1
+2026-10-30T19:58:48Z health bvh.mini.Fenrir: 34/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T19:58:51Z health oog.micro.Claudius: 32/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T19:58:55Z health stelo.SteloTestNano: 35/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-30T19:59:02Z health mz.NanoGod: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T19:59:03Z health cjk.Merkava: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T19:59:10Z health uccc.RingDing: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T19:59:08Z health ar.horizon.Horizon: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T19:59:15Z health arthord.NanoSatanMelee: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T19:59:20Z health pkdeken.Paladin: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T19:59:19Z health damij.mega.Boque: 34/35 survived, 6 skipped, 0 faults, shield verdict 1
+2026-10-30T19:59:32Z health ?: 24/35 survived, 9 skipped, 0 faults, shield verdict 
+2026-10-30T19:59:38Z health DM.mega.Bezier: 29/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-30T19:59:39Z health zen.Ronin: 33/35 survived, 5 skipped, 0 faults, shield verdict 1
+2026-10-30T19:59:55Z health timmit.TimmiT: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T19:59:58Z health kid.Toa: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:00:01Z health amk.jointstrike.JointStrike: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:00:08Z health rsim.mini.BulletCatcher: 34/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:00:04Z health cx.CigaretBH: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:00:13Z health cx.BlestPain: 34/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:00:20Z health Legend.Biogon: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:00:25Z health bbo.RamboT: 34/35 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-30T20:00:24Z health kawigi.sbf.FloodMini: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:00:32Z health oog.micro.Claudius: 33/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:00:35Z health doka.KillerRabbit: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:00:37Z health kc.micro.WaveShark: 34/35 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-30T20:00:39Z health jk.micro.Cotillion: 31/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:00:49Z health fushi.PvP1.PvP1: 35/35 survived, 11 skipped, 0 faults, shield verdict 0
+2026-10-30T20:00:51Z health jab.DiamondStealer: 33/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:00:58Z health fm.mammillarias: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:01:00Z health hadur117.micro.Eveimear: 31/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:01:05Z health slugzilla.Basilite: 34/35 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-30T20:01:06Z health abc.Shadow: 34/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:01:14Z health tango.Recrimpo: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:01:20Z health EH.Pegasus: 35/35 survived, 5 skipped, 0 faults, shield verdict 1
+2026-10-30T20:01:17Z health suh.mega.WaveSurferPG: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:01:28Z health cs.Wren: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:01:29Z health kawigi.f.FhqwhgadsMicro: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:01:35Z health genprog.Zafaran: 35/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-30T20:01:39Z health darkcanuck.Pris: 35/35 survived, 12 skipped, 0 faults, shield verdict 0
+2026-10-30T20:01:45Z health hp.Athena: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:01:52Z health kid.Toa: 35/35 survived, 5 skipped, 0 faults, shield verdict 1
+2026-10-30T20:01:56Z health Krabb.sliNk.Garm: 23/35 survived, 8 skipped, 0 faults, shield verdict 1
+2026-10-30T20:02:07Z health jaw.Mouse: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:02:07Z health romz.robot.guessfactor.TeasingFox: 29/35 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-30T20:02:15Z health dmh.robocode.robot.BlueBerry: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:02:13Z health ebo.Sparse: 29/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:02:19Z health stelo.MatchupMini: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:02:23Z health agrach.MicroDalek: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:02:32Z health pez.mako.Mako: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:02:31Z health stelo.MatchupWS: 30/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:02:39Z health bzdp.BoxCar: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:02:46Z health zh.UnderDog: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:02:44Z health pa.Improved: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:02:52Z health suh.nano.Worst: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:02:55Z health cli.WasteOfAmmo: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:03:00Z health ntw.Sigsys: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:03:03Z health mme.NikeEnhanced: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:03:08Z health bumblebee.Bumblebee: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:03:11Z health DM.Chicken: 35/35 survived, 7 skipped, 0 faults, shield verdict 1
+2026-10-30T20:03:18Z health pez.mini.Gouldingi: 34/35 survived, 5 skipped, 0 faults, shield verdict 1
+2026-10-30T20:03:21Z health ultra.Defender: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:03:32Z health kvk.HebusLeTroll: 33/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:03:39Z health jk.mini.CunobelinDC: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:03:37Z health bvh.mini.Freya: 34/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:03:43Z health asd.Cthulhu: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:03:55Z health snowman.Snowman: 35/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-30T20:04:01Z health elvbot.ElverionBot: 34/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:04:02Z health sul.NanoR2: 33/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:04:07Z health jbot.Rabbit2: 34/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:04:08Z health dz.OthoMini: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:04:15Z health abc.Shadow: 35/35 survived, 7 skipped, 0 faults, shield verdict 1
+2026-10-30T20:04:18Z health md.November: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:04:26Z health metal.small.MCool: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:04:31Z health kinsen.melee.Angsaichmophobia: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:04:34Z health ph.musketeer.Musketeer: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:04:40Z health mladjo.AIR: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:04:39Z health ers.nano.meroka.Meroka: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:04:43Z health theo.QuarkSoup: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:04:44Z health jk.mega.DrussGT: 33/35 survived, 7 skipped, 0 faults, shield verdict 1
+2026-10-30T20:04:55Z health cw.megas.Polar: 35/35 survived, 6 skipped, 0 faults, shield verdict 1
+2026-10-30T20:05:01Z health Krabb.fe4r.Fe4r: 32/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:05:07Z health ur4n0.UR4NO: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:05:14Z health gh.GrubbmGrb: 27/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:05:20Z health syl.Centipede: 33/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:05:27Z health kc.micro.Thorn: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:05:36Z health fromHell.C4H10O: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:05:45Z health apv.MicroAspid: 33/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:05:51Z health dvogon.GangBang: 35/35 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-30T20:05:55Z health velas.Alpha: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:05:57Z health bjl.LoneDragon: 35/35 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-30T20:06:01Z health theo.Hydrogen: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:06:08Z health pfvicm.Sobieski: 34/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:06:08Z health suh.micro.WallPM: 32/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:06:15Z health pez.micro.Aristocles: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:06:17Z health amk.ChumbaMini: 35/35 survived, 11 skipped, 0 faults, shield verdict 0
+2026-10-30T20:06:25Z health nz.jdc.nano.AralR: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:06:27Z health amc.ROBv301: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:06:33Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:06:33Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:06:33Z health doka.KillerRabbit: 32/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:06:30Z health qwaker00.Ahchoo: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:06:40Z health xander.cat.SamAxe: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:06:40Z health labg.Cataclysm: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:06:50Z health ag.Gir: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:06:51Z health dummy.micro.Sparrow: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:06:55Z health stelo.Liblix: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:06:57Z health velas.Beta_2_0: 35/35 survived, 11 skipped, 0 faults, shield verdict 0
+2026-10-30T20:07:05Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:07:05Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:07:02Z health gf.Centaur.Centaur: 34/35 survived, 7 skipped, 0 faults, shield verdict 1
+2026-10-30T20:07:03Z health rampancy.micro.Epiphron: 35/35 survived, 24 skipped, 0 faults, shield verdict 0
+2026-10-30T20:07:13Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:07:13Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:07:12Z health amk.ChumbaMini: 35/35 survived, 8 skipped, 0 faults, shield verdict 1
+2026-10-30T20:07:21Z health ph.micro.Pikeman: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:07:19Z health jk.mega.DrussGT: 35/35 survived, 8 skipped, 0 faults, shield verdict 1
+2026-10-30T20:07:40Z health marksteam.Phoenix: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:07:48Z health nosteel.Welby: 35/35 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-30T20:07:52Z health apv.TheBrainPi: 35/35 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-30T20:08:01Z health WidowMakersAtWar.EpicCow: 35/35 survived, 5 skipped, 0 faults, shield verdict 1
+2026-10-30T20:08:19Z health kvk.HebusLeTroll: 35/35 survived, 16 skipped, 0 faults, shield verdict 1
+2026-10-30T20:08:27Z health McS.Spanky_test: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:08:29Z health stelo.MirrorNano: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:08:35Z health jgap.JGAP130166: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:08:36Z health md.VelociRaptor: 34/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:08:43Z health Gecko.ultimateGeckoBot: 35/35 survived, 8 skipped, 0 faults, shield verdict 1
+2026-10-30T20:08:44Z health kawigi.sbf.FloodNano: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:08:51Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:08:51Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:08:52Z health marcinek.TopGun: 35/35 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-30T20:08:54Z health sul.Pinkbot: 35/35 survived, 12 skipped, 0 faults, shield verdict 0
+2026-10-30T20:09:01Z health el.JumpShoot: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:09:08Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:09:08Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:09:01Z health hadur117.mini.JayLexi: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-30T20:09:03Z health kc.serpent.Hydra: 35/35 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-30T20:09:12Z health cf.proto.Shiva: 33/35 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-30T20:09:15Z health EFD.AdvancedEFD: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:09:20Z health cx.Lacrimas: 34/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:09:26Z health da.NewBGank: 35/35 survived, 9 skipped, 0 faults, shield verdict 1
+2026-10-30T20:09:30Z health qwaker00.Ahchoo: 35/35 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-30T20:09:29Z health suh.micro.WallPM: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:09:39Z health alex.Diabolo5: 34/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:09:41Z health snowman.Snowman: 33/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:09:46Z health EH.kms.LightningStorm: 34/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:09:51Z health t3.Ripper: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:09:56Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:09:56Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:09:54Z health rijteam.SmartDodge: 35/35 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-30T20:09:56Z health nz.jdc.micro.HedgehogGF: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:10:03Z health tide.pear.Pear: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:10:08Z health cjk.Merkava: 33/35 survived, 12 skipped, 0 faults, shield verdict 0
+2026-10-30T20:10:11Z health mz.NanoDeath: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:10:13Z health ar.QuantumChromodynamics: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:10:21Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:10:21Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:10:21Z health cjk.Merkava: 35/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-30T20:10:24Z health maribo.melee.BMV: 35/35 survived, 9 skipped, 0 faults, shield verdict 1
+2026-10-30T20:10:29Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:10:29Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-10-30T20:10:24Z health nova.Snow: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:10:24Z health sL300.Mozart: 35/35 survived, 9 skipped, 0 faults, shield verdict 1
+2026-10-30T20:10:37Z health slugzilla.SNGGF: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:10:38Z health takeBot.SpinSpiral: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:10:45Z health reaper.Reaper: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:10:47Z health matt.UnderDark3: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:10:53Z health test.Fuzzer: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:10:59Z health dsw.StaticD: 23/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:10:59Z health kms.Golden: 34/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-30T20:11:02Z health simonton.beta.LifelongObsession: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:11:06Z health wiki.nano.Flick: 35/35 survived, 5 skipped, 0 faults, shield verdict 1
+2026-10-30T20:11:15Z health apv.NanoLauLectrikTheCannibal: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:11:17Z health aetos.AetosFirstBot: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:11:22Z health da.NewBGank: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:11:25Z health bvh.loki.Loki: 35/35 survived, 12 skipped, 0 faults, shield verdict 0
+2026-10-30T20:11:28Z health pez.rumble.Ali: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:11:30Z health suh.nano.RandomPM: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:11:38Z health winamp32.micro.MicroMacro: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:11:47Z health tm.Yuugao: 32/35 survived, 5 skipped, 0 faults, shield verdict 1
+2026-10-30T20:11:53Z health pla.Memnoch: 35/35 survived, 11 skipped, 0 faults, shield verdict 0
+2026-10-30T20:11:54Z health oog.melee.Mercutio: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:11:55Z health oog.mega.saguaro.Saguaro: 35/35 survived, 7 skipped, 0 faults, shield verdict 1
+2026-10-30T20:12:01Z health sul.Bicephal: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:12:07Z health DM.mega.Bezier: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:12:14Z health nz.jdc.nano.NeophytePattern: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:12:21Z health geep.mini.GPBotB: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:12:30Z health franzor.Lizt: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:12:28Z health robar.micro.Topaz: 35/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-30T20:12:34Z health wcsv.Stampede: 35/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-30T20:12:32Z health tcf.Drifter: 32/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:12:43Z health drm.Magazine: 34/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:12:48Z health lunchie.Lunchbox: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:12:52Z health bvh.micro.Freya: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:12:50Z health cs.s2.Seraphim: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:13:02Z health kawigi.sbf.FloodMini: 34/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:13:03Z health ethdsy.Malacka: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:13:08Z health sheldor.micro.EpeeistDC: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:13:09Z health lxx.Emerald: 35/35 survived, 7 skipped, 0 faults, shield verdict 1
+2026-10-30T20:13:16Z health PK.Twardy: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:13:14Z health pez.mako.Mako: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:13:19Z health ags.rougedc.RougeDC: 35/35 survived, 6 skipped, 0 faults, shield verdict 1
+2026-10-30T20:13:21Z health darkcanuck.Gaff: 34/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:13:33Z health ers.nano.meroka.Meroka: 27/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:13:38Z health sqTank.waveSurfing.LionWWSVMvoid: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:13:41Z health pkbots.BoyTDSurfer: 34/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:13:50Z health myl.micro.Avipes: 34/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:13:48Z health cjm.Chomsky: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:13:56Z health spin.Bugstard: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:13:58Z health rsim.mini.BulletCatcher: 33/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:13:59Z health mc2.enemy.Original: 34/35 survived, 8 skipped, 0 faults, shield verdict 1
+2026-10-30T20:14:04Z health radnor.RamRod: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:14:13Z health WdV.Lesserbee: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:14:14Z health gtf.robocode.Strafer: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:14:15Z health pez.rumble.CassiusClay: 35/35 survived, 8 skipped, 0 faults, shield verdict 1
+2026-10-30T20:14:22Z health rsalesc.roborio.Roborio: 34/35 survived, 6 skipped, 0 faults, shield verdict 1
+2026-10-30T20:14:35Z client rr01-roborumble: restart, console ../data/live/fence-qualify-3.19-run1\consoles\rr01-roborumble-2026-10-30T201435Z.log
+2026-10-30T20:14:41Z client rr02-roborumble: restart, console ../data/live/fence-qualify-3.19-run1\consoles\rr02-roborumble-2026-10-30T201441Z.log
+2026-10-30T20:14:42Z health kanishk.Fr0z3n: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:14:42Z health fromHell.BlackBox: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:14:50Z health abc.Shadow: 25/35 survived, 6 skipped, 0 faults, shield verdict 1
+2026-10-30T20:15:04Z health pc.Wavelet: 27/35 survived, 20 skipped, 0 faults, shield verdict 0
+2026-10-30T20:15:26Z health serenity.serenityFire: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:15:31Z health gre.svman4.Morfeas: 16/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:15:33Z health gg.Wolverine: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:15:38Z health arthord.MannyPacquiao: 29/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:15:36Z health gjr.Cephalosporin: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:15:48Z health bvh.mini.Mjolnir: 35/35 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-30T20:15:54Z health cx.micro.Smoke: 34/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:16:04Z health spartancompany.Spartan2: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:16:06Z health apv.AspidReloaded: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:16:16Z health lrem.magic.TormentedAngel: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:16:21Z health ary.micro.Weak: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:16:36Z health robin.ScalpBotC: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:16:38Z health gjr.Cephalosporin: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:16:44Z health dcs.PM.Eater_of_Worlds_PM: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:16:50Z health dmp.nano.Eve: 34/35 survived, 12 skipped, 0 faults, shield verdict 0
+2026-10-30T20:16:54Z health slugzilla.OscillateGF: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:16:53Z health kenran.mega.Pantheist: 35/35 survived, 15 skipped, 0 faults, shield verdict 0
+2026-10-30T20:16:59Z health ph.musketeer.Musketeer: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:17:05Z health theo.Tungsten: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:17:10Z health mbro.BelajarBot: 35/35 survived, 10 skipped, 0 faults, shield verdict 1
+2026-10-30T20:17:15Z health Ex.Survival: 35/35 survived, 30 skipped, 0 faults, shield verdict 0
+2026-10-30T20:17:24Z health cx.nano.Smog: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:17:24Z health sample.RamFire: 34/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:17:31Z done (STOP file): 0 1v1 battles, 0 collapses
+2026-10-30T20:17:30Z health cbot.cbot.CBot: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:17:29Z health tcf.Repat3: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:17:38Z health stf.PanzerGeneral: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:17:41Z health hlavko.micro.Flex: 35/35 survived, 8 skipped, 0 faults, shield verdict 1
+2026-10-30T20:17:48Z health bots.UberBot: 35/35 survived, 10 skipped, 0 faults, shield verdict 1
+2026-10-30T20:17:45Z health dz.Caedo: 34/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:17:55Z health mnt.SurferBot: 35/35 survived, 15 skipped, 0 faults, shield verdict 0
+2026-10-30T20:17:55Z health ratosh.Wesco: 34/35 survived, 15 skipped, 0 faults, shield verdict 0
+2026-10-30T20:18:00Z health davidalves.net.DuelistMicro: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:18:03Z health stelo.UntouchableNano: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-30T20:18:07Z health tcf.Drifter: 34/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:18:08Z health eem.EvBot: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-30T20:18:16Z health pa3k.Manta: 35/35 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-30T20:18:25Z health rsim.micro.uCatcher: 34/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-30T20:18:31Z health repositorio.NanoStep: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-30T20:18:33Z health pez.mini2.Pugilist: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-30T20:18:35Z profiles rr01_robots_.data_hadur117_Hadur.data: 219 files, 83 shield verdicts stored
+2026-10-30T20:18:35Z profiles rr01_robots_.data_hadur2_Hadur.data: 574 files, 233 shield verdicts stored
+2026-10-30T20:18:35Z profiles rr02_robots_.data_hadur117_Hadur.data: 203 files, 65 shield verdicts stored
+2026-10-30T20:18:35Z profiles rr02_robots_.data_hadur2_Hadur.data: 472 files, 192 shield verdicts stored
