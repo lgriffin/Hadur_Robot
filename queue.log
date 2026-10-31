@@ -15,3 +15,7 @@
 12:13:38 live-PL400 exit=0 in 1142 s
 12:13:38 start live-WARM4
 12:13:38 watching live-WARM4: 3 stop rule(s)
+12:20:49 progress live-WARM4: 119/276 (43%) battles, 994/h, ETA 9 min, 0 failed, skips 0.0/battle (last 100)
+12:30:49 live-WARM4 exit=0 in 1031 s
+12:30:49 start live-WARM16
+12:30:49 watching live-WARM16: 3 stop rule(s)
