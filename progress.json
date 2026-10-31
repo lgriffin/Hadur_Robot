@@ -1,0 +1,40 @@
+{
+ "plan": "pc-deise-e09",
+ "updated": 1793445559.1728723,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "live-D": {
+   "status": "pending"
+  },
+  "live-SAME": {
+   "status": "pending"
+  },
+  "live-PL400": {
+   "status": "pending"
+  },
+  "live-WARM4": {
+   "status": "pending"
+  },
+  "live-WARM16": {
+   "status": "pending"
+  },
+  "live-NARROW": {
+   "status": "pending"
+  },
+  "live-WSTOP": {
+   "status": "pending"
+  },
+  "live-SAOR": {
+   "status": "pending"
+  },
+  "read": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
