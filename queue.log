@@ -25,3 +25,10 @@
 23:25:18 start live-SC
 23:25:18 watching live-SC: 3 stop rule(s)
 23:25:23 progress live-SC: 0/430 (0%) battles, 0 failed
+23:55:39 progress live-SC: 400/430 (93%) battles, 791/h, ETA 2 min, 0 failed, skips 0.0/battle (last 100)
+23:57:29 live-SC exit=0 in 1931 s
+23:57:29 start read-live
+00:00:48 read-live exit=0 in 198 s
+00:00:48 start pr
+00:01:08 pr exit=0 in 20 s
+00:01:08 ALLDONE
