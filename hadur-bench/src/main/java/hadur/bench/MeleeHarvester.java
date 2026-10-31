@@ -342,29 +342,43 @@ public class MeleeHarvester extends BattleAdaptor {
 
     /**
      * BENCH-155: Hadur's shots as decisions. Runs before {@link #tallyBullets}, which is what
-     * adds a shot to {@code seenShots}, so a shot is logged on the turn it is first seen.
+     * adds a shot to {@code seenShots}, so a shot is logged on the turn it is first seen,
+     * whatever its state then: a point-blank shot can be first seen already hitting. The row
+     * reads the end-of-turn snapshot, one tick after the decision; own energy is the energy
+     * after the shot plus the power, so damage taken in that tick is in the row, and a hit
+     * victim is the target by name rather than by heading.
      */
     private void logShots(IRobotSnapshot me, IRobotSnapshot[] robots, IBulletSnapshot[] bullets, int turn,
                           int alive) throws IOException {
         for (IBulletSnapshot b : bullets) {
             if (b.getOwnerIndex() != me.getRobotIndex() || seenShots.contains(b.getBulletId())) continue;
-            if (b.getState() != BulletState.FIRED && b.getState() != BulletState.MOVING) continue;
-            IRobotSnapshot target = null;
-            double best = Double.MAX_VALUE;
-            for (IRobotSnapshot r : robots) {
-                if (r == me || isSentry(r) || r.getState() == robocode.control.snapshot.RobotState.DEAD) continue;
-                double bearing = Math.atan2(r.getX() - me.getX(), r.getY() - me.getY());
-                double off = Math.abs(robocode.util.Utils.normalRelativeAngle(bearing - b.getHeading()));
-                if (off < best) {
-                    best = off;
-                    target = r;
-                }
-            }
-            if (target == null) continue;
+            IRobotSnapshot target = b.getState() == BulletState.HIT_VICTIM ? byIndex(robots, b.getVictimIndex()) : null;
+            if (target == null) target = nearestHeading(me, robots, b.getHeading(), true);
+            // The field can fall to Hadur alone in the turn its shot is first seen: aim at whoever died.
+            if (target == null) target = nearestHeading(me, robots, b.getHeading(), false);
+            if (target == null || isSentry(target)) continue;
             double distance = Math.hypot(target.getX() - me.getX(), target.getY() - me.getY());
-            shots.write(String.format(Locale.ROOT, "%d,%d,%d,%.2f,%s,%.2f,%.1f,%.2f%n", round, turn, alive,
+            shots.write(String.format(Locale.ROOT, "%d,%d,%d,%.4f,%s,%.4f,%.4f,%.4f%n", round, turn, alive,
                 me.getEnergy() + b.getPower(), field(target.getName()), target.getEnergy(), distance, b.getPower()));
         }
+    }
+
+    /** The non-sentry fighter (living only, or any) whose bearing from Hadur lies nearest the heading. */
+    private IRobotSnapshot nearestHeading(IRobotSnapshot me, IRobotSnapshot[] robots, double heading,
+                                          boolean livingOnly) {
+        IRobotSnapshot target = null;
+        double best = Double.MAX_VALUE;
+        for (IRobotSnapshot r : robots) {
+            if (r == me || isSentry(r)) continue;
+            if (livingOnly && r.getState() == robocode.control.snapshot.RobotState.DEAD) continue;
+            double bearing = Math.atan2(r.getX() - me.getX(), r.getY() - me.getY());
+            double off = Math.abs(robocode.util.Utils.normalRelativeAngle(bearing - heading));
+            if (off < best) {
+                best = off;
+                target = r;
+            }
+        }
+        return target;
     }
 
     private static String field(String name) {

@@ -293,7 +293,29 @@ class MeleeHarvesterTest {
         h.close();
         List<String> lines = Files.readAllLines(dir.resolve("shots.csv"));
         assertEquals(MeleeHarvester.SHOT_HEADER, lines.get(0));
-        assertEquals(List.of("0,7,3,80.00,a.Alpha 1.0,60.00,400.0,3.00", "0,8,3,78.50,b.Beta 1.0,12.50,300.0,1.50"),
-            lines.subList(1, lines.size()));
+        assertEquals(List.of("0,7,3,80.0000,a.Alpha 1.0,60.0000,400.0000,3.0000",
+            "0,8,3,78.5000,b.Beta 1.0,12.5000,300.0000,1.5000"), lines.subList(1, lines.size()));
+    }
+
+    @Test
+    @Tag("BENCH-155")
+    @DisplayName("a shot first seen hitting names its victim, and one first seen after the last robot died still names it")
+    void shotsFirstSeenEnding() throws IOException {
+        IRobotSnapshot me = robot(0, US, 100, 100, true, 1.0, 77.0);
+        IRobotSnapshot a = robot(1, "a.Alpha 1.0", 100, 500, true, 1.0, 60.0);
+        IRobotSnapshot b = robot(2, "b.Beta 1.0", 400, 100, true, 1.0, 12.5);
+        IRobotSnapshot bDead = robot(2, "b.Beta 1.0", 400, 100, false, 1.0, 0.0);
+        IRobotSnapshot aDead = robot(1, "a.Alpha 1.0", 100, 500, false, 1.0, 0.0);
+        MeleeHarvester h = new MeleeHarvester(dir, US, Set.of());
+        h.onRoundStarted(new RoundStartedEvent(null, 0, null));
+        // Point blank: first seen already hitting Beta, though its heading points at Alpha.
+        h.onTurnEnded(turn(3, List.of(me, a, b), List.of(bullet(1, 0, 2, 2.0, BulletState.HIT_VICTIM, 0.0))));
+        // Everyone else died this turn; the shot first seen now was aimed at Alpha.
+        h.onTurnEnded(turn(4, List.of(me, aDead, bDead), List.of(bullet(2, 0, -1, 1.0, BulletState.FIRED, 0.0))));
+        h.onRoundEnded(new RoundEndedEvent(0, 0, 0));
+        h.close();
+        List<String> lines = Files.readAllLines(dir.resolve("shots.csv"));
+        assertEquals(List.of("0,3,3,79.0000,b.Beta 1.0,12.5000,300.0000,2.0000",
+            "0,4,3,78.0000,a.Alpha 1.0,0.0000,400.0000,1.0000"), lines.subList(1, lines.size()));
     }
 }

@@ -12,6 +12,7 @@ import table  # noqa: E402
 SRC = '''public class Bot {
     static final String POWER = "\\1\\2";
     static final String MODES = "";
+    static final int MASK = 1;
 }
 '''
 
@@ -109,6 +110,8 @@ class HashTest(unittest.TestCase):
         self.assertEqual(69609650, distill.java_hash("Hello"))
         h = distill.java_hash("a very long robot name 9.9.9")
         self.assertTrue(-(1 << 31) <= h < (1 << 31))
+        # A supplementary character is two UTF-16 units in Java: "\U0001F600".hashCode() == 1772 * 31 + 56832.
+        self.assertEqual(0xD83D * 31 + 0xDE00, distill.java_hash("\U0001F600"))
 
     def test_mask_and_string(self):
         names = distill.read_names(self.parts)
@@ -139,6 +142,7 @@ class HashTest(unittest.TestCase):
         body = text.split('MODES = "')[1].split('";')[0]
         self.assertEqual(1, body.count("2"))
         self.assertTrue(len(body) >= 16 and (len(body) & (len(body) - 1)) == 0, "a power of two")
+        self.assertIn("static final int MASK = %d;" % (len(body) - 1), text)
 
 
 if __name__ == "__main__":

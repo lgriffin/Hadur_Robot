@@ -134,13 +134,19 @@ def literal(values):
     return "".join("\\%o" % v for v in values)
 
 
-def write_constant(src, name, value):
+def write_constant(src, name, value, mask=None):
+    """Rewrites `static final String <name> = "...";` and, when mask is given and the source
+    declares `static final int MASK = <n>;`, that too, so the string and its mask never drift."""
     with open(src, encoding="utf-8") as f:
         text = f.read()
     out, n = re.subn(r'(static final String %s = ")[^"]*(";)' % name,
                      lambda m: m.group(1) + value + m.group(2), text)
     if n != 1:
         raise SystemExit("%s: one 'static final String %s' expected, found %d" % (src, name, n))
+    if mask is not None:
+        out, m = re.subn(r'(static final int MASK = )\d+(;)', lambda x: x.group(1) + str(mask) + x.group(2), out)
+        if m == 0:
+            print("warning: %s declares no 'static final int MASK'; set it to %d by hand" % (src, mask))
     with open(src, "w", encoding="utf-8", newline="\n") as f:
         f.write(out)
 
@@ -164,9 +170,11 @@ def power_main(a):
 # ---------------------------------------------------------------- hash
 
 def java_hash(s):
+    """String.hashCode(): over UTF-16 code units, so a name outside the BMP hashes as Java does."""
     h = 0
-    for ch in s:
-        h = (31 * h + ord(ch)) & 0xFFFFFFFF
+    units = s.encode("utf-16-le")
+    for i in range(0, len(units), 2):
+        h = (31 * h + (units[i] | units[i + 1] << 8)) & 0xFFFFFFFF
     return h - (1 << 32) if h >= 1 << 31 else h
 
 
@@ -242,7 +250,7 @@ def hash_main(a):
         for n in names:
             print("  %5d  %s  %s" % (java_hash(n) & mask, modes.get(n, a.default), n))
         return
-    write_constant(a.src, a.name, s.replace("\\", "\\\\").replace('"', '\\"'))
+    write_constant(a.src, a.name, s.replace("\\", "\\\\").replace('"', '\\"'), mask)
     print("%s: %d chars, MASK = %d -> %s" % (a.name, len(s), mask, a.src))
 
 
