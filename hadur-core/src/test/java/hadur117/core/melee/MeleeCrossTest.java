@@ -29,7 +29,7 @@ class MeleeCrossTest {
     @Tag("MMOVE-19")
     @DisplayName("MMOVE-19 ships off; on, a loss a shot's damage and wave explain teaches its shooter")
     void learnsFromHitsOnOthers() {
-        assertFalse(MeleeController.MELEE_CROSS);
+        assertTrue(MeleeController.MELEE_CROSS, "ships on from 3.21 (pc-melee-scal xh +0.19 +- 0.14, PR #484)");
         double hit = hadur117.core.physics.Rules.getBulletDamage(2.0);
         assertEquals(1, fight(true, hit, pt(500, 500)).danger().size("a"), "a's hit on b is learnt");
         assertEquals(0, fight(false, hit, pt(500, 500)).danger().size("a"), "off: nothing learnt");
