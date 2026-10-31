@@ -1,1 +1,22 @@
 21:33:21 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
+21:33:21 start prep
+21:33:23 progress pushed to origin claude/pc-eveimear-h1-progress (every 15 min)
+21:33:32 prep exit=0 in 10 s
+21:33:32 start h1-E01
+21:33:32 watching h1-E01: 3 stop rule(s)
+21:34:21 progress h1-E01: 126/288 (44%) battles, 9177/h, ETA 1 min, 0 failed, skips 0.0/battle (last 100)
+21:34:54 h1-E01 exit=0 in 82 s
+21:34:54 start h1-HM
+21:34:54 watching h1-HM: 3 stop rule(s)
+21:36:13 h1-HM exit=0 in 78 s
+21:36:13 start h1-HP
+21:36:13 watching h1-HP: 3 stop rule(s)
+21:37:35 h1-HP exit=0 in 82 s
+21:37:35 start h1-HM7
+21:37:35 watching h1-HM7: 3 stop rule(s)
+21:38:48 h1-HM7 exit=0 in 72 s
+21:38:48 start read
+21:38:53 read exit=0 in 5 s
+21:38:53 start pr
+21:38:58 pr exit=0 in 5 s
+21:38:58 ALLDONE
