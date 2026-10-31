@@ -1,0 +1,23 @@
+# PC card pc-melee-dia (docs/plan-melee-top5.md, MMOVE-22, MMOVE-23, MGUN-23, BENCH-152): one build alone on today's whole melee field, 46 fields x 6 seeds (3246-3251, after pc-melee-scal's 3240-3245), at the machine's melee width (@C@, fixed at prep) and CPU constant. Template: diprep writes work/melee-dia-<arm>.args with @V@ = the robot.release in hadur-robot/pom.xml and @A@ = the arm's suffix (aa, bb, dm, la, ea); every arm fights the same fields and seeds, so the read pairs them battle for battle.
+--suite
+melee-census-317.txt
+--seeds
+6
+--seed-base
+3245
+--rounds
+35
+--parallel
+@C@
+--child-heap
+2G
+--cpu-constant
+auto
+--robot-jar
+bisect/hadur117.Hadur_@V@@A@.jar
+--robot
+hadur117.Hadur @V@@A@
+--out
+work/melee-dia-@V@-@A@
+--report
+../docs/bench/local/melee-dia-@A@.md
