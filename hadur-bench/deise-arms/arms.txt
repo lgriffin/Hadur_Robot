@@ -76,5 +76,6 @@ PNS6 | PNS with 600 playouts: whether more keep paying (CPU: the skip rule watch
 # modal power by own energy x distance / 16 px into a string on 0.4's shipped class (+13 B, 1,488 by
 # javac), keeping 0.4's log10(energy) x 325 / distance in every cell Hadur's shots did not fill.
 TEACH | Hadur 3.20 in the seat: the teacher (its shots.csv is the product, its score is not a result) | @hadur117.Hadur 3.20
+PT0 | the table with no Hadur cells: 0.4's formula rounded to 16 px x fortieths (rounding control) | =work/deise-pt1/PT0.java
 PTS | Hadur's power on 2 x 2 blocks (2 energy x 32 px) with 20+ shots, 0.4's formula elsewhere | =work/deise-pt1/PTS.java
 PTB | Hadur's power on 4 x 4 blocks (4 energy x 64 px) with 10+ shots, 0.4's formula elsewhere | =work/deise-pt1/PTB.java

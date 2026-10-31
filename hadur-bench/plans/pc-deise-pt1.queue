@@ -23,24 +23,27 @@
 #          of its 32,768 cells came from Hadur:
 #            PTS  2 x 2 blocks (2 energy x 32 px) with 20+ shots (Sanaro's HS shape)
 #            PTB  4 x 4 blocks with 10+ shots (wider reach, coarser)
-#          Every other cell keeps 0.4's formula, so an arm differs from D only where Hadur's
-#          shots agree. Then tools/deise_arms.sh builds D, PTS and PTB.
-#   D, PTS, PTB  the live-shaped census, 46 fields x 6 fresh seeds (base 5200) = 276 battles a
+#          Every other cell keeps 0.4's formula at the cell's centre, so an arm differs from D
+#          only where Hadur's shots agree, plus the table's rounding (16 px, fortieths):
+#            PT0  the table with no Hadur cells at all, the rounding alone (a control for it)
+#          Then tools/deise_arms.sh builds D, PT0, PTS and PTB.
+#   D, PT0, PTS, PTB  the live-shaped census, 46 fields x 6 fresh seeds (base 5200) = 276 battles a
 #          seat, about 17 min each.
-# About 1.3 h in all on the PC.
-# Read against D, field by field. An arm passes when its gain's low end is above 0 (Deise's +0.30
+# About 1.6 h in all on the PC.
+# Read against D, field by field (PT0 should read level; if it does not, read PTS and PTB against
+# PT0 too). An arm passes when its gain's low end is above 0 (Deise's +0.30
 # bar is for a ship; a pass here first goes to the Deise thread, which fits it beside its rows).
 # Caveat (as n06): the teach run and the bench share the census fields, on different seeds.
 # Stop rules on every census step (docs/bench/watch.md; halt, finished seats are kept, the stopped
 # seat reruns from its start): 20 failed battles (a broken jar), no battle in 30 minutes (a hung
 # step), or 40+ skipped turns a battle over the last 100 (the PR #331 build-up). A halt at worst
-# leaves the rest of that seat and the seats after it unrun, at most 1,104 battles (about 1.3 h).
+# leaves the rest of that seat and the seats after it unrun, at most 1,380 battles (about 1.6 h).
 # No early finish on score: a census seat is one robot. ALERT opens an issue for Leigh on a stop.
 
 set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
-set ARMS = D,PTS,PTB
+set ARMS = D,PT0,PTS,PTB
 
 prep | (cd .. && mvn -q -DskipTests install -pl deise -am) && curl -fsSLo opponents/hadur117.Hadur_3.20.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.20/hadur117.Hadur_3.20.jar && cp ../deise/target/hadur117.mini.Deise_0.4.jar opponents/ && ./fetch-opponents.sh --set minimelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && DEISE_RUN=pt1 bash tools/deise_arms.sh live 6 5100 TEACH
 
@@ -51,7 +54,7 @@ live-TEACH | ${MVN} "-Dexec.args=@work/deise-pt1/live-TEACH.args"
   stop: stall 30m
   stop: skips 40 over 100
 
-build | python3 tools/deise_power.py 'work/deise-pt1/live-TEACH/*/battles/*/shots.csv' --own-step 2 --dist-step 2 --min 20 --out work/deise-pt1/PTS.java && python3 tools/deise_power.py 'work/deise-pt1/live-TEACH/*/battles/*/shots.csv' --own-step 4 --dist-step 4 --min 10 --out work/deise-pt1/PTB.java && DEISE_RUN=pt1 bash tools/deise_arms.sh live 6 5200 ${ARMS} && python3 tools/kitlab_codesize.py work/deise-pt1/hadur117.mini.DeisePTS_0.4.jar | tail -1 && python3 tools/kitlab_codesize.py work/deise-pt1/hadur117.mini.DeisePTB_0.4.jar | tail -1
+build | python3 tools/deise_power.py 'work/deise-pt1/live-TEACH/*/battles/*/shots.csv' --own-step 2 --dist-step 2 --min 20 --out work/deise-pt1/PTS.java && python3 tools/deise_power.py 'work/deise-pt1/live-TEACH/*/battles/*/shots.csv' --own-step 4 --dist-step 4 --min 10 --out work/deise-pt1/PTB.java && python3 tools/deise_power.py 'work/deise-pt1/live-TEACH/*/battles/*/shots.csv' --min 1000000000 --out work/deise-pt1/PT0.java && DEISE_RUN=pt1 bash tools/deise_arms.sh live 6 5200 ${ARMS} && python3 tools/kitlab_codesize.py work/deise-pt1/hadur117.mini.DeisePTS_0.4.jar | tail -1 && python3 tools/kitlab_codesize.py work/deise-pt1/hadur117.mini.DeisePTB_0.4.jar | tail -1
   after: live-TEACH
 
 live-D | ${MVN} "-Dexec.args=@work/deise-pt1/live-D.args"
@@ -61,8 +64,15 @@ live-D | ${MVN} "-Dexec.args=@work/deise-pt1/live-D.args"
   stop: stall 30m
   stop: skips 40 over 100
 
-live-PTS | ${MVN} "-Dexec.args=@work/deise-pt1/live-PTS.args"
+live-PT0 | ${MVN} "-Dexec.args=@work/deise-pt1/live-PT0.args"
   after: live-D
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-PTS | ${MVN} "-Dexec.args=@work/deise-pt1/live-PTS.args"
+  after: live-PT0
   watch: battles=276
   stop: fails 20
   stop: stall 30m
