@@ -71,3 +71,10 @@ WSTOP | a playout that reaches a wall stops there and votes in full, not 1 | Gun
 PN | PL400 and NARROW together (constants only) | DeiseLab.java | s/PLAYOUTS = 200;/PLAYOUTS = 400;/ | Gun.java | s/Math.atan(18 \/ distance)/Math.atan(9 \/ distance)/
 PNS | PL400, NARROW and SAME together (about 8 B) | DeiseLab.java | s/PLAYOUTS = 200;/PLAYOUTS = 400;/ | Gun.java | s/Math.atan(18 \/ distance)/Math.atan(9 \/ distance)/ | DeiseLab.java | s/static int target;/static int target, aimed = -1;/ | DeiseLab.java | s/getEnergy() > power) {/getEnergy() > power \&\& id == aimed) {/ | DeiseLab.java | s/^            setTurnGunRightRadians(Utils.normalRelativeAngle(/            aimed = id;\n            setTurnGunRightRadians(Utils.normalRelativeAngle(/
 PNS6 | PNS with 600 playouts: whether more keep paying (CPU: the skip rule watches it) | DeiseLab.java | s/PLAYOUTS = 200;/PLAYOUTS = 600;/ | Gun.java | s/Math.atan(18 \/ distance)/Math.atan(9 \/ distance)/ | DeiseLab.java | s/static int target;/static int target, aimed = -1;/ | DeiseLab.java | s/getEnergy() > power) {/getEnergy() > power \&\& id == aimed) {/ | DeiseLab.java | s/^            setTurnGunRightRadians(Utils.normalRelativeAngle(/            aimed = id;\n            setTurnGunRightRadians(Utils.normalRelativeAngle(/
+# Stage PT1 (pc-deise-pt1): Hadur as the teacher, as Sanaro's HS (PR #514, +0.55). TEACH seats
+# Hadur 3.20 in Deise's census only for its shots.csv; tools/deise_power.py then writes Hadur's
+# modal power by own energy x distance / 16 px into a string on 0.4's shipped class (+13 B, 1,488 by
+# javac), keeping 0.4's log10(energy) x 325 / distance in every cell Hadur's shots did not fill.
+TEACH | Hadur 3.20 in the seat: the teacher (its shots.csv is the product, its score is not a result) | @hadur117.Hadur 3.20
+PTS | Hadur's power on 2 x 2 blocks (2 energy x 32 px) with 20+ shots, 0.4's formula elsewhere | =work/deise-pt1/PTS.java
+PTB | Hadur's power on 4 x 4 blocks (4 energy x 64 px) with 10+ shots, 0.4's formula elsewhere | =work/deise-pt1/PTB.java
