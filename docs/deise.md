@@ -479,6 +479,17 @@ Firing harder is not the fix (E5): it spends the energy that keeps Deise alive. 
 gun's hit rate, not its power: aim, which needs bytes Deise does not have at 1,499, so it starts with
 freeing them (the constant-pool tables in docs/bench/kitlab-priors.md).
 
+### Stage E6: aim (card pc-deise-e09)
+
+PR #491 frees 47 bytes in the shipped class (local slots, same orders), so E6 tries where the shot
+goes. One sed an arm on DeiseLab (D is 0.4): SAME fires only at the robot the gun was last aimed at
+(after a switch of target the first shot used to go down the old target's line), PL400 doubles the
+playouts, WARM4 and WARM16 move how many samples a row needs to vote in full, NARROW spreads a vote
+over half the target's width, and WSTOP lets a playout that reaches a wall stop there and vote in
+full rather than 1. With SAOR, fresh seeds from 3900, 8 seats, about 2.3 h. Each seat is also split
+against D with melee_split (an aim arm should lift damage a round without costing survival). An arm
+at +0.30 or more over D, low end above 0, is fitted into the freed bytes as 0.5 on Leigh's go.
+
 ## 9. Uniqueness
 
 Leigh's rule for Saor holds here: inspired by others, never a copy. Deise's gun is Saor's own
