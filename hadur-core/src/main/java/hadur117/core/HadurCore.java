@@ -260,8 +260,8 @@ public final class HadurCore {
     /**
      * A core for {@code facts} with a shield list of Hadur's own (D5, SHIELD-5): on the
      * opponents it names, a Duel charter's rounds open in shield mode. The adapter reads the
-     * list from the robot jar and passes it here; any other charter ignores it, since shield
-     * mode applies to a 1v1 and to no melee or team. An empty list changes nothing.
+     * list from the robot jar and passes it here; a Melee charter reads it only at a hand-off
+     * (HAND-1, HAND-3, off by default) and a Team charter ignores it. An empty list changes nothing.
      *
      * @param facts the engine's facts before the first tick
      * @param telemetry where the line records go
@@ -290,7 +290,9 @@ public final class HadurCore {
         MeleeMemory meleeMemory = archive.meleeShelf();
         ProfileLibrary survivorLibrary = archive.survivorShelf();
         this.duel = new DuelController(facts.width(), facts.height(), enemiesTotal, telemetry,
-            library, survivorLibrary, stats, charter == Charter.DUEL ? shieldList : ShieldList.NONE, facts.rounds());
+            library, survivorLibrary, stats, charter == Charter.TEAM ? ShieldList.NONE : shieldList, facts.rounds());
+        // HAND-1 to HAND-3: a melee charter's duel reads the list only at a hand-off; a team's never.
+        this.duel.team(charter == Charter.TEAM);
         this.duelSeam = new DuelSeam(this, duel);
         // ROLE-6: only the charter's roles are built.
         if (charter.has(RoleId.MELEE)) {

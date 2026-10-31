@@ -1,0 +1,74 @@
+# The endgame hand-off (docs/plan-melee-top5.md, HAND-1, HAND-2, HAND-3, BENCH-157).
+# Leigh 2026-10-31 17:57: "What do you need? Make a card". Live, 23% of Hadur's melee rounds are lost
+# in the endgame duel (Hadur and one other left) and only 46% of those are won against the top 30
+# (docs/bench/live-3.20-melee.md). There the duel plays plain: the 1v1 mode table and shield mode
+# are off by construction (every per-opponent switch is duel-only), and nothing the melee learned
+# about the survivor's gun reaches the duel. Three switches, each a hand-off setting off a team
+# only (the duel never takes a hand-off in a 1v1, so the duel and team play are untouched):
+#   aa      the baseline (master: surfer, cross-learning and damage memory on)
+#   bb      its A/A copy
+#   et      etab, HAND-1: the survivor's 1v1 table entries apply in the endgame as in a duel: the
+#           shield list (shield mode with the list's opening drive, aims and exits), the simple-aim
+#           dodge, the dodge planner, stop-and-go, heat-jit and the gun stack. 40 of the 412 census
+#           robots are on the shield list, 22 in the table's other lines, 31 on the stack-off list.
+#   ed      edge, HAND-2: when the melee's book read the survivor's gun as head-on (3+ hits on Hadur
+#           this battle, 60% within Hadur's width of head-on), the dodge planner is on against it
+#           for the endgame, primed with the head-on expert (DODGE-4's machinery)
+#   es      eshd, HAND-3: the same verdict starts shield mode against the survivor on SHIELD-15's
+#           trial, listed or not; the trial's exits leave it for the battle once it fails
+# Not smoked in the cloud beyond a fault check (a hand-off a round, 12 fields x 2 seeds reads too
+# little); the card is the read. Each build fights the 46 census fields x 6 fresh seeds alone
+# (3259-3264, after pc-melee-dia's 3253-3258; 276 battles, 1,380 in all, about 2.2 h at ~620
+# battles/h) at the machine's melee width and CPU constant. The read pairs bb with aa (A/A, within
+# +-0.25) and each arm with the mean of aa and bb (--base2), battle for battle; the arm reports'
+# "Rounds that ended as a duel" tables say where an arm's endgame wins moved.
+# Verdict: an arm passes with its 95% low end above 0 (--gain 0, the melee gate since 2026-10-31),
+# Hadur's share of others outlived no more than 1 point lower and the 1-30 endgame wins no more than
+# 3 points lower; if its skipped turns a battle rise more than 20% over aa's it fails whatever its
+# APS (read from the arm reports). The card ends in a results PR on claude/pc-melee-hand-results
+# whatever the verdict; the melee thread reads it.
+#   ./queue.sh run pc-melee-hand        (or  .\queue.ps1 run pc-melee-hand)
+# Run it from master, one bench queue at a time:
+#   git checkout master && git pull
+# haprep reads the version from hadur-robot/pom.xml, so a bump cannot point the card at stale
+# jars, and fixes the width and version in work/, so a resumed card never mixes host profiles or
+# reads another version's battles. Prep clears the arms' battle folders, since it rebuilds their jars.
+# Stop rules (docs/bench/watch.md), halts only, each keeping every battle fought: fails 20 and
+# stall 30m on each arm (each arm is its own single-arm step, so `dead` cannot be read). A halt
+# leaves that arm's remaining battles (up to 276) and every later arm unrun (up to 1,104 if aa
+# halts); the cause is fixed and the card resumed, and the halted arm refights all its 276
+# battles (a single-arm run does not read back a stopped run's; up to ~27 min). No futility or skips rule: the paired read needs
+# the baselines whole, and melee skips are read from the arm reports against aa's.
+
+set OUT = ../docs/bench/local
+
+haprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb et ed es; do rm -f bisect/hadur117.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh etab && bash ./build-ablation.sh edge && bash ./build-ablation.sh eshd && mkdir -p work && rm -rf work/melee-hand-"$V"-aa work/melee-hand-"$V"-bb work/melee-hand-"$V"-et work/melee-hand-"$V"-ed work/melee-hand-"$V"-es && echo "$V" > work/melee-hand.version && for a in aa bb et ed es; do test -f bisect/hadur117.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-hand.args > work/melee-hand-$a.args || exit 1; done && rm -f ${OUT}/melee-hand-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+haaa   | mvn -q exec:java "-Dexec.args=@work/melee-hand-aa.args"
+  after: haprep
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+habb   | mvn -q exec:java "-Dexec.args=@work/melee-hand-bb.args"
+  after: haaa
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+haet   | mvn -q exec:java "-Dexec.args=@work/melee-hand-et.args"
+  after: habb
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+haed   | mvn -q exec:java "-Dexec.args=@work/melee-hand-ed.args"
+  after: haet
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+haes   | mvn -q exec:java "-Dexec.args=@work/melee-hand-es.args"
+  after: haed
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+haread | V=$(cat work/melee-hand.version) && test -n "$V" && W=work/melee-hand-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm et="$W"-et --arm ed="$W"-ed --arm es="$W"-es --census melee-census-317.txt --seeds 6 --gain 0 --survival-slack 1 --out ${OUT}/melee-hand-read.md --title "The endgame hand-off switches on $V" || true; } && test -s ${OUT}/melee-hand-read.md
+  after: haes
+hapr   | bash tools/open_results_pr.sh claude/pc-melee-hand-results "The endgame hand-off switches (HAND-1 to HAND-3)" ${OUT}/melee-hand-read.md $(ls ${OUT}/melee-hand-aa.md ${OUT}/melee-hand-bb.md ${OUT}/melee-hand-et.md ${OUT}/melee-hand-ed.md ${OUT}/melee-hand-es.md 2>/dev/null)
+  after: haread
