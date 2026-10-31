@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 306 of 310 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 307 of 312 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -1276,6 +1276,16 @@ traceability check reads. 306 of 310 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">BENCH-154</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
 <p>The bench shall carry the <code>pc-melee-dia</code> card, which builds <a class="req" href="requirements.html#MMOVE-22">MMOVE-22</a> and <a class="req" href="requirements.html#MMOVE-23">MMOVE-23</a> each alone on master&#x27;s melee (<a class="req" href="requirements.html#MGUN-23">MGUN-23</a> failed the skip bar on its cloud smoke and is not carded) beside an aa baseline and a bb A/A copy, runs each alone on the melee census at 6 fresh seeds after <code>pc-melee-scal</code>&#x27;s, and reads it with <code>tools/melee_s0.py screen --base2</code> under the melee gate (the 95% low end above 0, the 1-30 endgame wins no more than 3 points lower, the share of others outlived no more than 1 point lower, skipped turns a battle no more than 20% over the baseline&#x27;s).</p>
 <dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleeDiaPlanTest.java">MeleeDiaPlanTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-155">
+<div class="req-head"><span class="rid">BENCH-155</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>When a melee battle shows one of Hadur&#x27;s bullets for the first time, the melee harvester shall append one row to <code>shots.csv</code> (the round and turn, the fighters alive before that turn&#x27;s deaths, Hadur&#x27;s energy before the shot, the living non-sentry fighter whose bearing lies nearest the bullet&#x27;s heading, that robot&#x27;s energy and distance, and the power), once per bullet, so Hadur&#x27;s bullet-power decision is recorded against what a nano can see.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/MeleeHarvester.java" title="hadur.bench.MeleeHarvester">MeleeHarvester</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleeHarvesterTest.java">MeleeHarvesterTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-156">
+<div class="req-head"><span class="rid">BENCH-156</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall carry <code>tools/distill.py</code>, whose <code>power</code> command writes a Sanaro-shaped bullet-power constant from <code>shots.csv</code> rows (the modal power per energy cell where at least <code>--min</code> shots fall, the nearest filled cell on the row within <code>--reach</code> otherwise, <code>sanaro/table.py</code>&#x27;s formula elsewhere, so with no rows the constant is the shipped one), and whose <code>hash</code> command writes a per-opponent mode string of the smallest power-of-two length under which every participant&#x27;s Java <code>hashCode()</code> lands on its own cell; both write only into the source named by <code>--src</code>.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><span class="none">no tagged test</span></dd></dl>
 </article>
 <h2 id="group-DODGE">DODGE</h2>
 <article class="req-card" id="DODGE-1">
