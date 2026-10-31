@@ -123,6 +123,24 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#AVG_FAR" class="member-name-link">AVG_FAR</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#AVG_FAR_WEAK" class="member-name-link">AVG_FAR_WEAK</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#AVG_POWER" class="member-name-link">AVG_POWER</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-23">MGUN-23</a> (arm mavg), inspired by Diamond's melee power: off a team with three or more
+ opponents and <a href="#CROWD_RULE_ENERGY"><code>CROWD_RULE_ENERGY</code></a>, while Hadur's energy is at or above the living
+ opponents' mean it fires 3 at any range up to <a href="#AVG_FAR"><code>AVG_FAR</code></a> px once four or more are
+ left (with three, <a class="req" href="../../../../requirements.html#MGUN-13">MGUN-13</a> stands), and <a href="#AVG_WEAK_POWER"><code>AVG_WEAK_POWER</code></a> beyond; below the mean it
+ fires <a href="#AVG_WEAK_POWER"><code>AVG_WEAK_POWER</code></a> beyond <a href="#AVG_FAR_WEAK"><code>AVG_FAR_WEAK</code></a> px.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#AVG_WEAK_POWER" class="member-name-link">AVG_WEAK_POWER</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>static final boolean</code></div>
 <div class="col-second even-row-color"><code><a href="#CROWD_FLOOR" class="member-name-link">CROWD_FLOOR</a></code></div>
 <div class="col-last even-row-color">
@@ -224,27 +242,52 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#crowdPower(double,double,double,double,double,int)" class="member-name-link">crowdPower</a><wbr>(double&nbsp;tablePower,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#avgPower(double,double,double,double,int,double,boolean)" class="member-name-link">avgPower</a><wbr>(double&nbsp;p,
+ double&nbsp;distance,
+ double&nbsp;ownEnergy,
+ double&nbsp;targetEnergy,
+ int&nbsp;others,
+ double&nbsp;averageEnergy,
+ boolean&nbsp;on)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-23">MGUN-23</a>: <code>p</code> (the rules so far) replaced by Diamond's crowd power where the switch
+ <code>on</code> and the crowd conditions hold; a hold (0) and a finisher stand, and the kill,
+ lead and own-energy caps apply as the table's do.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#crowdPower(double,double,double,double,double,int)" class="member-name-link">crowdPower</a><wbr>(double&nbsp;tablePower,
  double&nbsp;distance,
  double&nbsp;nearest,
  double&nbsp;ownEnergy,
  double&nbsp;targetEnergy,
  int&nbsp;others)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">As <a href="#crowdPower(double,double,double,double,int)"><code>crowdPower(double, double, double, double, int)</code></a>, where with <a class="req" href="../../../../requirements.html#MGUN-22">MGUN-22</a> on and two or
  more opponents the power is <a href="#scalPower(double,double,double)"><code>scalPower(double, double, double)</code></a> from the nearest robot's distance
  <code>nearest</code>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#crowdPower(double,double,double,double,double,int,boolean)" class="member-name-link">crowdPower</a><wbr>(double&nbsp;tablePower,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#crowdPower(double,double,double,double,double,int,boolean)" class="member-name-link">crowdPower</a><wbr>(double&nbsp;tablePower,
  double&nbsp;distance,
  double&nbsp;nearest,
  double&nbsp;ownEnergy,
  double&nbsp;targetEnergy,
  int&nbsp;others,
  boolean&nbsp;scal)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#crowdPower(double,double,double,double,double,int,double)" class="member-name-link">crowdPower</a><wbr>(double&nbsp;tablePower,
+ double&nbsp;distance,
+ double&nbsp;nearest,
+ double&nbsp;ownEnergy,
+ double&nbsp;targetEnergy,
+ int&nbsp;others,
+ double&nbsp;averageEnergy)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">As above, with <a class="req" href="../../../../requirements.html#MGUN-23">MGUN-23</a> on also read against <code>averageEnergy</code>, the living opponents'
+ mean energy (NaN when unknown: the rule stands down).</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#crowdPower(double,double,double,double,int)" class="member-name-link">crowdPower</a><wbr>(double&nbsp;tablePower,
  double&nbsp;distance,
@@ -658,6 +701,67 @@ loadScripts(document, 'script');</script>
 </dl>
 </section>
 </li>
+<li>
+<section class="detail" id="AVG_POWER">
+<h3>AVG_POWER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">AVG_POWER</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-23">MGUN-23</a> (arm mavg), inspired by Diamond's melee power: off a team with three or more
+ opponents and <a href="#CROWD_RULE_ENERGY"><code>CROWD_RULE_ENERGY</code></a>, while Hadur's energy is at or above the living
+ opponents' mean it fires 3 at any range up to <a href="#AVG_FAR"><code>AVG_FAR</code></a> px once four or more are
+ left (with three, <a class="req" href="../../../../requirements.html#MGUN-13">MGUN-13</a> stands), and <a href="#AVG_WEAK_POWER"><code>AVG_WEAK_POWER</code></a> beyond; below the mean it
+ fires <a href="#AVG_WEAK_POWER"><code>AVG_WEAK_POWER</code></a> beyond <a href="#AVG_FAR_WEAK"><code>AVG_FAR_WEAK</code></a> px. Off.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.melee.MeleeEnergyPolicy.AVG_POWER">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="AVG_FAR">
+<h3>AVG_FAR</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">AVG_FAR</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.melee.MeleeEnergyPolicy.AVG_FAR">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="AVG_FAR_WEAK">
+<h3>AVG_FAR_WEAK</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">AVG_FAR_WEAK</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.melee.MeleeEnergyPolicy.AVG_FAR_WEAK">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="AVG_WEAK_POWER">
+<h3>AVG_WEAK_POWER</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">AVG_WEAK_POWER</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.melee.MeleeEnergyPolicy.AVG_WEAK_POWER">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -743,6 +847,35 @@ loadScripts(document, 'script');</script>
 <div class="block">As <a href="#crowdPower(double,double,double,double,int)"><code>crowdPower(double, double, double, double, int)</code></a>, where with <a class="req" href="../../../../requirements.html#MGUN-22">MGUN-22</a> on and two or
  more opponents the power is <a href="#scalPower(double,double,double)"><code>scalPower(double, double, double)</code></a> from the nearest robot's distance
  <code>nearest</code>. A hold (0) and a finisher stand.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="crowdPower(double,double,double,double,double,int,double)">
+<h3>crowdPower</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">crowdPower</span><wbr><span class="parameters">(double&nbsp;tablePower,
+ double&nbsp;distance,
+ double&nbsp;nearest,
+ double&nbsp;ownEnergy,
+ double&nbsp;targetEnergy,
+ int&nbsp;others,
+ double&nbsp;averageEnergy)</span></div>
+<div class="block">As above, with <a class="req" href="../../../../requirements.html#MGUN-23">MGUN-23</a> on also read against <code>averageEnergy</code>, the living opponents'
+ mean energy (NaN when unknown: the rule stands down).</div>
+</section>
+</li>
+<li>
+<section class="detail" id="avgPower(double,double,double,double,int,double,boolean)">
+<h3>avgPower</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">avgPower</span><wbr><span class="parameters">(double&nbsp;p,
+ double&nbsp;distance,
+ double&nbsp;ownEnergy,
+ double&nbsp;targetEnergy,
+ int&nbsp;others,
+ double&nbsp;averageEnergy,
+ boolean&nbsp;on)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-23">MGUN-23</a>: <code>p</code> (the rules so far) replaced by Diamond's crowd power where the switch
+ <code>on</code> and the crowd conditions hold; a hold (0) and a finisher stand, and the kill,
+ lead and own-energy caps apply as the table's do.</div>
 </section>
 </li>
 <li>

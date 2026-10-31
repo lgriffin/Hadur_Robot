@@ -747,9 +747,29 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Their mean |lateral velocity| across our line of sight, in px per tick (at most 8), or NaN.</div>
 </dd>
+<dt><a href="hadur117/core/melee/MeleeEnergyPolicy.html#AVG_FAR" class="member-name-link">AVG_FAR</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeEnergyPolicy.html" title="class in hadur117.core.melee">MeleeEnergyPolicy</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/MeleeEnergyPolicy.html#AVG_FAR_WEAK" class="member-name-link">AVG_FAR_WEAK</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeEnergyPolicy.html" title="class in hadur117.core.melee">MeleeEnergyPolicy</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/MeleeEnergyPolicy.html#AVG_POWER" class="member-name-link">AVG_POWER</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeEnergyPolicy.html" title="class in hadur117.core.melee">MeleeEnergyPolicy</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-23">MGUN-23</a> (arm mavg), inspired by Diamond's melee power: off a team with three or more
+ opponents and <a href="hadur117/core/melee/MeleeEnergyPolicy.html#CROWD_RULE_ENERGY"><code>MeleeEnergyPolicy.CROWD_RULE_ENERGY</code></a>, while Hadur's energy is at or above the living
+ opponents' mean it fires 3 at any range up to <a href="hadur117/core/melee/MeleeEnergyPolicy.html#AVG_FAR"><code>MeleeEnergyPolicy.AVG_FAR</code></a> px once four or more are
+ left (with three, <a class="req" href="../requirements.html#MGUN-13">MGUN-13</a> stands), and <a href="hadur117/core/melee/MeleeEnergyPolicy.html#AVG_WEAK_POWER"><code>MeleeEnergyPolicy.AVG_WEAK_POWER</code></a> beyond; below the mean it
+ fires <a href="hadur117/core/melee/MeleeEnergyPolicy.html#AVG_WEAK_POWER"><code>MeleeEnergyPolicy.AVG_WEAK_POWER</code></a> beyond <a href="hadur117/core/melee/MeleeEnergyPolicy.html#AVG_FAR_WEAK"><code>MeleeEnergyPolicy.AVG_FAR_WEAK</code></a> px.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MeleeEnergyPolicy.html#AVG_WEAK_POWER" class="member-name-link">AVG_WEAK_POWER</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeEnergyPolicy.html" title="class in hadur117.core.melee">MeleeEnergyPolicy</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/MeleeProfile.html#avgBulletPower()" class="member-name-link">avgBulletPower()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeProfile.html" title="class in hadur117.core.melee">MeleeProfile</a></dt>
 <dd>
 <div class="block">The mean power of its inferred shots, or NaN before any.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MeleeEnergyPolicy.html#avgPower(double,double,double,double,int,double,boolean)" class="member-name-link">avgPower(double, double, double, double, int, double, boolean)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeEnergyPolicy.html" title="class in hadur117.core.melee">MeleeEnergyPolicy</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-23">MGUN-23</a>: <code>p</code> (the rules so far) replaced by Diamond's crowd power where the switch
+ <code>on</code> and the crowd conditions hold; a hold (0) and a finisher stand, and the kill,
+ lead and own-energy caps apply as the table's do.</div>
 </dd>
 <dt><a href="hadur117/core/duel/ShadowAvoidance.html#avoided(double,double)" class="member-name-link">avoided(double, double)</a> - Method in class hadur117.core.duel.<a href="hadur117/core/duel/ShadowAvoidance.html" title="class in hadur117.core.duel">ShadowAvoidance</a></dt>
 <dd>&nbsp;</dd>
@@ -2252,6 +2272,11 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/melee/MeleeEnergyPolicy.html#crowdPower(double,double,double,double,double,int,boolean)" class="member-name-link">crowdPower(double, double, double, double, double, int, boolean)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeEnergyPolicy.html" title="class in hadur117.core.melee">MeleeEnergyPolicy</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/MeleeEnergyPolicy.html#crowdPower(double,double,double,double,double,int,double)" class="member-name-link">crowdPower(double, double, double, double, double, int, double)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeEnergyPolicy.html" title="class in hadur117.core.melee">MeleeEnergyPolicy</a></dt>
+<dd>
+<div class="block">As above, with <a class="req" href="../requirements.html#MGUN-23">MGUN-23</a> on also read against <code>averageEnergy</code>, the living opponents'
+ mean energy (NaN when unknown: the rule stands down).</div>
+</dd>
 <dt><a href="hadur117/core/melee/MeleeEnergyPolicy.html#crowdPower(double,double,double,double,int)" class="member-name-link">crowdPower(double, double, double, double, int)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeEnergyPolicy.html" title="class in hadur117.core.melee">MeleeEnergyPolicy</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MGUN-12">MGUN-12</a>, <a class="req" href="../requirements.html#MGUN-13">MGUN-13</a>: off a team, the power for a target with <code>others</code> opponents alive,
@@ -2295,6 +2320,12 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The bullet's damage.</div>
 </dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#DAMAGE_BASE" class="member-name-link">DAMAGE_BASE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#DAMAGE_DISTANCE_START" class="member-name-link">DAMAGE_DISTANCE_START</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-22">MMOVE-22</a>: the mean distance taken for an opponent never scanned.</div>
+</dd>
 <dt><a href="hadur/bench/LogHarvester.RoundRow.html#damageDealt" class="member-name-link">damageDealt</a> - Variable in class hadur.bench.<a href="hadur/bench/LogHarvester.RoundRow.html" title="class in hadur.bench">LogHarvester.RoundRow</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur/bench/RoundSeries.Row.html#damageDealt" class="member-name-link">damageDealt</a> - Variable in class hadur.bench.<a href="hadur/bench/RoundSeries.Row.html" title="class in hadur.bench">RoundSeries.Row</a></dt>
@@ -2304,6 +2335,8 @@ loadScripts(document, 'script');</script>
 <div class="block">One of our bullets hit the enemy.</div>
 </dd>
 <dt><a href="hadur117/core/melee/OpponentStats.html#damageDealtTo()" class="member-name-link">damageDealtTo()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/OpponentStats.html" title="class in hadur117.core.melee">OpponentStats</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#damageMemory()" class="member-name-link">damageMemory()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/OpponentStats.html#damageReceivedFrom()" class="member-name-link">damageReceivedFrom()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/OpponentStats.html" title="class in hadur117.core.melee">OpponentStats</a></dt>
 <dd>&nbsp;</dd>
@@ -2320,6 +2353,16 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/shieldmode/ShieldBudget.html#damageTaken(double)" class="member-name-link">damageTaken(double)</a> - Method in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldBudget.html" title="class in hadur117.core.shieldmode">ShieldBudget</a></dt>
 <dd>
 <div class="block">An enemy bullet hit us.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#damageWeights(java.util.List,java.util.function.ToDoubleFunction,java.util.function.ToDoubleFunction)" class="member-name-link">damageWeights(List&lt;EnemyInfo&gt;, ToDoubleFunction&lt;String&gt;, ToDoubleFunction&lt;String&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-22">MMOVE-22</a>: each living opponent's weight, (its damage to Hadur + <a href="hadur117/core/melee/MinimumRiskMovement.html#DAMAGE_BASE"><code>MinimumRiskMovement.DAMAGE_BASE</code></a>) x its
+ mean distance, scaled so the weights average 1; an opponent without a scan takes
+ <a href="hadur117/core/melee/MinimumRiskMovement.html#DAMAGE_DISTANCE_START"><code>MinimumRiskMovement.DAMAGE_DISTANCE_START</code></a>.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#damageWeights(java.util.Map)" class="member-name-link">damageWeights(Map&lt;String, Double&gt;)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-22">MMOVE-22</a>: the weights this decision's enemy terms carry, from <a href="hadur117/core/melee/MinimumRiskMovement.html#damageWeights(java.util.Map)"><code>MinimumRiskMovement.damageWeights(java.util.Map&lt;java.lang.String, java.lang.Double&gt;)</code></a>.</div>
 </dd>
 <dt><a href="hadur117/core/move/PlanInterval.html#danger" class="member-name-link">danger</a> - Variable in class hadur117.core.move.<a href="hadur117/core/move/PlanInterval.html" title="class in hadur117.core.move">PlanInterval</a></dt>
 <dd>
@@ -2616,6 +2659,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/mini/DeiseLab.html#destination" class="member-name-link">destination</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/DeiseLab.html" title="class in hadur117.mini">DeiseLab</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#diamond(boolean,boolean)" class="member-name-link">diamond(boolean, boolean)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-22">MMOVE-22</a>, <a class="req" href="../requirements.html#MMOVE-23">MMOVE-23</a>: sets the Diamond-inspired switches, for tests and the bench's arms.</div>
+</dd>
 <dt><a href="hadur117/core/physics/DiaUtils.html" class="type-name-link" title="class in hadur117.core.physics">DiaUtils</a> - Class in <a href="hadur117/core/physics/package-summary.html">hadur117.core.physics</a></dt>
 <dd>
 <div class="block">Small geometry and arithmetic helpers shared by the whole core: projecting points,
@@ -4463,6 +4510,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Weight in [0.3, 1] used to discount decisions based on old scans.</div>
 </dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#FULL_LATERAL" class="member-name-link">FULL_LATERAL</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/policy/PowerPolicy.html#FULL_POWER" class="member-name-link">FULL_POWER</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/PowerPolicy.html" title="class in hadur117.core.policy">PowerPolicy</a></dt>
 <dd>
 <div class="block">The power the full-power rules fire, in energy: the engine's maximum.</div>
@@ -7822,6 +7871,19 @@ loadScripts(document, 'script');</script>
  energy loss to someone other than Hadur that one other opponent's shot explains (its damage,
  its wave at the victim between the victim's last two scans) teaches that shooter's aim, as a
  hit on Hadur does (<a class="req" href="../requirements.html#MMOVE-15">MMOVE-15</a>).</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#MELEE_DAMAGE_MEMORY" class="member-name-link">MELEE_DAMAGE_MEMORY</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-22">MMOVE-22</a> (arm mdmg), inspired by Diamond's melee movement: off a team, each opponent's risk
+ term weighs by the damage its bullets have done to Hadur over the whole battle, plus
+ <a href="hadur117/core/melee/MinimumRiskMovement.html#DAMAGE_BASE"><code>MinimumRiskMovement.DAMAGE_BASE</code></a>, times its mean distance from Hadur (a gun that hits from afar is the
+ more dangerous), the weights scaled to average 1 over the living opponents.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#MELEE_FULL_LATERAL" class="member-name-link">MELEE_FULL_LATERAL</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-23">MMOVE-23</a> (arm mlat), inspired by Diamond: off a team with three or more opponents, the
+ lateral weight is <a href="hadur117/core/melee/MinimumRiskMovement.html#FULL_LATERAL"><code>MinimumRiskMovement.FULL_LATERAL</code></a> in place of <a href="hadur117/core/melee/MinimumRiskMovement.html#LATERAL"><code>MinimumRiskMovement.LATERAL</code></a>: a point reached
+ straight at or away from an opponent counts double, not half again.</div>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#MELEE_HEAT" class="member-name-link">MELEE_HEAT</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>
