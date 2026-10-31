@@ -77,6 +77,6 @@ szmt pick locks 9 of BeepBoop's 64 at a 5-point margin (+0.09 APS in sample, Hyd
 ## SHIELD-21: still plans per opponent
 
 A `shield-still:` line on the shield list turns SHIELD-20 on for that robot only (build-ablation `szlist`, suffix
-zl). `plans/pc-shield-still2.queue` (BENCH-153, about 12 min) re-measures the 40 picks
+zl). `plans/pc-shield-still2.queue` (BENCH-158, about 12 min) re-measures the 40 picks
 (`plans/shield-still-picks.txt`, the 9 added to the list from `plans/shield-still-add-picks.txt`) at 4 fresh seeds,
 gated at +0.05 APS, with a 5-point per-robot pick for the lines to ship.

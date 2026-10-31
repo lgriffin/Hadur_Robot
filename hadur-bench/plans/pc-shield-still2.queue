@@ -1,4 +1,4 @@
-# 1v1, shield step per opponent (BENCH-153, docs/bench/shield-step.md). Leigh starts it:
+# 1v1, shield step per opponent (BENCH-158, docs/bench/shield-step.md). Leigh starts it:
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-shield-still2        (or  ./queue.sh run pc-shield-still2)
 # One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes;

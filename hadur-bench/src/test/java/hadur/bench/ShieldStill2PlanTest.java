@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-153: the per-opponent shield step card (plans/pc-shield-still2.queue) is complete before it reaches the PC. */
+/** BENCH-158: the per-opponent shield step card (plans/pc-shield-still2.queue) is complete before it reaches the PC. */
 class ShieldStill2PlanTest {
 
     private static final Path QUEUE = Path.of("plans/pc-shield-still2.queue");
@@ -22,7 +22,7 @@ class ShieldStill2PlanTest {
     }
 
     @Test
-    @Tag("BENCH-153")
+    @Tag("BENCH-158")
     @DisplayName("the 40 picks with c/aa/mtzl at 4 fresh seeds, the gate, the pick and the stop rules")
     void cardIsComplete() throws IOException {
         String queue = Files.readString(QUEUE);
