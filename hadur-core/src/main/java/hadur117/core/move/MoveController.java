@@ -115,6 +115,10 @@ public class MoveController {
     private boolean replicator;
     /** MOVE-21: whether the danger kernel is the point value at the intersection centre (off by default). */
     private boolean pointKernel;
+    /** SKEY-2: the kernel width's multiplier in the views' danger; 1 unless a surf key is set. */
+    private double keyWidth = 1.0;
+    /** SKEY-2: the hit views' default key weights, the {@link MoveFormula}'s. */
+    private static final double[] KEY_DEFAULTS = new MoveFormula().weights.clone();
 
     /**
      * A controller with empty views and no waves, for a battle on {@code battleField}.
@@ -144,6 +148,40 @@ public class MoveController {
     /** MOVE-21: the danger kernel is the point value at the intersection centre (Diamond's); off, MOVE-4's integral. */
     public void setPointKernel(boolean on) {
         this.pointKernel = on;
+    }
+
+    /**
+     * SKEY-2: the opponent's surf key. Every view in the {@link MoveFormula} space (the hit views and the
+     * light flattener) searches with the default weights times the key's first nine values, and the
+     * views' danger kernel is the key's last value times as wide. Null restores the defaults, so a
+     * battle against an opponent with no key plays exactly as before.
+     *
+     * @param key nine weight multipliers then the width's ({@link hadur117.core.shieldmode.ShieldList#surfKeyFor}), or null
+     */
+    public void setSurfKey(double[] key) {
+        double[] w = KEY_DEFAULTS.clone();
+        if (key != null) {
+            for (int i = 0; i < w.length; i++) w[i] *= key[i];
+        }
+        keyWidth = key == null ? 1.0 : key[w.length];
+        for (KnnView<TimestampedGuessFactor> view : views) {
+            if (view.formula.getClass() == MoveFormula.class) view.setWeights(w.clone());
+        }
+    }
+
+    /** SKEY-2: the kernel width's multiplier now in force (1 with no surf key). */
+    public double keyWidth() {
+        return keyWidth;
+    }
+
+    /** SKEY-2: view {@code i}'s key weights, for tests. */
+    double[] viewKeyWeights(int i) {
+        return views.get(i).formula.weights.clone();
+    }
+
+    /** SKEY-2: whether view {@code i} searches the {@link MoveFormula} space, for tests. */
+    boolean viewInKeySpace(int i) {
+        return views.get(i).formula.getClass() == MoveFormula.class;
     }
 
     /**
@@ -1279,7 +1317,7 @@ public class MoveController {
                     w.firingAngle(tsgf.guessFactor), dangerAngle);
                 // MOVE-4: the kernel's mass over the whole intersection, not its height at the
                 // centre; MOVE-3: counting only what the shadows let through.
-                density += scanWeight * kernel(xFiringAngle, bandwidth, segments);
+                density += scanWeight * kernel(xFiringAngle, bandwidth * keyWidth, segments);
                 viewScanWeight += scanWeight;
             }
             totalScanWeight += viewScanWeight * viewWeight;
