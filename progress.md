@@ -1,12 +1,12 @@
 # Queue pc-melee-dia: progress
 
-Updated 2026-10-31 15:19:23 PC time (15:19 UTC), runner pid 63404.
+Updated 2026-10-31 15:34:31 PC time (15:34 UTC), runner pid 63404.
 
 - `diprep` done, exit 0 in 2 min
 - `diaa` done, exit 0 in 25 min
 - `dibb` done, exit 0 in 25 min
-- `didm` running
-- `dila` pending
+- `didm` done, exit 0 in 26 min
+- `dila` running
 - `diread` pending
 - `dipr` pending
 
@@ -36,22 +36,31 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### didm
 
-**252 of 276 battles** (91%), 0 failed. Running 24 min, 642 battles/h, about 2 min left (ends ~15:21 PC time). Last battle 0 min ago.
-Skipped turns a battle: 69.6 overall, first 100 63.9, last 100 76.1.
+**276 of 276 battles** (100%), 0 failed. Running 26 min, 647 battles/h, about 0 min left (ends ~15:21 PC time). Last battle 0 min ago.
+Skipped turns a battle: 71.7 overall, first 100 63.9, last 100 81.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 252 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 24 battles unrun (about 2 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### dila
+
+**132 of 276 battles** (48%), 0 failed. Running 13 min, 607 battles/h, about 14 min left (ends ~15:48 PC time). Last battle 0 min ago.
+Skipped turns a battle: 55.5 overall, first 100 52.8, last 100 59.5.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 132 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 144 battles unrun (about 14 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-14:03:45 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
-14:03:45 start diprep
-14:03:49 progress pushed to origin claude/pc-melee-dia-progress (every 15 min)
 14:06:11 diprep exit=0 in 146 s
 14:06:11 start diaa
 14:06:11 watching diaa: 2 stop rule(s)
@@ -64,4 +73,7 @@ Stopping now would leave 24 battles unrun (about 2 min); every battle already fo
 14:55:51 start didm
 14:55:51 watching didm: 2 stop rule(s)
 15:07:18 progress didm: 120/276 (43%) battles, 629/h, ETA 15 min, 0 failed, skips 70.7/battle (last 100)
+15:21:27 didm exit=0 in 1536 s
+15:21:27 start dila
+15:21:27 watching dila: 2 stop rule(s)
 ```
