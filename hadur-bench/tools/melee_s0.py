@@ -64,6 +64,9 @@ AA_HALF = 0.3
 SCREEN_AA = 0.25
 GAIN = 0.3
 BAND_SLACK = 3.0
+# BENCH-146: an arm whose skipped turns a battle rise more than this share over the baseline's fails
+# whatever its APS (the card's rule; the live client counts skips against Hadur).
+SKIP_SLACK = 0.20
 
 
 def band_of(rank):
@@ -425,10 +428,12 @@ def screen(base_work, arms, ranks, seeds=None, fields=None, base2_work=None):
     base, field_of = run_aps(base_work)
     mixed, other = base, {}
     base_phase = phase_stats(analyse(base_work, ranks))
+    base_skips = skips_a_battle(base_work)
     if base2_work:
         other, _ = run_aps(base2_work)
         mixed = {k: (a + other[k]) / 2 for k, a in base.items() if k in other}
         base_phase = pooled_phase(base_phase, phase_stats(analyse(base2_work, ranks)))
+    base_phase = base_phase + (base_skips,)
     out = []
     for name, work in arms:
         arm, _ = run_aps(work)
@@ -442,8 +447,28 @@ def screen(base_work, arms, ranks, seeds=None, fields=None, base2_work=None):
         known = set(against) | set(arm) | (set(base) | set(other) if name != "bb" else set())
         expected = max(len(known), (seeds or 0) * (fields or 0))
         out.append({"name": name, "paired": mean_ci(diffs), "pairs": pairs, "missing": expected - pairs,
-                    "fields": len(per_field), "phase": phase_stats(analyse(work, ranks))})
+                    "fields": len(per_field), "phase": phase_stats(analyse(work, ranks)) + (skips_a_battle(work),)})
     return out, base_phase
+
+
+def skips_a_battle(work):
+    """Skipped turns a battle over a run's candidate battles (the sum of its rounds' skips), or NaN."""
+    per_battle = []
+    for _field, _key, baseline, _robots, rounds in battles(work):
+        if baseline:
+            continue
+        per_battle.append(sum(int(r["skippedTurns"]) for r in rounds if r.get("skippedTurns", "").isdigit()))
+    return statistics.mean(per_battle) if per_battle else float("nan")
+
+
+def skips_over(arm, base_phase):
+    """The arm's skipped turns a battle as a share over the baseline's, or NaN when either is unknown."""
+    if len(arm["phase"]) < 6 or len(base_phase) < 6:
+        return float("nan")
+    a, b = arm["phase"][5], base_phase[5]
+    if math.isnan(a) or math.isnan(b) or b == 0:
+        return float("nan")
+    return a / b - 1
 
 
 def verdict(arm, base_phase, gain=GAIN, survival_slack=None):
@@ -463,9 +488,20 @@ def verdict(arm, base_phase, gain=GAIN, survival_slack=None):
             return "NO DATA"
         if lived < -survival_slack:
             return "FAIL"
+    over = skips_over(arm, base_phase)
+    if not math.isnan(over) and over > SKIP_SLACK:
+        return "FAIL"
     if m >= gain and m - h > 0 and not (band < -BAND_SLACK):
         return "PASS"
     return "FAIL"
+
+
+def skips_cell(skips, over=None):
+    if math.isnan(skips):
+        return "-"
+    if over is None or math.isnan(over):
+        return "%.1f" % skips
+    return "%.1f (%+.0f%%)" % (skips, 100 * over)
 
 
 def render_screen(rows, base_phase, title, gain=GAIN, survival_slack=None, gains=None, both=False):
@@ -474,19 +510,23 @@ def render_screen(rows, base_phase, title, gain=GAIN, survival_slack=None, gains
            ("Each arm but bb paired with the mean of the aa and bb baselines" if both else
             "Each arm paired with the aa baseline") + " battle for battle (same field, same seed). Paired APS is the mean over",
            "fields of the per-field mean difference, with its 95%% interval. Pass: +%.1f or more, low end above 0, and" % gain,
-           "1-30 endgame wins no more than %.0f points below the baseline's%s. The bb copy is clean within ±%.2f." % (
+           "1-30 endgame wins no more than %.0f points below the baseline's%s, and skipped turns a battle no more than %.0f%%" % (
                BAND_SLACK, "" if survival_slack is None else
                ", and the share of others outlived no more than %.0f point%s lower" % (survival_slack, "" if survival_slack == 1 else "s"),
-               SCREEN_AA), "",
-           "| Arm | Paired APS | Fields | Battles (missing) | 1-30 endgame wins | Deaths with two opponents left | Energy entering the endgame | Others outlived | Verdict |",
-           "|---|---|---|---|---|---|---|---|---|",
-           ("| aa and bb (baseline) " if both else "| aa (baseline) ") + "| - | - | - | %.1f%% of %d | %.1f%% | %.1f | %.1f%% | - |" % base_phase]
+               100 * SKIP_SLACK),
+           "over aa's. The bb copy is clean within ±%.2f." % SCREEN_AA, "",
+           "| Arm | Paired APS | Fields | Battles (missing) | 1-30 endgame wins | Deaths with two opponents left | Energy entering the endgame | Others outlived | Skips a battle | Verdict |",
+           "|---|---|---|---|---|---|---|---|---|---|",
+           ("| aa and bb (baseline) " if both else "| aa (baseline) ") + "| - | - | - | %.1f%% of %d | %.1f%% | %.1f | %.1f%% | %s | - |" % (
+               base_phase[:5] + (skips_cell(base_phase[5] if len(base_phase) > 5 else float("nan")),))]
     for r in rows:
         m, h = r["paired"]
-        w, n, dead, en, lived = r["phase"]
-        out.append("| %s | %+.2f ± %.2f | %d | %d (%d) | %.1f%% of %d (%+.1f) | %.1f%% (%+.1f) | %.1f (%+.1f) | %.1f%% (%+.1f) | **%s** |" % (
+        w, n, dead, en, lived = r["phase"][:5]
+        over = skips_over(r, base_phase)
+        out.append("| %s | %+.2f ± %.2f | %d | %d (%d) | %.1f%% of %d (%+.1f) | %.1f%% (%+.1f) | %.1f (%+.1f) | %.1f%% (%+.1f) | %s | **%s** |" % (
             r["name"], m, h, r["fields"], r["pairs"], r.get("missing", 0), w, n, w - base_phase[0], dead, dead - base_phase[2],
             en, en - base_phase[3], lived, lived - base_phase[4],
+            skips_cell(r["phase"][5] if len(r["phase"]) > 5 else float("nan"), over),
             verdict(r, base_phase, gains.get(r["name"], gain), survival_slack)))
     for name, g in gains.items():
         out += ["", "%s is judged at +%.1f, not +%.1f." % (name, g, gain)]

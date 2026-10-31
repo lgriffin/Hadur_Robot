@@ -228,6 +228,31 @@ class ScreenTest(unittest.TestCase):
             self.assertIn("up is judged at +1.5, not +0.5.", text)
             self.assertIn("others outlived no more than 1 point lower", text)
 
+    def test_skipped_turns_bar(self):
+        """BENCH-146: an arm whose skipped turns a battle rise more than 20% over aa's fails whatever its APS."""
+        with tempfile.TemporaryDirectory() as tmp:
+            sets = os.path.join(tmp, "census")
+            write(os.path.join(sets, "f.txt"), "aaa.Big 1.0 | melee-3 | aaa.Big_1.0.jar\n")
+            write(os.path.join(sets, "suite.txt"), "F01 | --set f.txt\nF02 | --set f.txt\n")
+            won = "0,1,10,aaa.Big 1.0,1,0,0,%d,-,-,aaa.Big 1.0,800,60.00,40.00,30.00,5.00\n"
+            fifth = "1,5,10,-,-,0,0,%d,300,aaa.Big 1.0,aaa.Big 1.0,-,-,-,90.00,0.00\n"
+            base, arm, slow = (os.path.join(tmp, x) for x in ("aa", "up", "slow"))
+            self.run_of(base, {"F01": [100, 102], "F02": [98, 100]}, [won % 10, fifth % 10])
+            self.run_of(arm, {"F01": [103, 104], "F02": [101, 103]}, [won % 12, fifth % 11])
+            self.run_of(slow, {"F01": [103, 104], "F02": [101, 103]}, [won % 20, fifth % 10])
+            rows, base_phase = ms.screen(base, [("up", arm), ("slow", slow)],
+                                         ms.census_ranks(os.path.join(sets, "suite.txt")))
+            self.assertAlmostEqual(base_phase[5], 20.0)
+            by = {r["name"]: r for r in rows}
+            self.assertAlmostEqual(ms.skips_over(by["up"], base_phase), 0.15)
+            self.assertEqual(ms.verdict(by["up"], base_phase), "PASS", "15% more skips is inside the bar")
+            self.assertAlmostEqual(ms.skips_over(by["slow"], base_phase), 0.5)
+            self.assertEqual(ms.verdict(by["slow"], base_phase), "FAIL", "50% more skips fails at any APS")
+            text = ms.render_screen(rows, base_phase, "t")
+            self.assertIn("skipped turns a battle no more than 20%\nover aa's", text)
+            self.assertIn("| 30.0 (+50%) | **FAIL** |", text)
+            self.assertIn("| 20.0 | - |", text)
+
 
 if __name__ == "__main__":
     unittest.main()
