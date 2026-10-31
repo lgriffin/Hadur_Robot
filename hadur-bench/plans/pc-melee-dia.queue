@@ -15,7 +15,7 @@
 # dm +0.44 +- 0.58 (energy entering the endgame +3.9, skips -5%), la +0.20 +- 0.75, ea -0.11 +- 0.49 with
 # skips +26% and 4 less energy entering the endgame. ea is built and kept as an arm (mavg) but not carded:
 # the smoke already fails it on the card's skip bar. The card runs dm and la.
-# Each build fights the 46 census fields x 6 fresh seeds alone (3246-3251; 276 battles, 1,104 in
+# Each build fights the 46 census fields x 6 fresh seeds alone (3253-3258, clear of the smoke's 3251-3252; 276 battles, 1,104 in
 # all, about 1.8 h at ~620 battles/h) at the machine's melee width and CPU constant. The read pairs
 # bb with aa (A/A, within +-0.25) and each arm with the mean of aa and bb (--base2), battle for
 # battle. Melee only: the switches act off a team, so the duel and team play are untouched.

@@ -247,16 +247,11 @@ public class FieldGun {
                                     List<EnemyInfo> alive, long now) {
         List<Solution> out = new ArrayList<>();
         double nearest = Double.POSITIVE_INFINITY;
+        for (EnemyInfo e : alive) if (e.age(now) <= MAX_AGE) nearest = Math.min(nearest, e.distance(me));
+        // MGUN-23: every living opponent's last known energy, so a radar gap cannot move the mean.
         double energySum = 0;
-        int fresh = 0;
-        for (EnemyInfo e : alive) {
-            if (e.age(now) > MAX_AGE) continue;
-            nearest = Math.min(nearest, e.distance(me));
-            energySum += e.energy;
-            fresh++;
-        }
-        // MGUN-23: the living opponents' mean energy, Hadur's standing in the field.
-        double average = fresh == 0 ? Double.NaN : energySum / fresh;
+        for (EnemyInfo e : alive) energySum += e.energy;
+        double average = alive.isEmpty() ? Double.NaN : energySum / alive.size();
         for (EnemyInfo e : alive) {
             if (e.age(now) > MAX_AGE) continue;
             double distance = e.distance(me);

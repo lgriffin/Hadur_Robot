@@ -68,11 +68,11 @@ class MeleeDiaPlanTest {
 
     @Test
     @Tag("BENCH-152")
-    @DisplayName("every arm runs alone on the census at 6 fresh seeds after pc-melee-scal's")
+    @DisplayName("every arm runs alone on the census at 6 fresh seeds after pc-melee-scal's and the smoke's")
     void args() throws IOException {
         String args = Files.readString(Path.of("plans/melee-dia.args"));
         assertTrue(args.contains("--suite\nmelee-census-317.txt\n"));
-        assertTrue(args.contains("--seeds\n6\n") && args.contains("--seed-base\n3245\n"));
+        assertTrue(args.contains("--seeds\n6\n") && args.contains("--seed-base\n3252\n"));
         assertTrue(args.contains("--parallel\n@C@\n") && args.contains("--cpu-constant\nauto\n"));
         assertTrue(args.contains("bisect/hadur117.Hadur_@V@@A@.jar") && args.contains("work/melee-dia-@V@-@A@"));
         assertFalse(args.contains("--baseline"), "arms pair in the read, not in the run");
