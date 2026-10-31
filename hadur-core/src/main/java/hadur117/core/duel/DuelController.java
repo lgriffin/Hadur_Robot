@@ -637,6 +637,12 @@ public final class DuelController {
         // POW-5: cap the shot against a T3 gun beyond 500 px, unless a full-power rule below
         // applies - applied first so POW-1..4's Math.max can still override it upward.
         bulletPower = PowerPolicy.capPower(opening.gunTier(), e.distance(), bulletPower);
+        // POW-14: BeepBoop's anti-BasicSurfer powers, in round 0 and while we hit often; before the
+        // full-power, shielder, kill and ram rules below, so none of their powers is rounded down.
+        if (PowerDesign.ANTI_BASIC_SURFER && enemiesTotal <= 1
+                && (round == 0 || ourRates.estimate().value() > PowerDesign.ABS_HIT_RATE)) {
+            bulletPower = PowerDesign.antiBasicSurfer(bulletPower);
+        }
         // POW-1, POW-2, POW-3, POW-4: full power where the profile, the range or this
         // battle's rates say it pays.
         PowerPolicy.Reason why = PowerPolicy.reason(opening.gunTier(), e.energy(), in.energy(),

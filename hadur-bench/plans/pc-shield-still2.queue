@@ -1,0 +1,44 @@
+# 1v1, shield step per opponent (BENCH-158, docs/bench/shield-step.md). Leigh starts it:
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-shield-still2        (or  ./queue.sh run pc-shield-still2)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes;
+# no step needs a decision. About 12 min of battles (480; pc-shield-still ran 2,834 an hour) and seconds of analysis.
+#
+# Why: pc-shield-still (PR #510) failed SHIELD-20 as a global switch (+0.09 +- 0.12 APS on our 273 listed robots,
+# +0.01 +- 0.08 adding BeepBoop's 64) but split by robot: 31 listed robots gained over 5 points (+0.24 APS in
+# sample: Pytko +21, Firebird +17, Lucid +15, Toa +15, the first four also up in the cloud on other seeds) and 23
+# lost over 5 (-0.16); 9 of BeepBoop's 64 locked at a 5-point margin (+0.09 APS in sample, Hydrogen +21).
+# SHIELD-21 turns the still plans on per opponent. This card re-measures the 40 picks on fresh seeds.
+#
+# confirm: the 40 picks (panel-shield-still-picks.txt) x c, aa, mtzl x 4 fresh seeds from 5400 = 480 battles.
+# gate:    mtzl at +0.05 APS over the 40 / 1,217 pairings, 95% low end above 0, A/A inside its band; a per-robot
+#          pick at a 5-point margin (mode_table.py) for the robots to ship; per-robot differences with losses.
+# Stop rules (docs/bench/watch.md): halts on 30 failed battles, an arm scoring nothing in 8, 40+ skipped turns
+# a battle over the last 200, or no battle in 30 minutes; every battle fought is kept and a rerun resumes.
+# No A/A or futility rule: 40 robots read too few for either before the end (pc-shield-still's A/A rule halted
+# it on noise at 1.00 points); the gate judges the A/A at the end. ALERT opens an issue for Leigh on any stop.
+# Nothing here ships: on a pass a PR adds the picked robots' shield-still lines (and the shield entries of
+# BeepBoop's picked robots) for the next census; the release rule stands.
+
+set V = 3.20
+set P = --parallel 12 --no-truth-log
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G --engine 1.11.1
+set W = work/shield-still2
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && SHIELD_ADD=plans/shield-still-add-picks.txt SHIELD_STILL=plans/shield-still-picks.txt bash ./build-ablation.sh slistadd,szlist && test -f bisect/hadur117.Hadur_${V}mtzl.jar && ./fetch-opponents.sh --set panel-shield-still-picks.txt && mvn -q compile
+
+confirm | ./bench-top20.sh ${C} ${P} --set panel-shield-still-picks.txt --seeds 4 --seed-base 5400 --arms plans/shield-still2.arms --out ${W} --label shield-still2 --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 40 over 200
+  stop: stall 30m
+
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-still2.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm mtzl --panel panel-shield-still-picks.txt --bar 0.05 --out ${OUT}/$(date +%Y-%m-%d)_shield-still2-gate.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 5 --out-tsv ${OUT}/shield-still2-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-still2-pick.md && python3 tools/per_robot.py ${W}/arms.tsv --arms mtzl --out ${OUT}/$(date +%Y-%m-%d)_shield-still2-per-robot.md --out-tsv ${OUT}/shield-still2-per-robot.tsv
+  after: confirm
+
+pr | bash tools/open_results_pr.sh claude/pc-shield-still2-results "1v1 shield step per opponent: SHIELD-21 on the 40 picks of pc-shield-still" ${OUT}/*_shield-still2*.md ${OUT}/shield-still2-per-robot.tsv $(find ${OUT} -maxdepth 1 -name shield-still2-pick.tsv -size +0c)
+  after: gate

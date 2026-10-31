@@ -479,7 +479,11 @@ class ShieldDesignTest {
      * aims that far off our centre.
      */
     private double stepUntilShield(String flags, double enemyX, double lead) {
-        mode(flags);
+        return stepUntilShield(flags, enemyX, lead, List.of("list.Target"));
+    }
+
+    private double stepUntilShield(String flags, double enemyX, double lead, List<String> list) {
+        mode = new ShieldMode(ShieldList.parse(list), records::add, 35, ShieldDesign.parse(flags));
         for (long t = 1; t <= 10; t++) {
             mode.onScan(ENEMY, t, MY_X - (t < 10 ? lead : 0), MY_Y, Math.PI / 2, 0, enemyX, ENEMY_Y, Math.PI, 0);
         }
@@ -507,5 +511,17 @@ class ShieldDesignTest {
             "a bullet dead on our centre casts no shadow from where we stand, so still keeps the step");
         assertEquals("still", ShieldDesign.parse("still").toString());
         assertFalse(ShieldDesign.SHIPPED.still);
+    }
+
+    @Test
+    @Tag("SHIELD-21")
+    @DisplayName("a shield-still line gives one opponent the still plans with the switch off; others keep the step")
+    void stillPerOpponent() {
+        List<String> named = List.of("list.Target", ShieldList.STILL_PREFIX + " list.Target 1.0");
+        assertEquals(0, stepUntilShield("", 520, 5, named), 0, "named: no step aside");
+        List<String> other = List.of("list.Target", ShieldList.STILL_PREFIX + " other.Bot 1.0");
+        assertEquals(ShieldMode.WIGGLE, stepUntilShield("", 520, 5, other), 1e-9, "not named: the step as shipped");
+        assertTrue(ShieldList.parse(named).still(ENEMY));
+        assertFalse(ShieldList.parse(other).still(ENEMY));
     }
 }

@@ -1,0 +1,10 @@
+# SHIELD-21 confirm (pc-shield-still2): the 9 robots of BeepBoop's 64 the szmt pick locked (PR #510). SHIELD_ADD for slistadd.
+cx.micro.Spark 0.6
+et.Predator 1.8
+fnc.bandit2002.Bandit2002 4.0.2
+lechu.Ala 0.0.4
+rdt199.Warlord 0.73
+rz.GlowBlowMelee 1.4
+stelo.UnfoolableNano 1.0
+theo.Hydrogen 2.1r
+wompi.Numbat 1.9
