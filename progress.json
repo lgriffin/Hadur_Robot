@@ -1,12 +1,16 @@
 {
  "plan": "pc-melee-dia",
- "updated": 1793455425.6744225,
+ "updated": 1793456333.899581,
  "steps": {
   "diprep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 146,
+   "end": "2026-10-31T14:06:11"
   },
   "diaa": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-10-31T14:06:11"
   },
   "dibb": {
    "status": "pending"
@@ -24,5 +28,43 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "diaa",
+   "started": 1793455571.8996773,
+   "updated": 1793456333.892439,
+   "elapsed": 761.9927616119385,
+   "expected": 276,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 131,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 618.9035168816638,
+   "eta": 843.4271025475655,
+   "fraction": 0.4746376811594203,
+   "last_battle_age": 1.3661484718322754,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 131"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    }
+   ],
+   "skips_mean": 61.908396946564885,
+   "skips_last100": 61.58
+  }
+ ]
 }
