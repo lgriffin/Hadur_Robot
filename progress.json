@@ -1,0 +1,37 @@
+{
+ "plan": "pc-deise-e10",
+ "updated": 1793463486.8733213,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "live-D": {
+   "status": "pending"
+  },
+  "live-PL400": {
+   "status": "pending"
+  },
+  "live-PN": {
+   "status": "pending"
+  },
+  "live-PNS": {
+   "status": "pending"
+  },
+  "live-PNS6": {
+   "status": "pending"
+  },
+  "live-MIR": {
+   "status": "pending"
+  },
+  "live-SAOR": {
+   "status": "pending"
+  },
+  "read": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
