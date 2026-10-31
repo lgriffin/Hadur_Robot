@@ -1,1 +1,7 @@
 08:13:41 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
+08:13:41 start ccprep
+08:13:44 progress pushed to origin claude/pc-team-concord-progress (every 15 min)
+08:15:31 ccprep exit=0 in 109 s
+08:15:31 start ccbb
+08:15:31 watching ccbb: 3 stop rule(s)
+08:15:42 progress ccbb: 0/1104 (0%) battles, 0 failed

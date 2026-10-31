@@ -1,12 +1,16 @@
 {
  "plan": "pc-team-concord",
- "updated": 1793434421.7173986,
+ "updated": 1793435329.5547717,
  "steps": {
   "ccprep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 109,
+   "end": "2026-10-31T08:15:31"
   },
   "ccbb": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-10-31T08:15:31"
   },
   "cccn": {
    "status": "pending"
@@ -30,5 +34,49 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "ccbb",
+   "started": 1793434531.5639338,
+   "updated": 1793435329.5483043,
+   "elapsed": 797.984370470047,
+   "expected": 1104,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 137,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 618.057217974688,
+   "eta": 5632.488220763033,
+   "fraction": 0.12409420289855072,
+   "last_battle_age": 0.9035522937774658,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 137"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "ok",
+     "detail": "9.9 a battle over the last 100 (first 100: 10.0)"
+    }
+   ],
+   "skips_mean": 10.021897810218977,
+   "skips_last100": 9.91
+  }
+ ]
 }
