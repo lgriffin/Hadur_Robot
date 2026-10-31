@@ -1055,8 +1055,12 @@ public final class ShieldMode {
         else maxPower = Math.min(maxPower, 0.1);
         if (maxPower < 0.1) return null;
         Plan best = null;
-        double[] wiggles = {wiggleSide * WIGGLE, 0};
+        // SHIELD-20: an enemy that aims a few ticks before it fires sees the step aside, and its
+        // next bullet is head-on to where we stood mid-step, which no predictor holds. With the
+        // still switch, a plan from where we stand wins whenever there is one.
+        double[] wiggles = design.still ? new double[] {0, wiggleSide * WIGGLE} : new double[] {wiggleSide * WIGGLE, 0};
         for (double wiggle : wiggles) {
+            if (design.still && best != null) break;
             double x = s.x + Math.sin(s.heading) * wiggle;
             double y = s.y + Math.cos(s.heading) * wiggle;
             for (int i = 0; i < POWER_SAMPLES; i++) {

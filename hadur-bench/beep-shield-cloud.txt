@@ -1,0 +1,9 @@
+pez.rumble.CassiusClay 2rho.02no | beep-gap 40.0 | pez.rumble.CassiusClay_2rho.02no.jar
+chase.pm.Pytko 1.0 | beep-gap 31.7 | chase.pm.Pytko_1.0.jar
+cx.Princess 1.0 | beep-gap 20.8 | cx.Princess_1.0.jar
+axeBots.Musashi 2.18 | beep-gap 20.2 | axeBots.Musashi_2.18.jar
+theo.Hydrogen 2.1r | beep-gap 19.5 | theo.Hydrogen_2.1r.jar
+kid.Toa .0.5 | beep-gap 16.9 | kid.Toa_.0.5.jar
+rdt199.Warlord 0.73 | beep-gap 14.6 | rdt199.Warlord_0.73.jar
+theo.simple.Lucid 1.0 | beep-gap 14.5 | theo.simple.Lucid_1.0.jar
+stelo.MatchupWS 1.2c | beep-gap 14.4 | stelo.MatchupWS_1.2c.jar
