@@ -13,6 +13,12 @@
 # a unit from 100 to 500 px and 2 bytes cheaper; keeping the bearing in aim's slot (aim is assigned
 # after the lead reads it) saves 2 more with the same play.
 S2 | Sanaro 0.2 as it ships (control, 249 B) |
+# N7 (pc-sanaro-n06): Hadur as the teacher. The card first seats Hadur 3.20 as the tenth robot of
+# the NanoMelee census (work/sanaro-n06/teach), which writes its bullet-power decision at every shot
+# (shots.csv, BENCH-155); these arms play tables distilled from those rows (BENCH-156) on 0.2's body.
+HT | Hadur's power: the modal power per 4 x 2 energy block (own x enemy) over all its shots, the row's nearest block for thin ones, 0.2's formula elsewhere (249 B, a table only) | | distill work/sanaro-n06/teach/*/battles/*/shots.csv --own-step 4 --enemy-step 2 --min 5 --reach 3
+HD | Hadur's thinning-field power: the same from shots fired with three or fewer alive, when its 1v1 brain is deciding, 4 x 4 blocks (249 B, a table only) | | distill work/sanaro-n06/teach/*/battles/*/shots.csv --alive 3 --own-step 4 --enemy-step 4 --min 5 --reach 4
+HS | Hadur's power where it is sure: 2 x 2 blocks with twenty or more shots only, 0.2's formula for the rest (249 B, a table only) | | distill work/sanaro-n06/teach/*/battles/*/shots.csv --own-step 2 --enemy-step 2 --min 20 --reach 0
 LQ | Quantum's lead v / (10 + 1.008^d) (258 B, reference) | s#e.getVelocity() / LEAD#e.getVelocity() / (10 + Math.pow(1.008, d = (int) e.getDistance()))#;s#/ (d = (int) e.getDistance())) + wall(getX())#/ d) + wall(getX())#
 LL | linear lead v / (8 + d / 32) (253 B, reference) | s#e.getVelocity() / LEAD#e.getVelocity() / (8 + ((d = (int) e.getDistance()) >> 5))#;s#/ (d = (int) e.getDistance())) + wall(getX())#/ d) + wall(getX())#
 LR | lead v / sqrt(d) (about v / (8 + d / 32) from 100 to 500 px); bearing kept in aim's slot (249 B) | s#e.getVelocity() / LEAD#e.getVelocity() / Math.sqrt(d = (int) e.getDistance())#;s#/ (d = (int) e.getDistance())) + wall(getX())#/ d) + wall(getX())#;s#Math.sin(aim = (bearing = e.getBearingRadians()#Math.sin(aim = (aim = e.getBearingRadians()#;s#Math.sin(e.getHeadingRadians() - bearing)#Math.sin(e.getHeadingRadians() - aim)#;s#double aim, bearing;#double aim;#

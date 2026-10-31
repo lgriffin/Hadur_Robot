@@ -17,7 +17,9 @@ Two subcommands:
           (640 // distance; shots beyond 640 px, step 0, are left out). A cell with at least --min
           shots holds the modal power Hadur chose there; a cell with fewer borrows the nearest filled
           cell on its row within --reach of enemy energy; the rest fall back to table.py's formula, so
-          the table is never thinner than the shipped one. --alive keeps only shots fired with that
+          the table is never thinner than the shipped one. --own-step and --enemy-step pool shots by
+          blocks of energy (a 4 x 4 block has sixteen cells' shots to agree on one power), the knob
+          against a thin teach run; borrowing then goes by whole blocks. --alive keeps only shots fired with that
           many fighters or fewer alive, so a 1v1 row block can be distilled from the endgame alone.
 
             python3 distill.py power work/pc-melee-*/battle-*/shots.csv --src path/to/Robot.java
@@ -59,9 +61,14 @@ CELLS = TOP * STRIDE + TOP + 1
 # ---------------------------------------------------------------- power
 
 def read_shots(paths, alive=None):
-    """Yields (own energy, enemy energy, distance, power) from shots.csv files; globs allowed."""
+    """Yields (own energy, enemy energy, distance, power) from shots.csv files; globs allowed.
+    A pattern that matches nothing is an error: a table silently built from no shots would be the
+    shipped one, and the arm would measure nothing."""
     for pattern in paths:
-        for path in sorted(glob.glob(pattern)) or [pattern]:
+        files = sorted(glob.glob(pattern)) or ([pattern] if os.path.exists(pattern) else [])
+        if not files:
+            raise SystemExit("distill: no shots.csv matches %s" % pattern)
+        for path in files:
             with open(path, newline="", encoding="utf-8") as f:
                 for row in csv.DictReader(f):
                     if alive is not None and int(row["alive"]) > alive:
@@ -80,15 +87,22 @@ def fortieths(power):
     return max(1, min(120, int(math.ceil(power * 40 - 1e-9))))
 
 
-def observed(shots):
-    """Cell index -> Counter of fortieths, from shots within the table's energy range."""
+def block(own, enemy, own_step=1, enemy_step=1):
+    """The cell a shot (or a table cell) pools into. The robot's own index comes first (an enemy
+    at 128 or more lands rows on, as table.py describes), then that index's row and column are
+    quantised to the steps, so a shot and the cells that read it always agree on the block."""
+    row, col = divmod(int(own) * STRIDE + int(enemy), STRIDE)
+    return (row // own_step * own_step) * STRIDE + col // enemy_step * enemy_step
+
+
+def observed(shots, own_step=1, enemy_step=1):
+    """Block index -> Counter of fortieths, from shots within the table's energy range."""
     cells = collections.defaultdict(collections.Counter)
     for own, enemy, distance, power in shots:
         p = band_power(distance, power)
         if p is None or own < 0 or enemy < 0:
             continue
-        # The robot's own index: an enemy at 128 or more lands rows on, as table.py describes.
-        i = int(own) * STRIDE + int(enemy)
+        i = block(own, enemy, own_step, enemy_step)
         if i < CELLS:
             cells[i][fortieths(p)] += 1
     return cells
@@ -100,21 +114,23 @@ def mode(counter):
     return max(v for v, n in counter.items() if n == best)
 
 
-def distil(cells, minimum=3, reach=4, **curve):
+def distil(cells, minimum=3, reach=4, own_step=1, enemy_step=1, **curve):
     """A full table: data where it is dense, the nearest data on the row where it is near, the formula elsewhere.
+    With steps above 1 a cell reads its block's data and borrows by whole blocks along the row.
     Returns (list of fortieths, dict of how each cell was filled: 'data', 'row', 'formula')."""
     filled = {i: mode(c) for i, c in cells.items() if sum(c.values()) >= minimum}
     out, how = [], collections.Counter()
     for i in range(CELLS):
-        if i in filled:
-            out.append(filled[i])
+        own, enemy = divmod(i, STRIDE)
+        home = block(own, enemy, own_step, enemy_step)  # own * STRIDE + enemy == i
+        if home in filled:
+            out.append(filled[home])
             how["data"] += 1
             continue
-        own, enemy = divmod(i, STRIDE)
         borrowed = None
         for d in range(1, reach + 1):
-            for e in (enemy - d, enemy + d):
-                j = own * STRIDE + e
+            for e in (enemy - d * enemy_step, enemy + d * enemy_step):
+                j = block(own, e, own_step, enemy_step)
                 if 0 <= e < STRIDE and j in filled and j < CELLS:
                     borrowed = filled[j]
                     break
@@ -153,15 +169,15 @@ def write_constant(src, name, value, mask=None):
 
 def power_main(a):
     shots = list(read_shots(a.shots, a.alive))
-    cells = observed(shots)
-    values, how = distil(cells, a.min, a.reach)
+    cells = observed(shots, a.own_step, a.enemy_step)
+    values, how = distil(cells, a.min, a.reach, a.own_step, a.enemy_step)
     print("shots: %d read, %d in band, %d cells seen, %d filled from data, %d from the row, %d from the formula"
           % (len(shots), sum(sum(c.values()) for c in cells.values()), len(cells), how["data"], how["row"],
              how["formula"]))
     if a.report:
         rows = collections.Counter(i // STRIDE for i, c in cells.items() if sum(c.values()) >= a.min)
         for own in sorted(rows):
-            print("  own energy %3d: %3d data cells" % (own, rows[own]))
+            print("  own energy %3d: %3d data blocks" % (own, rows[own]))
         return
     write_constant(a.src, a.name, literal(values))
     print("%s: %d cells -> %s" % (a.name, CELLS, a.src))
@@ -265,7 +281,9 @@ def main(argv=None):
     pw.add_argument("--src", help="the robot source whose constant is rewritten")
     pw.add_argument("--name", default="POWER", help="the constant's name (default POWER)")
     pw.add_argument("--min", type=int, default=3, help="shots a cell needs before its own mode is used")
-    pw.add_argument("--reach", type=int, default=4, help="how far along a row a thin cell borrows")
+    pw.add_argument("--reach", type=int, default=4, help="how far along a row (in blocks) a thin cell borrows")
+    pw.add_argument("--own-step", type=int, default=1, help="pool shots by this many own-energy units")
+    pw.add_argument("--enemy-step", type=int, default=1, help="pool shots by this many enemy-energy units")
     pw.add_argument("--alive", type=int, help="keep shots fired with at most this many fighters alive")
     pw.add_argument("--report", action="store_true", help="print coverage, write nothing")
     pw.set_defaults(run=power_main)

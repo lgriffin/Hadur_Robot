@@ -66,6 +66,38 @@ class PowerTest(unittest.TestCase):
         self.assertEqual(2, how["data"])
         self.assertEqual(len(values), distill.CELLS)
 
+    def test_steps_pool_shots_into_blocks(self):
+        path = os.path.join(self.dir, "shots.csv")
+        # Three shots spread over a 4 x 4 block of (own 80..83, enemy 8..11): one cell alone is too thin.
+        shots(path, [(5, 80, 8, 400, 2.0), (5, 83, 11, 400, 2.0), (5, 81, 10, 400, 2.5)])
+        thin = distill.observed(distill.read_shots([path]))
+        self.assertEqual(3, len(thin))
+        pooled = distill.observed(distill.read_shots([path]), 4, 4)
+        self.assertEqual({80 * 128 + 8: {80: 2, 100: 1}}, {k: dict(v) for k, v in pooled.items()})
+        values, how = distill.distil(pooled, minimum=3, reach=1, own_step=4, enemy_step=4)
+        for own in range(80, 84):
+            for enemy in range(8, 12):
+                self.assertEqual(80, values[own * 128 + enemy])
+        # The next block along the row borrows (reach 1 block), the one after is the formula.
+        self.assertEqual(80, values[82 * 128 + 13])
+        self.assertEqual(table.cell(82 * 128 + 17), values[82 * 128 + 17])
+        self.assertEqual(16, how["data"])
+
+    def test_enemy_past_the_stride_pools_as_the_robot_reads_it(self):
+        path = os.path.join(self.dir, "shots.csv")
+        # Enemy 128 at own 80 is index 80 * 128 + 128 = row 81, column 0 in the robot; with a
+        # 4-unit own step that is block (80, 0), which cell 81 * 128 + 0 must read.
+        shots(path, [(5, 80, 128, 400, 1.0)] * 3)
+        pooled = distill.observed(distill.read_shots([path]), 4, 4)
+        self.assertEqual([80 * 128], list(pooled))
+        values, how = distill.distil(pooled, minimum=3, reach=0, own_step=4, enemy_step=4)
+        self.assertEqual(40, values[81 * 128 + 0])
+        self.assertEqual(40, values[80 * 128 + 128])
+
+    def test_unmatched_glob_is_an_error(self):
+        with self.assertRaises(SystemExit):
+            list(distill.read_shots([os.path.join(self.dir, "nowhere", "*", "shots.csv")]))
+
     def test_alive_filter_keeps_the_endgame(self):
         path = os.path.join(self.dir, "shots.csv")
         shots(path, [(2, 80, 10, 400, 3.0)] * 3 + [(7, 80, 10, 400, 1.0)] * 5)
