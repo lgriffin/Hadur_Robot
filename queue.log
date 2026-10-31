@@ -1,1 +1,9 @@
 15:48:21 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
+15:48:21 start prep
+15:48:24 progress pushed to origin claude/pc-shield-still-progress (every 15 min)
+15:50:38 prep exit=0 in 137 s
+15:50:38 start still
+15:50:38 watching still: 6 stop rule(s)
+15:51:23 progress still: 28/1638 (2%) battles, 2271/h, ETA 43 min, 0 failed, skips 16.2/battle (last 100), aa +0.00, sz -0.87
+16:02:32 STOP still by rule aa after 20%: aa - c +1.00 pts over 150 robots, stop band ±1.00; 562 battles fought and kept, 1076 battles left unrun (about 23 min)
+16:02:32 still exit=75 in 713 s (halted, aa after 20%)
