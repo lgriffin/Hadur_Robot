@@ -1,6 +1,6 @@
 # Queue pc-deise-pt1: progress
 
-Updated 2026-10-31 22:22:36 PC time (22:22 UTC), runner pid 58760.
+Updated 2026-10-31 22:22:38 PC time (22:22 UTC), runner pid 58760.
 
 - `prep` done, exit 0 in 0 min
 - `live-TEACH` halted, exit 75 in 9 min, HALTED by skips 40 over 100: 64.7 a battle over the last 100 (first 100: 62.7)
@@ -37,4 +37,6 @@ Stopping now would leave 168 battles unrun (about 14 min); every battle already 
 22:14:31 progress live-TEACH: 0/276 (0%) battles, 0 failed
 22:22:36 STOP live-TEACH by rule skips 40 over 100: 64.7 a battle over the last 100 (first 100: 62.7); 108 battles fought and kept, 168 battles left unrun (about 14 min)
 22:22:36 live-TEACH exit=75 in 529 s (halted, skips 40 over 100)
+22:22:38 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/522
+22:22:38 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 ```
