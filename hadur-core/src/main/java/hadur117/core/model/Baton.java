@@ -38,19 +38,39 @@ public final class Baton {
         }
     }
 
+    /** HAND-2, HAND-3: what the giving role's book says of a robot's gun. */
+    public enum Gun { UNKNOWN, HEAD_ON, LEADING }
+
     /** A baton with nothing in it. */
     public static final Baton EMPTY = new Baton(Collections.emptyList(), null);
 
     private final List<Shot> shots;
     private final RobotStateLog path;
+    private final Gun gun;
 
     /**
      * @param shots the shots seen, in the order the giving role keeps them
      * @param path Hadur's path while the giving role drove, or null for none
      */
     public Baton(List<Shot> shots, RobotStateLog path) {
+        this(shots, path, Gun.UNKNOWN);
+    }
+
+    /**
+     * @param shots the shots seen, in the order the giving role keeps them
+     * @param path Hadur's path while the giving role drove, or null for none
+     * @param gun HAND-2, HAND-3: the survivor's gun as the giving role's book classed it, from
+     *     its hits on Hadur this battle; {@link Gun#UNKNOWN} with no survivor or too few hits
+     */
+    public Baton(List<Shot> shots, RobotStateLog path, Gun gun) {
         this.shots = Collections.unmodifiableList(new ArrayList<>(shots));
         this.path = path;
+        this.gun = gun == null ? Gun.UNKNOWN : gun;
+    }
+
+    /** HAND-2, HAND-3: the survivor's gun as the giving role's book classed it. */
+    public Gun gun() {
+        return gun;
     }
 
     /** The shots seen, oldest first as the giver keeps them. */

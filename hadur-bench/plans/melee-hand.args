@@ -1,0 +1,23 @@
+# PC card pc-melee-hand (docs/plan-melee-top5.md, HAND-1 to HAND-3, BENCH-155): one build alone on today's whole melee field, 46 fields x 6 seeds (3259-3264, after pc-melee-hand's 3253-3258), at the machine's melee width (@C@, fixed at prep) and CPU constant. Template: haprep writes work/melee-hand-<arm>.args with @V@ = the robot.release in hadur-robot/pom.xml and @A@ = the arm's suffix (aa, bb, et, ed, es); every arm fights the same fields and seeds, so the read pairs them battle for battle.
+--suite
+melee-census-317.txt
+--seeds
+6
+--seed-base
+3258
+--rounds
+35
+--parallel
+@C@
+--child-heap
+2G
+--cpu-constant
+auto
+--robot-jar
+bisect/hadur117.Hadur_@V@@A@.jar
+--robot
+hadur117.Hadur @V@@A@
+--out
+work/melee-hand-@V@-@A@
+--report
+../docs/bench/local/melee-hand-@A@.md

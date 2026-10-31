@@ -308,6 +308,8 @@ public final class ShieldMode {
 
     /** SHIELD-15: the opponent is in shield mode only on trial (unlisted, trial switch on). */
     private boolean onTrial;
+    /** HAND-3: a trial asked for by the caller (the melee's verdict on the survivor's gun), the trial switch aside. */
+    private boolean forcedTrial;
     private int trialShots;
     private double trialDamage;
     private int trialLost;
@@ -396,6 +398,16 @@ public final class ShieldMode {
         enemyShotsThisRound = 0;
         enemyFiredThisRound = false;
         openingTicks = 0;
+    }
+
+    /**
+     * HAND-3: asks for SHIELD-15's trial against an unlisted opponent whatever the trial switch
+     * says, with the trial's exits. Set before the opponent's first scan decides the mode.
+     *
+     * @param on whether the next opponent decided for starts on trial when unlisted
+     */
+    public void trial(boolean on) {
+        forcedTrial = on;
     }
 
     /**
@@ -529,7 +541,7 @@ public final class ShieldMode {
         if (decidedFor == null || !decidedFor.equals(name)) {
             decidedFor = name;
             boolean onList = list.matches(name);
-            onTrial = design.trial && !onList;
+            onTrial = (design.trial || forcedTrial) && !onList;
             listed = onList || onTrial;
             opening = listed && (design.move || list.moves(name));
             stayDamage = list.stayDamage(name, ShieldDesign.STAY_DAMAGE);

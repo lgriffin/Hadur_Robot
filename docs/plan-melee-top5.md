@@ -466,6 +466,25 @@ clean slate (MELEE-2; 23% of rounds are lost there, 46% won against ranks 1-30),
 larger build; Diamond's radar and melee gun do what Hadur's already do; ScalarR's energy caps (E/6, E/15
 beyond 325 px) hardly bite under Hadur's crowd rule, so they were not built.
 
+**The endgame hand-off (HAND-1, HAND-2, HAND-3, 2026-10-31).** Leigh: "What do you need? Make a card". The
+biggest pool after the Diamond switches: live, 23% of rounds are lost in the endgame duel and only 46% of
+them are won against the top 30. There the duel plays plain, by construction: every per-opponent switch in
+the duel is duel-only (`duelOnly`), the shield list never reaches a melee charter's duel, and nothing the
+melee learned about the survivor's gun crosses the hand-off (MMEM-2 hands over the waves in flight and
+the survivor's 1v1 profile, which a melee client rarely holds). Three hand-off settings, each off a team
+only (the duel never takes a hand-off in a 1v1, so the duel and team play are untouched; every fixture
+replays bit for bit with them off): **the table in the endgame** (`ENDGAME_TABLE`, arm `etab`/`et`: the
+survivor's 1v1 mode table entries apply as in a duel: shield list, dodge, dodge planner, stop-and-go,
+heat-jit, gun stack; 40 of the 412 census robots are on the shield list and 22 in the table's other
+lines), **the melee-learned dodge** (`ENDGAME_LEARNED_DODGE`, `edge`/`ed`: the melee's book read the
+survivor's gun as head-on from its hits on Hadur this battle, so the dodge planner is on against it,
+primed head-on) and **the melee-learned shield** (`ENDGAME_LEARNED_SHIELD`, `eshd`/`es`: the same verdict
+starts shield mode on SHIELD-15's trial, listed or not). Per-opponent play only, the one kind of change
+that has shown live. Card `pc-melee-hand` (BENCH-155): aa, bb, et, ed, es on the census at seeds
+3259-3264, about 2.2 h, under the melee gate; the arm reports' "Rounds that ended as a duel" tables say
+where the endgame wins moved. Left for later: handing the melee gun's aim experts to the duel gun, and
+the duel's own learned stats per survivor across rounds.
+
 ### Stage 4: stack, tailor, confirm
 
 - **Stack census** on master's defaults (all passed stages) against 3.17 on fresh seeds, 8 seeds

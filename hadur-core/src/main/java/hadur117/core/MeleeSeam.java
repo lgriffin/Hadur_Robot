@@ -386,7 +386,22 @@ final class MeleeSeam implements Role {
         for (EnemyShot s : core.world().shots(now)) {
             shots.add(new Baton.Shot(s.shooter, s.source, s.fireTime, s.power, s.travelled(now)));
         }
-        return new Baton(shots, melee.myPath());
+        return new Baton(shots, melee.myPath(), survivorGun());
+    }
+
+    /**
+     * HAND-2, HAND-3: the survivor's gun as the melee's book classed it from its hits on Hadur
+     * this battle (OpponentStats: at least 3 hits, 60% within Hadur's width of head-on).
+     * Unknown unless exactly one opponent is alive in the World.
+     */
+    private Baton.Gun survivorGun() {
+        List<EnemyInfo> alive = core.world().alive();
+        if (alive.size() != 1) return Baton.Gun.UNKNOWN;
+        switch (melee.book().get(alive.get(0).name).gunType()) {
+            case HEAD_ON: return Baton.Gun.HEAD_ON;
+            case LEADING: return Baton.Gun.LEADING;
+            default: return Baton.Gun.UNKNOWN;
+        }
     }
 
     /** Nothing is ever handed up to the Melee role. */

@@ -47,6 +47,8 @@ import hadur117.core.shield.ShieldDetector;
 import hadur117.core.shieldmode.ShieldList;
 import hadur117.core.shieldmode.ShieldMode;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -113,7 +115,25 @@ public final class DuelController {
      * D5: Hadur's own bullet shield (SHIELD-5, SHIELD-6); null unless this is a battle of one
      * opponent and the shield list names someone, so a melee or an empty list costs nothing.
      */
-    private final ShieldMode shield;
+    /**
+     * SHIELD-5: the battle's shield mode in a duel; in a melee (HAND-1, HAND-3) the survivor's,
+     * set at the hand-off and dropped with the duel's tracking, else null.
+     */
+    private ShieldMode shield;
+    /** SHIELD-6: the battle's rounds, for a shield mode built at a hand-off. */
+    private final int rounds;
+    /** HAND-1 to HAND-3: the duel is on a team, where the hand-off switches never act. */
+    private boolean onTeam;
+    /** HAND-1 to HAND-3: the switches, as shipped unless a test sets them. */
+    private boolean endgameTable = HandOffDesign.ENDGAME_TABLE;
+    private boolean endgameLearnedDodge = HandOffDesign.ENDGAME_LEARNED_DODGE;
+    private boolean endgameLearnedShield = HandOffDesign.ENDGAME_LEARNED_SHIELD;
+    /** HAND-1, HAND-3: each survivor's shield mode, kept across rounds so its budget and trial carry. */
+    private final Map<String, ShieldMode> endgameShields = new LinkedHashMap<>();
+    /** HAND-1 to HAND-3: the last survivor handed over, so a new one starts the dodger afresh. */
+    private String endgameSurvivor;
+    /** HAND-1 to HAND-3: what the last hand-off set, for tests and records. */
+    private String endgameSetting = "-";
     /**
      * SHIELD-5: the aim the shield tick turned the gun to for a shot at the enemy, the tick it
      * was ordered ({@link #shieldAimTime}); the shot goes out next tick if the gun is on it.
@@ -303,7 +323,7 @@ public final class DuelController {
      * @param library the Duel's {@code .hp} shelf, or null for none
      * @param survivorLibrary the shelf a melee survivor's 1v1 profile is read from, or null
      * @param stats the round's counters until the first {@link #newRound}
-     * @param shieldList SHIELD-5: the opponents shield mode applies to; used only when
+     * @param shieldList SHIELD-5: the opponents shield mode applies to; in a duel from the first scan, in a melee only at a hand-off (HAND-1, HAND-3); used only when
      *     {@code enemiesTotal} is 1 (the Duel charter), null or empty for none
      * @param rounds the battle's number of rounds, for SHIELD-6's budget; 0 when not known
      */
@@ -347,8 +367,26 @@ public final class DuelController {
         this.fieldHeight = fieldHeight;
         this.stats = stats;
         this.stackList = shieldList == null ? ShieldList.NONE : shieldList;
+        this.rounds = rounds;
         this.shield = enemiesTotal == 1 && shieldList != null && !shieldList.isEmpty()
             ? new ShieldMode(shieldList, telemetry, rounds) : null;
+    }
+
+    /** HAND-1 to HAND-3: tells the duel it is on a team, where the hand-off switches never act. */
+    public void team(boolean onTeam) {
+        this.onTeam = onTeam;
+    }
+
+    /** HAND-1 to HAND-3: sets the hand-off switches, for tests and the bench's arms. */
+    public void handOffSwitches(boolean table, boolean learnedDodge, boolean learnedShield) {
+        this.endgameTable = table;
+        this.endgameLearnedDodge = learnedDodge;
+        this.endgameLearnedShield = learnedShield;
+    }
+
+    /** HAND-1 to HAND-3: what the last hand-off set ("plain" for nothing; "-" before any). */
+    public String endgameSetting() {
+        return endgameSetting;
     }
 
     /**
@@ -391,6 +429,8 @@ public final class DuelController {
 
     /** Forgets the duel's view of the enemy, at a round's start and when the Duel takes over mid-round. */
     public void resetTracking() {
+        // HAND-1, HAND-3: a melee endgame's shield goes with the tracking; the next hand-off sets one.
+        if (enemiesTotal > 1) shield = null;
         ledger.newRound();
         rammer.newRound();
         ramActive = false;
@@ -1317,6 +1357,102 @@ public final class DuelController {
                 telemetry.emit("MEM," + round + "," + in.time() + ",handoff-failed," + clean(ex.toString()));
             }
         }
+        if (enemiesTotal > 1) endgame(in, survivor, baton == null ? Baton.Gun.UNKNOWN : baton.gun());
+    }
+
+    /**
+     * HAND-1 to HAND-3: the endgame's play against the survivor, set at the hand-off from the
+     * 1v1 mode table (HAND-1) and the melee's verdict on its gun (HAND-2, HAND-3), off a team
+     * only. Every per-opponent setting starts from the plain duel, so a survivor never
+     * inherits the last one's; a new survivor also starts the dodger afresh. The P record
+     * {@code endgame} says what was set.
+     */
+    private void endgame(BotInput in, String survivor, Baton.Gun gun) {
+        boolean fresh = !survivor.equals(endgameSurvivor);
+        endgameSurvivor = survivor;
+        if (fresh) shotDodger.reset();
+        moveController.setShotDodger(null);
+        moveController.setDodgePasses(false);
+        surfMover.setDodgePlanner(false);
+        dodgePlanOn = false;
+        heatJitOn = false;
+        stopAndGo = null;
+        gunController.setTripHammer(GunDesign.TRIPHAMMER);
+        gunController.setFreeGun(GunDesign.FREE_GUN);
+        gunController.setUndecayed(GunDesign.UNDECAYED);
+        shield = null;
+        if (onTeam || !(endgameTable || endgameLearnedDodge || endgameLearnedShield)) {
+            endgameSetting = "-";
+            return;
+        }
+        List<String> set = new ArrayList<>();
+        if (endgameTable) {
+            if (stackList.matches(survivor)) {
+                shield = endgameShield(survivor, false);
+                set.add("shield");
+            }
+            if (stackList.dodges(survivor)) {
+                moveController.setShotDodger(shotDodger);
+                set.add("dodge");
+            }
+            int plan = stackList.dodgePlan(survivor);
+            if (plan != ShieldList.NO_DODGE_PLAN) {
+                dodgePlan(plan);
+                set.add("plan");
+            }
+            int prefire = stackList.stopGo(survivor);
+            if (prefire > 0) {
+                stopAndGo = new StopAndGo(battleField, prefire);
+                stopAndGo.initRound();
+                set.add("stopgo");
+            }
+            if (stackList.heatJit(survivor)) {
+                heatJitOn = true;
+                set.add("heatjit");
+            }
+            if (stackList.gunStack(survivor) && !stackList.matches(survivor)) {
+                gunController.setTripHammer(true);
+                gunController.setFreeGun(true);
+                gunController.setUndecayed(true);
+                set.add("gunstack");
+            }
+        }
+        boolean headOn = gun == Baton.Gun.HEAD_ON;
+        if (endgameLearnedDodge && headOn && !dodgePlanOn) {
+            dodgePlan(SimpleAims.HEAD_ON);
+            set.add("learned-dodge");
+        }
+        if (endgameLearnedShield && headOn && shield == null) {
+            shield = endgameShield(survivor, true);
+            set.add("learned-shield");
+        }
+        endgameSetting = set.isEmpty() ? "plain" : String.join("+", set);
+        emitPolicy(round, in.time(), "endgame", Double.NaN, Double.NaN, endgameSetting);
+    }
+
+    /** DODGE-4: the dodge planner on, primed with expert {@code k} (-1 to learn it). */
+    private void dodgePlan(int k) {
+        dodgePlanOn = true;
+        moveController.setShotDodger(shotDodger);
+        moveController.setDodgePasses(true);
+        surfMover.setDodgePlanner(true);
+        shotDodger.prime(k);
+    }
+
+    /**
+     * HAND-1, HAND-3: the survivor's shield mode, one a survivor for the battle (its SHIELD-6
+     * budget and SHIELD-15 trial carry across its rounds), on this round from this tick.
+     * {@code trial} asks for the trial against an unlisted survivor (HAND-3).
+     */
+    private ShieldMode endgameShield(String survivor, boolean trial) {
+        ShieldMode s = endgameShields.get(survivor);
+        if (s == null) {
+            s = new ShieldMode(stackList, telemetry, rounds);
+            if (endgameShields.size() < 64) endgameShields.put(survivor, s);
+        }
+        s.trial(trial);
+        s.newRound(round);
+        return s;
     }
 
     /** The waves the last {@link #take} injected. */
