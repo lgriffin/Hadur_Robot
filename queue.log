@@ -15,3 +15,7 @@
 05:02:24 live-H650 exit=0 in 968 s
 05:02:24 start live-H900
 05:02:24 watching live-H900: 3 stop rule(s)
+05:13:33 progress live-H900: 170/276 (62%) battles, 914/h, ETA 7 min, 0 failed, skips 0.0/battle (last 100)
+05:18:19 live-H900 exit=0 in 954 s
+05:18:19 start live-HS650
+05:18:19 watching live-HS650: 3 stop rule(s)
