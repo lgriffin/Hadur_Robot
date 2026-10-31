@@ -14,3 +14,6 @@
 10:57:32 skip read (after PO2000, which has not finished exit=0)
 10:57:32 skip pr (after read, which has not finished exit=0)
 10:57:32 ALLDONE
+13:39:10 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
+13:39:10 skip prep (already exit=0)
+13:39:10 skip harvest (already exit=0)

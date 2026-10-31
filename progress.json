@@ -1,6 +1,6 @@
 {
  "plan": "pc-jaylexi-po",
- "updated": 1793444252.3456507,
+ "updated": 1793453950.672102,
  "steps": {
   "prep": {
    "status": "done",
@@ -41,49 +41,5 @@
    "reason": "after read"
   }
  },
- "watched": [
-  {
-   "step": "harvest",
-   "started": 1793443994.2652414,
-   "updated": 1793444117.713076,
-   "elapsed": 123.44783473014832,
-   "expected": 336,
-   "panel": null,
-   "field": null,
-   "multiarm": false,
-   "arms": [],
-   "aa": null,
-   "warnings": [],
-   "battles": 336,
-   "resumed": 0,
-   "failed": 0,
-   "disables": null,
-   "rate": 9798.470768192361,
-   "eta": 0.0,
-   "fraction": 1.0,
-   "last_battle_age": 1.7026209831237793,
-   "rules": [
-    {
-     "rule": "fails 20",
-     "action": "halt",
-     "state": "ok",
-     "detail": "0 failed of 336"
-    },
-    {
-     "rule": "stall 30m",
-     "action": "halt",
-     "state": "ok",
-     "detail": "last battle 0 min ago"
-    },
-    {
-     "rule": "skips 40 over 100",
-     "action": "halt",
-     "state": "ok",
-     "detail": "0.0 a battle over the last 100 (first 100: 0.0)"
-    }
-   ],
-   "skips_mean": 0,
-   "skips_last100": 0
-  }
- ]
+ "watched": []
 }
