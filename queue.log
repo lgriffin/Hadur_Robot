@@ -26,3 +26,9 @@
 05:51:26 live-SR exit=0 in 1011 s
 05:51:26 start live-SAOR
 05:51:26 watching live-SAOR: 3 stop rule(s)
+06:06:37 live-SAOR exit=0 in 911 s
+06:06:37 start read
+06:06:46 read exit=0 in 8 s
+06:06:46 start pr
+06:06:53 pr exit=0 in 6 s
+06:06:53 ALLDONE
