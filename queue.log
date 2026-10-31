@@ -8,3 +8,7 @@
 16:36:14 live-D exit=0 in 1060 s
 16:36:14 start live-PL400
 16:36:14 watching live-PL400: 3 stop rule(s)
+16:49:24 progress live-PL400: 174/276 (63%) battles, 793/h, ETA 8 min, 0 failed, skips 0.2/battle (last 100)
+16:54:57 live-PL400 exit=0 in 1123 s
+16:54:57 start live-PN
+16:54:57 watching live-PN: 3 stop rule(s)
