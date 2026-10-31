@@ -1,5 +1,5 @@
-# RETIRED 2026-10-30 after it ran (PR #439): MOVE-29 ships on from 3.20 (PR #441), so aimmem is a no-op on
-# master and c, aa and km all play the same aim; the 3.20 census (PR #454) read it against noaim.
+# RETIRED 2026-10-30 after it ran (PR #439): MOVE-29 ships on from 3.21 (PR #441), so aimmem is a no-op on
+# master and c, aa and km all play the same aim; the 3.21 census (PR #454) read it against noaim.
 # 1v1 plan to 3rd, the simple-gun gap (BENCH-140, docs/bench/simple-gun-gap.md). Leigh starts it:
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-sg-aim        (or  ./queue.sh run pc-sg-aim)
@@ -24,7 +24,7 @@
 # +0.05 APS at z 3 after 30% (391 of 1,302 battles): that leaves at most 911 battles (about 40 min) unrun,
 # the gate reads the rows so far and the results PR says it stopped early. ALERT opens an issue for Leigh
 # on any stop.
-# Nothing here ships: on a pass a PR turns MOVE-29 on for the 3.20 census; Leigh's release rule stands.
+# Nothing here ships: on a pass a PR turns MOVE-29 on for the 3.21 census; Leigh's release rule stands.
 
 set V = 3.19
 set P = --parallel 12 --no-truth-log
