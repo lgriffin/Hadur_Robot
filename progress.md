@@ -1,6 +1,6 @@
 # Queue pc-melee-scal: progress
 
-Updated 2026-10-31 00:45:58 PC time (00:45 UTC), runner pid 64324.
+Updated 2026-10-31 01:01:06 PC time (01:01 UTC), runner pid 64324.
 
 - `scprep` done, exit 0 in 6 min
 - `scaa` running
@@ -17,15 +17,15 @@ Updated 2026-10-31 00:45:58 PC time (00:45 UTC), runner pid 64324.
 
 ### scaa
 
-**96 of 276 battles** (35%), 0 failed. Running 9 min, 665 battles/h, about 16 min left (ends ~01:02 PC time). Last battle 0 min ago.
-Skipped turns a battle: 47.1 overall, first 96 47.1, last 96 47.1.
+**264 of 276 battles** (96%), 0 failed. Running 24 min, 666 battles/h, about 1 min left (ends ~01:02 PC time). Last battle 0 min ago.
+Skipped turns a battle: 55.7 overall, first 100 47.1, last 100 63.3.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 96 |
+| `fails 20` | halt | ok | 0 failed of 264 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 180 battles unrun (about 16 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 12 battles unrun (about 1 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
