@@ -438,6 +438,17 @@ while either robot was disabled and matched no wave; they are left out of the re
 count. (A disabled robot is still scanned, so such a shot is often seen, and then counts.) "False waves" are inferred waves with no real bullet behind them;
 "ledger phantoms" are drops 1.20 would have read as shots that the ledger explained away.
 
+## Distilling Hadur into nano tables (BENCH-155, BENCH-156)
+
+With `--melee` each battle directory also gets `shots.csv`: Hadur's bullet-power decision at every
+shot as a function of what a nano can see (robots alive, own energy before the shot, the target it
+aimed at, that robot's energy and distance). `tools/distill.py power work/<card>/*/shots.csv --src
+<Arm>.java` turns a pile of them into a Sanaro-shaped `POWER` constant (modal power per energy cell,
+the row's nearest data for thin cells, `sanaro/table.py`'s formula for the rest; `--report` prints the
+coverage first), and `tools/distill.py hash participants.txt --modes modes.tsv --src <Arm>.java` writes a
+`MODES` string keyed by `getName().hashCode() & MASK` with a mask that keeps every participant on its
+own cell. Both write into an arm's source only; the arm is then measured like any other.
+
 ## Analysing the rows (BENCH-38, BENCH-39)
 
 `Stats` takes its 95% critical values from Student's t at the sample's own degrees of freedom

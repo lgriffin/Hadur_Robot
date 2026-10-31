@@ -2281,3 +2281,30 @@ profiles, and the rumbles list it as a new participant.
   CONCORD back off, or keeps it only where both cards agree. Results claude/pc-team-concord2-results.
 - Solo play is untouched: CONCORD acts only while a teammate lives. Only the two team replay fixtures
   were re-recorded; the duel and melee fixtures replay bit for bit.
+
+## Hadur as the teacher: nano tables distilled from its decisions (BENCH-155, BENCH-156)
+
+- **Why.** A string constant costs a nano two bytes of code however long it is, and the index shapes the
+  small robots already pay for (own energy, enemy energy, `640 / distance`, `getOthers()`, the opponent's
+  `getName().hashCode()`) are the whole of what a nano can see. Measured against the stubs on
+  2026-10-31: a `charAt` lookup is about 15 bytes, so a table never pays for an expression, only for
+  branches, modes and state (a two-threshold power chain 36 -> 20 bytes; a per-opponent mode by name
+  hash about 17 bytes). Hadur cannot be ported down; its *answers* can. Leigh 2026-10-31: "Absolutely".
+- **BENCH-155.** The melee harvester writes `shots.csv`, one row per Hadur shot at the turn it is first
+  seen: round, turn, fighters alive before that turn's deaths, Hadur's energy before the shot (its energy
+  after, plus the power), the living fighter whose bearing lies nearest the bullet's heading, that
+  robot's energy and distance, and the power. Each shot is logged once; sentries and the dead are never
+  the target. `MeleeHarvesterTest.shotsLogDecisions`.
+- **BENCH-156.** `tools/distill.py power` reads those files into a Sanaro-shaped table (SANARO-2,
+  SANARO-8: cell `E * 128 + e` in fortieths, the 321-640 px power, read back through the integer step
+  `640 // distance`, shots past 640 px dropped): a cell with at least `--min` shots holds the modal power
+  Hadur chose there (ties to the higher power), a thinner cell borrows the nearest filled cell on its
+  row within `--reach`, and the rest fall back to `sanaro/table.py`'s formula, so with no data the
+  constant is the shipped one byte for byte. `--alive N` keeps only shots fired with N or fewer alive,
+  so a 1v1 row block can come from the endgame alone. `tools/distill.py hash` finds the smallest
+  power-of-two mask under which every participant's Java `hashCode()` lands on its own cell (or only the
+  `--protect`ed names, letting the rest share the default) and writes a `MODES` string from a
+  `name<TAB>char` file: in the robot, `MODES.charAt(e.getName().hashCode() & MASK)`. Names in the rumble
+  carry the version, so a rival's new release is a new cell. `tools/test_distill.py`.
+- Neither tool changes a shipped robot: the constants it writes go into an arm's source under
+  `--src`, and the arm earns its place on the census like any other (SANARO-10, SAOR-12).

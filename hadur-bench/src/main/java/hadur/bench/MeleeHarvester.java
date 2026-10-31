@@ -42,6 +42,12 @@ import robocode.control.snapshot.ITurnSnapshot;
  *     (counted before the turn's deaths); then the ticks it was alive and, of those, the ticks its gun
  *     was cool (heat 0) with energy to fire, so a robot that could shoot but held is seen. It
  *     is how Hadur's firepower is read against the field's.</li>
+ * <li>{@code shots.csv} (BENCH-155): one row per Hadur shot at the turn it is first seen
+ *     ({@link #SHOT_HEADER}): the round and turn, the fighters alive before that turn's deaths,
+ *     Hadur's energy before the shot (its energy after, plus the power), the robot the shot was
+ *     aimed at (the living fighter whose bearing lies nearest the bullet's heading), that robot's
+ *     energy and distance, and the power. It is Hadur's bullet-power decision as a function of
+ *     what a nano can see, the input of {@code tools/distill.py}.</li>
  * <li>{@code exposure.csv} (BENCH-116): one row per robot per round ({@link #EXPOSURE_HEADER}):
  *     the ticks it was alive with three or more fighters alive; over those ticks, the summed
  *     count of other fighters whose nearest living fighter it was; the bullet damage it took
@@ -64,8 +70,12 @@ public class MeleeHarvester extends BattleAdaptor {
     public static final String EXPOSURE_HEADER =
         "round,robot,crowdTicks,nearestLoad,takenCrowd,takenNearest,takenSecond";
 
+    public static final String SHOT_HEADER =
+        "round,turn,alive,ownEnergy,target,targetEnergy,distance,power";
+
     private final String us;
     private final BufferedWriter bullets;
+    private final BufferedWriter shots;
     private final BufferedWriter exposure;
     /** BENCH-116, per robot this round: crowd ticks, nearest load, crowd damage taken, as nearest, as second. */
     private final Map<String, double[]> exposed = new LinkedHashMap<>();
@@ -110,6 +120,8 @@ public class MeleeHarvester extends BattleAdaptor {
         bullets.write(BULLET_HEADER + "\n");
         this.exposure = Files.newBufferedWriter(dir.resolve("exposure.csv"), StandardCharsets.UTF_8);
         exposure.write(EXPOSURE_HEADER + "\n");
+        this.shots = Files.newBufferedWriter(dir.resolve("shots.csv"), StandardCharsets.UTF_8);
+        shots.write(SHOT_HEADER + "\n");
     }
 
     @Override
@@ -190,6 +202,11 @@ public class MeleeHarvester extends BattleAdaptor {
             }
         }
         tallyExposure(robots, snap.getBullets(), alive);
+        try {
+            logShots(me, robots, snap.getBullets(), snap.getTurn(), aliveThen);
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
         tallyBullets(robots, snap.getBullets(), alive);
         if (diedNow) {
             deathTick = snap.getTurn();
@@ -323,6 +340,33 @@ public class MeleeHarvester extends BattleAdaptor {
         for (IRobotSnapshot r : robots) energyBefore.put(r.getRobotIndex(), r.getEnergy());
     }
 
+    /**
+     * BENCH-155: Hadur's shots as decisions. Runs before {@link #tallyBullets}, which is what
+     * adds a shot to {@code seenShots}, so a shot is logged on the turn it is first seen.
+     */
+    private void logShots(IRobotSnapshot me, IRobotSnapshot[] robots, IBulletSnapshot[] bullets, int turn,
+                          int alive) throws IOException {
+        for (IBulletSnapshot b : bullets) {
+            if (b.getOwnerIndex() != me.getRobotIndex() || seenShots.contains(b.getBulletId())) continue;
+            if (b.getState() != BulletState.FIRED && b.getState() != BulletState.MOVING) continue;
+            IRobotSnapshot target = null;
+            double best = Double.MAX_VALUE;
+            for (IRobotSnapshot r : robots) {
+                if (r == me || isSentry(r) || r.getState() == robocode.control.snapshot.RobotState.DEAD) continue;
+                double bearing = Math.atan2(r.getX() - me.getX(), r.getY() - me.getY());
+                double off = Math.abs(robocode.util.Utils.normalRelativeAngle(bearing - b.getHeading()));
+                if (off < best) {
+                    best = off;
+                    target = r;
+                }
+            }
+            if (target == null) continue;
+            double distance = Math.hypot(target.getX() - me.getX(), target.getY() - me.getY());
+            shots.write(String.format(Locale.ROOT, "%d,%d,%d,%.2f,%s,%.2f,%.1f,%.2f%n", round, turn, alive,
+                me.getEnergy() + b.getPower(), field(target.getName()), target.getEnergy(), distance, b.getPower()));
+        }
+    }
+
     private static String field(String name) {
         return name == null ? "-" : name.replace(',', ';');
     }
@@ -385,5 +429,6 @@ public class MeleeHarvester extends BattleAdaptor {
         rounds.close();
         bullets.close();
         exposure.close();
+        shots.close();
     }
 }
