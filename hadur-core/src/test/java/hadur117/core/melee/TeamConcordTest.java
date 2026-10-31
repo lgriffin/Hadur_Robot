@@ -16,12 +16,15 @@ class TeamConcordTest {
 
     @Test
     @Tag("TMODE-33")
-    @DisplayName("TMODE-33: the team brain drops the pack hunt and its ranges, and plays FINISH")
+    @DisplayName("TMODE-33: the team brain plays FINISH, and with NO_HUNT drops the pack hunt")
     void modes() {
         Set<TeamModes.Mode> m = new TeamConcord().modes(TeamModes.of(TeamModes.Mode.MATEFIRE, TeamModes.Mode.HUNT,
             TeamModes.Mode.FAR, TeamModes.Mode.PATH, TeamModes.Mode.DODGE, TeamModes.Mode.CONCORD));
-        assertEquals(TeamModes.of(TeamModes.Mode.MATEFIRE, TeamModes.Mode.PATH, TeamModes.Mode.DODGE,
-            TeamModes.Mode.CONCORD, TeamModes.Mode.FINISH), m);
+        assertTrue(m.contains(TeamModes.Mode.FINISH));
+        assertTrue(m.containsAll(TeamModes.of(TeamModes.Mode.MATEFIRE, TeamModes.Mode.PATH, TeamModes.Mode.DODGE,
+            TeamModes.Mode.CONCORD)));
+        assertFalse(m.contains(TeamModes.Mode.FAR));
+        assertEquals(!TeamConcord.NO_HUNT, m.contains(TeamModes.Mode.HUNT));
     }
 
     @Test

@@ -26,10 +26,14 @@ import java.util.Set;
  */
 final class TeamConcord {
 
-    /** Its parts, each on with the brain; the {@code tmconcord} ablation's variants turn one off to weigh it. */
-    static final boolean MOVE = true, RADAR = true, GUN = true;
+    /**
+     * Its parts; the {@code tmconcord} ablation's variants change one to weigh it. The first cloud
+     * smoke (top 9, 2 seeds) lost 4.8 share points with all on, own hits up 38%: the group radar
+     * and the hunt standing down raised own fire against Ogi, so both are off for the second.
+     */
+    static final boolean MOVE = true, RADAR = false, GUN = true;
     /** Finer parts, for the same weighing: the hunt standing down, the risk's robot count, the gun's power and its pooling. */
-    static final boolean NO_HUNT = true, RISK = true, POWER = true, POOL = true;
+    static final boolean NO_HUNT = false, RISK = true, POWER = true, POOL = true;
 
     /** Member-turns the gang watch needs before it may turn GANG on. */
     static final int GANG_TURNS = 200;
@@ -42,8 +46,10 @@ final class TeamConcord {
     Set<TeamModes.Mode> modes(Set<TeamModes.Mode> table) {
         EnumSet<TeamModes.Mode> m = table.isEmpty() ? EnumSet.noneOf(TeamModes.Mode.class) : EnumSet.copyOf(table);
         if (!MOVE) return m;
-        if (NO_HUNT) m.remove(TeamModes.Mode.HUNT);
-        m.remove(TeamModes.Mode.PACK);
+        if (NO_HUNT) {
+            m.remove(TeamModes.Mode.HUNT);
+            m.remove(TeamModes.Mode.PACK);
+        }
         m.remove(TeamModes.Mode.FAR);
         m.remove(TeamModes.Mode.FARTHER);
         m.remove(TeamModes.Mode.NEAR);
