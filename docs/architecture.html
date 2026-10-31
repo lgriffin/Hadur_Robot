@@ -10,6 +10,7 @@
 <header><div class="wrap"><a class="brand" href="../index.html">Hadur 2</a><nav><a href="../index.html">Home</a><a href="../requirements.html">Requirements</a><a href="../docs/architecture.html" aria-current="page">Architecture</a><a href="../docs/testing.html">Testing</a><a href="../bench/index.html">Bench analysis</a><a href="../api/index.html">Javadoc</a><a href="https://github.com/lgriffin/Hadur_Robot">GitHub</a></nav></div></header>
 <main class="wrap">
 <h1 id="hadur-2-architecture">Hadur 2 architecture</h1>
+<blockquote><p>The current C4 view of all three styles (1v1, melee, team), with the switch and mode-table catalogue and the isolation rule, is <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/architecture-c4.md">architecture-c4.md</a>. This page keeps the detailed narrative of each subsystem; some names here predate the hadur117 rename.</p></blockquote>
 <p>Hadur 2 is hexagonal: the strategy lives in a core that only sees plain values, and a thin adapter connects it to Robocode. That split is what makes the rest of the plan testable: the core can be replayed, fuzzed and fault-injected without an engine.</p>
 <pre class="mermaid">graph LR
     subgraph Robocode
