@@ -67,9 +67,28 @@ public final class EnemyHistory {
     private long lastReverse = -1;
     private double lastSign;
 
+    /** TMODE-33: the tree of this robot's class, which every committed situation joins too; null for none. */
+    private final KdTree<float[]> pool;
+
     public EnemyHistory() {
-        tree.setWeights(WEIGHTS);
+        this(null);
     }
+
+    /** As above, where each committed situation also joins {@code pool}, its class's tree (TMODE-33). */
+    EnemyHistory(KdTree<float[]> pool) {
+        tree.setWeights(WEIGHTS);
+        this.pool = pool;
+    }
+
+    /** TMODE-33: a tree for a class of robots, weighted as each robot's own. */
+    static KdTree<float[]> classTree() {
+        KdTree<float[]> t = new KdTree<>(DIMENSIONS, CLASS_TREE_LIMIT);
+        t.setWeights(WEIGHTS);
+        return t;
+    }
+
+    /** TMODE-33: a class tree holds up to five robots' worth of situations. */
+    static final int CLASS_TREE_LIMIT = 5 * TREE_LIMIT;
 
     /** Situations with a known future. */
     public int size() {
@@ -144,6 +163,7 @@ public final class EnemyHistory {
         float[] t = new float[points.size() * 3];
         for (int k = 0; k < points.size(); k++) System.arraycopy(points.get(k), 0, t, 3 * k, 3);
         tree.addPoint(s.attributes, t);
+        if (pool != null) pool.addPoint(s.attributes, t);
     }
 
     /** The {@code k} situations most like {@code attributes}, nearest first. */

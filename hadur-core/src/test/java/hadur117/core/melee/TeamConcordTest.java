@@ -50,6 +50,9 @@ class TeamConcordTest {
         gang.watch(ganged, mates, enemies, 0);
         assertTrue(gang.gangOn());
         assertTrue(gang.modes(TeamModes.of(TeamModes.Mode.CONCORD)).contains(TeamModes.Mode.GANG));
+        // Once on, it stays on however the battle spreads out after.
+        for (int t = 0; t < 1000; t++) gang.watch(free, mates, enemies, 0);
+        assertTrue(gang.gangOn());
     }
 
     @Test

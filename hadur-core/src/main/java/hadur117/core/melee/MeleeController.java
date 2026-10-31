@@ -528,8 +528,13 @@ public class MeleeController {
 
     /** MMOVE-20: a shot left from {@code at} on {@code time} along {@code gunHeading}; kept for the shadows it casts. */
     public void shotFired(Point2D.Double at, long time, double gunHeading, double power) {
+        shotFired(at, time, gunHeading, power, lastTarget);
+    }
+
+    /** As above, the shot aimed at {@code target} by the command that fired it (or null). */
+    public void shotFired(Point2D.Double at, long time, double gunHeading, double power, String target) {
         // TMODE-33: counted for the team brain's power, whatever plays.
-        gun.shotAt(lastTarget);
+        gun.shotAt(target);
         if (!onTeam && mover.bulletShading()) mover.ownShot(at, time, gunHeading, power);
     }
 

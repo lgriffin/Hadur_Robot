@@ -166,6 +166,8 @@ public class FieldGun {
     private boolean swift;
     /** TMODE-33: whether the team modes this tick carry CONCORD. */
     private boolean concord;
+    /** TMODE-33: per enemy class, the tree every copy's situations join. */
+    private final Map<String, KdTree<float[]>> classTrees = new LinkedHashMap<>();
     /** TMODE-33: per enemy class, the shots fired at it and the hits on it, this battle. */
     private final Map<String, int[]> classShots = new LinkedHashMap<>();
     /** MGUN-17: true while a wave reads the field gun's own aim, which the experts must not steer. */
@@ -185,7 +187,7 @@ public class FieldGun {
     public EnemyHistory history(String name) {
         EnemyHistory h = histories.get(name);
         if (h == null && histories.size() < MAX_OPPONENTS) {
-            h = new EnemyHistory();
+            h = new EnemyHistory(classTrees.computeIfAbsent(TeamModes.key(name), k -> EnemyHistory.classTree()));
             histories.put(name, h);
         }
         return h;
@@ -390,17 +392,9 @@ public class FieldGun {
      * Nearest first; with fewer than {@code k} in all, none.
      */
     List<KdTree.Entry<float[]>> pooled(String name, double[] attributes, int k) {
-        String key = TeamModes.key(name);
-        List<KdTree.Entry<float[]>> all = new ArrayList<>();
-        int size = 0;
-        for (Map.Entry<String, EnemyHistory> h : histories.entrySet()) {
-            if (!TeamModes.key(h.getKey()).equals(key)) continue;
-            size += h.getValue().size();
-            all.addAll(h.getValue().neighbours(attributes, k));
-        }
-        if (size < k) return new ArrayList<>();
-        all.sort((a, b) -> Double.compare(a.distance, b.distance));
-        return new ArrayList<>(all.subList(0, Math.min(k, all.size())));
+        KdTree<float[]> t = classTrees.get(TeamModes.key(name));
+        if (t == null || t.size() < k) return new ArrayList<>();
+        return t.nearestNeighbor(attributes, k, true);
     }
 
     /** TMODE-32: whether this tick's team modes carry SWIFT; set before any aim of the tick. */

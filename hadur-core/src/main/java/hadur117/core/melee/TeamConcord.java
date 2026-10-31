@@ -41,6 +41,8 @@ final class TeamConcord {
     static final double GANG_SHARE = 0.04;
 
     private long turns, ganged;
+    /** Whether the watch has turned GANG on; once on, it stays on for the battle. */
+    private boolean gang;
 
     /** The modes this tick: {@code table}'s without the pack hunt, with FINISH, and GANG once the watch says so. */
     Set<TeamModes.Mode> modes(Set<TeamModes.Mode> table) {
@@ -67,11 +69,12 @@ final class TeamConcord {
     private void count(Point2D.Double p, List<EnemyInfo> enemies, long now) {
         turns++;
         if (MinimumRiskMovement.enemiesNear(p, enemies, now) >= MinimumRiskMovement.GANG_SIZE) ganged++;
+        if (turns >= GANG_TURNS && ganged >= GANG_SHARE * turns) gang = true;
     }
 
-    /** Whether the battle so far shows ganging. */
+    /** Whether the battle has shown ganging: once the watch turns GANG on, it stays on. */
     boolean gangOn() {
-        return turns >= GANG_TURNS && ganged >= GANG_SHARE * turns;
+        return gang;
     }
 
     /**

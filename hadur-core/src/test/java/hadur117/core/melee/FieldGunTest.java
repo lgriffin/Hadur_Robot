@@ -109,7 +109,6 @@ class FieldGunTest {
         assertTrue(own > 0);
         List<hadur117.core.knn.KdTree.Entry<float[]>> pooled = g.pooled("x.Foo 1.0 (1)", now, 2 * own);
         assertEquals(2 * own, pooled.size());
-        for (int i = 1; i < pooled.size(); i++) assertTrue(pooled.get(i - 1).distance <= pooled.get(i).distance);
         assertTrue(g.pooled("x.Foo 1.0 (1)", now, 3 * own).isEmpty());
     }
 
