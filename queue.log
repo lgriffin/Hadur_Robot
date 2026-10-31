@@ -9,3 +9,6 @@
 01:02:13 start scbb
 01:02:13 watching scbb: 2 stop rule(s)
 01:08:09 progress scbb: 72/276 (26%) battles, 728/h, ETA 17 min, 0 failed, skips 53.4/battle (last 100)
+01:26:05 scbb exit=0 in 1432 s
+01:26:05 start scwm
+01:26:05 watching scwm: 2 stop rule(s)
