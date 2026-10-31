@@ -274,10 +274,12 @@ class MeleeHarvesterTest {
 
     @Test
     @Tag("BENCH-155")
-    @DisplayName("shots.csv logs each Hadur shot once, aimed at the robot nearest the bullet's heading, with the energy before the shot")
+    @DisplayName("shots.csv logs each Hadur shot once, aimed at the robot nearest the bullet's heading, from the state it decided on")
     void shotsLogDecisions() throws IOException {
         // Hadur at (100, 100) with 77 energy after a 3.0 shot; Alpha due north at 400 px, Beta due east at 300 px.
         IRobotSnapshot me = robot(0, US, 100, 100, true, 1.0, 77.0);
+        // By the end of turn 8 Beta has moved and lost energy; the decision was made on turn 7's state.
+        IRobotSnapshot bLater = robot(2, "b.Beta 1.0", 450, 100, true, 1.0, 8.5);
         IRobotSnapshot a = robot(1, "a.Alpha 1.0", 100, 500, true, 1.0, 60.0);
         IRobotSnapshot b = robot(2, "b.Beta 1.0", 400, 100, true, 1.0, 12.5);
         IRobotSnapshot deadC = robot(3, "c.Gamma 1.0", 100, 400, false, 1.0, 0.0);
@@ -287,19 +289,21 @@ class MeleeHarvesterTest {
         h.onTurnEnded(turn(7, List.of(me, a, b, deadC), List.of(bullet(1, 0, -1, 3.0, BulletState.FIRED, 0.1),
             bullet(2, 1, -1, 1.0, BulletState.FIRED, 3.0))));
         // The same bullet moving on the next turn is not logged again; a new one aimed east is.
-        h.onTurnEnded(turn(8, List.of(me, a, b, deadC), List.of(bullet(1, 0, -1, 3.0, BulletState.MOVING, 0.1),
+        h.onTurnEnded(turn(8, List.of(me, a, bLater, deadC), List.of(bullet(1, 0, -1, 3.0, BulletState.MOVING, 0.1),
             bullet(3, 0, -1, 1.5, BulletState.FIRED, 1.5))));
         h.onRoundEnded(new RoundEndedEvent(0, 0, 0));
         h.close();
         List<String> lines = Files.readAllLines(dir.resolve("shots.csv"));
         assertEquals(MeleeHarvester.SHOT_HEADER, lines.get(0));
+        // Turn 7 is the round's first turn seen: the current snapshot stands in, energy after plus power.
+        // Turn 8 reads turn 7's snapshot: Hadur's 77, Beta's 12.5 at 300 px, not 8.5 at 350.
         assertEquals(List.of("0,7,3,80.0000,a.Alpha 1.0,60.0000,400.0000,3.0000",
-            "0,8,3,78.5000,b.Beta 1.0,12.5000,300.0000,1.5000"), lines.subList(1, lines.size()));
+            "0,8,3,77.0000,b.Beta 1.0,12.5000,300.0000,1.5000"), lines.subList(1, lines.size()));
     }
 
     @Test
     @Tag("BENCH-155")
-    @DisplayName("a shot first seen hitting names its victim, and one first seen after the last robot died still names it")
+    @DisplayName("a shot first seen hitting names its victim, and one first seen after the last robot died reads the turn before")
     void shotsFirstSeenEnding() throws IOException {
         IRobotSnapshot me = robot(0, US, 100, 100, true, 1.0, 77.0);
         IRobotSnapshot a = robot(1, "a.Alpha 1.0", 100, 500, true, 1.0, 60.0);
@@ -316,6 +320,6 @@ class MeleeHarvesterTest {
         h.close();
         List<String> lines = Files.readAllLines(dir.resolve("shots.csv"));
         assertEquals(List.of("0,3,3,79.0000,b.Beta 1.0,12.5000,300.0000,2.0000",
-            "0,4,3,78.0000,a.Alpha 1.0,0.0000,400.0000,1.0000"), lines.subList(1, lines.size()));
+            "0,4,3,77.0000,a.Alpha 1.0,60.0000,400.0000,1.0000"), lines.subList(1, lines.size()));
     }
 }

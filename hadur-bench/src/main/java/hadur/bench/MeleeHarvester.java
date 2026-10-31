@@ -44,9 +44,9 @@ import robocode.control.snapshot.ITurnSnapshot;
  *     is how Hadur's firepower is read against the field's.</li>
  * <li>{@code shots.csv} (BENCH-155): one row per Hadur shot at the turn it is first seen
  *     ({@link #SHOT_HEADER}): the round and turn, the fighters alive before that turn's deaths,
- *     Hadur's energy before the shot (its energy after, plus the power), the robot the shot was
- *     aimed at (the living fighter whose bearing lies nearest the bullet's heading), that robot's
- *     energy and distance, and the power. It is Hadur's bullet-power decision as a function of
+ *     then, from the previous turn's snapshot (the state Hadur decided on), its own energy, the
+ *     robot the shot was aimed at (the hit victim, else the living fighter whose bearing lies
+ *     nearest the bullet's heading), that robot's energy and distance, and the power. It is Hadur's bullet-power decision as a function of
  *     what a nano can see, the input of {@code tools/distill.py}.</li>
  * <li>{@code exposure.csv} (BENCH-116): one row per robot per round ({@link #EXPOSURE_HEADER}):
  *     the ticks it was alive with three or more fighters alive; over those ticks, the summed
@@ -109,6 +109,8 @@ public class MeleeHarvester extends BattleAdaptor {
     private int duelTick;
     private double duelEnergy, duelOppEnergy, takenCrowd, takenDuel;
     private final Set<Integer> counted = new HashSet<>();
+    /** BENCH-155: the previous turn's robots, the state Hadur saw when it decided this turn's shot. */
+    private IRobotSnapshot[] before;
 
     public MeleeHarvester(Path dir, String us, Set<String> sentries) throws IOException {
         this.us = us;
@@ -138,6 +140,7 @@ public class MeleeHarvester extends BattleAdaptor {
         duelTick = -1;
         duelEnergy = duelOppEnergy = takenCrowd = takenDuel = 0;
         counted.clear();
+        before = null;
         tally.clear();
         seenShots.clear();
         endedShots.clear();
@@ -207,6 +210,7 @@ public class MeleeHarvester extends BattleAdaptor {
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }
+        before = robots;
         tallyBullets(robots, snap.getBullets(), alive);
         if (diedNow) {
             deathTick = snap.getTurn();
@@ -343,23 +347,28 @@ public class MeleeHarvester extends BattleAdaptor {
     /**
      * BENCH-155: Hadur's shots as decisions. Runs before {@link #tallyBullets}, which is what
      * adds a shot to {@code seenShots}, so a shot is logged on the turn it is first seen,
-     * whatever its state then: a point-blank shot can be first seen already hitting. The row
-     * reads the end-of-turn snapshot, one tick after the decision; own energy is the energy
-     * after the shot plus the power, so damage taken in that tick is in the row, and a hit
-     * victim is the target by name rather than by heading.
+     * whatever its state then: a point-blank shot can be first seen already hitting. A shot
+     * fired in a turn was decided on the state at that turn's start, which is the previous
+     * turn's end-of-turn snapshot, so the row's energies, target and distance come from that
+     * snapshot when there is one; on a round's first turn the current snapshot stands in, with
+     * own energy as the energy after the shot plus the power.
      */
     private void logShots(IRobotSnapshot me, IRobotSnapshot[] robots, IBulletSnapshot[] bullets, int turn,
                           int alive) throws IOException {
+        IRobotSnapshot[] seen = before != null ? before : robots;
+        IRobotSnapshot meThen = before != null ? byIndex(before, me.getRobotIndex()) : null;
         for (IBulletSnapshot b : bullets) {
             if (b.getOwnerIndex() != me.getRobotIndex() || seenShots.contains(b.getBulletId())) continue;
-            IRobotSnapshot target = b.getState() == BulletState.HIT_VICTIM ? byIndex(robots, b.getVictimIndex()) : null;
-            if (target == null) target = nearestHeading(me, robots, b.getHeading(), true);
+            IRobotSnapshot target = b.getState() == BulletState.HIT_VICTIM ? byIndex(seen, b.getVictimIndex()) : null;
+            IRobotSnapshot from = meThen != null ? meThen : me;
+            if (target == null) target = nearestHeading(from, seen, b.getHeading(), true);
             // The field can fall to Hadur alone in the turn its shot is first seen: aim at whoever died.
-            if (target == null) target = nearestHeading(me, robots, b.getHeading(), false);
+            if (target == null) target = nearestHeading(from, seen, b.getHeading(), false);
             if (target == null || isSentry(target)) continue;
-            double distance = Math.hypot(target.getX() - me.getX(), target.getY() - me.getY());
+            double own = meThen != null ? meThen.getEnergy() : me.getEnergy() + b.getPower();
+            double distance = Math.hypot(target.getX() - from.getX(), target.getY() - from.getY());
             shots.write(String.format(Locale.ROOT, "%d,%d,%d,%.4f,%s,%.4f,%.4f,%.4f%n", round, turn, alive,
-                me.getEnergy() + b.getPower(), field(target.getName()), target.getEnergy(), distance, b.getPower()));
+                own, field(target.getName()), target.getEnergy(), distance, b.getPower()));
         }
     }
 
