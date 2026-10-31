@@ -8,3 +8,7 @@
 11:37:12 live-D exit=0 in 1040 s
 11:37:12 start live-SAME
 11:37:12 watching live-SAME: 3 stop rule(s)
+11:50:34 progress live-SAME: 198/276 (72%) battles, 889/h, ETA 5 min, 0 failed, skips 0.0/battle (last 100)
+11:54:36 live-SAME exit=0 in 1044 s
+11:54:36 start live-PL400
+11:54:36 watching live-PL400: 3 stop rule(s)
