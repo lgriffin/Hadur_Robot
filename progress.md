@@ -1,6 +1,6 @@
 # Queue pc-melee-scal: progress
 
-Updated 2026-10-31 03:17:10 PC time (03:17 UTC), runner pid 64324.
+Updated 2026-10-31 03:32:18 PC time (03:32 UTC), runner pid 64324.
 
 - `scprep` done, exit 0 in 6 min
 - `scaa` done, exit 0 in 25 min
@@ -9,8 +9,8 @@ Updated 2026-10-31 03:17:10 PC time (03:17 UTC), runner pid 64324.
 - `scxh` done, exit 0 in 24 min
 - `scwq` done, exit 0 in 24 min
 - `scbw` done, exit 0 in 24 min
-- `scfv` running
-- `scec` pending
+- `scfv` done, exit 0 in 21 min
+- `scec` running
 - `scbs` pending
 - `scread` pending
 - `scpr` pending
@@ -89,22 +89,31 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### scfv
 
-**169 of 276 battles** (61%), 0 failed. Running 14 min, 708 battles/h, about 9 min left (ends ~03:26 PC time). Last battle 0 min ago.
-Skipped turns a battle: 70.6 overall, first 100 62.5, last 100 72.2.
+**276 of 276 battles** (100%), 0 failed. Running 21 min, 787 battles/h, about 0 min left (ends ~03:23 PC time). Last battle 0 min ago.
+Skipped turns a battle: 71.3 overall, first 100 62.5, last 100 72.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 169 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 107 battles unrun (about 9 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### scec
+
+**102 of 276 battles** (37%), 0 failed. Running 8 min, 728 battles/h, about 14 min left (ends ~03:46 PC time). Last battle 0 min ago.
+Skipped turns a battle: 72.6 overall, first 100 71.7, last 100 72.4.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 102 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 174 battles unrun (about 14 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-01:51:13 scwm exit=0 in 1507 s
-01:51:13 start scxh
-01:51:13 watching scxh: 2 stop rule(s)
 02:08:36 progress scxh: 174/276 (63%) battles, 601/h, ETA 10 min, 0 failed, skips 63.3/battle (last 100)
 02:15:28 scxh exit=0 in 1455 s
 02:15:28 start scwq
@@ -117,4 +126,7 @@ Stopping now would leave 107 battles unrun (about 9 min); every battle already f
 03:02:51 start scfv
 03:02:51 watching scfv: 2 stop rule(s)
 03:09:06 progress scfv: 79/276 (29%) battles, 758/h, ETA 16 min, 0 failed, skips 65.6/battle (last 100)
+03:23:54 scfv exit=0 in 1262 s
+03:23:54 start scec
+03:23:54 watching scec: 2 stop rule(s)
 ```
