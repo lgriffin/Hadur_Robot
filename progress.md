@@ -1,12 +1,12 @@
 # Queue pc-sanaro-n06: progress
 
-Updated 2026-10-31 19:15:54 PC time (19:15 UTC), runner pid 58568.
+Updated 2026-10-31 19:31:02 PC time (19:31 UTC), runner pid 58568.
 
 - `prep` done, exit 0 in 0 min
-- `teach` running
-- `distill-report` pending
-- `arms` pending
-- `live-S2` pending
+- `teach` done, exit 0 in 15 min
+- `distill-report` done, exit 0 in 0 min
+- `arms` done, exit 0 in 0 min
+- `live-S2` running
 - `live-HT` pending
 - `live-HD` pending
 - `live-HS` pending
@@ -15,7 +15,7 @@ Updated 2026-10-31 19:15:54 PC time (19:15 UTC), runner pid 58568.
 
 ### teach
 
-**130 of 130 battles** (100%), 0 failed. Running 15 min, 522 battles/h, about 0 min left (ends ~19:15 PC time). Last battle 0 min ago.
+**130 of 130 battles** (100%), 0 failed. Running 15 min, 521 battles/h, about 0 min left (ends ~19:15 PC time). Last battle 0 min ago.
 Skipped turns a battle: 34.7 overall, first 100 33.9, last 100 32.4.
 
 | stop rule | on trip | state | now |
@@ -25,6 +25,19 @@ Skipped turns a battle: 34.7 overall, first 100 33.9, last 100 32.4.
 | `skips 40 over 100` | halt | ok | 32.4 a battle over the last 100 (first 100: 33.9) |
 
 Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### live-S2
+
+**200 of 430 battles** (47%), 0 failed. Running 15 min, 805 battles/h, about 17 min left (ends ~19:48 PC time). Last battle 1 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 200 |
+| `stall 30m` | halt | ok | last battle 1 min ago |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
+
+Stopping now would leave 230 battles unrun (about 17 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -36,4 +49,11 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 19:00:56 start teach
 19:00:56 watching teach: 3 stop rule(s)
 19:01:48 progress teach: 0/130 (0%) battles, 0 failed
+19:15:55 teach exit=0 in 898 s
+19:15:55 start distill-report
+19:15:58 distill-report exit=0 in 2 s
+19:15:58 start arms
+19:16:07 arms exit=0 in 9 s
+19:16:07 start live-S2
+19:16:07 watching live-S2: 3 stop rule(s)
 ```
