@@ -7,7 +7,9 @@ Each RUN is a bench run folder (conditions.json and battles/). Each is judged ag
 own run of the same battles, the 2026-10-23 worker ladder (docs/bench/local/2026-10-23_worker-ladder.md,
 PR #232), picked by the run's set: top5-s0-panel.txt is the duel block d12 (3.15, seed 2501, 12
 workers, truth log on), team-census46.txt the team block t12 (12 workers, seeds 2401-2402).
---reference-skips X and --reference-level Y judge any other run by hand.
+--reference-skips X and --reference-level Y judge any other run by hand; --reference-run LABEL=DIR judges
+against another run of the same battles (BENCH-151: the same machine the same day, so drift since the PC's
+reference cancels and only the difference between the two conditions is judged).
 
 VALID when the run's skipped turns a round stay within 15% of the PC's (the ladder's own limit,
 SKIP_LIMIT in tools/ladder.py) plus 0.02 a round of slack for a short run, and its engine disables
@@ -124,11 +126,22 @@ def main(argv=None):
     p.add_argument("--reference-skips", type=float)
     p.add_argument("--reference-disables", type=float, default=0.0)
     p.add_argument("--reference-level", type=float)
+    p.add_argument("--reference-run", help="LABEL=WORKDIR: judge against this run of the same battles on this "
+                                           "machine today, not the PC's 2026-10-23 run (BENCH-151)")
     args = p.parse_args(argv)
     override = None
     if args.reference_skips is not None:
         override = {"label": "given", "skips_round": args.reference_skips, "disables_100": args.reference_disables,
                     "level": args.reference_level}
+    if args.reference_run:
+        label, _, work = args.reference_run.partition("=")
+        try:
+            base = check(label, work)["run"]
+        except (OSError, ValueError) as e:
+            print(f"host_check.py: reference {label}: {e}", file=sys.stderr)
+            return 2
+        override = {"label": label, "skips_round": base["skips_round"], "disables_100": base["disables_100"],
+                    "level": base["level"]}
     results = []
     for spec in args.runs:
         label, _, work = spec.partition("=") if "=" in spec else (os.path.basename(spec.rstrip("/\\")), "", spec)

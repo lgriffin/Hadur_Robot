@@ -89,18 +89,40 @@ about 1 hour, and uploads are off throughout.
   This does not say whether the clients reached the bench, or whether 12 workers on 18 cores is simply
   narrower than the 24-core reference.
 
-### Run 2 (the card as it stands)
+### Run 2 (PR #486, 2026-10-31)
 
-- **Bench:** the duel block three times on the bench side. **solo** runs with no clients, which shows the
-  cost of 18 cores on its own. **duel** runs at 12 workers beside the clients. **duel10** runs at 10
-  workers beside the clients.
-  - solo TOO LOADED: the narrower bench is the cause.
-  - duel worse than solo: the clients reach the bench.
-  - duel10 VALID: use `WORKERS = 10` beside clients.
-- **Clients:** rr01 and rr02 with UPLOAD=NOT, scoring their Hadur 3.20 battles. There is no clean 3.20 page
-  yet, so they are scored against 3.19's cloud first pass (91.58, 1,221 pairings). 3.20 adds MOVE-29, about
-  +0.1 on the census, so a small positive mean reads as clean. The verdict is QUALIFIED within ±0.5.
-- The report is `data/live/fence-qualify-3.20-run2/fence-qualify.md`, delivered as a results PR.
+| Block | Fenced | Clients | Workers | Skips a round | Disables /100 | Level |
+|---|---|---|---:|---:|---:|---:|
+| solo | yes | none | 12 | 0.557 | 0.5 | 82.95 |
+| duel | yes | two 1v1 | 12 | 0.580 | 1.4 | 83.04 |
+| duel10 | yes | two 1v1 | 10 | 0.599 | 2.9 | 82.83 |
+| PC 2026-10-23 (d12) | no | none | 12 | 0.465 (bar 0.555) | 3.1 | 83.32 |
+
+- **Clients: QUALIFIED.** -0.11 ± 0.48 over 317 battles of 3.20, scored against 3.19's clean page.
+- **Bench: no load problem was found.** Every block missed the old bar, but only just.
+  - With no client running at all, the bench already sat at the bar (solo, 0.557).
+  - The clients added about 0.02 a round (duel against solo).
+  - Ten workers did not help (duel10).
+  - Disables and level were fine everywhere.
+- **What to change:** the bar, not the PC. It comes from an unfenced run a week ago, so drift since then
+  (Windows, JDK, the robot jars on disk) counts against the fence.
+
+### Run 3 (BENCH-151, the card as it stands)
+
+The card judges against today's PC: the same duel block three times in one session.
+
+- **base:** unfenced, no clients, all 24 cores.
+- **solo:** fenced to the bench side, no clients.
+- **duel:** fenced, beside two fenced clients.
+
+`host_check.py --reference-run base=...` judges solo and duel against base with the same 15% + 0.02 skip
+bar, disables + 2, and level ±1.5. The 10-23 comparison stays in the report as information only.
+
+| solo | duel | Meaning |
+|---|---|---|
+| VALID | VALID | Clients beside a fenced bench are safe: set `FENCE = on` and run them |
+| VALID | TOO LOADED | The clients reach the bench through something the fence does not split (memory, power) |
+| TOO LOADED | either | 18 cores cost the bench on their own: run narrower when fenced, or give the clients fewer cores |
 
 The clients play more Hadur battles here than in a normal live run, which is the heavier case for both
 sides.

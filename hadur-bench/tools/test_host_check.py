@@ -74,5 +74,19 @@ class HostCheckTest(unittest.TestCase):
             self.assertEqual(host_check.main([run(root, "b", 4, 30)]), 1)
 
 
+# @Tag("BENCH-151"): a run judged against another run of the same battles on the same machine.
+class ReferenceRunTest(unittest.TestCase):
+    def test_a_same_day_baseline_replaces_the_pc_reference(self):
+        with tempfile.TemporaryDirectory() as root:
+            base = run(root, "base", 12, 20)        # 0.571 a round: over the PC's bar on its own
+            near = run(root, "near", 12, 21)        # 0.600: within 15% of today's base
+            far = run(root, "far", 12, 27)          # 0.771: not
+            out = os.path.join(root, "r.md")
+            self.assertEqual(host_check.main([f"near={near}", "--reference-run", f"base={base}", "--out", out]), 0)
+            self.assertIn("**VALID**", open(out).read())
+            self.assertEqual(host_check.main([f"far={far}", "--reference-run", f"base={base}"]), 1)
+            self.assertEqual(host_check.main([f"base={base}"]), 1, "the same base fails the PC's 10-23 reference")
+
+
 if __name__ == "__main__":
     unittest.main()
