@@ -47,7 +47,8 @@ class ShieldListResourceTest {
     void listHoldsTheProbedRobots() {
         ShieldList list = ShieldList.parse(Arrays.asList(ShieldListData.lines()));
         // BENCH-126 (PR #376): Wolverine, Hikari and Melody moved to stop-and-go, off the list.
-        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3, list.size());
+        // SHIELD-21 (pc-shield-still2, PR #515): 7 of BeepBoop's shield robots join with still plans.
+        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
@@ -100,7 +101,7 @@ class ShieldListResourceTest {
         }
         // Robots of Nullstride's list the sweep found worse or open with a small mean.
         for (String name : new String[] {
-            "aaa.r.ScalarR 0.005h.053-noshield", "theo.Hydrogen 2.1r", "stelo.MatchupMicro 1.2",
+            "aaa.r.ScalarR 0.005h.053-noshield", "stelo.MatchupMicro 1.2",
             "cx.mini.BlackSwans 0.60"}) {
             assertTrue(!list.matches(name), name);
         }
@@ -183,5 +184,22 @@ class ShieldListResourceTest {
         String text = java.nio.file.Files.readString(src);
         assertTrue(!text.contains("getResourceAsStream") && !text.contains("getResource("),
             "Robocode denies the robot a read of its own jar");
+    }
+
+    @Test
+    @Tag("SHIELD-21")
+    @DisplayName("the 17 still picks of pc-shield-still2 carry shield-still lines, and the 7 from BeepBoop's list are shielded")
+    void stillPicks() {
+        java.util.List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
+        for (String n : ShieldTableData.stills()) lines.add(ShieldList.STILL_PREFIX + " " + n);
+        ShieldList list = ShieldList.parse(lines);
+        assertEquals(17, ShieldTableData.stills().length);
+        for (String n : ShieldTableData.stills()) {
+            assertTrue(list.matches(n), n + " is shielded");
+            assertTrue(list.still(n), n + " plans still");
+        }
+        // 3.13's sweep found Hydrogen worse to shield with the step; the still plans win it (+13.9 points).
+        assertTrue(list.still("theo.Hydrogen 2.1r"));
+        assertTrue(!list.still("rsk1.RSK1 4.0"), "RSK1 lost with the still plans (-7.7)");
     }
 }

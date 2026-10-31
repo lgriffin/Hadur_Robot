@@ -1,0 +1,62 @@
+# 1v1, per-opponent picks from the new 2nd-place rival's tables (BENCH-159, docs/bench/rival-2nd-read.md). Leigh starts it:
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-rival-picks        (or  ./queue.sh run pc-rival-picks)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes;
+# no step needs a decision. About 45 min of battles (2,070; pc-shield-still ran 2,834 an hour) and seconds of analysis.
+#
+# Why: a new 1v1 robot went to 2nd live on 2026-10-31 at 93.88, 2.07 APS over Hadur 3.20 on 1,220 shared bots. Its source
+# ships with it and keeps a mode for every robot on the 10-08 list. Split by its mode and ours, three of its pools fit
+# switches we already have (live APS at its scores, 1-3 battles a pairing, so candidates only):
+#   A  74 robots it shields and master does not:            +0.46   -> slistadd (mt), slistadd + szlist (mtzl)
+#   E  50 robots both shield, it leads by over 5 points:     +0.46   -> szlist (zl), sx0list (x0), both (zlx0)
+#   BC 36 robots it plays stop-and-go against, master not:   +0.16   -> sgolist (mdwl), sgo2list (mdwm), the 16 we shield
+#      off the shield list for both (slistdrop), as our shield drives first
+#
+# screens: each list x c, aa and its arms x 3 seeds from 5600 (A 888, E 750, BC 432 battles).
+# gates:   per screen, the multi-arm read, a 5-point per-robot pick (mode_table.py) and every robot's difference with
+#          losses. A screen ships nothing: the picks go to a confirm card on fresh seeds, then a PR adds the lines for
+#          the next census; the release rule stands.
+# Stop rules (docs/bench/watch.md): each screen halts on 30 failed battles, an arm scoring nothing in 8, 40+ skipped
+# turns a battle over the last 200, or no battle in 30 minutes; every battle fought is kept and a rerun resumes. A halt
+# in one screen leaves the later screens unrun (up to 1,182 battles if A halts at its start). No A/A or futility
+# rule: 36 to 74 robots read too few for either before the end; the gates judge the A/A at the end. ALERT opens an
+# issue for Leigh on any stop.
+
+set V = 3.20
+set P = --parallel 12 --no-truth-log
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G --engine 1.11.1
+set W = work/rival-picks
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && SHIELD_ADD=plans/rival-shield-add.txt bash ./build-ablation.sh slistadd && SHIELD_ADD=plans/rival-shield-add.txt SHIELD_STILL=plans/rival-shield-add.txt bash ./build-ablation.sh slistadd,szlist && SHIELD_STILL=plans/rival-shield-exec.txt bash ./build-ablation.sh szlist && SHIELD_EXIT0=plans/rival-shield-exec.txt bash ./build-ablation.sh sx0list && SHIELD_STILL=plans/rival-shield-exec.txt SHIELD_EXIT0=plans/rival-shield-exec.txt bash ./build-ablation.sh szlist,sx0list && SHIELD_DROP=plans/rival-stopgo-drop.txt STOP_GO=plans/rival-stopgo.txt bash ./build-ablation.sh slistdrop,sgolist && SHIELD_DROP=plans/rival-stopgo-drop.txt STOP_GO2=plans/rival-stopgo.txt bash ./build-ablation.sh slistdrop,sgo2list && for s in mt mtzl zl x0 zlx0 mdwl mdwm; do test -f bisect/hadur117.Hadur_${V}$s.jar || exit 1; done && ./fetch-opponents.sh --set panel-rival-shield-add.txt && ./fetch-opponents.sh --set panel-rival-shield-exec.txt && ./fetch-opponents.sh --set panel-rival-stopgo.txt && mvn -q compile
+
+screen-add | ./bench-top20.sh ${C} ${P} --set panel-rival-shield-add.txt --seeds 3 --seed-base 5600 --arms plans/rival-shield-add.arms --out ${W}/add --label rival-add --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 40 over 200
+  stop: stall 30m
+
+screen-exec | ./bench-top20.sh ${C} ${P} --set panel-rival-shield-exec.txt --seeds 3 --seed-base 5600 --arms plans/rival-shield-exec.arms --out ${W}/exec --label rival-exec --shuffle-jobs
+  after: screen-add
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 40 over 200
+  stop: stall 30m
+
+screen-stopgo | ./bench-top20.sh ${C} ${P} --set panel-rival-stopgo.txt --seeds 3 --seed-base 5600 --arms plans/rival-stopgo.arms --out ${W}/stopgo --label rival-stopgo --shuffle-jobs
+  after: screen-exec
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 40 over 200
+  stop: stall 30m
+
+gate | for s in add exec stopgo; do python3 ../data/tools/multiarm.py ${W}/$s/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_rival-$s.md && python3 ../data/tools/mode_table.py ${W}/$s/arms.tsv --margin 5 --out-tsv ${OUT}/rival-$s-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_rival-$s-pick.md || exit 1; done && python3 tools/per_robot.py ${W}/add/arms.tsv --arms mt mtzl --out ${OUT}/$(date +%Y-%m-%d)_rival-add-per-robot.md --out-tsv ${OUT}/rival-add-per-robot.tsv && python3 tools/per_robot.py ${W}/exec/arms.tsv --arms zl x0 zlx0 --out ${OUT}/$(date +%Y-%m-%d)_rival-exec-per-robot.md --out-tsv ${OUT}/rival-exec-per-robot.tsv && python3 tools/per_robot.py ${W}/stopgo/arms.tsv --arms mdwl mdwm --out ${OUT}/$(date +%Y-%m-%d)_rival-stopgo-per-robot.md --out-tsv ${OUT}/rival-stopgo-per-robot.tsv
+  after: screen-stopgo
+
+pr | bash tools/open_results_pr.sh claude/pc-rival-picks-results "1v1 per-opponent picks from the 2nd-place rival's tables: shield adds, shield execution, stop-and-go adds" ${OUT}/*_rival-*.md ${OUT}/rival-*-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'rival-*-pick.tsv' -size +0c)
+  after: gate

@@ -2278,6 +2278,7 @@ profiles, and the rumbles list it as a new participant.
 | BENCH-151 | Optional feature | Where `tools/host_check.py` is given `--reference-run LABEL=DIR`, it shall judge each run against that run's skipped turns a round, disables a 100 and level instead of the PC's 2026-10-23 reference, and the `pc-fence-qualify` card shall gate its fenced blocks (no clients, and beside two fenced clients) against an unfenced block of the same battles fought in the same session. | T7 |
 | BENCH-152 | Ubiquitous | The bench shall carry the `pc-shield-still` card, which builds SHIELD-20 on (`sstill`), and SHIELD-20 with the 64 robots of BeepBoop's shield list that ours lacks (`sstill,slistadd`), beside an aa A/A copy; runs the first against the 273 shield-listed robots at 2 fresh seeds from 5200 and the second against the 64 at 3 fresh seeds from 5300; gates each at +0.05 APS with the 95% low end above zero; writes a 5-point per-robot pick of the 64 and every robot's difference with losses; declares its stop rules; and stops before the results PR if any analysis fails. | T7 |
 | BENCH-158 | Ubiquitous | The bench shall carry the `pc-shield-still2` card, which builds SHIELD-21 for the 40 robots pc-shield-still put above +5 points (`slistadd,szlist`, the 9 of BeepBoop's list among them added to the shield list) beside an aa A/A copy; runs them at 4 fresh seeds from 5400; gates at +0.05 APS with the 95% low end above zero; writes a 5-point per-robot pick and every robot's difference with losses; declares its stop rules; and stops before the results PR if any analysis fails. | T7 |
+| BENCH-159 | Ubiquitous | The bench shall carry the `pc-rival-picks` card, which screens three per-opponent lists read from the new 2nd-place rival (docs/bench/rival-2nd-read.md): 74 shield additions (`slistadd`, `slistadd,szlist`), 50 shield-execution robots (`szlist`, `sx0list`, both) and 36 stop-and-go robots (`slistdrop,sgolist`, `slistdrop,sgo2list`), each beside master and an aa A/A copy at 3 seeds from 5600; writes a 5-point per-robot pick and every robot's difference with losses for each list; declares its stop rules; and stops before the results PR if any analysis fails. | T7 |
 
 ## The team brain on every team, and its confirm (TMODE-34, BENCH-153)
 
@@ -2328,10 +2329,10 @@ profiles, and the rumbles list it as a new participant.
   trades a few cautious cells for the shift's 3 bytes. Eveimear arms HM (714 B), HP (749 B) and HM7
   play the table in place of, or before, EVEIMEAR-3's detection; `plans/pc-eveimear-h1.queue`
   measures them against 0.1 (docs/kitlab.md section 6).
-- **Eveimear as its own teacher (2026-10-31).** pc-eveimear-h1 failed (PR #516): a gun's hit rate on
-  Hadur is the wrong signal for a stop-and-go robot. `tools/distill.py field` writes a whole-rumble
-  set, `oracle` picks per robot the arm that beat the default seed by seed (`--z`, `--min-gain`),
-  `hash --resolve default` sends an allowed conflict back to the default, and a constant over
-  65,535 bytes of modified UTF-8 is refused. Arm HB biases EVEIMEAR-3's threshold by -1000 / 0 /
-  +1000 per robot; `plans/pc-eveimear-h2.queue` teaches on 515 robots and reads HB on fresh battles
-  (docs/kitlab.md section 7).
+- **distill.py after pc-eveimear-h1 (2026-10-31).** pc-eveimear-h1 failed (PR #516): a gun's hit
+  rate on Hadur is the wrong signal for a stop-and-go robot (docs/kitlab.md section 7).
+  `tools/distill.py field` writes a whole-rumble set (`--present` drops robots with no jar, an empty
+  set is refused); `oracle` picks per robot the arm that beat the default battle by battle
+  (`--z`, `--min-gain`), its summary weighted as `kitlab_read.py` weighs a run; `hash` gives a robot
+  the modes file does not list the default, `--resolve default` sends an allowed conflict back to
+  it, and a constant over 65,535 bytes of modified UTF-8 is refused.

@@ -98,7 +98,7 @@ public class Eveimear extends AdvancedRobot {
         // A hit keeps the orbit direction: reversing on hits measured 1.65 APS worse (EVEIMEAR-4).
         double gain;
         enemyEnergy += gain = 3 * e.getPower();
-        // NV (pc-eveimear-h2): stop-and-go for the whole battle, every opponent.
+        // Once their hits have won back more than 40 + 23 per round, move at random for good (EVEIMEAR-3).
         if ((won += gain) > 1e9) {
             mode = -1;
         }

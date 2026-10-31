@@ -21,18 +21,20 @@ import robocode.util.Utils;
  * and ships with its source.
  */
 public class Eveimear extends AdvancedRobot {
-    // Eveimear's own verdict on each MicroRumble robot, keyed by the name's hash (pc-eveimear-h2,
-    // tools/distill.py oracle then hash --raw --default 1): 0 move at random from the first hit,
-    // 1 0.1's detection unchanged, 2 stop-and-go for the whole battle. Written by the card's prep.
-    static final String MODES = "";
-    static final int MASK = 1, SHIFT = 0;
     // Bins either side of guess factor zero (EVEIMEAR-6).
     static final int MID = 12;
     // The escape angle the bins span, about asin(8 / 14) for the power-2 waves (EVEIMEAR-6).
     static final double ESCAPE = 0.65;
     static final Rectangle2D.Double FIELD = new Rectangle2D.Double(18, 18, 764, 564);
 
-    static double enemyEnergy, direction = 1, won, mode, lastSpeed, since, enemyX, enemyY;
+    // Eveimear's own best mode against each MicroRumble robot, one char a robot keyed by the name's
+    // hash (tools/distill.py hash --raw --shift 0), learned from 0.1's battles in each mode
+    // (pc-eveimear-st): the char scales the detection's 40 + 23 a round, so 1 is 0.1's detection, 0
+    // moves at random from the first hit and 9 holds stop-and-go for good. Written by the card's build.
+    static final String MODES = "";
+    static final int MASK = 1;
+
+    static double enemyEnergy, direction = 1, won, mode, lastSpeed, since, enemyX, enemyY, tab;
     // Gun stats [velocity history][lateral speed][distance][bin] (EVEIMEAR-6).
     static int[][][][] stats = new int[5][5][5][2 * MID + 1];
 
@@ -47,6 +49,7 @@ public class Eveimear extends AdvancedRobot {
         Wave w;
         addCustomEvent(w = new Wave());
         distance = e.getDistance();
+        tab = MODES.charAt(e.getName().hashCode() & MASK);
         // Under 100 px the enemy is ramming: retreat hard, keep moving, fire hard (EVEIMEAR-7).
         offset = 2 + (antiRam = (int) (100 / distance));
 
@@ -103,10 +106,8 @@ public class Eveimear extends AdvancedRobot {
         // A hit keeps the orbit direction: reversing on hits measured 1.65 APS worse (EVEIMEAR-4).
         double gain;
         enemyEnergy += gain = 3 * e.getPower();
-        // Once their hits have won back more than 40 + 23 per round, move at random for good (EVEIMEAR-3);
-        // the table moves that line by -100000 (the first hit), 0 or +100000 (never: won is kept across
-        // rounds, and 35 rounds of hits at 9 energy a hit stay far below it) for this robot.
-        if ((won += gain) > 40 + 23 * getRoundNum() + (MODES.charAt(e.getName().hashCode() >>> SHIFT & MASK) - 1) * 100000) {
+        // Once their hits have won back more than 40 + 23 per round, move at random for good (EVEIMEAR-3).
+        if ((won += gain) > (40 + 23 * getRoundNum()) * tab) {
             mode = -1;
         }
     }

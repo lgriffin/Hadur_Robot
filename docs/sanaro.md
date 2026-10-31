@@ -402,3 +402,28 @@ tables on 0.2's body on the live-shaped census against S2: HT (every shot, 4 x 2
 gate is SANARO-13 as before; HT against HD says whether Hadur's crowd power or its endgame power is
 the one worth carrying, and a passing table can ship beside n05's lead, since they change different
 lines. The teach run's report is kept for the record only: Hadur in a nano field is not a result.
+
+## 17. pc-sanaro-n05 and n06 results, and the next card: pc-sanaro-n07 (stage N8)
+
+**pc-sanaro-n05 (PR #479, 2026-10-31): flat.** Against 0.2 (65.63): Quantum's own lead LQ
++0.08 ± 0.32, LL -0.04, LR 0.00, L18 -0.09, ScalarR's energy cap SC -0.35. n04's GG over CL (+0.5)
+was noise; 0.2's flat lead is as good as any.
+
+**pc-sanaro-n06 (PR #514, 2026-10-31): Hadur's power pays.** Against 0.2 (65.32): HS +0.55 ± 0.31,
+HD +0.39 ± 0.30, HT +0.35 ± 0.32, with survival up from 19.1 to 22.9-23.6 in all three. Hadur was
+taught in the 13 NanoMelee fields and scored in the 43 live-shaped ones, and the tables are by
+energy only, so this is not a fit to the test opponents; but n04's CL also read +0.55 once, so HS
+gets fresh seeds before it ships.
+
+`hadur-bench/plans/pc-sanaro-n07.queue`, Leigh starts it from master:
+`.\queue.ps1 run pc-sanaro-n07`. About 2.4 h with stop rules and ALERT. A teach run of Hadur 3.20 in
+the 43 live-shaped fields (3 seeds, base 23000), then 43 fields x 10 fresh seeds (base 24000) for:
+
+| Arm | Table | Bytes |
+|---|---|---|
+| S2 | 0.2 as it ships (control) | 249 |
+| HS | n06's HS, rebuilt from n06's teach run | 249 |
+| HL | HS's recipe on the live-shaped teach run | 249 |
+| HC | HS's recipe on both teach runs pooled | 249 |
+
+HS passing again ships it as 0.3 on Leigh's word; HL or HC reading above HS ships instead.

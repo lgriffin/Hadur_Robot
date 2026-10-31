@@ -1,0 +1,80 @@
+# Eveimear self-taught modes (docs/bench/kitlab-priors.md). pc-eveimear-h1 (PR #516) took each
+# robot's mode from Hadur's census and lost (-4.78 in place of 0.1's detection, -0.93 beside it):
+# a gun's hit rate on Hadur does not say whether stop-and-go beats it. This card asks Eveimear
+# itself: 0.1 fights the whole MicroRumble field (515 robots) three times, once in each mode, and
+# tools/kitlab_selfmodes.py keeps, per robot, the mode it scored best with (the detection unless
+# another wins by more than 3 points). tools/distill.py hash packs the picks into
+# kitlab/arms/Eveimear-st.java, where the char scales 0.1's 40 + 23 a round threshold (1 the
+# detection, 9 stop-and-go for good, 0 random from the first hit): 746 B with a 4,096 to 16,384-char table (up to 4 hash conflicts allowed; the first robot in the participants file keeps the cell).
+#   ./queue.sh run pc-eveimear-st        (or  .\queue.ps1 run pc-eveimear-st)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned (--parallel auto: the host profile's width). Every
+# step resumes; no step needs a decision. Nothing here touches Hadur or the other small bots, and
+# nothing is uploaded anywhere.
+#
+# Steps:
+#   E01, SG, RN  0.1 as released / stop-and-go for good / random from the first hit, on
+#                kitlab/micro-all-field.txt (515 robots, weight 1) x 2 seeds: 1,030 battles each.
+#   build        the picks, the table, the ST jar.
+#   TE01, TST    0.1 and ST on a fresh stratified sample (kitlab/micro-wide2-field.txt, seed 4: the
+#                top 12 and 100 rank bands) x 6 new seeds: 672 battles each.
+# Read: TST against TE01 on the same opponents (the paired gain). ST holds when the gain's low end is
+# above zero. The picks were made on other battles against the same robots, as a live table would be.
+# Stop rules on every bench step (docs/bench/watch.md; halt, every battle fought is kept and a rerun
+# resumes): 20 failed battles (a broken jar), no battle in 30 minutes (a hung step), or 40+ skipped
+# turns a battle over the last 100 (the PR #331 build-up). A halt at worst leaves the rest of that
+# step and the steps after it unrun, at most 4,434 battles. No early finish on score: each step is
+# one robot. ALERT opens an issue for Leigh on a stop.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set REL = https://github.com/lgriffin/Hadur_Robot/releases/download
+set J01 = opponents/hadur117.micro.Eveimear_0.1.jar
+
+prep | ./fetch-opponents.sh --set kitlab/micro-all-field.txt && ./fetch-opponents.sh --set kitlab/micro-wide2-field.txt && curl -fsSL -o ${J01} ${REL}/eveimear-v0.1/hadur117.micro.Eveimear_0.1.jar && bash kitlab/build_arm.sh kitlab/arms/Eveimear-sg.java hadur117.micro.Eveimear 0.1sg && bash kitlab/build_arm.sh kitlab/arms/Eveimear-rn.java hadur117.micro.Eveimear 0.1rn && bash kitlab/args.sh micro-all ${J01} "hadur117.micro.Eveimear 0.1" st-E01 2 && bash kitlab/args.sh micro-all kitlab/jars/hadur117.micro.Eveimear_0.1sg.jar "hadur117.micro.Eveimear 0.1sg" st-SG 2 && bash kitlab/args.sh micro-all kitlab/jars/hadur117.micro.Eveimear_0.1rn.jar "hadur117.micro.Eveimear 0.1rn" st-RN 2
+
+E01 | ${MVN} "-Dexec.args=@work/kitlab-st-E01.args"
+  after: prep
+  watch: battles=1030
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+SG | ${MVN} "-Dexec.args=@work/kitlab-st-SG.args"
+  after: E01
+  watch: battles=1030
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+RN | ${MVN} "-Dexec.args=@work/kitlab-st-RN.args"
+  after: SG
+  watch: battles=1030
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+build | mkdir -p work/eveimear-st && python3 tools/kitlab_selfmodes.py kitlab/micro-all-field.txt work/kitlab-st-E01 work/kitlab-st-SG work/kitlab-st-RN --out work/eveimear-st/modes.tsv && cp kitlab/arms/Eveimear-st.java work/eveimear-st/Eveimear.java && python3 tools/distill.py hash kitlab/micro-participants.txt --modes work/eveimear-st/modes.tsv --default 1 --raw --shift 0 --max-conflicts 4 --src work/eveimear-st/Eveimear.java && bash kitlab/build_arm.sh work/eveimear-st/Eveimear.java hadur117.micro.Eveimear 0.1st && bash kitlab/args.sh micro-wide2 ${J01} "hadur117.micro.Eveimear 0.1" st-TE01 6 && bash kitlab/args.sh micro-wide2 kitlab/jars/hadur117.micro.Eveimear_0.1st.jar "hadur117.micro.Eveimear 0.1st" st-TST 6
+  after: RN
+
+TE01 | ${MVN} "-Dexec.args=@work/kitlab-st-TE01.args"
+  after: build
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+TST | ${MVN} "-Dexec.args=@work/kitlab-st-TST.args"
+  after: TE01
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+read | (echo "# Eveimear self-taught modes (pc-eveimear-st)" && echo && echo '## Picks' && echo '```' && grep -c '	9$' work/eveimear-st/modes.tsv | sed 's/^/stop-and-go for good: /' && grep -c '	0$' work/eveimear-st/modes.tsv | sed 's/^/random from the first hit: /' && echo '```' && echo && echo '## ST against 0.1 on micro-wide2' && echo '```' && python3 tools/kitlab_read.py kitlab/micro-wide2-field.txt work/kitlab-st-TST --ref work/kitlab-st-TE01 && echo '```') > ${OUT}/eveimear-st.md
+  after: TST
+
+pr | bash tools/open_results_pr.sh claude/pc-eveimear-st-results "Eveimear self-taught modes" ${OUT}/eveimear-st.md
+  after: read

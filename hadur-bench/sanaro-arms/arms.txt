@@ -13,6 +13,11 @@
 # a unit from 100 to 500 px and 2 bytes cheaper; keeping the bearing in aim's slot (aim is assigned
 # after the lead reads it) saves 2 more with the same play.
 S2 | Sanaro 0.2 as it ships (control, 249 B) |
+# N8 (pc-sanaro-n07): HS again on fresh seeds (its table rebuilt from n06's teach run, so the same
+# table), and HS's recipe on a teach run in the 43 live-shaped fields themselves (HL), and on both
+# teach runs pooled (HC): more shots, so more 2 x 2 blocks clear twenty.
+HL | HS's recipe on Hadur's shots in the live-shaped fields (pc-sanaro-n07's teach run) (249 B, a table only) | | distill work/sanaro-n07/teach/*/battles/*/shots.csv --own-step 2 --enemy-step 2 --min 20 --reach 0
+HC | HS's recipe on both teach runs pooled, n06's NanoMelee fields and n07's live-shaped ones (249 B, a table only) | | distill work/sanaro-n06/teach/*/battles/*/shots.csv work/sanaro-n07/teach/*/battles/*/shots.csv --own-step 2 --enemy-step 2 --min 20 --reach 0
 # N7 (pc-sanaro-n06): Hadur as the teacher. The card first seats Hadur 3.20 as the tenth robot of
 # the NanoMelee census (work/sanaro-n06/teach), which writes its bullet-power decision at every shot
 # (shots.csv, BENCH-155); these arms play tables distilled from those rows (BENCH-156) on 0.2's body.
