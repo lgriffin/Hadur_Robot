@@ -1,0 +1,6 @@
+# pc-rival-picks, list A (BENCH-159): c is master, aa its A/A copy, mt the 74 robots of plans/rival-shield-add.txt
+# added to the shield list, mtzl the same with SHIELD-20's still shot plans for them (SHIELD-21).
+c | hadur117.Hadur 3.20 | bisect/hadur117.Hadur_3.20.jar
+aa | hadur117.Hadur 3.20aa | bisect/hadur117.Hadur_3.20aa.jar
+mt | hadur117.Hadur 3.20mt | bisect/hadur117.Hadur_3.20mt.jar
+mtzl | hadur117.Hadur 3.20mtzl | bisect/hadur117.Hadur_3.20mtzl.jar
