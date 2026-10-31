@@ -21,9 +21,10 @@ public final class AimMembers {
     /**
      * MOVE-31: the wide set, every simple angle {@link hadur117.core.physics.SimpleAims} gives
      * (head-on, linear, circular, averaged linear and the two one-line linear aims) at each of
-     * its three lags, in place of the three aims one tick back. Off unless an ablation turns it on.
+     * its three lags, in place of the three aims one tick back. On for the next census (pc-sg-wide
+     * passed, PR #480); the ablation sgoff turns it off.
      */
-    static final boolean WIDE = false;
+    static final boolean WIDE = true;
     /** The members: the views, then the aims. */
     public static final int MEMBERS;
     /** Each new bullet's share of a member's rolling score is 1 - DECAY. */
