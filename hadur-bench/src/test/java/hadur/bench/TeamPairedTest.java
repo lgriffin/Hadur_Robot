@@ -144,7 +144,7 @@ class TeamPairedTest {
 
     @Test
     @Tag("BENCH-42")
-    @Tag("BENCH-148")
+    @Tag("BENCH-149")
     @DisplayName("the harvester writes the share of our bullet damage that landed on the most-hit enemy, and a dash with none")
     void harvesterFocusFire() throws IOException {
         IRobotSnapshot m1 = robot(0, 0, MEMBER + " 1", true), m2 = robot(1, 0, MEMBER + " 2", true);
@@ -172,7 +172,7 @@ class TeamPairedTest {
         assertEquals(6 + 6, bullets.size(), String.join("\n", bullets));
         assertEquals("0,1,F,5,kc.Opp 1,3.00,0.0,0.0,0.0000," + MEMBER + " 1:0.0:0.0:0.0000:0.00;" + MEMBER
             + " 2:0.0:0.0:0.0000:0.00", bullets.get(8));
-        // BENCH-148: ours keep "-" in the tenth field and list the living enemies in an eleventh.
+        // BENCH-149: ours keep "-" in the tenth field and list the living enemies in an eleventh.
         assertEquals("0,1,F,1," + MEMBER + " 1,1.00,0.0,0.0,0.0000,-,kc.Opp 1:0.0:0.0:0.0000:0.00;kc.Opp 2:0.0:0.0:0.0000:0.00",
             bullets.get(0));
         assertEquals("0,1,H,1," + MEMBER + " 1,kc.Opp 1,1.00", bullets.get(1));

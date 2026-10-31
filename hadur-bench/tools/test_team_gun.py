@@ -1,4 +1,4 @@
-"""BENCH-148: team_gun.py reads our bullets and the enemy's the same way."""
+"""BENCH-149: team_gun.py reads our bullets and the enemy's the same way."""
 import os
 import sys
 import tempfile

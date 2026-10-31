@@ -1,0 +1,31 @@
+# PC card team-concord (TMODE-33 CONCORD, BENCH-150): bb (A/A) against aa on the picked teams, the gate's fresh seeds from 6800. Template: ccprep writes work/team-concord-gbb.args with @V@ = the robot.release in hadur-robot/pom.xml
+--team
+true
+--seeds
+16
+--seed-base
+6800
+--rounds
+10
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+work/team-concord-gate.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@bb.jar
+--robot
+hadur117.HadurTeam @V@bb
+--member
+hadur117.Hadur
+--out
+work/team-concord-@V@-gbb
+--report
+../docs/bench/local/team-concord-gbb.md
+--baseline
+bisect/hadur117.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur117.HadurTeam @V@aa

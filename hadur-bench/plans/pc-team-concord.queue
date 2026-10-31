@@ -1,0 +1,70 @@
+# The team brain after Ogi's design, in our own code (TMODE-33 CONCORD, BENCH-150). Team thread:
+# team-only, duel and melee fixtures bit for bit. Leigh 2026-10-30: "I want a meaningful shift APS wise.
+# We have the Ogi code and we have taken baby steps. Let's be bold", "I don't want bytes for byte
+# stylistically use it and adapt to our own". CONCORD plays one picture instead of switches: an enemy's
+# risk falls by 1/(1 + robots, teammates included, nearer it than the point); FINISH plays and a battle-long
+# gang watch turns GANG on; the gun pools its situations over every copy of an enemy class and fires 1.9
+# unless within 200 px or hitting that class 55% of 20 shots. Cloud smokes (top 9 x 2 seeds): all parts
+# -4.8 +- 5.3 share points with own hits +38% (the group radar and dropping the hunt raised own fire, so
+# both are off); the second cut +0.5 (53.4 vs 52.9), Combat, Shadow, Aleph, HOFSwarm up 7 to 11, Ogi and
+# Nightmare down 11 to 14: a per-team read, which this card makes on the whole field.
+#   ccprep  build aa, bb and cn (tmconcord: CONCORD forced on; the named teams play it on top of their entry)
+#   ccbb    bb vs aa, the 46 teams x 12 seeds (base 6700), 10 rounds; cccn the same for cn
+#   ccglob  CONCORD on every team: projected team APS change = sum of cn's per-team gain less half of bb's / 46
+#           (gate: +0.30 with the 95% low end above zero). The card changes nothing: on a PASS it ships in a PR.
+#   ccpick  per team, CONCORD when its gain over both baselines is +3.0 points or more with the 95% low
+#           end above zero (the counters rule); a team the table already names keeps its entry's modes
+#   ccgate  the picked table (mk) vs aa on the picked teams, 16 fresh seeds (base 6800); ccgbb A/A
+#   ccsum   projected team APS change = sum of the picked teams' gains / 46 (gate: +0.15 with the low
+#           end above zero); only on PASS is the gated table written as the table to ship
+# Each seed is a pair (the arm and aa): screens 2 x 46 x 12 x 2 = 2,208 battles, plus 64 per picked team
+# for the gate, about 2 h 30 to 3 h 30 at 12 workers (sizes itself to the host). Every step resumes
+# where it stopped. cn skips about twice the turns aa does on the cloud (9 vs 4 a battle): well under
+# the skips rule.
+# Stop rules on every battle step (halt; every battle fought is kept and a rerun resumes): 20 failed
+# battles (a broken jar), no battle in 30 minutes (a hung step), or 40+ skipped turns a battle over the
+# last 100 (the PR #331 build-up). A halt at the very start leaves the whole card unrun (2,208 screen
+# battles plus 64 a picked team); a halt in ccbb leaves the rest of ccbb and all 1,104 of cccn; in cccn,
+# the rest of cccn; in the gate steps, the rest of that step and ccgbb. No early finish on score: the
+# global gate is pooled over all 46 teams and the pick is per team.
+# The team thread reads claude/pc-team-concord-results.
+#   ./queue.sh run pc-team-concord        (or  .\queue.ps1 run pc-team-concord)
+# Run it from master (one bench queue at a time):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+set T = python3 tools/team_modes.py
+
+ccprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur117.HadurTeam_"$V"aa.jar bisect/hadur117.HadurTeam_"$V"bb.jar bisect/hadur117.HadurTeam_"$V"cn.jar bisect/hadur117.HadurTeam_"$V"mk.jar && rm -f ${OUT}/team-concord-*.md ${OUT}/team-concord-pick.tsv ${OUT}/team-concord-locked.java.txt work/team-concord-picked.java work/team-concord-gate.txt && ./fetch-opponents.sh --set team-census46.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmconcord && mkdir -p work && rm -rf work/team-concord-"$V"-bb work/team-concord-"$V"-cn work/team-concord-"$V"-gate work/team-concord-"$V"-gbb && for a in bb cn gate gbb; do sed "s/@V@/$V/g" plans/team-concord-$a.args > work/team-concord-$a.args || exit 1; done && for j in aa bb cn; do test -f bisect/hadur117.HadurTeam_"$V"$j.jar || exit 1; done && mvn -q compile
+ccbb   | mvn -q exec:java "-Dexec.args=@work/team-concord-bb.args"
+  after: ccprep
+  watch: battles=1104
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+cccn   | mvn -q exec:java "-Dexec.args=@work/team-concord-cn.args"
+  after: ccbb
+  watch: battles=1104
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+ccglob | ${T} gate --report ${OUT}/team-concord-cn.md --control ${OUT}/team-concord-bb.md --set team-census46.txt --seeds 12 --teams 46 --min-aps 0.3 --out-md ${OUT}/team-concord-verdict-global.md
+  after: cccn
+ccpick | ${T} pick --report CONCORD=${OUT}/team-concord-cn.md --control CONCORD=${OUT}/team-concord-bb.md --min-mean 3.0 --low-end 0 --base MATEFIRE,HUNT,PATH,DODGE --shipped ../hadur-core/src/main/java/hadur117/core/melee/TeamModes.java --census team-census46.txt --opponents opponents --out-md ${OUT}/team-concord-pick.md --out-tsv ${OUT}/team-concord-pick.tsv --out-java work/team-concord-picked.java --out-set work/team-concord-gate.txt && if [ -s work/team-concord-picked.java ]; then TEAM_MODE_LOCKED="$(pwd)/work/team-concord-picked.java" bash ./build-ablation.sh tmlock; else echo "nothing picked: no gate"; fi
+  after: ccglob
+ccgate | if [ -s work/team-concord-picked.java ]; then mvn -q exec:java "-Dexec.args=@work/team-concord-gate.args"; else echo "nothing picked: no gate"; fi
+  after: ccpick
+  watch:
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+ccgbb  | if [ -s work/team-concord-picked.java ]; then mvn -q exec:java "-Dexec.args=@work/team-concord-gbb.args"; else echo "nothing picked: no gate"; fi
+  after: ccgate
+  watch:
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+ccsum  | if [ -s work/team-concord-picked.java ]; then ${T} gate --report ${OUT}/team-concord-gate.md --control ${OUT}/team-concord-gbb.md --set work/team-concord-gate.txt --seeds 16 --teams 46 --min-aps 0.15 --out-md ${OUT}/team-concord-verdict.md && if grep -q '\*\*PASS\*\*' ${OUT}/team-concord-verdict.md; then cp work/team-concord-picked.java ${OUT}/team-concord-locked.java.txt; else echo "gate failed: no table to ship"; fi; else echo "CONCORD cleared the screen on no team: no gate, the table stays as shipped." > ${OUT}/team-concord-verdict.md; fi
+  after: ccgbb
+ccpr   | bash tools/open_results_pr.sh claude/pc-team-concord-results "The team brain after Ogi's design: whole field, global gate, per-team pick and gate" $(ls ${OUT}/team-concord-*.md ${OUT}/team-concord-pick.tsv ${OUT}/team-concord-locked.java.txt 2>/dev/null)
+  after: ccsum
