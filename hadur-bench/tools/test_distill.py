@@ -66,6 +66,23 @@ class PowerTest(unittest.TestCase):
         self.assertEqual(2, how["data"])
         self.assertEqual(len(values), distill.CELLS)
 
+    def test_steps_pool_shots_into_blocks(self):
+        path = os.path.join(self.dir, "shots.csv")
+        # Three shots spread over a 4 x 4 block of (own 80..83, enemy 8..11): one cell alone is too thin.
+        shots(path, [(5, 80, 8, 400, 2.0), (5, 83, 11, 400, 2.0), (5, 81, 10, 400, 2.5)])
+        thin = distill.observed(distill.read_shots([path]))
+        self.assertEqual(3, len(thin))
+        pooled = distill.observed(distill.read_shots([path]), 4, 4)
+        self.assertEqual({80 * 128 + 8: {80: 2, 100: 1}}, {k: dict(v) for k, v in pooled.items()})
+        values, how = distill.distil(pooled, minimum=3, reach=1, own_step=4, enemy_step=4)
+        for own in range(80, 84):
+            for enemy in range(8, 12):
+                self.assertEqual(80, values[own * 128 + enemy])
+        # The next block along the row borrows (reach 1 block), the one after is the formula.
+        self.assertEqual(80, values[82 * 128 + 13])
+        self.assertEqual(table.cell(82 * 128 + 17), values[82 * 128 + 17])
+        self.assertEqual(16, how["data"])
+
     def test_alive_filter_keeps_the_endgame(self):
         path = os.path.join(self.dir, "shots.csv")
         shots(path, [(2, 80, 10, 400, 3.0)] * 3 + [(7, 80, 10, 400, 1.0)] * 5)

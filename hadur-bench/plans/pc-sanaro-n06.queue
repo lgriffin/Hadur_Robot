@@ -1,0 +1,88 @@
+# Sanaro's stage N7 (docs/sanaro.md section 16): Hadur as the teacher. A nano cannot learn in a
+# battle, but a table costs it two bytes however long it is (SANARO-8), so the card first seats
+# Hadur 3.20 as the tenth robot of Sanaro's NanoMelee census and records its bullet-power decision at
+# every shot (shots.csv, BENCH-155: own energy, the target's energy and distance, robots alive), then
+# distils those rows into Sanaro-shaped power tables (tools/distill.py, BENCH-156) and measures them
+# on 0.2's body against 0.2 as it ships. Nothing shipped changes; the tables live in arms.
+#   ./queue.sh run pc-sanaro-n06        (or  .\queue.ps1 run pc-sanaro-n06)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers. Every step resumes; no step needs
+# a decision. Nothing here touches Hadur, Saor, TwinSaor, Deise, JayLexi or Eveimear.
+#
+# Teach: Hadur 3.20 in the 13 NanoMelee census fields (nanomelee-census.txt, both leaders in every
+# field) x 10 seeds (base 21000) = 130 battles, about 20 min at 12 wide; melee reads the nano field
+# at Hadur's own width. Its only product is work/sanaro-n06/teach/battles/*/shots.csv; the report is
+# kept for the record (Hadur in a nano field is not a result).
+# Arms (sanaro-arms/arms.txt, written against 0.2's source, each 249 B: a table changes no code):
+#   S2    Sanaro 0.2 as it ships (control)
+#   HT    Hadur's power, every shot: modal power per 4 x 2 energy block, row neighbours for thin ones
+#   HD    Hadur's power from shots with three or fewer alive, 4 x 4 blocks: its endgame policy, played always
+#   HS    Hadur's power only on 2 x 2 blocks that caught twenty or more shots; 0.2's formula elsewhere
+# distill-report prints each table's coverage (cells from data, from the row, from the formula)
+# before any arm fights, so a thin teach run is seen in the log rather than in the score.
+# Live-shaped census: 43 fields x 10 fresh seeds (base 22000) = 430 battles an arm, about 28 min an
+# arm (n05 ran 26-30). About 2.2 h in all with the teach run.
+# Read against S2. An arm passes when its difference's low end is above zero (SANARO-13). A passing
+# arm ships as 0.3 (or joins n05's winner: a table and a lead change different lines); HT against HD
+# says whether Hadur's crowd power or its endgame power is the one worth carrying.
+# Stop rules on every census step (docs/bench/watch.md; halt, every battle fought is kept and a
+# rerun resumes): 20 failed battles (a broken jar), no battle in 30 minutes (a hung step), or 40+
+# skipped turns a battle over the last 100 (the PR #331 build-up). A halt at worst leaves the rest
+# of that arm and the arms after it unrun, at most 1,290 battles (about 1.4 h). There is no early
+# finish on score: a census step is one robot, so there is no arm to call futile mid-step. ALERT
+# opens an issue for Leigh on a stop.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set ARMS = S2,HT,HD,HS
+
+prep | (cd .. && mvn -q -DskipTests install -pl hadur-robot,sanaro -am) && mkdir -p work/sanaro-n06 && cp ../hadur-robot/target/hadur117.Hadur_3.20.jar work/sanaro-n06/ && cp ../sanaro/target/hadur117.nano.Sanaro_0.2.jar opponents/ && ./fetch-opponents.sh --set nanomelee-field.txt && for f in nanomelee-census/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && printf '%s\n' --suite nanomelee-census.txt --seeds 10 --seed-base 21000 --rounds 35 --parallel 12 --child-heap 2G --cpu-constant 1488498 --robot-jar work/sanaro-n06/hadur117.Hadur_3.20.jar --robot "hadur117.Hadur 3.20" --out work/sanaro-n06/teach --report ${OUT}/sanaro-n06-teach.md > work/sanaro-n06/teach.args
+
+teach | ${MVN} "-Dexec.args=@work/sanaro-n06/teach.args"
+  after: prep
+  watch: battles=130
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+distill-report | python3 tools/distill.py power work/sanaro-n06/teach/battles/*/shots.csv --own-step 4 --enemy-step 2 --min 5 --reach 3 --report && python3 tools/distill.py power work/sanaro-n06/teach/battles/*/shots.csv --alive 3 --own-step 4 --enemy-step 4 --min 5 --reach 4 --report && python3 tools/distill.py power work/sanaro-n06/teach/battles/*/shots.csv --own-step 2 --enemy-step 2 --min 20 --reach 0 --report
+  after: teach
+
+arms | SANARO_RUN=n06 bash tools/sanaro_arms.sh live 10 22000 ${ARMS}
+  after: distill-report
+
+live-S2 | ${MVN} "-Dexec.args=@work/sanaro-n06/live-S2.args"
+  after: arms
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-HT | ${MVN} "-Dexec.args=@work/sanaro-n06/live-HT.args"
+  after: live-S2
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-HD | ${MVN} "-Dexec.args=@work/sanaro-n06/live-HD.args"
+  after: live-HT
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-HS | ${MVN} "-Dexec.args=@work/sanaro-n06/live-HS.args"
+  after: live-HD
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+read-live | python3 tools/sanaro_read.py --work-root work/sanaro-n06 --field live --arms ${ARMS} --control S2 --only work/sanaro-n06/live/micro.txt --live 66.41 > ${OUT}/sanaro-n06-live.md
+  after: live-HS
+
+pr | bash tools/open_results_pr.sh claude/pc-sanaro-n06-results "Sanaro stage N7: Hadur as the teacher, its power tables on 0.2's body, on the live-shaped census" ${OUT}/sanaro-n06-live.md ${OUT}/sanaro-n06-live-*.md ${OUT}/sanaro-n06-teach.md
+  after: read-live
