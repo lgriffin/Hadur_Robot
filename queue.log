@@ -26,3 +26,7 @@
 13:06:16 live-NARROW exit=0 in 1051 s
 13:06:16 start live-WSTOP
 13:06:16 watching live-WSTOP: 3 stop rule(s)
+13:21:21 progress live-WSTOP: 246/276 (89%) battles, 979/h, ETA 2 min, 0 failed, skips 0.0/battle (last 100)
+13:23:09 live-WSTOP exit=0 in 1013 s
+13:23:09 start live-SAOR
+13:23:09 watching live-SAOR: 3 stop rule(s)
