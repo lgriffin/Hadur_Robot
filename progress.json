@@ -1,6 +1,6 @@
 {
  "plan": "pc-deise-e10",
- "updated": 1793468026.879236,
+ "updated": 1793468934.6497269,
  "steps": {
   "prep": {
    "status": "done",
@@ -225,8 +225,8 @@
   {
    "step": "live-PNS6",
    "started": 1793468017.8044934,
-   "updated": 1793468026.8666644,
-   "elapsed": 9.06217098236084,
+   "updated": 1793468934.6414855,
+   "elapsed": 916.8369920253754,
    "expected": 276,
    "panel": null,
    "field": null,
@@ -234,20 +234,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 0,
+   "battles": 186,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": null,
-   "eta": null,
-   "fraction": 0.0,
-   "last_battle_age": 9.06217098236084,
+   "rate": 730.3370237284965,
+   "eta": 443.6308025929236,
+   "fraction": 0.6739130434782609,
+   "last_battle_age": 9.127382040023804,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 0"
+     "detail": "0 failed of 186"
     },
     {
      "rule": "stall 30m",
@@ -258,12 +258,12 @@
     {
      "rule": "skips 40 over 100",
      "action": "halt",
-     "state": "waiting",
-     "detail": "0 of 100 battles to read"
+     "state": "ok",
+     "detail": "2.0 a battle over the last 100 (first 100: 1.1)"
     }
    ],
-   "skips_mean": null,
-   "skips_last100": null
+   "skips_mean": 1.575268817204301,
+   "skips_last100": 1.98
   }
  ]
 }

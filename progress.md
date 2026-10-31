@@ -1,6 +1,6 @@
 # Queue pc-deise-e10: progress
 
-Updated 2026-10-31 17:33:46 PC time (17:33 UTC), runner pid 65080.
+Updated 2026-10-31 17:48:54 PC time (17:48 UTC), runner pid 65080.
 
 - `prep` done, exit 0 in 0 min
 - `live-D` done, exit 0 in 18 min
@@ -67,15 +67,16 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-PNS6
 
-**0 of 276 battles** (0%), 0 failed. Running 0 min. Last battle 0 min ago.
+**186 of 276 battles** (67%), 0 failed. Running 15 min, 730 battles/h, about 7 min left (ends ~17:56 PC time). Last battle 0 min ago.
+Skipped turns a battle: 1.6 overall, first 100 1.1, last 100 2.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 0 |
+| `fails 20` | halt | ok | 0 failed of 186 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | waiting | 0 of 100 battles to read |
+| `skips 40 over 100` | halt | ok | 2.0 a battle over the last 100 (first 100: 1.1) |
 
-Stopping now would leave 276 battles unrun; every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 90 battles unrun (about 7 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
