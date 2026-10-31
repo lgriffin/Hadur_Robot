@@ -1,10 +1,10 @@
 # Queue pc-deise-e09: progress
 
-Updated 2026-10-31 11:34:27 PC time (11:34 UTC), runner pid 20700.
+Updated 2026-10-31 11:49:33 PC time (11:49 UTC), runner pid 20700.
 
 - `prep` done, exit 0 in 1 min
-- `live-D` running
-- `live-SAME` pending
+- `live-D` done, exit 0 in 17 min
+- `live-SAME` running
 - `live-PL400` pending
 - `live-WARM4` pending
 - `live-WARM16` pending
@@ -16,16 +16,29 @@ Updated 2026-10-31 11:34:27 PC time (11:34 UTC), runner pid 20700.
 
 ### live-D
 
-**228 of 276 battles** (83%), 0 failed. Running 15 min, 938 battles/h, about 3 min left (ends ~11:37 PC time). Last battle 0 min ago.
+**276 of 276 battles** (100%), 0 failed. Running 17 min, 955 battles/h, about 0 min left (ends ~11:37 PC time). Last battle 0 min ago.
 Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 228 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 | `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
 
-Stopping now would leave 48 battles unrun (about 3 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### live-SAME
+
+**174 of 276 battles** (63%), 0 failed. Running 12 min, 845 battles/h, about 7 min left (ends ~11:56 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 174 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
+
+Stopping now would leave 102 battles unrun (about 7 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -37,4 +50,7 @@ Stopping now would leave 48 battles unrun (about 3 min); every battle already fo
 11:19:51 start live-D
 11:19:51 watching live-D: 3 stop rule(s)
 11:20:19 progress live-D: 1/276 (0%) battles, 127/h, ETA 2.2 h, 0 failed, skips 0.0/battle (last 100)
+11:37:12 live-D exit=0 in 1040 s
+11:37:12 start live-SAME
+11:37:12 watching live-SAME: 3 stop rule(s)
 ```

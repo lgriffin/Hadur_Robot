@@ -5,3 +5,6 @@
 11:19:51 start live-D
 11:19:51 watching live-D: 3 stop rule(s)
 11:20:19 progress live-D: 1/276 (0%) battles, 127/h, ETA 2.2 h, 0 failed, skips 0.0/battle (last 100)
+11:37:12 live-D exit=0 in 1040 s
+11:37:12 start live-SAME
+11:37:12 watching live-SAME: 3 stop rule(s)
