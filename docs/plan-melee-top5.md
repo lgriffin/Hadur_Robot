@@ -445,6 +445,23 @@ end above 0 with the endgame, survival and skip bars held passes. **MMOVE-19 shi
 bw, wq and fv are inside noise. The line is closed; nothing further goes on the PC until the surfer
 and xh are live and read per opponent on ranks 11-100.
 
+**Diamond-inspired switches (MMOVE-22, MMOVE-23, MGUN-23, 2026-10-31).** Leigh: "what can we explore in
+the cloud today to add to these? We have exceptionally strong reference bots to be inspired by, I'd like
+something to move us even 0.5 APS"; "Survival helps so this is a good line". Diamond (5th) ships its source
+under a zlib-style licence; three of its ideas, each our own build, each a switch off a team only:
+**damage memory** (`MELEE_DAMAGE_MEMORY`, arm `mdmg`/`dm`: each opponent's risk term weighs by the damage it
+has done to Hadur over the battle plus 10, times its mean distance, the weights averaging 1; Hadur otherwise
+remembers a hit for 100 ticks), **full lateral weight** (`MELEE_FULL_LATERAL`, `mlat`/`la`: Diamond's
+1 + |cos| in place of our 1 + 0.5 |cos| in the crowd) and **average-energy power** (`AVG_POWER`, `mavg`/`ea`:
+at or above the field's mean energy with four or more left, 3 at any range to 700 px; below it, 1 beyond
+300 px). Cloud smoke, 12 fields x 2 seeds against the same commit's aa (`docs/bench/local/dia-smoke.md`):
+dm +0.44 ± 0.58 (energy entering the endgame +3.9, skips -5%), la +0.20 ± 0.75, ea -0.11 ± 0.49 with skips
++26% and 4 less energy at the endgame. Card `pc-melee-dia` (BENCH-154) screens dm and la on the census at
+seeds 3253-3258 (clear of the smoke's) under the melee gate; ea stays off and uncarded. Also weighed and left: the endgame duel's
+clean slate (MELEE-2; 23% of rounds are lost there, 46% won against ranks 1-30), the biggest pool but a
+larger build; Diamond's radar and melee gun do what Hadur's already do; ScalarR's energy caps (E/6, E/15
+beyond 325 px) hardly bite under Hadur's crowd rule, so they were not built.
+
 ### Stage 4: stack, tailor, confirm
 
 - **Stack census** on master's defaults (all passed stages) against 3.17 on fresh seeds, 8 seeds
