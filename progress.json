@@ -1,0 +1,28 @@
+{
+ "plan": "pc-eveimear-h1",
+ "updated": 1793482401.5302198,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "h1-E01": {
+   "status": "pending"
+  },
+  "h1-HM": {
+   "status": "pending"
+  },
+  "h1-HP": {
+   "status": "pending"
+  },
+  "h1-HM7": {
+   "status": "pending"
+  },
+  "read": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
