@@ -28,6 +28,31 @@ final class PowerDesign {
      */
     static final boolean PRESSURE_CENTRES = false;
 
+    /**
+     * POW-14 anti-BasicSurfer powers: in a battle's first round, and while this battle's hit rate
+     * is above {@link #ABS_HIT_RATE}, the duel's power is lowered to the nearest of
+     * {@link #ABS_POWERS} (BeepBoop 2.0's set, which exploits a bug in BasicSurfer that many
+     * rumble surfers inherit).
+     */
+    static final boolean ANTI_BASIC_SURFER = false;
+
+    /** POW-14: the battle hit rate above which the anti-BasicSurfer powers hold after round 0. */
+    static final double ABS_HIT_RATE = 0.2;
+
+    /** POW-14: BeepBoop's anti-BasicSurfer powers, highest first. */
+    static final double[] ABS_POWERS = {Math.nextAfter(2.45, -1), 1.95, 1.45, 0.95, 0.65, 0.45, 0.15};
+
+    /**
+     * POW-14: the highest anti-BasicSurfer power at or below {@code power}; a power below the
+     * lowest is kept. Pure.
+     */
+    static double antiBasicSurfer(double power) {
+        for (double p : ABS_POWERS) {
+            if (p <= power) return p;
+        }
+        return power;
+    }
+
     private PowerDesign() {}
 
     /** The pressure gate in force: ALWAYS wins over CENTRES, which wins over the margin gate. */

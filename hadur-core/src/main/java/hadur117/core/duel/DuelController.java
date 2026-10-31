@@ -634,6 +634,11 @@ public final class DuelController {
             ram1Active = ram1;
             emitPolicy(round, time, "power", bulletPower, Double.NaN, ram1 ? "ram_1" : why.name().toLowerCase(Locale.ROOT));
         }
+        // POW-14: BeepBoop's anti-BasicSurfer powers, in round 0 and while we hit often.
+        if (PowerDesign.ANTI_BASIC_SURFER && enemiesTotal <= 1
+                && (round == 0 || ourRates.estimate().value() > PowerDesign.ABS_HIT_RATE)) {
+            bulletPower = PowerDesign.antiBasicSurfer(bulletPower);
+        }
         // POW-10: a power our energy cannot pay for is lowered, not held. END-4 (D2) will be the
         // one rule that holds a shot we could pay for, and it holds where the shot leaves, in
         // fireIfGunTurned: every scan still makes its wave, which teaches the gun.
