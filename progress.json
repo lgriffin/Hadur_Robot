@@ -1,0 +1,19 @@
+{
+ "plan": "pc-shield-power",
+ "updated": 1793548454.9526498,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "screen": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
