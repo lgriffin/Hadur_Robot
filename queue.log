@@ -5,3 +5,17 @@
 14:54:51 start screen
 14:54:51 watching screen: 5 stop rule(s)
 14:55:34 progress screen: 30/1392 (2%) battles, 2492/h, ETA 33 min, 0 failed, skips 18.9/battle (last 100), aa -0.05, fo +0.01
+15:25:57 progress screen: 1322/1392 (95%) battles, 2554/h, ETA 2 min, 0 failed, skips 16.7/battle (last 100), aa +0.00, fo +0.06
+15:29:21 screen exit=0 in 2070 s
+15:29:21 start pick
+15:29:21 pick exit=0 in 0 s
+15:29:21 start prep2
+15:29:54 prep2 exit=0 in 32 s
+15:29:54 start confirm
+15:29:54 watching confirm: 4 stop rule(s)
+15:33:54 confirm exit=0 in 240 s
+15:33:54 start gate
+15:33:55 gate exit=0 in 0 s
+15:33:55 start pr
+15:34:01 pr exit=0 in 5 s
+15:34:01 ALLDONE
