@@ -1,6 +1,6 @@
 # Queue pc-sanaro-n07: progress
 
-Updated 2026-11-01 12:12:44 PC time (12:12 UTC), runner pid 68380.
+Updated 2026-11-01 12:12:52 PC time (12:12 UTC), runner pid 68380.
 
 - `prep` done, exit 0 in 0 min
 - `teach` done, exit 0 in 12 min
@@ -10,8 +10,8 @@ Updated 2026-11-01 12:12:44 PC time (12:12 UTC), runner pid 68380.
 - `live-HS` done, exit 0 in 30 min
 - `live-HL` done, exit 0 in 30 min
 - `live-HC` done, exit 0 in 30 min
-- `read-live` running
-- `pr` pending
+- `read-live` done, exit 0 in 0 min
+- `pr` done, exit 0 in 0 min
 
 ### live-HS
 
@@ -55,10 +55,6 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 ### Queue log (last lines)
 
 ```
-10:42:02 skip live-S2 (already exit=0)
-10:42:02 start live-HS
-10:42:02 watching live-HS: 3 stop rule(s)
-10:42:04 progress pushed to origin claude/pc-sanaro-n07-progress (every 15 min)
 10:43:03 progress live-HS: 10/430 (2%) battles, 596/h, ETA 42 min, 0 failed, skips 0.0/battle (last 100)
 11:12:26 live-HS exit=0 in 1823 s
 11:12:26 start live-HL
@@ -70,4 +66,8 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 11:43:31 progress live-HC: 6/430 (1%) battles, 524/h, ETA 49 min, 0 failed, skips 0.0/battle (last 100)
 12:12:40 live-HC exit=0 in 1790 s
 12:12:40 start read-live
+12:12:45 read-live exit=0 in 5 s
+12:12:45 start pr
+12:12:52 pr exit=0 in 6 s
+12:12:52 ALLDONE
 ```

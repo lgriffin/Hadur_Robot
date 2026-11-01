@@ -1,6 +1,6 @@
 {
  "plan": "pc-sanaro-n07",
- "updated": 1793535164.312304,
+ "updated": 1793535172.385892,
  "steps": {
   "prep": {
    "status": "done",
@@ -51,11 +51,16 @@
    "end": "2026-11-01T12:12:40"
   },
   "read-live": {
-   "status": "running",
-   "start": "2026-11-01T12:12:40"
+   "status": "done",
+   "exit": 0,
+   "seconds": 5,
+   "end": "2026-11-01T12:12:45"
   },
   "pr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 6,
+   "end": "2026-11-01T12:12:52"
   }
  },
  "watched": [

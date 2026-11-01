@@ -47,3 +47,7 @@
 11:43:31 progress live-HC: 6/430 (1%) battles, 524/h, ETA 49 min, 0 failed, skips 0.0/battle (last 100)
 12:12:40 live-HC exit=0 in 1790 s
 12:12:40 start read-live
+12:12:45 read-live exit=0 in 5 s
+12:12:45 start pr
+12:12:52 pr exit=0 in 6 s
+12:12:52 ALLDONE
