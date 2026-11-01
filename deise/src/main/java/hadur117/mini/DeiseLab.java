@@ -25,8 +25,8 @@ public class DeiseLab extends AdvancedRobot {
     static final int GAP = 8;
     /** Whether unscanned opponents are played on by their last heading and speed: arm RK. */
     static final boolean RECKON = false;
-    /** Playouts an aim (DEISE-7): 200 since 0.3 (arm P200). */
-    static final int PLAYOUTS = 200;
+    /** Playouts an aim (DEISE-7): 400 since 0.5 (arm PN, pc-deise-e09 and e10). */
+    static final int PLAYOUTS = 400;
     /**
      * A point must be this much safer than the destination to replace it (DEISE-1); 0, since 0.3
      * (arm WN), takes the ring's best point every tick.
@@ -54,6 +54,13 @@ public class DeiseLab extends AdvancedRobot {
     static int wave;
     static int target;
     static double targetDistance;
+    /**
+     * Per opponent, kept across rounds: shots aimed at it and hits on it (DEISE-17, arm LEARNH since
+     * 0.5). The target is the nearest by distance times the root of (shots + 10) / (hits + 1.5).
+     */
+    static final double[] SHOT = new double[MAX];
+    static final double[] HIT = new double[MAX];
+    static double targetScore;
     static double[] destination;
 
     @Override
@@ -62,7 +69,7 @@ public class DeiseLab extends AdvancedRobot {
         setAdjustRadarForGunTurn(true);
         bots = new double[MAX][];
         waves = new double[64][];
-        targetDistance = Double.POSITIVE_INFINITY;
+        targetScore = Double.POSITIVE_INFINITY;
         destination = null;
         setTurnRadarRightRadians(Double.POSITIVE_INFINITY);
         while (true) {
@@ -133,16 +140,18 @@ public class DeiseLab extends AdvancedRobot {
         last[1] = heading;
         last[2] = velocity;
         last[3] = state;
-        // The nearest, sticky (DEISE-11).
-        if (distance < targetDistance || id == target) {
+        // The nearest by distance over the root of its hit rate, sticky (DEISE-11, DEISE-17).
+        double score = distance * Math.sqrt((SHOT[id] + 10) / (HIT[id] + 1.5));
+        if (score < targetScore || id == target) {
             target = id;
             targetDistance = distance;
+            targetScore = score;
             if (getGunHeat() < 1) {
                 setTurnRadarRightRadians(Double.POSITIVE_INFINITY * Math.sin(bearing - getRadarHeadingRadians()));
             }
             double power = Gun.power(getEnergy(), e.getEnergy(), distance, getOthers());
-            if (getGunTurnRemaining() == 0 && getEnergy() > power) {
-                setFire(power);
+            if (getGunTurnRemaining() == 0 && getEnergy() > power && setFireBullet(power) != null) {
+                SHOT[id]++;
             }
             setTurnGunRightRadians(Utils.normalRelativeAngle(
                 Gun.aim(table, state, x, y, heading, velocity, getX(), getY(), distance, power, PLAYOUTS, RANDOM) - getGunHeadingRadians()));
@@ -153,6 +162,9 @@ public class DeiseLab extends AdvancedRobot {
     @Override
     public void onBulletHit(BulletHitEvent e) {
         int id = IDS[e.getName().hashCode() & (IDS.length - 1)] - 1;
+        if (id >= 0) {
+            HIT[id]++;
+        }
         if (HITS && id >= 0) {
             BASE[id] = e.getEnergy();
         }
@@ -163,9 +175,8 @@ public class DeiseLab extends AdvancedRobot {
         int id = IDS[e.getName().hashCode() & (IDS.length - 1)] - 1;
         if (id >= 0) {
             bots[id] = null;
-            if (id == target) {
-                targetDistance = Double.POSITIVE_INFINITY;
-            }
         }
+        // Any death opens the target to every robot again (DEISE-11, since 0.5).
+        targetScore = Double.POSITIVE_INFINITY;
     }
 }
