@@ -345,4 +345,81 @@ class FileProfileStoreTest {
             assertTrue(after.bytesUsed() >= onDisk, "an interrupted save never understates what is used");
         }
     }
+
+    @Test
+    @Tag("MEM-15")
+    @DisplayName("MEM-15: a robot killed between the index and a shrinking write leaves the index overstating, never understating")
+    void killedBeforeAShrinkingWrite() throws IOException {
+        File d = dir.toFile();
+        indexed(200_000).write("big.hp", new byte[3_000]);
+        // The next battle shrinks it, and dies as the profile's own file is opened.
+        FileProfileStore dying = new FileProfileStore(d, 200_000,
+            f -> {
+                if (f.getName().equals("big.hp")) throw new IOException("killed");
+                return new FileOutputStream(f);
+            }, true);
+        assertThrows(java.io.UncheckedIOException.class, () -> dying.write("big.hp", new byte[100]));
+        FileProfileStore after = indexed(200_000);
+        assertTrue(after.size("big.hp") >= new File(d, "big.hp").length(),
+            "indexed " + after.size("big.hp") + ", on disk " + new File(d, "big.hp").length());
+
+        // A clean shrink saves the exact size once the write is done.
+        FileProfileStore s = indexed(200_000);
+        s.write("big.hp", new byte[100]);
+        FileProfileStore next = indexed(200_000);
+        assertTrue(next.indexRead());
+        assertEquals(100, next.size("big.hp"));
+    }
+
+    @Test
+    @Tag("MEM-15")
+    @DisplayName("MEM-15: an index that cannot be saved is removed before the write; one that cannot be removed stops the write")
+    void anUnsavableIndexNeverStaysBehind() throws IOException {
+        File d = dir.toFile();
+        indexed(200_000).write("a.hp", new byte[500]);
+        FileProfileStore noIndex = new FileProfileStore(d, 200_000,
+            f -> {
+                if (f.getName().equals(FileProfileStore.INDEX)) throw new IOException("quota");
+                return new FileOutputStream(f);
+            }, true);
+        noIndex.write("a.hp", new byte[50]);
+        assertFalse(new File(d, FileProfileStore.INDEX).exists(), "the stale index was removed");
+        FileProfileStore next = indexed(200_000);
+        assertFalse(next.indexRead());
+        assertEquals(50, next.size("a.hp"));
+
+        // An index the store can neither rewrite nor remove: the write does not go ahead.
+        new File(d, FileProfileStore.INDEX).delete();
+        File stuck = new File(d, FileProfileStore.INDEX);
+        stuck.mkdir();
+        writeRaw(new File(stuck, "pin"), 1);
+        FileProfileStore blocked = indexed(200_000);
+        assertThrows(IllegalStateException.class, () -> blocked.write("a.hp", new byte[7]));
+        assertEquals(50, new File(d, "a.hp").length(), "the profile was left as it was");
+        assertEquals(50, blocked.size("a.hp"));
+    }
+
+    @Test
+    @Tag("MEM-15")
+    @DisplayName("MEM-15: team members sharing the directory never read the saved index and remove it before their first change")
+    void teamMembersDropTheSavedIndex() throws IOException {
+        File d = dir.toFile();
+        indexed(200_000).write("a.hp", new byte[500]);
+        FileProfileStore leader = indexed(200_000).dropsSavedIndex();
+        FileProfileStore droid = indexed(200_000).dropsSavedIndex();
+        assertFalse(leader.indexRead(), "a team member lists the directory");
+        assertEquals(List.of("a.hp"), leader.names(), "the saved index is not a profile to a team member either");
+        leader.write("a.hp", new byte[40]);
+        assertFalse(new File(d, FileProfileStore.INDEX).exists());
+        droid.write("b.hp", new byte[9]);
+        assertFalse(new File(d, FileProfileStore.INDEX).exists(), "no member saves one");
+
+        FileProfileStore duel = indexed(200_000);
+        assertFalse(duel.indexRead(), "the next battle lists the directory");
+        assertEquals(40, duel.size("a.hp"));
+        assertEquals(9, duel.size("b.hp"));
+        duel.write("c.hp", new byte[1]);
+        assertTrue(indexed(200_000).indexRead(), "and saves the index again");
+    }
 }
+

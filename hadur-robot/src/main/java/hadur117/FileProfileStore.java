@@ -18,6 +18,7 @@ import java.util.TreeSet;
 import java.util.zip.CRC32;
 import robocode.AdvancedRobot;
 import robocode.RobocodeFileOutputStream;
+import robocode.TeamRobot;
 
 /**
  * The {@link ProfileStore} on Robocode's data directory. Robocode lets a robot write only
@@ -46,6 +47,14 @@ import robocode.RobocodeFileOutputStream;
  * its index on disk, in {@link #INDEX}, rewritten with every change: a battle starts from the
  * directory's names (one check) and that one file, and lists file by file only when the
  * names on disk are not the ones the index was written for, or the index is damaged.</p>
+ *
+ * <p>The saved index may overstate a file, never understate it: before a write it records
+ * the larger of the file's old and new lengths, and it is rewritten after a write only when
+ * the file shrank. If it cannot be saved, it is removed before the write goes ahead, and if
+ * it cannot be removed either, the write fails. In a team battle the five members share the
+ * directory, each with its own index in memory, so none of them may keep the saved one: the
+ * first change any of them makes removes it, and the next battle alone lists the directory
+ * and saves it again.</p>
  *
  * <p>Failures surface as unchecked exceptions ({@code UncheckedIOException},
  * {@code IllegalStateException}, {@code IllegalArgumentException}, or the sandbox's own
@@ -78,6 +87,10 @@ final class FileProfileStore implements ProfileStore {
     private long indexLength;
     /** MEM-15: whether this battle's index came from {@link #INDEX} rather than a listing. */
     private boolean indexRead;
+    /** MEM-15: a store that shares the directory (a team member) removes the saved index before its first change. */
+    private boolean dropSaved;
+    /** MEM-15: whether a dropping store has removed the saved index yet. */
+    private boolean dropped;
 
     /**
      * A store over {@code dir}.
@@ -109,12 +122,22 @@ final class FileProfileStore implements ProfileStore {
         // adds back what is already on disk, from MEM-11's index (MEM-15: read from its
         // file when it is current, so no file is asked its size).
         long available = robot.getDataQuotaAvailable();
-        FileProfileStore probe = new FileProfileStore(dir, 0, RobocodeFileOutputStream::new, true);
+        // A team's members share the directory, so none of them may trust or keep the saved index.
+        boolean shared = robot instanceof TeamRobot && ((TeamRobot) robot).getTeammates() != null;
+        FileProfileStore probe = new FileProfileStore(dir, 0, RobocodeFileOutputStream::new, !shared);
+        if (shared) probe.dropsSavedIndex();
         probe.index();
         FileProfileStore store = new FileProfileStore(dir, probe.bytesUsed() + available,
-            RobocodeFileOutputStream::new, true);
+            RobocodeFileOutputStream::new, !shared);
+        if (shared) store.dropsSavedIndex();
         store.take(probe);
         return store;
+    }
+
+    /** MEM-15: for a store that shares its directory: never read the saved index, and remove it before the first change. */
+    FileProfileStore dropsSavedIndex() {
+        dropSaved = true;
+        return this;
     }
 
     /** Takes another store's index of the same directory, so it is not built twice. */
@@ -165,11 +188,18 @@ final class FileProfileStore implements ProfileStore {
     public void write(String name, byte[] bytes) {
         Map<String, long[]> idx = index();
         File target = file(name);
-        // MEM-15: the saved index records the write before it happens. A robot killed part
-        // way leaves a file shorter than the index says, which only overstates what is used.
-        idx.put(name, new long[] {bytes.length, ++clock});
+        // MEM-15: the saved index records the write before it happens, at the larger of the
+        // file's old and new lengths, so a robot killed before or during the write leaves an
+        // index that only overstates what is used.
+        long[] old = idx.get(name);
+        long before = old == null ? 0 : old[0];
+        long stamp = ++clock;
+        idx.put(name, new long[] {Math.max(before, bytes.length), stamp});
         others.remove(name);
-        saveIndex();
+        if (!saveIndex()) {
+            if (old == null) idx.remove(name); else idx.put(name, old);
+            throw new IllegalStateException("store index could not be saved or removed; " + name + " not written");
+        }
         try (OutputStream out = opener.open(target)) {
             out.write(bytes);
         } catch (IOException e) {
@@ -179,6 +209,9 @@ final class FileProfileStore implements ProfileStore {
             saveIndex();
             throw new UncheckedIOException(e);
         }
+        idx.put(name, new long[] {bytes.length, stamp});
+        // Only a file that shrank leaves the saved index overstating it; a failure here keeps that.
+        if (bytes.length < before) saveIndex();
     }
 
     /** Empties the file through the opener, to get its length back from the quota, then deletes it. */
@@ -189,6 +222,8 @@ final class FileProfileStore implements ProfileStore {
             if (index().remove(name) != null) saveIndex();
             return;
         }
+        // MEM-15: a store sharing the directory removes the saved index before its first change.
+        if (dropSaved && !saveIndex()) throw new IllegalStateException("store index could not be removed; " + name + " not deleted");
         // Empty it first: Robocode refunds a file's length when it is opened for writing.
         try (OutputStream out = opener.open(f)) {
             out.flush();
@@ -251,7 +286,7 @@ final class FileProfileStore implements ProfileStore {
      */
     private Map<String, long[]> index() {
         if (index != null) return index;
-        if (keepIndex && dir != null) {
+        if (keepIndex && !dropSaved && dir != null) {
             String[] names = dir.list();
             if (names == null) {
                 adopt(new TreeMap<>());
@@ -269,9 +304,10 @@ final class FileProfileStore implements ProfileStore {
         }
         Map<String, long[]> listed = list(dir);
         long[] own = listed.remove(INDEX);
-        indexLength = keepIndex && own != null ? own[0] : 0;
-        if (!keepIndex && own != null) listed.put(INDEX, own);
-        if (keepIndex && dir != null) {
+        boolean saves = keepIndex || dropSaved;
+        indexLength = saves && own != null ? own[0] : 0;
+        if (!saves && own != null) listed.put(INDEX, own);
+        if (saves && dir != null) {
             String[] names = dir.list();
             if (names != null) {
                 for (String n : names) if (!n.equals(INDEX) && !listed.containsKey(n)) others.add(n);
@@ -374,23 +410,57 @@ final class FileProfileStore implements ProfileStore {
     }
 
     /**
-     * MEM-15: rewrites {@link #INDEX} from the index in memory. A failure (the quota, the
-     * sandbox) never fails the write it follows: the next battle finds the file damaged or
-     * out of date and lists the directory instead.
+     * MEM-15: brings {@link #INDEX} in line with the index in memory: rewrites it, or, for a
+     * store sharing the directory, removes it once. When it cannot be rewritten (the quota,
+     * the sandbox) it is removed instead, so the next battle lists the directory. Returns
+     * false only when a saved index that no longer matches may still be on disk.
      */
-    private void saveIndex() {
-        if (!keepIndex || dir == null || index == null) return;
+    private boolean saveIndex() {
+        if (dir == null || index == null) return true;
+        if (dropSaved) {
+            if (!dropped) dropped = removeIndexFile();
+            return dropped;
+        }
+        if (!keepIndex) return true;
         byte[] bytes = encodeIndex(index, others);
         File f = new File(dir, INDEX);
         try (OutputStream out = opener.open(f)) {
             out.write(bytes);
             indexLength = bytes.length;
+            return true;
         } catch (IOException | RuntimeException e) {
-            try {
-                indexLength = f.isFile() ? f.length() : 0;
-            } catch (RuntimeException ignored) {
+            // A file cut part way fails its CRC; one the opener never touched must go.
+            return removeIndexFile();
+        }
+    }
+
+    /**
+     * MEM-15: removes {@link #INDEX}: empties it through the opener first (Robocode refunds
+     * its length, and an empty index never decodes), then deletes it. True when no index
+     * that could be read is left on disk.
+     */
+    private boolean removeIndexFile() {
+        File f = new File(dir, INDEX);
+        try {
+            if (!f.exists()) {
                 indexLength = 0;
+                return true;
             }
+            try (OutputStream out = opener.open(f)) {
+                out.flush();
+                indexLength = 0;
+            } catch (IOException | RuntimeException e) {
+                // Could not empty it: deleting it still keeps a stale index from being read.
+            }
+            f.delete();
+            if (!f.exists()) {
+                indexLength = 0;
+                return true;
+            }
+            indexLength = f.isFile() ? f.length() : 0;
+            return f.isFile() && f.length() == 0;
+        } catch (RuntimeException e) {
+            return false;
         }
     }
 

@@ -2380,8 +2380,14 @@ profiles, and the rumbles list it as a new participant.
   CRC32s of the names and of the whole file. About 4 bytes a file: 1.4 KB for 360 profiles. A
   battle starts from `dir.list()` (one check) and that file. It lists file by file, as before, when
   the index is missing, damaged, or was written for other names; the next write saves a new one.
-  `store.hx` counts toward the quota and never appears in `names()`. A save killed part way leaves
-  the index overstating what is used, never understating it.
+  `store.hx` counts toward the quota and never appears in `names()`.
+- **Never understating (review on PR #563).** Before a write the saved index records the larger of
+  the file's old and new lengths, and it is rewritten after the write only when the file shrank, so
+  a robot killed at any point leaves it overstating at worst. An index that cannot be saved is
+  emptied and deleted before the write goes ahead; one that cannot be removed either stops the
+  write (a counted save failure). In a team battle the five members share the directory, each
+  with its own index in memory, so a team member never reads the saved index and removes it
+  before its first change; the next battle lists the directory once and saves it again.
 - **Measured.** Cloud, 360-file folder, Robocode 1.11.1 under strace (which makes each file call
   slow, as Windows is): set-up 1.6 to 1.9 s and the first turn at 134 to 173 before; 22 to 28 ms and
   the first turn at 1 after, once the first battle has saved the index. 109,615 path lookups
@@ -2389,5 +2395,6 @@ profiles, and the rumbles list it as a new participant.
   Without strace the core's part of set-up fell from 35 to 87 ms back to 8 to 15 ms.
 - Tests: `FileProfileStoreTest.startsFromTheSavedIndex`, `fallsBackToTheListing` (a stray file, a
   removed file, an index cut at every byte, a flipped bit), `keepsNamesThatAreNotFiles`,
-  `indexKeepsTheQuotaAndCrashSafety`.
+  `indexKeepsTheQuotaAndCrashSafety`, `killedBeforeAShrinkingWrite`,
+  `anUnsavableIndexNeverStaysBehind`, `teamMembersDropTheSavedIndex`.
 
