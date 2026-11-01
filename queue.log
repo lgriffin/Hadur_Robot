@@ -11,3 +11,7 @@
 12:15:58 progress record: 10/792 (1%) battles, 872/h, ETA 54 min, 0 failed, skips 16.4/battle (last 100)
 12:34:12 record exit=0 in 1134 s
 12:34:12 start fit
+13:58:50 fit exit=0 in 5077 s
+13:58:50 start confirm
+13:58:50 watching confirm: 4 stop rule(s)
+13:59:41 progress confirm: 37/2376 (2%) battles, 2592/h, ETA 54 min, 0 failed, skips 22.2/battle (last 100), aa +0.15, kl -0.38, klbb -0.20
