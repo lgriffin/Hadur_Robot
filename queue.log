@@ -8,3 +8,5 @@
 23:39:52 STOP mrogi by rule fails 20: 24 failed of 267; 267 battles fought and kept, 273 battles left unrun (about 29 min)
 23:39:52 mrogi exit=75 in 1706 s (halted, fails 20)
 23:39:52 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
+23:49:07 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
+23:49:07 skip mrprep (already exit=0)
