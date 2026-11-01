@@ -7,3 +7,5 @@
 03:40:40 progress teach: 3/129 (2%) battles, 275/h, ETA 28 min, 0 failed, skips 17.7/battle (last 100)
 03:49:44 STOP teach by rule skips 60 over 100: 82.9 a battle over the last 100 (first 100: 75.1); 111 battles fought and kept, 18 battles left unrun (about 2 min)
 03:49:45 teach exit=75 in 583 s (halted, skips 60 over 100)
+03:49:47 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/531
+03:49:47 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
