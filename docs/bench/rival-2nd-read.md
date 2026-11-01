@@ -158,3 +158,18 @@ At a 3-point margin, 13 robots hold (+0.08 APS in sample). They are on master:
 
 These 5 stay off: tobe.Saturn +4.1 (narrow interval), zeze2.OperatorZeze +1.1, stelo.MatchupWS 0.0,
 bayen.nut.Squirrel -0.1 and deo.FlowerBot -2.7. The lines go to the next census with everything else.
+
+### Card pc-rival-near (BENCH-163): the 28 near misses
+
+pc-rival-picks' screens left 28 robots whose best arm gained 3 or more points on 3 seeds without locking at 5, and
+whose lines are not on master yet. The largest are Mozart +12.5, MagicD3 +8.2, Bezier +7.5, PrairieWolf +7.3,
+Jammy +7.0, LightningStorm +7.0, AspidReloaded +6.2 and Hydrogen +6.0. Lucid and Warlord already carry their still
+lines.
+
+The five robots pc-rival-confirm read on 8 seeds stay out: Saturn, OperatorZeze, MatchupWS, Squirrel and FlowerBot.
+
+`hadur-bench/plans/pc-rival-near.queue` builds all 28 into one jar and runs it with c and aa on 8 fresh seeds from
+6500. That is 672 battles, about 10 minutes on the PC. Its gate and pick work as pc-rival-confirm's do, and
+`tools/ship_picks.py` ships what holds.
+
+A cloud screen (c vs the jar, 3 seeds from 6400, 168 battles, no A/A) runs in the meantime.
