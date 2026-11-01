@@ -20,3 +20,7 @@
 05:18:48 build exit=0 in 19 s
 05:18:48 start live-D
 05:18:48 watching live-D: 3 stop rule(s)
+05:26:28 progress live-D: 114/276 (41%) battles, 893/h, ETA 11 min, 0 failed, skips 0.2/battle (last 100)
+05:38:14 live-D exit=0 in 1166 s
+05:38:14 start live-PT0
+05:38:14 watching live-PT0: 3 stop rule(s)

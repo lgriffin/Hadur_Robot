@@ -1,12 +1,12 @@
 # Queue pc-deise-pt1: progress
 
-Updated 2026-11-01 05:25:27 PC time (05:25 UTC), runner pid 15224.
+Updated 2026-11-01 05:40:34 PC time (05:40 UTC), runner pid 15224.
 
 - `prep` done, exit 0 in 0 min
 - `live-TEACH` done, exit 0 in 23 min
 - `build` done, exit 0 in 0 min
-- `live-D` running
-- `live-PT0` pending
+- `live-D` done, exit 0 in 19 min
+- `live-PT0` running
 - `live-PTS` pending
 - `live-PTB` pending
 - `read` pending
@@ -27,24 +27,33 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-D
 
-**102 of 276 battles** (37%), 0 failed. Running 7 min, 920 battles/h, about 11 min left (ends ~05:36 PC time). Last battle 0 min ago.
-Skipped turns a battle: 0.1 overall, first 100 0.1, last 100 0.1.
+**276 of 276 battles** (100%), 0 failed. Running 19 min, 852 battles/h, about 0 min left (ends ~05:38 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.2 overall, first 100 0.1, last 100 0.2.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 102 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 0.1 a battle over the last 100 (first 100: 0.1) |
+| `skips 40 over 100` | halt | ok | 0.2 a battle over the last 100 (first 100: 0.1) |
 
-Stopping now would leave 174 battles unrun (about 11 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### live-PT0
+
+**30 of 276 battles** (11%), 0 failed. Running 2 min, 770 battles/h, about 19 min left (ends ~05:59 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.1 overall, first 30 0.1, last 30 0.1.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 30 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | waiting | 30 of 100 battles to read |
+
+Stopping now would leave 246 battles unrun (about 19 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-22:22:36 STOP live-TEACH by rule skips 40 over 100: 64.7 a battle over the last 100 (first 100: 62.7); 108 battles fought and kept, 168 battles left unrun (about 14 min)
-22:22:36 live-TEACH exit=75 in 529 s (halted, skips 40 over 100)
-22:22:38 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/522
-22:22:38 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 04:55:14 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
 04:55:14 skip prep (already exit=0)
 04:55:14 start live-TEACH
@@ -56,4 +65,8 @@ Stopping now would leave 174 battles unrun (about 11 min); every battle already 
 05:18:48 build exit=0 in 19 s
 05:18:48 start live-D
 05:18:48 watching live-D: 3 stop rule(s)
+05:26:28 progress live-D: 114/276 (41%) battles, 893/h, ETA 11 min, 0 failed, skips 0.2/battle (last 100)
+05:38:14 live-D exit=0 in 1166 s
+05:38:14 start live-PT0
+05:38:14 watching live-PT0: 3 stop rule(s)
 ```
