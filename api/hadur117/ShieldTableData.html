@@ -355,8 +355,8 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</span>&nbsp;<span class="element-name">surfKeys</span>()</div>
 <div class="block"><a class="req" href="../../requirements.html#SKEY-2">SKEY-2</a>: per-opponent surf keys, each line <code>"m1 ... m9 bw name"</code>: nine multipliers on the
  hit views' key weights (<code>MoveFormula</code>) and one on the kernel width, fitted offline from that
- opponent's bullets (<code>data/tools/surf_key_fit.py</code>). Empty on master; candidate builds add
- lines here (build-ablation.sh sklist).</div>
+ opponent's bullets (<code>data/tools/surf_key_fit.py</code>). The 175 keys of pc-surf-key (BENCH-160,
+ weights + width arm <code>kl</code>): gate +0.06 ± 0.05 APS on fresh seeds over the 198-robot panel.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>a fresh array of lines</dd>
