@@ -1,0 +1,6 @@
+# pc-rival-confirm: pc-rival-picks' shield-add picks (PR #532), joining the shield list.
+fm.claire 1.7
+projectx.TestNano 1.0
+rz.GlowBlowMelee 1.4
+tobe.Saturn lambda
+zeze2.OperatorZeze 1.05

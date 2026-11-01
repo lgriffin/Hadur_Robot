@@ -110,4 +110,30 @@ class ShieldListTest {
         assertEquals(1, l.size(), "no shield entry");
         assertEquals(150, ShieldList.NONE.stayDamage("a.B 1.0", 150));
     }
+
+    @Test
+    @Tag("SKEY-2")
+    @DisplayName("surf-key lines give an opponent's ten key values, matched as shield entries; malformed lines skipped")
+    void surfKeys() {
+        ShieldList l = ShieldList.parse(List.of(
+            "surf-key: 1 2 1 1 0.5 1 1 1 1 1.4 a.B 1.0",
+            "surf-key: 1 1 1 1 1 1 1 1 1 2 c.D",
+            "surf-key: 1 1 1 1 1 1 1 1 1 e.F 1.0",
+            "surf-key: 1 1 1 1 1 1 1 1 0 1 g.H",
+            "surf-key: 1 1 1 1 x 1 1 1 1 1 i.J"));
+        double[] k = l.surfKeyFor("a.B 1.0");
+        assertEquals(10, k.length);
+        assertEquals(2.0, k[1]);
+        assertEquals(1.4, k[9]);
+        k[1] = 9;
+        assertEquals(2.0, l.surfKeyFor("a.B 1.0")[1], "a fresh copy each call");
+        assertEquals(null, l.surfKeyFor("a.B 1.1"), "a versioned line matches that version only");
+        assertEquals(2.0, l.surfKeyFor("c.D 3")[9], "a versionless line matches every version");
+        assertEquals(null, l.surfKeyFor("e.F 1.0"), "nine values: the name would be a number");
+        assertEquals(null, l.surfKeyFor("g.H 1"), "a zero multiplier is skipped");
+        assertEquals(null, l.surfKeyFor("i.J 1"), "a non-number is skipped");
+        assertEquals(null, l.surfKeyFor(null));
+        assertEquals(0, l.size(), "no shield entry");
+        assertEquals(null, ShieldList.NONE.surfKeyFor("a.B 1.0"));
+    }
 }

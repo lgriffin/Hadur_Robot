@@ -1,0 +1,19 @@
+# 2026-11-01 pc-rival-confirm: the 18 picks of pc-rival-picks (PR #532), rows from the three screen panels.
+fm.claire 1.7 | rank646-band5 | fm.claire_1.7.jar
+projectx.TestNano 1.0 | rank1038-band6 | projectx.TestNano_1.0.jar
+rz.GlowBlowMelee 1.4 | rank262-band4 | rz.GlowBlowMelee_1.4.jar
+tobe.Saturn lambda | rank482-band5 | tobe.Saturn_lambda.jar
+zeze2.OperatorZeze 1.05 | rank712-band6 | zeze2.OperatorZeze_1.05.jar
+deo.FlowerBot 1.0 | rank223-band4 | deo.FlowerBot_1.0.jar
+stelo.MatchupWS 1.2c | rank107-band3 | stelo.MatchupWS_1.2c.jar
+supersample.SuperMercutio 1.0 | rank447-band5 | supersample.SuperMercutio_1.0.jar
+cx.micro.Smoke 0.96 | rank233-band4 | cx.micro.Smoke_0.96.jar
+dft.Cyprus 3.0 | rank337-band4 | dft.Cyprus_3.0.jar
+myl.micro.Avipes 1.00 | rank293-band4 | myl.micro.Avipes_1.00.jar
+rz.GlowBlowAPM 1.0 | rank229-band4 | rz.GlowBlowAPM_1.0.jar
+voidious.mini.Komarious 1.88 | rank65-band3 | voidious.mini.Komarious_1.88.jar
+bayen.nut.Squirrel 1.621 | rank176-band3 | bayen.nut.Squirrel_1.621.jar
+davidalves.net.DuelistMicroMkII 1.1 | rank345-band4 | davidalves.net.DuelistMicroMkII_1.1.jar
+rcb.Vanessa03 0 | rank318-band4 | rcb.Vanessa03_0.jar
+pez.mini.VertiLeach 0.4.0 | rank219-band4 | pez.mini.VertiLeach_0.4.0.jar
+synapse.Geomancy 15 | rank110-band3 | synapse.Geomancy_15.jar

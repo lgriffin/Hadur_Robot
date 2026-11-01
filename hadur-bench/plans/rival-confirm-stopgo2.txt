@@ -1,0 +1,3 @@
+# pc-rival-confirm: stop-and-go shift (flip 2, stopGoShift) picks of pc-rival-picks (PR #532).
+pez.mini.VertiLeach 0.4.0
+synapse.Geomancy 15

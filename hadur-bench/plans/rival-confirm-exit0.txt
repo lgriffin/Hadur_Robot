@@ -1,0 +1,6 @@
+# pc-rival-confirm: SHIELD-19 exit off for the zlx0 picks of pc-rival-picks (PR #532).
+cx.micro.Smoke 0.96
+dft.Cyprus 3.0
+myl.micro.Avipes 1.00
+rz.GlowBlowAPM 1.0
+voidious.mini.Komarious 1.88
