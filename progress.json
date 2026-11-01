@@ -1,0 +1,25 @@
+{
+ "plan": "pc-rival-picks",
+ "updated": 1793506690.7415478,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "screen-add": {
+   "status": "pending"
+  },
+  "screen-exec": {
+   "status": "pending"
+  },
+  "screen-stopgo": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
