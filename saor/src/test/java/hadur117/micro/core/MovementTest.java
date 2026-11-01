@@ -3,6 +3,7 @@ package hadur117.micro.core;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import net.jqwik.api.Example;
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
 import net.jqwik.api.Tag;
@@ -50,12 +51,23 @@ class MovementTest {
         double turn = Movement.turn(x, y, myX, myY, heading);
         double ahead = Movement.ahead(turn, x, y, myX, myY);
         double off = robocode.util.Utils.normalRelativeAngle(turn);
-        // Forwards when the point is in front, backwards when it is behind.
-        assertEquals(Math.abs(off) < Math.PI / 2, ahead > 0 || Math.hypot(x - myX, y - myY) < 1e-9);
+        // Forwards when the point is in front, backwards when it is behind. A point exactly abeam
+        // (cos(turn) = 0 to rounding, e.g. seed -3187135283157470441: 18, 29, 0, 25, 29) moves 0
+        // either way, so the sign there is rounding and is not tested; nor is the body turn's below.
+        if (Math.abs(Math.cos(turn)) > 1e-9) {
+            assertEquals(Math.abs(off) < Math.PI / 2, ahead > 0 || Math.hypot(x - myX, y - myY) < 1e-9);
+        }
         assertEquals(Math.hypot(x - myX, y - myY) * Math.abs(Math.cos(turn)), Math.abs(ahead), 1e-9);
         // The body turns toward the line through the point, never more than a quarter turn away.
         double facing = Math.abs(off) < Math.PI / 2 ? off : robocode.util.Utils.normalRelativeAngle(off + Math.PI);
         double bodyTurn = Movement.bodyTurn(turn);
-        if (Math.abs(facing) > 1e-9) assertEquals(Math.signum(facing), Math.signum(bodyTurn));
+        // Abeam, a quarter turn either way faces the line, so the sign is rounding there too.
+        if (Math.abs(facing) > 1e-9 && Math.abs(Math.cos(turn)) > 1e-9) assertEquals(Math.signum(facing), Math.signum(bodyTurn));
+    }
+
+    /** The point exactly abeam, from CI seed -3187135283157470441: it holds the property above. */
+    @Example
+    void aPointExactlyAbeamHoldsTheOrders() {
+        theOrdersHeadForThePointForwardsOrBackwards(18.0, 29.0, 0.0, 25, 29);
     }
 }
