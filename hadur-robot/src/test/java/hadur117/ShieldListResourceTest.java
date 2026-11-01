@@ -226,4 +226,22 @@ class ShieldListResourceTest {
         assertTrue(!list.still("theo.Hydrogen 2.1r"));
         assertTrue(!list.still("rsk1.RSK1 4.0"), "RSK1 lost with the still plans (-7.7)");
     }
+
+    @Test
+    @Tag("SKEY-2")
+    @DisplayName("the 175 surf keys of pc-surf-key (BENCH-160) all parse, one robot each")
+    void surfKeysShip() {
+        java.util.List<String> lines = new java.util.ArrayList<>();
+        for (String key : ShieldTableData.surfKeys()) lines.add(ShieldList.SURF_KEY_PREFIX + " " + key);
+        ShieldList list = ShieldList.parse(lines);
+        assertEquals(175, ShieldTableData.surfKeys().length);
+        for (String key : ShieldTableData.surfKeys()) {
+            String name = key.split(" ", ShieldList.SURF_KEY_VALUES + 1)[ShieldList.SURF_KEY_VALUES];
+            double[] k = list.surfKeyFor(name);
+            assertTrue(k != null && k.length == ShieldList.SURF_KEY_VALUES, name + " has a key");
+            for (double v : k) assertTrue(v > 0 && v <= 8, name + " multipliers in the fit's range");
+        }
+        assertTrue(list.surfKeyFor("voidious.Diamond 1.8.22") != null);
+        assertTrue(list.surfKeyFor("jk.mega.DrussGT 3.1.7") == null, "robots off the panel keep master's weights");
+    }
 }
