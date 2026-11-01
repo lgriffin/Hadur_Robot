@@ -1,13 +1,13 @@
 # Queue pc-sanaro-n07: progress
 
-Updated 2026-11-01 09:32:51 PC time (09:32 UTC), runner pid 46892.
+Updated 2026-11-01 09:47:58 PC time (09:47 UTC), runner pid 46892.
 
 - `prep` done, exit 0 in 0 min
 - `teach` done, exit 0 in 12 min
 - `distill-report` done, exit 0 in 0 min
 - `arms` done, exit 0 in 0 min
-- `live-S2` running
-- `live-HS` pending
+- `live-S2` done, exit 0 in 30 min
+- `live-HS` running
 - `live-HL` pending
 - `live-HC` pending
 - `read-live` pending
@@ -28,24 +28,33 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-S2
 
-**208 of 430 battles** (48%), 0 failed. Running 18 min, 677 battles/h, about 20 min left (ends ~09:52 PC time). Last battle 0 min ago.
+**430 of 430 battles** (100%), 0 failed. Running 30 min, 862 battles/h, about 0 min left (ends ~09:44 PC time). Last battle 0 min ago.
 Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 208 |
+| `fails 20` | halt | ok | 0 failed of 430 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 | `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
 
-Stopping now would leave 222 battles unrun (about 20 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### live-HS
+
+**51 of 430 battles** (12%), 0 failed. Running 4 min, 843 battles/h, about 27 min left (ends ~10:14 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 51 0.0, last 51 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 51 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | waiting | 51 of 100 battles to read |
+
+Stopping now would leave 379 battles unrun (about 27 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-03:49:47 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/531
-03:49:47 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
-09:02:39 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
-09:02:39 skip prep (already exit=0)
 09:02:39 start teach
 09:02:39 watching teach: 3 stop rule(s)
 09:02:41 progress pushed to origin claude/pc-sanaro-n07-progress (every 15 min)
@@ -57,4 +66,8 @@ Stopping now would leave 222 battles unrun (about 20 min); every battle already 
 09:14:24 arms exit=0 in 9 s
 09:14:24 start live-S2
 09:14:24 watching live-S2: 3 stop rule(s)
+09:33:52 progress live-S2: 220/430 (51%) battles, 679/h, ETA 19 min, 0 failed, skips 0.0/battle (last 100)
+09:44:20 live-S2 exit=0 in 1796 s
+09:44:20 start live-HS
+09:44:20 watching live-HS: 3 stop rule(s)
 ```

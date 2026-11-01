@@ -22,3 +22,7 @@
 09:14:24 arms exit=0 in 9 s
 09:14:24 start live-S2
 09:14:24 watching live-S2: 3 stop rule(s)
+09:33:52 progress live-S2: 220/430 (51%) battles, 679/h, ETA 19 min, 0 failed, skips 0.0/battle (last 100)
+09:44:20 live-S2 exit=0 in 1796 s
+09:44:20 start live-HS
+09:44:20 watching live-HS: 3 stop rule(s)
