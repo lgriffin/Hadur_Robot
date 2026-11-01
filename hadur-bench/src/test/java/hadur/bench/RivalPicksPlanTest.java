@@ -50,7 +50,9 @@ class RivalPicksPlanTest {
 
         String listData = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldListData.java"));
         // pc-rival-confirm (PR #537) shipped some of these picks: those robots have moved on master.
-        List<String> shipped = names("plans/rival-confirm-shipped.txt");
+        // pc-rival-near (PR #545) shipped more of them.
+        List<String> shipped = new java.util.ArrayList<>(names("plans/rival-confirm-shipped.txt"));
+        shipped.addAll(names("plans/rival-near-shipped.txt"));
         for (String n : drop) {
             if (!shipped.contains(n)) assertTrue(listData.contains("\"" + n + "\","), n + " is on the shield list to drop");
         }

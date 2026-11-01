@@ -47,10 +47,20 @@ class RivalNearPlanTest {
         stopGo.addAll(names("plans/rival-near-stopgo2.txt"));
         assertTrue(stopGo.containsAll(names("plans/rival-near-drop.txt")), "only stop-and-go picks leave the shield list");
         String listData = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldListData.java"));
+        // Picks shipped from the card's results (PR #545) have already made these edits.
+        Set<String> shipped = new HashSet<>(names("plans/rival-near-shipped.txt"));
         for (String n : names("plans/rival-near-drop.txt")) {
+            if (shipped.contains(n)) {
+                assertTrue(!listData.contains("\"" + n + "\","), n + " shipped: off master's shield list");
+                continue;
+            }
             assertTrue(listData.contains("\"" + n + "\","), n + " is on master's shield list");
         }
         for (String n : names("plans/rival-near-add.txt")) {
+            if (shipped.contains(n)) {
+                assertTrue(listData.contains("\"" + n + "\","), n + " shipped: on master's shield list");
+                continue;
+            }
             assertTrue(!listData.contains("\"" + n + "\","), n + " is not on master's shield list yet");
         }
         String prep = step(queue, "prep", "confirm");
