@@ -152,7 +152,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#flatOns()" class="member-name-link">flatOns</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block"><a class="req" href="../../requirements.html#MOVE-32">MOVE-32</a>: the opponents the duel surfs with the flattener views on (<a class="req" href="../../requirements.html#MOVE-24">MOVE-24</a> undone for them).</div>
+<div class="block"><a class="req" href="../../requirements.html#MOVE-32">MOVE-32</a>: the opponents the duel surfs with the flattener views on (<a class="req" href="../../requirements.html#MOVE-24">MOVE-24</a> undone for them):
+ the two pc-flat-on (PR #554) robots that gained on every read.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#gunStacks()" class="member-name-link">gunStacks</a>()</code></div>
@@ -341,8 +342,9 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="flatOns()">
 <h3>flatOns</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</span>&nbsp;<span class="element-name">flatOns</span>()</div>
-<div class="block"><a class="req" href="../../requirements.html#MOVE-32">MOVE-32</a>: the opponents the duel surfs with the flattener views on (<a class="req" href="../../requirements.html#MOVE-24">MOVE-24</a> undone for them).
- Empty on master; candidate builds add lines here (build-ablation.sh fllist).</div>
+<div class="block"><a class="req" href="../../requirements.html#MOVE-32">MOVE-32</a>: the opponents the duel surfs with the flattener views on (<a class="req" href="../../requirements.html#MOVE-24">MOVE-24</a> undone for them):
+ the two pc-flat-on (PR #554) robots that gained on every read. Candidate builds add lines here
+ (build-ablation.sh fllist).</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>a fresh array of names</dd>
