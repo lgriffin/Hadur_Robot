@@ -11,3 +11,7 @@
 22:22:38 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 04:55:14 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
 04:55:14 skip prep (already exit=0)
+04:55:14 start live-TEACH
+04:55:14 watching live-TEACH: 3 stop rule(s)
+04:55:16 progress pushed to origin claude/pc-deise-pt1-progress (every 15 min)
+04:56:14 progress live-TEACH: 6/276 (2%) battles, 357/h, ETA 45 min, 0 failed, skips 58.8/battle (last 100)

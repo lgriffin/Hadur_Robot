@@ -1,9 +1,9 @@
 # Queue pc-deise-pt1: progress
 
-Updated 2026-11-01 04:55:14 PC time (04:55 UTC), runner pid 15224.
+Updated 2026-11-01 05:10:20 PC time (05:10 UTC), runner pid 15224.
 
 - `prep` done, exit 0 in 0 min
-- `live-TEACH` halted, exit 75 in 9 min, HALTED by skips 40 over 100: 64.7 a battle over the last 100 (first 100: 62.7)
+- `live-TEACH` running
 - `build` pending
 - `live-D` pending
 - `live-PT0` pending
@@ -12,11 +12,22 @@ Updated 2026-11-01 04:55:14 PC time (04:55 UTC), runner pid 15224.
 - `read` pending
 - `pr` pending
 
+### live-TEACH
+
+**168 of 276 battles** (61%), 0 failed. Running 15 min, 667 battles/h, about 10 min left (ends ~05:20 PC time). Last battle 0 min ago.
+Skipped turns a battle: 65.9 overall, first 100 61.8, last 100 67.1.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 168 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 120 over 100` | halt | ok | 67.1 a battle over the last 100 (first 100: 61.8) |
+
+Stopping now would leave 108 battles unrun (about 10 min); every battle already fought is kept and a rerun resumes from it.
+
 ### Queue log (last lines)
 
 ```
-22:13:30 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
-22:13:30 start prep
 22:13:32 progress pushed to origin claude/pc-deise-pt1-progress (every 15 min)
 22:13:47 prep exit=0 in 16 s
 22:13:47 start live-TEACH
@@ -28,4 +39,8 @@ Updated 2026-11-01 04:55:14 PC time (04:55 UTC), runner pid 15224.
 22:22:38 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 04:55:14 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
 04:55:14 skip prep (already exit=0)
+04:55:14 start live-TEACH
+04:55:14 watching live-TEACH: 3 stop rule(s)
+04:55:16 progress pushed to origin claude/pc-deise-pt1-progress (every 15 min)
+04:56:14 progress live-TEACH: 6/276 (2%) battles, 357/h, ETA 45 min, 0 failed, skips 58.8/battle (last 100)
 ```
