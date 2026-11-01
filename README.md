@@ -88,7 +88,7 @@ Live results as of 2026-10-30 21:50 UTC (each robot's README keeps its full hist
 | [**HadurTeam**](hadur-robot/) `hadur117.HadurTeam` | TeamRumble | five Hadurs | **3rd of 48**, 81.51 (3.20, 2026-10-30, 45 of 47 pairings) | [standing](#standing) |
 | [**TwinSaor**](twinsaor/) `hadur117.twin.TwinSaor` | Twin Duel (2v2) | 1,995 B of 1,999 | **1st of 28**, 70.28 ± 0.50 (0.2, 2026-10-28) | [README](twinsaor/README.md) |
 | [**Saor**](saor/) `hadur117.micro.Saor` | MicroMelee | 723 B of 749 | **1st of 158**, 69.73 (0.3, 2026-10-30), 0.45 ahead of kc.micro.Figment | [README](saor/README.md) |
-| [**Deise**](deise/) `hadur117.mini.Deise` | MiniMelee | 1,494 B of 1,499 | **2nd of 206**, 70.57 (0.4, 2026-10-30), 0.58 behind kc.mini.Mirage | [README](deise/README.md) |
+| [**Deise**](deise/) `hadur117.mini.Deise` | MiniMelee | 1,499 B of 1,499 (0.5) | **2nd of 206**, 70.57 (0.4, 2026-10-30), 0.58 behind kc.mini.Mirage; 0.5 released 2026-11-01, live pass running | [README](deise/README.md) |
 | [**Sanaro**](sanaro/) `hadur117.nano.Sanaro` | NanoMelee | 247 B of 249 | **2nd of 90**, 65.15 (0.2, 2026-10-30), 1.26 behind d414.nano.Quantum | [README](sanaro/README.md) |
 | [**JayLexi**](jaylexi/) `hadur117.mini.JayLexi` | MiniRumble (1v1) | 1,485 B of 1,499 | **5th of 671**, 87.34 (0.2, settled 2026-10-30), 0.10 behind 4th, 1.67 behind sheldor.mini.FoilistMC | [README](jaylexi/README.md) |
 | [**Eveimear**](eveimear/) `hadur117.micro.Eveimear` | MicroRumble (1v1) | 722 B of 749 | **9th of 516**, 83.28 (0.1, 2026-10-30), 2.32 behind 1st | [README](eveimear/README.md) |
