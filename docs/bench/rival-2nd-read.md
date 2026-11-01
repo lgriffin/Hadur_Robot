@@ -120,3 +120,23 @@ Each screen writes a multi-arm read, a 5-point per-robot pick and every robot's 
 these stop rules: fails 30, dead 8, skips 40 over 200, stall 30m. A halt keeps every battle and a rerun resumes; a halt
 in one screen leaves the later screens unrun. No screen ships anything: the picks go to a confirm card on fresh seeds,
 then to the census.
+
+## pc-rival-picks results (PR #532, 2026-11-01) and card pc-rival-confirm (BENCH-161)
+
+As global switches, the lists lose: shield adds -2.57 points (mt) and -2.06 (mtzl) on 74 robots, and stop-and-go
+-19.6 (mdwl) and -9.5 (mdwm) on 36. Shield execution is the exception: still + exit off (zlx0) +1.64 ± 1.39 on 50.
+All three A/As sit inside their bands.
+
+At a 5-point margin, 18 robots lock, worth +0.14 APS in sample:
+
+- shield adds: fm.claire, projectx.TestNano, rz.GlowBlowMelee and tobe.Saturn with still lines; zeze2.OperatorZeze
+  without them;
+- execution: deo.FlowerBot, stelo.MatchupWS and SuperMercutio with still lines; cx.micro.Smoke, dft.Cyprus,
+  myl.micro.Avipes, rz.GlowBlowAPM and voidious.mini.Komarious with still lines and exit off;
+- stop-and-go: Squirrel, DuelistMicroMkII and Vanessa03 (flip 1, each off the shield list); VertiLeach and Geomancy
+  (flip 2).
+
+In-sample picks shrink. `hadur-bench/plans/pc-rival-confirm.queue` builds all 18 lines into one jar (each acts only on
+its own robot) and runs it beside master and an A/A on 8 fresh seeds from 6300. That is 432 battles, about 10 minutes.
+The gate is +0.05 APS with the 95% low end above 0, plus a 3-point per-robot pick. The lines that hold go to master
+for the next census.

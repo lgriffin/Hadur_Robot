@@ -504,4 +504,17 @@ final class ShieldTableData {
             "wompi.Numbat 1.9",
         };
     }
+
+    /**
+     * SKEY-2: per-opponent surf keys, each line {@code "m1 ... m9 bw name"}: nine multipliers on the
+     * hit views' key weights ({@code MoveFormula}) and one on the kernel width, fitted offline from that
+     * opponent's bullets ({@code data/tools/surf_key_fit.py}). Empty on master; candidate builds add
+     * lines here (build-ablation.sh sklist).
+     *
+     * @return a fresh array of lines
+     */
+    static String[] surfKeys() {
+        return new String[] {
+        };
+    }
 }

@@ -349,6 +349,7 @@ public final class DuelController {
         this.surfMover.setProtean(MoveDesign.PROTEAN, MoveDesign.PROTEAN_DWELL);
         this.surfMover.setAesRecord(MoveDesign.AES_RECORD);
         this.surfMover.setOracleRecord(MoveDesign.ORACLE_RECORD);
+        this.surfMover.setSurfKeyRecord(MoveDesign.SURF_KEY_RECORD);
         this.surfMover.setStopPointSurf(duelOnly(MoveDesign.STOP_POINT_SURF, enemiesTotal));
         this.surfMover.setStopPointAimMix(MoveDesign.AIM_MIX);
         this.shadowAvoidance = new ShadowAvoidance(fieldWidth, fieldHeight);
@@ -896,6 +897,10 @@ public final class DuelController {
             // ORACLE-1: the views' neighbours the surf recorded this tick (none unless the switch is on).
             for (String r : surfMover.drainOracleRecords()) {
                 telemetry.emit("ORC," + round + "," + in.time() + "," + r);
+            }
+            // SKEY-1: the waves' surf keys the surf recorded this tick (none unless the switch is on).
+            for (String r : surfMover.drainSurfKeyRecords()) {
+                telemetry.emit("SKN," + round + "," + in.time() + "," + r);
             }
         }
         // GUN-7: the next aim may read this plan, one tick on, if the surf published one.
@@ -1537,6 +1542,8 @@ public final class DuelController {
         // MOVE-23: the stack's per-opponent switches, decided now the opponent is named.
         stackOn = stackApplies(duelOnly(MoveDesign.STACK_LIST, enemiesTotal), stackList, name);
         moveController.setPointKernel(duelOnly(MoveDesign.POINT_KERNEL && stackOn, enemiesTotal));
+        // SKEY-2: the opponent's surf key, duel only; none restores the defaults.
+        moveController.setSurfKey(duelOnly(true, enemiesTotal) ? stackList.surfKeyFor(name) : null);
         // DODGE-3: the simple-aim dodge, forced for every opponent or for those the table names.
         // DODGE-4 to DODGE-6: the shot-dodge planner, forced or by the table's entry, primed with its shipped expert.
         int dodgePlan = stackList.dodgePlan(name);

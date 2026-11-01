@@ -1,0 +1,13 @@
+# pc-rival-confirm: SHIELD-21 still lines for the mtzl, zl and zlx0 picks of pc-rival-picks (PR #532).
+fm.claire 1.7
+projectx.TestNano 1.0
+rz.GlowBlowMelee 1.4
+tobe.Saturn lambda
+deo.FlowerBot 1.0
+stelo.MatchupWS 1.2c
+supersample.SuperMercutio 1.0
+cx.micro.Smoke 0.96
+dft.Cyprus 3.0
+myl.micro.Avipes 1.00
+rz.GlowBlowAPM 1.0
+voidious.mini.Komarious 1.88
