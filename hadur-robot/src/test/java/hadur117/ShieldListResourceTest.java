@@ -50,7 +50,7 @@ class ShieldListResourceTest {
         // SHIELD-21 (pc-shield-still2, PR #515): 7 of BeepBoop's shield robots join with still plans.
         // pc-rival-confirm (PR #537): claire, TestNano and GlowBlowMelee join with still plans; DuelistMicroMkII and
         // Vanessa03 leave for their stop-and-go lines.
-        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2, list.size());
+        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
@@ -80,7 +80,8 @@ class ShieldListResourceTest {
         // Robots whose interval lay below 0: shield mode costs points on them.
         for (String name : new String[] {
             // dz.Caedo 1.4 lost here and joined in 3.16 with SHIELD-16 (mode table v1).
-            "sqTank.waveSurfing.LionWWSVMvoid 0.01", "suh.mega.WaveSurferGF 1.04", "rz.Artist 0.2",
+            "sqTank.waveSurfing.LionWWSVMvoid 0.01", "suh.mega.WaveSurferGF 1.04",
+            // rz.Artist 0.2 lost here and joined with still plans in pc-rival-near (PR #545).
             // rjw.RabidWombat 0.71 lost here and joined with shield part 2 (PR #256).
             "ratosh.Nobo 0.21", "dy.LevelOne 2.0"}) {
             assertTrue(!list.matches(name), name);
@@ -155,16 +156,16 @@ class ShieldListResourceTest {
 
     @Test
     @Tag("POISON-2")
-    @DisplayName("stop-and-go entries, mode table v2, pass 2 and the gap-to-2nd re-pick (PRs #263, #276, #376): 18 + 8 + 1 variant 1, 35 + 12 + 2 + 2 variant 2 (pc-rival-confirm, PR #537)")
+    @DisplayName("stop-and-go entries, mode table v2, pass 2 and the gap-to-2nd re-pick (PRs #263, #276, #376): 18 + 8 + 1 + 3 variant 1, 35 + 12 + 2 + 2 + 1 variant 2 (pc-rival-confirm, PR #537; pc-rival-near, PR #545)")
     void listHoldsModeTableV2() {
         List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
         for (String name : ShieldTableData.stopGos()) lines.add(ShieldList.STOP_GO_PREFIX + " " + name);
         for (String name : ShieldTableData.stopGoShifts()) lines.add(ShieldList.STOP_GO_SHIFT_PREFIX + " " + name);
         ShieldList list = ShieldList.parse(lines);
-        assertEquals(18 + 8 + 1, ShieldTableData.stopGos().length);
-        assertEquals(35 + 12 + 2 + 2, ShieldTableData.stopGoShifts().length);
-        assertEquals(18 + 8 + 1, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGos())).size(), "no duplicates");
-        assertEquals(35 + 12 + 2 + 2, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGoShifts())).size(), "no duplicates");
+        assertEquals(18 + 8 + 1 + 3, ShieldTableData.stopGos().length);
+        assertEquals(35 + 12 + 2 + 2 + 1, ShieldTableData.stopGoShifts().length);
+        assertEquals(18 + 8 + 1 + 3, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGos())).size(), "no duplicates");
+        assertEquals(35 + 12 + 2 + 2 + 1, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGoShifts())).size(), "no duplicates");
         // DuelistMicroMkII (PR #263) and Vanessa03 (PR #276) were on both; pc-rival-confirm (PR #537) measured
         // them off the shield list, so stop-and-go now drives. The set stays as a guard.
         java.util.Set<String> both = java.util.Set.of("davidalves.net.DuelistMicroMkII 1.1", "rcb.Vanessa03 0");
@@ -186,6 +187,15 @@ class ShieldListResourceTest {
         for (String name : new String[] {"fm.claire 1.7", "projectx.TestNano 1.0", "rz.GlowBlowMelee 1.4"}) {
             assertTrue(list.matches(name), name + " is shielded");
         }
+        // pc-rival-near (PR #545): three left the list for stop-and-go, three joined it with still lines.
+        for (String name : new String[] {"EE.LittleBig 1.0", "theo.Hydrogen 2.1r", "wiki.Wolverine 2.1"}) {
+            assertTrue(!list.matches(name), name + " is off the shield list");
+            assertEquals(1, list.stopGo(name), name);
+        }
+        for (String name : new String[] {"dmp.micro.Aurora 1.41", "rz.Artist 0.2", "sL300.Mozart life"}) {
+            assertTrue(list.matches(name), name + " is shielded");
+        }
+        assertEquals(2, list.stopGo("divineomega.DivineBot 1.9.5"));
     }
 
     @Test
@@ -204,14 +214,16 @@ class ShieldListResourceTest {
         java.util.List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
         for (String n : ShieldTableData.stills()) lines.add(ShieldList.STILL_PREFIX + " " + n);
         ShieldList list = ShieldList.parse(lines);
-        // pc-rival-confirm (PR #537): 9 more, 5 of them with exit off.
-        assertEquals(17 + 9, ShieldTableData.stills().length);
+        // pc-rival-confirm (PR #537): 9 more, 5 of them with exit off. pc-rival-near (PR #545): 5 more, 2 with
+        // exit off; Hydrogen's line goes, since it left the list for stop-and-go and a still line reads only shielded.
+        assertEquals(17 + 9 + 5 - 1, ShieldTableData.stills().length);
         for (String n : ShieldTableData.stills()) {
             assertTrue(list.matches(n), n + " is shielded");
             assertTrue(list.still(n), n + " plans still");
         }
-        // 3.13's sweep found Hydrogen worse to shield with the step; the still plans win it (+13.9 points).
-        assertTrue(list.still("theo.Hydrogen 2.1r"));
+        // 3.13's sweep found Hydrogen worse to shield with the step and the still plans won it (+13.9 points);
+        // pc-rival-near (PR #545) found stop-and-go better still (+5.6 PC, +10.3 cloud), so it left the list.
+        assertTrue(!list.still("theo.Hydrogen 2.1r"));
         assertTrue(!list.still("rsk1.RSK1 4.0"), "RSK1 lost with the still plans (-7.7)");
     }
 }

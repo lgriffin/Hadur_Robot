@@ -175,3 +175,31 @@ passes the card's input lists to rebuild each robot's own codes:
 `python3 tools/ship_picks.py rival-near-pick.tsv --codes-from plans/rival-near --label "pc-rival-near (BENCH-163)"`.
 
 A cloud screen (c vs the jar, 3 seeds from 6400, 168 battles, no A/A) runs in the meantime.
+
+### pc-rival-near results (PR #545): 9 picks ship
+
+The card ran all 28 near misses as one build (rp) with c and aa on 8 PC seeds from 6500. The A/A was +0.50 ± 0.97
+points, inside its ±0.78 band, so the run stands. The whole build fails the global gate: +0.04 ± 0.04 APS against a
++0.05 bar. That is +1.87 ± 1.76 points over the panel, and BaronTrozo -13.7, Zealot -2.8 and FunkyChicken -2.6 pull
+it down.
+
+The mode-table pick locks 10 robots at a 3-point margin. The cloud screen (3 seeds from 6400, which the PC never
+ran) gives a second read on each one. Nine agree in sign on both, so they ship. Frankie (+5.0 PC, -0.1 cloud) does
+not.
+
+| Robot | Codes | PC (8 seeds) | Cloud (3 seeds) |
+|---|---|---:|---:|
+| sL300.Mozart life | mtzl | +13.6 | +10.3 |
+| EE.LittleBig 1.0 | mdwl | +6.6 | +4.2 |
+| rz.Artist 0.2 | mtzl | +6.0 | +3.8 |
+| theo.Hydrogen 2.1r | mdwl | +5.6 | +10.3 |
+| intruder.PrairieWolf 2.61 | zlx0 | +5.1 | +4.2 |
+| sheldor.nano.PointInLine 1.0 | zlx0 | +4.6 | +4.8 |
+| wiki.Wolverine 2.1 | mdwl | +4.6 | +4.1 |
+| divineomega.DivineBot 1.9.5 | wm | +3.7 | +2.9 |
+| dmp.micro.Aurora 1.41 | mtzl | +3.4 | +3.4 |
+
+These picks were made in sample on the PC seeds, so the PC gains are high. If they shrink by half, the nine are
+worth about +0.02 APS over the 1,212-robot field. Hydrogen leaves the shield list, so its still line goes too. A
+still line is read only while a robot is shielded, so this changes nothing in play. The names are in
+`hadur-bench/plans/rival-near-shipped.txt`.

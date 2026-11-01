@@ -370,6 +370,10 @@ final class ShieldTableData {
             "romz.robot.circular.WildRabbit 0.9.6",
             "steff.Rebel 2.1",
             "gg.Wolverine 2.0",
+            // pc-rival-near (BENCH-163, PR #545): held on PC seeds 6500 and the cloud screen
+            "EE.LittleBig 1.0",
+            "theo.Hydrogen 2.1r",
+            "wiki.Wolverine 2.1",
         };
     }
 
@@ -432,6 +436,8 @@ final class ShieldTableData {
             // pc-rival-confirm (PR #537): held at a 3-point margin on 8 fresh seeds
             "pez.mini.VertiLeach 0.4.0",
             "synapse.Geomancy 15",
+            // pc-rival-near (BENCH-163, PR #545): held on PC seeds 6500 and the cloud screen
+            "divineomega.DivineBot 1.9.5",
         };
     }
 
@@ -482,6 +488,9 @@ final class ShieldTableData {
             "myl.micro.Avipes 1.00",
             "rz.GlowBlowAPM 1.0",
             "voidious.mini.Komarious 1.88",
+            // pc-rival-near (BENCH-163, PR #545): held on PC seeds 6500 and the cloud screen
+            "intruder.PrairieWolf 2.61",
+            "sheldor.nano.PointInLine 1.0",
         };
     }
 
@@ -506,7 +515,6 @@ final class ShieldTableData {
             "rdt199.Warlord 0.73",
             "stelo.UnfoolableNano 1.0",
             "synapse.rsim.GeomancyBS 0.11",
-            "theo.Hydrogen 2.1r",
             "theo.avenge.Pequod 1.0",
             "theo.simple.Bones 1.0",
             "theo.simple.Lucid 1.0",
@@ -521,6 +529,12 @@ final class ShieldTableData {
             "rz.GlowBlowAPM 1.0",
             "supersample.SuperMercutio 1.0",
             "voidious.mini.Komarious 1.88",
+            // pc-rival-near (BENCH-163, PR #545): held on PC seeds 6500 and the cloud screen
+            "dmp.micro.Aurora 1.41",
+            "intruder.PrairieWolf 2.61",
+            "rz.Artist 0.2",
+            "sL300.Mozart life",
+            "sheldor.nano.PointInLine 1.0",
         };
     }
 
