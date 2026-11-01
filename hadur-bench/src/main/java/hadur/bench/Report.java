@@ -154,9 +154,10 @@ final class Report {
 
     /**
      * BENCH-79: the engine releases LiteRumble takes uploads from (its {@code structures.py}),
-     * so a result on any other release is not what the live ladder measures (issue #151).
+     * so a result on any other release is not what the live ladder measures (issue #151). Since
+     * 2026-11-01 the server answers older clients "CLIENT NOT SUPPORTED. Use one of: ['1.11.2', '1.12.0']".
      */
-    static final java.util.List<String> RUMBLE_ENGINES = java.util.List.of("1.10.3", "1.11.0", "1.11.1");
+    static final java.util.List<String> RUMBLE_ENGINES = java.util.List.of("1.11.2", "1.12.0");
 
     /** BENCH-79: "" for an engine the rumble accepts, else a warning to follow the version. */
     static String engineNote(String version) {

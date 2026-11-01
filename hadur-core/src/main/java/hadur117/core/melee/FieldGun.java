@@ -166,6 +166,8 @@ public class FieldGun {
     private boolean swift;
     /** TMODE-33: whether the team modes this tick carry CONCORD. */
     private boolean concord;
+    /** TMODE-36: whether the team modes this tick carry HEAVY. */
+    private boolean heavy;
     /** TMODE-33: per enemy class, the tree every copy's situations join. */
     private final Map<String, KdTree<float[]>> classTrees = new LinkedHashMap<>();
     /** TMODE-33: per enemy class, the shots fired at it and the hits on it, this battle. */
@@ -263,7 +265,7 @@ public class FieldGun {
             if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);
             else power = MeleeEnergyPolicy.crowdPower(power, distance, nearest, energy, e.energy, others, average);
             if (onTeam && swift) power = Math.min(power, SWIFT_POWER);
-            if (onTeam && concord && TeamConcord.POWER && power > CONCORD_POWER && distance > CONCORD_CLOSE && !readsWell(e.name)) {
+            if (onTeam && concord && !heavy && TeamConcord.POWER && power > CONCORD_POWER && distance > CONCORD_CLOSE && !readsWell(e.name)) {
                 power = CONCORD_POWER;
             }
             if (power <= 0) continue;
@@ -404,6 +406,11 @@ public class FieldGun {
     /** TMODE-32: whether this tick's team modes carry SWIFT; set before any aim of the tick. */
     public void swift(boolean swift) {
         this.swift = swift;
+    }
+
+    /** TMODE-36: whether this tick's team modes carry HEAVY; set before any aim of the tick. */
+    public void heavy(boolean heavy) {
+        this.heavy = heavy;
     }
 
     /** TMODE-31: whether this tick's team modes carry LEAD; set before any aim of the tick. */

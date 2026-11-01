@@ -124,9 +124,9 @@ class HarnessGapsTest {
     void sessionConditionsLine(@TempDir Path tmp) throws Exception {
         Path f = tmp.resolve("s.txt");
         Files.writeString(f, "opponents=set.txt\nrepeat=8\nshuffle=151\n");
-        String line = Bench.sessionConditions(SessionFile.parse(f), 256, "1.11.1",
+        String line = Bench.sessionConditions(SessionFile.parse(f), 256, "1.11.2",
             "robocode.cpu.constant=1488498 (pinned with --cpu-constant)");
-        assertEquals("Engine Robocode 1.11.1. robocode.cpu.constant=1488498 (pinned with --cpu-constant). "
+        assertEquals("Engine Robocode 1.11.2. robocode.cpu.constant=1488498 (pinned with --cpu-constant). "
             + "256 battles a robot, the list fought 8 times, shuffled with seed 151.", line);
         String report = SessionReport.render(Map.of("r", List.of(row(1, "a", 60))), "512M", false, false, 35, line);
         assertTrue(report.startsWith("# Session bench (BENCH-6)\n\n" + line + "\n\n"), report);
@@ -134,12 +134,13 @@ class HarnessGapsTest {
 
     @Test
     @Tag("BENCH-79")
-    @DisplayName("the default engine is 1.11.1, a release LiteRumble takes uploads from; others are flagged")
+    @DisplayName("the default engine is 1.11.2, a release LiteRumble takes uploads from; others are flagged")
     void defaultEngineIsARumbleRelease() throws Exception {
         String pom = Files.readString(Path.of("pom.xml"));
-        assertTrue(pom.contains("<robocode.version>1.11.1</robocode.version>"));
-        assertEquals("", Report.engineNote("1.11.1"));
-        assertEquals("", Report.engineNote("1.10.3"));
+        assertTrue(pom.contains("<robocode.version>1.11.2</robocode.version>"));
+        assertEquals("", Report.engineNote("1.11.2"));
+        assertEquals("", Report.engineNote("1.12.0"));
+        assertTrue(Report.engineNote("1.11.1").contains("not a release the rumble accepts"), "the server rejects 1.11.1 clients");
         assertTrue(Report.engineNote("1.9.5.6").contains("not a release the rumble accepts"));
     }
 
