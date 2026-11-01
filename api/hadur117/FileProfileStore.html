@@ -39,7 +39,7 @@ loadScripts(document, 'script');</script>
 <p>Summary:</p>
 <ul>
 <li><a href="#nested-class-summary">Nested</a></li>
-<li>Field</li>
+<li><a href="#field-summary">Field</a></li>
 <li><a href="#constructor-summary">Constr</a></li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
@@ -47,7 +47,7 @@ loadScripts(document, 'script');</script>
 <li>
 <p>Detail:</p>
 <ul>
-<li>Field</li>
+<li><a href="#field-detail">Field</a></li>
 <li><a href="#constructor-detail">Constr</a></li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
@@ -59,13 +59,13 @@ loadScripts(document, 'script');</script>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
 <li><a href="#nested-class-summary">Nested</a>&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
 <ul class="sub-nav-list">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
@@ -115,6 +115,23 @@ implements <a href="core/port/ProfileStore.html" title="interface in hadur117.co
  current, so a save does work for the files it touches, never for the files on disk. Only
  this battle's robot writes into its own data directory, so the index cannot go stale.</p>
 
+ <p><a class="req" href="../../requirements.html#MEM-15">MEM-15</a>: in the robot, every size or age the sandbox is asked for costs a permission
+ check that resolves the file's full path, three times over, and on Windows each one walks
+ the path on disk. Listing a full data directory that way (about 400 profiles on a client
+ that has run for days) took over half a second before the first turn, which the engine
+ charged as skipped turns and usually a lost first round. So the robot's store also keeps
+ its index on disk, in <a href="#INDEX"><code>INDEX</code></a>, rewritten with every change: a battle starts from the
+ directory's names (one check) and that one file, and lists file by file only when the
+ names on disk are not the ones the index was written for, or the index is damaged.</p>
+
+ <p>The saved index may overstate a file, never understate it: before a write it records
+ the larger of the file's old and new lengths, and it is rewritten after a write only when
+ the file shrank. If it cannot be saved, it is removed before the write goes ahead, and if
+ it cannot be removed either, the write fails. In a team battle the five members share the
+ directory, each with its own index in memory, so none of them may keep the saved one: the
+ first change any of them makes removes it, and the next battle alone lists the directory
+ and saves it again.</p>
+
  <p>Failures surface as unchecked exceptions (<code>UncheckedIOException</code>,
  <code>IllegalStateException</code>, <code>IllegalArgumentException</code>, or the sandbox's own
  <code>SecurityException</code>); the library turns any of them into a counted load or save
@@ -139,6 +156,23 @@ implements <a href="core/port/ProfileStore.html" title="interface in hadur117.co
 </div>
 </section>
 </li>
+<!-- =========== FIELD SUMMARY =========== -->
+<li>
+<section class="field-summary" id="field-summary">
+<h2>Field Summary</h2>
+<div class="caption"><span>Fields</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Field</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>(package private) static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#INDEX" class="member-name-link">INDEX</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../requirements.html#MEM-15">MEM-15</a>: the index's own file, kept beside the profiles and never among <a href="#names()"><code>names()</code></a>.</div>
+</div>
+</div>
+</section>
+</li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <li>
 <section class="constructor-summary" id="constructor-summary">
@@ -152,6 +186,13 @@ implements <a href="core/port/ProfileStore.html" title="interface in hadur117.co
  <a href="FileProfileStore.Opener.html" title="interface in hadur117">FileProfileStore.Opener</a>&nbsp;opener)</code></div>
 <div class="col-last even-row-color">
 <div class="block">A store over <code>dir</code>.</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.io.File,long,hadur117.FileProfileStore.Opener,boolean)" class="member-name-link">FileProfileStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;dir,
+ long&nbsp;quota,
+ <a href="FileProfileStore.Opener.html" title="interface in hadur117">FileProfileStore.Opener</a>&nbsp;opener,
+ boolean&nbsp;keepIndex)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">A store over <code>dir</code> that may keep its index on disk (<a class="req" href="../../requirements.html#MEM-15">MEM-15</a>).</div>
 </div>
 </div>
 </section>
@@ -170,17 +211,42 @@ implements <a href="core/port/ProfileStore.html" title="interface in hadur117.co
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#bytesUsed()" class="member-name-link">bytesUsed</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">The total length of the files in the data directory, from the index.</div>
+<div class="block">The total length of the files in the data directory, from the index, the index's own file included.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#delete(java.lang.String)" class="member-name-link">delete</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr>long[]&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#decodeIndex(byte%5B%5D,java.util.TreeSet,java.util.TreeSet)" class="member-name-link">decodeIndex</a><wbr>(byte[]&nbsp;b,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/TreeSet.html" title="class or interface in java.util" class="external-link">TreeSet</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;names,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/TreeSet.html" title="class or interface in java.util" class="external-link">TreeSet</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;others)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">The entries of an index written for exactly <code>names</code>, adding the names that are
+ not plain files to <code>others</code>; null when the bytes are damaged, of another
+ version, or for another set of names.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#delete(java.lang.String)" class="member-name-link">delete</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Empties the file through the opener, to get its length back from the quota, then deletes it.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="FileProfileStore.html" title="class in hadur117">FileProfileStore</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#forRobot(robocode.AdvancedRobot)" class="member-name-link">forRobot</a><wbr>(robocode.AdvancedRobot&nbsp;robot)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="FileProfileStore.html" title="class in hadur117">FileProfileStore</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#dropsSavedIndex()" class="member-name-link">dropsSavedIndex</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../requirements.html#MEM-15">MEM-15</a>: for a store that shares its directory: never read the saved index, and remove it before the first change.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static byte[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#encodeIndex(java.util.Map,java.util.TreeSet)" class="member-name-link">encodeIndex</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr>long[]&gt;&nbsp;files,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/TreeSet.html" title="class or interface in java.util" class="external-link">TreeSet</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;others)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../requirements.html#MEM-15">MEM-15</a>: the index's bytes.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="FileProfileStore.html" title="class in hadur117">FileProfileStore</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#forRobot(robocode.AdvancedRobot)" class="member-name-link">forRobot</a><wbr>(robocode.AdvancedRobot&nbsp;robot)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The store for a running robot: its data directory and its whole data quota.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#indexRead()" class="member-name-link">indexRead</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../requirements.html#MEM-15">MEM-15</a>: whether this battle's index came from the index file, with no file listed one by one.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lastModified(java.lang.String)" class="member-name-link">lastModified</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
@@ -225,6 +291,29 @@ implements <a href="core/port/ProfileStore.html" title="interface in hadur117.co
 </section>
 <section class="details">
 <ul class="details-list">
+<!-- ============ FIELD DETAIL =========== -->
+<li>
+<section class="field-details" id="field-detail">
+<h2>Field Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="INDEX">
+<h3>INDEX</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">INDEX</span></div>
+<div class="block"><a class="req" href="../../requirements.html#MEM-15">MEM-15</a>: the index's own file, kept beside the profiles and never among <a href="#names()"><code>names()</code></a>.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../constant-values.html#hadur117.FileProfileStore.INDEX">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+</ul>
+</section>
+</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">
@@ -245,6 +334,20 @@ implements <a href="core/port/ProfileStore.html" title="interface in hadur117.co
 </dl>
 </section>
 </li>
+<li>
+<section class="detail" id="&lt;init&gt;(java.io.File,long,hadur117.FileProfileStore.Opener,boolean)">
+<h3>FileProfileStore</h3>
+<div class="member-signature"><span class="element-name">FileProfileStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;dir,
+ long&nbsp;quota,
+ <a href="FileProfileStore.Opener.html" title="interface in hadur117">FileProfileStore.Opener</a>&nbsp;opener,
+ boolean&nbsp;keepIndex)</span></div>
+<div class="block">A store over <code>dir</code> that may keep its index on disk (<a class="req" href="../../requirements.html#MEM-15">MEM-15</a>).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>keepIndex</code> - true to start from <a href="#INDEX"><code>INDEX</code></a> and rewrite it with every change</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -258,6 +361,20 @@ implements <a href="core/port/ProfileStore.html" title="interface in hadur117.co
 <h3>forRobot</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="FileProfileStore.html" title="class in hadur117">FileProfileStore</a></span>&nbsp;<span class="element-name">forRobot</span><wbr><span class="parameters">(robocode.AdvancedRobot&nbsp;robot)</span></div>
 <div class="block">The store for a running robot: its data directory and its whole data quota.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="dropsSavedIndex()">
+<h3>dropsSavedIndex</h3>
+<div class="member-signature"><span class="return-type"><a href="FileProfileStore.html" title="class in hadur117">FileProfileStore</a></span>&nbsp;<span class="element-name">dropsSavedIndex</span>()</div>
+<div class="block"><a class="req" href="../../requirements.html#MEM-15">MEM-15</a>: for a store that shares its directory: never read the saved index, and remove it before the first change.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="indexRead()">
+<h3>indexRead</h3>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">indexRead</span>()</div>
+<div class="block"><a class="req" href="../../requirements.html#MEM-15">MEM-15</a>: whether this battle's index came from the index file, with no file listed one by one.</div>
 </section>
 </li>
 <li>
@@ -311,7 +428,7 @@ implements <a href="core/port/ProfileStore.html" title="interface in hadur117.co
 <section class="detail" id="bytesUsed()">
 <h3>bytesUsed</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">bytesUsed</span>()</div>
-<div class="block">The total length of the files in the data directory, from the index.</div>
+<div class="block">The total length of the files in the data directory, from the index, the index's own file included.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="core/port/ProfileStore.html#bytesUsed()">bytesUsed</a></code>&nbsp;in interface&nbsp;<code><a href="core/port/ProfileStore.html" title="interface in hadur117.core.port">ProfileStore</a></code></dd>
@@ -349,6 +466,29 @@ implements <a href="core/port/ProfileStore.html" title="interface in hadur117.co
 <dt>Specified by:</dt>
 <dd><code><a href="core/port/ProfileStore.html#quota()">quota</a></code>&nbsp;in interface&nbsp;<code><a href="core/port/ProfileStore.html" title="interface in hadur117.core.port">ProfileStore</a></code></dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="encodeIndex(java.util.Map,java.util.TreeSet)">
+<h3>encodeIndex</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">encodeIndex</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr>long[]&gt;&nbsp;files,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/TreeSet.html" title="class or interface in java.util" class="external-link">TreeSet</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;others)</span></div>
+<div class="block"><a class="req" href="../../requirements.html#MEM-15">MEM-15</a>: the index's bytes. Format: 'H','X', version 1, the count of names, the CRC32
+ of the names (sorted, one per line), the smallest modification time, then for each
+ name in order its length plus one (0 for a name that is not a plain file) and, for a
+ file, its time above the smallest, both as varints; last, the CRC32 of all before it.
+ About 4 bytes a file: under 2 KB for a full directory, against a 200 KB quota.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="decodeIndex(byte[],java.util.TreeSet,java.util.TreeSet)">
+<h3>decodeIndex</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr>long[]&gt;</span>&nbsp;<span class="element-name">decodeIndex</span><wbr><span class="parameters">(byte[]&nbsp;b,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/TreeSet.html" title="class or interface in java.util" class="external-link">TreeSet</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;names,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/TreeSet.html" title="class or interface in java.util" class="external-link">TreeSet</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;others)</span></div>
+<div class="block">The entries of an index written for exactly <code>names</code>, adding the names that are
+ not plain files to <code>others</code>; null when the bytes are damaged, of another
+ version, or for another set of names.</div>
 </section>
 </li>
 </ul>

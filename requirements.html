@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 318 of 324 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 319 of 325 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -179,6 +179,11 @@ traceability check reads. 318 of 324 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">MEM-13</span><span class="badge">Unwanted</span><span class="badge stage">R8</span></div>
 <p>If a save would take the store past 90% of its quota after every other seed is gone, then the library shall delete the least recently written profiles until it fits, and write.</p>
 <dl><dt>Implemented in</dt><dd><a href="api/hadur117/FileProfileStore.html" title="hadur117.FileProfileStore">FileProfileStore</a>, <a href="api/hadur117/core/memory/ProfileLibrary.html" title="hadur117.core.memory.ProfileLibrary">ProfileLibrary</a>, <a href="api/hadur117/core/port/MemoryProfileStore.html" title="hadur117.core.port.MemoryProfileStore">MemoryProfileStore</a>, <a href="api/hadur117/core/port/ProfileStore.html" title="hadur117.core.port.ProfileStore">ProfileStore</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/memory/ProfileLibraryTest.java">ProfileLibraryTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="MEM-15">
+<div class="req-head"><span class="rid">MEM-15</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
+<p>When a battle starts, the robot&#x27;s store shall build its index from one saved index file and the directory&#x27;s names, asking no file its size or age, unless the saved index is damaged or was written for other names.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/FileProfileStore.html" title="hadur117.FileProfileStore">FileProfileStore</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-robot/src/test/java/hadur117/FileProfileStoreTest.java">FileProfileStoreTest.java</a></dd></dl>
 </article>
 <h2 id="group-ADAPT">Adapt</h2>
 <article class="req-card" id="ADAPT-1">

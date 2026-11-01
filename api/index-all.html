@@ -1506,7 +1506,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/FileProfileStore.html#bytesUsed()" class="member-name-link">bytesUsed()</a> - Method in class hadur117.<a href="hadur117/FileProfileStore.html" title="class in hadur117">FileProfileStore</a></dt>
 <dd>
-<div class="block">The total length of the files in the data directory, from the index.</div>
+<div class="block">The total length of the files in the data directory, from the index, the index's own file included.</div>
 </dd>
 </dl>
 <h2 class="title" id="I:C">C</h2>
@@ -2569,6 +2569,12 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Reads one event written by <a href="hadur117/core/replay/LineCodec.html#encode(hadur117.core.model.BotEvent)"><code>LineCodec.encode(BotEvent)</code></a>.</div>
 </dd>
+<dt><a href="hadur117/FileProfileStore.html#decodeIndex(byte%5B%5D,java.util.TreeSet,java.util.TreeSet)" class="member-name-link">decodeIndex(byte[], TreeSet&lt;String&gt;, TreeSet&lt;String&gt;)</a> - Static method in class hadur117.<a href="hadur117/FileProfileStore.html" title="class in hadur117">FileProfileStore</a></dt>
+<dd>
+<div class="block">The entries of an index written for exactly <code>names</code>, adding the names that are
+ not plain files to <code>others</code>; null when the bytes are damaged, of another
+ version, or for another set of names.</div>
+</dd>
 <dt><a href="hadur117/core/replay/LineCodec.html#decodeInput(java.lang.String)" class="member-name-link">decodeInput(String)</a> - Static method in class hadur117.core.replay.<a href="hadur117/core/replay/LineCodec.html" title="class in hadur117.core.replay">LineCodec</a></dt>
 <dd>
 <div class="block">Reads an <code>I</code> line.</div>
@@ -3026,6 +3032,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Drops both seeds, keeping the stats (<a class="req" href="../requirements.html#MEM-5">MEM-5</a>).</div>
 </dd>
+<dt><a href="hadur117/FileProfileStore.html#dropsSavedIndex()" class="member-name-link">dropsSavedIndex()</a> - Method in class hadur117.<a href="hadur117/FileProfileStore.html" title="class in hadur117">FileProfileStore</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MEM-15">MEM-15</a>: for a store that shares its directory: never read the saved index, and remove it before the first change.</div>
+</dd>
 <dt><a href="hadur117/core/role/RoleResolver.html#drove(hadur117.core.role.RoleId)" class="member-name-link">drove(RoleId)</a> - Method in class hadur117.core.role.<a href="hadur117/core/role/RoleResolver.html" title="class in hadur117.core.role">RoleResolver</a></dt>
 <dd>
 <div class="block">The role completed a tick: the latch moves down to it if it is lower (<a class="req" href="../requirements.html#ROLE-4">ROLE-4</a>).</div>
@@ -3198,6 +3208,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/replay/LineCodec.html#encode(hadur117.core.model.BotOrders)" class="member-name-link">encode(BotOrders)</a> - Static method in class hadur117.core.replay.<a href="hadur117/core/replay/LineCodec.html" title="class in hadur117.core.replay">LineCodec</a></dt>
 <dd>
 <div class="block">One <code>O</code> line for a tick's orders.</div>
+</dd>
+<dt><a href="hadur117/FileProfileStore.html#encodeIndex(java.util.Map,java.util.TreeSet)" class="member-name-link">encodeIndex(Map&lt;String, long[]&gt;, TreeSet&lt;String&gt;)</a> - Static method in class hadur117.<a href="hadur117/FileProfileStore.html" title="class in hadur117">FileProfileStore</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MEM-15">MEM-15</a>: the index's bytes.</div>
 </dd>
 <dt><a href="hadur117/core/memory/ProfileCodec.html#encodeStatsOnly(hadur117.core.memory.OpponentProfile)" class="member-name-link">encodeStatsOnly(OpponentProfile)</a> - Static method in class hadur117.core.memory.<a href="hadur117/core/memory/ProfileCodec.html" title="class in hadur117.core.memory">ProfileCodec</a></dt>
 <dd>
@@ -4104,6 +4118,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/FileProfileStore.html#%3Cinit%3E(java.io.File,long,hadur117.FileProfileStore.Opener)" class="member-name-link">FileProfileStore(File, long, FileProfileStore.Opener)</a> - Constructor for class hadur117.<a href="hadur117/FileProfileStore.html" title="class in hadur117">FileProfileStore</a></dt>
 <dd>
 <div class="block">A store over <code>dir</code>.</div>
+</dd>
+<dt><a href="hadur117/FileProfileStore.html#%3Cinit%3E(java.io.File,long,hadur117.FileProfileStore.Opener,boolean)" class="member-name-link">FileProfileStore(File, long, FileProfileStore.Opener, boolean)</a> - Constructor for class hadur117.<a href="hadur117/FileProfileStore.html" title="class in hadur117">FileProfileStore</a></dt>
+<dd>
+<div class="block">A store over <code>dir</code> that may keep its index on disk (<a class="req" href="../requirements.html#MEM-15">MEM-15</a>).</div>
 </dd>
 <dt><a href="hadur117/FileProfileStore.Opener.html" class="type-name-link" title="interface in hadur117">FileProfileStore.Opener</a> - Interface in <a href="hadur117/package-summary.html">hadur117</a></dt>
 <dd>
@@ -6237,6 +6255,14 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/mini/JayLexi.Wave.html#index(java.awt.geom.Point2D.Double)" class="member-name-link">index(Point2D.Double)</a> - Method in class hadur117.mini.<a href="hadur117/mini/JayLexi.Wave.html" title="class in hadur117.mini">JayLexi.Wave</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/FileProfileStore.html#INDEX" class="member-name-link">INDEX</a> - Static variable in class hadur117.<a href="hadur117/FileProfileStore.html" title="class in hadur117">FileProfileStore</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MEM-15">MEM-15</a>: the index's own file, kept beside the profiles and never among <a href="hadur117/FileProfileStore.html#names()"><code>FileProfileStore.names()</code></a>.</div>
+</dd>
+<dt><a href="hadur117/FileProfileStore.html#indexRead()" class="member-name-link">indexRead()</a> - Method in class hadur117.<a href="hadur117/FileProfileStore.html" title="class in hadur117">FileProfileStore</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MEM-15">MEM-15</a>: whether this battle's index came from the index file, with no file listed one by one.</div>
+</dd>
 <dt><a href="hadur117/core/world/EnemyTracker.html#inferredShot(java.lang.String,java.awt.geom.Point2D.Double,long,java.awt.geom.Point2D.Double,long,double)" class="member-name-link">inferredShot(String, Point2D.Double, long, Point2D.Double, long, double)</a> - Static method in class hadur117.core.world.<a href="hadur117/core/world/EnemyTracker.html" title="class in hadur117.core.world">EnemyTracker</a></dt>
 <dd>
 <div class="block">The shot an energy drop between two scans shows.</div>
