@@ -2,6 +2,7 @@ package hadur117;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -16,6 +17,7 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -222,5 +224,125 @@ class FileProfileStoreTest {
         assertEquals(5, s.bytesUsed());
         assertEquals(0, s.size("new.hp"));
         assertEquals(0, s.lastModified("new.hp"));
+    }
+
+    FileProfileStore indexed(long quota) {
+        return new FileProfileStore(dir.toFile(), quota, FileOutputStream::new, true);
+    }
+
+    static void writeRaw(File f, int bytes) throws IOException {
+        try (FileOutputStream out = new FileOutputStream(f)) {
+            out.write(new byte[bytes]);
+        }
+    }
+
+    @Test
+    @Tag("MEM-15")
+    @DisplayName("MEM-15: a battle starts from the saved index, asking no file its size")
+    void startsFromTheSavedIndex() throws IOException {
+        File d = dir.toFile();
+        FileProfileStore first = indexed(200_000);
+        assertFalse(first.indexRead(), "an empty directory has no index yet");
+        for (int i = 0; i < 400; i++) first.write("bot" + i + "-v3.hp", new byte[100 + i]);
+        first.delete("bot7-v3.hp");
+        assertTrue(new File(d, FileProfileStore.INDEX).isFile());
+        long used = first.bytesUsed();
+
+        // A file whose size changed behind the store's back keeps its indexed size: the
+        // next battle did not ask it, which is the point.
+        writeRaw(new File(d, "bot3-v3.hp"), 5);
+        FileProfileStore next = indexed(200_000);
+        assertTrue(next.indexRead());
+        assertEquals(399, next.names().size());
+        assertFalse(next.names().contains(FileProfileStore.INDEX), "the index is not a profile");
+        assertEquals(103, next.size("bot3-v3.hp"));
+        assertEquals(used, next.bytesUsed(), "the index's own file is counted, as Robocode counts it");
+        assertEquals(first.lastModified("bot9-v3.hp"), next.lastModified("bot9-v3.hp"));
+        assertTrue(first.lastModified("bot399-v3.hp") > first.lastModified("bot0-v3.hp"));
+        assertEquals(first.lastModified("bot399-v3.hp"), next.lastModified("bot399-v3.hp"),
+            "write order survives, so MEM-13 forgets the same profiles");
+        long index = new File(d, FileProfileStore.INDEX).length();
+        assertTrue(index < 4_000, "a full directory's index is small: " + index + " bytes");
+
+        // Later writes are still newer than anything the index holds.
+        next.write("new-v3.hp", new byte[1]);
+        assertTrue(next.lastModified("new-v3.hp") > next.lastModified("bot399-v3.hp"));
+    }
+
+    @Test
+    @Tag("MEM-15")
+    @DisplayName("MEM-15: a changed set of names or a damaged index falls back to listing every file")
+    void fallsBackToTheListing() throws IOException {
+        File d = dir.toFile();
+        FileProfileStore first = indexed(200_000);
+        first.write("a.hp", new byte[10]);
+        first.write("b.hp", new byte[20]);
+
+        writeRaw(new File(d, "stray.hp"), 7);
+        FileProfileStore strayed = indexed(200_000);
+        assertFalse(strayed.indexRead(), "a name the index was not written for");
+        assertEquals(37 + new File(d, FileProfileStore.INDEX).length(), strayed.bytesUsed());
+        strayed.write("c.hp", new byte[1]);
+        assertTrue(indexed(200_000).indexRead(), "the next write saved an index for the new names");
+
+        new File(d, "stray.hp").delete();
+        assertFalse(indexed(200_000).indexRead(), "a name gone behind the store's back");
+
+        FileProfileStore again = indexed(200_000);
+        again.write("d.hp", new byte[2]);
+        byte[] good = java.nio.file.Files.readAllBytes(new File(d, FileProfileStore.INDEX).toPath());
+        for (int cut = 0; cut < good.length; cut++) {
+            java.nio.file.Files.write(new File(d, FileProfileStore.INDEX).toPath(), Arrays.copyOf(good, cut));
+            FileProfileStore s = indexed(200_000);
+            assertFalse(s.indexRead(), "an index cut at byte " + cut);
+            assertEquals(10 + 20 + 1 + 2 + cut, s.bytesUsed(), "cut at " + cut);
+        }
+        byte[] flipped = good.clone();
+        flipped[5] ^= 1;
+        java.nio.file.Files.write(new File(d, FileProfileStore.INDEX).toPath(), flipped);
+        assertFalse(indexed(200_000).indexRead(), "a flipped bit");
+    }
+
+    @Test
+    @Tag("MEM-15")
+    @DisplayName("MEM-15: a subdirectory beside the profiles does not stop the index being read")
+    void keepsNamesThatAreNotFiles() throws IOException {
+        File d = dir.toFile();
+        new File(d, "old-format").mkdirs();
+        FileProfileStore first = indexed(200_000);
+        first.write("a.hp", new byte[10]);
+        FileProfileStore next = indexed(200_000);
+        assertTrue(next.indexRead());
+        assertEquals(List.of("a.hp"), next.names());
+    }
+
+    @Test
+    @Tag("MEM-15")
+    @DisplayName("MEM-15: with the index on, saves still match Robocode's quota and survive a kill at any byte")
+    void indexKeepsTheQuotaAndCrashSafety() throws IOException {
+        RobocodeQuota quota = new RobocodeQuota(200_000, dir.toFile());
+        FileProfileStore s = new FileProfileStore(dir.toFile(), 200_000, quota::open, true);
+        ProfileLibrary library = new ProfileLibrary(s);
+        OpponentProfile p = profile("abc.Shadow 3.83c", 3);
+        for (int round = 0; round < 35; round++) {
+            assertEquals(ProfileLibrary.Saved.WRITTEN, library.save(p), "round " + round);
+        }
+        assertEquals(s.bytesUsed(), quota.used, "the quota charges only what is on disk, the index included");
+
+        OpponentProfile next = profile("abc.Shadow 3.83c", 4);
+        for (int kill = 0; kill < 6; kill++) {
+            int[] opens = {0};
+            int target = kill;
+            FileProfileStore dying = new FileProfileStore(dir.toFile(), 200_000,
+                f -> opens[0]++ == target ? new Dying(new FileOutputStream(f), 3) : new FileOutputStream(f), true);
+            new ProfileLibrary(dying).save(next);
+            ProfileLibrary.Loaded loaded = new ProfileLibrary(indexed(200_000)).load("abc.Shadow");
+            assertTrue(loaded.found(), "killed at open " + kill);
+            assertNull(loaded.failure(), "killed at open " + kill);
+            FileProfileStore after = indexed(200_000);
+            long onDisk = 0;
+            for (File f : dir.toFile().listFiles()) onDisk += f.length();
+            assertTrue(after.bytesUsed() >= onDisk, "an interrupted save never understates what is used");
+        }
     }
 }
