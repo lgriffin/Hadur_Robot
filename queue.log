@@ -5,3 +5,8 @@
 08:16:02 start ncbb
 08:16:02 watching ncbb: 3 stop rule(s)
 08:16:19 progress ncbb: 0/192 (0%) battles, 0 failed
+08:34:33 ncbb exit=0 in 1110 s
+08:34:33 start ncxc
+08:34:33 watching ncxc: 3 stop rule(s)
+08:41:00 ncxc exit=130 in 386 s (stopped)
+08:41:00 stopped; rerun to resume from the interrupted steps
