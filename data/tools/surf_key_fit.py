@@ -38,7 +38,7 @@ import aes_rank as ar  # noqa: E402
 DEFAULTS = (4, 3, 3, 3, 2, 4, 1, 3, 2)   # MoveFormula.weights
 DIMS = len(DEFAULTS)
 K, K_DIVISOR = 20, 5                      # the "normal" view
-MIN_DISTANCE = 1e-6                       # MoveController.MIN_DISTANCE floor on the squared distance
+MIN_DISTANCE = 1e-12                      # MoveController.MIN_DISTANCE floor on the squared distance
 STEPS = range(-12, 13)                    # weight multipliers 2^(q/4): x1/8 .. x8
 WIDTHS = (0.5, 0.7, 1.0, 1.4, 2.0, 2.8)
 SAMPLES = 41                              # guess factors a surface is rated at, evenly over [-1, 1]
@@ -196,11 +196,8 @@ def score(battles, mult, width):
     return s / n if n else float("nan")
 
 
-FIT_WIDTH = True                          # --no-width fixes the width at 1
-
-
-def descend(battles, sweeps=3):
-    """Coordinate descent from the default key; returns (mult, width, bits)."""
+def descend(battles, sweeps=3, fit_width=True):
+    """Coordinate descent from the default key; returns (mult, width, bits). fit_width False keeps the width at 1."""
     import numpy as np
     q = np.zeros(DIMS, dtype=int)
     wi = WIDTHS.index(1.0)
@@ -211,7 +208,7 @@ def descend(battles, sweeps=3):
         moved = False
         for d in range(DIMS + 1):
             if d == DIMS:
-                cands = [(q, j) for j in range(len(WIDTHS)) if j != wi] if FIT_WIDTH else []
+                cands = [(q, j) for j in range(len(WIDTHS)) if j != wi] if fit_width else []
             else:
                 cands = []
                 for step in (-4, -2, -1, 1, 2, 4):
@@ -231,7 +228,7 @@ def descend(battles, sweeps=3):
 
 def fit_bot(args):
     import numpy as np
-    name, battles = args
+    name, battles, fit_width = args
     hits = int(sum(len(b.hits) for b in battles))
     ones, wd = np.ones(DIMS), 1.0
     row = {"name": name, "battles": len(battles), "hits": hits, "bullets": int(sum(b.n for b in battles))}
@@ -241,15 +238,15 @@ def fit_bot(args):
         for k in range(2):
             train = [b for i, b in enumerate(battles) if i % 2 == k]
             test = [b for i, b in enumerate(battles) if i % 2 != k]
-            m, w, _ = descend(train)
+            m, w, _ = descend(train, fit_width=fit_width)
             folds.append(score(test, m, w) - score(test, ones, wd))
     row["folds"] = folds
-    m, w, s = descend(battles)
+    m, w, s = descend(battles, fit_width=fit_width)
     row["mult"], row["width"], row["fitted"] = m, w, s
     return row
 
 
-def fit(path, out, keys, tsv, jobs, min_gain, min_hits):
+def fit(path, out, keys, tsv, jobs, min_gain, min_hits, fit_width=True):
     import numpy as np
     z = np.load(path)
     names = list(z["bots"])
@@ -257,7 +254,7 @@ def fit(path, out, keys, tsv, jobs, min_gain, min_hits):
     for bi, name in enumerate(names):
         idx = np.nonzero(z["bot"] == bi)[0]
         battles = [Battle(z, idx[z["battle"][idx] == b]) for b in sorted(set(z["battle"][idx].tolist()))]
-        tasks.append((name, battles))
+        tasks.append((name, battles, fit_width))
     with Pool(max(1, jobs)) as pool:
         rows = list(pool.imap(fit_bot, tasks, chunksize=1))
     rows.sort(key=lambda r: -min(r["folds"]) if r["folds"] else 0)
@@ -296,7 +293,6 @@ def fit(path, out, keys, tsv, jobs, min_gain, min_hits):
 
 
 def main(argv=None):
-    global FIT_WIDTH
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("join")
@@ -313,11 +309,10 @@ def main(argv=None):
     p.add_argument("--min-hits", type=int, default=30)
     p.add_argument("--no-width", action="store_true", help="fit the nine weights only; the width stays 1")
     a = ap.parse_args(argv)
-    FIT_WIDTH = not getattr(a, "no_width", False)
     if a.cmd == "join":
         join(a.workdirs, a.out, a.jobs)
     else:
-        fit(a.data, a.out, a.keys, a.tsv, a.jobs, a.min_gain, a.min_hits)
+        fit(a.data, a.out, a.keys, a.tsv, a.jobs, a.min_gain, a.min_hits, fit_width=not a.no_width)
 
 
 if __name__ == "__main__":

@@ -57,6 +57,21 @@ class SurfKeyFitTest(unittest.TestCase):
         self.assertEqual(int(np.argmax(mult)), 0, "the weight on the one dimension the gun reads goes up most")
         self.assertGreater(sk.score(test, mult, width) - base, 0.1, "and the held-out battle scores better")
 
+    @unittest.skipIf(np is None, "numpy")
+    def test_no_width_reaches_spawned_workers(self):
+        # Windows starts Pool workers by spawn, which re-imports the module: --no-width must travel in the task
+        import multiprocessing
+        battles = [battle(1, hit_every=2), battle(2, hit_every=2)]
+        _, width, _ = sk.descend(battles, fit_width=False)
+        self.assertEqual(width, 1.0)
+        with multiprocessing.get_context("spawn").Pool(2) as pool:
+            rows = pool.map(sk.fit_bot, [("a", battles, False), ("b", battles, False)])
+        self.assertEqual([r["width"] for r in rows], [1.0, 1.0], "weights only in every worker")
+
+    @unittest.skipIf(np is None, "numpy")
+    def test_distance_floor_matches_the_surf(self):
+        self.assertEqual(sk.MIN_DISTANCE, 1e-12, "MoveController.MIN_DISTANCE")
+
 
 if __name__ == "__main__":
     unittest.main()

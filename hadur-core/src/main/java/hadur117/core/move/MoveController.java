@@ -151,10 +151,11 @@ public class MoveController {
     }
 
     /**
-     * SKEY-2: the opponent's surf key. Every view in the {@link MoveFormula} space (the hit views and the
-     * light flattener) searches with the default weights times the key's first nine values, and the
-     * views' danger kernel is the key's last value times as wide. Null restores the defaults, so a
-     * battle against an opponent with no key plays exactly as before.
+     * SKEY-2: the opponent's surf key. The hit views (the {@link MoveFormula} views that log bullet hits:
+     * normal and recent1 to recent6, what the fit models) search with the default weights times the key's
+     * first nine values, and their danger kernel is the key's last value times as wide. The flatteners and
+     * the simple view keep their weights and width. Null restores the defaults, so a battle against an
+     * opponent with no key plays exactly as before.
      *
      * @param key nine weight multipliers then the width's ({@link hadur117.core.shieldmode.ShieldList#surfKeyFor}), or null
      */
@@ -165,8 +166,18 @@ public class MoveController {
         }
         keyWidth = key == null ? 1.0 : key[w.length];
         for (KnnView<TimestampedGuessFactor> view : views) {
-            if (view.formula.getClass() == MoveFormula.class) view.setWeights(w.clone());
+            if (keyed(view)) view.setWeights(w.clone());
         }
+    }
+
+    /** SKEY-2: whether the surf key acts on {@code view}: a {@link MoveFormula} view that logs bullet hits. */
+    private static boolean keyed(KnnView<TimestampedGuessFactor> view) {
+        return view.logBulletHits && view.formula.getClass() == MoveFormula.class;
+    }
+
+    /** SKEY-2: the kernel width {@code view} uses: the key's width on a keyed view, else the bare bandwidth. */
+    private double viewBandwidth(KnnView<TimestampedGuessFactor> view, double bandwidth) {
+        return keyed(view) ? bandwidth * keyWidth : bandwidth;
     }
 
     /** SKEY-2: the kernel width's multiplier now in force (1 with no surf key). */
@@ -179,9 +190,9 @@ public class MoveController {
         return views.get(i).formula.weights.clone();
     }
 
-    /** SKEY-2: whether view {@code i} searches the {@link MoveFormula} space, for tests. */
+    /** SKEY-2: whether the surf key acts on view {@code i}, for tests. */
     boolean viewInKeySpace(int i) {
-        return views.get(i).formula.getClass() == MoveFormula.class;
+        return keyed(views.get(i));
     }
 
     /**
@@ -1317,7 +1328,7 @@ public class MoveController {
                     w.firingAngle(tsgf.guessFactor), dangerAngle);
                 // MOVE-4: the kernel's mass over the whole intersection, not its height at the
                 // centre; MOVE-3: counting only what the shadows let through.
-                density += scanWeight * kernel(xFiringAngle, bandwidth * keyWidth, segments);
+                density += scanWeight * kernel(xFiringAngle, viewBandwidth(view, bandwidth), segments);
                 viewScanWeight += scanWeight;
             }
             totalScanWeight += viewScanWeight * viewWeight;
@@ -1441,7 +1452,7 @@ public class MoveController {
                     / Math.sqrt(Math.max(entry.distance, MIN_DISTANCE)) * tsgf.weight();
                 double xFiringAngle = DiaUtils.normalizeAngle(
                     w.firingAngle(tsgf.guessFactor), dangerAngle);
-                density += scanWeight * kernel(xFiringAngle, bandwidth, segments);
+                density += scanWeight * kernel(xFiringAngle, viewBandwidth(view, bandwidth), segments);
                 viewScanWeight += scanWeight;
             }
             // !(x > 0) also catches NaN: such a view adds nothing to the average either.

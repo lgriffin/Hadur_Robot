@@ -20,7 +20,7 @@ class SurfKeyTest {
     private static final Point2D.Double ME = new Point2D.Double(400, 100);
     private static final double[] DEFAULTS = new MoveFormula().weights;
 
-    /** A controller whose views hold seven hits spread over guess factors, and one wave in the air. */
+    /** A controller whose views hold seven hits spread over guess factors, a 12% gun's prior, and one wave in the air. */
     private static MoveController world() {
         MoveController m = SurfOpeningTest.controller();
         for (int i = 0; i < 7; i++) {
@@ -29,6 +29,7 @@ class SurfKeyTest {
             s[12] = -0.6 + 0.2 * i;
             m.seed(s, new SeedWeight(0.5));
         }
+        m.setPrior(0.12, 0.01); // a 12% gun, so the hit views (on at 2.5 and 3%) rate the wave
         m.addWave(PlanPublishTest.firingWave(SOURCE, ME));
         return m;
     }
@@ -61,7 +62,7 @@ class SurfKeyTest {
 
     @Test
     @Tag("SKEY-2")
-    @DisplayName("a surf key multiplies the MoveFormula views' weights only; null restores the defaults")
+    @DisplayName("a surf key multiplies the hit views' weights only; null restores the defaults")
     void keyWeights() {
         MoveController m = world();
         double[][] before = new double[m.viewCount()][];
@@ -79,7 +80,7 @@ class SurfKeyTest {
                 assertArrayEquals(before[i], w, 0, "other spaces keep their own weights");
             }
         }
-        assertEquals(8, inSpace, "normal, recent1 to recent6 and the light flattener");
+        assertEquals(7, inSpace, "normal and recent1 to recent6; the light flattener logs visits and keeps its weights");
         m.setSurfKey(null);
         assertEquals(1.0, m.keyWidth());
         for (int i = 0; i < m.viewCount(); i++) {

@@ -11,8 +11,8 @@ mode, which hold +0.91 of its +2.07 lead.
   enemy wave at its first rating: fire time, power, and the 13 FlattenerFormula values (the first 9 are MoveFormula's).
   Behaviour is unchanged. With `oracle` and the truth log on, `gun_oracle.join_battle` gives each wave its true GF.
 - **SKEY-2, play.** A `surf-key: m1 .. m9 bw name` line in the shield list multiplies the 9 MoveFormula weights of the
-  8 hit views that use MoveFormula (the flatteners keep their own) and scales the danger kernel's width by `bw`. Duel
-  only. No line = master. Ablation `sklist` reads `SURF_KEY=<file>` (suffix `kl`); `sklist,bb` is the weights-only arm.
+  7 hit views (normal, recent1 to recent6) and scales only their danger kernel's width by `bw`. The simple view and the
+  three flatteners keep their weights and width, so the key changes only what the fit modelled. Duel only. No line = master. Ablation `sklist` reads `SURF_KEY=<file>` (suffix `kl`); `sklist,bb` is the weights-only arm.
 - **SKEY-3, fit.** `data/tools/surf_key_fit.py join` turns record runs into one table; `fit` models the "normal" hit
   view (k = min(20, n/5), the surf's kernel), scores each held-out bullet in bits over uniform (5% uniform mixed in), and
   searches each weight by coordinate descent in quarter-log2 steps plus 6 widths. Two seeds fit, two score, both ways. A
@@ -23,13 +23,17 @@ mode, which hold +0.91 of its +2.07 lead.
 - Record: 58 of the panel's 60 robots (two zen jars do not load) x 2 seeds, 207,972 enemy bullets, 19,277 hits.
   Report `local/2026-10-31_skey-rec.md`.
 - Fit: **50 of 60 keys ship**. The worse fold gains +0.22 bits a bullet on average (median +0.15); 3 robots lose.
-  Most picked the widest kernel (2.8 x 37, 2.0 x 12). The proxy models one view while the width acts on all of them, so
+  Most picked the widest kernel (2.8 x 37, 2.0 x 12). The proxy models one view while the width acts on all seven hit views, so
   the card also runs a weights-only arm. Fit table `local/2026-10-31_skey-fit.md`, keys `local/2026-10-31_skey-keys.txt`.
 - Smoke A/B, master vs keys, the 50 shipped robots x 2 fresh seeds from 6000 (200 battles):
   **+0.82 ± 1.03 points of score share, not significant**; 32 robots up, 18 down. Weaker robots gain (bands 4 to 6 +1.0
   to +1.7); the strong learners lose (WaveSerpent -8.4, SandboxDT -6.6, Diamond -6.5, PinkPanther -5.8, Dookious -4.1).
   On the 1,217 field that is about +0.03 APS. Reports `local/2026-10-31_skey-smoke.md` and
   `local/2026-10-31_skey-smoke-per-robot.md`.
+
+The smoke ran an earlier form of SKEY-2 that also widened the flatteners' kernels (weights 50 and 500) and keyed the
+light flattener; a review caught it, and the card tests the narrowed form. Widening the flatteners by 2.8 against
+the strong learners, where they are on, fits those losses too.
 
 The keys are fitted on 2 seeds of our own play, so a learner that adapts to us breaks them; that fits the losses. The
 PC card has 4 seeds a robot to fit on, a weights-only arm, and a 3-point per-robot pick, so only robots whose key pays
