@@ -180,6 +180,13 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../requirements.html#POISON-2">POISON-2</a>: the opponents fought with stop-and-go, WavePoisonShift's variant (two ticks early).</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#surfKeys()" class="member-name-link">surfKeys</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../requirements.html#SKEY-2">SKEY-2</a>: per-opponent surf keys, each line <code>"m1 ... m9 bw name"</code>: nine multipliers on the
+ hit views' key weights (<code>MoveFormula</code>) and one on the kernel width, fitted offline from that
+ opponent's bullets (<code>data/tools/surf_key_fit.py</code>).</div>
+</div>
 </div>
 </div>
 </div>
@@ -322,6 +329,20 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>a fresh array of names</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="surfKeys()">
+<h3>surfKeys</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</span>&nbsp;<span class="element-name">surfKeys</span>()</div>
+<div class="block"><a class="req" href="../../requirements.html#SKEY-2">SKEY-2</a>: per-opponent surf keys, each line <code>"m1 ... m9 bw name"</code>: nine multipliers on the
+ hit views' key weights (<code>MoveFormula</code>) and one on the kernel width, fitted offline from that
+ opponent's bullets (<code>data/tools/surf_key_fit.py</code>). Empty on master; candidate builds add
+ lines here (build-ablation.sh sklist).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>a fresh array of lines</dd>
 </dl>
 </section>
 </li>

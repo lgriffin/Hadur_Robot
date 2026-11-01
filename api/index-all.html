@@ -2964,6 +2964,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#ORACLE-1">ORACLE-1</a>: the records made since the last call, oldest first; the list is then emptied.</div>
 </dd>
+<dt><a href="hadur117/core/move/SurfMover.html#drainSurfKeyRecords()" class="member-name-link">drainSurfKeyRecords()</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/SurfMover.html" title="class in hadur117.core.move">SurfMover</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SKEY-1">SKEY-1</a>: the records made since the last call, oldest first; the list is then emptied.</div>
+</dd>
 <dt><a href="hadur117/core/move/ShotDodgePlanner.html#DRIFT" class="member-name-link">DRIFT</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/ShotDodgePlanner.html" title="class in hadur117.core.move">ShotDodgePlanner</a></dt>
 <dd>
 <div class="block">A replan is forced when we are this far from the path, px.</div>
@@ -6500,6 +6504,10 @@ loadScripts(document, 'script');</script>
  the version after the first space, as <code>"cz.libors.Ogi 1.0 (2)"</code> to
  <code>"cz.libors.Ogi"</code>.</div>
 </dd>
+<dt><a href="hadur117/core/move/MoveController.html#keyWidth()" class="member-name-link">keyWidth()</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/MoveController.html" title="class in hadur117.core.move">MoveController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SKEY-2">SKEY-2</a>: the kernel width's multiplier now in force (1 with no surf key).</div>
+</dd>
 <dt><a href="hadur117/mini/core/Gun.html#KILL" class="member-name-link">KILL</a> - Static variable in class hadur117.mini.core.<a href="hadur117/mini/core/Gun.html" title="class in hadur117.mini.core">Gun</a></dt>
 <dd>
 <div class="block">Whether power is capped at what kills the target (DEISE-10): off since 0.3 (arm WHPK +0.14).</div>
@@ -6952,6 +6960,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/replay/Replay.Tick.html#line()" class="member-name-link">line()</a> - Method in class hadur117.core.replay.<a href="hadur117/core/replay/Replay.Tick.html" title="class in hadur117.core.replay">Replay.Tick</a></dt>
 <dd>
 <div class="block">The 1-based line number of the tick's <code>I</code> line, for failure messages.</div>
+</dd>
+<dt><a href="hadur117/core/move/SurfKeyRecord.html#line(hadur117.core.model.Wave,double%5B%5D)" class="member-name-link">line(Wave, double[])</a> - Static method in class hadur117.core.move.<a href="hadur117/core/move/SurfKeyRecord.html" title="class in hadur117.core.move">SurfKeyRecord</a></dt>
+<dd>
+<div class="block">The record's line, without the <code>SKN,round,tick,</code> prefix.</div>
 </dd>
 <dt><a href="hadur117/core/move/AesRecord.html#line(hadur117.core.model.Wave,int,int,boolean%5B%5D,double%5B%5D,double%5B%5D%5B%5D)" class="member-name-link">line(Wave, int, int, boolean[], double[], double[][])</a> - Static method in class hadur117.core.move.<a href="hadur117/core/move/AesRecord.html" title="class in hadur117.core.move">AesRecord</a></dt>
 <dd>
@@ -13139,6 +13151,17 @@ loadScripts(document, 'script');</script>
 <div class="block">MOVE-25: whether the stop-point surf (<a href="hadur117/core/move/StopPointSurf.html" title="class in hadur117.core.move"><code>StopPointSurf</code></a>) drives every surfed tick in
  place of the three options and go-to, while the tick budget allows go-to surfing.</div>
 </dd>
+<dt><a href="hadur117/core/move/MoveController.html#setSurfKey(double%5B%5D)" class="member-name-link">setSurfKey(double[])</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/MoveController.html" title="class in hadur117.core.move">MoveController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SKEY-2">SKEY-2</a>: the opponent's surf key.</div>
+</dd>
+<dt><a href="hadur117/core/move/SurfMover.html#setSurfKeyRecord(boolean)" class="member-name-link">setSurfKeyRecord(boolean)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/SurfMover.html" title="class in hadur117.core.move">SurfMover</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SKEY-1">SKEY-1</a> (measurement): whether each wave's first three-option rating also prints an <code>SKN</code>
+ record with the wave's surf key, the <a href="hadur117/core/move/FlattenerFormula.html" title="class in hadur117.core.move"><code>FlattenerFormula</code></a> point whose first nine values are
+ the <a href="hadur117/core/move/MoveFormula.html" title="class in hadur117.core.move"><code>MoveFormula</code></a> point the hit views search on, for the per-opponent surf-key fit
+ (<code>data/tools/surf_key_fit.py</code>).</div>
+</dd>
 <dt><a href="hadur117/core/model/Wave.html#setTargetEnergy(double)" class="member-name-link">setTargetEnergy(double)</a> - Method in class hadur117.core.model.<a href="hadur117/core/model/Wave.html" title="class in hadur117.core.model">Wave</a></dt>
 <dd>
 <div class="block">Sets <a href="hadur117/core/model/Wave.html#targetEnergy"><code>Wave.targetEnergy</code></a>.</div>
@@ -14366,6 +14389,21 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MMOVE-15">MMOVE-15</a>: the learned aims a melee shot keeps, its nearest samples'.</div>
 </dd>
+<dt><a href="hadur117/core/shieldmode/ShieldList.html#SURF_KEY_PREFIX" class="member-name-link">SURF_KEY_PREFIX</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SKEY-2">SKEY-2</a>: a line starting with this gives an opponent's surf key: nine multipliers on the hit
+ views' key weights, one on the kernel width, then the name (<code>"m1 ... m9 bw name"</code>).</div>
+</dd>
+<dt><a href="hadur117/core/duel/MoveDesign.html#SURF_KEY_RECORD" class="member-name-link">SURF_KEY_RECORD</a> - Static variable in class hadur117.core.duel.<a href="hadur117/core/duel/MoveDesign.html" title="class in hadur117.core.duel">MoveDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SKEY-1">SKEY-1</a> (measurement): each wave's first three-option rating also prints an <code>SKN</code> record
+ with the wave's surf key, for the offline per-opponent surf-key fit
+ (<code>data/tools/surf_key_fit.py</code>).</div>
+</dd>
+<dt><a href="hadur117/core/shieldmode/ShieldList.html#SURF_KEY_VALUES" class="member-name-link">SURF_KEY_VALUES</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SKEY-2">SKEY-2</a>: the numbers a surf-key line carries before the name.</div>
+</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#surfBest(java.util.List,hadur117.core.melee.MinimumRiskMovement.View)" class="member-name-link">surfBest(List&lt;Point2D.Double&gt;, MinimumRiskMovement.View)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MMOVE-15">MMOVE-15</a>: the melee surfer's wave check, with <a class="req" href="../requirements.html#MMOVE-17">MMOVE-17</a>'s scores and <a class="req" href="../requirements.html#MMOVE-18">MMOVE-18</a>'s shadows when on.</div>
@@ -14373,6 +14411,23 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#surfing()" class="member-name-link">surfing()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MMOVE-15">MMOVE-15</a>: whether this movement surfs off a team.</div>
+</dd>
+<dt><a href="hadur117/core/shieldmode/ShieldList.html#surfKeyFor(java.lang.String)" class="member-name-link">surfKeyFor(String)</a> - Method in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SKEY-2">SKEY-2</a>: <code>robotName</code>'s surf key, by the rule of <a href="hadur117/core/shieldmode/ShieldList.html#matches(java.lang.String)"><code>ShieldList.matches(java.lang.String)</code></a>: the full name's entry,
+ else the name's without the version.</div>
+</dd>
+<dt><a href="hadur117/core/move/SurfKeyRecord.html" class="type-name-link" title="class in hadur117.core.move">SurfKeyRecord</a> - Class in <a href="hadur117/core/move/package-summary.html">hadur117.core.move</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SKEY-1">SKEY-1</a>: the surf-key record, one line per wave at the three-option surf's first rating of it, with
+ the wave's point in the surf sample's feature space (<a href="hadur117/core/move/FlattenerFormula.html" title="class in hadur117.core.move"><code>FlattenerFormula</code></a>; its first nine values
+ are the <a href="hadur117/core/move/MoveFormula.html" title="class in hadur117.core.move"><code>MoveFormula</code></a> point the hit views search on).</div>
+</dd>
+<dt><a href="hadur117/ShieldTableData.html#surfKeys()" class="member-name-link">surfKeys()</a> - Static method in class hadur117.<a href="hadur117/ShieldTableData.html" title="class in hadur117">ShieldTableData</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SKEY-2">SKEY-2</a>: per-opponent surf keys, each line <code>"m1 ... m9 bw name"</code>: nine multipliers on the
+ hit views' key weights (<code>MoveFormula</code>) and one on the kernel width, fitted offline from that
+ opponent's bullets (<code>data/tools/surf_key_fit.py</code>).</div>
 </dd>
 <dt><a href="hadur117/core/duel/DuelController.html#surfMode()" class="member-name-link">surfMode()</a> - Method in class hadur117.core.duel.<a href="hadur117/core/duel/DuelController.html" title="class in hadur117.core.duel">DuelController</a></dt>
 <dd>
@@ -16262,6 +16317,14 @@ the order they are declared.</div>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MOVE-14">MOVE-14</a>: each danger view's own score at <code>intersection</code>, and its share of the
  average, for the protean pick's spread.</div>
+</dd>
+<dt><a href="hadur117/core/move/MoveController.html#viewInKeySpace(int)" class="member-name-link">viewInKeySpace(int)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/MoveController.html" title="class in hadur117.core.move">MoveController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SKEY-2">SKEY-2</a>: whether the surf key acts on view <code>i</code>, for tests.</div>
+</dd>
+<dt><a href="hadur117/core/move/MoveController.html#viewKeyWeights(int)" class="member-name-link">viewKeyWeights(int)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/MoveController.html" title="class in hadur117.core.move">MoveController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SKEY-2">SKEY-2</a>: view <code>i</code>'s key weights, for tests.</div>
 </dd>
 <dt><a href="hadur117/core/gun/HybridGun.html#viewName()" class="member-name-link">viewName()</a> - Static method in class hadur117.core.gun.<a href="hadur117/core/gun/HybridGun.html" title="class in hadur117.core.gun">HybridGun</a></dt>
 <dd>

@@ -223,6 +223,17 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#POISON-2">POISON-2</a>: the same with the reverse crawl two ticks before the enemy's gun is ready (WavePoisonShift).</div>
 </div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#SURF_KEY_PREFIX" class="member-name-link">SURF_KEY_PREFIX</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#SKEY-2">SKEY-2</a>: a line starting with this gives an opponent's surf key: nine multipliers on the hit
+ views' key weights, one on the kernel width, then the name (<code>"m1 ... m9 bw name"</code>).</div>
+</div>
+<div class="col-first odd-row-color"><code>static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#SURF_KEY_VALUES" class="member-name-link">SURF_KEY_VALUES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#SKEY-2">SKEY-2</a>: the numbers a surf-key line carries before the name.</div>
+</div>
 </div>
 </section>
 </li>
@@ -321,9 +332,15 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../../../../requirements.html#POISON-2">POISON-2</a>: the stop-and-go variant for <code>robotName</code>, by the rule of <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>: the
  reverse crawl's ticks before the enemy's gun is ready, 1 or 2; 0 when it is not listed.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#withoutVersion(java.lang.String)" class="member-name-link">withoutVersion</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#surfKeyFor(java.lang.String)" class="member-name-link">surfKeyFor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#SKEY-2">SKEY-2</a>: <code>robotName</code>'s surf key, by the rule of <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>: the full name's entry,
+ else the name's without the version.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#withoutVersion(java.lang.String)" class="member-name-link">withoutVersion</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The name before its first space: Robocode's class names hold none, so what follows is the version.</div>
 </div>
 </div>
@@ -548,6 +565,37 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="SURF_KEY_PREFIX">
+<h3>SURF_KEY_PREFIX</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">SURF_KEY_PREFIX</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#SKEY-2">SKEY-2</a>: a line starting with this gives an opponent's surf key: nine multipliers on the hit
+ views' key weights, one on the kernel width, then the name (<code>"m1 ... m9 bw name"</code>).</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.shieldmode.ShieldList.SURF_KEY_PREFIX">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="SURF_KEY_VALUES">
+<h3>SURF_KEY_VALUES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">SURF_KEY_VALUES</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#SKEY-2">SKEY-2</a>: the numbers a surf-key line carries before the name.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.shieldmode.ShieldList.SURF_KEY_VALUES">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="HEAT_JIT">
 <h3>HEAT_JIT</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">HEAT_JIT</span></div>
@@ -696,6 +744,20 @@ loadScripts(document, 'script');</script>
 <dd><code>robotName</code> - the scanned robot's name, or null</dd>
 <dt>Returns:</dt>
 <dd>whether it is on the opening-drive list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="surfKeyFor(java.lang.String)">
+<h3>surfKeyFor</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double[]</span>&nbsp;<span class="element-name">surfKeyFor</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#SKEY-2">SKEY-2</a>: <code>robotName</code>'s surf key, by the rule of <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>: the full name's entry,
+ else the name's without the version.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>robotName</code> - the scanned robot's name, or null</dd>
+<dt>Returns:</dt>
+<dd>a fresh array of nine weight multipliers and the kernel width's, or null when none is shipped</dd>
 </dl>
 </section>
 </li>

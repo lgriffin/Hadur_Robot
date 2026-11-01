@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 313 of 318 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 315 of 321 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -1543,6 +1543,22 @@ traceability check reads. 313 of 318 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">SHELF-4</span><span class="badge">Ubiquitous</span><span class="badge stage">A4</span></div>
 <p>The <code>.hm</code> and <code>.ht</code> shelves shall each stay within a fixed byte budget.</p>
 <dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/MeleeMemoryTest.java">MeleeMemoryTest.java</a></dd></dl>
+</article>
+<h2 id="group-SKEY">SKEY</h2>
+<article class="req-card" id="SKEY-1">
+<div class="req-head"><span class="rid">SKEY-1</span><span class="badge">State</span><span class="badge stage">R9</span></div>
+<p>While the surf-key-record switch is on, in a duel, at the first tick the three-option surf publishes its options on a wave (<a class="req" href="requirements.html#MOVE-10">MOVE-10</a>), the duel shall emit one <code>SKN</code> telemetry record holding the wave&#x27;s fire time, power, whether a real bullet rides it, and its point in the surf sample&#x27;s feature space (<code>FlattenerFormula</code>, whose first nine values are the hit views&#x27; <code>MoveFormula</code> point); the option taken shall be the one the surf takes with the switch off. With the switch off no record is made.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/duel/DuelController.html" title="hadur117.core.duel.DuelController">DuelController</a>, <a href="api/hadur117/core/duel/MoveDesign.html" title="hadur117.core.duel.MoveDesign">MoveDesign</a>, <a href="api/hadur117/core/move/SurfKeyRecord.html" title="hadur117.core.move.SurfKeyRecord">SurfKeyRecord</a>, <a href="api/hadur117/core/move/SurfMover.html" title="hadur117.core.move.SurfMover">SurfMover</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/move/SurfKeyTest.java">SurfKeyTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="SKEY-2">
+<div class="req-head"><span class="rid">SKEY-2</span><span class="badge">Optional</span><span class="badge stage">R9</span></div>
+<p>Where the table&#x27;s <code>surf-key:</code> lines name the duel opponent (<code>m1 ... m9 bw name</code>, matched as the shield list is; a line with a non-positive or malformed value is skipped), every hit view in the <code>MoveFormula</code> space (normal and recent1 to recent6) shall search with the default key weights times the nine multipliers and those views&#x27; danger kernel shall be <code>bw</code> times as wide, while the simple view and the flatteners keep their weights and width; against any other opponent, and in melee and team, the views shall keep the default weights and width and the duel play exactly as before.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/Hadur.html" title="hadur117.Hadur">Hadur</a>, <a href="api/hadur117/ShieldTableData.html" title="hadur117.ShieldTableData">ShieldTableData</a>, <a href="api/hadur117/core/duel/DuelController.html" title="hadur117.core.duel.DuelController">DuelController</a>, <a href="api/hadur117/core/move/MoveController.html" title="hadur117.core.move.MoveController">MoveController</a>, <a href="api/hadur117/core/shieldmode/ShieldList.html" title="hadur117.core.shieldmode.ShieldList">ShieldList</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/move/SurfKeyTest.java">SurfKeyTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/shieldmode/ShieldListTest.java">ShieldListTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="SKEY-3">
+<div class="req-head"><span class="rid">SKEY-3</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p><code>data/tools/surf_key_fit.py</code> shall join each <code>SKN</code> record to the <code>ORC</code> join&#x27;s bullet (true guess factor, hit or not), model each opponent&#x27;s bullets with the normal hit view searching only the hits known before each bullet with a candidate key, rate a key by log2 density at the true guess factor over the uniform&#x27;s, fit the key by coordinate descent from the default on one battle and score it on another both ways, and write a <code>surf-key:</code> line only for an opponent whose two held-out folds both gain the minimum and that has the minimum hits.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><span class="none">no tagged test</span></dd></dl>
 </article>
 <h2 id="group-STRAND">STRAND</h2>
 <article class="req-card" id="STRAND-1">
