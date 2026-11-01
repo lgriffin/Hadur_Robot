@@ -1,0 +1,16 @@
+# pc-rival-near: near-miss picks of pc-rival-picks (PR #532), best arm 3+ points, not locked.
+janm.Jammy 1.0
+dmp.micro.Aurora 1.41
+aw.Gilgalad 1.99.5c
+rz.SmallDevil 1.502
+sL300.Mozart life
+tango.Recrimpo 2.51
+cjm.Che 1.2
+ruc.nano.Zealot 0.2
+rz.Artist 0.2
+pez.frankie.Frankie 0.9.6.1
+kawigi.nano.FunkyChicken 1.1
+slugzilla.ButtHead 2.0
+wilson.Chameleon 0.91
+intruder.PrairieWolf 2.61
+sheldor.nano.PointInLine 1.0
