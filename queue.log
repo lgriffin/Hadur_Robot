@@ -7,3 +7,7 @@
 00:13:32 progress c2bb: 0/1472 (0%) battles, 0 failed
 00:43:46 progress c2bb: 381/1472 (26%) battles, 750/h, ETA 1.5 h, 0 failed, skips 8.5/battle (last 100)
 01:14:00 progress c2bb: 898/1472 (61%) battles, 888/h, ETA 39 min, 0 failed, skips 6.7/battle (last 100)
+01:43:08 c2bb exit=0 in 5390 s
+01:43:08 start c2on
+01:43:08 watching c2on: 3 stop rule(s)
+01:44:14 progress c2on: 0/1472 (0%) battles, 0 failed
