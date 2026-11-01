@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import robocode.AdvancedRobot;
+import robocode.BulletHitEvent;
 import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
 
@@ -99,6 +100,9 @@ public final class MiniWorld {
     int ticks;
     /** Shots fired, as the world saw them. */
     public int shots;
+    /** Hits delivered, as BulletHitEvents. */
+    public int hits;
+    private boolean hit;
 
     /**
      * A world around a robot class loaded afresh from {@code classPath}.
@@ -169,6 +173,17 @@ public final class MiniWorld {
                     Math.hypot(e.x - x, e.y - y), e.heading, e.velocity, false));
             }
         }
+        Enemy near = null;
+        for (Enemy e : enemies) {
+            if (e.alive && (near == null || Math.hypot(e.x - x, e.y - y) < Math.hypot(near.x - x, near.y - y))) {
+                near = e;
+            }
+        }
+        if (hit && near != null) {
+            hits++;
+            robot.onBulletHit(new BulletHitEvent(near.name, near.energy, null));
+        }
+        hit = false;
     }
 
     private double lastRadarStep;
@@ -199,7 +214,8 @@ public final class MiniWorld {
             double p = Math.min(Math.max((Double) o, 0.1), 3);
             gunHeat = 1 + p / 5;
             energy -= p;
-            shots++;
+            // Every third shot hits the nearest live enemy at the next turn (DEISE-17's hits).
+            hit = ++shots % 3 == 0;
         }
         if ((o = peer.now.get("setMove")) != null) distanceRemaining = (Double) o;
         if ((o = peer.now.get("setTurnBody")) != null) bodyTurnRemaining = (Double) o;

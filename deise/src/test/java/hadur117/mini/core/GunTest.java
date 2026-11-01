@@ -89,11 +89,11 @@ class GunTest {
         for (int i = 0; i < 8; i++) {
             Gun.learn(t, run, run, r);
         }
-        // Moving north at 8, 400 px east of us.
+        // Moving north at 8, 400 px east of us; 400 playouts, as Deise aims since 0.5.
         double still = Math.atan2(400, 0);
         int stops = 0;
         for (int i = 0; i < 20; i++) {
-            double a = Gun.aim(t, run, 900, 400, 0, 8, 500, 400, 400, 2, 64, new Random(i));
+            double a = Gun.aim(t, run, 900, 400, 0, 8, 500, 400, 400, 2, 400, new Random(i));
             stops += off(a, still) < 0.02 ? 1 : 0;
         }
         assertTrue(stops <= 2, "aimed at the stop " + stops + " of 20");

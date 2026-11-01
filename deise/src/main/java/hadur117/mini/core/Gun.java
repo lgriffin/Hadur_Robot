@@ -62,8 +62,8 @@ public final class Gun {
         int[] bins = new int[BINS];
         int best = 0;
         double speed = 20 - 3 * power;
-        // At least 1 bin anywhere on a 1000 x 1000 field (atan(18 / 1415) is 2.07 bins).
-        int width = (int) (Math.atan(18 / distance) * (BINS / 2 / Math.PI));
+        // Half the target's width since 0.5 (arm PN); at least 1 bin anywhere on a 1000 x 1000 field (atan(9 / 1415) is 1.04 bins).
+        int width = (int) (Math.atan(9 / distance) * (BINS / 2 / Math.PI));
         for (int i = 0; i < playouts; i++) {
             double px = x;
             double py = y;

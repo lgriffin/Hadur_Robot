@@ -504,6 +504,50 @@ with PL400 again, D, Mirage and SAOR, fresh seeds from 4000, 7 seats, about 2 h.
 +0.30 or more over D, low end above 0, is fitted as 0.5 on Leigh's go; MIR's seat reads what is left
 of Mirage's lead on the bench.
 
+E6b's result (PR #509, 2026-10-31): D read 71.21 ± 0.16; against it PN +0.13 ± 0.21, PNS +0.11,
+PNS6 +0.27 ± 0.22 (but 600 playouts cost CPU) and PL400 -0.04. MIR's seat stood +0.61 over D. No
+stack clears +0.30, so the aim constants are spent; PN (0 B) is the safe base for 0.5.
+
+### Stage E7: whom to shoot, per opponent (cloud, 2026-10-31)
+
+E6 and E6b left Mirage about 8 damage a round ahead, and no constant on the aim moves it. E7
+chooses whom Deise shoots by what it has learned of each opponent. The harvester now writes every
+hit with its shooter and victim (`hits.csv`), and `tools/deise_rows.py` reads, per opponent, the
+shots Deise aimed at it, its hits on it and the damage each way: Deise hits DBall.NUKE 59% of the
+time and DTF.Kludgy 19%, so the nearest robot is often not the one worth a bullet
+(`/mnt/project-files/deise/deise-0.4-per-opponent-rows.tsv`, 0.4's seat, 70 rounds an opponent).
+
+Arms on DeiseLab at 0.4: LEARN keeps each opponent's shots fired at it and hits on it across
+rounds and takes as target the least distance times (shots + 10) / (hits + 1.5), so a robot hit
+half as often must be half as far; LEARNH takes the square root of that ratio; FEAR scales each
+opponent's push and waves by the damage it has dealt Deise against the mean. Cloud, 46 fields of
+the live-shaped census, seeds from 7000, 2 seeds, 35 rounds:
+
+| Arm | Census APS (203 opponents) | vs D, by field (46) | Damage a round | Rounds died in |
+|---|---|---|---|---|
+| D (0.4) | 71.28 ± 0.28 | 0 | 136.2 | 47.5% |
+| LEARN | 71.54 ± 0.23 | +0.32 ± 0.36 | 133.1 | 49.2% |
+| LEARNH | 71.62 ± 0.29 | **+0.45 ± 0.40** | 136.5 | 47.0% |
+
+LEARNH lives longer (mean death tick 1,007 to 1,049, last two 72.4% to 73.4%) and keeps its damage;
+full-strength LEARN chases far targets and dies more. FEAR ran last and does not fit in 0.5's
+bytes; it is read for 0.6.
+
+### Deise 0.5: PN and LEARNH, fitted
+
+Leigh (2026-10-31): cut 0.5 from the experiments that land by about 01:00 GMT, to see how far from
+1st the stack is live. 0.5 is PN (E6b) and LEARNH (E7) in one class at 1,499 bytes. They were each
+measured over 0.4, not together. Fitting them took 30 bytes, all but three of them free:
+`Rules.getBulletSpeed(power)` for the playouts' bullet speed (power is already within 0.1 to 3),
+`setFireBullet` returning null on a hot gun in place of a gun heat test, one `id(name)` lookup
+for the death and hit events, and the scan handler's locals declared in their old order (the
+`last` row back in a one-byte slot). Three small changes of behaviour pay the rest, all in the
+lab too, so the shipped class gives the same orders (DEISE-16): the target distance is no longer
+reset at a round's start or a death (only the target's score is; the ring's reach uses the old
+distance until the next scan, a tick or two), and any robot's death, not only the target's, opens
+the target to the next robot scanned (DEISE-17), which with the radar locked is the target again.
+The power table from the codesize thread (pc-deise-pt1) is for 0.6.
+
 ## 9. Uniqueness
 
 Leigh's rule for Saor holds here: inspired by others, never a copy. Deise's gun is Saor's own
