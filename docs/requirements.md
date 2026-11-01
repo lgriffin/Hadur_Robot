@@ -2135,7 +2135,7 @@ docs/sanaro.md section 12).
 | SANARO-5 | Event | When a scanned robot is closer than the target threshold, which creeps out CREEP (25) px every scan, the bot shall take it as the target and snap the threshold to its distance. | N0 |
 | SANARO-6 | Event | When the target is scanned, the bot shall turn its radar by its gun heat less LOCK (0.9) times the radar turn remaining: a sweep while the gun is hot, a flip on the target once it is nearly cool. | N0 |
 | SANARO-7 | Event | When the target is scanned, the bot shall turn its gun to the bearing plus its lateral velocity over LEAD (16) at every range (0.1: over 10 plus 1.008 to the distance). | N5 |
-| SANARO-8 | Event | When the target is scanned, the bot shall fire the table's power for (own energy, target energy) times the integer BAND (640) over the distance; a table cell is the lesser of 0.1 plus a sixteenth of its own energy (at most 2.5, and 3.0 from 120 energy) and the least power that kills any energy the target's truncated energy stands for (up to one more); a target at 128 energy or more reads energy / 128 rows on at its energy mod 128, a limit of the 128 stride. | N0 |
+| SANARO-8 | Event | When the target is scanned, the bot shall fire the table's power for (own energy, target energy) times the integer BAND (640) over the distance; from 0.3 a cell in a 2 x 2 block taught by Hadur 3.20's shots (tools/distill.py, pc-sanaro-n07 HL, 9,529 cells) holds Hadur's power, and every other cell is the lesser of 0.1 plus a sixteenth of its own energy (at most 2.5, and 3.0 from 120 energy) and the least power that kills any energy the target's truncated energy stands for (up to one more); a target at 128 energy or more reads energy / 128 rows on at its energy mod 128, a limit of the 128 stride. | N0 |
 | SANARO-9 | Ubiquitous | The shipped jar shall carry the robot's properties at the release version and its source. | N0 |
 | SANARO-10 | Ubiquitous | The NanoMelee census shall run ten NanoMelee robots a battle, both leaders in every battle, and the shipped build shall read an APS above NaturalScience 1.2.1's in the same battles by more than its 95% interval over at least 20 battles. | N2 |
 | SANARO-11 | Ubiquitous | In the same battles the shipped build shall outsurvive both leaders more often than not. | N2 |
@@ -2145,7 +2145,7 @@ docs/sanaro.md section 12).
 
 - **Coverage.** SANARO-1, SANARO-2 (no `<clinit>`) and SANARO-9 by `SanaroJarIT` (failsafe) on the
   shipped jar; SANARO-2 (table reach) and SANARO-8 (cells) by `SanaroTableTest`, which holds the
-  table to `sanaro/table.py`'s formula; SANARO-3 to SANARO-8 by `SanaroTest`, scan by scan on a
+  table to `sanaro/table.py`'s formula outside HL's taught blocks; SANARO-3 to SANARO-8 by `SanaroTest`, scan by scan on a
   probe subclass, SANARO-14 too. SANARO-10 to SANARO-13 are bench reads (`tools/sanaro_read.py`; fields by
   `tools/sanaro_fields.py`, both by `test_sanaro.py`), not build gates.
 

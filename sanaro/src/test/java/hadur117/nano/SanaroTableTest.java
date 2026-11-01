@@ -32,26 +32,31 @@ class SanaroTableTest {
         assertTrue(Sanaro.POWER.length() > top, "table " + Sanaro.POWER.length() + " cells, index up to " + top);
     }
 
-    @Test
-    @Tag("SANARO-8")
-    @DisplayName("each cell is the lesser of the base power and the kill power, in fortieths")
-    void cellsAreTheFormula() {
-        for (int i = 0; i < Sanaro.POWER.length(); i++) {
-            double p = Math.min(base(i >> 7), kill(i & 127));
-            int want = Math.max(1, Math.min(120, (int) Math.ceil(p * 40 - 1e-9)));
-            assertEquals(want, Sanaro.POWER.charAt(i), "cell " + i);
-        }
+    static int formula(int i) {
+        double p = Math.min(base(i >> 7), kill(i & 127));
+        return Math.max(1, Math.min(120, (int) Math.ceil(p * 40 - 1e-9)));
     }
 
     @Test
     @Tag("SANARO-8")
-    @DisplayName("at 321-640 px, with energy to spare, the shot is the least power that kills a weak enemy")
-    void exactKillShots() {
-        for (int enemy = 0; enemy <= 12; enemy++) {  // 2.5, the base at 100 energy, does 13: kills up to 12.99
-            double power = Sanaro.POWER.charAt((100 << 7) + enemy) / 40.0;
-            // The int is the truncated energy: the shot must kill anything up to enemy + 1.
-            assertTrue(damage(power) >= enemy + 1, "enemy " + enemy + ": power " + power + " does not kill " + (enemy + 0.99));
-            assertTrue(power == 0.1 || damage(power - 0.025) < enemy + 1, "enemy " + enemy + ": power " + power + " wastes energy");
+    @DisplayName("each cell is 0.2's formula, or Hadur's power over a whole 2 x 2 block it taught (0.3, HL)")
+    void cellsAreTheFormulaOrATaughtBlock() {
+        int taught = 0;
+        for (int i = 0; i < Sanaro.POWER.length(); i++) {
+            int c = Sanaro.POWER.charAt(i);
+            assertTrue(c >= 1 && c <= 120, "cell " + i + " is " + c + " fortieths");
+            if (c == formula(i)) continue;
+            taught++;
+            // tools/distill.py --own-step 2 --enemy-step 2: a taught block holds one power.
+            int r0 = (i >> 7) & ~1, c0 = (i & 127) & ~1;
+            for (int r = r0; r < r0 + 2; r++) {
+                for (int e = c0; e < c0 + 2; e++) {
+                    assertEquals(c, Sanaro.POWER.charAt((r << 7) + e), "cell " + i + "'s block at " + r + ", " + e);
+                }
+            }
         }
+        // pc-sanaro-n07's HL table (PR #548): 9,529 cells taught from Hadur 3.20's shots in the
+        // live-shaped fields; a different table needs a bench before it ships.
+        assertEquals(9529, taught, "cells that differ from the formula");
     }
 }
