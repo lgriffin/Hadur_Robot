@@ -17,12 +17,13 @@
 
     <properties>
         <!-- The robot's version: the jar is named for it and JayLexi.properties takes it by filtering. -->
-        <jaylexi.release>0.2</jaylexi.release>
+        <jaylexi.release>0.3</jaylexi.release>
         <!-- MiniRumble's limit, as Robocode's codesize tool counts the shipped jar (JAYLEXI-1). -->
         <jaylexi.codesize.limit>1499</jaylexi.codesize.limit>
         <!-- Rating clients still run Java 8; the shipped class targets it. -->
         <maven.compiler.release>8</maven.compiler.release>
         <jaylexi.jar>${project.build.directory}/hadur117.mini.JayLexi_${jaylexi.release}.jar</jaylexi.jar>
+        <proguard.version>7.8.2</proguard.version>
         <codesize.version>1.3.1</codesize.version>
     </properties>
 
@@ -31,6 +32,13 @@
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode-api</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <!-- Build tools, test scope so nothing reaches the jar: ProGuard runs at package. -->
+        <dependency>
+            <groupId>com.guardsquare</groupId>
+            <artifactId>proguard-base</artifactId>
+            <version>${proguard.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
@@ -53,31 +61,47 @@
             </resource>
         </resources>
         <plugins>
-            <!-- The jar the rumble takes: the robot's classes as javac wrote them, its properties and its source. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.1.0</version>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.8.1</version>
                 <executions>
+                    <!-- ProGuard needs the API jar's path as a library. -->
                     <execution>
-                        <id>robot-jar</id>
+                        <id>robocode-api-path</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>properties</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <!-- The jar the rumble takes: the robot's classes through ProGuard's optimiser
+                         (proguard.pro), with its properties and source, as Deise's (0.3's opponent
+                         tables fit MiniRumble only optimised). Run in its own JVM: ProGuard calls
+                         System.exit. -->
+                    <execution>
+                        <id>proguard</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>run</goal>
+                            <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <target>
-                                <jar destfile="${jaylexi.jar}">
-                                    <fileset dir="${project.build.outputDirectory}">
-                                        <include name="hadur117/mini/JayLexi.class"/>
-                                        <include name="hadur117/mini/JayLexi$*.class"/>
-                                        <include name="hadur117/mini/JayLexi.properties"/>
-                                    </fileset>
-                                    <fileset dir="${project.basedir}/src/main/java">
-                                        <include name="hadur117/mini/JayLexi.java"/>
-                                    </fileset>
-                                </jar>
-                            </target>
+                            <executable>${java.home}/bin/java</executable>
+                            <classpathScope>test</classpathScope>
+                            <arguments>
+                                <argument>-Djaylexi.jar=${jaylexi.jar}</argument>
+                                <argument>-Drobocode.api=${net.sf.robocode:robocode-api:jar}</argument>
+                                <argument>-classpath</argument>
+                                <classpath/>
+                                <argument>proguard.ProGuard</argument>
+                                <argument>@${project.basedir}/proguard.pro</argument>
+                            </arguments>
                         </configuration>
                     </execution>
                 </executions>

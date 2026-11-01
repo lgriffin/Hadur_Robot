@@ -26,6 +26,8 @@ final class Replay {
 
     // Shots fired and waves finished over the last run's rounds.
     static int shots, passed;
+    // The scanned robot's name, which picks JayLexi's per-opponent row.
+    static String name = "e";
 
     private Replay() {
     }
@@ -41,6 +43,8 @@ final class Replay {
                 f.setAccessible(true);
                 if (f.getType() == double.class) {
                     f.setDouble(null, 0);
+                } else if (f.getType() == int.class) {
+                    f.setInt(null, 0);
                 } else if (f.getType().isArray()) {
                     zero(f.get(null));
                 } else {
@@ -124,7 +128,7 @@ final class Replay {
                     ee = 100;
                 }
                 double ab = Math.atan2(ex - b.x, ey - b.y);
-                s.onScannedRobot(new ScannedRobotEvent("e", ee, Utils.normalRelativeAngle(ab - b.heading),
+                s.onScannedRobot(new ScannedRobotEvent(name, ee, Utils.normalRelativeAngle(ab - b.heading),
                         Math.hypot(ex - b.x, ey - b.y), eh, ev));
                 out.append('\n');
                 // Our physics, roughly.
