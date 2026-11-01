@@ -539,13 +539,18 @@ final class ShieldTableData {
     }
 
     /**
-     * MOVE-32: the opponents the duel surfs with the flattener views on (MOVE-24 undone for them).
-     * Empty on master; candidate builds add lines here (build-ablation.sh fllist).
+     * MOVE-32: the opponents the duel surfs with the flattener views on (MOVE-24 undone for them):
+     * the two pc-flat-on (PR #554) robots that gained on every read. Candidate builds add lines here
+     * (build-ablation.sh fllist).
      *
      * @return a fresh array of names
      */
     static String[] flatOns() {
         return new String[] {
+            // pc-flat-on (PR #554): screen +11.7 / confirm +11.6 (Dookious); screen +13.7 / confirm +4.0,
+            // cloud +13 / +8 (Combat).
+            "mn.Combat 3.25.0",
+            "voidious.Dookious 1.573c",
         };
     }
 

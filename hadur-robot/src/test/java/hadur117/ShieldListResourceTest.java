@@ -244,4 +244,19 @@ class ShieldListResourceTest {
         assertTrue(list.surfKeyFor("voidious.Diamond 1.8.22") != null);
         assertTrue(list.surfKeyFor("jk.mega.DrussGT 3.1.7") == null, "robots off the panel keep master's weights");
     }
+
+    @Test
+    @Tag("MOVE-32")
+    @DisplayName("the two pc-flat-on picks carry flat-on lines and are not shielded")
+    void flatOnPicks() {
+        java.util.List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
+        for (String n : ShieldTableData.flatOns()) lines.add(ShieldList.FLAT_ON_PREFIX + " " + n);
+        ShieldList list = ShieldList.parse(lines);
+        assertEquals(2, ShieldTableData.flatOns().length);
+        for (String n : ShieldTableData.flatOns()) {
+            assertTrue(list.flatOn(n), n + " surfs with the flatteners on");
+            assertTrue(!list.matches(n), n + " is surfed, not shielded");
+        }
+        assertTrue(!list.flatOn("lxx.Tomcat 3.68"), "Tomcat lost on the confirm (-3.9)");
+    }
 }
