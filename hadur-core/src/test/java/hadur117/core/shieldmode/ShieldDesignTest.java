@@ -568,6 +568,6 @@ class ShieldDesignTest {
         assertTrue(behind <= 3.0 * 20 / 100 + 1e-9, "behind: " + behind);
         assertTrue(behind < level, "behind " + behind + " under level " + level);
         assertEquals("ratio", ShieldDesign.parse("ratio").toString());
-        assertFalse(ShieldDesign.SHIPPED.ratio);
+        assertTrue(ShieldDesign.SHIPPED.ratio, "on from 3.21: pc-shield-power sr +0.15 ± 0.06 APS (BENCH-165)");
     }
 }

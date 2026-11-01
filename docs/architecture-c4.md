@@ -653,7 +653,7 @@ flowchart LR
 | `MoveDesign.HEAT_HOLD` | MOVE-11 | **on** | Hold the provisional gun-heat wave |
 | `MoveDesign.RAM_BREAK` | RAM-5 | **on** (3.19) | The rammer escape scores paths against the rammer's shots in flight |
 | `GunController.SHADOW_AIM` | GUN-7 | **on** | Shadow aim, left out once the matchup is won |
-| `ShieldDesign.SHIPPED` | SHIELD-8..16 | `prior,wall,hold,learn,mode,stay` | Which shield-mode parts run; `still` (SHIELD-20) is off and waits for a PC card |
+| `ShieldDesign.SHIPPED` | SHIELD-8..16 | `prior,wall,hold,learn,mode,stay,ratio` | Which shield-mode parts run; `ratio` (SHIELD-23) on from 3.21 (pc-shield-power +0.15 APS); `still` (SHIELD-20) and `cheap` (SHIELD-22) off |
 | `MoveDesign.STOP_AND_GO` | POISON-2 | off | Forces stop-and-go on everyone; per-opponent picks come from the table instead |
 | `MoveDesign.SHOT_DODGE`, `SHOT_DODGE_PLAN` | DODGE-3..6 | off | Force the simple-aim dodge or planner on everyone; table slots exist |
 | `MoveDesign.STACK_LIST` | MOVE-23 | off | Makes `StackListData` (197 top robots) switch the stop-start stack off; inert while off |
