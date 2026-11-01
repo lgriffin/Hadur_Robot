@@ -1,1 +1,9 @@
 03:39:39 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
+03:39:39 start prep
+03:39:41 progress pushed to origin claude/pc-sanaro-n07-progress (every 15 min)
+03:40:01 prep exit=0 in 21 s
+03:40:01 start teach
+03:40:01 watching teach: 3 stop rule(s)
+03:40:40 progress teach: 3/129 (2%) battles, 275/h, ETA 28 min, 0 failed, skips 17.7/battle (last 100)
+03:49:44 STOP teach by rule skips 60 over 100: 82.9 a battle over the last 100 (first 100: 75.1); 111 battles fought and kept, 18 battles left unrun (about 2 min)
+03:49:45 teach exit=75 in 583 s (halted, skips 60 over 100)
