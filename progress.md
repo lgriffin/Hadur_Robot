@@ -1,6 +1,6 @@
 # Queue pc-team-concord2: progress
 
-Updated 2026-11-01 02:42:40 PC time (02:42 UTC), runner pid 21196.
+Updated 2026-11-01 02:57:47 PC time (02:57 UTC), runner pid 21196.
 
 - `c2prep` done, exit 0 in 2 min
 - `c2bb` done, exit 0 in 1.5 h
@@ -23,16 +23,16 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### c2on
 
-**821 of 1472 battles** (56%), 0 failed. Running 60 min, 827 battles/h, about 47 min left (ends ~03:29 PC time). Last battle 0 min ago.
-Skipped turns a battle: 9.9 overall, first 100 11.6, last 100 7.6.
+**1092 of 1472 battles** (74%), 0 failed. Running 1.2 h, 878 battles/h, about 26 min left (ends ~03:23 PC time). Last battle 0 min ago.
+Skipped turns a battle: 9.2 overall, first 100 11.6, last 100 8.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 821 |
+| `fails 20` | halt | ok | 0 failed of 1092 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 7.6 a battle over the last 100 (first 100: 11.6) |
+| `skips 40 over 100` | halt | ok | 8.0 a battle over the last 100 (first 100: 11.6) |
 
-Stopping now would leave 651 battles unrun (about 47 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 380 battles unrun (about 26 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -51,4 +51,5 @@ Stopping now would leave 651 battles unrun (about 47 min); every battle already 
 01:43:08 watching c2on: 3 stop rule(s)
 01:44:14 progress c2on: 0/1472 (0%) battles, 0 failed
 02:14:27 progress c2on: 369/1472 (25%) battles, 707/h, ETA 1.6 h, 0 failed, skips 9.2/battle (last 100)
+02:44:41 progress c2on: 862/1472 (59%) battles, 840/h, ETA 44 min, 0 failed, skips 6.6/battle (last 100)
 ```
