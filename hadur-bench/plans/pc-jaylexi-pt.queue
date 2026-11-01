@@ -1,0 +1,82 @@
+# JayLexi with a bullet-power table taught by Hadur 3.20 (thread "Pack more strategy per byte").
+# Sanaro's Hadur-taught power table passed twice (n06 HS +0.55, n07 HL +0.67: taught in the fields
+# it is scored in) and ships as Sanaro 0.3. JayLexi 0.3 (PR #547) already reads its power from a
+# 24-char string, POWER.charAt((int) (distance / 50)) (3 under 150 px, 2 beyond: 0.2's rule), so a
+# taught table costs nothing as whole powers and about 4 bytes as tenths. A first look on the cloud
+# (Hadur v CunobelinDC and RaikoNano, 10 rounds each, 735 shots) has Hadur's median power at range
+# far below JayLexi's 2: about 1.4 at 250-350 px, 1.0 at 350-450 and 0.7-0.8 from 450 to 750.
+#   ./queue.sh run pc-jaylexi-pt        (or  .\queue.ps1 run pc-jaylexi-pt)
+# Run it from master, with JayLexi 0.3 (PR #547) merged: the build step checks the source is 0.3's.
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned (--parallel auto). Every step resumes; no step
+# needs a decision. Nothing here touches Hadur or the shipped JayLexi; nothing is uploaded.
+#
+# Steps:
+#   teach  Hadur 3.20 (the released jar) on kitlab/mini-all-field.txt, all 669 bots of the
+#          MiniRumble division but our own, 1 seed, truth log on: 669 battles, about 30-40 min.
+#          tools/jaylexi_power.py reads Hadur's own shots from the truth logs (a new own bullet
+#          within one step of Hadur), with both robots above 16 energy (JayLexi's energy clamps
+#          stay in its line), and takes the median power per 50 px band.
+#   build  three arms on 0.3's source, each by plain javac (kitlab/build_arm.sh):
+#            J3  JayLexi 0.3 as it is (the control), 1,494 B
+#            PW  Hadur's median rounded to a whole power per band, 1,494 B (a string only)
+#            PT  Hadur's median in tenths, read as charAt / 10.0: 1,498 B, under MiniRumble's
+#                1,499 but 1 B inside JayLexiJarIT's 3 spare, so a pass needs 2 B golfed to ship
+#          A band with fewer than 200 shots keeps 0.3's value. Each tool run prints its table.
+#   J3, PW, PT  on the fresh sample kitlab/mini-wide2-field.txt (112 bots, seed 4) at 6 seeds:
+#          672 battles each, about 3-6 min each at PR #500's rate.
+# About 1 h in all on the PC.
+# Read: PW and PT against J3 on the same opponents (the paired gain). An arm passes when its gain's
+# low end is above 0; PT over PW says whether the tenths are worth the golf. Leigh decides any
+# release (a pass would ship as JayLexi 0.3.1).
+# Stop rules on every bench step (docs/bench/watch.md; halt, every battle fought is kept and a rerun
+# resumes): 20 failed battles (a broken or missing jar), no battle in 30 minutes (a hung step), or
+# skipped turns over the last 100 battles: 60 a battle for the teach step (Hadur), 40 for the
+# JayLexi steps. A halt at worst leaves the rest of that step and the steps after it unrun, at
+# most 2,685 battles (about 1 h). No early finish on score: each step is one robot. ALERT opens an
+# issue for Leigh on a stop.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set HJ = work/jaylexi-pt/hadur117.Hadur_3.20.jar
+set SRC = ../jaylexi/src/main/java/hadur117/mini/JayLexi.java
+
+prep | ./fetch-opponents.sh --set kitlab/mini-all-field.txt && ./fetch-opponents.sh --set kitlab/mini-wide2-field.txt && mkdir -p work/jaylexi-pt && curl -fsSLo ${HJ} https://github.com/lgriffin/Hadur_Robot/releases/download/v3.20/hadur117.Hadur_3.20.jar && printf '%s\n' --set kitlab/mini-all-field.txt --seeds 1 --rounds 35 --parallel auto --unseeded true --robot-jar ${HJ} --robot "hadur117.Hadur 3.20" --truth-log true --child-heap 1G --out work/kitlab-pt-teach > work/kitlab-pt-teach.args
+
+teach | ${MVN} "-Dexec.args=@work/kitlab-pt-teach.args"
+  after: prep
+  watch: battles=669
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 60 over 100
+
+build | python3 tools/jaylexi_power.py 'work/kitlab-pt-teach/battles/*/truth.log.gz' --src ${SRC} --mode whole --min 200 --out work/jaylexi-pt/JayLexi-PW.java && python3 tools/jaylexi_power.py 'work/kitlab-pt-teach/battles/*/truth.log.gz' --src ${SRC} --mode tenths --min 200 --out work/jaylexi-pt/JayLexi-PT.java && bash kitlab/build_arm.sh ${SRC} hadur117.mini.JayLexi j3 && bash kitlab/build_arm.sh work/jaylexi-pt/JayLexi-PW.java hadur117.mini.JayLexi pw && bash kitlab/build_arm.sh work/jaylexi-pt/JayLexi-PT.java hadur117.mini.JayLexi pt && bash kitlab/args.sh mini-wide2 kitlab/jars/hadur117.mini.JayLexi_j3.jar "hadur117.mini.JayLexi j3" pt-J3 6 && bash kitlab/args.sh mini-wide2 kitlab/jars/hadur117.mini.JayLexi_pw.jar "hadur117.mini.JayLexi pw" pt-PW 6 && bash kitlab/args.sh mini-wide2 kitlab/jars/hadur117.mini.JayLexi_pt.jar "hadur117.mini.JayLexi pt" pt-PT 6
+  after: teach
+
+J3 | ${MVN} "-Dexec.args=@work/kitlab-pt-J3.args"
+  after: build
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+PW | ${MVN} "-Dexec.args=@work/kitlab-pt-PW.args"
+  after: J3
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+PT | ${MVN} "-Dexec.args=@work/kitlab-pt-PT.args"
+  after: PW
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+read | (echo "# JayLexi with Hadur's power table (pc-jaylexi-pt)" && echo && echo '## Tables' && echo '```' && python3 tools/jaylexi_power.py 'work/kitlab-pt-teach/battles/*/truth.log.gz' --src ${SRC} --mode tenths --min 200 --out work/jaylexi-pt/JayLexi-PT.java && echo '```' && echo && echo '## PW (whole powers) against J3, on mini-wide2' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide2-field.txt work/kitlab-pt-PW --ref work/kitlab-pt-J3 && echo '```' && echo && echo '## PT (tenths) against J3, on mini-wide2' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide2-field.txt work/kitlab-pt-PT --ref work/kitlab-pt-J3 && echo '```') > ${OUT}/jaylexi-pt.md
+  after: PT
+
+pr | bash tools/open_results_pr.sh claude/pc-jaylexi-pt-results "JayLexi with Hadur's power table" ${OUT}/jaylexi-pt.md
+  after: read
