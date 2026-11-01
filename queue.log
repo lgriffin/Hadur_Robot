@@ -45,3 +45,5 @@
 11:42:50 start live-HC
 11:42:50 watching live-HC: 3 stop rule(s)
 11:43:31 progress live-HC: 6/430 (1%) battles, 524/h, ETA 49 min, 0 failed, skips 0.0/battle (last 100)
+12:12:40 live-HC exit=0 in 1790 s
+12:12:40 start read-live
