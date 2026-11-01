@@ -31,3 +31,10 @@
 06:16:58 live-PTS exit=0 in 1140 s
 06:16:58 start live-PTB
 06:16:58 watching live-PTB: 3 stop rule(s)
+06:26:56 progress live-PTB: 132/276 (48%) battles, 795/h, ETA 11 min, 0 failed, skips 0.8/battle (last 100)
+06:36:06 live-PTB exit=0 in 1147 s
+06:36:06 start read
+06:36:09 read exit=0 in 3 s
+06:36:09 start pr
+06:36:16 pr exit=0 in 6 s
+06:36:16 ALLDONE
