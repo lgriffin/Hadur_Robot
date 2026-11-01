@@ -1,13 +1,16 @@
 {
  "plan": "pc-surf-key",
- "updated": 1793535237.2528648,
+ "updated": 1793536145.4773211,
  "steps": {
   "prep": {
-   "status": "running",
-   "start": "2026-11-01T10:27:53"
+   "status": "done",
+   "exit": 0,
+   "seconds": 79,
+   "end": "2026-11-01T12:15:17"
   },
   "record": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-01T12:15:17"
   },
   "fit": {
    "status": "pending"
@@ -22,5 +25,49 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "record",
+   "started": 1793535317.2524476,
+   "updated": 1793536145.468578,
+   "elapsed": 828.2161304950714,
+   "expected": 792,
+   "panel": 198,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 520,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 2260.279570842215,
+   "eta": 433.2207451820374,
+   "fraction": 0.6565656565656566,
+   "last_battle_age": 1.5417547225952148,
+   "rules": [
+    {
+     "rule": "fails 30",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 520"
+    },
+    {
+     "rule": "skips 40 over 200",
+     "action": "halt",
+     "state": "ok",
+     "detail": "17.9 a battle over the last 200 (first 200: 18.7)"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    }
+   ],
+   "skips_mean": 18.05576923076923,
+   "skips_last100": 17.27
+  }
+ ]
 }
