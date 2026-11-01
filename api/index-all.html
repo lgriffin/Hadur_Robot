@@ -4497,6 +4497,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/TeamModes.html#FORCE_GUNLINE" class="member-name-link">FORCE_GUNLINE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/TeamModes.html#FORCE_HEAVY" class="member-name-link">FORCE_HEAVY</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/TeamModes.html#FORCE_HUNT" class="member-name-link">FORCE_HUNT</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/TeamModes.html#FORCE_LEAD" class="member-name-link">FORCE_LEAD</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
@@ -4522,6 +4524,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Ablation switches: the mode for every team the table does not name.</div>
 </dd>
 <dt><a href="hadur117/core/melee/TeamModes.html#FORCE_SWIFT" class="member-name-link">FORCE_SWIFT</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/TeamModes.html#FORCE_WARY" class="member-name-link">FORCE_WARY</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/TeamModes.html#FORCE_WAVES" class="member-name-link">FORCE_WAVES</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
 <dd>&nbsp;</dd>
@@ -5753,6 +5757,15 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/ShieldTableData.html#heatJits()" class="member-name-link">heatJits()</a> - Static method in class hadur117.<a href="hadur117/ShieldTableData.html" title="class in hadur117">ShieldTableData</a></dt>
 <dd>
 <div class="block">MOVE-28: the opponents fought with <a class="req" href="../requirements.html#MOVE-13">MOVE-13</a>'s stop-and-start (heatjit).</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#heavy(boolean)" class="member-name-link">heavy(boolean)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">TMODE-36: whether this tick's team modes carry HEAVY; set before any aim of the tick.</div>
+</dd>
+<dt><a href="hadur117/core/melee/TeamModes.Mode.html#HEAVY" class="member-name-link">HEAVY</a> - Enum constant in enum class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a></dt>
+<dd>
+<div class="block">TMODE-36: against a team that dodges poorly, the team brain fires full power: CONCORD's
+ lighter <a href="hadur117/core/melee/FieldGun.html#CONCORD_POWER"><code>FieldGun.CONCORD_POWER</code></a> gives way, so rounds end sooner.</div>
 </dd>
 <dt><a href="hadur117/core/policy/BattleHitRates.html#HEAVY_ABOVE" class="member-name-link">HEAVY_ABOVE</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/BattleHitRates.html" title="class in hadur117.core.policy">BattleHitRates</a></dt>
 <dd>
@@ -16557,6 +16570,16 @@ the order they are declared.</div>
 <div class="block"><a class="req" href="../requirements.html#TIME-5">TIME-5</a>: runs one tick for each role of the charter through a throwaway core and guard
  before the real battle begins, so that class loading and JIT warm-up land here rather
  than on the first real tick a role drives.</div>
+</dd>
+<dt><a href="hadur117/core/melee/TeamModes.Mode.html#WARY" class="member-name-link">WARY</a> - Enum constant in enum class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a></dt>
+<dd>
+<div class="block">TMODE-37: a wounded member leaves the hunt sooner: under <a href="hadur117/core/melee/MinimumRiskMovement.html#WARY_ENERGY"><code>MinimumRiskMovement.WARY_ENERGY</code></a>
+ it plays plain minimum risk, not its place by the prey, so fewer members die in rounds the
+ team wins.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#WARY_ENERGY" class="member-name-link">WARY_ENERGY</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">TMODE-37: under WARY, the energy below which a member leaves the hunt.</div>
 </dd>
 <dt><a href="hadur117/core/melee/TeamConcord.html#watch(java.awt.geom.Point2D.Double,java.util.List,java.util.List,long)" class="member-name-link">watch(Point2D.Double, List&lt;Point2D.Double&gt;, List&lt;EnemyInfo&gt;, long)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamConcord.html" title="class in hadur117.core.melee">TeamConcord</a></dt>
 <dd>
