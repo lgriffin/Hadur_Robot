@@ -1,7 +1,7 @@
 # pc-rival-picks, lists B and C (BENCH-159): c is master, aa its A/A copy; for the 36 robots of plans/rival-stopgo.txt
 # mdwl plays stop-and-go (POISON-1, reverse 1 tick before the enemy's gun is ready), mdwm the shift variant (2 ticks);
 # both take the 16 of plans/rival-stopgo-drop.txt off the shield list so stop-and-go drives against them.
-c | hadur117.Hadur 3.20 | bisect/hadur117.Hadur_3.20.jar
-aa | hadur117.Hadur 3.20aa | bisect/hadur117.Hadur_3.20aa.jar
-mdwl | hadur117.Hadur 3.20mdwl | bisect/hadur117.Hadur_3.20mdwl.jar
-mdwm | hadur117.Hadur 3.20mdwm | bisect/hadur117.Hadur_3.20mdwm.jar
+c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
+aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
+mdwl | hadur117.Hadur 3.21mdwl | bisect/hadur117.Hadur_3.21mdwl.jar
+mdwm | hadur117.Hadur 3.21mdwm | bisect/hadur117.Hadur_3.21mdwm.jar

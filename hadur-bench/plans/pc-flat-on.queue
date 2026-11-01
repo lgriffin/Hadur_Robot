@@ -23,7 +23,7 @@
 # and a rerun resumes. No futility rule: the screen is for picks, not a global gate. ALERT opens an issue for Leigh.
 # Nothing here ships: on a pass a PR adds the confirmed robots' flat-on lines for the next census; the release rule stands.
 
-set V = 3.20
+set V = 3.21
 set P = --parallel 12 --no-truth-log
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G --engine 1.11.1
 set W = work/flat-on

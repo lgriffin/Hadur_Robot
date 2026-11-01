@@ -1,7 +1,7 @@
 # pc-surf-key (BENCH-160): c is master, aa its A/A copy; kl plays the fitted surf keys (SKEY-2: nine key-weight multipliers
 # and the kernel width) against the robots the fit shipped a key for, klbb the weights-only keys (width 1). bb only names
 # the second build apart; it changes nothing.
-c | hadur117.Hadur 3.20 | bisect/hadur117.Hadur_3.20.jar
-aa | hadur117.Hadur 3.20aa | bisect/hadur117.Hadur_3.20aa.jar
-kl | hadur117.Hadur 3.20kl | bisect/hadur117.Hadur_3.20kl.jar
-klbb | hadur117.Hadur 3.20klbb | bisect/hadur117.Hadur_3.20klbb.jar
+c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
+aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
+kl | hadur117.Hadur 3.21kl | bisect/hadur117.Hadur_3.21kl.jar
+klbb | hadur117.Hadur 3.21klbb | bisect/hadur117.Hadur_3.21klbb.jar

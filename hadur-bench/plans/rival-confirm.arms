@@ -1,6 +1,6 @@
 # pc-rival-confirm: c is master, aa its A/A copy, rp the 18 picks of pc-rival-picks (PR #532) together. Each line acts on
 # its own robot only: 5 join the shield list, 12 get SHIELD-21 still lines, 5 of them also SHIELD-19 exit off, 3 leave
 # the shield list for stop-and-go (flip 1) and 2 get stop-and-go shift (flip 2).
-c | hadur117.Hadur 3.20 | bisect/hadur117.Hadur_3.20.jar
-aa | hadur117.Hadur 3.20aa | bisect/hadur117.Hadur_3.20aa.jar
-rp | hadur117.Hadur 3.20mtmdzlx0wlwm | bisect/hadur117.Hadur_3.20mtmdzlx0wlwm.jar
+c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
+aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
+rp | hadur117.Hadur 3.21mtmdzlx0wlwm | bisect/hadur117.Hadur_3.21mtmdzlx0wlwm.jar

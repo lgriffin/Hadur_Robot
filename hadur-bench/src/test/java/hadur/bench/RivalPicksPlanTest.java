@@ -67,7 +67,7 @@ class RivalPicksPlanTest {
         for (String[] a : arms) {
             String text = Files.readString(Path.of(a[0]));
             for (int i = 1; i < a.length; i++) {
-                assertTrue(text.contains("\n" + a[i] + " | hadur117.Hadur 3.20" + (i == 1 ? "" : a[i]) + " | "), a[0] + " " + a[i]);
+                assertTrue(text.contains("\n" + a[i] + " | hadur117.Hadur 3.21" + (i == 1 ? "" : a[i]) + " | "), a[0] + " " + a[i]);
             }
         }
 
