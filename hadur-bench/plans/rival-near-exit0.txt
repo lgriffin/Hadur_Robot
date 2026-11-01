@@ -1,0 +1,10 @@
+# pc-rival-near: near-miss picks of pc-rival-picks (PR #532), best arm 3+ points, not locked.
+EH.kms.LightningStorm 0.11B
+oog.micro.MagicD3 0.41
+pez.frankie.Frankie 0.9.6.1
+oog.nano.Fuatisha 1.1
+slugzilla.ButtHead 2.0
+wilson.Chameleon 0.91
+DM.mega.Bezier 1.618fprrr
+intruder.PrairieWolf 2.61
+sheldor.nano.PointInLine 1.0
