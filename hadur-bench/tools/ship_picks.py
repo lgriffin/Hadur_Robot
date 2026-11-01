@@ -57,6 +57,12 @@ def body(ts, method):
     return ts[head:ts.index("        };", head)]
 
 
+def drop(ts, method, name):
+    head = ts.index("static String[] %s()" % method)
+    end = ts.index("        };", head)
+    return ts[:head] + ts[head:end].replace(entry(name), "") + ts[end:]
+
+
 def apply(picks, listdata, tabledata, label):
     ls, ts = open(listdata).read(), open(tabledata).read()
     added = {k: [] for k in CODES}
@@ -74,6 +80,10 @@ def apply(picks, listdata, tabledata, label):
         for c in codes:
             if c in TABLE and entry(name) not in body(ts, TABLE[c]):
                 added[c].append(name)
+        # One stop-and-go variant per robot: the parse reads shifts last, so a new variant drops the other.
+        for c, other in (("wl", "wm"), ("wm", "wl")):
+            if c in codes:
+                ts = drop(ts, TABLE[other], name)
     if added["mt"]:
         k = ls.rindex("        };")
         ls = ls[:k] + "            // %s\n" % label + "".join(entry(n) for n in added["mt"]) + ls[k:]

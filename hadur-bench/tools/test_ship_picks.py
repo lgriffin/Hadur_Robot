@@ -54,6 +54,10 @@ class ShipPicksTest(unittest.TestCase):
         self.assertIn("d.Free 1.0", body("stopGoShifts"))
         sp.apply([("b.StopGo 1.0", "mdwl")], lp, tp, "again")
         self.assertEqual(open(tp).read().count('"b.StopGo 1.0"'), 1, "a line already in the table is not added twice")
+        sp.apply([("d.Free 1.0", "wl")], lp, tp, "variant 1 now")
+        ts = open(tp).read()
+        self.assertIn("d.Free 1.0", sp.body(ts, "stopGos"))
+        self.assertNotIn("d.Free 1.0", sp.body(ts, "stopGoShifts"), "one stop-and-go variant per robot")
         with self.assertRaises(SystemExit):
             sp.apply([("a.Listed 1.0", "mt")], lp, tp, "again")
 

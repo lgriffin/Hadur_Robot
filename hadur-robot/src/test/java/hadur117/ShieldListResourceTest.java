@@ -177,6 +177,15 @@ class ShieldListResourceTest {
             assertTrue(!list.matches(name) || both.contains(name), "a stop-and-go robot is not shielded: " + name);
         }
         assertEquals(0, list.stopGo("dft.Cyanide 1.90"));
+        // pc-rival-confirm (PR #537): these two were measured off the shield list, so stop-and-go drives.
+        for (String name : both) {
+            assertTrue(!list.matches(name), name + " is off the shield list");
+            assertEquals(1, list.stopGo(name), name);
+        }
+        // and three joined it with still lines.
+        for (String name : new String[] {"fm.claire 1.7", "projectx.TestNano 1.0", "rz.GlowBlowMelee 1.4"}) {
+            assertTrue(list.matches(name), name + " is shielded");
+        }
     }
 
     @Test
