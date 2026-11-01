@@ -1,6 +1,6 @@
 # Queue pc-melee-hand: progress
 
-Updated 2026-10-31 23:49:07 PC time (23:49 UTC), runner pid 39612.
+Updated 2026-11-01 00:04:14 PC time (00:04 UTC), runner pid 39612.
 
 - `haprep` done, exit 0 in 3 min
 - `haaa` done, exit 0 in 24 min
@@ -49,15 +49,15 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### haes
 
-**19 of 276 battles** (7%), 0 failed. Running 3 min, 432 battles/h, about 36 min left (ends ~00:24 PC time). Last battle 0 min ago.
-Skipped turns a battle: 28.0 overall, first 19 28.0, last 19 28.0.
+**185 of 276 battles** (67%), 0 failed. Running 18 min, 625 battles/h, about 9 min left (ends ~00:12 PC time). Last battle 0 min ago.
+Skipped turns a battle: 65.0 overall, first 100 56.7, last 100 79.2.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 19 |
+| `fails 20` | halt | ok | 0 failed of 185 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 257 battles unrun (about 36 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 91 battles unrun (about 9 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
