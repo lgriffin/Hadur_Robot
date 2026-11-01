@@ -30,6 +30,14 @@ class Shots(unittest.TestCase):
                      + tline(1, 4, me, en, [("E", 100, 490, 2.0)]))    # enemy bullet: ignored
         self.assertEqual([(400.0, 1.5)], list(jp.shots([p], 16)))
 
+    def test_a_bullet_still_near_the_gun_next_tick_counts_once(self):
+        me, en = (100, 100, 0, 0, 90), (100, 500, 0, 0, 80)
+        # Power 3 moves 11 px a tick: still inside the 13 px "near the gun" test on the next tick.
+        p = self.log(tline(1, 1, me, en, [])
+                     + tline(1, 2, me, en, [("H", 100, 101, 3.0)])
+                     + tline(1, 3, me, en, [("H", 100, 112, 3.0)]))
+        self.assertEqual([(400.0, 3.0)], list(jp.shots([p], 16)))
+
     def test_low_energy_shots_are_left_out(self):
         me, en = (100, 100, 0, 0, 10), (100, 500, 0, 0, 80)
         p = self.log(tline(1, 1, me, en, []) + tline(1, 2, me, en, [("H", 100, 105, 1.0)]))

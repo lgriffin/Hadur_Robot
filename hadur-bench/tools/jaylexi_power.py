@@ -6,7 +6,7 @@ with POWER = 3 under 150 px and 2 beyond: 24 whole-power chars, 0.2's rule. Sana
 power table passed twice (n06 HS +0.55, n07 HL +0.67, taught in the fields it is scored in). This
 reads Hadur 3.20's own shots from truth logs of Hadur on the MiniRumble field (LogHarvester BENCH-97:
 each T line holds both robots and every bullet; an own bullet `H` is new when it sits within one
-step of Hadur) and writes Hadur's typical power per 50 px band into POWER, in one of two forms:
+step of Hadur and is not last tick's bullet moved one step on) and writes Hadur's typical power per 50 px band into POWER, in one of two forms:
 
   whole   whole powers 1..3 (the median rounded), the string only: 0 B, JayLexi's line unchanged
   tenths  tenths 1..30, read as POWER.charAt(...) / 10.0: about 4 B more
@@ -60,21 +60,28 @@ def shots(paths, energy_floor):
                 r = int(p[1])
                 me = [float(v) for v in p[3:8]]
                 en = [float(v) for v in p[8:13]]
+                own = []
+                for tok in (p[13].split() if len(p) > 13 else []):
+                    o, bx, by, bh, bp = tok.split(':')
+                    if o == 'H':
+                        own.append((float(bx), float(by), float(bh), float(bp)))
                 if prev is not None and prev[0] == r:
-                    pme, pen = prev[1], prev[2]
-                    for tok in (p[13].split() if len(p) > 13 else []):
-                        o, bx, by, _bh, bp = tok.split(':')
-                        if o != 'H':
-                            continue
-                        power = float(bp)
+                    pme, pen, pown = prev[1], prev[2], prev[3]
+                    for bx, by, bh, power in own:
                         step = 20 - 3 * power
+                        # The log carries no bullet id, so a bullet already seen is the one a
+                        # bullet of last tick reaches in one step along its heading.
+                        if any(pp == power and math.hypot(px + step * math.sin(ph) - bx,
+                                                          py + step * math.cos(ph) - by) < 1.5
+                               for px, py, ph, pp in pown):
+                            continue
                         # A bullet fired this tick sits within one step of the gun (Hadur's centre).
-                        if math.hypot(float(bx) - pme[0], float(by) - pme[1]) > step + 2:
+                        if math.hypot(bx - pme[0], by - pme[1]) > step + 2:
                             continue
                         if pme[4] <= energy_floor or pen[4] <= energy_floor:
                             continue
                         yield math.hypot(pen[0] - pme[0], pen[1] - pme[1]), power
-                prev = (r, me, en)
+                prev = (r, me, en, own)
 
 
 def table(rows, mode, minimum):
