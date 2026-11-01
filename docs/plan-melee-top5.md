@@ -485,6 +485,18 @@ that has shown live. Card `pc-melee-hand` (BENCH-157): aa, bb, et, ed, es on the
 where the endgame wins moved. Left for later: handing the melee gun's aim experts to the duel gun, and
 the duel's own learned stats per survivor across rounds.
 
+**Read (PR #526, run 2026-10-31 22:00 to 2026-11-01 00:11 PC time, 1,380 battles, bb clean +0.07 ± 0.18):
+all three FAIL the gate.** et +0.03 ± 0.16, ed -0.04 ± 0.15, es -0.07 ± 0.17; 1-30 endgame wins -1.4,
+-3.0 and -0.8 points; skips never above aa's. Nothing ships. Summing the arms' "Rounds that ended as a
+duel" tables over the 46 fields: against survivors with a table entry (shield list or other lines, about
+21% of the endgame rounds), et won 77.6% of 1,279 rounds against the baselines' 73.9% of 2,687, so the
+table does what it was built to do where it applies; against the rest, 69.3% against 68.6%, as expected
+with no entry. The pool is too small to show in APS: about 17% of rounds end as a duel and a fifth of
+those meet a listed survivor, so +3.7 points of wins there is under 0.1 APS. ed and es never lifted the
+wins they were built for: the head-on verdict needs three hits in one battle and rarely arrives before
+the last rounds. Left for later as above, and a wider endgame table would need gains against Diamond,
+ScalarR, Ogi and Neuromancer (the survivors Hadur loses to most), which no 1v1 entry covers.
+
 ### Stage 4: stack, tailor, confirm
 
 - **Stack census** on master's defaults (all passed stages) against 3.17 on fresh seeds, 8 seeds
