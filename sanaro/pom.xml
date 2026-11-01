@@ -17,7 +17,7 @@
 
     <properties>
         <!-- The robot's version: the jar is named for it and Sanaro.properties takes it by filtering. -->
-        <sanaro.release>0.2</sanaro.release>
+        <sanaro.release>0.3</sanaro.release>
         <!-- NanoMelee's limit, as Robocode's codesize tool counts the shipped jar (SANARO-1). -->
         <sanaro.codesize.limit>249</sanaro.codesize.limit>
         <!-- Rating clients still run Java 8; the shipped class targets it. -->

@@ -107,7 +107,18 @@ public final class TeamModes {
          * ganging; the radar splits the enemies among the members; the gun pools its situations
          * by enemy class and fires lighter unless close or reading that class well.
          */
-        CONCORD
+        CONCORD,
+        /**
+         * TMODE-36: against a team that dodges poorly, the team brain fires full power: CONCORD's
+         * lighter {@link FieldGun#CONCORD_POWER} gives way, so rounds end sooner. Only the gun changes.
+         */
+        HEAVY,
+        /**
+         * TMODE-37: a wounded member leaves the hunt sooner: under {@link MinimumRiskMovement#WARY_ENERGY}
+         * it plays plain minimum risk, not its place by the prey, so fewer members die in rounds the
+         * team wins.
+         */
+        WARY
     }
 
     /**
@@ -134,6 +145,8 @@ public final class TeamModes {
     public static final boolean FORCE_LEAD = false;
     public static final boolean FORCE_SWIFT = false;
     public static final boolean FORCE_CONCORD = true;
+    public static final boolean FORCE_HEAVY = false;
+    public static final boolean FORCE_WARY = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -147,7 +160,7 @@ public final class TeamModes {
         FORCE_WAVES ? Mode.WAVES : null, FORCE_HUNT ? Mode.HUNT : null, FORCE_LINES ? Mode.LINES : null,
         FORCE_GUNLINE ? Mode.GUNLINE : null, FORCE_PATH ? Mode.PATH : null,
         FORCE_DODGE ? Mode.DODGE : null, FORCE_LEAD ? Mode.LEAD : null, FORCE_SWIFT ? Mode.SWIFT : null,
-        FORCE_CONCORD ? Mode.CONCORD : null);
+        FORCE_CONCORD ? Mode.CONCORD : null, FORCE_HEAVY ? Mode.HEAVY : null, FORCE_WARY ? Mode.WARY : null);
 
     /** Opposing member class to its team's modes; filled from the per-team screens. */
     static final Map<String, Set<Mode>> TABLE = table();
@@ -166,15 +179,22 @@ public final class TeamModes {
 
     private static Map<String, Set<Mode>> table() {
         Map<String, Set<Mode>> t = new HashMap<>();
-        // Every entry plays CONCORD on top (TMODE-34), as pc-team-concord measured it (PR #494).
+        // Every entry plays CONCORD on top (TMODE-34), as pc-team-concord measured it (PR #494),
+        // but the four teams it lost to (TMODE-35).
         // pc-team-counters (PR #370), 16 fresh seeds: TroodonPack +4.7 ± 3.8, GrofGroup +2.5 ± 3.0.
         t.put("gh.nano.GrofGroupMember", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.LINEAR, Mode.PATH, Mode.DODGE, Mode.CONCORD));
         t.put("myl.micro.Troodon", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.PATH, Mode.DODGE, Mode.CONCORD));
         t.put("myl.micro.TroodonDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.PATH, Mode.DODGE, Mode.CONCORD));
         // pc-team-nododge (PR #465), 24 fresh seeds: DODGE off, NightmareTeam +3.9 ± 3.2, ImpactTeam +3.1 ± 1.4.
-        t.put("ustimaw.Nightmare", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CONCORD));
-        t.put("ustimaw.NigitmareDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CONCORD));
+        // pc-team-noconcord (PR #538), 24 fresh seeds: CONCORD off too (TMODE-35), NightmareTeam +2.4 ± 4.3.
+        t.put("ustimaw.Nightmare", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH));
+        t.put("ustimaw.NigitmareDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH));
         t.put("mn.nano.perceptual.Impact", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CONCORD));
+        // pc-team-noconcord (PR #538), 24 fresh seeds: CONCORD off (TMODE-35), OgiTeam +4.2 ± 3.0,
+        // CombatTeam +2.6 ± 3.8, FirestarterTeam +1.7 ± 3.3; +0.24 ± 0.16 APS with NightmareTeam.
+        t.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE));
+        t.put("mn.Combat", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE));
+        t.put("cb.fire.Firestarter", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE));
         return Collections.unmodifiableMap(t);
     }
 

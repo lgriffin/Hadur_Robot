@@ -88,7 +88,7 @@ Live results as of 2026-10-30 21:50 UTC (each robot's README keeps its full hist
 | [**HadurTeam**](hadur-robot/) `hadur117.HadurTeam` | TeamRumble | five Hadurs | **3rd of 48**, 81.51 (3.20, 2026-10-30, 45 of 47 pairings) | [standing](#standing) |
 | [**TwinSaor**](twinsaor/) `hadur117.twin.TwinSaor` | Twin Duel (2v2) | 1,995 B of 1,999 | **1st of 28**, 70.28 ± 0.50 (0.2, 2026-10-28) | [README](twinsaor/README.md) |
 | [**Saor**](saor/) `hadur117.micro.Saor` | MicroMelee | 723 B of 749 | **1st of 158**, 69.73 (0.3, 2026-10-30), 0.45 ahead of kc.micro.Figment | [README](saor/README.md) |
-| [**Deise**](deise/) `hadur117.mini.Deise` | MiniMelee | 1,494 B of 1,499 | **2nd of 206**, 70.57 (0.4, 2026-10-30), 0.58 behind kc.mini.Mirage | [README](deise/README.md) |
+| [**Deise**](deise/) `hadur117.mini.Deise` | MiniMelee | 1,499 B of 1,499 (0.5) | **1st of 206**, 71.28 ± 0.28 (0.5, 2026-11-01), 0.12 ahead of kc.mini.Mirage | [README](deise/README.md) |
 | [**Sanaro**](sanaro/) `hadur117.nano.Sanaro` | NanoMelee | 247 B of 249 | **2nd of 90**, 65.15 (0.2, 2026-10-30), 1.26 behind d414.nano.Quantum | [README](sanaro/README.md) |
 | [**JayLexi**](jaylexi/) `hadur117.mini.JayLexi` | MiniRumble (1v1) | 1,485 B of 1,499 | **5th of 671**, 87.34 (0.2, settled 2026-10-30), 0.10 behind 4th, 1.67 behind sheldor.mini.FoilistMC | [README](jaylexi/README.md) |
 | [**Eveimear**](eveimear/) `hadur117.micro.Eveimear` | MicroRumble (1v1) | 722 B of 749 | **9th of 516**, 83.28 (0.1, 2026-10-30), 2.32 behind 1st | [README](eveimear/README.md) |
@@ -96,8 +96,8 @@ Live results as of 2026-10-30 21:50 UTC (each robot's README keeps its full hist
 - **TwinSaor** is two copies of one Saor-derived robot sharing radar and targets, with a range and
   mode table per opposing team ([docs/twinsaor.md](docs/twinsaor.md)).
 - **Saor** is a Markov-gun micro melee bot that learns from every scan ([docs/saor.md](docs/saor.md)).
-- **Deise** is a least-risk mini melee bot with seen-shot waves, built to take 1st from
-  kc.mini.Mirage ([docs/deise.md](docs/deise.md)).
+- **Deise** is a least-risk mini melee bot with seen-shot waves that shoots the robot it hits best
+  for its distance; 0.5 took MiniMelee 1st from kc.mini.Mirage ([docs/deise.md](docs/deise.md)).
 - **Sanaro** is a nano melee bot: anti-gravity, a branch-free radar, a gun that fires only on its lead
   and a table of bullet power by both robots' energy ([docs/sanaro.md](docs/sanaro.md)).
 - **JayLexi** (a wave surfer with a GuessFactor gun) and **Eveimear** (stop-and-go movement over a

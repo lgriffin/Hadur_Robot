@@ -70,12 +70,16 @@ public class MeleeHarvester extends BattleAdaptor {
     public static final String EXPOSURE_HEADER =
         "round,robot,crowdTicks,nearestLoad,takenCrowd,takenNearest,takenSecond";
 
+    /** Every bullet hit Hadur gave or took, by shooter and victim (BENCH-156). */
+    public static final String HIT_HEADER = "round,shooter,victim,damage";
+
     public static final String SHOT_HEADER =
         "round,turn,alive,ownEnergy,target,targetEnergy,distance,power";
 
     private final String us;
     private final BufferedWriter bullets;
     private final BufferedWriter shots;
+    private final BufferedWriter hits;
     private final BufferedWriter exposure;
     /** BENCH-116, per robot this round: crowd ticks, nearest load, crowd damage taken, as nearest, as second. */
     private final Map<String, double[]> exposed = new LinkedHashMap<>();
@@ -124,6 +128,8 @@ public class MeleeHarvester extends BattleAdaptor {
         exposure.write(EXPOSURE_HEADER + "\n");
         this.shots = Files.newBufferedWriter(dir.resolve("shots.csv"), StandardCharsets.UTF_8);
         shots.write(SHOT_HEADER + "\n");
+        this.hits = Files.newBufferedWriter(dir.resolve("hits.csv"), StandardCharsets.UTF_8);
+        hits.write(HIT_HEADER + "\n");
     }
 
     @Override
@@ -333,6 +339,14 @@ public class MeleeHarvester extends BattleAdaptor {
                     if (left != null) dmg = Math.min(dmg, left);
                     t[2]++;
                     t[3] += dmg;
+                    if (owner.getName().equals(us) || victim.getName().equals(us)) {
+                        try {
+                            hits.write(String.format(java.util.Locale.ROOT, "%d,%s,%s,%.2f%n",
+                                round, field(owner.getName()), field(victim.getName()), dmg));
+                        } catch (IOException ex) {
+                            throw new UncheckedIOException(ex);
+                        }
+                    }
                     if (crowd) {
                         t[7]++;
                         t[8] += dmg;
@@ -453,5 +467,6 @@ public class MeleeHarvester extends BattleAdaptor {
         bullets.close();
         exposure.close();
         shots.close();
+        hits.close();
     }
 }

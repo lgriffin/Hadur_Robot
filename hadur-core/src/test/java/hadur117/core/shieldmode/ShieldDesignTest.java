@@ -524,4 +524,50 @@ class ShieldDesignTest {
         assertTrue(ShieldList.parse(named).still(ENEMY));
         assertFalse(ShieldList.parse(other).still(ENEMY));
     }
+    // ---- SHIELD-22, SHIELD-23: the crossing power
+
+    /** The power of the first shield shot at a 3.0 bullet from a moving enemy, with our and its energy. */
+    private double shieldPower(String flags, double energy, double enemyEnergy) {
+        mode = new ShieldMode(ShieldList.parse(List.of("list.Target")), records::add, 35, ShieldDesign.parse(flags));
+        for (long t = 1; t <= 10; t++) {
+            mode.onScan(ENEMY, t, MY_X, MY_Y, Math.PI / 2, 0, 520, ENEMY_Y, Math.PI, t < 9 ? 8 : 0);
+        }
+        mode.onEnemyShot(10, 3.0);
+        double gun = 0, x = MY_X;
+        for (long t = 11; t < 60; t++) {
+            ShieldMode.Command c = mode.tick(new ShieldMode.Situation(t, x, MY_Y, Math.PI / 2, gun, 0, 0.1,
+                energy, 520, ENEMY_Y, enemyEnergy, 0, 1.9, false, true));
+            if (c == null) return Double.NaN;
+            if (c.firePower > 0 && !c.attack) return c.firePower;
+            gun += c.gunTurn;
+            x += c.ahead;
+        }
+        return Double.NaN;
+    }
+
+    @Test
+    @Tag("SHIELD-22")
+    @DisplayName("cheap: the cheapest wide-enough crossing, never dearer than the shipped widest one")
+    void cheapCrossing() {
+        double shipped = shieldPower("", 100, 100);
+        double cheap = shieldPower("cheap", 100, 100);
+        assertTrue(shipped > 0.1 && shipped < 3.0, "shipped: " + shipped);
+        assertTrue(cheap > 0 && cheap < shipped, "cheap " + cheap + " under shipped " + shipped);
+        assertEquals("cheap", ShieldDesign.parse("cheap").toString());
+        assertFalse(ShieldDesign.SHIPPED.cheap);
+        assertFalse(ShieldDesign.parse("all").cheap);
+    }
+
+    @Test
+    @Tag("SHIELD-23")
+    @DisplayName("ratio: behind on energy the crossing is capped at the enemy's power times our energy over its energy")
+    void ratioCap() {
+        double level = shieldPower("ratio", 100, 100);
+        double behind = shieldPower("ratio", 20, 100);
+        assertTrue(level > 0, "level: " + level);
+        assertTrue(behind <= 3.0 * 20 / 100 + 1e-9, "behind: " + behind);
+        assertTrue(behind < level, "behind " + behind + " under level " + level);
+        assertEquals("ratio", ShieldDesign.parse("ratio").toString());
+        assertTrue(ShieldDesign.SHIPPED.ratio, "on from 3.21: pc-shield-power sr +0.15 ± 0.06 APS (BENCH-165)");
+    }
 }

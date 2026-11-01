@@ -96,6 +96,21 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("MOVE-32")
+    @DisplayName("flat-on lines name the opponents the duel surfs with the flatteners on, matched as shield entries")
+    void perOpponentFlatOn() {
+        ShieldList l = ShieldList.parse(List.of("flat-on: a.B 1.0", "flat-on: c.D", "heat-jit: c.D", "flat-on:"));
+        assertTrue(l.flatOn("a.B 1.0"));
+        assertFalse(l.flatOn("a.B 1.1"), "a versioned line matches that version only");
+        assertTrue(l.flatOn("c.D 2.3"), "a bare name matches every version");
+        assertTrue(l.heatJit("c.D 2.3"), "switches on one robot combine");
+        assertFalse(l.heatJit("a.B 1.0") || l.still("a.B 1.0"), "no other switch");
+        assertFalse(l.flatOn(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.flatOn("a.B 1.0"));
+    }
+
+    @Test
     @Tag("SHIELD-19")
     @DisplayName("shield-exit4 and shield-exit0 lines give an opponent's battle exit, matched as shield entries")
     void perOpponentExit() {
@@ -109,5 +124,31 @@ class ShieldListTest {
         assertFalse(l.heatJit("a.B 1.0") || l.gunStack("c.D 2.3"), "no other switch");
         assertEquals(1, l.size(), "no shield entry");
         assertEquals(150, ShieldList.NONE.stayDamage("a.B 1.0", 150));
+    }
+
+    @Test
+    @Tag("SKEY-2")
+    @DisplayName("surf-key lines give an opponent's ten key values, matched as shield entries; malformed lines skipped")
+    void surfKeys() {
+        ShieldList l = ShieldList.parse(List.of(
+            "surf-key: 1 2 1 1 0.5 1 1 1 1 1.4 a.B 1.0",
+            "surf-key: 1 1 1 1 1 1 1 1 1 2 c.D",
+            "surf-key: 1 1 1 1 1 1 1 1 1 e.F 1.0",
+            "surf-key: 1 1 1 1 1 1 1 1 0 1 g.H",
+            "surf-key: 1 1 1 1 x 1 1 1 1 1 i.J"));
+        double[] k = l.surfKeyFor("a.B 1.0");
+        assertEquals(10, k.length);
+        assertEquals(2.0, k[1]);
+        assertEquals(1.4, k[9]);
+        k[1] = 9;
+        assertEquals(2.0, l.surfKeyFor("a.B 1.0")[1], "a fresh copy each call");
+        assertEquals(null, l.surfKeyFor("a.B 1.1"), "a versioned line matches that version only");
+        assertEquals(2.0, l.surfKeyFor("c.D 3")[9], "a versionless line matches every version");
+        assertEquals(null, l.surfKeyFor("e.F 1.0"), "nine values: the name would be a number");
+        assertEquals(null, l.surfKeyFor("g.H 1"), "a zero multiplier is skipped");
+        assertEquals(null, l.surfKeyFor("i.J 1"), "a non-number is skipped");
+        assertEquals(null, l.surfKeyFor(null));
+        assertEquals(0, l.size(), "no shield entry");
+        assertEquals(null, ShieldList.NONE.surfKeyFor("a.B 1.0"));
     }
 }

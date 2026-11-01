@@ -1,0 +1,4 @@
+# pc-rival-confirm: stop-and-go (flip 1, stopGo) picks of pc-rival-picks (PR #532).
+bayen.nut.Squirrel 1.621
+davidalves.net.DuelistMicroMkII 1.1
+rcb.Vanessa03 0

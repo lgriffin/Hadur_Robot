@@ -130,6 +130,13 @@ final class MoveDesign {
     static final boolean ORACLE_RECORD = false;
 
     /**
+     * SKEY-1 (measurement): each wave's first three-option rating also prints an {@code SKN} record
+     * with the wave's surf key, for the offline per-opponent surf-key fit
+     * ({@code data/tools/surf_key_fit.py}). Behaviour unchanged.
+     */
+    static final boolean SURF_KEY_RECORD = false;
+
+    /**
      * MOVE-25: the duel surfs with the stop-point surf (StopPointSurf, docs/bench/surf-b-rivals-read.md):
      * dozens of stop points both ways rated on a smoothed probability histogram of the same views,
      * BeepBoop's 1 / sqrt(4 + t) time weight, two waves, and a plan kept until the waves or the

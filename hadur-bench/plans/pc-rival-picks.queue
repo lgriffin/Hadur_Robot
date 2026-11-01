@@ -22,7 +22,7 @@
 # rule: 36 to 74 robots read too few for either before the end; the gates judge the A/A at the end. ALERT opens an
 # issue for Leigh on any stop.
 
-set V = 3.20
+set V = 3.21
 set P = --parallel 12 --no-truth-log
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G --engine 1.11.1
 set W = work/rival-picks

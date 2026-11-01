@@ -42,7 +42,7 @@
 #   --dry-run              print what would be built, fetched and run, and run nothing
 #   --skip-build           skip `mvn package` at the repo root
 #   --skip-fetch           skip fetching the set's opponent jars
-#   --engine VERSION       run the battles on this Robocode release from Maven Central (e.g. 1.11.1)
+#   --engine VERSION       run the battles on this Robocode release from Maven Central (e.g. 1.11.2)
 #   --arms FILE            a multi-arm run (BENCH-92): every arm in FILE (label | robot | jar) on every
 #                          opponent and seed, in a shuffled order; writes arms.tsv. Replaces --robot/--baseline
 #   --pin                  bind each battle JVM to its worker's own processors (BENCH-93)

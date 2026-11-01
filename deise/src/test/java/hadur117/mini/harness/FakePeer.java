@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import robocode.Bullet;
 import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
 
 /**
@@ -57,6 +58,11 @@ public final class FakePeer implements InvocationHandler {
         if (name.equals("toString")) return "FakePeer";
         if (name.equals("hashCode")) return System.identityHashCode(this);
         if (name.equals("equals")) return proxy == args[0];
+        // A shot the gun can fire comes back as a bullet, as the engine's does (DEISE-17 counts it).
+        if (name.equals("setFire") && Double.valueOf(0.0).equals(values.get("getGunHeat"))
+            && values.get("getEnergy") instanceof Double energy && energy > 0) {
+            return new Bullet(0, 0, 0, (Double) args[0], "Deise", null, true, orders.size());
+        }
         return zero(type);
     }
 

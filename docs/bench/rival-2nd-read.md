@@ -120,3 +120,86 @@ Each screen writes a multi-arm read, a 5-point per-robot pick and every robot's 
 these stop rules: fails 30, dead 8, skips 40 over 200, stall 30m. A halt keeps every battle and a rerun resumes; a halt
 in one screen leaves the later screens unrun. No screen ships anything: the picks go to a confirm card on fresh seeds,
 then to the census.
+
+## pc-rival-picks results (PR #532, 2026-11-01) and card pc-rival-confirm (BENCH-161)
+
+As global switches, the lists lose: shield adds -2.57 points (mt) and -2.06 (mtzl) on 74 robots, and stop-and-go
+-19.6 (mdwl) and -9.5 (mdwm) on 36. Shield execution is the exception: still + exit off (zlx0) +1.64 ± 1.39 on 50.
+All three A/As sit inside their bands.
+
+At a 5-point margin, 18 robots lock, worth +0.14 APS in sample:
+
+- shield adds: fm.claire, projectx.TestNano, rz.GlowBlowMelee and tobe.Saturn with still lines; zeze2.OperatorZeze
+  without them;
+- execution: deo.FlowerBot, stelo.MatchupWS and SuperMercutio with still lines; cx.micro.Smoke, dft.Cyprus,
+  myl.micro.Avipes, rz.GlowBlowAPM and voidious.mini.Komarious with still lines and exit off;
+- stop-and-go: Squirrel, DuelistMicroMkII and Vanessa03 (flip 1, each off the shield list); VertiLeach and Geomancy
+  (flip 2).
+
+In-sample picks shrink. `hadur-bench/plans/pc-rival-confirm.queue` builds all 18 lines into one jar (each acts only on
+its own robot) and runs it beside master and an A/A on 8 fresh seeds from 6300. That is 432 battles, about 10 minutes.
+The gate is +0.05 APS with the 95% low end above 0, plus a 3-point per-robot pick. The lines that hold go to master
+for the next census.
+
+### pc-rival-confirm results (PR #537): 13 picks ship
+
+The 18 picks in one jar, 8 fresh seeds from 6300, 432 battles: **rp +5.67 ± 1.94 points** over master on the 18,
+which is **+0.08 ± 0.03 APS** pooled over both controls. 16 of the 18 are up. The A/A (aa - c) came out at
+-1.25 ± 1.03 against a ±0.97 band, just outside, so the gate script marks the run unread. Against either control
+alone the gain is over 4 times the A/A gap. The aa copy scored lower, so against it rp gains more.
+
+At a 3-point margin, 13 robots hold (+0.08 APS in sample). They are on master:
+
+- shield list + still lines: fm.claire, projectx.TestNano, rz.GlowBlowMelee;
+- still lines: SuperMercutio; still lines + exit off: cx.micro.Smoke, dft.Cyprus, myl.micro.Avipes, rz.GlowBlowAPM,
+  voidious.mini.Komarious;
+- off the shield list, so their existing stop-and-go lines drive: DuelistMicroMkII, Vanessa03;
+- stop-and-go shift: pez.mini.VertiLeach, synapse.Geomancy.
+
+These 5 stay off: tobe.Saturn +4.1 (narrow interval), zeze2.OperatorZeze +1.1, stelo.MatchupWS 0.0,
+bayen.nut.Squirrel -0.1 and deo.FlowerBot -2.7. The lines go to the next census with everything else.
+
+### Card pc-rival-near (BENCH-163): the 28 near misses
+
+pc-rival-picks' screens left 28 robots whose best arm gained 3 or more points on 3 seeds without locking at 5, and
+whose lines are not on master yet. The largest are Mozart +12.5, MagicD3 +8.2, Bezier +7.5, PrairieWolf +7.3,
+Jammy +7.0, LightningStorm +7.0, AspidReloaded +6.2 and Hydrogen +6.0. Lucid and Warlord already carry their still
+lines.
+
+The five robots pc-rival-confirm read on 8 seeds stay out: Saturn, OperatorZeze, MatchupWS, Squirrel and FlowerBot.
+
+`hadur-bench/plans/pc-rival-near.queue` builds all 28 into one jar and runs it with c and aa on 8 fresh seeds from
+6500. That is 672 battles, about 10 minutes on the PC. Its gate and pick work as pc-rival-confirm's do, and
+`tools/ship_picks.py` ships what holds. The card's pick TSV labels every robot `rp`, the combined arm, so shipping
+passes the card's input lists to rebuild each robot's own codes:
+`python3 tools/ship_picks.py rival-near-pick.tsv --codes-from plans/rival-near --label "pc-rival-near (BENCH-163)"`.
+
+A cloud screen (c vs the jar, 3 seeds from 6400, 168 battles, no A/A) runs in the meantime.
+
+### pc-rival-near results (PR #545): 9 picks ship
+
+The card ran all 28 near misses as one build (rp) with c and aa on 8 PC seeds from 6500. The A/A was +0.50 ± 0.97
+points, inside its ±0.78 band, so the run stands. The whole build fails the global gate: +0.04 ± 0.04 APS against a
++0.05 bar. That is +1.87 ± 1.76 points over the panel, and BaronTrozo -13.7, Zealot -2.8 and FunkyChicken -2.6 pull
+it down.
+
+The mode-table pick locks 10 robots at a 3-point margin. The cloud screen (3 seeds from 6400, which the PC never
+ran) gives a second read on each one. Nine agree in sign on both, so they ship. Frankie (+5.0 PC, -0.1 cloud) does
+not.
+
+| Robot | Codes | PC (8 seeds) | Cloud (3 seeds) |
+|---|---|---:|---:|
+| sL300.Mozart life | mtzl | +13.6 | +10.3 |
+| EE.LittleBig 1.0 | mdwl | +6.6 | +4.2 |
+| rz.Artist 0.2 | mtzl | +6.0 | +3.8 |
+| theo.Hydrogen 2.1r | mdwl | +5.6 | +10.3 |
+| intruder.PrairieWolf 2.61 | zlx0 | +5.1 | +4.2 |
+| sheldor.nano.PointInLine 1.0 | zlx0 | +4.6 | +4.8 |
+| wiki.Wolverine 2.1 | mdwl | +4.6 | +4.1 |
+| divineomega.DivineBot 1.9.5 | wm | +3.7 | +2.9 |
+| dmp.micro.Aurora 1.41 | mtzl | +3.4 | +3.4 |
+
+These picks were made in sample on the PC seeds, so the PC gains are high. If they shrink by half, the nine are
+worth about +0.02 APS over the 1,212-robot field. Hydrogen leaves the shield list, so its still line goes too. A
+still line is read only while a robot is shielded, so this changes nothing in play. The names are in
+`hadur-bench/plans/rival-near-shipped.txt`.

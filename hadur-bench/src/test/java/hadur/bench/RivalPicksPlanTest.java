@@ -49,8 +49,16 @@ class RivalPicksPlanTest {
         assertFalse(stopGo.contains("wiki.nano.Flick 1.0"), "Flick stays out: we lead it by 10 points");
 
         String listData = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldListData.java"));
-        for (String n : drop) assertTrue(listData.contains("\"" + n + "\","), n + " is on the shield list to drop");
-        for (String n : add) assertFalse(listData.contains("\"" + n + "\","), n + " is not on the shield list yet");
+        // pc-rival-confirm (PR #537) shipped some of these picks: those robots have moved on master.
+        // pc-rival-near (PR #545) shipped more of them.
+        List<String> shipped = new java.util.ArrayList<>(names("plans/rival-confirm-shipped.txt"));
+        shipped.addAll(names("plans/rival-near-shipped.txt"));
+        for (String n : drop) {
+            if (!shipped.contains(n)) assertTrue(listData.contains("\"" + n + "\","), n + " is on the shield list to drop");
+        }
+        for (String n : add) {
+            if (!shipped.contains(n)) assertFalse(listData.contains("\"" + n + "\","), n + " is not on the shield list yet");
+        }
 
         String[][] arms = {
             {"plans/rival-shield-add.arms", "c", "aa", "mt", "mtzl"},
@@ -59,7 +67,7 @@ class RivalPicksPlanTest {
         for (String[] a : arms) {
             String text = Files.readString(Path.of(a[0]));
             for (int i = 1; i < a.length; i++) {
-                assertTrue(text.contains("\n" + a[i] + " | hadur117.Hadur 3.20" + (i == 1 ? "" : a[i]) + " | "), a[0] + " " + a[i]);
+                assertTrue(text.contains("\n" + a[i] + " | hadur117.Hadur 3.21" + (i == 1 ? "" : a[i]) + " | "), a[0] + " " + a[i]);
             }
         }
 

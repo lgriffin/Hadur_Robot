@@ -1,0 +1,39 @@
+# 1v1, the rival's near-miss per-opponent picks on fresh seeds (BENCH-163, docs/bench/rival-2nd-read.md). Leigh starts it:
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-rival-near        (or  ./queue.sh run pc-rival-near)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes; no step needs a
+# decision. About 10 min of battles (28 robots x 3 arms x 8 seeds = 672; pc-rival-confirm ran ~4,300 an hour).
+#
+# Why: pc-rival-confirm (PR #537) shipped 13 picks (+0.08 APS). pc-rival-picks' screens (PR #532) left 28 more robots whose
+# best arm gained 3+ points on 3 seeds but did not lock at 5 (Mozart +12.5, MagicD3 +8.2, Bezier +7.5, PrairieWolf +7.3,
+# Jammy +7.0, LightningStorm +7.0, AspidReloaded +6.2, Hydrogen +6.0, ...). Master's own lines are left out. This card
+# runs all 28 picks in one jar on 8 fresh seeds from 6500 and keeps the ones that hold.
+#
+# gate: rp at +0.05 APS over the 28 / 1,217 pairings with the 95% low end above 0, A/A inside its band; a 3-point
+# per-robot pick names the lines to ship; every robot's difference with losses.
+# Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 40+ skipped turns a battle
+# over the last 200, or no battle in 30 minutes; every battle fought is kept and a rerun resumes. A halt leaves the
+# gate unrun. No A/A or futility rule: 28 robots are too few for an interim read. ALERT opens an issue for Leigh on
+# any stop. Nothing here ships: on a pass a PR adds the held picks' lines to master for the next census.
+
+set V = 3.21
+set C = --skip-build --skip-fetch --rounds 35 --parallel 12 --no-truth-log --cpu-constant 1488498 --child-heap 2G --engine 1.11.1
+set W = work/rival-near
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && SHIELD_ADD=plans/rival-near-add.txt SHIELD_STILL=plans/rival-near-still.txt SHIELD_EXIT0=plans/rival-near-exit0.txt SHIELD_DROP=plans/rival-near-drop.txt STOP_GO=plans/rival-near-stopgo.txt STOP_GO2=plans/rival-near-stopgo2.txt bash ./build-ablation.sh slistadd,slistdrop,szlist,sx0list,sgolist,sgo2list && test -f bisect/hadur117.Hadur_${V}mtmdzlx0wlwm.jar && ./fetch-opponents.sh --set panel-rival-near.txt && mvn -q compile
+
+confirm | ./bench-top20.sh ${C} --set panel-rival-near.txt --seeds 8 --seed-base 6500 --arms plans/rival-near.arms --out ${W} --label rival-near --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 40 over 200
+  stop: stall 30m
+
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_rival-near.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm rp --panel panel-rival-near.txt --bar 0.05 --out ${OUT}/$(date +%Y-%m-%d)_rival-near-gate.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 3 --out-tsv ${OUT}/rival-near-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_rival-near-pick.md && python3 tools/per_robot.py ${W}/arms.tsv --arms rp --out ${OUT}/$(date +%Y-%m-%d)_rival-near-per-robot.md --out-tsv ${OUT}/rival-near-per-robot.tsv
+  after: confirm
+
+pr | bash tools/open_results_pr.sh claude/pc-rival-near-results "1v1 the rival's 28 near-miss picks on fresh seeds" ${OUT}/*_rival-near*.md ${OUT}/rival-near-per-robot.tsv $(find ${OUT} -maxdepth 1 -name rival-near-pick.tsv -size +0c)
+  after: gate

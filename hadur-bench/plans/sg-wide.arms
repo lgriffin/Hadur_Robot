@@ -1,6 +1,6 @@
 # Simple-gun dodge part 2 (pc-sg-wide): c is master (3.20), aa its A/A copy, kw the 18 wide aim members
 # (MOVE-31), kikw the wide members also scored on intercepted bullets (MOVE-30 + MOVE-31).
-c | hadur117.Hadur 3.20 | bisect/hadur117.Hadur_3.20.jar
-aa | hadur117.Hadur 3.20aa | bisect/hadur117.Hadur_3.20aa.jar
-kw | hadur117.Hadur 3.20kw | bisect/hadur117.Hadur_3.20kw.jar
-kikw | hadur117.Hadur 3.20kikw | bisect/hadur117.Hadur_3.20kikw.jar
+c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
+aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
+kw | hadur117.Hadur 3.21kw | bisect/hadur117.Hadur_3.21kw.jar
+kikw | hadur117.Hadur 3.21kikw | bisect/hadur117.Hadur_3.21kikw.jar

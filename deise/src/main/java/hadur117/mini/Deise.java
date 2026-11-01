@@ -2,6 +2,7 @@ package hadur117.mini;
 
 import java.awt.geom.Point2D;
 import robocode.AdvancedRobot;
+import robocode.BulletHitEvent;
 import robocode.RobotDeathEvent;
 import robocode.Rules;
 import robocode.ScannedRobotEvent;
@@ -18,7 +19,9 @@ import robocode.util.Utils;
  * requires the same orders (DEISE-16). 0.4 is stage E3b's FAP: 0.3 without the field cap on
  * power, the test of whether an opponent likely aims at Deise made at every scan and kept as its
  * weight (1, or 0.25 when another robot is nearer it), which weighs its waves and its push,
- * 106,667 + 213,333 x weight (docs/deise.md section 8).</p>
+ * 106,667 + 213,333 x weight (docs/deise.md section 8). 0.5 adds stage E6b's PN (400 playouts,
+ * each voting over half the target's width) and stage E7's LEARNH: the target is the robot with
+ * the least distance times the root of the shots aimed at it over the hits on it (DEISE-17).</p>
  */
 public class Deise extends AdvancedRobot {
 
@@ -27,8 +30,8 @@ public class Deise extends AdvancedRobot {
      * start at 1, so slot 0 is what an unseen robot's death clears.
      */
     static char[][][] markov = new char[17][579][127];
-    /** Per opponent: last scan time, heading, velocity, state. */
-    static double[][] last = new double[17][4];
+    /** Per opponent: last scan time, heading, velocity, state, shots aimed at it, hits on it (DEISE-17). */
+    static double[][] last = new double[17][6];
     static int[] ids = new int[1 << 18];
     static int seen;
     /** Live opponents this round, {x, y, energy, weight}. */
@@ -37,6 +40,8 @@ public class Deise extends AdvancedRobot {
     static int wave;
     static int target;
     static double targetDistance;
+    /** The target's distance times the root of its shots over its hits, with a prior (DEISE-17). */
+    static double targetScore;
 
     @Override
     public void run() {
@@ -44,7 +49,7 @@ public class Deise extends AdvancedRobot {
         setAdjustRadarForGunTurn(true);
         bots = new double[17][];
         waves = new double[64][];
-        setTurnRadarRightRadians(targetDistance = Double.POSITIVE_INFINITY);
+        setTurnRadarRightRadians(targetScore = Double.POSITIVE_INFINITY);
         // Declared first so they take local slots 1 to 4, which have one-byte loads and stores:
         // the risk loops read them most (docs/bench/kitlab-priors.md).
         double[] o;
@@ -159,23 +164,26 @@ public class Deise extends AdvancedRobot {
         l[1] = heading;
         l[2] = velocity;
         l[3] = state;
-        // The nearest, sticky (DEISE-11).
-        if (distance < targetDistance || id == target) {
+        // The nearest by distance over the root of its hit rate, sticky (DEISE-11, DEISE-17).
+        double score = distance * Math.sqrt((l[4] + 10) / (l[5] + 1.5));
+        if (score < targetScore || id == target) {
             target = id;
             targetDistance = distance;
+            targetScore = score;
             if (getGunHeat() < 1) {
                 setTurnRadarRightRadians(Double.POSITIVE_INFINITY * Math.sin(bearing - getRadarHeadingRadians()));
             }
             // Range power, within 0.1 to 3 (DEISE-10).
             double power = Math.max(0.1, Math.min(3,
                 Math.log10(getEnergy()) * 325 / distance));
-            if (getGunTurnRemaining() == 0 && getEnergy() > power) {
-                setFire(power);
+            // A shot fired counts for its target: a hot gun fires none (DEISE-17).
+            if (getGunTurnRemaining() == 0 && getEnergy() > power && setFireBullet(power) != null) {
+                l[4]++;
             }
-            // 200 playouts of the target's chain, each voting over its width (DEISE-7 to DEISE-9).
+            // 400 playouts of the target's chain, each voting over half its width (DEISE-7 to DEISE-9; arm PN since 0.5).
             int[] bins = new int[1024];
             int best = 0;
-            int width = (int) (Math.atan(18 / distance) * (512 / Math.PI));
+            int width = (int) (Math.atan(9 / distance) * (512 / Math.PI));
             int i = 0;
             do {
                 double px = x;
@@ -186,7 +194,7 @@ public class Deise extends AdvancedRobot {
                 int weight = 100;
                 int ticks = 0;
                 int n;
-                while (++ticks * (20 - 3 * power) < Point2D.distance(px, py, mx, my)) {
+                while (++ticks * Rules.getBulletSpeed(power) < Point2D.distance(px, py, mx, my)) {
                     if ((n = table[s][126]) > 0) {
                         s = table[s][(int) (Math.random() * n)];
                     }
@@ -208,7 +216,7 @@ public class Deise extends AdvancedRobot {
                         best = b;
                     }
                 } while (++k <= width);
-            } while (++i < 200);
+            } while (++i < 400);
             setTurnGunRightRadians(Utils.normalRelativeAngle(best * (Math.PI / 512) - getGunHeadingRadians()));
         }
     }
@@ -220,10 +228,19 @@ public class Deise extends AdvancedRobot {
 
     @Override
     public void onRobotDeath(RobotDeathEvent e) {
-        int id = ids[e.getName().hashCode() & 262143];
-        bots[id] = null;
-        if (id == target) {
-            targetDistance = Double.POSITIVE_INFINITY;
-        }
+        // Any death opens the target to every robot again (DEISE-11).
+        bots[id(e.getName())] = null;
+        targetScore = Double.POSITIVE_INFINITY;
+    }
+
+    /** A hit on any robot counts for it (DEISE-17). */
+    @Override
+    public void onBulletHit(BulletHitEvent e) {
+        last[id(e.getName())][5]++;
+    }
+
+    /** A seen robot's id; 0 for one never seen. */
+    static int id(String name) {
+        return ids[name.hashCode() & 262143];
     }
 }

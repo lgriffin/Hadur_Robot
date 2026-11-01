@@ -1,0 +1,31 @@
+# PC card pc-team-angles (BENCH-167): arm gbb against aa. Template: anprep writes work/team-angles-gbb.args with @V@ = the robot.release in hadur-robot/pom.xml
+--team
+true
+--seeds
+16
+--seed-base
+7500
+--rounds
+10
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+work/team-angles-gate.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@bb.jar
+--robot
+hadur117.HadurTeam @V@bb
+--member
+hadur117.Hadur
+--out
+work/team-angles-@V@-gbb
+--report
+../docs/bench/local/team-angles-gbb.md
+--baseline
+bisect/hadur117.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur117.HadurTeam @V@aa

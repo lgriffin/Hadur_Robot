@@ -1,0 +1,40 @@
+# 1v1, the rival's per-opponent picks on fresh seeds (BENCH-161, docs/bench/rival-2nd-read.md). Leigh starts it:
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-rival-confirm        (or  ./queue.sh run pc-rival-confirm)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes; no step needs a
+# decision. About 10 min of battles (18 robots x 3 arms x 8 seeds = 432; pc-rival-picks ran ~3,900 an hour).
+#
+# Why: pc-rival-picks (PR #532) failed every list as a global switch (shield adds -2.57 pts, stop-and-go -19.6 and
+# -9.5) except shield execution (still + exit off +1.64 +- 1.39 on 50), but 18 robots locked at a 5-point margin:
+# 5 shield adds (+0.04 APS in sample), 8 execution lines (+0.07) and 5 stop-and-go adds (+0.03), +0.14 APS in sample.
+# In-sample picks shrink; this card re-measures all 18 on 8 fresh seeds from 6300 in one build (each line touches only
+# its robot) and keeps the ones that hold.
+#
+# gate: rp at +0.05 APS over the 18 / 1,217 pairings with the 95% low end above 0, A/A inside its band; a 3-point
+# per-robot pick names the lines to ship; every robot's difference with losses.
+# Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 40+ skipped turns a battle
+# over the last 200, or no battle in 30 minutes; every battle fought is kept and a rerun resumes. A halt leaves the
+# gate unrun. No A/A or futility rule: 18 robots are too few for an interim read. ALERT opens an issue for Leigh on
+# any stop. Nothing here ships: on a pass a PR adds the held picks' lines to master for the next census.
+
+set V = 3.21
+set C = --skip-build --skip-fetch --rounds 35 --parallel 12 --no-truth-log --cpu-constant 1488498 --child-heap 2G --engine 1.11.1
+set W = work/rival-confirm
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && SHIELD_ADD=plans/rival-confirm-add.txt SHIELD_STILL=plans/rival-confirm-still.txt SHIELD_EXIT0=plans/rival-confirm-exit0.txt SHIELD_DROP=plans/rival-confirm-drop.txt STOP_GO=plans/rival-confirm-stopgo.txt STOP_GO2=plans/rival-confirm-stopgo2.txt bash ./build-ablation.sh slistadd,slistdrop,szlist,sx0list,sgolist,sgo2list && test -f bisect/hadur117.Hadur_${V}mtmdzlx0wlwm.jar && ./fetch-opponents.sh --set panel-rival-confirm.txt && mvn -q compile
+
+confirm | ./bench-top20.sh ${C} --set panel-rival-confirm.txt --seeds 8 --seed-base 6300 --arms plans/rival-confirm.arms --out ${W} --label rival-confirm --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 40 over 200
+  stop: stall 30m
+
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_rival-confirm.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm rp --panel panel-rival-confirm.txt --bar 0.05 --out ${OUT}/$(date +%Y-%m-%d)_rival-confirm-gate.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 3 --out-tsv ${OUT}/rival-confirm-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_rival-confirm-pick.md && python3 tools/per_robot.py ${W}/arms.tsv --arms rp --out ${OUT}/$(date +%Y-%m-%d)_rival-confirm-per-robot.md --out-tsv ${OUT}/rival-confirm-per-robot.tsv
+  after: confirm
+
+pr | bash tools/open_results_pr.sh claude/pc-rival-confirm-results "1v1 the rival's 18 per-opponent picks on fresh seeds" ${OUT}/*_rival-confirm*.md ${OUT}/rival-confirm-per-robot.tsv $(find ${OUT} -maxdepth 1 -name rival-confirm-pick.tsv -size +0c)
+  after: gate

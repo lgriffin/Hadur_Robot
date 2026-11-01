@@ -29,7 +29,7 @@
 # Nothing here ships: on a pass a PR turns SHIELD-20 on (and adds the 64 or the picked ones) for the next
 # census; the release rule stands.
 
-set V = 3.20
+set V = 3.21
 set P = --parallel 12 --no-truth-log
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G --engine 1.11.1
 set W = work/shield-still

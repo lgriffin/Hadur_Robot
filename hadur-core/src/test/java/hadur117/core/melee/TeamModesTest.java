@@ -6,6 +6,7 @@ import static hadur117.core.melee.Fixtures.scan;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -54,7 +55,8 @@ class TeamModesTest {
     @Tag("TMODE-28")
     @Tag("TMODE-30")
     @Tag("TMODE-34")
-    @DisplayName("TMODE-1: a team's modes are its first member's entry, by class without version or duplicate marker; else the default, MATEFIRE, HUNT, PATH, DODGE and CONCORD in the shipped build (TMODE-12, TMODE-14, TMODE-28, TMODE-30, TMODE-34), every named team plays PATH and CONCORD, and DODGE unless it lost there (PR #465)")
+    @Tag("TMODE-35")
+    @DisplayName("TMODE-1: a team's modes are its first member's entry, by class without version or duplicate marker; else the default, MATEFIRE, HUNT, PATH, DODGE and CONCORD in the shipped build (TMODE-12, TMODE-14, TMODE-28, TMODE-30, TMODE-34), every named team plays PATH, DODGE unless it lost there (PR #465), and CONCORD unless it lost there (PR #538, TMODE-35)")
     void tableLookup() {
         EnemyTracker t = new EnemyTracker(field(1200, 1200));
         scan(t, "x.Other 2.0 (1)", 100, 100, 100, 1);
@@ -68,12 +70,16 @@ class TeamModesTest {
         // The table names only the teams whose counters passed on fresh seeds (PR #370), and the two
         // teams DODGE lost to, confirmed on fresh seeds (PR #465).
         Set<String> dodgeOff = Set.of("ustimaw.Nightmare", "ustimaw.NigitmareDroid", "mn.nano.perceptual.Impact");
+        // and the four teams CONCORD lost to, confirmed on fresh seeds (PR #538).
+        Set<String> concordOff = Set.of("ustimaw.Nightmare", "ustimaw.NigitmareDroid", "cz.libors.Ogi", "mn.Combat",
+            "cb.fire.Firestarter");
         assertEquals(java.util.Set.of("gh.nano.GrofGroupMember", "myl.micro.Troodon", "myl.micro.TroodonDroid",
-                "ustimaw.Nightmare", "ustimaw.NigitmareDroid", "mn.nano.perceptual.Impact"),
+                "ustimaw.Nightmare", "ustimaw.NigitmareDroid", "mn.nano.perceptual.Impact", "cz.libors.Ogi",
+                "mn.Combat", "cb.fire.Firestarter"),
             TeamModes.TABLE.keySet());
         for (Map.Entry<String, Set<TeamModes.Mode>> entry : TeamModes.TABLE.entrySet()) {
             assertTrue(entry.getValue().contains(TeamModes.Mode.PATH), entry.getKey());
-            assertTrue(entry.getValue().contains(TeamModes.Mode.CONCORD), entry.getKey());
+            assertEquals(!concordOff.contains(entry.getKey()), entry.getValue().contains(TeamModes.Mode.CONCORD), entry.getKey());
             assertEquals(!dodgeOff.contains(entry.getKey()), entry.getValue().contains(TeamModes.Mode.DODGE), entry.getKey());
         }
     }
@@ -312,6 +318,21 @@ class TeamModesTest {
         // The other pulls still scale every term but the posture's.
         assertTrue(MinimumRiskMovement.pull(pt(600, 400), 100, 3, prey, 100, mates(pt(700, 400)),
             EnumSet.of(TeamModes.Mode.PACK)).scalesBullets);
+    }
+
+    @Test
+    @Tag("TMODE-37")
+    @DisplayName("TMODE-37: with WARY a member under 50 energy leaves the hunt; at 50 it still hunts; off by default")
+    void waryLeavesHuntSooner() {
+        List<EnemyInfo> prey = enemies(pt(600, 1000)).alive();
+        Set<TeamModes.Mode> hunt = EnumSet.of(TeamModes.Mode.HUNT);
+        Set<TeamModes.Mode> wary = EnumSet.of(TeamModes.Mode.HUNT, TeamModes.Mode.WARY);
+        assertNotNull(MinimumRiskMovement.pull(pt(600, 400), "n", 40, 3, prey, 100, mates(pt(700, 400)), hunt));
+        assertNull(MinimumRiskMovement.pull(pt(600, 400), "n", 40, 3, prey, 100, mates(pt(700, 400)), wary));
+        assertNotNull(MinimumRiskMovement.pull(pt(600, 400), "n", MinimumRiskMovement.WARY_ENERGY, 3, prey, 100,
+            mates(pt(700, 400)), wary));
+        assertFalse(TeamModes.FORCE_WARY);
+        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.WARY));
     }
 
     @Test

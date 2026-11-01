@@ -11,6 +11,11 @@ EVEIMEAR-12 in [docs/requirements.md](../docs/requirements.md).
 0.1 is 722 bytes of 749 (two classes). Released 2026-10-28 (tag `eveimear-v0.1`). It shares the
 `hadur117.micro` package with Saor but never a jar.
 
+0.2 (prepared 2026-11-01, tag `eveimear-v0.2` on Leigh's go) is 746 bytes. A per-opponent string
+`MODES`, keyed by name hash and learned from Eveimear's own forced-mode battles, scales the
+damage threshold that switches stop-and-go to random orbit, so each robot gets the mode that
+worked against it. Bench: +0.36 ± 0.17 APS over 0.1 on a fresh 112-bot sample (6 seeds) (83.57 against 83.20).
+
 ## Standing
 
 | Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | 5th place | Gap to 5th |

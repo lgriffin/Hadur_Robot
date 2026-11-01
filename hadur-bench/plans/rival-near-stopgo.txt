@@ -1,0 +1,6 @@
+# pc-rival-near: near-miss picks of pc-rival-picks (PR #532), best arm 3+ points, not locked.
+theo.Hydrogen 2.1r
+EE.LittleBig 1.0
+wiki.Wolverine 2.1
+barontrozo.BaronTrozo 1.7.6
+xander.cat.Mikey 1.2

@@ -93,6 +93,12 @@ public class SurfMover {
     private boolean oracleRecord;
     /** ORACLE-1: records made since the last {@link #drainOracleRecords}. */
     private final List<String> oracleRecords = new ArrayList<>();
+    /** SKEY-1: whether each wave's first three-option rating also records the wave's surf key (bench builds only; off by default). */
+    private boolean surfKeyRecord;
+    /** SKEY-1: records made since the last {@link #drainSurfKeyRecords}. */
+    private final List<String> surfKeyRecords = new ArrayList<>();
+    /** SKEY-1: the surf sample's feature space, of which the hit views' space is the first nine values. */
+    private final FlattenerFormula surfKeyFormula = new FlattenerFormula();
     /** MOVE-14: whether the protean pick may replace the least-danger option (off by default). */
     private boolean proteanOn;
     /** MOVE-14: the mean dwell of a protean pick, in ticks. */
@@ -230,6 +236,26 @@ public class SurfMover {
      */
     public void setOracleRecord(boolean on) {
         this.oracleRecord = on;
+    }
+
+    /**
+     * SKEY-1 (measurement): whether each wave's first three-option rating also prints an {@code SKN}
+     * record with the wave's surf key, the {@link FlattenerFormula} point whose first nine values are
+     * the {@link MoveFormula} point the hit views search on, for the per-opponent surf-key fit
+     * ({@code data/tools/surf_key_fit.py}). Read-only: the option taken is the same with it on or off.
+     *
+     * @param on true to record
+     */
+    public void setSurfKeyRecord(boolean on) {
+        this.surfKeyRecord = on;
+    }
+
+    /** SKEY-1: the records made since the last call, oldest first; the list is then emptied. */
+    public List<String> drainSurfKeyRecords() {
+        if (surfKeyRecords.isEmpty()) return List.of();
+        List<String> out = new ArrayList<>(surfKeyRecords);
+        surfKeyRecords.clear();
+        return out;
     }
 
     /** ORACLE-1: the records made since the last call, oldest first; the list is then emptied. */
@@ -598,6 +624,11 @@ public class SurfMover {
         if (first && oracleRecord) {
             oracleRecords.add(OracleRecord.line(surfWave, chosen.ordinal(), firsts,
                 moveCtrl.viewCount(), moveCtrl.oracleNeighbours(surfWave)));
+        }
+
+        // SKEY-1: the wave's surf key, once, at the same first rating.
+        if (first && surfKeyRecord) {
+            surfKeyRecords.add(SurfKeyRecord.line(surfWave, surfKeyFormula.dataPointFromWave(surfWave)));
         }
 
         // Drive the same way the prediction did: toward the destination, wall-smoothed on

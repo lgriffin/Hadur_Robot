@@ -47,6 +47,30 @@ class JayLexiReplayTest {
 
     @Test
     @Tag("JAYLEXI-11")
+    @DisplayName("the two also agree against a robot with its own aim row, which plays other orders than the field's row")
+    void sameOrdersOnARecordedRow() throws Exception {
+        String field = shipped(1);
+        Replay.name = recordedName();
+        try {
+            assertEquals(-1, firstDifference(shipped(1), readable(1)));
+            assertNotEquals(-1, firstDifference(field, shipped(1)), "the row changes the orders");
+        } finally {
+            Replay.name = "e";
+        }
+    }
+
+    /** A name whose hash has a row in AIM. */
+    static String recordedName() {
+        for (int i = 0; ; i++) {
+            String n = "e" + i;
+            if (JayLexi.NAMES.indexOf((char) n.hashCode()) >= 0) {
+                return n;
+            }
+        }
+    }
+
+    @Test
+    @Tag("JAYLEXI-11")
     @DisplayName("the replay tells builds apart: the second wave at a third instead of a quarter gives other orders")
     void replayDiscriminates() throws Exception {
         String third = Replay.run(hadur117.mini.ref.JayLexi.class, hadur117.mini.ref.ReplayBot.Third::new, 1, 6, 1500);

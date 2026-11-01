@@ -1,0 +1,63 @@
+# 1v1, flatteners on per opponent against strong learners (BENCH-164, MOVE-32). Leigh starts it:
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-flat-on        (or  ./queue.sh run pc-flat-on)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes;
+# no step needs a decision. About 45 min of battles (1,392 screen + 3 x 4 per pick to confirm) and seconds of analysis.
+#
+# Why: strong learners are the biggest group of BeepBoop's lead over us (+1.43 APS over these 232 robots). BeepBoop
+# keeps flattener models in its surf ensemble; 3.15 switched ours off in every duel (MOVE-24, a census winner overall).
+# A cloud screen (2026-11-01, 36 learners x 2 seeds) found no global gain (+1.4 +- 2.0 points a robot) but a wide
+# per-robot split, and on 4 fresh cloud seeds Combat (+8, all 4 up) and Domogled (+5.5) held. Cloud runs starve
+# learners of CPU, so the PC decides.
+#
+# screen:  the 232 learners (panel-learners-flat.txt) x c, aa, fo x 2 fresh seeds from 6800 = 1,392 battles.
+# pick:    mode_table.py at a 5-point margin: the robots fo locks for (flat-on-pick.tsv).
+# prep2:   the confirm panel from the picks and the fq build (flat-on: lines for the picks only). No picks = the
+#          screen found nothing; prep2 stops the card there and ALERT says so.
+# confirm: the picks x c, aa, fq x 4 fresh seeds from 6900.
+# gate:    fq at +0.03 APS over the picks / 1,217 pairings, 95% low end above 0, A/A inside its band; a per-robot
+#          pick at a 5-point margin for the robots to ship; per-robot differences with losses.
+# Stop rules (docs/bench/watch.md): both battle steps halt on 30 failed battles, an arm scoring nothing in 8, 40+
+# skipped turns a battle over the last 200, or no battle in 30 minutes; the screen also halts on its A/A outside
+# its band after 20%. A halt leaves the rest of that step and every later step unrun; every battle fought is kept
+# and a rerun resumes. No futility rule: the screen is for picks, not a global gate. ALERT opens an issue for Leigh.
+# Nothing here ships: on a pass a PR adds the confirmed robots' flat-on lines for the next census; the release rule stands.
+
+set V = 3.21
+set P = --parallel 12 --no-truth-log
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G --engine 1.11.1
+set W = work/flat-on
+set W2 = work/flat-on2
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh flaton && test -f bisect/hadur117.Hadur_${V}fo.jar && ./fetch-opponents.sh --set panel-learners-flat.txt && mvn -q compile
+
+screen | ./bench-top20.sh ${C} ${P} --set panel-learners-flat.txt --seeds 2 --seed-base 6800 --arms plans/flat-on.arms --out ${W} --label flat-on --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 40 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+pick | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_flat-on-screen.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 5 --out-tsv ${OUT}/flat-on-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_flat-on-pick.md
+  after: screen
+
+prep2 | python3 tools/pick_panel.py ${OUT}/flat-on-pick.tsv panel-learners-flat.txt work/panel-flat-on-picks.txt && FLAT_ON=${OUT}/flat-on-pick.tsv bash ./build-ablation.sh fllist && test -f bisect/hadur117.Hadur_${V}fq.jar
+  after: pick
+
+confirm | ./bench-top20.sh ${C} ${P} --set work/panel-flat-on-picks.txt --seeds 4 --seed-base 6900 --arms plans/flat-on2.arms --out ${W2} --label flat-on2 --shuffle-jobs
+  after: prep2
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 40 over 200
+  stop: stall 30m
+
+gate | python3 ../data/tools/multiarm.py ${W2}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_flat-on2.md && python3 tools/shield_s2.py gate ${W2}/arms.tsv --arm fq --panel work/panel-flat-on-picks.txt --bar 0.03 --out ${OUT}/$(date +%Y-%m-%d)_flat-on2-gate.md && python3 ../data/tools/mode_table.py ${W2}/arms.tsv --margin 5 --out-tsv ${OUT}/flat-on2-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_flat-on2-pick.md && python3 tools/per_robot.py ${W2}/arms.tsv --arms fq --out ${OUT}/$(date +%Y-%m-%d)_flat-on2-per-robot.md --out-tsv ${OUT}/flat-on2-per-robot.tsv
+  after: confirm
+
+pr | bash tools/open_results_pr.sh claude/pc-flat-on-results "1v1 flatteners on per opponent: MOVE-32 screen and confirm on the strong learners" ${OUT}/*_flat-on*.md ${OUT}/flat-on-pick.tsv ${OUT}/flat-on2-per-robot.tsv $(find ${OUT} -maxdepth 1 -name flat-on2-pick.tsv -size +0c)
+  after: gate

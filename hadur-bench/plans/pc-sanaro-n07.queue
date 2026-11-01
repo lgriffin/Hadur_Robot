@@ -31,6 +31,9 @@
 # census step is one robot, so there is no arm to call futile mid-step. ALERT opens an issue for
 # Leigh on a stop.
 
+# The teach step's skip rule is 120 (was 60): Hadur skips 75-83 turns a battle, steady, in the
+# 43 live-shaped fields (n06's nano fields read 34); the first run halted at the 60 bar, issue #531.
+# A skipped turn costs Hadur a decision, not a wrong one, so the kept shots stay good.
 set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
@@ -43,7 +46,7 @@ teach | ${MVN} "-Dexec.args=@work/sanaro-n07/teach.args"
   watch: battles=129
   stop: fails 20
   stop: stall 30m
-  stop: skips 60 over 100
+  stop: skips 120 over 100
 
 distill-report | python3 tools/distill.py power work/sanaro-n06/teach/*/battles/*/shots.csv --own-step 2 --enemy-step 2 --min 20 --reach 0 --report && python3 tools/distill.py power work/sanaro-n07/teach/*/battles/*/shots.csv --own-step 2 --enemy-step 2 --min 20 --reach 0 --report && python3 tools/distill.py power work/sanaro-n06/teach/*/battles/*/shots.csv work/sanaro-n07/teach/*/battles/*/shots.csv --own-step 2 --enemy-step 2 --min 20 --reach 0 --report
   after: teach

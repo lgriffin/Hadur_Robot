@@ -1,5 +1,5 @@
 # Shield step, BeepBoop's shield list (pc-shield-still): c is master, aa its A/A copy, szmt SHIELD-20 with the
 # 64 robots of plans/beep-shield-add.txt on the shield list.
-c | hadur117.Hadur 3.20 | bisect/hadur117.Hadur_3.20.jar
-aa | hadur117.Hadur 3.20aa | bisect/hadur117.Hadur_3.20aa.jar
-szmt | hadur117.Hadur 3.20szmt | bisect/hadur117.Hadur_3.20szmt.jar
+c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
+aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
+szmt | hadur117.Hadur 3.21szmt | bisect/hadur117.Hadur_3.21szmt.jar

@@ -25,6 +25,8 @@
 #   grate   MGUN-18: an opponent's weight leans toward the ones the aim it fires has been hitting. Suffix gr.
 #   gdist   MGUN-19: the distance weight (100/d)^0.7, not 100/d. Suffix gd.
 #   tmswift (team only) TMODE-32: SWIFT on every team: the gun fires no harder than 1.9. Suffix sf.
+#   tmheavy (team only) TMODE-36: HEAVY, CONCORD's power cap off, on every unnamed team. Suffix hv.
+#   tmwary  (team only) TMODE-37: WARY, a member under 50 energy leaves the hunt, on every unnamed team. Suffix wy.
 #   tmconcord (team only) TMODE-33: the team brain after Ogi's design on every team. Suffix cn.
 #   tmconcordr / tmconcordm / tmconcordg: one part of it alone (radar cnr, movement cnm, gun cng);
 #   tmconcordp: the gun's pooling alone, power as shipped (cnp); tmconcordh: the movement with the hunt dropped (cnh).
@@ -302,6 +304,10 @@
 #         and while this battle's hit rate is above 20%, duel only. Suffix ab.
 #   sstill SHIELD-20: a shield shot plan from where we stand wins whenever there is one; the 0.1 px
 #         step aside only for a bullet no still plan meets (docs/bench/shield-step.md). Suffix sz.
+#   scheap SHIELD-22: the rival's crossing power: the cheapest shot plan whose shadow is half the
+#         widest's or more (docs/bench/shield-power.md). Suffix sc.
+#   sratio SHIELD-23: shot plans capped at the enemy's bullet times our energy over its energy.
+#         Suffix sr.
 #   smovelist the robots named in $SHIELD_MOVE (one per line, or a pick TSV) get the opening drive
 #         per opponent (ShieldTableData.moves()). Suffix mv.
 #   saimlist  the lines of $SHIELD_AIM ("predictor offset name", from tools/shield_s2.py aims) become
@@ -325,8 +331,14 @@
 #         stack GUN-8 to GUN-10 (GUN-11) per opponent. Suffixes hl, gl.
 #   sx4list / sx0list the robots named in $SHIELD_EXIT4 / $SHIELD_EXIT0 get SHIELD-11's battle exit at 400
 #         damage or none (SHIELD-19, ShieldTableData.exitLates() / exitOffs()). Suffixes x4, x0.
+#   skrec  SKEY-1: each wave's first three-option rating also writes an SKN record with the wave's surf
+#         key, for data/tools/surf_key_fit.py (measurement only; pair with oracle). Suffix kr.
+#   sklist the lines of $SURF_KEY ("m1 ... m9 bw name", from data/tools/surf_key_fit.py) become per-opponent
+#         surf keys (SKEY-2, ShieldTableData.surfKeys()). Suffix kl.
 #   szlist the robots named in $SHIELD_STILL get SHIELD-20's still shot plans (SHIELD-21,
 #         ShieldTableData.stills()). Suffix zl.
+#   fllist the robots named in $FLAT_ON get the flattener views back on in the duel (MOVE-32,
+#         ShieldTableData.flatOns()). Suffix fq.
 #   snull  all five at once: Nullstride's design as read from its jar.
 #   strim (3.13) the 22 listed robots that 3.13 lost to in both plan90-gate runs come off the shield
 #         list, so they are fought in normal mode: does the shield still pay against them
@@ -566,6 +578,9 @@ for a in "${list[@]}"; do
         oracle)
             edit "$movedesign" "static final boolean ORACLE_RECORD = false;" "static final boolean ORACLE_RECORD = true;"
             version="${version}or" ;;
+        skrec)
+            edit "$movedesign" "static final boolean SURF_KEY_RECORD = false;" "static final boolean SURF_KEY_RECORD = true;"
+            version="${version}kr" ;;
         close200)
             edit "$src/hadur-core/src/main/java/$pkg/core/gun/GunController.java" "static final double CLOSE_RANGE = 150.0;" "static final double CLOSE_RANGE = 200.0;"
             edit "$src/hadur-core/src/main/java/$pkg/core/gun/GunController.java" "static final double CLOSE_POWER = 2.95;" "static final double CLOSE_POWER = 3.0;"
@@ -980,7 +995,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
                 edit "$movedesign" "static final int STOP_AND_GO_PREFIRE = 1;" "static final int STOP_AND_GO_PREFIRE = 2;"
                 version="${version}ws"
             else version="${version}wp"; fi ;;
-        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist)
+        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist)
             # Shield part 2 (docs/plan-shield-quality.md): per-opponent opening drive or shipped aims;
             # the mode table's simple-aim dodge (DODGE-3).
             if [[ "$a" == smovelist ]]; then file="${SHIELD_MOVE:-}"; method="moves"; version="${version}mv"
@@ -992,8 +1007,10 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
             elif [[ "$a" == sx4list ]]; then file="${SHIELD_EXIT4:-}"; method="exitLates"; version="${version}x4"
             elif [[ "$a" == sx0list ]]; then file="${SHIELD_EXIT0:-}"; method="exitOffs"; version="${version}x0"
             elif [[ "$a" == szlist ]]; then file="${SHIELD_STILL:-}"; method="stills"; version="${version}zl"
+            elif [[ "$a" == sklist ]]; then file="${SURF_KEY:-}"; method="surfKeys"; version="${version}kl"
+            elif [[ "$a" == fllist ]]; then file="${FLAT_ON:-}"; method="flatOns"; version="${version}fq"
             else file="${STOP_GO2:-}"; method="stopGoShifts"; version="${version}wm"; fi
-            [[ -n "$file" && -f "$file" ]] || { echo "$a needs SHIELD_MOVE / SHIELD_AIM / SHOT_DODGE / STOP_GO / STOP_GO2 / HEAT_JIT / GUN_STACK / SHIELD_EXIT4 / SHIELD_EXIT0 / SHIELD_STILL=<file>" >&2; exit 2; }
+            [[ -n "$file" && -f "$file" ]] || { echo "$a needs SHIELD_MOVE / SHIELD_AIM / SHOT_DODGE / STOP_GO / STOP_GO2 / HEAT_JIT / GUN_STACK / SHIELD_EXIT4 / SHIELD_EXIT0 / SHIELD_STILL / SURF_KEY / FLAT_ON=<file>" >&2; exit 2; }
             add="$(python3 -c 'import sys,json
 lines=[l.split("\t")[0].strip() for l in open(sys.argv[1]) if l.strip() and not l.startswith("#")]
 print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines)), end="")' "$file")"
@@ -1006,7 +1023,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
                 edit "$listdata" "\"$r\"," '"",'
             done
             version="${version}tr" ;;
-        shold|slearn|smode|sstay|sturn|swall|strial|sprior|smove|srec|sstill|snull)
+        shold|slearn|smode|sstay|sturn|swall|strial|sprior|smove|srec|sstill|scheap|sratio|snull)
             # One switch of shieldmode.ShieldDesign (SHIELD-8 to SHIELD-12) added to SHIPPED.
             case "$a" in
                 shold) flag=hold; suffix=sh ;;
@@ -1020,6 +1037,8 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
                 smove) flag=move; suffix=sv ;;
                 srec) flag=rec; suffix=sk ;;
                 sstill) flag=still; suffix=sz ;;
+                scheap) flag=cheap; suffix=sc ;;
+                sratio) flag=ratio; suffix=sr ;;
                 snull) flag=all; suffix=sn ;;
             esac
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
@@ -1145,6 +1164,18 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$modes" "public static final boolean FORCE_LEAD = false;" "public static final boolean FORCE_LEAD = true;"
             sed -i -E 's/^(        t\.put\("[^"]+", of\(.*)\)\);$/\1, Mode.LEAD));/' "$modes"
             ;;
+        tmheavy)
+            # TMODE-36 (team only): HEAVY for every team the table does not name: CONCORD's 1.9 cap off,
+            # full power. Duel and melee fixtures bit for bit. Suffix hv.
+            version="${version}hv"
+            edit "$modes" "public static final boolean FORCE_HEAVY = false;" "public static final boolean FORCE_HEAVY = true;"
+            ;;
+        tmwary)
+            # TMODE-37 (team only): WARY for every team the table does not name: a member under 50
+            # energy leaves the hunt. Duel and melee fixtures bit for bit. Suffix wy.
+            version="${version}wy"
+            edit "$modes" "public static final boolean FORCE_WARY = false;" "public static final boolean FORCE_WARY = true;"
+            ;;
         tmswift)
             # TMODE-32 (team only): SWIFT for every team; the named teams play it on top of their entry.
             # Duel and melee fixtures bit for bit. Suffix sf.
@@ -1210,7 +1241,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, absurf, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgeb, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmtnear, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf, gexp, grate, gdist, gsoft, tdecap, tmlead, mscal, mmix, mwpath, mshade, mcross, mbshade, msearch, mdmg, mlat, mavg, etab, edge, eshd)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, absurf, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgeb, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmtnear, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf, gexp, grate, gdist, gsoft, tdecap, tmlead, tmheavy, tmwary, mscal, mmix, mwpath, mshade, mcross, mbshade, msearch, mdmg, mlat, mavg, etab, edge, eshd)" >&2; exit 2 ;;
     esac
 done
 

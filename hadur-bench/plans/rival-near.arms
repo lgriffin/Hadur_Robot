@@ -1,0 +1,6 @@
+# pc-rival-near: c is master, aa its A/A copy, rp the 28 near-miss picks of pc-rival-picks (PR #532) together. Each line
+# acts on its own robot only: 11 join the shield list, 15 still lines, 9 exit off, 3 leave the shield list,
+# 5 stop-and-go (flip 1) and 2 stop-and-go shift (flip 2).
+c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
+aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
+rp | hadur117.Hadur 3.21mtmdzlx0wlwm | bisect/hadur117.Hadur_3.21mtmdzlx0wlwm.jar

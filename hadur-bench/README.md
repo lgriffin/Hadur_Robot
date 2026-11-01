@@ -3,8 +3,9 @@
 Headless Robocode battles for measuring Hadur (stage S0 of the Hadur 2 plan), and the
 recorder that captures the core's replay fixtures (S1).
 
-The bench runs the full Robocode 1.11.1 engine from Maven Central (BENCH-79), one of the
-releases LiteRumble takes uploads from (1.10.3, 1.11.0, 1.11.1); `-Drobocode.version=...`
+The bench runs the full Robocode 1.11.2 engine from Maven Central (BENCH-79), one of the
+releases LiteRumble takes uploads from (1.11.2, 1.12.0; since 2026-11-01 it refuses 1.11.1 and older,
+and the default was 1.11.1 until then); `-Drobocode.version=...`
 (the scripts' `--engine`) swaps it, and every report names the engine it ran, flagging any
 release the rumble does not take. Until 2026-10-08 the default was 1.9.5.6, so earlier
 reports without an `--engine` ran on that (issue #151). The security manager is on.
@@ -99,7 +100,8 @@ mvn -q compile exec:java -Dexec.args="--set top19.txt --rounds 10 --seeds 1"
 
 `--robot-jar` and `--robot` need not be passed: both follow `robot.release` in
 hadur-robot/pom.xml (3.8 today), so they stay right across a version bump. For the Remote
-Control session that drives these runs, see issue #102.
+Control session that drives these runs, see issue #102. The Claude Code session on Leigh's PC starts from
+`docs/bench/pc-session.md`, its onboarding card (house rules, watching, stops, results PRs).
 
 ### Parallel runs
 

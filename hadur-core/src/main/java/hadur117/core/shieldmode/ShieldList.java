@@ -68,6 +68,15 @@ public final class ShieldList {
     public static final String EXIT_OFF_PREFIX = "shield-exit0:";
     /** SHIELD-21: a line starting with this names an opponent shield mode plans its shots still against (SHIELD-20). */
     public static final String STILL_PREFIX = "shield-still:";
+    /** MOVE-32: a line starting with this names an opponent the duel surfs with the flattener views on (MOVE-24 undone). */
+    public static final String FLAT_ON_PREFIX = "flat-on:";
+    /**
+     * SKEY-2: a line starting with this gives an opponent's surf key: nine multipliers on the hit
+     * views' key weights, one on the kernel width, then the name ({@code "m1 ... m9 bw name"}).
+     */
+    public static final String SURF_KEY_PREFIX = "surf-key:";
+    /** SKEY-2: the numbers a surf-key line carries before the name. */
+    public static final int SURF_KEY_VALUES = 10;
     /** MOVE-28: the per-opponent switch's bit in {@link #switches}. */
     static final int HEAT_JIT = 1;
     /** GUN-11: the per-opponent switch's bit in {@link #switches}. */
@@ -77,6 +86,8 @@ public final class ShieldList {
     static final int EXIT_OFF = 8;
     /** SHIELD-21: the per-opponent still switch's bit in {@link #switches}. */
     static final int STILL = 16;
+    /** MOVE-32: the per-opponent flattener switch's bit in {@link #switches}. */
+    static final int FLAT_ON = 32;
 
     private final Set<String> entries;
     /** MOVE-23: the stack off-list, matched as the shield entries are. */
@@ -93,6 +104,8 @@ public final class ShieldList {
     private Map<String, Integer> dodgePlans = Collections.emptyMap();
     /** MOVE-28, GUN-11: name to the per-opponent switches' bits. */
     private Map<String, Integer> switches = Collections.emptyMap();
+    /** SKEY-2: name to its surf key (nine weight multipliers, then the kernel width's). */
+    private Map<String, double[]> surfKeys = Collections.emptyMap();
 
     private ShieldList(Set<String> entries, Set<String> stackOff, Set<String> moves, Map<String, double[]> aims,
                        Set<String> dodges, Map<String, Integer> stopGo) {
@@ -119,6 +132,7 @@ public final class ShieldList {
         Map<String, Integer> stopGo = new TreeMap<>();
         Map<String, Integer> dodgePlans = new TreeMap<>();
         Map<String, Integer> switches = new TreeMap<>();
+        Map<String, double[]> surfKeys = new TreeMap<>();
         if (lines != null) {
             for (String line : lines) {
                 if (line == null) continue;
@@ -132,11 +146,28 @@ public final class ShieldList {
                 }
                 int bit = entry.startsWith(HEAT_JIT_PREFIX) ? HEAT_JIT : entry.startsWith(GUN_STACK_PREFIX) ? GUN_STACK
                     : entry.startsWith(EXIT_LATE_PREFIX) ? EXIT_LATE : entry.startsWith(EXIT_OFF_PREFIX) ? EXIT_OFF
-                    : entry.startsWith(STILL_PREFIX) ? STILL : 0;
+                    : entry.startsWith(STILL_PREFIX) ? STILL : entry.startsWith(FLAT_ON_PREFIX) ? FLAT_ON : 0;
                 if (bit != 0) {
                     String name = entry.substring(entry.indexOf(':') + 1).trim();
                     if (!name.isEmpty() && (switches.containsKey(name) || switches.size() < MAX_ENTRIES)) {
                         switches.merge(name, bit, (a, b) -> a | b);
+                    }
+                    continue;
+                }
+                if (entry.startsWith(SURF_KEY_PREFIX)) {
+                    String[] p = entry.substring(SURF_KEY_PREFIX.length()).trim().split(" ", SURF_KEY_VALUES + 1);
+                    if (p.length == SURF_KEY_VALUES + 1 && !p[SURF_KEY_VALUES].isEmpty() && surfKeys.size() < MAX_ENTRIES) {
+                        try {
+                            double[] key = new double[SURF_KEY_VALUES];
+                            boolean ok = true;
+                            for (int i = 0; i < SURF_KEY_VALUES; i++) {
+                                key[i] = Double.parseDouble(p[i]);
+                                ok &= key[i] > 0 && !Double.isInfinite(key[i]);
+                            }
+                            if (ok) surfKeys.put(p[SURF_KEY_VALUES], key);
+                        } catch (NumberFormatException e) {
+                            // A malformed surf-key line is skipped.
+                        }
                     }
                     continue;
                 }
@@ -190,12 +221,13 @@ public final class ShieldList {
             }
         }
         if (entries.isEmpty() && stackOff.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()
-            && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty()) return NONE;
+            && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty() && surfKeys.isEmpty()) return NONE;
         ShieldList list = new ShieldList(Collections.unmodifiableSet(entries), Collections.unmodifiableSet(stackOff),
             Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims), Collections.unmodifiableSet(dodges),
             Collections.unmodifiableMap(stopGo));
         list.dodgePlans = Collections.unmodifiableMap(dodgePlans);
         list.switches = Collections.unmodifiableMap(switches);
+        list.surfKeys = Collections.unmodifiableMap(surfKeys);
         return list;
     }
 
@@ -236,6 +268,21 @@ public final class ShieldList {
         if (robotName == null || moves.isEmpty()) return false;
         String name = robotName.trim().replaceAll("\\s+", " ");
         return moves.contains(name) || moves.contains(withoutVersion(name));
+    }
+
+    /**
+     * SKEY-2: {@code robotName}'s surf key, by the rule of {@link #matches}: the full name's entry,
+     * else the name's without the version.
+     *
+     * @param robotName the scanned robot's name, or null
+     * @return a fresh array of nine weight multipliers and the kernel width's, or null when none is shipped
+     */
+    public double[] surfKeyFor(String robotName) {
+        if (robotName == null || surfKeys.isEmpty()) return null;
+        String name = robotName.trim().replaceAll("\\s+", " ");
+        double[] k = surfKeys.get(name);
+        if (k == null) k = surfKeys.get(withoutVersion(name));
+        return k == null ? null : k.clone();
     }
 
     /**
@@ -341,6 +388,16 @@ public final class ShieldList {
      */
     public boolean still(String robotName) {
         return (switchBits(robotName) & STILL) != 0;
+    }
+
+    /**
+     * MOVE-32: whether the duel surfs {@code robotName} with the flattener views on, by the rule of
+     * {@link #matches}.
+     *
+     * @param robotName the scanned robot's name, or null
+     */
+    public boolean flatOn(String robotName) {
+        return (switchBits(robotName) & FLAT_ON) != 0;
     }
 
     private int switchBits(String robotName) {

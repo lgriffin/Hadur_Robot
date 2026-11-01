@@ -116,11 +116,9 @@ final class ShieldListData {
             "davidalves.net.DuelistMini 1.1",
             "mnt.AHEB 0.6a",
             "gh.GrubbmGrb 1.2.4",
-            "rcb.Vanessa03 0",
             "tw.Exterminator 1.0",
             "robar.micro.Kirbyi 1.0",
             "jcs.Decepticon 2.5.3",
-            "davidalves.net.DuelistMicroMkII 1.1",
             "kawigi.mini.Coriantumr 1.1",
             "arthord.KostyaTszyu Beta2",
             "stelo.Randomness 1.1",
@@ -246,7 +244,6 @@ final class ShieldListData {
             "bvh.fnr.Fenrir 0.36l",
             "racso.Frog 0.9",
             "slugzilla.OrbitGF 1.0",
-            "wiki.Wolverine 2.1",
             "slugzilla.OscillateGF 1.0",
             "throxbot.ThroxBot 0.1",
             "pe.minimelee.SandboxMiniMelee 1.1",
@@ -258,7 +255,6 @@ final class ShieldListData {
             // interval above 0 on a first pick (Saguaro's shield bots, pc-shield-s1; the rest of the
             // field, the pc-table-v1 screen) and again at +3 on 8 fresh seeds. Census gate with
             // SHIELD-16 on: +0.54 +/- 0.20 APS.
-            "EE.LittleBig 1.0",
             "KiraNL.Cataris 1.0",
             "PkKillers.PkAssassin 1.0",
             "apv.NanoLauLectrik 1.0",
@@ -340,8 +336,15 @@ final class ShieldListData {
             "fnc.bandit2002.Bandit2002 4.0.2",
             "rdt199.Warlord 0.73",
             "stelo.UnfoolableNano 1.0",
-            "theo.Hydrogen 2.1r",
             "wompi.Numbat 1.9",
+            // pc-rival-confirm (PR #537): held at a 3-point margin on 8 fresh seeds
+            "fm.claire 1.7",
+            "projectx.TestNano 1.0",
+            "rz.GlowBlowMelee 1.4",
+            // pc-rival-near (BENCH-163, PR #545): held on PC seeds 6500 and the cloud screen
+            "dmp.micro.Aurora 1.41",
+            "rz.Artist 0.2",
+            "sL300.Mozart life",
         };
     }
 }

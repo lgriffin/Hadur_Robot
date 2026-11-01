@@ -259,6 +259,10 @@ public class Hadur extends TeamRobot {
             for (String name : ShieldTableData.exitOffs()) lines.add(ShieldList.EXIT_OFF_PREFIX + " " + name);
             // SHIELD-21: per-opponent still shot plans (SHIELD-20).
             for (String name : ShieldTableData.stills()) lines.add(ShieldList.STILL_PREFIX + " " + name);
+            // MOVE-32: per-opponent flattener views on.
+            for (String name : ShieldTableData.flatOns()) lines.add(ShieldList.FLAT_ON_PREFIX + " " + name);
+            // SKEY-2: per-opponent surf keys.
+            for (String key : ShieldTableData.surfKeys()) lines.add(ShieldList.SURF_KEY_PREFIX + " " + key);
             return ShieldList.parse(lines);
         } catch (RuntimeException | LinkageError e) {
             out.println("SH," + getRoundNum() + "," + getTime() + ",list-failed," + e);

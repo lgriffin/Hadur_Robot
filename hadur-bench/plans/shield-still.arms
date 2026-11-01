@@ -1,5 +1,5 @@
 # Shield step (pc-shield-still): c is master (3.20 with MOVE-30/31 on), aa its A/A copy, sz the shield shot plan
 # from where we stand first (SHIELD-20).
-c | hadur117.Hadur 3.20 | bisect/hadur117.Hadur_3.20.jar
-aa | hadur117.Hadur 3.20aa | bisect/hadur117.Hadur_3.20aa.jar
-sz | hadur117.Hadur 3.20sz | bisect/hadur117.Hadur_3.20sz.jar
+c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
+aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
+sz | hadur117.Hadur 3.21sz | bisect/hadur117.Hadur_3.21sz.jar

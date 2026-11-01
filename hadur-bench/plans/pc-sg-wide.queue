@@ -24,7 +24,7 @@
 # Leigh on any stop.
 # Nothing here ships: on a pass a PR turns the passing switch on for the next census; the release rule stands.
 
-set V = 3.20
+set V = 3.21
 set P = --parallel 12 --no-truth-log
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G --engine 1.11.1
 set W = work/sg-wide

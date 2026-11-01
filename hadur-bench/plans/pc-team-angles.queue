@@ -1,0 +1,80 @@
+# Three new angles at once against every team (BENCH-167, team thread "Beat all 47 teams to take team
+# 1st"). Team-only: duel and melee fixtures bit for bit; nothing ships without a fresh-seed gate. The
+# live read (PR #564): about 3.6 of the ~5.9 APS gap to OgiTeam is 22 mid teams that both teams beat in
+# 97-100% of rounds, so the points leak inside rounds we win. One arm per way to stop that leak:
+#   hv  HEAVY (TMODE-36, tmheavy): CONCORD's 1.9 power cap off, full power: shorter rounds, more damage dealt
+#   wy  WARY (TMODE-37, tmwary): a member under 50 energy (not 20) leaves the hunt: fewer members lost
+#   md  DISABLED (TMODE-8, tmdis): drawn to a disabled enemy to finish it: enemies die sooner (last
+#       screened before HUNT, DODGE and CONCORD, so on today's build it is a fresh question)
+# Each forces its mode on every team the table does not name; the 7 named teams play their entry, so
+# their rows read as A/A. Run it after pc-team-mirror (one card at a time).
+#   anprep  build aa, bb, hv, wy and md
+#   anbb    bb vs aa, the 46 teams x 8 seeds (base 7400), 10 rounds; anhv, anwy, anmd the same per arm
+#   anglob  per arm, the mode on every unnamed team: projected APS = sum of per-team gains less half of
+#           bb's / 46 (gate +0.30 with the 95% low end above zero); a read only, nothing ships from it
+#   anpick  per team, the arm with the largest gain over both baselines, +3.0 points or more with the
+#           95% low end above zero (the counters rule); entries play MATEFIRE, HUNT, PATH, DODGE and
+#           CONCORD under it; a team the table already names keeps its entry
+#   angate  the picked table (mk) vs aa on the picked teams, 16 fresh seeds (base 7500); angbb its A/A
+#   ansum   projected APS = sum of the picked teams' gains / 46 (gate +0.15, low end above zero); only on
+#           PASS is the table written as the table to ship
+# Each seed is a pair (the arm and aa): screens 4 x 46 x 8 x 2 = 2,944 battles, about 3 h at 12 workers,
+# plus 64 a picked team for the gate (about 30 min for 10 teams). Every step resumes where it stopped.
+# Stop rules on every battle step (halt; every battle fought is kept and a rerun resumes): 20 failed
+# battles (a broken jar), no battle in 30 minutes (a hung step), or 40+ skipped turns a battle over the
+# last 100 (the PR #331 build-up). A halt in anbb leaves the rest of anbb and all three arms (2,208
+# battles); in an arm, the rest of it and the arms after it (736 each); in the gate steps, the rest of
+# that step and angbb. No early finish on score: the pick is per team.
+# The team thread reads claude/pc-team-angles-results.
+#   ./queue.sh run pc-team-angles        (or  .\queue.ps1 run pc-team-angles)
+# Run it from master (one bench queue at a time):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+set T = python3 tools/team_modes.py
+
+anprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && for j in aa bb hv wy md mk; do rm -f bisect/hadur117.HadurTeam_"$V"$j.jar; done && rm -f ${OUT}/team-angles-*.md ${OUT}/team-angles-pick.tsv ${OUT}/team-angles-locked.java.txt work/team-angles-picked.java work/team-angles-gate.txt && ./fetch-opponents.sh --set team-census46.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmheavy && bash ./build-ablation.sh tmwary && bash ./build-ablation.sh tmdis && mkdir -p work && for a in bb hv wy md gate gbb; do rm -rf work/team-angles-"$V"-$a && sed "s/@V@/$V/g" plans/team-angles-$a.args > work/team-angles-$a.args || exit 1; done && for j in aa bb hv wy md; do test -f bisect/hadur117.HadurTeam_"$V"$j.jar || exit 1; done && mvn -q compile
+anbb   | mvn -q exec:java "-Dexec.args=@work/team-angles-bb.args"
+  after: anprep
+  watch: battles=736
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+anhv   | mvn -q exec:java "-Dexec.args=@work/team-angles-hv.args"
+  after: anbb
+  watch: battles=736
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+anwy   | mvn -q exec:java "-Dexec.args=@work/team-angles-wy.args"
+  after: anhv
+  watch: battles=736
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+anmd   | mvn -q exec:java "-Dexec.args=@work/team-angles-md.args"
+  after: anwy
+  watch: battles=736
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+anglob | for a in hv wy md; do ${T} gate --report ${OUT}/team-angles-$a.md --control ${OUT}/team-angles-bb.md --set team-census46.txt --seeds 8 --teams 46 --min-aps 0.3 --out-md ${OUT}/team-angles-verdict-global-$a.md || exit 1; done
+  after: anmd
+anpick | ${T} pick --report HEAVY=${OUT}/team-angles-hv.md --report WARY=${OUT}/team-angles-wy.md --report DISABLED=${OUT}/team-angles-md.md --control HEAVY=${OUT}/team-angles-bb.md --control WARY=${OUT}/team-angles-bb.md --control DISABLED=${OUT}/team-angles-bb.md --min-mean 3.0 --low-end 0 --base MATEFIRE,HUNT,PATH,DODGE,CONCORD --shipped ../hadur-core/src/main/java/hadur117/core/melee/TeamModes.java --census team-census46.txt --opponents opponents --out-md ${OUT}/team-angles-pick.md --out-tsv ${OUT}/team-angles-pick.tsv --out-java work/team-angles-picked.java --out-set work/team-angles-gate.txt && if [ -s work/team-angles-picked.java ]; then TEAM_MODE_LOCKED="$(pwd)/work/team-angles-picked.java" bash ./build-ablation.sh tmlock; else echo "nothing picked: no gate"; fi
+  after: anglob
+angate | if [ -s work/team-angles-picked.java ]; then mvn -q exec:java "-Dexec.args=@work/team-angles-gate.args"; else echo "nothing picked: no gate"; fi
+  after: anpick
+  watch:
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+angbb  | if [ -s work/team-angles-picked.java ]; then mvn -q exec:java "-Dexec.args=@work/team-angles-gbb.args"; else echo "nothing picked: no gate"; fi
+  after: angate
+  watch:
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+ansum  | if [ -s work/team-angles-picked.java ]; then ${T} gate --report ${OUT}/team-angles-gate.md --control ${OUT}/team-angles-gbb.md --set work/team-angles-gate.txt --seeds 16 --teams 46 --min-aps 0.15 --out-md ${OUT}/team-angles-verdict.md && if grep -q '\*\*PASS\*\*' ${OUT}/team-angles-verdict.md; then cp work/team-angles-picked.java ${OUT}/team-angles-locked.java.txt; else echo "gate failed: no table to ship"; fi; else echo "No angle cleared the screen on any team: no gate, the table stays as shipped." > ${OUT}/team-angles-verdict.md; fi
+  after: angbb
+anpr   | bash tools/open_results_pr.sh claude/pc-team-angles-results "Three angles at once: HEAVY, WARY and DISABLED, whole field, per-team pick and gate" $(ls ${OUT}/team-angles-*.md ${OUT}/team-angles-pick.tsv ${OUT}/team-angles-locked.java.txt 2>/dev/null)
+  after: ansum
