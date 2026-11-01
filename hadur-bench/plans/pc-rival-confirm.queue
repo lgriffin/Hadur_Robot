@@ -17,7 +17,7 @@
 # gate unrun. No A/A or futility rule: 18 robots are too few for an interim read. ALERT opens an issue for Leigh on
 # any stop. Nothing here ships: on a pass a PR adds the held picks' lines to master for the next census.
 
-set V = 3.20
+set V = 3.21
 set C = --skip-build --skip-fetch --rounds 35 --parallel 12 --no-truth-log --cpu-constant 1488498 --child-heap 2G --engine 1.11.1
 set W = work/rival-confirm
 set OUT = ../docs/bench/local

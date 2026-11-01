@@ -1,5 +1,5 @@
 # SHIELD-21 confirm (pc-shield-still2): c is master, aa its A/A copy, mtzl the still shot plans (SHIELD-20) against the
 # 40 robots of plans/shield-still-picks.txt only, with the 9 of BeepBoop's list among them added to the shield list.
-c | hadur117.Hadur 3.20 | bisect/hadur117.Hadur_3.20.jar
-aa | hadur117.Hadur 3.20aa | bisect/hadur117.Hadur_3.20aa.jar
-mtzl | hadur117.Hadur 3.20mtzl | bisect/hadur117.Hadur_3.20mtzl.jar
+c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
+aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
+mtzl | hadur117.Hadur 3.21mtzl | bisect/hadur117.Hadur_3.21mtzl.jar

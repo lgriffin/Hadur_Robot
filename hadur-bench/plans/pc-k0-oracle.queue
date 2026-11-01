@@ -24,7 +24,7 @@
 # or no battle in 30 minutes; every battle fought is kept and a rerun resumes. One arm, so no A/A or dead-arm rule.
 # Nothing here ships: no release, no table line. K1 (new members scored in the oracle) reads oracle.npz next.
 
-set V = 3.20
+set V = 3.21
 set JAR = bisect/hadur117.Hadur_${V}aror.jar
 set C = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 --child-heap 2G --engine 1.11.1
 set W = work/k0-oracle

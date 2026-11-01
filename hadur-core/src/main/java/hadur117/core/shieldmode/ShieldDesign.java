@@ -86,7 +86,7 @@ public final class ShieldDesign {
      * gate at +0.54 +/- 0.20 APS with the 49 robots it added to the shield list, PR #244). The
      * ablation builds edit this one line.
      */
-    public static final ShieldDesign SHIPPED = parse("prior,wall,hold,learn,mode,stay");
+    public static final ShieldDesign SHIPPED = parse("prior,wall,hold,learn,mode,stay,ratio");
 
     /** SHIELD-8: no attack shots while shielding. */
     public final boolean hold;
