@@ -400,6 +400,7 @@ public final class DuelController {
         if (dodgePlanOn) on.add("plan");
         if (stopAndGo != null) on.add("stopgo");
         if (heatJitOn) on.add("heatjit");
+        if (flatOn) on.add("flat");
         if (shield != null && shield.active()) on.add("shield");
         return on.isEmpty() ? "-" : String.join(",", on);
     }
@@ -995,6 +996,8 @@ public final class DuelController {
     private boolean dodgePlanOn;
     /** MOVE-28: the table names this opponent for stop-and-start. */
     private boolean heatJitOn;
+    /** MOVE-32: the table turned the flattener views on for this opponent. */
+    private boolean flatOn;
 
     /** DODGE-5: the escape angle a bullet read is scored loosely at while the planner is on; NaN otherwise. */
     private double dodgeEscape(Wave w) {
@@ -1557,6 +1560,11 @@ public final class DuelController {
         if (dodgePlanOn) shotDodger.prime(dodgePlan);
         // MOVE-28: stop-and-start (MOVE-13) for the opponents the table names.
         heatJitOn = duelOnly(stackList.heatJit(name), enemiesTotal);
+        // MOVE-32: the flattener views back on for the opponents the table names.
+        if (duelOnly(stackList.flatOn(name), enemiesTotal)) {
+            moveController.setFlattenerOff(false);
+            flatOn = true;
+        }
         // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names, never a shield-mode one
         // (its TripHammer aims break the shield's bullet hits); the gun keeps them 1v1-only.
         if (duelOnly(stackList.gunStack(name) && !stackList.matches(name), enemiesTotal)) {
