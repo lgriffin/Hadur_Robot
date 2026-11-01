@@ -1,6 +1,6 @@
 {
  "plan": "pc-deise-pt1",
- "updated": 1793485358.0577276,
+ "updated": 1793508914.0315664,
  "steps": {
   "prep": {
    "status": "done",
@@ -37,49 +37,5 @@
    "status": "pending"
   }
  },
- "watched": [
-  {
-   "step": "live-TEACH",
-   "started": 1793484827.2069087,
-   "updated": 1793485356.3184633,
-   "elapsed": 529.1115546226501,
-   "expected": 276,
-   "panel": null,
-   "field": null,
-   "multiarm": false,
-   "arms": [],
-   "aa": null,
-   "warnings": [],
-   "battles": 108,
-   "resumed": 0,
-   "failed": 0,
-   "disables": null,
-   "rate": 734.8166877158503,
-   "eta": 823.0624183019003,
-   "fraction": 0.391304347826087,
-   "last_battle_age": 9.080049276351929,
-   "rules": [
-    {
-     "rule": "fails 20",
-     "action": "halt",
-     "state": "ok",
-     "detail": "0 failed of 108"
-    },
-    {
-     "rule": "stall 30m",
-     "action": "halt",
-     "state": "ok",
-     "detail": "last battle 0 min ago"
-    },
-    {
-     "rule": "skips 40 over 100",
-     "action": "halt",
-     "state": "TRIPPED",
-     "detail": "64.7 a battle over the last 100 (first 100: 62.7)"
-    }
-   ],
-   "skips_mean": 63.138888888888886,
-   "skips_last100": 64.74
-  }
- ]
+ "watched": []
 }
