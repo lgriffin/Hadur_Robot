@@ -24,3 +24,7 @@
 05:38:14 live-D exit=0 in 1166 s
 05:38:14 start live-PT0
 05:38:14 watching live-PT0: 3 stop rule(s)
+05:56:42 progress live-PT0: 258/276 (93%) battles, 838/h, ETA 1 min, 0 failed, skips 0.8/battle (last 100)
+05:57:57 live-PT0 exit=0 in 1183 s
+05:57:57 start live-PTS
+05:57:57 watching live-PTS: 3 stop rule(s)
