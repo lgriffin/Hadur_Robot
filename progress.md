@@ -1,6 +1,6 @@
 # Queue pc-team-concord2: progress
 
-Updated 2026-11-01 01:27:06 PC time (01:27 UTC), runner pid 21196.
+Updated 2026-11-01 01:42:12 PC time (01:42 UTC), runner pid 21196.
 
 - `c2prep` done, exit 0 in 2 min
 - `c2bb` running
@@ -10,16 +10,16 @@ Updated 2026-11-01 01:27:06 PC time (01:27 UTC), runner pid 21196.
 
 ### c2bb
 
-**1130 of 1472 battles** (77%), 0 failed. Running 1.2 h, 919 battles/h, about 22 min left (ends ~01:49 PC time). Last battle 0 min ago.
-Skipped turns a battle: 8.7 overall, first 100 9.5, last 100 8.2.
+**1440 of 1472 battles** (98%), 0 failed. Running 1.5 h, 972 battles/h, about 2 min left (ends ~01:44 PC time). Last battle 0 min ago.
+Skipped turns a battle: 8.3 overall, first 100 9.5, last 100 3.8.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 1130 |
+| `fails 20` | halt | ok | 0 failed of 1440 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 8.2 a battle over the last 100 (first 100: 9.5) |
+| `skips 40 over 100` | halt | ok | 3.8 a battle over the last 100 (first 100: 9.5) |
 
-Stopping now would leave 342 battles unrun (about 22 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 32 battles unrun (about 2 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
