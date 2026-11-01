@@ -1,0 +1,19 @@
+{
+ "plan": "pc-rival-confirm",
+ "updated": 1793522502.6406424,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "confirm": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
