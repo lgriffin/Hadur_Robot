@@ -9,3 +9,12 @@
 04:36:31 start screen-exec
 04:36:31 watching screen-exec: 4 stop rule(s)
 04:48:34 screen-exec exit=0 in 722 s
+04:48:34 start screen-stopgo
+04:48:34 watching screen-stopgo: 4 stop rule(s)
+04:53:38 progress screen-stopgo: 403/432 (93%) battles, 4782/h, ETA 0 min, 0 failed, skips 13.5/battle (last 100), aa -0.00, mdwl -0.58, mdwm -0.27
+04:54:52 screen-stopgo exit=0 in 378 s
+04:54:52 start gate
+04:54:54 gate exit=0 in 1 s
+04:54:54 start pr
+04:55:00 pr exit=0 in 6 s
+04:55:00 ALLDONE
