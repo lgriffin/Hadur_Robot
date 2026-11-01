@@ -7,3 +7,15 @@
 10:27:54 ALLDONE
 10:28:01 progress pushed to origin claude/pc-rival-near-progress (every 15 min)
 10:29:34 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
+10:29:34 start prep
+10:29:36 progress pushed to origin claude/pc-rival-near-progress (every 15 min)
+10:30:48 prep exit=0 in 74 s
+10:30:48 start confirm
+10:30:49 watching confirm: 4 stop rule(s)
+10:31:35 progress confirm: 38/672 (6%) battles, 2951/h, ETA 13 min, 0 failed, skips 12.6/battle (last 100), aa +0.03, rp +0.05
+10:41:41 confirm exit=0 in 652 s
+10:41:41 start gate
+10:41:42 gate exit=0 in 0 s
+10:41:42 start pr
+10:41:48 pr exit=0 in 5 s
+10:41:48 ALLDONE
