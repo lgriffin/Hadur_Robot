@@ -1519,6 +1519,8 @@ public final class DuelController {
         // would only write their off values over what the hand-off just set (HAND-1 to HAND-3;
         // the first duel scan of a melee battle follows its first hand-off on the same tick).
         if (enemiesTotal == 1) duelModes(name);
+        // MOVE-32: a P record says the table turned the flattener views on for this opponent.
+        if (flatOn) emitPolicy(round, time, "flat-on", Double.NaN, Double.NaN, "flat_on");
         // Without memory the B record still goes out, with '-' for what memory would say.
         if (library != null) {
             // MEM-4: a missing or damaged profile loads as a stranger; load never throws.
