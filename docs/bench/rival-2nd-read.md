@@ -170,6 +170,8 @@ The five robots pc-rival-confirm read on 8 seeds stay out: Saturn, OperatorZeze,
 
 `hadur-bench/plans/pc-rival-near.queue` builds all 28 into one jar and runs it with c and aa on 8 fresh seeds from
 6500. That is 672 battles, about 10 minutes on the PC. Its gate and pick work as pc-rival-confirm's do, and
-`tools/ship_picks.py` ships what holds.
+`tools/ship_picks.py` ships what holds. The card's pick TSV labels every robot `rp`, the combined arm, so shipping
+passes the card's input lists to rebuild each robot's own codes:
+`python3 tools/ship_picks.py rival-near-pick.tsv --codes-from plans/rival-near --label "pc-rival-near (BENCH-163)"`.
 
 A cloud screen (c vs the jar, 3 seeds from 6400, 168 battles, no A/A) runs in the meantime.

@@ -12,7 +12,11 @@ edits to the real sources that build-ablation.sh applies to a candidate build:
   wl  sgolist   ShieldTableData.stopGos()
   wm  sgo2list  ShieldTableData.stopGoShifts()
 
-Usage: ship_picks.py PICK.tsv [--only NAMES.txt] [--label "comment"] [--root REPO]
+A confirm card runs every pick in one combined arm (rp), so its pick TSV says rp, not each robot's
+codes. --codes-from PREFIX rebuilds each robot's code from the card's input lists
+PREFIX-{add,drop,still,exit0,stopgo,stopgo2}.txt, in mt md zl x0 wl wm order.
+
+Usage: ship_picks.py PICK.tsv [--only NAMES.txt] [--codes-from PREFIX] [--label "comment"] [--root REPO]
 """
 
 import argparse
@@ -33,6 +37,42 @@ def parts(arm):
             raise ValueError("arm %s: unknown suffix at %s" % (arm, arm[i:]))
         out.append(c)
         i += 2
+    return out
+
+
+FILES = (("mt", "add"), ("md", "drop"), ("zl", "still"), ("x0", "exit0"), ("wl", "stopgo"), ("wm", "stopgo2"))
+
+
+def names(path):
+    return [l.split("\t")[0].split("|")[0].strip() for l in open(path) if l.strip() and not l.startswith("#")]
+
+
+def codes_from(prefix):
+    """Each robot's arm code as the combined build applied it: membership of the card's six lists."""
+    out = {}
+    for code, suffix in FILES:
+        path = "%s-%s.txt" % (prefix, suffix)
+        if not os.path.exists(path):
+            raise SystemExit("%s is missing: a partial list set would ship a build the card never ran" % path)
+        for n in names(path):
+            out[n] = out.get(n, "") + code
+    return out
+
+
+COMBINED = "rp"
+
+
+def recode(picks, codes):
+    """Swap the combined arm label for each robot's own code; a robot missing from the lists, or a row
+    naming another arm that disagrees with the lists, is an error."""
+    out = []
+    for name, arm in picks:
+        if name not in codes:
+            raise SystemExit("%s is not in any input list" % name)
+        if arm != COMBINED and arm != codes[name]:
+            raise SystemExit("%s: pick arm %s is not the combined arm %s nor its listed code %s"
+                             % (name, arm, COMBINED, codes[name]))
+        out.append((name, codes[name]))
     return out
 
 
@@ -102,6 +142,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("picks")
     ap.add_argument("--only", help="a file of names (first column) to keep from the pick")
+    ap.add_argument("--codes-from", help="list prefix such as plans/rival-near: codes from the card's input lists")
     ap.add_argument("--label", default="shipped pick")
     ap.add_argument("--root", default=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
     a = ap.parse_args(argv)
@@ -109,7 +150,10 @@ def main(argv=None):
     if a.only:
         only = {l.split("\t")[0].strip() for l in open(a.only) if l.strip() and not l.startswith("#")}
     src = os.path.join(a.root, "hadur-robot", "src", "main", "java", "hadur117")
-    added = apply(read_picks(a.picks, only), os.path.join(src, "ShieldListData.java"),
+    picks = read_picks(a.picks, only)
+    if a.codes_from:
+        picks = recode(picks, codes_from(a.codes_from))
+    added = apply(picks, os.path.join(src, "ShieldListData.java"),
                   os.path.join(src, "ShieldTableData.java"), a.label)
     for c in CODES:
         if added[c]:
