@@ -53,3 +53,16 @@ on fresh seeds would ship.
 Stop rules: record and confirm halt on fails 30, skips 40 over 200, stall 30m; confirm also on dead 8. A record halt
 leaves the fit and the confirm unrun. Nothing ships from the card: on a pass a PR adds the picked robots' `surf-key:`
 lines for the next census.
+
+## pc-surf-key results (2026-11-01): the 175 keys ship
+
+- Fit: **175 of 198 keys ship** (both held-out folds +0.02 bits a bullet, 30 hits), from 918,192 enemy bullets.
+- Confirm, 3 fresh seeds from 5900, 2,376 battles: A/A +0.01 ± 0.36 points, inside its ± 0.48 band.
+  - `kl` (weights + width): **+0.36 ± 0.33 points; gate PASS +0.06 ± 0.05 APS** over 1,217 pairings.
+  - `klbb` (weights only): +0.03 ± 0.30 points; gate FAIL +0.01 ± 0.05 APS.
+- The `kl` gain sits in bands 1 to 4 (+0.8 to +1.2 points); band 6 is -0.15 ± 0.38. 101 of 198 robots gain.
+  Worst losses: Stampede2 -8.4, Knight -8.0, ArthurPanzergon -6.1 (3 seeds each, inside single-robot noise).
+- The 3-point per-robot pick (16 lines, +0.07 APS in sample) is no better than the whole arm and was picked on the
+  same seeds, so master ships the measured arm: all 175 `kl` lines in `ShieldTableData.surfKeys()`.
+- Reports `local/2026-11-01_surf-key*.md`, keys `local/surf-key-keys.txt` (results PR from
+  `claude/pc-surf-key-results`).
