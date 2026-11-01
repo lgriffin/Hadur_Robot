@@ -79,6 +79,9 @@ TEACH | Hadur 3.20 in the seat: the teacher (its shots.csv is the product, its s
 PT0 | the table with no Hadur cells: 0.4's formula rounded to 16 px x fortieths (rounding control) | =work/deise-pt1/PT0.java
 PTS | Hadur's power on 2 x 2 blocks (2 energy x 32 px) with 20+ shots, 0.4's formula elsewhere | =work/deise-pt1/PTS.java
 PTB | Hadur's power on 4 x 4 blocks (4 energy x 64 px) with 10+ shots, 0.4's formula elsewhere | =work/deise-pt1/PTB.java
+# The E7 arms are recipes on 0.4's DeiseLab (tag deise-v0.4) and are kept as the record of what ran;
+# LEARNH is in DeiseLab since 0.5, so LEARN and LEARNH no longer build on master (as PN and the
+# other E6/E6b arms, whose 200-playout base is gone). FEAR still builds.
 # Stage E7 (per opponent): pc-deise-e10 (PR #509) left Mirage 0.61 ahead with 8 more damage a round and
 # the aim constants spent. E7 chooses whom to shoot per opponent. LEARN keeps each opponent's shots
 # aimed at it and hits on it across rounds and picks the target by distance over its hit rate

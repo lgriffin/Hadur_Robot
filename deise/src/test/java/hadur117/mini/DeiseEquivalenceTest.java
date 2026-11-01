@@ -46,6 +46,7 @@ class DeiseEquivalenceTest {
             assertEquals(b.size(), a.size(), scenario + ": order counts differ");
             assertTrue(maxCount(shipped.robotClass) >= 8, scenario + ": no Markov row warmed, so DEISE-8 was not compared");
             assertTrue(shipped.shots > 10, scenario + ": the gun should fire, fired " + shipped.shots);
+            assertTrue(shipped.hits > 3, scenario + ": shots should hit (DEISE-17), hit " + shipped.hits);
             assertTrue(waves(shipped.robotClass) > 3, scenario + ": no seen-shot waves, so DEISE-5 was not compared");
         }
     }
