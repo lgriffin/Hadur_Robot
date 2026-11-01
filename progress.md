@@ -1,6 +1,6 @@
 # Queue pc-deise-pt1: progress
 
-Updated 2026-11-01 05:40:34 PC time (05:40 UTC), runner pid 15224.
+Updated 2026-11-01 05:55:42 PC time (05:55 UTC), runner pid 15224.
 
 - `prep` done, exit 0 in 0 min
 - `live-TEACH` done, exit 0 in 23 min
@@ -40,16 +40,16 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-PT0
 
-**30 of 276 battles** (11%), 0 failed. Running 2 min, 770 battles/h, about 19 min left (ends ~05:59 PC time). Last battle 0 min ago.
-Skipped turns a battle: 0.1 overall, first 30 0.1, last 30 0.1.
+**246 of 276 battles** (89%), 0 failed. Running 17 min, 846 battles/h, about 2 min left (ends ~05:57 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.5 overall, first 100 0.4, last 100 0.7.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 30 |
+| `fails 20` | halt | ok | 0 failed of 246 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | waiting | 30 of 100 battles to read |
+| `skips 40 over 100` | halt | ok | 0.7 a battle over the last 100 (first 100: 0.4) |
 
-Stopping now would leave 246 battles unrun (about 19 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 30 battles unrun (about 2 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
