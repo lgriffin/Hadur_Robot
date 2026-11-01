@@ -1,18 +1,24 @@
 {
  "plan": "pc-rival-near",
- "updated": 1793528873.9277024,
+ "updated": 1793528874.150384,
  "steps": {
   "prep": {
-   "status": "pending"
+   "status": "failed",
+   "exit": 128,
+   "seconds": 0,
+   "end": "2026-11-01T10:27:54"
   },
   "confirm": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after prep"
   },
   "gate": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after confirm"
   },
   "pr": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after gate"
   }
  },
  "watched": []
