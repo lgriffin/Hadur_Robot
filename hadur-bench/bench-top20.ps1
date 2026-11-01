@@ -83,7 +83,7 @@
   Skip `mvn -q package -DskipTests -Dmaven.javadoc.skip` at the repo root before the bench.
 .PARAMETER Engine
   Run the battles on this Robocode release from Maven Central (-Drobocode.version), e.g.
-  1.11.1, the version the rumble clients run. Default: the bench pom's version.
+  1.11.2, the version the rumble clients run. Default: the bench pom's version.
 .PARAMETER SkipFetch
   Skip fetching the set's opponent jars (fetch-opponents.ps1 -Set <Set>) before the bench.
 .EXAMPLE
