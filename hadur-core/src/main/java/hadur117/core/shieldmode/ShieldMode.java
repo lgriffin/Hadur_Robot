@@ -1077,8 +1077,8 @@ public final class ShieldMode {
         if (design.ratio) maxPower = Math.min(maxPower, pref);
         if (maxPower < 0.1) return null;
         Plan best = null;
-        // SHIELD-22: with cheap, the plans of the chosen spot, cheapest first, so the cheapest
-        // one wide enough can win over the widest.
+        // SHIELD-22: with cheap, every plan is kept, so the cheapest one wide enough can win
+        // over the widest.
         java.util.List<Plan> spot = design.cheap ? new java.util.ArrayList<>() : null;
         // SHIELD-20: an enemy that aims a few ticks before it fires sees the step aside, and its
         // next bullet is head-on to where we stood mid-step, which no predictor holds. With the
@@ -1095,6 +1095,8 @@ public final class ShieldMode {
                 if (sh == null) continue;
                 double turn = Math.abs(Angles.normalRelativeAngle(sh.fireAngle - s.gunHeading));
                 if (turn > MAX_GUN_TURN * (fireTime - s.time) + 1e-9) continue;
+                boolean wider = best == null || sh.width > best.width;
+                if (spot == null && !wider) continue;
                 Plan p = new Plan();
                 p.wave = w;
                 p.fireTime = fireTime;
@@ -1105,27 +1107,24 @@ public final class ShieldMode {
                 p.width = sh.width;
                 p.power = power;
                 if (spot != null) spot.add(p);
-                if (best == null || sh.width > best.width) best = p;
+                if (wider) best = p;
             }
         }
-        if (spot != null && best != null) return cheapest(spot, best, pref);
+        if (spot != null && best != null) return cheapest(spot, best);
         return best;
     }
 
     /**
      * SHIELD-22: the rival's crossing power. Of the plans from the widest plan's spot, the cheapest
-     * whose shadow is at least {@link #CHEAP_SHARE} of the widest, first among those no dearer than
-     * {@code pref}; the widest when none is.
+     * whose shadow is at least {@link #CHEAP_SHARE} of the widest (the widest itself qualifies).
      */
-    private static Plan cheapest(java.util.List<Plan> plans, Plan widest, double pref) {
-        Plan pick = null;
+    private static Plan cheapest(java.util.List<Plan> plans, Plan widest) {
+        Plan pick = widest;
         for (Plan p : plans) {
             if (p.wiggle != widest.wiggle || p.width < CHEAP_SHARE * widest.width) continue;
-            boolean inPref = p.power <= pref + 1e-9;
-            boolean pickInPref = pick != null && pick.power <= pref + 1e-9;
-            if (pick == null || (inPref && !pickInPref) || (inPref == pickInPref && p.power < pick.power)) pick = p;
+            if (p.power < pick.power) pick = p;
         }
-        return pick == null ? widest : pick;
+        return pick;
     }
 
     /**

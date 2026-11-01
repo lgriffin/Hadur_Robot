@@ -11,7 +11,7 @@
 # less on every crossing. The rival out-scores us by +0.49 APS on the 240 robots we both shield. Its battle-long
 # listing was already measured here and failed (pc-shield-exit, PR #383: s4 +0.04, s0 -0.01), so this card
 # measures the power rule only:
-#   sc  SHIELD-22, the rival's rule: cheapest plan with half the widest shadow or more, energy-ratio powers first
+#   sc  SHIELD-22, the rival's cheapest crossing wide enough: cheapest plan with half the widest shadow or more
 #   sr  SHIELD-23, the energy-ratio cap alone, widest plan under it
 # Panel: panel-shield-listed-321.txt, the 281 robots on master's shield list. Seeds 4 from 7200 (fresh).
 #

@@ -45,8 +45,7 @@ import java.util.Locale;
  *     exists; the step is kept only for a bullet no still plan can meet. Not part of {@code all}.</li>
  * <li>{@code cheap} (SHIELD-22): the rival's crossing power. Of the shot plans from the chosen
  *     spot, the cheapest whose shadow is at least {@link ShieldMode#CHEAP_SHARE} of the widest
- *     wins, first among those no dearer than the enemy's bullet scaled by our energy over its
- *     energy; the widest plan wins only when none is. Not part of {@code all}.</li>
+ *     wins. Not part of {@code all}; the energy ratio is {@code ratio}'s.</li>
  * <li>{@code ratio} (SHIELD-23): no shot plan dearer than the enemy's bullet scaled by our
  *     energy over its energy (never under 0.1). Not part of {@code all}.</li>
  * </ul>

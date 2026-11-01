@@ -303,8 +303,7 @@
 #   sstill SHIELD-20: a shield shot plan from where we stand wins whenever there is one; the 0.1 px
 #         step aside only for a bullet no still plan meets (docs/bench/shield-step.md). Suffix sz.
 #   scheap SHIELD-22: the rival's crossing power: the cheapest shot plan whose shadow is half the
-#         widest's or more, first among those no dearer than the enemy's bullet times our energy
-#         over its energy (docs/bench/shield-power.md). Suffix sc.
+#         widest's or more (docs/bench/shield-power.md). Suffix sc.
 #   sratio SHIELD-23: shot plans capped at the enemy's bullet times our energy over its energy.
 #         Suffix sr.
 #   smovelist the robots named in $SHIELD_MOVE (one per line, or a pick TSV) get the opening drive

@@ -23,7 +23,7 @@ Two switches, both off on master:
 
 | Switch | Ablation | Rule |
 |---|---|---|
-| `cheap` (SHIELD-22) | `scheap`, suffix sc | Of the plans from the chosen spot, the cheapest with half the widest shadow or more, first among those no dearer than enemy power x our energy / its energy |
+| `cheap` (SHIELD-22) | `scheap`, suffix sc | Of the plans from the chosen spot, the cheapest with half the widest shadow or more (the rival's "cheapest crossing wide enough") |
 | `ratio` (SHIELD-23) | `sratio`, suffix sr | No plan dearer than enemy power x our energy / its energy (never under 0.1); the widest under that cap |
 
 Card `hadur-bench/plans/pc-shield-power.queue` (BENCH-165) runs both on all 281 robots on master's shield
