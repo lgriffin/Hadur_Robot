@@ -118,7 +118,9 @@ loadScripts(document, 'script');</script>
  requires the same orders (DEISE-16). 0.4 is stage E3b's FAP: 0.3 without the field cap on
  power, the test of whether an opponent likely aims at Deise made at every scan and kept as its
  weight (1, or 0.25 when another robot is nearer it), which weighs its waves and its push,
- 106,667 + 213,333 x weight (docs/deise.md section 8).</p></div>
+ 106,667 + 213,333 x weight (docs/deise.md section 8). 0.5 adds stage E6b's PN (400 playouts,
+ each voting over half the target's width) and stage E7's LEARNH: the target is the robot with
+ the least distance times the root of the shots aimed at it over the hits on it (DEISE-17).</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -142,7 +144,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>(package private) static double[][]</code></div>
 <div class="col-second even-row-color"><code><a href="#last" class="member-name-link">last</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Per opponent: last scan time, heading, velocity, state.</div>
+<div class="block">Per opponent: last scan time, heading, velocity, state, shots aimed at it, hits on it (DEISE-17).</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static char[][][]</code></div>
 <div class="col-second odd-row-color"><code><a href="#markov" class="member-name-link">markov</a></code></div>
@@ -158,12 +160,17 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>(package private) static double</code></div>
 <div class="col-second even-row-color"><code><a href="#targetDistance" class="member-name-link">targetDistance</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static int</code></div>
-<div class="col-second odd-row-color"><code><a href="#wave" class="member-name-link">wave</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) static double[][]</code></div>
-<div class="col-second even-row-color"><code><a href="#waves" class="member-name-link">waves</a></code></div>
+<div class="col-first odd-row-color"><code>(package private) static double</code></div>
+<div class="col-second odd-row-color"><code><a href="#targetScore" class="member-name-link">targetScore</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The target's distance times the root of its shots over its hits, with a prior (DEISE-17).</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static int</code></div>
+<div class="col-second even-row-color"><code><a href="#wave" class="member-name-link">wave</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static double[][]</code></div>
+<div class="col-second odd-row-color"><code><a href="#waves" class="member-name-link">waves</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-robocode._RobotBase">Fields inherited from class&nbsp;robocode._RobotBase</h3>
@@ -194,6 +201,16 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#id(java.lang.String)" class="member-name-link">id</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">A seen robot's id; 0 for one never seen.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onBulletHit(robocode.BulletHitEvent)" class="member-name-link">onBulletHit</a><wbr>(robocode.BulletHitEvent&nbsp;e)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">A hit on any robot counts for it (DEISE-17).</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onRobotDeath(robocode.RobotDeathEvent)" class="member-name-link">onRobotDeath</a><wbr>(robocode.RobotDeathEvent&nbsp;e)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -220,7 +237,7 @@ loadScripts(document, 'script');</script>
 <code>endTurn, getGunHeadingDegrees, getHeadingDegrees, getMaxWaitCount, getRadarHeadingDegrees, getWaitCount, setTurnGunLeftDegrees, setTurnGunRightDegrees, setTurnLeftDegrees, setTurnRadarLeftDegrees, setTurnRadarRightDegrees, setTurnRightDegrees, turnGunLeftDegrees, turnGunRightDegrees, turnLeftDegrees, turnRadarLeftDegrees, turnRadarRightDegrees, turnRightDegrees</code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-robocode.Robot">Methods inherited from class&nbsp;robocode.Robot</h3>
-<code>ahead, back, doNothing, fire, fireBullet, getBasicEventListener, getBattleFieldHeight, getBattleFieldWidth, getEnergy, getGraphics, getGunCoolingRate, getGunHeading, getGunHeat, getHeading, getHeight, getInteractiveEventListener, getName, getNumRounds, getNumSentries, getOthers, getPaintEventListener, getRadarHeading, getRobotRunnable, getRoundNum, getSentryBorderSize, getTime, getVelocity, getWidth, getX, getY, onBattleEnded, onBulletHit, onBulletHitBullet, onBulletMissed, onHitByBullet, onHitRobot, onHitWall, onKeyPressed, onKeyReleased, onKeyTyped, onMouseClicked, onMouseDragged, onMouseEntered, onMouseExited, onMouseMoved, onMousePressed, onMouseReleased, onMouseWheelMoved, onPaint, onRoundEnded, onStatus, onWin, resume, scan, setAdjustGunForRobotTurn, setAdjustRadarForGunTurn, setAdjustRadarForRobotTurn, setAllColors, setBodyColor, setBulletColor, setColors, setColors, setDebugProperty, setGunColor, setRadarColor, setScanColor, stop, stop, turnGunLeft, turnGunRight, turnLeft, turnRadarLeft, turnRadarRight, turnRight</code></div>
+<code>ahead, back, doNothing, fire, fireBullet, getBasicEventListener, getBattleFieldHeight, getBattleFieldWidth, getEnergy, getGraphics, getGunCoolingRate, getGunHeading, getGunHeat, getHeading, getHeight, getInteractiveEventListener, getName, getNumRounds, getNumSentries, getOthers, getPaintEventListener, getRadarHeading, getRobotRunnable, getRoundNum, getSentryBorderSize, getTime, getVelocity, getWidth, getX, getY, onBattleEnded, onBulletHitBullet, onBulletMissed, onHitByBullet, onHitRobot, onHitWall, onKeyPressed, onKeyReleased, onKeyTyped, onMouseClicked, onMouseDragged, onMouseEntered, onMouseExited, onMouseMoved, onMousePressed, onMouseReleased, onMouseWheelMoved, onPaint, onRoundEnded, onStatus, onWin, resume, scan, setAdjustGunForRobotTurn, setAdjustRadarForGunTurn, setAdjustRadarForRobotTurn, setAllColors, setBodyColor, setBulletColor, setColors, setColors, setDebugProperty, setGunColor, setRadarColor, setScanColor, stop, stop, turnGunLeft, turnGunRight, turnLeft, turnRadarLeft, turnRadarRight, turnRight</code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-robocode._Robot">Methods inherited from class&nbsp;robocode._Robot</h3>
 <code>getBattleNum, getGunCharge, getGunImageName, getLife, getNumBattles, getRadarImageName, getRobotImageName, setGunImageName, setRadarImageName, setRobotImageName</code></div>
@@ -256,7 +273,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="last">
 <h3>last</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double[][]</span>&nbsp;<span class="element-name">last</span></div>
-<div class="block">Per opponent: last scan time, heading, velocity, state.</div>
+<div class="block">Per opponent: last scan time, heading, velocity, state, shots aimed at it, hits on it (DEISE-17).</div>
 </section>
 </li>
 <li>
@@ -300,6 +317,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="targetDistance">
 <h3>targetDistance</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">targetDistance</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="targetScore">
+<h3>targetScore</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">targetScore</span></div>
+<div class="block">The target's distance times the root of its shots over its hits, with a prior (DEISE-17).</div>
 </section>
 </li>
 </ul>
@@ -366,6 +390,26 @@ loadScripts(document, 'script');</script>
 <dt>Overrides:</dt>
 <dd><code>onRobotDeath</code>&nbsp;in class&nbsp;<code>robocode.Robot</code></dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="onBulletHit(robocode.BulletHitEvent)">
+<h3>onBulletHit</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onBulletHit</span><wbr><span class="parameters">(robocode.BulletHitEvent&nbsp;e)</span></div>
+<div class="block">A hit on any robot counts for it (DEISE-17).</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code>onBulletHit</code>&nbsp;in interface&nbsp;<code>robocode.robotinterfaces.IBasicEvents</code></dd>
+<dt>Overrides:</dt>
+<dd><code>onBulletHit</code>&nbsp;in class&nbsp;<code>robocode.Robot</code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="id(java.lang.String)">
+<h3>id</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">id</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
+<div class="block">A seen robot's id; 0 for one never seen.</div>
 </section>
 </li>
 </ul>

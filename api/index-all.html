@@ -5774,6 +5774,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">How many past states the die compares a new one with.</div>
 </dd>
+<dt><a href="hadur117/mini/DeiseLab.html#HIT" class="member-name-link">HIT</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/DeiseLab.html" title="class in hadur117.mini">DeiseLab</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/move/RamEscape.html#HIT_BOX" class="member-name-link">HIT_BOX</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/RamEscape.html" title="class in hadur117.core.move">RamEscape</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#RAM-5">RAM-5</a>: a bullet within this many px of our centre on both axes counts as a hit (half a robot, plus slack).</div>
@@ -5790,6 +5792,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/move/ShotDodgePlanner.html#HIT_COST" class="member-name-link">HIT_COST</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/ShotDodgePlanner.html" title="class in hadur117.core.move">ShotDodgePlanner</a></dt>
 <dd>
 <div class="block">A hit's cost per point of damage: above any miss's.</div>
+</dd>
+<dt><a href="hadur/bench/MeleeHarvester.html#HIT_HEADER" class="member-name-link">HIT_HEADER</a> - Static variable in class hadur.bench.<a href="hadur/bench/MeleeHarvester.html" title="class in hadur.bench">MeleeHarvester</a></dt>
+<dd>
+<div class="block">Every bullet hit Hadur gave or took, by shooter and victim (<a class="req" href="../requirements.html#BENCH-156">BENCH-156</a>).</div>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#HIT_RADIUS" class="member-name-link">HIT_RADIUS</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>
@@ -6139,6 +6145,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/role/Role.html#id()" class="member-name-link">id()</a> - Method in interface hadur117.core.role.<a href="hadur117/core/role/Role.html" title="interface in hadur117.core.role">Role</a></dt>
 <dd>
 <div class="block">Which role this is.</div>
+</dd>
+<dt><a href="hadur117/mini/Deise.html#id(java.lang.String)" class="member-name-link">id(String)</a> - Static method in class hadur117.mini.<a href="hadur117/mini/Deise.html" title="class in hadur117.mini">Deise</a></dt>
+<dd>
+<div class="block">A seen robot's id; 0 for one never seen.</div>
 </dd>
 <dt><a href="hadur117/core/melee/MeleeWaves.html#IDLE_INTERVAL" class="member-name-link">IDLE_INTERVAL</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeWaves.html" title="class in hadur117.core.melee">MeleeWaves</a></dt>
 <dd>
@@ -6601,7 +6611,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/mini/Deise.html#last" class="member-name-link">last</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/Deise.html" title="class in hadur117.mini">Deise</a></dt>
 <dd>
-<div class="block">Per opponent: last scan time, heading, velocity, state.</div>
+<div class="block">Per opponent: last scan time, heading, velocity, state, shots aimed at it, hits on it (DEISE-17).</div>
 </dd>
 <dt><a href="hadur117/mini/DeiseLab.html#LAST" class="member-name-link">LAST</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/DeiseLab.html" title="class in hadur117.mini">DeiseLab</a></dt>
 <dd>
@@ -9272,6 +9282,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/micro/SaorLab.html#onBulletHit(robocode.BulletHitEvent)" class="member-name-link">onBulletHit(BulletHitEvent)</a> - Method in class hadur117.micro.<a href="hadur117/micro/SaorLab.html" title="class in hadur117.micro">SaorLab</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/mini/Deise.html#onBulletHit(robocode.BulletHitEvent)" class="member-name-link">onBulletHit(BulletHitEvent)</a> - Method in class hadur117.mini.<a href="hadur117/mini/Deise.html" title="class in hadur117.mini">Deise</a></dt>
+<dd>
+<div class="block">A hit on any robot counts for it (DEISE-17).</div>
+</dd>
 <dt><a href="hadur117/mini/DeiseLab.html#onBulletHit(robocode.BulletHitEvent)" class="member-name-link">onBulletHit(BulletHitEvent)</a> - Method in class hadur117.mini.<a href="hadur117/mini/DeiseLab.html" title="class in hadur117.mini">DeiseLab</a></dt>
 <dd>
 <div class="block">Our hit is not their shot: their energy after it is the base for the next drop (DEISE-5, arm W).</div>
@@ -10395,7 +10409,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/mini/DeiseLab.html#PLAYOUTS" class="member-name-link">PLAYOUTS</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/DeiseLab.html" title="class in hadur117.mini">DeiseLab</a></dt>
 <dd>
-<div class="block">Playouts an aim (DEISE-7): 200 since 0.3 (arm P200).</div>
+<div class="block">Playouts an aim (DEISE-7): 400 since 0.5 (arm PN, pc-deise-e09 and e10).</div>
 </dd>
 <dt><a href="hadur117/twin/core/Gun.html#PLAYOUTS" class="member-name-link">PLAYOUTS</a> - Static variable in class hadur117.twin.core.<a href="hadur117/twin/core/Gun.html" title="class in hadur117.twin.core">Gun</a></dt>
 <dd>
@@ -13506,6 +13520,11 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/model/Baton.Shot.html#%3Cinit%3E(java.lang.String,java.awt.geom.Point2D.Double,long,double,double)" class="member-name-link">Shot(String, Point2D.Double, long, double, double)</a> - Constructor for class hadur117.core.model.<a href="hadur117/core/model/Baton.Shot.html" title="class in hadur117.core.model">Baton.Shot</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/mini/DeiseLab.html#SHOT" class="member-name-link">SHOT</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/DeiseLab.html" title="class in hadur117.mini">DeiseLab</a></dt>
+<dd>
+<div class="block">Per opponent, kept across rounds: shots aimed at it and hits on it (DEISE-17, arm LEARNH since
+ 0.5).</div>
+</dd>
 <dt><a href="hadur117/core/duel/MoveDesign.html#SHOT_DODGE" class="member-name-link">SHOT_DODGE</a> - Static variable in class hadur117.core.duel.<a href="hadur117/core/duel/MoveDesign.html" title="class in hadur117.core.duel">MoveDesign</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#DODGE-3">DODGE-3</a>: dodge the enemy's simple aim (<a class="req" href="../requirements.html#DODGE-1">DODGE-1</a>, <a class="req" href="../requirements.html#DODGE-2">DODGE-2</a>) against every opponent, not only
@@ -14721,6 +14740,12 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">As <a href="hadur117/core/model/Wave.html#targetWallDistance"><code>Wave.targetWallDistance</code></a>, orbiting the other way.</div>
 </dd>
+<dt><a href="hadur117/mini/Deise.html#targetScore" class="member-name-link">targetScore</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/Deise.html" title="class in hadur117.mini">Deise</a></dt>
+<dd>
+<div class="block">The target's distance times the root of its shots over its hits, with a prior (DEISE-17).</div>
+</dd>
+<dt><a href="hadur117/mini/DeiseLab.html#targetScore" class="member-name-link">targetScore</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/DeiseLab.html" title="class in hadur117.mini">DeiseLab</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/micro/Saor.html#targetState" class="member-name-link">targetState</a> - Static variable in class hadur117.micro.<a href="hadur117/micro/Saor.html" title="class in hadur117.micro">Saor</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/micro/SaorLab.html#targetState" class="member-name-link">targetState</a> - Static variable in class hadur117.micro.<a href="hadur117/micro/SaorLab.html" title="class in hadur117.micro">SaorLab</a></dt>
