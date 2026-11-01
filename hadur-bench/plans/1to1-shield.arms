@@ -1,8 +1,8 @@
 # pc-1to1 step shield (BENCH-133, docs/bench/local/2026-10-28_one-to-one-map.md): c is 3.19, aa its A/A copy;
 # s4 = every opponent shielded with SHIELD-11's battle exit at 400 damage (shield-all,sdmg400);
 # sv = the same plus SHIELD-17's opening drive (shield-all,smove,sdmg400); sy = SHIELD-15, Ogi's trial (strial).
-c | hadur117.Hadur 3.20 | bisect/hadur117.Hadur_3.20.jar
-aa | hadur117.Hadur 3.20aa | bisect/hadur117.Hadur_3.20aa.jar
-s4 | hadur117.Hadur 3.20sas4 | bisect/hadur117.Hadur_3.20sas4.jar
-sv | hadur117.Hadur 3.20sasvs4 | bisect/hadur117.Hadur_3.20sasvs4.jar
-sy | hadur117.Hadur 3.20sy | bisect/hadur117.Hadur_3.20sy.jar
+c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
+aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
+s4 | hadur117.Hadur 3.21sas4 | bisect/hadur117.Hadur_3.21sas4.jar
+sv | hadur117.Hadur 3.21sasvs4 | bisect/hadur117.Hadur_3.21sasvs4.jar
+sy | hadur117.Hadur 3.21sy | bisect/hadur117.Hadur_3.21sy.jar

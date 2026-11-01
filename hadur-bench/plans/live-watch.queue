@@ -39,8 +39,8 @@
 # is no, the watch step refuses to start and the release summary says not to run it.
 set QUALIFIED = no
 set PKG = hadur117
-set V1 = 3.20
-set VT = 3.20
+set V1 = 3.21
+set VT = 3.21
 set HOURS = 72
 set COLLAPSES = 10
 set DUELS = 1000

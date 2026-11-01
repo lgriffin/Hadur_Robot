@@ -35,7 +35,7 @@ set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
 
-prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_3.20.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh shield-all,sdmg400 && bash ./build-ablation.sh shield-all,smove,sdmg400 && bash ./build-ablation.sh strial && bash ./build-ablation.sh sgo && bash ./build-ablation.sh sgo2 && bash ./build-ablation.sh sdplan && ./fetch-opponents.sh --set panel-1to1-shield.txt && ./fetch-opponents.sh --set panel-1to1-learn.txt && mvn -q compile
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_3.21.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh shield-all,sdmg400 && bash ./build-ablation.sh shield-all,smove,sdmg400 && bash ./build-ablation.sh strial && bash ./build-ablation.sh sgo && bash ./build-ablation.sh sgo2 && bash ./build-ablation.sh sdplan && ./fetch-opponents.sh --set panel-1to1-shield.txt && ./fetch-opponents.sh --set panel-1to1-learn.txt && mvn -q compile
 
 shield | ./bench-top20.sh ${C} ${P} --set panel-1to1-shield.txt --seeds 6 --seed-base 3800 --arms plans/1to1-shield.arms --out work/1to1-shield --label 1to1-shield --shuffle-jobs
   after: prep
