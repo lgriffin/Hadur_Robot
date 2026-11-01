@@ -1,12 +1,16 @@
 {
  "plan": "pc-team-mirror",
- "updated": 1793574640.0311947,
+ "updated": 1793575546.2643073,
  "steps": {
   "mrprep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 45,
+   "end": "2026-11-01T23:11:26"
   },
   "mrogi": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-01T23:11:26"
   },
   "mrhad": {
    "status": "pending"
@@ -18,5 +22,49 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "mrogi",
+   "started": 1793574686.0176227,
+   "updated": 1793575546.2578795,
+   "elapsed": 860.2402567863464,
+   "expected": 540,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 108,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 451.9667580455541,
+   "eta": 3440.961027145386,
+   "fraction": 0.2,
+   "last_battle_age": 2.2990715503692627,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 108"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 60 over 200",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "108 of 200 battles to read"
+    }
+   ],
+   "skips_mean": 1.3703703703703705,
+   "skips_last100": 1.36
+  }
+ ]
 }
