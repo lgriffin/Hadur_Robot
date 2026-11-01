@@ -1,0 +1,613 @@
+2026-11-01T19:18:54Z client C:\RoboRumbleWorkers\rr01: results ['C:\\RoboRumbleWorkers\\rr01\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr01\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr01\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr01\\roborumble\\files\\resultsmelee.txt'], data ['C:\\RoboRumbleWorkers\\rr01\\robots\\.data\\hadur117\\Hadur.data', 'C:\\RoboRumbleWorkers\\rr01\\robots\\.data\\hadur2\\Hadur.data']
+2026-11-01T19:18:54Z client C:\RoboRumbleWorkers\rr02: results ['C:\\RoboRumbleWorkers\\rr02\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr02\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr02\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr02\\roborumble\\files\\resultsmelee.txt'], data ['C:\\RoboRumbleWorkers\\rr02\\robots\\.data\\hadur117\\Hadur.data', 'C:\\RoboRumbleWorkers\\rr02\\robots\\.data\\hadur2\\Hadur.data']
+2026-11-01T19:18:55Z client rr01-roborumble: start, console ../data/live/fence-qualify-3.20-run4\consoles\rr01-roborumble-2026-11-01T191855Z.log
+2026-11-01T19:18:55Z client rr02-roborumble: start, console ../data/live/fence-qualify-3.20-run4\consoles\rr02-roborumble-2026-11-01T191855Z.log
+2026-11-01T19:18:55Z profiles rr01_robots_.data_hadur117_Hadur.data: 392 files, 145 shield verdicts stored
+2026-11-01T19:18:55Z profiles rr01_robots_.data_hadur2_Hadur.data: 574 files, 233 shield verdicts stored
+2026-11-01T19:18:55Z profiles rr02_robots_.data_hadur117_Hadur.data: 352 files, 120 shield verdicts stored
+2026-11-01T19:18:55Z profiles rr02_robots_.data_hadur2_Hadur.data: 472 files, 192 shield verdicts stored
+2026-11-01T19:19:05Z battle hadur117.Hadur 3.20 vs dmp.micro.Aurora 1.41 (roborumble): 85.44% share, 34-1 rounds
+2026-11-01T19:19:04Z battle hadur117.Hadur 3.20 vs cb.nano.Insomnia 1.0 (roborumble): 92.08% share, 34-1 rounds
+2026-11-01T19:19:07Z battle hadur117.Hadur 3.20 vs velas.Alpha 1.0 (roborumble): 96.34% share, 34-1 rounds
+2026-11-01T19:19:07Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:07Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:07Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:07Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:07Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:07Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:07Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:07Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:05Z health whind.StrengthBee: 34/35 survived, 100 skipped, 0 faults, shield verdict 1
+2026-11-01T19:19:07Z health gh.GresSuffurd: 34/35 survived, 48 skipped, 0 faults, shield verdict 1
+2026-11-01T19:19:05Z START-UP DISABLE? whind.StrengthBee: 92 skipped turns in a row, setup 671 ms, first turn 0
+2026-11-01T19:19:07Z START-UP DISABLE? gh.GresSuffurd: 43 skipped turns in a row, setup 592 ms, first turn 0
+2026-11-01T19:19:15Z battle hadur117.Hadur 3.20 vs whind.StrengthBee 0.6.4 (roborumble): 70.08% share, 29-6 rounds
+2026-11-01T19:19:14Z health whind.StrengthBee: 29/35 survived, 115 skipped, 0 faults, shield verdict 1
+2026-11-01T19:19:14Z START-UP DISABLE? whind.StrengthBee: 106 skipped turns in a row, setup 714 ms, first turn 0
+2026-11-01T19:19:20Z battle hadur117.Hadur 3.20 vs gh.GresSuffurd 0.4.13 (roborumble): 61.58% share, 26-9 rounds  << LOW
+2026-11-01T19:19:22Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:22Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:23Z health Legend.X_FireFly: 35/35 survived, 15 skipped, 0 faults, shield verdict 0
+2026-11-01T19:19:23Z battle hadur117.Hadur 3.20 vs Legend.X_FireFly 1.3 (roborumble): 95.45% share, 35-0 rounds
+2026-11-01T19:19:28Z battle hadur117.Hadur 3.20 vs arthord.NanoSatanMelee Beta (roborumble): 87.39% share, 35-0 rounds
+2026-11-01T19:19:28Z health rdt.AgentSmith.AgentSmithRedux: 35/35 survived, 9 skipped, 0 faults, shield verdict 1
+2026-11-01T19:19:31Z battle hadur117.Hadur 3.20 vs rh.Intra 2.1DomoKN (roborumble): 72.85% share, 30-5 rounds
+2026-11-01T19:19:34Z battle hadur117.Hadur 3.20 vs blir.nano.Bruce R1.0.0 (roborumble): 84.6% share, 33-2 rounds
+2026-11-01T19:19:33Z battle hadur117.Hadur 3.20 vs rdt.AgentSmith.AgentSmithRedux 0.02 (roborumble): 97.08% share, 35-0 rounds
+2026-11-01T19:19:36Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:36Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:36Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:36Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:34Z health jrm.Test0: 34/35 survived, 91 skipped, 0 faults, shield verdict 0
+2026-11-01T19:19:33Z health jk.mega.DrussGT: 35/35 survived, 8 skipped, 0 faults, shield verdict 1
+2026-11-01T19:19:34Z START-UP DISABLE? jrm.Test0: 90 skipped turns in a row, setup 661 ms, first turn 0
+2026-11-01T19:19:37Z battle hadur117.Hadur 3.20 vs jrm.Test0 1.0 (roborumble): 94.73% share, 34-1 rounds
+2026-11-01T19:19:40Z battle hadur117.Hadur 3.20 vs lorneswork.Predator 1.0 (roborumble): 95.03% share, 34-1 rounds
+2026-11-01T19:19:43Z battle hadur117.Hadur 3.20 vs urdos.URDOS 1.3 (roborumble): 90.16% share, 33-2 rounds
+2026-11-01T19:19:44Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:44Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:44Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:44Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:43Z health myl.nano.Graviton: 33/35 survived, 98 skipped, 0 faults, shield verdict 1
+2026-11-01T19:19:43Z START-UP DISABLE? myl.nano.Graviton: 91 skipped turns in a row, setup 660 ms, first turn 0
+2026-11-01T19:19:46Z battle hadur117.Hadur 3.20 vs myl.nano.Graviton 1.10 (roborumble): 98.18% share, 34-1 rounds
+2026-11-01T19:19:50Z battle hadur117.Hadur 3.20 vs pez.nano.LittleEvilBrother 0.1 (roborumble): 96.03% share, 34-1 rounds
+2026-11-01T19:19:51Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:51Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:51Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:51Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:49Z health geep.mini.GPBotB: 34/35 survived, 59 skipped, 0 faults, shield verdict 1
+2026-11-01T19:19:49Z START-UP DISABLE? geep.mini.GPBotB: 53 skipped turns in a row, setup 587 ms, first turn 0
+2026-11-01T19:19:53Z battle hadur117.Hadur 3.20 vs geep.mini.GPBotB 1.1 (roborumble): 93.13% share, 34-1 rounds
+2026-11-01T19:19:56Z battle hadur117.Hadur 3.20 vs suh.nano.CornerRL 1.00 (roborumble): 94.68% share, 34-1 rounds
+2026-11-01T19:19:57Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:57Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:57Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:57Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:57Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:57Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:19:56Z health apv.LauLectrik: 34/35 survived, 88 skipped, 0 faults, shield verdict 0
+2026-11-01T19:19:56Z START-UP DISABLE? apv.LauLectrik: 79 skipped turns in a row, setup 650 ms, first turn 0
+2026-11-01T19:19:59Z battle hadur117.Hadur 3.20 vs apv.LauLectrik 1.2 (roborumble): 86.36% share, 32-3 rounds
+2026-11-01T19:20:02Z battle hadur117.Hadur 3.20 vs conscience.Electron 1.3g (roborumble): 92.98% share, 34-1 rounds
+2026-11-01T19:20:05Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:05Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:05Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:05Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:02Z health mue.Ascendant: 34/35 survived, 111 skipped, 0 faults, shield verdict 1
+2026-11-01T19:20:02Z START-UP DISABLE? mue.Ascendant: 103 skipped turns in a row, setup 709 ms, first turn 0
+2026-11-01T19:20:11Z battle hadur117.Hadur 3.20 vs mue.Ascendant 1.2.27 (roborumble): 48.46% share, 21-14 rounds  << LOW
+2026-11-01T19:20:10Z health ins.MobyNano: 21/35 survived, 131 skipped, 0 faults, shield verdict 0
+2026-11-01T19:20:10Z START-UP DISABLE? ins.MobyNano: 122 skipped turns in a row, setup 753 ms, first turn 0
+2026-11-01T19:20:15Z battle hadur117.Hadur 3.20 vs ins.MobyNano 0.8 (roborumble): 95.42% share, 34-1 rounds
+2026-11-01T19:20:18Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:18Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:18Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:18Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:15Z health bvh.frg.Friga: 34/35 survived, 83 skipped, 0 faults, shield verdict 0
+2026-11-01T19:20:15Z START-UP DISABLE? bvh.frg.Friga: 77 skipped turns in a row, setup 678 ms, first turn 0
+2026-11-01T19:20:22Z battle hadur117.Hadur 3.20 vs bvh.frg.Friga 0.112dev (roborumble): 96.59% share, 34-1 rounds
+2026-11-01T19:20:25Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:25Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:22Z health chase.pm.Pytko: 34/35 survived, 69 skipped, 0 faults, shield verdict 0
+2026-11-01T19:20:22Z START-UP DISABLE? chase.pm.Pytko: 63 skipped turns in a row, setup 656 ms, first turn 0
+2026-11-01T19:20:30Z battle hadur117.Hadur 3.20 vs chase.pm.Pytko 1.0 (roborumble): 76.93% share, 32-3 rounds
+2026-11-01T19:20:32Z battle hadur117.Hadur 3.20 vs gwah.GBotMarkIV 1.0 (roborumble): 96.88% share, 34-1 rounds
+2026-11-01T19:20:32Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:32Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:32Z health davidalves.net.DuelistMicroMkII: 34/35 survived, 75 skipped, 0 faults, shield verdict 0
+2026-11-01T19:20:32Z START-UP DISABLE? davidalves.net.DuelistMicroMkII: 69 skipped turns in a row, setup 653 ms, first turn 0
+2026-11-01T19:20:39Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:39Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:39Z health bigpete.Stewie: 33/35 survived, 78 skipped, 0 faults, shield verdict 0
+2026-11-01T19:20:39Z START-UP DISABLE? bigpete.Stewie: 71 skipped turns in a row, setup 658 ms, first turn 0
+2026-11-01T19:20:39Z battle hadur117.Hadur 3.20 vs davidalves.net.DuelistMicroMkII 1.1 (roborumble): 88.77% share, 33-2 rounds
+2026-11-01T19:20:43Z battle hadur117.Hadur 3.20 vs bigpete.Stewie 1.0 (roborumble): 97.21% share, 34-1 rounds
+2026-11-01T19:20:43Z battle hadur117.Hadur 3.20 vs jk.mega.DrussGT 3.1.16 (roborumble): 44.28% share, 16-19 rounds  << LOW
+2026-11-01T19:20:45Z battle hadur117.Hadur 3.20 vs mladjo.iRobot 0.3 (roborumble): 94.86% share, 35-0 rounds
+2026-11-01T19:20:46Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:46Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:46Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:46Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:43Z health davidalves.Firebird: 34/35 survived, 82 skipped, 0 faults, shield verdict 0
+2026-11-01T19:20:48Z health homerbots.h1: 34/35 survived, 44 skipped, 0 faults, shield verdict 0
+2026-11-01T19:20:43Z START-UP DISABLE? davidalves.Firebird: 76 skipped turns in a row, setup 679 ms, first turn 0
+2026-11-01T19:20:48Z START-UP DISABLE? homerbots.h1: 38 skipped turns in a row, setup 618 ms, first turn 0
+2026-11-01T19:20:53Z battle hadur117.Hadur 3.20 vs davidalves.Firebird 0.25 (roborumble): 92.48% share, 34-1 rounds
+2026-11-01T19:20:48Z battle hadur117.Hadur 3.20 vs homerbots.h1 1.0 (roborumble): 98.94% share, 34-1 rounds
+2026-11-01T19:20:51Z battle hadur117.Hadur 3.20 vs rdm.WallRider 0.5c (roborumble): 91.52% share, 33-2 rounds
+2026-11-01T19:20:54Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:54Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:54Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:54Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:54Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:54Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:20:53Z health taqho.taqbot: 34/35 survived, 82 skipped, 0 faults, shield verdict 0
+2026-11-01T19:20:55Z health jcs.Decepticon: 34/35 survived, 40 skipped, 0 faults, shield verdict 0
+2026-11-01T19:20:53Z START-UP DISABLE? taqho.taqbot: 75 skipped turns in a row, setup 690 ms, first turn 0
+2026-11-01T19:20:55Z START-UP DISABLE? jcs.Decepticon: 35 skipped turns in a row, setup 600 ms, first turn 0
+2026-11-01T19:20:55Z battle hadur117.Hadur 3.20 vs mladjo.Startko 1.0 (roborumble): 96.68% share, 34-1 rounds
+2026-11-01T19:21:01Z battle hadur117.Hadur 3.20 vs jcs.Decepticon 2.5.3 (roborumble): 95.33% share, 34-1 rounds
+2026-11-01T19:21:02Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:02Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:02Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:02Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:03Z health blir.nano.Cabbage: 34/35 survived, 44 skipped, 0 faults, shield verdict 0
+2026-11-01T19:21:03Z START-UP DISABLE? blir.nano.Cabbage: 38 skipped turns in a row, setup 609 ms, first turn 0
+2026-11-01T19:21:03Z battle hadur117.Hadur 3.20 vs blir.nano.Cabbage R1.0.1 (roborumble): 98.08% share, 34-1 rounds
+2026-11-01T19:21:06Z battle hadur117.Hadur 3.20 vs robar.nano.Scytodes 0.3 (roborumble): 92.96% share, 34-1 rounds
+2026-11-01T19:21:09Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:09Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:09Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:09Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:09Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:09Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:06Z health rampancy.Durandal: 34/35 survived, 43 skipped, 0 faults, shield verdict 1
+2026-11-01T19:21:06Z START-UP DISABLE? rampancy.Durandal: 37 skipped turns in a row, setup 601 ms, first turn 0
+2026-11-01T19:21:14Z battle hadur117.Hadur 3.20 vs taqho.taqbot 1.0 (roborumble): 92.25% share, 34-1 rounds
+2026-11-01T19:21:12Z battle hadur117.Hadur 3.20 vs rampancy.Durandal 2.2d (roborumble): 71.25% share, 29-6 rounds
+2026-11-01T19:21:16Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:16Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:14Z health kawigi.mini.Coriantumr: 34/35 survived, 87 skipped, 0 faults, shield verdict 0
+2026-11-01T19:21:12Z health whind.StrengthBee: 29/35 survived, 43 skipped, 0 faults, shield verdict 1
+2026-11-01T19:21:14Z START-UP DISABLE? kawigi.mini.Coriantumr: 81 skipped turns in a row, setup 690 ms, first turn 0
+2026-11-01T19:21:12Z START-UP DISABLE? whind.StrengthBee: 37 skipped turns in a row, setup 616 ms, first turn 0
+2026-11-01T19:21:21Z battle hadur117.Hadur 3.20 vs kawigi.mini.Coriantumr 1.1 (roborumble): 94.97% share, 34-1 rounds
+2026-11-01T19:21:21Z battle hadur117.Hadur 3.20 vs whind.StrengthBee 0.6.4 (roborumble): 71.5% share, 30-5 rounds
+2026-11-01T19:21:24Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:24Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:24Z health pak.JakeTheTestingRobot: 34/35 survived, 74 skipped, 0 faults, shield verdict 0
+2026-11-01T19:21:26Z health jwst.DAD.DarkAndDarker: 34/35 survived, 33 skipped, 0 faults, shield verdict 0
+2026-11-01T19:21:24Z START-UP DISABLE? pak.JakeTheTestingRobot: 69 skipped turns in a row, setup 661 ms, first turn 0
+2026-11-01T19:21:25Z battle hadur117.Hadur 3.20 vs pak.JakeTheTestingRobot .1b (roborumble): 96.2% share, 34-1 rounds
+2026-11-01T19:21:29Z battle hadur117.Hadur 3.20 vs amarok.Rookie 1.1 (roborumble): 89.32% share, 33-2 rounds
+2026-11-01T19:21:26Z battle hadur117.Hadur 3.20 vs jwst.DAD.DarkAndDarker 1.1 (roborumble): 90.79% share, 34-1 rounds
+2026-11-01T19:21:30Z battle hadur117.Hadur 3.20 vs slugzilla.OrbitLinear 1.1 (roborumble): 97.14% share, 34-1 rounds
+2026-11-01T19:21:32Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:32Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:32Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:32Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:32Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:32Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:32Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:32Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:33Z health ntc.Plains: 34/35 survived, 106 skipped, 0 faults, shield verdict 1
+2026-11-01T19:21:33Z health sch.Simone: 34/35 survived, 80 skipped, 0 faults, shield verdict 0
+2026-11-01T19:21:33Z START-UP DISABLE? ntc.Plains: 100 skipped turns in a row, setup 750 ms, first turn 0
+2026-11-01T19:21:33Z START-UP DISABLE? sch.Simone: 74 skipped turns in a row, setup 709 ms, first turn 0
+2026-11-01T19:21:33Z battle hadur117.Hadur 3.20 vs ntc.Plains 0.9 (roborumble): 95.4% share, 34-1 rounds
+2026-11-01T19:21:36Z battle hadur117.Hadur 3.20 vs rus.vv.Dzhigit 1.1 (roborumble): 96.32% share, 34-1 rounds
+2026-11-01T19:21:33Z battle hadur117.Hadur 3.20 vs kjc.Karaykan 1.0 (roborumble): 96.01% share, 34-1 rounds
+2026-11-01T19:21:36Z battle hadur117.Hadur 3.20 vs sch.Simone 0.3d (roborumble): 98.52% share, 34-1 rounds
+2026-11-01T19:21:40Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:40Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:40Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:40Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:40Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:40Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:40Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:40Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:40Z health jep.nano.Hawkwing: 33/35 survived, 84 skipped, 0 faults, shield verdict 0
+2026-11-01T19:21:41Z health cjm.Charo: 34/35 survived, 53 skipped, 0 faults, shield verdict 0
+2026-11-01T19:21:40Z START-UP DISABLE? jep.nano.Hawkwing: 78 skipped turns in a row, setup 680 ms, first turn 0
+2026-11-01T19:21:41Z START-UP DISABLE? cjm.Charo: 46 skipped turns in a row, setup 631 ms, first turn 0
+2026-11-01T19:21:40Z battle hadur117.Hadur 3.20 vs satan.R0 0.2 (roborumble): 86.62% share, 33-2 rounds
+2026-11-01T19:21:43Z battle hadur117.Hadur 3.20 vs jep.nano.Hawkwing 0.4.1 (roborumble): 96.52% share, 34-1 rounds
+2026-11-01T19:21:47Z battle hadur117.Hadur 3.20 vs Polkwane.Piyane 0.7b (roborumble): 93.64% share, 34-1 rounds
+2026-11-01T19:21:41Z battle hadur117.Hadur 3.20 vs mladjo.Grrrrr 0.9 (roborumble): 96.75% share, 34-1 rounds
+2026-11-01T19:21:48Z battle hadur117.Hadur 3.20 vs cjm.Charo 1.1 (roborumble): 95.68% share, 34-1 rounds
+2026-11-01T19:21:50Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:50Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:50Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:50Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:50Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:50Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:50Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:50Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:47Z health Polkwane.Piyane: 34/35 survived, 98 skipped, 0 faults, shield verdict 1
+2026-11-01T19:21:51Z health robar.micro.Kirbyi: 34/35 survived, 52 skipped, 0 faults, shield verdict 0
+2026-11-01T19:21:47Z START-UP DISABLE? Polkwane.Piyane: 92 skipped turns in a row, setup 656 ms, first turn 0
+2026-11-01T19:21:51Z START-UP DISABLE? robar.micro.Kirbyi: 47 skipped turns in a row, setup 632 ms, first turn 0
+2026-11-01T19:21:51Z battle hadur117.Hadur 3.20 vs ao.T100 0.9 (roborumble): 97.29% share, 34-1 rounds
+2026-11-01T19:21:56Z battle hadur117.Hadur 3.20 vs robar.micro.Kirbyi 1.0 (roborumble): 96.21% share, 34-1 rounds
+2026-11-01T19:21:58Z battle hadur117.Hadur 3.20 vs fcr.First 1.0 (roborumble): 98.25% share, 34-1 rounds
+2026-11-01T19:21:59Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:59Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:59Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:59Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:21:58Z health rdm.Grasshopper: 34/35 survived, 49 skipped, 0 faults, shield verdict 0
+2026-11-01T19:21:58Z START-UP DISABLE? rdm.Grasshopper: 41 skipped turns in a row, setup 612 ms, first turn 0
+2026-11-01T19:22:02Z battle hadur117.Hadur 3.20 vs rdm.Grasshopper 0.5e (roborumble): 95.27% share, 34-1 rounds
+2026-11-01T19:22:06Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:06Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:06Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:06Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:08Z health timmit.mini.TimVA: 33/35 survived, 46 skipped, 0 faults, shield verdict 1
+2026-11-01T19:22:08Z START-UP DISABLE? timmit.mini.TimVA: 41 skipped turns in a row, setup 608 ms, first turn 0
+2026-11-01T19:22:08Z battle hadur117.Hadur 3.20 vs timmit.mini.TimVA 0.43 (roborumble): 81.22% share, 33-2 rounds
+2026-11-01T19:22:13Z battle hadur117.Hadur 3.20 vs amk.Punbot.Punbot 0.01 (roborumble): 97.7% share, 34-1 rounds
+2026-11-01T19:22:13Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:13Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:12Z health ender.EnderRobot: 34/35 survived, 122 skipped, 0 faults, shield verdict 1
+2026-11-01T19:22:12Z START-UP DISABLE? ender.EnderRobot: 114 skipped turns in a row, setup 840 ms, first turn 0
+2026-11-01T19:22:15Z battle hadur117.Hadur 3.20 vs ender.EnderRobot 1.1 (roborumble): 89.3% share, 33-2 rounds
+2026-11-01T19:22:19Z battle hadur117.Hadur 3.20 vs rz.SmallDevil 1.502 (roborumble): 93.64% share, 34-1 rounds
+2026-11-01T19:22:20Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:20Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:20Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:20Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:20Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:20Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:19Z health rz.SmallDevil: 34/35 survived, 62 skipped, 0 faults, shield verdict 1
+2026-11-01T19:22:19Z START-UP DISABLE? rz.SmallDevil: 57 skipped turns in a row, setup 667 ms, first turn 0
+2026-11-01T19:22:23Z battle hadur117.Hadur 3.20 vs dmh.robocode.robot.PinkPanther 1.1 (roborumble): 63.52% share, 30-5 rounds  << LOW
+2026-11-01T19:22:27Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:27Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:23Z health pa3k.Manta: 30/35 survived, 119 skipped, 0 faults, shield verdict 1
+2026-11-01T19:22:23Z START-UP DISABLE? pa3k.Manta: 113 skipped turns in a row, setup 796 ms, first turn 0
+2026-11-01T19:22:29Z battle hadur117.Hadur 3.20 vs pa3k.Manta 1.20 (roborumble): 90.29% share, 34-1 rounds
+2026-11-01T19:22:35Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:35Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:36Z health ary.FourWD: 34/35 survived, 143 skipped, 0 faults, shield verdict 0
+2026-11-01T19:22:36Z START-UP DISABLE? ary.FourWD: 135 skipped turns in a row, setup 843 ms, first turn 0
+2026-11-01T19:22:36Z battle hadur117.Hadur 3.20 vs ary.FourWD 1.3d (roborumble): 93.97% share, 34-1 rounds
+2026-11-01T19:22:41Z battle hadur117.Hadur 3.20 vs doka.KillerRabbit 1.0 (roborumble): 77.64% share, 31-4 rounds
+2026-11-01T19:22:42Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:42Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:41Z health stelo.PianistNano: 31/35 survived, 96 skipped, 0 faults, shield verdict 0
+2026-11-01T19:22:41Z START-UP DISABLE? stelo.PianistNano: 90 skipped turns in a row, setup 725 ms, first turn 0
+2026-11-01T19:22:45Z battle hadur117.Hadur 3.20 vs stelo.PianistNano 1.3 (roborumble): 92.9% share, 34-1 rounds
+2026-11-01T19:22:47Z battle hadur117.Hadur 3.20 vs wiki.BasicBulletShielder 1.0 (roborumble): 99.0% share, 34-1 rounds
+2026-11-01T19:22:49Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:49Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:49Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:49Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:49Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:49Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:47Z health catcat20.shape.Theta: 34/35 survived, 87 skipped, 0 faults, shield verdict 1
+2026-11-01T19:22:47Z START-UP DISABLE? catcat20.shape.Theta: 80 skipped turns in a row, setup 687 ms, first turn 0
+2026-11-01T19:22:52Z battle hadur117.Hadur 3.20 vs ej.ChocolateBar 1.1 (roborumble): 97.14% share, 34-1 rounds
+2026-11-01T19:22:56Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:56Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:56Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:56Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:22:52Z health jk.melee.Neuromancer: 34/35 survived, 49 skipped, 0 faults, shield verdict 1
+2026-11-01T19:22:52Z START-UP DISABLE? jk.melee.Neuromancer: 42 skipped turns in a row, setup 621 ms, first turn 0
+2026-11-01T19:23:05Z battle hadur117.Hadur 3.20 vs catcat20.shape.Theta 0.018 (roborumble): 61.98% share, 25-10 rounds  << LOW
+2026-11-01T19:23:09Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:09Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:10Z health dz.OthoMicro: 30/35 survived, 120 skipped, 0 faults, shield verdict 1
+2026-11-01T19:23:10Z START-UP DISABLE? dz.OthoMicro: 113 skipped turns in a row, setup 792 ms, first turn 0
+2026-11-01T19:23:10Z battle hadur117.Hadur 3.20 vs dz.OthoMicro 0.12 (roborumble): 73.49% share, 30-5 rounds
+2026-11-01T19:23:13Z battle hadur117.Hadur 3.20 vs DM.Chicken 4.0 (roborumble): 97.97% share, 34-1 rounds
+2026-11-01T19:23:16Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:16Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:16Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:16Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:17Z health demetrix.nano.SledgeHammer: 34/35 survived, 95 skipped, 0 faults, shield verdict 0
+2026-11-01T19:23:17Z START-UP DISABLE? demetrix.nano.SledgeHammer: 90 skipped turns in a row, setup 726 ms, first turn 0
+2026-11-01T19:23:18Z battle hadur117.Hadur 3.20 vs demetrix.nano.SledgeHammer 0.22 (roborumble): 75.35% share, 34-1 rounds
+2026-11-01T19:23:23Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:23Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:23Z health xander.cat.Mikey: 32/35 survived, 107 skipped, 0 faults, shield verdict 1
+2026-11-01T19:23:23Z START-UP DISABLE? xander.cat.Mikey: 101 skipped turns in a row, setup 756 ms, first turn 0
+2026-11-01T19:23:23Z battle hadur117.Hadur 3.20 vs xander.cat.Mikey 1.2 (roborumble): 81.48% share, 32-3 rounds
+2026-11-01T19:23:30Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:30Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:34Z battle hadur117.Hadur 3.20 vs jk.melee.Neuromancer 7.12 (roborumble): 51.03% share, 20-16 rounds  << LOW
+2026-11-01T19:23:36Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:36Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:36Z health sL300.Mozart: 33/35 survived, 108 skipped, 0 faults, shield verdict 1
+2026-11-01T19:23:34Z health kenran.Bakko: 19/35 survived, 76 skipped, 0 faults, shield verdict 0
+2026-11-01T19:23:36Z START-UP DISABLE? sL300.Mozart: 97 skipped turns in a row, setup 742 ms, first turn 0
+2026-11-01T19:23:34Z START-UP DISABLE? kenran.Bakko: 48 skipped turns in a row, setup 648 ms, first turn 0
+2026-11-01T19:23:36Z battle hadur117.Hadur 3.20 vs sL300.Mozart life (roborumble): 78.54% share, 33-2 rounds
+2026-11-01T19:23:39Z battle hadur117.Hadur 3.20 vs pac.ABC 2.1 (roborumble): 97.9% share, 34-1 rounds
+2026-11-01T19:23:42Z battle hadur117.Hadur 3.20 vs madmath.Cow 0.1.1 (roborumble): 97.14% share, 34-1 rounds
+2026-11-01T19:23:41Z battle hadur117.Hadur 3.20 vs kenran.Bakko v1.0.1 (roborumble): 72.43% share, 28-7 rounds
+2026-11-01T19:23:44Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:44Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:44Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:44Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:44Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:44Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:44Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:44Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:45Z health fowl3628800.LightningBolt: 34/35 survived, 107 skipped, 0 faults, shield verdict 0
+2026-11-01T19:23:41Z health catcat20.Lambda: 28/35 survived, 59 skipped, 0 faults, shield verdict 1
+2026-11-01T19:23:45Z START-UP DISABLE? fowl3628800.LightningBolt: 101 skipped turns in a row, setup 766 ms, first turn 0
+2026-11-01T19:23:41Z START-UP DISABLE? catcat20.Lambda: 52 skipped turns in a row, setup 659 ms, first turn 0
+2026-11-01T19:23:45Z battle hadur117.Hadur 3.20 vs fowl3628800.LightningBolt 2.6.0 (roborumble): 98.42% share, 34-1 rounds
+2026-11-01T19:23:50Z battle hadur117.Hadur 3.20 vs dft.Krazy 1.5 (roborumble): 91.51% share, 34-1 rounds
+2026-11-01T19:23:52Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:52Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:52Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:52Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:50Z health ndn.DyslexicMonkey: 34/35 survived, 103 skipped, 0 faults, shield verdict 1
+2026-11-01T19:23:50Z START-UP DISABLE? ndn.DyslexicMonkey: 97 skipped turns in a row, setup 750 ms, first turn 0
+2026-11-01T19:23:54Z battle hadur117.Hadur 3.20 vs ndn.DyslexicMonkey 1.1 (roborumble): 94.4% share, 34-1 rounds
+2026-11-01T19:23:58Z battle hadur117.Hadur 3.20 vs tornyil.Lajcsi2.Lajcsi2sm 1.0 (roborumble): 85.89% share, 32-3 rounds
+2026-11-01T19:23:59Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:59Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:23:58Z health maribo.FollowFire: 32/35 survived, 90 skipped, 0 faults, shield verdict 0
+2026-11-01T19:23:58Z START-UP DISABLE? maribo.FollowFire: 84 skipped turns in a row, setup 695 ms, first turn 0
+2026-11-01T19:24:02Z battle hadur117.Hadur 3.20 vs maribo.FollowFire 1.11 (roborumble): 77.04% share, 34-1 rounds
+2026-11-01T19:24:04Z battle hadur117.Hadur 3.20 vs catcat20.Lambda 0.017 (roborumble): 61.5% share, 27-8 rounds  << LOW
+2026-11-01T19:24:06Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:06Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:06Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:06Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:06Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:06Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:02Z health dz.Caedo: 34/35 survived, 99 skipped, 0 faults, shield verdict 0
+2026-11-01T19:24:07Z health genprog.Rinmorikazu: 34/35 survived, 64 skipped, 0 faults, shield verdict 0
+2026-11-01T19:24:02Z START-UP DISABLE? dz.Caedo: 91 skipped turns in a row, setup 725 ms, first turn 0
+2026-11-01T19:24:07Z START-UP DISABLE? genprog.Rinmorikazu: 58 skipped turns in a row, setup 665 ms, first turn 0
+2026-11-01T19:24:09Z battle hadur117.Hadur 3.20 vs dz.Caedo 1.4 (roborumble): 90.31% share, 34-1 rounds
+2026-11-01T19:24:12Z battle hadur117.Hadur 3.20 vs aetos.AetosFirstBot 1.0 (roborumble): 97.71% share, 34-1 rounds
+2026-11-01T19:24:08Z battle hadur117.Hadur 3.20 vs bots.UnterExBot 1.0 (roborumble): 98.05% share, 34-1 rounds
+2026-11-01T19:24:11Z battle hadur117.Hadur 3.20 vs genprog.Rinmorikazu 1.0 (roborumble): 97.5% share, 34-1 rounds
+2026-11-01T19:24:13Z battle hadur117.Hadur 3.20 vs madmath.Cow 0.1.1 (roborumble): 97.17% share, 35-0 rounds
+2026-11-01T19:24:14Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:14Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:14Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:14Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:12Z health zezinho.QuerMePegarKKKK: 34/35 survived, 112 skipped, 0 faults, shield verdict 1
+2026-11-01T19:24:16Z health jp.SineWall: 34/35 survived, 92 skipped, 0 faults, shield verdict 0
+2026-11-01T19:24:12Z START-UP DISABLE? zezinho.QuerMePegarKKKK: 105 skipped turns in a row, setup 748 ms, first turn 0
+2026-11-01T19:24:16Z START-UP DISABLE? jp.SineWall: 85 skipped turns in a row, setup 755 ms, first turn 0
+2026-11-01T19:24:20Z battle hadur117.Hadur 3.20 vs zezinho.QuerMePegarKKKK 1.0 (roborumble): 77.64% share, 32-3 rounds
+2026-11-01T19:24:16Z battle hadur117.Hadur 3.20 vs jp.SineWall 1.0 (roborumble): 95.71% share, 34-1 rounds
+2026-11-01T19:24:23Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:23Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:23Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:23Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:23Z health com.syncleus.robocode.Dreadnaught: 34/34 survived, 5 skipped, 0 faults, shield verdict 0
+2026-11-01T19:24:23Z health nova.Snow: 34/35 survived, 84 skipped, 0 faults, shield verdict 1
+2026-11-01T19:24:23Z START-UP DISABLE? nova.Snow: 79 skipped turns in a row, setup 732 ms, first turn 0
+2026-11-01T19:24:23Z battle hadur117.Hadur 3.20 vs com.syncleus.robocode.Dreadnaught 0.1 (roborumble): 89.26% share, 34-1 rounds
+2026-11-01T19:24:26Z battle hadur117.Hadur 3.20 vs maribo.Omicron 1.0 (roborumble): 96.58% share, 34-1 rounds
+2026-11-01T19:24:23Z battle hadur117.Hadur 3.20 vs nova.Snow 1.0 (roborumble): 84.37% share, 34-1 rounds
+2026-11-01T19:24:31Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:31Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:31Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:31Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:31Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:31Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:31Z health jekl.mini.BlackPearl: 34/35 survived, 105 skipped, 0 faults, shield verdict 0
+2026-11-01T19:24:31Z START-UP DISABLE? jekl.mini.BlackPearl: 99 skipped turns in a row, setup 742 ms, first turn 0
+2026-11-01T19:24:31Z battle hadur117.Hadur 3.20 vs jekl.mini.BlackPearl .91 (roborumble): 94.29% share, 34-1 rounds
+2026-11-01T19:24:37Z battle hadur117.Hadur 3.20 vs labg.Cataclysm 2.05 (roborumble): 87.35% share, 33-2 rounds
+2026-11-01T19:24:38Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:38Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:38Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:38Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:37Z health GarmBox.Oranges: 33/35 survived, 144 skipped, 0 faults, shield verdict 0
+2026-11-01T19:24:37Z START-UP DISABLE? GarmBox.Oranges: 136 skipped turns in a row, setup 810 ms, first turn 0
+2026-11-01T19:24:40Z battle hadur117.Hadur 3.20 vs GarmBox.Oranges 1.0.1 (roborumble): 91.21% share, 33-2 rounds
+2026-11-01T19:24:45Z battle hadur117.Hadur 3.20 vs stranger.nano.TestBot 1.0 (roborumble): 88.48% share, 34-1 rounds
+2026-11-01T19:24:46Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:46Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:45Z health learn.ISmart: 34/35 survived, 115 skipped, 0 faults, shield verdict 0
+2026-11-01T19:24:45Z START-UP DISABLE? learn.ISmart: 109 skipped turns in a row, setup 774 ms, first turn 0
+2026-11-01T19:24:53Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:53Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:24:56Z battle hadur117.Hadur 3.20 vs learn.ISmart 2.0s (roborumble): 94.93% share, 34-1 rounds
+2026-11-01T19:24:59Z health bwbaugh.nano.Tirunculus: 34/34 survived, 7 skipped, 0 faults, shield verdict 0
+2026-11-01T19:24:59Z battle hadur117.Hadur 3.20 vs bwbaugh.nano.Tirunculus 0.0.0a (roborumble): 84.41% share, 34-1 rounds
+2026-11-01T19:25:11Z battle hadur117.Hadur 3.20 vs lxx.Tomcat 3.68 (roborumble): 61.1% share, 25-10 rounds  << LOW
+2026-11-01T19:25:11Z health NG.LegatusLegionis: 25/35 survived, 62 skipped, 0 faults, shield verdict 0
+2026-11-01T19:25:11Z START-UP DISABLE? NG.LegatusLegionis: 44 skipped turns in a row, setup 667 ms, first turn 0
+2026-11-01T19:25:15Z battle hadur117.Hadur 3.20 vs NG.LegatusLegionis 1.2 (roborumble): 94.15% share, 34-1 rounds
+2026-11-01T19:25:17Z battle hadur117.Hadur 3.20 vs pac.ABC 2.1 (roborumble): 98.57% share, 34-1 rounds
+2026-11-01T19:25:19Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:19Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:19Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:19Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:19Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:19Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:17Z health gio.RealGioBot: 34/35 survived, 51 skipped, 0 faults, shield verdict 0
+2026-11-01T19:25:17Z START-UP DISABLE? gio.RealGioBot: 45 skipped turns in a row, setup 628 ms, first turn 0
+2026-11-01T19:25:22Z battle hadur117.Hadur 3.20 vs gio.RealGioBot 1.0 (roborumble): 94.14% share, 34-1 rounds
+2026-11-01T19:25:25Z battle hadur117.Hadur 3.20 vs takeBot.WeavingWiggle 1.1 (roborumble): 93.79% share, 33-2 rounds
+2026-11-01T19:25:26Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:26Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:25Z health dft.Cardigan: 33/35 survived, 72 skipped, 0 faults, shield verdict 1
+2026-11-01T19:25:25Z START-UP DISABLE? dft.Cardigan: 68 skipped turns in a row, setup 707 ms, first turn 0
+2026-11-01T19:25:33Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:33Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:33Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:33Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:36Z battle hadur117.Hadur 3.20 vs wiki.mini.Griffon 0.1 (roborumble): 94.62% share, 34-1 rounds
+2026-11-01T19:25:36Z battle hadur117.Hadur 3.20 vs dft.Cardigan 1.09 (roborumble): 65.1% share, 28-7 rounds  << LOW
+2026-11-01T19:25:39Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:39Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:39Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:39Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:40Z health amk.ShizzleStiX.ShizzleStiX: 34/35 survived, 121 skipped, 0 faults, shield verdict 0
+2026-11-01T19:25:35Z health kinsen.melee.Angsaichmophobia: 27/35 survived, 73 skipped, 0 faults, shield verdict 0
+2026-11-01T19:25:40Z START-UP DISABLE? amk.ShizzleStiX.ShizzleStiX: 114 skipped turns in a row, setup 787 ms, first turn 0
+2026-11-01T19:25:35Z START-UP DISABLE? kinsen.melee.Angsaichmophobia: 64 skipped turns in a row, setup 690 ms, first turn 0
+2026-11-01T19:25:40Z battle hadur117.Hadur 3.20 vs amk.ShizzleStiX.ShizzleStiX 0.6 (roborumble): 93.29% share, 34-1 rounds
+2026-11-01T19:25:46Z battle hadur117.Hadur 3.20 vs jwst.DAD.DarkAndDarker 1.1 (roborumble): 75.79% share, 30-5 rounds
+2026-11-01T19:25:45Z battle hadur117.Hadur 3.20 vs kinsen.melee.Angsaichmophobia 1.8c (roborumble): 91.96% share, 34-1 rounds
+2026-11-01T19:25:48Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:48Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:48Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:48Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:46Z health stelo.PastFuture: 30/35 survived, 123 skipped, 0 faults, shield verdict 1
+2026-11-01T19:25:45Z health ap.Frederick: 34/35 survived, 46 skipped, 0 faults, shield verdict 0
+2026-11-01T19:25:46Z START-UP DISABLE? stelo.PastFuture: 116 skipped turns in a row, setup 797 ms, first turn 0
+2026-11-01T19:25:45Z START-UP DISABLE? ap.Frederick: 39 skipped turns in a row, setup 596 ms, first turn 0
+2026-11-01T19:25:51Z battle hadur117.Hadur 3.20 vs ap.Frederick 1.1 (roborumble): 99.03% share, 34-1 rounds
+2026-11-01T19:25:54Z battle hadur117.Hadur 3.20 vs pez.micro.Aristocles 0.3.9 (roborumble): 93.66% share, 33-2 rounds
+2026-11-01T19:25:56Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:56Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:56Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:56Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:56Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:56Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:25:54Z health alpha.BlackIce: 33/35 survived, 72 skipped, 0 faults, shield verdict 0
+2026-11-01T19:25:54Z START-UP DISABLE? alpha.BlackIce: 68 skipped turns in a row, setup 679 ms, first turn 0
+2026-11-01T19:25:59Z battle hadur117.Hadur 3.20 vs stelo.PastFuture 2.3.2 (roborumble): 61.23% share, 26-9 rounds  << LOW
+2026-11-01T19:26:00Z battle hadur117.Hadur 3.20 vs alpha.BlackIce 1.0 (roborumble): 88.75% share, 33-2 rounds
+2026-11-01T19:26:03Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:03Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:03Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:03Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:03Z health ahf.Acero: 33/35 survived, 118 skipped, 0 faults, shield verdict 1
+2026-11-01T19:26:06Z health ers.nano.lig.LigMA: 34/35 survived, 68 skipped, 0 faults, shield verdict 0
+2026-11-01T19:26:03Z START-UP DISABLE? ahf.Acero: 112 skipped turns in a row, setup 791 ms, first turn 0
+2026-11-01T19:26:06Z START-UP DISABLE? ers.nano.lig.LigMA: 63 skipped turns in a row, setup 689 ms, first turn 0
+2026-11-01T19:26:04Z battle hadur117.Hadur 3.20 vs ahf.Acero 1.0 (roborumble): 91.27% share, 33-2 rounds
+2026-11-01T19:26:06Z battle hadur117.Hadur 3.20 vs takeBot.SpinSpiral 1.2 (roborumble): 96.98% share, 34-1 rounds
+2026-11-01T19:26:10Z battle hadur117.Hadur 3.20 vs toz.Gnome 1.1 (roborumble): 91.68% share, 33-2 rounds
+2026-11-01T19:26:06Z battle hadur117.Hadur 3.20 vs ers.nano.lig.LigMA 1.9 (roborumble): 95.79% share, 34-1 rounds
+2026-11-01T19:26:11Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:11Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:11Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:11Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:11Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:11Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:10Z health alpha.BlackIce: 34/35 survived, 135 skipped, 0 faults, shield verdict 0
+2026-11-01T19:26:11Z health sgp.ShiningBeetle: 34/35 survived, 60 skipped, 0 faults, shield verdict 1
+2026-11-01T19:26:10Z START-UP DISABLE? alpha.BlackIce: 127 skipped turns in a row, setup 820 ms, first turn 0
+2026-11-01T19:26:11Z START-UP DISABLE? sgp.ShiningBeetle: 54 skipped turns in a row, setup 654 ms, first turn 0
+2026-11-01T19:26:17Z battle hadur117.Hadur 3.20 vs alpha.BlackIce 1.0 (roborumble): 79.49% share, 33-2 rounds
+2026-11-01T19:26:11Z battle hadur117.Hadur 3.20 vs hamilton.Hamilton 1.0 (roborumble): 92.26% share, 34-1 rounds
+2026-11-01T19:26:15Z battle hadur117.Hadur 3.20 vs sgp.ShiningBeetle 1.1 (roborumble): 89.47% share, 34-1 rounds
+2026-11-01T19:26:19Z battle hadur117.Hadur 3.20 vs demetrix.nano.Neutrino 0.27 (roborumble): 89.05% share, 33-2 rounds
+2026-11-01T19:26:19Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:19Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:19Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:19Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:19Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:19Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:19Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:19Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:17Z health bayen.nut.Squirrel: 33/35 survived, 132 skipped, 0 faults, shield verdict 1
+2026-11-01T19:26:22Z health bvh.tyr.Tyr: 34/35 survived, 91 skipped, 0 faults, shield verdict 0
+2026-11-01T19:26:17Z START-UP DISABLE? bayen.nut.Squirrel: 124 skipped turns in a row, setup 797 ms, first turn 0
+2026-11-01T19:26:22Z START-UP DISABLE? bvh.tyr.Tyr: 84 skipped turns in a row, setup 735 ms, first turn 0
+2026-11-01T19:26:24Z battle hadur117.Hadur 3.20 vs bayen.nut.Squirrel 1.621 (roborumble): 83.3% share, 32-3 rounds
+2026-11-01T19:26:22Z battle hadur117.Hadur 3.20 vs bvh.tyr.Tyr 1.74 (roborumble): 94.06% share, 34-1 rounds
+2026-11-01T19:26:26Z battle hadur117.Hadur 3.20 vs areb.Union 1.06 (roborumble): 91.62% share, 34-1 rounds
+2026-11-01T19:26:27Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:27Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:27Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:27Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:27Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:27Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:27Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:27Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:28Z health nat.Hikari: 33/35 survived, 134 skipped, 0 faults, shield verdict 1
+2026-11-01T19:26:29Z health nexus.Prototype: 34/35 survived, 69 skipped, 0 faults, shield verdict 0
+2026-11-01T19:26:28Z START-UP DISABLE? nat.Hikari: 128 skipped turns in a row, setup 812 ms, first turn 0
+2026-11-01T19:26:29Z START-UP DISABLE? nexus.Prototype: 62 skipped turns in a row, setup 693 ms, first turn 0
+2026-11-01T19:26:28Z battle hadur117.Hadur 3.20 vs nat.Hikari dev0001 (roborumble): 92.1% share, 33-2 rounds
+2026-11-01T19:26:30Z battle hadur117.Hadur 3.20 vs apc.Colossus2 0.12 (roborumble): 95.25% share, 34-1 rounds
+2026-11-01T19:26:34Z battle hadur117.Hadur 3.20 vs step.NanoBidu 1.0 (roborumble): 90.3% share, 33-2 rounds
+2026-11-01T19:26:30Z battle hadur117.Hadur 3.20 vs nexus.Prototype 1.0 (roborumble): 93.33% share, 34-1 rounds
+2026-11-01T19:26:33Z battle hadur117.Hadur 3.20 vs supersample.SuperTrackFire 1.0 (roborumble): 96.78% share, 35-0 rounds
+2026-11-01T19:26:36Z battle hadur117.Hadur 3.20 vs uccc.Scrapple 1.0 (roborumble): 98.77% share, 34-1 rounds
+2026-11-01T19:26:36Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:36Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:36Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:36Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:36Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:36Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:36Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:36Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:38Z health myl.micro.Troodon: 34/35 survived, 157 skipped, 0 faults, shield verdict 0
+2026-11-01T19:26:35Z health ers.nano.gokdeniz.Gokdeniz: 34/35 survived, 77 skipped, 0 faults, shield verdict 0
+2026-11-01T19:26:38Z START-UP DISABLE? myl.micro.Troodon: 148 skipped turns in a row, setup 835 ms, first turn 0
+2026-11-01T19:26:35Z START-UP DISABLE? ers.nano.gokdeniz.Gokdeniz: 69 skipped turns in a row, setup 673 ms, first turn 0
+2026-11-01T19:26:38Z battle hadur117.Hadur 3.20 vs myl.micro.Troodon 1.10 (roborumble): 96.17% share, 34-1 rounds
+2026-11-01T19:26:41Z battle hadur117.Hadur 3.20 vs kcn.percept.PerceptBot 2.3 (roborumble): 97.57% share, 34-1 rounds
+2026-11-01T19:26:40Z battle hadur117.Hadur 3.20 vs ers.nano.gokdeniz.Gokdeniz 1.5b (roborumble): 95.95% share, 34-1 rounds
+2026-11-01T19:26:44Z battle hadur117.Hadur 3.20 vs wiki.mini.GouldingiHT 1.0 (roborumble): 98.38% share, 35-0 rounds
+2026-11-01T19:26:44Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:44Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:44Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:44Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:44Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:44Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:45Z health Gecko.ultimateGeckoBot: 34/35 survived, 113 skipped, 0 faults, shield verdict 1
+2026-11-01T19:26:43Z health wiki.mini.GouldingiHT: 35/35 survived, 24 skipped, 0 faults, shield verdict 0
+2026-11-01T19:26:45Z START-UP DISABLE? Gecko.ultimateGeckoBot: 105 skipped turns in a row, setup 703 ms, first turn 0
+2026-11-01T19:26:45Z battle hadur117.Hadur 3.20 vs Gecko.ultimateGeckoBot 1.0 (roborumble): 97.16% share, 34-1 rounds
+2026-11-01T19:26:50Z battle hadur117.Hadur 3.20 vs slugzilla.RandomPattern 1.0 (roborumble): 96.23% share, 34-1 rounds
+2026-11-01T19:26:52Z battle hadur117.Hadur 3.20 vs sample.SpinBot 1.0 (roborumble): 98.67% share, 34-1 rounds
+2026-11-01T19:26:52Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:52Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:52Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:52Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:52Z done (STOP file): 137 1v1 battles, 0 collapses
+2026-11-01T19:26:52Z health omens.CannonfodderNano: 34/35 survived, 94 skipped, 0 faults, shield verdict 0
+2026-11-01T19:26:52Z START-UP DISABLE? omens.CannonfodderNano: 86 skipped turns in a row, setup 642 ms, first turn 0
+2026-11-01T19:26:55Z battle hadur117.Hadur 3.20 vs omens.CannonfodderNano 1.4 (roborumble): 96.21% share, 34-1 rounds
+2026-11-01T19:26:57Z battle hadur117.Hadur 3.20 vs pulsar.PulsarNano 0.2.4 (roborumble): 99.04% share, 35-0 rounds
+2026-11-01T19:26:59Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:59Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:26:57Z health ary.Help: 35/35 survived, 13 skipped, 0 faults, shield verdict 0
+2026-11-01T19:27:02Z battle hadur117.Hadur 3.20 vs ary.Help 1.0 (roborumble): 88.2% share, 33-2 rounds
+2026-11-01T19:27:05Z battle hadur117.Hadur 3.20 vs populations.TrainStoopidbot 0.01 (roborumble): 95.9% share, 34-1 rounds
+2026-11-01T19:27:06Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:06Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:05Z health pe.SandboxDT: 34/35 survived, 90 skipped, 0 faults, shield verdict 1
+2026-11-01T19:27:05Z START-UP DISABLE? pe.SandboxDT: 83 skipped turns in a row, setup 643 ms, first turn 0
+2026-11-01T19:27:13Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:13Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:16Z battle hadur117.Hadur 3.20 vs pe.SandboxDT 3.02 (roborumble): 55.91% share, 22-13 rounds  << LOW
+2026-11-01T19:27:18Z battle hadur117.Hadur 3.20 vs stordy.StordyBot 1.0 (roborumble): 97.51% share, 34-1 rounds
+2026-11-01T19:27:19Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:19Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:18Z health fw.Number1: 34/35 survived, 92 skipped, 0 faults, shield verdict 1
+2026-11-01T19:27:18Z START-UP DISABLE? fw.Number1: 86 skipped turns in a row, setup 643 ms, first turn 0
+2026-11-01T19:27:21Z battle hadur117.Hadur 3.20 vs fw.Number1 1.0b (roborumble): 94.52% share, 34-1 rounds
+2026-11-01T19:27:25Z battle hadur117.Hadur 3.20 vs radnor.RamRod 1.0 (roborumble): 73.66% share, 32-3 rounds
+2026-11-01T19:27:26Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:26Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:26Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:26Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:25Z health ry.LightningBug: 32/35 survived, 79 skipped, 0 faults, shield verdict 0
+2026-11-01T19:27:25Z START-UP DISABLE? ry.LightningBug: 74 skipped turns in a row, setup 626 ms, first turn 0
+2026-11-01T19:27:28Z battle hadur117.Hadur 3.20 vs ry.LightningBug 1.0 (roborumble): 90.53% share, 32-3 rounds
+2026-11-01T19:27:32Z battle hadur117.Hadur 3.20 vs slugzilla.OrbitGF 1.0 (roborumble): 85.68% share, 33-2 rounds
+2026-11-01T19:27:31Z battle hadur117.Hadur 3.20 vs wiki.nano.RaikoNano 1.1 (roborumble): 84.86% share, 33-2 rounds
+2026-11-01T19:27:32Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:32Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:32Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:32Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:32Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:32Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:32Z health suh.nano.MirrorL: 33/35 survived, 87 skipped, 0 faults, shield verdict 0
+2026-11-01T19:27:31Z health wiki.mako.MakoHT: 33/35 survived, 44 skipped, 0 faults, shield verdict 0
+2026-11-01T19:27:32Z START-UP DISABLE? suh.nano.MirrorL: 81 skipped turns in a row, setup 649 ms, first turn 0
+2026-11-01T19:27:31Z START-UP DISABLE? wiki.mako.MakoHT: 35 skipped turns in a row, setup 574 ms, first turn 0
+2026-11-01T19:27:35Z battle hadur117.Hadur 3.20 vs suh.nano.MirrorL 1.00 (roborumble): 95.39% share, 34-1 rounds
+2026-11-01T19:27:37Z battle hadur117.Hadur 3.20 vs wiki.mako.MakoHT 1.2.2.1 (roborumble): 96.82% share, 35-0 rounds
+2026-11-01T19:27:40Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:40Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:40Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:40Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:35Z health bjl.LoneDragon: 34/35 survived, 106 skipped, 0 faults, shield verdict 1
+2026-11-01T19:27:41Z health zeze2.OperatorZeze: 34/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-11-01T19:27:35Z START-UP DISABLE? bjl.LoneDragon: 99 skipped turns in a row, setup 686 ms, first turn 0
+2026-11-01T19:27:43Z battle hadur117.Hadur 3.20 vs bjl.LoneDragon 0.5 (roborumble): 91.19% share, 33-2 rounds
+2026-11-01T19:27:41Z battle hadur117.Hadur 3.20 vs kawigi.f.FhqwhgadsMicro 1.0 (roborumble): 94.23% share, 34-1 rounds
+2026-11-01T19:27:46Z battle hadur117.Hadur 3.20 vs zeze2.OperatorZeze 1.05 (roborumble): 89.14% share, 35-0 rounds
+2026-11-01T19:27:48Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:48Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:27:50Z health rjw.RabidWombat: 34/35 survived, 96 skipped, 0 faults, shield verdict 0
+2026-11-01T19:27:49Z health DM.Capriite: 35/35 survived, 28 skipped, 0 faults, shield verdict 1
+2026-11-01T19:27:50Z START-UP DISABLE? rjw.RabidWombat: 89 skipped turns in a row, setup 658 ms, first turn 0
+2026-11-01T19:27:50Z health rjw.RabidWombat: 34/35 survived, 96 skipped, 0 faults, shield verdict 0
+2026-11-01T19:27:57Z health axeBots.Musashi: 35/35 survived, 8 skipped, 0 faults, shield verdict 1
+2026-11-01T19:27:50Z START-UP DISABLE? rjw.RabidWombat: 89 skipped turns in a row, setup 658 ms, first turn 0
+2026-11-01T19:27:59Z profiles rr01_robots_.data_hadur117_Hadur.data: 392 files, 151 shield verdicts stored
+2026-11-01T19:27:59Z profiles rr01_robots_.data_hadur2_Hadur.data: 574 files, 233 shield verdicts stored
+2026-11-01T19:27:59Z profiles rr02_robots_.data_hadur117_Hadur.data: 352 files, 125 shield verdicts stored
+2026-11-01T19:27:59Z profiles rr02_robots_.data_hadur2_Hadur.data: 472 files, 192 shield verdicts stored
+2026-11-01T19:28:01Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
+2026-11-01T19:28:01Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur117.Hadur 3.20
