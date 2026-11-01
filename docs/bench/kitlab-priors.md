@@ -155,6 +155,26 @@ GF gun needs 100 to 180 B that string reads cannot free.
 4. **Not worth pursuing:** field-wide gun priors, pattern libraries, and full policy tables that
    replace the learning. In all three the enemy adapts, which a table cannot follow.
 
+## Eveimear self-taught modes (pc-eveimear-st, cloud run, 2026-11-01)
+
+PR #516 failed with a mode table taken from Hadur's census (HM -4.78). This card teaches Eveimear
+from its own battles instead.
+
+- Eveimear 0.1 was run on all 515 MicroRumble bots (2 seeds each), three times: as released (the
+  detection), with stop-and-go held for good, and with random movement from the first hit.
+- `tools/kitlab_selfmodes.py` picked a mode for each bot. It kept the detection unless another
+  mode won by more than 3 points. Result: 415 detection, 24 stop-and-go, 76 random. The in-sample
+  upper bound is +1.21 a robot.
+- The picks are packed into a name-hash string (mask 0x3fff, 100 cells not the default). The
+  arm is **746 B**, within the 749 B limit.
+- Fresh sample micro-wide2 (112 bots × 6 seeds): **ST +0.36 ± 0.17** over 0.1 run on the same
+  set (83.57 against 83.20). The low end is above 0, so it **passes**.
+
+This is the third case for the same lesson. A table pays when it is learned from the student's own
+battles: JayLexi PALL +0.44, Sanaro power +0.55, and now Eveimear modes +0.36. Eveimear 0.1 is
+83.36 live, so ST projects to about 83.7. Any release is Leigh's call. Results:
+`docs/bench/local/eveimear-st.md`.
+
 ## Files
 
 - `hadur-bench/tools/codesize_methods.py`: bytes per method
@@ -164,3 +184,5 @@ GF gun needs 100 to 180 B that string reads cannot free.
 - `hadur-bench/kitlab/arms/JayLexi-P.tmpl`, `JayLexi-PF.tmpl`, `JayLexi-PO.tmpl`, `JayLexi-G.java`,
   `JayLexi-PA.java`, `JayLexi-PF30.java`. The PO arms are generated from the template by the card.
 - `hadur-bench/plans/pc-jaylexi-po.queue`
+- `hadur-bench/tools/kitlab_selfmodes.py`, `kitlab/arms/Eveimear-{sg,rn,st}.java`,
+  `plans/pc-eveimear-st.queue` (and its cloud copy)
