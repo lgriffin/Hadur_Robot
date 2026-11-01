@@ -1,0 +1,31 @@
+# PC card pc-team-angles (BENCH-167): arm wy against aa. Template: anprep writes work/team-angles-wy.args with @V@ = the robot.release in hadur-robot/pom.xml
+--team
+true
+--seeds
+8
+--seed-base
+7400
+--rounds
+10
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+team-census46.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@wy.jar
+--robot
+hadur117.HadurTeam @V@wy
+--member
+hadur117.Hadur
+--out
+work/team-angles-@V@-wy
+--report
+../docs/bench/local/team-angles-wy.md
+--baseline
+bisect/hadur117.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur117.HadurTeam @V@aa

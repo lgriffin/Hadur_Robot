@@ -96,6 +96,20 @@ class FieldGunTest {
     }
 
     @Test
+    @Tag("TMODE-36")
+    @DisplayName("TMODE-36: on a team, HEAVY lifts CONCORD's 1.9 cap so a member with energy fires 3; off by default")
+    void heavyLiftsConcordPower() {
+        for (long t = 0; t <= 200; t++) scanned("a 1.0 (1)", 500, 800, 100, Math.PI / 2, 8, t);
+        gun.onTeam(true);
+        gun.concord(true);
+        assertEquals(FieldGun.CONCORD_POWER, gun.solutions(me, 100, 5, tracker.alive(), 200).get(0).power, 1e-9);
+        gun.heavy(true);
+        assertEquals(3.0, gun.solutions(me, 100, 5, tracker.alive(), 200).get(0).power, 1e-9);
+        assertFalse(TeamModes.FORCE_HEAVY);
+        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.HEAVY));
+    }
+
+    @Test
     @Tag("TMODE-33")
     @DisplayName("TMODE-33: on a team, CONCORD draws a robot's situations from every copy of its class")
     void concordPoolsByClass() {

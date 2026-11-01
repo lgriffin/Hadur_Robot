@@ -6,6 +6,7 @@ import static hadur117.core.melee.Fixtures.scan;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -317,6 +318,21 @@ class TeamModesTest {
         // The other pulls still scale every term but the posture's.
         assertTrue(MinimumRiskMovement.pull(pt(600, 400), 100, 3, prey, 100, mates(pt(700, 400)),
             EnumSet.of(TeamModes.Mode.PACK)).scalesBullets);
+    }
+
+    @Test
+    @Tag("TMODE-37")
+    @DisplayName("TMODE-37: with WARY a member under 50 energy leaves the hunt; at 50 it still hunts; off by default")
+    void waryLeavesHuntSooner() {
+        List<EnemyInfo> prey = enemies(pt(600, 1000)).alive();
+        Set<TeamModes.Mode> hunt = EnumSet.of(TeamModes.Mode.HUNT);
+        Set<TeamModes.Mode> wary = EnumSet.of(TeamModes.Mode.HUNT, TeamModes.Mode.WARY);
+        assertNotNull(MinimumRiskMovement.pull(pt(600, 400), "n", 40, 3, prey, 100, mates(pt(700, 400)), hunt));
+        assertNull(MinimumRiskMovement.pull(pt(600, 400), "n", 40, 3, prey, 100, mates(pt(700, 400)), wary));
+        assertNotNull(MinimumRiskMovement.pull(pt(600, 400), "n", MinimumRiskMovement.WARY_ENERGY, 3, prey, 100,
+            mates(pt(700, 400)), wary));
+        assertFalse(TeamModes.FORCE_WARY);
+        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.WARY));
     }
 
     @Test

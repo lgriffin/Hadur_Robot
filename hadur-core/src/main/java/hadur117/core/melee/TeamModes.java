@@ -107,7 +107,18 @@ public final class TeamModes {
          * ganging; the radar splits the enemies among the members; the gun pools its situations
          * by enemy class and fires lighter unless close or reading that class well.
          */
-        CONCORD
+        CONCORD,
+        /**
+         * TMODE-36: against a team that dodges poorly, the team brain fires full power: CONCORD's
+         * lighter {@link FieldGun#CONCORD_POWER} gives way, so rounds end sooner. Only the gun changes.
+         */
+        HEAVY,
+        /**
+         * TMODE-37: a wounded member leaves the hunt sooner: under {@link MinimumRiskMovement#WARY_ENERGY}
+         * it plays plain minimum risk, not its place by the prey, so fewer members die in rounds the
+         * team wins.
+         */
+        WARY
     }
 
     /**
@@ -134,6 +145,8 @@ public final class TeamModes {
     public static final boolean FORCE_LEAD = false;
     public static final boolean FORCE_SWIFT = false;
     public static final boolean FORCE_CONCORD = true;
+    public static final boolean FORCE_HEAVY = false;
+    public static final boolean FORCE_WARY = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -147,7 +160,7 @@ public final class TeamModes {
         FORCE_WAVES ? Mode.WAVES : null, FORCE_HUNT ? Mode.HUNT : null, FORCE_LINES ? Mode.LINES : null,
         FORCE_GUNLINE ? Mode.GUNLINE : null, FORCE_PATH ? Mode.PATH : null,
         FORCE_DODGE ? Mode.DODGE : null, FORCE_LEAD ? Mode.LEAD : null, FORCE_SWIFT ? Mode.SWIFT : null,
-        FORCE_CONCORD ? Mode.CONCORD : null);
+        FORCE_CONCORD ? Mode.CONCORD : null, FORCE_HEAVY ? Mode.HEAVY : null, FORCE_WARY ? Mode.WARY : null);
 
     /** Opposing member class to its team's modes; filled from the per-team screens. */
     static final Map<String, Set<Mode>> TABLE = table();
