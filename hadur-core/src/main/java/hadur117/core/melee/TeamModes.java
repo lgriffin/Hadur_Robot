@@ -166,15 +166,22 @@ public final class TeamModes {
 
     private static Map<String, Set<Mode>> table() {
         Map<String, Set<Mode>> t = new HashMap<>();
-        // Every entry plays CONCORD on top (TMODE-34), as pc-team-concord measured it (PR #494).
+        // Every entry plays CONCORD on top (TMODE-34), as pc-team-concord measured it (PR #494),
+        // but the four teams it lost to (TMODE-35).
         // pc-team-counters (PR #370), 16 fresh seeds: TroodonPack +4.7 ± 3.8, GrofGroup +2.5 ± 3.0.
         t.put("gh.nano.GrofGroupMember", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.LINEAR, Mode.PATH, Mode.DODGE, Mode.CONCORD));
         t.put("myl.micro.Troodon", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.PATH, Mode.DODGE, Mode.CONCORD));
         t.put("myl.micro.TroodonDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.PATH, Mode.DODGE, Mode.CONCORD));
         // pc-team-nododge (PR #465), 24 fresh seeds: DODGE off, NightmareTeam +3.9 ± 3.2, ImpactTeam +3.1 ± 1.4.
-        t.put("ustimaw.Nightmare", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CONCORD));
-        t.put("ustimaw.NigitmareDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CONCORD));
+        // pc-team-noconcord (PR #538), 24 fresh seeds: CONCORD off too (TMODE-35), NightmareTeam +2.4 ± 4.3.
+        t.put("ustimaw.Nightmare", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH));
+        t.put("ustimaw.NigitmareDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH));
         t.put("mn.nano.perceptual.Impact", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CONCORD));
+        // pc-team-noconcord (PR #538), 24 fresh seeds: CONCORD off (TMODE-35), OgiTeam +4.2 ± 3.0,
+        // CombatTeam +2.6 ± 3.8, FirestarterTeam +1.7 ± 3.3; +0.24 ± 0.16 APS with NightmareTeam.
+        t.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE));
+        t.put("mn.Combat", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE));
+        t.put("cb.fire.Firestarter", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE));
         return Collections.unmodifiableMap(t);
     }
 

@@ -1179,6 +1179,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | TMODE-32 | Optional | Where the team modes against the opposing team carry SWIFT, the field gun shall fire no harder than 1.9 at any target, a killing shot under that standing; SWIFT shall ship table-only and off, and the `tmswift` ablation (suffix sf) shall force it on with duel and melee play unchanged. | T7 |
 | TMODE-33 | Optional | Where the team modes against the opposing team carry CONCORD (the team brain after Ogi's design, written our own way), HadurTeam shall: score each enemy's risk at a point by 1/(1 + the robots, other enemies seen lately and teammates, nearer that enemy than the point) in place of the closest-robot factor; drop FAR, FARTHER and NEAR and play FINISH (and, with its NO_HUNT part, drop HUNT and PACK); play GANG once 200 or more member-turns this battle (Hadur and each teammate in view, each tick) show 4% or more with two enemies within 250 px; with its RADAR part, turn its radar toward the stalest enemy of its own group (the enemies nearer it than any teammate), sweeping while any enemy is 8 ticks unseen; draw each enemy's gun situations from every history of its class; and fire at most 1.9 beyond 200 px unless it has hit that class on 55% of 20 or more shots. CONCORD shall ship table-only and off, and the `tmconcord` ablation (suffix cn) shall force it on with duel and melee play unchanged; the shipped parts keep the hunt and the shipped radar (the first cloud smoke lost with them changed), and the `tmconcordr`, `tmconcordm`, `tmconcordg`, `tmconcordp` and `tmconcordh` ablations weigh one part each. | T7 |
 | TMODE-34 | Ubiquitous | The team mode table's default, for a team it does not name, shall include the CONCORD mode, and every team the table names shall play CONCORD on top of its entry. | T7 |
+| TMODE-35 | Ubiquitous | The team mode table shall name OgiTeam, CombatTeam, FirestarterTeam and NightmareTeam's member classes with every mode they played before without CONCORD. | T7 |
 
 ### T1 notes
 
@@ -2343,3 +2344,7 @@ profiles, and the rumbles list it as a new participant.
 - **BENCH-160.** Card plans/pc-team-noconcord.queue: CONCORD off for those four (xc, tmtab with
   plans/team-noconcord-table.java) and an A/A against aa, 24 fresh seeds from 7000 at 10 rounds (384
   battles, about 25 minutes); gate +0.15 over 46 teams. Results claude/pc-team-noconcord-results.
+- **TMODE-35 (PR #538).** pc-team-noconcord, 4 teams x 24 fresh seeds from 7000: CONCORD off for those
+  four **+0.24 +- 0.16 APS** (gate +0.15, PASS); Ogi +4.2, Combat +2.6, Nightmare +2.4, Firestarter
+  +1.7 share points, every one above zero. TeamModes.TABLE names cz.libors.Ogi, mn.Combat and
+  cb.fire.Firestarter with MATEFIRE, HUNT, PATH and DODGE, and Nightmare's two classes drop CONCORD.
