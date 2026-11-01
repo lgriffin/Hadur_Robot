@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-noconcord",
- "updated": 1793522460.7415,
+ "updated": 1793522976.2019796,
  "steps": {
   "ncprep": {
    "status": "done",
@@ -27,92 +27,5 @@
    "status": "pending"
   }
  },
- "watched": [
-  {
-   "step": "ncbb",
-   "started": 1793520962.9490068,
-   "updated": 1793522073.8820262,
-   "elapsed": 1110.933019399643,
-   "expected": 192,
-   "panel": null,
-   "field": null,
-   "multiarm": false,
-   "arms": [],
-   "aa": null,
-   "warnings": [],
-   "battles": 192,
-   "resumed": 0,
-   "failed": 0,
-   "disables": null,
-   "rate": 622.1797245467867,
-   "eta": 0.0,
-   "fraction": 1.0,
-   "last_battle_age": 1.5661380290985107,
-   "rules": [
-    {
-     "rule": "fails 20",
-     "action": "halt",
-     "state": "ok",
-     "detail": "0 failed of 192"
-    },
-    {
-     "rule": "stall 30m",
-     "action": "halt",
-     "state": "ok",
-     "detail": "last battle 0 min ago"
-    },
-    {
-     "rule": "skips 40 over 100",
-     "action": "halt",
-     "state": "ok",
-     "detail": "11.5 a battle over the last 100 (first 100: 13.8)"
-    }
-   ],
-   "skips_mean": 12.640625,
-   "skips_last100": 11.49
-  },
-  {
-   "step": "ncxc",
-   "started": 1793522073.8923786,
-   "updated": 1793522460.730472,
-   "elapsed": 386.8380935192108,
-   "expected": 192,
-   "panel": null,
-   "field": null,
-   "multiarm": false,
-   "arms": [],
-   "aa": null,
-   "warnings": [],
-   "battles": 56,
-   "resumed": 0,
-   "failed": 0,
-   "disables": null,
-   "rate": 521.1482617080686,
-   "eta": 939.4639414037977,
-   "fraction": 0.2916666666666667,
-   "last_battle_age": 0.19627928733825684,
-   "rules": [
-    {
-     "rule": "fails 20",
-     "action": "halt",
-     "state": "ok",
-     "detail": "0 failed of 56"
-    },
-    {
-     "rule": "stall 30m",
-     "action": "halt",
-     "state": "ok",
-     "detail": "last battle 0 min ago"
-    },
-    {
-     "rule": "skips 40 over 100",
-     "action": "halt",
-     "state": "waiting",
-     "detail": "56 of 100 battles to read"
-    }
-   ],
-   "skips_mean": 11.75,
-   "skips_last100": 11.75
-  }
- ]
+ "watched": []
 }
