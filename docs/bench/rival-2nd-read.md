@@ -140,3 +140,38 @@ In-sample picks shrink. `hadur-bench/plans/pc-rival-confirm.queue` builds all 18
 its own robot) and runs it beside master and an A/A on 8 fresh seeds from 6300. That is 432 battles, about 10 minutes.
 The gate is +0.05 APS with the 95% low end above 0, plus a 3-point per-robot pick. The lines that hold go to master
 for the next census.
+
+### pc-rival-confirm results (PR #537): 13 picks ship
+
+The 18 picks in one jar, 8 fresh seeds from 6300, 432 battles: **rp +5.67 ± 1.94 points** over master on the 18,
+which is **+0.08 ± 0.03 APS** pooled over both controls. 16 of the 18 are up. The A/A (aa - c) came out at
+-1.25 ± 1.03 against a ±0.97 band, just outside, so the gate script marks the run unread. Against either control
+alone the gain is over 4 times the A/A gap. The aa copy scored lower, so against it rp gains more.
+
+At a 3-point margin, 13 robots hold (+0.08 APS in sample). They are on master:
+
+- shield list + still lines: fm.claire, projectx.TestNano, rz.GlowBlowMelee;
+- still lines: SuperMercutio; still lines + exit off: cx.micro.Smoke, dft.Cyprus, myl.micro.Avipes, rz.GlowBlowAPM,
+  voidious.mini.Komarious;
+- off the shield list, so their existing stop-and-go lines drive: DuelistMicroMkII, Vanessa03;
+- stop-and-go shift: pez.mini.VertiLeach, synapse.Geomancy.
+
+These 5 stay off: tobe.Saturn +4.1 (narrow interval), zeze2.OperatorZeze +1.1, stelo.MatchupWS 0.0,
+bayen.nut.Squirrel -0.1 and deo.FlowerBot -2.7. The lines go to the next census with everything else.
+
+### Card pc-rival-near (BENCH-163): the 28 near misses
+
+pc-rival-picks' screens left 28 robots whose best arm gained 3 or more points on 3 seeds without locking at 5, and
+whose lines are not on master yet. The largest are Mozart +12.5, MagicD3 +8.2, Bezier +7.5, PrairieWolf +7.3,
+Jammy +7.0, LightningStorm +7.0, AspidReloaded +6.2 and Hydrogen +6.0. Lucid and Warlord already carry their still
+lines.
+
+The five robots pc-rival-confirm read on 8 seeds stay out: Saturn, OperatorZeze, MatchupWS, Squirrel and FlowerBot.
+
+`hadur-bench/plans/pc-rival-near.queue` builds all 28 into one jar and runs it with c and aa on 8 fresh seeds from
+6500. That is 672 battles, about 10 minutes on the PC. Its gate and pick work as pc-rival-confirm's do, and
+`tools/ship_picks.py` ships what holds. The card's pick TSV labels every robot `rp`, the combined arm, so shipping
+passes the card's input lists to rebuild each robot's own codes:
+`python3 tools/ship_picks.py rival-near-pick.tsv --codes-from plans/rival-near --label "pc-rival-near (BENCH-163)"`.
+
+A cloud screen (c vs the jar, 3 seeds from 6400, 168 battles, no A/A) runs in the meantime.

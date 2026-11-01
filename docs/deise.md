@@ -548,6 +548,18 @@ distance until the next scan, a tick or two), and any robot's death, not only th
 the target to the next robot scanned (DEISE-17), which with the radar locked is the target again.
 The power table from the codesize thread (pc-deise-pt1) is for 0.6.
 
+### 0.5's live first pass (2026-11-01): MiniMelee 1st
+
+1st in MiniMelee at 71.35 ± 0.32 over all 205 pairings (675 battles, 04:22 UTC), and 71.28 ± 0.28
+over 851 battles when the cloud client stopped at 09:06 UTC: 0.12 ahead of Mirage (71.16). That is
++0.71 over 0.4's 70.57; the parts measured one by one over 0.4 sum to +0.58 (PN +0.13, LEARNH
++0.45), so nothing suggests they cancel, though neither reading is precise enough to show more. Survival fell from 54.7% to 51.5% while the score rose: the gain is damage, the
+gap the 0.4 split found (section on E6). The lead is inside one pass's noise.
+
+PC card pc-deise-pt1 (PR #533) then read the power table on 0.5: Hadur's power cells lose on Deise
+(PTS -0.28 ± 0.23, PTB -0.31 ± 0.22 against D; the rounding control PT0 level), so 0.6 has no power
+table. FEAR (E7, stopped at field 23 of 46) is the open arm for 0.6.
+
 ## 9. Uniqueness
 
 Leigh's rule for Saor holds here: inspired by others, never a copy. Deise's gun is Saor's own

@@ -1,0 +1,3 @@
+# pc-rival-near: near-miss picks of pc-rival-picks (PR #532), best arm 3+ points, not locked.
+dft.Freddie 1.32
+divineomega.DivineBot 1.9.5

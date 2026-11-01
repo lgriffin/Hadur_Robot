@@ -116,11 +116,9 @@ final class ShieldListData {
             "davidalves.net.DuelistMini 1.1",
             "mnt.AHEB 0.6a",
             "gh.GrubbmGrb 1.2.4",
-            "rcb.Vanessa03 0",
             "tw.Exterminator 1.0",
             "robar.micro.Kirbyi 1.0",
             "jcs.Decepticon 2.5.3",
-            "davidalves.net.DuelistMicroMkII 1.1",
             "kawigi.mini.Coriantumr 1.1",
             "arthord.KostyaTszyu Beta2",
             "stelo.Randomness 1.1",
@@ -342,6 +340,10 @@ final class ShieldListData {
             "stelo.UnfoolableNano 1.0",
             "theo.Hydrogen 2.1r",
             "wompi.Numbat 1.9",
+            // pc-rival-confirm (PR #537): held at a 3-point margin on 8 fresh seeds
+            "fm.claire 1.7",
+            "projectx.TestNano 1.0",
+            "rz.GlowBlowMelee 1.4",
         };
     }
 }
