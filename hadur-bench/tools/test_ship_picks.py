@@ -85,6 +85,12 @@ class ShipPicksTest(unittest.TestCase):
         self.assertNotIn('"b.StopGo 1.0"', open(lp).read())
         with self.assertRaises(SystemExit):
             sp.recode([("z.Unknown 1.0", "rp")], codes)
+        self.assertEqual(sp.recode([("c.New 1.0", "mtzl")], codes), [("c.New 1.0", "mtzl")])
+        with self.assertRaises(SystemExit, msg="a different arm is refused, not replaced"):
+            sp.recode([("c.New 1.0", "zl")], codes)
+        os.remove(pre + "-stopgo2.txt")
+        with self.assertRaises(SystemExit, msg="a missing list file is refused"):
+            sp.codes_from(pre)
 
     def test_rival_near_lists(self):
         """Every robot on the rival-near panel gets a code ship_picks accepts."""

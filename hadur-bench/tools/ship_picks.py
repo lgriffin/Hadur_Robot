@@ -53,18 +53,25 @@ def codes_from(prefix):
     for code, suffix in FILES:
         path = "%s-%s.txt" % (prefix, suffix)
         if not os.path.exists(path):
-            continue
+            raise SystemExit("%s is missing: a partial list set would ship a build the card never ran" % path)
         for n in names(path):
             out[n] = out.get(n, "") + code
     return out
 
 
+COMBINED = "rp"
+
+
 def recode(picks, codes):
-    """Swap a combined arm label for each robot's own code; a robot missing from the lists is an error."""
+    """Swap the combined arm label for each robot's own code; a robot missing from the lists, or a row
+    naming another arm that disagrees with the lists, is an error."""
     out = []
-    for name, _ in picks:
+    for name, arm in picks:
         if name not in codes:
             raise SystemExit("%s is not in any input list" % name)
+        if arm != COMBINED and arm != codes[name]:
+            raise SystemExit("%s: pick arm %s is not the combined arm %s nor its listed code %s"
+                             % (name, arm, COMBINED, codes[name]))
         out.append((name, codes[name]))
     return out
 
