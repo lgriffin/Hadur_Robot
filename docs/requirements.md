@@ -155,6 +155,7 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | MEM-11 | Ubiquitous | The adapter shall list the data directory at most once per battle and answer every later name, size and age question from an index it keeps current. | R8 |
 | MEM-12 | Ubiquitous | The library shall read a stored profile to look for seeds only when its file is larger than 1 KB. | R8 |
 | MEM-13 | Unwanted | If a save would take the store past 90% of its quota after every other seed is gone, then the library shall delete the least recently written profiles until it fits, and write. | R8 |
+| MEM-15 | Event | When a battle starts, the robot's store shall build its index from one saved index file and the directory's names, asking no file its size or age, unless the saved index is damaged or was written for other names. | R9 |
 | RAM-2 | State | Once charges (the enemy's own speed toward us 6 px/tick or more for four scans running) have come within 120 px, with both robots above 20 energy, in two different rounds, for the rest of the battle, while the enemy has closed for two scans running within 500 px and until it is more than 650 px away, movement shall drive the heading that keeps a pursuing enemy furthest away over the next 20 ticks, and the core shall fire as RAM-1 does. | R9 |
 | MIR-1 | State | While the enemy has stayed within 30 px (running average) of the reflection through the field's centre of our own position of up to 8 ticks before for 120 scans running with both robots above 10 energy (30 once confirmed this battle), and until that error exceeds 80 px, movement shall follow a path planned at least 110 ticks ahead and the gun shall aim at the reflection of where that path has us when the bullet arrives. | R9 |
 
@@ -2365,6 +2366,41 @@ profiles, and the rumbles list it as a new participant.
   four **+0.24 +- 0.16 APS** (gate +0.15, PASS); Ogi +4.2, Combat +2.6, Nightmare +2.4, Firestarter
   +1.7 share points, every one above zero. TeamModes.TABLE names cz.libors.Ogi, mn.Combat and
   cb.fire.Firestarter with MATEFIRE, HUNT, PATH and DODGE, and Nightmare's two classes drop CONCORD.
+
+## MEM-15: a full data folder no longer costs the first turns (2026-11-01)
+
+- **Why.** pc-fence-qualify runs 3 and 4 (PRs #530, #562) failed their clients at -1.31 and -1.29
+  share points, and the bench beside them passed. Hadur's set-up time on the clients grew with its
+  data folder: 38 ms near empty, 330 ms at 219 files, 671 ms at 392, with 6, 7 and 79 skipped
+  turns a battle, and 92% of battles losing a round. In the robot, every `isFile`, `length` and
+  `lastModified` passes Robocode's `RobocodeSecurityPolicy.impliesRobotFileRead`, which
+  canonicalizes the file's path and the data directory's (`RobotFileSystemManager.isReadable`); on
+  Windows each canonicalization walks the path on disk. MEM-11's one listing cost three of those
+  checks per file. The bench never saw it (every battle starts with an empty folder), nor did the
+  cloud client behind the clean page (a fresh install). Any long-running client pays it.
+- **What.** `FileProfileStore` (the robot's store only; the plain constructor keeps the index in
+  memory as before) saves its index in `store.hx`, rewritten before every write and after every
+  delete: for each name in the directory, sorted, its length and write time as varints, with
+  CRC32s of the names and of the whole file. About 4 bytes a file: 1.4 KB for 360 profiles. A
+  battle starts from `dir.list()` (one check) and that file. It lists file by file, as before, when
+  the index is missing, damaged, or was written for other names; the next write saves a new one.
+  `store.hx` counts toward the quota and never appears in `names()`.
+- **Never understating (review on PR #563).** Before a write the saved index records the larger of
+  the file's old and new lengths, and it is rewritten after the write only when the file shrank, so
+  a robot killed at any point leaves it overstating at worst. An index that cannot be saved is
+  emptied and deleted before the write goes ahead; one that cannot be removed either stops the
+  write (a counted save failure). In a team battle the five members share the directory, each
+  with its own index in memory, so a team member never reads the saved index and removes it
+  before its first change; the next battle lists the directory once and saves it again.
+- **Measured.** Cloud, 360-file folder, Robocode 1.11.1 under strace (which makes each file call
+  slow, as Windows is): set-up 1.6 to 1.9 s and the first turn at 134 to 173 before; 22 to 28 ms and
+  the first turn at 1 after, once the first battle has saved the index. 109,615 path lookups
+  (`readlink`) for 4 battles before, 35,709 after, most of them the first battle's listing.
+  Without strace the core's part of set-up fell from 35 to 87 ms back to 8 to 15 ms.
+- Tests: `FileProfileStoreTest.startsFromTheSavedIndex`, `fallsBackToTheListing` (a stray file, a
+  removed file, an index cut at every byte, a flipped bit), `keepsNamesThatAreNotFiles`,
+  `indexKeepsTheQuotaAndCrashSafety`, `killedBeforeAShrinkingWrite`,
+  `anUnsavableIndexNeverStaysBehind`, `teamMembersDropTheSavedIndex`.
 
 ## The Ogi mirror: one lever per team (BENCH-166)
 
