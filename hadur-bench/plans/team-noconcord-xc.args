@@ -1,0 +1,31 @@
+# PC card team-noconcord (TMODE-34, BENCH-160): arm xc (CONCORD off for Ogi, Combat, Firestarter and Nightmare, from plans/team-noconcord-table.java), on the four teams of plans/team-noconcord-set.txt, 24 fresh seeds from 7000, against master (the aa build). Template: ncprep writes work/team-noconcord-xc.args with @V@ = the robot.release in hadur-robot/pom.xml.
+--team
+true
+--seeds
+24
+--seed-base
+7000
+--rounds
+10
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+plans/team-noconcord-set.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@xc.jar
+--robot
+hadur117.HadurTeam @V@xc
+--member
+hadur117.Hadur
+--out
+work/team-noconcord-@V@-xc
+--report
+../docs/bench/local/team-noconcord-xc.md
+--baseline
+bisect/hadur117.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur117.HadurTeam @V@aa

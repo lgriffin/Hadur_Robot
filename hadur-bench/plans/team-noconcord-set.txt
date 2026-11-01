@@ -1,0 +1,5 @@
+# pc-team-noconcord (BENCH-160): the four teams CONCORD lost to on both pc-team-concord (PR #494) and pc-team-concord2 (PR #529).
+cz.libors.OgiTeam v1 | team-0 | cz.libors.OgiTeam_v1.jar
+mn.CombatTeam 3.25.0 | team-1 | mn.CombatTeam_3.25.0.jar
+cb.fire.FirestarterTeam 2.0 | team-2 | cb.fire.FirestarterTeam_2.0.jar
+ustimaw.NightmareTeam 3.3 | team-5 | ustimaw.NightmareTeam_3.3.jar
