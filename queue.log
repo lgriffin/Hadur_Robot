@@ -16,3 +16,9 @@
 15:49:18 PW exit=0 in 184 s
 15:49:18 start PT
 15:49:18 watching PT: 3 stop rule(s)
+15:52:22 PT exit=0 in 184 s
+15:52:22 start read
+15:53:14 read exit=0 in 51 s
+15:53:14 start pr
+15:53:19 pr exit=0 in 4 s
+15:53:19 ALLDONE

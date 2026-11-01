@@ -1,6 +1,6 @@
 {
  "plan": "pc-jaylexi-pt",
- "updated": 1793548191.6995,
+ "updated": 1793548399.7578819,
  "steps": {
   "prep": {
    "status": "done",
@@ -33,14 +33,22 @@
    "end": "2026-11-01T15:49:18"
   },
   "PT": {
-   "status": "running",
-   "start": "2026-11-01T15:49:18"
+   "status": "done",
+   "exit": 0,
+   "seconds": 184,
+   "end": "2026-11-01T15:52:22"
   },
   "read": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 51,
+   "end": "2026-11-01T15:53:14"
   },
   "pr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 4,
+   "end": "2026-11-01T15:53:19"
   }
  },
  "watched": [
@@ -176,8 +184,8 @@
   {
    "step": "PT",
    "started": 1793548158.3320475,
-   "updated": 1793548191.685295,
-   "elapsed": 33.35324764251709,
+   "updated": 1793548342.808843,
+   "elapsed": 184.47679543495178,
    "expected": 672,
    "panel": null,
    "field": null,
@@ -185,20 +193,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 30,
+   "battles": 672,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 3238.0654848833037,
-   "eta": 713.7594995498657,
-   "fraction": 0.044642857142857144,
-   "last_battle_age": 0.05923724174499512,
+   "rate": 13113.844450171144,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 1.5479176044464111,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 30"
+     "detail": "0 failed of 672"
     },
     {
      "rule": "stall 30m",
@@ -209,12 +217,12 @@
     {
      "rule": "skips 40 over 100",
      "action": "halt",
-     "state": "waiting",
-     "detail": "30 of 100 battles to read"
+     "state": "ok",
+     "detail": "0.0 a battle over the last 100 (first 100: 0.0)"
     }
    ],
-   "skips_mean": 0.03333333333333333,
-   "skips_last100": 0.03333333333333333
+   "skips_mean": 0.001488095238095238,
+   "skips_last100": 0
   }
  ]
 }
