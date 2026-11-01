@@ -4,6 +4,9 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.Function;
 import robocode.AdvancedRobot;
@@ -26,6 +29,8 @@ final class Replay {
 
     // Shots fired and waves finished over the last run's rounds.
     static int shots, passed;
+    // The scanned robot's name, which picks JayLexi's per-opponent row.
+    static String name = "e";
 
     private Replay() {
     }
@@ -34,6 +39,9 @@ final class Replay {
         return Math.max(-m, Math.min(m, v));
     }
 
+    // Each non-array object static's value when zeroStatics first met it.
+    private static final Map<Field, Optional<Object>> INITIAL = new HashMap<>();
+
     /** Every static of the robot class back to zero, as a fresh JVM has it. */
     static void zeroStatics(Class<?> robot) throws Exception {
         for (Field f : robot.getDeclaredFields()) {
@@ -41,10 +49,20 @@ final class Replay {
                 f.setAccessible(true);
                 if (f.getType() == double.class) {
                     f.setDouble(null, 0);
+                } else if (f.getType() == int.class) {
+                    f.setInt(null, 0);
                 } else if (f.getType().isArray()) {
                     zero(f.get(null));
                 } else {
-                    f.set(null, null);
+                    // What the class initialiser gave, read on first sight: null, or a constant that
+                    // an optimiser un-finalled (as ProGuard does to FIELD).
+                    f.set(null, INITIAL.computeIfAbsent(f, k -> {
+                        try {
+                            return Optional.ofNullable(k.get(null));
+                        } catch (IllegalAccessException ex) {
+                            throw new IllegalStateException(ex);
+                        }
+                    }).orElse(null));
                 }
             }
         }
@@ -65,6 +83,17 @@ final class Replay {
         Field f = robot.getDeclaredField(name);
         f.setAccessible(true);
         f.set(null, value);
+    }
+
+    /** The shipped JayLexi's orders on the seed's script against a robot of this name. */
+    public static String shipped(long seed, String robotName) throws Exception {
+        String was = name;
+        name = robotName;
+        try {
+            return run(JayLexi.class, ReplayBot::new, seed, 6, 1500);
+        } finally {
+            name = was;
+        }
     }
 
     /** The orders of a robot class over rounds of ticks, on the script that seed draws. */
@@ -124,7 +153,7 @@ final class Replay {
                     ee = 100;
                 }
                 double ab = Math.atan2(ex - b.x, ey - b.y);
-                s.onScannedRobot(new ScannedRobotEvent("e", ee, Utils.normalRelativeAngle(ab - b.heading),
+                s.onScannedRobot(new ScannedRobotEvent(name, ee, Utils.normalRelativeAngle(ab - b.heading),
                         Math.hypot(ex - b.x, ey - b.y), eh, ev));
                 out.append('\n');
                 // Our physics, roughly.

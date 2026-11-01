@@ -30,7 +30,8 @@ class Probe extends JayLexi {
         next = null;
         waves = new ArrayList<>();
         surf = new double[4][5][BINS];
-        JayLexi.gun = new double[6][4][4][5][BINS];
+        JayLexi.gun = new double[480][BINS];
+        row = 0;
     }
 
     @Override public double getX() { return x; }

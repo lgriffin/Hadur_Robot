@@ -17,7 +17,7 @@
 
     <properties>
         <!-- The robot's version: the jar is named for it and Eveimear.properties takes it by filtering. -->
-        <eveimear.release>0.1</eveimear.release>
+        <eveimear.release>0.2</eveimear.release>
         <!-- MicroRumble's limit, as Robocode's codesize tool counts the shipped jar (EVEIMEAR-1). -->
         <eveimear.codesize.limit>749</eveimear.codesize.limit>
         <!-- Rating clients still run Java 8; the shipped class targets it. -->

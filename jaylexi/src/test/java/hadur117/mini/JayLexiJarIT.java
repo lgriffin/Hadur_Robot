@@ -7,6 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import codesize.Codesize;
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Properties;
 import java.util.jar.JarFile;
 import org.junit.jupiter.api.DisplayName;
@@ -46,6 +49,57 @@ class JayLexiJarIT {
             assertEquals(System.getProperty("jaylexi.release"), robot.getProperty("robot.version"));
             assertNotNull(j.getEntry("hadur117/mini/JayLexi.java"), "source not included");
             assertEquals("true", robot.getProperty("robot.java.source.included"));
+        }
+    }
+
+    /** Loads hadur117.mini classes from the jar first, then the test classes, with fresh statics. */
+    static final class JarFirst extends URLClassLoader {
+        JarFirst(URL... urls) {
+            super(urls, JayLexiJarIT.class.getClassLoader());
+        }
+
+        @Override
+        protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+            synchronized (getClassLoadingLock(name)) {
+                if (!name.startsWith("hadur117.mini.") || name.startsWith("hadur117.mini.ref.")) {
+                    return super.loadClass(name, resolve);
+                }
+                Class<?> c = findLoadedClass(name);
+                if (c == null) {
+                    c = findClass(name);
+                }
+                if (resolve) {
+                    resolveClass(c);
+                }
+                return c;
+            }
+        }
+    }
+
+    @Test
+    @Tag("JAYLEXI-11")
+    @DisplayName("the built jar gives the readable reference's orders, bit for bit, on the field's row and a recorded row")
+    void jarPlaysAsReadable() throws Exception {
+        URL tests = JayLexiJarIT.class.getProtectionDomain().getCodeSource().getLocation();
+        try (JarFirst loader = new JarFirst(jar().toURI().toURL(), tests)) {
+            Class<?> shipped = loader.loadClass("hadur117.mini.JayLexi");
+            assertEquals(jar().toURI().toURL(), shipped.getProtectionDomain().getCodeSource().getLocation(),
+                    "JayLexi comes from the jar");
+            Method orders = loader.loadClass("hadur117.mini.Replay").getMethod("shipped", long.class, String.class);
+            orders.setAccessible(true);
+            for (String name : new String[] {"e", JayLexiReplayTest.recordedName()}) {
+                for (long seed = 1; seed <= 3; seed++) {
+                    String jarOrders = (String) orders.invoke(null, seed, name);
+                    Replay.name = name;
+                    try {
+                        String readable = JayLexiReplayTest.readable(seed);
+                        assertEquals(-1, JayLexiReplayTest.firstDifference(jarOrders, readable),
+                                name + " seed " + seed + ": first tick whose orders differ");
+                    } finally {
+                        Replay.name = "e";
+                    }
+                }
+            }
         }
     }
 }
