@@ -13,3 +13,10 @@
 01:44:14 progress c2on: 0/1472 (0%) battles, 0 failed
 02:14:27 progress c2on: 369/1472 (25%) battles, 707/h, ETA 1.6 h, 0 failed, skips 9.2/battle (last 100)
 02:44:41 progress c2on: 862/1472 (59%) battles, 840/h, ETA 44 min, 0 failed, skips 6.6/battle (last 100)
+03:14:55 progress c2on: 1446/1472 (98%) battles, 945/h, ETA 2 min, 0 failed, skips 3.8/battle (last 100)
+03:15:39 c2on exit=0 in 5551 s
+03:15:39 start c2sum
+03:15:40 c2sum exit=0 in 0 s
+03:15:40 start c2pr
+03:15:46 c2pr exit=0 in 6 s
+03:15:46 ALLDONE
