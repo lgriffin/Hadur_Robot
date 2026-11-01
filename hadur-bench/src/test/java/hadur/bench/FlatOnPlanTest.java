@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-162: the per-opponent flattener card (plans/pc-flat-on.queue) is complete before it reaches the PC. */
+/** BENCH-164: the per-opponent flattener card (plans/pc-flat-on.queue) is complete before it reaches the PC. */
 class FlatOnPlanTest {
 
     private static final Path QUEUE = Path.of("plans/pc-flat-on.queue");
@@ -29,7 +29,7 @@ class FlatOnPlanTest {
     }
 
     @Test
-    @Tag("BENCH-162")
+    @Tag("BENCH-164")
     @DisplayName("screen of the 232 learners, pick, confirm of the picks at 4 fresh seeds, the gate and the stop rules")
     void cardIsComplete() throws IOException {
         String queue = Files.readString(QUEUE);

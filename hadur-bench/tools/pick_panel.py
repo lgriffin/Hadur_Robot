@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""BENCH-162: write the confirm panel of a pick TSV (mode_table.py --out-tsv).
+"""BENCH-164: write the confirm panel of a pick TSV (mode_table.py --out-tsv).
 
   python3 tools/pick_panel.py PICK.tsv PANEL.txt OUT.txt
 
