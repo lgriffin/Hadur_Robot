@@ -1,7 +1,7 @@
 # Deise
 
-`hadur117.mini.Deise` is Hadur's MiniMelee robot, built to take MiniMelee 1st from
-kc.mini.Mirage 0.2: Saor's graded Markov gun, learning every robot it scans, over a least-risk
+`hadur117.mini.Deise` is Hadur's MiniMelee robot, **1st in MiniMelee since 0.5** (2026-11-01), built to
+take 1st from kc.mini.Mirage 0.2: Saor's graded Markov gun, learning every robot it scans, over a least-risk
 movement that steps off the lines of the shots it sees fired (since 0.3) and keeps furthest from the robots likely aiming at it (since 0.4), shooting the robot it hits best for its distance (since 0.5). The design, the Mirage analysis and
 the stages are in [docs/deise.md](../docs/deise.md); the requirements are DEISE-1 to DEISE-17 in
 [docs/requirements.md](../docs/requirements.md).
@@ -12,6 +12,9 @@ LiteRumble scores the size rumbles from the same MeleeRumble battles. MiniMelee 
 
 | Version | Date (UTC) | Rumble | Rank | APS | Battles | 1st | Gap to 1st |
 |---|---|---|---|---|---|---|---|
+| 0.5 | 2026-11-01 09:06 | **MiniMelee** | **1st of 206** | **71.28 ± 0.28** | 851 | Deise; 2nd kc.mini.Mirage 0.2, 71.16 | leads by 0.12 |
+| 0.5 | 2026-11-01 09:06 (API) | MeleeRumble | 11th of 418 | 68.09 ± 0.19 | 1,687 | aaa.r.ScalarR 0.005g.047, 72.71 | +4.62 |
+| 0.5 | 2026-11-01 04:22 | **MiniMelee** | **1st of 206** | **71.35 ± 0.32** | 675 | Deise; 2nd kc.mini.Mirage 0.2, 71.15 | leads by 0.20 |
 | 0.4 | 2026-10-30 21:50 (API) | **MiniMelee** | **2nd of 206** | **70.57** | 726 | kc.mini.Mirage 0.2, 71.15 | +0.58 |
 | 0.4 | 2026-10-30 21:50 (API) | MeleeRumble | 15th of 418 | 67.60 | 1,585 | aaa.r.ScalarR 0.005g.047, 72.72 | +5.12 |
 | 0.4 | 2026-10-30 14:02 | **MiniMelee** | **2nd of 206** | **70.54 ± 0.36** | 559 | kc.mini.Mirage 0.2, 71.15 | +0.61 |
@@ -53,6 +56,15 @@ its shots and hits, and takes as target the least distance times the root of sho
 a prior). Its gun plays 400 playouts, each voting over half the target's width. Measured over 0.4
 part by part: learned targeting +0.45 ± 0.40 on a cloud census, the gun +0.13 ± 0.21
 (`pc-deise-e10`). Still one class at 1,499 bytes.
+
+**Deise 0.5 is 1st in MiniMelee**, the goal Deise was built for. Its full first pass (205 of 205
+pairings, 675 battles, 04:22 UTC) read 71.35 ± 0.32 against Mirage's 71.15; when the cloud client
+stopped at 09:06 UTC it was 71.28 ± 0.28 over 851 battles, 0.12 ahead of Mirage (71.16 ± 0.05).
+The lead is inside one pass's noise, so it can still move as other clients add battles. 0.5 gains
++0.71 over 0.4 (70.57) while surviving less (51.5% to 0.4's 54.7%; Mirage 55.6%): the gain is
+damage, which is where the 0.4 split put Mirage's lead. Saor 0.3 is 3rd (69.15). In the full
+MeleeRumble 0.5 is 11th (68.09), four places above 0.4 and above Hadur 3.20 (15th, 67.72). The
+pages are archived in `data/rumble/pages/` under 2026-11-01T0906Z*.
 
 **Deise 0.4** (released 2026-10-30) is stage E3b's FAP, still one class at 1,499 bytes. It
 tests at every scan whether each opponent is likely aiming at it, and that weight now scales
