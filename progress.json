@@ -1,9 +1,10 @@
 {
  "plan": "pc-surf-key",
- "updated": 1793528873.9287677,
+ "updated": 1793535237.2528648,
  "steps": {
   "prep": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-01T10:27:53"
   },
   "record": {
    "status": "pending"
