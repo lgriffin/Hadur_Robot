@@ -18,7 +18,7 @@ one first, bench it, then write the shipped one to match.
 0.3 (prepared 2026-11-01, tag `jaylexi-v0.3` on Leigh's go) adds two tables learned from JayLexi's own
 battles, held in constant-pool strings, which Robocode's codesize does not count: the field's
 first-shot bin for each of the gun's 480 segments, and a 47-bin surf danger row for each of the 669
-MiniRumble robots, picked by name hash. Bench: +0.44 ± 0.16 APS over 0.2 on a fresh 48-bot sample
+MiniRumble robots, picked by name hash. Bench: +0.44 ± 0.16 APS over 0.2 on a fresh 112-bot sample (6 seeds)
 (docs/bench/kitlab-priors.md). javac alone makes it 1,509 bytes, so the build runs the classes
 through ProGuard (`jaylexi/proguard.pro`, as Deise does) to 1,496 bytes.
 

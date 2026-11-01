@@ -22,6 +22,8 @@ class Probe extends Eveimear {
         mode = 0;
         lastSpeed = 0;
         since = 0;
+        // 0.1's detection, as an opponent whose MODES char is 1; the robot sets it on each scan.
+        tab = 1;
         stats = new int[5][5][5][2 * MID + 1];
     }
 
