@@ -16,13 +16,19 @@ Sanaro's flat lead, +0.55 ± 0.32 over 0.1 on the live-shaped census (pc-sanaro-
 2026-10-30 21:50 UTC), 1.26 behind Quantum's 66.41. It is 11th in MicroMelee (64.14), 21st in MiniMelee
 (63.56) and 79th in MeleeRumble (59.98).
 
+0.3 (249 bytes, the same code) keeps 0.2's power formula except in 9,529 cells of the table. Those
+cells hold Hadur 3.20's own bullet power, distilled from its shots in the 43 live-shaped NanoMelee
+fields (`tools/distill.py`, 2 x 2 blocks with 20 or more shots). On fresh seeds it read +0.67 ± 0.34
+over 0.2 (pc-sanaro-n07, PR #548, arm HL), and survival rose from 19.0 to 22.9. That projects about
+65.8, still 2nd behind Quantum's 66.41.
+
 ## Build
 
     mvn -pl sanaro verify
 
 The shipped jar is `sanaro/target/hadur117.nano.Sanaro_<version>.jar` (one class, its properties and
 source); `SanaroJarIT` prints its codesize. The power table is written into `Sanaro.java` by
-`python3 sanaro/table.py`; `SanaroTableTest` holds it to the formula. A table distilled from Hadur's own
+`python3 sanaro/table.py`; `SanaroTableTest` holds it to the formula outside the cells Hadur taught (0.3). A table distilled from Hadur's own
 shots instead (`hadur-bench/tools/distill.py power`, BENCH-156) goes into an arm's source, never here
 until the census has measured it.
 
