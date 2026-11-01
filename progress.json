@@ -1,0 +1,22 @@
+{
+ "plan": "pc-team-mirror",
+ "updated": 1793574640.0311947,
+ "steps": {
+  "mrprep": {
+   "status": "pending"
+  },
+  "mrogi": {
+   "status": "pending"
+  },
+  "mrhad": {
+   "status": "pending"
+  },
+  "mrread": {
+   "status": "pending"
+  },
+  "mrpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
