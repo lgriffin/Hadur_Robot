@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-concord2",
- "updated": 1793492798.7766044,
+ "updated": 1793493705.5679557,
  "steps": {
   "c2prep": {
    "status": "done",
@@ -26,8 +26,8 @@
   {
    "step": "c2bb",
    "started": 1793491998.655563,
-   "updated": 1793492798.76869,
-   "elapsed": 800.1131269931793,
+   "updated": 1793493705.560042,
+   "elapsed": 1706.9044787883759,
    "expected": 1472,
    "panel": null,
    "field": null,
@@ -35,20 +35,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 118,
+   "battles": 351,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 530.9249225748815,
-   "eta": 9180.959101260716,
-   "fraction": 0.08016304347826086,
-   "last_battle_age": 3.112494707107544,
+   "rate": 740.2874710932565,
+   "eta": 5451.395785532107,
+   "fraction": 0.23845108695652173,
+   "last_battle_age": 4.874938488006592,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 118"
+     "detail": "0 failed of 351"
     },
     {
      "rule": "stall 30m",
@@ -63,8 +63,8 @@
      "detail": "9.8 a battle over the last 100 (first 100: 9.5)"
     }
    ],
-   "skips_mean": 9.694915254237289,
-   "skips_last100": 9.8
+   "skips_mean": 10.102564102564102,
+   "skips_last100": 9.77
   }
  ]
 }
