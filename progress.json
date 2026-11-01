@@ -1,0 +1,28 @@
+{
+ "plan": "pc-flat-on",
+ "updated": 1793544814.034903,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "screen": {
+   "status": "pending"
+  },
+  "pick": {
+   "status": "pending"
+  },
+  "prep2": {
+   "status": "pending"
+  },
+  "confirm": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
