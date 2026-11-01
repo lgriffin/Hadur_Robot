@@ -5,3 +5,7 @@
 04:22:59 start screen-add
 04:22:59 watching screen-add: 4 stop rule(s)
 04:23:13 progress screen-add: 7/888 (1%) battles, 1789/h, ETA 30 min, 0 failed, skips 15.1/battle (last 100)
+04:36:31 screen-add exit=0 in 812 s
+04:36:31 start screen-exec
+04:36:31 watching screen-exec: 4 stop rule(s)
+04:48:34 screen-exec exit=0 in 722 s
