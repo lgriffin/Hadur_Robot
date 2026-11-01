@@ -187,6 +187,31 @@ public final class GunMimics {
         return out;
     }
 
+    /** MOVE-33: the mimics. */
+    public int size() {
+        return mimics.length;
+    }
+
+    /**
+     * MOVE-33: mimic {@code m}'s probability of guess factors in [{@code gfLo}, {@code gfHi}] on
+     * wave {@code w} (bins of {@link #GF_BINS}, a partial bin counting its share), or NaN with no data.
+     */
+    public double mass(int m, Wave w, double gfLo, double gfHi) {
+        double[] p = mimics[m].profile(w, GF_BINS);
+        if (p == null) return Double.NaN;
+        double lo = Math.max(-1, Math.min(gfLo, gfHi));
+        double hi = Math.min(1, Math.max(gfLo, gfHi));
+        if (!(hi > lo)) return 0;
+        double width = 2.0 / GF_BINS;
+        double mass = 0;
+        for (int j = gfBin(lo, GF_BINS); j <= gfBin(hi, GF_BINS); j++) {
+            double b0 = -1 + j * width;
+            double overlap = Math.min(hi, b0 + width) - Math.max(lo, b0);
+            if (overlap > 0) mass += p[j] * overlap / width;
+        }
+        return mass;
+    }
+
     /** The scores, views first; a copy. */
     public double[] scores() {
         return scores.clone();

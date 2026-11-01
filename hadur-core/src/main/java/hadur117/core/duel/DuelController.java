@@ -342,7 +342,12 @@ public final class DuelController {
         this.moveController.setPointKernel(duelOnly(MoveDesign.POINT_KERNEL, enemiesTotal));
         this.moveController.setGunMimics(duelOnly(MoveDesign.STOP_POINT_SURF && MoveDesign.MIMICS,
             enemiesTotal) ? new GunMimics() : null);
-        this.moveController.setAimMembers(duelOnly(MoveDesign.AIM_MEMBERS, enemiesTotal) ? new AimMembers() : null);
+        // MOVE-33: the learning-gun mimics join the aim members when both switches are on.
+        GunMimics memberMimics = duelOnly(MoveDesign.AIM_MEMBERS && MoveDesign.MIMIC_MEMBERS, enemiesTotal)
+            ? new GunMimics() : null;
+        this.moveController.setAimMembers(duelOnly(MoveDesign.AIM_MEMBERS, enemiesTotal)
+            ? new AimMembers(memberMimics == null ? 0 : memberMimics.size()) : null);
+        this.moveController.setMemberMimics(memberMimics);
         this.surfMover = new SurfMover(battleField, predictor);
         this.surfMover.setEscapeRoomTerm(MoveDesign.ESCAPE_ROOM);
         this.surfMover.setDistancingToEnemy(duelOnly(MoveDesign.DISTANCING_TO_ENEMY, enemiesTotal));

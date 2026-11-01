@@ -174,6 +174,14 @@ final class MoveDesign {
      */
     static final boolean AIM_INTERCEPTS = true;
 
+    /**
+     * MOVE-33: with {@link #AIM_MEMBERS}, the six visit-trained learning-gun mimics of MOVE-27
+     * (GunMimics) join the aim members after the aims, sharing a standing weight of 0.3, each
+     * scored on the bullets as the aims are. BeepBoop's surf blends such mimics of named guns
+     * (docs/bench/gun-oracle.md). Duel only, off.
+     */
+    static final boolean MIMIC_MEMBERS = false;
+
     private MoveDesign() { }
 
     /**

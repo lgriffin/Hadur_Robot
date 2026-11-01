@@ -230,6 +230,17 @@ public class MoveController {
         return aimMembers;
     }
 
+    /** MOVE-33: visit-trained learning-gun mimics as aim members after the aims, or null when off (duel only). */
+    private GunMimics memberMimics;
+
+    /**
+     * MOVE-33: sets the mimic members, read only while the aim members are on and built with
+     * room for them ({@link AimMembers#AimMembers(int)}); null turns them off.
+     */
+    public void setMemberMimics(GunMimics mimics) {
+        this.memberMimics = mimics;
+    }
+
     /** DODGE-2: sets the dodger the surf asks for each wave's danger; null turns it off. */
     public void setShotDodger(ShotDodger dodger) {
         this.shotDodger = dodger;
@@ -882,6 +893,8 @@ public class MoveController {
             // A visit moves the next plan's profile but does not end the current plan.
             gunMimics.learnVisit(w, w.guessFactor(intersection.angle));
         }
+        // MOVE-33: the mimic members learn every visit too, as the guns they copy do.
+        if (memberMimics != null) memberMimics.learnVisit(w, w.guessFactor(intersection.angle));
         for (KnnView<TimestampedGuessFactor> view : views) {
             if (!view.logVisits) continue;
             // MOVE-25: a visit learned is a change of the views too.
@@ -1357,13 +1370,29 @@ public class MoveController {
      */
     private double[] aimScores(Wave w, double dangerAngle, double bandwidth, List<double[]> segments) {
         double[] aims = w.simpleAims();
-        double[] out = new double[AimMembers.AIMS.length];
-        for (int a = 0; a < out.length; a++) {
+        int mimics = memberMimics == null ? 0 : aimMembers.mimics();
+        double[] out = new double[AimMembers.AIMS.length + mimics];
+        for (int a = 0; a < AimMembers.AIMS.length; a++) {
             double angle = aims == null ? Double.NaN : aims[AimMembers.AIMS[a]];
             out[a] = Double.isNaN(angle) ? Double.NaN
                 : kernel(DiaUtils.normalizeAngle(angle, dangerAngle), bandwidth, segments);
         }
+        mimicScores(w, dangerAngle, bandwidth, out, AimMembers.AIMS.length, mimics);
         return out;
+    }
+
+    /**
+     * MOVE-33: each mimic member's score over the intersection, in the aims' units (a member sure
+     * of the window scores 2, its probability there), from {@code at} on in {@code out}; NaN for
+     * a mimic with no data. The bullet shadows are not applied.
+     */
+    private void mimicScores(Wave w, double angle, double bandwidth, double[] out, int at, int mimics) {
+        if (mimics == 0) return;
+        double lo = w.guessFactor(angle - bandwidth);
+        double hi = w.guessFactor(angle + bandwidth);
+        for (int m = 0; m < mimics && m < memberMimics.size(); m++) {
+            out[at + m] = 2.0 * memberMimics.mass(m, w, lo, hi);
+        }
     }
 
     /**
@@ -1390,7 +1419,7 @@ public class MoveController {
         double bandwidth = Math.atan(HitForensics.HALF_WIDTH / Math.max(w.targetDistance, HitForensics.HALF_WIDTH));
         Wave.Intersection at = new Wave.Intersection(w.firingAngle(hitGf), bandwidth);
         try {
-            double[] scores = new double[AimMembers.MEMBERS];
+            double[] scores = new double[aimMembers.members()];
             boolean viewsHaveData = false;
             double[] estimate = viewEstimate();
             for (KnnView<TimestampedGuessFactor> view : views) {
@@ -1399,7 +1428,7 @@ public class MoveController {
             scores[0] = viewsHaveData ? getDangerScore(w, at, FORENSICS_CACHE, null, false) : Double.NaN;
             double[] aims = aimScores(w, at.angle, bandwidth, w.transmission(at));
             double[] aimAngles = w.simpleAims();
-            for (int a = 0; a < aims.length; a++) {
+            for (int a = 0; a < AimMembers.AIMS.length; a++) {
                 // An aim's kernel is a probability over the reachable angles only, so a kernel
                 // running past an escape angle is scaled up by the share it keeps inside.
                 if (!Double.isNaN(aims[a])) aims[a] /= reachableShare(w, aimAngles[AimMembers.AIMS[a]], bandwidth);
