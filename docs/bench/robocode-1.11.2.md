@@ -21,8 +21,8 @@ battle is now fought on 1.11.2 or later. This note checks what the release chang
 
 - **Code.** No shipped bot uses reflection, threads, sockets, processes, serialization,
   resources or Robocode internals. Hadur writes only through `RobocodeFileOutputStream` in its
-  data directory and reads and deletes only there; MEM-15's `store.hx` (PR #563) lives there
-  too. `HadurRecorder` writes outside the data directory, but it is bench-only, runs with
+  data directory and reads and deletes only there. MEM-15's `store.hx` (PR #563, open and not
+  in 3.21) will live there too; its row below is a check of that PR's branch, not of master. `HadurRecorder` writes outside the data directory, but it is bench-only, runs with
   security off and is not in the competition jar.
 - **Math.random.** Deise, Saor, TwinSaor and Eveimear call it. Live clients pass no
   `RANDOMSEED`, so nothing changes live; seeded bench battles of those bots become repeatable.
@@ -38,7 +38,7 @@ security errors in any log.
 | Bot | Mode | Result |
 |---|---|---|
 | Hadur 3.21 | 1v1 warm, 2 battles x 4 opponents | profiles saved and reloaded, 0 memory failures |
-| Hadur 3.21 + PR #563 | 1v1 warm, 3 battles x 4 | `store.hx` written and read back, 0 memory failures |
+| PR #563's branch (unmerged, not in 3.21) | 1v1 warm, 3 battles x 4 | `store.hx` written and read back, 0 memory failures |
 | Hadur 3.21 | melee, samples | 1st in every battle |
 | Deise 0.5, Saor 0.3, Sanaro 0.3 | melee, samples | 1st in every battle |
 | JayLexi 0.3, Eveimear 0.2 | 1v1 cold | ran clean |
