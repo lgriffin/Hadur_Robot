@@ -55,7 +55,7 @@ class TeamAnglesPlanTest {
         for (String a : List.of("bb", "hv", "wy", "md")) {
             String args = Files.readString(Path.of("plans/team-angles-" + a + ".args"));
             assertTrue(args.contains("--seeds\n8\n") && args.contains("--seed-base\n7400\n") && args.contains("--rounds\n10\n"), a);
-            assertTrue(args.contains("--set\nteam-census46.txt\n"), a);
+            assertTrue(args.contains("--set\nplans/team-angles-set.txt\n"), a);
             assertTrue(args.contains("bisect/hadur117.HadurTeam_@V@" + a + ".jar"), a);
             assertTrue(args.contains("--baseline\nbisect/hadur117.HadurTeam_@V@aa.jar\n"), a);
         }
