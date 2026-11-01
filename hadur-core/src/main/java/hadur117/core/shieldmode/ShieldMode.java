@@ -81,6 +81,8 @@ public final class ShieldMode {
     public static final double EXACT = 1e-5;
     /** The sideways step taken on the tick before a shield fires. */
     public static final double WIGGLE = 0.1;
+    /** SHIELD-22: the share of the widest shadow a cheaper plan needs to win with cheap on. */
+    public static final double CHEAP_SHARE = 0.5;
     /** Bullets that hit us with no predictor exact, in one round, before the round's exit. */
     public static final int MAX_UNPREDICTED_HITS = 2;
     /** Hits taken in one round, outnumbering our interceptions, before the round's exit. */
@@ -1069,8 +1071,15 @@ public final class ShieldMode {
         double maxPower = Math.min(3.0, s.energy - 0.1);
         if (enemyMoved) maxPower = Math.min(maxPower, Math.max(0.1, w.power - 0.01));
         else maxPower = Math.min(maxPower, 0.1);
+        // SHIELD-23: no dearer than the enemy's bullet scaled by the energy ratio, so the side
+        // behind on energy spends less on each crossing.
+        double pref = Math.max(0.1, Math.min(maxPower, w.power * s.energy / Math.max(s.enemyEnergy, 0.1)));
+        if (design.ratio) maxPower = Math.min(maxPower, pref);
         if (maxPower < 0.1) return null;
         Plan best = null;
+        // SHIELD-22: with cheap, the plans of the chosen spot, cheapest first, so the cheapest
+        // one wide enough can win over the widest.
+        java.util.List<Plan> spot = design.cheap ? new java.util.ArrayList<>() : null;
         // SHIELD-20: an enemy that aims a few ticks before it fires sees the step aside, and its
         // next bullet is head-on to where we stood mid-step, which no predictor holds. With the
         // still switch, a plan from where we stand wins whenever there is one.
@@ -1086,20 +1095,37 @@ public final class ShieldMode {
                 if (sh == null) continue;
                 double turn = Math.abs(Angles.normalRelativeAngle(sh.fireAngle - s.gunHeading));
                 if (turn > MAX_GUN_TURN * (fireTime - s.time) + 1e-9) continue;
-                if (best == null || sh.width > best.width) {
-                    best = new Plan();
-                    best.wave = w;
-                    best.fireTime = fireTime;
-                    best.x = x;
-                    best.y = y;
-                    best.wiggle = wiggle;
-                    best.angle = sh.fireAngle;
-                    best.width = sh.width;
-                    best.power = power;
-                }
+                Plan p = new Plan();
+                p.wave = w;
+                p.fireTime = fireTime;
+                p.x = x;
+                p.y = y;
+                p.wiggle = wiggle;
+                p.angle = sh.fireAngle;
+                p.width = sh.width;
+                p.power = power;
+                if (spot != null) spot.add(p);
+                if (best == null || sh.width > best.width) best = p;
             }
         }
+        if (spot != null && best != null) return cheapest(spot, best, pref);
         return best;
+    }
+
+    /**
+     * SHIELD-22: the rival's crossing power. Of the plans from the widest plan's spot, the cheapest
+     * whose shadow is at least {@link #CHEAP_SHARE} of the widest, first among those no dearer than
+     * {@code pref}; the widest when none is.
+     */
+    private static Plan cheapest(java.util.List<Plan> plans, Plan widest, double pref) {
+        Plan pick = null;
+        for (Plan p : plans) {
+            if (p.wiggle != widest.wiggle || p.width < CHEAP_SHARE * widest.width) continue;
+            boolean inPref = p.power <= pref + 1e-9;
+            boolean pickInPref = pick != null && pick.power <= pref + 1e-9;
+            if (pick == null || (inPref && !pickInPref) || (inPref == pickInPref && p.power < pick.power)) pick = p;
+        }
+        return pick == null ? widest : pick;
     }
 
     /**

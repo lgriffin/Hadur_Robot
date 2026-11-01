@@ -1,0 +1,47 @@
+# 1v1, the rival's shield crossing power on every robot we shield (BENCH-165, docs/bench/shield-power.md). Leigh starts it
+# once the PC is free (not beside another card: two cards on one checkout collide):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-shield-power        (or  ./queue.sh run pc-shield-power)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes; no step needs a
+# decision. About 1 h 5 min of battles (281 robots x 4 arms x 4 seeds = 4,496; pc-rival-confirm ran ~4,300 an hour).
+#
+# Why: the rival's shield and ours differ in how hard each crossing shot is. Ours fires the power with the widest
+# shadow, up to just under the enemy's bullet. The rival's fires the cheapest power wide enough to cross, and prefers
+# powers no dearer than the enemy's bullet times our energy over its energy, so the side behind on energy spends
+# less on every crossing. The rival out-scores us by +0.49 APS on the 240 robots we both shield. Its battle-long
+# listing was already measured here and failed (pc-shield-exit, PR #383: s4 +0.04, s0 -0.01), so this card
+# measures the power rule only:
+#   sc  SHIELD-22, the rival's rule: cheapest plan with half the widest shadow or more, energy-ratio powers first
+#   sr  SHIELD-23, the energy-ratio cap alone, widest plan under it
+# Panel: panel-shield-listed-321.txt, the 281 robots on master's shield list. Seeds 4 from 7200 (fresh).
+#
+# gate: each arm at +0.05 APS over the 281 / 1,217 pairings with the 95% low end above 0, A/A inside its band (a global
+# switch for every shielded robot). A 5-point per-robot pick and every robot's difference with losses give the
+# per-opponent picks for a confirm card if neither arm passes globally.
+# Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle
+# over the last 200, no battle in 30 minutes, or the A/A outside its band at z 3 after 20%; every battle fought is
+# kept and a rerun resumes. A halt leaves the gate unrun. No futility rule: the per-robot picks need every battle.
+# ALERT opens an issue for Leigh on any stop. Nothing here ships: a pass goes on master by PR, census-gated.
+
+set V = 3.20
+set C = --skip-build --skip-fetch --rounds 35 --parallel 12 --no-truth-log --cpu-constant 1488498 --child-heap 2G --engine 1.11.1
+set W = work/shield-power
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh scheap && bash ./build-ablation.sh sratio && test -f bisect/hadur117.Hadur_${V}sc.jar && test -f bisect/hadur117.Hadur_${V}sr.jar && ./fetch-opponents.sh --set panel-shield-listed-321.txt && mvn -q compile
+
+screen | ./bench-top20.sh ${C} --set panel-shield-listed-321.txt --seeds 4 --seed-base 7200 --arms plans/shield-power.arms --out ${W} --label shield-power --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-power.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm sc --panel panel-shield-listed-321.txt --bar 0.05 --out ${OUT}/$(date +%Y-%m-%d)_shield-power-sc-gate.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm sr --panel panel-shield-listed-321.txt --bar 0.05 --out ${OUT}/$(date +%Y-%m-%d)_shield-power-sr-gate.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 5 --out-tsv ${OUT}/shield-power-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-power-pick.md && python3 tools/per_robot.py ${W}/arms.tsv --arms sc sr --out ${OUT}/$(date +%Y-%m-%d)_shield-power-per-robot.md --out-tsv ${OUT}/shield-power-per-robot.tsv
+  after: screen
+
+pr | bash tools/open_results_pr.sh claude/pc-shield-power-results "1v1 the rival's shield crossing power on every shielded robot" ${OUT}/*_shield-power*.md ${OUT}/shield-power-per-robot.tsv $(find ${OUT} -maxdepth 1 -name shield-power-pick.tsv -size +0c)
+  after: gate
