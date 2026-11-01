@@ -4319,12 +4319,29 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MGUN-19">MGUN-19</a>: off a team, an opponent's distance weight is (100/d)^0.7, not 100/d (Ogi's flatter d^-0.686).</div>
 </dd>
+<dt><a href="hadur117/core/shieldmode/ShieldList.html#FLAT_ON" class="member-name-link">FLAT_ON</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-32">MOVE-32</a>: the per-opponent flattener switch's bit in <code>ShieldList.switches</code>.</div>
+</dd>
+<dt><a href="hadur117/core/shieldmode/ShieldList.html#FLAT_ON_PREFIX" class="member-name-link">FLAT_ON_PREFIX</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-32">MOVE-32</a>: a line starting with this names an opponent the duel surfs with the flattener views on (<a class="req" href="../requirements.html#MOVE-24">MOVE-24</a> undone).</div>
+</dd>
 <dt><a href="hadur117/core/move/GunMimics.html#FLAT_SHARE" class="member-name-link">FLAT_SHARE</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/GunMimics.html" title="class in hadur117.core.move">GunMimics</a></dt>
 <dd>
 <div class="block">The weight of a mimic's unsegmented buffer in its profile, so a fresh segment is not empty.</div>
 </dd>
 <dt><a href="hadur117/core/move/GunMimics.Mimic.html#flatCount" class="member-name-link">flatCount</a> - Variable in class hadur117.core.move.<a href="hadur117/core/move/GunMimics.Mimic.html" title="class in hadur117.core.move">GunMimics.Mimic</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/shieldmode/ShieldList.html#flatOn(java.lang.String)" class="member-name-link">flatOn(String)</a> - Method in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-32">MOVE-32</a>: whether the duel surfs <code>robotName</code> with the flattener views on, by the rule of
+ <a href="hadur117/core/shieldmode/ShieldList.html#matches(java.lang.String)"><code>ShieldList.matches(java.lang.String)</code></a>.</div>
+</dd>
+<dt><a href="hadur117/ShieldTableData.html#flatOns()" class="member-name-link">flatOns()</a> - Static method in class hadur117.<a href="hadur117/ShieldTableData.html" title="class in hadur117">ShieldTableData</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-32">MOVE-32</a>: the opponents the duel surfs with the flattener views on (<a class="req" href="../requirements.html#MOVE-24">MOVE-24</a> undone for them).</div>
+</dd>
 <dt><a href="hadur117/core/policy/MoveFlavour.Step.html#FLATTENER" class="member-name-link">FLATTENER</a> - Enum constant in enum class hadur117.core.policy.<a href="hadur117/core/policy/MoveFlavour.Step.html" title="enum class in hadur117.core.policy">MoveFlavour.Step</a></dt>
 <dd>
 <div class="block">The flattener views on, whatever their thresholds say.</div>
