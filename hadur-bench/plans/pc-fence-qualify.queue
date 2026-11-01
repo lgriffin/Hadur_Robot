@@ -19,6 +19,10 @@
 # (PC 83.32). So the bench sat at the bar before any client started, the clients added about 0.02 a round,
 # and fewer workers did not lower it: this is not load. The reference is a week old and unfenced.
 #
+# Run 3 (PR #530, 2026-11-01): bench gate PASSED (solo 0.614, duel 0.602 vs base 0.616, all VALID); clients
+# NOT QUALIFIED -1.31 ± 0.61 over 145 battles (70.7 skips a battle, mostly at battle start). Run 4 = the same
+# card after a PC restart.
+#
 # Run 3 (BENCH-151) judges against today instead: the same duel block three times,
 #   base: unfenced, no clients (the PC as every card runs it today, all 24 cores);
 #   solo: fenced to the bench side, no clients (the cost of 18 cores);
@@ -67,7 +71,7 @@ set CLEAN = ../data/rumble/parsed/2026-10-29T0857Z_roborumble_botdetails_hadur11
 set HEAP = --child-heap 2G
 set REL = https://github.com/lgriffin/Hadur_Robot/releases/download/v3.15
 # RUN: raise it to repeat the card in a fresh folder, bench output and results branch.
-set RUN = 3
+set RUN = 4
 set W = ../data/live/fence-qualify-${V1}-run${RUN}
 set B = work/fence-check-${RUN}
 
