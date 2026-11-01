@@ -1,0 +1,5 @@
+# MOVE-32 confirm (pc-flat-on): c is master, aa its A/A copy, fq the flattener views on against the screen's picks only
+# (flat-on: lines from the pick TSV, ablation fllist).
+c | hadur117.Hadur 3.20 | bisect/hadur117.Hadur_3.20.jar
+aa | hadur117.Hadur 3.20aa | bisect/hadur117.Hadur_3.20aa.jar
+fq | hadur117.Hadur 3.20fq | bisect/hadur117.Hadur_3.20fq.jar
