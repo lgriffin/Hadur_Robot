@@ -1,1 +1,7 @@
 04:18:10 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
+04:18:10 start prep
+04:18:13 progress pushed to origin claude/pc-rival-picks-progress (every 15 min)
+04:22:59 prep exit=0 in 288 s
+04:22:59 start screen-add
+04:22:59 watching screen-add: 4 stop rule(s)
+04:23:13 progress screen-add: 7/888 (1%) battles, 1789/h, ETA 30 min, 0 failed, skips 15.1/battle (last 100)
