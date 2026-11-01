@@ -27,3 +27,10 @@
 23:46:29 haed exit=0 in 1453 s
 23:46:29 start haes
 23:46:29 watching haes: 2 stop rule(s)
+00:05:14 progress haes: 198/276 (72%) battles, 633/h, ETA 7 min, 0 failed, skips 76.5/battle (last 100)
+00:10:57 haes exit=0 in 1468 s
+00:10:57 start haread
+00:11:05 haread exit=0 in 7 s
+00:11:05 start hapr
+00:11:11 hapr exit=0 in 6 s
+00:11:11 ALLDONE
