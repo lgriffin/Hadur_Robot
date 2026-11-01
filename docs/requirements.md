@@ -1180,6 +1180,8 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | TMODE-33 | Optional | Where the team modes against the opposing team carry CONCORD (the team brain after Ogi's design, written our own way), HadurTeam shall: score each enemy's risk at a point by 1/(1 + the robots, other enemies seen lately and teammates, nearer that enemy than the point) in place of the closest-robot factor; drop FAR, FARTHER and NEAR and play FINISH (and, with its NO_HUNT part, drop HUNT and PACK); play GANG once 200 or more member-turns this battle (Hadur and each teammate in view, each tick) show 4% or more with two enemies within 250 px; with its RADAR part, turn its radar toward the stalest enemy of its own group (the enemies nearer it than any teammate), sweeping while any enemy is 8 ticks unseen; draw each enemy's gun situations from every history of its class; and fire at most 1.9 beyond 200 px unless it has hit that class on 55% of 20 or more shots. CONCORD shall ship table-only and off, and the `tmconcord` ablation (suffix cn) shall force it on with duel and melee play unchanged; the shipped parts keep the hunt and the shipped radar (the first cloud smoke lost with them changed), and the `tmconcordr`, `tmconcordm`, `tmconcordg`, `tmconcordp` and `tmconcordh` ablations weigh one part each. | T7 |
 | TMODE-34 | Ubiquitous | The team mode table's default, for a team it does not name, shall include the CONCORD mode, and every team the table names shall play CONCORD on top of its entry. | T7 |
 | TMODE-35 | Ubiquitous | The team mode table shall name OgiTeam, CombatTeam, FirestarterTeam and NightmareTeam's member classes with every mode they played before without CONCORD. | T7 |
+| TMODE-36 | Optional feature | Where the team modes against a team carry HEAVY, a member playing CONCORD shall fire without CONCORD's 1.9 power cap; HEAVY shall be in no team's modes by default (only through the table or the tmheavy ablation). | T7 |
+| TMODE-37 | Optional feature | Where the team modes against a team carry WARY, a member under 50 energy shall leave the hunt (its place by the prey) instead of under 20; WARY shall be in no team's modes by default (only through the table or the tmwary ablation). | T7 |
 
 ### T1 notes
 
@@ -2296,6 +2298,8 @@ profiles, and the rumbles list it as a new participant.
 | BENCH-158 | Ubiquitous | The bench shall carry the `pc-shield-still2` card, which builds SHIELD-21 for the 40 robots pc-shield-still put above +5 points (`slistadd,szlist`, the 9 of BeepBoop's list among them added to the shield list) beside an aa A/A copy; runs them at 4 fresh seeds from 5400; gates at +0.05 APS with the 95% low end above zero; writes a 5-point per-robot pick and every robot's difference with losses; declares its stop rules; and stops before the results PR if any analysis fails. | T7 |
 | BENCH-164 | Ubiquitous | The bench shall carry the `pc-flat-on` card: master (c), its A/A copy (aa) and the duel's flattener views on (fo, ablation flaton) on `panel-learners-flat.txt` (the 232 strong learners of the BeepBoop gap not on the shield list), 2 fresh seeds from 6800, 12 workers, truth log off, stopping on 30 failed battles, an arm scoring nothing in 8, 40+ skipped turns a battle over the last 200, no battle in 30 minutes or the A/A outside its band after 20%; then the robots fo locks at a 5-point margin (`mode_table.py`), their panel (`tools/pick_panel.py`, which stops the card when nothing is picked) and the fq build (MOVE-32's flat-on lines for the picks only, ablation fllist); then c, aa and fq on the picks at 4 fresh seeds from 6900 with the same stop rules but the A/A; then the gate (fq minus pooled c and aa over the picks / 1,217 pairings at +0.03 APS, 95% low end above 0), the confirmed picks at a 5-point margin, per-robot losses and a results PR. | T7 |
 | BENCH-165 | Ubiquitous | The bench shall carry the `pc-shield-power` card: master (c), its A/A copy (aa), SHIELD-22 on (sc, ablation scheap) and SHIELD-23 on (sr, ablation sratio) on `panel-shield-listed-321.txt` (every robot on master's shield list), 4 fresh seeds from 7200, 12 workers, truth log off, stopping on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle over the last 200, no battle in 30 minutes or the A/A outside its band after 20%, with no futility rule; then a gate for each arm (pooled c and aa over the panel / 1,217 pairings at +0.05 APS, 95% low end above 0), a 5-point per-robot pick, every robot's difference with losses and a results PR, stopping before the PR if any analysis fails. | T7 |
+| BENCH-166 | Ubiquitous | The bench shall carry the `pc-team-mirror` card, a read that ships nothing: it builds master (aa), plays OgiTeam and then HadurTeam aa as the subject team against the 45 other teams of `plans/team-mirror-set.txt` at the same 12 seeds from 7300 and 10 rounds with no baseline, declares its stop rules on both battle steps (20 failed battles, no battle in 30 minutes, 60+ skipped turns a battle over the last 200), writes `tools/team_mirror.py`'s per-team split of the share gap into score parts (their survival, their bullet damage, ours, bonuses) with the lever each team needs, and opens its results on claude/pc-team-mirror-results. | T7 |
+| BENCH-167 | Ubiquitous | The bench shall carry the `pc-team-angles` card, which builds aa, a bb A/A copy and three arms (hv: HEAVY on every unnamed team, wy: WARY, md: DISABLED), plays each against aa on all 46 teams of team-census46.txt at 8 seeds from 7400 and 10 rounds, reads each arm's global change (+0.30 APS gate, a read only), picks per team the arm gaining +3.0 points or more with the 95% low end above zero, gates the picked table at 16 fresh seeds from 7500 (+0.15 APS over 46 teams with the 95% low end above zero), declares the stop rules on every battle step, and opens its results on claude/pc-team-angles-results. | T7 |
 | BENCH-159 | Ubiquitous | The bench shall carry the `pc-rival-picks` card, which screens three per-opponent lists read from the new 2nd-place rival (docs/bench/rival-2nd-read.md): 74 shield additions (`slistadd`, `slistadd,szlist`), 50 shield-execution robots (`szlist`, `sx0list`, both) and 36 stop-and-go robots (`slistdrop,sgolist`, `slistdrop,sgo2list`), each beside master and an aa A/A copy at 3 seeds from 5600; writes a 5-point per-robot pick and every robot's difference with losses for each list; declares its stop rules; and stops before the results PR if any analysis fails. | T7 |
 | BENCH-160 | Ubiquitous | The bench shall carry the `pc-surf-key` card, which records an `oracle,skrec` build against the 198 normal-play robots of `panel-surf-key-200.txt` at 4 seeds from 5800 with the truth log on; fits per-opponent surf keys with and without the kernel width (SKEY-3) and builds them (`sklist`, `sklist,bb`); runs both beside master and an aa A/A copy at 3 fresh seeds from 5900; gates each at +0.05 APS with the 95% low end above zero; writes a 3-point per-robot pick and every robot's difference with losses; declares its stop rules; and stops before the results PR if any analysis fails. | T7 |
 | BENCH-161 | Ubiquitous | The bench shall carry the `pc-rival-confirm` card, which builds the 18 per-opponent picks of `pc-rival-picks` into one jar (`slistadd,slistdrop,szlist,sx0list,sgolist,sgo2list`); runs it beside master and an aa A/A copy against the 18 robots of `panel-rival-confirm.txt` at 8 fresh seeds from 6300; gates it at +0.05 APS with the 95% low end above zero; writes a 3-point per-robot pick and every robot's difference with losses; declares its stop rules; and stops before the results PR if any analysis fails. | T7 |
@@ -2361,3 +2365,33 @@ profiles, and the rumbles list it as a new participant.
   four **+0.24 +- 0.16 APS** (gate +0.15, PASS); Ogi +4.2, Combat +2.6, Nightmare +2.4, Firestarter
   +1.7 share points, every one above zero. TeamModes.TABLE names cz.libors.Ogi, mn.Combat and
   cb.fire.Firestarter with MATEFIRE, HUNT, PATH and DODGE, and Nightmare's two classes drop CONCORD.
+
+## The Ogi mirror: one lever per team (BENCH-166)
+
+HadurTeam 3.21 went live 2nd at 82.13 (2026-11-01), OgiTeam 1st at 88.02. Lined up pairing by pairing
+with Ogi's live page, about 3.6 of the ~5.9 APS gap comes from 22 mid teams that both teams beat in
+97-100% of rounds (DemoniacNimrods, OmegaSquad, TMNR +15 share points each, Mamba, TidalWave,
+ArmyOfShiz, DiamondStealers, HOFSwarm, GrofGroup +10-12); the seven strong teams add about 2 (with the
+head-to-head pairing) and the bottom 18 about 0.3. The points leak inside rounds we win.
+
+- **BENCH-166.** Card plans/pc-team-mirror.queue: OgiTeam and HadurTeam master as subjects on the same
+  45 teams and 12 seeds from 7300 (1,080 battles, about 70 minutes). `tools/team_mirror.py` swaps each
+  of HadurTeam's score parts for Ogi's alone and reports the share it is worth, per team, with
+  team_losses.py's round read beside it, and names each team's lever: their survival (members we
+  lose), their bullets (damage we soak), our bullets, our survival, bonuses. Results
+  claude/pc-team-mirror-results. `tools/test_team_mirror.py`, `TeamMirrorPlanTest`.
+
+## Three angles at once: HEAVY, WARY, DISABLED (TMODE-36, TMODE-37, BENCH-167)
+
+Leigh 2026-11-01: the PC is free overnight, prep a second card that explores two or three angles at once.
+Each arm targets the leak in won rounds against the mid teams from a different side:
+
+- **TMODE-36 HEAVY.** CONCORD's 1.9 power cap gives way to full power, so rounds end sooner against
+  teams that dodge poorly (MGUN-6's full power benched +5.7 before CONCORD capped it).
+- **TMODE-37 WARY.** A member leaves the hunt under 50 energy instead of 20 and plays plain minimum
+  risk, so fewer members die in rounds the team wins (each costs 50 survival points a live enemy).
+- **DISABLED (TMODE-8)** on today's build: last screened before HUNT, DODGE and CONCORD.
+- **BENCH-167.** Card plans/pc-team-angles.queue: 46 teams x 8 seeds from 7400 per arm (2,944 battles,
+  about 3 h), per-team pick at +3.0 points, then a 16-seed fresh gate from 7500 on the picked teams.
+  Results claude/pc-team-angles-results. `TeamAnglesPlanTest`; `FieldGunTest` (TMODE-36),
+  `TeamModesTest` (TMODE-37).

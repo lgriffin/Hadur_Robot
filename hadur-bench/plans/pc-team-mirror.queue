@@ -1,0 +1,44 @@
+# The Ogi mirror (BENCH-166, team thread "Beat all 47 teams to take team 1st"). Diagnostic only: it
+# builds nothing that ships. HadurTeam 3.21 is live 2nd at 82.13, OgiTeam 1st at 88.02. Lined up
+# pairing by pairing, about 3.6 of the ~5.9 APS gap comes from 22 mid teams that both of us beat in
+# 97-100% of rounds: Ogi takes 8-15 more share points from each inside the rounds it wins. This card
+# runs OgiTeam itself as the subject against the 45 other teams, and HadurTeam master beside it on the
+# same seeds, so tools/team_mirror.py can split each team's gap into score parts (their survival
+# points = our members lost, their bullet damage = what we soak, our bullet damage, our survival,
+# bonuses) and name the lever each team needs. The per-team counters card comes after it.
+#   mrprep   build aa (master), write the args, fetch the 46 team jars
+#   mrogi    OgiTeam vs the 45 teams, 12 seeds from 7300, 10 rounds (540 battles)
+#   mrhad    HadurTeam aa vs the same 45 teams and seeds (540 battles)
+#   mrread   tools/team_mirror.py -> docs/bench/local/team-mirror.md, plus team_losses.py for each run
+#   mrpr     results PR on claude/pc-team-mirror-results
+# 1,080 battles, about 70 minutes at 12 workers (sizes itself to the host). Every step resumes where it
+# stopped.
+# Stop rules on both battle steps (halt; every battle fought is kept and a rerun resumes): 20 failed
+# battles (a broken jar), no battle in 30 minutes (a hung step), or 60+ skipped turns a battle over the
+# last 200 (census cards' rule; OgiTeam is a heavy robot). A halt in mrogi leaves the rest of mrogi
+# and all 540 of mrhad; a halt in mrhad, the rest of mrhad; mrread then reads what both runs share.
+# No early finish on score: it is a read, not a gate.
+# The team thread reads claude/pc-team-mirror-results.
+#   ./queue.sh run pc-team-mirror        (or  .\queue.ps1 run pc-team-mirror)
+# Run it from master (one bench queue at a time):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+
+mrprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur117.HadurTeam_"$V"aa.jar && rm -f ${OUT}/team-mirror*.md && ./fetch-opponents.sh --set team-census46.txt && bash ./build-ablation.sh aa && mkdir -p work && for a in ogi hadur; do sed "s/@V@/$V/g" plans/team-mirror-$a.args > work/team-mirror-$a.args || exit 1; done && test -f bisect/hadur117.HadurTeam_"$V"aa.jar && test -f opponents/cz.libors.OgiTeam_v1.jar && mvn -q compile
+mrogi  | mvn -q exec:java "-Dexec.args=@work/team-mirror-ogi.args"
+  after: mrprep
+  watch: battles=540
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 60 over 200
+mrhad  | mvn -q exec:java "-Dexec.args=@work/team-mirror-hadur.args"
+  after: mrogi
+  watch: battles=540
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 60 over 200
+mrread | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && python3 tools/team_mirror.py --ogi work/team-mirror-"$V"-ogi --hadur work/team-mirror-"$V"-hadur > ${OUT}/team-mirror.md && python3 tools/team_losses.py --ours "cz.libors.Ogi " --title "OgiTeam against the field" work/team-mirror-"$V"-ogi > ${OUT}/team-mirror-ogi-losses.md && python3 tools/team_losses.py --title "HadurTeam master against the field" work/team-mirror-"$V"-hadur > ${OUT}/team-mirror-hadur-losses.md
+  after: mrhad
+mrpr   | bash tools/open_results_pr.sh claude/pc-team-mirror-results "The Ogi mirror: where OgiTeam's points come from, team by team" $(ls ${OUT}/team-mirror*.md 2>/dev/null)
+  after: mrread

@@ -1,0 +1,28 @@
+# PC card pc-team-mirror (BENCH-166): HadurTeam master (aa) as the subject team against the 45 other teams (plans/team-mirror-set.txt),
+# 12 seeds from 7300, 10 rounds, no baseline. tools/team_mirror.py reads it beside the other subject's run.
+--team
+true
+--seeds
+12
+--seed-base
+7300
+--rounds
+10
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+plans/team-mirror-set.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@aa.jar
+--robot
+hadur117.HadurTeam @V@aa
+--member
+hadur117.Hadur
+--out
+work/team-mirror-@V@-hadur
+--report
+../docs/bench/local/team-mirror-hadur.md

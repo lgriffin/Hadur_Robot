@@ -170,6 +170,8 @@ public class MinimumRiskMovement {
     static final double PACK_PULL = 1.0;
     static final double PACK_FLOOR = 40;
     static final double PACK_ENERGY = 20;
+    /** TMODE-37: under WARY, the energy below which a member leaves the hunt. */
+    static final double WARY_ENERGY = 50;
     /**
      * TMODE-13, HUNT (NightmareTeam's packs, PACK's retry): each member is assigned an enemy at
      * the cost (distance + {@link #PACK_ENERGY_WEIGHT} x energy) squared, times
@@ -1088,7 +1090,8 @@ public class MinimumRiskMovement {
             EnemyInfo prey = disabled(me, enemies, now);
             if (prey != null) return new Pull(prey.location, DISABLED_FLOOR, DISABLED_PULL);
         }
-        if (modes.contains(TeamModes.Mode.HUNT) && energy >= PACK_ENERGY) {
+        if (modes.contains(TeamModes.Mode.HUNT)
+                && energy >= (modes.contains(TeamModes.Mode.WARY) ? WARY_ENERGY : PACK_ENERGY)) {
             Point2D.Double slot = huntSlot(me, name, enemies, now, mates, huntRadius(modes));
             if (slot != null) return new Pull(slot, PACK_FLOOR, HUNT_PULL, false);
         }
