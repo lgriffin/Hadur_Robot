@@ -1,0 +1,22 @@
+{
+ "plan": "pc-team-concord2",
+ "updated": 1793491891.8556447,
+ "steps": {
+  "c2prep": {
+   "status": "pending"
+  },
+  "c2bb": {
+   "status": "pending"
+  },
+  "c2on": {
+   "status": "pending"
+  },
+  "c2sum": {
+   "status": "pending"
+  },
+  "c2pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
