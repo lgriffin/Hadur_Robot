@@ -16,3 +16,4 @@
 16:49:42 progress pushed to origin claude/pc-shield-power-progress (every 15 min)
 16:50:30 stop rule aa after 20% would trip on screen (aa - c +0.84 pts over 200 robots, stop band ±0.78); not acted on
 16:50:30 progress screen: 1217/4496 (27%) battles, 0 failed, aa +0.19, sc +0.09, sr +0.12
+17:20:50 progress screen: 2093/4496 (47%) battles, 1736/h, ETA 1.4 h, 0 failed, skips 40.1/battle (last 100), aa +0.05, sc +0.13, sr +0.20
