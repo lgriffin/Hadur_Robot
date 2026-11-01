@@ -33,4 +33,5 @@ Stopping now would leave 273 battles unrun (about 29 min); every battle already 
 23:11:40 progress mrogi: 0/540 (0%) battles, 0 failed
 23:39:52 STOP mrogi by rule fails 20: 24 failed of 267; 267 battles fought and kept, 273 battles left unrun (about 29 min)
 23:39:52 mrogi exit=75 in 1706 s (halted, fails 20)
+23:39:52 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 ```
