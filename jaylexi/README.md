@@ -19,8 +19,10 @@ one first, bench it, then write the shipped one to match.
 battles, held in constant-pool strings, which Robocode's codesize does not count: the field's
 first-shot bin for each of the gun's 480 segments, and a 47-bin surf danger row for each of the 669
 MiniRumble robots, picked by name hash. Bench: +0.44 ± 0.16 APS over 0.2 on a fresh 112-bot sample (6 seeds)
-(docs/bench/kitlab-priors.md). javac alone makes it 1,509 bytes, so the build runs the classes
-through ProGuard (`jaylexi/proguard.pro`, as Deise does) to 1,496 bytes.
+(docs/bench/kitlab-priors.md). Written straight it is 1,509 bytes, so the shipped source is
+trimmed to 1,494 bytes with plain javac: waves take themselves off the event list, fire power by
+distance is a lookup string, the bin clamp's offset folds into the double, and the busiest
+double takes a one-byte local slot.
 
 ## Standing
 
@@ -49,8 +51,8 @@ the pages are saved in `data/rumble/pages/` under 2026-10-29T2010Z* (they caught
     mvn -pl jaylexi verify
 
 The shipped jar is `jaylexi/target/hadur117.mini.JayLexi_<version>.jar` (its classes, properties and
-source, ProGuard-optimised from 0.3); `JayLexiJarIT` prints its codesize and holds 3 bytes spare.
-`JayLexiReplayTest` runs on the javac classes, and ProGuard keeps their behaviour.
+source); `JayLexiJarIT` prints its codesize, holds 3 bytes spare, and replays the jar itself
+against the readable reference.
 
 ## Bench
 

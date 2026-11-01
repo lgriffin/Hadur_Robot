@@ -78,7 +78,7 @@ class JayLexiJarIT {
 
     @Test
     @Tag("JAYLEXI-11")
-    @DisplayName("the ProGuard-built jar gives the readable reference's orders, bit for bit, on the field's row and a recorded row")
+    @DisplayName("the built jar gives the readable reference's orders, bit for bit, on the field's row and a recorded row")
     void jarPlaysAsReadable() throws Exception {
         URL tests = JayLexiJarIT.class.getProtectionDomain().getCodeSource().getLocation();
         try (JarFirst loader = new JarFirst(jar().toURI().toURL(), tests)) {

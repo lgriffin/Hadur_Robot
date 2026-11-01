@@ -55,7 +55,7 @@ final class Replay {
                     zero(f.get(null));
                 } else {
                     // What the class initialiser gave, read on first sight: null, or a constant that
-                    // ProGuard un-finalled (FIELD in the shipped jar).
+                    // an optimiser un-finalled (as ProGuard does to FIELD).
                     f.set(null, INITIAL.computeIfAbsent(f, k -> {
                         try {
                             return Optional.ofNullable(k.get(null));

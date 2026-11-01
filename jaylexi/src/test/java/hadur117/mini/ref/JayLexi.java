@@ -7,7 +7,6 @@ import robocode.AdvancedRobot;
 import robocode.BulletHitBulletEvent;
 import robocode.BulletHitEvent;
 import robocode.Condition;
-import robocode.CustomEvent;
 import robocode.HitByBulletEvent;
 import robocode.Rules;
 import robocode.ScannedRobotEvent;
@@ -17,7 +16,7 @@ import robocode.util.Utils;
  * The readable JayLexi 0.3, as benched (docs/bench/kitlab-priors.md, arm PALL): 0.2 (arm J2w) with
  * the field's first-shot bin for each gun segment and a per-opponent surf danger row for each of the
  * 669 MiniRumble robots, read from constant-pool strings. It is over the MiniRumble limit, so the
- * shipped hadur117.mini.JayLexi is this code rewritten tighter and built through ProGuard;
+ * shipped hadur117.mini.JayLexi is this code rewritten tighter;
  * JayLexiReplayTest shows the two give the same orders, bit for bit. Change this first, then the
  * shipped one.
  */
@@ -33,6 +32,8 @@ public class JayLexi extends AdvancedRobot {
     static Point2D.Double me, enemy;
     static double enemyEnergy, distance, lastBearing, lastLateral, vChangeTime, enemySpeed;
     static ArrayList<Wave> waves;
+    // The robot, so a wave can take itself off the event list.
+    static JayLexi bot;
     static Wave next;
     // Surf stats [distance band][our lateral speed band][bin] (JAYLEXI-6).
     static double[][][] surf = new double[4][5][BINS];
@@ -49,6 +50,7 @@ public class JayLexi extends AdvancedRobot {
 
     public void run() {
         waves = new ArrayList<Wave>();
+        bot = this;
         setAdjustGunForRobotTurn(true);
         setAdjustRadarForGunTurn(true);
         do {
@@ -183,10 +185,6 @@ public class JayLexi extends AdvancedRobot {
         enemyEnergy -= Rules.getBulletDamage(e.getBullet().getPower());
     }
 
-    public void onCustomEvent(CustomEvent e) {
-        removeCustomEvent(e.getCondition());
-    }
-
     static Point2D.Double project(Point2D.Double p, double angle, double length) {
         return new Point2D.Double(p.x + Math.sin(angle) * length, p.y + Math.cos(angle) * length);
     }
@@ -237,8 +235,9 @@ public class JayLexi extends AdvancedRobot {
             if (mine) {
                 log(enemy, 600);
             }
-            waves.remove(this);
-            return true;
+            // Done: off the event list here, as the shipped build does.
+            bot.removeCustomEvent(this);
+            return waves.remove(this);
         }
     }
 }
