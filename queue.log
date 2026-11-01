@@ -7,3 +7,5 @@
 15:56:16 progress screen: 0/4496 (0%) battles, 0 failed
 16:20:36 STOP screen by rule aa after 20%: aa - c +0.84 pts over 200 robots, stop band ±0.78; 1217 battles fought and kept, 3279 battles left unrun (about 1.1 h)
 16:20:36 screen exit=75 in 1473 s (halted, aa after 20%)
+16:20:39 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/558
+16:20:39 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)

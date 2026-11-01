@@ -1,6 +1,6 @@
 # Queue pc-shield-power: progress
 
-Updated 2026-11-01 16:20:36 PC time (16:20 UTC), runner pid 69948.
+Updated 2026-11-01 16:20:39 PC time (16:20 UTC), runner pid 69948.
 
 - `prep` done, exit 0 in 2 min
 - `screen` halted, exit 75 in 25 min, HALTED by aa after 20%: aa - c +0.84 pts over 200 robots, stop band ±0.78
@@ -44,4 +44,6 @@ Stopping now would leave 3279 battles unrun (about 1.1 h); every battle already 
 15:56:16 progress screen: 0/4496 (0%) battles, 0 failed
 16:20:36 STOP screen by rule aa after 20%: aa - c +0.84 pts over 200 robots, stop band ±0.78; 1217 battles fought and kept, 3279 battles left unrun (about 1.1 h)
 16:20:36 screen exit=75 in 1473 s (halted, aa after 20%)
+16:20:39 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/558
+16:20:39 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 ```
