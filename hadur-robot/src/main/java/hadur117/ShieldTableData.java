@@ -429,6 +429,9 @@ final class ShieldTableData {
             "voidious.perceptual.RetroGirl 1.0.0",
             "nat.Hikari dev0001",
             "bing2.Melody 1.3.1",
+            // pc-rival-confirm (PR #537): held at a 3-point margin on 8 fresh seeds
+            "pez.mini.VertiLeach 0.4.0",
+            "synapse.Geomancy 15",
         };
     }
 
@@ -473,6 +476,12 @@ final class ShieldTableData {
      */
     static String[] exitOffs() {
         return new String[] {
+            // pc-rival-confirm (PR #537): held at a 3-point margin on 8 fresh seeds
+            "cx.micro.Smoke 0.96",
+            "dft.Cyprus 3.0",
+            "myl.micro.Avipes 1.00",
+            "rz.GlowBlowAPM 1.0",
+            "voidious.mini.Komarious 1.88",
         };
     }
 
@@ -502,6 +511,16 @@ final class ShieldTableData {
             "theo.simple.Bones 1.0",
             "theo.simple.Lucid 1.0",
             "wompi.Numbat 1.9",
+            // pc-rival-confirm (PR #537): held at a 3-point margin on 8 fresh seeds
+            "fm.claire 1.7",
+            "projectx.TestNano 1.0",
+            "rz.GlowBlowMelee 1.4",
+            "cx.micro.Smoke 0.96",
+            "dft.Cyprus 3.0",
+            "myl.micro.Avipes 1.00",
+            "rz.GlowBlowAPM 1.0",
+            "supersample.SuperMercutio 1.0",
+            "voidious.mini.Komarious 1.88",
         };
     }
 

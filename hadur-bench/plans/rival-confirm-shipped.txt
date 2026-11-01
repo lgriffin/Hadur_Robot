@@ -1,0 +1,14 @@
+# pc-rival-confirm (PR #537): the 13 picks held at a 3-point margin on 8 fresh seeds and shipped to master (BENCH-162).
+cx.micro.Smoke 0.96
+davidalves.net.DuelistMicroMkII 1.1
+dft.Cyprus 3.0
+fm.claire 1.7
+myl.micro.Avipes 1.00
+pez.mini.VertiLeach 0.4.0
+projectx.TestNano 1.0
+rcb.Vanessa03 0
+rz.GlowBlowAPM 1.0
+rz.GlowBlowMelee 1.4
+supersample.SuperMercutio 1.0
+synapse.Geomancy 15
+voidious.mini.Komarious 1.88

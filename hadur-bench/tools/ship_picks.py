@@ -52,6 +52,11 @@ def entry(name):
     return "            %s,\n" % json.dumps(name)
 
 
+def body(ts, method):
+    head = ts.index("static String[] %s()" % method)
+    return ts[head:ts.index("        };", head)]
+
+
 def apply(picks, listdata, tabledata, label):
     ls, ts = open(listdata).read(), open(tabledata).read()
     added = {k: [] for k in CODES}
@@ -67,7 +72,7 @@ def apply(picks, listdata, tabledata, label):
                 added["md"].append(name)
                 ls = ls.replace(entry(name), "")
         for c in codes:
-            if c in TABLE:
+            if c in TABLE and entry(name) not in body(ts, TABLE[c]):
                 added[c].append(name)
     if added["mt"]:
         k = ls.rindex("        };")
