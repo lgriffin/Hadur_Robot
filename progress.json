@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-noconcord",
- "updated": 1793522976.2019796,
+ "updated": 1793523711.3116827,
  "steps": {
   "ncprep": {
    "status": "done",
@@ -15,17 +15,67 @@
    "end": "2026-11-01T08:34:33"
   },
   "ncxc": {
-   "status": "interrupted",
-   "exit": 130,
-   "seconds": 386,
-   "end": "2026-11-01T08:41:00"
+   "status": "done",
+   "exit": 0,
+   "seconds": 729,
+   "end": "2026-11-01T09:01:45"
   },
   "ncsum": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-11-01T09:01:45"
   },
   "ncpr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 5,
+   "end": "2026-11-01T09:01:51"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "ncxc",
+   "started": 1793522976.207084,
+   "updated": 1793523705.7156534,
+   "elapsed": 729.5085694789886,
+   "expected": 192,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 192,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 947.4871563107909,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 1.5728824138641357,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 192"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "ok",
+     "detail": "10.4 a battle over the last 100 (first 100: 11.6)"
+    }
+   ],
+   "skips_mean": 11.109375,
+   "skips_last100": 10.41
+  }
+ ]
 }

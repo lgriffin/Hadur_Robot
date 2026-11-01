@@ -13,3 +13,13 @@
 08:49:36 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
 08:49:36 skip ncprep (already exit=0)
 08:49:36 skip ncbb (already exit=0)
+08:49:36 start ncxc
+08:49:36 watching ncxc: 3 stop rule(s)
+08:49:38 progress pushed to origin claude/pc-team-noconcord-progress (every 15 min)
+08:50:36 progress ncxc: 56/192 (29%) battles, 3333/h, ETA 2 min, 0 failed, skips 11.8/battle (last 100)
+09:01:45 ncxc exit=0 in 729 s
+09:01:45 start ncsum
+09:01:45 ncsum exit=0 in 0 s
+09:01:45 start ncpr
+09:01:51 ncpr exit=0 in 5 s
+09:01:51 ALLDONE
