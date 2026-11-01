@@ -1655,6 +1655,14 @@ loadScripts(document, 'script');</script>
 <div class="block">The kind of battle, fixed from the engine's facts before the first tick (<a class="req" href="../requirements.html#ROLE-1">ROLE-1</a>): it names
  the roles the battle can ever ask for.</div>
 </dd>
+<dt><a href="hadur117/core/shieldmode/ShieldDesign.html#cheap" class="member-name-link">cheap</a> - Variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldDesign.html" title="class in hadur117.core.shieldmode">ShieldDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-22">SHIELD-22</a>: the cheapest plan wide enough, not the widest.</div>
+</dd>
+<dt><a href="hadur117/core/shieldmode/ShieldMode.html#CHEAP_SHARE" class="member-name-link">CHEAP_SHARE</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldMode.html" title="class in hadur117.core.shieldmode">ShieldMode</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-22">SHIELD-22</a>: the share of the widest shadow a cheaper plan needs to win with cheap on.</div>
+</dd>
 <dt><a href="hadur/bench/Memory.html#check(long,int,java.lang.String)" class="member-name-link">check(long, int, String)</a> - Static method in class hadur.bench.<a href="hadur/bench/Memory.html" title="class in hadur.bench">Memory</a></dt>
 <dd>
 <div class="block">Judges a plan against <code>freeMb</code> of free physical memory; unknown free memory (negative) passes.</div>
@@ -10175,7 +10183,7 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/shieldmode/ShieldDesign.html#parse(java.lang.String)" class="member-name-link">parse(String)</a> - Static method in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldDesign.html" title="class in hadur117.core.shieldmode">ShieldDesign</a></dt>
 <dd>
 <div class="block">The design a comma-separated list of switch names turns on (<code>hold</code>, <code>learn</code>,
- <code>mode</code>, <code>stay</code>, <code>turn</code>, <code>wall</code>, <code>trial</code>, <code>prior</code>, <code>move</code>, <code>rec</code>, <code>still</code>, or <code>all</code>); blank
+ <code>mode</code>, <code>stay</code>, <code>turn</code>, <code>wall</code>, <code>trial</code>, <code>prior</code>, <code>move</code>, <code>rec</code>, <code>still</code>, <code>cheap</code>, <code>ratio</code>, or <code>all</code>); blank
  is <a href="hadur117/core/shieldmode/ShieldDesign.html#NONE"><code>ShieldDesign.NONE</code></a>.</div>
 </dd>
 <dt><a href="hadur/bench/Bench.html#parse(java.lang.String%5B%5D)" class="member-name-link">parse(String[])</a> - Static method in class hadur.bench.<a href="hadur/bench/Bench.html" title="class in hadur.bench">Bench</a></dt>
@@ -11336,6 +11344,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/gun/GunController.html#ratedShotsForTest(java.lang.String,boolean)" class="member-name-link">ratedShotsForTest(String, boolean)</a> - Method in class hadur117.core.gun.<a href="hadur117/core/gun/GunController.html" title="class in hadur117.core.gun">GunController</a></dt>
 <dd>
 <div class="block">Test seam: how many virtual shots have been rated for a class (the main gun's count).</div>
+</dd>
+<dt><a href="hadur117/core/shieldmode/ShieldDesign.html#ratio" class="member-name-link">ratio</a> - Variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldDesign.html" title="class in hadur117.core.shieldmode">ShieldDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-23">SHIELD-23</a>: plans capped at the enemy's power times the energy ratio.</div>
 </dd>
 <dt><a href="hadur117/core/ledger/EnergyLedger.Reading.html#raw()" class="member-name-link">raw()</a> - Method in class hadur117.core.ledger.<a href="hadur117/core/ledger/EnergyLedger.Reading.html" title="class in hadur117.core.ledger">EnergyLedger.Reading</a></dt>
 <dd>
