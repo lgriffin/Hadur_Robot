@@ -1,5 +1,7 @@
 """Tests for tools/distill.py (BENCH-156): Hadur's decisions into nano string tables."""
+import contextlib
 import csv
+import io
 import os
 import sys
 import tempfile
@@ -124,6 +126,64 @@ class PowerTest(unittest.TestCase):
 
 
 # @Tag("BENCH-156")
+class OracleTest(unittest.TestCase):
+    def test_default_stands_unless_beaten_clearly(self):
+        base = {"1": 50.0, "2": 52.0, "3": 48.0, "4": 50.0}
+        # Arm 0 gains about 10 on every seed: picked.
+        win = {k: v + 10 + (0.5 if k in "13" else -0.5) for k, v in base.items()}
+        c, m, se = distill.oracle_pick({"1": base, "0": win}, "1")
+        self.assertEqual("0", c)
+        self.assertAlmostEqual(10.0, m)
+        # Arm 2 gains 1 on average but noisily: inside one SE, the default stands.
+        noisy = {"1": 41.0, "2": 62.0, "3": 47.0, "4": 54.0}
+        self.assertEqual("1", distill.oracle_pick({"1": base, "2": noisy}, "1")[0])
+        # A clear gain under --min-gain stands down too.
+        small = {k: v + 0.5 for k, v in base.items()}
+        self.assertEqual("1", distill.oracle_pick({"1": base, "2": small}, "1", min_gain=1.0)[0])
+        self.assertEqual("2", distill.oracle_pick({"1": base, "2": small}, "1")[0])
+
+    def test_best_of_several_and_missing_runs(self):
+        base = {"1": 50.0, "2": 50.0, "3": 50.0}
+        a = {k: v + 5 + int(k) * 0.1 for k, v in base.items()}
+        b = {k: v + 8 + int(k) * 0.1 for k, v in base.items()}
+        self.assertEqual("2", distill.oracle_pick({"1": base, "0": a, "2": b}, "1")[0])
+        self.assertEqual("1", distill.oracle_pick({"1": {}, "0": a}, "1")[0])
+        self.assertEqual("1", distill.oracle_pick({"1": base, "0": {"1": 99.0}}, "1")[0])
+
+    def test_field_refuses_an_empty_set(self):
+        d = tempfile.mkdtemp()
+        parts = os.path.join(d, "p.txt")
+        with open(parts, "w", encoding="utf-8") as f:
+            f.write("a.A 1.0\n")
+        with self.assertRaises(SystemExit):
+            distill.main(["field", parts, "--present", d, "--out", os.path.join(d, "f.txt")])
+
+    def test_oracle_report_is_weighted(self):
+        d = tempfile.mkdtemp()
+        rows = [("a.A 1.0", 3.0), ("b.B 1.0", 1.0)]
+        with open(os.path.join(d, "set.txt"), "w") as f:
+            for n, w in rows:
+                f.write("%s | band:%s | %s | %s\n" % (n, w, distill.jar_of(n), w))
+        for arm, gain in (("base", {"a.A_1.0": 0, "b.B_1.0": 0}), ("win", {"a.A_1.0": 10, "b.B_1.0": 0})):
+            for stem, g in gain.items():
+                for seed, wob in enumerate((0.4, -0.4, 0.2, -0.2)):
+                    p = os.path.join(d, arm, "battles", "%s-%d" % (stem, seed))
+                    os.makedirs(p)
+                    share = 50 + g + (wob if arm == "win" else 0)
+                    with open(os.path.join(p, "result.csv"), "w") as f:
+                        f.write("ok,score,theirScore\ntrue,%f,%f\n" % (share, 100 - share))
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            distill.main(["oracle", os.path.join(d, "set.txt"), "--arm", "1=" + os.path.join(d, "base"),
+                          "--arm", "0=" + os.path.join(d, "win"), "--default", "1", "--report"])
+        # a gains 10 at weight 3, b nothing at weight 1: 7.5 weighted, not 5.0 flat.
+        self.assertIn("+7.50", out.getvalue())
+
+    def test_jar_of(self):
+        self.assertEqual("kc.micro.Thorn_1.252.jar", distill.jar_of("kc.micro.Thorn 1.252"))
+
+
+# @Tag("BENCH-156")
 class HashTest(unittest.TestCase):
     def setUp(self):
         self.dir = tempfile.mkdtemp()
@@ -195,6 +255,31 @@ class HashTest(unittest.TestCase):
             distill.main(["hash", self.parts, "--shift", "32", "--report"])
         with self.assertRaises(SystemExit):
             distill.main(["hash", self.parts, "--shift", "-1", "--report"])
+
+    def test_resolve_default_and_constant_limit(self):
+        names = ["a", "q"]  # one cell under a 4-bit mask
+        s = distill.modes_string(names, {"a": "0", "q": "2"}, 15, "1", 0, "default")
+        self.assertEqual("1", s[distill.cell("a", 15)])
+        # 32,768 raw NULs are 65,536 bytes of modified UTF-8: refused.
+        with open(self.parts, "w", encoding="utf-8") as f:
+            f.write("a 1.0\n")
+        with self.assertRaises(SystemExit):
+            distill.main(["hash", self.parts, "--raw", "--min-bits", "15", "--src", self.src])
+
+    def test_unlisted_robots_play_the_default_in_a_shared_cell(self):
+        names = ["a", "q"]  # one cell under a 4-bit mask; q is not in the modes file
+        for resolve in ("first", "default", "high"):
+            s = distill.modes_string(names, {"a": "0"}, 15, "1", 0, resolve)
+            self.assertEqual("0" if resolve == "first" else "1", s[distill.cell("a", 15)], resolve)
+        s = distill.modes_string(["q", "a"], {"a": "0"}, 15, "1", 0, "first")
+        self.assertEqual("1", s[distill.cell("a", 15)])
+
+    def test_modified_utf8_length(self):
+        self.assertEqual(3, distill.modified_utf8_len("abc"))
+        self.assertEqual(2, distill.modified_utf8_len("\0"))
+        self.assertEqual(2, distill.modified_utf8_len("\u00e9"))
+        self.assertEqual(3, distill.modified_utf8_len("\u20ac"))
+        self.assertEqual(6, distill.modified_utf8_len("\U0001F600"))
 
     def test_hash_writes_the_constant(self):
         modes = os.path.join(self.dir, "modes.tsv")

@@ -2356,6 +2356,13 @@ profiles, and the rumbles list it as a new participant.
   trades a few cautious cells for the shift's 3 bytes. Eveimear arms HM (714 B), HP (749 B) and HM7
   play the table in place of, or before, EVEIMEAR-3's detection; `plans/pc-eveimear-h1.queue`
   measures them against 0.1 (docs/kitlab.md section 6).
+- **distill.py after pc-eveimear-h1 (2026-10-31).** pc-eveimear-h1 failed (PR #516): a gun's hit
+  rate on Hadur is the wrong signal for a stop-and-go robot (docs/kitlab.md section 7).
+  `tools/distill.py field` writes a whole-rumble set (`--present` drops robots with no jar, an empty
+  set is refused); `oracle` picks per robot the arm that beat the default battle by battle
+  (`--z`, `--min-gain`), its summary weighted as `kitlab_read.py` weighs a run; `hash` gives a robot
+  the modes file does not list the default, `--resolve default` sends an allowed conflict back to
+  it, and a constant over 65,535 bytes of modified UTF-8 is refused.
 - **Confirm (PR #529).** pc-team-concord2, 46 teams x 16 fresh seeds from 6900: **+0.50 +- 0.43 APS**
   (PASS), so CONCORD stays on every team. Four teams lost on both cards: Ogi -3.8 then -9.5,
   Nightmare -1.1 then -8.6, Firestarter -1.9 then -4.8, Combat -1.6 then -3.9 share points.

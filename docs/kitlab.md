@@ -167,3 +167,28 @@ What the same lookup can carry next, at a few bytes each once a mode char is in 
 by opponent, the orbit distance, head-on against the robots Hadur rates M0, aim jitter against the
 shielders Hadur has flagged, and, for the mini, GuessFactor bins seeded by opponent class so the gun
 does not spend the first rounds learning what Hadur already knows. The nano gets one bit of it.
+
+## 7. pc-eveimear-h1 results: Hadur's census is the wrong teacher for Eveimear
+
+pc-eveimear-h1 (PR #516) failed every arm against 0.1 on 48 bots x 6 seeds: HM -4.78 ± 0.30, HP
+-0.93 ± 0.30, HM7 -5.40 ± 0.27. Leigh's per-opponent read (`kitlab_read.py --pairs`) put the loss
+on a few robots, and the table's own modes explain all of it:
+
+| Robots | Hit rate on Hadur | Table | HM | HP |
+|---|---|---|---|---|
+| Ant, SleepingGoat, RaikoMicro, GFMicro, Thorn, UnfoolableNano, MirrorPM | 0.008-0.049 | 0, stop-and-go | -13 to -52 | about 0 |
+| HedgehogGF, WaveShark, EpeeistDC | 0.058-0.069 | 1, random | +7.2, +5.5, +2.9 | |
+| NanoSatanMelee, Capulet | 0.056, 0.080 | 1, random | -11.6, -7.1 | -13.9, -8.2 |
+
+Every large loss is a robot the table called a weak gun. Hit rate on Hadur, a top surfer, measures
+how good a gun is, not whether it beats stop-and-go: Thorn hits Hadur 1.6% of the time and is
+lethal to a robot that stops. HM had no detection to fall back on and stopped for 35 rounds; HP
+kept 0.1's detection and recovered those robots. The table's random calls were right (HM7, which
+moved HedgehogGF, WaveShark and EpeeistDC back to stop-and-go, lost 39, 21 and 30 on them), and a
+third case wants neither: NanoSatanMelee was +2.4 under HM7, which never switched.
+
+So the modes are three (random from the first hit, 0.1's detection, never switch) and the teacher
+is Eveimear's own battles. That card is `plans/pc-eveimear-st.queue` (PR #519,
+docs/bench/kitlab-priors.md): 0.1 in each mode on all 515 MicroRumble robots, the per-robot pick
+packed with `tools/distill.py hash` into arm ST, read on a fresh sample. `tools/distill.py oracle`
+(BENCH-156) is the same pick with a paired-SE test, for a later card that wants one.
