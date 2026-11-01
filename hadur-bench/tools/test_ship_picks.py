@@ -61,6 +61,40 @@ class ShipPicksTest(unittest.TestCase):
         with self.assertRaises(SystemExit):
             sp.apply([("a.Listed 1.0", "mt")], lp, tp, "again")
 
+    def test_codes_from_combined_arm(self):
+        """A confirm card's pick says rp; the card's input lists give each robot's own codes."""
+        d = tempfile.mkdtemp()
+        pre = os.path.join(d, "near")
+        lists = {"add": ["c.New 1.0"], "drop": ["b.StopGo 1.0"], "still": ["c.New 1.0", "a.Listed 1.0"],
+                 "exit0": ["a.Listed 1.0"], "stopgo": ["b.StopGo 1.0"], "stopgo2": ["d.Free 1.0"]}
+        for k, v in lists.items():
+            open("%s-%s.txt" % (pre, k), "w").write("# header\n" + "".join(n + "\n" for n in v))
+        codes = sp.codes_from(pre)
+        self.assertEqual(codes, {"c.New 1.0": "mtzl", "a.Listed 1.0": "zlx0", "b.StopGo 1.0": "mdwl", "d.Free 1.0": "wm"})
+        pick = os.path.join(d, "pick.tsv")
+        open(pick, "w").write("c.New 1.0\trp\t9.1\t3.2\t8\t8\nb.StopGo 1.0\trp\t4.0\t3.1\t8\t8\n")
+        with self.assertRaises(ValueError):
+            [sp.parts(arm) for _, arm in sp.read_picks(pick)]
+        picks = sp.recode(sp.read_picks(pick), codes)
+        self.assertEqual(picks, [("c.New 1.0", "mtzl"), ("b.StopGo 1.0", "mdwl")])
+        lp, tp = os.path.join(d, "L.java"), os.path.join(d, "T.java")
+        open(lp, "w").write(LIST)
+        open(tp, "w").write(TABLE)
+        sp.apply(picks, lp, tp, "near")
+        self.assertIn('"c.New 1.0",', open(lp).read())
+        self.assertNotIn('"b.StopGo 1.0"', open(lp).read())
+        with self.assertRaises(SystemExit):
+            sp.recode([("z.Unknown 1.0", "rp")], codes)
+
+    def test_rival_near_lists(self):
+        """Every robot on the rival-near panel gets a code ship_picks accepts."""
+        here = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+        codes = sp.codes_from(os.path.join(here, "plans", "rival-near"))
+        panel = sp.names(os.path.join(here, "panel-rival-near.txt"))
+        self.assertEqual(sorted(codes), sorted(panel))
+        for n in panel:
+            sp.parts(codes[n])
+
 
 if __name__ == "__main__":
     unittest.main()
