@@ -9,11 +9,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-174: the cold-against-warm card (plans/pc-warm.queue) is complete before it reaches the PC. */
+/** BENCH-175: the cold-against-warm card (plans/pc-warm.queue) is complete before it reaches the PC. */
 class WarmPlanTest {
 
     @Test
-    @Tag("BENCH-174")
+    @Tag("BENCH-175")
     @DisplayName("sa, aa and lw cold then warm on the 400 screen at 2 fresh seeds, the reads, the stop rules and the PR")
     void cardIsComplete() throws IOException {
         String queue = Files.readString(Path.of("plans/pc-warm.queue"));

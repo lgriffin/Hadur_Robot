@@ -45,7 +45,7 @@ found a stored verdict for about 55% of opponents.
   opponents met twice and scored under 60% against (MEM-8, ADAPT-3). Those are the strong learners, where a
   bad replay costs the most.
 
-## The card: pc-warm (BENCH-174)
+## The card: pc-warm (BENCH-175)
 
 `plans/pc-warm.queue` measures this at scale on the PC:
 

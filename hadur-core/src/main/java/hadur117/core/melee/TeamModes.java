@@ -125,7 +125,13 @@ public final class TeamModes {
          * while any is left. The dodge's 15-tick check alone saw a teammate's bullet only once every
          * reachable spot was already in its path.
          */
-        CLEAR
+        CLEAR,
+        /**
+         * TMODE-39: the dodge's check of the enemies' waves drives each destination from the member's
+         * heading and velocity at the engine's turn rate, as CLEAR's check does, not from a standstill
+         * already facing the spot: a member at full speed the other way cannot dodge as that drive says.
+         */
+        MOMENTUM
     }
 
     /**
@@ -156,6 +162,8 @@ public final class TeamModes {
     public static final boolean FORCE_WARY = false;
     /** TMODE-38: CLEAR on every team, the ones the table names included (as PATH, TMODE-28). */
     public static final boolean FORCE_CLEAR = false;
+    /** TMODE-39: MOMENTUM on every team, the ones the table names included (as CLEAR). */
+    public static final boolean FORCE_MOMENTUM = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -241,14 +249,21 @@ public final class TeamModes {
     /** The modes against {@code enemies}: the first one the table names, else the default. */
     public static Set<Mode> against(List<EnemyInfo> enemies) {
         Set<Mode> m = against(enemies, TABLE, DEFAULT);
-        return FORCE_CLEAR ? withClear(m) : m;
+        if (FORCE_CLEAR) m = with(m, Mode.CLEAR);
+        if (FORCE_MOMENTUM) m = with(m, Mode.MOMENTUM);
+        return m;
     }
 
     /** TMODE-38: {@code m} with CLEAR added. */
     static Set<Mode> withClear(Set<Mode> m) {
-        if (m.contains(Mode.CLEAR)) return m;
+        return with(m, Mode.CLEAR);
+    }
+
+    /** {@code m} with {@code mode} added (TMODE-38, TMODE-39). */
+    static Set<Mode> with(Set<Mode> m, Mode mode) {
+        if (m.contains(mode)) return m;
         EnumSet<Mode> out = m.isEmpty() ? EnumSet.noneOf(Mode.class) : EnumSet.copyOf(m);
-        out.add(Mode.CLEAR);
+        out.add(mode);
         return Collections.unmodifiableSet(out);
     }
 

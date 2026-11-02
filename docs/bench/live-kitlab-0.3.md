@@ -74,3 +74,21 @@ Grouped by the opponent's MiniRumble rank. "Share" is the group's part of the wh
    (it takes 45% more damage than WaveShark, docs/bench/eveimear-gap.md).
 
 Each step releases on Leigh's word, and nothing is uploaded without his go.
+
+## Step 1 result: pc-jaylexi-rows (PR #588, 2026-11-02)
+
+The paired gain over 0.3 (J3), 6 seeds:
+
+| Arm | mini-wide2 (672 battles, decides) | paired estimate | top 60 (360 battles) |
+|---|---|---|---|
+| S30 | +0.36 ± 0.17 | 88.29 | +2.17 ± 0.38 |
+| S60 | +0.52 ± 0.15 | 88.45 | +2.99 ± 0.36 |
+| **S120** | **+0.72 ± 0.15** | **88.65** | **+3.05 ± 0.38** |
+| L60 | +0.54 ± 0.15 | 88.47 | +2.39 ± 0.37 |
+
+All four pass, and the gain still grows at 120. **0.4 = S120** (`jaylexi/`, 1,494 B, replay and
+jar tests pass). At 88.65 it would sit 2nd, 0.13 behind CunobelinDC and 0.37 behind FoilistMC.
+The next card, `hadur-bench/plans/pc-jaylexi-rows2.queue`, climbs on (top 200, 300, 450 and all)
+against 0.4 on a fresh sample (`kitlab/mini-wide3-field.txt`, rank-band seed 5), with 0.3 seated
+again to read 0.4's gain off the sample it was picked on.
+

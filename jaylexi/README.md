@@ -24,6 +24,13 @@ trimmed to 1,494 bytes with plain javac: waves take themselves off the event lis
 distance is a lookup string, the bin clamp's offset folds into the double, and the busiest
 double takes a one-byte local slot.
 
+0.4 (prepared 2026-11-02, tag `jaylexi-v0.4` on Leigh's go) gives the top 120 MiniRumble bots
+(by the 2026-11-02 rankings) the field's surf row instead of their own. Live, 0.3's own rows cost
+it 6 to 8 APS against each learning gun at the top. Only the data string changes, so it is still
+1,494 bytes and plays as 0.3 against the rest. Bench (pc-jaylexi-rows, PR #588): +0.72 ± 0.15
+over 0.3 on mini-wide2 (paired estimate 88.65), and +3.05 on the top 60
+(docs/bench/live-kitlab-0.3.md).
+
 ## Standing
 
 | Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | Next up | Gap |

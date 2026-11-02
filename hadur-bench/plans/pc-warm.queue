@@ -1,4 +1,4 @@
-# 1v1, what opponent memory is worth: every battle cold, then warm on the profile it left (BENCH-174, K3 of the road
+# 1v1, what opponent memory is worth: every battle cold, then warm on the profile it left (BENCH-175, K3 of the road
 # to king). Leigh starts it once the PC is free (not beside another card: two cards on one checkout collide):
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-warm        (or  ./queue.sh run pc-warm)

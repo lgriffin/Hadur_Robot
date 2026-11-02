@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""BENCH-174: read a --cold-warm run (cold-warm.tsv) of a robot and its baseline.
+"""BENCH-175: read a --cold-warm run (cold-warm.tsv) of a robot and its baseline.
 
   python3 tools/cold_warm_read.py RUN/cold-warm.tsv [RUN2/cold-warm.tsv ...] --robot "hadur117.Hadur 3.21sa" --baseline "hadur117.Hadur 3.21aa" \
       --out REPORT.md --out-tsv PER_ROBOT.tsv
@@ -63,7 +63,7 @@ def main(argv=None):
         per[opp] = {build: (st.mean(src[s][0] for s in seeds), st.mean(src[s][1] for s in seeds))
                     for build, src in ((a.robot, r), (a.baseline, b))}
     both = sorted(per)
-    lines = ["# Cold against warm (BENCH-174)", "",
+    lines = ["# Cold against warm (BENCH-175)", "",
              "%d robots with both builds' pairs on the same seeds; each robot weighted equally (points of score share)." % len(both), "",
              "| Read | Mean ± 95% |", "|---|---|"]
     for build in (a.baseline, a.robot):

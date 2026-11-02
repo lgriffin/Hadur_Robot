@@ -1,0 +1,80 @@
+# Sanaro's stage N11 (docs/sanaro.md section 20): the weaker-fire progression. pc-sanaro-n09 (results
+# on claude/pc-sanaro-n09-results, 2026-11-02) was flat arm by arm: B480 +0.10 +-0.33 (survival 23.8
+# to 28.2), K65 +0.06, B560 +0.02, K80 -0.08. Weaker fire buys 2-4 points of survival at no APS cost,
+# and the BAND steps lean up (B560 +0.02, B480 +0.10). Leigh 2026-11-02: small increments work, think
+# progression. So this card climbs that slope in small steps on twice the seeds, to read 0.1-0.2 APS.
+#   ./queue.sh run pc-sanaro-n10        (or  .\queue.ps1 run pc-sanaro-n10)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers. Every step resumes; no step needs
+# a decision. Nothing here touches Hadur, Saor, TwinSaor, Deise, JayLexi or Eveimear. No teach run.
+# Arms (sanaro-arms/arms.txt, on 0.3's source, all 249 B: BAND is one constant, the table a string):
+#   S3    Sanaro 0.3 as it ships (control)
+#   B480  BAND 480 again, on fresh seeds (n09's best)
+#   B400  BAND 400: 0.1 past 400, x1 to 200, x2 to 133
+#   B320  BAND 320: 0.1 past 320, x1 to 160, x2 to 107
+#   B4K8  BAND 480 and the table x 0.8
+# Live-shaped census: 43 fields x 20 fresh seeds (base 28000) = 860 battles an arm, about 50 min an
+# arm at n09's 1,050 an hour (95% on a difference about +-0.23). About 4 h 10 min in all.
+# Read against S3. An arm passes when the low end of its difference is above zero (SANARO-13). The
+# best passing arm is 0.4 on Leigh's word. If B480 repeats near +0.1 but misses the bar, the next
+# step pools n09's and n10's B480 battles (1,290 against 1,290).
+# Stop rules on every battle step (docs/bench/watch.md; halt, every battle fought is kept and a
+# rerun resumes):
+# - 20 failed battles (a broken jar).
+# - No battle in 30 minutes (a hung step).
+# - 40+ skipped turns a battle over the last 100 (the PR #331 build-up).
+# A halt at worst leaves the rest of that step and the steps after it unrun: at most 4,300 battles,
+# about 4 h 10 min. There is no early finish on score. A census step is one robot, so there is no
+# arm to compare against before the read. ALERT opens an issue for Leigh on a stop.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set ARMS = S3,B480,B400,B320,B4K8
+
+prep | (cd .. && mvn -q -DskipTests install -pl sanaro -am) && mkdir -p work/sanaro-n10 && cp ../sanaro/target/hadur117.nano.Sanaro_0.3.jar opponents/ && ./fetch-opponents.sh --set nanomelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done
+
+arms | SANARO_RUN=n10 bash tools/sanaro_arms.sh live 20 28000 ${ARMS}
+  after: prep
+
+live-S3 | ${MVN} "-Dexec.args=@work/sanaro-n10/live-S3.args"
+  after: arms
+  watch: battles=860
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-B480 | ${MVN} "-Dexec.args=@work/sanaro-n10/live-B480.args"
+  after: live-S3
+  watch: battles=860
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-B400 | ${MVN} "-Dexec.args=@work/sanaro-n10/live-B400.args"
+  after: live-B480
+  watch: battles=860
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-B320 | ${MVN} "-Dexec.args=@work/sanaro-n10/live-B320.args"
+  after: live-B400
+  watch: battles=860
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-B4K8 | ${MVN} "-Dexec.args=@work/sanaro-n10/live-B4K8.args"
+  after: live-B320
+  watch: battles=860
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+read-live | python3 tools/sanaro_read.py --work-root work/sanaro-n10 --field live --arms ${ARMS} --control S3 --only work/sanaro-n10/live/micro.txt --live 66.44 > ${OUT}/sanaro-n10-live.md
+  after: live-B4K8
+
+pr | bash tools/open_results_pr.sh claude/pc-sanaro-n10-results "Sanaro stage N11: the weaker-fire progression against 0.3" ${OUT}/sanaro-n10-live.md ${OUT}/sanaro-n10-live-*.md
+  after: read-live
