@@ -1,0 +1,31 @@
+# PC card pc-team-momentum (BENCH-171): arm bb against aa, 45 teams (TidalWave out) x 12 seeds from 7700. Template: mtprep writes work/team-momentum-bb.args with @V@ = the robot.release in hadur-robot/pom.xml
+--team
+true
+--seeds
+12
+--seed-base
+7700
+--rounds
+10
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+plans/team-angles-set.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@bb.jar
+--robot
+hadur117.HadurTeam @V@bb
+--member
+hadur117.Hadur
+--out
+work/team-momentum-@V@-bb
+--report
+../docs/bench/local/team-momentum-bb.md
+--baseline
+bisect/hadur117.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur117.HadurTeam @V@aa

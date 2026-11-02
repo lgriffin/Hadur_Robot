@@ -584,6 +584,30 @@ class TeamModesTest {
     }
 
     @Test
+    @Tag("TMODE-39")
+    @DisplayName("TMODE-39: MOMENTUM's wave check drives from the robot's heading and speed, so a side step that needs a turn first is no longer rated safe")
+    void momentumDrivesFromMotion() {
+        // As waveDamage: a power 3 wave from (600, 200) north reaches y = 600 near tick 35. On tick 28
+        // Hadur at (600, 600) has about 7 ticks to step aside east.
+        EnemyShot shot = new EnemyShot("e", pt(600, 200), 0, 3.0);
+        List<MinimumRiskMovement.Wave> waves = MinimumRiskMovement.Wave.of(List.of(
+            new VirtualBullet(shot, VirtualBullet.Aim.HEAD_ON, 0.0)));
+        double still = MinimumRiskMovement.waveDamage(pt(600, 600), pt(800, 600), 28, waves);
+        // Already facing east and stopped, the drive is the standstill one.
+        assertEquals(still, MinimumRiskMovement.waveDamageMoving(pt(600, 600), Math.PI / 2, 0, pt(800, 600), 28, waves, null), 1e-9);
+        // Running north at 8 px a tick, Hadur must turn 90 degrees first and stays in the wave's path.
+        double running = MinimumRiskMovement.waveDamageMoving(pt(600, 600), 0, 8, pt(800, 600), 28, waves, null);
+        assertTrue(running > still + 1, "running " + running + " still " + still);
+        assertEquals(0.0, MinimumRiskMovement.waveDamageMoving(pt(600, 600), 0, 8, pt(800, 600), 28, List.of(), null), 0.0);
+        assertFalse(TeamModes.FORCE_MOMENTUM);
+        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.MOMENTUM));
+        Set<TeamModes.Mode> named = EnumSet.of(TeamModes.Mode.MATEFIRE, TeamModes.Mode.DODGE);
+        Set<TeamModes.Mode> with = TeamModes.with(named, TeamModes.Mode.MOMENTUM);
+        assertTrue(with.contains(TeamModes.Mode.MOMENTUM) && with.containsAll(named));
+        assertSame(with, TeamModes.with(with, TeamModes.Mode.MOMENTUM));
+    }
+
+    @Test
     @Tag("TMODE-25")
     @DisplayName("TMODE-25: a teammate's bullet is counted, at its damage, on a drive that meets it and not on one that leaves its line")
     void pathCheck() {
