@@ -46,6 +46,16 @@ public final class HandOffDesign {
     /** HAND-4: the endgame duel's opening distance, in px: DistancePolicy's floor. */
     public static final double ENDGAME_CLOSE_OPENING = 400;
 
+    /**
+     * HAND-5 (arm emgun): in the endgame duel, the melee's field gun aims and fires at the
+     * survivor in place of the duel gun, while its kNN history of the survivor is deep enough to
+     * be a learned aim (the field gun's own test). The field gun has watched the survivor all
+     * battle and keeps reading its scans in the duel; the duel gun has only the endgames' few
+     * hundred ticks. The duel still moves and runs the radar. On the 1.11.2 cloud census Hadur
+     * wins 43% of its endgame duels against top-10 survivors even when ahead on energy.
+     */
+    public static final boolean ENDGAME_MELEE_GUN = false;
+
     private HandOffDesign() {
     }
 }

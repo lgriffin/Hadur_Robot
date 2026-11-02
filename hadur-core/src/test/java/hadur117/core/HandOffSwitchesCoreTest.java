@@ -206,4 +206,32 @@ class HandOffSwitchesCoreTest {
         assertEquals(Posture.DUEL, core.posture());
         return core;
     }
+
+    @Test
+    @Tag("HAND-5")
+    @DisplayName("HAND-5: in a melee endgame the field gun fires at the survivor once its history is learned; off, it never does")
+    void meleeGunInEndgame() {
+        assertFalse(HandOffDesign.ENDGAME_MELEE_GUN, "ships off");
+        assertEquals(0, endgameShots(false, false));
+        assertTrue(endgameShots(true, false) > 0, telemetry.toString());
+        // A team battle's charter is TEAM, which the switch never acts under (HadurCore's gate).
+    }
+
+    /** Field-gun shots in ticks 31 to 200 of a melee that left A alone at tick 30. */
+    private int endgameShots(boolean on, boolean onTeam) {
+        telemetry.clear();
+        HadurCore core = new HadurCore(BattleFacts.solo(1000, 1000, 3), telemetry::add, null, null, ShieldList.NONE);
+        core.endgameMeleeGun(on);
+        core.duel().team(onTeam);
+        core.prepareMemory();
+        core.newRound(0);
+        for (long t = 1; t < 30; t++) {
+            core.tick(input(t, 3, List.of(scan(A, 0), scan(B, 2), scan(C, 4))));
+        }
+        core.tick(input(30, 1, List.of(new BotEvent.RobotDeath(B), new BotEvent.RobotDeath(C), scan(A, 0))));
+        for (long t = 31; t <= 200; t++) {
+            core.tick(new BotInput(t, 0, 500, 500, 0, 0, 100, 0, 0, 0, 0, 0, 1, List.of(scan(A, 0))));
+        }
+        return core.endgameMeleeShots();
+    }
 }

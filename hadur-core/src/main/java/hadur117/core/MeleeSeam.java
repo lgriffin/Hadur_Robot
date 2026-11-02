@@ -47,6 +47,10 @@ final class MeleeSeam implements Role {
     private final boolean writes;
     /** What the melee brain asked for last tick; its fire power goes out this tick if the gun is there. */
     private MeleeController.Command lastCommand;
+    /** HAND-5: the field gun's last endgame aim, while it holds the gun; else null. */
+    private MeleeController.Command lastEndgameAim;
+    /** HAND-5: endgame shots the field gun fired this round. */
+    int endgameShots;
     /** The first exception a melee event handler threw this tick (GATE-4). */
     private RuntimeException eventFault;
     /** Melee memory failures this battle, for the M record (RES-5). */
@@ -88,6 +92,8 @@ final class MeleeSeam implements Role {
         wavesAtRoundStart[1] = melee.waves().resolved();
         wavesAtRoundStart[2] = melee.waves().hits();
         melee.profiles().newRound();
+        lastEndgameAim = null;
+        endgameShots = 0;
     }
 
     @Override
@@ -341,6 +347,32 @@ final class MeleeSeam implements Role {
         orders.turnGunRight(c.gunTurn);
         if (c.destination != null) goTo(in, c.destination, orders);
         lastCommand = c;
+    }
+
+    /**
+     * HAND-5: in the endgame duel, after the duel has driven, the field gun takes the gun while
+     * its aim on the survivor is a learned one: it fires last tick's aim when the gun is cool and
+     * has finished turning (as {@link #drive} does), holds the duel's shot, and turns to this
+     * tick's aim. Returns whether it took the gun; when it did not, the duel's orders stand.
+     */
+    boolean endgameGun(Tick tick, BotOrders.Builder orders) {
+        BotInput in = tick.in();
+        MeleeController.Command previous = lastEndgameAim;
+        MeleeController.Command c = melee.endgameAim(new MeleeController.Situation(
+            in.location(), in.gunHeading(), in.radarHeading(), in.energy(), in.time(),
+            in.others(), in.heading(), in.velocity(), in.gunHeat(), core.livingTeammates()));
+        lastEndgameAim = c.target != null && c.learnedAim ? c : null;
+        if (lastEndgameAim == null) return false;
+        orders.fire(0);
+        if (previous != null && previous.firePower > 0 && in.gunHeat() == 0
+                && Math.abs(Math.toDegrees(in.gunTurnRemaining())) < 0.05
+                && in.energy() > previous.firePower && tick.mayFire()) {
+            orders.fire(previous.firePower);
+            endgameShots++;
+            melee.shotFired(in.location(), in.time(), in.gunHeading(), previous.firePower, previous.target);
+        }
+        orders.turnGunRight(c.gunTurn);
+        return true;
     }
 
     /**
