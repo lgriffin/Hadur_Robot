@@ -1,6 +1,6 @@
 {
  "plan": "pc-sanaro-n08",
- "updated": 1793624195.9516575,
+ "updated": 1793624857.483689,
  "steps": {
   "prep": {
    "status": "done",
@@ -51,14 +51,22 @@
    "end": "2026-11-02T12:38:07"
   },
   "live-DAO": {
-   "status": "running",
-   "start": "2026-11-02T12:38:07"
+   "status": "done",
+   "exit": 0,
+   "seconds": 1752,
+   "end": "2026-11-02T13:07:19"
   },
   "read-live": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 7,
+   "end": "2026-11-02T13:07:27"
   },
   "pr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 10,
+   "end": "2026-11-02T13:07:37"
   }
  },
  "watched": [
@@ -280,8 +288,8 @@
   {
    "step": "live-DAO",
    "started": 1793623087.152865,
-   "updated": 1793624195.9419544,
-   "elapsed": 1108.7890894412994,
+   "updated": 1793624839.461921,
+   "elapsed": 1752.3090560436249,
    "expected": 430,
    "panel": null,
    "field": null,
@@ -289,20 +297,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 210,
+   "battles": 430,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 681.8248909546323,
-   "eta": 1161.588569890885,
-   "fraction": 0.4883720930232558,
-   "last_battle_age": 18.155141830444336,
+   "rate": 883.4058094153122,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 0.19108128547668457,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 210"
+     "detail": "0 failed of 430"
     },
     {
      "rule": "stall 30m",

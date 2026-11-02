@@ -29,3 +29,9 @@
 12:38:07 start live-DAO
 12:38:07 watching live-DAO: 3 stop rule(s)
 12:42:29 progress live-DAO: 60/430 (14%) battles, 823/h, ETA 27 min, 0 failed, skips 0.0/battle (last 100)
+13:07:19 live-DAO exit=0 in 1752 s
+13:07:19 start read-live
+13:07:27 read-live exit=0 in 7 s
+13:07:27 start pr
+13:07:37 pr exit=0 in 10 s
+13:07:37 ALLDONE
