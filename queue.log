@@ -7,3 +7,5 @@
 07:50:48 progress anbb: 0/736 (0%) battles, 0 failed
 08:16:09 anbb exit=130 in 1534 s (stopped)
 08:16:09 stopped; rerun to resume from the interrupted steps
+09:50:55 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
+09:50:55 skip anprep (already exit=0)

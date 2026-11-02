@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-angles",
- "updated": 1793607369.458569,
+ "updated": 1793613055.1329167,
  "steps": {
   "anprep": {
    "status": "done",
@@ -42,49 +42,5 @@
    "status": "pending"
   }
  },
- "watched": [
-  {
-   "step": "anbb",
-   "started": 1793605834.828292,
-   "updated": 1793607369.441375,
-   "elapsed": 1534.6130831241608,
-   "expected": 736,
-   "panel": null,
-   "field": null,
-   "multiarm": false,
-   "arms": [],
-   "aa": null,
-   "warnings": [],
-   "battles": 191,
-   "resumed": 0,
-   "failed": 0,
-   "disables": null,
-   "rate": 448.06082234108544,
-   "eta": 4378.8697921605635,
-   "fraction": 0.2595108695652174,
-   "last_battle_age": 14.075519561767578,
-   "rules": [
-    {
-     "rule": "fails 20",
-     "action": "halt",
-     "state": "ok",
-     "detail": "0 failed of 191"
-    },
-    {
-     "rule": "stall 30m",
-     "action": "halt",
-     "state": "ok",
-     "detail": "last battle 0 min ago"
-    },
-    {
-     "rule": "skips 40 over 100",
-     "action": "halt",
-     "state": "ok",
-     "detail": "19.7 a battle over the last 100 (first 100: 18.9)"
-    }
-   ],
-   "skips_mean": 18.984293193717278,
-   "skips_last100": 19.71
-  }
- ]
+ "watched": []
 }
