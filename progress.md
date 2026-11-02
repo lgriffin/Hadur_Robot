@@ -30,7 +30,6 @@ Stopping now would leave 358 battles unrun (about 19 min); every battle already 
 ### Queue log (last lines)
 
 ```
-07:47:49 progress pushed to origin claude/pc-team-angles-progress (every 15 min)
 07:50:34 anprep exit=0 in 167 s
 07:50:34 start anbb
 07:50:34 watching anbb: 3 stop rule(s)
@@ -45,4 +44,5 @@ Stopping now would leave 358 battles unrun (about 19 min); every battle already 
 09:51:55 progress anbb: 191/720 (27%) battles, 11372/h, ETA 3 min, 0 failed, skips 19.7/battle (last 100)
 10:10:03 STOP anbb by rule fails 20: 24 failed of 362; 362 battles fought and kept, 358 battles left unrun (about 19 min)
 10:10:04 anbb exit=75 in 1148 s (halted, fails 20)
+10:10:04 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 ```
