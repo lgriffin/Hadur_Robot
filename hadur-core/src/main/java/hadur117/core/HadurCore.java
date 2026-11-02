@@ -473,6 +473,8 @@ public final class HadurCore {
             if (melee) orders = meleeFailed(in, eventFault);
             else recordMeleeFault(in, eventFault);
             melee = false;
+            // HAND-5 fails closed too: a melee brain that threw keeps no gun this round.
+            endgameThisRound = false;
         }
         // WEAVE-3: the permission is given before the role drives, from where Hadur is now.
         // WEAVE-4: on a team it is withheld while a teammate stands in the fire lane.
@@ -489,13 +491,25 @@ public final class HadurCore {
                 orders = meleeFailed(in, ex);
             }
         } else {
-            duelSeam.drive(drive, orders);
+            // HAND-5: whether the melee field gun owns the gun is settled before the duel
+            // drives, so on its ticks the duel drives without leave to fire and books no shot.
+            boolean fieldGun = false;
             if (endgameMeleeGun && endgameThisRound && meleeSeam != null && teamLink == null
                     && gate.charter() == Charter.MELEE && in.others() == 1) {
                 try {
-                    meleeSeam.endgameGun(drive, orders);
+                    fieldGun = meleeSeam.endgameOwnsGun(drive);
                 } catch (RuntimeException ex) {
                     // HAND-5 fails closed: the duel's gun keeps the rest of the round.
+                    endgameThisRound = false;
+                    recordMeleeFault(in, ex);
+                }
+            }
+            duelSeam.drive(fieldGun ? tick.forDrive(RoleId.DUEL, focusing, budget.level(), false) : drive,
+                orders);
+            if (fieldGun) {
+                try {
+                    meleeSeam.endgameGun(drive, orders);
+                } catch (RuntimeException ex) {
                     endgameThisRound = false;
                     recordMeleeFault(in, ex);
                 }

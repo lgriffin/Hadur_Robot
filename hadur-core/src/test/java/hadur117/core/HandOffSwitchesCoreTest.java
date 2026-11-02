@@ -8,6 +8,7 @@ import hadur117.core.duel.HandOffDesign;
 import hadur117.core.model.BattleFacts;
 import hadur117.core.model.BotEvent;
 import hadur117.core.model.BotInput;
+import hadur117.core.model.BotOrders;
 import hadur117.core.role.Posture;
 import hadur117.core.shieldmode.ShieldList;
 import java.util.ArrayList;
@@ -214,8 +215,13 @@ class HandOffSwitchesCoreTest {
         assertFalse(HandOffDesign.ENDGAME_MELEE_GUN, "ships off");
         assertEquals(0, endgameShots(false, false));
         assertTrue(endgameShots(true, false) > 0, telemetry.toString());
+        // Every shot that leaves is booked once, and the duel books none the field gun held.
+        assertEquals(firedOrders, bookedShots, "fire orders against shots booked");
         // A team battle's charter is TEAM, which the switch never acts under (HadurCore's gate).
     }
+
+    private int firedOrders;
+    private int bookedShots;
 
     /** Field-gun shots in ticks 31 to 200 of a melee that left A alone at tick 30. */
     private int endgameShots(boolean on, boolean onTeam) {
@@ -229,9 +235,13 @@ class HandOffSwitchesCoreTest {
             core.tick(input(t, 3, List.of(scan(A, 0), scan(B, 2), scan(C, 4))));
         }
         core.tick(input(30, 1, List.of(new BotEvent.RobotDeath(B), new BotEvent.RobotDeath(C), scan(A, 0))));
+        int booked = core.stats().shotsFired;
+        firedOrders = 0;
         for (long t = 31; t <= 200; t++) {
-            core.tick(new BotInput(t, 0, 500, 500, 0, 0, 100, 0, 0, 0, 0, 0, 1, List.of(scan(A, 0))));
+            BotOrders o = core.tick(new BotInput(t, 0, 500, 500, 0, 0, 100, 0, 0, 0, 0, 0, 1, List.of(scan(A, 0))));
+            if (o.firePower() > 0) firedOrders++;
         }
+        bookedShots = core.stats().shotsFired - booked;
         return core.endgameMeleeShots();
     }
 }

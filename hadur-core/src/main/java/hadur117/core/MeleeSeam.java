@@ -49,6 +49,8 @@ final class MeleeSeam implements Role {
     private MeleeController.Command lastCommand;
     /** HAND-5: the field gun's last endgame aim, while it holds the gun; else null. */
     private MeleeController.Command lastEndgameAim;
+    /** HAND-5: the learned aim before this tick's, which a shot this tick fires along. */
+    private MeleeController.Command endgamePrevious;
     /** HAND-5: endgame shots the field gun fired this round. */
     int endgameShots;
     /** The first exception a melee event handler threw this tick (GATE-4). */
@@ -93,6 +95,7 @@ final class MeleeSeam implements Role {
         wavesAtRoundStart[2] = melee.waves().hits();
         melee.profiles().newRound();
         lastEndgameAim = null;
+        endgamePrevious = null;
         endgameShots = 0;
     }
 
@@ -350,29 +353,41 @@ final class MeleeSeam implements Role {
     }
 
     /**
-     * HAND-5: in the endgame duel, after the duel has driven, the field gun takes the gun while
-     * its aim on the survivor is a learned one: it fires last tick's aim when the gun is cool and
-     * has finished turning (as {@link #drive} does), holds the duel's shot, and turns to this
-     * tick's aim. Returns whether it took the gun; when it did not, the duel's orders stand.
+     * HAND-5: in the endgame duel, before the duel drives, decides whether the field gun owns the
+     * gun this tick: it does while its aim on the survivor is a learned one. The core then drives
+     * the duel without leave to fire, so the duel records no shot that never leaves, and calls
+     * {@link #endgameGun} to fire and turn.
      */
-    boolean endgameGun(Tick tick, BotOrders.Builder orders) {
+    boolean endgameOwnsGun(Tick tick) {
         BotInput in = tick.in();
-        MeleeController.Command previous = lastEndgameAim;
+        endgamePrevious = lastEndgameAim;
         MeleeController.Command c = melee.endgameAim(new MeleeController.Situation(
             in.location(), in.gunHeading(), in.radarHeading(), in.energy(), in.time(),
             in.others(), in.heading(), in.velocity(), in.gunHeat(), core.livingTeammates()));
         lastEndgameAim = c.target != null && c.learnedAim ? c : null;
-        if (lastEndgameAim == null) return false;
+        return lastEndgameAim != null;
+    }
+
+    /**
+     * HAND-5: the field gun's orders on a tick it owns ({@link #endgameOwnsGun}): fires last
+     * tick's aim when the gun is cool and has finished turning (as {@link #drive} does) and turns
+     * to this tick's aim. A shot counts toward {@link RoundStats#shotsFired} and toward the melee
+     * bullets whose outcomes the duel must not learn from (WORLD-5).
+     */
+    void endgameGun(Tick tick, BotOrders.Builder orders) {
+        BotInput in = tick.in();
+        MeleeController.Command previous = endgamePrevious;
         orders.fire(0);
         if (previous != null && previous.firePower > 0 && in.gunHeat() == 0
                 && Math.abs(Math.toDegrees(in.gunTurnRemaining())) < 0.05
                 && in.energy() > previous.firePower && tick.mayFire()) {
             orders.fire(previous.firePower);
             endgameShots++;
+            stats.shotsFired++;
+            core.meleeShotFired();
             melee.shotFired(in.location(), in.time(), in.gunHeading(), previous.firePower, previous.target);
         }
-        orders.turnGunRight(c.gunTurn);
-        return true;
+        orders.turnGunRight(lastEndgameAim.gunTurn);
     }
 
     /**
