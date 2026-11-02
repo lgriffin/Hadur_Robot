@@ -1,6 +1,6 @@
 # Queue pc-sanaro-n08: progress
 
-Updated 2026-11-02 12:41:28 PC time (12:41 UTC), runner pid 6164.
+Updated 2026-11-02 12:56:35 PC time (12:56 UTC), runner pid 6164.
 
 - `prep` done, exit 0 in 1 min
 - `teach` done, exit 0 in 24 min
@@ -81,21 +81,20 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-DAO
 
-**50 of 430 battles** (12%), 0 failed. Running 3 min, 892 battles/h, about 26 min left (ends ~13:07 PC time). Last battle 0 min ago.
-Skipped turns a battle: 0.0 overall, first 50 0.0, last 50 0.0.
+**210 of 430 battles** (49%), 0 failed. Running 18 min, 682 battles/h, about 19 min left (ends ~13:15 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 50 |
+| `fails 20` | halt | ok | 0 failed of 210 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | waiting | 50 of 100 battles to read |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
 
-Stopping now would leave 380 battles unrun (about 26 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 220 battles unrun (about 19 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-11:08:54 live-S3 exit=0 in 1978 s
 11:08:54 start live-HL2
 11:08:54 watching live-HL2: 3 stop rule(s)
 11:11:44 progress live-HL2: 40/430 (9%) battles, 849/h, ETA 28 min, 0 failed, skips 0.0/battle (last 100)
@@ -110,4 +109,5 @@ Stopping now would leave 380 battles unrun (about 26 min); every battle already 
 12:38:07 live-DAE exit=0 in 1751 s
 12:38:07 start live-DAO
 12:38:07 watching live-DAO: 3 stop rule(s)
+12:42:29 progress live-DAO: 60/430 (14%) battles, 823/h, ETA 27 min, 0 failed, skips 0.0/battle (last 100)
 ```
