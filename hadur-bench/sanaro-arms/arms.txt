@@ -17,6 +17,13 @@
 # 1/d while Hadur's is 3 inside 150 px, 1.5 at 300-500 and 1 beyond. A table indexed by distance drops
 # the step (8 B) and lets Hadur's own power stand at every range; robots left buys a third axis back at
 # 249 B. Tables by tools/distill.py power --shape on n07's and n08's live-shaped teach runs pooled.
+# N10 (pc-sanaro-n09), on 0.3: weaker fire. n08 (PR #575) found the distance tables, which fire Hadur's
+# power at every range, cost 6-8 points of survival. Robocode raises power under 0.1 to 0.1, so 0.3 never
+# holds fire: past 640 px its 0 step fires 0.1. BAND moves where the step drops; K scales every cell.
+B560 | the step's bands from 560 px: 0.1 shots past 560, x1 to 280, x2 to 186 (249 B) | s#BAND = 640;#BAND = 560;#
+B480 | the step's bands from 480 px: 0.1 shots past 480, x1 to 240, x2 to 160 (249 B) | s#BAND = 640;#BAND = 480;#
+K80 | 0.3's table, every cell x 0.8 (249 B, a table only) | | scale 0.8
+K65 | 0.3's table, every cell x 0.65 (249 B, a table only) | | scale 0.65
 S3 | Sanaro 0.3 as it ships (control, 249 B) |
 HL2 | 0.3's recipe (2 x 2 energy blocks, 20 shots) on n07's and n08's teach runs pooled (249 B, a table only) | | distill work/sanaro-n07/teach/*/battles/*/shots.csv work/sanaro-n08/teach/*/battles/*/shots.csv --own-step 2 --enemy-step 2 --min 20 --reach 0
 DE | distance (8 px) x enemy energy, Hadur's power, no 640 / d step (241 B) | s#BAND / d \* POWER.charAt(((int) getEnergy() << 7) + (int) e.getEnergy())#POWER.charAt((d >> 3 << 7) + (int) e.getEnergy())# | distill work/sanaro-n07/teach/*/battles/*/shots.csv work/sanaro-n08/teach/*/battles/*/shots.csv --shape de --min 20

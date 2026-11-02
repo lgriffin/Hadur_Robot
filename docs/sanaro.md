@@ -370,7 +370,8 @@ under ships as 0.3.
 | N6 | release 0.2 (2026-10-30, live 2nd at 65.18 after 271 battles); pc-sanaro-n05 (section 13): a growing lead in 249 bytes | an arm at 249 bytes or under over 0.2 on the live-shaped census |
 | N7 | pc-sanaro-n06 (section 16): Hadur's power tables, distilled from its shots, on 0.2's body | a table over 0.2 on the live-shaped census |
 | N8 | pc-sanaro-n07 (section 17): HL +0.67, released as 0.3 (2026-11-01; live 2nd at 65.56 after 663 battles, Quantum 66.44) | a table over 0.2 on fresh seeds |
-| N9 | pc-sanaro-n08 (section 18): tables indexed by distance, the last APS to 1st | an arm at 249 bytes or under over 0.3 on the live-shaped census |
+| N9 | pc-sanaro-n08 (section 18): tables indexed by distance, the last APS to 1st: FAIL (section 19) | an arm at 249 bytes or under over 0.3 on the live-shaped census |
+| N10 | pc-sanaro-n09 (section 19): weaker fire, by BAND and by scaling the table | an arm at 249 bytes or under over 0.3 on the live-shaped census |
 
 ## 15. Uniqueness
 
@@ -467,3 +468,31 @@ energies up to 400.
 build) is taught in the 43 live-shaped fields (6 seeds, base 25000), and the shots are pooled with
 n07's teach run. Each arm then runs 43 fields x 10 fresh seeds (base 26000). An arm passes when the
 low end of its difference over S3 is above zero. The best passing arm is 0.4 on Leigh's word.
+
+## 19. pc-sanaro-n08 results, and the next card: pc-sanaro-n09 (stage N10), weaker fire
+
+**pc-sanaro-n08 (PR #575, 2026-11-02): FAIL.** Against S3 (65.73, survival 22.4): HL2 +0.02 ± 0.32
+(23.0), DE -0.52 (15.9), DAE -0.38 (15.5), DAO -0.83 (14.1). Every distance table handed Sanaro
+Hadur's long-range power and cost it 6-8 points of survival. Hadur can afford a 1.0 shot at 700 px.
+A nano bleeds energy on it. HL2 shows the energy table is saturated: three times the teach shots
+change nothing.
+
+**A correction to section 18.** Robocode raises any power under 0.1 to 0.1
+(`BasicRobotProxy.setFireImpl`: `min(energy, min(max(power, 0.1), 3.0))`). So 0.3 never holds fire.
+Its 0 step past 640 px fires 0.1, and a table cannot hold fire either. The lever on energy is how
+weak the shots are, not whether they leave.
+
+`hadur-bench/plans/pc-sanaro-n09.queue`, which Leigh starts from master:
+`.\queue.ps1 run pc-sanaro-n09`. It takes about 2.5 h, with no teach run, stop rules and ALERT.
+Each arm runs 43 fields x 10 fresh seeds (base 27000). All arms are 249 B:
+
+| Arm | Change |
+|---|---|
+| S3 | 0.3 as it ships (control) |
+| B560 | `BAND = 560`: 0.1 past 560 px, x1 to 280, x2 to 186 |
+| B480 | `BAND = 480`: 0.1 past 480 px, x1 to 240, x2 to 160 |
+| K80 | 0.3's table, every cell x 0.8 (`tools/sanaro_scale.py`) |
+| K65 | every cell x 0.65 |
+
+An arm passes when the low end of its difference over S3 is above zero. If both B and K lose, 0.3's
+power is at its optimum in both directions, and the gap to Quantum has to come from movement or the gun.

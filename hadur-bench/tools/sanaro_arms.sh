@@ -11,7 +11,7 @@
 # args and battles go to work/sanaro-$SANARO_RUN and its reports to
 # ../docs/bench/local/sanaro-$SANARO_RUN-<field>-<arm>.md. SANARO_PARALLEL (default 12) is the
 # battles in flight. An arm's fourth field, when there is one, is sanaro/table.py's options: the arm
-# plays that power table (no bytes; the table is a string constant). An arm `NAME | what | @robot name` seats that robot (live census only; in the
+# plays that power table (no bytes; the table is a string constant); `scale F` scales the shipped one. An arm `NAME | what | @robot name` seats that robot (live census only; in the
 # NanoMelee census the leaders are in every field already).
 set -euo pipefail
 field="$1"; seeds="$2"; base="$3"; only="${4:-}"
@@ -44,7 +44,10 @@ grep -v '^#' sanaro-arms/arms.txt | while IFS='|' read -r name what expr table; 
         rm -rf "$dir"; mkdir -p "$dir/hadur117/nano"
         sed -e "s/class Sanaro /class $cls /" ${expr:+-e "$expr"} "$src" > "$dir/$cls.java"
         # shellcheck disable=SC2086
-        if [ "${table#distill }" != "$table" ]; then
+        if [ "${table#scale }" != "$table" ]; then
+            # The shipped table, every cell times a factor (pc-sanaro-n09): `scale <factor>`.
+            python3 tools/sanaro_scale.py --scale ${table#scale } --src "$dir/$cls.java"
+        elif [ "${table#distill }" != "$table" ]; then
             # A distilled table (BENCH-156): `distill <shots.csv globs and distill.py power options>`.
             python3 tools/distill.py power ${table#distill } --src "$dir/$cls.java"
         elif [ -n "$table" ]; then
