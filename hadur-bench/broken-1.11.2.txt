@@ -9,9 +9,21 @@ rsalesc.melee.Medina 0.4.5 | melee | verifier: java.awt.AWTKeyStroke (obfuscated
 rsalesc.melee.Monk 0.3.6c | melee | verifier: java.awt.AWTKeyStroke (obfuscated rsalesc.a.a.g)
 catcat20.Matcha 0.006 | melee | verifier: bundled gson uses java.sql, java.net.URL, AccessController
 catcat20.Lambda 0.024 | melee | verifier: bundled gson uses java.sql, java.net.URL, AccessController
-catcat20.shape.Theta 0.018 | melee | verifier: bundled gson uses java.sql, java.net.URL, AccessController
+catcat20.shape.Theta 0.018 | 1v1, melee | verifier: bundled gson uses java.sql, java.net.URL, AccessController
 morbid.MorbidPriest 1.0 | melee | verifier: ClassLoader.loadClass, Class.getClassLoader
 gre.svman4.Leonidas 1.3.2 | melee | verifier: java.util.Scanner
 gre.svman4.Morfeas 1.4.1 | melee | verifier: java.util.logging.Logger
-Krabb.sliNk.Garm 0.9u | melee | verifier: javax.imageio.ImageIO.setUseCache
+Krabb.sliNk.Garm 0.9u | 1v1, melee | verifier: javax.imageio.ImageIO.setUseCache
 inonit.robocode.javascript.MyFirstRobot 1.1 | melee | verifier: java.net.URI.toURL (script engine loader)
+#
+# 1v1: cloud load of the 232 strong learners (panel-learners-flat.txt, 2 rounds each), 2026-11-02;
+# these halted pc-mimic (issue #570). Theta and Garm are above.
+catcat20.Lambda 0.017 | 1v1 | verifier: bundled gson uses java.sql
+dsekercioglu.mega.Raven 3.56j8 | 1v1 | verifier: java.util.logging
+dsekercioglu.mega.WhiteFang 2.8.1 | 1v1 | verifier: java.util.logging
+pc.Wavelet 1.5 | 1v1 | verifier: java.io.FileWriter
+synnalagma.NeuralPremier 0.51 | 1v1 | verifier: java.io.FileReader
+rsalesc.mega.Knight 0.6.28 | 1v1 | invalid robot on load
+ag.Gir 0.99 | 1v1 | invalid robot on load
+apv.ScruchiPu 1.0 | 1v1 | invalid robot on load
+apv.TheBrainPi 0.5fix | 1v1 | invalid robot on load

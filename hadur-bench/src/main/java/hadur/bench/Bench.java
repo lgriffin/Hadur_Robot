@@ -463,6 +463,11 @@ public final class Bench {
             return runSession();
         }
         List<Opponent> opponents = Opponent.load(benchDir.resolve(opts.getOrDefault("set", "reference-set.txt")));
+        // BENCH-169: robots Robocode 1.11.2 will not load leave the set (--keep-broken keeps them).
+        if (!Boolean.parseBoolean(opts.getOrDefault("keep-broken", "false"))) {
+            int dropped = Broken.drop(opponents, Broken.names(benchDir.resolve(Broken.FILE)));
+            if (dropped > 0) System.out.println("dropped " + dropped + " robot(s) listed in " + Broken.FILE);
+        }
         String only = opts.get("only");
         if (only != null) opponents.removeIf(o -> !o.name.contains(only));
         if (opts.containsKey("shard")) {
