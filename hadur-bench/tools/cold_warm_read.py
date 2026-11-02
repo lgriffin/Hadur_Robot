@@ -41,22 +41,28 @@ def main(argv=None):
     ap.add_argument("--out", required=True)
     ap.add_argument("--out-tsv", required=True)
     a = ap.parse_args(argv)
-    cell = defaultdict(lambda: defaultdict(list))  # build -> opponent -> [(cold, warm)]
+    cell = defaultdict(dict)  # (build, opponent) -> {seed: (cold, warm)}
     with open(a.tsv, newline="") as f:
         for r in csv.DictReader(f, delimiter="\t"):
             if r["coldOk"] != "true" or r["warmOk"] != "true":
                 continue
-            cell[r["build"]][r["opponent"]].append((100 * float(r["coldScoreShare"]), 100 * float(r["warmScoreShare"])))
-    if a.robot not in cell or a.baseline not in cell:
+            cell[(r["build"], r["opponent"])][r["seed"]] = (100 * float(r["coldScoreShare"]), 100 * float(r["warmScoreShare"]))
+    builds = {b for b, _ in cell}
+    if a.robot not in builds or a.baseline not in builds:
         print("cold_warm_read: %s or %s has no finished pair in %s" % (a.robot, a.baseline, a.tsv), file=sys.stderr)
         return 1
+    # Only the seeds both builds finished, so every comparison is between the same battles.
     per = {}
-    for build in (a.robot, a.baseline):
-        for opp, pairs in cell[build].items():
-            per.setdefault(opp, {})[build] = (st.mean(p[0] for p in pairs), st.mean(p[1] for p in pairs))
-    both = sorted(o for o, v in per.items() if a.robot in v and a.baseline in v)
+    for opp in sorted({o for _, o in cell}):
+        r, b = cell.get((a.robot, opp), {}), cell.get((a.baseline, opp), {})
+        seeds = sorted(set(r) & set(b))
+        if not seeds:
+            continue
+        per[opp] = {build: (st.mean(src[s][0] for s in seeds), st.mean(src[s][1] for s in seeds))
+                    for build, src in ((a.robot, r), (a.baseline, b))}
+    both = sorted(per)
     lines = ["# Cold against warm (BENCH-174)", "",
-             "%d robots with both builds' pairs; each robot weighted equally (points of score share)." % len(both), "",
+             "%d robots with both builds' pairs on the same seeds; each robot weighted equally (points of score share)." % len(both), "",
              "| Read | Mean ± 95% |", "|---|---|"]
     for build in (a.baseline, a.robot):
         lines.append("| %s: warm minus cold | %s |" % (build, fmt(*mean_ci([per[o][build][1] - per[o][build][0] for o in both]))))

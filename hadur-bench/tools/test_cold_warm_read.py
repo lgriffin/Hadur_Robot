@@ -26,11 +26,21 @@ class ColdWarmReadTest(unittest.TestCase):
                 ("R", "z 1", 1, "false", "true", 0.10, 0.90, 0.80)]
         code, md, tsv = self.run_on(rows)
         self.assertEqual(0, code)
-        self.assertIn("2 robots with both builds' pairs", md)
+        self.assertIn("2 robots with both builds' pairs on the same seeds", md)
         self.assertIn("| B: warm minus cold | +5.00 ± 9.80 |", md)
         self.assertIn("| R: warm minus cold | -15.00 ± 9.80 |", md)
         self.assertIn("x 1\t50.00\t50.00\t50.00\t30.00", tsv)
         self.assertNotIn("z 1", tsv)
+
+    def test_unmatched_seeds_are_left_out(self):
+        rows = [("B", "x 1", 1, "true", "true", 0.50, 0.60, 0.10), ("R", "x 1", 2, "true", "true", 0.50, 0.30, -0.20),
+                ("B", "y 1", 1, "true", "true", 0.80, 0.90, 0.10), ("R", "y 1", 1, "true", "true", 0.80, 0.70, -0.10),
+                ("B", "y 1", 2, "false", "true", 0.10, 0.10, 0.00), ("R", "y 1", 2, "true", "true", 0.20, 0.99, 0.79)]
+        code, md, tsv = self.run_on(rows)
+        self.assertEqual(0, code)
+        self.assertIn("1 robots with both builds' pairs on the same seeds", md)
+        self.assertNotIn("x 1", tsv)
+        self.assertIn("y 1\t80.00\t90.00\t80.00\t70.00", tsv)
 
     def test_missing_build_fails(self):
         code, _, _ = self.run_on([("B", "x 1", 1, "true", "true", 0.5, 0.6, 0.1)])
