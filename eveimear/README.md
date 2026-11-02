@@ -20,10 +20,15 @@ worked against it. Bench: +0.36 ± 0.17 APS over 0.1 on a fresh 112-bot sample (
 
 | Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | 5th place | Gap to 5th |
 |---|---|---|---|---|---|---|---|---|
+| 0.2 | 2026-11-02 14:40 (first pass, API) | **MicroRumble** | **9th of 516** | **83.39 ± 0.31** | 515 | 731 | nz.jdc.micro.HedgehogGF 1.5, 84.94 | +1.55 |
 | 0.1 | 2026-10-30 21:50 (API) | **MicroRumble** | **9th of 516** | **83.28** | 515 | 2,362 | nz.jdc.micro.HedgehogGF 1.5, 84.96 | +1.68 |
 | 0.1 | 2026-10-29 07:23 | **MicroRumble** | **9th of 516** | **83.36 ± 0.33** | 515 | 608 | nz.jdc.micro.HedgehogGF 1.5, 84.93 | +1.57 |
 
-**Eveimear 0.1 is 9th in MicroRumble** on its first full pass, 1.57 behind HedgehogGF for 5th and
+**Eveimear 0.2 is 9th in MicroRumble** on its first pass (83.39 ± 0.31, 2026-11-02), +0.08 over 0.1
+on the 515 shared opponents where the bench said +0.36, so the self-taught mode table is about flat
+live ([docs/bench/live-kitlab-0.3.md](../docs/bench/live-kitlab-0.3.md)).
+
+**Eveimear 0.1 was 9th in MicroRumble** on its first full pass, 1.57 behind HedgehogGF for 5th and
 1.66 under Épéeist 3.7 on the 513 opponents the pages share. The cloud bench predicted 84.28, 0.9 too high,
 so 0.2 is read on a second sample too. Most of the gap is against even and strong opponents,
 and it is survival (5.7 to 8.5 points under Épéeist's). That points at the random movement after

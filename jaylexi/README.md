@@ -28,12 +28,20 @@ double takes a one-byte local slot.
 
 | Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | Next up | Gap |
 |---|---|---|---|---|---|---|---|---|
+| 0.3 | 2026-11-02 14:40 (first pass, API) | **MiniRumble** | **4th of 671** | **87.93 ± 0.28** | 669 | 855 | 1st sheldor.mini.FoilistMC 1.0, 89.02 | +1.09 |
 | 0.2 | 2026-10-30 21:50 (API) | **MiniRumble** | **5th of 671** | **87.34** | 670 | 2,040 | 1st sheldor.mini.FoilistMC 1.0, 89.01 | +1.67 |
 | 0.2 | 2026-10-30 19:50 (settled) | **MiniRumble** | **5th of 671** | **87.34** | 670 | 1,965 | 4th voidious.mini.Komarious 1.88, 87.44 | +0.10 |
 | 0.2 | 2026-10-29 20:10 (first pass, API) | **MiniRumble** | **5th of 671** | **87.43 ± 0.29** | 670 | 788 | 1st sheldor.mini.FoilistMC 1.0, 88.99 | +1.57 |
 | 0.1 | 2026-10-29 07:23 | **MiniRumble** | **6th of 671** | **86.95 ± 0.29** | 670 | 742 | simonton.mini.WeeksOnEnd 1.10.4, 87.35 | +0.40 |
 
-**JayLexi 0.2 is 5th in MiniRumble.** It settled at 87.34 on 1,965 battles (2026-10-30), 0.10
+**JayLexi 0.3 is 4th in MiniRumble** on its first pass (87.93 ± 0.28, 2026-11-02), past
+Komarious and WeeksOnEnd, 0.56 behind Foilist for 3rd and 1.09 behind FoilistMC for 1st. On the 664
+opponents the pages share it is +0.62 over 0.2 (the bench said +0.44). The tables won ranks 121 and
+down (+0.89 of APS) and cost the top 30 (−0.27; −6 to −8 APS a bot against the learning guns), which
+are now half the gap to 1st. The plan for 1st starts with giving the top bots the neutral surf row,
+which costs no bytes: [docs/bench/live-kitlab-0.3.md](../docs/bench/live-kitlab-0.3.md).
+
+**JayLexi 0.2 was 5th in MiniRumble.** It settled at 87.34 on 1,965 battles (2026-10-30), 0.10
 behind Komarious and level with WeeksOnEnd; 1st is FoilistMC on 89.01, 1.67 ahead. At its first
 pass (788 battles) it read 87.43, level with Komarious and past WeeksOnEnd. On the 668 opponents the pages share it is +0.47 over 0.1 (the bench said about +0.3).
 It is 1.57 behind FoilistMC for 1st. Seven tenths of that gap is the weak field, the 477 bots

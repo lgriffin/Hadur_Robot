@@ -79,7 +79,7 @@ round-end profile save that grew with every opponent on disk, fixed in 3.4
 
 Hadur has siblings, one for each size class and format it can win. Each is a separate robot with
 its own folder, build, requirements and README, and none shares code with Hadur.
-Live results as of 2026-10-30 21:50 UTC (each robot's README keeps its full history):
+Live results as of 2026-10-30 21:50 UTC, JayLexi and Eveimear 2026-11-02 14:40 UTC (each robot's README keeps its full history):
 
 | Robot | Rumble | Size | Live result | |
 |---|---|---|---|---|
@@ -90,8 +90,8 @@ Live results as of 2026-10-30 21:50 UTC (each robot's README keeps its full hist
 | [**Saor**](saor/) `hadur117.micro.Saor` | MicroMelee | 723 B of 749 | **1st of 158**, 69.73 (0.3, 2026-10-30), 0.45 ahead of kc.micro.Figment | [README](saor/README.md) |
 | [**Deise**](deise/) `hadur117.mini.Deise` | MiniMelee | 1,499 B of 1,499 (0.5) | **1st of 206**, 71.28 ± 0.28 (0.5, 2026-11-01), 0.12 ahead of kc.mini.Mirage | [README](deise/README.md) |
 | [**Sanaro**](sanaro/) `hadur117.nano.Sanaro` | NanoMelee | 247 B of 249 | **2nd of 90**, 65.15 (0.2, 2026-10-30), 1.26 behind d414.nano.Quantum | [README](sanaro/README.md) |
-| [**JayLexi**](jaylexi/) `hadur117.mini.JayLexi` | MiniRumble (1v1) | 1,485 B of 1,499 | **5th of 671**, 87.34 (0.2, settled 2026-10-30), 0.10 behind 4th, 1.67 behind sheldor.mini.FoilistMC | [README](jaylexi/README.md) |
-| [**Eveimear**](eveimear/) `hadur117.micro.Eveimear` | MicroRumble (1v1) | 722 B of 749 | **9th of 516**, 83.28 (0.1, 2026-10-30), 2.32 behind 1st | [README](eveimear/README.md) |
+| [**JayLexi**](jaylexi/) `hadur117.mini.JayLexi` | MiniRumble (1v1) | 1,494 B of 1,499 (0.3) | **4th of 671**, 87.93 ± 0.28 (0.3, first pass 2026-11-02), 0.56 behind 3rd, 1.09 behind sheldor.mini.FoilistMC | [README](jaylexi/README.md) |
+| [**Eveimear**](eveimear/) `hadur117.micro.Eveimear` | MicroRumble (1v1) | 746 B of 749 (0.2) | **9th of 516**, 83.39 ± 0.31 (0.2, first pass 2026-11-02), 2.19 behind kc.micro.WaveShark | [README](eveimear/README.md) |
 
 - **TwinSaor** is two copies of one Saor-derived robot sharing radar and targets, with a range and
   mode table per opposing team ([docs/twinsaor.md](docs/twinsaor.md)).
