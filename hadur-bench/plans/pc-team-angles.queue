@@ -26,7 +26,7 @@
 #           PASS is the table written as the table to ship
 # Each seed is a pair (the arm and aa): screens 4 x 45 x 8 x 2 = 2,880 battles, about 3 h at 12 workers,
 # plus 64 a picked team for the gate (about 30 min for 10 teams). Every step resumes where it stopped.
-# Stop rules on every battle step (halt; every battle fought is kept and a rerun resumes): 20 failed
+# Stop rules on every battle step (halt; every battle fought is kept and a rerun resumes): 60 failed
 # battles (a broken jar), no battle in 30 minutes (a hung step), or 40+ skipped turns a battle over the
 # last 100 (the PR #331 build-up). A halt in anbb leaves the rest of anbb and all three arms (2,160
 # battles); in an arm, the rest of it and the arms after it (720 each); in the gate steps, the rest of
