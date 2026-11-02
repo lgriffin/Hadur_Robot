@@ -15,3 +15,10 @@
 16:02:59 watching screen: 4 stop rule(s)
 16:03:01 progress pushed to origin claude/pc-mimic-progress (every 15 min)
 16:04:02 progress screen: 559/1989 (28%) battles, 1961/h, ETA 44 min, 0 failed, skips 38.2/battle (last 100), aa +0.03, mm -0.09
+16:34:21 progress screen: 1697/1989 (85%) battles, 2244/h, ETA 8 min, 0 failed, skips 35.9/battle (last 100), aa -0.03, mm -0.03
+16:43:39 screen exit=0 in 2440 s
+16:43:39 start gate
+16:43:40 gate exit=0 in 0 s
+16:43:40 start pr
+16:43:49 pr exit=0 in 9 s
+16:43:49 ALLDONE
