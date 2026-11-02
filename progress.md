@@ -1,6 +1,6 @@
 # Queue pc-team-angles: progress
 
-Updated 2026-11-02 13:38:01 PC time (13:38 UTC), runner pid 44560.
+Updated 2026-11-02 13:53:09 PC time (13:53 UTC), runner pid 44560.
 
 - `anprep` done, exit 0 in 3 min
 - `anbb` done, exit 0 in 21 min
@@ -29,21 +29,20 @@ Stopping now would leave -16 battles unrun (about -0 min); every battle already 
 
 ### anhv
 
-**93 of 720 battles** (13%), 0 failed. Running 9 min, 609 battles/h, about 1.0 h left (ends ~14:39 PC time). Last battle 0 min ago.
-Skipped turns a battle: 11.7 overall, first 93 11.7, last 93 11.7.
+**316 of 720 battles** (44%), 0 failed. Running 24 min, 781 battles/h, about 31 min left (ends ~14:24 PC time). Last battle 0 min ago.
+Skipped turns a battle: 12.1 overall, first 100 11.8, last 100 12.9.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 93 |
+| `fails 20` | halt | ok | 0 failed of 316 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | waiting | 93 of 100 battles to read |
+| `skips 40 over 100` | halt | ok | 12.9 a battle over the last 100 (first 100: 11.8) |
 
-Stopping now would leave 627 battles unrun (about 1.0 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 404 battles unrun (about 31 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-09:50:55 watching anbb: 3 stop rule(s)
 09:50:57 progress pushed to origin claude/pc-team-angles-progress (every 15 min)
 09:51:55 progress anbb: 191/720 (27%) battles, 11372/h, ETA 3 min, 0 failed, skips 19.7/battle (last 100)
 10:10:03 STOP anbb by rule fails 20: 24 failed of 362; 362 battles fought and kept, 358 battles left unrun (about 19 min)
@@ -58,4 +57,5 @@ Stopping now would leave 627 battles unrun (about 1.0 h); every battle already f
 13:28:52 anbb exit=0 in 1263 s
 13:28:52 start anhv
 13:28:52 watching anhv: 3 stop rule(s)
+13:39:02 progress anhv: 107/720 (15%) battles, 631/h, ETA 58 min, 0 failed, skips 11.7/battle (last 100)
 ```
