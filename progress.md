@@ -1,10 +1,10 @@
 # Queue pc-melee-end: progress
 
-Updated 2026-11-02 20:20:03 PC time (20:20 UTC), runner pid 51784.
+Updated 2026-11-02 20:35:10 PC time (20:35 UTC), runner pid 51784.
 
 - `meprep` done, exit 0 in 2 min
-- `meaa` running
-- `mebb` pending
+- `meaa` done, exit 0 in 45 min
+- `mebb` running
 - `meeg` pending
 - `meek` pending
 - `meread` pending
@@ -12,15 +12,27 @@ Updated 2026-11-02 20:20:03 PC time (20:20 UTC), runner pid 51784.
 
 ### meaa
 
-**264 of 276 battles** (96%), 0 failed. Running 43 min, 368 battles/h, about 2 min left (ends ~20:22 PC time). Last battle 0 min ago.
-Skipped turns a battle: 27.9 overall, first 100 27.9, last 100 27.9.
+**276 of 276 battles** (100%), 0 failed. Running 45 min, 371 battles/h, about 0 min left (ends ~20:21 PC time). Last battle 0 min ago.
+Skipped turns a battle: 27.7 overall, first 100 27.9, last 100 27.6.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 264 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 12 battles unrun (about 2 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### mebb
+
+**84 of 276 battles** (30%), 0 failed. Running 13 min, 374 battles/h, about 31 min left (ends ~21:05 PC time). Last battle 1 min ago.
+Skipped turns a battle: 26.6 overall, first 84 26.6, last 84 26.6.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 84 |
+| `stall 30m` | halt | ok | last battle 1 min ago |
+
+Stopping now would leave 192 battles unrun (about 31 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -33,4 +45,7 @@ Stopping now would leave 12 battles unrun (about 2 min); every battle already fo
 19:37:03 watching meaa: 2 stop rule(s)
 19:37:43 progress meaa: 0/276 (0%) battles, 0 failed
 20:07:57 progress meaa: 174/276 (63%) battles, 338/h, ETA 18 min, 0 failed, skips 28.0/battle (last 100)
+20:21:40 meaa exit=0 in 2676 s
+20:21:40 start mebb
+20:21:40 watching mebb: 2 stop rule(s)
 ```
