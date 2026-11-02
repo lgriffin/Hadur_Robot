@@ -1,12 +1,16 @@
 {
  "plan": "pc-team-angles",
- "updated": 1793605667.4764354,
+ "updated": 1793606575.065912,
  "steps": {
   "anprep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 167,
+   "end": "2026-11-02T07:50:34"
   },
   "anbb": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-02T07:50:34"
   },
   "anhv": {
    "status": "pending"
@@ -36,5 +40,49 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "anbb",
+   "started": 1793605834.828292,
+   "updated": 1793606575.0596287,
+   "elapsed": 740.2313368320465,
+   "expected": 736,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 80,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 389.0675599232909,
+   "eta": 6069.896962022782,
+   "fraction": 0.10869565217391304,
+   "last_battle_age": 6.684833526611328,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 80"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "80 of 100 battles to read"
+    }
+   ],
+   "skips_mean": 17.55,
+   "skips_last100": 17.55
+  }
+ ]
 }
