@@ -1,6 +1,6 @@
 # Queue pc-team-angles: progress
 
-Updated 2026-11-02 13:53:09 PC time (13:53 UTC), runner pid 44560.
+Updated 2026-11-02 14:08:17 PC time (14:08 UTC), runner pid 44560.
 
 - `anprep` done, exit 0 in 3 min
 - `anbb` done, exit 0 in 21 min
@@ -29,16 +29,16 @@ Stopping now would leave -16 battles unrun (about -0 min); every battle already 
 
 ### anhv
 
-**316 of 720 battles** (44%), 0 failed. Running 24 min, 781 battles/h, about 31 min left (ends ~14:24 PC time). Last battle 0 min ago.
-Skipped turns a battle: 12.1 overall, first 100 11.8, last 100 12.9.
+**598 of 720 battles** (83%), 0 failed. Running 39 min, 910 battles/h, about 8 min left (ends ~14:16 PC time). Last battle -0 min ago.
+Skipped turns a battle: 10.7 overall, first 100 11.8, last 100 9.1.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 316 |
-| `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 12.9 a battle over the last 100 (first 100: 11.8) |
+| `fails 20` | halt | ok | 0 failed of 598 |
+| `stall 30m` | halt | ok | last battle -0 min ago |
+| `skips 40 over 100` | halt | ok | 9.1 a battle over the last 100 (first 100: 11.8) |
 
-Stopping now would leave 404 battles unrun (about 31 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 122 battles unrun (about 8 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
