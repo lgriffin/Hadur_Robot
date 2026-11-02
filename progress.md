@@ -1,6 +1,6 @@
 # Queue pc-melee-end: progress
 
-Updated 2026-11-02 22:20:59 PC time (22:20 UTC), runner pid 51784.
+Updated 2026-11-02 22:36:07 PC time (22:36 UTC), runner pid 51784.
 
 - `meprep` done, exit 0 in 2 min
 - `meaa` done, exit 0 in 45 min
@@ -48,15 +48,15 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### meek
 
-**156 of 276 battles** (57%), 0 failed. Running 28 min, 334 battles/h, about 22 min left (ends ~22:42 PC time). Last battle 0 min ago.
-Skipped turns a battle: 28.8 overall, first 100 28.2, last 100 29.6.
+**264 of 276 battles** (96%), 0 failed. Running 43 min, 367 battles/h, about 2 min left (ends ~22:38 PC time). Last battle 0 min ago.
+Skipped turns a battle: 28.5 overall, first 100 28.2, last 100 28.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 156 |
+| `fails 20` | halt | ok | 0 failed of 264 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 120 battles unrun (about 22 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 12 battles unrun (about 2 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
