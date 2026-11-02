@@ -69,6 +69,14 @@ public class MinimumRiskMovement {
     static final double NEAREST_FRACTION = 0.8;
 
     static final double CLOSEST_FACTOR = 2.0;
+    /**
+     * MMOVE-23 (arms mnear3, mnear4): the closest-robot factor off a team. On the 1.11.2 census
+     * Hadur is the nearest robot of 0.83 opponents on a mean crowd tick, Diamond and ScalarR of
+     * 0.50; in the rounds Hadur dies in the crowd it is 0.98, and the damage from opponents it is
+     * nearest to doubles (44 against 20 in rounds it survives). A larger factor keeps Hadur off
+     * other robots' nearest-target lists. The team and the duel never read it.
+     */
+    public static final double CLOSEST_FACTOR_SOLO = 2.0;
     static final double RECENT_HIT_FACTOR = 1.5;
     static final long RECENT_HIT_TICKS = 100;
     static final long OPENING_TICKS = 30;
@@ -2235,7 +2243,8 @@ public class MinimumRiskMovement {
     double closestFactor(Point2D.Double p, EnemyInfo e, double nearestOther, long now, int others, boolean onTeam) {
         double c = 1.0;
         if (p.distance(e.location) < nearestOther) {
-            c = MeleeEndgame.closestFactor(CLOSEST_FACTOR, others, onTeam, MeleeEndgame.THREE_FAR);
+            c = MeleeEndgame.closestFactor(onTeam ? CLOSEST_FACTOR : CLOSEST_FACTOR_SOLO, others, onTeam,
+                MeleeEndgame.THREE_FAR);
             if (now < OPENING_TICKS) c *= 2;
         }
         if (e.lastHitHadur >= 0 && now - e.lastHitHadur <= RECENT_HIT_TICKS) c *= RECENT_HIT_FACTOR;
