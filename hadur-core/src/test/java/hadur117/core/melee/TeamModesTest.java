@@ -545,6 +545,45 @@ class TeamModesTest {
     }
 
     @Test
+    @Tag("TMODE-38")
+    @DisplayName("TMODE-38: CLEAR drives as the robot moves, so a member running at a bullet's line is blocked where a standstill drive would clear")
+    void clearDrivesWithMomentum() {
+        // A teammate's power 1.9 bullet (14.3 px a tick) flies west along y = 628 and passes x = 600
+        // on tick 104; Hadur is at (600, 600).
+        MinimumRiskMovement move = new MinimumRiskMovement(field(1200, 1200));
+        move.newRound();
+        move.mateShot("m0", pt(600 + 14.3 * 9, 628), 95, 3 * Math.PI / 2, 1.9);
+        MinimumRiskMovement.View v = move.view(pt(600, 600), 100, 100, 3, enemies(pt(100, 1100)).alive(),
+            MeleeStrategy.Plan.normal(), mates(pt(1000, 640)));
+        List<Point2D.Double[]> tracks = MinimumRiskMovement.tracks(v, move.mateBullets(pt(600, 600), 100));
+        assertNotNull(tracks);
+        // Driving south from a standstill clears the line. Running north at 8 px a tick, the same
+        // order brakes first, carrying Hadur 12 px north into the bullet's path as it passes.
+        assertFalse(MinimumRiskMovement.meets(pt(600, 600), 0, 0, pt(600, 400), tracks));
+        assertTrue(MinimumRiskMovement.meets(pt(600, 600), 0, 8, pt(600, 400), tracks));
+        // A drive west along the line is caught: the bullet flies faster than Hadur.
+        assertTrue(MinimumRiskMovement.meets(pt(600, 600), 3 * Math.PI / 2, 8, pt(300, 628), tracks));
+        // No bullet near: nothing to check.
+        assertNull(MinimumRiskMovement.tracks(v, List.of()));
+        assertFalse(TeamModes.FORCE_CLEAR);
+        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.CLEAR));
+        assertEquals(TeamModes.DEFAULT, TeamModes.against(List.of()));
+    }
+
+    @Test
+    @Tag("TMODE-38")
+    @DisplayName("TMODE-38: forced on, CLEAR joins every team's modes, the ones the table names included")
+    void clearJoinsEveryEntry() {
+        Set<TeamModes.Mode> named = EnumSet.of(TeamModes.Mode.MATEFIRE, TeamModes.Mode.PATH);
+        Set<TeamModes.Mode> with = TeamModes.withClear(named);
+        assertTrue(with.contains(TeamModes.Mode.CLEAR));
+        assertTrue(with.containsAll(named));
+        assertEquals(named.size() + 1, with.size());
+        assertSame(with, TeamModes.withClear(with));
+        assertEquals(EnumSet.of(TeamModes.Mode.CLEAR), TeamModes.withClear(TeamModes.NONE));
+    }
+
+    @Test
     @Tag("TMODE-25")
     @DisplayName("TMODE-25: a teammate's bullet is counted, at its damage, on a drive that meets it and not on one that leaves its line")
     void pathCheck() {

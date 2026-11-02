@@ -144,6 +144,11 @@ public class MinimumRiskMovement {
     static final double PATH_HALF = 18;
     static final int PATH_TICKS = 15;
     static final int PATH_RERANK = 8;
+    /**
+     * TMODE-38: how many ticks of each drive CLEAR checks against the teammates' bullets: a 0.1
+     * power bullet flies about 790 px in that time, so a member sees it while a side step still clears.
+     */
+    static final int CLEAR_TICKS = 40;
     /** MMOVE-8: how far apart, along its wall, the opening spots of two members in the roster are. */
     static final double MATE_FAN = 120;
     /** TMODE-2: a shot's weight is 1/(1+k)^2 for k teammates nearer its shooter; under this it makes no bullets. */
@@ -400,6 +405,8 @@ public class MinimumRiskMovement {
         List<VirtualBullet> pathBullets = List.of();
         /** TMODE-33: whether the enemy terms count every robot between an enemy and the point; only on a team. */
         boolean concord;
+        /** TMODE-38: rank only destinations whose drive meets no teammate bullet, while any is left. */
+        boolean clear;
 
         View(Point2D.Double me, double energy, long now, int others, List<EnemyInfo> enemies,
              List<VirtualBullet> bullets, MeleeStrategy.Plan plan) {
@@ -437,6 +444,8 @@ public class MinimumRiskMovement {
     private final Deque<VirtualBullet> bullets = new ArrayDeque<>();
     /** TMODE-9: the teammates' bullets from their reports, oldest first. */
     private final Deque<VirtualBullet> mateBullets = new ArrayDeque<>();
+    /** TMODE-38: Hadur's heading and velocity this tick, so CLEAR drives from how it is moving. */
+    private double heading, velocity;
     /** TMODE-10: whether this member leads its team (fixed for the battle). */
     private boolean leader;
     private final Set<EnemyShot> seenShots =
@@ -784,6 +793,12 @@ public class MinimumRiskMovement {
         mateBullets.addLast(new VirtualBullet(new EnemyShot(mate, at, tick, power, 0), VirtualBullet.Aim.HEAD_ON, heading));
     }
 
+    /** TMODE-38: Hadur's {@code heading} and {@code velocity} this tick, set before the destination is chosen. */
+    public void motion(double heading, double velocity) {
+        this.heading = heading;
+        this.velocity = velocity;
+    }
+
     /** TMODE-9: the teammates' bullets that have not yet passed {@code me}; the rest are dropped. */
     List<VirtualBullet> mateBullets(Point2D.Double me, long now) {
         double reach = Math.hypot(field.width, field.height);
@@ -965,6 +980,7 @@ public class MinimumRiskMovement {
         v.lines = !mates.isEmpty() && (modes.contains(TeamModes.Mode.LINES) || v.linesWide);
         v.gunLines = !mates.isEmpty() && modes.contains(TeamModes.Mode.GUNLINE);
         v.concord = TeamConcord.MOVE && TeamConcord.RISK && !mates.isEmpty() && modes.contains(TeamModes.Mode.CONCORD);
+        v.clear = !mates.isEmpty() && modes.contains(TeamModes.Mode.CLEAR);
         List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
         lastCandidates = candidates.size();
         if (surf && !onTeam(mates)) {
@@ -1395,9 +1411,20 @@ public class MinimumRiskMovement {
             order[i] = i;
         }
         java.util.Arrays.sort(order, (a, b) -> Double.compare(risk[a], risk[b]));
+        List<Point2D.Double[]> tracks = v.clear ? tracks(v, mateBullets) : null;
         List<Integer> picked = new ArrayList<>();
-        for (int i = 0; i < order.length && picked.size() < rerank; i++) picked.add(order[i]);
-        if (hold && !picked.contains(pool.size() - 1)) picked.add(pool.size() - 1);
+        for (int i = 0; i < order.length && picked.size() < rerank; i++) {
+            if (tracks == null || !meets(v.me, heading, velocity, pool.get(order[i]), tracks)) picked.add(order[i]);
+        }
+        if (tracks != null && picked.isEmpty()) {
+            // TMODE-38: every destination meets a teammate bullet: rank them as without CLEAR.
+            for (int i = 0; i < order.length && picked.size() < rerank; i++) picked.add(order[i]);
+            tracks = null;
+        }
+        if (hold && !picked.contains(pool.size() - 1)
+                && (tracks == null || !meets(v.me, heading, velocity, destination, tracks))) {
+            picked.add(pool.size() - 1);
+        }
         double[] damage = new double[picked.size()];
         double[] r = new double[picked.size()];
         for (int k = 0; k < picked.size(); k++) {
@@ -1460,10 +1487,21 @@ public class MinimumRiskMovement {
         java.util.Arrays.sort(order, (a, b) -> Double.compare(risk[a], risk[b]));
         List<Point2D.Double> picked = new ArrayList<>();
         List<Double> pickedRisk = new ArrayList<>();
+        // TMODE-38: with CLEAR, only the destinations whose drive meets no teammate bullet, while any is left.
+        List<Point2D.Double[]> tracks = v.clear ? tracks(v, v.pathBullets) : null;
         for (int i = 0; i < order.length && picked.size() < PATH_RERANK; i++) {
+            if (tracks != null && meets(v.me, heading, velocity, pool.get(order[i]), tracks)) continue;
             picked.add(pool.get(order[i]));
             pickedRisk.add(risk[order[i]]);
         }
+        if (tracks != null && picked.isEmpty()) {
+            for (int i = 0; i < order.length && picked.size() < PATH_RERANK; i++) {
+                picked.add(pool.get(order[i]));
+                pickedRisk.add(risk[order[i]]);
+            }
+            tracks = null;
+        }
+        if (hold && tracks != null && meets(v.me, heading, velocity, destination, tracks)) hold = false;
         Point2D.Double best = null;
         double bestScore = Double.POSITIVE_INFINITY;
         for (int k = 0; k < picked.size(); k++) {
@@ -1478,6 +1516,61 @@ public class MinimumRiskMovement {
             if (bestScore >= SWITCH_GAIN * risk(destination, v) + held) return destination;
         }
         return best;
+    }
+
+    /**
+     * TMODE-38: the teammates' {@code bullets} that come within a drive's reach of Hadur in the next
+     * {@link #CLEAR_TICKS} ticks, each as its place on each of those ticks; null when there are none.
+     */
+    static List<Point2D.Double[]> tracks(View v, List<VirtualBullet> bullets) {
+        double reach = MAX_SPEED * CLEAR_TICKS + 2 * PATH_HALF;
+        List<Point2D.Double[]> tracks = new ArrayList<>();
+        for (VirtualBullet b : bullets) {
+            if (b.closestApproach(v.me, v.now, v.now + CLEAR_TICKS) > reach) continue;
+            Point2D.Double[] at = new Point2D.Double[CLEAR_TICKS + 1];
+            for (int t = 0; t <= CLEAR_TICKS; t++) at[t] = b.position(v.now + t);
+            tracks.add(at);
+        }
+        return tracks.isEmpty() ? null : tracks;
+    }
+
+    /**
+     * TMODE-38: whether Hadur, at {@code me} with {@code heading} and {@code velocity}, driving to
+     * {@code to} as the melee's drive does (turn the nearer way, front or back; at most 4 px a tick
+     * while the turn left is over 45 degrees; the engine's turn rate, acceleration and braking),
+     * meets one of the bullet {@code tracks} (each its place on each of the next ticks) on some tick.
+     */
+    static boolean meets(Point2D.Double me, double heading, double velocity, Point2D.Double to,
+                         List<Point2D.Double[]> tracks) {
+        double x = me.x, y = me.y, h = heading, v = velocity;
+        for (int t = 1; t <= CLEAR_TICKS; t++) {
+            double turn = Angles.normalRelativeAngle(Math.atan2(to.x - x, to.y - y) - h);
+            double dist = Math.hypot(to.x - x, to.y - y);
+            if (Math.abs(turn) > Math.PI / 2) {
+                turn = Angles.normalRelativeAngle(turn + Math.PI);
+                dist = -dist;
+            }
+            double maxV = Math.abs(turn) > Math.PI / 4 ? 4.0 : MAX_SPEED;
+            double rate = Math.toRadians(10 - 0.75 * Math.abs(v));
+            h += Math.max(-rate, Math.min(rate, turn));
+            v = nextVelocity(v, dist, maxV);
+            x += Math.sin(h) * v;
+            y += Math.cos(h) * v;
+            for (Point2D.Double[] at : tracks) {
+                if (at[t - 1].equals(at[t])) continue;
+                if (crossesBox(at[t - 1], at[t], x, y, PATH_HALF)) return true;
+            }
+        }
+        return false;
+    }
+
+    /** TMODE-38: the engine's next velocity toward {@code distLeft} px left, at most {@code maxV}: 1 px a tick faster, 2 slower. */
+    static double nextVelocity(double v, double distLeft, double maxV) {
+        double want = distLeft > 0 ? Math.min(maxV, distLeft) : distLeft < 0 ? -Math.min(maxV, -distLeft) : 0;
+        if (v * want < 0 || Math.abs(want) < Math.abs(v)) {
+            return v > want ? Math.max(want, v - 2) : Math.min(want, v + 2);
+        }
+        return want > v ? Math.min(want, v + 1) : Math.max(want, v - 1);
     }
 
     /**

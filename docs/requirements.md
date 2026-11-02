@@ -1183,6 +1183,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | TMODE-35 | Ubiquitous | The team mode table shall name OgiTeam, CombatTeam, FirestarterTeam and NightmareTeam's member classes with every mode they played before without CONCORD. | T7 |
 | TMODE-36 | Optional feature | Where the team modes against a team carry HEAVY, a member playing CONCORD shall fire without CONCORD's 1.9 power cap; HEAVY shall be in no team's modes by default (only through the table or the tmheavy ablation). | T7 |
 | TMODE-37 | Optional feature | Where the team modes against a team carry WARY, a member under 50 energy shall leave the hunt (its place by the prey) instead of under 20; WARY shall be in no team's modes by default (only through the table or the tmwary ablation). | T7 |
+| TMODE-38 | Optional feature | Where the team modes against a team carry CLEAR, while Hadur has a living teammate and a teammate's bullet in flight comes within a drive's reach, the destination shall be ranked only among the candidates (and the held destination) whose drive, simulated from Hadur's heading and velocity with the engine's turn rate, acceleration and braking as the melee drive steers (nearer way front or back, 4 px a tick over a 45-degree turn) for 40 ticks, meets no teammate bullet; when every candidate meets one, the ranking shall be as without CLEAR. CLEAR shall be in no team's modes by default; the FORCE_CLEAR switch (ablation tmclear) adds it to every team's modes, the named teams' included. | T7 |
 
 ### T1 notes
 
@@ -2304,6 +2305,7 @@ profiles, and the rumbles list it as a new participant.
 | BENCH-165 | Ubiquitous | The bench shall carry the `pc-shield-power` card: master (c), its A/A copy (aa), SHIELD-22 on (sc, ablation scheap) and SHIELD-23 on (sr, ablation sratio) on `panel-shield-listed-321.txt` (every robot on master's shield list), 4 fresh seeds from 7200, 12 workers, truth log off, stopping on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle over the last 200, no battle in 30 minutes or the A/A outside its band after 20%, with no futility rule; then a gate for each arm (pooled c and aa over the panel / 1,217 pairings at +0.05 APS, 95% low end above 0), a 5-point per-robot pick, every robot's difference with losses and a results PR, stopping before the PR if any analysis fails. | T7 |
 | BENCH-166 | Ubiquitous | The bench shall carry the `pc-team-mirror` card, a read that ships nothing: it builds master (aa), plays OgiTeam and then HadurTeam aa as the subject team against the 45 other teams of `plans/team-mirror-set.txt` at the same 12 seeds from 7300 and 10 rounds with no baseline, declares its stop rules on both battle steps (20 failed battles, no battle in 30 minutes, 60+ skipped turns a battle over the last 200), writes `tools/team_mirror.py`'s per-team split of the share gap into score parts (their survival, their bullet damage, ours, bonuses) with the lever each team needs, and opens its results on claude/pc-team-mirror-results. | T7 |
 | BENCH-167 | Ubiquitous | The bench shall carry the `pc-team-angles` card, which builds aa, a bb A/A copy and three arms (hv: HEAVY on every unnamed team, wy: WARY, md: DISABLED), plays each against aa on all 46 teams of team-census46.txt at 8 seeds from 7400 and 10 rounds, reads each arm's global change (+0.30 APS gate, a read only), picks per team the arm gaining +3.0 points or more with the 95% low end above zero, gates the picked table at 16 fresh seeds from 7500 (+0.15 APS over 46 teams with the 95% low end above zero), declares the stop rules on every battle step, and opens its results on claude/pc-team-angles-results. | T7 |
+| BENCH-170 | Ubiquitous | The bench shall carry the `pc-team-clear` card, which builds aa, a bb A/A copy and cl (CLEAR on every team, TMODE-38), plays bb and cl against aa on the 45 teams of plans/team-angles-set.txt at 12 seeds from 7600 and 10 rounds, reads both arms' own-fire hits with tools/friendly_hits.py, gates cl's projected team APS change (each team's gain less half its bb gain, summed over 46) at +0.30 with the 95% low end above zero, declares the stop rules on every battle step, and opens its results on claude/pc-team-clear-results; the card changes no robot code. | T7 |
 | BENCH-159 | Ubiquitous | The bench shall carry the `pc-rival-picks` card, which screens three per-opponent lists read from the new 2nd-place rival (docs/bench/rival-2nd-read.md): 74 shield additions (`slistadd`, `slistadd,szlist`), 50 shield-execution robots (`szlist`, `sx0list`, both) and 36 stop-and-go robots (`slistdrop,sgolist`, `slistdrop,sgo2list`), each beside master and an aa A/A copy at 3 seeds from 5600; writes a 5-point per-robot pick and every robot's difference with losses for each list; declares its stop rules; and stops before the results PR if any analysis fails. | T7 |
 | BENCH-160 | Ubiquitous | The bench shall carry the `pc-surf-key` card, which records an `oracle,skrec` build against the 198 normal-play robots of `panel-surf-key-200.txt` at 4 seeds from 5800 with the truth log on; fits per-opponent surf keys with and without the kernel width (SKEY-3) and builds them (`sklist`, `sklist,bb`); runs both beside master and an aa A/A copy at 3 fresh seeds from 5900; gates each at +0.05 APS with the 95% low end above zero; writes a 3-point per-robot pick and every robot's difference with losses; declares its stop rules; and stops before the results PR if any analysis fails. | T7 |
 | BENCH-161 | Ubiquitous | The bench shall carry the `pc-rival-confirm` card, which builds the 18 per-opponent picks of `pc-rival-picks` into one jar (`slistadd,slistdrop,szlist,sx0list,sgolist,sgo2list`); runs it beside master and an aa A/A copy against the 18 robots of `panel-rival-confirm.txt` at 8 fresh seeds from 6300; gates it at +0.05 APS with the 95% low end above zero; writes a 3-point per-robot pick and every robot's difference with losses; declares its stop rules; and stops before the results PR if any analysis fails. | T7 |
@@ -2441,3 +2443,24 @@ Each arm targets the leak in won rounds against the mid teams from a different s
   about 3 h), per-team pick at +3.0 points, then a 16-seed fresh gate from 7500 on the picked teams.
   Results claude/pc-team-angles-results. `TeamAnglesPlanTest`; `FieldGunTest` (TMODE-36),
   `TeamModesTest` (TMODE-37).
+
+## Members out of their teammates' bullets: CLEAR (TMODE-38, BENCH-170)
+
+The Ogi mirror (BENCH-166, PR #569): Ogi's members take about 11 damage a round from their own team's
+bullets, ours about 40, on nearly every team. In the cloud (GrofGroup and DiamondStealers, 8 seeds from
+7400), Ogi fires with a mate in the line on 3.9% of shots and ours on 1.5%, yet our own bullets hit our
+members 2.96 times per 100 shots and Ogi's 0.63: Ogi's members get out of the way, ours do not. The
+teammates' bullets our members are told about are exact (heading, origin and tick); weighting them 5x
+or 1000x on the 15-tick path check, a 30-tick check, or Ogi's wave scoring all left own fire at 38-43 a
+round. The check drives each candidate from a standstill in any direction; a member running at 8 px a
+tick has to brake and turn, so the drive it was given carries it into the bullet.
+
+- **TMODE-38 CLEAR.** Before the ranking, any candidate whose drive meets a teammate bullet within 40
+  ticks is dropped, the drive simulated as the melee drive steers it from Hadur's real heading and
+  velocity. Only bullets that come within a drive's reach are traced, and only as far down the ranking
+  as needed, so the cost is close to today's. Cloud, 4 seeds each: own-fire damage 39 -> 24 a round,
+  skipped turns about 31 a battle against 24. Off by default; FORCE_CLEAR (ablation tmclear, suffix cl)
+  adds it to every team's modes. `TeamModesTest` (TMODE-38).
+- **BENCH-170.** Card plans/pc-team-clear.queue: bb and cl against aa on 45 teams x 12 seeds from 7600
+  (2,160 battles, about 2.2 h), own-fire read of both arms, gate +0.30 APS. Results
+  claude/pc-team-clear-results. `TeamClearPlanTest`.
