@@ -61,7 +61,8 @@ Grouped by the opponent's MiniRumble rank. "Share" is the group's part of the wh
    ranks 61 to 120 also slipped (−0.49). A second arm also skips the shared gun first-shot bin for
    those bots, if it fits in the 2 bytes left (1,494 of 1,499, and the jar test wants 3 spare). Read on
    a strong field (the top 60 by name, several seeds) with 0.2 and 0.3 seated on the same set, then
-   on mini-wide2 to show the weak field holds. One PC card with `stop:` rules, Leigh runs it.
+   on mini-wide2 to show the weak field holds. The card is `hadur-bench/plans/pc-jaylexi-rows.queue` (arms J3, S30, S60, S120 and L60, the
+   last keeping the top 60's own rows at peak 300; about 5,160 battles, 40 to 60 min), and Leigh runs it.
    Expected ~88.2, past Foilist only if the cutoff at 60 or 120 also pays.
 2. **Find bytes for the k-NN surf against the strong.** FoilistMC's edge over the top 60 is
    movement (−10 to −14 APS a bot there). The k-NN surf arm (k3KE) was +0.25 to +0.52 but 1,598 B;
