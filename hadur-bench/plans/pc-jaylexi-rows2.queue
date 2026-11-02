@@ -1,0 +1,88 @@
+# JayLexi 0.5 arms: how far down the ranking to take the per-opponent surf rows off (thread "Take
+# 1st with JayLexi and Sanaro"). pc-jaylexi-rows (PR #588, 2026-11-02) passed: on mini-wide2, over
+# 0.3, S30 +0.36, S60 +0.52, S120 +0.72 +-0.15, L60 +0.54; on the top 60 S120 +3.05. The gain still
+# grows at 120, so this card climbs on. 0.4 is S120 (the shipped source). Every arm changes only the
+# AIM string (tools/jaylexi_rows_off.py, 2026-11-02 rankings), so all are 1,494 B.
+#   ./queue.sh run pc-jaylexi-rows2        (or  .\queue.ps1 run pc-jaylexi-rows2)
+# Run it from master with this card merged: git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned (--parallel auto). Every step resumes; no step
+# needs a decision. Nothing here touches Hadur or the shipped JayLexi; nothing is uploaded.
+#
+# Arms (plain javac, kitlab/build_arm.sh, except J3, the released 0.3 jar):
+#   J3    JayLexi 0.3 (the released jar), to read 0.4's gain again on a fresh sample
+#   J4    JayLexi 0.4 = S120, the shipped source (the control)
+#   S200  the top 200 bots get the field row
+#   S300  the top 300
+#   S450  the top 450
+#   SALL  every bot gets the field row (no per-opponent rows at all)
+# Each arm on the fresh sample kitlab/mini-wide3-field.txt (112 bots, rank-band seed 5; 27 shared
+# with mini-wide2), 6 seeds: 672 battles an arm, 4,032 in all, about 20-30 min on the PC.
+# Read: each arm against J4 on the same opponents (the paired gain). An arm passes when its gain's
+# low end is above 0. J3 against J4 should come out about -0.7 if 0.4's gain holds. Leigh decides
+# any release (a pass ships as JayLexi 0.5).
+# Stop rules on every bench step (docs/bench/watch.md; halt, every battle fought is kept and a rerun
+# resumes): 20 failed battles (a broken or missing jar), no battle in 30 minutes (a hung step), or
+# skipped turns over 40 a battle over the last 100. A halt at worst leaves the rest of that step and
+# the steps after it unrun, at most 4,032 battles (about 30 min). No early finish on score: each step
+# is one robot. ALERT opens an issue for Leigh on a stop.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set SRC = ../jaylexi/src/main/java/hadur117/mini/JayLexi.java
+set RANK = ../data/rumble/parsed/2026-11-02T1440Z_minirumble_rankings.json
+set W = work/jaylexi-rows2
+set REL = https://github.com/lgriffin/Hadur_Robot/releases/download
+
+prep | ./fetch-opponents.sh --set kitlab/mini-wide3-field.txt && (python3 -c "import numpy" || python3 -m pip install numpy) && mkdir -p ${W} kitlab/jars && curl -fsSL -o kitlab/jars/hadur117.mini.JayLexi_0.3.jar ${REL}/jaylexi-v0.3/hadur117.mini.JayLexi_0.3.jar
+
+build | python3 tools/jaylexi_rows_off.py ${SRC} ${W}/JayLexi-S200.java --rankings ${RANK} --top 200 && python3 tools/jaylexi_rows_off.py ${SRC} ${W}/JayLexi-S300.java --rankings ${RANK} --top 300 && python3 tools/jaylexi_rows_off.py ${SRC} ${W}/JayLexi-S450.java --rankings ${RANK} --top 450 && python3 tools/jaylexi_rows_off.py ${SRC} ${W}/JayLexi-SALL.java --rankings ${RANK} --top 700 && bash kitlab/build_arm.sh ${SRC} hadur117.mini.JayLexi j4 && bash kitlab/build_arm.sh ${W}/JayLexi-S200.java hadur117.mini.JayLexi s200 && bash kitlab/build_arm.sh ${W}/JayLexi-S300.java hadur117.mini.JayLexi s300 && bash kitlab/build_arm.sh ${W}/JayLexi-S450.java hadur117.mini.JayLexi s450 && bash kitlab/build_arm.sh ${W}/JayLexi-SALL.java hadur117.mini.JayLexi sall && bash kitlab/args.sh mini-wide3 kitlab/jars/hadur117.mini.JayLexi_0.3.jar "hadur117.mini.JayLexi 0.3" rows2-J3 6 && bash kitlab/args.sh mini-wide3 kitlab/jars/hadur117.mini.JayLexi_j4.jar "hadur117.mini.JayLexi j4" rows2-J4 6 && bash kitlab/args.sh mini-wide3 kitlab/jars/hadur117.mini.JayLexi_s200.jar "hadur117.mini.JayLexi s200" rows2-S200 6 && bash kitlab/args.sh mini-wide3 kitlab/jars/hadur117.mini.JayLexi_s300.jar "hadur117.mini.JayLexi s300" rows2-S300 6 && bash kitlab/args.sh mini-wide3 kitlab/jars/hadur117.mini.JayLexi_s450.jar "hadur117.mini.JayLexi s450" rows2-S450 6 && bash kitlab/args.sh mini-wide3 kitlab/jars/hadur117.mini.JayLexi_sall.jar "hadur117.mini.JayLexi sall" rows2-SALL 6
+  after: prep
+
+J3 | ${MVN} "-Dexec.args=@work/kitlab-rows2-J3.args"
+  after: build
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+J4 | ${MVN} "-Dexec.args=@work/kitlab-rows2-J4.args"
+  after: J3
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+S200 | ${MVN} "-Dexec.args=@work/kitlab-rows2-S200.args"
+  after: J4
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+S300 | ${MVN} "-Dexec.args=@work/kitlab-rows2-S300.args"
+  after: S200
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+S450 | ${MVN} "-Dexec.args=@work/kitlab-rows2-S450.args"
+  after: S300
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+SALL | ${MVN} "-Dexec.args=@work/kitlab-rows2-SALL.args"
+  after: S450
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+read | (echo "# JayLexi 0.5 arms: how far down to take the surf rows off (pc-jaylexi-rows2)" && echo && echo '## J3 against J4 (0.4), on the fresh sample mini-wide3' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide3-field.txt work/kitlab-rows2-J3 --ref work/kitlab-rows2-J4 && echo '```' && echo && echo '## S200 against J4 (0.4), on the fresh sample mini-wide3' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide3-field.txt work/kitlab-rows2-S200 --ref work/kitlab-rows2-J4 && echo '```' && echo && echo '## S300 against J4 (0.4), on the fresh sample mini-wide3' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide3-field.txt work/kitlab-rows2-S300 --ref work/kitlab-rows2-J4 && echo '```' && echo && echo '## S450 against J4 (0.4), on the fresh sample mini-wide3' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide3-field.txt work/kitlab-rows2-S450 --ref work/kitlab-rows2-J4 && echo '```' && echo && echo '## SALL against J4 (0.4), on the fresh sample mini-wide3' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide3-field.txt work/kitlab-rows2-SALL --ref work/kitlab-rows2-J4 && echo '```') > ${OUT}/jaylexi-rows2.md
+  after: SALL
+
+pr | bash tools/open_results_pr.sh claude/pc-jaylexi-rows2-results "JayLexi 0.5 arms: how far down to take the surf rows off" ${OUT}/jaylexi-rows2.md
+  after: read

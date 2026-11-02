@@ -10,7 +10,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-170: the JayLexi surf-rows card (plans/pc-jaylexi-rows.queue) is complete before it reaches the PC. */
+/**
+ * BENCH-170: the JayLexi surf-rows card (plans/pc-jaylexi-rows.queue), and BENCH-174: its follow-up
+ * (plans/pc-jaylexi-rows2.queue), are complete before they reach the PC.
+ */
 class JayLexiRowsPlanTest {
 
     private static final Path QUEUE = Path.of("plans/pc-jaylexi-rows.queue");
@@ -46,5 +49,30 @@ class JayLexiRowsPlanTest {
         assertTrue(queue.contains("\nread | ") && queue.contains("after: " + prev));
         assertTrue(queue.contains("open_results_pr.sh claude/pc-jaylexi-rows-results"));
         assertTrue(queue.contains("set ALERT = lgriffin"));
+    }
+
+    @Test
+    @Tag("BENCH-174")
+    @DisplayName("rows2: the 0.3 jar fetched, every arm built and run on mini-wide3 in one chain with its stop rules, then the read and the PR")
+    void secondCardIsComplete() throws IOException {
+        String queue = Files.readString(Path.of("plans/pc-jaylexi-rows2.queue"));
+        long wide3 = Files.readAllLines(Path.of("kitlab/mini-wide3-field.txt")).stream()
+            .filter(l -> !l.startsWith("#") && l.contains("|")).count();
+        assertEquals(112, wide3);
+        assertTrue(queue.contains("releases/download") || queue.contains("${REL}/jaylexi-v0.3/hadur117.mini.JayLexi_0.3.jar"));
+        String prev = "build";
+        for (String a : new String[] {"J3", "J4", "S200", "S300", "S450", "SALL"}) {
+            int at = queue.indexOf("\n" + a + " | ");
+            assertTrue(at >= 0, a);
+            int next = queue.indexOf("\n\n", at + 1);
+            String body = queue.substring(at, next < 0 ? queue.length() : next);
+            assertTrue(body.contains("after: " + prev), a + " after " + prev);
+            for (String rule : new String[] {"fails 20", "stall 30m", "skips 40 over 100"}) {
+                assertTrue(body.contains("stop: " + rule), a + " " + rule);
+            }
+            prev = a;
+        }
+        assertTrue(queue.contains("--ref work/kitlab-rows2-J4"));
+        assertTrue(queue.contains("open_results_pr.sh claude/pc-jaylexi-rows2-results"));
     }
 }
