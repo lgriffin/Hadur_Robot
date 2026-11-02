@@ -1821,6 +1821,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Makes free text safe inside a CSV record: commas become ';' and line breaks spaces.</div>
 </dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.View.html#clear" class="member-name-link">clear</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.View.html" title="class in hadur117.core.melee">MinimumRiskMovement.View</a></dt>
+<dd>
+<div class="block">TMODE-38: rank only destinations whose drive meets no teammate bullet, while any is left.</div>
+</dd>
 <dt><a href="hadur117/core/model/RobotStateLog.html#clear()" class="member-name-link">clear()</a> - Method in class hadur117.core.model.<a href="hadur117/core/model/RobotStateLog.html" title="class in hadur117.core.model">RobotStateLog</a></dt>
 <dd>
 <div class="block">Forgets every state, as at the start of a round.</div>
@@ -1837,9 +1841,20 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Forgets the focus, when a round starts or melee takes back over.</div>
 </dd>
+<dt><a href="hadur117/core/melee/TeamModes.Mode.html#CLEAR" class="member-name-link">CLEAR</a> - Enum constant in enum class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a></dt>
+<dd>
+<div class="block">TMODE-38: a member keeps out of its teammates' bullets: of the destinations, only those whose
+ drive meets no teammate bullet in <a href="hadur117/core/melee/MinimumRiskMovement.html#CLEAR_TICKS"><code>MinimumRiskMovement.CLEAR_TICKS</code></a> ticks are ranked,
+ while any is left.</div>
+</dd>
 <dt><a href="hadur117/core/role/TeammateFence.html#CLEAR" class="member-name-link">CLEAR</a> - Static variable in class hadur117.core.role.<a href="hadur117/core/role/TeammateFence.html" title="class in hadur117.core.role">TeammateFence</a></dt>
 <dd>
 <div class="block">Two robots' half-widths (36) and a margin: nearer than this is a predicted collision, px.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#CLEAR_TICKS" class="member-name-link">CLEAR_TICKS</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">TMODE-38: how many ticks of each drive CLEAR checks against the teammates' bullets: a 0.1
+ power bullet flies about 790 px in that time, so a member sees it while a side step still clears.</div>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#clearBullets()" class="member-name-link">clearBullets()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>
@@ -4521,6 +4536,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/model/WaveManager.html#forAllWaves(hadur117.core.model.WaveManager.AllWaveListener)" class="member-name-link">forAllWaves(WaveManager.AllWaveListener)</a> - Method in class hadur117.core.model.<a href="hadur117/core/model/WaveManager.html" title="class in hadur117.core.model">WaveManager</a></dt>
 <dd>
 <div class="block">Calls <code>listener</code> with every wave in flight, oldest first.</div>
+</dd>
+<dt><a href="hadur117/core/melee/TeamModes.html#FORCE_CLEAR" class="member-name-link">FORCE_CLEAR</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
+<dd>
+<div class="block">TMODE-38: CLEAR on every team, the ones the table names included (as PATH, TMODE-28).</div>
 </dd>
 <dt><a href="hadur117/core/melee/TeamModes.html#FORCE_CONCORD" class="member-name-link">FORCE_CONCORD</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
 <dd>&nbsp;</dd>
@@ -8013,6 +8032,13 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#median(double%5B%5D)" class="member-name-link">median(double[])</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#meets(java.awt.geom.Point2D.Double,double,double,java.awt.geom.Point2D.Double,java.util.List)" class="member-name-link">meets(Point2D.Double, double, double, Point2D.Double, List&lt;Point2D.Double[]&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">TMODE-38: whether Hadur, at <code>me</code> with <code>heading</code> and <code>velocity</code>, driving to
+ <code>to</code> as the melee's drive does (turn the nearer way, front or back; at most 4 px a tick
+ while the turn left is over 45 degrees; the engine's turn rate, acceleration and braking),
+ meets one of the bullet <code>tracks</code> (each its place on each of the next ticks) on some tick.</div>
+</dd>
 <dt><a href="hadur117/core/MeleeSeam.html#melee" class="member-name-link">melee</a> - Variable in class hadur117.core.<a href="hadur117/core/MeleeSeam.html" title="class in hadur117.core">MeleeSeam</a></dt>
 <dd>
 <div class="block">The melee brain; it sees every non-sentry scan and death, whichever role drives.</div>
@@ -8634,6 +8660,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The direction it is moving: its heading, turned round when driving backwards.</div>
 </dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#motion(double,double)" class="member-name-link">motion(double, double)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">TMODE-38: Hadur's <code>heading</code> and <code>velocity</code> this tick, set before the destination is chosen.</div>
+</dd>
 <dt><a href="hadur117/core/shieldmode/ShieldDesign.html#move" class="member-name-link">move</a> - Variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldDesign.html" title="class in hadur117.core.shieldmode">ShieldDesign</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#SHIELD-17">SHIELD-17</a>: the opening drive against every shielded opponent.</div>
@@ -9085,6 +9115,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">One tick of driving perpendicular to the line from a wave's source, smoothed along
  walls.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#nextVelocity(double,double,double)" class="member-name-link">nextVelocity(double, double, double)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">TMODE-38: the engine's next velocity toward <code>distLeft</code> px left, at most <code>maxV</code>: 1 px a tick faster, 2 slower.</div>
 </dd>
 <dt><a href="hadur117/core/role/SentryFence.html#nextVelocity(double,double,double)" class="member-name-link">nextVelocity(double, double, double)</a> - Static method in class hadur117.core.role.<a href="hadur117/core/role/SentryFence.html" title="class in hadur117.core.role">SentryFence</a></dt>
 <dd>
@@ -15674,6 +15708,11 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/melee/MeleeController.html#tracker" class="member-name-link">tracker</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeController.html" title="class in hadur117.core.melee">MeleeController</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#tracks(hadur117.core.melee.MinimumRiskMovement.View,java.util.List)" class="member-name-link">tracks(MinimumRiskMovement.View, List&lt;VirtualBullet&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">TMODE-38: the teammates' <code>bullets</code> that come within a drive's reach of Hadur in the next
+ <a href="hadur117/core/melee/MinimumRiskMovement.html#CLEAR_TICKS"><code>MinimumRiskMovement.CLEAR_TICKS</code></a> ticks, each as its place on each of those ticks; null when there are none.</div>
+</dd>
 <dt><a href="hadur117/core/melee/MeleeProfileCodec.html#TRAILER" class="member-name-link">TRAILER</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeProfileCodec.html" title="class in hadur117.core.melee">MeleeProfileCodec</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/memory/ProfileCodec.html#TRAILER" class="member-name-link">TRAILER</a> - Static variable in class hadur117.core.memory.<a href="hadur117/core/memory/ProfileCodec.html" title="class in hadur117.core.memory">ProfileCodec</a></dt>
@@ -16987,6 +17026,10 @@ the order they are declared.</div>
 <div class="block"><a class="req" href="../requirements.html#MMOVE-20">MMOVE-20</a>: each wave's shadows (<code>shadows</code>, or none) with the shadows of Hadur's own
  <code>bullets</code> added: where a bullet's flight in one tick crosses the wave's front, the
  angles from the wave's source between its two ends, held from that radius outward.</div>
+</dd>
+<dt><a href="hadur117/core/melee/TeamModes.html#withClear(java.util.Set)" class="member-name-link">withClear(Set&lt;TeamModes.Mode&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
+<dd>
+<div class="block">TMODE-38: <code>m</code> with CLEAR added.</div>
 </dd>
 <dt><a href="hadur117/core/model/BotOrders.html#withDrive(double,double,double)" class="member-name-link">withDrive(double, double, double)</a> - Method in class hadur117.core.model.<a href="hadur117/core/model/BotOrders.html" title="class in hadur117.core.model">BotOrders</a></dt>
 <dd>
