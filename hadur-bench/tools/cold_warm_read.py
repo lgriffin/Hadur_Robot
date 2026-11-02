@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """BENCH-174: read a --cold-warm run (cold-warm.tsv) of a robot and its baseline.
 
-  python3 tools/cold_warm_read.py RUN/cold-warm.tsv --robot "hadur117.Hadur 3.21sa" --baseline "hadur117.Hadur 3.21aa" \
+  python3 tools/cold_warm_read.py RUN/cold-warm.tsv [RUN2/cold-warm.tsv ...] --robot "hadur117.Hadur 3.21sa" --baseline "hadur117.Hadur 3.21aa" \
       --out REPORT.md --out-tsv PER_ROBOT.tsv
 
 Each build fought every seed cold (data directory empty) and then warm on the profile the cold battle
-left. Per robot it averages over seeds, then reads, over the robots (each weighted equally, so on a
+left. Several files may be given (a robot run on its own, read against a baseline from another run on the
+same seeds); rows are pooled by build, opponent and seed. Per robot it averages over seeds, then reads, over the robots (each weighted equally, so on a
 band-proportional panel the mean is an APS estimate):
   - each build's warm minus cold (what memory is worth to it), with a 95% interval;
   - the robot's warm minus the baseline's warm, and the same for cold (the cold pair is an A/A when the
@@ -35,21 +36,22 @@ def fmt(m, ci):
 
 def main(argv=None):
     ap = argparse.ArgumentParser()
-    ap.add_argument("tsv")
+    ap.add_argument("tsv", nargs="+")
     ap.add_argument("--robot", required=True)
     ap.add_argument("--baseline", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--out-tsv", required=True)
     a = ap.parse_args(argv)
     cell = defaultdict(dict)  # (build, opponent) -> {seed: (cold, warm)}
-    with open(a.tsv, newline="") as f:
-        for r in csv.DictReader(f, delimiter="\t"):
-            if r["coldOk"] != "true" or r["warmOk"] != "true":
-                continue
-            cell[(r["build"], r["opponent"])][r["seed"]] = (100 * float(r["coldScoreShare"]), 100 * float(r["warmScoreShare"]))
+    for path in a.tsv:
+        with open(path, newline="") as f:
+            for r in csv.DictReader(f, delimiter="\t"):
+                if r["coldOk"] != "true" or r["warmOk"] != "true":
+                    continue
+                cell[(r["build"], r["opponent"])][r["seed"]] = (100 * float(r["coldScoreShare"]), 100 * float(r["warmScoreShare"]))
     builds = {b for b, _ in cell}
     if a.robot not in builds or a.baseline not in builds:
-        print("cold_warm_read: %s or %s has no finished pair in %s" % (a.robot, a.baseline, a.tsv), file=sys.stderr)
+        print("cold_warm_read: %s or %s has no finished pair in %s" % (a.robot, a.baseline, " ".join(a.tsv)), file=sys.stderr)
         return 1
     # Only the seeds both builds finished, so every comparison is between the same battles.
     per = {}

@@ -52,7 +52,12 @@ found a stored verdict for about 55% of opponents.
 - **Panel:** the 400-robot screen (`screen-311.txt`, drawn in proportion to band size, so a mean estimates
   APS).
 - **Builds:** seedall (sa) as the robot and master's A/A build (aa) as the baseline.
-- **Battles:** 2 fresh seeds from 7900, each battle cold and then warm. That is 3,200 battles, about 2 hours.
+- **Lukewarm (lw):** Leigh's "a lukewarm start before adapting". The stored tier still opens the battle at full
+  power (POW-1, POW-3). Once this battle's own hit rate on the opponent is known within POW-4's margin, the tier
+  rules apply only where POW-4's expected-value check also picks full power. lw plays the same seeds on its own
+  and is read against cw's aa rows.
+- **Battles:** 2 fresh seeds from 7900, each battle cold and then warm. That is 4,800 battles over three builds,
+  about 3 hours.
 - **The read** (`tools/cold_warm_read.py`):
   - each build's warm minus cold;
   - sa minus aa when warm;
@@ -64,5 +69,6 @@ The card decides K3's next step:
 - **Warm beats cold, with seeds or without:** K3 ships profiles. `ShelfProfileStore` (MEM-16, drafted)
   reads a profile from the jar when the data directory has none. A shelf card then harvests the profiles
   and tests them cold against master.
+- **lw warm beats aa warm:** the gate is the leak's fix, and ships as its own requirement.
 - **Warm loses:** memory is a live leak to fix first, per robot from the read's "hurts most" list, before
   anything is shipped.

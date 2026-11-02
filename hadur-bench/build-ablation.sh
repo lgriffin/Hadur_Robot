@@ -277,6 +277,9 @@
 #   s50   SHIELD-1 needs 10 of the last 20 bullets intercepted, and half of them, not 4 and a
 #         quarter. 3.12 P4: half of all census battles latch a shield verdict.
 #   notier   warm study: the stored gun tier no longer raises shots to full power (POW-1, POW-3 off). Suffix nt.
+#   lukewarm warm study: the stored gun tier still raises shots to full power (POW-1, POW-3) until this battle's
+#         own hit rate on them is known within POW-4's margin, and from then only while POW-4's expected-value
+#         comparison agrees. Suffix lw.
 #   seedall  K3 ceiling: every opponent's KNN seeds are kept after one battle (MEM-8's battles and score-share gates
 #         off), so a --cold-warm warm battle starts from a full prior. Measurement only. Suffix sa.
 #   nostore  SHIELD-3 no longer starts a battle from the profile's stored shield verdict: each
@@ -964,6 +967,16 @@ for a in "${list[@]}"; do
             edit "$pp" "if (gunTier == Tiers.Gun.T1 && enemyEnergy > MIN_ENEMY_ENERGY && enemyDistance <= POW_3_RANGE) {" \
                 "if (false && gunTier == Tiers.Gun.T1 && enemyEnergy > MIN_ENEMY_ENERGY && enemyDistance <= POW_3_RANGE) {"
             version="${version}nt" ;;
+        lukewarm)
+            # Warm study (docs/bench/k3-warm.md): the stored tier opens the battle, then this battle's evidence decides.
+            # Once our rolling hit rate is known within POW_4_MARGIN, POW-1 and POW-3 apply only where POW-4's
+            # expected-value comparison would also pick full power; before that they apply as they do on master.
+            pp="$src/hadur-core/src/main/java/$pkg/core/policy/PowerPolicy.java"
+            edit "$pp" "if (gunTier == Tiers.Gun.T0 && enemyEnergy > MIN_ENEMY_ENERGY) return Reason.POW_1;" \
+                "boolean liveSaysNo = !Double.isNaN(ours.value()) && ours.within(POW_4_MARGIN) && !(expectedValue(ours.value(), FULL_POWER) > expectedValue(ours.value(), gunPower)); if (!liveSaysNo && gunTier == Tiers.Gun.T0 && enemyEnergy > MIN_ENEMY_ENERGY) return Reason.POW_1;"
+            edit "$pp" "if (gunTier == Tiers.Gun.T1 && enemyEnergy > MIN_ENEMY_ENERGY && enemyDistance <= POW_3_RANGE) {" \
+                "if (!liveSaysNo && gunTier == Tiers.Gun.T1 && enemyEnergy > MIN_ENEMY_ENERGY && enemyDistance <= POW_3_RANGE) {"
+            version="${version}lw" ;;
         seedall)
             # K3 ceiling (docs/bench/k3-warm.md): every opponent's seeds are kept after one battle, whatever its
             # score share, so a warm battle starts from a full KNN prior. A measurement build, never a candidate.
@@ -1294,7 +1307,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, absurf, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgeb, tmdodgef, tmnododge, tmclear, tmnoof, tmnoconcord, tmtnear, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, seedall, mimmem, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf, gexp, grate, gdist, gsoft, tdecap, tmlead, tmheavy, tmwary, mscal, mmix, mwpath, mshade, mcross, mbshade, msearch, mdmg, mlat, mavg, etab, edge, eshd, eclose, emgun)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, absurf, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgeb, tmdodgef, tmnododge, tmclear, tmnoof, tmnoconcord, tmtnear, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf, gexp, grate, gdist, gsoft, tdecap, tmlead, tmheavy, tmwary, mscal, mmix, mwpath, mshade, mcross, mbshade, msearch, mdmg, mlat, mavg, etab, edge, eshd, eclose, emgun)" >&2; exit 2 ;;
     esac
 done
 

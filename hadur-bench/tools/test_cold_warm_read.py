@@ -42,6 +42,16 @@ class ColdWarmReadTest(unittest.TestCase):
         self.assertNotIn("x 1", tsv)
         self.assertIn("y 1\t80.00\t90.00\t80.00\t70.00", tsv)
 
+    def test_two_files_pool(self):
+        d = tempfile.mkdtemp()
+        one, two, md, out = (os.path.join(d, n) for n in ("a.tsv", "b.tsv", "r.md", "r.tsv"))
+        with open(one, "w") as f:
+            f.write(HEAD + "B\tx 1\t1\ttrue\ttrue\t0.5\t0.6\t0.1\n")
+        with open(two, "w") as f:
+            f.write(HEAD + "R\tx 1\t1\ttrue\ttrue\t0.5\t0.7\t0.2\n")
+        self.assertEqual(0, cw.main([one, two, "--robot", "R", "--baseline", "B", "--out", md, "--out-tsv", out]))
+        self.assertIn("x 1\t50.00\t60.00\t50.00\t70.00", open(out).read())
+
     def test_missing_build_fails(self):
         code, _, _ = self.run_on([("B", "x 1", 1, "true", "true", 0.5, 0.6, 0.1)])
         self.assertEqual(1, code)

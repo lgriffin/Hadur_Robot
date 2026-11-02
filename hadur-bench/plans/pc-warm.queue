@@ -3,7 +3,7 @@
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-warm        (or  ./queue.sh run pc-warm)
 # One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes; no step needs a
-# decision. About 2 h of battles (400 robots x 2 seeds x 2 builds x cold + warm = 3,200).
+# decision. About 3 h of battles (400 robots x 2 seeds x 3 builds x cold + warm = 4,800).
 #
 # Why: the bench fights every battle cold, but live clients remember their opponents (3.12's read: a stored
 # verdict for about 55% of them), so half the live score is played warm and the bench has never measured it.
@@ -15,13 +15,20 @@
 #     PvP1 89 -> 78, JollyNinja 95 -> 66 in a 5-round smoke). Live clients keep seeds for up to five opponents
 #     we score under 60% against (MEM-8), so this is also a possible live leak.
 #
+# Lukewarm (lw, Leigh 2026-11-02 "a lukewarm start before adapting"): the stored tier still opens the battle at
+# full power (POW-1, POW-3), but once this battle's own hit rate on them is known within POW-4's margin the tier
+# rules apply only where POW-4's expected-value check also picks full power. The cold battle is the same as aa's
+# (a cold battle has no tier), so lw's cold against aa's cold is a second A/A.
+#
 # cw:   screen-311.txt (400 robots drawn in proportion to band size, so a mean is an APS estimate) x sa (robot) and
 #       aa (baseline, master's A/A build) x 2 fresh seeds from 7900, each cold then warm (--cold-warm).
+# lw:   lw on its own, same seeds, each cold then warm; read against cw's aa rows (same battles, same seeds).
 # read: per build warm minus cold, sa minus aa warm, the cold pair as an A/A, the robots memory hurts and helps most.
 # Stop rules (docs/bench/watch.md): halt on 30 failed battles, 60+ skipped turns a battle over the last 200, or no
-# battle in 30 minutes; every battle fought is kept and a rerun resumes. A halt leaves the rest of cw, the read and
-# the PR unrun. ALERT opens an issue for Leigh on any stop. Nothing here ships: it decides whether K3 ships profiles
-# (warm beats cold), whether memory needs a fix first (warm loses), and which robots each applies to.
+# battle in 30 minutes; every battle fought is kept and a rerun resumes. A halt leaves the rest of the step, the
+# steps after it and the PR unrun. ALERT opens an issue for Leigh on any stop. Nothing here ships: it decides whether K3 ships profiles
+# (warm beats cold), whether memory needs a fix first (warm loses), whether lukewarm is that fix, and which robots
+# each applies to.
 
 set V = 3.21
 set P = --parallel 12 --no-truth-log
@@ -30,7 +37,7 @@ set W = work/warm
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
 
-prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && bash ./build-ablation.sh aa && bash ./build-ablation.sh seedall && test -f bisect/hadur117.Hadur_${V}sa.jar && ./fetch-opponents.sh --set screen-311.txt && mvn -q compile
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && bash ./build-ablation.sh aa && bash ./build-ablation.sh seedall && test -f bisect/hadur117.Hadur_${V}sa.jar && bash ./build-ablation.sh lukewarm && test -f bisect/hadur117.Hadur_${V}lw.jar && ./fetch-opponents.sh --set screen-311.txt && mvn -q compile
 
 cw | ./bench-top20.sh ${C} ${P} --set screen-311.txt --seeds 2 --seed-base 7900 --robot-jar bisect/hadur117.Hadur_${V}sa.jar --robot "hadur117.Hadur ${V}sa" --baseline bisect/hadur117.Hadur_${V}aa.jar --baseline-robot "hadur117.Hadur ${V}aa" --cold-warm --out ${W} --label warm
   after: prep
@@ -38,8 +45,14 @@ cw | ./bench-top20.sh ${C} ${P} --set screen-311.txt --seeds 2 --seed-base 7900 
   stop: skips 60 over 200
   stop: stall 30m
 
-read | python3 tools/cold_warm_read.py ${W}/cold-warm.tsv --robot "hadur117.Hadur ${V}sa" --baseline "hadur117.Hadur ${V}aa" --out ${OUT}/$(date +%Y-%m-%d)_warm.md --out-tsv ${OUT}/warm-per-robot.tsv
+lw | ./bench-top20.sh ${C} ${P} --set screen-311.txt --seeds 2 --seed-base 7900 --robot-jar bisect/hadur117.Hadur_${V}lw.jar --robot "hadur117.Hadur ${V}lw" --cold-warm --out ${W}-lw --label warm-lw
   after: cw
+  stop: fails 30
+  stop: skips 60 over 200
+  stop: stall 30m
 
-pr | bash tools/open_results_pr.sh claude/pc-warm-results "1v1 opponent memory: cold against warm, with and without seeds (K3)" ${OUT}/*_warm.md ${OUT}/warm-per-robot.tsv
+read | python3 tools/cold_warm_read.py ${W}/cold-warm.tsv --robot "hadur117.Hadur ${V}sa" --baseline "hadur117.Hadur ${V}aa" --out ${OUT}/$(date +%Y-%m-%d)_warm.md --out-tsv ${OUT}/warm-per-robot.tsv && python3 tools/cold_warm_read.py ${W}/cold-warm.tsv ${W}-lw/cold-warm.tsv --robot "hadur117.Hadur ${V}lw" --baseline "hadur117.Hadur ${V}aa" --out ${OUT}/$(date +%Y-%m-%d)_warm-lw.md --out-tsv ${OUT}/warm-lw-per-robot.tsv
+  after: lw
+
+pr | bash tools/open_results_pr.sh claude/pc-warm-results "1v1 opponent memory: cold against warm, with seeds and lukewarm (K3)" ${OUT}/*_warm.md ${OUT}/*_warm-lw.md ${OUT}/warm-per-robot.tsv ${OUT}/warm-lw-per-robot.tsv
   after: read

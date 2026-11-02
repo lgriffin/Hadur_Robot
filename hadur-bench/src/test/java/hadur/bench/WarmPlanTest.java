@@ -14,7 +14,7 @@ class WarmPlanTest {
 
     @Test
     @Tag("BENCH-174")
-    @DisplayName("sa and aa cold then warm on the 400 screen at 2 fresh seeds, the read, the stop rules and the PR")
+    @DisplayName("sa, aa and lw cold then warm on the 400 screen at 2 fresh seeds, the reads, the stop rules and the PR")
     void cardIsComplete() throws IOException {
         String queue = Files.readString(Path.of("plans/pc-warm.queue"));
         String version = Files.readString(Path.of("../hadur-robot/pom.xml"))
@@ -26,7 +26,7 @@ class WarmPlanTest {
         assertTrue(queue.contains("--robot \"hadur117.Hadur ${V}sa\" --baseline bisect/hadur117.Hadur_${V}aa.jar"
             + " --baseline-robot \"hadur117.Hadur ${V}aa\" --cold-warm --out ${W}"));
         assertTrue(queue.contains("tools/cold_warm_read.py ${W}/cold-warm.tsv"));
-        String[] steps = {"prep", "cw", "read", "pr"};
+        String[] steps = {"prep", "cw", "lw", "read", "pr"};
         for (int i = 1; i < steps.length; i++) {
             int at = queue.indexOf("\n" + steps[i] + " | ");
             assertTrue(at >= 0, steps[i]);
@@ -34,9 +34,15 @@ class WarmPlanTest {
             assertTrue(queue.substring(at, next < 0 ? queue.length() : next).contains("after: " + steps[i - 1]),
                 steps[i] + " after " + steps[i - 1]);
         }
-        String cw = queue.substring(queue.indexOf("\ncw | "), queue.indexOf("\n\nread | "));
+        assertTrue(queue.contains("build-ablation.sh lukewarm ") && Files.readString(Path.of("build-ablation.sh")).contains("        lukewarm)"),
+            "the lukewarm build exists");
+        assertTrue(queue.contains("--set screen-311.txt --seeds 2 --seed-base 7900 --robot-jar bisect/hadur117.Hadur_${V}lw.jar"),
+            "lw plays cw's seeds, so it reads against cw's aa rows");
+        assertTrue(queue.contains("cold_warm_read.py ${W}/cold-warm.tsv ${W}-lw/cold-warm.tsv --robot \"hadur117.Hadur ${V}lw\""));
+        String cw = queue.substring(queue.indexOf("\ncw | "), queue.indexOf("\n\nlw | "));
+        String lw = queue.substring(queue.indexOf("\nlw | "), queue.indexOf("\n\nread | "));
         for (String rule : new String[] {"fails 30", "skips 60 over 200", "stall 30m"}) {
-            assertTrue(cw.contains("stop: " + rule), rule);
+            assertTrue(cw.contains("stop: " + rule) && lw.contains("stop: " + rule), rule);
         }
         String read = queue.substring(queue.indexOf("\nread | "), queue.indexOf("\n\npr | "));
         assertTrue(!read.contains(";"), "a read error must stop the card before the results PR");
