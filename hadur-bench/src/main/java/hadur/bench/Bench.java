@@ -476,6 +476,11 @@ public final class Bench {
             System.out.println("shard " + kn[0] + "/" + kn[1] + ": " + opponents.size() + " opponents of the set");
         }
         if (dryRun) return dryRun(opponents);
+        if (opponents.isEmpty()) {
+            System.err.println("refusing to start: no robot left in the set after " + Broken.FILE
+                + ", --only and --shard");
+            return 2;
+        }
         Memory.Check memory = Memory.check(Memory.freeMb(), parallel, childHeap());
         System.out.println("memory: " + memory.message());
         if (!memory.ok() && !Boolean.parseBoolean(opts.getOrDefault("force-memory", "false"))) {

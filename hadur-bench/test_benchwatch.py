@@ -89,6 +89,13 @@ class SpecTest(unittest.TestCase):
                          ("work/x", 3, 3, 27, 1217, True))
         self.assertEqual(sp.arm_labels, ["c", "aa", "s4"])
 
+    def test_panel_leaves_out_broken_robots(self):
+        """BENCH-169: the bench drops robots broken-1.11.2.txt lists, so the expected count does too."""
+        (self.home / "broken-1.11.2.txt").write_text("# broken\nb  1 | 1v1 | invalid robot\n")
+        cmd = "./bench-top20.sh --set panel.txt --seeds 3 --arms x.arms --out work/x"
+        self.assertEqual(benchwatch.Spec("", cmd, self.home).panel, 2)
+        self.assertEqual(benchwatch.Spec("", cmd + " --keep-broken true", self.home).panel, 3)
+
     def test_futility_needs_shuffled_jobs_and_known_arms(self):
         cmd = "./bench-top20.sh --set panel.txt --seeds 3 --arms x.arms --out work/x"
         sp = benchwatch.Spec("", cmd, self.home)
