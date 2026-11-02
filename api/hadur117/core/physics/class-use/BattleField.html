@@ -187,6 +187,22 @@ loadScripts(document, 'script');</script>
  double&nbsp;y,
  <a href="../BattleField.html" title="class in hadur117.core.physics">BattleField</a>&nbsp;field)</code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static double</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../../melee/MinimumRiskMovement.html#waveDamageMoving(java.awt.geom.Point2D.Double,double,double,java.awt.geom.Point2D.Double,long,java.util.List,java.util.List,hadur117.core.physics.BattleField)" class="member-name-link">waveDamageMoving</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ double&nbsp;heading,
+ double&nbsp;velocity,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;to,
+ long&nbsp;now,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../melee/MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a>&gt;&nbsp;waves,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;double[][]&gt;&nbsp;shadows,
+ <a href="../BattleField.html" title="class in hadur117.core.physics">BattleField</a>&nbsp;field)</code></div>
+<div class="col-last even-row-color">
+<div class="block">TMODE-39: as <a href="../../melee/MinimumRiskMovement.html#waveDamage(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,long,java.util.List)"><code>MinimumRiskMovement.waveDamage(java.awt.geom.Point2D.Double, java.awt.geom.Point2D.Double, long, java.util.List&lt;hadur117.core.melee.MinimumRiskMovement.Wave&gt;)</code></a>, but Hadur leaves <code>me</code> with its <code>heading</code> and
+ <code>velocity</code> and drives to <code>to</code> as the melee's drive does (the nearer way, front or
+ back; at most 4 px a tick while the turn left is over 45 degrees; the engine's turn rate,
+ acceleration, braking and stopping-distance cap (<a href="../../melee/MinimumRiskMovement.html#engineVelocity(double,double,double)"><code>MinimumRiskMovement.engineVelocity(double, double, double)</code></a>), for <a href="../../melee/MinimumRiskMovement.html#WAVE_TICKS"><code>MinimumRiskMovement.WAVE_TICKS</code></a>
+ ticks.</div>
+</div>
 </div>
 <div class="caption"><span>Constructors in <a href="../../melee/package-summary.html">hadur117.core.melee</a> with parameters of type <a href="../BattleField.html" title="class in hadur117.core.physics">BattleField</a></span></div>
 <div class="summary-table three-column-summary">

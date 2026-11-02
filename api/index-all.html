@@ -3604,6 +3604,13 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#BENCH-72">BENCH-72</a>: the engine's random seed for the bench's seed <code>seed</code> (1..N).</div>
 </dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#engineVelocity(double,double,double)" class="member-name-link">engineVelocity(double, double, double)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">TMODE-39: the engine's next velocity toward <code>distance</code> px left (negative to reverse), at
+ most <code>maxV</code>: 1 px a tick faster, 2 slower, never faster than a stop within the distance
+ allows, and a robot moving the wrong way at 2 or less brakes through zero and speeds up in the
+ same tick.</div>
+</dd>
 <dt><a href="hadur/bench/Report.html#engineVersion(java.lang.String)" class="member-name-link">engineVersion(String)</a> - Static method in class hadur.bench.<a href="hadur/bench/Report.html" title="class in hadur.bench">Report</a></dt>
 <dd>
 <div class="block">The Robocode version in a classpath string, read from its robocode.core jar's name
@@ -4609,6 +4616,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/TeamModes.html#FORCE_MATEFIRE" class="member-name-link">FORCE_MATEFIRE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/TeamModes.html#FORCE_MOMENTUM" class="member-name-link">FORCE_MOMENTUM</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
+<dd>
+<div class="block">TMODE-39: MOMENTUM on every team, the ones the table names included (as CLEAR).</div>
+</dd>
 <dt><a href="hadur117/core/melee/TeamModes.html#FORCE_PACK" class="member-name-link">FORCE_PACK</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/TeamModes.html#FORCE_PATH" class="member-name-link">FORCE_PATH</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
@@ -8733,6 +8744,16 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The mode table (TWIN-13, docs/twinsaor.md sections 9 and 11): one char a slot, keyed like the
  records by name hash.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.View.html#momentum" class="member-name-link">momentum</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.View.html" title="class in hadur117.core.melee">MinimumRiskMovement.View</a></dt>
+<dd>
+<div class="block">TMODE-39: the dodge's wave check drives from Hadur's heading and velocity, at the engine's turn rate.</div>
+</dd>
+<dt><a href="hadur117/core/melee/TeamModes.Mode.html#MOMENTUM" class="member-name-link">MOMENTUM</a> - Enum constant in enum class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a></dt>
+<dd>
+<div class="block">TMODE-39: the dodge's check of the enemies' waves drives each destination from the member's
+ heading and velocity at the engine's turn rate, as CLEAR's check does, not from a standstill
+ already facing the spot: a member at full speed the other way cannot dodge as that drive says.</div>
 </dd>
 <dt><a href="hadur117/core/memory/OpponentProfile.html#motion" class="member-name-link">motion</a> - Variable in class hadur117.core.memory.<a href="hadur117/core/memory/OpponentProfile.html" title="class in hadur117.core.memory">OpponentProfile</a></dt>
 <dd>
@@ -16886,6 +16907,14 @@ the order they are declared.</div>
 <dd>
 <div class="block">As above, over the first <code>ticks</code> ticks only (<a class="req" href="../requirements.html#MMOVE-21">MMOVE-21</a>).</div>
 </dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#waveDamageMoving(java.awt.geom.Point2D.Double,double,double,java.awt.geom.Point2D.Double,long,java.util.List,java.util.List,hadur117.core.physics.BattleField)" class="member-name-link">waveDamageMoving(Point2D.Double, double, double, Point2D.Double, long, List&lt;MinimumRiskMovement.Wave&gt;, List&lt;double[][]&gt;, BattleField)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">TMODE-39: as <a href="hadur117/core/melee/MinimumRiskMovement.html#waveDamage(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,long,java.util.List)"><code>MinimumRiskMovement.waveDamage(java.awt.geom.Point2D.Double, java.awt.geom.Point2D.Double, long, java.util.List&lt;hadur117.core.melee.MinimumRiskMovement.Wave&gt;)</code></a>, but Hadur leaves <code>me</code> with its <code>heading</code> and
+ <code>velocity</code> and drives to <code>to</code> as the melee's drive does (the nearer way, front or
+ back; at most 4 px a tick while the turn left is over 45 degrees; the engine's turn rate,
+ acceleration, braking and stopping-distance cap (<a href="hadur117/core/melee/MinimumRiskMovement.html#engineVelocity(double,double,double)"><code>MinimumRiskMovement.engineVelocity(double, double, double)</code></a>), for <a href="hadur117/core/melee/MinimumRiskMovement.html#WAVE_TICKS"><code>MinimumRiskMovement.WAVE_TICKS</code></a>
+ ticks.</div>
+</dd>
 <dt><a href="hadur117/core/model/WaveManager.html" class="type-name-link" title="class in hadur117.core.model">WaveManager</a> - Class in <a href="hadur117/core/model/package-summary.html">hadur117.core.model</a></dt>
 <dd>
 <div class="block">The waves in flight on one side of the duel, and the bookkeeping that decides when each
@@ -17102,6 +17131,10 @@ the order they are declared.</div>
 <dt><a href="hadur/bench/SessionFile.html#wipe()" class="member-name-link">wipe()</a> - Method in record class hadur.bench.<a href="hadur/bench/SessionFile.html" title="class in hadur.bench">SessionFile</a></dt>
 <dd>
 <div class="block">Returns the value of the <code>wipe</code> record component.</div>
+</dd>
+<dt><a href="hadur117/core/melee/TeamModes.html#with(java.util.Set,hadur117.core.melee.TeamModes.Mode)" class="member-name-link">with(Set&lt;TeamModes.Mode&gt;, TeamModes.Mode)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamModes.html" title="class in hadur117.core.melee">TeamModes</a></dt>
+<dd>
+<div class="block"><code>m</code> with <code>mode</code> added (TMODE-38, TMODE-39).</div>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#withBulletShadows(java.util.List,java.util.List,java.util.List,double)" class="member-name-link">withBulletShadows(List&lt;double[][]&gt;, List&lt;MinimumRiskMovement.Wave&gt;, List&lt;VirtualBullet&gt;, double)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>
