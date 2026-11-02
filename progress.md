@@ -1,6 +1,6 @@
 # Queue pc-team-angles: progress
 
-Updated 2026-11-02 14:38:31 PC time (14:38 UTC), runner pid 44560.
+Updated 2026-11-02 14:53:39 PC time (14:53 UTC), runner pid 44560.
 
 - `anprep` done, exit 0 in 3 min
 - `anbb` done, exit 0 in 21 min
@@ -42,21 +42,20 @@ Stopping now would leave -16 battles unrun (about -1 min); every battle already 
 
 ### anwy
 
-**302 of 720 battles** (42%), 0 failed. Running 24 min, 761 battles/h, about 33 min left (ends ~15:11 PC time). Last battle 0 min ago.
-Skipped turns a battle: 11.7 overall, first 100 12.1, last 100 12.1.
+**568 of 720 battles** (79%), 0 failed. Running 39 min, 875 battles/h, about 10 min left (ends ~15:04 PC time). Last battle 0 min ago.
+Skipped turns a battle: 10.4 overall, first 100 12.1, last 100 9.1.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 302 |
+| `fails 20` | halt | ok | 0 failed of 568 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 12.1 a battle over the last 100 (first 100: 12.1) |
+| `skips 40 over 100` | halt | ok | 9.1 a battle over the last 100 (first 100: 12.1) |
 
-Stopping now would leave 418 battles unrun (about 33 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 152 battles unrun (about 10 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-10:10:04 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 13:07:48 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
 13:07:48 skip anprep (already exit=0)
 13:07:48 start anbb
@@ -71,4 +70,5 @@ Stopping now would leave 418 battles unrun (about 33 min); every battle already 
 14:14:42 anhv exit=0 in 2750 s
 14:14:42 start anwy
 14:14:42 watching anwy: 3 stop rule(s)
+14:39:32 progress anwy: 315/720 (44%) battles, 761/h, ETA 32 min, 0 failed, skips 12.3/battle (last 100)
 ```
