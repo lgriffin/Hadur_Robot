@@ -31,3 +31,9 @@
 08:16:41 watching mrhad: 3 stop rule(s)
 08:17:35 progress mrhad: 0/528 (0%) battles, 0 failed
 08:47:48 progress mrhad: 264/528 (50%) battles, 509/h, ETA 31 min, 0 failed, skips 19.3/battle (last 100)
+09:14:46 mrhad exit=0 in 3484 s
+09:14:46 start mrread
+09:15:03 mrread exit=0 in 16 s
+09:15:03 start mrpr
+09:15:09 mrpr exit=0 in 6 s
+09:15:09 ALLDONE

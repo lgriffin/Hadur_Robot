@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-mirror",
- "updated": 1793610115.3457687,
+ "updated": 1793610909.5751398,
  "steps": {
   "mrprep": {
    "status": "done",
@@ -15,16 +15,22 @@
    "end": "2026-11-02T08:16:41"
   },
   "mrhad": {
-   "status": "running",
-   "start": "2026-11-02T08:16:41"
+   "status": "done",
+   "exit": 0,
+   "seconds": 3484,
+   "end": "2026-11-02T09:14:46"
   },
   "mrread": {
-   "status": "skipped",
-   "reason": "after mrhad"
+   "status": "done",
+   "exit": 0,
+   "seconds": 16,
+   "end": "2026-11-02T09:15:03"
   },
   "mrpr": {
-   "status": "skipped",
-   "reason": "after mrread"
+   "status": "done",
+   "exit": 0,
+   "seconds": 6,
+   "end": "2026-11-02T09:15:09"
   }
  },
  "watched": [
@@ -74,8 +80,8 @@
   {
    "step": "mrhad",
    "started": 1793607401.6615613,
-   "updated": 1793610115.338207,
-   "elapsed": 2713.676645755768,
+   "updated": 1793610886.493646,
+   "elapsed": 3484.8320846557617,
    "expected": 528,
    "panel": null,
    "field": null,
@@ -83,20 +89,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 378,
+   "battles": 528,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 501.45989284622846,
-   "eta": 1076.8558118078442,
-   "fraction": 0.7159090909090909,
-   "last_battle_age": 8.886199235916138,
+   "rate": 545.4495234847922,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 1.6246964931488037,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 378"
+     "detail": "0 failed of 528"
     },
     {
      "rule": "stall 30m",
@@ -108,11 +114,11 @@
      "rule": "skips 60 over 200",
      "action": "halt",
      "state": "ok",
-     "detail": "16.1 a battle over the last 200 (first 200: 18.7)"
+     "detail": "15.4 a battle over the last 200 (first 200: 18.7)"
     }
    ],
-   "skips_mean": 17.33068783068783,
-   "skips_last100": 14.49
+   "skips_mean": 16.876893939393938,
+   "skips_last100": 15.27
   }
  ]
 }
