@@ -1,0 +1,40 @@
+{
+ "plan": "pc-team-angles",
+ "updated": 1793605667.4764354,
+ "steps": {
+  "anprep": {
+   "status": "pending"
+  },
+  "anbb": {
+   "status": "pending"
+  },
+  "anhv": {
+   "status": "pending"
+  },
+  "anwy": {
+   "status": "pending"
+  },
+  "anmd": {
+   "status": "pending"
+  },
+  "anglob": {
+   "status": "pending"
+  },
+  "anpick": {
+   "status": "pending"
+  },
+  "angate": {
+   "status": "pending"
+  },
+  "angbb": {
+   "status": "pending"
+  },
+  "ansum": {
+   "status": "pending"
+  },
+  "anpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
