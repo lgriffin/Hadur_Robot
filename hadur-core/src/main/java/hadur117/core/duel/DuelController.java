@@ -414,6 +414,7 @@ public final class DuelController {
         if (heatJitOn) on.add("heatjit");
         if (flatOn) on.add("flat");
         if (mimicOn) on.add("mimic");
+        if (fullOff) on.add("fulloff");
         if (shield != null && shield.active()) on.add("shield");
         return on.isEmpty() ? "-" : String.join(",", on);
     }
@@ -662,6 +663,8 @@ public final class DuelController {
         // battle's rates say it pays.
         PowerPolicy.Reason why = PowerPolicy.reason(opening.gunTier(), e.energy(), in.energy(),
             e.distance(), bulletPower, ourWindow.estimate(), theirWindow.estimate());
+        // POW-15: the table keeps the gun's own power against the opponents it names.
+        if (fullOff) why = PowerPolicy.Reason.GUN;
         if (why != powerReason) {
             powerReason = why;
             Estimate ours = ourWindow.estimate();
@@ -1013,6 +1016,8 @@ public final class DuelController {
     private boolean flatOn;
     /** MOVE-34: whether the table put the learning-gun mimics among the aim members for this opponent. */
     private boolean mimicOn;
+    /** POW-15: whether the table turned the full-power rules off for this opponent. */
+    private boolean fullOff;
 
     /** DODGE-5: the escape angle a bullet read is scored loosely at while the planner is on; NaN otherwise. */
     private double dodgeEscape(Wave w) {
@@ -1542,6 +1547,8 @@ public final class DuelController {
         if (flatOn) emitPolicy(round, time, "flat-on", Double.NaN, Double.NaN, "flat_on");
         // MOVE-34: a P record says the table put the mimics among the aim members for this opponent.
         if (mimicOn) emitPolicy(round, time, "mimic-on", Double.NaN, Double.NaN, "mimic_on");
+        // POW-15: a P record says the table turned the full-power rules off for this opponent.
+        if (fullOff) emitPolicy(round, time, "full-off", Double.NaN, Double.NaN, "full_off");
         // Without memory the B record still goes out, with '-' for what memory would say.
         if (library != null) {
             // MEM-4: a missing or damaged profile loads as a stranger; load never throws.
@@ -1597,6 +1604,8 @@ public final class DuelController {
             moveController.setMemberMimics(mimics);
             mimicOn = true;
         }
+        // POW-15: the full-power rules off for the opponents the table names.
+        fullOff = duelOnly(stackList.fullOff(name), enemiesTotal);
         // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names, never a shield-mode one
         // (its TripHammer aims break the shield's bullet hits); the gun keeps them 1v1-only.
         if (duelOnly(stackList.gunStack(name) && !stackList.matches(name), enemiesTotal)) {

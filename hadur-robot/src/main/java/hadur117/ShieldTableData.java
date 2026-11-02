@@ -567,6 +567,17 @@ final class ShieldTableData {
     }
 
     /**
+     * POW-15: the opponents the duel never fires a full-power rule (POW-1 to POW-4) at. Empty until
+     * a card holds robots; candidate builds add lines here (build-ablation.sh fplist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] fullOffs() {
+        return new String[] {
+        };
+    }
+
+    /**
      * SKEY-2: per-opponent surf keys, each line {@code "m1 ... m9 bw name"}: nine multipliers on the
      * hit views' key weights ({@code MoveFormula}) and one on the kernel width, fitted offline from that
      * opponent's bullets ({@code data/tools/surf_key_fit.py}). The 175 keys of pc-surf-key (BENCH-160,
