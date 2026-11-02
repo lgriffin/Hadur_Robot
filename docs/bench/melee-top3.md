@@ -42,8 +42,8 @@ and the evidence is in `melee-broken-1.11.2.md`.
 
 | Lever | What it does | Cloud smoke | Status |
 |---|---|---|---|
-| HAND-4 `ENDGAME_CLOSE` (arm `eclose`, suffix ek) | The endgame duel opens at 400 px, not the 650 stranger ceiling | 58 paired battles, seeds 4200-01. Distance 690 to 575 px. Hadur's duel hit rate 14.4 to 14.7%, the survivor's 9.8 to 10.9%. Duel wins +0.5 points, APS +0.12 ± 0.51 | Null in the cloud; read beside HAND-5 on pc-melee-end |
-| HAND-5 `ENDGAME_MELEE_GUN` (arm `emgun`, suffix eg) | In the endgame duel, the melee field gun (kNN, learned on the survivor all battle) aims and fires whenever it has learned the survivor | 56 paired battles, 28 fields, seeds 4300-01. Rounds won 54.6 to 56.2%. Duel wins 69.0 to 71.7%, against top-10 survivors 21.3 to 26.0%, against 11-30 57.2 to 61.8%. Duel hit rate level (14.0 vs 13.9%). Score share -0.12 ± 0.32, APS -0.13 ± 0.50 | Mixed and too noisy to call; carded as pc-melee-end |
+| HAND-4 `ENDGAME_CLOSE` (arm `eclose`, suffix ek) | The endgame duel opens at 400 px, not the 650 stranger ceiling | 58 paired battles, seeds 4200-01. Distance 690 to 575 px. Hadur's duel hit rate 14.4 to 14.7%, the survivor's 9.8 to 10.9%. Duel wins +0.5 points, APS +0.12 ± 0.51 | **FAILED** on pc-melee-end (PR #591): +0.04 ± 0.23, 1-30 endgame wins +1.3 points |
+| HAND-5 `ENDGAME_MELEE_GUN` (arm `emgun`, suffix eg) | In the endgame duel, the melee field gun (kNN, learned on the survivor all battle) aims and fires whenever it has learned the survivor | 56 paired battles, 28 fields, seeds 4300-01. Rounds won 54.6 to 56.2%. Duel wins 69.0 to 71.7%, against top-10 survivors 21.3 to 26.0%, against 11-30 57.2 to 61.8%. Duel hit rate level (14.0 vs 13.9%). Score share -0.12 ± 0.32, APS -0.13 ± 0.50 | **FAILED** on pc-melee-end (PR #591): -0.17 ± 0.23, 1-30 endgame wins -1.8 points |
 
 The HAND-5 smoke ran on a build in which the duel still booked the shots the field gun held: their
 waves, virtual bullets and bullet shadows. The duel also learned from the field gun's bullet outcomes.
@@ -59,7 +59,15 @@ fields × 6 fresh seeds (3265-3270), 1,104 battles, about 1.8 h. Each arm has fa
 stop rules. The read uses `melee_s0.py screen --base2` under the melee gate, and the card opens a
 results PR on `claude/pc-melee-end-results`.
 
-## Next if both fail
+## pc-melee-end read (PR #591, 2026-11-02)
+
+46 fields × 6 seeds, 276 battles an arm, none missing. The bb A/A copy was clean at +0.03 ± 0.16.
+HAND-5 lost 0.17 ± 0.23 APS and 1.8 points of 1-30 endgame wins once the duel no longer booked its
+shots: the melee kNN aims worse in a duel than the duel gun does. HAND-4 was flat at +0.04 ± 0.23.
+Energy entering the endgame (54.7) and deaths with two opponents left (9.3%) did not move in any arm.
+Both stay off. The endgame duel is not where the melee gap is.
+
+## Next
 
 The census says lost rounds start with the energy deficit from the crowd: 61 damage taken against 45.
 The next lever is crowd damage taken in the last three or four, before the duel begins.
