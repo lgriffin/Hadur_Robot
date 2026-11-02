@@ -132,4 +132,27 @@ class AimMembersTest {
         MoveController off = new MoveController(FIELD, new MovementPredictor(FIELD));
         off.scoreInterceptAims(w, new Point2D.Double(400, 300));
     }
+
+    @Test
+    @Tag("MOVE-33")
+    @DisplayName("mimic members follow the aims, share a 0.3 standing weight and learn like the aims")
+    void mimicMembers() {
+        AimMembers m = new AimMembers(6);
+        assertEquals(AimMembers.MEMBERS + 6, m.members());
+        assertEquals(6, m.mimics());
+        double total = 0;
+        for (int i = AimMembers.MEMBERS; i < m.members(); i++) total += m.weight(i);
+        assertEquals(AimMembers.MIMIC_PRIOR, total, 1e-12);
+        assertEquals(AimMembers.PRIOR, m.weight(1), 1e-12, "the aims keep their weight");
+        double[] say = nans(m.members());
+        say[0] = 0.05;
+        say[AimMembers.MEMBERS] = 1.0;
+        m.learn(say, 0.05);
+        assertTrue(m.score(AimMembers.MEMBERS) > 0 && m.score(0) < 0);
+        assertTrue(m.weight(AimMembers.MEMBERS) > AimMembers.MIMIC_PRIOR / 6);
+        double[] scores = nans(m.members() - 1);
+        scores[AimMembers.MEMBERS - 1] = 0.0;
+        assertTrue(m.danger(1.0, scores) < 1.0, "a mimic that says the window is safe pulls the danger down");
+        assertEquals(AimMembers.MEMBERS, new AimMembers().members(), "without mimics as before");
+    }
 }

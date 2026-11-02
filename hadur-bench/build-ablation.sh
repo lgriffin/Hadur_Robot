@@ -142,6 +142,7 @@
 #         and circular aims', each weighted by its rolling score at the bullets that hit us. Sets only AIM_MEMBERS.
 #   noaim  MOVE-29 off (it ships on from 3.20): the three-option surf rates on the views alone. Suffix kx.
 #   aimp3, aimp1  (with aimmem) MOVE-29's standing weight of each aim 0.1 -> 0.3 or 1.0. Suffix q3, q1.
+#   mimmem  MOVE-33: the six visit-trained learning-gun mimics (GunMimics) join the aim members. Suffix mm.
 #   aimbhb  MOVE-30: an enemy bullet ours met also scores the aim members, as a hit does. Sets only AIM_INTERCEPTS.
 #         Suffix ki.
 #   aimwide  MOVE-31: the aim members read all six simple angles at all three lags (18 aims, the same 0.3 total
@@ -545,6 +546,10 @@ for a in "${list[@]}"; do
         mimics)
             edit "$movedesign" "static final boolean MIMICS = false;" "static final boolean MIMICS = true;"
             version="${version}gm" ;;
+        mimmem)
+            # MOVE-33: the learning-gun mimics as aim members.
+            edit "$movedesign" "static final boolean MIMIC_MEMBERS = false;" "static final boolean MIMIC_MEMBERS = true;"
+            version="${version}mm" ;;
         aimmem)
             # Ships on from 3.20; the arm stays buildable for the older cards.
             grep -qF "static final boolean AIM_MEMBERS = true;" "$movedesign" \
@@ -1241,7 +1246,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, absurf, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgeb, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmtnear, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf, gexp, grate, gdist, gsoft, tdecap, tmlead, tmheavy, tmwary, mscal, mmix, mwpath, mshade, mcross, mbshade, msearch, mdmg, mlat, mavg, etab, edge, eshd)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, absurf, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgeb, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmtnear, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mimmem, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf, gexp, grate, gdist, gsoft, tdecap, tmlead, tmheavy, tmwary, mscal, mmix, mwpath, mshade, mcross, mbshade, msearch, mdmg, mlat, mavg, etab, edge, eshd)" >&2; exit 2 ;;
     esac
 done
 

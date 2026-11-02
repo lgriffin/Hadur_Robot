@@ -123,4 +123,21 @@ class GunMimicsTest {
         double[] p = m.profile(wave(), BINS);
         for (double v : p) assertEquals(1.0 / BINS, v, 1e-12);
     }
+
+    @Test
+    @Tag("MOVE-33")
+    @DisplayName("a mimic's mass over a guess-factor range is its probability there, NaN before data")
+    void massOverRange() {
+        GunMimics g = new GunMimics();
+        Wave w = wave();
+        assertTrue(Double.isNaN(g.mass(0, w, -0.1, 0.1)), "no visit yet");
+        for (int i = 0; i < 30; i++) g.learnVisit(w, 0.5);
+        double near = g.mass(0, w, 0.4, 0.6);
+        double far = g.mass(0, w, -0.6, -0.4);
+        assertTrue(near > 3 * far, near + " vs " + far);
+        assertEquals(1.0, g.mass(0, w, -1, 1), 1e-9, "the whole range holds all of it");
+        assertEquals(g.mass(0, w, 0.4, 0.6), g.mass(0, w, 0.6, 0.4), 1e-12, "either order");
+        assertEquals(0.0, g.mass(0, w, 0.3, 0.3), 1e-12, "an empty range");
+        assertEquals(6, g.size());
+    }
 }

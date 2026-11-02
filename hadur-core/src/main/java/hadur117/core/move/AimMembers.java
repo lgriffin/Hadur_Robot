@@ -64,12 +64,39 @@ public final class AimMembers {
         return out;
     }
 
-    private final double[] score = new double[MEMBERS];
+    /** MOVE-33: the total standing weight of the learning-gun mimic members, shared out over them. */
+    static final double MIMIC_PRIOR = 0.3;
+
+    private final double[] score;
+    /** MOVE-33: the mimic members after the aims (0 without them). */
+    private final int mimics;
     private int bullets;
+
+    /** The views and the aims (MOVE-29). */
+    public AimMembers() {
+        this(0);
+    }
+
+    /** MOVE-33: the views, the aims, then {@code mimics} learning-gun mimics. */
+    public AimMembers(int mimics) {
+        this.mimics = Math.max(0, mimics);
+        this.score = new double[MEMBERS + this.mimics];
+    }
+
+    /** Every member: the views, the aims, then the mimics. */
+    public int members() {
+        return score.length;
+    }
+
+    /** MOVE-33: the mimic members after the aims. */
+    public int mimics() {
+        return mimics;
+    }
 
     /** Each member's weight now: its standing weight times 2^(POWER x score). */
     public double weight(int member) {
-        return (member == 0 ? 1.0 : PRIOR) * Math.pow(2.0, POWER * score[member]);
+        double standing = member == 0 ? 1.0 : member < MEMBERS ? PRIOR : MIMIC_PRIOR / mimics;
+        return standing * Math.pow(2.0, POWER * score[member]);
     }
 
     /**
@@ -80,7 +107,7 @@ public final class AimMembers {
     public double danger(double viewScore, double[] aimScore) {
         double sum = weight(0) * viewScore;
         double total = weight(0);
-        for (int a = 0; a < aimScore.length; a++) {
+        for (int a = 0; a < aimScore.length && a + 1 < score.length; a++) {
             if (Double.isNaN(aimScore[a])) continue;
             double wt = weight(a + 1);
             sum += wt * aimScore[a];
@@ -97,7 +124,7 @@ public final class AimMembers {
      */
     public void learn(double[] scores, double uniform) {
         if (!(uniform > 0)) return;
-        for (int m = 0; m < MEMBERS && m < scores.length; m++) {
+        for (int m = 0; m < score.length && m < scores.length; m++) {
             if (Double.isNaN(scores[m])) continue;
             double ratio = (1 - EPS) * Math.max(0.0, scores[m]) / 2.0 / uniform + EPS;
             score[m] = DECAY * score[m] + (1 - DECAY) * (Math.log(ratio) / Math.log(2.0));

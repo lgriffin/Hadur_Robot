@@ -1,0 +1,46 @@
+# 1v1, learning-gun mimics in the surf against the strong learners (BENCH-168, MOVE-33). Leigh starts it once the PC
+# is free (not beside another card: two cards on one checkout collide):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-mimic        (or  ./queue.sh run pc-mimic)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes; no step needs a
+# decision. About 50 min of battles (232 x 3 arms x 3 seeds = 2,088) and seconds of analysis.
+#
+# Why: strong learners are the biggest part of BeepBoop's lead over us (+1.43 APS over these 232). BeepBoop's surf
+# blends mimics of named learning guns, each weighted by how well it predicted the real bullets; ours blends the views
+# with simple aims only (MOVE-29). MOVE-33 adds MOVE-27's six visit-trained learning-gun mimics as members beside the
+# aims. Cloud read 2026-11-02 (36 learners x 2 seeds, 35 rounds): mm - aa +1.75 +- 1.86 points a robot (+0.05 APS
+# over the 36), BlackBox +16, GresSuffurd +13, RougeDC +11, Wavelet +11, Shadow +10; worst Regicide -7, WaveSerpent -7.
+# Cloud runs starve learners of CPU, so the PC decides.
+#
+# screen: the 232 learners (panel-learners-flat.txt) x c, aa, mm x 3 fresh seeds from 7700.
+# gate:   mm minus pooled c and aa over the 232 / 1,217 pairings at +0.05 APS, 95% low end above 0, A/A inside its band;
+#         a per-robot pick at a 5-point margin; per-robot differences with losses.
+# Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle
+# over the last 200 (the panel's healthy level is ~16-21), or no battle in 30 minutes; every battle fought is kept and
+# a rerun resumes. A halt leaves the rest of the screen, the gate and the PR unrun. No A/A or futility rule: pc-shield-
+# still and pc-shield-power both halted on an interim A/A that settled; the gate judges the A/A at the end.
+# ALERT opens an issue for Leigh on any stop. Nothing here ships: a pass goes on master by PR for the next census
+# (the switch reaches every surfed opponent, so the census is its real gate); the release rule stands.
+
+set V = 3.21
+set P = --parallel 12 --no-truth-log
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
+set W = work/mimic
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh mimmem && test -f bisect/hadur117.Hadur_${V}mm.jar && ./fetch-opponents.sh --set panel-learners-flat.txt && mvn -q compile
+
+screen | ./bench-top20.sh ${C} ${P} --set panel-learners-flat.txt --seeds 3 --seed-base 7700 --arms plans/mimic.arms --out ${W} --label mimic --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_mimic.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm mm --panel panel-learners-flat.txt --bar 0.05 --out ${OUT}/$(date +%Y-%m-%d)_mimic-gate.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 5 --out-tsv ${OUT}/mimic-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_mimic-pick.md && python3 tools/per_robot.py ${W}/arms.tsv --arms mm --out ${OUT}/$(date +%Y-%m-%d)_mimic-per-robot.md --out-tsv ${OUT}/mimic-per-robot.tsv
+  after: screen
+
+pr | bash tools/open_results_pr.sh claude/pc-mimic-results "1v1 learning-gun mimics as surf members: MOVE-33 on the strong learners" ${OUT}/*_mimic*.md ${OUT}/mimic-per-robot.tsv $(find ${OUT} -maxdepth 1 -name mimic-pick.tsv -size +0c)
+  after: gate
