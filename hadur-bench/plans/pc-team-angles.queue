@@ -11,7 +11,9 @@
 # TidalWave is left out (plans/team-angles-set.txt): it does not load on Robocode 1.11.2, the bench's
 # engine since PR #565 (its FloodHT reads a zip the new sandbox blocks), so every battle with it fails
 # and drags neighbours down. Gains still divide by 46 teams. A battle step's exit 1 (some battles
-# failed) lets the card go on; the stop rules still halt a run with 20 failed battles.
+# failed) lets the card go on; the stop rules halt a run with 60 failed battles (8% of 720). On the
+# PC (2026-11-02, 12 workers) anbb lost 24 battles in one burst, near GrofGroup and DiamondStealers,
+# which all fight cleanly in the cloud; a failed battle drops its seed from the pairing.
 #   anprep  build aa, bb, hv, wy and md
 #   anbb    bb vs aa, 45 teams x 8 seeds (base 7400), 10 rounds; anhv, anwy, anmd the same per arm
 #   anglob  per arm, the mode on every unnamed team: projected APS = sum of per-team gains less half of
@@ -41,25 +43,25 @@ anprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.
 anbb   | mvn -q exec:java "-Dexec.args=@work/team-angles-bb.args" || test $? -eq 1
   after: anprep
   watch: battles=720
-  stop: fails 20
+  stop: fails 60
   stop: stall 30m
   stop: skips 40 over 100
 anhv   | mvn -q exec:java "-Dexec.args=@work/team-angles-hv.args" || test $? -eq 1
   after: anbb
   watch: battles=720
-  stop: fails 20
+  stop: fails 60
   stop: stall 30m
   stop: skips 40 over 100
 anwy   | mvn -q exec:java "-Dexec.args=@work/team-angles-wy.args" || test $? -eq 1
   after: anhv
   watch: battles=720
-  stop: fails 20
+  stop: fails 60
   stop: stall 30m
   stop: skips 40 over 100
 anmd   | mvn -q exec:java "-Dexec.args=@work/team-angles-md.args" || test $? -eq 1
   after: anwy
   watch: battles=720
-  stop: fails 20
+  stop: fails 60
   stop: stall 30m
   stop: skips 40 over 100
 anglob | for a in hv wy md; do ${T} gate --report ${OUT}/team-angles-$a.md --control ${OUT}/team-angles-bb.md --set plans/team-angles-set.txt --seeds 8 --teams 46 --min-aps 0.3 --out-md ${OUT}/team-angles-verdict-global-$a.md || exit 1; done
@@ -69,13 +71,13 @@ anpick | ${T} pick --report HEAVY=${OUT}/team-angles-hv.md --report WARY=${OUT}/
 angate | if [ -s work/team-angles-picked.java ]; then mvn -q exec:java "-Dexec.args=@work/team-angles-gate.args" || test $? -eq 1; else echo "nothing picked: no gate"; fi
   after: anpick
   watch:
-  stop: fails 20
+  stop: fails 60
   stop: stall 30m
   stop: skips 40 over 100
 angbb  | if [ -s work/team-angles-picked.java ]; then mvn -q exec:java "-Dexec.args=@work/team-angles-gbb.args" || test $? -eq 1; else echo "nothing picked: no gate"; fi
   after: angate
   watch:
-  stop: fails 20
+  stop: fails 60
   stop: stall 30m
   stop: skips 40 over 100
 ansum  | if [ -s work/team-angles-picked.java ]; then ${T} gate --report ${OUT}/team-angles-gate.md --control ${OUT}/team-angles-gbb.md --set work/team-angles-gate.txt --seeds 16 --teams 46 --min-aps 0.15 --out-md ${OUT}/team-angles-verdict.md && if grep -q '\*\*PASS\*\*' ${OUT}/team-angles-verdict.md; then cp work/team-angles-picked.java ${OUT}/team-angles-locked.java.txt; else echo "gate failed: no table to ship"; fi; else echo "No angle cleared the screen on any team: no gate, the table stays as shipped." > ${OUT}/team-angles-verdict.md; fi
