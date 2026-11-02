@@ -19,3 +19,12 @@
 23:30:49 S300 exit=0 in 198 s
 23:30:49 start S450
 23:30:49 watching S450: 3 stop rule(s)
+23:34:07 S450 exit=0 in 198 s
+23:34:07 start SALL
+23:34:07 watching SALL: 3 stop rule(s)
+23:37:28 SALL exit=0 in 200 s
+23:37:28 start read
+23:37:42 read exit=0 in 13 s
+23:37:42 start pr
+23:37:47 pr exit=0 in 5 s
+23:37:47 ALLDONE
