@@ -11,3 +11,6 @@
 17:11:40 start live-B560
 17:11:40 watching live-B560: 3 stop rule(s)
 17:15:18 progress live-B560: 61/430 (14%) battles, 1010/h, ETA 22 min, 0 failed, skips 0.0/battle (last 100)
+17:38:56 live-B560 exit=0 in 1635 s
+17:38:56 start live-B480
+17:38:56 watching live-B480: 3 stop rule(s)
