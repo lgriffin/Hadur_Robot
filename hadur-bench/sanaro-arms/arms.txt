@@ -12,6 +12,16 @@
 # N6 (pc-sanaro-n05): a growing lead in 249 bytes, on 0.2. v / sqrt(d) is v / (8 + d / 32) within
 # a unit from 100 to 500 px and 2 bytes cheaper; keeping the bearing in aim's slot (aim is assigned
 # after the lead reads it) saves 2 more with the same play.
+# N9 (pc-sanaro-n08), on 0.3's source (the HL table): the table's index, not only its cells. 0.3 reads
+# power by both energies and steps it by 640 / d, so it never fires past 640 px and its range shape is
+# 1/d while Hadur's is 3 inside 150 px, 1.5 at 300-500 and 1 beyond. A table indexed by distance drops
+# the step (8 B) and lets Hadur's own power stand at every range; robots left buys a third axis back at
+# 249 B. Tables by tools/distill.py power --shape on n07's and n08's live-shaped teach runs pooled.
+S3 | Sanaro 0.3 as it ships (control, 249 B) |
+HL2 | 0.3's recipe (2 x 2 energy blocks, 20 shots) on n07's and n08's teach runs pooled (249 B, a table only) | | distill work/sanaro-n07/teach/*/battles/*/shots.csv work/sanaro-n08/teach/*/battles/*/shots.csv --own-step 2 --enemy-step 2 --min 20 --reach 0
+DE | distance (8 px) x enemy energy, Hadur's power, no 640 / d step (241 B) | s#BAND / d \* POWER.charAt(((int) getEnergy() << 7) + (int) e.getEnergy())#POWER.charAt((d >> 3 << 7) + (int) e.getEnergy())# | distill work/sanaro-n07/teach/*/battles/*/shots.csv work/sanaro-n08/teach/*/battles/*/shots.csv --shape de --min 20
+DAE | robots left x distance (32 px) x enemy energy, Hadur's power, no step (249 B) | s#BAND / d \* POWER.charAt(((int) getEnergy() << 7) + (int) e.getEnergy())#POWER.charAt(((d >> 5) + getOthers() * 48 << 7) + (int) e.getEnergy())# | distill work/sanaro-n07/teach/*/battles/*/shots.csv work/sanaro-n08/teach/*/battles/*/shots.csv --shape dae --min 20
+DAO | robots left x distance (32 px) x own energy, Hadur's power, no step (249 B) | s#BAND / d \* POWER.charAt(((int) getEnergy() << 7) + (int) e.getEnergy())#POWER.charAt(((d >> 5) + getOthers() * 48 << 7) + (int) getEnergy())# | distill work/sanaro-n07/teach/*/battles/*/shots.csv work/sanaro-n08/teach/*/battles/*/shots.csv --shape dao --min 20
 S2 | Sanaro 0.2 as it ships (control, 249 B) |
 # N8 (pc-sanaro-n07): HS again on fresh seeds (its table rebuilt from n06's teach run, so the same
 # table), and HS's recipe on a teach run in the 43 live-shaped fields themselves (HL), and on both

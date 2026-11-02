@@ -25,6 +25,11 @@ Two subcommands:
             python3 distill.py power work/pc-melee-*/battle-*/shots.csv --src path/to/Robot.java
             python3 distill.py power ... --report          (prints coverage, writes nothing)
 
+          --shape de|od|dae|dao (pc-sanaro-n08) writes another index instead (SHAPES: distance x enemy
+          energy, own energy x distance, robots left x distance x enemy or own energy), each cell the
+          power itself, no 640 / d band. A thin cell takes the mode of the smallest 2^k block around it
+          with --min shots. The source must already read POWER.charAt(<the shape's index>).
+
   hash    Finds the smallest power-of-two mask, and the unsigned shift, under which no two names in
           a participants file (RoboRumble "name version,url" lines, or bare names) that need
           different chars share a cell of the Java String.hashCode(), and writes a MODES constant of
@@ -195,7 +200,108 @@ def write_constant(src, name, value, mask=None, shift=None):
         f.write(out)
 
 
+# Table shapes beyond 0.3's (pc-sanaro-n08): the index a robot reads, the Java expression that reads
+# it, and the table's length. Each cell holds the power itself in fortieths (no 640 / d band), so the
+# robot fires POWER.charAt(index) / 40.0. `d` is (int) e.getDistance(); others = fighters alive - 1,
+# as getOthers() reads it. An index never passes the end for d up to 1,414 px (the 1000 x 1000
+# diagonal), others up to 9 and any energy up to 400 (an energy of 128 or more reads rows on).
+SHAPES = {
+    # distance in 8 px rows x enemy energy: 241 B, 8 bytes under 0.3.
+    "de": ("(d >> 3 << 7) + (int) e.getEnergy()", 180 * STRIDE,
+           lambda own, enemy, d, others: (d >> 3 << 7) + enemy,
+           lambda i: (i >> 7, i & 127)),
+    # own energy x distance in 16 px columns: 241 B.
+    "od": ("((int) getEnergy() << 7) + (d >> 4)", 401 * STRIDE,
+           lambda own, enemy, d, others: (own << 7) + (d >> 4),
+           lambda i: (i >> 7, i & 127)),
+    # robots left x distance in 32 px x enemy energy: 249 B, level with 0.3.
+    "dae": ("((d >> 5) + getOthers() * 48 << 7) + (int) e.getEnergy()", 480 * STRIDE,
+            lambda own, enemy, d, others: ((d >> 5) + others * 48 << 7) + enemy,
+            lambda i: ((i >> 7) // 48, (i >> 7) % 48, i & 127)),
+    # robots left x distance in 32 px x own energy: 249 B.
+    "dao": ("((d >> 5) + getOthers() * 48 << 7) + (int) getEnergy()", 480 * STRIDE,
+            lambda own, enemy, d, others: ((d >> 5) + others * 48 << 7) + own,
+            lambda i: ((i >> 7) // 48, (i >> 7) % 48, i & 127)),
+}
+
+
+def read_shots_alive(paths):
+    """As read_shots, with the fighters alive first: (alive, own, enemy, distance, power)."""
+    for pattern in paths:
+        files = sorted(glob.glob(pattern)) or ([pattern] if os.path.exists(pattern) else [])
+        if not files:
+            raise SystemExit("distill: no shots.csv matches %s" % pattern)
+        for path in files:
+            with open(path, newline="", encoding="utf-8") as f:
+                for row in csv.DictReader(f):
+                    yield (int(row["alive"]), float(row["ownEnergy"]), float(row["targetEnergy"]),
+                           float(row["distance"]), float(row["power"]))
+
+
+def shaped(shots, shape, minimum=20):
+    """A full table of `shape` (SHAPES): each cell the modal power of Hadur's shots that land on it
+    when it has `minimum` of them; otherwise the mode of the smallest block around it (every axis
+    halved again and again, as 2 x 2, 4 x 4, ... blocks) holding `minimum`; the whole table's mode
+    last. Returns (list of fortieths, Counter of the block level each cell came from: 0 = its own)."""
+    _, length, index, coords = SHAPES[shape]
+    cells = collections.defaultdict(collections.Counter)
+    for alive, own, enemy, distance, power in shots:
+        if own < 0 or enemy < 0 or distance < 0 or alive < 1:
+            continue
+        i = index(int(own), int(enemy), int(distance), alive - 1)
+        if i < length:
+            cells[i][fortieths(power)] += 1
+    levels = [cells]
+    k = 0
+    while len(levels[-1]) > 1:
+        k += 1
+        pooled = collections.defaultdict(collections.Counter)
+        for i, c in cells.items():
+            pooled[tuple(x >> k for x in coords(i))].update(c)
+        levels.append(pooled)
+        if k > 12:
+            break
+    everything = collections.Counter()
+    for c in cells.values():
+        everything.update(c)
+    if not everything:
+        raise SystemExit("distill: no shots for shape %s" % shape)
+    out, how = [], collections.Counter()
+    for i in range(length):
+        value = None
+        for k, level in enumerate(levels):
+            c = level.get(i if k == 0 else tuple(x >> k for x in coords(i)))
+            if c and sum(c.values()) >= minimum:
+                value = mode(c)
+                how[k] += 1
+                break
+        if value is None:
+            value = mode(everything)
+            how.update(["all"])
+        out.append(value)
+    return out, how
+
+
+def shape_main(a):
+    expr = SHAPES[a.shape][0]
+    if a.src:
+        with open(a.src, encoding="utf-8") as f:
+            text = f.read()
+        if text.count("POWER.charAt(%s)" % expr) != 1:
+            raise SystemExit("distill: %s does not read POWER.charAt(%s) once (the arm's index for shape %s)"
+                             % (a.src, expr, a.shape))
+    values, how = shaped(list(read_shots_alive(a.shots)), a.shape, a.min)
+    print("shape %s: %d cells; by block level %s" % (a.shape, len(values),
+          ", ".join("%s: %d" % (k, n) for k, n in sorted(how.items(), key=lambda x: str(x[0])))))
+    if a.report or not a.src:
+        return
+    write_constant(a.src, a.name, literal(values))
+    print("%s: %d cells -> %s" % (a.name, len(values), a.src))
+
+
 def power_main(a):
+    if a.shape != "oe":
+        return shape_main(a)
     shots = list(read_shots(a.shots, a.alive))
     cells = observed(shots, a.own_step, a.enemy_step)
     values, how = distil(cells, a.min, a.reach, a.own_step, a.enemy_step)
@@ -547,6 +653,9 @@ def main(argv=None):
     pw.add_argument("--enemy-step", type=int, default=1, help="pool shots by this many enemy-energy units")
     pw.add_argument("--alive", type=int, help="keep shots fired with at most this many fighters alive")
     pw.add_argument("--report", action="store_true", help="print coverage, write nothing")
+    pw.add_argument("--shape", default="oe", choices=["oe"] + sorted(SHAPES),
+                    help="oe: 0.3's own x enemy energy table (the options above); de, od, dae, dao: the "
+                         "SHAPES tables, --min shots a cell (default 3; pc-sanaro-n08 uses 20)")
     pw.set_defaults(run=power_main)
 
     hs = sub.add_parser("hash", help="a per-opponent MODES string keyed by name hash")

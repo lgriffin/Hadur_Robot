@@ -126,6 +126,55 @@ class PowerTest(unittest.TestCase):
 
 
 # @Tag("BENCH-156")
+class ShapeTest(unittest.TestCase):
+    """pc-sanaro-n08's tables: other indexes than 0.3's own x enemy energy."""
+
+    def setUp(self):
+        self.dir = tempfile.mkdtemp()
+
+    def test_no_index_passes_the_end_or_the_constant_limit(self):
+        for name, (_, length, index, _) in distill.SHAPES.items():
+            self.assertLessEqual(length, 65535, name)
+            worst = max(index(own, enemy, d, others) for own in (0, 127, 128, 400) for enemy in (0, 127, 128, 400)
+                        for d in (0, 31, 32, 1414) for others in range(10))
+            self.assertLess(worst, length, name)
+
+    def test_coords_read_back_the_index(self):
+        _, _, index, coords = distill.SHAPES["dae"]
+        self.assertEqual((3, 12, 57), coords(index(80, 57, 12 * 32 + 5, 3)))
+        _, _, index, coords = distill.SHAPES["de"]
+        self.assertEqual((50, 90), coords(index(80, 90, 400, 3)))
+
+    def test_cells_hold_hadurs_power_and_thin_cells_take_their_block(self):
+        rows = [(4, 80, 50, 100, 3.0)] * 20 + [(4, 80, 50, 600, 1.0)] * 20 + [(4, 80, 51, 104, 2.0)] * 5
+        values, how = distill.shaped(rows, "dae", 20)
+        _, length, index, _ = distill.SHAPES["dae"]
+        self.assertEqual(length, len(values))
+        self.assertEqual(120, values[index(80, 50, 100, 3)])
+        self.assertEqual(40, values[index(80, 50, 600, 3)])
+        # Five shots are too few: the cell borrows its 2 x 2 x 2 block, the twenty power-3 shots.
+        self.assertEqual(120, values[index(80, 51, 104, 3)])
+        self.assertEqual(2, how[0])
+
+    def test_power_writes_a_shape_only_into_a_source_that_reads_it(self):
+        path = os.path.join(self.dir, "shots.csv")
+        shots(path, [(5, 60, 30, 300, 1.5)] * 20)
+        src = os.path.join(self.dir, "Bot.java")
+        with open(src, "w", encoding="utf-8") as f:
+            f.write(SRC)
+        with self.assertRaises(SystemExit):
+            distill.main(["power", path, "--shape", "de", "--min", "20", "--src", src])
+        with open(src, "w", encoding="utf-8") as f:
+            f.write(SRC.replace("}\n", "    void f() { POWER.charAt((d >> 3 << 7) + (int) e.getEnergy()); }\n}\n"))
+        with contextlib.redirect_stdout(io.StringIO()):
+            distill.main(["power", path, "--shape", "de", "--min", "20", "--src", src])
+        with open(src, encoding="utf-8") as f:
+            body = f.read().split('POWER = "')[1].split('";')[0]
+        self.assertEqual(distill.SHAPES["de"][1], body.count("\\"))
+        self.assertTrue(set(body.split("\\")[1:]) == {"74"}, "every cell 1.5, 60 fortieths, octal 74")
+
+
+# @Tag("BENCH-156")
 class OracleTest(unittest.TestCase):
     def test_default_stands_unless_beaten_clearly(self):
         base = {"1": 50.0, "2": 52.0, "3": 48.0, "4": 50.0}

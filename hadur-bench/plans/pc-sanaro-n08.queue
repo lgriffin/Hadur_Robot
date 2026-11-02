@@ -1,0 +1,99 @@
+# Sanaro's stage N9 (docs/sanaro.md section 18): the last APS to 1st in NanoMelee. 0.3 is live 2nd at
+# 65.56 ± 0.32 (663 battles), Quantum 1st at 66.44, a gap of 0.88. 0.3's table (pc-sanaro-n07's HL,
+# +0.67) holds Hadur's power by both energies, and the code then steps it by 640 / d. So Sanaro
+# never fires past 640 px, and its range shape is 1/d where Hadur's is 3 inside 150 px, 2-3 to
+# 300, 1.5 to 500 and 1 beyond. This card tests tables indexed by distance. Each cell holds Hadur's
+# power itself, at every range. Dropping the step frees 8 bytes, and robots left buys a third axis
+# back at 249 B (tools/distill.py power --shape; SHAPES lists every index).
+#   ./queue.sh run pc-sanaro-n08        (or  .\queue.ps1 run pc-sanaro-n08)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers. Every step resumes; no step needs
+# a decision. Nothing here touches Hadur, Saor, TwinSaor, Deise, JayLexi or Eveimear.
+#
+# Needs pc-sanaro-n07's teach run (work/sanaro-n07/teach, Nov 1). Prep stops at once if those shots are
+# gone. Teach: Hadur as master builds it in the 43 live-shaped fields x 6 fresh seeds (base 25000)
+# = 258 battles, about 40 min (n07's 129 ran 20). Its only product is
+# work/sanaro-n08/teach/*/battles/*/shots.csv. Every table below is taught on n07's and n08's teach
+# runs pooled, 387 battles.
+# Arms (sanaro-arms/arms.txt, on 0.3's source):
+#   S3    Sanaro 0.3 as it ships (control, 249 B)
+#   HL2   0.3's own recipe on the pooled teach runs: more shots, same index (249 B, a table only)
+#   DE    distance (8 px) x enemy energy, no step (241 B)
+#   DAE   robots left x distance (32 px) x enemy energy, no step (249 B)
+#   DAO   robots left x distance (32 px) x own energy, no step (249 B)
+# A cloud smoke on 2 battles built every arm at those sizes and ran each one in a live field, with
+# no exception and Sanaro firing.
+# Live-shaped census: 43 fields x 10 fresh seeds (base 26000) = 430 battles an arm, about 30 min an
+# arm. About 3.2 h in all with the teach run.
+# Read against S3. An arm passes when the low end of its difference is above zero (SANARO-13). The
+# best passing arm is 0.4 on Leigh's word. One at about +0.9 closes the gap to Quantum.
+# Stop rules on every battle step (docs/bench/watch.md; halt, every battle fought is kept and a
+# rerun resumes):
+# - 20 failed battles (a broken jar).
+# - No battle in 30 minutes (a hung step).
+# - 40+ skipped turns a battle over the last 100 (the PR #331 build-up). The teach step uses 120,
+#   because Hadur skips 75-83 a battle in these fields (issue #531).
+# A halt at worst leaves the rest of that step and the steps after it unrun: at most 2,408 battles,
+# about 3.2 h. There is no early finish on score. A census step is one robot, so there is no arm to
+# call futile mid-step. ALERT opens an issue for Leigh on a stop.
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set ARMS = S3,HL2,DE,DAE,DAO
+
+prep | ls work/sanaro-n07/teach/*/battles/*/shots.csv > /dev/null && (cd .. && mvn -q -DskipTests install -pl hadur-robot,sanaro -am) && HV=$(sed -n 's:.*<robot.release>\([0-9.]*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml | head -1) && mkdir -p work/sanaro-n08 && cp ../hadur-robot/target/hadur117.Hadur_$HV.jar work/sanaro-n08/ && cp ../sanaro/target/hadur117.nano.Sanaro_0.3.jar opponents/ && ./fetch-opponents.sh --set nanomelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && SANARO_RUN=n08 bash tools/sanaro_arms.sh live 10 26000 S3 && printf '%s\n' --suite work/sanaro-n08/live/sanaro/suite.txt --seeds 6 --seed-base 25000 --rounds 35 --parallel 12 --child-heap 2G --cpu-constant 1488498 --robot-jar work/sanaro-n08/hadur117.Hadur_$HV.jar --robot "hadur117.Hadur $HV" --out work/sanaro-n08/teach --report ${OUT}/sanaro-n08-teach.md > work/sanaro-n08/teach.args
+
+teach | ${MVN} "-Dexec.args=@work/sanaro-n08/teach.args"
+  after: prep
+  watch: battles=258
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 120 over 100
+
+distill-report | for s in de dae dao; do python3 tools/distill.py power work/sanaro-n07/teach/*/battles/*/shots.csv work/sanaro-n08/teach/*/battles/*/shots.csv --shape $s --min 20 --report || exit 1; done && python3 tools/distill.py power work/sanaro-n07/teach/*/battles/*/shots.csv work/sanaro-n08/teach/*/battles/*/shots.csv --own-step 2 --enemy-step 2 --min 20 --reach 0 --report
+  after: teach
+
+arms | SANARO_RUN=n08 bash tools/sanaro_arms.sh live 10 26000 ${ARMS}
+  after: distill-report
+
+live-S3 | ${MVN} "-Dexec.args=@work/sanaro-n08/live-S3.args"
+  after: arms
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-HL2 | ${MVN} "-Dexec.args=@work/sanaro-n08/live-HL2.args"
+  after: live-S3
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-DE | ${MVN} "-Dexec.args=@work/sanaro-n08/live-DE.args"
+  after: live-HL2
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-DAE | ${MVN} "-Dexec.args=@work/sanaro-n08/live-DAE.args"
+  after: live-DE
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-DAO | ${MVN} "-Dexec.args=@work/sanaro-n08/live-DAO.args"
+  after: live-DAE
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+read-live | python3 tools/sanaro_read.py --work-root work/sanaro-n08 --field live --arms ${ARMS} --control S3 --only work/sanaro-n08/live/micro.txt --live 66.44 > ${OUT}/sanaro-n08-live.md
+  after: live-DAO
+
+pr | bash tools/open_results_pr.sh claude/pc-sanaro-n08-results "Sanaro stage N9: power tables indexed by distance, for the last APS to 1st" ${OUT}/sanaro-n08-live.md ${OUT}/sanaro-n08-live-*.md ${OUT}/sanaro-n08-teach.md
+  after: read-live
