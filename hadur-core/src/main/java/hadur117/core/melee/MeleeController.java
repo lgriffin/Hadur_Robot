@@ -504,6 +504,7 @@ public class MeleeController {
             mover.damageWeights(MinimumRiskMovement.damageWeights(alive,
                 n -> book.get(n).damageReceivedFrom(), n -> book.get(n).averageDistance()));
         }
+        mover.motion(s.heading, s.velocity);
         c.destination = alive.isEmpty() ? null
             : mover.chooseDestination(s.me, s.energy, s.others, alive, s.time, plan, s.teammates, modes);
         gun.onTeam(!s.teammates.isEmpty());

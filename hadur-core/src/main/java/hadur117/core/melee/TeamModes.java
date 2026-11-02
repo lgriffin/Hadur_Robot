@@ -118,7 +118,14 @@ public final class TeamModes {
          * it plays plain minimum risk, not its place by the prey, so fewer members die in rounds the
          * team wins.
          */
-        WARY
+        WARY,
+        /**
+         * TMODE-38: a member keeps out of its teammates' bullets: of the destinations, only those whose
+         * drive meets no teammate bullet in {@link MinimumRiskMovement#CLEAR_TICKS} ticks are ranked,
+         * while any is left. The dodge's 15-tick check alone saw a teammate's bullet only once every
+         * reachable spot was already in its path.
+         */
+        CLEAR
     }
 
     /**
@@ -147,6 +154,8 @@ public final class TeamModes {
     public static final boolean FORCE_CONCORD = true;
     public static final boolean FORCE_HEAVY = false;
     public static final boolean FORCE_WARY = false;
+    /** TMODE-38: CLEAR on every team, the ones the table names included (as PATH, TMODE-28). */
+    public static final boolean FORCE_CLEAR = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -231,7 +240,16 @@ public final class TeamModes {
 
     /** The modes against {@code enemies}: the first one the table names, else the default. */
     public static Set<Mode> against(List<EnemyInfo> enemies) {
-        return against(enemies, TABLE, DEFAULT);
+        Set<Mode> m = against(enemies, TABLE, DEFAULT);
+        return FORCE_CLEAR ? withClear(m) : m;
+    }
+
+    /** TMODE-38: {@code m} with CLEAR added. */
+    static Set<Mode> withClear(Set<Mode> m) {
+        if (m.contains(Mode.CLEAR)) return m;
+        EnumSet<Mode> out = m.isEmpty() ? EnumSet.noneOf(Mode.class) : EnumSet.copyOf(m);
+        out.add(Mode.CLEAR);
+        return Collections.unmodifiableSet(out);
     }
 
     static Set<Mode> against(List<EnemyInfo> enemies, Map<String, Set<Mode>> table, Set<Mode> fallback) {
