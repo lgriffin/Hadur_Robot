@@ -371,7 +371,8 @@ under ships as 0.3.
 | N7 | pc-sanaro-n06 (section 16): Hadur's power tables, distilled from its shots, on 0.2's body | a table over 0.2 on the live-shaped census |
 | N8 | pc-sanaro-n07 (section 17): HL +0.67, released as 0.3 (2026-11-01; live 2nd at 65.56 after 663 battles, Quantum 66.44) | a table over 0.2 on fresh seeds |
 | N9 | pc-sanaro-n08 (section 18): tables indexed by distance, the last APS to 1st: FAIL (section 19) | an arm at 249 bytes or under over 0.3 on the live-shaped census |
-| N10 | pc-sanaro-n09 (section 19): weaker fire, by BAND and by scaling the table | an arm at 249 bytes or under over 0.3 on the live-shaped census |
+| N10 | pc-sanaro-n09 (section 19): weaker fire, by BAND and by scaling the table: flat arm by arm, B480 +0.10 (section 20) | an arm at 249 bytes or under over 0.3 on the live-shaped census |
+| N11 | pc-sanaro-n10 (section 20): the weaker-fire progression, B480 again, B400, B320, B480 with the table x 0.8, on 20 seeds | an arm at 249 bytes or under over 0.3 on the live-shaped census |
 
 ## 15. Uniqueness
 
@@ -496,3 +497,37 @@ Each arm runs 43 fields x 10 fresh seeds (base 27000). All arms are 249 B:
 
 An arm passes when the low end of its difference over S3 is above zero. If both B and K lose, 0.3's
 power is at its optimum in both directions, and the gap to Quantum has to come from movement or the gun.
+
+## 20. pc-sanaro-n09 results, and the next card: pc-sanaro-n10 (stage N11), the progression
+
+**pc-sanaro-n09 (results branch `claude/pc-sanaro-n09-results`, 2026-11-02): flat arm by arm.**
+Against S3 (65.92 ± 0.24 on the bench, survival 23.8), with 430 battles an arm and 95% intervals:
+
+| Arm | vs S3 | Survival |
+|---|---|---|
+| B560 | +0.02 ± 0.33 | 26.5 |
+| B480 | +0.10 ± 0.33 | 28.2 |
+| K80 | -0.08 ± 0.33 | 24.6 |
+| K65 | +0.06 ± 0.33 | 26.4 |
+
+No arm passes alone. But weaker fire buys 2 to 4 points of survival at no cost in APS, unlike every
+stronger-fire table in n08, which lost 6 to 8 points of survival and 0.4 to 0.8 APS. The BAND
+steps also lean up (B560 +0.02, B480 +0.10). Live, Sanaro already survives far more than Quantum
+(23.8% against 15.9%) and still trails it by 1.03, so the gap is damage and kills more than survival.
+
+Leigh asked for progression in small increments. So `hadur-bench/plans/pc-sanaro-n10.queue`, which
+Leigh starts from master, climbs the BAND slope on twice the seeds (43 fields x 20 seeds, base
+28000, 860 battles an arm, about ±0.23). All arms are 249 B (checked by build):
+
+| Arm | Change |
+|---|---|
+| S3 | 0.3 as it ships (control) |
+| B480 | `BAND = 480` again, on fresh seeds |
+| B400 | `BAND = 400`: 0.1 past 400 px, x1 to 200, x2 to 133 |
+| B320 | `BAND = 320`: 0.1 past 320 px, x1 to 160, x2 to 107 |
+| B4K8 | `BAND = 480` and the table x 0.8 |
+
+It takes about 4 h 10 min, with stop rules and ALERT. An arm passes when the low end of its
+difference over S3 is above zero. If B480 repeats near +0.1 and misses the bar, the next step pools
+n09's and n10's B480 battles. The survival this buys is what a later gun step can spend.
+
