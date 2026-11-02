@@ -238,27 +238,41 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Every mimic learns where we were when wave <code>w</code> passed: guess factor <code>gf</code>.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#roll(double%5B%5D,int,double,double)" class="member-name-link">roll</a><wbr>(double[]&nbsp;buffer,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#mass(int,hadur117.core.model.Wave,double,double)" class="member-name-link">mass</a><wbr>(int&nbsp;m,
+ <a href="../model/Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
+ double&nbsp;gfLo,
+ double&nbsp;gfHi)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-33">MOVE-33</a>: mimic <code>m</code>'s probability of guess factors in [<code>gfLo</code>, <code>gfHi</code>] on
+ wave <code>w</code> (bins of <a href="#GF_BINS"><code>GF_BINS</code></a>, a partial bin counting its share), or NaN with no data.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#roll(double%5B%5D,int,double,double)" class="member-name-link">roll</a><wbr>(double[]&nbsp;buffer,
  int&nbsp;count,
  double&nbsp;gf,
  double&nbsp;depth)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Folds a visit at <code>gf</code> into a rolling-average buffer of <code>count</code> samples so far, at
  most <code>depth</code> deep, with the classic 1 / (d^2 + 1) spread; returns the new count.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#scoreBullet(hadur117.core.model.Wave,double,double%5B%5D)" class="member-name-link">scoreBullet</a><wbr>(<a href="../model/Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#scoreBullet(hadur117.core.model.Wave,double,double%5B%5D)" class="member-name-link">scoreBullet</a><wbr>(<a href="../model/Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
  double&nbsp;gf,
  double[]&nbsp;viewsProfile)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">A real bullet on wave <code>w</code> was fired at <code>gf</code>: scores every model on the profile
  it gave the wave, before anything learns the bullet.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#scores()" class="member-name-link">scores</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#scores()" class="member-name-link">scores</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The scores, views first; a copy.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#size()" class="member-name-link">size</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-33">MOVE-33</a>: the mimics.</div>
 </div>
 </div>
 </div>
@@ -443,6 +457,24 @@ loadScripts(document, 'script');</script>
  double[]&nbsp;viewsProfile)</span></div>
 <div class="block">The blended profile for wave <code>w</code>: the views' and each mimic's, weighted by their
  score cubed, normalised. A mimic with no data yet is left out.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="size()">
+<h3>size</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">size</span>()</div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-33">MOVE-33</a>: the mimics.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="mass(int,hadur117.core.model.Wave,double,double)">
+<h3>mass</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">mass</span><wbr><span class="parameters">(int&nbsp;m,
+ <a href="../model/Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
+ double&nbsp;gfLo,
+ double&nbsp;gfHi)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-33">MOVE-33</a>: mimic <code>m</code>'s probability of guess factors in [<code>gfLo</code>, <code>gfHi</code>] on
+ wave <code>w</code> (bins of <a href="#GF_BINS"><code>GF_BINS</code></a>, a partial bin counting its share), or NaN with no data.</div>
 </section>
 </li>
 <li>

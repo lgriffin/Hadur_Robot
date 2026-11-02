@@ -144,19 +144,24 @@ loadScripts(document, 'script');</script>
 <div class="block">The members: the views, then the aims.</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#POWER" class="member-name-link">POWER</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#MIMIC_PRIOR" class="member-name-link">MIMIC_PRIOR</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">The power of 2 on the score in a member's weight.</div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-33">MOVE-33</a>: the total standing weight of the learning-gun mimic members, shared out over them.</div>
 </div>
 <div class="col-first even-row-color"><code>(package private) static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#PRIOR" class="member-name-link">PRIOR</a></code></div>
+<div class="col-second even-row-color"><code><a href="#POWER" class="member-name-link">POWER</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">The power of 2 on the score in a member's weight.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#PRIOR" class="member-name-link">PRIOR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Each aim's standing weight: <a href="#AIM_PRIOR">0.1</a> for the three narrow aims, and the same
  total (0.3) shared out over the wide set, so the views' head start is the same.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#WIDE" class="member-name-link">WIDE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#WIDE" class="member-name-link">WIDE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-31">MOVE-31</a>: the wide set, every simple angle <a href="../physics/SimpleAims.html" title="class in hadur117.core.physics"><code>SimpleAims</code></a> gives
  (head-on, linear, circular, averaged linear and the two one-line linear aims) at each of
  its three lags, in place of the three aims one tick back.</div>
@@ -173,7 +178,13 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">AimMembers</a>()</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The views and the aims (<a class="req" href="../../../../requirements.html#MOVE-29">MOVE-29</a>).</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(int)" class="member-name-link">AimMembers</a><wbr>(int&nbsp;mimics)</code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-33">MOVE-33</a>: the views, the aims, then <code>mimics</code> learning-gun mimics.</div>
+</div>
 </div>
 </section>
 </li>
@@ -209,6 +220,16 @@ loadScripts(document, 'script');</script>
  bullet's angle (in the units where a kernel centred on the window scores 1, so its
  probability there is half that), NaN when the member had no say; <code>uniform</code> is a
  uniform guess's probability for the same window.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#members()" class="member-name-link">members</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Every member: the views, the aims, then the mimics.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#mimics()" class="member-name-link">mimics</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-33">MOVE-33</a>: the mimic members after the aims.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#score(int)" class="member-name-link">score</a><wbr>(int&nbsp;member)</code></div>
@@ -342,6 +363,21 @@ loadScripts(document, 'script');</script>
  total (0.3) shared out over the wide set, so the views' head start is the same.</div>
 </section>
 </li>
+<li>
+<section class="detail" id="MIMIC_PRIOR">
+<h3>MIMIC_PRIOR</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">MIMIC_PRIOR</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-33">MOVE-33</a>: the total standing weight of the learning-gun mimic members, shared out over them.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.move.AimMembers.MIMIC_PRIOR">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -354,6 +390,14 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;()">
 <h3>AimMembers</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AimMembers</span>()</div>
+<div class="block">The views and the aims (<a class="req" href="../../../../requirements.html#MOVE-29">MOVE-29</a>).</div>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(int)">
+<h3>AimMembers</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AimMembers</span><wbr><span class="parameters">(int&nbsp;mimics)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-33">MOVE-33</a>: the views, the aims, then <code>mimics</code> learning-gun mimics.</div>
 </section>
 </li>
 </ul>
@@ -369,6 +413,20 @@ loadScripts(document, 'script');</script>
 <h3>wideAims</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">int[]</span>&nbsp;<span class="element-name">wideAims</span>()</div>
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-31">MOVE-31</a>: every angle type at every lag, lag-major.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="members()">
+<h3>members</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">members</span>()</div>
+<div class="block">Every member: the views, the aims, then the mimics.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="mimics()">
+<h3>mimics</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">mimics</span>()</div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-33">MOVE-33</a>: the mimic members after the aims.</div>
 </section>
 </li>
 <li>

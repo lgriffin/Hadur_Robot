@@ -413,7 +413,13 @@ loadScripts(document, 'script');</script>
  danger, beside the views.</div>
 </dd>
 <dt><a href="hadur117/core/move/AimMembers.html#%3Cinit%3E()" class="member-name-link">AimMembers()</a> - Constructor for class hadur117.core.move.<a href="hadur117/core/move/AimMembers.html" title="class in hadur117.core.move">AimMembers</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">The views and the aims (<a class="req" href="../requirements.html#MOVE-29">MOVE-29</a>).</div>
+</dd>
+<dt><a href="hadur117/core/move/AimMembers.html#%3Cinit%3E(int)" class="member-name-link">AimMembers(int)</a> - Constructor for class hadur117.core.move.<a href="hadur117/core/move/AimMembers.html" title="class in hadur117.core.move">AimMembers</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-33">MOVE-33</a>: the views, the aims, then <code>mimics</code> learning-gun mimics.</div>
+</dd>
 <dt><a href="hadur117/core/melee/MeleeWaves.Wave.html#aims" class="member-name-link">aims</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeWaves.Wave.html" title="class in hadur117.core.melee">MeleeWaves.Wave</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MGUN-17">MGUN-17</a>: every aim's angle, the field gun's first; null with the experts off.</div>
@@ -7530,6 +7536,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The expected damage to a box at <code>bearing</code> from the source, <code>half</code> radians each side.</div>
 </dd>
+<dt><a href="hadur117/core/move/GunMimics.html#mass(int,hadur117.core.model.Wave,double,double)" class="member-name-link">mass(int, Wave, double, double)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/GunMimics.html" title="class in hadur117.core.move">GunMimics</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-33">MOVE-33</a>: mimic <code>m</code>'s probability of guess factors in [<code>gfLo</code>, <code>gfHi</code>] on
+ wave <code>w</code> (bins of <a href="hadur117/core/move/GunMimics.html#GF_BINS"><code>GunMimics.GF_BINS</code></a>, a partial bin counting its share), or NaN with no data.</div>
+</dd>
 <dt><a href="hadur117/core/move/StopPointSurf.html#mass(hadur117.core.move.MoveController,hadur117.core.model.Wave,int,hadur117.core.model.Wave.Intersection)" class="member-name-link">mass(MoveController, Wave, int, Wave.Intersection)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/StopPointSurf.html" title="class in hadur117.core.move">StopPointSurf</a></dt>
 <dd>
 <div class="block">The smoothed histogram's mass over <code>x</code>, each part counted at the share our bullet
@@ -8287,6 +8298,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Each member's own T sums, in the order of <a href="hadur/bench/TeamReport.Battle.html#team"><code>TeamReport.Battle.team</code></a>, by log name (<code>member-1</code>).</div>
 </dd>
+<dt><a href="hadur117/core/move/AimMembers.html#members()" class="member-name-link">members()</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/AimMembers.html" title="class in hadur117.core.move">AimMembers</a></dt>
+<dd>
+<div class="block">Every member: the views, the aims, then the mimics.</div>
+</dd>
 <dt><a href="hadur117/core/move/AimMembers.html#MEMBERS" class="member-name-link">MEMBERS</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/AimMembers.html" title="class in hadur117.core.move">AimMembers</a></dt>
 <dd>
 <div class="block">The members: the views, then the aims.</div>
@@ -8353,6 +8368,16 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/move/GunMimics.Mimic.html#%3Cinit%3E(double,hadur117.core.move.GunMimics.Feature...)" class="member-name-link">Mimic(double, GunMimics.Feature...)</a> - Constructor for class hadur117.core.move.<a href="hadur117/core/move/GunMimics.Mimic.html" title="class in hadur117.core.move">GunMimics.Mimic</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/duel/MoveDesign.html#MIMIC_MEMBERS" class="member-name-link">MIMIC_MEMBERS</a> - Static variable in class hadur117.core.duel.<a href="hadur117/core/duel/MoveDesign.html" title="class in hadur117.core.duel">MoveDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-33">MOVE-33</a>: with <a href="hadur117/core/duel/MoveDesign.html#AIM_MEMBERS"><code>MoveDesign.AIM_MEMBERS</code></a>, the six visit-trained learning-gun mimics of MOVE-27
+ (GunMimics) join the aim members after the aims, sharing a standing weight of 0.3, each
+ scored on the bullets as the aims are.</div>
+</dd>
+<dt><a href="hadur117/core/move/AimMembers.html#MIMIC_PRIOR" class="member-name-link">MIMIC_PRIOR</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/AimMembers.html" title="class in hadur117.core.move">AimMembers</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-33">MOVE-33</a>: the total standing weight of the learning-gun mimic members, shared out over them.</div>
+</dd>
 <dt><a href="hadur117/core/move/MoveController.html#MIMIC_SCORE_BINS" class="member-name-link">MIMIC_SCORE_BINS</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/MoveController.html" title="class in hadur117.core.move">MoveController</a></dt>
 <dd>
 <div class="block">MOVE-27: the bins the ensemble scores the views' profile in; the stop-point surf's.</div>
@@ -8364,6 +8389,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/move/GunMimics.html#mimics" class="member-name-link">mimics</a> - Variable in class hadur117.core.move.<a href="hadur117/core/move/GunMimics.html" title="class in hadur117.core.move">GunMimics</a></dt>
 <dd>
 <div class="block">The mimics, after the views (model 0).</div>
+</dd>
+<dt><a href="hadur117/core/move/AimMembers.html#mimics()" class="member-name-link">mimics()</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/AimMembers.html" title="class in hadur117.core.move">AimMembers</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-33">MOVE-33</a>: the mimic members after the aims.</div>
 </dd>
 <dt><a href="hadur117/core/duel/MoveDesign.html#MIMICS" class="member-name-link">MIMICS</a> - Static variable in class hadur117.core.duel.<a href="hadur117/core/duel/MoveDesign.html" title="class in hadur117.core.duel">MoveDesign</a></dt>
 <dd>
@@ -13124,6 +13153,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Sets the size cap (<a class="req" href="../requirements.html#RES-2">RES-2</a>).</div>
 </dd>
+<dt><a href="hadur117/core/move/MoveController.html#setMemberMimics(hadur117.core.move.GunMimics)" class="member-name-link">setMemberMimics(GunMimics)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/MoveController.html" title="class in hadur117.core.move">MoveController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-33">MOVE-33</a>: sets the mimic members, read only while the aim members are on and built with
+ room for them (<a href="hadur117/core/move/AimMembers.html#%3Cinit%3E(int)"><code>AimMembers(int)</code></a>); null turns them off.</div>
+</dd>
 <dt><a href="hadur117/core/move/SurfMover.html#setMode(hadur117.core.move.SurfMover.Mode)" class="member-name-link">setMode(SurfMover.Mode)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/SurfMover.html" title="class in hadur117.core.move">SurfMover</a></dt>
 <dd>
 <div class="block">The mode for the next wave surfed (<a class="req" href="../requirements.html#MOVE-2">MOVE-2</a>'s "at the next surfable wave"); the wave
@@ -13880,6 +13914,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/model/WaveManager.html#size()" class="member-name-link">size()</a> - Method in class hadur117.core.model.<a href="hadur117/core/model/WaveManager.html" title="class in hadur117.core.model">WaveManager</a></dt>
 <dd>
 <div class="block">Waves in flight.</div>
+</dd>
+<dt><a href="hadur117/core/move/GunMimics.html#size()" class="member-name-link">size()</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/GunMimics.html" title="class in hadur117.core.move">GunMimics</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-33">MOVE-33</a>: the mimics.</div>
 </dd>
 <dt><a href="hadur117/core/policy/HitWindow.html#size()" class="member-name-link">size()</a> - Method in class hadur117.core.policy.<a href="hadur117/core/policy/HitWindow.html" title="class in hadur117.core.policy">HitWindow</a></dt>
 <dd>
