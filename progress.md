@@ -1,6 +1,6 @@
 # Queue pc-jaylexi-rows: progress
 
-Updated 2026-11-02 19:19:51 PC time (19:19 UTC), runner pid 55524.
+Updated 2026-11-02 19:34:21 PC time (19:34 UTC), runner pid 55524.
 
 - `prep` done, exit 0 in 0 min
 - `build` done, exit 0 in 0 min
@@ -9,13 +9,13 @@ Updated 2026-11-02 19:19:51 PC time (19:19 UTC), runner pid 55524.
 - `tS60` done, exit 0 in 2 min
 - `tS120` done, exit 0 in 2 min
 - `tL60` done, exit 0 in 2 min
-- `wJ3` running
-- `wS30` pending
-- `wS60` pending
-- `wS120` pending
-- `wL60` pending
-- `read` pending
-- `pr` pending
+- `wJ3` done, exit 0 in 3 min
+- `wS30` done, exit 0 in 3 min
+- `wS60` done, exit 0 in 3 min
+- `wS120` done, exit 0 in 3 min
+- `wL60` done, exit 0 in 3 min
+- `read` done, exit 0 in 0 min
+- `pr` done, exit 0 in 0 min
 
 ### tJ3
 
@@ -84,33 +84,85 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### wJ3
 
-**469 of 672 battles** (70%), 0 failed. Running 3 min, 11139 battles/h, about 1 min left (ends ~19:20 PC time). Last battle 0 min ago.
+**672 of 672 battles** (100%), 0 failed. Running 3 min, 12182 battles/h, about 0 min left (ends ~19:20 PC time). Last battle 0 min ago.
 Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 469 |
+| `fails 20` | halt | ok | 0 failed of 672 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 | `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
 
-Stopping now would leave 203 battles unrun (about 1 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### wS30
+
+**672 of 672 battles** (100%), 0 failed. Running 3 min, 12163 battles/h, about 0 min left (ends ~19:23 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 672 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### wS60
+
+**672 of 672 battles** (100%), 0 failed. Running 3 min, 12155 battles/h, about 0 min left (ends ~19:27 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 672 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### wS120
+
+**672 of 672 battles** (100%), 0 failed. Running 3 min, 11929 battles/h, about 0 min left (ends ~19:30 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 672 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### wL60
+
+**672 of 672 battles** (100%), 0 failed. Running 3 min, 12154 battles/h, about 0 min left (ends ~19:33 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 672 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-19:07:22 tJ3 exit=0 in 146 s
-19:07:22 start tS30
-19:07:22 watching tS30: 3 stop rule(s)
-19:09:52 tS30 exit=0 in 150 s
-19:09:52 start tS60
-19:09:52 watching tS60: 3 stop rule(s)
-19:12:23 tS60 exit=0 in 150 s
-19:12:23 start tS120
-19:12:23 watching tS120: 3 stop rule(s)
-19:14:52 tS120 exit=0 in 149 s
-19:14:52 start tL60
-19:14:52 watching tL60: 3 stop rule(s)
-19:17:19 tL60 exit=0 in 146 s
-19:17:19 start wJ3
-19:17:19 watching wJ3: 3 stop rule(s)
+19:23:57 wS30 exit=0 in 198 s
+19:23:57 start wS60
+19:23:57 watching wS60: 3 stop rule(s)
+19:27:16 wS60 exit=0 in 199 s
+19:27:16 start wS120
+19:27:16 watching wS120: 3 stop rule(s)
+19:30:39 wS120 exit=0 in 202 s
+19:30:39 start wL60
+19:30:39 watching wL60: 3 stop rule(s)
+19:33:58 wL60 exit=0 in 199 s
+19:33:58 start read
+19:34:15 read exit=0 in 17 s
+19:34:15 start pr
+19:34:21 pr exit=0 in 5 s
+19:34:21 ALLDONE
 ```

@@ -22,3 +22,21 @@
 19:17:19 tL60 exit=0 in 146 s
 19:17:19 start wJ3
 19:17:19 watching wJ3: 3 stop rule(s)
+19:20:38 wJ3 exit=0 in 198 s
+19:20:38 start wS30
+19:20:38 watching wS30: 3 stop rule(s)
+19:23:57 wS30 exit=0 in 198 s
+19:23:57 start wS60
+19:23:57 watching wS60: 3 stop rule(s)
+19:27:16 wS60 exit=0 in 199 s
+19:27:16 start wS120
+19:27:16 watching wS120: 3 stop rule(s)
+19:30:39 wS120 exit=0 in 202 s
+19:30:39 start wL60
+19:30:39 watching wL60: 3 stop rule(s)
+19:33:58 wL60 exit=0 in 199 s
+19:33:58 start read
+19:34:15 read exit=0 in 17 s
+19:34:15 start pr
+19:34:21 pr exit=0 in 5 s
+19:34:21 ALLDONE
