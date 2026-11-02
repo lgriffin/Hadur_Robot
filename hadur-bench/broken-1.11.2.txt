@@ -23,15 +23,17 @@ dsekercioglu.mega.Raven 3.56j8 | 1v1 | verifier: java.util.logging
 dsekercioglu.mega.WhiteFang 2.8.1 | 1v1 | verifier: java.util.logging
 pc.Wavelet 1.5 | 1v1 | verifier: java.io.FileWriter
 synnalagma.NeuralPremier 0.51 | 1v1 | verifier: java.io.FileReader
-rsalesc.mega.Knight 0.6.28 | 1v1 | invalid robot on load
-ag.Gir 0.99 | 1v1 | invalid robot on load
-apv.ScruchiPu 1.0 | 1v1 | invalid robot on load
-apv.TheBrainPi 0.5fix | 1v1 | invalid robot on load
+rsalesc.mega.Knight 0.6.28 | 1v1 | verifier: java.awt.AWTKeyStroke
+ag.Gir 0.99 | 1v1 | verifier: java.io.FileOutputStream
+apv.ScruchiPu 1.0 | 1v1 | verifier: java.io.FileReader, FileOutputStream
+apv.TheBrainPi 0.5fix | 1v1 | verifier: java.io.FileReader, FileOutputStream
 #
 # 1v1: cloud load of the whole 1v1 census (1,211 robots, 1 round each), 2026-11-02; adds to the learners above.
 # MorbidPriest and Leonidas are above as 1v1, melee.
 dsekercioglu.shield.ColdBreath 1.0 | 1v1 | verifier: java.util.logging
 rdt.AgentSmith.AgentSmith 0.5 | 1v1 | verifier: java.util.Scanner
 sqTank.waveSurfing.LionWWSVMvoid 0.01 | 1v1 | verifier: java.io.FileOutputStream
-florent.test.Toad 0.14t | 1v1 | invalid robot on load
-zh.UnderDog 0.0.2 | 1v1 | invalid robot on load
+florent.test.Toad 0.14t | 1v1 | verifier: java.lang.Thread.stop
+zh.UnderDog 0.0.2 | 1v1 | verifier: javax.sound.sampled.AudioSystem
+# live 1v1 client on 1.11.2, 2026-11-02 14:53 GMT: the bench's "invalid robot" rows above are the same verifier block.
+dev.kurtw.KurtBot 0.2 | 1v1 | verifier: java.util.logging
