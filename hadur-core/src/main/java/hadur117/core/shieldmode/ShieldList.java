@@ -70,6 +70,8 @@ public final class ShieldList {
     public static final String STILL_PREFIX = "shield-still:";
     /** MOVE-32: a line starting with this names an opponent the duel surfs with the flattener views on (MOVE-24 undone). */
     public static final String FLAT_ON_PREFIX = "flat-on:";
+    /** MOVE-34: a line starting with this names an opponent the duel surfs with the learning-gun mimics as aim members (MOVE-33). */
+    public static final String MIMIC_ON_PREFIX = "mimic-on:";
     /**
      * SKEY-2: a line starting with this gives an opponent's surf key: nine multipliers on the hit
      * views' key weights, one on the kernel width, then the name ({@code "m1 ... m9 bw name"}).
@@ -88,6 +90,8 @@ public final class ShieldList {
     static final int STILL = 16;
     /** MOVE-32: the per-opponent flattener switch's bit in {@link #switches}. */
     static final int FLAT_ON = 32;
+    /** MOVE-34: the per-opponent mimic switch's bit in {@link #switches}. */
+    static final int MIMIC_ON = 64;
 
     private final Set<String> entries;
     /** MOVE-23: the stack off-list, matched as the shield entries are. */
@@ -146,7 +150,8 @@ public final class ShieldList {
                 }
                 int bit = entry.startsWith(HEAT_JIT_PREFIX) ? HEAT_JIT : entry.startsWith(GUN_STACK_PREFIX) ? GUN_STACK
                     : entry.startsWith(EXIT_LATE_PREFIX) ? EXIT_LATE : entry.startsWith(EXIT_OFF_PREFIX) ? EXIT_OFF
-                    : entry.startsWith(STILL_PREFIX) ? STILL : entry.startsWith(FLAT_ON_PREFIX) ? FLAT_ON : 0;
+                    : entry.startsWith(STILL_PREFIX) ? STILL : entry.startsWith(FLAT_ON_PREFIX) ? FLAT_ON
+                    : entry.startsWith(MIMIC_ON_PREFIX) ? MIMIC_ON : 0;
                 if (bit != 0) {
                     String name = entry.substring(entry.indexOf(':') + 1).trim();
                     if (!name.isEmpty() && (switches.containsKey(name) || switches.size() < MAX_ENTRIES)) {
@@ -398,6 +403,16 @@ public final class ShieldList {
      */
     public boolean flatOn(String robotName) {
         return (switchBits(robotName) & FLAT_ON) != 0;
+    }
+
+    /**
+     * MOVE-34: whether the duel surfs {@code robotName} with MOVE-33's learning-gun mimics as aim
+     * members, by the rule of {@link #matches}.
+     *
+     * @param robotName the scanned robot's name, or null
+     */
+    public boolean mimicOn(String robotName) {
+        return (switchBits(robotName) & MIMIC_ON) != 0;
     }
 
     private int switchBits(String robotName) {

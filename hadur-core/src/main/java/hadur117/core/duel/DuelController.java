@@ -406,6 +406,7 @@ public final class DuelController {
         if (stopAndGo != null) on.add("stopgo");
         if (heatJitOn) on.add("heatjit");
         if (flatOn) on.add("flat");
+        if (mimicOn) on.add("mimic");
         if (shield != null && shield.active()) on.add("shield");
         return on.isEmpty() ? "-" : String.join(",", on);
     }
@@ -1003,6 +1004,8 @@ public final class DuelController {
     private boolean heatJitOn;
     /** MOVE-32: the table turned the flattener views on for this opponent. */
     private boolean flatOn;
+    /** MOVE-34: whether the table put the learning-gun mimics among the aim members for this opponent. */
+    private boolean mimicOn;
 
     /** DODGE-5: the escape angle a bullet read is scored loosely at while the planner is on; NaN otherwise. */
     private double dodgeEscape(Wave w) {
@@ -1526,6 +1529,8 @@ public final class DuelController {
         if (enemiesTotal == 1) duelModes(name);
         // MOVE-32: a P record says the table turned the flattener views on for this opponent.
         if (flatOn) emitPolicy(round, time, "flat-on", Double.NaN, Double.NaN, "flat_on");
+        // MOVE-34: a P record says the table put the mimics among the aim members for this opponent.
+        if (mimicOn) emitPolicy(round, time, "mimic-on", Double.NaN, Double.NaN, "mimic_on");
         // Without memory the B record still goes out, with '-' for what memory would say.
         if (library != null) {
             // MEM-4: a missing or damaged profile loads as a stranger; load never throws.
@@ -1571,6 +1576,15 @@ public final class DuelController {
         if (duelOnly(stackList.flatOn(name), enemiesTotal)) {
             moveController.setFlattenerOff(false);
             flatOn = true;
+        }
+        // MOVE-34: the learning-gun mimics (MOVE-33) join the aim members for the opponents the table
+        // names. Set once, at the battle's first scan, before any wave has passed us.
+        if (duelOnly(MoveDesign.AIM_MEMBERS && stackList.mimicOn(name), enemiesTotal)
+                && (moveController.aimMembers() == null || moveController.aimMembers().mimics() == 0)) {
+            GunMimics mimics = new GunMimics();
+            moveController.setAimMembers(new AimMembers(mimics.size()));
+            moveController.setMemberMimics(mimics);
+            mimicOn = true;
         }
         // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names, never a shield-mode one
         // (its TripHammer aims break the shield's bullet hits); the gun keeps them 1v1-only.
