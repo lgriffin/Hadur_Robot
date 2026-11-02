@@ -533,6 +533,31 @@ public class MeleeController {
         return c;
     }
 
+    /**
+     * HAND-5: the field gun's aim alone, for the endgame duel off a team: no radar, movement or
+     * virtual waves. The command's {@code learnedAim} says whether the aim came from the
+     * target's kNN history; its {@code target} is null when there is nothing to aim at.
+     */
+    public Command endgameAim(Situation s) {
+        Command c = new Command();
+        List<EnemyInfo> alive = tracker.alive();
+        if (alive.isEmpty()) return c;
+        gun.onTeam(false);
+        FieldGun.Aim aim = gun.aim(s.me, s.energy, s.others, alive, s.time);
+        if (aim == null) return c;
+        EnemyInfo target = tracker.get(aim.target);
+        if (target == null) return c;
+        c.target = aim.target;
+        c.learnedAim = aim.learned;
+        c.gunTurn = Angles.normalRelativeAngle(aim.angle - s.gunHeading);
+        double power = Math.min(aim.power, MeleeEnergyPolicy.killPower(target.energy));
+        boolean hold = target.age(s.time) > MAX_FIRE_AGE
+            || s.energy < MeleeEnergyPolicy.MIN_OWN_ENERGY
+            || s.energy <= power + 0.1;
+        c.firePower = hold ? 0 : power;
+        return c;
+    }
+
     /** MMOVE-20: a shot left from {@code at} on {@code time} along {@code gunHeading}; kept for the shadows it casts. */
     public void shotFired(Point2D.Double at, long time, double gunHeading, double power) {
         shotFired(at, time, gunHeading, power, lastTarget);

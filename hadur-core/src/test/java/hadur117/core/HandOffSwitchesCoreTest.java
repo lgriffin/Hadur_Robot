@@ -8,6 +8,7 @@ import hadur117.core.duel.HandOffDesign;
 import hadur117.core.model.BattleFacts;
 import hadur117.core.model.BotEvent;
 import hadur117.core.model.BotInput;
+import hadur117.core.model.BotOrders;
 import hadur117.core.role.Posture;
 import hadur117.core.shieldmode.ShieldList;
 import java.util.ArrayList;
@@ -166,5 +167,81 @@ class HandOffSwitchesCoreTest {
         assertEquals("-", core.duel().endgameSetting());
         assertFalse(has("SH,"), telemetry.toString());
         assertFalse(has("P,0,30,handoff"), telemetry.toString());
+    }
+
+    @Test
+    @Tag("HAND-4")
+    @DisplayName("HAND-4: the endgame duel opens at 400 px, not the stranger's 650; off it and on a team it does not")
+    void closeOpening() {
+        assertFalse(HandOffDesign.ENDGAME_CLOSE, "ships off");
+        HadurCore core = meleeToDuel(ShieldList.NONE, false, false, false, Double.NaN, false);
+        core.tick(input(31, 1, List.of(scan(A, 0))));
+        assertEquals(650, core.duel().targetDistance(), 1e-9, "off: the stranger's opening");
+
+        telemetry.clear();
+        core = meleeToDuelClose(false);
+        assertEquals("close", core.duel().endgameSetting());
+        assertTrue(has("P,0,30,handoff,-,-,close"), telemetry.toString());
+        core.tick(input(31, 1, List.of(scan(A, 0))));
+        assertEquals(HandOffDesign.ENDGAME_CLOSE_OPENING, core.duel().targetDistance(), 1e-9);
+
+        telemetry.clear();
+        core = meleeToDuelClose(true);
+        assertEquals("-", core.duel().endgameSetting(), "never on a team");
+        core.tick(input(31, 1, List.of(scan(A, 0))));
+        assertEquals(650, core.duel().targetDistance(), 1e-9);
+    }
+
+    /** As {@link #meleeToDuel} with only HAND-4 on. */
+    private HadurCore meleeToDuelClose(boolean onTeam) {
+        HadurCore core = new HadurCore(BattleFacts.solo(1000, 1000, 3), telemetry::add, null, null, ShieldList.NONE);
+        core.duel().handOffSwitches(false, false, false);
+        core.duel().handOffClose(true);
+        core.duel().team(onTeam);
+        core.prepareMemory();
+        core.newRound(0);
+        for (long t = 1; t < 30; t++) {
+            core.tick(input(t, 3, List.of(scan(A, 0), scan(B, 2), scan(C, 4))));
+        }
+        core.tick(input(30, 1, List.of(new BotEvent.RobotDeath(B), new BotEvent.RobotDeath(C), scan(A, 0))));
+        assertEquals(Posture.DUEL, core.posture());
+        return core;
+    }
+
+    @Test
+    @Tag("HAND-5")
+    @DisplayName("HAND-5: in a melee endgame the field gun fires at the survivor once its history is learned; off, it never does")
+    void meleeGunInEndgame() {
+        assertFalse(HandOffDesign.ENDGAME_MELEE_GUN, "ships off");
+        assertEquals(0, endgameShots(false, false));
+        assertTrue(endgameShots(true, false) > 0, telemetry.toString());
+        // Every shot that leaves is booked once, and the duel books none the field gun held.
+        assertEquals(firedOrders, bookedShots, "fire orders against shots booked");
+        // A team battle's charter is TEAM, which the switch never acts under (HadurCore's gate).
+    }
+
+    private int firedOrders;
+    private int bookedShots;
+
+    /** Field-gun shots in ticks 31 to 200 of a melee that left A alone at tick 30. */
+    private int endgameShots(boolean on, boolean onTeam) {
+        telemetry.clear();
+        HadurCore core = new HadurCore(BattleFacts.solo(1000, 1000, 3), telemetry::add, null, null, ShieldList.NONE);
+        core.endgameMeleeGun(on);
+        core.duel().team(onTeam);
+        core.prepareMemory();
+        core.newRound(0);
+        for (long t = 1; t < 30; t++) {
+            core.tick(input(t, 3, List.of(scan(A, 0), scan(B, 2), scan(C, 4))));
+        }
+        core.tick(input(30, 1, List.of(new BotEvent.RobotDeath(B), new BotEvent.RobotDeath(C), scan(A, 0))));
+        int booked = core.stats().shotsFired;
+        firedOrders = 0;
+        for (long t = 31; t <= 200; t++) {
+            BotOrders o = core.tick(new BotInput(t, 0, 500, 500, 0, 0, 100, 0, 0, 0, 0, 0, 1, List.of(scan(A, 0))));
+            if (o.firePower() > 0) firedOrders++;
+        }
+        bookedShots = core.stats().shotsFired - booked;
+        return core.endgameMeleeShots();
     }
 }

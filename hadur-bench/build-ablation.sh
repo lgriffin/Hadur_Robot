@@ -42,6 +42,8 @@
 #   etab   HAND-1: in a melee endgame off a team the survivor's 1v1 table entries apply (shield list, dodges, stop-go, heat-jit, gun stack). Suffix et.
 #   edge   HAND-2: a survivor whose gun the melee's book read as head-on gets the dodge planner, primed head-on. Suffix ed.
 #   eshd   HAND-3: that survivor gets shield mode on SHIELD-15's trial, listed or not. Suffix es.
+#   emgun  HAND-5: the melee's field gun aims in the endgame duel once its aim on the survivor is learned. Suffix eg.
+#   eclose HAND-4: the melee endgame duel opens at 400 px, not the stranger's 650 (docs/bench/melee-top3.md). Suffix ek.
 #   e3ring  MEND-1: with two opponents left off a team, the crowd's ring and lateral weight (no MMOVE-4). Suffix er.
 #   e3pow  MEND-2: with two opponents left off a team, the crowd's power table (not the duel's). Suffix ep.
 #   e3far  MEND-3: with two opponents left off a team, the closest-robot factor 4 (not 2). Suffix ef.
@@ -1112,6 +1114,20 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
+        emgun)
+            # HAND-5 (docs/bench/melee-top3.md): the melee's field gun aims in the endgame duel while
+            # its aim on the survivor is learned; melee charter off a team only, so the duel and
+            # team fixtures are bit for bit.
+            edit "$src/hadur-core/src/main/java/$pkg/core/duel/HandOffDesign.java" \
+                "public static final boolean ENDGAME_MELEE_GUN = false;" "public static final boolean ENDGAME_MELEE_GUN = true;"
+            version="${version}eg" ;;
+        eclose)
+            # HAND-4 (docs/bench/melee-top3.md): the melee endgame duel opens at 400 px, not the
+            # opening book's 650 for a stranger; off a team only, and the duel never takes a hand-off
+            # in a 1v1, so the duel and team fixtures are bit for bit.
+            edit "$src/hadur-core/src/main/java/$pkg/core/duel/HandOffDesign.java" \
+                "public static final boolean ENDGAME_CLOSE = false;" "public static final boolean ENDGAME_CLOSE = true;"
+            version="${version}ek" ;;
         etab|edge|eshd)
             # The endgame hand-off (HAND-1 to HAND-3, docs/plan-melee-top5.md): what the duel plays
             # when it takes over from the melee with one opponent left, off a team only; the duel
@@ -1253,7 +1269,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, absurf, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgeb, tmdodgef, tmnododge, tmclear, tmnoof, tmnoconcord, tmtnear, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mimmem, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf, gexp, grate, gdist, gsoft, tdecap, tmlead, tmheavy, tmwary, mscal, mmix, mwpath, mshade, mcross, mbshade, msearch, mdmg, mlat, mavg, etab, edge, eshd)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, absurf, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgeb, tmdodgef, tmnododge, tmclear, tmnoof, tmnoconcord, tmtnear, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mimmem, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf, gexp, grate, gdist, gsoft, tdecap, tmlead, tmheavy, tmwary, mscal, mmix, mwpath, mshade, mcross, mbshade, msearch, mdmg, mlat, mavg, etab, edge, eshd, eclose, emgun)" >&2; exit 2 ;;
     esac
 done
 
