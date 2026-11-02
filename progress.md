@@ -1,11 +1,11 @@
 # Queue pc-melee-end: progress
 
-Updated 2026-11-02 21:05:24 PC time (21:05 UTC), runner pid 51784.
+Updated 2026-11-02 21:20:31 PC time (21:20 UTC), runner pid 51784.
 
 - `meprep` done, exit 0 in 2 min
 - `meaa` done, exit 0 in 45 min
-- `mebb` running
-- `meeg` pending
+- `mebb` done, exit 0 in 44 min
+- `meeg` running
 - `meek` pending
 - `meread` pending
 - `mepr` pending
@@ -24,20 +24,31 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### mebb
 
-**270 of 276 battles** (98%), 0 failed. Running 44 min, 371 battles/h, about 1 min left (ends ~21:06 PC time). Last battle 0 min ago.
-Skipped turns a battle: 27.6 overall, first 100 27.3, last 100 27.2.
+**276 of 276 battles** (100%), 0 failed. Running 44 min, 374 battles/h, about 0 min left (ends ~21:06 PC time). Last battle 0 min ago.
+Skipped turns a battle: 27.4 overall, first 100 27.3, last 100 27.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 270 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 6 battles unrun (about 1 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### meeg
+
+**90 of 276 battles** (33%), 0 failed. Running 15 min, 372 battles/h, about 30 min left (ends ~21:50 PC time). Last battle 0 min ago.
+Skipped turns a battle: 27.4 overall, first 90 27.4, last 90 27.4.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 90 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 186 battles unrun (about 30 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-19:34:41 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
 19:34:41 start meprep
 19:34:43 progress pushed to origin claude/pc-melee-end-progress (every 15 min)
 19:37:03 meprep exit=0 in 142 s
@@ -49,4 +60,8 @@ Stopping now would leave 6 battles unrun (about 1 min); every battle already fou
 20:21:40 start mebb
 20:21:40 watching mebb: 2 stop rule(s)
 20:38:11 progress mebb: 108/276 (39%) battles, 392/h, ETA 26 min, 0 failed, skips 28.5/battle (last 100)
+21:06:00 mebb exit=0 in 2659 s
+21:06:00 start meeg
+21:06:00 watching meeg: 2 stop rule(s)
+21:08:25 progress meeg: 12/276 (4%) battles, 298/h, ETA 53 min, 0 failed, skips 30.3/battle (last 100)
 ```
