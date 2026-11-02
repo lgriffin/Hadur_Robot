@@ -23,3 +23,10 @@
 00:21:43 ALLDONE
 08:16:34 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
 08:16:34 skip mrprep (already exit=0)
+08:16:34 start mrogi
+08:16:34 watching mrogi: 3 stop rule(s)
+08:16:36 progress pushed to origin claude/pc-team-mirror-progress (every 15 min)
+08:16:41 mrogi exit=0 in 7 s
+08:16:41 start mrhad
+08:16:41 watching mrhad: 3 stop rule(s)
+08:17:35 progress mrhad: 0/528 (0%) battles, 0 failed

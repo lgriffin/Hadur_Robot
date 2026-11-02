@@ -1,23 +1,42 @@
 # Queue pc-team-mirror: progress
 
-Updated 2026-11-02 08:16:34 PC time (08:16 UTC), runner pid 42096.
+Updated 2026-11-02 08:31:41 PC time (08:31 UTC), runner pid 42096.
 
 - `mrprep` done, exit 0 in 1 min
-- `mrogi` failed, exit 1 in 33 min
-- `mrhad` skipped
+- `mrogi` done, exit 0 in 0 min
+- `mrhad` running
 - `mrread` skipped
 - `mrpr` skipped
+
+### mrogi
+
+**528 of 528 battles** (100%), 0 failed. Running 0 min, 262990 battles/h, about 0 min left (ends ~08:16 PC time). Last battle 0 min ago.
+Skipped turns a battle: 1.5 overall, first 100 1.3, last 100 1.4.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 528 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 60 over 200` | halt | ok | 1.4 a battle over the last 200 (first 200: 1.3) |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### mrhad
+
+**101 of 528 battles** (19%), 0 failed. Running 15 min, 404 battles/h, about 1.1 h left (ends ~09:35 PC time). Last battle 0 min ago.
+Skipped turns a battle: 19.1 overall, first 100 19.1, last 100 19.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 101 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 60 over 200` | halt | waiting | 101 of 200 battles to read |
+
+Stopping now would leave 427 battles unrun (about 1.1 h); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-23:49:07 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
-23:49:07 skip mrprep (already exit=0)
-23:49:07 start mrogi
-23:49:07 watching mrogi: 3 stop rule(s), shown only
-23:49:09 progress pushed to origin claude/pc-team-mirror-progress (every 15 min)
-23:50:08 progress mrogi: 243/540 (45%) battles, 14456/h, ETA 1 min, 3 failed, skips 1.4/battle (last 100)
-23:51:08 stop rule fails 20 would trip on mrogi (24 failed of 267); not acted on
 00:20:20 progress mrogi: 532/540 (99%) battles, 1022/h, ETA 0 min, 24 failed, skips 1.5/battle (last 100)
 00:21:43 mrogi exit=1 in 1955 s
 00:21:43 skip mrhad (after mrogi, which has not finished exit=0)
@@ -26,4 +45,11 @@ Updated 2026-11-02 08:16:34 PC time (08:16 UTC), runner pid 42096.
 00:21:43 ALLDONE
 08:16:34 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
 08:16:34 skip mrprep (already exit=0)
+08:16:34 start mrogi
+08:16:34 watching mrogi: 3 stop rule(s)
+08:16:36 progress pushed to origin claude/pc-team-mirror-progress (every 15 min)
+08:16:41 mrogi exit=0 in 7 s
+08:16:41 start mrhad
+08:16:41 watching mrhad: 3 stop rule(s)
+08:17:35 progress mrhad: 0/528 (0%) battles, 0 failed
 ```
