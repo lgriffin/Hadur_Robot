@@ -128,6 +128,8 @@ public final class DuelController {
     private boolean endgameTable = HandOffDesign.ENDGAME_TABLE;
     private boolean endgameLearnedDodge = HandOffDesign.ENDGAME_LEARNED_DODGE;
     private boolean endgameLearnedShield = HandOffDesign.ENDGAME_LEARNED_SHIELD;
+    /** HAND-4: the endgame duel opens close, as shipped unless a test sets it. */
+    private boolean endgameClose = HandOffDesign.ENDGAME_CLOSE;
     /** HAND-1, HAND-3: each survivor's shield mode, kept across rounds so its budget and trial carry. */
     private final Map<String, ShieldMode> endgameShields = new LinkedHashMap<>();
     /** HAND-1 to HAND-3: the last survivor handed over, so a new one starts the dodger afresh. */
@@ -388,6 +390,11 @@ public final class DuelController {
         this.endgameTable = table;
         this.endgameLearnedDodge = learnedDodge;
         this.endgameLearnedShield = learnedShield;
+    }
+
+    /** HAND-4: sets the close opening, for tests and the bench's arms. */
+    public void handOffClose(boolean close) {
+        this.endgameClose = close;
     }
 
     /** HAND-1 to HAND-3: what the last hand-off set ("plain" for nothing; "-" before any). */
@@ -1414,7 +1421,7 @@ public final class DuelController {
         gunController.setFreeGun(GunDesign.FREE_GUN);
         gunController.setUndecayed(GunDesign.UNDECAYED);
         shield = null;
-        if (onTeam || !(endgameTable || endgameLearnedDodge || endgameLearnedShield)) {
+        if (onTeam || !(endgameTable || endgameLearnedDodge || endgameLearnedShield || endgameClose)) {
             endgameSetting = "-";
             return;
         }
@@ -1458,6 +1465,10 @@ public final class DuelController {
         if (endgameLearnedShield && headOn && shield == null) {
             shield = endgameShield(survivor, true);
             set.add("learned-shield");
+        }
+        if (endgameClose && distance.controllerTarget() > HandOffDesign.ENDGAME_CLOSE_OPENING) {
+            distance = new DistancePolicy(HandOffDesign.ENDGAME_CLOSE_OPENING);
+            set.add("close");
         }
         endgameSetting = set.isEmpty() ? "plain" : String.join("+", set);
         emitPolicy(round, in.time(), "handoff", Double.NaN, Double.NaN, endgameSetting);

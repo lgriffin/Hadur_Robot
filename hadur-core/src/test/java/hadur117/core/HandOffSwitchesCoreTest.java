@@ -167,4 +167,43 @@ class HandOffSwitchesCoreTest {
         assertFalse(has("SH,"), telemetry.toString());
         assertFalse(has("P,0,30,handoff"), telemetry.toString());
     }
+
+    @Test
+    @Tag("HAND-4")
+    @DisplayName("HAND-4: the endgame duel opens at 400 px, not the stranger's 650; off it and on a team it does not")
+    void closeOpening() {
+        assertFalse(HandOffDesign.ENDGAME_CLOSE, "ships off");
+        HadurCore core = meleeToDuel(ShieldList.NONE, false, false, false, Double.NaN, false);
+        core.tick(input(31, 1, List.of(scan(A, 0))));
+        assertEquals(650, core.duel().targetDistance(), 1e-9, "off: the stranger's opening");
+
+        telemetry.clear();
+        core = meleeToDuelClose(false);
+        assertEquals("close", core.duel().endgameSetting());
+        assertTrue(has("P,0,30,handoff,-,-,close"), telemetry.toString());
+        core.tick(input(31, 1, List.of(scan(A, 0))));
+        assertEquals(HandOffDesign.ENDGAME_CLOSE_OPENING, core.duel().targetDistance(), 1e-9);
+
+        telemetry.clear();
+        core = meleeToDuelClose(true);
+        assertEquals("-", core.duel().endgameSetting(), "never on a team");
+        core.tick(input(31, 1, List.of(scan(A, 0))));
+        assertEquals(650, core.duel().targetDistance(), 1e-9);
+    }
+
+    /** As {@link #meleeToDuel} with only HAND-4 on. */
+    private HadurCore meleeToDuelClose(boolean onTeam) {
+        HadurCore core = new HadurCore(BattleFacts.solo(1000, 1000, 3), telemetry::add, null, null, ShieldList.NONE);
+        core.duel().handOffSwitches(false, false, false);
+        core.duel().handOffClose(true);
+        core.duel().team(onTeam);
+        core.prepareMemory();
+        core.newRound(0);
+        for (long t = 1; t < 30; t++) {
+            core.tick(input(t, 3, List.of(scan(A, 0), scan(B, 2), scan(C, 4))));
+        }
+        core.tick(input(30, 1, List.of(new BotEvent.RobotDeath(B), new BotEvent.RobotDeath(C), scan(A, 0))));
+        assertEquals(Posture.DUEL, core.posture());
+        return core;
+    }
 }
