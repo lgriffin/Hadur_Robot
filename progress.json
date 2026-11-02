@@ -1,0 +1,40 @@
+{
+ "plan": "pc-sanaro-n08",
+ "updated": 1793614210.2502098,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "teach": {
+   "status": "pending"
+  },
+  "distill-report": {
+   "status": "pending"
+  },
+  "arms": {
+   "status": "pending"
+  },
+  "live-S3": {
+   "status": "pending"
+  },
+  "live-HL2": {
+   "status": "pending"
+  },
+  "live-DE": {
+   "status": "pending"
+  },
+  "live-DAE": {
+   "status": "pending"
+  },
+  "live-DAO": {
+   "status": "pending"
+  },
+  "read-live": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
