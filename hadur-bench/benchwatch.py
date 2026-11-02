@@ -74,6 +74,18 @@ class WatchError(ValueError):
     pass
 
 
+def broken_names(home):
+    """BENCH-169: the robots broken-1.11.2.txt lists (name and version before a line's first bar)."""
+    path = home / "broken-1.11.2.txt"
+    if not path.is_file():
+        return set()
+    out = set()
+    for raw in path.read_text(encoding="utf-8-sig").splitlines():
+        if raw.strip() and not raw.lstrip().startswith("#"):
+            out.add(" ".join(raw.split("|")[0].split()))
+    return out
+
+
 def parse_duration(text):
     m = re.fullmatch(r"\s*(\d+(?:\.\d+)?)\s*([smh]?)\s*", text)
     if not m:
@@ -163,8 +175,11 @@ class Spec:
                     self.arm_labels.append(f[0])
                     self.arm_jars[f[0]] = f[2]
         if self.set_file and (self.home / self.set_file).is_file():
+            # BENCH-169: the bench drops robots broken-1.11.2.txt lists, so the panel leaves them out too.
+            broken = set() if flags.get("--keep-broken", "false").lower() == "true" else broken_names(self.home)
             self.panel = sum(1 for raw in (self.home / self.set_file).read_text(encoding="utf-8-sig").splitlines()
-                             if raw.strip() and not raw.lstrip().startswith("#"))
+                             if raw.strip() and not raw.lstrip().startswith("#")
+                             and " ".join(raw.split("|")[0].split()) not in broken)
         if self.battles is None and self.arm_labels and self.panel and self.seeds:
             self.battles = len(self.arm_labels) * self.panel * self.seeds
 
