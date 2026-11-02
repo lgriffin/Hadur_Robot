@@ -1,15 +1,15 @@
 # Queue pc-jaylexi-rows: progress
 
-Updated 2026-11-02 19:04:46 PC time (19:04 UTC), runner pid 55524.
+Updated 2026-11-02 19:19:51 PC time (19:19 UTC), runner pid 55524.
 
-- `prep` pending
-- `build` pending
-- `tJ3` pending
-- `tS30` pending
-- `tS60` pending
-- `tS120` pending
-- `tL60` pending
-- `wJ3` pending
+- `prep` done, exit 0 in 0 min
+- `build` done, exit 0 in 0 min
+- `tJ3` done, exit 0 in 2 min
+- `tS30` done, exit 0 in 2 min
+- `tS60` done, exit 0 in 2 min
+- `tS120` done, exit 0 in 2 min
+- `tL60` done, exit 0 in 2 min
+- `wJ3` running
 - `wS30` pending
 - `wS60` pending
 - `wS120` pending
@@ -17,8 +17,100 @@ Updated 2026-11-02 19:04:46 PC time (19:04 UTC), runner pid 55524.
 - `read` pending
 - `pr` pending
 
+### tJ3
+
+**360 of 360 battles** (100%), 0 failed. Running 2 min, 8831 battles/h, about 0 min left (ends ~19:07 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 360 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### tS30
+
+**360 of 360 battles** (100%), 0 failed. Running 3 min, 8639 battles/h, about 0 min left (ends ~19:09 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 360 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### tS60
+
+**360 of 360 battles** (100%), 0 failed. Running 3 min, 8609 battles/h, about 0 min left (ends ~19:12 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 360 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### tS120
+
+**360 of 360 battles** (100%), 0 failed. Running 2 min, 8665 battles/h, about 0 min left (ends ~19:14 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 360 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### tL60
+
+**360 of 360 battles** (100%), 0 failed. Running 2 min, 8821 battles/h, about 0 min left (ends ~19:17 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 360 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### wJ3
+
+**469 of 672 battles** (70%), 0 failed. Running 3 min, 11139 battles/h, about 1 min left (ends ~19:20 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 469 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
+
+Stopping now would leave 203 battles unrun (about 1 min); every battle already fought is kept and a rerun resumes from it.
+
 ### Queue log (last lines)
 
 ```
-19:04:46 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
+19:07:22 tJ3 exit=0 in 146 s
+19:07:22 start tS30
+19:07:22 watching tS30: 3 stop rule(s)
+19:09:52 tS30 exit=0 in 150 s
+19:09:52 start tS60
+19:09:52 watching tS60: 3 stop rule(s)
+19:12:23 tS60 exit=0 in 150 s
+19:12:23 start tS120
+19:12:23 watching tS120: 3 stop rule(s)
+19:14:52 tS120 exit=0 in 149 s
+19:14:52 start tL60
+19:14:52 watching tL60: 3 stop rule(s)
+19:17:19 tL60 exit=0 in 146 s
+19:17:19 start wJ3
+19:17:19 watching wJ3: 3 stop rule(s)
 ```
