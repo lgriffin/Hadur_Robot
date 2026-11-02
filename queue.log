@@ -43,3 +43,12 @@
 15:49:24 anpick exit=0 in 33 s
 15:49:24 start angate
 15:49:24 watching angate: 3 stop rule(s)
+15:56:02 angate exit=0 in 397 s
+15:56:02 start angbb
+15:56:02 watching angbb: 3 stop rule(s)
+16:02:48 angbb exit=0 in 406 s
+16:02:48 start ansum
+16:02:48 ansum exit=0 in 0 s
+16:02:48 start anpr
+16:02:55 anpr exit=0 in 6 s
+16:02:55 ALLDONE

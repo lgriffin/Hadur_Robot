@@ -1,6 +1,6 @@
 # Queue pc-team-angles: progress
 
-Updated 2026-11-02 15:54:07 PC time (15:54 UTC), runner pid 44560.
+Updated 2026-11-02 16:02:55 PC time (16:02 UTC), runner pid 44560.
 
 - `anprep` done, exit 0 in 3 min
 - `anbb` done, exit 0 in 21 min
@@ -9,10 +9,10 @@ Updated 2026-11-02 15:54:07 PC time (15:54 UTC), runner pid 44560.
 - `anmd` done, exit 0 in 47 min
 - `anglob` done, exit 0 in 0 min
 - `anpick` done, exit 0 in 1 min
-- `angate` running
-- `angbb` pending
-- `ansum` pending
-- `anpr` pending
+- `angate` done, exit 0 in 7 min
+- `angbb` done, exit 0 in 7 min
+- `ansum` done, exit 0 in 0 min
+- `anpr` done, exit 0 in 0 min
 
 ### anbb
 
@@ -68,31 +68,42 @@ Stopping now would leave -16 battles unrun (about -1 min); every battle already 
 
 ### angate
 
-**65 battles**, 0 failed. Running 5 min, 826 battles/h. Last battle 0 min ago.
-Skipped turns a battle: 11.0 overall, first 65 11.0, last 65 11.0.
+**96 battles**, 0 failed. Running 7 min, 869 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 10.6 overall, first 96 10.6, last 96 10.6.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 65 |
+| `fails 20` | halt | ok | 0 failed of 96 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | waiting | 65 of 100 battles to read |
+| `skips 40 over 100` | halt | waiting | 96 of 100 battles to read |
+
+### angbb
+
+**96 battles**, 0 failed. Running 7 min, 850 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 10.0 overall, first 96 10.0, last 96 10.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 96 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | waiting | 96 of 100 battles to read |
 
 ### Queue log (last lines)
 
 ```
-14:14:42 start anwy
-14:14:42 watching anwy: 3 stop rule(s)
-14:39:32 progress anwy: 315/720 (44%) battles, 761/h, ETA 32 min, 0 failed, skips 12.3/battle (last 100)
-15:01:31 anwy exit=0 in 2808 s
-15:01:31 start anmd
-15:01:31 watching anmd: 3 stop rule(s)
-15:09:46 progress anmd: 78/720 (11%) battles, 567/h, ETA 1.1 h, 0 failed, skips 11.4/battle (last 100)
-15:40:01 progress anmd: 552/720 (77%) battles, 860/h, ETA 12 min, 0 failed, skips 10.1/battle (last 100)
-15:48:49 anmd exit=0 in 2838 s
 15:48:49 start anglob
 15:48:50 anglob exit=0 in 0 s
 15:48:50 start anpick
 15:49:24 anpick exit=0 in 33 s
 15:49:24 start angate
 15:49:24 watching angate: 3 stop rule(s)
+15:56:02 angate exit=0 in 397 s
+15:56:02 start angbb
+15:56:02 watching angbb: 3 stop rule(s)
+16:02:48 angbb exit=0 in 406 s
+16:02:48 start ansum
+16:02:48 ansum exit=0 in 0 s
+16:02:48 start anpr
+16:02:55 anpr exit=0 in 6 s
+16:02:55 ALLDONE
 ```
