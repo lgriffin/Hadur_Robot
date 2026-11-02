@@ -1,0 +1,49 @@
+{
+ "plan": "pc-jaylexi-rows",
+ "updated": 1793646286.7821705,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "build": {
+   "status": "pending"
+  },
+  "tJ3": {
+   "status": "pending"
+  },
+  "tS30": {
+   "status": "pending"
+  },
+  "tS60": {
+   "status": "pending"
+  },
+  "tS120": {
+   "status": "pending"
+  },
+  "tL60": {
+   "status": "pending"
+  },
+  "wJ3": {
+   "status": "pending"
+  },
+  "wS30": {
+   "status": "pending"
+  },
+  "wS60": {
+   "status": "pending"
+  },
+  "wS120": {
+   "status": "pending"
+  },
+  "wL60": {
+   "status": "pending"
+  },
+  "read": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
