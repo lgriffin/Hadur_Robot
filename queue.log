@@ -1,1 +1,9 @@
 09:15:41 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
+09:15:41 start prep
+09:15:43 progress pushed to origin claude/pc-mimic-progress (every 15 min)
+09:17:07 prep exit=0 in 86 s
+09:17:07 start screen
+09:17:07 watching screen: 4 stop rule(s)
+09:17:41 progress screen: 16/2088 (1%) battles, 1678/h, ETA 1.2 h, 2 failed, skips 33.6/battle (last 100), aa +0.50
+09:29:50 STOP screen by rule fails 30: 30 failed of 525; 525 battles fought and kept, 1563 battles left unrun (about 38 min)
+09:29:51 screen exit=75 in 763 s (halted, fails 30)
