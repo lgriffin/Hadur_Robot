@@ -369,6 +369,8 @@ under ships as 0.3.
 | N5 | pc-sanaro-n04 (section 11, results section 12): CL passes, +0.55 at 249 bytes | an arm at 249 bytes or under over S0 on the live-shaped census |
 | N6 | release 0.2 (2026-10-30, live 2nd at 65.18 after 271 battles); pc-sanaro-n05 (section 13): a growing lead in 249 bytes | an arm at 249 bytes or under over 0.2 on the live-shaped census |
 | N7 | pc-sanaro-n06 (section 16): Hadur's power tables, distilled from its shots, on 0.2's body | a table over 0.2 on the live-shaped census |
+| N8 | pc-sanaro-n07 (section 17): HL +0.67, released as 0.3 (2026-11-01; live 2nd at 65.56 after 663 battles, Quantum 66.44) | a table over 0.2 on fresh seeds |
+| N9 | pc-sanaro-n08 (section 18): tables indexed by distance, the last APS to 1st | an arm at 249 bytes or under over 0.3 on the live-shaped census |
 
 ## 15. Uniqueness
 
@@ -427,3 +429,41 @@ the 43 live-shaped fields (3 seeds, base 23000), then 43 fields x 10 fresh seeds
 | HC | HS's recipe on both teach runs pooled | 249 |
 
 HS passing again ships it as 0.3 on Leigh's word; HL or HC reading above HS ships instead.
+
+## 18. 0.3 live and the next card: pc-sanaro-n08 (stage N9), tables indexed by distance
+
+**0.3 live (2026-11-02, 663 battles): 2nd at 65.56 ± 0.32**, with survival 23.57. Quantum is 1st at
+66.44, a gap of 0.88.
+
+0.3 fires `BAND / d * POWER.charAt(own * 128 + enemy) / 40`. The table is Hadur's power by both
+energies, read back to the 321-640 px band, and the integer step `640 / d` then scales it. That
+spends 8 bytes on the step and gives Sanaro a range shape of its own. It holds fire past 640 px,
+fires 1x from 321 to 640, 2x from 214 to 320, 3x from 161 to 213, and so on. Hadur's own rule
+(`MeleeEnergyPolicy.power`) is 3 inside 150 px, 2-3 to 300, 1.5 to 500 and 1 beyond, with a finisher
+at 16 enemy energy and a duel power once two are left.
+
+A table indexed by distance lets Hadur's power stand at every range, and the step's bytes come back
+(measured by javac, `tools/kitlab_codesize.py`):
+
+| Arm | Index (`d` = `(int) e.getDistance()`) | Bytes |
+|---|---|---|
+| S3 | 0.3 as it ships (control) | 249 |
+| HL2 | 0.3's index and recipe, on n07's and n08's teach runs pooled | 249 |
+| DE | `(d >> 3 << 7) + (int) e.getEnergy()`: distance in 8 px x enemy energy | 241 |
+| DAE | `((d >> 5) + getOthers() * 48 << 7) + (int) e.getEnergy()`: robots left x 32 px x enemy energy | 249 |
+| DAO | `((d >> 5) + getOthers() * 48 << 7) + (int) getEnergy()`: robots left x 32 px x own energy | 249 |
+
+Robots left, distance and both energies together (`d >> 6`, `own >> 4`) cost 253 B, and adding an
+own-energy cap to DE costs 252, so neither fits.
+
+The tables come from `tools/distill.py power --shape` (`SHAPES`; tests in `tools/test_distill.py`).
+Each cell holds the mode of Hadur's shots that land on it, if it has 20 or more. A thinner cell takes
+the mode of the smallest 2^k block around it that has 20, and the whole table's mode comes last.
+No index passes the end of its string for distances up to the 1,414 px diagonal, up to 9 others and
+energies up to 400.
+
+`hadur-bench/plans/pc-sanaro-n08.queue`, which Leigh starts from master:
+`.\queue.ps1 run pc-sanaro-n08`. It takes about 3.2 h, with stop rules and ALERT. Hadur (master's
+build) is taught in the 43 live-shaped fields (6 seeds, base 25000), and the shots are pooled with
+n07's teach run. Each arm then runs 43 fields x 10 fresh seeds (base 26000). An arm passes when the
+low end of its difference over S3 is above zero. The best passing arm is 0.4 on Leigh's word.
