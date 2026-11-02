@@ -1,0 +1,28 @@
+{
+ "plan": "pc-full-off",
+ "updated": 1793662671.115805,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "screen": {
+   "status": "pending"
+  },
+  "pick": {
+   "status": "pending"
+  },
+  "prep2": {
+   "status": "pending"
+  },
+  "confirm": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
