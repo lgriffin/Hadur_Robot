@@ -1,0 +1,116 @@
+# JayLexi 0.4 arms: per-opponent surf rows off (or lighter) for the strongest bots
+# (thread "Win the MiniRumble 1v1 with JayLexi"). Live, JayLexi 0.3 is 4th, 87.93, and +0.62 over
+# 0.2, but its per-opponent surf rows cost the top 30 bots 6 to 8 APS each (-0.27 of APS) while
+# winning ranks 121 and down (+0.89); docs/bench/live-kitlab-0.3.md. Each arm changes only the AIM
+# string (tools/jaylexi_rows_off.py, from the 2026-11-02 rankings), so all are 1,494 B like 0.3.
+#   ./queue.sh run pc-jaylexi-rows        (or  .\queue.ps1 run pc-jaylexi-rows)
+# Run it from master with this card merged: git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned (--parallel auto). Every step resumes; no step
+# needs a decision. Nothing here touches Hadur or the shipped JayLexi; nothing is uploaded.
+#
+# Arms (plain javac, kitlab/build_arm.sh):
+#   J3    JayLexi 0.3 as it is (the control)
+#   S30   the top 30 bots get the field row instead of their own
+#   S60   the same for the top 60
+#   S120  the same for the top 120 (118 have rows)
+#   L60   the top 60 keep their own row, scaled from peak 2000 down to 300 (PO300 passed on 112 bots)
+# Steps: each arm on kitlab/mini-top60-field.txt (the top 60 by name, 6 seeds: 360 battles), then
+# each on the fresh division sample kitlab/mini-wide2-field.txt (112 bots, 6 seeds: 672 battles).
+# 5,160 battles, about 40-60 min on the PC.
+# Read: each arm against J3 on the same opponents (the paired gain). mini-wide2 is the division
+# estimate and decides; an arm passes when its gain's low end there is above 0. mini-top60 shows
+# whether the top bots gained (it should be the bigger number). Leigh decides any release (a pass
+# ships as JayLexi 0.4).
+# Stop rules on every bench step (docs/bench/watch.md; halt, every battle fought is kept and a rerun
+# resumes): 20 failed battles (a broken or missing jar), no battle in 30 minutes (a hung step), or
+# skipped turns over 40 a battle over the last 100. A halt at worst leaves the rest of that step and
+# the steps after it unrun, at most 5,160 battles (about 1 h). No early finish on score: each step
+# is one robot. ALERT opens an issue for Leigh on a stop.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set SRC = ../jaylexi/src/main/java/hadur117/mini/JayLexi.java
+set RANK = ../data/rumble/parsed/2026-11-02T1440Z_minirumble_rankings.json
+set W = work/jaylexi-rows
+
+prep | ./fetch-opponents.sh --set kitlab/mini-top60-field.txt && ./fetch-opponents.sh --set kitlab/mini-wide2-field.txt && (python3 -c "import numpy" || python3 -m pip install numpy) && mkdir -p ${W}
+
+build | python3 tools/jaylexi_rows_off.py ${SRC} ${W}/JayLexi-S30.java --rankings ${RANK} --top 30 && python3 tools/jaylexi_rows_off.py ${SRC} ${W}/JayLexi-S60.java --rankings ${RANK} --top 60 && python3 tools/jaylexi_rows_off.py ${SRC} ${W}/JayLexi-S120.java --rankings ${RANK} --top 120 && python3 tools/jaylexi_rows_off.py ${SRC} ${W}/JayLexi-L60.java --rankings ${RANK} --top 60 --peak 300 && bash kitlab/build_arm.sh ${SRC} hadur117.mini.JayLexi j3 && bash kitlab/build_arm.sh ${W}/JayLexi-S30.java hadur117.mini.JayLexi s30 && bash kitlab/build_arm.sh ${W}/JayLexi-S60.java hadur117.mini.JayLexi s60 && bash kitlab/build_arm.sh ${W}/JayLexi-S120.java hadur117.mini.JayLexi s120 && bash kitlab/build_arm.sh ${W}/JayLexi-L60.java hadur117.mini.JayLexi l60 && bash kitlab/args.sh mini-top60 kitlab/jars/hadur117.mini.JayLexi_j3.jar "hadur117.mini.JayLexi j3" rows-tJ3 6 && bash kitlab/args.sh mini-top60 kitlab/jars/hadur117.mini.JayLexi_s30.jar "hadur117.mini.JayLexi s30" rows-tS30 6 && bash kitlab/args.sh mini-top60 kitlab/jars/hadur117.mini.JayLexi_s60.jar "hadur117.mini.JayLexi s60" rows-tS60 6 && bash kitlab/args.sh mini-top60 kitlab/jars/hadur117.mini.JayLexi_s120.jar "hadur117.mini.JayLexi s120" rows-tS120 6 && bash kitlab/args.sh mini-top60 kitlab/jars/hadur117.mini.JayLexi_l60.jar "hadur117.mini.JayLexi l60" rows-tL60 6 && bash kitlab/args.sh mini-wide2 kitlab/jars/hadur117.mini.JayLexi_j3.jar "hadur117.mini.JayLexi j3" rows-wJ3 6 && bash kitlab/args.sh mini-wide2 kitlab/jars/hadur117.mini.JayLexi_s30.jar "hadur117.mini.JayLexi s30" rows-wS30 6 && bash kitlab/args.sh mini-wide2 kitlab/jars/hadur117.mini.JayLexi_s60.jar "hadur117.mini.JayLexi s60" rows-wS60 6 && bash kitlab/args.sh mini-wide2 kitlab/jars/hadur117.mini.JayLexi_s120.jar "hadur117.mini.JayLexi s120" rows-wS120 6 && bash kitlab/args.sh mini-wide2 kitlab/jars/hadur117.mini.JayLexi_l60.jar "hadur117.mini.JayLexi l60" rows-wL60 6
+  after: prep
+
+tJ3 | ${MVN} "-Dexec.args=@work/kitlab-rows-tJ3.args"
+  after: build
+  watch: battles=360
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+tS30 | ${MVN} "-Dexec.args=@work/kitlab-rows-tS30.args"
+  after: tJ3
+  watch: battles=360
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+tS60 | ${MVN} "-Dexec.args=@work/kitlab-rows-tS60.args"
+  after: tS30
+  watch: battles=360
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+tS120 | ${MVN} "-Dexec.args=@work/kitlab-rows-tS120.args"
+  after: tS60
+  watch: battles=360
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+tL60 | ${MVN} "-Dexec.args=@work/kitlab-rows-tL60.args"
+  after: tS120
+  watch: battles=360
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+wJ3 | ${MVN} "-Dexec.args=@work/kitlab-rows-wJ3.args"
+  after: tL60
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+wS30 | ${MVN} "-Dexec.args=@work/kitlab-rows-wS30.args"
+  after: wJ3
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+wS60 | ${MVN} "-Dexec.args=@work/kitlab-rows-wS60.args"
+  after: wS30
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+wS120 | ${MVN} "-Dexec.args=@work/kitlab-rows-wS120.args"
+  after: wS60
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+wL60 | ${MVN} "-Dexec.args=@work/kitlab-rows-wL60.args"
+  after: wS120
+  watch: battles=672
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+read | (echo "# JayLexi 0.4 arms: surf rows off for the strongest bots (pc-jaylexi-rows)" && echo && echo '## S30 against J3, on the division sample mini-wide2 (decides)' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide2-field.txt work/kitlab-rows-wS30 --ref work/kitlab-rows-wJ3 --ref-aps 87.93 && echo '```' && echo && echo '## S60 against J3, on the division sample mini-wide2 (decides)' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide2-field.txt work/kitlab-rows-wS60 --ref work/kitlab-rows-wJ3 --ref-aps 87.93 && echo '```' && echo && echo '## S120 against J3, on the division sample mini-wide2 (decides)' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide2-field.txt work/kitlab-rows-wS120 --ref work/kitlab-rows-wJ3 --ref-aps 87.93 && echo '```' && echo && echo '## L60 against J3, on the division sample mini-wide2 (decides)' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-wide2-field.txt work/kitlab-rows-wL60 --ref work/kitlab-rows-wJ3 --ref-aps 87.93 && echo '```' && echo && echo '## S30 against J3, on the top 60' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-top60-field.txt work/kitlab-rows-tS30 --ref work/kitlab-rows-tJ3 --ref-aps 87.93 && echo '```' && echo && echo '## S60 against J3, on the top 60' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-top60-field.txt work/kitlab-rows-tS60 --ref work/kitlab-rows-tJ3 --ref-aps 87.93 && echo '```' && echo && echo '## S120 against J3, on the top 60' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-top60-field.txt work/kitlab-rows-tS120 --ref work/kitlab-rows-tJ3 --ref-aps 87.93 && echo '```' && echo && echo '## L60 against J3, on the top 60' && echo '```' && python3 tools/kitlab_read.py kitlab/mini-top60-field.txt work/kitlab-rows-tL60 --ref work/kitlab-rows-tJ3 --ref-aps 87.93 && echo '```') > ${OUT}/jaylexi-rows.md
+  after: wL60
+
+pr | bash tools/open_results_pr.sh claude/pc-jaylexi-rows-results "JayLexi 0.4 arms: surf rows off for the strongest bots" ${OUT}/jaylexi-rows.md
+  after: read
