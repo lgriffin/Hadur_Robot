@@ -20,6 +20,13 @@
 # N10 (pc-sanaro-n09), on 0.3: weaker fire. n08 (PR #575) found the distance tables, which fire Hadur's
 # power at every range, cost 6-8 points of survival. Robocode raises power under 0.1 to 0.1, so 0.3 never
 # holds fire: past 640 px its 0 step fires 0.1. BAND moves where the step drops; K scales every cell.
+# N11 (pc-sanaro-n10), on 0.3: the progression. n09 (results branch claude/pc-sanaro-n09-results): B480
+# +0.10 +-0.33 (survival 23.8 -> 28.2), K65 +0.06 (26.4), B560 +0.02 (26.5), K80 -0.08 (24.6). None
+# passes alone, but weaker fire buys survival at no APS cost and the BAND steps lean up. So climb in
+# small steps on more seeds: B480 again, then further (B400, B320), and B480 with the table x 0.8.
+B400 | the step's bands from 400 px: 0.1 shots past 400, x1 to 200, x2 to 133 (249 B) | s#BAND = 640;#BAND = 400;#
+B320 | the step's bands from 320 px: 0.1 shots past 320, x1 to 160, x2 to 107 (249 B) | s#BAND = 640;#BAND = 320;#
+B4K8 | BAND 480 and 0.3's table x 0.8 (249 B) | s#BAND = 640;#BAND = 480;# | scale 0.8
 B560 | the step's bands from 560 px: 0.1 shots past 560, x1 to 280, x2 to 186 (249 B) | s#BAND = 640;#BAND = 560;#
 B480 | the step's bands from 480 px: 0.1 shots past 480, x1 to 240, x2 to 160 (249 B) | s#BAND = 640;#BAND = 480;#
 K80 | 0.3's table, every cell x 0.8 (249 B, a table only) | | scale 0.8
