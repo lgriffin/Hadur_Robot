@@ -35,3 +35,11 @@
 15:01:31 start anmd
 15:01:31 watching anmd: 3 stop rule(s)
 15:09:46 progress anmd: 78/720 (11%) battles, 567/h, ETA 1.1 h, 0 failed, skips 11.4/battle (last 100)
+15:40:01 progress anmd: 552/720 (77%) battles, 860/h, ETA 12 min, 0 failed, skips 10.1/battle (last 100)
+15:48:49 anmd exit=0 in 2838 s
+15:48:49 start anglob
+15:48:50 anglob exit=0 in 0 s
+15:48:50 start anpick
+15:49:24 anpick exit=0 in 33 s
+15:49:24 start angate
+15:49:24 watching angate: 3 stop rule(s)
