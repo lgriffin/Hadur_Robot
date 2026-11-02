@@ -1,0 +1,19 @@
+{
+ "plan": "pc-mimic-on",
+ "updated": 1793659098.9864964,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "confirm": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
