@@ -19,3 +19,9 @@
 21:52:58 start meek
 21:52:58 watching meek: 2 stop rule(s)
 22:08:54 progress meek: 102/276 (37%) battles, 384/h, ETA 27 min, 0 failed, skips 28.0/battle (last 100)
+22:37:43 meek exit=0 in 2685 s
+22:37:43 start meread
+22:37:52 meread exit=0 in 8 s
+22:37:52 start mepr
+22:37:58 mepr exit=0 in 6 s
+22:37:58 ALLDONE
