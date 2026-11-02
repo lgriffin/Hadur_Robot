@@ -1,0 +1,5 @@
+# POW-15 screen (pc-full-off): c is master, aa its A/A copy, fp the full-power rules off against every robot of
+# panel-midfield.txt (full-off: lines from plans/full-off-all.list, ablation fplist).
+c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
+aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
+fp | hadur117.Hadur 3.21fp | bisect/hadur117.Hadur_3.21fp.jar
