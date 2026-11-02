@@ -42,6 +42,7 @@ class TeamAnglesPlanTest {
         assertTrue(block(queue, "ansum").contains("--seeds 16 --teams 46 --min-aps 0.15"));
         assertTrue(queue.contains("open_results_pr.sh claude/pc-team-angles-results"));
         for (String step : List.of("anbb", "anhv", "anwy", "anmd", "angate", "angbb")) {
+            assertTrue(block(queue, step).contains(".args\" || test $? -eq 1"), step + " goes on past failed battles");
             for (String rule : List.of("stop: fails 20", "stop: stall 30m", "stop: skips 40 over 100")) {
                 assertTrue(block(queue, step).contains(rule), step + " declares " + rule);
             }

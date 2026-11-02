@@ -34,25 +34,25 @@ set OUT = ../docs/bench/local
 set T = python3 tools/team_modes.py
 
 anprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && for j in aa bb hv wy md mk; do rm -f bisect/hadur117.HadurTeam_"$V"$j.jar; done && rm -f ${OUT}/team-angles-*.md ${OUT}/team-angles-pick.tsv ${OUT}/team-angles-locked.java.txt work/team-angles-picked.java work/team-angles-gate.txt && ./fetch-opponents.sh --set team-census46.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmheavy && bash ./build-ablation.sh tmwary && bash ./build-ablation.sh tmdis && mkdir -p work && for a in bb hv wy md gate gbb; do rm -rf work/team-angles-"$V"-$a && sed "s/@V@/$V/g" plans/team-angles-$a.args > work/team-angles-$a.args || exit 1; done && for j in aa bb hv wy md; do test -f bisect/hadur117.HadurTeam_"$V"$j.jar || exit 1; done && mvn -q compile
-anbb   | mvn -q exec:java "-Dexec.args=@work/team-angles-bb.args"
+anbb   | mvn -q exec:java "-Dexec.args=@work/team-angles-bb.args" || test $? -eq 1
   after: anprep
   watch: battles=736
   stop: fails 20
   stop: stall 30m
   stop: skips 40 over 100
-anhv   | mvn -q exec:java "-Dexec.args=@work/team-angles-hv.args"
+anhv   | mvn -q exec:java "-Dexec.args=@work/team-angles-hv.args" || test $? -eq 1
   after: anbb
   watch: battles=736
   stop: fails 20
   stop: stall 30m
   stop: skips 40 over 100
-anwy   | mvn -q exec:java "-Dexec.args=@work/team-angles-wy.args"
+anwy   | mvn -q exec:java "-Dexec.args=@work/team-angles-wy.args" || test $? -eq 1
   after: anhv
   watch: battles=736
   stop: fails 20
   stop: stall 30m
   stop: skips 40 over 100
-anmd   | mvn -q exec:java "-Dexec.args=@work/team-angles-md.args"
+anmd   | mvn -q exec:java "-Dexec.args=@work/team-angles-md.args" || test $? -eq 1
   after: anwy
   watch: battles=736
   stop: fails 20
@@ -62,13 +62,13 @@ anglob | for a in hv wy md; do ${T} gate --report ${OUT}/team-angles-$a.md --con
   after: anmd
 anpick | ${T} pick --report HEAVY=${OUT}/team-angles-hv.md --report WARY=${OUT}/team-angles-wy.md --report DISABLED=${OUT}/team-angles-md.md --control HEAVY=${OUT}/team-angles-bb.md --control WARY=${OUT}/team-angles-bb.md --control DISABLED=${OUT}/team-angles-bb.md --min-mean 3.0 --low-end 0 --base MATEFIRE,HUNT,PATH,DODGE,CONCORD --shipped ../hadur-core/src/main/java/hadur117/core/melee/TeamModes.java --census team-census46.txt --opponents opponents --out-md ${OUT}/team-angles-pick.md --out-tsv ${OUT}/team-angles-pick.tsv --out-java work/team-angles-picked.java --out-set work/team-angles-gate.txt && if [ -s work/team-angles-picked.java ]; then TEAM_MODE_LOCKED="$(pwd)/work/team-angles-picked.java" bash ./build-ablation.sh tmlock; else echo "nothing picked: no gate"; fi
   after: anglob
-angate | if [ -s work/team-angles-picked.java ]; then mvn -q exec:java "-Dexec.args=@work/team-angles-gate.args"; else echo "nothing picked: no gate"; fi
+angate | if [ -s work/team-angles-picked.java ]; then mvn -q exec:java "-Dexec.args=@work/team-angles-gate.args" || test $? -eq 1; else echo "nothing picked: no gate"; fi
   after: anpick
   watch:
   stop: fails 20
   stop: stall 30m
   stop: skips 40 over 100
-angbb  | if [ -s work/team-angles-picked.java ]; then mvn -q exec:java "-Dexec.args=@work/team-angles-gbb.args"; else echo "nothing picked: no gate"; fi
+angbb  | if [ -s work/team-angles-picked.java ]; then mvn -q exec:java "-Dexec.args=@work/team-angles-gbb.args" || test $? -eq 1; else echo "nothing picked: no gate"; fi
   after: angate
   watch:
   stop: fails 20
