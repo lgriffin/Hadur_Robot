@@ -584,6 +584,45 @@ class TeamModesTest {
     }
 
     @Test
+    @Tag("TMODE-39")
+    @DisplayName("TMODE-39: MOMENTUM's wave check drives from the robot's heading and speed, so a side step that needs a turn first is no longer rated safe")
+    void momentumDrivesFromMotion() {
+        // As waveDamage: a power 3 wave from (600, 200) north reaches y = 600 near tick 35. On tick 28
+        // Hadur at (600, 600) has about 7 ticks to step aside east.
+        EnemyShot shot = new EnemyShot("e", pt(600, 200), 0, 3.0);
+        List<MinimumRiskMovement.Wave> waves = MinimumRiskMovement.Wave.of(List.of(
+            new VirtualBullet(shot, VirtualBullet.Aim.HEAD_ON, 0.0)));
+        double still = MinimumRiskMovement.waveDamage(pt(600, 600), pt(800, 600), 28, waves);
+        // Already facing east and stopped, the drive is the standstill one.
+        assertEquals(still, MinimumRiskMovement.waveDamageMoving(pt(600, 600), Math.PI / 2, 0, pt(800, 600), 28, waves, null, null), 1e-9);
+        // Running north at 8 px a tick, Hadur must turn 90 degrees first and stays in the wave's path.
+        double running = MinimumRiskMovement.waveDamageMoving(pt(600, 600), 0, 8, pt(800, 600), 28, waves, null, null);
+        assertTrue(running > still + 1, "running " + running + " still " + still);
+        assertEquals(0.0, MinimumRiskMovement.waveDamageMoving(pt(600, 600), 0, 8, pt(800, 600), 28, List.of(), null, null), 0.0);
+        // The engine's velocity rule: at 8 px a tick with 10 px left Hadur brakes to 6, not 8; told to
+        // reverse at 1 px a tick it passes zero and comes back 1.5 in the tick.
+        assertEquals(6.0, MinimumRiskMovement.engineVelocity(8, 10, 8), 1e-9);
+        assertEquals(8.0, MinimumRiskMovement.engineVelocity(7, 500, 8), 1e-9);
+        assertEquals(-0.5, MinimumRiskMovement.engineVelocity(1, -100, 8), 1e-9);
+        assertEquals(0.0, MinimumRiskMovement.engineVelocity(0, 0, 8), 1e-9);
+        // A drive that runs into a wall stops at its edge: from (20, 600) at 8 west, turning to go
+        // north, the old rollout scored waves at x < 18; with the field it never leaves it.
+        EnemyShot west = new EnemyShot("w", pt(600, 600), 0, 3.0);
+        List<MinimumRiskMovement.Wave> wall = MinimumRiskMovement.Wave.of(List.of(
+            new VirtualBullet(west, VirtualBullet.Aim.HEAD_ON, 3 * Math.PI / 2)));
+        double free = MinimumRiskMovement.waveDamageMoving(pt(20, 600), 3 * Math.PI / 2, 8, pt(20, 900), 40, wall, null, null);
+        double walled = MinimumRiskMovement.waveDamageMoving(pt(20, 600), 3 * Math.PI / 2, 8, pt(20, 900), 40, wall, null,
+            new hadur117.core.physics.BattleField(1200, 1200));
+        assertTrue(walled >= free, "walled " + walled + " free " + free);
+        assertFalse(TeamModes.FORCE_MOMENTUM);
+        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.MOMENTUM));
+        Set<TeamModes.Mode> named = EnumSet.of(TeamModes.Mode.MATEFIRE, TeamModes.Mode.DODGE);
+        Set<TeamModes.Mode> with = TeamModes.with(named, TeamModes.Mode.MOMENTUM);
+        assertTrue(with.contains(TeamModes.Mode.MOMENTUM) && with.containsAll(named));
+        assertSame(with, TeamModes.with(with, TeamModes.Mode.MOMENTUM));
+    }
+
+    @Test
     @Tag("TMODE-25")
     @DisplayName("TMODE-25: a teammate's bullet is counted, at its damage, on a drive that meets it and not on one that leaves its line")
     void pathCheck() {

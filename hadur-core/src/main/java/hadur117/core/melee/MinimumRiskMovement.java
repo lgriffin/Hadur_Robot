@@ -407,6 +407,8 @@ public class MinimumRiskMovement {
         boolean concord;
         /** TMODE-38: rank only destinations whose drive meets no teammate bullet, while any is left. */
         boolean clear;
+        /** TMODE-39: the dodge's wave check drives from Hadur's heading and velocity, at the engine's turn rate. */
+        boolean momentum;
 
         View(Point2D.Double me, double energy, long now, int others, List<EnemyInfo> enemies,
              List<VirtualBullet> bullets, MeleeStrategy.Plan plan) {
@@ -981,6 +983,7 @@ public class MinimumRiskMovement {
         v.gunLines = !mates.isEmpty() && modes.contains(TeamModes.Mode.GUNLINE);
         v.concord = TeamConcord.MOVE && TeamConcord.RISK && !mates.isEmpty() && modes.contains(TeamModes.Mode.CONCORD);
         v.clear = !mates.isEmpty() && modes.contains(TeamModes.Mode.CLEAR);
+        v.momentum = !mates.isEmpty() && modes.contains(TeamModes.Mode.MOMENTUM);
         List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
         lastCandidates = candidates.size();
         if (surf && !onTeam(mates)) {
@@ -1445,6 +1448,9 @@ public class MinimumRiskMovement {
                     next = Math.min(next, drive(from, q, v.now + t, WAVE_TICKS, waves, shadows, met.clone()));
                 }
                 damage[k] = first + next;
+            } else if (v.momentum) {
+                // TMODE-39: drive from how Hadur is moving now, not from a standstill facing the spot.
+                damage[k] = waveDamageMoving(v.me, heading, velocity, p, v.now, waves, shadows, field);
             } else {
                 damage[k] = waveDamage(v.me, p, v.now, waves, shadows);
             }
@@ -1562,6 +1568,23 @@ public class MinimumRiskMovement {
             }
         }
         return false;
+    }
+
+    /**
+     * TMODE-39: the engine's next velocity toward {@code distance} px left (negative to reverse), at
+     * most {@code maxV}: 1 px a tick faster, 2 slower, never faster than a stop within the distance
+     * allows, and a robot moving the wrong way at 2 or less brakes through zero and speeds up in the
+     * same tick. The kernel's MovementPredictor rule, kept here so the melee strand owns it.
+     */
+    static double engineVelocity(double velocity, double distance, double maxV) {
+        if (distance < 0) return -engineVelocity(-velocity, -distance, maxV);
+        double t = Math.max(1, Math.ceil((Math.sqrt(4.0 * distance + 1.0) - 1.0) / 2.0));
+        double stop = (t - 1.0) * 2.0 + (distance - t * (t - 1.0)) / t;
+        double goal = Math.min(stop, maxV);
+        if (velocity >= 0) return Math.max(velocity - 2.0, Math.min(goal, velocity + 1.0));
+        double w = -velocity;
+        double turnBack = w > 2.0 ? 2.0 : (w / 2.0) * 2.0 + (1.0 - w / 2.0);
+        return Math.max(velocity - 1.0, Math.min(goal, velocity + turnBack));
     }
 
     /** TMODE-38: the engine's next velocity toward {@code distLeft} px left, at most {@code maxV}: 1 px a tick faster, 2 slower. */
@@ -1762,25 +1785,75 @@ public class MinimumRiskMovement {
             } else {
                 speed = 0;
             }
-            long tick = now + t;
-            for (int i = 0; i < waves.size(); i++) {
-                if (done[i]) continue;
-                Wave w = waves.get(i);
-                double d = Math.hypot(x - w.source.x, y - w.source.y);
-                double front = w.speed * (tick - w.fireTime);
-                if (front < d - WAVE_HALF) continue;
-                done[i] = true;
-                if (front - w.speed > d + WAVE_HALF) continue;
-                double bearing = Math.atan2(x - w.source.x, y - w.source.y);
-                double half = Math.atan(WAVE_HALF / Math.max(d, WAVE_HALF));
-                double m = w.mass(bearing, half);
-                if (shadows != null) m *= 1 - shaded(bearing, half, d, shadows.get(i));
-                total += m;
-            }
+            total += waveHits(x, y, now + t, waves, shadows, done);
         }
         state[0] = x;
         state[1] = y;
         state[2] = speed;
+        return total;
+    }
+
+    /** The mass of the {@code waves} not yet {@code done} whose front crosses Hadur's box at ({@code x}, {@code y}) on {@code tick}; marks them done. */
+    private static double waveHits(double x, double y, long tick, List<Wave> waves, List<double[][]> shadows,
+                                   boolean[] done) {
+        double total = 0;
+        for (int i = 0; i < waves.size(); i++) {
+            if (done[i]) continue;
+            Wave w = waves.get(i);
+            double d = Math.hypot(x - w.source.x, y - w.source.y);
+            double front = w.speed * (tick - w.fireTime);
+            if (front < d - WAVE_HALF) continue;
+            done[i] = true;
+            if (front - w.speed > d + WAVE_HALF) continue;
+            double bearing = Math.atan2(x - w.source.x, y - w.source.y);
+            double half = Math.atan(WAVE_HALF / Math.max(d, WAVE_HALF));
+            double m = w.mass(bearing, half);
+            if (shadows != null) m *= 1 - shaded(bearing, half, d, shadows.get(i));
+            total += m;
+        }
+        return total;
+    }
+
+    /**
+     * TMODE-39: as {@link #waveDamage}, but Hadur leaves {@code me} with its {@code heading} and
+     * {@code velocity} and drives to {@code to} as the melee's drive does (the nearer way, front or
+     * back; at most 4 px a tick while the turn left is over 45 degrees; the engine's turn rate,
+     * acceleration, braking and stopping-distance cap ({@link #engineVelocity}), for {@link #WAVE_TICKS}
+     * ticks. A drive that would leave {@code field} stops dead at its edge, as the engine stops a robot
+     * at a wall.
+     */
+    static double waveDamageMoving(Point2D.Double me, double heading, double velocity, Point2D.Double to,
+                                   long now, List<Wave> waves, List<double[][]> shadows, BattleField field) {
+        if (waves.isEmpty()) return 0;
+        boolean[] done = new boolean[waves.size()];
+        double total = 0;
+        double x = me.x, y = me.y, h = heading, v = velocity;
+        for (int t = 1; t <= WAVE_TICKS; t++) {
+            double turn = Angles.normalRelativeAngle(Math.atan2(to.x - x, to.y - y) - h);
+            double dist = Math.hypot(to.x - x, to.y - y);
+            if (dist <= 0.5) {
+                turn = 0;
+                dist = 0;
+            } else if (Math.abs(turn) > Math.PI / 2) {
+                turn = Angles.normalRelativeAngle(turn + Math.PI);
+                dist = -dist;
+            }
+            double maxV = Math.abs(turn) > Math.PI / 4 ? 4.0 : MAX_SPEED;
+            double rate = Math.toRadians(10 - 0.75 * Math.abs(v));
+            h += Math.max(-rate, Math.min(rate, turn));
+            v = engineVelocity(v, dist, maxV);
+            x += Math.sin(h) * v;
+            y += Math.cos(h) * v;
+            if (field != null) {
+                Point2D.Double in = field.translateToField(new Point2D.Double(x, y));
+                if (in.x != x || in.y != y) {
+                    x = in.x;
+                    y = in.y;
+                    v = 0;
+                }
+            }
+            total += waveHits(x, y, now + t, waves, shadows, done);
+        }
         return total;
     }
 
