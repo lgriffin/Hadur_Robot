@@ -5,3 +5,10 @@
 10:10:49 start teach
 10:10:49 watching teach: 3 stop rule(s)
 10:11:10 progress teach: 0/258 (0%) battles, 0 failed
+10:35:19 teach exit=0 in 1469 s
+10:35:19 start distill-report
+10:35:38 distill-report exit=0 in 19 s
+10:35:38 start arms
+10:35:56 arms exit=0 in 17 s
+10:35:56 start live-S3
+10:35:56 watching live-S3: 3 stop rule(s)
