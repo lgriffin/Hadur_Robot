@@ -1,0 +1,31 @@
+# PC card pc-team-clear (BENCH-170): arm cl against aa, 45 teams (TidalWave out) x 12 seeds from 7600. Template: clprep writes work/team-clear-cl.args with @V@ = the robot.release in hadur-robot/pom.xml
+--team
+true
+--seeds
+12
+--seed-base
+7600
+--rounds
+10
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+plans/team-angles-set.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@cl.jar
+--robot
+hadur117.HadurTeam @V@cl
+--member
+hadur117.Hadur
+--out
+work/team-clear-@V@-cl
+--report
+../docs/bench/local/team-clear-cl.md
+--baseline
+bisect/hadur117.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur117.HadurTeam @V@aa
