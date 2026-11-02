@@ -463,6 +463,11 @@ public final class Bench {
             return runSession();
         }
         List<Opponent> opponents = Opponent.load(benchDir.resolve(opts.getOrDefault("set", "reference-set.txt")));
+        // BENCH-169: robots Robocode 1.11.2 will not load leave the set (--keep-broken keeps them).
+        if (!Boolean.parseBoolean(opts.getOrDefault("keep-broken", "false"))) {
+            int dropped = Broken.drop(opponents, Broken.names(benchDir.resolve(Broken.FILE)));
+            if (dropped > 0) System.out.println("dropped " + dropped + " robot(s) listed in " + Broken.FILE);
+        }
         String only = opts.get("only");
         if (only != null) opponents.removeIf(o -> !o.name.contains(only));
         if (opts.containsKey("shard")) {
@@ -471,6 +476,11 @@ public final class Bench {
             System.out.println("shard " + kn[0] + "/" + kn[1] + ": " + opponents.size() + " opponents of the set");
         }
         if (dryRun) return dryRun(opponents);
+        if (opponents.isEmpty()) {
+            System.err.println("refusing to start: no robot left in the set after " + Broken.FILE
+                + ", --only and --shard");
+            return 2;
+        }
         Memory.Check memory = Memory.check(Memory.freeMb(), parallel, childHeap());
         System.out.println("memory: " + memory.message());
         if (!memory.ok() && !Boolean.parseBoolean(opts.getOrDefault("force-memory", "false"))) {
