@@ -10,3 +10,8 @@
 23:39:52 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 23:49:07 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
 23:49:07 skip mrprep (already exit=0)
+23:49:07 start mrogi
+23:49:07 watching mrogi: 3 stop rule(s), shown only
+23:49:09 progress pushed to origin claude/pc-team-mirror-progress (every 15 min)
+23:50:08 progress mrogi: 243/540 (45%) battles, 14456/h, ETA 1 min, 3 failed, skips 1.4/battle (last 100)
+23:51:08 stop rule fails 20 would trip on mrogi (24 failed of 267); not acted on
