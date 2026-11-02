@@ -1,0 +1,34 @@
+{
+ "plan": "pc-sanaro-n09",
+ "updated": 1793637846.1324928,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "arms": {
+   "status": "pending"
+  },
+  "live-S3": {
+   "status": "pending"
+  },
+  "live-B560": {
+   "status": "pending"
+  },
+  "live-B480": {
+   "status": "pending"
+  },
+  "live-K80": {
+   "status": "pending"
+  },
+  "live-K65": {
+   "status": "pending"
+  },
+  "read-live": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
