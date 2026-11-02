@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-mirror",
- "updated": 1793578903.4463663,
+ "updated": 1793578903.453814,
  "steps": {
   "mrprep": {
    "status": "done",
@@ -15,13 +15,16 @@
    "end": "2026-11-02T00:21:43"
   },
   "mrhad": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after mrogi"
   },
   "mrread": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after mrhad"
   },
   "mrpr": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after mrread"
   }
  },
  "watched": [

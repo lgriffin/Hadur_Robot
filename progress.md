@@ -4,9 +4,9 @@ Updated 2026-11-02 00:21:43 PC time (00:21 UTC), runner pid 5104.
 
 - `mrprep` done, exit 0 in 1 min
 - `mrogi` failed, exit 1 in 33 min
-- `mrhad` pending
-- `mrread` pending
-- `mrpr` pending
+- `mrhad` skipped
+- `mrread` skipped
+- `mrpr` skipped
 
 ### mrogi
 
@@ -24,10 +24,6 @@ Stopping now would leave -12 battles unrun (about -1 min); every battle already 
 ### Queue log (last lines)
 
 ```
-23:11:26 start mrogi
-23:11:26 watching mrogi: 3 stop rule(s)
-23:11:40 progress mrogi: 0/540 (0%) battles, 0 failed
-23:39:52 STOP mrogi by rule fails 20: 24 failed of 267; 267 battles fought and kept, 273 battles left unrun (about 29 min)
 23:39:52 mrogi exit=75 in 1706 s (halted, fails 20)
 23:39:52 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 23:49:07 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
@@ -39,4 +35,8 @@ Stopping now would leave -12 battles unrun (about -1 min); every battle already 
 23:51:08 stop rule fails 20 would trip on mrogi (24 failed of 267); not acted on
 00:20:20 progress mrogi: 532/540 (99%) battles, 1022/h, ETA 0 min, 24 failed, skips 1.5/battle (last 100)
 00:21:43 mrogi exit=1 in 1955 s
+00:21:43 skip mrhad (after mrogi, which has not finished exit=0)
+00:21:43 skip mrread (after mrhad, which has not finished exit=0)
+00:21:43 skip mrpr (after mrread, which has not finished exit=0)
+00:21:43 ALLDONE
 ```

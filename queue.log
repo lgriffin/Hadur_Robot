@@ -17,3 +17,7 @@
 23:51:08 stop rule fails 20 would trip on mrogi (24 failed of 267); not acted on
 00:20:20 progress mrogi: 532/540 (99%) battles, 1022/h, ETA 0 min, 24 failed, skips 1.5/battle (last 100)
 00:21:43 mrogi exit=1 in 1955 s
+00:21:43 skip mrhad (after mrogi, which has not finished exit=0)
+00:21:43 skip mrread (after mrhad, which has not finished exit=0)
+00:21:43 skip mrpr (after mrread, which has not finished exit=0)
+00:21:43 ALLDONE
