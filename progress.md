@@ -1,6 +1,6 @@
 # Queue pc-team-mirror: progress
 
-Updated 2026-11-02 08:31:41 PC time (08:31 UTC), runner pid 42096.
+Updated 2026-11-02 08:46:48 PC time (08:46 UTC), runner pid 42096.
 
 - `mrprep` done, exit 0 in 1 min
 - `mrogi` done, exit 0 in 0 min
@@ -23,16 +23,16 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### mrhad
 
-**101 of 528 battles** (19%), 0 failed. Running 15 min, 404 battles/h, about 1.1 h left (ends ~09:35 PC time). Last battle 0 min ago.
-Skipped turns a battle: 19.1 overall, first 100 19.1, last 100 19.0.
+**254 of 528 battles** (48%), 0 failed. Running 30 min, 506 battles/h, about 32 min left (ends ~09:19 PC time). Last battle 0 min ago.
+Skipped turns a battle: 18.5 overall, first 100 19.1, last 100 19.4.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 101 |
+| `fails 20` | halt | ok | 0 failed of 254 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | waiting | 101 of 200 battles to read |
+| `skips 60 over 200` | halt | ok | 18.5 a battle over the last 200 (first 200: 18.7) |
 
-Stopping now would leave 427 battles unrun (about 1.1 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 274 battles unrun (about 32 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
