@@ -20,7 +20,7 @@ worked against it. Bench: +0.36 ± 0.17 APS over 0.1 on a fresh 112-bot sample (
 
 | Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | 5th place | Gap to 5th |
 |---|---|---|---|---|---|---|---|---|
-| 0.2 | 2026-11-02 14:40 (first pass, API) | **MicroRumble** | **9th of 516** | **83.39 ± 0.31** | 515 | 731 | nz.jdc.micro.HedgehogGF 1.5, 84.94 | +1.55 |
+| 0.2 | 2026-11-02 14:40 (first pass, API) | **MicroRumble** | **9th of 516** | **83.39 ± 0.31** | 515 | 737 | nz.jdc.micro.HedgehogGF 1.5, 84.94 | +1.55 |
 | 0.1 | 2026-10-30 21:50 (API) | **MicroRumble** | **9th of 516** | **83.28** | 515 | 2,362 | nz.jdc.micro.HedgehogGF 1.5, 84.96 | +1.68 |
 | 0.1 | 2026-10-29 07:23 | **MicroRumble** | **9th of 516** | **83.36 ± 0.33** | 515 | 608 | nz.jdc.micro.HedgehogGF 1.5, 84.93 | +1.57 |
 

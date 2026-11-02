@@ -4,7 +4,9 @@ Leigh saved the pages at 14:34 UTC on 2026-11-02; they are in `data/rumble/pages
 `2026-11-02T1434Z_*`. The per-opponent rows come from the LiteRumble API (`BotDetails?api=true`),
 read at 14:40 UTC, and are saved in `data/rumble/parsed/2026-11-02T1440Z_*.json`. The 0.2 rows are
 its first pass (`2026-10-29T2020Z_*`, 788 battles). `python3 data/tools/kitlab_live_gap.py` with the
-JayLexi 0.3, FoilistMC, CunobelinDC, Foilist, JayLexi 0.2 and Komarious files prints the groups.
+JayLexi 0.3, FoilistMC, CunobelinDC, Foilist, JayLexi 0.2 and Komarious files prints the survival
+groups; with `--rank data/rumble/parsed/2026-11-02T1440Z_minirumble_rankings.json` first, and the
+JayLexi 0.3, JayLexi 0.2 and FoilistMC files, it prints the rank table below.
 
 ## Standing
 
@@ -16,7 +18,7 @@ JayLexi 0.3, FoilistMC, CunobelinDC, Foilist, JayLexi 0.2 and Komarious files pr
 | **hadur117.mini.JayLexi 0.3** | | **4th of 671** | **87.93 ± 0.28** | 94.02 | 669 | 855 |
 | voidious.mini.Komarious 1.88 | | 5th | 87.48 | | 670 | 41,884 |
 | kc.micro.WaveShark 0.5 | MicroRumble | 1st | 85.58 | 92.28 | 515 | 17,789 |
-| **hadur117.micro.Eveimear 0.2** | | **9th of 516** | **83.39 ± 0.31** | 90.71 | 515 | 731 |
+| **hadur117.micro.Eveimear 0.2** | | **9th of 516** | **83.39 ± 0.31** | 90.72 | 515 | 737 |
 
 - **JayLexi 0.3 is 4th, up from 5th**, past Komarious (87.48) and WeeksOnEnd. On the 664 opponents
   the pages share it is **+0.62 over 0.2** (88.30 against 87.68); the bench said +0.44 ± 0.16 and
