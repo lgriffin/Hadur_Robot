@@ -147,6 +147,10 @@ public final class HadurCore {
     private int meleeBulletsInFlight;
     /** MMEM-2: the melee has just ended; the next duel scan hands its survivor over. */
     private boolean handOffPending;
+    /** HAND-5: the field gun aims in a melee's endgame duel, as shipped unless a test sets it. */
+    private boolean endgameMeleeGun = hadur117.core.duel.HandOffDesign.ENDGAME_MELEE_GUN;
+    /** HAND-5: this round's duel took a melee hand-off, so its endgame may use the field gun. */
+    private boolean endgameThisRound;
     /** S6: the tick budget (TIME-1, TIME-2), the conductor's; its level goes to the driving role. */
     private final TickBudget budget = new TickBudget();
     /** WEAVE-3: whether a shot may leave this tick; until A5 always. */
@@ -361,6 +365,7 @@ public final class HadurCore {
         meleeTicks = duelTicks = focusTicks = meleeFaults = sentryHits = 0;
         deadThisRound.clear();
         handOffPending = false;
+        endgameThisRound = false;
         reports.clear();
         if (teamLink != null) teamLink.newRound();
         lastEnemiesAlive = -1;
@@ -468,6 +473,8 @@ public final class HadurCore {
             if (melee) orders = meleeFailed(in, eventFault);
             else recordMeleeFault(in, eventFault);
             melee = false;
+            // HAND-5 fails closed too: a melee brain that threw keeps no gun this round.
+            endgameThisRound = false;
         }
         // WEAVE-3: the permission is given before the role drives, from where Hadur is now.
         // WEAVE-4: on a team it is withheld while a teammate stands in the fire lane.
@@ -484,7 +491,29 @@ public final class HadurCore {
                 orders = meleeFailed(in, ex);
             }
         } else {
-            duelSeam.drive(drive, orders);
+            // HAND-5: whether the melee field gun owns the gun is settled before the duel
+            // drives, so on its ticks the duel drives without leave to fire and books no shot.
+            boolean fieldGun = false;
+            if (endgameMeleeGun && endgameThisRound && meleeSeam != null && teamLink == null
+                    && gate.charter() == Charter.MELEE && in.others() == 1) {
+                try {
+                    fieldGun = meleeSeam.endgameOwnsGun(drive);
+                } catch (RuntimeException ex) {
+                    // HAND-5 fails closed: the duel's gun keeps the rest of the round.
+                    endgameThisRound = false;
+                    recordMeleeFault(in, ex);
+                }
+            }
+            duelSeam.drive(fieldGun ? tick.forDrive(RoleId.DUEL, focusing, budget.level(), false) : drive,
+                orders);
+            if (fieldGun) {
+                try {
+                    meleeSeam.endgameGun(drive, orders);
+                } catch (RuntimeException ex) {
+                    endgameThisRound = false;
+                    recordMeleeFault(in, ex);
+                }
+            }
             checkFirePermission(drive, orders);
         }
         if (inMelee) meleeTicks++;
@@ -754,6 +783,16 @@ public final class HadurCore {
         meleeBulletsInFlight++;
     }
 
+    /** HAND-5: sets the endgame field gun, for tests and the bench's arms. */
+    public void endgameMeleeGun(boolean on) {
+        this.endgameMeleeGun = on;
+    }
+
+    /** HAND-5: endgame shots the field gun fired this round (0 without a melee brain). */
+    public int endgameMeleeShots() {
+        return meleeSeam == null ? 0 : meleeSeam.endgameShots;
+    }
+
     /** MMEM-2: whether the next duel scan hands a melee's survivor over. */
     boolean handOffPending() {
         return handOffPending;
@@ -767,6 +806,7 @@ public final class HadurCore {
      */
     void handOff(Tick tick, BotEvent.Scan e) {
         handOffPending = false;
+        endgameThisRound = true;
         Baton baton;
         try {
             baton = meleeSeam == null ? Baton.EMPTY : meleeSeam.give(tick);

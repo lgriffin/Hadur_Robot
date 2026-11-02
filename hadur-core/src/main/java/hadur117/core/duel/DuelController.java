@@ -128,6 +128,8 @@ public final class DuelController {
     private boolean endgameTable = HandOffDesign.ENDGAME_TABLE;
     private boolean endgameLearnedDodge = HandOffDesign.ENDGAME_LEARNED_DODGE;
     private boolean endgameLearnedShield = HandOffDesign.ENDGAME_LEARNED_SHIELD;
+    /** HAND-4: the endgame duel opens close, as shipped unless a test sets it. */
+    private boolean endgameClose = HandOffDesign.ENDGAME_CLOSE;
     /** HAND-1, HAND-3: each survivor's shield mode, kept across rounds so its budget and trial carry. */
     private final Map<String, ShieldMode> endgameShields = new LinkedHashMap<>();
     /** HAND-1 to HAND-3: the last survivor handed over, so a new one starts the dodger afresh. */
@@ -390,6 +392,11 @@ public final class DuelController {
         this.endgameLearnedShield = learnedShield;
     }
 
+    /** HAND-4: sets the close opening, for tests and the bench's arms. */
+    public void handOffClose(boolean close) {
+        this.endgameClose = close;
+    }
+
     /** HAND-1 to HAND-3: what the last hand-off set ("plain" for nothing; "-" before any). */
     public String endgameSetting() {
         return endgameSetting;
@@ -406,6 +413,8 @@ public final class DuelController {
         if (stopAndGo != null) on.add("stopgo");
         if (heatJitOn) on.add("heatjit");
         if (flatOn) on.add("flat");
+        if (mimicOn) on.add("mimic");
+        if (fullOff) on.add("fulloff");
         if (shield != null && shield.active()) on.add("shield");
         return on.isEmpty() ? "-" : String.join(",", on);
     }
@@ -654,6 +663,8 @@ public final class DuelController {
         // battle's rates say it pays.
         PowerPolicy.Reason why = PowerPolicy.reason(opening.gunTier(), e.energy(), in.energy(),
             e.distance(), bulletPower, ourWindow.estimate(), theirWindow.estimate());
+        // POW-15: the table keeps the gun's own power against the opponents it names.
+        if (fullOff) why = PowerPolicy.Reason.GUN;
         if (why != powerReason) {
             powerReason = why;
             Estimate ours = ourWindow.estimate();
@@ -1003,6 +1014,10 @@ public final class DuelController {
     private boolean heatJitOn;
     /** MOVE-32: the table turned the flattener views on for this opponent. */
     private boolean flatOn;
+    /** MOVE-34: whether the table put the learning-gun mimics among the aim members for this opponent. */
+    private boolean mimicOn;
+    /** POW-15: whether the table turned the full-power rules off for this opponent. */
+    private boolean fullOff;
 
     /** DODGE-5: the escape angle a bullet read is scored loosely at while the planner is on; NaN otherwise. */
     private double dodgeEscape(Wave w) {
@@ -1414,7 +1429,7 @@ public final class DuelController {
         gunController.setFreeGun(GunDesign.FREE_GUN);
         gunController.setUndecayed(GunDesign.UNDECAYED);
         shield = null;
-        if (onTeam || !(endgameTable || endgameLearnedDodge || endgameLearnedShield)) {
+        if (onTeam || !(endgameTable || endgameLearnedDodge || endgameLearnedShield || endgameClose)) {
             endgameSetting = "-";
             return;
         }
@@ -1458,6 +1473,10 @@ public final class DuelController {
         if (endgameLearnedShield && headOn && shield == null) {
             shield = endgameShield(survivor, true);
             set.add("learned-shield");
+        }
+        if (endgameClose && distance.controllerTarget() > HandOffDesign.ENDGAME_CLOSE_OPENING) {
+            distance = new DistancePolicy(HandOffDesign.ENDGAME_CLOSE_OPENING);
+            set.add("close");
         }
         endgameSetting = set.isEmpty() ? "plain" : String.join("+", set);
         emitPolicy(round, in.time(), "handoff", Double.NaN, Double.NaN, endgameSetting);
@@ -1526,6 +1545,10 @@ public final class DuelController {
         if (enemiesTotal == 1) duelModes(name);
         // MOVE-32: a P record says the table turned the flattener views on for this opponent.
         if (flatOn) emitPolicy(round, time, "flat-on", Double.NaN, Double.NaN, "flat_on");
+        // MOVE-34: a P record says the table put the mimics among the aim members for this opponent.
+        if (mimicOn) emitPolicy(round, time, "mimic-on", Double.NaN, Double.NaN, "mimic_on");
+        // POW-15: a P record says the table turned the full-power rules off for this opponent.
+        if (fullOff) emitPolicy(round, time, "full-off", Double.NaN, Double.NaN, "full_off");
         // Without memory the B record still goes out, with '-' for what memory would say.
         if (library != null) {
             // MEM-4: a missing or damaged profile loads as a stranger; load never throws.
@@ -1572,6 +1595,17 @@ public final class DuelController {
             moveController.setFlattenerOff(false);
             flatOn = true;
         }
+        // MOVE-34: the learning-gun mimics (MOVE-33) join the aim members for the opponents the table
+        // names. Set once, at the battle's first scan, before any wave has passed us.
+        if (duelOnly(MoveDesign.AIM_MEMBERS && stackList.mimicOn(name), enemiesTotal)
+                && (moveController.aimMembers() == null || moveController.aimMembers().mimics() == 0)) {
+            GunMimics mimics = new GunMimics();
+            moveController.setAimMembers(new AimMembers(mimics.size()));
+            moveController.setMemberMimics(mimics);
+            mimicOn = true;
+        }
+        // POW-15: the full-power rules off for the opponents the table names.
+        fullOff = duelOnly(stackList.fullOff(name), enemiesTotal);
         // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names, never a shield-mode one
         // (its TripHammer aims break the shield's bullet hits); the gun keeps them 1v1-only.
         if (duelOnly(stackList.gunStack(name) && !stackList.matches(name), enemiesTotal)) {
