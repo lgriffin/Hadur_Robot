@@ -1,6 +1,6 @@
 {
  "plan": "pc-sanaro-n09",
- "updated": 1793645093.8997858,
+ "updated": 1793645999.96257,
  "steps": {
   "prep": {
    "status": "done",
@@ -225,8 +225,8 @@
   {
    "step": "live-K65",
    "started": 1793644567.2197804,
-   "updated": 1793645093.893491,
-   "elapsed": 526.6737105846405,
+   "updated": 1793645999.9523082,
+   "elapsed": 1432.7325277328491,
    "expected": 430,
    "panel": null,
    "field": null,
@@ -234,20 +234,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 160,
+   "battles": 360,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 1093.6562589399123,
-   "eta": 888.7618866115808,
-   "fraction": 0.37209302325581395,
-   "last_battle_age": 2.162703514099121,
+   "rate": 904.5652101238923,
+   "eta": 278.5868803924984,
+   "fraction": 0.8372093023255814,
+   "last_battle_age": 1.5386686325073242,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 160"
+     "detail": "0 failed of 360"
     },
     {
      "rule": "stall 30m",
