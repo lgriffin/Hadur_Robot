@@ -42,6 +42,7 @@ class TeamAnglesPlanTest {
         assertTrue(block(queue, "ansum").contains("--seeds 16 --teams 46 --min-aps 0.15"));
         assertTrue(queue.contains("open_results_pr.sh claude/pc-team-angles-results"));
         for (String step : List.of("anbb", "anhv", "anwy", "anmd", "angate", "angbb")) {
+            assertTrue(block(queue, step).contains(".args\" || test $? -eq 1"), step + " goes on past failed battles");
             for (String rule : List.of("stop: fails 20", "stop: stall 30m", "stop: skips 40 over 100")) {
                 assertTrue(block(queue, step).contains(rule), step + " declares " + rule);
             }
@@ -55,7 +56,7 @@ class TeamAnglesPlanTest {
         for (String a : List.of("bb", "hv", "wy", "md")) {
             String args = Files.readString(Path.of("plans/team-angles-" + a + ".args"));
             assertTrue(args.contains("--seeds\n8\n") && args.contains("--seed-base\n7400\n") && args.contains("--rounds\n10\n"), a);
-            assertTrue(args.contains("--set\nteam-census46.txt\n"), a);
+            assertTrue(args.contains("--set\nplans/team-angles-set.txt\n"), a);
             assertTrue(args.contains("bisect/hadur117.HadurTeam_@V@" + a + ".jar"), a);
             assertTrue(args.contains("--baseline\nbisect/hadur117.HadurTeam_@V@aa.jar\n"), a);
         }

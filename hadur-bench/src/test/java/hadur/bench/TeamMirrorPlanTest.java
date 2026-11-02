@@ -39,7 +39,8 @@ class TeamMirrorPlanTest {
         assertTrue(block(queue, "mrread").contains("tools/team_mirror.py --ogi work/team-mirror-\"$V\"-ogi --hadur work/team-mirror-\"$V\"-hadur"));
         assertTrue(queue.contains("open_results_pr.sh claude/pc-team-mirror-results"));
         for (String step : List.of("mrogi", "mrhad")) {
-            assertTrue(block(queue, step).contains("watch: battles=540"), step);
+            assertTrue(block(queue, step).contains("watch: battles=528"), step);
+            assertTrue(block(queue, step).contains(".args\" || test $? -eq 1"), step + " goes on past failed battles");
             for (String rule : List.of("stop: fails 20", "stop: stall 30m", "stop: skips 60 over 200")) {
                 assertTrue(block(queue, step).contains(rule), step + " declares " + rule);
             }
@@ -48,10 +49,11 @@ class TeamMirrorPlanTest {
 
     @Test
     @Tag("BENCH-166")
-    @DisplayName("both subjects play the 45 other teams at the same 12 seeds from 7300, with no baseline")
+    @DisplayName("both subjects play the 44 other teams that load on 1.11.2 at the same 12 seeds from 7300, with no baseline")
     void args() throws IOException {
         List<String> set = Files.readAllLines(Path.of("plans/team-mirror-set.txt"));
-        assertTrue(set.stream().filter(l -> !l.startsWith("#") && !l.isBlank()).count() == 45, "45 teams");
+        assertTrue(set.stream().filter(l -> !l.startsWith("#") && !l.isBlank()).count() == 44, "44 teams");
+        assertFalse(set.stream().anyMatch(l -> l.startsWith("kawigi.sbf.TidalWave")), "TidalWave does not load on 1.11.2");
         assertFalse(set.stream().anyMatch(l -> l.startsWith("cz.libors.OgiTeam")), "Ogi is a subject, not an opponent");
         for (String a : List.of("ogi", "hadur")) {
             String args = Files.readString(Path.of("plans/team-mirror-" + a + ".args"));

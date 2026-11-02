@@ -14,7 +14,7 @@ auto
 --cpu-constant
 auto
 --set
-team-census46.txt
+plans/team-angles-set.txt
 --robot-jar
 bisect/hadur117.HadurTeam_@V@wy.jar
 --robot
