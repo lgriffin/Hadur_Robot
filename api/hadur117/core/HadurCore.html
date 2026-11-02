@@ -289,6 +289,16 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">S5: the endgame state as of the last duel tick.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#endgameMeleeGun(boolean)" class="member-name-link">endgameMeleeGun</a><wbr>(boolean&nbsp;on)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../requirements.html#HAND-5">HAND-5</a>: sets the endgame field gun, for tests and the bench's arms.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#endgameMeleeShots()" class="member-name-link">endgameMeleeShots</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../requirements.html#HAND-5">HAND-5</a>: endgame shots the field gun fired this round (0 without a melee brain).</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#enemiesTotal()" class="member-name-link">enemiesTotal</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -884,6 +894,20 @@ loadScripts(document, 'script');</script>
 <h3>meleeShotFired</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">meleeShotFired</span>()</div>
 <div class="block"><a class="req" href="../../../requirements.html#WORLD-5">WORLD-5</a>: a melee shot left; its outcome is the melee's, not the duel's.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="endgameMeleeGun(boolean)">
+<h3>endgameMeleeGun</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">endgameMeleeGun</span><wbr><span class="parameters">(boolean&nbsp;on)</span></div>
+<div class="block"><a class="req" href="../../../requirements.html#HAND-5">HAND-5</a>: sets the endgame field gun, for tests and the bench's arms.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="endgameMeleeShots()">
+<h3>endgameMeleeShots</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">endgameMeleeShots</span>()</div>
+<div class="block"><a class="req" href="../../../requirements.html#HAND-5">HAND-5</a>: endgame shots the field gun fired this round (0 without a melee brain).</div>
 </section>
 </li>
 <li>

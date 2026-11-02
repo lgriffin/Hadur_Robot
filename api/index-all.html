@@ -3264,6 +3264,16 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The two endgame states.</div>
 </dd>
+<dt><a href="hadur117/core/duel/HandOffDesign.html#ENDGAME_CLOSE" class="member-name-link">ENDGAME_CLOSE</a> - Static variable in class hadur117.core.duel.<a href="hadur117/core/duel/HandOffDesign.html" title="class in hadur117.core.duel">HandOffDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#HAND-4">HAND-4</a> (arm eclose): the endgame duel starts at <a href="hadur117/core/duel/HandOffDesign.html#ENDGAME_CLOSE_OPENING"><code>HandOffDesign.ENDGAME_CLOSE_OPENING</code></a> px, not the
+ opening book's distance (650 px for a survivor with no 1v1 profile, which is most of them),
+ and <a class="req" href="../requirements.html#DIST-1">DIST-1</a> moves it from there.</div>
+</dd>
+<dt><a href="hadur117/core/duel/HandOffDesign.html#ENDGAME_CLOSE_OPENING" class="member-name-link">ENDGAME_CLOSE_OPENING</a> - Static variable in class hadur117.core.duel.<a href="hadur117/core/duel/HandOffDesign.html" title="class in hadur117.core.duel">HandOffDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#HAND-4">HAND-4</a>: the endgame duel's opening distance, in px: DistancePolicy's floor.</div>
+</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#ENDGAME_LATERAL" class="member-name-link">ENDGAME_LATERAL</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/duel/HandOffDesign.html#ENDGAME_LEARNED_DODGE" class="member-name-link">ENDGAME_LEARNED_DODGE</a> - Static variable in class hadur117.core.duel.<a href="hadur117/core/duel/HandOffDesign.html" title="class in hadur117.core.duel">HandOffDesign</a></dt>
@@ -3276,6 +3286,12 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#HAND-3">HAND-3</a> (arm eshd): the same verdict starts shield mode against the survivor on <a class="req" href="../requirements.html#SHIELD-15">SHIELD-15</a>'s
  trial, listed or not; the trial's exits leave it for the battle once it fails.</div>
+</dd>
+<dt><a href="hadur117/core/duel/HandOffDesign.html#ENDGAME_MELEE_GUN" class="member-name-link">ENDGAME_MELEE_GUN</a> - Static variable in class hadur117.core.duel.<a href="hadur117/core/duel/HandOffDesign.html" title="class in hadur117.core.duel">HandOffDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#HAND-5">HAND-5</a> (arm emgun): in the endgame duel, the melee's field gun aims and fires at the
+ survivor in place of the duel gun, while its kNN history of the survivor is deep enough to
+ be a learned aim (the field gun's own test).</div>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#ENDGAME_RING_MAX" class="member-name-link">ENDGAME_RING_MAX</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
@@ -3291,6 +3307,30 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The endgame state for one tick.</div>
 </dd>
+<dt><a href="hadur117/core/melee/MeleeController.html#endgameAim(hadur117.core.melee.MeleeController.Situation)" class="member-name-link">endgameAim(MeleeController.Situation)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeController.html" title="class in hadur117.core.melee">MeleeController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#HAND-5">HAND-5</a>: the field gun's aim alone, for the endgame duel off a team: no radar, movement or
+ virtual waves.</div>
+</dd>
+<dt><a href="hadur117/core/MeleeSeam.html#endgameGun(hadur117.core.role.Tick,hadur117.core.model.BotOrders.Builder)" class="member-name-link">endgameGun(Tick, BotOrders.Builder)</a> - Method in class hadur117.core.<a href="hadur117/core/MeleeSeam.html" title="class in hadur117.core">MeleeSeam</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#HAND-5">HAND-5</a>: the field gun's orders on a tick it owns (<a href="hadur117/core/MeleeSeam.html#endgameOwnsGun(hadur117.core.role.Tick)"><code>MeleeSeam.endgameOwnsGun(hadur117.core.role.Tick)</code></a>): fires last
+ tick's aim when the gun is cool and has finished turning (as <a href="hadur117/core/MeleeSeam.html#drive(hadur117.core.role.Tick,hadur117.core.model.BotOrders.Builder)"><code>MeleeSeam.drive(hadur117.core.role.Tick, hadur117.core.model.BotOrders.Builder)</code></a> does) and turns
+ to this tick's aim.</div>
+</dd>
+<dt><a href="hadur117/core/HadurCore.html#endgameMeleeGun(boolean)" class="member-name-link">endgameMeleeGun(boolean)</a> - Method in class hadur117.core.<a href="hadur117/core/HadurCore.html" title="class in hadur117.core">HadurCore</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#HAND-5">HAND-5</a>: sets the endgame field gun, for tests and the bench's arms.</div>
+</dd>
+<dt><a href="hadur117/core/HadurCore.html#endgameMeleeShots()" class="member-name-link">endgameMeleeShots()</a> - Method in class hadur117.core.<a href="hadur117/core/HadurCore.html" title="class in hadur117.core">HadurCore</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#HAND-5">HAND-5</a>: endgame shots the field gun fired this round (0 without a melee brain).</div>
+</dd>
+<dt><a href="hadur117/core/MeleeSeam.html#endgameOwnsGun(hadur117.core.role.Tick)" class="member-name-link">endgameOwnsGun(Tick)</a> - Method in class hadur117.core.<a href="hadur117/core/MeleeSeam.html" title="class in hadur117.core">MeleeSeam</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#HAND-5">HAND-5</a>: in the endgame duel, before the duel drives, decides whether the field gun owns the
+ gun this tick: it does while its aim on the survivor is a learned one.</div>
+</dd>
 <dt><a href="hadur117/core/melee/MeleeEndgame.html#endgameRing(int,boolean,boolean)" class="member-name-link">endgameRing(int, boolean, boolean)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeEndgame.html" title="class in hadur117.core.melee">MeleeEndgame</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MMOVE-4">MMOVE-4</a>'s endgame ring and lateral weight apply; <a class="req" href="../requirements.html#MEND-1">MEND-1</a> (<code>keepCrowd</code>) holds them off.</div>
@@ -3298,6 +3338,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/duel/DuelController.html#endgameSetting()" class="member-name-link">endgameSetting()</a> - Method in class hadur117.core.duel.<a href="hadur117/core/duel/DuelController.html" title="class in hadur117.core.duel">DuelController</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#HAND-1">HAND-1</a> to <a class="req" href="../requirements.html#HAND-3">HAND-3</a>: what the last hand-off set ("plain" for nothing; "-" before any).</div>
+</dd>
+<dt><a href="hadur117/core/MeleeSeam.html#endgameShots" class="member-name-link">endgameShots</a> - Variable in class hadur117.core.<a href="hadur117/core/MeleeSeam.html" title="class in hadur117.core">MeleeSeam</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#HAND-5">HAND-5</a>: endgame shots the field gun fired this round.</div>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.View.html#enemies" class="member-name-link">enemies</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.View.html" title="class in hadur117.core.melee">MinimumRiskMovement.View</a></dt>
 <dd>&nbsp;</dd>
@@ -5506,6 +5550,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MMEM-2">MMEM-2</a>: the melee's survivor, scanned by the duel for the first time, after the Duel
  has switched to it and before it logs the scan.</div>
+</dd>
+<dt><a href="hadur117/core/duel/DuelController.html#handOffClose(boolean)" class="member-name-link">handOffClose(boolean)</a> - Method in class hadur117.core.duel.<a href="hadur117/core/duel/DuelController.html" title="class in hadur117.core.duel">DuelController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#HAND-4">HAND-4</a>: sets the close opening, for tests and the bench's arms.</div>
 </dd>
 <dt><a href="hadur117/core/duel/HandOffDesign.html" class="type-name-link" title="class in hadur117.core.duel">HandOffDesign</a> - Class in <a href="hadur117/core/duel/package-summary.html">hadur117.core.duel</a></dt>
 <dd>

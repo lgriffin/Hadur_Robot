@@ -114,6 +114,18 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#ENDGAME_CLOSE" class="member-name-link">ENDGAME_CLOSE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#HAND-4">HAND-4</a> (arm eclose): the endgame duel starts at <a href="#ENDGAME_CLOSE_OPENING"><code>ENDGAME_CLOSE_OPENING</code></a> px, not the
+ opening book's distance (650 px for a survivor with no 1v1 profile, which is most of them),
+ and <a class="req" href="../../../../requirements.html#DIST-1">DIST-1</a> moves it from there.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#ENDGAME_CLOSE_OPENING" class="member-name-link">ENDGAME_CLOSE_OPENING</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#HAND-4">HAND-4</a>: the endgame duel's opening distance, in px: DistancePolicy's floor.</div>
+</div>
+<div class="col-first even-row-color"><code>static final boolean</code></div>
 <div class="col-second even-row-color"><code><a href="#ENDGAME_LEARNED_DODGE" class="member-name-link">ENDGAME_LEARNED_DODGE</a></code></div>
 <div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#HAND-2">HAND-2</a> (arm edge): when the melee's book says the survivor's gun is head-on (at least 3
@@ -127,8 +139,15 @@ loadScripts(document, 'script');</script>
  trial, listed or not; the trial's exits leave it for the battle once it fails.</div>
 </div>
 <div class="col-first even-row-color"><code>static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#ENDGAME_TABLE" class="member-name-link">ENDGAME_TABLE</a></code></div>
+<div class="col-second even-row-color"><code><a href="#ENDGAME_MELEE_GUN" class="member-name-link">ENDGAME_MELEE_GUN</a></code></div>
 <div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#HAND-5">HAND-5</a> (arm emgun): in the endgame duel, the melee's field gun aims and fires at the
+ survivor in place of the duel gun, while its kNN history of the survivor is deep enough to
+ be a learned aim (the field gun's own test).</div>
+</div>
+<div class="col-first odd-row-color"><code>static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#ENDGAME_TABLE" class="member-name-link">ENDGAME_TABLE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#HAND-1">HAND-1</a> (arm etab): the survivor's entries in the 1v1 mode table apply in the endgame as
  in a duel: the shield list (shield mode, with the list's opening drive, shipped aims and
  exits), the simple-aim dodge, the dodge planner, stop-and-go, heat-jit and the gun stack.</div>
@@ -199,6 +218,62 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur117.core.duel.HandOffDesign.ENDGAME_LEARNED_SHIELD">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="ENDGAME_CLOSE">
+<h3>ENDGAME_CLOSE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">ENDGAME_CLOSE</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#HAND-4">HAND-4</a> (arm eclose): the endgame duel starts at <a href="#ENDGAME_CLOSE_OPENING"><code>ENDGAME_CLOSE_OPENING</code></a> px, not the
+ opening book's distance (650 px for a survivor with no 1v1 profile, which is most of them),
+ and <a class="req" href="../../../../requirements.html#DIST-1">DIST-1</a> moves it from there. On the 1.11.2 cloud census (docs/bench/melee-top3.md) the
+ endgame duel is fought at a median 694 px with power 1.0 and a 14% hit rate, against 40% in
+ the crowd, and is lost 21% of the time against survivors ranked below 30th, almost always
+ from behind on energy. Closer, Hadur's gun (the better one in most endgames) gains more than
+ the survivor's.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.duel.HandOffDesign.ENDGAME_CLOSE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="ENDGAME_CLOSE_OPENING">
+<h3>ENDGAME_CLOSE_OPENING</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">ENDGAME_CLOSE_OPENING</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#HAND-4">HAND-4</a>: the endgame duel's opening distance, in px: DistancePolicy's floor.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.duel.HandOffDesign.ENDGAME_CLOSE_OPENING">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="ENDGAME_MELEE_GUN">
+<h3>ENDGAME_MELEE_GUN</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">ENDGAME_MELEE_GUN</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#HAND-5">HAND-5</a> (arm emgun): in the endgame duel, the melee's field gun aims and fires at the
+ survivor in place of the duel gun, while its kNN history of the survivor is deep enough to
+ be a learned aim (the field gun's own test). The field gun has watched the survivor all
+ battle and keeps reading its scans in the duel; the duel gun has only the endgames' few
+ hundred ticks. The duel still moves and runs the radar. On the 1.11.2 cloud census Hadur
+ wins 43% of its endgame duels against top-10 survivors even when ahead on energy.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.duel.HandOffDesign.ENDGAME_MELEE_GUN">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
