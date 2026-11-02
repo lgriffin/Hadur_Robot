@@ -1,31 +1,29 @@
 # Queue pc-team-mirror: progress
 
-Updated 2026-11-02 00:19:20 PC time (00:19 UTC), runner pid 5104.
+Updated 2026-11-02 00:21:43 PC time (00:21 UTC), runner pid 5104.
 
 - `mrprep` done, exit 0 in 1 min
-- `mrogi` running
+- `mrogi` failed, exit 1 in 33 min
 - `mrhad` pending
 - `mrread` pending
 - `mrpr` pending
 
 ### mrogi
 
-**519 of 540 battles** (96%), 24 failed. Running 30 min, 1031 battles/h, about 1 min left (ends ~00:20 PC time). Last battle 0 min ago.
-Skipped turns a battle: 1.5 overall, first 100 1.3, last 100 1.5.
+**552 of 540 battles** (102%), 24 failed. Running 33 min, 1016 battles/h, about -1 min left (ends ~00:21 PC time). Last battle 0 min ago.
+Skipped turns a battle: 1.5 overall, first 100 1.3, last 100 1.4.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | TRIPPED | 24 failed of 519 |
+| `fails 20` | halt | TRIPPED | 24 failed of 552 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | ok | 1.5 a battle over the last 200 (first 200: 1.3) |
+| `skips 60 over 200` | halt | ok | 1.4 a battle over the last 200 (first 200: 1.3) |
 
-Stopping now would leave 21 battles unrun (about 1 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave -12 battles unrun (about -1 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-23:10:42 progress pushed to origin claude/pc-team-mirror-progress (every 15 min)
-23:11:26 mrprep exit=0 in 45 s
 23:11:26 start mrogi
 23:11:26 watching mrogi: 3 stop rule(s)
 23:11:40 progress mrogi: 0/540 (0%) battles, 0 failed
@@ -39,4 +37,6 @@ Stopping now would leave 21 battles unrun (about 1 min); every battle already fo
 23:49:09 progress pushed to origin claude/pc-team-mirror-progress (every 15 min)
 23:50:08 progress mrogi: 243/540 (45%) battles, 14456/h, ETA 1 min, 3 failed, skips 1.4/battle (last 100)
 23:51:08 stop rule fails 20 would trip on mrogi (24 failed of 267); not acted on
+00:20:20 progress mrogi: 532/540 (99%) battles, 1022/h, ETA 0 min, 24 failed, skips 1.5/battle (last 100)
+00:21:43 mrogi exit=1 in 1955 s
 ```
