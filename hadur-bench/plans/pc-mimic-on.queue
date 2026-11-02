@@ -1,0 +1,43 @@
+# 1v1, learning-gun mimics per opponent (BENCH-172, MOVE-34). Leigh starts it once the PC is free (not beside another
+# card: two cards on one checkout collide):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-mimic-on        (or  ./queue.sh run pc-mimic-on)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes; no step needs a
+# decision. About 15 min of battles (28 x 3 arms x 8 seeds = 672) and seconds of analysis.
+#
+# Why: pc-mimic (PR #581) failed its global gate (-0.03 +- 0.06 APS over the 232 learners) but split by band: the top
+# learners (bands 1-2) gained +1.3 points a robot, band 4 lost 0.9. Its 5-point picks (BlackBox +11.4, Domogled +8.4,
+# Gaff +8.3, Tomcat +8.3, Roborio +7.8, WeeklongObsession +6.5, Portia +6.3, PinkerStinker +5.7) were read on 3 seeds.
+# MOVE-34 turns the mimics on per opponent (mimic-on: lines), so the switch reaches only the robots it is named for.
+#
+# confirm: the 24 band 1-2 learners that load on 1.11.2 plus the 4 picks outside those bands (panel-mimic-on.txt)
+#          x c, aa, mq x 8 fresh seeds from 7800; mq names all 28 (plans/mimic-on.list).
+# gate:    mq minus pooled c and aa over the 28 / 1,217 pairings at +0.02 APS, 95% low end above 0, A/A inside its band;
+#          a per-robot pick at a 3-point margin (low end above 0) gives the robots that ship, gate or not.
+# Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle
+# over the last 200, or no battle in 30 minutes; every battle fought is kept and a rerun resumes. A halt leaves the
+# rest of the confirm, the gate and the PR unrun. ALERT opens an issue for Leigh on any stop. Nothing here ships: the
+# held robots go into ShieldTableData.mimicOns() by PR; the release rule stands.
+
+set V = 3.21
+set P = --parallel 12 --no-truth-log
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
+set W = work/mimic-on
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && MIMIC_ON=plans/mimic-on.list bash ./build-ablation.sh mmlist && test -f bisect/hadur117.Hadur_${V}mq.jar && ./fetch-opponents.sh --set panel-mimic-on.txt && mvn -q compile
+
+confirm | ./bench-top20.sh ${C} ${P} --set panel-mimic-on.txt --seeds 8 --seed-base 7800 --arms plans/mimic-on.arms --out ${W} --label mimic-on --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_mimic-on.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm mq --panel panel-mimic-on.txt --bar 0.02 --out ${OUT}/$(date +%Y-%m-%d)_mimic-on-gate.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 3 --out-tsv ${OUT}/mimic-on-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_mimic-on-pick.md && python3 tools/per_robot.py ${W}/arms.tsv --arms mq --out ${OUT}/$(date +%Y-%m-%d)_mimic-on-per-robot.md --out-tsv ${OUT}/mimic-on-per-robot.tsv
+  after: confirm
+
+pr | bash tools/open_results_pr.sh claude/pc-mimic-on-results "1v1 learning-gun mimics per opponent: MOVE-34 confirm on the top learners" ${OUT}/*_mimic-on*.md ${OUT}/mimic-on-per-robot.tsv $(find ${OUT} -maxdepth 1 -name mimic-on-pick.tsv -size +0c)
+  after: gate

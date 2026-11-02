@@ -261,6 +261,8 @@ public class Hadur extends TeamRobot {
             for (String name : ShieldTableData.stills()) lines.add(ShieldList.STILL_PREFIX + " " + name);
             // MOVE-32: per-opponent flattener views on.
             for (String name : ShieldTableData.flatOns()) lines.add(ShieldList.FLAT_ON_PREFIX + " " + name);
+            // MOVE-34: per-opponent learning-gun mimics as aim members.
+            for (String name : ShieldTableData.mimicOns()) lines.add(ShieldList.MIMIC_ON_PREFIX + " " + name);
             // SKEY-2: per-opponent surf keys.
             for (String key : ShieldTableData.surfKeys()) lines.add(ShieldList.SURF_KEY_PREFIX + " " + key);
             return ShieldList.parse(lines);

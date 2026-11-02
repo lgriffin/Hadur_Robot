@@ -1,0 +1,30 @@
+# 2026-11-02 MOVE-34 confirm: the band 1-2 strong learners of panel-learners-flat.txt that load on 1.11.2, then the
+# pc-mimic (PR #581) picks at 5 points outside those bands.
+pez.rumble.CassiusClay 2rho.02no | rank35-band2 | pez.rumble.CassiusClay_2rho.02no.jar
+voidious.Dookious 1.573c | rank19-band2 | voidious.Dookious_1.573c.jar
+cb.fire.Firestarter 2.0f | rank7-band1 | cb.fire.Firestarter_2.0f.jar
+lxx.Tomcat 3.68 | rank10-band1 | lxx.Tomcat_3.68.jar
+aw.Gilgalad 1.99.5c | rank12-band2 | aw.Gilgalad_1.99.5c.jar
+voidious.Diamond 1.8.22 | rank6-band1 | voidious.Diamond_1.8.22.jar
+kc.serpent.WaveSerpent 2.11 | rank15-band2 | kc.serpent.WaveSerpent_2.11.jar
+jk.melee.Neuromancer 7.12 | rank18-band2 | jk.melee.Neuromancer_7.12.jar
+cb.Domogled 1.2 | rank23-band2 | cb.Domogled_1.2.jar
+mn.Combat 3.25.0 | rank38-band2 | mn.Combat_3.25.0.jar
+rsalesc.roborio.Roborio 1.2.4 | rank22-band2 | rsalesc.roborio.Roborio_1.2.4.jar
+darkcanuck.Pris 0.92 | rank26-band2 | darkcanuck.Pris_0.92.jar
+gh.GresSuffurd 0.4.13 | rank14-band2 | gh.GresSuffurd_0.4.13.jar
+aaa.r.ScalarR 0.005h.053-noshield | rank5-band1 | aaa.r.ScalarR_0.005h.053-noshield.jar
+abc.Shadow 3.83c | rank25-band2 | abc.Shadow_3.83c.jar
+fromHell.BlackBox 0.0.2 | rank27-band2 | fromHell.BlackBox_0.0.2.jar
+fromHell.CHCl3 1.4.2 | rank40-band2 | fromHell.CHCl3_1.4.2.jar
+sheldor.mini.Foilist 1.3.1 | rank42-band2 | sheldor.mini.Foilist_1.3.1.jar
+sheldor.mini.FoilistMC 1.0 | rank47-band2 | sheldor.mini.FoilistMC_1.0.jar
+axeBots.SilverSurfer 2.53.33fix | rank37-band2 | axeBots.SilverSurfer_2.53.33fix.jar
+jk.precise.Wintermute 0.8 | rank28-band2 | jk.precise.Wintermute_0.8.jar
+zyx.mega.YersiniaPestis 3.0 | rank32-band2 | zyx.mega.YersiniaPestis_3.0.jar
+florent.XSeries.X2 0.17 | rank50-band2 | florent.XSeries.X2_0.17.jar
+ags.Midboss 1q.fast | rank33-band2 | ags.Midboss_1q.fast.jar
+darkcanuck.Gaff 1.50 | rank79-band3 | darkcanuck.Gaff_1.50.jar
+lazarecki.mega.PinkerStinker 0.7 | rank186-band3 | lazarecki.mega.PinkerStinker_0.7.jar
+positive.Portia 1.26e | rank63-band3 | positive.Portia_1.26e.jar
+simonton.micro.WeeklongObsession 3.4.1 | rank136-band3 | simonton.micro.WeeklongObsession_3.4.1.jar

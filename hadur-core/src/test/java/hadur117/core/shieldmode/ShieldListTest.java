@@ -111,6 +111,21 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("MOVE-34")
+    @DisplayName("mimic-on lines name the opponents the duel surfs with the mimic members, matched as shield entries")
+    void perOpponentMimicOn() {
+        ShieldList l = ShieldList.parse(List.of("mimic-on: a.B 1.0", "mimic-on: c.D", "flat-on: c.D", "mimic-on:"));
+        assertTrue(l.mimicOn("a.B 1.0"));
+        assertFalse(l.mimicOn("a.B 1.1"), "a versioned line matches that version only");
+        assertTrue(l.mimicOn("c.D 2.3"), "a bare name matches every version");
+        assertTrue(l.flatOn("c.D 2.3"), "switches on one robot combine");
+        assertFalse(l.flatOn("a.B 1.0") || l.heatJit("a.B 1.0"), "no other switch");
+        assertFalse(l.mimicOn(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.mimicOn("a.B 1.0"));
+    }
+
+    @Test
     @Tag("SHIELD-19")
     @DisplayName("shield-exit4 and shield-exit0 lines give an opponent's battle exit, matched as shield entries")
     void perOpponentExit() {
