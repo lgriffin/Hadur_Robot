@@ -9,3 +9,7 @@
 08:16:09 stopped; rerun to resume from the interrupted steps
 09:50:55 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
 09:50:55 skip anprep (already exit=0)
+09:50:55 start anbb
+09:50:55 watching anbb: 3 stop rule(s)
+09:50:57 progress pushed to origin claude/pc-team-angles-progress (every 15 min)
+09:51:55 progress anbb: 191/720 (27%) battles, 11372/h, ETA 3 min, 0 failed, skips 19.7/battle (last 100)
