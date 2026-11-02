@@ -1,1 +1,21 @@
 23:17:27 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
+23:17:27 start prep
+23:17:29 progress pushed to origin claude/pc-jaylexi-rows2-progress (every 15 min)
+23:17:29 prep exit=0 in 2 s
+23:17:29 start build
+23:17:34 build exit=0 in 5 s
+23:17:34 start J3
+23:17:34 watching J3: 3 stop rule(s)
+23:18:28 progress J3: 85/672 (13%) battles, 5733/h, ETA 6 min, 0 failed, skips 0.0/battle (last 100)
+23:20:52 J3 exit=0 in 197 s
+23:20:52 start J4
+23:20:52 watching J4: 3 stop rule(s)
+23:24:11 J4 exit=0 in 198 s
+23:24:11 start S200
+23:24:11 watching S200: 3 stop rule(s)
+23:27:30 S200 exit=0 in 198 s
+23:27:30 start S300
+23:27:30 watching S300: 3 stop rule(s)
+23:30:49 S300 exit=0 in 198 s
+23:30:49 start S450
+23:30:49 watching S450: 3 stop rule(s)
