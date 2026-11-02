@@ -1,4 +1,4 @@
-# 1v1, learning-gun mimics per opponent (BENCH-171, MOVE-34). Leigh starts it once the PC is free (not beside another
+# 1v1, learning-gun mimics per opponent (BENCH-172, MOVE-34). Leigh starts it once the PC is free (not beside another
 # card: two cards on one checkout collide):
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-mimic-on        (or  ./queue.sh run pc-mimic-on)

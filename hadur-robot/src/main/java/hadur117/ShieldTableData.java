@@ -556,7 +556,7 @@ final class ShieldTableData {
 
     /**
      * MOVE-34: the opponents the duel surfs with MOVE-33's learning-gun mimics as aim members. Empty
-     * until pc-mimic-on (BENCH-171) holds robots; candidate builds add lines here (build-ablation.sh
+     * until pc-mimic-on (BENCH-172) holds robots; candidate builds add lines here (build-ablation.sh
      * mmlist).
      *
      * @return a fresh array of names

@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-171: the per-opponent mimic card (plans/pc-mimic-on.queue) is complete before it reaches the PC. */
+/** BENCH-172: the per-opponent mimic card (plans/pc-mimic-on.queue) is complete before it reaches the PC. */
 class MimicOnPlanTest {
 
     private static List<String> names(String file, String split) throws IOException {
@@ -20,7 +20,7 @@ class MimicOnPlanTest {
     }
 
     @Test
-    @Tag("BENCH-171")
+    @Tag("BENCH-172")
     @DisplayName("the 28 top learners with c/aa/mq at 8 fresh seeds, mq naming the panel, the gate, the pick and the stop rules")
     void cardIsComplete() throws IOException {
         String queue = Files.readString(Path.of("plans/pc-mimic-on.queue"));

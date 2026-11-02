@@ -33,6 +33,29 @@ public final class HandOffDesign {
      */
     public static final boolean ENDGAME_LEARNED_SHIELD = false;
 
+    /**
+     * HAND-4 (arm eclose): the endgame duel starts at {@link #ENDGAME_CLOSE_OPENING} px, not the
+     * opening book's distance (650 px for a survivor with no 1v1 profile, which is most of them),
+     * and DIST-1 moves it from there. On the 1.11.2 cloud census (docs/bench/melee-top3.md) the
+     * endgame duel is fought at a median 694 px with power 1.0 and a 14% hit rate, against 40% in
+     * the crowd, and is lost 21% of the time against survivors ranked below 30th, almost always
+     * from behind on energy. Closer, Hadur's gun (the better one in most endgames) gains more than
+     * the survivor's.
+     */
+    public static final boolean ENDGAME_CLOSE = false;
+    /** HAND-4: the endgame duel's opening distance, in px: DistancePolicy's floor. */
+    public static final double ENDGAME_CLOSE_OPENING = 400;
+
+    /**
+     * HAND-5 (arm emgun): in the endgame duel, the melee's field gun aims and fires at the
+     * survivor in place of the duel gun, while its kNN history of the survivor is deep enough to
+     * be a learned aim (the field gun's own test). The field gun has watched the survivor all
+     * battle and keeps reading its scans in the duel; the duel gun has only the endgames' few
+     * hundred ticks. The duel still moves and runs the radar. On the 1.11.2 cloud census Hadur
+     * wins 43% of its endgame duels against top-10 survivors even when ahead on energy.
+     */
+    public static final boolean ENDGAME_MELEE_GUN = false;
+
     private HandOffDesign() {
     }
 }
