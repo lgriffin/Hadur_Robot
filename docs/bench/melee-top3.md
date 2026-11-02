@@ -45,6 +45,10 @@ and the evidence is in `melee-broken-1.11.2.md`.
 | HAND-4 `ENDGAME_CLOSE` (arm `eclose`, suffix ek) | The endgame duel opens at 400 px, not the 650 stranger ceiling | 58 paired battles, seeds 4200-01. Distance 690 to 575 px. Hadur's duel hit rate 14.4 to 14.7%, the survivor's 9.8 to 10.9%. Duel wins +0.5 points, APS +0.12 ± 0.51 | Null in the cloud; read beside HAND-5 on pc-melee-end |
 | HAND-5 `ENDGAME_MELEE_GUN` (arm `emgun`, suffix eg) | In the endgame duel, the melee field gun (kNN, learned on the survivor all battle) aims and fires whenever it has learned the survivor | 56 paired battles, 28 fields, seeds 4300-01. Rounds won 54.6 to 56.2%. Duel wins 69.0 to 71.7%, against top-10 survivors 21.3 to 26.0%, against 11-30 57.2 to 61.8%. Duel hit rate level (14.0 vs 13.9%). Score share -0.12 ± 0.32, APS -0.13 ± 0.50 | Mixed and too noisy to call; carded as pc-melee-end |
 
+The HAND-5 smoke ran on a build in which the duel still booked the shots the field gun held: their
+waves, virtual bullets and bullet shadows. The duel also learned from the field gun's bullet outcomes.
+The card runs the fixed build (PR #582 review), which decides the gun's owner before the duel drives.
+
 Both switches act only after a melee hand-off (charter MELEE, no team link, one enemy left), so the
 1v1 and the team never see them. Both ship off.
 
