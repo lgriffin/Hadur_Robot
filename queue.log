@@ -1,1 +1,7 @@
 23:24:30 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
+23:24:30 start msprep
+23:24:33 progress pushed to origin claude/pc-melee-strong-progress (every 15 min)
+23:27:02 msprep exit=0 in 152 s
+23:27:02 start mspilot
+23:27:02 watching mspilot: 2 stop rule(s)
+23:27:32 progress mspilot: 0/184 (0%) battles, 0 failed
