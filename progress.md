@@ -1,6 +1,6 @@
 # Queue pc-melee-near: progress
 
-Updated 2026-11-03 14:16:22 PC time (14:16 UTC), runner pid 692.
+Updated 2026-11-03 14:31:30 PC time (14:31 UTC), runner pid 692.
 
 - `mnprep` done, exit 0 in 2 min
 - `mnaa` done, exit 0 in 44 min
@@ -36,20 +36,19 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### mnn3
 
-**162 of 276 battles** (59%), 0 failed. Running 29 min, 332 battles/h, about 21 min left (ends ~14:36 PC time). Last battle 0 min ago.
-Skipped turns a battle: 27.7 overall, first 100 27.5, last 100 27.8.
+**270 of 276 battles** (98%), 0 failed. Running 44 min, 365 battles/h, about 1 min left (ends ~14:32 PC time). Last battle 0 min ago.
+Skipped turns a battle: 27.6 overall, first 100 27.5, last 100 27.2.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 162 |
+| `fails 20` | halt | ok | 0 failed of 270 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 114 battles unrun (about 21 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 6 battles unrun (about 1 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-12:15:26 start mnprep
 12:15:29 progress pushed to origin claude/pc-melee-near-progress (every 15 min)
 12:17:40 mnprep exit=0 in 133 s
 12:17:40 start mnaa
@@ -64,4 +63,5 @@ Stopping now would leave 114 battles unrun (about 21 min); every battle already 
 13:47:05 start mnn3
 13:47:05 watching mnn3: 2 stop rule(s)
 13:49:10 progress mnn3: 12/276 (4%) battles, 346/h, ETA 46 min, 0 failed, skips 27.5/battle (last 100)
+14:19:24 progress mnn3: 180/276 (65%) battles, 334/h, ETA 17 min, 0 failed, skips 28.3/battle (last 100)
 ```
