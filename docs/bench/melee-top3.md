@@ -87,7 +87,7 @@ on 46 fields × 6 seeds (3271-3276).
 
 Leigh's card rule of 2026-11-03 asks for per-opponent tailoring, a pilot that stops early and a
 written case. pc-melee-near is a melee-wide switch; Leigh granted it an exception on 2026-11-03
-("Exception with a pilot"). The pilot (BENCH-177) fights n4 against aa on 46 fields × 2 seeds
+("Exception with a pilot"). The pilot (BENCH-178) fights n4 against aa on 46 fields × 2 seeds
 (3277-3278, 184 battles, about 17% of the card); `tools/melee_pilot.py` stops the card unless the
 score share is up and crowd deaths are down, and opens the results PR with its read when it stops.
 

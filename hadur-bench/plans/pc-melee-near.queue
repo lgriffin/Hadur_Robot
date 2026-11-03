@@ -17,10 +17,12 @@
 # rank band; crowd deaths come with Hadur being more opponents' nearest robot (0.98 against 0.77), and
 # those opponents' damage doubles; the top survivors sit at 0.50; the n4 smoke cut crowd deaths 3.0 +- 2.5
 # points with the mechanism moving the right way (nearest damage -3.0 +- 1.5 a round).
-# Pilot (BENCH-177): mnpilot fights n4 against an aa baseline battle for battle on 46 fields x 2 seeds
+# Pilot (BENCH-178): mnpilot fights n4 against an aa baseline battle for battle on 46 fields x 2 seeds
 # (3277-3278; 184 battles, about 17% of the card, ~18 min), and mncheck stops the card unless Hadur's
-# score share is up and its crowd deaths are down. On a stop it opens the results PR with the pilot
-# read and fails, so no arm after it runs (up to 1,104 battles saved).
+# score share is up and its crowd deaths are down, on at least 95% of the 92 pairs with all 35 rounds
+# each. A few failed pilot battles do not skip the check (mnpilot exits 0 and the check counts the
+# pairs); a halt by a stop rule (fails 20, stall) stops the queue as on any card. On a stop the check
+# opens the results PR with the pilot read and fails, so no arm after it runs (up to 1,104 battles saved).
 # Each build fights the 46 census fields x 6 fresh seeds alone (3271-3276, after pc-melee-end's
 # 3265-3270; 276 battles, 1,104 in all, about 1.8 h at ~620 battles/h) at the machine's melee width
 # and CPU constant. The read pairs bb with aa (A/A, within +-0.25) and each arm with the mean of aa
@@ -48,12 +50,12 @@
 set OUT = ../docs/bench/local
 
 mnprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb n3 n4; do rm -f bisect/hadur117.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh mnear3 && bash ./build-ablation.sh mnear4 && mkdir -p work && rm -rf work/melee-near-"$V"-pilot work/melee-near-"$V"-aa work/melee-near-"$V"-bb work/melee-near-"$V"-n3 work/melee-near-"$V"-n4 && echo "$V" > work/melee-near.version && for a in aa bb n3 n4; do test -f bisect/hadur117.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-near.args > work/melee-near-$a.args || exit 1; done && sed -e "s/@V@/$V/g" -e "s/@C@/$C/g" plans/melee-near-pilot.args > work/melee-near-pilot.args && rm -f ${OUT}/melee-near-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
-mnpilot | mvn -q exec:java "-Dexec.args=@work/melee-near-pilot.args"
+mnpilot | mvn -q exec:java "-Dexec.args=@work/melee-near-pilot.args" || echo "pilot: some battles failed; mncheck reads what finished"
   after: mnprep
   watch: battles=184
   stop: fails 20
   stop: stall 30m
-mncheck | V=$(cat work/melee-near.version) && test -n "$V" && { python3 tools/melee_pilot.py work/melee-near-"$V"-pilot --out ${OUT}/melee-near-pilot.md --title "pc-melee-near pilot: n4 against aa on $V" || { bash tools/open_results_pr.sh claude/pc-melee-near-results "The melee closest-robot factor (MMOVE-24): pilot stopped the card" ${OUT}/melee-near-pilot.md; exit 1; }; }
+mncheck | V=$(cat work/melee-near.version) && test -n "$V" && { python3 tools/melee_pilot.py work/melee-near-"$V"-pilot --expect 92 --rounds 35 --out ${OUT}/melee-near-pilot.md --title "pc-melee-near pilot: n4 against aa on $V" || { bash tools/open_results_pr.sh claude/pc-melee-near-results "The melee closest-robot factor (MMOVE-24): pilot stopped the card" ${OUT}/melee-near-pilot.md; exit 1; }; }
   after: mnpilot
 mnaa   | mvn -q exec:java "-Dexec.args=@work/melee-near-aa.args"
   after: mncheck

@@ -1,4 +1,4 @@
-# PC card pc-melee-near pilot (BENCH-177, Leigh's card rule of 2026-11-03): n4 against an aa baseline battle for battle on the 46 census fields x 2 seeds (3277-3278, after the card's 3271-3276), 184 battles, about 17% of the card. tools/melee_pilot.py stops the card unless Hadur's score share is up and its crowd deaths down. Template: mnprep writes work/melee-near-pilot.args with @V@ = the robot.release in hadur-robot/pom.xml and @C@ = the machine's melee width.
+# PC card pc-melee-near pilot (BENCH-178, Leigh's card rule of 2026-11-03): n4 against an aa baseline battle for battle on the 46 census fields x 2 seeds (3277-3278, after the card's 3271-3276), 184 battles, about 17% of the card. tools/melee_pilot.py stops the card unless Hadur's score share is up and its crowd deaths down. Template: mnprep writes work/melee-near-pilot.args with @V@ = the robot.release in hadur-robot/pom.xml and @C@ = the machine's melee width.
 --suite
 melee-census-317.txt
 --seeds

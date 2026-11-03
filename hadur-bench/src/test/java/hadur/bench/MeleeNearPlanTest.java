@@ -95,7 +95,7 @@ class MeleeNearPlanTest {
     }
 
     @Test
-    @Tag("BENCH-177")
+    @Tag("BENCH-178")
     @DisplayName("a pilot of n4 against aa runs first and its check stops the card on no gain")
     void pilot() throws IOException {
         String queue = Files.readString(QUEUE);
@@ -106,7 +106,8 @@ class MeleeNearPlanTest {
         int at = queue.indexOf("\nmnpilot ");
         String body = queue.substring(at, queue.indexOf("\nmncheck ", at));
         for (String rule : List.of("stop: fails 20", "stop: stall 30m")) assertTrue(body.contains(rule), "pilot " + rule);
-        assertTrue(queue.contains("python3 tools/melee_pilot.py work/melee-near-\"$V\"-pilot"));
+        assertTrue(queue.contains("python3 tools/melee_pilot.py work/melee-near-\"$V\"-pilot --expect 92 --rounds 35"));
+        assertTrue(queue.contains("@work/melee-near-pilot.args\" || echo"), "a few failed pilot battles do not skip the check");
         assertTrue(queue.contains("open_results_pr.sh claude/pc-melee-near-results \"The melee closest-robot factor (MMOVE-24): pilot stopped the card\"")
             && queue.contains("; exit 1; }"), "a stopped pilot opens the results PR and fails, so no arm runs");
     }
