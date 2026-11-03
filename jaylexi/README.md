@@ -35,6 +35,7 @@ over 0.3 on mini-wide2 (paired estimate 88.65), and +3.05 on the top 60
 
 | Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | Next up | Gap |
 |---|---|---|---|---|---|---|---|---|
+| 0.4 | 2026-11-03 17:35 (first pass, API) | **MiniRumble** | **4th of 671** | **88.21 ± 0.29** | 669 | 773 | 3rd sheldor.mini.Foilist 1.3.1, 88.46; 1st FoilistMC 1.0, 89.00 | +0.25 / +0.79 |
 | 0.3 | 2026-11-02 14:40 (first pass, API) | **MiniRumble** | **4th of 671** | **87.93 ± 0.28** | 669 | 855 | 1st sheldor.mini.FoilistMC 1.0, 89.02 | +1.09 |
 | 0.2 | 2026-10-30 21:50 (API) | **MiniRumble** | **5th of 671** | **87.34** | 670 | 2,040 | 1st sheldor.mini.FoilistMC 1.0, 89.01 | +1.67 |
 | 0.2 | 2026-10-30 19:50 (settled) | **MiniRumble** | **5th of 671** | **87.34** | 670 | 1,965 | 4th voidious.mini.Komarious 1.88, 87.44 | +0.10 |
