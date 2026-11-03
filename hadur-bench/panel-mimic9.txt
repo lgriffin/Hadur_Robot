@@ -1,0 +1,10 @@
+# 2026-11-03 MOVE-34 re-test: the 9 robots pc-mimic-on (PR #593) picked at a 3-point margin, alone on fresh seeds.
+cb.fire.Firestarter 2.0f | rank7-band1 | cb.fire.Firestarter_2.0f.jar
+cb.Domogled 1.2 | rank23-band2 | cb.Domogled_1.2.jar
+darkcanuck.Pris 0.92 | rank26-band2 | darkcanuck.Pris_0.92.jar
+gh.GresSuffurd 0.4.13 | rank14-band2 | gh.GresSuffurd_0.4.13.jar
+aaa.r.ScalarR 0.005h.053-noshield | rank5-band1 | aaa.r.ScalarR_0.005h.053-noshield.jar
+fromHell.BlackBox 0.0.2 | rank27-band2 | fromHell.BlackBox_0.0.2.jar
+fromHell.CHCl3 1.4.2 | rank40-band2 | fromHell.CHCl3_1.4.2.jar
+darkcanuck.Gaff 1.50 | rank79-band3 | darkcanuck.Gaff_1.50.jar
+lazarecki.mega.PinkerStinker 0.7 | rank186-band3 | lazarecki.mega.PinkerStinker_0.7.jar

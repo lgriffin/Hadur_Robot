@@ -1,0 +1,41 @@
+# 1v1, learning-gun mimics on the 9 robots pc-mimic-on picked (BENCH-177, MOVE-34). Leigh starts it once the PC is free
+# (not beside another card: two cards on one checkout collide):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-mimic9        (or  ./queue.sh run pc-mimic9)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes; no step needs a
+# decision. About 20 minutes (9 robots x 12 seeds x 3 arms = 324 battles).
+#
+# Why: pc-mimic-on (PR #593) failed its gate on the 28 top learners (+0.03 +- 0.03 APS, low end at 0) but its pick locked
+# 9 robots at a 3-point margin (+5.9 points each, +0.04 APS in sample). The pick was made on the battles that scored
+# it, so the 9 are re-measured alone on fresh seeds before any of them reach mimicOns(). A cloud attempt (2026-11-03)
+# could not finish: the container was reclaimed twice mid-run.
+#
+# confirm: c, aa and mq (mimics on against the 9 only) x 12 fresh seeds from 8400.
+# gate:    mq minus pooled c and aa over the 9 / 1,217 pairings at +0.02 APS, 95% low end above 0; per robot, every
+#          opponent with mq's difference (ship the robots whose difference holds above 0).
+# Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle
+# over the last 200, or no battle in 30 minutes; every battle fought is kept and a rerun resumes. ALERT opens an issue
+# for Leigh on any stop. Nothing here ships: Claude writes the holders into mimicOns() from the results PR.
+
+set V = 3.21
+set P = --parallel 12 --no-truth-log
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
+set W = work/mimic9
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && MIMIC_ON=plans/mimic9.list bash ./build-ablation.sh mmlist && test -f bisect/hadur117.Hadur_${V}mq.jar && ./fetch-opponents.sh --set panel-mimic9.txt && mvn -q compile
+
+confirm | ./bench-top20.sh ${C} ${P} --set panel-mimic9.txt --seeds 12 --seed-base 8400 --arms plans/mimic9.arms --out ${W} --label mimic9 --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_mimic9.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm mq --panel panel-mimic9.txt --bar 0.02 --out ${OUT}/$(date +%Y-%m-%d)_mimic9-gate.md && python3 tools/per_robot.py ${W}/arms.tsv --arms mq --out ${OUT}/$(date +%Y-%m-%d)_mimic9-per-robot.md --out-tsv ${OUT}/mimic9-per-robot.tsv
+  after: confirm
+
+pr | bash tools/open_results_pr.sh claude/pc-mimic9-results "1v1 learning-gun mimics: re-test of the 9 picked robots on fresh seeds" ${OUT}/*_mimic9*.md ${OUT}/mimic9-per-robot.tsv
+  after: gate
