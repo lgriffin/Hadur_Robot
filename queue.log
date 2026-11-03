@@ -9,3 +9,4 @@
 13:01:53 mnaa exit=0 in 2653 s
 13:01:53 start mnbb
 13:01:53 watching mnbb: 2 stop rule(s)
+13:18:57 progress mnbb: 114/276 (41%) battles, 401/h, ETA 24 min, 0 failed, skips 28.6/battle (last 100)
