@@ -1,12 +1,12 @@
 # Queue pc-warm: progress
 
-Updated 2026-11-03 06:08:30 PC time (06:08 UTC), runner pid 53712.
+Updated 2026-11-03 06:20:39 PC time (06:20 UTC), runner pid 53712.
 
 - `prep` done, exit 0 in 2 min
 - `cw` done, exit 0 in 1.1 h
-- `lw` running
-- `read` pending
-- `pr` pending
+- `lw` done, exit 0 in 33 min
+- `read` done, exit 0 in 0 min
+- `pr` done, exit 0 in 0 min
 
 ### cw
 
@@ -21,22 +21,18 @@ Skipped turns a battle: 41.3 overall, first 100 35.2, last 100 47.7.
 
 ### lw
 
-**826 battles**, 0 failed. Running 21 min, 2344 battles/h. Last battle 0 min ago.
-Skipped turns a battle: 34.9 overall, first 100 31.0, last 100 38.7.
+**1580 battles**, 0 failed. Running 33 min, 2857 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 37.9 overall, first 100 31.0, last 100 41.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 826 |
-| `skips 60 over 200` | halt | ok | 37.5 a battle over the last 200 (first 200: 32.4) |
+| `fails 30` | halt | ok | 0 failed of 1580 |
+| `skips 60 over 200` | halt | ok | 42.8 a battle over the last 200 (first 200: 32.4) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
 ### Queue log (last lines)
 
 ```
-04:37:51 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
-04:37:51 start prep
-04:37:53 progress pushed to origin claude/pc-warm-progress (every 15 min)
-04:39:44 prep exit=0 in 113 s
 04:39:44 start cw
 04:39:44 watching cw: 3 stop rule(s)
 04:39:51 progress cw: 0 battles, 0 failed
@@ -45,4 +41,11 @@ Skipped turns a battle: 34.9 overall, first 100 31.0, last 100 38.7.
 05:47:21 cw exit=0 in 4056 s
 05:47:21 start lw
 05:47:21 watching lw: 3 stop rule(s)
+06:10:31 progress lw: 940 battles, 2435/h, 0 failed, skips 39.4/battle (last 100)
+06:20:32 lw exit=0 in 1990 s
+06:20:32 start read
+06:20:32 read exit=0 in 0 s
+06:20:32 start pr
+06:20:39 pr exit=0 in 6 s
+06:20:39 ALLDONE
 ```

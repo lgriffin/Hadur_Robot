@@ -10,3 +10,10 @@
 05:47:21 cw exit=0 in 4056 s
 05:47:21 start lw
 05:47:21 watching lw: 3 stop rule(s)
+06:10:31 progress lw: 940 battles, 2435/h, 0 failed, skips 39.4/battle (last 100)
+06:20:32 lw exit=0 in 1990 s
+06:20:32 start read
+06:20:32 read exit=0 in 0 s
+06:20:32 start pr
+06:20:39 pr exit=0 in 6 s
+06:20:39 ALLDONE
