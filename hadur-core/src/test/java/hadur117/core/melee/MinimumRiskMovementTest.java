@@ -149,6 +149,19 @@ class MinimumRiskMovementTest {
     }
 
     @Test
+    @Tag("MMOVE-24")
+    @DisplayName("MMOVE-24: off a team the crowd's closest factor is CLOSEST_FACTOR_SOLO, on a team CLOSEST_FACTOR; MEND-3 keeps two-left")
+    void closestFactorSolo() {
+        assertEquals(2.0, MinimumRiskMovement.CLOSEST_FACTOR_SOLO, 1e-9, "ships at today's factor");
+        EnemyInfo a = scan(tracker, "a", 500, 500, 100, 1);
+        Point2D.Double p = pt(500, 400);
+        assertEquals(MinimumRiskMovement.CLOSEST_FACTOR_SOLO, move.closestFactor(p, a, 1000, 40, 5, false), 1e-9);
+        assertEquals(MinimumRiskMovement.CLOSEST_FACTOR, move.closestFactor(p, a, 1000, 40, 5, true), 1e-9);
+        assertEquals(MinimumRiskMovement.CLOSEST_FACTOR_SOLO, move.closestFactor(p, a, 1000, 40, 3, false), 1e-9);
+        assertEquals(MeleeEndgame.THREE_FAR_FACTOR, move.closestFactor(p, a, 1000, 40, 2, false), 1e-9);
+    }
+
+    @Test
     @Tag("MMOVE-3")
     @DisplayName("MMOVE-3: a recorded shot becomes a head-on and a linear virtual bullet")
     void shotBecomesTwoBullets() {
