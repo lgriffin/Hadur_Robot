@@ -6,3 +6,7 @@
 00:06:13 watching clbb: 3 stop rule(s)
 00:06:33 progress clbb: 0/1080 (0%) battles, 0 failed
 00:36:45 progress clbb: 397/1080 (37%) battles, 780/h, ETA 53 min, 0 failed, skips 20.3/battle (last 100)
+01:06:57 progress clbb: 911/1080 (84%) battles, 900/h, ETA 11 min, 0 failed, skips 12.6/battle (last 100)
+01:13:25 clbb exit=0 in 4032 s
+01:13:25 start clcl
+01:13:25 watching clcl: 3 stop rule(s)
