@@ -1,1 +1,22 @@
 15:20:22 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
+15:20:22 start aiprep
+15:20:25 progress pushed to origin claude/pc-team-aim-progress (every 15 min)
+15:22:08 aiprep exit=0 in 105 s
+15:22:08 start aibb1
+15:22:08 watching aibb1: 3 stop rule(s)
+15:22:23 progress aibb1: 0/78 (0%) battles, 0 failed
+15:27:47 aibb1 exit=0 in 338 s
+15:27:47 start aiam1
+15:27:47 watching aiam1: 3 stop rule(s)
+15:33:26 aiam1 exit=0 in 339 s
+15:33:26 start aipilot
+15:33:32 aipilot exit=3 in 6 s
+15:33:32 skip aibb (after aipilot, which has not finished exit=0)
+15:33:32 skip aiam (after aibb, which has not finished exit=0)
+15:33:32 skip aiscr (after aiam, which has not finished exit=0)
+15:33:32 skip aipick (after aiscr, which has not finished exit=0)
+15:33:32 skip aigate (after aipick, which has not finished exit=0)
+15:33:32 skip aigbb (after aigate, which has not finished exit=0)
+15:33:32 skip aisum (after aigbb, which has not finished exit=0)
+15:33:32 skip aipr (after aisum, which has not finished exit=0)
+15:33:32 ALLDONE

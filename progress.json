@@ -1,43 +1,150 @@
 {
  "plan": "pc-team-aim",
- "updated": 1793719222.7354558,
+ "updated": 1793720012.8061886,
  "steps": {
   "aiprep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 105,
+   "end": "2026-11-03T15:22:08"
   },
   "aibb1": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 338,
+   "end": "2026-11-03T15:27:47"
   },
   "aiam1": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 339,
+   "end": "2026-11-03T15:33:26"
   },
   "aipilot": {
-   "status": "pending"
+   "status": "failed",
+   "exit": 3,
+   "seconds": 6,
+   "end": "2026-11-03T15:33:32"
   },
   "aibb": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after aipilot"
   },
   "aiam": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after aibb"
   },
   "aiscr": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after aiam"
   },
   "aipick": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after aiscr"
   },
   "aigate": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after aipick"
   },
   "aigbb": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after aigate"
   },
   "aisum": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after aigbb"
   },
   "aipr": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after aisum"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "aibb1",
+   "started": 1793719328.6962402,
+   "updated": 1793719667.547861,
+   "elapsed": 338.8516209125519,
+   "expected": 78,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 78,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 828.6812949095103,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 1.565011739730835,
+   "rules": [
+    {
+     "rule": "fails 60",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 78"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "78 of 100 battles to read"
+    }
+   ],
+   "skips_mean": 18.512820512820515,
+   "skips_last100": 18.512820512820515
+  },
+  {
+   "step": "aiam1",
+   "started": 1793719667.567914,
+   "updated": 1793720006.6605706,
+   "elapsed": 339.09265661239624,
+   "expected": 78,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 78,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 828.0922471316495,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 1.5556540489196777,
+   "rules": [
+    {
+     "rule": "fails 60",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 78"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "78 of 100 battles to read"
+    }
+   ],
+   "skips_mean": 18.333333333333332,
+   "skips_last100": 18.333333333333332
+  }
+ ]
 }
