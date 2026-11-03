@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-172, BENCH-177: the per-opponent mimic cards (plans/pc-mimic-on.queue, plans/pc-mimic9.queue) is complete before it reaches the PC. */
+/** BENCH-172, BENCH-177, BENCH-179: the per-opponent mimic cards (plans/pc-mimic-on.queue, pc-mimic9.queue, pc-mimic-wide.queue) are complete before it reaches the PC. */
 class MimicOnPlanTest {
 
     private static List<String> names(String file, String split) throws IOException {
@@ -99,6 +99,46 @@ class MimicOnPlanTest {
             "the watcher's A/A and futility rules need 10 robots read, and this panel has 9");
         assertTrue(queue.contains("# Why it should win"), "the card says why it should win before it runs");
         assertTrue(queue.contains("open_results_pr.sh claude/pc-mimic9-results"));
+        assertTrue(queue.contains("set ALERT = lgriffin") && queue.contains("set P = --parallel 12 --no-truth-log"));
+    }
+
+    @Test
+    @Tag("BENCH-179")
+    @DisplayName("the 36 untried learners screened with a pilot stop, the picks confirmed on fresh seeds, the gate and the PR")
+    void wideIsComplete() throws IOException {
+        String queue = Files.readString(Path.of("plans/pc-mimic-wide.queue"));
+        String version = Files.readString(Path.of("../hadur-robot/pom.xml"))
+            .replaceAll("(?s).*<robot.release>(.*?)</robot.release>.*", "$1");
+        assertTrue(queue.contains("set V = " + version + "\n"), "the card builds the current release");
+        List<String> panel = names("panel-mimic-wide.txt", "\\|");
+        assertEquals(36, panel.size());
+        assertEquals(panel.size(), panel.stream().distinct().count(), "no robot twice");
+        assertEquals(panel, names("plans/mimic-wide.list", "\t"), "mq names exactly the panel");
+        List<String> tried = names("plans/mimic-on.list", "\t");
+        for (String n : panel) {
+            assertTrue(!tried.contains(n), n + " was not tried on pc-mimic-on");
+            assertTrue(!Broken.names(Path.of(Broken.FILE)).contains(n), n + " loads on 1.11.2");
+        }
+        assertTrue(queue.contains("MIMIC_ON=plans/mimic-wide.list bash ./build-ablation.sh mmlist"));
+        assertTrue(queue.contains("--set panel-mimic-wide.txt --seeds 8 --seed-base 8600 --arms plans/mimic-wide.arms"));
+        assertTrue(queue.contains("--set work/panel-mimic-wide-picks.txt --seeds 12 --seed-base 8800 --arms plans/mimic-wide.arms"));
+        String[] steps = {"prep", "screen", "pick", "prep2", "confirm", "gate", "pr"};
+        for (int i = 1; i < steps.length; i++) {
+            int at = queue.indexOf("\n" + steps[i] + " | ");
+            assertTrue(at >= 0, steps[i]);
+            int next = queue.indexOf("\n\n", at + 1);
+            assertTrue(queue.substring(at, next < 0 ? queue.length() : next).contains("after: " + steps[i - 1]),
+                steps[i] + " after " + steps[i - 1]);
+        }
+        String screen = queue.substring(queue.indexOf("\nscreen | "), queue.indexOf("\n\npick | "));
+        for (String rule : new String[] {"fails 30", "dead 8", "skips 60 over 200", "stall 30m", "aa after 20%",
+                                         "futility mq below 0.01 after 20%"}) {
+            assertTrue(screen.contains("stop: " + rule), rule);
+        }
+        assertTrue(screen.contains("--shuffle-jobs"), "futility needs the jobs shuffled");
+        assertTrue(queue.contains("# Why it should win"), "the card says why it should win before it runs");
+        assertTrue(queue.contains("--arm mq --panel work/panel-mimic-wide-picks.txt --bar 0.02"));
+        assertTrue(queue.contains("open_results_pr.sh claude/pc-mimic-wide-results"));
         assertTrue(queue.contains("set ALERT = lgriffin") && queue.contains("set P = --parallel 12 --no-truth-log"));
     }
 }
