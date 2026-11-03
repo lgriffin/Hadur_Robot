@@ -1,6 +1,6 @@
 # Queue pc-team-clear: progress
 
-Updated 2026-11-03 02:05:20 PC time (02:05 UTC), runner pid 37376.
+Updated 2026-11-03 02:20:27 PC time (02:20 UTC), runner pid 37376.
 
 - `clprep` done, exit 0 in 2 min
 - `clbb` done, exit 0 in 1.1 h
@@ -24,16 +24,16 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### clcl
 
-**701 of 1080 battles** (65%), 0 failed. Running 52 min, 810 battles/h, about 28 min left (ends ~02:33 PC time). Last battle 0 min ago.
-Skipped turns a battle: 18.3 overall, first 100 18.3, last 100 15.3.
+**1022 of 1080 battles** (95%), 0 failed. Running 1.1 h, 915 battles/h, about 4 min left (ends ~02:24 PC time). Last battle 0 min ago.
+Skipped turns a battle: 17.9 overall, first 100 18.3, last 100 19.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 701 |
+| `fails 60` | halt | ok | 0 failed of 1022 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 15.3 a battle over the last 100 (first 100: 18.3) |
+| `skips 40 over 100` | halt | ok | 19.0 a battle over the last 100 (first 100: 18.3) |
 
-Stopping now would leave 379 battles unrun (about 28 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 58 battles unrun (about 4 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -51,4 +51,5 @@ Stopping now would leave 379 battles unrun (about 28 min); every battle already 
 01:13:25 start clcl
 01:13:25 watching clcl: 3 stop rule(s)
 01:37:10 progress clcl: 275/1080 (25%) battles, 695/h, ETA 1.2 h, 0 failed, skips 18.8/battle (last 100)
+02:07:21 progress clcl: 723/1080 (67%) battles, 804/h, ETA 27 min, 0 failed, skips 16.3/battle (last 100)
 ```
