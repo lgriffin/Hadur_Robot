@@ -570,10 +570,6 @@ public class FieldGun {
     }
 
     /**
-     * MGUN-18: 5 (hits + 1) / (waves + 5) of the aim the gun fires at the opponent (MGUN-17's
-     * pick, else the field gun's own), decayed; 1 with none read.
-     */
-    /**
      * MGUN-24: {@code name} finished the round in {@code place} among {@code opponents}
      * (1 is last alive; 0 is unplaced and ignored). Kept for the battle, across rounds.
      */
@@ -598,6 +594,10 @@ public class FieldGun {
         return Math.max(0, Math.min(1, (placedOpponents - mean) / (placedOpponents - 1)));
     }
 
+    /**
+     * MGUN-18: 5 (hits + 1) / (waves + 5) of the aim the gun fires at the opponent (MGUN-17's
+     * pick, else the field gun's own), decayed; 1 with none read.
+     */
     double hitFactor(String name) {
         double[] s = expertScores.get(name);
         if (s == null) return 1;

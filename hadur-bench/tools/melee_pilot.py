@@ -81,8 +81,10 @@ def main(argv=None):
                 '| Measure | Arm minus baseline |\n|---|---|\n'
                 f"| Hadur's score share | {r['share']:+.2f} ± {r['share_ci']:.2f} points |\n"
                 f"| Crowd deaths | {r['crowd']:+.2f} ± {r['crowd_ci']:.2f} points of rounds |\n\n"
-                f'**{verdict}.** The pilot passes when the score share is up and crowd deaths are down '
-                '(point estimates, BENCH-178).\n')
+                f'**{verdict}.** ' + ('The pilot passes when the score share is up (point estimate, '
+                                      '--share-only, BENCH-186).\n' if a.share_only else
+                                      'The pilot passes when the score share is up and crowd deaths are down '
+                                      '(point estimates, BENCH-178).\n'))
     return 0 if r['passed'] else 1
 
 
