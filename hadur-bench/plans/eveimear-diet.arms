@@ -1,0 +1,8 @@
+# BENCH-182 (pc-eveimear-diet): c is Eveimear 0.2 as released, aa its A/A rebuild, n the doc's play-neutral rows 1
+# and 3-6 (719 B, replay-identical to 0.2), r2 n plus row 2 (709), r27 r2 plus row 7 (704). Built by
+# tools/eveimear_diet.py.
+c | hadur117.micro.Eveimear 0.2 | kitlab/jars/hadur117.micro.Eveimear_0.2.jar
+aa | hadur117.micro.Eveimear 0.2aa | kitlab/jars/hadur117.micro.Eveimear_0.2aa.jar
+n | hadur117.micro.Eveimear 0.2n | kitlab/jars/hadur117.micro.Eveimear_0.2n.jar
+r2 | hadur117.micro.Eveimear 0.2r2 | kitlab/jars/hadur117.micro.Eveimear_0.2r2.jar
+r27 | hadur117.micro.Eveimear 0.2r27 | kitlab/jars/hadur117.micro.Eveimear_0.2r27.jar
