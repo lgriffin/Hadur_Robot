@@ -93,9 +93,9 @@ public final class MeleeWaves {
         return true;
     }
 
-    /** MGUN-17/18: whether the waves score every aim, off a team with either switch on. */
+    /** MGUN-17/18: whether the waves score every aim, off a team with either switch on; TMODE-40: on a team with AIM. */
     static boolean scoring(FieldGun gun) {
-        return (FieldGun.EXPERTS || FieldGun.HIT_TARGET) && !gun.onTeam();
+        return gun.scoresExperts();
     }
 
     /**

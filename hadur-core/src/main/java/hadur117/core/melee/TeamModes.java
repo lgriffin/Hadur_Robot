@@ -131,7 +131,14 @@ public final class TeamModes {
          * heading and velocity at the engine's turn rate, as CLEAR's check does, not from a standstill
          * already facing the spot: a member at full speed the other way cannot dodge as that drive says.
          */
-        MOMENTUM
+        MOMENTUM,
+        /**
+         * TMODE-40: the team gun's aim experts (MGUN-17) against this team: each class's waves also
+         * score head-on, linear and circular aims, and an aim that beats the field gun's hit rate on
+         * that class by {@link FieldGun#EXPERT_EDGE} takes it. Built for the nano and micro teams Ogi
+         * out-hits by 4-6 points. Only through the table, or FORCE_AIM to screen it.
+         */
+        AIM
     }
 
     /**
@@ -164,6 +171,8 @@ public final class TeamModes {
     public static final boolean FORCE_CLEAR = false;
     /** TMODE-39: MOMENTUM on every team, the ones the table names included (as CLEAR). */
     public static final boolean FORCE_MOMENTUM = false;
+    /** TMODE-40: AIM on every team, to screen which teams it helps (never shipped this way). */
+    public static final boolean FORCE_AIM = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -251,6 +260,7 @@ public final class TeamModes {
         Set<Mode> m = against(enemies, TABLE, DEFAULT);
         if (FORCE_CLEAR) m = with(m, Mode.CLEAR);
         if (FORCE_MOMENTUM) m = with(m, Mode.MOMENTUM);
+        if (FORCE_AIM) m = with(m, Mode.AIM);
         return m;
     }
 

@@ -511,6 +511,7 @@ public class MeleeController {
         gun.lead(modes.contains(TeamModes.Mode.LEAD));
         gun.swift(modes.contains(TeamModes.Mode.SWIFT));
         gun.heavy(modes.contains(TeamModes.Mode.HEAVY));
+        gun.teamAim(modes.contains(TeamModes.Mode.AIM));
         gun.concord(TeamConcord.GUN && modes.contains(TeamModes.Mode.CONCORD));
         waves.tick(s.me, s.time, s.gunHeat, alive, gun, s.energy, s.others);
 
