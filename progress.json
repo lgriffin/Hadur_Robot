@@ -1,0 +1,22 @@
+{
+ "plan": "pc-warm",
+ "updated": 1793680671.214712,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "cw": {
+   "status": "pending"
+  },
+  "lw": {
+   "status": "pending"
+  },
+  "read": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
