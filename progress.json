@@ -1,6 +1,6 @@
 {
  "plan": "pc-sanaro-n10",
- "updated": 1793690466.915976,
+ "updated": 1793691372.3373637,
  "steps": {
   "prep": {
    "status": "done",
@@ -87,8 +87,8 @@
   {
    "step": "live-B480",
    "started": 1793689764.8762324,
-   "updated": 1793690466.907702,
-   "elapsed": 702.0314695835114,
+   "updated": 1793691372.3286104,
+   "elapsed": 1607.4523780345917,
    "expected": 860,
    "panel": null,
    "field": null,
@@ -96,20 +96,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 232,
+   "battles": 405,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 1189.6902577536766,
-   "eta": 1900.3265642174358,
-   "fraction": 0.26976744186046514,
-   "last_battle_age": 10.294076919555664,
+   "rate": 907.0253152896978,
+   "eta": 1805.9032889030598,
+   "fraction": 0.47093023255813954,
+   "last_battle_age": 1.3513267040252686,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 232"
+     "detail": "0 failed of 405"
     },
     {
      "rule": "stall 30m",
@@ -124,8 +124,8 @@
      "detail": "0.0 a battle over the last 100 (first 100: 0.0)"
     }
    ],
-   "skips_mean": 0.004310344827586207,
-   "skips_last100": 0.01
+   "skips_mean": 0.0024691358024691358,
+   "skips_last100": 0
   }
  ]
 }
