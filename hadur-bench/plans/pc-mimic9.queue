@@ -10,6 +10,13 @@
 # it, so the 9 are re-measured alone on fresh seeds before any of them reach mimicOns(). A cloud attempt (2026-11-03)
 # could not finish: the container was reclaimed twice mid-run.
 #
+# Why it should win (Leigh's card rule, 2026-11-03): it is per-opponent tailoring only (mimics on against 9 named robots,
+# master everywhere else), the only kind of change that has shown live. On pc-mimic-on these 9 gained +3.4 to +8.4
+# points each over 8 seeds (95% low ends +0.3 to +4.2); the learning-gun mimics model exactly the learners these are, and
+# turning them on costs nothing against anyone else. Risk: the pick was in-sample, so some will regress to 0.
+# Pilot: the whole card is 20 minutes, so it is its own pilot; the futility rule needs 10 robots read and the panel has
+# 9, so the early stop is the A/A rule (a bench defect halts at 20%) plus the usual fails, dead, skips and stall.
+#
 # confirm: c, aa and mq (mimics on against the 9 only) x 12 fresh seeds from 8400.
 # gate:    mq minus pooled c and aa over the 9 / 1,217 pairings at +0.02 APS, 95% low end above 0; per robot, every
 #          opponent with mq's difference (ship the robots whose difference holds above 0).
@@ -33,6 +40,7 @@ confirm | ./bench-top20.sh ${C} ${P} --set panel-mimic9.txt --seeds 12 --seed-ba
   stop: dead 8
   stop: skips 60 over 200
   stop: stall 30m
+  stop: aa after 20%
 
 gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_mimic9.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm mq --panel panel-mimic9.txt --bar 0.02 --out ${OUT}/$(date +%Y-%m-%d)_mimic9-gate.md && python3 tools/per_robot.py ${W}/arms.tsv --arms mq --out ${OUT}/$(date +%Y-%m-%d)_mimic9-per-robot.md --out-tsv ${OUT}/mimic9-per-robot.tsv
   after: confirm
