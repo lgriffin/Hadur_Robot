@@ -1,0 +1,5 @@
+# BENCH-180 (pc-eveimear-st2) confirm: c is Eveimear 0.2, aa its A/A copy, pk 0.2 with the screen's picks written
+# into MODES (tools/eveimear_modes.py apply): it plays every robot outside the picks exactly as 0.2 does.
+c | hadur117.micro.Eveimear 0.2 | kitlab/jars/hadur117.micro.Eveimear_0.2.jar
+aa | hadur117.micro.Eveimear 0.2aa | kitlab/jars/hadur117.micro.Eveimear_0.2aa.jar
+pk | hadur117.micro.Eveimear 0.2pk | kitlab/jars/hadur117.micro.Eveimear_0.2pk.jar
