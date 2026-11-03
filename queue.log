@@ -8,3 +8,6 @@
 06:21:02 watching live-S3: 3 stop rule(s)
 06:21:42 progress live-S3: 0/860 (0%) battles, 0 failed
 06:51:54 progress live-S3: 420/860 (49%) battles, 816/h, ETA 32 min, 0 failed, skips 0.0/battle (last 100)
+07:09:24 live-S3 exit=0 in 2902 s
+07:09:24 start live-B480
+07:09:24 watching live-B480: 3 stop rule(s)
