@@ -1,0 +1,43 @@
+{
+ "plan": "pc-team-aim",
+ "updated": 1793719222.7354558,
+ "steps": {
+  "aiprep": {
+   "status": "pending"
+  },
+  "aibb1": {
+   "status": "pending"
+  },
+  "aiam1": {
+   "status": "pending"
+  },
+  "aipilot": {
+   "status": "pending"
+  },
+  "aibb": {
+   "status": "pending"
+  },
+  "aiam": {
+   "status": "pending"
+  },
+  "aiscr": {
+   "status": "pending"
+  },
+  "aipick": {
+   "status": "pending"
+  },
+  "aigate": {
+   "status": "pending"
+  },
+  "aigbb": {
+   "status": "pending"
+  },
+  "aisum": {
+   "status": "pending"
+  },
+  "aipr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
