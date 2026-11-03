@@ -20,13 +20,14 @@
 # halts it (`aa after 20%`). 36 robots read clears the watcher's 10-robot minimum for both.
 #
 # screen:  c, aa and mq (mimics on against the 36) x 8 seeds from 8600; pick at a 3-point margin with the interval above 0.
-# confirm: mq rebuilt for the picks only, c, aa x 12 fresh seeds from 8800; the gate (mq minus pooled c and aa over the
+# confirm: the same mq jar (mimics only act on listed robots, so it plays the picks exactly as a picks-only build
+#          would, and a resumed screen never meets a different jar), c, aa x 12 fresh seeds from 8800; the gate (mq minus pooled c and aa over the
 #          picks / 1,217 pairings at +0.02 APS, 95% low end above 0) and every pick's difference. Claude writes the
 #          holders into mimicOns() from the results PR; nothing ships from the card itself.
 # Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle
 # over the last 200, or no battle in 30 minutes; every battle fought is kept and a rerun resumes. The confirm has 12 or
-# fewer robots at most, so it carries the halt rules only. With no picks, prep2, confirm and gate pass straight through and
-# the PR carries the screen. ALERT opens an issue for Leigh on any stop.
+# fewer robots at most, so it carries the halt rules only. prep2 first clears any confirm reports an earlier
+# run left, so with no picks confirm and gate pass straight through and the PR carries this run's screen only. ALERT opens an issue for Leigh on any stop.
 
 set V = 3.21
 set P = --parallel 12 --no-truth-log
@@ -51,7 +52,7 @@ screen | ./bench-top20.sh ${C} ${P} --set panel-mimic-wide.txt --seeds 8 --seed-
 pick | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_mimic-wide-screen.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 3 --out-tsv ${OUT}/mimic-wide-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_mimic-wide-pick.md && python3 tools/per_robot.py ${W}/arms.tsv --arms mq --out ${OUT}/$(date +%Y-%m-%d)_mimic-wide-per-robot.md --out-tsv ${OUT}/mimic-wide-per-robot.tsv
   after: screen
 
-prep2 | if [ ! -s ${OUT}/mimic-wide-pick.tsv ]; then echo 'no picks: confirm and gate skip'; rm -f work/panel-mimic-wide-picks.txt; exit 0; fi && python3 tools/pick_panel.py ${OUT}/mimic-wide-pick.tsv panel-mimic-wide.txt work/panel-mimic-wide-picks.txt && MIMIC_ON=${OUT}/mimic-wide-pick.tsv bash ./build-ablation.sh mmlist && test -f bisect/hadur117.Hadur_${V}mq.jar
+prep2 | rm -f ${OUT}/*_mimic-wide2*.md ${OUT}/mimic-wide2-per-robot.tsv work/panel-mimic-wide-picks.txt && if [ ! -s ${OUT}/mimic-wide-pick.tsv ]; then echo 'no picks: confirm and gate skip'; exit 0; fi && python3 tools/pick_panel.py ${OUT}/mimic-wide-pick.tsv panel-mimic-wide.txt work/panel-mimic-wide-picks.txt
   after: pick
 
 confirm | if [ ! -s work/panel-mimic-wide-picks.txt ]; then echo 'no picks'; exit 0; fi && ./bench-top20.sh ${C} ${P} --set work/panel-mimic-wide-picks.txt --seeds 12 --seed-base 8800 --arms plans/mimic-wide.arms --out ${W2} --label mimic-wide2 --shuffle-jobs

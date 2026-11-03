@@ -138,6 +138,9 @@ class MimicOnPlanTest {
         assertTrue(screen.contains("--shuffle-jobs"), "futility needs the jobs shuffled");
         assertTrue(queue.contains("# Why it should win"), "the card says why it should win before it runs");
         assertTrue(queue.contains("--arm mq --panel work/panel-mimic-wide-picks.txt --bar 0.02"));
+        String prep2 = queue.substring(queue.indexOf("\nprep2 | "), queue.indexOf("\n\nconfirm | "));
+        assertTrue(!prep2.contains("build-ablation.sh"), "the screen's mq jar is never rebuilt, so a resumed screen keeps it");
+        assertTrue(prep2.startsWith("\nprep2 | rm -f ${OUT}/*_mimic-wide2*.md"), "old confirm reports never reach the PR");
         assertTrue(queue.contains("open_results_pr.sh claude/pc-mimic-wide-results"));
         assertTrue(queue.contains("set ALERT = lgriffin") && queue.contains("set P = --parallel 12 --no-truth-log"));
     }
