@@ -1,13 +1,13 @@
 # Queue pc-team-momentum: progress
 
-Updated 2026-11-03 04:37:40 PC time (04:37 UTC), runner pid 43904.
+Updated 2026-11-03 04:37:48 PC time (04:37 UTC), runner pid 43904.
 
 - `mtprep` done, exit 0 in 2 min
 - `mtbb` done, exit 0 in 1.1 h
 - `mtmo` done, exit 0 in 1.1 h
-- `mtff` running
-- `mtsum` pending
-- `mtpr` pending
+- `mtff` done, exit 0 in 0 min
+- `mtsum` done, exit 0 in 0 min
+- `mtpr` done, exit 0 in 0 min
 
 ### mtbb
 
@@ -38,12 +38,6 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 ### Queue log (last lines)
 
 ```
-02:21:43 start mtprep
-02:21:46 progress pushed to origin claude/pc-team-momentum-progress (every 15 min)
-02:23:24 mtprep exit=0 in 100 s
-02:23:24 start mtbb
-02:23:24 watching mtbb: 3 stop rule(s)
-02:23:44 progress mtbb: 0/1080 (0%) battles, 0 failed
 02:53:57 progress mtbb: 399/1080 (37%) battles, 784/h, ETA 52 min, 0 failed, skips 21.6/battle (last 100)
 03:24:10 progress mtbb: 910/1080 (84%) battles, 899/h, ETA 11 min, 0 failed, skips 12.4/battle (last 100)
 03:30:43 mtbb exit=0 in 4038 s
@@ -53,4 +47,10 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 04:24:35 progress mtmo: 747/1080 (69%) battles, 832/h, ETA 24 min, 0 failed, skips 14.2/battle (last 100)
 04:37:37 mtmo exit=0 in 4014 s
 04:37:37 start mtff
+04:37:42 mtff exit=0 in 4 s
+04:37:42 start mtsum
+04:37:42 mtsum exit=0 in 0 s
+04:37:42 start mtpr
+04:37:48 mtpr exit=0 in 5 s
+04:37:48 ALLDONE
 ```

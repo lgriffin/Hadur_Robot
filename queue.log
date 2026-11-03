@@ -14,3 +14,9 @@
 04:24:35 progress mtmo: 747/1080 (69%) battles, 832/h, ETA 24 min, 0 failed, skips 14.2/battle (last 100)
 04:37:37 mtmo exit=0 in 4014 s
 04:37:37 start mtff
+04:37:42 mtff exit=0 in 4 s
+04:37:42 start mtsum
+04:37:42 mtsum exit=0 in 0 s
+04:37:42 start mtpr
+04:37:48 mtpr exit=0 in 5 s
+04:37:48 ALLDONE
