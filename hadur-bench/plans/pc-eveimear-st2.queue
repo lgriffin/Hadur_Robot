@@ -36,7 +36,7 @@ set OUT = ../docs/bench/local
 set ALERT = lgriffin
 set REL = https://github.com/lgriffin/Hadur_Robot/releases/download
 
-prep | git checkout -q master && rm -f ${W}/GO && mkdir -p ${W} kitlab/jars && ./fetch-opponents.sh --set kitlab/micro-detect-field.txt && mvn -q compile && curl -fsSL -o kitlab/jars/hadur117.micro.Eveimear_0.2.jar ${REL}/eveimear-v0.2/hadur117.micro.Eveimear_0.2.jar && python3 tools/eveimear_modes.py force ${SRC} ${W}/rn.java --char 0 && python3 tools/eveimear_modes.py force ${SRC} ${W}/sg.java --char 9 && bash kitlab/build_arm.sh ${SRC} hadur117.micro.Eveimear 0.2aa && bash kitlab/build_arm.sh ${W}/rn.java hadur117.micro.Eveimear 0.2rn && bash kitlab/build_arm.sh ${W}/sg.java hadur117.micro.Eveimear 0.2sg
+prep | git checkout -q master && rm -f ${W}/GO ${OUT}/*_eveimear-st2*.md ${OUT}/eveimear-st2* && mkdir -p ${W} kitlab/jars && ./fetch-opponents.sh --set kitlab/micro-detect-field.txt && mvn -q compile && curl -fsSL -o kitlab/jars/hadur117.micro.Eveimear_0.2.jar ${REL}/eveimear-v0.2/hadur117.micro.Eveimear_0.2.jar && python3 tools/eveimear_modes.py force ${SRC} ${W}/rn.java --char 0 && python3 tools/eveimear_modes.py force ${SRC} ${W}/sg.java --char 9 && bash kitlab/build_arm.sh ${SRC} hadur117.micro.Eveimear 0.2aa && bash kitlab/build_arm.sh ${W}/rn.java hadur117.micro.Eveimear 0.2rn && bash kitlab/build_arm.sh ${W}/sg.java hadur117.micro.Eveimear 0.2sg
 
 pilot | sh ./bench-top20.sh ${C} --set kitlab/micro-detect-pilot.txt --seeds 10 --seed-base 31000 --arms plans/eveimear-st2.arms --out ${W}/pilot --label eveimear-st2-pilot --shuffle-jobs
   after: prep
