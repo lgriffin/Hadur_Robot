@@ -1,6 +1,6 @@
 # Queue pc-warm: progress
 
-Updated 2026-11-03 05:23:11 PC time (05:23 UTC), runner pid 53712.
+Updated 2026-11-03 05:38:17 PC time (05:38 UTC), runner pid 53712.
 
 - `prep` done, exit 0 in 2 min
 - `cw` running
@@ -10,13 +10,13 @@ Updated 2026-11-03 05:23:11 PC time (05:23 UTC), runner pid 53712.
 
 ### cw
 
-**1702 battles**, 0 failed. Running 43 min, 2350 battles/h. Last battle 0 min ago.
-Skipped turns a battle: 37.8 overall, first 100 35.2, last 100 40.7.
+**2580 battles**, 0 failed. Running 59 min, 2644 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 40.0 overall, first 100 35.2, last 100 45.5.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 1702 |
-| `skips 60 over 200` | halt | ok | 39.7 a battle over the last 200 (first 200: 35.7) |
+| `fails 30` | halt | ok | 0 failed of 2580 |
+| `skips 60 over 200` | halt | ok | 44.0 a battle over the last 200 (first 200: 35.7) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
 ### Queue log (last lines)
