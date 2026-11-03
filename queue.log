@@ -12,3 +12,7 @@
 07:09:24 start live-B480
 07:09:24 watching live-B480: 3 stop rule(s)
 07:22:07 progress live-B480: 252/860 (29%) battles, 1190/h, ETA 31 min, 0 failed, skips 0.0/battle (last 100)
+07:52:18 progress live-B480: 740/860 (86%) battles, 1035/h, ETA 7 min, 0 failed, skips 0.0/battle (last 100)
+07:58:49 live-B480 exit=0 in 2964 s
+07:58:49 start live-B400
+07:58:49 watching live-B400: 3 stop rule(s)

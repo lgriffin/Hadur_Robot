@@ -1,12 +1,12 @@
 # Queue pc-sanaro-n10: progress
 
-Updated 2026-11-03 07:51:18 PC time (07:51 UTC), runner pid 48284.
+Updated 2026-11-03 08:06:24 PC time (08:06 UTC), runner pid 48284.
 
 - `prep` done, exit 0 in 0 min
 - `arms` done, exit 0 in 0 min
 - `live-S3` done, exit 0 in 48 min
-- `live-B480` running
-- `live-B400` pending
+- `live-B480` done, exit 0 in 49 min
+- `live-B400` running
 - `live-B320` pending
 - `live-B4K8` pending
 - `read-live` pending
@@ -27,23 +27,33 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-B480
 
-**720 of 860 battles** (84%), 0 failed. Running 42 min, 1031 battles/h, about 8 min left (ends ~07:59 PC time). Last battle 0 min ago.
+**860 of 860 battles** (100%), 0 failed. Running 49 min, 1044 battles/h, about 0 min left (ends ~07:58 PC time). Last battle 0 min ago.
 Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 720 |
+| `fails 20` | halt | ok | 0 failed of 860 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 | `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
 
-Stopping now would leave 140 battles unrun (about 8 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### live-B400
+
+**140 of 860 battles** (16%), 0 failed. Running 8 min, 1108 battles/h, about 39 min left (ends ~08:45 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 140 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
+
+Stopping now would leave 720 battles unrun (about 39 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-06:20:41 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
-06:20:41 start prep
-06:20:44 progress pushed to origin claude/pc-sanaro-n10-progress (every 15 min)
 06:20:53 prep exit=0 in 11 s
 06:20:53 start arms
 06:21:02 arms exit=0 in 8 s
@@ -55,4 +65,8 @@ Stopping now would leave 140 battles unrun (about 8 min); every battle already f
 07:09:24 start live-B480
 07:09:24 watching live-B480: 3 stop rule(s)
 07:22:07 progress live-B480: 252/860 (29%) battles, 1190/h, ETA 31 min, 0 failed, skips 0.0/battle (last 100)
+07:52:18 progress live-B480: 740/860 (86%) battles, 1035/h, ETA 7 min, 0 failed, skips 0.0/battle (last 100)
+07:58:49 live-B480 exit=0 in 2964 s
+07:58:49 start live-B400
+07:58:49 watching live-B400: 3 stop rule(s)
 ```
