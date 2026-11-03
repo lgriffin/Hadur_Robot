@@ -22,7 +22,7 @@ class MeleeNearPlanTest {
     @DisplayName("the steps chain from prep through every arm to a results PR, on the version the pom names")
     void stepsChain() throws IOException {
         String queue = Files.readString(QUEUE);
-        List<String> steps = new java.util.ArrayList<>(List.of("mnprep"));
+        List<String> steps = new java.util.ArrayList<>(List.of("mnprep", "mnpilot", "mncheck"));
         for (String a : ARMS) steps.add("mn" + a);
         steps.add("mnread");
         steps.add("mnpr");
@@ -92,5 +92,23 @@ class MeleeNearPlanTest {
         assertTrue(move.contains("public static final double CLOSEST_FACTOR_SOLO = 2.0;"), "ships at 2");
         assertTrue(move.contains("public static final boolean MELEE_SURF = true;")
             && move.contains("public static final boolean MELEE_DAMAGE_MEMORY = true;"), "the arms sit on master's melee");
+    }
+
+    @Test
+    @Tag("BENCH-178")
+    @DisplayName("a pilot of n4 against aa runs first and its check stops the card on no gain")
+    void pilot() throws IOException {
+        String queue = Files.readString(QUEUE);
+        String args = Files.readString(Path.of("plans/melee-near-pilot.args"));
+        assertTrue(args.contains("--seeds\n2\n") && args.contains("--seed-base\n3276\n"), "fresh seeds after the card's");
+        assertTrue(args.contains("bisect/hadur117.Hadur_@V@n4.jar") && args.contains("--baseline\nbisect/hadur117.Hadur_@V@aa.jar"));
+        assertTrue(queue.contains("plans/melee-near-pilot.args > work/melee-near-pilot.args"), "prep writes the pilot's args");
+        int at = queue.indexOf("\nmnpilot ");
+        String body = queue.substring(at, queue.indexOf("\nmncheck ", at));
+        for (String rule : List.of("stop: fails 20", "stop: stall 30m")) assertTrue(body.contains(rule), "pilot " + rule);
+        assertTrue(queue.contains("python3 tools/melee_pilot.py work/melee-near-\"$V\"-pilot --expect 92 --rounds 35"));
+        assertTrue(queue.contains("@work/melee-near-pilot.args\" || echo"), "a few failed pilot battles do not skip the check");
+        assertTrue(queue.contains("open_results_pr.sh claude/pc-melee-near-results \"The melee closest-robot factor (MMOVE-24): pilot stopped the card\"")
+            && queue.contains("; exit 1; }"), "a stopped pilot opens the results PR and fails, so no arm runs");
     }
 }
