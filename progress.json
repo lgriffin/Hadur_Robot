@@ -1,0 +1,19 @@
+{
+ "plan": "pc-jaylexi-mid",
+ "updated": 1793729092.48928,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "confirm": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
