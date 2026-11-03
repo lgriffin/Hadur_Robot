@@ -556,7 +556,7 @@ final class ShieldTableData {
 
     /**
      * MOVE-34: the opponents the duel surfs with MOVE-33's learning-gun mimics as aim members: the
-     * pc-mimic-on (BENCH-172) picks that held on pc-mimic9 (BENCH-177). Candidate builds add lines
+     * pc-mimic-on (BENCH-172) picks that held on pc-mimic9 (BENCH-177), and pc-mimic-wide's (BENCH-179). Candidate builds add lines
      * here (build-ablation.sh mmlist).
      *
      * @return a fresh array of names
@@ -573,6 +573,11 @@ final class ShieldTableData {
             "cb.fire.Firestarter 2.0f",
             "fromHell.CHCl3 1.4.2",
             "aaa.r.ScalarR 0.005h.053-noshield",
+            // pc-mimic-wide (BENCH-179, PR #614): the 2 of 36 untried learners picked on the screen (8 seeds from 8600),
+            // both holding on 12 fresh seeds from 8800 (+6.1 and +5.9 points; +0.01 APS together, the most 2 robots
+            // can reach, so the card's +0.02 bar was out of reach by construction).
+            "gre.svman4.Morfeas 1.4.3",
+            "ags.rougedc.RougeDC willow",
         };
     }
 
