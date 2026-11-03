@@ -47,7 +47,7 @@ from pathlib import Path
 
 MODES = ("SOFT", "GANG", "FINISH", "LEARN", "PACK", "SCREEN", "POOL", "DISABLED", "MATEFIRE", "REAR", "WAVES", "HUNT",
          "LINES", "LINESW", "LANEP", "LANEB", "GUNLINE", "OWN", "HEADON", "LINEAR", "FAR", "FARTHER", "PATH", "NEAR",
-         "DODGE", "LEAD", "SWIFT", "CONCORD", "HEAVY", "WARY")
+         "DODGE", "LEAD", "SWIFT", "CONCORD", "HEAVY", "WARY", "CLEAR", "MOMENTUM", "AIM")
 
 ROW = re.compile(r"^\|\s*(?P<team>[^|]+?)\s*\|\s*[^|]*\|\s*[^|]*\|\s*(?P<mean>[+-]?\d+(?:\.\d+)?)(?:\s*±\s*(?P<ci>\d+(?:\.\d+)?))?\s*\|\s*$")
 
@@ -366,6 +366,13 @@ def cmd_gate(a):
     print(f"projected {aps:+.2f} +/- {ci:.2f}: {verdict}", file=sys.stderr)
     if short:
         raise SystemExit(f"gate incomplete: {', '.join(short)}")
+    if getattr(a, "stop_below", None) is not None and aps < a.stop_below:
+        md_stop = f"Pilot: projected {aps:+.2f} is under {a.stop_below:+.2f}: the card stops here."
+        if a.out_md:
+            with open(a.out_md, "a") as fh:
+                fh.write(md_stop + "\n")
+        print(md_stop, file=sys.stderr)
+        raise SystemExit(3)
 
 
 def main(argv=None):
@@ -412,6 +419,8 @@ def main(argv=None):
     gt.add_argument("--seeds", type=int, help="paired seeds each team must have in both reports")
     gt.add_argument("--min-aps", type=float, default=0.3)
     gt.add_argument("--out-md")
+    gt.add_argument("--stop-below", type=float,
+                    help="BENCH-172 pilot: exit 3 when the projected change is under this, so the queue skips the rest")
     a = p.parse_args(argv)
     {"pick": cmd_pick, "lock": cmd_lock, "gate": cmd_gate, "screens": cmd_screens}[a.cmd](a)
 

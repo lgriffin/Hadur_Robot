@@ -32,12 +32,19 @@ public final class MeleeWaves {
         public final double speed, aim;
         /** MGUN-17: every aim's angle, the field gun's first; null with the experts off. */
         final double[] aims;
+        /** TMODE-40: the expert-score key taken when the wave was emitted (FieldGun.expertKey). */
+        final String key;
 
         Wave(String target, Point2D.Double source, long time, double speed, double aim) {
             this(target, source, time, speed, aim, null);
         }
 
         Wave(String target, Point2D.Double source, long time, double speed, double aim, double[] aims) {
+            this(target, source, time, speed, aim, aims, target);
+        }
+
+        Wave(String target, Point2D.Double source, long time, double speed, double aim, double[] aims, String key) {
+            this.key = key;
             this.target = target;
             this.source = source;
             this.time = time;
@@ -87,15 +94,16 @@ public final class MeleeWaves {
                 scored = gun;
             }
             if (waves.size() >= MAX_WAVES) waves.removeFirst();
-            waves.addLast(new Wave(e.name, new Point2D.Double(me.x, me.y), now, 20 - 3 * a.power, a.angle, aims));
+            waves.addLast(new Wave(e.name, new Point2D.Double(me.x, me.y), now, 20 - 3 * a.power, a.angle, aims,
+                gun.expertKey(e.name)));
             emitted++;
         }
         return true;
     }
 
-    /** MGUN-17/18: whether the waves score every aim, off a team with either switch on. */
+    /** MGUN-17/18: whether the waves score every aim, off a team with either switch on; TMODE-40: on a team with AIM. */
     static boolean scoring(FieldGun gun) {
-        return (FieldGun.EXPERTS || FieldGun.HIT_TARGET) && !gun.onTeam();
+        return gun.scoresExperts();
     }
 
     /**
@@ -119,7 +127,7 @@ public final class MeleeWaves {
                 for (int x = 0; x < hit.length; x++) {
                     hit[x] = Math.abs(Angles.normalRelativeAngle(bearing - w.aims[x])) <= width;
                 }
-                scored.scoreExperts(w.target, hit);
+                scored.scoreExperts(w.key, hit);
             }
             resolved++;
             it.remove();
