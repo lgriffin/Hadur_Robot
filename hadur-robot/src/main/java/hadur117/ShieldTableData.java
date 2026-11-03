@@ -555,14 +555,24 @@ final class ShieldTableData {
     }
 
     /**
-     * MOVE-34: the opponents the duel surfs with MOVE-33's learning-gun mimics as aim members. Empty
-     * until pc-mimic-on (BENCH-172) holds robots; candidate builds add lines here (build-ablation.sh
-     * mmlist).
+     * MOVE-34: the opponents the duel surfs with MOVE-33's learning-gun mimics as aim members: the
+     * pc-mimic-on (BENCH-172) picks that held on pc-mimic9 (BENCH-177). Candidate builds add lines
+     * here (build-ablation.sh mmlist).
      *
      * @return a fresh array of names
      */
     static String[] mimicOns() {
         return new String[] {
+            // pc-mimic9 (BENCH-177, PR #603): pc-mimic-on's picks that held on 12 fresh seeds from 8400 (gate +0.03 +- 0.02 APS);
+            // cb.Domogled 1.2 fell to -0.8 and stays off.
+            "darkcanuck.Gaff 1.50",
+            "darkcanuck.Pris 0.92",
+            "lazarecki.mega.PinkerStinker 0.7",
+            "fromHell.BlackBox 0.0.2",
+            "gh.GresSuffurd 0.4.13",
+            "cb.fire.Firestarter 2.0f",
+            "fromHell.CHCl3 1.4.2",
+            "aaa.r.ScalarR 0.005h.053-noshield",
         };
     }
 
