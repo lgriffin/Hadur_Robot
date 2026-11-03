@@ -420,8 +420,11 @@ public class FieldGun {
         return onTeam ? teamAim : EXPERTS || HIT_TARGET;
     }
 
-    /** TMODE-40: on a team the experts' scores are kept per class, so every copy of an enemy teaches the rest. */
-    private String expertKey(String name) {
+    /**
+     * TMODE-40: the key {@code name}'s expert scores are kept under: on a team its class, so every
+     * copy of an enemy teaches the rest; off a team the name. A wave takes it when emitted.
+     */
+    public String expertKey(String name) {
         return onTeam ? TeamModes.key(name) : name;
     }
 
@@ -490,8 +493,8 @@ public class FieldGun {
     }
 
     /** MGUN-17: a wave at {@code name} reached it; {@code hit[x]} is whether aim x would have hit. */
-    public void scoreExperts(String name, boolean[] hit) {
-        name = expertKey(name);
+    public void scoreExperts(String key, boolean[] hit) {
+        String name = key;
         double[] s = expertScores.get(name);
         if (s == null) {
             if (expertScores.size() >= MAX_OPPONENTS) return;

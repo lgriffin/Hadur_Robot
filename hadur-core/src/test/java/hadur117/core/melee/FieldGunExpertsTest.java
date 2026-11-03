@@ -45,8 +45,8 @@ class FieldGunExpertsTest {
         assertTrue(MeleeWaves.scoring(gun));
         // Ten waves on each of two copies of one class make the twenty a pick needs.
         for (int i = 0; i < FieldGun.EXPERT_MIN / 2; i++) {
-            gun.scoreExperts("tmnr.TMNR 1.01", hits(false, true, false, false));
-            gun.scoreExperts("tmnr.TMNR 1.01 (2)", hits(false, true, false, false));
+            gun.scoreExperts(gun.expertKey("tmnr.TMNR 1.01"), hits(false, true, false, false));
+            gun.scoreExperts(gun.expertKey("tmnr.TMNR 1.01 (2)"), hits(false, true, false, false));
         }
         double[] pick = gun.pick("tmnr.TMNR 1.01 (3)");
         assertNotNull(pick, "a third copy reads the class's scores");
@@ -55,6 +55,13 @@ class FieldGunExpertsTest {
         gun.onTeam(false);
         assertFalse(gun.scoresExperts(), "off a team the MGUN-17 switch alone decides, and it ships off");
         assertNull(gun.pick("tmnr.TMNR 1.01 (3)"), "off a team scores are kept per name");
+        // A wave keeps the key it was emitted with: emitted on a team, it scores the class even if
+        // the last teammate has died before it lands.
+        assertEquals("tmnr.TMNR 1.01 (3)", gun.expertKey("tmnr.TMNR 1.01 (3)"));
+        gun.onTeam(true);
+        String key = gun.expertKey("tmnr.TMNR 1.01 (3)");
+        gun.onTeam(false);
+        assertNotEquals("tmnr.TMNR 1.01 (3)", key);
         assertFalse(TeamModes.FORCE_AIM);
         assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.AIM));
     }

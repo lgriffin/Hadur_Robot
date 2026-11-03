@@ -25,15 +25,18 @@ class TeamAimPlanTest {
 
     @Test
     @Tag("BENCH-172")
-    @DisplayName("the pilot comes first and its check gates the rest; the results PR opens whatever the pilot says")
+    @DisplayName("the pilot comes first and its check gates the rest; the results PR opens whatever the pilot says, never before")
     void pilotFirst() throws IOException {
         String queue = Files.readString(QUEUE);
-        String[] steps = {"aiprep", "aibb1", "aiam1", "aipilot", "aibb", "aiam", "aipick", "aigate", "aigbb", "aisum"};
+        String[] steps = {"aiprep", "aibb1", "aiam1", "aipilot", "aibb", "aiam", "aiscr", "aipick", "aigate", "aigbb", "aisum", "aipr"};
         for (int i = 1; i < steps.length; i++) {
             assertTrue(block(queue, steps[i]).contains("after: " + steps[i - 1]), steps[i] + " after " + steps[i - 1]);
         }
-        assertFalse(block(queue, "aipr").contains("after:"), "the results PR opens even when the pilot stops the card");
         assertTrue(block(queue, "aipilot").contains("--stop-below 0.0"));
+        assertTrue(block(queue, "aipilot").contains("--set plans/team-aim-set.txt --seeds 3"), "a short pilot cannot decide the card");
+        assertTrue(block(queue, "aipilot").contains("if [ $rc -eq 3 ]; then bash tools/open_results_pr.sh claude/pc-team-aim-results"),
+            "a pilot that stops the card opens the results PR itself");
+        assertTrue(block(queue, "aiscr").contains("--set plans/team-aim-set.txt --seeds 12"), "the pick reads only a whole screen");
         assertTrue(queue.contains("bash ./build-ablation.sh tmaim"));
         assertFalse(queue.matches("(?s).*HadurTeam_3\\.\\d.*"), "no robot version is hard-coded");
         assertTrue(queue.contains("rm -f ${OUT}/team-aim-*.md"), "a rerun never carries an old verdict");
