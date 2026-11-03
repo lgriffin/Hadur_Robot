@@ -1,0 +1,72 @@
+# Kill the strong scorers first (docs/bench/melee-top3.md, MGUN-24, BENCH-185).
+# Leigh 2026-11-03 22:18: "melee is different and I have capacity" (the per-opponent card rule does
+# not bind melee); 22:21 "Yes build it".
+# Why it should win: melee APS is pairwise. Against each opponent in a battle Hadur's pairing is
+# its battle score over its score plus the opponent's, and survival dominates the score: every
+# robot that dies while one lives is +50 to it, and the last alive gets +10 an opponent. A robot
+# that keeps finishing high banks those points in every round, and each one Hadur denies it
+# (by killing it before the crowd thins) lifts Hadur's pairing against it without Hadur scoring
+# more. The field gun today weighs opponents by distance, energy and recent hits only, so it
+# shoots whatever is near and weak. The movement levers (crowd distance, endgame range, endgame
+# gun) all failed; this one moves the gun. The risk: strong robots are harder to hit, so the
+# gun's hit rate may fall.
+# One switch, read only in melee off a team with three or more opponents alive, so the 1v1 and
+# the team never see it:
+#   aa      the baseline (master)
+#   bb      its A/A copy
+#   k1      mstr1, MGUN-24: an opponent's gun weight is times 1 + s, s = its mean finishing place
+#           this battle scaled to 0 (always first to die) .. 1 (always last alive), after 2 rounds
+#   k2      mstr2, MGUN-24: the same at 1 + 2s
+# Pilot (BENCH-186): mspilot fights k2 against an aa baseline battle for battle on 46 fields x 2
+# seeds (3286-3287; 184 battles, about 17% of the card, ~18 min), and mscheck stops the card unless
+# Hadur's score share is up (--share-only: this lever is not aimed at crowd deaths), on at least 95%
+# of the 92 pairs with all 35 rounds each. A few failed pilot battles do not skip the check; a halt
+# by a stop rule stops the queue as on any card. On a stop the check opens the results PR with the
+# pilot read and fails, so no arm after it runs (up to 1,104 battles saved).
+# Each build fights the 46 census fields x 6 fresh seeds alone (3280-3285; 276 battles, 1,104 in
+# all, about 3 h at the PC's ~370 battles/h) at the machine's melee width and CPU constant. The read
+# pairs bb with aa (A/A) and each arm with the mean of aa and bb (--base2), battle for battle.
+# Verdict: an arm passes with its 95% low end above 0 (--gain 0), Hadur's share of others outlived
+# no more than 1 point lower and the 1-30 endgame wins no more than 3 points lower; skipped turns
+# more than 20% over aa's fail it. The card ends in a results PR on claude/pc-melee-strong-results
+# whatever the verdict; the melee thread reads it.
+#   git checkout master && git pull
+#   ./queue.sh run pc-melee-strong        (or  .\queue.ps1 run pc-melee-strong)
+# Stop rules (docs/bench/watch.md), halts only, each keeping every battle fought: fails 20 and
+# stall 30m on the pilot and each arm. A halt leaves that step's remaining battles (up to 276) and
+# every later arm unrun (up to 1,104 if the pilot halts); the cause is fixed and the card resumed.
+
+set OUT = ../docs/bench/local
+
+msprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb k1 k2; do rm -f bisect/hadur117.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh mstr1 && bash ./build-ablation.sh mstr2 && mkdir -p work && rm -rf work/melee-strong-"$V"-pilot work/melee-strong-"$V"-aa work/melee-strong-"$V"-bb work/melee-strong-"$V"-k1 work/melee-strong-"$V"-k2 && echo "$V" > work/melee-strong.version && for a in aa bb k1 k2; do test -f bisect/hadur117.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-strong.args > work/melee-strong-$a.args || exit 1; done && sed -e "s/@V@/$V/g" -e "s/@C@/$C/g" plans/melee-strong-pilot.args > work/melee-strong-pilot.args && rm -f ${OUT}/melee-strong-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+mspilot | mvn -q exec:java "-Dexec.args=@work/melee-strong-pilot.args" || echo "pilot: some battles failed; mscheck reads what finished"
+  after: msprep
+  watch: battles=184
+  stop: fails 20
+  stop: stall 30m
+mscheck | V=$(cat work/melee-strong.version) && test -n "$V" && { python3 tools/melee_pilot.py work/melee-strong-"$V"-pilot --expect 92 --rounds 35 --share-only --out ${OUT}/melee-strong-pilot.md --title "pc-melee-strong pilot: k2 against aa on $V" || { bash tools/open_results_pr.sh claude/pc-melee-strong-results "Kill the strong scorers first (MGUN-24): pilot stopped the card" ${OUT}/melee-strong-pilot.md; exit 1; }; }
+  after: mspilot
+msaa   | mvn -q exec:java "-Dexec.args=@work/melee-strong-aa.args"
+  after: mscheck
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+msbb   | mvn -q exec:java "-Dexec.args=@work/melee-strong-bb.args"
+  after: msaa
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+msk1   | mvn -q exec:java "-Dexec.args=@work/melee-strong-k1.args"
+  after: msbb
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+msk2   | mvn -q exec:java "-Dexec.args=@work/melee-strong-k2.args"
+  after: msk1
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+msread | V=$(cat work/melee-strong.version) && test -n "$V" && W=work/melee-strong-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm k1="$W"-k1 --arm k2="$W"-k2 --census melee-census-317.txt --seeds 6 --gain 0 --survival-slack 1 --out ${OUT}/melee-strong-read.md --title "Kill the strong scorers first on $V" || true; } && test -s ${OUT}/melee-strong-read.md
+  after: msk2
+mspr   | bash tools/open_results_pr.sh claude/pc-melee-strong-results "Kill the strong scorers first (MGUN-24)" ${OUT}/melee-strong-read.md ${OUT}/melee-strong-pilot.md $(ls ${OUT}/melee-strong-aa.md ${OUT}/melee-strong-bb.md ${OUT}/melee-strong-k1.md ${OUT}/melee-strong-k2.md 2>/dev/null)
+  after: msread

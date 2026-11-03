@@ -99,3 +99,20 @@ it ran in full. The bb A/A copy was clean at +0.22 ± 0.20. n3 was flat at +0.01
 endgame wins +3.2 points and energy entering the endgame +1.2. n4 was flat at -0.03 ± 0.16, with
 skips +19%. Both fail. The cloud smoke's +0.29 share did not repeat. `CLOSEST_FACTOR_SOLO` stays at
 2. Crowd distance is not a lever on its own, so the melee top 3 has no switch left in this line.
+
+## Kill the strong scorers first (Leigh 2026-11-03 22:18-22:21)
+
+Leigh lifted the per-opponent card rule for melee ("melee is different and I have capacity") and asked
+for an overnight card. Melee APS is pairwise: against each opponent in a battle, Hadur's pairing is its
+battle score over its score plus the opponent's. Survival dominates the score (+50 for each robot that
+dies while one lives, +10 an opponent for the last alive), so a robot that keeps finishing high banks
+the most points against Hadur. Each one Hadur denies it by killing it before the crowd thins lifts
+that pairing even if Hadur scores no more. The field gun weighs opponents by distance, energy and
+recent hits only.
+
+MGUN-24 `STRONG_BOOST` (arms `mstr1` k1, `mstr2` k2; ships 0) multiplies an opponent's gun weight by
+1 + boost × s in the crowd (three or more opponents alive), with s its mean finishing place this battle
+scaled from 0 (always first to die) to 1 (always last alive), once two rounds have placed it. The risk
+is that strong robots are harder to hit. Card `pc-melee-strong` (BENCH-185): aa, bb, k1, k2 on 46 fields
+× 6 seeds (3280-3285); the pilot (BENCH-186) fights k2 against aa on 2 seeds (3286-3287) and stops the
+card unless the score share is up (`melee_pilot.py --share-only`).
