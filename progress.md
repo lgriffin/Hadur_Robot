@@ -1,10 +1,10 @@
 # Queue pc-melee-near: progress
 
-Updated 2026-11-03 13:00:48 PC time (13:00 UTC), runner pid 692.
+Updated 2026-11-03 13:15:55 PC time (13:15 UTC), runner pid 692.
 
 - `mnprep` done, exit 0 in 2 min
-- `mnaa` running
-- `mnbb` pending
+- `mnaa` done, exit 0 in 44 min
+- `mnbb` running
 - `mnn3` pending
 - `mnn4` pending
 - `mnread` pending
@@ -12,15 +12,27 @@ Updated 2026-11-03 13:00:48 PC time (13:00 UTC), runner pid 692.
 
 ### mnaa
 
-**264 of 276 battles** (96%), 0 failed. Running 43 min, 367 battles/h, about 2 min left (ends ~13:02 PC time). Last battle 1 min ago.
-Skipped turns a battle: 27.2 overall, first 100 27.6, last 100 26.9.
+**276 of 276 battles** (100%), 0 failed. Running 44 min, 375 battles/h, about 0 min left (ends ~13:01 PC time). Last battle 0 min ago.
+Skipped turns a battle: 27.0 overall, first 100 27.6, last 100 26.8.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 264 |
-| `stall 30m` | halt | ok | last battle 1 min ago |
+| `fails 20` | halt | ok | 0 failed of 276 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 12 battles unrun (about 2 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### mnbb
+
+**90 of 276 battles** (33%), 0 failed. Running 14 min, 385 battles/h, about 29 min left (ends ~13:44 PC time). Last battle 0 min ago.
+Skipped turns a battle: 27.8 overall, first 90 27.8, last 90 27.8.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 90 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 186 battles unrun (about 29 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -33,4 +45,7 @@ Stopping now would leave 12 battles unrun (about 2 min); every battle already fo
 12:17:40 watching mnaa: 2 stop rule(s)
 12:18:28 progress mnaa: 0/276 (0%) battles, 0 failed
 12:48:42 progress mnaa: 180/276 (65%) battles, 348/h, ETA 17 min, 0 failed, skips 27.1/battle (last 100)
+13:01:53 mnaa exit=0 in 2653 s
+13:01:53 start mnbb
+13:01:53 watching mnbb: 2 stop rule(s)
 ```
