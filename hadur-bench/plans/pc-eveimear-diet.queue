@@ -1,0 +1,55 @@
+# Eveimear codesize diet (thread "Take 1st with JayLexi and Sanaro"; BENCH-182), from Leigh's doc "Eveimear & Sanaro
+# Codesize Diet" (2026-11-03). Eveimear 0.2 is 9th in MicroRumble at 746 of 749 B; the next arms (a wall segment for
+# the gun, surf-lite, a per-opponent power char) need room the bot does not have. This card checks that the doc's
+# cuts give bytes back without costing play.
+#   ./queue.sh run pc-eveimear-diet        (or  .\queue.ps1 run pc-eveimear-diet)
+# Run it from master with this card merged: git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned. Nothing here touches the shipped Eveimear; nothing is uploaded or
+# released. Run it after pc-eveimear-st2 and pc-jaylexi-diet, not alongside them. About 30 min to the end.
+#
+# Why it should pass (Leigh asked for this evaluation, 2026-11-03 23:06; it is a no-loss check, not a gain arm):
+# - n (rows 1 and 3-6, 719 B, the doc's -27 exactly) gives 0.2's orders bit for bit on 8 seeded replay scripts of 10
+#   rounds x 1,500 ticks (cloud, 2026-11-03), with Math.random seeded the same in both builds. Row 6 alone differs
+#   only when the enemy's lateral speed is in (-1e-9, 0), an enemy heading at or away from us to 1e-10 rad, which the
+#   replay hit only with a rammer aimed exactly down the bearing. n's bench read must sit inside the A/A band.
+# - r2 (709) reads the enemy's energy from BulletHitEvent instead of subtracting our damage. The doc expects 0.0 +-
+#   0.17; only a tick where the enemy also fired is seen one scan early.
+# - r27 (704) also drops setAdjustRadarForGunTurn, so the radar's sweep-back rides the gun turn. The doc calls it
+#   probably a loser; it is cheap to check alongside.
+# - What it buys: 37 B (n + r2) to 42 B (r27) of room, against the 3 spare today: a fourth gun segment (about 20 B),
+#   a per-opponent power char from MODES (about 15), or most of the 60 B wall term. A cut ships only if its 95%
+#   interval is above -0.15 points, and only as Eveimear 0.3 on Leigh's word.
+#
+# Pilot: shuffled jobs, so the first 20% (about 1,350 battles) are a fair sample. At 20% the futility rule finishes
+# the run only if both row-2 arms (r2 and r27) are clearly harmful (best case under -0.5 points); n alone left is the
+# play-neutral build and needs no more battles to be safe. The A/A rule halts it if aa is out of its band against c.
+# Panel: kitlab/micro-wide2-field.txt (112 MicroRumble robots: the top 12 by name and one from each of 100 rank bands,
+# seed 4). 5 arms x 112 robots x 12 fresh seeds from 33000 x 35 rounds = 6,720 battles.
+# Read: each arm against c and aa pooled, per opponent, mean and 95% over the 112. Stop rules: fails 30, dead 8,
+# skips 60 over 200, stall 30m (halt; every battle fought is kept and a rerun resumes), aa after 20% (halt), futility
+# r2,r27 below -0.5 after 20% (finish). ALERT opens an issue for Leigh on a stop.
+
+set C = --skip-build --skip-fetch --rounds 35 --parallel auto --child-heap 512M --no-truth-log
+set SRC = ../eveimear/src/main/java/hadur117/micro/Eveimear.java
+set W = work/eveimear-diet
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set REL = https://github.com/lgriffin/Hadur_Robot/releases/download
+
+prep | git checkout -q master && rm -f ${OUT}/*_eveimear-diet*.md && mkdir -p ${W} kitlab/jars && ./fetch-opponents.sh --set kitlab/micro-wide2-field.txt && mvn -q compile && curl -fsSL -o kitlab/jars/hadur117.micro.Eveimear_0.2.jar ${REL}/eveimear-v0.2/hadur117.micro.Eveimear_0.2.jar && python3 tools/eveimear_diet.py ${SRC} ${W}/n.java --rows neutral && python3 tools/eveimear_diet.py ${SRC} ${W}/r2.java --rows neutral,row2 && python3 tools/eveimear_diet.py ${SRC} ${W}/r27.java --rows neutral,row2,row7 && bash kitlab/build_arm.sh ${SRC} hadur117.micro.Eveimear 0.2aa && bash kitlab/build_arm.sh ${W}/n.java hadur117.micro.Eveimear 0.2n && bash kitlab/build_arm.sh ${W}/r2.java hadur117.micro.Eveimear 0.2r2 && bash kitlab/build_arm.sh ${W}/r27.java hadur117.micro.Eveimear 0.2r27
+
+bench | sh ./bench-top20.sh ${C} --set kitlab/micro-wide2-field.txt --seeds 12 --seed-base 33000 --arms plans/eveimear-diet.arms --out ${W}/run --label eveimear-diet --shuffle-jobs
+  after: prep
+  watch:
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+  stop: futility r2,r27 below -0.5 after 20%
+
+gate | python3 ../data/tools/multiarm.py ${W}/run/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_eveimear-diet.md && printf '\n## Sizes\n\nc 0.2 746 B; n 719; r2 709; r27 704 (plain javac, kitlab_codesize.py). A cut ships when its 95%% interval against c and aa pooled is above -0.15 points.\n' >> ${OUT}/$(date +%Y-%m-%d)_eveimear-diet.md && { [ ! -f ${W}/run/EARLY-STOP.md ] || cat ${W}/run/EARLY-STOP.md >> ${OUT}/$(date +%Y-%m-%d)_eveimear-diet.md; }
+  after: bench
+
+pr | bash tools/open_results_pr.sh claude/pc-eveimear-diet-results "Eveimear codesize diet: 746 to 704 B, no-loss check (pc-eveimear-diet)" ${OUT}/*_eveimear-diet.md
+  after: gate
