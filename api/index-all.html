@@ -10638,6 +10638,11 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../requirements.html#BENCH-78">BENCH-78</a>: a session runs in the main home, not in worker homes, so a constant pinned with
  <code>--cpu-constant</code> is written there; without one the home is left to the engine.</div>
 </dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#placed(java.lang.String,int,int)" class="member-name-link">placed(String, int, int)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-24">MGUN-24</a>: <code>name</code> finished the round in <code>place</code> among <code>opponents</code>
+ (1 is last alive; 0 is unplaced and ignored).</div>
+</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.View.html#plan" class="member-name-link">plan</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.View.html" title="class in hadur117.core.melee">MinimumRiskMovement.View</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/move/ShotDodgePlanner.html#plan(hadur117.core.model.RobotState,java.util.List,java.util.List,double,hadur117.core.model.RobotState,double)" class="member-name-link">plan(RobotState, List&lt;Wave&gt;, List&lt;Double&gt;, double, RobotState, double)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/ShotDodgePlanner.html" title="class in hadur117.core.move">ShotDodgePlanner</a></dt>
@@ -14639,6 +14644,21 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.Pull.html#strength" class="member-name-link">strength</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.Pull.html" title="class in hadur117.core.melee">MinimumRiskMovement.Pull</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#strength(java.lang.String)" class="member-name-link">strength(String)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-24">MGUN-24</a>: 0 for a robot that dies first every round, 1 for one always last alive; 0 until placed <a href="hadur117/core/melee/FieldGun.html#STRONG_ROUNDS"><code>FieldGun.STRONG_ROUNDS</code></a> times.</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#STRONG_BOOST" class="member-name-link">STRONG_BOOST</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-24">MGUN-24</a>: off a team, while three or more opponents are alive, an opponent's weight is
+ times 1 + <a href="hadur117/core/melee/FieldGun.html#STRONG_BOOST"><code>FieldGun.STRONG_BOOST</code></a> s, with s = (n - p) / (n - 1) from its mean finishing
+ place p among the battle's n opponents over the rounds so far (1 is last alive), once
+ <a href="hadur117/core/melee/FieldGun.html#STRONG_ROUNDS"><code>FieldGun.STRONG_ROUNDS</code></a> rounds have placed it.</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#STRONG_ROUNDS" class="member-name-link">STRONG_ROUNDS</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-24">MGUN-24</a>: rounds an opponent must have been placed in before its place counts.</div>
+</dd>
 <dt><a href="hadur117/core/melee/AimExperts.html#strongest(java.util.List)" class="member-name-link">strongest(List&lt;TeamDanger.Aim&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/AimExperts.html" title="class in hadur117.core.melee">AimExperts</a></dt>
 <dd>
 <div class="block">The heading of the strongest of <code>aims</code>, or NaN for none: the learned expert's call.</div>

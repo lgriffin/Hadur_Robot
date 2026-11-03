@@ -304,6 +304,19 @@ loadScripts(document, 'script');</script>
  cannot take the whole opponent (Ogi's 1/(match + 1.6), scaled to our distances).</div>
 </div>
 <div class="col-first even-row-color"><code>static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#STRONG_BOOST" class="member-name-link">STRONG_BOOST</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-24">MGUN-24</a>: off a team, while three or more opponents are alive, an opponent's weight is
+ times 1 + <a href="#STRONG_BOOST"><code>STRONG_BOOST</code></a> s, with s = (n - p) / (n - 1) from its mean finishing
+ place p among the battle's n opponents over the rounds so far (1 is last alive), once
+ <a href="#STRONG_ROUNDS"><code>STRONG_ROUNDS</code></a> rounds have placed it.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#STRONG_ROUNDS" class="member-name-link">STRONG_ROUNDS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-24">MGUN-24</a>: rounds an opponent must have been placed in before its place counts.</div>
+</div>
+<div class="col-first even-row-color"><code>static final double</code></div>
 <div class="col-second even-row-color"><code><a href="#SWIFT_POWER" class="member-name-link">SWIFT_POWER</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">TMODE-32: the most a member fires under SWIFT: Ogi's own power, 14.3 px a tick.</div>
@@ -487,59 +500,72 @@ loadScripts(document, 'script');</script>
  <a href="#EXPERT_EDGE"><code>EXPERT_EDGE</code></a>, with its smoothed hit rate over the field gun's, or null: before
  <a href="#EXPERT_MIN"><code>EXPERT_MIN</code></a> waves, or with no aim that far ahead.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#playForward(java.awt.geom.Point2D.Double,hadur117.core.world.EnemyInfo,float%5B%5D,double,long)" class="member-name-link">playForward</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#placed(java.lang.String,int,int)" class="member-name-link">placed</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ int&nbsp;place,
+ int&nbsp;opponents)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-24">MGUN-24</a>: <code>name</code> finished the round in <code>place</code> among <code>opponents</code>
+ (1 is last alive; 0 is unplaced and ignored).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#playForward(java.awt.geom.Point2D.Double,hadur117.core.world.EnemyInfo,float%5B%5D,double,long)" class="member-name-link">playForward</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  <a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
  float[]&nbsp;t,
  double&nbsp;power,
  long&nbsp;now)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Plays trajectory <code>t</code> forward from <code>e</code>'s last scan until a bullet of
  <code>power</code> fired from <code>me</code> now would reach it; stays inside the walls.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../knn/KdTree.Entry.html" title="class in hadur117.core.knn">KdTree.Entry</a>&lt;float[]&gt;&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#pooled(java.lang.String,double%5B%5D,int)" class="member-name-link">pooled</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../knn/KdTree.Entry.html" title="class in hadur117.core.knn">KdTree.Entry</a>&lt;float[]&gt;&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#pooled(java.lang.String,double%5B%5D,int)" class="member-name-link">pooled</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  double[]&nbsp;attributes,
  int&nbsp;k)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">TMODE-33: the <code>k</code> situations most like <code>attributes</code> from every history of
  <code>name</code>'s class, so each copy of a team's robot teaches the gun about the others.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#rams(hadur117.core.world.EnemyInfo,java.awt.geom.Point2D.Double)" class="member-name-link">rams</a><wbr>(<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#rams(hadur117.core.world.EnemyInfo,java.awt.geom.Point2D.Double)" class="member-name-link">rams</a><wbr>(<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Coming at Hadur inside <a href="#RAMMER_RANGE"><code>RAMMER_RANGE</code></a>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#readsWell(java.lang.String)" class="member-name-link">readsWell</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#readsWell(java.lang.String)" class="member-name-link">readsWell</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">TMODE-33: whether Hadur hits <code>name</code>'s class <a href="#CONCORD_RATE"><code>CONCORD_RATE</code></a> of <a href="#CONCORD_SHOTS"><code>CONCORD_SHOTS</code></a> or more shots.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#scoreExperts(java.lang.String,boolean%5B%5D)" class="member-name-link">scoreExperts</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#scoreExperts(java.lang.String,boolean%5B%5D)" class="member-name-link">scoreExperts</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
  boolean[]&nbsp;hit)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MGUN-17">MGUN-17</a>: a wave at <code>name</code> reached it; <code>hit[x]</code> is whether aim x would have hit.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#scoresExperts()" class="member-name-link">scoresExperts</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#scoresExperts()" class="member-name-link">scoresExperts</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MGUN-17">MGUN-17</a>/TMODE-40: whether the waves score the simple aims: off a team with the switch, on one with AIM.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shotAt(java.lang.String)" class="member-name-link">shotAt</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;target)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shotAt(java.lang.String)" class="member-name-link">shotAt</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;target)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">TMODE-33: one of Hadur's bullets left, aimed at <code>target</code>; counted against its class.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="FieldGun.Solution.html" title="class in hadur117.core.melee">FieldGun.Solution</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#solutions(java.awt.geom.Point2D.Double,double,int,java.util.List,long)" class="member-name-link">solutions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="FieldGun.Solution.html" title="class in hadur117.core.melee">FieldGun.Solution</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#solutions(java.awt.geom.Point2D.Double,double,int,java.util.List,long)" class="member-name-link">solutions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  double&nbsp;energy,
  int&nbsp;others,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;&nbsp;alive,
  long&nbsp;now)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Every firing solution this tick, for every opponent fresh enough to shoot at.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#strength(java.lang.String)" class="member-name-link">strength</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-24">MGUN-24</a>: 0 for a robot that dies first every round, 1 for one always last alive; 0 until placed <a href="#STRONG_ROUNDS"><code>STRONG_ROUNDS</code></a> times.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#swift(boolean)" class="member-name-link">swift</a><wbr>(boolean&nbsp;swift)</code></div>
@@ -837,6 +863,41 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur117.core.melee.FieldGun.DECAP_BOOST">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="STRONG_BOOST">
+<h3>STRONG_BOOST</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">STRONG_BOOST</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-24">MGUN-24</a>: off a team, while three or more opponents are alive, an opponent's weight is
+ times 1 + <a href="#STRONG_BOOST"><code>STRONG_BOOST</code></a> s, with s = (n - p) / (n - 1) from its mean finishing
+ place p among the battle's n opponents over the rounds so far (1 is last alive), once
+ <a href="#STRONG_ROUNDS"><code>STRONG_ROUNDS</code></a> rounds have placed it. A robot that keeps finishing high takes
+ the most melee points from Hadur in every pairing: each opponent that dies while it lives
+ is +50 to it, so killing it early denies those points. Battle-scoped, never saved.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.melee.FieldGun.STRONG_BOOST">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="STRONG_ROUNDS">
+<h3>STRONG_ROUNDS</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">STRONG_ROUNDS</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-24">MGUN-24</a>: rounds an opponent must have been placed in before its place counts.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.melee.FieldGun.STRONG_ROUNDS">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
@@ -1393,6 +1454,23 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../../../../requirements.html#MGUN-17">MGUN-17</a>: the simple aim that has beaten the field gun on <code>name</code> by
  <a href="#EXPERT_EDGE"><code>EXPERT_EDGE</code></a>, with its smoothed hit rate over the field gun's, or null: before
  <a href="#EXPERT_MIN"><code>EXPERT_MIN</code></a> waves, or with no aim that far ahead.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="placed(java.lang.String,int,int)">
+<h3>placed</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">placed</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ int&nbsp;place,
+ int&nbsp;opponents)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-24">MGUN-24</a>: <code>name</code> finished the round in <code>place</code> among <code>opponents</code>
+ (1 is last alive; 0 is unplaced and ignored). Kept for the battle, across rounds.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="strength(java.lang.String)">
+<h3>strength</h3>
+<div class="member-signature"><span class="return-type">double</span>&nbsp;<span class="element-name">strength</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-24">MGUN-24</a>: 0 for a robot that dies first every round, 1 for one always last alive; 0 until placed <a href="#STRONG_ROUNDS"><code>STRONG_ROUNDS</code></a> times.</div>
 </section>
 </li>
 <li>

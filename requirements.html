@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 325 of 331 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 326 of 332 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -803,6 +803,11 @@ traceability check reads. 325 of 331 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">MGUN-23</span><span class="badge">Optional</span><span class="badge stage">M7</span></div>
 <p>Where the <code>AVG_POWER</code> switch is on, while in melee off a team with three or more opponents and 20 energy or more, a shot that is neither a hold nor a finisher shall, with Hadur&#x27;s energy at or above the living opponents&#x27; mean energy and four or more opponents, have power 3 within 700 px and 1.0 beyond, and with Hadur&#x27;s energy below that mean have power 1.0 beyond 300 px, under the table&#x27;s kill, lead and own-energy caps; otherwise <a class="req" href="requirements.html#MGUN-13">MGUN-13</a>&#x27;s power stands (inspired by Diamond; ships off).</p>
 <dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/melee/FieldGun.html" title="hadur117.core.melee.FieldGun">FieldGun</a>, <a href="api/hadur117/core/melee/MeleeEnergyPolicy.html" title="hadur117.core.melee.MeleeEnergyPolicy">MeleeEnergyPolicy</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/melee/MeleeEnergyPolicyTest.java">MeleeEnergyPolicyTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="MGUN-24">
+<div class="req-head"><span class="rid">MGUN-24</span><span class="badge">Optional</span><span class="badge stage">M7</span></div>
+<p>Where <code>STRONG_BOOST</code> is above 0, while in melee off a team with three or more opponents alive, the field gun shall multiply an opponent&#x27;s weight by 1 + <code>STRONG_BOOST</code> × s, where s = (n − p) / (n − 1) from its mean finishing place p among the battle&#x27;s n opponents over the battle&#x27;s rounds so far (1 is last alive), and 0 until two rounds have placed it.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/MeleeSeam.html" title="hadur117.core.MeleeSeam">MeleeSeam</a>, <a href="api/hadur117/core/melee/FieldGun.html" title="hadur117.core.melee.FieldGun">FieldGun</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/melee/FieldGunStrongTest.java">FieldGunStrongTest.java</a></dd></dl>
 </article>
 <h2 id="group-MMEM">Melee memory</h2>
 <article class="req-card" id="MMEM-1">
