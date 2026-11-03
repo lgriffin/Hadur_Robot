@@ -19,3 +19,9 @@
 14:32:10 start mnn4
 14:32:10 watching mnn4: 2 stop rule(s)
 14:49:38 progress mnn4: 114/276 (41%) battles, 391/h, ETA 25 min, 0 failed, skips 29.9/battle (last 100)
+15:19:52 mnn4 exit=0 in 2862 s
+15:19:52 start mnread
+15:20:07 mnread exit=0 in 14 s
+15:20:07 start mnpr
+15:20:14 mnpr exit=0 in 7 s
+15:20:14 ALLDONE

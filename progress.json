@@ -1,6 +1,6 @@
 {
  "plan": "pc-melee-near",
- "updated": 1793719011.1050532,
+ "updated": 1793719214.9801567,
  "steps": {
   "mnprep": {
    "status": "done",
@@ -27,14 +27,22 @@
    "end": "2026-11-03T14:32:10"
   },
   "mnn4": {
-   "status": "running",
-   "start": "2026-11-03T14:32:10"
+   "status": "done",
+   "exit": 0,
+   "seconds": 2862,
+   "end": "2026-11-03T15:19:52"
   },
   "mnread": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 14,
+   "end": "2026-11-03T15:20:07"
   },
   "mnpr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 7,
+   "end": "2026-11-03T15:20:14"
   }
  },
  "watched": [
@@ -152,8 +160,8 @@
   {
    "step": "mnn4",
    "started": 1793716330.1895785,
-   "updated": 1793719011.0964572,
-   "elapsed": 2680.906878709793,
+   "updated": 1793719192.6380913,
+   "elapsed": 2862.4485127925873,
    "expected": 276,
    "panel": null,
    "field": null,
@@ -161,20 +169,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 258,
+   "battles": 276,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 346.44992982635495,
-   "eta": 187.0400147937065,
-   "fraction": 0.9347826086956522,
-   "last_battle_age": 0.11380577087402344,
+   "rate": 347.1154138002817,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 0.27862977981567383,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 258"
+     "detail": "0 failed of 276"
     },
     {
      "rule": "stall 30m",
@@ -183,8 +191,8 @@
      "detail": "last battle 0 min ago"
     }
    ],
-   "skips_mean": 31.147286821705425,
-   "skips_last100": 34.97
+   "skips_mean": 32.26086956521739,
+   "skips_last100": 38.78
   }
  ]
 }
