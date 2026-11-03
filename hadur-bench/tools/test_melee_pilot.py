@@ -53,6 +53,13 @@ class MeleePilotTest(unittest.TestCase):
     def test_share_up_but_more_crowd_deaths_stops(self):
         self.assertEqual(1, self.run_case([(22, 4)], [(20, 3)])[0])
 
+    def test_share_only_passes_a_share_gain_with_more_crowd_deaths(self):
+        # BENCH-186: a targeting lever is judged on the share alone.
+        self.assertEqual(0, self.run_case([(22, 4)], [(20, 3)], extra=('--share-only',))[0])
+
+    def test_share_only_still_stops_without_a_share_gain(self):
+        self.assertEqual(1, self.run_case([(19, 1)], [(20, 3)], extra=('--share-only',))[0])
+
     def test_second_place_is_not_a_crowd_death(self):
         with tempfile.TemporaryDirectory() as t:
             d = os.path.join(t, 'b')

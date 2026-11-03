@@ -2,7 +2,7 @@
 """BENCH-178: the melee pilot read. Pairs each arm battle with its --baseline battle (same field,
 same seed) and passes only when the pilot is complete (at least 95% of the expected pairs, each with
 the run's rounds) and the arm shows a gain: Hadur's mean score share up and its crowd deaths (rounds
-it finished third or worse, so it died with two or more opponents left) down, both as point estimates. A pilot is a cheap early look, not a gate: it stops a card that shows nothing in its first
+it finished third or worse, so it died with two or more opponents left) down, both as point estimates (with --share-only, the share alone: BENCH-186). A pilot is a cheap early look, not a gate: it stops a card that shows nothing in its first
 ~20%, and the full card still has to pass the melee gate.
 
     python3 tools/melee_pilot.py <run dir> --out pilot.md   (exit 0 pass, 1 no gain, 2 no data)
@@ -48,7 +48,7 @@ def ci(xs):
     return 1.96 * statistics.stdev(xs) / len(xs) ** 0.5 if len(xs) > 1 else float('inf')
 
 
-def read(root, expect=None, rounds=None):
+def read(root, expect=None, rounds=None, share_only=False):
     p = pairs(root, rounds)
     if not p or (expect and len(p) < 0.95 * expect):
         return dict(battles=len(p), incomplete=True)
@@ -56,7 +56,7 @@ def read(root, expect=None, rounds=None):
     crowd = [a[1] - b[1] for a, b in p]
     return dict(battles=len(p), share=statistics.mean(share), share_ci=ci(share),
                 crowd=statistics.mean(crowd), crowd_ci=ci(crowd),
-                passed=statistics.mean(share) > 0 and statistics.mean(crowd) < 0, incomplete=False)
+                passed=statistics.mean(share) > 0 and (share_only or statistics.mean(crowd) < 0), incomplete=False)
 
 
 def main(argv=None):
@@ -66,8 +66,10 @@ def main(argv=None):
     ap.add_argument('--title', default='Melee pilot')
     ap.add_argument('--expect', type=int, help='the pairs the pilot schedules; under 95% of them is no data')
     ap.add_argument('--rounds', type=int, help='the rounds a battle fights; a shorter one is left out')
+    ap.add_argument('--share-only', action='store_true',
+                    help='BENCH-186: pass on the score share alone, for a lever not aimed at crowd deaths')
     a = ap.parse_args(argv)
-    r = read(a.root, a.expect, a.rounds)
+    r = read(a.root, a.expect, a.rounds, a.share_only)
     with open(a.out, 'w') as f:
         f.write(f'# {a.title}\n\n')
         if r['incomplete']:
