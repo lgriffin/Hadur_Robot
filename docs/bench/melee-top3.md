@@ -91,3 +91,11 @@ written case. pc-melee-near is a melee-wide switch; Leigh granted it an exceptio
 (3277-3278, 184 battles, about 17% of the card); `tools/melee_pilot.py` stops the card unless the
 score share is up and crowd deaths are down, and opens the results PR with its read when it stops.
 
+
+## pc-melee-near read (PR #608, 2026-11-03)
+
+46 fields × 6 seeds, 276 battles an arm, none missing. The run started before the pilot merged, so
+it ran in full. The bb A/A copy was clean at +0.22 ± 0.20. n3 was flat at +0.01 ± 0.15, with 1-30
+endgame wins +3.2 points and energy entering the endgame +1.2. n4 was flat at -0.03 ± 0.16, with
+skips +19%. Both fail. The cloud smoke's +0.29 share did not repeat. `CLOSEST_FACTOR_SOLO` stays at
+2. Crowd distance is not a lever on its own, so the melee top 3 has no switch left in this line.
