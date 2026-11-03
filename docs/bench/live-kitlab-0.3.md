@@ -92,3 +92,32 @@ The next card, `hadur-bench/plans/pc-jaylexi-rows2.queue`, climbs on (top 200, 3
 against 0.4 on a fresh sample (`kitlab/mini-wide3-field.txt`, rank-band seed 5), with 0.3 seated
 again to read 0.4's gain off the sample it was picked on.
 
+
+## 0.4 live (2026-11-03)
+
+Leigh released 0.4 (S120) and the cloud client ran it from 13:24 to 17:33 GMT. The pages are saved in
+`data/rumble/pages/2026-11-03T1733Z_*`, and the API copies in `data/rumble/parsed/2026-11-03T1735Z_*`. The table
+is `kitlab_live_gap.py --rank` on the new rankings with JayLexi 0.4, 0.3 and FoilistMC (668 shared opponents).
+
+**0.4 is 4th, 88.21 ± 0.29 (669 pairings, 773 battles)**, +0.28 over 0.3 (87.93). Foilist (3rd) is
+0.25 ahead, CunobelinDC 0.55 and FoilistMC 0.79. The bench said +0.72 on mini-wide2 and about +0.1 on
+the fresh mini-wide3, and the live gain sits between the two.
+
+| Opponents (rank) | n | 0.4 − 0.3 | share | 0.4 − FoilistMC | share |
+|---|---|---|---|---|---|
+| 1 to 15 | 13 | **+7.44 ± 1.61** | +0.14 | −6.52 | −0.13 |
+| 16 to 30 | 15 | **+3.82 ± 1.64** | +0.09 | −5.81 | −0.13 |
+| 31 to 60 | 30 | −0.09 ± 1.21 | 0.00 | −0.71 | −0.03 |
+| 61 to 120 | 60 | +0.67 ± 0.67 | +0.06 | −1.62 | −0.15 |
+| 121 to 250 | 130 | −0.16 ± 0.37 | −0.03 | −0.41 | −0.08 |
+| 251 to 450 | 200 | −0.08 ± 0.15 | −0.02 | −0.92 | −0.28 |
+| 451 and down | 220 | +0.15 ± 0.07 | +0.05 | +0.16 | +0.05 |
+
+- **Taking the rows off for the top won back the top 30**, as designed: +7.4 and +3.8 a bot. The
+  rest of the field held, so the table's gains there were kept.
+- **The gap to FoilistMC (0.74 on the shared set) is now in two places.** The top 30 is −0.26 of it,
+  movement against the learning guns, which needs k-NN-class surfing that doesn't fit in the
+  bytes (kitlab-0.3-arms.md). Ranks 61 to 120 and 251 to 450 are −0.43 between them, small per bot
+  (−1.6 and −0.9) but many bots.
+- 3rd needs +0.25. The mid-field rows (ranks 61 to 450, −0.51 against FoilistMC) are where a
+  per-opponent card can still find it.

@@ -89,7 +89,7 @@ Live results as of 2026-11-02 16:00 UTC (each robot's README keeps its full hist
 | [**Saor**](saor/) `hadur117.micro.Saor` | MicroMelee | 723 B of 749 | **1st of 158**, 69.51 ± 0.27 (0.3), 0.24 ahead of kc.micro.Figment; 3rd of 206 in MiniMelee | [README](saor/README.md) |
 | [**Deise**](deise/) `hadur117.mini.Deise` | MiniMelee | 1,499 B of 1,499 | **1st of 206**, 71.18 ± 0.22 (0.5), 0.04 ahead of kc.mini.Mirage; 12th of 418 in MeleeRumble | [README](deise/README.md) |
 | [**Sanaro**](sanaro/) `hadur117.nano.Sanaro` | NanoMelee | 249 B of 249 | **2nd of 90**, 65.41 ± 0.29 (0.3), 1.03 behind d414.nano.Quantum | [README](sanaro/README.md) |
-| [**JayLexi**](jaylexi/) `hadur117.mini.JayLexi` | MiniRumble (1v1) | 1,494 B of 1,499 | **4th of 670**, 87.92 ± 0.27 (0.3), 1.08 behind sheldor.mini.FoilistMC | [README](jaylexi/README.md) |
+| [**JayLexi**](jaylexi/) `hadur117.mini.JayLexi` | MiniRumble (1v1) | 1,494 B of 1,499 | **4th of 670**, 88.21 ± 0.29 (0.4), 0.25 behind 3rd and 0.79 behind sheldor.mini.FoilistMC | [README](jaylexi/README.md) |
 | [**Eveimear**](eveimear/) `hadur117.micro.Eveimear` | MicroRumble (1v1) | 746 B of 749 | **9th of 516**, 83.35 ± 0.30 (0.2), 2.23 behind kc.micro.WaveShark | [README](eveimear/README.md) |
 
 - **TwinSaor** is two copies of one Saor-derived robot sharing radar and targets, with a range and
