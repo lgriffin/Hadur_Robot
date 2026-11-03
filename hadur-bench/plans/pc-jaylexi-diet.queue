@@ -17,13 +17,13 @@
 #   segment, or a per-opponent power row. A cut ships only if its 95% interval is above -0.15 points.
 #
 # Pilot: shuffled jobs, so the first 20% (about 2,150 battles) are a fair sample. At 20% the futility rule finishes
-# the run if both r2 and all are clearly harmful (best case under -0.5 points): every arm but n carries row 2, so then
-# nothing else could ship either. The A/A rule halts it if aa is out of its band against c.
+# the run only if every row-2 arm (r2, r9, r10, r11 and all) is clearly harmful (best case under -0.5 points); n
+# alone left could still ship, but it is the play-neutral build and needs no more battles to be safe. The A/A rule halts it if aa is out of its band against c.
 # Panel: kitlab/mini-wide3-field.txt (112 MiniRumble robots: the top 12 by name and one from each of 100 rank bands,
 # seed 5). 8 arms x 112 robots x 12 fresh seeds from 9800 x 35 rounds = 10,752 battles.
 # Read: each arm against c and aa pooled, per opponent, mean and 95% over the 112 (unweighted; the bands also carry
 # weights for kitlab_read.py, given too). Stop rules: fails 30, dead 8, skips 60 over 200, stall 30m (halt; every
-# battle fought is kept and a rerun resumes), aa after 20% (halt), futility r2,all below -0.5 after 20% (finish).
+# battle fought is kept and a rerun resumes), aa after 20% (halt), futility r2,r9,r10,r11,all below -0.5 after 20% (finish).
 # ALERT opens an issue for Leigh on a stop.
 
 set C = --skip-build --skip-fetch --rounds 35 --parallel auto --child-heap 512M --no-truth-log
@@ -43,7 +43,7 @@ bench | sh ./bench-top20.sh ${C} --set kitlab/mini-wide3-field.txt --seeds 12 --
   stop: skips 60 over 200
   stop: stall 30m
   stop: aa after 20%
-  stop: futility r2,all below -0.5 after 20%
+  stop: futility r2,r9,r10,r11,all below -0.5 after 20%
 
 gate | python3 ../data/tools/multiarm.py ${W}/run/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_jaylexi-diet.md && printf '\n## Sizes\n\nc 0.4 1,494 B; n 1,470; r2 1,460; r9 1,454; r10 1,455; r11 1,456; all 1,445 (plain javac, kitlab_codesize.py). A cut ships when its 95%% interval against c and aa pooled is above -0.15 points.\n' >> ${OUT}/$(date +%Y-%m-%d)_jaylexi-diet.md && { [ ! -f ${W}/run/EARLY-STOP.md ] || cat ${W}/run/EARLY-STOP.md >> ${OUT}/$(date +%Y-%m-%d)_jaylexi-diet.md; }
   after: bench
