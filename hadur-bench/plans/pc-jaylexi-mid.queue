@@ -20,6 +20,8 @@
 # neither p1 nor p4 can still reach a gain above 0 (z 3), and the A/A rule halts it if aa is out of its band against c.
 # Otherwise it runs on to 3,200 battles.
 #
+# Ranks here count the other robots only (our own two left out of the 2026-11-02 list), so 121-450 is global 123-452;
+# the arms and the panel use the same numbering, so every panel robot is one whose row the arms change.
 # Panel: kitlab/mini-mid-field.txt, 80 robots, one from each even rank band of MiniRumble ranks 121-450 (seed 8), none in
 # broken-1.11.2.txt, on Robocode 1.11.2. 4 arms x 80 robots x 10 fresh seeds from 9700 x 35 rounds.
 # Read: each arm against c and aa pooled, per opponent, mean and 95% over the 80; per band (1: 121-250, 2: 251-450). The
@@ -49,7 +51,7 @@ confirm | sh ./bench-top20.sh ${C} --set kitlab/mini-mid-field.txt --seeds 10 --
   stop: aa after 20%
   stop: futility p1,p4 below 0 after 20%
 
-gate | python3 ../data/tools/multiarm.py ${W}/run/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_jaylexi-mid.md && { [ ! -f ${W}/run/EARLY-STOP.md ] || cat ${W}/run/EARLY-STOP.md >> ${OUT}/$(date +%Y-%m-%d)_jaylexi-mid.md; }
+gate | python3 ../data/tools/multiarm.py ${W}/run/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_jaylexi-mid.md && printf '\n## Whole field\n\nThe panel stands for 330 of 669 pairings: the whole-field APS gain of each arm is its vs-ref difference and interval x 0.49.\n' >> ${OUT}/$(date +%Y-%m-%d)_jaylexi-mid.md && { [ ! -f ${W}/run/EARLY-STOP.md ] || cat ${W}/run/EARLY-STOP.md >> ${OUT}/$(date +%Y-%m-%d)_jaylexi-mid.md; }
   after: confirm
 
 pr | bash tools/open_results_pr.sh claude/pc-jaylexi-mid-results "JayLexi mid-field surf-row strength (pc-jaylexi-mid)" ${OUT}/*_jaylexi-mid.md

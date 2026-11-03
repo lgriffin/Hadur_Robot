@@ -1,6 +1,7 @@
 # jaylexi-mid panel (pc-jaylexi-mid): MiniRumble ranks 121 to 450 (2026-11-02 14:40 rankings, our robots left out), one robot
 # from each of 80 even rank bands, seed 8, robots in broken-1.11.2.txt passed over. Weight 1 each: the panel mean stands for
-# ranks 121-450 (330 of 669 pairings). Role band: 1 ranks 121-250, 2 ranks 251-450.
+# ranks 121-450 (330 of 669 pairings). Role band: 1 ranks 121-250, 2 ranks 251-450. Ranks count the other robots only
+# (our own two left out), as tools/jaylexi_rows_off.py does, so 121-450 here is global 123-452.
 exauge.LemonDrop 1.6.130 | rank122-band1 | exauge.LemonDrop_1.6.130.jar | 1.0000
 ers.nano.lig.LigMA 1.9 | rank127-band1 | ers.nano.lig.LigMA_1.9.jar | 1.0000
 pe.mini.SandboxMini 1.2 | rank132-band1 | pe.mini.SandboxMini_1.2.jar | 1.0000
