@@ -1,11 +1,11 @@
 # Queue pc-team-momentum: progress
 
-Updated 2026-11-03 04:22:34 PC time (04:22 UTC), runner pid 43904.
+Updated 2026-11-03 04:37:40 PC time (04:37 UTC), runner pid 43904.
 
 - `mtprep` done, exit 0 in 2 min
 - `mtbb` done, exit 0 in 1.1 h
-- `mtmo` running
-- `mtff` pending
+- `mtmo` done, exit 0 in 1.1 h
+- `mtff` running
 - `mtsum` pending
 - `mtpr` pending
 
@@ -24,21 +24,20 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### mtmo
 
-**711 of 1080 battles** (66%), 0 failed. Running 52 min, 823 battles/h, about 27 min left (ends ~04:49 PC time). Last battle 0 min ago.
-Skipped turns a battle: 18.2 overall, first 100 17.6, last 100 16.1.
+**1080 of 1080 battles** (100%), 0 failed. Running 1.1 h, 968 battles/h, about 0 min left (ends ~04:37 PC time). Last battle 0 min ago.
+Skipped turns a battle: 17.4 overall, first 100 17.6, last 100 9.3.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 711 |
+| `fails 60` | halt | ok | 0 failed of 1080 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 16.1 a battle over the last 100 (first 100: 17.6) |
+| `skips 40 over 100` | halt | ok | 9.3 a battle over the last 100 (first 100: 17.6) |
 
-Stopping now would leave 369 battles unrun (about 27 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-02:21:43 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
 02:21:43 start mtprep
 02:21:46 progress pushed to origin claude/pc-team-momentum-progress (every 15 min)
 02:23:24 mtprep exit=0 in 100 s
@@ -51,4 +50,7 @@ Stopping now would leave 369 battles unrun (about 27 min); every battle already 
 03:30:43 start mtmo
 03:30:43 watching mtmo: 3 stop rule(s)
 03:54:23 progress mtmo: 281/1080 (26%) battles, 712/h, ETA 1.1 h, 0 failed, skips 17.8/battle (last 100)
+04:24:35 progress mtmo: 747/1080 (69%) battles, 832/h, ETA 24 min, 0 failed, skips 14.2/battle (last 100)
+04:37:37 mtmo exit=0 in 4014 s
+04:37:37 start mtff
 ```
