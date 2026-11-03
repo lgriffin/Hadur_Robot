@@ -1,0 +1,34 @@
+{
+ "plan": "pc-melee-strong",
+ "updated": 1793748270.7740335,
+ "steps": {
+  "msprep": {
+   "status": "pending"
+  },
+  "mspilot": {
+   "status": "pending"
+  },
+  "mscheck": {
+   "status": "pending"
+  },
+  "msaa": {
+   "status": "pending"
+  },
+  "msbb": {
+   "status": "pending"
+  },
+  "msk1": {
+   "status": "pending"
+  },
+  "msk2": {
+   "status": "pending"
+  },
+  "msread": {
+   "status": "pending"
+  },
+  "mspr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
