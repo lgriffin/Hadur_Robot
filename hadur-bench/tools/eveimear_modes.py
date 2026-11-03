@@ -10,9 +10,10 @@ hit. pc-eveimear-st picked them from 2 seeds a mode, so only 100 of 515 robots c
         FIELD's robots whose 0.2 cell holds 1, less the robots that do not load on 1.11.2; PILOT takes every 5th,
         REST the others (pilot + rest = OUT, so the screen never refights a pilot battle).
   force SRC OUT --char {0,9}      every cell set to the char (an arm that plays that mode against every robot)
-  apply SRC PICK.tsv OUT --field FIELD [--arm-char rn=0 --arm-char sg=9]
+  apply SRC PICK.tsv OUT --field FIELD [--written FILE] [--arm-char rn=0 --arm-char sg=9]
         0.2 with each picked robot's cell set to its arm's char. A cell another FIELD robot shares is left alone
-        unless every robot on it picked the same char, so no robot outside the picks changes mode.
+        unless every robot on it picked the same char, so no robot outside the picks changes mode. --written keeps
+        the pick lines it wrote, so the confirm panel holds only robots whose mode pk really changes.
   pilot ARMS.tsv --margin 3 --out FILE
         the pilot's read: real picks (rn, sg against c and aa pooled) and null picks (aa against c alone, the same
         test on two copies of one jar). Exit 0 when the real picks are at least 2 x null + 3, else exit 3: no gain
@@ -103,15 +104,21 @@ def cmd_apply(a):
     for l in field_lines(a.field):
         on_cell.setdefault(cell(name_of(l), mask), []).append(name_of(l))
     done = skipped = 0
+    lines = [l for l in open(a.pick, encoding="utf-8") if l.strip() and not l.startswith("#")]
+    written = []
     for name, ch in sorted(picks.items()):
         c = cell(name, mask)
         if all(picks.get(o) == ch for o in on_cell.get(c, [name])):
             modes[c] = ch
             done += 1
+            written += [l for l in lines if l.split("\t")[0].strip() == name]
         else:
             skipped += 1
             print("left alone (cell shared): %s" % name)
     write_src(src, m, modes, a.out)
+    if a.written:
+        with open(a.written, "w", encoding="utf-8") as f:
+            f.writelines(written)
     print("%s: %d picks written, %d left alone" % (a.out, done, skipped))
 
 
@@ -150,6 +157,7 @@ def main():
     p.add_argument("--char", type=int, choices=(0, 9), required=True)
     p = sub.add_parser("apply"); p.add_argument("src"); p.add_argument("pick"); p.add_argument("out")
     p.add_argument("--field", required=True)
+    p.add_argument("--written", help="the pick lines actually written, for the confirm panel")
     p.add_argument("--arm-char", action="append", default=None)
     p = sub.add_parser("pilot"); p.add_argument("arms"); p.add_argument("--margin", type=float, default=3.0)
     p.add_argument("--out", required=True)
