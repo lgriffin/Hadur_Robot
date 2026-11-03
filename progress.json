@@ -1,12 +1,16 @@
 {
  "plan": "pc-team-momentum",
- "updated": 1793672503.8976579,
+ "updated": 1793673410.519761,
  "steps": {
   "mtprep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 100,
+   "end": "2026-11-03T02:23:24"
   },
   "mtbb": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-03T02:23:24"
   },
   "mtmo": {
    "status": "pending"
@@ -21,5 +25,49 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "mtbb",
+   "started": 1793672604.727785,
+   "updated": 1793673410.5119596,
+   "elapsed": 805.7841744422913,
+   "expected": 1080,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 127,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 567.3975916894155,
+   "eta": 6046.553686956721,
+   "fraction": 0.1175925925925926,
+   "last_battle_age": 5.428791761398315,
+   "rules": [
+    {
+     "rule": "fails 60",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 127"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "ok",
+     "detail": "18.3 a battle over the last 100 (first 100: 17.4)"
+    }
+   ],
+   "skips_mean": 17.724409448818896,
+   "skips_last100": 18.31
+  }
+ ]
 }
