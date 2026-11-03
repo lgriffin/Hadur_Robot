@@ -187,6 +187,35 @@ class TeamModesTest(unittest.TestCase):
         self.assertIn("**+0.45 ±", text)
         self.assertIn("**PASS**", text)
 
+    def test_pick_takes_aim_and_writes_it_into_the_table(self):
+        am = report(self.d, "am.md", {"a.ATeam 1": (6.0, 2.0), "b.BTeam 2": (1.0, 2.0)})
+        bb = report(self.d, "abb.md", {"a.ATeam 1": (0.0, 1.0), "b.BTeam 2": (0.0, 1.0)})
+        out = Path(self.d)
+        team_modes.main(["pick", "--report", f"AIM={am}", "--control", f"AIM={bb}", "--min-mean", "3.0", "--low-end", "0",
+                         "--base", "MATEFIRE,HUNT,PATH,DODGE,CONCORD", "--census", str(out / "census.txt"),
+                         "--opponents", self.d, "--out-tsv", str(out / "aim.tsv"), "--out-java", str(out / "aim.java"),
+                         "--out-md", str(out / "aim.md")])
+        java = (out / "aim.java").read_text()
+        self.assertIn("Mode.AIM", java)
+        self.assertIn("Mode.CONCORD", java)
+        self.assertNotIn('"b.', java)
+        for mode in ("CLEAR", "MOMENTUM", "AIM"):
+            self.assertIn(mode, team_modes.MODES)
+
+    def test_gate_stop_below_ends_a_pilot_with_no_gain(self):
+        mk = report(self.d, "pmk.md", {"a.ATeam 1": (-1.0, 3.0), "b.BTeam 2": (0.5, 4.0)})
+        bb = report(self.d, "pbb.md", {"a.ATeam 1": (0.0, 2.0), "b.BTeam 2": (0.0, 2.0)})
+        out = Path(self.d) / "pilot.md"
+        with self.assertRaises(SystemExit) as stop:
+            team_modes.main(["gate", "--report", mk, "--control", bb, "--teams", "20", "--min-aps", "0.3",
+                             "--stop-below", "0", "--out-md", str(out)])
+        self.assertEqual(3, stop.exception.code)
+        self.assertIn("the card stops here", out.read_text())
+        # A pilot that shows a gain goes on, whatever its verdict.
+        up = report(self.d, "pup.md", {"a.ATeam 1": (2.0, 3.0), "b.BTeam 2": (0.5, 4.0)})
+        team_modes.main(["gate", "--report", up, "--control", bb, "--teams", "20", "--min-aps", "0.3",
+                         "--stop-below", "0", "--out-md", str(Path(self.d) / "pilot2.md")])
+
 
     def counted(self, name, diffs, pairs):
         p = Path(report(self.d, name, diffs))

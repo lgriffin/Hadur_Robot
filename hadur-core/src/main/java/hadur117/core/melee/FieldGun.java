@@ -174,6 +174,8 @@ public class FieldGun {
     private final Map<String, int[]> classShots = new LinkedHashMap<>();
     /** MGUN-17: true while a wave reads the field gun's own aim, which the experts must not steer. */
     private boolean pure;
+    /** TMODE-40: whether this tick's team modes carry AIM. */
+    private boolean teamAim;
 
     public FieldGun(BattleField field) {
         this.field = field;
@@ -408,6 +410,24 @@ public class FieldGun {
         this.swift = swift;
     }
 
+    /** TMODE-40: whether this tick's team modes carry AIM; set before any aim of the tick. */
+    public void teamAim(boolean teamAim) {
+        this.teamAim = teamAim;
+    }
+
+    /** MGUN-17/TMODE-40: whether the waves score the simple aims: off a team with the switch, on one with AIM. */
+    public boolean scoresExperts() {
+        return onTeam ? teamAim : EXPERTS || HIT_TARGET;
+    }
+
+    /**
+     * TMODE-40: the key {@code name}'s expert scores are kept under: on a team its class, so every
+     * copy of an enemy teaches the rest; off a team the name. A wave takes it when emitted.
+     */
+    public String expertKey(String name) {
+        return onTeam ? TeamModes.key(name) : name;
+    }
+
     /** TMODE-36: whether this tick's team modes carry HEAVY; set before any aim of the tick. */
     public void heavy(boolean heavy) {
         this.heavy = heavy;
@@ -449,7 +469,7 @@ public class FieldGun {
     }
 
     private boolean expertsOn() {
-        return EXPERTS && !onTeam && !pure;
+        return !pure && (onTeam ? teamAim : EXPERTS);
     }
 
     /**
@@ -473,7 +493,8 @@ public class FieldGun {
     }
 
     /** MGUN-17: a wave at {@code name} reached it; {@code hit[x]} is whether aim x would have hit. */
-    public void scoreExperts(String name, boolean[] hit) {
+    public void scoreExperts(String key, boolean[] hit) {
+        String name = key;
         double[] s = expertScores.get(name);
         if (s == null) {
             if (expertScores.size() >= MAX_OPPONENTS) return;
@@ -491,7 +512,7 @@ public class FieldGun {
      * {@link #EXPERT_MIN} waves, or with no aim that far ahead.
      */
     double[] pick(String name) {
-        double[] s = expertScores.get(name);
+        double[] s = expertScores.get(expertKey(name));
         if (s == null || s[EXPERT_COUNT] < (1 - Math.pow(EXPERT_DECAY, EXPERT_MIN)) / (1 - EXPERT_DECAY) - 1e-9) return null;
         double field = (s[FIELD] + 1) / (s[EXPERT_COUNT] + 2);
         int best = -1;

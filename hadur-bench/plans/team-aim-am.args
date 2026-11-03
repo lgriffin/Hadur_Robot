@@ -1,0 +1,31 @@
+# PC card pc-team-aim (BENCH-172): arm am against aa. Template: aiprep writes work/team-aim-am.args with @V@ = the robot.release in hadur-robot/pom.xml
+--team
+true
+--seeds
+12
+--seed-base
+8200
+--rounds
+10
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+plans/team-aim-set.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@am.jar
+--robot
+hadur117.HadurTeam @V@am
+--member
+hadur117.Hadur
+--out
+work/team-aim-@V@-am
+--report
+../docs/bench/local/team-aim-am.md
+--baseline
+bisect/hadur117.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur117.HadurTeam @V@aa
