@@ -10,3 +10,7 @@
 13:01:53 start mnbb
 13:01:53 watching mnbb: 2 stop rule(s)
 13:18:57 progress mnbb: 114/276 (41%) battles, 401/h, ETA 24 min, 0 failed, skips 28.6/battle (last 100)
+13:47:05 mnbb exit=0 in 2711 s
+13:47:05 start mnn3
+13:47:05 watching mnn3: 2 stop rule(s)
+13:49:10 progress mnn3: 12/276 (4%) battles, 346/h, ETA 46 min, 0 failed, skips 27.5/battle (last 100)
