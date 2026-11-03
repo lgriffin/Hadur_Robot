@@ -6,3 +6,7 @@
 02:23:24 watching mtbb: 3 stop rule(s)
 02:23:44 progress mtbb: 0/1080 (0%) battles, 0 failed
 02:53:57 progress mtbb: 399/1080 (37%) battles, 784/h, ETA 52 min, 0 failed, skips 21.6/battle (last 100)
+03:24:10 progress mtbb: 910/1080 (84%) battles, 899/h, ETA 11 min, 0 failed, skips 12.4/battle (last 100)
+03:30:43 mtbb exit=0 in 4038 s
+03:30:43 start mtmo
+03:30:43 watching mtmo: 3 stop rule(s)
