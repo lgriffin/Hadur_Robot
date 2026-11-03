@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-176: the pc-melee-near card (MMOVE-23) is complete before it reaches the PC. */
+/** BENCH-176: the pc-melee-near card (MMOVE-24) is complete before it reaches the PC. */
 class MeleeNearPlanTest {
 
     private static final Path QUEUE = Path.of("plans/pc-melee-near.queue");

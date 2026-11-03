@@ -44,8 +44,8 @@
 #   edge   HAND-2: a survivor whose gun the melee's book read as head-on gets the dodge planner, primed head-on. Suffix ed.
 #   eshd   HAND-3: that survivor gets shield mode on SHIELD-15's trial, listed or not. Suffix es.
 #   emgun  HAND-5: the melee's field gun aims in the endgame duel once its aim on the survivor is learned. Suffix eg.
-#   mnear3 MMOVE-23: the melee closest-robot factor off a team is 3, not 2 (docs/bench/melee-top3.md). Suffix n3.
-#   mnear4 MMOVE-23: as mnear3 at 4. Suffix n4.
+#   mnear3 MMOVE-24: the melee closest-robot factor off a team is 3, not 2 (docs/bench/melee-top3.md). Suffix n3.
+#   mnear4 MMOVE-24: as mnear3 at 4. Suffix n4.
 #   eclose HAND-4: the melee endgame duel opens at 400 px, not the stranger's 650 (docs/bench/melee-top3.md). Suffix ek.
 #   e3ring  MEND-1: with two opponents left off a team, the crowd's ring and lateral weight (no MMOVE-4). Suffix er.
 #   e3pow  MEND-2: with two opponents left off a team, the crowd's power table (not the duel's). Suffix ep.
@@ -1201,8 +1201,8 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
         mnear3|mnear4)
-            # MMOVE-23 (docs/bench/melee-top3.md): the closest-robot factor off a team, 3 or 4 for 2,
-            # so Hadur is fewer opponents' nearest robot in the crowd; team and duel bit for bit.
+            # MMOVE-24 (docs/bench/melee-top3.md): the crowd's closest-robot factor off a team (three or more
+            # opponents; MEND-3 keeps 4 with two left), 3 or 4 for 2, so Hadur is fewer opponents' nearest robot in the crowd; team and duel bit for bit.
             n=${a#mnear}
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
                 "public static final double CLOSEST_FACTOR_SOLO = 2.0;" "public static final double CLOSEST_FACTOR_SOLO = $n.0;"
