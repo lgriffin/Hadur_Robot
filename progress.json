@@ -1,0 +1,28 @@
+{
+ "plan": "pc-melee-near",
+ "updated": 1793708126.9150798,
+ "steps": {
+  "mnprep": {
+   "status": "pending"
+  },
+  "mnaa": {
+   "status": "pending"
+  },
+  "mnbb": {
+   "status": "pending"
+  },
+  "mnn3": {
+   "status": "pending"
+  },
+  "mnn4": {
+   "status": "pending"
+  },
+  "mnread": {
+   "status": "pending"
+  },
+  "mnpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
