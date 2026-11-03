@@ -1,0 +1,63 @@
+# Crowd survival in melee (docs/bench/melee-top3.md, MMOVE-23, BENCH-176).
+# Leigh 2026-11-02 23:15: "Lets do both options" (crowd damage taken and per-opponent survival).
+# The endgame duel switches failed (pc-melee-near, PR #591); the gap is crowd damage. On the 1.11.2
+# census Hadur is the nearest robot of 0.83 opponents on a crowd tick (Diamond and ScalarR 0.50),
+# 0.98 in the rounds it dies in the crowd, where the damage from those opponents doubles (44 vs 20).
+# One switch, read only in melee off a team, so the 1v1 and the team never see it:
+#   aa      the baseline (master)
+#   bb      its A/A copy
+#   n3      mnear3, MMOVE-23: the closest-robot factor off a team is 3, not 2
+#   n4      mnear4, MMOVE-23: the same at 4. Cloud smoke (43 paired battles, 22 fields, seeds
+#           4400-01): crowd deaths 22.1 -> 19.1% of rounds (-3.0 +- 2.5), damage from opponents
+#           Hadur is nearest to -3.0 +- 1.5 a round, score share +0.29 +- 0.30.
+# Each build fights the 46 census fields x 6 fresh seeds alone (3271-3276, after pc-melee-end's
+# 3265-3270; 276 battles, 1,104 in all, about 1.8 h at ~620 battles/h) at the machine's melee width
+# and CPU constant. The read pairs bb with aa (A/A, within +-0.25) and each arm with the mean of aa
+# and bb (--base2), battle for battle; the arm reports' "Rounds that ended as a duel" tables say
+# where an arm's endgame wins moved.
+# Verdict: an arm passes with its 95% low end above 0 (--gain 0, the melee gate since 2026-10-31),
+# Hadur's share of others outlived no more than 1 point lower and the 1-30 endgame wins no more than
+# 3 points lower; if its skipped turns a battle rise more than 20% over aa's it fails whatever its
+# APS (read from the arm reports). The card ends in a results PR on claude/pc-melee-near-results
+# whatever the verdict; the melee thread reads it.
+#   ./queue.sh run pc-melee-near        (or  .\queue.ps1 run pc-melee-near)
+# Run it from master, one bench queue at a time:
+#   git checkout master && git pull
+# haprep reads the version from hadur-robot/pom.xml, so a bump cannot point the card at stale
+# jars, and fixes the width and version in work/, so a resumed card never mixes host profiles or
+# reads another version's battles. Prep clears the arms' battle folders, since it rebuilds their jars.
+# Stop rules (docs/bench/watch.md), halts only, each keeping every battle fought: fails 20 and
+# stall 30m on each arm (each arm is its own single-arm step, so `dead` cannot be read). A halt
+# leaves that arm's remaining battles (up to 276) and every later arm unrun (up to 828 if aa
+# halts); the cause is fixed and the card resumed, and the halted arm refights all its 276
+# battles (a single-arm run does not read back a stopped run's; up to ~27 min). No futility or
+# skips rule: the paired read needs the baselines whole, and melee skips are read from the arm
+# reports against aa's.
+
+set OUT = ../docs/bench/local
+
+mnprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb n3 n4; do rm -f bisect/hadur117.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh mnear3 && bash ./build-ablation.sh mnear4 && mkdir -p work && rm -rf work/melee-near-"$V"-aa work/melee-near-"$V"-bb work/melee-near-"$V"-n3 work/melee-near-"$V"-n4 && echo "$V" > work/melee-near.version && for a in aa bb n3 n4; do test -f bisect/hadur117.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-near.args > work/melee-near-$a.args || exit 1; done && rm -f ${OUT}/melee-near-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+mnaa   | mvn -q exec:java "-Dexec.args=@work/melee-near-aa.args"
+  after: mnprep
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+mnbb   | mvn -q exec:java "-Dexec.args=@work/melee-near-bb.args"
+  after: mnaa
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+mnn3   | mvn -q exec:java "-Dexec.args=@work/melee-near-n3.args"
+  after: mnbb
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+mnn4   | mvn -q exec:java "-Dexec.args=@work/melee-near-n4.args"
+  after: mnn3
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+mnread | V=$(cat work/melee-near.version) && test -n "$V" && W=work/melee-near-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm n3="$W"-n3 --arm n4="$W"-n4 --census melee-census-317.txt --seeds 6 --gain 0 --survival-slack 1 --out ${OUT}/melee-near-read.md --title "The closest-robot factor on $V" || true; } && test -s ${OUT}/melee-near-read.md
+  after: mnn4
+mnpr   | bash tools/open_results_pr.sh claude/pc-melee-near-results "The melee closest-robot factor (MMOVE-23)" ${OUT}/melee-near-read.md $(ls ${OUT}/melee-near-aa.md ${OUT}/melee-near-bb.md ${OUT}/melee-near-n3.md ${OUT}/melee-near-n4.md 2>/dev/null)
+  after: mnread

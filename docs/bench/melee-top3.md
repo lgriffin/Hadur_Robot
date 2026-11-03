@@ -67,7 +67,20 @@ shots: the melee kNN aims worse in a duel than the duel gun does. HAND-4 was fla
 Energy entering the endgame (54.7) and deaths with two opponents left (9.3%) did not move in any arm.
 Both stay off. The endgame duel is not where the melee gap is.
 
-## Next
+## Crowd survival (Leigh 2026-11-02 23:15: "Lets do both options")
 
-The census says lost rounds start with the energy deficit from the crowd: 61 damage taken against 45.
-The next lever is crowd damage taken in the last three or four, before the duel begins.
+From the pc-melee-end baselines (aa and bb, 19,320 rounds) and the cloud census:
+
+- **Per opponent:** crowd deaths are spread thin. The worst killer, DemonicRage, causes 1.8% of
+  4,208 crowd deaths. Hadur dies in the crowd in 24% of rounds 0-4 and 22% of rounds 5-29, so a
+  saved per-opponent danger prior would win back about 0.3 points of crowd deaths at most. Not built.
+- **Crowd damage:** in rounds Hadur dies in the crowd it is the nearest robot of 0.98 opponents on a
+  mean crowd tick, against 0.77 in rounds it survives. The damage it takes from those opponents
+  doubles, 44 against 20. Diamond and ScalarR sit at 0.50, and ScalarR takes half Hadur's crowd
+  damage a tick.
+
+MMOVE-23 `CLOSEST_FACTOR_SOLO` (arms `mnear3` n3, `mnear4` n4) raises the closest-robot factor off a
+team from 2. Cloud smoke of n4 (43 paired battles, 22 fields, seeds 4400-01; the container restarted
+mid-run): crowd deaths 22.1 to 19.1% of rounds (-3.0 ± 2.5), damage from opponents Hadur is nearest
+to -3.0 ± 1.5 a round, score share +0.29 ± 0.30. Carded as `pc-melee-near` (BENCH-176): aa, bb, n3, n4
+on 46 fields × 6 seeds (3271-3276).
