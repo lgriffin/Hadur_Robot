@@ -1,0 +1,37 @@
+{
+ "plan": "pc-shelf",
+ "updated": 1793747594.8622408,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "pilot-s": {
+   "status": "pending"
+  },
+  "screen-s": {
+   "status": "pending"
+  },
+  "pilot-u": {
+   "status": "pending"
+  },
+  "screen-u": {
+   "status": "pending"
+  },
+  "pick": {
+   "status": "pending"
+  },
+  "build": {
+   "status": "pending"
+  },
+  "confirm": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
