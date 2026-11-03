@@ -1,0 +1,52 @@
+# JayLexi codesize diet (thread "Take 1st with JayLexi and Sanaro"; BENCH-181), from Leigh's doc "JayLexi 0.4 Codesize
+# Diet" (2026-11-03). JayLexi 0.4 is 4th in MiniRumble at 1,494 of 1,499 B; every arm that could close the +0.25 to
+# 3rd needs bytes. This card checks that the doc's cuts give bytes back without costing play.
+#   ./queue.sh run pc-jaylexi-diet        (or  .\queue.ps1 run pc-jaylexi-diet)
+# Run it from master with this card merged: git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned. Nothing here touches the shipped JayLexi; nothing is uploaded or
+# released. About 45 min to the end.
+#
+# Why it should pass (Leigh asked for this evaluation, 2026-11-03 22:50; it is a no-loss check, not a gain arm):
+# - n (rows 1, 3-8, 1,470 B) passes JayLexiReplayTest against the readable ref: the same orders every tick as 0.4. Its
+#   bench read must sit inside the A/A band; if it does not, the bench is what is wrong.
+# - r2 (1,460) reads the enemy's energy from BulletHitEvent instead of subtracting our damage. The doc expects 0.0 +-
+#   0.15; only a tick where the enemy also fired or hit a wall is seen one scan early.
+# - r9 / r10 / r11 (each r2 + one row) and all (1,445) change a tick of surf after a hit, the radar's gun-turn
+#   coupling and the radar's 2x margin. The doc calls r11 the likely keeper and r9 the likely loser.
+# - What it buys: 34 B (n + r2) to 49 B (all) of room, enough for the 4-byte gun change left out of 0.2 plus a third surf
+#   segment, or a per-opponent power row. A cut ships only if its 95% interval is above -0.15 points.
+#
+# Pilot: shuffled jobs, so the first 20% (about 2,150 battles) are a fair sample. At 20% the futility rule finishes
+# the run if both r2 and all are clearly harmful (best case under -0.5 points): every arm but n carries row 2, so then
+# nothing else could ship either. The A/A rule halts it if aa is out of its band against c.
+# Panel: kitlab/mini-wide3-field.txt (112 MiniRumble robots: the top 12 by name and one from each of 100 rank bands,
+# seed 5). 8 arms x 112 robots x 12 fresh seeds from 9800 x 35 rounds = 10,752 battles.
+# Read: each arm against c and aa pooled, per opponent, mean and 95% over the 112 (unweighted; the bands also carry
+# weights for kitlab_read.py, given too). Stop rules: fails 30, dead 8, skips 60 over 200, stall 30m (halt; every
+# battle fought is kept and a rerun resumes), aa after 20% (halt), futility r2,all below -0.5 after 20% (finish).
+# ALERT opens an issue for Leigh on a stop.
+
+set C = --skip-build --skip-fetch --rounds 35 --parallel auto --child-heap 512M --no-truth-log
+set SRC = ../jaylexi/src/main/java/hadur117/mini/JayLexi.java
+set W = work/jaylexi-diet
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set REL = https://github.com/lgriffin/Hadur_Robot/releases/download
+
+prep | git checkout -q master && rm -f ${OUT}/*_jaylexi-diet*.md && mkdir -p ${W} kitlab/jars && ./fetch-opponents.sh --set kitlab/mini-wide3-field.txt && mvn -q compile && curl -fsSL -o kitlab/jars/hadur117.mini.JayLexi_0.4.jar ${REL}/jaylexi-v0.4/hadur117.mini.JayLexi_0.4.jar && python3 tools/jaylexi_diet.py ${SRC} ${W}/n.java --rows neutral && python3 tools/jaylexi_diet.py ${SRC} ${W}/r2.java --rows neutral,row2 && python3 tools/jaylexi_diet.py ${SRC} ${W}/r9.java --rows neutral,row2,row9 && python3 tools/jaylexi_diet.py ${SRC} ${W}/r10.java --rows neutral,row2,row10 && python3 tools/jaylexi_diet.py ${SRC} ${W}/r11.java --rows neutral,row2,row11 && python3 tools/jaylexi_diet.py ${SRC} ${W}/all.java --rows neutral,row2,row9,row10,row11 && bash kitlab/build_arm.sh ${SRC} hadur117.mini.JayLexi 0.4aa && bash kitlab/build_arm.sh ${W}/n.java hadur117.mini.JayLexi 0.4n && bash kitlab/build_arm.sh ${W}/r2.java hadur117.mini.JayLexi 0.4r2 && bash kitlab/build_arm.sh ${W}/r9.java hadur117.mini.JayLexi 0.4r9 && bash kitlab/build_arm.sh ${W}/r10.java hadur117.mini.JayLexi 0.4r10 && bash kitlab/build_arm.sh ${W}/r11.java hadur117.mini.JayLexi 0.4r11 && bash kitlab/build_arm.sh ${W}/all.java hadur117.mini.JayLexi 0.4all
+
+bench | sh ./bench-top20.sh ${C} --set kitlab/mini-wide3-field.txt --seeds 12 --seed-base 9800 --arms plans/jaylexi-diet.arms --out ${W}/run --label jaylexi-diet --shuffle-jobs
+  after: prep
+  watch:
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+  stop: futility r2,all below -0.5 after 20%
+
+gate | python3 ../data/tools/multiarm.py ${W}/run/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_jaylexi-diet.md && printf '\n## Sizes\n\nc 0.4 1,494 B; n 1,470; r2 1,460; r9 1,454; r10 1,455; r11 1,456; all 1,445 (plain javac, kitlab_codesize.py). A cut ships when its 95%% interval against c and aa pooled is above -0.15 points.\n' >> ${OUT}/$(date +%Y-%m-%d)_jaylexi-diet.md && { [ ! -f ${W}/run/EARLY-STOP.md ] || cat ${W}/run/EARLY-STOP.md >> ${OUT}/$(date +%Y-%m-%d)_jaylexi-diet.md; }
+  after: bench
+
+pr | bash tools/open_results_pr.sh claude/pc-jaylexi-diet-results "JayLexi codesize diet: 1,494 to 1,445 B, no-loss check (pc-jaylexi-diet)" ${OUT}/*_jaylexi-diet.md
+  after: gate

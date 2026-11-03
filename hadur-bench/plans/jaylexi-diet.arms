@@ -1,0 +1,11 @@
+# BENCH-181 (pc-jaylexi-diet): c is JayLexi 0.4 as released, aa its A/A rebuild, n the doc's play-neutral rows 1 and
+# 3-8 (1,470 B, replay-identical to 0.4), r2 n plus row 2 (1,460), r9 / r10 / r11 r2 plus that one row (1,454 /
+# 1,455 / 1,456), all r2 plus rows 9-11 (1,445). Built by tools/jaylexi_diet.py.
+c | hadur117.mini.JayLexi 0.4 | kitlab/jars/hadur117.mini.JayLexi_0.4.jar
+aa | hadur117.mini.JayLexi 0.4aa | kitlab/jars/hadur117.mini.JayLexi_0.4aa.jar
+n | hadur117.mini.JayLexi 0.4n | kitlab/jars/hadur117.mini.JayLexi_0.4n.jar
+r2 | hadur117.mini.JayLexi 0.4r2 | kitlab/jars/hadur117.mini.JayLexi_0.4r2.jar
+r9 | hadur117.mini.JayLexi 0.4r9 | kitlab/jars/hadur117.mini.JayLexi_0.4r9.jar
+r10 | hadur117.mini.JayLexi 0.4r10 | kitlab/jars/hadur117.mini.JayLexi_0.4r10.jar
+r11 | hadur117.mini.JayLexi 0.4r11 | kitlab/jars/hadur117.mini.JayLexi_0.4r11.jar
+all | hadur117.mini.JayLexi 0.4all | kitlab/jars/hadur117.mini.JayLexi_0.4all.jar
