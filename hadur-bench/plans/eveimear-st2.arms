@@ -1,0 +1,7 @@
+# BENCH-180 (pc-eveimear-st2): c is Eveimear 0.2 as released, aa its A/A copy, rn every robot random from the first
+# hit (MODES all 0), sg every robot stop-and-go for good (MODES all 9). Against the panel's robots c and aa play the
+# detection (their 0.2 cell holds 1), so rn and sg are the two modes 0.2 never picked for them.
+c | hadur117.micro.Eveimear 0.2 | kitlab/jars/hadur117.micro.Eveimear_0.2.jar
+aa | hadur117.micro.Eveimear 0.2aa | kitlab/jars/hadur117.micro.Eveimear_0.2aa.jar
+rn | hadur117.micro.Eveimear 0.2rn | kitlab/jars/hadur117.micro.Eveimear_0.2rn.jar
+sg | hadur117.micro.Eveimear 0.2sg | kitlab/jars/hadur117.micro.Eveimear_0.2sg.jar

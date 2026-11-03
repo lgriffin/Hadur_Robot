@@ -1,0 +1,77 @@
+# Eveimear mode picks, round 2 (thread "Take 1st with JayLexi and Sanaro"; BENCH-180). Eveimear 0.2 is 9th in
+# MicroRumble on 83.39, 2.2 behind WaveShark, the gap spread over ranks 61-450 (-1.4 to -4.2 a robot).
+#   ./queue.sh run pc-eveimear-st2        (or  .\queue.ps1 run pc-eveimear-st2)
+# Run it from master with this card merged: git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned. Nothing here touches Hadur or the shipped Eveimear; nothing is
+# uploaded or released. About 1 h 40 min to the end, about 15 min if the pilot stops it.
+#
+# Why it should win (Leigh's card rule, 2026-11-03):
+# - Per-opponent tailoring only: every arm changes Eveimear's MODES chars (one a robot, by name hash) and nothing else,
+#   at the same 746 B. The candidate ships only the robots that pass on fresh seeds.
+# - The table has shown live. 0.2 against 0.1 per robot (2026-11-02 live pages): the 74 robots it set to random from the
+#   first hit +2.06 +- 0.63 a robot, the 25 set to stop-and-go +1.07 +- 0.92, the 416 it left alone -0.33 +- 0.15 (the
+#   same play, so that is pass drift). Net of drift the picks gained +2.4 and +1.4 a robot.
+# - But pc-eveimear-st picked from 2 seeds a mode at a 3-point margin, so only the biggest effects cleared it: 416 robots
+#   kept the detection untested beyond that. 10 seeds a mode here find the smaller ones. If one in six of the 416 holds
+#   at +2 points (half the first round's rate and size), that is about +0.27 APS (416 / 6 x 2 / 515).
+# - Risk: the first round took the easy picks, and the rest read 0. The pilot catches that.
+#
+# Pilot: every 5th robot of the panel (84) first, 10 seeds. Then `pilotgate` counts the real picks (rn or sg beating c
+# and aa pooled by 3 points, interval above 0) against the null picks (aa beating c by the same test: two copies of one
+# jar, so pure noise). Fewer than 2 x null + 3 real picks and the screen, the build and the confirm all skip, and the PR
+# carries the pilot alone. An A/A outside its band halts the pilot (aa after 20%).
+# Screen: the other 332 robots, same arms and seeds; the pick reads pilot and screen together.
+# Confirm: the picked robots x 12 fresh seeds from 32000, c, aa and pk; gate: pk minus c and aa pooled, summed over
+# the picks / 515 pairings, bar +0.05 APS with the 95% low end above 0, and every pick's difference. A pass ships as
+# Eveimear 0.3 on Leigh's word only (pk's MODES table, 746 B).
+# Panels: kitlab/micro-detect-field.txt (the 416 robots of micro-all-field.txt whose 0.2 cell holds 1, none in
+# broken-1.11.2.txt), split into kitlab/micro-detect-pilot.txt (84) and kitlab/micro-detect-rest.txt (332).
+# Stop rules: fails 30, dead 8, skips 60 over 200, stall 30m (halt; every battle fought is kept and a rerun resumes),
+# aa after 20% (halt). ALERT opens an issue for Leigh on a stop.
+
+set C = --skip-build --skip-fetch --rounds 35 --parallel auto --child-heap 512M --no-truth-log
+set SRC = ../eveimear/src/main/java/hadur117/micro/Eveimear.java
+set W = work/eveimear-st2
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set REL = https://github.com/lgriffin/Hadur_Robot/releases/download
+
+prep | git checkout -q master && rm -f ${W}/GO ${OUT}/*_eveimear-st2*.md ${OUT}/eveimear-st2* && mkdir -p ${W} kitlab/jars && ./fetch-opponents.sh --set kitlab/micro-detect-field.txt && mvn -q compile && curl -fsSL -o kitlab/jars/hadur117.micro.Eveimear_0.2.jar ${REL}/eveimear-v0.2/hadur117.micro.Eveimear_0.2.jar && python3 tools/eveimear_modes.py force ${SRC} ${W}/rn.java --char 0 && python3 tools/eveimear_modes.py force ${SRC} ${W}/sg.java --char 9 && bash kitlab/build_arm.sh ${SRC} hadur117.micro.Eveimear 0.2aa && bash kitlab/build_arm.sh ${W}/rn.java hadur117.micro.Eveimear 0.2rn && bash kitlab/build_arm.sh ${W}/sg.java hadur117.micro.Eveimear 0.2sg
+
+pilot | sh ./bench-top20.sh ${C} --set kitlab/micro-detect-pilot.txt --seeds 10 --seed-base 31000 --arms plans/eveimear-st2.arms --out ${W}/pilot --label eveimear-st2-pilot --shuffle-jobs
+  after: prep
+  watch:
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+pilotgate | python3 tools/eveimear_modes.py pilot ${W}/pilot/arms.tsv --margin 3 --out ${OUT}/$(date +%Y-%m-%d)_eveimear-st2-pilot.md; rc=$?; [ $rc = 0 ] && touch ${W}/GO; [ $rc = 0 ] || [ $rc = 3 ]
+  after: pilot
+
+screen | if [ ! -f ${W}/GO ]; then echo 'pilot: no gain over noise, screen skips'; exit 0; fi && sh ./bench-top20.sh ${C} --set kitlab/micro-detect-rest.txt --seeds 10 --seed-base 31000 --arms plans/eveimear-st2.arms --out ${W}/screen --label eveimear-st2-screen --shuffle-jobs
+  after: pilotgate
+  watch:
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+build | rm -f ${W}/pick.tsv ${W}/written.tsv ${W}/picks.txt kitlab/jars/hadur117.micro.Eveimear_0.2pk.jar && if [ ! -f ${W}/GO ]; then echo 'pilot stopped the card'; exit 0; fi && python3 ../data/tools/mode_table.py ${W}/pilot/arms.tsv ${W}/screen/arms.tsv --margin 3 --out-tsv ${W}/pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_eveimear-st2-pick.md && if [ ! -s ${W}/pick.tsv ]; then echo 'no picks'; exit 0; fi && python3 tools/eveimear_modes.py apply ${SRC} ${W}/pick.tsv ${W}/pk.java --field kitlab/micro-all-field.txt --written ${W}/written.tsv && python3 tools/pick_panel.py ${W}/written.tsv kitlab/micro-detect-field.txt ${W}/picks.txt && bash kitlab/build_arm.sh ${W}/pk.java hadur117.micro.Eveimear 0.2pk && cp ${W}/pick.tsv ${OUT}/eveimear-st2-pick.tsv
+  after: screen
+
+confirm | if [ ! -s ${W}/picks.txt ]; then echo 'no picks'; exit 0; fi && sh ./bench-top20.sh ${C} --set ${W}/picks.txt --seeds 12 --seed-base 32000 --arms plans/eveimear-st2-confirm.arms --out ${W}/confirm --label eveimear-st2-confirm --shuffle-jobs
+  after: build
+  watch:
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+
+gate | if [ ! -s ${W}/picks.txt ]; then echo 'no picks'; exit 0; fi && python3 ../data/tools/multiarm.py ${W}/confirm/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_eveimear-st2-confirm.md && python3 tools/shield_s2.py gate ${W}/confirm/arms.tsv --arm pk --panel ${W}/picks.txt --field 515 --bar 0.05 --out ${OUT}/$(date +%Y-%m-%d)_eveimear-st2-gate.md && python3 tools/per_robot.py ${W}/confirm/arms.tsv --arms pk --out ${OUT}/$(date +%Y-%m-%d)_eveimear-st2-per-robot.md --out-tsv ${OUT}/eveimear-st2-per-robot.tsv && cp ${W}/pk.java ${OUT}/eveimear-st2-pk.java.txt
+  after: confirm
+
+pr | bash tools/open_results_pr.sh claude/pc-eveimear-st2-results "Eveimear mode picks, round 2 (pc-eveimear-st2)" ${OUT}/*_eveimear-st2*.md $(find ${OUT} -maxdepth 1 -name 'eveimear-st2*' -size +0c)
+  after: gate
