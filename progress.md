@@ -1,6 +1,6 @@
 # Queue pc-sanaro-n10: progress
 
-Updated 2026-11-03 09:21:55 PC time (09:21 UTC), runner pid 48284.
+Updated 2026-11-03 09:37:01 PC time (09:37 UTC), runner pid 48284.
 
 - `prep` done, exit 0 in 0 min
 - `arms` done, exit 0 in 0 min
@@ -53,21 +53,20 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-B320
 
-**440 of 860 battles** (51%), 0 failed. Running 32 min, 818 battles/h, about 31 min left (ends ~09:52 PC time). Last battle 0 min ago.
+**792 of 860 battles** (92%), 0 failed. Running 47 min, 1003 battles/h, about 4 min left (ends ~09:41 PC time). Last battle 0 min ago.
 Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 440 |
+| `fails 20` | halt | ok | 0 failed of 792 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 | `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
 
-Stopping now would leave 420 battles unrun (about 31 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 68 battles unrun (about 4 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-06:21:42 progress live-S3: 0/860 (0%) battles, 0 failed
 06:51:54 progress live-S3: 420/860 (49%) battles, 816/h, ETA 32 min, 0 failed, skips 0.0/battle (last 100)
 07:09:24 live-S3 exit=0 in 2902 s
 07:09:24 start live-B480
@@ -82,4 +81,5 @@ Stopping now would leave 420 battles unrun (about 31 min); every battle already 
 08:49:39 start live-B320
 08:49:39 watching live-B320: 3 stop rule(s)
 08:52:43 progress live-B320: 60/860 (7%) battles, 1173/h, ETA 41 min, 0 failed, skips 0.0/battle (last 100)
+09:22:55 progress live-B320: 460/860 (53%) battles, 830/h, ETA 29 min, 0 failed, skips 0.0/battle (last 100)
 ```
