@@ -1,0 +1,25 @@
+{
+ "plan": "pc-team-clear",
+ "updated": 1793664272.3887918,
+ "steps": {
+  "clprep": {
+   "status": "pending"
+  },
+  "clbb": {
+   "status": "pending"
+  },
+  "clcl": {
+   "status": "pending"
+  },
+  "clff": {
+   "status": "pending"
+  },
+  "clsum": {
+   "status": "pending"
+  },
+  "clpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
