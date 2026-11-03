@@ -84,3 +84,11 @@ team from 2. Cloud smoke of n4 (43 paired battles, 22 fields, seeds 4400-01; the
 mid-run): crowd deaths 22.1 to 19.1% of rounds (-3.0 ± 2.5), damage from opponents Hadur is nearest
 to -3.0 ± 1.5 a round, score share +0.29 ± 0.30. Carded as `pc-melee-near` (BENCH-176): aa, bb, n3, n4
 on 46 fields × 6 seeds (3271-3276).
+
+## pc-melee-near read (PR #608, 2026-11-03)
+
+46 fields × 6 seeds, 276 battles an arm, none missing. The run started before the pilot merged, so
+it ran in full. The bb A/A copy was clean at +0.22 ± 0.20. n3 was flat at +0.01 ± 0.15, with 1-30
+endgame wins +3.2 points and energy entering the endgame +1.2. n4 was flat at -0.03 ± 0.16, with
+skips +19%. Both fail. The cloud smoke's +0.29 share did not repeat. `CLOSEST_FACTOR_SOLO` stays at
+2. Crowd distance is not a lever on its own, so the melee top 3 has no switch left in this line.
