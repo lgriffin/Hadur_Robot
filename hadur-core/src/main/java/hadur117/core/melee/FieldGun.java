@@ -85,6 +85,18 @@ public class FieldGun {
      */
     public static final boolean DECAP = false;
     static final double DECAP_BOOST = 3.0;
+
+    /**
+     * MGUN-24: off a team, while three or more opponents are alive, an opponent's weight is
+     * times 1 + {@link #STRONG_BOOST} s, with s = (n - p) / (n - 1) from its mean finishing
+     * place p among the battle's n opponents over the rounds so far (1 is last alive), once
+     * {@link #STRONG_ROUNDS} rounds have placed it. A robot that keeps finishing high takes
+     * the most melee points from Hadur in every pairing: each opponent that dies while it lives
+     * is +50 to it, so killing it early denies those points. Battle-scoped, never saved.
+     */
+    public static final double STRONG_BOOST = 0.0;
+    /** MGUN-24: rounds an opponent must have been placed in before its place counts. */
+    static final int STRONG_ROUNDS = 2;
     /** MGUN-21: a robot first seen in a round above this energy is its team's leader. */
     static final double LEADER_SEEN = 150;
     /** MGUN-21: what a leader's death drains from each living teammate. */
@@ -172,6 +184,10 @@ public class FieldGun {
     private final Map<String, KdTree<float[]>> classTrees = new LinkedHashMap<>();
     /** TMODE-33: per enemy class, the shots fired at it and the hits on it, this battle. */
     private final Map<String, int[]> classShots = new LinkedHashMap<>();
+    /** MGUN-24: each opponent's summed finishing place and rounds placed, this battle. */
+    private final Map<String, int[]> places = new LinkedHashMap<>();
+    /** MGUN-24: the battle's opponent count, from the last placed round. */
+    private int placedOpponents;
     /** MGUN-17: true while a wave reads the field gun's own aim, which the experts must not steer. */
     private boolean pure;
     /** TMODE-40: whether this tick's team modes carry AIM. */
@@ -357,6 +373,7 @@ public class FieldGun {
         if (FLAT_DISTANCE && !onTeam) w = Math.pow(w, 0.7);
         if (HIT_TARGET && !onTeam) w *= hitFactor(e.name);
         if (DECAP && onTeam && decapitates(e, alive)) w *= DECAP_BOOST;
+        if (STRONG_BOOST > 0 && !onTeam && alive.size() >= 3) w *= 1 + STRONG_BOOST * strength(e.name);
         if (lead && onTeam) w *= leadFactor(e, alive);
         w *= 1 + 0.5 * (100 - Math.min(100, e.energy)) / 100.0;
         if (e.energy <= MeleeEnergyPolicy.FINISHER_ENERGY) w *= FINISHER_BOOST;
@@ -556,6 +573,31 @@ public class FieldGun {
      * MGUN-18: 5 (hits + 1) / (waves + 5) of the aim the gun fires at the opponent (MGUN-17's
      * pick, else the field gun's own), decayed; 1 with none read.
      */
+    /**
+     * MGUN-24: {@code name} finished the round in {@code place} among {@code opponents}
+     * (1 is last alive; 0 is unplaced and ignored). Kept for the battle, across rounds.
+     */
+    public void placed(String name, int place, int opponents) {
+        if (place < 1 || opponents < 2) return;
+        int[] c = places.get(name);
+        if (c == null) {
+            if (places.size() >= MAX_OPPONENTS) return;
+            c = new int[2];
+            places.put(name, c);
+        }
+        c[0] += place;
+        c[1]++;
+        placedOpponents = opponents;
+    }
+
+    /** MGUN-24: 0 for a robot that dies first every round, 1 for one always last alive; 0 until placed {@link #STRONG_ROUNDS} times. */
+    double strength(String name) {
+        int[] c = places.get(name);
+        if (c == null || c[1] < STRONG_ROUNDS || placedOpponents < 2) return 0;
+        double mean = (double) c[0] / c[1];
+        return Math.max(0, Math.min(1, (placedOpponents - mean) / (placedOpponents - 1)));
+    }
+
     double hitFactor(String name) {
         double[] s = expertScores.get(name);
         if (s == null) return 1;

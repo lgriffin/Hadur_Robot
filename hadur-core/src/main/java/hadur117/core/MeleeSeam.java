@@ -1,6 +1,7 @@
 package hadur117.core;
 
 import hadur117.core.link.Report;
+import hadur117.core.melee.FieldGun;
 import hadur117.core.melee.MeleeController;
 import hadur117.core.melee.MeleeRadar;
 import hadur117.core.melee.TeamDanger;
@@ -112,6 +113,13 @@ final class MeleeSeam implements Role {
      */
     @Override
     public void roundEnded(RoundResult result) {
+        // MGUN-24: the field gun keeps each opponent's place for the battle, memory or not.
+        if (FieldGun.STRONG_BOOST > 0) {
+            int opponents = core.enemiesTotal();
+            for (String name : melee.profiles().scannedNames()) {
+                melee.gun().placed(name, melee.profiles().rank(name, opponents), opponents);
+            }
+        }
         if (memory == null) return;
         try {
             memory.foldRound(melee.profiles(), core.enemiesTotal());
