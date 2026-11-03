@@ -1,0 +1,7 @@
+# pc-jaylexi-mid (BENCH-179): c is the released JayLexi 0.4, aa 0.4 rebuilt from its source (the A/A), p1 and p4 0.4 with
+# the per-opponent surf rows of MiniRumble ranks 121-450 scaled to peak 1000 and 4000 (0.4: 2000). All 1,494 B; the
+# arms come from tools/jaylexi_rows_off.py --skip in the prep step.
+c | hadur117.mini.JayLexi 0.4 | kitlab/jars/hadur117.mini.JayLexi_0.4.jar
+aa | hadur117.mini.JayLexi 0.4aa | kitlab/jars/hadur117.mini.JayLexi_0.4aa.jar
+p1 | hadur117.mini.JayLexi 0.4p1000 | kitlab/jars/hadur117.mini.JayLexi_0.4p1000.jar
+p4 | hadur117.mini.JayLexi 0.4p4000 | kitlab/jars/hadur117.mini.JayLexi_0.4p4000.jar
