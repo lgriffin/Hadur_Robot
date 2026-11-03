@@ -1,6 +1,6 @@
 # Queue pc-team-momentum: progress
 
-Updated 2026-11-03 02:36:50 PC time (02:36 UTC), runner pid 43904.
+Updated 2026-11-03 02:51:56 PC time (02:51 UTC), runner pid 43904.
 
 - `mtprep` done, exit 0 in 2 min
 - `mtbb` running
@@ -11,16 +11,16 @@ Updated 2026-11-03 02:36:50 PC time (02:36 UTC), runner pid 43904.
 
 ### mtbb
 
-**127 of 1080 battles** (12%), 0 failed. Running 13 min, 567 battles/h, about 1.7 h left (ends ~04:17 PC time). Last battle 0 min ago.
-Skipped turns a battle: 17.7 overall, first 100 17.4, last 100 18.3.
+**366 of 1080 battles** (34%), 0 failed. Running 29 min, 770 battles/h, about 56 min left (ends ~03:47 PC time). Last battle 0 min ago.
+Skipped turns a battle: 18.9 overall, first 100 17.4, last 100 19.1.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 127 |
+| `fails 60` | halt | ok | 0 failed of 366 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 18.3 a battle over the last 100 (first 100: 17.4) |
+| `skips 40 over 100` | halt | ok | 19.1 a battle over the last 100 (first 100: 17.4) |
 
-Stopping now would leave 953 battles unrun (about 1.7 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 714 battles unrun (about 56 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
