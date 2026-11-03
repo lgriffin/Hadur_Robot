@@ -17,3 +17,6 @@
 07:58:49 start live-B400
 07:58:49 watching live-B400: 3 stop rule(s)
 08:22:31 progress live-B400: 398/860 (46%) battles, 1008/h, ETA 28 min, 0 failed, skips 0.0/battle (last 100)
+08:49:39 live-B400 exit=0 in 3049 s
+08:49:39 start live-B320
+08:49:39 watching live-B320: 3 stop rule(s)
