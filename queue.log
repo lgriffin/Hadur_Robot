@@ -12,3 +12,11 @@
 01:13:25 watching clcl: 3 stop rule(s)
 01:37:10 progress clcl: 275/1080 (25%) battles, 695/h, ETA 1.2 h, 0 failed, skips 18.8/battle (last 100)
 02:07:21 progress clcl: 723/1080 (67%) battles, 804/h, ETA 27 min, 0 failed, skips 16.3/battle (last 100)
+02:21:29 clcl exit=0 in 4084 s
+02:21:29 start clff
+02:21:34 clff exit=0 in 4 s
+02:21:34 start clsum
+02:21:34 clsum exit=0 in 0 s
+02:21:34 start clpr
+02:21:40 clpr exit=0 in 6 s
+02:21:40 ALLDONE

@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-clear",
- "updated": 1793672427.3438892,
+ "updated": 1793672500.6922898,
  "steps": {
   "clprep": {
    "status": "done",
@@ -15,17 +15,28 @@
    "end": "2026-11-03T01:13:25"
   },
   "clcl": {
-   "status": "running",
-   "start": "2026-11-03T01:13:25"
+   "status": "done",
+   "exit": 0,
+   "seconds": 4084,
+   "end": "2026-11-03T02:21:29"
   },
   "clff": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 4,
+   "end": "2026-11-03T02:21:34"
   },
   "clsum": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-11-03T02:21:34"
   },
   "clpr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 6,
+   "end": "2026-11-03T02:21:40"
   }
  },
  "watched": [
@@ -75,8 +86,8 @@
   {
    "step": "clcl",
    "started": 1793668405.6540139,
-   "updated": 1793672427.3349235,
-   "elapsed": 4021.6809096336365,
+   "updated": 1793672489.8880386,
+   "elapsed": 4084.2340247631073,
    "expected": 1080,
    "panel": null,
    "field": null,
@@ -84,20 +95,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 1022,
+   "battles": 1080,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 914.8413518304625,
-   "eta": 228.2362942844921,
-   "fraction": 0.9462962962962963,
-   "last_battle_age": 0.23305201530456543,
+   "rate": 951.9532858368738,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 1.6546342372894287,
    "rules": [
     {
      "rule": "fails 60",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 1022"
+     "detail": "0 failed of 1080"
     },
     {
      "rule": "stall 30m",
@@ -109,11 +120,11 @@
      "rule": "skips 40 over 100",
      "action": "halt",
      "state": "ok",
-     "detail": "19.0 a battle over the last 100 (first 100: 18.3)"
+     "detail": "8.6 a battle over the last 100 (first 100: 18.3)"
     }
    ],
-   "skips_mean": 17.895303326810176,
-   "skips_last100": 18.98
+   "skips_mean": 17.475925925925925,
+   "skips_last100": 8.63
   }
  ]
 }
