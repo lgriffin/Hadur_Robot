@@ -1,6 +1,6 @@
 # Queue pc-shelf: progress
 
-Updated 2026-11-03 23:24:22 PC time (23:24 UTC), runner pid 19168.
+Updated 2026-11-03 23:24:24 PC time (23:24 UTC), runner pid 19168.
 
 - `prep` done, exit 0 in 6 min
 - `pilot-s` done, exit 0 in 5 min
@@ -82,4 +82,6 @@ Stopping now would leave 924 battles unrun; every battle already fought is kept 
 23:24:17 watching screen-s: 5 stop rule(s)
 23:24:22 STOP screen-s by rule aa after 20%: aa - c +3.02 pts over 33 robots, stop band ±2.36; 231 battles fought and kept, 924 battles left unrun
 23:24:22 screen-s exit=75 in 5 s (halted, aa after 20%)
+23:24:24 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/623
+23:24:24 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 ```
