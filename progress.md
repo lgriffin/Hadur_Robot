@@ -1,14 +1,14 @@
 # Queue pc-sanaro-n10: progress
 
-Updated 2026-11-03 09:37:01 PC time (09:37 UTC), runner pid 48284.
+Updated 2026-11-03 09:52:08 PC time (09:52 UTC), runner pid 48284.
 
 - `prep` done, exit 0 in 0 min
 - `arms` done, exit 0 in 0 min
 - `live-S3` done, exit 0 in 48 min
 - `live-B480` done, exit 0 in 49 min
 - `live-B400` done, exit 0 in 51 min
-- `live-B320` running
-- `live-B4K8` pending
+- `live-B320` done, exit 0 in 51 min
+- `live-B4K8` running
 - `read-live` pending
 - `pr` pending
 
@@ -53,23 +53,33 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-B320
 
-**792 of 860 battles** (92%), 0 failed. Running 47 min, 1003 battles/h, about 4 min left (ends ~09:41 PC time). Last battle 0 min ago.
+**860 of 860 battles** (100%), 0 failed. Running 51 min, 1017 battles/h, about 0 min left (ends ~09:40 PC time). Last battle 0 min ago.
 Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 792 |
+| `fails 20` | halt | ok | 0 failed of 860 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 | `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
 
-Stopping now would leave 68 battles unrun (about 4 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### live-B4K8
+
+**231 of 860 battles** (27%), 0 failed. Running 12 min, 1181 battles/h, about 32 min left (ends ~10:24 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 231 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 40 over 100` | halt | ok | 0.0 a battle over the last 100 (first 100: 0.0) |
+
+Stopping now would leave 629 battles unrun (about 32 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-06:51:54 progress live-S3: 420/860 (49%) battles, 816/h, ETA 32 min, 0 failed, skips 0.0/battle (last 100)
-07:09:24 live-S3 exit=0 in 2902 s
-07:09:24 start live-B480
 07:09:24 watching live-B480: 3 stop rule(s)
 07:22:07 progress live-B480: 252/860 (29%) battles, 1190/h, ETA 31 min, 0 failed, skips 0.0/battle (last 100)
 07:52:18 progress live-B480: 740/860 (86%) battles, 1035/h, ETA 7 min, 0 failed, skips 0.0/battle (last 100)
@@ -82,4 +92,7 @@ Stopping now would leave 68 battles unrun (about 4 min); every battle already fo
 08:49:39 watching live-B320: 3 stop rule(s)
 08:52:43 progress live-B320: 60/860 (7%) battles, 1173/h, ETA 41 min, 0 failed, skips 0.0/battle (last 100)
 09:22:55 progress live-B320: 460/860 (53%) battles, 830/h, ETA 29 min, 0 failed, skips 0.0/battle (last 100)
+09:40:24 live-B320 exit=0 in 3044 s
+09:40:24 start live-B4K8
+09:40:24 watching live-B4K8: 3 stop rule(s)
 ```
