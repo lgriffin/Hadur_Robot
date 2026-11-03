@@ -26,3 +26,10 @@
 09:40:24 start live-B4K8
 09:40:24 watching live-B4K8: 3 stop rule(s)
 09:53:08 progress live-B4K8: 247/860 (29%) battles, 1163/h, ETA 32 min, 0 failed, skips 0.0/battle (last 100)
+10:23:20 progress live-B4K8: 712/860 (83%) battles, 995/h, ETA 9 min, 0 failed, skips 0.0/battle (last 100)
+10:31:34 live-B4K8 exit=0 in 3069 s
+10:31:34 start read-live
+10:31:48 read-live exit=0 in 14 s
+10:31:48 start pr
+10:31:55 pr exit=0 in 7 s
+10:31:55 ALLDONE
