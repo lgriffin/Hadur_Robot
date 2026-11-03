@@ -1,12 +1,16 @@
 {
  "plan": "pc-warm",
- "updated": 1793680671.214712,
+ "updated": 1793681577.7432282,
  "steps": {
   "prep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 113,
+   "end": "2026-11-03T04:39:44"
   },
   "cw": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-03T04:39:44"
   },
   "lw": {
    "status": "pending"
@@ -18,5 +22,49 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "cw",
+   "started": 1793680784.8249083,
+   "updated": 1793681577.7342072,
+   "elapsed": 792.9092988967896,
+   "expected": null,
+   "panel": 395,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 274,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 1244.026273083722,
+   "eta": null,
+   "fraction": null,
+   "last_battle_age": 3.820915937423706,
+   "rules": [
+    {
+     "rule": "fails 30",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 274"
+    },
+    {
+     "rule": "skips 60 over 200",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "69 of 200 battles to read"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    }
+   ],
+   "skips_mean": 33.971014492753625,
+   "skips_last100": 33.971014492753625
+  }
+ ]
 }
