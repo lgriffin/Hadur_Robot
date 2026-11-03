@@ -41,7 +41,7 @@ class JayLexiDietPlanTest {
         assertTrue(body.contains("--shuffle-jobs") && body.contains("--arms plans/jaylexi-diet.arms")
             && body.contains("--set kitlab/mini-wide3-field.txt"));
         for (String rule : new String[] {"fails 30", "dead 8", "skips 60 over 200", "stall 30m", "aa after 20%",
-                "futility r2,all below -0.5 after 20%"}) {
+                "futility r2,r9,r10,r11,all below -0.5 after 20%"}) {
             assertTrue(body.contains("stop: " + rule), rule);
         }
         assertTrue(queue.contains("open_results_pr.sh claude/pc-jaylexi-diet-results"));
