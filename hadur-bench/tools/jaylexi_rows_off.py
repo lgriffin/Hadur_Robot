@@ -9,6 +9,9 @@ the AIM string changes, so the arm is the same bytecode size as 0.3.
 
     python3 tools/jaylexi_rows_off.py SRC OUT --rankings RANKINGS.json --top 60 [--peak 0]
     python3 tools/jaylexi_rows_off.py --field OUT_FIELD --rankings RANKINGS.json --top 60
+    python3 tools/jaylexi_rows_off.py SRC OUT --rankings RANKINGS.json --top 450 --skip 120 --peak 4000
+
+The third form scales only ranks 121 to 450 (--skip leaves the first 120 of the top 450 alone).
 
 The second form writes a kitlab field of the top N robots by name (weight 1 each).
 """
@@ -87,10 +90,11 @@ def main():
     ap.add_argument('out', nargs='?')
     ap.add_argument('--rankings', required=True)
     ap.add_argument('--top', type=int, required=True)
+    ap.add_argument('--skip', type=int, default=0, help='leave the first SKIP of the top N as they are (a rank band SKIP+1..N)')
     ap.add_argument('--peak', type=int, default=0, help='0: the field row; else scale each row to this peak')
     ap.add_argument('--field', help='write a field file of the top N instead of an arm')
     a = ap.parse_args()
-    names = top(a.rankings, a.top)
+    names = top(a.rankings, a.top)[a.skip:]
     if a.field:
         field(a.field, names)
     else:
