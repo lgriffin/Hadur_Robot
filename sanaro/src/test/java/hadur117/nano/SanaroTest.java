@@ -130,7 +130,7 @@ class SanaroTest {
 
     @Test
     @Tag("SANARO-8")
-    @DisplayName("the shot is the table's power times the integer band 640 / distance")
+    @DisplayName("the shot is the table's power times the integer band 480 / distance (0.4; 640 to 0.3)")
     void powerBands() {
         for (int d : new int[] {100, 200, 300, 500, 700}) {
             Probe.reset();
@@ -138,7 +138,7 @@ class SanaroTest {
             Sanaro.range = 1000;
             p.onScannedRobot(scan("a", 50, 0, d, 0, 0));
             double table = Sanaro.POWER.charAt(100 * 128 + 50) / 40.0;
-            assertEquals(640 / d * table, p.fire, 1e-12, "at " + d + " px");
+            assertEquals(480 / d * table, p.fire, 1e-12, "at " + d + " px");
         }
     }
 }

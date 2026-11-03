@@ -28,7 +28,7 @@ public class Sanaro extends AdvancedRobot {
     // The target threshold creeps out this far every scan (SANARO-5).
     static final int CREEP = 25;
     // Power steps: the table's power times BAND / distance, an integer (SANARO-8).
-    static final int BAND = 640;
+    static final int BAND = 480;
 
     static int range;
     static double fx, fy;

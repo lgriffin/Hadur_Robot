@@ -372,7 +372,7 @@ under ships as 0.3.
 | N8 | pc-sanaro-n07 (section 17): HL +0.67, released as 0.3 (2026-11-01; live 2nd at 65.56 after 663 battles, Quantum 66.44) | a table over 0.2 on fresh seeds |
 | N9 | pc-sanaro-n08 (section 18): tables indexed by distance, the last APS to 1st: FAIL (section 19) | an arm at 249 bytes or under over 0.3 on the live-shaped census |
 | N10 | pc-sanaro-n09 (section 19): weaker fire, by BAND and by scaling the table: flat arm by arm, B480 +0.10 (section 20) | an arm at 249 bytes or under over 0.3 on the live-shaped census |
-| N11 | pc-sanaro-n10 (section 20): the weaker-fire progression, B480 again, B400, B320, B480 with the table x 0.8, on 20 seeds | an arm at 249 bytes or under over 0.3 on the live-shaped census |
+| N11 | pc-sanaro-n10 (section 20): the weaker-fire progression: B480 +0.30 and B4K8 +0.36 pass, B320 -0.75 (section 21); 0.4 = B480 | an arm at 249 bytes or under over 0.3 on the live-shaped census |
 
 ## 15. Uniqueness
 
@@ -530,4 +530,23 @@ Leigh starts from master, climbs the BAND slope on twice the seeds (43 fields x 
 It takes about 4 h 10 min, with stop rules and ALERT. An arm passes when the low end of its
 difference over S3 is above zero. If B480 repeats near +0.1 and misses the bar, the next step pools
 n09's and n10's B480 battles. The survival this buys is what a later gun step can spend.
+
+## 21. pc-sanaro-n10 results (PR #602), and 0.4
+
+Against S3 (65.63 ± 0.16, survival 24.0), 860 battles an arm, 95% intervals:
+
+| Arm | vs S3 | Survival |
+|---|---|---|
+| B480 | **+0.30 ± 0.22** | 27.5 |
+| B400 | -0.04 ± 0.22 | 29.2 |
+| B320 | -0.75 ± 0.22 | 29.2 |
+| B4K8 | **+0.36 ± 0.22** | 29.5 |
+
+B480 and B4K8 pass. The slope peaks at a 480 px band and then falls: B400 is level, and B320 loses
+0.75 while its survival keeps rising. Below 480 the weaker shots cost more damage than the survival
+buys back. B480 has now passed twice (n09 +0.10 over 430 battles, n10 +0.30 over 860; about +0.23
+pooled). B4K8 is +0.06 over B480 in the same run, which is noise, from one run only. **0.4 = B480**,
+`BAND = 480`, 249 B, prepared but not released (release on Leigh's word). It projects about 65.6 live
+against Quantum's 66.44. Under Leigh's 2026-11-03 rule, the next Sanaro card is per-opponent
+tailoring with a pilot stage, not another global switch.
 
