@@ -6,3 +6,7 @@
 04:39:44 watching cw: 3 stop rule(s)
 04:39:51 progress cw: 0 battles, 0 failed
 05:10:05 progress cw: 996 battles, 1969/h, 0 failed, skips 37.7/battle (last 100)
+05:40:18 progress cw: 2704 battles, 2679/h, 0 failed, skips 45.0/battle (last 100)
+05:47:21 cw exit=0 in 4056 s
+05:47:21 start lw
+05:47:21 watching lw: 3 stop rule(s)
