@@ -95,7 +95,8 @@ class MimicOnPlanTest {
         for (String rule : new String[] {"fails 30", "dead 8", "skips 60 over 200", "stall 30m"}) {
             assertTrue(confirm.contains("stop: " + rule), rule);
         }
-        assertTrue(confirm.contains("stop: aa after 20%"), "a bench defect stops the run early");
+        assertTrue(!confirm.contains("stop: aa ") && !confirm.contains("stop: futility"),
+            "the watcher's A/A and futility rules need 10 robots read, and this panel has 9");
         assertTrue(queue.contains("# Why it should win"), "the card says why it should win before it runs");
         assertTrue(queue.contains("open_results_pr.sh claude/pc-mimic9-results"));
         assertTrue(queue.contains("set ALERT = lgriffin") && queue.contains("set P = --parallel 12 --no-truth-log"));
