@@ -22,6 +22,11 @@ fields (`tools/distill.py`, 2 x 2 blocks with 20 or more shots). On fresh seeds 
 over 0.2 (pc-sanaro-n07, PR #548, arm HL), and survival rose from 19.0 to 22.9. That projects about
 65.8, still 2nd behind Quantum's 66.41.
 
+0.4 (prepared 2026-11-02, 249 bytes; not released) fires weaker at range: the 640 / distance step
+becomes 480 / distance, so shots drop to 0.1 past 480 px and halve from 240 px. It read +0.10 ±
+0.33 (pc-sanaro-n09) and +0.30 ± 0.22 (pc-sanaro-n10, fresh seeds), about +0.23 pooled over 1,290
+battles, with survival up from 24 to 27.5. That projects about 65.6 live, still 2nd behind Quantum.
+
 ## Build
 
     mvn -pl sanaro verify
