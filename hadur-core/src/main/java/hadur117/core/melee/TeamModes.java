@@ -59,18 +59,10 @@ public final class TeamModes {
          */
         CONCORD,
         /**
-         * TSURF-1..6, the team duelist's mover (Leigh's strategy doc of 2026-11-04): each enemy shot
-         * the member sees is a duel wave in a {@link CrowdSurfer}, rated by the duel's danger views
-         * learned per shooter across the battle and weighted by the robots, teammates included,
-         * nearer the shooter; the lowest-risk candidates of the ring are driven to through those
-         * waves, and the crowd's risk (the hunt slot, CONCORD's terms, teammates' bullets) stays the
-         * crowd cost. It stands in for DODGE and the virtual bullets while it plays.
-         */
-        SURF,
-        /**
-         * TGUN-1..3, the team duelist's gun ({@link TeamDuelGun}): the duel's guns, their views
-         * learned per enemy class from every member's sightings, aim at the field gun's target
-         * once they have learned its class; the power stays the field gun's.
+         * TGUN-1..2, the team duelist's gun ({@link TeamDuelGun}; Leigh's strategy doc of
+         * 2026-11-04): the duel's guns, their views learned per enemy class from every member's
+         * sightings, aim at the field gun's target once they have learned its class; the power
+         * stays the field gun's.
          */
         DUELGUN
     }
@@ -85,8 +77,6 @@ public final class TeamModes {
     public static final boolean FORCE_PATH = true;
     public static final boolean FORCE_DODGE = true;
     public static final boolean FORCE_CONCORD = true;
-    /** TSURF: SURF on every team, the ones the table names included, to screen it (never shipped this way). */
-    public static final boolean FORCE_SURF = false;
     /** TGUN: DUELGUN on every team, the ones the table names included, to screen it (never shipped this way). */
     public static final boolean FORCE_DUELGUN = false;
 
@@ -168,10 +158,9 @@ public final class TeamModes {
     /** The modes against {@code enemies}: the first one the table names, else the default. */
     public static Set<Mode> against(List<EnemyInfo> enemies) {
         Set<Mode> m = against(enemies, TABLE, DEFAULT);
-        if (!FORCE_SURF && !FORCE_DUELGUN) return m;
+        if (!FORCE_DUELGUN || m.contains(Mode.DUELGUN)) return m;
         EnumSet<Mode> with = m.isEmpty() ? EnumSet.noneOf(Mode.class) : EnumSet.copyOf(m);
-        if (FORCE_SURF) with.add(Mode.SURF);
-        if (FORCE_DUELGUN) with.add(Mode.DUELGUN);
+        with.add(Mode.DUELGUN);
         return with;
     }
 

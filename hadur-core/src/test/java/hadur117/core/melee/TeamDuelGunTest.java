@@ -13,13 +13,10 @@ class TeamDuelGunTest {
 
     @Test
     @Tag("TGUN-1")
-    @Tag("TSURF-1")
-    @DisplayName("TGUN-1, TSURF-1: ships off: no team plays DUELGUN or SURF and the controller builds no duel gun")
+    @DisplayName("TGUN-1: ships off: no team plays DUELGUN and the controller builds no duel gun")
     void shipsOff() {
         assertFalse(TeamModes.FORCE_DUELGUN);
-        assertFalse(TeamModes.FORCE_SURF);
         assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.DUELGUN));
-        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.SURF));
         assertNull(new MeleeController(field(1200, 1200), new hadur117.core.world.EnemyTracker(field(1200, 1200))).teamGun());
     }
 

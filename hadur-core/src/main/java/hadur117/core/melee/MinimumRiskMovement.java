@@ -303,18 +303,6 @@ public class MinimumRiskMovement {
         return duelist != null;
     }
 
-    /** TSURF: the team member's surfer, its state and every other robot's position this tick; null off SURF. */
-    private CrowdSurfer teamSurfer;
-    private RobotState teamSurfState;
-    private Map<String, Point2D.Double> teamSurfOthers = Map.of();
-
-    /** TSURF: this tick's surfer, Hadur's state and the other robots (enemies and teammates) by name. */
-    void teamSurf(CrowdSurfer surfer, RobotState me, Map<String, Point2D.Double> others) {
-        this.teamSurfer = surfer;
-        this.teamSurfState = me;
-        this.teamSurfOthers = others;
-    }
-
     /** MSURF: Hadur's state and the opponents' positions for this tick's choice. */
     void duelistTick(RobotState me, Map<String, Point2D.Double> others) {
         this.duelistState = me;
@@ -600,11 +588,6 @@ public class MinimumRiskMovement {
             destination = waveBest(candidates, v);
             return destination;
         }
-        if (!mates.isEmpty() && modes.contains(TeamModes.Mode.SURF) && teamSurfer != null && teamSurfState != null) {
-            // TSURF-1: the duel surfer's expected damage re-ranks the ring; the risk is the crowd cost.
-            destination = surfBest(candidates, v, teamSurfer, teamSurfState, teamSurfOthers);
-            return destination;
-        }
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.DODGE)) {
             v.pathBullets = mateBullets(me, now);
             if (!TeamDodge.OWN_FIRE) v.mateBullets = List.of();
@@ -711,12 +694,6 @@ public class MinimumRiskMovement {
      * {@link #SWITCH_GAIN}.
      */
     Point2D.Double duelistBest(List<Point2D.Double> candidates, View v) {
-        return surfBest(candidates, v, duelist, duelistState, duelistOthers);
-    }
-
-    /** MSURF-1 and TSURF-1: {@link #duelistBest} for the given surfer, state and other robots. */
-    Point2D.Double surfBest(List<Point2D.Double> candidates, View v, CrowdSurfer surfer, RobotState state,
-                            Map<String, Point2D.Double> others) {
         List<Point2D.Double> pool = new ArrayList<>(candidates);
         boolean hold = destination != null && destination.distance(v.me) > REACHED;
         int stop = pool.size();
@@ -733,12 +710,12 @@ public class MinimumRiskMovement {
         for (int i = 0; i < order.length && picked.size() < WAVE_RERANK; i++) picked.add(order[i]);
         if (!picked.contains(stop)) picked.add(stop);
         if (hold && !picked.contains(pool.size() - 1)) picked.add(pool.size() - 1);
-        List<CrowdSurfer.Threat> threats = surfer.threats(state, others);
+        List<CrowdSurfer.Threat> threats = duelist.threats(duelistState, duelistOthers);
         double[] damage = new double[picked.size()];
         double[] r = new double[picked.size()];
         for (int k = 0; k < picked.size(); k++) {
             r[k] = risk[picked.get(k)];
-            damage[k] = surfer.danger(state, pool.get(picked.get(k)), threats);
+            damage[k] = duelist.danger(duelistState, pool.get(picked.get(k)), threats);
         }
         double[] score = waveScores(r, damage);
         Point2D.Double best = null;

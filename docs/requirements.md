@@ -722,7 +722,7 @@ Every requirement group belongs to one owner, the same owner as the code it gove
 | STRAND-4 | Ubiquitous | A recorded duel battle and a recorded melee battle shall each replay to identical orders, telemetry and store files. | A0 |
 | STRAND-5 | Ubiquitous | A recorded team battle shall replay to identical orders and telemetry for each recorded member. | A5 |
 | STRAND-6 | Unwanted behaviour | If a constant that a retired requirement names in backticks (`X`, or `Owner.X` to tie it to one source file) is still declared `static final` in the robot's main sources and no live requirement names it, then the build shall fail: a failed card's results PR removes the switch, its code, ablation arm, card and tests with its requirement. | A5 |
-| STRAND-7 | Ubiquitous | A strand may use, and shall never edit, the duel packages STRAND-2's check names for it: the melee strand the duel's `move` package, for the duel surfer's waves and danger views under the crowd (MSURF); every other cross-strand dependency stays forbidden. | A0 |
+| STRAND-7 | Ubiquitous | A strand may use, and shall never edit, the duel packages STRAND-2's check names for it: the melee strand the duel's `move` package (the crowd surfer, MSURF) and `gun` package (the team duelist's gun, TGUN); every other cross-strand dependency stays forbidden. | A0 |
 
 ### A5 notes
 
@@ -2521,13 +2521,12 @@ movement.
   on no gain, then the screen to 12 seeds, a per-team pick and a 16-seed fresh gate. Results
   claude/pc-team-aim-results. `TeamAimPlanTest`.
 
-## The team duelist: crowd surfer and duel gun on team members (TSURF, TGUN, BENCH-TG1)
+## The team duelist's gun on team members (TGUN, BENCH-TG1)
 
-Leigh's strategy doc of 2026-11-04 ("Hadur: Team & Melee, the structural shift to 1st") makes the team member the duelist with a crowd around it. Stage 0 (the Duel driving every member from the first tick, ablation tmduel) lost badly on a cloud smoke (PhoenixTeam 15% vs 78%) and was dropped unmerged. SURF (the melee thread's CrowdSurfer re-ranking the member's ring, views per enemy class) read -5.7 then -3.7 share points on 6 teams x 2 seeds, members taking about 18% more damage than DODGE, which learns from all five members' hits; it ships off. DUELGUN read +1.1 +- 2.7 on the same smoke (OgiTeam +6.4) and goes to the PC card pc-team-dgun.
+Leigh's strategy doc of 2026-11-04 ("Hadur: Team & Melee, the structural shift to 1st") makes the team member the duelist with a crowd around it. Stage 0 (the Duel driving every member from the first tick, ablation tmduel) lost badly on a cloud smoke (PhoenixTeam 15% vs 78%) and was dropped unmerged. SURF (the melee thread's CrowdSurfer re-ranking the member's ring, views per enemy class) read -5.7 then -3.7 share points on 6 teams x 2 seeds, members taking about 18% more damage than DODGE, which learns from all five members' hits; it stays on the parked branch claude/team-tsurf-parked, unmerged. DUELGUN read +1.1 +- 2.7 on the same smoke (OgiTeam +6.4) and goes to the PC card pc-team-dgun.
 
 | ID | Type | Requirement | Stage |
 |---|---|---|---|
-| TSURF-1 | State | While the team modes carry SURF, the member's destination shall be the ring candidate the melee surfer's re-rank (MSURF-1) picks with a team CrowdSurfer whose shooters are keyed by enemy class, every other robot (enemies and teammates) weighting each wave; DODGE and the virtual bullets stand down. Ships off (FORCE_SURF false, no table entry). | T7 |
 | TGUN-1 | State | While the team modes carry DUELGUN, the member shall aim at the field gun's target with the duel's GunController once that target's class has broken at least 20 gun waves and its last wave is at most 2 ticks old; otherwise, and always for the power, the field gun decides. Ships off (FORCE_DUELGUN false, no table entry). | T7 |
 | TGUN-2 | Ubiquitous | Every sighting of an enemy, the member's own scans and its teammates', shall make one gun wave from where the member stood to the enemy, breaking on that enemy's later sightings and teaching views kept per enemy class; a sighting no newer than the last of that enemy is ignored. | T7 |
 | BENCH-TG1 | Ubiquitous | The bench shall carry the `pc-team-dgun` card: aa, a bb A/A copy and dgu (ablation tmdgun) on the 46 teams of team-census46.txt; a pilot of 3 seeds from 9300 that ends the card, opening its results PR, when dgu's projected team APS change (each team's gain less half its bb gain, over 46) is below zero; else both to 12 seeds, gated at +0.5 APS with the 95% low end above zero; fails, stall and skips stop rules on every battle step; results on claude/pc-team-dgun-results. | T7 |

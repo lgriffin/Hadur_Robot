@@ -20,7 +20,6 @@
 #   tmconcordp: the gun's pooling alone, power as shipped (cnp).
 #   The brain's shipped parts (TeamConcord): movement and gun on, group radar off, hunt kept.
 #   tmnoconcord (team only) TMODE-34 off: CONCORD on no team, as before it shipped. Suffix ncn.
-#   tmsurf  (team only) TSURF: the duel surfer per shooter drives every member (SURF on every team). Suffix su.
 #   tmdgun  (team only) TGUN: the duel's guns, learned per class from every member's sightings, aim at the target. Suffix dgu.
 #   mdmg   MMOVE-22: each opponent's risk weighs by the damage it has done to Hadur this battle x its mean distance (Diamond). Suffix dm. Ships on from 3.21, so on master dm is the robot as it is.
 #   e3far  MEND-3: with two opponents left off a team, the closest-robot factor 4 (not 2). Suffix ef.
@@ -889,13 +888,8 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
                 "public static final boolean MELEE_DUELIST = false;" "public static final boolean MELEE_DUELIST = true;"
             version="${version}du" ;;
-        tmsurf)
-            # TSURF-1..6 (team only): SURF on every team: the duel surfer's waves per shooter re-rank the
-            # member's ring, DODGE stands down; duel and melee bit for bit. Suffix su.
-            edit "$modes" "public static final boolean FORCE_SURF = false;" "public static final boolean FORCE_SURF = true;"
-            version="${version}su" ;;
         tmdgun)
-            # TGUN-1..3 (team only): DUELGUN on every team: the duel's guns, learned per enemy class from every
+            # TGUN-1..2 (team only): DUELGUN on every team: the duel's guns, learned per enemy class from every
             # member's sightings, aim at the field gun's target; duel and melee bit for bit. Suffix dgu.
             edit "$modes" "public static final boolean FORCE_DUELGUN = false;" "public static final boolean FORCE_DUELGUN = true;"
             version="${version}dgu" ;;
@@ -911,7 +905,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             else
                 version="${version}y3"
             fi ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, mfar3, mfar25, mduel, tmsurf, tmdgun)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, mfar3, mfar25, mduel, tmdgun)" >&2; exit 2 ;;
     esac
 done
 
