@@ -59,6 +59,31 @@ class JayLexiReplayTest {
         }
     }
 
+    @Test
+    @Tag("JAYLEXI-11")
+    @DisplayName("the two also agree against a robot with an orbit angle of its own, which plays other orders than 1.15")
+    void sameOrdersOnAnOrbitRow() throws Exception {
+        String field = shipped(1);
+        Replay.name = orbitName();
+        try {
+            assertEquals(-1, firstDifference(shipped(1), readable(1)));
+            assertNotEquals(-1, firstDifference(field, shipped(1)), "the orbit changes the orders");
+        } finally {
+            Replay.name = "e";
+        }
+    }
+
+    /** A name whose row has an orbit other than 1.15. */
+    static String orbitName() {
+        for (int i = 0; ; i++) {
+            String n = "e" + i;
+            int k = JayLexi.NAMES.indexOf((char) n.hashCode());
+            if (k >= 0 && JayLexi.ORB.charAt(k + 1) != 115) {
+                return n;
+            }
+        }
+    }
+
     /** A name whose hash has a row in AIM. */
     static String recordedName() {
         for (int i = 0; ; i++) {

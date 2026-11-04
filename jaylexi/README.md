@@ -31,6 +31,11 @@ it 6 to 8 APS against each learning gun at the top. Only the data string changes
 over 0.3 on mini-wide2 (paired estimate 88.65), and +3.05 on the top 60
 (docs/bench/live-kitlab-0.3.md).
 
+0.5 (prepared 2026-11-04, tag `jaylexi-v0.5` on Leigh's go) is 1,487 bytes. A codesize diet (PR #626)
+writes the same play in fewer bytes, and an `ORB` string spends them on a per-robot orbit angle:
+1.35 for 13 robots and 0.95 for 9, 1.15 for the rest (pc-jaylexi-orb, PR #644: +0.06 ± 0.04 APS on
+fresh seeds). Notes in docs/releases/jaylexi-v0.5.md.
+
 ## Standing
 
 | Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | Next up | Gap |

@@ -13,7 +13,8 @@ import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 
 /**
- * The readable JayLexi 0.3, as benched (docs/bench/kitlab-priors.md, arm PALL): 0.2 (arm J2w) with
+ * The readable JayLexi 0.5: 0.4 with each robot's orbit angle read from ORB (pc-jaylexi-orb, PR #644).
+ * 0.3, as benched (docs/bench/kitlab-priors.md, arm PALL), was 0.2 (arm J2w) with
  * the field's first-shot bin for each gun segment and a per-opponent surf danger row for each of the
  * 669 MiniRumble robots, read from constant-pool strings. It is over the MiniRumble limit, so the
  * shipped hadur117.mini.JayLexi is this code rewritten tighter;
@@ -23,8 +24,11 @@ import robocode.util.Utils;
 public class JayLexi extends AdvancedRobot {
     // Bins either side of guess factor zero, and the whole width (JAYLEXI-4, JAYLEXI-6).
     static final int MID = 23, BINS = 47;
-    // Orbit angle off the wave's bearing: a little under PI/2, so the orbit drifts outward (JAYLEXI-5).
-    static final double ORBIT = 1.15;
+    // Orbit angle off the wave's bearing (JAYLEXI-5): 1.15, a little under PI/2 so the orbit drifts
+    // outward, or this robot's own angle from ORB, in hundredths of a radian, by its AIM row
+    // (pc-jaylexi-orb, PR #644).
+    static double orbit;
+    static final String ORB = "ssssssssssss\207sssssssssssssssssssssssssssssssssssssssssssssssssssssssssss_ssssssssssssssssssssssss\207ssssssssssssssssssssssssssssssssssss_sssssssssssssssssssssssssss_ssssssssssssssss\207ss\207s\207sssssssssssssssssssssss_sssssssssssssssssssssssssssssssssss_s\207ssssssssss\207ssssssssssssssssssssssssssssssssssssssssssss\207sss_ssssss\207sssssssssss_ssssssssssssssss\207sssssssssssssssssssssss\207ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss_sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss\207sssssssssssssssssssssssssssssssssssssssssssssss_ssssssss\207sssssssssssssssssssssssssssss";
     // Wall smoothing: the stick that must stay inside the field (JAYLEXI-7).
     static final double STICK = 140;
     static final Rectangle2D.Double FIELD = new Rectangle2D.Double(18, 18, 764, 564);
@@ -76,6 +80,7 @@ public class JayLexi extends AdvancedRobot {
 
         // This opponent's aim row in AIM: its name hash in NAMES, or the field's row when not found.
         row = BINS * (NAMES.indexOf((char) e.getName().hashCode()) + 1);
+        orbit = ORB.charAt(row / BINS) / 100.0;
 
         // Radar: twice the turn to the enemy, so it never slips off (JAYLEXI-2).
         setTurnRadarRightRadians(2 * Utils.normalRelativeAngle(absBearing - getRadarHeadingRadians()));
@@ -86,7 +91,7 @@ public class JayLexi extends AdvancedRobot {
         angle = absBearing + Math.PI;
         try {
             Wave s = waves.get(0);
-            angle = s.angle(me) + ORBIT * (direction = Math.signum(both(-1) - both(1)));
+            angle = s.angle(me) + orbit * (direction = Math.signum(both(-1) - both(1)));
         } catch (Exception ex) {
         }
         setTurnRightRadians(Math.tan(angle = smooth(me, angle, direction) - getHeadingRadians()));
@@ -137,7 +142,7 @@ public class JayLexi extends AdvancedRobot {
         int tick = 3;
         do {
             move = 1;
-            if (Math.cos(angle = smooth(p, s.angle(p) + dir * ORBIT, dir) - heading) < 0) {
+            if (Math.cos(angle = smooth(p, s.angle(p) + dir * orbit, dir) - heading) < 0) {
                 angle += Math.PI;
                 move = -1;
             }
