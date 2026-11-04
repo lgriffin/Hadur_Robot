@@ -47,7 +47,7 @@
 #   emgun  HAND-5: the melee's field gun aims in the endgame duel once its aim on the survivor is learned. Suffix eg.
 #   mnear3 MMOVE-24: the melee closest-robot factor off a team is 3, not 2 (docs/bench/melee-top3.md). Suffix n3.
 #   mnear4 MMOVE-24: as mnear3 at 4. Suffix n4.
-#   mclean MMOVE-25: off a team the crowd movement is Diamond's whole melee mover, not Hadur's (docs/bench/melee-top3.md). Suffix dc.
+#   mclean MMOVE-25: off a team the crowd movement is Diamond's whole melee mover, not Hadur's (docs/bench/melee-top3.md). Suffix dv.
 #   mstr1  MGUN-24: the melee gun weighs an opponent by 1 + 1 x its strength (mean finishing place this battle) in the crowd. Suffix k1.
 #   mstr2  MGUN-24: as mstr1 at 2 x. Suffix k2.
 #   eclose HAND-4: the melee endgame duel opens at 400 px, not the stranger's 650 (docs/bench/melee-top3.md). Suffix ek.
@@ -1214,7 +1214,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             # MMOVE-25 (docs/bench/melee-top3.md): Diamond's melee mover replaces Hadur's off a team; team and duel bit for bit.
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
                 "public static final boolean MELEE_CLEAN = false;" "public static final boolean MELEE_CLEAN = true;"
-            version="${version}dc" ;;
+            version="${version}dv" ;;
         mstr1|mstr2)
             # MGUN-24 (docs/bench/melee-top3.md): off a team with three or more opponents alive, the field
             # gun leans toward opponents that keep finishing high this battle; team and duel bit for bit.
