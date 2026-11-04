@@ -24,3 +24,11 @@
 08:53:17 watching pilot-u: 4 stop rule(s)
 09:05:48 progress pilot-u: 483/1062 (45%) battles, 2317/h, ETA 15 min, 0 failed, skips 34.6/battle (last 100), aa -0.02, mt -0.64, wl -5.85, hl -0.00, gl -0.06
 09:24:24 pilot-u exit=1 in 1867 s
+09:24:26 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/630
+09:24:26 skip screen-u (after pilot-u, which has not finished exit=0)
+09:24:26 skip pick (after screen-u, which has not finished exit=0)
+09:24:26 skip build (after pick, which has not finished exit=0)
+09:24:26 skip confirm (after build, which has not finished exit=0)
+09:24:26 skip gate (after confirm, which has not finished exit=0)
+09:24:26 skip pr (after gate, which has not finished exit=0)
+09:24:26 ALLDONE

@@ -1,6 +1,6 @@
 {
  "plan": "pc-shelf",
- "updated": 1793784264.4129257,
+ "updated": 1793784266.3772745,
  "steps": {
   "prep": {
    "status": "done",
@@ -27,22 +27,28 @@
    "end": "2026-11-04T09:24:24"
   },
   "screen-u": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after pilot-u"
   },
   "pick": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after screen-u"
   },
   "build": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after pick"
   },
   "confirm": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after build"
   },
   "gate": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after confirm"
   },
   "pr": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after gate"
   }
  },
  "watched": [
