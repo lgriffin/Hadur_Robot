@@ -85,10 +85,12 @@ class MeleeEnergyPolicyTest {
 
     @Test
     @Tag("MGUN-25")
-    @DisplayName("MGUN-25: ships off; on, at least the far power beyond 300 px with 60 energy or more and three or more left")
+    @DisplayName("MGUN-25: on at 2.5; at least the far power beyond 300 px with 60 energy or more and three or more left")
     void farPower() {
-        assertFalse(MeleeEnergyPolicy.FAR_SPARE);
-        assertEquals(1.92, MeleeEnergyPolicy.crowdPower(1.5, 600, 60, 50, 5), 1e-9, "off: MGUN-13 stands");
+        assertTrue(MeleeEnergyPolicy.FAR_SPARE);
+        assertEquals(2.5, MeleeEnergyPolicy.FAR_SPARE_POWER, 1e-12);
+        assertEquals(2.5, MeleeEnergyPolicy.crowdPower(1.5, 600, 60, 50, 5), 1e-9, "on: 2.5 beyond 300 px from 60 energy");
+        assertEquals(1.92, MeleeEnergyPolicy.crowdPower(1.5, 600, 59, 50, 5), 1e-9, "under 60 energy MGUN-13 stands");
         assertEquals(3.0, MeleeEnergyPolicy.farPower(1.92, 600, 70, 50, 5, true, 3.0), 1e-9);
         assertEquals(2.5, MeleeEnergyPolicy.farPower(1.92, 900, 60, 50, 3, true, 2.5), 1e-9, "from 60 energy, three left");
         assertEquals(1.92, MeleeEnergyPolicy.farPower(1.92, 600, 59, 50, 5, true, 3.0), 1e-9, "under 60 energy: unchanged");

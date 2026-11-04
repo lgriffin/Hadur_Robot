@@ -133,7 +133,10 @@ public final class FixtureReplay {
             } else if (line.startsWith("S,")) {
                 String[] s = line.split(",", 3);
                 if (r.recordedStore == null) r.recordedStore = new TreeMap<>();
-                r.recordedStore.put(s[1], Base64.getDecoder().decode(s[2]));
+                // MEM-15: store.hx, the saved store index, is written by the robot's file adapter
+                // (FileProfileStore), not the core, so no replay writes it; a fixture recorded since
+                // it shipped carries it, and the comparison leaves it out.
+                if (!"store.hx".equals(s[1])) r.recordedStore.put(s[1], Base64.getDecoder().decode(s[2]));
             }
         }
         if (store != null) {

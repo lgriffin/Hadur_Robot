@@ -16,10 +16,11 @@ class MeleeCrowdPowerTest {
     void shipped() {
         assertTrue(MeleeEnergyPolicy.CROWD_OGI);
         assertTrue(MeleeEnergyPolicy.OGI_WIDE);
-        assertEquals(MeleeEnergyPolicy.crowdPower(1.0, 600, 80, 80, 5, true, true),
-            MeleeEnergyPolicy.crowdPower(1.0, 600, 80, 80, 5), 1e-9);
+        assertEquals(MeleeEnergyPolicy.crowdPower(1.0, 600, 59, 80, 5, true, true),
+            MeleeEnergyPolicy.crowdPower(1.0, 600, 59, 80, 5), 1e-9);
         assertEquals(3.0, MeleeEnergyPolicy.crowdPower(1.95, 250, 60, 80, 3), 1e-9, "within 300 px");
-        assertEquals(1.92, MeleeEnergyPolicy.crowdPower(1.95, 350, 60, 80, 3), 1e-9, "beyond 300 px");
+        assertEquals(2.5, MeleeEnergyPolicy.crowdPower(1.95, 350, 60, 80, 3), 1e-9, "beyond 300 px from 60 energy (MGUN-25)");
+        assertEquals(1.92, MeleeEnergyPolicy.crowdPower(1.95, 350, 59, 80, 3), 1e-9, "beyond 300 px under 60 energy");
         assertEquals(1.95, MeleeEnergyPolicy.crowdPower(1.95, 250, 60, 80, 2), 1e-9, "two left: the duel's table");
     }
 

@@ -43,15 +43,16 @@ public final class MeleeEnergyPolicy {
     public static final boolean OGI_WIDE = true;
     static final double OGI_WIDE_CLOSE = 300;
     /**
-     * MGUN-25 (arms mfar3, mfar25): off a team with three or more opponents, a shot beyond
+     * MGUN-25 (pc-melee-far, PR #647): off a team with three or more opponents, a shot beyond
      * {@link #OGI_WIDE_CLOSE} px fires at least {@link #FAR_SPARE_POWER} while Hadur has
      * {@link #FAR_SPARE_ENERGY} energy or more, in place of MGUN-13's 1.92. The top bots fire about
      * as often as Hadur at the same hit rate but spend 15-25% more power in the crowd, and 64% of
      * Hadur's crowd shots are this far with this much energy (docs/bench/melee-top3.md); the energy
-     * floor keeps the endgame's reserve. Off.
+     * floor keeps the endgame's reserve. On from 3.22 at power 2.5: pc-melee-far y5 +0.30 +- 0.17
+     * (low end +0.13, endgame wins +0.9, skips +16%), y3 (power 3) +0.19 +- 0.19, PR #647.
      */
-    public static final boolean FAR_SPARE = false;
-    static final double FAR_SPARE_POWER = 3.0;
+    public static final boolean FAR_SPARE = true;
+    static final double FAR_SPARE_POWER = 2.5;
     static final double FAR_SPARE_ENERGY = 60.0;
 
     private MeleeEnergyPolicy() {}
