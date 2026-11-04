@@ -512,19 +512,20 @@ public class MeleeController {
         c.target = aim.target;
         c.learnedAim = aim.learned;
         c.gunTurn = Angles.normalRelativeAngle(aim.angle - s.gunHeading);
+
+        // MGUN-5: the energy table's power stands whatever the posture; the posture shapes
+        // where Hadur goes, never whether or how hard it fires.
+        double power = Math.min(aim.power, MeleeEnergyPolicy.killPower(target.energy));
         duelAimed = false;
         if (teamGun != null && onTeam && modes.contains(TeamModes.Mode.DUELGUN)) {
-            // TGUN-1: the duel gun takes the field gun's target once it has learned its class.
-            double duel = teamGun.aim(aim.target, s.me, s.time);
+            // TGUN-1: the duel gun takes the field gun's target once it has learned its class,
+            // aiming for the power the shot will go at.
+            double duel = teamGun.aim(aim.target, s.me, s.time, power);
             if (!Double.isNaN(duel)) {
                 c.gunTurn = Angles.normalRelativeAngle(duel - s.gunHeading);
                 duelAimed = true;
             }
         }
-
-        // MGUN-5: the energy table's power stands whatever the posture; the posture shapes
-        // where Hadur goes, never whether or how hard it fires.
-        double power = Math.min(aim.power, MeleeEnergyPolicy.killPower(target.energy));
         boolean hold = target.age(s.time) > MAX_FIRE_AGE
             || s.energy < MeleeEnergyPolicy.MIN_OWN_ENERGY
             || s.energy <= power + 0.1;

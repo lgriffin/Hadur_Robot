@@ -45,6 +45,8 @@ public final class TeamDuelGun {
     private final Map<String, Integer> breaks = new HashMap<>();
     private int round = -1;
     private long aimed, fired;
+    /** The wave the last aim was taken on; the shot that follows fires its virtual guns on it. */
+    private Wave aimedWave;
 
     /** One enemy's movement, as the duel's scan handler keeps it for its one opponent. */
     private static final class Track {
@@ -70,6 +72,7 @@ public final class TeamDuelGun {
     public void newRound() {
         round++;
         tracks.clear();
+        aimedWave = null;
         gun.initRound();
     }
 
@@ -139,25 +142,46 @@ public final class TeamDuelGun {
     }
 
     /**
-     * The duel gun's angle at {@code target} from {@code me} on {@code time}, or NaN while it
-     * has not learned the target's class or has no fresh wave on it.
+     * The duel gun's angle at {@code target} from {@code me} on {@code time} for a shot of
+     * {@code power}, or NaN while it has not learned the target's class or has no fresh wave on
+     * it. The wave takes the shot's power first (GUN-5: the gun is picked from that power
+     * class's ratings), as the duel decides power before aim.
      */
-    public double aim(String target, Point2D.Double me, long time) {
+    public double aim(String target, Point2D.Double me, long time, double power) {
+        aimedWave = null;
         if (target == null) return Double.NaN;
         Track t = tracks.get(target);
         if (t == null || t.lastWave == null || time - t.lastWave.fireTime > MAX_WAVE_AGE) return Double.NaN;
         if (breaks(target) < MIN_BREAKS) return Double.NaN;
         aimed++;
-        return gun.aim(t.lastWave, me, time);
+        Wave w = t.lastWave;
+        if (power > 0 && power != w.bulletPower()) {
+            w.setBulletPower(power);
+            w.setWallDistances();
+        }
+        aimedWave = w;
+        return gun.aim(w, me, time);
     }
 
-    /** A shot of {@code power} left at {@code target} on the duel gun's aim: the virtual guns fire with it. */
+    /**
+     * A shot of {@code power} left at {@code target} on the duel gun's last aim: that aim's
+     * wave (not a newer sighting's) becomes the firing wave, so its virtual bullets are scored
+     * when it breaks, as the duel's real-bullet waves are.
+     */
     public void fired(String target, Point2D.Double me, long time, double power) {
-        Track t = tracks.get(target);
-        if (t == null || t.lastWave == null) return;
+        Wave w = aimedWave;
+        aimedWave = null;
+        if (w == null || target == null || !w.botName.equals(key.apply(target))) return;
         fired++;
-        t.lastWave.setBulletPower(power);
-        gun.fireVirtualBullets(t.lastWave, me, time, power);
+        w.firingWave = true;
+        if (power != w.bulletPower()) {
+            w.setBulletPower(power);
+            w.setWallDistances();
+        }
+        gun.fireVirtualBullets(w, me, time, power);
         gun.shotFired();
     }
+
+    /** The wave the last aim was taken on, or null; for tests. */
+    Wave aimedWave() { return aimedWave; }
 }
