@@ -96,15 +96,13 @@ loadScripts(document, 'script');</script>
  <a href="TeamModes.Mode.html#CONCORD"><code>TeamModes.Mode.CONCORD</code></a> that keep state across ticks.
 
  <ul>
- <li><b>Modes.</b> The pack hunt and its range variants stand down; FINISH plays; GANG plays
-     once this battle has shown ganging (<a href="#gangOn()"><code>gangOn()</code></a>).</li>
+ <li><b>Modes.</b> FINISH plays; GANG plays once this battle has shown ganging
+     (<a href="#gangOn()"><code>gangOn()</code></a>).</li>
  <li><b>Gang watch.</b> Every tick, each member in view (Hadur and its teammates) counts as one
      member-turn, ganged with <a href="MinimumRiskMovement.html#GANG_SIZE"><code>MinimumRiskMovement.GANG_SIZE</code></a> or more enemies within
      <a href="MinimumRiskMovement.html#GANG_RANGE"><code>MinimumRiskMovement.GANG_RANGE</code></a>. After <a href="#GANG_TURNS"><code>GANG_TURNS</code></a> member-turns, GANG plays
      while <a href="#GANG_SHARE"><code>GANG_SHARE</code></a> or more of them were ganged. A team that spreads out never turns
      it on; one that gangs up does within a round. Kept for the battle.</li>
- <li><b>Radar groups.</b> Each enemy belongs to the member nearest it, so the members split the
-     field and each sweeps only its own group (<a href="#group(java.awt.geom.Point2D.Double,java.util.List,java.util.List)"><code>group(java.awt.geom.Point2D.Double, java.util.List&lt;java.awt.geom.Point2D.Double&gt;, java.util.List&lt;hadur117.core.world.EnemyInfo&gt;)</code></a>).</li>
  </ul>
 
  <p>Team-only, like every mode: the controller reaches it only with a living teammate.</p></div>
@@ -141,29 +139,19 @@ loadScripts(document, 'script');</script>
 <div class="block">Its parts; the <code>tmconcord</code> ablation's variants change one to weigh it.</div>
 </div>
 <div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#NO_HUNT" class="member-name-link">NO_HUNT</a></code></div>
+<div class="col-second even-row-color"><code><a href="#POOL" class="member-name-link">POOL</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Finer parts, for the same weighing: the hunt standing down, the risk's robot count, the gun's power and its pooling.</div>
+<div class="block">Finer parts, for the same weighing: the risk's robot count, the gun's power and its pooling.</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#POOL" class="member-name-link">POOL</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#POWER" class="member-name-link">POWER</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Finer parts, for the same weighing: the hunt standing down, the risk's robot count, the gun's power and its pooling.</div>
-</div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#POWER" class="member-name-link">POWER</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Finer parts, for the same weighing: the hunt standing down, the risk's robot count, the gun's power and its pooling.</div>
-</div>
-<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#RADAR" class="member-name-link">RADAR</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">Its parts; the <code>tmconcord</code> ablation's variants change one to weigh it.</div>
+<div class="block">Finer parts, for the same weighing: the risk's robot count, the gun's power and its pooling.</div>
 </div>
 <div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
 <div class="col-second even-row-color"><code><a href="#RISK" class="member-name-link">RISK</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Finer parts, for the same weighing: the hunt standing down, the risk's robot count, the gun's power and its pooling.</div>
+<div class="block">Finer parts, for the same weighing: the risk's robot count, the gun's power and its pooling.</div>
 </div>
 </div>
 </section>
@@ -186,7 +174,7 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
@@ -197,25 +185,17 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Whether the battle has shown ganging: once the watch turns GANG on, it stays on.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#group(java.awt.geom.Point2D.Double,java.util.List,java.util.List)" class="member-name-link">group</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&gt;&nbsp;mates,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;&nbsp;enemies)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">The enemies seen lately whose nearest member, of Hadur at <code>me</code> and <code>mates</code>, is
- Hadur: the group its radar keeps fresh.</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#modes(java.util.Set)" class="member-name-link">modes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;&nbsp;table)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">The modes this tick: <code>table</code>'s with FINISH, and GANG once the watch says so.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#modes(java.util.Set)" class="member-name-link">modes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;&nbsp;table)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">The modes this tick: <code>table</code>'s without the pack hunt, with FINISH, and GANG once the watch says so.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#watch(java.awt.geom.Point2D.Double,java.util.List,java.util.List,long)" class="member-name-link">watch</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#watch(java.awt.geom.Point2D.Double,java.util.List,java.util.List,long)" class="member-name-link">watch</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&gt;&nbsp;mates,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;&nbsp;enemies,
  long&nbsp;now)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Counts this tick's member-turns: Hadur at <code>me</code> and each teammate at <code>mates</code>.</div>
 </div>
 </div>
@@ -239,9 +219,8 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="MOVE">
 <h3>MOVE</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">MOVE</span></div>
-<div class="block">Its parts; the <code>tmconcord</code> ablation's variants change one to weigh it. The first cloud
- smoke (top 9, 2 seeds) lost 4.8 share points with all on, own hits up 38%: the group radar
- and the hunt standing down raised own fire against Ogi, so both are off for the second.</div>
+<div class="block">Its parts; the <code>tmconcord</code> ablation's variants change one to weigh it. The group radar
+ and the hunt standing down lost share points in the first cloud smoke and are gone.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -253,29 +232,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="RADAR">
-<h3>RADAR</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">RADAR</span></div>
-<div class="block">Its parts; the <code>tmconcord</code> ablation's variants change one to weigh it. The first cloud
- smoke (top 9, 2 seeds) lost 4.8 share points with all on, own hits up 38%: the group radar
- and the hunt standing down raised own fire against Ogi, so both are off for the second.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.melee.TeamConcord.RADAR">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="GUN">
 <h3>GUN</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">GUN</span></div>
-<div class="block">Its parts; the <code>tmconcord</code> ablation's variants change one to weigh it. The first cloud
- smoke (top 9, 2 seeds) lost 4.8 share points with all on, own hits up 38%: the group radar
- and the hunt standing down raised own fire against Ogi, so both are off for the second.</div>
+<div class="block">Its parts; the <code>tmconcord</code> ablation's variants change one to weigh it. The group radar
+ and the hunt standing down lost share points in the first cloud smoke and are gone.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -287,25 +248,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="NO_HUNT">
-<h3>NO_HUNT</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">NO_HUNT</span></div>
-<div class="block">Finer parts, for the same weighing: the hunt standing down, the risk's robot count, the gun's power and its pooling.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.melee.TeamConcord.NO_HUNT">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="RISK">
 <h3>RISK</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">RISK</span></div>
-<div class="block">Finer parts, for the same weighing: the hunt standing down, the risk's robot count, the gun's power and its pooling.</div>
+<div class="block">Finer parts, for the same weighing: the risk's robot count, the gun's power and its pooling.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -320,7 +266,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="POWER">
 <h3>POWER</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">POWER</span></div>
-<div class="block">Finer parts, for the same weighing: the hunt standing down, the risk's robot count, the gun's power and its pooling.</div>
+<div class="block">Finer parts, for the same weighing: the risk's robot count, the gun's power and its pooling.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -335,7 +281,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="POOL">
 <h3>POOL</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">POOL</span></div>
-<div class="block">Finer parts, for the same weighing: the hunt standing down, the risk's robot count, the gun's power and its pooling.</div>
+<div class="block">Finer parts, for the same weighing: the risk's robot count, the gun's power and its pooling.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -402,7 +348,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="modes(java.util.Set)">
 <h3>modes</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;</span>&nbsp;<span class="element-name">modes</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;&nbsp;table)</span></div>
-<div class="block">The modes this tick: <code>table</code>'s without the pack hunt, with FINISH, and GANG once the watch says so.</div>
+<div class="block">The modes this tick: <code>table</code>'s with FINISH, and GANG once the watch says so.</div>
 </section>
 </li>
 <li>
@@ -420,16 +366,6 @@ loadScripts(document, 'script');</script>
 <h3>gangOn</h3>
 <div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">gangOn</span>()</div>
 <div class="block">Whether the battle has shown ganging: once the watch turns GANG on, it stays on.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="group(java.awt.geom.Point2D.Double,java.util.List,java.util.List)">
-<h3>group</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;</span>&nbsp;<span class="element-name">group</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&gt;&nbsp;mates,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;&nbsp;enemies)</span></div>
-<div class="block">The enemies seen lately whose nearest member, of Hadur at <code>me</code> and <code>mates</code>, is
- Hadur: the group its radar keeps fresh. A tie goes to Hadur.</div>
 </section>
 </li>
 </ul>

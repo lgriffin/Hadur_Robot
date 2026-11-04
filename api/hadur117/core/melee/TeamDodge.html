@@ -105,7 +105,7 @@ loadScripts(document, 'script');</script>
      class. Profiles are made once a shot, never per candidate, which is what kept the
      learned aims (LEARN with WAVES) from costing skipped turns.</li>
  <li><b>Where to go.</b> The base risk ranks the candidates without any bullet in it
-     (<a href="#RANK_BULLETS"><code>RANK_BULLETS</code></a> off), the <a href="#RERANK"><code>RERANK</code></a> safest and the held destination are each
+     the <a href="#RERANK"><code>RERANK</code></a> safest and the held destination are each
      driven to for 30 ticks through every profile and, for 15, through the teammates' bullets
      (TMODE-25), and the score is Ogi's <code>risk/median + 3 x damage/median</code>.</li>
  </ol>
@@ -133,15 +133,9 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">TMODE-29, on since TMODE-30 (ablation tmnoof turns it off): our own fire as PATH weighs it.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#RANK_BULLETS" class="member-name-link">RANK_BULLETS</a></code></div>
+<div class="col-first even-row-color"><code>(package private) static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#RERANK" class="member-name-link">RERANK</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Ablation switch (tmdodgeb): the base ranking keeps the head-on and linear virtual bullets
- and the teammates' bullets, as the shipped movement scores them, under the re-rank.</div>
-</div>
-<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#RERANK" class="member-name-link">RERANK</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">Candidates driven through the waves: more than WAVES' 8, since the base ranking no longer sees bullets.</div>
 </div>
 </div>
@@ -222,22 +216,6 @@ loadScripts(document, 'script');</script>
 <section class="field-details" id="field-detail">
 <h2>Field Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="RANK_BULLETS">
-<h3>RANK_BULLETS</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">RANK_BULLETS</span></div>
-<div class="block">Ablation switch (tmdodgeb): the base ranking keeps the head-on and linear virtual bullets
- and the teammates' bullets, as the shipped movement scores them, under the re-rank.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.melee.TeamDodge.RANK_BULLETS">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="OWN_FIRE">
 <h3>OWN_FIRE</h3>

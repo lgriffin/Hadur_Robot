@@ -54,13 +54,8 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Package</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><a href="#hadur117.core">hadur117.core</a></div>
+<div class="col-first even-row-color"><a href="#hadur117.core.melee">hadur117.core.melee</a></div>
 <div class="col-last even-row-color">
-<div class="block">Hadur 2's core: the whole of the robot's strategy, as plain Java that never sees the
- Robocode engine.</div>
-</div>
-<div class="col-first odd-row-color"><a href="#hadur117.core.melee">hadur117.core.melee</a></div>
-<div class="col-last odd-row-color">
 <div class="block">Melee (free-for-all) subsystems: opponent tracking, sweep radar, minimum-risk
  movement, target selection, circular targeting and posture strategy, and each
  opponent's melee profile block (<a class="req" href="../../../../../requirements.html#MMEM-1">MMEM-1</a>), driven each
@@ -69,22 +64,6 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-uses">
 <ul class="block-list">
-<li>
-<section class="detail" id="hadur117.core">
-<h2>Uses of <a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a> in <a href="../../package-summary.html">hadur117.core</a></h2>
-<div class="caption"><span>Fields in <a href="../../package-summary.html">hadur117.core</a> with type parameters of type <a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a></span></div>
-<div class="summary-table three-column-summary">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Field</div>
-<div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;&gt;</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">TeamLink.</span><code><a href="../../TeamLink.html#modes" class="member-name-link">modes</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">TMODE-17, TMODE-18: the modes against the living enemies, from the team mode table; a test may name its own.</div>
-</div>
-</div>
-</section>
-</li>
 <li>
 <section class="detail" id="hadur117.core.melee">
 <h2>Uses of <a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a> in <a href="../package-summary.html">hadur117.core.melee</a></h2>
@@ -144,23 +123,12 @@ the order they are declared.</div>
 <div class="col-first even-row-color"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;</code></div>
 <div class="col-second even-row-color"><span class="type-name-label">TeamConcord.</span><code><a href="../TeamConcord.html#modes(java.util.Set)" class="member-name-link">modes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;&nbsp;table)</code></div>
 <div class="col-last even-row-color">
-<div class="block">The modes this tick: <code>table</code>'s without the pack hunt, with FINISH, and GANG once the watch says so.</div>
+<div class="block">The modes this tick: <code>table</code>'s with FINISH, and GANG once the watch says so.</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;</code></div>
 <div class="col-second odd-row-color"><span class="type-name-label">TeamModes.</span><code><a href="../TeamModes.html#of(hadur117.core.melee.TeamModes.Mode...)" class="member-name-link">of</a><wbr>(<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>...&nbsp;modes)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">The set of <code>modes</code>, nulls left out; the table's entries are written with it.</div>
-</div>
-<div class="col-first even-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">TeamModes.</span><code><a href="../TeamModes.html#with(java.util.Set,hadur117.core.melee.TeamModes.Mode)" class="member-name-link">with</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;&nbsp;m,
- <a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&nbsp;mode)</code></div>
-<div class="col-last even-row-color">
-<div class="block"><code>m</code> with <code>mode</code> added (TMODE-38, TMODE-39).</div>
-</div>
-<div class="col-first odd-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">TeamModes.</span><code><a href="../TeamModes.html#withClear(java.util.Set)" class="member-name-link">withClear</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;&nbsp;m)</code></div>
-<div class="col-last odd-row-color">
-<div class="block">TMODE-38: <code>m</code> with CLEAR added.</div>
 </div>
 </div>
 <div class="caption"><span>Methods in <a href="../package-summary.html">hadur117.core.melee</a> with parameters of type <a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a></span></div>
@@ -172,12 +140,6 @@ the order they are declared.</div>
 <div class="col-second even-row-color"><span class="type-name-label">TeamModes.</span><code><a href="../TeamModes.html#of(hadur117.core.melee.TeamModes.Mode...)" class="member-name-link">of</a><wbr>(<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>...&nbsp;modes)</code></div>
 <div class="col-last even-row-color">
 <div class="block">The set of <code>modes</code>, nulls left out; the table's entries are written with it.</div>
-</div>
-<div class="col-first odd-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">TeamModes.</span><code><a href="../TeamModes.html#with(java.util.Set,hadur117.core.melee.TeamModes.Mode)" class="member-name-link">with</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;&nbsp;m,
- <a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&nbsp;mode)</code></div>
-<div class="col-last odd-row-color">
-<div class="block"><code>m</code> with <code>mode</code> added (TMODE-38, TMODE-39).</div>
 </div>
 </div>
 <div class="caption"><span>Method parameters in <a href="../package-summary.html">hadur117.core.melee</a> with type arguments of type <a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a></span></div>
@@ -208,39 +170,34 @@ the order they are declared.</div>
 <div class="block">As above, with the team's <code>modes</code> against this team (T7): <a href="../TeamModes.Mode.html#GANG"><code>GANG</code></a>
  and <a href="../TeamModes.Mode.html#FINISH"><code>FINISH</code></a> draw the decision to a point (TMODE-3, TMODE-4).</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#huntRadius(java.util.Set)" class="member-name-link">huntRadius</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;&nbsp;modes)</code></div>
+<div class="col-first odd-row-color"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">TeamConcord.</span><code><a href="../TeamConcord.html#modes(java.util.Set)" class="member-name-link">modes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;&nbsp;table)</code></div>
 <div class="col-last odd-row-color">
-<div class="block">TMODE-23, TMODE-24: the hunt's radius against this team.</div>
+<div class="block">The modes this tick: <code>table</code>'s with FINISH, and GANG once the watch says so.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">TeamConcord.</span><code><a href="../TeamConcord.html#modes(java.util.Set)" class="member-name-link">modes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;&nbsp;table)</code></div>
+<div class="col-first even-row-color"><code>(package private) static <a href="../VirtualBullet.Aim.html" title="enum class in hadur117.core.melee">VirtualBullet.Aim</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">TeamModes.</span><code><a href="../TeamModes.html#onlyAim(java.util.Set)" class="member-name-link">onlyAim</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;&nbsp;modes)</code></div>
 <div class="col-last even-row-color">
-<div class="block">The modes this tick: <code>table</code>'s without the pack hunt, with FINISH, and GANG once the watch says so.</div>
-</div>
-<div class="col-first odd-row-color"><code>(package private) static <a href="../VirtualBullet.Aim.html" title="enum class in hadur117.core.melee">VirtualBullet.Aim</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">TeamModes.</span><code><a href="../TeamModes.html#onlyAim(java.util.Set)" class="member-name-link">onlyAim</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;&nbsp;modes)</code></div>
-<div class="col-last odd-row-color">
 <div class="block">TMODE-21, TMODE-22: the one aim the team's shots make a virtual bullet on, or null for both.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static boolean</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">TeamModes.</span><code><a href="../TeamModes.html#owns(java.util.Set)" class="member-name-link">owns</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;&nbsp;modes)</code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static boolean</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">TeamModes.</span><code><a href="../TeamModes.html#owns(java.util.Set)" class="member-name-link">owns</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;&nbsp;modes)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">TMODE-20: whether a shot counts only for the member it was aimed at (MMOVE-9's nearest rule).</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static <a href="../MinimumRiskMovement.Pull.html" title="class in hadur117.core.melee">MinimumRiskMovement.Pull</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#pull(java.awt.geom.Point2D.Double,double,int,java.util.List,long,java.util.List,java.util.Set)" class="member-name-link">pull</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first even-row-color"><code>(package private) static <a href="../MinimumRiskMovement.Pull.html" title="class in hadur117.core.melee">MinimumRiskMovement.Pull</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#pull(java.awt.geom.Point2D.Double,double,int,java.util.List,long,java.util.List,java.util.Set)" class="member-name-link">pull</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  double&nbsp;energy,
  int&nbsp;others,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;&nbsp;enemies,
  long&nbsp;now,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../world/Roster.Mate.html" title="class in hadur117.core.world">Roster.Mate</a>&gt;&nbsp;mates,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;&nbsp;modes)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block">TMODE-3, TMODE-4: the point a team member is drawn to, or null.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static <a href="../MinimumRiskMovement.Pull.html" title="class in hadur117.core.melee">MinimumRiskMovement.Pull</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#pull(java.awt.geom.Point2D.Double,java.lang.String,double,int,java.util.List,long,java.util.List,java.util.Set)" class="member-name-link">pull</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first odd-row-color"><code>(package private) static <a href="../MinimumRiskMovement.Pull.html" title="class in hadur117.core.melee">MinimumRiskMovement.Pull</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#pull(java.awt.geom.Point2D.Double,java.lang.String,double,int,java.util.List,long,java.util.List,java.util.Set)" class="member-name-link">pull</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  double&nbsp;energy,
  int&nbsp;others,
@@ -248,19 +205,8 @@ the order they are declared.</div>
  long&nbsp;now,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../world/Roster.Mate.html" title="class in hadur117.core.world">Roster.Mate</a>&gt;&nbsp;mates,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;&nbsp;modes)</code></div>
-<div class="col-last even-row-color">
-<div class="block">As above, with <code>name</code> this member's name for TMODE-13's order (null: first).</div>
-</div>
-<div class="col-first odd-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">TeamModes.</span><code><a href="../TeamModes.html#with(java.util.Set,hadur117.core.melee.TeamModes.Mode)" class="member-name-link">with</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;&nbsp;m,
- <a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&nbsp;mode)</code></div>
 <div class="col-last odd-row-color">
-<div class="block"><code>m</code> with <code>mode</code> added (TMODE-38, TMODE-39).</div>
-</div>
-<div class="col-first even-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">TeamModes.</span><code><a href="../TeamModes.html#withClear(java.util.Set)" class="member-name-link">withClear</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur117.core.melee">TeamModes.Mode</a>&gt;&nbsp;m)</code></div>
-<div class="col-last even-row-color">
-<div class="block">TMODE-38: <code>m</code> with CLEAR added.</div>
+<div class="block">As above, with <code>name</code> this member's name for TMODE-13's order (null: first).</div>
 </div>
 </div>
 </section>

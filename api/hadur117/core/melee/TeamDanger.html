@@ -102,10 +102,8 @@ loadScripts(document, 'script');</script>
  the nearest samples say the enemy aims, in place of <a class="req" href="../../../../requirements.html#MMOVE-3">MMOVE-3</a>'s head-on and linear guesses,
  once the log holds <a href="#MIN_SAMPLES"><code>MIN_SAMPLES</code></a>.</p>
 
- <p>Two switches, both off in the shipped build: <a href="#NEAREST"><code>NEAREST</code></a> (MMOVE-9, a shot is aimed
- at the member nearest the shooter, so the others leave it alone) and <a href="#LEARNED"><code>LEARNED</code></a>
- (MMOVE-10, the learned aims). Either acts only while Hadur has a living teammate: off a
- team, or as the last member alive, nothing here is reached.</p></div>
+ <p>The team's dodge (TMODE-27) reads these logs, and TMODE-20's shot ownership its
+ nearest-member rule; only while Hadur has a living teammate.</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -150,30 +148,20 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Neighbours a shot's aims are taken from.</div>
 </div>
-<div class="col-first even-row-color"><code>static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#LEARNED" class="member-name-link">LEARNED</a></code></div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#MAX_GF" class="member-name-link">MAX_GF</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">MMOVE-10 switch: detected shots are dodged at the team's learned aims.</div>
-</div>
-<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#MAX_GF" class="member-name-link">MAX_GF</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">A guess factor is kept within this, so a stray match cannot throw a bullet off the field.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#MAX_SAMPLES" class="member-name-link">MAX_SAMPLES</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#MAX_SAMPLES" class="member-name-link">MAX_SAMPLES</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Samples kept per enemy, oldest dropped first.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#MIN_SAMPLES" class="member-name-link">MIN_SAMPLES</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">Samples a log needs before its aims replace head-on and linear.</div>
-</div>
-<div class="col-first even-row-color"><code>static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#NEAREST" class="member-name-link">NEAREST</a></code></div>
+<div class="col-first even-row-color"><code>(package private) static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#MIN_SAMPLES" class="member-name-link">MIN_SAMPLES</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">MMOVE-9 switch: a shot is taken as aimed at the member nearest the shooter.</div>
+<div class="block">Samples a log needs before its aims replace head-on and linear.</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static final double</code></div>
 <div class="col-second odd-row-color"><code><a href="#NEAREST_MARGIN" class="member-name-link">NEAREST_MARGIN</a></code></div>
@@ -305,36 +293,6 @@ loadScripts(document, 'script');</script>
 <section class="field-details" id="field-detail">
 <h2>Field Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="NEAREST">
-<h3>NEAREST</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">NEAREST</span></div>
-<div class="block">MMOVE-9 switch: a shot is taken as aimed at the member nearest the shooter.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.melee.TeamDanger.NEAREST">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="LEARNED">
-<h3>LEARNED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">LEARNED</span></div>
-<div class="block">MMOVE-10 switch: detected shots are dodged at the team's learned aims.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.melee.TeamDanger.LEARNED">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="MIN_SAMPLES">
 <h3>MIN_SAMPLES</h3>
