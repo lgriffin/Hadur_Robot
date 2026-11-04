@@ -27,7 +27,7 @@ import java.util.Map;
  *     class. Profiles are made once a shot, never per candidate, which is what kept the
  *     learned aims (LEARN with WAVES) from costing skipped turns.</li>
  * <li><b>Where to go.</b> The base risk ranks the candidates without any bullet in it
- *     ({@link #RANK_BULLETS} off), the {@link #RERANK} safest and the held destination are each
+ *     the {@link #RERANK} safest and the held destination are each
  *     driven to for 30 ticks through every profile and, for 15, through the teammates' bullets
  *     (TMODE-25), and the score is Ogi's {@code risk/median + 3 x damage/median}.</li>
  * </ol>
@@ -36,11 +36,6 @@ import java.util.Map;
  */
 final class TeamDodge {
 
-    /**
-     * Ablation switch (tmdodgeb): the base ranking keeps the head-on and linear virtual bullets
-     * and the teammates' bullets, as the shipped movement scores them, under the re-rank.
-     */
-    static final boolean RANK_BULLETS = false;
     /**
      * TMODE-29, on since TMODE-30 (ablation tmnoof turns it off): our own fire as PATH weighs it. The base ranking keeps
      * MATEFIRE's teammate-bullet risk, and the teammates' bullets crossed on each drive add to

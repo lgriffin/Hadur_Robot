@@ -106,25 +106,6 @@ class TeamModesTest {
     }
 
     @Test
-    @Tag("TMODE-2")
-    @DisplayName("TMODE-2: with SOFT the shot's head-on and linear bullets carry its weight; under the floor it makes none")
-    void softBullets() {
-        EnemyShot shot = new EnemyShot("e", pt(600, 200), 10, 2.0);
-        TeamDanger danger = new TeamDanger(field(1200, 1200));
-        MinimumRiskMovement one = new MinimumRiskMovement(field(1200, 1200));
-        one.newRound();
-        one.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(pt(600, 300)), danger, false, false, true);
-        assertEquals(2, one.bullets().size());
-        for (VirtualBullet b : one.bullets()) assertEquals(0.25, b.weight, 0);
-
-        MinimumRiskMovement three = new MinimumRiskMovement(field(1200, 1200));
-        three.newRound();
-        three.updateBullets(List.of(shot), path(), pt(600, 600), 12,
-            List.of(pt(600, 300), pt(500, 300), pt(700, 300)), danger, false, false, true);
-        assertTrue(three.bullets().isEmpty());
-    }
-
-    @Test
     @Tag("TMODE-3")
     @DisplayName("TMODE-3: with two enemies within 250 px Hadur is drawn to its nearest teammate; else to a ganged teammate, to 300 px; else nothing")
     void gangPull() {
@@ -201,11 +182,9 @@ class TeamModesTest {
         EnemyShot shot = new EnemyShot("e", pt(600, 200), 10, 2.0);
         MinimumRiskMovement alone = new MinimumRiskMovement(field(1200, 1200));
         alone.newRound();
-        alone.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(),
-            new TeamDanger(field(1200, 1200)), true, true, true);
-        // TMODE-9, TMODE-10: a teammate's bullet and the leader's rear are kept but never read alone.
+        alone.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(), true, VirtualBullet.Aim.LINEAR);
+        // TMODE-9: a teammate's bullet is kept but never read alone.
         alone.mateShot("m0", pt(600, 500), 11, 0, 3.0);
-        alone.leader(true);
         MinimumRiskMovement solo = new MinimumRiskMovement(field(1200, 1200));
         solo.newRound();
         solo.updateBullets(List.of(shot), path(), pt(600, 600), 12);
@@ -219,53 +198,6 @@ class TeamModesTest {
             List.of(), ALL);
         Point2D.Double d2 = solo.chooseDestination(pt(600, 600), 100, 2, near, 12, MeleeStrategy.Plan.normal());
         assertEquals(d2, d1);
-    }
-
-    @Test
-    @Tag("TMODE-5")
-    @DisplayName("TMODE-5: the prey is the fresh enemy nearest the team's centre, its energy weighing 1.2 a point")
-    void preyChoice() {
-        EnemyTracker t = new EnemyTracker(field(1200, 1200));
-        scan(t, "near 1.0", 600, 800, 100, 100);
-        scan(t, "weak 1.0", 600, 900, 10, 100);
-        // near: 200 + 120 = 320; weak: 300 + 12 = 312.
-        assertEquals("weak 1.0", MinimumRiskMovement.prey(pt(600, 600), t.alive(), 100).name);
-        assertNull(MinimumRiskMovement.prey(pt(600, 600), t.alive(), 100 + MinimumRiskMovement.CAP_MAX_AGE));
-    }
-
-    @Test
-    @Tag("TMODE-5")
-    @DisplayName("TMODE-5: two members on one side of the prey take places either side of it, 70 degrees apart, at 0.74 of the nearer one's distance")
-    void pincerSlots() {
-        List<EnemyInfo> prey = enemies(pt(600, 900)).alive();
-        Point2D.Double me = pt(550, 500);
-        Point2D.Double mate = pt(650, 500);
-        Point2D.Double a = MinimumRiskMovement.pincerSlot(me, prey, 100, mates(mate));
-        Point2D.Double b = MinimumRiskMovement.pincerSlot(mate, prey, 100, mates(me));
-        double r = 0.74 * pt(600, 900).distance(me);
-        assertEquals(r, a.distance(600, 900), 1e-6);
-        assertEquals(r, b.distance(600, 900), 1e-6);
-        double ba = Math.atan2(a.x - 600, a.y - 900);
-        double bb = Math.atan2(b.x - 600, b.y - 900);
-        assertEquals(Math.toRadians(70), Math.abs(hadur117.core.physics.Angles.normalRelativeAngle(ba - bb)), 1e-9);
-        // Each keeps its own side: Hadur, west of the mate, takes the western place.
-        assertTrue(a.x < 600 && b.x > 600, a + " " + b);
-    }
-
-    @Test
-    @Tag("TMODE-5")
-    @DisplayName("TMODE-5: with PACK Hadur is drawn to its pincer place; ganged, GANG's regroup comes first; under 20 energy, no hunt")
-    void packPull() {
-        List<EnemyInfo> prey = enemies(pt(600, 1000)).alive();
-        Set<TeamModes.Mode> pack = EnumSet.of(TeamModes.Mode.PACK);
-        MinimumRiskMovement.Pull p = MinimumRiskMovement.pull(pt(600, 400), 100, 3, prey, 100, mates(pt(700, 400)), pack);
-        assertEquals(MinimumRiskMovement.pincerSlot(pt(600, 400), prey, 100, mates(pt(700, 400))), p.at);
-        assertEquals(MinimumRiskMovement.PACK_FLOOR, p.floor, 0);
-        assertNull(MinimumRiskMovement.pull(pt(600, 400), 19, 3, prey, 100, mates(pt(700, 400)), pack));
-        List<EnemyInfo> two = enemies(pt(700, 600), pt(600, 750)).alive();
-        p = MinimumRiskMovement.pull(pt(600, 600), 100, 3, two, 100, mates(pt(200, 600)),
-            EnumSet.of(TeamModes.Mode.PACK, TeamModes.Mode.GANG));
-        assertEquals(pt(200, 600), p.at);
     }
 
     @Test
@@ -304,54 +236,6 @@ class TeamModesTest {
     }
 
     @Test
-    @Tag("TMODE-13")
-    @DisplayName("TMODE-13: with HUNT the pull is 0.3 strong and leaves the bullets' risk unscaled; under 20 energy, no hunt")
-    void huntPull() {
-        List<EnemyInfo> prey = enemies(pt(600, 1000)).alive();
-        Set<TeamModes.Mode> hunt = EnumSet.of(TeamModes.Mode.HUNT);
-        MinimumRiskMovement.Pull p = MinimumRiskMovement.pull(pt(600, 400), "n", 100, 3, prey, 100,
-            mates(pt(700, 400)), hunt);
-        assertEquals(MinimumRiskMovement.huntSlot(pt(600, 400), "n", prey, 100, mates(pt(700, 400))), p.at);
-        assertEquals(MinimumRiskMovement.HUNT_PULL, p.strength, 0);
-        assertFalse(p.scalesBullets);
-        assertNull(MinimumRiskMovement.pull(pt(600, 400), "n", 19, 3, prey, 100, mates(pt(700, 400)), hunt));
-        // The other pulls still scale every term but the posture's.
-        assertTrue(MinimumRiskMovement.pull(pt(600, 400), 100, 3, prey, 100, mates(pt(700, 400)),
-            EnumSet.of(TeamModes.Mode.PACK)).scalesBullets);
-    }
-
-    @Test
-    @Tag("TMODE-37")
-    @DisplayName("TMODE-37: with WARY a member under 50 energy leaves the hunt; at 50 it still hunts; off by default")
-    void waryLeavesHuntSooner() {
-        List<EnemyInfo> prey = enemies(pt(600, 1000)).alive();
-        Set<TeamModes.Mode> hunt = EnumSet.of(TeamModes.Mode.HUNT);
-        Set<TeamModes.Mode> wary = EnumSet.of(TeamModes.Mode.HUNT, TeamModes.Mode.WARY);
-        assertNotNull(MinimumRiskMovement.pull(pt(600, 400), "n", 40, 3, prey, 100, mates(pt(700, 400)), hunt));
-        assertNull(MinimumRiskMovement.pull(pt(600, 400), "n", 40, 3, prey, 100, mates(pt(700, 400)), wary));
-        assertNotNull(MinimumRiskMovement.pull(pt(600, 400), "n", MinimumRiskMovement.WARY_ENERGY, 3, prey, 100,
-            mates(pt(700, 400)), wary));
-        assertFalse(TeamModes.FORCE_WARY);
-        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.WARY));
-    }
-
-    @Test
-    @Tag("TMODE-6")
-    @DisplayName("TMODE-6: with SCREEN a teammate nearer an enemy than a point keeps Hadur from counting as that enemy's closest robot")
-    void screenedByMate() {
-        List<EnemyInfo> one = enemies(pt(600, 900), pt(100, 100)).alive();
-        MinimumRiskMovement move = new MinimumRiskMovement(field(1200, 1200));
-        move.newRound();
-        List<Roster.Mate> m = mates(pt(600, 1000));
-        MinimumRiskMovement.View v = move.view(pt(600, 600), 100, 100, 4, one, MeleeStrategy.Plan.normal(), m);
-        Point2D.Double p = pt(600, 700);
-        double plain = move.enemyRisk(p, v, 0);
-        MinimumRiskMovement.screen(v, 100);
-        // The teammate is 100 px from the enemy, the point 200: Hadur there is no longer its closest.
-        assertEquals(plain / MinimumRiskMovement.CLOSEST_FACTOR, move.enemyRisk(p, v, 0), 1e-9);
-    }
-
-    @Test
     @Tag("TMODE-7")
     @DisplayName("TMODE-7: pooled, every copy of an enemy class feeds and reads one log")
     void pooledLogs() {
@@ -368,26 +252,6 @@ class TeamModesTest {
         assertEquals(1, apart.size("cz.libors.Ogi 1.0 (2)"));
         d.pool(false);
         assertEquals(1, d.size("cz.libors.Ogi 1.0 (1)"));
-    }
-
-    @Test
-    @Tag("TMODE-8")
-    @DisplayName("TMODE-8: with DISABLED Hadur is drawn to the nearest fresh disabled enemy within 500 px, to 50 px; not to a live or distant one")
-    void disabledPull() {
-        Set<TeamModes.Mode> dis = EnumSet.of(TeamModes.Mode.DISABLED);
-        EnemyTracker t = new EnemyTracker(field(1200, 1200));
-        scan(t, "dead 1.0", 900, 600, 0, 100);
-        scan(t, "live 1.0", 700, 600, 50, 100);
-        MinimumRiskMovement.Pull p = MinimumRiskMovement.pull(pt(600, 600), 100, 3, t.alive(), 100, mates(pt(200, 600)), dis);
-        assertEquals(pt(900, 600), p.at);
-        assertEquals(MinimumRiskMovement.DISABLED_FLOOR, p.floor, 0);
-        assertEquals(MinimumRiskMovement.DISABLED_PULL, p.strength, 0);
-        // Too far, or stale: nothing.
-        assertNull(MinimumRiskMovement.pull(pt(100, 100), 100, 3, t.alive(), 100, mates(pt(200, 600)), dis));
-        assertNull(MinimumRiskMovement.pull(pt(600, 600), 100, 3, t.alive(), 100 + MinimumRiskMovement.CAP_MAX_AGE,
-            mates(pt(200, 600)), dis));
-        // Without the mode, nothing.
-        assertNull(MinimumRiskMovement.pull(pt(600, 600), 100, 3, t.alive(), 100, mates(pt(200, 600)), TeamModes.NONE));
     }
 
     @Test
@@ -449,48 +313,6 @@ class TeamModesTest {
     }
 
     @Test
-    @Tag("TMODE-11")
-    @DisplayName("TMODE-11: with WAVES on a team the destination is one of the safest candidates, re-ranked by the waves")
-    void wavesPick() {
-        List<EnemyInfo> far = enemies(pt(600, 150)).alive();
-        List<Roster.Mate> m = mates(pt(200, 900));
-        MinimumRiskMovement move = new MinimumRiskMovement(field(1200, 1200));
-        move.newRound();
-        move.updateBullets(List.of(new EnemyShot("e", pt(600, 150), 0, 3.0)), path(), pt(600, 600), 20);
-        Point2D.Double d = move.chooseDestination(pt(600, 600), 100, 1, far, 20, MeleeStrategy.Plan.normal(),
-            m, TeamModes.of(TeamModes.Mode.WAVES));
-        assertTrue(move.candidates(pt(600, 600), 1, far, 20, m).contains(d));
-    }
-
-    @Test
-    @Tag("TMODE-10")
-    @DisplayName("TMODE-10: with REAR the leader's enemy terms weigh 1.5 times; a member that is not the leader is unchanged")
-    void rearLeader() {
-        List<EnemyInfo> two = enemies(pt(700, 600), pt(600, 800)).alive();
-        List<Roster.Mate> m = mates(pt(200, 600));
-        MinimumRiskMovement move = new MinimumRiskMovement(field(1200, 1200));
-        move.newRound();
-        MinimumRiskMovement.View plain = move.view(pt(600, 600), 100, 100, 3, two, MeleeStrategy.Plan.normal(), m);
-        MinimumRiskMovement.View rear = move.view(pt(600, 600), 100, 100, 3, two, MeleeStrategy.Plan.normal(), m);
-        rear.rear = true;
-        Point2D.Double p = pt(650, 650);
-        double enemies = move.enemyRisk(p, plain, 0) + move.enemyRisk(p, plain, 1);
-        assertEquals(move.risk(p, plain) + (MinimumRiskMovement.REAR_FACTOR - 1) * enemies, move.risk(p, rear), 1e-9);
-        // chooseDestination sets rear only for the leader.
-        MinimumRiskMovement led = new MinimumRiskMovement(field(1200, 1200));
-        led.newRound();
-        led.leader(true);
-        MinimumRiskMovement member = new MinimumRiskMovement(field(1200, 1200));
-        member.newRound();
-        MinimumRiskMovement base = new MinimumRiskMovement(field(1200, 1200));
-        base.newRound();
-        Set<TeamModes.Mode> r = EnumSet.of(TeamModes.Mode.REAR);
-        Point2D.Double a = base.chooseDestination(pt(600, 600), 100, 3, two, 100, MeleeStrategy.Plan.normal(), m);
-        Point2D.Double b = member.chooseDestination(pt(600, 600), 100, 3, two, 100, MeleeStrategy.Plan.normal(), m, r);
-        assertEquals(a, b);
-    }
-
-    @Test
     @Tag("TMODE-20")
     @Tag("TMODE-21")
     @Tag("TMODE-22")
@@ -505,13 +327,11 @@ class TeamModesTest {
         TeamDanger danger = new TeamDanger(field(1200, 1200));
         MinimumRiskMovement theirs = new MinimumRiskMovement(field(1200, 1200));
         theirs.newRound();
-        theirs.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(pt(600, 300)), danger,
-            TeamModes.owns(EnumSet.of(TeamModes.Mode.OWN)), false, false, null);
+        theirs.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(pt(600, 300)), TeamModes.owns(EnumSet.of(TeamModes.Mode.OWN)), null);
         assertTrue(theirs.bullets().isEmpty());
         MinimumRiskMovement mine = new MinimumRiskMovement(field(1200, 1200));
         mine.newRound();
-        mine.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(pt(600, 1000)), danger,
-            TeamModes.owns(EnumSet.of(TeamModes.Mode.OWN)), false, false, null);
+        mine.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(pt(600, 1000)), TeamModes.owns(EnumSet.of(TeamModes.Mode.OWN)), null);
         assertEquals(2, mine.bullets().size());
     }
 
@@ -524,12 +344,12 @@ class TeamModesTest {
         TeamDanger danger = new TeamDanger(field(1200, 1200));
         MinimumRiskMovement both = new MinimumRiskMovement(field(1200, 1200));
         both.newRound();
-        both.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(pt(100, 1100)), danger, false, false, false, null);
+        both.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(pt(100, 1100)), false, null);
         assertEquals(2, both.bullets().size());
         for (VirtualBullet.Aim aim : new VirtualBullet.Aim[] {VirtualBullet.Aim.HEAD_ON, VirtualBullet.Aim.LINEAR}) {
             MinimumRiskMovement one = new MinimumRiskMovement(field(1200, 1200));
             one.newRound();
-            one.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(pt(100, 1100)), danger, false, false, false, aim);
+            one.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(pt(100, 1100)), false, aim);
             assertEquals(1, one.bullets().size());
             VirtualBullet b = one.bullets().get(0);
             assertEquals(aim, b.aim);
@@ -540,86 +360,8 @@ class TeamModesTest {
         // Off a team (no living teammate) the shot makes both guesses as ever.
         MinimumRiskMovement alone = new MinimumRiskMovement(field(1200, 1200));
         alone.newRound();
-        alone.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(), danger, false, false, false, VirtualBullet.Aim.HEAD_ON);
+        alone.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(), false, VirtualBullet.Aim.HEAD_ON);
         assertEquals(2, alone.bullets().size());
-    }
-
-    @Test
-    @Tag("TMODE-38")
-    @DisplayName("TMODE-38: CLEAR drives as the robot moves, so a member running at a bullet's line is blocked where a standstill drive would clear")
-    void clearDrivesWithMomentum() {
-        // A teammate's power 1.9 bullet (14.3 px a tick) flies west along y = 628 and passes x = 600
-        // on tick 104; Hadur is at (600, 600).
-        MinimumRiskMovement move = new MinimumRiskMovement(field(1200, 1200));
-        move.newRound();
-        move.mateShot("m0", pt(600 + 14.3 * 9, 628), 95, 3 * Math.PI / 2, 1.9);
-        MinimumRiskMovement.View v = move.view(pt(600, 600), 100, 100, 3, enemies(pt(100, 1100)).alive(),
-            MeleeStrategy.Plan.normal(), mates(pt(1000, 640)));
-        List<Point2D.Double[]> tracks = MinimumRiskMovement.tracks(v, move.mateBullets(pt(600, 600), 100));
-        assertNotNull(tracks);
-        // Driving south from a standstill clears the line. Running north at 8 px a tick, the same
-        // order brakes first, carrying Hadur 12 px north into the bullet's path as it passes.
-        assertFalse(MinimumRiskMovement.meets(pt(600, 600), 0, 0, pt(600, 400), tracks));
-        assertTrue(MinimumRiskMovement.meets(pt(600, 600), 0, 8, pt(600, 400), tracks));
-        // A drive west along the line is caught: the bullet flies faster than Hadur.
-        assertTrue(MinimumRiskMovement.meets(pt(600, 600), 3 * Math.PI / 2, 8, pt(300, 628), tracks));
-        // No bullet near: nothing to check.
-        assertNull(MinimumRiskMovement.tracks(v, List.of()));
-        assertFalse(TeamModes.FORCE_CLEAR);
-        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.CLEAR));
-        assertEquals(TeamModes.DEFAULT, TeamModes.against(List.of()));
-    }
-
-    @Test
-    @Tag("TMODE-38")
-    @DisplayName("TMODE-38: forced on, CLEAR joins every team's modes, the ones the table names included")
-    void clearJoinsEveryEntry() {
-        Set<TeamModes.Mode> named = EnumSet.of(TeamModes.Mode.MATEFIRE, TeamModes.Mode.PATH);
-        Set<TeamModes.Mode> with = TeamModes.withClear(named);
-        assertTrue(with.contains(TeamModes.Mode.CLEAR));
-        assertTrue(with.containsAll(named));
-        assertEquals(named.size() + 1, with.size());
-        assertSame(with, TeamModes.withClear(with));
-        assertEquals(EnumSet.of(TeamModes.Mode.CLEAR), TeamModes.withClear(TeamModes.NONE));
-    }
-
-    @Test
-    @Tag("TMODE-39")
-    @DisplayName("TMODE-39: MOMENTUM's wave check drives from the robot's heading and speed, so a side step that needs a turn first is no longer rated safe")
-    void momentumDrivesFromMotion() {
-        // As waveDamage: a power 3 wave from (600, 200) north reaches y = 600 near tick 35. On tick 28
-        // Hadur at (600, 600) has about 7 ticks to step aside east.
-        EnemyShot shot = new EnemyShot("e", pt(600, 200), 0, 3.0);
-        List<MinimumRiskMovement.Wave> waves = MinimumRiskMovement.Wave.of(List.of(
-            new VirtualBullet(shot, VirtualBullet.Aim.HEAD_ON, 0.0)));
-        double still = MinimumRiskMovement.waveDamage(pt(600, 600), pt(800, 600), 28, waves);
-        // Already facing east and stopped, the drive is the standstill one.
-        assertEquals(still, MinimumRiskMovement.waveDamageMoving(pt(600, 600), Math.PI / 2, 0, pt(800, 600), 28, waves, null, null), 1e-9);
-        // Running north at 8 px a tick, Hadur must turn 90 degrees first and stays in the wave's path.
-        double running = MinimumRiskMovement.waveDamageMoving(pt(600, 600), 0, 8, pt(800, 600), 28, waves, null, null);
-        assertTrue(running > still + 1, "running " + running + " still " + still);
-        assertEquals(0.0, MinimumRiskMovement.waveDamageMoving(pt(600, 600), 0, 8, pt(800, 600), 28, List.of(), null, null), 0.0);
-        // The engine's velocity rule: at 8 px a tick with 10 px left Hadur brakes to 6, not 8; told to
-        // reverse at 1 px a tick it passes zero and comes back 1.5 in the tick.
-        assertEquals(6.0, MinimumRiskMovement.engineVelocity(8, 10, 8), 1e-9);
-        assertEquals(8.0, MinimumRiskMovement.engineVelocity(7, 500, 8), 1e-9);
-        assertEquals(-0.5, MinimumRiskMovement.engineVelocity(1, -100, 8), 1e-9);
-        assertEquals(0.0, MinimumRiskMovement.engineVelocity(0, 0, 8), 1e-9);
-        // A drive that runs into a wall stops at its edge: from (20, 600) at 8 west, turning to go
-        // north, the old rollout scored waves at x < 18; with the field it never leaves it.
-        EnemyShot west = new EnemyShot("w", pt(600, 600), 0, 3.0);
-        List<MinimumRiskMovement.Wave> wall = MinimumRiskMovement.Wave.of(List.of(
-            new VirtualBullet(west, VirtualBullet.Aim.HEAD_ON, 3 * Math.PI / 2)));
-        double free = MinimumRiskMovement.waveDamageMoving(pt(20, 600), 3 * Math.PI / 2, 8, pt(20, 900), 40, wall, null, null);
-        double walled = MinimumRiskMovement.waveDamageMoving(pt(20, 600), 3 * Math.PI / 2, 8, pt(20, 900), 40, wall, null,
-            new hadur117.core.physics.BattleField(1200, 1200));
-        assertTrue(walled >= free, "walled " + walled + " free " + free);
-        assertFalse(TeamModes.FORCE_MOMENTUM);
-        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.MOMENTUM));
-        Set<TeamModes.Mode> named = EnumSet.of(TeamModes.Mode.MATEFIRE, TeamModes.Mode.DODGE);
-        Set<TeamModes.Mode> with = TeamModes.with(named, TeamModes.Mode.MOMENTUM);
-        assertTrue(with.contains(TeamModes.Mode.MOMENTUM) && with.containsAll(named));
-        assertSame(with, TeamModes.with(with, TeamModes.Mode.MOMENTUM));
     }
 
     @Test
@@ -671,20 +413,19 @@ class TeamModesTest {
     }
 
     @Test
-    @Tag("TMODE-23")
-    @Tag("TMODE-24")
-    @Tag("TMODE-26")
-    @DisplayName("TMODE-23/24/26: with FAR the hunt's place is 500 px from its prey, FARTHER 650 px, NEAR 250 px; else 350 px")
-    void huntRange() {
-        List<EnemyInfo> prey = enemies(pt(600, 900)).alive();
-        assertEquals(MinimumRiskMovement.HUNT_RADIUS, MinimumRiskMovement.huntRadius(EnumSet.of(TeamModes.Mode.HUNT)), 0);
-        for (TeamModes.Mode m : new TeamModes.Mode[] {TeamModes.Mode.FAR, TeamModes.Mode.FARTHER, TeamModes.Mode.NEAR}) {
-            Set<TeamModes.Mode> modes = EnumSet.of(TeamModes.Mode.HUNT, m);
-            double r = m == TeamModes.Mode.FAR ? 500 : m == TeamModes.Mode.FARTHER ? 650 : 250;
-            assertEquals(r, MinimumRiskMovement.huntRadius(modes), 0);
-            MinimumRiskMovement.Pull p = MinimumRiskMovement.pull(pt(600, 300), "n", 100, 3, prey, 100,
-                mates(pt(700, 300)), modes);
-            assertEquals(r, p.at.distance(600, 900), 1e-6);
-        }
+    @Tag("TMODE-13")
+    @DisplayName("TMODE-13: with HUNT the pull is 0.3 strong and leaves the bullets' risk unscaled; under 20 energy, no hunt")
+    void huntPull() {
+        List<EnemyInfo> prey = enemies(pt(600, 1000)).alive();
+        Set<TeamModes.Mode> hunt = EnumSet.of(TeamModes.Mode.HUNT);
+        MinimumRiskMovement.Pull p = MinimumRiskMovement.pull(pt(600, 400), "n", 100, 3, prey, 100,
+            mates(pt(700, 400)), hunt);
+        assertEquals(MinimumRiskMovement.huntSlot(pt(600, 400), "n", prey, 100, mates(pt(700, 400))), p.at);
+        assertEquals(MinimumRiskMovement.HUNT_PULL, p.strength, 0);
+        assertFalse(p.scalesBullets);
+        assertNull(MinimumRiskMovement.pull(pt(600, 400), "n", 19, 3, prey, 100, mates(pt(700, 400)), hunt));
+        // The other pulls still scale every term but the posture's.
+        assertTrue(MinimumRiskMovement.pull(pt(600, 400), 100, 2, prey, 100, mates(pt(700, 400)),
+            EnumSet.of(TeamModes.Mode.FINISH)).scalesBullets);
     }
 }

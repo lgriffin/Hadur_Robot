@@ -45,9 +45,7 @@ import sys
 import zipfile
 from pathlib import Path
 
-MODES = ("SOFT", "GANG", "FINISH", "LEARN", "PACK", "SCREEN", "POOL", "DISABLED", "MATEFIRE", "REAR", "WAVES", "HUNT",
-         "LINES", "LINESW", "LANEP", "LANEB", "GUNLINE", "OWN", "HEADON", "LINEAR", "FAR", "FARTHER", "PATH", "NEAR",
-         "DODGE", "LEAD", "SWIFT", "CONCORD", "HEAVY", "WARY", "CLEAR", "MOMENTUM", "AIM")
+MODES = ("GANG", "FINISH", "MATEFIRE", "HUNT", "OWN", "HEADON", "LINEAR", "PATH", "DODGE", "CONCORD")
 
 ROW = re.compile(r"^\|\s*(?P<team>[^|]+?)\s*\|\s*[^|]*\|\s*[^|]*\|\s*(?P<mean>[+-]?\d+(?:\.\d+)?)(?:\s*±\s*(?P<ci>\d+(?:\.\d+)?))?\s*\|\s*$")
 

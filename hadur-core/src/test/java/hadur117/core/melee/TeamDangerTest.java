@@ -113,16 +113,16 @@ class TeamDangerTest {
 
     @Test
     @Tag("MMOVE-9")
-    @DisplayName("MMOVE-9: on a team with NEAREST, a shot at a nearer teammate makes no virtual bullets; with neither switch the bullets are MMOVE-3's")
+    @DisplayName("MMOVE-9: on a team with the nearest rule, a shot at a nearer teammate makes no virtual bullets; without it the bullets are MMOVE-3's")
     void nearestDropsOthersShots() {
         MinimumRiskMovement team = new MinimumRiskMovement(field(1200, 1200));
         team.newRound();
-        team.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(pt(600, 300)), danger, true, false);
+        team.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(pt(600, 300)), true, null);
         assertTrue(team.bullets().isEmpty());
 
         MinimumRiskMovement off = new MinimumRiskMovement(field(1200, 1200));
         off.newRound();
-        off.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(pt(600, 300)), danger, false, false);
+        off.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(pt(600, 300)), false, null);
         MinimumRiskMovement solo = new MinimumRiskMovement(field(1200, 1200));
         solo.newRound();
         solo.updateBullets(List.of(shot), path(), pt(600, 600), 12);
@@ -132,29 +132,6 @@ class TeamDangerTest {
             assertEquals(solo.bullets().get(i).heading, off.bullets().get(i).heading, 0.0);
             assertEquals(1.0, off.bullets().get(i).weight, 0.0);
         }
-    }
-
-    @Test
-    @Tag("MMOVE-10")
-    @DisplayName("MMOVE-10: on a team with LEARNED, a deep enough log replaces head-on and linear with its weighted aims")
-    void learnedBullets() {
-        MinimumRiskMovement team = new MinimumRiskMovement(field(1200, 1200));
-        team.newRound();
-        // Not yet deep enough: the two guesses.
-        team.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(pt(100, 1100)), danger, false, true);
-        assertEquals(2, team.bullets().size());
-        for (int i = 0; i < 8; i++) danger.add(danger.sample(shot, target(true), mea));
-        EnemyShot next = new EnemyShot("e", pt(600, 200), 11, 2.0);
-        team.updateBullets(List.of(shot, next), path(), pt(600, 600), 12, List.of(pt(100, 1100)), danger, false, true);
-        List<VirtualBullet> learned = team.bullets().subList(2, team.bullets().size());
-        assertEquals(8, learned.size());
-        double total = 0;
-        for (VirtualBullet b : learned) {
-            assertEquals(VirtualBullet.Aim.LEARNED, b.aim);
-            assertEquals(mea, b.heading, 1e-9);
-            total += b.weight;
-        }
-        assertEquals(TeamDanger.SHOT_WEIGHT, total, 1e-9);
     }
 
     @Test
@@ -181,13 +158,12 @@ class TeamDangerTest {
 
     @Test
     @Tag("MMOVE-9")
-    @Tag("MMOVE-10")
-    @DisplayName("MMOVE-9, MMOVE-10: with no teammate both switches on change nothing: the bullets are MMOVE-3's, weight 1")
+    @DisplayName("MMOVE-9: with no teammate the nearest rule and the one aim change nothing: the bullets are MMOVE-3's, weight 1")
     void soloUntouched() {
         for (int i = 0; i < 8; i++) danger.add(danger.sample(shot, target(true), mea));
         MinimumRiskMovement alone = new MinimumRiskMovement(field(1200, 1200));
         alone.newRound();
-        alone.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(), danger, true, true);
+        alone.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(), true, VirtualBullet.Aim.HEAD_ON);
         MinimumRiskMovement solo = new MinimumRiskMovement(field(1200, 1200));
         solo.newRound();
         solo.updateBullets(List.of(shot), path(), pt(600, 600), 12);
