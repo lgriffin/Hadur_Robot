@@ -121,28 +121,23 @@ implements <a href="role/Role.html" title="interface in hadur117.core.role">Role
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>(package private) int</code></div>
-<div class="col-second even-row-color"><code><a href="#endgameShots" class="member-name-link">endgameShots</a></code></div>
+<div class="col-second even-row-color"><code><a href="#ghostTicks" class="member-name-link">ghostTicks</a></code></div>
 <div class="col-last even-row-color">
-<div class="block"><a class="req" href="../../../requirements.html#HAND-5">HAND-5</a>: endgame shots the field gun fired this round.</div>
+<div class="block">Per-round counters for the M record.</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) int</code></div>
-<div class="col-second odd-row-color"><code><a href="#ghostTicks" class="member-name-link">ghostTicks</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#maxScanGap" class="member-name-link">maxScanGap</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">Per-round counters for the M record.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) int</code></div>
-<div class="col-second even-row-color"><code><a href="#maxScanGap" class="member-name-link">maxScanGap</a></code></div>
+<div class="col-first even-row-color"><code>(package private) final <a href="melee/MeleeController.html" title="class in hadur117.core.melee">MeleeController</a></code></div>
+<div class="col-second even-row-color"><code><a href="#melee" class="member-name-link">melee</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Per-round counters for the M record.</div>
-</div>
-<div class="col-first odd-row-color"><code>(package private) final <a href="melee/MeleeController.html" title="class in hadur117.core.melee">MeleeController</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#melee" class="member-name-link">melee</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">The melee brain; it sees every non-sentry scan and death, whichever role drives.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) int</code></div>
-<div class="col-second even-row-color"><code><a href="#sweepGap" class="member-name-link">sweepGap</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) int</code></div>
+<div class="col-second odd-row-color"><code><a href="#sweepGap" class="member-name-link">sweepGap</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Per-round counters for the M record.</div>
 </div>
 </div>
@@ -191,20 +186,6 @@ implements <a href="role/Role.html" title="interface in hadur117.core.role">Role
  <a href="model/BotOrders.Builder.html" title="class in hadur117.core.model">BotOrders.Builder</a>&nbsp;orders)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../requirements.html#MELEE-7">MELEE-7</a>..8, MRADAR, MMOVE, MGUN: one tick of melee.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#endgameGun(hadur117.core.role.Tick,hadur117.core.model.BotOrders.Builder)" class="member-name-link">endgameGun</a><wbr>(<a href="role/Tick.html" title="class in hadur117.core.role">Tick</a>&nbsp;tick,
- <a href="model/BotOrders.Builder.html" title="class in hadur117.core.model">BotOrders.Builder</a>&nbsp;orders)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block"><a class="req" href="../../../requirements.html#HAND-5">HAND-5</a>: the field gun's orders on a tick it owns (<a href="#endgameOwnsGun(hadur117.core.role.Tick)"><code>endgameOwnsGun(hadur117.core.role.Tick)</code></a>): fires last
- tick's aim when the gun is cool and has finished turning (as <a href="#drive(hadur117.core.role.Tick,hadur117.core.model.BotOrders.Builder)"><code>drive(hadur117.core.role.Tick, hadur117.core.model.BotOrders.Builder)</code></a> does) and turns
- to this tick's aim.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#endgameOwnsGun(hadur117.core.role.Tick)" class="member-name-link">endgameOwnsGun</a><wbr>(<a href="role/Tick.html" title="class in hadur117.core.role">Tick</a>&nbsp;tick)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block"><a class="req" href="../../../requirements.html#HAND-5">HAND-5</a>: in the endgame duel, before the duel drives, decides whether the field gun owns the
- gun this tick: it does while its aim on the survivor is a learned one.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="model/Baton.html" title="class in hadur117.core.model">Baton</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#give(hadur117.core.role.Tick)" class="member-name-link">give</a><wbr>(<a href="role/Tick.html" title="class in hadur117.core.role">Tick</a>&nbsp;tick)</code></div>
@@ -353,13 +334,6 @@ implements <a href="role/Role.html" title="interface in hadur117.core.role">Role
 <h3>melee</h3>
 <div class="member-signature"><span class="modifiers">final</span>&nbsp;<span class="return-type"><a href="melee/MeleeController.html" title="class in hadur117.core.melee">MeleeController</a></span>&nbsp;<span class="element-name">melee</span></div>
 <div class="block">The melee brain; it sees every non-sentry scan and death, whichever role drives.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="endgameShots">
-<h3>endgameShots</h3>
-<div class="member-signature"><span class="return-type">int</span>&nbsp;<span class="element-name">endgameShots</span></div>
-<div class="block"><a class="req" href="../../../requirements.html#HAND-5">HAND-5</a>: endgame shots the field gun fired this round.</div>
 </section>
 </li>
 <li>
@@ -626,27 +600,6 @@ implements <a href="role/Role.html" title="interface in hadur117.core.role">Role
 <dt>Specified by:</dt>
 <dd><code><a href="role/Role.html#drive(hadur117.core.role.Tick,hadur117.core.model.BotOrders.Builder)">drive</a></code>&nbsp;in interface&nbsp;<code><a href="role/Role.html" title="interface in hadur117.core.role">Role</a></code></dd>
 </dl>
-</section>
-</li>
-<li>
-<section class="detail" id="endgameOwnsGun(hadur117.core.role.Tick)">
-<h3>endgameOwnsGun</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">endgameOwnsGun</span><wbr><span class="parameters">(<a href="role/Tick.html" title="class in hadur117.core.role">Tick</a>&nbsp;tick)</span></div>
-<div class="block"><a class="req" href="../../../requirements.html#HAND-5">HAND-5</a>: in the endgame duel, before the duel drives, decides whether the field gun owns the
- gun this tick: it does while its aim on the survivor is a learned one. The core then drives
- the duel without leave to fire, so the duel records no shot that never leaves, and calls
- <a href="#endgameGun(hadur117.core.role.Tick,hadur117.core.model.BotOrders.Builder)"><code>endgameGun(hadur117.core.role.Tick, hadur117.core.model.BotOrders.Builder)</code></a> to fire and turn.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="endgameGun(hadur117.core.role.Tick,hadur117.core.model.BotOrders.Builder)">
-<h3>endgameGun</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">endgameGun</span><wbr><span class="parameters">(<a href="role/Tick.html" title="class in hadur117.core.role">Tick</a>&nbsp;tick,
- <a href="model/BotOrders.Builder.html" title="class in hadur117.core.model">BotOrders.Builder</a>&nbsp;orders)</span></div>
-<div class="block"><a class="req" href="../../../requirements.html#HAND-5">HAND-5</a>: the field gun's orders on a tick it owns (<a href="#endgameOwnsGun(hadur117.core.role.Tick)"><code>endgameOwnsGun(hadur117.core.role.Tick)</code></a>): fires last
- tick's aim when the gun is cool and has finished turning (as <a href="#drive(hadur117.core.role.Tick,hadur117.core.model.BotOrders.Builder)"><code>drive(hadur117.core.role.Tick, hadur117.core.model.BotOrders.Builder)</code></a> does) and turns
- to this tick's aim. A shot counts toward <a href="model/RoundStats.html#shotsFired"><code>RoundStats.shotsFired</code></a> and toward the melee
- bullets whose outcomes the duel must not learn from (<a class="req" href="../../../requirements.html#WORLD-5">WORLD-5</a>).</div>
 </section>
 </li>
 <li>
