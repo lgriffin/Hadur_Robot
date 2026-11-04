@@ -174,6 +174,18 @@ class SummaryTest(unittest.TestCase):
         s = self.summary(self.field(40, 0.0, aa_shift=3.0), ["aa after 10%"])
         self.assertEqual(s["rules"][0]["state"], "TRIPPED")
 
+    def test_a_wide_spread_panel_widens_the_aa_band(self):
+        # Shield robots: one battle each, 7+ points a battle seed to seed. A +3 A/A mean is noise there.
+        rnd, rows = random.Random(5), []
+        for o in range(33):
+            base = 0.85 + rnd.gauss(0, 0.05)
+            rows.append(row("c", f"b{o} 1", 1, base + rnd.gauss(0, 0.07)))
+            rows.append(row("aa", f"b{o} 1", 1, base + 0.03 + rnd.gauss(0, 0.07)))
+        s = self.summary(rows, ["aa after 10%"])
+        self.assertGreater(s["aa"]["band_stop"], s["aa"]["band"] * benchwatch.Z_STOP / benchwatch.multiarm.Z99)
+        self.assertEqual(s["aa"]["band_from"], "observed spread")
+        self.assertEqual(s["rules"][0]["state"], "ok")
+
     def test_failures_dead_arms_and_skips(self):
         rows = self.field(10, 0.0, skips=50)
         rows += [row("s4", "b99 1", 1, 0.5, ok="false") for _ in range(3)]

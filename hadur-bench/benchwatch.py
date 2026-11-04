@@ -356,7 +356,12 @@ def _arm_table(spec, rows, s, fresh):
     if spec.control in run.share and spec.aa in run.share:
         aa = multiarm.aa_check(run, spec.control, spec.aa)
         if aa:
+            # The modelled band assumes BATTLE_SD a battle; on a heavy-tailed panel (shield robots run near 7)
+            # the per-robot A/A differences spread wider, so the stop band is the larger of the two.
             aa["band_stop"] = aa["band"] * Z_STOP / multiarm.Z99
+            e = next((x for x in s["arms"] if x["arm"] == spec.aa), None)
+            if e and e.get("half_stop") is not None and e["half_stop"] > aa["band_stop"]:
+                aa["band_stop"], aa["band_from"] = e["half_stop"], "observed spread"
             s["aa"] = aa
 
 
@@ -400,7 +405,8 @@ def evaluate(rule, spec, s):
         if not aa or aa.get("n", 0) < 10 or aa["diff"] is None:
             out.update(state="waiting", detail="fewer than 10 robots read in both")
             return out
-        out["detail"] = f"aa - {spec.control} {aa['diff']:+.2f} pts over {aa['n']} robots, stop band ±{aa['band_stop']:.2f}"
+        out["detail"] = f"aa - {spec.control} {aa['diff']:+.2f} pts over {aa['n']} robots, stop band ±{aa['band_stop']:.2f}" \
+            + (f" ({aa['band_from']})" if aa.get("band_from") else "")
         if abs(aa["diff"]) > aa["band_stop"]:
             out["state"] = "TRIPPED"
     elif k == "futility":
