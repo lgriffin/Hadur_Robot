@@ -116,3 +116,10 @@ scaled from 0 (always first to die) to 1 (always last alive), once two rounds ha
 is that strong robots are harder to hit. Card `pc-melee-strong` (BENCH-185): aa, bb, k1, k2 on 46 fields
 × 6 seeds (3280-3285); the pilot (BENCH-186) fights k2 against aa on 2 seeds (3286-3287) and stops the
 card unless the score share is up (`melee_pilot.py --share-only`).
+
+## pc-melee-strong read (PR #625, 2026-11-04)
+
+The pilot stopped the card after 184 battles: k2 against aa on 92 pairs moved Hadur's score share
+-0.11 ± 0.23 points and crowd deaths -1.4 ± 1.9 points of rounds. Leaning the gun toward the robots
+that keep finishing high does not pay: what Hadur takes from them is matched by what it loses on the
+easier targets it no longer shoots. `STRONG_BOOST` stays 0, and 920 battles were saved.
