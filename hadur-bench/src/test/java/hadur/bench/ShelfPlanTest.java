@@ -43,10 +43,12 @@ class ShelfPlanTest {
         List<String> shield = List.of(Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldListData.java"))
             .split("\n")).stream().map(String::trim).filter(l -> l.startsWith("\"") && l.endsWith("\","))
             .map(l -> l.substring(1, l.length() - 2)).toList();
+        // Issue #630: pilot-u found these two do not load; the bench drops them, the panel keeps its first run's names.
+        List<String> foundBroken = List.of("zen.Mirage 0.9.5", "zen.Ronin 1.0.0");
         for (String n : u) {
             assertTrue(!shield.contains(n), n + " is off the shield list");
             assertTrue(!s.contains(n), n + " on one panel only");
-            assertTrue(!Broken.names(Path.of(Broken.FILE)).contains(n), n + " loads on 1.11.2");
+            assertTrue(foundBroken.contains(n) || !Broken.names(Path.of(Broken.FILE)).contains(n), n + " loads on 1.11.2");
         }
         for (String n : s) {
             assertTrue(shield.contains(n), n + " is on the shield list");
@@ -75,6 +77,6 @@ class ShelfPlanTest {
         assertTrue(step(queue, "build", "confirm").contains("rm -f ${OUT}/*_shelf-confirm*.md"), "old confirms never reach the PR");
         assertTrue(queue.contains("# Why it should win"), "the card says why it should win before it runs");
         assertTrue(queue.contains("open_results_pr.sh claude/pc-shelf-results"));
-        assertTrue(queue.contains("set ALERT = lgriffin") && queue.contains("set P = --parallel 12 --no-truth-log"));
+        assertTrue(queue.contains("set ALERT = lgriffin") && queue.contains("set P = --parallel 12 --no-truth-log --failed-ok"));
     }
 }

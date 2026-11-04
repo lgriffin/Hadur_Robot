@@ -28,7 +28,7 @@ The teams the table does not name play the default modes, so they add nothing bu
   team_modes.py screens --counters plans/team-counters.tsv --census team-census46.txt \
       --opponents opponents --base MATEFIRE,HUNT --out-dir work
 
-The per-opponent counters (TMODE-20 to TMODE-24, BENCH-123): `plans/team-counters.tsv` names, for
+The per-opponent counters (TMODE-20 to TMODE-22): a counters TSV (once `plans/team-counters.tsv`) names, for
 each team whose code was read, up to three counters (screens s1, s2, s3), each a mode set as
 OWN,LINEAR. `screens` writes one table per screen (work/team-counters-s1.java) and the teams it
 plays a counter against (work/team-counters-s1.txt). `pick --counters` then reads each
@@ -45,9 +45,7 @@ import sys
 import zipfile
 from pathlib import Path
 
-MODES = ("SOFT", "GANG", "FINISH", "LEARN", "PACK", "SCREEN", "POOL", "DISABLED", "MATEFIRE", "REAR", "WAVES", "HUNT",
-         "LINES", "LINESW", "LANEP", "LANEB", "GUNLINE", "OWN", "HEADON", "LINEAR", "FAR", "FARTHER", "PATH", "NEAR",
-         "DODGE", "LEAD", "SWIFT", "CONCORD", "HEAVY", "WARY", "CLEAR", "MOMENTUM", "AIM")
+MODES = ("GANG", "FINISH", "MATEFIRE", "HUNT", "OWN", "HEADON", "LINEAR", "PATH", "DODGE", "CONCORD")
 
 ROW = re.compile(r"^\|\s*(?P<team>[^|]+?)\s*\|\s*[^|]*\|\s*[^|]*\|\s*(?P<mean>[+-]?\d+(?:\.\d+)?)(?:\s*±\s*(?P<ci>\d+(?:\.\d+)?))?\s*\|\s*$")
 

@@ -48,12 +48,6 @@ final class MeleeSeam implements Role {
     private final boolean writes;
     /** What the melee brain asked for last tick; its fire power goes out this tick if the gun is there. */
     private MeleeController.Command lastCommand;
-    /** HAND-5: the field gun's last endgame aim, while it holds the gun; else null. */
-    private MeleeController.Command lastEndgameAim;
-    /** HAND-5: the learned aim before this tick's, which a shot this tick fires along. */
-    private MeleeController.Command endgamePrevious;
-    /** HAND-5: endgame shots the field gun fired this round. */
-    int endgameShots;
     /** The first exception a melee event handler threw this tick (GATE-4). */
     private RuntimeException eventFault;
     /** Melee memory failures this battle, for the M record (RES-5). */
@@ -95,9 +89,6 @@ final class MeleeSeam implements Role {
         wavesAtRoundStart[1] = melee.waves().resolved();
         wavesAtRoundStart[2] = melee.waves().hits();
         melee.profiles().newRound();
-        lastEndgameAim = null;
-        endgamePrevious = null;
-        endgameShots = 0;
     }
 
     @Override
@@ -361,44 +352,6 @@ final class MeleeSeam implements Role {
     }
 
     /**
-     * HAND-5: in the endgame duel, before the duel drives, decides whether the field gun owns the
-     * gun this tick: it does while its aim on the survivor is a learned one. The core then drives
-     * the duel without leave to fire, so the duel records no shot that never leaves, and calls
-     * {@link #endgameGun} to fire and turn.
-     */
-    boolean endgameOwnsGun(Tick tick) {
-        BotInput in = tick.in();
-        endgamePrevious = lastEndgameAim;
-        MeleeController.Command c = melee.endgameAim(new MeleeController.Situation(
-            in.location(), in.gunHeading(), in.radarHeading(), in.energy(), in.time(),
-            in.others(), in.heading(), in.velocity(), in.gunHeat(), core.livingTeammates()));
-        lastEndgameAim = c.target != null && c.learnedAim ? c : null;
-        return lastEndgameAim != null;
-    }
-
-    /**
-     * HAND-5: the field gun's orders on a tick it owns ({@link #endgameOwnsGun}): fires last
-     * tick's aim when the gun is cool and has finished turning (as {@link #drive} does) and turns
-     * to this tick's aim. A shot counts toward {@link RoundStats#shotsFired} and toward the melee
-     * bullets whose outcomes the duel must not learn from (WORLD-5).
-     */
-    void endgameGun(Tick tick, BotOrders.Builder orders) {
-        BotInput in = tick.in();
-        MeleeController.Command previous = endgamePrevious;
-        orders.fire(0);
-        if (previous != null && previous.firePower > 0 && in.gunHeat() == 0
-                && Math.abs(Math.toDegrees(in.gunTurnRemaining())) < 0.05
-                && in.energy() > previous.firePower && tick.mayFire()) {
-            orders.fire(previous.firePower);
-            endgameShots++;
-            stats.shotsFired++;
-            core.meleeShotFired();
-            melee.shotFired(in.location(), in.time(), in.gunHeading(), previous.firePower, previous.target);
-        }
-        orders.turnGunRight(lastEndgameAim.gunTurn);
-    }
-
-    /**
      * Drives toward {@code destination}, backwards if that is the shorter turn. A robot can
      * drive either way at the same speed, so it never needs to turn more than 90 degrees.
      * This is where melee lowers the speed limit that MELEE-2 lifts on hand-over.
@@ -441,22 +394,7 @@ final class MeleeSeam implements Role {
         for (EnemyShot s : core.world().shots(now)) {
             shots.add(new Baton.Shot(s.shooter, s.source, s.fireTime, s.power, s.travelled(now)));
         }
-        return new Baton(shots, melee.myPath(), survivorGun());
-    }
-
-    /**
-     * HAND-2, HAND-3: the survivor's gun as the melee's book classed it from its hits on Hadur
-     * this battle (OpponentStats: at least 3 hits, 60% within Hadur's width of head-on).
-     * Unknown unless exactly one opponent is alive in the World.
-     */
-    private Baton.Gun survivorGun() {
-        List<EnemyInfo> alive = core.world().alive();
-        if (alive.size() != 1) return Baton.Gun.UNKNOWN;
-        switch (melee.book().get(alive.get(0).name).gunType()) {
-            case HEAD_ON: return Baton.Gun.HEAD_ON;
-            case LEADING: return Baton.Gun.LEADING;
-            default: return Baton.Gun.UNKNOWN;
-        }
+        return new Baton(shots, melee.myPath());
     }
 
     /** Nothing is ever handed up to the Melee role. */

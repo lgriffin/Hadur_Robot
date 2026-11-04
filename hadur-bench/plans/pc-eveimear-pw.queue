@@ -1,0 +1,83 @@
+# Eveimear per-robot bullet power (thread "Take 1st with JayLexi and Sanaro"; BENCH-183). Leigh, 2026-11-04 08:35:
+# "maximise the spare bytes before release". The diet (#627) freed 27 B; this card spends 22 of them on a power
+# char a robot, with the gun's waves flying at that power's speed and its escape angle following.
+#   ./queue.sh run pc-eveimear-pw        (or  .\queue.ps1 run pc-eveimear-pw)
+# Run it from master with this card merged: git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned. Nothing here touches the shipped Eveimear; nothing is uploaded or
+# released. About 1 h 40 min to the end, about 20 min if the pilot stops it.
+#
+# Why it should win (Leigh's card rule, 2026-11-03):
+# - Per-opponent tailoring only: each arm changes the power char of the MODES table (one a robot, by name hash) and
+#   nothing else; the candidate ships only the robots that pass on fresh seeds. Same pick-and-confirm shape as
+#   pc-eveimear-st2, which passed at +0.08 APS (#622).
+# - The earlier power-3 loss (-3.86, docs/bench/eveimear-power.md) was the gun: its waves flew at power 2's 14 px a
+#   tick, so every power-3 bullet was aimed for the wrong flight time. Here the waves follow the power. In a cloud
+#   screen (2026-11-04, 80 robots of ranks 61-515, 1 seed, 10 rounds) power 3 everywhere went from -3.86 to
+#   -1.83 +- 2.19, +0.59 on ranks 251-450, and 18 robots read +3 points or more for p3 (9 for p1) against 3 for the
+#   A/A null: per-robot picks have room. Big single reads: Prestige +18.7, MicroScoob +16.8, DuelistNano +15.7.
+# - The gap to 5th lives in the mid-field, where rounds last too long (eveimear-power.md): more power ends them.
+# - The base (c, 741 B) gives 0.2-with-picks orders on 6 seeded replays: every move, radar and fire order bit for
+#   bit, and the gun turn within 1e-6 rad (the escape scaling rounds its two products in another order).
+# - The escape angle follows the speed too (0.65 x 14 / speed: 0.83 at power 3 where asin(8/11) is 0.81, 0.54 at
+#   power 1), so a power-3 pick can aim at the whole reachable arc; the cloud screen above ran without it.
+# - Risk: the 1-seed reads are noisy (+-15 points a robot). The pilot's null count catches that.
+#
+# Pilot: every 5th robot (103) first, 10 seeds. Then `pilotgate` counts the real picks (p3 or p1 beating c and aa
+# pooled by 3 points, interval above 0) against the null picks (aa beating c by the same test). Fewer than 2 x null + 3
+# real picks and the screen, the build and the confirm all skip, and the PR carries the pilot alone. An A/A outside its
+# band halts the pilot (aa after 20%).
+# Screen: the other 412 robots, same arms and seeds; the pick reads pilot and screen together.
+# Confirm: the picked robots x 12 fresh seeds from 35000, c, aa and pk; gate: pk minus c and aa pooled, summed over the
+# picks / 515 pairings, bar +0.05 APS with the 95% low end above 0, and every pick's difference. A pass ships in
+# Eveimear 0.3 on Leigh's word only (pk's MODES table, 741 B).
+# Panels: kitlab/micro-pw-field.txt (all 515 robots of micro-all-field.txt, none ours or broken), split into
+# kitlab/micro-pw-pilot.txt (103) and kitlab/micro-pw-rest.txt (412).
+# Stop rules: fails 30, dead 8, skips 60 over 200, stall 30m (halt; every battle fought is kept and a rerun resumes),
+# aa after 20% (halt). ALERT opens an issue for Leigh on a stop.
+
+set C = --skip-build --skip-fetch --rounds 35 --parallel auto --child-heap 512M --no-truth-log
+set SRC = ../eveimear/src/main/java/hadur117/micro/Eveimear.java
+set PK = ../docs/bench/local/eveimear-st2-pk.java.txt
+set W = work/eveimear-pw
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && rm -f ${W}/GO ${OUT}/*_eveimear-pw*.md ${OUT}/eveimear-pw* && mkdir -p ${W} kitlab/jars && ./fetch-opponents.sh --set kitlab/micro-pw-field.txt && mvn -q compile && python3 tools/eveimear_power2.py base ${SRC} ${W}/b.java --modes ${PK} && python3 tools/eveimear_power2.py force ${W}/b.java ${W}/p3.java --speed 11 && python3 tools/eveimear_power2.py force ${W}/b.java ${W}/p1.java --speed 17 && bash kitlab/build_arm.sh ${W}/b.java hadur117.micro.Eveimear 0.3b && bash kitlab/build_arm.sh ${W}/b.java hadur117.micro.Eveimear 0.3ba && bash kitlab/build_arm.sh ${W}/p3.java hadur117.micro.Eveimear 0.3p3 && bash kitlab/build_arm.sh ${W}/p1.java hadur117.micro.Eveimear 0.3p1
+
+pilot | sh ./bench-top20.sh ${C} --set kitlab/micro-pw-pilot.txt --seeds 10 --seed-base 34000 --arms plans/eveimear-pw.arms --out ${W}/pilot --label eveimear-pw-pilot --shuffle-jobs
+  after: prep
+  watch:
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+pilotgate | python3 tools/eveimear_modes.py pilot ${W}/pilot/arms.tsv --margin 3 --out ${OUT}/$(date +%Y-%m-%d)_eveimear-pw-pilot.md; rc=$?; [ $rc = 0 ] && touch ${W}/GO; [ $rc = 0 ] || [ $rc = 3 ]
+  after: pilot
+
+screen | if [ ! -f ${W}/GO ]; then echo 'pilot: no gain over noise, screen skips'; exit 0; fi && sh ./bench-top20.sh ${C} --set kitlab/micro-pw-rest.txt --seeds 10 --seed-base 34000 --arms plans/eveimear-pw.arms --out ${W}/screen --label eveimear-pw-screen --shuffle-jobs
+  after: pilotgate
+  watch:
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+build | rm -f ${W}/pick.tsv ${W}/written.tsv ${W}/picks.txt kitlab/jars/hadur117.micro.Eveimear_0.3pk.jar && if [ ! -f ${W}/GO ]; then echo 'pilot stopped the card'; exit 0; fi && python3 ../data/tools/mode_table.py ${W}/pilot/arms.tsv ${W}/screen/arms.tsv --margin 3 --out-tsv ${W}/pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_eveimear-pw-pick.md && if [ ! -s ${W}/pick.tsv ]; then echo 'no picks'; exit 0; fi && python3 tools/eveimear_power2.py apply ${W}/b.java ${W}/pick.tsv ${W}/pk.java --field kitlab/micro-all-field.txt --written ${W}/written.tsv && python3 tools/pick_panel.py ${W}/written.tsv kitlab/micro-pw-field.txt ${W}/picks.txt && bash kitlab/build_arm.sh ${W}/pk.java hadur117.micro.Eveimear 0.3pk && cp ${W}/pick.tsv ${OUT}/eveimear-pw-pick.tsv
+  after: screen
+
+confirm | if [ ! -s ${W}/picks.txt ]; then echo 'no picks'; exit 0; fi && sh ./bench-top20.sh ${C} --set ${W}/picks.txt --seeds 12 --seed-base 35000 --arms plans/eveimear-pw-confirm.arms --out ${W}/confirm --label eveimear-pw-confirm --shuffle-jobs
+  after: build
+  watch:
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+
+gate | if [ ! -s ${W}/picks.txt ]; then echo 'no picks'; exit 0; fi && python3 ../data/tools/multiarm.py ${W}/confirm/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_eveimear-pw-confirm.md && python3 tools/shield_s2.py gate ${W}/confirm/arms.tsv --arm pk --panel ${W}/picks.txt --field 515 --bar 0.05 --out ${OUT}/$(date +%Y-%m-%d)_eveimear-pw-gate.md && python3 tools/per_robot.py ${W}/confirm/arms.tsv --arms pk --out ${OUT}/$(date +%Y-%m-%d)_eveimear-pw-per-robot.md --out-tsv ${OUT}/eveimear-pw-per-robot.tsv && cp ${W}/pk.java ${OUT}/eveimear-pw-pk.java.txt
+  after: confirm
+
+pr | bash tools/open_results_pr.sh claude/pc-eveimear-pw-results "Eveimear per-robot power (pc-eveimear-pw)" ${OUT}/*_eveimear-pw*.md $(find ${OUT} -maxdepth 1 -name 'eveimear-pw*' -size +0c)
+  after: gate

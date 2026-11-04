@@ -48,7 +48,7 @@ class TeamModesTest(unittest.TestCase):
         soft = report(self.d, "soft.md", {"a.ATeam 1": (5.0, 2.0), "b.BTeam 2": (1.0, 4.0), "c.CTeam 3": (3.0, 2.0)})
         gang = report(self.d, "gang.md", {"a.ATeam 1": (8.0, 3.0), "b.BTeam 2": (6.0, 5.0), "c.CTeam 3": (-1.0, 2.0)})
         out = Path(self.d)
-        team_modes.main(["pick", "--report", f"SOFT={soft}", "--report", f"GANG={gang}",
+        team_modes.main(["pick", "--report", f"HEADON={soft}", "--report", f"LINEAR={gang}",
                          "--census", str(out / "census.txt"), "--opponents", self.d,
                          "--out-md", str(out / "pick.md"), "--out-tsv", str(out / "pick.tsv"),
                          "--out-java", str(out / "t.java"), "--out-set", str(out / "set.txt")])
@@ -57,11 +57,11 @@ class TeamModesTest(unittest.TestCase):
     def test_pick_takes_the_best_mode_whose_low_end_clears_zero(self):
         out = self.pick()
         java = (out / "t.java").read_text()
-        # a: GANG +8 > SOFT +5, both clear; b: GANG +6 +/- 5 clears, SOFT does not; c: SOFT.
-        self.assertIn('t.put("a.A", of(Mode.GANG));', java)
-        self.assertIn('t.put("b.Lead", of(Mode.GANG));', java)
-        self.assertIn('t.put("b.Droid", of(Mode.GANG));', java)
-        self.assertIn('t.put("c.C", of(Mode.SOFT));', java)
+        # a: LINEAR +8 > HEADON +5, both clear; b: LINEAR +6 +/- 5 clears, HEADON does not; c: HEADON.
+        self.assertIn('t.put("a.A", of(Mode.LINEAR));', java)
+        self.assertIn('t.put("b.Lead", of(Mode.LINEAR));', java)
+        self.assertIn('t.put("b.Droid", of(Mode.LINEAR));', java)
+        self.assertIn('t.put("c.C", of(Mode.HEADON));', java)
         self.assertEqual(3, len([l for l in (out / "set.txt").read_text().splitlines() if not l.startswith("#")]))
 
     def test_lock_keeps_only_confirmed_gains(self):
@@ -76,13 +76,13 @@ class TeamModesTest(unittest.TestCase):
         self.assertNotIn('"c.C"', java)
 
     def test_a_class_two_teams_share_with_different_picks_is_left_out(self):
-        lines, clashes = team_modes.java_lines({"x": {"SOFT"}, "y": {"GANG"}}, {"x": ["s.Same"], "y": ["s.Same"]})
+        lines, clashes = team_modes.java_lines({"x": {"HEADON"}, "y": {"LINEAR"}}, {"x": ["s.Same"], "y": ["s.Same"]})
         self.assertEqual([], lines)
         self.assertEqual(["s.Same"], clashes)
 
     def test_a_class_an_unpicked_team_shares_is_left_out(self):
-        lines, clashes = team_modes.java_lines({"x": {"SOFT"}}, {"x": ["s.Same", "s.Own"], "y": ["s.Same"]})
-        self.assertEqual(['        t.put("s.Own", of(Mode.SOFT));'], lines)
+        lines, clashes = team_modes.java_lines({"x": {"HEADON"}}, {"x": ["s.Same", "s.Own"], "y": ["s.Same"]})
+        self.assertEqual(['        t.put("s.Own", of(Mode.HEADON));'], lines)
         self.assertEqual(["s.Same"], clashes)
 
     def test_a_single_pair_row_has_no_interval(self):
@@ -95,14 +95,14 @@ class TeamModesTest(unittest.TestCase):
 
 
     def test_base_modes_join_every_entry_in_mode_order(self):
-        lines, _ = team_modes.java_lines({"x": {"LANEP"}}, {"x": ["s.X"]}, ("MATEFIRE", "HUNT"))
-        self.assertEqual(['        t.put("s.X", of(Mode.MATEFIRE, Mode.HUNT, Mode.LANEP));'], lines)
+        lines, _ = team_modes.java_lines({"x": {"DODGE"}}, {"x": ["s.X"]}, ("MATEFIRE", "HUNT"))
+        self.assertEqual(['        t.put("s.X", of(Mode.MATEFIRE, Mode.HUNT, Mode.DODGE));'], lines)
 
     def test_a_class_the_shipped_table_names_keeps_its_modes(self):
         shipped = {"s.T": {"MATEFIRE", "HUNT", "OWN", "HEADON"}}
-        lines, _ = team_modes.java_lines({"x": {"NEAR"}, "y": {"PATH"}}, {"x": ["s.T"], "y": ["s.Y"]},
+        lines, _ = team_modes.java_lines({"x": {"DODGE"}, "y": {"PATH"}}, {"x": ["s.T"], "y": ["s.Y"]},
                                          ("MATEFIRE", "HUNT"), shipped)
-        self.assertEqual(['        t.put("s.T", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.NEAR));',
+        self.assertEqual(['        t.put("s.T", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.DODGE));',
                           '        t.put("s.Y", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH));'], lines)
 
     def test_shipped_table_reads_the_t_put_lines(self):
@@ -116,29 +116,29 @@ class TeamModesTest(unittest.TestCase):
         lanep = report(self.d, "lp.md", {"a.ATeam 1": (4.0, 9.0), "b.BTeam 2": (2.0, 1.0), "c.CTeam 3": (3.5, 9.0)})
         lines = report(self.d, "ml.md", {"a.ATeam 1": (3.0, 1.0), "b.BTeam 2": (-1.0, 1.0), "c.CTeam 3": (1.0, 9.0)})
         out = Path(self.d)
-        team_modes.main(["pick", "--report", f"LANEP={lanep}", "--report", f"LINES={lines}", "--min-mean", "3.0",
+        team_modes.main(["pick", "--report", f"DODGE={lanep}", "--report", f"CONCORD={lines}", "--min-mean", "3.0",
                          "--base", "MATEFIRE,HUNT", "--census", str(out / "census.txt"), "--opponents", self.d,
                          "--out-tsv", str(out / "p.tsv"), "--out-java", str(out / "p.java")])
         java = (out / "p.java").read_text()
-        self.assertIn('t.put("a.A", of(Mode.MATEFIRE, Mode.HUNT, Mode.LANEP));', java)
+        self.assertIn('t.put("a.A", of(Mode.MATEFIRE, Mode.HUNT, Mode.DODGE));', java)
         self.assertNotIn('"b.Lead"', java)
-        self.assertIn('t.put("c.C", of(Mode.MATEFIRE, Mode.HUNT, Mode.LANEP));', java)
+        self.assertIn('t.put("c.C", of(Mode.MATEFIRE, Mode.HUNT, Mode.DODGE));', java)
 
 
     def test_control_scores_a_mode_against_both_baselines(self):
         lanep = report(self.d, "lp.md", {"a.ATeam 1": (4.0, 2.0), "b.BTeam 2": (4.0, 2.0), "c.CTeam 3": (0.0, 2.0)})
         bb = report(self.d, "bb.md", {"a.ATeam 1": (0.0, 2.0), "b.BTeam 2": (4.0, 2.0), "c.CTeam 3": (0.0, 2.0)})
         out = Path(self.d)
-        team_modes.main(["pick", "--report", f"LANEP={lanep}", "--control", f"LANEP={bb}", "--min-mean", "3.0",
+        team_modes.main(["pick", "--report", f"DODGE={lanep}", "--control", f"DODGE={bb}", "--min-mean", "3.0",
                          "--census", str(out / "census.txt"), "--opponents", self.d, "--out-tsv", str(out / "c.tsv")])
         tsv = (out / "c.tsv").read_text()
-        self.assertIn("a.ATeam 1\tLANEP\t4.00", tsv)
+        self.assertIn("a.ATeam 1\tDODGE\t4.00", tsv)
         self.assertNotIn("b.BTeam 2", tsv)
 
 
     def counters_tsv(self):
         p = Path(self.d, "counters.tsv")
-        p.write_text("# counters\nteam\ts1\ts2\na.ATeam 1\tOWN,LINEAR\tFAR\nb.BTeam 2\tOWN\t-\n", encoding="utf-8")
+        p.write_text("# counters\nteam\ts1\ts2\na.ATeam 1\tOWN,LINEAR\tDODGE\nb.BTeam 2\tOWN\t-\n", encoding="utf-8")
         return str(p)
 
     def test_screens_write_one_table_and_set_per_screen(self):
@@ -149,7 +149,7 @@ class TeamModesTest(unittest.TestCase):
         self.assertIn('t.put("a.A", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.LINEAR));', s1)
         self.assertIn('t.put("b.Lead", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN));', s1)
         s2 = (out / "w" / "team-counters-s2.java").read_text()
-        self.assertEqual(['        t.put("a.A", of(Mode.MATEFIRE, Mode.HUNT, Mode.FAR));'], s2.splitlines())
+        self.assertEqual(['        t.put("a.A", of(Mode.MATEFIRE, Mode.HUNT, Mode.DODGE));'], s2.splitlines())
         sets = {n: [l.split(" |")[0] for l in (out / "w" / f"team-counters-{n}.txt").read_text().splitlines() if not l.startswith("#")]
                 for n in ("s1", "s2", "all")}
         self.assertEqual(["a.ATeam 1", "b.BTeam 2"], sets["s1"])
@@ -172,11 +172,11 @@ class TeamModesTest(unittest.TestCase):
                          "--census", str(out / "census.txt"), "--opponents", self.d,
                          "--out-tsv", str(out / "k.tsv"), "--out-java", str(out / "k.java"), "--out-md", str(out / "k.md")])
         java = (out / "k.java").read_text()
-        # a: s2 (FAR) +6 beats s1 +4; b: s1 +5 has its low end under zero, so no pick.
-        self.assertIn('t.put("a.A", of(Mode.MATEFIRE, Mode.HUNT, Mode.FAR));', java)
+        # a: s2 (DODGE) +6 beats s1 +4; b: s1 +5 has its low end under zero, so no pick.
+        self.assertIn('t.put("a.A", of(Mode.MATEFIRE, Mode.HUNT, Mode.DODGE));', java)
         self.assertNotIn('"b.Lead"', java)
-        self.assertIn("a.ATeam 1\tFAR\t6.00", (out / "k.tsv").read_text())
-        self.assertIn("s2 (FAR)", (out / "k.md").read_text())
+        self.assertIn("a.ATeam 1\tDODGE\t6.00", (out / "k.tsv").read_text())
+        self.assertIn("s2 (DODGE)", (out / "k.md").read_text())
 
     def test_gate_spreads_the_gains_over_every_team(self):
         mk = report(self.d, "mk.md", {"a.ATeam 1": (6.0, 3.0), "b.BTeam 2": (4.0, 4.0)})
@@ -187,19 +187,19 @@ class TeamModesTest(unittest.TestCase):
         self.assertIn("**+0.45 ±", text)
         self.assertIn("**PASS**", text)
 
-    def test_pick_takes_aim_and_writes_it_into_the_table(self):
+    def test_pick_takes_a_mode_and_writes_it_into_the_table(self):
         am = report(self.d, "am.md", {"a.ATeam 1": (6.0, 2.0), "b.BTeam 2": (1.0, 2.0)})
         bb = report(self.d, "abb.md", {"a.ATeam 1": (0.0, 1.0), "b.BTeam 2": (0.0, 1.0)})
         out = Path(self.d)
-        team_modes.main(["pick", "--report", f"AIM={am}", "--control", f"AIM={bb}", "--min-mean", "3.0", "--low-end", "0",
+        team_modes.main(["pick", "--report", f"GANG={am}", "--control", f"GANG={bb}", "--min-mean", "3.0", "--low-end", "0",
                          "--base", "MATEFIRE,HUNT,PATH,DODGE,CONCORD", "--census", str(out / "census.txt"),
-                         "--opponents", self.d, "--out-tsv", str(out / "aim.tsv"), "--out-java", str(out / "aim.java"),
+                         "--opponents", self.d, "--out-tsv", str(out / "gang.tsv"), "--out-java", str(out / "aim.java"),
                          "--out-md", str(out / "aim.md")])
         java = (out / "aim.java").read_text()
-        self.assertIn("Mode.AIM", java)
+        self.assertIn("Mode.GANG", java)
         self.assertIn("Mode.CONCORD", java)
         self.assertNotIn('"b.', java)
-        for mode in ("CLEAR", "MOMENTUM", "AIM"):
+        for mode in ("MATEFIRE", "HUNT", "PATH", "DODGE", "CONCORD"):
             self.assertIn(mode, team_modes.MODES)
 
     def test_gate_stop_below_ends_a_pilot_with_no_gain(self):

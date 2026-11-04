@@ -112,11 +112,6 @@ public class MeleeController {
     private Set<TeamModes.Mode> modes = TeamModes.NONE;
     /** TMODE-33: the team brain's battle-long state; read only while CONCORD plays. */
     private final TeamConcord concord = new TeamConcord();
-    /**
-     * TMODE-10: whether the battle's first tick has told whether Hadur leads its team. A team's
-     * leader is the same member every round, so a fault's recovery mid-round does not ask again.
-     */
-    private boolean leaderKnown;
     private final BattleField field;
     /**
      * MMOVE-19 (arm mcross), inspired by ScalarR: with the surfer on, off a team, an opponent's
@@ -324,8 +319,7 @@ public class MeleeController {
         double headOn = DiaUtils.absoluteBearing(shooter.location, atFire.location);
         double botWidth = DiaUtils.botWidthAimAngle(distance);
         stats.recordDamageReceived(damage, heading - headOn, botWidth);
-        if (onTeam && (TeamDanger.LEARNED || modes.contains(TeamModes.Mode.LEARN) || modes.contains(TeamModes.Mode.POOL)
-                || modes.contains(TeamModes.Mode.DODGE))) {
+        if (onTeam && modes.contains(TeamModes.Mode.DODGE)) {
             learn(name, power, heading, me, now);
         } else if (!onTeam && mover.surfing()) {
             // MMOVE-15: the melee surfer learns each shooter's aim from the hits on Hadur.
@@ -447,17 +441,12 @@ public class MeleeController {
         MeleeStrategy.Plan plan = strategy.evaluate(tracker, s.me, s.energy, s.others, s.time);
         c.posture = plan.posture;
         onTeam = !s.teammates.isEmpty();
-        if (!leaderKnown) {
-            // TMODE-10: only a team's leader starts a battle with more than 100 energy.
-            leaderKnown = true;
-            mover.leader(s.energy > 100);
-        }
         if (onTeam) {
             // T7 (TMODE-1): the modes against this team.
             modes = TeamModes.against(alive);
-            // TMODE-7: POOL is LEARN with one log per enemy class; TMODE-27's dodge reads the class logs too.
+            // TMODE-27: the dodge reads one learned-aim log per enemy class.
             boolean dodging = modes.contains(TeamModes.Mode.DODGE);
-            danger.pool(modes.contains(TeamModes.Mode.POOL) || dodging);
+            danger.pool(dodging);
             // T6 (MMOVE-9, MMOVE-10): where each teammate stands, for whom a shot was aimed at.
             List<Point2D.Double> mates = new ArrayList<>(s.teammates.size());
             for (Roster.Mate m : s.teammates) mates.add(m.at(s.time));
@@ -466,37 +455,20 @@ public class MeleeController {
                 concord.watch(s.me, mates, alive, s.time);
                 modes = concord.modes(modes);
             }
-            if (modes.contains(TeamModes.Mode.CONCORD) && TeamConcord.RADAR) {
-                // TMODE-33: the team brain's modes, its gang watch and its radar group.
-                c.radarTurn = radar.groupTurn(s.me, s.radarHeading, tracker, s.others, finisher, s.time,
-                    TeamConcord.group(s.me, mates, alive));
-            } else {
-                c.radarTurn = radar.radarTurn(s.me, s.radarHeading, tracker, s.others, finisher, s.time,
-                    true, s.gunHeat, lastTarget);
-            }
+            c.radarTurn = radar.radarTurn(s.me, s.radarHeading, tracker, s.others, finisher, s.time);
             if (dodging) {
-                // TMODE-27: each shot profiled once; the virtual bullets stand down unless ranked.
-                List<EnemyShot> shots = tracker.shots(s.time);
-                mover.dodge().update(shots, myPath, s.me, s.time, mates, danger,
+                // TMODE-27: each shot profiled once; the virtual bullets stand down.
+                mover.dodge().update(tracker.shots(s.time), myPath, s.me, s.time, mates, danger,
                     TeamModes.owns(modes), TeamModes.onlyAim(modes));
-                if (TeamDodge.RANK_BULLETS) {
-                    mover.updateBullets(shots, myPath, s.me, s.time, mates, danger,
-                        TeamModes.owns(modes), false, false, TeamModes.onlyAim(modes));
-                } else {
-                    mover.clearBullets();
-                }
+                mover.clearBullets();
             } else {
                 // TMODE-20..22: shot ownership and the one aim, for a team whose code is read.
-                mover.updateBullets(tracker.shots(s.time), myPath, s.me, s.time, mates, danger,
-                    TeamDanger.NEAREST || TeamModes.owns(modes),
-                    TeamDanger.LEARNED || modes.contains(TeamModes.Mode.LEARN)
-                        || modes.contains(TeamModes.Mode.POOL),
-                    modes.contains(TeamModes.Mode.SOFT), TeamModes.onlyAim(modes));
+                mover.updateBullets(tracker.shots(s.time), myPath, s.me, s.time, mates,
+                    TeamModes.owns(modes), TeamModes.onlyAim(modes));
             }
         } else {
             modes = TeamModes.NONE;
-            c.radarTurn = radar.radarTurn(s.me, s.radarHeading, tracker, s.others, finisher, s.time,
-                false, s.gunHeat, lastTarget);
+            c.radarTurn = radar.radarTurn(s.me, s.radarHeading, tracker, s.others, finisher, s.time);
             mover.updateMeleeBullets(tracker.shots(s.time), myPath, s.me, s.time, alive, danger);
         }
         if (!onTeam && mover.damageMemory()) {
@@ -504,14 +476,9 @@ public class MeleeController {
             mover.damageWeights(MinimumRiskMovement.damageWeights(alive,
                 n -> book.get(n).damageReceivedFrom(), n -> book.get(n).averageDistance()));
         }
-        mover.motion(s.heading, s.velocity);
         c.destination = alive.isEmpty() ? null
             : mover.chooseDestination(s.me, s.energy, s.others, alive, s.time, plan, s.teammates, modes);
         gun.onTeam(!s.teammates.isEmpty());
-        gun.lead(modes.contains(TeamModes.Mode.LEAD));
-        gun.swift(modes.contains(TeamModes.Mode.SWIFT));
-        gun.heavy(modes.contains(TeamModes.Mode.HEAVY));
-        gun.teamAim(modes.contains(TeamModes.Mode.AIM));
         gun.concord(TeamConcord.GUN && modes.contains(TeamModes.Mode.CONCORD));
         waves.tick(s.me, s.time, s.gunHeat, alive, gun, s.energy, s.others);
 
@@ -526,31 +493,6 @@ public class MeleeController {
 
         // MGUN-5: the energy table's power stands whatever the posture; the posture shapes
         // where Hadur goes, never whether or how hard it fires.
-        double power = Math.min(aim.power, MeleeEnergyPolicy.killPower(target.energy));
-        boolean hold = target.age(s.time) > MAX_FIRE_AGE
-            || s.energy < MeleeEnergyPolicy.MIN_OWN_ENERGY
-            || s.energy <= power + 0.1;
-        c.firePower = hold ? 0 : power;
-        return c;
-    }
-
-    /**
-     * HAND-5: the field gun's aim alone, for the endgame duel off a team: no radar, movement or
-     * virtual waves. The command's {@code learnedAim} says whether the aim came from the
-     * target's kNN history; its {@code target} is null when there is nothing to aim at.
-     */
-    public Command endgameAim(Situation s) {
-        Command c = new Command();
-        List<EnemyInfo> alive = tracker.alive();
-        if (alive.isEmpty()) return c;
-        gun.onTeam(false);
-        FieldGun.Aim aim = gun.aim(s.me, s.energy, s.others, alive, s.time);
-        if (aim == null) return c;
-        EnemyInfo target = tracker.get(aim.target);
-        if (target == null) return c;
-        c.target = aim.target;
-        c.learnedAim = aim.learned;
-        c.gunTurn = Angles.normalRelativeAngle(aim.angle - s.gunHeading);
         double power = Math.min(aim.power, MeleeEnergyPolicy.killPower(target.energy));
         boolean hold = target.age(s.time) > MAX_FIRE_AGE
             || s.energy < MeleeEnergyPolicy.MIN_OWN_ENERGY

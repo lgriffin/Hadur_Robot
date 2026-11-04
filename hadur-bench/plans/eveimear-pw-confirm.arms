@@ -1,0 +1,5 @@
+# BENCH-183 (pc-eveimear-pw) confirm: c the 0.3 base, aa its A/A rebuild, pk the base with the screen's picks written
+# into MODES (tools/eveimear_power2.py apply): it plays every robot outside the picks exactly as the base does.
+c | hadur117.micro.Eveimear 0.3b | kitlab/jars/hadur117.micro.Eveimear_0.3b.jar
+aa | hadur117.micro.Eveimear 0.3ba | kitlab/jars/hadur117.micro.Eveimear_0.3ba.jar
+pk | hadur117.micro.Eveimear 0.3pk | kitlab/jars/hadur117.micro.Eveimear_0.3pk.jar

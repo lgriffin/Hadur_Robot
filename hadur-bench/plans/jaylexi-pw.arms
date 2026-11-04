@@ -1,0 +1,8 @@
+# BENCH-184 (pc-jaylexi-pw): c is the 0.5 base (0.4 + the diet's play-neutral rows + a power row a robot read in tenths,
+# every row 0.4's table: 3 under 150 px, else 2; 1,480 B, JayLexiReplayTest bit for bit), aa its A/A rebuild, hi every
+# robot 3.0 at every distance, lo every robot 1.5. JayLexi's waves fly at the fired power's speed already. Built by
+# tools/jaylexi_power2.py.
+c | hadur117.mini.JayLexi 0.5b | kitlab/jars/hadur117.mini.JayLexi_0.5b.jar
+aa | hadur117.mini.JayLexi 0.5ba | kitlab/jars/hadur117.mini.JayLexi_0.5ba.jar
+hi | hadur117.mini.JayLexi 0.5hi | kitlab/jars/hadur117.mini.JayLexi_0.5hi.jar
+lo | hadur117.mini.JayLexi 0.5lo | kitlab/jars/hadur117.mini.JayLexi_0.5lo.jar

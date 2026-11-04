@@ -25,17 +25,10 @@ import java.util.Map;
  * the nearest samples say the enemy aims, in place of MMOVE-3's head-on and linear guesses,
  * once the log holds {@link #MIN_SAMPLES}.</p>
  *
- * <p>Two switches, both off in the shipped build: {@link #NEAREST} (MMOVE-9, a shot is aimed
- * at the member nearest the shooter, so the others leave it alone) and {@link #LEARNED}
- * (MMOVE-10, the learned aims). Either acts only while Hadur has a living teammate: off a
- * team, or as the last member alive, nothing here is reached.</p>
+ * <p>The team's dodge (TMODE-27) reads these logs, and TMODE-20's shot ownership its
+ * nearest-member rule; only while Hadur has a living teammate.</p>
  */
 public final class TeamDanger {
-
-    /** MMOVE-9 switch: a shot is taken as aimed at the member nearest the shooter. */
-    public static final boolean NEAREST = false;
-    /** MMOVE-10 switch: detected shots are dodged at the team's learned aims. */
-    public static final boolean LEARNED = false;
 
     /** Samples a log needs before its aims replace head-on and linear. */
     static final int MIN_SAMPLES = 5;

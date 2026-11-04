@@ -101,16 +101,6 @@ public class FieldGun {
     static final double LEADER_SEEN = 150;
     /** MGUN-21: what a leader's death drains from each living teammate. */
     static final double LEADER_DRAIN = 30;
-    /** TMODE-31: the leader's weight under LEAD. */
-    static final double LEAD_BOOST = 4.0;
-    /** TMODE-31: a scanner's weight under LEAD while droids are about. */
-    static final double EYES_BOOST = 2.5;
-    /**
-     * TMODE-32: the most a member fires under SWIFT: Ogi's own power, 14.3 px a tick. The team gun
-     * read (docs/bench/local/team-gun-read.md) has our power-3 shots at Ogi hitting 12.1% against
-     * about 17% at Combat and Firestarter, and Ogi's lighter shots hitting us 23.6% at 200-400 px.
-     */
-    public static final double SWIFT_POWER = 1.9;
     /** TMODE-33: the team brain's power, from Ogi's 1.92: a faster bullet than 3 that still pays. */
     public static final double CONCORD_POWER = 1.9;
     /** TMODE-33: within this, px, the team brain fires full power. */
@@ -119,8 +109,6 @@ public class FieldGun {
     static final double CONCORD_RATE = 0.55;
     /** TMODE-33: ...once this many shots at it have ended. */
     static final int CONCORD_SHOTS = 20;
-    /** TMODE-31: a robot first seen in a round with more than this, up to {@link #LEADER_SEEN}, is a droid (120). */
-    static final double DROID_SEEN = 110;
 
     /** MGUN-17: the aims a wave scores; FIELD is the field gun's own. */
     public static final int FIELD = 0, HEAD_ON = 1, LINEAR = 2, CIRCULAR = 3, EXPERT_COUNT = 4;
@@ -172,14 +160,8 @@ public class FieldGun {
     private final Map<String, double[]> expertScores = new LinkedHashMap<>();
     /** MGUN-21: each robot's energy when first seen this round, kept from its first scan on whatever switches are on. */
     private final Map<String, Double> firstEnergy = new LinkedHashMap<>();
-    /** TMODE-31: whether the team modes this tick carry LEAD. */
-    private boolean lead;
-    /** TMODE-32: whether the team modes this tick carry SWIFT. */
-    private boolean swift;
     /** TMODE-33: whether the team modes this tick carry CONCORD. */
     private boolean concord;
-    /** TMODE-36: whether the team modes this tick carry HEAVY. */
-    private boolean heavy;
     /** TMODE-33: per enemy class, the tree every copy's situations join. */
     private final Map<String, KdTree<float[]>> classTrees = new LinkedHashMap<>();
     /** TMODE-33: per enemy class, the shots fired at it and the hits on it, this battle. */
@@ -190,8 +172,6 @@ public class FieldGun {
     private int placedOpponents;
     /** MGUN-17: true while a wave reads the field gun's own aim, which the experts must not steer. */
     private boolean pure;
-    /** TMODE-40: whether this tick's team modes carry AIM. */
-    private boolean teamAim;
 
     public FieldGun(BattleField field) {
         this.field = field;
@@ -282,8 +262,7 @@ public class FieldGun {
             if (power <= 0) continue;
             if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);
             else power = MeleeEnergyPolicy.crowdPower(power, distance, nearest, energy, e.energy, others, average);
-            if (onTeam && swift) power = Math.min(power, SWIFT_POWER);
-            if (onTeam && concord && !heavy && TeamConcord.POWER && power > CONCORD_POWER && distance > CONCORD_CLOSE && !readsWell(e.name)) {
+            if (onTeam && concord && TeamConcord.POWER && power > CONCORD_POWER && distance > CONCORD_CLOSE && !readsWell(e.name)) {
                 power = CONCORD_POWER;
             }
             if (power <= 0) continue;
@@ -374,7 +353,6 @@ public class FieldGun {
         if (HIT_TARGET && !onTeam) w *= hitFactor(e.name);
         if (DECAP && onTeam && decapitates(e, alive)) w *= DECAP_BOOST;
         if (STRONG_BOOST > 0 && !onTeam && alive.size() >= 3) w *= 1 + STRONG_BOOST * strength(e.name);
-        if (lead && onTeam) w *= leadFactor(e, alive);
         w *= 1 + 0.5 * (100 - Math.min(100, e.energy)) / 100.0;
         if (e.energy <= MeleeEnergyPolicy.FINISHER_ENERGY) w *= FINISHER_BOOST;
         if (isolated(e, alive)) w *= ISOLATED_BOOST;
@@ -422,53 +400,14 @@ public class FieldGun {
         return t.nearestNeighbor(attributes, k, true);
     }
 
-    /** TMODE-32: whether this tick's team modes carry SWIFT; set before any aim of the tick. */
-    public void swift(boolean swift) {
-        this.swift = swift;
-    }
-
-    /** TMODE-40: whether this tick's team modes carry AIM; set before any aim of the tick. */
-    public void teamAim(boolean teamAim) {
-        this.teamAim = teamAim;
-    }
-
-    /** MGUN-17/TMODE-40: whether the waves score the simple aims: off a team with the switch, on one with AIM. */
+    /** MGUN-17: whether the waves score the simple aims: off a team with the switch, never on one. */
     public boolean scoresExperts() {
-        return onTeam ? teamAim : EXPERTS || HIT_TARGET;
+        return !onTeam && (EXPERTS || HIT_TARGET);
     }
 
-    /**
-     * TMODE-40: the key {@code name}'s expert scores are kept under: on a team its class, so every
-     * copy of an enemy teaches the rest; off a team the name. A wave takes it when emitted.
-     */
+    /** MGUN-17: the key {@code name}'s expert scores are kept under. A wave takes it when emitted. */
     public String expertKey(String name) {
-        return onTeam ? TeamModes.key(name) : name;
-    }
-
-    /** TMODE-36: whether this tick's team modes carry HEAVY; set before any aim of the tick. */
-    public void heavy(boolean heavy) {
-        this.heavy = heavy;
-    }
-
-    /** TMODE-31: whether this tick's team modes carry LEAD; set before any aim of the tick. */
-    public void lead(boolean lead) {
-        this.lead = lead;
-    }
-
-    /**
-     * TMODE-31: {@link #LEAD_BOOST} for the enemy leader; {@link #EYES_BOOST} for any other
-     * robot that is not a droid while a droid is alive; else 1.
-     */
-    double leadFactor(EnemyInfo e, List<EnemyInfo> alive) {
-        for (EnemyInfo o : alive) firstEnergy.putIfAbsent(o.name, o.energy);
-        double first = firstEnergy.getOrDefault(e.name, 0.0);
-        if (first > LEADER_SEEN) return LEAD_BOOST;
-        if (first > DROID_SEEN) return 1;
-        for (EnemyInfo o : alive) {
-            double f = firstEnergy.getOrDefault(o.name, 0.0);
-            if (o != e && f > DROID_SEEN && f <= LEADER_SEEN) return EYES_BOOST;
-        }
-        return 1;
+        return name;
     }
 
     /**
@@ -486,7 +425,7 @@ public class FieldGun {
     }
 
     private boolean expertsOn() {
-        return !pure && (onTeam ? teamAim : EXPERTS);
+        return !pure && !onTeam && EXPERTS;
     }
 
     /**
