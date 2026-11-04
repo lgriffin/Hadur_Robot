@@ -5,3 +5,19 @@
 11:07:27 watching pilot: 5 stop rule(s)
 11:07:40 progress pushed to origin claude/pc-jaylexi-pw-progress (every 15 min)
 11:08:19 progress pilot: 134/5360 (2%) battles, 9419/h, ETA 33 min, 0 failed, skips 0.0/battle (last 100), aa -0.39, hi -1.95, lo -1.53
+11:30:50 pilot exit=0 in 1402 s
+11:30:50 start pilotgate
+11:30:51 pilotgate exit=0 in 0 s
+11:30:51 start screen
+11:30:51 watching screen: 5 stop rule(s)
+11:30:51 screen exit=0 in 0 s
+11:30:51 start build
+11:30:51 build exit=0 in 0 s
+11:30:51 start confirm
+11:30:51 watching confirm: 4 stop rule(s)
+11:30:51 confirm exit=0 in 0 s
+11:30:51 start gate
+11:30:51 gate exit=0 in 0 s
+11:30:51 start pr
+11:30:57 pr exit=0 in 5 s
+11:30:57 ALLDONE
