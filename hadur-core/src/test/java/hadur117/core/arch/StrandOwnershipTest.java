@@ -49,9 +49,9 @@ public class StrandOwnershipTest {
     static final String ROOT = "hadur117.core";
     /**
      * STRAND-7: the duel packages another strand may use, never edit (DuelIdentityTest pins them):
-     * the melee duelist (MSURF) builds the duel's waves and danger views, one set a shooter.
+     * the team duelist's gun (TGUN) aims with the duel's GunController, its views learned per enemy class.
      */
-    static final Map<String, List<String>> USES = Map.of("melee", List.of("hadur117.core.move", "hadur117.core.gun"));
+    static final Map<String, List<String>> USES = Map.of("melee", List.of("hadur117.core.gun"));
 
     static final JavaClasses core = ArchitectureTest.core;
 
