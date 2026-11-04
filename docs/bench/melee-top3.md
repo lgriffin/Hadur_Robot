@@ -156,3 +156,10 @@ MGUN-13 fires 1.92 beyond 300 px. Every earlier step up paid (MGUN-13 +0.62, MGU
 energy, and Diamond's (MGUN-23) was flat in its cloud smoke. MGUN-25 raises far power only while
 Hadur has 60 energy or more, so the endgame reserve stays: arms y3 (power 3) and y5 (power 2.5),
 pilot y3 against aa with a share-only stop.
+
+### pc-melee-far read (PR #647): MGUN-25 ships on at 2.5
+
+Pilot y3 against aa: share +0.30 ± 0.26, so the card ran in full. Paired over aa and bb (bb clean, +0.11 ± 0.18):
+y5 (power 2.5) **+0.30 ± 0.17**, low end +0.13, endgame wins +0.9, energy entering the endgame -0.2, skips +16%: PASS;
+y3 (power 3) +0.19 ± 0.19, others outlived -0.8, endgame energy -0.9. FAR_SPARE ships on at power 2.5 for 3.22; the card,
+its arms and plan test are removed, the melee-samples and melee-handoff fixtures re-recorded. Duel and team fixtures bit for bit.
