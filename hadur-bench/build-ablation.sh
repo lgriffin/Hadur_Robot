@@ -37,6 +37,8 @@
 #   mnear4 MMOVE-24: as mnear3 at 4. Suffix n4.
 #   mstr1  MGUN-24: the melee gun weighs an opponent by 1 + 1 x its strength (mean finishing place this battle) in the crowd. Suffix k1.
 #   mstr2  MGUN-24: as mstr1 at 2 x. Suffix k2.
+#   mfar3  MGUN-25: with 60 energy or more and three or more left, at least power 3 beyond 300 px. Suffix y3.
+#   mfar25 MGUN-25: as mfar3 at power 2.5. Suffix y5.
 #   e3ring  MEND-1: with two opponents left off a team, the crowd's ring and lateral weight (no MMOVE-4). Suffix er.
 #   e3pow  MEND-2: with two opponents left off a team, the crowd's power table (not the duel's). Suffix ep.
 #   e3far  MEND-3: with two opponents left off a team, the closest-robot factor 4 (not 2). Suffix ef.
@@ -889,6 +891,18 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/FieldGun.java" \
                 "public static final double STRONG_BOOST = 0.0;" "public static final double STRONG_BOOST = $n.0;"
             version="${version}k$n" ;;
+        mfar3|mfar25)
+            # MGUN-25 (docs/bench/melee-top3.md): off a team with three or more opponents, at least the far
+            # power beyond 300 px while Hadur has 60 energy or more; team and duel bit for bit.
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEnergyPolicy.java" \
+                "public static final boolean FAR_SPARE = false;" "public static final boolean FAR_SPARE = true;"
+            if [ "$a" = mfar25 ]; then
+                edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEnergyPolicy.java" \
+                    "static final double FAR_SPARE_POWER = 3.0;" "static final double FAR_SPARE_POWER = 2.5;"
+                version="${version}y5"
+            else
+                version="${version}y3"
+            fi ;;
         mnear3|mnear4)
             # MMOVE-24 (docs/bench/melee-top3.md): the crowd's closest-robot factor off a team (three or more
             # opponents; MEND-3 keeps 4 with two left), 3 or 4 for 2, so Hadur is fewer opponents' nearest robot in the crowd; team and duel bit for bit.
@@ -981,7 +995,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf, gexp, grate, gdist, gsoft, tdecap, mscal, mmix, mwpath, mshade, mcross, mbshade, msearch, mdmg, mlat, mavg, mnear3, mnear4, mstr1, mstr2)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf, gexp, grate, gdist, gsoft, tdecap, mscal, mmix, mwpath, mshade, mcross, mbshade, msearch, mdmg, mlat, mavg, mnear3, mnear4, mstr1, mstr2, mfar3, mfar25)" >&2; exit 2 ;;
     esac
 done
 

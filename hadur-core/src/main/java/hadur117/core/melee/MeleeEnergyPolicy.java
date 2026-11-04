@@ -81,6 +81,17 @@ public final class MeleeEnergyPolicy {
     static final double AVG_FAR = 700;
     static final double AVG_FAR_WEAK = 300;
     static final double AVG_WEAK_POWER = 1.0;
+    /**
+     * MGUN-25 (arms mfar25, mfar3): off a team with three or more opponents, a shot beyond
+     * {@link #OGI_WIDE_CLOSE} px fires at least {@link #FAR_SPARE_POWER} while Hadur has
+     * {@link #FAR_SPARE_ENERGY} energy or more, in place of MGUN-13's 1.92. The top bots fire about
+     * as often as Hadur at the same hit rate but spend 15-25% more power in the crowd, and 64% of
+     * Hadur's crowd shots are this far with this much energy (docs/bench/melee-top3.md); the energy
+     * floor keeps the endgame's reserve, which ScalarR's power rule (MGUN-22) spent. Off.
+     */
+    public static final boolean FAR_SPARE = false;
+    static final double FAR_SPARE_POWER = 3.0;
+    static final double FAR_SPARE_ENERGY = 60.0;
 
     private MeleeEnergyPolicy() {}
 
@@ -176,7 +187,25 @@ public final class MeleeEnergyPolicy {
     public static double crowdPower(double tablePower, double distance, double nearest, double ownEnergy,
                                     double targetEnergy, int others, double averageEnergy) {
         double p = crowdPower(tablePower, distance, nearest, ownEnergy, targetEnergy, others);
-        return avgPower(p, distance, ownEnergy, targetEnergy, others, averageEnergy, AVG_POWER);
+        p = avgPower(p, distance, ownEnergy, targetEnergy, others, averageEnergy, AVG_POWER);
+        return farPower(p, distance, ownEnergy, targetEnergy, others, FAR_SPARE, FAR_SPARE_POWER);
+    }
+
+    /**
+     * MGUN-25: {@code p} (the rules so far) raised to at least {@code power} where the switch
+     * {@code on}, three or more opponents are alive, the target is beyond {@link #OGI_WIDE_CLOSE}
+     * px and not a finisher, and Hadur has {@link #FAR_SPARE_ENERGY} or more; a hold (0) stands,
+     * and the kill, lead and own-energy caps apply as the table's do. It never lowers {@code p}.
+     */
+    static double farPower(double p, double distance, double ownEnergy, double targetEnergy, int others,
+                           boolean on, double power) {
+        if (!on || p <= 0 || p >= power || others < 3 || distance <= OGI_WIDE_CLOSE
+            || ownEnergy < FAR_SPARE_ENERGY || targetEnergy <= FINISHER_ENERGY) {
+            return p;
+        }
+        double q = Math.min(power, killPower(targetEnergy));
+        if (ownEnergy > targetEnergy) q = Math.min(q, ownEnergy - targetEnergy);
+        return Math.max(p, Math.min(q, ownEnergy));
     }
 
     /**

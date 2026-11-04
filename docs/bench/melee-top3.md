@@ -133,3 +133,26 @@ place of Hadur's off a team, with Hadur's gun and radar. Cloud smoke, 46 census 
 paired against 3.21: score share -1.13 ± 0.36 points, crowd deaths +5.7 ± 2.7 points of rounds.
 Hadur's surfer mover outsurvives Diamond's on Hadur; the live survival gap to Diamond is not its
 movement design. Not carded.
+
+## Far power on spare energy (MGUN-25, pc-melee-far, 2026-11-04)
+
+The diagnosis after the Diamond mover failed. In the cloud 3.21 census fields Hadur shares with the
+top bots, Hadur fires about as many crowd shots at about the same hit rate, but they put 15-25% more
+power into the crowd (a battle: Diamond 66 to Hadur's 54, ScalarR 90 to 72, Firestarter 67 to 57,
+Neuromancer 75 to 61, DemonicRage 66 to 57) and do that much more crowd damage. Hadur's crowd damage
+taken is no worse than Diamond's (59 to 64), so movement is not the gap; firepower is.
+
+Where the power goes (Hadur's crowd shots, not finishers, three or more left):
+
+| Range | Own energy | Share of shots | Mean power |
+|---|---|---|---|
+| beyond 300 px | 60 or more | 64% | 2.03 |
+| beyond 300 px | 40-60 | 9% | 1.94 |
+| beyond 300 px | under 40 | 9% | 1.47 |
+| within 300 px | 60 or more | 16% | 2.83 |
+
+MGUN-13 fires 1.92 beyond 300 px. Every earlier step up paid (MGUN-13 +0.62, MGUN-16 power 3 out to
+300 px +0.15). ScalarR's rule (MGUN-22) scored +0.18 but cost 4.8 points of endgame wins by spending
+energy, and Diamond's (MGUN-23) was flat in its cloud smoke. MGUN-25 raises far power only while
+Hadur has 60 energy or more, so the endgame reserve stays: arms y3 (power 3) and y5 (power 2.5),
+pilot y3 against aa with a share-only stop.

@@ -680,7 +680,7 @@ team radar look and the learned-danger switches).
 | `MeleeEndgame.THREE_FAR` | MEND-3 | **on** | With two left, closest-robot factor 4 |
 | `MELEE_AIMED`, `HOPS`, `HEAT`, `CLOSER`, `MIX`, `PATH_DANGER`, `SHADE`, `BULLET_SHADE`, `SEARCH`, `DAMAGE_MEMORY`, `FULL_LATERAL` | MMOVE-11..23 | off | Crowd movement ideas (ScalarR, Diamond) benched and not shipped |
 | `FieldGun.EXPERTS`, `HIT_TARGET`, `FLAT_DISTANCE`, `SOFT_MATCH`, `DECAP`; `EnemyHistory.CROWD` | MGUN-11..21 | off | Field gun variants |
-| `MeleeEnergyPolicy.AVG_POWER`, `CROWD_FLOOR`, `OGI_LOW`, `OGI_TWO`, `SCAL_POWER`; `MeleeEndgame.THREE_POWER`, `THREE_RING` | MGUN, MEND | off | Power and endgame variants |
+| `MeleeEnergyPolicy.AVG_POWER`, `CROWD_FLOOR`, `FAR_SPARE`, `OGI_LOW`, `OGI_TWO`, `SCAL_POWER`; `MeleeEndgame.THREE_POWER`, `THREE_RING` | MGUN, MEND | off | Power and endgame variants |
 
 **Team (only while a teammate lives)**
 
