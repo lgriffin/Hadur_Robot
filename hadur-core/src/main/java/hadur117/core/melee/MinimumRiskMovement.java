@@ -93,8 +93,6 @@ public class MinimumRiskMovement {
     /** Hadur's rough speed to a point, for when it would be there. */
     static final double TRAVEL_SPEED = 7.0;
     static final int MAX_BULLETS = 128;
-    /** MMOVE-10: a learned shot makes up to {@link TeamDanger#K} bullets, so the cap is three times MMOVE-3's. */
-    static final int LEARNED_MAX_BULLETS = 3 * MAX_BULLETS;
     /** MMOVE-15: the learned aims a melee shot keeps, its nearest samples'. */
     static final int SURF_AIMS = 4;
 
@@ -119,31 +117,6 @@ public class MinimumRiskMovement {
     static final double MATE_PATH_K = 0.3;
     static final double MATE_PATH_RANGE = 60;
     /**
-     * TMODE-15: weight of a point straight behind a teammate's likely target (its nearest fresh
-     * enemy) as the teammate sees it, falling to none at {@link #LINES_HALF} radians off that line;
-     * only past the target, and up to {@link #LINES_REACH} px beyond it.
-     */
-    static final double LINES_K = 0.3;
-    static final double LINES_HALF = 0.3;
-    static final double LINES_REACH = 800;
-    /** TMODE-16: the wider cone's weight and half-angle, radians (ablation tmlinesw's values). */
-    static final double LINES_WIDE_K = 0.6;
-    static final double LINES_WIDE_HALF = 0.45;
-    /**
-     * TMODE-19: weight of a point on the line ahead of a teammate's gun, falling to none
-     * {@link #GUNLINE_HALF} px off it, from {@link #GUNLINE_NEAR} to {@link #GUNLINE_REACH} px
-     * ahead; only while that gun fires within {@link #GUNLINE_TICKS} ticks, by its stated heat,
-     * and only from an aim no older than {@link #GUNLINE_AGE} ticks.
-     */
-    static final double GUNLINE_K = 0.4;
-    static final double GUNLINE_HALF = 70;
-    static final double GUNLINE_NEAR = 20;
-    static final double GUNLINE_REACH = 900;
-    static final double GUNLINE_TICKS = 6;
-    static final long GUNLINE_AGE = 3;
-    /** TMODE-19: the engine's default gun cooling, heat a tick; a stated heat over it is ticks to fire. */
-    static final double GUNLINE_COOLING = 0.1;
-    /**
      * TMODE-25: the {@link #PATH_RERANK} lowest-risk candidates and the destination held are
      * each driven to for {@link #PATH_TICKS} ticks; every teammate bullet whose
      * flight on some tick crosses Hadur's box ({@link #PATH_HALF} px each side) there adds
@@ -153,11 +126,6 @@ public class MinimumRiskMovement {
     static final double PATH_HALF = 18;
     static final int PATH_TICKS = 15;
     static final int PATH_RERANK = 8;
-    /**
-     * TMODE-38: how many ticks of each drive CLEAR checks against the teammates' bullets: a 0.1
-     * power bullet flies about 790 px in that time, so a member sees it while a side step still clears.
-     */
-    static final int CLEAR_TICKS = 40;
     /** MMOVE-8: how far apart, along its wall, the opening spots of two members in the roster are. */
     static final double MATE_FAN = 120;
     /** TMODE-2: a shot's weight is 1/(1+k)^2 for k teammates nearer its shooter; under this it makes no bullets. */
@@ -174,18 +142,11 @@ public class MinimumRiskMovement {
     static final double FINISH_ENERGY = 30;
     /** TMODE-5: the prey's cost weighs its energy this much against its distance (NightmareTeam's 1.2). */
     static final double PACK_ENERGY_WEIGHT = 1.2;
-    /** TMODE-5: the pincer's radius as a share of the nearest member's distance (NightmareTeam's 0.74), and its bounds. */
-    static final double PACK_RADIUS_SHARE = 0.74;
-    static final double PACK_MIN_RADIUS = 150;
-    static final double PACK_MAX_RADIUS = 450;
     /** TMODE-5: members' places are at most this far apart round the prey: 70 degrees. */
     static final double PACK_SPREAD = Math.toRadians(70);
-    /** TMODE-5: the pull's strength, its floor, and the energy a member needs to hunt. */
-    static final double PACK_PULL = 1.0;
+    /** TMODE-5: the hunt's floor, and the energy a member needs to hunt. */
     static final double PACK_FLOOR = 40;
     static final double PACK_ENERGY = 20;
-    /** TMODE-37: under WARY, the energy below which a member leaves the hunt. */
-    static final double WARY_ENERGY = 50;
     /**
      * TMODE-13, HUNT (NightmareTeam's packs, PACK's retry): each member is assigned an enemy at
      * the cost (distance + {@link #PACK_ENERGY_WEIGHT} x energy) squared, times
@@ -194,11 +155,6 @@ public class MinimumRiskMovement {
      * at {@link #HUNT_PULL}, leaves the bullets' risk unscaled.
      */
     static final double HUNT_RADIUS = 350;
-    /** TMODE-23, TMODE-24: the hunt's radius against a team whose power falls with distance. */
-    static final double HUNT_RADIUS_FAR = 500;
-    static final double HUNT_RADIUS_FARTHER = 650;
-    /** TMODE-26: the hunt radius against a team whose shots only land up close. */
-    static final double HUNT_RADIUS_NEAR = 250;
     /**
      * TMODE-21, TMODE-22: the weight of a shot's one virtual bullet against a team that aims
      * only head-on or only linear: the two guesses' total, all on the real line.
@@ -332,15 +288,8 @@ public class MinimumRiskMovement {
     static final long SWEEP_TICKS = 10;
     /** Opponents whose data has gone stale do not cap the ring. */
     static final long CAP_MAX_AGE = EnemyInfo.STALE_TICKS;
-    /** TMODE-8: an enemy at or under this energy is disabled; one within the range draws a member, to the floor. */
-    static final double DISABLED_ENERGY = 0.1;
-    static final double DISABLED_RANGE = 500;
-    static final double DISABLED_FLOOR = 50;
-    static final double DISABLED_PULL = 0.5;
     /** TMODE-9: teammates' bullets kept, oldest dropped first. */
     static final int MATE_BULLETS = 64;
-    /** TMODE-10: the leader's enemy terms weigh this much more. */
-    static final double REAR_FACTOR = 1.5;
     /** TMODE-11: the lowest-risk candidates driven to, the ticks each drive is checked, and the damage term's weight. */
     static final int WAVE_RERANK = 8;
     static final int WAVE_TICKS = 30;
@@ -402,22 +351,10 @@ public class MinimumRiskMovement {
         Pull pull;
         /** TMODE-9: the teammates' bullets in flight this decision weighs; empty unless MATEFIRE. */
         List<VirtualBullet> mateBullets = List.of();
-        /** TMODE-10: whether this decision is the leader's keeping back. */
-        boolean rear;
-        /** TMODE-15: whether the teammates' lines of fire count; only on a team. */
-        boolean lines;
-        /** TMODE-16: whether those lines use the wider cone. */
-        boolean linesWide;
-        /** TMODE-19: whether the lines ahead of the teammates' guns count; only on a team. */
-        boolean gunLines;
         /** TMODE-25: the teammates' bullets in flight each candidate's drive is checked against; empty unless PATH. */
         List<VirtualBullet> pathBullets = List.of();
         /** TMODE-33: whether the enemy terms count every robot between an enemy and the point; only on a team. */
         boolean concord;
-        /** TMODE-38: rank only destinations whose drive meets no teammate bullet, while any is left. */
-        boolean clear;
-        /** TMODE-39: the dodge's wave check drives from Hadur's heading and velocity, at the engine's turn rate. */
-        boolean momentum;
 
         View(Point2D.Double me, double energy, long now, int others, List<EnemyInfo> enemies,
              List<VirtualBullet> bullets, MeleeStrategy.Plan plan) {
@@ -455,10 +392,6 @@ public class MinimumRiskMovement {
     private final Deque<VirtualBullet> bullets = new ArrayDeque<>();
     /** TMODE-9: the teammates' bullets from their reports, oldest first. */
     private final Deque<VirtualBullet> mateBullets = new ArrayDeque<>();
-    /** TMODE-38: Hadur's heading and velocity this tick, so CLEAR drives from how it is moving. */
-    private double heading, velocity;
-    /** TMODE-10: whether this member leads its team (fixed for the battle). */
-    private boolean leader;
     private final Set<EnemyShot> seenShots =
         Collections.newSetFromMap(new IdentityHashMap<EnemyShot, Boolean>());
     private final Deque<Point2D.Double> past = new ArrayDeque<>();
@@ -804,10 +737,17 @@ public class MinimumRiskMovement {
         mateBullets.addLast(new VirtualBullet(new EnemyShot(mate, at, tick, power, 0), VirtualBullet.Aim.HEAD_ON, heading));
     }
 
-    /** TMODE-38: Hadur's {@code heading} and {@code velocity} this tick, set before the destination is chosen. */
-    public void motion(double heading, double velocity) {
-        this.heading = heading;
-        this.velocity = velocity;
+    /**
+     * TMODE-2: the share of {@code shot} aimed at Hadur, standing at {@code me} when it was
+     * fired: 1/(1+k)^2 for the k teammates in {@code mates} nearer its source.
+     */
+    static double softWeight(EnemyShot shot, Point2D.Double me, List<Point2D.Double> mates) {
+        double mine = shot.source.distance(me);
+        int k = 0;
+        for (Point2D.Double m : mates) {
+            if (shot.source.distance(m) < mine) k++;
+        }
+        return 1.0 / ((1 + k) * (1 + k));
     }
 
     /** TMODE-9: the teammates' bullets that have not yet passed {@code me}; the rest are dropped. */
@@ -815,11 +755,6 @@ public class MinimumRiskMovement {
         double reach = Math.hypot(field.width, field.height);
         mateBullets.removeIf(b -> b.passed(me, now, reach));
         return new ArrayList<>(mateBullets);
-    }
-
-    /** TMODE-10: whether this member is its team's leader; set on the battle's first tick. */
-    public void leader(boolean leader) {
-        this.leader = leader;
     }
 
     /** Virtual bullets in flight, for tests and the bench. */
@@ -863,89 +798,44 @@ public class MinimumRiskMovement {
 
     /**
      * On a team (T6): as above, where {@code mates} are the living teammates' positions. With
-     * {@code nearest} ({@link TeamDanger#NEAREST}) a shot whose source was nearer a teammate
-     * than Hadur makes no bullets (MMOVE-9); with {@code learned} ({@link TeamDanger#LEARNED})
-     * a shot whose shooter's log is deep enough makes the learned aims in place of the head-on
-     * and linear guesses (MMOVE-10). With neither, or no teammate, this is
+     * {@code nearest} (TMODE-20 OWN) a shot whose source was nearer a teammate than Hadur makes
+     * no bullets (MMOVE-9's rule); with {@code only} (TMODE-21 HEADON, TMODE-22 LINEAR) each shot
+     * makes one virtual bullet, on that aim, at {@link #ONE_AIM_WEIGHT}: the team's code aims no
+     * other way. With neither, or no teammate, this is
      * {@link #updateBullets(List, RobotStateLog, Point2D.Double, long)}.
      */
     public void updateBullets(List<EnemyShot> shots, RobotStateLog myPath, Point2D.Double me,
-                              long now, List<Point2D.Double> mates, TeamDanger danger,
-                              boolean nearest, boolean learned) {
-        updateBullets(shots, myPath, me, now, mates, danger, nearest, learned, false);
-    }
-
-    /**
-     * As above, where with {@code soft} (TMODE-2) each shot's bullets weigh
-     * {@link #softWeight}: less for each teammate nearer its shooter than Hadur was, and none
-     * under {@link #SOFT_FLOOR}.
-     */
-    public void updateBullets(List<EnemyShot> shots, RobotStateLog myPath, Point2D.Double me,
-                              long now, List<Point2D.Double> mates, TeamDanger danger,
-                              boolean nearest, boolean learned, boolean soft) {
-        updateBullets(shots, myPath, me, now, mates, danger, nearest, learned, soft, null);
-    }
-
-    /**
-     * As above, where with {@code only} (TMODE-21 HEADON, TMODE-22 LINEAR) each shot makes one
-     * virtual bullet, on that aim, at {@link #ONE_AIM_WEIGHT}: the team's code aims no other way.
-     * Null: both guesses.
-     */
-    public void updateBullets(List<EnemyShot> shots, RobotStateLog myPath, Point2D.Double me,
-                              long now, List<Point2D.Double> mates, TeamDanger danger,
-                              boolean nearest, boolean learned, boolean soft, VirtualBullet.Aim only) {
-        if (mates.isEmpty() || (!nearest && !learned && !soft && only == null)) {
+                              long now, List<Point2D.Double> mates, boolean nearest, VirtualBullet.Aim only) {
+        if (mates.isEmpty() || (!nearest && only == null)) {
             updateBullets(shots, myPath, me, now);
             return;
         }
-        int cap = learned ? LEARNED_MAX_BULLETS : MAX_BULLETS;
+        int cap = MAX_BULLETS;
         for (EnemyShot s : shots) {
             if (!seenShots.add(s)) continue;
             RobotState at = myPath.getState(s.fireTime);
             if (at == null) at = myPath.getState(s.fireTime + 1);
             Point2D.Double target = at == null ? me : at.location;
             if (nearest && !TeamDanger.aimedAtMe(s, target, mates)) continue;
-            double w = soft ? softWeight(s, target, mates) : 1.0;
-            if (w < SOFT_FLOOR) continue;
-            List<TeamDanger.Aim> aims = learned && at != null ? danger.aims(s, at) : null;
-            if (aims != null) {
-                for (TeamDanger.Aim a : aims) {
-                    add(new VirtualBullet(s, VirtualBullet.Aim.LEARNED, a.heading, w * a.weight), cap);
-                }
-                continue;
-            }
             double hot = DiaUtils.absoluteBearing(s.source, target);
             if (only == VirtualBullet.Aim.HEAD_ON) {
-                add(new VirtualBullet(s, VirtualBullet.Aim.HEAD_ON, hot, ONE_AIM_WEIGHT * w), cap);
+                add(new VirtualBullet(s, VirtualBullet.Aim.HEAD_ON, hot, ONE_AIM_WEIGHT), cap);
                 continue;
             }
             double linear = at == null ? hot : VirtualBullet.linearHeading(s.source, target,
                 at.heading, at.velocity, s.speed(), field.width, field.height);
             if (only == VirtualBullet.Aim.LINEAR) {
-                add(new VirtualBullet(s, VirtualBullet.Aim.LINEAR, linear, ONE_AIM_WEIGHT * w), cap);
+                add(new VirtualBullet(s, VirtualBullet.Aim.LINEAR, linear, ONE_AIM_WEIGHT), cap);
                 continue;
             }
-            add(new VirtualBullet(s, VirtualBullet.Aim.HEAD_ON, hot, w), cap);
-            add(new VirtualBullet(s, VirtualBullet.Aim.LINEAR, linear, w), cap);
+            add(new VirtualBullet(s, VirtualBullet.Aim.HEAD_ON, hot, 1.0), cap);
+            add(new VirtualBullet(s, VirtualBullet.Aim.LINEAR, linear, 1.0), cap);
         }
         double reach = Math.hypot(field.width, field.height);
         for (Iterator<VirtualBullet> it = bullets.iterator(); it.hasNext(); ) {
             if (it.next().passed(me, now, reach)) it.remove();
         }
         seenShots.retainAll(shots);
-    }
-
-    /**
-     * TMODE-2: the share of {@code shot} aimed at Hadur, standing at {@code me} when it was
-     * fired: 1/(1+k)^2 for the k teammates in {@code mates} nearer its source.
-     */
-    static double softWeight(EnemyShot shot, Point2D.Double me, List<Point2D.Double> mates) {
-        double mine = shot.source.distance(me);
-        int k = 0;
-        for (Point2D.Double m : mates) {
-            if (shot.source.distance(m) < mine) k++;
-        }
-        return 1.0 / ((1 + k) * (1 + k));
     }
 
     private void add(VirtualBullet b) {
@@ -984,15 +874,8 @@ public class MinimumRiskMovement {
         if (openingSpot == null) openingSpot = openingSpot(me);
         View v = new View(me, energy, now, others, enemies, new ArrayList<>(bullets), plan, mates);
         if (!mates.isEmpty() && !modes.isEmpty()) v.pull = pull(me, teamName, energy, others, enemies, now, mates, modes);
-        if (!mates.isEmpty() && modes.contains(TeamModes.Mode.SCREEN)) screen(v, now);
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.MATEFIRE)) v.mateBullets = relevant(mateBullets(me, now), me, now);
-        v.rear = leader && !mates.isEmpty() && modes.contains(TeamModes.Mode.REAR);
-        v.linesWide = modes.contains(TeamModes.Mode.LINESW);
-        v.lines = !mates.isEmpty() && (modes.contains(TeamModes.Mode.LINES) || v.linesWide);
-        v.gunLines = !mates.isEmpty() && modes.contains(TeamModes.Mode.GUNLINE);
         v.concord = TeamConcord.MOVE && TeamConcord.RISK && !mates.isEmpty() && modes.contains(TeamModes.Mode.CONCORD);
-        v.clear = !mates.isEmpty() && modes.contains(TeamModes.Mode.CLEAR);
-        v.momentum = !mates.isEmpty() && modes.contains(TeamModes.Mode.MOMENTUM);
         List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
         lastCandidates = candidates.size();
         if (surf && !onTeam(mates)) {
@@ -1002,12 +885,8 @@ public class MinimumRiskMovement {
         }
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.DODGE)) {
             v.pathBullets = mateBullets(me, now);
-            if (!TeamDodge.RANK_BULLETS && !TeamDodge.OWN_FIRE) v.mateBullets = List.of();
+            if (!TeamDodge.OWN_FIRE) v.mateBullets = List.of();
             destination = dodgeBest(candidates, v, dodge.waves());
-            return destination;
-        }
-        if (!mates.isEmpty() && modes.contains(TeamModes.Mode.WAVES)) {
-            destination = waveBest(candidates, v);
             return destination;
         }
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.PATH)) {
@@ -1114,17 +993,12 @@ public class MinimumRiskMovement {
                 && enemies.get(0).age(now) < CAP_MAX_AGE && energy >= FINISH_ENERGY) {
             return new Pull(enemies.get(0).location, FINISH_FLOOR, FINISH_PULL);
         }
-        if (modes.contains(TeamModes.Mode.DISABLED)) {
-            EnemyInfo prey = disabled(me, enemies, now);
-            if (prey != null) return new Pull(prey.location, DISABLED_FLOOR, DISABLED_PULL);
-        }
-        if (modes.contains(TeamModes.Mode.HUNT)
-                && energy >= (modes.contains(TeamModes.Mode.WARY) ? WARY_ENERGY : PACK_ENERGY)) {
-            Point2D.Double slot = huntSlot(me, name, enemies, now, mates, huntRadius(modes));
+        if (modes.contains(TeamModes.Mode.HUNT) && energy >= PACK_ENERGY) {
+            Point2D.Double slot = huntSlot(me, name, enemies, now, mates, HUNT_RADIUS);
             if (slot != null) return new Pull(slot, PACK_FLOOR, HUNT_PULL, false);
         }
         boolean gang = modes.contains(TeamModes.Mode.GANG);
-        if (!gang && !modes.contains(TeamModes.Mode.PACK)) return null;
+        if (!gang) return null;
         Point2D.Double nearest = null;
         Point2D.Double ganged = null;
         for (Roster.Mate m : mates) {
@@ -1135,88 +1009,8 @@ public class MinimumRiskMovement {
             }
         }
         if (gang && nearest != null && enemiesNear(me, enemies, now) >= GANG_SIZE) return new Pull(nearest, 0, GANG_PULL);
-        if (modes.contains(TeamModes.Mode.PACK) && energy >= PACK_ENERGY) {
-            Point2D.Double slot = pincerSlot(me, enemies, now, mates);
-            if (slot != null) return new Pull(slot, PACK_FLOOR, PACK_PULL);
-        }
         if (gang && ganged != null) return new Pull(ganged, HELP_FLOOR, GANG_PULL);
         return null;
-    }
-
-    /**
-     * TMODE-8: the nearest enemy seen lately at or under {@link #DISABLED_ENERGY} and within
-     * {@link #DISABLED_RANGE} of {@code me}, or null.
-     */
-    static EnemyInfo disabled(Point2D.Double me, List<EnemyInfo> enemies, long now) {
-        EnemyInfo best = null;
-        for (EnemyInfo e : enemies) {
-            if (e.age(now) >= CAP_MAX_AGE || e.energy > DISABLED_ENERGY) continue;
-            double d = e.location.distance(me);
-            if (d <= DISABLED_RANGE && (best == null || d < best.location.distance(me))) best = e;
-        }
-        return best;
-    }
-
-    /**
-     * TMODE-5: the team's prey, as every member works it out from the positions they share: the
-     * enemy seen lately with the least distance from the team's centre plus
-     * {@link #PACK_ENERGY_WEIGHT} times its energy (NightmareTeam's assignment cost). Null when
-     * none is fresh.
-     */
-    static EnemyInfo prey(Point2D.Double centre, List<EnemyInfo> enemies, long now) {
-        EnemyInfo best = null;
-        double bestCost = Double.POSITIVE_INFINITY;
-        for (EnemyInfo e : enemies) {
-            if (e.age(now) >= CAP_MAX_AGE) continue;
-            double cost = e.location.distance(centre) + PACK_ENERGY_WEIGHT * e.energy;
-            // Ties go to the name, so every member picks the same prey.
-            if (cost < bestCost || (cost == bestCost && best != null && e.name.compareTo(best.name) < 0)) {
-                bestCost = cost;
-                best = e;
-            }
-        }
-        return best;
-    }
-
-    /**
-     * TMODE-5: Hadur's place in the pincer round the prey. The members (Hadur and its teammates
-     * in view) are ranked by their bearing from the prey about the team's mean bearing, and
-     * spread over an arc about that mean, {@link #PACK_SPREAD} apart at most and never more than
-     * a full turn in all; Hadur's place is its rank's angle at {@link #PACK_RADIUS_SHARE} of the
-     * nearest member's distance, kept within {@link #PACK_MIN_RADIUS} and
-     * {@link #PACK_MAX_RADIUS}. Null with no fresh enemy.
-     */
-    static Point2D.Double pincerSlot(Point2D.Double me, List<EnemyInfo> enemies, long now, List<Roster.Mate> mates) {
-        List<Point2D.Double> pack = new ArrayList<>(mates.size() + 1);
-        pack.add(me);
-        for (Roster.Mate m : mates) pack.add(m.at(now));
-        double cx = 0, cy = 0;
-        for (Point2D.Double q : pack) {
-            cx += q.x;
-            cy += q.y;
-        }
-        EnemyInfo prey = prey(new Point2D.Double(cx / pack.size(), cy / pack.size()), enemies, now);
-        if (prey == null) return null;
-        Point2D.Double t = prey.location;
-        double sx = 0, sy = 0, nearest = Double.POSITIVE_INFINITY;
-        for (Point2D.Double q : pack) {
-            double b = DiaUtils.absoluteBearing(t, q);
-            sx += Math.sin(b);
-            sy += Math.cos(b);
-            nearest = Math.min(nearest, q.distance(t));
-        }
-        double mean = Math.atan2(sx, sy);
-        double mine = Angles.normalRelativeAngle(DiaUtils.absoluteBearing(t, me) - mean);
-        int rank = 0;
-        for (int i = 1; i < pack.size(); i++) {
-            double off = Angles.normalRelativeAngle(DiaUtils.absoluteBearing(t, pack.get(i)) - mean);
-            if (off < mine) rank++;
-        }
-        int n = pack.size();
-        double spread = Math.min(PACK_SPREAD, 2 * Math.PI / n);
-        double angle = mean + (rank - (n - 1) / 2.0) * spread;
-        double r = DiaUtils.limit(PACK_MIN_RADIUS, PACK_RADIUS_SHARE * nearest, PACK_MAX_RADIUS);
-        return DiaUtils.project(t, angle, r);
     }
 
     /**
@@ -1260,14 +1054,6 @@ public class MinimumRiskMovement {
         return huntSlot(me, name, enemies, now, mates, HUNT_RADIUS);
     }
 
-    /** TMODE-23, TMODE-24: the hunt's radius against this team. */
-    static double huntRadius(Set<TeamModes.Mode> modes) {
-        if (modes.contains(TeamModes.Mode.FARTHER)) return HUNT_RADIUS_FARTHER;
-        if (modes.contains(TeamModes.Mode.FAR)) return HUNT_RADIUS_FAR;
-        if (modes.contains(TeamModes.Mode.NEAR)) return HUNT_RADIUS_NEAR;
-        return HUNT_RADIUS;
-    }
-
     /** As above, at {@code radius} from the prey. */
     static Point2D.Double huntSlot(Point2D.Double me, String name, List<EnemyInfo> enemies, long now,
                                    List<Roster.Mate> mates, double radius) {
@@ -1305,21 +1091,6 @@ public class MinimumRiskMovement {
         double spread = Math.min(PACK_SPREAD, 2 * Math.PI / n);
         double angle = mean + (rank - (n - 1) / 2.0) * spread;
         return DiaUtils.project(t, angle, radius);
-    }
-
-    /**
-     * TMODE-6: a teammate screens Hadur from an enemy as another enemy does: each enemy's
-     * distance to its nearest other robot, which decides whether Hadur at a point would be its
-     * closest (MMOVE-2), takes the living teammates in view too (Ogi counts every robot nearer
-     * the enemy, teammates included).
-     */
-    static void screen(View v, long now) {
-        for (int i = 0; i < v.enemies.size(); i++) {
-            Point2D.Double e = v.enemies.get(i).location;
-            for (Roster.Mate m : v.mates) {
-                v.nearestOther[i] = Math.min(v.nearestOther[i], e.distance(m.at(now)));
-            }
-        }
     }
 
     /** TMODE-3: the enemies seen lately within {@link #GANG_RANGE} of {@code p}. */
@@ -1423,20 +1194,9 @@ public class MinimumRiskMovement {
             order[i] = i;
         }
         java.util.Arrays.sort(order, (a, b) -> Double.compare(risk[a], risk[b]));
-        List<Point2D.Double[]> tracks = v.clear ? tracks(v, mateBullets) : null;
         List<Integer> picked = new ArrayList<>();
-        for (int i = 0; i < order.length && picked.size() < rerank; i++) {
-            if (tracks == null || !meets(v.me, heading, velocity, pool.get(order[i]), tracks)) picked.add(order[i]);
-        }
-        if (tracks != null && picked.isEmpty()) {
-            // TMODE-38: every destination meets a teammate bullet: rank them as without CLEAR.
-            for (int i = 0; i < order.length && picked.size() < rerank; i++) picked.add(order[i]);
-            tracks = null;
-        }
-        if (hold && !picked.contains(pool.size() - 1)
-                && (tracks == null || !meets(v.me, heading, velocity, destination, tracks))) {
-            picked.add(pool.size() - 1);
-        }
+        for (int i = 0; i < order.length && picked.size() < rerank; i++) picked.add(order[i]);
+        if (hold && !picked.contains(pool.size() - 1)) picked.add(pool.size() - 1);
         double[] damage = new double[picked.size()];
         double[] r = new double[picked.size()];
         for (int k = 0; k < picked.size(); k++) {
@@ -1457,9 +1217,6 @@ public class MinimumRiskMovement {
                     next = Math.min(next, drive(from, q, v.now + t, WAVE_TICKS, waves, shadows, met.clone()));
                 }
                 damage[k] = first + next;
-            } else if (v.momentum) {
-                // TMODE-39: drive from how Hadur is moving now, not from a standstill facing the spot.
-                damage[k] = waveDamageMoving(v.me, heading, velocity, p, v.now, waves, shadows, field);
             } else {
                 damage[k] = waveDamage(v.me, p, v.now, waves, shadows);
             }
@@ -1502,21 +1259,10 @@ public class MinimumRiskMovement {
         java.util.Arrays.sort(order, (a, b) -> Double.compare(risk[a], risk[b]));
         List<Point2D.Double> picked = new ArrayList<>();
         List<Double> pickedRisk = new ArrayList<>();
-        // TMODE-38: with CLEAR, only the destinations whose drive meets no teammate bullet, while any is left.
-        List<Point2D.Double[]> tracks = v.clear ? tracks(v, v.pathBullets) : null;
         for (int i = 0; i < order.length && picked.size() < PATH_RERANK; i++) {
-            if (tracks != null && meets(v.me, heading, velocity, pool.get(order[i]), tracks)) continue;
             picked.add(pool.get(order[i]));
             pickedRisk.add(risk[order[i]]);
         }
-        if (tracks != null && picked.isEmpty()) {
-            for (int i = 0; i < order.length && picked.size() < PATH_RERANK; i++) {
-                picked.add(pool.get(order[i]));
-                pickedRisk.add(risk[order[i]]);
-            }
-            tracks = null;
-        }
-        if (hold && tracks != null && meets(v.me, heading, velocity, destination, tracks)) hold = false;
         Point2D.Double best = null;
         double bestScore = Double.POSITIVE_INFINITY;
         for (int k = 0; k < picked.size(); k++) {
@@ -1531,78 +1277,6 @@ public class MinimumRiskMovement {
             if (bestScore >= SWITCH_GAIN * risk(destination, v) + held) return destination;
         }
         return best;
-    }
-
-    /**
-     * TMODE-38: the teammates' {@code bullets} that come within a drive's reach of Hadur in the next
-     * {@link #CLEAR_TICKS} ticks, each as its place on each of those ticks; null when there are none.
-     */
-    static List<Point2D.Double[]> tracks(View v, List<VirtualBullet> bullets) {
-        double reach = MAX_SPEED * CLEAR_TICKS + 2 * PATH_HALF;
-        List<Point2D.Double[]> tracks = new ArrayList<>();
-        for (VirtualBullet b : bullets) {
-            if (b.closestApproach(v.me, v.now, v.now + CLEAR_TICKS) > reach) continue;
-            Point2D.Double[] at = new Point2D.Double[CLEAR_TICKS + 1];
-            for (int t = 0; t <= CLEAR_TICKS; t++) at[t] = b.position(v.now + t);
-            tracks.add(at);
-        }
-        return tracks.isEmpty() ? null : tracks;
-    }
-
-    /**
-     * TMODE-38: whether Hadur, at {@code me} with {@code heading} and {@code velocity}, driving to
-     * {@code to} as the melee's drive does (turn the nearer way, front or back; at most 4 px a tick
-     * while the turn left is over 45 degrees; the engine's turn rate, acceleration and braking),
-     * meets one of the bullet {@code tracks} (each its place on each of the next ticks) on some tick.
-     */
-    static boolean meets(Point2D.Double me, double heading, double velocity, Point2D.Double to,
-                         List<Point2D.Double[]> tracks) {
-        double x = me.x, y = me.y, h = heading, v = velocity;
-        for (int t = 1; t <= CLEAR_TICKS; t++) {
-            double turn = Angles.normalRelativeAngle(Math.atan2(to.x - x, to.y - y) - h);
-            double dist = Math.hypot(to.x - x, to.y - y);
-            if (Math.abs(turn) > Math.PI / 2) {
-                turn = Angles.normalRelativeAngle(turn + Math.PI);
-                dist = -dist;
-            }
-            double maxV = Math.abs(turn) > Math.PI / 4 ? 4.0 : MAX_SPEED;
-            double rate = Math.toRadians(10 - 0.75 * Math.abs(v));
-            h += Math.max(-rate, Math.min(rate, turn));
-            v = nextVelocity(v, dist, maxV);
-            x += Math.sin(h) * v;
-            y += Math.cos(h) * v;
-            for (Point2D.Double[] at : tracks) {
-                if (at[t - 1].equals(at[t])) continue;
-                if (crossesBox(at[t - 1], at[t], x, y, PATH_HALF)) return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * TMODE-39: the engine's next velocity toward {@code distance} px left (negative to reverse), at
-     * most {@code maxV}: 1 px a tick faster, 2 slower, never faster than a stop within the distance
-     * allows, and a robot moving the wrong way at 2 or less brakes through zero and speeds up in the
-     * same tick. The kernel's MovementPredictor rule, kept here so the melee strand owns it.
-     */
-    static double engineVelocity(double velocity, double distance, double maxV) {
-        if (distance < 0) return -engineVelocity(-velocity, -distance, maxV);
-        double t = Math.max(1, Math.ceil((Math.sqrt(4.0 * distance + 1.0) - 1.0) / 2.0));
-        double stop = (t - 1.0) * 2.0 + (distance - t * (t - 1.0)) / t;
-        double goal = Math.min(stop, maxV);
-        if (velocity >= 0) return Math.max(velocity - 2.0, Math.min(goal, velocity + 1.0));
-        double w = -velocity;
-        double turnBack = w > 2.0 ? 2.0 : (w / 2.0) * 2.0 + (1.0 - w / 2.0);
-        return Math.max(velocity - 1.0, Math.min(goal, velocity + turnBack));
-    }
-
-    /** TMODE-38: the engine's next velocity toward {@code distLeft} px left, at most {@code maxV}: 1 px a tick faster, 2 slower. */
-    static double nextVelocity(double v, double distLeft, double maxV) {
-        double want = distLeft > 0 ? Math.min(maxV, distLeft) : distLeft < 0 ? -Math.min(maxV, -distLeft) : 0;
-        if (v * want < 0 || Math.abs(want) < Math.abs(v)) {
-            return v > want ? Math.max(want, v - 2) : Math.min(want, v + 2);
-        }
-        return want > v ? Math.min(want, v + 1) : Math.max(want, v - 1);
     }
 
     /**
@@ -1824,49 +1498,6 @@ public class MinimumRiskMovement {
     }
 
     /**
-     * TMODE-39: as {@link #waveDamage}, but Hadur leaves {@code me} with its {@code heading} and
-     * {@code velocity} and drives to {@code to} as the melee's drive does (the nearer way, front or
-     * back; at most 4 px a tick while the turn left is over 45 degrees; the engine's turn rate,
-     * acceleration, braking and stopping-distance cap ({@link #engineVelocity}), for {@link #WAVE_TICKS}
-     * ticks. A drive that would leave {@code field} stops dead at its edge, as the engine stops a robot
-     * at a wall.
-     */
-    static double waveDamageMoving(Point2D.Double me, double heading, double velocity, Point2D.Double to,
-                                   long now, List<Wave> waves, List<double[][]> shadows, BattleField field) {
-        if (waves.isEmpty()) return 0;
-        boolean[] done = new boolean[waves.size()];
-        double total = 0;
-        double x = me.x, y = me.y, h = heading, v = velocity;
-        for (int t = 1; t <= WAVE_TICKS; t++) {
-            double turn = Angles.normalRelativeAngle(Math.atan2(to.x - x, to.y - y) - h);
-            double dist = Math.hypot(to.x - x, to.y - y);
-            if (dist <= 0.5) {
-                turn = 0;
-                dist = 0;
-            } else if (Math.abs(turn) > Math.PI / 2) {
-                turn = Angles.normalRelativeAngle(turn + Math.PI);
-                dist = -dist;
-            }
-            double maxV = Math.abs(turn) > Math.PI / 4 ? 4.0 : MAX_SPEED;
-            double rate = Math.toRadians(10 - 0.75 * Math.abs(v));
-            h += Math.max(-rate, Math.min(rate, turn));
-            v = engineVelocity(v, dist, maxV);
-            x += Math.sin(h) * v;
-            y += Math.cos(h) * v;
-            if (field != null) {
-                Point2D.Double in = field.translateToField(new Point2D.Double(x, y));
-                if (in.x != x || in.y != y) {
-                    x = in.x;
-                    y = in.y;
-                    v = 0;
-                }
-            }
-            total += waveHits(x, y, now + t, waves, shadows, done);
-        }
-        return total;
-    }
-
-    /**
      * MMOVE-21: the speed a drive that left {@code me} and is at {@code end} {x, y, speed} keeps
      * heading on to {@code to}: its speed along the new line, none if that turns back.
      */
@@ -2058,7 +1689,7 @@ public class MinimumRiskMovement {
             if (v.plan.fight != null && (e == v.plan.fight[0] || e == v.plan.fight[1])) {
                 w = FIGHT_WEIGHT;
             }
-            r += w * enemyRisk(p, v, i) * (v.rear ? REAR_FACTOR : 1.0);
+            r += w * enemyRisk(p, v, i);
         }
         // TMODE-13: a pull that leaves the bullets alone adds them after it scales the rest.
         boolean apart = v.pull != null && !v.pull.scalesBullets;
@@ -2105,68 +1736,6 @@ public class MinimumRiskMovement {
             }
             double sd = segmentDistance(v.me, p, from, q);
             r += MATE_PATH_K * Math.max(0, 1 - sd / MATE_PATH_RANGE);
-        }
-        if (v.gunLines) r += gunLineRisk(p, v.mates, v.now);
-        if (v.lines) {
-            r += v.linesWide ? linesRisk(p, v.mates, v.enemies, v.now, LINES_WIDE_K, LINES_WIDE_HALF)
-                : linesRisk(p, v.mates, v.enemies, v.now);
-        }
-        return r;
-    }
-
-    /**
-     * TMODE-15: for each teammate, now, and its nearest fresh enemy, {@link #LINES_K} where
-     * {@code p} lies on the line from the teammate through that enemy and past it, falling
-     * linearly to none {@link #LINES_HALF} radians off the line as the teammate sees it, and
-     * none nearer the teammate than the enemy or more than {@link #LINES_REACH} px beyond it.
-     * The bullets a teammate fires at that enemy and misses fly there.
-     */
-    static double linesRisk(Point2D.Double p, List<Roster.Mate> mates, List<EnemyInfo> enemies, long now) {
-        return linesRisk(p, mates, enemies, now, LINES_K, LINES_HALF);
-    }
-
-    /**
-     * TMODE-19: for each teammate whose stated aim is fresh and whose gun fires within
-     * {@link #GUNLINE_TICKS} ticks, {@link #GUNLINE_K} where {@code p} lies on the line from
-     * the teammate's place now along its gun heading, falling linearly to none
-     * {@link #GUNLINE_HALF} px off it; only between {@link #GUNLINE_NEAR} and
-     * {@link #GUNLINE_REACH} px ahead. A lead shot flies there whether or not an enemy stands on it.
-     */
-    static double gunLineRisk(Point2D.Double p, List<Roster.Mate> mates, long now) {
-        double r = 0;
-        for (Roster.Mate m : mates) {
-            if (m.aimed() < 0 || now - m.aimed() > GUNLINE_AGE) continue;
-            double toFire = m.gunHeat() / GUNLINE_COOLING - (now - m.aimed());
-            if (toFire > GUNLINE_TICKS) continue;
-            Point2D.Double q = m.at(now);
-            double dx = Math.sin(m.gunHeading());
-            double dy = Math.cos(m.gunHeading());
-            double along = (p.x - q.x) * dx + (p.y - q.y) * dy;
-            if (along < GUNLINE_NEAR || along > GUNLINE_REACH) continue;
-            double across = Math.abs((p.x - q.x) * dy - (p.y - q.y) * dx);
-            r += GUNLINE_K * Math.max(0, 1 - across / GUNLINE_HALF);
-        }
-        return r;
-    }
-
-    /** TMODE-15 and TMODE-16: {@link #linesRisk} with weight {@code k} and half-angle {@code half}. */
-    static double linesRisk(Point2D.Double p, List<Roster.Mate> mates, List<EnemyInfo> enemies, long now,
-                            double k, double half) {
-        double r = 0;
-        for (Roster.Mate m : mates) {
-            Point2D.Double q = m.at(now);
-            EnemyInfo target = null;
-            for (EnemyInfo e : enemies) {
-                if (e.age(now) >= CAP_MAX_AGE) continue;
-                if (target == null || e.location.distance(q) < target.location.distance(q)) target = e;
-            }
-            if (target == null) continue;
-            double range = target.location.distance(q);
-            double d = p.distance(q);
-            if (d <= range || d > range + LINES_REACH) continue;
-            double off = Math.abs(Angles.normalRelativeAngle(
-                DiaUtils.absoluteBearing(q, p) - DiaUtils.absoluteBearing(q, target.location)));
-            r += k * Math.max(0, 1 - off / half);
         }
         return r;
     }

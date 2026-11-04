@@ -35,38 +35,6 @@ class FieldGunExpertsTest {
     }
 
     @Test
-    @Tag("TMODE-40")
-    @DisplayName("TMODE-40: on a team the experts score only under AIM, pooled by enemy class; off a team AIM does nothing")
-    void teamAimPoolsByClass() {
-        gun.onTeam(true);
-        assertFalse(gun.scoresExperts(), "a team without AIM scores only the field gun");
-        gun.teamAim(true);
-        assertTrue(gun.scoresExperts());
-        assertTrue(MeleeWaves.scoring(gun));
-        // Ten waves on each of two copies of one class make the twenty a pick needs.
-        for (int i = 0; i < FieldGun.EXPERT_MIN / 2; i++) {
-            gun.scoreExperts(gun.expertKey("tmnr.TMNR 1.01"), hits(false, true, false, false));
-            gun.scoreExperts(gun.expertKey("tmnr.TMNR 1.01 (2)"), hits(false, true, false, false));
-        }
-        double[] pick = gun.pick("tmnr.TMNR 1.01 (3)");
-        assertNotNull(pick, "a third copy reads the class's scores");
-        assertEquals(FieldGun.HEAD_ON, (int) pick[0]);
-        gun.teamAim(false);
-        gun.onTeam(false);
-        assertFalse(gun.scoresExperts(), "off a team the MGUN-17 switch alone decides, and it ships off");
-        assertNull(gun.pick("tmnr.TMNR 1.01 (3)"), "off a team scores are kept per name");
-        // A wave keeps the key it was emitted with: emitted on a team, it scores the class even if
-        // the last teammate has died before it lands.
-        assertEquals("tmnr.TMNR 1.01 (3)", gun.expertKey("tmnr.TMNR 1.01 (3)"));
-        gun.onTeam(true);
-        String key = gun.expertKey("tmnr.TMNR 1.01 (3)");
-        gun.onTeam(false);
-        assertNotEquals("tmnr.TMNR 1.01 (3)", key);
-        assertFalse(TeamModes.FORCE_AIM);
-        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.AIM));
-    }
-
-    @Test
     @Tag("MGUN-17")
     @DisplayName("MGUN-17: no pick before twenty waves; then the simple aim that beats the field gun takes the opponent")
     void pickFollowsHits() {

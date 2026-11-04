@@ -23,46 +23,14 @@ public final class TeamModes {
 
     /** A team movement mode. */
     public enum Mode {
-        /** TMODE-2: a shot's virtual bullets weigh less for each teammate nearer its shooter. */
-        SOFT,
         /** TMODE-3: a member near two or more enemies is drawn to a teammate; a free one to a ganged teammate. */
         GANG,
         /** TMODE-4: against the last enemy, with energy to spare, close in. */
         FINISH,
-        /** MMOVE-10 as a mode: dodge the team's learned aims. */
-        LEARN,
-        /** TMODE-5: hunt as a pack: every member closes on the same enemy from its own side (NightmareTeam's pincer). */
-        PACK,
-        /** TMODE-6: teammates count with enemies as robots nearer an enemy than Hadur would be. */
-        SCREEN,
-        /** TMODE-7: MMOVE-10's learned aims from one log per enemy class, fed by all its copies. */
-        POOL,
-        /** TMODE-8: a member is drawn to a disabled enemy nearby, to finish it (CombatTeam). */
-        DISABLED,
         /** TMODE-9: the teammates' bullets in flight count as danger, as an enemy's do (CombatTeam). */
         MATEFIRE,
-        /** TMODE-10: the leader, whose death costs every teammate energy, keeps further from enemies. */
-        REAR,
-        /** TMODE-11: the safest candidates are re-ranked by the shots their drive would cross (Ogi's waves). */
-        WAVES,
         /** TMODE-13: packs of two or three assigned per enemy, each member at a fixed 350 px round its prey (NightmareTeam). */
         HUNT,
-        /** TMODE-15: a member keeps out of the cone behind each teammate's likely target, where that teammate's misses fly. */
-        LINES,
-        /**
-         * TMODE-16: TMODE-15 with wider, heavier cones ({@code LINES_WIDE_K}, {@code LINES_WIDE_HALF}),
-         * as ablation tmlinesw benched them. Only through the table: no FORCE switch.
-         */
-        LINESW,
-        /** TMODE-17: WEAVE-10 for this team: a nearer teammate's predicted track holds the shot. Only through the table. */
-        LANEP,
-        /** TMODE-18: WEAVE-11 for this team: a teammate beyond the target holds the shot. Only through the table. */
-        LANEB,
-        /**
-         * TMODE-19: members state their gun's heading and heat; a member keeps out of the line
-         * ahead of each teammate's gun while that gun is about to fire.
-         */
-        GUNLINE,
         /**
          * TMODE-20: shot ownership, for a team whose code shoots its closest enemy: a shot makes
          * virtual bullets only for the member it was aimed at (MMOVE-9's nearest rule). Only
@@ -73,72 +41,23 @@ public final class TeamModes {
         HEADON,
         /** TMODE-22: the team aims only linear: one linear virtual bullet per shot. Only through the table. */
         LINEAR,
-        /** TMODE-23: the team's power falls with distance: hunt at 500 px, not 350. Only through the table. */
-        FAR,
-        /** TMODE-24: as FAR, at 650 px. Only through the table. */
-        FARTHER,
         /** TMODE-25: each candidate's drive is checked tick by tick against the teammates' bullets in flight (Firestarter). */
         PATH,
-        /** TMODE-26: the team only lands its shots up close: hunt at 250 px, not 350. Only through the table. */
-        NEAR,
         /**
          * TMODE-27: Ogi's dodge as one piece ({@link TeamDodge}): shot profiles from aim experts
          * weighted per enemy class, driven through on the safest candidates. It stands in for
-         * the virtual bullets and SOFT, LEARN, POOL and WAVES while it plays.
+         * the virtual bullets while it plays.
          */
         DODGE,
         /**
-         * TMODE-31: for a team run by its leader or fed by droids: the gun leans on the leader
-         * (first seen above 150 energy) and, with droids about (first seen near 120), on the
-         * robots that scan for them, so the team loses its orders and its eyes first ({@link FieldGun#lead}).
-         */
-        LEAD,
-        /**
-         * TMODE-32: for a team that dodges waves (Ogi): the gun fires no harder than
-         * {@link FieldGun#SWIFT_POWER}, a faster bullet that leaves the dodge less time
-         * ({@link FieldGun#swift}); a killing shot under it stands.
-         */
-        SWIFT,
-        /**
          * TMODE-33, the team brain after Ogi's design, in our own code ({@link TeamConcord}): the
          * whole team plays one picture instead of switches laid on the free-for-all movement. Its
-         * enemy risk counts every robot, teammates included, between an enemy and the point; the
-         * pack hunt stands down for FINISH and a GANG that turns itself on once the battle shows
-         * ganging; the radar splits the enemies among the members; the gun pools its situations
-         * by enemy class and fires lighter unless close or reading that class well.
+         * enemy risk counts every robot, teammates included, between an enemy and the point; it
+         * plays FINISH, and a GANG that turns itself on once the battle shows ganging; the gun
+         * pools its situations by enemy class and fires lighter unless close or reading that
+         * class well.
          */
-        CONCORD,
-        /**
-         * TMODE-36: against a team that dodges poorly, the team brain fires full power: CONCORD's
-         * lighter {@link FieldGun#CONCORD_POWER} gives way, so rounds end sooner. Only the gun changes.
-         */
-        HEAVY,
-        /**
-         * TMODE-37: a wounded member leaves the hunt sooner: under {@link MinimumRiskMovement#WARY_ENERGY}
-         * it plays plain minimum risk, not its place by the prey, so fewer members die in rounds the
-         * team wins.
-         */
-        WARY,
-        /**
-         * TMODE-38: a member keeps out of its teammates' bullets: of the destinations, only those whose
-         * drive meets no teammate bullet in {@link MinimumRiskMovement#CLEAR_TICKS} ticks are ranked,
-         * while any is left. The dodge's 15-tick check alone saw a teammate's bullet only once every
-         * reachable spot was already in its path.
-         */
-        CLEAR,
-        /**
-         * TMODE-39: the dodge's check of the enemies' waves drives each destination from the member's
-         * heading and velocity at the engine's turn rate, as CLEAR's check does, not from a standstill
-         * already facing the spot: a member at full speed the other way cannot dodge as that drive says.
-         */
-        MOMENTUM,
-        /**
-         * TMODE-40: the team gun's aim experts (MGUN-17) against this team: each class's waves also
-         * score head-on, linear and circular aims, and an aim that beats the field gun's hit rate on
-         * that class by {@link FieldGun#EXPERT_EDGE} takes it. Built for the nano and micro teams Ogi
-         * out-hits by 4-6 points. Only through the table, or FORCE_AIM to screen it.
-         */
-        AIM
+        CONCORD
     }
 
     /**
@@ -146,47 +65,19 @@ public final class TeamModes {
      * the shipped build since team step C (TMODE-12): with WEAVE-9's narrow lane, teammates'
      * bullets fly near more often, and the pair benched +2.9 share points against 3.16.
      */
-    public static final boolean FORCE_SOFT = false;
-    public static final boolean FORCE_GANG = false;
-    public static final boolean FORCE_FINISH = false;
-    public static final boolean FORCE_LEARN = false;
-    public static final boolean FORCE_PACK = false;
-    public static final boolean FORCE_SCREEN = false;
-    public static final boolean FORCE_POOL = false;
-    public static final boolean FORCE_DISABLED = false;
     public static final boolean FORCE_MATEFIRE = true;
-    public static final boolean FORCE_REAR = false;
-    public static final boolean FORCE_WAVES = false;
     public static final boolean FORCE_HUNT = true;
-    public static final boolean FORCE_LINES = false;
-    public static final boolean FORCE_GUNLINE = false;
     public static final boolean FORCE_PATH = true;
     public static final boolean FORCE_DODGE = true;
-    public static final boolean FORCE_LEAD = false;
-    public static final boolean FORCE_SWIFT = false;
     public static final boolean FORCE_CONCORD = true;
-    public static final boolean FORCE_HEAVY = false;
-    public static final boolean FORCE_WARY = false;
-    /** TMODE-38: CLEAR on every team, the ones the table names included (as PATH, TMODE-28). */
-    public static final boolean FORCE_CLEAR = false;
-    /** TMODE-39: MOMENTUM on every team, the ones the table names included (as CLEAR). */
-    public static final boolean FORCE_MOMENTUM = false;
-    /** TMODE-40: AIM on every team, to screen which teams it helps (never shipped this way). */
-    public static final boolean FORCE_AIM = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
 
     /** The modes for teams the table does not name. */
     static final Set<Mode> DEFAULT = of(
-        FORCE_SOFT ? Mode.SOFT : null, FORCE_GANG ? Mode.GANG : null, FORCE_FINISH ? Mode.FINISH : null,
-        FORCE_LEARN ? Mode.LEARN : null, FORCE_PACK ? Mode.PACK : null, FORCE_SCREEN ? Mode.SCREEN : null,
-        FORCE_POOL ? Mode.POOL : null, FORCE_DISABLED ? Mode.DISABLED : null,
-        FORCE_MATEFIRE ? Mode.MATEFIRE : null, FORCE_REAR ? Mode.REAR : null,
-        FORCE_WAVES ? Mode.WAVES : null, FORCE_HUNT ? Mode.HUNT : null, FORCE_LINES ? Mode.LINES : null,
-        FORCE_GUNLINE ? Mode.GUNLINE : null, FORCE_PATH ? Mode.PATH : null,
-        FORCE_DODGE ? Mode.DODGE : null, FORCE_LEAD ? Mode.LEAD : null, FORCE_SWIFT ? Mode.SWIFT : null,
-        FORCE_CONCORD ? Mode.CONCORD : null, FORCE_HEAVY ? Mode.HEAVY : null, FORCE_WARY ? Mode.WARY : null);
+        FORCE_MATEFIRE ? Mode.MATEFIRE : null, FORCE_HUNT ? Mode.HUNT : null, FORCE_PATH ? Mode.PATH : null,
+        FORCE_DODGE ? Mode.DODGE : null, FORCE_CONCORD ? Mode.CONCORD : null);
 
     /** Opposing member class to its team's modes; filled from the per-team screens. */
     static final Map<String, Set<Mode>> TABLE = table();
@@ -257,24 +148,7 @@ public final class TeamModes {
 
     /** The modes against {@code enemies}: the first one the table names, else the default. */
     public static Set<Mode> against(List<EnemyInfo> enemies) {
-        Set<Mode> m = against(enemies, TABLE, DEFAULT);
-        if (FORCE_CLEAR) m = with(m, Mode.CLEAR);
-        if (FORCE_MOMENTUM) m = with(m, Mode.MOMENTUM);
-        if (FORCE_AIM) m = with(m, Mode.AIM);
-        return m;
-    }
-
-    /** TMODE-38: {@code m} with CLEAR added. */
-    static Set<Mode> withClear(Set<Mode> m) {
-        return with(m, Mode.CLEAR);
-    }
-
-    /** {@code m} with {@code mode} added (TMODE-38, TMODE-39). */
-    static Set<Mode> with(Set<Mode> m, Mode mode) {
-        if (m.contains(mode)) return m;
-        EnumSet<Mode> out = m.isEmpty() ? EnumSet.noneOf(Mode.class) : EnumSet.copyOf(m);
-        out.add(mode);
-        return Collections.unmodifiableSet(out);
+        return against(enemies, TABLE, DEFAULT);
     }
 
     static Set<Mode> against(List<EnemyInfo> enemies, Map<String, Set<Mode>> table, Set<Mode> fallback) {

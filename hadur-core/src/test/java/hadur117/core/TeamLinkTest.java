@@ -303,15 +303,8 @@ class TeamLinkTest {
 
     /** The power fired over {@code ticks} ticks with these scans each tick, on the narrow or the wide lane. */
     private static double fired(List<BotEvent> events, int ticks, boolean narrow) {
-        return fired(events, ticks, narrow, false, false);
-    }
-
-    /** The power fired on the narrow or wide lane, with WEAVE-10 and WEAVE-11 as given. */
-    private static double fired(List<BotEvent> events, int ticks, boolean narrow, boolean predict, boolean beyond) {
         HadurCore core = new HadurCore(facts(), line -> {}, null, new TriggerHappy());
         core.teamLink().narrowLane = narrow;
-        core.teamLink().predictLane = predict;
-        core.teamLink().beyondLane = beyond;
         core.newRound(0);
         double fired = 0;
         for (long t = 1; t <= ticks; t++) fired += core.tick(input(t, 5, events)).firePower();
@@ -379,65 +372,6 @@ class TeamLinkTest {
         List<BotEvent> close = new ArrayList<>(enemies());
         close.add(mateScan(200, 20, 0, 0));
         assertEquals(0, fired(close, 6, true), 1e-9, "mate within a robot's width");
-    }
-
-    @Test
-    @Tag("WEAVE-10")
-    @DisplayName("WEAVE-10: off as shipped; on, a teammate nearer than the target holds the shot when its predicted track meets the bullet")
-    void predictedMateHoldsTheShot() {
-        assertFalse(TeamLink.NARROW_PREDICT);
-        // 300 px up and 60 px east, walking west at 4: 11 degrees off the line now, on it
-        // (28 px west) when a 14 px a tick bullet gets there 22 ticks later.
-        List<BotEvent> crossing = List.of(scan("e.A", 0, 500), scan("e.B", 2.5, 350), mateScan(300, 60, 3 * Math.PI / 2, 4));
-        assertTrue(fired(crossing, 6, true) > 0, "the narrow lane judges the present place");
-        assertEquals(0, fired(crossing, 6, true, true, false), 1e-9, "predicted into the line");
-        // Walking east, away from the line: the shot leaves.
-        List<BotEvent> leaving = List.of(scan("e.A", 0, 500), scan("e.B", 2.5, 350), mateScan(300, 60, Math.PI / 2, 4));
-        assertTrue(fired(leaving, 6, true, true, false) > 0, "predicted out of the line");
-        // 491 px up and 141 east, running south-west at 8: it meets a bullet 350 px up the line
-        // on tick 25 and is wide of the line again before a bullet would reach its first distance.
-        List<BotEvent> early = List.of(scan("e.A", 0, 550), scan("e.B", 2.5, 350), mateScan(491.4, 141.4, 5 * Math.PI / 4, 8));
-        assertTrue(fired(early, 6, true) > 0, "the narrow lane alone fires");
-        assertEquals(0, fired(early, 6, true, true, false), 1e-9, "met on the bullet's way");
-    }
-
-    @Test
-    @Tag("WEAVE-11")
-    @DisplayName("WEAVE-11: off as shipped; on, a teammate up to 450 px beyond the target on the line holds the shot")
-    void mateBeyondTheTargetHoldsTheShot() {
-        assertFalse(TeamLink.NARROW_BEYOND);
-        // The enemy 200 px up the line, MATE 300 px up it: a miss flies on into it.
-        List<BotEvent> behind = List.of(scan("e.A", 0, 200), scan("e.B", 2.5, 350), scan(MATE, 0, 300));
-        assertTrue(fired(behind, 6, true) > 0, "WEAVE-9 alone fires past the target");
-        assertEquals(0, fired(behind, 6, true, false, true), 1e-9, "held for the mate beyond");
-        // MATE 700 px up: more than 450 px past the target, the shot leaves.
-        List<BotEvent> far = List.of(scan("e.A", 0, 200), scan("e.B", 2.5, 350), scan(MATE, 0, 700));
-        assertTrue(fired(far, 6, true, false, true) > 0, "too far past the target");
-    }
-
-    /** The power fired on the narrow lane, switches off, with the mode table naming {@code modes} against every team. */
-    private static double firedWith(List<BotEvent> events, int ticks, TeamModes.Mode... modes) {
-        HadurCore core = new HadurCore(facts(), line -> {}, null, new TriggerHappy());
-        core.teamLink().narrowLane = true;
-        core.teamLink().modes = enemies -> Set.of(modes);
-        core.newRound(0);
-        double fired = 0;
-        for (long t = 1; t <= ticks; t++) fired += core.tick(input(t, 5, events)).firePower();
-        return fired;
-    }
-
-    @Test
-    @Tag("TMODE-17")
-    @Tag("TMODE-18")
-    @DisplayName("TMODE-17, TMODE-18: a team the table names with LANEP or LANEB plays WEAVE-10 or WEAVE-11 against it")
-    void tableNamesTheLaneVariants() {
-        List<BotEvent> crossing = List.of(scan("e.A", 0, 500), scan("e.B", 2.5, 350), mateScan(300, 60, 3 * Math.PI / 2, 4));
-        assertTrue(firedWith(crossing, 6) > 0, "no lane mode: the narrow lane alone");
-        assertEquals(0, firedWith(crossing, 6, TeamModes.Mode.LANEP), 1e-9, "LANEP predicts the mate into the line");
-        assertTrue(firedWith(crossing, 6, TeamModes.Mode.LANEB) > 0, "LANEB alone does not predict a nearer mate");
-        List<BotEvent> behind = List.of(scan("e.A", 0, 200), scan("e.B", 2.5, 350), scan(MATE, 0, 300));
-        assertTrue(firedWith(behind, 6, TeamModes.Mode.LANEP) > 0, "LANEP alone fires past the target");
-        assertEquals(0, firedWith(behind, 6, TeamModes.Mode.LANEB), 1e-9, "LANEB holds for the mate beyond");
     }
 
     @Test
@@ -521,40 +455,6 @@ class TeamLinkTest {
         double fired = 0;
         for (long t = 1; t <= 10; t++) fired += solo.tick(input(t, 1, List.of(scan("e.A", 0.5, 300)))).firePower();
         assertTrue(fired > 0, "RES-7 still holds off a team");
-    }
-
-    @Test
-    @Tag("TMODE-19")
-    @DisplayName("TMODE-19: with GUNLINE played our report states the gun's heading and heat, and a teammate's stated aim reaches the roster; without it, no aim")
-    void reportsStateTheAimUnderGunline() {
-        HadurCore core = new HadurCore(facts(), line -> {}, null);
-        core.teamLink().modes = enemies -> Set.of(TeamModes.Mode.GUNLINE);
-        core.newRound(0);
-        Report sent = new Report(0, 1, 500, 500, 0, 0, 100, List.of(), List.of(), List.of(), List.of(),
-            new Report.Aim(2.0, 0.3));
-        BotOrders o = core.tick(input(2, 5, List.of(new BotEvent.Message(MATE, LinkCodec.encode(sent)))));
-        Report r = LinkCodec.decode(o.messages().get(0));
-        assertTrue(r.aim() != null, "our aim is stated");
-        assertEquals(0, r.aim().gunHeat, 1e-9);
-        assertEquals(2.0, core.roster().mate(MATE).gunHeading(), 1e-9);
-        assertEquals(0.3, core.roster().mate(MATE).gunHeat(), 1e-9);
-        assertEquals(1, core.roster().mate(MATE).aimed());
-        HadurCore plain = new HadurCore(facts(), line -> {}, null);
-        plain.newRound(0);
-        assertEquals(null, LinkCodec.decode(plain.tick(input(1, 5, enemies())).messages().get(0)).aim());
-        // A tick that fires states the heat the shot leaves: 1 + power / 5.
-        HadurCore firing = new HadurCore(facts(), line -> {}, null, new TriggerHappy());
-        firing.teamLink().modes = enemies -> Set.of(TeamModes.Mode.GUNLINE);
-        firing.newRound(0);
-        boolean fired = false;
-        for (long t = 1; t <= 6 && !fired; t++) {
-            BotOrders f = firing.tick(input(t, 5, enemies()));
-            if (f.firePower() > 0) {
-                fired = true;
-                assertEquals(1 + f.firePower() / 5, LinkCodec.decode(f.messages().get(0)).aim().gunHeat, 1e-9);
-            }
-        }
-        assertTrue(fired, "the trigger-happy brain fired");
     }
 
     @Test

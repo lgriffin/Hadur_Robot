@@ -640,7 +640,14 @@ flowchart LR
   H --> I["release when 1v1, melee, team ready"]
 ```
 
-### The switch catalogue (master, 2026-10-31)
+### The switch catalogue (master, 2026-11-04)
+
+A switch whose card failed is removed with its code, ablation arm, card and tests, and its
+requirement moves to the retired table in docs/requirements.md; this catalogue lists only what ships
+or what a mode table or ablation still reaches. The 3.22 cleanup removed the melee endgame hand-off
+(HAND-1..5) and the failed team modes (PACK, SCREEN, DISABLED, REAR, SOFT, LEARN, POOL, WAVES, LINES,
+LINESW, LANEP, LANEB, GUNLINE, FAR, FARTHER, NEAR, LEAD, SWIFT, HEAVY, WARY, CLEAR, MOMENTUM, AIM, the
+team radar look and the learned-danger switches).
 
 **Duel (1v1 only, through `duelOnly`)**
 
@@ -674,7 +681,6 @@ flowchart LR
 | `MELEE_AIMED`, `HOPS`, `HEAT`, `CLOSER`, `MIX`, `PATH_DANGER`, `SHADE`, `BULLET_SHADE`, `SEARCH`, `DAMAGE_MEMORY`, `FULL_LATERAL` | MMOVE-11..23 | off | Crowd movement ideas (ScalarR, Diamond) benched and not shipped |
 | `FieldGun.EXPERTS`, `HIT_TARGET`, `FLAT_DISTANCE`, `SOFT_MATCH`, `DECAP`; `EnemyHistory.CROWD` | MGUN-11..21 | off | Field gun variants |
 | `MeleeEnergyPolicy.AVG_POWER`, `CROWD_FLOOR`, `OGI_LOW`, `OGI_TWO`, `SCAL_POWER`; `MeleeEndgame.THREE_POWER`, `THREE_RING` | MGUN, MEND | off | Power and endgame variants |
-| `MeleeRadar.TEAM_LOOK` | MRADAR-3 | off | Team radar look |
 
 **Team (only while a teammate lives)**
 
@@ -685,10 +691,9 @@ flowchart LR
 | `TeamModes.FORCE_PATH` | TMODE-25, -28 | **on** | Check each drive against teammates' bullets |
 | `TeamModes.FORCE_DODGE` + `TeamDodge.OWN_FIRE` | TMODE-27, -29, -30 | **on** | Ogi's dodge as one piece, own fire kept |
 | `TeamModes.FORCE_CONCORD` | TMODE-33, -34 | **on**, master only (2026-10-31) | The team brain on every team; confirm card `pc-team-concord2` |
-| `TeamConcord.MOVE`, `GUN`, `RISK`, `POWER`, `POOL` | TMODE-33 | **on** | CONCORD's parts; `RADAR` and `NO_HUNT` off |
-| `TeamLink.NARROW_LANE` | WEAVE-9 | **on** | Ogi's narrow fire lane; `NARROW_PREDICT`, `NARROW_BEYOND` off |
-| other `FORCE_*` (SOFT, GANG, FINISH, LEARN, PACK, SCREEN, POOL, DISABLED, REAR, WAVES, LINES, GUNLINE, LEAD, SWIFT) | TMODE-2..32 | off | Only through the table, or for an ablation |
-| `TeamDanger.LEARNED`, `NEAREST`; `TeamDodge.RANK_BULLETS` | MMOVE-9, -10 | off | Older learned-danger switches |
+| `TeamConcord.MOVE`, `GUN`, `RISK`, `POWER`, `POOL` | TMODE-33 | **on** | CONCORD's parts (the group radar and the hunt stand-down failed and are removed) |
+| `TeamLink.NARROW_LANE` | WEAVE-9 | **on** | Ogi's narrow fire lane |
+| table-only modes `OWN`, `HEADON`, `LINEAR`; `GANG`, `FINISH` through CONCORD | TMODE-3, -4, -20..22 | per team | No `FORCE_*` switch; the table or CONCORD names them |
 | `RoleResolver.TEAM_BUILT` | ROLE-3 | off | There is no Team role; members play Melee then Duel |
 
 ### Tier 2: the 1v1 mode table

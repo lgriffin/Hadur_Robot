@@ -24,18 +24,11 @@
 #   gexp    MGUN-17: after 20 waves, a head-on, linear or circular aim that out-hits the field gun 1.25x takes that opponent. Suffix gx.
 #   grate   MGUN-18: an opponent's weight leans toward the ones the aim it fires has been hitting. Suffix gr.
 #   gdist   MGUN-19: the distance weight (100/d)^0.7, not 100/d. Suffix gd.
-#   tmswift (team only) TMODE-32: SWIFT on every team: the gun fires no harder than 1.9. Suffix sf.
-#   tmheavy (team only) TMODE-36: HEAVY, CONCORD's power cap off, on every unnamed team. Suffix hv.
-#   tmclear (team only) TMODE-38: CLEAR, members keep out of their teammates' bullets (40-tick drive check). Suffix cl.
-#   tmmomentum (team only) TMODE-39: MOMENTUM, the dodge's wave check drives from heading and velocity. Suffix mo.
-#   tmaim   (team only) TMODE-40: AIM on every team: the team gun's aim experts, scored per class. Suffix am.
-#   tmwary  (team only) TMODE-37: WARY, a member under 50 energy leaves the hunt, on every unnamed team. Suffix wy.
 #   tmconcord (team only) TMODE-33: the team brain after Ogi's design on every team. Suffix cn.
-#   tmconcordr / tmconcordm / tmconcordg: one part of it alone (radar cnr, movement cnm, gun cng);
-#   tmconcordp: the gun's pooling alone, power as shipped (cnp); tmconcordh: the movement with the hunt dropped (cnh).
+#   tmconcordm / tmconcordg: one part of it alone (movement cnm, gun cng);
+#   tmconcordp: the gun's pooling alone, power as shipped (cnp).
 #   The brain's shipped parts (TeamConcord): movement and gun on, group radar off, hunt kept.
 #   tmnoconcord (team only) TMODE-34 off: CONCORD on no team, as before it shipped. Suffix ncn.
-#   tmlead  (team only) TMODE-31: LEAD on every team: the gun leans on the leader and, with droids about, the scanners. Suffix ld.
 #   tdecap  (team only) MGUN-21: the gun leans 3x on the enemy leader once its death drains more than it costs. Suffix dc.
 #   gsoft   MGUN-20: a situation's weight 1/(distance + mean distance), not 1/(0.01 + distance). Suffix gv.
 #   mdmg   MMOVE-22: each opponent's risk weighs by the damage it has done to Hadur this battle x its mean distance (Diamond). Suffix dm. Ships on from 3.21, so on master dm is the robot as it is.
@@ -225,44 +218,15 @@
 #   tram  (team only) TR1, shoot rammers: the field gun no longer skips an enemy closing on the member
 #         inside 100 px (FieldGun.rams). Off a team the skip stays. Three ramming teams take 1.6-2.1 APS
 #         of the gap to 5th-6th (docs/plan-team-top5.md). Suffix rm. MGUN-10 ships it: use --ref v3.15.
-#   t6n   (team only) T6, MMOVE-9: a detected shot is taken as aimed at the member nearest the shooter;
-#         the others make no virtual bullets for it (TeamDanger.NEAREST). Suffix dn.
-#   t6l   (team only) T6, MMOVE-10: enemy bullets that hit any member teach a shared per-enemy log of
-#         its gun; members dodge its learned aims in place of head-on and linear (TeamDanger.LEARNED).
-#         Suffix dl. Both together: t6n,t6l (docs/plan-team-top5.md stage S2, card team-s2).
-#   tmsoft (team only) T7, TMODE-2: the SOFT mode against every team (a shot weighs 1/(1+k)^2 for the k
-#         teammates nearer its shooter). Suffix ms.
-#   tmgang (team only) T7, TMODE-3: the GANG mode against every team (a member near two enemies is drawn to
-#         its nearest teammate; a free one to a ganged teammate). Suffix mg.
-#   tmfin  (team only) T7, TMODE-4: the FINISH mode against every team (close on the last enemy). Suffix mf.
-#   tmlearn (team only) T7: the LEARN mode (MMOVE-10) against every team. Suffix ml.
-#   tmpack (team only) T7, TMODE-5: the PACK mode against every team (members close on one prey from
-#         their own sides, NightmareTeam's pincer). Suffix mp.
-#         One census run of each fills the per-team mode table (docs/bench/team-top-decompile.md).
-#   tmscreen (team only) T7, TMODE-6: SCREEN against every team (teammates count as robots nearer an
-#         enemy in MMOVE-2's closest test, as Ogi). Suffix mx.
-#   tmpool (team only) T7, TMODE-7: POOL against every team (learned aims, one log per enemy class). Suffix mo.
-#   tmdis  (team only) T7, TMODE-8: DISABLED against every team (drawn to a disabled enemy). Suffix md.
 #   tmfire (team only) T7, TMODE-9: MATEFIRE against every team (teammates' bullets as danger). Suffix mb.
 #   thunt250, thunt200 (team only) TMODE-13's hunt place 250 / 200 px from the prey, not 350, against
 #         every team (hunting closer in; FAR/FARTHER lost in pc-team-counters, PR #370). Suffix hr25 / hr20.
-#   tmrear (team only) T7, TMODE-10: REAR against every team (the leader keeps back). Suffix mr.
-#   tmwaves (team only) T7, TMODE-11: WAVES against every team (Ogi's wave check on the safest destinations,
-#          team step D). Suffix mw.
-#   tmwk  (team only) with tmwaves: each virtual bullet's kernel 2.5 bot widths wide, not half of one. Suffix wk.
-#          The three combine: tmdis,tmfire,tmrear is one build (suffix mdmbmr).
 #   tmpath (team only) TMODE-25: PATH against every team (Firestarter's path check: each candidate's drive
 #         checked tick by tick against the teammates' bullets in flight); the teams the table names
 #         play it on top of their entry. Suffix mp.
 #   tmdodge (team only) TMODE-27: DODGE against every team (Ogi's dodge as one piece: shot profiles from
 #         aim experts weighted per enemy class, the 12 safest candidates driven through them and the
 #         teammates' bullets); the teams the table names play it on top of their entry. Suffix dg.
-#   tmdodgeb (team only) with tmdodge: the base ranking keeps the head-on and linear virtual bullets and
-#         the teammates' bullets (TeamDodge.RANK_BULLETS). Suffix db.
-#   tmtnear (team only) TMODE-26: NEAR (hunt at 250 px) added to the shipped TroodonPack entry. Suffix tn.
-#   tmgunline (team only) TMODE-19: GUNLINE against every team: members state their gun heading and heat,
-#         and keep out of the line ahead of a teammate's gun about to fire (K 0.4, 70 px). Suffix mgl.
-#   tmgunlinew (team only) with it heavier and wider (K 1.0, 100 px). Suffix mglw.
 #   tmtab (team only) T7, TMODE-1: the screen's table, the t.put lines in $TEAM_MODE_TABLE (default
 #         work/team-modes-screen.java, written by tools/team_modes.py pick). Suffix mt, or
 #         $TEAM_MODE_SUFFIX (the per-opponent counter screens build ka, kb, kc).
@@ -724,46 +688,6 @@ for a in "${list[@]}"; do
             version="${version}l0"
             edit "$core" "boolean laneClear = teamLink == null || teamLink.laneClear(raw);" "boolean laneClear = true;"
             ;;
-        t6n)
-            version="${version}dn"
-            edit "$danger" "public static final boolean NEAREST = false;" "public static final boolean NEAREST = true;"
-            ;;
-        t6l)
-            version="${version}dl"
-            edit "$danger" "public static final boolean LEARNED = false;" "public static final boolean LEARNED = true;"
-            ;;
-        tmsoft)
-            version="${version}ms"
-            edit "$modes" "public static final boolean FORCE_SOFT = false;" "public static final boolean FORCE_SOFT = true;"
-            ;;
-        tmgang)
-            version="${version}mg"
-            edit "$modes" "public static final boolean FORCE_GANG = false;" "public static final boolean FORCE_GANG = true;"
-            ;;
-        tmfin)
-            version="${version}mf"
-            edit "$modes" "public static final boolean FORCE_FINISH = false;" "public static final boolean FORCE_FINISH = true;"
-            ;;
-        tmlearn)
-            version="${version}ml"
-            edit "$modes" "public static final boolean FORCE_LEARN = false;" "public static final boolean FORCE_LEARN = true;"
-            ;;
-        tmpack)
-            version="${version}mp"
-            edit "$modes" "public static final boolean FORCE_PACK = false;" "public static final boolean FORCE_PACK = true;"
-            ;;
-        tmscreen)
-            version="${version}mx"
-            edit "$modes" "public static final boolean FORCE_SCREEN = false;" "public static final boolean FORCE_SCREEN = true;"
-            ;;
-        tmpool)
-            version="${version}mo"
-            edit "$modes" "public static final boolean FORCE_POOL = false;" "public static final boolean FORCE_POOL = true;"
-            ;;
-        tmdis)
-            version="${version}md"
-            edit "$modes" "public static final boolean FORCE_DISABLED = false;" "public static final boolean FORCE_DISABLED = true;"
-            ;;
         tmfire)
             version="${version}mb"
             # TMODE-12 ships MATEFIRE since team step C; on older source (--ref) force it on.
@@ -786,41 +710,9 @@ for a in "${list[@]}"; do
             version="${version}nmh"
             edit "$modes" "public static final boolean FORCE_HUNT = true;" "public static final boolean FORCE_HUNT = false;"
             ;;
-        tmlines)
-            version="${version}ml"
-            edit "$modes" "public static final boolean FORCE_LINES = false;" "public static final boolean FORCE_LINES = true;"
-            ;;
-        tmgunline)
-            version="${version}mgl"
-            edit "$modes" "public static final boolean FORCE_GUNLINE = false;" "public static final boolean FORCE_GUNLINE = true;"
-            ;;
-        tmgunlinew)
-            version="${version}mglw"
-            edit "$modes" "public static final boolean FORCE_GUNLINE = false;" "public static final boolean FORCE_GUNLINE = true;"
-            edit "$mrm" "static final double GUNLINE_K = 0.4;" "static final double GUNLINE_K = 1.0;"
-            edit "$mrm" "static final double GUNLINE_HALF = 70;" "static final double GUNLINE_HALF = 100;"
-            ;;
-        tmlinesw)
-            version="${version}mlw"
-            edit "$modes" "public static final boolean FORCE_LINES = false;" "public static final boolean FORCE_LINES = true;"
-            edit "$mrm" "static final double LINES_K = 0.3;" "static final double LINES_K = 0.6;"
-            edit "$mrm" "static final double LINES_HALF = 0.3;" "static final double LINES_HALF = 0.45;"
-            ;;
-        tmwk)
-            version="${version}wk"
-            edit "$mrm" "double sigma = Math.max(1e-3, half / 2);" "double sigma = Math.max(1e-3, half * 2.5);"
-            ;;
-        tmwaves)
-            version="${version}mw"
-            edit "$modes" "public static final boolean FORCE_WAVES = false;" "public static final boolean FORCE_WAVES = true;"
-            ;;
         thunt250|thunt200)
             r="${a#thunt}"; version="${version}hr${r:0:2}"
             edit "$mrm" "static final double HUNT_RADIUS = 350;" "static final double HUNT_RADIUS = $r;"
-            ;;
-        tmrear)
-            version="${version}mr"
-            edit "$modes" "public static final boolean FORCE_REAR = false;" "public static final boolean FORCE_REAR = true;"
             ;;
         tmtab|tmlock)
             if [[ "$a" == tmtab ]]; then table="${TEAM_MODE_TABLE:-$here/work/team-modes-screen.java}"; version="${version}${TEAM_MODE_SUFFIX:-mt}"
@@ -861,43 +753,15 @@ for a in "${list[@]}"; do
             # Wherever an earlier ablation left DODGE in a named entry.
             sed -i -E '/^        t\.put\(/s/, Mode\.DODGE([,)])/\1/' "$modes"
             ;;
-        tmdodgeb)
-            version="${version}db"
-            edit "$dodge" "static final boolean RANK_BULLETS = false;" "static final boolean RANK_BULLETS = true;"
-            ;;
         tmdodgef)
             version="${version}of"
             # TMODE-30 ships OWN_FIRE; on older source force it on.
             grep -qF "static final boolean OWN_FIRE = true;" "$dodge" \
                 || edit "$dodge" "static final boolean OWN_FIRE = false;" "static final boolean OWN_FIRE = true;"
             ;;
-        tmclear)
-            # TMODE-38 (team only): CLEAR on every team, named ones included: a member ranks only the
-            # destinations whose drive meets no teammate bullet in 40 ticks. Duel and melee fixtures bit for bit. Suffix cl.
-            version="${version}cl"
-            edit "$modes" "public static final boolean FORCE_CLEAR = false;" "public static final boolean FORCE_CLEAR = true;"
-            ;;
-        tmmomentum)
-            # TMODE-39 (team only): MOMENTUM on every team, named ones included: the dodge's check of the
-            # enemies' waves drives from the member's heading and velocity. Duel and melee fixtures bit for bit. Suffix mo.
-            version="${version}mo"
-            edit "$modes" "public static final boolean FORCE_MOMENTUM = false;" "public static final boolean FORCE_MOMENTUM = true;"
-            ;;
-        tmaim)
-            # TMODE-40 (team only): AIM on every team: the team gun's head-on, linear and circular
-            # experts, scored per enemy class, take a class they out-hit the field gun on. Suffix am.
-            version="${version}am"
-            edit "$modes" "public static final boolean FORCE_AIM = false;" "public static final boolean FORCE_AIM = true;"
-            ;;
         tmnoof)
             version="${version}nof"
             edit "$dodge" "static final boolean OWN_FIRE = true;" "static final boolean OWN_FIRE = false;"
-            ;;
-        tmtnear)
-            version="${version}tn"
-            n="$(grep -cE '^        t\.put\("myl\.micro\.Troodon(Droid)?", of\(' "$modes" || true)"
-            [[ "$n" == 2 ]] || { echo "ablation tmtnear: found $n Troodon entries in $modes" >&2; exit 1; }
-            sed -i -E 's/^(        t\.put\("myl\.micro\.Troodon(Droid)?", of\(.*)\)\);$/\1, Mode.NEAR));/' "$modes"
             ;;
         tram)
             version="${version}rm"
@@ -926,18 +790,6 @@ for a in "${list[@]}"; do
         }
         double dx = Math.sin(in.gunHeading());"
             fi
-            ;;
-        tlook)
-            version="${version}lk"
-            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeRadar.java" "public static final boolean TEAM_LOOK = false;" "public static final boolean TEAM_LOOK = true;"
-            ;;
-        tlanep)
-            version="${version}lp"
-            edit "$tlink" "static final boolean NARROW_PREDICT = false;" "static final boolean NARROW_PREDICT = true;"
-            ;;
-        tlaneb)
-            version="${version}lb"
-            edit "$tlink" "static final boolean NARROW_BEYOND = false;" "static final boolean NARROW_BEYOND = true;"
             ;;
         tlanew)
             version="${version}lw"
@@ -1224,50 +1076,19 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
-        tmlead)
-            # TMODE-31 (team only): LEAD for every team; the named teams play it on top of their entry.
-            # Duel and melee fixtures bit for bit. Suffix ld.
-            version="${version}ld"
-            edit "$modes" "public static final boolean FORCE_LEAD = false;" "public static final boolean FORCE_LEAD = true;"
-            sed -i -E 's/^(        t\.put\("[^"]+", of\(.*)\)\);$/\1, Mode.LEAD));/' "$modes"
-            ;;
-        tmheavy)
-            # TMODE-36 (team only): HEAVY for every team the table does not name: CONCORD's 1.9 cap off,
-            # full power. Duel and melee fixtures bit for bit. Suffix hv.
-            version="${version}hv"
-            edit "$modes" "public static final boolean FORCE_HEAVY = false;" "public static final boolean FORCE_HEAVY = true;"
-            ;;
-        tmwary)
-            # TMODE-37 (team only): WARY for every team the table does not name: a member under 50
-            # energy leaves the hunt. Duel and melee fixtures bit for bit. Suffix wy.
-            version="${version}wy"
-            edit "$modes" "public static final boolean FORCE_WARY = false;" "public static final boolean FORCE_WARY = true;"
-            ;;
-        tmswift)
-            # TMODE-32 (team only): SWIFT for every team; the named teams play it on top of their entry.
-            # Duel and melee fixtures bit for bit. Suffix sf.
-            version="${version}sf"
-            edit "$modes" "public static final boolean FORCE_SWIFT = false;" "public static final boolean FORCE_SWIFT = true;"
-            sed -i -E 's/^(        t\.put\("[^"]+", of\(.*)\)\);$/\1, Mode.SWIFT));/' "$modes"
-            ;;
-        tmconcord|tmconcordr|tmconcordm|tmconcordg|tmconcordp|tmconcordh)
+        tmconcord|tmconcordm|tmconcordg|tmconcordp)
             # TMODE-33 (team only): CONCORD for every team; the named teams play it on top of their entry.
-            # Duel and melee fixtures bit for bit. Suffix cn; one part alone: radar cnr, movement cnm, gun cng.
+            # Duel and melee fixtures bit for bit. Suffix cn; one part alone: movement cnm, gun cng; gun without CONCORD power cnp.
             concord="$src/hadur-core/src/main/java/$pkg/core/melee/TeamConcord.java"
             case "$a" in
                 tmconcord) version="${version}cn" ;;
-                tmconcordr) version="${version}cnr"
-                    edit "$concord" "MOVE = true, RADAR = false, GUN = true;" "MOVE = false, RADAR = true, GUN = false;" ;;
                 tmconcordm) version="${version}cnm"
-                    edit "$concord" "MOVE = true, RADAR = false, GUN = true;" "MOVE = true, RADAR = false, GUN = false;" ;;
+                    edit "$concord" "MOVE = true, GUN = true;" "MOVE = true, GUN = false;" ;;
                 tmconcordg) version="${version}cng"
-                    edit "$concord" "MOVE = true, RADAR = false, GUN = true;" "MOVE = false, RADAR = false, GUN = true;" ;;
+                    edit "$concord" "MOVE = true, GUN = true;" "MOVE = false, GUN = true;" ;;
                 tmconcordp) version="${version}cnp"
-                    edit "$concord" "MOVE = true, RADAR = false, GUN = true;" "MOVE = false, RADAR = false, GUN = true;"
+                    edit "$concord" "MOVE = true, GUN = true;" "MOVE = false, GUN = true;"
                     edit "$concord" "POWER = true, POOL = true;" "POWER = false, POOL = true;" ;;
-                tmconcordh) version="${version}cnh"
-                    edit "$concord" "MOVE = true, RADAR = false, GUN = true;" "MOVE = true, RADAR = false, GUN = false;"
-                    edit "$concord" "NO_HUNT = false, RISK = true," "NO_HUNT = true, RISK = true," ;;
             esac
             # TMODE-34 ships CONCORD; on older source (--ref) force it on.
             if ! grep -qF "public static final boolean FORCE_CONCORD = true;" "$modes"; then
@@ -1308,7 +1129,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, absurf, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgeb, tmdodgef, tmnododge, tmclear, tmmomentum, tmaim, tmnoof, tmnoconcord, tmtnear, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf, gexp, grate, gdist, gsoft, tdecap, tmlead, tmheavy, tmwary, mscal, mmix, mwpath, mshade, mcross, mbshade, msearch, mdmg, mlat, mavg, mnear3, mnear4, mstr1, mstr2)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, absurf, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf, gexp, grate, gdist, gsoft, tdecap, mscal, mmix, mwpath, mshade, mcross, mbshade, msearch, mdmg, mlat, mavg, mnear3, mnear4, mstr1, mstr2)" >&2; exit 2 ;;
     esac
 done
 
