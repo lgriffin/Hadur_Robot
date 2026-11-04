@@ -765,7 +765,18 @@ public final class Bench {
         }
         System.out.println();
         System.out.println(report);
-        return sorted.stream().anyMatch(r -> r.split("\t")[7].equals("false")) ? 1 : 0;
+        return armsExit(sorted, Boolean.parseBoolean(opts.getOrDefault("failed-ok", "false")));
+    }
+
+    /**
+     * BENCH-187: a multi-arm run's exit code. Any failed battle fails it, unless {@code --failed-ok} is set and
+     * fewer than 1 battle in 20 failed: an opponent that will not load (Robocode 1.11.2, broken-1.11.2.txt) then
+     * leaves its rows marked failed, which every reader skips, and the queue's next step still runs.
+     */
+    static int armsExit(List<String> rows, boolean failedOk) {
+        long failed = rows.stream().filter(r -> r.split("\t")[7].equals("false")).count();
+        if (failed == 0) return 0;
+        return failedOk && failed * 20 < rows.size() ? 0 : 1;
     }
 
     /** BENCH-92: each arm's battles, mean score share, engine disables and skipped turns, from the rows. */

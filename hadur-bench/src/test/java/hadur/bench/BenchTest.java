@@ -124,4 +124,16 @@ class BenchTest {
         assertEquals(List.of("hadur2.Hadur 3.7", "a", "b"),
             Bench.withFirst(List.of("hadur2.Hadur 3.8", "a", "b"), "hadur2.Hadur 3.7"));
     }
+
+    @Test
+    @DisplayName("BENCH-187: --failed-ok passes a multi-arm run with a few unloadable robots, not a broken one")
+    void failedOkToleratesAFewFailedBattles() {
+        List<String> rows = new java.util.ArrayList<>();
+        for (int i = 0; i < 100; i++) rows.add(String.join("\t", "c", "r", "o" + i, "b", "1", "1", "1", i < 2 ? "false" : "true"));
+        assertEquals(1, Bench.armsExit(rows, false));
+        assertEquals(0, Bench.armsExit(rows, true));
+        assertEquals(0, Bench.armsExit(rows.subList(2, 100), false));
+        for (int i = 2; i < 6; i++) rows.set(i, rows.get(i).replace("\ttrue", "\tfalse"));
+        assertEquals(1, Bench.armsExit(rows, true));
+    }
 }

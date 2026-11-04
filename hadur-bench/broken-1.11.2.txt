@@ -37,3 +37,7 @@ florent.test.Toad 0.14t | 1v1 | verifier: java.lang.Thread.stop
 zh.UnderDog 0.0.2 | 1v1 | verifier: javax.sound.sampled.AudioSystem
 # live 1v1 client on 1.11.2, 2026-11-02 14:53 GMT: the bench's "invalid robot" rows above are the same verifier block.
 dev.kurtw.KurtBot 0.2 | 1v1 | verifier: java.util.logging
+#
+# 1v1: pc-shelf pilot-u on the PC, 2026-11-04 (issue #630): every battle failed to load.
+zen.Mirage 0.9.5 | 1v1 | load: "expected 2 robots; found 1"
+zen.Ronin 1.0.0 | 1v1 | load: "expected 2 robots; found 1"
