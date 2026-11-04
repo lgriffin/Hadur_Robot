@@ -12,33 +12,15 @@
 #
 # Ablations (each a one-line edit of the duel, checked to apply exactly once):
 #   g24   melee Stage 2: the field gun takes 24 situations an opponent off a team (MGUN-7's 12). Suffix g4.
-#   gcrowd  MGUN-11: the field gun's situations also see the crowd (nearest robot, heading to it, alive). Suffix gc.
-#   pfloor  MGUN-12: off a team with 3+ opponents and 20+ energy, fire at least 1.9 at any distance, in place of
-#           MGUN-13 where that ships on. Suffix pf.
-#   pogi   MGUN-13: as pfloor's conditions, Ogi's power: 1.92, and 3 within 200 px. Suffix po. Ships on since
-#          BENCH-118, so it no longer applies on master.
-#   ogi2    MGUN-14: MGUN-13 also with two opponents left. Suffix o2.
-#   ogie10  MGUN-15: MGUN-13 from 10 own energy, not 20. Suffix oe.
+#   pogi   MGUN-13: off a team with 3+ opponents and 20+ energy, Ogi's power: 1.92, and 3 within 200 px.
+#          Suffix po. Ships on since BENCH-118, so on master po is the robot as it is.
 #   ogi300  MGUN-16: MGUN-13's power 3 out to 300 px, not 200. Suffix ow.
-#   gexp    MGUN-17: after 20 waves, a head-on, linear or circular aim that out-hits the field gun 1.25x takes that opponent. Suffix gx.
-#   grate   MGUN-18: an opponent's weight leans toward the ones the aim it fires has been hitting. Suffix gr.
-#   gdist   MGUN-19: the distance weight (100/d)^0.7, not 100/d. Suffix gd.
 #   tmconcord (team only) TMODE-33: the team brain after Ogi's design on every team. Suffix cn.
 #   tmconcordm / tmconcordg: one part of it alone (movement cnm, gun cng);
 #   tmconcordp: the gun's pooling alone, power as shipped (cnp).
 #   The brain's shipped parts (TeamConcord): movement and gun on, group radar off, hunt kept.
 #   tmnoconcord (team only) TMODE-34 off: CONCORD on no team, as before it shipped. Suffix ncn.
-#   tdecap  (team only) MGUN-21: the gun leans 3x on the enemy leader once its death drains more than it costs. Suffix dc.
-#   gsoft   MGUN-20: a situation's weight 1/(distance + mean distance), not 1/(0.01 + distance). Suffix gv.
 #   mdmg   MMOVE-22: each opponent's risk weighs by the damage it has done to Hadur this battle x its mean distance (Diamond). Suffix dm. Ships on from 3.21, so on master dm is the robot as it is.
-#   mlat   MMOVE-23: the crowd's lateral weight 1.0, not 0.5 (Diamond's 1 + |cos|). Suffix la.
-#   mavg   MGUN-23: at or above the field's mean energy, 3 at any range with four or more left; below it, 1 beyond 300 px (Diamond). Suffix ea.
-#   mnear3 MMOVE-24: the melee closest-robot factor off a team is 3, not 2 (docs/bench/melee-top3.md). Suffix n3.
-#   mnear4 MMOVE-24: as mnear3 at 4. Suffix n4.
-#   mstr1  MGUN-24: the melee gun weighs an opponent by 1 + 1 x its strength (mean finishing place this battle) in the crowd. Suffix k1.
-#   mstr2  MGUN-24: as mstr1 at 2 x. Suffix k2.
-#   e3ring  MEND-1: with two opponents left off a team, the crowd's ring and lateral weight (no MMOVE-4). Suffix er.
-#   e3pow  MEND-2: with two opponents left off a team, the crowd's power table (not the duel's). Suffix ep.
 #   e3far  MEND-3: with two opponents left off a team, the closest-robot factor 4 (not 2). Suffix ef.
 #   aa    no change: the same robot under another name (suffix aa), the A/A arm of a multi-arm run
 #         (BENCH-92, docs/plan-top5.md section 6.1), so a run prices its own noise.
@@ -818,90 +800,29 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             # not MGUN-7's 12. A team keeps its own K. Suffix g4.
             edit "$fgun" "public static final int MELEE_K = 12;" "public static final int MELEE_K = 24;"
             version="${version}g4" ;;
-        gcrowd)
-            # Melee Stage 2, MGUN-11: the field gun's situations also see the crowd. Suffix gc.
-            edit "$src/hadur-core/src/main/java/$pkg/core/melee/EnemyHistory.java" \
-                "public static final boolean CROWD = false;" "public static final boolean CROWD = true;"
-            version="${version}gc" ;;
-        pfloor|pogi)
-            # Melee firepower (docs/plan-melee-top5.md, MGUN-12/13): one MeleeEnergyPolicy crowd rule on,
-            # off a team with three or more opponents only; duel and team fixtures bit for bit.
-            # MGUN-13 ships on since pc-melee-ogi (BENCH-118), so pogi no longer applies on master, and
-            # pfloor turns it off: crowdPower gives Ogi's rule precedence, so the floor stands in for it.
-            policy="$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEnergyPolicy.java"
-            if [[ "$a" == pfloor ]]; then flag=CROWD_FLOOR; suffix=pf; else flag=CROWD_OGI; suffix=po; fi
-            if [[ "$a" == pfloor ]] && grep -qF "public static final boolean CROWD_OGI = true;" "$policy"; then
-                edit "$policy" "public static final boolean CROWD_OGI = true;" "public static final boolean CROWD_OGI = false;"
-            fi
-            edit "$policy" \
-                "public static final boolean $flag = false;" "public static final boolean $flag = true;"
-            version="${version}${suffix}" ;;
-        ogi2|ogie10|ogi300)
-            # Melee firepower part 2 (docs/plan-melee-top5.md, MGUN-14..16): widen MGUN-13, which
-            # ships on, off a team only; duel and team fixtures bit for bit.
-            # MGUN-16 ships on since 3.19, so ogi300 no longer applies on master.
+        pogi|ogi300)
+            # Melee firepower (docs/plan-melee-top5.md, MGUN-13, MGUN-16): Ogi's crowd power and its
+            # 300 px reach, off a team only; duel and team fixtures bit for bit. Both ship on (BENCH-118,
+            # 3.19), so on master each builds the robot as it is.
             case "$a" in
-                ogi2) flag=OGI_TWO; suffix=o2 ;;
-                ogie10) flag=OGI_LOW; suffix=oe ;;
+                pogi) flag=CROWD_OGI; suffix=po ;;
                 ogi300) flag=OGI_WIDE; suffix=ow ;;
             esac
+            grep -q "public static final boolean $flag = true;" \
+                "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEnergyPolicy.java" ||
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEnergyPolicy.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
-        mscal)
-            # ScalarR-inspired melee power (docs/bench/scalarr-melee-decompile.md, MGUN-22): off a
-            # team with two or more opponents; duel and team fixtures bit for bit.
-            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEnergyPolicy.java" \
-                "public static final boolean SCAL_POWER = false;" "public static final boolean SCAL_POWER = true;"
-            version="${version}ec" ;;
-        mmix|mwpath|mshade|mbshade|msearch)
-            # ScalarR-inspired surfer parts (docs/bench/scalarr-melee-decompile.md, MMOVE-16..18,
-            # MMOVE-20, MMOVE-21): the melee surfer (MMOVE-15) with one part on top, off a team only;
-            # duel and team bit for bit.
-            case "$a" in
-                mmix) flag=MELEE_MIX; suffix=wm ;;
-                mwpath) flag=MELEE_PATH_DANGER; suffix=wq ;;
-                mshade) flag=MELEE_SHADE; suffix=bs ;;
-                mbshade) flag=MELEE_BULLET_SHADE; suffix=bw ;;
-                msearch) flag=MELEE_SEARCH; suffix=fv ;;
-            esac
-            # The surfer ships on from 3.21, so only the part is switched on.
-            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
-                "public static final boolean $flag = false;" "public static final boolean $flag = true;"
-            version="${version}${suffix}" ;;
-        mdmg|mlat)
-            # Diamond-inspired crowd movement (MMOVE-22 damage memory, MMOVE-23 full lateral weight), off
-            # a team only; duel and team fixtures bit for bit. MMOVE-22 ships on from 3.21 (pc-melee-dia
-            # dm +0.43 +- 0.17, PR #503), so on master mdmg builds the robot as it is.
-            case "$a" in
-                mdmg) flag=MELEE_DAMAGE_MEMORY; suffix=dm ;;
-                mlat) flag=MELEE_FULL_LATERAL; suffix=la ;;
-            esac
+        mdmg)
+            # Diamond-inspired crowd movement (MMOVE-22 damage memory), off a team only; duel and team
+            # fixtures bit for bit. MMOVE-22 ships on from 3.21 (pc-melee-dia dm +0.43 +- 0.17, PR #503),
+            # so on master mdmg builds the robot as it is.
+            flag=MELEE_DAMAGE_MEMORY; suffix=dm
             grep -q "public static final boolean $flag = true;" \
                 "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" ||
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
-        mstr1|mstr2)
-            # MGUN-24 (docs/bench/melee-top3.md): off a team with three or more opponents alive, the field
-            # gun leans toward opponents that keep finishing high this battle; team and duel bit for bit.
-            n=${a#mstr}
-            edit "$src/hadur-core/src/main/java/$pkg/core/melee/FieldGun.java" \
-                "public static final double STRONG_BOOST = 0.0;" "public static final double STRONG_BOOST = $n.0;"
-            version="${version}k$n" ;;
-        mnear3|mnear4)
-            # MMOVE-24 (docs/bench/melee-top3.md): the crowd's closest-robot factor off a team (three or more
-            # opponents; MEND-3 keeps 4 with two left), 3 or 4 for 2, so Hadur is fewer opponents' nearest robot in the crowd; team and duel bit for bit.
-            n=${a#mnear}
-            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
-                "public static final double CLOSEST_FACTOR_SOLO = 2.0;" "public static final double CLOSEST_FACTOR_SOLO = $n.0;"
-            version="${version}n$n" ;;
-        mavg)
-            # Diamond-inspired melee power (MGUN-23): off a team with three or more opponents, 3 at any
-            # range while at or above the field's mean energy; duel and team fixtures bit for bit.
-            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEnergyPolicy.java" \
-                "public static final boolean AVG_POWER = false;" "public static final boolean AVG_POWER = true;"
-            version="${version}ea" ;;
         mcross)
             # ScalarR-inspired learning (docs/bench/scalarr-melee-decompile.md, MMOVE-19): the melee
             # surfer also learns each shooter's aim from its hits on other opponents, off a team
@@ -912,17 +833,10 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeController.java" \
                 "public static final boolean MELEE_CROSS = false;" "public static final boolean MELEE_CROSS = true;"
             version="${version}xh" ;;
-        maim|mhop|mheat|mcloser|msurf)
-            # Melee crowd survival (docs/plan-melee-top5.md Stage 3, MMOVE-11..14): one
-            # MinimumRiskMovement crowd switch on, off a team only; duel and team fixtures bit for bit.
-            # MMOVE-15 ships on from 3.21, so on master msurf builds the robot as it is.
-            case "$a" in
-                maim) flag=MELEE_AIMED; suffix=ma ;;
-                mhop) flag=MELEE_HOPS; suffix=mh ;;
-                mheat) flag=MELEE_HEAT; suffix=mt ;;
-                mcloser) flag=MELEE_CLOSER; suffix=mc ;;
-                msurf) flag=MELEE_SURF; suffix=ms ;;
-            esac
+        msurf)
+            # The melee surfer (MMOVE-15), off a team only; duel and team fixtures bit for bit. It ships
+            # on from 3.21, so on master msurf builds the robot as it is.
+            flag=MELEE_SURF; suffix=ms
             grep -q "public static final boolean $flag = true;" \
                 "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" ||
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
@@ -954,34 +868,16 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$modes" "public static final boolean FORCE_CONCORD = true;" "public static final boolean FORCE_CONCORD = false;"
             sed -i -E '/^        t\.put\(/s/, Mode\.CONCORD([,)])/\1/' "$modes"
             ;;
-        tdecap)
-            # MGUN-21 (team only): the field gun leans 3x on the enemy leader once its death pays;
-            # duel and melee fixtures bit for bit. Suffix dc.
-            edit "$fgun" "public static final boolean DECAP = false;" "public static final boolean DECAP = true;"
-            version="${version}dc" ;;
-        gexp|grate|gdist|gsoft)
-            # Melee gun, inspired by Ogi (docs/plan-melee-top5.md, MGUN-17..20): one FieldGun switch
-            # on, off a team only; duel and team fixtures bit for bit.
-            case "$a" in
-                gexp) flag=EXPERTS; suffix=gx ;;
-                grate) flag=HIT_TARGET; suffix=gr ;;
-                gdist) flag=FLAT_DISTANCE; suffix=gd ;;
-                gsoft) flag=SOFT_MATCH; suffix=gv ;;
-            esac
-            edit "$fgun" "public static final boolean $flag = false;" "public static final boolean $flag = true;"
-            version="${version}${suffix}" ;;
-        e3ring|e3pow|e3far)
-            # Melee Stage 1 (docs/plan-melee-top5.md, MEND-1..3): one melee.MeleeEndgame switch on,
-            # acting only with two opponents left off a team; duel and team fixtures bit for bit.
-            case "$a" in
-                e3ring) flag=THREE_RING; suffix=er ;;
-                e3pow) flag=THREE_POWER; suffix=ep ;;
-                e3far) flag=THREE_FAR; suffix=ef ;;
-            esac
+        e3far)
+            # Melee Stage 1 (docs/plan-melee-top5.md, MEND-3): with two opponents left off a team,
+            # being an opponent's closest robot weighs 4; duel and team fixtures bit for bit. It ships
+            # on (BENCH-115), so on master e3far builds the robot as it is.
+            grep -q "public static final boolean THREE_FAR = true;" \
+                "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" ||
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
-                "public static final boolean $flag = false;" "public static final boolean $flag = true;"
-            version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf, gexp, grate, gdist, gsoft, tdecap, mscal, mmix, mwpath, mshade, mcross, mbshade, msearch, mdmg, mlat, mavg, mnear3, mnear4, mstr1, mstr2)" >&2; exit 2 ;;
+                "public static final boolean THREE_FAR = false;" "public static final boolean THREE_FAR = true;"
+            version="${version}ef" ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3far, g24, pogi, ogi300, msurf, mcross, mdmg)" >&2; exit 2 ;;
     esac
 done
 

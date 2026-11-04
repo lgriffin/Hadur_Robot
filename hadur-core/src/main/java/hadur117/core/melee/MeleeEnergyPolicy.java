@@ -30,57 +30,18 @@ public final class MeleeEnergyPolicy {
     /** MGUN-6: the own energy from which a member on a team fires full power. */
     public static final double TEAM_FULL_POWER_ENERGY = 30.0;
     /**
-     * MGUN-12: off a team with three or more opponents and 20 energy or more, fire at least
-     * {@link #CROWD_FLOOR_POWER} wherever the target is, in place of the table's 1.0 and 1.5 beyond
-     * 300 px. Off: the crowd exposure read (BENCH-116) has the top 10 firing 2.6 in the crowd to
-     * Hadur's 1.6 at the same hit rate, and the bench builds an arm with it on (pfloor).
-     */
-    public static final boolean CROWD_FLOOR = false;
-    static final double CROWD_FLOOR_POWER = 1.9;
-    /**
-     * MGUN-13: as MGUN-12's conditions, fire Ogi's melee power instead: {@link #OGI_POWER}, and 3
-     * within {@link #OGI_CLOSE} px. On: +0.62 on the K = 12 gun (BENCH-117) and +0.57 +-0.18 on
-     * top of K = 24 and MEND-3 (pc-melee-ogi, BENCH-118).
+     * MGUN-13: off a team with three or more opponents and {@link #CROWD_RULE_ENERGY} or more, fire
+     * Ogi's melee power: {@link #OGI_POWER}, and 3 within {@link #OGI_CLOSE} px. On: +0.62 on the
+     * K = 12 gun (BENCH-117) and +0.57 +-0.18 on top of K = 24 and MEND-3 (pc-melee-ogi, BENCH-118).
      */
     public static final boolean CROWD_OGI = true;
     static final double OGI_POWER = 1.92;
     static final double OGI_CLOSE = 200;
-    /** MGUN-12, MGUN-13: the own energy from which the crowd rules fire harder than the table. */
+    /** MGUN-13: the own energy from which the crowd rule fires harder than the table. */
     static final double CROWD_RULE_ENERGY = 20.0;
-    /**
-     * MGUN-14: MGUN-13 also with two opponents left, where the duel's table fires now. Off: the
-     * exposure read on the banked build (docs/plan-melee-top5.md) has Hadur's crowd power at 1.85
-     * to the top 10's 2.56, and the rule idle there; the bench builds an arm with it on (ogi2).
-     */
-    public static final boolean OGI_TWO = false;
-    /** MGUN-15: MGUN-13 from {@link #OGI_LOW_ENERGY} own energy, not 20. Off (arm ogie10). */
-    public static final boolean OGI_LOW = false;
-    static final double OGI_LOW_ENERGY = 10.0;
     /** MGUN-16: MGUN-13's power 3 out to {@link #OGI_WIDE_CLOSE} px, not 200. On for 3.19 (power2 card +0.15 +- 0.15, PR #349). */
     public static final boolean OGI_WIDE = true;
     static final double OGI_WIDE_CLOSE = 300;
-    /**
-     * MGUN-22 (arm mscal), inspired by ScalarR's melee power: off a team with two or more
-     * opponents, power falls with the distance to the nearest robot and in a line with Hadur's own
-     * energy rather than stepping at {@link #CROWD_RULE_ENERGY}. Off.
-     */
-    public static final boolean SCAL_POWER = false;
-    static final double SCAL_REACH = 1300;
-    static final double SCAL_FAR = 325;
-    static final double SCAL_SHARE = 6;
-    static final double SCAL_FAR_SHARE = 15;
-    static final double SCAL_RESERVE = 0.02;
-    /**
-     * MGUN-23 (arm mavg), inspired by Diamond's melee power: off a team with three or more
-     * opponents and {@link #CROWD_RULE_ENERGY}, while Hadur's energy is at or above the living
-     * opponents' mean it fires 3 at any range up to {@link #AVG_FAR} px once four or more are
-     * left (with three, MGUN-13 stands), and {@link #AVG_WEAK_POWER} beyond; below the mean it
-     * fires {@link #AVG_WEAK_POWER} beyond {@link #AVG_FAR_WEAK} px. Off.
-     */
-    public static final boolean AVG_POWER = false;
-    static final double AVG_FAR = 700;
-    static final double AVG_FAR_WEAK = 300;
-    static final double AVG_WEAK_POWER = 1.0;
 
     private MeleeEnergyPolicy() {}
 
@@ -124,112 +85,30 @@ public final class MeleeEnergyPolicy {
     }
 
     /**
-     * MGUN-12, MGUN-13: off a team, the power for a target with {@code others} opponents alive,
-     * given the table's {@code tablePower}. A hold (0) stands, as do a finisher, fewer than three
-     * opponents and own energy under {@link #CROWD_RULE_ENERGY}; otherwise a switched-on rule
-     * replaces the table's power, still capped by what kills the target, by the lead over it and by
-     * Hadur's own energy, as the table is. With both switches off the table stands.
+     * MGUN-13: off a team, the power for a target with {@code others} opponents alive, given the
+     * table's {@code tablePower}. A hold (0) stands, as do a finisher, fewer than three opponents
+     * and own energy under {@link #CROWD_RULE_ENERGY}; otherwise Ogi's power replaces the table's,
+     * still capped by what kills the target, by the lead over it and by Hadur's own energy, as the
+     * table is.
      */
     public static double crowdPower(double tablePower, double distance, double ownEnergy, double targetEnergy,
                                     int others) {
-        return crowdPower(tablePower, distance, ownEnergy, targetEnergy, others, CROWD_FLOOR, CROWD_OGI,
-            OGI_TWO, OGI_LOW, OGI_WIDE);
+        return crowdPower(tablePower, distance, ownEnergy, targetEnergy, others, CROWD_OGI, OGI_WIDE);
     }
 
+    /** As above with MGUN-13 ({@code ogi}) and MGUN-16 ({@code wide}) as given; MGUN-16 widens MGUN-13 only. */
     static double crowdPower(double tablePower, double distance, double ownEnergy, double targetEnergy,
-                             int others, boolean floor, boolean ogi) {
-        return crowdPower(tablePower, distance, ownEnergy, targetEnergy, others, floor, ogi, false, false, false);
-    }
-
-    /** MGUN-14..16 widen MGUN-13 only: with it off they do nothing. */
-    static double crowdPower(double tablePower, double distance, double ownEnergy, double targetEnergy,
-                             int others, boolean floor, boolean ogi, boolean two, boolean low, boolean wide) {
-        int least = ogi && two ? 2 : 3;
-        double energy = ogi && low ? OGI_LOW_ENERGY : CROWD_RULE_ENERGY;
-        if (tablePower <= 0 || others < least || ownEnergy < energy || targetEnergy <= FINISHER_ENERGY
-            || !(floor || ogi)) {
+                             int others, boolean ogi, boolean wide) {
+        if (!ogi || tablePower <= 0 || others < 3 || ownEnergy < CROWD_RULE_ENERGY
+            || targetEnergy <= FINISHER_ENERGY) {
             return tablePower;
         }
-        if (floor && !ogi && others < 3) return tablePower;
-        double close = ogi && wide ? OGI_WIDE_CLOSE : OGI_CLOSE;
-        double p = ogi ? (distance <= close ? MAX_POWER : OGI_POWER) : Math.max(tablePower, CROWD_FLOOR_POWER);
+        double close = wide ? OGI_WIDE_CLOSE : OGI_CLOSE;
+        double p = distance <= close ? MAX_POWER : OGI_POWER;
         p = Math.min(p, killPower(targetEnergy));
         if (ownEnergy > targetEnergy) p = Math.min(p, ownEnergy - targetEnergy);
         p = Math.max(p, MIN_POWER);
         return Math.min(p, ownEnergy);
-    }
-
-    /**
-     * As {@link #crowdPower(double, double, double, double, int)}, where with MGUN-22 on and two or
-     * more opponents the power is {@link #scalPower} from the nearest robot's distance
-     * {@code nearest}. A hold (0) and a finisher stand.
-     */
-    public static double crowdPower(double tablePower, double distance, double nearest, double ownEnergy,
-                                    double targetEnergy, int others) {
-        return crowdPower(tablePower, distance, nearest, ownEnergy, targetEnergy, others, SCAL_POWER);
-    }
-
-    /**
-     * As above, with MGUN-23 on also read against {@code averageEnergy}, the living opponents'
-     * mean energy (NaN when unknown: the rule stands down).
-     */
-    public static double crowdPower(double tablePower, double distance, double nearest, double ownEnergy,
-                                    double targetEnergy, int others, double averageEnergy) {
-        double p = crowdPower(tablePower, distance, nearest, ownEnergy, targetEnergy, others);
-        return avgPower(p, distance, ownEnergy, targetEnergy, others, averageEnergy, AVG_POWER);
-    }
-
-    /**
-     * MGUN-23: {@code p} (the rules so far) replaced by Diamond's crowd power where the switch
-     * {@code on} and the crowd conditions hold; a hold (0) and a finisher stand, and the kill,
-     * lead and own-energy caps apply as the table's do.
-     */
-    static double avgPower(double p, double distance, double ownEnergy, double targetEnergy, int others,
-                           double averageEnergy, boolean on) {
-        if (!on || p <= 0 || others < 3 || ownEnergy < CROWD_RULE_ENERGY || targetEnergy <= FINISHER_ENERGY
-            || Double.isNaN(averageEnergy)) {
-            return p;
-        }
-        double q;
-        if (ownEnergy >= averageEnergy) {
-            if (others < 4) return p;
-            q = distance > AVG_FAR ? AVG_WEAK_POWER : MAX_POWER;
-        } else {
-            if (distance <= AVG_FAR_WEAK) return p;
-            q = AVG_WEAK_POWER;
-        }
-        q = Math.min(q, killPower(targetEnergy));
-        if (ownEnergy > targetEnergy) q = Math.min(q, ownEnergy - targetEnergy);
-        q = Math.max(q, MIN_POWER);
-        return Math.min(q, ownEnergy);
-    }
-
-    static double crowdPower(double tablePower, double distance, double nearest, double ownEnergy,
-                             double targetEnergy, int others, boolean scal) {
-        if (scal && tablePower > 0 && others >= 2 && targetEnergy > FINISHER_ENERGY) {
-            return scalPower(nearest, ownEnergy, targetEnergy);
-        }
-        return crowdPower(tablePower, distance, ownEnergy, targetEnergy, others);
-    }
-
-    /**
-     * MGUN-22: {@link #SCAL_REACH}/{@code nearest}, capped at own energy/{@link #SCAL_SHARE}, at
-     * own energy/{@link #SCAL_FAR_SHARE} beyond {@link #SCAL_FAR} px, at what kills the target and
-     * {@link #SCAL_RESERVE} short of Hadur's own energy and at the lead over the target, as the table
-     * is (a lead under the lightest shot holds, 0); 0.1 to 3.
-     */
-    static double scalPower(double nearest, double ownEnergy, double targetEnergy) {
-        double p = SCAL_REACH / Math.max(1, nearest);
-        if (nearest > SCAL_FAR) p = Math.min(p, ownEnergy / SCAL_FAR_SHARE);
-        p = Math.min(p, ownEnergy / SCAL_SHARE);
-        p = Math.min(p, killPower(targetEnergy));
-        p = Math.min(p, ownEnergy - SCAL_RESERVE);
-        if (ownEnergy > targetEnergy) {
-            double lead = ownEnergy - targetEnergy;
-            if (lead < MIN_POWER) return 0;
-            p = Math.min(p, lead);
-        }
-        return Math.max(MIN_POWER, Math.min(MAX_POWER, p));
     }
 
     /** The duel gun's 1v1 table, mirrored here: melee code does not reach into the duel. */

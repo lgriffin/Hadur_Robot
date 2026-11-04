@@ -30,27 +30,13 @@ public final class MeleeWaves {
         public final Point2D.Double source;
         public final long time;
         public final double speed, aim;
-        /** MGUN-17: every aim's angle, the field gun's first; null with the experts off. */
-        final double[] aims;
-        /** TMODE-40: the expert-score key taken when the wave was emitted (FieldGun.expertKey). */
-        final String key;
 
         Wave(String target, Point2D.Double source, long time, double speed, double aim) {
-            this(target, source, time, speed, aim, null);
-        }
-
-        Wave(String target, Point2D.Double source, long time, double speed, double aim, double[] aims) {
-            this(target, source, time, speed, aim, aims, target);
-        }
-
-        Wave(String target, Point2D.Double source, long time, double speed, double aim, double[] aims, String key) {
-            this.key = key;
             this.target = target;
             this.source = source;
             this.time = time;
             this.speed = speed;
             this.aim = aim;
-            this.aims = aims;
         }
     }
 
@@ -58,8 +44,6 @@ public final class MeleeWaves {
     private double lastHeat = Double.NaN;
     private long lastEmit = Long.MIN_VALUE;
     private long emitted, resolved, hits;
-    /** MGUN-17/18: the gun the waves score their aims into; set by {@link #tick}. */
-    private FieldGun scored;
 
     public void newRound() {
         waves.clear();
@@ -84,26 +68,11 @@ public final class MeleeWaves {
             // With none (a rammer it leaves alone, too little energy) there is no aim to score.
             FieldGun.Aim a = gun.fieldAim(me, energy, others, e, now);
             if (a == null) continue;
-            double[] aims = null;
-            if (scoring(gun)) {
-                aims = new double[FieldGun.EXPERT_COUNT];
-                aims[FieldGun.FIELD] = a.angle;
-                for (int x = FieldGun.HEAD_ON; x < FieldGun.EXPERT_COUNT; x++) {
-                    aims[x] = DiaUtils.absoluteBearing(me, gun.expertAim(me, e, x, a.power, now));
-                }
-                scored = gun;
-            }
             if (waves.size() >= MAX_WAVES) waves.removeFirst();
-            waves.addLast(new Wave(e.name, new Point2D.Double(me.x, me.y), now, 20 - 3 * a.power, a.angle, aims,
-                gun.expertKey(e.name)));
+            waves.addLast(new Wave(e.name, new Point2D.Double(me.x, me.y), now, 20 - 3 * a.power, a.angle));
             emitted++;
         }
         return true;
-    }
-
-    /** MGUN-17/18: whether the waves score every aim, off a team with either switch on; TMODE-40: on a team with AIM. */
-    static boolean scoring(FieldGun gun) {
-        return gun.scoresExperts();
     }
 
     /**
@@ -122,13 +91,6 @@ public final class MeleeWaves {
             double width = DiaUtils.botWidthAimAngle(Math.max(18.0, d));
             double off = Math.abs(Angles.normalRelativeAngle(bearing - w.aim));
             if (off <= width) hits++;
-            if (w.aims != null && scored != null) {
-                boolean[] hit = new boolean[w.aims.length];
-                for (int x = 0; x < hit.length; x++) {
-                    hit[x] = Math.abs(Angles.normalRelativeAngle(bearing - w.aims[x])) <= width;
-                }
-                scored.scoreExperts(w.key, hit);
-            }
             resolved++;
             it.remove();
         }

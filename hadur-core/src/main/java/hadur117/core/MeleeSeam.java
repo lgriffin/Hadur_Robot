@@ -1,7 +1,6 @@
 package hadur117.core;
 
 import hadur117.core.link.Report;
-import hadur117.core.melee.FieldGun;
 import hadur117.core.melee.MeleeController;
 import hadur117.core.melee.MeleeRadar;
 import hadur117.core.melee.TeamDanger;
@@ -104,13 +103,6 @@ final class MeleeSeam implements Role {
      */
     @Override
     public void roundEnded(RoundResult result) {
-        // MGUN-24: the field gun keeps each opponent's place for the battle, memory or not.
-        if (FieldGun.STRONG_BOOST > 0) {
-            int opponents = core.enemiesTotal();
-            for (String name : melee.profiles().scannedNames()) {
-                melee.gun().placed(name, melee.profiles().rank(name, opponents), opponents);
-            }
-        }
         if (memory == null) return;
         try {
             memory.foldRound(melee.profiles(), core.enemiesTotal());
@@ -208,7 +200,6 @@ final class MeleeSeam implements Role {
             EnemyInfo info = core.scanInfo();
             if (worldFed && info != null && info.name.equals(e.name())) {
                 guard(() -> {
-                    melee.at(in.location());
                     melee.scanned(info, core.scanShot(), e.distance(), e.velocity(), time);
                 });
             }
@@ -219,10 +210,6 @@ final class MeleeSeam implements Role {
         } else if (event instanceof BotEvent.BulletHit) {
             BotEvent.BulletHit e = (BotEvent.BulletHit) event;
             if (!tick.foreign(e.name())) guard(() -> melee.bulletHit(e.name(), e.power()));
-            guard(() -> melee.ownBulletGone(e.power(), e.bulletHeading()));
-        } else if (event instanceof BotEvent.BulletHitBullet) {
-            BotEvent.BulletHitBullet e = (BotEvent.BulletHitBullet) event;
-            guard(() -> melee.ownBulletGone(e.power(), e.bulletHeading()));
         } else if (event instanceof BotEvent.HitByBullet) {
             BotEvent.HitByBullet e = (BotEvent.HitByBullet) event;
             guard(() -> melee.hitByBullet(e.name(), e.power(), e.heading(), in.location(), in.time()));
