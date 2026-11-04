@@ -11,14 +11,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-190: the pc-melee-floor card (MGUN-26) is complete before it reaches the PC. */
+/** BENCH-192: the pc-melee-floor card (MGUN-26) is complete before it reaches the PC. */
 class MeleeFloorPlanTest {
 
     private static final Path QUEUE = Path.of("plans/pc-melee-floor.queue");
     private static final List<String> ARMS = List.of("aa", "bb", "z4", "z5");
 
     @Test
-    @Tag("BENCH-190")
+    @Tag("BENCH-192")
     @DisplayName("the steps chain from prep through every arm to a results PR, on the version the pom names")
     void stepsChain() throws IOException {
         String queue = Files.readString(QUEUE);
@@ -51,7 +51,7 @@ class MeleeFloorPlanTest {
     }
 
     @Test
-    @Tag("BENCH-190")
+    @Tag("BENCH-192")
     @DisplayName("every arm step declares its stop rules")
     void stopRules() throws IOException {
         String queue = Files.readString(QUEUE);
@@ -67,7 +67,7 @@ class MeleeFloorPlanTest {
     }
 
     @Test
-    @Tag("BENCH-190")
+    @Tag("BENCH-192")
     @DisplayName("every arm runs alone on the census at 6 fresh seeds after pc-melee-far's")
     void args() throws IOException {
         String args = Files.readString(Path.of("plans/melee-floor.args"));
@@ -80,7 +80,7 @@ class MeleeFloorPlanTest {
     }
 
     @Test
-    @Tag("BENCH-190")
+    @Tag("BENCH-192")
     @DisplayName("each arm edits only the far power's energy floor, 60 on master")
     void ablation() throws IOException {
         String abl = Files.readString(Path.of("build-ablation.sh"));
@@ -94,7 +94,7 @@ class MeleeFloorPlanTest {
     }
 
     @Test
-    @Tag("BENCH-191")
+    @Tag("BENCH-193")
     @DisplayName("a pilot of z4 against aa runs first and its check stops the card unless the share is up")
     void pilot() throws IOException {
         String queue = Files.readString(QUEUE);

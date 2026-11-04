@@ -1,4 +1,4 @@
-# Far power from less spare energy (docs/bench/melee-top3.md, MGUN-26, BENCH-190).
+# Far power from less spare energy (docs/bench/melee-top3.md, MGUN-26, BENCH-192).
 # Leigh 2026-11-04 21:03: "what's next?" after pc-melee-far passed (y5 +0.30 +- 0.17, PR #647):
 # MGUN-25 now fires at least 2.5 beyond 300 px, but only from 60 energy.
 # Why it should win: the same lever, one step wider. In the cloud 3.21 census another 9% of Hadur's
@@ -11,7 +11,7 @@
 #   bb      its A/A copy
 #   z4      mfloor40, MGUN-26: MGUN-25 from 40 energy
 #   z5      mfloor50, MGUN-26: MGUN-25 from 50 energy
-# Pilot (BENCH-191): mlpilot fights z4 against an aa baseline battle for battle on 46 fields x 2
+# Pilot (BENCH-193): mlpilot fights z4 against an aa baseline battle for battle on 46 fields x 2
 # seeds (3310-3311; 184 battles, about 1 h), and mlcheck stops the card unless Hadur's score share
 # is up (--share-only), on at least 95% of the 92 pairs with all 35 rounds each. On a stop the
 # check opens the results PR with the pilot read and fails, so no arm after it runs.
