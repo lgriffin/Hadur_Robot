@@ -1,6 +1,6 @@
 {
  "plan": "pc-melee-strong",
- "updated": 1793751887.6212869,
+ "updated": 1793752751.28438,
  "steps": {
   "msprep": {
    "status": "done",
@@ -9,37 +9,48 @@
    "end": "2026-11-03T23:27:02"
   },
   "mspilot": {
-   "status": "running",
-   "start": "2026-11-03T23:27:02"
+   "status": "done",
+   "exit": 0,
+   "seconds": 4322,
+   "end": "2026-11-04T00:39:05"
   },
   "mscheck": {
-   "status": "pending"
+   "status": "failed",
+   "exit": 1,
+   "seconds": 5,
+   "end": "2026-11-04T00:39:11"
   },
   "msaa": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after mscheck"
   },
   "msbb": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after msaa"
   },
   "msk1": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after msbb"
   },
   "msk2": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after msk1"
   },
   "msread": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after msk2"
   },
   "mspr": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after msread"
   }
  },
  "watched": [
   {
    "step": "mspilot",
    "started": 1793748422.929323,
-   "updated": 1793751887.6103108,
-   "elapsed": 3464.6809878349304,
+   "updated": 1793752745.361268,
+   "elapsed": 4322.4319450855255,
    "expected": 184,
    "panel": null,
    "field": null,
@@ -47,20 +58,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 142,
+   "battles": 184,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 147.54605165523407,
-   "eta": 1024.7647992187822,
-   "fraction": 0.7717391304347826,
-   "last_battle_age": 12.687127590179443,
+   "rate": 153.24706286078808,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 0.15657639503479004,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 142"
+     "detail": "0 failed of 184"
     },
     {
      "rule": "stall 30m",
@@ -69,8 +80,8 @@
      "detail": "last battle 0 min ago"
     }
    ],
-   "skips_mean": 24.58450704225352,
-   "skips_last100": 24.46
+   "skips_mean": 24.23913043478261,
+   "skips_last100": 23.28
   }
  ]
 }

@@ -6,3 +6,14 @@
 23:27:02 watching mspilot: 2 stop rule(s)
 23:27:32 progress mspilot: 0/184 (0%) battles, 0 failed
 23:57:39 progress mspilot: 80/184 (43%) battles, 157/h, ETA 40 min, 0 failed, skips 25.7/battle (last 100)
+00:27:48 progress mspilot: 152/184 (83%) battles, 150/h, ETA 13 min, 0 failed, skips 25.1/battle (last 100)
+00:39:05 mspilot exit=0 in 4322 s
+00:39:05 start mscheck
+00:39:11 mscheck exit=1 in 5 s
+00:39:11 skip msaa (after mscheck, which has not finished exit=0)
+00:39:11 skip msbb (after msaa, which has not finished exit=0)
+00:39:11 skip msk1 (after msbb, which has not finished exit=0)
+00:39:11 skip msk2 (after msk1, which has not finished exit=0)
+00:39:11 skip msread (after msk2, which has not finished exit=0)
+00:39:11 skip mspr (after msread, which has not finished exit=0)
+00:39:11 ALLDONE
