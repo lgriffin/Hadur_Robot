@@ -6,3 +6,9 @@
 15:49:07 watching mfpilot: 2 stop rule(s)
 15:49:55 progress mfpilot: 0/184 (0%) battles, 0 failed
 16:20:04 progress mfpilot: 83/184 (45%) battles, 161/h, ETA 38 min, 0 failed, skips 24.7/battle (last 100)
+16:50:13 progress mfpilot: 170/184 (92%) battles, 167/h, ETA 5 min, 0 failed, skips 24.4/battle (last 100)
+16:54:26 mfpilot exit=0 in 3919 s
+16:54:26 start mfcheck
+16:54:28 mfcheck exit=0 in 1 s
+16:54:28 start mfaa
+16:54:28 watching mfaa: 2 stop rule(s)
