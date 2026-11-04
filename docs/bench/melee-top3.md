@@ -163,3 +163,8 @@ Pilot y3 against aa: share +0.30 ± 0.26, so the card ran in full. Paired over a
 y5 (power 2.5) **+0.30 ± 0.17**, low end +0.13, endgame wins +0.9, energy entering the endgame -0.2, skips +16%: PASS;
 y3 (power 3) +0.19 ± 0.19, others outlived -0.8, endgame energy -0.9. FAR_SPARE ships on at power 2.5 for 3.22; the card,
 its arms and plan test are removed, the melee-samples and melee-handoff fixtures re-recorded. Duel and team fixtures bit for bit.
+
+## Far power from less spare energy (MGUN-26, pc-melee-floor, 2026-11-04)
+
+Leigh 2026-11-04 21:03: "what's next?". MGUN-25 (on at 2.5, PR #652) fires only from 60 energy; another 9% of crowd shots
+beyond 300 px leave with 40-60 energy at about 1.94. pc-melee-floor tries the floor at 40 (z4) and 50 (z5), pilot z4 against aa.

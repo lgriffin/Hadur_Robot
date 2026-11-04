@@ -22,6 +22,8 @@
 #   tmnoconcord (team only) TMODE-34 off: CONCORD on no team, as before it shipped. Suffix ncn.
 #   mdmg   MMOVE-22: each opponent's risk weighs by the damage it has done to Hadur this battle x its mean distance (Diamond). Suffix dm. Ships on from 3.21, so on master dm is the robot as it is.
 #   e3far  MEND-3: with two opponents left off a team, the closest-robot factor 4 (not 2). Suffix ef.
+#   mfloor40 MGUN-26: MGUN-25's far power from 40 energy, not 60. Suffix z4.
+#   mfloor50 MGUN-26: as mfloor40 from 50 energy. Suffix z5.
 #   aa    no change: the same robot under another name (suffix aa), the A/A arm of a multi-arm run
 #         (BENCH-92, docs/plan-top5.md section 6.1), so a run prices its own noise.
 #   bb    no change, suffix bb: a second A/A copy, for a run whose baseline is the aa build (card team-s2).
@@ -878,6 +880,13 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean THREE_FAR = false;" "public static final boolean THREE_FAR = true;"
             version="${version}ef" ;;
+        mfloor40|mfloor50)
+            # MGUN-26 (docs/bench/melee-top3.md): MGUN-25's far power from less own energy, off a team
+            # with three or more opponents; team and duel bit for bit.
+            n=${a#mfloor}
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEnergyPolicy.java" \
+                "static final double FAR_SPARE_ENERGY = 60.0;" "static final double FAR_SPARE_ENERGY = $n.0;"
+            version="${version}z${n:0:1}" ;;
         *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3far, g24, pogi, ogi300, msurf, mcross, mdmg)" >&2; exit 2 ;;
     esac
 done
