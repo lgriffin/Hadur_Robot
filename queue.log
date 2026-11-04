@@ -17,3 +17,7 @@
 20:35:55 skip dgscr (after dgdg, which has not finished exit=0)
 20:35:55 skip dgpr (after dgscr, which has not finished exit=0)
 20:35:55 ALLDONE
+20:38:35 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
+20:38:35 skip dgprep (already exit=0)
+20:38:35 skip dgbb1 (already exit=0)
+20:38:35 skip dgdg1 (already exit=0)
