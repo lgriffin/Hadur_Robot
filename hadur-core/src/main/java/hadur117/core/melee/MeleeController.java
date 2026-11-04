@@ -157,6 +157,12 @@ public class MeleeController {
     /** MSURF: the surfer, or null with the switch off. */
     public CrowdSurfer duelist() { return duelist; }
 
+    /** TSURF: the team member's duel waves, made on the first team tick that plays SURF; null until then. */
+    private CrowdSurfer teamSurfer;
+
+    /** TSURF: the team member's surfer, or null while no team tick has played SURF. */
+    public CrowdSurfer teamSurfer() { return teamSurfer; }
+
     public void newRound() {
         tracker.newRound();
         radar.newRound();
@@ -167,6 +173,7 @@ public class MeleeController {
         myPath.clear();
         paths.clear();
         if (duelist != null) duelist.newRound();
+        if (teamSurfer != null) teamSurfer.newRound();
     }
 
     public OpponentStatsBook book() { return book; }
@@ -201,6 +208,10 @@ public class MeleeController {
         // MSURF-2: each shot seen off a team is a duel wave at Hadur.
         if (shot != null && duelist != null && !onTeam) {
             duelist.onShot(shot.shooter, shot.source, shot.fireTime, shot.power, myPath, info.energy, lastEnergy);
+        }
+        // TSURF-2: on a team playing SURF, each enemy shot is a duel wave at this member.
+        if (shot != null && teamSurfer != null && onTeam && modes.contains(TeamModes.Mode.SURF)) {
+            teamSurfer.onShot(shot.shooter, shot.source, shot.fireTime, shot.power, myPath, info.energy, lastEnergy);
         }
     }
 
@@ -304,6 +315,8 @@ public class MeleeController {
         stats.recordDamageReceived(damage, heading - headOn, botWidth);
         // MSURF-3: the shooter's duel views learn the angle the bullet left at.
         if (!onTeam && duelist != null) duelist.onHitByBullet(name, power, heading, me, now);
+        // TSURF-3: on a team the shooter's duel views learn it the same way.
+        if (onTeam && teamSurfer != null) teamSurfer.onHitByBullet(name, power, heading, me, now);
         if (onTeam && modes.contains(TeamModes.Mode.DODGE)) {
             learn(name, power, heading, me, now);
         } else if (!onTeam && mover.surfing()) {
@@ -440,7 +453,19 @@ public class MeleeController {
                 modes = concord.modes(modes);
             }
             c.radarTurn = radar.radarTurn(s.me, s.radarHeading, tracker, s.others, finisher, s.time);
-            if (dodging) {
+            if (modes.contains(TeamModes.Mode.SURF)) {
+                // TSURF-1..6: the duel waves rate the moves; DODGE and the virtual bullets stand down.
+                if (teamSurfer == null) {
+                    teamSurfer = new CrowdSurfer(field);
+                    teamSurfer.newRound();
+                }
+                teamSurfer.tick(s.time, s.me);
+                Map<String, Point2D.Double> others = new HashMap<>();
+                for (EnemyInfo e : alive) others.put(e.name, e.location);
+                for (int i = 0; i < mates.size(); i++) others.put("#mate" + i, mates.get(i));
+                mover.teamSurf(teamSurfer, myPath.getState(s.time), others);
+                mover.clearBullets();
+            } else if (dodging) {
                 // TMODE-27: each shot profiled once; the virtual bullets stand down.
                 mover.dodge().update(tracker.shots(s.time), myPath, s.me, s.time, mates, danger,
                     TeamModes.owns(modes), TeamModes.onlyAim(modes));

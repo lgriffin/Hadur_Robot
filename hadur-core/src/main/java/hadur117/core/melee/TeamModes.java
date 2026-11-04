@@ -57,7 +57,16 @@ public final class TeamModes {
          * pools its situations by enemy class and fires lighter unless close or reading that
          * class well.
          */
-        CONCORD
+        CONCORD,
+        /**
+         * TSURF-1..6, the team duelist's mover (Leigh's strategy doc of 2026-11-04): each enemy shot
+         * the member sees is a duel wave in a {@link CrowdSurfer}, rated by the duel's danger views
+         * learned per shooter across the battle and weighted by the robots, teammates included,
+         * nearer the shooter; the lowest-risk candidates of the ring are driven to through those
+         * waves, and the crowd's risk (the hunt slot, CONCORD's terms, teammates' bullets) stays the
+         * crowd cost. It stands in for DODGE and the virtual bullets while it plays.
+         */
+        SURF
     }
 
     /**
@@ -70,6 +79,8 @@ public final class TeamModes {
     public static final boolean FORCE_PATH = true;
     public static final boolean FORCE_DODGE = true;
     public static final boolean FORCE_CONCORD = true;
+    /** TSURF: SURF on every team, the ones the table names included, to screen it (never shipped this way). */
+    public static final boolean FORCE_SURF = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -148,7 +159,11 @@ public final class TeamModes {
 
     /** The modes against {@code enemies}: the first one the table names, else the default. */
     public static Set<Mode> against(List<EnemyInfo> enemies) {
-        return against(enemies, TABLE, DEFAULT);
+        Set<Mode> m = against(enemies, TABLE, DEFAULT);
+        if (!FORCE_SURF || m.contains(Mode.SURF)) return m;
+        EnumSet<Mode> with = m.isEmpty() ? EnumSet.noneOf(Mode.class) : EnumSet.copyOf(m);
+        with.add(Mode.SURF);
+        return with;
     }
 
     static Set<Mode> against(List<EnemyInfo> enemies, Map<String, Set<Mode>> table, Set<Mode> fallback) {
