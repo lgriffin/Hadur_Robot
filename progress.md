@@ -1,13 +1,13 @@
 # Queue pc-melee-far: progress
 
-Updated 2026-11-04 18:17:53 PC time (18:17 UTC), runner pid 36348.
+Updated 2026-11-04 18:33:01 PC time (18:33 UTC), runner pid 36348.
 
 - `mfprep` done, exit 0 in 2 min
 - `mfpilot` done, exit 0 in 1.1 h
 - `mfcheck` done, exit 0 in 0 min
 - `mfaa` done, exit 0 in 45 min
-- `mfbb` running
-- `mfy3` pending
+- `mfbb` done, exit 0 in 45 min
+- `mfy3` running
 - `mfy5` pending
 - `mfread` pending
 - `mfpr` pending
@@ -38,23 +38,31 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### mfbb
 
-**234 of 276 battles** (85%), 0 failed. Running 39 min, 363 battles/h, about 7 min left (ends ~18:24 PC time). Last battle 0 min ago.
-Skipped turns a battle: 29.7 overall, first 100 30.0, last 100 28.9.
+**276 of 276 battles** (100%), 0 failed. Running 45 min, 370 battles/h, about 0 min left (ends ~18:23 PC time). Last battle 0 min ago.
+Skipped turns a battle: 29.3 overall, first 100 30.0, last 100 28.3.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 234 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 42 battles unrun (about 7 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### mfy3
+
+**54 of 276 battles** (20%), 0 failed. Running 9 min, 358 battles/h, about 37 min left (ends ~19:10 PC time). Last battle 0 min ago.
+Skipped turns a battle: 29.7 overall, first 54 29.7, last 54 29.7.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 54 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 222 battles unrun (about 37 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-15:49:07 start mfpilot
-15:49:07 watching mfpilot: 2 stop rule(s)
-15:49:55 progress mfpilot: 0/184 (0%) battles, 0 failed
-16:20:04 progress mfpilot: 83/184 (45%) battles, 161/h, ETA 38 min, 0 failed, skips 24.7/battle (last 100)
 16:50:13 progress mfpilot: 170/184 (92%) battles, 167/h, ETA 5 min, 0 failed, skips 24.4/battle (last 100)
 16:54:26 mfpilot exit=0 in 3919 s
 16:54:26 start mfcheck
@@ -66,4 +74,8 @@ Stopping now would leave 42 battles unrun (about 7 min); every battle already fo
 17:39:10 start mfbb
 17:39:10 watching mfbb: 2 stop rule(s)
 17:50:41 progress mfbb: 72/276 (26%) battles, 375/h, ETA 33 min, 0 failed, skips 29.9/battle (last 100)
+18:20:55 progress mfbb: 252/276 (91%) battles, 362/h, ETA 4 min, 0 failed, skips 29.1/battle (last 100)
+18:23:58 mfbb exit=0 in 2687 s
+18:23:58 start mfy3
+18:23:58 watching mfy3: 2 stop rule(s)
 ```

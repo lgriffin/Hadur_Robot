@@ -17,3 +17,7 @@
 17:39:10 start mfbb
 17:39:10 watching mfbb: 2 stop rule(s)
 17:50:41 progress mfbb: 72/276 (26%) battles, 375/h, ETA 33 min, 0 failed, skips 29.9/battle (last 100)
+18:20:55 progress mfbb: 252/276 (91%) battles, 362/h, ETA 4 min, 0 failed, skips 29.1/battle (last 100)
+18:23:58 mfbb exit=0 in 2687 s
+18:23:58 start mfy3
+18:23:58 watching mfy3: 2 stop rule(s)
