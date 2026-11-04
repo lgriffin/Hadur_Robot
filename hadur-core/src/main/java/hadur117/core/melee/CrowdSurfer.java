@@ -49,9 +49,21 @@ public final class CrowdSurfer {
     private int round = -1;
     private long wavesAdded, hitsLogged;
 
+    /** The shooter's name to the key its controller is kept under: the name itself, or (TSURF-3) its class. */
+    private final java.util.function.UnaryOperator<String> key;
+
     public CrowdSurfer(BattleField field) {
+        this(field, java.util.function.UnaryOperator.identity());
+    }
+
+    /**
+     * TSURF-3: a surfer whose shooters share one controller per {@code key} (on a team, the
+     * enemy's class), so every copy of a class teaches the same views.
+     */
+    public CrowdSurfer(BattleField field, java.util.function.UnaryOperator<String> key) {
         this.field = field;
         this.predictor = new MovementPredictor(field);
+        this.key = key;
     }
 
     /** A new round: every shooter's waves go, what its views learned stays. */
@@ -102,7 +114,7 @@ public final class CrowdSurfer {
             .setSourceEnergy(sourceEnergy);
         w.firingWave = true;
         w.setWallDistances();
-        shooter(shooter).addWave(w);
+        shooter(key.apply(shooter)).addWave(w);
         wavesAdded++;
     }
 
@@ -139,7 +151,7 @@ public final class CrowdSurfer {
      * {@code me}: its wave learns the angle it was fired at and counts as a hit.
      */
     public void onHitByBullet(String shooter, double power, double heading, Point2D.Double me, long time) {
-        MoveController mc = shooters.get(shooter);
+        MoveController mc = shooters.get(key.apply(shooter));
         if (mc == null) return;
         Wave w = mc.findBulletWave(me, time, shooter, power);
         if (w == null) return;
@@ -152,7 +164,7 @@ public final class CrowdSurfer {
 
     /** One of Hadur's bullets met {@code shooter}'s at {@code at}: that wave is no shot at Hadur. */
     public void onBulletHitBullet(String shooter, double power, Point2D.Double at, long time) {
-        MoveController mc = shooters.get(shooter);
+        MoveController mc = shooters.get(key.apply(shooter));
         if (mc == null) return;
         Wave w = mc.findBulletWave(at, time, shooter, power);
         if (w != null) w.bulletHitBullet = true;
@@ -192,7 +204,7 @@ public final class CrowdSurfer {
                 double aimed = w.sourceLocation.distance(w.targetLocation);
                 int k = 0;
                 for (Map.Entry<String, Point2D.Double> o : others.entrySet()) {
-                    if (o.getKey().equals(en.getKey())) continue;
+                    if (o.getKey().equals(w.botName)) continue;
                     if (o.getValue().distance(w.sourceLocation) < aimed) k++;
                 }
                 double weight = 1.0 / ((1 + k) * (1 + k));
