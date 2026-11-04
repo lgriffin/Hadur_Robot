@@ -211,22 +211,7 @@ public class MainGun {
      * @return the view, named {@link #viewName()}
      */
     public KnnView<TimestampedFiringAngle> createView(int enemiesTotal) {
-        return createView(enemiesTotal, null);
-    }
-
-    /**
-     * GKEY-3: {@link #createView(int)} with the formula's weights multiplied by a per-opponent gun key.
-     *
-     * @param enemiesTotal the opponents at the start of the battle, for the crowd feature
-     * @param key one multiplier a feature ({@link GunFormula}'s ten; 0 drops a feature), or null for the defaults
-     * @return the view, named {@link #viewName()}
-     */
-    public KnnView<TimestampedFiringAngle> createView(int enemiesTotal, double[] key) {
-        GunFormula formula = new GunFormula(enemiesTotal);
-        if (key != null && key.length == formula.weights.length) {
-            for (int i = 0; i < key.length; i++) formula.weights[i] *= key[i];
-        }
-        return new KnnView<TimestampedFiringAngle>(formula)
+        return new KnnView<TimestampedFiringAngle>(new GunFormula(enemiesTotal))
             .setK(K_SIZE).setKDivisor(K_DIVISOR)
             .visitsOn().virtualWavesOn().meleeOn()
             .setName(VIEW_NAME);

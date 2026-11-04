@@ -314,7 +314,6 @@ public final class DuelController {
         this.gunController.setTripHammer(GunDesign.TRIPHAMMER);
         this.gunController.setFreeGun(GunDesign.FREE_GUN);
         this.gunController.setUndecayed(GunDesign.UNDECAYED);
-        this.gunController.setKeyRecord(GunDesign.GUN_KEY_RECORD);
         this.moveController = new MoveController(battleField, predictor);
         moveController.setFlattenerOff(duelOnly(MoveDesign.FLATTENER_OFF, enemiesTotal));
         // MOVE-33: the learning-gun mimics join the aim members when both switches are on.
@@ -671,10 +670,6 @@ public final class DuelController {
 
         gunWaveManager.checkActiveWaves(time, enemyState,
             (w, bs) -> gunController.onWaveBreak(w, bs));
-        // GKEY-1: the gun waves that broke this tick (none unless the switch is on).
-        for (String r : gunController.drainKeyRecords()) {
-            telemetry.emit("GKR," + round + "," + time + "," + r);
-        }
         checkGunSeed(time);
 
         // The enemy's possible wave: from the enemy to us, one per scan. Until a later scan's
@@ -1321,8 +1316,6 @@ public final class DuelController {
     private void duelModes(String name) {
         // SKEY-2: the opponent's surf key, duel only; none restores the defaults.
         moveController.setSurfKey(duelOnly(true, enemiesTotal) ? stackList.surfKeyFor(name) : null);
-        // GKEY-3: the opponent's gun key for the main view, duel only; none keeps the defaults.
-        gunController.setMainKey(name, duelOnly(true, enemiesTotal) ? stackList.gunKeyFor(name) : null);
         // DODGE-3: the simple-aim dodge, forced for every opponent or for those the table names.
         // DODGE-4 to DODGE-6: the shot-dodge planner, forced or by the table's entry, primed with its shipped expert.
         int dodgePlan = stackList.dodgePlan(name);
