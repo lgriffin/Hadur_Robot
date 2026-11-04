@@ -13,3 +13,6 @@
 16:54:28 start mfaa
 16:54:28 watching mfaa: 2 stop rule(s)
 17:20:26 progress mfaa: 138/276 (50%) battles, 319/h, ETA 26 min, 0 failed, skips 29.8/battle (last 100)
+17:39:10 mfaa exit=0 in 2682 s
+17:39:10 start mfbb
+17:39:10 watching mfbb: 2 stop rule(s)
