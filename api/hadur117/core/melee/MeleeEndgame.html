@@ -97,10 +97,8 @@ loadScripts(document, 'script');</script>
  <p>The Stage 0 census (PR #292) found Hadur dies with two opponents left in 12.8% of rounds,
  the largest share of its deaths, and enters the last duel behind on energy against every
  survivor ranked 1-30. Today two opponents left already plays as the duel will: the endgame
- ring and lateral weight (<a class="req" href="../../../../requirements.html#MMOVE-4">MMOVE-4</a>) and the duel's power table (<a class="req" href="../../../../requirements.html#MGUN-2">MGUN-2</a>). Each switch below
- keeps the crowd's play for that phase instead. <a class="req" href="../../../../requirements.html#MEND-3">MEND-3</a> is on (banked with <a class="req" href="../../../../requirements.html#MGUN-7">MGUN-7</a>'s 24 by the
- bank card, <a class="req" href="../../../../requirements.html#BENCH-115">BENCH-115</a>); the other two are off, and the bench builds an arm with one turned on
- (build-ablation.sh e3ring, e3pow).</p>
+ ring and lateral weight (<a class="req" href="../../../../requirements.html#MMOVE-4">MMOVE-4</a>) and the duel's power table (<a class="req" href="../../../../requirements.html#MGUN-2">MGUN-2</a>). <a class="req" href="../../../../requirements.html#MEND-3">MEND-3</a> raises the
+ closest-robot factor for that phase (banked with <a class="req" href="../../../../requirements.html#MGUN-7">MGUN-7</a>'s 24 by the bank card, <a class="req" href="../../../../requirements.html#BENCH-115">BENCH-115</a>).</p>
 
  <p>None applies on a team, nor with one opponent left, so team battles and the duel (and with
  it every 1v1 battle) are untouched.</p></div>
@@ -126,16 +124,6 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MEND-3">MEND-3</a>: the closest-robot factor then, in place of <a class="req" href="../../../../requirements.html#MMOVE-2">MMOVE-2</a>'s 2.</div>
 </div>
-<div class="col-first even-row-color"><code>static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#THREE_POWER" class="member-name-link">THREE_POWER</a></code></div>
-<div class="col-last even-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#MEND-2">MEND-2</a>: with two opponents left off a team, fire by the crowd's power table.</div>
-</div>
-<div class="col-first odd-row-color"><code>static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#THREE_RING" class="member-name-link">THREE_RING</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#MEND-1">MEND-1</a>: with two opponents left off a team, keep the crowd's ring and lateral weight.</div>
-</div>
 </div>
 </section>
 </li>
@@ -159,25 +147,10 @@ loadScripts(document, 'script');</script>
 <div class="block">The closest-robot factor (<a class="req" href="../../../../requirements.html#MMOVE-2">MMOVE-2</a>); <a class="req" href="../../../../requirements.html#MEND-3">MEND-3</a> (<code>far</code>) raises it in this phase.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#endgameRing(int,boolean,boolean)" class="member-name-link">endgameRing</a><wbr>(int&nbsp;others,
- boolean&nbsp;onTeam,
- boolean&nbsp;keepCrowd)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block"><a class="req" href="../../../../requirements.html#MMOVE-4">MMOVE-4</a>'s endgame ring and lateral weight apply; <a class="req" href="../../../../requirements.html#MEND-1">MEND-1</a> (<code>keepCrowd</code>) holds them off.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#powerOthers(int,boolean,boolean)" class="member-name-link">powerOthers</a><wbr>(int&nbsp;others,
- boolean&nbsp;onTeam,
- boolean&nbsp;crowdPower)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">The opponent count the power table reads (<a class="req" href="../../../../requirements.html#MGUN-2">MGUN-2</a>, <a class="req" href="../../../../requirements.html#MGUN-3">MGUN-3</a>); <a class="req" href="../../../../requirements.html#MEND-2">MEND-2</a> (<code>crowdPower</code>)
- reads two opponents as three, so the crowd's table stands.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#three(int,boolean)" class="member-name-link">three</a><wbr>(int&nbsp;others,
  boolean&nbsp;onTeam)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Whether this is the phase the switches act on: two opponents left, off a team.</div>
+<div class="block">Whether this is the phase <a class="req" href="../../../../requirements.html#MEND-3">MEND-3</a> acts on: two opponents left, off a team.</div>
 </div>
 </div>
 </div>
@@ -196,36 +169,6 @@ loadScripts(document, 'script');</script>
 <section class="field-details" id="field-detail">
 <h2>Field Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="THREE_RING">
-<h3>THREE_RING</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">THREE_RING</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#MEND-1">MEND-1</a>: with two opponents left off a team, keep the crowd's ring and lateral weight.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.melee.MeleeEndgame.THREE_RING">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="THREE_POWER">
-<h3>THREE_POWER</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">THREE_POWER</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#MEND-2">MEND-2</a>: with two opponents left off a team, fire by the crowd's power table.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.melee.MeleeEndgame.THREE_POWER">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="THREE_FAR">
 <h3>THREE_FAR</h3>
@@ -269,26 +212,7 @@ loadScripts(document, 'script');</script>
 <h3>three</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">three</span><wbr><span class="parameters">(int&nbsp;others,
  boolean&nbsp;onTeam)</span></div>
-<div class="block">Whether this is the phase the switches act on: two opponents left, off a team.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="endgameRing(int,boolean,boolean)">
-<h3>endgameRing</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">endgameRing</span><wbr><span class="parameters">(int&nbsp;others,
- boolean&nbsp;onTeam,
- boolean&nbsp;keepCrowd)</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#MMOVE-4">MMOVE-4</a>'s endgame ring and lateral weight apply; <a class="req" href="../../../../requirements.html#MEND-1">MEND-1</a> (<code>keepCrowd</code>) holds them off.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="powerOthers(int,boolean,boolean)">
-<h3>powerOthers</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">powerOthers</span><wbr><span class="parameters">(int&nbsp;others,
- boolean&nbsp;onTeam,
- boolean&nbsp;crowdPower)</span></div>
-<div class="block">The opponent count the power table reads (<a class="req" href="../../../../requirements.html#MGUN-2">MGUN-2</a>, <a class="req" href="../../../../requirements.html#MGUN-3">MGUN-3</a>); <a class="req" href="../../../../requirements.html#MEND-2">MEND-2</a> (<code>crowdPower</code>)
- reads two opponents as three, so the crowd's table stands.</div>
+<div class="block">Whether this is the phase <a class="req" href="../../../../requirements.html#MEND-3">MEND-3</a> acts on: two opponents left, off a team.</div>
 </section>
 </li>
 <li>
