@@ -543,6 +543,7 @@ C4Component
     Component(concord, "TeamConcord", "melee", "CONCORD: the team brain after Ogi (TMODE-33/34)")
     Component(dodge, "TeamDodge", "melee", "DODGE: shot profiles from aim experts by enemy class (TMODE-27)")
     Component(tdanger, "TeamDanger", "melee", "Per-class log of enemy aims, fed by every member's hits")
+    Component(mrm, "MinimumRiskMovement", "melee", "The mover's team branches: MATEFIRE, DODGE, PATH, teammates' bullets")
     Component(trisk, "TeamRisk", "melee", "Team terms the mover reads on a team: teammates, HUNT, PATH, GANG, FINISH, CONCORD factor")
     Component(fg, "FieldGun", "melee", "Teammates' sightings in each history (MGUN-8); 21 situations; CONCORD power")
   }
