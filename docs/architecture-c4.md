@@ -644,7 +644,8 @@ flowchart LR
 
 A switch whose card failed is removed with its code, ablation arm, card and tests, and its
 requirement moves to the retired table in docs/requirements.md; this catalogue lists only what ships
-or what a mode table or ablation still reaches. The 3.22 cleanup removed the melee endgame hand-off
+or what a mode table or ablation still reaches. `RetiredSwitchTest` (STRAND-6) fails the build while a retired
+requirement's switch is still declared in the robot. The 3.22 cleanup removed the melee endgame hand-off
 (HAND-1..5), the failed 1v1 surf, distance and power switches (MOVE-12, 14..21, 23, 25..27, DIST-3, TIME-6, RAM-4,
 POW-12, POW-14, with `StackListData`, `StopPointSurf`, `ProteanPick`, `EscapeRoom`, `ReplicatorWeights`) and the failed team modes (PACK, SCREEN, DISABLED, REAR, SOFT, LEARN, POOL, WAVES, LINES,
 LINESW, LANEP, LANEB, GUNLINE, FAR, FARTHER, NEAR, LEAD, SWIFT, HEAVY, WARY, CLEAR, MOMENTUM, AIM, the

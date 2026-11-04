@@ -721,6 +721,7 @@ Every requirement group belongs to one owner, the same owner as the code it gove
 | STRAND-3 | Ubiquitous | Each owner's sources shall be pinned by hash. | A0 |
 | STRAND-4 | Ubiquitous | A recorded duel battle and a recorded melee battle shall each replay to identical orders, telemetry and store files. | A0 |
 | STRAND-5 | Ubiquitous | A recorded team battle shall replay to identical orders and telemetry for each recorded member. | A5 |
+| STRAND-6 | Unwanted behaviour | If a switch that a retired requirement names ("Where the `X` switch is on", or "Where `X` is above 0") is still declared in the robot's main sources and no live requirement names it, then the build shall fail: a failed card's results PR removes the switch, its code, ablation arm, card and tests with its requirement. | A5 |
 
 ### A5 notes
 

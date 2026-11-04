@@ -49,6 +49,12 @@ is the short version plus the house rules, which matter more than the tooling.
    master.
 9. **Releases are not yours.** Sessions cannot push tags. A Hadur release goes through the
    `release.yml` workflow on Leigh's word, and only when 1v1, team and melee are all ready.
+10. **A failed card leaves no code behind.** Leigh, 2026-11-04: failed experiment code in the robot
+    is "extreme bloat". The owning cloud thread's results PR for a failed arm removes its switch, the
+    code behind it, its ablation arm, its card and plan test, and moves its requirement to the
+    retired table in `docs/requirements.md` (the switch catalogue in `docs/architecture-c4.md` says
+    the same). `RetiredSwitchTest` (STRAND-6) fails the build while a retired requirement's switch
+    is still declared. A banked or pending arm stays until its card is read.
 
 ## 3. Before you start a card
 
