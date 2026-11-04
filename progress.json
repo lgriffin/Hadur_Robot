@@ -1,12 +1,16 @@
 {
  "plan": "pc-team-dgun",
- "updated": 1793822233.6012318,
+ "updated": 1793823140.2702143,
  "steps": {
   "dgprep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 129,
+   "end": "2026-11-04T19:59:23"
   },
   "dgbb1": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-04T19:59:23"
   },
   "dgdg1": {
    "status": "pending"
@@ -27,5 +31,49 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "dgbb1",
+   "started": 1793822363.306886,
+   "updated": 1793823140.2622523,
+   "elapsed": 776.9553663730621,
+   "expected": 276,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 190,
+   "resumed": 0,
+   "failed": 12,
+   "disables": null,
+   "rate": 880.359451268107,
+   "eta": 351.6745342530702,
+   "fraction": 0.6884057971014492,
+   "last_battle_age": 0.8661935329437256,
+   "rules": [
+    {
+     "rule": "fails 60",
+     "action": "halt",
+     "state": "ok",
+     "detail": "12 failed of 190"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "ok",
+     "detail": "17.0 a battle over the last 100 (first 100: 19.1)"
+    }
+   ],
+   "skips_mean": 17.741573033707866,
+   "skips_last100": 17.01
+  }
+ ]
 }
