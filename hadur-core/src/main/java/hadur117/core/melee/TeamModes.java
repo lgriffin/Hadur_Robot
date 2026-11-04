@@ -66,7 +66,13 @@ public final class TeamModes {
          * waves, and the crowd's risk (the hunt slot, CONCORD's terms, teammates' bullets) stays the
          * crowd cost. It stands in for DODGE and the virtual bullets while it plays.
          */
-        SURF
+        SURF,
+        /**
+         * TGUN-1..3, the team duelist's gun ({@link TeamDuelGun}): the duel's guns, their views
+         * learned per enemy class from every member's sightings, aim at the field gun's target
+         * once they have learned its class; the power stays the field gun's.
+         */
+        DUELGUN
     }
 
     /**
@@ -81,6 +87,8 @@ public final class TeamModes {
     public static final boolean FORCE_CONCORD = true;
     /** TSURF: SURF on every team, the ones the table names included, to screen it (never shipped this way). */
     public static final boolean FORCE_SURF = false;
+    /** TGUN: DUELGUN on every team, the ones the table names included, to screen it (never shipped this way). */
+    public static final boolean FORCE_DUELGUN = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -160,9 +168,10 @@ public final class TeamModes {
     /** The modes against {@code enemies}: the first one the table names, else the default. */
     public static Set<Mode> against(List<EnemyInfo> enemies) {
         Set<Mode> m = against(enemies, TABLE, DEFAULT);
-        if (!FORCE_SURF || m.contains(Mode.SURF)) return m;
+        if (!FORCE_SURF && !FORCE_DUELGUN) return m;
         EnumSet<Mode> with = m.isEmpty() ? EnumSet.noneOf(Mode.class) : EnumSet.copyOf(m);
-        with.add(Mode.SURF);
+        if (FORCE_SURF) with.add(Mode.SURF);
+        if (FORCE_DUELGUN) with.add(Mode.DUELGUN);
         return with;
     }
 

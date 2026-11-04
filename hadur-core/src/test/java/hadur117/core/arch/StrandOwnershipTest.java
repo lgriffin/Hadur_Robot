@@ -51,7 +51,7 @@ public class StrandOwnershipTest {
      * STRAND-7: the duel packages another strand may use, never edit (DuelIdentityTest pins them):
      * the melee duelist (MSURF) builds the duel's waves and danger views, one set a shooter.
      */
-    static final Map<String, List<String>> USES = Map.of("melee", List.of("hadur117.core.move"));
+    static final Map<String, List<String>> USES = Map.of("melee", List.of("hadur117.core.move", "hadur117.core.gun"));
 
     static final JavaClasses core = ArchitectureTest.core;
 
