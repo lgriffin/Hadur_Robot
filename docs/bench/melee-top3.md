@@ -123,3 +123,13 @@ The pilot stopped the card after 184 battles: k2 against aa on 92 pairs moved Ha
 -0.11 ± 0.23 points and crowd deaths -1.4 ± 1.9 points of rounds. Leaning the gun toward the robots
 that keep finishing high does not pay: what Hadur takes from them is matched by what it loses on the
 easier targets it no longer shoots. `STRONG_BOOST` stays 0, and 920 battles were saved.
+
+## Diamond's whole melee mover (cloud, 2026-11-04)
+
+Leigh 2026-11-04: rebuild the crowd movement on a top bot's design. Of the top five only Diamond ships
+its source (zlib licence), and it survives 68.6 live against Hadur's 55.8. MMOVE-25 (`MELEE_CLEAN`,
+built on branch `claude/project-thread-s5g1cq`, never merged) put Diamond's 270-line melee mover in
+place of Hadur's off a team, with Hadur's gun and radar. Cloud smoke, 46 census fields × seed 4600,
+paired against 3.21: score share -1.13 ± 0.36 points, crowd deaths +5.7 ± 2.7 points of rounds.
+Hadur's surfer mover outsurvives Diamond's on Hadur; the live survival gap to Diamond is not its
+movement design. Not carded.
