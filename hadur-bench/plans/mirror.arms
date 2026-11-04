@@ -1,0 +1,6 @@
+# pc-mirror (BENCH-194): c master, aa its A/A copy, and the rivals' own jars as arms on the same names and seeds.
+# prep appends ns (Nullstride 2.3.3) to work/mirror.arms when its jar is on the PC.
+c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
+aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
+bb | kc.mega.BeepBoop 2.0 | opponents/kc.mega.BeepBoop_2.0.jar
+sg | oog.mega.saguaro.Saguaro 1.0 | opponents/oog.mega.saguaro.Saguaro_1.0.jar
