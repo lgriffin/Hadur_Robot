@@ -2180,17 +2180,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">As above with <a class="req" href="../requirements.html#MGUN-13">MGUN-13</a> (<code>ogi</code>) and <a class="req" href="../requirements.html#MGUN-16">MGUN-16</a> (<code>wide</code>) as given; <a class="req" href="../requirements.html#MGUN-16">MGUN-16</a> widens <a class="req" href="../requirements.html#MGUN-13">MGUN-13</a> only.</div>
 </dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.html" class="type-name-link" title="class in hadur117.core.melee">CrowdSurfer</a> - Class in <a href="hadur117/core/melee/package-summary.html">hadur117.core.melee</a></dt>
-<dd>
-<div class="block">The duel surfer's waves and danger views fed by several shooters at once (<a class="req" href="../requirements.html#MSURF-1">MSURF-1</a>..3, and
- the engine TSURF shares).</div>
-</dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.html#%3Cinit%3E(hadur117.core.physics.BattleField)" class="member-name-link">CrowdSurfer(BattleField)</a> - Constructor for class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.html" title="class in hadur117.core.melee">CrowdSurfer</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.Threat.html" class="type-name-link" title="class in hadur117.core.melee">CrowdSurfer.Threat</a> - Class in <a href="hadur117/core/melee/package-summary.html">hadur117.core.melee</a></dt>
-<dd>
-<div class="block">One wave to surf: whose it is, its index among its shooter's surfable waves, its weight.</div>
-</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#crowdWeight(hadur117.core.world.EnemyShot,java.awt.geom.Point2D.Double,java.util.List)" class="member-name-link">crowdWeight(EnemyShot, Point2D.Double, List&lt;EnemyInfo&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MMOVE-15">MMOVE-15</a>: the share of <code>shot</code> aimed at Hadur, standing at <code>me</code> when it was
@@ -2295,13 +2284,6 @@ loadScripts(document, 'script');</script>
 <div class="block">The danger: the members' weighted mean of their scores at an intersection, the views'
  <code>viewScore</code> as member 0 and each aim's <code>aimScore</code>; an aim that is NaN (no
  angle on this wave) is left out.</div>
-</dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.html#danger(hadur117.core.model.RobotState,java.awt.geom.Point2D.Double,java.util.List)" class="member-name-link">danger(RobotState, Point2D.Double, List&lt;CrowdSurfer.Threat&gt;)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.html" title="class in hadur117.core.melee">CrowdSurfer</a></dt>
-<dd>
-<div class="block">The expected damage of driving from <code>me</code> to <code>point</code> and stopping there,
- against <code>threats</code> (heaviest first, from <a href="hadur117/core/melee/CrowdSurfer.html#threats(hadur117.core.model.RobotState,java.util.Map)"><code>CrowdSurfer.threats(hadur117.core.model.RobotState, java.util.Map&lt;java.lang.String, java.awt.geom.Point2D.Double&gt;)</code></a>): the first
- <a href="hadur117/core/melee/CrowdSurfer.html#PRECISE"><code>CrowdSurfer.PRECISE</code></a> by precise intersection over every state that wave crosses Hadur in,
- the rest at the first such state.</div>
 </dd>
 <dt><a href="hadur117/mini/JayLexi.html#danger(hadur117.mini.JayLexi.Wave,double)" class="member-name-link">danger(JayLexi.Wave, double)</a> - Static method in class hadur117.mini.<a href="hadur117/mini/JayLexi.html" title="class in hadur117.mini">JayLexi</a></dt>
 <dd>
@@ -2889,33 +2871,6 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur/bench/Bench.html#duelHostLine(int)" class="member-name-link">duelHostLine(int)</a> - Method in class hadur.bench.<a href="hadur/bench/Bench.html" title="class in hadur.bench">Bench</a></dt>
 <dd>
 <div class="block">The duel report's conditions: the melee and team reports' line, less its closing full stop (the report adds it).</div>
-</dd>
-<dt><a href="hadur117/core/melee/MeleeController.html#duelist()" class="member-name-link">duelist()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeController.html" title="class in hadur117.core.melee">MeleeController</a></dt>
-<dd>
-<div class="block">MSURF: the surfer, or null with the switch off.</div>
-</dd>
-<dt><a href="hadur117/core/melee/MeleeController.html#duelist(boolean)" class="member-name-link">duelist(boolean)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeController.html" title="class in hadur117.core.melee">MeleeController</a></dt>
-<dd>
-<div class="block">MSURF: sets the switch, for tests.</div>
-</dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#duelist(hadur117.core.melee.CrowdSurfer)" class="member-name-link">duelist(CrowdSurfer)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
-<dd>
-<div class="block">MSURF: the surfer that rates moves off a team, or null for the risk sum alone.</div>
-</dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#duelistBest(java.util.List,hadur117.core.melee.MinimumRiskMovement.View)" class="member-name-link">duelistBest(List&lt;Point2D.Double&gt;, MinimumRiskMovement.View)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
-<dd>
-<div class="block"><a class="req" href="../requirements.html#MSURF-1">MSURF-1</a>: the <a href="hadur117/core/melee/MinimumRiskMovement.html#WAVE_RERANK"><code>MinimumRiskMovement.WAVE_RERANK</code></a> lowest-risk candidates, Hadur's own spot (a stop) and the
- destination held if not reached, each driven to through the surfer's waves; scored as
- <a href="hadur117/core/melee/MinimumRiskMovement.html#waveScores(double%5B%5D,double%5B%5D)"><code>MinimumRiskMovement.waveScores(double[], double[])</code></a> with the surfer's expected damage, the held destination times
- <a href="hadur117/core/melee/MinimumRiskMovement.html#SWITCH_GAIN"><code>MinimumRiskMovement.SWITCH_GAIN</code></a>.</div>
-</dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#duelistTick(hadur117.core.model.RobotState,java.util.Map)" class="member-name-link">duelistTick(RobotState, Map&lt;String, Point2D.Double&gt;)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
-<dd>
-<div class="block">MSURF: Hadur's state and the opponents' positions for this tick's choice.</div>
-</dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#duelling()" class="member-name-link">duelling()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
-<dd>
-<div class="block">MSURF: whether the duel surfer rates moves off a team.</div>
 </dd>
 <dt><a href="hadur117/core/duel/DuelController.html#duelOnly(boolean,int)" class="member-name-link">duelOnly(boolean, int)</a> - Static method in class hadur117.core.duel.<a href="hadur117/core/duel/DuelController.html" title="class in hadur117.core.duel">DuelController</a></dt>
 <dd>
@@ -4672,10 +4627,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Go-to surfing's pick on the last tick; null in the three-option mode.</div>
 </dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.html#goToStep(hadur117.core.model.RobotState,java.awt.geom.Point2D.Double)" class="member-name-link">goToStep(RobotState, Point2D.Double)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.html" title="class in hadur117.core.melee">CrowdSurfer</a></dt>
-<dd>
-<div class="block">One tick of driving to <code>point</code> and stopping there, front or back first.</div>
-</dd>
 <dt><a href="hadur117/core/move/ShotDodgePlanner.html#goToStep(hadur117.core.model.RobotState,java.awt.geom.Point2D.Double)" class="member-name-link">goToStep(RobotState, Point2D.Double)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/ShotDodgePlanner.html" title="class in hadur117.core.move">ShotDodgePlanner</a></dt>
 <dd>
 <div class="block">One tick of driving to <code>point</code> and stopping there, as go-to surfing's.</div>
@@ -5585,8 +5536,6 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/memory/OpponentProfile.html#hitsByMotion" class="member-name-link">hitsByMotion</a> - Variable in class hadur117.core.memory.<a href="hadur117/core/memory/OpponentProfile.html" title="class in hadur117.core.memory">OpponentProfile</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.html#hitsLogged()" class="member-name-link">hitsLogged()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.html" title="class in hadur117.core.melee">CrowdSurfer</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/MeleeProfile.html#hitsOnHadur" class="member-name-link">hitsOnHadur</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeProfile.html" title="class in hadur117.core.melee">MeleeProfile</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/MeleeProfile.html#hitsOnHadur()" class="member-name-link">hitsOnHadur()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeProfile.html" title="class in hadur117.core.melee">MeleeProfile</a></dt>
@@ -5671,10 +5620,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">END-4 for a shot that does not go through the main gun's own hold: shield mode's attack
  shots.</div>
-</dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.html#HORIZON" class="member-name-link">HORIZON</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.html" title="class in hadur117.core.melee">CrowdSurfer</a></dt>
-<dd>
-<div class="block">The most ticks a move is predicted: past every wave in the air at the slowest speed.</div>
 </dd>
 <dt><a href="hadur117/core/melee/EnemyHistory.html#HORIZON" class="member-name-link">HORIZON</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/EnemyHistory.html" title="class in hadur117.core.melee">EnemyHistory</a></dt>
 <dd>
@@ -5849,8 +5794,6 @@ loadScripts(document, 'script');</script>
 <div class="block">D2's check on the engine (END-4): with two robots that never hit each other, does the one
  with more energy survive Robocode's inactivity penalty?</div>
 </dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.Threat.html#index" class="member-name-link">index</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.Threat.html" title="class in hadur117.core.melee">CrowdSurfer.Threat</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="hadur/bench/SessionReport.Row.html#index()" class="member-name-link">index()</a> - Method in record class hadur.bench.<a href="hadur/bench/SessionReport.Row.html" title="class in hadur.bench">SessionReport.Row</a></dt>
 <dd>
 <div class="block">Returns the value of the <code>index</code> record component.</div>
@@ -7414,8 +7357,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Whether <code>name</code> may be written or deleted.</div>
 </dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.Threat.html#mc" class="member-name-link">mc</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.Threat.html" title="class in hadur117.core.melee">CrowdSurfer.Threat</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/MeleeController.Situation.html#me" class="member-name-link">me</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeController.Situation.html" title="class in hadur117.core.melee">MeleeController.Situation</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.View.html#me" class="member-name-link">me</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.View.html" title="class in hadur117.core.melee">MinimumRiskMovement.View</a></dt>
@@ -7478,10 +7419,6 @@ loadScripts(document, 'script');</script>
  term weighs by the damage its bullets have done to Hadur over the whole battle, plus
  <a href="hadur117/core/melee/MinimumRiskMovement.html#DAMAGE_BASE"><code>MinimumRiskMovement.DAMAGE_BASE</code></a>, times its mean distance from Hadur (a gun that hits from afar is the
  more dangerous), the weights scaled to average 1 over the living opponents.</div>
-</dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#MELEE_DUELIST" class="member-name-link">MELEE_DUELIST</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
-<dd>
-<div class="block"><a class="req" href="../requirements.html#MSURF-1">MSURF-1</a>..4 (arm mduel): off a team, the duel surfer's waves under the crowd.</div>
 </dd>
 <dt><a href="hadur117/core/melee/FieldGun.html#MELEE_K" class="member-name-link">MELEE_K</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
 <dd>
@@ -7905,10 +7842,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Fewer weak battles than this cannot tell a slide from noise.</div>
 </dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.html#MIN_WEIGHT" class="member-name-link">MIN_WEIGHT</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.html" title="class in hadur117.core.melee">CrowdSurfer</a></dt>
-<dd>
-<div class="block">A wave weighing less is not surfed (Ogi drops a shot under 0.1).</div>
-</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html" class="type-name-link" title="class in hadur117.core.melee">MinimumRiskMovement</a> - Class in <a href="hadur117/core/melee/package-summary.html">hadur117.core.melee</a></dt>
 <dd>
 <div class="block">Melee movement: minimum risk (<a class="req" href="../requirements.html#MMOVE-1">MMOVE-1</a>..4), the HawkOnFire and Diamond shape.</div>
@@ -8321,10 +8254,6 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/ledger/EnergyLedger.html#newRound()" class="member-name-link">newRound()</a> - Method in class hadur117.core.ledger.<a href="hadur117/core/ledger/EnergyLedger.html" title="class in hadur117.core.ledger">EnergyLedger</a></dt>
 <dd>
 <div class="block">Forgets the last scan; the next scan only sets the baseline.</div>
-</dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.html#newRound()" class="member-name-link">newRound()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.html" title="class in hadur117.core.melee">CrowdSurfer</a></dt>
-<dd>
-<div class="block">A new round: every shooter's waves go, what its views learned stays.</div>
 </dd>
 <dt><a href="hadur117/core/melee/EnemyHistory.html#newRound()" class="member-name-link">newRound()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/EnemyHistory.html" title="class in hadur117.core.melee">EnemyHistory</a></dt>
 <dd>
@@ -8748,10 +8677,6 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/mini/JayLexi.html#onBulletHit(robocode.BulletHitEvent)" class="member-name-link">onBulletHit(BulletHitEvent)</a> - Method in class hadur117.mini.<a href="hadur117/mini/JayLexi.html" title="class in hadur117.mini">JayLexi</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.html#onBulletHitBullet(java.lang.String,double,java.awt.geom.Point2D.Double,long)" class="member-name-link">onBulletHitBullet(String, double, Point2D.Double, long)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.html" title="class in hadur117.core.melee">CrowdSurfer</a></dt>
-<dd>
-<div class="block">One of Hadur's bullets met <code>shooter</code>'s at <code>at</code>: that wave is no shot at Hadur.</div>
-</dd>
 <dt><a href="hadur117/Hadur.html#onBulletHitBullet(robocode.BulletHitBulletEvent)" class="member-name-link">onBulletHitBullet(BulletHitBulletEvent)</a> - Method in class hadur117.<a href="hadur117/Hadur.html" title="class in hadur117">Hadur</a></dt>
 <dd>
 <div class="block">One of our bullets met an enemy bullet: our power, where they met, the enemy
@@ -8804,11 +8729,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">An enemy bullet hit us: its damage goes to SHIELD-6's budget, and its heading scores
  the predictors.</div>
-</dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.html#onHitByBullet(java.lang.String,double,double,java.awt.geom.Point2D.Double,long)" class="member-name-link">onHitByBullet(String, double, double, Point2D.Double, long)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.html" title="class in hadur117.core.melee">CrowdSurfer</a></dt>
-<dd>
-<div class="block"><code>shooter</code>'s bullet of <code>power</code>, travelling at <code>heading</code>, hit Hadur at
- <code>me</code>: its wave learns the angle it was fired at and counts as a hit.</div>
 </dd>
 <dt><a href="hadur117/core/melee/MeleeController.html#onHitByBullet(java.lang.String,double,double,java.awt.geom.Point2D.Double,long)" class="member-name-link">onHitByBullet(String, double, double, Point2D.Double, long)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeController.html" title="class in hadur117.core.melee">MeleeController</a></dt>
 <dd>
@@ -8970,11 +8890,6 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/twin/SaorTwin.html#onScannedRobot(robocode.ScannedRobotEvent)" class="member-name-link">onScannedRobot(ScannedRobotEvent)</a> - Method in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.html#onShot(java.lang.String,java.awt.geom.Point2D.Double,long,double,hadur117.core.model.RobotStateLog,double,double)" class="member-name-link">onShot(String, Point2D.Double, long, double, RobotStateLog, double, double)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.html" title="class in hadur117.core.melee">CrowdSurfer</a></dt>
-<dd>
-<div class="block">A shot <code>shooter</code> fired from <code>source</code> on <code>fireTime</code> at <code>power</code>:
- a firing wave aimed at Hadur as <code>myPath</code> had it the tick before.</div>
-</dd>
 <dt><a href="hadur117/core/melee/FieldGun.html#onSighting(java.lang.String,long,double,double,double,double,double,double)" class="member-name-link">onSighting(String, long, double, double, double, double, double, double)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
 <dd>
 <div class="block">MGUN-8: a teammate's sighting of <code>name</code>, <code>distance</code> from Hadur, joins its
@@ -10001,10 +9916,6 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/MeleeProfileFolder.Tally.html#powerSum" class="member-name-link">powerSum</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeProfileFolder.Tally.html" title="class in hadur117.core.melee">MeleeProfileFolder.Tally</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.html#PRECISE" class="member-name-link">PRECISE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.html" title="class in hadur117.core.melee">CrowdSurfer</a></dt>
-<dd>
-<div class="block">Waves rated by precise intersection; the rest are rated at one state.</div>
-</dd>
 <dt><a href="hadur117/core/model/Wave.html#PRECISE_MEA_WALL_STICK" class="member-name-link">PRECISE_MEA_WALL_STICK</a> - Static variable in class hadur117.core.model.<a href="hadur117/core/model/Wave.html" title="class in hadur117.core.model">Wave</a></dt>
 <dd>
 <div class="block">Wall stick, in pixels, for the wall smoothing used when the precise escape angle's
@@ -12528,16 +12439,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/world/EnemyShot.html#shooter" class="member-name-link">shooter</a> - Variable in class hadur117.core.world.<a href="hadur117/core/world/EnemyShot.html" title="class in hadur117.core.world">EnemyShot</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.html#shooter(java.lang.String)" class="member-name-link">shooter(String)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.html" title="class in hadur117.core.melee">CrowdSurfer</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/FieldGun.html#SHOOTER_BOOST" class="member-name-link">SHOOTER_BOOST</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/FieldGun.html#SHOOTER_WINDOW" class="member-name-link">SHOOTER_WINDOW</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.html#shooters()" class="member-name-link">shooters()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.html" title="class in hadur117.core.melee">CrowdSurfer</a></dt>
-<dd>
-<div class="block">How many shooters have a controller, for tests.</div>
-</dd>
 <dt><a href="hadur117/core/memory/Bytes.Reader.html#shorts(int)" class="member-name-link">shorts(int)</a> - Method in class hadur117.core.memory.<a href="hadur117/core/memory/Bytes.Reader.html" title="class in hadur117.core.memory">Bytes.Reader</a></dt>
 <dd>
 <div class="block"><code>n</code> shorts written by <a href="hadur117/core/memory/Bytes.Writer.html#shorts(short%5B%5D)"><code>Bytes.Writer.shorts(short[])</code></a>.</div>
@@ -14055,14 +13960,6 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur/bench/BattleResult.html#theirSurvival" class="member-name-link">theirSurvival</a> - Variable in class hadur.bench.<a href="hadur/bench/BattleResult.html" title="class in hadur.bench">BattleResult</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.Threat.html#%3Cinit%3E(hadur117.core.model.Wave,hadur117.core.move.MoveController,int,double,double)" class="member-name-link">Threat(Wave, MoveController, int, double, double)</a> - Constructor for class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.Threat.html" title="class in hadur117.core.melee">CrowdSurfer.Threat</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.html#threats(hadur117.core.model.RobotState,java.util.Map)" class="member-name-link">threats(RobotState, Map&lt;String, Point2D.Double&gt;)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.html" title="class in hadur117.core.melee">CrowdSurfer</a></dt>
-<dd>
-<div class="block">Every wave still to reach <code>me</code>, weighted by the robots in <code>others</code> (every
- living opponent's last known position, by name) nearer its shooter than Hadur was when
- it fired, heaviest first; a wave under <a href="hadur117/core/melee/CrowdSurfer.html#MIN_WEIGHT"><code>CrowdSurfer.MIN_WEIGHT</code></a> is left out.</div>
-</dd>
 <dt><a href="hadur117/core/melee/MeleeEndgame.html#three(int,boolean)" class="member-name-link">three(int, boolean)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeEndgame.html" title="class in hadur117.core.melee">MeleeEndgame</a></dt>
 <dd>
 <div class="block">Whether this is the phase <a class="req" href="../requirements.html#MEND-3">MEND-3</a> acts on: two opponents left, off a team.</div>
@@ -14104,10 +14001,6 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/policy/MirrorDetector.html#tick(double,double,double%5B%5D,double%5B%5D,double,double)" class="member-name-link">tick(double, double, double[], double[], double, double)</a> - Method in class hadur117.core.policy.<a href="hadur117/core/policy/MirrorDetector.html" title="class in hadur117.core.policy">MirrorDetector</a></dt>
 <dd>
 <div class="block">One scan.</div>
-</dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.html#tick(long,java.awt.geom.Point2D.Double)" class="member-name-link">tick(long, Point2D.Double)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.html" title="class in hadur117.core.melee">CrowdSurfer</a></dt>
-<dd>
-<div class="block">Every shooter's waves log Hadur at <code>me</code> on <code>time</code>; passed waves teach and go.</div>
 </dd>
 <dt><a href="hadur117/core/melee/MeleeController.html#tick(hadur117.core.melee.MeleeController.Situation)" class="member-name-link">tick(MeleeController.Situation)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeController.html" title="class in hadur117.core.melee">MeleeController</a></dt>
 <dd>&nbsp;</dd>
@@ -14811,10 +14704,6 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../requirements.html#MOVE-1">MOVE-1</a>: forgets bullets that have left the field by <code>time</code> and computes the
  shadow our bullets in flight cast on each firing wave.</div>
 </dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.Threat.html#urgency" class="member-name-link">urgency</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.Threat.html" title="class in hadur117.core.melee">CrowdSurfer.Threat</a></dt>
-<dd>
-<div class="block">Weight times damage over the ticks to impact: the order the precise ones are picked in.</div>
-</dd>
 <dt><a href="hadur117/core/model/BotEvent.TickTime.html#usedNanos()" class="member-name-link">usedNanos()</a> - Method in class hadur117.core.model.<a href="hadur117/core/model/BotEvent.TickTime.html" title="class in hadur117.core.model">BotEvent.TickTime</a></dt>
 <dd>
 <div class="block">Nanoseconds the core's previous tick took, as the adapter measured it.</div>
@@ -15101,10 +14990,6 @@ the order they are declared.</div>
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.html#vchangeTime(hadur117.core.model.RobotStateLog,long)" class="member-name-link">vchangeTime(RobotStateLog, long)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.html" title="class in hadur117.core.melee">CrowdSurfer</a></dt>
-<dd>
-<div class="block">Ticks since Hadur's velocity last changed by more than 0.5, up to 100.</div>
-</dd>
 <dt><a href="hadur117/mini/JayLexi.html#vChangeTime" class="member-name-link">vChangeTime</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/JayLexi.html" title="class in hadur117.mini">JayLexi</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/link/Report.Sighting.html#velocity" class="member-name-link">velocity</a> - Variable in class hadur117.core.link.<a href="hadur117/core/link/Report.Sighting.html" title="class in hadur117.core.link">Report.Sighting</a></dt>
@@ -15140,10 +15025,6 @@ the order they are declared.</div>
 <dt><a href="hadur117/twin/SaorTwin.html#VELOCITY" class="member-name-link">VELOCITY</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
 <dd>
 <div class="block">Record fields.</div>
-</dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.html#velocitySign(hadur117.core.model.RobotStateLog,long)" class="member-name-link">velocitySign(RobotStateLog, long)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.html" title="class in hadur117.core.melee">CrowdSurfer</a></dt>
-<dd>
-<div class="block">The sign of Hadur's last non-zero velocity at or before <code>time</code>; 1 when none.</div>
 </dd>
 <dt><a href="hadur/bench/ShieldProbe.html#verdict(hadur.bench.Stats)" class="member-name-link">verdict(Stats)</a> - Static method in class hadur.bench.<a href="hadur/bench/ShieldProbe.html" title="class in hadur.bench">ShieldProbe</a></dt>
 <dd>
@@ -15411,8 +15292,6 @@ the order they are declared.</div>
 <dd>
 <div class="block">Counts this tick's member-turns: Hadur at <code>me</code> and each teammate at <code>mates</code>.</div>
 </dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.Threat.html#wave" class="member-name-link">wave</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.Threat.html" title="class in hadur117.core.melee">CrowdSurfer.Threat</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/move/PlanInterval.html#wave" class="member-name-link">wave</a> - Variable in class hadur117.core.move.<a href="hadur117/core/move/PlanInterval.html" title="class in hadur117.core.move">PlanInterval</a></dt>
 <dd>
 <div class="block">The enemy wave in the air; the gun reads its source, power and shadows.</div>
@@ -15545,8 +15424,6 @@ the order they are declared.</div>
 <div class="block">How much the seen-shot waves count (DEISE-5): 1 since 0.3 (E0 to E1b's arm W, +0.44 to +0.59);
  0 turns them off.</div>
 </dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.html#wavesAdded()" class="member-name-link">wavesAdded()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.html" title="class in hadur117.core.melee">CrowdSurfer</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#waveScores(double%5B%5D,double%5B%5D)" class="member-name-link">waveScores(double[], double[])</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>
 <div class="block">TMODE-11: each destination's score from its risk and wave damage.</div>
@@ -15584,8 +15461,6 @@ the order they are declared.</div>
 <div class="block">This view's weight when several views' neighbours are combined (the anti-surfer gun's
  density, the surf's danger). 1 unless set.</div>
 </dd>
-<dt><a href="hadur117/core/melee/CrowdSurfer.Threat.html#weight" class="member-name-link">weight</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/CrowdSurfer.Threat.html" title="class in hadur117.core.melee">CrowdSurfer.Threat</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/FieldGun.Solution.html#weight" class="member-name-link">weight</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.Solution.html" title="class in hadur117.core.melee">FieldGun.Solution</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/TeamDanger.Aim.html#weight" class="member-name-link">weight</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamDanger.Aim.html" title="class in hadur117.core.melee">TeamDanger.Aim</a></dt>
