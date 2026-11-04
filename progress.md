@@ -1,6 +1,6 @@
 # Queue pc-shelf: progress
 
-Updated 2026-11-04 09:04:47 PC time (09:04 UTC), runner pid 41756.
+Updated 2026-11-04 09:19:58 PC time (09:19 UTC), runner pid 41756.
 
 - `prep` done, exit 0 in 6 min
 - `pilot-s` done, exit 0 in 5 min
@@ -43,34 +43,33 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### pilot-u
 
-**443 of 1062 battles** (42%), 0 failed. Running 11 min, 2312 battles/h, about 16 min left (ends ~09:20 PC time). Last battle 0 min ago.
-Skipped turns a battle: 39.2 overall, first 100 42.9, last 100 32.4; engine disables 7.
+**956 of 1062 battles** (90%), 12 failed. Running 27 min, 2150 battles/h, about 3 min left (ends ~09:22 PC time). Last battle 0 min ago.
+Skipped turns a battle: 36.9 overall, first 100 42.9, last 100 33.2; engine disables 14.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 72 | 0 | 79.90 | - | - | - | 41.4 |
-| aa | 77 | 0 | 78.98 | -0.01 (71 robots) | ±0.19 | -0.29 .. +0.28 | 41.4 |
-| mt | 73 | 0 | 75.17 | -0.67 (70 robots) | ±0.19 | -0.97 .. -0.38 | 44.4 |
-| wl | 74 | 0 | 39.48 | -5.75 (70 robots) | ±0.93 | -7.17 .. -4.33 | 25.7 |
-| hl | 74 | 0 | 79.95 | -0.01 (70 robots) | ±0.14 | -0.22 .. +0.21 | 40.2 |
-| gl | 73 | 0 | 78.64 | -0.07 (69 robots) | ±0.17 | -0.32 .. +0.18 | 42.0 |
+| c | 157 | 2 | 76.61 | - | - | - | 39.8 |
+| aa | 159 | 2 | 76.90 | +0.04 (154 robots) | ±0.12 | -0.15 .. +0.23 | 39.1 |
+| mt | 159 | 2 | 72.62 | -0.59 (153 robots) | ±0.14 | -0.80 .. -0.38 | 41.5 |
+| wl | 161 | 2 | 33.91 | -6.21 (154 robots) | ±0.60 | -7.13 .. -5.29 | 22.3 |
+| hl | 161 | 2 | 76.95 | +0.02 (154 robots) | ±0.10 | -0.14 .. +0.17 | 38.4 |
+| gl | 159 | 2 | 76.98 | -0.00 (153 robots) | ±0.12 | -0.18 .. +0.17 | 40.5 |
 
 APS = mean difference over the robots read x 177 panel robots / 1217 pairings.
-A/A: aa - c -0.05 pts over 71 robots; 1% band ±1.39 (inside).
+A/A: aa - c +0.25 pts over 154 robots; 1% band ±0.94 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 443 |
+| `fails 30` | halt | ok | 12 failed of 956 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 60 over 200` | halt | ok | 35.3 a battle over the last 200 (first 200: 42.3) |
+| `skips 60 over 200` | halt | ok | 34.6 a battle over the last 200 (first 200: 42.3) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 619 battles unrun (about 16 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 106 battles unrun (about 3 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-23:24:17 watching screen-s: 5 stop rule(s)
 23:24:22 STOP screen-s by rule aa after 20%: aa - c +3.02 pts over 33 robots, stop band ±2.36; 231 battles fought and kept, 924 battles left unrun
 23:24:22 screen-s exit=75 in 5 s (halted, aa after 20%)
 23:24:24 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/623
@@ -85,4 +84,5 @@ Stopping now would leave 619 battles unrun (about 16 min); every battle already 
 08:53:17 screen-s exit=0 in 1131 s
 08:53:17 start pilot-u
 08:53:17 watching pilot-u: 4 stop rule(s)
+09:05:48 progress pilot-u: 483/1062 (45%) battles, 2317/h, ETA 15 min, 0 failed, skips 34.6/battle (last 100), aa -0.02, mt -0.64, wl -5.85, hl -0.00, gl -0.06
 ```
