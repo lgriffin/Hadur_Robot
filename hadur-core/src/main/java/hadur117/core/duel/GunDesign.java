@@ -21,5 +21,12 @@ final class GunDesign {
      */
     static final boolean UNDECAYED = false;
 
+    /**
+     * GKEY-1 (measurement): every duel gun wave that breaks also prints a {@code GKR} record with its
+     * {@link hadur117.core.gun.GunFormula} point and where the target went, for the offline per-opponent
+     * gun-key fit ({@code data/tools/gun_key_fit.py}). Behaviour unchanged.
+     */
+    static final boolean GUN_KEY_RECORD = false;
+
     private GunDesign() { }
 }

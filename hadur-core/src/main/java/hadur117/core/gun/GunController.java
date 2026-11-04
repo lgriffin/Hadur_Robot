@@ -201,6 +201,32 @@ public class GunController {
      *
      * @param sampleSink where the samples go (the profile's folder), or null for none
      */
+    /** GKEY-1: whether broken duel waves are recorded for the offline gun-key fit. */
+    private boolean keyRecord;
+    /** GKEY-1: records made since the last {@link #drainKeyRecords}. */
+    private final List<String> keyRecords = new ArrayList<>();
+
+    /**
+     * GKEY-1 (measurement): records every duel gun wave as it breaks; see {@link GunKeyRecord}.
+     *
+     * @param on true to record
+     */
+    public void setKeyRecord(boolean on) {
+        this.keyRecord = on;
+    }
+
+    /**
+     * GKEY-1: the records made since the last call, oldest first.
+     *
+     * @return the record lines, without the duel's prefix
+     */
+    public List<String> drainKeyRecords() {
+        if (keyRecords.isEmpty()) return List.of();
+        List<String> out = new ArrayList<>(keyRecords);
+        keyRecords.clear();
+        return out;
+    }
+
     public void setSampleSink(Consumer<double[]> sampleSink) {
         this.sampleSink = sampleSink;
     }
@@ -713,6 +739,9 @@ public class GunController {
             if (shouldLog(view, w)) {
                 view.logWave(w, tfa);
             }
+        }
+        if (keyRecord && is1v1 && !w.altWave) {
+            keyRecords.add(GunKeyRecord.line(w, sampleFormula.dataPointFromWave(w), waveBreakStates, breakState));
         }
         if (sampleSink != null && is1v1 && w.firingWave && !w.altWave) {
             // The layout seed() reads back: ten features, gf, dv.x, dv.y.

@@ -445,6 +445,10 @@ for a in "${list[@]}"; do
         oracle)
             edit "$movedesign" "static final boolean ORACLE_RECORD = false;" "static final boolean ORACLE_RECORD = true;"
             version="${version}or" ;;
+        gkrec)
+            # GKEY-1 (measurement): every broken duel gun wave prints a GKR record for gun_key_fit.py.
+            edit "$gundesign" "static final boolean GUN_KEY_RECORD = false;" "static final boolean GUN_KEY_RECORD = true;"
+            version="${version}gr" ;;
         skrec)
             edit "$movedesign" "static final boolean SURF_KEY_RECORD = false;" "static final boolean SURF_KEY_RECORD = true;"
             version="${version}kr" ;;
@@ -893,7 +897,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             # member's sightings, aim at the field gun's target; duel and melee bit for bit. Suffix dgu.
             edit "$modes" "public static final boolean FORCE_DUELGUN = false;" "public static final boolean FORCE_DUELGUN = true;"
             version="${version}dgu" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, tmdgun)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, gkrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, tmdgun)" >&2; exit 2 ;;
     esac
 done
 
