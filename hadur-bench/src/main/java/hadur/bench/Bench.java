@@ -765,7 +765,7 @@ public final class Bench {
         }
         System.out.println();
         System.out.println(report);
-        return armsExit(sorted, opts.containsKey("failed-ok"));
+        return armsExit(sorted, Boolean.parseBoolean(opts.getOrDefault("failed-ok", "false")));
     }
 
     /**
