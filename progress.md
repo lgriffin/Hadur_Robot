@@ -1,6 +1,6 @@
 # Queue pc-jaylexi-orb: progress
 
-Updated 2026-11-04 14:26:08 PC time (14:26 UTC), runner pid 35932.
+Updated 2026-11-04 14:41:20 PC time (14:41 UTC), runner pid 35932.
 
 - `prep` done, exit 0 in 0 min
 - `pilot` done, exit 0 in 23 min
@@ -36,26 +36,26 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### screen
 
-**4902 of 21360 battles** (23%), 0 failed. Running 22 min, 13079 battles/h, about 1.3 h left (ends ~15:41 PC time). Last battle 0 min ago.
+**8247 of 21360 battles** (39%), 0 failed. Running 38 min, 13238 battles/h, about 59 min left (ends ~15:40 PC time). Last battle 0 min ago.
 Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0; engine disables 0.
 
 | arm | battles | failed | share | vs control (pts) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 1228 | 0 | 88.77 | - | - | - | 0.0 |
-| aa | 1225 | 0 | 88.74 | -0.03 (497 robots) | ±0.06 | -0.12 .. +0.06 | 0.0 |
-| near | 1226 | 0 | 88.57 | -0.19 (497 robots) | ±0.24 | -0.56 .. +0.18 | 0.0 |
-| far | 1223 | 0 | 88.56 | -0.20 (497 robots) | ±0.20 | -0.51 .. +0.12 | 0.0 |
-A/A: aa - c -0.03 pts over 497 robots; 1% band ±0.33 (inside).
+| c | 2060 | 0 | 88.63 | - | - | - | 0.0 |
+| aa | 2065 | 0 | 88.62 | -0.01 (533 robots) | ±0.05 | -0.09 .. +0.06 | 0.0 |
+| near | 2061 | 0 | 88.43 | -0.20 (533 robots) | ±0.18 | -0.48 .. +0.08 | 0.0 |
+| far | 2061 | 0 | 88.41 | -0.22 (533 robots) | ±0.17 | -0.48 .. +0.04 | 0.0 |
+A/A: aa - c -0.01 pts over 533 robots; 1% band ±0.26 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 4902 |
+| `fails 30` | halt | ok | 0 failed of 8247 |
 | `dead 8` | halt | ok | every arm scoring |
 | `skips 60 over 200` | halt | ok | 0.0 a battle over the last 200 (first 200: 0.0) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `aa after 20%` | halt | ok | aa - c -0.03 pts over 497 robots, stop band ±0.39 |
+| `aa after 20%` | halt | ok | aa - c -0.01 pts over 533 robots, stop band ±0.30 |
 
-Stopping now would leave 16458 battles unrun (about 1.3 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 13113 battles unrun (about 59 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
