@@ -1,0 +1,67 @@
+# 1v1, the duel mirror (BENCH-194; strategy doc "1v1: per-robot harvest", the per-name programme's first night).
+# Leigh starts it once the PC is free (not beside another card):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-mirror        (or  ./queue.sh run pc-mirror)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes; no step needs a
+# decision. About 4 to 5 hours if it runs to the end (91 names x 4 or 5 arms x 24 seeds, 8,700 to 10,900 battles);
+# the pilot stops it at about 50 minutes when the bench cannot see the rivals' lead.
+#
+# Why it should win (Leigh's card rule, 2026-11-03):
+#   - Per-opponent tailoring: this card names, for each of the 91 names with the most room, what the best rival does
+#     to that name that Hadur does not. It changes no robot code; it writes the specification every per-name entry
+#     after it is built from (the doc's order: mirror first, then table lines, then parameter lines, then builds).
+#   - The ceiling is real and per-name: the best of the eight rivals takes 3.88 APS more than Hadur over 1,190 names
+#     (live pages of 15 Oct to 2 Nov); name-ledger.tsv (tools/name_ledger.py) has every row. The 91 names here are
+#     the head, 12+ points behind the best rival each, 1.38 APS together; Nullstride or BeepBoop is the answer on 54
+#     of them and Saguaro on 14, so those three are the arms.
+#   - The bench never measured it: past harvests searched Hadur's own modes on 6 seeds. Here the rival plays the
+#     name on the same seeds as Hadur, at 24 seeds (about +-2.5 a name), and the read splits its lead into gun (damage
+#     dealt), movement (damage taken) and survival, so each name gets one kind of answer: a table line, a parameter
+#     line, or a build.
+#   - It also settles the Mjolnir fall: 3.21 reads 26 live against bvh.mini.Mjolnir 0.3 after 70 to 83 in every
+#     release before; c at 24 seeds says whether the bench sees it (then the stop-and-go entry comes off) or not.
+#     ary.SMG and darkcanuck.Holden, the other two named entries that fell, are on the panel too.
+#   - Risk: the bench may not reproduce the live lead (different clients, 3-battle live pairings). The pilot checks
+#     exactly that before the night is spent.
+# Pilot (tools/shelf_pilot.py, the first 4 of 24 seeds, 17%): the names where a rival arm beats c by 8+ points,
+#   against the A/A copy's count (noise). The night runs only when some rival beats the A/A count by 10+ names;
+#   otherwise the mirror stops, the PR says the bench does not see the gap, and the per-name programme is re-planned.
+# read:    multiarm.py (every arm on the panel), mirror_read.py (per name: each arm's share, survival, damage dealt
+#          and taken a round; the best rival; its edge: gun, movement or survival), per_robot.py (each rival minus c
+#          with its interval). Nothing ships from this card: it feeds the next cards, each gated on fresh seeds.
+# Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 150+ skipped turns a
+# battle over the last 200 (the rivals' own jars skip more turns than Hadur, so only a broken host trips it), or no
+# battle in 30 minutes; every battle fought is kept and a rerun resumes. ALERT opens an issue for Leigh on any stop.
+# Nullstride has no archive jar: prep copies it from the RoboRumble client's robots directory when it is there and
+# adds the ns arm; without it the mirror runs c, aa, bb and sg.
+
+set V = 3.21
+set P = --parallel 12 --no-truth-log --failed-ok
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
+set W = work/mirror
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work opponents && rm -f work/mirror.stop && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && test -f bisect/hadur117.Hadur_${V}aa.jar && ./fetch-opponents.sh --set panel-mirror.txt && ./fetch-opponents.sh --set panel-mirror-rivals.txt && { ./fetch-opponents.sh --set panel-mirror-ns.txt || [ -s opponents/jd.Nullstride_2.3.3.jar ] || cp /c/robocode/robots/jd.Nullstride_2.3.3.jar opponents/ || true; } && cp plans/mirror.arms work/mirror.arms && { if [ -s opponents/jd.Nullstride_2.3.3.jar ]; then echo 'ns | jd.Nullstride 2.3.3 | opponents/jd.Nullstride_2.3.3.jar' >> work/mirror.arms; fi; } && cat work/mirror.arms && mvn -q compile
+
+pilot | ./bench-top20.sh ${C} ${P} --set panel-mirror.txt --seeds 4 --seed-base 9800 --arms work/mirror.arms --out ${W} --label mirror --shuffle-jobs && python3 tools/shelf_pilot.py ${W}/arms.tsv --arms $(grep -oE '^(bb|sg|ns) ' work/mirror.arms) --threshold 8 --excess 10 --out ${OUT}/$(date +%Y-%m-%d)_mirror-pilot.md --stop-file work/mirror.stop
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 150 over 200
+  stop: stall 30m
+
+mirror | if [ -f work/mirror.stop ]; then echo 'pilot: the bench does not see the rivals lead, mirror skips'; exit 0; fi && ./bench-top20.sh ${C} ${P} --set panel-mirror.txt --seeds 24 --seed-base 9800 --arms work/mirror.arms --out ${W} --label mirror --shuffle-jobs
+  after: pilot
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 150 over 200
+  stop: stall 30m
+
+read | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_mirror.md && python3 tools/mirror_read.py ${W}/arms.tsv --rivals $(grep -oE '^(bb|sg|ns) ' work/mirror.arms) --out ${OUT}/$(date +%Y-%m-%d)_mirror-read.md --out-tsv ${OUT}/mirror-read.tsv && python3 tools/per_robot.py ${W}/arms.tsv --arms $(grep -oE '^(bb|sg|ns) ' work/mirror.arms) --out ${OUT}/$(date +%Y-%m-%d)_mirror-per-robot.md --out-tsv ${OUT}/mirror-per-robot.tsv
+  after: mirror
+
+pr | bash tools/open_results_pr.sh claude/pc-mirror-results "1v1 duel mirror: what the best rival takes from each of the 91 names with the most room, and how" ${OUT}/*_mirror*.md ${OUT}/mirror-*.tsv
+  after: read
