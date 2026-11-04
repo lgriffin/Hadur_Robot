@@ -17,3 +17,8 @@ To https://github.com/lgriffin/Hadur_Robot.git
 09:52:42 watching screen: 5 stop rule(s)
 10:06:23 progress screen: 3072/16480 (19%) battles, 13499/h, ETA 60 min, 0 failed, skips 0.0/battle (last 100), aa -0.01, p3 -1.23, p1 -4.47
 10:36:44 progress screen: 10184/16480 (62%) battles, 14082/h, ETA 27 min, 0 failed, skips 0.0/battle (last 100), aa -0.02, p3 -1.66, p1 -4.87
+11:04:32 screen exit=0 in 4309 s
+11:04:32 start build
+11:04:33 build exit=0 in 1 s
+11:04:33 start confirm
+11:04:33 watching confirm: 4 stop rule(s)

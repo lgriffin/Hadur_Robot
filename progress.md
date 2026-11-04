@@ -1,13 +1,13 @@
 # Queue pc-eveimear-pw: progress
 
-Updated 2026-11-04 10:50:49 PC time (10:50 UTC), runner pid 22484.
+Updated 2026-11-04 11:05:53 PC time (11:05 UTC), runner pid 22484.
 
 - `prep` done, exit 0 in 0 min
 - `pilot` done, exit 0 in 17 min
 - `pilotgate` done, exit 0 in 0 min
-- `screen` running
-- `build` pending
-- `confirm` pending
+- `screen` done, exit 0 in 1.2 h
+- `build` done, exit 0 in 0 min
+- `confirm` running
 - `gate` pending
 - `pr` pending
 
@@ -36,35 +36,51 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### screen
 
-**13481 of 16480 battles** (82%), 0 failed. Running 58 min, 14066 battles/h, about 13 min left (ends ~11:03 PC time). Last battle 0 min ago.
+**16480 of 16480 battles** (100%), 0 failed. Running 1.2 h, 13618 battles/h, about 0 min left (ends ~11:04 PC time). Last battle 1 min ago.
 Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0; engine disables 0.
 
 | arm | battles | failed | share | vs control (pts) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 3369 | 0 | 83.85 | - | - | - | 0.0 |
-| aa | 3372 | 0 | 83.84 | -0.02 (412 robots) | ±0.02 | -0.05 .. +0.01 | 0.0 |
-| p3 | 3369 | 0 | 82.19 | -1.65 (412 robots) | ±0.32 | -2.14 .. -1.17 | 0.0 |
-| p1 | 3371 | 0 | 78.91 | -4.94 (412 robots) | ±0.55 | -5.78 .. -4.09 | 0.0 |
-A/A: aa - c -0.02 pts over 412 robots; 1% band ±0.20 (inside).
+| c | 4120 | 0 | 83.81 | - | - | - | 0.0 |
+| aa | 4120 | 0 | 83.81 | -0.00 (412 robots) | ±0.01 | -0.02 .. +0.02 | 0.0 |
+| p3 | 4120 | 0 | 82.20 | -1.61 (412 robots) | ±0.31 | -2.08 .. -1.14 | 0.0 |
+| p1 | 4120 | 0 | 78.96 | -4.85 (412 robots) | ±0.55 | -5.69 .. -4.01 | 0.0 |
+A/A: aa - c -0.00 pts over 412 robots; 1% band ±0.18 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 13481 |
+| `fails 30` | halt | ok | 0 failed of 16480 |
+| `dead 8` | halt | ok | every arm scoring |
+| `skips 60 over 200` | halt | ok | 0.0 a battle over the last 200 (first 200: 0.0) |
+| `stall 30m` | halt | ok | last battle 1 min ago |
+| `aa after 20%` | halt | ok | aa - c -0.00 pts over 412 robots, stop band ±0.21 |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### confirm
+
+**252 of 468 battles** (54%), 0 failed. Running 1 min, 11550 battles/h, about 1 min left (ends ~11:06 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0; engine disables 0.
+
+| arm | battles | failed | share | vs control (pts) | 95% | stop-rule bound (z 3) | skips |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| c | 82 | 0 | 68.15 | - | - | - | 0.0 |
+| aa | 85 | 0 | 68.39 | +0.24 (13 robots) | ±0.62 | -0.70 .. +1.19 | 0.0 |
+| pk | 85 | 0 | 73.75 | +5.49 (13 robots) | ±4.30 | -1.09 .. +12.07 | 0.0 |
+A/A: aa - c +0.24 pts over 13 robots; 1% band ±1.28 (inside).
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 30` | halt | ok | 0 failed of 252 |
 | `dead 8` | halt | ok | every arm scoring |
 | `skips 60 over 200` | halt | ok | 0.0 a battle over the last 200 (first 200: 0.0) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `aa after 20%` | halt | ok | aa - c -0.02 pts over 412 robots, stop band ±0.23 |
 
-Stopping now would leave 2999 battles unrun (about 13 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 216 battles unrun (about 1 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-09:35:21 start pilot
-09:35:21 watching pilot: 5 stop rule(s)
-09:36:11 progress pilot: 148/4120 (4%) battles, 10844/h, ETA 22 min, 0 failed, skips 0.0/battle (last 100), aa -0.02, p3 -1.16, p1 -4.96
-09:50:20 progress push failed (the run is unaffected; later failures not logged): git push: remote: Internal Server Error        
-remote: Request ID E6DD:204361:3506C5:667A2A:6AEAFFDB        
 remote: Time 2026-11-04T09:50:20Z
 To https://github.com/lgriffin/Hadur_Robot.git
  ! [remote rejected]     e295c320fa82a3197964402a04d24a0abcf18d47 -> claude/pc-eveimear-pw-progress (Internal Server Er
@@ -75,4 +91,9 @@ To https://github.com/lgriffin/Hadur_Robot.git
 09:52:42 watching screen: 5 stop rule(s)
 10:06:23 progress screen: 3072/16480 (19%) battles, 13499/h, ETA 60 min, 0 failed, skips 0.0/battle (last 100), aa -0.01, p3 -1.23, p1 -4.47
 10:36:44 progress screen: 10184/16480 (62%) battles, 14082/h, ETA 27 min, 0 failed, skips 0.0/battle (last 100), aa -0.02, p3 -1.66, p1 -4.87
+11:04:32 screen exit=0 in 4309 s
+11:04:32 start build
+11:04:33 build exit=0 in 1 s
+11:04:33 start confirm
+11:04:33 watching confirm: 4 stop rule(s)
 ```
