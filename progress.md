@@ -1,6 +1,6 @@
 # Queue pc-melee-far: progress
 
-Updated 2026-11-04 16:01:58 PC time (16:01 UTC), runner pid 36348.
+Updated 2026-11-04 16:17:03 PC time (16:17 UTC), runner pid 36348.
 
 - `mfprep` done, exit 0 in 2 min
 - `mfpilot` running
@@ -14,15 +14,15 @@ Updated 2026-11-04 16:01:58 PC time (16:01 UTC), runner pid 36348.
 
 ### mfpilot
 
-**37 of 184 battles** (20%), 0 failed. Running 13 min, 173 battles/h, about 51 min left (ends ~16:53 PC time). Last battle 0 min ago.
-Skipped turns a battle: 25.3 overall, first 37 25.3, last 37 25.3.
+**81 of 184 battles** (44%), 0 failed. Running 28 min, 174 battles/h, about 36 min left (ends ~16:52 PC time). Last battle 0 min ago.
+Skipped turns a battle: 25.0 overall, first 81 25.0, last 81 25.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 37 |
+| `fails 20` | halt | ok | 0 failed of 81 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 147 battles unrun (about 51 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 103 battles unrun (about 36 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
