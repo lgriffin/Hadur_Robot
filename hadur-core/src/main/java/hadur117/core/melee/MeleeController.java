@@ -139,24 +139,12 @@ public class MeleeController {
         this.field = field;
         if (TeamModes.FORCE_DUELGUN) this.teamGun = new TeamDuelGun(field, TeamModes::key);
         this.mover = new MinimumRiskMovement(field);
-        if (MinimumRiskMovement.MELEE_DUELIST) duelist(true);
         this.gun = new FieldGun(field);
         this.danger = new TeamDanger(field);
     }
 
-    /** MSURF: the duel waves under the crowd, or null with the switch off. */
-    private CrowdSurfer duelist;
-    /** MSURF: Hadur's energy at the last tick, for the waves' surf key. */
+    /** TGUN: the member's energy at the last tick, for the duel gun's waves. */
     private double lastEnergy = 100;
-
-    /** MSURF: sets the switch, for tests. */
-    void duelist(boolean on) {
-        duelist = on ? new CrowdSurfer(field) : null;
-        mover.duelist(duelist);
-    }
-
-    /** MSURF: the surfer, or null with the switch off. */
-    public CrowdSurfer duelist() { return duelist; }
 
     /** TGUN: the team member's duel gun, made when the screen switch is on; null otherwise. */
     private TeamDuelGun teamGun;
@@ -182,7 +170,6 @@ public class MeleeController {
         lastTarget = null;
         myPath.clear();
         paths.clear();
-        if (duelist != null) duelist.newRound();
         if (teamGun != null) teamGun.newRound();
         duelAimed = false;
     }
@@ -216,10 +203,6 @@ public class MeleeController {
         gun.onScan(info, distance, time);
         waves.onScan(info, time);
         if (cross && !onTeam && mover.surfing()) crossHit(info, time);
-        // MSURF-2: each shot seen off a team is a duel wave at Hadur.
-        if (shot != null && duelist != null && !onTeam) {
-            duelist.onShot(shot.shooter, shot.source, shot.fireTime, shot.power, myPath, info.energy, lastEnergy);
-        }
         // TGUN-2: on a team every scan is a gun wave for the duel gun.
         if (teamGun != null && onTeam) {
             teamGun.sighted(name, time, info.location, info.heading, info.velocity, info.energy, stoodAt(time),
@@ -331,8 +314,6 @@ public class MeleeController {
         double headOn = DiaUtils.absoluteBearing(shooter.location, atFire.location);
         double botWidth = DiaUtils.botWidthAimAngle(distance);
         stats.recordDamageReceived(damage, heading - headOn, botWidth);
-        // MSURF-3: the shooter's duel views learn the angle the bullet left at.
-        if (!onTeam && duelist != null) duelist.onHitByBullet(name, power, heading, me, now);
         if (onTeam && modes.contains(TeamModes.Mode.DODGE)) {
             learn(name, power, heading, me, now);
         } else if (!onTeam && mover.surfing()) {
@@ -482,15 +463,7 @@ public class MeleeController {
         } else {
             modes = TeamModes.NONE;
             c.radarTurn = radar.radarTurn(s.me, s.radarHeading, tracker, s.others, finisher, s.time);
-            if (duelist != null) {
-                // MSURF-1..4: the duel waves rate the moves; the mover scores no bullets.
-                duelist.tick(s.time, s.me);
-                Map<String, Point2D.Double> others = new HashMap<>();
-                for (EnemyInfo e : alive) others.put(e.name, e.location);
-                mover.duelistTick(myPath.getState(s.time), others);
-            } else {
-                mover.updateMeleeBullets(tracker.shots(s.time), myPath, s.me, s.time, alive, danger);
-            }
+            mover.updateMeleeBullets(tracker.shots(s.time), myPath, s.me, s.time, alive, danger);
         }
         lastEnergy = s.energy;
         if (!onTeam && mover.damageMemory()) {

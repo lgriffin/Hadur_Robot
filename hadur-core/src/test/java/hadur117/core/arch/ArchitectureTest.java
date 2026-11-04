@@ -201,12 +201,12 @@ public class ArchitectureTest {
         // The melee brain runs instead of the duel subsystems, so it needs only the model, the
         // engine's physics, the shared World (A3) and the generic kd-tree (its own instances:
         // melee data never reaches a duel tree); and the duel code must not reach into it.
-        // STRAND-7: the crowd surfer (MSURF, TSURF) and the team duelist's gun (TGUN) use the
-        // duel's move and gun packages, never edit them (StrandOwnershipTest.USES).
+        // STRAND-7: the team duelist's gun (TGUN) uses the duel's gun package, never edits it
+        // (StrandOwnershipTest.USES).
         noClasses().that().resideInAPackage("hadur117.core.melee..")
             .should().dependOnClassesThat().resideOutsideOfPackages("hadur117.core.melee..",
                 "hadur117.core.physics..", "hadur117.core.model..", "hadur117.core.knn..",
-                "hadur117.core.world..", "hadur117.core.move..", "hadur117.core.gun..", "java..")
+                "hadur117.core.world..", "hadur117.core.gun..", "java..")
             .check(core);
         noClasses().that().resideInAPackage("hadur117.core.melee..")
             .should().dependOnClassesThat(JavaClass.Predicates.resideInAPackage("hadur117.core.knn..")
