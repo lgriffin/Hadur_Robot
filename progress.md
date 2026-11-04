@@ -1,6 +1,6 @@
 # Queue pc-melee-far: progress
 
-Updated 2026-11-04 19:33:29 PC time (19:33 UTC), runner pid 36348.
+Updated 2026-11-04 19:48:37 PC time (19:48 UTC), runner pid 36348.
 
 - `mfprep` done, exit 0 in 2 min
 - `mfpilot` done, exit 0 in 1.1 h
@@ -62,15 +62,15 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### mfy5
 
-**132 of 276 battles** (48%), 0 failed. Running 24 min, 324 battles/h, about 27 min left (ends ~20:00 PC time). Last battle 2 min ago.
-Skipped turns a battle: 31.2 overall, first 100 31.1, last 100 32.6.
+**228 of 276 battles** (83%), 0 failed. Running 40 min, 346 battles/h, about 8 min left (ends ~19:56 PC time). Last battle 0 min ago.
+Skipped turns a battle: 33.7 overall, first 100 31.1, last 100 36.8.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 132 |
-| `stall 30m` | halt | ok | last battle 2 min ago |
+| `fails 20` | halt | ok | 0 failed of 228 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 144 battles unrun (about 27 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 48 battles unrun (about 8 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
