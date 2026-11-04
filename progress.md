@@ -1,6 +1,6 @@
 # Queue pc-melee-far: progress
 
-Updated 2026-11-04 17:17:25 PC time (17:17 UTC), runner pid 36348.
+Updated 2026-11-04 17:32:32 PC time (17:32 UTC), runner pid 36348.
 
 - `mfprep` done, exit 0 in 2 min
 - `mfpilot` done, exit 0 in 1.1 h
@@ -26,15 +26,15 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### mfaa
 
-**132 of 276 battles** (48%), 0 failed. Running 23 min, 345 battles/h, about 25 min left (ends ~17:42 PC time). Last battle 1 min ago.
-Skipped turns a battle: 29.0 overall, first 100 28.9, last 100 29.4.
+**233 of 276 battles** (84%), 0 failed. Running 38 min, 367 battles/h, about 7 min left (ends ~17:39 PC time). Last battle 0 min ago.
+Skipped turns a battle: 29.3 overall, first 100 28.9, last 100 29.7.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 132 |
-| `stall 30m` | halt | ok | last battle 1 min ago |
+| `fails 20` | halt | ok | 0 failed of 233 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 144 battles unrun (about 25 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 43 battles unrun (about 7 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -53,4 +53,5 @@ Stopping now would leave 144 battles unrun (about 25 min); every battle already 
 16:54:28 mfcheck exit=0 in 1 s
 16:54:28 start mfaa
 16:54:28 watching mfaa: 2 stop rule(s)
+17:20:26 progress mfaa: 138/276 (50%) battles, 319/h, ETA 26 min, 0 failed, skips 29.8/battle (last 100)
 ```
