@@ -1,0 +1,34 @@
+{
+ "plan": "pc-melee-far",
+ "updated": 1793807213.72264,
+ "steps": {
+  "mfprep": {
+   "status": "pending"
+  },
+  "mfpilot": {
+   "status": "pending"
+  },
+  "mfcheck": {
+   "status": "pending"
+  },
+  "mfaa": {
+   "status": "pending"
+  },
+  "mfbb": {
+   "status": "pending"
+  },
+  "mfy3": {
+   "status": "pending"
+  },
+  "mfy5": {
+   "status": "pending"
+  },
+  "mfread": {
+   "status": "pending"
+  },
+  "mfpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
