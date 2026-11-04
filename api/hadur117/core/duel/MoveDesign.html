@@ -125,45 +125,9 @@ loadScripts(document, 'script');</script>
  weighted by how well it predicted the bullets that hit us.</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#AIM_MIX" class="member-name-link">AIM_MIX</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">MOVE-26: with <a href="#STOP_POINT_SURF"><code>STOP_POINT_SURF</code></a>, the shot dodger reads every opponent's bullets and the
- stop-point surf mixes the most-matched simple aim into its danger at the share of bullets it
- matched.</div>
-</div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#BULLET_HIT_BULLET_LOG" class="member-name-link">BULLET_HIT_BULLET_LOG</a></code></div>
-<div class="col-last even-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-19">MOVE-19</a>: an enemy bullet our bullet destroys teaches the hit views the guess factor it
- was fired at, as a hit on us does (Diamond's onBulletHitBullet).</div>
-</div>
-<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#DISTANCING_TO_ENEMY" class="member-name-link">DISTANCING_TO_ENEMY</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-18">MOVE-18</a>: the surf's distancing factor is measured to the enemy's last scanned position
- (as Diamond does) rather than to the wave's source.</div>
-</div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#ESCAPE_ROOM" class="member-name-link">ESCAPE_ROOM</a></code></div>
-<div class="col-last even-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-12">MOVE-12</a>: the first wave's danger is scaled by the escape-angle position term (BeepBoop's).</div>
-</div>
-<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
 <div class="col-second odd-row-color"><code><a href="#FLATTENER_OFF" class="member-name-link">FLATTENER_OFF</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-24">MOVE-24</a>: in a duel the flattener views stay off (3.15).</div>
-</div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#GUN_GATE" class="member-name-link">GUN_GATE</a></code></div>
-<div class="col-last even-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-17">MOVE-17</a>: the gun-heat wave (meant to be built with <a href="#HEAT_WAVE"><code>HEAT_WAVE</code></a> and
- <a href="#HEAT_HOLD"><code>HEAT_HOLD</code></a> false) is offered only while the enemy's gun is not a learning one by
- <a class="req" href="../../../../requirements.html#MOVE-15">MOVE-15</a>'s count, so the stop-and-start is dropped against learning guns.</div>
-</div>
-<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#GUN_SPLIT" class="member-name-link">GUN_SPLIT</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-15">MOVE-15</a>: movement by the enemy's gun (meant to be built with <a href="#HEAT_WAVE"><code>HEAT_WAVE</code></a>).</div>
 </div>
 <div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
 <div class="col-second even-row-color"><code><a href="#HEAT_HOLD" class="member-name-link">HEAT_HOLD</a></code></div>
@@ -177,35 +141,11 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-11">MOVE-11</a>: surf the enemy's next shot before it leaves, when its gun is about to be cool.</div>
 </div>
 <div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#HIT_CLEARS_CACHE" class="member-name-link">HIT_CLEARS_CACHE</a></code></div>
+<div class="col-second even-row-color"><code><a href="#MIMIC_MEMBERS" class="member-name-link">MIMIC_MEMBERS</a></code></div>
 <div class="col-last even-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-20">MOVE-20</a>: every hit on us and every intercept clears the surf's cached neighbour searches,
- not only a change of the surfed wave.</div>
-</div>
-<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#HOLD_650" class="member-name-link">HOLD_650</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#DIST-3">DIST-3</a>: no <a class="req" href="../../../../requirements.html#DIST-1">DIST-1</a> walk-in in a duel.</div>
-</div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#KEEP_SECOND_WAVE" class="member-name-link">KEEP_SECOND_WAVE</a></code></div>
-<div class="col-last even-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#TIME-6">TIME-6</a>: a skipped turn (level 1) no longer drops the surf's second wave for the rest of
- the round; it is dropped from level 2, where the k halving and the go-to shedding also stay.</div>
-</div>
-<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#MIMIC_MEMBERS" class="member-name-link">MIMIC_MEMBERS</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-33">MOVE-33</a>: with <a href="#AIM_MEMBERS"><code>AIM_MEMBERS</code></a>, the six visit-trained learning-gun mimics of MOVE-27
  (GunMimics) join the aim members after the aims, sharing a standing weight of 0.3, each
  scored on the bullets as the aims are.</div>
-</div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#MIMICS" class="member-name-link">MIMICS</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">MOVE-27: with <a href="#STOP_POINT_SURF"><code>STOP_POINT_SURF</code></a>, the stop-point surf rates waves on the enemy-gun
- ensemble (GunMimics): the views blended with visit-trained mimics of common learning guns,
- each weighted by how well it predicted the real bullets, cubed.</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
 <div class="col-second odd-row-color"><code><a href="#ORACLE_RECORD" class="member-name-link">ORACLE_RECORD</a></code></div>
@@ -215,58 +155,22 @@ loadScripts(document, 'script');</script>
  enemy-gun oracle (<code>data/tools/gun_oracle.py</code>).</div>
 </div>
 <div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#POINT_KERNEL" class="member-name-link">POINT_KERNEL</a></code></div>
+<div class="col-second even-row-color"><code><a href="#RAM_BREAK" class="member-name-link">RAM_BREAK</a></code></div>
 <div class="col-last even-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-21">MOVE-21</a>: the danger kernel is the point value 2^-|u| at the intersection's centre
- (Diamond's), not <a class="req" href="../../../../requirements.html#MOVE-4">MOVE-4</a>'s integral over the intersection.</div>
-</div>
-<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#PROTEAN" class="member-name-link">PROTEAN</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: while the enemy's gun is cool and no real bullet is within 10 ticks, the surf draws
- its option from the protean pick (a softmin over the option dangers, a replaying chaotic die)
- instead of taking the least danger.</div>
-</div>
-<div class="col-first even-row-color"><code>(package private) static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#PROTEAN_DWELL" class="member-name-link">PROTEAN_DWELL</a></code></div>
-<div class="col-last even-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: the protean pick's mean dwell, in ticks; 1 re-picks every tick.</div>
-</div>
-<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#RAM_BREAK" class="member-name-link">RAM_BREAK</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: while <a class="req" href="../../../../requirements.html#RAM-2">RAM-2</a>'s escape drives, each path it weighs loses closest approach for every
  aim (head-on, linear) one of the rammer's shots in flight would hit it with.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#RAM_HEAT" class="member-name-link">RAM_HEAT</a></code></div>
-<div class="col-last even-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#RAM-4">RAM-4</a>: once the opponent is a confirmed rammer (<a class="req" href="../../../../requirements.html#RAM-2">RAM-2</a>), the duel plays as with heatjit on
- (<a class="req" href="../../../../requirements.html#MOVE-11">MOVE-11</a>'s gun-heat wave offered, <a class="req" href="../../../../requirements.html#MOVE-13">MOVE-13</a>'s hold off) for the rest of the battle.</div>
-</div>
 <div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#REPLICATOR" class="member-name-link">REPLICATOR</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#SHOT_DODGE" class="member-name-link">SHOT_DODGE</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-16">MOVE-16</a>: the danger views' weights evolve by the replicator equation.</div>
-</div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#SHOT_DODGE" class="member-name-link">SHOT_DODGE</a></code></div>
-<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#DODGE-3">DODGE-3</a>: dodge the enemy's simple aim (<a class="req" href="../../../../requirements.html#DODGE-1">DODGE-1</a>, <a class="req" href="../../../../requirements.html#DODGE-2">DODGE-2</a>) against every opponent, not only
  those the table names.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#SHOT_DODGE_PLAN" class="member-name-link">SHOT_DODGE_PLAN</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#SHOT_DODGE_PLAN" class="member-name-link">SHOT_DODGE_PLAN</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#DODGE-6">DODGE-6</a>: the shot-dodge planner (Saguaro's ShotDodger movement) against every opponent, not
  only those the table's <code>shot-dodge2:</code> lines name; a shipped expert still primes it.</div>
-</div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#STACK_LIST" class="member-name-link">STACK_LIST</a></code></div>
-<div class="col-last even-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-23">MOVE-23</a>: the stop-and-start stack (<a class="req" href="../../../../requirements.html#MOVE-13">MOVE-13</a> heatjit, <a class="req" href="../../../../requirements.html#SHIELD-14">SHIELD-14</a> swall, and <a class="req" href="../../../../requirements.html#MOVE-20">MOVE-20</a>, <a class="req" href="../../../../requirements.html#MOVE-21">MOVE-21</a>
- and <a class="req" href="../../../../requirements.html#TIME-6">TIME-6</a> whenever those are on) applies only to opponents not on the stack off-list;
- a listed opponent plays as if those switches were off.</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
 <div class="col-second odd-row-color"><code><a href="#STOP_AND_GO" class="member-name-link">STOP_AND_GO</a></code></div>
@@ -280,16 +184,8 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../../../../requirements.html#POISON-2">POISON-2</a>: the forced stop-and-go's variant: 1 WavePoison, 2 WavePoisonShift.</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#STOP_POINT_SURF" class="member-name-link">STOP_POINT_SURF</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#SURF_KEY_RECORD" class="member-name-link">SURF_KEY_RECORD</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">MOVE-25: the duel surfs with the stop-point surf (StopPointSurf, docs/bench/surf-b-rivals-read.md):
- dozens of stop points both ways rated on a smoothed probability histogram of the same views,
- BeepBoop's 1 / sqrt(4 + t) time weight, two waves, and a plan kept until the waves or the
- views change.</div>
-</div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#SURF_KEY_RECORD" class="member-name-link">SURF_KEY_RECORD</a></code></div>
-<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#SKEY-1">SKEY-1</a> (measurement): each wave's first three-option rating also prints an <code>SKN</code> record
  with the wave's surf key, for the offline per-opponent surf-key fit
  (<code>data/tools/surf_key_fit.py</code>).</div>
@@ -341,240 +237,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur117.core.duel.MoveDesign.HEAT_HOLD">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="ESCAPE_ROOM">
-<h3>ESCAPE_ROOM</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">ESCAPE_ROOM</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-12">MOVE-12</a>: the first wave's danger is scaled by the escape-angle position term (BeepBoop's).</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.duel.MoveDesign.ESCAPE_ROOM">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="PROTEAN">
-<h3>PROTEAN</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">PROTEAN</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: while the enemy's gun is cool and no real bullet is within 10 ticks, the surf draws
- its option from the protean pick (a softmin over the option dangers, a replaying chaotic die)
- instead of taking the least danger.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.duel.MoveDesign.PROTEAN">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="PROTEAN_DWELL">
-<h3>PROTEAN_DWELL</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">PROTEAN_DWELL</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: the protean pick's mean dwell, in ticks; 1 re-picks every tick.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.duel.MoveDesign.PROTEAN_DWELL">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="GUN_SPLIT">
-<h3>GUN_SPLIT</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">GUN_SPLIT</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-15">MOVE-15</a>: movement by the enemy's gun (meant to be built with <a href="#HEAT_WAVE"><code>HEAT_WAVE</code></a>). Once enough
- of the enemy's hits on us are of the learned class, the surf takes the protean pick at the
- hot setting on the held gun-heat wave; until then it takes the gun-heat wave afresh each
- tick (the stop-and-start), which does well against simple guns. When true it decides the
- hold and the protean switch; <a href="#HEAT_HOLD"><code>HEAT_HOLD</code></a> and <a href="#PROTEAN"><code>PROTEAN</code></a> are then not read.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.duel.MoveDesign.GUN_SPLIT">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="REPLICATOR">
-<h3>REPLICATOR</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">REPLICATOR</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-16">MOVE-16</a>: the danger views' weights evolve by the replicator equation. Each enemy bullet that
- hits us multiplies a view's weight by how well it predicted the bullet's angle relative to
- the weighted average, with every view's share kept at 2% or more; off, the weights are fixed.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.duel.MoveDesign.REPLICATOR">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="GUN_GATE">
-<h3>GUN_GATE</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">GUN_GATE</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-17">MOVE-17</a>: the gun-heat wave (meant to be built with <a href="#HEAT_WAVE"><code>HEAT_WAVE</code></a> and
- <a href="#HEAT_HOLD"><code>HEAT_HOLD</code></a> false) is offered only while the enemy's gun is not a learning one by
- <a class="req" href="../../../../requirements.html#MOVE-15">MOVE-15</a>'s count, so the stop-and-start is dropped against learning guns. Once the gun is
- called learning the surf is as with the gun-heat wave off. <a href="#GUN_SPLIT"><code>GUN_SPLIT</code></a>, if on, wins:
- the gate is then not read.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.duel.MoveDesign.GUN_GATE">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="HOLD_650">
-<h3>HOLD_650</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">HOLD_650</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#DIST-3">DIST-3</a>: no <a class="req" href="../../../../requirements.html#DIST-1">DIST-1</a> walk-in in a duel. The desired distance stays at the opening's (650 for a
- stranger) for the whole battle; <a class="req" href="../../../../requirements.html#END-1">END-1</a>'s finishing distance is unchanged.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.duel.MoveDesign.HOLD_650">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="DISTANCING_TO_ENEMY">
-<h3>DISTANCING_TO_ENEMY</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">DISTANCING_TO_ENEMY</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-18">MOVE-18</a>: the surf's distancing factor is measured to the enemy's last scanned position
- (as Diamond does) rather than to the wave's source.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.duel.MoveDesign.DISTANCING_TO_ENEMY">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="BULLET_HIT_BULLET_LOG">
-<h3>BULLET_HIT_BULLET_LOG</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">BULLET_HIT_BULLET_LOG</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-19">MOVE-19</a>: an enemy bullet our bullet destroys teaches the hit views the guess factor it
- was fired at, as a hit on us does (Diamond's onBulletHitBullet).</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.duel.MoveDesign.BULLET_HIT_BULLET_LOG">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="HIT_CLEARS_CACHE">
-<h3>HIT_CLEARS_CACHE</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">HIT_CLEARS_CACHE</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-20">MOVE-20</a>: every hit on us and every intercept clears the surf's cached neighbour searches,
- not only a change of the surfed wave.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.duel.MoveDesign.HIT_CLEARS_CACHE">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="POINT_KERNEL">
-<h3>POINT_KERNEL</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">POINT_KERNEL</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-21">MOVE-21</a>: the danger kernel is the point value 2^-|u| at the intersection's centre
- (Diamond's), not <a class="req" href="../../../../requirements.html#MOVE-4">MOVE-4</a>'s integral over the intersection.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.duel.MoveDesign.POINT_KERNEL">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="KEEP_SECOND_WAVE">
-<h3>KEEP_SECOND_WAVE</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">KEEP_SECOND_WAVE</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#TIME-6">TIME-6</a>: a skipped turn (level 1) no longer drops the surf's second wave for the rest of
- the round; it is dropped from level 2, where the k halving and the go-to shedding also stay.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.duel.MoveDesign.KEEP_SECOND_WAVE">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="STACK_LIST">
-<h3>STACK_LIST</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">STACK_LIST</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-23">MOVE-23</a>: the stop-and-start stack (<a class="req" href="../../../../requirements.html#MOVE-13">MOVE-13</a> heatjit, <a class="req" href="../../../../requirements.html#SHIELD-14">SHIELD-14</a> swall, and <a class="req" href="../../../../requirements.html#MOVE-20">MOVE-20</a>, <a class="req" href="../../../../requirements.html#MOVE-21">MOVE-21</a>
- and <a class="req" href="../../../../requirements.html#TIME-6">TIME-6</a> whenever those are on) applies only to opponents not on the stack off-list;
- a listed opponent plays as if those switches were off. The decision is made per
- opponent at run time; with this off the switches are the compile-time ones alone.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.duel.MoveDesign.STACK_LIST">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="RAM_HEAT">
-<h3>RAM_HEAT</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">RAM_HEAT</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#RAM-4">RAM-4</a>: once the opponent is a confirmed rammer (<a class="req" href="../../../../requirements.html#RAM-2">RAM-2</a>), the duel plays as with heatjit on
- (<a class="req" href="../../../../requirements.html#MOVE-11">MOVE-11</a>'s gun-heat wave offered, <a class="req" href="../../../../requirements.html#MOVE-13">MOVE-13</a>'s hold off) for the rest of the battle. The
- top-5 factorial put all of heatjit's gain on the rammers (+1.4 points) and a small loss on
- ranks 51-400, so this keeps the gain where it was measured. Off by default.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.duel.MoveDesign.RAM_HEAT">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
@@ -660,58 +322,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur117.core.duel.MoveDesign.SURF_KEY_RECORD">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="STOP_POINT_SURF">
-<h3>STOP_POINT_SURF</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">STOP_POINT_SURF</span></div>
-<div class="block">MOVE-25: the duel surfs with the stop-point surf (StopPointSurf, docs/bench/surf-b-rivals-read.md):
- dozens of stop points both ways rated on a smoothed probability histogram of the same views,
- BeepBoop's 1 / sqrt(4 + t) time weight, two waves, and a plan kept until the waves or the
- views change. Melee and team never take it.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.duel.MoveDesign.STOP_POINT_SURF">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="AIM_MIX">
-<h3>AIM_MIX</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">AIM_MIX</span></div>
-<div class="block">MOVE-26: with <a href="#STOP_POINT_SURF"><code>STOP_POINT_SURF</code></a>, the shot dodger reads every opponent's bullets and the
- stop-point surf mixes the most-matched simple aim into its danger at the share of bullets it
- matched. The three-option surf, on the ticks it still drives, then dodges as <a class="req" href="../../../../requirements.html#DODGE-3">DODGE-3</a> does.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.duel.MoveDesign.AIM_MIX">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="MIMICS">
-<h3>MIMICS</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">MIMICS</span></div>
-<div class="block">MOVE-27: with <a href="#STOP_POINT_SURF"><code>STOP_POINT_SURF</code></a>, the stop-point surf rates waves on the enemy-gun
- ensemble (GunMimics): the views blended with visit-trained mimics of common learning guns,
- each weighted by how well it predicted the real bullets, cubed.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.duel.MoveDesign.MIMICS">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>

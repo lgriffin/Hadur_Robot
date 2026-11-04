@@ -154,20 +154,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-1">MOVE-1</a>: where our bullets shadow an enemy wave.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="EscapeRoom.html" title="class in hadur117.core.move">EscapeRoom</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="FlattenerFormula.html" title="class in hadur117.core.move">FlattenerFormula</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-12">MOVE-12</a>: how much of its escape angle a robot keeps inside the field.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="FlattenerFormula.html" title="class in hadur117.core.move">FlattenerFormula</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">The flattener's feature space: <a href="MoveFormula.html" title="class in hadur117.core.move"><code>MoveFormula</code></a>'s nine attributes of our movement
  when an enemy wave was fired, plus our displacement over the last 20 and 40 ticks, with
  its own weights.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GunClassifier.html" title="class in hadur117.core.move">GunClassifier</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-15">MOVE-15</a>: tells whether the enemy's gun is a learning one, from the HF classes
- (<a href="HitForensics.html#classify(double,double,double)"><code>HitForensics.classify(double, double, double)</code></a>) of the bullets that hit us in the duel this battle.</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="GunMimics.html" title="class in hadur117.core.move">GunMimics</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
@@ -221,18 +212,9 @@ loadScripts(document, 'script');</script>
 <div class="block">MOVE-8: where our current plan puts us on one enemy wave, as the firing angles that would
  hit us there.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ProteanPick.html" title="class in hadur117.core.move">ProteanPick</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RamEscape.html" title="class in hadur117.core.move">RamEscape</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: the protean pick.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RamEscape.html" title="class in hadur117.core.move">RamEscape</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block"><a class="req" href="../../../../requirements.html#RAM-2">RAM-2</a>: keeping a charging rammer at arm's length.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ReplicatorWeights.html" title="class in hadur117.core.move">ReplicatorWeights</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-16">MOVE-16</a>: the per-battle multipliers that let the danger views reproduce in proportion to
- how well each predicted the bullets that actually came (the discrete replicator equation).</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ShadowGain.html" title="class in hadur117.core.move">ShadowGain</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
@@ -260,29 +242,24 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color class-summary class-summary-tab3">
 <div class="block">The phase of the last <a href="StopAndGo.html#move(hadur117.core.model.BotOrders.Builder,hadur117.core.model.RobotState,java.awt.geom.Point2D.Double,double,double,long)"><code>StopAndGo.move(hadur117.core.model.BotOrders.Builder, hadur117.core.model.RobotState, java.awt.geom.Point2D.Double, double, double, long)</code></a>: the next one's input decides it.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="StopPointSurf.html" title="class in hadur117.core.move">StopPointSurf</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SurfKeyRecord.html" title="class in hadur117.core.move">SurfKeyRecord</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">MOVE-25: a second duel surf, built from how DrussGT and BeepBoop plan
- (docs/bench/surf-b-rivals-read.md).</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SurfKeyRecord.html" title="class in hadur117.core.move">SurfKeyRecord</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block"><a class="req" href="../../../../requirements.html#SKEY-1">SKEY-1</a>: the surf-key record, one line per wave at the three-option surf's first rating of it, with
  the wave's point in the surf sample's feature space (<a href="FlattenerFormula.html" title="class in hadur117.core.move"><code>FlattenerFormula</code></a>; its first nine values
  are the <a href="MoveFormula.html" title="class in hadur117.core.move"><code>MoveFormula</code></a> point the hit views search on).</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SurfMover.html" title="class in hadur117.core.move">SurfMover</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SurfMover.html" title="class in hadur117.core.move">SurfMover</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">The duel's wave surfing: each tick, decides where to drive so that the enemy's next
  bullets are least likely to hit us, and writes the body's turn, distance and speed into
  the orders.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="SurfMover.Mode.html" title="enum class in hadur117.core.move">SurfMover.Mode</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab3">
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="SurfMover.Mode.html" title="enum class in hadur117.core.move">SurfMover.Mode</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
 <div class="block">How to pick where to be when a wave breaks.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="SurfMover.SurfOption.html" title="enum class in hadur117.core.move">SurfMover.SurfOption</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="SurfMover.SurfOption.html" title="enum class in hadur117.core.move">SurfMover.SurfOption</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">
 <div class="block">The three-option surf's choices; <a href="SurfMover.SurfOption.html#direction"><code>SurfMover.SurfOption.direction</code></a> is the orbit sign.</div>
 </div>
 </div>

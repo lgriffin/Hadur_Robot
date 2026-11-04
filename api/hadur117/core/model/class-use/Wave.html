@@ -54,48 +54,29 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Package</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><a href="#hadur117.core.duel">hadur117.core.duel</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="#hadur117.core.gun">hadur117.core.gun</a></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><a href="#hadur117.core.gun">hadur117.core.gun</a></div>
+<div class="col-last even-row-color">
 <div class="block">The duel's gun: two KNN guns, the virtual guns that rate them, and the choice between
  them.</div>
 </div>
-<div class="col-first even-row-color"><a href="#hadur117.core.knn">hadur117.core.knn</a></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><a href="#hadur117.core.knn">hadur117.core.knn</a></div>
+<div class="col-last odd-row-color">
 <div class="block">K-nearest-neighbour learning shared by the duel's gun and movement: a weighted KD-tree
  and the views built on it.</div>
 </div>
-<div class="col-first odd-row-color"><a href="#hadur117.core.model">hadur117.core.model</a></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><a href="#hadur117.core.model">hadur117.core.model</a></div>
+<div class="col-last even-row-color">
 <div class="block">The values the core is made of: what crosses the hexagonal boundary each tick, the robot
  states and their logs, and the waves the duel's gun and movement learn from.</div>
 </div>
-<div class="col-first even-row-color"><a href="#hadur117.core.move">hadur117.core.move</a></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><a href="#hadur117.core.move">hadur117.core.move</a></div>
+<div class="col-last odd-row-color">
 <div class="block">The duel's movement: wave surfing against the enemy's bullets, the danger views it
  scores with, and the shadows our own bullets cast on the enemy's waves.</div>
 </div>
 </div>
 <section class="class-uses">
 <ul class="block-list">
-<li>
-<section class="detail" id="hadur117.core.duel">
-<h2>Uses of <a href="../Wave.html" title="class in hadur117.core.model">Wave</a> in <a href="../../duel/package-summary.html">hadur117.core.duel</a></h2>
-<div class="caption"><span>Methods in <a href="../../duel/package-summary.html">hadur117.core.duel</a> with parameters of type <a href="../Wave.html" title="class in hadur117.core.model">Wave</a></span></div>
-<div class="summary-table three-column-summary">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Method</div>
-<div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>(package private) static boolean</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">DuelController.</span><code><a href="../../duel/DuelController.html#logsIntercept(boolean,hadur117.core.model.Wave)" class="member-name-link">logsIntercept</a><wbr>(boolean&nbsp;switchOn,
- <a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;interceptedWave)</code></div>
-<div class="col-last even-row-color">
-<div class="block"><a class="req" href="../../../../../requirements.html#MOVE-19">MOVE-19</a>: whether an intercept teaches the hit views: the switch is on and the enemy bullet's wave was found.</div>
-</div>
-</div>
-</section>
-</li>
 <li>
 <section class="detail" id="hadur117.core.gun">
 <h2>Uses of <a href="../Wave.html" title="class in hadur117.core.model">Wave</a> in <a href="../../gun/package-summary.html">hadur117.core.gun</a></h2>
@@ -552,37 +533,24 @@ loadScripts(document, 'script');</script>
  dangerous.</div>
 </div>
 <div class="col-first even-row-color"><code>double[]</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">MoveController.</span><code><a href="../../move/MoveController.html#dangerProfile(hadur117.core.model.Wave,int,int)" class="member-name-link">dangerProfile</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
- int&nbsp;surfWaveIndex,
- int&nbsp;bins)</code></div>
-<div class="col-last even-row-color">
-<div class="block">MOVE-25: the danger views' firing angles for <code>w</code> as a histogram over the classic
- guess factor: <code>bins</code> equal bins across [-1, 1], each holding the summed weight of
- the neighbours whose guess factor falls in it (view weight times scan weight, the same
- weights <a href="../../move/MoveController.html#getDangerScore(hadur117.core.model.Wave,hadur117.core.model.Wave.Intersection,int)"><code>MoveController.getDangerScore(hadur117.core.model.Wave, hadur117.core.model.Wave.Intersection, int)</code></a> averages), normalised to sum to 1.</div>
-</div>
-<div class="col-first odd-row-color"><code>double[]</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">FlattenerFormula.</span><code><a href="../../move/FlattenerFormula.html#dataPointFromWave(hadur117.core.model.Wave,boolean)" class="member-name-link">dataPointFromWave</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
+<div class="col-second even-row-color"><span class="type-name-label">FlattenerFormula.</span><code><a href="../../move/FlattenerFormula.html#dataPointFromWave(hadur117.core.model.Wave,boolean)" class="member-name-link">dataPointFromWave</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
  boolean&nbsp;aiming)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block">The eleven-value point for enemy wave <code>w</code>: <a href="../../move/MoveFormula.html" title="class in hadur117.core.move"><code>MoveFormula</code></a>'s nine, scaled
  the same way (see the comments there), then the 20- and 40-tick displacements.</div>
 </div>
-<div class="col-first even-row-color"><code>double[]</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">MoveFormula.</span><code><a href="../../move/MoveFormula.html#dataPointFromWave(hadur117.core.model.Wave,boolean)" class="member-name-link">dataPointFromWave</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
- boolean&nbsp;aiming)</code></div>
-<div class="col-last even-row-color">
-<div class="block">The nine-value point for enemy wave <code>w</code>.</div>
-</div>
 <div class="col-first odd-row-color"><code>double[]</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">SimpleFormula.</span><code><a href="../../move/SimpleFormula.html#dataPointFromWave(hadur117.core.model.Wave,boolean)" class="member-name-link">dataPointFromWave</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
+<div class="col-second odd-row-color"><span class="type-name-label">MoveFormula.</span><code><a href="../../move/MoveFormula.html#dataPointFromWave(hadur117.core.model.Wave,boolean)" class="member-name-link">dataPointFromWave</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
  boolean&nbsp;aiming)</code></div>
 <div class="col-last odd-row-color">
+<div class="block">The nine-value point for enemy wave <code>w</code>.</div>
+</div>
+<div class="col-first even-row-color"><code>double[]</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">SimpleFormula.</span><code><a href="../../move/SimpleFormula.html#dataPointFromWave(hadur117.core.model.Wave,boolean)" class="member-name-link">dataPointFromWave</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
+ boolean&nbsp;aiming)</code></div>
+<div class="col-last even-row-color">
 <div class="block">The three-value point for enemy wave <code>w</code>, each value in about [0, 1].</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">SurfMover.</span><code><a href="../../move/SurfMover.html#distancingPoint(hadur117.core.model.Wave)" class="member-name-link">distancingPoint</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;surfWave)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>double</code></div>
 <div class="col-second odd-row-color"><span class="type-name-label">MoveController.</span><code><a href="../../move/MoveController.html#getDangerScore(hadur117.core.model.Wave,hadur117.core.model.Wave.Intersection,int)" class="member-name-link">getDangerScore</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
  <a href="../Wave.Intersection.html" title="class in hadur117.core.model">Wave.Intersection</a>&nbsp;intersection,
@@ -694,78 +662,62 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../../../../../requirements.html#MOVE-33">MOVE-33</a>: mimic <code>m</code>'s probability of guess factors in [<code>gfLo</code>, <code>gfHi</code>] on
  wave <code>w</code> (bins of <a href="../../move/GunMimics.html#GF_BINS"><code>GunMimics.GF_BINS</code></a>, a partial bin counting its share), or NaN with no data.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) double</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">StopPointSurf.</span><code><a href="../../move/StopPointSurf.html#mass(hadur117.core.move.MoveController,hadur117.core.model.Wave,int,hadur117.core.model.Wave.Intersection)" class="member-name-link">mass</a><wbr>(<a href="../../move/MoveController.html" title="class in hadur117.core.move">MoveController</a>&nbsp;moveCtrl,
- <a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;wave,
- int&nbsp;waveIndex,
- <a href="../Wave.Intersection.html" title="class in hadur117.core.model">Wave.Intersection</a>&nbsp;x)</code></div>
-<div class="col-last odd-row-color">
-<div class="block">The smoothed histogram's mass over <code>x</code>, each part counted at the share our bullet
- shadows let through.</div>
-</div>
-<div class="col-first even-row-color"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;double[]&gt;&gt;</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">BulletShadows.</span><code><a href="../../move/BulletShadows.html#of(hadur117.core.model.Wave,java.util.List,double,double)" class="member-name-link">of</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;wave,
+<div class="col-first odd-row-color"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;double[]&gt;&gt;</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">BulletShadows.</span><code><a href="../../move/BulletShadows.html#of(hadur117.core.model.Wave,java.util.List,double,double)" class="member-name-link">of</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;wave,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../move/OurBullet.html" title="class in hadur117.core.move">OurBullet</a>&gt;&nbsp;bullets,
  double&nbsp;fieldWidth,
  double&nbsp;fieldHeight)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">The shadows <code>bullets</code> cast on <code>wave</code>: element 0 the certain ones, element 1
  every angle that may meet one of ours (the certain ones included), each merged into
  disjoint <code>[low, high]</code> bearing intervals sorted by <code>low</code> (<a class="req" href="../../../../../requirements.html#MOVE-1">MOVE-1</a>).</div>
 </div>
-<div class="col-first odd-row-color"><code>static <a href="../../move/PlanInterval.html" title="class in hadur117.core.move">PlanInterval</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">PlanInterval.</span><code><a href="../../move/PlanInterval.html#of(hadur117.core.model.Wave,hadur117.core.model.Wave.Intersection,double)" class="member-name-link">of</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;wave,
+<div class="col-first even-row-color"><code>static <a href="../../move/PlanInterval.html" title="class in hadur117.core.move">PlanInterval</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">PlanInterval.</span><code><a href="../../move/PlanInterval.html#of(hadur117.core.model.Wave,hadur117.core.model.Wave.Intersection,double)" class="member-name-link">of</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;wave,
  <a href="../Wave.Intersection.html" title="class in hadur117.core.model">Wave.Intersection</a>&nbsp;intersection,
  double&nbsp;danger)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block">The interval of an intersection.</div>
 </div>
-<div class="col-first even-row-color"><code>double[]</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">MoveController.</span><code><a href="../../move/MoveController.html#oracleNeighbours(hadur117.core.model.Wave)" class="member-name-link">oracleNeighbours</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w)</code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>double[]</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">MoveController.</span><code><a href="../../move/MoveController.html#oracleNeighbours(hadur117.core.model.Wave)" class="member-name-link">oracleNeighbours</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w)</code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../../requirements.html#ORACLE-1">ORACLE-1</a> (K0, measurement): what each danger view would say about wave <code>w</code>, as the
  <a href="../../move/OracleRecord.html" title="class in hadur117.core.move"><code>OracleRecord</code></a> line carries it: per view, whether it is on with data, its weight in the
  danger average, how many neighbours it found, then each neighbour's guess factor and scan
  weight (its decay over the square root of its distance, times its seed weight), exactly as
  <a href="../../move/MoveController.html#getDangerScore(hadur117.core.model.Wave,hadur117.core.model.Wave.Intersection,int)"><code>MoveController.getDangerScore(hadur117.core.model.Wave, hadur117.core.model.Wave.Intersection, int)</code></a> weighs them.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static <a href="../../move/SurfMover.SurfOption.html" title="enum class in hadur117.core.move">SurfMover.SurfOption</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">SurfMover.</span><code><a href="../../move/SurfMover.html#orbitSide(hadur117.core.model.Wave,hadur117.core.model.RobotState,java.awt.geom.Point2D.Double)" class="member-name-link">orbitSide</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;surfWave,
+<div class="col-first even-row-color"><code>(package private) static <a href="../../move/SurfMover.SurfOption.html" title="enum class in hadur117.core.move">SurfMover.SurfOption</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">SurfMover.</span><code><a href="../../move/SurfMover.html#orbitSide(hadur117.core.model.Wave,hadur117.core.model.RobotState,java.awt.geom.Point2D.Double)" class="member-name-link">orbitSide</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;surfWave,
  <a href="../RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;myState,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;point)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block">The way round the wave's source that driving to <code>point</code> goes: clockwise when the
  point's bearing from the source is clockwise of ours, counter-clockwise otherwise
  (our own position counts as clockwise).</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) double[]</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">GunMimics.Mimic.</span><code><a href="../../move/GunMimics.Mimic.html#profile(hadur117.core.model.Wave,int)" class="member-name-link">profile</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
+<div class="col-first odd-row-color"><code>(package private) double[]</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">GunMimics.Mimic.</span><code><a href="../../move/GunMimics.Mimic.html#profile(hadur117.core.model.Wave,int)" class="member-name-link">profile</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
  int&nbsp;bins)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">The model's probability over <code>bins</code> equal bins of [-1, 1], or null with no data.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">MoveController.</span><code><a href="../../move/MoveController.html#reachableShare(hadur117.core.model.Wave,double,double)" class="member-name-link">reachableShare</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
+<div class="col-first even-row-color"><code>(package private) static double</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MoveController.</span><code><a href="../../move/MoveController.html#reachableShare(hadur117.core.model.Wave,double,double)" class="member-name-link">reachableShare</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
  double&nbsp;angle,
  double&nbsp;bandwidth)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../../requirements.html#MOVE-29">MOVE-29</a>: the share of the kernel on <code>angle</code> that lies between the wave's escape
  angles, at least a quarter so an aim far outside cannot blow up its score.</div>
 </div>
-<div class="col-first even-row-color"><code>void</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">GunMimics.</span><code><a href="../../move/GunMimics.html#scoreBullet(hadur117.core.model.Wave,double,double%5B%5D)" class="member-name-link">scoreBullet</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
+<div class="col-first odd-row-color"><code>void</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">GunMimics.</span><code><a href="../../move/GunMimics.html#scoreBullet(hadur117.core.model.Wave,double,double%5B%5D)" class="member-name-link">scoreBullet</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
  double&nbsp;gf,
  double[]&nbsp;viewsProfile)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">A real bullet on wave <code>w</code> was fired at <code>gf</code>: scores every model on the profile
  it gave the wave, before anything learns the bullet.</div>
-</div>
-<div class="col-first odd-row-color"><code>void</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">MoveController.</span><code><a href="../../move/MoveController.html#scoreIntercept(hadur117.core.model.Wave,java.awt.geom.Point2D.Double)" class="member-name-link">scoreIntercept</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;bulletLocation)</code></div>
-<div class="col-last odd-row-color">
-<div class="block">MOVE-27: an enemy bullet our bullet met at <code>bulletLocation</code>, when the views do not learn
- it (<a class="req" href="../../../../../requirements.html#MOVE-19">MOVE-19</a> off): its angle still scores the ensemble's models.</div>
 </div>
 <div class="col-first even-row-color"><code>void</code></div>
 <div class="col-second even-row-color"><span class="type-name-label">MoveController.</span><code><a href="../../move/MoveController.html#scoreInterceptAims(hadur117.core.model.Wave,java.awt.geom.Point2D.Double)" class="member-name-link">scoreInterceptAims</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
@@ -780,48 +732,9 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>(package private) int</code></div>
 <div class="col-second even-row-color"><span class="type-name-label">GunMimics.Mimic.</span><code><a href="../../move/GunMimics.Mimic.html#segment(hadur117.core.model.Wave)" class="member-name-link">segment</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&gt;</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">StopPointSurf.</span><code><a href="../../move/StopPointSurf.html#stopPoints(hadur117.core.model.RobotState,hadur117.core.model.Wave,double)" class="member-name-link">stopPoints</a><wbr>(<a href="../RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;start,
- <a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;wave,
- double&nbsp;desiredDistance)</code></div>
-<div class="col-last odd-row-color">
-<div class="block">The stop points for <code>wave</code> from <code>start</code>: where we stand, and every tick along
- each orbit (full speed, the surf's attack angle toward the desired distance, wall-smoothed)
- until the wave reaches our centre, thinned to <a href="../../move/StopPointSurf.html#POINT_SPACING"><code>StopPointSurf.POINT_SPACING</code></a> apart.</div>
-</div>
-<div class="col-first even-row-color"><code>int</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">StopPointSurf.</span><code><a href="../../move/StopPointSurf.html#surf(hadur117.core.model.BotOrders.Builder,hadur117.core.model.RobotState,hadur117.core.move.MoveController,hadur117.core.model.Wave,int,double,java.awt.geom.Point2D.Double)" class="member-name-link">surf</a><wbr>(<a href="../BotOrders.Builder.html" title="class in hadur117.core.model">BotOrders.Builder</a>&nbsp;orders,
- <a href="../RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;myState,
- <a href="../../move/MoveController.html" title="class in hadur117.core.move">MoveController</a>&nbsp;moveCtrl,
- <a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;surfWave,
- int&nbsp;wavesToSurf,
- double&nbsp;desiredDistance,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;distancingFrom)</code></div>
-<div class="col-last even-row-color">
-<div class="block">Surfs <code>surfWave</code> (and the next surfable wave when <code>wavesToSurf</code> is 2 or more):
- keeps or remakes the plan, publishes its intervals and writes the drive.</div>
-</div>
-<div class="col-first odd-row-color"><code>double[]</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">MoveController.</span><code><a href="../../move/MoveController.html#surfProfile(hadur117.core.model.Wave,int,int)" class="member-name-link">surfProfile</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
- int&nbsp;surfWaveIndex,
- int&nbsp;bins)</code></div>
-<div class="col-last odd-row-color">
-<div class="block">MOVE-27: the profile the stop-point surf rates <code>w</code> on: the views' <a href="../../move/MoveController.html#dangerProfile(hadur117.core.model.Wave,int,int)"><code>MoveController.dangerProfile(hadur117.core.model.Wave, int, int)</code></a>,
- blended with the enemy-gun ensemble's models when it is on.</div>
-</div>
-<div class="col-first even-row-color"><code>(package private) double</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">GunMimics.Feature.</span><code><a href="../../move/GunMimics.Feature.html#value(hadur117.core.model.Wave)" class="member-name-link">value</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) int</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">MoveController.</span><code><a href="../../move/MoveController.html#viewDangers(hadur117.core.model.Wave,hadur117.core.model.Wave.Intersection,int,double%5B%5D,double%5B%5D)" class="member-name-link">viewDangers</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
- <a href="../Wave.Intersection.html" title="class in hadur117.core.model">Wave.Intersection</a>&nbsp;intersection,
- int&nbsp;surfWaveIndex,
- double[]&nbsp;dangers,
- double[]&nbsp;weights)</code></div>
-<div class="col-last odd-row-color">
-<div class="block"><a class="req" href="../../../../../requirements.html#MOVE-14">MOVE-14</a>: each danger view's own score at <code>intersection</code>, and its share of the
- average, for the protean pick's spread.</div>
-</div>
+<div class="col-first odd-row-color"><code>(package private) double</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">GunMimics.Feature.</span><code><a href="../../move/GunMimics.Feature.html#value(hadur117.core.model.Wave)" class="member-name-link">value</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w)</code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>(package private) static double</code></div>
 <div class="col-second even-row-color"><span class="type-name-label">ShotDodgePlanner.</span><code><a href="../../move/ShotDodgePlanner.html#waveCost(hadur117.core.model.Wave,hadur117.core.model.Wave.Intersection,double,double)" class="member-name-link">waveCost</a><wbr>(<a href="../Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
  <a href="../Wave.Intersection.html" title="class in hadur117.core.model">Wave.Intersection</a>&nbsp;x,

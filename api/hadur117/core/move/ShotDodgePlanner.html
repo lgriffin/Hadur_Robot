@@ -235,81 +235,87 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#cost(java.util.List,java.util.List,java.util.List,double,hadur117.core.model.RobotState)" class="member-name-link">cost</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/RobotState.html" title="class in hadur117.core.model">RobotState</a>&gt;&nbsp;path,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#attackAngle(double,double)" class="member-name-link">attackAngle</a><wbr>(double&nbsp;distance,
+ double&nbsp;desiredDistance)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">As the three-option surf's attack angle: 0.6 times the relative distance error, capped.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#cost(java.util.List,java.util.List,java.util.List,double,hadur117.core.model.RobotState)" class="member-name-link">cost</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/RobotState.html" title="class in hadur117.core.model">RobotState</a>&gt;&nbsp;path,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/Wave.html" title="class in hadur117.core.model">Wave</a>&gt;&nbsp;waves,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;&nbsp;bullets,
  double&nbsp;band,
  <a href="../model/RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;enemy)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The path's cost (see the class comment).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#enemyAt(hadur117.core.model.RobotState,long)" class="member-name-link">enemyAt</a><wbr>(<a href="../model/RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;enemy,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#enemyAt(hadur117.core.model.RobotState,long)" class="member-name-link">enemyAt</a><wbr>(<a href="../model/RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;enemy,
  long&nbsp;time)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The enemy at <code>time</code>, driven on at its last heading and speed and held inside the field.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="../model/RobotState.html" title="class in hadur117.core.model">RobotState</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#goToStep(hadur117.core.model.RobotState,java.awt.geom.Point2D.Double)" class="member-name-link">goToStep</a><wbr>(<a href="../model/RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;state,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="../model/RobotState.html" title="class in hadur117.core.model">RobotState</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#goToStep(hadur117.core.model.RobotState,java.awt.geom.Point2D.Double)" class="member-name-link">goToStep</a><wbr>(<a href="../model/RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;state,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;point)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">One tick of driving to <code>point</code> and stopping there, as go-to surfing's.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../model/RobotState.html" title="class in hadur117.core.model">RobotState</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#path(hadur117.core.model.RobotState,java.awt.geom.Point2D.Double,java.util.List)" class="member-name-link">path</a><wbr>(<a href="../model/RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;start,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../model/RobotState.html" title="class in hadur117.core.model">RobotState</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#path(hadur117.core.model.RobotState,java.awt.geom.Point2D.Double,java.util.List)" class="member-name-link">path</a><wbr>(<a href="../model/RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;start,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;point,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/Wave.html" title="class in hadur117.core.model">Wave</a>&gt;&nbsp;waves)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Driving to <code>point</code> and stopping there, one state a tick from <code>start</code>, until every wave has passed.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#plan(hadur117.core.model.RobotState,java.util.List,java.util.List,double,hadur117.core.model.RobotState,double)" class="member-name-link">plan</a><wbr>(<a href="../model/RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;myState,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#plan(hadur117.core.model.RobotState,java.util.List,java.util.List,double,hadur117.core.model.RobotState,double)" class="member-name-link">plan</a><wbr>(<a href="../model/RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;myState,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/Wave.html" title="class in hadur117.core.model">Wave</a>&gt;&nbsp;waves,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;&nbsp;bullets,
  double&nbsp;band,
  <a href="../model/RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;enemy,
  double&nbsp;desiredDistance)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#planPoint()" class="member-name-link">planPoint</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#planPoint()" class="member-name-link">planPoint</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The point driven to; null before the first plan.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#points(hadur117.core.model.RobotState,java.awt.geom.Point2D.Double,java.util.List,double)" class="member-name-link">points</a><wbr>(<a href="../model/RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;start,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#points(hadur117.core.model.RobotState,java.awt.geom.Point2D.Double,java.util.List,double)" class="member-name-link">points</a><wbr>(<a href="../model/RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;start,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;source,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/Wave.html" title="class in hadur117.core.model">Wave</a>&gt;&nbsp;waves,
  double&nbsp;desiredDistance)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The stop points (see the class comment), standing still first.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#replans()" class="member-name-link">replans</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#replans()" class="member-name-link">replans</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Replans over the battle; for tests.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reset()" class="member-name-link">reset</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reset()" class="member-name-link">reset</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Forgets the plan, at each round and after anything else drove.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#surf(hadur117.core.model.BotOrders.Builder,hadur117.core.model.RobotState,hadur117.core.move.MoveController,hadur117.core.physics.ShotDodger,hadur117.core.model.RobotState,double)" class="member-name-link">surf</a><wbr>(<a href="../model/BotOrders.Builder.html" title="class in hadur117.core.model">BotOrders.Builder</a>&nbsp;orders,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#surf(hadur117.core.model.BotOrders.Builder,hadur117.core.model.RobotState,hadur117.core.move.MoveController,hadur117.core.physics.ShotDodger,hadur117.core.model.RobotState,double)" class="member-name-link">surf</a><wbr>(<a href="../model/BotOrders.Builder.html" title="class in hadur117.core.model">BotOrders.Builder</a>&nbsp;orders,
  <a href="../model/RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;myState,
  <a href="MoveController.html" title="class in hadur117.core.move">MoveController</a>&nbsp;moveCtrl,
  <a href="../physics/ShotDodger.html" title="class in hadur117.core.physics">ShotDodger</a>&nbsp;dodger,
  <a href="../model/RobotState.html" title="class in hadur117.core.model">RobotState</a>&nbsp;enemy,
  double&nbsp;desiredDistance)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Drives the tick when the dodger has an expert and a surfable wave has its bullet.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#waveCost(hadur117.core.model.Wave,hadur117.core.model.Wave.Intersection,double,double)" class="member-name-link">waveCost</a><wbr>(<a href="../model/Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#waveCost(hadur117.core.model.Wave,hadur117.core.model.Wave.Intersection,double,double)" class="member-name-link">waveCost</a><wbr>(<a href="../model/Wave.html" title="class in hadur117.core.model">Wave</a>&nbsp;w,
  <a href="../model/Wave.Intersection.html" title="class in hadur117.core.model">Wave.Intersection</a>&nbsp;x,
  double&nbsp;bullet,
  double&nbsp;band)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">One wave's cost for a path crossing it at <code>x</code>, its expert bullet at <code>bullet</code> and
  as far as <code>band</code> either side (<a href="../physics/ShotDodger.html#band(int)"><code>ShotDodger.band(int)</code></a>).</div>
 </div>
@@ -561,6 +567,14 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="attackAngle(double,double)">
+<h3>attackAngle</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">attackAngle</span><wbr><span class="parameters">(double&nbsp;distance,
+ double&nbsp;desiredDistance)</span></div>
+<div class="block">As the three-option surf's attack angle: 0.6 times the relative distance error, capped.</div>
+</section>
+</li>
 <li>
 <section class="detail" id="reset()">
 <h3>reset</h3>
