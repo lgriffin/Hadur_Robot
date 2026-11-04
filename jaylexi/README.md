@@ -36,6 +36,12 @@ writes the same play in fewer bytes, and an `ORB` string spends them on a per-ro
 1.35 for 13 robots and 0.95 for 9, 1.15 for the rest (pc-jaylexi-orb, PR #644: +0.06 ± 0.04 APS on
 fresh seeds). Notes in docs/releases/jaylexi-v0.5.md.
 
+0.6 (banked 2026-11-04, not released) adds aim jitter against bullet catchers (JAYLEXI-19): BulletCatcher's
+orbit char carries 2 pi more, which switches on up to 0.125 rad of random gun turn; every other robot plays as
+0.5. +57.3 ± 3.3 points against BulletCatcher on 20 fresh seeds, +0.086 APS
+([docs/bench/local/2026-11-04_jaylexi-jit.md](../docs/bench/local/2026-11-04_jaylexi-jit.md)). It is 1,507 bytes
+with javac, so the jar is built through ProGuard again (`jaylexi/proguard.pro`) to 1,494 bytes.
+
 ## Standing
 
 | Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | Next up | Gap |
@@ -72,8 +78,8 @@ the pages are saved in `data/rumble/pages/` under 2026-10-29T2010Z* (they caught
     mvn -pl jaylexi verify
 
 The shipped jar is `jaylexi/target/hadur117.mini.JayLexi_<version>.jar` (its classes, properties and
-source); `JayLexiJarIT` prints its codesize, holds 3 bytes spare, and replays the jar itself
-against the readable reference.
+source, ProGuard-optimised from 0.6); `JayLexiJarIT` prints its codesize, holds 3 bytes spare, and
+replays the jar itself against the readable reference.
 
 ## Bench
 

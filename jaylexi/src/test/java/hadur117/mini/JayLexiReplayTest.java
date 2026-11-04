@@ -73,12 +73,27 @@ class JayLexiReplayTest {
         }
     }
 
+    @Test
+    @Tag("JAYLEXI-19")
+    @DisplayName("the aim jitter rides BulletCatcher's orbit char alone, and its orbit stays 2 pi from a picked one")
+    void jitterOnlyAgainstTheCatcher() {
+        int k = JayLexi.NAMES.indexOf((char) "rsim.mini.BulletCatcher 0.4".hashCode());
+        assertTrue(k >= 0, "BulletCatcher has a row");
+        for (int i = 0; i < JayLexi.ORB.length(); i++) {
+            int c = JayLexi.ORB.charAt(i);
+            assertEquals(i == k + 1, c >= 400, "row " + i);
+        }
+        double orbit = (JayLexi.ORB.charAt(k + 1) - 2 * Math.PI * 100) / 100.0;
+        assertEquals(1.15, orbit, 0.005, "1.15 plus 2 pi, to 0.003 rad");
+    }
+
     /** A name whose row has an orbit other than 1.15. */
     static String orbitName() {
         for (int i = 0; ; i++) {
             String n = "e" + i;
             int k = JayLexi.NAMES.indexOf((char) n.hashCode());
-            if (k >= 0 && JayLexi.ORB.charAt(k + 1) != 115) {
+            // Not a jitter row (JAYLEXI-19): its Math.random() draws are not seeded, so it does not replay.
+            if (k >= 0 && JayLexi.ORB.charAt(k + 1) != 115 && JayLexi.ORB.charAt(k + 1) < 400) {
                 return n;
             }
         }
