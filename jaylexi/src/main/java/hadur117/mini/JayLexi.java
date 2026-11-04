@@ -123,7 +123,7 @@ public class JayLexi extends AdvancedRobot {
         lateral = Math.min(Math.min(POWER.charAt((int) (distance / 50)), getEnergy() / 15), enemyEnergy / 4 + 0.1);
         w.travelled = -1.5 * (w.speed = Rules.getBulletSpeed(lateral));
         addCustomEvent(w);
-        // Up to 0.0625 rad of aim jitter against a robot whose orbit char carries 2 pi more: a bullet catcher (JAYLEXI-19).
+        // Up to 0.125 rad of aim jitter against a robot whose orbit char carries 2 pi more: a bullet catcher (JAYLEXI-19).
         setTurnGunRightRadians(Utils.normalRelativeAngle(absBearing - getGunHeadingRadians()
                 + (Math.random() - 0.5) * ((int) orbit >> 2) / 4 + w.dir * (best - MID) * Math.asin(8 / w.speed) / MID));
         if (Math.abs(getGunTurnRemaining()) < 3 && setFireBullet(lateral) != null) {

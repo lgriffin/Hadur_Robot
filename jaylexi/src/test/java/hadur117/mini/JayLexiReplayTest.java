@@ -92,7 +92,8 @@ class JayLexiReplayTest {
         for (int i = 0; ; i++) {
             String n = "e" + i;
             int k = JayLexi.NAMES.indexOf((char) n.hashCode());
-            if (k >= 0 && JayLexi.ORB.charAt(k + 1) != 115) {
+            // Not a jitter row (JAYLEXI-19): its Math.random() draws are not seeded, so it does not replay.
+            if (k >= 0 && JayLexi.ORB.charAt(k + 1) != 115 && JayLexi.ORB.charAt(k + 1) < 400) {
                 return n;
             }
         }

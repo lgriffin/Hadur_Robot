@@ -2,7 +2,7 @@
 """JayLexi per-robot aim jitter against bullet catchers (JAYLEXI-19, BENCH-190).
 
 Bullet catchers (rsim.mini.BulletCatcher) shoot JayLexi's bullets down: its GuessFactor gun aims where they
-expect, and every bullet caught costs JayLexi the energy it fired. A random turn of up to 0.0625 rad either side
+expect, and every bullet caught costs JayLexi the energy it fired. A random turn of up to 0.125 rad either side
 of the aim breaks the catch (BulletCatcher 21.9% -> 72.7% of the score, 4 seeds, 2026-11-04). For most robots
 the jitter only scatters good aim, so it has to be per robot. It costs no table: it rides the orbit char.
 
@@ -12,7 +12,7 @@ The orbit is read in hundredths of a radian (tools/jaylexi_orbit.py, 0.95 to 1.3
 every orbit under 4 rad, so those robots aim exactly as before (the term is +-0.0, and JayLexi draws no other
 random numbers, so their play is bit for bit unchanged). Adding 628 to a robot's char (2 pi in hundredths, 0.0032
 rad short) keeps its orbit (the orbit only enters sin, cos and tan) and makes the term 1: that robot's aim
-jitters by up to 0.0625 rad either way. 1,494 B with ecj + ProGuard (kitlab/build_arm_pg.sh), within 1,496.
+jitters by up to 0.125 rad either way. 1,494 B with ecj + ProGuard (kitlab/build_arm_pg.sh), within 1,496.
 
   python3 tools/jaylexi_jit.py SRC OUT [--all] [--pick PICK.tsv --field FIELD --written F]
 

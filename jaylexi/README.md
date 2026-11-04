@@ -37,7 +37,7 @@ writes the same play in fewer bytes, and an `ORB` string spends them on a per-ro
 fresh seeds). Notes in docs/releases/jaylexi-v0.5.md.
 
 0.6 (banked 2026-11-04, not released) adds aim jitter against bullet catchers (JAYLEXI-19): BulletCatcher's
-orbit char carries 2 pi more, which switches on up to 0.0625 rad of random gun turn; every other robot plays as
+orbit char carries 2 pi more, which switches on up to 0.125 rad of random gun turn; every other robot plays as
 0.5. +57.3 ± 3.3 points against BulletCatcher on 20 fresh seeds, +0.086 APS
 ([docs/bench/local/2026-11-04_jaylexi-jit.md](../docs/bench/local/2026-11-04_jaylexi-jit.md)). It is 1,507 bytes
 with javac, so the jar is built through ProGuard again (`jaylexi/proguard.pro`) to 1,494 bytes.

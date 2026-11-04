@@ -127,7 +127,7 @@ public class JayLexi extends AdvancedRobot {
         w.travelled = -1.5 * w.speed;
         addCustomEvent(w);
         // Aim jitter (JAYLEXI-19): an orbit of 4 rad or more (a robot's own orbit plus 2 pi, which
-        // the drive and danger read the same) turns the gun up to 0.0625 rad either way at random,
+        // the drive and danger read the same) turns the gun up to 0.125 rad either way at random,
         // so a bullet catcher cannot shoot the bullet down. Under 4 the term is 0 and play is 0.5's.
         double jitter = (Math.random() - 0.5) * ((int) orbit >> 2) / 4;
         setTurnGunRightRadians(Utils.normalRelativeAngle(absBearing - getGunHeadingRadians()
