@@ -26,3 +26,10 @@
 19:09:01 start mfy5
 19:09:01 watching mfy5: 2 stop rule(s)
 19:21:24 progress mfy5: 78/276 (28%) battles, 378/h, ETA 31 min, 0 failed, skips 30.5/battle (last 100)
+19:51:38 progress mfy5: 242/276 (88%) battles, 341/h, ETA 6 min, 0 failed, skips 37.6/battle (last 100)
+19:56:48 mfy5 exit=0 in 2866 s
+19:56:48 start mfread
+19:56:58 mfread exit=0 in 10 s
+19:56:58 start mfpr
+19:57:08 mfpr exit=0 in 9 s
+19:57:08 ALLDONE
