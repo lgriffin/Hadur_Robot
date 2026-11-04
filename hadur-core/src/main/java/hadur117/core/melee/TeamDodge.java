@@ -39,7 +39,7 @@ final class TeamDodge {
     /**
      * TMODE-29, on since TMODE-30 (ablation tmnoof turns it off): our own fire as PATH weighs it. The base ranking keeps
      * MATEFIRE's teammate-bullet risk, and the teammates' bullets crossed on each drive add to
-     * the risk at {@link MinimumRiskMovement#PATH_K} rather than to the median-scaled damage.
+     * the risk at {@link TeamRisk#PATH_K} rather than to the median-scaled damage.
      */
     static final boolean OWN_FIRE = true;
     /** Candidates driven through the waves: more than WAVES' 8, since the base ranking no longer sees bullets. */
@@ -105,7 +105,7 @@ final class TeamDodge {
         if (at == null) at = path.getState(s.fireTime + 1);
         Point2D.Double target = at == null ? me : at.location;
         double aimed = own ? (TeamDanger.aimedAtMe(s, target, mates) ? 1.0 : 0.0)
-            : MinimumRiskMovement.softWeight(s, target, mates);
+            : TeamRisk.softWeight(s, target, mates);
         if (aimed < MinimumRiskMovement.SOFT_FLOOR) return null;
         double hot = DiaUtils.absoluteBearing(s.source, target);
         if (at == null) return new MinimumRiskMovement.Wave(s, aimed, new double[] {hot}, new double[] {1.0}, hot);
