@@ -102,8 +102,6 @@ public class MeleeController {
     /** Where Hadur has been this round, to tell head-on shooters from leading ones. */
     private final RobotStateLog myPath = new RobotStateLog();
     private long ghostsDropped;
-    /** Where Hadur was at its last tick, for MGUN-11's nearest robot; null before the first. */
-    private Point2D.Double lastMe;
     /** T6: the team's log of each enemy's gun (MMOVE-9, MMOVE-10); untouched off a team. */
     private final TeamDanger danger;
     /** Whether the last tick had a living teammate. */
@@ -153,7 +151,6 @@ public class MeleeController {
         lastTarget = null;
         myPath.clear();
         paths.clear();
-        lastMe = null;
     }
 
     public OpponentStatsBook book() { return book; }
@@ -182,12 +179,7 @@ public class MeleeController {
         profiles.scanned(name, distance);
         if (shot != null) profiles.shotInferred(name, shot.power);
         book.get(name).recordScan(distance, velocity, info.turnRate());
-        if (EnemyHistory.CROWD) {
-            List<EnemyInfo> alive = tracker.alive();
-            gun.onScan(info, distance, time, nearest(info.name, info.location, alive), alive.size());
-        } else {
-            gun.onScan(info, distance, time);
-        }
+        gun.onScan(info, distance, time);
         waves.onScan(info, time);
         if (cross && !onTeam && mover.surfing()) crossHit(info, time);
     }
@@ -242,36 +234,7 @@ public class MeleeController {
      */
     public void mateSighting(String name, long time, double x, double y, double heading, double velocity,
                              double distance, double turnRate) {
-        if (EnemyHistory.CROWD) {
-            List<EnemyInfo> alive = tracker.alive();
-            gun.onSighting(name, time, x, y, heading, velocity, distance, turnRate,
-                nearest(name, new Point2D.Double(x, y), alive), alive.size());
-        } else {
-            gun.onSighting(name, time, x, y, heading, velocity, distance, turnRate);
-        }
-    }
-
-    /**
-     * MGUN-11: where Hadur is now, set before the tick's scans so their crowd attributes
-     * measure from this tick's position rather than the last.
-     */
-    public void at(Point2D.Double me) {
-        lastMe = me;
-    }
-
-    /** MGUN-11: the robot nearest {@code name} at {@code at}, Hadur included, or null. */
-    private Point2D.Double nearest(String name, Point2D.Double at, List<EnemyInfo> alive) {
-        Point2D.Double nearest = lastMe;
-        double best = lastMe == null ? Double.POSITIVE_INFINITY : lastMe.distance(at);
-        for (EnemyInfo o : alive) {
-            if (o.name.equals(name) || o.location == null) continue;
-            double d = o.location.distance(at);
-            if (d < best) {
-                best = d;
-                nearest = o.location;
-            }
-        }
-        return nearest;
+        gun.onSighting(name, time, x, y, heading, velocity, distance, turnRate);
     }
 
     /** One of Hadur's bullets of {@code power} hit {@code name}. */
@@ -433,7 +396,6 @@ public class MeleeController {
         myPath.addState(RobotState.newBuilder().setLocation(s.me).setHeading(s.heading)
             .setVelocity(s.velocity).setTime(s.time).build());
         Command c = new Command();
-        lastMe = s.me;
         ghostsDropped += tracker.pruneGhosts(s.others, s.time, s.me);
         EnemyInfo last = tracker.get(lastTarget);
         String finisher = last != null && last.energy <= FINISHER_ENERGY ? last.name : null;
@@ -501,7 +463,7 @@ public class MeleeController {
         return c;
     }
 
-    /** MMOVE-20: a shot left from {@code at} on {@code time} along {@code gunHeading}; kept for the shadows it casts. */
+    /** A shot left from {@code at} on {@code time} along {@code gunHeading}, at the last target. */
     public void shotFired(Point2D.Double at, long time, double gunHeading, double power) {
         shotFired(at, time, gunHeading, power, lastTarget);
     }
@@ -510,11 +472,5 @@ public class MeleeController {
     public void shotFired(Point2D.Double at, long time, double gunHeading, double power, String target) {
         // TMODE-33: counted for the team brain's power, whatever plays.
         gun.shotAt(target);
-        if (!onTeam && mover.bulletShading()) mover.ownShot(at, time, gunHeading, power);
-    }
-
-    /** MMOVE-20: one of Hadur's bullets hit a robot or a bullet, so it casts no more shadows. */
-    public void ownBulletGone(double power, double heading) {
-        if (mover.bulletShading()) mover.ownBulletGone(power, heading);
     }
 }

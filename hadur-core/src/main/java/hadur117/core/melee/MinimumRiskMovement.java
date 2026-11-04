@@ -69,15 +69,6 @@ public class MinimumRiskMovement {
     static final double NEAREST_FRACTION = 0.8;
 
     static final double CLOSEST_FACTOR = 2.0;
-    /**
-     * MMOVE-24 (arms mnear3, mnear4): the closest-robot factor off a team. On the 1.11.2 census
-     * Hadur is the nearest robot of 0.83 opponents on a mean crowd tick, Diamond and ScalarR of
-     * 0.50; in the rounds Hadur dies in the crowd it is 0.98, and the damage from opponents it is
-     * nearest to doubles (44 against 20 in rounds it survives). A larger factor keeps Hadur off
-     * other robots' nearest-target lists in the crowd, three or more opponents alive; with two
-     * left MEND-3's factor of 4 stands in every arm. The team and the duel never read it.
-     */
-    public static final double CLOSEST_FACTOR_SOLO = 2.0;
     static final double RECENT_HIT_FACTOR = 1.5;
     static final long RECENT_HIT_TICKS = 100;
     static final long OPENING_TICKS = 30;
@@ -167,42 +158,8 @@ public class MinimumRiskMovement {
     static final double REACHED = 20;
 
     /**
-     * MMOVE-11 (pc-melee-crowd, arm maim): off a team, a seen shot's bullets weigh
-     * 1/(1+k)^2 for the k other opponents nearer its shooter than Hadur was, and none under
-     * {@link #SOFT_FLOOR}: in a crowd most shots are aimed at someone else. Off.
-     */
-    public static final boolean MELEE_AIMED = false;
-    /**
-     * MMOVE-12 (arm mhop): off a team with three or more opponents left, short hops: the
-     * rings run from {@link #HOP_INNER} to {@link #HOP_SHARE} of the nearest fresh opponent's
-     * distance, at least {@link #HOP_MIN} and at most {@link #RING_MAX} px. Off.
-     */
-    public static final boolean MELEE_HOPS = false;
-    static final double HOP_SHARE = 0.45;
-    static final double HOP_MIN = 80;
-    static final double HOP_INNER = 40;
-    /**
-     * MMOVE-13 (arm mheat): off a team, an opponent Hadur is the nearest robot to is assumed to
-     * fire at Hadur on the tick its gun could next be cool (from its last seen shot, else
-     * {@link #ASSUMED_FIRST_TICK}) unless a real shot shows first: head-on and linear bullets at
-     * the power of its last seen shot (else {@link #ASSUMED_POWER}), weighing
-     * {@link #ASSUMED_WEIGHT}. Off.
-     */
-    public static final boolean MELEE_HEAT = false;
-    static final double ASSUMED_WEIGHT = 0.5;
-    static final double ASSUMED_POWER = 2.0;
-    static final long ASSUMED_FIRST_TICK = 30;
-    /** The engine's default gun cooling, heat a tick. */
-    static final double GUN_COOLING = 0.1;
-    /**
-     * MMOVE-14 (arm mcloser): off a team with three or more opponents left, an opponent's term
-     * is divided by one plus the number of other opponents nearer it than the point: a robot
-     * with closer prey is less likely to come for Hadur. Off.
-     */
-    public static final boolean MELEE_CLOSER = false;
-    /**
      * MMOVE-15 (arm msurf), the melee surfer: off a team, the top three's way. Each seen shot is
-     * a wave weighed by who else is nearer its shooter (MMOVE-11's weight); once Hadur's log of
+     * a wave weighed by who else is nearer its shooter ({@link #crowdWeight}); once Hadur's log of
      * that shooter's hits holds {@link TeamDanger#MIN_SAMPLES}, its bullets are the learned aims
      * (MMOVE-10's log, fed off a team by Hadur's own hits) in place of head-on and linear; and the
      * destination is chosen by the wave check (TMODE-11): the {@link #WAVE_RERANK} least risky
@@ -210,45 +167,6 @@ public class MinimumRiskMovement {
      * (pc-melee-surf: +0.99 +- 0.19 census APS, PR #462).
      */
     public static final boolean MELEE_SURF = true;
-    /**
-     * MMOVE-16 (arm mmix), inspired by ScalarR: with the surfer on, a shot's share aimed at Hadur
-     * is Hadur's 1/d^2 from its source over the sum of 1/d^2 for every robot alive but the shooter,
-     * in place of MMOVE-11's 1/(1+k)^2; shares under {@link #MIX_FLOOR} make no bullets. Off.
-     */
-    public static final boolean MELEE_MIX = false;
-    static final double MIX_FLOOR = 0.02;
-    /**
-     * MMOVE-17 (arm mwpath), inspired by ScalarR: with the surfer on, each destination of the wave
-     * check scores (20 x its wave damage / all the damage in the air + c) x (1 + c), c its risk
-     * over the risk where Hadur stands, so a crowd both adds and multiplies. Off.
-     */
-    public static final boolean MELEE_PATH_DANGER = false;
-    static final double PATH_DANGER_K = 20;
-    /**
-     * MMOVE-18 (arm mshade), inspired by ScalarR: with the surfer on, a wave's danger at Hadur is
-     * cut by the share of Hadur's width that another robot nearer its source covers (each robot
-     * over {@link #SHADE_MIN} px from the source, +-asin(18/d) wide). Off.
-     */
-    public static final boolean MELEE_SHADE = false;
-    static final double SHADE_MIN = 36;
-    static final double SHADE_HALF = 18;
-    /**
-     * MMOVE-20 (arm mbshade), inspired by ScalarR: with the surfer on, each of Hadur's own bullets
-     * in flight shades the stretch of every enemy wave it crosses, from the crossing outward, as a
-     * bot shadow does (MMOVE-18's share of Hadur's width). Off.
-     */
-    public static final boolean MELEE_BULLET_SHADE = false;
-    /** MMOVE-20: Hadur's own bullets kept for their shadows; more than are ever in the air at once. */
-    static final int OWN_BULLETS = 32;
-    /**
-     * MMOVE-21 (arm msearch), inspired by ScalarR: with the surfer on, the destinations it weighs
-     * are five {@link #SEARCH_STEP} px steps (away from the crowd and toward the nearest corner;
-     * straight on; straight back; and square to either side) in place of the least risky points,
-     * each scored as the waves met on the way plus the least of the five steps from its end, two
-     * waves deep. Off.
-     */
-    public static final boolean MELEE_SEARCH = false;
-    static final double SEARCH_STEP = 140;
     /**
      * MMOVE-22 (arm mdmg), inspired by Diamond's melee movement: off a team, each opponent's risk
      * term weighs by the damage its bullets have done to Hadur over the whole battle, plus
@@ -262,14 +180,6 @@ public class MinimumRiskMovement {
     static final double DAMAGE_BASE = 10;
     /** MMOVE-22: the mean distance taken for an opponent never scanned. */
     static final double DAMAGE_DISTANCE_START = 500;
-    /**
-     * MMOVE-23 (arm mlat), inspired by Diamond: off a team with three or more opponents, the
-     * lateral weight is {@link #FULL_LATERAL} in place of {@link #LATERAL}: a point reached
-     * straight at or away from an opponent counts double, not half again. Off.
-     */
-    public static final boolean MELEE_FULL_LATERAL = false;
-    static final double FULL_LATERAL = 1.0;
-
     static final double PERIPHERY_K = 0.2;
     static final double CUTOFF_K = 0.4;
     static final double FIGHT_K = 0.4;
@@ -398,26 +308,19 @@ public class MinimumRiskMovement {
     private Point2D.Double destination;
     private Point2D.Double openingSpot;
     private long round = -1;
-    /** MMOVE-11..14: the crowd switches this movement plays; the shipped ones unless a test sets them. */
-    private boolean aimed = MELEE_AIMED, hops = MELEE_HOPS, heat = MELEE_HEAT, closer = MELEE_CLOSER;
     /** MMOVE-15: whether this movement surfs off a team. */
     private boolean surf = MELEE_SURF;
-    /** MMOVE-16..18: the ScalarR-inspired switches on the surfer. */
-    private boolean mix = MELEE_MIX, pathDanger = MELEE_PATH_DANGER, shade = MELEE_SHADE;
-    /** MMOVE-20, MMOVE-21: the further ScalarR-inspired switches on the surfer. */
-    private boolean bulletShade = MELEE_BULLET_SHADE, search = MELEE_SEARCH;
-    /** MMOVE-22, MMOVE-23: the Diamond-inspired switches. */
-    private boolean damageMemory = MELEE_DAMAGE_MEMORY, fullLateral = MELEE_FULL_LATERAL;
+    /** MMOVE-22: whether this movement remembers the damage each gun has done. */
+    private boolean damageMemory = MELEE_DAMAGE_MEMORY;
     /** MMOVE-22: this tick's weight per opponent, averaging 1; empty when the switch is off. */
     private Map<String, Double> damageWeight = Map.of();
     public boolean damageMemory() {
         return damageMemory;
     }
 
-    /** MMOVE-22, MMOVE-23: sets the Diamond-inspired switches, for tests and the bench's arms. */
-    void diamond(boolean damageMemory, boolean fullLateral) {
-        this.damageMemory = damageMemory;
-        this.fullLateral = fullLateral;
+    /** MMOVE-22: sets the damage memory, for tests. */
+    void damageMemory(boolean on) {
+        this.damageMemory = on;
     }
 
     /** MMOVE-22: the weights this decision's enemy terms carry, from {@link #damageWeights}. */
@@ -447,15 +350,6 @@ public class MinimumRiskMovement {
         for (Map.Entry<String, Double> x : raw.entrySet()) out.put(x.getKey(), x.getValue() / mean);
         return out;
     }
-    /** MMOVE-20: Hadur's own bullets in flight; filled only with the switch on. */
-    private final Deque<VirtualBullet> ownBullets = new ArrayDeque<>();
-    /** MMOVE-13: per opponent, the tick its gun could next fire, and its last seen shot's power. */
-    private final java.util.Map<String, Long> nextFire = new java.util.HashMap<>();
-    private final java.util.Map<String, Double> lastPower = new java.util.HashMap<>();
-    /** MMOVE-13: how long an assumed shot is kept for a seen one to replace: past any bullet's flight. */
-    static final long ASSUMED_KEEP = 150;
-    /** MMOVE-13: the assumed shots whose bullets are still in the air. */
-    private final List<EnemyShot> assumed = new ArrayList<>();
     private int lastCandidates;
     /** MMOVE-8: this member's place in the team's roster, or -1 off a team. */
     private int teamIndex = -1;
@@ -498,7 +392,7 @@ public class MinimumRiskMovement {
         teamName = name;
     }
 
-    /** Whether this member is on a team: a roster place, or a living teammate in sight (MEND-1..3 read it). */
+    /** Whether this member is on a team: a roster place, or a living teammate in sight (MEND-3 reads it). */
     private boolean onTeam(List<Roster.Mate> mates) {
         return teamIndex >= 0 || !mates.isEmpty();
     }
@@ -508,58 +402,10 @@ public class MinimumRiskMovement {
         openingSpot = null;
         bullets.clear();
         mateBullets.clear();
-        ownBullets.clear();
         seenShots.clear();
         past.clear();
-        nextFire.clear();
-        lastPower.clear();
-        assumed.clear();
         dodge.newRound();
         round++;
-    }
-
-    /** MMOVE-16..18: sets the ScalarR-inspired switches, for tests. */
-    void scalar(boolean mix, boolean pathDanger, boolean shade) {
-        this.mix = mix;
-        this.pathDanger = pathDanger;
-        this.shade = shade;
-    }
-
-    /** MMOVE-20, MMOVE-21: sets the further ScalarR-inspired switches, for tests. */
-    void scalar2(boolean bulletShade, boolean search) {
-        this.bulletShade = bulletShade;
-        this.search = search;
-    }
-
-    /** MMOVE-20: whether Hadur's own bullets are kept for their shadows. */
-    public boolean bulletShading() {
-        return surf && bulletShade;
-    }
-
-    /** MMOVE-20: Hadur fired from {@code at} on {@code tick} along {@code heading}. */
-    public void ownShot(Point2D.Double at, long tick, double heading, double power) {
-        while (ownBullets.size() >= OWN_BULLETS) ownBullets.removeFirst();
-        ownBullets.addLast(new VirtualBullet(new EnemyShot("", new Point2D.Double(at.x, at.y), tick, power, 0),
-            VirtualBullet.Aim.HEAD_ON, heading));
-    }
-
-    /**
-     * MMOVE-20: one of Hadur's bullets of {@code power} hit a robot or a bullet, so it casts no more
-     * shadows: of the kept bullets of that power, the one whose heading is nearest {@code heading}
-     * (the oldest when the heading is unknown) is dropped.
-     */
-    public void ownBulletGone(double power, double heading) {
-        VirtualBullet gone = null;
-        double best = Double.POSITIVE_INFINITY;
-        for (VirtualBullet b : ownBullets) {
-            if (Math.abs(b.shot.power - power) > 0.001) continue;
-            double off = Double.isNaN(heading) ? 0 : Math.abs(Angles.normalRelativeAngle(b.heading - heading));
-            if (off < best) {
-                best = off;
-                gone = b;
-            }
-        }
-        if (gone != null) ownBullets.remove(gone);
     }
 
     /** MMOVE-15: sets the melee surfer, for tests. */
@@ -572,19 +418,9 @@ public class MinimumRiskMovement {
         return surf;
     }
 
-    /** MMOVE-11..14: sets the crowd switches, for tests and the bench's arms. */
-    void crowd(boolean aimed, boolean hops, boolean heat, boolean closer) {
-        this.aimed = aimed;
-        this.hops = hops;
-        this.heat = heat;
-        this.closer = closer;
-    }
-
     /**
-     * Off a team: {@link #updateBullets(List, RobotStateLog, Point2D.Double, long)}, then with
-     * MMOVE-11 each new shot's bullets weigh by the opponents nearer its shooter, and with
-     * MMOVE-13 the opponents Hadur is nearest to fire assumed shots when their guns could be cool.
-     * {@code enemies} are the living opponents. With both off this is MMOVE-3 bit for bit.
+     * Off a team: {@link #updateBullets(List, RobotStateLog, Point2D.Double, long)}, MMOVE-3.
+     * {@code enemies} are the living opponents.
      */
     public void updateMeleeBullets(List<EnemyShot> shots, RobotStateLog myPath, Point2D.Double me,
                                    long now, List<EnemyInfo> enemies) {
@@ -592,13 +428,13 @@ public class MinimumRiskMovement {
     }
 
     /**
-     * As above, where with MMOVE-15 each shot also weighs by MMOVE-11's crowd weight and a
+     * As above, where with MMOVE-15 each shot also weighs by its {@link #crowdWeight} and a
      * shooter whose log in {@code danger} is deep enough makes its learned aims.
      */
     public void updateMeleeBullets(List<EnemyShot> shots, RobotStateLog myPath, Point2D.Double me,
                                    long now, List<EnemyInfo> enemies, TeamDanger danger) {
         boolean learn = surf && danger != null;
-        if (!aimed && !heat && !learn) {
+        if (!learn) {
             updateBullets(shots, myPath, me, now);
             return;
         }
@@ -607,16 +443,9 @@ public class MinimumRiskMovement {
             RobotState at = myPath.getState(s.fireTime);
             if (at == null) at = myPath.getState(s.fireTime + 1);
             Point2D.Double target = at == null ? me : at.location;
-            if (heat) {
-                long cool = s.fireTime + coolTicks(s.power);
-                if (cool > nextFire.getOrDefault(s.shooter, Long.MIN_VALUE)) nextFire.put(s.shooter, cool);
-                lastPower.put(s.shooter, s.power);
-                dropAssumed(s);
-            }
-            double w = learn && mix ? mixWeight(s, target, enemies)
-                : aimed || learn ? crowdWeight(s, target, enemies) : 1.0;
-            if (w < (learn && mix ? MIX_FLOOR : SOFT_FLOOR)) continue;
-            List<TeamDanger.Aim> aims = learn && at != null ? danger.aims(s, at) : null;
+            double w = crowdWeight(s, target, enemies);
+            if (w < SOFT_FLOOR) continue;
+            List<TeamDanger.Aim> aims = at != null ? danger.aims(s, at) : null;
             if (aims != null) {
                 // The SURF_AIMS nearest aims carry the shot's whole weight: melee has many shots
                 // in flight, and every bullet costs each candidate's risk sum.
@@ -634,8 +463,6 @@ public class MinimumRiskMovement {
             }
             addGuesses(s, at, target, w);
         }
-        if (heat) assumeShots(me, now, enemies, myPath);
-        assumed.removeIf(x -> now - x.fireTime > ASSUMED_KEEP);
         double reach = Math.hypot(field.width, field.height);
         for (Iterator<VirtualBullet> it = bullets.iterator(); it.hasNext(); ) {
             if (it.next().passed(me, now, reach)) it.remove();
@@ -652,43 +479,7 @@ public class MinimumRiskMovement {
     }
 
     /**
-     * MMOVE-13: a seen shot replaces the shots assumed of its shooter in the same cooling
-     * window (fired no earlier than a cooling before it), so one shot is not counted twice.
-     */
-    private void dropAssumed(EnemyShot seen) {
-        long from = seen.fireTime - coolTicks(seen.power);
-        java.util.Set<EnemyShot> gone = java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
-        for (Iterator<EnemyShot> it = assumed.iterator(); it.hasNext(); ) {
-            EnemyShot a = it.next();
-            if (a.shooter.equals(seen.shooter) && a.fireTime >= from) {
-                gone.add(a);
-                it.remove();
-            }
-        }
-        if (!gone.isEmpty()) bullets.removeIf(b -> gone.contains(b.shot));
-    }
-
-    /** Ticks a gun takes to cool after a shot of {@code power}, at the engine's default cooling. */
-    static long coolTicks(double power) {
-        return (long) Math.ceil((1 + power / 5) / GUN_COOLING);
-    }
-
-    /**
-     * MMOVE-16: the share of {@code shot} aimed at Hadur, standing at {@code me} when it was
-     * fired: 1/d^2 to Hadur over the sum of 1/d^2 to Hadur and every living opponent but the shooter.
-     */
-    static double mixWeight(EnemyShot shot, Point2D.Double me, List<EnemyInfo> enemies) {
-        double mine = 1 / Math.max(1, shot.source.distanceSq(me));
-        double sum = mine;
-        for (EnemyInfo e : enemies) {
-            if (e.location == null || e.name.equals(shot.shooter)) continue;
-            sum += 1 / Math.max(1, shot.source.distanceSq(e.location));
-        }
-        return mine / sum;
-    }
-
-    /**
-     * MMOVE-11: the share of {@code shot} aimed at Hadur, standing at {@code me} when it was
+     * MMOVE-15: the share of {@code shot} aimed at Hadur, standing at {@code me} when it was
      * fired: 1/(1+k)^2 for the k living opponents other than its shooter nearer its source.
      */
     static double crowdWeight(EnemyShot shot, Point2D.Double me, List<EnemyInfo> enemies) {
@@ -699,33 +490,6 @@ public class MinimumRiskMovement {
             if (shot.source.distance(e.location) < mine) k++;
         }
         return 1.0 / ((1 + k) * (1 + k));
-    }
-
-    /**
-     * MMOVE-13: each living opponent with energy that Hadur is nearer than any other opponent,
-     * whose gun could be cool by {@code now}, is taken to fire at Hadur now; its next possible
-     * shot is a cooling later.
-     */
-    void assumeShots(Point2D.Double me, long now, List<EnemyInfo> enemies, RobotStateLog myPath) {
-        for (EnemyInfo e : enemies) {
-            if (e.location == null || e.isStale(now)) continue;
-            if (now < nextFire.getOrDefault(e.name, ASSUMED_FIRST_TICK)) continue;
-            double mine = e.location.distance(me);
-            boolean nearest = true;
-            for (EnemyInfo o : enemies) {
-                if (o != e && o.location != null && !o.isStale(now) && o.location.distance(e.location) < mine) {
-                    nearest = false;
-                    break;
-                }
-            }
-            if (!nearest) continue;
-            double power = Math.min(lastPower.getOrDefault(e.name, ASSUMED_POWER), e.energy);
-            if (power < 0.1) continue;
-            EnemyShot s = new EnemyShot(e.name, new Point2D.Double(e.location.x, e.location.y), now, power);
-            addGuesses(s, myPath.getState(now), me, ASSUMED_WEIGHT);
-            assumed.add(s);
-            nextFire.put(e.name, now + coolTicks(power));
-        }
     }
 
     /**
@@ -880,7 +644,7 @@ public class MinimumRiskMovement {
         lastCandidates = candidates.size();
         if (surf && !onTeam(mates)) {
             // MMOVE-15: the melee surfer picks by the wave check.
-            destination = surfBest(candidates, v);
+            destination = waveBest(candidates, v);
             return destination;
         }
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.DODGE)) {
@@ -938,7 +702,7 @@ public class MinimumRiskMovement {
      */
     public List<Point2D.Double> candidates(Point2D.Double me, int others, List<EnemyInfo> enemies,
                                            long now, List<Roster.Mate> mates) {
-        boolean endgame = MeleeEndgame.endgameRing(others, onTeam(mates), MeleeEndgame.THREE_RING);
+        boolean endgame = others == 2;
         double min = endgame ? ENDGAME_RING_MIN : RING_MIN;
         double max = endgame ? ENDGAME_RING_MAX : RING_MAX;
         double nearest = Double.POSITIVE_INFINITY;
@@ -947,11 +711,6 @@ public class MinimumRiskMovement {
             nearest = Math.min(nearest, e.location.distance(me));
         }
         for (Roster.Mate m : mates) nearest = Math.min(nearest, m.at(now).distance(me));
-        if (hops && !onTeam(mates) && others >= 3 && nearest < Double.POSITIVE_INFINITY) {
-            // MMOVE-12: short hops through the crowd.
-            min = HOP_INNER;
-            max = Math.min(RING_MAX, Math.max(HOP_MIN, HOP_SHARE * nearest));
-        }
         double cap = Math.max(MIN_RING, NEAREST_FRACTION * nearest);
         List<Point2D.Double> out = new ArrayList<>(CANDIDATES);
         for (int ring = 0; ring < RINGS; ring++) {
@@ -1116,45 +875,6 @@ public class MinimumRiskMovement {
         return rerankBest(candidates, v, WAVE_RERANK, Wave.of(v.bullets), List.of(), false);
     }
 
-    /** MMOVE-15: the melee surfer's wave check, with MMOVE-17's scores and MMOVE-18's shadows when on. */
-    Point2D.Double surfBest(List<Point2D.Double> candidates, View v) {
-        if (!pathDanger && !shade && !bulletShade && !search) return waveBest(candidates, v);
-        if (search) candidates = steps(v.me, v);
-        return rerankBest(candidates, v, WAVE_RERANK, Wave.of(v.bullets), List.of(), false, true);
-    }
-
-    /**
-     * MMOVE-21: the five {@link #SEARCH_STEP} px steps from {@code from}, kept {@link #WALL_MARGIN}
-     * inside the field: away from every opponent (each pushing 1/d^2) and toward the nearest corner
-     * (0.5/(500 + d^2)); along the way Hadur is heading (to its destination, else that first step);
-     * straight back; and square to either side.
-     */
-    List<Point2D.Double> steps(Point2D.Double from, View v) {
-        double fx = 0, fy = 0;
-        for (EnemyInfo e : v.enemies) {
-            if (e.location == null) continue;
-            double dx = from.x - e.location.x, dy = from.y - e.location.y;
-            double d2 = Math.max(1, dx * dx + dy * dy);
-            fx += dx / Math.sqrt(d2) / d2;
-            fy += dy / Math.sqrt(d2) / d2;
-        }
-        double cx = from.x < field.width / 2 ? 0 : field.width, cy = from.y < field.height / 2 ? 0 : field.height;
-        double c2 = (cx - from.x) * (cx - from.x) + (cy - from.y) * (cy - from.y);
-        double cd = Math.max(1, Math.sqrt(c2));
-        fx += (cx - from.x) / cd * 0.5 / (500 + c2);
-        fy += (cy - from.y) / cd * 0.5 / (500 + c2);
-        double away = fx == 0 && fy == 0 ? 0 : Math.atan2(fx, fy);
-        double ahead = destination != null && destination.distance(from) > REACHED
-            ? DiaUtils.absoluteBearing(from, destination) : away;
-        List<Point2D.Double> out = new ArrayList<>(5);
-        for (double a : new double[] {away, ahead, ahead + Math.PI, ahead + Math.PI / 2, ahead - Math.PI / 2}) {
-            Point2D.Double p = DiaUtils.project(from, a, SEARCH_STEP);
-            out.add(new Point2D.Double(DiaUtils.limit(WALL_MARGIN, p.x, field.width - WALL_MARGIN),
-                DiaUtils.limit(WALL_MARGIN, p.y, field.height - WALL_MARGIN)));
-        }
-        return out;
-    }
-
     /**
      * TMODE-27, Ogi's dodge: the {@link TeamDodge#RERANK} lowest-risk candidates, and the
      * destination held if not reached, are each driven to through the shot profiles
@@ -1176,14 +896,6 @@ public class MinimumRiskMovement {
      */
     Point2D.Double rerankBest(List<Point2D.Double> candidates, View v, int rerank, List<Wave> waves,
                               List<VirtualBullet> mateBullets, boolean ownFire) {
-        return rerankBest(candidates, v, rerank, waves, mateBullets, ownFire, false);
-    }
-
-    /** As above; with {@code scalar} the surfer's MMOVE-17 scores and MMOVE-18 shadows apply when on. */
-    Point2D.Double rerankBest(List<Point2D.Double> candidates, View v, int rerank, List<Wave> waves,
-                              List<VirtualBullet> mateBullets, boolean ownFire, boolean scalar) {
-        List<double[][]> shadows = scalar && shade ? shadows(waves, v.enemies) : null;
-        if (scalar && bulletShade) shadows = withBulletShadows(shadows, waves, ownBullets(v.me, v.now), reach(field));
         List<Point2D.Double> pool = new ArrayList<>(candidates);
         boolean hold = destination != null && destination.distance(v.me) > REACHED;
         if (hold) pool.add(destination);
@@ -1202,31 +914,13 @@ public class MinimumRiskMovement {
         for (int k = 0; k < picked.size(); k++) {
             Point2D.Double p = pool.get(picked.get(k));
             r[k] = risk[picked.get(k)];
-            if (scalar && search) {
-                // MMOVE-21: the waves met until the step ends, then the best of the next five steps.
-                // The second leg starts where and as fast as the first ended, and a wave met on the
-                // first leg is not met again.
-                int t = arrival(v.me, p);
-                double[] end = {v.me.x, v.me.y, 0};
-                boolean[] met = new boolean[waves.size()];
-                double first = drive(end, p, v.now, t, waves, shadows, met);
-                double next = Double.POSITIVE_INFINITY;
-                for (Point2D.Double q : steps(p, v)) {
-                    double[] from = end.clone();
-                    from[2] = carried(v.me, from, q);
-                    next = Math.min(next, drive(from, q, v.now + t, WAVE_TICKS, waves, shadows, met.clone()));
-                }
-                damage[k] = first + next;
-            } else {
-                damage[k] = waveDamage(v.me, p, v.now, waves, shadows);
-            }
+            damage[k] = waveDamage(v.me, p, v.now, waves);
             if (mateBullets.isEmpty()) continue;
             double own = pathDamage(v.me, p, v.now, mateBullets);
             if (ownFire) r[k] += PATH_K * own;
             else damage[k] += own;
         }
-        double[] score = scalar && pathDanger ? pathDangerScores(r, damage, risk(v.me, v), inAir(waves))
-            : waveScores(r, damage);
+        double[] score = waveScores(r, damage);
         Point2D.Double best = null;
         double bestScore = Double.POSITIVE_INFINITY;
         for (int k = 0; k < picked.size(); k++) {
@@ -1350,75 +1044,6 @@ public class MinimumRiskMovement {
         return out;
     }
 
-    /**
-     * MMOVE-17: (K x damage / all the damage in the air + c) x (1 + c), c each destination's risk
-     * over the risk {@code here} (or the median, if more), all measured from the least (as {@link #waveScores}).
-     */
-    static double[] pathDangerScores(double[] risk, double[] damage, double here, double inAir) {
-        double least = here;
-        for (double x : risk) least = Math.min(least, x);
-        double[] shifted = new double[risk.length];
-        for (int k = 0; k < risk.length; k++) shifted[k] = risk[k] - least;
-        // Where Hadur stands is the least risk, the median keeps the scale.
-        double base = Math.max(1e-9, Math.max(here - least, median(shifted)));
-        double total = Math.max(1e-9, inAir);
-        double[] out = new double[risk.length];
-        for (int k = 0; k < risk.length; k++) {
-            double c = (risk[k] - least) / base;
-            out[k] = (PATH_DANGER_K * damage[k] / total + c) * (1 + c);
-        }
-        return out;
-    }
-
-    /** MMOVE-17: the most damage the {@code waves} in the air could do. */
-    static double inAir(List<Wave> waves) {
-        double sum = 0;
-        for (Wave w : waves) sum += w.aimed * w.damage;
-        return sum;
-    }
-
-    /**
-     * MMOVE-18: for each wave, the robots other than its shooter over {@link #SHADE_MIN} px from its
-     * source, each as {bearing from the source, half width +-asin(18/d), distance}.
-     */
-    static List<double[][]> shadows(List<Wave> waves, List<EnemyInfo> enemies) {
-        List<double[][]> out = new ArrayList<>(waves.size());
-        for (Wave w : waves) {
-            List<double[]> one = new ArrayList<>();
-            for (EnemyInfo e : enemies) {
-                if (e.location == null || e.name.equals(w.shooter)) continue;
-                double d = w.source.distance(e.location);
-                if (d <= SHADE_MIN) continue;
-                one.add(new double[] {Math.atan2(e.location.x - w.source.x, e.location.y - w.source.y),
-                    Math.asin(Math.min(1, SHADE_HALF / d)), d});
-            }
-            out.add(one.toArray(new double[0][]));
-        }
-        return out;
-    }
-
-    /**
-     * MMOVE-18: the share of [bearing +- half] that the shadows nearer the source than {@code d}
-     * cover, counting overlapping shadows once.
-     */
-    static double shaded(double bearing, double half, double d, double[][] shadows) {
-        List<double[]> parts = new ArrayList<>();
-        for (double[] sh : shadows) {
-            if (sh[2] >= d) continue;
-            double off = Angles.normalRelativeAngle(sh[0] - bearing);
-            double lo = Math.max(-half, off - sh[1]), hi = Math.min(half, off + sh[1]);
-            if (hi > lo) parts.add(new double[] {lo, hi});
-        }
-        parts.sort((a, b) -> Double.compare(a[0], b[0]));
-        double covered = 0, end = -half;
-        for (double[] p : parts) {
-            if (p[1] <= end) continue;
-            covered += p[1] - Math.max(p[0], end);
-            end = p[1];
-        }
-        return Math.min(1, covered / (2 * half));
-    }
-
     static double median(double[] xs) {
         double[] s = xs.clone();
         java.util.Arrays.sort(s);
@@ -1433,52 +1058,24 @@ public class MinimumRiskMovement {
      * {@link #WAVE_TICKS} ticks. Each wave counts once, on the tick its front crosses the box.
      */
     static double waveDamage(Point2D.Double me, Point2D.Double to, long now, List<Wave> waves) {
-        return waveDamage(me, to, now, waves, null);
-    }
-
-    /** As above, each wave's mass cut by the share of Hadur its {@code shadows} cover (MMOVE-18), if given. */
-    static double waveDamage(Point2D.Double me, Point2D.Double to, long now, List<Wave> waves,
-                             List<double[][]> shadows) {
-        return waveDamage(me, to, now, waves, shadows, WAVE_TICKS);
-    }
-
-    /** As above, over the first {@code ticks} ticks only (MMOVE-21). */
-    static double waveDamage(Point2D.Double me, Point2D.Double to, long now, List<Wave> waves,
-                             List<double[][]> shadows, int ticks) {
         if (waves.isEmpty()) return 0;
-        return drive(new double[] {me.x, me.y, 0}, to, now, ticks, waves, shadows, new boolean[waves.size()]);
-    }
-
-    /**
-     * The drive behind {@link #waveDamage}: from {@code state} {x, y, speed} toward {@code to}, from
-     * tick {@code now} for {@code ticks} ticks, skipping the waves {@code done} marks. On return
-     * {@code state} holds where and how fast the drive ended and {@code done} the waves it met
-     * (MMOVE-21 carries both into its second leg).
-     */
-    static double drive(double[] state, Point2D.Double to, long now, int ticks, List<Wave> waves,
-                        List<double[][]> shadows, boolean[] done) {
+        boolean[] done = new boolean[waves.size()];
         double total = 0;
-        double x = state[0], y = state[1], speed = state[2];
-        for (int t = 1; t <= ticks; t++) {
+        double x = me.x, y = me.y, speed = 0;
+        for (int t = 1; t <= WAVE_TICKS; t++) {
             double left = Math.hypot(to.x - x, to.y - y);
             if (left > 0.5) {
                 speed = Math.min(MAX_SPEED, Math.min(speed + 1, left));
                 x += (to.x - x) / left * speed;
                 y += (to.y - y) / left * speed;
-            } else {
-                speed = 0;
             }
-            total += waveHits(x, y, now + t, waves, shadows, done);
+            total += waveHits(x, y, now + t, waves, done);
         }
-        state[0] = x;
-        state[1] = y;
-        state[2] = speed;
         return total;
     }
 
     /** The mass of the {@code waves} not yet {@code done} whose front crosses Hadur's box at ({@code x}, {@code y}) on {@code tick}; marks them done. */
-    private static double waveHits(double x, double y, long tick, List<Wave> waves, List<double[][]> shadows,
-                                   boolean[] done) {
+    private static double waveHits(double x, double y, long tick, List<Wave> waves, boolean[] done) {
         double total = 0;
         for (int i = 0; i < waves.size(); i++) {
             if (done[i]) continue;
@@ -1490,92 +1087,9 @@ public class MinimumRiskMovement {
             if (front - w.speed > d + WAVE_HALF) continue;
             double bearing = Math.atan2(x - w.source.x, y - w.source.y);
             double half = Math.atan(WAVE_HALF / Math.max(d, WAVE_HALF));
-            double m = w.mass(bearing, half);
-            if (shadows != null) m *= 1 - shaded(bearing, half, d, shadows.get(i));
-            total += m;
+            total += w.mass(bearing, half);
         }
         return total;
-    }
-
-    /**
-     * MMOVE-21: the speed a drive that left {@code me} and is at {@code end} {x, y, speed} keeps
-     * heading on to {@code to}: its speed along the new line, none if that turns back.
-     */
-    static double carried(Point2D.Double me, double[] end, Point2D.Double to) {
-        double ax = end[0] - me.x, ay = end[1] - me.y, bx = to.x - end[0], by = to.y - end[1];
-        double la = Math.hypot(ax, ay), lb = Math.hypot(bx, by);
-        if (la == 0 || lb == 0) return 0;
-        return Math.max(0, end[2] * (ax * bx + ay * by) / (la * lb));
-    }
-
-    /** MMOVE-21: the ticks the wave check's drive takes from {@code me} to {@code to}, at most {@link #WAVE_TICKS}. */
-    static int arrival(Point2D.Double me, Point2D.Double to) {
-        double x = me.x, y = me.y, speed = 0;
-        for (int t = 1; t <= WAVE_TICKS; t++) {
-            double left = Math.hypot(to.x - x, to.y - y);
-            if (left <= 0.5) return t;
-            speed = Math.min(MAX_SPEED, Math.min(speed + 1, left));
-            x += (to.x - x) / left * speed;
-            y += (to.y - y) / left * speed;
-        }
-        return WAVE_TICKS;
-    }
-
-    /** MMOVE-20: Hadur's own bullets still in the field at {@code now}. */
-    List<VirtualBullet> ownBullets(Point2D.Double me, long now) {
-        ownBullets.removeIf(b -> (now - b.shot.fireTime) * b.shot.speed() > reach(field));
-        return new ArrayList<>(ownBullets);
-    }
-
-    /**
-     * MMOVE-20: each wave's shadows ({@code shadows}, or none) with the shadows of Hadur's own
-     * {@code bullets} added: where a bullet's flight in one tick crosses the wave's front, the
-     * angles from the wave's source between its two ends, held from that radius outward.
-     */
-    static List<double[][]> withBulletShadows(List<double[][]> shadows, List<Wave> waves, List<VirtualBullet> bullets,
-                                              double reach) {
-        List<double[][]> out = new ArrayList<>(waves.size());
-        for (int i = 0; i < waves.size(); i++) {
-            Wave w = waves.get(i);
-            List<double[]> one = new ArrayList<>();
-            if (shadows != null) one.addAll(java.util.Arrays.asList(shadows.get(i)));
-            for (VirtualBullet b : bullets) {
-                double[] sh = bulletShadow(w, b, reach);
-                if (sh != null) one.add(sh);
-            }
-            out.add(one.toArray(new double[0][]));
-        }
-        return out;
-    }
-
-    /** MMOVE-20: the farthest a bullet flies in {@code field}, its diagonal. */
-    static double reach(BattleField field) {
-        return Math.hypot(field.width, field.height);
-    }
-
-    /**
-     * MMOVE-20: the shadow {bearing, half, radius} that {@code b} casts on {@code w}: the first tick
-     * the bullet crosses the wave's front, either way, the angles between where it was and where it
-     * is; null if it never crosses before it has flown {@code reach}.
-     */
-    static double[] bulletShadow(Wave w, VirtualBullet b, double reach) {
-        long start = Math.max(w.fireTime, b.shot.fireTime);
-        long end = b.shot.fireTime + (long) Math.ceil(reach / b.shot.speed());
-        Point2D.Double before = b.position(start);
-        boolean outside = w.source.distance(before) > w.speed * (start - w.fireTime);
-        for (long t = start + 1; t <= end; t++) {
-            Point2D.Double at = b.position(t);
-            double r = w.speed * (t - w.fireTime);
-            boolean in = w.source.distance(at) <= r;
-            if (in == outside) {
-                double a0 = Math.atan2(before.x - w.source.x, before.y - w.source.y);
-                double a1 = Math.atan2(at.x - w.source.x, at.y - w.source.y);
-                double half = Math.abs(Angles.normalRelativeAngle(a1 - a0)) / 2;
-                return new double[] {a0 + Angles.normalRelativeAngle(a1 - a0) / 2, half, r - w.speed};
-            }
-            before = at;
-        }
-        return null;
     }
 
     /** TMODE-11: one shot in flight as a profile over its headings. */
@@ -1761,19 +1275,8 @@ public class MinimumRiskMovement {
         r *= v.concord ? concordFactor(p, e, v, i) : closestFactor(p, e, v.nearestOther[i], v.now, v.others, onTeam(v.mates));
         // MMOVE-22: the guns that have hurt Hadur this battle weigh more, the harmless ones less.
         if (damageMemory && !onTeam(v.mates)) r *= damageWeight.getOrDefault(e.name, 1.0);
-        if (closer && v.others >= 3 && !onTeam(v.mates)) {
-            // MMOVE-14: each other opponent nearer e than the point is prey e would sooner take.
-            double mine = p.distance(e.location);
-            int n = 0;
-            for (int j = 0; j < v.enemies.size(); j++) {
-                EnemyInfo o = v.enemies.get(j);
-                if (j != i && !o.isStale(v.now) && o.location.distance(e.location) < mine) n++;
-            }
-            r /= 1 + n;
-        }
         if (p.distance(v.me) > 1) {
-            double lateral = MeleeEndgame.endgameRing(v.others, onTeam(v.mates), MeleeEndgame.THREE_RING)
-                ? ENDGAME_LATERAL : fullLateral && v.others >= 3 && !onTeam(v.mates) ? FULL_LATERAL : LATERAL;
+            double lateral = v.others == 2 ? ENDGAME_LATERAL : LATERAL;
             double a = DiaUtils.absoluteBearing(p, e.location) - DiaUtils.absoluteBearing(v.me, p);
             r *= 1.0 + lateral * Math.abs(Math.cos(a));
         }
@@ -1813,7 +1316,7 @@ public class MinimumRiskMovement {
     double closestFactor(Point2D.Double p, EnemyInfo e, double nearestOther, long now, int others, boolean onTeam) {
         double c = 1.0;
         if (p.distance(e.location) < nearestOther) {
-            c = MeleeEndgame.closestFactor(onTeam ? CLOSEST_FACTOR : CLOSEST_FACTOR_SOLO, others, onTeam,
+            c = MeleeEndgame.closestFactor(CLOSEST_FACTOR, others, onTeam,
                 MeleeEndgame.THREE_FAR);
             if (now < OPENING_TICKS) c *= 2;
         }

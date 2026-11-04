@@ -644,11 +644,14 @@ flowchart LR
 
 A switch whose card failed is removed with its code, ablation arm, card and tests, and its
 requirement moves to the retired table in docs/requirements.md; this catalogue lists only what ships
-or what a mode table or ablation still reaches. The 3.22 cleanup removed the melee endgame hand-off
+or what a mode table or ablation still reaches. `RetiredSwitchTest` (STRAND-6) fails the build while a retired
+requirement's switch is still declared in the robot. The 3.22 cleanup removed the melee endgame hand-off
 (HAND-1..5), the failed 1v1 surf, distance and power switches (MOVE-12, 14..21, 23, 25..27, DIST-3, TIME-6, RAM-4,
 POW-12, POW-14, with `StackListData`, `StopPointSurf`, `ProteanPick`, `EscapeRoom`, `ReplicatorWeights`) and the failed team modes (PACK, SCREEN, DISABLED, REAR, SOFT, LEARN, POOL, WAVES, LINES,
 LINESW, LANEP, LANEB, GUNLINE, FAR, FARTHER, NEAR, LEAD, SWIFT, HEAVY, WARY, CLEAR, MOMENTUM, AIM, the
-team radar look and the learned-danger switches).
+team radar look and the learned-danger switches) and the failed melee crowd switches (movement
+MMOVE-11..14, 16..18, 20, 21, 23, 24; field gun MGUN-11, 17..21, 24; power MGUN-12, 14, 15, 22, 23;
+endgame MEND-1, 2).
 
 **Duel (1v1 only, through `duelOnly`)**
 
@@ -678,9 +681,7 @@ team radar look and the learned-danger switches).
 | `MeleeEnergyPolicy.CROWD_OGI` | MGUN-13 | **on** | Ogi's crowd power, 3 up close |
 | `MeleeEnergyPolicy.OGI_WIDE` | MGUN-16 | **on** (3.19) | Power 3 out to 300 px |
 | `MeleeEndgame.THREE_FAR` | MEND-3 | **on** | With two left, closest-robot factor 4 |
-| `MELEE_AIMED`, `HOPS`, `HEAT`, `CLOSER`, `MIX`, `PATH_DANGER`, `SHADE`, `BULLET_SHADE`, `SEARCH`, `DAMAGE_MEMORY`, `FULL_LATERAL` | MMOVE-11..23 | off | Crowd movement ideas (ScalarR, Diamond) benched and not shipped |
-| `FieldGun.EXPERTS`, `HIT_TARGET`, `FLAT_DISTANCE`, `SOFT_MATCH`, `DECAP`; `EnemyHistory.CROWD` | MGUN-11..21 | off | Field gun variants |
-| `MeleeEnergyPolicy.AVG_POWER`, `CROWD_FLOOR`, `OGI_LOW`, `OGI_TWO`, `SCAL_POWER`; `MeleeEndgame.THREE_POWER`, `THREE_RING` | MGUN, MEND | off | Power and endgame variants |
+| `MinimumRiskMovement.MELEE_DAMAGE_MEMORY` | MMOVE-22 | **on**, master only (3.21) | Each opponent's risk weighs by the damage it has done Hadur this battle (Diamond) |
 
 **Team (only while a teammate lives)**
 
