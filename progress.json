@@ -1,0 +1,31 @@
+{
+ "plan": "pc-team-dgun",
+ "updated": 1793822233.6012318,
+ "steps": {
+  "dgprep": {
+   "status": "pending"
+  },
+  "dgbb1": {
+   "status": "pending"
+  },
+  "dgdg1": {
+   "status": "pending"
+  },
+  "dgpilot": {
+   "status": "pending"
+  },
+  "dgbb": {
+   "status": "pending"
+  },
+  "dgdg": {
+   "status": "pending"
+  },
+  "dgscr": {
+   "status": "pending"
+  },
+  "dgpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
