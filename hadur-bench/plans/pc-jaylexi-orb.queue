@@ -1,0 +1,81 @@
+# JayLexi per-robot orbit angle (thread "Take 1st with JayLexi and Sanaro"; BENCH-187). Leigh, 2026-11-04: "maximise
+# the spare bytes before release", then "Yes let's try it" to a per-robot orbit. The diet (#626) freed 26 B; this card
+# spends 17 of them on an orbit char a robot (1,487 B of 1,496), read through the aim prior's row index.
+#   ./queue.sh run pc-jaylexi-orb        (or  .\queue.ps1 run pc-jaylexi-orb)
+# Run it from master with this card merged: git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned. Nothing here touches the shipped JayLexi; nothing is uploaded or
+# released. About 2 h 30 min to the end, about 25 min if the pilot stops it.
+#
+# Why it should win (Leigh's card rule, 2026-11-03):
+# - Per-opponent tailoring only: each arm changes the orbit chars (one a robot in NAMES, by name hash) and nothing else;
+#   the candidate ships only the robots that pass on fresh seeds. Same pick-and-confirm shape as pc-eveimear-st2 (#622,
+#   +0.08 APS) and pc-eveimear-pw (#634, +0.14 APS).
+# - Movement is where JayLexi loses to the top of the MiniRumble, and 0.4 surfs every robot at one orbit angle (1.15 rad
+#   off the wave's bearing), in both the drive and the danger prediction. In a cloud screen (2026-11-04,
+#   docs/bench/local/2026-11-04_jlorbit-cloud-screen.md: kitlab/mini-mid-field.txt, 80 robots of ranks 121-450, 1 seed,
+#   10 rounds) near (1.35) read +0.31 +- 1.40 overall and far (0.95) +0.86 +- 1.39, with 19 and 22 robots at +3 points or
+#   more against 1 for the A/A null. The power screen that failed its pilot (#635) had 17 and 10 against a null of 3, so
+#   this one starts with about twice the room. Big single reads: Prestige, OthoMicro, IotaCT, AceSurf (+11 to +22).
+# - The base (c, 1,487 B) passes JayLexiReplayTest against the readable 0.4 ref (115 / 100.0 == 1.15 exactly), so c and
+#   aa are the shipped play; a 1.35 build fails that test, so the test sees the orbit.
+# - Risk: the 1-seed reads are noisy, and robots that read big for both arms are partly a bad c seed. The pilot pools
+#   c and aa and counts the A/A null picks, which catches that.
+#
+# Pilot: every 5th robot (134) first, 10 seeds. Then `pilotgate` counts the real picks (near or far beating c and aa
+# pooled by 3 points, interval above 0) against the null picks (aa beating c by the same test). Fewer than 2 x null + 3
+# real picks and the screen, the build and the confirm all skip, and the PR carries the pilot alone. An A/A outside its
+# band halts the pilot (aa after 20%).
+# Screen: the other 534 robots, same arms and seeds; the pick reads pilot and screen together.
+# Confirm: the picked robots with an orbit char of their own x 12 fresh seeds from 39000, c, aa and pk; gate: pk minus c
+# and aa pooled, summed over the picks / 669 pairings, bar +0.05 APS with the 95% low end above 0, and every pick's
+# difference. A pass ships in JayLexi 0.5 on Leigh's word only (pk's ORB table, 1,487 B).
+# Panels: kitlab/mini-pw-field.txt (the 668 robots of mini-all-field.txt not in broken-1.11.2.txt), split into
+# kitlab/mini-pw-pilot.txt (134) and kitlab/mini-pw-rest.txt (534).
+# Stop rules: fails 30, dead 8, skips 60 over 200, stall 30m (halt; every battle fought is kept and a rerun resumes),
+# aa after 20% (halt). ALERT opens an issue for Leigh on a stop.
+
+set C = --skip-build --skip-fetch --rounds 35 --parallel auto --child-heap 512M --no-truth-log
+set SRC = ../jaylexi/src/main/java/hadur117/mini/JayLexi.java
+set W = work/jaylexi-orb
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && rm -f ${W}/GO ${OUT}/*_jaylexi-orb*.md ${OUT}/jaylexi-orb* && mkdir -p ${W} kitlab/jars && ./fetch-opponents.sh --set kitlab/mini-pw-field.txt && mvn -q compile && python3 tools/jaylexi_orbit.py ${SRC} ${W}/b.java && python3 tools/jaylexi_orbit.py ${SRC} ${W}/near.java --all 135 && python3 tools/jaylexi_orbit.py ${SRC} ${W}/far.java --all 95 && bash kitlab/build_arm.sh ${W}/b.java hadur117.mini.JayLexi 0.5ob && bash kitlab/build_arm.sh ${W}/b.java hadur117.mini.JayLexi 0.5oba && bash kitlab/build_arm.sh ${W}/near.java hadur117.mini.JayLexi 0.5onear && bash kitlab/build_arm.sh ${W}/far.java hadur117.mini.JayLexi 0.5ofar
+
+pilot | sh ./bench-top20.sh ${C} --set kitlab/mini-pw-pilot.txt --seeds 10 --seed-base 38000 --arms plans/jaylexi-orb.arms --out ${W}/pilot --label jaylexi-orb-pilot --shuffle-jobs
+  after: prep
+  watch:
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+pilotgate | python3 tools/eveimear_modes.py pilot ${W}/pilot/arms.tsv --margin 3 --out ${OUT}/$(date +%Y-%m-%d)_jaylexi-orb-pilot.md; rc=$?; [ $rc = 0 ] && touch ${W}/GO; [ $rc = 0 ] || [ $rc = 3 ]
+  after: pilot
+
+screen | if [ ! -f ${W}/GO ]; then echo 'pilot: no gain over noise, screen skips'; exit 0; fi && sh ./bench-top20.sh ${C} --set kitlab/mini-pw-rest.txt --seeds 10 --seed-base 38000 --arms plans/jaylexi-orb.arms --out ${W}/screen --label jaylexi-orb-screen --shuffle-jobs
+  after: pilotgate
+  watch:
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+build | rm -f ${W}/pick.tsv ${W}/written.tsv ${W}/picks.txt kitlab/jars/hadur117.mini.JayLexi_0.5opk.jar && if [ ! -f ${W}/GO ]; then echo 'pilot stopped the card'; exit 0; fi && python3 ../data/tools/mode_table.py ${W}/pilot/arms.tsv ${W}/screen/arms.tsv --margin 3 --out-tsv ${W}/pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_jaylexi-orb-pick.md && if [ ! -s ${W}/pick.tsv ]; then echo 'no picks'; exit 0; fi && python3 tools/jaylexi_orbit.py ${SRC} ${W}/pk.java --pick ${W}/pick.tsv --field kitlab/mini-all-field.txt --arm-orbit near=135 --arm-orbit far=95 --written ${W}/written.tsv && python3 tools/pick_panel.py ${W}/written.tsv kitlab/mini-pw-field.txt ${W}/picks.txt && bash kitlab/build_arm.sh ${W}/pk.java hadur117.mini.JayLexi 0.5opk && cp ${W}/pick.tsv ${OUT}/jaylexi-orb-pick.tsv
+  after: screen
+
+confirm | if [ ! -s ${W}/picks.txt ]; then echo 'no picks'; exit 0; fi && sh ./bench-top20.sh ${C} --set ${W}/picks.txt --seeds 12 --seed-base 39000 --arms plans/jaylexi-orb-confirm.arms --out ${W}/confirm --label jaylexi-orb-confirm --shuffle-jobs
+  after: build
+  watch:
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+
+gate | if [ ! -s ${W}/picks.txt ]; then echo 'no picks'; exit 0; fi && python3 ../data/tools/multiarm.py ${W}/confirm/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_jaylexi-orb-confirm.md && python3 tools/shield_s2.py gate ${W}/confirm/arms.tsv --arm pk --panel ${W}/picks.txt --field 669 --bar 0.05 --out ${OUT}/$(date +%Y-%m-%d)_jaylexi-orb-gate.md && python3 tools/per_robot.py ${W}/confirm/arms.tsv --arms pk --out ${OUT}/$(date +%Y-%m-%d)_jaylexi-orb-per-robot.md --out-tsv ${OUT}/jaylexi-orb-per-robot.tsv && cp ${W}/pk.java ${OUT}/jaylexi-orb-pk.java.txt
+  after: confirm
+
+pr | bash tools/open_results_pr.sh claude/pc-jaylexi-orb-results "JayLexi per-robot orbit (pc-jaylexi-orb)" ${OUT}/*_jaylexi-orb*.md $(find ${OUT} -maxdepth 1 -name 'jaylexi-orb*' -size +0c)
+  after: gate
