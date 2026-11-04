@@ -1,0 +1,31 @@
+{
+ "plan": "pc-jaylexi-pw",
+ "updated": 1793790438.4808502,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "pilot": {
+   "status": "pending"
+  },
+  "pilotgate": {
+   "status": "pending"
+  },
+  "screen": {
+   "status": "pending"
+  },
+  "build": {
+   "status": "pending"
+  },
+  "confirm": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
