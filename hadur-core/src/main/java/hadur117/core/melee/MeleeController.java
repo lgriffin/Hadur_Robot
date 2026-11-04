@@ -485,7 +485,7 @@ public class MeleeController {
             if (modes.contains(TeamModes.Mode.SURF)) {
                 // TSURF-1..6: the duel waves rate the moves; DODGE and the virtual bullets stand down.
                 if (teamSurfer == null) {
-                    teamSurfer = new CrowdSurfer(field, TeamModes::key);
+                    teamSurfer = new CrowdSurfer(field);
                     teamSurfer.newRound();
                 }
                 teamSurfer.tick(s.time, s.me);
