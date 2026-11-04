@@ -680,6 +680,7 @@ endgame MEND-1, 2).
 | `MeleeController.MELEE_CROSS` | MMOVE-19 | **on**, master only (3.21) | Learn a shooter's aim from its hits on others |
 | `MeleeEnergyPolicy.CROWD_OGI` | MGUN-13 | **on** | Ogi's crowd power, 3 up close |
 | `MeleeEnergyPolicy.OGI_WIDE` | MGUN-16 | **on** (3.19) | Power 3 out to 300 px |
+| `MeleeEnergyPolicy.FAR_SPARE` | MGUN-25 | off (card pc-melee-far) | At least power 3 (or 2.5) beyond 300 px while Hadur has 60+ energy |
 | `MeleeEndgame.THREE_FAR` | MEND-3 | **on** | With two left, closest-robot factor 4 |
 | `MinimumRiskMovement.MELEE_DAMAGE_MEMORY` | MMOVE-22 | **on**, master only (3.21) | Each opponent's risk weighs by the damage it has done Hadur this battle (Diamond) |
 

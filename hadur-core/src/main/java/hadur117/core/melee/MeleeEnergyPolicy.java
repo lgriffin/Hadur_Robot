@@ -42,6 +42,17 @@ public final class MeleeEnergyPolicy {
     /** MGUN-16: MGUN-13's power 3 out to {@link #OGI_WIDE_CLOSE} px, not 200. On for 3.19 (power2 card +0.15 +- 0.15, PR #349). */
     public static final boolean OGI_WIDE = true;
     static final double OGI_WIDE_CLOSE = 300;
+    /**
+     * MGUN-25 (arms mfar3, mfar25): off a team with three or more opponents, a shot beyond
+     * {@link #OGI_WIDE_CLOSE} px fires at least {@link #FAR_SPARE_POWER} while Hadur has
+     * {@link #FAR_SPARE_ENERGY} energy or more, in place of MGUN-13's 1.92. The top bots fire about
+     * as often as Hadur at the same hit rate but spend 15-25% more power in the crowd, and 64% of
+     * Hadur's crowd shots are this far with this much energy (docs/bench/melee-top3.md); the energy
+     * floor keeps the endgame's reserve. Off.
+     */
+    public static final boolean FAR_SPARE = false;
+    static final double FAR_SPARE_POWER = 3.0;
+    static final double FAR_SPARE_ENERGY = 60.0;
 
     private MeleeEnergyPolicy() {}
 
@@ -93,7 +104,25 @@ public final class MeleeEnergyPolicy {
      */
     public static double crowdPower(double tablePower, double distance, double ownEnergy, double targetEnergy,
                                     int others) {
-        return crowdPower(tablePower, distance, ownEnergy, targetEnergy, others, CROWD_OGI, OGI_WIDE);
+        double p = crowdPower(tablePower, distance, ownEnergy, targetEnergy, others, CROWD_OGI, OGI_WIDE);
+        return farPower(p, distance, ownEnergy, targetEnergy, others, FAR_SPARE, FAR_SPARE_POWER);
+    }
+
+    /**
+     * MGUN-25: {@code p} (the rules so far) raised to at least {@code power} where the switch
+     * {@code on}, three or more opponents are alive, the target is beyond {@link #OGI_WIDE_CLOSE}
+     * px and not a finisher, and Hadur has {@link #FAR_SPARE_ENERGY} or more; a hold (0) stands,
+     * and the kill, lead and own-energy caps apply as the table's do. It never lowers {@code p}.
+     */
+    static double farPower(double p, double distance, double ownEnergy, double targetEnergy, int others,
+                           boolean on, double power) {
+        if (!on || p <= 0 || p >= power || others < 3 || distance <= OGI_WIDE_CLOSE
+            || ownEnergy < FAR_SPARE_ENERGY || targetEnergy <= FINISHER_ENERGY) {
+            return p;
+        }
+        double q = Math.min(power, killPower(targetEnergy));
+        if (ownEnergy > targetEnergy) q = Math.min(q, ownEnergy - targetEnergy);
+        return Math.max(p, Math.min(q, ownEnergy));
     }
 
     /** As above with MGUN-13 ({@code ogi}) and MGUN-16 ({@code wide}) as given; MGUN-16 widens MGUN-13 only. */
