@@ -47,11 +47,6 @@ public class StrandOwnershipTest {
     public static final List<String> OWNERS = List.of("kernel", "duel", "melee", "team", "conductor");
     static final List<String> STRANDS = List.of("duel", "melee", "team");
     static final String ROOT = "hadur117.core";
-    /**
-     * STRAND-7: the duel packages another strand may use, never edit (DuelIdentityTest pins them):
-     * the team duelist's gun (TGUN) aims with the duel's GunController, its views learned per enemy class.
-     */
-    static final Map<String, List<String>> USES = Map.of("melee", List.of("hadur117.core.gun"));
 
     static final JavaClasses core = ArchitectureTest.core;
 
@@ -110,7 +105,6 @@ public class StrandOwnershipTest {
 
     @Test
     @Tag("STRAND-2")
-    @Tag("STRAND-7")
     @DisplayName("STRAND-2: no strand depends on another strand or on the conductor")
     public void strandsStayApart() {
         for (String strand : STRANDS) {
@@ -118,7 +112,6 @@ public class StrandOwnershipTest {
             if (mine.length == 0) continue;
             List<String> forbidden = new ArrayList<>(packagesOf("conductor"));
             for (String other : STRANDS) if (!other.equals(strand)) forbidden.addAll(packagesOf(other));
-            forbidden.removeAll(USES.getOrDefault(strand, List.of()));
             String[] theirs = patterns(forbidden);
             if (theirs.length == 0) continue;
             noClasses().that().resideInAnyPackage(mine)
