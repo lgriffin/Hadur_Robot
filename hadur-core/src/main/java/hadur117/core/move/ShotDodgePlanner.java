@@ -75,6 +75,14 @@ public final class ShotDodgePlanner {
     static final int REPLAN_TICKS = 5;
     /** Wall smoothing's reach for the orbit points, px. */
     private static final double WALL_STICK = 160.0;
+    /** The attack angle's cap, as the three-option surf's. */
+    private static final double MAX_ATTACK_ANGLE = Math.PI * 0.45;
+
+    /** As the three-option surf's attack angle: 0.6 times the relative distance error, capped. */
+    static double attackAngle(double distance, double desiredDistance) {
+        double factor = (distance - desiredDistance) / desiredDistance;
+        return DiaUtils.limit(-MAX_ATTACK_ANGLE, factor * 0.6, MAX_ATTACK_ANGLE);
+    }
 
     private final BattleField battleField;
     private final MovementPredictor predictor;
@@ -205,7 +213,7 @@ public final class ShotDodgePlanner {
             RobotState s = start;
             for (int t = 1, i = 0; t <= last && i < POINT_TICKS.length; t++) {
                 double bearing = DiaUtils.absoluteBearing(source, s.location);
-                double attack = StopPointSurf.attackAngle(source.distance(s.location), desiredDistance);
+                double attack = attackAngle(source.distance(s.location), desiredDistance);
                 double goAngle = battleField.wallSmoothing(s.location,
                     bearing + direction * (Math.PI / 2 + attack), direction, WALL_STICK);
                 s = predictor.nextLocation(s, 8.0, goAngle, false);

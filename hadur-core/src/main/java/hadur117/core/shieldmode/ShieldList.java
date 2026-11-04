@@ -35,12 +35,10 @@ public final class ShieldList {
     public static final int MAX_ENTRIES = 4096;
 
     /** The list with nobody on it: shield mode never starts. */
-    public static final ShieldList NONE = new ShieldList(Collections.<String>emptySet(), Collections.<String>emptySet(),
+    public static final ShieldList NONE = new ShieldList(Collections.<String>emptySet(),
         Collections.<String>emptySet(), Collections.<String, double[]>emptyMap(), Collections.<String>emptySet(),
         Collections.<String, Integer>emptyMap());
 
-    /** MOVE-23: a line starting with this names an opponent on the stack off-list, not a shield-mode one. */
-    public static final String STACK_OFF_PREFIX = "stack-off:";
     /** SHIELD-17: a line starting with this names an opponent for the shield's opening drive. */
     public static final String MOVE_PREFIX = "shield-move:";
     /** SHIELD-18: a line starting with this gives an opponent's shipped aim. */
@@ -98,8 +96,6 @@ public final class ShieldList {
     static final int FULL_OFF = 128;
 
     private final Set<String> entries;
-    /** MOVE-23: the stack off-list, matched as the shield entries are. */
-    private final Set<String> stackOff;
     /** SHIELD-17: the opening-drive list. */
     private final Set<String> moves;
     /** SHIELD-18: name to {predictor, offset}. */
@@ -115,10 +111,9 @@ public final class ShieldList {
     /** SKEY-2: name to its surf key (nine weight multipliers, then the kernel width's). */
     private Map<String, double[]> surfKeys = Collections.emptyMap();
 
-    private ShieldList(Set<String> entries, Set<String> stackOff, Set<String> moves, Map<String, double[]> aims,
+    private ShieldList(Set<String> entries, Set<String> moves, Map<String, double[]> aims,
                        Set<String> dodges, Map<String, Integer> stopGo) {
         this.entries = entries;
-        this.stackOff = stackOff;
         this.moves = moves;
         this.aims = aims;
         this.dodges = dodges;
@@ -133,7 +128,6 @@ public final class ShieldList {
      */
     public static ShieldList parse(Iterable<String> lines) {
         Set<String> entries = new TreeSet<>();
-        Set<String> stackOff = new TreeSet<>();
         Set<String> moves = new TreeSet<>();
         Map<String, double[]> aims = new TreeMap<>();
         Set<String> dodges = new TreeSet<>();
@@ -146,12 +140,6 @@ public final class ShieldList {
                 if (line == null) continue;
                 String entry = line.trim().replaceAll("\\s+", " ");
                 if (entry.isEmpty() || entry.startsWith("#")) continue;
-                if (entry.startsWith(STACK_OFF_PREFIX)) {
-                    // MOVE-23: carried in the same list so the adapter hands the core one object.
-                    String name = entry.substring(STACK_OFF_PREFIX.length()).trim();
-                    if (!name.isEmpty() && stackOff.size() < MAX_ENTRIES) stackOff.add(name);
-                    continue;
-                }
                 int bit = entry.startsWith(HEAT_JIT_PREFIX) ? HEAT_JIT : entry.startsWith(GUN_STACK_PREFIX) ? GUN_STACK
                     : entry.startsWith(EXIT_LATE_PREFIX) ? EXIT_LATE : entry.startsWith(EXIT_OFF_PREFIX) ? EXIT_OFF
                     : entry.startsWith(STILL_PREFIX) ? STILL : entry.startsWith(FLAT_ON_PREFIX) ? FLAT_ON
@@ -230,9 +218,9 @@ public final class ShieldList {
                 entries.add(entry);
             }
         }
-        if (entries.isEmpty() && stackOff.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()
+        if (entries.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()
             && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty() && surfKeys.isEmpty()) return NONE;
-        ShieldList list = new ShieldList(Collections.unmodifiableSet(entries), Collections.unmodifiableSet(stackOff),
+        ShieldList list = new ShieldList(Collections.unmodifiableSet(entries),
             Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims), Collections.unmodifiableSet(dodges),
             Collections.unmodifiableMap(stopGo));
         list.dodgePlans = Collections.unmodifiableMap(dodgePlans);
@@ -252,19 +240,6 @@ public final class ShieldList {
         if (robotName == null || entries.isEmpty()) return false;
         String name = robotName.trim().replaceAll("\\s+", " ");
         return entries.contains(name) || entries.contains(withoutVersion(name));
-    }
-
-    /**
-     * MOVE-23: whether {@code robotName} is on the stack off-list, by the same rule as
-     * {@link #matches}: its full name is, or its name without the version is.
-     *
-     * @param robotName the scanned robot's name, or null
-     * @return whether the stop-and-start stack stays off against it
-     */
-    public boolean onStackOffList(String robotName) {
-        if (robotName == null || stackOff.isEmpty()) return false;
-        String name = robotName.trim().replaceAll("\\s+", " ");
-        return stackOff.contains(name) || stackOff.contains(withoutVersion(name));
     }
 
     /**

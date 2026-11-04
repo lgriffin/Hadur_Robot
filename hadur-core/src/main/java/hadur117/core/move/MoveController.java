@@ -109,12 +109,6 @@ public class MoveController {
     private final FlattenerFormula sampleFormula = new FlattenerFormula();
     /** Where hits on us go, for the opponent profile's surf seed; null until the opening sets it. */
     private Consumer<double[]> sampleSink;
-    /** MOVE-16: the views' multipliers, kept for the battle (not reset by {@link #initRound}). */
-    private final ReplicatorWeights replicatorWeights;
-    /** MOVE-16: whether the multipliers are learned and applied; off, the weights are fixed. */
-    private boolean replicator;
-    /** MOVE-21: whether the danger kernel is the point value at the intersection centre (off by default). */
-    private boolean pointKernel;
     /** SKEY-2: the kernel width's multiplier in the views' danger; 1 unless a surf key is set. */
     private double keyWidth = 1.0;
     /** SKEY-2: the hit views' default key weights, the {@link MoveFormula}'s. */
@@ -131,23 +125,6 @@ public class MoveController {
         this.predictor = predictor;
         this.waveManager = new WaveManager();
         initSurfViews();
-        this.replicatorWeights = new ReplicatorWeights(views.size());
-    }
-
-    /**
-     * MOVE-16: whether each enemy bullet that hits us moves the danger views' weights toward the
-     * views that predicted it (the replicator equation, {@link ReplicatorWeights}). Off, the
-     * weights stay fixed and the multipliers are never read.
-     *
-     * @param on true to learn and apply the multipliers
-     */
-    public void setReplicator(boolean on) {
-        this.replicator = on;
-    }
-
-    /** MOVE-21: the danger kernel is the point value at the intersection centre (Diamond's); off, MOVE-4's integral. */
-    public void setPointKernel(boolean on) {
-        this.pointKernel = on;
     }
 
     /**
@@ -201,17 +178,7 @@ public class MoveController {
      * ({@code u} in bandwidths), scaled by the share of the intersection the shadows leave.
      */
     double kernel(double at, double bandwidth, List<double[]> segments) {
-        return pointKernel ? pointKernelValue(at, bandwidth, segments) : kernelMass(at, bandwidth, segments);
-    }
-
-    static double pointKernelValue(double at, double bandwidth, List<double[]> segments) {
-        double from = segments.get(0)[0];
-        double to = segments.get(segments.size() - 1)[1];
-        double open = 0;
-        for (double[] s : segments) open += s[2] * (s[1] - s[0]);
-        double through = to > from ? open / (to - from) : 1.0;
-        double centre = (from + to) / 2;
-        return through * Math.pow(2.0, -Math.abs(at - centre) / bandwidth);
+        return kernelMass(at, bandwidth, segments);
     }
 
     /** DODGE-2: the simple-aim dodger the surf asks, or null when it is off (duel only). */
@@ -259,28 +226,10 @@ public class MoveController {
         return shotDodger;
     }
 
-    /** MOVE-27: the enemy-gun ensemble the stop-point surf blends, or null when it is off. */
-    private GunMimics gunMimics;
-
-    /** MOVE-27: sets the ensemble (duel only); null turns it off. */
-    public void setGunMimics(GunMimics mimics) {
-        this.gunMimics = mimics;
-    }
-
-    /** MOVE-27: the ensemble, or null. */
-    public GunMimics gunMimics() {
-        return gunMimics;
-    }
-
-    /** MOVE-16: each view's multiplier, in the order the views were built; all 1 until learned. */
-    double[] replicatorMultipliers() {
-        return replicatorWeights.multipliers();
-    }
-
     /** MOVE-16: the view's weight in the danger average: its own, times its multiplier when on. */
     private double effectiveWeight(int i) {
         KnnView<TimestampedGuessFactor> view = views.get(i);
-        return replicator ? view.weight * replicatorWeights.multiplier(i) : view.weight;
+        return view.weight;
     }
 
     /**
@@ -888,17 +837,10 @@ public class MoveController {
         if (dodgePasses && shotDodger != null && !w.hitByBullet && !w.bulletHitBullet) {
             shotDodger.observePass(w.simpleAims(), intersection.angle, intersection.bandwidth);
         }
-        if (gunMimics != null) {
-            // MOVE-27: a learning gun learns every visit; so do its mimics.
-            // A visit moves the next plan's profile but does not end the current plan.
-            gunMimics.learnVisit(w, w.guessFactor(intersection.angle));
-        }
         // MOVE-33: the mimic members learn every visit too, as the guns they copy do.
         if (memberMimics != null) memberMimics.learnVisit(w, w.guessFactor(intersection.angle));
         for (KnnView<TimestampedGuessFactor> view : views) {
             if (!view.logVisits) continue;
-            // MOVE-25: a visit learned is a change of the views too.
-            viewRevision++;
             // Visits are logged even for a wave our bullet destroyed: we were still there.
             double gf = w.guessFactor(intersection.angle);
             view.logWave(w, new TimestampedGuessFactor(currentRound, currentTime, gf));
@@ -943,12 +885,6 @@ public class MoveController {
         // The bullet lies on its firing line, so its bearing from the source is the exact
         // angle it was fired at.
         double hitGF = hitWave.guessFactor(bulletLocation);
-        // MOVE-25: the stop-point surf replans once the views have learned something new.
-        viewRevision++;
-        // MOVE-16: rate the hit before any view learns it, so each view is judged on a prediction.
-        if (replicator) updateReplicator(hitWave, hitGF);
-        // MOVE-27: score the ensemble's models on this bullet before anything learns it.
-        if (gunMimics != null) scoreMimics(hitWave, hitGF);
         // MOVE-29: score the aim members on this bullet before the views learn it.
         if (aimMembers != null) learnAimMembers(hitWave, hitGF);
         for (KnnView<TimestampedGuessFactor> view : views) {
@@ -963,61 +899,6 @@ public class MoveController {
             sample[12] = hitGF;
             sampleSink.accept(sample);
         }
-    }
-
-    /**
-     * MOVE-16: the replicator step for a bullet fired at {@code hitGf} on wave {@code w}. Each view
-     * that is on with data (the test {@link #getDangerScore} applies) is rated by its density at
-     * that guess factor, normalised over the {@link HitForensics#SAMPLES} guess factors in
-     * [-1, 1]; {@link ReplicatorWeights#update} moves the multipliers. Read-only on the views:
-     * it uses the cache slot of {@link #dangerPercentile} and empties it after.
-     */
-    private void updateReplicator(Wave w, double hitGf) {
-        int n = views.size();
-        double bandwidth = Math.atan(HitForensics.HALF_WIDTH / Math.max(w.targetDistance, HitForensics.HALF_WIDTH));
-        double[] estimate = viewEstimate();
-        double[] weights = new double[n];
-        double[] densities = new double[n];
-        boolean[] on = new boolean[n];
-        try {
-            validateCache(w, FORENSICS_CACHE);
-            for (int i = 0; i < n; i++) {
-                KnnView<TimestampedGuessFactor> view = views.get(i);
-                weights[i] = view.weight;
-                if (view.effectiveSize() == 0 || !viewOn(view, estimate)) continue;
-                on[i] = true;
-                List<KdTree.Entry<TimestampedGuessFactor>> neighbors =
-                    getNearestNeighbors(view, w, FORENSICS_CACHE);
-                double[] decay = view.getDecayWeights(neighbors);
-                double[] scan = new double[neighbors.size()];
-                double[] angle = new double[neighbors.size()];
-                for (int k = 0; k < scan.length; k++) {
-                    KdTree.Entry<TimestampedGuessFactor> entry = neighbors.get(k);
-                    scan[k] = decay[k]
-                        / Math.sqrt(Math.max(entry.distance, MIN_DISTANCE)) * entry.value.weight();
-                    angle[k] = w.firingAngle(entry.value.guessFactor);
-                }
-                double[] grid = new double[HitForensics.SAMPLES];
-                for (int g = 0; g < grid.length; g++) {
-                    grid[g] = kernelSum(w, scan, angle, HitForensics.sampleGuessFactor(g), bandwidth);
-                }
-                densities[i] = ReplicatorWeights.density(kernelSum(w, scan, angle, hitGf, bandwidth), grid);
-            }
-            replicatorWeights.update(weights, on, densities);
-        } finally {
-            for (KnnView<TimestampedGuessFactor> view : views) view.cachedNeighbors.remove(FORENSICS_CACHE);
-            cacheOwners.remove(FORENSICS_CACHE);
-        }
-    }
-
-    /** MOVE-16: the neighbours' point kernels {@code 2^-|u|} summed at guess factor {@code gf} (u in half-widths). */
-    private static double kernelSum(Wave w, double[] scan, double[] angle, double gf, double bandwidth) {
-        double at = w.firingAngle(gf);
-        double sum = 0;
-        for (int k = 0; k < scan.length; k++) {
-            sum += scan[k] * Math.pow(2.0, -Math.abs(DiaUtils.normalizeAngle(angle[k], at) - at) / bandwidth);
-        }
-        return sum;
     }
 
     /**
@@ -1442,83 +1323,9 @@ public class MoveController {
         }
     }
 
-    /**
-     * MOVE-14: each danger view's own score at {@code intersection}, and its share of the
-     * average, for the protean pick's spread. The views are the ones {@link #getDangerScore}
-     * averages, with the same kernel and shadows: view {@code i}'s danger is its density over
-     * its scan weight, and its share is its weight times its scan weight, normalised to sum
-     * to 1, so the weighted mean of the dangers is {@link #getDangerScore} (less its no-data
-     * fallback). Read-only: it only reads the neighbour cache, as {@link #getDangerScore} does.
-     *
-     * @param w the wave being surfed
-     * @param intersection the firing angles that would hit us
-     * @param surfWaveIndex the wave's index among the surfable waves, which keys the cache
-     * @param dangers receives each counted view's danger; at least as long as the view list
-     * @param weights receives each counted view's normalised weight; same length
-     * @return how many views were counted (0 when none is on with data)
-     */
-    int viewDangers(Wave w, Wave.Intersection intersection, int surfWaveIndex,
-                    double[] dangers, double[] weights) {
-        double dangerAngle = intersection.angle;
-        double bandwidth = intersection.bandwidth;
-        validateCache(w, surfWaveIndex);
-        List<double[]> segments = w.transmission(intersection);
-        double[] estimate = viewEstimate();
-        int n = 0;
-        double total = 0;
-        for (int vi = 0; vi < views.size(); vi++) {
-            KnnView<TimestampedGuessFactor> view = views.get(vi);
-            if (view.effectiveSize() == 0 || !viewOn(view, estimate)) continue;
-            List<KdTree.Entry<TimestampedGuessFactor>> neighbors =
-                getNearestNeighbors(view, w, surfWaveIndex);
-            double[] decay = view.getDecayWeights(neighbors);
-            double density = 0;
-            double viewScanWeight = 0;
-            for (int k = 0; k < decay.length; k++) {
-                KdTree.Entry<TimestampedGuessFactor> entry = neighbors.get(k);
-                TimestampedGuessFactor tsgf = entry.value;
-                double scanWeight = decay[k]
-                    / Math.sqrt(Math.max(entry.distance, MIN_DISTANCE)) * tsgf.weight();
-                double xFiringAngle = DiaUtils.normalizeAngle(
-                    w.firingAngle(tsgf.guessFactor), dangerAngle);
-                density += scanWeight * kernel(xFiringAngle, viewBandwidth(view, bandwidth), segments);
-                viewScanWeight += scanWeight;
-            }
-            // !(x > 0) also catches NaN: such a view adds nothing to the average either.
-            if (!(viewScanWeight > 0)) continue;
-            dangers[n] = density / viewScanWeight;
-            weights[n] = effectiveWeight(vi) * viewScanWeight;
-            total += weights[n];
-            n++;
-        }
-        if (!(total > 0)) return 0;
-        for (int i = 0; i < n; i++) weights[i] /= total;
-        return n;
-    }
-
-    /** MOVE-14: how many danger views there are, the size of {@link #viewDangers}' arrays. */
+    /** How many danger views there are. */
     int viewCount() {
         return views.size();
-    }
-
-    /**
-     * MOVE-14: the fewest ticks before a real (firing) wave that has not yet hit us or met
-     * one of our bullets reaches our centre, as we stand now; infinity when there is none.
-     * A wave already past our centre is not counted. Read-only.
-     *
-     * @param myState our state now
-     * @return the ticks, 0 or more, or {@link Double#POSITIVE_INFINITY}
-     */
-    public double soonestFiringImpact(RobotState myState) {
-        double[] soonest = {Double.POSITIVE_INFINITY};
-        waveManager.forAllWaves(w -> {
-            if (!w.firingWave || w.processedBulletHit()) return;
-            double remaining = myState.location.distance(w.sourceLocation)
-                - w.distanceTraveled(myState.time);
-            if (remaining < 0) return;
-            soonest[0] = Math.min(soonest[0], remaining / w.bulletSpeed());
-        });
-        return soonest[0];
     }
 
     /**
@@ -1554,81 +1361,6 @@ public class MoveController {
         return danger;
     }
 
-    /** MOVE-25: counts every sample the danger views learn, hit or visit, this battle. */
-    private long viewRevision;
-
-    /** MOVE-25: the danger views' revision; it changes whenever a view learns a hit or a visit. */
-    public long viewRevision() {
-        return viewRevision;
-    }
-
-    /**
-     * MOVE-25: the danger views' firing angles for {@code w} as a histogram over the classic
-     * guess factor: {@code bins} equal bins across [-1, 1], each holding the summed weight of
-     * the neighbours whose guess factor falls in it (view weight times scan weight, the same
-     * weights {@link #getDangerScore} averages), normalised to sum to 1. No kernel and no
-     * shadows: the stop-point surf smooths it and applies them. With no view on with data it
-     * holds {@link #defaultDanger}'s fixed guess (GF 0 weight 3, GF 0.85 weight 1).
-     *
-     * @param w the wave
-     * @param surfWaveIndex the wave's index among the surfable waves, which keys the cache
-     * @param bins the number of bins, at least 2
-     * @return the histogram, summing to 1
-     */
-    public double[] dangerProfile(Wave w, int surfWaveIndex, int bins) {
-        validateCache(w, surfWaveIndex);
-        double[] out = new double[bins];
-        double[] estimate = viewEstimate();
-        double total = 0;
-        for (int vi = 0; vi < views.size(); vi++) {
-            KnnView<TimestampedGuessFactor> view = views.get(vi);
-            if (view.effectiveSize() == 0 || !viewOn(view, estimate)) continue;
-            double viewWeight = effectiveWeight(vi);
-            List<KdTree.Entry<TimestampedGuessFactor>> neighbors =
-                getNearestNeighbors(view, w, surfWaveIndex);
-            double[] decay = view.getDecayWeights(neighbors);
-            for (int k = 0; k < decay.length; k++) {
-                KdTree.Entry<TimestampedGuessFactor> entry = neighbors.get(k);
-                TimestampedGuessFactor tsgf = entry.value;
-                double scanWeight = decay[k]
-                    / Math.sqrt(Math.max(entry.distance, MIN_DISTANCE)) * tsgf.weight();
-                double add = viewWeight * scanWeight;
-                if (!(add > 0)) continue;
-                out[profileBin(tsgf.guessFactor, bins)] += add;
-                total += add;
-            }
-        }
-        if (!(total > 0)) {
-            Arrays.fill(out, 0.0);
-            out[profileBin(0.0, bins)] += 0.75;
-            out[profileBin(0.85, bins)] += 0.25;
-            return out;
-        }
-        for (int i = 0; i < bins; i++) out[i] /= total;
-        return out;
-    }
-
-    /**
-     * MOVE-27: the profile the stop-point surf rates {@code w} on: the views' {@link #dangerProfile},
-     * blended with the enemy-gun ensemble's models when it is on.
-     */
-    public double[] surfProfile(Wave w, int surfWaveIndex, int bins) {
-        double[] views = dangerProfile(w, surfWaveIndex, bins);
-        return gunMimics == null ? views : gunMimics.blend(w, views);
-    }
-
-    /** MOVE-27: the bins the ensemble scores the views' profile in; the stop-point surf's. */
-    static final int MIMIC_SCORE_BINS = StopPointSurf.BINS;
-
-    /**
-     * MOVE-27: an enemy bullet our bullet met at {@code bulletLocation}, when the views do not learn
-     * it (MOVE-19 off): its angle still scores the ensemble's models. Does nothing when it is off.
-     */
-    public void scoreIntercept(Wave w, Point2D.Double bulletLocation) {
-        if (gunMimics == null || w == null) return;
-        scoreMimics(w, w.guessFactor(bulletLocation));
-    }
-
     /**
      * MOVE-30: an enemy bullet our bullet met at {@code bulletLocation} scores the aim members, as
      * {@link #logBulletHit} does for a hit, and teaches nothing else. Does nothing with the
@@ -1637,26 +1369,6 @@ public class MoveController {
     public void scoreInterceptAims(Wave w, Point2D.Double bulletLocation) {
         if (aimMembers == null || w == null) return;
         learnAimMembers(w, w.guessFactor(bulletLocation));
-    }
-
-    /**
-     * MOVE-27: scores the ensemble's models on a bullet fired at {@code hitGf}, the views on
-     * their profile of the wave. It uses the HF cache slot and empties it after, as
-     * {@link #updateReplicator} does, so the surf's cached neighbours are untouched.
-     */
-    private void scoreMimics(Wave w, double hitGf) {
-        try {
-            gunMimics.scoreBullet(w, hitGf, dangerProfile(w, FORENSICS_CACHE, MIMIC_SCORE_BINS));
-        } finally {
-            for (KnnView<TimestampedGuessFactor> view : views) view.cachedNeighbors.remove(FORENSICS_CACHE);
-            cacheOwners.remove(FORENSICS_CACHE);
-        }
-    }
-
-    /** MOVE-25: the bin of {@code gf} among {@code bins} equal bins over [-1, 1], clamped. */
-    static int profileBin(double gf, int bins) {
-        int b = (int) Math.floor((gf + 1) / 2 * bins);
-        return Math.max(0, Math.min(bins - 1, b));
     }
 
     /** Floor for a neighbour's squared distance, so an exact match weighs a lot but not infinitely. */

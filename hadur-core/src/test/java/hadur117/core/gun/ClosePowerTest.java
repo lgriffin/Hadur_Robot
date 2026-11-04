@@ -18,6 +18,6 @@ class ClosePowerTest {
         assertEquals(150.0, GunController.CLOSE_RANGE, 1e-12);
         assertEquals(2.95, GunController.CLOSE_POWER, 1e-12);
         assertEquals(2.95, g.calculateBulletPower(140, 80, 80, 1), 1e-12);
-        assertEquals(1.95, g.calculateBulletPower(175, 80, 80, 1), 1e-12, "150 to 200 px stays 1.95 until close200");
+        assertEquals(1.95, g.calculateBulletPower(175, 80, 80, 1), 1e-12, "beyond 150 px the base is 1.95");
     }
 }

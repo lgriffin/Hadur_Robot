@@ -744,11 +744,7 @@ public class GunController {
      * 2.95 inside 150 px) without the cubic power-down, the one thing the regime replaces.
      */
     public enum Stakes {
-        NORMAL, CHAFF, DEFAULT,
-        /** POW-12: no power-down, base power 2.5 beyond 150 px (2.95 inside stays). */
-        PRESSURE,
-        /** POW-12, weaker form: no power-down, base power 1.95 kept. */
-        PRESSURE_DOWN }
+        NORMAL, CHAFF, DEFAULT }
 
     /**
      * The bullet power for the next gun wave, before the core's power policy.
@@ -783,10 +779,7 @@ public class GunController {
         return calculateMeleeBulletPower(distance, myEnergy, enemyEnergy, enemiesAlive);
     }
 
-    /**
-     * POW-13 (off): the duel's close-range power band, 2.95 inside 150 px; the ablation {@code close200}
-     * widens it to Ogi's melee rule, power 3 inside 200 px (MGUN-13 in a duel).
-     */
+    /** The duel's close-range power band: 2.95 inside 150 px. */
     static final double CLOSE_RANGE = 150.0;
 
     /** POW-13: the power fired inside {@link #CLOSE_RANGE}. */
@@ -802,13 +795,13 @@ public class GunController {
      */
     private double calculate1v1BulletPower(double distance, double myEnergy,
                                             double enemyEnergy, Stakes stakes) {
-        double bulletPower = stakes == Stakes.PRESSURE ? 2.5 : 1.95;
+        double bulletPower = 1.95;
         if (distance < CLOSE_RANGE) {
             bulletPower = CLOSE_POWER;
         }
         if (stakes == Stakes.CHAFF) {
             bulletPower = Rules.MIN_BULLET_POWER;
-        } else if (stakes == Stakes.NORMAL && distance > 325.0) { // DEFAULT, PRESSURE, PRESSURE_DOWN skip it
+        } else if (stakes == Stakes.NORMAL && distance > 325.0) { // DEFAULT skips it
             // 63 at an even or worse energy balance, 4 lower per point we lead, never below 35.
             double powerDownPoint = DiaUtils.limit(35.0,
                 63.0 + (enemyEnergy - myEnergy) * 4.0, 63.0);

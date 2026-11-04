@@ -69,7 +69,7 @@ C4Container
   Container_Boundary(jar, "hadur117.Hadur_3.20.jar (and HadurTeam: the same classes plus HadurTeam.team)") {
     Container(adapter, "Adapter", "hadur-robot, hadur117.Hadur", "TeamRobot. Turns engine events into BotEvent values, applies BotOrders. Only code that sees robocode.*")
     Container(core, "Core", "hadur-core, hadur117.core", "All strategy as plain Java. No engine, no I/O, no clock, no randomness.")
-    Container(tables, "Table data classes", "hadur-robot", "ShieldListData, ShieldTableData, StackListData: the 1v1 mode table as code")
+    Container(tables, "Table data classes", "hadur-robot", "ShieldListData, ShieldTableData: the 1v1 mode table as code")
   }
   ContainerDb(store, "Data directory", "Robocode sandboxed files", ".hp profiles, .hm melee blocks, battles.hc, health record")
   Container(bench, "hadur-bench", "Java 17, scripts", "Bench, census, build-ablation.sh, plans/*.queue cards")
@@ -598,7 +598,7 @@ Hadur's behaviour is chosen at four tiers. From slowest to fastest:
 | Tier | What | Where it lives | Who changes it | When it takes effect |
 |---|---|---|---|---|
 | 1. Compile-time switches | `static final boolean` flags (and a few constants) per feature | design classes and the feature's own class | a master PR after a bench gate; an ablation build for a test | the build |
-| 2. Per-opponent mode tables | named opponents get a non-default play | 1v1: `ShieldListData`, `ShieldTableData`, `StackListData` in the robot jar. Team: `TeamModes.TABLE` | a master PR from a bench screen; table ablations fill them for a run | 1v1: first scan of the battle. Team: every tick |
+| 2. Per-opponent mode tables | named opponents get a non-default play | 1v1: `ShieldListData`, `ShieldTableData` in the robot jar. Team: `TeamModes.TABLE` | a master PR from a bench screen; table ablations fill them for a run | 1v1: first scan of the battle. Team: every tick |
 | 3. Charter and role gates | which brains exist and which drives | `Charter`, `RoleResolver`, `duelOnly`, `onTeam` | fixed by the design | tick 0 and every tick |
 | 4. Runtime adaptation | learned choices inside a battle | opening book tiers, move flavour, seed trust, virtual-gun ratings, AimMembers weights, TickBudget levels, ShieldMode exits, CONCORD's gang watch | the battle's own evidence | as evidence arrives |
 
@@ -645,7 +645,8 @@ flowchart LR
 A switch whose card failed is removed with its code, ablation arm, card and tests, and its
 requirement moves to the retired table in docs/requirements.md; this catalogue lists only what ships
 or what a mode table or ablation still reaches. The 3.22 cleanup removed the melee endgame hand-off
-(HAND-1..5) and the failed team modes (PACK, SCREEN, DISABLED, REAR, SOFT, LEARN, POOL, WAVES, LINES,
+(HAND-1..5), the failed 1v1 surf, distance and power switches (MOVE-12, 14..21, 23, 25..27, DIST-3, TIME-6, RAM-4,
+POW-12, POW-14, with `StackListData`, `StopPointSurf`, `ProteanPick`, `EscapeRoom`, `ReplicatorWeights`) and the failed team modes (PACK, SCREEN, DISABLED, REAR, SOFT, LEARN, POOL, WAVES, LINES,
 LINESW, LANEP, LANEB, GUNLINE, FAR, FARTHER, NEAR, LEAD, SWIFT, HEAVY, WARY, CLEAR, MOMENTUM, AIM, the
 team radar look and the learned-danger switches).
 
@@ -663,11 +664,10 @@ team radar look and the learned-danger switches).
 | `ShieldDesign.SHIPPED` | SHIELD-8..16 | `prior,wall,hold,learn,mode,stay,ratio` | Which shield-mode parts run; `ratio` (SHIELD-23) on from 3.21 (pc-shield-power +0.15 APS); `still` (SHIELD-20) and `cheap` (SHIELD-22) off |
 | `MoveDesign.STOP_AND_GO` | POISON-2 | off | Forces stop-and-go on everyone; per-opponent picks come from the table instead |
 | `MoveDesign.SHOT_DODGE`, `SHOT_DODGE_PLAN` | DODGE-3..6 | off | Force the simple-aim dodge or planner on everyone; table slots exist |
-| `MoveDesign.STACK_LIST` | MOVE-23 | off | Makes `StackListData` (197 top robots) switch the stop-start stack off; inert while off |
 | `GunDesign.TRIPHAMMER`, `FREE_GUN`, `UNDECAYED` | GUN-8..11 | off | The gun stack; per-opponent `gun-stack:` slot, empty |
-| `MoveDesign.PROTEAN`, `GUN_SPLIT`, `HEAT_WAVE`, `REPLICATOR`, `MIMICS`, `ESCAPE_ROOM`, `STOP_POINT_SURF`, `POINT_KERNEL`, `KEEP_SECOND_WAVE`, `GUN_GATE`, `DISTANCING_TO_ENEMY`, `HIT_CLEARS_CACHE`, `BULLET_HIT_BULLET_LOG`, `RAM_HEAT`, `AIM_MIX` | MOVE-12..28 | off | Tried and not shipped, or superseded (the core surf rebuild is closed) |
+| `MoveDesign.HEAT_WAVE` | MOVE-11 | off | Forces heat-jit on everyone; per-opponent picks come from the table (`heat-jit:`, MOVE-28) |
+| `MoveDesign.MIMIC_MEMBERS` | MOVE-33 | off | Forces the learning-gun mimics among the aim members; per-opponent `mimic-on:` (MOVE-34) |
 | `MoveDesign.AES_RECORD`, `ORACLE_RECORD` | AES-1, ORACLE-1 | off | Telemetry recorders for the bench's studies |
-| `PowerDesign.PRESSURE*` | POW | off | Pressure power variants |
 
 **Melee (off a team only)**
 
@@ -699,7 +699,7 @@ team radar look and the learned-danger switches).
 ### Tier 2: the 1v1 mode table
 
 The 1v1 table is per opponent, PC-trained and census-gated: only per-opponent picks have shown
-live gains. It ships as three classes in the robot jar, because the sandbox refuses a robot the
+live gains. It ships as two classes in the robot jar, because the sandbox refuses a robot the
 read of its own jar's resources but lets classes load.
 
 ```mermaid
@@ -707,11 +707,9 @@ flowchart LR
   subgraph jar["robot jar (hadur-robot)"]
     SL["ShieldListData.lines()<br/>273 shield entries"]
     ST["ShieldTableData<br/>moves 39, aims 232,<br/>stopGos 27, stopGoShifts 49,<br/>dodges, dodgePlans, heatJits,<br/>gunStacks, exitLates, exitOffs (empty)"]
-    SK["StackListData.lines()<br/>197 (inert: STACK_LIST off)"]
   end
   SL --> P["Hadur.shieldList():<br/>prefix each line<br/>(shield-move:, shield-aim:, stop-go:, ...)"]
   ST --> P
-  SK --> P
   P --> Q["ShieldList.parse<br/>(core, no I/O)"]
   Q --> C{"Charter DUEL?"}
   C -- no --> N["ShieldList.NONE"]
@@ -729,7 +727,6 @@ flowchart LR
 | `heatJits()` | `heat-jit:` | MOVE-28 | 0 | Stop-and-start surf |
 | `gunStacks()` | `gun-stack:` | GUN-11 | 0 | TripHammer gun stack (never for a shield opponent) |
 | `exitLates()`, `exitOffs()` | `shield-exit4:`, `shield-exit0:` | SHIELD-19 | 0 | Later or no damage exit from shield mode |
-| `StackListData` | `stack-off:` | MOVE-23 | 197 | Stop-start stack off, only with `STACK_LIST` on |
 
 Matching is exact: `pkg.Bot 1.2` matches that version only, `pkg.Bot` every version, never a prefix.
 Entries arrive from bench screens: the table ablations (`smovelist`, `saimlist`, `sgolist`,

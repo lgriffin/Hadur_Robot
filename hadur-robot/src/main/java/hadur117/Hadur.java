@@ -238,9 +238,7 @@ public class Hadur extends TeamRobot {
      */
     private ShieldList shieldList() {
         try {
-            // MOVE-23: the stack off-list rides in the same object, its lines marked.
             java.util.List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
-            for (String name : StackListData.lines()) lines.add(ShieldList.STACK_OFF_PREFIX + " " + name);
             // SHIELD-17, SHIELD-18: mode table part 2's opening drive and shipped aims, marked the same way.
             for (String name : ShieldTableData.moves()) lines.add(ShieldList.MOVE_PREFIX + " " + name);
             for (String aim : ShieldTableData.aims()) lines.add(ShieldList.AIM_PREFIX + " " + aim);

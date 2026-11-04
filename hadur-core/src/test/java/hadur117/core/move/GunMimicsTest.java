@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 class GunMimicsTest {
 
     static final BattleField FIELD = new BattleField(800, 600);
-    static final int BINS = StopPointSurf.BINS;
+    static final int BINS = 151;
 
     static Wave wave() {
         return new Wave("enemy", new Point2D.Double(400, 500), new Point2D.Double(400, 200),
@@ -35,7 +35,7 @@ class GunMimicsTest {
     }
 
     @Test
-    @Tag("MOVE-27")
+    @Tag("MOVE-33")
     @DisplayName("with no visits learned the blend is the views' profile")
     void freshBlendIsTheViews() {
         GunMimics g = new GunMimics();
@@ -46,7 +46,7 @@ class GunMimicsTest {
     }
 
     @Test
-    @Tag("MOVE-27")
+    @Tag("MOVE-33")
     @DisplayName("the views start far ahead: one visit barely moves the blend")
     void viewsLeadAtTheStart() {
         GunMimics g = new GunMimics();
@@ -60,7 +60,7 @@ class GunMimicsTest {
     }
 
     @Test
-    @Tag("MOVE-27")
+    @Tag("MOVE-33")
     @DisplayName("a mimic that predicts the real bullets takes over the blend")
     void predictiveMimicTakesOver() {
         GunMimics g = new GunMimics();
@@ -80,7 +80,7 @@ class GunMimicsTest {
     }
 
     @Test
-    @Tag("MOVE-27")
+    @Tag("MOVE-33")
     @DisplayName("a uniform profile scores 1 at any bullet")
     void uniformDensityIsOne() {
         assertEquals(1.0, GunMimics.density(uniform(), 0.2), 1e-9);
@@ -88,7 +88,7 @@ class GunMimicsTest {
     }
 
     @Test
-    @Tag("MOVE-27")
+    @Tag("MOVE-33")
     @DisplayName("a rolling buffer peaks at the visits and forgets at its depth")
     void rollingBuffer() {
         double[] b = new double[GunMimics.GF_BINS];
@@ -99,7 +99,7 @@ class GunMimicsTest {
     }
 
     @Test
-    @Tag("MOVE-27")
+    @Tag("MOVE-33")
     @DisplayName("segments split waves by the shooter's view of us")
     void segmentsSplitWaves() {
         Wave slow = wave();
@@ -113,7 +113,7 @@ class GunMimicsTest {
     }
 
     @Test
-    @Tag("MOVE-27")
+    @Tag("MOVE-33")
     @DisplayName("a flat buffer gives a flat profile at the surf's bins")
     void flatBufferFlatProfile() {
         GunMimics.Mimic m = new GunMimics.Mimic(10);

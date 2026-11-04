@@ -14,7 +14,6 @@ import hadur117.core.memory.ProfileFolder;
 import hadur117.core.memory.ProfileLibrary;
 import hadur117.core.memory.Tiers;
 import hadur117.core.model.*;
-import hadur117.core.move.GunClassifier;
 import hadur117.core.move.AimMembers;
 import hadur117.core.move.GunMimics;
 import hadur117.core.move.StopAndGo;
@@ -52,7 +51,6 @@ import java.util.List;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * The Duel strand's brain (A2): everything Hadur does against one opponent, lifted out of
@@ -107,8 +105,6 @@ public final class DuelController {
     private double smallestEnemyPower = Double.NaN;
     /** END-4: whether the last shot decision held the shot, so a P record marks each change. */
     private boolean end4Holding;
-    /** MOVE-25: this round's ticks with a cool gun, and those of them off its aim. */
-    private int coolTicks, offAimTicks;
     /** Whether the aim the gun is turning to carries the anti-shield offset (SHIELD-2). */
     private boolean aimCarriesJitter;
     /**
@@ -117,8 +113,6 @@ public final class DuelController {
      */
     /** SHIELD-5: the battle's shield mode in a duel, else null. */
     private ShieldMode shield;
-    /** SHIELD-6: the battle's rounds, for a shield mode built at a hand-off. */
-    private final int rounds;
     /** The last survivor handed over, so a new one starts the dodger afresh. */
     private String endgameSurvivor;
     /**
@@ -160,7 +154,6 @@ public final class DuelController {
     /** MOVE-23: carries the stack off-list (the shield list object holds both). */
     private final ShieldList stackList;
     /** MOVE-23: whether the stop-and-start stack applies to this opponent; true until it is named. */
-    private boolean stackOn = true;
     /** The distance to the duel opponent at its last scan, in px. */
     private double lastEnemyDistance;
     /** What the opening book chose (S4); {@link Opening#STRANGER} until a profile is read. */
@@ -183,8 +176,6 @@ public final class DuelController {
      * S5: our duel bullets' outcomes and their waves' outcomes, rolling, across rounds while
      * the duel opponent stays the same one.
      */
-    /** POW-12: whether the pressure gate held at the last duel aim, for the policy record. */
-    private boolean pressureApplied;
     private final HitWindow ourWindow = new HitWindow();
     /** S5: the outcomes of their firing waves as they break on us, rolling (DIST-1, POW-2). */
     private final HitWindow theirWindow = new HitWindow();
@@ -325,10 +316,6 @@ public final class DuelController {
         this.gunController.setUndecayed(GunDesign.UNDECAYED);
         this.moveController = new MoveController(battleField, predictor);
         moveController.setFlattenerOff(duelOnly(MoveDesign.FLATTENER_OFF, enemiesTotal));
-        this.moveController.setReplicator(MoveDesign.REPLICATOR);
-        this.moveController.setPointKernel(duelOnly(MoveDesign.POINT_KERNEL, enemiesTotal));
-        this.moveController.setGunMimics(duelOnly(MoveDesign.STOP_POINT_SURF && MoveDesign.MIMICS,
-            enemiesTotal) ? new GunMimics() : null);
         // MOVE-33: the learning-gun mimics join the aim members when both switches are on.
         GunMimics memberMimics = duelOnly(MoveDesign.AIM_MEMBERS && MoveDesign.MIMIC_MEMBERS, enemiesTotal)
             ? new GunMimics() : null;
@@ -336,14 +323,9 @@ public final class DuelController {
             ? new AimMembers(memberMimics == null ? 0 : memberMimics.size()) : null);
         this.moveController.setMemberMimics(memberMimics);
         this.surfMover = new SurfMover(battleField, predictor);
-        this.surfMover.setEscapeRoomTerm(MoveDesign.ESCAPE_ROOM);
-        this.surfMover.setDistancingToEnemy(duelOnly(MoveDesign.DISTANCING_TO_ENEMY, enemiesTotal));
-        this.surfMover.setProtean(MoveDesign.PROTEAN, MoveDesign.PROTEAN_DWELL);
         this.surfMover.setAesRecord(MoveDesign.AES_RECORD);
         this.surfMover.setOracleRecord(MoveDesign.ORACLE_RECORD);
         this.surfMover.setSurfKeyRecord(MoveDesign.SURF_KEY_RECORD);
-        this.surfMover.setStopPointSurf(duelOnly(MoveDesign.STOP_POINT_SURF, enemiesTotal));
-        this.surfMover.setStopPointAimMix(MoveDesign.AIM_MIX);
         this.shadowAvoidance = new ShadowAvoidance(fieldWidth, fieldHeight);
         this.ramEscape = new RamEscape(battleField, predictor);
         this.mirror = new MirrorDetector(fieldWidth, fieldHeight);
@@ -360,7 +342,6 @@ public final class DuelController {
         this.fieldHeight = fieldHeight;
         this.stats = stats;
         this.stackList = shieldList == null ? ShieldList.NONE : shieldList;
-        this.rounds = rounds;
         this.shield = enemiesTotal == 1 && shieldList != null && !shieldList.isEmpty()
             ? new ShieldMode(shieldList, telemetry, rounds) : null;
     }
@@ -600,26 +581,11 @@ public final class DuelController {
             emitPolicy(round, time, "lead", ours.value(), ours.margin(), leadApplies ? "lead_on" : "lead_off");
         }
         PowerPolicy.Lead lead = PowerPolicy.lead(leadApplies, in.energy(), e.energy());
-        // POW-12: pressure power, duel only and never while the lead-aware regime holds.
-        boolean pressure = enemiesTotal <= 1 && PowerDesign.pressureHolds(
-            lead != PowerPolicy.Lead.OFF, in.energy(), ourWindow, theirWindow);
-        if (pressure != pressureApplied) {
-            pressureApplied = pressure;
-            Estimate ours = ourWindow.estimate();
-            emitPolicy(round, time, "pressure", ours.value(), ours.margin(), pressure ? "pressure_on" : "pressure_off");
-        }
         double bulletPower = gunController.calculateBulletPower(
-            e.distance(), in.energy(), e.energy(), in.others(),
-            pressure ? PowerDesign.pressureStakes() : stakes(lead));
+            e.distance(), in.energy(), e.energy(), in.others(), stakes(lead));
         // POW-5: cap the shot against a T3 gun beyond 500 px, unless a full-power rule below
         // applies - applied first so POW-1..4's Math.max can still override it upward.
         bulletPower = PowerPolicy.capPower(opening.gunTier(), e.distance(), bulletPower);
-        // POW-14: BeepBoop's anti-BasicSurfer powers, in round 0 and while we hit often; before the
-        // full-power, shielder, kill and ram rules below, so none of their powers is rounded down.
-        if (PowerDesign.ANTI_BASIC_SURFER && enemiesTotal <= 1
-                && (round == 0 || ourRates.estimate().value() > PowerDesign.ABS_HIT_RATE)) {
-            bulletPower = PowerDesign.antiBasicSurfer(bulletPower);
-        }
         // POW-1, POW-2, POW-3, POW-4: full power where the profile, the range or this
         // battle's rates say it pays.
         PowerPolicy.Reason why = PowerPolicy.reason(opening.gunTier(), e.energy(), in.energy(),
@@ -744,7 +710,7 @@ public final class DuelController {
             if (shield != null) {
                 if (reading.uncertain()) {
                     // SHIELD-14: with the wall switch, an uncertain shot still builds a wave, at the ledger's guess.
-                    if (shield.design().wall && stackOn) shield.onEnemyShot(fireTime, reading.guess(), true);
+                    if (shield.design().wall) shield.onEnemyShot(fireTime, reading.guess(), true);
                     else shield.onEnemyFired();
                 }
                 else shield.onEnemyShot(fireTime, reading.corrected());
@@ -848,26 +814,13 @@ public final class DuelController {
                 in.gunCoolingRate(), roundEnemyShot);
         } else {
             // MOVE-11: the enemy's gun is cool by now or next tick, and the wave it will leave is surfed too.
-            // MOVE-15: the enemy's gun decides the hold and the protean pick when the split is on.
-            boolean split = MoveDesign.GUN_SPLIT;
-            boolean learning = split && gunClassifier.learning();
-            // MOVE-23: a listed opponent plays as with heatjit off (the hold on, no gun-heat wave).
-            // RAM-4: a confirmed rammer gets heatjit (the gun-heat wave, no hold) whatever the switches say.
-            // MOVE-28: a listed opponent gets heatjit the same way.
-            boolean ramHeat = ramHeat(duelOnly(MoveDesign.RAM_HEAT, enemiesTotal), rammer.confirmed()) || heatJitOn;
-            moveController.setProvisionalHold(split ? learning : ((MoveDesign.HEAT_HOLD && !ramHeat) || !stackOn));
-            // MOVE-17: the gate closes the gun-heat wave once the gun is called learning (the split wins).
-            moveController.setProvisionalReady(provisionalOffered((MoveDesign.HEAT_WAVE || ramHeat) && stackOn,
-                MoveDesign.GUN_GATE && !split, gunClassifier.learning(),
-                enemyGunHeat(in).at(in.time()) <= in.gunCoolingRate()), in.time());
-            if (split) {
-                surfMover.setProtean(learning, MoveDesign.PROTEAN_DWELL);
-                surfMover.setProteanHot(learning);
-            }
-            if (split ? learning : MoveDesign.PROTEAN) proteanWindow(in);
+            // MOVE-28: an opponent the table names gets heatjit (the gun-heat wave, no hold).
+            moveController.setProvisionalHold(MoveDesign.HEAT_HOLD && !heatJitOn);
+            moveController.setProvisionalReady((MoveDesign.HEAT_WAVE || heatJitOn)
+                && enemyGunHeat(in).at(in.time()) <= in.gunCoolingRate(), in.time());
             if (dodgePlanOn) surfMover.setDodgeEnemy(lastEnemyState);
             surfMover.move(orders, currentState(in), moveController, lastEnemyLocation,
-                TickBudget.wavesToSurf(level, duelOnly(MoveDesign.KEEP_SECOND_WAVE && stackOn, enemiesTotal)), TickBudget.goToAllowed(level));
+                TickBudget.wavesToSurf(level), TickBudget.goToAllowed(level));
             // AES-1: the decision records the surf made this tick (none unless the switch is on).
             for (String r : surfMover.drainAesRecords()) {
                 telemetry.emit("AES," + round + "," + in.time() + "," + r);
@@ -885,14 +838,6 @@ public final class DuelController {
         if (!moveController.planIntervals().isEmpty()) planTime = in.time();
         // RADAR-1: no scan this tick or the one before, so the lock has lost it.
         if (in.time() - lastScanTime > 1) reacquire(in, orders);
-    }
-
-    /**
-     * MOVE-23: whether the stop-and-start stack applies to {@code opponent}: always with the
-     * switch off; with it on, unless the opponent is on the stack off-list.
-     */
-    static boolean stackApplies(boolean stackListOn, ShieldList list, String opponent) {
-        return !stackListOn || list == null || !list.onStackOffList(opponent);
     }
 
     /**
@@ -925,44 +870,9 @@ public final class DuelController {
     }
 
     /** A duel-only move switch: in effect only in a duel; melee and team endgames play as with it off. */
-    /** RAM-4: whether the duel plays heatjit for being against a confirmed rammer. */
-    static boolean ramHeat(boolean switchOn, boolean confirmedRammer) {
-        return switchOn && confirmedRammer;
-    }
-
     static boolean duelOnly(boolean switchOn, int enemiesTotal) {
         return switchOn && enemiesTotal <= 1;
     }
-
-    /** DIST-3: whether DIST-1 may move the target: not with the hold-650 switch on. */
-    static boolean distanceMoves(boolean hold650) {
-        return !hold650;
-    }
-
-    /** MOVE-19: whether an intercept teaches the hit views: the switch is on and the enemy bullet's wave was found. */
-    static boolean logsIntercept(boolean switchOn, Wave interceptedWave) {
-        return switchOn && interceptedWave != null;
-    }
-
-    /** MOVE-20: whether a hit or an intercept clears the cached neighbour searches. */
-    static boolean clearsCacheOnHit(boolean switchOn) {
-        return switchOn;
-    }
-
-    /**
-     * MOVE-11, MOVE-17: whether the gun-heat wave is offered this tick: the switch is on, the gate
-     * (if on) has not closed it because the gun is learning, and the gun is cool by now or next tick.
-     */
-    static boolean provisionalOffered(boolean heatWave, boolean gate, boolean learning, boolean gunReady) {
-        return heatWave && !(gate && learning) && gunReady;
-    }
-
-    /**
-     * MOVE-15: the classes of the bullets that hit us in the duel this battle. This controller
-     * lives for the battle (it is built once and {@link #newRound} does not rebuild it), so the
-     * count runs across its rounds and starts empty with the next battle's controller.
-     */
-    private final GunClassifier gunClassifier = new GunClassifier();
 
     /**
      * DODGE-2: the simple aim the enemy's gun fires, counted across the battle's rounds like the
@@ -998,28 +908,6 @@ public final class DuelController {
     private long roundEnemyShot = Long.MIN_VALUE;
     /** DODGE-1: ticks the averaged linear aim averages our velocity over. */
     static final int AIM_AVERAGE_TICKS = 10;
-
-    /** MOVE-14: no protean pick when a real bullet is this many ticks from reaching us. */
-    private static final double PROTEAN_MIN_TICKS = 10.0;
-    /** MOVE-14: the round and enemy the protean die was last seeded for. */
-    private int proteanSeedRound = -1;
-    private String proteanSeedName;
-
-    /**
-     * MOVE-14: tells the surf whether the protean pick may act this tick: the enemy's gun heat
-     * is no more than one tick's cooling (MOVE-11's test) and no real wave reaches us within
-     * {@link #PROTEAN_MIN_TICKS} ticks. The die is seeded per round from the enemy's name.
-     */
-    private void proteanWindow(BotInput in) {
-        if (proteanSeedRound != round || !Objects.equals(proteanSeedName, opponentName)) {
-            proteanSeedRound = round;
-            proteanSeedName = opponentName;
-            surfMover.seedProtean(opponentName, round);
-        }
-        boolean cool = enemyGunHeat(in).at(in.time()) <= in.gunCoolingRate();
-        boolean clear = moveController.soonestFiringImpact(currentState(in)) > PROTEAN_MIN_TICKS;
-        surfMover.setProteanWindow(cool && clear);
-    }
 
     /**
      * One of our bullets hit a robot. Its shadow goes (MOVE-1); a duel bullet's outcome goes
@@ -1074,8 +962,6 @@ public final class DuelController {
             if (moveController.shotDodger() != null) shotDodger.observe(hitWave.simpleAims(), e.heading(), dodgeEscape(hitWave));
             moveController.logBulletHit(hitWave, bulletLoc, round, in.time());
         }
-        // MOVE-20: a hit is a new sample for the next wave's neighbours too.
-        if (clearsCacheOnHit(duelOnly(MoveDesign.HIT_CLEARS_CACHE && stackOn, enemiesTotal))) moveController.clearNeighborCache();
         if (folder != null && driving) {
             // File the hit under the distance and movement at the wave's fire time when known.
             boolean found = hitWave != null;
@@ -1102,7 +988,6 @@ public final class DuelController {
             hitWave.bulletSpeed(), hitWave.maxEscapeAngle());
         String cls = HitForensics.classify(gf, linearGf,
             HitForensics.tolerance(hitWave.targetDistance, hitWave.maxEscapeAngle()));
-        if (MoveDesign.GUN_SPLIT || MoveDesign.GUN_GATE) gunClassifier.record(cls);
         PlanInterval plan = moveController.lastPlanFor(hitWave);
         long planTime = moveController.lastPlanTime(hitWave);
         long optionTime = moveController.lastOptionTime(hitWave);
@@ -1176,18 +1061,9 @@ public final class DuelController {
             }
             hitWave.bulletHitBullet = true;
             if (moveController.shotDodger() != null) shotDodger.observe(hitWave.simpleAims(), e.enemyHeading(), dodgeEscape(hitWave));
-            // MOVE-19: the bullet's angle is a sample of the enemy gun's aim, as a hit would be.
-            if (logsIntercept(duelOnly(MoveDesign.BULLET_HIT_BULLET_LOG, enemiesTotal), hitWave)) {
-                moveController.logBulletHit(hitWave, hitLoc, round, in.time());
-            } else {
-                // MOVE-27: the angle still scores the ensemble's models, which logBulletHit would do.
-                moveController.scoreIntercept(hitWave, hitLoc);
-                // MOVE-30: and, where the switch is on, the aim members.
-                if (MoveDesign.AIM_INTERCEPTS) moveController.scoreInterceptAims(hitWave, hitLoc);
-            }
+            // MOVE-30: the bullet's angle scores the aim members, where the switch is on.
+            if (MoveDesign.AIM_INTERCEPTS) moveController.scoreInterceptAims(hitWave, hitLoc);
         }
-        // MOVE-20: an intercept clears the cached searches, as a hit does.
-        if (clearsCacheOnHit(duelOnly(MoveDesign.HIT_CLEARS_CACHE && stackOn, enemiesTotal))) moveController.clearNeighborCache();
     }
 
     /**
@@ -1237,20 +1113,6 @@ public final class DuelController {
                 + (pb < 0 ? "0" : String.format(java.util.Locale.ROOT, "%.2f", shotDodger.planScore(pb))) + ","
                 + shotDodger.read() + "," + shotDodger.passes() + "," + (pb < 0 ? 0 : shotDodger.contradictions(pb)) + ","
                 + (shotDodger.planActive() ? 1 : 0) + "," + surfMover.dodgePlanTicks());
-        }
-        if (duelOnly(MoveDesign.STOP_POINT_SURF, enemiesTotal)) {
-            // MOVE-25: GH,round,tick,coolTicks,offAimTicks.
-            telemetry.emit("GH," + round + "," + tick + "," + coolTicks + "," + offAimTicks);
-        }
-        coolTicks = 0;
-        offAimTicks = 0;
-        if (moveController.gunMimics() != null) {
-            // MOVE-27: GM,round,tick,views score,each mimic's score.
-            StringBuilder gm = new StringBuilder("GM," + round + "," + tick);
-            for (double score : moveController.gunMimics().scores()) {
-                gm.append(',').append(String.format(java.util.Locale.ROOT, "%.3f", score));
-            }
-            telemetry.emit(gm.toString());
         }
         if (stopAndGo != null) {
             // POISON-1: WP,round,tick,goTicks,stopTicks,reverseTicks.
@@ -1389,15 +1251,6 @@ public final class DuelController {
         shield = null;
     }
 
-    /** DODGE-4: the dodge planner on, primed with expert {@code k} (-1 to learn it). */
-    private void dodgePlan(int k) {
-        dodgePlanOn = true;
-        moveController.setShotDodger(shotDodger);
-        moveController.setDodgePasses(true);
-        surfMover.setDodgePlanner(true);
-        shotDodger.prime(k);
-    }
-
     /** The waves the last {@link #take} injected. */
     public int injected() {
         return injected;
@@ -1461,9 +1314,6 @@ public final class DuelController {
 
     /** The duel's per-opponent switches, decided now the opponent is named (MOVE-23, DODGE-3 to DODGE-6, MOVE-28, GUN-11, POISON-2). */
     private void duelModes(String name) {
-        // MOVE-23: the stack's per-opponent switches, decided now the opponent is named.
-        stackOn = stackApplies(duelOnly(MoveDesign.STACK_LIST, enemiesTotal), stackList, name);
-        moveController.setPointKernel(duelOnly(MoveDesign.POINT_KERNEL && stackOn, enemiesTotal));
         // SKEY-2: the opponent's surf key, duel only; none restores the defaults.
         moveController.setSurfKey(duelOnly(true, enemiesTotal) ? stackList.surfKeyFor(name) : null);
         // DODGE-3: the simple-aim dodge, forced for every opponent or for those the table names.
@@ -1471,8 +1321,7 @@ public final class DuelController {
         int dodgePlan = stackList.dodgePlan(name);
         if (MoveDesign.SHOT_DODGE_PLAN && dodgePlan == ShieldList.NO_DODGE_PLAN) dodgePlan = -1;
         dodgePlanOn = duelOnly(dodgePlan >= -1, enemiesTotal);
-        moveController.setShotDodger(duelOnly(MoveDesign.SHOT_DODGE || stackList.dodges(name)
-                || (MoveDesign.STOP_POINT_SURF && MoveDesign.AIM_MIX), enemiesTotal) || dodgePlanOn
+        moveController.setShotDodger(duelOnly(MoveDesign.SHOT_DODGE || stackList.dodges(name), enemiesTotal) || dodgePlanOn
             ? shotDodger : null);
         moveController.setDodgePasses(dodgePlanOn);
         surfMover.setDodgePlanner(dodgePlanOn);
@@ -1744,7 +1593,7 @@ public final class DuelController {
             Estimate ours = ourWindow.estimate();
             Estimate theirs = theirWindow.estimate();
             // DIST-3: held at the opening distance, no walk in or out.
-            if (distanceMoves(duelOnly(MoveDesign.HOLD_650, enemiesTotal)) && distance.onWave(ours, theirs) != DistancePolicy.Step.HOLD) {
+            if (distance.onWave(ours, theirs) != DistancePolicy.Step.HOLD) {
                 // The gap's margin: the two estimates' margins combined in quadrature.
                 emitPolicy(round, in.time(), "distance", ours.value() - theirs.value(),
                     Math.hypot(ours.margin(), theirs.margin()),
@@ -1811,8 +1660,7 @@ public final class DuelController {
                 surfMover.setMode(SurfMover.Mode.GO_TO);
                 break;
             case FAR:
-                // DIST-3: the hold keeps the opening distance; the flavour still changes.
-                if (distanceMoves(duelOnly(MoveDesign.HOLD_650, enemiesTotal))) distance.shiftOut(MoveFlavour.FAR_SHIFT);
+                distance.shiftOut(MoveFlavour.FAR_SHIFT);
                 break;
             default:
                 break;
@@ -2058,11 +1906,6 @@ public final class DuelController {
         if (end4 != end4Holding) {
             end4Holding = end4;
             emitPolicy(round, in.time(), "power", firePower, Double.NaN, end4 ? "end_4" : "end_4_off");
-        }
-        // MOVE-25: a cool gun's ticks, and those it was off its aim, for the GH record.
-        if (in.gunHeat() == 0) {
-            coolTicks++;
-            if (Math.abs(Math.toDegrees(in.gunTurnRemaining())) >= 0.05) offAimTicks++;
         }
         if (in.gunHeat() == 0 && Math.abs(Math.toDegrees(in.gunTurnRemaining())) < 0.05
                 && !Double.isNaN(firePower) && lastGunWave != null && !predictable

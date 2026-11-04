@@ -13,7 +13,6 @@
 # Ablations (each a one-line edit of the duel, checked to apply exactly once):
 #   g24   melee Stage 2: the field gun takes 24 situations an opponent off a team (MGUN-7's 12). Suffix g4.
 #   gcrowd  MGUN-11: the field gun's situations also see the crowd (nearest robot, heading to it, alive). Suffix gc.
-#   close200  POW-13: the duel fires power 3 inside 200 px (Ogi's melee rule; 2.95 inside 150 px ships). Suffix cr.
 #   pfloor  MGUN-12: off a team with 3+ opponents and 20+ energy, fire at least 1.9 at any distance, in place of
 #           MGUN-13 where that ships on. Suffix pf.
 #   pogi   MGUN-13: as pfloor's conditions, Ogi's power: 1.92, and 3 within 200 px. Suffix po. Ships on since
@@ -77,37 +76,6 @@
 #         linear aims). Suffix rk.
 #   heatjit  MOVE-13: the gun-heat wave taken afresh each tick (the first MOVE-11 build): the surf
 #         re-ranks every tick while the enemy's gun is ready and stops and starts. Suffix hj.
-#   wallesc  MOVE-12: the first wave's danger is also multiplied by BeepBoop's escape-angle position term
-#         (our escape room against his, at the move's end), in the three options and in go-to. Suffix we.
-#   protean  MOVE-14: the protean pick: while the enemy's gun is cool and no real bullet is within 10 ticks,
-#         the surf draws its option from a softmin over the three dangers (temperature from the views'
-#         disagreement, safety-capped) with a replaying chaotic die, instead of taking the least danger;
-#         the dwell stays 1 tick (re-pick every tick). Suffix pr.
-#   pdw3  MOVE-14: protean with a mean dwell of 3 ticks. Suffix p3.
-#   pdw8  MOVE-14: protean with a mean dwell of 8 ticks. Suffix p8.
-#   pc10  MOVE-14 protean's temperature gain c raised from 1 to 10 (combine with protean). Suffix pc.
-#   phot  MOVE-14 protean near-uniform over the options at most twice the best's danger: the
-#         temperature floor 0.02 -> 0.5 of the best danger, the cap 0.5 -> 1.0 (combine with protean). Suffix ph.
-#   split  MOVE-15: movement by the enemy's gun: once 6 of the enemy's hits on us this battle are counted and
-#         60% are of the learned class, the surf holds the gun-heat wave and takes the hot protean pick
-#         (floor 0.5, cap 1.0, dwell 1); until then it takes the wave afresh each tick (stop-and-start).
-#         Sets HEAT_WAVE and GUN_SPLIT, so build it alone: not combined with heat or heatjit (they edit the
-#         same HEAT_WAVE line, which the second edit would not find), nor with protean or phot (unneeded). Suffix sp.
-#   gungate  MOVE-17: the gun-heat wave is dropped once the enemy's gun is called learning (MOVE-15's count: 6 hits,
-#         60% learned), so the stop-and-start runs only against other guns. Meant to combine with heatjit
-#         (heatjit,gungate -> hjgg); sets only GUN_GATE. With split the split wins. Suffix gg.
-#   hold650  DIST-3: no DIST-1 walk-in in a duel; the desired distance stays at the opening's (650 for a stranger).
-#         END-1's finish is unchanged. Sets only HOLD_650. Suffix d6.
-#   dfac     MOVE-18: the surf's distancing factor is measured to the enemy's last scanned position, as Diamond does,
-#         not to the wave's source. Sets only DISTANCING_TO_ENEMY. Suffix df.
-#   bhb      MOVE-19: a bullet of ours that destroys an enemy bullet teaches the hit views that bullet's guess factor,
-#         as Diamond's onBulletHitBullet does. Sets only BULLET_HIT_BULLET_LOG. Suffix bh.
-#   hitclr   MOVE-20: every hit on us and every intercept clears the cached neighbour searches, not only a change of the
-#         surfed wave. Sets only HIT_CLEARS_CACHE. Suffix hc.
-#   pkern    MOVE-21: the danger kernel is the point value 2^-abs(u) at the intersection centre (Diamond's) instead of
-#         MOVE-4's integral over it. Sets only POINT_KERNEL. Suffix pk.
-#   keep2    TIME-6: a skipped turn no longer drops the surf's second wave for the rest of the round (dropped from level 2;
-#         the k halving and go-to shedding stay). Sets only KEEP_SECOND_WAVE. Suffix w2.
 #   thgun    GUN-8: in a duel the main gun aims from a TripHammer view, Diamond 1.8.22's duel gun (its formula, weight
 #         schedule, k = size/9 up to 225, 59 candidate angles, cube kernel); the displacement view keeps logging and the
 #         main candidate's virtual bullet and rating are the TripHammer's. Sets only TRIPHAMMER. Suffix th.
@@ -116,25 +84,12 @@
 #   nodecay  GUN-10: gun ratings are lifetime hits over shots, without GUN-1's 100-shot half-life (Diamond's form). Sets
 #         only UNDECAYED. Suffix nk (not nd: nodur has it). Suffixes follow the order given, so stack as thgun,freegun,
 #         nodecay for th, fg, nk (heatjit,swall,thgun,freegun,nodecay -> hjswthfgnk).
-#   stacklist  MOVE-23: the stop-and-start stack (heatjit, swall, and hitclr, pkern, keep2 whenever those are also named)
-#         applies only to opponents not on the stack off-list (hadur-bench/stack-off-top200.txt, held in the robot's
-#         StackListData); a listed opponent plays as if those switches were off. Sets only STACK_LIST; the stack's own
-#         codes still turn the switches on. Suffix xl (not sl: slearn has it). Last in the stack's order:
-#         heatjit,swall,thgun,freegun,nodecay,stacklist -> hjswthfgnkxl.
 #   aesrec  AES-1 (measurement, docs/plan-aes.md): each wave's first three-option rating is printed as an AES
 #         record with every term of each option's danger, for data/tools/aes_rank.py. Sets only AES_RECORD;
 #         behaviour unchanged (the rating is made without the cutoff, which picks the same option). Suffix ar.
 #   oracle ORACLE-1 (measurement, K0 of the road to king): each wave's first three-option rating also prints an ORC
 #         record with every danger view's neighbours on the wave, for data/tools/gun_oracle.py. Sets only
 #         ORACLE_RECORD; behaviour unchanged. Suffix or.
-#   surfb  MOVE-25: the stop-point surf (docs/bench/surf-b-rivals-read.md): stop points both ways rated on a smoothed
-#         probability histogram of the same views, 1 / sqrt(4 + t) time weight, two waves, plan kept until the waves or
-#         the views change. Sets only STOP_POINT_SURF. Suffix sb.
-#   aimmix  MOVE-26 (with surfb): the shot dodger reads every opponent and the stop-point surf mixes the most-matched
-#         simple aim into its danger at its matched share. Sets only AIM_MIX. Suffix am (surfb,aimmix -> sbam).
-#   mimics  MOVE-27 (with surfb): the stop-point surf rates waves on the enemy-gun ensemble, the views blended with
-#         visit-trained mimics of learning guns weighted by their score at real bullets cubed. Sets only MIMICS.
-#         Suffix gm (surfb,mimics -> sbgm).
 #   aimmem  MOVE-29 (K1 of the road to king): the three-option surf mixes the views' danger with the head-on, linear
 #         and circular aims', each weighted by its rolling score at the bullets that hit us. Sets only AIM_MEMBERS.
 #   noaim  MOVE-29 off (it ships on from 3.20): the three-option surf rates on the views alone. Suffix kx.
@@ -147,19 +102,6 @@
 #   sgoff  MOVE-30 and MOVE-31 off (both on for the census after 3.20): the aim members are MOVE-29's three,
 #         scored on hits only. Suffix kj.
 #         Suffix km.
-#   pressure  POW-12 (the plan's POW-11): while our rolling hit rate less its margin is at least 12%, theirs plus its margin at
-#         most 9%, and our energy is above 12, the duel gun skips the cubic power-down and fires a base power of 2.5
-#         beyond 150 px (2.95 inside stays); the lead-aware regime wins where it holds. Sets PRESSURE only; combines
-#         with heatjit,swall,flt8. Suffix pw.
-#   pdown  POW-12's weaker form: under the same gate only the power-down is skipped, the base power stays 1.95. Sets
-#         PRESSURE and PRESSURE_BASE_ONLY_POWERDOWN, so build it alone: not with pressure. Suffix pd.
-#   pwall  POW-12 gate variant: pressure power on every duel aim with no rate gate (energy floor and lead-regime yield kept).
-#         Sets PRESSURE and PRESSURE_ALWAYS; build it alone: not with pressure or pdown; wins over pwc. Suffix pa.
-#   pwc  POW-12 gate variant: the window centres only (ours >= 12%, theirs <= 9%, both windows >= 30 outcomes, no margins).
-#         Sets PRESSURE and PRESSURE_CENTRES; build it alone: not with pressure, pdown or pwall. Suffix pz (pc is pc10's).
-#   repl  MOVE-16: the danger views' weights evolve by the replicator equation: each enemy bullet that hits us
-#         multiplies a view's weight by how well it predicted the bullet's angle against the weighted average
-#         (every view keeps 2% of the share), so the view that reads this gun takes over. Suffix rp.
 #   silent  the Duel never fires: drive() is entered with WEAVE-3's fire permission withdrawn (mayFire = false),
 #         which both of the duel's fire sites (the aimed shot and the shield's) honour; the radar,
 #         aim, waves and movement all still run. Hadur then scores only by survival, which is what
@@ -275,8 +217,6 @@
 #         while its gun cools) against every shielded opponent. Suffix sv.
 #   srec   SHIELD-18: each shield round's end writes the predictors' state (SP), which saimlist's
 #         file is built from. Changes no play. Suffix sk.
-#   absurf POW-14: BeepBoop's anti-BasicSurfer powers (2.45-, 1.95, 1.45, 0.95, 0.65, 0.45, 0.15) in round 0
-#         and while this battle's hit rate is above 20%, duel only. Suffix ab.
 #   sstill SHIELD-20: a shield shot plan from where we stand wins whenever there is one; the 0.1 px
 #         step aside only for a bullet no still plan meets (docs/bench/shield-step.md). Suffix sz.
 #   scheap SHIELD-22: the rival's crossing power: the cheapest shot plan whose shadow is half the
@@ -354,8 +294,6 @@ design="$src/hadur-core/src/main/java/$pkg/core/shieldmode/ShieldDesign.java"
 movedesign="$src/hadur-core/src/main/java/$pkg/core/duel/MoveDesign.java"
 aimmembers="$src/hadur-core/src/main/java/$pkg/core/move/AimMembers.java"
 gundesign="$src/hadur-core/src/main/java/$pkg/core/duel/GunDesign.java"
-powerdesign="$src/hadur-core/src/main/java/$pkg/core/duel/PowerDesign.java"
-protean="$src/hadur-core/src/main/java/$pkg/core/move/ProteanPick.java"
 listdata="$src/hadur-robot/src/main/java/$pkg/ShieldListData.java"
 tabledata="$src/hadur-robot/src/main/java/$pkg/ShieldTableData.java"
 budget="$src/hadur-core/src/main/java/$pkg/core/policy/TickBudget.java"
@@ -468,9 +406,6 @@ for a in "${list[@]}"; do
             # SHIELD-14 off: 3.15's shipped wall shot undone (the shield as 3.14 plays it).
             edit "$design" 'parse("wall,hold,learn,mode,stay")' 'parse("hold,learn,mode,stay")'
             version="${version}xs" ;;
-        ramheat)
-            edit "$movedesign" "static final boolean RAM_HEAT = false;" "static final boolean RAM_HEAT = true;"
-            version="${version}rh" ;;
         rambrk)
             edit "$movedesign" "static final boolean RAM_BREAK = false;" "static final boolean RAM_BREAK = true;"
             version="${version}rk" ;;
@@ -478,31 +413,6 @@ for a in "${list[@]}"; do
             edit "$movedesign" "static final boolean HEAT_WAVE = false;" "static final boolean HEAT_WAVE = true;"
             edit "$movedesign" "static final boolean HEAT_HOLD = true;" "static final boolean HEAT_HOLD = false;"
             version="${version}hj" ;;
-        split)
-            edit "$movedesign" "static final boolean HEAT_WAVE = false;" "static final boolean HEAT_WAVE = true;"
-            edit "$movedesign" "static final boolean GUN_SPLIT = false;" "static final boolean GUN_SPLIT = true;"
-            version="${version}sp" ;;
-        gungate)
-            edit "$movedesign" "static final boolean GUN_GATE = false;" "static final boolean GUN_GATE = true;"
-            version="${version}gg" ;;
-        hold650)
-            edit "$movedesign" "static final boolean HOLD_650 = false;" "static final boolean HOLD_650 = true;"
-            version="${version}d6" ;;
-        dfac)
-            edit "$movedesign" "static final boolean DISTANCING_TO_ENEMY = false;" "static final boolean DISTANCING_TO_ENEMY = true;"
-            version="${version}df" ;;
-        bhb)
-            edit "$movedesign" "static final boolean BULLET_HIT_BULLET_LOG = false;" "static final boolean BULLET_HIT_BULLET_LOG = true;"
-            version="${version}bh" ;;
-        hitclr)
-            edit "$movedesign" "static final boolean HIT_CLEARS_CACHE = false;" "static final boolean HIT_CLEARS_CACHE = true;"
-            version="${version}hc" ;;
-        pkern)
-            edit "$movedesign" "static final boolean POINT_KERNEL = false;" "static final boolean POINT_KERNEL = true;"
-            version="${version}pk" ;;
-        keep2)
-            edit "$movedesign" "static final boolean KEEP_SECOND_WAVE = false;" "static final boolean KEEP_SECOND_WAVE = true;"
-            version="${version}w2" ;;
         thgun)
             edit "$gundesign" "static final boolean TRIPHAMMER = false;" "static final boolean TRIPHAMMER = true;"
             version="${version}th" ;;
@@ -512,18 +422,6 @@ for a in "${list[@]}"; do
         nodecay)
             edit "$gundesign" "static final boolean UNDECAYED = false;" "static final boolean UNDECAYED = true;"
             version="${version}nk" ;;
-        stacklist)
-            edit "$movedesign" "static final boolean STACK_LIST = false;" "static final boolean STACK_LIST = true;"
-            version="${version}xl" ;;
-        surfb)
-            edit "$movedesign" "static final boolean STOP_POINT_SURF = false;" "static final boolean STOP_POINT_SURF = true;"
-            version="${version}sb" ;;
-        aimmix)
-            edit "$movedesign" "static final boolean AIM_MIX = false;" "static final boolean AIM_MIX = true;"
-            version="${version}am" ;;
-        mimics)
-            edit "$movedesign" "static final boolean MIMICS = false;" "static final boolean MIMICS = true;"
-            version="${version}gm" ;;
         mimmem)
             # MOVE-33: the learning-gun mimics as aim members.
             edit "$movedesign" "static final boolean MIMIC_MEMBERS = false;" "static final boolean MIMIC_MEMBERS = true;"
@@ -564,52 +462,6 @@ for a in "${list[@]}"; do
         skrec)
             edit "$movedesign" "static final boolean SURF_KEY_RECORD = false;" "static final boolean SURF_KEY_RECORD = true;"
             version="${version}kr" ;;
-        close200)
-            edit "$src/hadur-core/src/main/java/$pkg/core/gun/GunController.java" "static final double CLOSE_RANGE = 150.0;" "static final double CLOSE_RANGE = 200.0;"
-            edit "$src/hadur-core/src/main/java/$pkg/core/gun/GunController.java" "static final double CLOSE_POWER = 2.95;" "static final double CLOSE_POWER = 3.0;"
-            version="${version}cr" ;;
-        absurf)
-            edit "$powerdesign" "static final boolean ANTI_BASIC_SURFER = false;" "static final boolean ANTI_BASIC_SURFER = true;"
-            version="${version}ab" ;;
-        pressure)
-            edit "$powerdesign" "static final boolean PRESSURE = false;" "static final boolean PRESSURE = true;"
-            version="${version}pw" ;;
-        pdown)
-            edit "$powerdesign" "static final boolean PRESSURE = false;" "static final boolean PRESSURE = true;"
-            edit "$powerdesign" "static final boolean PRESSURE_BASE_ONLY_POWERDOWN = false;" "static final boolean PRESSURE_BASE_ONLY_POWERDOWN = true;"
-            version="${version}pd" ;;
-        pwall)
-            edit "$powerdesign" "static final boolean PRESSURE = false;" "static final boolean PRESSURE = true;"
-            edit "$powerdesign" "static final boolean PRESSURE_ALWAYS = false;" "static final boolean PRESSURE_ALWAYS = true;"
-            version="${version}pa" ;;
-        pwc)
-            edit "$powerdesign" "static final boolean PRESSURE = false;" "static final boolean PRESSURE = true;"
-            edit "$powerdesign" "static final boolean PRESSURE_CENTRES = false;" "static final boolean PRESSURE_CENTRES = true;"
-            version="${version}pz" ;;
-        repl)
-            edit "$movedesign" "static final boolean REPLICATOR = false;" "static final boolean REPLICATOR = true;"
-            version="${version}rp" ;;
-        wallesc)
-            edit "$movedesign" "static final boolean ESCAPE_ROOM = false;" "static final boolean ESCAPE_ROOM = true;"
-            version="${version}we" ;;
-        protean)
-            edit "$movedesign" "static final boolean PROTEAN = false;" "static final boolean PROTEAN = true;"
-            version="${version}pr" ;;
-        pdw3)
-            edit "$movedesign" "static final boolean PROTEAN = false;" "static final boolean PROTEAN = true;"
-            edit "$movedesign" "static final int PROTEAN_DWELL = 1;" "static final int PROTEAN_DWELL = 3;"
-            version="${version}p3" ;;
-        pc10)
-            edit "$protean" "static final double C = 1.0;" "static final double C = 10.0;"
-            version="${version}pc" ;;
-        phot)
-            edit "$protean" "static final double T0_SHARE = 0.02;" "static final double T0_SHARE = 0.5;"
-            edit "$protean" "static final double DELTA = 0.5;" "static final double DELTA = 1.0;"
-            version="${version}ph" ;;
-        pdw8)
-            edit "$movedesign" "static final boolean PROTEAN = false;" "static final boolean PROTEAN = true;"
-            edit "$movedesign" "static final int PROTEAN_DWELL = 1;" "static final int PROTEAN_DWELL = 8;"
-            version="${version}p8" ;;
         silent)
             edit "$duel" "public void drive(BotInput in, BotOrders.Builder orders, int level, boolean mayFire) {" \
                 "public void drive(BotInput in, BotOrders.Builder orders, int level, boolean mayFire) { mayFire = false;"
@@ -1129,7 +981,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, absurf, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf, gexp, grate, gdist, gsoft, tdecap, mscal, mmix, mwpath, mshade, mcross, mbshade, msearch, mdmg, mlat, mavg, mnear3, mnear4, mstr1, mstr2)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, ogi2, ogie10, ogi300, maim, mhop, mheat, mcloser, msurf, gexp, grate, gdist, gsoft, tdecap, mscal, mmix, mwpath, mshade, mcross, mbshade, msearch, mdmg, mlat, mavg, mnear3, mnear4, mstr1, mstr2)" >&2; exit 2 ;;
     esac
 done
 
