@@ -1,0 +1,6 @@
+# BENCH-187 (pc-jaylexi-orb) confirm: c the 0.5 orbit base, aa its A/A rebuild, pk the base with the screen's picks
+# written into their orbit chars (tools/jaylexi_orbit.py --pick): it plays every robot outside the picks exactly as the
+# base does.
+c | hadur117.mini.JayLexi 0.5ob | kitlab/jars/hadur117.mini.JayLexi_0.5ob.jar
+aa | hadur117.mini.JayLexi 0.5oba | kitlab/jars/hadur117.mini.JayLexi_0.5oba.jar
+pk | hadur117.mini.JayLexi 0.5opk | kitlab/jars/hadur117.mini.JayLexi_0.5opk.jar

@@ -1,0 +1,8 @@
+# BENCH-187 (pc-jaylexi-orb): c is the 0.5 orbit base (0.4 + the diet's play-neutral rows + an orbit char a robot read
+# in hundredths of a radian, every char 115 = 0.4's 1.15; 1,487 B, JayLexiReplayTest bit for bit), aa its A/A rebuild,
+# near every robot 1.35 rad off the wave's bearing (a tighter, more inward orbit), far every robot 0.95 (more outward).
+# Built by tools/jaylexi_orbit.py.
+c | hadur117.mini.JayLexi 0.5ob | kitlab/jars/hadur117.mini.JayLexi_0.5ob.jar
+aa | hadur117.mini.JayLexi 0.5oba | kitlab/jars/hadur117.mini.JayLexi_0.5oba.jar
+near | hadur117.mini.JayLexi 0.5onear | kitlab/jars/hadur117.mini.JayLexi_0.5onear.jar
+far | hadur117.mini.JayLexi 0.5ofar | kitlab/jars/hadur117.mini.JayLexi_0.5ofar.jar
