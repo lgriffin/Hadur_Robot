@@ -1,0 +1,31 @@
+{
+ "plan": "pc-jaylexi-orb",
+ "updated": 1793799644.7677724,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "pilot": {
+   "status": "pending"
+  },
+  "pilotgate": {
+   "status": "pending"
+  },
+  "screen": {
+   "status": "pending"
+  },
+  "build": {
+   "status": "pending"
+  },
+  "confirm": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
