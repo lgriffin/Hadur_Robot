@@ -1,12 +1,16 @@
 {
  "plan": "pc-melee-far",
- "updated": 1793807213.72264,
+ "updated": 1793808118.9657798,
  "steps": {
   "mfprep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 133,
+   "end": "2026-11-04T15:49:07"
   },
   "mfpilot": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-04T15:49:07"
   },
   "mfcheck": {
    "status": "pending"
@@ -30,5 +34,43 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "mfpilot",
+   "started": 1793807347.5085058,
+   "updated": 1793808118.9585779,
+   "elapsed": 771.4500720500946,
+   "expected": 184,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 37,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 172.66185437772643,
+   "eta": 3064.950286253079,
+   "fraction": 0.20108695652173914,
+   "last_battle_age": 0.2740166187286377,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 37"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    }
+   ],
+   "skips_mean": 25.324324324324323,
+   "skips_last100": 25.324324324324323
+  }
+ ]
 }
