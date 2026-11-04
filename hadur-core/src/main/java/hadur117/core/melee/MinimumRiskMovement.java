@@ -128,6 +128,15 @@ public class MinimumRiskMovement {
      * (PR #503).
      */
     public static final boolean MELEE_DAMAGE_MEMORY = true;
+    /**
+     * MSURF-1..4 (arm mduel): off a team, the duel surfer's waves under the crowd. Each seen shot
+     * is a duel wave in a {@link CrowdSurfer}, rated by the duel's danger views learned per
+     * shooter across the battle; this mover keeps the candidate ring and the crowd cost and
+     * scores no bullets of its own. The {@link #WAVE_RERANK} least risky candidates, Hadur's own
+     * spot (a stop) and the destination held are each driven to and rated by the surfer's
+     * expected damage, scored as {@link #waveScores}. Off.
+     */
+    public static final boolean MELEE_DUELIST = false;
     static final double DAMAGE_BASE = 10;
     /** MMOVE-22: the mean distance taken for an opponent never scanned. */
     static final double DAMAGE_DISTANCE_START = 500;
@@ -276,6 +285,29 @@ public class MinimumRiskMovement {
     private long salt;
     /** TMODE-27: Ogi's dodge, its shot profiles and aim experts; read only while it plays. */
     private final TeamDodge dodge;
+
+    /** MSURF: the duel waves, or null with the switch off; set by the melee brain. */
+    private CrowdSurfer duelist;
+    /** MSURF: Hadur's full state this tick, for the surfer's predictions. */
+    private RobotState duelistState;
+    /** MSURF: every living opponent's last known position this tick. */
+    private Map<String, Point2D.Double> duelistOthers = Map.of();
+
+    /** MSURF: the surfer that rates moves off a team, or null for the risk sum alone. */
+    void duelist(CrowdSurfer surfer) {
+        this.duelist = surfer;
+    }
+
+    /** MSURF: whether the duel surfer rates moves off a team. */
+    public boolean duelling() {
+        return duelist != null;
+    }
+
+    /** MSURF: Hadur's state and the opponents' positions for this tick's choice. */
+    void duelistTick(RobotState me, Map<String, Point2D.Double> others) {
+        this.duelistState = me;
+        this.duelistOthers = others;
+    }
 
     public MinimumRiskMovement(BattleField field) {
         this.field = field;
@@ -546,6 +578,11 @@ public class MinimumRiskMovement {
         v.concord = TeamConcord.MOVE && TeamConcord.RISK && !mates.isEmpty() && modes.contains(TeamModes.Mode.CONCORD);
         List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
         lastCandidates = candidates.size();
+        if (duelist != null && duelistState != null && !onTeam(mates)) {
+            // MSURF-1: the duel surfer's expected damage re-ranks the ring.
+            destination = duelistBest(candidates, v);
+            return destination;
+        }
         if (surf && !onTeam(mates)) {
             // MMOVE-15: the melee surfer picks by the wave check.
             destination = waveBest(candidates, v);
@@ -648,6 +685,50 @@ public class MinimumRiskMovement {
      */
     Point2D.Double waveBest(List<Point2D.Double> candidates, View v) {
         return rerankBest(candidates, v, WAVE_RERANK, Wave.of(v.bullets), List.of(), false);
+    }
+
+    /**
+     * MSURF-1: the {@link #WAVE_RERANK} lowest-risk candidates, Hadur's own spot (a stop) and the
+     * destination held if not reached, each driven to through the surfer's waves; scored as
+     * {@link #waveScores} with the surfer's expected damage, the held destination times
+     * {@link #SWITCH_GAIN}.
+     */
+    Point2D.Double duelistBest(List<Point2D.Double> candidates, View v) {
+        List<Point2D.Double> pool = new ArrayList<>(candidates);
+        boolean hold = destination != null && destination.distance(v.me) > REACHED;
+        int stop = pool.size();
+        pool.add(new Point2D.Double(v.me.x, v.me.y));
+        if (hold) pool.add(destination);
+        double[] risk = new double[pool.size()];
+        Integer[] order = new Integer[pool.size()];
+        for (int i = 0; i < pool.size(); i++) {
+            risk[i] = risk(pool.get(i), v);
+            order[i] = i;
+        }
+        java.util.Arrays.sort(order, (a, b) -> Double.compare(risk[a], risk[b]));
+        List<Integer> picked = new ArrayList<>();
+        for (int i = 0; i < order.length && picked.size() < WAVE_RERANK; i++) picked.add(order[i]);
+        if (!picked.contains(stop)) picked.add(stop);
+        if (hold && !picked.contains(pool.size() - 1)) picked.add(pool.size() - 1);
+        List<CrowdSurfer.Threat> threats = duelist.threats(duelistState, duelistOthers);
+        double[] damage = new double[picked.size()];
+        double[] r = new double[picked.size()];
+        for (int k = 0; k < picked.size(); k++) {
+            r[k] = risk[picked.get(k)];
+            damage[k] = duelist.danger(duelistState, pool.get(picked.get(k)), threats);
+        }
+        double[] score = waveScores(r, damage);
+        Point2D.Double best = null;
+        double bestScore = Double.POSITIVE_INFINITY;
+        for (int k = 0; k < picked.size(); k++) {
+            double sc = score[k];
+            if (hold && picked.get(k) == pool.size() - 1) sc *= SWITCH_GAIN;
+            if (sc < bestScore) {
+                bestScore = sc;
+                best = pool.get(picked.get(k));
+            }
+        }
+        return best;
     }
 
     /**

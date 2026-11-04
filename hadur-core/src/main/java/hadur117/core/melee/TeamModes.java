@@ -57,7 +57,14 @@ public final class TeamModes {
          * pools its situations by enemy class and fires lighter unless close or reading that
          * class well.
          */
-        CONCORD
+        CONCORD,
+        /**
+         * TGUN-1..2, the team duelist's gun ({@link TeamDuelGun}; Leigh's strategy doc of
+         * 2026-11-04): the duel's guns, their views learned per enemy class from every member's
+         * sightings, aim at the field gun's target once they have learned its class; the power
+         * stays the field gun's.
+         */
+        DUELGUN
     }
 
     /**
@@ -70,6 +77,8 @@ public final class TeamModes {
     public static final boolean FORCE_PATH = true;
     public static final boolean FORCE_DODGE = true;
     public static final boolean FORCE_CONCORD = true;
+    /** TGUN: DUELGUN on every team, the ones the table names included, to screen it (never shipped this way). */
+    public static final boolean FORCE_DUELGUN = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -148,7 +157,11 @@ public final class TeamModes {
 
     /** The modes against {@code enemies}: the first one the table names, else the default. */
     public static Set<Mode> against(List<EnemyInfo> enemies) {
-        return against(enemies, TABLE, DEFAULT);
+        Set<Mode> m = against(enemies, TABLE, DEFAULT);
+        if (!FORCE_DUELGUN || m.contains(Mode.DUELGUN)) return m;
+        EnumSet<Mode> with = m.isEmpty() ? EnumSet.noneOf(Mode.class) : EnumSet.copyOf(m);
+        with.add(Mode.DUELGUN);
+        return with;
     }
 
     static Set<Mode> against(List<EnemyInfo> enemies, Map<String, Set<Mode>> table, Set<Mode> fallback) {
