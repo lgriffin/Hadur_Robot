@@ -1,15 +1,15 @@
 # Queue pc-jaylexi-orb: progress
 
-Updated 2026-11-04 15:41:50 PC time (15:41 UTC), runner pid 35932.
+Updated 2026-11-04 15:46:31 PC time (15:46 UTC), runner pid 35932.
 
 - `prep` done, exit 0 in 0 min
 - `pilot` done, exit 0 in 23 min
 - `pilotgate` done, exit 0 in 0 min
 - `screen` done, exit 0 in 1.6 h
 - `build` done, exit 0 in 0 min
-- `confirm` running
-- `gate` pending
-- `pr` pending
+- `confirm` done, exit 0 in 5 min
+- `gate` done, exit 0 in 0 min
+- `pr` done, exit 0 in 0 min
 
 ### pilot
 
@@ -59,33 +59,28 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### confirm
 
-**0 of 792 battles** (0%), 0 failed. Running 0 min. Last battle 0 min ago.
+**792 of 792 battles** (100%), 0 failed. Running 5 min, 10365 battles/h, about 0 min left (ends ~15:46 PC time). Last battle 0 min ago.
+Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0; engine disables 0.
 
 | arm | battles | failed | share | vs control (pts) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 0 | 0 | - | - | - | - | - |
-| aa | 0 | 0 | - | - | - | - | - |
-| pk | 0 | 0 | - | - | - | - | - |
+| c | 264 | 0 | 71.39 | - | - | - | 0.0 |
+| aa | 264 | 0 | 71.32 | -0.07 (22 robots) | ±0.22 | -0.41 .. +0.26 | 0.0 |
+| pk | 264 | 0 | 73.17 | +1.81 (22 robots) | ±1.12 | +0.10 .. +3.52 | 0.0 |
+A/A: aa - c -0.07 pts over 22 robots; 1% band ±0.72 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 0 |
+| `fails 30` | halt | ok | 0 failed of 792 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 60 over 200` | halt | waiting | 0 of 200 battles to read |
+| `skips 60 over 200` | halt | ok | 0.0 a battle over the last 200 (first 200: 0.0) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 792 battles unrun; every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-13:40:51 watching pilot: 5 stop rule(s)
-13:41:46 progress pilot: 174/5360 (3%) battles, 11559/h, ETA 27 min, 0 failed, skips 0.0/battle (last 100), aa +0.14, near -0.57, far -0.30
-14:03:37 pilot exit=0 in 1366 s
-14:03:37 start pilotgate
-14:03:37 pilotgate exit=0 in 0 s
-14:03:37 start screen
-14:03:37 watching screen: 5 stop rule(s)
 14:12:00 progress screen: 1781/21360 (8%) battles, 12789/h, ETA 1.5 h, 0 failed, skips 0.0/battle (last 100), aa -0.03, near -0.17, far -0.16
 14:42:21 progress screen: 8474/21360 (40%) battles, 13250/h, ETA 58 min, 0 failed, skips 0.0/battle (last 100), aa -0.01, near -0.19, far -0.21
 15:12:34 progress screen: 15127/21360 (71%) battles, 13214/h, ETA 28 min, 0 failed, skips 0.0/battle (last 100), aa -0.01, near -0.15, far -0.14
@@ -94,4 +89,11 @@ Stopping now would leave 792 battles unrun; every battle already fought is kept 
 15:41:48 build exit=0 in 2 s
 15:41:48 start confirm
 15:41:48 watching confirm: 4 stop rule(s)
+15:42:51 progress confirm: 164/792 (21%) battles, 9462/h, ETA 4 min, 0 failed, skips 0.0/battle (last 100), aa -0.10, pk +3.66
+15:46:23 confirm exit=0 in 275 s
+15:46:23 start gate
+15:46:24 gate exit=0 in 0 s
+15:46:24 start pr
+15:46:31 pr exit=0 in 6 s
+15:46:31 ALLDONE
 ```
