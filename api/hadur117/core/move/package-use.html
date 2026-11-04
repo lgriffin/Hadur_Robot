@@ -61,8 +61,15 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color"><a href="#hadur117.core.duel">hadur117.core.duel</a></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><a href="#hadur117.core.move">hadur117.core.move</a></div>
+<div class="col-first even-row-color"><a href="#hadur117.core.melee">hadur117.core.melee</a></div>
 <div class="col-last even-row-color">
+<div class="block">Melee (free-for-all) subsystems: opponent tracking, sweep radar, minimum-risk
+ movement, target selection, circular targeting and posture strategy, and each
+ opponent's melee profile block (<a class="req" href="../../../../requirements.html#MMEM-1">MMEM-1</a>), driven each
+ tick by <a href="../melee/MeleeController.html" title="class in hadur117.core.melee"><code>MeleeController</code></a>.</div>
+</div>
+<div class="col-first odd-row-color"><a href="#hadur117.core.move">hadur117.core.move</a></div>
+<div class="col-last odd-row-color">
 <div class="block">The duel's movement: wave surfing against the enemy's bullets, the danger views it
  scores with, and the shadows our own bullets cast on the enemy's waves.</div>
 </div>
@@ -96,6 +103,21 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><a href="class-use/SurfMover.Mode.html#hadur117.core.duel">SurfMover.Mode</a></div>
 <div class="col-last odd-row-color">
 <div class="block">How to pick where to be when a wave breaks.</div>
+</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="hadur117.core.melee">
+<div class="caption"><span>Classes in <a href="package-summary.html">hadur117.core.move</a> used by <a href="../melee/package-summary.html">hadur117.core.melee</a></span></div>
+<div class="summary-table two-column-summary">
+<div class="table-header col-first">Class</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><a href="class-use/MoveController.html#hadur117.core.melee">MoveController</a></div>
+<div class="col-last even-row-color">
+<div class="block">What the duel's surf knows about the enemy's gun: its waves in flight, the KNN danger
+ views that score where on a wave its bullets go, its hit rate on us, and our bullets in
+ flight with the shadows they cast on its waves (<a class="req" href="../../../../requirements.html#MOVE-1">MOVE-1</a>).</div>
 </div>
 </div>
 </section>
