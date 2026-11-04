@@ -655,7 +655,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">One-line linear with the arcsine.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.Pull.html#at" class="member-name-link">at</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.Pull.html" title="class in hadur117.core.melee">MinimumRiskMovement.Pull</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.Pull.html#at" class="member-name-link">at</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.Pull.html" title="class in hadur117.core.melee">TeamRisk.Pull</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/gun/ShadowAim.Mass.html#at(double)" class="member-name-link">at(double)</a> - Method in class hadur117.core.gun.<a href="hadur117/core/gun/ShadowAim.Mass.html" title="class in hadur117.core.gun">ShadowAim.Mass</a></dt>
 <dd>
@@ -1918,7 +1918,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">TMODE-33: ...once this many shots at it have ended.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#concordFactor(java.awt.geom.Point2D.Double,hadur117.core.world.EnemyInfo,hadur117.core.melee.MinimumRiskMovement.View,int)" class="member-name-link">concordFactor(Point2D.Double, EnemyInfo, MinimumRiskMovement.View, int)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#concordFactor(java.awt.geom.Point2D.Double,hadur117.core.world.EnemyInfo,hadur117.core.melee.MinimumRiskMovement.View,int)" class="member-name-link">concordFactor(Point2D.Double, EnemyInfo, MinimumRiskMovement.View, int)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">TMODE-33: enemy <code>i</code>'s factor in the team brain: 1/(1 + n) for the n robots, the other
  enemies seen lately and the teammates, nearer that enemy than <code>p</code>.</div>
@@ -2123,7 +2123,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MMOVE-19">MMOVE-19</a>: how far, energy, a loss may be from a shot's damage (losses are kept to 0.01).</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#crossesBox(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,double,double,double)" class="member-name-link">crossesBox(Point2D.Double, Point2D.Double, double, double, double)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#crossesBox(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,double,double,double)" class="member-name-link">crossesBox(Point2D.Double, Point2D.Double, double, double, double)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">Whether the segment <code>a</code>-<code>b</code> meets the square of half-side <code>half</code> round (<code>cx</code>, <code>cy</code>).</div>
 </dd>
@@ -2709,7 +2709,7 @@ loadScripts(document, 'script');</script>
 <div class="block">TMODE-27, Ogi's dodge: the <a href="hadur117/core/melee/TeamDodge.html#RERANK"><code>TeamDodge.RERANK</code></a> lowest-risk candidates, and the
  destination held if not reached, are each driven to through the shot profiles
  <code>waves</code> for <a href="hadur117/core/melee/MinimumRiskMovement.html#WAVE_TICKS"><code>MinimumRiskMovement.WAVE_TICKS</code></a> ticks and through the teammates' bullets for
- <a href="hadur117/core/melee/MinimumRiskMovement.html#PATH_TICKS"><code>MinimumRiskMovement.PATH_TICKS</code></a>; scored as <a href="hadur117/core/melee/MinimumRiskMovement.html#waveScores(double%5B%5D,double%5B%5D)"><code>MinimumRiskMovement.waveScores(double[], double[])</code></a>, the held destination times
+ <a href="hadur117/core/melee/TeamRisk.html#PATH_TICKS"><code>TeamRisk.PATH_TICKS</code></a>; scored as <a href="hadur117/core/melee/MinimumRiskMovement.html#waveScores(double%5B%5D,double%5B%5D)"><code>MinimumRiskMovement.waveScores(double[], double[])</code></a>, the held destination times
  <a href="hadur117/core/melee/MinimumRiskMovement.html#SWITCH_GAIN"><code>MinimumRiskMovement.SWITCH_GAIN</code></a>.</div>
 </dd>
 <dt><a href="hadur117/core/shieldmode/ShieldList.html#dodgePlan(java.lang.String)" class="member-name-link">dodgePlan(String)</a> - Method in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
@@ -3019,9 +3019,9 @@ loadScripts(document, 'script');</script>
  others less the teammates heard from on this tick, and the enemies at the start less
  those known dead this round.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#enemiesNear(java.awt.geom.Point2D.Double,java.util.List,long)" class="member-name-link">enemiesNear(Point2D.Double, List&lt;EnemyInfo&gt;, long)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#enemiesNear(java.awt.geom.Point2D.Double,java.util.List,long)" class="member-name-link">enemiesNear(Point2D.Double, List&lt;EnemyInfo&gt;, long)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
-<div class="block">TMODE-3: the enemies seen lately within <a href="hadur117/core/melee/MinimumRiskMovement.html#GANG_RANGE"><code>MinimumRiskMovement.GANG_RANGE</code></a> of <code>p</code>.</div>
+<div class="block">TMODE-3: the enemies seen lately within <a href="hadur117/core/melee/TeamRisk.html#GANG_RANGE"><code>TeamRisk.GANG_RANGE</code></a> of <code>p</code>.</div>
 </dd>
 <dt><a href="hadur117/core/HadurCore.html#enemiesTotal()" class="member-name-link">enemiesTotal()</a> - Method in class hadur117.core.<a href="hadur117/core/HadurCore.html" title="class in hadur117.core">HadurCore</a></dt>
 <dd>
@@ -3620,7 +3620,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">A float as its IEEE 754 bits, which keeps NaN and infinities distinct.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.Pull.html#factor(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double)" class="member-name-link">factor(Point2D.Double, Point2D.Double)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.Pull.html" title="class in hadur117.core.melee">MinimumRiskMovement.Pull</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.Pull.html#factor(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double)" class="member-name-link">factor(Point2D.Double, Point2D.Double)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.Pull.html" title="class in hadur117.core.melee">TeamRisk.Pull</a></dt>
 <dd>
 <div class="block">The factor for moving from <code>me</code> to <code>p</code>.</div>
 </dd>
@@ -3897,15 +3897,15 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#END-1">END-1</a>: enemy energy below this ...</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#FINISH_ENERGY" class="member-name-link">FINISH_ENERGY</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#FINISH_ENERGY" class="member-name-link">FINISH_ENERGY</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#FINISH_FLOOR" class="member-name-link">FINISH_FLOOR</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#FINISH_FLOOR" class="member-name-link">FINISH_FLOOR</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/policy/Endgame.html#FINISH_OUR_ENERGY" class="member-name-link">FINISH_OUR_ENERGY</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/Endgame.html" title="class in hadur117.core.policy">Endgame</a></dt>
 <dd>
 <div class="block">... and ours above this.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#FINISH_PULL" class="member-name-link">FINISH_PULL</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#FINISH_PULL" class="member-name-link">FINISH_PULL</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">TMODE-4: the last enemy pulls this hard, down to this distance, while Hadur has this energy.</div>
 </dd>
@@ -4123,7 +4123,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Reads a float array written by <a href="hadur117/core/memory/Bytes.Writer.html#floats(float%5B%5D)"><code>Bytes.Writer.floats(float[])</code></a> into <code>into</code>.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.Pull.html#floor" class="member-name-link">floor</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.Pull.html" title="class in hadur117.core.melee">MinimumRiskMovement.Pull</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.Pull.html#floor" class="member-name-link">floor</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.Pull.html" title="class in hadur117.core.melee">TeamRisk.Pull</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/physics/ShotDodger.html#FLOOR" class="member-name-link">FLOOR</a> - Static variable in class hadur117.core.physics.<a href="hadur117/core/physics/ShotDodger.html" title="class in hadur117.core.physics">ShotDodger</a></dt>
 <dd>
@@ -4305,11 +4305,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">TMODE-3: a member near two or more enemies is drawn to a teammate; a free one to a ganged teammate.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#GANG_PULL" class="member-name-link">GANG_PULL</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#GANG_PULL" class="member-name-link">GANG_PULL</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">TMODE-3: the pull's strength, and the floor when helping a ganged teammate.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#GANG_RANGE" class="member-name-link">GANG_RANGE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#GANG_RANGE" class="member-name-link">GANG_RANGE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">TMODE-3: an enemy within this of a robot counts toward ganging it; two make a gang.</div>
 </dd>
@@ -4317,7 +4317,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The share of ganged member-turns from which GANG plays.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#GANG_SIZE" class="member-name-link">GANG_SIZE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#GANG_SIZE" class="member-name-link">GANG_SIZE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/TeamConcord.html#GANG_TURNS" class="member-name-link">GANG_TURNS</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamConcord.html" title="class in hadur117.core.melee">TeamConcord</a></dt>
 <dd>
@@ -5368,7 +5368,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The vote of a playout that held a state with no sample.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#HELP_FLOOR" class="member-name-link">HELP_FLOOR</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#HELP_FLOOR" class="member-name-link">HELP_FLOOR</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur/bench/Stats.Interval.html#hi()" class="member-name-link">hi()</a> - Method in record class hadur.bench.<a href="hadur/bench/Stats.Interval.html" title="class in hadur.bench">Stats.Interval</a></dt>
 <dd>
@@ -5655,31 +5655,31 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">TMODE-13: packs of two or three assigned per enemy, each member at a fixed 350 px round its prey (NightmareTeam).</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#HUNT_CROWD" class="member-name-link">HUNT_CROWD</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#HUNT_CROWD" class="member-name-link">HUNT_CROWD</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#HUNT_MAX_GROUP" class="member-name-link">HUNT_MAX_GROUP</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#HUNT_MAX_GROUP" class="member-name-link">HUNT_MAX_GROUP</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#HUNT_PULL" class="member-name-link">HUNT_PULL</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#HUNT_PULL" class="member-name-link">HUNT_PULL</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#HUNT_RADIUS" class="member-name-link">HUNT_RADIUS</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#HUNT_RADIUS" class="member-name-link">HUNT_RADIUS</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">TMODE-13, HUNT (NightmareTeam's packs, PACK's retry): each member is assigned an enemy at
- the cost (distance + <a href="hadur117/core/melee/MinimumRiskMovement.html#PACK_ENERGY_WEIGHT"><code>MinimumRiskMovement.PACK_ENERGY_WEIGHT</code></a> x energy) squared, times
- <a href="hadur117/core/melee/MinimumRiskMovement.html#HUNT_CROWD"><code>MinimumRiskMovement.HUNT_CROWD</code></a> for an enemy that already has <a href="hadur117/core/melee/MinimumRiskMovement.html#HUNT_MAX_GROUP"><code>MinimumRiskMovement.HUNT_MAX_GROUP</code></a> members, so two or
- three go to each; it holds a place <a href="hadur117/core/melee/MinimumRiskMovement.html#HUNT_RADIUS"><code>MinimumRiskMovement.HUNT_RADIUS</code></a> from its prey, fixed, and the pull,
- at <a href="hadur117/core/melee/MinimumRiskMovement.html#HUNT_PULL"><code>MinimumRiskMovement.HUNT_PULL</code></a>, leaves the bullets' risk unscaled.</div>
+ the cost (distance + <a href="hadur117/core/melee/TeamRisk.html#PACK_ENERGY_WEIGHT"><code>TeamRisk.PACK_ENERGY_WEIGHT</code></a> x energy) squared, times
+ <a href="hadur117/core/melee/TeamRisk.html#HUNT_CROWD"><code>TeamRisk.HUNT_CROWD</code></a> for an enemy that already has <a href="hadur117/core/melee/TeamRisk.html#HUNT_MAX_GROUP"><code>TeamRisk.HUNT_MAX_GROUP</code></a> members, so two or
+ three go to each; it holds a place <a href="hadur117/core/melee/TeamRisk.html#HUNT_RADIUS"><code>TeamRisk.HUNT_RADIUS</code></a> from its prey, fixed, and the pull,
+ at <a href="hadur117/core/melee/TeamRisk.html#HUNT_PULL"><code>TeamRisk.HUNT_PULL</code></a>, leaves the bullets' risk unscaled.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#huntAssign(java.util.List,java.util.List,long)" class="member-name-link">huntAssign(List&lt;Point2D.Double&gt;, List&lt;EnemyInfo&gt;, long)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#huntAssign(java.util.List,java.util.List,long)" class="member-name-link">huntAssign(List&lt;Point2D.Double&gt;, List&lt;EnemyInfo&gt;, long)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">TMODE-13: each member's prey, as every member works it out from the positions they share.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#huntSlot(java.awt.geom.Point2D.Double,java.lang.String,java.util.List,long,java.util.List)" class="member-name-link">huntSlot(Point2D.Double, String, List&lt;EnemyInfo&gt;, long, List&lt;Roster.Mate&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#huntSlot(java.awt.geom.Point2D.Double,java.lang.String,java.util.List,long,java.util.List)" class="member-name-link">huntSlot(Point2D.Double, String, List&lt;EnemyInfo&gt;, long, List&lt;Roster.Mate&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">TMODE-13: Hadur's place round its prey: the members hunting it, ranked by their bearing
- from it about their mean bearing, spread <a href="hadur117/core/melee/MinimumRiskMovement.html#PACK_SPREAD"><code>MinimumRiskMovement.PACK_SPREAD</code></a> apart, at
- <a href="hadur117/core/melee/MinimumRiskMovement.html#HUNT_RADIUS"><code>MinimumRiskMovement.HUNT_RADIUS</code></a>.</div>
+ from it about their mean bearing, spread <a href="hadur117/core/melee/TeamRisk.html#PACK_SPREAD"><code>TeamRisk.PACK_SPREAD</code></a> apart, at
+ <a href="hadur117/core/melee/TeamRisk.html#HUNT_RADIUS"><code>TeamRisk.HUNT_RADIUS</code></a>.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#huntSlot(java.awt.geom.Point2D.Double,java.lang.String,java.util.List,long,java.util.List,double)" class="member-name-link">huntSlot(Point2D.Double, String, List&lt;EnemyInfo&gt;, long, List&lt;Roster.Mate&gt;, double)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#huntSlot(java.awt.geom.Point2D.Double,java.lang.String,java.util.List,long,java.util.List,double)" class="member-name-link">huntSlot(Point2D.Double, String, List&lt;EnemyInfo&gt;, long, List&lt;Roster.Mate&gt;, double)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">As above, at <code>radius</code> from the prey.</div>
 </dd>
@@ -6939,7 +6939,7 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/world/Roster.Mate.html#%3Cinit%3E(java.lang.String)" class="member-name-link">Mate(String)</a> - Constructor for class hadur117.core.world.<a href="hadur117/core/world/Roster.Mate.html" title="class in hadur117.core.world">Roster.Mate</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#MATE_BULLETS" class="member-name-link">MATE_BULLETS</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#MATE_BULLETS" class="member-name-link">MATE_BULLETS</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">TMODE-9: teammates' bullets kept, oldest dropped first.</div>
 </dd>
@@ -6947,19 +6947,19 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">MMOVE-8: how far apart, along its wall, the opening spots of two members in the roster are.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#MATE_FLOOR" class="member-name-link">MATE_FLOOR</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#MATE_FLOOR" class="member-name-link">MATE_FLOOR</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">MMOVE-6: a teammate nearer than this is scored as if at this distance: about a robot's width.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#MATE_K" class="member-name-link">MATE_K</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#MATE_K" class="member-name-link">MATE_K</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
-<div class="block">MMOVE-6: weight, in units of <code>MinimumRiskMovement.UNIT</code>, of a teammate's inverse-square term.</div>
+<div class="block">MMOVE-6: weight, in units of <a href="hadur117/core/melee/MinimumRiskMovement.html#UNIT"><code>MinimumRiskMovement.UNIT</code></a>, of a teammate's inverse-square term.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#MATE_PATH_K" class="member-name-link">MATE_PATH_K</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#MATE_PATH_K" class="member-name-link">MATE_PATH_K</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">MMOVE-7: weight, and reach in px, of the term for a path crossing a teammate's track.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#MATE_PATH_RANGE" class="member-name-link">MATE_PATH_RANGE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#MATE_PATH_RANGE" class="member-name-link">MATE_PATH_RANGE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/twin/SaorTwin.html#mateAlive" class="member-name-link">mateAlive</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
 <dd>&nbsp;</dd>
@@ -7795,10 +7795,6 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#%3Cinit%3E(hadur117.core.physics.BattleField)" class="member-name-link">MinimumRiskMovement(BattleField)</a> - Constructor for class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.Pull.html" class="type-name-link" title="class in hadur117.core.melee">MinimumRiskMovement.Pull</a> - Class in <a href="hadur117/core/melee/package-summary.html">hadur117.core.melee</a></dt>
-<dd>
-<div class="block">TMODE-3, TMODE-4: a point a team member is drawn to.</div>
-</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.View.html" class="type-name-link" title="class in hadur117.core.melee">MinimumRiskMovement.View</a> - Class in <a href="hadur117/core/melee/package-summary.html">hadur117.core.melee</a></dt>
 <dd>
 <div class="block">What the movement sees this tick.</div>
@@ -8647,7 +8643,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/HadurRecorder.html#onDeath(robocode.DeathEvent)" class="member-name-link">onDeath(DeathEvent)</a> - Method in class hadur117.<a href="hadur117/HadurRecorder.html" title="class in hadur117">HadurRecorder</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#ONE_AIM_WEIGHT" class="member-name-link">ONE_AIM_WEIGHT</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#ONE_AIM_WEIGHT" class="member-name-link">ONE_AIM_WEIGHT</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">TMODE-21, TMODE-22: the weight of a shot's one virtual bullet against a team that aims
  only head-on or only linear: the two guesses' total, all on the real line.</div>
@@ -9334,17 +9330,17 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:P">P</h2>
 <dl class="index">
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#PACK_ENERGY" class="member-name-link">PACK_ENERGY</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#PACK_ENERGY" class="member-name-link">PACK_ENERGY</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#PACK_ENERGY_WEIGHT" class="member-name-link">PACK_ENERGY_WEIGHT</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#PACK_ENERGY_WEIGHT" class="member-name-link">PACK_ENERGY_WEIGHT</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">TMODE-5: the prey's cost weighs its energy this much against its distance (NightmareTeam's 1.2).</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#PACK_FLOOR" class="member-name-link">PACK_FLOOR</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#PACK_FLOOR" class="member-name-link">PACK_FLOOR</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">TMODE-5: the hunt's floor, and the energy a member needs to hunt.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#PACK_SPREAD" class="member-name-link">PACK_SPREAD</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#PACK_SPREAD" class="member-name-link">PACK_SPREAD</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">TMODE-5: members' places are at most this far apart round the prey: 70 degrees.</div>
 </dd>
@@ -9469,36 +9465,36 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">TMODE-25: each candidate's drive is checked tick by tick against the teammates' bullets in flight (Firestarter).</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#PATH_HALF" class="member-name-link">PATH_HALF</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#PATH_HALF" class="member-name-link">PATH_HALF</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#PATH_K" class="member-name-link">PATH_K</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#PATH_K" class="member-name-link">PATH_K</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
-<div class="block">TMODE-25: the <a href="hadur117/core/melee/MinimumRiskMovement.html#PATH_RERANK"><code>MinimumRiskMovement.PATH_RERANK</code></a> lowest-risk candidates and the destination held are
- each driven to for <a href="hadur117/core/melee/MinimumRiskMovement.html#PATH_TICKS"><code>MinimumRiskMovement.PATH_TICKS</code></a> ticks; every teammate bullet whose
- flight on some tick crosses Hadur's box (<a href="hadur117/core/melee/MinimumRiskMovement.html#PATH_HALF"><code>MinimumRiskMovement.PATH_HALF</code></a> px each side) there adds
- <a href="hadur117/core/melee/MinimumRiskMovement.html#PATH_K"><code>MinimumRiskMovement.PATH_K</code></a> times its damage to that candidate's risk.</div>
+<div class="block">TMODE-25: the <a href="hadur117/core/melee/TeamRisk.html#PATH_RERANK"><code>TeamRisk.PATH_RERANK</code></a> lowest-risk candidates and the destination held are
+ each driven to for <a href="hadur117/core/melee/TeamRisk.html#PATH_TICKS"><code>TeamRisk.PATH_TICKS</code></a> ticks; every teammate bullet whose
+ flight on some tick crosses Hadur's box (<a href="hadur117/core/melee/TeamRisk.html#PATH_HALF"><code>TeamRisk.PATH_HALF</code></a> px each side) there adds
+ <a href="hadur117/core/melee/TeamRisk.html#PATH_K"><code>TeamRisk.PATH_K</code></a> times its damage to that candidate's risk.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#PATH_RERANK" class="member-name-link">PATH_RERANK</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#PATH_RERANK" class="member-name-link">PATH_RERANK</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#PATH_TICKS" class="member-name-link">PATH_TICKS</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#PATH_TICKS" class="member-name-link">PATH_TICKS</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#pathBest(java.util.List,hadur117.core.melee.MinimumRiskMovement.View)" class="member-name-link">pathBest(List&lt;Point2D.Double&gt;, MinimumRiskMovement.View)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#pathBest(hadur117.core.melee.MinimumRiskMovement,java.awt.geom.Point2D.Double,java.util.List,hadur117.core.melee.MinimumRiskMovement.View)" class="member-name-link">pathBest(MinimumRiskMovement, Point2D.Double, List&lt;Point2D.Double&gt;, MinimumRiskMovement.View)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
-<div class="block">TMODE-25, Firestarter's path check: the <a href="hadur117/core/melee/MinimumRiskMovement.html#PATH_RERANK"><code>MinimumRiskMovement.PATH_RERANK</code></a> lowest-risk candidates and the
+<div class="block">TMODE-25, Firestarter's path check: the <a href="hadur117/core/melee/TeamRisk.html#PATH_RERANK"><code>TeamRisk.PATH_RERANK</code></a> lowest-risk candidates and the
  destination held if not reached are each scored as their risk
- plus <a href="hadur117/core/melee/MinimumRiskMovement.html#PATH_K"><code>MinimumRiskMovement.PATH_K</code></a> times the damage of the teammates' bullets their drive would meet in
- <a href="hadur117/core/melee/MinimumRiskMovement.html#PATH_TICKS"><code>MinimumRiskMovement.PATH_TICKS</code></a> ticks.</div>
+ plus <a href="hadur117/core/melee/TeamRisk.html#PATH_K"><code>TeamRisk.PATH_K</code></a> times the damage of the teammates' bullets their drive would meet in
+ <a href="hadur117/core/melee/TeamRisk.html#PATH_TICKS"><code>TeamRisk.PATH_TICKS</code></a> ticks.</div>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.View.html#pathBullets" class="member-name-link">pathBullets</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.View.html" title="class in hadur117.core.melee">MinimumRiskMovement.View</a></dt>
 <dd>
 <div class="block">TMODE-25: the teammates' bullets in flight each candidate's drive is checked against; empty unless PATH.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#pathDamage(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,long,java.util.List)" class="member-name-link">pathDamage(Point2D.Double, Point2D.Double, long, List&lt;VirtualBullet&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#pathDamage(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,long,java.util.List)" class="member-name-link">pathDamage(Point2D.Double, Point2D.Double, long, List&lt;VirtualBullet&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">TMODE-25: the damage of the <code>bullets</code> Hadur would meet driving from <code>me</code>
  straight to <code>to</code> (accelerating 1 px a tick to 8, stopping there) for
- <a href="hadur117/core/melee/MinimumRiskMovement.html#PATH_TICKS"><code>MinimumRiskMovement.PATH_TICKS</code></a> ticks: a bullet counts once, on the first tick its flight that tick
- crosses Hadur's box, <a href="hadur117/core/melee/MinimumRiskMovement.html#PATH_HALF"><code>MinimumRiskMovement.PATH_HALF</code></a> px each side of its centre, as the engine checks it.</div>
+ <a href="hadur117/core/melee/TeamRisk.html#PATH_TICKS"><code>TeamRisk.PATH_TICKS</code></a> ticks: a bullet counts once, on the first tick its flight that tick
+ crosses Hadur's box, <a href="hadur117/core/melee/TeamRisk.html#PATH_HALF"><code>TeamRisk.PATH_HALF</code></a> px each side of its centre, as the engine checks it.</div>
 </dd>
 <dt><a href="hadur117/core/policy/PowerPolicy.html#payable(double,double)" class="member-name-link">payable(double, double)</a> - Static method in class hadur117.core.policy.<a href="hadur117/core/policy/PowerPolicy.html" title="class in hadur117.core.policy">PowerPolicy</a></dt>
 <dd>
@@ -10174,17 +10170,17 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">TMODE-3, TMODE-4: the point this decision is drawn to, or null; only on a team.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#pull(java.awt.geom.Point2D.Double,double,int,java.util.List,long,java.util.List,java.util.Set)" class="member-name-link">pull(Point2D.Double, double, int, List&lt;EnemyInfo&gt;, long, List&lt;Roster.Mate&gt;, Set&lt;TeamModes.Mode&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#pull(java.awt.geom.Point2D.Double,double,int,java.util.List,long,java.util.List,java.util.Set)" class="member-name-link">pull(Point2D.Double, double, int, List&lt;EnemyInfo&gt;, long, List&lt;Roster.Mate&gt;, Set&lt;TeamModes.Mode&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">TMODE-3, TMODE-4: the point a team member is drawn to, or null.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#pull(java.awt.geom.Point2D.Double,java.lang.String,double,int,java.util.List,long,java.util.List,java.util.Set)" class="member-name-link">pull(Point2D.Double, String, double, int, List&lt;EnemyInfo&gt;, long, List&lt;Roster.Mate&gt;, Set&lt;TeamModes.Mode&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#pull(java.awt.geom.Point2D.Double,java.lang.String,double,int,java.util.List,long,java.util.List,java.util.Set)" class="member-name-link">pull(Point2D.Double, String, double, int, List&lt;EnemyInfo&gt;, long, List&lt;Roster.Mate&gt;, Set&lt;TeamModes.Mode&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">As above, with <code>name</code> this member's name for TMODE-13's order (null: first).</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.Pull.html#%3Cinit%3E(java.awt.geom.Point2D.Double,double,double)" class="member-name-link">Pull(Point2D.Double, double, double)</a> - Constructor for class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.Pull.html" title="class in hadur117.core.melee">MinimumRiskMovement.Pull</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.Pull.html#%3Cinit%3E(java.awt.geom.Point2D.Double,double,double)" class="member-name-link">Pull(Point2D.Double, double, double)</a> - Constructor for class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.Pull.html" title="class in hadur117.core.melee">TeamRisk.Pull</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.Pull.html#%3Cinit%3E(java.awt.geom.Point2D.Double,double,double,boolean)" class="member-name-link">Pull(Point2D.Double, double, double, boolean)</a> - Constructor for class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.Pull.html" title="class in hadur117.core.melee">MinimumRiskMovement.Pull</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.Pull.html#%3Cinit%3E(java.awt.geom.Point2D.Double,double,double,boolean)" class="member-name-link">Pull(Point2D.Double, double, double, boolean)</a> - Constructor for class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.Pull.html" title="class in hadur117.core.melee">TeamRisk.Pull</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:Q">Q</h2>
@@ -10845,7 +10841,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">TMODE-11, TMODE-27: the <code>rerank</code> lowest-risk candidates, and the destination held if
  not reached, each driven to through the <code>waves</code> for <a href="hadur117/core/melee/MinimumRiskMovement.html#WAVE_TICKS"><code>MinimumRiskMovement.WAVE_TICKS</code></a> ticks and
- through the teammates' <code>bullets</code> for <a href="hadur117/core/melee/MinimumRiskMovement.html#PATH_TICKS"><code>MinimumRiskMovement.PATH_TICKS</code></a>; scored as
+ through the teammates' <code>bullets</code> for <a href="hadur117/core/melee/TeamRisk.html#PATH_TICKS"><code>TeamRisk.PATH_TICKS</code></a>; scored as
  <a href="hadur117/core/melee/MinimumRiskMovement.html#waveScores(double%5B%5D,double%5B%5D)"><code>MinimumRiskMovement.waveScores(double[], double[])</code></a>, the held destination times <a href="hadur117/core/melee/MinimumRiskMovement.html#SWITCH_GAIN"><code>MinimumRiskMovement.SWITCH_GAIN</code></a>.</div>
 </dd>
 <dt><a href="hadur117/core/policy/PowerPolicy.html#RESERVE" class="member-name-link">RESERVE</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/PowerPolicy.html" title="class in hadur117.core.policy">PowerPolicy</a></dt>
@@ -11464,7 +11460,7 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../requirements.html#TIME-4">TIME-4</a>: writes <code>profile</code>'s statistics without re-writing its seeds from
  scratch.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.Pull.html#scalesBullets" class="member-name-link">scalesBullets</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.Pull.html" title="class in hadur117.core.melee">MinimumRiskMovement.Pull</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.Pull.html#scalesBullets" class="member-name-link">scalesBullets</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.Pull.html" title="class in hadur117.core.melee">TeamRisk.Pull</a></dt>
 <dd>
 <div class="block">Whether the pull scales the bullets' risk too; TMODE-13's leaves it as it is.</div>
 </dd>
@@ -11724,7 +11720,7 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/move/GunMimics.Mimic.html#segment(hadur117.core.model.Wave)" class="member-name-link">segment(Wave)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/GunMimics.Mimic.html" title="class in hadur117.core.move">GunMimics.Mimic</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#segmentDistance(java.awt.geom.Point2D,java.awt.geom.Point2D,java.awt.geom.Point2D,java.awt.geom.Point2D)" class="member-name-link">segmentDistance(Point2D, Point2D, Point2D, Point2D)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#segmentDistance(java.awt.geom.Point2D,java.awt.geom.Point2D,java.awt.geom.Point2D,java.awt.geom.Point2D)" class="member-name-link">segmentDistance(Point2D, Point2D, Point2D, Point2D)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">The least distance between segments a-b and c-d.</div>
 </dd>
@@ -12786,7 +12782,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">TMODE-2: a shot's weight is 1/(1+k)^2 for k teammates nearer its shooter; under this it makes no bullets.</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#softWeight(hadur117.core.world.EnemyShot,java.awt.geom.Point2D.Double,java.util.List)" class="member-name-link">softWeight(EnemyShot, Point2D.Double, List&lt;Point2D.Double&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#softWeight(hadur117.core.world.EnemyShot,java.awt.geom.Point2D.Double,java.util.List)" class="member-name-link">softWeight(EnemyShot, Point2D.Double, List&lt;Point2D.Double&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">TMODE-2: the share of <code>shot</code> aimed at Hadur, standing at <code>me</code> when it was
  fired: 1/(1+k)^2 for the k teammates in <code>mates</code> nearer its source.</div>
@@ -13131,7 +13127,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Files of a duel or melee shelf: a team battle writes neither (<a class="req" href="../requirements.html#SHELF-2">SHELF-2</a>).</div>
 </dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.Pull.html#strength" class="member-name-link">strength</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.Pull.html" title="class in hadur117.core.melee">MinimumRiskMovement.Pull</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.Pull.html#strength" class="member-name-link">strength</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.Pull.html" title="class in hadur117.core.melee">TeamRisk.Pull</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/AimExperts.html#strongest(java.util.List)" class="member-name-link">strongest(List&lt;TeamDanger.Aim&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/AimExperts.html" title="class in hadur117.core.melee">AimExperts</a></dt>
 <dd>
@@ -13721,12 +13717,12 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/TeamLink.html#teammateHits" class="member-name-link">teammateHits</a> - Variable in class hadur117.core.<a href="hadur117/core/TeamLink.html" title="class in hadur117.core">TeamLink</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#teammateRisk(java.awt.geom.Point2D.Double,hadur117.core.melee.MinimumRiskMovement.View)" class="member-name-link">teammateRisk(Point2D.Double, MinimumRiskMovement.View)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dt><a href="hadur117/core/melee/TeamRisk.html#teammateRisk(java.awt.geom.Point2D.Double,hadur117.core.melee.MinimumRiskMovement.View)" class="member-name-link">teammateRisk(Point2D.Double, MinimumRiskMovement.View)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.html" title="class in hadur117.core.melee">TeamRisk</a></dt>
 <dd>
 <div class="block">MMOVE-6, MMOVE-7: for each living teammate with a fresh position, its predicted point
- when Hadur would arrive at <code>p</code> scores <a href="hadur117/core/melee/MinimumRiskMovement.html#MATE_K"><code>MinimumRiskMovement.MATE_K</code></a> over the inverse square of
- the distance (floored at <a href="hadur117/core/melee/MinimumRiskMovement.html#MATE_FLOOR"><code>MinimumRiskMovement.MATE_FLOOR</code></a>), and the path from Hadur to <code>p</code>
- scores <a href="hadur117/core/melee/MinimumRiskMovement.html#MATE_PATH_K"><code>MinimumRiskMovement.MATE_PATH_K</code></a> for passing within <a href="hadur117/core/melee/MinimumRiskMovement.html#MATE_PATH_RANGE"><code>MinimumRiskMovement.MATE_PATH_RANGE</code></a> of the
+ when Hadur would arrive at <code>p</code> scores <a href="hadur117/core/melee/TeamRisk.html#MATE_K"><code>TeamRisk.MATE_K</code></a> over the inverse square of
+ the distance (floored at <a href="hadur117/core/melee/TeamRisk.html#MATE_FLOOR"><code>TeamRisk.MATE_FLOOR</code></a>), and the path from Hadur to <code>p</code>
+ scores <a href="hadur117/core/melee/TeamRisk.html#MATE_PATH_K"><code>TeamRisk.MATE_PATH_K</code></a> for passing within <a href="hadur117/core/melee/TeamRisk.html#MATE_PATH_RANGE"><code>TeamRisk.MATE_PATH_RANGE</code></a> of the
  teammate's predicted track from now until then.</div>
 </dd>
 <dt><a href="hadur117/core/melee/MeleeController.Situation.html#teammates" class="member-name-link">teammates</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeController.Situation.html" title="class in hadur117.core.melee">MeleeController.Situation</a></dt>
@@ -13766,6 +13762,15 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur/bench/TeamReport.Battle.html" class="type-name-link" title="class in hadur.bench">TeamReport.Battle</a> - Class in <a href="hadur/bench/package-summary.html">hadur.bench</a></dt>
 <dd>
 <div class="block">One battle: its result and what its members printed.</div>
+</dd>
+<dt><a href="hadur117/core/melee/TeamRisk.html" class="type-name-link" title="class in hadur117.core.melee">TeamRisk</a> - Class in <a href="hadur117/core/melee/package-summary.html">hadur117.core.melee</a></dt>
+<dd>
+<div class="block">The team half of the melee mover: the terms and choices <a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee"><code>MinimumRiskMovement</code></a> reads only
+ on a team (T1..T7).</div>
+</dd>
+<dt><a href="hadur117/core/melee/TeamRisk.Pull.html" class="type-name-link" title="class in hadur117.core.melee">TeamRisk.Pull</a> - Class in <a href="hadur117/core/melee/package-summary.html">hadur117.core.melee</a></dt>
+<dd>
+<div class="block">TMODE-3, TMODE-4: a point a team member is drawn to.</div>
 </dd>
 <dt><a href="hadur/bench/TeamRunner.html" class="type-name-link" title="class in hadur.bench">TeamRunner</a> - Class in <a href="hadur/bench/package-summary.html">hadur.bench</a></dt>
 <dd>
@@ -14543,6 +14548,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the value of the <code>unit</code> record component.</div>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#unit(long)" class="member-name-link">unit(long)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#UNIT" class="member-name-link">UNIT</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/OpponentStats.GunType.html#UNKNOWN" class="member-name-link">UNKNOWN</a> - Enum constant in enum class hadur117.core.melee.<a href="hadur117/core/melee/OpponentStats.GunType.html" title="enum class in hadur117.core.melee">OpponentStats.GunType</a></dt>
 <dd>&nbsp;</dd>

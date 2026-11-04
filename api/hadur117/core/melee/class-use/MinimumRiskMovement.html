@@ -76,6 +76,23 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color"><span class="type-name-label">MeleeController.</span><code><a href="../MeleeController.html#mover()" class="member-name-link">mover</a>()</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
+<div class="caption"><span>Methods in <a href="../package-summary.html">hadur117.core.melee</a> with parameters of type <a href="../MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Method</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">TeamRisk.</span><code><a href="../TeamRisk.html#pathBest(hadur117.core.melee.MinimumRiskMovement,java.awt.geom.Point2D.Double,java.util.List,hadur117.core.melee.MinimumRiskMovement.View)" class="member-name-link">pathBest</a><wbr>(<a href="../MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a>&nbsp;move,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;destination,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&gt;&nbsp;candidates,
+ <a href="../MinimumRiskMovement.View.html" title="class in hadur117.core.melee">MinimumRiskMovement.View</a>&nbsp;v)</code></div>
+<div class="col-last even-row-color">
+<div class="block">TMODE-25, Firestarter's path check: the <a href="../TeamRisk.html#PATH_RERANK"><code>TeamRisk.PATH_RERANK</code></a> lowest-risk candidates and the
+ destination held if not reached are each scored as their risk
+ plus <a href="../TeamRisk.html#PATH_K"><code>TeamRisk.PATH_K</code></a> times the damage of the teammates' bullets their drive would meet in
+ <a href="../TeamRisk.html#PATH_TICKS"><code>TeamRisk.PATH_TICKS</code></a> ticks.</div>
+</div>
+</div>
 </section>
 </li>
 </ul>
