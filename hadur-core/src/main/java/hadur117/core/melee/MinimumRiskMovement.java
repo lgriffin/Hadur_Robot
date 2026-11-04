@@ -885,6 +885,7 @@ public class MinimumRiskMovement {
         }
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.DODGE)) {
             v.pathBullets = mateBullets(me, now);
+            if (!TeamDodge.OWN_FIRE) v.mateBullets = List.of();
             destination = dodgeBest(candidates, v, dodge.waves());
             return destination;
         }

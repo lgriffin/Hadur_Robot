@@ -52,10 +52,10 @@ public final class TeamModes {
         /**
          * TMODE-33, the team brain after Ogi's design, in our own code ({@link TeamConcord}): the
          * whole team plays one picture instead of switches laid on the free-for-all movement. Its
-         * enemy risk counts every robot, teammates included, between an enemy and the point; the
-         * pack hunt stands down for FINISH and a GANG that turns itself on once the battle shows
-         * ganging; the radar splits the enemies among the members; the gun pools its situations
-         * by enemy class and fires lighter unless close or reading that class well.
+         * enemy risk counts every robot, teammates included, between an enemy and the point; it
+         * plays FINISH, and a GANG that turns itself on once the battle shows ganging; the gun
+         * pools its situations by enemy class and fires lighter unless close or reading that
+         * class well.
          */
         CONCORD
     }
