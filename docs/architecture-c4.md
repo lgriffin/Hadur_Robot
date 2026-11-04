@@ -543,7 +543,8 @@ C4Component
     Component(concord, "TeamConcord", "melee", "CONCORD: the team brain after Ogi (TMODE-33/34)")
     Component(dodge, "TeamDodge", "melee", "DODGE: shot profiles from aim experts by enemy class (TMODE-27)")
     Component(tdanger, "TeamDanger", "melee", "Per-class log of enemy aims, fed by every member's hits")
-    Component(mrm, "MinimumRiskMovement", "melee", "Team terms: teammates, HUNT, PATH, MATEFIRE, GANG, FINISH")
+    Component(mrm, "MinimumRiskMovement", "melee", "The mover's team branches: MATEFIRE, DODGE, PATH, teammates' bullets")
+    Component(trisk, "TeamRisk", "melee", "Team terms the mover reads on a team: teammates, HUNT, PATH, GANG, FINISH, CONCORD factor")
     Component(fg, "FieldGun", "melee", "Teammates' sightings in each history (MGUN-8); 21 situations; CONCORD power")
   }
   Rel(raw, tl, "filter(raw)")
@@ -556,6 +557,7 @@ C4Component
   Rel(modes, concord, "")
   Rel(concord, mrm, "gang watch, modes")
   Rel(dodge, mrm, "profiles")
+  Rel(mrm, trisk, "team terms (onTeam only)")
   Rel(tf, tl, "")
   UpdateLayoutConfig($c4ShapeInRow="4", $c4BoundaryInRow="1")
 ```

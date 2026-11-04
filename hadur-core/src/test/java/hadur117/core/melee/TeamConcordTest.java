@@ -66,8 +66,8 @@ class TeamConcordTest {
             List.of(), MeleeStrategy.Plan.normal());
         int i = enemies.indexOf(tracker.get("e"));
         // The other enemy stands between e and the point: half.
-        assertEquals(0.5, MinimumRiskMovement.concordFactor(pt(500, 800), tracker.get("e"), alone, i), 1e-9);
+        assertEquals(0.5, TeamRisk.concordFactor(pt(500, 800), tracker.get("e"), alone, i), 1e-9);
         // Nothing nearer e than a point beside it: one.
-        assertEquals(1.0, MinimumRiskMovement.concordFactor(pt(540, 500), tracker.get("e"), alone, i), 1e-9);
+        assertEquals(1.0, TeamRisk.concordFactor(pt(540, 500), tracker.get("e"), alone, i), 1e-9);
     }
 }

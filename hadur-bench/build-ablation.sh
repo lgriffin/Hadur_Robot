@@ -291,6 +291,7 @@ danger="$src/hadur-core/src/main/java/$pkg/core/melee/TeamDanger.java"
 modes="$src/hadur-core/src/main/java/$pkg/core/melee/TeamModes.java"
 dodge="$src/hadur-core/src/main/java/$pkg/core/melee/TeamDodge.java"
 mrm="$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java"
+trisk="$src/hadur-core/src/main/java/$pkg/core/melee/TeamRisk.java"
 core="$src/hadur-core/src/main/java/$pkg/core/HadurCore.java"
 mseam="$src/hadur-core/src/main/java/$pkg/core/MeleeSeam.java"
 robot="$src/hadur-robot/src/main/java/$pkg/Hadur.java"
@@ -548,7 +549,7 @@ for a in "${list[@]}"; do
             ;;
         thunt250|thunt200)
             r="${a#thunt}"; version="${version}hr${r:0:2}"
-            edit "$mrm" "static final double HUNT_RADIUS = 350;" "static final double HUNT_RADIUS = $r;"
+            edit "$trisk" "static final double HUNT_RADIUS = 350;" "static final double HUNT_RADIUS = $r;"
             ;;
         tmtab|tmlock)
             if [[ "$a" == tmtab ]]; then table="${TEAM_MODE_TABLE:-$here/work/team-modes-screen.java}"; version="${version}${TEAM_MODE_SUFFIX:-mt}"

@@ -1158,7 +1158,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
   sighting states with the position. `at(tick)` moves the last known point `velocity` px for
   each tick since, along the heading, no more than 8 px a tick. `Roster.living(now)` lists the
   living teammates whose position is no older than `SILENT_WINDOW`.
-- **MMOVE-6 to MMOVE-8.** `MinimumRiskMovement.teammateRisk` adds `MATE_K` (0.6) over the
+- **MMOVE-6 to MMOVE-8.** `TeamRisk.teammateRisk` adds `MATE_K` (0.6) over the
   square of the distance (floored at 36 px) to the teammate's predicted point at arrival, and
   `MATE_PATH_K` (0.3) for a path within 60 px of its predicted track; the ring is capped by
   the nearest teammate as by the nearest opponent. The noise hash is salted with
@@ -1221,7 +1221,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 - **Where.** `melee.TeamModes` holds the table (`TABLE`, empty until the per-team screens fill
   it) and the forced default (`FORCE_SOFT`, `FORCE_GANG`, `FORCE_FINISH`, `FORCE_LEARN`, all off).
   `MeleeController.tick` reads the modes each tick on a team. SOFT is
-  `MinimumRiskMovement.softWeight`; GANG and FINISH are `MinimumRiskMovement.pull`, a `Pull`
+  `TeamRisk.softWeight`; GANG and FINISH are `TeamRisk.pull`, a `Pull`
   that scales the risk in `risk`; LEARN turns on MMOVE-10 for that team.
 - **PACK (TMODE-5).** NightmareTeam's leader sends two or three members after each enemy, on
   an arc round it. Hadur has no leader: every member works out the same prey from the
@@ -1875,7 +1875,7 @@ failed and are removed (3.22 cleanup); the mimics live on in MOVE-33 and MOVE-34
 - **Gate.** PC card pc-team-hunt (PR #282): all 46 TeamRumble opponents, 6 seeds, paired with the
   3.17 build. A/A -0.4 ± 0.7; HUNT (`tmhunt`) **+4.1 ± 0.9**, with ShadowTeam +16.5, Aleph +15.3,
   CombatTeam +12.7, Ogi +8.1 and Nightmare -3.2.
-- **TMODE-13.** `MinimumRiskMovement.huntAssign` and `huntSlot`: leaderless name-order assignment,
+- **TMODE-13.** `TeamRisk.huntAssign` and `huntSlot`: leaderless name-order assignment,
   slots at a fixed `HUNT_RADIUS` (350) ranked by bearing, pull `HUNT_PULL` (0.3) that leaves the
   bullets' risk unscaled (`Pull.scalesBullets`).
 - **TMODE-14.** `TeamModes.FORCE_HUNT` is true; ablation `tmnohunt` turns it off.
@@ -1942,7 +1942,7 @@ failed and are removed (3.22 cleanup); the mimics live on in MOVE-33 and MOVE-34
 - **Why.** Leigh 2026-10-28: proceed with the next team step. Firestarter (2nd) checks each move
   against its own team's bullets in flight; the cloud closer-hunt smoke lost on the field (250 px
   -0.6 +- 1.3, 200 px -2.0 +- 1.3, 22 teams x 6 seeds) but TroodonPack gained at both (+4.3, +3.7).
-- **TMODE-25.** `TeamModes.Mode.PATH` (FORCE_PATH, on since TMODE-28): `MinimumRiskMovement.pathBest`,
+- **TMODE-25.** `TeamModes.Mode.PATH` (FORCE_PATH, on since TMODE-28): `TeamRisk.pathBest`,
   `pathDamage`, `crossesBox`; `PATH_K` 1, `PATH_HALF` 18, `PATH_TICKS` 15, `PATH_RERANK` 8.
 - **TMODE-26.** `TeamModes.Mode.NEAR`, table-only: `huntRadius` gives `HUNT_RADIUS_NEAR` 250.
 - With PATH and NEAR both forced into the default, only the three team replay fixtures move; the

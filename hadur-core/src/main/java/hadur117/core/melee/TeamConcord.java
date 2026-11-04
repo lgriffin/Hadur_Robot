@@ -14,8 +14,8 @@ import java.util.Set;
  * <li><b>Modes.</b> FINISH plays; GANG plays once this battle has shown ganging
  *     ({@link #gangOn}).</li>
  * <li><b>Gang watch.</b> Every tick, each member in view (Hadur and its teammates) counts as one
- *     member-turn, ganged with {@link MinimumRiskMovement#GANG_SIZE} or more enemies within
- *     {@link MinimumRiskMovement#GANG_RANGE}. After {@link #GANG_TURNS} member-turns, GANG plays
+ *     member-turn, ganged with {@link TeamRisk#GANG_SIZE} or more enemies within
+ *     {@link TeamRisk#GANG_RANGE}. After {@link #GANG_TURNS} member-turns, GANG plays
  *     while {@link #GANG_SHARE} or more of them were ganged. A team that spreads out never turns
  *     it on; one that gangs up does within a round. Kept for the battle.</li>
  * </ul>
@@ -58,7 +58,7 @@ final class TeamConcord {
 
     private void count(Point2D.Double p, List<EnemyInfo> enemies, long now) {
         turns++;
-        if (MinimumRiskMovement.enemiesNear(p, enemies, now) >= MinimumRiskMovement.GANG_SIZE) ganged++;
+        if (TeamRisk.enemiesNear(p, enemies, now) >= TeamRisk.GANG_SIZE) ganged++;
         if (turns >= GANG_TURNS && ganged >= GANG_SHARE * turns) gang = true;
     }
 

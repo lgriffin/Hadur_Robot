@@ -63,11 +63,11 @@ class MinimumRiskMovementTeamTest {
         Point2D.Double p = pt(600, 500);
         MinimumRiskMovement.View v = view(mate(600, 500, 0, 0));
         // A path term too: Hadur's path ends on the teammate's track at the point.
-        double atFloor = move.teammateRisk(p, v);
-        assertEquals(MinimumRiskMovement.MATE_K * 1e4 / (36 * 36) + MinimumRiskMovement.MATE_PATH_K, atFloor, 1e-9);
-        double far = move.teammateRisk(p, view(mate(600, 700, 0, 0)));
-        assertEquals(MinimumRiskMovement.MATE_K * 1e4 / (200 * 200), far, 1e-9);
-        double farther = move.teammateRisk(p, view(mate(600, 900, 0, 0)));
+        double atFloor = TeamRisk.teammateRisk(p, v);
+        assertEquals(TeamRisk.MATE_K * 1e4 / (36 * 36) + TeamRisk.MATE_PATH_K, atFloor, 1e-9);
+        double far = TeamRisk.teammateRisk(p, view(mate(600, 700, 0, 0)));
+        assertEquals(TeamRisk.MATE_K * 1e4 / (200 * 200), far, 1e-9);
+        double farther = TeamRisk.teammateRisk(p, view(mate(600, 900, 0, 0)));
         assertEquals(far / 4, farther, 1e-9);
     }
 
@@ -95,13 +95,13 @@ class MinimumRiskMovementTeamTest {
         Point2D.Double across = pt(500, 700);
         Point2D.Double beside = pt(500, 300);
         MinimumRiskMovement.View v = view(mates);
-        double crossing = move.teammateRisk(across, v);
-        double clear = move.teammateRisk(beside, v);
+        double crossing = TeamRisk.teammateRisk(across, v);
+        double clear = TeamRisk.teammateRisk(beside, v);
         long arrive = 100 + (long) Math.ceil(across.distance(pt(500, 500)) / MinimumRiskMovement.TRAVEL_SPEED);
-        double point = MinimumRiskMovement.MATE_K * 1e4
+        double point = TeamRisk.MATE_K * 1e4
             / Math.pow(Math.max(36, across.distance(mates.get(0).at(arrive))), 2);
-        assertEquals(point + MinimumRiskMovement.MATE_PATH_K, crossing, 1e-9);
-        assertTrue(clear < MinimumRiskMovement.MATE_PATH_K, "clear path scored " + clear);
+        assertEquals(point + TeamRisk.MATE_PATH_K, crossing, 1e-9);
+        assertTrue(clear < TeamRisk.MATE_PATH_K, "clear path scored " + clear);
     }
 
     @Test
