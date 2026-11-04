@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 class GunMimicsTest {
 
     static final BattleField FIELD = new BattleField(800, 600);
-    static final int BINS = StopPointSurf.BINS;
+    static final int BINS = 151;
 
     static Wave wave() {
         return new Wave("enemy", new Point2D.Double(400, 500), new Point2D.Double(400, 200),
