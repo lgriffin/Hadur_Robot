@@ -2205,6 +2205,8 @@ E1 to E6 map onto these as the last column says.
 | EVEIMEAR-10 | Event | When the enemy is scanned, the bot shall turn its radar back by the turn it had left. | K1 |
 | EVEIMEAR-11 | Event | When we hit the enemy, the bot shall take the bullet's damage off the enemy's energy, and when hit, add three times the bullet's power, so neither reads as a shot. | K3 |
 | EVEIMEAR-12 | Ubiquitous | On the MicroRumble bench sample, paired against Épéeist 3.7, the build shall predict at least 85.3 APS before it is submitted. | plan S4 |
+| EVEIMEAR-13 | Ubiquitous | The bot shall move its aim by a random offset of up to 3 bins either way against a robot whose MODES char has a mode nibble of 15 (rsim.micro.uCatcher 0.1, whose catch it breaks: +52.0 ± 2.5 points, docs/bench/local/2026-11-04_eveimear-jit.md), and aim as before against every other robot. | 0.4 |
+| EVEIMEAR-17 | Ubiquitous | The shipped jar, built through ProGuard (`eveimear/proguard.pro`), shall give the javac classes' orders, bit for bit, on seeded scripts with Math.random swapped for a seeded draw, against the field's row, a stop-and-go row and the jitter row. | 0.4 |
 
 - **Coverage.** JAYLEXI-1, JAYLEXI-9, EVEIMEAR-1 and EVEIMEAR-9 by `JayLexiJarIT` and
   `EveimearJarIT` (failsafe) on the shipped jars; JAYLEXI-2 to JAYLEXI-8 by `JayLexiTest`, JAYLEXI-11 by `JayLexiReplayTest`, and
