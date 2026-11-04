@@ -82,4 +82,22 @@ class MeleeEnergyPolicyTest {
         assertEquals(0.5, MeleeEnergyPolicy.teamPower(0.5, 9, 80), 1e-9);
         assertEquals(0, MeleeEnergyPolicy.teamPower(0, 100, 99.95));
     }
+
+    @Test
+    @Tag("MGUN-25")
+    @DisplayName("MGUN-25: ships off; on, at least the far power beyond 300 px with 60 energy or more and three or more left")
+    void farPower() {
+        assertFalse(MeleeEnergyPolicy.FAR_SPARE);
+        assertEquals(1.92, MeleeEnergyPolicy.crowdPower(1.5, 600, 60, 50, 5), 1e-9, "off: MGUN-13 stands");
+        assertEquals(3.0, MeleeEnergyPolicy.farPower(1.92, 600, 70, 50, 5, true, 3.0), 1e-9);
+        assertEquals(2.5, MeleeEnergyPolicy.farPower(1.92, 900, 60, 50, 3, true, 2.5), 1e-9, "from 60 energy, three left");
+        assertEquals(1.92, MeleeEnergyPolicy.farPower(1.92, 600, 59, 50, 5, true, 3.0), 1e-9, "under 60 energy: unchanged");
+        assertEquals(3.0, MeleeEnergyPolicy.farPower(3.0, 300, 70, 50, 5, true, 2.5), 1e-9, "within 300 px: unchanged");
+        assertEquals(1.92, MeleeEnergyPolicy.farPower(1.92, 600, 70, 50, 2, true, 3.0), 1e-9, "two left: the duel's");
+        assertEquals(0.0, MeleeEnergyPolicy.farPower(0.0, 600, 70, 50, 5, true, 3.0), 1e-9, "a hold stands");
+        assertEquals(2.0, MeleeEnergyPolicy.farPower(2.0, 600, 70, 12, 5, true, 3.0), 1e-9, "a finisher keeps its power");
+        assertEquals(2.0, MeleeEnergyPolicy.farPower(1.92, 600, 82, 80, 5, true, 3.0), 1e-9, "the lead cap");
+        assertEquals(1.92, MeleeEnergyPolicy.farPower(1.92, 600, 81, 80, 5, true, 3.0), 1e-9, "never lowers the power");
+        assertEquals(1.92, MeleeEnergyPolicy.farPower(1.92, 600, 70, 50, 5, false, 3.0), 1e-9, "switched off: unchanged");
+    }
 }

@@ -1,0 +1,27 @@
+# PC card pc-melee-far pilot (BENCH-189): y3 against an aa baseline battle for battle on the 46 census fields x 2 seeds (3294-3295, after the card's 3288-3293), 184 battles, about 17% of the card. tools/melee_pilot.py --share-only stops the card unless Hadur's score share is up. Template: mfprep writes work/melee-far-pilot.args with @V@ = the robot.release in hadur-robot/pom.xml and @C@ = the machine's melee width.
+--suite
+melee-census-317.txt
+--seeds
+2
+--seed-base
+3293
+--rounds
+35
+--parallel
+@C@
+--child-heap
+2G
+--cpu-constant
+auto
+--robot-jar
+bisect/hadur117.Hadur_@V@y3.jar
+--robot
+hadur117.Hadur @V@y3
+--baseline
+bisect/hadur117.Hadur_@V@aa.jar
+--baseline-robot
+hadur117.Hadur @V@aa
+--out
+work/melee-far-@V@-pilot
+--report
+../docs/bench/local/melee-far-pilot-battles.md

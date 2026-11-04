@@ -1,0 +1,72 @@
+# Far power on spare energy (docs/bench/melee-top3.md, MGUN-25, BENCH-188).
+# Leigh 2026-11-03 22:18: "melee is different and I have capacity" (the per-opponent card rule does
+# not bind melee); 2026-11-04 13:44 "PC is available".
+# Why it should win: melee APS is pairwise and its score is survival plus bullet damage. In the
+# fields Hadur shares with the top bots (cloud 3.21 census), Hadur fires about as many crowd shots
+# at about the same hit rate, but the top bots put 15-25% more power into the crowd (Diamond 66 to
+# Hadur's 54 a battle, ScalarR 90 to 72, Firestarter 67 to 57) and do that much more crowd damage,
+# while Hadur's crowd damage taken is no worse than Diamond's. The movement levers all failed; the
+# gap is firepower. 64% of Hadur's crowd shots (not finishers, three or more left) are beyond
+# 300 px with 60 energy or more, at about 2.0 power: MGUN-13 fires 1.92 there. Every earlier power
+# step paid (MGUN-13 +0.62, MGUN-16 power 3 out to 300 px +0.15); ScalarR's rule (MGUN-22) scored
+# +0.18 but spent the endgame's energy (endgame wins -4.8), so this one fires harder only while
+# Hadur has 60 energy or more. The risk: far shots hit less, so harder ones drain energy faster.
+# One switch, read only in melee off a team with three or more opponents alive, so the 1v1 and
+# the team never see it:
+#   aa      the baseline (master)
+#   bb      its A/A copy
+#   y3      mfar3, MGUN-25: at least power 3 beyond 300 px while Hadur has 60 energy or more
+#   y5      mfar25, MGUN-25: the same at power 2.5
+# Pilot (BENCH-189): mfpilot fights y3 against an aa baseline battle for battle on 46 fields x 2
+# seeds (3294-3295; 184 battles, about 17% of the card), and mfcheck stops the card unless Hadur's
+# score share is up (--share-only), on at least 95% of the 92 pairs with all 35 rounds each. A few
+# failed pilot battles do not skip the check; a halt by a stop rule stops the queue as on any card.
+# On a stop the check opens the results PR with the pilot read and fails, so no arm after it runs
+# (up to 1,104 battles saved).
+# Each build fights the 46 census fields x 6 fresh seeds alone (3288-3293; 276 battles, 1,104 in
+# all, about 3 h at the PC's ~370 battles/h) at the machine's melee width and CPU constant. The read
+# pairs bb with aa (A/A) and each arm with the mean of aa and bb (--base2), battle for battle.
+# Verdict: an arm passes with its 95% low end above 0 (--gain 0), Hadur's share of others outlived
+# no more than 1 point lower and the 1-30 endgame wins no more than 3 points lower; skipped turns
+# more than 20% over aa's fail it. The card ends in a results PR on claude/pc-melee-far-results
+# whatever the verdict; the melee thread reads it.
+#   git checkout master && git pull
+#   ./queue.sh run pc-melee-far        (or  .\queue.ps1 run pc-melee-far)
+# Stop rules (docs/bench/watch.md), halts only, each keeping every battle fought: fails 20 and
+# stall 30m on the pilot and each arm. A halt leaves that step's remaining battles (up to 276) and
+# every later arm unrun (up to 1,104 if the pilot halts); the cause is fixed and the card resumed.
+
+set OUT = ../docs/bench/local
+
+mfprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb y3 y5; do rm -f bisect/hadur117.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh mfar3 && bash ./build-ablation.sh mfar25 && mkdir -p work && rm -rf work/melee-far-"$V"-pilot work/melee-far-"$V"-aa work/melee-far-"$V"-bb work/melee-far-"$V"-y3 work/melee-far-"$V"-y5 && echo "$V" > work/melee-far.version && for a in aa bb y3 y5; do test -f bisect/hadur117.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-far.args > work/melee-far-$a.args || exit 1; done && sed -e "s/@V@/$V/g" -e "s/@C@/$C/g" plans/melee-far-pilot.args > work/melee-far-pilot.args && rm -f ${OUT}/melee-far-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+mfpilot | mvn -q exec:java "-Dexec.args=@work/melee-far-pilot.args" || echo "pilot: some battles failed; mfcheck reads what finished"
+  after: mfprep
+  watch: battles=184
+  stop: fails 20
+  stop: stall 30m
+mfcheck | V=$(cat work/melee-far.version) && test -n "$V" && { python3 tools/melee_pilot.py work/melee-far-"$V"-pilot --expect 92 --rounds 35 --share-only --out ${OUT}/melee-far-pilot.md --title "pc-melee-far pilot: y3 against aa on $V" || { bash tools/open_results_pr.sh claude/pc-melee-far-results "Far power on spare energy (MGUN-25): pilot stopped the card" ${OUT}/melee-far-pilot.md; exit 1; }; }
+  after: mfpilot
+mfaa   | mvn -q exec:java "-Dexec.args=@work/melee-far-aa.args"
+  after: mfcheck
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+mfbb   | mvn -q exec:java "-Dexec.args=@work/melee-far-bb.args"
+  after: mfaa
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+mfy3   | mvn -q exec:java "-Dexec.args=@work/melee-far-y3.args"
+  after: mfbb
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+mfy5   | mvn -q exec:java "-Dexec.args=@work/melee-far-y5.args"
+  after: mfy3
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+mfread | V=$(cat work/melee-far.version) && test -n "$V" && W=work/melee-far-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm y3="$W"-y3 --arm y5="$W"-y5 --census melee-census-317.txt --seeds 6 --gain 0 --survival-slack 1 --out ${OUT}/melee-far-read.md --title "Far power on spare energy on $V" || true; } && test -s ${OUT}/melee-far-read.md
+  after: mfy5
+mfpr   | bash tools/open_results_pr.sh claude/pc-melee-far-results "Far power on spare energy (MGUN-25)" ${OUT}/melee-far-read.md ${OUT}/melee-far-pilot.md $(ls ${OUT}/melee-far-aa.md ${OUT}/melee-far-bb.md ${OUT}/melee-far-y3.md ${OUT}/melee-far-y5.md 2>/dev/null)
+  after: mfread
