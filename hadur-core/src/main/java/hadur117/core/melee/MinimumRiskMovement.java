@@ -312,6 +312,20 @@ public class MinimumRiskMovement {
      * straight at or away from an opponent counts double, not half again. Off.
      */
     public static final boolean MELEE_FULL_LATERAL = false;
+    /**
+     * MMOVE-25: off a team, the crowd movement is Diamond's whole melee mover in place of every
+     * term above (surfer included): 64 points at min(100 + 0..100, nearest robot) around Hadur, each
+     * opponent's risk energy ratio (0.25..4) x (1 + |cos(bearing to it - heading to the point)|) x its
+     * damage weight (MMOVE-22) / (distance^2 x (robots closer to it than 0.8 x that distance squared + 1)),
+     * times 1 + the pull of 50 random recent spots; the current point is kept at 0.8 of its risk
+     * while it is no further than the nearest robot. A clean-slate test of the 2,400-line mover
+     * against the 270-line one that survives 13 points more live (docs/bench/melee-top3.md).
+     */
+    public static final boolean MELEE_CLEAN = false;
+    static final int CLEAN_SLICES = 64;
+    static final double CLEAN_KEEP = 0.8;
+    static final int CLEAN_RECENT = 50;
+    static final long CLEAN_RECENT_EVERY = 7;
     static final double FULL_LATERAL = 1.0;
 
     static final double PERIPHERY_K = 0.2;
@@ -571,6 +585,8 @@ public class MinimumRiskMovement {
     }
 
     public void newRound() {
+        cleanDest = null;
+        cleanRecent.clear();
         destination = null;
         openingSpot = null;
         bullets.clear();
@@ -957,6 +973,89 @@ public class MinimumRiskMovement {
         bullets.addLast(b);
     }
 
+    /** MMOVE-25: whether the clean (Diamond) mover runs off a team; the switch, or a test's {@link #clean(boolean)}. */
+    private boolean clean = MELEE_CLEAN;
+    /** MMOVE-25: random spots near where Hadur has been, newest first. */
+    private final Deque<Point2D.Double> cleanRecent = new ArrayDeque<>();
+    /** MMOVE-25: the point being driven to and its heading from Hadur when picked. */
+    private Point2D.Double cleanDest;
+    private double cleanGo;
+    /** MMOVE-25: seeded per round so a battle replays the same. */
+    private java.util.Random cleanRandom = new java.util.Random(25);
+
+    void clean(boolean on) {
+        this.clean = on;
+    }
+
+    /** MMOVE-25: Diamond's melee mover (voidious.move.MeleeMover, zlib licence), on Hadur's view. */
+    Point2D.Double cleanBest(Point2D.Double me, double energy, List<EnemyInfo> enemies, long now) {
+        if (now % CLEAN_RECENT_EVERY == 0) {
+            for (int i = 0; i < 5; i++) {
+                double a = cleanRandom.nextDouble() * 2 * Math.PI;
+                double d = 5 + cleanRandom.nextDouble() * cleanRandom.nextDouble() * 200;
+                cleanRecent.addFirst(new Point2D.Double(me.x + Math.sin(a) * d, me.y + Math.cos(a) * d));
+            }
+            while (cleanRecent.size() > CLEAN_RECENT) cleanRecent.removeLast();
+        }
+        EnemyInfo nearest = null;
+        for (EnemyInfo e : enemies) if (nearest == null || e.distance(me) < nearest.distance(me)) nearest = e;
+        double near = nearest.distance(me);
+        double stick = Math.min(100 + cleanRandom.nextDouble() * 100, near);
+        Point2D.Double best = null;
+        double bestRisk = Double.POSITIVE_INFINITY, bestGo = 0;
+        for (int i = 0; i < CLEAN_SLICES; i++) {
+            double a = i * 2 * Math.PI / CLEAN_SLICES;
+            Point2D.Double p = field.translateToField(new Point2D.Double(me.x + Math.sin(a) * stick, me.y + Math.cos(a) * stick));
+            double r = cleanRisk(p, a, me, energy, enemies);
+            if (r < bestRisk && !cleanHitsWall(me, p)) {
+                bestRisk = r;
+                best = p;
+                bestGo = a;
+            }
+        }
+        if (cleanDest != null && me.distance(cleanDest) <= near && !cleanHitsWall(me, cleanDest)) {
+            double keep = CLEAN_KEEP * cleanRisk(cleanDest, cleanGo, me, energy, enemies);
+            if (keep < bestRisk || best == null) {
+                best = cleanDest;
+                bestGo = cleanGo;
+            }
+        }
+        if (best == null) best = cleanDest != null ? cleanDest : me;
+        cleanDest = best;
+        cleanGo = bestGo;
+        return best;
+    }
+
+    double cleanRisk(Point2D.Double p, double go, Point2D.Double me, double energy, List<EnemyInfo> enemies) {
+        double risk = 0;
+        for (EnemyInfo e : enemies) {
+            double d2 = Math.max(1, p.distanceSq(e.location));
+            double bearing = Math.atan2(e.location.x - me.x, e.location.y - me.y);
+            int closer = 0;
+            for (EnemyInfo o : enemies) {
+                if (o != e && o.location.distanceSq(e.location) < d2 * 0.8) closer++;
+            }
+            double ratio = Math.max(0.25, Math.min(4, e.energy / Math.max(0.1, energy)));
+            risk += ratio * (1 + Math.abs(Math.cos(bearing - go))) * damageWeight.getOrDefault(e.name, 1.0)
+                / (d2 * (closer + 1));
+        }
+        double pull = 0;
+        for (Point2D.Double q : cleanRecent) pull += 30.0 / Math.max(1, q.distanceSq(p));
+        return risk * (1 + pull);
+    }
+
+    /** MMOVE-25: whether driving straight at {@code p} at full speed leaves the field within 5 ticks. */
+    boolean cleanHitsWall(Point2D.Double me, Point2D.Double p) {
+        double a = Math.atan2(p.x - me.x, p.y - me.y);
+        double reach = me.distance(p);
+        for (int t = 1; t <= 5; t++) {
+            double step = Math.min(8 * t, reach);
+            double x = me.x + Math.sin(a) * step, y = me.y + Math.cos(a) * step;
+            if (x < 18 || y < 18 || x > field.width - 18 || y > field.height - 18) return true;
+        }
+        return false;
+    }
+
     /** Picks this tick's destination. */
     public Point2D.Double chooseDestination(Point2D.Double me, double energy, int others,
                                             List<EnemyInfo> enemies, long now,
@@ -993,6 +1092,10 @@ public class MinimumRiskMovement {
         v.concord = TeamConcord.MOVE && TeamConcord.RISK && !mates.isEmpty() && modes.contains(TeamModes.Mode.CONCORD);
         v.clear = !mates.isEmpty() && modes.contains(TeamModes.Mode.CLEAR);
         v.momentum = !mates.isEmpty() && modes.contains(TeamModes.Mode.MOMENTUM);
+        if (clean && !onTeam(mates) && !enemies.isEmpty()) {
+            destination = cleanBest(me, energy, enemies, now);
+            return destination;
+        }
         List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
         lastCandidates = candidates.size();
         if (surf && !onTeam(mates)) {
