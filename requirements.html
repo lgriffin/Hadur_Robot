@@ -630,8 +630,8 @@ traceability check reads. 274 of 281 live requirements have a tagged test. The r
 <dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/melee/MeleeEnergyPolicy.html" title="hadur117.core.melee.MeleeEnergyPolicy">MeleeEnergyPolicy</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/melee/MeleeCrowdPowerTest.java">MeleeCrowdPowerTest.java</a></dd></dl>
 </article>
 <article class="req-card" id="MGUN-25">
-<div class="req-head"><span class="rid">MGUN-25</span><span class="badge">Optional</span><span class="badge stage">M7</span></div>
-<p>Where the <code>FAR_SPARE</code> switch is on, while in melee off a team with three or more opponents alive and 60 energy or more, a shot at a target beyond 300 px that is neither a hold nor a finisher shall have at least <code>FAR_SPARE_POWER</code> (3), still capped by what kills the target, by Hadur&#x27;s lead over it and by Hadur&#x27;s own energy, and never lower than the rules before it gave.</p>
+<div class="req-head"><span class="rid">MGUN-25</span><span class="badge">State</span><span class="badge stage">M7</span></div>
+<p>While in melee off a team with three or more opponents alive and 60 energy or more, a shot at a target beyond 300 px that is neither a hold nor a finisher shall have at least <code>FAR_SPARE_POWER</code> (2.5), still capped by what kills the target, by Hadur&#x27;s lead over it and by Hadur&#x27;s own energy, and never lower than the rules before it gave (on from 3.22: pc-melee-far y5 +0.30 ± 0.17, PR #647).</p>
 <dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/melee/MeleeEnergyPolicy.html" title="hadur117.core.melee.MeleeEnergyPolicy">MeleeEnergyPolicy</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/melee/MeleeEnergyPolicyTest.java">MeleeEnergyPolicyTest.java</a></dd></dl>
 </article>
 <h2 id="group-MMEM">Melee memory</h2>

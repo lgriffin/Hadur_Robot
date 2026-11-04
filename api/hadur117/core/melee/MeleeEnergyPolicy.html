@@ -137,7 +137,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>static final boolean</code></div>
 <div class="col-second even-row-color"><code><a href="#FAR_SPARE" class="member-name-link">FAR_SPARE</a></code></div>
 <div class="col-last even-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#MGUN-25">MGUN-25</a> (arms mfar3, mfar25): off a team with three or more opponents, a shot beyond
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-25">MGUN-25</a> (pc-melee-far, PR #647): off a team with three or more opponents, a shot beyond
  <a href="#OGI_WIDE_CLOSE"><code>OGI_WIDE_CLOSE</code></a> px fires at least <a href="#FAR_SPARE_POWER"><code>FAR_SPARE_POWER</code></a> while Hadur has
  <a href="#FAR_SPARE_ENERGY"><code>FAR_SPARE_ENERGY</code></a> energy or more, in place of <a class="req" href="../../../../requirements.html#MGUN-13">MGUN-13</a>'s 1.92.</div>
 </div>
@@ -436,12 +436,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="FAR_SPARE">
 <h3>FAR_SPARE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">FAR_SPARE</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#MGUN-25">MGUN-25</a> (arms mfar3, mfar25): off a team with three or more opponents, a shot beyond
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-25">MGUN-25</a> (pc-melee-far, PR #647): off a team with three or more opponents, a shot beyond
  <a href="#OGI_WIDE_CLOSE"><code>OGI_WIDE_CLOSE</code></a> px fires at least <a href="#FAR_SPARE_POWER"><code>FAR_SPARE_POWER</code></a> while Hadur has
  <a href="#FAR_SPARE_ENERGY"><code>FAR_SPARE_ENERGY</code></a> energy or more, in place of <a class="req" href="../../../../requirements.html#MGUN-13">MGUN-13</a>'s 1.92. The top bots fire about
  as often as Hadur at the same hit rate but spend 15-25% more power in the crowd, and 64% of
  Hadur's crowd shots are this far with this much energy (docs/bench/melee-top3.md); the energy
- floor keeps the endgame's reserve. Off.</div>
+ floor keeps the endgame's reserve. On from 3.22 at power 2.5: pc-melee-far y5 +0.30 +- 0.17
+ (low end +0.13, endgame wins +0.9, skips +16%), y3 (power 3) +0.19 +- 0.19, PR #647.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
