@@ -16,6 +16,11 @@ EVEIMEAR-12 in [docs/requirements.md](../docs/requirements.md).
 damage threshold that switches stop-and-go to random orbit, so each robot gets the mode that
 worked against it. Bench: +0.36 ± 0.17 APS over 0.1 on a fresh 112-bot sample (6 seeds) (83.57 against 83.20).
 
+0.3 (prepared 2026-11-04, tag `eveimear-v0.3` on Leigh's go) is 741 bytes. A codesize diet (PR #627)
+frees bytes, each `MODES` char also carries the robot's wave speed, so picked robots get their own
+fire power (pc-eveimear-pw, PR #634: +0.14 ± 0.10 APS), and 16 more robots get mode picks
+(pc-eveimear-st2, PR #622: +0.08 ± 0.03). Notes in docs/releases/eveimear-v0.3.md.
+
 ## Standing
 
 | Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | 5th place | Gap to 5th |
