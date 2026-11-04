@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-dgun",
- "updated": 1793824715.3805292,
+ "updated": 1793824725.1437852,
  "steps": {
   "dgprep": {
    "status": "done",
@@ -22,9 +22,9 @@
   },
   "dgpilot": {
    "status": "failed",
-   "exit": 1,
-   "seconds": 0,
-   "end": "2026-11-04T20:35:55"
+   "exit": 3,
+   "seconds": 9,
+   "end": "2026-11-04T20:38:45"
   },
   "dgbb": {
    "status": "skipped",
