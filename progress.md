@@ -1,6 +1,6 @@
 # Queue pc-melee-strong: progress
 
-Updated 2026-11-04 00:09:44 PC time (00:09 UTC), runner pid 51528.
+Updated 2026-11-04 00:24:47 PC time (00:24 UTC), runner pid 51528.
 
 - `msprep` done, exit 0 in 3 min
 - `mspilot` running
@@ -14,15 +14,15 @@ Updated 2026-11-04 00:09:44 PC time (00:09 UTC), runner pid 51528.
 
 ### mspilot
 
-**94 of 184 battles** (51%), 0 failed. Running 43 min, 132 battles/h, about 41 min left (ends ~00:50 PC time). Last battle 1 min ago.
-Skipped turns a battle: 25.0 overall, first 94 25.0, last 94 25.0.
+**142 of 184 battles** (77%), 0 failed. Running 58 min, 148 battles/h, about 17 min left (ends ~00:41 PC time). Last battle 0 min ago.
+Skipped turns a battle: 24.6 overall, first 100 24.9, last 100 24.5.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 94 |
-| `stall 30m` | halt | ok | last battle 1 min ago |
+| `fails 20` | halt | ok | 0 failed of 142 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 90 battles unrun (about 41 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 42 battles unrun (about 17 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
