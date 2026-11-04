@@ -142,7 +142,8 @@ class ShieldListResourceTest {
         for (String name : new String[] {"CharlieN.Omega.Omega 1.03", "SHAM.WOW 1.4", "voidious.micro.Jen 1.11"}) {
             assertTrue(list.matches(name), name);
         }
-        assertEquals(31 + 8, ShieldTableData.moves().length);
+        // pc-shelf (PR #636): 6 more opening drives held on the confirm's fresh seeds.
+        assertEquals(31 + 8 + 6, ShieldTableData.moves().length);
         for (String name : ShieldTableData.moves()) {
             assertTrue(list.moves(name) && list.matches(name), "an opening drive is for a shielded robot: " + name);
         }
@@ -216,7 +217,8 @@ class ShieldListResourceTest {
         ShieldList list = ShieldList.parse(lines);
         // pc-rival-confirm (PR #537): 9 more, 5 of them with exit off. pc-rival-near (PR #545): 5 more, 2 with
         // exit off; Hydrogen's line goes, since it left the list for stop-and-go and a still line reads only shielded.
-        assertEquals(17 + 9 + 5 - 1, ShieldTableData.stills().length);
+        // pc-shelf (PR #636): Entangled.
+        assertEquals(17 + 9 + 5 - 1 + 1, ShieldTableData.stills().length);
         for (String n : ShieldTableData.stills()) {
             assertTrue(list.matches(n), n + " is shielded");
             assertTrue(list.still(n), n + " plans still");
