@@ -17,12 +17,13 @@
 
     <properties>
         <!-- The robot's version: the jar is named for it and Eveimear.properties takes it by filtering. -->
-        <eveimear.release>0.3</eveimear.release>
+        <eveimear.release>0.4</eveimear.release>
         <!-- MicroRumble's limit, as Robocode's codesize tool counts the shipped jar (EVEIMEAR-1). -->
         <eveimear.codesize.limit>749</eveimear.codesize.limit>
         <!-- Rating clients still run Java 8; the shipped class targets it. -->
         <maven.compiler.release>8</maven.compiler.release>
         <eveimear.jar>${project.build.directory}/hadur117.micro.Eveimear_${eveimear.release}.jar</eveimear.jar>
+        <proguard.version>7.8.2</proguard.version>
         <codesize.version>1.3.1</codesize.version>
     </properties>
 
@@ -31,6 +32,20 @@
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode-api</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <!-- Build tools, test scope so nothing reaches the jar: ProGuard runs at package. -->
+        <dependency>
+            <groupId>com.guardsquare</groupId>
+            <artifactId>proguard-base</artifactId>
+            <version>${proguard.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- The jar replay (EVEIMEAR-17) loads both builds with Math.random swapped for a seeded draw. -->
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-commons</artifactId>
+            <version>9.7.1</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
@@ -53,31 +68,47 @@
             </resource>
         </resources>
         <plugins>
-            <!-- The jar the rumble takes: the robot's classes as javac wrote them, its properties and its source. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.1.0</version>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.8.1</version>
                 <executions>
+                    <!-- ProGuard needs the API jar's path as a library. -->
                     <execution>
-                        <id>robot-jar</id>
+                        <id>robocode-api-path</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>properties</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <!-- The jar the rumble takes: the robot's classes through ProGuard's optimiser
+                         (proguard.pro), with its properties and source, as Deise's: 0.4's catcher jitter
+                         (EVEIMEAR-13) fits MicroRumble only optimised; EveimearJarIT replays the jar. Run in its own JVM: ProGuard calls
+                         System.exit. -->
+                    <execution>
+                        <id>proguard</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>run</goal>
+                            <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <target>
-                                <jar destfile="${eveimear.jar}">
-                                    <fileset dir="${project.build.outputDirectory}">
-                                        <include name="hadur117/micro/Eveimear.class"/>
-                                        <include name="hadur117/micro/Eveimear$*.class"/>
-                                        <include name="hadur117/micro/Eveimear.properties"/>
-                                    </fileset>
-                                    <fileset dir="${project.basedir}/src/main/java">
-                                        <include name="hadur117/micro/Eveimear.java"/>
-                                    </fileset>
-                                </jar>
-                            </target>
+                            <executable>${java.home}/bin/java</executable>
+                            <classpathScope>test</classpathScope>
+                            <arguments>
+                                <argument>-Deveimear.jar=${eveimear.jar}</argument>
+                                <argument>-Drobocode.api=${net.sf.robocode:robocode-api:jar}</argument>
+                                <argument>-classpath</argument>
+                                <classpath/>
+                                <argument>proguard.ProGuard</argument>
+                                <argument>@${project.basedir}/proguard.pro</argument>
+                            </arguments>
                         </configuration>
                     </execution>
                 </executions>

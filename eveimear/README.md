@@ -21,6 +21,12 @@ frees bytes, each `MODES` char also carries the robot's wave speed, so picked ro
 fire power (pc-eveimear-pw, PR #634: +0.14 ± 0.10 APS), and 16 more robots get mode picks
 (pc-eveimear-st2, PR #622: +0.08 ± 0.03). Notes in docs/releases/eveimear-v0.3.md.
 
+0.4 (banked 2026-11-04, not released) adds aim jitter against uCatcher (EVEIMEAR-13): its `MODES` nibble 15
+moves the aim by up to 3 bins at random; the nibbles in use (0, 1, 9) leave it as it was. +52.0 ± 2.5 points
+against uCatcher on 20 fresh seeds, +0.10 APS, with no cost across 80 other robots
+([docs/bench/local/2026-11-04_eveimear-jit.md](../docs/bench/local/2026-11-04_eveimear-jit.md)). It is 752 bytes
+with javac, so the jar goes through ProGuard (`eveimear/proguard.pro`) to 742 bytes.
+
 ## Standing
 
 | Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | 5th place | Gap to 5th |
@@ -48,7 +54,8 @@ the gun. The full read, by opponent group, is in
     mvn -pl eveimear verify
 
 The shipped jar is `eveimear/target/hadur117.micro.Eveimear_<version>.jar` (its classes, properties
-and source); `EveimearJarIT` prints its codesize and holds 3 bytes spare.
+and source, ProGuard-optimised from 0.4); `EveimearJarIT` prints its codesize, holds 3 bytes spare, and
+replays the jar against the javac classes with Math.random seeded (EVEIMEAR-17).
 
 ## Bench
 
