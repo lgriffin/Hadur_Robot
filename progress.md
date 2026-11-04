@@ -1,6 +1,6 @@
 # Queue pc-eveimear-pw: progress
 
-Updated 2026-11-04 10:05:22 PC time (10:05 UTC), runner pid 22484.
+Updated 2026-11-04 10:20:31 PC time (10:20 UTC), runner pid 22484.
 
 - `prep` done, exit 0 in 0 min
 - `pilot` done, exit 0 in 17 min
@@ -36,31 +36,30 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### screen
 
-**2833 of 16480 battles** (17%), 0 failed. Running 13 min, 13438 battles/h, about 1.0 h left (ends ~11:06 PC time). Last battle -0 min ago.
+**6382 of 16480 battles** (39%), 0 failed. Running 28 min, 13784 battles/h, about 44 min left (ends ~11:04 PC time). Last battle 0 min ago.
 Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0; engine disables 0.
 
 | arm | battles | failed | share | vs control (pts) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 710 | 0 | 83.59 | - | - | - | 0.0 |
-| aa | 708 | 0 | 83.59 | -0.01 (341 robots) | ±0.09 | -0.14 .. +0.13 | 0.0 |
-| p3 | 706 | 0 | 82.15 | -1.44 (341 robots) | ±0.46 | -2.14 .. -0.73 | 0.0 |
-| p1 | 709 | 0 | 78.99 | -4.60 (341 robots) | ±0.67 | -5.63 .. -3.57 | 0.0 |
-A/A: aa - c -0.01 pts over 341 robots; 1% band ±0.44 (inside).
+| c | 1596 | 0 | 83.62 | - | - | - | 0.0 |
+| aa | 1597 | 0 | 83.60 | -0.03 (407 robots) | ±0.05 | -0.11 .. +0.05 | 0.0 |
+| p3 | 1593 | 0 | 82.16 | -1.45 (407 robots) | ±0.37 | -2.02 .. -0.89 | 0.0 |
+| p1 | 1596 | 0 | 79.01 | -4.60 (407 robots) | ±0.58 | -5.49 .. -3.72 | 0.0 |
+A/A: aa - c -0.03 pts over 407 robots; 1% band ±0.29 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 2833 |
+| `fails 30` | halt | ok | 0 failed of 6382 |
 | `dead 8` | halt | ok | every arm scoring |
 | `skips 60 over 200` | halt | ok | 0.0 a battle over the last 200 (first 200: 0.0) |
-| `stall 30m` | halt | ok | last battle -0 min ago |
-| `aa after 20%` | halt | waiting | checks from 20% of the battles (now 17%) |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `aa after 20%` | halt | ok | aa - c -0.03 pts over 407 robots, stop band ±0.34 |
 
-Stopping now would leave 13647 battles unrun (about 1.0 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 10098 battles unrun (about 44 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-09:35:12 progress pushed to origin claude/pc-eveimear-pw-progress (every 15 min)
 09:35:21 prep exit=0 in 11 s
 09:35:21 start pilot
 09:35:21 watching pilot: 5 stop rule(s)
@@ -75,4 +74,5 @@ To https://github.com/lgriffin/Hadur_Robot.git
 09:52:42 pilotgate exit=0 in 0 s
 09:52:42 start screen
 09:52:42 watching screen: 5 stop rule(s)
+10:06:23 progress screen: 3072/16480 (19%) battles, 13499/h, ETA 60 min, 0 failed, skips 0.0/battle (last 100), aa -0.01, p3 -1.23, p1 -4.47
 ```
