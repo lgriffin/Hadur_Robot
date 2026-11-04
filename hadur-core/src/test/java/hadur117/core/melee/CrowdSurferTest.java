@@ -98,4 +98,25 @@ class CrowdSurferTest {
         assertNotNull(m.duelist());
         assertTrue(m.mover().duelling());
     }
+
+    @Test
+    @Tag("MSURF-4")
+    @DisplayName("MSURF-4: with the switch on, a seen shot goes to the surfer, never to the mover's virtual bullets")
+    void moverScoresNoBullets() {
+        MeleeController m = new MeleeController(FIELD);
+        m.duelist(true);
+        m.newRound();
+        Point2D.Double me = new Point2D.Double(500, 500);
+        m.tick(new MeleeController.Situation(me, 0, 0, 100, 0, 3));
+        m.onScan("a", new Point2D.Double(500, 100), 400, 100, 0, 0, 1);
+        m.onScan("b", new Point2D.Double(100, 100), 566, 100, 0, 0, 1);
+        m.onScan("c", new Point2D.Double(900, 900), 566, 100, 0, 0, 1);
+        m.tick(new MeleeController.Situation(me, 0, 0, 100, 1, 3));
+        m.tick(new MeleeController.Situation(me, 0, 0, 100, 2, 3));
+        m.onScan("a", new Point2D.Double(500, 100), 400, 98, 0, 0, 3);
+        MeleeController.Command c = m.tick(new MeleeController.Situation(me, 0, 0, 100, 3, 3));
+        assertEquals(1, m.duelist().wavesAdded());
+        assertTrue(m.mover().bullets().isEmpty());
+        assertNotNull(c.destination);
+    }
 }
