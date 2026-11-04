@@ -1,5 +1,5 @@
 # BENCH-183 (pc-eveimear-pw): c is the 0.3 base (0.2 + the pc-eveimear-st2 mode picks + the diet's play-neutral rows
-# + the power code, every robot at wave speed 14: 0.2's power and waves, 739 B), aa its A/A rebuild, p3 every robot
+# + the power code, every robot at wave speed 14: 0.2's power, waves and escape angle, 741 B), aa its A/A rebuild, p3 every robot
 # at speed 11 (power 3, waves at 11 px a tick), p1 every robot at speed 17 (power 1). Built by tools/eveimear_power2.py.
 c | hadur117.micro.Eveimear 0.3b | kitlab/jars/hadur117.micro.Eveimear_0.3b.jar
 aa | hadur117.micro.Eveimear 0.3ba | kitlab/jars/hadur117.micro.Eveimear_0.3ba.jar

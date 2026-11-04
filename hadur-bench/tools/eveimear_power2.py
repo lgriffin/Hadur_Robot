@@ -3,15 +3,17 @@
 
 0.2 fires 2 (3 close in) at every robot while its gun waves fly at 14 px a tick, power 2's speed, so the
 power-3 screen of 2026-11-03 (-3.86) aimed every power-3 bullet with guess factors learned for the wrong
-flight time. The 0.3 base fixes that in 20 bytes, on the diet's 719 B (tools/eveimear_diet.py, neutral):
+flight time. The 0.3 base fixes that in 22 bytes, on the diet's 719 B (tools/eveimear_diet.py, neutral):
 each MODES char holds 16 x s + m, m the movement mode (0, 1 or 9, as 0.2) and s the wave speed, and
 
     speed = (int) (tab = MODES.charAt(...)) >> 4;        the robot's wave speed
     power  (20 - speed) / 3 + antiRam                    the power that flies at that speed (was 2 + antiRam)
     mode   ... * (tab % 16)                              the threshold reads m as before
     wave   travelled += speed                            (was 14)
+    gun    w.dir = copySign(speed, ...): bins x speed / 14, aim / speed, so the escape angle is 0.65 x 14 / speed
 
-With s = 14 for every robot the base gives 0.2's orders bit for bit (with the mode table it is given); 739 B.
+With s = 14 for every robot the base plays 0.2's power, waves and escape angle (with the mode table it is given;
+the gun's two products round in another order, so the gun turn can differ in the last bit); 741 B.
 
   panel FIELD OUT --pilot P --rest R [--every 5] [--broken FILE]   every robot but ours and the broken
   base SRC OUT [--modes MODES_SRC]   SRC (0.2) with the diet and the power code; MODES_SRC's mode table if given
@@ -39,6 +41,14 @@ CODE = [
     ("setFire(Math.min(Math.min(2 + antiRam,", "setFire(Math.min(Math.min((20 - speed) / 3 + antiRam,"),
     ("(40 + 23 * getRoundNum()) * tab)", "(40 + 23 * getRoundNum()) * (tab % 16))"),
     ("if ((travelled += 14) <", "if ((travelled += speed) <"),
+    # The escape angle follows the speed, 0.65 x 14 / speed (0.2's 0.65 at 14; 0.83 at 11, where asin(8 / 11) is 0.81): the wave's
+    # dir carries the speed with its sign, so the bins scale by speed and the aim divides by it.
+    ("w.dir = Math.copySign(1, angle + 0.0);", "w.dir = Math.copySign(speed, angle + 0.0);"),
+    ("+ w.dir * (best - MID) * (ESCAPE / MID)));", "+ (best - MID) * (ESCAPE * 14 / MID) / w.dir));"),
+    ("* dir * (MID / ESCAPE) + 58.5))]++;", "* dir * (MID / ESCAPE / 14) + 72.5))]++;"),
+    # At speed 17 a bin's x reaches +-70 (pi x 12 x 17 / 9.1), so CLAMP runs from -72: char k is clamp(k - 60, 0, 24).
+    ('static final String CLAMP = "' + eveimear_diet.CLAMP + '";',
+     'static final String CLAMP = "' + "".join("\\%o" % max(0, min(24, k - 60)) for k in range(145)) + '";'),
 ]
 
 
