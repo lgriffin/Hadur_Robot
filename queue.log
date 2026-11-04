@@ -36,3 +36,23 @@
 11:31:13 skip prep (already exit=0)
 11:31:13 skip pilot-s (already exit=0)
 11:31:13 skip screen-s (already exit=0)
+11:31:13 start pilot-u
+11:31:13 watching pilot-u: 4 stop rule(s)
+11:31:15 progress pushed to origin claude/pc-shelf-progress (every 15 min)
+11:31:21 pilot-u exit=0 in 8 s
+11:31:21 start screen-u
+11:31:21 watching screen-u: 5 stop rule(s)
+11:31:22 screen-u exit=0 in 0 s
+11:31:22 start pick
+11:31:22 pick exit=0 in 0 s
+11:31:22 start build
+11:31:54 build exit=0 in 31 s
+11:31:54 start confirm
+11:31:54 watching confirm: 4 stop rule(s)
+11:32:13 progress confirm: 7/360 (2%) battles, 1314/h, ETA 16 min, 0 failed, skips 35.3/battle (last 100)
+11:38:47 confirm exit=0 in 412 s
+11:38:47 start gate
+11:38:47 gate exit=0 in 0 s
+11:38:47 start pr
+11:38:53 pr exit=0 in 6 s
+11:38:53 ALLDONE
