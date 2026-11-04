@@ -69,6 +69,13 @@ final class ShieldTableData {
             "stelo.MatchupWS 1.2c",
             "usa.nano.Nemo 2.0",
             "wiki.mako.MakoHT 1.2.2.1",
+            // pc-shelf (BENCH-180, PR #636): held +1 point or more on 12 fresh seeds
+            "ary.SMG 1.01",
+            "cuoq.Kakera 1.0",
+            "kenran.mega.Pantheist 1.1",
+            "racso.Crono 1.0",
+            "spinnercat.Robovirus 2.718",
+            "suh.micro.MirrorPM 1.00",
         };
     }
 
@@ -464,13 +471,15 @@ final class ShieldTableData {
     }
 
     /**
-     * SHIELD-19: the opponents SHIELD-11 leaves the battle against at 400 damage, not 150. Empty:
-     * candidate builds add lines here (build-ablation.sh sx4list).
+     * SHIELD-19: the opponents SHIELD-11 leaves the battle against at 400 damage, not 150.
+     * Candidate builds add lines here (build-ablation.sh sx4list).
      *
      * @return a fresh array of names
      */
     static String[] exitLates() {
         return new String[] {
+            // pc-shelf (BENCH-180, PR #636): held +3.0 points on 12 fresh seeds
+            "stelo.MatchupWS 1.2c",
         };
     }
 
@@ -535,6 +544,8 @@ final class ShieldTableData {
             "rz.Artist 0.2",
             "sL300.Mozart life",
             "sheldor.nano.PointInLine 1.0",
+            // pc-shelf (BENCH-180, PR #636): held +1 point or more on 12 fresh seeds
+            "shinh.Entangled 0.3",
         };
     }
 
