@@ -8,3 +8,12 @@
 20:16:45 dgbb1 exit=0 in 1041 s
 20:16:45 start dgdg1
 20:16:45 watching dgdg1: 3 stop rule(s)
+20:30:28 progress dgdg1: 188/276 (68%) battles, 822/h, ETA 6 min, 12 failed, skips 26.3/battle (last 100)
+20:35:54 dgdg1 exit=0 in 1149 s
+20:35:55 start dgpilot
+20:35:55 dgpilot exit=1 in 0 s
+20:35:55 skip dgbb (after dgpilot, which has not finished exit=0)
+20:35:55 skip dgdg (after dgbb, which has not finished exit=0)
+20:35:55 skip dgscr (after dgdg, which has not finished exit=0)
+20:35:55 skip dgpr (after dgscr, which has not finished exit=0)
+20:35:55 ALLDONE

@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-dgun",
- "updated": 1793824046.8821206,
+ "updated": 1793824555.3337057,
  "steps": {
   "dgprep": {
    "status": "done",
@@ -15,23 +15,32 @@
    "end": "2026-11-04T20:16:45"
   },
   "dgdg1": {
-   "status": "running",
-   "start": "2026-11-04T20:16:45"
+   "status": "done",
+   "exit": 0,
+   "seconds": 1149,
+   "end": "2026-11-04T20:35:55"
   },
   "dgpilot": {
-   "status": "pending"
+   "status": "failed",
+   "exit": 1,
+   "seconds": 0,
+   "end": "2026-11-04T20:35:55"
   },
   "dgbb": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after dgpilot"
   },
   "dgdg": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after dgbb"
   },
   "dgscr": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after dgdg"
   },
   "dgpr": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after dgscr"
   }
  },
  "watched": [
@@ -81,8 +90,8 @@
   {
    "step": "dgdg1",
    "started": 1793823405.138925,
-   "updated": 1793824046.8742852,
-   "elapsed": 641.7353601455688,
+   "updated": 1793824554.8271997,
+   "elapsed": 1149.6882746219635,
    "expected": 276,
    "panel": null,
    "field": null,
@@ -90,20 +99,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 131,
+   "battles": 282,
    "resumed": 0,
    "failed": 12,
    "disables": null,
-   "rate": 734.8823662966367,
-   "eta": 710.317765046622,
-   "fraction": 0.4746376811594203,
-   "last_battle_age": 0.5026528835296631,
+   "rate": 883.0219655269725,
+   "eta": -24.46145265153114,
+   "fraction": 1.0217391304347827,
+   "last_battle_age": 0.1552417278289795,
    "rules": [
     {
      "rule": "fails 60",
      "action": "halt",
      "state": "ok",
-     "detail": "12 failed of 131"
+     "detail": "12 failed of 282"
     },
     {
      "rule": "stall 30m",
@@ -115,11 +124,11 @@
      "rule": "skips 40 over 100",
      "action": "halt",
      "state": "ok",
-     "detail": "32.1 a battle over the last 100 (first 100: 32.1)"
+     "detail": "35.9 a battle over the last 100 (first 100: 32.1)"
     }
    ],
-   "skips_mean": 32.016806722689076,
-   "skips_last100": 32.06
+   "skips_mean": 31.696296296296296,
+   "skips_last100": 35.93
   }
  ]
 }
