@@ -1,6 +1,6 @@
 {
  "plan": "pc-melee-far",
- "updated": 1793809928.2172227,
+ "updated": 1793810832.5617077,
  "steps": {
   "mfprep": {
    "status": "done",
@@ -38,8 +38,8 @@
   {
    "step": "mfpilot",
    "started": 1793807347.5085058,
-   "updated": 1793809928.2090905,
-   "elapsed": 2580.7005846500397,
+   "updated": 1793810832.5516706,
+   "elapsed": 3485.043164730072,
    "expected": 184,
    "panel": null,
    "field": null,
@@ -47,20 +47,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 108,
+   "battles": 162,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 150.65676441218147,
-   "eta": 1816.0485595685464,
-   "fraction": 0.5869565217391305,
-   "last_battle_age": 16.120312213897705,
+   "rate": 167.34369487936334,
+   "eta": 473.277466815195,
+   "fraction": 0.8804347826086957,
+   "last_battle_age": 3.5496654510498047,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 108"
+     "detail": "0 failed of 162"
     },
     {
      "rule": "stall 30m",
@@ -69,8 +69,8 @@
      "detail": "last battle 0 min ago"
     }
    ],
-   "skips_mean": 24.055555555555557,
-   "skips_last100": 23.99
+   "skips_mean": 24.660493827160494,
+   "skips_last100": 24.97
   }
  ]
 }
