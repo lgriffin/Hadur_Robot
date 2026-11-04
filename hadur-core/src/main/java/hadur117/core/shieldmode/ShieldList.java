@@ -79,6 +79,13 @@ public final class ShieldList {
     public static final String SURF_KEY_PREFIX = "surf-key:";
     /** SKEY-2: the numbers a surf-key line carries before the name. */
     public static final int SURF_KEY_VALUES = 10;
+    /**
+     * GKEY-3: a line starting with this gives an opponent's gun key: ten multipliers on the main gun's
+     * {@code GunFormula} weights (0 drops a feature), then the name ({@code "m0 ... m9 name"}).
+     */
+    public static final String GUN_KEY_PREFIX = "gun-key:";
+    /** GKEY-3: the numbers a gun-key line carries before the name. */
+    public static final int GUN_KEY_VALUES = 10;
     /** MOVE-28: the per-opponent switch's bit in {@link #switches}. */
     static final int HEAT_JIT = 1;
     /** GUN-11: the per-opponent switch's bit in {@link #switches}. */
@@ -110,6 +117,8 @@ public final class ShieldList {
     private Map<String, Integer> switches = Collections.emptyMap();
     /** SKEY-2: name to its surf key (nine weight multipliers, then the kernel width's). */
     private Map<String, double[]> surfKeys = Collections.emptyMap();
+    /** GKEY-3: per-opponent gun keys by name. */
+    private Map<String, double[]> gunKeys = Collections.emptyMap();
 
     private ShieldList(Set<String> entries, Set<String> moves, Map<String, double[]> aims,
                        Set<String> dodges, Map<String, Integer> stopGo) {
@@ -135,6 +144,7 @@ public final class ShieldList {
         Map<String, Integer> dodgePlans = new TreeMap<>();
         Map<String, Integer> switches = new TreeMap<>();
         Map<String, double[]> surfKeys = new TreeMap<>();
+        Map<String, double[]> gunKeys = new TreeMap<>();
         if (lines != null) {
             for (String line : lines) {
                 if (line == null) continue;
@@ -149,6 +159,24 @@ public final class ShieldList {
                     String name = entry.substring(entry.indexOf(':') + 1).trim();
                     if (!name.isEmpty() && (switches.containsKey(name) || switches.size() < MAX_ENTRIES)) {
                         switches.merge(name, bit, (a, b) -> a | b);
+                    }
+                    continue;
+                }
+                if (entry.startsWith(GUN_KEY_PREFIX)) {
+                    String[] p = entry.substring(GUN_KEY_PREFIX.length()).trim().split(" ", GUN_KEY_VALUES + 1);
+                    if (p.length == GUN_KEY_VALUES + 1 && !p[GUN_KEY_VALUES].isEmpty() && gunKeys.size() < MAX_ENTRIES) {
+                        try {
+                            double[] key = new double[GUN_KEY_VALUES];
+                            boolean ok = true, any = false;
+                            for (int i = 0; i < GUN_KEY_VALUES; i++) {
+                                key[i] = Double.parseDouble(p[i]);
+                                ok &= key[i] >= 0 && !Double.isInfinite(key[i]);
+                                any |= key[i] > 0;
+                            }
+                            if (ok && any) gunKeys.put(p[GUN_KEY_VALUES], key);
+                        } catch (NumberFormatException e) {
+                            // A malformed gun-key line is skipped.
+                        }
                     }
                     continue;
                 }
@@ -219,13 +247,15 @@ public final class ShieldList {
             }
         }
         if (entries.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()
-            && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty() && surfKeys.isEmpty()) return NONE;
+            && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty() && surfKeys.isEmpty()
+            && gunKeys.isEmpty()) return NONE;
         ShieldList list = new ShieldList(Collections.unmodifiableSet(entries),
             Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims), Collections.unmodifiableSet(dodges),
             Collections.unmodifiableMap(stopGo));
         list.dodgePlans = Collections.unmodifiableMap(dodgePlans);
         list.switches = Collections.unmodifiableMap(switches);
         list.surfKeys = Collections.unmodifiableMap(surfKeys);
+        list.gunKeys = Collections.unmodifiableMap(gunKeys);
         return list;
     }
 
@@ -253,6 +283,28 @@ public final class ShieldList {
         if (robotName == null || moves.isEmpty()) return false;
         String name = robotName.trim().replaceAll("\\s+", " ");
         return moves.contains(name) || moves.contains(withoutVersion(name));
+    }
+
+    /**
+     * SKEY-2: {@code robotName}'s surf key, by the rule of {@link #matches}: the full name's entry,
+     * else the name's without the version.
+     *
+     * @param robotName the scanned robot's name, or null
+     * @return a fresh array of nine weight multipliers and the kernel width's, or null when none is shipped
+     */
+    /**
+     * GKEY-3: {@code robotName}'s gun key, by the rule of {@link #matches}: the full name's entry, else
+     * the name's without the version.
+     *
+     * @param robotName the scanned robot's name, or null
+     * @return a fresh array of ten weight multipliers, or null when none is shipped
+     */
+    public double[] gunKeyFor(String robotName) {
+        if (robotName == null || gunKeys.isEmpty()) return null;
+        String name = robotName.trim().replaceAll("\\s+", " ");
+        double[] k = gunKeys.get(name);
+        if (k == null) k = gunKeys.get(withoutVersion(name));
+        return k == null ? null : k.clone();
     }
 
     /**

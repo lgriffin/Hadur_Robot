@@ -604,6 +604,19 @@ final class ShieldTableData {
     }
 
     /**
+     * GKEY-3: per-opponent gun keys, each line {@code "m0 ... m9 name"}: ten multipliers on the main gun's
+     * {@code GunFormula} weights (0 drops a feature), fitted offline from that opponent's movement
+     * ({@code data/tools/gun_key_fit.py}). Empty until a card holds keys; candidate builds add lines here
+     * (build-ablation.sh gklist).
+     *
+     * @return a fresh array of lines
+     */
+    static String[] gunKeys() {
+        return new String[] {
+        };
+    }
+
+    /**
      * SKEY-2: per-opponent surf keys, each line {@code "m1 ... m9 bw name"}: nine multipliers on the
      * hit views' key weights ({@code MoveFormula}) and one on the kernel width, fitted offline from that
      * opponent's bullets ({@code data/tools/surf_key_fit.py}). The 175 keys of pc-surf-key (BENCH-160,

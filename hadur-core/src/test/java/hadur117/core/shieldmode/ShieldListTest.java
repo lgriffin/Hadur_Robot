@@ -181,4 +181,32 @@ class ShieldListTest {
         assertEquals(0, l.size(), "no shield entry");
         assertEquals(null, ShieldList.NONE.surfKeyFor("a.B 1.0"));
     }
+
+    @Test
+    @Tag("GKEY-3")
+    @DisplayName("gun-key lines give an opponent's ten multipliers, a zero drops a feature; all-zero or malformed lines skipped")
+    void gunKeys() {
+        ShieldList l = ShieldList.parse(List.of(
+            "gun-key: 1 2 0 1 0.5 1 1 1 1 1.4 a.B 1.0",
+            "gun-key: 1 1 1 1 1 1 1 1 1 2 c.D",
+            "gun-key: 1 1 1 1 1 1 1 1 1 e.F 1.0",
+            "gun-key: 0 0 0 0 0 0 0 0 0 0 g.H",
+            "gun-key: 1 1 1 1 x 1 1 1 1 1 i.J",
+            "gun-key: 1 1 1 1 -1 1 1 1 1 1 k.L"));
+        double[] k = l.gunKeyFor("a.B 1.0");
+        assertEquals(10, k.length);
+        assertEquals(2.0, k[1]);
+        assertEquals(0.0, k[2]);
+        k[1] = 9;
+        assertEquals(2.0, l.gunKeyFor("a.B 1.0")[1], "a fresh copy each call");
+        assertEquals(null, l.gunKeyFor("a.B 1.1"), "a versioned line matches that version only");
+        assertEquals(2.0, l.gunKeyFor("c.D 3")[9], "a versionless line matches every version");
+        assertEquals(null, l.gunKeyFor("e.F 1.0"), "nine values: the name would be a number");
+        assertEquals(null, l.gunKeyFor("g.H 1"), "an all-zero key is skipped");
+        assertEquals(null, l.gunKeyFor("i.J 1"), "a non-number is skipped");
+        assertEquals(null, l.gunKeyFor("k.L 1"), "a negative multiplier is skipped");
+        assertEquals(null, l.surfKeyFor("a.B 1.0"), "a gun key is not a surf key");
+        assertEquals(0, l.size(), "no shield entry");
+        assertEquals(null, ShieldList.NONE.gunKeyFor("a.B 1.0"));
+    }
 }

@@ -201,6 +201,22 @@ public class GunController {
      *
      * @param sampleSink where the samples go (the profile's folder), or null for none
      */
+    /** GKEY-3: per-opponent gun keys for the main view, by the name the views are kept under. */
+    private final Map<String, double[]> mainKeys = new HashMap<>();
+
+    /**
+     * GKEY-3: the main view's gun key for {@code botName} (ten multipliers on {@link GunFormula}'s
+     * weights), taken when the opponent's views are made; null, or a call after they are made, changes nothing.
+     *
+     * @param botName the opponent
+     * @param key the multipliers, or null for the defaults
+     */
+    public void setMainKey(String botName, double[] key) {
+        if (botName == null) return;
+        if (key == null) mainKeys.remove(botName);
+        else mainKeys.put(botName, key.clone());
+    }
+
     /** GKEY-1: whether broken duel waves are recorded for the offline gun-key fit. */
     private boolean keyRecord;
     /** GKEY-1: records made since the last {@link #drainKeyRecords}. */
@@ -298,7 +314,7 @@ public class GunController {
     public Map<String, KnnView<TimestampedFiringAngle>> getOrCreateViews(String botName) {
         return enemyViews.computeIfAbsent(botName, k -> {
             Map<String, KnnView<TimestampedFiringAngle>> views = new LinkedHashMap<>();
-            views.put(MainGun.viewName(), mainGun.createView(enemiesTotal).setKShare(kShare));
+            views.put(MainGun.viewName(), mainGun.createView(enemiesTotal, mainKeys.get(k)).setKShare(kShare));
             for (KnnView<TimestampedFiringAngle> asView : antiSurferGun.createViews()) {
                 views.put(asView.name, asView.setKShare(kShare));
             }
