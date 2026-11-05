@@ -35,6 +35,7 @@
 # never sweeps; the 0.1 shots past 480 px keep the radar turning. Holding fire is dead.
 # N15 (pc-sanaro-n12), on 0.4's source: a radar that sweeps longer. LOCK is the gun heat under which each
 # scan flips the radar onto the target; lower, and it sweeps for more ticks after each shot (0 bytes).
+# pc-sanaro-n12 (PR #664) stopped at its pilot: K7 -1.79, K5 -3.62, K3 -1.12 against S4. LOCK 0.9 stays.
 K7 | LOCK 0.7: the radar sweeps two ticks longer after each shot (249 B) | s#LOCK = 0.9;#LOCK = 0.7;#
 K5 | LOCK 0.5: four ticks longer (249 B) | s#LOCK = 0.9;#LOCK = 0.5;#
 K3 | LOCK 0.3: six ticks longer (249 B) | s#LOCK = 0.9;#LOCK = 0.3;#
