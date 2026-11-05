@@ -1,0 +1,7 @@
+# BENCH-200 (pc-eveimear-port): c Eveimear 0.4 (ProGuard build of master's source, 742 B), aa its A/A rebuild,
+# cot Cotillion 0.8, XR the passing transplant from pc-eveimear-cot (823 B), P the fitted port (749 B).
+c | hadur117.micro.Eveimear 0.4c | kitlab/jars/hadur117.micro.Eveimear_0.4c.jar
+aa | hadur117.micro.Eveimear 0.4aa | kitlab/jars/hadur117.micro.Eveimear_0.4aa.jar
+cot | jk.micro.Cotillion 0.8 | opponents/jk.micro.Cotillion_0.8.jar
+XR | hadur117.micro.Eveimear 0.4XR | kitlab/jars/hadur117.micro.Eveimear_0.4XR.jar
+P | hadur117.micro.Eveimear 0.5P | kitlab/jars/hadur117.micro.Eveimear_0.5P.jar
