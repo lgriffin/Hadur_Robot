@@ -16,3 +16,14 @@
 14:55:51 pilot-H480 exit=0 in 526 s
 14:55:51 start pilot-H400
 14:55:51 watching pilot-H400: 3 stop rule(s)
+14:59:50 progress pilot-H400: 76/172 (44%) battles, 1146/h, ETA 5 min, 0 failed, skips 0.0/battle (last 100)
+15:04:36 pilot-H400 exit=0 in 524 s
+15:04:36 start pilot
+15:04:43 pilot exit=3 in 7 s
+15:04:43 skip live-S4 (after pilot, which has not finished exit=0)
+15:04:43 skip live-H512 (after live-S4, which has not finished exit=0)
+15:04:43 skip live-H480 (after live-H512, which has not finished exit=0)
+15:04:43 skip live-H400 (after live-H480, which has not finished exit=0)
+15:04:43 skip read-live (after live-H400, which has not finished exit=0)
+15:04:43 skip pr (after read-live, which has not finished exit=0)
+15:04:43 ALLDONE
