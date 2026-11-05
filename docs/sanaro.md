@@ -568,3 +568,34 @@ needs one more byte to fit. Melee cards may be field-wide (Leigh, 2026-11-03 22:
 The card's pilot is the first 4 of each arm's 20 seeds. `sanaro_read.py --stop-below 0` stops the card
 with a results PR unless some hold arm reads at or above S4 (BENCH-195). The full steps resume the
 pilot's battles.
+
+## 23. pc-sanaro-n11 results (PR #662): holding fire loses
+
+The card stopped at its pilot (4 seeds, 172 battles an arm, live-shaped census):
+
+| Arm | APS | vs S4 | Survival |
+|---|---|---|---|
+| S4 (0.4) | 65.94 ± 0.36 | | 27.0 |
+| H512 | 64.04 ± 0.36 | -1.91 ± 0.51 | 19.6 |
+| H480 | 63.95 ± 0.37 | -2.03 ± 0.52 | 19.9 |
+| H400 | 61.64 ± 0.42 | -4.37 ± 0.56 | 16.4 |
+
+Survival falls by 7 to 11 points, so the loss is in staying alive, not in the gun. A likely
+mechanism, not yet tested, is the radar. Sanaro's radar flips onto its target whenever gun heat is under LOCK (0.9),
+and sweeps otherwise (SANARO-6). A robot that never fires keeps its gun heat at 0. So its radar stays
+locked on the far target and stops sweeping, and the anti-gravity loses sight of the robots closing in.
+The 0.1 shots past 480 px are not wasted: they heat the gun, and that sends the radar round. The
+nearer the hold, the longer the radar stays locked, which matches the order H512 ≈ H480 > H400.
+
+Every arm's loss is more than three times its interval on the pilot's 172 battles, so the full
+20-seed read was not run and holding fire is dropped. The radar account is a hypothesis; pc-sanaro-n12
+(section 24) tests it from the other side. 0.4 (B480, +0.30 in n10) stays the candidate, on Leigh's word.
+
+## 24. The next card: pc-sanaro-n12 (stage N15), a radar that sweeps longer
+
+n11 points at the radar. A shot heats the gun to between 1.02 and 1.6, and the gun cools 0.1 a tick.
+With LOCK at 0.9 the radar sweeps for only 1 to 7 ticks after each shot. It then sits on one robot for
+the 9 ticks before the gun is cool. n03 tried LOCK 1.0, which locks sooner, and lost 1.72; n11's
+never-sweeping radar lost 2 to 4.4. So the slope says to sweep for longer. `hadur-bench/plans/pc-sanaro-n12.queue`
+measures LOCK 0.7 (K7), 0.5 (K5) and 0.3 (K3) against S4 on the live-shaped census, with n11's pilot
+gate (BENCH-196). Each arm is 249 B: LOCK is one constant.

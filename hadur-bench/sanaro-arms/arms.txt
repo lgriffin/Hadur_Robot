@@ -30,6 +30,14 @@
 # find the bytes for a winner). H512's 5-byte form ORs d >> 9 into the gate's integer before the compare,
 # if (((int) (aim * (range = d)) / GATE | d >> 9) == 0): javac 249 -> 254 B, 250 B with the hand pass.
 # The arm is written && d < 512 (same play) because this file splits fields on the bar.
+# pc-sanaro-n11 (PR #662) stopped at its pilot: H512 -1.91, H480 -2.03, H400 -4.37 against S4, survival
+# 27.0 -> 19.6 / 19.9 / 16.4. Holding fire keeps gun heat at 0, so the radar locks on a far target and
+# never sweeps; the 0.1 shots past 480 px keep the radar turning. Holding fire is dead.
+# N15 (pc-sanaro-n12), on 0.4's source: a radar that sweeps longer. LOCK is the gun heat under which each
+# scan flips the radar onto the target; lower, and it sweeps for more ticks after each shot (0 bytes).
+K7 | LOCK 0.7: the radar sweeps two ticks longer after each shot (249 B) | s#LOCK = 0.9;#LOCK = 0.7;#
+K5 | LOCK 0.5: four ticks longer (249 B) | s#LOCK = 0.9;#LOCK = 0.5;#
+K3 | LOCK 0.3: six ticks longer (249 B) | s#LOCK = 0.9;#LOCK = 0.3;#
 S4 | Sanaro 0.4 as it ships (control, 249 B) |
 H512 | hold fire past 512 px (5 B: 250 B with the hand pass; measure only) | s#/ GATE == 0)#/ GATE == 0 \&\& d < 512)#
 H480 | hold fire past 480 px, where 0.4's step reaches 0 (measure only) | s#/ GATE == 0)#/ GATE == 0 \&\& d < 480)#
