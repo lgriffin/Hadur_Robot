@@ -1,6 +1,6 @@
 # Queue pc-melee-floor: progress
 
-Updated 2026-11-05 00:49:10 PC time (00:49 UTC), runner pid 37368.
+Updated 2026-11-05 01:04:18 PC time (01:04 UTC), runner pid 37368.
 
 - `mlprep` done, exit 0 in 3 min
 - `mlpilot` done, exit 0 in 1.3 h
@@ -38,15 +38,15 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### mlbb
 
-**12 of 276 battles** (4%), 0 failed. Running 3 min, 239 battles/h, about 1.1 h left (ends ~01:55 PC time). Last battle 0 min ago.
-Skipped turns a battle: 36.1 overall, first 12 36.1, last 12 36.1.
+**102 of 276 battles** (37%), 0 failed. Running 18 min, 338 battles/h, about 31 min left (ends ~01:35 PC time). Last battle 0 min ago.
+Skipped turns a battle: 33.1 overall, first 100 33.1, last 100 33.1.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 12 |
+| `fails 20` | halt | ok | 0 failed of 102 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 264 battles unrun (about 1.1 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 174 battles unrun (about 31 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
