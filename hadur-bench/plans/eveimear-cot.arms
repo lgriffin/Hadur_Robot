@@ -1,0 +1,8 @@
+# BENCH-198 (pc-eveimear-cot): c is Eveimear 0.4 as banked (master's source, ProGuard, 742 B), aa its A/A rebuild,
+# cot Cotillion 0.8 itself (the ceiling on this field), X 0.4's movement and modes with Cotillion's gun, radar and power
+# (kitlab/arms/Eveimear-cotX.java, 802 B), XR X plus Cotillion's random-mode reversal (Eveimear-cotXR.java, 823 B).
+c | hadur117.micro.Eveimear 0.4c | kitlab/jars/hadur117.micro.Eveimear_0.4c.jar
+aa | hadur117.micro.Eveimear 0.4aa | kitlab/jars/hadur117.micro.Eveimear_0.4aa.jar
+cot | jk.micro.Cotillion 0.8 | opponents/jk.micro.Cotillion_0.8.jar
+X | hadur117.micro.Eveimear 0.4X | kitlab/jars/hadur117.micro.Eveimear_0.4X.jar
+XR | hadur117.micro.Eveimear 0.4XR | kitlab/jars/hadur117.micro.Eveimear_0.4XR.jar
