@@ -720,7 +720,7 @@ open(p,"w").write(s)' "$listdata" "$SHIELD_DROP" || exit 2
 names=[l.split("\t")[0].strip() for l in open(sys.argv[1]) if l.strip() and not l.startswith("#")]
 print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(names)), end="")' "$SHIELD_ADD")"
             [[ -n "$add" ]] || { echo "slistadd: $SHIELD_ADD names no robot" >&2; exit 2; }
-            python3 -c 'import sys; p,a=sys.argv[1:]; s=open(p).read(); k=s.rindex("        };"); open(p,"w").write(s[:k]+a+s[k:])' "$listdata" "$add"
+            printf '%s' "$add" | python3 -c 'import sys; p=sys.argv[1]; a=sys.stdin.read(); s=open(p).read(); k=s.rindex("        };"); open(p,"w").write(s[:k]+a+s[k:])' "$listdata"
             version="${version}mt" ;;
         sdodge)
             edit "$movedesign" "static final boolean SHOT_DODGE = false;" "static final boolean SHOT_DODGE = true;"
@@ -742,7 +742,7 @@ for l in open(sys.argv[1]):
     out.append(l if re.match(r"^-?\d+ ", l) else "-1 "+l)
 print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), end="")' "$SHOT_DODGE_PLAN")"
             [[ -n "$add" ]] || { echo "sdplanlist: $SHOT_DODGE_PLAN has no line" >&2; exit 2; }
-            python3 -c 'import sys; p,m,a=sys.argv[1:]; s=open(p).read(); k=s.index("        };", s.index("static String[] %s()" % m)); open(p,"w").write(s[:k]+a+s[k:])' "$tabledata" dodgePlans "$add"
+            printf '%s' "$add" | python3 -c 'import sys; p,m=sys.argv[1:]; a=sys.stdin.read(); s=open(p).read(); k=s.index("        };", s.index("static String[] %s()" % m)); open(p,"w").write(s[:k]+a+s[k:])' "$tabledata" dodgePlans
             version="${version}dp" ;;
         sgo|sgo2)
             edit "$movedesign" "static final boolean STOP_AND_GO = false;" "static final boolean STOP_AND_GO = true;"
@@ -774,7 +774,9 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
 lines=[l.split("\t")[0].strip() for l in open(sys.argv[1]) if l.strip() and not l.startswith("#")]
 print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines)), end="")' "$file")"
             [[ -n "$add" ]] || { echo "$a: $file has no line" >&2; exit 2; }
-            python3 -c 'import sys; p,m,a=sys.argv[1:]; s=open(p).read(); k=s.index("        };", s.index("static String[] %s()" % m)); open(p,"w").write(s[:k]+a+s[k:])' "$tabledata" "$method" "$add"
+            # The lines go in on stdin, not argv: a whole-field list (1,212 names, ~48 KB) is past Windows' 32 KB
+            # command line, where Git Bash then fails the step with exit 126 (pc-tailor-field, 2026-11-05).
+            printf '%s' "$add" | python3 -c 'import sys; p,m=sys.argv[1:]; a=sys.stdin.read(); s=open(p).read(); k=s.index("        };", s.index("static String[] %s()" % m)); open(p,"w").write(s[:k]+a+s[k:])' "$tabledata" "$method"
             ;;
         strim)
             # 3.13: the 22 robots 3.13's shield lost to in both gate runs leave the list.
