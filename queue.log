@@ -16,3 +16,10 @@
 20:06:04 pilot-QP exit=0 in 496 s
 20:06:04 start pilot-QTP
 20:06:04 watching pilot-QTP: 3 stop rule(s)
+20:09:59 progress pilot-QTP: 76/172 (44%) battles, 1165/h, ETA 5 min, 0 failed, skips 0.0/battle (last 100)
+20:14:39 pilot-QTP exit=0 in 515 s
+20:14:39 start pilot-EW
+20:14:39 watching pilot-EW: 3 stop rule(s)
+20:23:51 pilot-EW exit=0 in 551 s
+20:23:51 start pilot-EB
+20:23:51 watching pilot-EB: 3 stop rule(s)
