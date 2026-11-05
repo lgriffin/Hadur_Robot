@@ -111,6 +111,15 @@ class SpecTest(unittest.TestCase):
         with self.assertRaisesRegex(benchwatch.WatchError, "multi-arm"):
             sp.check([benchwatch.Rule("dead 5")])
         sp.check([benchwatch.Rule("fails 5"), benchwatch.Rule("stall 30m")])
+        with self.assertRaisesRegex(benchwatch.WatchError, "--arms step"):
+            sp.check([benchwatch.Rule("skips 60 over 200 arms c aa")])
+
+    def test_skips_arms_must_be_known(self):
+        cmd = "./bench-top20.sh --set panel.txt --seeds 3 --arms x.arms --out work/x"
+        sp = benchwatch.Spec("", cmd, self.home)
+        with self.assertRaisesRegex(benchwatch.WatchError, "no arm 'zz'"):
+            sp.check([benchwatch.Rule("skips 60 over 200 arms c zz")])
+        sp.check([benchwatch.Rule("skips 60 over 200 arms c aa")])
 
     def test_plan_errors_reach_the_queue(self):
         (self.home / "plans" / "t.queue").write_text("a | true\n  stop: explode\n")

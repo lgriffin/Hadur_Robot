@@ -209,6 +209,12 @@ class Spec:
                 missing = [a for a in r.arms if self.arm_labels and a not in self.arm_labels]
                 if missing:
                     raise WatchError(f"stop: {r.text}: no arm '{missing[0]}' in {self.arms_file}")
+            if r.kind == "skips" and r.arms:
+                if not self.multiarm:
+                    raise WatchError(f"stop: {r.text}: 'arms' needs an --arms step (a step log has no arm per battle)")
+                missing = [a for a in r.arms if self.arm_labels and a not in self.arm_labels]
+                if missing:
+                    raise WatchError(f"stop: {r.text}: no arm '{missing[0]}' in {self.arms_file}")
             if r.kind == "aa" and self.arm_labels and self.aa not in self.arm_labels:
                 raise WatchError(f"stop: {r.text}: no A/A arm '{self.aa}' in {self.arms_file}")
             files_there = all((self.home / f).is_file() for f in (self.arms_file, self.set_file) if f)
