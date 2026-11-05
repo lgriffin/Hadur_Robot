@@ -168,3 +168,10 @@ its arms and plan test are removed, the melee-samples and melee-handoff fixtures
 
 Leigh 2026-11-04 21:03: "what's next?". MGUN-25 (on at 2.5, PR #652) fires only from 60 energy; another 9% of crowd shots
 beyond 300 px leave with 40-60 energy at about 1.94. pc-melee-floor tries the floor at 40 (z4) and 50 (z5), pilot z4 against aa.
+
+### pc-melee-floor read (PR #656): FAIL, the floor stays 60
+
+Pilot z4 against aa: share +0.07 ± 0.23, so the card ran in full. Paired over aa and bb (bb clean, +0.01 ± 0.19):
+z4 (from 40 energy) **-0.11 ± 0.13**, others outlived -0.5; z5 (from 50) -0.00 ± 0.16, endgame wins +2.1. Neither clears
+0, so spending the reserve under 60 buys nothing: the far-power lever is used up at 60. MGUN-26, the arms and the card
+are removed; master keeps MGUN-25 on at 2.5 from 60 energy.
