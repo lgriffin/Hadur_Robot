@@ -1,0 +1,46 @@
+{
+ "plan": "pc-sanaro-n12",
+ "updated": 1793895889.8429632,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "arms": {
+   "status": "pending"
+  },
+  "pilot-S4": {
+   "status": "pending"
+  },
+  "pilot-K7": {
+   "status": "pending"
+  },
+  "pilot-K5": {
+   "status": "pending"
+  },
+  "pilot-K3": {
+   "status": "pending"
+  },
+  "pilot": {
+   "status": "pending"
+  },
+  "live-S4": {
+   "status": "pending"
+  },
+  "live-K7": {
+   "status": "pending"
+  },
+  "live-K5": {
+   "status": "pending"
+  },
+  "live-K3": {
+   "status": "pending"
+  },
+  "read-live": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
