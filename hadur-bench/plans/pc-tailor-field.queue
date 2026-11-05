@@ -29,9 +29,10 @@
 #     (RammingC +3.4, Galaxy03 +4.0). None was screened on the other ~1,000 robots.
 #   - Risk: a lever that loses on a robot is not picked (5-point margin, 95% low end above 0), and the confirm
 #     re-measures the picks on 4 fresh seeds against c and an A/A copy before anything ships.
-# Pilot (tools/x5_card.py pilot): the 13 smoke names (panel-x5-pilot.txt) at the screen's seeds on all 11 arms; the
-#   screen runs when x5 gains 2+ points over c on the 7 gun names OR rd gains 1+ on the 6 rammers; otherwise straight
-#   to the results PR.
+# Pilot (tools/x5_card.py pilot): the 13 smoke names (panel-x5-pilot.txt) at the screen's seeds on all 11 arms. It
+#   checks the two new levers: when neither x5 gains 2+ points over c on the 7 gun names nor rd 1+ on the 6 rammers,
+#   x5 and rd are dropped and the screen runs c and the other eight levers (plans/tailor-field-8.arms, ~8,000 battles
+#   fewer); the eight are switches that already won where they were screened, so they are not stopped by the new two.
 # screen:  census-312.txt x 11 arms x 2 seeds from 9300; pick at a 5-point margin (mode_table, ref c), one lever a robot.
 # confirm: the picks x c, aa, xr (each picked robot on its lever) x 4 fresh seeds from 9400; gate +0.03 APS.
 # Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle
@@ -57,7 +58,7 @@ pilot | ./bench-top20.sh ${C} ${P} --set panel-x5-pilot.txt --seeds 2 --seed-bas
   stop: skips 60 over 200
   stop: stall 30m
 
-screen | if [ -f work/x5.stop ]; then echo 'pilot: no gain on the smoke names, screen skips'; exit 0; fi && ./bench-top20.sh ${C} ${P} --set census-312.txt --seeds 2 --seed-base 9300 --arms plans/tailor-field.arms --out ${W} --label x5f --shuffle-jobs
+screen | A=plans/tailor-field.arms; if [ -f work/x5.stop ]; then echo 'pilot: x5 and rd below their bars, the screen runs the other eight levers'; A=plans/tailor-field-8.arms; fi && ./bench-top20.sh ${C} ${P} --set census-312.txt --seeds 2 --seed-base 9300 --arms $A --out ${W} --label x5f --shuffle-jobs
   after: pilot
   watch: field=1217
   stop: fails 30
@@ -65,13 +66,13 @@ screen | if [ -f work/x5.stop ]; then echo 'pilot: no gain on the smoke names, s
   stop: skips 60 over 200
   stop: stall 30m
 
-pick | if [ -f work/x5.stop ]; then exit 0; fi && python3 ../data/tools/multiarm.py ${W}/arms.tsv --census census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_x5f-screen.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 5 --out-tsv ${OUT}/x5f-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_x5f-pick.md
+pick | python3 ../data/tools/multiarm.py ${W}/arms.tsv --census census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_x5f-screen.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 5 --out-tsv ${OUT}/x5f-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_x5f-pick.md
   after: screen
 
-prep2 | if [ -f work/x5.stop ]; then exit 0; fi && python3 tools/pick_panel.py ${OUT}/x5f-pick.tsv census-312.txt work/panel-x5f-picks.txt && python3 tools/x5_card.py lists ${OUT}/x5f-pick.tsv --list-prefix work/tf --env-out work/tf-env.sh --abl-out work/x5f-abl.txt --arms-out work/x5f-2.arms --version ${V} && . ./work/tf-env.sh && bash ./build-ablation.sh $(cat work/x5f-abl.txt)
+prep2 | python3 tools/pick_panel.py ${OUT}/x5f-pick.tsv census-312.txt work/panel-x5f-picks.txt && python3 tools/x5_card.py lists ${OUT}/x5f-pick.tsv --list-prefix work/tf --env-out work/tf-env.sh --abl-out work/x5f-abl.txt --arms-out work/x5f-2.arms --version ${V} && . ./work/tf-env.sh && bash ./build-ablation.sh $(cat work/x5f-abl.txt)
   after: pick
 
-confirm | if [ -f work/x5.stop ]; then exit 0; fi && ./bench-top20.sh ${C} ${P} --set work/panel-x5f-picks.txt --seeds 4 --seed-base 9400 --arms work/x5f-2.arms --out ${W2} --label x5f-2 --shuffle-jobs
+confirm | ./bench-top20.sh ${C} ${P} --set work/panel-x5f-picks.txt --seeds 4 --seed-base 9400 --arms work/x5f-2.arms --out ${W2} --label x5f-2 --shuffle-jobs
   after: prep2
   watch: field=1217
   stop: fails 30
@@ -79,7 +80,7 @@ confirm | if [ -f work/x5.stop ]; then exit 0; fi && ./bench-top20.sh ${C} ${P} 
   stop: skips 60 over 200
   stop: stall 30m
 
-gate | if [ -f work/x5.stop ]; then exit 0; fi && python3 ../data/tools/multiarm.py ${W2}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_x5f-2.md && python3 tools/shield_s2.py gate ${W2}/arms.tsv --arm xr --panel work/panel-x5f-picks.txt --bar 0.03 --out ${OUT}/$(date +%Y-%m-%d)_x5f-2-gate.md && python3 ../data/tools/mode_table.py ${W2}/arms.tsv --margin 3 --out-tsv ${OUT}/x5f-2-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_x5f-2-pick.md && python3 tools/per_robot.py ${W2}/arms.tsv --arms xr --out ${OUT}/$(date +%Y-%m-%d)_x5f-2-per-robot.md --out-tsv ${OUT}/x5f-2-per-robot.tsv
+gate | python3 ../data/tools/multiarm.py ${W2}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_x5f-2.md && python3 tools/shield_s2.py gate ${W2}/arms.tsv --arm xr --panel work/panel-x5f-picks.txt --bar 0.03 --out ${OUT}/$(date +%Y-%m-%d)_x5f-2-gate.md && python3 ../data/tools/mode_table.py ${W2}/arms.tsv --margin 3 --out-tsv ${OUT}/x5f-2-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_x5f-2-pick.md && python3 tools/per_robot.py ${W2}/arms.tsv --arms xr --out ${OUT}/$(date +%Y-%m-%d)_x5f-2-per-robot.md --out-tsv ${OUT}/x5f-2-per-robot.tsv
   after: confirm
 
 pr | bash tools/open_results_pr.sh claude/pc-tailor-field-results "1v1 per robot, whole field: ten gun and movement levers, each robot on the one it wins" ${OUT}/*_x5f*.md $(find ${OUT} -maxdepth 1 -name 'x5f*.tsv' -size +0c)

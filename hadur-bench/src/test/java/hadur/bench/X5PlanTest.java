@@ -60,7 +60,7 @@ class X5PlanTest {
         assertEquals(levers.length + 1, arms.lines().filter(l -> !l.isBlank() && !l.startsWith("#")).count(), "c and the ten levers");
         assertTrue(queue.contains("--set panel-x5-pilot.txt --seeds 2 --seed-base 9300 --arms plans/tailor-field.arms --out ${W}"));
         assertTrue(queue.contains("tools/x5_card.py pilot ${W}/arms.tsv --names panel-x5-pilot.txt --check x5=panel-x5.txt@2 --check rd=panel-rammers.txt@1 --ref c"));
-        assertTrue(queue.contains("--set census-312.txt --seeds 2 --seed-base 9300 --arms plans/tailor-field.arms --out ${W}"));
+        assertTrue(queue.contains("--set census-312.txt --seeds 2 --seed-base 9300 --arms $A --out ${W}"));
         assertTrue(queue.contains("mode_table.py ${W}/arms.tsv --margin 5 --out-tsv ${OUT}/x5f-pick.tsv"));
         assertTrue(queue.contains("tools/pick_panel.py ${OUT}/x5f-pick.tsv census-312.txt work/panel-x5f-picks.txt"));
         assertTrue(queue.contains("tools/x5_card.py lists ${OUT}/x5f-pick.tsv --list-prefix work/tf --env-out work/tf-env.sh"));
@@ -72,9 +72,16 @@ class X5PlanTest {
             assertTrue(step(queue, steps[i], i + 1 < steps.length ? steps[i + 1] : null).contains("after: " + steps[i - 1]),
                 steps[i] + " after " + steps[i - 1]);
         }
-        for (String s : new String[] {"screen", "pick", "prep2", "confirm", "gate"}) {
-            assertTrue(step(queue, s, steps[List.of(steps).indexOf(s) + 1]).contains("if [ -f work/x5.stop ]; then"),
-                s + " skips after a stopped pilot");
+        String screen = step(queue, "screen", "pick");
+        assertTrue(screen.contains("if [ -f work/x5.stop ]; then") && screen.contains("A=plans/tailor-field-8.arms")
+            && screen.contains("--arms $A"), "a pilot below its bars drops x5 and rd, never the other eight levers");
+        String eight = Files.readString(Path.of("plans/tailor-field-8.arms"));
+        for (String line : arms.lines().filter(l -> !l.isBlank() && !l.startsWith("#")).toList()) {
+            boolean dropped = line.startsWith("x5 |") || line.startsWith("rd |");
+            assertEquals(!dropped, eight.contains("\n" + line + "\n") || eight.endsWith("\n" + line), line);
+        }
+        for (String s : new String[] {"pick", "prep2", "confirm", "gate"}) {
+            assertTrue(!step(queue, s, steps[List.of(steps).indexOf(s) + 1]).contains("x5.stop"), s + " runs either way");
         }
         for (String s : new String[] {"pilot", "screen", "confirm"}) {
             String body = step(queue, s, steps[List.of(steps).indexOf(s) + 1]);
