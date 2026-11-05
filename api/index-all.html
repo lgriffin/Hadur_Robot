@@ -5393,6 +5393,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The heavy class holds powers above this.</div>
 </dd>
+<dt><a href="hadur117/core/move/RamEscape.html#HEAVY_HIT_COST" class="member-name-link">HEAVY_HIT_COST</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/RamEscape.html" title="class in hadur117.core.move">RamEscape</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#RAM-6">RAM-6</a>: the cost a path pays for each shot aim that hits it, against a rammer the table names.</div>
+</dd>
 <dt><a href="hadur117/core/physics/BattleField.html#height" class="member-name-link">height</a> - Variable in class hadur117.core.physics.<a href="hadur117/core/physics/BattleField.html" title="class in hadur117.core.physics">BattleField</a></dt>
 <dd>
 <div class="block">The field's full height, in px.</div>
@@ -10329,6 +10333,14 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">A collision costs as much as a bullet of this damage, so a path is rammed only when every path is.</div>
 </dd>
+<dt><a href="hadur117/core/shieldmode/ShieldList.html#RAM_DODGE" class="member-name-link">RAM_DODGE</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#RAM-6">RAM-6</a>: the per-opponent rammer dodge switch's bit in <code>ShieldList.switches</code>.</div>
+</dd>
+<dt><a href="hadur117/core/shieldmode/ShieldList.html#RAM_DODGE_PREFIX" class="member-name-link">RAM_DODGE_PREFIX</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#RAM-6">RAM-6</a>: a line starting with this names a rammer the escape dodges its shots in flight from at a heavy cost.</div>
+</dd>
 <dt><a href="hadur117/core/melee/MeleeProfileFolder.html#RAM_RANGE" class="member-name-link">RAM_RANGE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeProfileFolder.html" title="class in hadur117.core.melee">MeleeProfileFolder</a></dt>
 <dd>
 <div class="block">A scan this close is a robot touching, or about to touch, Hadur: a ram.</div>
@@ -10344,6 +10356,16 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur/bench/BattleResult.html#ramDamageBonus" class="member-name-link">ramDamageBonus</a> - Variable in class hadur.bench.<a href="hadur/bench/BattleResult.html" title="class in hadur.bench">BattleResult</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/shieldmode/ShieldList.html#ramDodge(java.lang.String)" class="member-name-link">ramDodge(String)</a> - Method in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#RAM-6">RAM-6</a>: whether the rammer escape weighs a path that meets one of <code>robotName</code>'s shots at
+ the heavy cost, by the rule of <a href="hadur117/core/shieldmode/ShieldList.html#matches(java.lang.String)"><code>ShieldList.matches(java.lang.String)</code></a>.</div>
+</dd>
+<dt><a href="hadur117/ShieldTableData.html#ramDodges()" class="member-name-link">ramDodges()</a> - Static method in class hadur117.<a href="hadur117/ShieldTableData.html" title="class in hadur117">ShieldTableData</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#RAM-6">RAM-6</a>: the rammers whose escape (<a class="req" href="../requirements.html#RAM-2">RAM-2</a>) weighs a path that meets one of their shots in flight
+ at <code>RamEscape.HEAVY_HIT_COST</code>, not <a class="req" href="../requirements.html#RAM-5">RAM-5</a>'s <code>HIT_COST</code>.</div>
+</dd>
 <dt><a href="hadur117/core/move/RamEscape.html" class="type-name-link" title="class in hadur117.core.move">RamEscape</a> - Class in <a href="hadur117/core/move/package-summary.html">hadur117.core.move</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#RAM-2">RAM-2</a>: keeping a charging rammer at arm's length.</div>
@@ -11968,6 +11990,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/model/RobotState.Builder.html#setHeading(double)" class="member-name-link">setHeading(double)</a> - Method in class hadur117.core.model.<a href="hadur117/core/model/RobotState.Builder.html" title="class in hadur117.core.model">RobotState.Builder</a></dt>
 <dd>
 <div class="block">The body heading, radians (0 = north, clockwise).</div>
+</dd>
+<dt><a href="hadur117/core/move/RamEscape.html#setHeavyHitCost(boolean)" class="member-name-link">setHeavyHitCost(boolean)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/RamEscape.html" title="class in hadur117.core.move">RamEscape</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#RAM-6">RAM-6</a>: whether a path meeting one of the rammer's shots pays <a href="hadur117/core/move/RamEscape.html#HEAVY_HIT_COST"><code>RamEscape.HEAVY_HIT_COST</code></a> (true)
+ or <a class="req" href="../requirements.html#RAM-5">RAM-5</a>'s <a href="hadur117/core/move/RamEscape.html#HIT_COST"><code>RamEscape.HIT_COST</code></a> (false).</div>
 </dd>
 <dt><a href="hadur117/core/model/Wave.html#setHitByBullet(boolean)" class="member-name-link">setHitByBullet(boolean)</a> - Method in class hadur117.core.model.<a href="hadur117/core/model/Wave.html" title="class in hadur117.core.model">Wave</a></dt>
 <dd>
@@ -15717,6 +15744,34 @@ the order they are declared.</div>
 <dt><a href="hadur117/twin/SaorTwin.html#X" class="member-name-link">X</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
 <dd>
 <div class="block">Record fields.</div>
+</dd>
+<dt><a href="hadur117/core/policy/PowerPolicy.html#x5(double,double)" class="member-name-link">x5(double, double)</a> - Static method in class hadur117.core.policy.<a href="hadur117/core/policy/PowerPolicy.html" title="class in hadur117.core.policy">PowerPolicy</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#POW-16">POW-16</a>: the most a shot keeps of <code>power</code> while hiding its speed from a surfer that
+ reads our shot from our energy drop and later matches the bullet that hits it to that wave
+ by <code>Math.round(speed * 10)</code>.</div>
+</dd>
+<dt><a href="hadur117/core/shieldmode/ShieldList.html#X5_POWER" class="member-name-link">X5_POWER</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#POW-16">POW-16</a>: the per-opponent x.x5 power switch's bit in <code>ShieldList.switches</code>.</div>
+</dd>
+<dt><a href="hadur117/core/shieldmode/ShieldList.html#X5_POWER_PREFIX" class="member-name-link">X5_POWER_PREFIX</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#POW-16">POW-16</a>: a line starting with this names an opponent the duel fires only x.x5 powers at.</div>
+</dd>
+<dt><a href="hadur117/core/policy/PowerPolicy.html#X5_STEPS" class="member-name-link">X5_STEPS</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/PowerPolicy.html" title="class in hadur117.core.policy">PowerPolicy</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#POW-16">POW-16</a>: the x.x5 powers tried, 0.1 apart, before a shot keeps its own power.</div>
+</dd>
+<dt><a href="hadur117/core/shieldmode/ShieldList.html#x5Power(java.lang.String)" class="member-name-link">x5Power(String)</a> - Method in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#POW-16">POW-16</a>: whether the duel fires only x.x5 powers at <code>robotName</code>, by the rule of <a href="hadur117/core/shieldmode/ShieldList.html#matches(java.lang.String)"><code>ShieldList.matches(java.lang.String)</code></a>.</div>
+</dd>
+<dt><a href="hadur117/ShieldTableData.html#x5Powers()" class="member-name-link">x5Powers()</a> - Static method in class hadur117.<a href="hadur117/ShieldTableData.html" title="class in hadur117">ShieldTableData</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#POW-16">POW-16</a>: the opponents the duel fires only x.x5 powers at (2.45, 1.95, ...), whose bullet speed
+ sits on a rounding edge that a surfer matching hits to its waves by <code>round(speed * 10)</code>
+ misses, so it never learns where it was hit.</div>
 </dd>
 </dl>
 <h2 class="title" id="I:Y">Y</h2>

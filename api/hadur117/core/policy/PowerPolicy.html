@@ -291,6 +291,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">... and theirs certainly below this.</div>
 </div>
+<div class="col-first odd-row-color"><code>static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#X5_STEPS" class="member-name-link">X5_STEPS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#POW-16">POW-16</a>: the x.x5 powers tried, 0.1 apart, before a shot keeps its own power.</div>
+</div>
 </div>
 </section>
 </li>
@@ -410,6 +415,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">SHIELD-4: the power to fire at a bullet shielder that has not moved in the last 10 ticks:
  <a href="#FULL_POWER"><code>FULL_POWER</code></a>, never below what the rules before it chose.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#x5(double,double)" class="member-name-link">x5</a><wbr>(double&nbsp;power,
+ double&nbsp;energy)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#POW-16">POW-16</a>: the most a shot keeps of <code>power</code> while hiding its speed from a surfer that
+ reads our shot from our energy drop and later matches the bullet that hits it to that wave
+ by <code>Math.round(speed * 10)</code>.</div>
 </div>
 </div>
 </div>
@@ -661,6 +674,21 @@ loadScripts(document, 'script');</script>
 </dl>
 </section>
 </li>
+<li>
+<section class="detail" id="X5_STEPS">
+<h3>X5_STEPS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">X5_STEPS</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#POW-16">POW-16</a>: the x.x5 powers tried, 0.1 apart, before a shot keeps its own power.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.policy.PowerPolicy.X5_STEPS">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -846,6 +874,28 @@ loadScripts(document, 'script');</script>
 <dd><code>smallestEnemyPower</code> - the smallest bullet power they have fired this battle, or NaN if none</dd>
 <dt>Returns:</dt>
 <dd>whether to hold the shot</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="x5(double,double)">
+<h3>x5</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">x5</span><wbr><span class="parameters">(double&nbsp;power,
+ double&nbsp;energy)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#POW-16">POW-16</a>: the most a shot keeps of <code>power</code> while hiding its speed from a surfer that
+ reads our shot from our energy drop and later matches the bullet that hits it to that wave
+ by <code>Math.round(speed * 10)</code>. Only an x.x5 power puts the speed times ten on a .5 edge,
+ and then whether <code>energy - (energy - p)</code>, the drop the surfer reads, rounds to the
+ same tenth as <code>p</code> itself depends on the energy's last bits. The x.x5 powers at or
+ below <code>power</code>, highest first and at most <a href="#X5_STEPS"><code>X5_STEPS</code></a> of them, are tried and the
+ first whose read speed rounds apart from its own is returned; when none does, or below
+ 0.15, <code>power</code> is returned unchanged.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>power</code> - the power chosen</dd>
+<dd><code>energy</code> - our energy as the surfer sees it before the shot</dd>
+<dt>Returns:</dt>
+<dd>the power to fire</dd>
 </dl>
 </section>
 </li>
