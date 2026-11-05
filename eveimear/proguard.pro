@@ -3,7 +3,7 @@
 # MicroRumble's 749 bytes only optimised (Leigh, 2026-11-04: ProGuard builds allowed when they replay identically). Paths are relative to eveimear/; the pom passes <eveimear.jar> and
 # <robocode.api>.
 
--injars  target/classes(hadur117/micro/Eveimear.class,hadur117/micro/Eveimear$Wave.class,hadur117/micro/Eveimear.properties)
+-injars  target/classes(hadur117/micro/Eveimear.class,hadur117/micro/Eveimear.properties)
 -injars  src/main/java(hadur117/micro/Eveimear.java)
 -outjars <eveimear.jar>
 

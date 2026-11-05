@@ -1,10 +1,11 @@
 # Eveimear
 
 `hadur117.micro.Eveimear` is Hadur's MicroRumble (1v1, under 750 bytes) robot, from Leigh's design
-plan "JayLexi & Eveimear — MiniRumble and MicroRumble 1v1 Design Plan" and its kitlab drafts. It
-moves stop-and-go, one step per enemy shot sized to the bullet's flight, until the enemy's gun has
-won back 40 + 23 energy per round by hitting it, then orbits at random for the rest of the battle; its gun is a GuessFactor
-gun on Condition waves segmented on velocity history, lateral speed and distance. The design, the
+plan "JayLexi & Eveimear — MiniRumble and MicroRumble 1v1 Design Plan" and its kitlab drafts. Since 0.5 it
+is Cotillion 0.8 by Skilgannon (Julian Kent), whose source ships in its jar, with Eveimear's own per-robot
+mode table: stop-and-go, one step per enemy shot, until the enemy has hit it (2 + round) times the robot's
+mode, then random orbit; a multiple-choice symbolic pattern-matching gun; a locked radar. 0.1 to 0.4 were
+Eveimear's own GuessFactor gun on the same movement. The design, the
 bench and the results are in [docs/kitlab.md](../docs/kitlab.md); the requirements are EVEIMEAR-1 to
 EVEIMEAR-12 in [docs/requirements.md](../docs/requirements.md).
 
@@ -26,6 +27,14 @@ moves the aim by up to 3 bins at random; the nibbles in use (0, 1, 9) leave it a
 against uCatcher on 20 fresh seeds, +0.10 APS, with no cost across 80 other robots
 ([docs/bench/local/2026-11-04_eveimear-jit.md](../docs/bench/local/2026-11-04_eveimear-jit.md)). It is 752 bytes
 with javac, so the jar goes through ProGuard (`eveimear/proguard.pro`) to 742 bytes.
+
+0.5 (prepared 2026-11-05, tag `eveimear-v0.5` on Leigh's go) is 749 bytes, the limit exactly. Read from
+the leaders' shipped source, Eveimear 0.4 moved as Cotillion 0.8 does, line for line; the 2-point gap was
+Cotillion's gun, radar, power and random-mode reversal (pc-eveimear-cot, PR #669: that half of Cotillion
+on 0.4's body read +1.90 ± 0.63). 0.5 is Cotillion's code with one addition, 0.4's per-robot mode table
+re-indexed by the top 14 bits of the name's hash (the 515 MicroRumble names keep their cells). Bench
+(pc-eveimear-port, PR #676, 112 robots x 12 seeds): +2.22 ± 0.76 points over 0.4, Cotillion itself +1.90.
+0.4's catcher jitter (EVEIMEAR-13) is gone with its gun.
 
 ## Standing
 
@@ -54,7 +63,7 @@ the gun. The full read, by opponent group, is in
     mvn -pl eveimear verify
 
 The shipped jar is `eveimear/target/hadur117.micro.Eveimear_<version>.jar` (its classes, properties
-and source, ProGuard-optimised from 0.4); `EveimearJarIT` prints its codesize, holds 3 bytes spare, and
+and source, ProGuard-optimised from 0.4); `EveimearJarIT` prints its codesize, holds it within 749 bytes, and
 replays the jar against the javac classes with Math.random seeded (EVEIMEAR-17).
 
 ## Bench

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.awt.geom.Rectangle2D;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -11,7 +12,10 @@ import org.junit.jupiter.api.Test;
 import robocode.Bullet;
 import robocode.BulletHitEvent;
 import robocode.HitByBulletEvent;
+import robocode.Rules;
 import robocode.ScannedRobotEvent;
+import robocode.StatusEvent;
+import robocode.util.Utils;
 
 /** Eveimear's orders for one scan at a time (EVEIMEAR-2 to EVEIMEAR-11), traced on the Probe. */
 class EveimearTest {
@@ -48,16 +52,19 @@ class EveimearTest {
 
     @Test
     @Tag("EVEIMEAR-3")
-    @DisplayName("past 40 + 23 x round of energy won back by their hits, it moves every tick for the rest of the battle")
+    @DisplayName("past (2 + round) x the robot's MODES char of hits, each 5 / bullet speed, it moves every tick for the rest of the battle")
     void switchesToRandom() {
         Probe p = new Probe();
         p.round = 1;
-        for (int i = 0; i < 7; i++) {
+        int scale = Eveimear.MODES.charAt("enemy".hashCode() >>> 18);
+        double each = 5 / Rules.getBulletSpeed(3);
+        int under = (int) Math.floor((2 + 1) * scale / each);
+        for (int i = 0; i < under; i++) {
             p.onHitByBullet(hitBy(3));
         }
-        assertEquals(0, Eveimear.mode, 0, "seven power-3 hits win back 63, not over 40 + 23 in the second round");
+        assertEquals(0, Eveimear.flat, 0, under + " power-3 hits are not over (2 + 1) x " + scale);
         p.onHitByBullet(hitBy(3));
-        assertEquals(-1, Eveimear.mode, 0, "an eighth, 72, is over");
+        assertEquals(-1, Eveimear.flat, 0, "one more is over");
         p.onScannedRobot(scan(100, 0, 400));
         p.ahead = null;
         p.onScannedRobot(scan(100, 0, 400));
@@ -65,11 +72,22 @@ class EveimearTest {
     }
 
     @Test
+    @Tag("EVEIMEAR-3")
+    @DisplayName("the mode table reads the top 14 bits of the name's hash and holds only the four modes")
+    void modeTable() {
+        assertEquals(1 << 14, Eveimear.MODES.length());
+        for (char c : Eveimear.MODES.toCharArray()) {
+            assertTrue(c == 0 || c == 1 || c == 9 || c == 15, "mode " + (int) c);
+        }
+    }
+
+    @Test
     @Tag("EVEIMEAR-4")
-    @DisplayName("a hit keeps the orbit direction")
-    void hitKeepsDirection() {
+    @DisplayName("in stop-and-go in open field it keeps its orbit direction, hit or not")
+    void keepsDirection() {
         Probe p = new Probe();
         p.onHitByBullet(hitBy(1));
+        p.onScannedRobot(scan(100, 0, 400));
         assertEquals(1, Eveimear.direction, 0);
     }
 
@@ -79,26 +97,25 @@ class EveimearTest {
     void smoothing() {
         Probe p = new Probe();
         p.x = 30;
-        p.heading = 0;
         // Enemy due north; orbiting clockwise (+1) would drive west, into the wall.
         p.onScannedRobot(scan(100, 0, 400));
-        double drive = p.turn + p.heading;
-        assertTrue(Eveimear.FIELD.contains(p.x + 160 * Math.sin(Math.atan(Math.tan(drive))), p.y + 160 * Math.cos(Math.atan(Math.tan(drive))))
-                || Eveimear.FIELD.contains(p.x - 160 * Math.sin(Math.atan(Math.tan(drive))), p.y - 160 * Math.cos(Math.atan(Math.tan(drive)))));
+        double drive = Math.atan(p.turn) + p.heading;
+        Rectangle2D.Double field = new Rectangle2D.Double(18, 18, 764, 564);
+        assertTrue(field.contains(p.x + 160 * Math.sin(drive), p.y + 160 * Math.cos(drive))
+                || field.contains(p.x - 160 * Math.sin(drive), p.y - 160 * Math.cos(drive)));
     }
 
     @Test
     @Tag("EVEIMEAR-6")
-    @DisplayName("a gun wave every scan logs the bin the enemy is in when it passes")
-    void gunWave() {
+    @DisplayName("each scan adds one symbol, and against a robot that stands still the gun aims at it")
+    void gunMatches() {
         Probe p = new Probe();
-        p.onScannedRobot(scan(100, 0, 140));
-        Eveimear.Wave w = (Eveimear.Wave) p.events.get(0);
-        assertTrue(!w.test(), "14 px is not 140");
-        for (int i = 0; i < 9; i++) {
-            w.test();
+        for (int i = 1; i <= 40; i++) {
+            p.onScannedRobot(scan(100, 0.3, 400));
+            assertEquals(i, Eveimear.searchData.length());
         }
-        assertTrue(w.bins[Eveimear.MID] == 1, "the enemy stood still: guess factor zero");
+        double bin = 2 * Math.PI / (Eveimear.BINS - 1);
+        assertEquals(0.3, Utils.normalRelativeAngle(p.gunTurn), bin, "within a bin of the enemy");
     }
 
     @Test
@@ -115,26 +132,29 @@ class EveimearTest {
 
     @Test
     @Tag("EVEIMEAR-8")
-    @DisplayName("power is 2 at range, enough to finish, and never the last 0.1 of our energy")
+    @DisplayName("power is 2 at range, at most a quarter of the enemy's energy, and only while we have more than that")
     void power() {
         Probe p = new Probe();
         p.onScannedRobot(scan(100, 0, 400));
         assertEquals(2, p.fired, 1e-12);
         p.onScannedRobot(scan(2, 0, 400));
-        assertEquals(0.6, p.fired, 1e-12);
-        p.energy = 0.5;
+        assertEquals(0.5, p.fired, 1e-12);
+        p.fired = null;
+        p.energy = 1.5;
         p.onScannedRobot(scan(100, 0, 400));
-        assertEquals(0.4, p.fired, 1e-12);
+        assertNull(p.fired, "1.5 energy does not fire 2");
     }
 
     @Test
     @Tag("EVEIMEAR-10")
-    @DisplayName("each scan turns the radar back by what it had left")
+    @DisplayName("the radar turns every tick until it sees the enemy, then locks at twice the bearing")
     void radar() {
         Probe p = new Probe();
-        p.radarRemaining = 0.4;
-        p.onScannedRobot(scan(100, 0, 400));
-        assertEquals(0.4, p.radarLeft, 1e-12);
+        p.onStatus(new StatusEvent(null));
+        assertEquals(1, p.radarTurn, 1e-12);
+        p.radarHeading = 0.1;
+        p.onScannedRobot(scan(100, 0.3, 400));
+        assertEquals(0.4, p.radarTurn, 1e-12);
     }
 
     @Test
@@ -143,7 +163,7 @@ class EveimearTest {
     void bookedHits() {
         Probe p = new Probe();
         p.onScannedRobot(scan(100, 0, 400));
-        p.onBulletHit(new BulletHitEvent("enemy", 90, new Bullet(0, 0, 0, 2, "me", "enemy", false, 1)));
+        p.onBulletHit(new BulletHitEvent("enemy", 90, new Bullet(0, 0, 0, 2.5, "me", "enemy", false, 1)));
         p.onScannedRobot(scan(90, 0, 400));
         assertNull(p.ahead, "our hit is not their shot");
         p.onHitByBullet(hitBy(2));

@@ -2,7 +2,7 @@ name: release-eveimear
 
 # Eveimear (docs/kitlab.md) ships on its own tags, eveimear-v0.1 and on, apart from Hadur's v* and the other
 # small bots' tags. Run by hand with a version: it builds and tests the repo, checks the jar
-# carries that version (the eveimear build fails above MicroRumble's 749 bytes less 3 spare, EVEIMEAR-1), and
+# carries that version (the eveimear build fails above MicroRumble's 749 bytes, EVEIMEAR-1), and
 # publishes a release with the jar, whose asset URL is what the RoboRumble participants list
 # needs (LiteRumble scores it in MicroRumble by its codesize).
 on:
