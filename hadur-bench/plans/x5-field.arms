@@ -1,0 +1,5 @@
+# pc-x5-field screen (BENCH-197): c master, x5 POW-16 naming every robot of census-312.txt, rd RAM-6 naming every
+# robot of census-312.txt (ablations x5list, rdlist from work/field.list). Each robot keeps the arm its battles pick.
+c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
+x5 | hadur117.Hadur 3.21x5 | bisect/hadur117.Hadur_3.21x5.jar
+rd | hadur117.Hadur 3.21rd | bisect/hadur117.Hadur_3.21rd.jar

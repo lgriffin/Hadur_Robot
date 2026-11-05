@@ -1,4 +1,4 @@
-# POW-16 screen (pc-x5, BENCH-197): the 46 robots of census-312.txt that load on 1.11.2 and whose bytecode matches a bullet
+# POW-16 candidates (BENCH-197): the 46 robots of census-312.txt that load on 1.11.2 and whose bytecode matches a bullet
 # that hit them to a wave with Math.round on the bullet power (one method calls Bullet.getPower and Math.round; the
 # scan of 2026-11-05 over all 1,214 opponent jars). Lines copied from census-312.txt.
 jk.mega.DrussGT 3.1.16 | rank3-band1 | jk.mega.DrussGT_3.1.16.jar
