@@ -22,7 +22,6 @@ bvh.team.Valkiries 1.0 | team-17 | bvh.team.Valkiries_1.0.jar
 radnor.RadnorMedSchool 1.0 | team-18 | radnor.RadnorMedSchool_1.0.jar
 gh.mini.GrubbmGroup 0.4 | team-19 | gh.mini.GrubbmGroup_0.4.jar
 apvteam.MambaTeam 0.7.5 | team-20 | apvteam.MambaTeam_0.7.5.jar
-kawigi.sbf.TidalWave 0.8 | team | kawigi.sbf.TidalWave_0.8.jar
 gh.nano.GrofGroup 1.1 | team | gh.nano.GrofGroup_1.1.jar
 jab.DiamondStealers 5 | team | jab.DiamondStealers_5.jar
 ethdsy.MalackaTeam 1.2 | team | ethdsy.MalackaTeam_1.2.jar
