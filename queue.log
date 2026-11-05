@@ -15,3 +15,7 @@
 08:17:07 watching pilot: 4 stop rule(s)
 08:17:09 progress pushed to origin claude/pc-mirror-progress (every 15 min)
 08:18:07 progress pilot: 802/1820 (44%) battles, 1071/h, ETA 57 min, 0 failed, skips 73.1/battle (last 100), aa -0.01, bb +0.79, sg -0.24, ns +0.81
+08:48:29 progress pilot: 1693/1820 (93%) battles, 1754/h, ETA 4 min, 0 failed, skips 173.5/battle (last 100), aa -0.03, bb +0.80, sg -0.26, ns +0.85
+08:54:42 pilot exit=0 in 2255 s
+08:54:42 start mirror
+08:54:42 watching mirror: 4 stop rule(s)
