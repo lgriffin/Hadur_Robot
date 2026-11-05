@@ -568,3 +568,23 @@ needs one more byte to fit. Melee cards may be field-wide (Leigh, 2026-11-03 22:
 The card's pilot is the first 4 of each arm's 20 seeds. `sanaro_read.py --stop-below 0` stops the card
 with a results PR unless some hold arm reads at or above S4 (BENCH-195). The full steps resume the
 pilot's battles.
+
+## 23. pc-sanaro-n11 results (PR #662): holding fire loses
+
+The card stopped at its pilot (4 seeds, 172 battles an arm, live-shaped census):
+
+| Arm | APS | vs S4 | Survival |
+|---|---|---|---|
+| S4 (0.4) | 65.94 ± 0.36 | | 27.0 |
+| H512 | 64.04 ± 0.36 | -1.91 ± 0.51 | 19.6 |
+| H480 | 63.95 ± 0.37 | -2.03 ± 0.52 | 19.9 |
+| H400 | 61.64 ± 0.42 | -4.37 ± 0.56 | 16.4 |
+
+Survival falls by 7 to 11 points, so the loss is in staying alive, not in the gun. The likely
+mechanism is the radar. Sanaro's radar flips onto its target whenever gun heat is under LOCK (0.9),
+and sweeps otherwise (SANARO-6). A robot that never fires keeps its gun heat at 0. So its radar stays
+locked on the far target and stops sweeping, and the anti-gravity loses sight of the robots closing in.
+The 0.1 shots past 480 px are not wasted: they heat the gun, and that sends the radar round. The
+nearer the hold, the longer the radar stays locked, which matches the order H512 ≈ H480 > H400.
+
+Holding fire is dead. 0.4 (B480, +0.30 in n10) stays the candidate, on Leigh's word.
