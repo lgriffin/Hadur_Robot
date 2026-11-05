@@ -22,3 +22,7 @@
 01:32:58 start mlz4
 01:32:58 watching mlz4: 2 stop rule(s)
 01:38:33 progress mlz4: 30/276 (11%) battles, 322/h, ETA 46 min, 0 failed, skips 22.0/battle (last 100)
+02:08:47 progress mlz4: 222/276 (80%) battles, 372/h, ETA 9 min, 0 failed, skips 26.6/battle (last 100)
+02:16:38 mlz4 exit=0 in 2620 s
+02:16:38 start mlz5
+02:16:38 watching mlz5: 2 stop rule(s)
