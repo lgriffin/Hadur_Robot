@@ -1,6 +1,6 @@
 # Queue pc-mirror: progress
 
-Updated 2026-11-05 10:18:26 PC time (10:18 UTC), runner pid 55080.
+Updated 2026-11-05 10:33:29 PC time (10:33 UTC), runner pid 55080.
 
 - `prep` done, exit 0 in 1 min
 - `pilot` done, exit 0 in 38 min
@@ -41,28 +41,28 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### mirror
 
-**4316 of 10920 battles** (40%), 0 failed, 1820 read back from an earlier run. Running 1.4 h, 1662 battles/h, about 4.0 h left (ends ~14:16 PC time). Last battle 0 min ago.
-Skipped turns a battle: 132.1 overall, first 100 60.4, last 100 168.5; engine disables 11.
+**4770 of 10920 battles** (44%), 0 failed, 1820 read back from an earlier run. Running 1.6 h, 1640 battles/h, about 3.8 h left (ends ~14:18 PC time). Last battle 0 min ago.
+Skipped turns a battle: 128.5 overall, first 100 60.4, last 100 78.7; engine disables 14.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 862 | 0 | 75.42 | - | - | - | 29.7 |
-| aa | 863 | 0 | 75.23 | -0.01 (91 robots) | ±0.03 | -0.06 .. +0.03 | 29.8 |
-| bb | 864 | 0 | 85.91 | +0.79 (91 robots) | ±0.10 | +0.63 .. +0.95 | 221.4 |
-| sg | 862 | 0 | 71.73 | -0.27 (91 robots) | ±0.25 | -0.64 .. +0.11 | 178.6 |
-| ns | 865 | 0 | 86.61 | +0.84 (91 robots) | ±0.11 | +0.68 .. +1.01 | 170.2 |
+| c | 954 | 0 | 75.44 | - | - | - | 30.3 |
+| aa | 954 | 0 | 75.11 | -0.02 (91 robots) | ±0.03 | -0.07 .. +0.02 | 30.3 |
+| bb | 953 | 0 | 85.97 | +0.80 (91 robots) | ±0.10 | +0.64 .. +0.96 | 211.2 |
+| sg | 953 | 0 | 71.69 | -0.27 (91 robots) | ±0.25 | -0.65 .. +0.11 | 181.9 |
+| ns | 956 | 0 | 86.60 | +0.85 (91 robots) | ±0.11 | +0.69 .. +1.01 | 168.1 |
 
 APS = mean difference over the robots read x 91 panel robots / 1217 pairings.
-A/A: aa - c -0.19 pts over 91 robots; 1% band ±0.40 (inside).
+A/A: aa - c -0.33 pts over 91 robots; 1% band ±0.38 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 4316 |
+| `fails 30` | halt | ok | 0 failed of 4770 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 60 over 200 arms c aa` | halt | ok | 27.9 a battle over the last 200 (first 200: 29.4) |
+| `skips 60 over 200 arms c aa` | halt | ok | 35.7 a battle over the last 200 (first 200: 29.4) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 6604 battles unrun (about 4.0 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 6150 battles unrun (about 3.8 h); every battle already fought is kept and a rerun resumes from it.
 
 > warning: arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 715 h before this step started: check it is not stale
 
@@ -73,7 +73,6 @@ Stopping now would leave 6604 battles unrun (about 4.0 h); every battle already 
 ### Queue log (last lines)
 
 ```
-03:24:40 pilot exit=75 in 1394 s (halted, skips 150 over 200)
 03:24:42 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/657
 03:24:42 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 08:17:07 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
@@ -88,4 +87,5 @@ Stopping now would leave 6604 battles unrun (about 4.0 h); every battle already 
 08:54:42 watching mirror: 4 stop rule(s)
 09:18:52 progress mirror: 2559/10920 (23%) battles, 1836/h, ETA 4.6 h, 0 failed, skips 153.9/battle (last 100), aa -0.03, bb +0.78, sg -0.27, ns +0.85
 09:49:16 progress mirror: 3503/10920 (32%) battles, 1868/h, ETA 4.0 h, 0 failed, skips 147.5/battle (last 100), aa -0.02, bb +0.79, sg -0.27, ns +0.84
+10:19:26 progress mirror: 4344/10920 (40%) battles, 1678/h, ETA 3.9 h, 0 failed, skips 140.1/battle (last 100), aa -0.01, bb +0.79, sg -0.27, ns +0.85
 ```
