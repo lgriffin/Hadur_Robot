@@ -1,6 +1,6 @@
 # Queue pc-melee-floor: progress
 
-Updated 2026-11-05 02:50:06 PC time (02:50 UTC), runner pid 37368.
+Updated 2026-11-05 03:00:05 PC time (03:00 UTC), runner pid 37368.
 
 - `mlprep` done, exit 0 in 3 min
 - `mlpilot` done, exit 0 in 1.3 h
@@ -8,9 +8,9 @@ Updated 2026-11-05 02:50:06 PC time (02:50 UTC), runner pid 37368.
 - `mlaa` done, exit 0 in 51 min
 - `mlbb` done, exit 0 in 47 min
 - `mlz4` done, exit 0 in 44 min
-- `mlz5` running
-- `mlread` pending
-- `mlpr` pending
+- `mlz5` done, exit 0 in 43 min
+- `mlread` done, exit 0 in 0 min
+- `mlpr` done, exit 0 in 0 min
 
 ### mlpilot
 
@@ -62,25 +62,19 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### mlz5
 
-**204 of 276 battles** (74%), 0 failed. Running 33 min, 366 battles/h, about 12 min left (ends ~03:01 PC time). Last battle 0 min ago.
-Skipped turns a battle: 26.7 overall, first 100 26.4, last 100 26.6.
+**276 of 276 battles** (100%), 0 failed. Running 43 min, 383 battles/h, about 0 min left (ends ~02:59 PC time). Last battle 0 min ago.
+Skipped turns a battle: 26.4 overall, first 100 26.4, last 100 26.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 204 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 72 battles unrun (about 12 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-00:07:50 progress mlaa: 66/276 (24%) battles, 315/h, ETA 40 min, 0 failed, skips 33.1/battle (last 100)
-00:38:05 progress mlaa: 228/276 (83%) battles, 319/h, ETA 9 min, 0 failed, skips 31.8/battle (last 100)
-00:46:10 mlaa exit=0 in 3054 s
-00:46:10 start mlbb
-00:46:10 watching mlbb: 2 stop rule(s)
-01:08:20 progress mlbb: 120/276 (43%) battles, 325/h, ETA 29 min, 0 failed, skips 33.9/battle (last 100)
 01:32:58 mlbb exit=0 in 2808 s
 01:32:58 start mlz4
 01:32:58 watching mlz4: 2 stop rule(s)
@@ -90,4 +84,10 @@ Stopping now would leave 72 battles unrun (about 12 min); every battle already f
 02:16:38 start mlz5
 02:16:38 watching mlz5: 2 stop rule(s)
 02:39:01 progress mlz5: 132/276 (48%) battles, 354/h, ETA 24 min, 0 failed, skips 27.2/battle (last 100)
+02:59:50 mlz5 exit=0 in 2591 s
+02:59:50 start mlread
+02:59:57 mlread exit=0 in 7 s
+02:59:57 start mlpr
+03:00:05 mlpr exit=0 in 8 s
+03:00:05 ALLDONE
 ```

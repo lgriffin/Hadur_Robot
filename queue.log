@@ -27,3 +27,9 @@
 02:16:38 start mlz5
 02:16:38 watching mlz5: 2 stop rule(s)
 02:39:01 progress mlz5: 132/276 (48%) battles, 354/h, ETA 24 min, 0 failed, skips 27.2/battle (last 100)
+02:59:50 mlz5 exit=0 in 2591 s
+02:59:50 start mlread
+02:59:57 mlread exit=0 in 7 s
+02:59:57 start mlpr
+03:00:05 mlpr exit=0 in 8 s
+03:00:05 ALLDONE
