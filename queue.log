@@ -22,3 +22,6 @@
 21:40:35 watching screen: 4 stop rule(s)
 21:56:18 screen exit=130 in 943 s (stopped)
 21:56:18 stopped; rerun to resume from the interrupted steps
+22:10:47 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
+22:10:47 skip prep (already exit=0)
+22:10:47 skip pilot (already exit=0)
