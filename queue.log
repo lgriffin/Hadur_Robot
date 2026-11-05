@@ -5,3 +5,9 @@
 19:09:42 start bench
 19:09:42 watching bench: 6 stop rule(s)
 19:10:24 progress bench: 73/6720 (1%) battles, 6367/h, ETA 1.0 h, 0 failed, skips 0.0/battle (last 100), aa +0.00, cot +3.43, X +2.05, XR +1.88
+19:38:32 bench exit=0 in 1729 s
+19:38:32 start gate
+19:38:33 gate exit=0 in 0 s
+19:38:33 start pr
+19:38:39 pr exit=0 in 6 s
+19:38:39 ALLDONE
