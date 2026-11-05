@@ -36,6 +36,18 @@
 # N15 (pc-sanaro-n12), on 0.4's source: a radar that sweeps longer. LOCK is the gun heat under which each
 # scan flips the radar onto the target; lower, and it sweeps for more ticks after each shot (0 bytes).
 # pc-sanaro-n12 (PR #664) stopped at its pilot: K7 -1.79, K5 -3.62, K3 -1.12 against S4. LOCK 0.9 stays.
+# N18 (pc-sanaro-q), on 0.4's source: Quantum's own rules. Quantum 1.0.0's source ships in its jar
+# (d414/nano/Quantum.java). It is Sanaro's engine: 0.9 decay, 120 - |turn|, the same wall push, a radar
+# locked by gun heat, the same 18 / d fire gate. It differs in three things: it holds the nearest robot by
+# name until a nearer one shows or it dies (Sanaro's threshold creeps 25 px a scan), it fires a fixed 2.5
+# capped at energy / 7 (no table, no band), and its lead is v / (10 + 1.008^d). The arms below take the
+# first two, and the endgame pair from the 2026-11-04 plan (N16) rides along. Measured over the byte
+# limit (QT 269 B, QTP 253 B; QP 233 B, EW and EB a few bytes over); bytes are found for a winner only.
+QT | Quantum's target: the nearest robot, held by name, reset when any robot dies (269 B) | s#static int range;#static int range; static String TN;#;s#setTurnRadarRight(Double.POSITIVE_INFINITY);#setTurnRadarRight(range = Integer.MAX_VALUE);#;s#if (d < (range += CREEP)) {#if (!(e.getName() != TN \&\& d >= range)) { TN = e.getName();#;s#    static double wall(double v) {#    public void onRobotDeath(robocode.RobotDeathEvent e) { range = Integer.MAX_VALUE; }\n    static double wall(double v) {#
+QP | Quantum's power: min(energy / 7, 2.5), no table, no band (233 B) | s#setFire(BAND / d \* POWER.charAt(((int) getEnergy() << 7) + (int) e.getEnergy()) / 40.0);#setFire(Math.min(getEnergy() / 7, 2.49999));#
+QTP | QT and QP together (253 B) | s#static int range;#static int range; static String TN;#;s#setTurnRadarRight(Double.POSITIVE_INFINITY);#setTurnRadarRight(range = Integer.MAX_VALUE);#;s#if (d < (range += CREEP)) {#if (!(e.getName() != TN \&\& d >= range)) { TN = e.getName();#;s#    static double wall(double v) {#    public void onRobotDeath(robocode.RobotDeathEvent e) { range = Integer.MAX_VALUE; }\n    static double wall(double v) {#;s#setFire(BAND / d \* POWER.charAt(((int) getEnergy() << 7) + (int) e.getEnergy()) / 40.0);#setFire(Math.min(getEnergy() / 7, 2.49999));#
+EW | the wall push halved with one robot left (measure only) | s#static double wall#double wall#;s#return 1 / v - 1 / (1000 - v);#return (1 / v - 1 / (1000 - v)) / (getOthers() < 2 ? 2 : 1);#
+EB | BAND 960 with one robot left: twice the power in the duel (measure only) | s#setFire(BAND / d#setFire((getOthers() < 2 ? 960 : BAND) / d#
 K7 | LOCK 0.7: the radar sweeps two ticks longer after each shot (249 B) | s#LOCK = 0.9;#LOCK = 0.7;#
 K5 | LOCK 0.5: four ticks longer (249 B) | s#LOCK = 0.9;#LOCK = 0.5;#
 K3 | LOCK 0.3: six ticks longer (249 B) | s#LOCK = 0.9;#LOCK = 0.3;#

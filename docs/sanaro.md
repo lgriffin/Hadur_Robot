@@ -624,3 +624,23 @@ below S4 by more than its interval.
 
 Sanaro's cheap levers are now measured: BAND (passed: 0.4), lead, power tables, spiral, fire gate,
 holding fire and the radar threshold. 0.4 stays the candidate (B480, +0.10 in n09 and +0.30 in n10).
+
+## 26. The next card: pc-sanaro-q (stage N18), Quantum's own rules
+
+Quantum 1.0.0, 1st in NanoMelee, ships its source in its jar (`d414/nano/Quantum.java` beside the
+`.j` assembly it was built from). Read on 2026-11-05, it is Sanaro's engine: the same 0.9 decay on the
+anti-gravity, the same `120 - |turn|` drive, the same wall push, a radar locked by gun heat, and the
+same 18 / d fire gate (Sanaro's gate, +1.06 in n04, is Quantum's `AIM_TOLERANCE`). The earlier plan
+read Quantum from its wiki page and called it a fighter against Sanaro's flight; the code says the
+movement is identical. Quantum differs in three things only:
+
+| Rule | Quantum | Sanaro 0.4 |
+|---|---|---|
+| Target | the nearest robot, held by name until a nearer one shows or any robot dies | a threshold that creeps out 25 px a scan |
+| Power | `min(energy / 7, 2.5)`, no table, no band | a table by both energies x 480 / d (0.1 shots past 480 px) |
+| Lead | `v / (10 + 1.008^d)` | `v / 16` (LQ +0.08 in n05, noise) |
+
+The card (`hadur-bench/plans/pc-sanaro-q.queue`, BENCH-199) takes the first two: QT, QP and QTP, plus
+the endgame pair from the 2026-11-04 plan (EW: wall push halved with one robot left; EB: BAND 960 with
+one robot left). Arms are over 249 B where they must be (QT 269, QTP 253); bytes are found only for a
+winner. Live-shaped census, 43 fields x 20 seeds from 31000, pilot at 4 seeds with `--stop-below 0`.
