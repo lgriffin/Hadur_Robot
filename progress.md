@@ -1,6 +1,6 @@
 # Queue pc-melee-floor: progress
 
-Updated 2026-11-05 00:03:48 PC time (00:03 UTC), runner pid 37368.
+Updated 2026-11-05 00:18:56 PC time (00:18 UTC), runner pid 37368.
 
 - `mlprep` done, exit 0 in 3 min
 - `mlpilot` done, exit 0 in 1.3 h
@@ -26,15 +26,15 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### mlaa
 
-**42 of 276 battles** (15%), 0 failed. Running 9 min, 295 battles/h, about 48 min left (ends ~00:51 PC time). Last battle 0 min ago.
-Skipped turns a battle: 28.8 overall, first 42 28.8, last 42 28.8.
+**124 of 276 battles** (45%), 0 failed. Running 24 min, 314 battles/h, about 29 min left (ends ~00:47 PC time). Last battle 0 min ago.
+Skipped turns a battle: 33.4 overall, first 100 32.8, last 100 33.8.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 42 |
+| `fails 20` | halt | ok | 0 failed of 124 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 234 battles unrun (about 48 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 152 battles unrun (about 29 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -53,4 +53,5 @@ Stopping now would leave 234 battles unrun (about 48 min); every battle already 
 23:55:15 mlcheck exit=0 in 1 s
 23:55:15 start mlaa
 23:55:15 watching mlaa: 2 stop rule(s)
+00:07:50 progress mlaa: 66/276 (24%) battles, 315/h, ETA 40 min, 0 failed, skips 33.1/battle (last 100)
 ```
