@@ -59,7 +59,7 @@ class MirrorTest(unittest.TestCase):
         self.assertIn("Why it should win", q)
         self.assertIn("--threshold 8 --excess 10", q, "the pilot")
         self.assertIn("if [ -f work/mirror.stop ]", q, "a failed pilot skips the night")
-        for rule in ("stop: fails 30", "stop: stall 30m"):
+        for rule in ("stop: fails 30", "stop: stall 30m", "stop: skips 60 over 200 arms c aa"):
             self.assertIn(rule, q)
         panel = [l for l in open(os.path.join(BENCH, "panel-mirror.txt")) if "|" in l]
         names = {l.split("|")[0].strip() for l in panel}
