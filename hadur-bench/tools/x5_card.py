@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
-"""pc-x5-field card helpers (BENCH-197): the pilot gate and the confirm build's lists.
+"""pc-tailor-field card helpers (BENCH-197): the pilot gate and the confirm build's lists.
 
   python3 tools/x5_card.py pilot ARMS.tsv --names PILOT.txt --check x5=panel-x5.txt@2 --check rd=panel-rammers.txt@1 \
       [--ref c] --out PILOT.md --stop-file STOP
-  python3 tools/x5_card.py lists PICK.tsv [--x5-arm x5] [--rd-arm rd] --x5-out X5.txt --rd-out RD.txt \
-      --abl-out ABL.txt --arms-out ARMS --version 3.21
+  python3 tools/x5_card.py lists PICK.tsv --list-prefix work/tf --env-out ENV.sh --abl-out ABL.txt --arms-out ARMS \
+      --version 3.21
 
 pilot: each --check ARM=MEMBERS@BAR takes the PILOT robots (name | note | jar) that MEMBERS also lists and their mean
 of the arm's score share minus the reference arms' (--ref, comma separated, pooled). The card goes on when any check
 reaches its bar; when none does, STOP is written and the screen skips. A checked robot with no finished battle of the
 arm or a reference arm fails the step (exit 2): a partial pilot decides nothing.
-lists: splits the pick TSV (mode_table.py --out-tsv: robot, then the arm that won it) into the POW-16 names (picked
-by the x5 arm) and the RAM-6 names (picked by the rd arm), one name a line; writes the build-ablation.sh argument for
-the lists that hold a name (x5list, rdlist) and the confirm arms file whose xr line names the jar that build makes.
-Exits 1 when no robot picked either arm. Standard library only.
+lists: splits the pick TSV (mode_table.py --out-tsv: robot, then the arm that won it) by lever (LEVERS: screen arm ->
+list ablation), writes one name list per lever that won a robot (PREFIX-ARM.list), a shell file exporting each list's
+variable, the build-ablation.sh argument for those ablations, and the confirm arms file whose xr line names the jar
+that build makes. Exits 1 when no robot picked any lever. Standard library only.
 """
 import argparse
 import csv
@@ -67,7 +67,7 @@ def pilot(a):
         # An incomplete pilot is neither a GO nor a STOP: the step fails and the card halts for a rerun.
         print("pilot incomplete, no finished battles for: %s" % ", ".join(missing), file=sys.stderr)
         return 2
-    lines = ["# pc-x5-field pilot against %s" % " and ".join(refs), "",
+    lines = ["# pc-tailor-field pilot against %s" % " and ".join(refs), "",
              "**%s**" % ("GO, the screen runs" if go else "STOP, the screen skips"), ""]
     for arm, members, bar, mean, ok, rows in sections:
         lines += ["## %s on the pilot robots in %s" % (arm, members), "",
@@ -82,27 +82,46 @@ def pilot(a):
     return 0
 
 
+# Screen arm -> (build-ablation.sh list ablation, the variable naming its file, the jar suffix it adds).
+LEVERS = {
+    "x5": ("x5list", "X5_POWER", "x5"),    # POW-16 hidden bullet speed (gun)
+    "gs": ("gslist", "GUN_STACK", "gl"),   # GUN-11 gun stack (gun)
+    "fp": ("fplist", "FULL_OFF", "fp"),    # POW-15 no full-power rules (gun)
+    "rd": ("rdlist", "RAM_DODGE", "rd"),   # RAM-6 heavy rammer dodge (movement)
+    "sg": ("sgolist", "STOP_GO", "wl"),    # POISON-2 stop-and-go, WavePoison (movement)
+    "sw": ("sgo2list", "STOP_GO2", "wm"),  # POISON-2 stop-and-go, WavePoisonShift (movement)
+    "hj": ("hjlist", "HEAT_JIT", "hl"),    # MOVE-28 stop-and-start (movement)
+    "dg": ("sdodgelist", "SHOT_DODGE", "dg"),  # DODGE-3 simple-aim dodge (movement)
+    "fl": ("fllist", "FLAT_ON", "fq"),     # MOVE-32 flattener on (movement)
+    "mm": ("mmlist", "MIMIC_ON", "mq"),    # MOVE-34 mimic aims in the surf (movement)
+}
+
+
 def lists(a):
-    x5, rd = [], []
+    picked = {k: [] for k in LEVERS}
     for line in open(a.pick, encoding="utf-8"):
         if line.strip() and not line.startswith("#"):
             f = line.split("\t")
-            {a.x5_arm: x5, a.rd_arm: rd}.get(f[1].strip(), []).append(f[0].strip())
-    open(a.x5_out, "w", encoding="utf-8").write("".join(n + "\n" for n in x5))
-    open(a.rd_out, "w", encoding="utf-8").write("".join(n + "\n" for n in rd))
-    abl = [k for k, v in (("x5list", x5), ("rdlist", rd)) if v]
-    if not abl:
-        print("no robot picked either arm", file=sys.stderr)
+            if f[1].strip() in picked:
+                picked[f[1].strip()].append(f[0].strip())
+    used = [k for k in LEVERS if picked[k]]
+    if not used:
+        print("no robot picked any lever", file=sys.stderr)
         return 1
-    suffix = "".join({"x5list": "x5", "rdlist": "rd"}[k] for k in abl)
-    open(a.abl_out, "w", encoding="utf-8").write(",".join(abl) + "\n")
-    v = a.version
+    env = []
+    for k in used:
+        path = "%s-%s.list" % (a.list_prefix, k)
+        open(path, "w", encoding="utf-8").write("".join(n + "\n" for n in picked[k]))
+        env.append("export %s=%s\n" % (LEVERS[k][1], path))
+    open(a.env_out, "w", encoding="utf-8").write("".join(env))
+    open(a.abl_out, "w", encoding="utf-8").write(",".join(LEVERS[k][0] for k in used) + "\n")
+    v, suffix = a.version, "".join(LEVERS[k][2] for k in used)
     open(a.arms_out, "w", encoding="utf-8").write(
-        "# pc-x5-field confirm (BENCH-197): c master, aa its A/A copy, xr POW-16 and RAM-6 on the screen's picks only.\n"
+        "# pc-tailor-field confirm (BENCH-197): c master, aa its A/A copy, xr each picked robot on the lever it won.\n"
         "c | hadur117.Hadur %s | bisect/hadur117.Hadur_%s.jar\n"
         "aa | hadur117.Hadur %saa | bisect/hadur117.Hadur_%saa.jar\n"
         "xr | hadur117.Hadur %s%s | bisect/hadur117.Hadur_%s%s.jar\n" % (v, v, v, v, v, suffix, v, suffix))
-    print("%d POW-16 picks, %d RAM-6 picks: %s" % (len(x5), len(rd), ",".join(abl)))
+    print(", ".join("%d %s" % (len(picked[k]), k) for k in used))
     return 0
 
 
@@ -118,10 +137,8 @@ def main(argv=None):
     p.add_argument("--stop-file", required=True)
     q = sub.add_parser("lists")
     q.add_argument("pick")
-    q.add_argument("--x5-arm", default="x5")
-    q.add_argument("--rd-arm", default="rd")
-    q.add_argument("--x5-out", required=True)
-    q.add_argument("--rd-out", required=True)
+    q.add_argument("--list-prefix", required=True)
+    q.add_argument("--env-out", required=True)
     q.add_argument("--abl-out", required=True)
     q.add_argument("--arms-out", required=True)
     q.add_argument("--version", required=True)

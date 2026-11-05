@@ -54,26 +54,44 @@ class X5CardTest(unittest.TestCase):
         self.assertFalse(os.path.exists(out))
 
     def outs(self):
-        out = {k: os.path.join(self.d, k) for k in ("x5", "rd", "abl", "arms")}
-        return out, ["--x5-out", out["x5"], "--rd-out", out["rd"], "--abl-out", out["abl"], "--arms-out", out["arms"],
-                     "--version", "3.21"]
+        out = {k: os.path.join(self.d, k) for k in ("env", "abl", "arms")}
+        prefix = os.path.join(self.d, "tf")
+        return out, prefix, ["--list-prefix", prefix, "--env-out", out["env"], "--abl-out", out["abl"],
+                             "--arms-out", out["arms"], "--version", "3.21"]
 
-    def test_lists_split_the_picks_by_the_arm_that_won_and_name_the_jar(self):
-        pick = self.path("pick.tsv", "a.A 1\tx5\t9\t2\t2\t2\nr.R 2\trd\t6\t1\t2\t2\nq.Q 1\tx5\t7\t1\t2\t2\n")
-        out, args = self.outs()
+    def test_lists_split_the_picks_by_lever_and_name_the_jar(self):
+        pick = self.path("pick.tsv", "a.A 1\tx5\t9\t2\t2\t2\nr.R 2\trd\t6\t1\t2\t2\nq.Q 1\tx5\t7\t1\t2\t2\n"
+                                     "s.S 1\tsg\t8\t1\t2\t2\nm.M 1\tmm\t6\t1\t2\t2\nu.U 1\tzz\t9\t1\t2\t2\n")
+        out, prefix, args = self.outs()
         self.assertEqual(0, x5_card.main(["lists", pick] + args))
-        self.assertEqual("a.A 1\nq.Q 1\n", open(out["x5"]).read())
-        self.assertEqual("r.R 2\n", open(out["rd"]).read())
-        self.assertEqual("x5list,rdlist\n", open(out["abl"]).read())
-        self.assertIn("xr | hadur117.Hadur 3.21x5rd | bisect/hadur117.Hadur_3.21x5rd.jar", open(out["arms"]).read())
+        self.assertEqual("a.A 1\nq.Q 1\n", open(prefix + "-x5.list").read())
+        self.assertEqual("r.R 2\n", open(prefix + "-rd.list").read())
+        self.assertEqual("s.S 1\n", open(prefix + "-sg.list").read())
+        self.assertFalse(os.path.exists(prefix + "-gs.list"), "a lever no robot picked writes no list")
+        self.assertEqual("x5list,rdlist,sgolist,mmlist\n", open(out["abl"]).read(), "LEVERS order, so the suffix is known")
+        env = open(out["env"]).read()
+        self.assertIn("export X5_POWER=%s-x5.list\n" % prefix, env)
+        self.assertIn("export STOP_GO=%s-sg.list\n" % prefix, env)
+        self.assertIn("export MIMIC_ON=%s-mm.list\n" % prefix, env)
+        self.assertIn("xr | hadur117.Hadur 3.21x5rdwlmq | bisect/hadur117.Hadur_3.21x5rdwlmq.jar", open(out["arms"]).read())
 
-    def test_lists_with_one_kind_builds_that_one_and_none_exits_1(self):
-        out, args = self.outs()
-        self.assertEqual(0, x5_card.main(["lists", self.path("p1.tsv", "r.R 2\trd\t6\t1\t2\t2\n")] + args))
-        self.assertEqual("rdlist\n", open(out["abl"]).read())
-        self.assertEqual("", open(out["x5"]).read())
-        self.assertIn("hadur117.Hadur 3.21rd |", open(out["arms"]).read())
+    def test_lists_with_one_lever_builds_that_one_and_none_exits_1(self):
+        out, prefix, args = self.outs()
+        self.assertEqual(0, x5_card.main(["lists", self.path("p1.tsv", "r.R 2\thj\t6\t1\t2\t2\n")] + args))
+        self.assertEqual("hjlist\n", open(out["abl"]).read())
+        self.assertIn("hadur117.Hadur 3.21hl |", open(out["arms"]).read())
         self.assertEqual(1, x5_card.main(["lists", self.path("p2.tsv", "")] + args))
+
+    def test_levers_match_the_screen_arms(self):
+        here = os.path.dirname(os.path.abspath(__file__))
+        arms = {}
+        for line in open(os.path.join(here, "..", "plans", "tailor-field.arms")):
+            if line.strip() and not line.startswith("#"):
+                k, robot, _ = [f.strip() for f in line.split("|")]
+                arms[k] = robot
+        self.assertEqual(set(x5_card.LEVERS) | {"c"}, set(arms))
+        for k, (_, _, suffix) in x5_card.LEVERS.items():
+            self.assertEqual("hadur117.Hadur 3.21" + suffix, arms[k], k)
 
 
 if __name__ == "__main__":
