@@ -10,3 +10,9 @@
 14:38:13 pilot-S4 exit=0 in 550 s
 14:38:13 start pilot-H512
 14:38:13 watching pilot-H512: 3 stop rule(s)
+14:47:05 pilot-H512 exit=0 in 532 s
+14:47:05 start pilot-H480
+14:47:05 watching pilot-H480: 3 stop rule(s)
+14:55:51 pilot-H480 exit=0 in 526 s
+14:55:51 start pilot-H400
+14:55:51 watching pilot-H400: 3 stop rule(s)
