@@ -38,7 +38,7 @@ loadScripts(document, 'script');</script>
 <li>
 <p>Summary:</p>
 <ul>
-<li><a href="#nested-class-summary">Nested</a></li>
+<li>Nested</li>
 <li><a href="#field-summary">Field</a></li>
 <li><a href="#constructor-summary">Constr</a></li>
 <li><a href="#method-summary">Method</a></li>
@@ -58,7 +58,7 @@ loadScripts(document, 'script');</script>
 <div id="navbar-sub-list">
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
-<li><a href="#nested-class-summary">Nested</a>&nbsp;|&nbsp;</li>
+<li>Nested&nbsp;|&nbsp;</li>
 <li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
@@ -108,34 +108,23 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">Eveimear</span>
 <span class="extends-implements">extends robocode.AdvancedRobot</span></div>
-<div class="block">Eveimear, a MicroRumble 1v1 robot (docs/kitlab.md): stop-and-go that steps once for each enemy
- shot until the enemy's gun has found it, then random orbit for the rest of the battle, over a
- GuessFactor gun on Condition waves segmented on velocity history, lateral speed and distance.
+<div class="block">Eveimear 0.5, a MicroRumble 1v1 robot (docs/kitlab.md): Cotillion 0.8 by Skilgannon (Julian Kent), whose
+ source ships in its jar, with Eveimear's own per-robot mode table. pc-eveimear-cot (PR #669) showed that
+ Eveimear 0.4 moved as Cotillion does and lost the 2-point gap in Cotillion's gun, radar, power and
+ random-mode reversal; pc-eveimear-port (PR #676) measured this build at +2.22 +- 0.76 points over 0.4,
+ level with Cotillion (+1.90) on 112 MicroRumble robots.
 
- Ideas taken, with thanks, from open RoboWiki bots: Epeeist and Continuation (Sheldor, RWPCL) for
- the damage threshold, the anti-ram term and the stick smoothing; Cotillion (Jdev) for the step
- length; Thorn and HedgehogGF for stop-and-go into random movement. The code is Eveimear's own
- and ships with its source.</div>
+ From Cotillion: a multiple-choice symbolic pattern matcher (each tick one char of the enemy's lateral
+ velocity, advancing velocity and forward wall; up to 50 distinct matches, keys up to 30 chars, each
+ replayed to the bullet's arrival, out-of-field replays dropped, votes weighted by key length into 255
+ bins round the circle), a radar locked at twice the bearing, power 100 / distance + min(2, enemy energy
+ / 4), and stop-and-go that steps once for each enemy shot until the enemy has hit it enough, then random
+ orbit that reverses at 0.6 sqrt(bullet speed / distance) - 0.04 a tick.
+
+ Eveimear's own: the hit count at which the movement leaves stop-and-go, scaled per robot by MODES (EVEIMEAR-3).</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
-<!-- ======== NESTED CLASS SUMMARY ======== -->
-<li>
-<section class="nested-class-summary" id="nested-class-summary">
-<h2>Nested Class Summary</h2>
-<div class="caption"><span>Nested Classes</span></div>
-<div class="summary-table three-column-summary">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Class</div>
-<div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>(package private) static class&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="Eveimear.Wave.html" class="type-name-link" title="class in hadur117.micro">Eveimear.Wave</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">A gun wave: one per scan, at 14 px a tick (power 2), logged where the enemy is when it passes.</div>
-</div>
-</div>
-</section>
-</li>
 <!-- =========== FIELD SUMMARY =========== -->
 <li>
 <section class="field-summary" id="field-summary">
@@ -145,57 +134,30 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>(package private) static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#CLAMP" class="member-name-link">CLAMP</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color"><code><a href="#direction" class="member-name-link">direction</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) static double</code></div>
-<div class="col-second even-row-color"><code><a href="#enemyEnergy" class="member-name-link">enemyEnergy</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color"><code><a href="#enemyX" class="member-name-link">enemyX</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) static double</code></div>
-<div class="col-second even-row-color"><code><a href="#enemyY" class="member-name-link">enemyY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#ESCAPE" class="member-name-link">ESCAPE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Rectangle.html" title="class or interface in java.awt" class="external-link">Rectangle</a></code></div>
-<div class="col-second even-row-color"><code><a href="#FIELD" class="member-name-link">FIELD</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color"><code><a href="#lastSpeed" class="member-name-link">lastSpeed</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>(package private) static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#MASK" class="member-name-link">MASK</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#MID" class="member-name-link">MID</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) static double</code></div>
-<div class="col-second even-row-color"><code><a href="#mode" class="member-name-link">mode</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#MODES" class="member-name-link">MODES</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) static double</code></div>
-<div class="col-second even-row-color"><code><a href="#since" class="member-name-link">since</a></code></div>
+<div class="col-second even-row-color"><code><a href="#BINS" class="member-name-link">BINS</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color"><code><a href="#speed" class="member-name-link">speed</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) static int[][][][]</code></div>
-<div class="col-second even-row-color"><code><a href="#stats" class="member-name-link">stats</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color"><code><a href="#tab" class="member-name-link">tab</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#bulletVelocity" class="member-name-link">bulletVelocity</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>(package private) static double</code></div>
-<div class="col-second even-row-color"><code><a href="#won" class="member-name-link">won</a></code></div>
+<div class="col-second even-row-color"><code><a href="#direction" class="member-name-link">direction</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static double</code></div>
+<div class="col-second odd-row-color"><code><a href="#flat" class="member-name-link">flat</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static double</code></div>
+<div class="col-second even-row-color"><code><a href="#hits" class="member-name-link">hits</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static double</code></div>
+<div class="col-second odd-row-color"><code><a href="#lastEnemyEnergy" class="member-name-link">lastEnemyEnergy</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#MODES" class="member-name-link">MODES</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/StringBuilder.html" title="class or interface in java.lang" class="external-link">StringBuilder</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#searchData" class="member-name-link">searchData</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-robocode._RobotBase">Fields inherited from class&nbsp;robocode._RobotBase</h3>
@@ -230,29 +192,26 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onBulletHit(robocode.BulletHitEvent)" class="member-name-link">onBulletHit</a><wbr>(robocode.BulletHitEvent&nbsp;e)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onCustomEvent(robocode.CustomEvent)" class="member-name-link">onCustomEvent</a><wbr>(robocode.CustomEvent&nbsp;e)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onHitByBullet(robocode.HitByBulletEvent)" class="member-name-link">onHitByBullet</a><wbr>(robocode.HitByBulletEvent&nbsp;e)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onHitByBullet(robocode.HitByBulletEvent)" class="member-name-link">onHitByBullet</a><wbr>(robocode.HitByBulletEvent&nbsp;e)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onScannedRobot(robocode.ScannedRobotEvent)" class="member-name-link">onScannedRobot</a><wbr>(robocode.ScannedRobotEvent&nbsp;e)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onScannedRobot(robocode.ScannedRobotEvent)" class="member-name-link">onScannedRobot</a><wbr>(robocode.ScannedRobotEvent&nbsp;e)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onStatus(robocode.StatusEvent)" class="member-name-link">onStatus</a><wbr>(robocode.StatusEvent&nbsp;e)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#run()" class="member-name-link">run</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-robocode.AdvancedRobot">Methods inherited from class&nbsp;robocode.AdvancedRobot</h3>
-<code>addCustomEvent, clearAllEvents, execute, getAdvancedEventListener, getAllEvents, getBulletHitBulletEvents, getBulletHitEvents, getBulletMissedEvents, getDataDirectory, getDataFile, getDataQuotaAvailable, getDistanceRemaining, getEventPriority, getGunHeadingRadians, getGunTurnRemaining, getGunTurnRemainingRadians, getHeadingRadians, getHitByBulletEvents, getHitRobotEvents, getHitWallEvents, getRadarHeadingRadians, getRadarTurnRemaining, getRadarTurnRemainingRadians, getRobotDeathEvents, getScannedRobotEvents, getStatusEvents, getTurnRemaining, getTurnRemainingRadians, isAdjustGunForRobotTurn, isAdjustRadarForGunTurn, isAdjustRadarForRobotTurn, onDeath, onSkippedTurn, removeCustomEvent, setAhead, setBack, setEventPriority, setFire, setFireBullet, setInterruptible, setMaxTurnRate, setMaxVelocity, setResume, setStop, setStop, setTurnGunLeft, setTurnGunLeftRadians, setTurnGunRight, setTurnGunRightRadians, setTurnLeft, setTurnLeftRadians, setTurnRadarLeft, setTurnRadarLeftRadians, setTurnRadarRight, setTurnRadarRightRadians, setTurnRight, setTurnRightRadians, turnGunLeftRadians, turnGunRightRadians, turnLeftRadians, turnRadarLeftRadians, turnRadarRightRadians, turnRightRadians, waitFor</code></div>
+<code>addCustomEvent, clearAllEvents, execute, getAdvancedEventListener, getAllEvents, getBulletHitBulletEvents, getBulletHitEvents, getBulletMissedEvents, getDataDirectory, getDataFile, getDataQuotaAvailable, getDistanceRemaining, getEventPriority, getGunHeadingRadians, getGunTurnRemaining, getGunTurnRemainingRadians, getHeadingRadians, getHitByBulletEvents, getHitRobotEvents, getHitWallEvents, getRadarHeadingRadians, getRadarTurnRemaining, getRadarTurnRemainingRadians, getRobotDeathEvents, getScannedRobotEvents, getStatusEvents, getTurnRemaining, getTurnRemainingRadians, isAdjustGunForRobotTurn, isAdjustRadarForGunTurn, isAdjustRadarForRobotTurn, onCustomEvent, onDeath, onSkippedTurn, removeCustomEvent, setAhead, setBack, setEventPriority, setFire, setFireBullet, setInterruptible, setMaxTurnRate, setMaxVelocity, setResume, setStop, setStop, setTurnGunLeft, setTurnGunLeftRadians, setTurnGunRight, setTurnGunRightRadians, setTurnLeft, setTurnLeftRadians, setTurnRadarLeft, setTurnRadarLeftRadians, setTurnRadarRight, setTurnRadarRightRadians, setTurnRight, setTurnRightRadians, turnGunLeftRadians, turnGunRightRadians, turnLeftRadians, turnRadarLeftRadians, turnRadarRightRadians, turnRightRadians, waitFor</code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-robocode._AdvancedRobot">Methods inherited from class&nbsp;robocode._AdvancedRobot</h3>
 <code>endTurn, getGunHeadingDegrees, getHeadingDegrees, getMaxWaitCount, getRadarHeadingDegrees, getWaitCount, setTurnGunLeftDegrees, setTurnGunRightDegrees, setTurnLeftDegrees, setTurnRadarLeftDegrees, setTurnRadarRightDegrees, setTurnRightDegrees, turnGunLeftDegrees, turnGunRightDegrees, turnLeftDegrees, turnRadarLeftDegrees, turnRadarRightDegrees, turnRightDegrees</code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-robocode.Robot">Methods inherited from class&nbsp;robocode.Robot</h3>
-<code>ahead, back, doNothing, fire, fireBullet, getBasicEventListener, getBattleFieldHeight, getBattleFieldWidth, getEnergy, getGraphics, getGunCoolingRate, getGunHeading, getGunHeat, getHeading, getHeight, getInteractiveEventListener, getName, getNumRounds, getNumSentries, getOthers, getPaintEventListener, getRadarHeading, getRobotRunnable, getRoundNum, getSentryBorderSize, getTime, getVelocity, getWidth, getX, getY, onBattleEnded, onBulletHitBullet, onBulletMissed, onHitRobot, onHitWall, onKeyPressed, onKeyReleased, onKeyTyped, onMouseClicked, onMouseDragged, onMouseEntered, onMouseExited, onMouseMoved, onMousePressed, onMouseReleased, onMouseWheelMoved, onPaint, onRobotDeath, onRoundEnded, onStatus, onWin, resume, scan, setAdjustGunForRobotTurn, setAdjustRadarForGunTurn, setAdjustRadarForRobotTurn, setAllColors, setBodyColor, setBulletColor, setColors, setColors, setDebugProperty, setGunColor, setRadarColor, setScanColor, stop, stop, turnGunLeft, turnGunRight, turnLeft, turnRadarLeft, turnRadarRight, turnRight</code></div>
+<code>ahead, back, doNothing, fire, fireBullet, getBasicEventListener, getBattleFieldHeight, getBattleFieldWidth, getEnergy, getGraphics, getGunCoolingRate, getGunHeading, getGunHeat, getHeading, getHeight, getInteractiveEventListener, getName, getNumRounds, getNumSentries, getOthers, getPaintEventListener, getRadarHeading, getRobotRunnable, getRoundNum, getSentryBorderSize, getTime, getVelocity, getWidth, getX, getY, onBattleEnded, onBulletHitBullet, onBulletMissed, onHitRobot, onHitWall, onKeyPressed, onKeyReleased, onKeyTyped, onMouseClicked, onMouseDragged, onMouseEntered, onMouseExited, onMouseMoved, onMousePressed, onMouseReleased, onMouseWheelMoved, onPaint, onRobotDeath, onRoundEnded, onWin, resume, run, scan, setAdjustGunForRobotTurn, setAdjustRadarForGunTurn, setAdjustRadarForRobotTurn, setAllColors, setBodyColor, setBulletColor, setColors, setColors, setDebugProperty, setGunColor, setRadarColor, setScanColor, stop, stop, turnGunLeft, turnGunRight, turnLeft, turnRadarLeft, turnRadarRight, turnRight</code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-robocode._Robot">Methods inherited from class&nbsp;robocode._Robot</h3>
 <code>getBattleNum, getGunCharge, getGunImageName, getLife, getNumBattles, getRadarImageName, getRobotImageName, setGunImageName, setRadarImageName, setRobotImageName</code></div>
@@ -277,37 +236,17 @@ loadScripts(document, 'script');</script>
 <h2>Field Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="MID">
-<h3>MID</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">MID</span></div>
+<section class="detail" id="BINS">
+<h3>BINS</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">BINS</span></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
 <ul class="tag-list">
-<li><a href="../../constant-values.html#hadur117.micro.Eveimear.MID">Constant Field Values</a></li>
+<li><a href="../../constant-values.html#hadur117.micro.Eveimear.BINS">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
-</section>
-</li>
-<li>
-<section class="detail" id="ESCAPE">
-<h3>ESCAPE</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">ESCAPE</span></div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../constant-values.html#hadur117.micro.Eveimear.ESCAPE">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="FIELD">
-<h3>FIELD</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Rectangle.html" title="class or interface in java.awt" class="external-link">Rectangle</a></span>&nbsp;<span class="element-name">FIELD</span></div>
 </section>
 </li>
 <li>
@@ -325,37 +264,15 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="MASK">
-<h3>MASK</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">MASK</span></div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../constant-values.html#hadur117.micro.Eveimear.MASK">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
+<section class="detail" id="searchData">
+<h3>searchData</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/StringBuilder.html" title="class or interface in java.lang" class="external-link">StringBuilder</a></span>&nbsp;<span class="element-name">searchData</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="CLAMP">
-<h3>CLAMP</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">CLAMP</span></div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../constant-values.html#hadur117.micro.Eveimear.CLAMP">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="enemyEnergy">
-<h3>enemyEnergy</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">enemyEnergy</span></div>
+<section class="detail" id="bulletVelocity">
+<h3>bulletVelocity</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">bulletVelocity</span></div>
 </section>
 </li>
 <li>
@@ -365,57 +282,21 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="won">
-<h3>won</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">won</span></div>
+<section class="detail" id="lastEnemyEnergy">
+<h3>lastEnemyEnergy</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">lastEnemyEnergy</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="mode">
-<h3>mode</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">mode</span></div>
+<section class="detail" id="flat">
+<h3>flat</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">flat</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="lastSpeed">
-<h3>lastSpeed</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">lastSpeed</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="since">
-<h3>since</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">since</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="enemyX">
-<h3>enemyX</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">enemyX</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="enemyY">
-<h3>enemyY</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">enemyY</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="tab">
-<h3>tab</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">tab</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="speed">
-<h3>speed</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">speed</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="stats">
-<h3>stats</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">int[][][][]</span>&nbsp;<span class="element-name">stats</span></div>
+<section class="detail" id="hits">
+<h3>hits</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">hits</span></div>
 </section>
 </li>
 </ul>
@@ -441,14 +322,14 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="run()">
-<h3>run</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">run</span>()</div>
+<section class="detail" id="onStatus(robocode.StatusEvent)">
+<h3>onStatus</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onStatus</span><wbr><span class="parameters">(robocode.StatusEvent&nbsp;e)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Runnable.html#run()" title="class or interface in java.lang" class="external-link">run</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a></code></dd>
+<dd><code>onStatus</code>&nbsp;in interface&nbsp;<code>robocode.robotinterfaces.IBasicEvents</code></dd>
 <dt>Overrides:</dt>
-<dd><code>run</code>&nbsp;in class&nbsp;<code>robocode.Robot</code></dd>
+<dd><code>onStatus</code>&nbsp;in class&nbsp;<code>robocode.Robot</code></dd>
 </dl>
 </section>
 </li>
@@ -465,18 +346,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="onBulletHit(robocode.BulletHitEvent)">
-<h3>onBulletHit</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onBulletHit</span><wbr><span class="parameters">(robocode.BulletHitEvent&nbsp;e)</span></div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code>onBulletHit</code>&nbsp;in interface&nbsp;<code>robocode.robotinterfaces.IBasicEvents</code></dd>
-<dt>Overrides:</dt>
-<dd><code>onBulletHit</code>&nbsp;in class&nbsp;<code>robocode.Robot</code></dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="onHitByBullet(robocode.HitByBulletEvent)">
 <h3>onHitByBullet</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onHitByBullet</span><wbr><span class="parameters">(robocode.HitByBulletEvent&nbsp;e)</span></div>
@@ -489,14 +358,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="onCustomEvent(robocode.CustomEvent)">
-<h3>onCustomEvent</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onCustomEvent</span><wbr><span class="parameters">(robocode.CustomEvent&nbsp;e)</span></div>
+<section class="detail" id="onBulletHit(robocode.BulletHitEvent)">
+<h3>onBulletHit</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onBulletHit</span><wbr><span class="parameters">(robocode.BulletHitEvent&nbsp;e)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code>onCustomEvent</code>&nbsp;in interface&nbsp;<code>robocode.robotinterfaces.IAdvancedEvents</code></dd>
+<dd><code>onBulletHit</code>&nbsp;in interface&nbsp;<code>robocode.robotinterfaces.IBasicEvents</code></dd>
 <dt>Overrides:</dt>
-<dd><code>onCustomEvent</code>&nbsp;in class&nbsp;<code>robocode.AdvancedRobot</code></dd>
+<dd><code>onBulletHit</code>&nbsp;in class&nbsp;<code>robocode.Robot</code></dd>
 </dl>
 </section>
 </li>
