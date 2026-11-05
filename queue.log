@@ -10,3 +10,6 @@
 21:16:24 gate exit=2 in 0 s
 21:16:24 skip pr (after gate, which has not finished exit=0)
 21:16:24 ALLDONE
+21:56:33 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
+21:56:33 skip prep (already exit=0)
+21:56:33 skip bench (already exit=0)
