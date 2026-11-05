@@ -85,12 +85,11 @@ class MeleeEnergyPolicyTest {
 
     @Test
     @Tag("MGUN-25")
-    @Tag("MGUN-26")
     @DisplayName("MGUN-25: on at 2.5; at least the far power beyond 300 px with 60 energy or more and three or more left")
     void farPower() {
         assertTrue(MeleeEnergyPolicy.FAR_SPARE);
         assertEquals(2.5, MeleeEnergyPolicy.FAR_SPARE_POWER, 1e-12);
-        assertEquals(60.0, MeleeEnergyPolicy.FAR_SPARE_ENERGY, 1e-12, "MGUN-26: master's floor; the arms lower it");
+        assertEquals(60.0, MeleeEnergyPolicy.FAR_SPARE_ENERGY, 1e-12, "the floor: pc-melee-floor's 40 and 50 failed (PR #656)");
         assertEquals(2.5, MeleeEnergyPolicy.crowdPower(1.5, 600, 60, 50, 5), 1e-9, "on: 2.5 beyond 300 px from 60 energy");
         assertEquals(1.92, MeleeEnergyPolicy.crowdPower(1.5, 600, 59, 50, 5), 1e-9, "under 60 energy MGUN-13 stands");
         assertEquals(3.0, MeleeEnergyPolicy.farPower(1.92, 600, 70, 50, 5, true, 3.0), 1e-9);
