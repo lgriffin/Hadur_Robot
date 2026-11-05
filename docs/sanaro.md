@@ -560,8 +560,9 @@ weaker fire buys survival at no APS cost. Holding fire is the end of that slope.
 
 `hadur-bench/plans/pc-sanaro-n11.queue` measures three hold ranges on 0.4's source: H512, H480 and
 H400, against S4 (0.4 as banked). They are over the byte limit on purpose. Leigh (2026-11-05): measure
-the idea first, then find the bytes for the winner. H512 is the cheapest form, `| d >> 9` on the gate
-at 5 bytes. The hand pass (bearing kept on the stack, `dup2_x1` for the aim) frees 4 bytes, so H512
+the idea first, then find the bytes for the winner. H512's cheapest form ORs `d >> 9` into the gate's integer before the
+compare, `if (((int) (aim * (range = d)) / GATE | d >> 9) == 0)`: javac 249 -> 254 B, 5 bytes (checked 2026-11-05). The arm is built as
+`&& d < 512`, which plays the same (arms.txt splits on `|`). The hand pass (bearing kept on the stack, `dup2_x1` for the aim) frees 4 bytes, so H512
 needs one more byte to fit. Melee cards may be field-wide (Leigh, 2026-11-03 22:18).
 
 The card's pilot is the first 4 of each arm's 20 seeds. `sanaro_read.py --stop-below 0` stops the card

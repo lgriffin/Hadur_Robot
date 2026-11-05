@@ -27,7 +27,9 @@
 # N14 (pc-sanaro-n11), on 0.4's source (BAND 480): hold fire past a range. 0.4 never holds: past 480 px
 # its step is 0 and setFire(0) fires 0.1 (Robocode lifts it). These arms fire nothing past N px, so the
 # gun stays cool for the next near target. Measured over the byte limit (Leigh 2026-11-05: test first,
-# find the bytes for a winner); `| d >> 9` on the gate is the 5-byte form of H512, 250 B with the hand pass.
+# find the bytes for a winner). H512's 5-byte form ORs d >> 9 into the gate's integer before the compare,
+# if (((int) (aim * (range = d)) / GATE | d >> 9) == 0): javac 249 -> 254 B, 250 B with the hand pass.
+# The arm is written && d < 512 (same play) because this file splits fields on the bar.
 S4 | Sanaro 0.4 as it ships (control, 249 B) |
 H512 | hold fire past 512 px (5 B: 250 B with the hand pass; measure only) | s#/ GATE == 0)#/ GATE == 0 \&\& d < 512)#
 H480 | hold fire past 480 px, where 0.4's step reaches 0 (measure only) | s#/ GATE == 0)#/ GATE == 0 \&\& d < 480)#

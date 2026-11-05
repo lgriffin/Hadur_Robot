@@ -11,8 +11,8 @@
 # gun heat. That is about 10 ticks in which a robot that closes to 200 px cannot be shot at full
 # power. n09 and n10 found that weaker fire buys survival (23.8 to 28.2) at no APS cost, and B480
 # passed twice (+0.10, +0.30). Holding fire is the end of that slope: no energy and no heat spent on
-# far shots. H512 is the 5-byte form (`| d >> 9` on the gate), which fits at 250 B with the hand pass
-# plus one byte found later. H480 and H400 measure the slope. The arms are over the byte limit on
+# far shots. H512's 5-byte form is if (((int) (aim * (range = d)) / GATE | d >> 9) == 0) (javac 249 ->
+# 254 B; 250 B with the hand pass, so one byte short); the arm is built as && d < 512, the same play. H480 and H400 measure the slope. The arms are over the byte limit on
 # purpose (Leigh 2026-11-05: measure the idea first, then find the bytes for a winner).
 #
 # Arms (sanaro-arms/arms.txt, on 0.4's source):
