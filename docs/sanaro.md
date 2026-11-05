@@ -599,3 +599,22 @@ the 9 ticks before the gun is cool. n03 tried LOCK 1.0, which locks sooner, and 
 never-sweeping radar lost 2 to 4.4. So the slope says to sweep for longer. `hadur-bench/plans/pc-sanaro-n12.queue`
 measures LOCK 0.7 (K7), 0.5 (K5) and 0.3 (K3) against S4 on the live-shaped census, with n11's pilot
 gate (BENCH-196). Each arm is 249 B: LOCK is one constant.
+
+## 25. pc-sanaro-n12 results (PR #664): LOCK 0.9 stays
+
+The card stopped at its pilot (4 seeds, 172 battles an arm):
+
+| Arm | APS | vs S4 | Survival |
+|---|---|---|---|
+| S4 (LOCK 0.9) | 66.17 ± 0.36 | | 27.7 |
+| K7 (0.7) | 64.64 ± 0.32 | -1.79 ± 0.48 | 26.0 |
+| K5 (0.5) | 62.91 ± 0.45 | -3.62 ± 0.57 | 19.9 |
+| K3 (0.3) | 65.40 ± 0.34 | -1.12 ± 0.49 | 27.2 |
+
+Sweeping longer loses too. With n03's LOCK 1.0 (-1.72), the threshold is a peak at 0.9 on both sides.
+So section 23's radar account is not confirmed: more sweep does not buy survival. The lock time is
+already tuned. K5's drop below K3 is not monotonic, so part of each reading is noise, but every arm is
+below S4 by more than its interval.
+
+Sanaro's cheap levers are now measured: BAND (passed: 0.4), lead, power tables, spiral, fire gate,
+holding fire and the radar threshold. 0.4 stays the candidate (B480, +0.10 in n09 and +0.30 in n10).
