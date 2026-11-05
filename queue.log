@@ -20,3 +20,5 @@
 21:40:35 pilot exit=0 in 248 s
 21:40:35 start screen
 21:40:35 watching screen: 4 stop rule(s)
+21:56:18 screen exit=130 in 943 s (stopped)
+21:56:18 stopped; rerun to resume from the interrupted steps
