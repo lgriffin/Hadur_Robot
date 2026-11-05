@@ -1,0 +1,19 @@
+{
+ "plan": "pc-eveimear-cot",
+ "updated": 1793905763.957081,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "bench": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
