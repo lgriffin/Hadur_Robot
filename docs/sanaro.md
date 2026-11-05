@@ -597,6 +597,7 @@ n11 points at the radar. A shot heats the gun to between 1.02 and 1.6, and the g
 With LOCK at 0.9 the radar sweeps for only 1 to 7 ticks after each shot. It then sits on one robot for
 the 9 ticks before the gun is cool. n03 tried LOCK 1.0, which locks sooner, and lost 1.72; n11's
 never-sweeping radar lost 2 to 4.4. So the slope says to sweep for longer. `hadur-bench/plans/pc-sanaro-n12.queue`
+(run and removed, results in section 25)
 measures LOCK 0.7 (K7), 0.5 (K5) and 0.3 (K3) against S4 on the live-shaped census, with n11's pilot
 gate (BENCH-196). Each arm is 249 B: LOCK is one constant.
 
@@ -611,7 +612,12 @@ The card stopped at its pilot (4 seeds, 172 battles an arm):
 | K5 (0.5) | 62.91 ± 0.45 | -3.62 ± 0.57 | 19.9 |
 | K3 (0.3) | 65.40 ± 0.34 | -1.12 ± 0.49 | 27.2 |
 
-Sweeping longer loses too. With n03's LOCK 1.0 (-1.72), the threshold is a peak at 0.9 on both sides.
+The APS and vs S4 columns are sanaro_read.py's own figures. APS is the arm's mean over its NanoMelee
+pairings (opponents). vs S4 is the field-by-field paired difference, which weights each of the 43
+fields equally, so it is not the gap between the APS cells. Sections 21 and 23 use the same two bases.
+
+Sweeping longer loses too. No LOCK below 0.9 beat S4 in this pilot, and n03's LOCK 1.0 lost 1.72 in
+its own run. 0.8 and 0.95 are untested, so 0.9 is the best measured value, not a proven peak.
 So section 23's radar account is not confirmed: more sweep does not buy survival. The lock time is
 already tuned. K5's drop below K3 is not monotonic, so part of each reading is noise, but every arm is
 below S4 by more than its interval.
