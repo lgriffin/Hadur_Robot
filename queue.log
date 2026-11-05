@@ -23,3 +23,15 @@
 20:23:51 pilot-EW exit=0 in 551 s
 20:23:51 start pilot-EB
 20:23:51 watching pilot-EB: 3 stop rule(s)
+20:33:01 pilot-EB exit=0 in 550 s
+20:33:01 start pilot
+20:33:11 pilot exit=3 in 9 s
+20:33:11 skip live-S4 (after pilot, which has not finished exit=0)
+20:33:11 skip live-QT (after live-S4, which has not finished exit=0)
+20:33:11 skip live-QP (after live-QT, which has not finished exit=0)
+20:33:11 skip live-QTP (after live-QP, which has not finished exit=0)
+20:33:11 skip live-EW (after live-QTP, which has not finished exit=0)
+20:33:11 skip live-EB (after live-EW, which has not finished exit=0)
+20:33:11 skip read-live (after live-EB, which has not finished exit=0)
+20:33:11 skip pr (after read-live, which has not finished exit=0)
+20:33:11 ALLDONE

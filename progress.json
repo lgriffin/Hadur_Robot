@@ -1,6 +1,6 @@
 {
  "plan": "pc-sanaro-q",
- "updated": 1793910245.6575148,
+ "updated": 1793910791.7175634,
  "steps": {
   "prep": {
    "status": "done",
@@ -45,35 +45,48 @@
    "end": "2026-11-05T20:23:51"
   },
   "pilot-EB": {
-   "status": "running",
-   "start": "2026-11-05T20:23:51"
+   "status": "done",
+   "exit": 0,
+   "seconds": 550,
+   "end": "2026-11-05T20:33:01"
   },
   "pilot": {
-   "status": "pending"
+   "status": "failed",
+   "exit": 3,
+   "seconds": 9,
+   "end": "2026-11-05T20:33:11"
   },
   "live-S4": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after pilot"
   },
   "live-QT": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after live-S4"
   },
   "live-QP": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after live-QT"
   },
   "live-QTP": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after live-QP"
   },
   "live-EW": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after live-QTP"
   },
   "live-EB": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after live-EW"
   },
   "read-live": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after live-EB"
   },
   "pr": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after read-live"
   }
  },
  "watched": [
@@ -295,8 +308,8 @@
   {
    "step": "pilot-EB",
    "started": 1793910231.5353239,
-   "updated": 1793910245.6435177,
-   "elapsed": 14.10819387435913,
+   "updated": 1793910781.8776965,
+   "elapsed": 550.3423726558685,
    "expected": 172,
    "panel": null,
    "field": null,
@@ -304,20 +317,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 0,
+   "battles": 172,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": null,
-   "eta": null,
-   "fraction": 0.0,
-   "last_battle_age": 14.10819387435913,
+   "rate": 1125.117800782511,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 0.21238374710083008,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 0"
+     "detail": "0 failed of 172"
     },
     {
      "rule": "stall 30m",
@@ -328,12 +341,12 @@
     {
      "rule": "skips 40 over 100",
      "action": "halt",
-     "state": "waiting",
-     "detail": "0 of 100 battles to read"
+     "state": "ok",
+     "detail": "0.0 a battle over the last 100 (first 100: 0.0)"
     }
    ],
-   "skips_mean": null,
-   "skips_last100": null
+   "skips_mean": 0.005813953488372093,
+   "skips_last100": 0
   }
  ]
 }
