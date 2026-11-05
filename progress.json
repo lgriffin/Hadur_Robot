@@ -1,12 +1,16 @@
 {
  "plan": "pc-eveimear-port",
- "updated": 1793911654.337894,
+ "updated": 1793912565.2617564,
  "steps": {
   "prep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 13,
+   "end": "2026-11-05T20:47:47"
   },
   "bench": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-05T20:47:47"
   },
   "gate": {
    "status": "pending"
@@ -15,5 +19,143 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "bench",
+   "started": 1793911667.4957309,
+   "updated": 1793912563.8379958,
+   "elapsed": 896.3422648906708,
+   "expected": 6720,
+   "panel": 112,
+   "field": null,
+   "multiarm": true,
+   "arms": [
+    {
+     "arm": "c",
+     "battles": 710,
+     "failed": 0,
+     "level": 81.0666151856576,
+     "skips": 0,
+     "fresh": 710,
+     "scored": 710,
+     "diff": null
+    },
+    {
+     "arm": "aa",
+     "battles": 709,
+     "failed": 0,
+     "level": 81.09913775832302,
+     "skips": 0.0014104372355430183,
+     "fresh": 709,
+     "scored": 709,
+     "diff": 0.03252257266542997,
+     "n": 112,
+     "ci95": 0.07956375307765555,
+     "half_stop": 0.12178125471069727,
+     "scale": null
+    },
+    {
+     "arm": "cot",
+     "battles": 710,
+     "failed": 5,
+     "level": 83.40564189839189,
+     "skips": 0.01702127659574468,
+     "fresh": 710,
+     "scored": 705,
+     "diff": 1.9749342004341999,
+     "n": 111,
+     "ci95": 0.7098078975025399,
+     "half_stop": 1.0864406594426632,
+     "scale": null
+    },
+    {
+     "arm": "XR",
+     "battles": 710,
+     "failed": 0,
+     "level": 82.9685848149866,
+     "skips": 0.01267605633802817,
+     "fresh": 710,
+     "scored": 710,
+     "diff": 1.8841577864100192,
+     "n": 112,
+     "ci95": 0.6594687754401608,
+     "half_stop": 1.0093909828165726,
+     "scale": null
+    },
+    {
+     "arm": "P",
+     "battles": 707,
+     "failed": 0,
+     "level": 83.37733464749536,
+     "skips": 0.016973125884016973,
+     "fresh": 707,
+     "scored": 707,
+     "diff": 2.29290761891878,
+     "n": 112,
+     "ci95": 0.7916355097457758,
+     "half_stop": 1.211687004712922,
+     "scale": null
+    }
+   ],
+   "aa": {
+    "diff": 0.03252257266542997,
+    "ci": 0.07956375307765555,
+    "n": 112,
+    "band": 0.4383374633618345,
+    "ok": true,
+    "band_stop": 0.5096947248393424
+   },
+   "warnings": [
+    "arm cot's jar opponents/jk.micro.Cotillion_0.8.jar was built 695 h before this step started: check it is not stale"
+   ],
+   "battles": 3546,
+   "resumed": 0,
+   "failed": 5,
+   "disables": 0,
+   "rate": 14241.88114297729,
+   "eta": 802.3097430239676,
+   "fraction": 0.5276785714285714,
+   "last_battle_age": 0.04025101661682129,
+   "rules": [
+    {
+     "rule": "fails 30",
+     "action": "halt",
+     "state": "ok",
+     "detail": "5 failed of 3546"
+    },
+    {
+     "rule": "dead 8",
+     "action": "halt",
+     "state": "ok",
+     "detail": "every arm scoring"
+    },
+    {
+     "rule": "skips 60 over 200",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0.0 a battle over the last 200 (first 200: 0.0)"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "aa after 20%",
+     "action": "halt",
+     "state": "ok",
+     "detail": "aa - c +0.03 pts over 112 robots, stop band \u00b10.51"
+    },
+    {
+     "rule": "futility P below 0.3 after 20%",
+     "action": "finish",
+     "state": "ok",
+     "detail": "P +2.29, best case +3.50 pts vs bar +0.30"
+    }
+   ],
+   "skips_mean": 0.009601807399039819,
+   "skips_last100": 0
+  }
+ ]
 }
