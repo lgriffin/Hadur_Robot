@@ -10,3 +10,9 @@
 16:34:47 pilot-S4 exit=0 in 576 s
 16:34:47 start pilot-K7
 16:34:47 watching pilot-K7: 3 stop rule(s)
+16:44:53 pilot-K7 exit=0 in 605 s
+16:44:53 start pilot-K5
+16:44:53 watching pilot-K5: 3 stop rule(s)
+16:54:46 pilot-K5 exit=0 in 593 s
+16:54:46 start pilot-K3
+16:54:46 watching pilot-K3: 3 stop rule(s)
