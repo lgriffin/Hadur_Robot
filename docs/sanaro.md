@@ -588,3 +588,12 @@ The 0.1 shots past 480 px are not wasted: they heat the gun, and that sends the 
 nearer the hold, the longer the radar stays locked, which matches the order H512 ≈ H480 > H400.
 
 Holding fire is dead. 0.4 (B480, +0.30 in n10) stays the candidate, on Leigh's word.
+
+## 24. The next card: pc-sanaro-n12 (stage N15), a radar that sweeps longer
+
+n11 points at the radar. A shot heats the gun to between 1.02 and 1.6, and the gun cools 0.1 a tick.
+With LOCK at 0.9 the radar sweeps for only 1 to 7 ticks after each shot. It then sits on one robot for
+the 9 ticks before the gun is cool. n03 tried LOCK 1.0, which locks sooner, and lost 1.72; n11's
+never-sweeping radar lost 2 to 4.4. So the slope says to sweep for longer. `hadur-bench/plans/pc-sanaro-n12.queue`
+measures LOCK 0.7 (K7), 0.5 (K5) and 0.3 (K3) against S4 on the live-shaped census, with n11's pilot
+gate (BENCH-196). Each arm is 249 B: LOCK is one constant.
