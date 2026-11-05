@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hadur117.core.memory.Estimate;
 import hadur117.core.memory.Tiers;
+import hadur117.core.physics.Rules;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -219,5 +220,26 @@ class PowerPolicyTest {
     void tooMuchEnergyIsNotAKillShot() {
         assertTrue(Double.isNaN(PowerPolicy.leastPowerThatKills(16.01)));
         assertTrue(Double.isNaN(PowerPolicy.leastPowerThatKills(80)));
+    }
+
+    @Test
+    @Tag("POW-16")
+    @DisplayName("POW-16: an x.x5 power at or below the chosen one whose speed, read back from the energy drop, rounds apart")
+    void x5PowerHidesTheSpeed() {
+        for (double energy : new double[] {100.0, 87.3, 64.15, 33.33, 12.7}) {
+            for (double power : new double[] {3.0, 2.5, 1.96, 1.2, 0.5}) {
+                double p = PowerPolicy.x5(power, energy);
+                assertTrue(p <= power, p + " above " + power);
+                if (p != power) {
+                    assertEquals(0.5, Math.abs(p * 30 - Math.floor(p * 30)), 1e-9, p + " is not an x.x5 power");
+                    assertTrue(power - p < 0.45, "at most four steps of 0.1 below: " + p);
+                    double read = energy - (energy - p);
+                    assertTrue(Math.round(Rules.getBulletSpeed(read) * 10) != Math.round(Rules.getBulletSpeed(p) * 10),
+                        "the speed read from the drop rounds apart from the bullet's at " + p + ", energy " + energy);
+                }
+            }
+        }
+        assertEquals(0.1, PowerPolicy.x5(0.1, 50.0), 0.0, "below 0.15 the power stands");
+        assertEquals(2.45, PowerPolicy.x5(2.45, 2.0), 0.0, "no x.x5 power our energy can pay for: the shot keeps its own");
     }
 }

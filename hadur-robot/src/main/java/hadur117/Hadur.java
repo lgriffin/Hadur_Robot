@@ -263,6 +263,10 @@ public class Hadur extends TeamRobot {
             for (String name : ShieldTableData.mimicOns()) lines.add(ShieldList.MIMIC_ON_PREFIX + " " + name);
             // POW-15: per-opponent full-power rules off.
             for (String name : ShieldTableData.fullOffs()) lines.add(ShieldList.FULL_OFF_PREFIX + " " + name);
+            // POW-16: per-opponent x.x5 powers.
+            for (String name : ShieldTableData.x5Powers()) lines.add(ShieldList.X5_POWER_PREFIX + " " + name);
+            // RAM-6: per-rammer escape dodge cost.
+            for (String name : ShieldTableData.ramDodges()) lines.add(ShieldList.RAM_DODGE_PREFIX + " " + name);
             // SKEY-2: per-opponent surf keys.
             for (String key : ShieldTableData.surfKeys()) lines.add(ShieldList.SURF_KEY_PREFIX + " " + key);
             return ShieldList.parse(lines);
