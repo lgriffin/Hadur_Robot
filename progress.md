@@ -1,6 +1,6 @@
 # Queue pc-mirror: progress
 
-Updated 2026-11-05 12:03:47 PC time (12:03 UTC), runner pid 55080.
+Updated 2026-11-05 12:18:51 PC time (12:18 UTC), runner pid 55080.
 
 - `prep` done, exit 0 in 1 min
 - `pilot` done, exit 0 in 38 min
@@ -41,28 +41,28 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### mirror
 
-**7550 of 10920 battles** (69%), 0 failed, 1820 read back from an earlier run. Running 3.2 h, 1798 battles/h, about 1.9 h left (ends ~13:56 PC time). Last battle 0 min ago.
-Skipped turns a battle: 116.0 overall, first 100 60.4, last 100 5.5; engine disables 33.
+**7977 of 10920 battles** (73%), 0 failed, 1820 read back from an earlier run. Running 3.4 h, 1656 battles/h, about 1.8 h left (ends ~14:05 PC time). Last battle 0 min ago.
+Skipped turns a battle: 108.3 overall, first 100 60.4, last 100 4.2; engine disables 33.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 1511 | 0 | 75.37 | - | - | - | 29.4 |
-| aa | 1511 | 0 | 75.01 | -0.03 (91 robots) | ±0.02 | -0.06 .. +0.01 | 29.3 |
-| bb | 1510 | 0 | 86.07 | +0.81 (91 robots) | ±0.10 | +0.66 .. +0.97 | 196.1 |
-| sg | 1510 | 0 | 71.68 | -0.26 (91 robots) | ±0.24 | -0.62 .. +0.10 | 174.3 |
-| ns | 1508 | 0 | 86.64 | +0.86 (91 robots) | ±0.10 | +0.70 .. +1.01 | 153.3 |
+| c | 1595 | 0 | 75.36 | - | - | - | 28.3 |
+| aa | 1597 | 0 | 75.04 | -0.02 (91 robots) | ±0.02 | -0.06 .. +0.01 | 28.1 |
+| bb | 1595 | 0 | 86.13 | +0.82 (91 robots) | ±0.10 | +0.66 .. +0.97 | 185.8 |
+| sg | 1595 | 0 | 71.91 | -0.25 (91 robots) | ±0.23 | -0.59 .. +0.10 | 165.1 |
+| ns | 1595 | 0 | 86.72 | +0.86 (91 robots) | ±0.10 | +0.71 .. +1.01 | 145.1 |
 
 APS = mean difference over the robots read x 91 panel robots / 1217 pairings.
-A/A: aa - c -0.35 pts over 91 robots; 1% band ±0.30 (OUTSIDE: comparisons void).
+A/A: aa - c -0.32 pts over 91 robots; 1% band ±0.29 (OUTSIDE: comparisons void).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 7550 |
+| `fails 30` | halt | ok | 0 failed of 7977 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 60 over 200 arms c aa` | halt | ok | 8.9 a battle over the last 200 (first 200: 29.4) |
+| `skips 60 over 200 arms c aa` | halt | ok | 8.1 a battle over the last 200 (first 200: 29.4) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 3370 battles unrun (about 1.9 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 2943 battles unrun (about 1.8 h); every battle already fought is kept and a rerun resumes from it.
 
 > warning: arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 715 h before this step started: check it is not stale
 
