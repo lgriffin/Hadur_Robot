@@ -1,0 +1,58 @@
+{
+ "plan": "pc-sanaro-q",
+ "updated": 1793907524.9946039,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "arms": {
+   "status": "pending"
+  },
+  "pilot-S4": {
+   "status": "pending"
+  },
+  "pilot-QT": {
+   "status": "pending"
+  },
+  "pilot-QP": {
+   "status": "pending"
+  },
+  "pilot-QTP": {
+   "status": "pending"
+  },
+  "pilot-EW": {
+   "status": "pending"
+  },
+  "pilot-EB": {
+   "status": "pending"
+  },
+  "pilot": {
+   "status": "pending"
+  },
+  "live-S4": {
+   "status": "pending"
+  },
+  "live-QT": {
+   "status": "pending"
+  },
+  "live-QP": {
+   "status": "pending"
+  },
+  "live-QTP": {
+   "status": "pending"
+  },
+  "live-EW": {
+   "status": "pending"
+  },
+  "live-EB": {
+   "status": "pending"
+  },
+  "read-live": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
