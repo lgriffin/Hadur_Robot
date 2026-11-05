@@ -29,9 +29,10 @@
 # read:    multiarm.py (every arm on the panel), mirror_read.py (per name: each arm's share, survival, damage dealt
 #          and taken a round; the best rival; its edge: gun, movement or survival), per_robot.py (each rival minus c
 #          with its interval). Nothing ships from this card: it feeds the next cards, each gated on fresh seeds.
-# Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 150+ skipped turns a
-# battle over the last 200 (the rivals' own jars skip more turns than Hadur, so only a broken host trips it), or no
-# battle in 30 minutes; every battle fought is kept and a rerun resumes. ALERT opens an issue for Leigh on any stop.
+# Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a
+# battle over Hadur's (c and aa) last 200 battles, or no battle in 30 minutes. The rivals' jars skip 140 to 180 turns
+# a battle by design (issue #657: the first run's all-arms skips rule halted the pilot at 784 battles), so the skips
+# rule watches Hadur's arms only; every battle fought is kept and a rerun resumes. ALERT opens an issue for Leigh on any stop.
 # Nullstride has no archive jar: prep copies it from the RoboRumble client's robots directory when it is there and
 # adds the ns arm; without it the mirror runs c, aa, bb and sg.
 
@@ -49,7 +50,7 @@ pilot | ./bench-top20.sh ${C} ${P} --set panel-mirror.txt --seeds 4 --seed-base 
   watch: field=1217
   stop: fails 30
   stop: dead 8
-  stop: skips 150 over 200
+  stop: skips 60 over 200 arms c aa
   stop: stall 30m
 
 mirror | if [ -f work/mirror.stop ]; then echo 'pilot: the bench does not see the rivals lead, mirror skips'; exit 0; fi && ./bench-top20.sh ${C} ${P} --set panel-mirror.txt --seeds 24 --seed-base 9800 --arms work/mirror.arms --out ${W} --label mirror --shuffle-jobs
@@ -57,7 +58,7 @@ mirror | if [ -f work/mirror.stop ]; then echo 'pilot: the bench does not see th
   watch: field=1217
   stop: fails 30
   stop: dead 8
-  stop: skips 150 over 200
+  stop: skips 60 over 200 arms c aa
   stop: stall 30m
 
 read | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_mirror.md && python3 tools/mirror_read.py ${W}/arms.tsv --rivals $(grep -oE '^(bb|sg|ns) ' work/mirror.arms) --out ${OUT}/$(date +%Y-%m-%d)_mirror-read.md --out-tsv ${OUT}/mirror-read.tsv && python3 tools/per_robot.py ${W}/arms.tsv --arms $(grep -oE '^(bb|sg|ns) ' work/mirror.arms) --out ${OUT}/$(date +%Y-%m-%d)_mirror-per-robot.md --out-tsv ${OUT}/mirror-per-robot.tsv

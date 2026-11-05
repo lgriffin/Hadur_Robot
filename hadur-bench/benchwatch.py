@@ -28,8 +28,11 @@ two-sided a look), not the 95% the gates use, so looking every minute does not t
     fails N                       N failed battles (crash, broken jar, engine refusing a robot). halt
     dead K                        an arm with K or more battles and not one point scored in any of them:
                                   a jar that does not load or a stale/wrong build. halt
-    skips S [over W]              the last W battles (default 100) skip S or more turns a battle on
-                                  average: the skipped-turn build-up of PR #331. halt
+    skips S [over W] [arms A B ..]
+                                  the last W battles (default 100) skip S or more turns a battle on
+                                  average: the skipped-turn build-up of PR #331. halt. With arms, only
+                                  those arms' battles count (a card whose arms include other robots'
+                                  jars, which skip turns by design, watches Hadur's arms alone).
     stall M                       no battle finished for M (90s, 30m, 1h): a hung step. halt
     aa [after F%]                 the A/A arm's difference from the control outside its band at Z_STOP
                                   (multiarm.aa_check's band, 2.58 there): the bench has an arm defect,
@@ -113,6 +116,13 @@ class Rule:
             raise WatchError("empty stop rule")
         self.kind, rest = words[0], words[1:]
         self.after = 0.0
+        self.arms = ()
+        if self.kind == "skips" and "arms" in rest:
+            i = rest.index("arms")
+            self.arms = tuple(rest[i + 1:])
+            rest = rest[:i]
+            if not self.arms:
+                raise WatchError(f"stop: {self.text}: 'arms' needs at least one arm")
         if "after" in rest:
             i = rest.index("after")
             if i + 1 >= len(rest):
@@ -196,6 +206,12 @@ class Spec:
                 if not self.shuffled:
                     raise WatchError(f"stop: {r.text}: needs --shuffle-jobs on the step, else a partial run "
                                      "reads only the set's first robots")
+                missing = [a for a in r.arms if self.arm_labels and a not in self.arm_labels]
+                if missing:
+                    raise WatchError(f"stop: {r.text}: no arm '{missing[0]}' in {self.arms_file}")
+            if r.kind == "skips" and r.arms:
+                if not self.multiarm:
+                    raise WatchError(f"stop: {r.text}: 'arms' needs an --arms step (a step log has no arm per battle)")
                 missing = [a for a in r.arms if self.arm_labels and a not in self.arm_labels]
                 if missing:
                     raise WatchError(f"stop: {r.text}: no arm '{missing[0]}' in {self.arms_file}")
@@ -292,6 +308,7 @@ def summarize(spec, rules, step_log, started, now=None):
         # A failed row from before this step started is a battle Bench fights again, not a new failure.
         s["failed"] = sum(1 for r in fresh if r["ok"] != "true")
         skips = [int(r["skippedTurns"]) for r in fresh if r["ok"] == "true"]
+        s["skips_arm"] = [(r["arm"], int(r["skippedTurns"])) for r in fresh if r["ok"] == "true"]
         last_t = max((r["_t"] for r in fresh), default=None)
         recent_t = [r["_t"] for r in fresh if r["_t"] >= now - RATE_WINDOW]
         s["disables"] = sum(int(r["engineDisables"]) for r in fresh)
@@ -388,6 +405,8 @@ def evaluate(rule, spec, s):
             out["state"] = "TRIPPED"
     elif k == "skips":
         sk = s["skips"]
+        if rule.arms:
+            sk = [v for a, v in s.get("skips_arm", []) if a in rule.arms]
         if len(sk) < rule.window:
             out.update(state="waiting", detail=f"{len(sk)} of {rule.window} battles to read")
             return out
@@ -512,6 +531,6 @@ def render_step(name, spec, s):
 
 
 def to_json(s):
-    return {k: v for k, v in s.items() if k not in ("rows", "skips")} | {
+    return {k: v for k, v in s.items() if k not in ("rows", "skips", "skips_arm")} | {
         "skips_mean": st.mean(s["skips"]) if s["skips"] else None,
         "skips_last100": st.mean(s["skips"][-100:]) if s["skips"] else None}
