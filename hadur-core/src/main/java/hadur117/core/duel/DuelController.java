@@ -359,6 +359,8 @@ public final class DuelController {
         if (flatOn) on.add("flat");
         if (mimicOn) on.add("mimic");
         if (fullOff) on.add("fulloff");
+        if (x5Power) on.add("x5");
+        if (ramDodge) on.add("ramdodge");
         if (shield != null && shield.active()) on.add("shield");
         return on.isEmpty() ? "-" : String.join(",", on);
     }
@@ -889,6 +891,10 @@ public final class DuelController {
     private boolean mimicOn;
     /** POW-15: whether the table turned the full-power rules off for this opponent. */
     private boolean fullOff;
+    /** POW-16: whether the table holds the duel's shots to x.x5 powers for this opponent. */
+    private boolean x5Power;
+    /** RAM-6: whether the table gave the rammer escape the heavy shot cost for this opponent. */
+    private boolean ramDodge;
 
     /** DODGE-5: the escape angle a bullet read is scored loosely at while the planner is on; NaN otherwise. */
     private double dodgeEscape(Wave w) {
@@ -1344,6 +1350,11 @@ public final class DuelController {
         }
         // POW-15: the full-power rules off for the opponents the table names.
         fullOff = duelOnly(stackList.fullOff(name), enemiesTotal);
+        // POW-16: x.x5 powers for the opponents the table names.
+        x5Power = duelOnly(stackList.x5Power(name), enemiesTotal);
+        // RAM-6: the rammer escape's heavy shot cost, for the rammers the table names.
+        ramDodge = duelOnly(stackList.ramDodge(name), enemiesTotal);
+        ramEscape.setHeavyHitCost(ramDodge);
         // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names, never a shield-mode one
         // (its TripHammer aims break the shield's bullet hits); the gun keeps them 1v1-only.
         if (duelOnly(stackList.gunStack(name) && !stackList.matches(name), enemiesTotal)) {
@@ -1901,6 +1912,8 @@ public final class DuelController {
         // aim), the conductor's fire permission (WEAVE-3) and a gun that is hot or off target.
         // END-4: the last of our lead is kept once the enemy can no longer fire.
         double firePower = PowerPolicy.payable(bulletPower, in.energy());
+        // POW-16: an x.x5 power whose speed the opponent misreads from our energy drop, for an opponent the table names.
+        if (x5Power && !Double.isNaN(firePower)) firePower = PowerPolicy.x5(firePower, in.energy());
         boolean end4 = !Double.isNaN(firePower) && PowerPolicy.holdsLastShot(in.energy(), firePower,
             lastEnemyEnergy, smallestEnemyPower);
         if (end4 != end4Holding) {

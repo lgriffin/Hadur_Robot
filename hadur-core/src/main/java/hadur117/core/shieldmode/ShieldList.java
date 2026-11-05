@@ -72,6 +72,10 @@ public final class ShieldList {
     public static final String MIMIC_ON_PREFIX = "mimic-on:";
     /** POW-15: a line starting with this names an opponent the duel never fires the full-power rules (POW-1 to POW-4) at. */
     public static final String FULL_OFF_PREFIX = "full-off:";
+    /** POW-16: a line starting with this names an opponent the duel fires only x.x5 powers at. */
+    public static final String X5_POWER_PREFIX = "x5-power:";
+    /** RAM-6: a line starting with this names a rammer the escape dodges its shots in flight from at a heavy cost. */
+    public static final String RAM_DODGE_PREFIX = "ram-dodge:";
     /**
      * SKEY-2: a line starting with this gives an opponent's surf key: nine multipliers on the hit
      * views' key weights, one on the kernel width, then the name ({@code "m1 ... m9 bw name"}).
@@ -94,6 +98,10 @@ public final class ShieldList {
     static final int MIMIC_ON = 64;
     /** POW-15: the per-opponent full-power-off switch's bit in {@link #switches}. */
     static final int FULL_OFF = 128;
+    /** POW-16: the per-opponent x.x5 power switch's bit in {@link #switches}. */
+    static final int X5_POWER = 256;
+    /** RAM-6: the per-opponent rammer dodge switch's bit in {@link #switches}. */
+    static final int RAM_DODGE = 512;
 
     private final Set<String> entries;
     /** SHIELD-17: the opening-drive list. */
@@ -144,7 +152,9 @@ public final class ShieldList {
                     : entry.startsWith(EXIT_LATE_PREFIX) ? EXIT_LATE : entry.startsWith(EXIT_OFF_PREFIX) ? EXIT_OFF
                     : entry.startsWith(STILL_PREFIX) ? STILL : entry.startsWith(FLAT_ON_PREFIX) ? FLAT_ON
                     : entry.startsWith(MIMIC_ON_PREFIX) ? MIMIC_ON
-                    : entry.startsWith(FULL_OFF_PREFIX) ? FULL_OFF : 0;
+                    : entry.startsWith(FULL_OFF_PREFIX) ? FULL_OFF
+                    : entry.startsWith(X5_POWER_PREFIX) ? X5_POWER
+                    : entry.startsWith(RAM_DODGE_PREFIX) ? RAM_DODGE : 0;
                 if (bit != 0) {
                     String name = entry.substring(entry.indexOf(':') + 1).trim();
                     if (!name.isEmpty() && (switches.containsKey(name) || switches.size() < MAX_ENTRIES)) {
@@ -403,6 +413,25 @@ public final class ShieldList {
      */
     public boolean fullOff(String robotName) {
         return (switchBits(robotName) & FULL_OFF) != 0;
+    }
+
+    /**
+     * POW-16: whether the duel fires only x.x5 powers at {@code robotName}, by the rule of {@link #matches}.
+     *
+     * @param robotName the scanned robot's name, or null
+     */
+    public boolean x5Power(String robotName) {
+        return (switchBits(robotName) & X5_POWER) != 0;
+    }
+
+    /**
+     * RAM-6: whether the rammer escape weighs a path that meets one of {@code robotName}'s shots at
+     * the heavy cost, by the rule of {@link #matches}.
+     *
+     * @param robotName the scanned robot's name, or null
+     */
+    public boolean ramDodge(String robotName) {
+        return (switchBits(robotName) & RAM_DODGE) != 0;
     }
 
     private int switchBits(String robotName) {
