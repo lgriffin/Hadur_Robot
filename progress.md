@@ -1,6 +1,6 @@
 # Queue pc-mirror: progress
 
-Updated 2026-11-05 13:04:27 PC time (13:04 UTC), runner pid 55080.
+Updated 2026-11-05 13:20:18 PC time (13:20 UTC), runner pid 55080.
 
 - `prep` done, exit 0 in 1 min
 - `pilot` done, exit 0 in 38 min
@@ -41,28 +41,28 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### mirror
 
-**9207 of 10920 battles** (84%), 0 failed, 1820 read back from an earlier run. Running 4.2 h, 1678 battles/h, about 1.0 h left (ends ~14:05 PC time). Last battle -0 min ago.
-Skipped turns a battle: 104.9 overall, first 100 60.4, last 100 92.0; engine disables 59.
+**9699 of 10920 battles** (89%), 0 failed, 1820 read back from an earlier run. Running 4.4 h, 1748 battles/h, about 42 min left (ends ~14:02 PC time). Last battle 0 min ago.
+Skipped turns a battle: 105.3 overall, first 100 60.4, last 100 66.1; engine disables 111.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 1841 | 0 | 75.32 | - | - | - | 27.8 |
-| aa | 1841 | 0 | 75.03 | -0.02 (91 robots) | ±0.02 | -0.05 .. +0.01 | 27.5 |
-| bb | 1841 | 0 | 86.22 | +0.83 (91 robots) | ±0.10 | +0.67 .. +0.98 | 179.5 |
-| sg | 1842 | 0 | 71.98 | -0.24 (91 robots) | ±0.22 | -0.58 .. +0.10 | 161.2 |
-| ns | 1842 | 0 | 86.76 | +0.87 (91 robots) | ±0.10 | +0.71 .. +1.02 | 140.8 |
+| c | 1941 | 0 | 75.30 | - | - | - | 28.4 |
+| aa | 1941 | 0 | 75.06 | -0.02 (91 robots) | ±0.02 | -0.05 .. +0.01 | 28.4 |
+| bb | 1941 | 0 | 86.22 | +0.83 (91 robots) | ±0.10 | +0.67 .. +0.98 | 177.0 |
+| sg | 1938 | 0 | 71.93 | -0.24 (91 robots) | ±0.22 | -0.59 .. +0.10 | 163.0 |
+| ns | 1938 | 0 | 86.72 | +0.86 (91 robots) | ±0.10 | +0.71 .. +1.02 | 141.6 |
 
 APS = mean difference over the robots read x 91 panel robots / 1217 pairings.
-A/A: aa - c -0.29 pts over 91 robots; 1% band ±0.27 (OUTSIDE: comparisons void).
+A/A: aa - c -0.25 pts over 91 robots; 1% band ±0.27 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 9207 |
+| `fails 30` | halt | ok | 0 failed of 9699 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 60 over 200 arms c aa` | halt | ok | 35.7 a battle over the last 200 (first 200: 29.4) |
-| `stall 30m` | halt | ok | last battle -0 min ago |
+| `skips 60 over 200 arms c aa` | halt | ok | 42.1 a battle over the last 200 (first 200: 29.4) |
+| `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 1713 battles unrun (about 1.0 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 1221 battles unrun (about 42 min); every battle already fought is kept and a rerun resumes from it.
 
 > warning: arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 715 h before this step started: check it is not stale
 
@@ -73,7 +73,6 @@ Stopping now would leave 1713 battles unrun (about 1.0 h); every battle already 
 ### Queue log (last lines)
 
 ```
-08:17:07 watching pilot: 4 stop rule(s)
 08:17:09 progress pushed to origin claude/pc-mirror-progress (every 15 min)
 08:18:07 progress pilot: 802/1820 (44%) battles, 1071/h, ETA 57 min, 0 failed, skips 73.1/battle (last 100), aa -0.01, bb +0.79, sg -0.24, ns +0.81
 08:48:29 progress pilot: 1693/1820 (93%) battles, 1754/h, ETA 4 min, 0 failed, skips 173.5/battle (last 100), aa -0.03, bb +0.80, sg -0.26, ns +0.85
@@ -88,4 +87,5 @@ Stopping now would leave 1713 battles unrun (about 1.0 h); every battle already 
 11:49:45 progress mirror: 7183/10920 (66%) battles, 1896/h, ETA 2.0 h, 0 failed, skips 11.1/battle (last 100), aa -0.03, bb +0.81, sg -0.28, ns +0.85
 12:19:51 progress mirror: 8014/10920 (73%) battles, 1654/h, ETA 1.8 h, 0 failed, skips 3.8/battle (last 100), aa -0.02, bb +0.82, sg -0.25, ns +0.86
 12:50:01 progress mirror: 8821/10920 (81%) battles, 1602/h, ETA 1.3 h, 0 failed, skips 175.3/battle (last 100), aa -0.03, bb +0.83, sg -0.23, ns +0.87
+13:20:18 progress mirror: 9699/10920 (89%) battles, 1748/h, ETA 42 min, 0 failed, skips 66.1/battle (last 100), aa -0.02, bb +0.83, sg -0.24, ns +0.86
 ```
