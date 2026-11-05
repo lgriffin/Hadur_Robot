@@ -40,7 +40,7 @@ bench | sh ./bench-top20.sh ${C} --set kitlab/micro-wide2-field.txt --seeds 12 -
   stop: aa after 20%
   stop: futility P below 0.3 after 20%
 
-gate | python3 ../data/tools/multiarm.py ${W}/run/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_eveimear-port.md && printf '\n## Sizes\n\nc 0.4 742 B; P 749; XR 823; Cotillion 729 (ProGuard builds, kitlab_codesize.py). P passes when its 95%% low end against c is above +0.3 points and it sits inside XR's interval.\n' >> ${OUT}/$(date +%Y-%m-%d)_eveimear-port.md && { [ ! -f ${W}/run/EARLY-STOP.md ] || cat ${W}/run/EARLY-STOP.md >> ${OUT}/$(date +%Y-%m-%d)_eveimear-port.md; }
+gate | python3 ../data/tools/multiarm.py ${W}/run/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_eveimear-port.md && printf '\n## Sizes\n\nc 0.4 742 B; P 749; XR 823; Cotillion 729 (ProGuard builds, kitlab_codesize.py). P passes when its 95%% low end against c is above +0.3 points and it sits inside the XR interval.\n' >> ${OUT}/$(date +%Y-%m-%d)_eveimear-port.md && { [ ! -f ${W}/run/EARLY-STOP.md ] || cat ${W}/run/EARLY-STOP.md >> ${OUT}/$(date +%Y-%m-%d)_eveimear-port.md; }
   after: bench
 
 pr | bash tools/open_results_pr.sh claude/pc-eveimear-port-results "Eveimear: the Cotillion transplant at 749 B (pc-eveimear-port)" ${OUT}/*_eveimear-port.md
