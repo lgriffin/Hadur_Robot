@@ -1,0 +1,28 @@
+# Queue pc-eveimear-port: progress
+
+Updated 2026-11-05 21:56:33 PC time (21:56 UTC), runner pid 55196.
+
+- `prep` done, exit 0 in 0 min
+- `bench` done, exit 0 in 29 min
+- `gate` failed, exit 2 in 0 min
+- `pr` skipped
+
+### Queue log (last lines)
+
+```
+20:47:34 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
+20:47:34 start prep
+20:47:37 progress pushed to origin claude/pc-eveimear-port-progress (every 15 min)
+20:47:47 prep exit=0 in 13 s
+20:47:47 start bench
+20:47:47 watching bench: 6 stop rule(s)
+20:48:35 progress bench: 151/6720 (2%) battles, 11518/h, ETA 34 min, 0 failed, skips 0.0/battle (last 100), aa -0.12, cot +0.93, XR +2.77, P +1.32
+21:16:24 bench exit=0 in 1717 s
+21:16:24 start gate
+21:16:24 gate exit=2 in 0 s
+21:16:24 skip pr (after gate, which has not finished exit=0)
+21:16:24 ALLDONE
+21:56:33 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
+21:56:33 skip prep (already exit=0)
+21:56:33 skip bench (already exit=0)
+```
