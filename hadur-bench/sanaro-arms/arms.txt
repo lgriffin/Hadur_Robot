@@ -24,6 +24,14 @@
 # +0.10 +-0.33 (survival 23.8 -> 28.2), K65 +0.06 (26.4), B560 +0.02 (26.5), K80 -0.08 (24.6). None
 # passes alone, but weaker fire buys survival at no APS cost and the BAND steps lean up. So climb in
 # small steps on more seeds: B480 again, then further (B400, B320), and B480 with the table x 0.8.
+# N14 (pc-sanaro-n11), on 0.4's source (BAND 480): hold fire past a range. 0.4 never holds: past 480 px
+# its step is 0 and setFire(0) fires 0.1 (Robocode lifts it). These arms fire nothing past N px, so the
+# gun stays cool for the next near target. Measured over the byte limit (Leigh 2026-11-05: test first,
+# find the bytes for a winner); `| d >> 9` on the gate is the 5-byte form of H512, 250 B with the hand pass.
+S4 | Sanaro 0.4 as it ships (control, 249 B) |
+H512 | hold fire past 512 px (5 B: 250 B with the hand pass; measure only) | s#/ GATE == 0)#/ GATE == 0 \&\& d < 512)#
+H480 | hold fire past 480 px, where 0.4's step reaches 0 (measure only) | s#/ GATE == 0)#/ GATE == 0 \&\& d < 480)#
+H400 | hold fire past 400 px (measure only) | s#/ GATE == 0)#/ GATE == 0 \&\& d < 400)#
 B400 | the step's bands from 400 px: 0.1 shots past 400, x1 to 200, x2 to 133 (249 B) | s#BAND = 640;#BAND = 400;#
 B320 | the step's bands from 320 px: 0.1 shots past 320, x1 to 160, x2 to 107 (249 B) | s#BAND = 640;#BAND = 320;#
 B4K8 | BAND 480 and 0.3's table x 0.8 (249 B) | s#BAND = 640;#BAND = 480;# | scale 0.8

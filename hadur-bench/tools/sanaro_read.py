@@ -163,12 +163,23 @@ def main(argv=None):
     p.add_argument("--arms-file", default=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                                                        "sanaro-arms", "arms.txt"))
     p.add_argument("--live", type=float)
+    p.add_argument("--stop-below", type=float,
+                   help="a pilot's gate (BENCH-195): exit 3 when no arm but the control reads at or above this vs control")
     a = p.parse_args(argv)
     only = names(a.only)
     seats = saor_arms.seats(a.arms_file)
     rows = read(a.work_root, a.arms.split(","), a.control, only, a.field, seats)
     sys.stdout.write(render(rows, a.control, a.field, a.live))
+    if a.stop_below is not None and stopped(rows, a.control, a.stop_below):
+        sys.stdout.write("\nPilot gate: no arm reads %+.2f or better against %s, so the card stops here.\n"
+                         % (a.stop_below, a.control))
+        return 3
     return 0
+
+
+def stopped(rows, control, bar):
+    """True when no arm but the control has a difference against it at or above bar."""
+    return not any(r["diff"] is not None and r["diff"] >= bar for r in rows if r["arm"] != control)
 
 
 if __name__ == "__main__":

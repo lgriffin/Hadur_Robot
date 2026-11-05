@@ -550,3 +550,20 @@ pooled). B4K8 is +0.06 over B480 in the same run, which is noise, from one run o
 against Quantum's 66.44. Under Leigh's 2026-11-03 rule, the next Sanaro card is per-opponent
 tailoring with a pilot stage, not another global switch.
 
+
+## 22. The next card: pc-sanaro-n11 (stage N14), hold fire past a range
+
+0.4 never holds fire. Past 480 px its power step `BAND / d` is 0, and Robocode lifts `setFire(0)` to a
+0.1 shot (section 19). That shot all but never hits in a ten-robot melee, and it adds 1.02 gun heat:
+about ten ticks in which a robot that closes in cannot be shot at full power. n09 and n10 showed that
+weaker fire buys survival at no APS cost. Holding fire is the end of that slope.
+
+`hadur-bench/plans/pc-sanaro-n11.queue` measures three hold ranges on 0.4's source: H512, H480 and
+H400, against S4 (0.4 as banked). They are over the byte limit on purpose. Leigh (2026-11-05): measure
+the idea first, then find the bytes for the winner. H512 is the cheapest form, `| d >> 9` on the gate
+at 5 bytes. The hand pass (bearing kept on the stack, `dup2_x1` for the aim) frees 4 bytes, so H512
+needs one more byte to fit. Melee cards may be field-wide (Leigh, 2026-11-03 22:18).
+
+The card's pilot is the first 4 of each arm's 20 seeds. `sanaro_read.py --stop-below 0` stops the card
+with a results PR unless some hold arm reads at or above S4 (BENCH-195). The full steps resume the
+pilot's battles.
