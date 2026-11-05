@@ -644,3 +644,26 @@ The card (`hadur-bench/plans/pc-sanaro-q.queue`, BENCH-199) takes the first two:
 the endgame pair from the 2026-11-04 plan (EW: wall push halved with one robot left; EB: BAND 960 with
 one robot left). Arms are over 249 B where they must be (QT 269, QTP 253); bytes are found only for a
 winner. Live-shaped census, 43 fields x 20 seeds from 31000, pilot at 4 seeds with `--stop-below 0`.
+
+## 27. pc-sanaro-q result: the pilot stopped, and QT was a broken arm
+
+The pilot (PR #672, live census, 4 seeds, 172 battles an arm) read against S4 (66.12 ± 0.37):
+
+| Arm | APS | vs S4 | Survival |
+|---|---|---|---|
+| QT | 31.43 | -35.54 ± 0.70 | 0.1 |
+| QP | 65.09 | -1.05 ± 0.51 | 11.5 |
+| QTP | 31.62 | -35.30 ± 0.58 | 0.2 |
+| EW | 65.34 | -0.87 ± 0.50 | 18.9 |
+| EB | 65.81 | -0.48 ± 0.52 | 23.9 |
+
+QP, EW and EB are measured and lost: Quantum's flat 2.5 power is worse than Sanaro's table on
+Sanaro's body, and neither endgame change helps. QT and QTP did not measure Quantum's target. The arm's
+sed replaced the radar's opening `setTurnRadarRight(Double.POSITIVE_INFINITY)` with
+`setTurnRadarRight(range = Integer.MAX_VALUE)`. Sanaro's lock sets the radar turn to
+`(getGunHeat() - LOCK) * getRadarTurnRemaining()` on each scan of the target, which keeps an infinite
+turn infinite but shrinks a finite one towards zero, so the radar stopped turning and the robot went
+blind (survival 0.1%). The fixed arm (`sanaro-arms/arms.txt` QT: the radar stays infinite and `range`
+is reset in its own statement) read +1.28 ± 1.34 against S4 on one cloud census seed (13 fields),
+survival 70.1 -> 72.8. That is inside noise; a wider cloud read decides whether it earns a card.
+The card is removed; QTP is dropped with QP.
