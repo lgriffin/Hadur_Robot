@@ -6,7 +6,8 @@
       --x5-out X5.txt --rd-out RD.txt --abl-out ABL.txt --arms-out ARMS --version 3.21
 
 pilot: per robot of PANEL (name | note | jar) the arm's mean score share minus the pooled c and aa mean, then the
-mean over those robots; at or above --bar the card goes on, below it STOP is written and the screen skips.
+mean over those robots; at or above --bar the card goes on, below it STOP is written and the screen skips. A robot
+with no finished battle of the arm, c or aa fails the step (exit 2): a partial pilot decides nothing.
 lists: splits the pick TSV (mode_table.py --out-tsv: robot in the first column) into the POW-16 names (on the
 x5 panel) and the RAM-6 names (on the rammer panel), one name a line; writes the build-ablation.sh argument
 for the lists that hold a name (x5list, rdlist) and the confirm arms file whose xr line names the jar that
@@ -39,11 +40,17 @@ def shares(path):
 
 def pilot(a):
     s = shares(a.arms)
-    rows = []
+    rows, missing = [], []
     for name in panel_names(a.names):
-        arm, ref = s[name].get(a.arm, []), s[name].get("c", []) + s[name].get("aa", [])
-        if arm and ref:
-            rows.append((name, st.mean(arm) - st.mean(ref), len(arm), len(ref)))
+        if not all(s[name].get(k) for k in (a.arm, "c", "aa")):
+            missing.append(name)
+            continue
+        arm, ref = s[name][a.arm], s[name]["c"] + s[name]["aa"]
+        rows.append((name, st.mean(arm) - st.mean(ref), len(arm), len(ref)))
+    if missing:
+        # An incomplete pilot is neither a GO nor a STOP: the step fails and the card halts for a rerun.
+        print("pilot incomplete, no finished %s, c and aa battles for: %s" % (a.arm, ", ".join(missing)), file=sys.stderr)
+        return 2
     mean = st.mean(r[1] for r in rows) if rows else float("nan")
     go = bool(rows) and mean >= a.bar
     lines = ["# pc-x5 pilot: %s against pooled c and aa on the pilot names" % a.arm, "",

@@ -38,12 +38,15 @@ class X5CardTest(unittest.TestCase):
                       "--stop-file", stop])
         self.assertTrue(os.path.exists(stop))
 
-    def test_pilot_with_no_rows_stops(self):
-        names = self.path("p.txt", "a.A 1 | n | a.jar\n")
-        arms = self.path("arms.tsv", HEAD + row("c", "a.A 1", 1, 0.5))
+    def test_a_partial_pilot_fails_and_decides_nothing(self):
+        names = self.path("p.txt", "a.A 1 | n | a.jar\nb.B 1 | n | b.jar\n")
+        arms = self.path("arms.tsv", HEAD + row("c", "a.A 1", 1, 0.5) + row("aa", "a.A 1", 1, 0.5) + row("xr", "a.A 1", 1, 0.9)
+                         + row("c", "b.B 1", 1, 0.5) + row("aa", "b.B 1", 1, 0.5) + row("xr", "b.B 1", 1, 0.1, ok="false"))
         stop = os.path.join(self.d, "stop")
-        x5_card.main(["pilot", arms, "--names", names, "--out", os.path.join(self.d, "o.md"), "--stop-file", stop])
-        self.assertTrue(os.path.exists(stop))
+        rc = x5_card.main(["pilot", arms, "--names", names, "--out", os.path.join(self.d, "o.md"), "--stop-file", stop])
+        self.assertEqual(2, rc, "b.B has no finished xr battle, so a favourable a.A alone cannot pass")
+        self.assertFalse(os.path.exists(stop))
+        self.assertFalse(os.path.exists(os.path.join(self.d, "o.md")))
 
     def test_lists_split_the_picks_and_name_the_jar(self):
         pick = self.path("pick.tsv", "a.A 1\txr\t9\t2\t3\t6\nr.R 2\txr\t6\t1\t3\t6\nq.Q 1\txr\t7\t1\t3\t6\n")

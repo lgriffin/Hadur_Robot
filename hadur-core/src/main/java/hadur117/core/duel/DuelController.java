@@ -1822,17 +1822,19 @@ public final class DuelController {
         orders.ahead(c.ahead);
         orders.turnGunRight(c.gunTurn);
         if (c.firePower > 0) {
-            orders.fire(c.firePower);
+            // POW-16: a shield attack shot hides its speed too; an interception keeps the power it needs.
+            double shot = c.attack && x5Power ? PowerPolicy.x5(c.firePower, in.energy()) : c.firePower;
+            orders.fire(shot);
             if (c.attack) {
                 lastGunWave.firingWave = true;
                 // GUN-5: rated in the class of the power the shield fired at, which it may
                 // have cut from the wave's; the sampled gun's phase moves on as for any shot.
-                double firedPower = Math.min(in.energy(), c.firePower);
+                double firedPower = Math.min(in.energy(), shot);
                 gunController.shieldAttackFired(lastGunWave, me, in.time(), firedPower,
                     TickBudget.virtualGuns(level));
                 lastRealBulletFireTime = in.time();
                 stats.shotsFired++;
-                if (c.firePower >= PowerPolicy.FULL_POWER) stats.fullPowerShots++;
+                if (shot >= PowerPolicy.FULL_POWER) stats.fullPowerShots++;
                 if (carried) {
                     stats.jitteredShots++;
                     aimJitter.shotFired();
