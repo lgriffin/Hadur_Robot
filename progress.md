@@ -1,6 +1,6 @@
 # Queue pc-mirror: progress
 
-Updated 2026-11-05 03:24:40 PC time (03:24 UTC), runner pid 42956.
+Updated 2026-11-05 03:24:42 PC time (03:24 UTC), runner pid 42956.
 
 - `prep` done, exit 0 in 1 min
 - `pilot` halted, exit 75 in 23 min, HALTED by skips 150 over 200: 156.8 a battle over the last 200 (first 200: 75.3)
@@ -51,4 +51,6 @@ Stopping now would leave 1036 battles unrun (about 31 min); every battle already
 03:02:25 progress pilot: 39/1820 (2%) battles, 2361/h, ETA 45 min, 0 failed, skips 39.8/battle (last 100), aa +0.13, bb +0.39, sg +0.32, ns +0.58
 03:24:40 STOP pilot by rule skips 150 over 200: 156.8 a battle over the last 200 (first 200: 75.3); 784 battles fought and kept, 1036 battles left unrun (about 31 min)
 03:24:40 pilot exit=75 in 1394 s (halted, skips 150 over 200)
+03:24:42 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/657
+03:24:42 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 ```
