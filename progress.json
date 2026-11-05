@@ -1,6 +1,6 @@
 {
  "plan": "pc-eveimear-port",
- "updated": 1793915793.3297343,
+ "updated": 1793915805.4236572,
  "steps": {
   "prep": {
    "status": "done",
@@ -15,14 +15,16 @@
    "end": "2026-11-05T21:16:24"
   },
   "gate": {
-   "status": "failed",
-   "exit": 2,
+   "status": "done",
+   "exit": 0,
    "seconds": 0,
-   "end": "2026-11-05T21:16:24"
+   "end": "2026-11-05T21:56:33"
   },
   "pr": {
-   "status": "skipped",
-   "reason": "after gate"
+   "status": "done",
+   "exit": 0,
+   "seconds": 11,
+   "end": "2026-11-05T21:56:45"
   }
  },
  "watched": []
