@@ -10,3 +10,9 @@
 19:49:00 pilot-S4 exit=0 in 573 s
 19:49:00 start pilot-QT
 19:49:00 watching pilot-QT: 3 stop rule(s)
+19:57:47 pilot-QT exit=0 in 527 s
+19:57:47 start pilot-QP
+19:57:47 watching pilot-QP: 3 stop rule(s)
+20:06:04 pilot-QP exit=0 in 496 s
+20:06:04 start pilot-QTP
+20:06:04 watching pilot-QTP: 3 stop rule(s)
