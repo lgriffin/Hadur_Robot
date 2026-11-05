@@ -16,3 +16,14 @@
 16:54:46 pilot-K5 exit=0 in 593 s
 16:54:46 start pilot-K3
 16:54:46 watching pilot-K3: 3 stop rule(s)
+16:56:04 progress pilot-K3: 22/172 (13%) battles, 1019/h, ETA 9 min, 0 failed, skips 0.0/battle (last 100)
+17:04:36 pilot-K3 exit=0 in 590 s
+17:04:36 start pilot
+17:05:31 pilot exit=3 in 54 s
+17:05:31 skip live-S4 (after pilot, which has not finished exit=0)
+17:05:31 skip live-K7 (after live-S4, which has not finished exit=0)
+17:05:31 skip live-K5 (after live-K7, which has not finished exit=0)
+17:05:31 skip live-K3 (after live-K5, which has not finished exit=0)
+17:05:31 skip read-live (after live-K3, which has not finished exit=0)
+17:05:31 skip pr (after read-live, which has not finished exit=0)
+17:05:31 ALLDONE
