@@ -321,6 +321,35 @@ public final class PowerPolicy {
     }
 
     /**
+     * POW-16: the most a shot keeps of {@code power} while hiding its speed from a surfer that
+     * reads our shot from our energy drop and later matches the bullet that hits it to that wave
+     * by {@code Math.round(speed * 10)}. Only an x.x5 power puts the speed times ten on a .5 edge,
+     * and then whether {@code energy - (energy - p)}, the drop the surfer reads, rounds to the
+     * same tenth as {@code p} itself depends on the energy's last bits. The x.x5 powers at or
+     * below {@code power}, highest first and at most {@link #X5_STEPS} of them, are tried and the
+     * first whose read speed rounds apart from its own is returned; when none does, or below
+     * 0.15, {@code power} is returned unchanged.
+     *
+     * @param power the power chosen
+     * @param energy our energy as the surfer sees it before the shot
+     * @return the power to fire
+     */
+    public static double x5(double power, double energy) {
+        if (power < 0.15) return power;
+        long k = (long) Math.floor((power - 0.05) * 10.0 + 1e-9);
+        for (int step = 0; step < X5_STEPS && k - step >= 1; step++) {
+            double p = (2 * (k - step) + 1) / 20.0;
+            if (p >= energy) continue;
+            double read = energy - (energy - p);
+            if (Math.round(Rules.getBulletSpeed(read) * 10) != Math.round(Rules.getBulletSpeed(p) * 10)) return p;
+        }
+        return power;
+    }
+
+    /** POW-16: the x.x5 powers tried, 0.1 apart, before a shot keeps its own power. */
+    public static final int X5_STEPS = 4;
+
+    /**
      * POW-10: the power a shot can be paid for at. A power below our energy stands; otherwise
      * it is lowered to {@link #RESERVE} less than our energy, never below the engine's minimum.
      * NaN when even the minimum power would leave nothing (our energy is at most
