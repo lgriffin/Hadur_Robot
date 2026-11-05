@@ -13,3 +13,7 @@
 23:55:15 start mlaa
 23:55:15 watching mlaa: 2 stop rule(s)
 00:07:50 progress mlaa: 66/276 (24%) battles, 315/h, ETA 40 min, 0 failed, skips 33.1/battle (last 100)
+00:38:05 progress mlaa: 228/276 (83%) battles, 319/h, ETA 9 min, 0 failed, skips 31.8/battle (last 100)
+00:46:10 mlaa exit=0 in 3054 s
+00:46:10 start mlbb
+00:46:10 watching mlbb: 2 stop rule(s)

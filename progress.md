@@ -1,12 +1,12 @@
 # Queue pc-melee-floor: progress
 
-Updated 2026-11-05 00:34:03 PC time (00:34 UTC), runner pid 37368.
+Updated 2026-11-05 00:49:10 PC time (00:49 UTC), runner pid 37368.
 
 - `mlprep` done, exit 0 in 3 min
 - `mlpilot` done, exit 0 in 1.3 h
 - `mlcheck` done, exit 0 in 0 min
-- `mlaa` running
-- `mlbb` pending
+- `mlaa` done, exit 0 in 51 min
+- `mlbb` running
 - `mlz4` pending
 - `mlz5` pending
 - `mlread` pending
@@ -26,23 +26,31 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### mlaa
 
-**198 of 276 battles** (72%), 0 failed. Running 39 min, 306 battles/h, about 15 min left (ends ~00:49 PC time). Last battle 1 min ago.
-Skipped turns a battle: 32.2 overall, first 100 32.8, last 100 31.7.
+**276 of 276 battles** (100%), 0 failed. Running 51 min, 325 battles/h, about 0 min left (ends ~00:46 PC time). Last battle 0 min ago.
+Skipped turns a battle: 32.1 overall, first 100 32.8, last 100 31.7.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 198 |
-| `stall 30m` | halt | ok | last battle 1 min ago |
+| `fails 20` | halt | ok | 0 failed of 276 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 78 battles unrun (about 15 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### mlbb
+
+**12 of 276 battles** (4%), 0 failed. Running 3 min, 239 battles/h, about 1.1 h left (ends ~01:55 PC time). Last battle 0 min ago.
+Skipped turns a battle: 36.1 overall, first 12 36.1, last 12 36.1.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 12 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 264 battles unrun (about 1.1 h); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-22:33:18 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
-22:33:18 start mlprep
-22:33:21 progress pushed to origin claude/pc-melee-floor-progress (every 15 min)
-22:36:34 mlprep exit=0 in 195 s
 22:36:34 start mlpilot
 22:36:34 watching mlpilot: 2 stop rule(s)
 22:37:20 progress mlpilot: 0/184 (0%) battles, 0 failed
@@ -54,4 +62,8 @@ Stopping now would leave 78 battles unrun (about 15 min); every battle already f
 23:55:15 start mlaa
 23:55:15 watching mlaa: 2 stop rule(s)
 00:07:50 progress mlaa: 66/276 (24%) battles, 315/h, ETA 40 min, 0 failed, skips 33.1/battle (last 100)
+00:38:05 progress mlaa: 228/276 (83%) battles, 319/h, ETA 9 min, 0 failed, skips 31.8/battle (last 100)
+00:46:10 mlaa exit=0 in 3054 s
+00:46:10 start mlbb
+00:46:10 watching mlbb: 2 stop rule(s)
 ```
