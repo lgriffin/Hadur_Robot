@@ -42,14 +42,14 @@
 # name until a nearer one shows or it dies (Sanaro's threshold creeps 25 px a scan), it fires a fixed 2.5
 # capped at energy / 7 (no table, no band), and its lead is v / (10 + 1.008^d). The arms below take the
 # first two, and the endgame pair from the 2026-11-04 plan (N16) rides along. Measured over the byte
-# limit (QT 269 B, QTP 253 B; QP 233 B, EW and EB a few bytes over); bytes are found for a winner only.
+# limit (QT 269 B, 270 B fixed; QTP 253 B; QP 233 B, EW and EB a few bytes over); bytes are found for a winner only.
 # pc-sanaro-q (PR #672) stopped at its pilot: QP -1.05, EW -0.87, EB -0.48 against S4 (live census, 4 seeds).
 # QT and QTP read -35 with survival 0.1: an arm bug, not Quantum's rule. The sed put a finite turn on the
 # radar (Integer.MAX_VALUE in place of infinity), and the lock multiplies the remaining turn by
 # (gun heat - LOCK) every scan, so the turn shrinks to 0 and the radar stops. QT below is fixed (radar
 # left infinite, range reset on its own); QTP is gone with QP. Fixed QT on the cloud census, 1 seed:
 # +1.28 +- 1.34 against S4 (13 fields), survival 70.1 -> 72.8.
-QT | Quantum's target: the nearest robot, held by name, reset when any robot dies (269 B) | s#static int range;#static int range; static String TN;#;s#setTurnRadarRight(Double.POSITIVE_INFINITY);#setTurnRadarRight(Double.POSITIVE_INFINITY); range = Integer.MAX_VALUE;#;s#if (d < (range += CREEP)) {#if (!(e.getName() != TN \&\& d >= range)) { TN = e.getName();#;s#    static double wall(double v) {#    public void onRobotDeath(robocode.RobotDeathEvent e) { range = Integer.MAX_VALUE; }\n    static double wall(double v) {#
+QT | Quantum's target: the nearest robot, held by name, reset when any robot dies (270 B) | s#static int range;#static int range; static String TN;#;s#setTurnRadarRight(Double.POSITIVE_INFINITY);#setTurnRadarRight(Double.POSITIVE_INFINITY); range = Integer.MAX_VALUE;#;s#if (d < (range += CREEP)) {#if (!(e.getName() != TN \&\& d >= range)) { TN = e.getName();#;s#    static double wall(double v) {#    public void onRobotDeath(robocode.RobotDeathEvent e) { range = Integer.MAX_VALUE; }\n    static double wall(double v) {#
 QP | Quantum's power: min(energy / 7, 2.5), no table, no band (233 B) | s#setFire(BAND / d \* POWER.charAt(((int) getEnergy() << 7) + (int) e.getEnergy()) / 40.0);#setFire(Math.min(getEnergy() / 7, 2.49999));#
 EW | the wall push halved with one robot left (measure only) | s#static double wall#double wall#;s#return 1 / v - 1 / (1000 - v);#return (1 / v - 1 / (1000 - v)) / (getOthers() < 2 ? 2 : 1);#
 EB | BAND 960 with one robot left: twice the power in the duel (measure only) | s#setFire(BAND / d#setFire((getOthers() < 2 ? 960 : BAND) / d#
