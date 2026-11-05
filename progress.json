@@ -1,0 +1,22 @@
+{
+ "plan": "pc-mirror",
+ "updated": 1793847624.6922693,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "pilot": {
+   "status": "pending"
+  },
+  "mirror": {
+   "status": "pending"
+  },
+  "read": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
