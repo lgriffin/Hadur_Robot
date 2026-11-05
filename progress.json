@@ -1,0 +1,46 @@
+{
+ "plan": "pc-sanaro-n11",
+ "updated": 1793888915.925795,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "arms": {
+   "status": "pending"
+  },
+  "pilot-S4": {
+   "status": "pending"
+  },
+  "pilot-H512": {
+   "status": "pending"
+  },
+  "pilot-H480": {
+   "status": "pending"
+  },
+  "pilot-H400": {
+   "status": "pending"
+  },
+  "pilot": {
+   "status": "pending"
+  },
+  "live-S4": {
+   "status": "pending"
+  },
+  "live-H512": {
+   "status": "pending"
+  },
+  "live-H480": {
+   "status": "pending"
+  },
+  "live-H400": {
+   "status": "pending"
+  },
+  "read-live": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
