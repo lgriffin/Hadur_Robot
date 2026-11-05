@@ -1,6 +1,6 @@
 # Queue pc-tailor-field: progress
 
-Updated 2026-11-05 20:34:42 PC time (20:34 UTC), runner pid 59800.
+Updated 2026-11-05 21:28:46 PC time (21:28 UTC), runner pid 61996.
 
 - `prep` failed, exit 126 in 1 min
 - `pilot` skipped
@@ -26,4 +26,5 @@ Updated 2026-11-05 20:34:42 PC time (20:34 UTC), runner pid 59800.
 20:34:42 skip gate (after confirm, which has not finished exit=0)
 20:34:42 skip pr (after gate, which has not finished exit=0)
 20:34:42 ALLDONE
+21:28:46 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
 ```
