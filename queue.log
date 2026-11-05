@@ -7,3 +7,8 @@
 22:37:20 progress mlpilot: 0/184 (0%) battles, 0 failed
 23:07:29 progress mlpilot: 82/184 (45%) battles, 159/h, ETA 38 min, 0 failed, skips 23.6/battle (last 100)
 23:37:39 progress mlpilot: 142/184 (77%) battles, 139/h, ETA 18 min, 0 failed, skips 25.9/battle (last 100)
+23:55:14 mlpilot exit=0 in 4720 s
+23:55:14 start mlcheck
+23:55:15 mlcheck exit=0 in 1 s
+23:55:15 start mlaa
+23:55:15 watching mlaa: 2 stop rule(s)
