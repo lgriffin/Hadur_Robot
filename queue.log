@@ -5,3 +5,5 @@
 03:01:26 start pilot
 03:01:26 watching pilot: 4 stop rule(s)
 03:02:25 progress pilot: 39/1820 (2%) battles, 2361/h, ETA 45 min, 0 failed, skips 39.8/battle (last 100), aa +0.13, bb +0.39, sg +0.32, ns +0.58
+03:24:40 STOP pilot by rule skips 150 over 200: 156.8 a battle over the last 200 (first 200: 75.3); 784 battles fought and kept, 1036 battles left unrun (about 31 min)
+03:24:40 pilot exit=75 in 1394 s (halted, skips 150 over 200)
