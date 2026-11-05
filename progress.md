@@ -1,13 +1,13 @@
 # Queue pc-melee-floor: progress
 
-Updated 2026-11-05 01:19:25 PC time (01:19 UTC), runner pid 37368.
+Updated 2026-11-05 01:34:32 PC time (01:34 UTC), runner pid 37368.
 
 - `mlprep` done, exit 0 in 3 min
 - `mlpilot` done, exit 0 in 1.3 h
 - `mlcheck` done, exit 0 in 0 min
 - `mlaa` done, exit 0 in 51 min
-- `mlbb` running
-- `mlz4` pending
+- `mlbb` done, exit 0 in 47 min
+- `mlz4` running
 - `mlz5` pending
 - `mlread` pending
 - `mlpr` pending
@@ -38,22 +38,31 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### mlbb
 
-**174 of 276 battles** (63%), 0 failed. Running 33 min, 314 battles/h, about 19 min left (ends ~01:38 PC time). Last battle 0 min ago.
-Skipped turns a battle: 31.1 overall, first 100 33.1, last 100 29.8.
+**276 of 276 battles** (100%), 0 failed. Running 47 min, 354 battles/h, about 0 min left (ends ~01:32 PC time). Last battle 0 min ago.
+Skipped turns a battle: 28.9 overall, first 100 33.1, last 100 25.1.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 174 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 102 battles unrun (about 19 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### mlz4
+
+**6 of 276 battles** (2%), 0 failed. Running 2 min, 230 battles/h, about 1.2 h left (ends ~02:44 PC time). Last battle 0 min ago.
+Skipped turns a battle: 18.8 overall, first 6 18.8, last 6 18.8.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 6 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 270 battles unrun (about 1.2 h); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-22:36:34 watching mlpilot: 2 stop rule(s)
-22:37:20 progress mlpilot: 0/184 (0%) battles, 0 failed
-23:07:29 progress mlpilot: 82/184 (45%) battles, 159/h, ETA 38 min, 0 failed, skips 23.6/battle (last 100)
 23:37:39 progress mlpilot: 142/184 (77%) battles, 139/h, ETA 18 min, 0 failed, skips 25.9/battle (last 100)
 23:55:14 mlpilot exit=0 in 4720 s
 23:55:14 start mlcheck
@@ -66,4 +75,7 @@ Stopping now would leave 102 battles unrun (about 19 min); every battle already 
 00:46:10 start mlbb
 00:46:10 watching mlbb: 2 stop rule(s)
 01:08:20 progress mlbb: 120/276 (43%) battles, 325/h, ETA 29 min, 0 failed, skips 33.9/battle (last 100)
+01:32:58 mlbb exit=0 in 2808 s
+01:32:58 start mlz4
+01:32:58 watching mlz4: 2 stop rule(s)
 ```

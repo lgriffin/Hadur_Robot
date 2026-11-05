@@ -18,3 +18,6 @@
 00:46:10 start mlbb
 00:46:10 watching mlbb: 2 stop rule(s)
 01:08:20 progress mlbb: 120/276 (43%) battles, 325/h, ETA 29 min, 0 failed, skips 33.9/battle (last 100)
+01:32:58 mlbb exit=0 in 2808 s
+01:32:58 start mlz4
+01:32:58 watching mlz4: 2 stop rule(s)
