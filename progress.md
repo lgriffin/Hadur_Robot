@@ -1,6 +1,6 @@
 # Queue pc-tailor-field: progress
 
-Updated 2026-11-06 13:27:11 PC time (13:27 UTC), runner pid 52376.
+Updated 2026-11-06 13:42:14 PC time (13:42 UTC), runner pid 52376.
 
 - `prep` done, exit 0 in 8 min
 - `pilot` done, exit 0 in 4 min
@@ -13,36 +13,35 @@ Updated 2026-11-06 13:27:11 PC time (13:27 UTC), runner pid 52376.
 
 ### screen
 
-**7697 battles**, 0 failed, 3259 read back from an earlier run. Running 5.8 h, 770 battles/h. Last battle 0 min ago.
-Skipped turns a battle: 55.1 overall, first 100 54.7, last 100 60.4; engine disables 2163.
+**7896 battles**, 0 failed, 3259 read back from an earlier run. Running 6.1 h, 804 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 55.2 overall, first 100 54.7, last 100 56.9; engine disables 2268.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| sg | 698 | 0 | 77.79 | -14.13 (596 robots) | ±1.81 | -16.90 .. -11.37 | 46.8 |
-| fp | 697 | 0 | 92.26 | +0.06 (595 robots) | ±0.33 | -0.44 .. +0.56 | 53.2 |
-| hj | 699 | 0 | 92.42 | +0.21 (594 robots) | ±0.32 | -0.27 .. +0.70 | 54.6 |
-| mm | 701 | 0 | 92.04 | -0.17 (597 robots) | ±0.34 | -0.70 .. +0.36 | 56.6 |
-| dg | 700 | 0 | 92.14 | -0.10 (595 robots) | ±0.31 | -0.58 .. +0.37 | 54.5 |
-| rd | 699 | 0 | 92.34 | +0.14 (595 robots) | ±0.30 | -0.32 .. +0.60 | 54.9 |
-| sw | 701 | 0 | 78.27 | -13.73 (595 robots) | ±1.79 | -16.48 .. -10.99 | 47.9 |
-| gs | 700 | 0 | 92.28 | +0.07 (597 robots) | ±0.33 | -0.44 .. +0.58 | 54.6 |
-| fl | 700 | 0 | 92.20 | -0.00 (596 robots) | ±0.30 | -0.46 .. +0.46 | 53.4 |
-| x5 | 700 | 0 | 92.20 | -0.01 (597 robots) | ±0.32 | -0.50 .. +0.48 | 56.8 |
-| c | 702 | 0 | 92.21 | - | - | - | 53.0 |
+| sg | 720 | 0 | 77.96 | -13.97 (605 robots) | ±1.78 | -16.70 .. -11.24 | 46.7 |
+| fp | 718 | 0 | 92.33 | +0.08 (604 robots) | ±0.32 | -0.41 .. +0.57 | 53.4 |
+| hj | 718 | 0 | 92.45 | +0.22 (604 robots) | ±0.31 | -0.26 .. +0.70 | 54.3 |
+| mm | 718 | 0 | 92.05 | -0.17 (604 robots) | ±0.34 | -0.69 .. +0.35 | 56.8 |
+| dg | 719 | 0 | 92.16 | -0.09 (604 robots) | ±0.31 | -0.55 .. +0.38 | 54.9 |
+| rd | 719 | 0 | 92.38 | +0.16 (603 robots) | ±0.30 | -0.30 .. +0.61 | 54.9 |
+| sw | 717 | 0 | 78.24 | -13.68 (603 robots) | ±1.78 | -16.40 .. -10.96 | 48.0 |
+| gs | 718 | 0 | 92.30 | +0.06 (604 robots) | ±0.33 | -0.44 .. +0.57 | 54.7 |
+| fl | 716 | 0 | 92.22 | +0.00 (604 robots) | ±0.30 | -0.45 .. +0.46 | 53.8 |
+| x5 | 718 | 0 | 92.24 | -0.01 (605 robots) | ±0.32 | -0.49 .. +0.48 | 56.9 |
+| c | 715 | 0 | 92.27 | - | - | - | 53.1 |
 
 APS = mean difference over the robots read x 1194 panel robots / 1217 pairings.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 7697 |
+| `fails 30` | halt | ok | 0 failed of 7896 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 90 over 200` | halt | ok | 57.9 a battle over the last 200 (first 200: 56.5) |
+| `skips 90 over 200` | halt | ok | 57.4 a battle over the last 200 (first 200: 56.5) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
 ### Queue log (last lines)
 
 ```
-07:37:53 start screen
 07:37:53 watching screen: 4 stop rule(s)
 07:37:56 progress pushed to origin claude/pc-tailor-field-progress (every 15 min)
 07:39:04 progress screen: 3259 battles, 0 failed, sg -14.55, fp +0.05, hj +0.11, mm -0.49, dg -0.13, rd +0.02, sw -14.05, gs -0.12, fl -0.09, x5 -0.25
@@ -57,4 +56,5 @@ APS = mean difference over the robots read x 1194 panel robots / 1217 pairings.
 12:11:31 progress screen: 6745 battles, 796/h, 0 failed, skips 58.4/battle (last 100), sg -14.13, fp +0.09, hj +0.24, mm -0.19, dg -0.11, rd +0.17, sw -13.65, gs +0.10, fl -0.03, x5 -0.03
 12:41:45 progress screen: 7125 battles, 756/h, 0 failed, skips 58.0/battle (last 100), sg -13.98, fp +0.06, hj +0.24, mm -0.17, dg -0.14, rd +0.16, sw -13.53, gs +0.10, fl -0.02, x5 -0.05
 13:12:00 progress screen: 7494 battles, 736/h, 0 failed, skips 47.2/battle (last 100), sg -14.01, fp +0.08, hj +0.23, mm -0.18, dg -0.08, rd +0.16, sw -13.49, gs +0.10, fl +0.01, x5 -0.04
+13:42:14 progress screen: 7896 battles, 804/h, 0 failed, skips 56.9/battle (last 100), sg -13.97, fp +0.08, hj +0.22, mm -0.17, dg -0.09, rd +0.16, sw -13.68, gs +0.06, fl +0.00, x5 -0.01
 ```
