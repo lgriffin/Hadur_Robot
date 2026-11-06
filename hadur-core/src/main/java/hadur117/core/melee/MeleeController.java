@@ -137,28 +137,9 @@ public class MeleeController {
     public MeleeController(BattleField field, EnemyTracker world) {
         this.tracker = world;
         this.field = field;
-        if (TeamModes.FORCE_DUELGUN) this.teamGun = new TeamDuelGun(field, TeamModes::key);
         this.mover = new MinimumRiskMovement(field);
         this.gun = new FieldGun(field);
         this.danger = new TeamDanger(field);
-    }
-
-    /** TGUN: the member's energy at the last tick, for the duel gun's waves. */
-    private double lastEnergy = 100;
-
-    /** TGUN: the team member's duel gun, made when the screen switch is on; null otherwise. */
-    private TeamDuelGun teamGun;
-    /** TGUN: whether this tick's aim is the duel gun's. */
-    private boolean duelAimed;
-
-    /** TGUN: the team member's duel gun, or null with the switch off. */
-    public TeamDuelGun teamGun() { return teamGun; }
-
-    /** TGUN-1: where the member stood on {@code time}, or the tick before; null when neither is logged. */
-    private Point2D.Double stoodAt(long time) {
-        RobotState at = myPath.getState(time);
-        if (at == null) at = myPath.getState(time - 1);
-        return at == null ? null : at.location;
     }
 
     public void newRound() {
@@ -170,8 +151,6 @@ public class MeleeController {
         lastTarget = null;
         myPath.clear();
         paths.clear();
-        if (teamGun != null) teamGun.newRound();
-        duelAimed = false;
     }
 
     public OpponentStatsBook book() { return book; }
@@ -203,11 +182,6 @@ public class MeleeController {
         gun.onScan(info, distance, time);
         waves.onScan(info, time);
         if (cross && !onTeam && mover.surfing()) crossHit(info, time);
-        // TGUN-2: on a team every scan is a gun wave for the duel gun.
-        if (teamGun != null && onTeam) {
-            teamGun.sighted(name, time, info.location, info.heading, info.velocity, info.energy, stoodAt(time),
-                lastEnergy, tracker.alive().size());
-        }
     }
 
     /** MMOVE-19: sets the switch, for tests. */
@@ -261,12 +235,6 @@ public class MeleeController {
     public void mateSighting(String name, long time, double x, double y, double heading, double velocity,
                              double distance, double turnRate) {
         gun.onSighting(name, time, x, y, heading, velocity, distance, turnRate);
-        // TGUN-1: a teammate's sighting is a gun wave from where this member stood.
-        if (teamGun != null && onTeam) {
-            EnemyInfo e = tracker.get(name);
-            teamGun.sighted(name, time, new Point2D.Double(x, y), heading, velocity, e == null ? 100 : e.energy,
-                stoodAt(time), lastEnergy, tracker.alive().size());
-        }
     }
 
     /** One of Hadur's bullets of {@code power} hit {@code name}. */
@@ -412,6 +380,11 @@ public class MeleeController {
     public RobotStateLog myPath() { return myPath; }
     public FieldGun gun() { return gun; }
     public MeleeWaves waves() { return waves; }
+
+    /** TMODE-43: the fire lane the modes against this team play, from the last tick; narrow off a team. */
+    public TeamModes.Lane lane() {
+        return onTeam ? TeamModes.lane(modes) : TeamModes.Lane.NARROW;
+    }
     public MeleeStrategy strategy() { return strategy; }
 
     /** MMOVE-8: this member's place in its team's roster (negative off a team). */
@@ -432,12 +405,14 @@ public class MeleeController {
         EnemyInfo last = tracker.get(lastTarget);
         String finisher = last != null && last.energy <= FINISHER_ENERGY ? last.name : null;
         List<EnemyInfo> alive = tracker.alive();
-        MeleeStrategy.Plan plan = strategy.evaluate(tracker, s.me, s.energy, s.others, s.time);
-        c.posture = plan.posture;
         onTeam = !s.teammates.isEmpty();
+        // T7 (TMODE-1): the modes against this team; off a team, none.
+        modes = onTeam ? TeamModes.against(alive) : TeamModes.NONE;
+        // TMODE-44: with POST the posture is NORMAL and the fight between two enemies is not read.
+        MeleeStrategy.Plan plan = onTeam && modes.contains(TeamModes.Mode.POST)
+            ? MeleeStrategy.Plan.normal() : strategy.evaluate(tracker, s.me, s.energy, s.others, s.time);
+        c.posture = plan.posture;
         if (onTeam) {
-            // T7 (TMODE-1): the modes against this team.
-            modes = TeamModes.against(alive);
             // TMODE-27: the dodge reads one learned-aim log per enemy class.
             boolean dodging = modes.contains(TeamModes.Mode.DODGE);
             danger.pool(dodging);
@@ -461,11 +436,9 @@ public class MeleeController {
                     TeamModes.owns(modes), TeamModes.onlyAim(modes));
             }
         } else {
-            modes = TeamModes.NONE;
             c.radarTurn = radar.radarTurn(s.me, s.radarHeading, tracker, s.others, finisher, s.time);
             mover.updateMeleeBullets(tracker.shots(s.time), myPath, s.me, s.time, alive, danger);
         }
-        lastEnergy = s.energy;
         if (!onTeam && mover.damageMemory()) {
             // MMOVE-22: the battle's book of who has hit Hadur, and from how far, weighs the enemy terms.
             mover.damageWeights(MinimumRiskMovement.damageWeights(alive,
@@ -475,6 +448,8 @@ public class MeleeController {
             : mover.chooseDestination(s.me, s.energy, s.others, alive, s.time, plan, s.teammates, modes);
         gun.onTeam(!s.teammates.isEmpty());
         gun.concord(TeamConcord.GUN && modes.contains(TeamModes.Mode.CONCORD));
+        // TMODE-41: the gun's per-team mode, read off the table.
+        gun.focus(onTeam && modes.contains(TeamModes.Mode.FOCUS));
         waves.tick(s.me, s.time, s.gunHeat, alive, gun, s.energy, s.others);
 
         // MGUN-1: the peak of every opponent's firing solutions.
@@ -489,16 +464,6 @@ public class MeleeController {
         // MGUN-5: the energy table's power stands whatever the posture; the posture shapes
         // where Hadur goes, never whether or how hard it fires.
         double power = Math.min(aim.power, MeleeEnergyPolicy.killPower(target.energy));
-        duelAimed = false;
-        if (teamGun != null && onTeam && modes.contains(TeamModes.Mode.DUELGUN)) {
-            // TGUN-1: the duel gun takes the field gun's target once it has learned its class,
-            // aiming for the power the shot will go at.
-            double duel = teamGun.aim(aim.target, s.me, s.time, power);
-            if (!Double.isNaN(duel)) {
-                c.gunTurn = Angles.normalRelativeAngle(duel - s.gunHeading);
-                duelAimed = true;
-            }
-        }
         boolean hold = target.age(s.time) > MAX_FIRE_AGE
             || s.energy < MeleeEnergyPolicy.MIN_OWN_ENERGY
             || s.energy <= power + 0.1;
@@ -515,7 +480,5 @@ public class MeleeController {
     public void shotFired(Point2D.Double at, long time, double gunHeading, double power, String target) {
         // TMODE-33: counted for the team brain's power, whatever plays.
         gun.shotAt(target);
-        // TGUN-1: a shot on the duel gun's aim fires its virtual guns, which score them.
-        if (duelAimed && teamGun != null && target != null) teamGun.fired(target, at, time, power);
     }
 }

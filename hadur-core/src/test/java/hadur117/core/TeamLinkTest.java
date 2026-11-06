@@ -528,4 +528,19 @@ class TeamLinkTest {
         assertTrue(melee.seen.indexOf("mate:e.D@1") < melee.seen.indexOf("scan:e.A"), melee.seen.toString());
         assertTrue(melee.gun().history("e.D").current() != null);
     }
+
+    @Test
+    @Tag("TMODE-43")
+    @DisplayName("TMODE-43: under the table's NONE lane every shot is clear; under NARROW the lane holds as WEAVE-9 reads it")
+    void noLaneClearsEveryShot() {
+        HadurCore core = new HadurCore(facts(), line -> {}, null, new TriggerHappy());
+        core.teamLink().narrowLane = true;
+        core.newRound(0);
+        List<BotEvent> nearer = List.of(scan("e.A", 0, 400), scan("e.B", 2.5, 350), scan(MATE, 0, 200));
+        for (long t = 1; t <= 6; t++) core.tick(input(t, 5, nearer));
+        BotInput in = input(7, 5, nearer);
+        assertFalse(core.teamLink().laneClear(in), "the mate before the target holds the narrow lane");
+        assertFalse(core.teamLink().laneClear(in, TeamModes.Lane.NARROW));
+        assertTrue(core.teamLink().laneClear(in, TeamModes.Lane.NONE));
+    }
 }

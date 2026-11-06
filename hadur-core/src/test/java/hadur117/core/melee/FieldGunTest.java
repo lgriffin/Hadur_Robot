@@ -269,4 +269,22 @@ class FieldGunTest {
         gun.onTeam(false);
         for (FieldGun.Solution s : gun.solutions(me, 100, 5, tracker.alive(), 6)) assertTrue(s.power < 3.0);
     }
+
+    @Test
+    @Tag("TMODE-41")
+    @DisplayName("TMODE-41: with FOCUS on a team the enemy of least energy weighs three times over; off a team, or not the weakest, nothing changes")
+    void focusWeight() {
+        EnemyInfo weak = scanned("weak", 500, 800, 40, 0, 0, 1);
+        EnemyInfo other = scanned("other", 500, 200, 100, 0, 0, 1);
+        double weakBase = gun.weight(weak, me, tracker.alive(), 1);
+        double otherBase = gun.weight(other, me, tracker.alive(), 1);
+        gun.focus(true);
+        assertEquals(weakBase, gun.weight(weak, me, tracker.alive(), 1), 1e-9, "off a team FOCUS is nothing");
+        gun.onTeam(true);
+        assertEquals(FieldGun.FOCUS_BOOST * weakBase, gun.weight(weak, me, tracker.alive(), 1), 1e-9);
+        assertEquals(otherBase, gun.weight(other, me, tracker.alive(), 1), 1e-9, "not the weakest");
+        assertEquals(3.0, FieldGun.FOCUS_BOOST, 0);
+        gun.focus(false);
+        assertEquals(weakBase, gun.weight(weak, me, tracker.alive(), 1), 1e-9);
+    }
 }

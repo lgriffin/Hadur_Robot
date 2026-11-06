@@ -1,0 +1,31 @@
+# PC card team-farm (BENCH-204, TMODE-41..44): the confirm, arm c@J@ (@J@ = bb, the A/A, or fx, the tmtab build of the picked table work/team-farm-pick.java), on the picked teams (work/team-farm-confirm.txt), 12 fresh seeds from 9500, against master (the aa build). Template: tfcprep writes work/team-farm-c@J@.args with @V@ = the robot.release in hadur-robot/pom.xml.
+--team
+true
+--seeds
+12
+--seed-base
+9500
+--rounds
+12
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+work/team-farm-confirm.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@@J@.jar
+--robot
+hadur117.HadurTeam @V@@J@
+--member
+hadur117.Hadur
+--out
+work/team-farm-@V@-c@J@
+--report
+../docs/bench/local/team-farm-c@J@.md
+--baseline
+bisect/hadur117.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur117.HadurTeam @V@aa
