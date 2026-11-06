@@ -10,7 +10,7 @@
 # it, so the 9 are re-measured alone on fresh seeds before any of them reach mimicOns(). A cloud attempt (2026-11-03)
 # could not finish: the container was reclaimed twice mid-run.
 #
-# Why it should win (Leigh's card rule, 2026-11-03): it is per-opponent tailoring only (mimics on against 9 named robots,
+# Why it should win (the PC card rule of 2026-11-03): it is per-opponent tailoring only (mimics on against 9 named robots,
 # master everywhere else), the only kind of change that has shown live. On pc-mimic-on these 9 gained +3.4 to +8.4
 # points each over 8 seeds (95% low ends +0.3 to +4.2); the learning-gun mimics model exactly the learners these are, and
 # turning them on costs nothing against anyone else. Risk: the pick was in-sample, so some will regress to 0.

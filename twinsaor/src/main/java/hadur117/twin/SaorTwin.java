@@ -18,6 +18,10 @@ import robocode.util.Utils;
  * (TWIN-6). The decisions are the core's ({@code hadur117.twin.core}); this class turns them
  * into orders. Statics are per robot, because each robot has its own class loader, so the
  * Markov tables are the only state kept from round to round.</p>
+ *
+ * <p>Credit: the Markov gun is Saor's, which is Figment 1.0's design by Kevin Clark (Kev),
+ * kc.micro.Figment (no licence stated in its jar): state packing, playout and bin vote. The
+ * shared scans, the focus fire and the 90-degree stations are TwinSaor's own.</p>
  */
 public class SaorTwin extends TeamRobot {
 

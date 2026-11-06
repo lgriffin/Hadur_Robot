@@ -134,7 +134,7 @@ the data and seven times the depth, fires without holding for teammates, and at 
 
 All of these are team-only by construction: they act only while a teammate lives (the
 `onTeam` / living-teammate test MGUN-6 and MGUN-7 already use), so duel and melee fixtures stay
-bit-identical (Leigh's rule of 2026-10-11). Each starts as an ablation switch in
+bit-identical (the rule of 2026-10-11). Each starts as an ablation switch in
 `build-ablation.sh`, screened on the cloud and then gated on the PC on `team-census45` (6 seeds,
 the T2 protocol), and ships only on a whole-field gain.
 

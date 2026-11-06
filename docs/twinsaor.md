@@ -1,17 +1,15 @@
 # TwinSaor: a Twin Duel team built on Saor
 
-Leigh, 2026-10-27: "I want to now design a twin duel strategy for Saor, TwinSaor is the robot's
-name. This gives us 2000 code size to play with so 2x Saor core logic and a small bit of team
-logic. Analyse the number 1 attached and see what we can do team logic wise. We will not run a
-PC bench until we run a live run later."
+TwinSaor is a Twin Duel team for Saor: 2,000 bytes, so two Saor cores and a small team layer, after a
+read of the leader's team logic. No PC bench runs before a live run.
 
 Section 1 reads the Twin Duel rules and the live table, section 2 takes apart the leader,
 LunarTwins 1.4a, and sections 3 to 6 are TwinSaor itself: what it keeps from Saor, the team
 layer, the byte budget and the stages to a live run. Section 8 is what was built for 0.1 and
 how it did against LunarTwins on the cloud box.
 
-Leigh, 2026-10-27 15:58 and 15:59 UTC: "Lets design the bench and create a 0.1 team Jar", then
-"Run it in the cloud 1:1 vs the top team as a simple comparison".
+Next came the bench and a 0.1 team jar, run in the cloud one to one against the top team as a
+simple comparison (2026-10-27).
 
 ## 1. The rumble
 
@@ -187,7 +185,7 @@ the corner, and each twin runs one wall.
   the leader keeps its station and the other twin takes the far side of the target's bearing.
 
 This is inspired by LunarTwins' idea (two robots, one target, positions from the leader's view
-of the team) and is Saor's own in geometry and motion. Leigh's rule for Saor, unique and never a
+of the team) and is Saor's own in geometry and motion. The rule for Saor, unique and never a
 copy, holds: TwinSaor shares no code with LunarTwins and differs in kill rule, angle, range,
 radar and gun.
 
@@ -236,7 +234,7 @@ wiki), the 30-energy leader-penalty kill rule (4.2), and 128 playouts (no bytes,
 
 ## 6. Stages
 
-Leigh's rule: no PC bench until after a live run. So TwinSaor's first numbers come from the
+The rule: no PC bench until after a live run. So TwinSaor's first numbers come from the
 rumble itself, and the bench is a later stage.
 
 Stages are W0 to W3 (W for Twin; T is the Team plan's letter).
@@ -336,7 +334,7 @@ targeting showed, both twins aimed), and a battle-log test that names them is du
 
 ### The bench
 
-Leigh's rule was no PC bench before a live run; 0.1 has had it. Section 9 turns the card into the
+The rule was no PC bench before a live run; 0.1 has had it. Section 9 turns the card into the
 per-team screen. As first designed:
 
 - `hadur-bench/twinduel-field.txt`: the 27 teams of the live table, with their archive jars.
@@ -356,8 +354,7 @@ The APS is lost in two places (`twinsaor/README.md`): about 1.8 to the four stro
 win by survival (NightAndDay and GeminiTeam 37.8, 11% survival; MarioBros 45.7; LuminariousDuo
 49.7), and about 1.5 to weaker teams that tie or beat it (CoyotePair 46.1, InevitableTeam 50.1,
 ImpactTwins 52.4, KomariousTeam 53.7, YinYang 54.8, JointStrikeForce 55.5). Each pairing is 1 to
-4 battles live, so these are ±5 to 8 each. Leigh, 2026-10-27: "tailor this to a per opponent
-basis". Per-opponent tables are the only change that has ever transferred live for Hadur's 1v1,
+4 battles live, so these are ±5 to 8 each. The next step is tailoring per opponent. Per-opponent tables are the only change that has ever transferred live for Hadur's 1v1,
 and the Twin Duel field is small: 27 teams, 54 robots.
 
 ### What a mode is
@@ -471,7 +468,7 @@ key cost about 40 bytes against 10 spare, which the flattening in section 9 pays
 
 ## 11. W4 results and 0.2
 
-W4 ran on the cloud box (Leigh, 2026-10-28: the PC was busy), at 8 seeds a team (Leigh's pick, to
+W4 ran on the cloud box (2026-10-28: the PC was busy), at 8 seeds a team (chosen to
 halve the wait) and parallel 3: 6 arms on the 24 tailored teams, 1,152 battles, 0.3 to 0.4 skipped
 turns a battle. R1W is confirmed on the fresh seeds: W1 against 0.1 reads **+3.81 ± 0.68** share
 points over the 24 teams (`twin-w4.md`; +3.39 APS on the 27-team field), positive on 20 of 24, with

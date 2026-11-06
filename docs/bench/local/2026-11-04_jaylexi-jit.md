@@ -22,7 +22,7 @@ Under 4 rad the factor is 0, so the term is ±0.0 and the aim is unchanged. JayL
 so the play is bit for bit 0.5's. BulletCatcher's char is 115 + 628 = 743. That is 2 pi more (0.0032 rad short),
 which the drive and the danger read the same, because the orbit only enters sin, cos and tan. The factor is then 1,
 and the gun jitters by up to 0.125 rad either way. No new table is needed. It costs 20 B: 1,507 with javac, 1,494
-through ProGuard (Leigh allowed ProGuard builds that replay identically, 2026-11-04). JayLexiJarIT replays the
+through ProGuard (ProGuard builds are allowed when they replay identically, 2026-11-04). JayLexiJarIT replays the
 built jar against the readable reference, and the cloud replay harness gives 0.5's orders for every other name.
 
 ## Field screen: catchers only

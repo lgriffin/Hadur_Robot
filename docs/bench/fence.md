@@ -1,8 +1,7 @@
 # Rumble clients beside the bench: the core fence (BENCH-145 to BENCH-147)
 
-Leigh, 2026-10-30: "On my high end PC if we containerised robocode would that protect the bench? I'd like
-to be able to run rumbles as needed." Then: "Lets build it and I'll be restarting the PC today to see can
-we get it qualified. Don't merge though."
+The question: would containerising Robocode on the PC protect the bench, so rumble clients can run
+beside it as needed? This page is the answer and the build (2026-10-30).
 
 ## Why not a container
 

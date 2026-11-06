@@ -6,7 +6,7 @@
 # decision. About 4 to 5 hours if it runs to the end (91 names x 4 or 5 arms x 24 seeds, 8,700 to 10,900 battles);
 # the pilot stops it at about 50 minutes when the bench cannot see the rivals' lead.
 #
-# Why it should win (Leigh's card rule, 2026-11-03):
+# Why it should win (the PC card rule of 2026-11-03):
 #   - Per-opponent tailoring: this card names, for each of the 91 names with the most room, what the best rival does
 #     to that name that Hadur does not. It changes no robot code; it writes the specification every per-name entry
 #     after it is built from (the doc's order: mirror first, then table lines, then parameter lines, then builds).

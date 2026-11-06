@@ -8,8 +8,7 @@
                                    [--main C:/robocode] [--out DIR] [--hours 0] [--restart-minutes 15] [--live]
     python3 tools/fence.py clients rr01:roborumble.bat C:/robocode:meleerumble.bat    (the same, by folder)
 
-Leigh, 2026-10-30: "On my high end PC if we containerised robocode would that protect the bench? I'd like
-to be able to run rumbles as needed." A container caps how much CPU the clients take but not where it
+Rumble clients should run beside the bench on the PC without disturbing it. A container caps how much CPU the clients take but not where it
 runs: Docker on Windows is a WSL2 virtual machine whose virtual CPUs float over every host thread, and
 the bench is unpinned, so client JVMs still share cores, hyperthread siblings and L3 cache with battle
 JVMs. Eight clients beside nothing already starved the PC (PR #356). What does separate them is

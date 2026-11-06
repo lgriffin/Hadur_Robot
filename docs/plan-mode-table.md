@@ -1,7 +1,6 @@
 # Plan: a per-opponent mode table for 1v1 (Saguaro's approach), 2026-10-23
 
-Leigh (12:21 UTC): "We had that as an idea but you dismissed it. Why can't we do it?" We can. This
-plan replaces the per-bot switch tailoring that was set aside on 2026-10-19.
+This plan revives the per-opponent mode table, set aside earlier, and replaces the per-bot switch tailoring that was set aside on 2026-10-19.
 
 ## Why the 2026-10-19 version failed and this one need not
 

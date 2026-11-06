@@ -10,7 +10,7 @@
 # the field gun keeps a target until the duel gun has learned its class. The power, the 1.9 cap and the
 # fire lane are unchanged. Cloud smoke (6 teams x 2 seeds from 9100, PR body): +1.1 +- 2.7 share points,
 # OgiTeam +6.4. The duel surfer half of the doc (SURF) read -3.7 on the same smoke and is not on this card.
-# Leigh's rule (2026-11-03): a pilot stage first. dgpilot reads the first 3 of 12 seeds (25% of the screen)
+# The rule (2026-11-03): a pilot stage first. dgpilot reads the first 3 of 12 seeds (25% of the screen)
 # on all 46 teams and stops the card unless the projected change is above zero; the results PR opens either way.
 #   dgprep   build aa, bb and dgu (tmdgun: DUELGUN on every team)
 #   dgbb1    bb vs aa, the 46 teams of team-census46.txt x 3 seeds (base 9300), 10 rounds; dgdg1 the same for dgu

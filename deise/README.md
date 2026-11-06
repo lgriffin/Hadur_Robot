@@ -6,6 +6,14 @@ movement that steps off the lines of the shots it sees fired (since 0.3) and kee
 the stages are in [docs/deise.md](../docs/deise.md); the requirements are DEISE-1 to DEISE-17 in
 [docs/requirements.md](../docs/requirements.md).
 
+## Credit
+
+Deise's gun is Saor's, and Saor's gun is **Figment 1.0 by Kevin Clark (Kev)**, `kc.micro.Figment`:
+the Markov state packing, the play-it-forward playout and the bin vote are Figment's design (no
+licence is stated in its jar; see [saor/README.md](../saor/README.md)). The step off a seen shot's
+line follows two lines of **Mirage 0.2 by Kev**, `kc.mini.Mirage` (RWPCL). The least-risk
+movement, the likely-shooter weight, the wave log and the target rule (DEISE-17) are Deise's own.
+
 ## Standing
 
 LiteRumble scores the size rumbles from the same MeleeRumble battles. MiniMelee is the target.

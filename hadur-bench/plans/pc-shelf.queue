@@ -6,7 +6,7 @@
 # decision. About 3 hours if it runs to the end (screens 1,155 + 5,310 battles, then the picks x 3 arms x 12 fresh
 # seeds); a panel whose pilot fails skips its screen (U's pilot stops it at about 25 minutes, S's at about 5).
 #
-# Why it should win (Leigh's card rule, 2026-11-03):
+# Why it should win (the PC card rule of 2026-11-03):
 #   - Per-opponent tailoring only: every arm turns one switch on against named robots, and the confirm jar plays each
 #     robot with the one switch its screen picked, master everywhere else. This is the K3 shelf as a table: the
 #     per-robot configuration (shield or not, stop-and-go, stop-and-start, gun stack, still shots, exits, opening

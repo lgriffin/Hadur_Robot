@@ -1,8 +1,8 @@
 # How the best movers move, and a movement of our own
 
-2026-10-15, plan-top3 stage 1 (docs/plan-top3.md). Leigh asked how the top robots move, which one
-takes the least damage, and whether geometry and maths, chaos theory or biology could give us a
-way of moving no one has used before.
+2026-10-15, plan-top3 stage 1 (docs/plan-top3.md). How do the top robots move, which one
+takes the least damage, and could geometry and maths, chaos theory or biology give us a
+way of moving no one has used before?
 
 Sources: DrussGT 3.1.16, Diamond 1.8.22 and BeepBoop 2.0 ship their source in their rumble jars
 (`hadur-bench/opponents/`); ScalarR 0.005h.053 ships none, and Nullstride is not reachable from
@@ -56,7 +56,7 @@ the same danger model, screened -0.36 APS today
 
 ## Something of our own
 
-Leigh's question: using geometry, chaos theory or biology, can we predict and move in a way no one
+The question: using geometry, chaos theory or biology, can we predict and move in a way no one
 has? Three ideas, each a duel-only switch, off by default, screened like any other.
 
 ### 1. Protean escape (biology)

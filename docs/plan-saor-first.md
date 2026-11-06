@@ -1,6 +1,6 @@
 # Saor: plan for 1st in MicroMelee
 
-Leigh, 2026-10-25 23:32 UTC: "3rd at 68.08 … Now lets plan the gap to 1st." This plan is
+Saor is 3rd at 68.08; this plan is for the gap to 1st. It is
 built from the live pages archived in `data/rumble/pages/2026-10-25T23*` and the bench
 census in PR #284. The gap split comes from `data/tools/melee_gap.py live`.
 
@@ -79,8 +79,7 @@ the cause, but it has not been tested.
 
 ## 5. Saor stays its own robot
 
-Leigh, 2026-10-25 23:52 UTC: "I do want us unique and different, inspired by others but not
-copying them byte for byte."
+Saor is to be unique and different: inspired by others, never copying them byte for byte.
 
 - **The parity arms are measurements, not candidates.** G, W, R, Z and FX run Figment's code,
   and they only show which difference costs Saor points. None of them ships. FX above all is
@@ -277,7 +276,7 @@ What this means:
 
 ## 6f. Saor 0.2 and the stage 5a card (pc-saor-s04, about 2 h)
 
-Leigh chose to ship S2 at the tie (2026-10-27): **Saor 0.2 is S2**, at 748 bytes after ProGuard
+The decision was to ship S2 at the tie (2026-10-27): **Saor 0.2 is S2**, at 748 bytes after ProGuard
 (S2 kept an empty collision handler, which 0.2 drops). It differs from Figment in behaviour:
 Figment samples any seen row at full vote, while 0.2 grades its vote by the row's samples, has
 no ram leg, keeps the end-game cap, 64 playouts, 512 opponent tables and 1024 bins.
@@ -339,3 +338,31 @@ Figment and Wallaby are not changing; both have been in the rumble for years. If
 closes the gap, Saor ties Figment. Clearing it by 0.5 needs stages 2 and 3 to add about +0.5
 on top. That is not certain: the largest single gain the arm screen found so far was zero. The
 plan is built so that each stage's verdict shows how much is left before the next card.
+
+## 8. Saor 0.4: our own algorithm, part by part (2026-11-06)
+
+The code comparison of 2026-11-06 found that about 90 of Saor's 103 lines restate Figment 1.0
+(Kev): the corner oscillation (MeleeSeed's), the Markov state packing, the play-it-forward
+playout, the 1,024-bin vote and the power rule. Saor's own parts (sampling any seen row, the
+graded vote, learning on every scan) are where its lead over Figment comes from. The decision of
+2026-11-06 is to rewrite the algorithm part by part under a parity gate. Credit is now in the
+header, README and jar (PR #683). 0.4 replaces the Figment parts one by one, each with a
+design of Saor's own, under a parity gate: a rewritten part must not cost points against 0.3.
+
+The gate: on the MicroMelee census (18 fields of 9) with 6 seeds, the arm's paired interval over
+C (0.3 rebuilt) includes 0 and its mean is above -0.25; a low end above 0 is a gain, and the
+best arm of a stage becomes the base of the next. Every arm is a whole file
+(`hadur-bench/saor-arms/Saor<NAME>.java`, `=file` in arms.txt), javac-built over the byte
+limit; the fit to 749 bytes comes after the last stage, as JayLexi and Eveimear were fitted.
+Runs on the cloud box (3 workers, about 35 min an arm); nothing is uploaded or released.
+
+| Stage | Figment part replaced | Saor's own design | Arms | Card |
+|---|---|---|---|---|
+| 1. Movement | corner oscillation (MeleeSeed's: leg 55 + distance / 2.5 along a corner's axes) | the least risky of eight candidate points when a leg ends, risk = every live robot's energy over its squared distance, the current spot excluded; robots remembered by name hash, forgotten on death | MR (ring of 8 at 170), MP (corners and edge midpoints) | `cloud-saor-r1` |
+| 2. Gun chain | state = (turn in fifths, velocity, acceleration sign) packed in 579; a row of 126 successors sampled at random; the playout stepped by the sampled state | a second-order chain keyed on the last two states, with Saor's graded vote kept; the vote spread in bins scaled by bullet flight time rather than a fixed ±4 | G2 (second order), GV (flight-scaled vote), G2V | `cloud-saor-r2` |
+| 3. Target and power | nearest, sticky by name; power log10(energy) × 325 / distance | the robot we hit best for its distance (Deise's LEARNH idea in micro form); power from the chain's confidence (the thinnest row's samples) and distance | TH, PC, THPC | `cloud-saor-r3` |
+| 4. Fit | | the stack of passes fitted into 749 bytes after ProGuard, the core and SAOR-15 updated, confirmed on the live-shaped census with Figment seated | | `pc-saor-r4` |
+
+Stage 1 arms MR and MP are built and queued on the cloud behind the Sanaro N19 arms and the
+JayLexi k-NN card (about 12:30 start, read about 15:00). A stage with no arm through the gate is
+redesigned, not reverted: the Figment part never ships again once its replacement exists.

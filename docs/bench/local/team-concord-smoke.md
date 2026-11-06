@@ -1,8 +1,7 @@
 # Team brain CONCORD (TMODE-33): cloud smokes (2026-10-31)
 
-Leigh, 2026-10-30 23:38 GMT: "I want a meaningful shift APS wise. We have the Ogi code and we have taken
-baby steps. Let's be bold", and "I don't want bytes for byte stylistically use it and adapt to our own".
-CONCORD takes Ogi's design (docs/bench/ogi-deep-dive.md) as one team brain, written our own way.
+The aim is a large APS shift rather than small steps, adapting Ogi's ideas in our own code, not
+byte for byte. CONCORD takes Ogi's design (docs/bench/ogi-deep-dive.md) as one team brain, written our own way.
 
 ## Read
 

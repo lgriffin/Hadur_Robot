@@ -21,8 +21,8 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 /**
- * STRAND-6: a failed card's switch leaves the robot with its requirement (Leigh, 2026-11-04: "we
- * should not have checked this in... extreme bloat"). Every constant a retired requirement names in
+ * STRAND-6: a failed card's switch leaves the robot with its requirement (failed
+ * experiment code is not kept in the robot). Every constant a retired requirement names in
  * backticks (`X`, or `Owner.X` to tie it to one source file) must no longer be declared
  * {@code static final} in the robot's main sources, unless a live requirement still names it.
  */

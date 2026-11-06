@@ -1,8 +1,7 @@
 # Running the bench on a second machine
 
-Leigh, 2026-10-25: "I need to run the bench on a 2nd machine, my laptop is connected. Modify the
-bench to detect hardware capability and scale appropriately." And: "Main PC should always go max,
-my laptop is less powerful so needs to scale." This is how (BENCH-105 to BENCH-107).
+The bench runs on a second, smaller machine as well as the main PC. It detects the hardware and
+scales to it, while the main PC always runs at full width. This is how (BENCH-105 to BENCH-107).
 
 ## What the bench works out by itself
 

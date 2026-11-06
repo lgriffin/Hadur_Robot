@@ -1,8 +1,8 @@
 # Shield quality: SHIELD-16, Saguaro's body-turn aim base (2026-10-23)
 
 Stage 1 of the 1v1 per-opponent table plan (Claude Doc "Plan: the 1v1 per-opponent table",
-https://claude.ai/artifact/JCvvLxWV5gjrzL5aCSPech; docs/plan-mode-table.md). Leigh chose "better
-shield first" on 2026-10-23.
+https://claude.ai/artifact/JCvvLxWV5gjrzL5aCSPech; docs/plan-mode-table.md). The better shield
+comes first (decision of 2026-10-23).
 
 ## Finding
 
@@ -107,4 +107,4 @@ first pass by segment.
   summed over the panel with the lower end above 0; results PR. The whole table's census is M5.
 - The same card then runs team stage S4 (plans/team-s4.steps, TMODE-8 to TMODE-10: five screens,
   2,760 battles, about 3 h) after the 1v1 results PR, back on master, with its own results PR
-  (Leigh, 2026-10-24: one combined card). About 8 h in all.
+  (2026-10-24: one combined card). About 8 h in all.

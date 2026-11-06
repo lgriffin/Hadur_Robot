@@ -1,7 +1,7 @@
 # Plan: HadurTeam to top 5 in the TeamRumble
 
-Date: 2026-10-23. Asked by Leigh after 3.15's first team pass: "Our team results are in and we
-didn't improve by a serious amount. Why? Come up with a plan to get me top 5."
+Date: 2026-10-23, after 3.15's first team pass, which did not improve by much: why, and a plan to
+reach the top 5.
 
 Sources: the live TeamRumble pages fetched at 10:05 UTC for HadurTeam 3.15, HadurTeam 3.13
 (retired, its final state) and the eight teams above Hadur, archived in
@@ -358,7 +358,7 @@ PR #264) added to Hadur's live score. APS points are each segment's share of the
 
 ## 9. Pack hunting passes (TMODE-13, 2026-10-25)
 
-Leigh chose to build a top-20 structure. HUNT is Nightmare's assigned pincers with PACK's three
+The decision was to build a top-20 structure. HUNT is Nightmare's assigned pincers with PACK's three
 flaws fixed:
 - members are assigned two or three to an enemy, leaderless, in name order;
 - each holds a slot at a fixed 350 px from its prey, ranked by bearing;
@@ -565,7 +565,7 @@ the same for team: read each costly team's code, then give it a counter that exp
   often (32,102 to 27,221) and teammates collided 26% less (1,803 to 1,339). NEAR on TroodonPack
   -0.1 ± 2.6: closed.
 - **Why global here.** The mechanism fixes our own fire, which costs us against every team, and the
-  gain is too small for any one team to show at affordable seeds. Leigh chose the confirm
+  gain is too small for any one team to show at affordable seeds. The decision was the confirm
   (2026-10-29), knowing it is one switch rather than a per-opponent pick.
 - **Card** plans/pc-team-path2.queue (BENCH-135): bb and mp on 46 teams x 16 fresh seeds from 5100,
   2,944 battles, about 3.4 h; pooled gate +0.30 APS with the low end above zero. Stop rules on both
@@ -632,7 +632,7 @@ the same for team: read each costly team's code, then give it a counter that exp
 
 pc-team-dodge2 (PR #450) shipped DODGE with own fire on every team (+0.85 ± 0.42 APS, PR #451), but
 three teams read worse with it: ImpactTeam -4.2 ± 1.5, ImWithStupidTeam -2.5 ± 1.6, NightmareTeam
--3.5 ± 3.7 share points. Per-team picks are the only kind that has carried live, so Leigh chose to
+-3.5 ± 3.7 share points. Per-team picks are the only kind that has carried live, so the decision was to
 try turning DODGE off for those three. They were picked after the fact from 46 teams, so
 `pc-team-nododge` (BENCH-144) confirms on fresh seeds first: aa, bb and xd (their member classes get
 MATEFIRE, HUNT and PATH, every shipped mode but DODGE) on the three teams at 24 seeds from 5900,
@@ -661,8 +661,8 @@ dies in 56% (Firestarter), 23% (Combat) and 12% (Ogi) of rounds. Own fire still 
 round, 54% of it on lines with no enemy near. Team gun accuracy is the next study.
 
 The top three play leaderless (every member the same code); only NightmareTeam's leader gives
-orders. Leigh pointed at the rest of the field: "our scores can come against mid and lower teams.
-Teams that play a leader control wise. Where killing it effectively ends the game." A read of the
+orders. The rest of the field matters: points can come against mid and lower teams that are run by a
+leader, where killing the leader effectively ends the game. A read of the
 jars finds nine: four run on a leader's orders (Nightmare, Enjambre, BuggerHive, Slippery) and
 five on droids, which have no radar, fed by scanners (TroodonPack, Slartibartfass, Bakery,
 FourProphetsAndADiscliple, ImWithDroidTeam). The engine starts a leader at 200 energy and a droid at

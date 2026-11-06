@@ -1,6 +1,6 @@
 # How the four rivals above Hadur are built (2026-10-23)
 
-Leigh asked for source analysis of 4th to 7th, and chose on 2026-10-23 11:32 UTC to decompile the
+A source analysis of 4th to 7th (2026-10-23), decompiling the
 three that ship no source. Jars are the rumble participants' own: Saguaro 1.0 (GitHub release),
 ScalarR 0.005h.053-noshield and Ogi v1 (participants-list links). Decompiled with CFR 0.152 in a
 scratch directory; nothing from them is copied into Hadur. Diamond 1.8.22 ships its source and was

@@ -1,7 +1,6 @@
 # Melee: a plan from 17th to the top 5 (2026-10-25)
 
-Leigh, 2026-10-25 20:30 UTC: "We have learned a lot about melee and are sitting in 17th. Top 5 is
-the goal here as well. I'd like a plan that we can follow to get us there."
+Hadur is 17th in melee; the goal is the top 5, and this is the plan to get there.
 
 This plan starts from what is already measured: the 3.13 gap read
 ([melee-gap-3.13.md](bench/melee-gap-3.13.md)), the melee gun stage M7
@@ -277,7 +276,7 @@ on the census at 8 fresh seeds (3183-3190), 1,104 battles; g4ef pairs with the m
 (`screen --base2`) and passes at +0.3 with the low end above 0 and survival no more than 1 point
 lower. A pass turns both on in master.
 
-**Movement rebuild, step M0: the crowd exposure read (2026-10-26, BENCH-116).** Leigh chose to
+**Movement rebuild, step M0: the crowd exposure read (2026-10-26, BENCH-116).** The decision was to
 bank g4 + ef and then rebuild the melee movement. Before building, master ran on 12 census fields
 (every fourth, 1 seed, cloud; docs/bench/local/melee-exposure-317.md) with the new exposure.csv:
 
@@ -298,7 +297,7 @@ behind;** the gap is the crowd's bullet power, now on a better gun (g4). Power a
 on the older gun (mpow +0.1 on 3.13's K = 3 gun; Stage 1's ep +0.06), so a power stage must be
 screened on top of g4ef.
 
-**Firepower result (2026-10-26, PC card pc-melee-power, PR #320).** Leigh chose the firepower stage
+**Firepower result (2026-10-26, PC card pc-melee-power, PR #320).** The decision was the firepower stage
 over a movement rebuild. On master (K = 12 gun), each arm alone on the census at 6 seeds (3191-3196),
 paired with the mean of aa and bb:
 
@@ -342,7 +341,7 @@ just above 0 on 6 seeds, held back. 3.18.1 reads 13th live at 67.92, beating its
 (3211-3218) with the same read; a pass turns it on in master. Firepower widening is otherwise spent:
 the rest of the gap to 5th (+2.19 to Diamond's 70.11) needs Stage 3 or a bigger idea.
 
-**MGUN-16 ships in 3.19 (2026-10-28).** Leigh chose to ship it in 3.19 on the power2 result alone
+**MGUN-16 ships in 3.19 (2026-10-28).** The decision was to ship it in 3.19 on the power2 result alone
 before `pc-melee-wide` ran; the card is retired and 3.19's live melee page is the read.
 
 **3.19 live and Stage 3 (2026-10-29).** 3.19 reads 14th at 67.77; 10th is kc.mini.Mirage at 68.23
@@ -380,7 +379,7 @@ m-danger are both flat, stop Stage 3 there (section 6).
 
 **Melee surfer (MMOVE-15, 2026-10-29).** The top three (ScalarR, Neuromancer, Firestarter) all surf
 learned enemy waves in melee; Hadur's melee movement only ever dodges head-on and linear guesses.
-Leigh chose to build that before more single-knob arms. MMOVE-15 (`MELEE_SURF`, arm `msurf`/`ms`)
+The decision was to build that before more single-knob arms. MMOVE-15 (`MELEE_SURF`, arm `msurf`/`ms`)
 is m-closer's shot weight, m-danger and m-wave in one switch, our own build from Hadur's team
 pieces: each seen shot is a wave weighed `1/(1+k)^2`; once Hadur has 5 hits from a shooter, that
 shooter's bullets are its learned aims (the team's kNN log, fed off a team by Hadur's own hits);
@@ -393,9 +392,8 @@ CPU guard would fail. Keeping each shot's 4 nearest aims at the shot's whole wei
 bullet cap: +0.56 ± 0.73 against an aa rerun (aa vs aa +0.12 ± 0.53), skips 24 vs 26, others
 outlived +2.3 points, deaths with two left -2.4 points. Level to positive and CPU-clean: carded.
 
-**Melee gun inspired by Ogi (MGUN-17..20, 2026-10-30).** Leigh: "Lets explore its gun for melee its
-clearly working for it. Our goal is not to beat Ogi 1:1 its to beat the field. Lets not copy it
-directly lets be inspired by it." Hadur's field gun already has Ogi's depth (24 situations) and power
+**Melee gun inspired by Ogi (MGUN-17..20, 2026-10-30).** The goal is to beat the
+field, not Ogi one on one, with a gun inspired by Ogi's and not copied from it. Hadur's field gun already has Ogi's depth (24 situations) and power
 (3 inside 300 px); the crowd features read null (MGUN-11). Four further ideas, each Hadur's own take,
 each a switch off a team only:
 
@@ -426,7 +424,7 @@ the Stage 3 gate and CPU guard. A passing arm stacks with the melee surfer (if i
 on 1 seed every arm read below aa (gx -1.47 ± 1.01, gr -0.24, gd -0.91, gv -0.87); on 2 more seeds with an
 A/A copy (bb -0.13 ± 0.86, clean) gx read -0.88 ± 0.53 and gr +0.18 ± 0.57; the v2 experts above
 read -0.36 ± 0.50. Both expert builds entered the endgame about 6 energy lower. The parts of Ogi's gun
-that pay (depth, power 3 close in) are already in Hadur. Leigh chose to park the line: the switches
+that pay (depth, power 3 close in) are already in Hadur. The decision was to park the line: the switches
 stay on master, off, and `pc-melee-gun` is retired before it ran.
 
 **ScalarR-inspired switches (MGUN-22, MMOVE-16..21, 2026-10-31).** Seven ideas from ScalarR's movement
@@ -437,17 +435,15 @@ others (xh), own-bullet shade (bw) and a two-wave step search (fv). On 46 fields
 battles an arm, bb -0.03 ± 0.21 clean): xh +0.19 ± 0.14 (low end +0.05, endgame level, skips +18%),
 ec +0.18 ± 0.15 (endgame -4.8, skips +43%), bw +0.10 ± 0.15, wm +0.08 (skips +93%), bs +0.06
 (endgame -3.7), wq 0.00, fv -0.20 ± 0.21. The cloud smokes (+0.45 to +0.94) did not repeat. No arm
-cleared the +0.3 cut; Leigh (2026-10-31): "Where is the .3 coming from? It seems excessively high
-and we are leaving .19 on the table." The cut was this plan's, set above the early A/A noise
+cleared the +0.3 cut, which left a +0.19 arm on the table. The cut was this plan's, set above the early A/A noise
 (±0.3 at 4 seeds), and 6-seed screens resolve ±0.15, so the gate above drops the APS cut: the low
 end above 0 with the endgame, survival and skip bars held passes. **MMOVE-19 ships on from 3.21**
 (cross-learning, the one arm that passes that gate); ec, bs and wm fail their endgame or skip bars,
 bw, wq and fv are inside noise. The line is closed; nothing further goes on the PC until the surfer
 and xh are live and read per opponent on ranks 11-100.
 
-**Diamond-inspired switches (MMOVE-22, MMOVE-23, MGUN-23, 2026-10-31).** Leigh: "what can we explore in
-the cloud today to add to these? We have exceptionally strong reference bots to be inspired by, I'd like
-something to move us even 0.5 APS"; "Survival helps so this is a good line". Diamond (5th) ships its source
+**Diamond-inspired switches (MMOVE-22, MMOVE-23, MGUN-23, 2026-10-31).** The aim: cloud
+arms inspired by the strong reference bots, worth even 0.5 APS, on the survival line. Diamond (5th) ships its source
 under a zlib-style licence; three of its ideas, each our own build, each a switch off a team only:
 **damage memory** (`MELEE_DAMAGE_MEMORY`, arm `mdmg`/`dm`: each opponent's risk term weighs by the damage it
 has done to Hadur over the battle plus 10, times its mean distance, the weights averaging 1; Hadur otherwise
@@ -466,7 +462,7 @@ clean slate (MELEE-2; 23% of rounds are lost there, 46% won against ranks 1-30),
 larger build; Diamond's radar and melee gun do what Hadur's already do; ScalarR's energy caps (E/6, E/15
 beyond 325 px) hardly bite under Hadur's crowd rule, so they were not built.
 
-**The endgame hand-off (HAND-1, HAND-2, HAND-3, 2026-10-31).** Leigh: "What do you need? Make a card". The
+**The endgame hand-off (HAND-1, HAND-2, HAND-3, 2026-10-31).** The
 biggest pool after the Diamond switches: live, 23% of rounds are lost in the endgame duel and only 46% of
 them are won against the top 30. There the duel plays plain, by construction: every per-opponent switch in
 the duel is duel-only (`duelOnly`), the shield list never reaches a melee charter's duel, and nothing the

@@ -52,7 +52,7 @@ found a stored verdict for about 55% of opponents.
 - **Panel:** the 400-robot screen (`screen-311.txt`, drawn in proportion to band size, so a mean estimates
   APS).
 - **Builds:** seedall (sa) as the robot and master's A/A build (aa) as the baseline.
-- **Lukewarm (lw):** Leigh's "a lukewarm start before adapting". The stored tier still opens the battle at full
+- **Lukewarm (lw):** a lukewarm start before adapting. The stored tier still opens the battle at full
   power (POW-1, POW-3). Once this battle's own hit rate on the opponent is known within POW-4's margin, the tier
   rules apply only where POW-4's expected-value check also picks full power. lw plays the same seeds on its own
   and is read against cw's aa rows.

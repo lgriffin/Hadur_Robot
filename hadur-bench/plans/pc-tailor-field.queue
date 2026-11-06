@@ -1,7 +1,6 @@
 # 1v1, per robot over the whole field, gun AND movement: every robot of census-312.txt is fought by master and by ten
 # builds, each switching on one per-robot lever for every robot, and keeps the lever its own battles pick, or none
-# (BENCH-197; Leigh 2026-11-05: "both a movement and a gun approach", "a tailored ask for all 1200 robots", "be
-# holistic, I want this to be a huge run that shifts us forward"). Leigh starts it once the PC is free:
+# (BENCH-197: movement and gun levers, tailored over all 1,200 robots, one large holistic run). Leigh starts it once the PC is free:
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-tailor-field        (or  ./queue.sh run pc-tailor-field)
 # It supersedes pc-x5-field and fights in the same folder (work/x5f) at the same seeds with the same c, x5 and rd
@@ -16,7 +15,7 @@
 #   movement: rd RAM-6 rammer dodge; sg / sw POISON-2 stop-and-go (WavePoison / WavePoisonShift); hj MOVE-28
 #             stop-and-start; dg DODGE-3 simple-aim dodge; fl MOVE-32 flattener on; mm MOVE-34 mimic aims in the surf.
 #
-# Why it should win (Leigh's card rule, 2026-11-03):
+# Why it should win (the PC card rule of 2026-11-03):
 #   - Per-opponent tailoring on every robot, both halves. The mirror study (2026-11-05, 48 gap robots, truth logs)
 #     found the BeepBoop gap is movement on rammers and the mid-field and gun on learned-orbit surfers; each lever
 #     answers one of those, and no shortlist decides who is tried: a robot is found by fighting it.

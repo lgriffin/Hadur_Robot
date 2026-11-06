@@ -22,6 +22,12 @@ import robocode.util.Utils;
  * 106,667 + 213,333 x weight (docs/deise.md section 8). 0.5 adds stage E6b's PN (400 playouts,
  * each voting over half the target's width) and stage E7's LEARNH: the target is the robot with
  * the least distance times the root of the shots aimed at it over the hits on it (DEISE-17).</p>
+ *
+ * <p>Credit: the Markov gun comes through Saor from Figment 1.0 by Kevin Clark (Kev),
+ * kc.micro.Figment (state packing, playout and bin vote are Figment's design; no licence stated in
+ * its jar), and the shot-line avoidance follows two lines of Mirage 0.2 by Kev, kc.mini.Mirage
+ * (RWPCL). The least-risk movement, the likely-shooter weight, the wave log and the target rule are
+ * Deise's own.</p>
  */
 public class Deise extends AdvancedRobot {
 

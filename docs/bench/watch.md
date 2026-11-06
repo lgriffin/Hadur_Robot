@@ -1,7 +1,7 @@
 # Watching a PC card as it runs (BENCH-128 to BENCH-131)
 
-Leigh, 2026-10-28: "Why can't the harness do what you have done in the cloud there and monitor as it
-runs? Instead I'm doing 6 hour runs that have clear failures." Until now a PC card was read only from
+A PC card should be watched as it runs, so a run with clear failures stops early instead of going
+on for hours. Until now a PC card was read only from
 its results PR at the end. Now the queue runner reads every battle as it lands and can stop a card on
 rules the card declared before it started.
 

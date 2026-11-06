@@ -1,6 +1,6 @@
 # Eveimear per-opponent levers: cloud pre-screen (2026-11-03)
 
-Leigh's card rule (2026-11-03) asks every PC card to be per-opponent tailoring with a pilot stop and a
+The PC card rule (2026-11-03) asks every PC card to be per-opponent tailoring with a pilot stop and a
 written case. Before handing Eveimear a card, three zero-byte per-opponent arms were screened in the
 cloud, so a bad idea costs 10 minutes here instead of a PC run. None showed a gain, so no Eveimear
 card goes to the PC from this round.

@@ -203,7 +203,7 @@ for 3.13hjsw on the same census; the three surf switches add +0.03 ± 0.18 to th
 Stage 2 closed: all five switches stay off; hc+pk+w2 parked as a +0.2 stack for a combined
 gate with whatever stage 3 brings.** Stage 3 (the gun) is what is left for the class.
 
-**Rank gate on the stack (2026-10-20, Leigh: build it as a backup, like the shield list):** on both
+**Rank gate on the stack (2026-10-20, built as a backup, like the shield list):** on both
 censuses the stack gains only below rank 200; stack on for ranks 201+ only reads +0.26 ± 0.11
 (hjsw) and +0.25 ± 0.11 (hjswhcpkw2) APS against +0.20 / +0.22 everywhere, cross-validated per
 band +0.25 both ways; the in-battle share proxy recovers nothing and per-bot lists read +0.15 out
@@ -257,7 +257,7 @@ the census (`pc-midrange-census-2`, seeds 1121-1124) against 3.13 at the +0.3 ga
 200 or better -0.12, below 200 +0.13. Gate missed on both counts; the top-50 guard's +2.7 did not
 reproduce. Stage 3 closed; th, fg, nk stay off.**
 
-## Close-out (2026-10-21, Leigh: pause)
+## Close-out (2026-10-21, paused)
 
 Three stages, five PC screens and three whole-field censuses (about 40 PC hours) bought these
 facts, each of which closes a door the earlier plans had left open:

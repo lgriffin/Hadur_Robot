@@ -43,9 +43,15 @@ grep -v '^#' saor-arms/arms.txt | while IFS='|' read -r name what expr; do
     else
     cls="Saor$name"; dir="$out/build/$cls"
     rm -rf "$dir"; mkdir -p "$dir/hadur117/micro"
+    if [ "${expr#=}" != "$expr" ]; then
+        # A whole source file (saor-arms/Saor<NAME>.java): the 0.4 rewrite arms replace whole parts.
+        [ -f "${expr#=}" ] || { echo "saor_arms: arm $name needs ${expr#=}" >&2; exit 2; }
+        sed -e "s/class Saor /class $cls /" "${expr#=}" > "$dir/$cls.java"
+    else
     sed -e "s/class Saor /class $cls /" ${expr:+-e "$expr"} "$src" > "$dir/$cls.java"
     if [ -n "$expr" ] && cmp -s <(sed "s/class Saor /class $cls /" "$src") "$dir/$cls.java"; then
         echo "saor_arms: arm $name's sed changed nothing" >&2; exit 3
+    fi
     fi
     javac --release 8 -nowarn -cp "$api" -d "$dir" "$dir/$cls.java"
     printf 'robot.classname=hadur117.micro.%s\nrobot.version=0.1\nrobot.author.name=lgriffin\nrobocode.version=1.9.3.0\n' "$cls" \

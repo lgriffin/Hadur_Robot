@@ -12,7 +12,7 @@ per ID, unit and jqwik tests, ArchUnit unchanged, replay fixtures re-recorded wh
 changes, deliberate `DuelIdentityTest` re-pins named in the PR, `hadur.climb.stage` bumped in
 the root pom).
 
-Goal (Leigh, 2026-09-30): **top 30 in the RoboRumble 1v1.** On 2026-09-30 at 11:45 UTC rank
+Goal (2026-09-30): **top 30 in the RoboRumble 1v1.** On 2026-09-30 at 11:45 UTC rank
 30 was davidalves.Firebird 0.25 at 84.30 APS and rank 40 fromHell.CHCl3 1.4.2 at 83.11; 3.1
 finished at 81.46 (rank 65 of 1,216). We need **+2.9 APS**, and about +3.5 to sit inside the
 top 30 with a margin.

@@ -1,6 +1,6 @@
 # How BeepBoop and DrussGT surf, against Hadur's surf (2026-10-24)
 
-Leigh asked (2026-10-24) why the core surf was never properly investigated, after the tracker's
+The core surf had never been properly investigated (2026-10-24), and the tracker's
 gap read put two-thirds of BeepBoop's 5.4-point lead over 3.16 on mid-field defence: Hadur takes
 12.8 bullet damage a round against the robots on neither shield list, Diamond 9.5, ScalarR 8.2,
 Nullstride 6.8 (`docs/top3-movement-study.md`). This note reads the two strongest surfs from the

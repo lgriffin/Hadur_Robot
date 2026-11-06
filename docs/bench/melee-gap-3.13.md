@@ -127,7 +127,7 @@ read. All three builds are bench ablations (`hadur-bench/build-ablation.sh`), no
 | Build | What changes | Hadur damage per round | Gun idle | APS paired diff by field (A, B, C, D, E) | Pooled |
 |---|---|---|---|---|---|
 | mpow | 3 or more opponents and 30+ energy: power 3 (or the kill) | 71 vs 56 (+27%) | | -1.6, +1.7, -0.1, -2.1, +2.6 | **+0.1** |
-| mhold | Leigh's passive theory: 3 or more opponents, fire only to finish (16 energy or less) | 17 vs 54 | 55% | -5.7, -6.9, -8.5, **-5.7 ± 3.1**, -2.7 | **-5.9** |
+| mhold | A passive theory: 3 or more opponents, fire only to finish (16 energy or less) | 17 vs 54 | 55% | -5.7, -6.9, -8.5, **-5.7 ± 3.1**, -2.7 | **-5.9** |
 | mrate | fire on scans up to 8 ticks old (was 5), no lead cap with 3+ opponents | 55 vs 57 | 17% vs 21% | +0.8, -0.6, -4.6, +1.8, -2.3 | **-1.0** |
 
 - **Power alone is a wash** (mpow), as M6's power tables were on the old reference field: the

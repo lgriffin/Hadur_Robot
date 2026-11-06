@@ -1,9 +1,7 @@
 # Deise: a MiniMelee entry
 
-Leigh, 2026-10-27: "Mini bot will be called Deise. Lets design it to be first." Before that, on
-Mirage: "I'd like to analyse what Mirage does to see can Saor bridge the gap but I'm also
-considering a new bot to win that group. Assume we had the byte code capacity how would we
-bridge it?"
+Deise is a MiniMelee robot designed to take 1st, after a study of what Mirage does and how the gap
+to it could be bridged with a mini's byte budget.
 
 `hadur117.mini.Deise` is a third robot, separate from Hadur, Saor and TwinSaor: a melee bot for
 the MiniMelee rumble (codesize under 1,500 bytes, ten robots on a 1000 x 1000 field, scored by
@@ -135,7 +133,7 @@ when D or a one-change arm reads within 1.0 of MIR in the same run.
 | E2 | Fit 1,499 bytes: flatten into one class as Saor is, with an equivalence test against the core (done early, for 0.2: 1,490 bytes) | DeiseJarIT at 1,499; the fitted build reads level with E1's |
 | E3 | Release the fitted build on Leigh's go | live MiniMelee 1st |
 
-Leigh asked for Deise live on 2026-10-27 to get real numbers before the census. 0.1
+Deise went live on 2026-10-27 to get real numbers before the census. 0.1
 (`deise-v0.1`) went out unfitted at 2,303 bytes, which the MiniMelee table does not take, and
 should never have been cut. 0.2 is the same robot fitted to 1,490 bytes (section 7), so stage E2's
 fit came before E0's census.
@@ -535,7 +533,7 @@ bytes; it is read for 0.6.
 
 ### Deise 0.5: PN and LEARNH, fitted
 
-Leigh (2026-10-31): cut 0.5 from the experiments that land by about 01:00 GMT, to see how far from
+0.5 (2026-10-31) is cut from the experiments that landed by about 01:00 GMT, to see how far from
 1st the stack is live. 0.5 is PN (E6b) and LEARNH (E7) in one class at 1,499 bytes. They were each
 measured over 0.4, not together. Fitting them took 30 bytes, all but three of them free:
 `Rules.getBulletSpeed(power)` for the playouts' bullet speed (power is already within 0.1 to 3),
@@ -562,7 +560,7 @@ table. FEAR (E7, stopped at field 23 of 46) is the open arm for 0.6.
 
 ## 9. Uniqueness
 
-Leigh's rule for Saor holds here: inspired by others, never a copy. Deise's gun is Saor's own
+The rule for Saor holds here: inspired by others, never a copy. Deise's gun is Saor's own
 (the graded vote, the cold circle, the range power), not Mirage's. Its movement is a least-risk
 ring, a family as old as melee itself; what is Deise's is what it weighs: opponents by their
 energy, Saor's corners while crowded, and (measured, off for now) shots it saw fired instead of

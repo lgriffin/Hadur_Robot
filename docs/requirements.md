@@ -1205,7 +1205,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
   version 2 (`LinkCodec.VERSION_DODGES`), one without is version 1 byte for byte.
 - **Switches.** `TeamDanger.NEAREST` and `TeamDanger.LEARNED` are both off: the shipped team
   plays as before. `build-ablation.sh t6n` and `t6l` turn them on for the PC gate (card team-s2).
-- **Team only (Leigh, 2026-10-23: "ONLY ... in the team capabilities and NEVER in others").** Both
+- **Team only: never in the 1v1 or melee capabilities.** Both
   are reached only with a living teammate; with no teammate the movement calls MMOVE-3's own path
   (`TeamDangerTest.soloUntouched`, both switches on), and a hit is learnt only while `onTeam`.
   Checked with both switches turned on: every duel and melee replay fixture (Walls, Crazy, RamFire,
@@ -1214,8 +1214,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 
 ### T7 notes: the team mode table (TMODE-1 to TMODE-4)
 
-- **Why.** Leigh (2026-10-23): "There are only 44 teams in team mode, we can and should have a
-  1:1 strategy for them." The decompile read (docs/bench/team-top-decompile.md) found that the
+- **Why.** There are only 44 teams in the team rumble, so each can have its own strategy. The decompile read (docs/bench/team-top-decompile.md) found that the
   top teams' movement differs from Hadur's mainly in how much of each enemy shot a member takes as
   its own (Ogi, Firestarter), in regrouping when ganged (Ogi), and in closing on the last enemy
   (Ogi, Combat). Different teams punish different things, so each team gets its own modes.
@@ -1438,7 +1437,7 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
   table fights with ShotDodger). The dodge-smoke runs showed DODGE-2's reading locked (Machete: 190 of 194
   bullets read matched one expert) yet Hadur took the same damage as without it (about 2,150 a battle): the
   three-option surf cannot reach a spot the known bullet misses at close range. The planner is Hadur's
-  own design (Leigh, 2026-10-25: "unique and different, inspired by others but not copying them"),
+  own design (inspired by others, not copying them),
   taking three ideas from Saguaro's ShotDodger and none of its code or data: score a path by its
   clearance from the predicted bullet (`damage / clearance^2`, a hit above any miss), add the enemy's
   distance (`2500 / d^2`), and learn the experts loosely (Gaussian, 0.18 GF) from hits and from the
@@ -1624,7 +1623,7 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
 | BENCH-110 | Ubiquitous | The bench shall carry `tools/factor_picks.py`, which reads the Stage 2 factorial's runs and design and gives, per factor, its field effect, the robots whose own effect is at least 5 points either way, and the APS a per-opponent switch would add measured held out (picked on the design points with a second factor at one level, read on those at the other, both ways, averaged; only picks away from the shipped level count: "on" picks for a factor that ships off, "off" picks, crediting minus the effect, for one named as shipping on, as sw and F have since 3.15), over 1,217 pairings, using only the robots with every design point and counting those left out. | R9 |
 | BENCH-111 | Ubiquitous | The bench shall carry `tools/third.py`, `panel-third-dodge.txt` (the 148 Saguaro ShotDodger robots Hadur 3.17 scores under 95 live or Saguaro leads by more than 3), the `sdplan` and `sdplanlist` ablations and the `pc-1v1-third` card: the factorial picks (BENCH-110); a screen of the panel with the control, its A/A copy and the planner at 3 seeds; the planner locked per robot at +5 points with the 95% interval above 0; each locked robot's expert read from its own battles' DP records (a strict majority of those where the planner acted, else -1); the candidate built from those lines; a verify on the locked robots at 3 fresh seeds; the gate of BENCH-100; and a results PR. | R9 |
 | BENCH-112 | Ubiquitous | The bench shall carry the `hjlist` and `gslist` ablations (the robots of `$HEAT_JIT` / `$GUN_STACK` get MOVE-28 / GUN-11 entries), the candidate lists `plans/factor-heatjit.txt` and `plans/factor-gunstack.txt` (the Stage 2 factorial's +5-point picks for hj and G, less the robots a shield or stop-and-go entry already drives), `panel-factor-picks.txt` and the `pc-1v1-factor` card: those robots against the control, its A/A copy and the candidate at 6 fresh seeds, the gate of BENCH-100 at +0.03 APS, and a results PR. | R9 |
-| BENCH-113 | Event | When a release is published, the release workflow's summary shall name the release watch, and the bench shall carry the `live-watch` card: `data/tools/live_client.py watch` over every RoboRumble client folder under `C:/RoboRumbleWorkers` with the 1v1, melee and team pages of the versions the card names, keeping only those versions' battles (`--robot`) fought after the watch first started (`--new-only`), and stopping at 10 collapses (1v1 battles at least 15 points under the pairing's score on the live page) or 1,000 1v1 battles, whichever comes first, within 72 hours or when a STOP file appears in the watch folder, then polling health records a further minute for the last battle, and logging the hour's battle counts hourly, then `live_client.py report` and a results PR of the watch folder's TSVs (profiles included), report and log (Leigh, 2026-10-26: the watch is part of every release). | R9 |
+| BENCH-113 | Event | When a release is published, the release workflow's summary shall name the release watch, and the bench shall carry the `live-watch` card: `data/tools/live_client.py watch` over every RoboRumble client folder under `C:/RoboRumbleWorkers` with the 1v1, melee and team pages of the versions the card names, keeping only those versions' battles (`--robot`) fought after the watch first started (`--new-only`), and stopping at 10 collapses (1v1 battles at least 15 points under the pairing's score on the live page) or 1,000 1v1 battles, whichever comes first, within 72 hours or when a STOP file appears in the watch folder, then polling health records a further minute for the last battle, and logging the hour's battle counts hourly, then `live_client.py report` and a results PR of the watch folder's TSVs (profiles included), report and log (2026-10-26: the watch is part of every release). | R9 |
 | BENCH-114 | Event | When one of our team's bullets hits one of our members, the team harvester's `friendly.log` line shall add where the victim stood when the bullet was first shown: the distance along the bullet's line of the nearest living enemy within 60 px of it (`target`), the victim's distance along and across the line, and the hit's kind: `lane` (ahead within 36 px of the line and nearer than the target), `noline` (no target), `walkin` (hit before reaching the target) or `beyond` (hit past it); and `tools/team_losses.py` shall report the kinds' shares per band. | R9 |
 | BENCH-115 | Ubiquitous | The bench shall carry the `pc-melee-bank` card, which builds the field gun at 24 situations an opponent and MEND-3 together, and the same with MGUN-13, runs each, an aa baseline and a bb A/A copy each alone on the melee census at 8 seeds after Stage 2's, and reads it with `tools/melee_s0.py screen --base2`, which pairs every arm but bb with the mean of the two baseline copies battle for battle, at a +0.3 bar with the 95% low end above 0 and Hadur's share of the others it outlives no more than 1 point lower, and pairs the MGUN-13 stack with the build without it battle for battle, so crowd power passes only when it adds with the 95% low end above 0. | R9 |
 | BENCH-116 | Event | When a melee round ends, the bench shall write one `exposure.csv` row per fighter with its ticks alive while three or more fighters were alive, the summed count over those ticks of other fighters whose nearest living fighter it was, the bullet damage it took while three or more were alive (capped at its energy), and the parts of that damage fired by a shooter whose nearest and whose second nearest living fighter it was when the shot was first seen; and `tools/melee_exposure.py` shall read them per 100 crowd ticks for Hadur and for the census opponents by rank band. | R9 |
@@ -1683,8 +1682,8 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
   unattended, so every pick, build and gate is a queue step with no decision in between.
 - **BENCH-105.** `hadur-bench/hostprofile.py`, `benchqueue.py` (host variables, `host`, `--workers`,
   `--work-dir`), `HostWidth.java` (`--parallel auto`, `--cpu-constant auto`); tested by
-  `test_hostprofile.py`, `test_benchqueue.py` (HostTest) and `HostWidthTest`. Why: Leigh 2026-10-25,
-  a laptop as a second bench machine; the PC keeps its measured 12 (PR #232). See
+  `test_hostprofile.py`, `test_benchqueue.py` (HostTest) and `HostWidthTest`. Why: a laptop as a second bench
+  machine (2026-10-25); the PC keeps its measured 12 (PR #232). See
   `docs/bench/second-machine.md`.
 - **BENCH-106.** `hadur-bench/tools/host_check.py`, `plans/host-check.queue`; tested by
   `tools/test_host_check.py`. Why: a laptop's numbers stand beside the PC's only if its skipped
@@ -1693,7 +1692,7 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
   census without fighting an opponent twice.
 - **BENCH-108.** `Bench.runSuite`, `Bench.suiteLinesAtOnce`; tested by `SuiteParallelTest`. Why: pc-melee-s0
   (results PR #292) asked for 12 workers on the PC but ran 4 battles at a time, because each 4-seed field
-  only has 4 battles and the suite ran fields one by one; Leigh: "Main PC should always go max".
+  only has 4 battles and the suite ran fields one by one; the main PC should always run at full width.
 
 ## 3.15: the census winners shipped (MOVE-24, SHIELD-14 on)
 
@@ -1834,7 +1833,7 @@ A retired requirement keeps its ID; no new requirement reuses it.
 | MGUN-26 | Where the far power's own-energy floor is below 60, MGUN-25 shall apply from that own energy in place of 60 (arms `mfloor40`, `mfloor50`; master stays at 60). | 3.22 cleanup | pc-melee-floor failed (PR #656): z4 -0.11 ± 0.13, z5 -0.00 ± 0.16; the floor stays 60 |
 | BENCH-192 | The bench shall carry the `pc-melee-floor` card, which builds MGUN-26 at 40 (`mfloor40`) and 50 (`mfloor50`) beside an aa baseline and its A/A copy on the 46 melee census fields × 6 fresh seeds (3304-3309), with fails 20 and stall 30m stop rules on each arm, and ends in a results PR on `claude/pc-melee-floor-results`. | 3.22 cleanup | Card pc-melee-floor run and removed (PR #656) |
 | BENCH-193 | The `pc-melee-floor` card shall first fight a pilot, z4 against an aa baseline battle for battle on 46 fields × 2 seeds (3310-3311), and shall stop with a results PR unless Hadur's mean score share is up (`melee_pilot.py --share-only`) on at least 95% of the 92 pairs with all 35 rounds. | 3.22 cleanup | Card pc-melee-floor run and removed (PR #656) |
-| BENCH-178 | The `pc-melee-near` card shall first fight a pilot, n4 against an aa baseline battle for battle on the melee census at 2 fresh seeds (about a sixth of the card), and `tools/melee_pilot.py` shall stop the card, opening its results PR with the pilot read, unless every scheduled pair is complete (at least 95% of them, each of the run's rounds) and Hadur's paired score share is up and its crowd deaths (rounds it finished third or worse) down (Leigh's card rule of 2026-11-03). | 3.22 cleanup | Card pc-melee-near run and removed |
+| BENCH-178 | The `pc-melee-near` card shall first fight a pilot, n4 against an aa baseline battle for battle on the melee census at 2 fresh seeds (about a sixth of the card), and `tools/melee_pilot.py` shall stop the card, opening its results PR with the pilot read, unless every scheduled pair is complete (at least 95% of them, each of the run's rounds) and Hadur's paired score share is up and its crowd deaths (rounds it finished third or worse) down (The PC card rule of 2026-11-03). | 3.22 cleanup | Card pc-melee-near run and removed |
 | BENCH-186 | The `pc-melee-strong` card shall first fight a pilot, k2 against an aa baseline battle for battle on 46 fields × 2 seeds (3286-3287), and shall stop with a results PR unless Hadur's mean score share is up (`melee_pilot.py --share-only`) on at least 95% of the 92 pairs with all 35 rounds. | 3.22 cleanup | Card pc-melee-strong run and removed |
 
 ### R6 notes
@@ -1937,7 +1936,7 @@ failed and are removed (3.22 cleanup); the mimics live on in MOVE-33 and MOVE-34
 
 ## Team per-opponent counters (TMODE-20 to TMODE-24, BENCH-123)
 
-- **Why.** Leigh 2026-10-27: tailor a plan per opponent, as the 1v1 mode table does. Code reads of
+- **Why.** A plan tailored per opponent, as the 1v1 mode table does. Code reads of
   the 16 costliest teams (docs/plan-team-top5.md section 11): 10 shoot their closest enemy, 9 cut
   power with distance, 5 aim only head-on or only linear.
 - **TMODE-20..24.** `TeamModes.Mode.OWN`, `HEADON`, `LINEAR`, `FAR`, `FARTHER`, table-only (no
@@ -1951,7 +1950,7 @@ failed and are removed (3.22 cleanup); the mimics live on in MOVE-33 and MOVE-34
 
 ## Team path check and Troodon at 250 px (TMODE-25, TMODE-26, BENCH-124)
 
-- **Why.** Leigh 2026-10-28: proceed with the next team step. Firestarter (2nd) checks each move
+- **Why.** The next team step. Firestarter (2nd) checks each move
   against its own team's bullets in flight; the cloud closer-hunt smoke lost on the field (250 px
   -0.6 +- 1.3, 200 px -2.0 +- 1.3, 22 teams x 6 seeds) but TroodonPack gained at both (+4.3, +3.7).
 - **TMODE-25.** `TeamModes.Mode.PATH` (FORCE_PATH, on since TMODE-28): `TeamRisk.pathBest`,
@@ -1965,7 +1964,7 @@ failed and are removed (3.22 cleanup); the mimics live on in MOVE-33 and MOVE-34
 
 ## 1v1 gap to 2nd: shield exit and re-picks (BENCH-126)
 
-- **Why.** Leigh 2026-10-28: 3.18.1 is 4th, 1.28 behind DrussGT; find the opponents to tailor for.
+- **Why.** 3.18.1 is 4th, 1.28 behind DrussGT; this finds the opponents to tailor for.
   The live read (docs/bench/gap-to-2nd.md) puts the largest tailorable pool on shield robots where both
   rivals score 90-98 and Hadur 70-85. A cloud read on 8 of them shows shield mode leaving the battle at
   SHIELD-11's 150-damage exit around round 15, after which the surf takes 3-5x Saguaro's damage.
@@ -2017,8 +2016,7 @@ failed and are removed (3.22 cleanup); the mimics live on in MOVE-33 and MOVE-34
 
 ## Watching a PC card as it runs (BENCH-128 to BENCH-131)
 
-- **Why.** Leigh 2026-10-28: "Why can't the harness do what you have done in the cloud there and monitor
-  as it runs? Instead I'm doing 6 hour runs that have clear failures." A PC card was read only from its
+- **Why.** The harness should watch a card as it runs, so runs with clear failures stop early. A PC card was read only from its
   results PR at the end, so a losing arm, a crash, a skipped-turn build-up or a broken jar cost the
   whole card.
 - **BENCH-128.** Bench `--job-order shuffled` (`bench-top20.sh --shuffle-jobs`). `Arms.resumed` read
@@ -2111,7 +2109,7 @@ bench card: docs/twinsaor.md. It depends on nothing of Hadur's or Saor's, and th
 ## Deise, a MiniMelee entry (DEISE-1 to DEISE-17, stages E0 to E7)
 
 `hadur117.mini.Deise`, a separate robot in the `deise` module, built to take MiniMelee 1st from
-kc.mini.Mirage (Leigh, 2026-10-27). Design, the Mirage analysis and the stages: docs/deise.md.
+kc.mini.Mirage (2026-10-27). Design, the Mirage analysis and the stages: docs/deise.md.
 It depends on nothing of Hadur's, Saor's or TwinSaor's, and they on nothing of it. Its stages
 are E0 to E7 (D is the DrussGT route's letter).
 
@@ -2146,7 +2144,7 @@ are E0 to E7 (D is the DrussGT route's letter).
 ## Sanaro, a NanoMelee entry (SANARO-1 to SANARO-14, stages N0 to N6)
 
 `hadur117.nano.Sanaro`, a separate robot in the `sanaro` module, built to outrank
-d414.nano.Quantum and sheldor.melee.nano.NaturalScience in NanoMelee (Leigh, 2026-10-28, from his
+d414.nano.Quantum and sheldor.melee.nano.NaturalScience in NanoMelee (2026-10-28, from the
 design doc "Nano Melee: Beating NaturalScience & Quantum"). Design, the dissection and the stages:
 docs/sanaro.md. It depends on nothing of Hadur's, Saor's, TwinSaor's or Deise's, and they on
 nothing of it. The design doc's N-1 to N-12 are SANARO-1 to SANARO-12 here. SANARO-13 is the
@@ -2200,7 +2198,7 @@ E1 to E6 map onto these as the last column says.
 | JAYLEXI-10 | Ubiquitous | On the MiniRumble bench sample, paired against Komarious 1.88, the build shall predict at least 87.7 APS before it is submitted. | plan S4 |
 | JAYLEXI-11 | Ubiquitous | The shipped code shall give the same orders, bit for bit, as the readable reference kept with the tests, on seeded replays of scans, hits and shots, so bytes are saved without changing play. | 0.2 |
 | JAYLEXI-19 | Ubiquitous | The bot shall turn its gun by a random angle of up to 0.125 rad either way against a robot whose orbit char carries 2 pi more than its orbit (rsim.mini.BulletCatcher 0.4, whose catch it breaks: +57.3 ± 3.3 points, docs/bench/local/2026-11-04_jaylexi-jit.md), and aim as before against every other robot; the shipped jar is built through ProGuard (`jaylexi/proguard.pro`, 1,494 B) and JayLexiJarIT replays it against the readable reference. | 0.6 |
-| EVEIMEAR-1 | Unwanted | If Robocode's codesize tool reports more than 749 bytes for the shipped jar (MicroRumble's limit; 0.5 is 749 exactly, so the 3 spare of K6 is given up for Cotillion's gun, Leigh 2026-11-05), then the build shall fail. | K6, 0.5 |
+| EVEIMEAR-1 | Unwanted | If Robocode's codesize tool reports more than 749 bytes for the shipped jar (MicroRumble's limit; 0.5 is 749 exactly, so the 3 spare of K6 is given up for Cotillion's gun, 2026-11-05), then the build shall fail. | K6, 0.5 |
 | EVEIMEAR-2 | Event | While in stop-and-go, when the enemy fires, the bot shall step (3 + (int) (drop x 1.999999)) << 3 px along its orbit. | E1 |
 | EVEIMEAR-3 | Event | When the enemy's hits, each counted 5 / bullet speed, exceed (2 + round) x the robot's MODES char (read by the top 14 bits of the name's hash: 0, 1, 9 or 15), the bot shall move every tick and reverse at random for the rest of the battle. | E2, 0.5 |
 | EVEIMEAR-4 | Event | While in stop-and-go, the bot shall keep its orbit direction, hit or not, reversing only off a wall it cannot clear; in random orbit it shall reverse at 0.6 sqrt(bullet speed / distance) - 0.04 a tick (Cotillion 0.8). | E3, 0.5 |
@@ -2253,18 +2251,17 @@ profiles, and the rumbles list it as a new participant.
 
 - **Why.** pc-team-path (PR #414) found no team where PATH paid +3.0 on its own, but pooled over the
   46 it read +0.5 ± 0.5 share points over aa (bb -0.0 ± 0.5), with our own hits on teammates down
-  15%. Leigh 2026-10-29 chose to confirm it as one switch for every team.
+  15%. The decision (2026-10-29) was to confirm it as one switch for every team.
 - **BENCH-135.** Card plans/pc-team-path2.queue: aa, bb, mp (build-ablation `tmpath`); bb and mp on
   team-census46.txt at 16 seeds from 5100 (16, not 10, to narrow the pooled interval); `team_modes.py
   gate` over all 46 teams at +0.30 APS. A PASS is followed by a PR that sets FORCE_PATH = true.
 
 ## Ogi's dodge as one piece (TMODE-27, BENCH-139)
 
-- **Why.** Leigh 2026-10-29: OgiTeam leads the team rumble by about 6.4 APS on survival (97.6%).
+- **Why.** OgiTeam leads the team rumble by about 6.4 APS on survival (97.6%).
   Its parts ported one switch at a time (SOFT, SCREEN, POOL, LEARN, WAVES, radar) read zero; its
   dodge only works whole: shot detection, a learned per-class danger model with simple-aim
-  experts, and a path check over the safest spots. Leigh: "If it makes sense to do a parallel full
-  rebuild of the teams core do so".
+  experts, and a path check over the safest spots, so it is built as a parallel rebuild of the team core.
 - **TMODE-27.** `TeamModes.Mode.DODGE` (FORCE_DODGE on since TMODE-30), `melee.TeamDodge` and
   `melee.AimExperts`: a parallel team movement path that stands in for the virtual bullets and
   the SOFT/LEARN/POOL/WAVES switches. Profiles are made once a shot (the CPU that sank WAVES with
@@ -2279,7 +2276,7 @@ profiles, and the rumbles list it as a new participant.
   `mp` +0.7 +- 0.3 share points against aa, bb A/A -0.2 +- 0.3, projected **+0.77 +- 0.36 APS**
   (gate +0.30, low end above zero: PASS). Our bullets on our own members fell 81,824 to 69,429.
   Aleph +3.8, Slartibartfass, ArmyOfShiz and DemoniacNimrods +3.0, Firestarter +2.8, HOFSwarm +2.4;
-  Polylunar -2.5, Ogi -0.2. A global switch, not a per-team pick: Leigh chose the confirm knowing so.
+  Polylunar -2.5, Ogi -0.2. A global switch, not a per-team pick: the confirm was chosen knowing so.
 - **TMODE-28.** `TeamModes.FORCE_PATH` is true and the three named entries (GrofGroup, Troodon,
   TroodonDroid) carry `Mode.PATH`, as the measured `tmpath` arm played them. Ablation `tmnopath`
   turns both off; `tmpath` keeps working on older source.
@@ -2302,8 +2299,7 @@ profiles, and the rumbles list it as a new participant.
 
 ## Rumble clients beside the bench: the core fence (BENCH-145 to BENCH-147)
 
-- **Why.** Leigh, 2026-10-30: "On my high end PC if we containerised robocode would that protect the
-  bench? I'd like to be able to run rumbles as needed." A container caps CPU amount, not placement
+- **Why.** Rumble clients should run beside the bench on the PC without disturbing it. A container caps CPU amount, not placement
   (Docker on Windows is a WSL2 VM whose virtual CPUs float over every host thread), so clients would
   still share cores and L3 with battle JVMs. Processor affinity on both sides, cut along the L3
   groups, does separate them. Notes docs/bench/fence.md.
@@ -2359,7 +2355,7 @@ profiles, and the rumbles list it as a new participant.
   **+0.87 +- 0.53 APS** (gate +0.30, low end +0.34: PASS); the five-team table (Shadow, GlowingHawks,
   ArmyOfShiz, HOFSwarm, TeamDeath) +0.35 +- 0.21 on 16 fresh seeds (PASS), survival +7.4 points. Losses
   to Ogi -3.8, DiamondStealers -2.0, Firestarter -1.9, Combat -1.6; own-member hits +22% in the gate.
-  Leigh 2026-10-31 13:04 GMT chose "Global on, plus confirm card".
+  Decision of 2026-10-31: on for every team, plus a confirm card.
 - **TMODE-34.** `TeamModes.FORCE_CONCORD` is true and every named entry carries `Mode.CONCORD`, as the
   measured `tmconcord` arm played them. Ablation `tmnoconcord` (suffix ncn) is the build before;
   `tmconcord` keeps working on older source.
@@ -2376,7 +2372,7 @@ profiles, and the rumbles list it as a new participant.
   `getName().hashCode()`) are the whole of what a nano can see. Measured against the stubs on
   2026-10-31: a `charAt` lookup is about 15 bytes, so a table never pays for an expression, only for
   branches, modes and state (a two-threshold power chain 36 -> 20 bytes; a per-opponent mode by name
-  hash about 17 bytes). Hadur cannot be ported down; its *answers* can. Leigh 2026-10-31: "Absolutely".
+  hash about 17 bytes). Hadur cannot be ported down; its *answers* can.
 - **BENCH-155.** The melee harvester writes `shots.csv`, one row per Hadur shot at the turn it is first
   seen: round, turn, fighters alive before that turn's deaths, Hadur's energy before the shot (its energy
   after, plus the power), the living fighter whose bearing lies nearest the bullet's heading, that
@@ -2472,7 +2468,7 @@ head-to-head pairing) and the bottom 18 about 0.3. The points leak inside rounds
 
 ## Three angles at once: HEAVY, WARY, DISABLED (TMODE-36, TMODE-37, BENCH-167)
 
-Leigh 2026-11-01: the PC is free overnight, prep a second card that explores two or three angles at once.
+A second overnight PC card explores two or three angles at once (2026-11-01).
 Each arm targets the leak in won rounds against the mid teams from a different side:
 
 - **TMODE-36 HEAVY.** CONCORD's 1.9 power cap gives way to full power, so rounds end sooner against

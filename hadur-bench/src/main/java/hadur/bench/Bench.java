@@ -379,7 +379,7 @@ public final class Bench {
         }
         // BENCH-108: a melee field has only --seeds battles to share between the workers, so a
         // 12-wide suite of 4-seed fields would leave two thirds of the PC idle; fields run side by
-        // side until the width is filled ("Main PC should always go max", Leigh 2026-10-25).
+        // side until the width is filled (the main PC always runs at full width).
         int atOnce = suiteLinesAtOnce(global, lines, System.getenv());
         if (atOnce > 1 && new HashSet<>(labels).size() < labels.size()) {
             throw new IllegalArgumentException("suite labels must be distinct to run lines side by side "

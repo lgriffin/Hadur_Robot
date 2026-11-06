@@ -1,9 +1,8 @@
 # Strategy in the constant pool (codesize bots, 2026-10-30/31)
 
-Leigh asked on 2026-10-30 at 23:45 GMT for bytecode and constant-pool tricks in the codesize bots
-(Deise, JayLexi, Eveimear, then Sanaro), and at 23:56 GMT for a design that can carry the more
-complicated movement and targeting Hadur and its rivals use, hard-coded where needed: "This is our
-pathway to first."
+This page covers bytecode and constant-pool tricks in the codesize bots (Deise, JayLexi,
+Eveimear, then Sanaro), and a design that can carry the more complicated movement and targeting
+Hadur and its rivals use, hard-coded where needed, as the path to first (2026-10-30).
 
 **The fact everything rests on:** Robocode's codesize 1.3.1 adds up the `Code` attribute length of
 every method. The constant pool is not counted, so strings, numbers and names cost nothing. A

@@ -1,11 +1,11 @@
-# PC card 2026-10-17: one queue for all three styles, one step at a time (Leigh's rule: one bench
+# PC card 2026-10-17: one queue for all three styles, one step at a time (the rule: one bench
 # queue on the PC, RoboRumble workers at 0 until ALLDONE). Run from master (robot 3.14):
 #   ./queue.sh run pc-1017        (or  .\queue.ps1 run pc-1017)
 #   .\queue.ps1 status pc-1017    progress;  .\queue.ps1 stop pc-1017  stops only its own tree
 # Resumable: a restart skips the steps that exited 0.
 #
 # 1v1 (thread "Road to top 3", PR #199). The stop-and-start (MOVE-13, 3.13hj) is the base since
-#   Leigh chose to stack (2026-10-17). The later flattener on top of it, paired against 3.13hj on
+#   The decision was to stack (2026-10-17). The later flattener on top of it, paired against 3.13hj on
 #   the 400-bot screen (screen-311.txt), 8 fresh seeds 961-968. The cloud reads flt59 at 4 seeds;
 #   the PC gives both at 8. Built from the 1v1 branch in a side worktree (its ablations live there).
 #     hjf8  flattener threshold 4.5% -> 8% (DrussGT's)      about 2 hours
