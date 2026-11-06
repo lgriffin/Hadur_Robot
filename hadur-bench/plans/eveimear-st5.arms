@@ -1,0 +1,5 @@
+# cloud-eveimear-st5: c is Eveimear 0.5 as released (master's source, ProGuard, 749 B), aa its A/A rebuild, ST5 0.5
+# with the mode table relearned on the 0.5 body (work/eveimear-st5/Eveimear.java, 749 B).
+c | hadur117.micro.Eveimear 0.5c | kitlab/jars/hadur117.micro.Eveimear_0.5c.jar
+aa | hadur117.micro.Eveimear 0.5aa | kitlab/jars/hadur117.micro.Eveimear_0.5aa.jar
+ST5 | hadur117.micro.Eveimear 0.5st5 | kitlab/jars/hadur117.micro.Eveimear_0.5st5.jar
