@@ -40,6 +40,10 @@ LiteRumble API (`BotDetails?api=true`), read at 03:05 UTC on 2026-11-06 and save
   −13, Raiko, GFMicro, PumpkinPie). That is movement.
 - **Ranks 251 to 450 cost 0.23 with survival level** (−0.15 points): we live as long as FoilistMC does there and
   score 0.77 less a robot. That is how fast and how much we hit: the gun.
+  **Correction (2026-11-06, bench):** on `cloud-jaylexi-foil` FoilistMC beat 0.6 in ranks 251 to 450 by +1.23 points
+  by taking 2.2 less damage a round while dealing only 0.5 more, and its gun on our body (FG) was flat there (+0.00).
+  F is FoilistMC's own jar, and FG raised no exceptions in any of its 448 battles. Every band of the lead is damage
+  avoided, which points to movement, not gun. `cloud-jaylexi-foil2` (BENCH-203) tests that directly.
 - FoilistMC's source ships in its jar (RWPCL). Its gun is a multiple-choice pattern matcher over the enemy's lateral
   speed in thirds, replayed with lateral and advancing speed, matches weighted by recency × length, with a power
   table by distance and own energy. Eveimear closed its whole gap to Cotillion by putting the leader's gun on our body
@@ -65,6 +69,7 @@ LiteRumble API (`BotDetails?api=true`), read at 03:05 UTC on 2026-11-06 and save
   picks now mean other thresholds. **`cloud-eveimear-st5`** (BENCH-202) relearns them on 0.5 itself, as
   pc-eveimear-st did for 0.1: every cell 1, 9 or 0 over the whole field, a pick per robot that clears one standard
   error, and the packed 749 B build read against 0.5 on fresh seeds.
+  **Ran: ST5 -0.11 +- 0.35, fails** (docs/bench/eveimear-st5.md). 0.5 keeps its shipped table.
 
 ## Cloud cards
 
@@ -72,6 +77,6 @@ LiteRumble API (`BotDetails?api=true`), read at 03:05 UTC on 2026-11-06 and save
 |---|---|---|---|
 | `cloud-jaylexi-foil` | c (0.6), aa, F (FoilistMC), FG (0.6 + FoilistMC gun, 1,434 B) on mini-wide3 x 4 seeds | 1,792 | **Ran: FG -0.43 +- 0.57 (fail), F +1.42 +- 0.60** (docs/bench/jaylexi-foil.md) |
 | `cloud-jaylexi-foil2` | c, aa, F, FM (FoilistMC's movement + JayLexi's gun, javac 1,796 B) on mini-wide3 x 4 seeds | 1,792 | FM low end over c above 0 and inside F's interval: the lead is movement |
-| `cloud-eveimear-st5` | 0.5 in modes 1 / 9 / 0 on all 515 micros x 2 seeds, then ST5 vs c, aa on micro-wide2 x 6 seeds | 5,106 | ST5 low end over c above 0; then a PC card |
+| `cloud-eveimear-st5` | 0.5 in modes 1 / 9 / 0 on all 515 micros x 2 seeds, then ST5 vs c, aa on micro-wide2 x 6 seeds | 5,106 | **Ran: ST5 -0.11 +- 0.35 (fail)** (docs/bench/eveimear-st5.md) |
 
 They run on the cloud box (3 workers) one after the other. Nothing is uploaded or released.
