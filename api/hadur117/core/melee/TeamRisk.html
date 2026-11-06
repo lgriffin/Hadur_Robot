@@ -155,87 +155,92 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color"><code><a href="#HELP_FLOOR" class="member-name-link">HELP_FLOOR</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>(package private) static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#HUNT_CROWD" class="member-name-link">HUNT_CROWD</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#HUNT_MAX_GROUP" class="member-name-link">HUNT_MAX_GROUP</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#HUNT_CLOSE" class="member-name-link">HUNT_CLOSE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">TMODE-42: HUNT's place with CLOSE, px from the prey.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#HUNT_CROWD" class="member-name-link">HUNT_CROWD</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#HUNT_PULL" class="member-name-link">HUNT_PULL</a></code></div>
+<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#HUNT_MAX_GROUP" class="member-name-link">HUNT_MAX_GROUP</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>(package private) static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#HUNT_RADIUS" class="member-name-link">HUNT_RADIUS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-second even-row-color"><code><a href="#HUNT_PULL" class="member-name-link">HUNT_PULL</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#HUNT_RADIUS" class="member-name-link">HUNT_RADIUS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">TMODE-13, HUNT (NightmareTeam's packs, PACK's retry): each member is assigned an enemy at
  the cost (distance + <a href="#PACK_ENERGY_WEIGHT"><code>PACK_ENERGY_WEIGHT</code></a> x energy) squared, times
  <a href="#HUNT_CROWD"><code>HUNT_CROWD</code></a> for an enemy that already has <a href="#HUNT_MAX_GROUP"><code>HUNT_MAX_GROUP</code></a> members, so two or
  three go to each; it holds a place <a href="#HUNT_RADIUS"><code>HUNT_RADIUS</code></a> from its prey, fixed, and the pull,
  at <a href="#HUNT_PULL"><code>HUNT_PULL</code></a>, leaves the bullets' risk unscaled.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#MATE_BULLETS" class="member-name-link">MATE_BULLETS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#MATE_BULLETS" class="member-name-link">MATE_BULLETS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">TMODE-9: teammates' bullets kept, oldest dropped first.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#MATE_FLOOR" class="member-name-link">MATE_FLOOR</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#MATE_FLOOR" class="member-name-link">MATE_FLOOR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">MMOVE-6: a teammate nearer than this is scored as if at this distance: about a robot's width.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#MATE_K" class="member-name-link">MATE_K</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#MATE_K" class="member-name-link">MATE_K</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">MMOVE-6: weight, in units of <a href="MinimumRiskMovement.html#UNIT"><code>MinimumRiskMovement.UNIT</code></a>, of a teammate's inverse-square term.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#MATE_PATH_K" class="member-name-link">MATE_PATH_K</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#MATE_PATH_K" class="member-name-link">MATE_PATH_K</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">MMOVE-7: weight, and reach in px, of the term for a path crossing a teammate's track.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#MATE_PATH_RANGE" class="member-name-link">MATE_PATH_RANGE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>(package private) static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#ONE_AIM_WEIGHT" class="member-name-link">ONE_AIM_WEIGHT</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-second even-row-color"><code><a href="#MATE_PATH_RANGE" class="member-name-link">MATE_PATH_RANGE</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#ONE_AIM_WEIGHT" class="member-name-link">ONE_AIM_WEIGHT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">TMODE-21, TMODE-22: the weight of a shot's one virtual bullet against a team that aims
  only head-on or only linear: the two guesses' total, all on the real line.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#PACK_ENERGY" class="member-name-link">PACK_ENERGY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>(package private) static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#PACK_ENERGY_WEIGHT" class="member-name-link">PACK_ENERGY_WEIGHT</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-second even-row-color"><code><a href="#PACK_ENERGY" class="member-name-link">PACK_ENERGY</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#PACK_ENERGY_WEIGHT" class="member-name-link">PACK_ENERGY_WEIGHT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">TMODE-5: the prey's cost weighs its energy this much against its distance (NightmareTeam's 1.2).</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#PACK_FLOOR" class="member-name-link">PACK_FLOOR</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#PACK_FLOOR" class="member-name-link">PACK_FLOOR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">TMODE-5: the hunt's floor, and the energy a member needs to hunt.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#PACK_SPREAD" class="member-name-link">PACK_SPREAD</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#PACK_SPREAD" class="member-name-link">PACK_SPREAD</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">TMODE-5: members' places are at most this far apart round the prey: 70 degrees.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#PATH_HALF" class="member-name-link">PATH_HALF</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>(package private) static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#PATH_K" class="member-name-link">PATH_K</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-second even-row-color"><code><a href="#PATH_HALF" class="member-name-link">PATH_HALF</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#PATH_K" class="member-name-link">PATH_K</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">TMODE-25: the <a href="#PATH_RERANK"><code>PATH_RERANK</code></a> lowest-risk candidates and the destination held are
  each driven to for <a href="#PATH_TICKS"><code>PATH_TICKS</code></a> ticks; every teammate bullet whose
  flight on some tick crosses Hadur's box (<a href="#PATH_HALF"><code>PATH_HALF</code></a> px each side) there adds
  <a href="#PATH_K"><code>PATH_K</code></a> times its damage to that candidate's risk.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#PATH_RERANK" class="member-name-link">PATH_RERANK</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>(package private) static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#PATH_TICKS" class="member-name-link">PATH_TICKS</a></code></div>
+<div class="col-second even-row-color"><code><a href="#PATH_RERANK" class="member-name-link">PATH_RERANK</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#PATH_TICKS" class="member-name-link">PATH_TICKS</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -676,6 +681,21 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur117.core.melee.TeamRisk.HUNT_RADIUS">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="HUNT_CLOSE">
+<h3>HUNT_CLOSE</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">HUNT_CLOSE</span></div>
+<div class="block">TMODE-42: HUNT's place with CLOSE, px from the prey.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.melee.TeamRisk.HUNT_CLOSE">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
