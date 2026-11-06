@@ -345,9 +345,9 @@ plan is built so that each stage's verdict shows how much is left before the nex
 The code comparison of 2026-11-06 found that about 90 of Saor's 103 lines restate Figment 1.0
 (Kev): the corner oscillation (MeleeSeed's), the Markov state packing, the play-it-forward
 playout, the 1,024-bin vote and the power rule. Saor's own parts (sampling any seen row, the
-graded vote, learning on every scan) are where its lead over Figment comes from. Leigh: "90 lines
-identical is criminal... rewrite the algorithm and do the parity gate approach." Credit is now in
-the header, README and jar (PR #683). 0.4 replaces the Figment parts one by one, each with a
+graded vote, learning on every scan) are where its lead over Figment comes from. The decision of
+2026-11-06 is to rewrite the algorithm part by part under a parity gate. Credit is now in the
+header, README and jar (PR #683). 0.4 replaces the Figment parts one by one, each with a
 design of Saor's own, under a parity gate: a rewritten part must not cost points against 0.3.
 
 The gate: on the MicroMelee census (18 fields of 9) with 6 seeds, the arm's paired interval over

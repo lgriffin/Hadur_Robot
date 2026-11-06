@@ -1,5 +1,4 @@
-# Saor 0.4 rewrite, stage 1: our own movement under the parity gate (docs/plan-saor-first.md 8; Leigh, 2026-11-06:
-# "rewrite the algorithm and do the parity gate approach"). Cloud card, 3 workers, no alerts, no PR step.
+# Saor 0.4 rewrite, stage 1: our own movement under the parity gate (docs/plan-saor-first.md 8). Cloud card, 3 workers, no alerts, no PR step.
 #   ./queue.sh run cloud-saor-r1
 #
 # Why: Saor's corner oscillation is Figment's (MeleeSeed's) line for line. MR and MP are Saor's own movement: when a
