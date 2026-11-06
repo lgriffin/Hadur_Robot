@@ -3,7 +3,7 @@
 # put DODGE with own fire on every team at +0.85 ± 0.42 APS, but three teams read worse with it:
 # ImpactTeam -4.2 ± 1.5, ImWithStupidTeam -2.5 ± 1.6 and NightmareTeam -3.5 ± 3.7 share points.
 # Those were picked after the fact from 46 teams, so this card confirms them on fresh seeds before
-# any table entry ships. Leigh 2026-10-30: "Yup do that."
+# any table entry ships.
 #   ndprep  build aa, bb, and xd: tmtab with plans/team-nododge-table.java (the three teams' member
 #           classes get MATEFIRE, HUNT and PATH: every shipped mode but DODGE)
 #   ndbb    bb vs aa, the 3 teams x 24 fresh seeds (base 5900), 12 rounds as pc-team-dodge2; ndxd the same for xd

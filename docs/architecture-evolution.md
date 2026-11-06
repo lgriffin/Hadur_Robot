@@ -6,13 +6,13 @@ _This is the repository copy of Leigh's plan doc, [Hadur — Architecture Evolut
 
 Hadur becomes one identity kernel with three strands, Duel, Melee and Team, behind a single role contract. The battle's facts fix its charter at tick 0, and within a round the role can only step down one ladder: Team, then Melee, then Duel. Six stages (A0 to A5) get there without changing the code of the nine packages pinned today, and the ladder plans start from the A2 release, 3.6.
 
-**Status: final.** Leigh settled the open decisions on 5 October 2026, and the Decisions table at the end records them. An implementer thread builds the plan stage by stage, one PR per stage, with the usual rigour: EARS rows in `docs/requirements.md`, a tagged Cucumber scenario per ID, unit and jqwik tests, and `hadur.arch.stage` bumped in the root pom.
+**Status: final.** The open decisions were settled on 5 October 2026, and the Decisions table at the end records them. An implementer thread builds the plan stage by stage, one PR per stage, with the usual rigour: EARS rows in `docs/requirements.md`, a tagged Cucumber scenario per ID, unit and jqwik tests, and `hadur.arch.stage` bumped in the root pom.
 
 Three house rules run tighter here. The only ArchUnit changes are the ones this plan names, no fixture is re-recorded from A1 to A4, and no code in the nine pinned packages changes.
 
-## Leigh: the framing
+## The framing
 
-> I want an architecture evolution for Hadur using my hexagonal approach. There are three goals: 1v1, melee and team. All are attainable. Before focusing on an individual route, such as the Druss route, I want a scalable approach so that the bot's output weaves into its role without overlap. It knows its role, it adapts instantly, and it does not have to guess or switch. That gives a uniform approach for three strands of innovation, one per ladder, while keeping a core of identity across the board. Let's redesign the architecture now, before the individual plans converge on their ladders.
+The brief: an architecture evolution for Hadur on the hexagonal approach, for three attainable goals (1v1, melee and team). Before any single route, such as the Druss route, a scalable design in which the bot's output weaves into its role without overlap: it knows its role, adapts instantly, and does not have to guess or switch. One uniform approach gives three strands of innovation, one per ladder, around a shared core of identity, and the architecture is redesigned now, before the ladder plans converge.
 
 The design below is held to five tests taken from that brief.
 
@@ -464,7 +464,7 @@ The largest risk is A2, which moves well over half of `HadurCore` in one stage. 
 
 ### Decisions
 
-Leigh settled the first four on 5 October 2026. The next three stand as this plan recommended until he says otherwise, and the last is set on the bench.
+The first four were settled on 5 October 2026. The next three stand as this plan recommended until he says otherwise, and the last is set on the bench.
 
 | Decision | Outcome | Standing |
 |---|---|---|

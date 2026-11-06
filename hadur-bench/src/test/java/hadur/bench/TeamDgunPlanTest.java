@@ -40,7 +40,7 @@ class TeamDgunPlanTest {
         assertTrue(queue.contains("bash ./build-ablation.sh tmdgun"));
         assertFalse(queue.matches("(?s).*HadurTeam_3\\.\\d.*"), "no robot version is hard-coded");
         assertTrue(queue.contains("rm -f ${OUT}/team-dgun-*.md"), "a rerun never carries an old verdict");
-        assertTrue(queue.contains("# Why it should win:"), "Leigh's rule: the card says why it should win");
+        assertTrue(queue.contains("# Why it should win:"), "PC card rule: the card says why it should win");
         for (String step : List.of("dgbb1", "dgdg1", "dgbb", "dgdg")) {
             assertTrue(block(queue, step).contains(".args\" || test $? -eq 1"), step + " goes on past failed battles");
             for (String rule : List.of("stop: fails 60", "stop: stall 30m", "stop: skips 40 over 100")) {

@@ -252,7 +252,7 @@ Paired per field against the control, no arm gains:
 
 The duel screen's gain from uncapped one-on-one power (P) does not reach the census: the duels
 it wins are a small share of all rounds. The power cap and the leg are closed as levers. 0.1
-stays, and on Leigh's go (2026-10-25: "cut a release, I'd like to get results") it is released
+stays, and on Leigh's go (2026-10-25) it is released
 as is, for a live reading that calibrates bench against live.
 
 ## Entering the rumble (U5)

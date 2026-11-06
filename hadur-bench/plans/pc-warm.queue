@@ -15,7 +15,7 @@
 #     PvP1 89 -> 78, JollyNinja 95 -> 66 in a 5-round smoke). Live clients keep seeds for up to five opponents
 #     we score under 60% against (MEM-8), so this is also a possible live leak.
 #
-# Lukewarm (lw, Leigh 2026-11-02 "a lukewarm start before adapting"): the stored tier still opens the battle at
+# Lukewarm (lw, a lukewarm start before adapting): the stored tier still opens the battle at
 # full power (POW-1, POW-3), but once this battle's own hit rate on them is known within POW-4's margin the tier
 # rules apply only where POW-4's expected-value check also picks full power. The cold battle is the same as aa's
 # (a cold battle has no tier), so lw's cold against aa's cold is a second A/A.

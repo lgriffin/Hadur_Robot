@@ -12,10 +12,10 @@
 # robot over Eveimear 0.4, and a transplant of its gun, radar and power onto an older Eveimear body read +0.68 +- 0.86
 # over 0.4 and -0.46 +- 0.92 under Cotillion. Its gun alone, with Eveimear's sweeping radar and power, read -0.93: the
 # matcher needs the locked radar's scan every tick. X and XR rebuild that transplant on 0.4's own body (per-robot
-# modes kept). The arms are over the 749-byte limit on purpose (Leigh 2026-11-05: test first, find bytes for a
+# modes kept). The arms are over the 749-byte limit on purpose (test first, find bytes for a
 # winner); Cotillion fits all of it in 729 B, so a winner has a known path back under the limit.
 #
-# Pilot (Leigh's rule, 2026-11-03): shuffled jobs, so the first 20% (about 1,350 battles) are a fair sample. At 20% the
+# Pilot (the rule of 2026-11-03): shuffled jobs, so the first 20% (about 1,350 battles) are a fair sample. At 20% the
 # futility rule finishes the run when neither X nor XR can still reach +0.3 points over c. The A/A rule halts it if
 # aa leaves its band against c.
 # Panel: kitlab/micro-wide2-field.txt (112 MicroRumble robots: the top 12 by name and one from each of 100 rank bands).

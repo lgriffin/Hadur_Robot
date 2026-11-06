@@ -1,6 +1,6 @@
 # How ScalarR survives melee: a read of its decompiled jar (2026-10-30)
 
-Leigh's ask (2026-10-30 16:05 GMT): "Can we deobfuscate ScalarR's bot?" ScalarR (aaa.r.ScalarR by
+ScalarR (aaa.r.ScalarR by
 xor) leads the MeleeRumble with 73.09 APS and 82.9% survival. This note is what the jar shows
 about its melee energy management, its melee surfing and its shadows, and which of its ideas
 Deise and Hadur's melee could test.

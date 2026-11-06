@@ -1,6 +1,5 @@
-# Fenced clients beside the bench (BENCH-147, Leigh 2026-10-30: "On my high end PC if we containerised
-# robocode would that protect the bench? I'd like to be able to run rumbles as needed" ... "Lets build it
-# and I'll be restarting the PC today to see can we get it qualified").
+# Fenced clients beside the bench (BENCH-147): rumble clients run beside the bench on the
+# PC without disturbing it, once the PC is qualified.
 #   .\queue.ps1 run pc-fence-qualify --fresh        (or  ./queue.sh run pc-fence-qualify --fresh)
 # CLOSE EVERY ROBORUMBLE CLIENT WINDOW FIRST and run no other queue: this card runs the bench AND two
 # clients, each on its own side of the fence (tools/fence.py show prints it: on the PC the bench gets three

@@ -1,7 +1,7 @@
 # 1v1: opponents to close the gap to 2nd (2026-10-28)
 
-Leigh 2026-10-28 06:54 GMT: 3.18.1 is 4th at 91.34, DrussGT 2nd at 92.57 (+1.28); find the
-opponents we can change our approach for. Taking 3rd and testing it is the agreed first target.
+3.18.1 is 4th at 91.34, DrussGT 2nd at 92.57 (+1.28). This finds the opponents we can change our
+approach for. Taking 3rd and testing it is the agreed first target.
 Write-up for reading: "Hadur 1v1: opponents to close the gap to 2nd" (Claude Doc), per-bot table in
 the project files (`gap-to-2nd/gap-to-2nd-opponents.tsv`).
 

@@ -67,7 +67,7 @@ shots: the melee kNN aims worse in a duel than the duel gun does. HAND-4 was fla
 Energy entering the endgame (54.7) and deaths with two opponents left (9.3%) did not move in any arm.
 Both stay off. The endgame duel is not where the melee gap is.
 
-## Crowd survival (Leigh 2026-11-02 23:15: "Lets do both options")
+## Crowd survival (both options, 2026-11-02)
 
 From the pc-melee-end baselines (aa and bb, 19,320 rounds) and the cloud census:
 
@@ -85,8 +85,8 @@ mid-run): crowd deaths 22.1 to 19.1% of rounds (-3.0 ± 2.5), damage from oppone
 to -3.0 ± 1.5 a round, score share +0.29 ± 0.30. Carded as `pc-melee-near` (BENCH-176): aa, bb, n3, n4
 on 46 fields × 6 seeds (3271-3276).
 
-Leigh's card rule of 2026-11-03 asks for per-opponent tailoring, a pilot that stops early and a
-written case. pc-melee-near is a melee-wide switch; Leigh granted it an exception on 2026-11-03
+The PC card rule of 2026-11-03 asks for per-opponent tailoring, a pilot that stops early and a
+written case. pc-melee-near is a melee-wide switch; it was granted an exception on 2026-11-03
 ("Exception with a pilot"). The pilot (BENCH-178) fights n4 against aa on 46 fields × 2 seeds
 (3277-3278, 184 battles, about 17% of the card); `tools/melee_pilot.py` stops the card unless the
 score share is up and crowd deaths are down, and opens the results PR with its read when it stops.
@@ -100,10 +100,10 @@ endgame wins +3.2 points and energy entering the endgame +1.2. n4 was flat at -0
 skips +19%. Both fail. The cloud smoke's +0.29 share did not repeat. `CLOSEST_FACTOR_SOLO` stays at
 2. Crowd distance is not a lever on its own, so the melee top 3 has no switch left in this line.
 
-## Kill the strong scorers first (Leigh 2026-11-03 22:18-22:21)
+## Kill the strong scorers first (2026-11-03)
 
-Leigh lifted the per-opponent card rule for melee ("melee is different and I have capacity") and asked
-for an overnight card. Melee APS is pairwise: against each opponent in a battle, Hadur's pairing is its
+The per-opponent card rule does not apply to melee, which has capacity for field-wide cards; this is an
+overnight card. Melee APS is pairwise: against each opponent in a battle, Hadur's pairing is its
 battle score over its score plus the opponent's. Survival dominates the score (+50 for each robot that
 dies while one lives, +10 an opponent for the last alive), so a robot that keeps finishing high banks
 the most points against Hadur. Each one Hadur denies it by killing it before the crowd thins lifts
@@ -126,7 +126,7 @@ easier targets it no longer shoots. `STRONG_BOOST` stays 0, and 920 battles were
 
 ## Diamond's whole melee mover (cloud, 2026-11-04)
 
-Leigh 2026-11-04: rebuild the crowd movement on a top bot's design. Of the top five only Diamond ships
+Next (2026-11-04): rebuild the crowd movement on a top bot's design. Of the top five only Diamond ships
 its source (zlib licence), and it survives 68.6 live against Hadur's 55.8. MMOVE-25 (`MELEE_CLEAN`,
 built on branch `claude/project-thread-s5g1cq`, never merged) put Diamond's 270-line melee mover in
 place of Hadur's off a team, with Hadur's gun and radar. Cloud smoke, 46 census fields × seed 4600,
@@ -166,7 +166,7 @@ its arms and plan test are removed, the melee-samples and melee-handoff fixtures
 
 ## Far power from less spare energy (MGUN-26, pc-melee-floor, 2026-11-04)
 
-Leigh 2026-11-04 21:03: "what's next?". MGUN-25 (on at 2.5, PR #652) fires only from 60 energy; another 9% of crowd shots
+Next after 2026-11-04: MGUN-25 (on at 2.5, PR #652) fires only from 60 energy; another 9% of crowd shots
 beyond 300 px leave with 40-60 energy at about 1.94. pc-melee-floor tries the floor at 40 (z4) and 50 (z5), pilot z4 against aa.
 
 ### pc-melee-floor read (PR #656): FAIL, the floor stays 60

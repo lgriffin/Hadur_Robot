@@ -1,6 +1,6 @@
 # Saor: plan for 1st in MicroMelee
 
-Leigh, 2026-10-25 23:32 UTC: "3rd at 68.08 … Now lets plan the gap to 1st." This plan is
+Saor is 3rd at 68.08; this plan is for the gap to 1st. It is
 built from the live pages archived in `data/rumble/pages/2026-10-25T23*` and the bench
 census in PR #284. The gap split comes from `data/tools/melee_gap.py live`.
 
@@ -79,8 +79,7 @@ the cause, but it has not been tested.
 
 ## 5. Saor stays its own robot
 
-Leigh, 2026-10-25 23:52 UTC: "I do want us unique and different, inspired by others but not
-copying them byte for byte."
+Saor is to be unique and different: inspired by others, never copying them byte for byte.
 
 - **The parity arms are measurements, not candidates.** G, W, R, Z and FX run Figment's code,
   and they only show which difference costs Saor points. None of them ships. FX above all is
@@ -277,7 +276,7 @@ What this means:
 
 ## 6f. Saor 0.2 and the stage 5a card (pc-saor-s04, about 2 h)
 
-Leigh chose to ship S2 at the tie (2026-10-27): **Saor 0.2 is S2**, at 748 bytes after ProGuard
+The decision was to ship S2 at the tie (2026-10-27): **Saor 0.2 is S2**, at 748 bytes after ProGuard
 (S2 kept an empty collision handler, which 0.2 drops). It differs from Figment in behaviour:
 Figment samples any seen row at full vote, while 0.2 grades its vote by the row's samples, has
 no ram leg, keeps the end-game cap, 64 playouts, 512 opponent tables and 1024 bins.

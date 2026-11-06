@@ -1,8 +1,7 @@
 # Sanaro's stage N11 (docs/sanaro.md section 20): the weaker-fire progression. pc-sanaro-n09 (results
 # on claude/pc-sanaro-n09-results, 2026-11-02) was flat arm by arm: B480 +0.10 +-0.33 (survival 23.8
 # to 28.2), K65 +0.06, B560 +0.02, K80 -0.08. Weaker fire buys 2-4 points of survival at no APS cost,
-# and the BAND steps lean up (B560 +0.02, B480 +0.10). Leigh 2026-11-02: small increments work, think
-# progression. So this card climbs that slope in small steps on twice the seeds, to read 0.1-0.2 APS.
+# and the BAND steps lean up (B560 +0.02, B480 +0.10). Small increments work, so this card climbs that slope in small steps on twice the seeds, to read 0.1-0.2 APS.
 #   ./queue.sh run pc-sanaro-n10        (or  .\queue.ps1 run pc-sanaro-n10)
 # Run it from master:
 #   git checkout master && git pull

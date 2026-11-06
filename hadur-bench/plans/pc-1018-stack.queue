@@ -1,4 +1,4 @@
-# PC card 2026-10-18 (Leigh approved, thread "PC runs for all three styles"): the 1v1 census of the
+# PC card 2026-10-18 (approved; thread "PC runs for all three styles"): the 1v1 census of the
 # top-3 stack, one step at a time (one bench queue on the PC, RoboRumble workers at 0 until ALLDONE).
 #   ./queue.sh run pc-1018-stack        (or  .\queue.ps1 run pc-1018-stack)
 # Resumable: a restart skips the steps that exited 0.

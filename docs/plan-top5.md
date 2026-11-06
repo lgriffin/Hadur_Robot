@@ -1,9 +1,7 @@
 # Plan: top 5 in 1v1, from all the censuses read together
 
-Date: 2026-10-21. Asked by Leigh after the midrange plan was paused ("40 hours of census and
-the plan to make the top 5 has not materialised; deep analysis on the census runs and an
-informed approach to bridge it; we have a high-end PC to check multiple scenarios in parallel
-yet we single-run things").
+Date: 2026-10-21, after the midrange plan was paused: a deep read of the census runs, an informed
+approach to the top 5, and parallel PC scenarios instead of single runs.
 
 This document has two halves. Sections 1 to 5 read every census we have as one data set: what
 the bench measures well, what it does not, where the gap to the robots above Hadur sits and
@@ -321,7 +319,7 @@ excess damage into damage per tick and ticks per round.
 
 ### Free points (2026-10-21): avoidable losses, and how each is closed
 
-Leigh's rule: no point is lost to something avoidable. Every avoidable loss the data shows is
+The rule: no point is lost to something avoidable. Every avoidable loss the data shows is
 listed here with its size and what closes it. Together they are small, about 0.05 APS of the
 1.74, so they do not replace the segment work, but each one is cheap to close and none needs a
 census: a census cannot resolve 0.03 APS, and each fix is judged where its fault happens.

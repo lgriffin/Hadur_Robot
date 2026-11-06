@@ -10,7 +10,7 @@
 #           Pass: at least +0.6 APS over the field with the 95% interval above 0, the 103 new
 #           robots positive together, and no band below -0.05 APS.
 #   census  The whole field (census-312.txt, 1,212 robots), 4 fresh seeds (931-934): the census
-#           confirmation Leigh's standing rule asks for. Robots off the list should read level.
+#           confirmation the standing rule asks for. Robots off the list should read level.
 #           About 3.5 hours.
 # Read each with data/tools/screen_paired.py on its rows export, --set as below.
 

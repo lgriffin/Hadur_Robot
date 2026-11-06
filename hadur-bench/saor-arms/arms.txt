@@ -10,7 +10,7 @@ N | cap 3 / others + 1.9: uncapped one on one, 2.9 at 2-3 left, 1.9 from 4 (764)
 U | no power cap at all, frees 14 bytes (750) | s#Math.min(getOthers() / 3 + 1.9, Math.log10(getEnergy()) \* 325 / (targetDistance = distance))#Math.log10(getEnergy()) * 325 / (targetDistance = distance)#
 L | longer leg: 55 + distance / 2, wider swings in melee and duel (764) | s#int x = 55 + (int) (targetDistance / 2.5);#int x = 55 + (int) (targetDistance / 2);#
 S | shorter leg: 55 + distance / 3.5, tighter to the corner (764) | s#int x = 55 + (int) (targetDistance / 2.5);#int x = 55 + (int) (targetDistance / 3.5);#
-# Stage 0 and 1 of docs/plan-saor-first.md (Leigh, 2026-10-25: "plan the gap to 1st"). Seats run
+# Stage 0 and 1 of docs/plan-saor-first.md (the gap to 1st). Seats run
 # on the live-shaped census only (tools/saor_live.py); the parity arms revert where Saor differs
 # from Figment.
 FIG | kc.micro.Figment 1.0 in the seat (1st, 69.37 live) | @kc.micro.Figment 1.0

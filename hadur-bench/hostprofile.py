@@ -16,8 +16,8 @@ cores and a team one about 2, and SMT threads are not whole cores, so 24 / 2 = 1
 physical cores the machine is also somebody's desktop, so one core (two for melee, which sheds
 turns first when the CPU is short) is held back before dividing. The width is also capped so
 the battle JVMs fit in 70% of free memory at 2.3 GB each (Bench's own memory check, Memory.java)
-on those smaller hosts only: a big host always goes to its full width (Leigh 2026-10-25: "Main PC
-should always go max"). It is never below 1. Workers are never pinned.
+on those smaller hosts only: a big host always goes to its full width (the main PC
+always runs at full width). It is never below 1. Workers are never pinned.
 
 Overrides, strongest first: the queue's --workers N; the environment (HADUR_BENCH_WORKERS for
 every kind, HADUR_BENCH_WORKERS_DUEL / _TEAM / _MELEE for one); the file hadur-bench/host.local
@@ -266,7 +266,7 @@ def auto_workers(kind, physical, avail_gb):
     by_cpu = max(1, (physical - reserve) // CORES_PER_WORKER)
     why = f"{physical} physical cores" + (f" less {reserve} held back" if reserve else "") + f", / {CORES_PER_WORKER}"
     if avail_gb is None or physical >= BIG_HOST_CORES:
-        # A big host always runs its full width (Leigh 2026-10-25: "Main PC should always go max");
+        # A big host always runs its full width (the main PC always goes to its maximum);
         # Bench's own memory check still guards it.
         return by_cpu, why
     by_mem = max(1, int(avail_gb * 1024 * MEMORY_SHARE) // WORKER_MB)

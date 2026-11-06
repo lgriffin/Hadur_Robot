@@ -1,7 +1,6 @@
 # Sanaro: a NanoMelee entry
 
-Leigh, 2026-10-28: "We are going to build a nanobot ... that has to fit under the limits. Its
-name will be sanaro. Build it, test it in the cloud against the top bots and give me a PC card."
+Sanaro is a NanoMelee robot: built, tested in the cloud against the top bots, then carded for the PC.
 The design is Leigh's doc "Nano Melee: Beating NaturalScience & Quantum"
 (https://claude.ai/artifact/CFF7CDNc8tZZjd8abXnAta); this page records what was built from it,
 what the cloud box measured and what the PC card measures next.
@@ -348,7 +347,7 @@ said (15.9 to 19.6).
 The fit: v / sqrt(d) is within a unit of v / (8 + d / 32) from 100 to 500 px and costs 2 bytes
 less, and the bearing can live in aim's slot, which aim only takes after the lead has read it: 2
 more. Two seeds cannot tell LR from LL; ten can. SC and S6 test ScalarR's cap (power falls with its
-own energy, Leigh 2026-10-30); Sanaro's table already falls as own energy / 16, which is why they
+own energy); Sanaro's table already falls as own energy / 16, which is why they
 read flat.
 
 `hadur-bench/plans/pc-sanaro-n05.queue`, Leigh starts it from master:
@@ -376,7 +375,7 @@ under ships as 0.3.
 
 ## 15. Uniqueness
 
-Leigh's rule for Saor holds here: inspired by others, never a copy. Sanaro shares the open
+The rule for Saor holds here: inspired by others, never a copy. Sanaro shares the open
 DustBunny line's anti-gravity and lead, which every bot at the top of NanoMelee shares, and
 differs in behaviour where it counts: the power table (its own formula, not NaturalScience's
 4,991-character table), the creeping target in place of a name lock, the radar threshold and no
@@ -388,7 +387,7 @@ The seated leaders are references only and never ship.
 
 ## 16. The next card: pc-sanaro-n06 (stage N7), Hadur as the teacher
 
-Leigh 2026-10-31: the string tricks do not shrink a nano (a `charAt` is about 15 bytes, so a table
+The string tricks do not shrink a nano (a `charAt` is about 15 bytes, so a table
 pays only for branches and modes, never for a formula), but they let a nano carry any policy that
 fits an index it already pays for. Sanaro's power table is indexed by both energies and the
 `640 / d` band; Hadur, 14th in the MeleeRumble, has a learned energy policy a nano cannot run.
@@ -515,7 +514,7 @@ stronger-fire table in n08, which lost 6 to 8 points of survival and 0.4 to 0.8 
 steps also lean up (B560 +0.02, B480 +0.10). Live, Sanaro already survives far more than Quantum
 (23.8% against 15.9%) and still trails it by 1.03, so the gap is damage and kills more than survival.
 
-Leigh asked for progression in small increments. So `hadur-bench/plans/pc-sanaro-n10.queue`, which
+Progress comes in small increments. So `hadur-bench/plans/pc-sanaro-n10.queue`, which
 Leigh starts from master, climbs the BAND slope on twice the seeds (43 fields x 20 seeds, base
 28000, 860 battles an arm, about ±0.23). All arms are 249 B (checked by build):
 
@@ -547,7 +546,7 @@ B480 and B4K8 pass. The slope peaks at a 480 px band and then falls: B400 is lev
 buys back. B480 has now passed twice (n09 +0.10 over 430 battles, n10 +0.30 over 860; about +0.23
 pooled). B4K8 is +0.06 over B480 in the same run, which is noise, from one run only. **0.4 = B480**,
 `BAND = 480`, 249 B, prepared but not released (release on Leigh's word). It projects about 65.6 live
-against Quantum's 66.44. Under Leigh's 2026-11-03 rule, the next Sanaro card is per-opponent
+against Quantum's 66.44. Under the PC card rule of 2026-11-03, the next Sanaro card is per-opponent
 tailoring with a pilot stage, not another global switch.
 
 
@@ -559,11 +558,11 @@ about ten ticks in which a robot that closes in cannot be shot at full power. n0
 weaker fire buys survival at no APS cost. Holding fire is the end of that slope.
 
 `hadur-bench/plans/pc-sanaro-n11.queue` measures three hold ranges on 0.4's source: H512, H480 and
-H400, against S4 (0.4 as banked). They are over the byte limit on purpose. Leigh (2026-11-05): measure
+H400, against S4 (0.4 as banked). They are over the byte limit on purpose: measure
 the idea first, then find the bytes for the winner. H512's cheapest form ORs `d >> 9` into the gate's integer before the
 compare, `if (((int) (aim * (range = d)) / GATE | d >> 9) == 0)`: javac 249 -> 254 B, 5 bytes (checked 2026-11-05). The arm is built as
 `&& d < 512`, which plays the same (arms.txt splits on `|`). The hand pass (bearing kept on the stack, `dup2_x1` for the aim) frees 4 bytes, so H512
-needs one more byte to fit. Melee cards may be field-wide (Leigh, 2026-11-03 22:18).
+needs one more byte to fit. Melee cards may be field-wide (2026-11-03 22:18).
 
 The card's pilot is the first 4 of each arm's 20 seeds. `sanaro_read.py --stop-below 0` stops the card
 with a results PR unless some hold arm reads at or above S4 (BENCH-195). The full steps resume the

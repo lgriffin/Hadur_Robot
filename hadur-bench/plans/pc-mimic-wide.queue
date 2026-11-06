@@ -6,7 +6,7 @@
 # decision. About 65 minutes if it runs to the end (screen 36 x 8 seeds x 3 arms = 864 battles, then the picks x 12
 # seeds x 3 arms on fresh seeds), about 10 minutes if the pilot stops it.
 #
-# Why it should win (Leigh's card rule, 2026-11-03):
+# Why it should win (the PC card rule of 2026-11-03):
 #   - Per-opponent tailoring only: mimics on against named robots, master everywhere else. It is the switch that just
 #     passed: pc-mimic9 (PR #603) +0.03 +- 0.02 APS, 8 of 9 robots holding on fresh seeds (Gaff +12.5, Pris +8.2), now
 #     in mimicOns() (PR #605).

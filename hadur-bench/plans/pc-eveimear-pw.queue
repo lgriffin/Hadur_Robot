@@ -1,12 +1,12 @@
-# Eveimear per-robot bullet power (thread "Take 1st with JayLexi and Sanaro"; BENCH-183). Leigh, 2026-11-04 08:35:
-# "maximise the spare bytes before release". The diet (#627) freed 27 B; this card spends 22 of them on a power
+# Eveimear per-robot bullet power (thread "Take 1st with JayLexi and Sanaro"; BENCH-183): spend the
+# spare bytes before release. The diet (#627) freed 27 B; this card spends 22 of them on a power
 # char a robot, with the gun's waves flying at that power's speed and its escape angle following.
 #   ./queue.sh run pc-eveimear-pw        (or  .\queue.ps1 run pc-eveimear-pw)
 # Run it from master with this card merged: git checkout master && git pull
 # One bench queue, RoboRumble workers at 0, unpinned. Nothing here touches the shipped Eveimear; nothing is uploaded or
 # released. About 1 h 40 min to the end, about 20 min if the pilot stops it.
 #
-# Why it should win (Leigh's card rule, 2026-11-03):
+# Why it should win (the PC card rule of 2026-11-03):
 # - Per-opponent tailoring only: each arm changes the power char of the MODES table (one a robot, by name hash) and
 #   nothing else; the candidate ships only the robots that pass on fresh seeds. Same pick-and-confirm shape as
 #   pc-eveimear-st2, which passed at +0.08 APS (#622).

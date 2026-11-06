@@ -48,7 +48,7 @@ ranked near Hadur: positive means Hadur takes more from that opponent than its n
 
 The melee surfer (MMOVE-15) is on master and census-passed at +0.99 ± 0.19 with others outlived +3.0
 and two-left deaths -2.2 (PR #462): it moves exactly the survival this page says is short. It is not
-live. It ships with the next minor, which waits until 1v1 and team have a gain ready too (Leigh's rule,
+live. It ships with the next minor, which waits until 1v1 and team have a gain ready too (the rule,
 2026-10-30). The ScalarR switches on top were screened by pc-melee-scal (BENCH-146, PR #484):
 none passed, so the surfer stays as built. The read to make after 3.21's first pass is this table again, against
 3.20 on the same opponents, with ranks 11 to 100 as the line that has to move.

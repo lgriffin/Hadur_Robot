@@ -1,6 +1,6 @@
 # The new 2nd-place 1v1 rival: what it does and what Hadur can take from it
 
-Read on 2026-10-31 (22:10 GMT) on Leigh's ask. Leigh asked that the robot not be named here, so it is "the rival"
+Read on 2026-10-31. The robot is not named here; it is "the rival"
 throughout. No rumble client was run and nothing was uploaded.
 
 ## Where it stands

@@ -2,12 +2,12 @@
 
 Planning document, 2026-10-01, written on top of
 [rumble-memory-scale-plan.md](rumble-memory-scale-plan.md) (PR #74, merged) and its data in
-[bench/r7-session.md](bench/r7-session.md). Leigh's ask: why skipped turns per battle climbed
+[bench/r7-session.md](bench/r7-session.md). The question: why skipped turns per battle climbed
 from 10 to 90 over the 300-battle one-JVM session on 3.2, how to prevent it, and what we gain
 if it is gone. PR #74 answers the first two correctly. This document checks its evidence
 against the raw session logs and the Robocode 1.9.5.6 engine source, reproduces the cause
 independently in twenty minutes on the weak set, corrects four points, adds what R8 should
-also do, and separates the question Leigh actually cares about (the live slide) from the one
+also do, and separates the question that matters (the live slide) from the one
 the session answered.
 
 **Status: final.** The Sonnet thread implements R8 as #74 lays it out, with the additions in

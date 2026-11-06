@@ -16,7 +16,7 @@
 #   LL    linear lead v / (8 + d / 32) (253 B: reference, does not fit)
 #   LR    lead v / sqrt(d), bearing kept in aim's slot (249 B: the 0.3 candidate)
 #   L18   flat lead v / 18 (249 B; cloud +0.30)
-#   SC    ScalarR's energy cap, Leigh 2026-10-30: base power own energy / 15 at range, about
+#   SC    ScalarR's energy cap: base power own energy / 15 at range, about
 #         E / 7.5 inside 320 px through the band (249 B, a table only; cloud -0.08)
 # Live-shaped census: 43 fields x 10 fresh seeds (base 20000) = 430 battles an arm, about 28 min an
 # arm (n04 ran 26-30). About 2.8 h in all.

@@ -6,7 +6,7 @@
 # One bench queue, RoboRumble workers at 0, unpinned. Nothing here touches the shipped JayLexi; nothing is uploaded or
 # released. About 45 min to the end.
 #
-# Why it should pass (Leigh asked for this evaluation, 2026-11-03 22:50; it is a no-loss check, not a gain arm):
+# Why it should pass (it is a no-loss check, not a gain arm):
 # - n (rows 1, 3-8, 1,470 B) passes JayLexiReplayTest against the readable ref: the same orders every tick as 0.4. Its
 #   bench read must sit inside the A/A band; if it does not, the bench is what is wrong.
 # - r2 (1,460) reads the enemy's energy from BulletHitEvent instead of subtracting our damage. The doc expects 0.0 +-

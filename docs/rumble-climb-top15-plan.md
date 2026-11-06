@@ -10,7 +10,7 @@ needed, with the usual rigour (EARS rows in `docs/requirements.md`, a tagged Cuc
 per ID, unit and jqwik tests, ArchUnit unchanged, replay fixtures re-recorded when play
 changes, deliberate `DuelIdentityTest` re-pins named in the PR, `hadur.climb.stage` bumped).
 
-Goal (Leigh, 2026-10-03): **top 15 in the RoboRumble 1v1, by consolidating the pairings
+Goal (2026-10-03): **top 15 in the RoboRumble 1v1, by consolidating the pairings
 against the robots ranked below Hadur.** Nothing in this plan targets the top 19.
 
 ## 1. Is 21st a regression? No: it is a partial pass

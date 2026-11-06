@@ -14,7 +14,7 @@
 # the enemy (Cotillion's) instead of the exact damage; and the radar is reset every tick as Cotillion does. Cotillion
 # itself, with all three, read within noise of XR. The card checks that P holds XR's level at 749 B.
 #
-# Pilot (Leigh's rule, 2026-11-03): shuffled jobs, so the first 20% are a fair sample. At 20% the futility rule finishes
+# Pilot (the rule of 2026-11-03): shuffled jobs, so the first 20% are a fair sample. At 20% the futility rule finishes
 # the run when P can no longer reach +0.3 points over c. The A/A rule halts it if aa leaves its band against c.
 # Panel: kitlab/micro-wide2-field.txt (112 robots) x 12 fresh seeds from 35000 x 35 rounds; 5 arms = 6,720 battles.
 # Read: each arm against c and aa pooled. P passes when its low end against c is above +0.3 and it is inside XR's

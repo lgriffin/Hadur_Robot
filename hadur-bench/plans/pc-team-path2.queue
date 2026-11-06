@@ -3,8 +3,7 @@
 # Confirm PATH as every team's default (TMODE-25, BENCH-135; docs/plan-team-top5.md section 13),
 # team thread: team-only, duel and melee fixtures bit for bit. pc-team-path (PR #414) found no team
 # where PATH paid +3.0 on its own, but pooled over the 46 it read +0.5 ± 0.5 share points over aa
-# (bb -0.0 ± 0.5), with our bullets hitting our own members 15% less often. Leigh 2026-10-29: build the
-# confirm. This card reruns that comparison on fresh seeds and gates it as one switch for every team.
+# (bb -0.0 ± 0.5), with our bullets hitting our own members 15% less often. This card reruns that comparison on fresh seeds and gates it as one switch for every team.
 #   tqprep  build aa, bb and mp (PATH forced on; the named teams play it on top of their entry)
 #   tqbb    bb vs aa, 46 teams x 16 fresh seeds (base 5100); tqmp the same for mp
 #   tqsum   projected team APS change = sum of each team's mp gain less half its bb gain / 46

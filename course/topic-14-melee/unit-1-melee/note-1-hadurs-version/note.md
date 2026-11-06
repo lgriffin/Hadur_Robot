@@ -149,7 +149,7 @@ The team entry reached 12th in the TeamRumble on the melee brain alone. The gap 
 
 MGUN-6 is one function, [`MeleeEnergyPolicy.teamPower`](https://github.com/lgriffin/Hadur_Robot/blob/97796d8/hadur-core/src/main/java/hadur2/core/melee/MeleeEnergyPolicy.java): with 30 energy or more, a member fires power 3, or the power that kills, in place of the table. [`FieldGun`](https://github.com/lgriffin/Hadur_Robot/blob/97796d8/hadur-core/src/main/java/hadur2/core/melee/FieldGun.java) calls it only while Hadur has a living teammate whose position is fresh, so a 1v1 or a melee never reaches it. On all 45 teams, 6 seeds, paired with 3.12, it was **+5.7 ± 1.1** points a team; live, HadurTeam 3.13 went from 12th to **9th** (68.30).
 
-Notice how the rule is kept from the other ladders. Leigh's rule for team work was that it must not move 1v1 behaviour at all, so the change is a team-only path, not a retuned table: the 1v1 and melee replay fixtures replay unchanged, and only the two team fixtures were re-recorded. When one codebase plays three ladders, a change for one of them is gated by proving the other two did not move.
+Notice how the rule is kept from the other ladders. The rule for team work was that it must not move 1v1 behaviour at all, so the change is a team-only path, not a retuned table: the 1v1 and melee replay fixtures replay unchanged, and only the two team fixtures were re-recorded. When one codebase plays three ladders, a change for one of them is gated by proving the other two did not move.
 
 ## Try this
 

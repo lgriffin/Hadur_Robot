@@ -5,7 +5,7 @@
 # One bench queue, RoboRumble workers at 0, unpinned. Nothing here touches Hadur or the shipped Eveimear; nothing is
 # uploaded or released. About 1 h 40 min to the end, about 15 min if the pilot stops it.
 #
-# Why it should win (Leigh's card rule, 2026-11-03):
+# Why it should win (the PC card rule of 2026-11-03):
 # - Per-opponent tailoring only: every arm changes Eveimear's MODES chars (one a robot, by name hash) and nothing else,
 #   at the same 746 B. The candidate ships only the robots that pass on fresh seeds.
 # - The table has shown live. 0.2 against 0.1 per robot (2026-11-02 live pages): the 74 robots it set to random from the

@@ -136,7 +136,7 @@ teammates, so 1v1 and melee play is untouched. The difference is the paired scor
 
 ## 6. Candidate changes, in order
 
-**Isolation rule (Leigh, 2026-10-11): no team change may touch 1v1 play in any way.** Every candidate
+**Isolation rule (2026-10-11): no team change may touch 1v1 play in any way.** Every candidate
 below acts only while a member has living teammates, reached through `teamLink != null` or a non-empty
 teammate list, as T1 did. Any build must keep every 1v1 and melee replay fixture bit-identical with
 none re-recorded (`ReplayTest`) and leave `DuelIdentityTest` and the duel packages untouched; only the

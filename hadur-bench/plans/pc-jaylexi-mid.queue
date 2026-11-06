@@ -7,7 +7,7 @@
 # One bench queue, RoboRumble workers at 0, unpinned. Nothing here touches Hadur or the shipped JayLexi; nothing is
 # uploaded or released.
 #
-# Why it should win (Leigh's card rule, 2026-11-03):
+# Why it should win (the PC card rule of 2026-11-03):
 # - Per-opponent tailoring only: each arm changes the AIM rows (where that named robot aimed at us) of ranks 121-450, and
 #   nothing else, at the same 1,494 B. The top 120 keep 0.4's field row, the rest keep 0.4's rows.
 # - Those rows are the one lever that has shown live on this field: 0.3's rows gained +1.4 to +1.7 a bot on ranks 121-450

@@ -6,8 +6,8 @@ Each arm's census and gate-field runs are read with saor_gates.evaluate. An arm'
 carries a 95% interval for seed-to-seed noise: within each census field the battles' own APS
 values vary from seed to seed, and the field variances combine into the error of the mean over
 fields. The arm is compared with the control field by field (the same opponents, other seeds),
-with the interval of that difference built the same way. The top-5 bar (Leigh, 2026-10-25: "a
-guaranteed top 5") is a full census (--pairings opponents, 156) whose APS interval sits wholly
+with the interval of that difference built the same way. The top-5 bar (a
+guaranteed top 5) is a full census (--pairings opponents, 156) whose APS interval sits wholly
 above --top5: default 66.6, which is 5th place (Quantum, 65.61 on the 2026-10-25 rankings) plus a
 1.0 margin for the bench-to-live offset (Hadur's 1v1 ran 0.5 to 0.7 under its bench live).
 

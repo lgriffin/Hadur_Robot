@@ -1,7 +1,7 @@
 # RETIRED 2026-10-30 after it ran (PR #437): DODGE and OWN_FIRE ship on master (PR #451), so tmdodge
 # is a no-op on master and a rerun would compare like with like. To re-measure, build tmnododge as the control.
 # Ogi's dodge as one piece (TMODE-27, BENCH-139; docs/plan-team-top5.md section 14), team thread:
-# team-only, duel and melee fixtures bit for bit. Leigh 2026-10-29: OgiTeam leads by ~6.4 APS on
+# team-only, duel and melee fixtures bit for bit. OgiTeam leads by ~6.4 APS on
 # survival; our ports of its parts one switch at a time read zero, so this is its dodge built whole:
 #   DODGE (TMODE-27): every detected shot profiled once from aim experts (head-on, linear, circular,
 #         averaged, half speed, the team's learned aims pooled by class) weighted by how well each

@@ -1,7 +1,7 @@
 # Melee robots that do not load on Robocode 1.11.2 (2026-11-02)
 
-Leigh, 2026-11-02: "Some bots for melee are pure broken, cloud run if needed and exclude them in a
-blacklist." Robocode 1.11.2 (required by the rumble since 2026-11-01, `docs/bench/robocode-1.11.2.md`)
+Some melee robots are broken on the current engine, so they are found on the cloud box and kept out
+of the bench by a skip list. Robocode 1.11.2 (required by the rumble since 2026-11-01, `docs/bench/robocode-1.11.2.md`)
 verifies robot classes as they load. Ten robots of the 414-robot melee census fail that check, so
 they cannot fight on the bench or on any live client.
 
@@ -38,7 +38,7 @@ exauge.GateKeeper, rampancy.Durandal and others).
 
 ## What it means for melee
 
-The live melee set stops at 416 or 417 pairings (Leigh: "we are done with 416"). The listed robots
+The live melee set stops at 416 or 417 pairings (the live set is left at 416). The listed robots
 keep the scores they had and get no new battles. On the bench the census loses ten robots, so 10
 fields fight with eight opponents, not nine; paired reads (arm against aa on the same fields and
 seeds) are unaffected.

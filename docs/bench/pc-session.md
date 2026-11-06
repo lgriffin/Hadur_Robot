@@ -34,7 +34,7 @@ is the short version plus the house rules, which matter more than the tooling.
    leaves the checkout on `claude/<plan>-results`, so the next card must switch back first. Keep the
    working tree clean: a stray local edit gets built into the jar.
 4. **Never start a card Leigh hasn't asked for**, and never auto-start one he said he will run
-   himself. "pc-x next" or "add it" from Leigh is the go; a cloud thread's card on master is not.
+   himself. An explicit ask from Leigh for that card is the go; a cloud thread's card on master is not.
 5. **Never edit a card, on disk or on master, while it runs.** A card's rules are fixed before it
    starts. A change goes to master by PR and applies to the next run.
 6. **Never discard battles.** Never stop or restart a bench on an untested guess. Never delete
@@ -49,8 +49,8 @@ is the short version plus the house rules, which matter more than the tooling.
    master.
 9. **Releases are not yours.** Sessions cannot push tags. A Hadur release goes through the
    `release.yml` workflow on Leigh's word, and only when 1v1, team and melee are all ready.
-10. **A failed card leaves no code behind.** Leigh, 2026-11-04: failed experiment code in the robot
-    is "extreme bloat". The owning cloud thread's results PR for a failed arm removes its switch, the
+10. **A failed card leaves no code behind.** Failed experiment code in the robot
+    is bloat. The owning cloud thread's results PR for a failed arm removes its switch, the
     code behind it, its ablation arm, its card and plan test, and moves its requirement to the
     retired table in `docs/requirements.md` (the switch catalogue in `docs/architecture-c4.md` says
     the same). `RetiredSwitchTest` (STRAND-6) fails the build while a retired requirement's switch
@@ -87,8 +87,7 @@ stop too, not start the next one.
   lines are earlier runs). **`status` exits 255 while a plan is unfinished; that is normal.**
 - **Lead every check-in with anything idle or late:** no battle for 10+ minutes, or a step 10+
   minutes past the header's estimate. Some steps print nothing for a long time (the `fit` step of
-  pc-surf-key ran 85 minutes silently). Say so before Leigh has to ask: on 2026-11-01 he asked "Is
-  surf not running since just after 12?" and then "How was I meant to know that?". Give durations
+  pc-surf-key ran 85 minutes silently). Say so before Leigh has to ask. Give durations
   and an expected end time in GMT, and say when a time is your estimate rather than measured.
 - **Progress on GitHub:** watched steps push `progress.md` and `progress.json` to the branch
   `claude/<plan>-progress` every 15 minutes and at once on a stop. That is how Leigh and the cloud
@@ -109,7 +108,7 @@ battles and time left unrun, the issue link, and whether anything is queued behi
 him the choices and wait for his pick:
 
 - **Rerun with `--no-stop-rules`**: `.\queue.ps1 run <plan> --no-stop-rules`. It resumes from the
-  kept battles, shows the rules, logs "would trip" lines and never acts on them. Leigh chose this
+  kept battles, shows the rules, logs "would trip" lines and never acts on them. It was used
   for pc-shield-still (#505), where an early A/A trip at 20% (+1.00 against ±1.00) settled to
   +0.04 ± 0.54 over the whole panel. pc-shield-power (#558) tripped the same way (+0.84 against
   ±0.78 at 20%).
@@ -126,7 +125,7 @@ him the choices and wait for his pick:
    quoting it word for word with the numbers beside it. Check run quality first: battles fought of
    the total, failures, skipped turns a battle, the A/A.
 3. Post a verdict comment on the PR with `gh pr comment <n> --body-file <file>`, starting with
-   **"Reading (Claude, for Leigh):"**. Use "Pointers" only for readings that are your own guesses.
+   **"Reading (Claude):"**. Use "Pointers" only for readings that are your own guesses.
    The owning cloud thread reads your comment, so say plainly what passed and what failed.
 4. Tell Leigh: the PR number, a small table (arm, size, gain, low end, verdict), run quality in one
    line, and what decision is his. Leigh routes results by PR number, so always give it.
