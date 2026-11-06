@@ -1,0 +1,7 @@
+# cloud-jaylexi-foil: c is JayLexi 0.6 as released (master's source, ProGuard), aa its A/A rebuild, F FoilistMC 1.0
+# itself (the MiniRumble leader, the ceiling on this field), FG JayLexi 0.6's movement with FoilistMC's gun and power
+# (kitlab/arms/JayLexi-FG.java, 1,434 B).
+c | hadur117.mini.JayLexi 0.6c | kitlab/jars/hadur117.mini.JayLexi_0.6c.jar
+aa | hadur117.mini.JayLexi 0.6aa | kitlab/jars/hadur117.mini.JayLexi_0.6aa.jar
+F | sheldor.mini.FoilistMC 1.0 | opponents/sheldor.mini.FoilistMC_1.0.jar
+FG | hadur117.mini.JayLexi 0.6FG | kitlab/jars/hadur117.mini.JayLexi_0.6FG.jar
