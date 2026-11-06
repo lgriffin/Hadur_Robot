@@ -1,6 +1,6 @@
 # Queue pc-tailor-field: progress
 
-Updated 2026-11-06 12:26:42 PC time (12:26 UTC), runner pid 52376.
+Updated 2026-11-06 12:41:45 PC time (12:41 UTC), runner pid 52376.
 
 - `prep` done, exit 0 in 8 min
 - `pilot` done, exit 0 in 4 min
@@ -13,36 +13,35 @@ Updated 2026-11-06 12:26:42 PC time (12:26 UTC), runner pid 52376.
 
 ### screen
 
-**6932 battles**, 0 failed, 3259 read back from an earlier run. Running 4.8 h, 754 battles/h. Last battle 0 min ago.
-Skipped turns a battle: 54.9 overall, first 100 54.7, last 100 54.9; engine disables 1795.
+**7125 battles**, 0 failed, 3259 read back from an earlier run. Running 5.1 h, 756 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 55.1 overall, first 100 54.7, last 100 58.0; engine disables 1883.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| sg | 630 | 0 | 77.89 | -14.07 (543 robots) | ±1.89 | -16.96 .. -11.17 | 46.7 |
-| fp | 629 | 0 | 92.31 | +0.10 (543 robots) | ±0.35 | -0.43 .. +0.63 | 52.6 |
-| hj | 629 | 0 | 92.40 | +0.23 (544 robots) | ±0.34 | -0.29 .. +0.75 | 54.8 |
-| mm | 633 | 0 | 91.98 | -0.19 (545 robots) | ±0.37 | -0.76 .. +0.38 | 56.2 |
-| dg | 630 | 0 | 92.05 | -0.15 (543 robots) | ±0.33 | -0.65 .. +0.36 | 53.1 |
-| rd | 628 | 0 | 92.35 | +0.14 (542 robots) | ±0.32 | -0.36 .. +0.63 | 54.5 |
-| sw | 629 | 0 | 78.36 | -13.58 (543 robots) | ±1.87 | -16.44 .. -10.72 | 47.7 |
-| gs | 633 | 0 | 92.31 | +0.11 (546 robots) | ±0.35 | -0.43 .. +0.65 | 55.0 |
-| fl | 629 | 0 | 92.16 | -0.00 (543 robots) | ±0.31 | -0.48 .. +0.48 | 53.3 |
-| x5 | 631 | 0 | 92.14 | -0.05 (544 robots) | ±0.34 | -0.57 .. +0.47 | 56.4 |
-| c | 631 | 0 | 92.18 | - | - | - | 53.2 |
+| sg | 649 | 0 | 78.07 | -13.98 (558 robots) | ±1.86 | -16.83 .. -11.13 | 46.8 |
+| fp | 647 | 0 | 92.26 | +0.06 (557 robots) | ±0.34 | -0.46 .. +0.59 | 52.8 |
+| hj | 649 | 0 | 92.49 | +0.24 (558 robots) | ±0.33 | -0.27 .. +0.75 | 54.8 |
+| mm | 650 | 0 | 92.08 | -0.17 (558 robots) | ±0.37 | -0.73 .. +0.39 | 55.9 |
+| dg | 646 | 0 | 92.10 | -0.14 (557 robots) | ±0.33 | -0.64 .. +0.37 | 53.9 |
+| rd | 648 | 0 | 92.42 | +0.16 (557 robots) | ±0.32 | -0.32 .. +0.64 | 54.7 |
+| sw | 648 | 0 | 78.47 | -13.53 (558 robots) | ±1.84 | -16.35 .. -10.71 | 48.1 |
+| gs | 646 | 0 | 92.32 | +0.10 (556 robots) | ±0.35 | -0.43 .. +0.63 | 55.0 |
+| fl | 648 | 0 | 92.23 | -0.02 (557 robots) | ±0.31 | -0.50 .. +0.45 | 53.2 |
+| x5 | 648 | 0 | 92.20 | -0.05 (557 robots) | ±0.34 | -0.57 .. +0.46 | 56.4 |
+| c | 646 | 0 | 92.23 | - | - | - | 53.2 |
 
 APS = mean difference over the robots read x 1194 panel robots / 1217 pairings.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 6932 |
+| `fails 30` | halt | ok | 0 failed of 7125 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 90 over 200` | halt | ok | 50.4 a battle over the last 200 (first 200: 56.5) |
+| `skips 90 over 200` | halt | ok | 58.5 a battle over the last 200 (first 200: 56.5) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
 ### Queue log (last lines)
 
 ```
-07:37:53 skip prep (already exit=0)
 07:37:53 skip pilot (already exit=0)
 07:37:53 start screen
 07:37:53 watching screen: 4 stop rule(s)
@@ -57,4 +56,5 @@ APS = mean difference over the robots read x 1194 panel robots / 1217 pairings.
 11:11:09 progress screen: 5977 battles, 714/h, 0 failed, skips 39.2/battle (last 100), sg -14.08, fp +0.10, hj +0.24, mm -0.26, dg -0.07, rd +0.14, sw -13.82, gs +0.11, fl -0.06, x5 -0.03
 11:41:18 progress screen: 6346 battles, 736/h, 0 failed, skips 43.6/battle (last 100), sg -14.08, fp +0.15, hj +0.28, mm -0.21, dg -0.10, rd +0.21, sw -13.63, gs +0.13, fl -0.04, x5 +0.03
 12:11:31 progress screen: 6745 battles, 796/h, 0 failed, skips 58.4/battle (last 100), sg -14.13, fp +0.09, hj +0.24, mm -0.19, dg -0.11, rd +0.17, sw -13.65, gs +0.10, fl -0.03, x5 -0.03
+12:41:45 progress screen: 7125 battles, 756/h, 0 failed, skips 58.0/battle (last 100), sg -13.98, fp +0.06, hj +0.24, mm -0.17, dg -0.14, rd +0.16, sw -13.53, gs +0.10, fl -0.02, x5 -0.05
 ```
