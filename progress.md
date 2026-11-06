@@ -1,6 +1,6 @@
 # Queue pc-tailor-field: progress
 
-Updated 2026-11-06 01:45:55 PC time (01:45 UTC), runner pid 60476.
+Updated 2026-11-06 07:36:31 PC time (07:36 UTC), runner pid 10944.
 
 - `prep` done, exit 0 in 8 min
 - `pilot` done, exit 0 in 4 min
@@ -11,40 +11,9 @@ Updated 2026-11-06 01:45:55 PC time (01:45 UTC), runner pid 60476.
 - `gate` skipped
 - `pr` skipped
 
-### screen
-
-**3259 battles**, 0 failed, 491 read back from an earlier run. Running 3.6 h, 794 battles/h. Last battle 0 min ago.
-Skipped turns a battle: 52.8 overall, first 100 58.8, last 100 65.2; engine disables 1322.
-
-| arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| sg | 295 | 0 | 76.89 | -14.55 (266 robots) | ±2.72 | -18.72 .. -10.38 | 44.3 |
-| fp | 297 | 0 | 91.76 | +0.05 (265 robots) | ±0.50 | -0.72 .. +0.81 | 47.8 |
-| hj | 296 | 0 | 91.80 | +0.11 (266 robots) | ±0.49 | -0.63 .. +0.86 | 50.5 |
-| mm | 295 | 0 | 91.21 | -0.49 (265 robots) | ±0.49 | -1.24 .. +0.25 | 56.5 |
-| dg | 298 | 0 | 91.55 | -0.13 (267 robots) | ±0.50 | -0.89 .. +0.62 | 50.5 |
-| rd | 296 | 0 | 91.76 | +0.02 (267 robots) | ±0.49 | -0.74 .. +0.77 | 54.5 |
-| sw | 297 | 0 | 77.42 | -14.05 (265 robots) | ±2.72 | -18.21 .. -9.90 | 44.3 |
-| gs | 297 | 0 | 91.56 | -0.12 (267 robots) | ±0.51 | -0.89 .. +0.66 | 53.7 |
-| fl | 297 | 0 | 91.55 | -0.09 (266 robots) | ±0.41 | -0.73 .. +0.54 | 53.2 |
-| x5 | 295 | 0 | 91.45 | -0.25 (266 robots) | ±0.53 | -1.06 .. +0.55 | 52.9 |
-| c | 296 | 0 | 91.69 | - | - | - | 52.0 |
-
-APS = mean difference over the robots read x 1194 panel robots / 1217 pairings.
-
-| stop rule | on trip | state | now |
-|---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 3259 |
-| `dead 8` | halt | ok | every arm scoring |
-| `skips 60 over 200` | halt | TRIPPED | 60.0 a battle over the last 200 (first 200: 57.8) |
-| `stall 30m` | halt | ok | last battle 0 min ago |
-
 ### Queue log (last lines)
 
 ```
-22:10:47 start screen
-22:10:47 watching screen: 4 stop rule(s)
-22:10:49 progress pushed to origin claude/pc-tailor-field-progress (every 15 min)
 22:11:47 progress screen: 491 battles, 0 failed, sg -16.34, fp -0.47, hj -0.44, mm -0.98, dg +0.36, rd -0.68, sw -20.46, gs -0.00, fl -0.32, x5 +0.57
 22:42:03 progress screen: 936 battles, 868/h, 0 failed, skips 54.6/battle (last 100), sg -15.62, fp -0.04, hj -0.55, mm -0.80, dg -0.24, rd -0.63, sw -15.48, gs -0.19, fl -0.25, x5 -0.09
 23:12:20 progress screen: 1304 battles, 736/h, 0 failed, skips 45.8/battle (last 100), sg -14.72, fp +0.26, hj -0.22, mm -0.67, dg -0.15, rd -0.23, sw -14.01, gs -0.11, fl -0.14, x5 -0.23
@@ -57,4 +26,7 @@ APS = mean difference over the robots read x 1194 panel robots / 1217 pairings.
 01:45:53 screen exit=75 in 12906 s (halted, skips 60 over 200)
 01:45:55 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/678
 01:45:55 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
+07:36:31 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
+07:36:31 skip prep (already exit=0)
+07:36:31 skip pilot (already exit=0)
 ```
