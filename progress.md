@@ -1,6 +1,6 @@
 # Queue pc-tailor-field: progress
 
-Updated 2026-11-06 01:45:53 PC time (01:45 UTC), runner pid 60476.
+Updated 2026-11-06 01:45:55 PC time (01:45 UTC), runner pid 60476.
 
 - `prep` done, exit 0 in 8 min
 - `pilot` done, exit 0 in 4 min
@@ -42,8 +42,6 @@ APS = mean difference over the robots read x 1194 panel robots / 1217 pairings.
 ### Queue log (last lines)
 
 ```
-22:10:47 skip prep (already exit=0)
-22:10:47 skip pilot (already exit=0)
 22:10:47 start screen
 22:10:47 watching screen: 4 stop rule(s)
 22:10:49 progress pushed to origin claude/pc-tailor-field-progress (every 15 min)
@@ -57,4 +55,6 @@ APS = mean difference over the robots read x 1194 panel robots / 1217 pairings.
 01:43:52 progress screen: 3234 battles, 792/h, 0 failed, skips 65.3/battle (last 100), sg -14.52, fp +0.05, hj +0.12, mm -0.52, dg -0.12, rd +0.03, sw -14.17, gs -0.12, fl -0.09, x5 -0.25
 01:45:53 STOP screen by rule skips 60 over 200: 60.0 a battle over the last 200 (first 200: 57.8); 3259 battles fought and kept, the rest of the step unrun
 01:45:53 screen exit=75 in 12906 s (halted, skips 60 over 200)
+01:45:55 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/678
+01:45:55 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 ```
