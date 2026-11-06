@@ -1,0 +1,39 @@
+# JayLexi: is FoilistMC's lead its movement? (thread "Take 1st with JayLexi, Eveimear and Sanaro"; BENCH-203).
+# Cloud card: run on the cloud box, 3 workers, no alerts, no PR step (the thread reads it and opens the PR).
+#   ./queue.sh run cloud-jaylexi-foil2
+#
+# Why it should win: cloud-jaylexi-foil (docs/bench/jaylexi-foil.md) put FoilistMC itself +1.42 +- 0.60 over JayLexi
+# 0.6 on mini-wide3, but FoilistMC's gun on JayLexi's body read -0.43 +- 0.57: the lead is not the gun. The live pass
+# said the same from the other side: the top 30 cost 0.22, all survival. FM is FoilistMC 1.0 unchanged (its
+# two-option surf with a k-nearest-neighbour danger over logged hits, wall-hit-aware energy drops, its radar) with
+# JayLexi 0.6's GuessFactor gun, power and catcher jitter in place of its pattern matcher. If FM reads near F, the
+# whole lead is movement, and the next card is the byte port: FoilistMC's movement into 1,499 B with our gun, the
+# way Eveimear 0.5 took Cotillion's. FM is a javac build (ProGuard's optimiser broke FoilistMC's arithmetic: an
+# ArithmeticException every scan), 1,796 B, so it is an attribution arm, not a candidate.
+#
+# Panel: kitlab/mini-wide3-field.txt (112 robots) x 4 fresh seeds from 38000 x 35 rounds; 4 arms = 1,792 battles,
+# shuffled jobs, about 80 min on the cloud box. Read: each arm against c and aa pooled (multiarm.py). FM explains
+# the lead when its low end over c is above 0 and it sits inside F's interval. Stop rules: fails 30, dead 8, skips 60
+# over 200, stall 30m (halt; every battle fought is kept and a rerun resumes), aa after 20% (halt). Nothing is
+# uploaded or released.
+
+set C = --skip-build --skip-fetch --rounds 35 --parallel 3 --child-heap 512M --no-truth-log
+set SRC = ../jaylexi/src/main/java/hadur117/mini/JayLexi.java
+set W = work/jaylexi-foil2
+set OUT = ../docs/bench/local
+set ALERT =
+set PROGRESS_BRANCH = off
+
+prep | rm -f ${OUT}/*_jaylexi-foil2*.md && mkdir -p ${W} kitlab/jars && ./fetch-opponents.sh --set kitlab/mini-wide3-field.txt && mvn -q compile && bash kitlab/build_arm_pg.sh ${SRC} hadur117.mini.JayLexi 0.6c && bash kitlab/build_arm_pg.sh ${SRC} hadur117.mini.JayLexi 0.6aa && bash kitlab/build_arm.sh kitlab/arms/JayLexi-FM.java hadur117.mini.JayLexi 0.6FM
+
+bench | sh ./bench-top20.sh ${C} --set kitlab/mini-wide3-field.txt --seeds 4 --seed-base 38000 --arms plans/jaylexi-foil2.arms --out ${W}/run --label jaylexi-foil2 --shuffle-jobs --failed-ok
+  after: prep
+  watch:
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+gate | python3 ../data/tools/multiarm.py ${W}/run/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_jaylexi-foil2.md && printf '\n## Sizes\n\nc (0.6) 1,494 B ProGuard; FM 1,796 javac; FoilistMC 1,499. FM explains the lead when its low end over c is above 0 and it sits inside the F interval.\n' >> ${OUT}/$(date +%Y-%m-%d)_jaylexi-foil2.md && { [ ! -f ${W}/run/EARLY-STOP.md ] || cat ${W}/run/EARLY-STOP.md >> ${OUT}/$(date +%Y-%m-%d)_jaylexi-foil2.md; }
+  after: bench
