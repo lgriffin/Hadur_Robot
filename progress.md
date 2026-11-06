@@ -1,10 +1,10 @@
 # Queue pc-tailor-field: progress
 
-Updated 2026-11-06 01:43:01 PC time (01:43 UTC), runner pid 60476.
+Updated 2026-11-06 01:45:53 PC time (01:45 UTC), runner pid 60476.
 
 - `prep` done, exit 0 in 8 min
 - `pilot` done, exit 0 in 4 min
-- `screen` running
+- `screen` halted, exit 75 in 3.6 h, HALTED by skips 60 over 200: 60.0 a battle over the last 200 (first 200: 57.8)
 - `pick` skipped
 - `prep2` skipped
 - `confirm` skipped
@@ -13,38 +13,35 @@ Updated 2026-11-06 01:43:01 PC time (01:43 UTC), runner pid 60476.
 
 ### screen
 
-**3223 battles**, 0 failed, 491 read back from an earlier run. Running 3.5 h, 794 battles/h. Last battle -0 min ago.
-Skipped turns a battle: 52.6 overall, first 100 58.8, last 100 65.3; engine disables 1299.
+**3259 battles**, 0 failed, 491 read back from an earlier run. Running 3.6 h, 794 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 52.8 overall, first 100 58.8, last 100 65.2; engine disables 1322.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| sg | 292 | 0 | 77.03 | -14.52 (262 robots) | ±2.74 | -18.70 .. -10.33 | 44.6 |
-| fp | 291 | 0 | 91.75 | +0.05 (262 robots) | ±0.51 | -0.72 .. +0.83 | 47.8 |
-| hj | 294 | 0 | 91.80 | +0.12 (264 robots) | ±0.49 | -0.63 .. +0.87 | 50.4 |
-| mm | 292 | 0 | 91.22 | -0.52 (261 robots) | ±0.49 | -1.27 .. +0.23 | 56.5 |
-| dg | 295 | 0 | 91.51 | -0.13 (263 robots) | ±0.50 | -0.89 .. +0.64 | 50.0 |
-| rd | 292 | 0 | 91.83 | +0.03 (263 robots) | ±0.49 | -0.72 .. +0.79 | 53.9 |
-| sw | 294 | 0 | 77.47 | -14.17 (263 robots) | ±2.73 | -18.35 .. -9.98 | 43.9 |
-| gs | 292 | 0 | 91.51 | -0.11 (262 robots) | ±0.51 | -0.90 .. +0.67 | 53.9 |
-| fl | 293 | 0 | 91.57 | -0.12 (261 robots) | ±0.42 | -0.76 .. +0.52 | 52.8 |
-| x5 | 295 | 0 | 91.45 | -0.25 (263 robots) | ±0.53 | -1.06 .. +0.57 | 52.9 |
-| c | 293 | 0 | 91.72 | - | - | - | 51.6 |
+| sg | 295 | 0 | 76.89 | -14.55 (266 robots) | ±2.72 | -18.72 .. -10.38 | 44.3 |
+| fp | 297 | 0 | 91.76 | +0.05 (265 robots) | ±0.50 | -0.72 .. +0.81 | 47.8 |
+| hj | 296 | 0 | 91.80 | +0.11 (266 robots) | ±0.49 | -0.63 .. +0.86 | 50.5 |
+| mm | 295 | 0 | 91.21 | -0.49 (265 robots) | ±0.49 | -1.24 .. +0.25 | 56.5 |
+| dg | 298 | 0 | 91.55 | -0.13 (267 robots) | ±0.50 | -0.89 .. +0.62 | 50.5 |
+| rd | 296 | 0 | 91.76 | +0.02 (267 robots) | ±0.49 | -0.74 .. +0.77 | 54.5 |
+| sw | 297 | 0 | 77.42 | -14.05 (265 robots) | ±2.72 | -18.21 .. -9.90 | 44.3 |
+| gs | 297 | 0 | 91.56 | -0.12 (267 robots) | ±0.51 | -0.89 .. +0.66 | 53.7 |
+| fl | 297 | 0 | 91.55 | -0.09 (266 robots) | ±0.41 | -0.73 .. +0.54 | 53.2 |
+| x5 | 295 | 0 | 91.45 | -0.25 (266 robots) | ±0.53 | -1.06 .. +0.55 | 52.9 |
+| c | 296 | 0 | 91.69 | - | - | - | 52.0 |
 
 APS = mean difference over the robots read x 1194 panel robots / 1217 pairings.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 3223 |
+| `fails 30` | halt | ok | 0 failed of 3259 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 60 over 200` | halt | ok | 58.1 a battle over the last 200 (first 200: 57.8) |
-| `stall 30m` | halt | ok | last battle -0 min ago |
+| `skips 60 over 200` | halt | TRIPPED | 60.0 a battle over the last 200 (first 200: 57.8) |
+| `stall 30m` | halt | ok | last battle 0 min ago |
 
 ### Queue log (last lines)
 
 ```
-21:56:18 screen exit=130 in 943 s (stopped)
-21:56:18 stopped; rerun to resume from the interrupted steps
-22:10:47 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
 22:10:47 skip prep (already exit=0)
 22:10:47 skip pilot (already exit=0)
 22:10:47 start screen
@@ -57,4 +54,7 @@ APS = mean difference over the robots read x 1194 panel robots / 1217 pairings.
 00:13:04 progress screen: 2067 battles, 826/h, 0 failed, skips 56.7/battle (last 100), sg -14.66, fp +0.46, hj +0.28, mm -0.42, dg -0.05, rd +0.06, sw -13.98, gs -0.08, fl +0.01, x5 +0.04
 00:43:12 progress screen: 2459 battles, 784/h, 0 failed, skips 47.3/battle (last 100), sg -14.27, fp +0.14, hj +0.17, mm -0.51, dg -0.05, rd +0.00, sw -13.92, gs -0.31, fl -0.07, x5 -0.06
 01:13:34 progress screen: 2834 battles, 732/h, 0 failed, skips 41.9/battle (last 100), sg -15.38, fp +0.11, hj +0.20, mm -0.57, dg -0.09, rd +0.05, sw -14.49, gs -0.06, fl -0.16, x5 -0.15
+01:43:52 progress screen: 3234 battles, 792/h, 0 failed, skips 65.3/battle (last 100), sg -14.52, fp +0.05, hj +0.12, mm -0.52, dg -0.12, rd +0.03, sw -14.17, gs -0.12, fl -0.09, x5 -0.25
+01:45:53 STOP screen by rule skips 60 over 200: 60.0 a battle over the last 200 (first 200: 57.8); 3259 battles fought and kept, the rest of the step unrun
+01:45:53 screen exit=75 in 12906 s (halted, skips 60 over 200)
 ```
