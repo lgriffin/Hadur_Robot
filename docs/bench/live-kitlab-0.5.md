@@ -70,7 +70,8 @@ LiteRumble API (`BotDetails?api=true`), read at 03:05 UTC on 2026-11-06 and save
 
 | Card | What | Battles | Pass |
 |---|---|---|---|
-| `cloud-jaylexi-foil` | c (0.6), aa, F (FoilistMC), FG (0.6 + FoilistMC gun, 1,434 B) on mini-wide3 x 4 seeds | 1,792 | FG low end over c above 0 and within noise of F; then a PC card (12 seeds, +0.3 gate) |
+| `cloud-jaylexi-foil` | c (0.6), aa, F (FoilistMC), FG (0.6 + FoilistMC gun, 1,434 B) on mini-wide3 x 4 seeds | 1,792 | **Ran: FG -0.43 +- 0.57 (fail), F +1.42 +- 0.60** (docs/bench/jaylexi-foil.md) |
+| `cloud-jaylexi-foil2` | c, aa, F, FM (FoilistMC's movement + JayLexi's gun, javac 1,796 B) on mini-wide3 x 4 seeds | 1,792 | FM low end over c above 0 and inside F's interval: the lead is movement |
 | `cloud-eveimear-st5` | 0.5 in modes 1 / 9 / 0 on all 515 micros x 2 seeds, then ST5 vs c, aa on micro-wide2 x 6 seeds | 5,106 | ST5 low end over c above 0; then a PC card |
 
-Both run on the cloud box (3 workers) one after the other, JayLexi first. Nothing is uploaded or released.
+They run on the cloud box (3 workers) one after the other. Nothing is uploaded or released.
