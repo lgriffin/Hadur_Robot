@@ -48,3 +48,16 @@ B2 | 0.2 spreading each playout's vote over 5 bins, not 9 (748) | s#int k = -4;#
 B6 | 0.2 spreading each playout's vote over 13 bins (749) | s#int k = -4;#int k = -6;#; s#++k <= 4#++k <= 6#
 # Stage 5b (docs/plan-saor-first.md 6h): stage 5a's pass LA, and LA with U2's 14 bytes freed.
 LAU | 0.2 learning on every scan, no end-game power cap (723) | s#if (getGunHeat() < 0.9) {#{#; s#Math.min(getOthers() / 3 + 1.9, Math.log10(getEnergy()) \* 325 / (targetDistance = distance))#Math.log10(getEnergy()) * 325 / (targetDistance = distance)#
+# 0.4 rewrite (Leigh, 2026-11-06: "rewrite the algorithm and do the parity gate approach"): the
+# Figment parts go one by one, each replaced by Saor's own design and screened against 0.3 (C is
+# 0.3's source; AA its rebuild). Whole-file arms, `=saor-arms/Saor<NAME>.java`, javac-built, over
+# the byte limit; the parity gate is that the part costs nothing (docs/plan-saor-first.md 8).
+AA | 0.3 rebuilt, the A/A control | s#/\*\* Per-opponent Markov rows#/** A/A. Per-opponent Markov rows#
+MR | stage 1, movement: a ring of 8 points 170 away, the least risky by every live robot's energy over its squared distance, re-chosen when the leg ends | =saor-arms/SaorMR.java
+MP | stage 1, movement: the 4 corners and 4 edge midpoints scored the same way, never the point we stand on | =saor-arms/SaorMP.java
+G2 | stage 2, gun: a second-order chain, rows keyed on the last two states ((state * 31 + previous) % 1151, 256 hashes), graded vote kept | =saor-arms/SaorG2.java
+GV | stage 2, gun: each playout's vote spread over 2 + ticks / 8 bins a side (at most 8) instead of a fixed 4, so a long shot votes wider | =saor-arms/SaorGV.java
+G2V | stage 2, gun: G2 and GV together | =saor-arms/SaorG2V.java
+TH | stage 3, target: the robot we hit best for its distance (distance x (shots + 2) / (hits + 1), per robot across rounds), sticky by name | =saor-arms/SaorTH.java
+PC | stage 3, power: (1 + 4 x our hit rate on the robot) x 200 / distance in place of log10(energy) x 325 / distance | =saor-arms/SaorPC.java
+THPC | stage 3, TH and PC together | =saor-arms/SaorTHPC.java
