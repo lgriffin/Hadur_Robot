@@ -35,7 +35,10 @@
 #   fewer); the eight are switches that already won where they were screened, so they are not stopped by the new two.
 # screen:  census-312.txt x 11 arms x 2 seeds from 9300; pick at a 5-point margin (mode_table, ref c), one lever a robot.
 # confirm: the picks x c, aa, xr (each picked robot on its lever) x 4 fresh seeds from 9400; gate +0.03 APS.
-# Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle
+# Skips limit 90, not 60 (2026-11-06): the first screen halted at 01:45 on 60.0 a battle over the last 200 with
+# every arm, master included, at 44-57 a battle (whole run 52.8, 3,259 battles, none failed): that is Hadur's normal
+# load at 12 workers on the whole field, shared evenly across arms, not an overload. 90 still halts a real one.
+# Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 90+ skipped turns a battle
 # over the last 200, or no battle in 30 minutes; every battle fought is kept and a rerun resumes. ALERT opens an
 # issue for Leigh on any stop. Nothing here ships: the confirmed lines go into ShieldTableData by PR; the release
 # rule stands.
@@ -55,7 +58,7 @@ pilot | ./bench-top20.sh ${C} ${P} --set panel-x5-pilot.txt --seeds 2 --seed-bas
   watch: field=1217
   stop: fails 30
   stop: dead 8
-  stop: skips 60 over 200
+  stop: skips 90 over 200
   stop: stall 30m
 
 screen | A=plans/tailor-field.arms; if [ -f work/x5.stop ]; then echo 'pilot: x5 and rd below their bars, the screen runs the other eight levers'; A=plans/tailor-field-8.arms; fi && ./bench-top20.sh ${C} ${P} --set census-312.txt --seeds 2 --seed-base 9300 --arms $A --out ${W} --label x5f --shuffle-jobs
@@ -63,7 +66,7 @@ screen | A=plans/tailor-field.arms; if [ -f work/x5.stop ]; then echo 'pilot: x5
   watch: field=1217
   stop: fails 30
   stop: dead 8
-  stop: skips 60 over 200
+  stop: skips 90 over 200
   stop: stall 30m
 
 pick | python3 ../data/tools/multiarm.py ${W}/arms.tsv --census census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_x5f-screen.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 5 --out-tsv ${OUT}/x5f-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_x5f-pick.md
@@ -77,7 +80,7 @@ confirm | ./bench-top20.sh ${C} ${P} --set work/panel-x5f-picks.txt --seeds 4 --
   watch: field=1217
   stop: fails 30
   stop: dead 8
-  stop: skips 60 over 200
+  stop: skips 90 over 200
   stop: stall 30m
 
 gate | python3 ../data/tools/multiarm.py ${W2}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_x5f-2.md && python3 tools/shield_s2.py gate ${W2}/arms.tsv --arm xr --panel work/panel-x5f-picks.txt --bar 0.03 --out ${OUT}/$(date +%Y-%m-%d)_x5f-2-gate.md && python3 ../data/tools/mode_table.py ${W2}/arms.tsv --margin 3 --out-tsv ${OUT}/x5f-2-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_x5f-2-pick.md && python3 tools/per_robot.py ${W2}/arms.tsv --arms xr --out ${OUT}/$(date +%Y-%m-%d)_x5f-2-per-robot.md --out-tsv ${OUT}/x5f-2-per-robot.tsv

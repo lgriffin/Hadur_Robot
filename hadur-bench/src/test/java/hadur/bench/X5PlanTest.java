@@ -86,7 +86,7 @@ class X5PlanTest {
         for (String s : new String[] {"pilot", "screen", "confirm"}) {
             String body = step(queue, s, steps[List.of(steps).indexOf(s) + 1]);
             assertTrue(body.contains("--shuffle-jobs") && body.contains("watch: field=1217"), s);
-            for (String rule : new String[] {"fails 30", "dead 8", "skips 60 over 200", "stall 30m"}) {
+            for (String rule : new String[] {"fails 30", "dead 8", "skips 90 over 200", "stall 30m"}) {
                 assertTrue(body.contains("stop: " + rule), s + " " + rule);
             }
         }
