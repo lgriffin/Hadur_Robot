@@ -6,6 +6,10 @@ twice. It keeps Saor's Markov gun, shares every scan between the twins, focuses 
 enemy with the least energy, and puts its twins 90 degrees apart around the target. Design,
 the LunarTwins analysis, the build and the bench card are in [docs/twinsaor.md](../docs/twinsaor.md).
 
+Credit: the Markov gun is Saor's, which is the design of **Figment 1.0 by Kevin Clark (Kev)**,
+`kc.micro.Figment` (state packing, playout and bin vote; no licence stated in its jar, see
+[saor/README.md](../saor/README.md)). The shared scans, focus fire and stations are TwinSaor's own.
+
     mvn -pl twinsaor verify      # tests, the team jar, the 1,999-byte gate
 
 ## Standing
