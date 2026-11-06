@@ -9,7 +9,7 @@ at PR #679.
 random from the first hit, 95 to stop-and-go held), and the build fights the same as 0.5 on fresh seeds. No band
 moves past the A/A's own spread (ST5 -1.11 and aa -0.63 in the top 30, on 15 robots). The A/A is clean (-0.09 +- 0.31).
 
-So the table 0.5 shipped with is not costing anything that a relearn can recover. 0.5 keeps it. Eveimear is 1st in
+So a relearn on 0.5's body recovers nothing measurable on this panel (within +- 0.35). 0.5 keeps it. Eveimear is 1st in
 MicroRumble, and the remaining small-bot effort goes to JayLexi's movement (`cloud-jaylexi-foil2`, BENCH-203).
 
 ## Read (multiarm.py)

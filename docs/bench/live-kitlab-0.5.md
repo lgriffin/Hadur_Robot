@@ -42,7 +42,8 @@ LiteRumble API (`BotDetails?api=true`), read at 03:05 UTC on 2026-11-06 and save
   score 0.77 less a robot. That is how fast and how much we hit: the gun.
   **Correction (2026-11-06, bench):** on `cloud-jaylexi-foil` FoilistMC beat 0.6 in ranks 251 to 450 by +1.23 points
   by taking 2.2 less damage a round while dealing only 0.5 more, and its gun on our body (FG) was flat there (+0.00).
-  Every band of its lead is damage avoided, so the whole gap is movement, not gun.
+  F is FoilistMC's own jar, and FG raised no exceptions in any of its 448 battles. Every band of the lead is damage
+  avoided, which points to movement, not gun. `cloud-jaylexi-foil2` (BENCH-203) tests that directly.
 - FoilistMC's source ships in its jar (RWPCL). Its gun is a multiple-choice pattern matcher over the enemy's lateral
   speed in thirds, replayed with lateral and advancing speed, matches weighted by recency × length, with a power
   table by distance and own energy. Eveimear closed its whole gap to Cotillion by putting the leader's gun on our body
