@@ -1,8 +1,8 @@
 # Confirm the team brain on every team on fresh seeds (TMODE-34, BENCH-153). Team thread: team-only,
 # duel and melee fixtures bit for bit. pc-team-concord (PR #494, 46 teams x 12 seeds from 6700): CONCORD
 # on every team +0.87 +- 0.53 APS (gate PASS, low end +0.34), but measured on the screen seeds; the
-# five-team table +0.35 +- 0.21 on fresh ones. Leigh 2026-10-31 13:04 GMT chose "Global on, plus confirm
-# card": master ships CONCORD on every team (FORCE_CONCORD, every named entry), and this card checks it
+# five-team table +0.35 +- 0.21 on fresh ones. Decision of 2026-10-31: on for every team plus a
+# confirm card. Master ships CONCORD on every team (FORCE_CONCORD, every named entry), and this card checks it
 # against the build before it shipped on seeds it has never seen.
 #   c2prep  build aa (master, CONCORD on), ncn (tmnoconcord: CONCORD on no team, the baseline) and
 #           bbncn (the same again under its own name, the A/A)

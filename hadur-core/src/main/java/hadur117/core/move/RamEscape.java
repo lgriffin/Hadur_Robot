@@ -50,6 +50,10 @@ public final class RamEscape {
     private double lastHeading = Double.NaN;
     /** RAM-5: a candidate path loses this many px of closest approach for each aim one of the rammer's shots would hit it with. */
     static final double HIT_COST = 60.0;
+    /** RAM-6: the cost a path pays for each shot aim that hits it, against a rammer the table names. */
+    public static final double HEAVY_HIT_COST = 400.0;
+    /** RAM-5, RAM-6: the cost in force for this opponent. */
+    private double hitCost = HIT_COST;
     /** RAM-5: a bullet within this many px of our centre on both axes counts as a hit (half a robot, plus slack). */
     static final double HIT_BOX = 22.0;
     /** RAM-5: ticks a candidate is played for the shots: a shot chasing a fleeing robot takes long to reach it. */
@@ -74,6 +78,16 @@ public final class RamEscape {
     public void initRound() {
         lastHeading = Double.NaN;
         shots.clear();
+    }
+
+    /**
+     * RAM-6: whether a path meeting one of the rammer's shots pays {@link #HEAVY_HIT_COST} (true)
+     * or RAM-5's {@link #HIT_COST} (false).
+     *
+     * @param heavy whether the heavy cost is in force
+     */
+    public void setHeavyHitCost(boolean heavy) {
+        hitCost = heavy ? HEAVY_HIT_COST : HIT_COST;
     }
 
     /** The heading chosen on the last {@link #move}, NaN before the first. */
@@ -221,7 +235,7 @@ public final class RamEscape {
             if (min < floor) return null;
             sum += d;
         }
-        return new double[] {min - HIT_COST * Integer.bitCount(hits), sum / HORIZON, bent};
+        return new double[] {min - hitCost * Integer.bitCount(hits), sum / HORIZON, bent};
     }
 
     /**

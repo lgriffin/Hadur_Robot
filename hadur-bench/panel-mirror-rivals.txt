@@ -1,0 +1,2 @@
+kc.mega.BeepBoop 2.0 | rank1-band1 | kc.mega.BeepBoop_2.0.jar
+oog.mega.saguaro.Saguaro 1.0 | rank4-band1 | oog.mega.saguaro.Saguaro_1.0.jar

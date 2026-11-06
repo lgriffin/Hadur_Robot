@@ -1,0 +1,51 @@
+# Eveimear: what is Cotillion's gun worth on Eveimear's body? (thread "Take 1st with JayLexi, Eveimear and Sanaro";
+# BENCH-198). The 2026-11-04 plan diagnosed the leaders from their wiki pages. Their source ships inside their jars,
+# and reading it (2026-11-05) showed that Cotillion 0.8 (85.57, joint 1st) moves exactly as Eveimear does, line for
+# line. It differs only in its gun (a multiple-choice symbolic pattern matcher), its radar (locks at twice the
+# bearing), its power (antiRam + min(2, enemy energy / 4)) and one reversal rule after the switch to random mode.
+#   ./queue.sh run pc-eveimear-cot        (or  .\queue.ps1 run pc-eveimear-cot)
+# Run it from master with this card merged: git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned. Nothing here touches the shipped Eveimear; nothing is uploaded or
+# released. About 35 minutes to the end.
+#
+# Why it should win: on the cloud (80 mid-field robots, 6 seeds, 10 rounds) Cotillion read +1.14 +- 1.00 points a
+# robot over Eveimear 0.4, and a transplant of its gun, radar and power onto an older Eveimear body read +0.68 +- 0.86
+# over 0.4 and -0.46 +- 0.92 under Cotillion. Its gun alone, with Eveimear's sweeping radar and power, read -0.93: the
+# matcher needs the locked radar's scan every tick. X and XR rebuild that transplant on 0.4's own body (per-robot
+# modes kept). The arms are over the 749-byte limit on purpose (test first, find bytes for a
+# winner); Cotillion fits all of it in 729 B, so a winner has a known path back under the limit.
+#
+# Pilot (the rule of 2026-11-03): shuffled jobs, so the first 20% (about 1,350 battles) are a fair sample. At 20% the
+# futility rule finishes the run when neither X nor XR can still reach +0.3 points over c. The A/A rule halts it if
+# aa leaves its band against c.
+# Panel: kitlab/micro-wide2-field.txt (112 MicroRumble robots: the top 12 by name and one from each of 100 rank bands).
+# 5 arms x 112 robots x 12 fresh seeds from 34000 x 35 rounds = 6,720 battles.
+# Read: each arm against c and aa pooled, per opponent, mean and 95% over the 112; cot is the ceiling the transplant is
+# measured against. A transplant passes when its low end against c is above +0.3 points; the next step is then the
+# byte port, not a release. Stop rules: fails 30, dead 8, skips 60 over 200, stall 30m (halt; every battle fought is
+# kept and a rerun resumes), aa after 20% (halt), futility X,XR below 0.3 after 20% (finish). ALERT opens an issue
+# for Leigh on a stop.
+
+set C = --skip-build --skip-fetch --rounds 35 --parallel auto --child-heap 512M --no-truth-log
+set SRC = ../eveimear/src/main/java/hadur117/micro/Eveimear.java
+set W = work/eveimear-cot
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && rm -f ${OUT}/*_eveimear-cot*.md && mkdir -p ${W} kitlab/jars && ./fetch-opponents.sh --set kitlab/micro-wide2-field.txt && mvn -q compile && bash kitlab/build_arm_pg.sh ${SRC} hadur117.micro.Eveimear 0.4c && bash kitlab/build_arm_pg.sh ${SRC} hadur117.micro.Eveimear 0.4aa && bash kitlab/build_arm_pg.sh kitlab/arms/Eveimear-cotX.java hadur117.micro.Eveimear 0.4X && bash kitlab/build_arm_pg.sh kitlab/arms/Eveimear-cotXR.java hadur117.micro.Eveimear 0.4XR
+
+bench | sh ./bench-top20.sh ${C} --set kitlab/micro-wide2-field.txt --seeds 12 --seed-base 34000 --arms plans/eveimear-cot.arms --out ${W}/run --label eveimear-cot --shuffle-jobs --failed-ok
+  after: prep
+  watch:
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+  stop: futility X,XR below 0.3 after 20%
+
+gate | python3 ../data/tools/multiarm.py ${W}/run/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_eveimear-cot.md && printf '\n## Sizes\n\nc 0.4 742 B; X 802; XR 823; Cotillion 729 (ProGuard builds, kitlab_codesize.py). A transplant passes when its 95%% low end against c is above +0.3 points; the next step is the byte port.\n' >> ${OUT}/$(date +%Y-%m-%d)_eveimear-cot.md && { [ ! -f ${W}/run/EARLY-STOP.md ] || cat ${W}/run/EARLY-STOP.md >> ${OUT}/$(date +%Y-%m-%d)_eveimear-cot.md; }
+  after: bench
+
+pr | bash tools/open_results_pr.sh claude/pc-eveimear-cot-results "Eveimear with Cotillion's gun, radar and power (pc-eveimear-cot)" ${OUT}/*_eveimear-cot.md
+  after: gate

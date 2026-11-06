@@ -1,7 +1,7 @@
 # Saor's plan for 1st in MicroMelee, stage 5a (docs/plan-saor-first.md 6f): a screen on 0.2.
 # pc-saor-s03 (PR #329): S2 (Saor's graded vote, no ram leg, learning below 0.9 gun heat) read
 # 69.83 on the live-shaped census against Figment's 69.79 in the same run, a tie. S2 shipped as
-# Saor 0.2 (Leigh, 2026-10-27), 748 bytes. This card screens 0.2's free constants and its two
+# Saor 0.2 (2026-10-27), 748 bytes. This card screens 0.2's free constants and its two
 # byte savers on the MicroMelee census; the winners go to a live-shaped confirm card (stage 5b)
 # with Figment seated.
 #   ./queue.sh run pc-saor-s04        (or  .\queue.ps1 run pc-saor-s04)

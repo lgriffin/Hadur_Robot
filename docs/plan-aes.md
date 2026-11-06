@@ -2,8 +2,8 @@
 
 **Closed 2026-10-19: Kill 1 failed on the PC (pc-aes-class).** See "PC result" below.
 
-2026-10-19. Leigh asked whether the proposal "AES: Adversarial Evolutionary Surfing" (v0.1,
-19 October 2026) has merit, and for a PC plan to test it. This note judges it against what the
+2026-10-19. Does the proposal "AES: Adversarial Evolutionary Surfing" (v0.1,
+19 October 2026) have merit, and what PC plan would test it? This note judges it against what the
 project has already measured and keeps only the part the evidence leaves open.
 
 ## Verdict in one paragraph
@@ -100,7 +100,7 @@ keeps, because weights fitted on one base belong to that base.
 
 ### Step 2: record (PC, about 7-8 hours, queue `hadur-bench/plans/pc-aes.queue`)
 
-Leigh asked for as much data as the run can give, so the record covers the whole census rather
+The run records as much data as it can give, so the record covers the whole census rather
 than the class alone: the base with AES-1 on, `census-312.txt` (1,212 bots), 4 fresh seeds
 (1071-1074), 35 rounds, no baseline: 4,848 battles, about 7-8 hours at the census rate. That is
 four times the data on the 432 flat x learning bots the plan first sized (2 seeds), gives the

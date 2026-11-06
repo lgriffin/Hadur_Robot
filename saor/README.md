@@ -5,6 +5,18 @@ per-opponent Markov gun that grades its trust in thin patterns. The design, the 
 [docs/saor.md](../docs/saor.md). The plan to reach 1st is
 [docs/plan-saor-first.md](../docs/plan-saor-first.md).
 
+## Credit
+
+Saor is built on **Figment 1.0 by Kevin Clark (Kev)**, `kc.micro.Figment`, whose source ships in its
+jar (no licence is stated in it). The corner oscillation (MeleeSeed's movement, by Simonton, as
+Figment's own header says), the Markov state packing, the play-it-forward playout, the 1,024-bin
+vote and the power rule are Figment's design, and Saor's class restates them line for line: about
+90 of its 103 lines follow Figment's. Saor's own parts are the circular cold start, sampling any
+seen row, the graded vote on thin patterns and learning on every scan; those are where its lead
+over Figment comes from (docs/saor.md). The 0.1 to 0.3 READMEs and jars did not say this; they
+should have. The 0.4 plan replaces the Figment parts one by one with Hadur's own designs, each
+under a parity gate against 0.3 (docs/plan-saor-first.md).
+
 ## Standing
 
 LiteRumble scores the size rumbles from the same MeleeRumble battles, so Saor shows up in

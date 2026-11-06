@@ -1,4 +1,4 @@
-# pc-team-farm (BENCH-194, TMODE-41..44): the arms, each a change to every team's current table entry (the shipped
+# pc-team-farm (BENCH-204, TMODE-41..44): the arms, each a change to every team's current table entry (the shipped
 # TeamModes.TABLE entry, else the default MATEFIRE,HUNT,PATH,DODGE,CONCORD). add/remove are modes;
 # needs names a mode the change only means something with (a team without it skips the arm).
 # Screened in this order; the pilot reads the first three (fo, cl, nl) before the rest run.

@@ -1,0 +1,105 @@
+# Duel mirror: what each rival takes from a name, and how (BENCH-188)
+
+91 names. Rival arms: bb, sg, ns; control c. Shares are score share %, dealt and taken are bullet damage a round. Gun = the best rival's extra damage dealt, move = the damage it avoids; edge is the larger.
+
+Names where the best rival is 8+ points above Hadur on the bench: 74.
+
+- ns, movement: 40
+- bb, movement: 16
+- sg, movement: 11
+- ns, gun: 5
+- bb, gun: 2
+
+| Name | Seeds | Hadur | A/A | bb | sg | ns | Best | Gap | Gun | Move | Edge |
+|---|---:|---:|---:|---:|---:|---:|---|---:|---:|---:|---|
+| pez.rumble.CassiusClay 2rho.02no | 24 | 61.4 ± 2.8 | 62.7 | 96.6 | 56.6 | 96.5 | bb | +35.2 | -39.3 | +27.3 | movement |
+| cb.fire.Firestarter 2.0f | 24 | 50.5 ± 2.0 | 51.0 | 74.8 | 42.9 | 79.9 | ns | +29.4 | +3.9 | +9.0 | movement |
+| barontrozo.BaronTrozo 1.7.6 | 24 | 68.8 ± 1.7 | 69.0 | 78.0 | 98.0 | 77.2 | sg | +29.1 | +12.5 | +28.7 | movement |
+| aw.Gilgalad 1.99.5c | 24 | 50.0 ± 2.1 | 52.0 | 76.0 | 40.9 | 77.4 | ns | +27.4 | +8.6 | +10.3 | movement |
+| mn.Combat 3.25.0 | 24 | 59.1 ± 2.4 | 59.1 | 82.6 | 43.8 | 82.9 | ns | +23.8 | +2.3 | +12.7 | movement |
+| lxx.Tomcat 3.68 | 24 | 57.9 ± 2.1 | 57.6 | 79.7 | 41.8 | 80.4 | ns | +22.5 | +7.7 | +9.6 | movement |
+| jw.Booring 1.11 | 24 | 78.0 ± 1.2 | 76.7 | 99.6 | 76.7 | 99.4 | bb | +21.6 | -5.0 | +24.3 | movement |
+| zyx.mega.YersiniaPestis 3.0 | 24 | 56.0 ± 1.4 | 56.0 | 74.8 | 49.7 | 76.8 | ns | +20.8 | +6.6 | +13.3 | movement |
+| cb.Domogled 1.2 | 24 | 62.9 ± 2.1 | 61.5 | 80.9 | 62.0 | 83.3 | ns | +20.5 | +8.6 | +7.4 | gun |
+| jk.precise.Wintermute 0.8 | 24 | 62.4 ± 1.6 | 64.7 | 82.2 | 57.2 | 82.4 | ns | +20.0 | +7.4 | +13.8 | movement |
+| apv.AspidReloaded 0.6 | 24 | 79.8 ± 1.3 | 80.0 | 99.8 | 88.4 | 99.8 | bb | +20.0 | +6.3 | +21.1 | movement |
+| kc.serpent.WaveSerpent 2.11 | 24 | 56.3 ± 2.1 | 57.9 | 76.1 | 46.3 | 76.1 | ns | +19.8 | +4.6 | +9.8 | movement |
+| abc.Shadow 3.83c | 24 | 54.6 ± 1.6 | 52.9 | 74.4 | 47.1 | 74.3 | bb | +19.8 | +4.2 | +11.9 | movement |
+| cs.Nene 1.0.5 | 24 | 57.2 ± 2.0 | 58.4 | 76.8 | 50.6 | 76.4 | bb | +19.6 | +4.3 | +11.3 | movement |
+| rampancy.Durandal 2.2d | 24 | 75.5 ± 1.6 | 76.6 | 93.2 | 87.5 | 93.6 | ns | +18.1 | +28.6 | +16.4 | gun |
+| voidious.Dookious 1.573c | 24 | 61.2 ± 2.2 | 58.5 | 78.6 | 43.9 | 78.1 | bb | +17.3 | +5.2 | +10.1 | movement |
+| gh.GresSuffurd 0.4.13 | 24 | 60.6 ± 2.2 | 61.7 | 77.3 | 45.6 | 77.9 | ns | +17.3 | +2.1 | +8.6 | movement |
+| dragonbyte.Neutrino 4 | 24 | 82.3 ± 2.2 | 83.4 | 99.4 | 83.6 | 99.6 | ns | +17.2 | +6.9 | +0.0 | gun |
+| slugzilla.Parallax 0.1 | 24 | 82.6 ± 1.5 | 83.5 | 92.0 | 99.8 | 92.1 | sg | +17.2 | -0.9 | +18.0 | movement |
+| suh.mega.WaveSurferPG 1.06 | 24 | 79.2 ± 2.5 | 77.0 | 87.2 | 95.8 | 89.1 | sg | +16.6 | -44.8 | +18.3 | movement |
+| jcs.AutoBot 4.2.1 | 24 | 75.5 ± 1.7 | 73.5 | 91.7 | 73.7 | 91.5 | bb | +16.2 | +2.2 | +16.9 | movement |
+| sheldor.mini.Foilist 1.3.1 | 24 | 64.6 ± 2.0 | 63.2 | 78.5 | 58.4 | 80.6 | ns | +16.0 | +4.9 | +9.0 | movement |
+| stelo.PastFuture 2.3.2 | 24 | 65.1 ± 1.8 | 66.3 | 76.9 | 80.6 | 77.1 | sg | +15.5 | -32.1 | +29.1 | movement |
+| DM.mega.Regicide 2.0rrr | 24 | 67.7 ± 1.7 | 66.9 | 83.1 | 51.4 | 83.1 | bb | +15.4 | -0.4 | +10.2 | movement |
+| jk.melee.Neuromancer 7.12 | 24 | 54.1 ± 2.0 | 54.8 | 65.5 | 53.3 | 69.2 | ns | +15.0 | +4.7 | +9.2 | movement |
+| damij.mega.Boque aaah | 24 | 68.7 ± 1.9 | 65.2 | 82.9 | 58.4 | 83.6 | ns | +14.9 | +4.2 | +9.4 | movement |
+| kc.micro.rammer.MaxRisk 0.6 | 24 | 74.4 ± 1.3 | 73.3 | 89.1 | 75.3 | 89.2 | ns | +14.8 | -6.3 | +29.1 | movement |
+| ebo.Sparse 0.02 | 24 | 80.6 ± 1.4 | 80.1 | 95.1 | 90.1 | 94.6 | bb | +14.6 | +37.0 | +13.4 | gun |
+| ags.Midboss 1q.fast | 24 | 71.4 ± 2.1 | 70.8 | 84.3 | 60.1 | 85.7 | ns | +14.3 | +3.4 | +11.1 | movement |
+| dsekercioglu.mini.Partial 0.1.3 | 24 | 82.6 ± 1.6 | 82.5 | 96.8 | 81.2 | 96.6 | bb | +14.2 | +3.9 | +16.8 | movement |
+| cx.micro.Blur 0.2 | 24 | 85.3 ± 1.5 | 86.9 | 91.8 | 99.5 | 91.2 | sg | +14.1 | -2.4 | +15.6 | movement |
+| fromHell.BlackBox 0.0.2 | 24 | 68.9 ± 1.5 | 69.0 | 82.0 | 57.7 | 82.9 | ns | +13.9 | +2.8 | +8.7 | movement |
+| davidalves.net.DuelistMicro 1.22 | 24 | 82.6 ± 0.9 | 82.0 | 86.4 | 96.5 | 87.6 | sg | +13.9 | -24.0 | +16.4 | movement |
+| tm.Yuugao 1.0 | 24 | 77.6 ± 1.7 | 76.9 | 83.1 | 91.1 | 84.3 | sg | +13.5 | -32.2 | +18.5 | movement |
+| tw.Exterminator 1.0 | 24 | 83.3 ± 2.9 | 84.0 | 95.6 | 96.5 | 95.8 | sg | +13.2 | -31.6 | +7.5 | movement |
+| suh.nano.RammingC 1.00 | 24 | 80.3 ± 1.1 | 80.4 | 92.9 | 81.0 | 93.1 | ns | +12.8 | -14.2 | +31.0 | movement |
+| suzushin7.nano.Galaxy03 1.01 | 24 | 80.1 ± 0.6 | 80.4 | 92.8 | 81.5 | 92.9 | ns | +12.8 | -14.1 | +31.1 | movement |
+| stelo.MatchupMicro 1.2 | 24 | 83.5 ± 1.2 | 82.5 | 95.6 | 89.5 | 96.1 | ns | +12.6 | -51.5 | +19.3 | movement |
+| pl.Patton.GeneralPatton 1.54 | 24 | 81.6 ± 1.3 | 82.5 | 94.0 | 89.9 | 94.2 | ns | +12.6 | +17.5 | +13.7 | gun |
+| dft.Cardigan 1.09 | 24 | 71.5 ± 1.6 | 70.9 | 83.6 | 57.7 | 84.1 | ns | +12.5 | +4.6 | +10.3 | movement |
+| step.nanoPri 1.0 | 24 | 78.3 ± 0.9 | 78.3 | 90.8 | 84.5 | 90.8 | bb | +12.5 | -13.4 | +31.8 | movement |
+| rh.Intra 2.1DomoKN | 24 | 71.6 ± 1.9 | 70.4 | 83.2 | 77.7 | 83.9 | ns | +12.4 | +1.8 | +9.8 | movement |
+| davidalves.PhoenixOS 1.1 | 24 | 69.6 ± 2.1 | 67.2 | 81.9 | 54.6 | 81.0 | bb | +12.4 | +0.0 | +9.1 | movement |
+| pe.SandboxDT 3.02 | 24 | 69.3 ± 1.9 | 67.7 | 79.6 | 53.1 | 81.6 | ns | +12.3 | +2.3 | +9.8 | movement |
+| darkcanuck.Holden 1.13a | 24 | 76.6 ± 6.6 | 76.1 | 88.4 | 83.3 | 88.6 | ns | +12.1 | -3.7 | +10.2 | movement |
+| mz.NanoDeath 2.56 | 24 | 77.7 ± 0.6 | 77.3 | 89.0 | 81.1 | 89.7 | ns | +11.9 | -8.5 | +26.4 | movement |
+| jab.micro.Sanguijuela 0.8 | 24 | 77.2 ± 0.8 | 76.4 | 88.7 | 78.5 | 89.0 | ns | +11.8 | -8.4 | +25.9 | movement |
+| ags.Glacier 0.3.2 | 24 | 66.9 ± 2.0 | 64.6 | 77.0 | 56.5 | 78.5 | ns | +11.6 | +4.0 | +8.7 | movement |
+| cx.Princess 1.0 | 24 | 68.7 ± 1.9 | 71.2 | 80.1 | 79.0 | 78.8 | bb | +11.4 | -20.1 | +14.2 | movement |
+| cw.megas.Silhouette 1.1 | 24 | 74.4 ± 1.5 | 74.0 | 84.7 | 85.3 | 85.8 | ns | +11.4 | +1.8 | +10.6 | movement |
+| demetrix.nano.SledgeHammer 0.22 | 24 | 76.1 ± 0.7 | 75.9 | 86.9 | 79.8 | 87.3 | ns | +11.2 | -8.3 | +27.1 | movement |
+| EH.Fusion 0.32 | 24 | 84.7 ± 1.1 | 84.0 | 95.4 | 88.3 | 95.9 | ns | +11.2 | -5.6 | +18.6 | movement |
+| janm.Jammy 1.0 | 24 | 87.4 ± 1.2 | 87.5 | 98.5 | 97.3 | 98.0 | bb | +11.1 | -17.1 | +15.2 | movement |
+| EFD.AdvancedEFD 0.4.5a | 24 | 68.7 ± 1.6 | 68.1 | 79.4 | 62.3 | 79.8 | ns | +11.1 | -0.6 | +6.0 | movement |
+| cjm.Che 1.2 | 24 | 79.0 ± 1.4 | 79.1 | 89.8 | 85.0 | 87.3 | bb | +10.8 | -37.9 | +14.9 | movement |
+| hp.Athena 0.1 | 24 | 87.1 ± 1.4 | 88.1 | 97.9 | 88.5 | 97.7 | bb | +10.7 | +34.7 | +11.2 | gun |
+| ary.Crisis 1.0 | 24 | 86.4 ± 0.9 | 87.2 | 96.1 | 97.0 | 96.6 | sg | +10.6 | -1.7 | +13.6 | movement |
+| axeBots.SilverSurfer 2.53.33fix | 24 | 69.3 ± 2.2 | 68.6 | 79.5 | 54.9 | 79.9 | ns | +10.6 | +2.4 | +6.6 | movement |
+| as.xbots 1.0 | 24 | 81.4 ± 0.9 | 80.9 | 91.3 | 86.2 | 92.0 | ns | +10.5 | -3.7 | +19.8 | movement |
+| tobe.Saturn lambda | 24 | 79.8 ± 1.4 | 80.2 | 87.4 | 90.1 | 88.4 | sg | +10.3 | -34.8 | +15.4 | movement |
+| darkcanuck.Pris 0.92 | 24 | 67.1 ± 1.5 | 67.6 | 76.6 | 50.1 | 77.4 | ns | +10.3 | +2.9 | +8.4 | movement |
+| cs.PumpkinPie 1.0 | 24 | 77.8 ± 1.5 | 77.0 | 86.6 | 70.5 | 87.6 | ns | +9.9 | -1.3 | +9.4 | movement |
+| stelo.MatchupMini 1.1 | 24 | 71.2 ± 2.1 | 69.6 | 80.6 | 78.0 | 80.7 | ns | +9.5 | +6.6 | +7.3 | movement |
+| ultra.Defender 1.2 | 24 | 89.0 ± 0.9 | 88.9 | 97.8 | 98.5 | 97.8 | sg | +9.5 | -3.0 | +13.0 | movement |
+| ags.rougedc.RougeDC willow | 24 | 69.7 ± 1.6 | 69.8 | 78.2 | 54.9 | 79.0 | ns | +9.2 | -2.6 | +4.1 | movement |
+| sul.Bicephal 1.2 | 24 | 77.5 ± 0.7 | 76.7 | 86.6 | 80.2 | 86.7 | ns | +9.2 | -7.0 | +21.3 | movement |
+| arthord.NanoSatan Mu | 24 | 84.4 ± 1.2 | 84.0 | 93.6 | 82.2 | 93.4 | bb | +9.2 | -3.3 | +11.3 | movement |
+| darkcanuck.Gaff 1.50 | 24 | 73.1 ± 1.5 | 73.6 | 80.6 | 53.7 | 82.0 | ns | +9.0 | +5.6 | +6.1 | movement |
+| oog.micro.MagicD3 0.41 | 24 | 88.2 ± 3.3 | 92.4 | 97.1 | 95.1 | 95.1 | bb | +9.0 | -9.7 | +7.1 | movement |
+| eem.EvBotNG v12.8 | 24 | 70.3 ± 2.5 | 69.3 | 78.3 | 60.3 | 79.2 | ns | +8.8 | -7.0 | +4.9 | movement |
+| rc.yoda.Yoda 1.0.6c.fix | 24 | 88.2 ± 4.5 | 88.1 | 89.6 | 95.0 | 97.0 | ns | +8.8 | +56.6 | +4.1 | gun |
+| rsalesc.roborio.Roborio 1.2.4 | 24 | 58.7 ± 1.2 | 58.0 | 66.5 | 49.5 | 67.5 | ns | +8.8 | +2.1 | +6.5 | movement |
+| gh.micro.GrubbmThree 1.01 | 24 | 72.7 ± 0.7 | 72.5 | 80.8 | 74.0 | 81.0 | ns | +8.3 | -5.3 | +22.2 | movement |
+| catcat20.Rabbit 0.001 | 24 | 83.6 ± 1.9 | 83.7 | 91.8 | 75.5 | 91.9 | ns | +8.3 | +3.1 | +6.4 | movement |
+| drm.CobraBora 1.12 | 24 | 79.3 ± 1.4 | 77.8 | 85.9 | 69.2 | 84.7 | bb | +6.6 | -3.3 | +6.7 | movement |
+| kc.micro.Needle 0.101 | 24 | 79.5 ± 1.5 | 78.2 | 85.3 | 69.3 | 86.1 | ns | +6.6 | +1.9 | +6.0 | movement |
+| EH.kms.LightningStorm 0.11B | 24 | 84.7 ± 3.5 | 85.1 | 91.1 | 90.5 | 89.8 | bb | +6.5 | -5.5 | +5.2 | movement |
+| cx.mini.BlackSwans 0.60 | 24 | 74.8 ± 1.5 | 73.2 | 79.9 | 23.9 | 80.2 | ns | +5.4 | -5.1 | +8.9 | movement |
+| lazarecki.mega.PinkerStinker 0.7 | 24 | 80.4 ± 1.5 | 79.9 | 84.5 | 62.3 | 84.8 | ns | +4.4 | +1.2 | +2.9 | movement |
+| kenran.mega.Pantheist 1.1 | 24 | 90.2 ± 1.6 | 90.4 | 94.1 | 88.1 | 93.6 | bb | +3.9 | +67.4 | -2.6 | gun |
+| theo.Tungsten 1.0a | 24 | 95.3 ± 2.2 | 97.4 | 98.1 | 98.9 | 99.0 | ns | +3.7 | -1.7 | +2.1 | movement |
+| bvh.mini.Mjolnir 0.3 | 24 | 82.4 ± 0.8 | 82.3 | 85.2 | 81.8 | 86.0 | ns | +3.5 | -4.8 | +8.0 | movement |
+| cx.CigaretBH 1.03 | 24 | 75.8 ± 1.6 | 76.8 | 78.0 | 24.3 | 79.0 | ns | +3.2 | -11.8 | +7.2 | movement |
+| cx.mini.Cigaret 1.31 | 24 | 74.5 ± 1.7 | 72.8 | 73.6 | 50.2 | 77.6 | ns | +3.1 | -12.6 | +9.2 | movement |
+| rz.GlowBlow 2.31 | 24 | 77.1 ± 1.8 | 77.8 | 77.5 | 27.6 | 80.0 | ns | +2.9 | -13.0 | +8.0 | movement |
+| rz.Artist 0.2 | 24 | 88.0 ± 2.8 | 89.1 | 90.5 | 90.8 | 90.9 | ns | +2.9 | +33.7 | -4.3 | gun |
+| axeBots.Musashi 2.18 | 24 | 78.3 ± 2.3 | 77.2 | 80.4 | 17.4 | 80.7 | ns | +2.4 | -10.3 | +6.4 | movement |
+| da.NewBGank 1.4 | 24 | 92.2 ± 1.0 | 92.2 | 93.4 | 92.9 | 93.4 | ns | +1.2 | +25.2 | -1.3 | gun |
+| slugzilla.Basilite 0.13 | 24 | 99.0 ± 0.8 | 99.2 | 99.6 | 98.7 | 99.5 | bb | +0.6 | -0.0 | +0.2 | movement |
+| cs.s2.Seraphim 2.3.1 | 24 | 99.6 ± 0.7 | 99.9 | 99.8 | 98.8 | 99.9 | ns | +0.2 | +0.0 | +0.1 | movement |
+| ary.SMG 1.01 | 24 | 97.0 ± 1.3 | 96.5 | 93.5 | 96.9 | 93.7 | sg | -0.1 | +8.0 | -0.4 | gun |

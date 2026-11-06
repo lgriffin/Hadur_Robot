@@ -1,4 +1,4 @@
-# PC qualification (BENCH-125, Leigh 2026-10-27 after the 3.18 live collapse): before the PC's RoboRumble
+# PC qualification (BENCH-125, 2026-10-27, after the 3.18 live collapse): before the PC's RoboRumble
 # clients upload 3.18.1's first pass, fight with uploads off and check the battles match clean pairings.
 #   ./queue.sh run pc-qualify --fresh        (or  .\queue.ps1 run pc-qualify --fresh)
 # CLOSE EVERY ROBORUMBLE CLIENT WINDOW FIRST, and run nothing else on the PC: this card is the only queue.

@@ -1,0 +1,89 @@
+# 1v1, per robot over the whole field, gun AND movement: every robot of census-312.txt is fought by master and by ten
+# builds, each switching on one per-robot lever for every robot, and keeps the lever its own battles pick, or none
+# (BENCH-197: movement and gun levers, tailored over all 1,200 robots, one large holistic run). Leigh starts it once the PC is free:
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-tailor-field        (or  ./queue.sh run pc-tailor-field)
+# It supersedes pc-x5-field and fights in the same folder (work/x5f) at the same seeds with the same c, x5 and rd
+# builds, so any battle pc-x5-field already fought is kept and not fought again.
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes; no step needs a
+# decision. Size: screen 1,212 robots x 11 arms x 2 seeds = 26,664 battles, ~41 h at the ~650 battles/h recent cards
+# ran (jobs shuffled, so stopping early leaves every lever evenly part-read and a rerun resumes); its first 286 battles
+# are the pilot (~25 min); confirm = the picks x 3 arms (c, aa, xr) x 4 fresh seeds, ~4-7 h.
+#
+# The levers (plans/tailor-field.arms), each an existing per-robot table line that so far was only tried on a panel:
+#   gun:      x5 POW-16 hidden bullet speed; gs GUN-11 gun stack; fp POW-15 no full-power rules.
+#   movement: rd RAM-6 rammer dodge; sg / sw POISON-2 stop-and-go (WavePoison / WavePoisonShift); hj MOVE-28
+#             stop-and-start; dg DODGE-3 simple-aim dodge; fl MOVE-32 flattener on; mm MOVE-34 mimic aims in the surf.
+#
+# Why it should win (the PC card rule of 2026-11-03):
+#   - Per-opponent tailoring on every robot, both halves. The mirror study (2026-11-05, 48 gap robots, truth logs)
+#     found the BeepBoop gap is movement on rammers and the mid-field and gun on learned-orbit surfers; each lever
+#     answers one of those, and no shortlist decides who is tried: a robot is found by fighting it.
+#   - Gun, the mechanism is measured: GeneralPatton-type surfers match a hit to its wave by Math.round(speed * 10);
+#     POW-16's x.x5 powers make every Hadur hit unmatched (instrumented GeneralPatton: 0 of 72 logged vs 28 of 60).
+#     Cloud smoke, 7 names x 3 seeds: Durandal +16.6, Sparse +14.4, Athena +5.9, GeneralPatton +4.9, NewBGank +2.9,
+#     Pantheist -1.2, SMG -2.7.
+#   - Movement, each lever already won where it was screened: stop-and-go +0.61 APS on 53 robots (verify, 2026-10-25);
+#     flattener on +11.6 on Dookious (PR #554); mimic aims +0.03 APS on 8 (PR #603); RAM-6 smoke +1.3 a rammer
+#     (RammingC +3.4, Galaxy03 +4.0). None was screened on the other ~1,000 robots.
+#   - Risk: a lever that loses on a robot is not picked (5-point margin, 95% low end above 0), and the confirm
+#     re-measures the picks on 4 fresh seeds against c and an A/A copy before anything ships.
+# Pilot (tools/x5_card.py pilot): the 13 smoke names (panel-x5-pilot.txt) at the screen's seeds on all 11 arms. It
+#   checks the two new levers: when neither x5 gains 2+ points over c on the 7 gun names nor rd 1+ on the 6 rammers,
+#   x5 and rd are dropped and the screen runs c and the other eight levers (plans/tailor-field-8.arms, ~8,000 battles
+#   fewer); the eight are switches that already won where they were screened, so they are not stopped by the new two.
+# screen:  census-312.txt x 11 arms x 2 seeds from 9300; pick at a 5-point margin (mode_table, ref c), one lever a robot.
+# confirm: the picks x c, aa, xr (each picked robot on its lever) x 4 fresh seeds from 9400; gate +0.03 APS.
+# Skips limit 90, not 60 (2026-11-06): the first screen halted at 01:45 on 60.0 a battle over the last 200 with
+# every arm, master included, at 44-57 a battle (whole run 52.8, 3,259 battles, none failed): that is Hadur's normal
+# load at 12 workers on the whole field, shared evenly across arms, not an overload. 90 still halts a real one.
+# Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 90+ skipped turns a battle
+# over the last 200, or no battle in 30 minutes; every battle fought is kept and a rerun resumes. ALERT opens an
+# issue for Leigh on any stop. Nothing here ships: the confirmed lines go into ShieldTableData by PR; the release
+# rule stands.
+
+set V = 3.21
+set P = --parallel 12 --no-truth-log
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
+set W = work/x5f
+set W2 = work/x5f-2
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && rm -f work/x5.stop && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && grep -v '^#' census-312.txt | cut -d'|' -f1 | sed 's/ *$//' | grep . > work/field.list && bash ./build-ablation.sh aa && X5_POWER=work/field.list bash ./build-ablation.sh x5list && RAM_DODGE=work/field.list bash ./build-ablation.sh rdlist && GUN_STACK=work/field.list bash ./build-ablation.sh gslist && FULL_OFF=work/field.list bash ./build-ablation.sh fplist && STOP_GO=work/field.list bash ./build-ablation.sh sgolist && STOP_GO2=work/field.list bash ./build-ablation.sh sgo2list && HEAT_JIT=work/field.list bash ./build-ablation.sh hjlist && SHOT_DODGE=work/field.list bash ./build-ablation.sh sdodgelist && FLAT_ON=work/field.list bash ./build-ablation.sh fllist && MIMIC_ON=work/field.list bash ./build-ablation.sh mmlist && test -f bisect/hadur117.Hadur_${V}x5.jar && test -f bisect/hadur117.Hadur_${V}rd.jar && test -f bisect/hadur117.Hadur_${V}gl.jar && test -f bisect/hadur117.Hadur_${V}fp.jar && test -f bisect/hadur117.Hadur_${V}wl.jar && test -f bisect/hadur117.Hadur_${V}wm.jar && test -f bisect/hadur117.Hadur_${V}hl.jar && test -f bisect/hadur117.Hadur_${V}dg.jar && test -f bisect/hadur117.Hadur_${V}fq.jar && test -f bisect/hadur117.Hadur_${V}mq.jar && ./fetch-opponents.sh --set census-312.txt && mvn -q compile
+
+pilot | ./bench-top20.sh ${C} ${P} --set panel-x5-pilot.txt --seeds 2 --seed-base 9300 --arms plans/tailor-field.arms --out ${W} --label x5f --shuffle-jobs && python3 tools/x5_card.py pilot ${W}/arms.tsv --names panel-x5-pilot.txt --check x5=panel-x5.txt@2 --check rd=panel-rammers.txt@1 --ref c --out ${OUT}/$(date +%Y-%m-%d)_x5f-pilot.md --stop-file work/x5.stop
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 90 over 200
+  stop: stall 30m
+
+screen | A=plans/tailor-field.arms; if [ -f work/x5.stop ]; then echo 'pilot: x5 and rd below their bars, the screen runs the other eight levers'; A=plans/tailor-field-8.arms; fi && ./bench-top20.sh ${C} ${P} --set census-312.txt --seeds 2 --seed-base 9300 --arms $A --out ${W} --label x5f --shuffle-jobs
+  after: pilot
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 90 over 200
+  stop: stall 30m
+
+pick | python3 ../data/tools/multiarm.py ${W}/arms.tsv --census census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_x5f-screen.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 5 --out-tsv ${OUT}/x5f-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_x5f-pick.md
+  after: screen
+
+prep2 | python3 tools/pick_panel.py ${OUT}/x5f-pick.tsv census-312.txt work/panel-x5f-picks.txt && python3 tools/x5_card.py lists ${OUT}/x5f-pick.tsv --list-prefix work/tf --env-out work/tf-env.sh --abl-out work/x5f-abl.txt --arms-out work/x5f-2.arms --version ${V} && . ./work/tf-env.sh && bash ./build-ablation.sh $(cat work/x5f-abl.txt)
+  after: pick
+
+confirm | ./bench-top20.sh ${C} ${P} --set work/panel-x5f-picks.txt --seeds 4 --seed-base 9400 --arms work/x5f-2.arms --out ${W2} --label x5f-2 --shuffle-jobs
+  after: prep2
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 90 over 200
+  stop: stall 30m
+
+gate | python3 ../data/tools/multiarm.py ${W2}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_x5f-2.md && python3 tools/shield_s2.py gate ${W2}/arms.tsv --arm xr --panel work/panel-x5f-picks.txt --bar 0.03 --out ${OUT}/$(date +%Y-%m-%d)_x5f-2-gate.md && python3 ../data/tools/mode_table.py ${W2}/arms.tsv --margin 3 --out-tsv ${OUT}/x5f-2-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_x5f-2-pick.md && python3 tools/per_robot.py ${W2}/arms.tsv --arms xr --out ${OUT}/$(date +%Y-%m-%d)_x5f-2-per-robot.md --out-tsv ${OUT}/x5f-2-per-robot.tsv
+  after: confirm
+
+pr | bash tools/open_results_pr.sh claude/pc-tailor-field-results "1v1 per robot, whole field: ten gun and movement levers, each robot on the one it wins" ${OUT}/*_x5f*.md $(find ${OUT} -maxdepth 1 -name 'x5f*.tsv' -size +0c)
+  after: gate

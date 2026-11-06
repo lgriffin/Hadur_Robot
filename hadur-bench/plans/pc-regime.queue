@@ -1,5 +1,5 @@
 # PC queue: MOVE-17 regime switch (thread "Movement as pattern design", docs/bench/style-lab.md).
-# Start only after pc-1017's ALLDONE, never alongside it (Leigh's rule: one bench queue on the PC,
+# Start only after pc-1017's ALLDONE, never alongside it (the rule: one bench queue on the PC,
 # RoboRumble workers at 0 until ALLDONE). Run from this branch (claude/project-thread-9lx52t):
 #   ./queue.sh run pc-regime        (or  .\queue.ps1 run pc-regime)
 # Resumable: a restart skips the steps that exited 0.

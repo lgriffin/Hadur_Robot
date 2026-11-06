@@ -39,7 +39,7 @@ and, with --low-end, has its 95% low end above that.
       --shipped ../hadur-core/.../TeamModes.java --default MATEFIRE,HUNT,PATH,DODGE,CONCORD \
       --out-dir work --stem team-farm
 
-The farm (TMODE-41 to TMODE-44, BENCH-194): an arms TSV names, per arm, a change to each team's
+The farm (TMODE-41 to TMODE-44, BENCH-204): an arms TSV names, per arm, a change to each team's
 current entry (the shipped table's, or --default): modes to add and modes to remove, and a mode
 the change needs present (`needs`). `arms` writes the counters TSV for `pick` (work/team-farm-counters.tsv:
 every team's entry under each arm, '-' where the arm changes nothing) and, as `screens` does, one
@@ -478,7 +478,7 @@ def main(argv=None):
     pk.add_argument("--out-set")
     pk.add_argument("--teams", type=int, default=46, help="pairings the picks' sum is spread over for --stop-below")
     pk.add_argument("--stop-below", type=float,
-                    help="BENCH-194 pilot: exit 3 when the picks project under this many APS, so the queue stops the card")
+                    help="BENCH-204 pilot: exit 3 when the picks project under this many APS, so the queue stops the card")
     ar = sub.add_parser("arms")
     ar.add_argument("--arms", required=True, help="the arms TSV: name, add, remove, needs")
     ar.add_argument("--census", required=True)

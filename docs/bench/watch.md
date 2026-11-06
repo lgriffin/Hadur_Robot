@@ -1,7 +1,7 @@
 # Watching a PC card as it runs (BENCH-128 to BENCH-131)
 
-Leigh, 2026-10-28: "Why can't the harness do what you have done in the cloud there and monitor as it
-runs? Instead I'm doing 6 hour runs that have clear failures." Until now a PC card was read only from
+A PC card should be watched as it runs, so a run with clear failures stops early instead of going
+on for hours. Until now a PC card was read only from
 its results PR at the end. Now the queue runner reads every battle as it lands and can stop a card on
 rules the card declared before it started.
 
@@ -31,6 +31,7 @@ Rules are lines on the step, fixed before the run like the rest of the card:
   stop: fails 30                               halt: 30 failed battles (crash, broken jar)
   stop: dead 8                                 halt: an arm scoring nothing in 8+ battles (stale/bad jar)
   stop: skips 40 over 200                      halt: last 200 battles skip 40+ turns a battle (PR #331)
+  stop: skips 60 over 200 arms c aa            the same, counting only the named arms (other robots' jars as arms skip by design)
   stop: stall 30m                              halt: no battle finished in 30 minutes
   stop: aa after 20%                           halt: A/A outside its band at z 3 (bench defect)
   stop: futility s4,s0 below 0.10 after 30%    finish: no candidate can still reach the gate's bar

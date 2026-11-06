@@ -1,5 +1,5 @@
 # Worker ladder (docs/bench/throughput.md): how many battles the PC can run at once, and what the
-# truth-log switch (BENCH-97) saves. Leigh 2026-10-23: "build what is needed". About 1.75 h.
+# truth-log switch (BENCH-97) saves. About 1.75 h.
 #   ./queue.sh run pc-ladder        (or  .\queue.ps1 run pc-ladder)
 # Run from master with RoboRumble clients at 0 (the team-s1 header showed one running), nothing else on the PC.
 # --force-memory: the 2G heap is a cap; a battle JVM uses well under 100 MB of heap (measured), so

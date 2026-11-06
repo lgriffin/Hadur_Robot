@@ -115,5 +115,21 @@ class SanaroTableArmsTest(unittest.TestCase):
         self.assertEqual(text.count("class SanaroQ7"), 1)
 
 
+
+class PilotGate(unittest.TestCase):
+    """BENCH-195: the pilot stops the card unless some arm reads at or above the bar."""
+
+    def rows(self, *diffs):
+        return [{"arm": "S", "diff": 0.0}] + [{"arm": "A%d" % i, "diff": d} for i, d in enumerate(diffs)]
+
+    def test_stops_when_every_arm_is_below(self):
+        self.assertTrue(sanaro_read.stopped(self.rows(-0.2, -0.01), "S", 0.0))
+
+    def test_runs_on_when_one_arm_reaches_the_bar(self):
+        self.assertFalse(sanaro_read.stopped(self.rows(-0.2, 0.0), "S", 0.0))
+
+    def test_an_unread_arm_does_not_count(self):
+        self.assertTrue(sanaro_read.stopped(self.rows(None), "S", 0.0))
+
 if __name__ == "__main__":
     unittest.main()

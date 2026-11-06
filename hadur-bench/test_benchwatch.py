@@ -111,6 +111,15 @@ class SpecTest(unittest.TestCase):
         with self.assertRaisesRegex(benchwatch.WatchError, "multi-arm"):
             sp.check([benchwatch.Rule("dead 5")])
         sp.check([benchwatch.Rule("fails 5"), benchwatch.Rule("stall 30m")])
+        with self.assertRaisesRegex(benchwatch.WatchError, "--arms step"):
+            sp.check([benchwatch.Rule("skips 60 over 200 arms c aa")])
+
+    def test_skips_arms_must_be_known(self):
+        cmd = "./bench-top20.sh --set panel.txt --seeds 3 --arms x.arms --out work/x"
+        sp = benchwatch.Spec("", cmd, self.home)
+        with self.assertRaisesRegex(benchwatch.WatchError, "no arm 'zz'"):
+            sp.check([benchwatch.Rule("skips 60 over 200 arms c zz")])
+        sp.check([benchwatch.Rule("skips 60 over 200 arms c aa")])
 
     def test_plan_errors_reach_the_queue(self):
         (self.home / "plans" / "t.queue").write_text("a | true\n  stop: explode\n")
@@ -196,6 +205,18 @@ class SummaryTest(unittest.TestCase):
         states = {r["rule"]: r["state"] for r in s["rules"]}
         self.assertEqual(states, {"fails 3": "TRIPPED", "dead 8": "TRIPPED", "skips 40 over 20": "TRIPPED",
                                   "stall 5m": "ok"})
+
+    def test_skips_can_watch_named_arms_only(self):
+        rows = self.field(10, 0.0, skips=10)
+        for r in rows:
+            if r["arm"] not in ("c", "aa"):
+                r["skippedTurns"] = "200"     # another robot's jar as an arm: it skips by design
+        self.assertEqual(benchwatch.Rule("skips 40 over 20 arms c aa").arms, ("c", "aa"))
+        s = self.summary(rows, ["skips 40 over 20", "skips 40 over 20 arms c aa"])
+        states = {r["rule"]: r["state"] for r in s["rules"]}
+        self.assertEqual(states, {"skips 40 over 20": "TRIPPED", "skips 40 over 20 arms c aa": "ok"})
+        with self.assertRaises(benchwatch.WatchError):
+            benchwatch.Rule("skips 40 over 20 arms")
 
     def test_rows_from_before_the_step_are_not_new_failures_or_dead_arms(self):
         rows = self.field(10, 0.0) + [row("s4", "b99 1", 1, 0.5, ok="false") for _ in range(3)]

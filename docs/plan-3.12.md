@@ -147,7 +147,7 @@ bug fix, so it can ship on a level screen if the volatile steps show the silent 
 
 ## P5: never close in
 
-Leigh's hunch (2026-10-11): closing distance draws Hadur into the opponent's strengths, so it
+A hunch (2026-10-11): closing distance draws Hadur into the opponent's strengths, so it
 should not close in under any circumstances. P1 could not test that, because the target moved
 and the real distance did not. P5 tests it as one global rule on the whole screen, not per bot:
 `away` keeps DIST-1 from ever stepping in, keeps END-1 at that distance, and makes the surf

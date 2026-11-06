@@ -1,4 +1,4 @@
-# 1v1 mode table v2 (docs/bench/live-3.16.md, Leigh's "Tailor the field (3 modes)"): stop-and-go
+# 1v1 mode table v2 (docs/bench/live-3.16.md, "Tailor the field (3 modes)"): stop-and-go
 # (POISON-1, POISON-2) per opponent, against the 148 robots Saguaro plays WavePoison or
 # WavePoisonShift against (panel-saguaro-poison.txt) and the 148 Hadur scores under 85 live that
 # Saguaro fights with its normal modes (panel-low-normal.txt).
@@ -25,7 +25,7 @@
 #   an entry plays bit for bit as 3.16, so it adds nothing but noise to the verify.
 # gate: t3 minus pooled c and aa summed over the verify panel / 1,217 pairings: PASS at +0.15 APS
 #   with the lower end above 0 and the A/A inside its band. The verdict goes in the results PR either
-#   way; table v2 with shield part 2 is then censused against 3.16 before any 3.17 (Leigh's rule: no
+#   way; table v2 with shield part 2 is then censused against 3.16 before any 3.17 (the rule: no
 #   1v1 release unless it is shown to land over 90 APS live).
 
 set P = --parallel 12 --no-truth-log

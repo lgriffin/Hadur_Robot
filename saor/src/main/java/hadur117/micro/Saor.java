@@ -19,6 +19,15 @@ import robocode.util.Utils;
  * requires the same orders (SAOR-15), on the compiled class and on the shipped jar. ProGuard
  * still runs over it as a peephole pass, and the build fails above 749 bytes (SAOR-11).</p>
  *
+ * <p>Credit: this class is built on Figment 1.0 by Kevin Clark (Kev), kc.micro.Figment, whose
+ * source ships in its jar with no licence stated. The corner oscillation (MeleeSeed's movement by
+ * Simonton, as Figment's header says), the Markov state packing, the play-it-forward playout,
+ * the 1,024-bin vote and the power rule are Figment's design, restated line for line here; about
+ * 90 of this class's lines follow Figment's. Saor's own parts are the circular cold start, sampling
+ * any seen row, the graded vote on thin patterns (SAOR-7) and learning on every scan (0.3). The
+ * 0.4 plan (docs/plan-saor-first.md) replaces the Figment parts one by one with our own designs
+ * under a parity gate.</p>
+ *
  * <p>Byte idioms, each mirrored in the core and listed in docs/saor.md: statics over fields;
  * the axis toggles with {@code ^= 1} so it needs no initialiser; 1024 angle bins wrap with
  * {@code & 1023}; one catch absorbs a full Markov row and an out-of-range state. 0.2 has no collision handler: the ram leg of 0.1

@@ -2,8 +2,8 @@
 
 Follow-up to the melee gap read ([melee-gap-3.13.md](melee-gap-3.13.md)), which found Hadur 3.13
 17th in the MeleeRumble, 2.7 APS behind tenth, with the lowest bullet damage of the top-20 fields
-and the gun cool and unfired on 21% of its ticks. Leigh (2026-10-15): build the melee gun
-capabilities with total isolation from 1v1.
+and the gun cool and unfired on 21% of its ticks. The melee gun
+capabilities are built in total isolation from 1v1 (2026-10-15).
 
 ## 1. Why the gun sits idle
 

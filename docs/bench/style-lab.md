@@ -1,7 +1,7 @@
 # Style lab: movement as pattern and design, outside Robocode
 
-2026-10-17. Leigh asked whether we could trace movement and judge it outside Robocode, as pure
-pattern and design matching, in search of a movement style of our own. This is the first pass:
+2026-10-17. Can we trace movement and judge it outside Robocode, as pure
+pattern and design matching, in search of a movement style of our own? This is the first pass:
 the tools in `data/tools/style_lab/`, traces of 33 robots, and what they show.
 
 ## What the lab is

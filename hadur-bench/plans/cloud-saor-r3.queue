@@ -1,0 +1,35 @@
+# Saor 0.4 rewrite, stage 3: our own target and power under the parity gate (docs/plan-saor-first.md 8). Cloud
+# card, 3 workers, no alerts, no PR step.
+#   ./queue.sh run cloud-saor-r3
+#
+# Why: Saor's nearest-sticky target and log10(energy) x 325 / distance power are Figment's. Both arms keep a book of
+# shots fired at and hits on every robot by name hash, across rounds. TH targets the robot we hit best for its
+# distance: distance x (shots + 2) / (hits + 1), sticky by name (Deise's LEARNH idea in micro form). PC sets power
+# from our hit rate on the robot and its range: (1 + 4 x rate) x 200 / distance. THPC is both. Whole-file arms
+# (saor-arms/SaorTH.java, SaorPC.java, SaorTHPC.java), javac 830 / 819 / 848 B.
+# Parity gate and panel as cloud-saor-r1: MicroMelee census x 6 seeds from 4300, 108 battles an arm, about 35 min
+# each. Nothing is uploaded or released.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ARMS = C,AA,TH,PC,THPC
+
+prep | (cd .. && mvn -q -DskipTests install -pl saor -am) && ./fetch-opponents.sh --set micromelee-field.txt && SAOR_RUN=r1 bash tools/saor_arms.sh census 6 4300 ${ARMS} && sed -i 's/^12$/3/; s/^2G$/512M/' work/saor-r3/census-*.args
+
+census-C | ${MVN} "-Dexec.args=@work/saor-r3/census-C.args"
+  after: prep
+
+census-AA | ${MVN} "-Dexec.args=@work/saor-r3/census-AA.args"
+  after: census-C
+
+census-TH | ${MVN} "-Dexec.args=@work/saor-r3/census-TH.args"
+  after: census-AA
+
+census-PC | ${MVN} "-Dexec.args=@work/saor-r3/census-PC.args"
+  after: census-TH
+
+census-THPC | ${MVN} "-Dexec.args=@work/saor-r3/census-THPC.args"
+  after: census-PC
+
+read | python3 tools/saor_arms.py --work-root work/saor-r3 --arms ${ARMS} --control C > ${OUT}/saor-r3-census.md
+  after: census-THPC

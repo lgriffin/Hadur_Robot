@@ -223,7 +223,7 @@ change. Division mean and gap-field are against 0.2, as in every round.
 - So the k-NN surf does not fit in a Mini with its gain intact. Even if the five free changes stay
   free together, they reach 1,540 B, 44 over the 1,496 target. No other cut priced in rounds 5 to 9 is free.
 
-**Parked, 2026-10-30 19:53 UTC (Leigh).** The k-NN surf is not fitted and 0.3 is not released, so
+**Parked, 2026-10-30.** The k-NN surf is not fitted and 0.3 is not released, so
 0.2 stays live. The shipped build that replays k3KE bit for bit (1,598 B) is kept as
 `kitlab/arms/JayLexi-k3KEs.java`, and the matching readable build and test changes are saved as
 `jaylexi-0.3-knn-golf-1598.patch` in the project's shared files.
@@ -231,7 +231,7 @@ change. Division mean and gap-field are against 0.2, as in every round.
 
 ### Round 10: fitted with ecj + ProGuard (2026-10-30 evening)
 
-Leigh asked whether compression could help. Codesize counts method bytecode, so zipping does
+Could compression help? Codesize counts method bytecode, so zipping does
 nothing, but the ecj compiler and ProGuard's optimizer shrink the bytecode itself. The k-NN build
 goes from 1,598 to 1,574 B (javac 1,598, ecj 1,593, then ProGuard), and 0.2 from 1,485 to 1,471.
 JayLexiReplayTest passes on the ProGuard classes, bit for bit. One source rewrite, reusing `f` for

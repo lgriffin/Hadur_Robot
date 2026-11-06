@@ -30,4 +30,4 @@ taken, SHIELD-6's damage budget runs out in fewer battles, so the mode stays on 
 falls by about as much again. That is why the result beats the +0.08 nowave ceiling.
 
 With the stop-and-start's +0.24 (whole field) the stack is about +0.36 APS, over the +0.3 gate on
-screens, so it goes to the census (Leigh, 2026-10-17: census once the stack clears +0.3).
+screens, so it goes to the census (2026-10-17: census once the stack clears +0.3).

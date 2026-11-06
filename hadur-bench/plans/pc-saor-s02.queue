@@ -3,7 +3,7 @@
 # Saor's plan for 1st in MicroMelee, stage 2 (docs/plan-saor-first.md): Saor's own answer to
 # stage 1's finding. pc-saor-s01 (PR #294) found the whole gap in one place: Saor waits for 8
 # samples before it samples a Markov row, and sampling any seen row (W, Figment's rule) gave
-# +1.35 census APS and rounds won 51% -> 59.5%. Leigh, 2026-10-25: Saor stays its own robot, so
+# +1.35 census APS and rounds won 51% -> 59.5%. Saor stays its own robot, so
 # W is the reference here, not a candidate.
 #   ./queue.sh run pc-saor-s02        (or  .\queue.ps1 run pc-saor-s02)
 # Run it from master:

@@ -1,6 +1,6 @@
 # 1v1: the shield's own step aside (2026-10-31)
 
-Leigh 2026-10-31: claw every APS BeepBoop holds over us, and run what we need in the cloud to find it. BeepBoop
+The aim (2026-10-31): claw back every APS BeepBoop holds over us, with cloud runs to find it. BeepBoop
 leads us by +0.35 APS on the robots we both shield and by +0.32 on the 64 robots it shields and we surf
 (write-up "Hadur vs BeepBoop: where the 3.16 goes", Claude Doc).
 

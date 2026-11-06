@@ -1,0 +1,14 @@
+# pc-tailor-field pilot (BENCH-197): the 13 names of the 2026-11-05 cloud smokes, 7 for POW-16 and 6 rammers for RAM-6.
+ary.SMG 1.01 | rank81-band3 | ary.SMG_1.01.jar
+kenran.mega.Pantheist 1.1 | rank142-band3 | kenran.mega.Pantheist_1.1.jar
+ebo.Sparse 0.02 | rank367-band4 | ebo.Sparse_0.02.jar
+rampancy.Durandal 2.2d | rank216-band4 | rampancy.Durandal_2.2d.jar
+hp.Athena 0.1 | rank500-band5 | hp.Athena_0.1.jar
+pl.Patton.GeneralPatton 1.54 | rank351-band4 | pl.Patton.GeneralPatton_1.54.jar
+da.NewBGank 1.4 | rank134-band3 | da.NewBGank_1.4.jar
+demetrix.nano.SledgeHammer 0.22 | rank523-band5 | demetrix.nano.SledgeHammer_0.22.jar
+kc.micro.rammer.MaxRisk 0.6 | rank479-band5 | kc.micro.rammer.MaxRisk_0.6.jar
+mz.NanoDeath 2.56 | rank513-band5 | mz.NanoDeath_2.56.jar
+suh.nano.RammingC 1.00 | rank637-band5 | suh.nano.RammingC_1.00.jar
+sul.Bicephal 1.2 | rank477-band5 | sul.Bicephal_1.2.jar
+suzushin7.nano.Galaxy03 1.01 | rank615-band5 | suzushin7.nano.Galaxy03_1.01.jar

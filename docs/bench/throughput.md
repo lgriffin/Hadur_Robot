@@ -1,7 +1,7 @@
 # Bench throughput (2026-10-23)
 
-Leigh asked why the bench averages about 12 battles a minute when a minimised rumble client runs
-10 battles in seconds. The full read, with every measurement, is the artifact
+Why does the bench average about 12 battles a minute when a minimised rumble client runs
+10 battles in seconds? The full read, with every measurement, is the artifact
 https://claude.ai/artifact/7bWonLGQsi7obMGXHXtQEP. This page keeps the findings, the two changes
 they led to, and the PC card that measures the rest.
 
@@ -77,7 +77,7 @@ exited 0. Report: `docs/bench/local/2026-10-23_worker-ladder.md` (A/A and c leve
   cannot tell those counts apart.
 - A/A sat inside its band in every duel block.
 
-**Decision (Leigh, 2026-10-23): run 12 workers for duel and team queues on the PC.** Duel 16 is
+**Decision (2026-10-23): run 12 workers for duel and team queues on the PC.** Duel 16 is
 faster but its skip margin is too thin to trust for census and release gates. `bench-top20.sh`
 already defaults to a quarter of the logical cores (12 on the PC); team `.args` files set
 `--parallel 12`. The truth log stays on by default; `--no-truth-log` is optional for runs no

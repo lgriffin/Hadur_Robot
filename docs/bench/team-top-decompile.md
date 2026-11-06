@@ -1,6 +1,6 @@
 # How the top teams play together, and a per-team mode table for HadurTeam (2026-10-23)
 
-Leigh's ask (2026-10-23 22:52 local): decompile the top teams, work out their teamwork and core
+The task (2026-10-23): decompile the top teams, work out their teamwork and core
 team movement, bring the best of it into HadurTeam, and pick a mode per opposing team as the
 1v1 mode table does. This is the read. Section 5 is the plan.
 

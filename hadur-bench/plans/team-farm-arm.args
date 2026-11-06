@@ -1,4 +1,4 @@
-# PC card team-farm (BENCH-194, TMODE-41..44): one screen arm @A@ (the tmtab build of work/team-farm-@A@.java, every team's entry changed one way), on the teams the arm changes (work/team-farm-@A@.txt), the same 6 seeds from 9400 as bb, against master (the aa build). Template: tfprep writes work/team-farm-@A@.args with @V@ = the robot.release in hadur-robot/pom.xml and @A@ = the arm.
+# PC card team-farm (BENCH-204, TMODE-41..44): one screen arm @A@ (the tmtab build of work/team-farm-@A@.java, every team's entry changed one way), on the teams the arm changes (work/team-farm-@A@.txt), the same 6 seeds from 9400 as bb, against master (the aa build). Template: tfprep writes work/team-farm-@A@.args with @V@ = the robot.release in hadur-robot/pom.xml and @A@ = the arm.
 --team
 true
 --seeds

@@ -604,6 +604,31 @@ final class ShieldTableData {
     }
 
     /**
+     * POW-16: the opponents the duel fires only x.x5 powers at (2.45, 1.95, ...), whose bullet speed
+     * sits on a rounding edge that a surfer matching hits to its waves by {@code round(speed * 10)}
+     * misses, so it never learns where it was hit. Empty until a card holds robots; candidate builds
+     * add lines here (build-ablation.sh x5list).
+     *
+     * @return a fresh array of names
+     */
+    static String[] x5Powers() {
+        return new String[] {
+        };
+    }
+
+    /**
+     * RAM-6: the rammers whose escape (RAM-2) weighs a path that meets one of their shots in flight
+     * at {@code RamEscape.HEAVY_HIT_COST}, not RAM-5's {@code HIT_COST}. Empty until a card holds
+     * robots; candidate builds add lines here (build-ablation.sh rdlist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] ramDodges() {
+        return new String[] {
+        };
+    }
+
+    /**
      * SKEY-2: per-opponent surf keys, each line {@code "m1 ... m9 bw name"}: nine multipliers on the
      * hit views' key weights ({@code MoveFormula}) and one on the kernel width, fitted offline from that
      * opponent's bullets ({@code data/tools/surf_key_fit.py}). The 175 keys of pc-surf-key (BENCH-160,

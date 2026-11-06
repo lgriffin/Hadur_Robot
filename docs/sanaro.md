@@ -1,7 +1,6 @@
 # Sanaro: a NanoMelee entry
 
-Leigh, 2026-10-28: "We are going to build a nanobot ... that has to fit under the limits. Its
-name will be sanaro. Build it, test it in the cloud against the top bots and give me a PC card."
+Sanaro is a NanoMelee robot: built, tested in the cloud against the top bots, then carded for the PC.
 The design is Leigh's doc "Nano Melee: Beating NaturalScience & Quantum"
 (https://claude.ai/artifact/CFF7CDNc8tZZjd8abXnAta); this page records what was built from it,
 what the cloud box measured and what the PC card measures next.
@@ -348,7 +347,7 @@ said (15.9 to 19.6).
 The fit: v / sqrt(d) is within a unit of v / (8 + d / 32) from 100 to 500 px and costs 2 bytes
 less, and the bearing can live in aim's slot, which aim only takes after the lead has read it: 2
 more. Two seeds cannot tell LR from LL; ten can. SC and S6 test ScalarR's cap (power falls with its
-own energy, Leigh 2026-10-30); Sanaro's table already falls as own energy / 16, which is why they
+own energy); Sanaro's table already falls as own energy / 16, which is why they
 read flat.
 
 `hadur-bench/plans/pc-sanaro-n05.queue`, Leigh starts it from master:
@@ -376,7 +375,7 @@ under ships as 0.3.
 
 ## 15. Uniqueness
 
-Leigh's rule for Saor holds here: inspired by others, never a copy. Sanaro shares the open
+The rule for Saor holds here: inspired by others, never a copy. Sanaro shares the open
 DustBunny line's anti-gravity and lead, which every bot at the top of NanoMelee shares, and
 differs in behaviour where it counts: the power table (its own formula, not NaturalScience's
 4,991-character table), the creeping target in place of a name lock, the radar threshold and no
@@ -388,7 +387,7 @@ The seated leaders are references only and never ship.
 
 ## 16. The next card: pc-sanaro-n06 (stage N7), Hadur as the teacher
 
-Leigh 2026-10-31: the string tricks do not shrink a nano (a `charAt` is about 15 bytes, so a table
+The string tricks do not shrink a nano (a `charAt` is about 15 bytes, so a table
 pays only for branches and modes, never for a formula), but they let a nano carry any policy that
 fits an index it already pays for. Sanaro's power table is indexed by both energies and the
 `640 / d` band; Hadur, 14th in the MeleeRumble, has a learned energy policy a nano cannot run.
@@ -515,7 +514,7 @@ stronger-fire table in n08, which lost 6 to 8 points of survival and 0.4 to 0.8 
 steps also lean up (B560 +0.02, B480 +0.10). Live, Sanaro already survives far more than Quantum
 (23.8% against 15.9%) and still trails it by 1.03, so the gap is damage and kills more than survival.
 
-Leigh asked for progression in small increments. So `hadur-bench/plans/pc-sanaro-n10.queue`, which
+Progress comes in small increments. So `hadur-bench/plans/pc-sanaro-n10.queue`, which
 Leigh starts from master, climbs the BAND slope on twice the seeds (43 fields x 20 seeds, base
 28000, 860 battles an arm, about ±0.23). All arms are 249 B (checked by build):
 
@@ -547,6 +546,123 @@ B480 and B4K8 pass. The slope peaks at a 480 px band and then falls: B400 is lev
 buys back. B480 has now passed twice (n09 +0.10 over 430 battles, n10 +0.30 over 860; about +0.23
 pooled). B4K8 is +0.06 over B480 in the same run, which is noise, from one run only. **0.4 = B480**,
 `BAND = 480`, 249 B, prepared but not released (release on Leigh's word). It projects about 65.6 live
-against Quantum's 66.44. Under Leigh's 2026-11-03 rule, the next Sanaro card is per-opponent
+against Quantum's 66.44. Under the PC card rule of 2026-11-03, the next Sanaro card is per-opponent
 tailoring with a pilot stage, not another global switch.
 
+
+## 22. The next card: pc-sanaro-n11 (stage N14), hold fire past a range
+
+0.4 never holds fire. Past 480 px its power step `BAND / d` is 0, and Robocode lifts `setFire(0)` to a
+0.1 shot (section 19). That shot all but never hits in a ten-robot melee, and it adds 1.02 gun heat:
+about ten ticks in which a robot that closes in cannot be shot at full power. n09 and n10 showed that
+weaker fire buys survival at no APS cost. Holding fire is the end of that slope.
+
+`hadur-bench/plans/pc-sanaro-n11.queue` measures three hold ranges on 0.4's source: H512, H480 and
+H400, against S4 (0.4 as banked). They are over the byte limit on purpose: measure
+the idea first, then find the bytes for the winner. H512's cheapest form ORs `d >> 9` into the gate's integer before the
+compare, `if (((int) (aim * (range = d)) / GATE | d >> 9) == 0)`: javac 249 -> 254 B, 5 bytes (checked 2026-11-05). The arm is built as
+`&& d < 512`, which plays the same (arms.txt splits on `|`). The hand pass (bearing kept on the stack, `dup2_x1` for the aim) frees 4 bytes, so H512
+needs one more byte to fit. Melee cards may be field-wide (2026-11-03 22:18).
+
+The card's pilot is the first 4 of each arm's 20 seeds. `sanaro_read.py --stop-below 0` stops the card
+with a results PR unless some hold arm reads at or above S4 (BENCH-195). The full steps resume the
+pilot's battles.
+
+## 23. pc-sanaro-n11 results (PR #662): holding fire loses
+
+The card stopped at its pilot (4 seeds, 172 battles an arm, live-shaped census):
+
+| Arm | APS | vs S4 | Survival |
+|---|---|---|---|
+| S4 (0.4) | 65.94 ± 0.36 | | 27.0 |
+| H512 | 64.04 ± 0.36 | -1.91 ± 0.51 | 19.6 |
+| H480 | 63.95 ± 0.37 | -2.03 ± 0.52 | 19.9 |
+| H400 | 61.64 ± 0.42 | -4.37 ± 0.56 | 16.4 |
+
+Survival falls by 7 to 11 points, so the loss is in staying alive, not in the gun. A likely
+mechanism, not yet tested, is the radar. Sanaro's radar flips onto its target whenever gun heat is under LOCK (0.9),
+and sweeps otherwise (SANARO-6). A robot that never fires keeps its gun heat at 0. So its radar stays
+locked on the far target and stops sweeping, and the anti-gravity loses sight of the robots closing in.
+The 0.1 shots past 480 px are not wasted: they heat the gun, and that sends the radar round. The
+nearer the hold, the longer the radar stays locked, which matches the order H512 ≈ H480 > H400.
+
+Every arm's loss is more than three times its interval on the pilot's 172 battles, so the full
+20-seed read was not run and holding fire is dropped. The radar account is a hypothesis; pc-sanaro-n12
+(section 24) tests it from the other side. 0.4 (B480, +0.30 in n10) stays the candidate, on Leigh's word.
+
+## 24. The next card: pc-sanaro-n12 (stage N15), a radar that sweeps longer
+
+n11 points at the radar. A shot heats the gun to between 1.02 and 1.6, and the gun cools 0.1 a tick.
+With LOCK at 0.9 the radar sweeps for only 1 to 7 ticks after each shot. It then sits on one robot for
+the 9 ticks before the gun is cool. n03 tried LOCK 1.0, which locks sooner, and lost 1.72; n11's
+never-sweeping radar lost 2 to 4.4. So the slope says to sweep for longer. `hadur-bench/plans/pc-sanaro-n12.queue`
+(run and removed, results in section 25)
+measures LOCK 0.7 (K7), 0.5 (K5) and 0.3 (K3) against S4 on the live-shaped census, with n11's pilot
+gate (BENCH-196). Each arm is 249 B: LOCK is one constant.
+
+## 25. pc-sanaro-n12 results (PR #664): LOCK 0.9 stays
+
+The card stopped at its pilot (4 seeds, 172 battles an arm):
+
+| Arm | APS | vs S4 | Survival |
+|---|---|---|---|
+| S4 (LOCK 0.9) | 66.17 ± 0.36 | | 27.7 |
+| K7 (0.7) | 64.64 ± 0.32 | -1.79 ± 0.48 | 26.0 |
+| K5 (0.5) | 62.91 ± 0.45 | -3.62 ± 0.57 | 19.9 |
+| K3 (0.3) | 65.40 ± 0.34 | -1.12 ± 0.49 | 27.2 |
+
+The APS and vs S4 columns are sanaro_read.py's own figures. APS is the arm's mean over its NanoMelee
+pairings (opponents). vs S4 is the field-by-field paired difference, which weights each of the 43
+fields equally, so it is not the gap between the APS cells. Sections 21 and 23 use the same two bases.
+
+Sweeping longer loses too. No LOCK below 0.9 beat S4 in this pilot, and n03's LOCK 1.0 lost 1.72 in
+its own run. 0.8 and 0.95 are untested, so 0.9 is the best measured value, not a proven peak.
+So section 23's radar account is not confirmed: more sweep does not buy survival. The lock time is
+already tuned. K5's drop below K3 is not monotonic, so part of each reading is noise, but every arm is
+below S4 by more than its interval.
+
+Sanaro's cheap levers are now measured: BAND (passed: 0.4), lead, power tables, spiral, fire gate,
+holding fire and the radar threshold. 0.4 stays the candidate (B480, +0.10 in n09 and +0.30 in n10).
+
+## 26. The next card: pc-sanaro-q (stage N18), Quantum's own rules
+
+Quantum 1.0.0, 1st in NanoMelee, ships its source in its jar (`d414/nano/Quantum.java` beside the
+`.j` assembly it was built from). Read on 2026-11-05, it is Sanaro's engine: the same 0.9 decay on the
+anti-gravity, the same `120 - |turn|` drive, the same wall push, a radar locked by gun heat, and the
+same 18 / d fire gate (Sanaro's gate, +1.06 in n04, is Quantum's `AIM_TOLERANCE`). The earlier plan
+read Quantum from its wiki page and called it a fighter against Sanaro's flight; the code says the
+movement is identical. Quantum differs in three things only:
+
+| Rule | Quantum | Sanaro 0.4 |
+|---|---|---|
+| Target | the nearest robot, held by name until a nearer one shows or any robot dies | a threshold that creeps out 25 px a scan |
+| Power | `min(energy / 7, 2.5)`, no table, no band | a table by both energies x 480 / d (0.1 shots past 480 px) |
+| Lead | `v / (10 + 1.008^d)` | `v / 16` (LQ +0.08 in n05, noise) |
+
+The card (`hadur-bench/plans/pc-sanaro-q.queue`, BENCH-199) takes the first two: QT, QP and QTP, plus
+the endgame pair from the 2026-11-04 plan (EW: wall push halved with one robot left; EB: BAND 960 with
+one robot left). Arms are over 249 B where they must be (QT 269, QTP 253); bytes are found only for a
+winner. Live-shaped census, 43 fields x 20 seeds from 31000, pilot at 4 seeds with `--stop-below 0`.
+
+## 27. pc-sanaro-q result: the pilot stopped, and QT was a broken arm
+
+The pilot (PR #672, live census, 4 seeds, 172 battles an arm) read against S4 (66.12 ± 0.37):
+
+| Arm | APS | vs S4 | Survival |
+|---|---|---|---|
+| QT | 31.43 | -35.54 ± 0.70 | 0.1 |
+| QP | 65.09 | -1.05 ± 0.51 | 11.5 |
+| QTP | 31.62 | -35.30 ± 0.58 | 0.2 |
+| EW | 65.34 | -0.87 ± 0.50 | 18.9 |
+| EB | 65.81 | -0.48 ± 0.52 | 23.9 |
+
+QP, EW and EB are measured and lost: Quantum's flat 2.5 power is worse than Sanaro's table on
+Sanaro's body, and neither endgame change helps. QT and QTP did not measure Quantum's target. The arm's
+sed replaced the radar's opening `setTurnRadarRight(Double.POSITIVE_INFINITY)` with
+`setTurnRadarRight(range = Integer.MAX_VALUE)`. Sanaro's lock sets the radar turn to
+`(getGunHeat() - LOCK) * getRadarTurnRemaining()` on each scan of the target, which keeps an infinite
+turn infinite but shrinks a finite one towards zero, so the radar stopped turning and the robot went
+blind (survival 0.1%). The fixed arm (`sanaro-arms/arms.txt` QT: the radar stays infinite and `range`
+is reset in its own statement) read +1.28 ± 1.34 against S4 on one cloud census seed (13 fields),
+survival 70.1 -> 72.8. That is inside noise; a wider cloud read decides whether it earns a card.
+The card is removed; QTP is dropped with QP.

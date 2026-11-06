@@ -1,0 +1,7 @@
+# cloud-jaylexi-foil2: c is JayLexi 0.6 as released (master's source, ProGuard), aa its A/A rebuild, F FoilistMC 1.0
+# itself, FM FoilistMC 1.0's movement, radar and surfing with JayLexi 0.6's gun (kitlab/arms/JayLexi-FM.java, javac
+# build, 1,796 B: over the limit, an attribution arm).
+c | hadur117.mini.JayLexi 0.6c | kitlab/jars/hadur117.mini.JayLexi_0.6c.jar
+aa | hadur117.mini.JayLexi 0.6aa | kitlab/jars/hadur117.mini.JayLexi_0.6aa.jar
+F | sheldor.mini.FoilistMC 1.0 | opponents/sheldor.mini.FoilistMC_1.0.jar
+FM | hadur117.mini.JayLexi 0.6FM | kitlab/jars/hadur117.mini.JayLexi_0.6FM.jar

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-194: the pc-team-farm card (a per-team strategy table from every team-only lever) is complete before it reaches the PC. */
+/** BENCH-204: the pc-team-farm card (a per-team strategy table from every team-only lever) is complete before it reaches the PC. */
 class TeamFarmPlanTest {
 
     private static final Path QUEUE = Path.of("plans/pc-team-farm.queue");
@@ -27,7 +27,7 @@ class TeamFarmPlanTest {
     }
 
     @Test
-    @Tag("BENCH-194")
+    @Tag("BENCH-204")
     @DisplayName("the steps chain from prep through bb, the pilot's three arms, the pilot, the other six, the pick, the confirm, the lock and the gate to a results PR, on the version the pom names")
     void stepsChain() throws IOException {
         String queue = Files.readString(QUEUE);
@@ -56,7 +56,7 @@ class TeamFarmPlanTest {
     }
 
     @Test
-    @Tag("BENCH-194")
+    @Tag("BENCH-204")
     @DisplayName("the pilot and the pick score each arm against both baselines, need the 95% low end above zero, and stop the card with a results PR under +0.15 APS")
     void pilotAndPick() throws IOException {
         String queue = Files.readString(QUEUE);
@@ -76,7 +76,7 @@ class TeamFarmPlanTest {
     }
 
     @Test
-    @Tag("BENCH-194")
+    @Tag("BENCH-204")
     @DisplayName("every battle step declares its stop rules")
     void stopRules() throws IOException {
         String queue = Files.readString(QUEUE);
@@ -92,7 +92,7 @@ class TeamFarmPlanTest {
     }
 
     @Test
-    @Tag("BENCH-194")
+    @Tag("BENCH-204")
     @DisplayName("the arms TSV names the nine arms in the queue's order, each a change to the current entry; HEAVY, already failed per team, is not among them")
     void armsTable() throws IOException {
         List<String> rows = Files.readAllLines(Path.of("plans/team-farm-arms.tsv")).stream()
@@ -106,7 +106,7 @@ class TeamFarmPlanTest {
     }
 
     @Test
-    @Tag("BENCH-194")
+    @Tag("BENCH-204")
     @DisplayName("the screen pairs bb and every arm with aa on 6 seeds from 9400 at 12 rounds; the confirm on 12 fresh seeds from 9500 on the picked teams")
     void args() throws IOException {
         String bb = Files.readString(Path.of("plans/team-farm-bb.args"));

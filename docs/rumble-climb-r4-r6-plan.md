@@ -11,7 +11,7 @@ scenario per ID, unit and jqwik tests, ArchUnit unchanged, replay fixtures re-re
 when play changes, deliberate `DuelIdentityTest` re-pins named in the PR,
 `hadur.climb.stage` bumped in the root pom).
 
-Goal (Leigh, 2026-09-28): **top 40 in the RoboRumble 1v1**, grown slowly. Hadur 3.0 is 64th
+Goal (2026-09-28): **top 40 in the RoboRumble 1v1**, grown slowly. Hadur 3.0 is 64th
 at 81.57 APS; rank 40 (jk.mini.CunobelinDC 1.2) is 83.07 and rank 30 is 84.23. We need
 about +1.5 APS, and +2.0 to be safely inside it.
 

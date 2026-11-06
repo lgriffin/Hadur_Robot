@@ -1,6 +1,6 @@
 # Ogi deep dive: how OgiTeam leads the team rumble, and what HadurTeam should take (2026-10-24)
 
-Leigh's ask (2026-10-24 00:05 local): a deeper read of Ogi's code, the team version first, since
+A deeper read of Ogi's code, the team version first, since
 it leads the team rumble by a wide margin and sits above Hadur in 1v1. This builds on
 `rivals-source-read.md` (1v1 Ogi) and `team-top-decompile.md` (first team read, which gave the
 SOFT, GANG and FINISH modes). It does not repeat them; it goes through the whole jar.
@@ -241,7 +241,7 @@ lookup table.**
 
 All of it is team-only: reached only with a living teammate, behind its own switch and
 ablation, and proven solo-inert by replaying the duel and melee fixtures bit for bit with the
-switch on (Leigh's rule, 2026-10-11 and 2026-10-23). Estimates are guesses from the size of
+switch on (the rule of 2026-10-11 and 2026-10-23). Estimates are guesses from the size of
 the gap and from Hadur's earlier team screens; none is measured.
 
 | # | Port | What changes in Hadur | Size | Guess (team APS) | Why this rank |

@@ -185,7 +185,7 @@ MeleeRumble and TeamRumble on 2026-10-05. Open after A5:
 
 ## S7
 
-- **Melee stays.** The plan's S7 said to cut melee; Leigh chose to keep it (2026-09-27),
+- **Melee stays.** The plan's S7 said to cut melee; the decision was to keep it (2026-09-27),
   since 2.1 entered the MeleeRumble with it and it only runs with two or more opponents
   alive. The earlier item under "Release 2.1" is settled.
 - **2.2 is entered in both rumbles** (2026-09-27) from a local build hosted on Google Drive;

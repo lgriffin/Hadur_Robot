@@ -9,8 +9,8 @@ The pass is complete: 1,215 of 1,215 pairings, 1,759 battles, the first at 10:02
 | 3.10 | **86.42** ± 0.20 | **20th** | 93.94 | 1,759 |
 | 3.9 | 87.15 ± 0.19 | 13th | 95.04 | 1,885 |
 
-Leigh asked three things after the drop: where the 0.73 went, why the bench on the PC and the
-live ladder disagree, and a class for every opponent. The tools are `data/tools/live_passes.py`
+Three questions after the drop: where did the 0.73 go, why do the bench on the PC and the
+live ladder disagree, and what class is every opponent? The tools are `data/tools/live_passes.py`
 (BENCH-80 to BENCH-82); the per-opponent table is [`opponents-3.10.tsv`](opponents-3.10.tsv).
 
 ## 1. Where the gap came from

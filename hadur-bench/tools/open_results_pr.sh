@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Commits a PC run's reports to their own branch, pushes it and opens a PR against master, so the
-# results reach GitHub as a PR even with no one watching (Leigh, 2026-10-22). Run as a queue's last
+# results reach GitHub as a PR even with no one watching (2026-10-22). Run as a queue's last
 # step from hadur-bench:  bash tools/open_results_pr.sh BRANCH "TITLE" REPORT...
 # Re-running is safe: the branch is reset to the current commit plus the reports, the push is a
 # force-with-lease, and an open PR for the branch is left as it is.

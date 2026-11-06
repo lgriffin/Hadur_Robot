@@ -1,0 +1,38 @@
+# JayLexi: our own k-NN surf on the 0.6 body (thread "Take 1st with JayLexi, Eveimear and Sanaro"; BENCH-204).
+# Cloud card: run on the cloud box, 3 workers, no alerts, no PR step (the thread reads it and opens the PR).
+#   ./queue.sh run cloud-jaylexi-knn
+#
+# Why it should win: cloud-jaylexi-foil2 (docs/bench/jaylexi-foil2.md) put FoilistMC's movement with JayLexi's gun
+# +1.17 +- 0.77 over 0.6 (FoilistMC itself +1.50): the whole gap to 1st is movement, and FoilistMC's movement is a
+# k-nearest-neighbour surf over logged hits. JayLexi does not take its code: KN is JayLexi's own k-NN surf, the k3KE
+# design that read +0.52 and +0.25 on the 0.2 body, moved onto 0.6 (two-wave precise prediction, per-robot orbit,
+# power picks, catcher jitter kept). The danger at a predicted point is a head-on prior plus, for every enemy bullet
+# that hit us or one of ours, a kernel on the guess-factor gap scaled by the distance in (lateral, advancing, range)
+# and weighted 1.05^n by recency. KA keeps the 0.6 surf bins and the per-robot AIM prior under the same k-NN term.
+# Both are javac builds over 1,499 B (1,726 / 1,745), so a win is a byte hunt, not a candidate.
+#
+# Panel: kitlab/mini-wide3-field.txt (112 robots) x 4 fresh seeds from 39000 x 35 rounds; 4 arms = 1,792 battles,
+# shuffled jobs, about 80 min on the cloud box. Read: each arm against c and aa pooled (multiarm.py). Pass: KN or
+# KA low end over c above 0. Stop rules: fails 30, dead 8, skips 60 over 200, stall 30m (halt; every battle fought
+# is kept and a rerun resumes), aa after 20% (halt). Nothing is uploaded or released.
+
+set C = --skip-build --skip-fetch --rounds 35 --parallel 3 --child-heap 512M --no-truth-log
+set SRC = ../jaylexi/src/main/java/hadur117/mini/JayLexi.java
+set W = work/jaylexi-knn
+set OUT = ../docs/bench/local
+set ALERT =
+set PROGRESS_BRANCH = off
+
+prep | rm -f ${OUT}/*_jaylexi-knn*.md && mkdir -p ${W} kitlab/jars && ./fetch-opponents.sh --set kitlab/mini-wide3-field.txt && mvn -q compile && bash kitlab/build_arm_pg.sh ${SRC} hadur117.mini.JayLexi 0.6c && bash kitlab/build_arm_pg.sh ${SRC} hadur117.mini.JayLexi 0.6aa && bash kitlab/build_arm.sh kitlab/arms/JayLexi-KN.java hadur117.mini.JayLexi 0.6KN && bash kitlab/build_arm.sh kitlab/arms/JayLexi-KA.java hadur117.mini.JayLexi 0.6KA
+
+bench | sh ./bench-top20.sh ${C} --set kitlab/mini-wide3-field.txt --seeds 4 --seed-base 39000 --arms plans/jaylexi-knn.arms --out ${W}/run --label jaylexi-knn --shuffle-jobs --failed-ok
+  after: prep
+  watch:
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+gate | python3 ../data/tools/multiarm.py ${W}/run/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_jaylexi-knn.md && printf '\n## Sizes\n\nc (0.6) 1,494 B ProGuard; KN 1,726 javac; KA 1,745 javac. Pass: KN or KA low end over c above 0; then the byte hunt.\n' >> ${OUT}/$(date +%Y-%m-%d)_jaylexi-knn.md && { [ ! -f ${W}/run/EARLY-STOP.md ] || cat ${W}/run/EARLY-STOP.md >> ${OUT}/$(date +%Y-%m-%d)_jaylexi-knn.md; }
+  after: bench

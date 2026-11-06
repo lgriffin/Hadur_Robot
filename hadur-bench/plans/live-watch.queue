@@ -1,4 +1,4 @@
-# Release watch (Leigh, 2026-10-26: "build that into your PC card at release"): run on the PC right after
+# Release watch (part of the PC card at every release): run on the PC right after
 # every release, while the RoboRumble clients run the new version, so collapsed live battles are logged
 # with their health records (skipped turns, faults, shield verdicts) instead of guessed at afterwards.
 #   ./queue.sh run live-watch --fresh        (or  .\queue.ps1 run live-watch --fresh)
@@ -10,7 +10,7 @@
 # stoppable, skipped turn) go to client-events.tsv; every RESTART minutes each client is restarted at its
 # next battle end or upload (none cut), or WAIT minutes later if none ends (counted as cut). In 3.17 run 2
 # (PR #331) clients left running climbed from 4 to 87 skipped turns a battle in 75 minutes. Four 1v1 clients, not
-# six (Leigh, 2026-10-27): with six plus melee and team, 3.17 run 3 (PR #355) skipped 57 turns a battle from the
+# six (2026-10-27): with six plus melee and team, 3.17 run 3 (PR #355) skipped 57 turns a battle from the
 # first minute and live APS fell 89.93 -> 89.48 over 1,010 battles; six alone had started at 4. All six stop
 # when the watch ends. It never runs a bench, so it is the one queue on the PC for its length. Edit V1 / VT below in the release PR: the versions the
 # 1v1/melee and team participant lines name (they can differ, as 3.17 and 3.17.1 did).

@@ -1,0 +1,9 @@
+# cloud-jaylexi-knn: c is JayLexi 0.6 as released (master's source, ProGuard), aa its A/A rebuild. KN replaces the
+# surf-bin danger with a k-nearest-neighbour danger over every logged hit (lateral, advancing, distance; kernel on
+# guess factor, recency-weighted), the k3KE design of 0.2 on the 0.6 body (kitlab/arms/JayLexi-KN.java, javac 1,726
+# B). KA keeps the surf bins and the per-robot AIM prior and adds the same k-NN term (JayLexi-KA.java, 1,745 B).
+# Both are over the limit: a win is byte-hunted afterwards.
+c | hadur117.mini.JayLexi 0.6c | kitlab/jars/hadur117.mini.JayLexi_0.6c.jar
+aa | hadur117.mini.JayLexi 0.6aa | kitlab/jars/hadur117.mini.JayLexi_0.6aa.jar
+KN | hadur117.mini.JayLexi 0.6KN | kitlab/jars/hadur117.mini.JayLexi_0.6KN.jar
+KA | hadur117.mini.JayLexi 0.6KA | kitlab/jars/hadur117.mini.JayLexi_0.6KA.jar

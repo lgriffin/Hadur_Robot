@@ -297,7 +297,7 @@ Nine decisions follow, in order of evidence: one measured, two modelled, three s
 
 ### 7. A shield list: agreed (D5)
 
-This is the only decision here that could move APS by whole points. Leigh agreed to it on 2026-10-05 with APS as the objective; the stages below are ranked by expected APS, D5 first.
+This is the only decision here that could move APS by whole points. It was agreed on 2026-10-05 with APS as the objective; the stages below are ranked by expected APS, D5 first.
 
 - **The size.** Hadur 3.4 averaged 82.3% against the 357 robots on DrussGT's list. Lifting that average to 88% is worth 1.7 APS, and to 92%, 2.9. Neither level is measured for Hadur.
 - **What it did for others.** DrussGT gained 0.72 APS when shielding arrived in 2.9.0 and 1.0 more across its five shield releases, 3.1.10 to 3.1.14. ScalarR went from 91.41 to 93.1 the day its shield shipped and fell from 94.45 to 91.55 when it was removed. BeepBoop went from 91.61 to 94.23 in the release that added its list, and Xor puts that list's worth at 2 to 3 APS.

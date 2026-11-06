@@ -147,4 +147,34 @@ class RamEscapeTest {
         on.initRound();
         assertEquals(0, on.shotsInFlight(), "a new round carries no shot");
     }
+
+    @Test
+    @Tag("RAM-6")
+    @DisplayName("RAM-6: by a wall, the heavy shot cost turns the escape off a path RAM-5 accepts a hit on, and off again restores RAM-5")
+    void heavyCostLeavesTheShotByAWall() {
+        // Pinned near the west wall with a rammer 100 px to the south-south-east that fired power 3 led
+        // along our heading: RAM-5's cost of 60 px a hit keeps the longest escape; RAM-6's 400 does not.
+        double h = 5 * 2 * Math.PI / 24;
+        double a = 11 * 2 * Math.PI / 12;
+        double rx = 40 - Math.sin(a) * 100;
+        double ry = 105 - Math.cos(a) * 100;
+        RobotState me = state(40, 105, h, 8, 100);
+        RobotState rammer = state(rx, ry, a, 8, 100);
+        RobotState aimed = state(40 - 8 * Math.sin(h), 105 - 8 * Math.cos(h), h, 8, 99);
+        RamEscape plain = new RamEscape(FIELD, PREDICTOR);
+        RamEscape heavy = new RamEscape(FIELD, PREDICTOR);
+        heavy.setHeavyHitCost(true);
+        plain.onEnemyShot(99, rx, ry, 3.0, aimed);
+        heavy.onEnemyShot(99, rx, ry, 3.0, aimed);
+        plain.move(BotOrders.builder(), me, rammer, true);
+        heavy.move(BotOrders.builder(), me, rammer, true);
+        assertTrue(Math.abs(Angles.normalRelativeAngle(heavy.lastHeading() - plain.lastHeading())) > 0.2,
+            plain.lastHeading() + " vs " + heavy.lastHeading());
+        RamEscape back = new RamEscape(FIELD, PREDICTOR);
+        back.setHeavyHitCost(true);
+        back.setHeavyHitCost(false);
+        back.onEnemyShot(99, rx, ry, 3.0, aimed);
+        back.move(BotOrders.builder(), me, rammer, true);
+        assertEquals(plain.lastHeading(), back.lastHeading(), 1e-12);
+    }
 }

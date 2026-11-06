@@ -1,12 +1,12 @@
-# JayLexi per-robot orbit angle (thread "Take 1st with JayLexi and Sanaro"; BENCH-187). Leigh, 2026-11-04: "maximise
-# the spare bytes before release", then "Yes let's try it" to a per-robot orbit. The diet (#626) freed 26 B; this card
+# JayLexi per-robot orbit angle (thread "Take 1st with JayLexi and Sanaro"; BENCH-187). Spend the spare bytes
+# before release on a per-robot orbit. The diet (#626) freed 26 B; this card
 # spends 17 of them on an orbit char a robot (1,487 B of 1,496), read through the aim prior's row index.
 #   ./queue.sh run pc-jaylexi-orb        (or  .\queue.ps1 run pc-jaylexi-orb)
 # Run it from master with this card merged: git checkout master && git pull
 # One bench queue, RoboRumble workers at 0, unpinned. Nothing here touches the shipped JayLexi; nothing is uploaded or
 # released. About 2 h 30 min to the end, about 25 min if the pilot stops it.
 #
-# Why it should win (Leigh's card rule, 2026-11-03):
+# Why it should win (the PC card rule of 2026-11-03):
 # - Per-opponent tailoring only: each arm changes the orbit chars (one a robot in NAMES, by name hash) and nothing else;
 #   the candidate ships only the robots that pass on fresh seeds. Same pick-and-confirm shape as pc-eveimear-st2 (#622,
 #   +0.08 APS) and pc-eveimear-pw (#634, +0.14 APS).

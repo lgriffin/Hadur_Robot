@@ -25,7 +25,7 @@ def resolve(detected, env=None, local=None, **kw):
 
 class RuleTest(unittest.TestCase):
     def test_the_pc_runs_twelve_of_every_kind_with_its_rumble_constant(self):
-        # PR #232: 12 unpinned workers on the 24-core PC; "Main PC should always go max" (Leigh 2026-10-25),
+        # PR #232: 12 unpinned workers on the 24-core PC; the main PC always runs at full width,
         # so its free memory never narrows it.
         p = resolve(PC)
         self.assertEqual(p["workers"], {"duel": 12, "team": 12, "melee": 12})

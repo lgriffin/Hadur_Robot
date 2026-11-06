@@ -1,6 +1,6 @@
 # Eveimear wave-surfing arms (MicroRumble, 2026-10-30/31)
 
-Leigh's pick on 2026-10-30 at 23:10 GMT was "Both, Eveimear first". That meant giving Eveimear a wave-surfing movement inside the MicroRumble codesize limit, then doing the JayLexi shared k-NN redesign. [eveimear-gap.md](eveimear-gap.md) found that movement is the gap to WaveShark: Eveimear 0.1 takes 26.5 damage a round and WaveShark takes 18.3.
+The order chosen on 2026-10-30 was Eveimear first: giving Eveimear a wave-surfing movement inside the MicroRumble codesize limit, then doing the JayLexi shared k-NN redesign. [eveimear-gap.md](eveimear-gap.md) found that movement is the gap to WaveShark: Eveimear 0.1 takes 26.5 damage a round and WaveShark takes 18.3.
 
 **Result:** a surfer beats 0.1 by +3.1 on the gap field at 1,013 B. Cut down to 743 B, it no longer beats 0.1. On the two division samples it is 0.6 to 0.7 points below 0.1. Eveimear 0.1 stays live.
 

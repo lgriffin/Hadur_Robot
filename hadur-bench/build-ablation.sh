@@ -22,8 +22,6 @@
 #   tmnoconcord (team only) TMODE-34 off: CONCORD on no team, as before it shipped. Suffix ncn.
 #   mdmg   MMOVE-22: each opponent's risk weighs by the damage it has done to Hadur this battle x its mean distance (Diamond). Suffix dm. Ships on from 3.21, so on master dm is the robot as it is.
 #   e3far  MEND-3: with two opponents left off a team, the closest-robot factor 4 (not 2). Suffix ef.
-#   mfloor40 MGUN-26: MGUN-25's far power from 40 energy, not 60. Suffix z4.
-#   mfloor50 MGUN-26: as mfloor40 from 50 energy. Suffix z5.
 #   aa    no change: the same robot under another name (suffix aa), the A/A arm of a multi-arm run
 #         (BENCH-92, docs/plan-top5.md section 6.1), so a run prices its own noise.
 #   bb    no change, suffix bb: a second A/A copy, for a run whose baseline is the aa build (card team-s2).
@@ -156,7 +154,7 @@
 #   tmtab (team only) T7, TMODE-1: the screen's table, the t.put lines in $TEAM_MODE_TABLE (default
 #         work/team-modes-screen.java, written by tools/team_modes.py pick). Suffix mt, or
 #         $TEAM_MODE_SUFFIX (the per-opponent counter screens build ka, kb, kc).
-#         pc-team-farm (BENCH-194) builds one tmtab arm per lever from tools/team_modes.py arms
+#         pc-team-farm (BENCH-204) builds one tmtab arm per lever from tools/team_modes.py arms
 #         (suffixes fo, cl, nl, po, ga, ho, li, nh, np, and fx for the picked table).
 #   tmlock (team only) the confirmed table, $TEAM_MODE_LOCKED (default work/team-modes-locked.java,
 #         written by tools/team_modes.py lock). Suffix mk.
@@ -244,6 +242,10 @@
 #         the duel (MOVE-34, ShieldTableData.mimicOns()). Suffix mq.
 #   fplist the robots named in $FULL_OFF get the gun's own power, never a full-power rule (POW-15,
 #         ShieldTableData.fullOffs()). Suffix fp.
+#   x5list the robots named in $X5_POWER get, shot by shot, an x.x5 power whose speed they misread
+#         from our energy drop (POW-16, ShieldTableData.x5Powers()). Suffix x5.
+#   rdlist the rammers named in $RAM_DODGE get the escape's heavy shot cost (RAM-6,
+#         ShieldTableData.ramDodges()). Suffix rd.
 #   snull  all five at once: Nullstride's design as read from its jar.
 #   strim (3.13) the 22 listed robots that 3.13 lost to in both plan90-gate runs come off the shield
 #         list, so they are fought in normal mode: does the shield still pay against them
@@ -719,7 +721,7 @@ open(p,"w").write(s)' "$listdata" "$SHIELD_DROP" || exit 2
 names=[l.split("\t")[0].strip() for l in open(sys.argv[1]) if l.strip() and not l.startswith("#")]
 print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(names)), end="")' "$SHIELD_ADD")"
             [[ -n "$add" ]] || { echo "slistadd: $SHIELD_ADD names no robot" >&2; exit 2; }
-            python3 -c 'import sys; p,a=sys.argv[1:]; s=open(p).read(); k=s.rindex("        };"); open(p,"w").write(s[:k]+a+s[k:])' "$listdata" "$add"
+            printf '%s' "$add" | python3 -c 'import sys; p=sys.argv[1]; a=sys.stdin.read(); s=open(p).read(); k=s.rindex("        };"); open(p,"w").write(s[:k]+a+s[k:])' "$listdata"
             version="${version}mt" ;;
         sdodge)
             edit "$movedesign" "static final boolean SHOT_DODGE = false;" "static final boolean SHOT_DODGE = true;"
@@ -741,7 +743,7 @@ for l in open(sys.argv[1]):
     out.append(l if re.match(r"^-?\d+ ", l) else "-1 "+l)
 print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), end="")' "$SHOT_DODGE_PLAN")"
             [[ -n "$add" ]] || { echo "sdplanlist: $SHOT_DODGE_PLAN has no line" >&2; exit 2; }
-            python3 -c 'import sys; p,m,a=sys.argv[1:]; s=open(p).read(); k=s.index("        };", s.index("static String[] %s()" % m)); open(p,"w").write(s[:k]+a+s[k:])' "$tabledata" dodgePlans "$add"
+            printf '%s' "$add" | python3 -c 'import sys; p,m=sys.argv[1:]; a=sys.stdin.read(); s=open(p).read(); k=s.index("        };", s.index("static String[] %s()" % m)); open(p,"w").write(s[:k]+a+s[k:])' "$tabledata" dodgePlans
             version="${version}dp" ;;
         sgo|sgo2)
             edit "$movedesign" "static final boolean STOP_AND_GO = false;" "static final boolean STOP_AND_GO = true;"
@@ -749,7 +751,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
                 edit "$movedesign" "static final int STOP_AND_GO_PREFIRE = 1;" "static final int STOP_AND_GO_PREFIRE = 2;"
                 version="${version}ws"
             else version="${version}wp"; fi ;;
-        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist)
+        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rdlist)
             # Shield part 2 (docs/plan-shield-quality.md): per-opponent opening drive or shipped aims;
             # the mode table's simple-aim dodge (DODGE-3).
             if [[ "$a" == smovelist ]]; then file="${SHIELD_MOVE:-}"; method="moves"; version="${version}mv"
@@ -765,13 +767,17 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
             elif [[ "$a" == fllist ]]; then file="${FLAT_ON:-}"; method="flatOns"; version="${version}fq"
             elif [[ "$a" == mmlist ]]; then file="${MIMIC_ON:-}"; method="mimicOns"; version="${version}mq"
             elif [[ "$a" == fplist ]]; then file="${FULL_OFF:-}"; method="fullOffs"; version="${version}fp"
+            elif [[ "$a" == x5list ]]; then file="${X5_POWER:-}"; method="x5Powers"; version="${version}x5"
+            elif [[ "$a" == rdlist ]]; then file="${RAM_DODGE:-}"; method="ramDodges"; version="${version}rd"
             else file="${STOP_GO2:-}"; method="stopGoShifts"; version="${version}wm"; fi
-            [[ -n "$file" && -f "$file" ]] || { echo "$a needs SHIELD_MOVE / SHIELD_AIM / SHOT_DODGE / STOP_GO / STOP_GO2 / HEAT_JIT / GUN_STACK / SHIELD_EXIT4 / SHIELD_EXIT0 / SHIELD_STILL / SURF_KEY / FLAT_ON / MIMIC_ON / FULL_OFF=<file>" >&2; exit 2; }
+            [[ -n "$file" && -f "$file" ]] || { echo "$a needs SHIELD_MOVE / SHIELD_AIM / SHOT_DODGE / STOP_GO / STOP_GO2 / HEAT_JIT / GUN_STACK / SHIELD_EXIT4 / SHIELD_EXIT0 / SHIELD_STILL / SURF_KEY / FLAT_ON / MIMIC_ON / FULL_OFF / X5_POWER / RAM_DODGE=<file>" >&2; exit 2; }
             add="$(python3 -c 'import sys,json
 lines=[l.split("\t")[0].strip() for l in open(sys.argv[1]) if l.strip() and not l.startswith("#")]
 print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines)), end="")' "$file")"
             [[ -n "$add" ]] || { echo "$a: $file has no line" >&2; exit 2; }
-            python3 -c 'import sys; p,m,a=sys.argv[1:]; s=open(p).read(); k=s.index("        };", s.index("static String[] %s()" % m)); open(p,"w").write(s[:k]+a+s[k:])' "$tabledata" "$method" "$add"
+            # The lines go in on stdin, not argv: a whole-field list (1,212 names, ~48 KB) is past Windows' 32 KB
+            # command line, where Git Bash then fails the step with exit 126 (pc-tailor-field, 2026-11-05).
+            printf '%s' "$add" | python3 -c 'import sys; p,m=sys.argv[1:]; a=sys.stdin.read(); s=open(p).read(); k=s.index("        };", s.index("static String[] %s()" % m)); open(p,"w").write(s[:k]+a+s[k:])' "$tabledata" "$method"
             ;;
         strim)
             # 3.13: the 22 robots 3.13's shield lost to in both gate runs leave the list.
@@ -889,7 +895,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEnergyPolicy.java" \
                 "static final double FAR_SPARE_ENERGY = 60.0;" "static final double FAR_SPARE_ENERGY = $n.0;"
             version="${version}z${n:0:1}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3far, g24, pogi, ogi300, msurf, mcross, mdmg)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rdlist)" >&2; exit 2 ;;
     esac
 done
 

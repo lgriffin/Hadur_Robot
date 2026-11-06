@@ -1,6 +1,6 @@
 # JayLexi and Eveimear: the MiniRumble and MicroRumble 1v1 entries
 
-Leigh, 2026-10-28: "let's build these two and see the reference zip", with his design plan
+Built from the design plan
 "JayLexi & Eveimear — MiniRumble and MicroRumble 1v1 Design Plan"
 (https://claude.ai/artifact/C2YjT4PxhV2AX4WQdE9aWX) and `kitlab.zip` (the J1, E1, E2 and E2b
 drafts, API stubs, a codesize counter and RoboRunner scripts). This page records what was built
@@ -133,7 +133,7 @@ Neither meets the plan's submission gate yet. Next, in the order the arms point:
 
 ## 6. Hadur as the teacher: Eveimear's mode table (pc-eveimear-h1)
 
-Leigh 2026-10-31: the string tricks shrink nothing (a `charAt` is about 15 bytes), but they let a
+The string tricks shrink nothing (a `charAt` is about 15 bytes), but they let a
 small robot carry any policy that fits an index it already pays for, and in 1v1 the cheapest index
 is the opponent's name. `MODES.charAt(e.getName().hashCode() >>> SHIFT & MASK)` is one 17-byte lookup
 that returns, from the first scan, what Hadur knows about that robot (BENCH-156, `tools/distill.py

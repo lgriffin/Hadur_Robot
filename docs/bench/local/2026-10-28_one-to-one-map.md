@@ -1,7 +1,6 @@
 # The 1:1 map: every opponent's class against the live pages of Hadur and six rivals (2026-10-28)
 
-Leigh (2026-10-28 22:52): "A 1:1 mapping and classification keeps being ignored. Micro changes are not
-shifting us positively." This is the map, built from what the repo holds: the 2026-10-18 census classes
+Small global changes were not moving the live score, so this is a 1:1 map of every opponent: it is built from what the repo holds: the 2026-10-18 census classes
 (`2026-10-18_census-classes.tsv`, the opponent's gun class and movement class) joined to Hadur 3.17 and
 3.18.1 pooled by battles (3,618 battles, same code, 91.08 pooled against 91.34 on the page) and the
 rivals' BotDetails pages (Saguaro, ScalarR, JKHydra, Ogi of 2026-10-25; BeepBoop, DrussGT, Nullstride,
