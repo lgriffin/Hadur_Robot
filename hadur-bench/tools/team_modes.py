@@ -35,6 +35,18 @@ plays a counter against (work/team-counters-s1.txt). `pick --counters` then read
 --report s1=... as that screen, and picks for each team the screen whose gain clears --min-mean
 and, with --low-end, has its 95% low end above that.
 
+  team_modes.py arms --arms plans/team-farm-arms.tsv --census team-census46.txt --opponents opponents \
+      --shipped ../hadur-core/.../TeamModes.java --default MATEFIRE,HUNT,PATH,DODGE,CONCORD \
+      --out-dir work --stem team-farm
+
+The farm (TMODE-41 to TMODE-44, BENCH-194): an arms TSV names, per arm, a change to each team's
+current entry (the shipped table's, or --default): modes to add and modes to remove, and a mode
+the change needs present (`needs`). `arms` writes the counters TSV for `pick` (work/team-farm-counters.tsv:
+every team's entry under each arm, '-' where the arm changes nothing) and, as `screens` does, one
+table and team set per arm (work/team-farm-ARM.java, .txt). `pick --counters` on it then picks for
+each team the arm whose gain clears, and `pick --stop-below APS` ends a pilot early: exit 3 when the
+picks, summed and spread over --teams pairings, project under APS.
+
 A pick is kept by `lock` only where the table build, on fresh seeds, beat aa against that team
 by at least --min-gain points: the 1v1 lesson that a short screen's +6.7 can be -8.9 on confirm.
 """
@@ -45,7 +57,8 @@ import sys
 import zipfile
 from pathlib import Path
 
-MODES = ("GANG", "FINISH", "MATEFIRE", "HUNT", "OWN", "HEADON", "LINEAR", "PATH", "DODGE", "CONCORD")
+MODES = ("GANG", "FINISH", "MATEFIRE", "HUNT", "OWN", "HEADON", "LINEAR", "PATH", "DODGE", "CONCORD",
+         "FOCUS", "CLOSE", "NOLANE", "POST")
 
 ROW = re.compile(r"^\|\s*(?P<team>[^|]+?)\s*\|\s*[^|]*\|\s*[^|]*\|\s*(?P<mean>[+-]?\d+(?:\.\d+)?)(?:\s*±\s*(?P<ci>\d+(?:\.\d+)?))?\s*\|\s*$")
 
@@ -198,6 +211,26 @@ def counters(path):
     return names, out
 
 
+def write_screens(names, table, rows, classes, base, out_dir, stem="team-counters"):
+    """One table (`stem-NAME.java`) and team set (`stem-NAME.txt`) per screen, plus `stem-all.txt`."""
+    for name in names:
+        entries = {t: set(c[name]) for t, c in table.items() if name in c}
+        lines, clashes = java_lines(entries, classes, base)
+        if clashes:
+            raise SystemExit(f"screen {name}: classes two teams share: " + ", ".join(clashes))
+        played = emitted(lines, classes, entries)
+        missing = sorted(set(entries) - played)
+        if missing:
+            raise SystemExit(f"screen {name}: no member classes (jar missing): " + ", ".join(missing))
+        write(str(Path(out_dir) / f"{stem}-{name}.java"), "\n".join(lines) + "\n")
+        set_lines = [f"# Teams screen {name} plays a counter against (team_modes.py screens)"] + [l for t, l, _ in rows if t in played]
+        write(str(Path(out_dir) / f"{stem}-{name}.txt"), "\n".join(set_lines) + "\n")
+        print(f"screen {name}: {len(played)} teams", file=sys.stderr)
+    every = [l for t, l, _ in rows if table.get(t)]
+    write(str(Path(out_dir) / f"{stem}-all.txt"),
+          "\n".join(["# Teams any screen plays a counter against (team_modes.py screens)"] + every) + "\n")
+
+
 def cmd_screens(a):
     names, table = counters(a.counters)
     rows = census(a.census)
@@ -206,22 +239,62 @@ def cmd_screens(a):
     if unknown:
         raise SystemExit("counters for teams not in the census: " + ", ".join(unknown))
     classes = classes_for(rows, a.opponents)
-    for name in names:
-        entries = {t: set(c[name]) for t, c in table.items() if name in c}
-        lines, clashes = java_lines(entries, classes, base_modes(a.base))
-        if clashes:
-            raise SystemExit(f"screen {name}: classes two teams share: " + ", ".join(clashes))
-        played = emitted(lines, classes, entries)
-        missing = sorted(set(entries) - played)
-        if missing:
-            raise SystemExit(f"screen {name}: no member classes (jar missing): " + ", ".join(missing))
-        write(str(Path(a.out_dir) / f"team-counters-{name}.java"), "\n".join(lines) + "\n")
-        set_lines = [f"# Teams screen {name} plays a counter against (team_modes.py screens)"] + [l for t, l, _ in rows if t in played]
-        write(str(Path(a.out_dir) / f"team-counters-{name}.txt"), "\n".join(set_lines) + "\n")
-        print(f"screen {name}: {len(played)} teams", file=sys.stderr)
-    every = [l for t, l, _ in rows if table.get(t)]
-    write(str(Path(a.out_dir) / "team-counters-all.txt"),
-          "\n".join(["# Teams any screen plays a counter against (team_modes.py screens)"] + every) + "\n")
+    write_screens(names, table, rows, classes, base_modes(a.base), a.out_dir)
+
+
+def arms_table(path):
+    """[(name, add, remove, needs)] from an arms TSV: header name<TAB>add<TAB>remove<TAB>needs, '-' for none."""
+    lines = [l for l in Path(path).read_text(encoding="utf-8").splitlines()
+             if l.strip() and not l.lstrip().startswith("#")]
+    head = [c.strip() for c in lines[0].split("\t")]
+    if head[:4] != ["name", "add", "remove", "needs"]:
+        raise SystemExit(f"{path}: the first line must be the header name<TAB>add<TAB>remove<TAB>needs")
+    out = []
+    for line in lines[1:]:
+        cells = [c.strip() for c in line.split("\t")] + ["-"] * 4
+        name, add, remove, needs = cells[:4]
+        out.append((name, base_modes("" if add == "-" else add), base_modes("" if remove == "-" else remove),
+                    base_modes("" if needs == "-" else needs)))
+    return out
+
+
+def current_entry(team_classes, shipped, default):
+    """A team's modes today: the shipped entry of its first named member class, else the default."""
+    for c in team_classes:
+        if c in shipped:
+            return set(shipped[c])
+    return set(default)
+
+
+def cmd_arms(a):
+    arms = arms_table(a.arms)
+    rows = census(a.census)
+    classes = classes_for(rows, a.opponents)
+    shipped = shipped_table(a.shipped) if a.shipped else {}
+    default = base_modes(a.default)
+    names = [n for n, _, _, _ in arms]
+    table = {}
+    tsv = ["# Each team's entry under each arm, from team_modes.py arms; '-' where the arm changes nothing.",
+           "team\t" + "\t".join(names)]
+    unkeyed = [t for t, _, _ in rows if not classes.get(t)]
+    if unkeyed:
+        print("no member classes (jar missing), so no arm reaches: " + ", ".join(unkeyed), file=sys.stderr)
+    for team, _, _ in rows:
+        if team in unkeyed:
+            tsv.append(team + "\t" + "\t".join("-" for _ in arms))
+            continue
+        now = current_entry(classes.get(team, []), shipped, default)
+        cells = []
+        for name, add, remove, needs in arms:
+            entry = (now | set(add)) - set(remove)
+            if entry == now or any(m not in now for m in needs):
+                cells.append("-")
+                continue
+            table.setdefault(team, {})[name] = tuple(m for m in MODES if m in entry)
+            cells.append(",".join(m for m in MODES if m in entry))
+        tsv.append(team + "\t" + "\t".join(cells))
+    write(str(Path(a.out_dir) / f"{a.stem}-counters.tsv"), "\n".join(tsv) + "\n")
+    write_screens(names, table, rows, classes, (), a.out_dir, a.stem)
 
 
 def cmd_pick(a):
@@ -287,6 +360,17 @@ def cmd_pick(a):
     set_lines = ["# Teams the screen's table plays a mode against (team_modes.py pick)"] + [l for t, l, _ in rows if t in played]
     write(a.out_set, "\n".join(set_lines) + "\n")
     print(f"picked {len(picks)} of {len(rows)} teams", file=sys.stderr)
+    if a.stop_below is not None:
+        gains = [float(l.split("\t")[2]) for l in tsv[1:]]
+        aps = sum(gains) / a.teams
+        note = (f"Projected team APS from the picks: {aps:+.2f} (sum {sum(gains):+.1f} points over {a.teams}); "
+                f"pilot bar {a.stop_below:+.2f}: " + ("the card goes on." if aps >= a.stop_below else "the card stops here."))
+        if a.out_md:
+            with open(a.out_md, "a", encoding="utf-8") as fh:
+                fh.write("\n" + note + "\n")
+        print(note, file=sys.stderr)
+        if aps < a.stop_below:
+            raise SystemExit(3)
 
 
 def cmd_lock(a):
@@ -392,6 +476,17 @@ def main(argv=None):
     pk.add_argument("--out-tsv")
     pk.add_argument("--out-java")
     pk.add_argument("--out-set")
+    pk.add_argument("--teams", type=int, default=46, help="pairings the picks' sum is spread over for --stop-below")
+    pk.add_argument("--stop-below", type=float,
+                    help="BENCH-194 pilot: exit 3 when the picks project under this many APS, so the queue stops the card")
+    ar = sub.add_parser("arms")
+    ar.add_argument("--arms", required=True, help="the arms TSV: name, add, remove, needs")
+    ar.add_argument("--census", required=True)
+    ar.add_argument("--opponents", default="opponents")
+    ar.add_argument("--shipped", help="TeamModes.java: a team the table names starts from that entry")
+    ar.add_argument("--default", default="", help="the modes a team the table does not name plays, as MATEFIRE,HUNT")
+    ar.add_argument("--out-dir", required=True)
+    ar.add_argument("--stem", default="team-farm")
     lk = sub.add_parser("lock")
     lk.add_argument("--confirm", required=True)
     lk.add_argument("--pick-tsv", required=True)
@@ -420,7 +515,7 @@ def main(argv=None):
     gt.add_argument("--stop-below", type=float,
                     help="BENCH-172 pilot: exit 3 when the projected change is under this, so the queue skips the rest")
     a = p.parse_args(argv)
-    {"pick": cmd_pick, "lock": cmd_lock, "gate": cmd_gate, "screens": cmd_screens}[a.cmd](a)
+    {"pick": cmd_pick, "lock": cmd_lock, "gate": cmd_gate, "screens": cmd_screens, "arms": cmd_arms}[a.cmd](a)
 
 
 if __name__ == "__main__":

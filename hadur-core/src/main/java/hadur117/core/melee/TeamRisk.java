@@ -87,6 +87,8 @@ final class TeamRisk {
      * at {@link #HUNT_PULL}, leaves the bullets' risk unscaled.
      */
     static final double HUNT_RADIUS = 350;
+    /** TMODE-42: HUNT's place with CLOSE, px from the prey. */
+    static final double HUNT_CLOSE = 250;
 
     /**
      * TMODE-21, TMODE-22: the weight of a shot's one virtual bullet against a team that aims
@@ -169,7 +171,9 @@ final class TeamRisk {
             return new Pull(enemies.get(0).location, FINISH_FLOOR, FINISH_PULL);
         }
         if (modes.contains(TeamModes.Mode.HUNT) && energy >= PACK_ENERGY) {
-            Point2D.Double slot = huntSlot(me, name, enemies, now, mates, HUNT_RADIUS);
+            // TMODE-42: CLOSE brings the place in.
+            double radius = modes.contains(TeamModes.Mode.CLOSE) ? HUNT_CLOSE : HUNT_RADIUS;
+            Point2D.Double slot = huntSlot(me, name, enemies, now, mates, radius);
             if (slot != null) return new Pull(slot, PACK_FLOOR, HUNT_PULL, false);
         }
         boolean gang = modes.contains(TeamModes.Mode.GANG);

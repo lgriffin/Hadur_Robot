@@ -156,6 +156,8 @@
 #   tmtab (team only) T7, TMODE-1: the screen's table, the t.put lines in $TEAM_MODE_TABLE (default
 #         work/team-modes-screen.java, written by tools/team_modes.py pick). Suffix mt, or
 #         $TEAM_MODE_SUFFIX (the per-opponent counter screens build ka, kb, kc).
+#         pc-team-farm (BENCH-194) builds one tmtab arm per lever from tools/team_modes.py arms
+#         (suffixes fo, cl, nl, po, ga, ho, li, nh, np, and fx for the picked table).
 #   tmlock (team only) the confirmed table, $TEAM_MODE_LOCKED (default work/team-modes-locked.java,
 #         written by tools/team_modes.py lock). Suffix mk.
 #   mrate (melee and team) fire more often: the controller fires on a scan up to 8 ticks old (was 5;

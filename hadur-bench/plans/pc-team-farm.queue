@@ -1,0 +1,136 @@
+# Farm team APS with a per-team strategy table (TMODE-41 to TMODE-44, BENCH-194). Team thread:
+# team-only, duel and melee fixtures bit for bit. The 1v1 approach brought to the team game: every
+# team-only lever becomes a table mode, each arm screens one change to every team's current entry
+# against all 46 teams, the pick keeps for each team the arm it wins, and a fresh-seed confirm locks
+# the table. Why it should win: the shipped table came from three narrow cards (counters, nododge,
+# noconcord) and names 7 teams; the other levers (focus fire, the hunt slot, the fire lane, posture,
+# GANG, the aims, HUNT and PATH off) were only ever judged on the whole field, where a lever that
+# wins 10 teams and loses 10 reads as noise. The mirror (PR #569) put the gap to Ogi at +6 to +16
+# share points on the top 15 teams, members lost and damage taken, which is movement and fire, not
+# aim. One team's +5 is +0.1 APS; a table of a dozen such wins is the 1v1 story again. Not here:
+# HEAVY (CONCORD's cap off), already picked per team on 46 teams x 8 seeds and failed (PR #580).
+#   aa      the baseline (master); bb its A/A copy
+#   fo      FOCUS (TMODE-41): the field gun weighs the enemy of least energy three times over
+#   cl      CLOSE (TMODE-42): HUNT's place is 250 px from the prey, not 350 (teams with HUNT; the
+#           cloud 250 px smoke on 22 teams lost on the field but Troodon gained +4.3)
+#   nl      NOLANE (TMODE-43): no fire lane, a shot leaves whatever teammate lies ahead
+#   po      POST (TMODE-44): posture always NORMAL, no backing off between two enemies
+#   ga      GANG (TMODE-3) on from the first tick (CONCORD turns it on only once ganging shows)
+#   ho      OWN + HEADON (TMODE-20/21), LINEAR off;  li  OWN + LINEAR (TMODE-20/22), HEADON off
+#   nh      HUNT off;  np  PATH off
+# Each arm's table (work/team-farm-ARM.java) and team set (work/team-farm-ARM.txt) come from
+# tools/team_modes.py arms over plans/team-farm-arms.tsv: a team's entry is its shipped TABLE entry,
+# else the default (MATEFIRE, HUNT, PATH, DODGE, CONCORD), changed one way; a team the change
+# leaves as it is skips the arm. sampleteam.MyFirstTeam has no jar to key, so plays the default.
+# Screen: bb and every arm against aa on the same 6 fresh seeds (9400-9405), 12 rounds, paired.
+# Pilot (the card gate's early stop): after bb and the first three arms, tfpilot picks per team
+# (gain over aa less half of bb's, 95% low end above zero) and stops the card, results PR and all,
+# when the picks project under +0.15 APS (sum of picked gains over 46). The pilot is a stop rule,
+# not a verdict: a pass only lets the other six arms run.
+# Pick (tfpick): the same rule over all nine arms; ties to the larger mean; a team's picked entry is
+# the whole mode set (current entry changed that way). Under +0.15 APS the card stops the same way.
+# Confirm: the picked table (fx) and bb against aa on the picked teams, 12 fresh seeds (9500-9511);
+# tflock keeps a pick whose fresh-seed gain against both baselines is +1.0 or more, and tfgate prices
+# the kept entries as a projected team APS change (at least +0.15 with the 95% low end above zero).
+# The card changes nothing: on a PASS a PR writes work/team-farm-locked.java into TeamModes.TABLE.
+# Size: bb 552 battles; the arms 45+45+45+45+45+44+44+45+45 = 403 team-arms x 12 = 4,836; the
+# confirm 2 x picked teams x 24 (about 720 at 15 teams): about 6,100 battles, 7-7.5 h at the
+# PC's ~860 team battles/h. Every step resumes where it stopped.
+# Stop rules on every battle step (halt; every battle fought is kept and a rerun resumes): 60 failed
+# battles, no battle in 30 minutes, or 60+ skipped turns a battle over the last 200 (census load).
+# The team thread reads claude/pc-team-farm-results.
+#   ./queue.sh run pc-team-farm        (or  .\queue.ps1 run pc-team-farm)
+# Run it from master (one bench queue at a time):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+set T = python3 tools/team_modes.py
+set MODES = ../hadur-core/src/main/java/hadur117/core/melee/TeamModes.java
+set DEFAULT = MATEFIRE,HUNT,PATH,DODGE,CONCORD
+set PICK = --low-end 0 --margin 0 --teams 46 --census team-census46.txt --opponents opponents --counters work/team-farm-counters.tsv
+
+tfprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && for a in aa bb fo cl nl po ga ho li nh np fx; do rm -f bisect/hadur117.HadurTeam_"$V"$a.jar; done && rm -f ${OUT}/team-farm-*.md ${OUT}/team-farm-locked.java.txt && mkdir -p work && rm -rf work/team-farm-"$V"-* && rm -f work/team-farm-*.java work/team-farm-*.txt work/team-farm-*.tsv work/team-farm-*.args && echo "$V" > work/team-farm.version && ./fetch-opponents.sh --set team-census46.txt && ${T} arms --arms plans/team-farm-arms.tsv --census team-census46.txt --opponents opponents --shipped ${MODES} --default ${DEFAULT} --out-dir work --stem team-farm && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && for a in fo cl nl po ga ho li nh np; do TEAM_MODE_TABLE="$(pwd)/work/team-farm-$a.java" TEAM_MODE_SUFFIX=$a bash ./build-ablation.sh tmtab || exit 1; done && sed "s/@V@/$V/g" plans/team-farm-bb.args > work/team-farm-bb.args && for a in fo cl nl po ga ho li nh np; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" plans/team-farm-arm.args > work/team-farm-$a.args || exit 1; done && for a in aa bb fo cl nl po ga ho li nh np; do test -f bisect/hadur117.HadurTeam_"$V"$a.jar || exit 1; done && mvn -q compile
+tfbb | mvn -q exec:java "-Dexec.args=@work/team-farm-bb.args"
+  after: tfprep
+  watch: battles=552
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tffo | mvn -q exec:java "-Dexec.args=@work/team-farm-fo.args"
+  after: tfbb
+  watch: battles=552
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tfcl | mvn -q exec:java "-Dexec.args=@work/team-farm-cl.args"
+  after: tffo
+  watch: battles=552
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tfnl | mvn -q exec:java "-Dexec.args=@work/team-farm-nl.args"
+  after: tfcl
+  watch: battles=552
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tfpilot | ${T} pick --report fo=${OUT}/team-farm-fo.md --control fo=${OUT}/team-farm-bb.md --report cl=${OUT}/team-farm-cl.md --control cl=${OUT}/team-farm-bb.md --report nl=${OUT}/team-farm-nl.md --control nl=${OUT}/team-farm-bb.md ${PICK} --stop-below 0.15 --out-md ${OUT}/team-farm-pilot.md || { bash tools/open_results_pr.sh claude/pc-team-farm-results "Farm team APS with a per-team strategy table (TMODE-41..44): pilot stopped the card" ${OUT}/team-farm-pilot.md $(ls ${OUT}/team-farm-bb.md ${OUT}/team-farm-fo.md ${OUT}/team-farm-cl.md ${OUT}/team-farm-nl.md 2>/dev/null); exit 1; }
+  after: tfnl
+tfpo | mvn -q exec:java "-Dexec.args=@work/team-farm-po.args"
+  after: tfpilot
+  watch: battles=552
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tfga | mvn -q exec:java "-Dexec.args=@work/team-farm-ga.args"
+  after: tfpo
+  watch: battles=552
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tfho | mvn -q exec:java "-Dexec.args=@work/team-farm-ho.args"
+  after: tfga
+  watch: battles=552
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tfli | mvn -q exec:java "-Dexec.args=@work/team-farm-li.args"
+  after: tfho
+  watch: battles=552
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tfnh | mvn -q exec:java "-Dexec.args=@work/team-farm-nh.args"
+  after: tfli
+  watch: battles=552
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tfnp | mvn -q exec:java "-Dexec.args=@work/team-farm-np.args"
+  after: tfnh
+  watch: battles=552
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tfpick | ${T} pick --report fo=${OUT}/team-farm-fo.md --control fo=${OUT}/team-farm-bb.md --report cl=${OUT}/team-farm-cl.md --control cl=${OUT}/team-farm-bb.md --report nl=${OUT}/team-farm-nl.md --control nl=${OUT}/team-farm-bb.md --report po=${OUT}/team-farm-po.md --control po=${OUT}/team-farm-bb.md --report ga=${OUT}/team-farm-ga.md --control ga=${OUT}/team-farm-bb.md --report ho=${OUT}/team-farm-ho.md --control ho=${OUT}/team-farm-bb.md --report li=${OUT}/team-farm-li.md --control li=${OUT}/team-farm-bb.md --report nh=${OUT}/team-farm-nh.md --control nh=${OUT}/team-farm-bb.md --report np=${OUT}/team-farm-np.md --control np=${OUT}/team-farm-bb.md ${PICK} --stop-below 0.15 --out-md ${OUT}/team-farm-pick.md --out-tsv work/team-farm-pick.tsv --out-java work/team-farm-pick.java --out-set work/team-farm-confirm.txt || { bash tools/open_results_pr.sh claude/pc-team-farm-results "Farm team APS with a per-team strategy table (TMODE-41..44): no pick cleared the screen" ${OUT}/team-farm-pick.md ${OUT}/team-farm-pilot.md $(ls ${OUT}/team-farm-bb.md ${OUT}/team-farm-fo.md ${OUT}/team-farm-cl.md ${OUT}/team-farm-nl.md ${OUT}/team-farm-po.md ${OUT}/team-farm-ga.md ${OUT}/team-farm-ho.md ${OUT}/team-farm-li.md ${OUT}/team-farm-nh.md ${OUT}/team-farm-np.md 2>/dev/null); exit 1; }
+  after: tfnp
+tfcprep | V=$(cat work/team-farm.version) && test -n "$V" && test -s work/team-farm-pick.java && TEAM_MODE_TABLE="$(pwd)/work/team-farm-pick.java" TEAM_MODE_SUFFIX=fx bash ./build-ablation.sh tmtab && for j in bb fx; do sed -e "s/@V@/$V/g" -e "s/@J@/$j/g" plans/team-farm-confirm.args > work/team-farm-c$j.args || exit 1; done && test -f bisect/hadur117.HadurTeam_"$V"fx.jar && rm -rf work/team-farm-"$V"-cbb work/team-farm-"$V"-cfx
+  after: tfpick
+tfcbb | mvn -q exec:java "-Dexec.args=@work/team-farm-cbb.args"
+  after: tfcprep
+  watch: battles=1104
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tfcfx | mvn -q exec:java "-Dexec.args=@work/team-farm-cfx.args"
+  after: tfcbb
+  watch: battles=1104
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tflock | ${T} lock --confirm ${OUT}/team-farm-cfx.md --control ${OUT}/team-farm-cbb.md --pick-tsv work/team-farm-pick.tsv --census team-census46.txt --opponents opponents --min-gain 1.0 --out-md ${OUT}/team-farm-lock.md --out-java work/team-farm-locked.java --out-set work/team-farm-locked.txt && cp work/team-farm-locked.java ${OUT}/team-farm-locked.java.txt
+  after: tfcfx
+tfgate | ${T} gate --report ${OUT}/team-farm-cfx.md --control ${OUT}/team-farm-cbb.md --set work/team-farm-locked.txt --seeds 12 --teams 46 --min-aps 0.15 --out-md ${OUT}/team-farm-verdict.md || test $? -eq 1
+  after: tflock
+tfpr | bash tools/open_results_pr.sh claude/pc-team-farm-results "Farm team APS with a per-team strategy table (TMODE-41..44)" ${OUT}/team-farm-verdict.md ${OUT}/team-farm-lock.md ${OUT}/team-farm-pick.md ${OUT}/team-farm-pilot.md ${OUT}/team-farm-locked.java.txt $(ls ${OUT}/team-farm-bb.md ${OUT}/team-farm-cbb.md ${OUT}/team-farm-cfx.md ${OUT}/team-farm-fo.md ${OUT}/team-farm-cl.md ${OUT}/team-farm-nl.md ${OUT}/team-farm-po.md ${OUT}/team-farm-ga.md ${OUT}/team-farm-ho.md ${OUT}/team-farm-li.md ${OUT}/team-farm-nh.md ${OUT}/team-farm-np.md 2>/dev/null)
+  after: tfgate

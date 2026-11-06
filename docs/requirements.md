@@ -1151,6 +1151,10 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | TMODE-33 | Optional | Where the team modes against the opposing team carry CONCORD (the team brain after Ogi's design, written our own way), HadurTeam shall: score each enemy's risk at a point by 1/(1 + the robots, other enemies seen lately and teammates, nearer that enemy than the point) in place of the closest-robot factor; play FINISH; play GANG once 200 or more member-turns this battle (Hadur and each teammate in view, each tick) show 4% or more with two enemies within 250 px; draw each enemy's gun situations from every history of its class; and fire at most 1.9 beyond 200 px unless it has hit that class on 55% of 20 or more shots. CONCORD shall ship table-only and off, and the `tmconcord` ablation (suffix cn) shall force it on with duel and melee play unchanged; it keeps the hunt and the shipped radar (the group radar and the hunt stand-down lost in the first cloud smoke and are removed), and the `tmconcordm`, `tmconcordg` and `tmconcordp` ablations weigh one part each. | T7 |
 | TMODE-34 | Ubiquitous | The team mode table's default, for a team it does not name, shall include the CONCORD mode, and every team the table names shall play CONCORD on top of its entry. | T7 |
 | TMODE-35 | Ubiquitous | The team mode table shall name OgiTeam, CombatTeam, FirestarterTeam and NightmareTeam's member classes with every mode they played before without CONCORD. | T7 |
+| TMODE-41 | Optional | Where the team modes against a team carry FOCUS, while Hadur has a living teammate, the field gun shall weigh the living enemy of least energy three times over (`FieldGun.FOCUS_BOOST`), so the whole team leans on the enemy nearest death; off a team, or without FOCUS, the weight shall stand. FOCUS shall be in no team's modes by default: only the table (and the `pc-team-farm` arm fo) plays it. | T7 |
+| TMODE-42 | Optional | Where the team modes against a team carry CLOSE with HUNT, a member's hunt place (TMODE-13) shall be `TeamRisk.HUNT_CLOSE` (250) px from its prey instead of 350; CLOSE without HUNT shall hunt nothing. CLOSE shall be in no team's modes by default: only the table (arm cl) plays it. | T7 |
+| TMODE-43 | Optional | Where the team modes against a team carry NOLANE, while Hadur has a living teammate, the fire lane (WEAVE-4, WEAVE-7, WEAVE-9) shall hold no shot: `TeamModes.lane` reads NONE and `TeamLink.laneClear` with it is always true; with any other modes, or off a team, the lane shall be the shipped narrow one. NOLANE shall be in no team's modes by default: only the table (arm nl) plays it. | T7 |
+| TMODE-44 | Optional | Where the team modes against a team carry POST, while Hadur has a living teammate, the member's posture shall be NORMAL every tick (`MeleeStrategy.Plan.normal()`), the fight between two enemies not read; without POST the melee strategy shall set the posture as it does today. POST shall be in no team's modes by default: only the table (arm po) plays it. | T7 |
 
 ### T1 notes
 
@@ -2333,6 +2337,7 @@ profiles, and the rumbles list it as a new participant.
 | BENCH-187 | Ubiquitous | The JayLexi per-robot orbit card (`plans/pc-jaylexi-orb.queue`) shall build, with `tools/jaylexi_orbit.py`, the 0.5 orbit base (0.4 with the diet's play-neutral rows and an orbit char a robot read in hundredths of a radian through the aim prior's row index, every char 115 = 0.4's 1.15, 1,487 B) and arms with every robot at 1.35 (near) and 0.95 (far); run them with the base's A/A rebuild on every 5th robot of `kitlab/mini-pw-field.txt` at 10 seeds from 38000, skip the rest when the real 3-point picks number fewer than twice the A/A null picks plus 3, screen the other robots on the same seeds, write the picks into their own orbit chars (a char two field robots find only when both picked it), confirm them at 12 fresh seeds from 39000 under the gate (+0.05 APS over 669 pairings, 95% low end above 0), halt each bench step on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle over the last 200, no battle in 30 minutes or (pilot and screen) an A/A outside its band after 20%, and open its results PR. | T7 |
 | BENCH-192 | Ubiquitous | The bench shall carry the `pc-melee-floor` card, which builds MGUN-26 at 40 (`mfloor40`) and 50 (`mfloor50`) beside an aa baseline and its A/A copy on the 46 melee census fields × 6 fresh seeds (3304-3309), with fails 20 and stall 30m stop rules on each arm, and ends in a results PR on `claude/pc-melee-floor-results`. | R9 |
 | BENCH-193 | Ubiquitous | The `pc-melee-floor` card shall first fight a pilot, z4 against an aa baseline battle for battle on 46 fields × 2 seeds (3310-3311), and shall stop with a results PR unless Hadur's mean score share is up (`melee_pilot.py --share-only`) on at least 95% of the 92 pairs with all 35 rounds. | R9 |
+| BENCH-194 | Ubiquitous | The bench shall carry the `pc-team-farm` card: `tools/team_modes.py arms` shall write, from `plans/team-farm-arms.tsv` over the shipped `TeamModes.TABLE` and the default modes, one table and team set per arm (each team's current entry changed one way; a team the change leaves as it is, or that lacks a mode the change needs, skips the arm) and the counters TSV `pick` reads; the card shall build aa, its A/A copy bb and the nine `tmtab` arms fo, cl, nl, po, ga, ho, li, nh, np, play bb and every arm against aa on the 46 teams of `team-census46.txt` at 6 seeds from 9400 and 12 rounds, and after bb and the first three arms pick per team the arm whose gain over aa less half of bb's has its 95% low end above zero, stopping the card with a results PR when the picks project under +0.15 APS (`pick --stop-below`); else play the other six arms, pick the same way over all nine, build the picked table (fx) and play it and bb against aa on the picked teams at 12 fresh seeds from 9500, lock the picks at +1.0 against both baselines and gate the locked table at +0.15 APS with the 95% low end above zero; every battle step shall declare its stop rules, and the card shall change no robot code (results on claude/pc-team-farm-results). | R9 |
 | BENCH-190 | Ubiquitous | `tools/jaylexi_jit.py` shall write JayLexi's aim-jitter term, read from the orbit char, into a source, and add 2 pi (628 hundredths) to the orbit char of every robot (`--all`) or of the robots a pick file names with arm jt (`--pick`, skipping robots without a NAMES row of their own and rows another field robot's hash finds unless it picked jt too). | 0.6 |
 | BENCH-169 | Ubiquitous | Before it runs a `--set`, the bench shall drop every robot `hadur-bench/broken-1.11.2.txt` names (the exact name and version before a line's first bar; each line gives name and version, mode and reason), the robots Robocode 1.11.2 will not load, and say how many it dropped; `--keep-broken true` keeps them. | T7 |
 | BENCH-170 | Ubiquitous | The JayLexi surf-rows card (`plans/pc-jaylexi-rows.queue`) shall build each arm with `tools/jaylexi_rows_off.py` from the saved 2026-11-02 MiniRumble rankings, run every arm on the top-60 field and on mini-wide2 in one chain with fail, stall and skip stop rules on every bench step, and open its results PR only after the read. | T7 |
@@ -2530,6 +2535,34 @@ movement.
 - **BENCH-172.** Card plans/pc-team-aim.queue: a 15-minute pilot (13 teams x 3 seeds) that ends the card
   on no gain, then the screen to 12 seeds, a per-team pick and a 16-seed fresh gate. Results
   claude/pc-team-aim-results. `TeamAimPlanTest`.
+
+## Per-team strategies from the whole lever set: FARM (TMODE-41 to TMODE-44, BENCH-194)
+
+The 1v1 climb came from per-opponent tailoring: a line per robot, screened on the whole field. The team
+game has the same machinery (the mode table, `team_modes.py`) but only three narrow cards ever filled it
+(counters, nododge, noconcord: 7 teams named). Every other team-only lever (focus fire, the hunt slot, the
+fire lane, posture, GANG, the aims, HUNT and PATH off) was judged on the whole field, where a lever that
+wins ten teams and loses ten reads as noise. The mirror (BENCH-166) put the gap to Ogi at +6 to +16 share
+points on the top 15 teams, members lost and damage taken in won rounds, which is movement and fire, not
+aim (the team gun levers all failed: TGUN, DUELGUN, AIM). One team's +5 is +0.1 APS; a table of a dozen
+such wins is the 1v1 story again.
+
+- **TMODE-41 FOCUS.** `FieldGun.focus`, `weakest`, `FOCUS_BOOST` 3: the least-energy enemy weighs three
+  times over, so the team ends rounds sooner against teams that cannot keep a member alive. The global
+  switch (tfocus) lost -2.2 on the field; per team it is untried. `FieldGunTest` (TMODE-41).
+- **TMODE-42 CLOSE.** `TeamRisk.HUNT_CLOSE` 250, read in `TeamRisk.pull`: TMODE-26's NEAR again, now
+  screened on every team (the 250 px smoke lost on 22 teams but Troodon gained +4.3). `TeamModesTest`.
+- **TMODE-43 NOLANE.** `TeamModes.Lane`, `TeamModes.lane`, `MeleeController.lane`, `MeleeSeam.lane`,
+  `TeamLink.laneClear(in, lane)`: against a team the lane never pays for (one that dodges little and
+  dies fast), the held shots are the leak. `TeamLinkTest`, `TeamModesTest` (TMODE-43).
+- **TMODE-44 POST.** `MeleeController.tick` takes `MeleeStrategy.Plan.normal()` under POST: no backing
+  off a fight between two enemies, which against a team that gangs is where the member dies alone.
+  `TeamModesTest` (TMODE-44).
+- Not here: HEAVY (TMODE-36), already picked per team on 46 teams x 8 seeds and failed (PR #580).
+- **BENCH-194.** Card plans/pc-team-farm.queue, arms plans/team-farm-arms.tsv, `team_modes.py arms`
+  (each arm's table from the shipped entry or the default, changed one way) and `pick --stop-below`
+  (the pilot and the pick stop the card under +0.15 APS). About 6,100 battles, 7-7.5 h. Results
+  claude/pc-team-farm-results. `TeamFarmPlanTest`; `test_team_modes.py`.
 
 ## The team duelist's gun on team members (TGUN, BENCH-TG1)
 

@@ -57,7 +57,23 @@ public final class TeamModes {
          * pools its situations by enemy class and fires lighter unless close or reading that
          * class well.
          */
-        CONCORD
+        CONCORD,
+        /** TMODE-41 (FARM): the field gun weighs the enemy of least energy three times over. Only through the table. */
+        FOCUS,
+        /** TMODE-42 (FARM): HUNT's place is {@link TeamRisk#HUNT_CLOSE} px from the prey, not 350. Only through the table. */
+        CLOSE,
+        /** TMODE-43 (FARM): no fire lane: a shot leaves whatever teammate lies ahead (CombatTeam). Only through the table. */
+        NOLANE,
+        /** TMODE-44 (FARM): the member's posture is always NORMAL: no backing off a fight between two enemies. Only through the table. */
+        POST
+    }
+
+    /** TMODE-43: how the fire lane is read against the opposing team. */
+    public enum Lane { NARROW, NONE }
+
+    /** TMODE-43: the lane {@code modes} play: none with NOLANE, else the shipped lane. */
+    public static Lane lane(Set<Mode> modes) {
+        return modes.contains(Mode.NOLANE) ? Lane.NONE : Lane.NARROW;
     }
 
     /**
