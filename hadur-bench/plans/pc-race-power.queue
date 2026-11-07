@@ -1,0 +1,76 @@
+# 1v1, per robot over the whole field: POW-17 energy-race bullet power (BENCH-206). Every robot of census-312.txt is
+# fought by master (c), its A/A copy (aa) and rp, a build that switches the energy race's power pick on for every robot;
+# each robot keeps rp only where its own battles pick it. Leigh starts it once the PC is free (after pc-tailor-field and
+# pc-team-farm; one card at a time, from master):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-race-power        (or  ./queue.sh run pc-race-power)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes; no step needs a
+# decision. Size: pilot 4 robots x 3 arms x 4 seeds = 48 battles (~5 min); screen 1,212 robots x 3 arms x 2 seeds =
+# 7,272 battles, ~11 h at ~650 battles/h; confirm = the picks x 3 arms x 4 fresh seeds, ~1-3 h.
+#
+# Why it should win (the PC card rule of 2026-11-03):
+#   - Per-opponent tailoring: race-power: is a per-robot table switch (POW-17), so 1v1 against every robot the pick does
+#     not name is unchanged. No shortlist decides who is tried: every robot is fought.
+#   - The mechanism: Hadur's power is a stack of single-cause rules (tier, range, rate, lead). POW-17 picks the power by
+#     its effect on the rest of the round, a value iteration over both energies fed by this battle's resolved shots (our
+#     own design of the energy-race idea the score-maximising leaders use).
+#   - Measured on the cloud (BENCH-205, PR #684, 47 strong robots x 3 seeds): level across the panel (+0.85 +/-1.93 vs c,
+#     A/A +0.57), and the per-robot picks held on 6 fresh seeds: Diamond +12.0, Combat +10.9, Shadow +2.3, Domogled +3.8.
+#     Saguaro 1.1's lead over Hadur sits almost wholly against robots under 75 APS, where the cloud panel never went.
+#   - Risk: a robot keeps rp only at a 5-point margin with its 95% low end above 0, and the confirm re-measures the picks
+#     on 4 fresh seeds against c and aa before anything ships. Cost: about 7 skipped turns a battle more than master.
+# Pilot (stop rule): the 4 cloud-confirmed robots (panel-race-confirm.txt) x 4 seeds from 10200. When rp's mean gain over
+#   c and aa pooled is under 3 points there, work/rpf.stop is written, every later step skips and the results PR carries
+#   the pilot alone: a pick that cannot reproduce its cloud result on the PC is not worth 11 PC hours. A screen that
+#   picks no robot writes the same file at prep2, so confirm and gate skip and the results PR carries the screen.
+# screen:  census-312.txt x c/aa/rp x 2 seeds from 10200 (the pilot's first two seeds are reused); pick at a 5-point margin.
+# confirm: the picks x c, aa, xr (rp on the picked robots only) x 4 fresh seeds from 10300; gate +0.03 APS.
+# Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 90+ skipped turns a battle
+# over the last 200, or no battle in 30 minutes; every battle fought is kept and a rerun resumes. Nothing here ships:
+# the confirmed lines go into ShieldTableData.racePowers() by PR; the release rule stands.
+
+set V = 3.21
+set P = --parallel 12 --no-truth-log
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
+set W = work/rpf
+set W2 = work/rpf-2
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && rm -f work/rpf.stop && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && grep -v '^#' census-312.txt | cut -d'|' -f1 | sed 's/ *$//' | grep . > work/field.list && bash ./build-ablation.sh aa && RACE_POWER=work/field.list bash ./build-ablation.sh rplist && test -f bisect/hadur117.Hadur_${V}aa.jar && test -f bisect/hadur117.Hadur_${V}rp.jar && ./fetch-opponents.sh --set census-312.txt && mvn -q compile
+
+pilot | ./bench-top20.sh ${C} ${P} --set panel-race-confirm.txt --seeds 4 --seed-base 10200 --arms plans/race-power-field.arms --out ${W} --label rpf --shuffle-jobs && python3 tools/x5_card.py pilot ${W}/arms.tsv --names panel-race-confirm.txt --check rp=panel-race-confirm.txt@3 --ref c,aa --out ${OUT}/$(date +%Y-%m-%d)_rpf-pilot.md --stop-file work/rpf.stop
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 90 over 200
+  stop: stall 30m
+
+screen | if [ -f work/rpf.stop ]; then echo 'pilot: rp under 3 points on the cloud picks, no screen'; exit 0; fi && ./bench-top20.sh ${C} ${P} --set census-312.txt --seeds 2 --seed-base 10200 --arms plans/race-power-field.arms --out ${W} --label rpf --shuffle-jobs
+  after: pilot
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 90 over 200
+  stop: stall 30m
+
+pick | if [ -f work/rpf.stop ]; then echo 'stopped (see work/rpf.stop): skipped'; exit 0; fi && python3 ../data/tools/multiarm.py ${W}/arms.tsv --census census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_rpf-screen.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 5 --out-tsv ${OUT}/rpf-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_rpf-pick.md
+  after: screen
+
+prep2 | if [ -f work/rpf.stop ]; then echo 'stopped (see work/rpf.stop): skipped'; exit 0; fi && if ! python3 tools/pick_panel.py ${OUT}/rpf-pick.tsv census-312.txt work/panel-rpf-picks.txt; then echo 'no robot picked: confirm and gate skip, the PR carries the screen'; echo 'screen picked no robot' > work/rpf.stop; exit 0; fi && grep -v '^#' work/panel-rpf-picks.txt | cut -d'|' -f1 | sed 's/ *$//' | grep . > work/rpf-picks.list && RACE_POWER=work/rpf-picks.list RACE_POWER_SUFFIX=rx bash ./build-ablation.sh rplist && test -f bisect/hadur117.Hadur_${V}rx.jar
+  after: pick
+
+confirm | if [ -f work/rpf.stop ]; then echo 'stopped (see work/rpf.stop): skipped'; exit 0; fi && ./bench-top20.sh ${C} ${P} --set work/panel-rpf-picks.txt --seeds 4 --seed-base 10300 --arms plans/race-power-confirm.arms --out ${W2} --label rpf-2 --shuffle-jobs
+  after: prep2
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 90 over 200
+  stop: stall 30m
+
+gate | if [ -f work/rpf.stop ]; then echo 'stopped (see work/rpf.stop): skipped'; exit 0; fi && python3 ../data/tools/multiarm.py ${W2}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_rpf-2.md && python3 tools/shield_s2.py gate ${W2}/arms.tsv --arm xr --panel work/panel-rpf-picks.txt --bar 0.03 --out ${OUT}/$(date +%Y-%m-%d)_rpf-2-gate.md && python3 ../data/tools/mode_table.py ${W2}/arms.tsv --margin 3 --out-tsv ${OUT}/rpf-2-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_rpf-2-pick.md && python3 tools/per_robot.py ${W2}/arms.tsv --arms xr --out ${OUT}/$(date +%Y-%m-%d)_rpf-2-per-robot.md --out-tsv ${OUT}/rpf-2-per-robot.tsv
+  after: confirm
+
+pr | bash tools/open_results_pr.sh claude/pc-race-power-results "1v1 per robot, whole field: energy-race bullet power, each robot on it only where it wins" ${OUT}/*_rpf*.md $(find ${OUT} -maxdepth 1 -name 'rpf*.tsv' -size +0c)
+  after: gate

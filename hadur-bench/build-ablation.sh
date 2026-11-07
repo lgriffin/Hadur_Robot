@@ -245,7 +245,7 @@
 #   x5list the robots named in $X5_POWER get, shot by shot, an x.x5 power whose speed they misread
 #         from our energy drop (POW-16, ShieldTableData.x5Powers()). Suffix x5.
 #   rplist the robots named in $RACE_POWER get the energy race's power pick (POW-17,
-#         ShieldTableData.racePowers()). Suffix rp.
+#         ShieldTableData.racePowers()). Suffix rp, or $RACE_POWER_SUFFIX.
 #   rdlist the rammers named in $RAM_DODGE get the escape's heavy shot cost (RAM-6,
 #         ShieldTableData.ramDodges()). Suffix rd.
 #   snull  all five at once: Nullstride's design as read from its jar.
@@ -771,7 +771,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
             elif [[ "$a" == fplist ]]; then file="${FULL_OFF:-}"; method="fullOffs"; version="${version}fp"
             elif [[ "$a" == x5list ]]; then file="${X5_POWER:-}"; method="x5Powers"; version="${version}x5"
             elif [[ "$a" == rdlist ]]; then file="${RAM_DODGE:-}"; method="ramDodges"; version="${version}rd"
-            elif [[ "$a" == rplist ]]; then file="${RACE_POWER:-}"; method="racePowers"; version="${version}rp"
+            elif [[ "$a" == rplist ]]; then file="${RACE_POWER:-}"; method="racePowers"; version="${version}${RACE_POWER_SUFFIX:-rp}"
             else file="${STOP_GO2:-}"; method="stopGoShifts"; version="${version}wm"; fi
             [[ -n "$file" && -f "$file" ]] || { echo "$a needs SHIELD_MOVE / SHIELD_AIM / SHOT_DODGE / STOP_GO / STOP_GO2 / HEAT_JIT / GUN_STACK / SHIELD_EXIT4 / SHIELD_EXIT0 / SHIELD_STILL / SURF_KEY / FLAT_ON / MIMIC_ON / FULL_OFF / X5_POWER / RAM_DODGE / RACE_POWER=<file>" >&2; exit 2; }
             add="$(python3 -c 'import sys,json
