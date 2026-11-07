@@ -1,6 +1,6 @@
 # Queue pc-team-farm: progress
 
-Updated 2026-11-07 16:15:25 PC time (16:15 UTC), runner pid 57892.
+Updated 2026-11-07 16:30:33 PC time (16:30 UTC), runner pid 57892.
 
 - `tfprep` done, exit 0 in 7 min
 - `tfbb` done, exit 0 in 39 min
@@ -50,21 +50,20 @@ Stopping now would leave 36 battles unrun (about 3 min); every battle already fo
 
 ### tfcl
 
-**27 of 552 battles** (5%), 0 failed. Running 5 min, 314 battles/h, about 1.7 h left (ends ~17:55 PC time). Last battle 0 min ago.
-Skipped turns a battle: 16.6 overall, first 27 16.6, last 27 16.6.
+**234 of 552 battles** (42%), 0 failed. Running 20 min, 692 battles/h, about 28 min left (ends ~16:58 PC time). Last battle 0 min ago.
+Skipped turns a battle: 19.5 overall, first 100 20.1, last 100 20.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 27 |
+| `fails 60` | halt | ok | 0 failed of 234 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | waiting | 27 of 200 battles to read |
+| `skips 60 over 200` | halt | ok | 20.0 a battle over the last 200 (first 200: 19.6) |
 
-Stopping now would leave 525 battles unrun (about 1.7 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 318 battles unrun (about 28 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-14:44:38 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
 14:44:38 start tfprep
 14:44:40 progress pushed to origin claude/pc-team-farm-progress (every 15 min)
 14:51:16 tfprep exit=0 in 397 s
@@ -79,4 +78,5 @@ Stopping now would leave 525 battles unrun (about 1.7 h); every battle already f
 16:10:15 tffo exit=0 in 2388 s
 16:10:15 start tfcl
 16:10:15 watching tfcl: 3 stop rule(s)
+16:22:29 progress tfcl: 117/552 (21%) battles, 574/h, ETA 45 min, 0 failed, skips 20.2/battle (last 100)
 ```
