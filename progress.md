@@ -1,15 +1,15 @@
 # Queue pc-tailor-field: progress
 
-Updated 2026-11-07 14:30:03 PC time (14:30 UTC), runner pid 52376.
+Updated 2026-11-07 14:44:19 PC time (14:44 UTC), runner pid 52376.
 
 - `prep` done, exit 0 in 8 min
 - `pilot` done, exit 0 in 4 min
 - `screen` done, exit 0 in 30.7 h
 - `pick` done, exit 0 in 0 min
 - `prep2` done, exit 0 in 1 min
-- `confirm` running
-- `gate` skipped
-- `pr` skipped
+- `confirm` done, exit 0 in 25 min
+- `gate` done, exit 0 in 0 min
+- `pr` done, exit 0 in 0 min
 
 ### screen
 
@@ -41,26 +41,26 @@ APS = mean difference over the robots read x 1194 panel robots / 1217 pairings.
 
 ### confirm
 
-**411 of 912 battles** (45%), 0 failed. Running 10 min, 2379 battles/h, about 13 min left (ends ~14:42 PC time). Last battle 0 min ago.
-Skipped turns a battle: 33.1 overall, first 100 41.1, last 100 29.1; engine disables 45.
+**912 of 912 battles** (100%), 0 failed. Running 25 min, 2231 battles/h, about 0 min left (ends ~14:44 PC time). Last battle 0 min ago.
+Skipped turns a battle: 30.7 overall, first 100 41.1, last 100 30.5; engine disables 69.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 137 | 0 | 78.72 | - | - | - | 32.8 |
-| aa | 138 | 0 | 78.50 | -0.03 (65 robots) | ±0.09 | -0.17 .. +0.10 | 33.1 |
-| xr | 136 | 0 | 80.77 | +0.12 (65 robots) | ±0.08 | -0.01 .. +0.24 | 33.5 |
+| c | 304 | 0 | 78.40 | - | - | - | 30.6 |
+| aa | 304 | 0 | 78.66 | +0.02 (76 robots) | ±0.05 | -0.06 .. +0.09 | 30.5 |
+| xr | 304 | 0 | 80.34 | +0.11 (76 robots) | ±0.08 | -0.00 .. +0.23 | 31.0 |
 
 APS = mean difference over the robots read x 76 panel robots / 1217 pairings.
-A/A: aa - c -0.51 pts over 65 robots; 1% band ±1.00 (inside).
+A/A: aa - c +0.26 pts over 76 robots; 1% band ±0.67 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 411 |
+| `fails 30` | halt | ok | 0 failed of 912 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 90 over 200` | halt | ok | 30.4 a battle over the last 200 (first 200: 35.2) |
+| `skips 90 over 200` | halt | ok | 28.8 a battle over the last 200 (first 200: 35.2) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 501 battles unrun (about 13 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 > warning: arm c's jar bisect/hadur117.Hadur_3.21.jar was built 41 h before this step started: check it is not stale
 
@@ -69,12 +69,6 @@ Stopping now would leave 501 battles unrun (about 13 min); every battle already 
 ### Queue log (last lines)
 
 ```
-10:53:00 progress screen: 23639 battles, 738/h, 0 failed, skips 74.4/battle (last 100), sg -13.61, fp +0.12, hj +0.20, mm -0.17, dg -0.03, rd +0.02, sw -13.26, gs -0.09, fl -0.09, x5 -0.19
-11:23:22 progress screen: 24044 battles, 806/h, 0 failed, skips 57.6/battle (last 100), sg -13.59, fp +0.11, hj +0.19, mm -0.19, dg -0.05, rd -0.01, sw -13.28, gs -0.09, fl -0.10, x5 -0.20
-11:53:35 progress screen: 24423 battles, 758/h, 0 failed, skips 54.5/battle (last 100), sg -13.60, fp +0.11, hj +0.21, mm -0.18, dg -0.07, rd -0.01, sw -13.28, gs -0.09, fl -0.10, x5 -0.20
-12:23:52 progress screen: 24796 battles, 744/h, 0 failed, skips 57.2/battle (last 100), sg -13.69, fp +0.10, hj +0.20, mm -0.18, dg -0.07, rd -0.02, sw -13.42, gs -0.08, fl -0.10, x5 -0.21
-12:54:09 progress screen: 25184 battles, 766/h, 0 failed, skips 49.1/battle (last 100), sg -13.66, fp +0.09, hj +0.21, mm -0.18, dg -0.06, rd -0.02, sw -13.41, gs -0.07, fl -0.10, x5 -0.20
-13:24:36 progress screen: 25571 battles, 762/h, 0 failed, skips 59.9/battle (last 100), sg -13.69, fp +0.11, hj +0.22, mm -0.16, dg -0.05, rd -0.02, sw -13.41, gs -0.07, fl -0.10, x5 -0.19
 13:54:43 progress screen: 25980 battles, 818/h, 0 failed, skips 63.3/battle (last 100), sg -13.66, fp +0.13, hj +0.25, mm -0.14, dg -0.03, rd -0.00, sw -13.40, gs -0.05, fl -0.08, x5 -0.17
 14:18:59 screen exit=0 in 110466 s
 14:18:59 start pick
@@ -84,4 +78,10 @@ Stopping now would leave 501 battles unrun (about 13 min); every battle already 
 14:19:40 start confirm
 14:19:40 watching confirm: 4 stop rule(s)
 14:24:58 progress confirm: 218/912 (24%) battles, 2471/h, ETA 17 min, 0 failed, skips 31.2/battle (last 100), aa -0.05, xr +0.04
+14:44:12 confirm exit=0 in 1471 s
+14:44:12 start gate
+14:44:13 gate exit=0 in 0 s
+14:44:13 start pr
+14:44:19 pr exit=0 in 6 s
+14:44:19 ALLDONE
 ```
