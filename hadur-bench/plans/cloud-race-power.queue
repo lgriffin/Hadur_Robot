@@ -1,0 +1,53 @@
+# POW-17 energy-race power, cloud screen (BENCH-205; thread "Analyse what changed in Saguaro 1.1").
+# Cloud card: run on the cloud box, 3 workers, no alerts, no PR step (the thread reads it and opens the PR).
+#   bash ./queue.sh run cloud-race-power
+#
+# Why it should win: Hadur's power is a stack of single-cause rules (tier, range, rate, lead). The top
+# score-maximising designs pick the power by what it does to the whole rest of the round instead: an energy race
+# between two guns, each firing at its gun-heat rate, each hit taking damage and refunding three times the power.
+# POW-17 is our own version of that idea: a value iteration over both energies, valued in score (bullet damage plus
+# the round's survival swing), fed by this battle's own resolved shots. It is a per-opponent table switch
+# (race-power:), so a pass ships only for the robots it wins against and 1v1 elsewhere is unchanged.
+#
+# Panel: race-guard.txt (47 robots: the census top 50 less Nullstride 2.3.3, Saguaro 1.1 in for 1.0) x 3 fresh
+# seeds from 52000 x 35 rounds; 3 arms = 423 battles, shuffled jobs. A container restart loses only the battles in
+# flight: rerun the card and the bench resumes from the battles already written.
+# Read: rp against c and aa pooled (multiarm.py); per-robot picks at a 5-point margin (mode_table.py).
+# Stop rules: fails 30, dead 8, skips 60 over 200, stall 30m, aa after 20%. Nothing is uploaded or released.
+
+set C = --skip-build --skip-fetch --rounds 35 --parallel 3 --child-heap 768M --no-truth-log
+set V = 3.21
+set W = work/race-power
+set OUT = ../docs/bench/local
+set ALERT =
+set PROGRESS_BRANCH = off
+
+prep | mkdir -p bisect ${W} && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && RACE_POWER=plans/race-power-guard.list bash ./build-ablation.sh rplist && test -f bisect/hadur117.Hadur_${V}rp.jar && mkdir -p opponents && { cp /mnt/project-files/bench-opponents/oog.mega.saguaro.Saguaro_1.1.jar opponents/ 2>/dev/null || true; } && ./fetch-opponents.sh --set race-guard.txt && mvn -q compile
+
+bench | sh ./bench-top20.sh ${C} --set race-guard.txt --seeds 3 --seed-base 52000 --arms plans/race-power.arms --out ${W} --label race-power --shuffle-jobs --failed-ok
+  after: prep
+  watch:
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+pick | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_race-power-screen.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 5 --out-tsv ${OUT}/race-power-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_race-power-pick.md
+  after: bench
+
+# Confirm: the robots the pick locked (docs/bench/local/race-power-pick.tsv, rows won by rp) at 6 fresh seeds from 52100,
+# same arms (rp already names every panel robot). panel-race-confirm.txt is rebuilt from that pick, so the confirm always
+# fights what this screen chose; an empty pick stops the card here. Holds when rp's low end over c and aa stays above 0
+# on them.
+confirm | awk -F'\t' 'NR==FNR { if ($2 == "rp") keep[$1] = 1; next } /^[ \t]*#/ { next } { n = $1; sub(/[ \t]*\|.*/, "", n); sub(/^[ \t]+/, "", n); if (n in keep) print }' ${OUT}/race-power-pick.tsv race-guard.txt > panel-race-confirm.txt && test -s panel-race-confirm.txt && sh ./bench-top20.sh ${C} --set panel-race-confirm.txt --seeds 6 --seed-base 52100 --arms plans/race-power.arms --out work/race-power2 --label race-power2 --shuffle-jobs --failed-ok
+  after: pick
+  watch:
+  stop: fails 30
+  stop: dead 8
+  stop: stall 30m
+
+# Report only: the thread reads the verdict (low end of rp over c and aa above 0 per robot) from this report; a
+# cloud card ships nothing, so there is no automatic pass.
+report | python3 ../data/tools/multiarm.py work/race-power2/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_race-power-confirm.md
+  after: confirm

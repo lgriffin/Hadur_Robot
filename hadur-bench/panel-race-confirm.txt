@@ -1,0 +1,5 @@
+# POW-17 confirm: the 4 robots the cloud-race-power screen picked at a 5-point margin (2026-11-07).
+abc.Shadow 3.83c | rank25-band2 | abc.Shadow_3.83c.jar
+cb.Domogled 1.2 | rank23-band2 | cb.Domogled_1.2.jar
+mn.Combat 3.25.0 | rank38-band2 | mn.Combat_3.25.0.jar
+voidious.Diamond 1.8.22 | rank6-band1 | voidious.Diamond_1.8.22.jar

@@ -74,6 +74,8 @@ public final class ShieldList {
     public static final String FULL_OFF_PREFIX = "full-off:";
     /** POW-16: a line starting with this names an opponent the duel fires only x.x5 powers at. */
     public static final String X5_POWER_PREFIX = "x5-power:";
+    /** POW-17: a line starting with this names an opponent the duel picks its power against by the energy race. */
+    public static final String RACE_POWER_PREFIX = "race-power:";
     /** RAM-6: a line starting with this names a rammer the escape dodges its shots in flight from at a heavy cost. */
     public static final String RAM_DODGE_PREFIX = "ram-dodge:";
     /**
@@ -102,6 +104,8 @@ public final class ShieldList {
     static final int X5_POWER = 256;
     /** RAM-6: the per-opponent rammer dodge switch's bit in {@link #switches}. */
     static final int RAM_DODGE = 512;
+    /** POW-17: the per-opponent energy-race power switch's bit in {@link #switches}. */
+    static final int RACE_POWER = 1024;
 
     private final Set<String> entries;
     /** SHIELD-17: the opening-drive list. */
@@ -154,7 +158,8 @@ public final class ShieldList {
                     : entry.startsWith(MIMIC_ON_PREFIX) ? MIMIC_ON
                     : entry.startsWith(FULL_OFF_PREFIX) ? FULL_OFF
                     : entry.startsWith(X5_POWER_PREFIX) ? X5_POWER
-                    : entry.startsWith(RAM_DODGE_PREFIX) ? RAM_DODGE : 0;
+                    : entry.startsWith(RAM_DODGE_PREFIX) ? RAM_DODGE
+                    : entry.startsWith(RACE_POWER_PREFIX) ? RACE_POWER : 0;
                 if (bit != 0) {
                     String name = entry.substring(entry.indexOf(':') + 1).trim();
                     if (!name.isEmpty() && (switches.containsKey(name) || switches.size() < MAX_ENTRIES)) {
@@ -422,6 +427,16 @@ public final class ShieldList {
      */
     public boolean x5Power(String robotName) {
         return (switchBits(robotName) & X5_POWER) != 0;
+    }
+
+    /**
+     * POW-17: whether the table names this opponent for the energy-race power pick.
+     *
+     * @param robotName the opponent's name as Robocode lists it
+     * @return true when a {@code race-power:} line matches it
+     */
+    public boolean racePower(String robotName) {
+        return (switchBits(robotName) & RACE_POWER) != 0;
     }
 
     /**
