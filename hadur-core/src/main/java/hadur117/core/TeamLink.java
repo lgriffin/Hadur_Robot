@@ -1,7 +1,6 @@
 package hadur117.core;
 
 import hadur117.core.link.LinkCodec;
-import hadur117.core.melee.TeamModes;
 import hadur117.core.link.Report;
 import hadur117.core.model.BattleFacts;
 import hadur117.core.model.BotEvent;
@@ -300,11 +299,6 @@ final class TeamLink {
      */
     boolean laneClear(BotInput in) {
         return narrowLane ? narrowLaneClear(in) : wideLaneClear(in);
-    }
-
-    /** As above under the table's {@code lane} (TMODE-43): with none, every shot is clear. */
-    boolean laneClear(BotInput in, TeamModes.Lane lane) {
-        return lane == TeamModes.Lane.NONE || laneClear(in);
     }
 
     /**

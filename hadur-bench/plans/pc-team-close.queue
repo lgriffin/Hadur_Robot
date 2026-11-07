@@ -1,0 +1,61 @@
+# CLOSE on every team: the hunt place 250 px from the prey, confirmed field-wide (TMODE-42, BENCH-205).
+# Team thread: team-only, duel and melee fixtures bit for bit. pc-team-farm (PR #689) screened nine
+# levers per team and its pilot stopped it: per-team picks at 6 seeds have no power, but read
+# field-wide against both baselines CLOSE was the one lever in the black, +0.41 +- 0.47 APS on 43
+# teams (Nightmare +4.5, Aleph +3.6, TMNR +3.5; Shadow -5.7), FOCUS -2.5 and NOLANE -0.25. The 250 px
+# cloud smoke of 2026-10-28 (22 teams x 6 seeds) read -0.6 +- 1.3 share points, so this is the
+# tie-breaker: 46 teams x 12 fresh seeds, paired with aa, bb as the A/A control.
+# Why it should win: the hunt place is where a member spends most of a round; 100 px nearer the prey
+# its shots land more often and the prey dies sooner, which is the mirror's gap (members lost and
+# damage taken inside won rounds, PR #569). The risk is the same: nearer means hit more.
+#   aa      the baseline (master); bb its A/A copy
+#   tc      tmclose: FORCE_CLOSE on and Mode.CLOSE on every shipped table entry
+# Pilot (the card gate's early stop): tcbb1 and tctc1 play 4 seeds (9600-9603, 368 battles each,
+# about 50 min together); tcpilot gates tc against both baselines and stops the card, results PR
+# and all, when the projected change is under zero. The pilot is a stop rule, not a verdict.
+# Full read: tcbb2 and tctc2 extend the same runs to 12 seeds (9600-9611; the bench resumes from the
+# pilot's battles), then tcgate gates at +0.15 APS with the 95% low end above zero, pooled over the
+# teams with a full pairing (--teams 46 spreads the sum over the whole field).
+# The card changes nothing: on a PASS a PR flips FORCE_CLOSE on and adds CLOSE to the shipped entries.
+# Size: 2 x 46 x 12 x 2 = 2,208 battles, about 2.7 h at the PC's ~820 team battles/h.
+# Stop rules on every battle step (halt; every battle fought is kept and a rerun resumes): 60 failed
+# battles, no battle in 30 minutes, or 60+ skipped turns a battle over the last 200 (census load).
+# The team thread reads claude/pc-team-close-results.
+#   ./queue.sh run pc-team-close        (or  .\queue.ps1 run pc-team-close)
+# Run it from master (one bench queue at a time):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+set T = python3 tools/team_modes.py
+
+tcprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && for a in aa bb tc; do rm -f bisect/hadur117.HadurTeam_"$V"$a.jar; done && rm -f ${OUT}/team-close-*.md && mkdir -p work && rm -rf work/team-close-"$V"-bb work/team-close-"$V"-tc && echo "$V" > work/team-close.version && ./fetch-opponents.sh --set team-census46.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmclose && for a in bb tc; do for s in 4 12; do sed -e "s/@V@/$V/g" -e "s/@S@/$s/g" plans/team-close-$a.args > work/team-close-$a-$s.args || exit 1; done; done && for a in aa bb tc; do test -f bisect/hadur117.HadurTeam_"$V"$a.jar || exit 1; done && mvn -q compile
+tcbb1  | mvn -q exec:java "-Dexec.args=@work/team-close-bb-4.args"
+  after: tcprep
+  watch: battles=368
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tctc1  | mvn -q exec:java "-Dexec.args=@work/team-close-tc-4.args"
+  after: tcbb1
+  watch: battles=368
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tcpilot | ${T} gate --report ${OUT}/team-close-tc.md --control ${OUT}/team-close-bb.md --teams 46 --min-aps 0.15 --stop-below 0 --out-md ${OUT}/team-close-pilot.md || { rc=$?; test $rc -eq 3 && { bash tools/open_results_pr.sh claude/pc-team-close-results "CLOSE on every team (TMODE-42): pilot stopped the card" ${OUT}/team-close-pilot.md ${OUT}/team-close-bb.md ${OUT}/team-close-tc.md; exit 1; }; test $rc -eq 1; }
+  after: tctc1
+tcbb2  | mvn -q exec:java "-Dexec.args=@work/team-close-bb-12.args"
+  after: tcpilot
+  watch: battles=1104
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tctc2  | mvn -q exec:java "-Dexec.args=@work/team-close-tc-12.args"
+  after: tcbb2
+  watch: battles=1104
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tcgate | ${T} gate --report ${OUT}/team-close-tc.md --control ${OUT}/team-close-bb.md --teams 46 --min-aps 0.15 --out-md ${OUT}/team-close-verdict.md || test $? -eq 1
+  after: tctc2
+tcpr   | bash tools/open_results_pr.sh claude/pc-team-close-results "CLOSE on every team: the hunt place at 250 px (TMODE-42)" ${OUT}/team-close-verdict.md ${OUT}/team-close-pilot.md ${OUT}/team-close-bb.md ${OUT}/team-close-tc.md
+  after: tcgate
