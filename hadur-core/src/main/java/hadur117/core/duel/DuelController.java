@@ -362,7 +362,6 @@ public final class DuelController {
         if (fullOff) on.add("fulloff");
         if (x5Power) on.add("x5");
         if (racePower) on.add("race");
-        if (ramDodge) on.add("ramdodge");
         if (shield != null && shield.active()) on.add("shield");
         return on.isEmpty() ? "-" : String.join(",", on);
     }
@@ -905,8 +904,6 @@ public final class DuelController {
     private boolean fullOff;
     /** POW-16: whether the table holds the duel's shots to x.x5 powers for this opponent. */
     private boolean x5Power;
-    /** RAM-6: whether the table gave the rammer escape the heavy shot cost for this opponent. */
-    private boolean ramDodge;
     /** POW-17: the table names this opponent for the energy-race power pick. */
     private boolean racePower;
     /** POW-17: whether the race picked the last power, for the P record on a change. */
@@ -1372,9 +1369,6 @@ public final class DuelController {
         x5Power = duelOnly(stackList.x5Power(name), enemiesTotal);
         // POW-17: the energy-race power pick for the opponents the table names.
         racePower = duelOnly(stackList.racePower(name), enemiesTotal);
-        // RAM-6: the rammer escape's heavy shot cost, for the rammers the table names.
-        ramDodge = duelOnly(stackList.ramDodge(name), enemiesTotal);
-        ramEscape.setHeavyHitCost(ramDodge);
         // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names, never a shield-mode one
         // (its TripHammer aims break the shield's bullet hits); the gun keeps them 1v1-only.
         if (duelOnly(stackList.gunStack(name) && !stackList.matches(name), enemiesTotal)) {

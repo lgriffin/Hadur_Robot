@@ -76,8 +76,6 @@ public final class ShieldList {
     public static final String X5_POWER_PREFIX = "x5-power:";
     /** POW-17: a line starting with this names an opponent the duel picks its power against by the energy race. */
     public static final String RACE_POWER_PREFIX = "race-power:";
-    /** RAM-6: a line starting with this names a rammer the escape dodges its shots in flight from at a heavy cost. */
-    public static final String RAM_DODGE_PREFIX = "ram-dodge:";
     /**
      * SKEY-2: a line starting with this gives an opponent's surf key: nine multipliers on the hit
      * views' key weights, one on the kernel width, then the name ({@code "m1 ... m9 bw name"}).
@@ -102,8 +100,6 @@ public final class ShieldList {
     static final int FULL_OFF = 128;
     /** POW-16: the per-opponent x.x5 power switch's bit in {@link #switches}. */
     static final int X5_POWER = 256;
-    /** RAM-6: the per-opponent rammer dodge switch's bit in {@link #switches}. */
-    static final int RAM_DODGE = 512;
     /** POW-17: the per-opponent energy-race power switch's bit in {@link #switches}. */
     static final int RACE_POWER = 1024;
 
@@ -158,7 +154,6 @@ public final class ShieldList {
                     : entry.startsWith(MIMIC_ON_PREFIX) ? MIMIC_ON
                     : entry.startsWith(FULL_OFF_PREFIX) ? FULL_OFF
                     : entry.startsWith(X5_POWER_PREFIX) ? X5_POWER
-                    : entry.startsWith(RAM_DODGE_PREFIX) ? RAM_DODGE
                     : entry.startsWith(RACE_POWER_PREFIX) ? RACE_POWER : 0;
                 if (bit != 0) {
                     String name = entry.substring(entry.indexOf(':') + 1).trim();
@@ -437,16 +432,6 @@ public final class ShieldList {
      */
     public boolean racePower(String robotName) {
         return (switchBits(robotName) & RACE_POWER) != 0;
-    }
-
-    /**
-     * RAM-6: whether the rammer escape weighs a path that meets one of {@code robotName}'s shots at
-     * the heavy cost, by the rule of {@link #matches}.
-     *
-     * @param robotName the scanned robot's name, or null
-     */
-    public boolean ramDodge(String robotName) {
-        return (switchBits(robotName) & RAM_DODGE) != 0;
     }
 
     private int switchBits(String robotName) {
