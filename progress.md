@@ -1,6 +1,6 @@
 # Queue pc-team-farm: progress
 
-Updated 2026-11-07 15:45:10 PC time (15:45 UTC), runner pid 57892.
+Updated 2026-11-07 16:00:17 PC time (16:00 UTC), runner pid 57892.
 
 - `tfprep` done, exit 0 in 7 min
 - `tfbb` done, exit 0 in 39 min
@@ -37,16 +37,16 @@ Stopping now would leave 12 battles unrun (about 1 min); every battle already fo
 
 ### tffo
 
-**143 of 552 battles** (26%), 0 failed. Running 15 min, 583 battles/h, about 42 min left (ends ~16:27 PC time). Last battle 0 min ago.
-Skipped turns a battle: 19.3 overall, first 100 20.4, last 100 19.4.
+**348 of 552 battles** (63%), 0 failed. Running 30 min, 700 battles/h, about 17 min left (ends ~16:17 PC time). Last battle 1 min ago.
+Skipped turns a battle: 18.3 overall, first 100 20.4, last 100 16.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 143 |
-| `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | waiting | 143 of 200 battles to read |
+| `fails 60` | halt | ok | 0 failed of 348 |
+| `stall 30m` | halt | ok | last battle 1 min ago |
+| `skips 60 over 200` | halt | ok | 17.7 a battle over the last 200 (first 200: 19.3) |
 
-Stopping now would leave 409 battles unrun (about 42 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 204 battles unrun (about 17 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -62,4 +62,5 @@ Stopping now would leave 409 battles unrun (about 42 min); every battle already 
 15:30:27 tfbb exit=0 in 2351 s
 15:30:27 start tffo
 15:30:27 watching tffo: 3 stop rule(s)
+15:52:13 progress tffo: 244/552 (44%) battles, 672/h, ETA 27 min, 0 failed, skips 19.2/battle (last 100)
 ```
