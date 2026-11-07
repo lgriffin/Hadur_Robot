@@ -392,6 +392,13 @@ public final class Bench {
             for (int i = 0; i < lines.size(); i++) {
                 Map<String, String> opts = lines.get(i);
                 String label = labels.get(i);
+                // BENCH-95: a suite line whose field already wrote its report (a stopped run) is kept, not rerun.
+                Path done = Path.of(opts.get("out")).resolve("report.md");
+                if (!"false".equals(global.get("resume")) && Files.exists(done)) {
+                    System.out.println("== " + label + " kept from an earlier, stopped run (BENCH-95)");
+                    runs.add(java.util.concurrent.CompletableFuture.completedFuture(0));
+                    continue;
+                }
                 runs.add(pool.submit(() -> {
                     System.out.println("== " + label);
                     return new Bench(opts).run();

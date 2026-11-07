@@ -363,6 +363,12 @@ Runs on the cloud box (3 workers, about 35 min an arm); nothing is uploaded or r
 | 3. Target and power | nearest, sticky by name; power log10(energy) × 325 / distance | the robot we hit best for its distance (Deise's LEARNH idea in micro form); power from the chain's confidence (the thinnest row's samples) and distance | TH, PC, THPC | `cloud-saor-r3` |
 | 4. Fit | | the stack of passes fitted into 749 bytes after ProGuard, the core and SAOR-15 updated, confirmed on the live-shaped census with Figment seated | | `pc-saor-r4` |
 
-Stage 1 arms MR and MP are built and queued on the cloud behind the Sanaro N19 arms and the
-JayLexi k-NN card (about 12:30 start, read about 15:00). A stage with no arm through the gate is
-redesigned, not reverted: the Figment part never ships again once its replacement exists.
+A stage with no arm through the gate is redesigned, not reverted: the Figment part never ships
+again once its replacement exists.
+
+Status 2026-11-07 (all reads in docs/bench/saor-0.4-own-parts.md): stage 2's GV passes (+0.40);
+stage 3's TH is the nearest miss (-0.29). Movement took about 45 own designs: the best, WNF (legs
+between the corner's two walls to random depths, run to their end, and an orbit from two robots
+left), costs about 0.6 over three seed sets and has not passed the gate; the decision of
+2026-11-07 is to keep designing movement before the gun chain. The stage cards have been removed
+with the failed arms; the arms still in play are GV, TH and WNF.
