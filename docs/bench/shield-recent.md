@@ -69,3 +69,15 @@ are the candidates for `shield-still:` lines (Princess also `shield-exit0:`), to
 on the PC over the whole field by the usual card gate. pc-shield-still (PR #510, 2026-10-31) measured Musashi,
 Princess and CassiusClay with the still shield on and did not pick them; the cloud and the PC have disagreed on
 shield robots before, so the PC read decides.
+
+## Confirm on fresh seeds (9911-9914; `la` = names + `shield-still:`, `lb` = `la` + `shield-exit0:` for Princess)
+
+| Robot | c | la | lb |
+|---|---:|---:|---:|
+| axeBots.Musashi 2.18 | 76.0 | 95.8 | 96.9 |
+| cx.Princess 1.0 | 73.6 | 72.3 | 75.7 |
+| pez.rumble.CassiusClay 2rho.02no | 63.9 | 58.3 | 59.5 |
+
+Musashi holds on every seed (+20); Princess is noise without the exit off and +2 with it; CassiusClay loses on fresh
+seeds, as pc-shield-still said. Card `pc-shield-audit` (BENCH-209, plans/pc-shield-audit.queue) takes Musashi and
+Princess (with exit off) to the PC on 12 fresh seeds against master and its A/A copy; CassiusClay stays off the list.
