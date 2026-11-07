@@ -209,31 +209,6 @@ class ShieldDesignTest {
         }
     }
 
-    // ---- SHIELD-24: offsets and the predictor choice from the last 20 bullets
-
-    @Test
-    @Tag("SHIELD-24")
-    @DisplayName("an aim that moves after thirty bullets is followed within twenty with recent; the 500-error mode stays on the old aim")
-    void recentFollowsAMovedAim() {
-        for (String flags : new String[] {"stay,mode", "stay,mode,recent"}) {
-            mode(flags);
-            scan(1);
-            long t = 10;
-            for (int i = 0; i < 30; i++, t += 30) hit(t, t + 20, 0.1, Math.PI + 0.02);
-            for (int i = 0; i < 20; i++, t += 30) hit(t, t + 20, 0.1, Math.PI + 0.05);
-            hit(t, t + 20, 0.1, Math.PI + 0.05);
-            String sb = lastSb();
-            if (flags.contains("recent")) {
-                assertTrue(sb.endsWith(",1,0.10"), "recent follows the moved aim: " + sb);
-            } else {
-                assertTrue(sb.endsWith(",0,0.10"), "the 500-error mode holds the old aim: " + sb);
-            }
-        }
-        assertEquals("recent", ShieldDesign.parse("recent").toString());
-        assertFalse(ShieldDesign.SHIPPED.recent, "off in the shipped design");
-        assertFalse(ShieldDesign.parse("all").recent, "not in all");
-    }
-
     // ---- SHIELD-11: no exits inside the round
 
     @Test

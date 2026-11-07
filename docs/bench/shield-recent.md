@@ -32,12 +32,40 @@ re-learning, not the predictors: SHIELD-10's offset is the most frequent error a
 three exact rounds that mode stays on the old aim for as long again. BeepBoop's shielder (`kc/mega/shield/Shielder.java`)
 scores its offset over its last 20 bullets and picks its predictor the same way.
 
-## SHIELD-24
+## SHIELD-24 (tried and removed)
 
-`ShieldDesign` gains `recent` (off in SHIPPED, not in `all`): the modal offsets keep `RECENT_ERRORS` = 20 errors
-instead of 500, and `bestPredictor` counts exact matches over the last 20 learned bullets instead of the battle's
-totals. With the switch off the robot plays bit for bit. Ablation `srecent` (suffix sj).
+Two cuts of a `recent` switch on `ShieldDesign`, both off by default, ablation `srecent` (suffix sj):
 
-## Cloud read
+1. The modal offsets keep the last 20 errors instead of 500, and `bestPredictor` counts exact matches over the
+   last 20 learned bullets instead of the battle's totals.
+2. The offsets from the last 20 errors, a head-on error counting two recurrences over its own (BeepBoop's
+   zero bonus), predictor choice on the battle's totals as before.
 
-(filled in below as the runs finish)
+## Cloud read (seeds 9901-9902, 35 rounds, parallel 3; `c` master, `sz` = `sstill,slistadd`, `sj`/`rz` = the same
+with cut 1 / cut 2, `sw`/`rw` = cut 1 / cut 2 with the step-aside plan)
+
+| Robot | c | sz | sj (cut 1) | rz (cut 2) | sw | rw |
+|---|---:|---:|---:|---:|---:|---:|
+| axeBots.Musashi 2.18 | 71.7 | 97.7 | 92.9 | 98.1 | 87.4 | 91.5 |
+| cx.Princess 1.0 | 63.7 | 74.3 | 77.6 | 71.5 | 72.6 | 65.4 |
+| pez.rumble.CassiusClay 2rho.02no | 58.6 | 63.9 | 51.1 | 65.6 | 57.4 | 61.3 |
+| cx.mini.BlackSwans 0.60 | 72.6 | 69.3 | 65.8 | 65.8 | 65.5 | 66.7 |
+| rz.GlowBlow 2.31 | 80.2 | 73.3 | 77.7 | 71.4 | 74.0 | 76.0 |
+| cx.CigaretBH 1.03 | 77.6 | 72.7 | 65.6 | 72.9 | 67.8 | 68.0 |
+| stelo.MatchupMicro 1.2 | 88.0 | 71.6 | 73.7 | 68.8 | 76.6 | 76.3 |
+| mean | 73.2 | 74.6 | 72.0 | 73.4 | 71.6 | 72.1 |
+
+Cut 1 flipped to a stale predictor at a round start against Princess (seed 1 round 2: six power-3 hits, no shot)
+and hurt CassiusClay by 13. Cut 2 is within noise of `sz` on every robot (mean -1.2) and worse on Princess, the
+robot it was built for. The `SR` records show why: against Princess seed 1 the three arms are identical (94 shots,
+88 intercepts, exit at 150 damage in round 4); the binding constraint is SHIELD-11's battle exit, not how fast the
+offset re-learns. The switch is removed (no dead experiment code); this doc keeps the read.
+
+## What the read does say
+
+The list add with the still plan (`sz`) against master, both seeds: Musashi +26, Princess +11 (+22 with no damage
+exit, s0 above), CassiusClay +5; GlowBlow -7, BlackSwans -3, CigaretBH -5, MatchupMicro -16. The three winners
+are the candidates for `shield-still:` lines (Princess also `shield-exit0:`), to be confirmed on fresh seeds and then
+on the PC over the whole field by the usual card gate. pc-shield-still (PR #510, 2026-10-31) measured Musashi,
+Princess and CassiusClay with the still shield on and did not pick them; the cloud and the PC have disagreed on
+shield robots before, so the PC read decides.

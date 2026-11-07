@@ -3,9 +3,7 @@ package hadur117.core.shieldmode;
 /**
  * SHIELD-10: the value that recurs most often among the last {@code capacity} added, two
  * values counting as the same when they are within {@code tolerance}. A tie goes to the value
- * added most recently. SHIELD-24: a {@code zeroBonus} above 0 counts a value within 0.01 of
- * zero as that many extra recurrences, so a head-on aim is kept until another offset recurs
- * more often than that. Each add is linear in the capacity: every kept value carries how many
+ * added most recently. Each add is linear in the capacity: every kept value carries how many
  * kept values lie within the tolerance of it, and the add and the eviction update those counts.
  * Bounded (RES-2) and deterministic (CORE-2).
  */
@@ -15,7 +13,6 @@ final class ModalOffset {
     private final int[] counts;
     private final long[] added;
     private final double tolerance;
-    private final double zeroBonus;
     private int size;
     private int next;
     private long serial;
@@ -27,23 +24,11 @@ final class ModalOffset {
      * @param tolerance how close two values must be to count as the same
      */
     ModalOffset(int capacity, double tolerance) {
-        this(capacity, tolerance, 0);
-    }
-
-    /**
-     * An empty set that prefers a near-zero value (SHIELD-24).
-     *
-     * @param capacity the values kept, at least 1
-     * @param tolerance how close two values must be to count as the same
-     * @param zeroBonus the recurrences a value within 0.01 of zero counts over its own
-     */
-    ModalOffset(int capacity, double tolerance, double zeroBonus) {
         if (capacity < 1) throw new IllegalArgumentException("capacity " + capacity);
         values = new double[capacity];
         counts = new int[capacity];
         added = new long[capacity];
         this.tolerance = tolerance;
-        this.zeroBonus = zeroBonus;
     }
 
     /**
@@ -82,12 +67,10 @@ final class ModalOffset {
      */
     double mode() {
         int best = -1;
-        double bestScore = 0;
         for (int j = 0; j < size; j++) {
-            double score = counts[j] + (Math.abs(values[j]) < 0.01 ? zeroBonus : 0);
-            if (best < 0 || score > bestScore || (score == bestScore && added[j] > added[best])) {
+            if (best < 0 || counts[j] > counts[best]
+                    || (counts[j] == counts[best] && added[j] > added[best])) {
                 best = j;
-                bestScore = score;
             }
         }
         return best < 0 ? 0 : values[best];

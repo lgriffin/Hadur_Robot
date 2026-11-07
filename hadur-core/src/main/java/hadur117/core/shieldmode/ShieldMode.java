@@ -355,14 +355,9 @@ public final class ShieldMode {
         this.bases = this.design.bases();
         this.predictors = 3 * bases;
         if (this.design.mode) {
-            // SHIELD-24: with recent, the mode is over the last RECENT_ERRORS bullets only, and a
-            // head-on aim counts ZERO_BONUS recurrences over its own, so it is kept until another
-            // offset recurs more often than that.
-            int kept = this.design.recent ? ShieldDesign.RECENT_ERRORS : ShieldDesign.KEPT_ERRORS;
-            double bonus = this.design.recent ? ShieldDesign.ZERO_BONUS : 0;
             for (int b = 0; b < MAX_BASES; b++) {
-                modal[b] = new ModalOffset(kept, EXACT, bonus);
-                directionalModal[b] = new ModalOffset(kept, EXACT, bonus);
+                modal[b] = new ModalOffset(ShieldDesign.KEPT_ERRORS, EXACT);
+                directionalModal[b] = new ModalOffset(ShieldDesign.KEPT_ERRORS, EXACT);
             }
         }
         newRound(0);
