@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""pc-tailor-field card helpers (BENCH-197): the pilot gate and the confirm build's lists.
+"""Per-robot card helpers (first pc-tailor-field, BENCH-197; now pc-race-power, BENCH-206): the pilot gate and the
+confirm build's lists.
 
-  python3 tools/x5_card.py pilot ARMS.tsv --names PILOT.txt --check x5=panel-x5.txt@2 --check rd=panel-rammers.txt@1 \
+  python3 tools/x5_card.py pilot ARMS.tsv --names PILOT.txt --check x5=panel-x5.txt@2 \
       [--ref c] --out PILOT.md --stop-file STOP
   python3 tools/x5_card.py lists PICK.tsv --list-prefix work/tf --env-out ENV.sh --abl-out ABL.txt --arms-out ARMS \
       --version 3.21
@@ -87,7 +88,6 @@ LEVERS = {
     "x5": ("x5list", "X5_POWER", "x5"),    # POW-16 hidden bullet speed (gun)
     "gs": ("gslist", "GUN_STACK", "gl"),   # GUN-11 gun stack (gun)
     "fp": ("fplist", "FULL_OFF", "fp"),    # POW-15 no full-power rules (gun)
-    "rd": ("rdlist", "RAM_DODGE", "rd"),   # RAM-6 heavy rammer dodge (movement)
     "sg": ("sgolist", "STOP_GO", "wl"),    # POISON-2 stop-and-go, WavePoison (movement)
     "sw": ("sgo2list", "STOP_GO2", "wm"),  # POISON-2 stop-and-go, WavePoisonShift (movement)
     "hj": ("hjlist", "HEAT_JIT", "hl"),    # MOVE-28 stop-and-start (movement)

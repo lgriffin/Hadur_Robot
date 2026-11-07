@@ -163,20 +163,23 @@ class ShieldListResourceTest {
         for (String name : ShieldTableData.stopGos()) lines.add(ShieldList.STOP_GO_PREFIX + " " + name);
         for (String name : ShieldTableData.stopGoShifts()) lines.add(ShieldList.STOP_GO_SHIFT_PREFIX + " " + name);
         ShieldList list = ShieldList.parse(lines);
-        assertEquals(18 + 8 + 1 + 3, ShieldTableData.stopGos().length);
-        assertEquals(35 + 12 + 2 + 2 + 1, ShieldTableData.stopGoShifts().length);
-        assertEquals(18 + 8 + 1 + 3, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGos())).size(), "no duplicates");
-        assertEquals(35 + 12 + 2 + 2 + 1, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGoShifts())).size(), "no duplicates");
+        assertEquals(18 + 8 + 1 + 3 + 1, ShieldTableData.stopGos().length);
+        assertEquals(35 + 12 + 2 + 2 + 1 + 3, ShieldTableData.stopGoShifts().length);
+        assertEquals(18 + 8 + 1 + 3 + 1, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGos())).size(), "no duplicates");
+        assertEquals(35 + 12 + 2 + 2 + 1 + 3, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGoShifts())).size(), "no duplicates");
         // DuelistMicroMkII (PR #263) and Vanessa03 (PR #276) were on both; pc-rival-confirm (PR #537) measured
         // them off the shield list, so stop-and-go now drives. The set stays as a guard.
+        // pc-tailor-field (BENCH-197, PR #686) banked two stop-and-go picks on shielded robots as measured: they act
+        // whenever the shield is not driving (Shiva +7.2 on the fresh-seed confirm).
+        java.util.Set<String> tailored = java.util.Set.of("cf.proto.Shiva 2.2", "wompi.Numbat 1.9");
         java.util.Set<String> both = java.util.Set.of("davidalves.net.DuelistMicroMkII 1.1", "rcb.Vanessa03 0");
         for (String name : ShieldTableData.stopGos()) {
             assertEquals(1, list.stopGo(name), name);
-            assertTrue(!list.matches(name) || both.contains(name), "a stop-and-go robot is not shielded: " + name);
+            assertTrue(!list.matches(name) || both.contains(name) || tailored.contains(name), "a stop-and-go robot is not shielded: " + name);
         }
         for (String name : ShieldTableData.stopGoShifts()) {
             assertEquals(2, list.stopGo(name), name);
-            assertTrue(!list.matches(name) || both.contains(name), "a stop-and-go robot is not shielded: " + name);
+            assertTrue(!list.matches(name) || both.contains(name) || tailored.contains(name), "a stop-and-go robot is not shielded: " + name);
         }
         assertEquals(0, list.stopGo("dft.Cyanide 1.90"));
         // pc-rival-confirm (PR #537): these two were measured off the shield list, so stop-and-go drives.
@@ -254,10 +257,12 @@ class ShieldListResourceTest {
         java.util.List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
         for (String n : ShieldTableData.flatOns()) lines.add(ShieldList.FLAT_ON_PREFIX + " " + n);
         ShieldList list = ShieldList.parse(lines);
-        assertEquals(2, ShieldTableData.flatOns().length);
+        assertEquals(2 + 4, ShieldTableData.flatOns().length, "pc-flat-on and pc-tailor-field (BENCH-197) picks");
         for (String n : ShieldTableData.flatOns()) {
             assertTrue(list.flatOn(n), n + " surfs with the flatteners on");
-            assertTrue(!list.matches(n), n + " is surfed, not shielded");
+            // pc-tailor-field (BENCH-197) banked two flat-on picks on shielded robots, acting when the shield is not driving.
+            assertTrue(!list.matches(n) || java.util.Set.of("apv.NanoLauLectrikTheCannibal 1.1", "nz.jdc.micro.HedgehogP 1.2").contains(n),
+                n + " is surfed, not shielded");
         }
         assertTrue(!list.flatOn("lxx.Tomcat 3.68"), "Tomcat lost on the confirm (-3.9)");
     }
