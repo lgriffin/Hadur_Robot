@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-farm",
- "updated": 1794070848.49138,
+ "updated": 1794071756.0595098,
  "steps": {
   "tfprep": {
    "status": "done",
@@ -206,8 +206,8 @@
   {
    "step": "tfnl",
    "started": 1794070106.0245895,
-   "updated": 1794070848.4836307,
-   "elapsed": 742.4590411186218,
+   "updated": 1794071756.0582893,
+   "elapsed": 1650.0336997509003,
    "expected": 552,
    "panel": null,
    "field": null,
@@ -215,36 +215,36 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 115,
+   "battles": 336,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 557.6065170898171,
-   "eta": 2821.3443562507628,
-   "fraction": 0.20833333333333334,
-   "last_battle_age": 0.7600135803222656,
+   "rate": 733.0759366809351,
+   "eta": 1060.7359498398644,
+   "fraction": 0.6086956521739131,
+   "last_battle_age": 79.63911890983582,
    "rules": [
     {
      "rule": "fails 60",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 115"
+     "detail": "0 failed of 336"
     },
     {
      "rule": "stall 30m",
      "action": "halt",
      "state": "ok",
-     "detail": "last battle 0 min ago"
+     "detail": "last battle 1 min ago"
     },
     {
      "rule": "skips 60 over 200",
      "action": "halt",
-     "state": "waiting",
-     "detail": "115 of 200 battles to read"
+     "state": "ok",
+     "detail": "18.3 a battle over the last 200 (first 200: 20.4)"
     }
    ],
-   "skips_mean": 21.617391304347827,
-   "skips_last100": 21.76
+   "skips_mean": 19.297619047619047,
+   "skips_last100": 15.86
   }
  ]
 }
