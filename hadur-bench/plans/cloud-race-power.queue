@@ -22,7 +22,7 @@ set OUT = ../docs/bench/local
 set ALERT =
 set PROGRESS_BRANCH = off
 
-prep | mkdir -p bisect ${W} && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && RACE_POWER=plans/race-power-guard.list bash ./build-ablation.sh rplist && test -f bisect/hadur117.Hadur_${V}rp.jar && ./fetch-opponents.sh --set race-guard.txt; cp /mnt/project-files/bench-opponents/oog.mega.saguaro.Saguaro_1.1.jar opponents/ 2>/dev/null; mvn -q compile
+prep | mkdir -p bisect ${W} && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && RACE_POWER=plans/race-power-guard.list bash ./build-ablation.sh rplist && test -f bisect/hadur117.Hadur_${V}rp.jar && mkdir -p opponents && { cp /mnt/project-files/bench-opponents/oog.mega.saguaro.Saguaro_1.1.jar opponents/ 2>/dev/null || true; } && ./fetch-opponents.sh --set race-guard.txt && mvn -q compile
 
 bench | sh ./bench-top20.sh ${C} --set race-guard.txt --seeds 3 --seed-base 52000 --arms plans/race-power.arms --out ${W} --label race-power --shuffle-jobs --failed-ok
   after: prep
@@ -36,15 +36,18 @@ bench | sh ./bench-top20.sh ${C} --set race-guard.txt --seeds 3 --seed-base 5200
 pick | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_race-power-screen.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 5 --out-tsv ${OUT}/race-power-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_race-power-pick.md
   after: bench
 
-# Confirm: the robots the pick locked (docs/bench/local/race-power-pick.tsv, listed in panel-race-confirm.txt) at 6 fresh
-# seeds from 52100, same arms (rp already names every panel robot). Holds when rp's low end over c and aa stays above 0
+# Confirm: the robots the pick locked (docs/bench/local/race-power-pick.tsv, rows won by rp) at 6 fresh seeds from 52100,
+# same arms (rp already names every panel robot). panel-race-confirm.txt is rebuilt from that pick, so the confirm always
+# fights what this screen chose; an empty pick stops the card here. Holds when rp's low end over c and aa stays above 0
 # on them.
-confirm | sh ./bench-top20.sh ${C} --set panel-race-confirm.txt --seeds 6 --seed-base 52100 --arms plans/race-power.arms --out work/race-power2 --label race-power2 --shuffle-jobs --failed-ok
+confirm | awk -F'\t' 'NR==FNR { if ($2 == "rp") keep[$1] = 1; next } /^[ \t]*#/ { next } { n = $1; sub(/[ \t]*\|.*/, "", n); sub(/^[ \t]+/, "", n); if (n in keep) print }' ${OUT}/race-power-pick.tsv race-guard.txt > panel-race-confirm.txt && test -s panel-race-confirm.txt && sh ./bench-top20.sh ${C} --set panel-race-confirm.txt --seeds 6 --seed-base 52100 --arms plans/race-power.arms --out work/race-power2 --label race-power2 --shuffle-jobs --failed-ok
   after: pick
   watch:
   stop: fails 30
   stop: dead 8
   stop: stall 30m
 
-gate | python3 ../data/tools/multiarm.py work/race-power2/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_race-power-confirm.md
+# Report only: the thread reads the verdict (low end of rp over c and aa above 0 per robot) from this report; a
+# cloud card ships nothing, so there is no automatic pass.
+report | python3 ../data/tools/multiarm.py work/race-power2/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_race-power-confirm.md
   after: confirm

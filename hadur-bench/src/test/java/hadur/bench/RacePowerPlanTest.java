@@ -39,14 +39,17 @@ class RacePowerPlanTest {
 
     @Test
     @Tag("BENCH-205")
-    @DisplayName("the steps chain prep, bench, pick, confirm, gate; the confirm uses fresh seeds; the bench resumes and stops on A/A drift")
+    @DisplayName("the steps chain prep, bench, pick, confirm, report; the confirm fights the pick on fresh seeds; the bench resumes and stops on A/A drift")
     void stepsChain() throws IOException {
         String q = Files.readString(QUEUE);
         assertTrue(q.contains("RACE_POWER=plans/race-power-guard.list bash ./build-ablation.sh rplist"));
         assertTrue(q.contains("--set race-guard.txt --seeds 3 --seed-base 52000 --arms plans/race-power.arms"));
         assertTrue(q.contains("--set panel-race-confirm.txt --seeds 6 --seed-base 52100 --arms plans/race-power.arms"));
         assertTrue(q.contains("stop: aa after 20%"));
-        for (String[] s : new String[][] {{"bench", "prep"}, {"pick", "bench"}, {"confirm", "pick"}, {"gate", "confirm"}}) {
+        assertTrue(q.contains("race-power-pick.tsv race-guard.txt > panel-race-confirm.txt && test -s panel-race-confirm.txt"),
+            "the confirm panel comes from this screen's pick");
+        assertTrue(!q.contains("--set race-guard.txt; "), "prep fails as a unit");
+        for (String[] s : new String[][] {{"bench", "prep"}, {"pick", "bench"}, {"confirm", "pick"}, {"report", "confirm"}}) {
             int at = q.indexOf("\n" + s[0] + " |");
             assertTrue(at >= 0, s[0]);
             assertTrue(q.indexOf("after: " + s[1], at) > at, s[0] + " after " + s[1]);
