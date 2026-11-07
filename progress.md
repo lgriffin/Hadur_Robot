@@ -1,6 +1,6 @@
 # Queue pc-race-power: progress
 
-Updated 2026-11-07 21:00:06 PC time (21:00 UTC), runner pid 58972.
+Updated 2026-11-07 21:15:16 PC time (21:15 UTC), runner pid 58972.
 
 - `prep` done, exit 0 in 2 min
 - `pilot` done, exit 0 in 6 min
@@ -36,31 +36,30 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### screen
 
-**3543 of 7164 battles** (49%), 0 failed, 48 read back from an earlier run. Running 3.4 h, 942 battles/h, about 3.8 h left (ends ~00:50 PC time). Last battle 0 min ago.
-Skipped turns a battle: 59.0 overall, first 100 50.8, last 100 57.2; engine disables 1807.
+**3767 of 7164 battles** (53%), 0 failed, 48 read back from an earlier run. Running 3.7 h, 898 battles/h, about 3.8 h left (ends ~01:02 PC time). Last battle 0 min ago.
+Skipped turns a battle: 59.0 overall, first 100 50.8, last 100 61.0; engine disables 1928.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 1178 | 0 | 92.84 | - | - | - | 59.9 |
-| aa | 1182 | 0 | 92.63 | -0.20 (894 robots) | ±0.22 | -0.54 .. +0.14 | 57.9 |
-| rp | 1183 | 0 | 92.82 | +0.09 (892 robots) | ±0.22 | -0.25 .. +0.43 | 58.4 |
+| c | 1256 | 0 | 92.78 | - | - | - | 59.7 |
+| aa | 1254 | 0 | 92.61 | -0.17 (930 robots) | ±0.21 | -0.50 .. +0.16 | 58.2 |
+| rp | 1257 | 0 | 92.76 | +0.05 (930 robots) | ±0.22 | -0.28 .. +0.39 | 58.4 |
 
 APS = mean difference over the robots read x 1194 panel robots / 1217 pairings.
-A/A: aa - c -0.21 pts over 894 robots; 1% band ±0.34 (inside).
+A/A: aa - c -0.17 pts over 930 robots; 1% band ±0.33 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 3543 |
+| `fails 30` | halt | ok | 0 failed of 3767 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 90 over 200` | halt | ok | 59.7 a battle over the last 200 (first 200: 54.3) |
+| `skips 90 over 200` | halt | ok | 61.2 a battle over the last 200 (first 200: 54.3) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 3621 battles unrun (about 3.8 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 3397 battles unrun (about 3.8 h); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-17:28:02 start prep
 17:28:04 progress pushed to origin claude/pc-race-power-progress (every 15 min)
 17:29:48 prep exit=0 in 106 s
 17:29:48 start pilot
@@ -75,4 +74,5 @@ Stopping now would leave 3621 battles unrun (about 3.8 h); every battle already 
 19:31:12 progress screen: 2164/7164 (30%) battles, 1012/h, ETA 4.9 h, 0 failed, skips 52.1/battle (last 100), aa -0.29, rp +0.11
 20:01:30 progress screen: 2656/7164 (37%) battles, 968/h, ETA 4.7 h, 0 failed, skips 55.3/battle (last 100), aa -0.25, rp +0.15
 20:31:49 progress screen: 3095/7164 (43%) battles, 870/h, ETA 4.7 h, 0 failed, skips 62.9/battle (last 100), aa -0.26, rp +0.11
+21:02:08 progress screen: 3572/7164 (50%) battles, 932/h, ETA 3.9 h, 0 failed, skips 53.6/battle (last 100), aa -0.20, rp +0.07
 ```
