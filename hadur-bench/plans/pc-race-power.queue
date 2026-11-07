@@ -29,8 +29,11 @@
 # over the last 200, or no battle in 30 minutes; every battle fought is kept and a rerun resumes. Nothing here ships:
 # the confirmed lines go into ShieldTableData.racePowers() by PR; the release rule stands.
 
+# --failed-ok (BENCH-187): the bench drops broken-1.11.2.txt before it starts, but a robot newly found not to load
+# still leaves failed rows the readers skip. With the flag a step exits 0 while under 1 battle in 20 failed, so one
+# such robot cannot fail an 11 h screen at its end; the 30-failure stop rule still halts a real fault.
 set V = 3.21
-set P = --parallel 12 --no-truth-log
+set P = --parallel 12 --no-truth-log --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
 set W = work/rpf
 set W2 = work/rpf-2

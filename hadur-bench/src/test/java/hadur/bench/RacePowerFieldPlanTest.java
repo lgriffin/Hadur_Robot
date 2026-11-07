@@ -56,6 +56,7 @@ class RacePowerFieldPlanTest {
         assertTrue(block(q, "gate").contains("gate ${W2}/arms.tsv --arm xr --panel work/panel-rpf-picks.txt --bar 0.03"));
         assertTrue(block(q, "pr").contains("open_results_pr.sh claude/pc-race-power-results"));
         assertTrue(q.contains("Why it should win"));
+        assertTrue(q.contains("set P = --parallel 12 --no-truth-log --failed-ok"), "robots that never load do not fail a step (BENCH-187)");
         for (String s : List.of("pilot", "screen", "confirm")) {
             assertTrue(block(q, s).contains("stop: skips 90 over 200") && block(q, s).contains("stop: stall 30m"), s);
         }
