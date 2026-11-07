@@ -130,34 +130,29 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Absolute headings tried, evenly spaced.</div>
 </div>
-<div class="col-first odd-row-color"><code>static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#HEAVY_HIT_COST" class="member-name-link">HEAVY_HIT_COST</a></code></div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#HIT_BOX" class="member-name-link">HIT_BOX</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#RAM-6">RAM-6</a>: the cost a path pays for each shot aim that hits it, against a rammer the table names.</div>
-</div>
-<div class="col-first even-row-color"><code>(package private) static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#HIT_BOX" class="member-name-link">HIT_BOX</a></code></div>
-<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: a bullet within this many px of our centre on both axes counts as a hit (half a robot, plus slack).</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#HIT_COST" class="member-name-link">HIT_COST</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#HIT_COST" class="member-name-link">HIT_COST</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: a candidate path loses this many px of closest approach for each aim one of the rammer's shots would hit it with.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#HORIZON" class="member-name-link">HORIZON</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#HORIZON" class="member-name-link">HORIZON</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Ticks each candidate is played forward.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#MAX_SHOTS" class="member-name-link">MAX_SHOTS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#MAX_SHOTS" class="member-name-link">MAX_SHOTS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: the most shots in flight kept.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#SHOT_HORIZON" class="member-name-link">SHOT_HORIZON</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#SHOT_HORIZON" class="member-name-link">SHOT_HORIZON</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: ticks a candidate is played for the shots: a shot chasing a fleeing robot takes long to reach it.</div>
 </div>
 </div>
@@ -231,15 +226,9 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: the rammer fired.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setHeavyHitCost(boolean)" class="member-name-link">setHeavyHitCost</a><wbr>(boolean&nbsp;heavy)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shotsInFlight()" class="member-name-link">shotsInFlight</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block"><a class="req" href="../../../../requirements.html#RAM-6">RAM-6</a>: whether a path meeting one of the rammer's shots pays <a href="#HEAVY_HIT_COST"><code>HEAVY_HIT_COST</code></a> (true)
- or <a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>'s <a href="#HIT_COST"><code>HIT_COST</code></a> (false).</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shotsInFlight()" class="member-name-link">shotsInFlight</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: the shots in flight, for tests.</div>
 </div>
 </div>
@@ -299,21 +288,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur117.core.move.RamEscape.HIT_COST">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="HEAVY_HIT_COST">
-<h3>HEAVY_HIT_COST</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">HEAVY_HIT_COST</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#RAM-6">RAM-6</a>: the cost a path pays for each shot aim that hits it, against a rammer the table names.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.move.RamEscape.HEAVY_HIT_COST">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
@@ -397,18 +371,6 @@ loadScripts(document, 'script');</script>
 <h3>initRound</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initRound</span>()</div>
 <div class="block">A new round: no heading carried over.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="setHeavyHitCost(boolean)">
-<h3>setHeavyHitCost</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setHeavyHitCost</span><wbr><span class="parameters">(boolean&nbsp;heavy)</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#RAM-6">RAM-6</a>: whether a path meeting one of the rammer's shots pays <a href="#HEAVY_HIT_COST"><code>HEAVY_HIT_COST</code></a> (true)
- or <a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>'s <a href="#HIT_COST"><code>HIT_COST</code></a> (false).</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>heavy</code> - whether the heavy cost is in force</dd>
-</dl>
 </section>
 </li>
 <li>
