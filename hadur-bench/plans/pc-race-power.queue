@@ -21,7 +21,8 @@
 #     on 4 fresh seeds against c and aa before anything ships. Cost: about 7 skipped turns a battle more than master.
 # Pilot (stop rule): the 4 cloud-confirmed robots (panel-race-confirm.txt) x 4 seeds from 10200. When rp's mean gain over
 #   c and aa pooled is under 3 points there, work/rpf.stop is written, every later step skips and the results PR carries
-#   the pilot alone: a pick that cannot reproduce its cloud result on the PC is not worth 11 PC hours.
+#   the pilot alone: a pick that cannot reproduce its cloud result on the PC is not worth 11 PC hours. A screen that
+#   picks no robot writes the same file at prep2, so confirm and gate skip and the results PR carries the screen.
 # screen:  census-312.txt x c/aa/rp x 2 seeds from 10200 (the pilot's first two seeds are reused); pick at a 5-point margin.
 # confirm: the picks x c, aa, xr (rp on the picked robots only) x 4 fresh seeds from 10300; gate +0.03 APS.
 # Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 90+ skipped turns a battle
@@ -54,13 +55,13 @@ screen | if [ -f work/rpf.stop ]; then echo 'pilot: rp under 3 points on the clo
   stop: skips 90 over 200
   stop: stall 30m
 
-pick | if [ -f work/rpf.stop ]; then echo 'pilot stop: skipped'; exit 0; fi && python3 ../data/tools/multiarm.py ${W}/arms.tsv --census census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_rpf-screen.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 5 --out-tsv ${OUT}/rpf-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_rpf-pick.md
+pick | if [ -f work/rpf.stop ]; then echo 'stopped (see work/rpf.stop): skipped'; exit 0; fi && python3 ../data/tools/multiarm.py ${W}/arms.tsv --census census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_rpf-screen.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 5 --out-tsv ${OUT}/rpf-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_rpf-pick.md
   after: screen
 
-prep2 | if [ -f work/rpf.stop ]; then echo 'pilot stop: skipped'; exit 0; fi && python3 tools/pick_panel.py ${OUT}/rpf-pick.tsv census-312.txt work/panel-rpf-picks.txt && grep -v '^#' work/panel-rpf-picks.txt | cut -d'|' -f1 | sed 's/ *$//' | grep . > work/rpf-picks.list && RACE_POWER=work/rpf-picks.list RACE_POWER_SUFFIX=rx bash ./build-ablation.sh rplist && test -f bisect/hadur117.Hadur_${V}rx.jar
+prep2 | if [ -f work/rpf.stop ]; then echo 'stopped (see work/rpf.stop): skipped'; exit 0; fi && if ! python3 tools/pick_panel.py ${OUT}/rpf-pick.tsv census-312.txt work/panel-rpf-picks.txt; then echo 'no robot picked: confirm and gate skip, the PR carries the screen'; echo 'screen picked no robot' > work/rpf.stop; exit 0; fi && grep -v '^#' work/panel-rpf-picks.txt | cut -d'|' -f1 | sed 's/ *$//' | grep . > work/rpf-picks.list && RACE_POWER=work/rpf-picks.list RACE_POWER_SUFFIX=rx bash ./build-ablation.sh rplist && test -f bisect/hadur117.Hadur_${V}rx.jar
   after: pick
 
-confirm | if [ -f work/rpf.stop ]; then echo 'pilot stop: skipped'; exit 0; fi && ./bench-top20.sh ${C} ${P} --set work/panel-rpf-picks.txt --seeds 4 --seed-base 10300 --arms plans/race-power-confirm.arms --out ${W2} --label rpf-2 --shuffle-jobs
+confirm | if [ -f work/rpf.stop ]; then echo 'stopped (see work/rpf.stop): skipped'; exit 0; fi && ./bench-top20.sh ${C} ${P} --set work/panel-rpf-picks.txt --seeds 4 --seed-base 10300 --arms plans/race-power-confirm.arms --out ${W2} --label rpf-2 --shuffle-jobs
   after: prep2
   watch: field=1217
   stop: fails 30
@@ -68,7 +69,7 @@ confirm | if [ -f work/rpf.stop ]; then echo 'pilot stop: skipped'; exit 0; fi &
   stop: skips 90 over 200
   stop: stall 30m
 
-gate | if [ -f work/rpf.stop ]; then echo 'pilot stop: skipped'; exit 0; fi && python3 ../data/tools/multiarm.py ${W2}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_rpf-2.md && python3 tools/shield_s2.py gate ${W2}/arms.tsv --arm xr --panel work/panel-rpf-picks.txt --bar 0.03 --out ${OUT}/$(date +%Y-%m-%d)_rpf-2-gate.md && python3 ../data/tools/mode_table.py ${W2}/arms.tsv --margin 3 --out-tsv ${OUT}/rpf-2-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_rpf-2-pick.md && python3 tools/per_robot.py ${W2}/arms.tsv --arms xr --out ${OUT}/$(date +%Y-%m-%d)_rpf-2-per-robot.md --out-tsv ${OUT}/rpf-2-per-robot.tsv
+gate | if [ -f work/rpf.stop ]; then echo 'stopped (see work/rpf.stop): skipped'; exit 0; fi && python3 ../data/tools/multiarm.py ${W2}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_rpf-2.md && python3 tools/shield_s2.py gate ${W2}/arms.tsv --arm xr --panel work/panel-rpf-picks.txt --bar 0.03 --out ${OUT}/$(date +%Y-%m-%d)_rpf-2-gate.md && python3 ../data/tools/mode_table.py ${W2}/arms.tsv --margin 3 --out-tsv ${OUT}/rpf-2-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_rpf-2-pick.md && python3 tools/per_robot.py ${W2}/arms.tsv --arms xr --out ${OUT}/$(date +%Y-%m-%d)_rpf-2-per-robot.md --out-tsv ${OUT}/rpf-2-per-robot.tsv
   after: confirm
 
 pr | bash tools/open_results_pr.sh claude/pc-race-power-results "1v1 per robot, whole field: energy-race bullet power, each robot on it only where it wins" ${OUT}/*_rpf*.md $(find ${OUT} -maxdepth 1 -name 'rpf*.tsv' -size +0c)

@@ -50,6 +50,7 @@ class RacePowerFieldPlanTest {
         for (String s : List.of("screen", "pick", "prep2", "confirm", "gate")) {
             assertTrue(block(q, s).contains("if [ -f work/rpf.stop ]; then"), s + " skips after a pilot stop");
         }
+        assertTrue(block(q, "prep2").contains("echo 'screen picked no robot' > work/rpf.stop; exit 0"), "an empty pick skips confirm and gate");
         assertTrue(block(q, "prep2").contains("RACE_POWER=work/rpf-picks.list RACE_POWER_SUFFIX=rx bash ./build-ablation.sh rplist"));
         assertTrue(block(q, "confirm").contains("--seeds 4 --seed-base 10300 --arms plans/race-power-confirm.arms"));
         assertTrue(block(q, "gate").contains("gate ${W2}/arms.tsv --arm xr --panel work/panel-rpf-picks.txt --bar 0.03"));
