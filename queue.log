@@ -10,3 +10,6 @@
 15:30:27 start tffo
 15:30:27 watching tffo: 3 stop rule(s)
 15:52:13 progress tffo: 244/552 (44%) battles, 672/h, ETA 27 min, 0 failed, skips 19.2/battle (last 100)
+16:10:15 tffo exit=0 in 2388 s
+16:10:15 start tfcl
+16:10:15 watching tfcl: 3 stop rule(s)
