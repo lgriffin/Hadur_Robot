@@ -2008,7 +2008,7 @@ failed and are removed (3.22 cleanup); the mimics live on in MOVE-33 and MOVE-34
   from the last 20 bullets, BeepBoop's head-on bonus) read within noise of the still shield on 7 robots and worse on
   Princess; the exit, not the offset, is the constraint. Code removed; read in docs/bench/shield-recent.md.
 - **BENCH-209.** The shield audit's cloud read (docs/bench/shield-recent.md): the still shield beat master on
-  Musashi (+20 on 6 seeds) and Princess (+11 on 2, +2 on 4 with the damage exit off) and lost on the other five
+  Musashi (+20 on 6 seeds) and Princess (+11 on 2 seeds; with the damage exit off +5 on one seed and +2 on 4 fresh ones) and lost on the other five
   BeepBoop-only robots read. `pc-shield-audit` re-measures the two on 12 fresh PC seeds against c and aa before any
   line ships; pc-shield-still (PR #510) did not pick them, so the PC decides. Test: `ShieldAuditPlanTest`.
 - **SHIELD-21.** pc-shield-still (PR #510) failed SHIELD-20 globally (+0.09 +- 0.12 APS) but split by robot (31

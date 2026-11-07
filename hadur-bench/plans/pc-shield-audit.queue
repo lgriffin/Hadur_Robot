@@ -9,15 +9,17 @@
 #   - Per-opponent tailoring: each line names one robot; every other robot, team and melee play bit for bit as master.
 #   - Measured: the shield audit of 2026-11-07 found 58 robots BeepBoop 2.0 shields and we do not. In the cloud the
 #     still shield (list add + shield-still) beat master on Musashi by +20 on 6 seeds (every seed, 90-99 against
-#     70-81) and on Princess by +11 on 2 seeds, +2 on 4 more with the damage exit off; it lost on the other five of
-#     the seven read (GlowBlow, BlackSwans, CigaretBH, MatchupMicro, CassiusClay), which stay off.
+#     70-81) and on Princess by +11 on 2 seeds (9901-9902); with the damage exit off Princess read +5 on seed 9801
+#     and +2 on 4 fresh seeds, against -1 without it. Princess is the weaker candidate and the PC decides it. The still
+#     shield lost on the other five of the seven read (GlowBlow, BlackSwans, CigaretBH, MatchupMicro, CassiusClay), which stay off.
 #   - Mechanism: Musashi fires power 3 head-on from range; our shield intercepts 99.8% (4 hits in 35 rounds) and the
 #     damage race is one-sided. Princess's learned aim moves after three exact rounds; SHIELD-11's 150-damage exit
 #     ended the mode before it re-learnt, so Princess carries exit off (as Smoke, Cyprus, Avipes, GlowBlowAPM do).
 #   - Risk: pc-shield-still (PR #510, 2026-10-31) fought both with the still shield on and did not pick them at its
 #     5-point margin; cloud and PC have disagreed on shield robots before. This card re-measures on 12 fresh seeds
 #     against master and its A/A copy; a robot ships only at a 3-point margin with its 95% low end above 0.
-# gate: sa at +0.01 APS over the 2 / 1,217 pairings with the 95% low end above 0, A/A inside its band; a 3-point
+# gate: sa at +0.01 APS (the two robots' gains summed and read over the 1,217-robot field, as every per-robot card;
+# `watch: field=1217` is that normalisation, not a battle count) with the 95% low end above 0, A/A inside its band; a 3-point
 # per-robot pick names the lines to ship. No pilot or futility rule: two robots are too few for an interim read
 # (as pc-rival-confirm).
 # Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle
