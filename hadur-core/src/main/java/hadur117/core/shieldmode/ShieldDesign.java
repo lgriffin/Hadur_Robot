@@ -76,9 +76,11 @@ public final class ShieldDesign {
     public static final int MOVE_STOP_TICKS = 5;
     /** SHIELD-18: the exact matches a shipped aim starts its predictor with. */
     public static final int AIM_PRIOR = 3;
+    /** SHIELD-24: with recent, the bullets the offsets and the predictor choice are read from. */
+    public static final int RECENT_ERRORS = 20;
 
     /** 3.12's shield: every switch off. */
-    public static final ShieldDesign NONE = new ShieldDesign(false, false, false, false, false, false, false, false, false, false, false, false, false);
+    public static final ShieldDesign NONE = new ShieldDesign(false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
     /**
      * The design the robot ships (SHIELD-13; SHIELD-14's wall since 3.15, +0.19 +/- 0.09 APS in the
@@ -114,10 +116,16 @@ public final class ShieldDesign {
     public final boolean cheap;
     /** SHIELD-23: plans capped at the enemy's power times the energy ratio. */
     public final boolean ratio;
+    /**
+     * SHIELD-24: the learned offsets are the most frequent error among the last
+     * {@value #RECENT_ERRORS} bullets, not the last {@value #KEPT_ERRORS}, and the predictor used is
+     * the one exact for most of those, so an aim that moves is followed within a score of bullets.
+     */
+    public final boolean recent;
 
     private ShieldDesign(boolean hold, boolean learn, boolean mode, boolean stay, boolean turn,
                          boolean wall, boolean trial, boolean prior, boolean move, boolean rec,
-                         boolean still, boolean cheap, boolean ratio) {
+                         boolean still, boolean cheap, boolean ratio, boolean recent) {
         this.hold = hold;
         this.learn = learn;
         this.mode = mode;
@@ -131,11 +139,12 @@ public final class ShieldDesign {
         this.still = still;
         this.cheap = cheap;
         this.ratio = ratio;
+        this.recent = recent;
     }
 
     /**
      * The design a comma-separated list of switch names turns on ({@code hold}, {@code learn},
-     * {@code mode}, {@code stay}, {@code turn}, {@code wall}, {@code trial}, {@code prior}, {@code move}, {@code rec}, {@code still}, {@code cheap}, {@code ratio}, or {@code all}); blank
+     * {@code mode}, {@code stay}, {@code turn}, {@code wall}, {@code trial}, {@code prior}, {@code move}, {@code rec}, {@code still}, {@code cheap}, {@code ratio}, {@code recent}, or {@code all}); blank
      * is {@link #NONE}.
      *
      * @param flags the switches
@@ -145,7 +154,7 @@ public final class ShieldDesign {
     public static ShieldDesign parse(String flags) {
         boolean hold = false, learn = false, mode = false, stay = false, turn = false,
             wall = false, trial = false, prior = false, move = false, rec = false, still = false,
-            cheap = false, ratio = false;
+            cheap = false, ratio = false, recent = false;
         for (String raw : flags.split(",")) {
             String f = raw.trim().toLowerCase(Locale.ROOT);
             switch (f) {
@@ -163,14 +172,16 @@ public final class ShieldDesign {
                 case "still": still = true; break;
                 case "cheap": cheap = true; break;
                 case "ratio": ratio = true; break;
+                case "recent": recent = true; break;
                 case "all": hold = learn = mode = stay = turn = true; break;
                 default: throw new IllegalArgumentException("unknown shield switch: " + raw);
             }
         }
-        if (!(hold || learn || mode || stay || turn || wall || trial || prior || move || rec || still || cheap || ratio)) {
+        if (!(hold || learn || mode || stay || turn || wall || trial || prior || move || rec || still || cheap || ratio
+                || recent)) {
             return NONE;
         }
-        return new ShieldDesign(hold, learn, mode, stay, turn, wall, trial, prior, move, rec, still, cheap, ratio);
+        return new ShieldDesign(hold, learn, mode, stay, turn, wall, trial, prior, move, rec, still, cheap, ratio, recent);
     }
 
     /**
@@ -216,6 +227,7 @@ public final class ShieldDesign {
         if (still) b.append(",still");
         if (cheap) b.append(",cheap");
         if (ratio) b.append(",ratio");
+        if (recent) b.append(",recent");
         return b.length() == 0 ? "none" : b.substring(1);
     }
 }
