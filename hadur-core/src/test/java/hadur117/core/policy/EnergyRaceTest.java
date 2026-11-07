@@ -14,6 +14,7 @@ class EnergyRaceTest {
         EnergyRace r = new EnergyRace();
         for (int k = 0; k < ourShots; k++) r.ours(ourPower, k < ourHits);
         for (int k = 0; k < theirShots; k++) r.theirs(theirPower, k < theirHits);
+        r.converge();
         return r;
     }
 
@@ -24,6 +25,7 @@ class EnergyRaceTest {
         EnergyRace r = race(EnergyRace.MIN_SHOTS - 1, 2, 2.0, 30, 3, 2.0);
         assertTrue(Double.isNaN(r.choose(100, 100)));
         r.ours(2.0, false);
+        r.converge();
         assertTrue(!Double.isNaN(r.choose(100, 100)));
     }
 

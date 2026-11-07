@@ -24,7 +24,8 @@ import hadur117.core.physics.Rules;
  * other powers by the ratio of maximum escape angles: a slower bullet gives the target a wider
  * arc to be in. Range, walls, ramming and bullet shadows are not modelled.</p>
  *
- * <p>Until both sides have {@link #MIN_SHOTS} resolved shots, {@link #choose} returns NaN and the
+ * <p>The solve is spread over the calls, {@link #ROWS_PER_CALL} grid rows each. Until both sides have
+ * {@link #MIN_SHOTS} resolved shots and {@link #WARMUP_SWEEPS} sweeps are done, {@link #choose} returns NaN and the
  * other rules stand. Bounded: a fixed grid, six counters, no allocation per tick (RES-2).</p>
  */
 public final class EnergyRace {
@@ -42,9 +43,14 @@ public final class EnergyRace {
     static final double OUR_PRIOR = 0.12;
     static final double THEIR_PRIOR = 0.10;
     static final double PRIOR_SHOTS = 15.0;
-    /** Sweeps on a fresh solve and on a warm one after the counts change. */
-    static final int COLD_SWEEPS = 25;
-    static final int WARM_SWEEPS = 3;
+    /**
+     * Grid rows swept a call: the solve is spread over ticks, a full sweep every nine, so no tick
+     * pays for a whole solve (a whole solve a call cost the smoke battle 63 skipped turns against 9).
+     * The counts move slowly, so values that trail them by a few sweeps stay close.
+     */
+    static final int ROWS_PER_CALL = 3;
+    /** Full sweeps from the starting guess before the race decides. */
+    static final int WARMUP_SWEEPS = 4;
 
     private static final int N = GRID.length;
 
@@ -95,6 +101,7 @@ public final class EnergyRace {
     public double choose(double ourEnergy, double theirEnergy) {
         if (!ready() || !(ourEnergy > POWERS[0]) || !(theirEnergy > 0)) return Double.NaN;
         Model m = refresh();
+        if (sweepsDone < WARMUP_SWEEPS) return Double.NaN;
         double best = Double.NEGATIVE_INFINITY;
         double pick = Double.NaN;
         for (double p : POWERS) {
@@ -110,19 +117,43 @@ public final class EnergyRace {
 
     /** The value of a pair of energies, for tests: expected score to come, ours less theirs. */
     double valueAt(double ourEnergy, double theirEnergy) {
-        refresh();
+        converge();
         return interp(ourEnergy, theirEnergy);
     }
 
     /** The model of the counts now, the grid re-solved when they changed since the last solve. */
     private Model refresh() {
-        if (dirty || !solved || current == null) {
+        if (dirty || current == null) {
             current = model();
-            solve(current, solved ? WARM_SWEEPS : COLD_SWEEPS);
-            solved = true;
             dirty = false;
         }
+        if (!solved) {
+            guess();
+            solved = true;
+            sweepsDone = 0;
+            cursor = 0;
+        }
+        for (int r = 0; r < ROWS_PER_CALL; r++) {
+            for (int j = 0; j < N; j++) value[cursor][j] = stateValue(current, cursor, j);
+            if (++cursor == N) {
+                cursor = 0;
+                sweepsDone++;
+            }
+        }
         return current;
+    }
+
+    /** The next grid row to sweep, and the full sweeps done since the starting guess. */
+    private int cursor;
+    private int sweepsDone;
+
+    /** The starting guess: the energy lead, bounded by the round's stakes. */
+    private void guess() {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                value[i][j] = Math.max(-ROUND_SWING, Math.min(ROUND_SWING, GRID[i] - GRID[j]));
+            }
+        }
     }
 
     private Model current;
@@ -176,14 +207,9 @@ public final class EnergyRace {
 
     // ---- the solve ----------------------------------------------------------------------
 
-    private void solve(Model m, int sweeps) {
-        for (int s = 0; s < sweeps; s++) {
-            for (int i = 0; i < N; i++) {
-                for (int j = 0; j < N; j++) {
-                    value[i][j] = stateValue(m, i, j);
-                }
-            }
-        }
+    /** For tests: sweep until the values settle. */
+    void converge() {
+        for (int k = 0; k < 40 * N / ROWS_PER_CALL; k++) refresh();
     }
 
     /** One grid state's value, the self-referencing share of each power solved in closed form. */
