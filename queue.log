@@ -14,3 +14,7 @@
 16:10:15 start tfcl
 16:10:15 watching tfcl: 3 stop rule(s)
 16:22:29 progress tfcl: 117/552 (21%) battles, 574/h, ETA 45 min, 0 failed, skips 20.2/battle (last 100)
+16:48:26 tfcl exit=0 in 2290 s
+16:48:26 start tfnl
+16:48:26 watching tfnl: 3 stop rule(s)
+16:52:44 progress tfnl: 18/552 (3%) battles, 251/h, ETA 2.1 h, 0 failed, skips 21.1/battle (last 100)
