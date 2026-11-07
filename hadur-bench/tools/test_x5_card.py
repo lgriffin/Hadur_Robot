@@ -82,6 +82,41 @@ class X5CardTest(unittest.TestCase):
         self.assertIn("hadur117.Hadur 3.21hl |", open(out["arms"]).read())
         self.assertEqual(1, x5_card.main(["lists", self.path("p2.tsv", "")] + args))
 
+    def test_lean_puts_each_undecided_robot_on_its_best_allowed_lever(self):
+        census = self.path("census.txt", "# field\na.A 1 | n | a.jar\nb.B 1 | n | b.jar\nk.K 1 | n | k.jar\n"
+                                          "p.P 1 | n | p.jar\nd.D 1 | n | d.jar\ne.E 1 | n | e.jar\n")
+        rows = ""
+        for s in (1, 2):
+            rows += row("c", "a.A 1", s, 0.70) + row("x5", "a.A 1", s, 0.72) + row("hj", "a.A 1", s, 0.73)
+            rows += row("c", "b.B 1", s, 0.70) + row("x5", "b.B 1", s, 0.705) + row("dg", "b.B 1", s, 0.90)
+            rows += row("c", "k.K 1", s, 0.70) + row("gs", "k.K 1", s, 0.80)
+            rows += row("c", "p.P 1", s, 0.50) + row("fp", "p.P 1", s, 0.60)
+            rows += row("c", "d.D 1", s, 0.50) + row("mm", "d.D 1", s, 0.56)
+        screen = self.path("arms.tsv", HEAD + rows)
+        banked = self.path("pick.tsv", "k.K 1\tgs\t10\t2\t2\t2\n")
+        o = {k: os.path.join(self.d, k) for k in ("lean", "set", "pilot")}
+        args = ["lean", screen, "--census", census, "--exclude", banked, "--levers", "x5,gs,fp,sg,sw,hj,fl,mm",
+                "--pick-out", o["lean"], "--set-out", o["set"], "--pilot-out", o["pilot"], "--pilot-every", "2"]
+        self.assertEqual(0, x5_card.main(args))
+        lean = [l.split("\t")[:2] for l in open(o["lean"]).read().splitlines()]
+        self.assertEqual([["a.A 1", "hj"], ["p.P 1", "fp"], ["d.D 1", "mm"]], lean,
+                         "best allowed lever; b.B leans only to dg (left out), k.K is banked, e.E was never fought")
+        body = [l for l in open(o["set"]).read().splitlines() if not l.startswith("#")]
+        self.assertEqual(["a.A 1 | n | a.jar", "p.P 1 | n | p.jar", "d.D 1 | n | d.jar"], body, "census lines, census order")
+        pilot = [l for l in open(o["pilot"]).read().splitlines() if not l.startswith("#")]
+        self.assertEqual(["a.A 1 | n | a.jar", "d.D 1 | n | d.jar"], pilot, "every second leaning robot")
+        self.assertEqual(1, x5_card.main(args[:args.index("--levers") + 1] + ["sg"] + args[args.index("--levers") + 2:]))
+        self.assertEqual(2, x5_card.main(args[:args.index("--levers") + 1] + ["rd"] + args[args.index("--levers") + 2:]),
+                         "a retired lever is refused")
+
+    def test_lists_can_name_the_arm_and_leave_out_the_aa_copy(self):
+        out, prefix, args = self.outs()
+        pick = self.path("pl.tsv", "a.A 1\thj\t2\t0\t2\t2\nb.B 1\tx5\t3\t0\t2\t2\n")
+        self.assertEqual(0, x5_card.main(["lists", pick] + args + ["--arm", "ln", "--no-aa"]))
+        arms = [l for l in open(out["arms"]).read().splitlines() if not l.startswith("#")]
+        self.assertEqual(["c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar",
+                          "ln | hadur117.Hadur 3.21x5hl | bisect/hadur117.Hadur_3.21x5hl.jar"], arms)
+
     def test_levers_match_build_ablation(self):
         here = os.path.dirname(os.path.abspath(__file__))
         script = open(os.path.join(here, "..", "build-ablation.sh"), encoding="utf-8").read()
