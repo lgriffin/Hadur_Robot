@@ -86,7 +86,8 @@ class TailorNearPlanTest {
         String[] steps = {"prep", "pilot", "field", "gate", "pr"};
         ordered(queue, steps);
         watched(queue, steps, "pilot", "field");
-        assertTrue(queue.contains("awk 'NR % 5 == 1' > work/panel-hjf-pilot.txt"));
+        assertTrue(queue.contains("NR == FNR {b[n] = 1; next} !(n in b) && k++ % 5 == 0' broken-1.11.2.txt census-312.txt > work/panel-hjf-pilot.txt"),
+            "the pilot leaves out the robots the bench drops, else it can never be complete");
         assertTrue(queue.contains("--set work/panel-hjf-pilot.txt --seeds 3 --seed-base 9700 --arms plans/hj-field.arms --out ${W}"));
         assertTrue(queue.contains("--check hj=work/panel-hjf-pilot.txt@0 --ref c,aa"));
         assertTrue(queue.contains("--set census-312.txt --seeds 3 --seed-base 9700 --arms plans/hj-field.arms --out ${W}"));

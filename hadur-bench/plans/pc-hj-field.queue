@@ -21,7 +21,8 @@
 #     not once the shot is seen; robots that fire as soon as their gun is cool are dodged earlier.
 #   - Risk: hj ships only if it clears +0.03 APS with its 95% low end above 0 on these fresh seeds, pooled against c
 #     and aa; the per-robot report then names the robots it costs, which stay off the list.
-# Pilot (stop rule): every fifth robot of the field (work/panel-hjf-pilot.txt) x c, aa, hj x 3 seeds from 9700. When
+# Pilot (stop rule): every fifth robot of the field that loads (work/panel-hjf-pilot.txt; broken-1.11.2.txt's robots are
+#   left out first, since the bench drops them and the pilot needs every robot it names) x c, aa, hj x 3 seeds from 9700. When
 #   hj's mean gain over c and aa there is below 0, work/hjf.stop is written, every later step skips and the results PR
 #   carries the pilot alone.
 # field: census-312.txt x c, aa, hj x 3 seeds from 9700 (the pilot's battles are kept); gate +0.03 APS over the field.
@@ -36,7 +37,7 @@ set W = work/hjf
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
 
-prep | git checkout -q master && mkdir -p bisect work && rm -f work/hjf.stop && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && grep -v '^#' census-312.txt | cut -d'|' -f1 | sed 's/ *$//' | grep . > work/field.list && grep -v '^#' census-312.txt | grep . | awk 'NR % 5 == 1' > work/panel-hjf-pilot.txt && bash ./build-ablation.sh aa && HEAT_JIT=work/field.list bash ./build-ablation.sh hjlist && test -f bisect/hadur117.Hadur_${V}aa.jar && test -f bisect/hadur117.Hadur_${V}hl.jar && ./fetch-opponents.sh --set census-312.txt && mvn -q compile
+prep | git checkout -q master && mkdir -p bisect work && rm -f work/hjf.stop && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && grep -v '^#' census-312.txt | cut -d'|' -f1 | sed 's/ *$//' | grep . > work/field.list && awk -F'|' '{gsub(/\r/, "")} /^#/ || !NF {next} {n = $1; gsub(/^ +| +$/, "", n); gsub(/ +/, " ", n)} NR == FNR {b[n] = 1; next} !(n in b) && k++ % 5 == 0' broken-1.11.2.txt census-312.txt > work/panel-hjf-pilot.txt && bash ./build-ablation.sh aa && HEAT_JIT=work/field.list bash ./build-ablation.sh hjlist && test -f bisect/hadur117.Hadur_${V}aa.jar && test -f bisect/hadur117.Hadur_${V}hl.jar && ./fetch-opponents.sh --set census-312.txt && mvn -q compile
 
 pilot | ./bench-top20.sh ${C} ${P} --set work/panel-hjf-pilot.txt --seeds 3 --seed-base 9700 --arms plans/hj-field.arms --out ${W} --label hjf --shuffle-jobs && python3 tools/x5_card.py pilot ${W}/arms.tsv --names work/panel-hjf-pilot.txt --check hj=work/panel-hjf-pilot.txt@0 --ref c,aa --out ${OUT}/$(date +%Y-%m-%d)_hjf-pilot.md --stop-file work/hjf.stop
   after: prep
