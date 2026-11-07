@@ -35,3 +35,16 @@ bench | sh ./bench-top20.sh ${C} --set race-guard.txt --seeds 3 --seed-base 5200
 
 pick | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_race-power-screen.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 5 --out-tsv ${OUT}/race-power-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_race-power-pick.md
   after: bench
+
+# Confirm: the robots the pick locked (docs/bench/local/race-power-pick.tsv, listed in panel-race-confirm.txt) at 6 fresh
+# seeds from 52100, same arms (rp already names every panel robot). Holds when rp's low end over c and aa stays above 0
+# on them.
+confirm | sh ./bench-top20.sh ${C} --set panel-race-confirm.txt --seeds 6 --seed-base 52100 --arms plans/race-power.arms --out work/race-power2 --label race-power2 --shuffle-jobs --failed-ok
+  after: pick
+  watch:
+  stop: fails 30
+  stop: dead 8
+  stop: stall 30m
+
+gate | python3 ../data/tools/multiarm.py work/race-power2/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_race-power-confirm.md
+  after: confirm
