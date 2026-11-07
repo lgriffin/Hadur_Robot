@@ -76,8 +76,10 @@ public final class ShieldDesign {
     public static final int MOVE_STOP_TICKS = 5;
     /** SHIELD-18: the exact matches a shipped aim starts its predictor with. */
     public static final int AIM_PRIOR = 3;
-    /** SHIELD-24: with recent, the bullets the offsets and the predictor choice are read from. */
+    /** SHIELD-24: with recent, the bullets the learned offsets are read from. */
     public static final int RECENT_ERRORS = 20;
+    /** SHIELD-24: with recent, the recurrences a head-on offset (within 0.01) counts over its own. */
+    public static final double ZERO_BONUS = 2;
 
     /** 3.12's shield: every switch off. */
     public static final ShieldDesign NONE = new ShieldDesign(false, false, false, false, false, false, false, false, false, false, false, false, false, false);
@@ -118,8 +120,9 @@ public final class ShieldDesign {
     public final boolean ratio;
     /**
      * SHIELD-24: the learned offsets are the most frequent error among the last
-     * {@value #RECENT_ERRORS} bullets, not the last {@value #KEPT_ERRORS}, and the predictor used is
-     * the one exact for most of those, so an aim that moves is followed within a score of bullets.
+     * {@value #RECENT_ERRORS} bullets, not the last {@value #KEPT_ERRORS}, with a head-on error
+     * counting {@value #ZERO_BONUS} recurrences over its own, so an aim that moves is followed
+     * within a score of bullets and a head-on aim is not left for a stray.
      */
     public final boolean recent;
 

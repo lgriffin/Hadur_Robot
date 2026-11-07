@@ -264,10 +264,6 @@ public final class ShieldMode {
     /** Our shield bullets in flight: {power, heading}, oldest first. */
     private final List<double[]> ownBullets = new ArrayList<>();
     private final int[] exactHits = new int[3 * MAX_BASES];
-    /** SHIELD-24: which predictors were exact for each of the last {@link ShieldDesign#RECENT_ERRORS} bullets, as bits. */
-    private final int[] recentExact = new int[ShieldDesign.RECENT_ERRORS];
-    private int recentCount;
-    private int recentNext;
     private final double[] offsets = new double[MAX_BASES];
     private final double[] directionalOffsets = new double[MAX_BASES];
     private int offsetSamples;
@@ -359,11 +355,14 @@ public final class ShieldMode {
         this.bases = this.design.bases();
         this.predictors = 3 * bases;
         if (this.design.mode) {
-            // SHIELD-24: with recent, the mode is over the last RECENT_ERRORS bullets only.
+            // SHIELD-24: with recent, the mode is over the last RECENT_ERRORS bullets only, and a
+            // head-on aim counts ZERO_BONUS recurrences over its own, so it is kept until another
+            // offset recurs more often than that.
             int kept = this.design.recent ? ShieldDesign.RECENT_ERRORS : ShieldDesign.KEPT_ERRORS;
+            double bonus = this.design.recent ? ShieldDesign.ZERO_BONUS : 0;
             for (int b = 0; b < MAX_BASES; b++) {
-                modal[b] = new ModalOffset(kept, EXACT);
-                directionalModal[b] = new ModalOffset(kept, EXACT);
+                modal[b] = new ModalOffset(kept, EXACT, bonus);
+                directionalModal[b] = new ModalOffset(kept, EXACT, bonus);
             }
         }
         newRound(0);
@@ -510,25 +509,8 @@ public final class ShieldMode {
         return opening;
     }
 
-    /**
-     * The predictor that has matched the most enemy bullets exactly; with SHIELD-24's recent, the
-     * most of the last {@link ShieldDesign#RECENT_ERRORS} bullets. The lowest index on a tie.
-     */
+    /** The predictor that has matched the most enemy bullets exactly. */
     int bestPredictor() {
-        if (design.recent && recentCount > 0) {
-            int best = 0, bestCount = -1;
-            for (int i = 0; i < predictors; i++) {
-                int n = 0;
-                for (int k = 0; k < recentCount; k++) {
-                    if ((recentExact[k] & (1 << i)) != 0) n++;
-                }
-                if (n > bestCount) {
-                    best = i;
-                    bestCount = n;
-                }
-            }
-            return best;
-        }
         int best = 0;
         for (int i = 1; i < predictors; i++) {
             if (exactHits[i] > exactHits[best]) best = i;
@@ -743,18 +725,12 @@ public final class ShieldMode {
      */
     private boolean learn(EnemyWave w, double heading) {
         boolean predicted = false;
-        int exact = 0;
         for (int i = 0; i < predictors; i++) {
             if (Math.abs(Angles.normalRelativeAngle(heading - predicted(w, i))) < EXACT) {
                 exactHits[i]++;
-                exact |= 1 << i;
                 predicted = true;
             }
         }
-        // SHIELD-24: the bullets the recent predictor choice reads.
-        recentExact[recentNext] = exact;
-        recentNext = (recentNext + 1) % recentExact.length;
-        if (recentCount < recentExact.length) recentCount++;
         for (int b = 0; b < bases; b++) {
             double err = Angles.normalRelativeAngle(heading - w.headings[b]);
             if (design.mode) {
