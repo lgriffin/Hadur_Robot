@@ -6,3 +6,6 @@
 14:51:16 watching tfbb: 3 stop rule(s)
 14:51:42 progress tfbb: 0/552 (0%) battles, 0 failed
 15:21:58 progress tfbb: 358/552 (65%) battles, 700/h, ETA 17 min, 0 failed, skips 15.9/battle (last 100)
+15:30:27 tfbb exit=0 in 2351 s
+15:30:27 start tffo
+15:30:27 watching tffo: 3 stop rule(s)
