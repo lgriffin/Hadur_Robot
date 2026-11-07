@@ -58,22 +58,11 @@ public final class TeamModes {
          * class well.
          */
         CONCORD,
-        /** TMODE-41 (FARM): the field gun weighs the enemy of least energy three times over. Only through the table. */
-        FOCUS,
-        /** TMODE-42 (FARM): HUNT's place is {@link TeamRisk#HUNT_CLOSE} px from the prey, not 350. Only through the table. */
-        CLOSE,
-        /** TMODE-43 (FARM): no fire lane: a shot leaves whatever teammate lies ahead (CombatTeam). Only through the table. */
-        NOLANE,
-        /** TMODE-44 (FARM): the member's posture is always NORMAL: no backing off a fight between two enemies. Only through the table. */
-        POST
-    }
-
-    /** TMODE-43: how the fire lane is read against the opposing team. */
-    public enum Lane { NARROW, NONE }
-
-    /** TMODE-43: the lane {@code modes} play: none with NOLANE, else the shipped lane. */
-    public static Lane lane(Set<Mode> modes) {
-        return modes.contains(Mode.NOLANE) ? Lane.NONE : Lane.NARROW;
+        /**
+         * TMODE-42: HUNT's place is {@link TeamRisk#HUNT_CLOSE} px from the prey, not 350. Only
+         * through the table, or forced on every team by {@link #FORCE_CLOSE} (ablation tmclose).
+         */
+        CLOSE
     }
 
     /**
@@ -86,6 +75,8 @@ public final class TeamModes {
     public static final boolean FORCE_PATH = true;
     public static final boolean FORCE_DODGE = true;
     public static final boolean FORCE_CONCORD = true;
+    /** TMODE-42: CLOSE on every team, to screen only (pc-team-close). */
+    public static final boolean FORCE_CLOSE = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -93,7 +84,7 @@ public final class TeamModes {
     /** The modes for teams the table does not name. */
     static final Set<Mode> DEFAULT = of(
         FORCE_MATEFIRE ? Mode.MATEFIRE : null, FORCE_HUNT ? Mode.HUNT : null, FORCE_PATH ? Mode.PATH : null,
-        FORCE_DODGE ? Mode.DODGE : null, FORCE_CONCORD ? Mode.CONCORD : null);
+        FORCE_DODGE ? Mode.DODGE : null, FORCE_CONCORD ? Mode.CONCORD : null, FORCE_CLOSE ? Mode.CLOSE : null);
 
     /** Opposing member class to its team's modes; filled from the per-team screens. */
     static final Map<String, Set<Mode>> TABLE = table();

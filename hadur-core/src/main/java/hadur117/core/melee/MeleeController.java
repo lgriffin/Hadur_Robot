@@ -381,10 +381,6 @@ public class MeleeController {
     public FieldGun gun() { return gun; }
     public MeleeWaves waves() { return waves; }
 
-    /** TMODE-43: the fire lane the modes against this team play, from the last tick; narrow off a team. */
-    public TeamModes.Lane lane() {
-        return onTeam ? TeamModes.lane(modes) : TeamModes.Lane.NARROW;
-    }
     public MeleeStrategy strategy() { return strategy; }
 
     /** MMOVE-8: this member's place in its team's roster (negative off a team). */
@@ -408,9 +404,7 @@ public class MeleeController {
         onTeam = !s.teammates.isEmpty();
         // T7 (TMODE-1): the modes against this team; off a team, none.
         modes = onTeam ? TeamModes.against(alive) : TeamModes.NONE;
-        // TMODE-44: with POST the posture is NORMAL and the fight between two enemies is not read.
-        MeleeStrategy.Plan plan = onTeam && modes.contains(TeamModes.Mode.POST)
-            ? MeleeStrategy.Plan.normal() : strategy.evaluate(tracker, s.me, s.energy, s.others, s.time);
+        MeleeStrategy.Plan plan = strategy.evaluate(tracker, s.me, s.energy, s.others, s.time);
         c.posture = plan.posture;
         if (onTeam) {
             // TMODE-27: the dodge reads one learned-aim log per enemy class.
@@ -448,8 +442,6 @@ public class MeleeController {
             : mover.chooseDestination(s.me, s.energy, s.others, alive, s.time, plan, s.teammates, modes);
         gun.onTeam(!s.teammates.isEmpty());
         gun.concord(TeamConcord.GUN && modes.contains(TeamModes.Mode.CONCORD));
-        // TMODE-41: the gun's per-team mode, read off the table.
-        gun.focus(onTeam && modes.contains(TeamModes.Mode.FOCUS));
         waves.tick(s.me, s.time, s.gunHeat, alive, gun, s.energy, s.others);
 
         // MGUN-1: the peak of every opponent's firing solutions.

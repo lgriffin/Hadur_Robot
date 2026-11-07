@@ -1,7 +1,6 @@
 package hadur117.core;
 
 import hadur117.core.adapt.Opening;
-import hadur117.core.melee.TeamModes;
 import hadur117.core.duel.DuelController;
 import hadur117.core.melee.MeleeController;
 import hadur117.core.memory.Estimate;
@@ -469,9 +468,7 @@ public final class HadurCore {
         }
         // WEAVE-3: the permission is given before the role drives, from where Hadur is now.
         // WEAVE-4: on a team it is withheld while a teammate stands in the fire lane.
-        // TMODE-43: the lane the table plays against this team (none with NOLANE).
-        boolean laneClear = teamLink == null
-            || teamLink.laneClear(raw, meleeSeam == null ? TeamModes.Lane.NARROW : meleeSeam.lane());
+        boolean laneClear = teamLink == null || teamLink.laneClear(raw);
         if (teamLink != null) teamLink.lane(raw, laneClear);
         Tick drive = tick.forDrive(melee ? RoleId.MELEE : RoleId.DUEL, focusing, budget.level(),
             laneClear && firePermission.test(in));

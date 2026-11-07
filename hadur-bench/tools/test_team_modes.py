@@ -251,7 +251,7 @@ class TeamModesTest(unittest.TestCase):
 
     def arms_tsv(self):
         p = Path(self.d, "arms.tsv")
-        p.write_text("# arms\nname\tadd\tremove\tneeds\nfo\tFOCUS\t-\t-\ncl\tCLOSE\t-\tHUNT\nnh\t-\tHUNT\t-\n",
+        p.write_text("# arms\nname\tadd\tremove\tneeds\nfo\tGANG\t-\t-\ncl\tCLOSE\t-\tHUNT\nnh\t-\tHUNT\t-\n",
                      encoding="utf-8")
         return str(p)
 
@@ -267,10 +267,10 @@ class TeamModesTest(unittest.TestCase):
                          "--shipped", self.shipped_java(), "--default", "MATEFIRE,HUNT,CONCORD",
                          "--out-dir", str(out / "w"), "--stem", "farm"])
         fo = (out / "w" / "farm-fo.java").read_text()
-        # a and c play the default plus FOCUS; b starts from its shipped entry.
-        self.assertIn('t.put("a.A", of(Mode.MATEFIRE, Mode.HUNT, Mode.CONCORD, Mode.FOCUS));', fo)
-        self.assertIn('t.put("b.Lead", of(Mode.MATEFIRE, Mode.PATH, Mode.FOCUS));', fo)
-        self.assertIn('t.put("c.C", of(Mode.MATEFIRE, Mode.HUNT, Mode.CONCORD, Mode.FOCUS));', fo)
+        # a and c play the default plus GANG; b starts from its shipped entry.
+        self.assertIn('t.put("a.A", of(Mode.GANG, Mode.MATEFIRE, Mode.HUNT, Mode.CONCORD));', fo)
+        self.assertIn('t.put("b.Lead", of(Mode.GANG, Mode.MATEFIRE, Mode.PATH));', fo)
+        self.assertIn('t.put("c.C", of(Mode.GANG, Mode.MATEFIRE, Mode.HUNT, Mode.CONCORD));', fo)
         cl = (out / "w" / "farm-cl.java").read_text()
         self.assertNotIn('"b.Lead"', cl, "CLOSE needs HUNT, which b does not play")
         self.assertIn('t.put("a.A", of(Mode.MATEFIRE, Mode.HUNT, Mode.CONCORD, Mode.CLOSE));', cl)
@@ -283,7 +283,7 @@ class TeamModesTest(unittest.TestCase):
         self.assertEqual(["a.ATeam 1", "c.CTeam 3"], sets["cl"])
         tsv = (out / "w" / "farm-counters.tsv").read_text().splitlines()
         self.assertEqual("team\tfo\tcl\tnh", tsv[1])
-        self.assertEqual("b.BTeam 2\tMATEFIRE,PATH,FOCUS\t-\t-", tsv[3])
+        self.assertEqual("b.BTeam 2\tGANG,MATEFIRE,PATH\t-\t-", tsv[3])
 
     def test_arms_skip_a_team_with_no_jar(self):
         out = Path(self.d)
@@ -304,14 +304,14 @@ class TeamModesTest(unittest.TestCase):
                          "--census", str(out / "census.txt"), "--opponents", self.d,
                          "--out-tsv", str(out / "f.tsv"), "--out-java", str(out / "f.java")])
         java = (out / "f.java").read_text()
-        self.assertIn('t.put("a.A", of(Mode.MATEFIRE, Mode.HUNT, Mode.CONCORD, Mode.FOCUS));', java)
+        self.assertIn('t.put("a.A", of(Mode.GANG, Mode.MATEFIRE, Mode.HUNT, Mode.CONCORD));', java)
         self.assertNotIn('"b.Lead"', java, "b plays no HUNT, so nh never reached it")
         self.assertNotIn('"c.C"', java)
 
     def test_pick_stops_a_pilot_under_the_aps_bar(self):
         out = Path(self.d)
         fo = report(self.d, "fo.md", {"a.ATeam 1": (3.0, 1.0), "b.BTeam 2": (0.0, 1.0), "c.CTeam 3": (0.0, 1.0)})
-        args = ["pick", "--report", f"FOCUS={fo}", "--low-end", "0", "--census", str(out / "census.txt"),
+        args = ["pick", "--report", f"GANG={fo}", "--low-end", "0", "--census", str(out / "census.txt"),
                 "--opponents", self.d, "--teams", "10", "--out-md", str(out / "s.md"), "--out-tsv", str(out / "s.tsv")]
         team_modes.main(args + ["--stop-below", "0.2"])
         self.assertIn("+0.30", (out / "s.md").read_text())

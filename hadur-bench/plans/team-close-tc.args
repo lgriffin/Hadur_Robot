@@ -1,0 +1,31 @@
+# PC card team-close (BENCH-205, TMODE-42): arm tc (tmclose: CLOSE on every team, TMODE-42), all 46 teams x @S@ fresh seeds from 9600, 12 rounds, against master (the aa build). Template: the queue writes work/team-close-tc-@S@.args with @V@ = the robot.release in hadur-robot/pom.xml and @S@ = the seeds (4 for the pilot, 12 for the full read; the same --out, so the full read resumes from the pilot's battles).
+--team
+true
+--seeds
+@S@
+--seed-base
+9600
+--rounds
+12
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+team-census46.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@tc.jar
+--robot
+hadur117.HadurTeam @V@tc
+--member
+hadur117.Hadur
+--out
+work/team-close-@V@-tc
+--report
+../docs/bench/local/team-close-tc.md
+--baseline
+bisect/hadur117.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur117.HadurTeam @V@aa

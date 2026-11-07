@@ -255,32 +255,12 @@ public class FieldGun {
         if (e.energy <= MeleeEnergyPolicy.FINISHER_ENERGY) w *= FINISHER_BOOST;
         if (isolated(e, alive)) w *= ISOLATED_BOOST;
         if (e.hitsOnHadur(now, SHOOTER_WINDOW) >= 2) w *= SHOOTER_BOOST;
-        // TMODE-41: with FOCUS the whole team leans on the enemy nearest death.
-        if (focus && onTeam && weakest(e, alive)) w *= FOCUS_BOOST;
         return w;
     }
 
     /** TMODE-33: whether this tick's team modes carry CONCORD; set before any aim of the tick. */
     public void concord(boolean concord) {
         this.concord = concord;
-    }
-
-    /** TMODE-41: the weight on the enemy of least energy with FOCUS. */
-    static final double FOCUS_BOOST = 3.0;
-    /** TMODE-41: whether this tick's team modes carry FOCUS; set before any aim of the tick. */
-    private boolean focus;
-
-    /** TMODE-41: whether the field gun weighs the weakest enemy {@link #FOCUS_BOOST} times over. */
-    public void focus(boolean focus) {
-        this.focus = focus;
-    }
-
-    /** TMODE-41: whether no living opponent has less energy than {@code e}. */
-    static boolean weakest(EnemyInfo e, List<EnemyInfo> alive) {
-        for (EnemyInfo o : alive) {
-            if (o != e && o.energy < e.energy) return false;
-        }
-        return true;
     }
 
     /** TMODE-33: one of Hadur's bullets left, aimed at {@code target}; counted against its class. */

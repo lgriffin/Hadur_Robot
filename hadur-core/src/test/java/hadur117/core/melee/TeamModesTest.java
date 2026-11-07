@@ -430,19 +430,12 @@ class TeamModesTest {
     }
 
     @Test
-    @Tag("TMODE-41")
     @Tag("TMODE-42")
-    @Tag("TMODE-43")
-    @Tag("TMODE-44")
-    @DisplayName("TMODE-41 to TMODE-44: FOCUS, CLOSE, NOLANE and POST reach a member only through the table; NOLANE is the lane with none; CLOSE puts the hunt place 250 px from the prey")
-    void farmModes() {
-        for (TeamModes.Mode m : EnumSet.of(TeamModes.Mode.FOCUS, TeamModes.Mode.CLOSE, TeamModes.Mode.NOLANE, TeamModes.Mode.POST)) {
-            assertFalse(TeamModes.DEFAULT.contains(m), m.name());
-            for (Set<TeamModes.Mode> entry : TeamModes.TABLE.values()) assertFalse(entry.contains(m), m.name());
-        }
-        assertEquals(TeamModes.Lane.NARROW, TeamModes.lane(TeamModes.DEFAULT));
-        assertEquals(TeamModes.Lane.NARROW, TeamModes.lane(TeamModes.NONE));
-        assertEquals(TeamModes.Lane.NONE, TeamModes.lane(EnumSet.of(TeamModes.Mode.NOLANE)));
+    @DisplayName("TMODE-42: CLOSE puts the hunt place 250 px from the prey instead of 350, means nothing without HUNT, and reaches a member only through the table (FORCE_CLOSE off)")
+    void closeHunt() {
+        assertFalse(TeamModes.FORCE_CLOSE);
+        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.CLOSE));
+        for (Set<TeamModes.Mode> entry : TeamModes.TABLE.values()) assertFalse(entry.contains(TeamModes.Mode.CLOSE));
         List<EnemyInfo> prey = enemies(pt(600, 1000)).alive();
         TeamRisk.Pull far = TeamRisk.pull(pt(600, 400), "n", 100, 3, prey, 100, mates(pt(700, 400)),
             EnumSet.of(TeamModes.Mode.HUNT));
@@ -451,10 +444,6 @@ class TeamModesTest {
             EnumSet.of(TeamModes.Mode.HUNT, TeamModes.Mode.CLOSE));
         assertEquals(TeamRisk.HUNT_CLOSE, close.at.distance(600, 1000), 1e-6);
         assertEquals(250, TeamRisk.HUNT_CLOSE, 0);
-        // CLOSE without HUNT is no hunt at all.
         assertNull(TeamRisk.pull(pt(600, 400), "n", 100, 3, prey, 100, mates(pt(700, 400)), EnumSet.of(TeamModes.Mode.CLOSE)));
-        // Off a team the controller's lane is the narrow one whatever the table says.
-        MeleeController solo = new MeleeController(field(1200, 1200));
-        assertEquals(TeamModes.Lane.NARROW, solo.lane());
     }
 }

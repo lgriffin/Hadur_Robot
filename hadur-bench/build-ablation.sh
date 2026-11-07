@@ -154,8 +154,8 @@
 #   tmtab (team only) T7, TMODE-1: the screen's table, the t.put lines in $TEAM_MODE_TABLE (default
 #         work/team-modes-screen.java, written by tools/team_modes.py pick). Suffix mt, or
 #         $TEAM_MODE_SUFFIX (the per-opponent counter screens build ka, kb, kc).
-#         pc-team-farm (BENCH-204) builds one tmtab arm per lever from tools/team_modes.py arms
-#         (suffixes fo, cl, nl, po, ga, ho, li, nh, np, and fx for the picked table).
+#   tmclose (team only) TMODE-42: CLOSE on every team, the hunt place 250 px from the prey instead
+#         of 350 (FORCE_CLOSE, and Mode.CLOSE on every shipped table entry). Suffix tc (pc-team-close).
 #   tmlock (team only) the confirmed table, $TEAM_MODE_LOCKED (default work/team-modes-locked.java,
 #         written by tools/team_modes.py lock). Suffix mk.
 #   mrate (melee and team) fire more often: the controller fires on a scan up to 8 ticks old (was 5;
@@ -873,6 +873,12 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             sed -i -E 's/^(        t\.put\("[^"]+", of\(.*)\)\);$/\1, Mode.CONCORD));/' "$modes"
             fi
             ;;
+        tmclose)
+            # TMODE-42 on every team: the default's hunt place and every shipped entry's at 250 px. Suffix tc.
+            version="${version}tc"
+            edit "$modes" "public static final boolean FORCE_CLOSE = false;" "public static final boolean FORCE_CLOSE = true;"
+            sed -i -E '/^        t\.put\(/s/\)\);$/, Mode.CLOSE));/' "$modes"
+            ;;
         tmnoconcord)
             # TMODE-34 off: CONCORD on no team, the build before it shipped. Suffix ncn.
             version="${version}ncn"
@@ -895,7 +901,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEnergyPolicy.java" \
                 "static final double FAR_SPARE_ENERGY = 60.0;" "static final double FAR_SPARE_ENERGY = $n.0;"
             version="${version}z${n:0:1}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist)" >&2; exit 2 ;;
     esac
 done
 

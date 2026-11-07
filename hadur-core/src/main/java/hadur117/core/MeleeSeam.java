@@ -1,7 +1,6 @@
 package hadur117.core;
 
 import hadur117.core.link.Report;
-import hadur117.core.melee.TeamModes;
 import hadur117.core.melee.MeleeController;
 import hadur117.core.melee.MeleeRadar;
 import hadur117.core.melee.TeamDanger;
@@ -294,11 +293,6 @@ final class MeleeSeam implements Role {
     }
 
     /** The round's ghosts dropped, targeting waves sent and resolved, and virtual hits, for the M record. */
-    /** TMODE-43: the fire lane the team modes play, from the melee brain's last tick. */
-    TeamModes.Lane lane() {
-        return melee.lane();
-    }
-
     String roundCounts() {
         return (melee.ghostsDropped() - ghostsAtRoundStart)
             + "," + (melee.waves().emitted() - wavesAtRoundStart[0])
