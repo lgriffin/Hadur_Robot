@@ -392,16 +392,17 @@ public final class Bench {
             for (int i = 0; i < lines.size(); i++) {
                 Map<String, String> opts = lines.get(i);
                 String label = labels.get(i);
-                // BENCH-95: a suite line whose field already wrote its report (a stopped run) is kept, not rerun.
-                Path done = Path.of(opts.get("out")).resolve("report.md");
-                if (!"false".equals(global.get("resume")) && Files.exists(done)) {
-                    System.out.println("== " + label + " kept from an earlier, stopped run (BENCH-95)");
+                // BENCH-205: a field that finished cleanly under the same settings and robot jar is kept.
+                if (suiteFieldDone(opts)) {
+                    System.out.println("== " + label + " kept from an earlier, stopped run (BENCH-205)");
                     runs.add(java.util.concurrent.CompletableFuture.completedFuture(0));
                     continue;
                 }
                 runs.add(pool.submit(() -> {
                     System.out.println("== " + label);
-                    return new Bench(opts).run();
+                    int code = new Bench(opts).run();
+                    if (code == 0) markSuiteFieldDone(opts);
+                    return code;
                 }));
             }
             int exit = 0;
@@ -440,6 +441,52 @@ public final class Bench {
      * records fixtures (their names carry no line label) or has no pinned CPU constant (each field
      * would calibrate it in its own home while the others load the host).
      */
+    /** BENCH-205: the file a suite field writes in its output folder once it has finished with exit 0. */
+    static final String SUITE_DONE = "suite-done.txt";
+
+    /**
+     * BENCH-205: what a finished suite field was run with: its merged options in key order, and the
+     * size and modification time of every option value that names a file (the robot jar among them),
+     * so a rebuilt arm or changed seeds never reuse an older field's report.
+     */
+    static String suiteFieldStamp(Map<String, String> opts) {
+        StringBuilder stamp = new StringBuilder();
+        for (Map.Entry<String, String> e : new java.util.TreeMap<>(opts).entrySet()) {
+            stamp.append(e.getKey()).append('=').append(e.getValue());
+            try {
+                Path f = Path.of(e.getValue());
+                if (Files.isRegularFile(f)) {
+                    stamp.append(" [").append(Files.size(f)).append(' ').append(Files.getLastModifiedTime(f).toMillis()).append(']');
+                }
+            } catch (Exception ignored) {
+                // not a path
+            }
+            stamp.append('\n');
+        }
+        return stamp.toString();
+    }
+
+    /** BENCH-205: whether a suite field may be kept: resume is on for the line and its done stamp matches. */
+    static boolean suiteFieldDone(Map<String, String> opts) {
+        if (!Boolean.parseBoolean(opts.getOrDefault("resume", "true"))) return false;
+        Path out = Path.of(opts.get("out"));
+        try {
+            return Files.exists(out.resolve("report.md")) && Files.exists(out.resolve(SUITE_DONE))
+                && Files.readString(out.resolve(SUITE_DONE)).equals(suiteFieldStamp(opts));
+        } catch (java.io.IOException e) {
+            return false;
+        }
+    }
+
+    /** BENCH-205: records a suite field as finished, written whole or not at all. */
+    static void markSuiteFieldDone(Map<String, String> opts) throws java.io.IOException {
+        Path out = Path.of(opts.get("out"));
+        Path tmp = out.resolve(SUITE_DONE + ".tmp");
+        Files.writeString(tmp, suiteFieldStamp(opts));
+        Files.move(tmp, out.resolve(SUITE_DONE), java.nio.file.StandardCopyOption.REPLACE_EXISTING,
+            java.nio.file.StandardCopyOption.ATOMIC_MOVE);
+    }
+
     static int suiteLinesAtOnce(Map<String, String> global, List<Map<String, String>> lines, Map<String, String> env) {
         if (global.containsKey("suite-parallel")) {
             int n = Integer.parseInt(global.get("suite-parallel").trim());

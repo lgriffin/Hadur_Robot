@@ -91,6 +91,7 @@ Both fail; the arms, the card and its arms file are removed.
 
 ## Bench change
 
-`Bench` suite runs now keep a field whose `out/<label>/report.md` already exists from a stopped
-run (BENCH-95, `--resume`, on by default), so a restarted cloud box resumes a census from the
-next field instead of from the start.
+`Bench` suite runs now keep a field that finished with exit 0 under the same merged options and
+robot jar (BENCH-205: `suite-done.txt`, written only after a clean finish and compared on restart),
+so a restarted cloud box resumes a census from the next field instead of from the start; a failed,
+interrupted or rebuilt field runs again, and `--resume false` on a line turns it off.
