@@ -29,6 +29,7 @@ import hadur117.core.move.SurfMover;
 import hadur117.core.physics.*;
 import hadur117.core.port.Telemetry;
 import hadur117.core.policy.BattleHitRates;
+import hadur117.core.policy.EnergyRace;
 import hadur117.core.policy.Matchup;
 import hadur117.core.policy.DistancePolicy;
 import hadur117.core.policy.Endgame;
@@ -360,6 +361,7 @@ public final class DuelController {
         if (mimicOn) on.add("mimic");
         if (fullOff) on.add("fulloff");
         if (x5Power) on.add("x5");
+        if (racePower) on.add("race");
         if (ramDodge) on.add("ramdodge");
         if (shield != null && shield.active()) on.add("shield");
         return on.isEmpty() ? "-" : String.join(",", on);
@@ -587,13 +589,23 @@ public final class DuelController {
             e.distance(), in.energy(), e.energy(), in.others(), stakes(lead));
         // POW-5: cap the shot against a T3 gun beyond 500 px, unless a full-power rule below
         // applies - applied first so POW-1..4's Math.max can still override it upward.
-        bulletPower = PowerPolicy.capPower(opening.gunTier(), e.distance(), bulletPower);
+        // POW-17: against the opponents the table names, once both sides have shots resolved, the
+        // energy race picks the power in place of the gun's choice, POW-5 and POW-1 to POW-4;
+        // SHIELD-4, END-3, RAM-1 and POW-10 below still apply to it.
+        double racePick = racePower && enemiesTotal <= 1 ? race.choose(in.energy(), e.energy()) : Double.NaN;
+        boolean raceOn = !Double.isNaN(racePick);
+        if (raceOn != raceApplied) {
+            raceApplied = raceOn;
+            emitPolicy(round, time, "race-power", raceOn ? racePick : Double.NaN, Double.NaN, raceOn ? "race_on" : "race_off");
+        }
+        if (raceOn) bulletPower = racePick;
+        else bulletPower = PowerPolicy.capPower(opening.gunTier(), e.distance(), bulletPower);
         // POW-1, POW-2, POW-3, POW-4: full power where the profile, the range or this
         // battle's rates say it pays.
         PowerPolicy.Reason why = PowerPolicy.reason(opening.gunTier(), e.energy(), in.energy(),
             e.distance(), bulletPower, ourWindow.estimate(), theirWindow.estimate());
         // POW-15: the table keeps the gun's own power against the opponents it names.
-        if (fullOff) why = PowerPolicy.Reason.GUN;
+        if (fullOff || raceOn) why = PowerPolicy.Reason.GUN;
         if (why != powerReason) {
             powerReason = why;
             Estimate ours = ourWindow.estimate();
@@ -895,6 +907,12 @@ public final class DuelController {
     private boolean x5Power;
     /** RAM-6: whether the table gave the rammer escape the heavy shot cost for this opponent. */
     private boolean ramDodge;
+    /** POW-17: the table names this opponent for the energy-race power pick. */
+    private boolean racePower;
+    /** POW-17: whether the race picked the last power, for the P record on a change. */
+    private boolean raceApplied;
+    /** POW-17: the energy race, fed every resolved duel bullet whether or not it is on. */
+    private final EnergyRace race = new EnergyRace();
 
     /** DODGE-5: the escape angle a bullet read is scored loosely at while the planner is on; NaN otherwise. */
     private double dodgeEscape(Wave w) {
@@ -1352,6 +1370,8 @@ public final class DuelController {
         fullOff = duelOnly(stackList.fullOff(name), enemiesTotal);
         // POW-16: x.x5 powers for the opponents the table names.
         x5Power = duelOnly(stackList.x5Power(name), enemiesTotal);
+        // POW-17: the energy-race power pick for the opponents the table names.
+        racePower = duelOnly(stackList.racePower(name), enemiesTotal);
         // RAM-6: the rammer escape's heavy shot cost, for the rammers the table names.
         ramDodge = duelOnly(stackList.ramDodge(name), enemiesTotal);
         ramEscape.setHeavyHitCost(ramDodge);
@@ -1644,6 +1664,7 @@ public final class DuelController {
         theirWindow.clear();
         ourRates.clear();
         theirRates.clear();
+        race.clear();
         leadVerdict = false;
         leadApplied = false;
         matchWon = false;
@@ -2102,6 +2123,7 @@ public final class DuelController {
     /** POW-11: counts one resolved duel bullet of ours, in the battle's rates and the round's counters. */
     private void countOurs(double power, boolean hit) {
         ourRates.record(power, hit);
+        race.ours(power, hit);
         int c = BattleHitRates.classOf(power);
         stats.ourShotsByClass[c]++;
         if (hit) stats.ourHitsByClass[c]++;
@@ -2110,6 +2132,7 @@ public final class DuelController {
     /** POW-11: counts one resolved enemy bullet, in the battle's rates and the round's counters. */
     private void countTheirs(double power, boolean hit) {
         theirRates.record(power, hit);
+        race.theirs(power, hit);
         int c = BattleHitRates.classOf(power);
         stats.theirShotsByClass[c]++;
         if (hit) stats.theirHitsByClass[c]++;

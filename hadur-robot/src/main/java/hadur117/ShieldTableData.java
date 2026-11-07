@@ -617,6 +617,15 @@ final class ShieldTableData {
     }
 
     /**
+     * POW-17: the opponents the duel picks its bullet power against by the energy race
+     * ({@code race-power:} lines). Empty until a card's pick holds robots.
+     */
+    static String[] racePowers() {
+        return new String[] {
+        };
+    }
+
+    /**
      * RAM-6: the rammers whose escape (RAM-2) weighs a path that meets one of their shots in flight
      * at {@code RamEscape.HEAVY_HIT_COST}, not RAM-5's {@code HIT_COST}. Empty until a card holds
      * robots; candidate builds add lines here (build-ablation.sh rdlist).
