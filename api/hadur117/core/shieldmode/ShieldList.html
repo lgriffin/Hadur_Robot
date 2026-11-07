@@ -229,6 +229,16 @@ loadScripts(document, 'script');</script>
 <div class="block">The list with nobody on it: shield mode never starts.</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#RACE_POWER" class="member-name-link">RACE_POWER</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#POW-17">POW-17</a>: the per-opponent energy-race power switch's bit in <code>switches</code>.</div>
+</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#RACE_POWER_PREFIX" class="member-name-link">RACE_POWER_PREFIX</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#POW-17">POW-17</a>: a line starting with this names an opponent the duel picks its power against by the energy race.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
 <div class="col-second odd-row-color"><code><a href="#RAM_DODGE" class="member-name-link">RAM_DODGE</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#RAM-6">RAM-6</a>: the per-opponent rammer dodge switch's bit in <code>switches</code>.</div>
@@ -365,50 +375,55 @@ loadScripts(document, 'script');</script>
 <div class="block">Reads a list from its lines.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ramDodge(java.lang.String)" class="member-name-link">ramDodge</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#racePower(java.lang.String)" class="member-name-link">racePower</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#POW-17">POW-17</a>: whether the table names this opponent for the energy-race power pick.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ramDodge(java.lang.String)" class="member-name-link">ramDodge</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#RAM-6">RAM-6</a>: whether the rammer escape weighs a path that meets one of <code>robotName</code>'s shots at
  the heavy cost, by the rule of <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#size()" class="member-name-link">size</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#size()" class="member-name-link">size</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">How many entries the list holds.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stayDamage(java.lang.String,double)" class="member-name-link">stayDamage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stayDamage(java.lang.String,double)" class="member-name-link">stayDamage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName,
  double&nbsp;standard)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#SHIELD-19">SHIELD-19</a>: the damage the enemy's bullets must pass before <a class="req" href="../../../../requirements.html#SHIELD-11">SHIELD-11</a> leaves the battle against
  <code>robotName</code>, by the rule of <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>: no damage exit for an <code>shield-exit0:</code>
  entry, 400 for an <code>shield-exit4:</code> entry (the former when both), else <code>standard</code>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#still(java.lang.String)" class="member-name-link">still</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#still(java.lang.String)" class="member-name-link">still</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#SHIELD-21">SHIELD-21</a>: whether shield mode plans its shots still (<a class="req" href="../../../../requirements.html#SHIELD-20">SHIELD-20</a>) against <code>robotName</code>,
  by the rule of <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stopGo(java.lang.String)" class="member-name-link">stopGo</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stopGo(java.lang.String)" class="member-name-link">stopGo</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#POISON-2">POISON-2</a>: the stop-and-go variant for <code>robotName</code>, by the rule of <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>: the
  reverse crawl's ticks before the enemy's gun is ready, 1 or 2; 0 when it is not listed.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#surfKeyFor(java.lang.String)" class="member-name-link">surfKeyFor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#surfKeyFor(java.lang.String)" class="member-name-link">surfKeyFor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#SKEY-2">SKEY-2</a>: <code>robotName</code>'s surf key, by the rule of <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>: the full name's entry,
  else the name's without the version.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#withoutVersion(java.lang.String)" class="member-name-link">withoutVersion</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#withoutVersion(java.lang.String)" class="member-name-link">withoutVersion</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The name before its first space: Robocode's class names hold none, so what follows is the version.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#x5Power(java.lang.String)" class="member-name-link">x5Power</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#x5Power(java.lang.String)" class="member-name-link">x5Power</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#POW-16">POW-16</a>: whether the duel fires only x.x5 powers at <code>robotName</code>, by the rule of <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>.</div>
 </div>
 </div>
@@ -678,6 +693,21 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="RACE_POWER_PREFIX">
+<h3>RACE_POWER_PREFIX</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">RACE_POWER_PREFIX</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#POW-17">POW-17</a>: a line starting with this names an opponent the duel picks its power against by the energy race.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.shieldmode.ShieldList.RACE_POWER_PREFIX">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="RAM_DODGE_PREFIX">
 <h3>RAM_DODGE_PREFIX</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">RAM_DODGE_PREFIX</span></div>
@@ -867,6 +897,21 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur117.core.shieldmode.ShieldList.RAM_DODGE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="RACE_POWER">
+<h3>RACE_POWER</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">RACE_POWER</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#POW-17">POW-17</a>: the per-opponent energy-race power switch's bit in <code>switches</code>.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.core.shieldmode.ShieldList.RACE_POWER">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
@@ -1098,6 +1143,19 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>robotName</code> - the scanned robot's name, or null</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="racePower(java.lang.String)">
+<h3>racePower</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">racePower</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#POW-17">POW-17</a>: whether the table names this opponent for the energy-race power pick.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>robotName</code> - the opponent's name as Robocode lists it</dd>
+<dt>Returns:</dt>
+<dd>true when a <code>race-power:</code> line matches it</dd>
 </dl>
 </section>
 </li>

@@ -1639,6 +1639,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">RAM-3: the arm a round with a confirmed rammer plays, chosen at its start.</div>
 </dd>
+<dt><a href="hadur117/core/policy/EnergyRace.html#choose(double,double)" class="member-name-link">choose(double, double)</a> - Method in class hadur117.core.policy.<a href="hadur117/core/policy/EnergyRace.html" title="class in hadur117.core.policy">EnergyRace</a></dt>
+<dd>
+<div class="block">The power the race picks at these energies.</div>
+</dd>
 <dt><a href="hadur117/core/gun/ShadowAim.html#choose(double,hadur117.core.gun.ShadowAim.Mass,double,double,hadur117.core.gun.ShadowValue)" class="member-name-link">choose(double, ShadowAim.Mass, double, double, ShadowValue)</a> - Static method in class hadur117.core.gun.<a href="hadur117/core/gun/ShadowAim.html" title="class in hadur117.core.gun">ShadowAim</a></dt>
 <dd>
 <div class="block">The firing angle GUN-7 picks.</div>
@@ -1713,6 +1717,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/policy/BattleHitRates.html#clear()" class="member-name-link">clear()</a> - Method in class hadur117.core.policy.<a href="hadur117/core/policy/BattleHitRates.html" title="class in hadur117.core.policy">BattleHitRates</a></dt>
 <dd>
 <div class="block">Forgets every count, when the duel opponent changes.</div>
+</dd>
+<dt><a href="hadur117/core/policy/EnergyRace.html#clear()" class="member-name-link">clear()</a> - Method in class hadur117.core.policy.<a href="hadur117/core/policy/EnergyRace.html" title="class in hadur117.core.policy">EnergyRace</a></dt>
+<dd>
+<div class="block">A new duel opponent: forget everything.</div>
 </dd>
 <dt><a href="hadur117/core/policy/HitWindow.html#clear()" class="member-name-link">clear()</a> - Method in class hadur117.core.policy.<a href="hadur117/core/policy/HitWindow.html" title="class in hadur117.core.policy">HitWindow</a></dt>
 <dd>
@@ -1991,6 +1999,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/policy/DistancePolicy.html#controllerTarget()" class="member-name-link">controllerTarget()</a> - Method in class hadur117.core.policy.<a href="hadur117/core/policy/DistancePolicy.html" title="class in hadur117.core.policy">DistancePolicy</a></dt>
 <dd>
 <div class="block">The controller's own target, the endgame aside, in px.</div>
+</dd>
+<dt><a href="hadur117/core/policy/EnergyRace.html#converge()" class="member-name-link">converge()</a> - Method in class hadur117.core.policy.<a href="hadur117/core/policy/EnergyRace.html" title="class in hadur117.core.policy">EnergyRace</a></dt>
+<dd>
+<div class="block">For tests: sweep until the values settle.</div>
 </dd>
 <dt><a href="hadur117/core/shieldmode/ShieldMode.Situation.html#coolingRate" class="member-name-link">coolingRate</a> - Variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldMode.Situation.html" title="class in hadur117.core.shieldmode">ShieldMode.Situation</a></dt>
 <dd>&nbsp;</dd>
@@ -3214,6 +3226,13 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">One scan's reading.</div>
 </dd>
+<dt><a href="hadur117/core/policy/EnergyRace.html" class="type-name-link" title="class in hadur117.core.policy">EnergyRace</a> - Class in <a href="hadur117/core/policy/package-summary.html">hadur117.core.policy</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#POW-17">POW-17</a>: bullet power chosen by the rest of the round's energy race, for the opponents the mode
+ table names (<code>race-power:</code>).</div>
+</dd>
+<dt><a href="hadur117/core/policy/EnergyRace.html#%3Cinit%3E()" class="member-name-link">EnergyRace()</a> - Constructor for class hadur117.core.policy.<a href="hadur117/core/policy/EnergyRace.html" title="class in hadur117.core.policy">EnergyRace</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/role/SentryFence.html#enforceable(double)" class="member-name-link">enforceable(double)</a> - Method in class hadur117.core.role.<a href="hadur117/core/role/SentryFence.html" title="class in hadur117.core.role">SentryFence</a></dt>
 <dd>
 <div class="block">Whether the border leaves a safe area at all; without one the fence stands aside.</div>
@@ -3400,6 +3419,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.Wave.html#escape" class="member-name-link">escape</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/policy/EnergyRace.html#escape(double)" class="member-name-link">escape(double)</a> - Static method in class hadur117.core.policy.<a href="hadur117/core/policy/EnergyRace.html" title="class in hadur117.core.policy">EnergyRace</a></dt>
+<dd>
+<div class="block">Maximum escape angle of a bullet of this power.</div>
+</dd>
 <dt><a href="hadur117/core/policy/RammerPolicy.html#escape(double,double,double,double)" class="member-name-link">escape(double, double, double, double)</a> - Method in class hadur117.core.policy.<a href="hadur117/core/policy/RammerPolicy.html" title="class in hadur117.core.policy">RammerPolicy</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#RAM-2">RAM-2</a>: one scan's reading for the escape.</div>
@@ -4601,6 +4624,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/move/SurfMover.html#goToStep(hadur117.core.model.RobotState,java.awt.geom.Point2D.Double)" class="member-name-link">goToStep(RobotState, Point2D.Double)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/SurfMover.html" title="class in hadur117.core.move">SurfMover</a></dt>
 <dd>
 <div class="block">One tick of driving to <code>point</code> and stopping there, front or back first.</div>
+</dd>
+<dt><a href="hadur117/core/policy/EnergyRace.html#GRID" class="member-name-link">GRID</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/EnergyRace.html" title="class in hadur117.core.policy">EnergyRace</a></dt>
+<dd>
+<div class="block">Energy grid, finer at the low end.</div>
 </dd>
 <dt><a href="hadur/bench/RepeatStudy.html#group(java.util.List)" class="member-name-link">group(List&lt;RepeatStudy.Row&gt;)</a> - Static method in class hadur.bench.<a href="hadur/bench/RepeatStudy.html" title="class in hadur.bench">RepeatStudy</a></dt>
 <dd>
@@ -7807,6 +7834,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The engine's bullet powers: a drop in this range may be a shot (<a class="req" href="../requirements.html#MSENSE-2">MSENSE-2</a>).</div>
 </dd>
+<dt><a href="hadur117/core/policy/EnergyRace.html#MIN_SHOTS" class="member-name-link">MIN_SHOTS</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/EnergyRace.html" title="class in hadur117.core.policy">EnergyRace</a></dt>
+<dd>
+<div class="block">Resolved shots each side needs before the race decides.</div>
+</dd>
 <dt><a href="hadur117/core/gun/ShadowAim.html#MIN_SPACING" class="member-name-link">MIN_SPACING</a> - Static variable in class hadur117.core.gun.<a href="hadur117/core/gun/ShadowAim.html" title="class in hadur117.core.gun">ShadowAim</a></dt>
 <dd>
 <div class="block">A candidate this close, in half-widths, to one already taken adds nothing.</div>
@@ -9192,6 +9223,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The engine's count of others when that report was read.</div>
 </dd>
+<dt><a href="hadur117/core/policy/EnergyRace.html#OUR_PRIOR" class="member-name-link">OUR_PRIOR</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/EnergyRace.html" title="class in hadur117.core.policy">EnergyRace</a></dt>
+<dd>
+<div class="block">Prior hit rates and their weight in shots.</div>
+</dd>
 <dt><a href="hadur117/core/policy/PowerPolicy.html#OUR_RATE" class="member-name-link">OUR_RATE</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/PowerPolicy.html" title="class in hadur117.core.policy">PowerPolicy</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#POW-2">POW-2</a>: our rolling hit rate must be certainly above this ...</div>
@@ -9279,6 +9314,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/HadurCore.html#ourRollingHitRate()" class="member-name-link">ourRollingHitRate()</a> - Method in class hadur117.core.<a href="hadur117/core/HadurCore.html" title="class in hadur117.core">HadurCore</a></dt>
 <dd>
 <div class="block">S5: our rolling hit rate, over our last duel bullets (<a class="req" href="../requirements.html#DIST-1">DIST-1</a>, <a class="req" href="../requirements.html#POW-2">POW-2</a>).</div>
+</dd>
+<dt><a href="hadur117/core/policy/EnergyRace.html#ours(double,boolean)" class="member-name-link">ours(double, boolean)</a> - Method in class hadur117.core.policy.<a href="hadur117/core/policy/EnergyRace.html" title="class in hadur117.core.policy">EnergyRace</a></dt>
+<dd>
+<div class="block">One of our bullets resolved.</div>
 </dd>
 <dt><a href="hadur/bench/TeamReport.Battle.html#ourScore" class="member-name-link">ourScore</a> - Variable in class hadur.bench.<a href="hadur/bench/TeamReport.Battle.html" title="class in hadur.bench">TeamReport.Battle</a></dt>
 <dd>&nbsp;</dd>
@@ -9889,6 +9928,10 @@ loadScripts(document, 'script');</script>
  power stands, <code>POW_1</code>/<code>POW_2</code>/<code>POW_3</code> for the full-power rules,
  <code>POW_4</code> when the expected-value comparison picked full power over the gun's own.</div>
 </dd>
+<dt><a href="hadur117/core/policy/EnergyRace.html#POWERS" class="member-name-link">POWERS</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/EnergyRace.html" title="class in hadur117.core.policy">EnergyRace</a></dt>
+<dd>
+<div class="block">The powers we choose among.</div>
+</dd>
 <dt><a href="hadur117/core/memory/OpponentProfile.html#powerShares()" class="member-name-link">powerShares()</a> - Method in class hadur117.core.memory.<a href="hadur117/core/memory/OpponentProfile.html" title="class in hadur117.core.memory">OpponentProfile</a></dt>
 <dd>
 <div class="block">The share of their shots in each power bin; all zero before any shot.</div>
@@ -10041,6 +10084,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#DODGE-4">DODGE-4</a>: a shipped expert's prior, in bullets read.</div>
 </dd>
+<dt><a href="hadur117/core/policy/EnergyRace.html#PRIOR_SHOTS" class="member-name-link">PRIOR_SHOTS</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/EnergyRace.html" title="class in hadur117.core.policy">EnergyRace</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/move/MoveController.html#priorInUse()" class="member-name-link">priorInUse()</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/MoveController.html" title="class in hadur117.core.move">MoveController</a></dt>
 <dd>
 <div class="block">Whether the profile's estimate is deciding the danger views right now (the same test
@@ -10248,6 +10293,23 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:R">R</h2>
 <dl class="index">
+<dt><a href="hadur117/core/shieldmode/ShieldList.html#RACE_POWER" class="member-name-link">RACE_POWER</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#POW-17">POW-17</a>: the per-opponent energy-race power switch's bit in <code>ShieldList.switches</code>.</div>
+</dd>
+<dt><a href="hadur117/core/shieldmode/ShieldList.html#RACE_POWER_PREFIX" class="member-name-link">RACE_POWER_PREFIX</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#POW-17">POW-17</a>: a line starting with this names an opponent the duel picks its power against by the energy race.</div>
+</dd>
+<dt><a href="hadur117/core/shieldmode/ShieldList.html#racePower(java.lang.String)" class="member-name-link">racePower(String)</a> - Method in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#POW-17">POW-17</a>: whether the table names this opponent for the energy-race power pick.</div>
+</dd>
+<dt><a href="hadur117/ShieldTableData.html#racePowers()" class="member-name-link">racePowers()</a> - Static method in class hadur117.<a href="hadur117/ShieldTableData.html" title="class in hadur117">ShieldTableData</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#POW-17">POW-17</a>: the opponents the duel picks its bullet power against by the energy race
+ (<code>race-power:</code> lines).</div>
+</dd>
 <dt><a href="hadur117/core/world/EnemyTracker.html#RADAR_RANGE" class="member-name-link">RADAR_RANGE</a> - Static variable in class hadur117.core.world.<a href="hadur117/core/world/EnemyTracker.html" title="class in hadur117.core.world">EnemyTracker</a></dt>
 <dd>
 <div class="block">The engine's radar range.</div>
@@ -10513,6 +10575,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/melee/FieldGun.html#readsWell(java.lang.String)" class="member-name-link">readsWell(String)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
 <dd>
 <div class="block">TMODE-33: whether Hadur hits <code>name</code>'s class <a href="hadur117/core/melee/FieldGun.html#CONCORD_RATE"><code>FieldGun.CONCORD_RATE</code></a> of <a href="hadur117/core/melee/FieldGun.html#CONCORD_SHOTS"><code>FieldGun.CONCORD_SHOTS</code></a> or more shots.</div>
+</dd>
+<dt><a href="hadur117/core/policy/EnergyRace.html#ready()" class="member-name-link">ready()</a> - Method in class hadur117.core.policy.<a href="hadur117/core/policy/EnergyRace.html" title="class in hadur117.core.policy">EnergyRace</a></dt>
+<dd>
+<div class="block">Whether both sides have enough resolved shots for the race to decide.</div>
 </dd>
 <dt><a href="hadur117/core/policy/PowerPolicy.html#reason(hadur117.core.memory.Tiers.Gun,double,double,double,double,hadur117.core.memory.Estimate,hadur117.core.memory.Estimate)" class="member-name-link">reason(Tiers.Gun, double, double, double, double, Estimate, Estimate)</a> - Static method in class hadur117.core.policy.<a href="hadur117/core/policy/PowerPolicy.html" title="class in hadur117.core.policy">PowerPolicy</a></dt>
 <dd>
@@ -11149,6 +11215,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">A round's survival and last-survivor bonuses in a 1v1, in score points.</div>
 </dd>
+<dt><a href="hadur117/core/policy/EnergyRace.html#ROUND_SWING" class="member-name-link">ROUND_SWING</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/EnergyRace.html" title="class in hadur117.core.policy">EnergyRace</a></dt>
+<dd>
+<div class="block">Score for the side left alive: survival 50, last survivor 10, about 20 kill bonus.</div>
+</dd>
 <dt><a href="hadur117/core/MeleeSeam.html#roundCounts()" class="member-name-link">roundCounts()</a> - Method in class hadur117.core.<a href="hadur117/core/MeleeSeam.html" title="class in hadur117.core">MeleeSeam</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/duel/DuelController.html#roundEnded(long,boolean)" class="member-name-link">roundEnded(long, boolean)</a> - Method in class hadur117.core.duel.<a href="hadur117/core/duel/DuelController.html" title="class in hadur117.core.duel">DuelController</a></dt>
@@ -11315,6 +11385,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur/bench/Arms.html#ROW_FILE" class="member-name-link">ROW_FILE</a> - Static variable in class hadur.bench.<a href="hadur/bench/Arms.html" title="class in hadur.bench">Arms</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#BENCH-95">BENCH-95</a>: the file in each battle's directory that keeps that battle's row, for a resumed run.</div>
+</dd>
+<dt><a href="hadur117/core/policy/EnergyRace.html#ROWS_PER_CALL" class="member-name-link">ROWS_PER_CALL</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/EnergyRace.html" title="class in hadur117.core.policy">EnergyRace</a></dt>
+<dd>
+<div class="block">Grid rows swept a call: the solve is spread over ticks, a full sweep every nine, so no tick
+ pays for a whole solve (a whole solve a call cost the smoke battle 63 skipped turns against 9).</div>
 </dd>
 <dt><a href="hadur/bench/BattleResult.html#rShortfall" class="member-name-link">rShortfall</a> - Variable in class hadur.bench.<a href="hadur/bench/BattleResult.html" title="class in hadur.bench">BattleResult</a></dt>
 <dd>
@@ -13844,6 +13919,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/mini/JayLexi.Wave.html#test()" class="member-name-link">test()</a> - Method in class hadur117.mini.<a href="hadur117/mini/JayLexi.Wave.html" title="class in hadur117.mini">JayLexi.Wave</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/policy/EnergyRace.html#THEIR_PRIOR" class="member-name-link">THEIR_PRIOR</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/EnergyRace.html" title="class in hadur117.core.policy">EnergyRace</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/policy/PowerPolicy.html#THEIR_RATE" class="member-name-link">THEIR_RATE</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/PowerPolicy.html" title="class in hadur117.core.policy">PowerPolicy</a></dt>
 <dd>
 <div class="block">... and theirs certainly below this.</div>
@@ -13923,6 +14000,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/HadurCore.html#theirRollingHitRate()" class="member-name-link">theirRollingHitRate()</a> - Method in class hadur117.core.<a href="hadur117/core/HadurCore.html" title="class in hadur117.core">HadurCore</a></dt>
 <dd>
 <div class="block">S5: their rolling hit rate, over their last firing waves to break on us (<a class="req" href="../requirements.html#DIST-1">DIST-1</a>, <a class="req" href="../requirements.html#POW-2">POW-2</a>).</div>
+</dd>
+<dt><a href="hadur117/core/policy/EnergyRace.html#theirs(double,boolean)" class="member-name-link">theirs(double, boolean)</a> - Method in class hadur117.core.policy.<a href="hadur117/core/policy/EnergyRace.html" title="class in hadur117.core.policy">EnergyRace</a></dt>
+<dd>
+<div class="block">One of their bullets resolved.</div>
 </dd>
 <dt><a href="hadur/bench/BattleResult.html#theirScore" class="member-name-link">theirScore</a> - Variable in class hadur.bench.<a href="hadur/bench/BattleResult.html" title="class in hadur.bench">BattleResult</a></dt>
 <dd>&nbsp;</dd>
@@ -14708,6 +14789,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/move/GunMimics.Feature.html#value(hadur117.core.model.Wave)" class="member-name-link">value(Wave)</a> - Method in enum class hadur117.core.move.<a href="hadur117/core/move/GunMimics.Feature.html" title="enum class in hadur117.core.move">GunMimics.Feature</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/policy/EnergyRace.html#valueAt(double,double)" class="member-name-link">valueAt(double, double)</a> - Method in class hadur117.core.policy.<a href="hadur117/core/policy/EnergyRace.html" title="class in hadur117.core.policy">EnergyRace</a></dt>
+<dd>
+<div class="block">The value of a pair of energies, for tests: expected score to come, ours less theirs.</div>
+</dd>
 <dt><a href="hadur117/core/adapt/Opening.Gun.html#valueOf(java.lang.String)" class="member-name-link">valueOf(String)</a> - Static method in enum class hadur117.core.adapt.<a href="hadur117/core/adapt/Opening.Gun.html" title="enum class in hadur117.core.adapt">Opening.Gun</a></dt>
 <dd>
 <div class="block">Returns the enum constant of this class with the specified name.</div>
@@ -15275,6 +15360,10 @@ the order they are declared.</div>
 <div class="block"><a class="req" href="../requirements.html#TIME-5">TIME-5</a>: runs one tick for each role of the charter through a throwaway core and guard
  before the real battle begins, so that class loading and JIT warm-up land here rather
  than on the first real tick a role drives.</div>
+</dd>
+<dt><a href="hadur117/core/policy/EnergyRace.html#WARMUP_SWEEPS" class="member-name-link">WARMUP_SWEEPS</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/EnergyRace.html" title="class in hadur117.core.policy">EnergyRace</a></dt>
+<dd>
+<div class="block">Full sweeps from the starting guess before the race decides.</div>
 </dd>
 <dt><a href="hadur117/core/melee/TeamConcord.html#watch(java.awt.geom.Point2D.Double,java.util.List,java.util.List,long)" class="member-name-link">watch(Point2D.Double, List&lt;Point2D.Double&gt;, List&lt;EnemyInfo&gt;, long)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/TeamConcord.html" title="class in hadur117.core.melee">TeamConcord</a></dt>
 <dd>
