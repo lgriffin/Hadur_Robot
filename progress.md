@@ -1,6 +1,6 @@
 # Queue pc-tailor-field: progress
 
-Updated 2026-11-07 12:59:12 PC time (12:59 UTC), runner pid 52376.
+Updated 2026-11-07 13:14:24 PC time (13:14 UTC), runner pid 52376.
 
 - `prep` done, exit 0 in 8 min
 - `pilot` done, exit 0 in 4 min
@@ -13,30 +13,30 @@ Updated 2026-11-07 12:59:12 PC time (12:59 UTC), runner pid 52376.
 
 ### screen
 
-**25246 battles**, 0 failed, 3259 read back from an earlier run. Running 29.4 h, 746 battles/h. Last battle 0 min ago.
-Skipped turns a battle: 56.4 overall, first 100 54.7, last 100 50.2; engine disables 10821.
+**25437 battles**, 0 failed, 3259 read back from an earlier run. Running 29.6 h, 740 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 56.4 overall, first 100 54.7, last 100 56.7; engine disables 10908.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| sg | 2294 | 0 | 78.71 | -13.67 (1193 robots) | ±1.23 | -15.55 .. -11.79 | 49.8 |
-| fp | 2296 | 0 | 92.73 | +0.09 (1193 robots) | ±0.16 | -0.16 .. +0.34 | 57.3 |
-| hj | 2296 | 0 | 92.86 | +0.22 (1193 robots) | ±0.17 | -0.04 .. +0.47 | 56.4 |
-| mm | 2295 | 0 | 92.46 | -0.18 (1193 robots) | ±0.18 | -0.45 .. +0.09 | 58.4 |
-| dg | 2295 | 0 | 92.58 | -0.06 (1193 robots) | ±0.16 | -0.30 .. +0.18 | 55.2 |
-| rd | 2297 | 0 | 92.63 | -0.01 (1193 robots) | ±0.16 | -0.25 .. +0.23 | 56.9 |
-| sw | 2294 | 0 | 78.98 | -13.40 (1193 robots) | ±1.23 | -15.29 .. -11.52 | 50.4 |
-| gs | 2294 | 0 | 92.57 | -0.07 (1193 robots) | ±0.18 | -0.34 .. +0.20 | 57.5 |
-| fl | 2295 | 0 | 92.54 | -0.10 (1193 robots) | ±0.15 | -0.34 .. +0.14 | 56.4 |
-| x5 | 2293 | 0 | 92.44 | -0.20 (1193 robots) | ±0.17 | -0.46 .. +0.06 | 57.3 |
-| c | 2297 | 0 | 92.64 | - | - | - | 57.4 |
+| sg | 2311 | 0 | 78.68 | -13.70 (1193 robots) | ±1.23 | -15.58 .. -11.82 | 49.8 |
+| fp | 2314 | 0 | 92.75 | +0.11 (1193 robots) | ±0.16 | -0.13 .. +0.35 | 57.3 |
+| hj | 2313 | 0 | 92.87 | +0.22 (1193 robots) | ±0.17 | -0.03 .. +0.48 | 56.4 |
+| mm | 2312 | 0 | 92.48 | -0.16 (1193 robots) | ±0.17 | -0.42 .. +0.10 | 58.5 |
+| dg | 2315 | 0 | 92.59 | -0.05 (1193 robots) | ±0.16 | -0.29 .. +0.19 | 55.1 |
+| rd | 2311 | 0 | 92.62 | -0.02 (1193 robots) | ±0.15 | -0.25 .. +0.22 | 56.8 |
+| sw | 2312 | 0 | 78.97 | -13.41 (1193 robots) | ±1.23 | -15.29 .. -11.53 | 50.4 |
+| gs | 2311 | 0 | 92.57 | -0.07 (1193 robots) | ±0.18 | -0.34 .. +0.20 | 57.5 |
+| fl | 2310 | 0 | 92.54 | -0.09 (1193 robots) | ±0.15 | -0.33 .. +0.14 | 56.4 |
+| x5 | 2313 | 0 | 92.44 | -0.20 (1193 robots) | ±0.17 | -0.46 .. +0.06 | 57.4 |
+| c | 2315 | 0 | 92.64 | - | - | - | 57.3 |
 
 APS = mean difference over the robots read x 1194 panel robots / 1217 pairings.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 25246 |
+| `fails 30` | halt | ok | 0 failed of 25437 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 90 over 200` | halt | ok | 51.5 a battle over the last 200 (first 200: 56.5) |
+| `skips 90 over 200` | halt | ok | 56.5 a battle over the last 200 (first 200: 56.5) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
 ### Queue log (last lines)
