@@ -38,7 +38,7 @@
 # the confirmed lines go into ShieldTableData by PR; the release rule stands.
 
 set V = 3.21
-set P = --parallel 12 --no-truth-log
+set P = --parallel 12 --no-truth-log --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
 set W = work/tnr
 set W2 = work/tnr-2
