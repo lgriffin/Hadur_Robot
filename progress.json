@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-farm",
- "updated": 1794071756.0595098,
+ "updated": 1794072462.3508694,
  "steps": {
   "tfprep": {
    "status": "done",
@@ -27,50 +27,68 @@
    "end": "2026-11-07T16:48:26"
   },
   "tfnl": {
-   "status": "running",
-   "start": "2026-11-07T16:48:26"
+   "status": "done",
+   "exit": 0,
+   "seconds": 2349,
+   "end": "2026-11-07T17:27:35"
   },
   "tfpilot": {
-   "status": "pending"
+   "status": "failed",
+   "exit": 1,
+   "seconds": 6,
+   "end": "2026-11-07T17:27:42"
   },
   "tfpo": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after tfpilot"
   },
   "tfga": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after tfpo"
   },
   "tfho": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after tfga"
   },
   "tfli": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after tfho"
   },
   "tfnh": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after tfli"
   },
   "tfnp": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after tfnh"
   },
   "tfpick": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after tfnp"
   },
   "tfcprep": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after tfpick"
   },
   "tfcbb": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after tfcprep"
   },
   "tfcfx": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after tfcbb"
   },
   "tflock": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after tfcfx"
   },
   "tfgate": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after tflock"
   },
   "tfpr": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after tfgate"
   }
  },
  "watched": [
@@ -206,8 +224,8 @@
   {
    "step": "tfnl",
    "started": 1794070106.0245895,
-   "updated": 1794071756.0582893,
-   "elapsed": 1650.0336997509003,
+   "updated": 1794072455.6453228,
+   "elapsed": 2349.6207332611084,
    "expected": 552,
    "panel": null,
    "field": null,
@@ -215,36 +233,36 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 336,
+   "battles": 516,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 733.0759366809351,
-   "eta": 1060.7359498398644,
-   "fraction": 0.6086956521739131,
-   "last_battle_age": 79.63911890983582,
+   "rate": 790.5956794234539,
+   "eta": 163.92702790193778,
+   "fraction": 0.9347826086956522,
+   "last_battle_age": 1.6689693927764893,
    "rules": [
     {
      "rule": "fails 60",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 336"
+     "detail": "0 failed of 516"
     },
     {
      "rule": "stall 30m",
      "action": "halt",
      "state": "ok",
-     "detail": "last battle 1 min ago"
+     "detail": "last battle 0 min ago"
     },
     {
      "rule": "skips 60 over 200",
      "action": "halt",
      "state": "ok",
-     "detail": "18.3 a battle over the last 200 (first 200: 20.4)"
+     "detail": "16.6 a battle over the last 200 (first 200: 20.4)"
     }
    ],
-   "skips_mean": 19.297619047619047,
-   "skips_last100": 15.86
+   "skips_mean": 18.282945736434108,
+   "skips_last100": 16.36
   }
  ]
 }
