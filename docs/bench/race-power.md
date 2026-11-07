@@ -26,7 +26,19 @@ Diamond 1.8.22 +14.8 (low +10.8), Combat 3.25.0 +13.1 (+8.1), Shadow 3.83c +8.1 
 
 ## Confirm
 
-The 4 picks at 6 fresh seeds from 52100 (`panel-race-confirm.txt`): see `local/*_race-power-confirm.md`.
+The 4 picks at 6 fresh seeds from 52100 (`panel-race-confirm.txt`), 72 battles: rp +7.26 +- 4.84 points over c
+on them, A/A +0.77 +- 5.47 (`local/2026-11-07_race-power-confirm.md`).
+
+| Robot | c | aa | rp | rp - mean(c, aa) |
+|---|---:|---:|---:|---:|
+| voidious.Diamond 1.8.22 | 52.2 | 45.7 | 61.0 | +12.0 |
+| mn.Combat 3.25.0 | 58.2 | 58.9 | 69.5 | +10.9 |
+| cb.Domogled 1.2 | 62.5 | 69.5 | 69.8 | +3.8 |
+| abc.Shadow 3.83c | 54.0 | 55.9 | 57.3 | +2.3 |
+
+Diamond and Combat hold at about the screen's size; Shadow and Domogled shrink to within noise. The two that hold
+are worth about +0.02 APS. Next: a whole-field PC card (1,212 robots, picks at a 5-point margin, confirm seeds),
+since the screen covered only the strongest 40 and Saguaro 1.1's lead over Hadur sits below 75 APS.
 
 ## Cost
 
