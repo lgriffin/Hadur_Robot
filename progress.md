@@ -1,6 +1,6 @@
 # Queue pc-tailor-near: progress
 
-Updated 2026-11-08 12:18:25 PC time (12:18 UTC), runner pid 19552.
+Updated 2026-11-08 12:33:35 PC time (12:33 UTC), runner pid 19552.
 
 - `prep` done, exit 0 in 2 min
 - `pilot` done, exit 0 in 17 min
@@ -34,24 +34,24 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### screen
 
-**3521 of 3928 battles** (90%), 0 failed, 792 read back from an earlier run. Running 1.7 h, 1486 battles/h, about 16 min left (ends ~12:34 PC time). Last battle 0 min ago.
-Skipped turns a battle: 52.5 overall, first 100 49.3, last 100 51.3; engine disables 1097.
+**3909 of 3928 battles** (100%), 0 failed, 792 read back from an earlier run. Running 2.0 h, 1474 battles/h, about 1 min left (ends ~12:34 PC time). Last battle 0 min ago.
+Skipped turns a battle: 52.4 overall, first 100 49.3, last 100 55.8; engine disables 1233.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 1759 | 0 | 90.50 | - | - | - | 47.4 |
-| ln | 1762 | 0 | 90.73 | +0.09 (491 robots) | ±0.10 | -0.06 .. +0.24 | 46.8 |
+| c | 1955 | 0 | 90.49 | - | - | - | 48.0 |
+| ln | 1954 | 0 | 90.72 | +0.09 (491 robots) | ±0.10 | -0.06 .. +0.25 | 47.2 |
 
 APS = mean difference over the robots read x 491 panel robots / 1217 pairings.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 3521 |
+| `fails 30` | halt | ok | 0 failed of 3909 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 90 over 200` | halt | ok | 53.2 a battle over the last 200 (first 200: 49.6) |
+| `skips 90 over 200` | halt | ok | 52.3 a battle over the last 200 (first 200: 49.6) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 407 battles unrun (about 16 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 19 battles unrun (about 1 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -69,4 +69,5 @@ Stopping now would leave 407 battles unrun (about 16 min); every battle already 
 10:49:23 progress screen: 1191/3928 (30%) battles, 1745/h, ETA 1.6 h, 0 failed, skips 50.2/battle (last 100), ln -0.05
 11:19:43 progress screen: 2015/3928 (51%) battles, 1632/h, ETA 1.2 h, 0 failed, skips 55.2/battle (last 100), ln +0.06
 11:50:04 progress screen: 2826/3928 (72%) battles, 1604/h, ETA 41 min, 0 failed, skips 50.6/battle (last 100), ln +0.08
+12:20:26 progress screen: 3570/3928 (91%) battles, 1468/h, ETA 15 min, 0 failed, skips 52.2/battle (last 100), ln +0.09
 ```
