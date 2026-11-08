@@ -1,4 +1,4 @@
-# POW-17 energy-race power: cloud screen (BENCH-205)
+# POW-17 energy-race power: cloud screen (BENCH-210)
 
 Card `plans/cloud-race-power.queue`, 2026-11-07, cloud box (4 cores, 3 workers, truth log off).
 
