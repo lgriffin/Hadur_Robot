@@ -12,3 +12,10 @@
 11:19:43 progress screen: 2015/3928 (51%) battles, 1632/h, ETA 1.2 h, 0 failed, skips 55.2/battle (last 100), ln +0.06
 11:50:04 progress screen: 2826/3928 (72%) battles, 1604/h, ETA 41 min, 0 failed, skips 50.6/battle (last 100), ln +0.08
 12:20:26 progress screen: 3570/3928 (91%) battles, 1468/h, ETA 15 min, 0 failed, skips 52.2/battle (last 100), ln +0.09
+12:35:43 screen exit=0 in 7203 s
+12:35:43 start pick
+12:35:44 pick exit=0 in 0 s
+12:35:44 start prep2
+12:36:23 prep2 exit=0 in 38 s
+12:36:23 start confirm
+12:36:23 watching confirm: 4 stop rule(s)
