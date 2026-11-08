@@ -185,7 +185,8 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#racePowers()" class="member-name-link">racePowers</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../requirements.html#POW-17">POW-17</a>: the opponents the duel picks its bullet power against by the energy race
- (<code>race-power:</code> lines).</div>
+ (<code>race-power:</code> lines): the 8 robots pc-race-power (BENCH-206, PR #695) locked at a 3-point margin on
+ 4 fresh seeds after a whole-field screen (confirm gate +0.10 +- 0.05 APS).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#stills()" class="member-name-link">stills</a>()</code></div>
@@ -419,7 +420,12 @@ loadScripts(document, 'script');</script>
 <h3>racePowers</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</span>&nbsp;<span class="element-name">racePowers</span>()</div>
 <div class="block"><a class="req" href="../../requirements.html#POW-17">POW-17</a>: the opponents the duel picks its bullet power against by the energy race
- (<code>race-power:</code> lines). Empty until a card's pick holds robots.</div>
+ (<code>race-power:</code> lines): the 8 robots pc-race-power (BENCH-206, PR #695) locked at a 3-point margin on
+ 4 fresh seeds after a whole-field screen (confirm gate +0.10 +- 0.05 APS).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>a fresh array of names</dd>
+</dl>
 </section>
 </li>
 <li>
