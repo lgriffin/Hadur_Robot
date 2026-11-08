@@ -82,3 +82,14 @@ shield robots before, so the PC read decides.
 Musashi holds on every seed (+20); Princess is -1 without the exit off and +2 with it, both inside noise; CassiusClay loses on fresh
 seeds, as pc-shield-still said. Card `pc-shield-audit` (BENCH-209, plans/pc-shield-audit.queue) takes Musashi and
 Princess (with exit off) to the PC on 12 fresh seeds against master and its A/A copy; CassiusClay stays off the list.
+
+## PC result (pc-shield-audit, PR #697, 12 seeds from 9950)
+
+| Robot | control | sa |
+|---|---:|---:|
+| cx.Princess 1.0 | 70.7 | +7.0 (95% low +2.6) |
+| axeBots.Musashi 2.18 | 78.7 | -3.0 |
+
+Princess holds its 3-point pick and ships (list, `shield-still:`, `shield-exit0:`). Musashi, +20 on every cloud seed,
+loses 3 on the PC, as pc-shield-still said on 2026-10-31: the second time the cloud and the PC disagree on a shield
+robot, so a cloud shield read is a candidate list, never a result.
