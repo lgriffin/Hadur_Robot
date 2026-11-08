@@ -9,3 +9,8 @@
 01:54:46 start tctc1
 01:54:46 watching tctc1: 3 stop rule(s)
 01:57:58 progress tctc1: 10/368 (3%) battles, 187/h, ETA 1.9 h, 0 failed, skips 16.4/battle (last 100)
+02:22:02 tctc1 exit=0 in 1635 s
+02:22:02 start tcpilot
+02:22:02 tcpilot exit=0 in 0 s
+02:22:02 start tcbb2
+02:22:02 watching tcbb2: 3 stop rule(s)

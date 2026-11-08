@@ -1,12 +1,12 @@
 # Queue pc-team-close: progress
 
-Updated 2026-11-08 02:11:05 PC time (02:11 UTC), runner pid 24944.
+Updated 2026-11-08 02:26:13 PC time (02:26 UTC), runner pid 24944.
 
 - `tcprep` done, exit 0 in 2 min
 - `tcbb1` done, exit 0 in 27 min
-- `tctc1` running
-- `tcpilot` pending
-- `tcbb2` pending
+- `tctc1` done, exit 0 in 27 min
+- `tcpilot` done, exit 0 in 0 min
+- `tcbb2` running
 - `tctc2` pending
 - `tcgate` pending
 - `tcpr` pending
@@ -26,21 +26,33 @@ Stopping now would leave 8 battles unrun (about 1 min); every battle already fou
 
 ### tctc1
 
-**191 of 368 battles** (52%), 0 failed. Running 16 min, 702 battles/h, about 15 min left (ends ~02:26 PC time). Last battle 0 min ago.
-Skipped turns a battle: 19.8 overall, first 100 19.9, last 100 19.4.
+**360 of 368 battles** (98%), 0 failed. Running 27 min, 792 battles/h, about 1 min left (ends ~02:22 PC time). Last battle 0 min ago.
+Skipped turns a battle: 18.2 overall, first 100 19.9, last 100 16.1.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 191 |
+| `fails 60` | halt | ok | 0 failed of 360 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | waiting | 191 of 200 battles to read |
+| `skips 60 over 200` | halt | ok | 16.6 a battle over the last 200 (first 200: 19.8) |
 
-Stopping now would leave 177 battles unrun (about 15 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 8 battles unrun (about 1 min); every battle already fought is kept and a rerun resumes from it.
+
+### tcbb2
+
+**44 of 1104 battles** (4%), 0 failed. Running 4 min, 630 battles/h, about 1.7 h left (ends ~04:07 PC time). Last battle 0 min ago.
+Skipped turns a battle: 19.1 overall, first 44 19.1, last 44 19.1.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 60` | halt | ok | 0 failed of 44 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 60 over 200` | halt | waiting | 44 of 200 battles to read |
+
+Stopping now would leave 1060 battles unrun (about 1.7 h); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-01:25:41 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
 01:25:41 start tcprep
 01:25:43 progress pushed to origin claude/pc-team-close-progress (every 15 min)
 01:27:32 tcprep exit=0 in 110 s
@@ -51,4 +63,9 @@ Stopping now would leave 177 battles unrun (about 15 min); every battle already 
 01:54:46 start tctc1
 01:54:46 watching tctc1: 3 stop rule(s)
 01:57:58 progress tctc1: 10/368 (3%) battles, 187/h, ETA 1.9 h, 0 failed, skips 16.4/battle (last 100)
+02:22:02 tctc1 exit=0 in 1635 s
+02:22:02 start tcpilot
+02:22:02 tcpilot exit=0 in 0 s
+02:22:02 start tcbb2
+02:22:02 watching tcbb2: 3 stop rule(s)
 ```
