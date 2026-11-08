@@ -1,0 +1,62 @@
+# The field's target curve (docs/bench/melee-top3.md, MMOVE-27, BENCH-215).
+# Why it should win: the melee surfer weighs each seen shot by 1/(1+k)^2 for the k opponents nearer its
+# shooter than Hadur, as if every robot shot its nearest. Twelve traced census fields (62,823 shots,
+# tools/melee_targets.py) say a shot goes to the shooter's nearest robot 41% of the time, and the chance
+# a shot is at Hadur given k robots nearer the shooter runs 48, 20, 14, 12, 12, 10, 9, 9, 7% for k = 0..8:
+# the surfer dropped every shot with k >= 3, a third of those aimed at it, and weighed k = 1 and 2 at
+# half to a third of their true share. The MH hit record (MMOVE-26) agrees from the other side: 16% of the
+# damage Hadur takes is from inferred shots the surfer dropped, and while five or more are alive about
+# half the damage is from shots weighed at a quarter or less or never seen. CROWD_CURVE (arm mcurve, cv)
+# weighs a seen shot by that curve scaled to 1 at k = 0, so no seen shot is dropped.
+# Cloud smoke 2026-11-08 (12 census fields x 2 seeds against master, 24 pairs): share +0.47 +- 0.34,
+# crowd deaths -3.0 +- 3.3 points, rounds won +3.8 +- 4.0, crowd damage per tick -4%; skipped turns
+# 44 against 28 a battle on the slow cloud box (more virtual bullets), which the skip bar below reads
+# on the PC. Expected +0.2 to +0.5 APS; a cloud melee smoke has over-read the PC before (pc-melee-near).
+# Reads only in melee off a team; the duel and the team are bit for bit.
+#   aa      the baseline (master)
+#   bb      its A/A copy
+#   cv      MMOVE-27 CROWD_CURVE
+# Pilot (BENCH-216): mcpilot fights cv against an aa baseline battle for battle on 46 fields x 2 seeds
+# (3326-3327; 184 battles, about 1 h), and mccheck stops the card unless Hadur's score share is up
+# (--share-only), on at least 95% of the 92 pairs with all 35 rounds each. On a stop the check opens
+# the results PR with the pilot read and fails, so no arm after it runs.
+# Each build fights the 46 census fields x 6 fresh seeds alone (3320-3325; 276 battles, 828 in all,
+# about 2.5 h at the PC's ~370 battles/h). The read pairs bb with aa (A/A) and cv with the mean of aa
+# and bb (--base2), battle for battle.
+# Verdict: cv passes with its 95% low end above 0 (--gain 0), Hadur's share of others outlived no more
+# than 1 point lower and the 1-30 endgame wins no more than 3 points lower; skipped turns more than 20%
+# over aa's fail it. The card ends in a results PR on claude/pc-melee-curve-results.
+#   git checkout master && git pull
+#   ./queue.sh run pc-melee-curve        (or  .\queue.ps1 run pc-melee-curve)
+# Stop rules (docs/bench/watch.md), halts only, each keeping every battle fought: fails 20 and
+# stall 30m on the pilot and each arm.
+
+set OUT = ../docs/bench/local
+
+mcprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb cv; do rm -f bisect/hadur117.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh mcurve && mkdir -p work && rm -rf work/melee-curve-"$V"-pilot work/melee-curve-"$V"-aa work/melee-curve-"$V"-bb work/melee-curve-"$V"-cv && echo "$V" > work/melee-curve.version && for a in aa bb cv; do test -f bisect/hadur117.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-curve.args > work/melee-curve-$a.args || exit 1; done && sed -e "s/@V@/$V/g" -e "s/@C@/$C/g" plans/melee-curve-pilot.args > work/melee-curve-pilot.args && rm -f ${OUT}/melee-curve-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+mcpilot | mvn -q exec:java "-Dexec.args=@work/melee-curve-pilot.args" || echo "pilot: some battles failed; mccheck reads what finished"
+  after: mcprep
+  watch: battles=184
+  stop: fails 20
+  stop: stall 30m
+mccheck | V=$(cat work/melee-curve.version) && test -n "$V" && { python3 tools/melee_pilot.py work/melee-curve-"$V"-pilot --expect 92 --rounds 35 --share-only --out ${OUT}/melee-curve-pilot.md --title "pc-melee-curve pilot: cv against aa on $V" || { bash tools/open_results_pr.sh claude/pc-melee-curve-results "The field's target curve (MMOVE-27): pilot stopped the card" ${OUT}/melee-curve-pilot.md; exit 1; }; }
+  after: mcpilot
+mcaa   | mvn -q exec:java "-Dexec.args=@work/melee-curve-aa.args"
+  after: mccheck
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+mcbb   | mvn -q exec:java "-Dexec.args=@work/melee-curve-bb.args"
+  after: mcaa
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+mccv   | mvn -q exec:java "-Dexec.args=@work/melee-curve-cv.args"
+  after: mcbb
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+mcread | V=$(cat work/melee-curve.version) && test -n "$V" && W=work/melee-curve-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm cv="$W"-cv --census melee-census-317.txt --seeds 6 --gain 0 --survival-slack 1 --out ${OUT}/melee-curve-read.md --title "The field's target curve on $V" || true; } && test -s ${OUT}/melee-curve-read.md
+  after: mccv
+mcpr   | bash tools/open_results_pr.sh claude/pc-melee-curve-results "The field's target curve (MMOVE-27)" ${OUT}/melee-curve-read.md ${OUT}/melee-curve-pilot.md $(ls ${OUT}/melee-curve-aa.md ${OUT}/melee-curve-bb.md ${OUT}/melee-curve-cv.md 2>/dev/null)
+  after: mcread
