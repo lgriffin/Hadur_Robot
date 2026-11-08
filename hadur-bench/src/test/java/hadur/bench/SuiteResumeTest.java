@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-/** BENCH-205: a restarted suite keeps only fields that finished cleanly under the same settings and jar. No battle starts. */
+/** BENCH-211: a restarted suite keeps only fields that finished cleanly under the same settings and jar. No battle starts. */
 class SuiteResumeTest {
 
     @TempDir
@@ -32,7 +32,7 @@ class SuiteResumeTest {
     }
 
     @Test
-    @Tag("BENCH-205")
+    @Tag("BENCH-211")
     @DisplayName("a report alone, from a failed or interrupted field, is not kept")
     void reportWithoutDoneStampRuns() throws Exception {
         Path jar = Files.writeString(dir.resolve("a.jar"), "jar");
@@ -40,7 +40,7 @@ class SuiteResumeTest {
     }
 
     @Test
-    @Tag("BENCH-205")
+    @Tag("BENCH-211")
     @DisplayName("a field marked done is kept, unless the line turns resume off")
     void doneFieldKeptUnlessResumeOff() throws Exception {
         Path jar = Files.writeString(dir.resolve("a.jar"), "jar");
@@ -52,7 +52,7 @@ class SuiteResumeTest {
     }
 
     @Test
-    @Tag("BENCH-205")
+    @Tag("BENCH-211")
     @DisplayName("changed seeds or a rebuilt jar under the same output folder run the field again")
     void changedSettingsOrJarRunAgain() throws Exception {
         Path jar = Files.writeString(dir.resolve("a.jar"), "jar");

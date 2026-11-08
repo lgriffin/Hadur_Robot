@@ -392,9 +392,9 @@ public final class Bench {
             for (int i = 0; i < lines.size(); i++) {
                 Map<String, String> opts = lines.get(i);
                 String label = labels.get(i);
-                // BENCH-205: a field that finished cleanly under the same settings and robot jar is kept.
+                // BENCH-211: a field that finished cleanly under the same settings and robot jar is kept.
                 if (suiteFieldDone(opts)) {
-                    System.out.println("== " + label + " kept from an earlier, stopped run (BENCH-205)");
+                    System.out.println("== " + label + " kept from an earlier, stopped run (BENCH-211)");
                     runs.add(java.util.concurrent.CompletableFuture.completedFuture(0));
                     continue;
                 }
@@ -441,11 +441,11 @@ public final class Bench {
      * records fixtures (their names carry no line label) or has no pinned CPU constant (each field
      * would calibrate it in its own home while the others load the host).
      */
-    /** BENCH-205: the file a suite field writes in its output folder once it has finished with exit 0. */
+    /** BENCH-211: the file a suite field writes in its output folder once it has finished with exit 0. */
     static final String SUITE_DONE = "suite-done.txt";
 
     /**
-     * BENCH-205: what a finished suite field was run with: its merged options in key order, and the
+     * BENCH-211: what a finished suite field was run with: its merged options in key order, and the
      * size and modification time of every option value that names a file (the robot jar among them),
      * so a rebuilt arm or changed seeds never reuse an older field's report.
      */
@@ -466,7 +466,7 @@ public final class Bench {
         return stamp.toString();
     }
 
-    /** BENCH-205: whether a suite field may be kept: resume is on for the line and its done stamp matches. */
+    /** BENCH-211: whether a suite field may be kept: resume is on for the line and its done stamp matches. */
     static boolean suiteFieldDone(Map<String, String> opts) {
         if (!Boolean.parseBoolean(opts.getOrDefault("resume", "true"))) return false;
         Path out = Path.of(opts.get("out"));
@@ -478,7 +478,7 @@ public final class Bench {
         }
     }
 
-    /** BENCH-205: records a suite field as finished, written whole or not at all. */
+    /** BENCH-211: records a suite field as finished, written whole or not at all. */
     static void markSuiteFieldDone(Map<String, String> opts) throws java.io.IOException {
         Path out = Path.of(opts.get("out"));
         Path tmp = out.resolve(SUITE_DONE + ".tmp");
