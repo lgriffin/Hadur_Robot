@@ -1,13 +1,17 @@
 package hadur.bench;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.lang.reflect.Proxy;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.zip.GZIPInputStream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -54,6 +58,8 @@ class MeleeHarvesterTest {
                 case "getOutputStreamSnapshot" -> "";
                 case "getGunHeat" -> heat;
                 case "getEnergy" -> energy;
+                case "getBodyHeading" -> 0.0;
+                case "getVelocity" -> 0.0;
                 default -> throw new UnsupportedOperationException(m.getName());
             });
     }
@@ -76,6 +82,8 @@ class MeleeHarvesterTest {
                 case "getVictimIndex" -> victim;
                 case "getPower" -> power;
                 case "getHeading" -> heading;
+                case "getX" -> 0.0;
+                case "getY" -> 0.0;
                 default -> throw new UnsupportedOperationException(m.getName());
             });
     }
@@ -321,5 +329,40 @@ class MeleeHarvesterTest {
         List<String> lines = Files.readAllLines(dir.resolve("shots.csv"));
         assertEquals(List.of("0,3,3,79.0000,b.Beta 1.0,12.5000,300.0000,2.0000",
             "0,4,3,77.0000,a.Alpha 1.0,60.0000,400.0000,1.0000"), lines.subList(1, lines.size()));
+    }
+
+    @Test
+    @Tag("BENCH-213")
+    @DisplayName("BENCH-213: --melee-trace true writes trace.log.gz, one T line a turn with every robot and bullet; off by default")
+    void meleeTrace() throws IOException {
+        assertEquals(List.of("-Xmx2G", "-Dhadur.bench.melee.trace=true"), Bench.childFlags(Map.of("melee-trace", "true"), 1));
+        assertEquals(List.of("-Xmx2G"), Bench.childFlags(Map.of(), 1));
+        String was = System.getProperty("hadur.bench.melee.trace");
+        try {
+            System.clearProperty("hadur.bench.melee.trace");
+            assertFalse(MeleeHarvester.traceOn());
+            IRobotSnapshot me = robot(0, US, 100, 100, true);
+            IRobotSnapshot a = robot(1, "a.Alpha 1.0", 500, 500, true), deadB = robot(2, "b.Beta 1.0", 150, 100, false);
+            harvest(List.of(List.of(turn(5, List.of(me, a, deadB), List.of()))));
+            assertFalse(Files.exists(dir.resolve("trace.log.gz")), "off by default");
+            System.setProperty("hadur.bench.melee.trace", "true");
+            assertTrue(MeleeHarvester.traceOn());
+            harvest(List.of(List.of(turn(5, List.of(me, a, deadB), List.of(bullet(1, 1, -1, 2.0, BulletState.MOVING))))));
+            List<String> lines;
+            try (var in = new java.io.BufferedReader(new java.io.InputStreamReader(
+                    new GZIPInputStream(Files.newInputStream(dir.resolve("trace.log.gz")))))) {
+                lines = in.lines().toList();
+            }
+            assertEquals("V,1", lines.get(0));
+            assertEquals(2, lines.size());
+            String t = lines.get(1);
+            assertTrue(t.startsWith("T,0,5," + US + ":100.0:100.0:"), t);
+            assertTrue(t.contains(",a.Alpha 1.0:500.0:500.0:0.000:0.00:50.00:1,"), t);
+            assertTrue(t.contains(",b.Beta 1.0:150.0:100.0:0.000:0.00:50.00:0,"), "a dead robot is marked 0: " + t);
+            assertTrue(t.endsWith(",a.Alpha 1.0:0.0:0.0:0.000:2.00"), "the bullet, by its owner: " + t);
+        } finally {
+            if (was == null) System.clearProperty("hadur.bench.melee.trace");
+            else System.setProperty("hadur.bench.melee.trace", was);
+        }
     }
 }

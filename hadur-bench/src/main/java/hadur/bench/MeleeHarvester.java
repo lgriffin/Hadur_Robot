@@ -2,6 +2,7 @@ package hadur.bench;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.zip.GZIPOutputStream;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.RoundEndedEvent;
 import robocode.control.events.RoundStartedEvent;
@@ -48,6 +50,11 @@ import robocode.control.snapshot.ITurnSnapshot;
  *     robot the shot was aimed at (the hit victim, else the living fighter whose bearing lies
  *     nearest the bullet's heading), that robot's energy and distance, and the power. It is Hadur's bullet-power decision as a function of
  *     what a nano can see, the input of {@code tools/distill.py}.</li>
+ * <li>{@code trace.log.gz} (BENCH-213, only with {@code --melee-trace true}): one {@code T} record per
+ *     turn with every robot's true state ({@code name:x:y:heading:velocity:energy:alive}) and every
+ *     live bullet ({@code owner:x:y:heading:power}, {@code |} between bullets), so a round can be drawn robot by robot: who stood
+ *     nearest whom, where the shots came from, and where Hadur died. About 3 MB a battle, so off
+ *     unless asked.</li>
  * <li>{@code exposure.csv} (BENCH-116): one row per robot per round ({@link #EXPOSURE_HEADER}):
  *     the ticks it was alive with three or more fighters alive; over those ticks, the summed
  *     count of other fighters whose nearest living fighter it was; the bullet damage it took
@@ -81,6 +88,8 @@ public class MeleeHarvester extends BattleAdaptor {
     private final BufferedWriter shots;
     private final BufferedWriter hits;
     private final BufferedWriter exposure;
+    /** BENCH-213: null unless the melee trace is on. */
+    private final BufferedWriter trace;
     /** BENCH-116, per robot this round: crowd ticks, nearest load, crowd damage taken, as nearest, as second. */
     private final Map<String, double[]> exposed = new LinkedHashMap<>();
     /** Bullet id to the victim's place by distance from the shooter when the shot was first seen, by robot index. */
@@ -130,6 +139,41 @@ public class MeleeHarvester extends BattleAdaptor {
         shots.write(SHOT_HEADER + "\n");
         this.hits = Files.newBufferedWriter(dir.resolve("hits.csv"), StandardCharsets.UTF_8);
         hits.write(HIT_HEADER + "\n");
+        if (traceOn()) {
+            this.trace = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(
+                Files.newOutputStream(dir.resolve("trace.log.gz"))), StandardCharsets.UTF_8));
+            trace.write("V,1\n");
+        } else {
+            Files.deleteIfExists(dir.resolve("trace.log.gz"));
+            this.trace = null;
+        }
+    }
+
+    /** BENCH-213: whether a melee battle child writes {@code trace.log.gz} ({@code -Dhadur.bench.melee.trace=true}). */
+    static boolean traceOn() {
+        return "true".equalsIgnoreCase(System.getProperty("hadur.bench.melee.trace", "false"));
+    }
+
+    /** BENCH-213: this turn's robots and bullets, one line. */
+    private void writeTrace(IRobotSnapshot[] robots, IBulletSnapshot[] bullets, int turn) throws IOException {
+        if (trace == null) return;
+        StringBuilder b = new StringBuilder("T,").append(round).append(',').append(turn);
+        for (IRobotSnapshot r : robots) {
+            b.append(',').append(field(r.getName()).replace(':', ';')).append(':')
+             .append(String.format(Locale.ROOT, "%.1f:%.1f:%.3f:%.2f:%.2f:%d", r.getX(), r.getY(), r.getBodyHeading(),
+                 r.getVelocity(), r.getEnergy(), r.getState() == robocode.control.snapshot.RobotState.DEAD ? 0 : 1));
+        }
+        b.append(',');
+        boolean first = true;
+        for (IBulletSnapshot bl : bullets) {
+            if (bl.getState() != BulletState.FIRED && bl.getState() != BulletState.MOVING) continue;
+            if (!first) b.append('|');
+            first = false;
+            IRobotSnapshot owner = byIndex(robots, bl.getOwnerIndex());
+            b.append(owner == null ? "?" : field(owner.getName()).replace(':', ';')).append(':')
+             .append(String.format(Locale.ROOT, "%.1f:%.1f:%.3f:%.2f", bl.getX(), bl.getY(), bl.getHeading(), bl.getPower()));
+        }
+        trace.write(b.append('\n').toString());
     }
 
     @Override
@@ -212,6 +256,7 @@ public class MeleeHarvester extends BattleAdaptor {
         }
         tallyExposure(robots, snap.getBullets(), alive);
         try {
+            writeTrace(robots, snap.getBullets(), snap.getTurn());
             logShots(me, robots, snap.getBullets(), snap.getTurn(), aliveThen);
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
@@ -468,5 +513,6 @@ public class MeleeHarvester extends BattleAdaptor {
         exposure.close();
         shots.close();
         hits.close();
+        if (trace != null) trace.close();
     }
 }

@@ -202,3 +202,15 @@ three the duel is lost even ahead (ScalarR 17%, Diamond 11% when Hadur leads), s
 middle of the field. pc-melee-three tries two ways to reach the duel nearer even: hold far shots at a
 richer target (MEND-4, `mthold`) and wear down the richer of the two (MEND-5, `mtstrong`), pilot both
 together. Expected +0.1 to +0.3: even all the 20+-behind duels won at the 0-20-behind rate is about +0.4.
+
+## Tracing a melee round (BENCH-213, 2026-11-08)
+
+Leigh: "Show me a diagram of our data, I want to see an example where we are nearest compared to other bots.
+Tracing is a good addition to our harness." `--melee-trace true` makes a melee battle write `trace.log.gz`
+(every robot and bullet, every turn), and `tools/melee_trace_draw.py BATTLE --round N --out PNG` draws the
+field at four ticks with an arrow from each robot to its nearest, plus the round's timeline of how many
+robots have Hadur as their nearest against the field's mean, Hadur's energy and its death. First cloud
+battle (field f24, seed 4400, 6 rounds, /mnt/project-files/melee/trace-f24-round*.png): in the two crowd
+deaths Hadur holds a corner, loses 40 energy to shots while nobody's nearest, then from about tick 370 the
+nearest opponent (Corsair) hunts it along the edge until two robots share it as nearest and it dies at 6
+energy. The trace is the input for the death-forensics pass.
