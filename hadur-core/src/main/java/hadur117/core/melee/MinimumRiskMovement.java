@@ -400,13 +400,19 @@ public class MinimumRiskMovement {
      * fired: 1/(1+k)^2 for the k living opponents other than its shooter nearer its source.
      */
     static double crowdWeight(EnemyShot shot, Point2D.Double me, List<EnemyInfo> enemies) {
+        int k = nearer(shot, me, enemies);
+        return 1.0 / ((1 + k) * (1 + k));
+    }
+
+    /** The k of {@link #crowdWeight}: living opponents other than the shooter nearer {@code shot}'s source than {@code me}. */
+    static int nearer(EnemyShot shot, Point2D.Double me, List<EnemyInfo> enemies) {
         double mine = shot.source.distance(me);
         int k = 0;
         for (EnemyInfo e : enemies) {
             if (e.location == null || e.name.equals(shot.shooter)) continue;
             if (shot.source.distance(e.location) < mine) k++;
         }
-        return 1.0 / ((1 + k) * (1 + k));
+        return k;
     }
 
     /**

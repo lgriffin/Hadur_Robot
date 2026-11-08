@@ -260,20 +260,77 @@ public class MeleeController {
         hitByBullet(name, power, heading, me, now);
     }
 
+    /**
+     * MMOVE-26: a hit on Hadur off a team, as the melee surfer saw the shot that made it:
+     * {@code seen} when a shot the World inferred matches it (MMOVE-10's test), then the k
+     * living opponents that were nearer its shooter than Hadur when it was fired and the
+     * crowd weight 1/(1+k)^2 the surfer gave it (MMOVE-15). Read once by the seam.
+     */
+    public static final class Hit {
+        public final String shooter;
+        public final double damage, distance;
+        public final boolean seen;
+        public final int nearer;
+        public final double weight;
+        /** Living opponents when the hit landed. */
+        public final int alive;
+
+        Hit(String shooter, double damage, double distance, boolean seen, int nearer, double weight, int alive) {
+            this.shooter = shooter;
+            this.damage = damage;
+            this.distance = distance;
+            this.seen = seen;
+            this.nearer = nearer;
+            this.weight = weight;
+            this.alive = alive;
+        }
+
+        /** The record's fields after {@code MH,round,tick,shooter}: damage, distance, seen, nearer, weight, alive. */
+        public String fields() {
+            return fmt(damage) + "," + (Double.isNaN(distance) ? "-" : String.valueOf(Math.round(distance))) + ","
+                + (seen ? 1 : 0) + "," + nearer + "," + fmt(weight) + "," + alive;
+        }
+
+        private static String fmt(double v) {
+            return String.format(java.util.Locale.ROOT, "%.3f", v);
+        }
+    }
+
+    /** MMOVE-26: the last hit on Hadur, or null; cleared as it is read. */
+    private Hit lastHit;
+
+    /** MMOVE-26: the last hit on Hadur off a team, once; null when none since the last call. */
+    public Hit takeHit() {
+        Hit h = lastHit;
+        lastHit = null;
+        return h;
+    }
+
     /** The World has booked {@code name}'s hit on Hadur; the melee's own books take it. */
     public void hitByBullet(String name, double power, double heading,
                             Point2D.Double me, long now) {
         OpponentStats stats = book.get(name);
         double damage = Rules.getBulletDamage(power);
         EnemyInfo shooter = tracker.get(name);
+        int alive = tracker.alive().size();
         if (shooter == null) {
             stats.recordDamageReceived(damage, Double.NaN, 0);
             profiles.hitOnHadur(name, null);
+            if (!onTeam) lastHit = new Hit(name, damage, Double.NaN, false, -1, 0, alive);
             return;
         }
         double distance = shooter.location.distance(me);
         long flight = Math.round(distance / Rules.getBulletSpeed(power));
         RobotState atFire = myPath.getState(now - flight);
+        if (!onTeam) {
+            // MMOVE-26: what the surfer saw of the shot that hit, for the MH record.
+            EnemyShot shot = match(name, power, me, now);
+            RobotState at = shot == null ? null : myPath.getState(shot.fireTime);
+            Point2D.Double target = at != null ? at.location : atFire != null ? atFire.location : me;
+            int nearer = shot == null ? -1 : MinimumRiskMovement.nearer(shot, target, tracker.alive());
+            double weight = shot == null ? 0 : MinimumRiskMovement.crowdWeight(shot, target, tracker.alive());
+            lastHit = new Hit(name, damage, distance, shot != null, nearer, weight, alive);
+        }
         if (atFire == null) {
             stats.recordDamageReceived(damage, Double.NaN, 0);
             profiles.hitOnHadur(name, null);
@@ -305,17 +362,7 @@ public class MeleeController {
 
     /** As above; off a team ({@code report} false) the sample is logged, not kept for a report. */
     void learn(String name, double power, double heading, Point2D.Double me, long now, boolean report) {
-        EnemyShot best = null;
-        double bestErr = Double.POSITIVE_INFINITY;
-        for (EnemyShot shot : tracker.shots(now)) {
-            if (!shot.shooter.equals(name) || Math.abs(shot.power - power) > 0.01) continue;
-            double err = Math.abs(shot.source.distance(me) - shot.travelled(now));
-            if (err > LEARN_SLACK + shot.window * shot.speed()) continue;
-            if (err < bestErr) {
-                bestErr = err;
-                best = shot;
-            }
-        }
+        EnemyShot best = match(name, power, me, now);
         if (best == null) return;
         RobotState at = myPath.getState(best.fireTime);
         if (at == null) return;
@@ -330,6 +377,26 @@ public class MeleeController {
         }
         if (report) danger.own(sample);
         else danger.add(sample);
+    }
+
+    /**
+     * MMOVE-10: the shot of {@code name} among those the World inferred that a hit on Hadur at
+     * {@code me} on {@code now} ends: the same power, its bullet's flight from its source
+     * matching the ticks since it was fired, the closest such; null when none explains it.
+     */
+    EnemyShot match(String name, double power, Point2D.Double me, long now) {
+        EnemyShot best = null;
+        double bestErr = Double.POSITIVE_INFINITY;
+        for (EnemyShot shot : tracker.shots(now)) {
+            if (!shot.shooter.equals(name) || Math.abs(shot.power - power) > 0.01) continue;
+            double err = Math.abs(shot.source.distance(me) - shot.travelled(now));
+            if (err > LEARN_SLACK + shot.window * shot.speed()) continue;
+            if (err < bestErr) {
+                bestErr = err;
+                best = shot;
+            }
+        }
+        return best;
     }
 
     /** MMOVE-10: how far, px, a hit may be from where its shot's bullet should be: a robot's reach and a tick's flight. */
