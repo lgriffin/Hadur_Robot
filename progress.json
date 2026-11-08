@@ -1,0 +1,31 @@
+{
+ "plan": "pc-melee-curve",
+ "updated": 1794178580.803585,
+ "steps": {
+  "mcprep": {
+   "status": "pending"
+  },
+  "mcpilot": {
+   "status": "pending"
+  },
+  "mccheck": {
+   "status": "pending"
+  },
+  "mcaa": {
+   "status": "pending"
+  },
+  "mcbb": {
+   "status": "pending"
+  },
+  "mccv": {
+   "status": "pending"
+  },
+  "mcread": {
+   "status": "pending"
+  },
+  "mcpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
