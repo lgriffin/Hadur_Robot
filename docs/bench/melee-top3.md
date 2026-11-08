@@ -240,3 +240,47 @@ Hiding kills Hadur faster on both halves. The grid drives cross the field throug
 nearest-robot term did not even lower the nearest load; holding fire leaves the crowd stronger for longer and
 gives up the bullet-damage half of the score. The one melee lever that has paid since 3.19 is the opposite:
 more firepower in the crowd (MGUN-13, MGUN-16, MGUN-25). The code was never merged; nothing to remove.
+
+## What the surfer saw of the shots that hit us (MMOVE-26, 2026-11-08)
+
+The hide study left one question: how much of the damage Hadur takes comes from shots its surfer never
+weighed? Each hit on Hadur off a team now writes an `MH` record (`MH,round,tick,shooter,damage,distance,
+seen,nearer,weight,alive`): whether a shot the World inferred matches the hit, how many living opponents
+were nearer the shooter than Hadur when it fired, and the crowd weight 1/(1+k)^2 the surfer gave it
+(MMOVE-15; shots under 0.1 make no virtual bullets). `tools/melee_hits.py DIR` aggregates the records of a
+bench's battles.
+
+Twelve census fields, one battle of 35 rounds each, master with the record (mean APS 69.0):
+
+| what the surfer saw of the shot | hits | damage | share |
+|---|---:|---:|---:|
+| inferred shot, weight >= 0.1 (surfed) | 2219 | 16424 | 61% |
+| inferred shot, weight < 0.1 (dropped as aimed at someone nearer the shooter) | 376 | 4357 | 16% |
+| no inferred shot matches the hit (never surfed) | 711 | 6330 | 23% |
+
+| alive | damage | surfed | dropped | unseen |
+|---:|---:|---:|---:|---:|
+| 9 | 4466 | 48% | 30% | 21% |
+| 8 | 3768 | 48% | 26% | 26% |
+| 7 | 2782 | 50% | 25% | 26% |
+| 6 | 2499 | 51% | 20% | 29% |
+| 5 | 2904 | 54% | 16% | 30% |
+| 4 | 3072 | 63% | 12% | 25% |
+| 3 | 2771 | 80% | 0% | 20% |
+| 2 | 2844 | 87% | 0% | 13% |
+| 1 | 1901 | 85% | 0% | 15% |
+
+Of the damage from inferred shots, 48% (10,045 of 20,781) came from a shooter that had at least one robot
+nearer it than Hadur, so the surfer had given the shot a quarter of its weight or less. By shooter that share
+runs from 21% (Figment, which mostly shoots its nearest) to 68% (ACPFinal), with Diamond 36%, Combat 47%,
+DemonicRage 48%, Portia 54%, Scimitar 59% and JollyNinja 67%: half the field picks a target by something other
+than distance. (This run's records recomputed the weight at impact from the living opponents and counted a
+killing bullet's full damage; the record now carries the weight the surfer itself gave the shot and caps the
+damage at Hadur's energy. Rows with one opponent alive are the endgame duel, which the duel drives.)
+
+Read: in the crowd (five or more alive, where the deaths that cost the rank happen) about half the damage
+Hadur takes is from shots its surfer weighed at a quarter or less, or never saw. The nearest-robot crowd
+weight is the wrong model for half the shooters, and a quarter of the hits match no inferred shot at all.
+The next melee lever is the danger model, not the mover's geometry or its posture: a per-shooter target
+model (who each robot actually shoots at, learned from the trace or from its hits) in place of 1/(1+k)^2,
+and a look at why a quarter of the hits have no shot to match (scan gaps, energy drops masked by damage).

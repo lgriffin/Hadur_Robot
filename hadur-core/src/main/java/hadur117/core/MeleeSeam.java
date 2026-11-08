@@ -213,6 +213,11 @@ final class MeleeSeam implements Role {
         } else if (event instanceof BotEvent.HitByBullet) {
             BotEvent.HitByBullet e = (BotEvent.HitByBullet) event;
             guard(() -> melee.hitByBullet(e.name(), e.power(), e.heading(), in.location(), in.time()));
+            // MMOVE-26: what the surfer saw of the shot that hit, one MH record a hit.
+            MeleeController.Hit hit = melee.takeHit();
+            if (hit != null) {
+                core.emit("MH," + core.round() + "," + in.time() + "," + HadurCore.clean(hit.shooter) + "," + hit.fields());
+            }
         } else if (event instanceof BotEvent.RobotDeath) {
             String name = ((BotEvent.RobotDeath) event).name();
             guard(() -> melee.died(name, tick.isSentry(name)));
