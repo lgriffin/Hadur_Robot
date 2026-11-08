@@ -291,28 +291,28 @@ The MH read above says the surfer never weighed 39% of the damage Hadur takes. T
 who the field actually shoots at. `tools/melee_targets.py` reads it from melee traces (BENCH-213): for every
 bullet that first appears, the living robot whose head-on or linear bearing from the shooter lies nearest
 the bullet's heading, filed by that robot's distance rank from the shooter. Twelve traced census fields,
-20 rounds each, 62,823 opponent shots (7% match no robot within 12 degrees):
+20 rounds each, 63,408 opponent shots (7% match no robot within 12 degrees):
 
 | target's distance rank from the shooter (0 = nearest) | shots | share | surfer weight 1/(1+k)^2 |
 |---:|---:|---:|---:|
-| 0 | 18289 | 41% | 1.00 |
-| 1 | 7800 | 17% | 0.25 |
-| 2 | 5190 | 12% | 0.11 |
-| 3 | 3830 | 9% | 0.06 |
-| 4 | 2998 | 7% | 0.04 |
-| 5 to 8 | 6580 | 15% | 0.03 to 0.01 |
+| 0 | 18438 | 41% | 1.00 |
+| 1 | 7873 | 17% | 0.25 |
+| 2 | 5233 | 12% | 0.11 |
+| 3 | 3876 | 9% | 0.06 |
+| 4 | 3028 | 7% | 0.04 |
+| 5 to 8 | 6651 | 15% | 0.03 to 0.01 |
 
 | robots nearer the shooter than Hadur | shots with Hadur there | at Hadur | share | surfer weight |
 |---:|---:|---:|---:|---:|
-| 0 | 5535 | 2654 | 48% | 1.00 |
-| 1 | 6971 | 1387 | 20% | 0.25 |
-| 2 | 7283 | 1001 | 14% | 0.11 |
-| 3 | 5921 | 727 | 12% | 0.06 |
-| 4 | 4972 | 584 | 12% | 0.04 |
-| 5 | 4246 | 411 | 10% | 0.03 |
-| 6 | 3503 | 327 | 9% | 0.02 |
-| 7 | 2756 | 240 | 9% | 0.02 |
-| 8 | 1976 | 129 | 7% | 0.01 |
+| 0 | 5584 | 2667 | 48% | 1.00 |
+| 1 | 7031 | 1400 | 20% | 0.25 |
+| 2 | 7336 | 1011 | 14% | 0.11 |
+| 3 | 5978 | 734 | 12% | 0.06 |
+| 4 | 5027 | 592 | 12% | 0.04 |
+| 5 | 4290 | 416 | 10% | 0.03 |
+| 6 | 3538 | 328 | 9% | 0.02 |
+| 7 | 2785 | 240 | 9% | 0.02 |
+| 8 | 2000 | 130 | 6% | 0.01 |
 
 A shot goes to the shooter's nearest robot 41% of the time. The 1/(1+k)^2 weight is right at k = 0 and
 k = 1, a third low at k = 2, and from k = 3 up it falls under the 0.1 floor, so the surfer dropped every

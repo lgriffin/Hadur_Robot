@@ -7,7 +7,9 @@ For every bullet that first appears in a trace, the shooter's target is the livi
 linear-lead bearing from the shooter lies nearest the bullet's heading (within --tol degrees). The shot
 is then filed by the target's distance rank from the shooter (0 = its nearest robot). Output: the field's
 share of shots at the k-th nearest robot against the surfer's 1/(1+k)^2 weight, the chance a shot is at
-Hadur given k robots were nearer the shooter, and the same per shooter.
+Hadur given k robots were nearer the shooter, and the same per shooter. The rank tables count shots with
+three or more candidates (where the surfer's crowd weight matters) and leave out the shots that match no
+aim: a conditional share, which takes those shots to be spread like the matched ones.
 """
 import argparse, glob, gzip, math, os, sys
 from collections import defaultdict
@@ -54,25 +56,31 @@ def linear_lead(sx, sy, t, speed):
 
 
 def shots(trace, tol):
-    """Yields (shooter, target, rank, others, names_by_rank) per new bullet."""
+    """Yields (shooter, target, rank, others, names_by_rank) per bullet on its first turn in the trace.
+
+    A bullet is new when no bullet of the previous turn, advanced one tick along its heading, lands
+    where it is; so two shots of one robot at the same heading and power are two shots.
+    """
     prev_robots, prev_bullets = None, []
-    seen = set()
+    last_turn = -1
     for rnd, turn, robots, bullets in trace:
-        if prev_robots is None or turn == 1 or turn < getattr(shots, 'last', -1):
-            prev_robots, prev_bullets, seen = robots, [], set()
-        shots.last = turn
+        if prev_robots is None or turn <= last_turn:
+            prev_robots, prev_bullets = robots, []
+        last_turn = turn
+        expected = []
+        for owner, x, y, h, pw in prev_bullets:
+            speed = 20 - 3 * pw
+            expected.append((owner, x + math.sin(h) * speed, y + math.cos(h) * speed, h))
         for owner, x, y, h, pw in bullets:
             speed = 20 - 3 * pw
-            key = (owner, round(h, 4), pw, rnd)
-            # A bullet just fired is within a tick or two of its owner's gun.
+            if any(o == owner and abs(eh - h) < 1e-6 and math.hypot(ex - x, ey - y) < 3 for o, ex, ey, eh in expected):
+                continue
             o = robots.get(owner) or prev_robots.get(owner)
             if o is None:
                 continue
             op = prev_robots.get(owner, o)
-            if math.hypot(x - op['x'], y - op['y']) > 2.5 * speed + 20 or key in seen:
-                seen.add(key)
-                continue
-            seen.add(key)
+            if math.hypot(x - op['x'], y - op['y']) > 2.5 * speed + 20:
+                continue  # first seen far from its owner: a trace gap, not a fresh shot
             # The others alive when it fired: last turn's positions, the shot came before this turn.
             cands = []
             for name, r in prev_robots.items():
@@ -88,10 +96,7 @@ def shots(trace, tol):
             cands.sort()
             ranked = [c[1] for c in cands]
             best = min(cands, key=lambda c: c[2])
-            if math.degrees(best[2]) > tol:
-                target = None
-            else:
-                target = best[1]
+            target = None if math.degrees(best[2]) > tol else best[1]
             yield owner, target, (ranked.index(target) if target else -1), len(cands), ranked
         prev_robots, prev_bullets = robots, bullets
 

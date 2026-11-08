@@ -430,7 +430,7 @@ public class MinimumRiskMovement {
 
     /**
      * MMOVE-27 (arm mcurve): the share of a shot aimed at Hadur with k robots nearer its shooter,
-     * as the field shoots. Twelve traced census fields (62,823 shots, tools/melee_targets.py):
+     * as the field shoots. Twelve traced census fields (63,408 shots, tools/melee_targets.py):
      * a shot goes to the shooter's nearest robot 41% of the time, and the chance it is at Hadur
      * given k robots nearer the shooter runs 48, 20, 14, 12, 12, 10, 9, 9, 7% for k = 0..8; the
      * table is that curve scaled to 1 at k = 0. Under 1/(1+k)^2 the surfer dropped a third of the
