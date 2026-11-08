@@ -1,0 +1,67 @@
+# The three-robot phase (docs/bench/melee-top3.md, MEND-4, MEND-5, BENCH-211).
+# Leigh 2026-11-08: "Where is melee at? Its within touching distance of first lets figure this out".
+# Why it should win: in the cloud 3.21 census Hadur wins 97% of the endgame duels it starts 20 or
+# more energy ahead and 32% of those it starts 20 or more behind (opponent for opponent the gap holds:
+# -0.34 and +0.18 against each survivor's own rate). Behind duels start against a survivor with 71
+# energy, and on the way there, with two opponents left, Hadur spends about 19 energy on 16 shots at
+# about 700 px (1.25 power). Two ways to start the duel nearer even:
+#   th  mthold, MEND-4: hold a shot beyond 500 px at a target with more energy than Hadur
+#   ts  mtstrong, MEND-5: the field gun weighs the richer of the two opponents 3x, so the likely
+#       survivor is worn down (today's weight leans toward the weaker one)
+# The risk: fewer shots at range lose the kill on the third robot and some bullet damage score; the
+# gate's endgame and others-outlived bars catch a loss there. Expected +0.1 to +0.3 APS.
+# Both read only in melee off a team with exactly two opponents alive; the duel and the crowd are
+# bit for bit.
+#   aa      the baseline (master)
+#   bb      its A/A copy
+#   th      MEND-4 alone
+#   ts      MEND-5 alone
+# Pilot (BENCH-212): m3pilot fights both together (thts) against an aa baseline battle for battle on
+# 46 fields x 2 seeds (3318-3319; 184 battles, about 1 h), and m3check stops the card unless Hadur's
+# score share is up (--share-only), on at least 95% of the 92 pairs with all 35 rounds each. On a
+# stop the check opens the results PR with the pilot read and fails, so no arm after it runs.
+# Each build fights the 46 census fields x 6 fresh seeds alone (3312-3317; 276 battles, 1,104 in
+# all, about 3 h at the PC's ~370 battles/h). The read pairs bb with aa (A/A) and each arm with the
+# mean of aa and bb (--base2), battle for battle.
+# Verdict: an arm passes with its 95% low end above 0 (--gain 0), Hadur's share of others outlived
+# no more than 1 point lower and the 1-30 endgame wins no more than 3 points lower; skipped turns
+# more than 20% over aa's fail it. The card ends in a results PR on claude/pc-melee-three-results.
+#   git checkout master && git pull
+#   ./queue.sh run pc-melee-three        (or  .\queue.ps1 run pc-melee-three)
+# Stop rules (docs/bench/watch.md), halts only, each keeping every battle fought: fails 20 and
+# stall 30m on the pilot and each arm.
+
+set OUT = ../docs/bench/local
+
+m3prep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb th ts thts; do rm -f bisect/hadur117.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh mthold && bash ./build-ablation.sh mtstrong && bash ./build-ablation.sh mthold,mtstrong && mkdir -p work && rm -rf work/melee-three-"$V"-pilot work/melee-three-"$V"-aa work/melee-three-"$V"-bb work/melee-three-"$V"-th work/melee-three-"$V"-ts && echo "$V" > work/melee-three.version && for a in aa bb th ts; do test -f bisect/hadur117.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-three.args > work/melee-three-$a.args || exit 1; done && test -f bisect/hadur117.Hadur_"$V"thts.jar && sed -e "s/@V@/$V/g" -e "s/@C@/$C/g" plans/melee-three-pilot.args > work/melee-three-pilot.args && rm -f ${OUT}/melee-three-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+m3pilot | mvn -q exec:java "-Dexec.args=@work/melee-three-pilot.args" || echo "pilot: some battles failed; m3check reads what finished"
+  after: m3prep
+  watch: battles=184
+  stop: fails 20
+  stop: stall 30m
+m3check | V=$(cat work/melee-three.version) && test -n "$V" && { python3 tools/melee_pilot.py work/melee-three-"$V"-pilot --expect 92 --rounds 35 --share-only --out ${OUT}/melee-three-pilot.md --title "pc-melee-three pilot: thts against aa on $V" || { bash tools/open_results_pr.sh claude/pc-melee-three-results "The three-robot phase (MEND-4, MEND-5): pilot stopped the card" ${OUT}/melee-three-pilot.md; exit 1; }; }
+  after: m3pilot
+m3aa   | mvn -q exec:java "-Dexec.args=@work/melee-three-aa.args"
+  after: m3check
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+m3bb   | mvn -q exec:java "-Dexec.args=@work/melee-three-bb.args"
+  after: m3aa
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+m3th   | mvn -q exec:java "-Dexec.args=@work/melee-three-th.args"
+  after: m3bb
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+m3ts   | mvn -q exec:java "-Dexec.args=@work/melee-three-ts.args"
+  after: m3th
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+m3read | V=$(cat work/melee-three.version) && test -n "$V" && W=work/melee-three-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm th="$W"-th --arm ts="$W"-ts --census melee-census-317.txt --seeds 6 --gain 0 --survival-slack 1 --out ${OUT}/melee-three-read.md --title "The three-robot phase on $V" || true; } && test -s ${OUT}/melee-three-read.md
+  after: m3ts
+m3pr   | bash tools/open_results_pr.sh claude/pc-melee-three-results "The three-robot phase (MEND-4, MEND-5)" ${OUT}/melee-three-read.md ${OUT}/melee-three-pilot.md $(ls ${OUT}/melee-three-aa.md ${OUT}/melee-three-bb.md ${OUT}/melee-three-th.md ${OUT}/melee-three-ts.md 2>/dev/null)
+  after: m3read

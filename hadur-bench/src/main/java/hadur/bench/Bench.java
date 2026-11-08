@@ -1162,7 +1162,7 @@ public final class Bench {
      * threads; {@code --child-cpus 0} leaves the JVM to itself. {@code --child-heap} (e.g.
      * {@code 512M}, the rumble client's) sets the heap cap, {@code 2G} when not given (BENCH-60),
      * and {@code none} leaves it uncapped. {@code --truth-log false} turns the duel truth log off
-     * (BENCH-97).
+     * (BENCH-97); {@code --melee-trace true} turns the melee trace on (BENCH-213).
      */
     private List<String> childFlags() {
         return childFlags(opts, parallel);
@@ -1177,6 +1177,8 @@ public final class Bench {
         if (!Memory.uncapped(heap)) flags.add("-Xmx" + heap);
         // BENCH-97: --truth-log false keeps a duel battle from writing truth.log.gz.
         if ("false".equalsIgnoreCase(opts.getOrDefault("truth-log", "true"))) flags.add("-Dhadur.bench.truth=false");
+        // BENCH-213: --melee-trace true makes a melee battle write trace.log.gz (every robot, every turn).
+        if ("true".equalsIgnoreCase(opts.getOrDefault("melee-trace", "false"))) flags.add("-Dhadur.bench.melee.trace=true");
         return flags;
     }
 

@@ -54,6 +54,14 @@ public final class MeleeEnergyPolicy {
     public static final boolean FAR_SPARE = true;
     static final double FAR_SPARE_POWER = 2.5;
     static final double FAR_SPARE_ENERGY = 60.0;
+    /**
+     * MEND-4 (pc-melee-three, off): with two opponents left, a shot beyond {@link #THREE_HOLD_DISTANCE}
+     * px at a target that is not a finisher and has more energy than Hadur is held. In the 3.21
+     * census the endgame duels Hadur starts 20 or more behind it wins 32% of the time (97% when 20
+     * or more ahead), and on the way there it spends about 19 energy on 16 shots at about 700 px.
+     */
+    public static final boolean THREE_HOLD = false;
+    static final double THREE_HOLD_DISTANCE = 500;
 
     private MeleeEnergyPolicy() {}
 
@@ -124,6 +132,21 @@ public final class MeleeEnergyPolicy {
         double q = Math.min(power, killPower(targetEnergy));
         if (ownEnergy > targetEnergy) q = Math.min(q, ownEnergy - targetEnergy);
         return Math.max(p, Math.min(q, ownEnergy));
+    }
+
+    /**
+     * MEND-4: whether to hold a shot off a team with {@code others} opponents alive: where the switch
+     * {@code on}, two are left, the target is beyond {@link #THREE_HOLD_DISTANCE} px, not a finisher,
+     * and has more energy than Hadur's {@code ownEnergy}.
+     */
+    static boolean threeHold(boolean on, int others, double distance, double ownEnergy, double targetEnergy) {
+        return on && others == 2 && distance > THREE_HOLD_DISTANCE && targetEnergy > FINISHER_ENERGY
+            && targetEnergy > ownEnergy;
+    }
+
+    /** MEND-4 as shipped ({@link #THREE_HOLD}). */
+    public static boolean threeHold(int others, double distance, double ownEnergy, double targetEnergy) {
+        return threeHold(THREE_HOLD, others, distance, ownEnergy, targetEnergy);
     }
 
     /** As above with MGUN-13 ({@code ogi}) and MGUN-16 ({@code wide}) as given; MGUN-16 widens MGUN-13 only. */

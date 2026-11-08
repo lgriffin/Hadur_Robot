@@ -22,6 +22,8 @@
 #   tmnoconcord (team only) TMODE-34 off: CONCORD on no team, as before it shipped. Suffix ncn.
 #   mdmg   MMOVE-22: each opponent's risk weighs by the damage it has done to Hadur this battle x its mean distance (Diamond). Suffix dm. Ships on from 3.21, so on master dm is the robot as it is.
 #   e3far  MEND-3: with two opponents left off a team, the closest-robot factor 4 (not 2). Suffix ef.
+#   mthold   MEND-4: with two opponents left off a team, hold a shot beyond 500 px at a richer target. Suffix th.
+#   mtstrong MEND-5: with two opponents left off a team, the richer one weighs 3x in the field gun. Suffix ts.
 #   aa    no change: the same robot under another name (suffix aa), the A/A arm of a multi-arm run
 #         (BENCH-92, docs/plan-top5.md section 6.1), so a run prices its own noise.
 #   bb    no change, suffix bb: a second A/A copy, for a run whose baseline is the aa build (card team-s2).
@@ -143,8 +145,9 @@
 #         inside 100 px (FieldGun.rams). Off a team the skip stays. Three ramming teams take 1.6-2.1 APS
 #         of the gap to 5th-6th (docs/plan-team-top5.md). Suffix rm. MGUN-10 ships it: use --ref v3.15.
 #   tmfire (team only) T7, TMODE-9: MATEFIRE against every team (teammates' bullets as danger). Suffix mb.
-#   thunt250, thunt200 (team only) TMODE-13's hunt place 250 / 200 px from the prey, not 350, against
-#         every team (hunting closer in; FAR/FARTHER lost in pc-team-counters, PR #370). Suffix hr25 / hr20.
+#   thunt250, thunt200 (team only) TMODE-13's hunt place 250 / 200 px from the prey against every team
+#         (both radii; FAR/FARTHER lost in pc-team-counters, PR #370). CLOSE ships 250 px on every team
+#         (PR #700), so on master thunt250 is the shipped build and thunt200 the arm. Suffix hr25 / hr20.
 #   tmpath (team only) TMODE-25: PATH against every team (Firestarter's path check: each candidate's drive
 #         checked tick by tick against the teammates' bullets in flight); the teams the table names
 #         play it on top of their entry. Suffix mp.
@@ -156,6 +159,9 @@
 #         $TEAM_MODE_SUFFIX (the per-opponent counter screens build ka, kb, kc).
 #   tmclose (team only) TMODE-42: CLOSE on every team, the hunt place 250 px from the prey instead
 #         of 350 (FORCE_CLOSE, and Mode.CLOSE on every shipped table entry). Suffix tc (pc-team-close).
+#         Ships since PR #696, so on master it builds the robot as it is.
+#   tmnoclose (team only) TMODE-42 off: the hunt place 350 px on every team, the build before CLOSE
+#         shipped. Suffix ncl.
 #   tmlock (team only) the confirmed table, $TEAM_MODE_LOCKED (default work/team-modes-locked.java,
 #         written by tools/team_modes.py lock). Suffix mk.
 #   mrate (melee and team) fire more often: the controller fires on a scan up to 8 ticks old (was 5;
@@ -552,8 +558,13 @@ for a in "${list[@]}"; do
             edit "$modes" "public static final boolean FORCE_HUNT = true;" "public static final boolean FORCE_HUNT = false;"
             ;;
         thunt250|thunt200)
+            # Both radii, since CLOSE ships on every team (PR #700) and the hunt reads HUNT_CLOSE:
+            # on master thunt250 is the shipped build and thunt200 the 200 px arm.
             r="${a#thunt}"; version="${version}hr${r:0:2}"
             edit "$trisk" "static final double HUNT_RADIUS = 350;" "static final double HUNT_RADIUS = $r;"
+            if grep -qF "static final double HUNT_CLOSE = 250;" "$trisk"; then
+            edit "$trisk" "static final double HUNT_CLOSE = 250;" "static final double HUNT_CLOSE = $r;"
+            fi
             ;;
         tmtab|tmlock)
             if [[ "$a" == tmtab ]]; then table="${TEAM_MODE_TABLE:-$here/work/team-modes-screen.java}"; version="${version}${TEAM_MODE_SUFFIX:-mt}"
@@ -875,9 +886,18 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             ;;
         tmclose)
             # TMODE-42 on every team: the default's hunt place and every shipped entry's at 250 px. Suffix tc.
+            # It ships since PR #696; on older source (--ref) force it on.
             version="${version}tc"
+            if ! grep -qF "public static final boolean FORCE_CLOSE = true;" "$modes"; then
             edit "$modes" "public static final boolean FORCE_CLOSE = false;" "public static final boolean FORCE_CLOSE = true;"
-            sed -i -E '/^        t\.put\(/s/\)\);$/, Mode.CLOSE));/' "$modes"
+            sed -i -E '/^        t\.put\(/{/Mode\.CLOSE/!s/\)\);$/, Mode.CLOSE));/}' "$modes"
+            fi
+            ;;
+        tmnoclose)
+            # TMODE-42 off: the hunt place 350 px on every team, the build before CLOSE shipped. Suffix ncl.
+            version="${version}ncl"
+            edit "$modes" "public static final boolean FORCE_CLOSE = true;" "public static final boolean FORCE_CLOSE = false;"
+            sed -i -E '/^        t\.put\(/s/, Mode\.CLOSE([,)])/\1/' "$modes"
             ;;
         tmnoconcord)
             # TMODE-34 off: CONCORD on no team, the build before it shipped. Suffix ncn.
@@ -894,6 +914,16 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean THREE_FAR = false;" "public static final boolean THREE_FAR = true;"
             version="${version}ef" ;;
+        mthold)
+            # MEND-4 (docs/bench/melee-top3.md): melee off a team with two opponents only; duel and team bit for bit.
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEnergyPolicy.java" \
+                "public static final boolean THREE_HOLD = false;" "public static final boolean THREE_HOLD = true;"
+            version="${version}th" ;;
+        mtstrong)
+            # MEND-5 (docs/bench/melee-top3.md): melee off a team with two opponents only; duel and team bit for bit.
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/FieldGun.java" \
+                "public static final boolean THREE_STRONG = false;" "public static final boolean THREE_STRONG = true;"
+            version="${version}ts" ;;
         mfloor40|mfloor50)
             # MGUN-26 (docs/bench/melee-top3.md): MGUN-25's far power from less own energy, off a team
             # with three or more opponents; team and duel bit for bit.
@@ -901,7 +931,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEnergyPolicy.java" \
                 "static final double FAR_SPARE_ENERGY = 60.0;" "static final double FAR_SPARE_ENERGY = $n.0;"
             version="${version}z${n:0:1}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, mthold, mtstrong)" >&2; exit 2 ;;
     esac
 done
 
