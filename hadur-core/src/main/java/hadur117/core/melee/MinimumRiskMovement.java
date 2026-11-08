@@ -221,6 +221,26 @@ public class MinimumRiskMovement {
     private final Deque<VirtualBullet> mateBullets = new ArrayDeque<>();
     private final Set<EnemyShot> seenShots =
         Collections.newSetFromMap(new IdentityHashMap<EnemyShot, Boolean>());
+    /** MMOVE-26: the crowd weight the surfer gave each shot it processed, for the hit record. */
+    private final Map<EnemyShot, Weighed> weighed = new IdentityHashMap<>();
+
+    /** MMOVE-26: what the surfer saw of a shot when it first processed it. */
+    public static final class Weighed {
+        /** Living opponents nearer the shooter than Hadur was when it fired. */
+        public final int nearer;
+        /** The crowd weight given; under {@link #SOFT_FLOOR} the shot made no bullets. */
+        public final double weight;
+
+        Weighed(int nearer, double weight) {
+            this.nearer = nearer;
+            this.weight = weight;
+        }
+    }
+
+    /** MMOVE-26: what the surfer saw of {@code shot} when it processed it, or null if it never did. */
+    public Weighed weighed(EnemyShot shot) {
+        return shot == null ? null : weighed.get(shot);
+    }
     private final Deque<Point2D.Double> past = new ArrayDeque<>();
     private Point2D.Double destination;
     private Point2D.Double openingSpot;
@@ -292,6 +312,7 @@ public class MinimumRiskMovement {
     void clearBullets() {
         bullets.clear();
         seenShots.clear();
+        weighed.clear();
     }
 
     /**
@@ -320,6 +341,7 @@ public class MinimumRiskMovement {
         bullets.clear();
         mateBullets.clear();
         seenShots.clear();
+        weighed.clear();
         past.clear();
         dodge.newRound();
         round++;
@@ -361,6 +383,7 @@ public class MinimumRiskMovement {
             if (at == null) at = myPath.getState(s.fireTime + 1);
             Point2D.Double target = at == null ? me : at.location;
             double w = crowdWeight(s, target, enemies);
+            weighed.put(s, new Weighed(nearer(s, target, enemies), w));
             if (w < SOFT_FLOOR) continue;
             List<TeamDanger.Aim> aims = at != null ? danger.aims(s, at) : null;
             if (aims != null) {
@@ -385,6 +408,7 @@ public class MinimumRiskMovement {
             if (it.next().passed(me, now, reach)) it.remove();
         }
         seenShots.retainAll(shots);
+        weighed.keySet().retainAll(shots);
     }
 
     private void addGuesses(EnemyShot s, RobotState at, Point2D.Double target, double w) {
@@ -400,13 +424,35 @@ public class MinimumRiskMovement {
      * fired: 1/(1+k)^2 for the k living opponents other than its shooter nearer its source.
      */
     static double crowdWeight(EnemyShot shot, Point2D.Double me, List<EnemyInfo> enemies) {
+        int k = nearer(shot, me, enemies);
+        return CROWD_CURVE ? curveWeight(k) : 1.0 / ((1 + k) * (1 + k));
+    }
+
+    /**
+     * MMOVE-27 (arm mcurve): the share of a shot aimed at Hadur with k robots nearer its shooter,
+     * as the field shoots. Twelve traced census fields (63,408 shots, tools/melee_targets.py):
+     * a shot goes to the shooter's nearest robot 41% of the time, and the chance it is at Hadur
+     * given k robots nearer the shooter runs 48, 20, 14, 12, 12, 10, 9, 9, 7% for k = 0..8; the
+     * table is that curve scaled to 1 at k = 0. Under 1/(1+k)^2 the surfer dropped a third of the
+     * shots aimed at it (every k of 3 or more) and weighed the rest at a quarter or less.
+     */
+    public static final boolean CROWD_CURVE = false;
+    static final double[] CROWD_CURVE_TABLE = {1.0, 0.42, 0.29, 0.25, 0.25, 0.21, 0.19, 0.19, 0.15};
+
+    /** MMOVE-27: {@link #CROWD_CURVE_TABLE} at k, its last entry beyond. */
+    static double curveWeight(int k) {
+        return CROWD_CURVE_TABLE[Math.min(k, CROWD_CURVE_TABLE.length - 1)];
+    }
+
+    /** The k of {@link #crowdWeight}: living opponents other than the shooter nearer {@code shot}'s source than {@code me}. */
+    static int nearer(EnemyShot shot, Point2D.Double me, List<EnemyInfo> enemies) {
         double mine = shot.source.distance(me);
         int k = 0;
         for (EnemyInfo e : enemies) {
             if (e.location == null || e.name.equals(shot.shooter)) continue;
             if (shot.source.distance(e.location) < mine) k++;
         }
-        return 1.0 / ((1 + k) * (1 + k));
+        return k;
     }
 
     /**

@@ -339,4 +339,26 @@ class MinimumRiskMovementTest {
         Point2D.Double second = move.chooseDestination(me, 100, 3, tracker.alive(), 101, normal);
         assertSame(first, second);
     }
+
+    @Test
+    @Tag("MMOVE-27")
+    void crowdCurveWeighsAShotAsTheFieldShoots() {
+        EnemyTracker t = new EnemyTracker();
+        scan(t, "s", 100, 100, 100, 0);
+        scan(t, "n1", 150, 150, 100, 0);
+        scan(t, "n2", 200, 100, 100, 0);
+        scan(t, "far", 900, 900, 100, 0);
+        EnemyShot shot = new EnemyShot("s", pt(100, 100), 0, 2.0);
+        // Two robots nearer the shooter than Hadur at (400, 400); the far one is not.
+        assertEquals(2, MinimumRiskMovement.nearer(shot, pt(400, 400), t.alive()));
+        assertEquals(0, MinimumRiskMovement.nearer(shot, pt(110, 100), t.alive()));
+        assertEquals(1.0, MinimumRiskMovement.curveWeight(0), 1e-9);
+        assertEquals(0.42, MinimumRiskMovement.curveWeight(1), 1e-9);
+        assertEquals(0.29, MinimumRiskMovement.curveWeight(2), 1e-9);
+        // Beyond the table's last k the last entry holds, and every entry clears the floor.
+        assertEquals(MinimumRiskMovement.curveWeight(8), MinimumRiskMovement.curveWeight(20), 1e-9);
+        for (int k = 0; k < 12; k++) assertTrue(MinimumRiskMovement.curveWeight(k) >= MinimumRiskMovement.SOFT_FLOOR);
+        double expected = MinimumRiskMovement.CROWD_CURVE ? 0.29 : 1.0 / 9;
+        assertEquals(expected, MinimumRiskMovement.crowdWeight(shot, pt(400, 400), t.alive()), 1e-9);
+    }
 }
