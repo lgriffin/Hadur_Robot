@@ -9,7 +9,8 @@ control. Nothing was uploaded or released.
 
 Seed blocks: r1 4100, r2 4200, r3 4300, r1x 4500, r1z 4600. Reports: `docs/bench/local/saor-r1-census.md`,
 `saor-r2-census.md`, `saor-r3-census.md`, `saor-r1x-census.md`, `saor-r1z-census.md`,
-`saor-r1x-wfr.md`, `saor-r1z-wfr.md`.
+`saor-r1x-wfr.md`, `saor-r1z-wfr.md`, and for section 9 `saor-r1x-wng.md`, `saor-r1z-wng.md`,
+`saor-r1x-wnh.md`, `saor-r1z-wnh.md`, `saor-r1x-wgv.md`, `saor-r1z-wgv.md`.
 
 ## Result
 
@@ -71,6 +72,18 @@ The movement went from -3.0 to about -0.6 over about 45 designs. The steps that 
    0.3, 0.55 and 0.8 rad: -1.36, -2.36, -6.28): a dead end.
 8. **The orbit on 0.3 itself** (CO) reads -0.14 ± 0.37: it does not improve the corner oscillation's
    own duels, it only repairs designs that duel badly.
+
+9. **Speed through the leg ends** (2026-11-07 to 11-08, blocks r1x and r1z, WNF read -0.27 and -0.89
+   on the same seeds). Every change to how WNF moves along and between its legs lost:
+   - a pause of 0 to 9 ticks at each leg end (WNP -1.75, -1.91): standing still is costly;
+   - the next leg picked 30 or 70 before the leg end, so the robot never stops but arcs into it
+     (WNG -0.88, -1.20; WNK -1.56, -1.56);
+   - a stop at each leg's midpoint on the same line (WNH -1.57, -1.87);
+   - top speed re-rolled between 8 and 3 about every 10 ticks (WNJ -2.50, -3.06);
+   - leg depths drawn short (25-85) or long (150-225), half each (WNM -1.09, -1.13).
+   WNF with the GV vote width (WGV -0.97, -0.87) is no better than WNF alone, as OWN showed.
+   WNF's legs, run at full speed to their end with one reversal there, look like a local optimum of
+   this family: the remaining gap needs a different idea, not a variant.
 
 **Where WNF still loses** (C against WNF over the three blocks, 11,340 rounds each): duels end in a
 win equally often (85.9% and 85.8%). WNF dies 13% more often in the crowd (4,778 deaths against
