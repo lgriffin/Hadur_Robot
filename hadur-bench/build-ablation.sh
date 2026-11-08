@@ -853,6 +853,13 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeController.java" \
                 "public static final boolean MELEE_CROSS = false;" "public static final boolean MELEE_CROSS = true;"
             version="${version}xh" ;;
+        mcurve)
+            # MMOVE-27: the melee surfer weighs each seen shot by the field's target curve (who the
+            # field actually shoots at, traced census) in place of 1/(1+k)^2; off a team only, duel
+            # and team fixtures bit for bit. Suffix cv.
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
+                "public static final boolean CROWD_CURVE = false;" "public static final boolean CROWD_CURVE = true;"
+            version="${version}cv" ;;
         msurf)
             # The melee surfer (MMOVE-15), off a team only; duel and team fixtures bit for bit. It ships
             # on from 3.21, so on master msurf builds the robot as it is.

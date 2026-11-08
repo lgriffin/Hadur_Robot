@@ -284,3 +284,58 @@ weight is the wrong model for half the shooters, and a quarter of the hits match
 The next melee lever is the danger model, not the mover's geometry or its posture: a per-shooter target
 model (who each robot actually shoots at, learned from the trace or from its hits) in place of 1/(1+k)^2,
 and a look at why a quarter of the hits have no shot to match (scan gaps, energy drops masked by damage).
+
+## The field's target curve (MMOVE-27, pc-melee-curve, 2026-11-08)
+
+The MH read above says the surfer never weighed 39% of the damage Hadur takes. The other side of that is
+who the field actually shoots at. `tools/melee_targets.py` reads it from melee traces (BENCH-213): for every
+bullet that first appears, the living robot whose head-on or linear bearing from the shooter lies nearest
+the bullet's heading, filed by that robot's distance rank from the shooter. Twelve traced census fields,
+20 rounds each, 63,408 opponent shots (7% match no robot within 12 degrees):
+
+| target's distance rank from the shooter (0 = nearest) | shots | share | surfer weight 1/(1+k)^2 |
+|---:|---:|---:|---:|
+| 0 | 18438 | 41% | 1.00 |
+| 1 | 7873 | 17% | 0.25 |
+| 2 | 5233 | 12% | 0.11 |
+| 3 | 3876 | 9% | 0.06 |
+| 4 | 3028 | 7% | 0.04 |
+| 5 to 8 | 6651 | 15% | 0.03 to 0.01 |
+
+| robots nearer the shooter than Hadur | shots with Hadur there | at Hadur | share | surfer weight |
+|---:|---:|---:|---:|---:|
+| 0 | 5584 | 2667 | 48% | 1.00 |
+| 1 | 7031 | 1400 | 20% | 0.25 |
+| 2 | 7336 | 1011 | 14% | 0.11 |
+| 3 | 5978 | 734 | 12% | 0.06 |
+| 4 | 5027 | 592 | 12% | 0.04 |
+| 5 | 4290 | 416 | 10% | 0.03 |
+| 6 | 3538 | 328 | 9% | 0.02 |
+| 7 | 2785 | 240 | 9% | 0.02 |
+| 8 | 2000 | 130 | 6% | 0.01 |
+
+A shot goes to the shooter's nearest robot 41% of the time. The 1/(1+k)^2 weight is right at k = 0 and
+k = 1, a third low at k = 2, and from k = 3 up it falls under the 0.1 floor, so the surfer dropped every
+such shot: a third of the shots aimed at Hadur. Per shooter the nearest share runs from 24% (Original) and
+28% (Diamond) to 72% (Numbat); Diamond, Portia, Lunar and Glacier put 42 to 50% of their shots at their
+third-nearest or further.
+
+MMOVE-27 (`CROWD_CURVE`, arm `mcurve`, suffix cv) replaces 1/(1+k)^2 with that curve scaled to 1 at
+k = 0: 1, 0.42, 0.29, 0.25, 0.25, 0.21, 0.19, 0.19, 0.15. No seen shot falls under the floor. A per-shooter
+table is the natural next step once the field curve has been read on the PC.
+
+Cloud smoke 2026-11-08, 12 census fields x 2 seeds against master, 24 pairs:
+
+| measure | cv | master | diff |
+|---|---:|---:|---:|
+| score share | 19.43 | 18.96 | +0.47 ± 0.34 |
+| crowd deaths (%) | 23.2 | 26.2 | -3.0 ± 3.3 |
+| rounds won (%) | 51.2 | 47.4 | +3.8 ± 4.0 |
+| crowd damage per tick (x100) | 7.80 | 8.16 | -0.35 ± 0.46 |
+| skipped turns a battle | 43.9 | 28.1 | more virtual bullets |
+
+The first melee smoke since the surfer itself with a low end above 0. The cost is CPU: every seen shot
+now makes bullets, so skipped turns rose by half on the slow cloud box; the card's skip bar (20% over aa)
+reads that on the PC. Card pc-melee-curve (BENCH-215, pilot BENCH-216): aa, bb, cv on the 46 census fields
+x 6 fresh seeds (3320-3325) after a cv-against-aa pilot (3326-3327) that stops the card unless the share is
+up. Results PR on claude/pc-melee-curve-results. If it fails, CROWD_CURVE, its arm and the card are removed.
