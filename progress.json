@@ -1,0 +1,34 @@
+{
+ "plan": "pc-melee-three",
+ "updated": 1794158305.6946015,
+ "steps": {
+  "m3prep": {
+   "status": "pending"
+  },
+  "m3pilot": {
+   "status": "pending"
+  },
+  "m3check": {
+   "status": "pending"
+  },
+  "m3aa": {
+   "status": "pending"
+  },
+  "m3bb": {
+   "status": "pending"
+  },
+  "m3th": {
+   "status": "pending"
+  },
+  "m3ts": {
+   "status": "pending"
+  },
+  "m3read": {
+   "status": "pending"
+  },
+  "m3pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
