@@ -1,0 +1,31 @@
+{
+ "plan": "pc-tailor-stack",
+ "updated": 1794163173.1838086,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "pilot": {
+   "status": "pending"
+  },
+  "screen": {
+   "status": "pending"
+  },
+  "pick": {
+   "status": "pending"
+  },
+  "prep2": {
+   "status": "pending"
+  },
+  "confirm": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
