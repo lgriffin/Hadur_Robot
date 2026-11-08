@@ -22,3 +22,11 @@
 23:33:54 progress screen: 5836/7164 (81%) battles, 888/h, ETA 1.5 h, 0 failed, skips 64.7/battle (last 100), aa -0.13, rp +0.09
 00:03:59 progress screen: 6262/7164 (87%) battles, 852/h, ETA 1.1 h, 0 failed, skips 64.0/battle (last 100), aa -0.13, rp +0.08
 00:34:09 progress screen: 6689/7164 (93%) battles, 852/h, ETA 33 min, 0 failed, skips 47.1/battle (last 100), aa -0.10, rp +0.12
+01:04:28 progress screen: 7116/7164 (99%) battles, 848/h, ETA 3 min, 0 failed, skips 55.5/battle (last 100), aa -0.16, rp +0.16
+01:09:59 screen exit=0 in 27274 s
+01:09:59 start pick
+01:10:00 pick exit=0 in 0 s
+01:10:00 start prep2
+01:10:36 prep2 exit=0 in 36 s
+01:10:36 start confirm
+01:10:36 watching confirm: 4 stop rule(s)
