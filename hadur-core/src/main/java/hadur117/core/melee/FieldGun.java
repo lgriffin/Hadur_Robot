@@ -48,6 +48,15 @@ public class FieldGun {
     static final double FINISHER_BOOST = 2.0;
     static final double ISOLATED_BOOST = 1.3;
     static final double SHOOTER_BOOST = 1.5;
+    /**
+     * MEND-5 (pc-melee-three, off): with two opponents left off a team, the one with more energy
+     * weighs {@link #THREE_STRONG_BOOST} times as much, so Hadur's fire wears down the robot it is
+     * likelier to duel (the gun's own weight leans the other way, toward the weaker). Whoever then
+     * survives is either the weaker one or a strong one with less energy left: in the 3.21 census
+     * the duel's survivor had 71 energy when Hadur started 20 or more behind, and Hadur won 32%.
+     */
+    public static final boolean THREE_STRONG = false;
+    static final double THREE_STRONG_BOOST = 3.0;
     static final long SHOOTER_WINDOW = 200;
     static final double RAMMER_RANGE = 100;
     /** Closing speed above which a robot inside {@link #RAMMER_RANGE} counts as ramming. */
@@ -169,6 +178,7 @@ public class FieldGun {
             double distance = e.distance(me);
             boolean finisher = e.energy <= MeleeEnergyPolicy.FINISHER_ENERGY;
             if (!finisher && !onTeam && rams(e, me)) continue;
+            if (!onTeam && MeleeEnergyPolicy.threeHold(others, distance, energy, e.energy)) continue;
             double power = MeleeEnergyPolicy.power(distance, energy, e.energy, others);
             if (power <= 0) continue;
             if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);
@@ -178,6 +188,7 @@ public class FieldGun {
             }
             if (power <= 0) continue;
             double weight = weight(e, me, alive, now);
+            if (!onTeam && strongerOfTwo(THREE_STRONG, others, e, alive)) weight *= THREE_STRONG_BOOST;
             EnemyHistory h = history(e.name);
             double[] attributes = h == null ? null : h.current();
             List<KdTree.Entry<float[]>> near;
@@ -249,6 +260,18 @@ public class FieldGun {
      * An opponent's weight: 1/distance, leaning toward weak opponents, boosted for a finisher
      * (MGUN-2), an isolated opponent and a recent shooter.
      */
+    /**
+     * MEND-5: where the switch {@code on} and two opponents are alive, whether {@code e} has more
+     * energy than every other robot in {@code alive}.
+     */
+    static boolean strongerOfTwo(boolean on, int others, EnemyInfo e, List<EnemyInfo> alive) {
+        if (!on || others != 2) return false;
+        for (EnemyInfo o : alive) {
+            if (o != e && o.energy >= e.energy) return false;
+        }
+        return true;
+    }
+
     double weight(EnemyInfo e, Point2D.Double me, List<EnemyInfo> alive, long now) {
         double w = 100.0 / Math.max(50.0, e.distance(me));
         w *= 1 + 0.5 * (100 - Math.min(100, e.energy)) / 100.0;
