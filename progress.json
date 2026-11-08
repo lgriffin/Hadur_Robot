@@ -1,12 +1,16 @@
 {
  "plan": "pc-tailor-near",
- "updated": 1794133023.4810107,
+ "updated": 1794133934.321901,
  "steps": {
   "prep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 103,
+   "end": "2026-11-08T10:18:46"
   },
   "pilot": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-08T10:18:46"
   },
   "screen": {
    "status": "pending"
@@ -27,5 +31,80 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "pilot",
+   "started": 1794133126.937046,
+   "updated": 1794133933.9817584,
+   "elapsed": 807.044712305069,
+   "expected": 792,
+   "panel": 99,
+   "field": 1217,
+   "multiarm": true,
+   "arms": [
+    {
+     "arm": "c",
+     "battles": 389,
+     "failed": 0,
+     "level": 89.93164141414141,
+     "skips": 28.197943444730075,
+     "fresh": 389,
+     "scored": 389,
+     "diff": null
+    },
+    {
+     "arm": "ln",
+     "battles": 393,
+     "failed": 0,
+     "level": 90.268265993266,
+     "skips": 28.633587786259543,
+     "fresh": 393,
+     "scored": 393,
+     "diff": 0.33662457912457944,
+     "n": 99,
+     "ci95": 0.5041560548101337,
+     "half_stop": 0.7716674308318373,
+     "scale": 0.08134757600657354
+    }
+   ],
+   "aa": null,
+   "warnings": [],
+   "battles": 782,
+   "resumed": 0,
+   "failed": 0,
+   "disables": 1,
+   "rate": 3488.282566103764,
+   "eta": 10.320264863236176,
+   "fraction": 0.9873737373737373,
+   "last_battle_age": 2.75654673576355,
+   "rules": [
+    {
+     "rule": "fails 30",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 782"
+    },
+    {
+     "rule": "dead 8",
+     "action": "halt",
+     "state": "ok",
+     "detail": "every arm scoring"
+    },
+    {
+     "rule": "skips 90 over 200",
+     "action": "halt",
+     "state": "ok",
+     "detail": "27.7 a battle over the last 200 (first 200: 30.7)"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    }
+   ],
+   "skips_mean": 28.41687979539642,
+   "skips_last100": 27.32
+  }
+ ]
 }
