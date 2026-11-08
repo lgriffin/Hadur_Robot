@@ -220,3 +220,23 @@ battle (field f24, seed 4400, 6 rounds, /mnt/project-files/melee/trace-f24-round
 deaths Hadur holds a corner, loses 40 energy to shots while nobody's nearest, then from about tick 370 the
 nearest opponent (Corsair) hunts it along the edge until two robots share it as nearest and it dies at 6
 energy. The trace is the input for the death-forensics pass.
+
+## The hide posture (MHIDE-1..3, 2026-11-08): three cloud smokes, all losses, not merged
+
+Leigh, on the traces: "there are huge empty spaces that we don't try and move into, why?" and "We have no
+mechanic to try and hide and survive until the field whittles down." Built as a switch on the thread branch:
+with five or more alive, or three or more and Hadur under the median energy, the mover's candidates gained a
+7 × 7 field grid and each point paid 2 units of risk for every opponent it would make Hadur the nearest of,
+and the gun held unless the target was a finisher or already had Hadur as its nearest robot. Cloud smokes,
+12 census fields × 2 seeds (24 paired battles) against aa:
+
+| Build | Score share | Crowd deaths (points of rounds) | Rounds won | Damage a crowd tick | Nearest load |
+|---|---|---|---|---|---|
+| both (hd) | -3.91 ± 0.61 | +19.8 | -16.9 | +35% | 0.82 → 0.87 |
+| movement only (hm) | -1.52 ± 0.69 | +9.9 | -8.1 | +25% | 0.82 → 0.86 |
+| fire hold only (hf) | -2.10 ± 0.50 | +5.4 | -7.0 | +7% | level |
+
+Hiding kills Hadur faster on both halves. The grid drives cross the field through other robots' fire, and the
+nearest-robot term did not even lower the nearest load; holding fire leaves the crowd stronger for longer and
+gives up the bullet-damage half of the score. The one melee lever that has paid since 3.19 is the opposite:
+more firepower in the crowd (MGUN-13, MGUN-16, MGUN-25). The code was never merged; nothing to remove.
