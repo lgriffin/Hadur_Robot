@@ -1,6 +1,6 @@
 {
  "plan": "pc-tailor-near",
- "updated": 1794138484.6899877,
+ "updated": 1794139394.5747037,
  "steps": {
   "prep": {
    "status": "done",
@@ -112,8 +112,8 @@
   {
    "step": "screen",
    "started": 1794134140.219695,
-   "updated": 1794138483.3631032,
-   "elapsed": 4343.143408060074,
+   "updated": 1794139394.104849,
+   "elapsed": 5253.885154008865,
    "expected": 3928,
    "panel": 491,
    "field": 1217,
@@ -121,45 +121,45 @@
    "arms": [
     {
      "arm": "c",
-     "battles": 1384,
+     "battles": 1583,
      "failed": 0,
-     "level": 90.52393518518518,
-     "skips": 45.76878612716763,
-     "fresh": 988,
-     "scored": 988,
+     "level": 90.53184693877552,
+     "skips": 46.7877447883765,
+     "fresh": 1187,
+     "scored": 1187,
      "diff": null
     },
     {
      "arm": "ln",
-     "battles": 1382,
+     "battles": 1578,
      "failed": 0,
-     "level": 90.78136316872428,
-     "skips": 45.05426917510854,
-     "fresh": 986,
-     "scored": 986,
-     "diff": 0.2574279835390949,
-     "n": 486,
-     "ci95": 0.297606884830233,
-     "half_stop": 0.45552074208709137,
+     "level": 90.70018027210884,
+     "skips": 45.97148288973384,
+     "fresh": 1182,
+     "scored": 1182,
+     "diff": 0.16833333333333333,
+     "n": 490,
+     "ci95": 0.27944921346165913,
+     "half_stop": 0.427728387951519,
      "scale": 0.40345110928512734
     }
    ],
    "aa": null,
    "warnings": [],
-   "battles": 2766,
+   "battles": 3161,
    "resumed": 792,
    "failed": 0,
-   "disables": 770,
-   "rate": 1588.0,
-   "eta": 2634.2569269521414,
-   "fraction": 0.7041751527494908,
-   "last_battle_age": 2.1012251377105713,
+   "disables": 937,
+   "rate": 1564.0,
+   "eta": 1765.473145780051,
+   "fraction": 0.804735234215886,
+   "last_battle_age": 7.452012777328491,
    "rules": [
     {
      "rule": "fails 30",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 2766"
+     "detail": "0 failed of 3161"
     },
     {
      "rule": "dead 8",
@@ -171,7 +171,7 @@
      "rule": "skips 90 over 200",
      "action": "halt",
      "state": "ok",
-     "detail": "54.2 a battle over the last 200 (first 200: 49.6)"
+     "detail": "54.3 a battle over the last 200 (first 200: 49.6)"
     },
     {
      "rule": "stall 30m",
@@ -180,8 +180,8 @@
      "detail": "last battle 0 min ago"
     }
    ],
-   "skips_mean": 52.21023302938197,
-   "skips_last100": 52.7
+   "skips_mean": 52.36893203883495,
+   "skips_last100": 53.44
   }
  ]
 }
