@@ -13203,6 +13203,11 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/melee/TeamRisk.Pull.html#strength" class="member-name-link">strength</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.Pull.html" title="class in hadur117.core.melee">TeamRisk.Pull</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#strongerOfTwo(boolean,int,hadur117.core.world.EnemyInfo,java.util.List)" class="member-name-link">strongerOfTwo(boolean, int, EnemyInfo, List&lt;EnemyInfo&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MEND-5">MEND-5</a>: where the switch <code>on</code> and two opponents are alive, whether <code>e</code> has more
+ energy than every other robot in <code>alive</code>.</div>
+</dd>
 <dt><a href="hadur117/core/melee/AimExperts.html#strongest(java.util.List)" class="member-name-link">strongest(List&lt;TeamDanger.Aim&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/AimExperts.html" title="class in hadur117.core.melee">AimExperts</a></dt>
 <dd>
 <div class="block">The heading of the strongest of <code>aims</code>, or NaN for none: the learned expert's call.</div>
@@ -13969,6 +13974,31 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/melee/MeleeEndgame.html#THREE_FAR_FACTOR" class="member-name-link">THREE_FAR_FACTOR</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeEndgame.html" title="class in hadur117.core.melee">MeleeEndgame</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MEND-3">MEND-3</a>: the closest-robot factor then, in place of <a class="req" href="../requirements.html#MMOVE-2">MMOVE-2</a>'s 2.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MeleeEnergyPolicy.html#THREE_HOLD" class="member-name-link">THREE_HOLD</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeEnergyPolicy.html" title="class in hadur117.core.melee">MeleeEnergyPolicy</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MEND-4">MEND-4</a> (pc-melee-three, off): with two opponents left, a shot beyond <a href="hadur117/core/melee/MeleeEnergyPolicy.html#THREE_HOLD_DISTANCE"><code>MeleeEnergyPolicy.THREE_HOLD_DISTANCE</code></a>
+ px at a target that is not a finisher and has more energy than Hadur is held.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MeleeEnergyPolicy.html#THREE_HOLD_DISTANCE" class="member-name-link">THREE_HOLD_DISTANCE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeEnergyPolicy.html" title="class in hadur117.core.melee">MeleeEnergyPolicy</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#THREE_STRONG" class="member-name-link">THREE_STRONG</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MEND-5">MEND-5</a> (pc-melee-three, off): with two opponents left off a team, the one with more energy
+ weighs <a href="hadur117/core/melee/FieldGun.html#THREE_STRONG_BOOST"><code>FieldGun.THREE_STRONG_BOOST</code></a> times as much, so Hadur's fire wears down the robot it is
+ likelier to duel (the gun's own weight leans the other way, toward the weaker).</div>
+</dd>
+<dt><a href="hadur117/core/melee/FieldGun.html#THREE_STRONG_BOOST" class="member-name-link">THREE_STRONG_BOOST</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/MeleeEnergyPolicy.html#threeHold(boolean,int,double,double,double)" class="member-name-link">threeHold(boolean, int, double, double, double)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeEnergyPolicy.html" title="class in hadur117.core.melee">MeleeEnergyPolicy</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MEND-4">MEND-4</a>: whether to hold a shot off a team with <code>others</code> opponents alive: where the switch
+ <code>on</code>, two are left, the target is beyond <a href="hadur117/core/melee/MeleeEnergyPolicy.html#THREE_HOLD_DISTANCE"><code>MeleeEnergyPolicy.THREE_HOLD_DISTANCE</code></a> px, not a finisher,
+ and has more energy than Hadur's <code>ownEnergy</code>.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MeleeEnergyPolicy.html#threeHold(int,double,double,double)" class="member-name-link">threeHold(int, double, double, double)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeEnergyPolicy.html" title="class in hadur117.core.melee">MeleeEnergyPolicy</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MEND-4">MEND-4</a> as shipped (<a href="hadur117/core/melee/MeleeEnergyPolicy.html#THREE_HOLD"><code>MeleeEnergyPolicy.THREE_HOLD</code></a>).</div>
 </dd>
 <dt><a href="hadur117/core/policy/TickBudget.html#THRESHOLD" class="member-name-link">THRESHOLD</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/TickBudget.html" title="class in hadur117.core.policy">TickBudget</a></dt>
 <dd>
@@ -15486,10 +15516,7 @@ the order they are declared.</div>
 <div class="block">Each member's weight now: its standing weight times 2^(POWER x score).</div>
 </dd>
 <dt><a href="hadur117/core/melee/FieldGun.html#weight(hadur117.core.world.EnemyInfo,java.awt.geom.Point2D.Double,java.util.List,long)" class="member-name-link">weight(EnemyInfo, Point2D.Double, List&lt;EnemyInfo&gt;, long)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
-<dd>
-<div class="block">An opponent's weight: 1/distance, leaning toward weak opponents, boosted for a finisher
- (<a class="req" href="../requirements.html#MGUN-2">MGUN-2</a>), an isolated opponent and a recent shooter.</div>
-</dd>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/micro/core/Targeting.html#WEIGHT" class="member-name-link">WEIGHT</a> - Static variable in class hadur117.micro.core.<a href="hadur117/micro/core/Targeting.html" title="class in hadur117.micro.core">Targeting</a></dt>
 <dd>
 <div class="block">A playout's vote while every step was drawn from a warm row.</div>

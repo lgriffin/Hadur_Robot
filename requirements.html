@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 275 of 282 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 277 of 284 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -1230,6 +1230,16 @@ traceability check reads. 275 of 282 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">MEND-3</span><span class="badge">State</span><span class="badge stage">M7</span></div>
 <p>While in melee off a team with two opponents alive, movement shall weight a point where it would be an opponent&#x27;s closest robot four times the base risk, in place of <a class="req" href="requirements.html#MMOVE-2">MMOVE-2</a>&#x27;s two.</p>
 <dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/melee/FieldGun.html" title="hadur117.core.melee.FieldGun">FieldGun</a>, <a href="api/hadur117/core/melee/MeleeEndgame.html" title="hadur117.core.melee.MeleeEndgame">MeleeEndgame</a>, <a href="api/hadur117/core/melee/MeleeEnergyPolicy.html" title="hadur117.core.melee.MeleeEnergyPolicy">MeleeEnergyPolicy</a>, <a href="api/hadur117/core/melee/MinimumRiskMovement.html" title="hadur117.core.melee.MinimumRiskMovement">MinimumRiskMovement</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/melee/MeleeEndgameTest.java">MeleeEndgameTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="MEND-4">
+<div class="req-head"><span class="rid">MEND-4</span><span class="badge">Optional</span><span class="badge stage">M7</span></div>
+<p>Where the <code>THREE_HOLD</code> switch is on, while in melee off a team with two opponents alive, the gun shall hold a shot at a target beyond 500 px that is not a finisher and has more energy than Hadur (arm <code>mthold</code>, ships off).</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/melee/MeleeEnergyPolicy.html" title="hadur117.core.melee.MeleeEnergyPolicy">MeleeEnergyPolicy</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/melee/MeleeEnergyPolicyTest.java">MeleeEnergyPolicyTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="MEND-5">
+<div class="req-head"><span class="rid">MEND-5</span><span class="badge">Optional</span><span class="badge stage">M7</span></div>
+<p>Where the <code>THREE_STRONG</code> switch is on, while in melee off a team with two opponents alive, the field gun shall multiply the weight of the opponent with more energy than the other by 3 (arm <code>mtstrong</code>, ships off).</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/melee/FieldGun.html" title="hadur117.core.melee.FieldGun">FieldGun</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/melee/FieldGunTest.java">FieldGunTest.java</a></dd></dl>
 </article>
 <h2 id="group-MIR">MIR</h2>
 <article class="req-card" id="MIR-1">
