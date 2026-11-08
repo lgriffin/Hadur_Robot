@@ -1,6 +1,6 @@
 {
  "plan": "pc-melee-three",
- "updated": 1794159211.0270233,
+ "updated": 1794160115.10877,
  "steps": {
   "m3prep": {
    "status": "done",
@@ -38,8 +38,8 @@
   {
    "step": "m3pilot",
    "started": 1794158509.7300487,
-   "updated": 1794159211.0208762,
-   "elapsed": 701.2908275127411,
+   "updated": 1794160115.1009896,
+   "elapsed": 1605.3709409236908,
    "expected": 184,
    "panel": null,
    "field": null,
@@ -47,20 +47,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 32,
+   "battles": 80,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 164.26851098078427,
-   "eta": 3331.1314306855206,
-   "fraction": 0.17391304347826086,
-   "last_battle_age": 35.590075731277466,
+   "rate": 179.39779066530997,
+   "eta": 2086.982223200798,
+   "fraction": 0.43478260869565216,
+   "last_battle_age": 38.44262146949768,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 32"
+     "detail": "0 failed of 80"
     },
     {
      "rule": "stall 30m",
@@ -69,8 +69,8 @@
      "detail": "last battle 1 min ago"
     }
    ],
-   "skips_mean": 24.84375,
-   "skips_last100": 24.84375
+   "skips_mean": 24.5,
+   "skips_last100": 24.5
   }
  ]
 }
