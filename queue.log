@@ -5,3 +5,6 @@
 01:27:32 start tcbb1
 01:27:32 watching tcbb1: 3 stop rule(s)
 01:27:42 progress tcbb1: 0/368 (0%) battles, 0 failed
+01:54:46 tcbb1 exit=0 in 1633 s
+01:54:46 start tctc1
+01:54:46 watching tctc1: 3 stop rule(s)
