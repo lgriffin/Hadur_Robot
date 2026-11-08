@@ -175,3 +175,30 @@ Pilot z4 against aa: share +0.07 ± 0.23, so the card ran in full. Paired over a
 z4 (from 40 energy) **-0.11 ± 0.13**, others outlived -0.5; z5 (from 50) -0.00 ± 0.16, endgame wins +2.1. Neither clears
 0, so spending the reserve under 60 buys nothing: the far-power lever is used up at 60. MGUN-26, the arms and the card
 are removed; master keeps MGUN-25 on at 2.5 from 60 energy.
+
+## The three-robot phase (MEND-4, MEND-5, pc-melee-three, 2026-11-08)
+
+Leigh 2026-11-08: "Where is melee at? Its within touching distance of first lets figure this out". Live
+2026-11-08: 7th 69.48; ScalarR 72.72, Neuromancer 72.13, Firestarter 71.43, Ogi 70.74, Diamond 70.10,
+DemonicRage 69.97. Survival 55.8 against ScalarR's 82.7.
+
+Where the score goes (cloud 3.21 census, 1,260 rounds): 263 rounds lost in the endgame duel, 269 in
+the crowd. A crowd death gives up every opponent still alive, so the crowd costs about 3.5 times the
+opponents outlived the duel does (925 against 263).
+
+The endgame duel by energy lead at its start (opponent-adjusted: each duel's win against its
+survivor's own rate over the other duels):
+
+| Lead at the duel | Duels | Won | Survivor's own rate | Energy entering two-left | Survivor's energy | Spent with two left |
+|---|---|---|---|---|---|---|
+| 20+ behind | 213 | 32% | 65% | 48 | 71.5 | 18.6 on 16.6 shots |
+| 0-20 behind | 180 | 65% | 69% | 55 | 44.6 | 19.4 on 16.3 shots |
+| 0-20 ahead | 194 | 81% | 73% | 65 | 39.2 | 18.2 on 12.6 shots |
+| 20+ ahead | 380 | 97% | 79% | 90 | 29.3 | 15.4 on 9.5 shots |
+
+The lead is made mostly before two are left (48 against 90 energy entering it) and by who survives;
+the two-left phase spends about 19 energy at about 700 px and 1.25 power in every row. Against the top
+three the duel is lost even ahead (ScalarR 17%, Diamond 11% when Hadur leads), so the lever is the
+middle of the field. pc-melee-three tries two ways to reach the duel nearer even: hold far shots at a
+richer target (MEND-4, `mthold`) and wear down the richer of the two (MEND-5, `mtstrong`), pilot both
+together. Expected +0.1 to +0.3: even all the 20+-behind duels won at the 0-20-behind rate is about +0.4.

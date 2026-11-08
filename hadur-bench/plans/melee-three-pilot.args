@@ -1,0 +1,27 @@
+# PC card pc-melee-three pilot (BENCH-210): thts (both switches) against an aa baseline battle for battle on the 46 census fields x 2 seeds (3318-3319, after the card's 3312-3317), 184 battles, about 17% of the card. tools/melee_pilot.py --share-only stops the card unless Hadur's score share is up. Template: m3prep writes work/melee-three-pilot.args with @V@ = the robot.release in hadur-robot/pom.xml and @C@ = the machine's melee width.
+--suite
+melee-census-317.txt
+--seeds
+2
+--seed-base
+3317
+--rounds
+35
+--parallel
+@C@
+--child-heap
+2G
+--cpu-constant
+auto
+--robot-jar
+bisect/hadur117.Hadur_@V@thts.jar
+--robot
+hadur117.Hadur @V@thts
+--baseline
+bisect/hadur117.Hadur_@V@aa.jar
+--baseline-robot
+hadur117.Hadur @V@aa
+--out
+work/melee-three-@V@-pilot
+--report
+../docs/bench/local/melee-three-pilot-battles.md
