@@ -20,3 +20,10 @@
 03:14:26 start tctc2
 03:14:26 watching tctc2: 3 stop rule(s)
 03:28:45 progress tctc2: 198/1104 (18%) battles, 830/h, ETA 1.1 h, 0 failed, skips 23.6/battle (last 100)
+03:59:00 progress tctc2: 824/1104 (75%) battles, 1110/h, ETA 15 min, 0 failed, skips 19.2/battle (last 100)
+04:06:34 tctc2 exit=0 in 3128 s
+04:06:34 start tcgate
+04:06:35 tcgate exit=0 in 0 s
+04:06:35 start tcpr
+04:06:40 tcpr exit=0 in 5 s
+04:06:40 ALLDONE
