@@ -1,0 +1,31 @@
+{
+ "plan": "pc-team-close",
+ "updated": 1794101141.6076438,
+ "steps": {
+  "tcprep": {
+   "status": "pending"
+  },
+  "tcbb1": {
+   "status": "pending"
+  },
+  "tctc1": {
+   "status": "pending"
+  },
+  "tcpilot": {
+   "status": "pending"
+  },
+  "tcbb2": {
+   "status": "pending"
+  },
+  "tctc2": {
+   "status": "pending"
+  },
+  "tcgate": {
+   "status": "pending"
+  },
+  "tcpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
