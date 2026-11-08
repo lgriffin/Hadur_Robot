@@ -30,3 +30,9 @@
 01:10:36 prep2 exit=0 in 36 s
 01:10:36 start confirm
 01:10:36 watching confirm: 4 stop rule(s)
+01:25:08 confirm exit=0 in 871 s
+01:25:08 start gate
+01:25:09 gate exit=0 in 0 s
+01:25:09 start pr
+01:25:15 pr exit=0 in 6 s
+01:25:15 ALLDONE
