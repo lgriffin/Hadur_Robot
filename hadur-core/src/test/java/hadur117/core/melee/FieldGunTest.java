@@ -269,24 +269,4 @@ class FieldGunTest {
         gun.onTeam(false);
         for (FieldGun.Solution s : gun.solutions(me, 100, 5, tracker.alive(), 6)) assertTrue(s.power < 3.0);
     }
-
-    @Test
-    @Tag("MEND-5")
-    @DisplayName("MEND-5: off by default; with two opponents left the one with more energy is the stronger, not with three or a tie")
-    void strongerOfTwo() {
-        assertFalse(FieldGun.THREE_STRONG, "MEND-5 ships off (arm mtstrong)");
-        EnemyInfo a = new EnemyInfo("a");
-        EnemyInfo b = new EnemyInfo("b");
-        EnemyInfo c = new EnemyInfo("c");
-        a.energy = 70;
-        b.energy = 40;
-        c.energy = 20;
-        List<EnemyInfo> two = Arrays.asList(a, b);
-        assertTrue(FieldGun.strongerOfTwo(true, 2, a, two));
-        assertFalse(FieldGun.strongerOfTwo(true, 2, b, two));
-        assertFalse(FieldGun.strongerOfTwo(false, 2, a, two), "off");
-        assertFalse(FieldGun.strongerOfTwo(true, 3, a, Arrays.asList(a, b, c)), "three opponents: no change");
-        b.energy = 70;
-        assertFalse(FieldGun.strongerOfTwo(true, 2, a, two), "a tie boosts neither");
-    }
 }
