@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 """Per-robot card helpers (pc-tailor-field BENCH-197, pc-race-power BENCH-206, pc-tailor-near BENCH-207, pc-hj-field
-BENCH-208): the pilot gate, the leaning robots of an earlier screen and the per-robot build's lists.
+BENCH-208, pc-tailor-stack BENCH-214): the pilot gate, the leaning robots of an earlier screen, the levers the table
+already carries and the per-robot build's lists.
 
   python3 tools/x5_card.py pilot ARMS.tsv --names PILOT.txt --check x5=panel-x5.txt@2 \
       [--ref c] --out PILOT.md --stop-file STOP
   python3 tools/x5_card.py lists PICK.tsv --list-prefix work/tf --env-out ENV.sh --abl-out ABL.txt --arms-out ARMS \
       --version 3.21 [--arm xr] [--no-aa]
   python3 tools/x5_card.py lean SCREEN.tsv --census census-312.txt --exclude PICK.tsv --levers x5,gs,... [--min 1] \
+      [--carry CARRIED.tsv [--only-carried]] [--shielded PANEL.txt] [--req BENCH-207] \
       --pick-out LEAN.tsv --set-out SET.txt --pilot-out PILOT.txt [--pilot-every 5]
+  python3 tools/x5_card.py carried ../hadur-robot/src/main/java/hadur117/ShieldTableData.java --out CARRIED.tsv
 
 pilot: each --check ARM=MEMBERS@BAR takes the PILOT robots (name | note | jar) that MEMBERS also lists and their mean
 of the arm's score share minus the reference arms' (--ref, comma separated, pooled). The card goes on when any check
@@ -17,7 +20,8 @@ lists: splits the pick TSV (mode_table.py --out-tsv: robot, then the arm that wo
 list ablation), writes one name list per lever that won a robot (PREFIX-ARM.list), a shell file exporting each list's
 variable, the build-ablation.sh argument for those ablations, and the confirm arms file whose xr line names the jar
 that build makes. Exits 1 when no robot picked any lever.
-lean (pc-tailor-near, BENCH-207): see lean(). Standard library only.
+lean (pc-tailor-near, BENCH-207; pc-tailor-stack, BENCH-214): see lean().
+carried (pc-tailor-stack, BENCH-214): see carried(). Standard library only.
 """
 import argparse
 import csv
@@ -97,7 +101,20 @@ LEVERS = {
     "dg": ("sdodgelist", "SHOT_DODGE", "dg"),  # DODGE-3 simple-aim dodge (movement)
     "fl": ("fllist", "FLAT_ON", "fq"),     # MOVE-32 flattener on (movement)
     "mm": ("mmlist", "MIMIC_ON", "mq"),    # MOVE-34 mimic aims in the surf (movement)
+    "rp": ("rplist", "RACE_POWER", "rp"),  # POW-17 energy-race power pick (gun)
 }
+
+# BENCH-214: the levers that work the same part of the robot. A robot stacks a second lever only from another
+# family: one bullet-power rule (x5, fp and rp each replace the power choice), one stop-and-go variant (sw is sg's
+# shifted form); gs, hj, fl and mm each stand alone.
+FAMILY = {"x5": "power", "fp": "power", "rp": "power", "sg": "stopgo", "sw": "stopgo",
+          "gs": "gs", "hj": "hj", "fl": "fl", "mm": "mm"}
+# GUN-11's TripHammer aims and MOVE-32's flattener never apply to a shield-mode robot (DuelController).
+SHIELD_FREE = {"gs", "fl"}
+
+# ShieldTableData method -> lever, for carried().
+METHODS = {"x5Powers": "x5", "gunStacks": "gs", "fullOffs": "fp", "stopGos": "sg", "stopGoShifts": "sw",
+           "heatJits": "hj", "flatOns": "fl", "mimicOns": "mm", "racePowers": "rp"}
 
 
 def lists(a):
@@ -130,11 +147,50 @@ def lists(a):
     return 0
 
 
+def carried(a):
+    """BENCH-214: the per-robot levers the shipped table carries, read from ShieldTableData.java: every name in the
+    methods METHODS lists (robot, lever; a robot on two levers has two rows). Exits 1 when it finds none."""
+    import re
+    rows, method, lever = [], None, None
+    for line in open(a.source, encoding="utf-8"):
+        m = re.match(r"\s*static String\[\] (\w+)\(\)", line)
+        if m:
+            method = m.group(1)
+            lever = METHODS.get(method)
+            continue
+        t = line.strip()
+        if t.startswith("}"):
+            lever = None
+        elif lever and t.startswith('"'):
+            name = re.match(r'"([^"]*)"', t).group(1)
+            if name:
+                rows.append("%s\t%s\n" % (name, lever))
+    if not rows:
+        print("no per-robot lever in %s" % a.source, file=sys.stderr)
+        return 1
+    open(a.out, "w", encoding="utf-8").write("".join(rows))
+    print("%d carried lever lines" % len(rows))
+    return 0
+
+
+def read_pick(path):
+    """(robot, lever) rows of a pick TSV (robot first, lever second; comments skipped)."""
+    out = []
+    for line in open(path, encoding="utf-8"):
+        if line.strip() and not line.startswith("#"):
+            f = line.split("\t")
+            out.append((f[0].strip(), f[1].strip() if len(f) > 1 else ""))
+    return out
+
+
 def lean(a):
     """BENCH-207: each robot the earlier screen fought and no pick holds, on the lever it leaned to there. A robot leans
     when its best allowed lever's mean score share beat c's by --min points; ties go to the larger gain. Writes the
     leaning robots as a pick TSV (robot, lever, gain, 0, n lever, n c) that `lists` turns into one build, their census
-    lines as a set, and every --pilot-every'th of those lines as the pilot set. Exits 1 when no robot leans."""
+    lines as a set, and every --pilot-every'th of those lines as the pilot set. Exits 1 when no robot leans.
+    BENCH-214: with --carry (robot, lever rows the table already carries), a carried robot may lean only to a lever
+    of another FAMILY than the ones it carries; --only-carried keeps the other robots out; --shielded names the
+    robots (a census panel) that may not lean to gs or fl."""
     s = shares(a.screen)
     levers = [k for k in a.levers.split(",") if k]
     unknown = [k for k in levers if k not in LEVERS]
@@ -143,9 +199,13 @@ def lean(a):
         return 2
     skip = set()
     for path in a.exclude or []:
-        for line in open(path, encoding="utf-8"):
-            if line.strip() and not line.startswith("#"):
-                skip.add(line.split("\t")[0].strip())
+        skip.update(n for n, _ in read_pick(path))
+    carry = defaultdict(set)
+    for path in a.carry or []:
+        for name, lever in read_pick(path):
+            if lever in FAMILY:
+                carry[name].add(FAMILY[lever])
+    shielded = set(panel_names(a.shielded)) if a.shielded else set()
     census = []
     for line in open(a.census, encoding="utf-8"):
         if line.strip() and not line.startswith("#") and "|" in line:
@@ -154,11 +214,13 @@ def lean(a):
     count = {k: 0 for k in levers}
     for name, line in census:
         arms = s.get(name)
-        if name in skip or not arms or not arms.get("c"):
+        if name in skip or not arms or not arms.get("c") or (a.only_carried and name not in carry):
             continue
         ref = arms["c"]
         best = None
         for k in levers:
+            if FAMILY[k] in carry[name] or (name in shielded and k in SHIELD_FREE):
+                continue
             xs = arms.get(k)
             if xs:
                 d = st.mean(xs) - st.mean(ref)
@@ -172,10 +234,10 @@ def lean(a):
         print("no robot leans to any lever", file=sys.stderr)
         return 1
     open(a.pick_out, "w", encoding="utf-8").write("".join(rows))
-    head = "# BENCH-207: robots of %s that lean to a lever on %s (best lever +%.1f points or more over c).\n"
-    open(a.set_out, "w", encoding="utf-8").write(head % (a.census, a.screen, a.min) + "".join(lines))
+    head = "# %s: robots of %s that lean to a lever on %s (best lever +%.1f points or more over c).\n"
+    open(a.set_out, "w", encoding="utf-8").write(head % (a.req, a.census, a.screen, a.min) + "".join(lines))
     open(a.pilot_out, "w", encoding="utf-8").write(
-        "# BENCH-207 pilot: every %dth robot of %s.\n" % (a.pilot_every, a.set_out) + "".join(lines[::a.pilot_every]))
+        "# %s pilot: every %dth robot of %s.\n" % (a.req, a.pilot_every, a.set_out) + "".join(lines[::a.pilot_every]))
     print("%d robots lean (%s); pilot %d" % (len(rows), ", ".join("%s %d" % (k, n) for k, n in count.items() if n),
                                              len(lines[::a.pilot_every])))
     return 0
@@ -210,8 +272,15 @@ def main(argv=None):
     r.add_argument("--set-out", required=True)
     r.add_argument("--pilot-out", required=True)
     r.add_argument("--pilot-every", type=int, default=5)
+    r.add_argument("--carry", action="append", help="a robot, lever TSV the table carries: no lever of the same family")
+    r.add_argument("--only-carried", action="store_true", help="only the robots a --carry file names")
+    r.add_argument("--shielded", help="a census panel of the shield-mode robots, which lean to neither gs nor fl")
+    r.add_argument("--req", default="BENCH-207", help="the requirement named in the set files' headers")
+    c = sub.add_parser("carried")
+    c.add_argument("source", help="ShieldTableData.java")
+    c.add_argument("--out", required=True)
     a = ap.parse_args(argv)
-    return {"pilot": pilot, "lists": lists, "lean": lean}[a.cmd](a)
+    return {"pilot": pilot, "lists": lists, "lean": lean, "carried": carried}[a.cmd](a)
 
 
 if __name__ == "__main__":
