@@ -101,4 +101,44 @@ class MeleeControllerTest {
         controller.newRound();
         assertNull(tick(0, 3).target);
     }
+
+    @Test
+    @Tag("MMOVE-26")
+    void recordsWhatTheSurferSawOfEachHit() {
+        scan(controller.tracker, "a", 400, 500, 100, 0);
+        scan(controller.tracker, "b", 100, 100, 100, 0);
+        scan(controller.tracker, "c", 200, 150, 100, 0);
+        tick(0, 3);
+        // a fires power 3 at tick 0 with nobody nearer it than Hadur: the whole shot is ours.
+        scan(controller.tracker, "a", 400, 500, 97, 1);
+        for (int t = 1; t <= 18; t++) tick(t, 3);
+        controller.hitByBullet("a", 3, Math.PI, me, 18);
+        MeleeController.Hit hit = controller.takeHit();
+        assertNotNull(hit);
+        assertEquals("a", hit.shooter);
+        assertTrue(hit.seen);
+        assertEquals(0, hit.nearer);
+        assertEquals(1.0, hit.weight, 1e-9);
+        assertEquals(16, hit.damage, 1e-9);
+        assertEquals(200, hit.distance, 1e-9);
+        assertEquals(3, hit.alive);
+        assertNull(controller.takeHit(), "read once");
+
+        // b fires at tick 18 with c nearer it than Hadur: the surfer gave the shot a quarter.
+        scan(controller.tracker, "b", 100, 100, 97, 19);
+        for (int t = 19; t <= 18 + 33; t++) tick(t, 3);
+        controller.hitByBullet("b", 3, 0, me, 18 + 33);
+        hit = controller.takeHit();
+        assertTrue(hit.seen);
+        assertEquals(1, hit.nearer);
+        assertEquals(0.25, hit.weight, 1e-9);
+
+        // A hit no inferred shot explains: unseen, no weight.
+        controller.hitByBullet("c", 1, 0, me, 60);
+        hit = controller.takeHit();
+        assertFalse(hit.seen);
+        assertEquals(-1, hit.nearer);
+        assertEquals(0, hit.weight, 1e-9);
+        assertEquals("4.000,250,0,-1,0.000,3", hit.fields());
+    }
 }
