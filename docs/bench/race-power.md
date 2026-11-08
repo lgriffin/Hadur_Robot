@@ -76,6 +76,8 @@ DrussGT (master 9); the solve is spread at three grid rows a call.
 | cb.mega.RandomBot 1.0 | 72.4 | -1.5 |
 | wcsv.mega.PowerHouse2 0.2 | 99.1 | -2.1 |
 
-The 8 that held at a 3-point margin on the confirm seeds alone (BeepBoop down to FoilistMC above) are banked in
-`ShieldTableData.racePowers()` by PR #698. The gain is at the top of the field: BeepBoop +24 and Nullstride +17 are
-the two robots ahead of Hadur. The cloud and PC cards are removed after their runs.
+The 8 that held at a 3-point margin on the confirm seeds (BeepBoop down to FoilistMC above) are banked in
+`ShieldTableData.racePowers()` by PR #698. The gate covers all 19 picks; the 8 are chosen on the same confirm seeds,
+so their confirm gains are in-sample and run high. Each of them also gained 6 to 19 points on the screen's 2 seeds,
+which only picked the 19, not the 8. The gain is at the top of the field: BeepBoop +24 and Nullstride +17 are the two
+robots ahead of Hadur. The cloud and PC cards are removed after their runs.
