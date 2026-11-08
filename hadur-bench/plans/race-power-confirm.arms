@@ -1,5 +1,0 @@
-# pc-race-power confirm (BENCH-206): c, aa, and xr = the energy race's power pick against only the robots the screen
-# picked (ablation rplist with RACE_POWER_SUFFIX=rx over work/rpf-picks.list).
-c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
-aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
-xr | hadur117.Hadur 3.21rx | bisect/hadur117.Hadur_3.21rx.jar

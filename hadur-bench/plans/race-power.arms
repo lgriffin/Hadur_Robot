@@ -1,5 +1,0 @@
-# POW-17 screen (cloud-race-power): c is master, aa its A/A copy, rp the energy race's power pick against every
-# robot of guard-top50.txt (race-power: lines from plans/race-power-guard.list, ablation rplist).
-c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
-aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
-rp | hadur117.Hadur 3.21rp | bisect/hadur117.Hadur_3.21rp.jar

@@ -44,3 +44,40 @@ since the screen covered only the strongest 40 and Saguaro 1.1's lead over Hadur
 
 rp skips about 7 more turns a battle. A whole solve per re-fit cost 63 skipped turns in the first smoke against
 DrussGT (master 9); the solve is spread at three grid rows a call.
+
+## Whole field on the PC (pc-race-power, BENCH-206, PR #695)
+
+- **Pilot:** the 4 cloud picks at 4 seeds gave rp +10.5 points over c and aa (bar 3): GO.
+- **Screen:** 1,194 robots x c/aa/rp x 2 seeds from 10200, 7,164 battles, none failed. rp +0.14 ± 0.16 vs c over
+  the field (A/A -0.15 ± 0.15). By band: band 1 +5.0 (9 robots), band 2 +3.4 (32), bands 3-6 level.
+- **Pick:** 19 robots at a 5-point margin with the low end above 0. Shadow and Domogled were not picked again.
+- **Confirm:** the 19 at 4 fresh seeds from 10300, xr (rp on the picks only) +6.46 ± 3.36 points over c on them,
+  A/A -0.14 ± 1.48. Gate: +0.10 ± 0.05 APS over the 1,217-pairing field, **pass**.
+
+| Robot | c | xr - c |
+|---|---:|---:|
+| kc.mega.BeepBoop 2.0 | 24.5 | +24.3 |
+| jd.Nullstride 2.3.3 | 24.0 | +16.7 |
+| dragonbyte.Neutrino 4 | 80.0 | +15.5 |
+| voidious.Diamond 1.8.22 | 47.5 | +15.3 |
+| mn.Combat 3.25.0 | 57.0 | +13.8 |
+| lxx.Tomcat 3.68 | 57.3 | +10.8 |
+| voidious.Dookious 1.573c | 61.9 | +6.4 |
+| sheldor.mini.FoilistMC 1.0 | 74.9 | +5.9 |
+| gh.GresSuffurd 0.4.13 | 58.5 | +5.4 |
+| oog.micro.MagicD3 0.41 | 89.0 | +3.5 |
+| lancel.Lynx 1.09 | 66.6 | +2.8 |
+| ad.Quest 0.10 | 89.8 | +2.7 |
+| DM.mega.Regicide 2.0rrr | 69.4 | +1.7 |
+| kc.serpent.WaveSerpent 2.11 | 57.9 | +1.7 |
+| jk.sheldor.nano.Yatagan 1.2.3 | 93.1 | +1.5 |
+| rh.Intra 2.1DomoKN | 72.9 | -0.9 |
+| jwst.DAD.DarkAndDarker 1.1 | 94.6 | -0.9 |
+| cb.mega.RandomBot 1.0 | 72.4 | -1.5 |
+| wcsv.mega.PowerHouse2 0.2 | 99.1 | -2.1 |
+
+The 8 that held at a 3-point margin on the confirm seeds (BeepBoop down to FoilistMC above) are banked in
+`ShieldTableData.racePowers()` by PR #698. The gate covers all 19 picks; the 8 are chosen on the same confirm seeds,
+so their confirm gains are in-sample and run high. Each of them also gained 6 to 19 points on the screen's 2 seeds,
+which only picked the 19, not the 8. The gain is at the top of the field: BeepBoop +24 and Nullstride +17 are the two
+robots ahead of Hadur. The cloud and PC cards are removed after their runs.
