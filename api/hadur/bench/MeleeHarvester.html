@@ -124,6 +124,11 @@ loadScripts(document, 'script');</script>
      robot the shot was aimed at (the hit victim, else the living fighter whose bearing lies
      nearest the bullet's heading), that robot's energy and distance, and the power. It is Hadur's bullet-power decision as a function of
      what a nano can see, the input of <code>tools/distill.py</code>.</li>
+ <li><code>trace.log.gz</code> (BENCH-213, only with <code>--melee-trace true</code>): one <code>T</code> record per
+     turn with every robot's true state (<code>name:x:y:heading:velocity:energy:alive</code>) and every
+     live bullet (<code>owner:x:y:heading:power</code>, <code>|</code> between bullets), so a round can be drawn robot by robot: who stood
+     nearest whom, where the shots came from, and where Hadur died. About 3 MB a battle, so off
+     unless asked.</li>
  <li><code>exposure.csv</code> (<a class="req" href="../../../requirements.html#BENCH-116">BENCH-116</a>): one row per robot per round (<a href="#EXPOSURE_HEADER"><code>EXPOSURE_HEADER</code></a>):
      the ticks it was alive with three or more fighters alive; over those ticks, the summed
      count of other fighters whose nearest living fighter it was; the bullet damage it took
@@ -185,7 +190,7 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
@@ -203,6 +208,11 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onTurnEnded(robocode.control.events.TurnEndedEvent)" class="member-name-link">onTurnEnded</a><wbr>(robocode.control.events.TurnEndedEvent&nbsp;e)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#traceOn()" class="member-name-link">traceOn</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">BENCH-213: whether a melee battle child writes <code>trace.log.gz</code> (<code>-Dhadur.bench.melee.trace=true</code>).</div>
+</div>
 </div>
 </div>
 </div>
@@ -323,6 +333,13 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="traceOn()">
+<h3>traceOn</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">traceOn</span>()</div>
+<div class="block">BENCH-213: whether a melee battle child writes <code>trace.log.gz</code> (<code>-Dhadur.bench.melee.trace=true</code>).</div>
+</section>
+</li>
 <li>
 <section class="detail" id="onRoundStarted(robocode.control.events.RoundStartedEvent)">
 <h3>onRoundStarted</h3>
