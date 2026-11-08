@@ -103,18 +103,4 @@ class MeleeEnergyPolicyTest {
         assertEquals(1.92, MeleeEnergyPolicy.farPower(1.92, 600, 81, 80, 5, true, 3.0), 1e-9, "never lowers the power");
         assertEquals(1.92, MeleeEnergyPolicy.farPower(1.92, 600, 70, 50, 5, false, 3.0), 1e-9, "switched off: unchanged");
     }
-
-    @Test
-    @Tag("MEND-4")
-    @DisplayName("MEND-4: off by default; with two opponents left, hold beyond 500 px at a richer target that is not a finisher")
-    void threeHold() {
-        assertFalse(MeleeEnergyPolicy.THREE_HOLD, "MEND-4 ships off (arm mthold)");
-        assertFalse(MeleeEnergyPolicy.threeHold(2, 700, 30, 70), "off: the shipped robot fires");
-        assertTrue(MeleeEnergyPolicy.threeHold(true, 2, 700, 30, 70));
-        assertFalse(MeleeEnergyPolicy.threeHold(true, 2, 500, 30, 70), "500 px or nearer fires");
-        assertFalse(MeleeEnergyPolicy.threeHold(true, 2, 700, 70, 30), "Hadur ahead fires");
-        assertFalse(MeleeEnergyPolicy.threeHold(true, 2, 700, 10, 16), "a finisher fires");
-        assertFalse(MeleeEnergyPolicy.threeHold(true, 3, 700, 30, 70), "three opponents: no change");
-        assertFalse(MeleeEnergyPolicy.threeHold(true, 1, 700, 30, 70), "the duel: no change");
-    }
 }

@@ -203,6 +203,12 @@ middle of the field. pc-melee-three tries two ways to reach the duel nearer even
 richer target (MEND-4, `mthold`) and wear down the richer of the two (MEND-5, `mtstrong`), pilot both
 together. Expected +0.1 to +0.3: even all the 20+-behind duels won at the 0-20-behind rate is about +0.4.
 
+### pc-melee-three read (PR #708): the pilot stopped the card
+
+Both switches together against aa, 92 pairs: share -0.16 ± 0.24, crowd deaths +1.8 points of rounds. Holding
+far shots and leaning on the richer robot with two left do not reach the duel better off; the energy lead is
+made earlier, in the crowd. MEND-4, MEND-5, the arms and the card are removed; the melee is bit for bit master's.
+
 ## Tracing a melee round (BENCH-213, 2026-11-08)
 
 Leigh: "Show me a diagram of our data, I want to see an example where we are nearest compared to other bots.
