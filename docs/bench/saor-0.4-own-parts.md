@@ -10,7 +10,8 @@ control. Nothing was uploaded or released.
 Seed blocks: r1 4100, r2 4200, r3 4300, r1x 4500, r1z 4600. Reports: `docs/bench/local/saor-r1-census.md`,
 `saor-r2-census.md`, `saor-r3-census.md`, `saor-r1x-census.md`, `saor-r1z-census.md`,
 `saor-r1x-wfr.md`, `saor-r1z-wfr.md`, and for section 9 `saor-r1x-wng.md`, `saor-r1z-wng.md`,
-`saor-r1x-wnh.md`, `saor-r1z-wnh.md`, `saor-r1x-wgv.md`, `saor-r1z-wgv.md`.
+`saor-r1x-wnh.md`, `saor-r1z-wnh.md`, `saor-r1x-wgv.md`, `saor-r1z-wgv.md`,
+`saor-r1x-wnz.md`, `saor-r1z-wnz.md`.
 
 ## Result
 
@@ -82,6 +83,8 @@ The movement went from -3.0 to about -0.6 over about 45 designs. The steps that 
    - top speed re-rolled between 8 and 3 about every 10 ticks (WNJ -2.50, -3.06);
    - leg depths drawn short (25-85) or long (150-225), half each (WNM -1.09, -1.13).
    WNF with the GV vote width (WGV -0.97, -0.87) is no better than WNF alone, as OWN showed.
+   - random reversals back along the leg, 3% or 6% a tick (WNZ -1.76, -2.33; WNW -2.85, -2.86):
+     every extra reversal costs, so mid-leg reversals are not what the crowd's simple guns miss.
    WNF's legs, run at full speed to their end with one reversal there, look like a local optimum of
    this family: the remaining gap needs a different idea, not a variant.
 
