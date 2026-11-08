@@ -49,8 +49,8 @@ class ShieldListResourceTest {
         // BENCH-126 (PR #376): Wolverine, Hikari and Melody moved to stop-and-go, off the list.
         // SHIELD-21 (pc-shield-still2, PR #515): 7 of BeepBoop's shield robots join with still plans.
         // pc-rival-confirm (PR #537): claire, TestNano and GlowBlowMelee join with still plans; DuelistMicroMkII and
-        // Vanessa03 leave for their stop-and-go lines.
-        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3, list.size());
+        // Vanessa03 leave for their stop-and-go lines. pc-shield-audit (PR #697): Princess joins with still and exit off.
+        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
@@ -163,20 +163,23 @@ class ShieldListResourceTest {
         for (String name : ShieldTableData.stopGos()) lines.add(ShieldList.STOP_GO_PREFIX + " " + name);
         for (String name : ShieldTableData.stopGoShifts()) lines.add(ShieldList.STOP_GO_SHIFT_PREFIX + " " + name);
         ShieldList list = ShieldList.parse(lines);
-        assertEquals(18 + 8 + 1 + 3, ShieldTableData.stopGos().length);
-        assertEquals(35 + 12 + 2 + 2 + 1, ShieldTableData.stopGoShifts().length);
-        assertEquals(18 + 8 + 1 + 3, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGos())).size(), "no duplicates");
-        assertEquals(35 + 12 + 2 + 2 + 1, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGoShifts())).size(), "no duplicates");
+        assertEquals(18 + 8 + 1 + 3 + 1, ShieldTableData.stopGos().length);
+        assertEquals(35 + 12 + 2 + 2 + 1 + 3, ShieldTableData.stopGoShifts().length);
+        assertEquals(18 + 8 + 1 + 3 + 1, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGos())).size(), "no duplicates");
+        assertEquals(35 + 12 + 2 + 2 + 1 + 3, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGoShifts())).size(), "no duplicates");
         // DuelistMicroMkII (PR #263) and Vanessa03 (PR #276) were on both; pc-rival-confirm (PR #537) measured
         // them off the shield list, so stop-and-go now drives. The set stays as a guard.
+        // pc-tailor-field (BENCH-197, PR #686) banked two stop-and-go picks on shielded robots as measured: they act
+        // whenever the shield is not driving (Shiva +7.2 on the fresh-seed confirm).
+        java.util.Set<String> tailored = java.util.Set.of("cf.proto.Shiva 2.2", "wompi.Numbat 1.9");
         java.util.Set<String> both = java.util.Set.of("davidalves.net.DuelistMicroMkII 1.1", "rcb.Vanessa03 0");
         for (String name : ShieldTableData.stopGos()) {
             assertEquals(1, list.stopGo(name), name);
-            assertTrue(!list.matches(name) || both.contains(name), "a stop-and-go robot is not shielded: " + name);
+            assertTrue(!list.matches(name) || both.contains(name) || tailored.contains(name), "a stop-and-go robot is not shielded: " + name);
         }
         for (String name : ShieldTableData.stopGoShifts()) {
             assertEquals(2, list.stopGo(name), name);
-            assertTrue(!list.matches(name) || both.contains(name), "a stop-and-go robot is not shielded: " + name);
+            assertTrue(!list.matches(name) || both.contains(name) || tailored.contains(name), "a stop-and-go robot is not shielded: " + name);
         }
         assertEquals(0, list.stopGo("dft.Cyanide 1.90"));
         // pc-rival-confirm (PR #537): these two were measured off the shield list, so stop-and-go drives.
@@ -217,8 +220,9 @@ class ShieldListResourceTest {
         ShieldList list = ShieldList.parse(lines);
         // pc-rival-confirm (PR #537): 9 more, 5 of them with exit off. pc-rival-near (PR #545): 5 more, 2 with
         // exit off; Hydrogen's line goes, since it left the list for stop-and-go and a still line reads only shielded.
-        // pc-shelf (PR #636): Entangled.
-        assertEquals(17 + 9 + 5 - 1 + 1, ShieldTableData.stills().length);
+        // pc-shelf (PR #636): Entangled. pc-shield-audit (PR #697): Princess, with exit off.
+        assertEquals(17 + 9 + 5 - 1 + 1 + 1, ShieldTableData.stills().length);
+        assertTrue(list.matches("cx.Princess 1.0") && Arrays.asList(ShieldTableData.exitOffs()).contains("cx.Princess 1.0"));
         for (String n : ShieldTableData.stills()) {
             assertTrue(list.matches(n), n + " is shielded");
             assertTrue(list.still(n), n + " plans still");
@@ -254,11 +258,24 @@ class ShieldListResourceTest {
         java.util.List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
         for (String n : ShieldTableData.flatOns()) lines.add(ShieldList.FLAT_ON_PREFIX + " " + n);
         ShieldList list = ShieldList.parse(lines);
-        assertEquals(2, ShieldTableData.flatOns().length);
+        assertEquals(2 + 4, ShieldTableData.flatOns().length, "pc-flat-on and pc-tailor-field (BENCH-197) picks");
         for (String n : ShieldTableData.flatOns()) {
             assertTrue(list.flatOn(n), n + " surfs with the flatteners on");
-            assertTrue(!list.matches(n), n + " is surfed, not shielded");
+            // pc-tailor-field (BENCH-197) banked two flat-on picks on shielded robots, acting when the shield is not driving.
+            assertTrue(!list.matches(n) || java.util.Set.of("apv.NanoLauLectrikTheCannibal 1.1", "nz.jdc.micro.HedgehogP 1.2").contains(n),
+                n + " is surfed, not shielded");
         }
         assertTrue(!list.flatOn("lxx.Tomcat 3.68"), "Tomcat lost on the confirm (-3.9)");
+    }
+    @Test
+    @Tag("POW-17")
+    @DisplayName("the 8 pc-race-power picks carry race-power lines and no other robot does")
+    void racePowerPicks() {
+        java.util.List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
+        for (String n : ShieldTableData.racePowers()) lines.add(ShieldList.RACE_POWER_PREFIX + " " + n);
+        ShieldList list = ShieldList.parse(lines);
+        assertEquals(8, ShieldTableData.racePowers().length, "pc-race-power (BENCH-206, PR #695) confirm picks");
+        for (String n : ShieldTableData.racePowers()) assertTrue(list.racePower(n), n);
+        assertTrue(!list.racePower("abc.Shadow 3.83c"), "a pilot robot that did not hold the 3-point margin");
     }
 }

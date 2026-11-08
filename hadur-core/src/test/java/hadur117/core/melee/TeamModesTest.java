@@ -428,4 +428,22 @@ class TeamModesTest {
         assertTrue(TeamRisk.pull(pt(600, 400), 100, 2, prey, 100, mates(pt(700, 400)),
             EnumSet.of(TeamModes.Mode.FINISH)).scalesBullets);
     }
+
+    @Test
+    @Tag("TMODE-42")
+    @DisplayName("TMODE-42: CLOSE puts the hunt place 250 px from the prey instead of 350, means nothing without HUNT, and reaches a member only through the table (FORCE_CLOSE off)")
+    void closeHunt() {
+        assertFalse(TeamModes.FORCE_CLOSE);
+        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.CLOSE));
+        for (Set<TeamModes.Mode> entry : TeamModes.TABLE.values()) assertFalse(entry.contains(TeamModes.Mode.CLOSE));
+        List<EnemyInfo> prey = enemies(pt(600, 1000)).alive();
+        TeamRisk.Pull far = TeamRisk.pull(pt(600, 400), "n", 100, 3, prey, 100, mates(pt(700, 400)),
+            EnumSet.of(TeamModes.Mode.HUNT));
+        assertEquals(TeamRisk.HUNT_RADIUS, far.at.distance(600, 1000), 1e-6);
+        TeamRisk.Pull close = TeamRisk.pull(pt(600, 400), "n", 100, 3, prey, 100, mates(pt(700, 400)),
+            EnumSet.of(TeamModes.Mode.HUNT, TeamModes.Mode.CLOSE));
+        assertEquals(TeamRisk.HUNT_CLOSE, close.at.distance(600, 1000), 1e-6);
+        assertEquals(250, TeamRisk.HUNT_CLOSE, 0);
+        assertNull(TeamRisk.pull(pt(600, 400), "n", 100, 3, prey, 100, mates(pt(700, 400)), EnumSet.of(TeamModes.Mode.CLOSE)));
+    }
 }

@@ -1,0 +1,2 @@
+# pc-shield-audit (BENCH-209, PR #697): picks shipped to master; older cards' pre-ship checks skip them.
+cx.Princess 1.0

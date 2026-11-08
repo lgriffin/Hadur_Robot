@@ -1,0 +1,5 @@
+# pc-shield-audit: c is master, aa its A/A copy, sa the two robots' lines together (each line acts on its own robot
+# only): both join the shield list with SHIELD-21 still lines, Princess also with SHIELD-19 exit off.
+c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
+aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
+sa | hadur117.Hadur 3.21mtzlx0 | bisect/hadur117.Hadur_3.21mtzlx0.jar

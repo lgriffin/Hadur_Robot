@@ -381,6 +381,8 @@ final class ShieldTableData {
             "EE.LittleBig 1.0",
             "theo.Hydrogen 2.1r",
             "wiki.Wolverine 2.1",
+            // BENCH-197 pc-tailor-field (PR #686): picked on the whole-field screen, kept on fresh seeds.
+            "eem.IWillFireNoBullet v2.4",
         };
     }
 
@@ -445,6 +447,10 @@ final class ShieldTableData {
             "synapse.Geomancy 15",
             // pc-rival-near (BENCH-163, PR #545): held on PC seeds 6500 and the cloud screen
             "divineomega.DivineBot 1.9.5",
+            // BENCH-197 pc-tailor-field (PR #686): picked on the whole-field screen, kept on fresh seeds.
+            "cf.proto.Shiva 2.2",
+            "stelo.PastFuture 2.3.2",
+            "wompi.Numbat 1.9",
         };
     }
 
@@ -456,6 +462,19 @@ final class ShieldTableData {
      */
     static String[] heatJits() {
         return new String[] {
+            // BENCH-197 pc-tailor-field (PR #686): picked on the whole-field screen, kept on fresh seeds.
+            "bvh.mini.Wodan 0.50",
+            "elloco.Flower 0.1r1",
+            "jk.mega.DrussGT 3.1.16",
+            "jw.Booring 1.11",
+            "kenran.Bakko v1.0.1",
+            "lazarecki.mega.PinkerStinker 0.7",
+            "mnt.AHEB 0.6a",
+            "oog.nano.Caligula 1.15",
+            "pe.SandboxDT 3.02",
+            "staticline.whiskey.Whiskey 0.6",
+            "stf.PanzerGeneral 0.1",
+            "stranger.nano.TestBot 1.0",
         };
     }
 
@@ -467,6 +486,15 @@ final class ShieldTableData {
      */
     static String[] gunStacks() {
         return new String[] {
+            // BENCH-197 pc-tailor-field (PR #686): picked on the whole-field screen, kept on fresh seeds.
+            "abc.Shadow 3.83c",
+            "ags.Glacier 0.3.2",
+            "ags.rougedc.RougeDC willow",
+            "arthord.NanoSatanMelee Beta",
+            "cb.mega.RandomBot 1.0",
+            "ebo.Tahoe 1.1.79",
+            "jam.RaikoMX 0.32",
+            "radnor.RamRod 1.0",
         };
     }
 
@@ -500,6 +528,9 @@ final class ShieldTableData {
             // pc-rival-near (BENCH-163, PR #545): held on PC seeds 6500 and the cloud screen
             "intruder.PrairieWolf 2.61",
             "sheldor.nano.PointInLine 1.0",
+            // pc-shield-audit (BENCH-209, PR #697): Princess's learned aim moves after three exact rounds and the
+            // shield re-learns it only if the mode stays; +7.0 points on 12 fresh seeds
+            "cx.Princess 1.0",
         };
     }
 
@@ -546,6 +577,8 @@ final class ShieldTableData {
             "sheldor.nano.PointInLine 1.0",
             // pc-shelf (BENCH-180, PR #636): held +1 point or more on 12 fresh seeds
             "shinh.Entangled 0.3",
+            // pc-shield-audit (BENCH-209, PR #697): +7.0 points on 12 fresh seeds, with exit off
+            "cx.Princess 1.0",
         };
     }
 
@@ -562,6 +595,11 @@ final class ShieldTableData {
             // cloud +13 / +8 (Combat).
             "mn.Combat 3.25.0",
             "voidious.Dookious 1.573c",
+            // BENCH-197 pc-tailor-field (PR #686): picked on the whole-field screen, kept on fresh seeds.
+            "apv.NanoLauLectrikTheCannibal 1.1",
+            "nz.jdc.micro.HedgehogP 1.2",
+            "sheldor.mini.Foilist 1.3.1",
+            "tornyil.bottomup.BottomUp 1.05",
         };
     }
 
@@ -589,6 +627,16 @@ final class ShieldTableData {
             // can reach, so the card's +0.02 bar was out of reach by construction).
             "gre.svman4.Morfeas 1.4.3",
             "ags.rougedc.RougeDC willow",
+            // BENCH-197 pc-tailor-field (PR #686): picked on the whole-field screen, kept on fresh seeds.
+            "DM.mega.Regicide 2.0rrr",
+            "deo.virtual.RainbowBot 1.0",
+            "jk.precise.Wintermute 0.8",
+            "nz.jdc.nano.PralDeGuerre 1.2",
+            "romz.robot.Test 0.1.0",
+            "theo.simple.Lucid 1.0",
+            "voidious.Diamond 1.8.22",
+            "voidious.Dookious 1.573c",
+            "whind.StrengthBee 0.6.4",
         };
     }
 
@@ -600,6 +648,18 @@ final class ShieldTableData {
      */
     static String[] fullOffs() {
         return new String[] {
+            // BENCH-197 pc-tailor-field (PR #686): picked on the whole-field screen, kept on fresh seeds.
+            "DTF.Kludgy 1.2b",
+            "axeBots.Musashi 2.18",
+            "cb.Domogled 1.2",
+            "cx.Lacrimas 1.36",
+            "dsekercioglu.mini.Partial 0.1.3",
+            "fushi.PvP1.PvP1 2004-02-16",
+            "pa3k.Viper 5.03",
+            "stelo.MatchupMicro 1.2",
+            "stelo.MatchupMini 1.1",
+            "suh.nano.AngularMirrorC 1.00",
+            "xander.cat.Fiona 1.4",
         };
     }
 
@@ -613,18 +673,39 @@ final class ShieldTableData {
      */
     static String[] x5Powers() {
         return new String[] {
+            // BENCH-197 pc-tailor-field (PR #686): picked on the whole-field screen, kept on fresh seeds.
+            "ary.Crisis 1.0",
+            "dz.GalbaMini 0.121",
+            "ebo.Sparse 0.02",
+            "eem.zapper v6.03",
+            "hp.Athena 0.1",
+            "pl.Drum 0.1",
+            "pulsar.PulsarMax 0.8.9",
+            "rampancy.Durandal 2.2d",
+            "stelo.RamTrackSurfer 1.2",
+            "test.Fuzzer 1.0.1",
+            "tw.Exterminator 1.0",
         };
     }
 
     /**
-     * RAM-6: the rammers whose escape (RAM-2) weighs a path that meets one of their shots in flight
-     * at {@code RamEscape.HEAVY_HIT_COST}, not RAM-5's {@code HIT_COST}. Empty until a card holds
-     * robots; candidate builds add lines here (build-ablation.sh rdlist).
+     * POW-17: the opponents the duel picks its bullet power against by the energy race
+     * ({@code race-power:} lines): the 8 robots pc-race-power (BENCH-206, PR #695) locked at a 3-point margin on
+     * 4 fresh seeds after a whole-field screen (confirm gate +0.10 +- 0.05 APS).
      *
      * @return a fresh array of names
      */
-    static String[] ramDodges() {
+    static String[] racePowers() {
         return new String[] {
+            // pc-race-power (BENCH-206, PR #695): points over master on the 4 confirm seeds
+            "kc.mega.BeepBoop 2.0",          // +24.3
+            "jd.Nullstride 2.3.3",           // +16.7
+            "dragonbyte.Neutrino 4",         // +15.5
+            "voidious.Diamond 1.8.22",       // +15.3
+            "mn.Combat 3.25.0",              // +13.8
+            "lxx.Tomcat 3.68",               // +10.8
+            "voidious.Dookious 1.573c",      // +6.4
+            "sheldor.mini.FoilistMC 1.0",    // +5.9
         };
     }
 

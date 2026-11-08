@@ -20,7 +20,6 @@
 #   tmconcordp: the gun's pooling alone, power as shipped (cnp).
 #   The brain's shipped parts (TeamConcord): movement and gun on, group radar off, hunt kept.
 #   tmnoconcord (team only) TMODE-34 off: CONCORD on no team, as before it shipped. Suffix ncn.
-#   tmdgun  (team only) TGUN: the duel's guns, learned per class from every member's sightings, aim at the target. Suffix dgu.
 #   mdmg   MMOVE-22: each opponent's risk weighs by the damage it has done to Hadur this battle x its mean distance (Diamond). Suffix dm. Ships on from 3.21, so on master dm is the robot as it is.
 #   e3far  MEND-3: with two opponents left off a team, the closest-robot factor 4 (not 2). Suffix ef.
 #   aa    no change: the same robot under another name (suffix aa), the A/A arm of a multi-arm run
@@ -155,6 +154,8 @@
 #   tmtab (team only) T7, TMODE-1: the screen's table, the t.put lines in $TEAM_MODE_TABLE (default
 #         work/team-modes-screen.java, written by tools/team_modes.py pick). Suffix mt, or
 #         $TEAM_MODE_SUFFIX (the per-opponent counter screens build ka, kb, kc).
+#   tmclose (team only) TMODE-42: CLOSE on every team, the hunt place 250 px from the prey instead
+#         of 350 (FORCE_CLOSE, and Mode.CLOSE on every shipped table entry). Suffix tc (pc-team-close).
 #   tmlock (team only) the confirmed table, $TEAM_MODE_LOCKED (default work/team-modes-locked.java,
 #         written by tools/team_modes.py lock). Suffix mk.
 #   mrate (melee and team) fire more often: the controller fires on a scan up to 8 ticks old (was 5;
@@ -243,8 +244,8 @@
 #         ShieldTableData.fullOffs()). Suffix fp.
 #   x5list the robots named in $X5_POWER get, shot by shot, an x.x5 power whose speed they misread
 #         from our energy drop (POW-16, ShieldTableData.x5Powers()). Suffix x5.
-#   rdlist the rammers named in $RAM_DODGE get the escape's heavy shot cost (RAM-6,
-#         ShieldTableData.ramDodges()). Suffix rd.
+#   rplist the robots named in $RACE_POWER get the energy race's power pick (POW-17,
+#         ShieldTableData.racePowers()). Suffix rp, or $RACE_POWER_SUFFIX.
 #   snull  all five at once: Nullstride's design as read from its jar.
 #   strim (3.13) the 22 listed robots that 3.13 lost to in both plan90-gate runs come off the shield
 #         list, so they are fought in normal mode: does the shield still pay against them
@@ -750,7 +751,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
                 edit "$movedesign" "static final int STOP_AND_GO_PREFIRE = 1;" "static final int STOP_AND_GO_PREFIRE = 2;"
                 version="${version}ws"
             else version="${version}wp"; fi ;;
-        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rdlist)
+        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist)
             # Shield part 2 (docs/plan-shield-quality.md): per-opponent opening drive or shipped aims;
             # the mode table's simple-aim dodge (DODGE-3).
             if [[ "$a" == smovelist ]]; then file="${SHIELD_MOVE:-}"; method="moves"; version="${version}mv"
@@ -767,9 +768,9 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
             elif [[ "$a" == mmlist ]]; then file="${MIMIC_ON:-}"; method="mimicOns"; version="${version}mq"
             elif [[ "$a" == fplist ]]; then file="${FULL_OFF:-}"; method="fullOffs"; version="${version}fp"
             elif [[ "$a" == x5list ]]; then file="${X5_POWER:-}"; method="x5Powers"; version="${version}x5"
-            elif [[ "$a" == rdlist ]]; then file="${RAM_DODGE:-}"; method="ramDodges"; version="${version}rd"
+            elif [[ "$a" == rplist ]]; then file="${RACE_POWER:-}"; method="racePowers"; version="${version}${RACE_POWER_SUFFIX:-rp}"
             else file="${STOP_GO2:-}"; method="stopGoShifts"; version="${version}wm"; fi
-            [[ -n "$file" && -f "$file" ]] || { echo "$a needs SHIELD_MOVE / SHIELD_AIM / SHOT_DODGE / STOP_GO / STOP_GO2 / HEAT_JIT / GUN_STACK / SHIELD_EXIT4 / SHIELD_EXIT0 / SHIELD_STILL / SURF_KEY / FLAT_ON / MIMIC_ON / FULL_OFF / X5_POWER / RAM_DODGE=<file>" >&2; exit 2; }
+            [[ -n "$file" && -f "$file" ]] || { echo "$a needs SHIELD_MOVE / SHIELD_AIM / SHOT_DODGE / STOP_GO / STOP_GO2 / HEAT_JIT / GUN_STACK / SHIELD_EXIT4 / SHIELD_EXIT0 / SHIELD_STILL / SURF_KEY / FLAT_ON / MIMIC_ON / FULL_OFF / X5_POWER / RACE_POWER=<file>" >&2; exit 2; }
             add="$(python3 -c 'import sys,json
 lines=[l.split("\t")[0].strip() for l in open(sys.argv[1]) if l.strip() and not l.startswith("#")]
 print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines)), end="")' "$file")"
@@ -872,6 +873,12 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             sed -i -E 's/^(        t\.put\("[^"]+", of\(.*)\)\);$/\1, Mode.CONCORD));/' "$modes"
             fi
             ;;
+        tmclose)
+            # TMODE-42 on every team: the default's hunt place and every shipped entry's at 250 px. Suffix tc.
+            version="${version}tc"
+            edit "$modes" "public static final boolean FORCE_CLOSE = false;" "public static final boolean FORCE_CLOSE = true;"
+            sed -i -E '/^        t\.put\(/s/\)\);$/, Mode.CLOSE));/' "$modes"
+            ;;
         tmnoconcord)
             # TMODE-34 off: CONCORD on no team, the build before it shipped. Suffix ncn.
             version="${version}ncn"
@@ -887,12 +894,14 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean THREE_FAR = false;" "public static final boolean THREE_FAR = true;"
             version="${version}ef" ;;
-        tmdgun)
-            # TGUN-1..2 (team only): DUELGUN on every team: the duel's guns, learned per enemy class from every
-            # member's sightings, aim at the field gun's target; duel and melee bit for bit. Suffix dgu.
-            edit "$modes" "public static final boolean FORCE_DUELGUN = false;" "public static final boolean FORCE_DUELGUN = true;"
-            version="${version}dgu" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, x5list, rdlist, notier, lukewarm, seedall, mimmem, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, tmdgun)" >&2; exit 2 ;;
+        mfloor40|mfloor50)
+            # MGUN-26 (docs/bench/melee-top3.md): MGUN-25's far power from less own energy, off a team
+            # with three or more opponents; team and duel bit for bit.
+            n=${a#mfloor}
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEnergyPolicy.java" \
+                "static final double FAR_SPARE_ENERGY = 60.0;" "static final double FAR_SPARE_ENERGY = $n.0;"
+            version="${version}z${n:0:1}" ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist)" >&2; exit 2 ;;
     esac
 done
 

@@ -1,0 +1,84 @@
+# 1v1, per robot over the rest of the field (BENCH-207): pc-tailor-field fought all 1,194 loading robots with ten levers
+# at 2 seeds and banked 60 picks (PR #687). For the other ~1,130 robots no lever won by its 5-point margin, but at 2
+# seeds a real gain of 1 to 3 points cannot clear that bar. This card gives each of them a second, fair look: every
+# robot that leaned to a lever there (its best lever 1+ point over c in work/x5f) is fought again on that one lever
+# against master, on fresh seeds, and keeps it where these new battles alone say it wins.
+# Leigh starts it once the PC is free (one card at a time, from master):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-tailor-near        (or  ./queue.sh run pc-tailor-near)
+# It needs pc-tailor-field's screen battles in work/x5f (prep stops with a message when work/x5f/arms.tsv is missing).
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes; no step needs a
+# decision. Size: about 700-900 leaning robots x 2 arms (c, ln) x 4 seeds = ~5,600-7,200 battles, ~9-11 h at ~650
+# battles/h; the first fifth of them is the pilot (~2 h); confirm = the picks x c, aa, xr x 4 fresh seeds, ~1-3 h.
+#
+# The arms: c is master (the 60 banked picks in); ln is ONE build in which each leaning robot is on the lever it leaned
+# to (tools/x5_card.py lean, then lists --arm ln), so a robot is fought on its own lever only and the run costs 2 arms,
+# not 9. Levers a robot may lean to: x5, gs, fp (gun); sg, sw, hj, fl, mm (movement). dg is left out (its 8 picks
+# confirmed at +0.02, noise) and rd is retired (RAM-6, PR #687). The 76 robots pc-tailor-field picked are left out.
+#
+# Why it should win (the PC card rule of 2026-11-03):
+#   - Per-opponent tailoring on every robot the first screen could not decide: no shortlist, the screen's own battles
+#     choose each robot's lever, and the whole leaning field is fought again.
+#   - The first screen's power: at 2 seeds a robot's lever-minus-c difference has an sd of 3-5 points, so the 5-point
+#     margin found only the large gains (76 picks, 60 held at +0.11 APS). Gains of 1-3 points on hundreds of mid-field
+#     robots add up: hj alone, switched on for every robot, read +0.26 +/- 0.16 APS field-wide on that screen.
+#   - No winner's curse in the pick: the lean is chosen on the old seeds, the pick is made on 4 new ones (from 9500)
+#     only, and the confirm re-measures the picks on 4 more fresh seeds (from 9600) against c and aa before anything ships.
+#   - Risk: a robot keeps its lever only at a 2-point margin with its 95% low end above 0 on the new seeds; every other
+#     robot stays as master plays it.
+# Pilot (stop rule): every fifth leaning robot (work/panel-tnr-pilot.txt) x c, ln x 4 seeds from 9500. When ln's mean
+#   gain over c there is under 0.3 points, work/tnr.stop is written, every later step skips and the results PR carries
+#   the pilot alone: if the leans are only noise, the rest of the run is not worth 8 PC hours. The screen resumes the
+#   pilot's battles. A screen that picks no robot writes the same file at prep2.
+# screen:  the leaning robots x c, ln x 4 seeds from 9500; pick at a 2-point margin (mode_table, ref c).
+# confirm: the picks x c, aa, xr (each picked robot on its lever) x 4 fresh seeds from 9600; gate +0.03 APS.
+# Note: when the picks keep every lever ln had, xr's jar has ln's name and replaces it at prep2; the screen is over by then.
+# Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 90+ skipped turns a battle
+# over the last 200, or no battle in 30 minutes; every battle fought is kept and a rerun resumes. Nothing here ships:
+# the confirmed lines go into ShieldTableData by PR; the release rule stands.
+
+set V = 3.21
+set P = --parallel 12 --no-truth-log --failed-ok
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
+set W = work/tnr
+set W2 = work/tnr-2
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && rm -f work/tnr.stop && if [ ! -f work/x5f/arms.tsv ]; then echo 'needs work/x5f/arms.tsv, the pc-tailor-field screen battles'; exit 1; fi && python3 tools/x5_card.py lean work/x5f/arms.tsv --census census-312.txt --exclude ${OUT}/x5f-pick.tsv --levers x5,gs,fp,sg,sw,hj,fl,mm --min 1 --pick-out work/tnr-lean.tsv --set-out work/panel-tnr.txt --pilot-out work/panel-tnr-pilot.txt && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && python3 tools/x5_card.py lists work/tnr-lean.tsv --list-prefix work/tnl --env-out work/tnl-env.sh --abl-out work/tnl-abl.txt --arms-out work/tnr.arms --version ${V} --arm ln --no-aa && (. ./work/tnl-env.sh && bash ./build-ablation.sh $(cat work/tnl-abl.txt)) && test -f bisect/hadur117.Hadur_${V}aa.jar && test -f "$(awk -F'|' '/^ln /{gsub(/ /, "", $3); print $3}' work/tnr.arms)" && ./fetch-opponents.sh --set census-312.txt && mvn -q compile
+
+pilot | ./bench-top20.sh ${C} ${P} --set work/panel-tnr-pilot.txt --seeds 4 --seed-base 9500 --arms work/tnr.arms --out ${W} --label tnr --shuffle-jobs && python3 tools/x5_card.py pilot ${W}/arms.tsv --names work/panel-tnr-pilot.txt --check ln=work/panel-tnr-pilot.txt@0.3 --ref c --out ${OUT}/$(date +%Y-%m-%d)_tnr-pilot.md --stop-file work/tnr.stop
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 90 over 200
+  stop: stall 30m
+
+screen | if [ -f work/tnr.stop ]; then echo 'pilot: ln under 0.3 points over c, no screen'; exit 0; fi && ./bench-top20.sh ${C} ${P} --set work/panel-tnr.txt --seeds 4 --seed-base 9500 --arms work/tnr.arms --out ${W} --label tnr --shuffle-jobs
+  after: pilot
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 90 over 200
+  stop: stall 30m
+
+pick | if [ -f work/tnr.stop ]; then echo 'stopped (see work/tnr.stop): skipped'; exit 0; fi && cp work/tnr-lean.tsv ${OUT}/tnr-lean.tsv && python3 ../data/tools/multiarm.py ${W}/arms.tsv --census census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_tnr-screen.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 2 --out-tsv ${OUT}/tnr-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_tnr-pick.md && python3 tools/per_robot.py ${W}/arms.tsv --arms ln --out ${OUT}/$(date +%Y-%m-%d)_tnr-per-robot.md --out-tsv ${OUT}/tnr-per-robot.tsv
+  after: screen
+
+prep2 | if [ -f work/tnr.stop ]; then echo 'stopped (see work/tnr.stop): skipped'; exit 0; fi && awk -F'\t' 'BEGIN{OFS="\t"} NR==FNR{l[$1]=$2; next} ($1 in l){$2=l[$1]; print}' work/tnr-lean.tsv ${OUT}/tnr-pick.tsv > work/tnr-pick-levers.tsv && if ! python3 tools/pick_panel.py work/tnr-pick-levers.tsv census-312.txt work/panel-tnr-picks.txt; then echo 'no robot picked: confirm and gate skip, the PR carries the screen'; echo 'screen picked no robot' > work/tnr.stop; exit 0; fi && python3 tools/x5_card.py lists work/tnr-pick-levers.tsv --list-prefix work/tnx --env-out work/tnx-env.sh --abl-out work/tnx-abl.txt --arms-out work/tnr-2.arms --version ${V} && (. ./work/tnx-env.sh && bash ./build-ablation.sh $(cat work/tnx-abl.txt)) && test -f "$(awk -F'|' '/^xr /{gsub(/ /, "", $3); print $3}' work/tnr-2.arms)"
+  after: pick
+
+confirm | if [ -f work/tnr.stop ]; then echo 'stopped (see work/tnr.stop): skipped'; exit 0; fi && ./bench-top20.sh ${C} ${P} --set work/panel-tnr-picks.txt --seeds 4 --seed-base 9600 --arms work/tnr-2.arms --out ${W2} --label tnr-2 --shuffle-jobs
+  after: prep2
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 90 over 200
+  stop: stall 30m
+
+gate | if [ -f work/tnr.stop ]; then echo 'stopped (see work/tnr.stop): skipped'; exit 0; fi && python3 ../data/tools/multiarm.py ${W2}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_tnr-2.md && python3 tools/shield_s2.py gate ${W2}/arms.tsv --arm xr --panel work/panel-tnr-picks.txt --bar 0.03 --out ${OUT}/$(date +%Y-%m-%d)_tnr-2-gate.md && cp work/tnr-pick-levers.tsv ${OUT}/tnr-pick-levers.tsv && python3 tools/per_robot.py ${W2}/arms.tsv --arms xr --out ${OUT}/$(date +%Y-%m-%d)_tnr-2-per-robot.md --out-tsv ${OUT}/tnr-2-per-robot.tsv
+  after: confirm
+
+pr | bash tools/open_results_pr.sh claude/pc-tailor-near-results "1v1 per robot, the rest of the field: each leaning robot on its lever, fresh seeds" ${OUT}/*_tnr*.md $(find ${OUT} -maxdepth 1 -name 'tnr*.tsv' -size +0c)
+  after: gate

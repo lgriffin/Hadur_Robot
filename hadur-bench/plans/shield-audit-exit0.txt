@@ -1,0 +1,2 @@
+# pc-shield-audit: SHIELD-19 exit off for Princess, whose learned aim moves after three rounds and re-learns only if the mode stays.
+cx.Princess 1.0

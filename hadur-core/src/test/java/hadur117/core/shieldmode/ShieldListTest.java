@@ -142,17 +142,16 @@ class ShieldListTest {
 
     @Test
     @Tag("POW-16")
-    @DisplayName("x5-power and ram-dodge lines name opponents for POW-16 and RAM-6, matched as shield entries")
-    void perOpponentX5AndRamDodge() {
-        ShieldList l = ShieldList.parse(List.of("x5-power: a.B 1.0", "ram-dodge: c.D", "full-off: c.D", "x5-power:"));
+    @DisplayName("x5-power lines name opponents for POW-16, matched as shield entries")
+    void perOpponentX5() {
+        ShieldList l = ShieldList.parse(List.of("x5-power: a.B 1.0", "full-off: c.D", "x5-power:"));
         assertTrue(l.x5Power("a.B 1.0"));
         assertFalse(l.x5Power("a.B 1.1"), "a versioned line matches that version only");
-        assertTrue(l.ramDodge("c.D 2.3"), "a bare name matches every version");
         assertTrue(l.fullOff("c.D 2.3"), "switches on one robot combine");
-        assertFalse(l.ramDodge("a.B 1.0") || l.x5Power("c.D 2.3") || l.fullOff("a.B 1.0"), "no other switch");
-        assertFalse(l.x5Power(null) || l.ramDodge(null));
+        assertFalse(l.x5Power("c.D 2.3") || l.fullOff("a.B 1.0"), "no other switch");
+        assertFalse(l.x5Power(null));
         assertFalse(l.matches("a.B 1.0"), "not a shield entry");
-        assertFalse(ShieldList.NONE.x5Power("a.B 1.0") || ShieldList.NONE.ramDodge("c.D"));
+        assertFalse(ShieldList.NONE.x5Power("a.B 1.0"));
     }
 
     @Test

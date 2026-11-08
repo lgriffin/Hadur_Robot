@@ -59,12 +59,10 @@ public final class TeamModes {
          */
         CONCORD,
         /**
-         * TGUN-1..2, the team duelist's gun ({@link TeamDuelGun}; Leigh's strategy doc of
-         * 2026-11-04): the duel's guns, their views learned per enemy class from every member's
-         * sightings, aim at the field gun's target once they have learned its class; the power
-         * stays the field gun's.
+         * TMODE-42: HUNT's place is {@link TeamRisk#HUNT_CLOSE} px from the prey, not 350. Only
+         * through the table, or forced on every team by {@link #FORCE_CLOSE} (ablation tmclose).
          */
-        DUELGUN
+        CLOSE
     }
 
     /**
@@ -77,8 +75,8 @@ public final class TeamModes {
     public static final boolean FORCE_PATH = true;
     public static final boolean FORCE_DODGE = true;
     public static final boolean FORCE_CONCORD = true;
-    /** TGUN: DUELGUN on every team, the ones the table names included, to screen it (never shipped this way). */
-    public static final boolean FORCE_DUELGUN = false;
+    /** TMODE-42: CLOSE on every team, to screen only (pc-team-close). */
+    public static final boolean FORCE_CLOSE = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -86,7 +84,7 @@ public final class TeamModes {
     /** The modes for teams the table does not name. */
     static final Set<Mode> DEFAULT = of(
         FORCE_MATEFIRE ? Mode.MATEFIRE : null, FORCE_HUNT ? Mode.HUNT : null, FORCE_PATH ? Mode.PATH : null,
-        FORCE_DODGE ? Mode.DODGE : null, FORCE_CONCORD ? Mode.CONCORD : null);
+        FORCE_DODGE ? Mode.DODGE : null, FORCE_CONCORD ? Mode.CONCORD : null, FORCE_CLOSE ? Mode.CLOSE : null);
 
     /** Opposing member class to its team's modes; filled from the per-team screens. */
     static final Map<String, Set<Mode>> TABLE = table();
@@ -157,11 +155,7 @@ public final class TeamModes {
 
     /** The modes against {@code enemies}: the first one the table names, else the default. */
     public static Set<Mode> against(List<EnemyInfo> enemies) {
-        Set<Mode> m = against(enemies, TABLE, DEFAULT);
-        if (!FORCE_DUELGUN || m.contains(Mode.DUELGUN)) return m;
-        EnumSet<Mode> with = m.isEmpty() ? EnumSet.noneOf(Mode.class) : EnumSet.copyOf(m);
-        with.add(Mode.DUELGUN);
-        return with;
+        return against(enemies, TABLE, DEFAULT);
     }
 
     static Set<Mode> against(List<EnemyInfo> enemies, Map<String, Set<Mode>> table, Set<Mode> fallback) {

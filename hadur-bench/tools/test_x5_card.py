@@ -60,20 +60,20 @@ class X5CardTest(unittest.TestCase):
                              "--arms-out", out["arms"], "--version", "3.21"]
 
     def test_lists_split_the_picks_by_lever_and_name_the_jar(self):
-        pick = self.path("pick.tsv", "a.A 1\tx5\t9\t2\t2\t2\nr.R 2\trd\t6\t1\t2\t2\nq.Q 1\tx5\t7\t1\t2\t2\n"
+        pick = self.path("pick.tsv", "a.A 1\tx5\t9\t2\t2\t2\nr.R 2\tgs\t6\t1\t2\t2\nq.Q 1\tx5\t7\t1\t2\t2\n"
                                      "s.S 1\tsg\t8\t1\t2\t2\nm.M 1\tmm\t6\t1\t2\t2\nu.U 1\tzz\t9\t1\t2\t2\n")
         out, prefix, args = self.outs()
         self.assertEqual(0, x5_card.main(["lists", pick] + args))
         self.assertEqual("a.A 1\nq.Q 1\n", open(prefix + "-x5.list").read())
-        self.assertEqual("r.R 2\n", open(prefix + "-rd.list").read())
+        self.assertEqual("r.R 2\n", open(prefix + "-gs.list").read())
         self.assertEqual("s.S 1\n", open(prefix + "-sg.list").read())
-        self.assertFalse(os.path.exists(prefix + "-gs.list"), "a lever no robot picked writes no list")
-        self.assertEqual("x5list,rdlist,sgolist,mmlist\n", open(out["abl"]).read(), "LEVERS order, so the suffix is known")
+        self.assertFalse(os.path.exists(prefix + "-fp.list"), "a lever no robot picked writes no list")
+        self.assertEqual("x5list,gslist,sgolist,mmlist\n", open(out["abl"]).read(), "LEVERS order, so the suffix is known")
         env = open(out["env"]).read()
         self.assertIn("export X5_POWER=%s-x5.list\n" % prefix, env)
         self.assertIn("export STOP_GO=%s-sg.list\n" % prefix, env)
         self.assertIn("export MIMIC_ON=%s-mm.list\n" % prefix, env)
-        self.assertIn("xr | hadur117.Hadur 3.21x5rdwlmq | bisect/hadur117.Hadur_3.21x5rdwlmq.jar", open(out["arms"]).read())
+        self.assertIn("xr | hadur117.Hadur 3.21x5glwlmq | bisect/hadur117.Hadur_3.21x5glwlmq.jar", open(out["arms"]).read())
 
     def test_lists_with_one_lever_builds_that_one_and_none_exits_1(self):
         out, prefix, args = self.outs()
@@ -82,16 +82,49 @@ class X5CardTest(unittest.TestCase):
         self.assertIn("hadur117.Hadur 3.21hl |", open(out["arms"]).read())
         self.assertEqual(1, x5_card.main(["lists", self.path("p2.tsv", "")] + args))
 
-    def test_levers_match_the_screen_arms(self):
+    def test_lean_puts_each_undecided_robot_on_its_best_allowed_lever(self):
+        census = self.path("census.txt", "# field\na.A 1 | n | a.jar\nb.B 1 | n | b.jar\nk.K 1 | n | k.jar\n"
+                                          "p.P 1 | n | p.jar\nd.D 1 | n | d.jar\ne.E 1 | n | e.jar\n")
+        rows = ""
+        for s in (1, 2):
+            rows += row("c", "a.A 1", s, 0.70) + row("x5", "a.A 1", s, 0.72) + row("hj", "a.A 1", s, 0.73)
+            rows += row("c", "b.B 1", s, 0.70) + row("x5", "b.B 1", s, 0.705) + row("dg", "b.B 1", s, 0.90)
+            rows += row("c", "k.K 1", s, 0.70) + row("gs", "k.K 1", s, 0.80)
+            rows += row("c", "p.P 1", s, 0.50) + row("fp", "p.P 1", s, 0.60)
+            rows += row("c", "d.D 1", s, 0.50) + row("mm", "d.D 1", s, 0.56)
+        screen = self.path("arms.tsv", HEAD + rows)
+        banked = self.path("pick.tsv", "k.K 1\tgs\t10\t2\t2\t2\n")
+        o = {k: os.path.join(self.d, k) for k in ("lean", "set", "pilot")}
+        args = ["lean", screen, "--census", census, "--exclude", banked, "--levers", "x5,gs,fp,sg,sw,hj,fl,mm",
+                "--pick-out", o["lean"], "--set-out", o["set"], "--pilot-out", o["pilot"], "--pilot-every", "2"]
+        self.assertEqual(0, x5_card.main(args))
+        lean = [l.split("\t")[:2] for l in open(o["lean"]).read().splitlines()]
+        self.assertEqual([["a.A 1", "hj"], ["p.P 1", "fp"], ["d.D 1", "mm"]], lean,
+                         "best allowed lever; b.B leans only to dg (left out), k.K is banked, e.E was never fought")
+        body = [l for l in open(o["set"]).read().splitlines() if not l.startswith("#")]
+        self.assertEqual(["a.A 1 | n | a.jar", "p.P 1 | n | p.jar", "d.D 1 | n | d.jar"], body, "census lines, census order")
+        pilot = [l for l in open(o["pilot"]).read().splitlines() if not l.startswith("#")]
+        self.assertEqual(["a.A 1 | n | a.jar", "d.D 1 | n | d.jar"], pilot, "every second leaning robot")
+        self.assertEqual(1, x5_card.main(args[:args.index("--levers") + 1] + ["sg"] + args[args.index("--levers") + 2:]))
+        self.assertEqual(2, x5_card.main(args[:args.index("--levers") + 1] + ["rd"] + args[args.index("--levers") + 2:]),
+                         "a retired lever is refused")
+
+    def test_lists_can_name_the_arm_and_leave_out_the_aa_copy(self):
+        out, prefix, args = self.outs()
+        pick = self.path("pl.tsv", "a.A 1\thj\t2\t0\t2\t2\nb.B 1\tx5\t3\t0\t2\t2\n")
+        self.assertEqual(0, x5_card.main(["lists", pick] + args + ["--arm", "ln", "--no-aa"]))
+        arms = [l for l in open(out["arms"]).read().splitlines() if not l.startswith("#")]
+        self.assertEqual(["c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar",
+                          "ln | hadur117.Hadur 3.21x5hl | bisect/hadur117.Hadur_3.21x5hl.jar"], arms)
+
+    def test_levers_match_build_ablation(self):
         here = os.path.dirname(os.path.abspath(__file__))
-        arms = {}
-        for line in open(os.path.join(here, "..", "plans", "tailor-field.arms")):
-            if line.strip() and not line.startswith("#"):
-                k, robot, _ = [f.strip() for f in line.split("|")]
-                arms[k] = robot
-        self.assertEqual(set(x5_card.LEVERS) | {"c"}, set(arms))
-        for k, (_, _, suffix) in x5_card.LEVERS.items():
-            self.assertEqual("hadur117.Hadur 3.21" + suffix, arms[k], k)
+        script = open(os.path.join(here, "..", "build-ablation.sh"), encoding="utf-8").read()
+        for k, (abl, var, suffix) in x5_card.LEVERS.items():
+            self.assertIn("|%s|" % abl, script.replace(")", "|"), k)
+            line = [l for l in script.splitlines() if 'file="${%s:-}"' % var in l]
+            self.assertEqual(1, len(line), k)
+            self.assertIn('version="${version}%s"' % suffix, line[0], k)
 
 
 if __name__ == "__main__":

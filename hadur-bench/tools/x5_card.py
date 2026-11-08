@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""pc-tailor-field card helpers (BENCH-197): the pilot gate and the confirm build's lists.
+"""Per-robot card helpers (pc-tailor-field BENCH-197, pc-race-power BENCH-206, pc-tailor-near BENCH-207, pc-hj-field
+BENCH-208): the pilot gate, the leaning robots of an earlier screen and the per-robot build's lists.
 
-  python3 tools/x5_card.py pilot ARMS.tsv --names PILOT.txt --check x5=panel-x5.txt@2 --check rd=panel-rammers.txt@1 \
+  python3 tools/x5_card.py pilot ARMS.tsv --names PILOT.txt --check x5=panel-x5.txt@2 \
       [--ref c] --out PILOT.md --stop-file STOP
   python3 tools/x5_card.py lists PICK.tsv --list-prefix work/tf --env-out ENV.sh --abl-out ABL.txt --arms-out ARMS \
-      --version 3.21
+      --version 3.21 [--arm xr] [--no-aa]
+  python3 tools/x5_card.py lean SCREEN.tsv --census census-312.txt --exclude PICK.tsv --levers x5,gs,... [--min 1] \
+      --pick-out LEAN.tsv --set-out SET.txt --pilot-out PILOT.txt [--pilot-every 5]
 
 pilot: each --check ARM=MEMBERS@BAR takes the PILOT robots (name | note | jar) that MEMBERS also lists and their mean
 of the arm's score share minus the reference arms' (--ref, comma separated, pooled). The card goes on when any check
@@ -13,7 +16,8 @@ arm or a reference arm fails the step (exit 2): a partial pilot decides nothing.
 lists: splits the pick TSV (mode_table.py --out-tsv: robot, then the arm that won it) by lever (LEVERS: screen arm ->
 list ablation), writes one name list per lever that won a robot (PREFIX-ARM.list), a shell file exporting each list's
 variable, the build-ablation.sh argument for those ablations, and the confirm arms file whose xr line names the jar
-that build makes. Exits 1 when no robot picked any lever. Standard library only.
+that build makes. Exits 1 when no robot picked any lever.
+lean (pc-tailor-near, BENCH-207): see lean(). Standard library only.
 """
 import argparse
 import csv
@@ -67,7 +71,7 @@ def pilot(a):
         # An incomplete pilot is neither a GO nor a STOP: the step fails and the card halts for a rerun.
         print("pilot incomplete, no finished battles for: %s" % ", ".join(missing), file=sys.stderr)
         return 2
-    lines = ["# pc-tailor-field pilot against %s" % " and ".join(refs), "",
+    lines = ["# Pilot against %s" % " and ".join(refs), "",
              "**%s**" % ("GO, the screen runs" if go else "STOP, the screen skips"), ""]
     for arm, members, bar, mean, ok, rows in sections:
         lines += ["## %s on the pilot robots in %s" % (arm, members), "",
@@ -87,7 +91,6 @@ LEVERS = {
     "x5": ("x5list", "X5_POWER", "x5"),    # POW-16 hidden bullet speed (gun)
     "gs": ("gslist", "GUN_STACK", "gl"),   # GUN-11 gun stack (gun)
     "fp": ("fplist", "FULL_OFF", "fp"),    # POW-15 no full-power rules (gun)
-    "rd": ("rdlist", "RAM_DODGE", "rd"),   # RAM-6 heavy rammer dodge (movement)
     "sg": ("sgolist", "STOP_GO", "wl"),    # POISON-2 stop-and-go, WavePoison (movement)
     "sw": ("sgo2list", "STOP_GO2", "wm"),  # POISON-2 stop-and-go, WavePoisonShift (movement)
     "hj": ("hjlist", "HEAT_JIT", "hl"),    # MOVE-28 stop-and-start (movement)
@@ -116,12 +119,65 @@ def lists(a):
     open(a.env_out, "w", encoding="utf-8").write("".join(env))
     open(a.abl_out, "w", encoding="utf-8").write(",".join(LEVERS[k][0] for k in used) + "\n")
     v, suffix = a.version, "".join(LEVERS[k][2] for k in used)
-    open(a.arms_out, "w", encoding="utf-8").write(
-        "# pc-tailor-field confirm (BENCH-197): c master, aa its A/A copy, xr each picked robot on the lever it won.\n"
-        "c | hadur117.Hadur %s | bisect/hadur117.Hadur_%s.jar\n"
-        "aa | hadur117.Hadur %saa | bisect/hadur117.Hadur_%saa.jar\n"
-        "xr | hadur117.Hadur %s%s | bisect/hadur117.Hadur_%s%s.jar\n" % (v, v, v, v, v, suffix, v, suffix))
+    arms = ["# Per-robot card arms (x5_card.py lists): c master%s, %s each listed robot on its lever.\n"
+            % ("" if a.no_aa else ", aa its A/A copy", a.arm),
+            "c | hadur117.Hadur %s | bisect/hadur117.Hadur_%s.jar\n" % (v, v)]
+    if not a.no_aa:
+        arms.append("aa | hadur117.Hadur %saa | bisect/hadur117.Hadur_%saa.jar\n" % (v, v))
+    arms.append("%s | hadur117.Hadur %s%s | bisect/hadur117.Hadur_%s%s.jar\n" % (a.arm, v, suffix, v, suffix))
+    open(a.arms_out, "w", encoding="utf-8").write("".join(arms))
     print(", ".join("%d %s" % (len(picked[k]), k) for k in used))
+    return 0
+
+
+def lean(a):
+    """BENCH-207: each robot the earlier screen fought and no pick holds, on the lever it leaned to there. A robot leans
+    when its best allowed lever's mean score share beat c's by --min points; ties go to the larger gain. Writes the
+    leaning robots as a pick TSV (robot, lever, gain, 0, n lever, n c) that `lists` turns into one build, their census
+    lines as a set, and every --pilot-every'th of those lines as the pilot set. Exits 1 when no robot leans."""
+    s = shares(a.screen)
+    levers = [k for k in a.levers.split(",") if k]
+    unknown = [k for k in levers if k not in LEVERS]
+    if unknown:
+        print("unknown lever: %s" % ", ".join(unknown), file=sys.stderr)
+        return 2
+    skip = set()
+    for path in a.exclude or []:
+        for line in open(path, encoding="utf-8"):
+            if line.strip() and not line.startswith("#"):
+                skip.add(line.split("\t")[0].strip())
+    census = []
+    for line in open(a.census, encoding="utf-8"):
+        if line.strip() and not line.startswith("#") and "|" in line:
+            census.append((line.split("|")[0].strip(), line if line.endswith("\n") else line + "\n"))
+    rows, lines = [], []
+    count = {k: 0 for k in levers}
+    for name, line in census:
+        arms = s.get(name)
+        if name in skip or not arms or not arms.get("c"):
+            continue
+        ref = arms["c"]
+        best = None
+        for k in levers:
+            xs = arms.get(k)
+            if xs:
+                d = st.mean(xs) - st.mean(ref)
+                if best is None or d > best[1]:
+                    best = (k, d, len(xs))
+        if best and best[1] >= a.min:
+            rows.append("%s\t%s\t%.2f\t0\t%d\t%d\n" % (name, best[0], best[1], best[2], len(ref)))
+            lines.append(line)
+            count[best[0]] += 1
+    if not rows:
+        print("no robot leans to any lever", file=sys.stderr)
+        return 1
+    open(a.pick_out, "w", encoding="utf-8").write("".join(rows))
+    head = "# BENCH-207: robots of %s that lean to a lever on %s (best lever +%.1f points or more over c).\n"
+    open(a.set_out, "w", encoding="utf-8").write(head % (a.census, a.screen, a.min) + "".join(lines))
+    open(a.pilot_out, "w", encoding="utf-8").write(
+        "# BENCH-207 pilot: every %dth robot of %s.\n" % (a.pilot_every, a.set_out) + "".join(lines[::a.pilot_every]))
+    print("%d robots lean (%s); pilot %d" % (len(rows), ", ".join("%s %d" % (k, n) for k, n in count.items() if n),
+                                             len(lines[::a.pilot_every])))
     return 0
 
 
@@ -142,8 +198,20 @@ def main(argv=None):
     q.add_argument("--abl-out", required=True)
     q.add_argument("--arms-out", required=True)
     q.add_argument("--version", required=True)
+    q.add_argument("--arm", default="xr", help="the label of the build's arm")
+    q.add_argument("--no-aa", action="store_true", help="leave the A/A copy out of the arms file")
+    r = sub.add_parser("lean")
+    r.add_argument("screen")
+    r.add_argument("--census", required=True)
+    r.add_argument("--exclude", action="append", help="a pick TSV whose robots are left out, repeatable")
+    r.add_argument("--levers", required=True, help="comma separated screen arms a robot may lean to")
+    r.add_argument("--min", type=float, default=1.0)
+    r.add_argument("--pick-out", required=True)
+    r.add_argument("--set-out", required=True)
+    r.add_argument("--pilot-out", required=True)
+    r.add_argument("--pilot-every", type=int, default=5)
     a = ap.parse_args(argv)
-    return pilot(a) if a.cmd == "pilot" else lists(a)
+    return {"pilot": pilot, "lists": lists, "lean": lean}[a.cmd](a)
 
 
 if __name__ == "__main__":

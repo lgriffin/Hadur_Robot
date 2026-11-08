@@ -53,6 +53,8 @@ class RivalPicksPlanTest {
         // pc-rival-near (PR #545) shipped more of them.
         List<String> shipped = new java.util.ArrayList<>(names("plans/rival-confirm-shipped.txt"));
         shipped.addAll(names("plans/rival-near-shipped.txt"));
+        // pc-shield-audit (PR #697) shipped Princess.
+        shipped.addAll(names("plans/shield-audit-shipped.txt"));
         for (String n : drop) {
             if (!shipped.contains(n)) assertTrue(listData.contains("\"" + n + "\","), n + " is on the shield list to drop");
         }
