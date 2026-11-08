@@ -1,6 +1,6 @@
 # Queue pc-melee-curve: progress
 
-Updated 2026-11-08 23:11:25 PC time (23:11 UTC), runner pid 58948.
+Updated 2026-11-08 23:26:29 PC time (23:26 UTC), runner pid 58948.
 
 - `mcprep` done, exit 0 in 2 min
 - `mcpilot` running
@@ -13,15 +13,15 @@ Updated 2026-11-08 23:11:25 PC time (23:11 UTC), runner pid 58948.
 
 ### mcpilot
 
-**32 of 184 battles** (17%), 0 failed. Running 13 min, 147 battles/h, about 1.0 h left (ends ~00:13 PC time). Last battle 0 min ago.
-Skipped turns a battle: 40.0 overall, first 32 40.0, last 32 40.0.
+**74 of 184 battles** (40%), 0 failed. Running 28 min, 158 battles/h, about 42 min left (ends ~00:08 PC time). Last battle 0 min ago.
+Skipped turns a battle: 44.7 overall, first 74 44.7, last 74 44.7.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 32 |
+| `fails 20` | halt | ok | 0 failed of 74 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 152 battles unrun (about 1.0 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 110 battles unrun (about 42 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
