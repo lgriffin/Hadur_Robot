@@ -49,8 +49,8 @@ class ShieldListResourceTest {
         // BENCH-126 (PR #376): Wolverine, Hikari and Melody moved to stop-and-go, off the list.
         // SHIELD-21 (pc-shield-still2, PR #515): 7 of BeepBoop's shield robots join with still plans.
         // pc-rival-confirm (PR #537): claire, TestNano and GlowBlowMelee join with still plans; DuelistMicroMkII and
-        // Vanessa03 leave for their stop-and-go lines.
-        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3, list.size());
+        // Vanessa03 leave for their stop-and-go lines. pc-shield-audit (PR #697): Princess joins with still and exit off.
+        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
@@ -220,8 +220,9 @@ class ShieldListResourceTest {
         ShieldList list = ShieldList.parse(lines);
         // pc-rival-confirm (PR #537): 9 more, 5 of them with exit off. pc-rival-near (PR #545): 5 more, 2 with
         // exit off; Hydrogen's line goes, since it left the list for stop-and-go and a still line reads only shielded.
-        // pc-shelf (PR #636): Entangled.
-        assertEquals(17 + 9 + 5 - 1 + 1, ShieldTableData.stills().length);
+        // pc-shelf (PR #636): Entangled. pc-shield-audit (PR #697): Princess, with exit off.
+        assertEquals(17 + 9 + 5 - 1 + 1 + 1, ShieldTableData.stills().length);
+        assertTrue(list.matches("cx.Princess 1.0") && Arrays.asList(ShieldTableData.exitOffs()).contains("cx.Princess 1.0"));
         for (String n : ShieldTableData.stills()) {
             assertTrue(list.matches(n), n + " is shielded");
             assertTrue(list.still(n), n + " plans still");
@@ -265,5 +266,16 @@ class ShieldListResourceTest {
                 n + " is surfed, not shielded");
         }
         assertTrue(!list.flatOn("lxx.Tomcat 3.68"), "Tomcat lost on the confirm (-3.9)");
+    }
+    @Test
+    @Tag("POW-17")
+    @DisplayName("the 8 pc-race-power picks carry race-power lines and no other robot does")
+    void racePowerPicks() {
+        java.util.List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
+        for (String n : ShieldTableData.racePowers()) lines.add(ShieldList.RACE_POWER_PREFIX + " " + n);
+        ShieldList list = ShieldList.parse(lines);
+        assertEquals(8, ShieldTableData.racePowers().length, "pc-race-power (BENCH-206, PR #695) confirm picks");
+        for (String n : ShieldTableData.racePowers()) assertTrue(list.racePower(n), n);
+        assertTrue(!list.racePower("abc.Shadow 3.83c"), "a pilot robot that did not hold the 3-point margin");
     }
 }

@@ -1,0 +1,3 @@
+# 2026-11-07 pc-shield-audit: the two robots, rows from census-312.txt.
+axeBots.Musashi 2.18 | rank156-band3 | axeBots.Musashi_2.18.jar
+cx.Princess 1.0 | rank207-band4 | cx.Princess_1.0.jar

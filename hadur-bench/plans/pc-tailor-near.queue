@@ -3,7 +3,7 @@
 # seeds a real gain of 1 to 3 points cannot clear that bar. This card gives each of them a second, fair look: every
 # robot that leaned to a lever there (its best lever 1+ point over c in work/x5f) is fought again on that one lever
 # against master, on fresh seeds, and keeps it where these new battles alone say it wins.
-# Leigh starts it once the PC is free (after pc-race-power; one card at a time, from master):
+# Leigh starts it once the PC is free (one card at a time, from master):
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-tailor-near        (or  ./queue.sh run pc-tailor-near)
 # It needs pc-tailor-field's screen battles in work/x5f (prep stops with a message when work/x5f/arms.tsv is missing).
@@ -38,7 +38,7 @@
 # the confirmed lines go into ShieldTableData by PR; the release rule stands.
 
 set V = 3.21
-set P = --parallel 12 --no-truth-log
+set P = --parallel 12 --no-truth-log --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
 set W = work/tnr
 set W2 = work/tnr-2

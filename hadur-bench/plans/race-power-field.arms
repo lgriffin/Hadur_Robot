@@ -1,5 +1,0 @@
-# pc-race-power screen (BENCH-206): c master, aa its A/A copy, rp the energy race's power pick (POW-17) against every
-# robot of census-312.txt (race-power: lines from work/field.list, ablation rplist).
-c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
-aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
-rp | hadur117.Hadur 3.21rp | bisect/hadur117.Hadur_3.21rp.jar

@@ -67,7 +67,8 @@ class TailorNearPlanTest {
             assertTrue(step(queue, s, steps[List.of(steps).indexOf(s) + 1]).contains("if [ -f work/tnr.stop ]"), s + " stops with the pilot");
         }
         assertTrue(queue.contains("open_results_pr.sh claude/pc-tailor-near-results"));
-        assertTrue(queue.contains("set ALERT = lgriffin") && queue.contains("set P = --parallel 12 --no-truth-log"));
+        assertTrue(queue.contains("set ALERT = lgriffin") && queue.contains("set P = --parallel 12 --no-truth-log --failed-ok\n"),
+            "one failed battle in thousands must not fail the step (BENCH-187)");
         assertTrue(queue.contains("Why it should win"));
     }
 
@@ -93,6 +94,7 @@ class TailorNearPlanTest {
         assertTrue(queue.contains("--set census-312.txt --seeds 3 --seed-base 9700 --arms plans/hj-field.arms --out ${W}"));
         assertTrue(queue.contains("shield_s2.py gate ${W}/arms.tsv --arm hj --panel census-312.txt --bar 0.03"));
         assertTrue(queue.contains("open_results_pr.sh claude/pc-hj-field-results"));
+        assertTrue(queue.contains("set P = --parallel 12 --no-truth-log --failed-ok\n"), "BENCH-187");
         assertTrue(queue.contains("Why it should win"));
     }
 }

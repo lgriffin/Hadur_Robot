@@ -1,4 +1,4 @@
-# The three-robot phase (docs/bench/melee-top3.md, MEND-4, MEND-5, BENCH-209).
+# The three-robot phase (docs/bench/melee-top3.md, MEND-4, MEND-5, BENCH-211).
 # Leigh 2026-11-08: "Where is melee at? Its within touching distance of first lets figure this out".
 # Why it should win: in the cloud 3.21 census Hadur wins 97% of the endgame duels it starts 20 or
 # more energy ahead and 32% of those it starts 20 or more behind (opponent for opponent the gap holds:
@@ -16,7 +16,7 @@
 #   bb      its A/A copy
 #   th      MEND-4 alone
 #   ts      MEND-5 alone
-# Pilot (BENCH-210): m3pilot fights both together (thts) against an aa baseline battle for battle on
+# Pilot (BENCH-212): m3pilot fights both together (thts) against an aa baseline battle for battle on
 # 46 fields x 2 seeds (3318-3319; 184 battles, about 1 h), and m3check stops the card unless Hadur's
 # score share is up (--share-only), on at least 95% of the 92 pairs with all 35 rounds each. On a
 # stop the check opens the results PR with the pilot read and fails, so no arm after it runs.

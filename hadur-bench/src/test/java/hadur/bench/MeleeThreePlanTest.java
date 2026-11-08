@@ -11,14 +11,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-209: the pc-melee-three card (MEND-4, MEND-5) is complete before it reaches the PC. */
+/** BENCH-211: the pc-melee-three card (MEND-4, MEND-5) is complete before it reaches the PC. */
 class MeleeThreePlanTest {
 
     private static final Path QUEUE = Path.of("plans/pc-melee-three.queue");
     private static final List<String> ARMS = List.of("aa", "bb", "th", "ts");
 
     @Test
-    @Tag("BENCH-209")
+    @Tag("BENCH-211")
     @DisplayName("the steps chain from prep through every arm to a results PR, on the version the pom names")
     void stepsChain() throws IOException {
         String queue = Files.readString(QUEUE);
@@ -51,7 +51,7 @@ class MeleeThreePlanTest {
     }
 
     @Test
-    @Tag("BENCH-209")
+    @Tag("BENCH-211")
     @DisplayName("every arm step declares its stop rules")
     void stopRules() throws IOException {
         String queue = Files.readString(QUEUE);
@@ -67,7 +67,7 @@ class MeleeThreePlanTest {
     }
 
     @Test
-    @Tag("BENCH-209")
+    @Tag("BENCH-211")
     @DisplayName("every arm runs alone on the census at 6 fresh seeds after pc-melee-floor's")
     void args() throws IOException {
         String args = Files.readString(Path.of("plans/melee-three.args"));
@@ -80,7 +80,7 @@ class MeleeThreePlanTest {
     }
 
     @Test
-    @Tag("BENCH-209")
+    @Tag("BENCH-211")
     @DisplayName("each arm turns on one switch that ships off on master")
     void ablation() throws IOException {
         String abl = Files.readString(Path.of("build-ablation.sh"));
@@ -96,7 +96,7 @@ class MeleeThreePlanTest {
     }
 
     @Test
-    @Tag("BENCH-210")
+    @Tag("BENCH-212")
     @DisplayName("a pilot of both switches (thts) against aa runs first and its check stops the card unless the share is up")
     void pilot() throws IOException {
         String queue = Files.readString(QUEUE);
