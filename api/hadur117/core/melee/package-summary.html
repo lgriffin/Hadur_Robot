@@ -138,16 +138,23 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">What Hadur should do this tick.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MeleeController.Situation.html" title="class in hadur117.core.melee">MeleeController.Situation</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MeleeController.Hit.html" title="class in hadur117.core.melee">MeleeController.Hit</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block"><a class="req" href="../../../../requirements.html#MMOVE-26">MMOVE-26</a>: a hit on Hadur off a team, as the melee surfer saw the shot that made it:
+ <code>seen</code> when a shot the World inferred matches it (MMOVE-10's test), then the k
+ living opponents that were nearer its shooter than Hadur when it was fired and the
+ crowd weight 1/(1+k)^2 the surfer gave it (<a class="req" href="../../../../requirements.html#MMOVE-15">MMOVE-15</a>).</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MeleeController.Situation.html" title="class in hadur117.core.melee">MeleeController.Situation</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">What Hadur knows about itself this tick.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MeleeEndgame.html" title="class in hadur117.core.melee">MeleeEndgame</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MeleeEndgame.html" title="class in hadur117.core.melee">MeleeEndgame</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">Melee Stage 1 (docs/plan-melee-top5.md): Hadur's play with two opponents left, off a team.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MeleeEnergyPolicy.html" title="class in hadur117.core.melee">MeleeEnergyPolicy</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MeleeEnergyPolicy.html" title="class in hadur117.core.melee">MeleeEnergyPolicy</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Melee bullet power (<a class="req" href="../../../../requirements.html#MGUN-2">MGUN-2</a>, <a class="req" href="../../../../requirements.html#MGUN-3">MGUN-3</a>), the plan's energy table:
 
  
@@ -159,79 +166,83 @@ loadScripts(document, 'script');</script>
      2.0 inside 300 px rising to 3.0 at 150 px.
  </div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MeleeGun.html" title="class in hadur117.core.melee">MeleeGun</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MeleeGun.html" title="class in hadur117.core.melee">MeleeGun</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">The field gun's fallback for an opponent with too little history (<a class="req" href="../../../../requirements.html#MGUN-1">MGUN-1</a>): circular
  prediction, or linear while the opponent's turn rate is unknown.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MeleeGun.Aim.html" title="class in hadur117.core.melee">MeleeGun.Aim</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="MeleeGun.Strategy.html" title="enum class in hadur117.core.melee">MeleeGun.Strategy</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab3">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MeleeProfile.html" title="class in hadur117.core.melee">MeleeProfile</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MeleeGun.Aim.html" title="class in hadur117.core.melee">MeleeGun.Aim</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="MeleeGun.Strategy.html" title="enum class in hadur117.core.melee">MeleeGun.Strategy</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">&nbsp;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MeleeProfile.html" title="class in hadur117.core.melee">MeleeProfile</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">What Hadur remembers about one opponent from melee battles (<a class="req" href="../../../../requirements.html#MMEM-1">MMEM-1</a>): how often its
  inferred shots hit Hadur, whether those hits were aimed head-on or led, how hard it
  fires, how often it comes in to ram, and where it usually finishes.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="MeleeProfile.AimClass.html" title="enum class in hadur117.core.melee">MeleeProfile.AimClass</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="MeleeProfile.AimClass.html" title="enum class in hadur117.core.melee">MeleeProfile.AimClass</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">
 <div class="block">Aim classes of the hits on Hadur, the index into <a href="MeleeProfile.html#aimHits"><code>MeleeProfile.aimHits</code></a>.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MeleeProfileCodec.html" title="class in hadur117.core.melee">MeleeProfileCodec</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MeleeProfileCodec.html" title="class in hadur117.core.melee">MeleeProfileCodec</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">The melee profile block's file format (<a class="req" href="../../../../requirements.html#MMEM-1">MMEM-1</a>): small, hand-written, versioned and
  checksummed like the 1v1 profile's, and written to its own file beside it.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MeleeProfileFolder.html" title="class in hadur117.core.melee">MeleeProfileFolder</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MeleeProfileFolder.html" title="class in hadur117.core.melee">MeleeProfileFolder</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">One round's melee observations of each opponent, waiting to join its
  <a href="MeleeProfile.html" title="class in hadur117.core.melee"><code>MeleeProfile</code></a> when the round ends (<a class="req" href="../../../../requirements.html#MMEM-1">MMEM-1</a>).</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MeleeProfileFolder.Tally.html" title="class in hadur117.core.melee">MeleeProfileFolder.Tally</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MeleeProfileFolder.Tally.html" title="class in hadur117.core.melee">MeleeProfileFolder.Tally</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">One opponent's round so far.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab5"><a href="MeleeProfileFormatException.html" title="class in hadur117.core.melee">MeleeProfileFormatException</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab5">
+<div class="col-first odd-row-color class-summary class-summary-tab5"><a href="MeleeProfileFormatException.html" title="class in hadur117.core.melee">MeleeProfileFormatException</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab5">
 <div class="block">Bytes that are not a valid melee profile block: wrong magic or version, truncated, bad
  checksum or bad values (<a class="req" href="../../../../requirements.html#MMEM-1">MMEM-1</a>).</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MeleeRadar.html" title="class in hadur117.core.melee">MeleeRadar</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MeleeRadar.html" title="class in hadur117.core.melee">MeleeRadar</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Melee radar.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MeleeStrategy.html" title="class in hadur117.core.melee">MeleeStrategy</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MeleeStrategy.html" title="class in hadur117.core.melee">MeleeStrategy</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">Picks Hadur's overall posture in a melee from the state of the battle.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MeleeStrategy.Plan.html" title="class in hadur117.core.melee">MeleeStrategy.Plan</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MeleeStrategy.Plan.html" title="class in hadur117.core.melee">MeleeStrategy.Plan</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">The chosen posture, plus what it implies for targeting and positioning.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="MeleeStrategy.Posture.html" title="enum class in hadur117.core.melee">MeleeStrategy.Posture</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab3">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MeleeWaves.html" title="class in hadur117.core.melee">MeleeWaves</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="MeleeStrategy.Posture.html" title="enum class in hadur117.core.melee">MeleeStrategy.Posture</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">&nbsp;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MeleeWaves.html" title="class in hadur117.core.melee">MeleeWaves</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Targeting waves on every gun-heat cycle (<a class="req" href="../../../../requirements.html#MGUN-4">MGUN-4</a>): whenever the gun comes off cooldown, and
  every <a href="MeleeWaves.html#IDLE_INTERVAL"><code>MeleeWaves.IDLE_INTERVAL</code></a> ticks while it sits cool without firing, a wave goes out at
  every opponent in sight carrying the angle the field gun would aim at it.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MeleeWaves.Wave.html" title="class in hadur117.core.melee">MeleeWaves.Wave</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MeleeWaves.Wave.html" title="class in hadur117.core.melee">MeleeWaves.Wave</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">One wave at one opponent.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Melee movement: minimum risk (<a class="req" href="../../../../requirements.html#MMOVE-1">MMOVE-1</a>..4), the HawkOnFire and Diamond shape.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MinimumRiskMovement.View.html" title="class in hadur117.core.melee">MinimumRiskMovement.View</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MinimumRiskMovement.View.html" title="class in hadur117.core.melee">MinimumRiskMovement.View</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">What the movement sees this tick.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">TMODE-11: one shot in flight as a profile over its headings.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MinimumRiskMovement.Weighed.html" title="class in hadur117.core.melee">MinimumRiskMovement.Weighed</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block"><a class="req" href="../../../../requirements.html#MMOVE-26">MMOVE-26</a>: what the surfer saw of a shot when it first processed it.</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpponentStats.html" title="class in hadur117.core.melee">OpponentStats</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">

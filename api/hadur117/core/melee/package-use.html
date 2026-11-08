@@ -130,60 +130,71 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">What Hadur should do this tick.</div>
 </div>
-<div class="col-first odd-row-color"><a href="class-use/MeleeController.Situation.html#hadur117.core.melee">MeleeController.Situation</a></div>
+<div class="col-first odd-row-color"><a href="class-use/MeleeController.Hit.html#hadur117.core.melee">MeleeController.Hit</a></div>
 <div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MMOVE-26">MMOVE-26</a>: a hit on Hadur off a team, as the melee surfer saw the shot that made it:
+ <code>seen</code> when a shot the World inferred matches it (MMOVE-10's test), then the k
+ living opponents that were nearer its shooter than Hadur when it was fired and the
+ crowd weight 1/(1+k)^2 the surfer gave it (<a class="req" href="../../../../requirements.html#MMOVE-15">MMOVE-15</a>).</div>
+</div>
+<div class="col-first even-row-color"><a href="class-use/MeleeController.Situation.html#hadur117.core.melee">MeleeController.Situation</a></div>
+<div class="col-last even-row-color">
 <div class="block">What Hadur knows about itself this tick.</div>
 </div>
-<div class="col-first even-row-color"><a href="class-use/MeleeGun.Aim.html#hadur117.core.melee">MeleeGun.Aim</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="class-use/MeleeGun.Strategy.html#hadur117.core.melee">MeleeGun.Strategy</a></div>
+<div class="col-first odd-row-color"><a href="class-use/MeleeGun.Aim.html#hadur117.core.melee">MeleeGun.Aim</a></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><a href="class-use/MeleeProfile.html#hadur117.core.melee">MeleeProfile</a></div>
-<div class="col-last even-row-color">
+<div class="col-first even-row-color"><a href="class-use/MeleeGun.Strategy.html#hadur117.core.melee">MeleeGun.Strategy</a></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><a href="class-use/MeleeProfile.html#hadur117.core.melee">MeleeProfile</a></div>
+<div class="col-last odd-row-color">
 <div class="block">What Hadur remembers about one opponent from melee battles (<a class="req" href="../../../../requirements.html#MMEM-1">MMEM-1</a>): how often its
  inferred shots hit Hadur, whether those hits were aimed head-on or led, how hard it
  fires, how often it comes in to ram, and where it usually finishes.</div>
 </div>
-<div class="col-first odd-row-color"><a href="class-use/MeleeProfile.AimClass.html#hadur117.core.melee">MeleeProfile.AimClass</a></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><a href="class-use/MeleeProfile.AimClass.html#hadur117.core.melee">MeleeProfile.AimClass</a></div>
+<div class="col-last even-row-color">
 <div class="block">Aim classes of the hits on Hadur, the index into <a href="MeleeProfile.html#aimHits"><code>MeleeProfile.aimHits</code></a>.</div>
 </div>
-<div class="col-first even-row-color"><a href="class-use/MeleeProfileFolder.html#hadur117.core.melee">MeleeProfileFolder</a></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><a href="class-use/MeleeProfileFolder.html#hadur117.core.melee">MeleeProfileFolder</a></div>
+<div class="col-last odd-row-color">
 <div class="block">One round's melee observations of each opponent, waiting to join its
  <a href="MeleeProfile.html" title="class in hadur117.core.melee"><code>MeleeProfile</code></a> when the round ends (<a class="req" href="../../../../requirements.html#MMEM-1">MMEM-1</a>).</div>
 </div>
-<div class="col-first odd-row-color"><a href="class-use/MeleeStrategy.html#hadur117.core.melee">MeleeStrategy</a></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><a href="class-use/MeleeStrategy.html#hadur117.core.melee">MeleeStrategy</a></div>
+<div class="col-last even-row-color">
 <div class="block">Picks Hadur's overall posture in a melee from the state of the battle.</div>
 </div>
-<div class="col-first even-row-color"><a href="class-use/MeleeStrategy.Plan.html#hadur117.core.melee">MeleeStrategy.Plan</a></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><a href="class-use/MeleeStrategy.Plan.html#hadur117.core.melee">MeleeStrategy.Plan</a></div>
+<div class="col-last odd-row-color">
 <div class="block">The chosen posture, plus what it implies for targeting and positioning.</div>
 </div>
-<div class="col-first odd-row-color"><a href="class-use/MeleeStrategy.Posture.html#hadur117.core.melee">MeleeStrategy.Posture</a></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><a href="class-use/MeleeWaves.html#hadur117.core.melee">MeleeWaves</a></div>
-<div class="col-last even-row-color">
+<div class="col-first even-row-color"><a href="class-use/MeleeStrategy.Posture.html#hadur117.core.melee">MeleeStrategy.Posture</a></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><a href="class-use/MeleeWaves.html#hadur117.core.melee">MeleeWaves</a></div>
+<div class="col-last odd-row-color">
 <div class="block">Targeting waves on every gun-heat cycle (<a class="req" href="../../../../requirements.html#MGUN-4">MGUN-4</a>): whenever the gun comes off cooldown, and
  every <a href="MeleeWaves.html#IDLE_INTERVAL"><code>MeleeWaves.IDLE_INTERVAL</code></a> ticks while it sits cool without firing, a wave goes out at
  every opponent in sight carrying the angle the field gun would aim at it.</div>
 </div>
-<div class="col-first odd-row-color"><a href="class-use/MeleeWaves.Wave.html#hadur117.core.melee">MeleeWaves.Wave</a></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><a href="class-use/MeleeWaves.Wave.html#hadur117.core.melee">MeleeWaves.Wave</a></div>
+<div class="col-last even-row-color">
 <div class="block">One wave at one opponent.</div>
 </div>
-<div class="col-first even-row-color"><a href="class-use/MinimumRiskMovement.html#hadur117.core.melee">MinimumRiskMovement</a></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><a href="class-use/MinimumRiskMovement.html#hadur117.core.melee">MinimumRiskMovement</a></div>
+<div class="col-last odd-row-color">
 <div class="block">Melee movement: minimum risk (<a class="req" href="../../../../requirements.html#MMOVE-1">MMOVE-1</a>..4), the HawkOnFire and Diamond shape.</div>
 </div>
-<div class="col-first odd-row-color"><a href="class-use/MinimumRiskMovement.View.html#hadur117.core.melee">MinimumRiskMovement.View</a></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><a href="class-use/MinimumRiskMovement.View.html#hadur117.core.melee">MinimumRiskMovement.View</a></div>
+<div class="col-last even-row-color">
 <div class="block">What the movement sees this tick.</div>
 </div>
-<div class="col-first even-row-color"><a href="class-use/MinimumRiskMovement.Wave.html#hadur117.core.melee">MinimumRiskMovement.Wave</a></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><a href="class-use/MinimumRiskMovement.Wave.html#hadur117.core.melee">MinimumRiskMovement.Wave</a></div>
+<div class="col-last odd-row-color">
 <div class="block">TMODE-11: one shot in flight as a profile over its headings.</div>
+</div>
+<div class="col-first even-row-color"><a href="class-use/MinimumRiskMovement.Weighed.html#hadur117.core.melee">MinimumRiskMovement.Weighed</a></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MMOVE-26">MMOVE-26</a>: what the surfer saw of a shot when it first processed it.</div>
 </div>
 <div class="col-first odd-row-color"><a href="class-use/OpponentStats.html#hadur117.core.melee">OpponentStats</a></div>
 <div class="col-last odd-row-color">
