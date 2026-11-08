@@ -1,6 +1,6 @@
 # Queue pc-melee-three: progress
 
-Updated 2026-11-08 17:48:35 PC time (17:48 UTC), runner pid 19668.
+Updated 2026-11-08 18:03:40 PC time (18:03 UTC), runner pid 19668.
 
 - `m3prep` done, exit 0 in 3 min
 - `m3pilot` running
@@ -14,15 +14,15 @@ Updated 2026-11-08 17:48:35 PC time (17:48 UTC), runner pid 19668.
 
 ### m3pilot
 
-**80 of 184 battles** (43%), 0 failed. Running 27 min, 179 battles/h, about 35 min left (ends ~18:23 PC time). Last battle 1 min ago.
-Skipped turns a battle: 24.5 overall, first 80 24.5, last 80 24.5.
+**102 of 184 battles** (55%), 0 failed. Running 42 min, 146 battles/h, about 34 min left (ends ~18:37 PC time). Last battle 0 min ago.
+Skipped turns a battle: 23.8 overall, first 100 23.7, last 100 23.8.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 80 |
-| `stall 30m` | halt | ok | last battle 1 min ago |
+| `fails 20` | halt | ok | 0 failed of 102 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 104 battles unrun (about 35 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 82 battles unrun (about 34 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -34,4 +34,5 @@ Stopping now would leave 104 battles unrun (about 35 min); every battle already 
 17:21:49 start m3pilot
 17:21:49 watching m3pilot: 2 stop rule(s)
 17:22:27 progress m3pilot: 0/184 (0%) battles, 0 failed
+17:52:36 progress m3pilot: 83/184 (45%) battles, 162/h, ETA 37 min, 0 failed, skips 24.3/battle (last 100)
 ```
