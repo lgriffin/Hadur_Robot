@@ -6,3 +6,12 @@
 12:54:30 watching pilot: 4 stop rule(s)
 12:54:51 progress pilot: 10/2151 (0%) battles, 1698/h, ETA 1.3 h, 0 failed, skips 33.9/battle (last 100)
 13:25:16 progress pilot: 1652/2151 (77%) battles, 3226/h, ETA 9 min, 0 failed, skips 31.5/battle (last 100), aa -0.02, hj +0.01
+13:39:20 pilot exit=0 in 2690 s
+13:39:20 start field
+13:39:20 watching field: 4 stop rule(s)
+13:39:21 field exit=0 in 0 s
+13:39:21 start gate
+13:39:21 gate exit=0 in 0 s
+13:39:21 start pr
+13:39:27 pr exit=0 in 5 s
+13:39:27 ALLDONE
