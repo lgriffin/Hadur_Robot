@@ -404,7 +404,8 @@ public class MeleeController {
         onTeam = !s.teammates.isEmpty();
         // T7 (TMODE-1): the modes against this team; off a team, none.
         modes = onTeam ? TeamModes.against(alive) : TeamModes.NONE;
-        MeleeStrategy.Plan plan = strategy.evaluate(tracker, s.me, s.energy, s.others, s.time);
+        MeleeStrategy.Plan plan = strategy.evaluate(tracker, s.me, s.energy, s.others, s.time,
+            MeleeStrategy.HIDE && !onTeam);
         c.posture = plan.posture;
         if (onTeam) {
             // TMODE-27: the dodge reads one learned-aim log per enemy class.
@@ -459,6 +460,12 @@ public class MeleeController {
         boolean hold = target.age(s.time) > MAX_FIRE_AGE
             || s.energy < MeleeEnergyPolicy.MIN_OWN_ENERGY
             || s.energy <= power + 0.1;
+        // MHIDE-3: hiding, Hadur shoots only a finisher or a robot it is already the nearest of; a shot
+        // at anyone else buys a new enemy (most of the field aims at whoever hurt it last).
+        if (plan.posture == MeleeStrategy.Posture.HIDE && target.energy > FINISHER_ENERGY
+            && !MeleeStrategy.nearestIs(s.me, target, alive)) {
+            hold = true;
+        }
         c.firePower = hold ? 0 : power;
         return c;
     }

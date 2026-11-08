@@ -220,3 +220,14 @@ battle (field f24, seed 4400, 6 rounds, /mnt/project-files/melee/trace-f24-round
 deaths Hadur holds a corner, loses 40 energy to shots while nobody's nearest, then from about tick 370 the
 nearest opponent (Corsair) hunts it along the edge until two robots share it as nearest and it dies at 6
 energy. The trace is the input for the death-forensics pass.
+
+## The hide posture (MHIDE-1..3, 2026-11-08)
+
+Leigh, on the traces: "there are huge empty spaces that we don't try and move into, why?" and "We have no
+mechanic to try and hide and survive until the field whittles down." The mover looks only 100-300 px out
+(capped at 0.8 of the nearest robot's distance), its 1/d² crowd term prices open space above a corner, and
+the gun fires at someone every time it is cool (MGUN-5 forbids the posture to hold it). MHIDE adds a posture:
+with five or more alive, or three or more and Hadur under the median energy, candidates gain a 7 × 7 field
+grid, each point pays 2 units for every opponent it would make Hadur the nearest of, and the gun holds unless
+the target is a finisher or already has Hadur as its nearest robot. Switch `MeleeStrategy.HIDE`, arm `mhide`
+(suffix hd), off. Cloud smoke first (12 fields x 2 seeds against aa); a PC card with a pilot if survival is up.

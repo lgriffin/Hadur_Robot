@@ -684,6 +684,7 @@ endgame MEND-1, 2).
 | `MeleeEnergyPolicy.OGI_WIDE` | MGUN-16 | **on** (3.19) | Power 3 out to 300 px |
 | `MeleeEnergyPolicy.FAR_SPARE` | MGUN-25 | **on**, master only (3.22) | At least power 2.5 beyond 300 px while Hadur has 60+ energy |
 | `MeleeEndgame.THREE_FAR` | MEND-3 | **on** | With two left, closest-robot factor 4 |
+| `MeleeStrategy.HIDE` | MHIDE-1..3 | off (pc-melee-hide arm `mhide`) | Hide posture: in a crowd of 5+, or 3+ when behind the median energy, go where nobody's nearest over the whole field and fire only at a finisher or a robot already nearest to Hadur |
 | `MinimumRiskMovement.MELEE_DAMAGE_MEMORY` | MMOVE-22 | **on**, master only (3.21) | Each opponent's risk weighs by the damage it has done Hadur this battle (Diamond) |
 
 **Team (only while a teammate lives)**

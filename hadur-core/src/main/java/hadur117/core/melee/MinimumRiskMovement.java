@@ -132,6 +132,15 @@ public class MinimumRiskMovement {
     /** MMOVE-22: the mean distance taken for an opponent never scanned. */
     static final double DAMAGE_DISTANCE_START = 500;
     static final double PERIPHERY_K = 0.2;
+    /**
+     * MHIDE-2: under the hide posture, each opponent whose nearest living robot a point would make
+     * Hadur adds this much risk (one full-energy opponent 100 px away is one unit), and the
+     * {@link #HIDE_GRID} x {@link #HIDE_GRID} field grid joins the candidates, so an empty part of
+     * the field is on the menu, not only the ring around Hadur.
+     */
+    static final double HIDE_NEAREST_K = 2.0;
+    static final int HIDE_GRID = 7;
+    static final double HIDE_GRID_MARGIN = 60;
     static final double CUTOFF_K = 0.4;
     static final double FIGHT_K = 0.4;
     static final double FIGHT_WEIGHT = 2.0;
@@ -545,6 +554,7 @@ public class MinimumRiskMovement {
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.MATEFIRE)) v.mateBullets = relevant(mateBullets(me, now), me, now);
         v.concord = TeamConcord.MOVE && TeamConcord.RISK && !mates.isEmpty() && modes.contains(TeamModes.Mode.CONCORD);
         List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
+        if (plan.posture == MeleeStrategy.Posture.HIDE) candidates = withHideGrid(candidates);
         lastCandidates = candidates.size();
         if (surf && !onTeam(mates)) {
             // MMOVE-15: the melee surfer picks by the wave check.
@@ -628,6 +638,37 @@ public class MinimumRiskMovement {
             }
         }
         return out;
+    }
+
+    /** MHIDE-2: the ring candidates plus a {@link #HIDE_GRID}-square grid over the whole field. */
+    List<Point2D.Double> withHideGrid(List<Point2D.Double> ring) {
+        List<Point2D.Double> out = new ArrayList<>(ring.size() + HIDE_GRID * HIDE_GRID);
+        out.addAll(ring);
+        for (int i = 0; i < HIDE_GRID; i++) {
+            for (int j = 0; j < HIDE_GRID; j++) {
+                out.add(new Point2D.Double(
+                    HIDE_GRID_MARGIN + (field.width - 2 * HIDE_GRID_MARGIN) * i / (HIDE_GRID - 1),
+                    HIDE_GRID_MARGIN + (field.height - 2 * HIDE_GRID_MARGIN) * j / (HIDE_GRID - 1)));
+            }
+        }
+        return out;
+    }
+
+    /** MHIDE-2: how many of {@code enemies} would have {@code p} as their nearest living robot. */
+    static int nearestCount(Point2D.Double p, List<EnemyInfo> enemies) {
+        int n = 0;
+        for (EnemyInfo e : enemies) {
+            double d = p.distance(e.location);
+            boolean nearest = true;
+            for (EnemyInfo o : enemies) {
+                if (o != e && o.location.distance(e.location) < d) {
+                    nearest = false;
+                    break;
+                }
+            }
+            if (nearest) n++;
+        }
+        return n;
     }
 
     Point2D.Double clip(Point2D.Double p) {
@@ -1080,6 +1121,8 @@ public class MinimumRiskMovement {
                 Point2D.Double c = centroid(enemies);
                 return c == null ? 0 : -PERIPHERY_K * Math.min(p.distance(c), 500) / 500;
             }
+            case HIDE:
+                return HIDE_NEAREST_K * nearestCount(p, enemies);
             case AGGRESSIVE:
                 if (plan.preferredTarget == null) return 0;
                 return CUTOFF_K * p.distance(cutOffPoint(plan.preferredTarget)) / 500;

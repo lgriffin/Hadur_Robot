@@ -1582,6 +1582,9 @@ gun as it was (docs/bench/melee-gun-3.13.md).
 | MGUN-13 | State | While off a team with three or more opponents alive and 20 energy or more, for a target that is not a finisher, the melee gun shall fire power 3 at a target within 200 px and 1.92 beyond, in place of the table, still capped by the power that kills the target, by the lead over it and by its own energy. | M7 |
 | MGUN-16 | State | While MGUN-13 applies, it shall fire power 3 at a target within 300 px in place of 200. | M7 |
 | MGUN-25 | State | While in melee off a team with three or more opponents alive and 60 energy or more, a shot at a target beyond 300 px that is neither a hold nor a finisher shall have at least `FAR_SPARE_POWER` (2.5), still capped by what kills the target, by Hadur's lead over it and by Hadur's own energy, and never lower than the rules before it gave (on from 3.22: pc-melee-far y5 +0.30 ± 0.17, PR #647). | M7 |
+| MHIDE-1 | Optional | Where the `HIDE` switch is on, while in melee off a team with five or more opponents alive, or with three or more alive and Hadur's energy below the living opponents' median, the strategy's posture shall be HIDE (arm `mhide`, ships off). | M7 |
+| MHIDE-2 | Optional | Where the posture is HIDE, movement shall add to the ring candidates a 7 × 7 grid over the field inside a 60 px margin, and shall add to each candidate's risk 2 units for every living opponent whose nearest living robot the candidate would make Hadur. | M7 |
+| MHIDE-3 | Optional | Where the posture is HIDE, the gun shall hold a shot at a target that is not a finisher unless Hadur is that target's nearest living robot, in place of MGUN-5's rule for that posture. | M7 |
 
 - **MGUN-7.** `FieldGun.MELEE_K` (12) beside `FieldGun.K` (3), chosen by `FieldGun.k()` from
   `onTeam`. More situations spread each opponent over the angles it is likely to reach, so the

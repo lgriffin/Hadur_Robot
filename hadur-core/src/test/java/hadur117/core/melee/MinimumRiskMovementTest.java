@@ -339,4 +339,24 @@ class MinimumRiskMovementTest {
         Point2D.Double second = move.chooseDestination(me, 100, 3, tracker.alive(), 101, normal);
         assertSame(first, second);
     }
+
+    @Test
+    @Tag("MHIDE-2")
+    @DisplayName("MHIDE-2: hiding adds the field grid to the candidates and two units of risk for each opponent a point would be nearest to")
+    void hideRisk() {
+        EnemyTracker t = new EnemyTracker();
+        scan(t, "a", 500, 500, 100, 100);
+        scan(t, "b", 600, 600, 100, 100);
+        scan(t, "c", 100, 900, 100, 100);
+        List<EnemyInfo> alive = t.alive();
+        MeleeStrategy.Plan hide = new MeleeStrategy.Plan(MeleeStrategy.Posture.HIDE, null, null);
+        assertEquals(1, MinimumRiskMovement.nearestCount(pt(500, 420), alive), "a's nearest (80 against b's 141)");
+        assertEquals(0, MinimumRiskMovement.nearestCount(pt(500, 350), alive), "nobody's nearest (a has b at 141, c has a at 566)");
+        assertEquals(2.0, move.postureRisk(pt(500, 420), alive, hide) - move.postureRisk(pt(500, 350), alive, hide), 1e-9);
+        assertEquals(0.0, move.postureRisk(pt(500, 420), alive, normal), 1e-9, "the normal posture adds nothing");
+        List<Point2D.Double> ring = move.candidates(pt(500, 300), 5, alive, 100);
+        List<Point2D.Double> all = move.withHideGrid(ring);
+        assertEquals(ring.size() + 49, all.size());
+        assertTrue(all.contains(pt(60, 60)) && all.contains(pt(940, 940)) && all.contains(pt(500, 500)));
+    }
 }
