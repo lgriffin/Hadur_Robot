@@ -178,15 +178,6 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">MGUN-6: the own energy from which a member on a team fires full power.</div>
 </div>
-<div class="col-first even-row-color"><code>static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#THREE_HOLD" class="member-name-link">THREE_HOLD</a></code></div>
-<div class="col-last even-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#MEND-4">MEND-4</a> (pc-melee-three, off): with two opponents left, a shot beyond <a href="#THREE_HOLD_DISTANCE"><code>THREE_HOLD_DISTANCE</code></a>
- px at a target that is not a finisher and has more energy than Hadur is held.</div>
-</div>
-<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#THREE_HOLD_DISTANCE" class="member-name-link">THREE_HOLD_DISTANCE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -263,25 +254,6 @@ loadScripts(document, 'script');</script>
  double&nbsp;targetEnergy)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">MGUN-6: the power a member on a team fires, given the table's <code>tablePower</code>.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#threeHold(boolean,int,double,double,double)" class="member-name-link">threeHold</a><wbr>(boolean&nbsp;on,
- int&nbsp;others,
- double&nbsp;distance,
- double&nbsp;ownEnergy,
- double&nbsp;targetEnergy)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block"><a class="req" href="../../../../requirements.html#MEND-4">MEND-4</a>: whether to hold a shot off a team with <code>others</code> opponents alive: where the switch
- <code>on</code>, two are left, the target is beyond <a href="#THREE_HOLD_DISTANCE"><code>THREE_HOLD_DISTANCE</code></a> px, not a finisher,
- and has more energy than Hadur's <code>ownEnergy</code>.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#threeHold(int,double,double,double)" class="member-name-link">threeHold</a><wbr>(int&nbsp;others,
- double&nbsp;distance,
- double&nbsp;ownEnergy,
- double&nbsp;targetEnergy)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block"><a class="req" href="../../../../requirements.html#MEND-4">MEND-4</a> as shipped (<a href="#THREE_HOLD"><code>THREE_HOLD</code></a>).</div>
 </div>
 </div>
 </div>
@@ -509,38 +481,6 @@ loadScripts(document, 'script');</script>
 </dl>
 </section>
 </li>
-<li>
-<section class="detail" id="THREE_HOLD">
-<h3>THREE_HOLD</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">THREE_HOLD</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#MEND-4">MEND-4</a> (pc-melee-three, off): with two opponents left, a shot beyond <a href="#THREE_HOLD_DISTANCE"><code>THREE_HOLD_DISTANCE</code></a>
- px at a target that is not a finisher and has more energy than Hadur is held. In the 3.21
- census the endgame duels Hadur starts 20 or more behind it wins 32% of the time (97% when 20
- or more ahead), and on the way there it spends about 19 energy on 16 shots at about 700 px.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.melee.MeleeEnergyPolicy.THREE_HOLD">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="THREE_HOLD_DISTANCE">
-<h3>THREE_HOLD_DISTANCE</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">THREE_HOLD_DISTANCE</span></div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.melee.MeleeEnergyPolicy.THREE_HOLD_DISTANCE">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
 </ul>
 </section>
 </li>
@@ -600,29 +540,6 @@ loadScripts(document, 'script');</script>
  <code>on</code>, three or more opponents are alive, the target is beyond <a href="#OGI_WIDE_CLOSE"><code>OGI_WIDE_CLOSE</code></a>
  px and not a finisher, and Hadur has <a href="#FAR_SPARE_ENERGY"><code>FAR_SPARE_ENERGY</code></a> or more; a hold (0) stands,
  and the kill, lead and own-energy caps apply as the table's do. It never lowers <code>p</code>.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="threeHold(boolean,int,double,double,double)">
-<h3>threeHold</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">threeHold</span><wbr><span class="parameters">(boolean&nbsp;on,
- int&nbsp;others,
- double&nbsp;distance,
- double&nbsp;ownEnergy,
- double&nbsp;targetEnergy)</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#MEND-4">MEND-4</a>: whether to hold a shot off a team with <code>others</code> opponents alive: where the switch
- <code>on</code>, two are left, the target is beyond <a href="#THREE_HOLD_DISTANCE"><code>THREE_HOLD_DISTANCE</code></a> px, not a finisher,
- and has more energy than Hadur's <code>ownEnergy</code>.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="threeHold(int,double,double,double)">
-<h3>threeHold</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">threeHold</span><wbr><span class="parameters">(int&nbsp;others,
- double&nbsp;distance,
- double&nbsp;ownEnergy,
- double&nbsp;targetEnergy)</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#MEND-4">MEND-4</a> as shipped (<a href="#THREE_HOLD"><code>THREE_HOLD</code></a>).</div>
 </section>
 </li>
 <li>

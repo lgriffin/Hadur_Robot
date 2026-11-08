@@ -200,16 +200,6 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>(package private) static final long</code></div>
 <div class="col-second even-row-color"><code><a href="#SHOOTER_WINDOW" class="member-name-link">SHOOTER_WINDOW</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#THREE_STRONG" class="member-name-link">THREE_STRONG</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#MEND-5">MEND-5</a> (pc-melee-three, off): with two opponents left off a team, the one with more energy
- weighs <a href="#THREE_STRONG_BOOST"><code>THREE_STRONG_BOOST</code></a> times as much, so Hadur's fire wears down the robot it is
- likelier to duel (the gun's own weight leans the other way, toward the weaker).</div>
-</div>
-<div class="col-first even-row-color"><code>(package private) static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#THREE_STRONG_BOOST" class="member-name-link">THREE_STRONG_BOOST</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -355,25 +345,19 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Every firing solution this tick, for every opponent fresh enough to shoot at.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#strongerOfTwo(boolean,int,hadur117.core.world.EnemyInfo,java.util.List)" class="member-name-link">strongerOfTwo</a><wbr>(boolean&nbsp;on,
- int&nbsp;others,
- <a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;&nbsp;alive)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block"><a class="req" href="../../../../requirements.html#MEND-5">MEND-5</a>: where the switch <code>on</code> and two opponents are alive, whether <code>e</code> has more
- energy than every other robot in <code>alive</code>.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#tolerance(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double)" class="member-name-link">tolerance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#tolerance(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double)" class="member-name-link">tolerance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#weight(hadur117.core.world.EnemyInfo,java.awt.geom.Point2D.Double,java.util.List,long)" class="member-name-link">weight</a><wbr>(<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#weight(hadur117.core.world.EnemyInfo,java.awt.geom.Point2D.Double,java.util.List,long)" class="member-name-link">weight</a><wbr>(<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;&nbsp;alive,
  long&nbsp;now)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">An opponent's weight: 1/distance, leaning toward weak opponents, boosted for a finisher
+ (<a class="req" href="../../../../requirements.html#MGUN-2">MGUN-2</a>), an isolated opponent and a recent shooter.</div>
+</div>
 </div>
 </div>
 </div>
@@ -490,39 +474,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur117.core.melee.FieldGun.SHOOTER_BOOST">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="THREE_STRONG">
-<h3>THREE_STRONG</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">THREE_STRONG</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#MEND-5">MEND-5</a> (pc-melee-three, off): with two opponents left off a team, the one with more energy
- weighs <a href="#THREE_STRONG_BOOST"><code>THREE_STRONG_BOOST</code></a> times as much, so Hadur's fire wears down the robot it is
- likelier to duel (the gun's own weight leans the other way, toward the weaker). Whoever then
- survives is either the weaker one or a strong one with less energy left: in the 3.21 census
- the duel's survivor had 71 energy when Hadur started 20 or more behind, and Hadur won 32%.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.melee.FieldGun.THREE_STRONG">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="THREE_STRONG_BOOST">
-<h3>THREE_STRONG_BOOST</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">THREE_STRONG_BOOST</span></div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.core.melee.FieldGun.THREE_STRONG_BOOST">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
@@ -748,23 +699,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="strongerOfTwo(boolean,int,hadur117.core.world.EnemyInfo,java.util.List)">
-<h3>strongerOfTwo</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">strongerOfTwo</span><wbr><span class="parameters">(boolean&nbsp;on,
- int&nbsp;others,
- <a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;&nbsp;alive)</span></div>
-<div class="block"><a class="req" href="../../../../requirements.html#MEND-5">MEND-5</a>: where the switch <code>on</code> and two opponents are alive, whether <code>e</code> has more
- energy than every other robot in <code>alive</code>.</div>
-</section>
-</li>
-<li>
 <section class="detail" id="weight(hadur117.core.world.EnemyInfo,java.awt.geom.Point2D.Double,java.util.List,long)">
 <h3>weight</h3>
 <div class="member-signature"><span class="return-type">double</span>&nbsp;<span class="element-name">weight</span><wbr><span class="parameters">(<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&nbsp;e,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur117.core.world">EnemyInfo</a>&gt;&nbsp;alive,
  long&nbsp;now)</span></div>
+<div class="block">An opponent's weight: 1/distance, leaning toward weak opponents, boosted for a finisher
+ (<a class="req" href="../../../../requirements.html#MGUN-2">MGUN-2</a>), an isolated opponent and a recent shooter.</div>
 </section>
 </li>
 <li>
