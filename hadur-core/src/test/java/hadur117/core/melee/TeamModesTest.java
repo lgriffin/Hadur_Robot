@@ -56,7 +56,8 @@ class TeamModesTest {
     @Tag("TMODE-30")
     @Tag("TMODE-34")
     @Tag("TMODE-35")
-    @DisplayName("TMODE-1: a team's modes are its first member's entry, by class without version or duplicate marker; else the default, MATEFIRE, HUNT, PATH, DODGE and CONCORD in the shipped build (TMODE-12, TMODE-14, TMODE-28, TMODE-30, TMODE-34), every named team plays PATH, DODGE unless it lost there (PR #465), and CONCORD unless it lost there (PR #538, TMODE-35)")
+    @Tag("TMODE-42")
+    @DisplayName("TMODE-1: a team's modes are its first member's entry, by class without version or duplicate marker; else the default, MATEFIRE, HUNT, PATH, DODGE, CONCORD and CLOSE in the shipped build (TMODE-12, TMODE-14, TMODE-28, TMODE-30, TMODE-34, TMODE-42), every named team plays PATH, DODGE unless it lost there (PR #465), and CONCORD unless it lost there (PR #538, TMODE-35)")
     void tableLookup() {
         EnemyTracker t = new EnemyTracker(field(1200, 1200));
         scan(t, "x.Other 2.0 (1)", 100, 100, 100, 1);
@@ -66,7 +67,7 @@ class TeamModesTest {
         assertSame(gang, TeamModes.against(t.alive(), table, TeamModes.NONE));
         assertSame(TeamModes.NONE, TeamModes.against(List.of(t.get("x.Other 2.0 (1)")), table, TeamModes.NONE));
         assertEquals(EnumSet.of(TeamModes.Mode.MATEFIRE, TeamModes.Mode.HUNT, TeamModes.Mode.PATH, TeamModes.Mode.DODGE,
-            TeamModes.Mode.CONCORD), TeamModes.DEFAULT);
+            TeamModes.Mode.CONCORD, TeamModes.Mode.CLOSE), TeamModes.DEFAULT);
         // The table names only the teams whose counters passed on fresh seeds (PR #370), and the two
         // teams DODGE lost to, confirmed on fresh seeds (PR #465).
         Set<String> dodgeOff = Set.of("ustimaw.Nightmare", "ustimaw.NigitmareDroid", "mn.nano.perceptual.Impact");
@@ -431,11 +432,11 @@ class TeamModesTest {
 
     @Test
     @Tag("TMODE-42")
-    @DisplayName("TMODE-42: CLOSE puts the hunt place 250 px from the prey instead of 350, means nothing without HUNT, and reaches a member only through the table (FORCE_CLOSE off)")
+    @DisplayName("TMODE-42: CLOSE puts the hunt place 250 px from the prey instead of 350, means nothing without HUNT, and ships on every team (FORCE_CLOSE on, every table entry)")
     void closeHunt() {
-        assertFalse(TeamModes.FORCE_CLOSE);
-        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.CLOSE));
-        for (Set<TeamModes.Mode> entry : TeamModes.TABLE.values()) assertFalse(entry.contains(TeamModes.Mode.CLOSE));
+        assertTrue(TeamModes.FORCE_CLOSE);
+        assertTrue(TeamModes.DEFAULT.contains(TeamModes.Mode.CLOSE));
+        for (Set<TeamModes.Mode> entry : TeamModes.TABLE.values()) assertTrue(entry.contains(TeamModes.Mode.CLOSE));
         List<EnemyInfo> prey = enemies(pt(600, 1000)).alive();
         TeamRisk.Pull far = TeamRisk.pull(pt(600, 400), "n", 100, 3, prey, 100, mates(pt(700, 400)),
             EnumSet.of(TeamModes.Mode.HUNT));

@@ -59,8 +59,10 @@ public final class TeamModes {
          */
         CONCORD,
         /**
-         * TMODE-42: HUNT's place is {@link TeamRisk#HUNT_CLOSE} px from the prey, not 350. Only
-         * through the table, or forced on every team by {@link #FORCE_CLOSE} (ablation tmclose).
+         * TMODE-42: HUNT's place is {@link TeamRisk#HUNT_CLOSE} px from the prey, not 350. On
+         * every team since pc-team-close (PR #696): +0.56 ± 0.42 APS over 45 teams at 12 seeds,
+         * GrofGroup +5.2 ± 2.6 the one team clear on its own; own-member bullet hits +4.2 ± 1.7 a
+         * battle, accepted. Off through {@link #FORCE_CLOSE} (ablation tmnoclose).
          */
         CLOSE
     }
@@ -75,8 +77,8 @@ public final class TeamModes {
     public static final boolean FORCE_PATH = true;
     public static final boolean FORCE_DODGE = true;
     public static final boolean FORCE_CONCORD = true;
-    /** TMODE-42: CLOSE on every team, to screen only (pc-team-close). */
-    public static final boolean FORCE_CLOSE = false;
+    /** TMODE-42: CLOSE on every team, as pc-team-close measured it (PR #696). */
+    public static final boolean FORCE_CLOSE = true;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -104,21 +106,21 @@ public final class TeamModes {
     private static Map<String, Set<Mode>> table() {
         Map<String, Set<Mode>> t = new HashMap<>();
         // Every entry plays CONCORD on top (TMODE-34), as pc-team-concord measured it (PR #494),
-        // but the four teams it lost to (TMODE-35).
+        // but the four teams it lost to (TMODE-35), and CLOSE (TMODE-42) since pc-team-close (PR #696).
         // pc-team-counters (PR #370), 16 fresh seeds: TroodonPack +4.7 ± 3.8, GrofGroup +2.5 ± 3.0.
-        t.put("gh.nano.GrofGroupMember", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.LINEAR, Mode.PATH, Mode.DODGE, Mode.CONCORD));
-        t.put("myl.micro.Troodon", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.PATH, Mode.DODGE, Mode.CONCORD));
-        t.put("myl.micro.TroodonDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.PATH, Mode.DODGE, Mode.CONCORD));
+        t.put("gh.nano.GrofGroupMember", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.LINEAR, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE));
+        t.put("myl.micro.Troodon", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE));
+        t.put("myl.micro.TroodonDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE));
         // pc-team-nododge (PR #465), 24 fresh seeds: DODGE off, NightmareTeam +3.9 ± 3.2, ImpactTeam +3.1 ± 1.4.
         // pc-team-noconcord (PR #538), 24 fresh seeds: CONCORD off too (TMODE-35), NightmareTeam +2.4 ± 4.3.
-        t.put("ustimaw.Nightmare", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH));
-        t.put("ustimaw.NigitmareDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH));
-        t.put("mn.nano.perceptual.Impact", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CONCORD));
+        t.put("ustimaw.Nightmare", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CLOSE));
+        t.put("ustimaw.NigitmareDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CLOSE));
+        t.put("mn.nano.perceptual.Impact", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CONCORD, Mode.CLOSE));
         // pc-team-noconcord (PR #538), 24 fresh seeds: CONCORD off (TMODE-35), OgiTeam +4.2 ± 3.0,
         // CombatTeam +2.6 ± 3.8, FirestarterTeam +1.7 ± 3.3; +0.24 ± 0.16 APS with NightmareTeam.
-        t.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE));
-        t.put("mn.Combat", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE));
-        t.put("cb.fire.Firestarter", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE));
+        t.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE));
+        t.put("mn.Combat", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE));
+        t.put("cb.fire.Firestarter", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE));
         return Collections.unmodifiableMap(t);
     }
 
