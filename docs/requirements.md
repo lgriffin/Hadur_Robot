@@ -2012,6 +2012,13 @@ failed and are removed (3.22 cleanup); the mimics live on in MOVE-33 and MOVE-34
   rounds and the 500-bullet modal offset stays on the old aim until the 150-damage exit. A `recent` switch (offsets
   from the last 20 bullets, BeepBoop's head-on bonus) read within noise of the still shield on 7 robots and worse on
   Princess; the exit, not the offset, is the constraint. Code removed; read in docs/bench/shield-recent.md.
+- **BENCH-207 and BENCH-208 results (2026-11-08).** pc-tailor-near (PR #704): 491 leaning robots at 4 new seeds, ln
+  +0.10 +- 0.10 APS, 32 picks at 2 points; confirm on 4 fresh seeds PASS +0.03 +- 0.02 APS (xr +1.28 +- 0.82 points
+  over the 32). Banked 28 (as BENCH-197: screen and confirm pooled above 0; a lever already carried or GUN-11 on a
+  shielded robot dropped): x5 2, gs 2, fp 5, fl 2, sg 2, sw 4, hj 6, mm 5; AutoBot (pooled below 0), EpeeistDC (sw
+  already shipped), Chiva (gs, shielded) and Hyperion (fl, shielded: the flattener never surfs it) stay as master. pc-hj-field (PR #705): the pilot stopped the card, hj
+  -0.12 points over 239 robots against A/A -0.14; stop-and-start for the whole field fails and the per-robot hj picks
+  stand. Both cards are removed after their runs.
 - **POW-17 banked (pc-race-power, BENCH-206, PR #695).** Whole-field screen at 2 seeds: rp +0.14 +- 0.16 APS over
   1,194 robots, 19 picks at 5 points; confirm on 4 fresh seeds PASS +0.10 +- 0.05 APS, 8 held at 3 points: BeepBoop
   +24.3, Nullstride +16.7, Neutrino +15.5, Diamond +15.3, Combat +13.8, Tomcat +10.8, Dookious +6.4, FoilistMC +5.9.

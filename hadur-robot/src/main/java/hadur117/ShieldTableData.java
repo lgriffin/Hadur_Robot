@@ -383,6 +383,9 @@ final class ShieldTableData {
             "wiki.Wolverine 2.1",
             // BENCH-197 pc-tailor-field (PR #686): picked on the whole-field screen, kept on fresh seeds.
             "eem.IWillFireNoBullet v2.4",
+            // BENCH-207 pc-tailor-near (PR #704): leaned on pc-tailor-field's screen, picked on 4 new seeds, kept on 4 fresh ones (screen / confirm points).
+            "fala.robocode.FalaRobot 1.0",                 // +2.1 / +2.0
+            "dft.Freddie 1.32",                            // +3.0 / +0.5
         };
     }
 
@@ -451,6 +454,11 @@ final class ShieldTableData {
             "cf.proto.Shiva 2.2",
             "stelo.PastFuture 2.3.2",
             "wompi.Numbat 1.9",
+            // BENCH-207 pc-tailor-near (PR #704): leaned on pc-tailor-field's screen, picked on 4 new seeds, kept on 4 fresh ones (screen / confirm points).
+            "slugzilla.SNGGF 1.0",                         // +2.4 / +2.7
+            "pez.mini.ChironexFleckeri 0.5",               // +3.8 / +1.3
+            "populations.TrainStoopidbot 0.01",            // +2.2 / +0.5
+            "cx.nano.Smog 2.6",                            // +4.2 / +0.3
         };
     }
 
@@ -475,6 +483,13 @@ final class ShieldTableData {
             "staticline.whiskey.Whiskey 0.6",
             "stf.PanzerGeneral 0.1",
             "stranger.nano.TestBot 1.0",
+            // BENCH-207 pc-tailor-near (PR #704): leaned on pc-tailor-field's screen, picked on 4 new seeds, kept on 4 fresh ones (screen / confirm points).
+            "GarmBox.Oranges 1.0.1",                       // +3.3 / +1.6
+            "md.VelociRaptor 1.3",                         // +2.2 / +1.5
+            "gio.RealGioBot 1.0",                          // +2.0 / +1.3
+            "theo.real.Ahab 1.0",                          // +8.9 / +1.0
+            "test.Podgy 4.0",                              // +4.4 / +0.9
+            "dragonbyte.Neutrino 4",                       // +4.5 / +0.0
         };
     }
 
@@ -495,6 +510,9 @@ final class ShieldTableData {
             "ebo.Tahoe 1.1.79",
             "jam.RaikoMX 0.32",
             "radnor.RamRod 1.0",
+            // BENCH-207 pc-tailor-near (PR #704): leaned on pc-tailor-field's screen, picked on 4 new seeds, kept on 4 fresh ones (screen / confirm points).
+            "xander.cat.Mikey 1.2",                        // +2.9 / +4.3
+            "kc.mega.BeepBoop 2.0",                        // +15.2 / +3.1
         };
     }
 
@@ -600,6 +618,9 @@ final class ShieldTableData {
             "nz.jdc.micro.HedgehogP 1.2",
             "sheldor.mini.Foilist 1.3.1",
             "tornyil.bottomup.BottomUp 1.05",
+            // BENCH-207 pc-tailor-near (PR #704): leaned on pc-tailor-field's screen, picked on 4 new seeds, kept on 4 fresh ones (screen / confirm points).
+            "rsalesc.roborio.Roborio 1.2.4",               // +5.1 / +1.8
+            "apv.LauLectrik 1.2",                          // +7.8 / -1.8
         };
     }
 
@@ -637,6 +658,12 @@ final class ShieldTableData {
             "voidious.Diamond 1.8.22",
             "voidious.Dookious 1.573c",
             "whind.StrengthBee 0.6.4",
+            // BENCH-207 pc-tailor-near (PR #704): leaned on pc-tailor-field's screen, picked on 4 new seeds, kept on 4 fresh ones (screen / confirm points).
+            "kawigi.sbf.FloodSonnet 0.9",                  // +9.0 / +4.7
+            "gh.mini.Grimmig 0.3.6",                       // +2.3 / +0.8
+            "djdjdj.NanoSkunk10 1.0",                      // +3.6 / +0.3
+            "eat.HumblePieLite 1.0",                       // +2.9 / -0.2
+            "amk.ChumbaMini 0.2",                          // +5.2 / -0.5
         };
     }
 
@@ -660,6 +687,12 @@ final class ShieldTableData {
             "stelo.MatchupMini 1.1",
             "suh.nano.AngularMirrorC 1.00",
             "xander.cat.Fiona 1.4",
+            // BENCH-207 pc-tailor-near (PR #704): leaned on pc-tailor-field's screen, picked on 4 new seeds, kept on 4 fresh ones (screen / confirm points).
+            "dz.GalbaMicro 0.11",                          // +3.9 / +4.6
+            "wiki.nano.Flick 1.0",                         // +5.5 / +3.4
+            "eld.Hmm 1.0",                                 // +4.6 / +1.3
+            "jekl.Jekyl .70",                              // +7.8 / -1.3
+            "cjm.Che 1.2",                                 // +9.1 / -2.7
         };
     }
 
@@ -685,6 +718,9 @@ final class ShieldTableData {
             "stelo.RamTrackSurfer 1.2",
             "test.Fuzzer 1.0.1",
             "tw.Exterminator 1.0",
+            // BENCH-207 pc-tailor-near (PR #704): leaned on pc-tailor-field's screen, picked on 4 new seeds, kept on 4 fresh ones (screen / confirm points).
+            "pl.Patton.GeneralPatton 1.54",                // +7.1 / +8.1
+            "cre.Karolos 0.32",                            // +5.2 / +4.0
         };
     }
 
