@@ -221,6 +221,26 @@ public class MinimumRiskMovement {
     private final Deque<VirtualBullet> mateBullets = new ArrayDeque<>();
     private final Set<EnemyShot> seenShots =
         Collections.newSetFromMap(new IdentityHashMap<EnemyShot, Boolean>());
+    /** MMOVE-26: the crowd weight the surfer gave each shot it processed, for the hit record. */
+    private final Map<EnemyShot, Weighed> weighed = new IdentityHashMap<>();
+
+    /** MMOVE-26: what the surfer saw of a shot when it first processed it. */
+    public static final class Weighed {
+        /** Living opponents nearer the shooter than Hadur was when it fired. */
+        public final int nearer;
+        /** The crowd weight given; under {@link #SOFT_FLOOR} the shot made no bullets. */
+        public final double weight;
+
+        Weighed(int nearer, double weight) {
+            this.nearer = nearer;
+            this.weight = weight;
+        }
+    }
+
+    /** MMOVE-26: what the surfer saw of {@code shot} when it processed it, or null if it never did. */
+    public Weighed weighed(EnemyShot shot) {
+        return shot == null ? null : weighed.get(shot);
+    }
     private final Deque<Point2D.Double> past = new ArrayDeque<>();
     private Point2D.Double destination;
     private Point2D.Double openingSpot;
@@ -292,6 +312,7 @@ public class MinimumRiskMovement {
     void clearBullets() {
         bullets.clear();
         seenShots.clear();
+        weighed.clear();
     }
 
     /**
@@ -320,6 +341,7 @@ public class MinimumRiskMovement {
         bullets.clear();
         mateBullets.clear();
         seenShots.clear();
+        weighed.clear();
         past.clear();
         dodge.newRound();
         round++;
@@ -361,6 +383,7 @@ public class MinimumRiskMovement {
             if (at == null) at = myPath.getState(s.fireTime + 1);
             Point2D.Double target = at == null ? me : at.location;
             double w = crowdWeight(s, target, enemies);
+            weighed.put(s, new Weighed(nearer(s, target, enemies), w));
             if (w < SOFT_FLOOR) continue;
             List<TeamDanger.Aim> aims = at != null ? danger.aims(s, at) : null;
             if (aims != null) {
@@ -385,6 +408,7 @@ public class MinimumRiskMovement {
             if (it.next().passed(me, now, reach)) it.remove();
         }
         seenShots.retainAll(shots);
+        weighed.keySet().retainAll(shots);
     }
 
     private void addGuesses(EnemyShot s, RobotState at, Point2D.Double target, double w) {

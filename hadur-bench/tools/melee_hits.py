@@ -59,7 +59,8 @@ def main():
     total = sum(r['damage'] for r in rows)
     logs = len({r['log'] for r in rows})
     rounds = len({(r['log'], r['round']) for r in rows})
-    print(f"{len(rows)} hits, {total:.0f} damage, over {rounds} rounds of {logs} battles\n")
+    print(f"{len(rows)} hits, {total:.0f} damage, over {rounds} rounds of {logs} battles "
+          f"(rows with one opponent alive are the endgame duel, which the duel drives)\n")
 
     by = defaultdict(lambda: [0, 0.0])
     for r in rows:
@@ -96,7 +97,7 @@ def main():
         n, d = near[k]
         print(f"| {k} | {n} | {d:.0f} | {1.0 / (1 + k) ** 2:.2f} |")
 
-    print(f"\n| shooter | hits | damage | surfed | unseen | hit us with someone nearer it |")
+    print(f"\n| shooter | hits | damage | surfed | unseen | inferred-shot damage with someone nearer it |")
     print("|---|---:|---:|---:|---:|---:|")
     who = defaultdict(lambda: defaultdict(float))
     for r in rows:
@@ -107,7 +108,8 @@ def main():
     for k in sorted(who, key=lambda s: -(who[s]['weighed'] + who[s]['dropped'] + who[s]['unseen']))[:a.top]:
         v = who[k]
         d = v['weighed'] + v['dropped'] + v['unseen']
-        print(f"| {k} | {int(v['n'])} | {d:.0f} | {pct(v['weighed'], d):.0f}% | {pct(v['unseen'], d):.0f}% | {pct(v['notNearest'], d):.0f}% |")
+        inferred = v['weighed'] + v['dropped']
+        print(f"| {k} | {int(v['n'])} | {d:.0f} | {pct(v['weighed'], d):.0f}% | {pct(v['unseen'], d):.0f}% | {pct(v['notNearest'], inferred):.0f}% |")
 
 
 if __name__ == '__main__':

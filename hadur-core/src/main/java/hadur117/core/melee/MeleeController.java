@@ -268,6 +268,7 @@ public class MeleeController {
      */
     public static final class Hit {
         public final String shooter;
+        /** The bullet's damage, no more than Hadur's energy at the last tick; the distance from the shot's source. */
         public final double damage, distance;
         public final boolean seen;
         public final int nearer;
@@ -298,6 +299,8 @@ public class MeleeController {
 
     /** MMOVE-26: the last hit on Hadur, or null; cleared as it is read. */
     private Hit lastHit;
+    /** MMOVE-26: Hadur's energy at the last tick, the most a hit can take. */
+    private double lastEnergy = 100;
 
     /** MMOVE-26: the last hit on Hadur off a team, once; null when none since the last call. */
     public Hit takeHit() {
@@ -312,25 +315,34 @@ public class MeleeController {
         OpponentStats stats = book.get(name);
         double damage = Rules.getBulletDamage(power);
         EnemyInfo shooter = tracker.get(name);
-        int alive = tracker.alive().size();
+        if (!onTeam) {
+            // MMOVE-26: what the surfer saw of the shot that hit, for the MH record. The shot is
+            // matched first: a dead shooter's bullet still flies, and its shot is still tracked.
+            EnemyShot shot = match(name, power, me, now);
+            MinimumRiskMovement.Weighed w = mover.weighed(shot);
+            int nearer = w != null ? w.nearer : -1;
+            double weight = w != null ? w.weight : 0;
+            if (w == null && shot != null) {
+                // Inferred but never processed by the surfer: as it would have weighed it, now.
+                RobotState at = myPath.getState(shot.fireTime);
+                Point2D.Double target = at != null ? at.location : me;
+                nearer = MinimumRiskMovement.nearer(shot, target, tracker.alive());
+                weight = MinimumRiskMovement.crowdWeight(shot, target, tracker.alive());
+            }
+            double distance = shot != null ? shot.source.distance(me)
+                : shooter != null ? shooter.location.distance(me) : Double.NaN;
+            // A killing bullet takes no more than the energy Hadur had.
+            lastHit = new Hit(name, Math.min(damage, lastEnergy), distance, shot != null, nearer, weight,
+                tracker.alive().size());
+        }
         if (shooter == null) {
             stats.recordDamageReceived(damage, Double.NaN, 0);
             profiles.hitOnHadur(name, null);
-            if (!onTeam) lastHit = new Hit(name, damage, Double.NaN, false, -1, 0, alive);
             return;
         }
         double distance = shooter.location.distance(me);
         long flight = Math.round(distance / Rules.getBulletSpeed(power));
         RobotState atFire = myPath.getState(now - flight);
-        if (!onTeam) {
-            // MMOVE-26: what the surfer saw of the shot that hit, for the MH record.
-            EnemyShot shot = match(name, power, me, now);
-            RobotState at = shot == null ? null : myPath.getState(shot.fireTime);
-            Point2D.Double target = at != null ? at.location : atFire != null ? atFire.location : me;
-            int nearer = shot == null ? -1 : MinimumRiskMovement.nearer(shot, target, tracker.alive());
-            double weight = shot == null ? 0 : MinimumRiskMovement.crowdWeight(shot, target, tracker.alive());
-            lastHit = new Hit(name, damage, distance, shot != null, nearer, weight, alive);
-        }
         if (atFire == null) {
             stats.recordDamageReceived(damage, Double.NaN, 0);
             profiles.hitOnHadur(name, null);
@@ -461,6 +473,7 @@ public class MeleeController {
     }
 
     public Command tick(Situation s) {
+        lastEnergy = s.energy;
         myPath.addState(RobotState.newBuilder().setLocation(s.me).setHeading(s.heading)
             .setVelocity(s.velocity).setTime(s.time).build());
         Command c = new Command();

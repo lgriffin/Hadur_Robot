@@ -271,9 +271,12 @@ Twelve census fields, one battle of 35 rounds each, master with the record (mean
 | 1 | 1901 | 85% | 0% | 15% |
 
 Of the damage from inferred shots, 48% (10,045 of 20,781) came from a shooter that had at least one robot
-nearer it than Hadur, so the surfer had given the shot a quarter of its weight or less. By shooter the share
-runs from 14% (Figment, which does shoot its nearest) to 54% (ACPFinal), with DemonicRage 40%, Portia 43%,
-Combat 43%, JollyNinja 47% and Scimitar 52%: half the field picks a target by something other than distance.
+nearer it than Hadur, so the surfer had given the shot a quarter of its weight or less. By shooter that share
+runs from 21% (Figment, which mostly shoots its nearest) to 68% (ACPFinal), with Diamond 36%, Combat 47%,
+DemonicRage 48%, Portia 54%, Scimitar 59% and JollyNinja 67%: half the field picks a target by something other
+than distance. (This run's records recomputed the weight at impact from the living opponents and counted a
+killing bullet's full damage; the record now carries the weight the surfer itself gave the shot and caps the
+damage at Hadur's energy. Rows with one opponent alive are the endgame duel, which the duel drives.)
 
 Read: in the crowd (five or more alive, where the deaths that cost the rank happen) about half the damage
 Hadur takes is from shots its surfer weighed at a quarter or less, or never saw. The nearest-robot crowd

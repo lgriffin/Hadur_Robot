@@ -140,5 +140,18 @@ class MeleeControllerTest {
         assertEquals(-1, hit.nearer);
         assertEquals(0, hit.weight, 1e-9);
         assertEquals("4.000,250,0,-1,0.000,3", hit.fields());
+
+        // A dead shooter's bullet still flies: its shot is matched, and a killing bullet takes
+        // no more than the energy Hadur had.
+        scan(controller.tracker, "a", 400, 500, 94, 61);
+        for (int t = 61; t <= 78; t++) {
+            controller.tick(new MeleeController.Situation(me, 0, 0, 5, t, 3));
+        }
+        controller.onRobotDeath("a");
+        controller.hitByBullet("a", 3, Math.PI, me, 78);
+        hit = controller.takeHit();
+        assertTrue(hit.seen);
+        assertEquals(5, hit.damage, 1e-9);
+        assertEquals(2, hit.alive);
     }
 }
