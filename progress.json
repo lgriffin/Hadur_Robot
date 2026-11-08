@@ -1,0 +1,22 @@
+{
+ "plan": "pc-hj-field",
+ "updated": 1794142370.274952,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "pilot": {
+   "status": "pending"
+  },
+  "field": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
