@@ -1,12 +1,16 @@
 {
  "plan": "pc-melee-three",
- "updated": 1794158305.6946015,
+ "updated": 1794159211.0270233,
  "steps": {
   "m3prep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 204,
+   "end": "2026-11-08T17:21:49"
   },
   "m3pilot": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-08T17:21:49"
   },
   "m3check": {
    "status": "pending"
@@ -30,5 +34,43 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "m3pilot",
+   "started": 1794158509.7300487,
+   "updated": 1794159211.0208762,
+   "elapsed": 701.2908275127411,
+   "expected": 184,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 32,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 164.26851098078427,
+   "eta": 3331.1314306855206,
+   "fraction": 0.17391304347826086,
+   "last_battle_age": 35.590075731277466,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 32"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 1 min ago"
+    }
+   ],
+   "skips_mean": 24.84375,
+   "skips_last100": 24.84375
+  }
+ ]
 }
