@@ -1,6 +1,6 @@
 {
  "plan": "pc-melee-three",
- "updated": 1794161923.8806245,
+ "updated": 1794162504.1884785,
  "steps": {
   "m3prep": {
    "status": "done",
@@ -9,37 +9,48 @@
    "end": "2026-11-08T17:21:49"
   },
   "m3pilot": {
-   "status": "running",
-   "start": "2026-11-08T17:21:49"
+   "status": "done",
+   "exit": 0,
+   "seconds": 3988,
+   "end": "2026-11-08T18:28:18"
   },
   "m3check": {
-   "status": "pending"
+   "status": "failed",
+   "exit": 1,
+   "seconds": 5,
+   "end": "2026-11-08T18:28:24"
   },
   "m3aa": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after m3check"
   },
   "m3bb": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after m3aa"
   },
   "m3th": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after m3bb"
   },
   "m3ts": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after m3th"
   },
   "m3read": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after m3ts"
   },
   "m3pr": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after m3read"
   }
  },
  "watched": [
   {
    "step": "m3pilot",
    "started": 1794158509.7300487,
-   "updated": 1794161923.8723333,
-   "elapsed": 3414.142284631729,
+   "updated": 1794162498.3735905,
+   "elapsed": 3988.6435418128967,
    "expected": 184,
    "panel": null,
    "field": null,
@@ -47,20 +58,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 156,
+   "battles": 184,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 164.4922657523565,
-   "eta": 612.7947690364642,
-   "fraction": 0.8478260869565217,
-   "last_battle_age": 1.2021028995513916,
+   "rate": 166.0714960000987,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 0.20337295532226562,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 156"
+     "detail": "0 failed of 184"
     },
     {
      "rule": "stall 30m",
@@ -69,8 +80,8 @@
      "detail": "last battle 0 min ago"
     }
    ],
-   "skips_mean": 24.73076923076923,
-   "skips_last100": 25.26
+   "skips_mean": 24.21195652173913,
+   "skips_last100": 24.23
   }
  ]
 }
