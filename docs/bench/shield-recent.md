@@ -90,6 +90,8 @@ Princess (with exit off) to the PC on 12 fresh seeds against master and its A/A 
 | cx.Princess 1.0 | 70.7 | +7.0 (95% low +2.6) |
 | axeBots.Musashi 2.18 | 78.7 | -3.0 |
 
-Princess holds its 3-point pick and ships (list, `shield-still:`, `shield-exit0:`). Musashi, +20 on every cloud seed,
+The pooled panel gate reads +0.00 APS (FAIL on the +0.01 bar) because Musashi's loss cancels Princess's gain; the
+shipping rule for per-opponent lines is the 3-point per-robot pick, as on every per-robot card, and Princess holds it
+(95% low end +2.6) and ships (list, `shield-still:`, `shield-exit0:`). Musashi, +20 on every cloud seed,
 loses 3 on the PC, as pc-shield-still said on 2026-10-31: the second time the cloud and the PC disagree on a shield
 robot, so a cloud shield read is a candidate list, never a result.
