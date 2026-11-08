@@ -2007,6 +2007,11 @@ failed and are removed (3.22 cleanup); the mimics live on in MOVE-33 and MOVE-34
   rounds and the 500-bullet modal offset stays on the old aim until the 150-damage exit. A `recent` switch (offsets
   from the last 20 bullets, BeepBoop's head-on bonus) read within noise of the still shield on 7 robots and worse on
   Princess; the exit, not the offset, is the constraint. Code removed; read in docs/bench/shield-recent.md.
+- **POW-17 banked (pc-race-power, BENCH-206, PR #695).** Whole-field screen at 2 seeds: rp +0.14 +- 0.16 APS over
+  1,194 robots, 19 picks at 5 points; confirm on 4 fresh seeds PASS +0.10 +- 0.05 APS, 8 held at 3 points: BeepBoop
+  +24.3, Nullstride +16.7, Neutrino +15.5, Diamond +15.3, Combat +13.8, Tomcat +10.8, Dookious +6.4, FoilistMC +5.9.
+  `ShieldTableData.racePowers()` carries the 8. pc-shield-audit (BENCH-209, PR #697): Princess +7.0 ships with still
+  and exit off; Musashi -3.0 stays off.
 - **BENCH-209.** The shield audit's cloud read (docs/bench/shield-recent.md): the still shield beat master on
   Musashi (+20 on 6 seeds) and Princess (+11 on 2 seeds; with the damage exit off +5 on one seed and +2 on 4 fresh ones) and lost on the other five
   BeepBoop-only robots read. `pc-shield-audit` re-measures the two on 12 fresh PC seeds against c and aa before any

@@ -528,6 +528,9 @@ final class ShieldTableData {
             // pc-rival-near (BENCH-163, PR #545): held on PC seeds 6500 and the cloud screen
             "intruder.PrairieWolf 2.61",
             "sheldor.nano.PointInLine 1.0",
+            // pc-shield-audit (BENCH-209, PR #697): Princess's learned aim moves after three exact rounds and the
+            // shield re-learns it only if the mode stays; +7.0 points on 12 fresh seeds
+            "cx.Princess 1.0",
         };
     }
 
@@ -574,6 +577,8 @@ final class ShieldTableData {
             "sheldor.nano.PointInLine 1.0",
             // pc-shelf (BENCH-180, PR #636): held +1 point or more on 12 fresh seeds
             "shinh.Entangled 0.3",
+            // pc-shield-audit (BENCH-209, PR #697): +7.0 points on 12 fresh seeds, with exit off
+            "cx.Princess 1.0",
         };
     }
 
@@ -685,10 +690,22 @@ final class ShieldTableData {
 
     /**
      * POW-17: the opponents the duel picks its bullet power against by the energy race
-     * ({@code race-power:} lines). Empty until a card's pick holds robots.
+     * ({@code race-power:} lines): the 8 robots pc-race-power (BENCH-206, PR #695) locked at a 3-point margin on
+     * 4 fresh seeds after a whole-field screen (confirm gate +0.10 +- 0.05 APS).
+     *
+     * @return a fresh array of names
      */
     static String[] racePowers() {
         return new String[] {
+            // pc-race-power (BENCH-206, PR #695): points over master on the 4 confirm seeds
+            "kc.mega.BeepBoop 2.0",          // +24.3
+            "jd.Nullstride 2.3.3",           // +16.7
+            "dragonbyte.Neutrino 4",         // +15.5
+            "voidious.Diamond 1.8.22",       // +15.3
+            "mn.Combat 3.25.0",              // +13.8
+            "lxx.Tomcat 3.68",               // +10.8
+            "voidious.Dookious 1.573c",      // +6.4
+            "sheldor.mini.FoilistMC 1.0",    // +5.9
         };
     }
 
