@@ -280,3 +280,4 @@ slugzilla.OrbitLinear 1.1 | rank839-band6 | slugzilla.OrbitLinear_1.1.jar
 ejbots.AngryGrandpappy 1.2 | rank916-band6 | ejbots.AngryGrandpappy_1.2.jar
 Noran.BitchingElk 0.054 | rank964-band6 | Noran.BitchingElk_0.054.jar
 projectx.TestNano 1.0 | rank1038-band6 | projectx.TestNano_1.0.jar
+cx.Princess 1.0 | rank207-band4 | cx.Princess_1.0.jar
