@@ -1,6 +1,6 @@
 # Queue pc-team-close: progress
 
-Updated 2026-11-08 01:55:57 PC time (01:55 UTC), runner pid 24944.
+Updated 2026-11-08 02:11:05 PC time (02:11 UTC), runner pid 24944.
 
 - `tcprep` done, exit 0 in 2 min
 - `tcbb1` done, exit 0 in 27 min
@@ -26,15 +26,16 @@ Stopping now would leave 8 battles unrun (about 1 min); every battle already fou
 
 ### tctc1
 
-**0 of 368 battles** (0%), 0 failed. Running 1 min. Last battle 1 min ago.
+**191 of 368 battles** (52%), 0 failed. Running 16 min, 702 battles/h, about 15 min left (ends ~02:26 PC time). Last battle 0 min ago.
+Skipped turns a battle: 19.8 overall, first 100 19.9, last 100 19.4.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 0 |
-| `stall 30m` | halt | ok | last battle 1 min ago |
-| `skips 60 over 200` | halt | waiting | 0 of 200 battles to read |
+| `fails 60` | halt | ok | 0 failed of 191 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 60 over 200` | halt | waiting | 191 of 200 battles to read |
 
-Stopping now would leave 368 battles unrun; every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 177 battles unrun (about 15 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -49,4 +50,5 @@ Stopping now would leave 368 battles unrun; every battle already fought is kept 
 01:54:46 tcbb1 exit=0 in 1633 s
 01:54:46 start tctc1
 01:54:46 watching tctc1: 3 stop rule(s)
+01:57:58 progress tctc1: 10/368 (3%) battles, 187/h, ETA 1.9 h, 0 failed, skips 16.4/battle (last 100)
 ```
