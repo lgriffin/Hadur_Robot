@@ -2582,7 +2582,7 @@ of the three had one. Read field-wide against both baselines (43 teams):
   read -0.6 ± 1.3 on 22 teams. Confirmed field-wide by BENCH-205 and shipped.
 - **BENCH-205.** Card plans/pc-team-close.queue: aa, bb and `tmclose` on 46 teams; a 4-seed pilot
   gated against both baselines (stop under zero), then 12 seeds from 9600 and the +0.15 APS gate.
-  2,208 battles an arm in all, 0 failed. **PASS (PR #696): +0.56 ± 0.42 APS** (45 teams, sum
+  1,104 battles an arm in all (the 4-seed pilot's 368 among them), 0 failed. **PASS (PR #696): +0.56 ± 0.42 APS** (45 teams, sum
   +26.0 over 46; the pilot read +0.19 ± 1.10), the A/A control -0.07. A broad small gain: GrofGroup
   +5.2 ± 2.6 is the one team clear on its own, then Aleph +3.9, Firestarter +3.0, ArmyOfShiz +2.8,
   HOFSwarm +2.6; OgiTeam -3.2 ± 4.2 the largest loss, inside noise. Rounds won +0.3 ± 0.7, focus

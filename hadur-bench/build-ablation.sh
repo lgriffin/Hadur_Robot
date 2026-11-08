@@ -143,8 +143,9 @@
 #         inside 100 px (FieldGun.rams). Off a team the skip stays. Three ramming teams take 1.6-2.1 APS
 #         of the gap to 5th-6th (docs/plan-team-top5.md). Suffix rm. MGUN-10 ships it: use --ref v3.15.
 #   tmfire (team only) T7, TMODE-9: MATEFIRE against every team (teammates' bullets as danger). Suffix mb.
-#   thunt250, thunt200 (team only) TMODE-13's hunt place 250 / 200 px from the prey, not 350, against
-#         every team (hunting closer in; FAR/FARTHER lost in pc-team-counters, PR #370). Suffix hr25 / hr20.
+#   thunt250, thunt200 (team only) TMODE-13's hunt place 250 / 200 px from the prey against every team
+#         (both radii; FAR/FARTHER lost in pc-team-counters, PR #370). CLOSE ships 250 px on every team
+#         (PR #700), so on master thunt250 is the shipped build and thunt200 the arm. Suffix hr25 / hr20.
 #   tmpath (team only) TMODE-25: PATH against every team (Firestarter's path check: each candidate's drive
 #         checked tick by tick against the teammates' bullets in flight); the teams the table names
 #         play it on top of their entry. Suffix mp.
@@ -555,8 +556,13 @@ for a in "${list[@]}"; do
             edit "$modes" "public static final boolean FORCE_HUNT = true;" "public static final boolean FORCE_HUNT = false;"
             ;;
         thunt250|thunt200)
+            # Both radii, since CLOSE ships on every team (PR #700) and the hunt reads HUNT_CLOSE:
+            # on master thunt250 is the shipped build and thunt200 the 200 px arm.
             r="${a#thunt}"; version="${version}hr${r:0:2}"
             edit "$trisk" "static final double HUNT_RADIUS = 350;" "static final double HUNT_RADIUS = $r;"
+            if grep -qF "static final double HUNT_CLOSE = 250;" "$trisk"; then
+            edit "$trisk" "static final double HUNT_CLOSE = 250;" "static final double HUNT_CLOSE = $r;"
+            fi
             ;;
         tmtab|tmlock)
             if [[ "$a" == tmtab ]]; then table="${TEAM_MODE_TABLE:-$here/work/team-modes-screen.java}"; version="${version}${TEAM_MODE_SUFFIX:-mt}"
