@@ -26,7 +26,43 @@ class AesRoundTest(unittest.TestCase):
         self.assertEqual(" 0- 0", R.bucket(0))
         self.assertEqual(" 1- 2", R.bucket(2))
         self.assertEqual("15-34", R.bucket(34))
-        self.assertEqual("35+", R.bucket(35))
+        self.assertEqual(R.LATE, R.bucket(35))
+        self.assertIn(R.LATE, R.LABELS)
+
+    def test_battle_directory_names_take_every_bench_label(self):
+        for name, arm in (("abc.Shadow_3.83c-10700-c", "c"), ("abc.Shadow_3.83c-10700-aa", "aa"),
+                          ("x.Y_1.0-3-pf.2_B", "pf.2_B")):
+            m = R.DIR.match(name)
+            self.assertIsNotNone(m, name)
+            self.assertEqual(arm, m.group("arm"))
+            self.assertEqual("10700" if "10700" in name else "3", m.group("seed"))
+        self.assertIsNone(R.DIR.match("abc.Shadow_3.83c-10700-baseline-x"))
+
+    def test_strictly_top_excludes_ties(self):
+        self.assertTrue(R.strictly_top([0.1, 0.5, 0.2], 1))
+        self.assertFalse(R.strictly_top([0.5, 0.5, 0.2], 1))
+        self.assertFalse(R.strictly_top([0.5, 0.5, 0.2], 0))
+        self.assertTrue(R.strictly_top([-math.inf, 0.5, -math.inf], 1))
+
+    def test_report_pairs_seeds_and_lists_late_rounds(self):
+        def counter(waves, hit):
+            return {"waves": float(waves), "hit": float(hit), "dmg": 0.0, "avoidable": 0.0, "allhit": 0.0,
+                    "ranked": 0.0, "top": 0.0, "topfirst": 0.0, "topviews": 0.0}
+        stats = {"c": {" 0- 0": counter(10, 1), R.LATE: counter(10, 2)}, "aa": {" 0- 0": counter(10, 1)},
+                 "x": {" 0- 0": counter(10, 3)}}
+        # c fought seeds 1 and 2 against bot A, x only seed 1 (with a different rate on seed 2 unfought)
+        perbot = {"c": {"A": {1: counter(10, 1), 2: counter(10, 5)}},
+                  "aa": {"A": {1: counter(10, 1), 2: counter(10, 5)}},
+                  "x": {"A": {1: counter(10, 2)}}}
+        totals = {a: {"records": 0, "real": 0, "matched": 0, "bullets": 0} for a in ("c", "aa", "x")}
+        text = R.report(stats, perbot, totals)
+        self.assertIn("| c | %s | 10 |" % R.LATE, text, "the late bucket has its row")
+        self.assertIn("x minus c", text, "c is the reference even though aa sorts first")
+        self.assertNotIn("minus aa", text)
+        # the paired row uses seed 1 alone: c 0.100, x 0.200
+        self.assertIn("| A | 1 | 10 | 0.100 | 0.200 | +0.100 |", text)
+        with self.assertRaises(SystemExit):
+            R.report(stats, perbot, totals, ref="zz")
 
     def test_views_only_rebuilds_the_blend_or_falls_back(self):
         t = terms(0.0, 0.0, [0.2, 0.6], [1.0, 1.0])

@@ -3,16 +3,18 @@
 round bucket, and did its danger rank the hit option highest?  The battle-level instrument for a danger
 member (docs/bench/gun-oracle.md, 2026-11-09): oracle bits pick candidates, this gates them.
 
-    python3 data/tools/aes_round.py WORKDIR --out REPORT.md
+    python3 data/tools/aes_round.py WORKDIR --out REPORT.md [--ref ARM]
 
 WORKDIR is a multi-arm bench run of `aesrec` builds with truth logs on (no --no-truth-log), whose battle
 directories are WORKDIR/battles/<slug>-<seed>-<arm>/.  Each record is matched to its bullet by
 aes_rank.join_battle.  Per arm and round bucket: waves, the share whose chosen option the bullet hit, the
 share where another present option would have missed (avoidable), the share where every option was hit,
-how often the blend's danger (VIEW_SCORE, the views mixed with the members) ranked the hit option top
-when exactly one option was hit, the same for the views alone (rebuilt from the logged parts) and for the
-option's whole first-wave danger, and the bullet damage taken per wave.  Then the same over all rounds,
-and per opponent the hit share of each arm against the first, with a paired mean and interval.
+how often the blend's danger (VIEW_SCORE, the views mixed with the members) ranked the hit option
+strictly top when exactly one option was hit (a tie for top is not top), the same for the views alone
+(rebuilt from the logged parts) and for the option's whole first-wave danger, and the bullet damage taken
+per wave.  Then the same over all rounds, and per opponent the hit share of each arm against the
+reference arm (--ref, `c` when the run has one) over the seeds both arms fought, with a paired mean and
+interval over opponents.
 """
 import argparse
 import math
@@ -24,16 +26,24 @@ from collections import defaultdict
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import aes_rank as A  # noqa: E402
 
-DIR = re.compile(r"^(?P<slug>.+)-(?P<seed>\d+)-(?P<arm>[a-z0-9]+)$")
+# <slug>-<seed>-<arm>: the arm label as the bench accepts it (hadur.bench.Arms: letters, digits, '.' and '_').
+DIR = re.compile(r"^(?P<slug>.+)-(?P<seed>\d+)-(?P<arm>[A-Za-z0-9._]+)$")
 BUCKETS = [(0, 0), (1, 2), (3, 6), (7, 14), (15, 34)]
+LATE = "35+"
+LABELS = ["%2d-%2d" % x for x in BUCKETS] + [LATE]
 
 
 def bucket(rnd):
-    """The round bucket's label, '35+' past the last."""
+    """The round bucket's label, LATE past the last."""
     for lo, hi in BUCKETS:
         if lo <= rnd <= hi:
             return "%2d-%2d" % (lo, hi)
-    return "35+"
+    return LATE
+
+
+def strictly_top(scores, idx):
+    """Whether scores[idx] is above every other entry (a tie for top is not top)."""
+    return all(scores[idx] > scores[o] for o in range(len(scores)) if o != idx)
 
 
 def views_only(terms, views):
@@ -60,24 +70,24 @@ def tally(key, rec, hit, present, dmg):
         opts = rec["options"]
         key["ranked"] += 1
         vs = [opts[o][1][A.VIEW_SCORE] if present[o] else -math.inf for o in range(3)]
-        key["top"] += max(range(3), key=lambda o: vs[o]) == hits[0]
+        key["top"] += strictly_top(vs, hits[0])
         fs = [opts[o][1][A.FIRST] if present[o] else -math.inf for o in range(3)]
-        key["topfirst"] += max(range(3), key=lambda o: fs[o]) == hits[0]
+        key["topfirst"] += strictly_top(fs, hits[0])
         vo = [views_only(opts[o][1], rec["views"]) if present[o] else -math.inf for o in range(3)]
-        key["topviews"] += max(range(3), key=lambda o: vo[o]) == hits[0]
+        key["topviews"] += strictly_top(vo, hits[0])
 
 
 def read(workdir):
-    """(stats[arm][bucket], perbot[arm][slug], totals[arm]) over every battle directory."""
+    """(stats[arm][bucket], perbot[arm][slug][seed], totals[arm]) over every battle directory."""
     base = os.path.join(workdir, "battles")
     stats = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
-    perbot = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+    perbot = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(float))))
     totals = defaultdict(lambda: defaultdict(int))
     for name in sorted(os.listdir(base)):
         m = DIR.match(name)
         if not m:
             continue
-        arm, slug = m.group("arm"), m.group("slug")
+        arm, slug, seed = m.group("arm"), m.group("slug"), int(m.group("seed"))
         rows, st = A.join_battle(os.path.join(base, name))
         for k, v in st.items():
             totals[arm][k] += v
@@ -89,51 +99,67 @@ def read(workdir):
             hit = [o is not None and A.inside(heading, o[1][A.LOW], o[1][A.HIGH]) for o in opts]
             dmg = A.bullet_damage(power)
             tally(stats[arm][bucket(rec["round"])], rec, hit, present, dmg)
-            tally(perbot[arm][slug], rec, hit, present, dmg)
+            tally(perbot[arm][slug][seed], rec, hit, present, dmg)
     return stats, perbot, totals
+
+
+def pooled(counters):
+    """One counter dict summing the given ones."""
+    s = defaultdict(float)
+    for c in counters:
+        for k, v in c.items():
+            s[k] += v
+    return s
 
 
 def rate(s, k, n="waves"):
     return s[k] / s[n] if s[n] else float("nan")
 
 
-def report(stats, perbot, totals):
+def report(stats, perbot, totals, ref=None):
+    """The Markdown report; ref is the reference arm (`c` when present, else the first by name)."""
+    arms = sorted(perbot)
+    if ref is None:
+        ref = "c" if "c" in perbot else (arms[0] if arms else None)
+    elif ref not in perbot:
+        raise SystemExit("no battles of the reference arm %r; arms here: %s" % (ref, ", ".join(arms)))
     lines = ["# AES by round: first ratings against the real bullet", ""]
     for arm in sorted(totals):
         t = totals[arm]
         lines.append("arm %s: records %d, real %d, matched %d of %d bullets" % (arm, t["records"], t["real"], t["matched"], t["bullets"]))
     lines += ["", "| arm | rounds | waves | hit chosen | avoidable | all hit | blend ranks hit top | views-only top | first ranks hit top | dmg/wave |",
               "|---|---|---|---|---|---|---|---|---|---|"]
-    for b in ["%2d-%2d" % x for x in BUCKETS]:
+    for b in LABELS:
         for arm in sorted(stats):
-            s = stats[arm][b]
-            if not s["waves"]:
+            s = stats[arm].get(b)
+            if not s or not s["waves"]:
                 continue
             lines.append("| %s | %s | %d | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f |" % (
                 arm, b, s["waves"], rate(s, "hit"), rate(s, "avoidable"), rate(s, "allhit"),
                 rate(s, "top", "ranked"), rate(s, "topviews", "ranked"), rate(s, "topfirst", "ranked"), rate(s, "dmg")))
     lines += ["", "| arm | waves | hit chosen | avoidable | blend ranks hit top | views-only top | dmg/wave |", "|---|---|---|---|---|---|---|"]
     for arm in sorted(stats):
-        s = defaultdict(float)
-        for b in stats[arm].values():
-            for k, v in b.items():
-                s[k] += v
+        s = pooled(stats[arm].values())
         lines.append("| %s | %d | %.3f | %.3f | %.3f | %.3f | %.3f |" % (
             arm, s["waves"], rate(s, "hit"), rate(s, "avoidable"), rate(s, "top", "ranked"), rate(s, "topviews", "ranked"), rate(s, "dmg")))
-    arms = sorted(perbot)
-    if len(arms) >= 2:
-        ref = arms[0]
-        for arm in arms[1:]:
-            lines += ["", "## Per opponent: hit share of the chosen option, %s minus %s" % (arm, ref), "",
-                      "| opponent | waves | %s | %s | diff |" % (ref, arm), "|---|---|---|---|---|"]
+    if ref is not None and len(arms) >= 2:
+        for arm in arms:
+            if arm == ref:
+                continue
+            lines += ["", "## Per opponent: hit share of the chosen option, %s minus %s (seeds both fought)" % (arm, ref), "",
+                      "| opponent | seeds | waves | %s | %s | diff |" % (ref, arm), "|---|---|---|---|---|---|"]
             diffs = []
             for slug in sorted(perbot[ref]):
-                if slug not in perbot[arm]:
+                seeds = sorted(set(perbot[ref][slug]) & set(perbot[arm].get(slug, {})))
+                if not seeds:
                     continue
-                sc, sp = perbot[ref][slug], perbot[arm][slug]
+                sc = pooled(perbot[ref][slug][x] for x in seeds)
+                sp = pooled(perbot[arm][slug][x] for x in seeds)
+                if not sc["waves"] or not sp["waves"]:
+                    continue
                 hc, hp = rate(sc, "hit"), rate(sp, "hit")
                 diffs.append(hp - hc)
-                lines.append("| %s | %d | %.3f | %.3f | %+.3f |" % (slug, sc["waves"], hc, hp, hp - hc))
+                lines.append("| %s | %d | %d | %.3f | %.3f | %+.3f |" % (slug, len(seeds), sc["waves"], hc, hp, hp - hc))
             if diffs:
                 n = len(diffs)
                 mean = sum(diffs) / n
@@ -146,8 +172,9 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("workdir")
     ap.add_argument("--out", required=True)
+    ap.add_argument("--ref", help="the reference arm (default c when the run has one, else the first by name)")
     a = ap.parse_args()
-    text = report(*read(a.workdir))
+    text = report(*read(a.workdir), ref=a.ref)
     with open(a.out, "w") as f:
         f.write(text)
     print(text, end="")
