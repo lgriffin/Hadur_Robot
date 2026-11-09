@@ -854,21 +854,6 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeController.java" \
                 "public static final boolean MELEE_CROSS = false;" "public static final boolean MELEE_CROSS = true;"
             version="${version}xh" ;;
-        pgentle|pedge)
-            # Posture arms, second round (cloud only, read by scratchpad sc/posture.py and sc/shadow.py):
-            # pgentle: corner and wall penalties off, a gentle corner pull (-0.15 over 400 px); pedge: penalties
-            # off and the centre push doubled, no corner pull. Suffixes pg, pe.
-            mrm="$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java"
-            edit "$mrm" "static final double WALL_K = 0.3;" "static final double WALL_K = 0;"
-            if [[ "$a" == pgentle ]]; then
-                edit "$mrm" "static final double CORNER_K = 0.5;" "static final double CORNER_K = -0.15;"
-                edit "$mrm" "static final double CORNER_RANGE = 120;" "static final double CORNER_RANGE = 400;"
-                version="${version}pg"
-            else
-                edit "$mrm" "static final double CORNER_K = 0.5;" "static final double CORNER_K = 0;"
-                edit "$mrm" "static final double CENTRE_K = 0.25;" "static final double CENTRE_K = 0.5;"
-                version="${version}pe"
-            fi ;;
         msurf)
             # The melee surfer (MMOVE-15), off a team only; duel and team fixtures bit for bit. It ships
             # on from 3.21, so on master msurf builds the robot as it is.

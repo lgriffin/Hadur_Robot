@@ -541,7 +541,24 @@ corner's apex, where its candidate ring has nowhere to go; ScalarR sits in the s
 The posture is not the lever on its own, and a pull is the wrong way to it; the arms were removed. What ScalarR's
 corner buys depends on a dodge that still works with 50 px of wall room, which Hadur's mover does not have.
 
+A second round kept Hadur moving: `pg` (penalties off, a gentle pull of -0.15 over 400 px) and `pe` (penalties off,
+the centre push doubled, no pull). Same fields and seed:
+
+| Hadur arm | nearest px | nearest-of | corner ticks | wall room | bullets aimed at it | hit per aimed bullet | hit, under 60 px of wall | damage taken / round | crowd deaths |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| master | 443 | 0.91 | 17% | 102 | 7,917 | 12% | 13% of 2,128 | 66.9 | 21% |
+| pc | 455 | 0.79 | 28% | 64 | 7,350 | 14% | 16% of 5,041 | 68.3 | 20% |
+| pg | 478 | 0.79 | 38% | 59 | 7,046 | 15% | 16% of 5,095 | 72.9 | 24% |
+| pe | 470 | 0.79 | 30% | 52 | 7,470 | 15% | 15% of 5,515 | 70.7 | 27% |
+
+Every step toward the walls trades 6 to 11% fewer bullets aimed at Hadur for a higher hit rate on the ones that
+are, and the trade never pays: with its wall room under 60 px Hadur is hit by 15 to 18% of the bullets aimed at it
+against 13% in master's rare visits and ScalarR's 13 to 14% at the same wall room. The posture arms were all
+removed. The melee lever, as far as these crowds can show it, is the dodge with little wall room: the surfer's
+candidate ring and its guesses were made for the open field, and Hadur pays for every tick it spends at a wall.
+
 Four parts of the melee gap have now been measured in the same crowds and tried one at a time: the wave model
 (four flat arms), the firepower (MGUN-22, failed on the PC), the target choice, and the posture (this section).
-Each of ScalarR's parts imitated alone has lost; its edge is the parts together, and the next design has to be a
-mover that holds the posture while it dodges, read by the same posture and per-bullet numbers before any score.
+Each of ScalarR's parts imitated alone has lost; its edge is the parts together. The next design is the dodge at the
+walls (the per-aimed-bullet hit rate under 60 px of wall room, 15 to 18% today against ScalarR's 13%), read by the
+same traced numbers before any posture change or score.
