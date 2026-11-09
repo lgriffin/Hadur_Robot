@@ -105,6 +105,8 @@ public class MinimumRiskMovement {
     static final double MATE_FAN = 120;
     /** TMODE-2: a shot's weight is 1/(1+k)^2 for k teammates nearer its shooter; under this it makes no bullets. */
     static final double SOFT_FLOOR = 0.1;
+    /** Guess factor of a third default guess for shots without learned aims; 0 for none (cloud arm mmid). */
+    static final double MID_GUESS = 0;
     static final double SWITCH_GAIN = 0.9;
     static final double REACHED = 20;
 
@@ -417,6 +419,12 @@ public class MinimumRiskMovement {
             at.heading, at.velocity, s.speed(), field.width, field.height);
         add(new VirtualBullet(s, VirtualBullet.Aim.HEAD_ON, hot, w));
         add(new VirtualBullet(s, VirtualBullet.Aim.LINEAR, linear, w));
+        if (MID_GUESS > 0 && at != null) {
+            // A third default guess part way to the linear aim, where half the hits on Hadur land
+            // (docs/bench/melee-top3.md, the guess factors of 10,164 traced bullets at Hadur).
+            double mid = hot + MID_GUESS * TeamDanger.maxEscape(s) * TeamDanger.direction(s, at);
+            add(new VirtualBullet(s, VirtualBullet.Aim.HEAD_ON, mid, w));
+        }
     }
 
     /**

@@ -867,6 +867,17 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeController.java" \
                 "public static final boolean MELEE_CROSS = false;" "public static final boolean MELEE_CROSS = true;"
             version="${version}xh" ;;
+        mnolearn)
+            # Cloud arm: the melee surfer never swaps head-on and linear for learned aims (the
+            # crowd damage taken per round is flat over 35 rounds). Suffix nl.
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/TeamDanger.java" \
+                "static final int MIN_SAMPLES = 5;" "static final int MIN_SAMPLES = Integer.MAX_VALUE;"
+            version="${version}nl" ;;
+        mmid)
+            # Cloud arm: a third default guess at guess factor 0.4 beside head-on and linear. Suffix md.
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
+                "static final double MID_GUESS = 0;" "static final double MID_GUESS = 0.4;"
+            version="${version}md" ;;
         msurf)
             # The melee surfer (MMOVE-15), off a team only; duel and team fixtures bit for bit. It ships
             # on from 3.21, so on master msurf builds the robot as it is.
