@@ -562,3 +562,21 @@ Four parts of the melee gap have now been measured in the same crowds and tried 
 Each of ScalarR's parts imitated alone has lost; its edge is the parts together. The next design is the dodge at the
 walls (the per-aimed-bullet hit rate under 60 px of wall room, 15 to 18% today against ScalarR's 13%), read by the
 same traced numbers before any posture change or score.
+
+### Which aims hit Hadur at the wall (2026-11-09)
+
+The bullets aimed at each robot (within the escape angle), by the aim's guess factor and the target's wall room at
+the fire, master Hadur and ScalarR in the same fields (scratchpad `sc/wallgf.py`, `sc/wallspeed.py`):
+
+| wall room under 60 px | aimed | hit | behind (GF < -0.15) | head-on | mid (0.15 to 0.6) | linear (0.6+) |
+|---|---:|---:|---:|---:|---:|---:|
+| Hadur: share of aims / hit rate | 2,128 | 13% | 16% / 5% | 51% / 12% | 24% / 15% | 9% / **29%** |
+| ScalarR: share of aims / hit rate | 5,558 | 14% | 15% / 7% | 56% / 15% | 22% / 16% | 6% / 14% |
+| Hadur in the open (150 px or more) | 1,301 | 10% | 14% / 4% | 61% / 8% | 21% / 16% | 4% / 22% |
+
+At a wall, Hadur is hit by 29% of the linear aims fired at it, ScalarR by 14%; head-on and mid aims hit the two
+alike. Hadur is not slower there (mean speed 5.7 against ScalarR's 5.0; still 5% of ticks against 12%): it runs
+along the wall at a steady speed and is led. Two cloud arms test the two obvious causes on the same fields, read by
+this table: `pnopast` drops the past-position penalty (`PAST_K` 0.02 to 0), which charges Hadur for reversing over
+ground it has just covered; `plinwall` doubles the linear guess's weight for shots fired while Hadur had under
+60 px of wall room (`WALL_LINEAR_BOOST`, 1 on master).
