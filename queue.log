@@ -5,3 +5,5 @@
 07:52:29 start pilot
 07:52:29 watching pilot: 4 stop rule(s)
 07:53:16 progress pilot: 40/1434 (3%) battles, 3101/h, ETA 27 min, 0 failed, skips 43.7/battle (last 100), aa -0.05, pf -0.02
+08:23:36 progress pilot: 1432/1434 (100%) battles, 2742/h, ETA 0 min, 0 failed, skips 37.1/battle (last 100), aa +0.01, pf -0.09
+08:27:50 pilot exit=2 in 2121 s
