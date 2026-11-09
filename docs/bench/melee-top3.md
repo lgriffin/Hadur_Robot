@@ -356,3 +356,130 @@ the next step: the curve is flat from k = 3 up (12% to 7%), so the surfer gains 
 shots apart by k alone; a per-shooter table (Diamond, Portia, Lunar and Glacier put 42 to 50% of their
 shots at their third-nearest or further, Figment and Numbat shoot nearest) or the 23% of hits no inferred
 shot matches are the parts of the danger model still unread.
+
+## The hits no inferred shot matches (MSENSE-3, the energy ledger, 2026-11-09)
+
+The MH read (MMOVE-26) left 23% of the damage Hadur takes with no inferred shot behind it. To see why, the 12
+census fields were fought again (seed 5300, 20 rounds) with the recorder, so Hadur's own scans and hit events
+(the replay transcript) sit beside the trace's truth of every bullet. Every one of the 1,831 hits found its
+bullet in the trace, so each unseen hit can be put against the two scans of its shooter that bracket the fire.
+
+| why the inferred shot is missing | hits | damage | share of unseen damage |
+|---|---:|---:|---:|
+| another robot's bullet hit the shooter in the same scan gap (drop over 3, read as damage) | 71 | 755 | 30% |
+| the shooter's own bullet hit another robot in the gap (3 x power back, read as a gain) | 60 | 642 | 26% |
+| the shooter's own bullet hit Hadur in the gap (3 x power back; Hadur knows this one exactly) | 47 | 360 | 14% |
+| the shooter was not scanned again before the bullet arrived | 28 | 242 | 10% |
+| both: hit and landed in the gap | 20 | 217 | 9% |
+| drop over 3 with no bullet event in the trace (wall or ram) | 17 | 167 | 7% |
+| other | 22 | 118 | 4% |
+
+The same classifier over the 1,569 seen hits puts 95% of them in "drop equals the power", so the split is
+sound. Over every pair of consecutive scans of every robot (238,400 pairs, 54,225 with a shot in the gap),
+MSENSE-2 reads the shot cleanly 80% of the time; the lost fifth splits the same way: the shooter's bullet
+landed on another robot 38% (its shot was itself tracked in two thirds of those), the shooter was hit 29%
+(the hitting shot tracked in 70%), two bullet events in one gap 12%, wall or ram 8%, its bullet hit Hadur 5%.
+A drop over 3 with the shooter's gun cool holds a shot 73% of the time; with the gun hot, never.
+
+MSENSE-3 (`MeleeController.ENERGY_LEDGER`, arm `mledger`, suffix lg) books what Hadur knows of those
+changes. A hit on Hadur by a shooter of power q gives it 3q, exactly. A drop over 3 is put against the one
+other tracked shot whose wave reached the shooter between its two scans (the same geometry as MMOVE-19), and
+what is left over the bullet's damage is the shot. A gain is put against the one tracked shot of the shooter's
+own whose wave reached another living robot in the gap, and 3 x its power less the gain is the shot. A shot is
+read only when one power explains the change, that power is a bullet's, and the shooter's gun, by its last
+tracked shot, could have cooled. The ledger's own measure is the MH record: the unseen share should fall from
+23% to about 10%.
+
+### First read of the ledger (cloud, 2026-11-09)
+
+Paired smoke, the 12 census fields x 2 seeds (seed 5500, 35 rounds), `mledger` against the A/A build:
+
+| measure | ledger | baseline | diff |
+|---|---:|---:|---:|
+| score share | | | +0.23 ± 0.39 |
+| crowd deaths per 100 rounds | | | -3.7 ± 3.7 |
+| crowd damage per tick | | | -0.45 ± 0.60 |
+| skipped turns (sum) | 606 | 607 | none |
+| MH: hits with no inferred shot, share of damage | 14% | 20% | |
+| MH: hits surfed | 64% | 59% | |
+
+The recorded and traced run of the same 12 fields with the ledger on (seed 5300, 20 rounds) put the unseen
+damage at 12.0% against 16.6% off, and showed what the ledger still missed. The hits on Hadur the shooter
+earned back were all but gone (47 to 12 hits) and its landings on other robots halved (60 to 38), but a
+shooter hit by another robot's bullet stayed where it was (71 to 69 hits, 43% of the damage still unseen).
+The cause was the "exactly one candidate" rule: when a shooter is hit, two to five tracked waves of two to five
+different powers straddle it in its scan gap (68 of 69 cases had the true wave among them, none had it alone).
+Filtering the candidates by what their damage leaves of the drop (a bullet's power, or nothing) leaves one
+power in 39 of the 69, two in 13, none in 13. The ledger now reads that way on both branches.
+
+### Second read (2026-11-09): the sensing is fixed, the score does not move
+
+With the residual filter the recorded run's unseen damage fell to 10.1% (1,506 of 14,873), the figure the
+first study predicted: a hit shooter 71 to 37 hits, its own landing 60 to 22, its hit on Hadur 47 to 5. What is
+left is a drop over 3 with no bullet event in the trace (wall or ram, 25%), a shooter not scanned again before
+its bullet arrived (12%), and the hit shooters where two powers still fit (27%). The MH record of the second
+paired smoke (seed 5600, 24 pairs) says the same: hits with no inferred shot 20% to 10% of damage, surfed 60%
+to 67%, dropped as aimed elsewhere 20% to 23%.
+
+| paired smoke, 12 census fields x 2 seeds | share | crowd deaths per 100 rounds |
+|---|---:|---:|
+| seed 5500 | +0.23 ± 0.39 | -3.7 ± 3.7 |
+| seed 5600 (residual filter) | -0.22 ± 0.50 | +3.0 ± 4.7 |
+| pooled, 48 pairs | +0.01 ± 0.32 | |
+
+Skipped turns per battle were the same in both arms. Verdict: seeing one shot in ten more does not change the
+melee score. The surfer already had the waves that mattered; the hits it takes come from waves it had and
+weighed wrong (23% of damage is a shot it held under weight 0.1 because other robots stood nearer the shooter)
+or surfed and still took (67%). The lever is in the weighing and the choice, not in the sensing. MSENSE-3 is not
+carded for the PC and does not ship: the ledger code, its arm and its requirement were taken out of the PR
+(the no-dead-switch rule); the study and tools stay as the record, and the code is in the branch history.
+
+Tools: scratchpad `ms/unseen.py` (hits against the trace and transcript), `ms/gaps.py` (every scan pair),
+`ms/cadence.py` (each robot's power constancy, 69%, and how often it fires within a tick of its gun cooling, 84%).
+
+## Where the bullets at Hadur go, and what the surfer learns (2026-11-09)
+
+Three reads of the ledger-on recorded run (12 census fields, seed 5300, 20 rounds, 52,000 traced shots) and the
+MH record of the seed-5600 paired smoke, taken after the ledger showed that sensing is not the lever.
+
+**Who a shooter aims at.** A bullet's target is the living robot nearest its heading at the fire (within 25
+degrees). Given k robots nearer the shooter than Hadur, the chance it is aimed at Hadur is 0.45, 0.18, 0.13,
+0.11, 0.11, 0.09 for k = 0 to 5, close to MMOVE-15's 1/(1+k)^2. Shooters persist: when a shooter's previous
+shot was at Hadur, the next is at Hadur with 0.51 against the base 0.16, at every k (0.76, 0.50, 0.44, 0.37
+for k = 0 to 3). The aim of a miss is unknowable in battle, but the shooter's last landed bullet is: when it
+landed on Hadur (onHitByBullet, exact) the next shot is at Hadur with 0.60, 0.33, 0.28, 0.20 for k = 0 to 3,
+against 0.41, 0.15, 0.12, 0.11 when it landed on another robot. The signal is real but thin where it would
+matter: of the 335 hits on Hadur from shots held under the 0.1 floor (k of 3 or more), 27 came from a shooter
+whose last bullet had landed on Hadur.
+
+**Where the bullets go.** For the 10,164 bullets aimed at Hadur with three or more robots alive, the guess
+factor (GF; +1 is the full escape angle in Hadur's direction of travel, the linear aim):
+
+| GF band | of all bullets at Hadur | of the 1,546 that hit |
+|---|---:|---:|
+| within 0.1 of head-on (0) | 38% | 27% |
+| 0.2 to 0.9 (between the two default guesses) | 36% | 52% |
+| within 0.1 of the linear aim | 19% | 27% |
+| behind Hadur (GF under -0.1) | 15% | 13% |
+
+The surfer's default guesses are head-on and linear (MMOVE-15), each carrying the shot's weight; nothing sits
+between them, where half the hits land. Near shooters (under 300 px) spread further toward the linear aim.
+
+**What the learned aims buy.** Once a shooter's log holds five hits on Hadur, its shot's danger is its four
+nearest learned aims in place of the guesses. Crowd damage taken per round, 24 master battles of 35 rounds:
+
+| rounds | 0-4 | 5-9 | 10-14 | 15-19 | 20-24 | 25-29 | 30-34 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| damage per round | 51.5 | 52.0 | 50.3 | 49.9 | 53.7 | 46.0 | 48.9 |
+| hits per round | 5.10 | 4.95 | 4.86 | 5.04 | 5.16 | 4.42 | 4.72 |
+
+Flat. The ledger arm reads the same (58.7 in rounds 0-4, 56.3 in rounds 30-34). Whatever the melee surfer
+learns from a shooter's hits does not lower the hits it takes from that shooter later in the battle.
+
+**Cloud arms (seed 5700, 12 fields x 2 seeds each, paired against master):** `mnolearn` (the guesses are never
+replaced by learned aims), `mmid` (a third default guess at GF 0.4, `MinimumRiskMovement.MID_GUESS`), and both.
+Read (24 pairs each): `mnolearn` -0.28 ± 0.59 share, crowd deaths +4.6 ± 4.4 per 100 rounds;
+`mmid` +0.15 ± 0.49, crowd deaths -1.3 ± 3.7; both -0.23 ± 0.39. Neither moves the score at this size; the
+learned aims may be worth a few crowd deaths, and a third guess buys nothing visible. The arms and the
+`MID_GUESS` constant were removed. Four wave-model changes in a row (weights, sensing, aims, learning) read
+flat on the cloud: the melee gap is not in the wave model. Tools: scratchpad `ms-lg2/persist3.py`, `ms-lg2/gf.py`.
