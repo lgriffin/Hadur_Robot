@@ -12,7 +12,7 @@ Seed blocks: r1 4100, r2 4200, r3 4300, r1x 4500, r1z 4600. Reports: `docs/bench
 `saor-r1x-wfr.md`, `saor-r1z-wfr.md`, and for section 9 `saor-r1x-wng.md`, `saor-r1z-wng.md`,
 `saor-r1x-wnh.md`, `saor-r1z-wnh.md`, `saor-r1x-wgv.md`, `saor-r1z-wgv.md`,
 `saor-r1x-wnz.md`, `saor-r1z-wnz.md`, and for section 10 `saor-<block>-wcd.md`, `-wtd.md`, `-wtb.md`,
-`-wte.md`, `-wbg.md` and `-wto.md`.
+`-wte.md`, `-wbg.md`, `-wto.md` and `-wtr.md` (which also carries WTN).
 
 ## Result
 
@@ -106,8 +106,12 @@ The movement went from -3.0 to about -0.6 over about 45 designs. The steps that 
       nothing on an own movement, as on WNF;
     - WTB without the duel orbit (WTO -0.43, -0.70, -0.45 on r1, r1z, r3; WTB -0.69, -0.36, -0.45):
       the same, so the orbit no longer earns its place once the legs follow the threat.
-    Following who actually hits us is the first signal that closed the gap; the rest of WTB's
-    shortfall is inside about 0.3.
+    - half the nearer of the target and the threat (WTN -0.38, -0.37, -0.41, -0.67, -0.42, about
+      -0.45);
+    - WTB with the threat cleared at each round start and its range set from its last seen position
+      on the hit (WTR -0.50, -0.15, -0.78, -0.67, -0.33, about -0.49).
+    Following who actually hits us is the first signal that closed the gap. WTB, WTN and WTR sit
+    within noise of each other (about -0.3 to -0.5); WTB's -0.32 is the best read of the family.
 
 **Where WNF still loses** (C against WNF over the three blocks, 11,340 rounds each): duels end in a
 win equally often (85.9% and 85.8%). WNF dies 13% more often in the crowd (4,778 deaths against
