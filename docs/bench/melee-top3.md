@@ -410,8 +410,28 @@ shooter hit by another robot's bullet stayed where it was (71 to 69 hits, 43% of
 The cause was the "exactly one candidate" rule: when a shooter is hit, two to five tracked waves of two to five
 different powers straddle it in its scan gap (68 of 69 cases had the true wave among them, none had it alone).
 Filtering the candidates by what their damage leaves of the drop (a bullet's power, or nothing) leaves one
-power in 39 of the 69, two in 13, none in 13. The ledger now reads that way on both branches; the next read is
-of the same recorded run and smoke at seed 5600.
+power in 39 of the 69, two in 13, none in 13. The ledger now reads that way on both branches.
+
+### Second read (2026-11-09): the sensing is fixed, the score does not move
+
+With the residual filter the recorded run's unseen damage fell to 10.1% (1,506 of 14,873), the figure the
+first study predicted: a hit shooter 71 to 37 hits, its own landing 60 to 22, its hit on Hadur 47 to 5. What is
+left is a drop over 3 with no bullet event in the trace (wall or ram, 25%), a shooter not scanned again before
+its bullet arrived (12%), and the hit shooters where two powers still fit (27%). The MH record of the second
+paired smoke (seed 5600, 24 pairs) says the same: hits with no inferred shot 20% to 10% of damage, surfed 60%
+to 67%, dropped as aimed elsewhere 20% to 23%.
+
+| paired smoke, 12 census fields x 2 seeds | share | crowd deaths per 100 rounds |
+|---|---:|---:|
+| seed 5500 | +0.23 ± 0.39 | -3.7 ± 3.7 |
+| seed 5600 (residual filter) | -0.22 ± 0.50 | +3.0 ± 4.7 |
+| pooled, 48 pairs | +0.01 ± 0.32 | |
+
+Skipped turns per battle were the same in both arms. Verdict: seeing one shot in ten more does not change the
+melee score. The surfer already had the waves that mattered; the hits it takes come from waves it had and
+weighed wrong (23% of damage is a shot it held under weight 0.1 because other robots stood nearer the shooter)
+or surfed and still took (67%). The lever is in the weighing and the choice, not in the sensing. MSENSE-3 is not
+carded for the PC and does not ship; the study and tools stay as the record.
 
 Tools: scratchpad `ms/unseen.py` (hits against the trace and transcript), `ms/gaps.py` (every scan pair),
 `ms/cadence.py` (each robot's power constancy, 69%, and how often it fires within a tick of its gun cooling, 84%).
