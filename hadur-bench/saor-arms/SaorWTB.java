@@ -2,6 +2,7 @@ package hadur117.micro;
 
 import java.awt.geom.Point2D;
 import robocode.AdvancedRobot;
+import robocode.HitByBulletEvent;
 import robocode.RobotDeathEvent;
 import robocode.Rules;
 import robocode.ScannedRobotEvent;
@@ -49,6 +50,9 @@ public class Saor extends AdvancedRobot {
     static double[] seenX = new double[512], seenY = new double[512], seenE = new double[512];
     static Point2D.Double goal = new Point2D.Double();
     static double targetBearing;
+    /** The robot that last hit us (null until one does), and its range at its latest scan. */
+    static String threat;
+    static double threatRange = 300;
     static int dir = 1;
 
     @Override
@@ -59,9 +63,10 @@ public class Saor extends AdvancedRobot {
     }
 
     /**
-     * WNF, Saor's own movement (0.4 candidate, docs/bench/saor-0.4-own-parts.md). In the crowd: legs
-     * between the two walls of the corner we are in, 25 off the wall, each to a random depth up to
-     * 225, every leg run to its end and crossing to the other wall. From two robots left: an orbit,
+     * WTB, Saor's own movement (0.4 candidate, docs/bench/saor-0.4-own-parts.md). In the crowd: legs
+     * between the two walls of the corner we are in, 25 off the wall, crossing to the other wall at
+     * each leg end; the depth along the wall is recomputed every tick as half the range of the robot
+     * that last hit us (the nearest until one has, at most 260). From two robots left: an orbit,
      * perpendicular to the target and edging to 300 away, reversing at the walls and at random
      * about every 25 ticks.
      */
@@ -80,14 +85,16 @@ public class Saor extends AdvancedRobot {
                 dir = -dir;
             }
             goal.setLocation(x, y);
-        } else if (getDistanceRemaining() == 0) {
-            double x = 25 + Math.random() * 200;
+        } else {
+            if (getDistanceRemaining() == 0) {
+                axis ^= 1;
+            }
+            double x = Math.min(260, (threat == null ? targetDistance : threatRange) / 2);
             double y = 25;
             if (axis > 0) {
                 y = x;
                 x = 25;
             }
-            axis ^= 1;
             goal.setLocation(myX > 500 ? 1000 - x : x, myY > 500 ? 1000 - y : y);
         }
         double turn;
@@ -106,6 +113,9 @@ public class Saor extends AdvancedRobot {
         seenX[hh] = myX + Math.sin(bearing) * e.getDistance();
         seenY[hh] = myY + Math.cos(bearing) * e.getDistance();
         seenE[hh] = e.getEnergy() + 20;
+        if (name.equals(threat)) {
+            threatRange = e.getDistance();
+        }
         // Nearest, sticky by name (SAOR-3).
         if ((distance = e.getDistance()) < targetDistance || name == targetName) {
             targetName = name;
@@ -172,7 +182,15 @@ public class Saor extends AdvancedRobot {
 
     /** Any death frees the target and the radar (SAOR-4). */
     @Override
+    public void onHitByBullet(HitByBulletEvent e) {
+        threat = e.getName();
+    }
+
+    @Override
     public void onRobotDeath(RobotDeathEvent e) {
+        if (e != null && e.getName().equals(threat)) {
+            threat = null;
+        }
         setTurnRadarRightRadians(targetDistance = Double.POSITIVE_INFINITY);
         if (e != null) {
             seenE[e.getName().hashCode() & 511] = 0;

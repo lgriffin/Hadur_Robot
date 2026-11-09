@@ -11,7 +11,8 @@ Seed blocks: r1 4100, r2 4200, r3 4300, r1x 4500, r1z 4600. Reports: `docs/bench
 `saor-r2-census.md`, `saor-r3-census.md`, `saor-r1x-census.md`, `saor-r1z-census.md`,
 `saor-r1x-wfr.md`, `saor-r1z-wfr.md`, and for section 9 `saor-r1x-wng.md`, `saor-r1z-wng.md`,
 `saor-r1x-wnh.md`, `saor-r1z-wnh.md`, `saor-r1x-wgv.md`, `saor-r1z-wgv.md`,
-`saor-r1x-wnz.md`, `saor-r1z-wnz.md`.
+`saor-r1x-wnz.md`, `saor-r1z-wnz.md`, and for section 10 `saor-<block>-wcd.md`, `-wtd.md`, `-wtb.md`,
+`-wte.md`, `-wbg.md` and `-wto.md`.
 
 ## Result
 
@@ -19,12 +20,13 @@ Seed blocks: r1 4100, r2 4200, r3 4300, r1x 4500, r1z 4600. Reports: `docs/bench
 |---|---|---|---|
 | Gun vote | GV: each playout's vote spread over 2 + ticks / 8 bins a side (at most 8) | +0.40 ± 0.41 | **pass** |
 | Target | TH: the robot we hit best for its distance, sticky by name | -0.29 ± 0.43 | miss (nearest) |
-| Movement | WNF: corner-wall legs to random depths, run to their end, orbit from two left | -0.71, -0.27, -0.89 over three blocks: about **-0.62 ± 0.24** | fail |
+| Movement | WTB: corner-wall legs whose depth is, every tick, half the range of the robot that last hit us | -0.69, -0.06, -0.45, -0.06, -0.36 over five blocks: about **-0.32 ± 0.19** | fail (closest) |
 | Gun chain | none: second-order, pattern match and wall-band chains all cost 1 to 4 | | fail |
 | Power | none: hit-rate and distance-band rules cost 0.5 to 1.1 | | fail |
 
 All own parts together (OWN: WNF + GV + TH) read -1.05 ± 0.39: GV and TH add nothing on top of
-WNF. The decision of 2026-11-07 is to keep designing movement before moving on to the gun chain.
+WNF, and WTB + GV (WBG) reads about -0.44 over five blocks against WTB's -0.32 (section 10). The
+decisions of 2026-11-07 are to keep designing movement before moving on to the gun chain.
 
 ## Gun and target (stages 2 and 3)
 
@@ -88,6 +90,25 @@ The movement went from -3.0 to about -0.6 over about 45 designs. The steps that 
    WNF's legs, run at full speed to their end with one reversal there, look like a local optimum of
    this family: the remaining gap needs a different idea, not a variant.
 
+10. **Legs that follow the threat** (2026-11-09). WNF fixes each leg's depth when the leg starts;
+    0.3 recomputes its depth every tick from the nearest robot's range. Own live signals, five
+    seed blocks where marked (r1, r2, r3, r1x, r1z; WNF -0.71, n/a, n/a, -0.27, -0.89):
+    - the crowd's mean scan distance, 25 + mean / 3 (WCR -1.42, -1.24 on r1x, r1z), plus a random
+      0-80 per leg (WCD -1.85, -1.88): worse than WNF;
+    - **the range of the robot that last hit us** (the nearest until one has), 25 + range / 3:
+      WTH -0.40, -0.32, -0.70, -0.13, -0.58, about -0.43; better than WNF on every shared block;
+    - depth range / 2, at most 260: **WTB -0.69, -0.06, -0.45, -0.06, -0.36, about -0.32 ± 0.19**,
+      the best own movement; shallower (40 + range / 4: WTS -0.36, -0.51 on r1x, r1z) and deeper
+      (range / 1.6, at most 320: WTD -0.36, -0.88) are worse;
+    - the threat forgotten 100 ticks after its last hit (WTE -0.30, -0.57 on r1, r1z; WTB -0.69,
+      -0.36) or the hardest hitter of the round (WTM -0.55, -0.72): no better;
+    - WTB with the GV vote width (WBG -0.47, -0.38, -0.57, -0.20, -0.56, about -0.44): GV adds
+      nothing on an own movement, as on WNF;
+    - WTB without the duel orbit (WTO -0.43, -0.70, -0.45 on r1, r1z, r3; WTB -0.69, -0.36, -0.45):
+      the same, so the orbit no longer earns its place once the legs follow the threat.
+    Following who actually hits us is the first signal that closed the gap; the rest of WTB's
+    shortfall is inside about 0.3.
+
 **Where WNF still loses** (C against WNF over the three blocks, 11,340 rounds each): duels end in a
 win equally often (85.9% and 85.8%). WNF dies 13% more often in the crowd (4,778 deaths against
 4,218), spread across many killers, mostly simple-gun nanos and micros (Ant, Quantum, NanoAndrew,
@@ -95,9 +116,9 @@ DustBunny, Wisdom, Troodon). The remaining gap is survival in the crowd, not the
 
 ## Code kept
 
-`hadur-bench/saor-arms/` keeps GV (pass), TH (nearest miss) and WNF (best movement). The failed arm
-sources and the stage cards were removed with this result. WNF's source was tidied for the commit
-with the same behaviour (the one-candidate risk loop it inherited is gone).
+`hadur-bench/saor-arms/` keeps GV (pass), TH (nearest miss) and WTB (best movement, which replaces
+WNF there on 2026-11-09). The failed arm sources and the stage cards were removed with each result;
+WTB's source was tidied for the commit with the same behaviour (the unused per-leg offset is gone).
 
 ## JayLexi k-NN (same run, BENCH-204)
 
