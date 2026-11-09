@@ -88,6 +88,14 @@ public final class FieldPrior {
         return centres[b];
     }
 
+    /**
+     * The oracle walks the orbit toward the wall in steps of this many escape angles and records
+     * the first step outside the field; the wave's distance is walked in hundredths, so it is
+     * rounded up to the same grid before binning, or a wall at 0.48 would read a different cell
+     * here than in the table.
+     */
+    static final double WALL_STEP = 0.05;
+
     static int bin(double value, double[] edges) {
         int s = 0;
         while (s < edges.length && value >= edges[s]) s++;
@@ -101,7 +109,7 @@ public final class FieldPrior {
     public int cell(Wave w) {
         int lat = bin(Math.abs(w.lateralVelocity()), FieldPriorData.LAT);
         int accel = bin(w.targetAccel, FieldPriorData.ACCEL);
-        int wall = bin(w.targetWallDistance, FieldPriorData.WALL);
+        int wall = bin(Math.ceil(w.targetWallDistance / WALL_STEP - 1e-9) * WALL_STEP, FieldPriorData.WALL);
         int flight = bin(w.targetDistance / w.bulletSpeed(), FieldPriorData.FLIGHT);
         int nLat = FieldPriorData.LAT.length + 1;
         int nAccel = FieldPriorData.ACCEL.length + 1;

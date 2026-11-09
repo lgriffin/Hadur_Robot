@@ -150,4 +150,21 @@ class FieldPriorTest {
         assertTrue(Math.abs(plainRatio - priorRatio) > 1e-6, plainRatio + " vs " + priorRatio);
         assertTrue(withPrior.getDangerScore(w, at, 0) > 0);
     }
+    @Test
+    @Tag("MOVE-35")
+    @DisplayName("the wall room is read on the oracle's 0.05 grid: 0.46 to 0.50 share the table's cell")
+    void wallGrid() {
+        FieldPrior prior = new FieldPrior();
+        Wave w = wave(Math.PI / 2, 8, 0.0);
+        w.targetWallDistance = 0.45;
+        int below = prior.cell(w);
+        w.targetWallDistance = 0.46;
+        int rounded = prior.cell(w);
+        w.targetWallDistance = 0.50;
+        int edge = prior.cell(w);
+        assertEquals(edge, rounded, "0.46 rounds up to the oracle's 0.50 sample");
+        assertTrue(below != edge, "0.45 is its own sample, below the edge");
+        w.targetWallDistance = 1.5;
+        assertEquals(2, (prior.cell(w) / 12) % 3, "the cap sits in the top wall bin");
+    }
 }
