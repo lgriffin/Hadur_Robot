@@ -1,6 +1,6 @@
 {
  "plan": "pc-field-prior",
- "updated": 1794212870.668017,
+ "updated": 1794212872.5761907,
  "steps": {
   "prep": {
    "status": "done",
@@ -15,13 +15,16 @@
    "end": "2026-11-09T08:27:50"
   },
   "screen": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after pilot"
   },
   "gate": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after screen"
   },
   "pr": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after gate"
   }
  },
  "watched": [
