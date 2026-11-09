@@ -854,6 +854,25 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeController.java" \
                 "public static final boolean MELEE_CROSS = false;" "public static final boolean MELEE_CROSS = true;"
             version="${version}xh" ;;
+        pcor|ppull|pfar)
+            # Posture arms (cloud only, read by scratchpad sc/posture.py against ScalarR's numbers):
+            # pcor drops the corner and wall penalties; ppull turns the corner term into a pull
+            # over 400 px; pfar adds the closest-robot factor 3. Suffixes pc, pp, pf.
+            mrm="$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java"
+            edit "$mrm" "static final double WALL_K = 0.3;" "static final double WALL_K = 0;"
+            case "$a" in
+                pcor) edit "$mrm" "static final double CORNER_K = 0.5;" "static final double CORNER_K = 0;"
+                      version="${version}pc" ;;
+                ppull|pfar)
+                      edit "$mrm" "static final double CORNER_K = 0.5;" "static final double CORNER_K = -0.5;"
+                      edit "$mrm" "static final double CORNER_RANGE = 120;" "static final double CORNER_RANGE = 400;"
+                      if [[ "$a" == pfar ]]; then
+                          edit "$mrm" "static final double CLOSEST_FACTOR = 2.0;" "static final double CLOSEST_FACTOR = 3.0;"
+                          version="${version}pf"
+                      else
+                          version="${version}pp"
+                      fi ;;
+            esac ;;
         msurf)
             # The melee surfer (MMOVE-15), off a team only; duel and team fixtures bit for bit. It ships
             # on from 3.21, so on master msurf builds the robot as it is.
