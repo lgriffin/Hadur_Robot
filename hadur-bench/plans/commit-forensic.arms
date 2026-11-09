@@ -1,0 +1,5 @@
+# Cloud AES forensic for MOVE-36 surf commitment (docs/bench/local/2026-11-09_view-rank.md): c is 3.21 with the AES
+# recorder on (aa,aesrec), cm the same with the commitment discount 0.8 (commit,aesrec). Scored on real hits by round
+# with the truth logs on.
+c | hadur117.Hadur 3.21aaar | bisect/hadur117.Hadur_3.21aaar.jar
+cm | hadur117.Hadur 3.21cmar | bisect/hadur117.Hadur_3.21cmar.jar
