@@ -253,4 +253,24 @@ class MeleeControllerTest {
         c.onScan("a", pt(100, 300), 300, 79, 0, 0, 10);
         assertEquals(1, c.tracker.shots(10).stream().filter(s -> s.shooter.equals("a")).count());
     }
+
+    @Test
+    @Tag("MSENSE-3")
+    void ledgerCorrectsAShotTheWorldReadLightBecauseOfItsHitOnHadur() {
+        MeleeController c = ledgered();
+        c.onScan("a", pt(400, 500), 200, 100, 0, 0, 0);
+        c.onScan("b", pt(100, 100), 360, 100, 0, 0, 0);
+        for (int t = 0; t <= 10; t++) c.tick(new MeleeController.Situation(me, 0, 0, 100, t, 2));
+        // a's power-0.5 bullet hits Hadur (1.5 back) and a fires power 3 in the same gap: the World
+        // reads the net drop, 1.5, as a shot of 1.5. The ledger puts the shot right.
+        c.hitByBullet("a", 0.5, Math.PI, me, 10);
+        c.onScan("a", pt(400, 500), 200, 98.5, 0, 0, 11);
+        EnemyShot shot = shotOf(c, "a", 11);
+        assertNotNull(shot);
+        assertEquals(3.0, shot.power, 1e-9);
+        // A net drop that no bullet's power explains once the gain is back is no shot at all.
+        c.hitByBullet("a", 2.0, Math.PI, me, 20);
+        c.onScan("a", pt(400, 500), 200, 96.5, 0, 0, 21);
+        assertEquals(1, c.tracker.shots(21).stream().filter(s -> s.shooter.equals("a")).count());
+    }
 }

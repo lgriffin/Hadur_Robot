@@ -124,6 +124,12 @@ public class EnemyTracker {
         return shot;
     }
 
+    /** MSENSE-3: forgets {@code shot}, one the ledger found to be misread; nothing when it is not kept. */
+    public void removeShot(EnemyShot shot) {
+        shots.remove(shot);
+        if (lastScanShot == shot) lastScanShot = null;
+    }
+
     /** The shot the last {@link #onScan} inferred, or null when it inferred none. */
     public EnemyShot lastScanShot() {
         return lastScanShot;

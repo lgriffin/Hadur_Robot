@@ -28,7 +28,7 @@ final class EnergyLedger {
 
     /** The engine's gun cooling: 0.1 heat a tick, and a shot heats the gun 1 + power / 5. */
     static final double COOLING_RATE = 0.1;
-    /** How far, px, a stale scan of a victim may be from where the wave met it: 8 px a tick, capped. */
+    /** How far, px, a victim's scan may be from where the wave met it: 8 px a tick of scan age and gap, capped. */
     static final double STALE_PX_PER_TICK = 8.0, MAX_STALE_PX = 100.0;
     private static final double EPS = 1e-6;
 
@@ -58,8 +58,14 @@ final class EnergyLedger {
      */
     EnemyShot resolve(EnemyInfo s, EnemyShot read, long now, List<EnemyInfo> alive) {
         Double gain = gains.remove(s.name);
-        if (read != null) return read;
         double loss = s.lastLoss();
+        if (read != null) {
+            if (gain == null) return read;
+            // The World read a shot from a drop that held a gain too: the shot was heavier by the
+            // gain, or, when that is no bullet's power, the drop was not one shot at all.
+            tracker.removeShot(read);
+            return shot(s.name, loss + gain, now);
+        }
         if (Double.isNaN(loss) || s.lastBumped()) return null;
         long a = s.previousScanTime(), b = s.lastScanTime;
         if (a < 0 || b <= a) return null;
@@ -89,7 +95,8 @@ final class EnergyLedger {
                 if (!w.shooter.equals(s.name)) continue;
                 for (EnemyInfo v : alive) {
                     if (v.name.equals(s.name) || v.location == null) continue;
-                    double stale = Math.min(MAX_STALE_PX, STALE_PX_PER_TICK * Math.max(0, now - v.lastScanTime));
+                    // The wave met v somewhere in s's scan gap; v's scan may be older or newer than that.
+                    double stale = Math.min(MAX_STALE_PX, STALE_PX_PER_TICK * (Math.max(0, now - v.lastScanTime) + (b - a)));
                     if (!reached(w, v, a, b, stale)) continue;
                     if (!Double.isNaN(q) && Math.abs(q - w.power) > 0.005) return null;
                     q = w.power;
