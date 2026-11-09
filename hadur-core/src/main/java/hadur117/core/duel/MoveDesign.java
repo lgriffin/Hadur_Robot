@@ -33,14 +33,6 @@ final class MoveDesign {
     static final boolean AES_RECORD = false;
 
     /**
-     * MOVE-36 (candidate, cloud forensic only, docs/bench/local/2026-11-09_view-rank.md): on a wave's
-     * later ratings the option taken last tick keeps its danger scaled by this factor before the
-     * three are compared, so the surf changes its mind only when another option is clearly better.
-     * 1 is the surf as shipped (no discount); the bench arm commit sets 0.8. Duel only.
-     */
-    static final double SURF_COMMIT = 1.0;
-
-    /**
      * ORACLE-1 (measurement, K0 of the road to king): each wave's first three-option rating also
      * prints an {@code ORC} record with every danger view's neighbours on the wave, for the offline
      * enemy-gun oracle ({@code data/tools/gun_oracle.py}). Behaviour unchanged.

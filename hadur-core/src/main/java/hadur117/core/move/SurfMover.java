@@ -77,10 +77,6 @@ public class SurfMover {
     private final Map<SurfOption, Point2D.Double> surfOptionDestinations = new HashMap<>();
     /** The wave surfed last tick; a different one resets the destinations and the cache. */
     private Wave lastWaveSurfed;
-    /** MOVE-36: the factor the option taken last tick keeps on its danger at a later rating of the same wave (1 off). */
-    private double commit = 1.0;
-    /** MOVE-36: the option taken at the last rating of {@link #lastWaveSurfed}; null at a wave's first rating. */
-    private SurfOption committed;
     /** AES-1: whether each wave's first three-option rating is recorded (bench builds only; off by default). */
     private boolean aesRecord;
     /** AES-1: while an option is rated for the record, where its first wave's terms go; else null. */
@@ -170,15 +166,6 @@ public class SurfMover {
      */
     public void setAesRecord(boolean on) {
         this.aesRecord = on;
-    }
-
-    /**
-     * MOVE-36: the discount the option taken last tick keeps on later ratings of the same wave.
-     *
-     * @param factor the danger multiplier, 1 for none
-     */
-    public void setCommit(double factor) {
-        this.commit = factor;
     }
 
     /** AES-1: the records made since the last call, oldest first; the list is then emptied. */
@@ -432,7 +419,6 @@ public class SurfMover {
             lastWaveSurfed = surfWave;
             lastSurfDestination = null;
             stopDestination = null;
-            committed = null;
         }
 
         boolean goingClockwise = lastSurfOption == SurfOption.CLOCKWISE;
@@ -448,10 +434,6 @@ public class SurfMover {
         double ccwDanger = surfOptionDangers.getOrDefault(SurfOption.COUNTER_CLOCKWISE, 0.0);
         double stopDanger = surfOptionDangers.getOrDefault(SurfOption.STOP, 0.0);
         double cwDanger = surfOptionDangers.getOrDefault(SurfOption.CLOCKWISE, 0.0);
-        // MOVE-36: the option taken last tick on this wave keeps its discount.
-        if (committed == SurfOption.COUNTER_CLOCKWISE) ccwDanger *= commit;
-        else if (committed == SurfOption.STOP) stopDanger *= commit;
-        else if (committed == SurfOption.CLOCKWISE) cwDanger *= commit;
 
         boolean takeStop = stopDanger <= ccwDanger && stopDanger <= cwDanger;
         boolean takeClockwise = cwDanger < ccwDanger;
@@ -478,7 +460,6 @@ public class SurfMover {
             stopDestination = null;
         }
 
-        committed = chosen;
         // MOVE-8: the plan just chosen, for the gun to read.
         moveCtrl.publishPlan(surfOptionChains.getOrDefault(chosen, List.of()));
         // MOVE-10: what each option planned on this wave, for the hit forensics.
