@@ -76,8 +76,10 @@ class FieldPriorPlanTest {
     void pilotStopsTheCard() throws IOException {
         String queue = Files.readString(Path.of("plans/pc-field-prior.queue"));
         String prep = step(queue, "prep", "pilot");
-        assertTrue(prep.contains("awk 'NR<=2 || (NR>2 && (NR-3)%5==0)' census-312.txt > work/panel-fpr-pilot.txt"),
-            "every fifth robot, the header kept");
+        assertTrue(prep.contains("awk 'NR<=2 || (NR>2 && (NR-3)%5==0)' census-312.txt | awk -F'|'"),
+            "every fifth robot by line, so the first run's battles resume");
+        assertTrue(prep.contains("NR == FNR {b[n] = 1; next} !(n in b)' broken-1.11.2.txt - > work/panel-fpr-pilot.txt"),
+            "less broken-1.11.2.txt's robots: they have no battles and the pilot analysis refuses an incomplete panel (issue #718)");
         String pilot = step(queue, "pilot", "screen");
         assertTrue(pilot.contains("--set work/panel-fpr-pilot.txt --seeds 2 --seed-base 10600 --arms plans/field-prior.arms --out ${W}"));
         assertTrue(pilot.contains("x5_card.py pilot ${W}/arms.tsv --names work/panel-fpr-pilot.txt --check pf=work/panel-fpr-pilot.txt@0.1 --ref c"));
