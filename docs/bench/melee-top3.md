@@ -223,8 +223,8 @@ energy. The trace is the input for the death-forensics pass.
 
 ## The hide posture (MHIDE-1..3, 2026-11-08): three cloud smokes, all losses, not merged
 
-Leigh, on the traces: "there are huge empty spaces that we don't try and move into, why?" and "We have no
-mechanic to try and hide and survive until the field whittles down." Built as a switch on the thread branch:
+The question from the traces was whether Hadur should use the field's empty spaces to hide and survive until
+the crowd thins. Built as a switch on the thread branch:
 with five or more alive, or three or more and Hadur under the median energy, the mover's candidates gained a
 7 × 7 field grid and each point paid 2 units of risk for every opponent it would make Hadur the nearest of,
 and the gun held unless the target was a finisher or already had Hadur as its nearest robot. Cloud smokes,
@@ -483,3 +483,41 @@ Read (24 pairs each): `mnolearn` -0.28 ± 0.59 share, crowd deaths +4.6 ± 4.4 p
 learned aims may be worth a few crowd deaths, and a third guess buys nothing visible. The arms and the
 `MID_GUESS` constant were removed. Four wave-model changes in a row (weights, sensing, aims, learning) read
 flat on the cloud: the melee gap is not in the wave model. Tools: scratchpad `ms-lg2/persist3.py`, `ms-lg2/gf.py`.
+
+## ScalarR and Hadur in the same crowds (2026-11-09)
+
+The 12 census fields were fought again (seed 5800, 20 rounds, traced) with ScalarR 0.005g.047 seated in each in
+place of the field's lowest-ranked robot, so both robots stand in the same ten-robot crowds. Over 240 rounds each,
+ticks with three or more alive (scratchpad `sc/posture.py`, `sc/guns.py`, `sc/targets.py`, `sc/shadow.py`):
+
+| in the crowd | ScalarR | Hadur |
+|---|---:|---:|
+| score share in these battles | 20.2 | 16.2 |
+| survival score / bullet damage score per battle | 7,883 / 2,968 | 7,062 / 2,366 |
+| mean place, deaths in the crowd (4+ alive) | 1.95, 14% | 2.76, 21% |
+| damage taken / dealt per round | 54 / 164 | 67 / 130 |
+| distance to the nearest robot | 521 px | 443 px |
+| robots within 400 px | 0.65 | 0.91 |
+| robots whose nearest robot it is | 0.66 | 0.91 |
+| wall room; share of ticks in a corner (both walls under 150 px) | 51 px; 43% | 102 px; 17% |
+| speed; energy | 5.3; 68 | 6.2; 59 |
+| bullets aimed at it (within the escape angle), per 240 rounds | 6,976 | 7,917 |
+| of those: hit it / taken by another robot on the way | 13% / 9% | 12% / 8% |
+| shots per round; mean power; landed anywhere (crowd only) | 49; 2.12; 28% | 48; 1.76; 27% |
+| landed anywhere, all phases (the endgame duel included) | 38% | 30% |
+| distance to the target at the fire; shots at its nearest robot | 772 px; 33% | 607 px; 51% |
+
+Three things follow. **Dodging per bullet is equal:** of the bullets aimed at each, ScalarR is hit by 13% and Hadur
+by 12%, and bot shadows take 9% and 8%. That is the fourth and last way the wave model turns out not to be the gap.
+**ScalarR is shot at less:** 12% fewer bullets are aimed at it because it stands 80 px further from everyone, in a
+corner two ticks in five, and is the nearest robot of 0.66 opponents against Hadur's 0.91. **ScalarR fires harder
+at the same crowd hit rate:** power 2.12 against 1.76 at 28% against 27%, and it chooses its target by hittability
+rather than nearness (a third of its shots go to robots with three or more others nearer), so it does 26% more
+damage; it also reaches the final duel more often, where its gun lands 38% overall against Hadur's 30%.
+
+Every one-part imitation of this has failed on the PC: ScalarR's power rule (MGUN-22), its step search with the
+corner pull (MMOVE-21), the nearest-target factor (MMOVE-24), and the hide posture on the cloud. None of those
+arms was checked against the posture numbers above; the hide posture, for one, raised the nearest load it was
+meant to lower. The next build therefore targets the posture itself (nearest robot 520 px or more, nearest-of
+0.7 or less, a corner two ticks in five, with the gun firing as now) and is read first against these numbers on
+traced cloud battles, and only then against the score.
