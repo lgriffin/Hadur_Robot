@@ -3,6 +3,7 @@
 
     python3 data/tools/gun_oracle.py join WORKDIR [WORKDIR ...] --out DATA.npz [--jobs 4]
     python3 data/tools/gun_oracle.py score DATA.npz --out REPORT.md [--classes TSV] [--tsv PER_BOT.tsv]
+    python3 data/tools/gun_oracle.py prior DATA.npz --out REPORT.md [--java FieldPriorData.java]
 
 A bench run of an `oracle` build (hadur-bench/build-ablation.sh; `aesrec,oracle` for the gate)
 leaves, per battle directory WORKDIR/battles/<slug>-<seed>/, a hadur.log with one ORC record per
@@ -35,6 +36,14 @@ log2 of its density at each bullet's guess factor over the uniform's, and its we
 score): exponential weights over the views. Only bullets the robot could have learned from count
 (the ones that hit it, `seen`, from the HF records), and only once they have arrived (fire time plus
 flight time), so the model uses nothing the robot would not know when it rates the wave.
+
+K1 step 3, the field prior (MOVE-35): a table of where the field's learning guns put their bullets,
+by the state they aimed at. `prior` cuts each rated bullet's wave features (abs lateral speed,
+acceleration, wall room ahead, flight time: PRIOR_FEATURES, PRIOR_EDGES) into a cell and counts
+the bullets of each cell by guess-factor bin (PRIOR_BINS over [-1, 1]). Scored leaving each
+opponent out of the table it is scored against (what a new opponent meets), alone and as a member
+of the rolling blend with aims at standing weight PRIOR_WEIGHT, and written as the Java data class
+the robot ships (FieldPriorData) from every opponent's bullets.
 
 The gate (K0 in the plan) checks the oracle is the surf, offline: on waves with both records, the
 views' score rebuilt from the neighbours over each option's plan interval equals the AES record's
@@ -764,6 +773,183 @@ def gate(z):
             int(checked.sum()), float(np.mean(choice[both][checked] == 1)) if checked.any() else float("nan"))
 
 
+PRIOR_FEATURES = (0, 2, 6, 8)   # WAVE_FEATURES: abs lateral speed, acceleration, wall ahead, flight time
+PRIOR_EDGES = ((2.0, 5.0, 7.0), (-0.5, 0.5), (0.5, 1.0), (25.0, 40.0, 55.0))  # FieldPriorData.LAT/ACCEL/WALL/FLIGHT
+PRIOR_BINS = 41         # guess-factor bins over [-1, 1] (FieldPriorData.GF_BINS)
+PRIOR_SMOOTH = 0.1      # the flat profile's share in each cell (FieldPrior.SMOOTH)
+PRIOR_MIN = 20          # a thinner cell reads as the flat profile (FieldPrior.MIN_BULLETS)
+PRIOR_WEIGHT = 2.0      # the member's standing weight against the views' 1 (FieldPrior.WEIGHT)
+
+
+def prior_cells(z):
+    """(cell per rated bullet, cells): the bullet's wave features cut at PRIOR_EDGES, the first feature's
+    index varying fastest, as FieldPrior.cell lays the table out."""
+    import numpy as np
+    feat = z["w_feat"].astype(np.float64)[z["wave"].astype(int)]
+    cell = np.zeros(len(feat), dtype=np.int64)
+    mult = 1
+    for col, edges in zip(PRIOR_FEATURES, PRIOR_EDGES):
+        cell += np.searchsorted(np.array(edges), feat[:, col]) * mult
+        mult *= len(edges) + 1
+    return cell, mult
+
+
+def prior_counts(z, cell, cells, bins=PRIOR_BINS):
+    """(cells x bins) bullets per cell and guess-factor bin, and (bots x cells x bins) each opponent's."""
+    import numpy as np
+    gf = np.clip(z["gf"].astype(np.float64), -1.0, 1.0)
+    gi = np.clip(np.round((gf + 1) / 2 * (bins - 1)).astype(int), 0, bins - 1)
+    bot = z["bot"].astype(int)
+    total = np.zeros((cells, bins))
+    np.add.at(total, (cell, gi), 1.0)
+    per = np.zeros((int(bot.max()) + 1, cells, bins))
+    np.add.at(per, (bot, cell, gi), 1.0)
+    return total, per
+
+
+def prior_profiles(counts, smooth=PRIOR_SMOOTH, least=PRIOR_MIN):
+    """(cells x bins) each cell's probability over the bins: its counts, a share `smooth` of the whole
+    table's profile mixed in; a cell under `least` bullets is the whole table's profile (FieldPrior)."""
+    import numpy as np
+    flat = counts.sum(axis=0)
+    flat = flat / max(flat.sum(), 1e-9)
+    tot = counts.sum(axis=1)
+    own = counts / np.maximum(tot, 1e-9)[:, None]
+    mixed = (1 - smooth) * own + smooth * flat[None, :]
+    return np.where((tot >= least)[:, None], mixed, flat[None, :])
+
+
+def prior_member(z, bins=PRIOR_BINS, leave_out=True):
+    """The field prior as a model: (surface waves x SAMPLES, value at the bullet's gf), each bullet scored
+    on the table fitted without its own opponent (`leave_out`), each bin's probability put through the
+    surf's kernel at the bin's guess factor, as MoveController.priorScore sums it."""
+    import numpy as np
+    cell, cells = prior_cells(z)
+    total, per = prior_counts(z, cell, cells, bins)
+    bot = z["bot"].astype(int)
+    gf = z["gf"].astype(np.float64)
+    mea = z["mea"].astype(np.float64)
+    half = np.arctan(HALF_WIDTH / np.maximum(z["dist"].astype(np.float64), HALF_WIDTH))
+    centres = np.linspace(-1.0, 1.0, bins)
+    grid = np.linspace(-1.0, 1.0, SAMPLES)
+    surface, value = np.full((len(gf), SAMPLES), np.nan), np.full(len(gf), np.nan)
+    for b in np.unique(bot):
+        prof = prior_profiles(total - per[b] if leave_out else total)
+        for i in np.nonzero(bot == b)[0]:
+            at = np.append(grid, gf[i]) * mea[i]
+            v = prof[cell[i]] @ kernel_mass(centres[:, None] * mea[i], at[None, :] - half[i], at[None, :] + half[i])
+            surface[i], value[i] = v[:SAMPLES], v[SAMPLES]
+    return surface, value
+
+
+def member_likelihood(member):
+    """(waves,) a member's density at the bullet's guess factor over the uniform's, as view_likelihoods."""
+    import numpy as np
+    s = np.clip(member[0], 0.0, None)
+    mass = (s.sum(axis=1) - 0.5 * (s[:, 0] + s[:, -1])) * (2.0 / (SAMPLES - 1))
+    ok = np.isfinite(mass) & (mass > 0) & np.isfinite(member[1])
+    dens = (1 - EPS) * np.clip(np.nan_to_num(member[1]), 0.0, None) / np.where(ok, mass, 1.0) + EPS * 0.5
+    return np.where(ok, dens / 0.5, np.nan)
+
+
+def mixture_with_members(z, weights, members):
+    """mixture_with_aims over the views, the aims and then `members` [(surface, value)], `weights`
+    (waves x views + 3 + len(members))."""
+    import numpy as np
+    n = z["surface"].shape[1]
+    comps = [mixture_part(z["surface"][:, v, :], z["at"][:, v], z["on"][:, v]) for v in range(n)]
+    comps += [mixture_part(*aim_values(z, i), np.ones(len(z["gf"]), dtype=bool)) for i in range(len(AIMS))]
+    comps += [mixture_part(np.nan_to_num(m[0]), m[1], np.isfinite(m[1])) for m in members]
+    wm = np.stack([np.where(c[2], weights[:, i], 0.0) for i, c in enumerate(comps)], axis=1)
+    den = wm.sum(axis=1)
+    den = np.where(den > 0, den, np.nan)
+    surface = sum(wm[:, i, None] * c[0] for i, c in enumerate(comps)) / den[:, None]
+    value = sum(wm[:, i] * c[1] for i, c in enumerate(comps)) / den
+    return surface, value
+
+
+def prior_java(z, path):
+    """Writes FieldPriorData.java: the table from every opponent's bullets, as the robot ships it."""
+    import numpy as np
+    cell, cells = prior_cells(z)
+    total, _ = prior_counts(z, cell, cells)
+    names = ("LAT", "ACCEL", "WALL", "FLIGHT")
+    docs = ("Lateral speed edges, px/tick.", "Acceleration edges, px/tick per tick.",
+            "Wall room ahead edges, in escape angles.", "Flight time edges, ticks.")
+    lines = ["package hadur117.core.move;", "", "/**",
+             " * MOVE-35: the field prior's table, fitted offline by {@code data/tools/gun_oracle.py prior} on the",
+             " * K1 oracle's bullets (docs/bench/gun-oracle.md, \"K1 step 3\"): %d enemy bullets from %d learning guns,"
+             % (len(cell), len(np.unique(z["bot"]))),
+             " * each counted once in the cell of the state it was aimed at and the guess-factor bin it went to.",
+             " * Generated: do not edit by hand.", " *",
+             " * <p>Cells are indexed lateral speed, then acceleration, then wall room ahead, then flight time",
+             " * (the first index varying fastest), with the bin edges {@link FieldPrior} reads. Each row is one",
+             " * cell's %d guess-factor bins over [-1, 1], as counts.</p>" % PRIOR_BINS, " */",
+             "final class FieldPriorData {", ""]
+    for name, doc, edges in zip(names, docs, PRIOR_EDGES):
+        lines += ["    /** %s */" % doc, "    static final double[] %s = {%s};" % (name, ", ".join("%.1f" % e for e in edges))]
+    lines += ["    /** Guess-factor bins over [-1, 1]. */", "    static final int GF_BINS = %d;" % PRIOR_BINS,
+              "    /** The bullets the table was fitted on. */", "    static final int BULLETS = %d;" % len(cell), "",
+              "    /** One cell a row: its bins' counts, comma-separated. */", "    static final String[] ROWS = {"]
+    for row in total:
+        lines.append('        "%s",' % ",".join(str(int(c)) for c in row))
+    lines += ["    };", "", "    private FieldPriorData() { }", "}"]
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
+
+
+def prior(path, out, java):
+    """Scores the field prior on DATA.npz (each opponent against a table without it) alone and in the
+    rolling blend, by round, and writes the shipped table's Java class when `java` is given."""
+    import numpy as np
+    z = dict(np.load(path))
+    bots = [str(b) for b in z["bots"]]
+    bot = z["bot"].astype(int)
+    rnd = z["round"].astype(int)
+    like = view_likelihoods(z)
+    both = np.concatenate([like, aim_likelihoods(z)], axis=1)
+    standing = [1.0] * like.shape[1] + [AIM_PRIOR] * len(AIMS)
+    rolling = mixture_with_aims(z, rolling_weights(z, both) * np.array(standing))
+    member = prior_member(z)
+    with_prior = mixture_with_members(z, rolling_weights(z, np.concatenate([both, member_likelihood(member)[:, None]], axis=1))
+                                      * np.array(standing + [PRIOR_WEIGHT]), [member])
+    models_ = [("blend (rolling, views + aims, K1)", rolling), ("field prior alone (each opponent left out)", member),
+               ("blend (rolling, views + aims + field prior, K1 step 3)", with_prior)]
+    nanmean = (lambda v: float(np.nanmean(v)) if np.isfinite(v).any() else float("nan"))
+    lines = ["# The field prior on the oracle's bullets", "",
+             "Data: `%s`, %d bullets, %d opponents; each opponent scored against the table fitted on the others. "
+             "Columns as `score`'s." % (os.path.basename(path), len(bot), len(bots)), "",
+             "| Model | bits | calibrated | safe | rank |", "|---|---|---|---|---|"]
+    rated = {}
+    for name, sv in models_:
+        b, s, r = rate(sv[0], sv[1], rank=True)
+        rated[name] = (b, s)
+        cb, mix = calibrated(b, bot, len(bots))
+        lines.append("| %s | %+.3f | %+.3f (%.2f) | %.3f | %.3f |" % (
+            name, nanmean(per_bot(b, bot, len(bots))), cb, mix, nanmean(per_bot(s, bot, len(bots))),
+            nanmean(per_bot(r, bot, len(bots)))))
+    lines += ["", "## By round", "", "| Rounds | bullets | rolling bits | rolling safe | with prior bits | with prior safe |",
+              "|---|---|---|---|---|---|"]
+    b0, s0 = rated[models_[0][0]]
+    b1, s1 = rated[models_[2][0]]
+    for lo, hi in ((0, 1), (1, 3), (3, 7), (7, 15), (15, 1000)):
+        m = (rnd >= lo) & (rnd < hi)
+        if not m.any():
+            continue
+        f = (lambda v: nanmean(per_bot(np.where(m, v, np.nan), bot, len(bots))))
+        lines.append("| %d-%d | %d | %+.3f | %.3f | %+.3f | %.3f |" % (lo, hi - 1 if hi < 1000 else rnd.max(), int(m.sum()),
+                                                                   f(b0), f(s0), f(b1), f(s1)))
+    d = per_bot(b1, bot, len(bots)) - per_bot(b0, bot, len(bots))
+    lines += ["", "Opponents the prior improves (bits): %d of %d." % (int(np.sum(d > 0)), int(np.sum(np.isfinite(d))))]
+    if java:
+        prior_java(z, java)
+        lines += ["", "Table written to `%s` from every opponent's bullets." % java]
+    with open(out, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
+    print("\n".join(lines))
+
+
+
 def score(path, out, classes_path, tsv):
     import numpy as np
     z = dict(np.load(path))
@@ -875,9 +1061,15 @@ def main():
     s.add_argument("--classes", default=os.path.join(os.path.dirname(__file__), "..", "..", "docs", "bench",
                                                        "local", "2026-10-18_census-classes.tsv"))
     s.add_argument("--tsv")
+    f = sub.add_parser("prior")
+    f.add_argument("data")
+    f.add_argument("--out", required=True)
+    f.add_argument("--java")
     a = p.parse_args()
     if a.cmd == "join":
         join(a.workdirs, a.out, a.jobs)
+    elif a.cmd == "prior":
+        prior(a.data, a.out, a.java)
     else:
         score(a.data, a.out, a.classes, a.tsv)
 

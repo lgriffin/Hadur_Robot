@@ -15,6 +15,7 @@ import hadur117.core.memory.ProfileLibrary;
 import hadur117.core.memory.Tiers;
 import hadur117.core.model.*;
 import hadur117.core.move.AimMembers;
+import hadur117.core.move.FieldPrior;
 import hadur117.core.move.GunMimics;
 import hadur117.core.move.StopAndGo;
 import hadur117.core.physics.ShotDodger;
@@ -320,9 +321,13 @@ public final class DuelController {
         // MOVE-33: the learning-gun mimics join the aim members when both switches are on.
         GunMimics memberMimics = duelOnly(MoveDesign.AIM_MEMBERS && MoveDesign.MIMIC_MEMBERS, enemiesTotal)
             ? new GunMimics() : null;
+        // MOVE-35: the field prior is the last aim member when both switches are on.
+        FieldPrior fieldPrior = duelOnly(MoveDesign.AIM_MEMBERS && MoveDesign.FIELD_PRIOR, enemiesTotal)
+            ? new FieldPrior() : null;
         this.moveController.setAimMembers(duelOnly(MoveDesign.AIM_MEMBERS, enemiesTotal)
-            ? new AimMembers(memberMimics == null ? 0 : memberMimics.size()) : null);
+            ? new AimMembers(memberMimics == null ? 0 : memberMimics.size(), fieldPrior != null) : null);
         this.moveController.setMemberMimics(memberMimics);
+        this.moveController.setFieldPrior(fieldPrior);
         this.surfMover = new SurfMover(battleField, predictor);
         this.surfMover.setAesRecord(MoveDesign.AES_RECORD);
         this.surfMover.setOracleRecord(MoveDesign.ORACLE_RECORD);
@@ -1359,7 +1364,7 @@ public final class DuelController {
         if (duelOnly(MoveDesign.AIM_MEMBERS && stackList.mimicOn(name), enemiesTotal)
                 && (moveController.aimMembers() == null || moveController.aimMembers().mimics() == 0)) {
             GunMimics mimics = new GunMimics();
-            moveController.setAimMembers(new AimMembers(mimics.size()));
+            moveController.setAimMembers(new AimMembers(mimics.size(), moveController.fieldPrior() != null));
             moveController.setMemberMimics(mimics);
             mimicOn = true;
         }

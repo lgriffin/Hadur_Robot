@@ -153,7 +153,7 @@ linear, mixed, linear+learning and head-on+learning guns, rammers and sitters ou
 | **rolling over the views and the three simple aims** | **+0.386** | **0.077** | **0.701** | **+1.621** | 0.024 | **0.895** |
 | hindsight: best fixed mix of the views | +0.387 | 0.075 | 0.706 | +1.543 | 0.024 | 0.874 |
 
-Reports: [learning-flat](local/2026-10-29_k1-step2-learning-flat-cloud.md),
+Reports: [field prior on k2](local/2026-11-09_k1-step3-field-prior-k2.md); [learning-flat](local/2026-10-29_k1-step2-learning-flat-cloud.md),
 [simple guns](local/2026-10-29_k1-step2-simple-cloud.md) (per robot: the matching `.tsv`), and the
 simple-gun battles ([2026-10-29_k1-simple-cloud-battles.md](local/2026-10-29_k1-simple-cloud-battles.md)).
 
@@ -215,10 +215,65 @@ ceiling is +0.056 calibrated bits, and the best of it plays at about +0.07 APS, 
 King's gap on these robots needs a member that knows something the views and simple aims don't.
 MOVE-29 stays off; it is not worth a confirm card on its own.
 
+## K1 step 3: the field prior (MOVE-35, 2026-11-09)
+
+Re-weighting the members Hadur has was spent at step 2: the best fixed mix in hindsight (+0.387) is
+where the rolling blend with aims already stands (+0.386). The next member had to carry information no
+view has. The inquisition of 2026-11-08 ([the 1v1 ledger](https://claude.ai/artifact/SPmKN18Hg3DrhtQNf1LqFS))
+and the replay study pointed at the same place: BeepBoop is hit 30% less than Hadur by the same guns from
+round 1, so part of what it knows, it knows before the battle starts. The shipped blend by round on the
+48 learning guns of `k2.npz` says where that bites:
+
+| Rounds | bullets | shipped bits | shipped safe |
+|---|---|---|---|
+| 0 | 1,291 | -0.575 | 0.139 |
+| 1-2 | 2,396 | -0.231 | 0.107 |
+| 3-6 | 5,233 | +0.103 | 0.098 |
+| 7-14 | 10,613 | +0.350 | 0.087 |
+| 15-34 | 27,186 | +0.385 | 0.074 |
+
+For the first three rounds the views are empty or nearly so and the surf drives on the no-data guess
+(head-on weight 3, 0.85 of the escape angle weight 1): worse than a uniform guess, and bullets from the
+third the surf drives into at 14%, twice the late-round rate.
+
+Two priors fitted offline were scored, each bullet's model built without its own opponent:
+
+- **A field prior**: where the other 47 learning guns put their bullets, given the state Hadur was in
+  when the enemy aimed (the oracle's wave features). As a k-NN member (K 150 over all nine features)
+  it scores +0.359 calibrated bits alone, more than the shipped blend, and in the rolling blend at
+  standing weight 1 lifts it to +0.434, safe 0.077 to 0.070, rank 0.701 to 0.710. A table over four
+  features (lateral speed 4 bins, acceleration 3, wall room ahead 3, flight time 4; 144 cells of 41
+  guess factors, each cell a tenth of the whole table's profile mixed in) keeps all of it: +0.440 at
+  standing weight 2, safe 0.068, rank 0.713, 32 of 36 opponents better in bits. By round: 0-0
+  +0.360 / 0.074, 1-2 +0.370 / 0.060, 3-6 +0.415 / 0.075, 7-14 +0.448 / 0.072, 15-34 +0.458 / 0.067.
+- **A per-opponent prior**: the same opponent's own bullets from rounds 18-34, standing in for a
+  previous battle, scored on rounds 0-17. Alone +0.533, with the rolling blend at standing weight 3
+  +0.555 against +0.361 without it, safe 0.084 to 0.061. That is the size of the prize if each robot's
+  gun model were carried into the battle; it needs per-opponent data the robot does not ship yet, and
+  a real previous battle is a weaker stand-in than the same battle's late rounds. It is the next
+  step, not this one.
+
+The field prior ships as `FieldPrior` (hadur-core, `MoveDesign.FIELD_PRIOR`, off; ablation `fprior`,
+suffix pf): the last aim member, standing weight 2, each bin's share times the surf's kernel on the
+bin's angle through the shadows, scored on hits like the aims and so weighed down once the views have
+learnt this gun. `gun_oracle.py prior DATA.npz --out REPORT.md --java FieldPriorData.java` fits and
+scores the table and writes the data class; the shipped one is from `k2.npz` (46,719 bullets, 48
+opponents) and the PC's `oracle-k1.npz` (779,545 bullets, 432 opponents) refits it in one step.
+
+What the oracle cannot say: how much of a smaller safest-third leak becomes score. The aim members'
++0.067 bits and 8.1% to 7.7% read as +0.03 +- 0.64 pp in the cloud and +0.07 +- 0.15 APS on the PC's
+432 learning guns. The prior's step is three times that (7.7% to 6.8%, and the first rounds fixed), so
+a census-weighted cloud smoke (`hadur-bench/prior-smoke-cloud.txt`, every 25th robot of census-312
+across all six bands, `plans/prior-smoke.arms`: c, aa, pf, 2 seeds from 10600) decides whether it goes
+to a PC card.
+
+**Empty views.** With the prior on, the empty-view fallback (head-on 3 : wide 1) no longer ends the blend: scaled to a member's units it stands as member 0 and the prior and aims speak, as the oracle scores them. With the prior off the fallback is the danger, as before. This is the round-0 window where the shipped model scored worst.
+
 ## Next
 
-- **Aim members**: measured (above), off. K1 by re-weighting is done.
-- **New information, not new weights**: the next oracle candidates are members built on features no view
-  uses yet, scored on `oracle-k1.npz` (on the PC) before any battle.
+- **Aim members**: measured (above), on from 3.20 for the simple guns' sake. K1 by re-weighting is done.
+- **Field prior** (step 3, above): cloud smoke, then a PC card.
+- **Per-opponent prior**: the oracle's biggest read (+0.555); needs the robot to carry each opponent's gun model
+  into the battle, fitted on the PC's `oracle-k1.npz`.
 
 Nothing here ships: no release, no table line, and 1v1 behaviour is unchanged with the switches off.
