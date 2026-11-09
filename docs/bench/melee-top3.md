@@ -390,6 +390,29 @@ read only when one power explains the change, that power is a bullet's, and the 
 tracked shot, could have cooled. The ledger's own measure is the MH record: the unseen share should fall from
 23% to about 10%.
 
+### First read of the ledger (cloud, 2026-11-09)
+
+Paired smoke, the 12 census fields x 2 seeds (seed 5500, 35 rounds), `mledger` against the A/A build:
+
+| measure | ledger | baseline | diff |
+|---|---:|---:|---:|
+| score share | | | +0.23 ± 0.39 |
+| crowd deaths per 100 rounds | | | -3.7 ± 3.7 |
+| crowd damage per tick | | | -0.45 ± 0.60 |
+| skipped turns (sum) | 606 | 607 | none |
+| MH: hits with no inferred shot, share of damage | 14% | 20% | |
+| MH: hits surfed | 64% | 59% | |
+
+The recorded and traced run of the same 12 fields with the ledger on (seed 5300, 20 rounds) put the unseen
+damage at 12.0% against 16.6% off, and showed what the ledger still missed. The hits on Hadur the shooter
+earned back were all but gone (47 to 12 hits) and its landings on other robots halved (60 to 38), but a
+shooter hit by another robot's bullet stayed where it was (71 to 69 hits, 43% of the damage still unseen).
+The cause was the "exactly one candidate" rule: when a shooter is hit, two to five tracked waves of two to five
+different powers straddle it in its scan gap (68 of 69 cases had the true wave among them, none had it alone).
+Filtering the candidates by what their damage leaves of the drop (a bullet's power, or nothing) leaves one
+power in 39 of the 69, two in 13, none in 13. The ledger now reads that way on both branches; the next read is
+of the same recorded run and smoke at seed 5600.
+
 Tools: scratchpad `ms/unseen.py` (hits against the trace and transcript), `ms/gaps.py` (every scan pair),
 `ms/cadence.py` (each robot's power constancy, 69%, and how often it fires within a tick of its gun cooling, 84%).
 
