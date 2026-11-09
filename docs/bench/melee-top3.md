@@ -436,3 +436,46 @@ carded for the PC and does not ship; the study and tools stay as the record.
 Tools: scratchpad `ms/unseen.py` (hits against the trace and transcript), `ms/gaps.py` (every scan pair),
 `ms/cadence.py` (each robot's power constancy, 69%, and how often it fires within a tick of its gun cooling, 84%).
 
+## Where the bullets at Hadur go, and what the surfer learns (2026-11-09)
+
+Three reads of the ledger-on recorded run (12 census fields, seed 5300, 20 rounds, 52,000 traced shots) and the
+MH record of the seed-5600 paired smoke, taken after the ledger showed that sensing is not the lever.
+
+**Who a shooter aims at.** A bullet's target is the living robot nearest its heading at the fire (within 25
+degrees). Given k robots nearer the shooter than Hadur, the chance it is aimed at Hadur is 0.45, 0.18, 0.13,
+0.11, 0.11, 0.09 for k = 0 to 5, close to MMOVE-15's 1/(1+k)^2. Shooters persist: when a shooter's previous
+shot was at Hadur, the next is at Hadur with 0.51 against the base 0.16, at every k (0.76, 0.50, 0.44, 0.37
+for k = 0 to 3). The aim of a miss is unknowable in battle, but the shooter's last landed bullet is: when it
+landed on Hadur (onHitByBullet, exact) the next shot is at Hadur with 0.60, 0.33, 0.28, 0.20 for k = 0 to 3,
+against 0.41, 0.15, 0.12, 0.11 when it landed on another robot. The signal is real but thin where it would
+matter: of the 335 hits on Hadur from shots held under the 0.1 floor (k of 3 or more), 27 came from a shooter
+whose last bullet had landed on Hadur.
+
+**Where the bullets go.** For the 10,164 bullets aimed at Hadur with three or more robots alive, the guess
+factor (GF; +1 is the full escape angle in Hadur's direction of travel, the linear aim):
+
+| GF band | of all bullets at Hadur | of the 1,546 that hit |
+|---|---:|---:|
+| within 0.1 of head-on (0) | 38% | 27% |
+| 0.2 to 0.9 (between the two default guesses) | 36% | 52% |
+| within 0.1 of the linear aim | 19% | 27% |
+| behind Hadur (GF under -0.1) | 15% | 13% |
+
+The surfer's default guesses are head-on and linear (MMOVE-15), each carrying the shot's weight; nothing sits
+between them, where half the hits land. Near shooters (under 300 px) spread further toward the linear aim.
+
+**What the learned aims buy.** Once a shooter's log holds five hits on Hadur, its shot's danger is its four
+nearest learned aims in place of the guesses. Crowd damage taken per round, 24 master battles of 35 rounds:
+
+| rounds | 0-4 | 5-9 | 10-14 | 15-19 | 20-24 | 25-29 | 30-34 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| damage per round | 51.5 | 52.0 | 50.3 | 49.9 | 53.7 | 46.0 | 48.9 |
+| hits per round | 5.10 | 4.95 | 4.86 | 5.04 | 5.16 | 4.42 | 4.72 |
+
+Flat. The ledger arm reads the same (58.7 in rounds 0-4, 56.3 in rounds 30-34). Whatever the melee surfer
+learns from a shooter's hits does not lower the hits it takes from that shooter later in the battle.
+
+**Cloud arms (seed 5700, 12 fields x 2 seeds each, paired against master):** `mnolearn` (the guesses are never
+replaced by learned aims), `mmid` (a third default guess at GF 0.4, `MinimumRiskMovement.MID_GUESS`), and both.
+If the learned aims are inert, `mnolearn` reads flat; if the gap between the guesses is where the surfer
+fails, `mmid` reads up. Tools: scratchpad `ms-lg2/persist3.py`, `ms-lg2/gf.py`.
