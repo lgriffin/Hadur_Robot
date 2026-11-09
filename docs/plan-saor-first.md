@@ -372,3 +372,7 @@ between the corner's two walls to random depths, run to their end, and an orbit 
 left), costs about 0.6 over three seed sets and has not passed the gate; the decision of
 2026-11-07 is to keep designing movement before the gun chain. The stage cards have been removed
 with the failed arms; the arms still in play are GV, TH and WNF.
+
+Status 2026-11-09: legs whose depth follows, every tick, half the range of the robot that last hit
+us (WTB) cost about 0.32 over five seed sets, the closest own movement yet, still short of the gate.
+GV adds nothing on top of it. The arms still in play are GV, TH and WTB, which replaces WNF.
