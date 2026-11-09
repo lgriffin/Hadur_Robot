@@ -3,6 +3,7 @@ package hadur117.core.move;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import hadur117.core.model.SeedWeight;
 import hadur117.core.model.Wave;
 import hadur117.core.physics.BattleField;
 import hadur117.core.physics.MovementPredictor;
@@ -166,5 +167,25 @@ class FieldPriorTest {
         assertTrue(below != edge, "0.45 is its own sample, below the edge");
         w.targetWallDistance = 1.5;
         assertEquals(2, (prior.cell(w) / 12) % 3, "the cap sits in the top wall bin");
+    }
+    @Test
+    @Tag("MOVE-35")
+    @DisplayName("once the views have data the prior leaves the blend: the danger equals the aim-member blend without it")
+    void leavesWithData() {
+        MoveController withAims = SurfOpeningTest.controller();
+        withAims.setAimMembers(new AimMembers(0, false));
+        MoveController withPrior = SurfOpeningTest.controller();
+        withPrior.setAimMembers(new AimMembers(0, true));
+        withPrior.setFieldPrior(new FieldPrior());
+        double[] s = new double[MoveController.SAMPLE_WIDTH];
+        s[12] = 0.3;
+        for (MoveController m : new MoveController[] {withAims, withPrior}) {
+            for (int i = 0; i < 7; i++) m.seed(s, new SeedWeight(0.5));
+        }
+        Wave w = wave(Math.PI / 2, 8, 0.0);
+        for (double gf : new double[] {0.0, 0.3, 0.6}) {
+            Wave.Intersection at = new Wave.Intersection(w.firingAngle(gf), 0.1);
+            assertEquals(withAims.getDangerScore(w, at, 0), withPrior.getDangerScore(w, at, 0), 1e-12, "gf " + gf);
+        }
     }
 }

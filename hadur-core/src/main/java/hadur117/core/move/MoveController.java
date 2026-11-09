@@ -1255,27 +1255,32 @@ public class MoveController {
             if (parts != null) parts[2 * views.size()] = fallback;
             // MOVE-35: with the field prior on, the empty views do not end the blend: the
             // fallback, scaled to a member's units (its weights sum to DEFAULT_WEIGHT), stands
-            // as member 0 and the prior and aims speak. This is the early-round window the
-            // prior is for. Without it the fallback is the danger, as it always was.
+            // as member 0 and the prior and aims speak. This is the only window the prior is
+            // in: once the views have data they know this gun better than the field does (the
+            // AES forensic of 2026-11-09, docs/bench/gun-oracle.md). Without the prior the
+            // fallback is the danger, as it always was.
             if (!mixAims || aimMembers == null || fieldPrior == null || !aimMembers.fieldPrior()) {
                 return fallback;
             }
-            return aimMembers.danger(fallback / DEFAULT_WEIGHT, aimScores(w, dangerAngle, bandwidth, segments));
+            return aimMembers.danger(fallback / DEFAULT_WEIGHT, aimScores(w, dangerAngle, bandwidth, segments, true));
         }
         if (parts != null) parts[2 * views.size()] = Double.NaN;
         double viewScore = totalDanger / totalScanWeight;
         if (!mixAims || aimMembers == null) return viewScore;
-        return aimMembers.danger(viewScore, aimScores(w, dangerAngle, bandwidth, segments));
+        return aimMembers.danger(viewScore, aimScores(w, dangerAngle, bandwidth, segments, false));
     }
 
     /**
      * MOVE-29: each aim member's score at an intersection: the surf's kernel on the aim's angle
-     * over the intersection's segments; NaN for an aim the wave has no angle for.
+     * over the intersection's segments; NaN for an aim the wave has no angle for. MOVE-35: the
+     * field prior's score is the last entry when {@code withPrior} and the prior is on; without
+     * it the array stops before the prior's slot and {@link AimMembers#danger} leaves it out.
      */
-    private double[] aimScores(Wave w, double dangerAngle, double bandwidth, List<double[]> segments) {
+    private double[] aimScores(Wave w, double dangerAngle, double bandwidth, List<double[]> segments,
+                               boolean withPrior) {
         double[] aims = w.simpleAims();
         int mimics = memberMimics == null ? 0 : aimMembers.mimics();
-        boolean prior = fieldPrior != null && aimMembers.fieldPrior();
+        boolean prior = withPrior && fieldPrior != null && aimMembers.fieldPrior();
         double[] out = new double[AimMembers.AIMS.length + mimics + (prior ? 1 : 0)];
         for (int a = 0; a < AimMembers.AIMS.length; a++) {
             double angle = aims == null ? Double.NaN : aims[AimMembers.AIMS[a]];
@@ -1348,7 +1353,7 @@ public class MoveController {
                 if (view.effectiveSize() > 0 && viewOn(view, estimate)) viewsHaveData = true;
             }
             scores[0] = viewsHaveData ? getDangerScore(w, at, FORENSICS_CACHE, null, false) : Double.NaN;
-            double[] aims = aimScores(w, at.angle, bandwidth, w.transmission(at));
+            double[] aims = aimScores(w, at.angle, bandwidth, w.transmission(at), false);
             double[] aimAngles = w.simpleAims();
             for (int a = 0; a < AimMembers.AIMS.length; a++) {
                 // An aim's kernel is a probability over the reachable angles only, so a kernel
