@@ -293,7 +293,7 @@ class FieldPriorTest(unittest.TestCase):
         return {"w_feat": feat, "wave": np.arange(6), "gf": np.array([0.5] * 3 + [-0.5] * 3, dtype=np.float32),
                 "bot": np.array([0, 0, 0, 1, 1, 1]), "mea": np.full(6, 0.6), "dist": np.full(6, 400.0)}
 
-    # @Tag("MOVE-35")
+    # @Tag("ORACLE-2")
     def test_cells_follow_the_java_layout_lateral_fastest(self):
         cell, cells = go.prior_cells(self.data())
         self.assertEqual(cells, 4 * 3 * 3 * 4)
@@ -301,7 +301,7 @@ class FieldPriorTest(unittest.TestCase):
         self.assertEqual(int(cell[0]), 3 + 4 * (1 + 3 * (2 + 3 * 1)))
         self.assertEqual(int(cell[3]), 0 + 4 * (1 + 3 * (2 + 3 * 1)))
 
-    # @Tag("MOVE-35")
+    # @Tag("ORACLE-2")
     def test_profiles_smooth_toward_the_flat_and_a_thin_cell_is_the_flat(self):
         counts = np.zeros((2, go.PRIOR_BINS))
         counts[0, 30] = 100.0
@@ -312,7 +312,7 @@ class FieldPriorTest(unittest.TestCase):
         self.assertTrue(np.allclose(prof[1], flat), "5 bullets read as the whole table")
         self.assertTrue(np.allclose(prof.sum(axis=1), 1.0))
 
-    # @Tag("MOVE-35")
+    # @Tag("ORACLE-2")
     def test_each_opponent_is_scored_on_the_others_table_and_the_java_class_counts_every_bullet(self):
         z = self.data()
         surface, value = go.prior_member(z)

@@ -358,11 +358,21 @@ Runs on the cloud box (3 workers, about 35 min an arm); nothing is uploaded or r
 
 | Stage | Figment part replaced | Saor's own design | Arms | Card |
 |---|---|---|---|---|
-| 1. Movement | corner oscillation (MeleeSeed's: leg 55 + distance / 2.5 along a corner's axes) | the least risky of eight candidate points when a leg ends, risk = every live robot's energy over its squared distance, the current spot excluded; robots remembered by name hash, forgotten on death | MR (ring of 8 at 170), MP (corners and edge midpoints) | `cloud-saor-r1` |
-| 2. Gun chain | state = (turn in fifths, velocity, acceleration sign) packed in 579; a row of 126 successors sampled at random; the playout stepped by the sampled state | a second-order chain keyed on the last two states, with Saor's graded vote kept; the vote spread in bins scaled by bullet flight time rather than a fixed ±4 | G2 (second order), GV (flight-scaled vote), G2V | `cloud-saor-r2` |
-| 3. Target and power | nearest, sticky by name; power log10(energy) × 325 / distance | the robot we hit best for its distance (Deise's LEARNH idea in micro form); power from the chain's confidence (the thinnest row's samples) and distance | TH, PC, THPC | `cloud-saor-r3` |
+| 1. Movement | corner oscillation (MeleeSeed's: leg 55 + distance / 2.5 along a corner's axes) | the least risky of eight candidate points when a leg ends, risk = every live robot's energy over its squared distance, the current spot excluded; robots remembered by name hash, forgotten on death | MR (ring of 8 at 170), MP (corners and edge midpoints) | `cloud-saor-r1` (run, retired) |
+| 2. Gun chain | state = (turn in fifths, velocity, acceleration sign) packed in 579; a row of 126 successors sampled at random; the playout stepped by the sampled state | a second-order chain keyed on the last two states, with Saor's graded vote kept; the vote spread in bins scaled by bullet flight time rather than a fixed ±4 | G2 (second order), GV (flight-scaled vote), G2V | `cloud-saor-r2` (run, retired) |
+| 3. Target and power | nearest, sticky by name; power log10(energy) × 325 / distance | the robot we hit best for its distance (Deise's LEARNH idea in micro form); power from the chain's confidence (the thinnest row's samples) and distance | TH, PC, THPC | `cloud-saor-r3` (run, retired) |
 | 4. Fit | | the stack of passes fitted into 749 bytes after ProGuard, the core and SAOR-15 updated, confirmed on the live-shaped census with Figment seated | | `pc-saor-r4` |
 
-Stage 1 arms MR and MP are built and queued on the cloud behind the Sanaro N19 arms and the
-JayLexi k-NN card (about 12:30 start, read about 15:00). A stage with no arm through the gate is
-redesigned, not reverted: the Figment part never ships again once its replacement exists.
+A stage with no arm through the gate is redesigned, not reverted: the Figment part never ships
+again once its replacement exists.
+
+Status 2026-11-07 (all reads in docs/bench/saor-0.4-own-parts.md): stage 2's GV passes (+0.40);
+stage 3's TH is the nearest miss (-0.29). Movement took about 45 own designs: the best, WNF (legs
+between the corner's two walls to random depths, run to their end, and an orbit from two robots
+left), costs about 0.6 over three seed sets and has not passed the gate; the decision of
+2026-11-07 is to keep designing movement before the gun chain. The stage cards have been removed
+with the failed arms; the arms still in play are GV, TH and WNF.
+
+Status 2026-11-09: legs whose depth follows, every tick, half the range of the robot that last hit
+us (WTB) cost about 0.32 over five seed sets, the closest own movement yet, still short of the gate.
+GV adds nothing on top of it. The arms still in play are GV, TH and WTB, which replaces WNF.
