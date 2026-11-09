@@ -518,6 +518,30 @@ damage; it also reaches the final duel more often, where its gun lands 38% overa
 Every one-part imitation of this has failed on the PC: ScalarR's power rule (MGUN-22), its step search with the
 corner pull (MMOVE-21), the nearest-target factor (MMOVE-24), and the hide posture on the cloud. None of those
 arms was checked against the posture numbers above; the hide posture, for one, raised the nearest load it was
-meant to lower. The next build therefore targets the posture itself (nearest robot 520 px or more, nearest-of
-0.7 or less, a corner two ticks in five, with the gun firing as now) and is read first against these numbers on
-traced cloud battles, and only then against the score.
+meant to lower. The posture was therefore built to the numbers above and read against them first.
+
+### Posture arms (2026-11-09): ScalarR's posture reached, and it costs Hadur more
+
+Three cloud arms on the mover's constants, fought traced on the same twelve ScalarR fields (seed 5800, 240 rounds
+each): `pc` drops the corner and wall penalties (`CORNER_K`, `WALL_K` to 0); `pp` also turns the corner term into
+a pull over 400 px; `pf` adds the closest-robot factor 3.
+
+| Hadur arm | nearest px | nearest-of | corner ticks | wall room | bullets aimed at it | hit per aimed bullet | damage taken / round | crowd deaths | place |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| master | 443 | 0.91 | 17% | 102 | 7,917 | 12% | 66.9 | 21% | 2.77 |
+| pc | 455 | 0.79 | 28% | 64 | | | 68.3 | 20% | 2.68 |
+| pp | 499 | 0.68 | 58% | 50 | 6,998 | 17% | 72.5 | 23% | 2.92 |
+| pf | 510 | 0.68 | 57% | 52 | 7,012 | 17% | 74.3 | 29% | 3.08 |
+| ScalarR, same fields | 509-524 | 0.66-0.76 | 39-43% | 51-55 | 6,976-8,035 | 13% | 54-60 | 14-16% | 1.94-2.02 |
+
+The pull reaches ScalarR's posture to the pixel and cuts the bullets aimed at Hadur by 12%, the same 12% ScalarR
+enjoys. Hadur then takes more damage, not less: the hit rate per aimed bullet rises from 12% to 17%, all of it at
+the walls (under 60 px of wall room: master 13%, `pf` 18%, ScalarR 13-14%). A constant pull parks Hadur at the
+corner's apex, where its candidate ring has nowhere to go; ScalarR sits in the same corners and keeps dodging.
+The posture is not the lever on its own, and a pull is the wrong way to it; the arms were removed. What ScalarR's
+corner buys depends on a dodge that still works with 50 px of wall room, which Hadur's mover does not have.
+
+Four parts of the melee gap have now been measured in the same crowds and tried one at a time: the wave model
+(four flat arms), the firepower (MGUN-22, failed on the PC), the target choice, and the posture (this section).
+Each of ScalarR's parts imitated alone has lost; its edge is the parts together, and the next design has to be a
+mover that holds the posture while it dodges, read by the same posture and per-bullet numbers before any score.
