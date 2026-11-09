@@ -285,6 +285,58 @@ class VisitMemberTest(unittest.TestCase):
 
 
 @unittest.skipIf(np is None, "numpy is not installed")
+class FieldPriorTest(unittest.TestCase):
+
+    def data(self):
+        """Six bullets of two opponents: opponent 0 shoots guess factor 0.5 at a fast lateral target, 1 shoots -0.5 at a still one."""
+        feat = np.array([[8, 0, 0, 5, 5, 400, 1.2, 1.2, 30]] * 3 + [[0, 0, 0, 5, 5, 400, 1.2, 1.2, 30]] * 3, dtype=np.float32)
+        return {"w_feat": feat, "wave": np.arange(6), "gf": np.array([0.5] * 3 + [-0.5] * 3, dtype=np.float32),
+                "bot": np.array([0, 0, 0, 1, 1, 1]), "mea": np.full(6, 0.6), "dist": np.full(6, 400.0)}
+
+    # @Tag("MOVE-35")
+    def test_cells_follow_the_java_layout_lateral_fastest(self):
+        cell, cells = go.prior_cells(self.data())
+        self.assertEqual(cells, 4 * 3 * 3 * 4)
+        # lateral 8 -> bin 3, accel 0 -> bin 1, wall 1.2 -> bin 2, flight 30 -> bin 1: 3 + 4 (1 + 3 (2 + 3 x 1))
+        self.assertEqual(int(cell[0]), 3 + 4 * (1 + 3 * (2 + 3 * 1)))
+        self.assertEqual(int(cell[3]), 0 + 4 * (1 + 3 * (2 + 3 * 1)))
+
+    # @Tag("MOVE-35")
+    def test_profiles_smooth_toward_the_flat_and_a_thin_cell_is_the_flat(self):
+        counts = np.zeros((2, go.PRIOR_BINS))
+        counts[0, 30] = 100.0
+        counts[1, 10] = 5.0
+        prof = go.prior_profiles(counts)
+        flat = counts.sum(axis=0) / counts.sum()
+        self.assertAlmostEqual(prof[0, 30], 0.9 + 0.1 * flat[30])
+        self.assertTrue(np.allclose(prof[1], flat), "5 bullets read as the whole table")
+        self.assertTrue(np.allclose(prof.sum(axis=1), 1.0))
+
+    # @Tag("MOVE-35")
+    def test_each_opponent_is_scored_on_the_others_table_and_the_java_class_counts_every_bullet(self):
+        z = self.data()
+        surface, value = go.prior_member(z)
+        grid = np.linspace(-1, 1, go.SAMPLES)
+        # Opponent 0's bullets meet a table of opponent 1's alone: all its mass at -0.5, in another cell, so the flat.
+        self.assertAlmostEqual(grid[int(np.argmax(surface[0]))], -0.5, places=6)
+        self.assertAlmostEqual(grid[int(np.argmax(surface[3]))], 0.5, places=6, msg="and opponent 1 meets opponent 0's")
+        self.assertLess(value[0], 0.01, "a bullet where the others' table put nothing scores little")
+        d = tempfile.mkdtemp()
+        try:
+            path = os.path.join(d, "FieldPriorData.java")
+            go.prior_java(z, path)
+            with open(path, encoding="utf-8") as f:
+                text = f.read()
+            self.assertIn("static final int BULLETS = 6;", text)
+            self.assertIn("static final double[] LAT = {2.0, 5.0, 7.0};", text)
+            rows = [l.strip().strip('",') for l in text.splitlines() if l.strip().startswith('"')]
+            self.assertEqual(len(rows), 144)
+            self.assertEqual(sum(int(c) for r in rows for c in r.split(",")), 6)
+        finally:
+            shutil.rmtree(d)
+
+
+@unittest.skipIf(np is None, "numpy is not installed")
 class RankAndCalibrationTest(unittest.TestCase):
 
     # @Tag("ORACLE-4")
