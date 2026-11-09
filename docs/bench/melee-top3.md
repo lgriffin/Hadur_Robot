@@ -320,9 +320,8 @@ such shot: a third of the shots aimed at Hadur. Per shooter the nearest share ru
 28% (Diamond) to 72% (Numbat); Diamond, Portia, Lunar and Glacier put 42 to 50% of their shots at their
 third-nearest or further.
 
-MMOVE-27 (`CROWD_CURVE`, arm `mcurve`, suffix cv) replaces 1/(1+k)^2 with that curve scaled to 1 at
-k = 0: 1, 0.42, 0.29, 0.25, 0.25, 0.21, 0.19, 0.19, 0.15. No seen shot falls under the floor. A per-shooter
-table is the natural next step once the field curve has been read on the PC.
+MMOVE-27 (`CROWD_CURVE`, arm `mcurve`, suffix cv) replaced 1/(1+k)^2 with that curve scaled to 1 at
+k = 0: 1, 0.42, 0.29, 0.25, 0.25, 0.21, 0.19, 0.19, 0.15, so no seen shot fell under the floor.
 
 Cloud smoke 2026-11-08, 12 census fields x 2 seeds against master, 24 pairs:
 
@@ -334,8 +333,26 @@ Cloud smoke 2026-11-08, 12 census fields x 2 seeds against master, 24 pairs:
 | crowd damage per tick (x100) | 7.80 | 8.16 | -0.35 ± 0.46 |
 | skipped turns a battle | 43.9 | 28.1 | more virtual bullets |
 
-The first melee smoke since the surfer itself with a low end above 0. The cost is CPU: every seen shot
-now makes bullets, so skipped turns rose by half on the slow cloud box; the card's skip bar (20% over aa)
-reads that on the PC. Card pc-melee-curve (BENCH-215, pilot BENCH-216): aa, bb, cv on the 46 census fields
-x 6 fresh seeds (3320-3325) after a cv-against-aa pilot (3326-3327) that stops the card unless the share is
-up. Results PR on claude/pc-melee-curve-results. If it fails, CROWD_CURVE, its arm and the card are removed.
+The first melee smoke since the surfer itself with a low end above 0, at a CPU cost: every seen shot made
+bullets, and skipped turns rose by half on the slow cloud box. Card pc-melee-curve (BENCH-215, pilot
+BENCH-216) took it to the PC: a cv-against-aa pilot on the 46 census fields x 2 seeds (3326-3327), then aa,
+bb and cv alone at 6 seeds (3320-3325) if the pilot's share was up.
+
+### pc-melee-curve read (PR #715): the pilot stopped the card
+
+| measure (cv minus aa, 92 paired battles, 46 fields x 2 seeds) | read |
+|---|---:|
+| score share | -0.05 ± 0.26 |
+| crowd deaths (points of rounds) | +0.16 ± 2.05 |
+
+No gain and no harm: the interval spans zero, and the cloud smoke's +0.47 centre lies above its upper end.
+The pilot gives skipped turns for both arms together (about 48 a battle, 184 battles, none failed), so cv's
+own skip cost was never read on the PC. The third melee cloud smoke to over-read the PC (pc-melee-near,
+pc-melee-three, pc-melee-curve), and the third melee card in a row to stop at its pilot. CROWD_CURVE, the
+`mcurve` arm, the card and its test are removed; MMOVE-27, BENCH-215 and BENCH-216 are retired.
+`tools/melee_targets.py` and the MH record stay: the target fit is a fact about the field, and the lesson
+is that weighing every seen shot by the field-wide curve does not turn it into points. What it says for
+the next step: the curve is flat from k = 3 up (12% to 7%), so the surfer gains little from telling those
+shots apart by k alone; a per-shooter table (Diamond, Portia, Lunar and Glacier put 42 to 50% of their
+shots at their third-nearest or further, Figment and Numbat shoot nearest) or the 23% of hits no inferred
+shot matches are the parts of the danger model still unread.

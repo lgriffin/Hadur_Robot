@@ -425,23 +425,7 @@ public class MinimumRiskMovement {
      */
     static double crowdWeight(EnemyShot shot, Point2D.Double me, List<EnemyInfo> enemies) {
         int k = nearer(shot, me, enemies);
-        return CROWD_CURVE ? curveWeight(k) : 1.0 / ((1 + k) * (1 + k));
-    }
-
-    /**
-     * MMOVE-27 (arm mcurve): the share of a shot aimed at Hadur with k robots nearer its shooter,
-     * as the field shoots. Twelve traced census fields (63,408 shots, tools/melee_targets.py):
-     * a shot goes to the shooter's nearest robot 41% of the time, and the chance it is at Hadur
-     * given k robots nearer the shooter runs 48, 20, 14, 12, 12, 10, 9, 9, 7% for k = 0..8; the
-     * table is that curve scaled to 1 at k = 0. Under 1/(1+k)^2 the surfer dropped a third of the
-     * shots aimed at it (every k of 3 or more) and weighed the rest at a quarter or less.
-     */
-    public static final boolean CROWD_CURVE = false;
-    static final double[] CROWD_CURVE_TABLE = {1.0, 0.42, 0.29, 0.25, 0.25, 0.21, 0.19, 0.19, 0.15};
-
-    /** MMOVE-27: {@link #CROWD_CURVE_TABLE} at k, its last entry beyond. */
-    static double curveWeight(int k) {
-        return CROWD_CURVE_TABLE[Math.min(k, CROWD_CURVE_TABLE.length - 1)];
+        return 1.0 / ((1 + k) * (1 + k));
     }
 
     /** The k of {@link #crowdWeight}: living opponents other than the shooter nearer {@code shot}'s source than {@code me}. */
