@@ -1,5 +1,0 @@
-# pc-field-prior (BENCH-217): c is master as it stands (built as aa), aa its second copy (bb), pf master with the
-# field prior (MOVE-35, fprior) as the last aim member.
-c | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
-aa | hadur117.Hadur 3.21bb | bisect/hadur117.Hadur_3.21bb.jar
-pf | hadur117.Hadur 3.21pf | bisect/hadur117.Hadur_3.21pf.jar
