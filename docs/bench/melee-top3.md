@@ -175,3 +175,184 @@ Pilot z4 against aa: share +0.07 ± 0.23, so the card ran in full. Paired over a
 z4 (from 40 energy) **-0.11 ± 0.13**, others outlived -0.5; z5 (from 50) -0.00 ± 0.16, endgame wins +2.1. Neither clears
 0, so spending the reserve under 60 buys nothing: the far-power lever is used up at 60. MGUN-26, the arms and the card
 are removed; master keeps MGUN-25 on at 2.5 from 60 energy.
+
+## The three-robot phase (MEND-4, MEND-5, pc-melee-three, 2026-11-08)
+
+Leigh 2026-11-08: "Where is melee at? Its within touching distance of first lets figure this out". Live
+2026-11-08: 7th 69.48; ScalarR 72.72, Neuromancer 72.13, Firestarter 71.43, Ogi 70.74, Diamond 70.10,
+DemonicRage 69.97. Survival 55.8 against ScalarR's 82.7.
+
+Where the score goes (cloud 3.21 census, 1,260 rounds): 263 rounds lost in the endgame duel, 269 in
+the crowd. A crowd death gives up every opponent still alive, so the crowd costs about 3.5 times the
+opponents outlived the duel does (925 against 263).
+
+The endgame duel by energy lead at its start (opponent-adjusted: each duel's win against its
+survivor's own rate over the other duels):
+
+| Lead at the duel | Duels | Won | Survivor's own rate | Energy entering two-left | Survivor's energy | Spent with two left |
+|---|---|---|---|---|---|---|
+| 20+ behind | 213 | 32% | 65% | 48 | 71.5 | 18.6 on 16.6 shots |
+| 0-20 behind | 180 | 65% | 69% | 55 | 44.6 | 19.4 on 16.3 shots |
+| 0-20 ahead | 194 | 81% | 73% | 65 | 39.2 | 18.2 on 12.6 shots |
+| 20+ ahead | 380 | 97% | 79% | 90 | 29.3 | 15.4 on 9.5 shots |
+
+The lead is made mostly before two are left (48 against 90 energy entering it) and by who survives;
+the two-left phase spends about 19 energy at about 700 px and 1.25 power in every row. Against the top
+three the duel is lost even ahead (ScalarR 17%, Diamond 11% when Hadur leads), so the lever is the
+middle of the field. pc-melee-three tries two ways to reach the duel nearer even: hold far shots at a
+richer target (MEND-4, `mthold`) and wear down the richer of the two (MEND-5, `mtstrong`), pilot both
+together. Expected +0.1 to +0.3: even all the 20+-behind duels won at the 0-20-behind rate is about +0.4.
+
+### pc-melee-three read (PR #708): the pilot stopped the card
+
+Both switches together against aa, 92 pairs: share -0.16 ± 0.24, crowd deaths +1.8 points of rounds. Holding
+far shots and leaning on the richer robot with two left do not reach the duel better off; the energy lead is
+made earlier, in the crowd. MEND-4, MEND-5, the arms and the card are removed; the melee is bit for bit master's.
+
+## Tracing a melee round (BENCH-213, 2026-11-08)
+
+Leigh: "Show me a diagram of our data, I want to see an example where we are nearest compared to other bots.
+Tracing is a good addition to our harness." `--melee-trace true` makes a melee battle write `trace.log.gz`
+(every robot and bullet, every turn), and `tools/melee_trace_draw.py BATTLE --round N --out PNG` draws the
+field at four ticks with an arrow from each robot to its nearest, plus the round's timeline of how many
+robots have Hadur as their nearest against the field's mean, Hadur's energy and its death. First cloud
+battle (field f24, seed 4400, 6 rounds, /mnt/project-files/melee/trace-f24-round*.png): in the two crowd
+deaths Hadur holds a corner, loses 40 energy to shots while nobody's nearest, then from about tick 370 the
+nearest opponent (Corsair) hunts it along the edge until two robots share it as nearest and it dies at 6
+energy. The trace is the input for the death-forensics pass.
+
+## The hide posture (MHIDE-1..3, 2026-11-08): three cloud smokes, all losses, not merged
+
+Leigh, on the traces: "there are huge empty spaces that we don't try and move into, why?" and "We have no
+mechanic to try and hide and survive until the field whittles down." Built as a switch on the thread branch:
+with five or more alive, or three or more and Hadur under the median energy, the mover's candidates gained a
+7 × 7 field grid and each point paid 2 units of risk for every opponent it would make Hadur the nearest of,
+and the gun held unless the target was a finisher or already had Hadur as its nearest robot. Cloud smokes,
+12 census fields × 2 seeds (24 paired battles) against aa:
+
+| Build | Score share | Crowd deaths (points of rounds) | Rounds won | Damage a crowd tick | Nearest load |
+|---|---|---|---|---|---|
+| both (hd) | -3.91 ± 0.61 | +19.8 | -16.9 | +35% | 0.82 → 0.87 |
+| movement only (hm) | -1.52 ± 0.69 | +9.9 | -8.1 | +25% | 0.82 → 0.86 |
+| fire hold only (hf) | -2.10 ± 0.50 | +5.4 | -7.0 | +7% | level |
+
+Hiding kills Hadur faster on both halves. The grid drives cross the field through other robots' fire, and the
+nearest-robot term did not even lower the nearest load; holding fire leaves the crowd stronger for longer and
+gives up the bullet-damage half of the score. The one melee lever that has paid since 3.19 is the opposite:
+more firepower in the crowd (MGUN-13, MGUN-16, MGUN-25). The code was never merged; nothing to remove.
+
+## What the surfer saw of the shots that hit us (MMOVE-26, 2026-11-08)
+
+The hide study left one question: how much of the damage Hadur takes comes from shots its surfer never
+weighed? Each hit on Hadur off a team now writes an `MH` record (`MH,round,tick,shooter,damage,distance,
+seen,nearer,weight,alive`): whether a shot the World inferred matches the hit, how many living opponents
+were nearer the shooter than Hadur when it fired, and the crowd weight 1/(1+k)^2 the surfer gave it
+(MMOVE-15; shots under 0.1 make no virtual bullets). `tools/melee_hits.py DIR` aggregates the records of a
+bench's battles.
+
+Twelve census fields, one battle of 35 rounds each, master with the record (mean APS 69.0):
+
+| what the surfer saw of the shot | hits | damage | share |
+|---|---:|---:|---:|
+| inferred shot, weight >= 0.1 (surfed) | 2219 | 16424 | 61% |
+| inferred shot, weight < 0.1 (dropped as aimed at someone nearer the shooter) | 376 | 4357 | 16% |
+| no inferred shot matches the hit (never surfed) | 711 | 6330 | 23% |
+
+| alive | damage | surfed | dropped | unseen |
+|---:|---:|---:|---:|---:|
+| 9 | 4466 | 48% | 30% | 21% |
+| 8 | 3768 | 48% | 26% | 26% |
+| 7 | 2782 | 50% | 25% | 26% |
+| 6 | 2499 | 51% | 20% | 29% |
+| 5 | 2904 | 54% | 16% | 30% |
+| 4 | 3072 | 63% | 12% | 25% |
+| 3 | 2771 | 80% | 0% | 20% |
+| 2 | 2844 | 87% | 0% | 13% |
+| 1 | 1901 | 85% | 0% | 15% |
+
+Of the damage from inferred shots, 48% (10,045 of 20,781) came from a shooter that had at least one robot
+nearer it than Hadur, so the surfer had given the shot a quarter of its weight or less. By shooter that share
+runs from 21% (Figment, which mostly shoots its nearest) to 68% (ACPFinal), with Diamond 36%, Combat 47%,
+DemonicRage 48%, Portia 54%, Scimitar 59% and JollyNinja 67%: half the field picks a target by something other
+than distance. (This run's records recomputed the weight at impact from the living opponents and counted a
+killing bullet's full damage; the record now carries the weight the surfer itself gave the shot and caps the
+damage at Hadur's energy. Rows with one opponent alive are the endgame duel, which the duel drives.)
+
+Read: in the crowd (five or more alive, where the deaths that cost the rank happen) about half the damage
+Hadur takes is from shots its surfer weighed at a quarter or less, or never saw. The nearest-robot crowd
+weight is the wrong model for half the shooters, and a quarter of the hits match no inferred shot at all.
+The next melee lever is the danger model, not the mover's geometry or its posture: a per-shooter target
+model (who each robot actually shoots at, learned from the trace or from its hits) in place of 1/(1+k)^2,
+and a look at why a quarter of the hits have no shot to match (scan gaps, energy drops masked by damage).
+
+## The field's target curve (MMOVE-27, pc-melee-curve, 2026-11-08)
+
+The MH read above says the surfer never weighed 39% of the damage Hadur takes. The other side of that is
+who the field actually shoots at. `tools/melee_targets.py` reads it from melee traces (BENCH-213): for every
+bullet that first appears, the living robot whose head-on or linear bearing from the shooter lies nearest
+the bullet's heading, filed by that robot's distance rank from the shooter. Twelve traced census fields,
+20 rounds each, 63,408 opponent shots (7% match no robot within 12 degrees):
+
+| target's distance rank from the shooter (0 = nearest) | shots | share | surfer weight 1/(1+k)^2 |
+|---:|---:|---:|---:|
+| 0 | 18438 | 41% | 1.00 |
+| 1 | 7873 | 17% | 0.25 |
+| 2 | 5233 | 12% | 0.11 |
+| 3 | 3876 | 9% | 0.06 |
+| 4 | 3028 | 7% | 0.04 |
+| 5 to 8 | 6651 | 15% | 0.03 to 0.01 |
+
+| robots nearer the shooter than Hadur | shots with Hadur there | at Hadur | share | surfer weight |
+|---:|---:|---:|---:|---:|
+| 0 | 5584 | 2667 | 48% | 1.00 |
+| 1 | 7031 | 1400 | 20% | 0.25 |
+| 2 | 7336 | 1011 | 14% | 0.11 |
+| 3 | 5978 | 734 | 12% | 0.06 |
+| 4 | 5027 | 592 | 12% | 0.04 |
+| 5 | 4290 | 416 | 10% | 0.03 |
+| 6 | 3538 | 328 | 9% | 0.02 |
+| 7 | 2785 | 240 | 9% | 0.02 |
+| 8 | 2000 | 130 | 6% | 0.01 |
+
+A shot goes to the shooter's nearest robot 41% of the time. The 1/(1+k)^2 weight is right at k = 0 and
+k = 1, a third low at k = 2, and from k = 3 up it falls under the 0.1 floor, so the surfer dropped every
+such shot: a third of the shots aimed at Hadur. Per shooter the nearest share runs from 24% (Original) and
+28% (Diamond) to 72% (Numbat); Diamond, Portia, Lunar and Glacier put 42 to 50% of their shots at their
+third-nearest or further.
+
+MMOVE-27 (`CROWD_CURVE`, arm `mcurve`, suffix cv) replaced 1/(1+k)^2 with that curve scaled to 1 at
+k = 0: 1, 0.42, 0.29, 0.25, 0.25, 0.21, 0.19, 0.19, 0.15, so no seen shot fell under the floor.
+
+Cloud smoke 2026-11-08, 12 census fields x 2 seeds against master, 24 pairs:
+
+| measure | cv | master | diff |
+|---|---:|---:|---:|
+| score share | 19.43 | 18.96 | +0.47 ± 0.34 |
+| crowd deaths (%) | 23.2 | 26.2 | -3.0 ± 3.3 |
+| rounds won (%) | 51.2 | 47.4 | +3.8 ± 4.0 |
+| crowd damage per tick (x100) | 7.80 | 8.16 | -0.35 ± 0.46 |
+| skipped turns a battle | 43.9 | 28.1 | more virtual bullets |
+
+The first melee smoke since the surfer itself with a low end above 0, at a CPU cost: every seen shot made
+bullets, and skipped turns rose by half on the slow cloud box. Card pc-melee-curve (BENCH-215, pilot
+BENCH-216) took it to the PC: a cv-against-aa pilot on the 46 census fields x 2 seeds (3326-3327), then aa,
+bb and cv alone at 6 seeds (3320-3325) if the pilot's share was up.
+
+### pc-melee-curve read (PR #715): the pilot stopped the card
+
+| measure (cv minus aa, 92 paired battles, 46 fields x 2 seeds) | read |
+|---|---:|
+| score share | -0.05 ± 0.26 |
+| crowd deaths (points of rounds) | +0.16 ± 2.05 |
+
+No gain and no harm: the interval spans zero, and the cloud smoke's +0.47 centre lies above its upper end.
+The pilot gives skipped turns for both arms together (about 48 a battle, 184 battles, none failed), so cv's
+own skip cost was never read on the PC. The third melee cloud smoke to over-read the PC (pc-melee-near,
+pc-melee-three, pc-melee-curve), and the third melee card in a row to stop at its pilot. CROWD_CURVE, the
+`mcurve` arm, the card and its test are removed; MMOVE-27, BENCH-215 and BENCH-216 are retired.
+`tools/melee_targets.py` and the MH record stay: the target fit is a fact about the field, and the lesson
+is that weighing every seen shot by the field-wide curve does not turn it into points. What it says for
+the next step: the curve is flat from k = 3 up (12% to 7%), so the surfer gains little from telling those
+shots apart by k alone; a per-shooter table (Diamond, Portia, Lunar and Glacier put 42 to 50% of their
+shots at their third-nearest or further, Figment and Numbat shoot nearest) or the 23% of hits no inferred
+shot matches are the parts of the danger model still unread.

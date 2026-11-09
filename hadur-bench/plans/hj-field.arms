@@ -1,5 +1,0 @@
-# pc-hj-field (BENCH-208): c master, aa its A/A copy, hj MOVE-28 stop-and-start switched on for every robot of
-# census-312.txt (build-ablation.sh hjlist from work/field.list).
-c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
-aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
-hj | hadur117.Hadur 3.21hl | bisect/hadur117.Hadur_3.21hl.jar

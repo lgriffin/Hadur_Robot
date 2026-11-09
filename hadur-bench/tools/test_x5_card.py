@@ -124,7 +124,47 @@ class X5CardTest(unittest.TestCase):
             self.assertIn("|%s|" % abl, script.replace(")", "|"), k)
             line = [l for l in script.splitlines() if 'file="${%s:-}"' % var in l]
             self.assertEqual(1, len(line), k)
-            self.assertIn('version="${version}%s"' % suffix, line[0], k)
+            self.assertTrue('version="${version}%s"' % suffix in line[0] or ':-%s}"' % suffix in line[0],
+                            "%s: the default jar suffix is %s" % (k, suffix))
+
+    def test_lean_stacks_a_second_lever_of_another_family_on_the_carried_robots(self):
+        census = self.path("census.txt", "a.A 1 | n | a.jar\nb.B 1 | n | b.jar\ns.S 1 | n | s.jar\nn.N 1 | n | n.jar\n")
+        rows = ""
+        for s in (1, 2):
+            # a.A carries x5 (power): fp is the same family, so hj wins; b.B carries sg: sw is out, gs wins.
+            rows += row("c", "a.A 1", s, 0.70) + row("fp", "a.A 1", s, 0.80) + row("hj", "a.A 1", s, 0.73)
+            rows += row("c", "b.B 1", s, 0.70) + row("sw", "b.B 1", s, 0.80) + row("gs", "b.B 1", s, 0.72)
+            # s.S is a shield-mode robot carrying mm: gs and fl are barred, x5 is under the bar.
+            rows += row("c", "s.S 1", s, 0.70) + row("gs", "s.S 1", s, 0.80) + row("fl", "s.S 1", s, 0.79) + row("x5", "s.S 1", s, 0.705)
+            # n.N carries nothing: --only-carried leaves it out.
+            rows += row("c", "n.N 1", s, 0.50) + row("hj", "n.N 1", s, 0.60)
+        screen = self.path("arms.tsv", HEAD + rows)
+        carried = self.path("carried.tsv", "a.A 1\tx5\nb.B 1\tsg\ns.S 1\tmm\n")
+        shielded = self.path("shield.txt", "# listed\ns.S 1 | n | s.jar\n")
+        o = {k: os.path.join(self.d, k) for k in ("lean", "set", "pilot")}
+        args = ["lean", screen, "--census", census, "--carry", carried, "--only-carried", "--shielded", shielded,
+                "--levers", "x5,gs,fp,sg,sw,hj,fl,mm", "--req", "BENCH-214",
+                "--pick-out", o["lean"], "--set-out", o["set"], "--pilot-out", o["pilot"]]
+        self.assertEqual(0, x5_card.main(args))
+        lean = [l.split("\t")[:2] for l in open(o["lean"]).read().splitlines()]
+        self.assertEqual([["a.A 1", "hj"], ["b.B 1", "gs"]], lean)
+        self.assertTrue(open(o["set"]).read().startswith("# BENCH-214:"))
+        # Without --only-carried a carried robot still stacks and an uncarried one leans as before; rp is a power lever.
+        rows2 = HEAD + "".join(row("c", n, s, 0.50) + row("rp", n, s, 0.60) for n in ("a.A 1", "n.N 1") for s in (1, 2))
+        screen2 = self.path("rp.tsv", rows2)
+        args = ["lean", screen2, "--census", census, "--carry", carried, "--levers", "rp",
+                "--pick-out", o["lean"], "--set-out", o["set"], "--pilot-out", o["pilot"]]
+        self.assertEqual(0, x5_card.main(args))
+        lean = [l.split("\t")[:2] for l in open(o["lean"]).read().splitlines()]
+        self.assertEqual([["n.N 1", "rp"]], lean, "a.A carries a power lever, so rp is barred")
+
+    def test_carried_reads_the_table_methods(self):
+        src = self.path("T.java", "class T {\n    static String[] moves() {\n        return new String[] {\n            \"m.M 1\",\n        };\n    }\n"
+                                  "    static String[] heatJits() {\n        return new String[] {\n            // a note\n            \"h.H 1\",  // +2\n            \"\",\n        };\n    }\n"
+                                  "    static String[] racePowers() {\n        return new String[] {\n            \"r.R 1\",\n        };\n    }\n}\n")
+        out = os.path.join(self.d, "carried.tsv")
+        self.assertEqual(0, x5_card.main(["carried", src, "--out", out]))
+        self.assertEqual("h.H 1\thj\nr.R 1\trp\n", open(out).read(), "moves is not a lever; blank entries are skipped")
 
 
 if __name__ == "__main__":

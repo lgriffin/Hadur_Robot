@@ -163,10 +163,10 @@ class ShieldListResourceTest {
         for (String name : ShieldTableData.stopGos()) lines.add(ShieldList.STOP_GO_PREFIX + " " + name);
         for (String name : ShieldTableData.stopGoShifts()) lines.add(ShieldList.STOP_GO_SHIFT_PREFIX + " " + name);
         ShieldList list = ShieldList.parse(lines);
-        assertEquals(18 + 8 + 1 + 3 + 1, ShieldTableData.stopGos().length);
-        assertEquals(35 + 12 + 2 + 2 + 1 + 3, ShieldTableData.stopGoShifts().length);
-        assertEquals(18 + 8 + 1 + 3 + 1, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGos())).size(), "no duplicates");
-        assertEquals(35 + 12 + 2 + 2 + 1 + 3, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGoShifts())).size(), "no duplicates");
+        assertEquals(18 + 8 + 1 + 3 + 1 + 2, ShieldTableData.stopGos().length);
+        assertEquals(35 + 12 + 2 + 2 + 1 + 3 + 4, ShieldTableData.stopGoShifts().length);
+        assertEquals(18 + 8 + 1 + 3 + 1 + 2, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGos())).size(), "no duplicates");
+        assertEquals(35 + 12 + 2 + 2 + 1 + 3 + 4, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGoShifts())).size(), "no duplicates");
         // DuelistMicroMkII (PR #263) and Vanessa03 (PR #276) were on both; pc-rival-confirm (PR #537) measured
         // them off the shield list, so stop-and-go now drives. The set stays as a guard.
         // pc-tailor-field (BENCH-197, PR #686) banked two stop-and-go picks on shielded robots as measured: they act
@@ -258,7 +258,7 @@ class ShieldListResourceTest {
         java.util.List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
         for (String n : ShieldTableData.flatOns()) lines.add(ShieldList.FLAT_ON_PREFIX + " " + n);
         ShieldList list = ShieldList.parse(lines);
-        assertEquals(2 + 4, ShieldTableData.flatOns().length, "pc-flat-on and pc-tailor-field (BENCH-197) picks");
+        assertEquals(2 + 4 + 2, ShieldTableData.flatOns().length, "pc-flat-on, pc-tailor-field (BENCH-197) and pc-tailor-near (BENCH-207) picks");
         for (String n : ShieldTableData.flatOns()) {
             assertTrue(list.flatOn(n), n + " surfs with the flatteners on");
             // pc-tailor-field (BENCH-197) banked two flat-on picks on shielded robots, acting when the shield is not driving.
