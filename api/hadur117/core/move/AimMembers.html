@@ -185,6 +185,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-33">MOVE-33</a>: the views, the aims, then <code>mimics</code> learning-gun mimics.</div>
 </div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(int,boolean)" class="member-name-link">AimMembers</a><wbr>(int&nbsp;mimics,
+ boolean&nbsp;fieldPrior)</code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-35">MOVE-35</a>: the views, the aims, <code>mimics</code> learning-gun mimics, then the field prior
+ (<a href="FieldPrior.html" title="class in hadur117.core.move"><code>FieldPrior</code></a>, standing weight <a href="FieldPrior.html#WEIGHT">2.0</a>) when <code>fieldPrior</code>.</div>
+</div>
 </div>
 </section>
 </li>
@@ -212,38 +218,43 @@ loadScripts(document, 'script');</script>
  <code>viewScore</code> as member 0 and each aim's <code>aimScore</code>; an aim that is NaN (no
  angle on this wave) is left out.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#learn(double%5B%5D,double)" class="member-name-link">learn</a><wbr>(double[]&nbsp;scores,
- double&nbsp;uniform)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#fieldPrior()" class="member-name-link">fieldPrior</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-35">MOVE-35</a>: whether the field prior is the last member.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#learn(double%5B%5D,double)" class="member-name-link">learn</a><wbr>(double[]&nbsp;scores,
+ double&nbsp;uniform)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Learns a bullet that hit us: <code>scores[m]</code> is member m's score over a window at the
  bullet's angle (in the units where a kernel centred on the window scores 1, so its
  probability there is half that), NaN when the member had no say; <code>uniform</code> is a
  uniform guess's probability for the same window.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#members()" class="member-name-link">members</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#members()" class="member-name-link">members</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Every member: the views, the aims, then the mimics.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#mimics()" class="member-name-link">mimics</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#mimics()" class="member-name-link">mimics</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-33">MOVE-33</a>: the mimic members after the aims.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#score(int)" class="member-name-link">score</a><wbr>(int&nbsp;member)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#score(int)" class="member-name-link">score</a><wbr>(int&nbsp;member)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Member m's rolling score.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#weight(int)" class="member-name-link">weight</a><wbr>(int&nbsp;member)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#weight(int)" class="member-name-link">weight</a><wbr>(int&nbsp;member)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Each member's weight now: its standing weight times 2^(POWER x score).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static int[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#wideAims()" class="member-name-link">wideAims</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static int[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#wideAims()" class="member-name-link">wideAims</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-31">MOVE-31</a>: every angle type at every lag, lag-major.</div>
 </div>
 </div>
@@ -400,6 +411,15 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-33">MOVE-33</a>: the views, the aims, then <code>mimics</code> learning-gun mimics.</div>
 </section>
 </li>
+<li>
+<section class="detail" id="&lt;init&gt;(int,boolean)">
+<h3>AimMembers</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AimMembers</span><wbr><span class="parameters">(int&nbsp;mimics,
+ boolean&nbsp;fieldPrior)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-35">MOVE-35</a>: the views, the aims, <code>mimics</code> learning-gun mimics, then the field prior
+ (<a href="FieldPrior.html" title="class in hadur117.core.move"><code>FieldPrior</code></a>, standing weight <a href="FieldPrior.html#WEIGHT">2.0</a>) when <code>fieldPrior</code>.</div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -427,6 +447,13 @@ loadScripts(document, 'script');</script>
 <h3>mimics</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">mimics</span>()</div>
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-33">MOVE-33</a>: the mimic members after the aims.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="fieldPrior()">
+<h3>fieldPrior</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">fieldPrior</span>()</div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-35">MOVE-35</a>: whether the field prior is the last member.</div>
 </section>
 </li>
 <li>
