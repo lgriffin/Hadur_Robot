@@ -70,6 +70,16 @@ final class MoveDesign {
      */
     static final boolean MIMIC_MEMBERS = false;
 
+    /**
+     * MOVE-35 (K1 step 3, docs/bench/gun-oracle.md): with {@link #AIM_MEMBERS}, the field prior
+     * (FieldPrior: a table of where learning guns on the whole field put their bullets, by the
+     * state they aimed at, fitted offline on the oracle's bullets) is the last aim member, standing
+     * weight 2, scored on the bullets as the aims are. On the oracle it lifts the rolling blend
+     * from +0.39 to +0.44 bits and cuts the safest-third leak 7.7% to 6.8%, most in the first
+     * rounds, where the views are empty. Duel only, off.
+     */
+    static final boolean FIELD_PRIOR = false;
+
     private MoveDesign() { }
 
     /**

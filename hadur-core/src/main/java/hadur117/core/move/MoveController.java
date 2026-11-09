@@ -208,6 +208,22 @@ public class MoveController {
         this.memberMimics = mimics;
     }
 
+    /** MOVE-35: the field prior as the last aim member, or null when off (duel only). */
+    private FieldPrior fieldPrior;
+
+    /**
+     * MOVE-35: sets the field prior, read only while the aim members are on and built with room
+     * for it ({@link AimMembers#AimMembers(int, boolean)}); null turns it off.
+     */
+    public void setFieldPrior(FieldPrior prior) {
+        this.fieldPrior = prior;
+    }
+
+    /** MOVE-35: the field prior, or null when off. */
+    public FieldPrior fieldPrior() {
+        return fieldPrior;
+    }
+
     /** DODGE-2: sets the dodger the surf asks for each wave's danger; null turns it off. */
     public void setShotDodger(ShotDodger dodger) {
         this.shotDodger = dodger;
@@ -1252,14 +1268,32 @@ public class MoveController {
     private double[] aimScores(Wave w, double dangerAngle, double bandwidth, List<double[]> segments) {
         double[] aims = w.simpleAims();
         int mimics = memberMimics == null ? 0 : aimMembers.mimics();
-        double[] out = new double[AimMembers.AIMS.length + mimics];
+        boolean prior = fieldPrior != null && aimMembers.fieldPrior();
+        double[] out = new double[AimMembers.AIMS.length + mimics + (prior ? 1 : 0)];
         for (int a = 0; a < AimMembers.AIMS.length; a++) {
             double angle = aims == null ? Double.NaN : aims[AimMembers.AIMS[a]];
             out[a] = Double.isNaN(angle) ? Double.NaN
                 : kernel(DiaUtils.normalizeAngle(angle, dangerAngle), bandwidth, segments);
         }
         mimicScores(w, dangerAngle, bandwidth, out, AimMembers.AIMS.length, mimics);
+        if (prior) out[out.length - 1] = priorScore(w, dangerAngle, bandwidth, segments);
         return out;
+    }
+
+    /**
+     * MOVE-35: the field prior's score over the intersection, in the aims' units (a member sure
+     * of the window scores 1): each guess-factor bin's probability times the surf's kernel on
+     * the bin's angle, as a view's neighbours are summed, through the bullet shadows.
+     */
+    private double priorScore(Wave w, double dangerAngle, double bandwidth, List<double[]> segments) {
+        double[] p = fieldPrior.profile(w);
+        double score = 0;
+        for (int b = 0; b < p.length; b++) {
+            if (p[b] <= 0) continue;
+            double angle = DiaUtils.normalizeAngle(w.firingAngle(fieldPrior.centre(b)), dangerAngle);
+            score += p[b] * kernel(angle, bandwidth, segments);
+        }
+        return score;
     }
 
     /**
