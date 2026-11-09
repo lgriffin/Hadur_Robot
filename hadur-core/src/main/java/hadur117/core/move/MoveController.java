@@ -208,22 +208,6 @@ public class MoveController {
         this.memberMimics = mimics;
     }
 
-    /** MOVE-35: the field prior as the last aim member, or null when off (duel only). */
-    private FieldPrior fieldPrior;
-
-    /**
-     * MOVE-35: sets the field prior, read only while the aim members are on and built with room
-     * for it ({@link AimMembers#AimMembers(int, boolean)}); null turns it off.
-     */
-    public void setFieldPrior(FieldPrior prior) {
-        this.fieldPrior = prior;
-    }
-
-    /** MOVE-35: the field prior, or null when off. */
-    public FieldPrior fieldPrior() {
-        return fieldPrior;
-    }
-
     /** DODGE-2: sets the dodger the surf asks for each wave's danger; null turns it off. */
     public void setShotDodger(ShotDodger dodger) {
         this.shotDodger = dodger;
@@ -1253,59 +1237,29 @@ public class MoveController {
         if (enabledSize == 0 || !(totalScanWeight > 0)) {
             double fallback = defaultDanger(w, segments, bandwidth);
             if (parts != null) parts[2 * views.size()] = fallback;
-            // MOVE-35: with the field prior on, the empty views do not end the blend: the
-            // fallback, scaled to a member's units (its weights sum to DEFAULT_WEIGHT), stands
-            // as member 0 and the prior and aims speak. This is the only window the prior is
-            // in: once the views have data they know this gun better than the field does (the
-            // AES forensic of 2026-11-09, docs/bench/gun-oracle.md). Without the prior the
-            // fallback is the danger, as it always was.
-            if (!mixAims || aimMembers == null || fieldPrior == null || !aimMembers.fieldPrior()) {
-                return fallback;
-            }
-            return aimMembers.danger(fallback / DEFAULT_WEIGHT, aimScores(w, dangerAngle, bandwidth, segments, true));
+            return fallback;
         }
         if (parts != null) parts[2 * views.size()] = Double.NaN;
         double viewScore = totalDanger / totalScanWeight;
         if (!mixAims || aimMembers == null) return viewScore;
-        return aimMembers.danger(viewScore, aimScores(w, dangerAngle, bandwidth, segments, false));
+        return aimMembers.danger(viewScore, aimScores(w, dangerAngle, bandwidth, segments));
     }
 
     /**
      * MOVE-29: each aim member's score at an intersection: the surf's kernel on the aim's angle
-     * over the intersection's segments; NaN for an aim the wave has no angle for. MOVE-35: the
-     * field prior's score is the last entry when {@code withPrior} and the prior is on; without
-     * it the array stops before the prior's slot and {@link AimMembers#danger} leaves it out.
+     * over the intersection's segments; NaN for an aim the wave has no angle for.
      */
-    private double[] aimScores(Wave w, double dangerAngle, double bandwidth, List<double[]> segments,
-                               boolean withPrior) {
+    private double[] aimScores(Wave w, double dangerAngle, double bandwidth, List<double[]> segments) {
         double[] aims = w.simpleAims();
         int mimics = memberMimics == null ? 0 : aimMembers.mimics();
-        boolean prior = withPrior && fieldPrior != null && aimMembers.fieldPrior();
-        double[] out = new double[AimMembers.AIMS.length + mimics + (prior ? 1 : 0)];
+        double[] out = new double[AimMembers.AIMS.length + mimics];
         for (int a = 0; a < AimMembers.AIMS.length; a++) {
             double angle = aims == null ? Double.NaN : aims[AimMembers.AIMS[a]];
             out[a] = Double.isNaN(angle) ? Double.NaN
                 : kernel(DiaUtils.normalizeAngle(angle, dangerAngle), bandwidth, segments);
         }
         mimicScores(w, dangerAngle, bandwidth, out, AimMembers.AIMS.length, mimics);
-        if (prior) out[out.length - 1] = priorScore(w, dangerAngle, bandwidth, segments);
         return out;
-    }
-
-    /**
-     * MOVE-35: the field prior's score over the intersection, in the aims' units (a member sure
-     * of the window scores 1): each guess-factor bin's probability times the surf's kernel on
-     * the bin's angle, as a view's neighbours are summed, through the bullet shadows.
-     */
-    private double priorScore(Wave w, double dangerAngle, double bandwidth, List<double[]> segments) {
-        double[] p = fieldPrior.profile(w);
-        double score = 0;
-        for (int b = 0; b < p.length; b++) {
-            if (p[b] <= 0) continue;
-            double angle = DiaUtils.normalizeAngle(w.firingAngle(fieldPrior.centre(b)), dangerAngle);
-            score += p[b] * kernel(angle, bandwidth, segments);
-        }
-        return score;
     }
 
     /**
@@ -1353,7 +1307,7 @@ public class MoveController {
                 if (view.effectiveSize() > 0 && viewOn(view, estimate)) viewsHaveData = true;
             }
             scores[0] = viewsHaveData ? getDangerScore(w, at, FORENSICS_CACHE, null, false) : Double.NaN;
-            double[] aims = aimScores(w, at.angle, bandwidth, w.transmission(at), false);
+            double[] aims = aimScores(w, at.angle, bandwidth, w.transmission(at));
             double[] aimAngles = w.simpleAims();
             for (int a = 0; a < AimMembers.AIMS.length; a++) {
                 // An aim's kernel is a probability over the reachable angles only, so a kernel
@@ -1390,9 +1344,6 @@ public class MoveController {
             (List<?>) view.cachedNeighbors.get(surfWaveIndex);
     }
 
-    /** The sum of {@link #defaultDanger}'s gun weights; divides it into a member's units (MOVE-35). */
-    static final double DEFAULT_WEIGHT = 4.0;
-
     /**
      * The danger with no data: the same kernel as {@link #getDangerScore}, summed (not
      * averaged) over two assumed guns: head-on (guess factor 0, weight 3) and one firing at
@@ -1401,7 +1352,6 @@ public class MoveController {
     private double defaultDanger(Wave w, List<double[]> segments, double bandwidth) {
         double[] guessFactors = {0.0, 0.85};
         double[] weights = {3.0, 1.0};
-        assert weights[0] + weights[1] == DEFAULT_WEIGHT;
         double danger = 0;
         for (int i = 0; i < guessFactors.length; i++) {
             double firingAngle = w.firingAngle(guessFactors[i]);

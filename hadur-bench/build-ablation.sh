@@ -77,8 +77,6 @@
 #   noaim  MOVE-29 off (it ships on from 3.20): the three-option surf rates on the views alone. Suffix kx.
 #   aimp3, aimp1  (with aimmem) MOVE-29's standing weight of each aim 0.1 -> 0.3 or 1.0. Suffix q3, q1.
 #   mimmem  MOVE-33: the six visit-trained learning-gun mimics (GunMimics) join the aim members. Suffix mm.
-#   fprior  MOVE-35 (K1 step 3): the field prior (FieldPrior, a table of where the field's learning guns shoot by the
-#         state they aimed at, fitted offline on the oracle's bullets) is the last aim member. Sets only FIELD_PRIOR.
 #         Suffix pf.
 #   aimbhb  MOVE-30: an enemy bullet ours met also scores the aim members, as a hit does. Sets only AIM_INTERCEPTS.
 #         Suffix ki.
@@ -422,10 +420,6 @@ for a in "${list[@]}"; do
             # MOVE-33: the learning-gun mimics as aim members.
             edit "$movedesign" "static final boolean MIMIC_MEMBERS = false;" "static final boolean MIMIC_MEMBERS = true;"
             version="${version}mm" ;;
-        fprior)
-            # MOVE-35: the field prior as the last aim member.
-            edit "$movedesign" "static final boolean FIELD_PRIOR = false;" "static final boolean FIELD_PRIOR = true;"
-            version="${version}pf" ;;
         aimmem)
             # Ships on from 3.20; the arm stays buildable for the older cards.
             grep -qF "static final boolean AIM_MEMBERS = true;" "$movedesign" \

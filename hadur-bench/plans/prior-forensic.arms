@@ -1,3 +1,0 @@
-# Field-prior forensics (cloud, measurement only): both arms print AES records (aesrec); pf adds the field prior.
-c | hadur117.Hadur 3.21aaar | bisect/hadur117.Hadur_3.21aaar.jar
-pf | hadur117.Hadur 3.21pfar | bisect/hadur117.Hadur_3.21pfar.jar
