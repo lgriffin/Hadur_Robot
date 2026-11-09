@@ -854,6 +854,19 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeController.java" \
                 "public static final boolean MELEE_CROSS = false;" "public static final boolean MELEE_CROSS = true;"
             version="${version}xh" ;;
+        pnopast|plinwall)
+            # Wall-dodge arms (cloud only, read by scratchpad sc/wallgf.py: the hit rate of linear aims on Hadur
+            # under 60 px of wall room, 29% on master against ScalarR's 14%). pnopast drops the past-position
+            # penalty so Hadur may reverse along a wall; plinwall doubles the linear guess's weight for shots
+            # fired while Hadur stood under 60 px of wall room. Suffixes np, lw.
+            mrm="$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java"
+            if [[ "$a" == pnopast ]]; then
+                edit "$mrm" "static final double PAST_K = 0.02;" "static final double PAST_K = 0;"
+                version="${version}np"
+            else
+                edit "$mrm" "static final double WALL_LINEAR_BOOST = 1, WALL_LINEAR_ROOM = 60;" "static final double WALL_LINEAR_BOOST = 2, WALL_LINEAR_ROOM = 60;"
+                version="${version}lw"
+            fi ;;
         msurf)
             # The melee surfer (MMOVE-15), off a team only; duel and team fixtures bit for bit. It ships
             # on from 3.21, so on master msurf builds the robot as it is.
