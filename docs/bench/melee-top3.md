@@ -478,5 +478,8 @@ learns from a shooter's hits does not lower the hits it takes from that shooter 
 
 **Cloud arms (seed 5700, 12 fields x 2 seeds each, paired against master):** `mnolearn` (the guesses are never
 replaced by learned aims), `mmid` (a third default guess at GF 0.4, `MinimumRiskMovement.MID_GUESS`), and both.
-If the learned aims are inert, `mnolearn` reads flat; if the gap between the guesses is where the surfer
-fails, `mmid` reads up. Tools: scratchpad `ms-lg2/persist3.py`, `ms-lg2/gf.py`.
+Read (24 pairs each, `nlmd` 20): `mnolearn` -0.28 ± 0.59 share, crowd deaths +4.6 ± 4.4 per 100 rounds;
+`mmid` +0.15 ± 0.49, crowd deaths -1.3 ± 3.7; both -0.23 ± 0.46. Neither moves the score at this size; the
+learned aims may be worth a few crowd deaths, and a third guess buys nothing visible. The arms and the
+`MID_GUESS` constant were removed. Four wave-model changes in a row (weights, sensing, aims, learning) read
+flat on the cloud: the melee gap is not in the wave model. Tools: scratchpad `ms-lg2/persist3.py`, `ms-lg2/gf.py`.
