@@ -267,6 +267,8 @@ a census-weighted cloud smoke (`hadur-bench/prior-smoke-cloud.txt`, every 25th r
 across all six bands, `plans/prior-smoke.arms`: c, aa, pf, 2 seeds from 10600) decides whether it goes
 to a PC card.
 
+**Empty views.** With the prior on, the empty-view fallback (head-on 3 : wide 1) no longer ends the blend: scaled to a member's units it stands as member 0 and the prior and aims speak, as the oracle scores them. With the prior off the fallback is the danger, as before. This is the round-0 window where the shipped model scored worst.
+
 ## Next
 
 - **Aim members**: measured (above), on from 3.20 for the simple guns' sake. K1 by re-weighting is done.

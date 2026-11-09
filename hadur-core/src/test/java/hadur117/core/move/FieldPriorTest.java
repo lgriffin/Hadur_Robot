@@ -128,4 +128,26 @@ class FieldPriorTest {
         scores[scores.length - 1] = 1.0;
         assertTrue(m.danger(0.0, scores) > 0.5, "the prior carries the danger when the aims are silent");
     }
+    @Test
+    @Tag("MOVE-35")
+    @DisplayName("with no view data the prior still shapes the danger; without the prior the fallback stands")
+    void emptyViews() {
+        Wave w = wave(Math.PI / 2, 8, 0.0);
+        Wave.Intersection at = new Wave.Intersection(w.firingAngle(0.0), 0.1);
+        Wave.Intersection side = new Wave.Intersection(w.firingAngle(0.6), 0.1);
+        MoveController plain = SurfOpeningTest.controller();
+        MoveController withAims = SurfOpeningTest.controller();
+        withAims.setAimMembers(new AimMembers(0, false));
+        MoveController withPrior = SurfOpeningTest.controller();
+        withPrior.setAimMembers(new AimMembers(0, true));
+        withPrior.setFieldPrior(new FieldPrior());
+        // Aim members alone leave the empty-view fallback untouched.
+        assertEquals(plain.getDangerScore(w, at, 0), withAims.getDangerScore(w, at, 0), 1e-12);
+        assertEquals(plain.getDangerScore(w, side, 0), withAims.getDangerScore(w, side, 0), 1e-12);
+        // The prior changes the ratio between two windows: it is in the blend.
+        double plainRatio = plain.getDangerScore(w, side, 0) / plain.getDangerScore(w, at, 0);
+        double priorRatio = withPrior.getDangerScore(w, side, 0) / withPrior.getDangerScore(w, at, 0);
+        assertTrue(Math.abs(plainRatio - priorRatio) > 1e-6, plainRatio + " vs " + priorRatio);
+        assertTrue(withPrior.getDangerScore(w, at, 0) > 0);
+    }
 }

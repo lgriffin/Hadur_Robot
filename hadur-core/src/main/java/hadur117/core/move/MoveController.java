@@ -1253,7 +1253,14 @@ public class MoveController {
         if (enabledSize == 0 || !(totalScanWeight > 0)) {
             double fallback = defaultDanger(w, segments, bandwidth);
             if (parts != null) parts[2 * views.size()] = fallback;
-            return fallback;
+            // MOVE-35: with the field prior on, the empty views do not end the blend: the
+            // fallback, scaled to a member's units (its weights sum to DEFAULT_WEIGHT), stands
+            // as member 0 and the prior and aims speak. This is the early-round window the
+            // prior is for. Without it the fallback is the danger, as it always was.
+            if (!mixAims || aimMembers == null || fieldPrior == null || !aimMembers.fieldPrior()) {
+                return fallback;
+            }
+            return aimMembers.danger(fallback / DEFAULT_WEIGHT, aimScores(w, dangerAngle, bandwidth, segments));
         }
         if (parts != null) parts[2 * views.size()] = Double.NaN;
         double viewScore = totalDanger / totalScanWeight;
@@ -1378,6 +1385,9 @@ public class MoveController {
             (List<?>) view.cachedNeighbors.get(surfWaveIndex);
     }
 
+    /** The sum of {@link #defaultDanger}'s gun weights; divides it into a member's units (MOVE-35). */
+    static final double DEFAULT_WEIGHT = 4.0;
+
     /**
      * The danger with no data: the same kernel as {@link #getDangerScore}, summed (not
      * averaged) over two assumed guns: head-on (guess factor 0, weight 3) and one firing at
@@ -1386,6 +1396,7 @@ public class MoveController {
     private double defaultDanger(Wave w, List<double[]> segments, double bandwidth) {
         double[] guessFactors = {0.0, 0.85};
         double[] weights = {3.0, 1.0};
+        assert weights[0] + weights[1] == DEFAULT_WEIGHT;
         double danger = 0;
         for (int i = 0; i < guessFactors.length; i++) {
             double firingAngle = w.firingAngle(guessFactors[i]);
