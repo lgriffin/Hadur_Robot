@@ -78,10 +78,6 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/move/GunMimics.Feature.html#ACCEL" class="member-name-link">ACCEL</a> - Enum constant in enum class hadur117.core.move.<a href="hadur117/core/move/GunMimics.Feature.html" title="enum class in hadur117.core.move">GunMimics.Feature</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/move/FieldPriorData.html#ACCEL" class="member-name-link">ACCEL</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/FieldPriorData.html" title="class in hadur117.core.move">FieldPriorData</a></dt>
-<dd>
-<div class="block">Acceleration edges, px/tick per tick.</div>
-</dd>
 <dt><a href="hadur117/core/physics/Rules.html#ACCELERATION" class="member-name-link">ACCELERATION</a> - Static variable in class hadur117.core.physics.<a href="hadur117/core/physics/Rules.html" title="class in hadur117.core.physics">Rules</a></dt>
 <dd>
 <div class="block">How much a robot can speed up in one tick, in px/tick per tick.</div>
@@ -409,11 +405,6 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/move/AimMembers.html#%3Cinit%3E(int)" class="member-name-link">AimMembers(int)</a> - Constructor for class hadur117.core.move.<a href="hadur117/core/move/AimMembers.html" title="class in hadur117.core.move">AimMembers</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MOVE-33">MOVE-33</a>: the views, the aims, then <code>mimics</code> learning-gun mimics.</div>
-</dd>
-<dt><a href="hadur117/core/move/AimMembers.html#%3Cinit%3E(int,boolean)" class="member-name-link">AimMembers(int, boolean)</a> - Constructor for class hadur117.core.move.<a href="hadur117/core/move/AimMembers.html" title="class in hadur117.core.move">AimMembers</a></dt>
-<dd>
-<div class="block"><a class="req" href="../requirements.html#MOVE-35">MOVE-35</a>: the views, the aims, <code>mimics</code> learning-gun mimics, then the field prior
- (<a href="hadur117/core/move/FieldPrior.html" title="class in hadur117.core.move"><code>FieldPrior</code></a>, standing weight <a href="hadur117/core/move/FieldPrior.html#WEIGHT">2.0</a>) when <code>fieldPrior</code>.</div>
 </dd>
 <dt><a href="hadur117/ShieldTableData.html#aims()" class="member-name-link">aims()</a> - Static method in class hadur117.<a href="hadur117/ShieldTableData.html" title="class in hadur117">ShieldTableData</a></dt>
 <dd>
@@ -996,14 +987,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The predictor that has matched the most enemy bullets exactly.</div>
 </dd>
-<dt><a href="hadur117/core/move/FieldPrior.html#bin(double,double%5B%5D)" class="member-name-link">bin(double, double[])</a> - Static method in class hadur117.core.move.<a href="hadur117/core/move/FieldPrior.html" title="class in hadur117.core.move">FieldPrior</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="hadur117/mini/JayLexi.Wave.html#bins" class="member-name-link">bins</a> - Variable in class hadur117.mini.<a href="hadur117/mini/JayLexi.Wave.html" title="class in hadur117.mini">JayLexi.Wave</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/move/FieldPrior.html#bins()" class="member-name-link">bins()</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/FieldPrior.html" title="class in hadur117.core.move">FieldPrior</a></dt>
-<dd>
-<div class="block">The guess-factor bins.</div>
-</dd>
 <dt><a href="hadur117/micro/core/Targeting.html#BINS" class="member-name-link">BINS</a> - Static variable in class hadur117.micro.core.<a href="hadur117/micro/core/Targeting.html" title="class in hadur117.micro.core">Targeting</a></dt>
 <dd>
 <div class="block">Angle bins in a full circle; a power of two so a bin wraps with a mask.</div>
@@ -1351,10 +1336,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The bullets learnt this battle.</div>
 </dd>
-<dt><a href="hadur117/core/move/FieldPriorData.html#BULLETS" class="member-name-link">BULLETS</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/FieldPriorData.html" title="class in hadur117.core.move">FieldPriorData</a></dt>
-<dd>
-<div class="block">The bullets the table was fitted on.</div>
-</dd>
 <dt><a href="hadur117/core/move/BulletShadows.html" class="type-name-link" title="class in hadur117.core.move">BulletShadows</a> - Class in <a href="hadur117/core/move/package-summary.html">hadur117.core.move</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MOVE-1">MOVE-1</a>: where our bullets shadow an enemy wave.</div>
@@ -1536,15 +1517,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">1.20's fixed distance, and the furthest the controller goes.</div>
 </dd>
-<dt><a href="hadur117/core/move/FieldPrior.html#cell(hadur117.core.model.Wave)" class="member-name-link">cell(Wave)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/FieldPrior.html" title="class in hadur117.core.move">FieldPrior</a></dt>
-<dd>
-<div class="block">The cell of the state wave <code>w</code> was aimed at: lateral speed, acceleration, wall room
- in the orbit direction and flight time, the first index varying fastest.</div>
-</dd>
-<dt><a href="hadur117/core/move/FieldPrior.html#cells()" class="member-name-link">cells()</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/FieldPrior.html" title="class in hadur117.core.move">FieldPrior</a></dt>
-<dd>
-<div class="block">The number of cells.</div>
-</dd>
 <dt><a href="hadur117/core/memory/Estimate.html#center()" class="member-name-link">center()</a> - Method in class hadur117.core.memory.<a href="hadur117/core/memory/Estimate.html" title="class in hadur117.core.memory">Estimate</a></dt>
 <dd>
 <div class="block">The centre the margin is measured from: Agresti-Coull's rate of <code>hits + 2</code> in
@@ -1552,10 +1524,6 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.Wave.html#centre" class="member-name-link">centre</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.Wave.html" title="class in hadur117.core.melee">MinimumRiskMovement.Wave</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/move/FieldPrior.html#centre(int)" class="member-name-link">centre(int)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/FieldPrior.html" title="class in hadur117.core.move">FieldPrior</a></dt>
-<dd>
-<div class="block">The guess factor at the centre of bin <code>b</code>.</div>
-</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#CENTRE_K" class="member-name-link">CENTRE_K</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/move/MirrorDrive.html#CENTRE_MARGIN" class="member-name-link">CENTRE_MARGIN</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/MirrorDrive.html" title="class in hadur117.core.move">MirrorDrive</a></dt>
@@ -2491,10 +2459,6 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur/bench/BattleResult.html#DEFAULT_SKIPS_PER_ROUND" class="member-name-link">DEFAULT_SKIPS_PER_ROUND</a> - Static variable in class hadur.bench.<a href="hadur/bench/BattleResult.html" title="class in hadur.bench">BattleResult</a></dt>
 <dd>
 <div class="block">Default ceiling on engine-announced skipped turns per round for a battle to count as trusted.</div>
-</dd>
-<dt><a href="hadur117/core/move/MoveController.html#DEFAULT_WEIGHT" class="member-name-link">DEFAULT_WEIGHT</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/MoveController.html" title="class in hadur117.core.move">MoveController</a></dt>
-<dd>
-<div class="block">The sum of <code>MoveController.defaultDanger(hadur117.core.model.Wave, java.util.List&lt;double[]&gt;, double)</code>'s gun weights; divides it into a member's units (<a class="req" href="../requirements.html#MOVE-35">MOVE-35</a>).</div>
 </dd>
 <dt><a href="hadur/bench/Bench.html#defaultRobot(java.util.Map,java.nio.file.Path,java.lang.String)" class="member-name-link">defaultRobot(Map&lt;String, String&gt;, Path, String)</a> - Static method in class hadur.bench.<a href="hadur/bench/Bench.html" title="class in hadur.bench">Bench</a></dt>
 <dd>
@@ -3818,13 +3782,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Twin Duel's field side.</div>
 </dd>
-<dt><a href="hadur117/core/duel/MoveDesign.html#FIELD_PRIOR" class="member-name-link">FIELD_PRIOR</a> - Static variable in class hadur117.core.duel.<a href="hadur117/core/duel/MoveDesign.html" title="class in hadur117.core.duel">MoveDesign</a></dt>
-<dd>
-<div class="block"><a class="req" href="../requirements.html#MOVE-35">MOVE-35</a> (K1 step 3, docs/bench/gun-oracle.md): with <a href="hadur117/core/duel/MoveDesign.html#AIM_MEMBERS"><code>MoveDesign.AIM_MEMBERS</code></a>, the field prior
- (FieldPrior: a table of where learning guns on the whole field put their bullets, by the
- state they aimed at, fitted offline on the oracle's bullets) is the last aim member, standing
- weight 2, scored on the bullets as the aims are.</div>
-</dd>
 <dt><a href="hadur117/core/melee/FieldGun.html#fieldAim(java.awt.geom.Point2D.Double,double,int,hadur117.core.world.EnemyInfo,long)" class="member-name-link">fieldAim(Point2D.Double, double, int, EnemyInfo, long)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/FieldGun.html" title="class in hadur117.core.melee">FieldGun</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MGUN-4">MGUN-4</a>: the field gun's own aim at one opponent, which a targeting wave carries.</div>
@@ -3845,34 +3802,6 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/shieldmode/ShieldMode.Situation.html#fieldHeight" class="member-name-link">fieldHeight</a> - Variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldMode.Situation.html" title="class in hadur117.core.shieldmode">ShieldMode.Situation</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/move/AimMembers.html#fieldPrior()" class="member-name-link">fieldPrior()</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/AimMembers.html" title="class in hadur117.core.move">AimMembers</a></dt>
-<dd>
-<div class="block"><a class="req" href="../requirements.html#MOVE-35">MOVE-35</a>: whether the field prior is the last member.</div>
-</dd>
-<dt><a href="hadur117/core/move/MoveController.html#fieldPrior()" class="member-name-link">fieldPrior()</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/MoveController.html" title="class in hadur117.core.move">MoveController</a></dt>
-<dd>
-<div class="block"><a class="req" href="../requirements.html#MOVE-35">MOVE-35</a>: the field prior, or null when off.</div>
-</dd>
-<dt><a href="hadur117/core/move/FieldPrior.html" class="type-name-link" title="class in hadur117.core.move">FieldPrior</a> - Class in <a href="hadur117/core/move/package-summary.html">hadur117.core.move</a></dt>
-<dd>
-<div class="block"><a class="req" href="../requirements.html#MOVE-35">MOVE-35</a> (K1 step 3 of the road to king, docs/bench/gun-oracle.md): the field prior, a member
- of the danger that knows how learning guns shoot before this one has shown us anything.</div>
-</dd>
-<dt><a href="hadur117/core/move/FieldPrior.html#%3Cinit%3E()" class="member-name-link">FieldPrior()</a> - Constructor for class hadur117.core.move.<a href="hadur117/core/move/FieldPrior.html" title="class in hadur117.core.move">FieldPrior</a></dt>
-<dd>
-<div class="block">The shipped table (<a href="hadur117/core/move/FieldPriorData.html" title="class in hadur117.core.move"><code>FieldPriorData</code></a>).</div>
-</dd>
-<dt><a href="hadur117/core/move/FieldPrior.html#%3Cinit%3E(java.lang.String%5B%5D)" class="member-name-link">FieldPrior(String[])</a> - Constructor for class hadur117.core.move.<a href="hadur117/core/move/FieldPrior.html" title="class in hadur117.core.move">FieldPrior</a></dt>
-<dd>
-<div class="block">A table of <code>rows</code>, each a cell's comma-separated bin counts.</div>
-</dd>
-<dt><a href="hadur117/core/move/FieldPriorData.html" class="type-name-link" title="class in hadur117.core.move">FieldPriorData</a> - Class in <a href="hadur117/core/move/package-summary.html">hadur117.core.move</a></dt>
-<dd>
-<div class="block"><a class="req" href="../requirements.html#MOVE-35">MOVE-35</a>: the field prior's table, fitted offline by <code>data/tools/gun_oracle.py prior</code> on the
- K1 oracle's bullets (docs/bench/gun-oracle.md, "K1 step 3"): 46719 enemy bullets from 48 learning guns on
- flat movers (hadur-bench/k0-cloud.txt, 2026-10-29), each counted once in the cell of the state it was
- aimed at and the guess-factor bin it went to.</div>
-</dd>
 <dt><a href="hadur117/core/melee/MeleeController.Hit.html#fields()" class="member-name-link">fields()</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeController.Hit.html" title="class in hadur117.core.melee">MeleeController.Hit</a></dt>
 <dd>
 <div class="block">The record's fields after <code>MH,round,tick,shooter</code>: damage, distance, seen, nearer, weight, alive.</div>
@@ -4217,10 +4146,6 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/move/GunMimics.Feature.html#FLIGHT" class="member-name-link">FLIGHT</a> - Enum constant in enum class hadur117.core.move.<a href="hadur117/core/move/GunMimics.Feature.html" title="enum class in hadur117.core.move">GunMimics.Feature</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/move/FieldPriorData.html#FLIGHT" class="member-name-link">FLIGHT</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/FieldPriorData.html" title="class in hadur117.core.move">FieldPriorData</a></dt>
-<dd>
-<div class="block">Flight time edges, ticks.</div>
-</dd>
 <dt><a href="hadur117/core/memory/Bytes.Writer.html#floats(float%5B%5D)" class="member-name-link">floats(float[])</a> - Method in class hadur117.core.memory.<a href="hadur117/core/memory/Bytes.Writer.html" title="class in hadur117.core.memory">Bytes.Writer</a></dt>
 <dd>
 <div class="block">A float array: its length as a u8, then each value.</div>
@@ -4617,10 +4542,6 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/TeamDanger.Sample.html#gf" class="member-name-link">gf</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamDanger.Sample.html" title="class in hadur117.core.melee">TeamDanger.Sample</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/move/FieldPriorData.html#GF_BINS" class="member-name-link">GF_BINS</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/FieldPriorData.html" title="class in hadur117.core.move">FieldPriorData</a></dt>
-<dd>
-<div class="block">Guess-factor bins over [-1, 1].</div>
-</dd>
 <dt><a href="hadur117/core/move/GunMimics.html#GF_BINS" class="member-name-link">GF_BINS</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/GunMimics.html" title="class in hadur117.core.move">GunMimics</a></dt>
 <dd>
 <div class="block">Guess-factor bins of each mimic's buffer over [-1, 1].</div>
@@ -6401,10 +6322,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Survival over the last <code>n</code> weak battles that ran.</div>
 </dd>
-<dt><a href="hadur117/core/move/FieldPriorData.html#LAT" class="member-name-link">LAT</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/FieldPriorData.html" title="class in hadur117.core.move">FieldPriorData</a></dt>
-<dd>
-<div class="block">Lateral speed edges, px/tick.</div>
-</dd>
 <dt><a href="hadur117/mini/JayLexi.html#LAT" class="member-name-link">LAT</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/JayLexi.html" title="class in hadur117.mini">JayLexi</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/link/Report.Dodge.html#lateral" class="member-name-link">lateral</a> - Variable in class hadur117.core.link.<a href="hadur117/core/link/Report.Dodge.html" title="class in hadur117.core.link">Report.Dodge</a></dt>
@@ -7835,10 +7752,6 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/physics/Rules.html#MIN_BULLET_POWER" class="member-name-link">MIN_BULLET_POWER</a> - Static variable in class hadur117.core.physics.<a href="hadur117/core/physics/Rules.html" title="class in hadur117.core.physics">Rules</a></dt>
 <dd>
 <div class="block">The weakest bullet the engine fires, in energy; the lower bound of a shot (<a class="req" href="../requirements.html#WAVE-2">WAVE-2</a>).</div>
-</dd>
-<dt><a href="hadur117/core/move/FieldPrior.html#MIN_BULLETS" class="member-name-link">MIN_BULLETS</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/FieldPrior.html" title="class in hadur117.core.move">FieldPrior</a></dt>
-<dd>
-<div class="block">A cell with fewer bullets than this reads as the flat profile.</div>
 </dd>
 <dt><a href="hadur117/core/policy/Matchup.html#MIN_BULLETS" class="member-name-link">MIN_BULLETS</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/Matchup.html" title="class in hadur117.core.policy">Matchup</a></dt>
 <dd>
@@ -10214,10 +10127,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The profile to use: the stored one, or a fresh one for a stranger; never null.</div>
 </dd>
-<dt><a href="hadur117/core/move/FieldPrior.html#profile(hadur117.core.model.Wave)" class="member-name-link">profile(Wave)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/FieldPrior.html" title="class in hadur117.core.move">FieldPrior</a></dt>
-<dd>
-<div class="block">The prior's probability of each guess-factor bin on wave <code>w</code>; sums to 1.</div>
-</dd>
 <dt><a href="hadur117/core/move/GunMimics.Mimic.html#profile(hadur117.core.model.Wave,int)" class="member-name-link">profile(Wave, int)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/GunMimics.Mimic.html" title="class in hadur117.core.move">GunMimics.Mimic</a></dt>
 <dd>
 <div class="block">The model's probability over <code>bins</code> equal bins of [-1, 1], or null with no data.</div>
@@ -11471,10 +11380,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#BENCH-95">BENCH-95</a>: the file in each battle's directory that keeps that battle's row, for a resumed run.</div>
 </dd>
-<dt><a href="hadur117/core/move/FieldPriorData.html#ROWS" class="member-name-link">ROWS</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/FieldPriorData.html" title="class in hadur117.core.move">FieldPriorData</a></dt>
-<dd>
-<div class="block">One cell a row: its bins' counts, comma-separated.</div>
-</dd>
 <dt><a href="hadur117/core/policy/EnergyRace.html#ROWS_PER_CALL" class="member-name-link">ROWS_PER_CALL</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/EnergyRace.html" title="class in hadur117.core.policy">EnergyRace</a></dt>
 <dd>
 <div class="block">Grid rows swept a call: the solve is spread over ticks, a full sweep every nine, so no tick
@@ -12105,11 +12010,6 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/model/Wave.html#setEnemiesAlive(int)" class="member-name-link">setEnemiesAlive(int)</a> - Method in class hadur117.core.model.<a href="hadur117/core/model/Wave.html" title="class in hadur117.core.model">Wave</a></dt>
 <dd>
 <div class="block">Sets <a href="hadur117/core/model/Wave.html#enemiesAlive"><code>Wave.enemiesAlive</code></a>.</div>
-</dd>
-<dt><a href="hadur117/core/move/MoveController.html#setFieldPrior(hadur117.core.move.FieldPrior)" class="member-name-link">setFieldPrior(FieldPrior)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/MoveController.html" title="class in hadur117.core.move">MoveController</a></dt>
-<dd>
-<div class="block"><a class="req" href="../requirements.html#MOVE-35">MOVE-35</a>: sets the field prior, read only while the aim members are on and built with room
- for it (<a href="hadur117/core/move/AimMembers.html#%3Cinit%3E(int,boolean)"><code>AimMembers(int, boolean)</code></a>); null turns it off.</div>
 </dd>
 <dt><a href="hadur117/core/model/Wave.html#setFiringWave(boolean)" class="member-name-link">setFiringWave(boolean)</a> - Method in class hadur117.core.model.<a href="hadur117/core/model/Wave.html" title="class in hadur117.core.model">Wave</a></dt>
 <dd>
@@ -12997,10 +12897,6 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/mini/JayLexi.html#smooth(java.awt.geom.Point2D.Double,double,double)" class="member-name-link">smooth(Point2D.Double, double, double)</a> - Static method in class hadur117.mini.<a href="hadur117/mini/JayLexi.html" title="class in hadur117.mini">JayLexi</a></dt>
 <dd>
 <div class="block">Turn the angle away from the wall until a STICK ahead stays inside the field (JAYLEXI-7).</div>
-</dd>
-<dt><a href="hadur117/core/move/FieldPrior.html#SMOOTH" class="member-name-link">SMOOTH</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/FieldPrior.html" title="class in hadur117.core.move">FieldPrior</a></dt>
-<dd>
-<div class="block">The share of the flat (all cells) profile mixed into each cell's, so a thin cell is not spiky.</div>
 </dd>
 <dt><a href="hadur117/core/move/StopAndGo.html#smoothed(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,int)" class="member-name-link">smoothed(Point2D.Double, Point2D.Double, int)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/StopAndGo.html" title="class in hadur117.core.move">StopAndGo</a></dt>
 <dd>
@@ -15374,10 +15270,6 @@ the order they are declared.</div>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/move/GunMimics.Feature.html#WALL" class="member-name-link">WALL</a> - Enum constant in enum class hadur117.core.move.<a href="hadur117/core/move/GunMimics.Feature.html" title="enum class in hadur117.core.move">GunMimics.Feature</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/move/FieldPriorData.html#WALL" class="member-name-link">WALL</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/FieldPriorData.html" title="class in hadur117.core.move">FieldPriorData</a></dt>
-<dd>
-<div class="block">Wall room ahead edges, in escape angles.</div>
-</dd>
 <dt><a href="hadur117/micro/core/Movement.html#WALL" class="member-name-link">WALL</a> - Static variable in class hadur117.micro.core.<a href="hadur117/micro/core/Movement.html" title="class in hadur117.micro.core">Movement</a></dt>
 <dd>
 <div class="block">How far the oscillation points sit from their wall (SAOR-1).</div>
@@ -15406,13 +15298,6 @@ the order they are declared.</div>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#WALL_RANGE" class="member-name-link">WALL_RANGE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/core/move/FieldPrior.html#WALL_STEP" class="member-name-link">WALL_STEP</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/FieldPrior.html" title="class in hadur117.core.move">FieldPrior</a></dt>
-<dd>
-<div class="block">The oracle walks the orbit toward the wall in steps of this many escape angles and records
- the first step outside the field; the wave's distance is walked in hundredths, so it is
- rounded up to the same grid before binning, or a wall at 0.48 would read a different cell
- here than in the table.</div>
-</dd>
 <dt><a href="hadur117/core/move/StopAndGo.html#WALL_STICK" class="member-name-link">WALL_STICK</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/StopAndGo.html" title="class in hadur117.core.move">StopAndGo</a></dt>
 <dd>
 <div class="block">The wall-smoothing stick, px.</div>
@@ -15689,10 +15574,6 @@ the order they are declared.</div>
 <dd>
 <div class="block">An opponent's weight: 1/distance, leaning toward weak opponents, boosted for a finisher
  (<a class="req" href="../requirements.html#MGUN-2">MGUN-2</a>), an isolated opponent and a recent shooter.</div>
-</dd>
-<dt><a href="hadur117/core/move/FieldPrior.html#WEIGHT" class="member-name-link">WEIGHT</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/FieldPrior.html" title="class in hadur117.core.move">FieldPrior</a></dt>
-<dd>
-<div class="block">The prior's standing weight against the views' 1 in <a href="hadur117/core/move/AimMembers.html" title="class in hadur117.core.move"><code>AimMembers</code></a>.</div>
 </dd>
 <dt><a href="hadur117/micro/core/Targeting.html#WEIGHT" class="member-name-link">WEIGHT</a> - Static variable in class hadur117.micro.core.<a href="hadur117/micro/core/Targeting.html" title="class in hadur117.micro.core">Targeting</a></dt>
 <dd>
