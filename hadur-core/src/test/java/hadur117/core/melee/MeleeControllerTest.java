@@ -224,6 +224,23 @@ class MeleeControllerTest {
 
     @Test
     @Tag("MSENSE-3")
+    void ledgerPicksTheOneHitWhoseDamageLeavesAShotOfTheDrop() {
+        MeleeController c = ledgered();
+        // Two waves reach a in its scan gap: b's power 3 from the west and d's power 1 from the east.
+        c.onScan("b", pt(100, 100), 360, 100, 0, 0, 0);
+        c.onScan("b", pt(100, 100), 360, 97, 0, 0, 1);
+        c.onScan("d", pt(700, 100), 360, 100, 0, 0, 0);
+        c.onScan("d", pt(700, 100), 360, 99, 0, 0, 1);
+        c.onScan("a", pt(400, 100), 200, 100, 0, 0, 20);
+        // A loss of 18 is b's 16 of damage and a power-2 shot; d's 4 of damage would leave 14, no shot.
+        c.onScan("a", pt(400, 100), 200, 82, 0, 0, 30);
+        EnemyShot shot = shotOf(c, "a", 30);
+        assertNotNull(shot);
+        assertEquals(2.0, shot.power, 1e-9);
+    }
+
+    @Test
+    @Tag("MSENSE-3")
     void ledgerReadsTheShotHiddenByItsOwnBulletLanding() {
         MeleeController c = ledgered();
         // a fires power 3 at tick 0 from (400, 500); c stands 220 px north, where the wave lands near tick 20.

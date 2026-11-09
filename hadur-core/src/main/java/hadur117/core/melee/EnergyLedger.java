@@ -77,10 +77,13 @@ final class EnergyLedger {
         // The shooter moved between its scans; the wave may have met it anywhere on the way.
         double moved = s.previousLocation() == null ? 0 : s.previousLocation().distance(s.location);
         if (loss > EnemyInfo.MAX_SHOT + EPS) {
-            // Hit by someone's bullet: the one tracked shot whose wave reached s in the gap.
+            // Hit by someone's bullet: of the tracked shots whose waves reached s in the gap (in a
+            // crowd there are several, of several powers), the one power whose damage leaves a
+            // shot, or nothing, of the drop.
             double q = Double.NaN;
             for (EnemyShot w : tracker.shots(now)) {
                 if (w.shooter.equals(s.name) || !reached(w, s, a, b, moved)) continue;
+                if (!explains(loss - Rules.getBulletDamage(w.power))) continue;
                 if (!Double.isNaN(q) && Math.abs(q - w.power) > 0.005) return null;
                 q = w.power;
             }
@@ -88,11 +91,11 @@ final class EnergyLedger {
             return shot(s.name, loss - Rules.getBulletDamage(q), now);
         }
         if (loss < EnemyInfo.MIN_SHOT - EPS) {
-            // Its own bullet landed on someone: the one of its tracked shots whose wave reached
-            // another living robot in the gap.
+            // Its own bullet landed on someone: the one power among its tracked shots whose waves
+            // reached another living robot in the gap that leaves a shot, or nothing, of the drop.
             double q = Double.NaN;
             for (EnemyShot w : tracker.shots(now)) {
-                if (!w.shooter.equals(s.name)) continue;
+                if (!w.shooter.equals(s.name) || !explains(loss + 3 * w.power)) continue;
                 for (EnemyInfo v : alive) {
                     if (v.name.equals(s.name) || v.location == null) continue;
                     // The wave met v somewhere in s's scan gap; v's scan may be older or newer than that.
@@ -106,6 +109,12 @@ final class EnergyLedger {
             return shot(s.name, loss + 3 * q, now);
         }
         return null;
+    }
+
+    /** Whether what is left of a drop, {@code rest}, is a bullet's power or nothing at all. */
+    private static boolean explains(double rest) {
+        return Math.abs(rest) < 0.011
+                || (rest >= EnemyInfo.MIN_SHOT - 0.011 && rest <= EnemyInfo.MAX_SHOT + 0.011);
     }
 
     /** The shot of {@code power}, added when the power is a bullet's. */
