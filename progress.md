@@ -1,6 +1,6 @@
 # Queue pc-field-prior: progress
 
-Updated 2026-11-09 12:52:36 PC time (12:52 UTC), runner pid 22896.
+Updated 2026-11-09 12:52:38 PC time (12:52 UTC), runner pid 22896.
 
 - `prep` done, exit 0 in 2 min
 - `pilot` failed, exit 2 in 0 min
@@ -33,11 +33,6 @@ Stopping now would leave 0 battles unrun; every battle already fought is kept an
 ### Queue log (last lines)
 
 ```
-07:52:29 watching pilot: 4 stop rule(s)
-07:53:16 progress pilot: 40/1434 (3%) battles, 3101/h, ETA 27 min, 0 failed, skips 43.7/battle (last 100), aa -0.05, pf -0.02
-08:23:36 progress pilot: 1432/1434 (100%) battles, 2742/h, ETA 0 min, 0 failed, skips 37.1/battle (last 100), aa +0.01, pf -0.09
-08:27:50 pilot exit=2 in 2121 s
-08:27:52 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/718
 08:27:52 skip screen (after pilot, which has not finished exit=0)
 08:27:52 skip gate (after screen, which has not finished exit=0)
 08:27:52 skip pr (after gate, which has not finished exit=0)
@@ -48,4 +43,9 @@ Stopping now would leave 0 battles unrun; every battle already fought is kept an
 12:52:25 watching pilot: 4 stop rule(s)
 12:52:27 progress pushed to origin claude/pc-field-prior-progress (every 15 min)
 12:52:36 pilot exit=2 in 10 s
+12:52:38 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/720
+12:52:38 skip screen (after pilot, which has not finished exit=0)
+12:52:38 skip gate (after screen, which has not finished exit=0)
+12:52:38 skip pr (after gate, which has not finished exit=0)
+12:52:38 ALLDONE
 ```

@@ -18,3 +18,8 @@
 12:52:25 watching pilot: 4 stop rule(s)
 12:52:27 progress pushed to origin claude/pc-field-prior-progress (every 15 min)
 12:52:36 pilot exit=2 in 10 s
+12:52:38 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/720
+12:52:38 skip screen (after pilot, which has not finished exit=0)
+12:52:38 skip gate (after screen, which has not finished exit=0)
+12:52:38 skip pr (after gate, which has not finished exit=0)
+12:52:38 ALLDONE
