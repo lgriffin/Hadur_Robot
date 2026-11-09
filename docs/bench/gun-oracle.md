@@ -253,12 +253,24 @@ Two priors fitted offline were scored, each bullet's model built without its own
   a real previous battle is a weaker stand-in than the same battle's late rounds. It is the next
   step, not this one.
 
-The field prior ships as `FieldPrior` (hadur-core, `MoveDesign.FIELD_PRIOR`, off; ablation `fprior`,
-suffix pf): the last aim member, standing weight 2, each bin's share times the surf's kernel on the
-bin's angle through the shadows, scored on hits like the aims and so weighed down once the views have
-learnt this gun. `gun_oracle.py prior DATA.npz --out REPORT.md --java FieldPriorData.java` fits and
-scores the table and writes the data class; the shipped one is from `k2.npz` (46,719 bullets, 48
-opponents) and the PC's `oracle-k1.npz` (779,545 bullets, 432 opponents) refits it in one step.
+**Outcome (2026-11-09).** The table shipped as a danger member behind an off switch (MOVE-35, standing weight 2)
+and went to the PC as card pc-field-prior. Its pilot stopped it: -0.50 points mean over 239 robots (pooled
+-0.10 ± 0.07 APS, A/A +0.00; results PR #721). A cloud AES forensic, both builds recording every first wave
+rating against the bullet the engine fired (32 learning guns x 2 seeds, 83k waves an arm,
+[read](local/2026-11-09_prior-forensic-aes.md)), showed why: in round 0 the member cut hits on the chosen
+option from 0.111 to 0.095, and from round 1 on it raised them (0.100 to 0.105 overall) while the blend
+with it ranked the real bullet's option top less often than the views alone (0.421 against 0.444). A redesign
+that let it speak only while the views had no data was no better ([read](local/2026-11-09_prior-forensic2-aes.md):
+round 0 0.114 against 0.100, rounds 1-2 0.108 against 0.096; the baseline's own round 0 moved from 0.111
+to 0.100 between the two runs, so the first run's round-0 gain was within that noise). The switch and the
+member are removed; `gun_oracle.py prior` and the k2 report stay as the record.
+
+**What the oracle missed.** It scores each model's probability of the bullet's guess factor (bits). The surf
+does not use probabilities: it ranks three options by danger mass and takes the least. A sharper model can
+score more bits and still rank the three options worse, and the oracle's rolling blend learnt per-view weights
+that the robot's fixed view blend does not. From here a danger member earns a PC card only after the AES
+forensic (`data/tools/aes_round.py`) shows fewer hits on the chosen option round by round on the cloud; oracle
+bits alone pick candidates, they do not gate.
 
 What the oracle cannot say: how much of a smaller safest-third leak becomes score. The aim members'
 +0.067 bits and 8.1% to 7.7% read as +0.03 +- 0.64 pp in the cloud and +0.07 +- 0.15 APS on the PC's
@@ -272,8 +284,9 @@ to a PC card.
 ## Next
 
 - **Aim members**: measured (above), on from 3.20 for the simple guns' sake. K1 by re-weighting is done.
-- **Field prior** (step 3, above): cloud smoke, then a PC card.
-- **Per-opponent prior**: the oracle's biggest read (+0.555); needs the robot to carry each opponent's gun model
-  into the battle, fitted on the PC's `oracle-k1.npz`.
+- **Field prior** (step 3, above): failed its PC card and both forensics; removed.
+- **Per-opponent prior**: the oracle's biggest read (+0.555), but the field prior showed oracle bits do not
+  carry into the surf's choice on their own. Before any build it needs a battle-level case: the AES forensic
+  on a robot whose late-round profile is carried in as the member, fewer hits round by round, on the cloud.
 
 Nothing here ships: no release, no table line, and 1v1 behaviour is unchanged with the switches off.
