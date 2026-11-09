@@ -24,3 +24,17 @@
 12:52:38 skip pr (after gate, which has not finished exit=0)
 12:52:38 ALLDONE
 12:52:57 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
+12:52:57 start prep
+12:52:59 progress pushed to origin claude/pc-field-prior-progress (every 15 min)
+12:54:58 prep exit=0 in 120 s
+12:54:58 start pilot
+12:54:58 watching pilot: 4 stop rule(s)
+12:55:07 pilot exit=0 in 8 s
+12:55:07 start screen
+12:55:07 watching screen: 4 stop rule(s)
+12:55:07 screen exit=0 in 0 s
+12:55:07 start gate
+12:55:07 gate exit=0 in 0 s
+12:55:07 start pr
+12:55:14 pr exit=0 in 6 s
+12:55:14 ALLDONE
