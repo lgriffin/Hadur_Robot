@@ -123,15 +123,6 @@ public class MeleeController {
     private boolean cross = MELEE_CROSS;
     /** MMOVE-19: each opponent's scanned path this round; empty with the switch off. */
     private final Map<String, RobotStateLog> paths = new HashMap<>();
-    /**
-     * MSENSE-3 (arm mledger): off a team with the surfer on, a scan that shows no shot is read
-     * again with what Hadur knows moved the shooter's energy in the same gap: its hits on Hadur,
-     * the tracked shot that hit it, the tracked shot of its own that landed. One field shot in
-     * five is hidden that way. Off.
-     */
-    public static final boolean ENERGY_LEDGER = false;
-    private boolean ledgerOn = ENERGY_LEDGER;
-    private final EnergyLedger ledger;
 
     public MeleeController(BattleField field) {
         this(field, new EnemyTracker(field));
@@ -149,7 +140,6 @@ public class MeleeController {
         this.mover = new MinimumRiskMovement(field);
         this.gun = new FieldGun(field);
         this.danger = new TeamDanger(field);
-        this.ledger = new EnergyLedger(world);
     }
 
     public void newRound() {
@@ -161,7 +151,6 @@ public class MeleeController {
         lastTarget = null;
         myPath.clear();
         paths.clear();
-        ledger.newRound();
     }
 
     public OpponentStatsBook book() { return book; }
@@ -187,10 +176,6 @@ public class MeleeController {
      */
     public void scanned(EnemyInfo info, EnemyShot shot, double distance, double velocity, long time) {
         String name = info.name;
-        if (ledgerOn && !onTeam && mover.surfing()) {
-            // MSENSE-3: the shot the scan pair hid, if the World read none and the ledger can.
-            shot = ledger.resolve(info, shot, time, tracker.alive());
-        }
         profiles.scanned(name, distance);
         if (shot != null) profiles.shotInferred(name, shot.power);
         book.get(name).recordScan(distance, velocity, info.turnRate());
@@ -202,11 +187,6 @@ public class MeleeController {
     /** MMOVE-19: sets the switch, for tests. */
     void cross(boolean on) {
         this.cross = on;
-    }
-
-    /** MSENSE-3: sets the switch, for tests. */
-    void ledger(boolean on) {
-        this.ledgerOn = on;
     }
 
     /**
@@ -335,7 +315,6 @@ public class MeleeController {
         OpponentStats stats = book.get(name);
         double damage = Rules.getBulletDamage(power);
         EnemyInfo shooter = tracker.get(name);
-        if (ledgerOn && !onTeam) ledger.hitOnHadur(name, power);
         if (!onTeam) {
             // MMOVE-26: what the surfer saw of the shot that hit, for the MH record. The shot is
             // matched first: a dead shooter's bullet still flies, and its shot is still tracked.

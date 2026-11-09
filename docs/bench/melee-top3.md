@@ -431,7 +431,8 @@ Skipped turns per battle were the same in both arms. Verdict: seeing one shot in
 melee score. The surfer already had the waves that mattered; the hits it takes come from waves it had and
 weighed wrong (23% of damage is a shot it held under weight 0.1 because other robots stood nearer the shooter)
 or surfed and still took (67%). The lever is in the weighing and the choice, not in the sensing. MSENSE-3 is not
-carded for the PC and does not ship; the study and tools stay as the record.
+carded for the PC and does not ship: the ledger code, its arm and its requirement were taken out of the PR
+(the no-dead-switch rule); the study and tools stay as the record, and the code is in the branch history.
 
 Tools: scratchpad `ms/unseen.py` (hits against the trace and transcript), `ms/gaps.py` (every scan pair),
 `ms/cadence.py` (each robot's power constancy, 69%, and how often it fires within a tick of its gun cooling, 84%).

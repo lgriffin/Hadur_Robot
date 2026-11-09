@@ -111,25 +111,6 @@ public class EnemyTracker {
         return e;
     }
 
-    /**
-     * MSENSE-3: a shot of {@code power} that {@code name}'s last two scans hid, resolved by the
-     * melee's energy ledger: fired in the window between them, like an inferred shot, and kept
-     * with the shots. Null when {@code name} is unknown or has had one scan.
-     */
-    public EnemyShot addResolvedShot(String name, double power, long now) {
-        EnemyInfo e = enemies.get(name);
-        if (e == null || e.previousScanTime() < 0) return null;
-        EnemyShot shot = inferredShot(name, e.previousLocation(), e.previousScanTime(), e.location, e.lastScanTime, power);
-        addShot(shot, now);
-        return shot;
-    }
-
-    /** MSENSE-3: forgets {@code shot}, one the ledger found to be misread; nothing when it is not kept. */
-    public void removeShot(EnemyShot shot) {
-        shots.remove(shot);
-        if (lastScanShot == shot) lastScanShot = null;
-    }
-
     /** The shot the last {@link #onScan} inferred, or null when it inferred none. */
     public EnemyShot lastScanShot() {
         return lastScanShot;

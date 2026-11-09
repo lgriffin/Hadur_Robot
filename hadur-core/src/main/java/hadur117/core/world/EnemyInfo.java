@@ -17,7 +17,7 @@ public class EnemyInfo {
     /** Window over which energy lost to other robots is summed. */
     public static final int LOSS_WINDOW = 40;
     /** The engine's bullet powers: a drop in this range may be a shot (MSENSE-2). */
-    public static final double MIN_SHOT = 0.1, MAX_SHOT = 3.0;
+    static final double MIN_SHOT = 0.1, MAX_SHOT = 3.0;
     /**
      * The fewest ticks between two shots: the lightest bullet heats the gun by 1.02, which
      * the default cooling rate of 0.1 a tick takes 11 ticks to clear.
@@ -43,10 +43,6 @@ public class EnemyInfo {
     private Point2D.Double prevLocation;
     private final Deque<long[]> externalLosses = new ArrayDeque<>();
     private double pendingOwnDamage;
-    /** MSENSE-3: the energy the last two scans showed it losing, less Hadur's own hits; NaN before its second scan. */
-    private double lastLoss = Double.NaN;
-    /** MSENSE-3: whether a bump explained the last scan pair's drop. */
-    private boolean lastBumped;
 
     public EnemyInfo(String name) {
         this.name = name;
@@ -70,8 +66,6 @@ public class EnemyInfo {
         double shot = Double.NaN;
         if (lastScanTime >= 0) {
             double loss = this.energy - energy - pendingOwnDamage;
-            lastLoss = loss;
-            lastBumped = bumped;
             // A gap long enough for several shots can hide them in one bigger drop.
             long shotsPossible = 1 + Math.max(0, time - lastScanTime - 1) / MIN_REFIRE_TICKS;
             if (loss > MAX_SHOT + EPS && shotsPossible > 1 && loss <= shotsPossible * MAX_SHOT + EPS) {
@@ -103,19 +97,6 @@ public class EnemyInfo {
     /** Ticks since the last scan. */
     public long age(long now) {
         return lastScanTime < 0 ? Long.MAX_VALUE : now - lastScanTime;
-    }
-
-    /**
-     * MSENSE-3: the energy the last two scans showed it losing, Hadur's own hits taken off; negative
-     * when it gained. NaN before its second scan.
-     */
-    public double lastLoss() {
-        return lastLoss;
-    }
-
-    /** MSENSE-3: whether a bump (wall or robot) explained the last scan pair's drop, so no shot was read. */
-    public boolean lastBumped() {
-        return lastBumped;
     }
 
     /** Where the scan before the latest one saw it, or null before its second scan. */
