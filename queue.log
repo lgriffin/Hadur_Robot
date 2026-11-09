@@ -7,3 +7,12 @@
 22:59:22 progress mcpilot: 1/184 (1%) battles, 60/h, ETA 3.1 h, 0 failed, skips 56.0/battle (last 100)
 23:29:30 progress mcpilot: 80/184 (43%) battles, 154/h, ETA 40 min, 0 failed, skips 45.5/battle (last 100)
 23:59:39 progress mcpilot: 140/184 (76%) battles, 137/h, ETA 19 min, 0 failed, skips 48.4/battle (last 100)
+00:15:28 mcpilot exit=0 in 4626 s
+00:15:28 start mccheck
+00:15:34 mccheck exit=1 in 6 s
+00:15:34 skip mcaa (after mccheck, which has not finished exit=0)
+00:15:34 skip mcbb (after mcaa, which has not finished exit=0)
+00:15:34 skip mccv (after mcbb, which has not finished exit=0)
+00:15:34 skip mcread (after mccv, which has not finished exit=0)
+00:15:34 skip mcpr (after mcread, which has not finished exit=0)
+00:15:34 ALLDONE
