@@ -850,6 +850,13 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
+        mledger)
+            # MSENSE-3: the melee's energy ledger reads the shots an opponent's energy hides (its
+            # hits on Hadur, the tracked shot that hit it, its own shot that landed); off a team
+            # only, duel and team fixtures bit for bit. Suffix lg.
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeController.java" \
+                "public static final boolean ENERGY_LEDGER = false;" "public static final boolean ENERGY_LEDGER = true;"
+            version="${version}lg" ;;
         mcross)
             # ScalarR-inspired learning (docs/bench/scalarr-melee-decompile.md, MMOVE-19): the melee
             # surfer also learns each shooter's aim from its hits on other opponents, off a team

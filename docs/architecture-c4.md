@@ -681,6 +681,7 @@ endgame MEND-1, 2).
 |---|---|---|---|
 | `MinimumRiskMovement.MELEE_SURF` | MMOVE-15 | **on**, master only (3.21) | The melee surfer: crowd-weighted shots, learned aims, wave re-rank |
 | `MeleeController.MELEE_CROSS` | MMOVE-19 | **on**, master only (3.21) | Learn a shooter's aim from its hits on others |
+| `MeleeController.ENERGY_LEDGER` | MSENSE-3 | off (arm `mledger`) | The energy ledger reads the shots a shooter's other energy changes hide (its hit on Hadur, the shot that hit it, its own shot that landed) |
 | `MeleeEnergyPolicy.CROWD_OGI` | MGUN-13 | **on** | Ogi's crowd power, 3 up close |
 | `MeleeEnergyPolicy.OGI_WIDE` | MGUN-16 | **on** (3.19) | Power 3 out to 300 px |
 | `MeleeEnergyPolicy.FAR_SPARE` | MGUN-25 | **on**, master only (3.22) | At least power 2.5 beyond 300 px while Hadur has 60+ energy |

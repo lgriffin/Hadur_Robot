@@ -356,3 +356,40 @@ the next step: the curve is flat from k = 3 up (12% to 7%), so the surfer gains 
 shots apart by k alone; a per-shooter table (Diamond, Portia, Lunar and Glacier put 42 to 50% of their
 shots at their third-nearest or further, Figment and Numbat shoot nearest) or the 23% of hits no inferred
 shot matches are the parts of the danger model still unread.
+
+## The hits no inferred shot matches (MSENSE-3, the energy ledger, 2026-11-09)
+
+The MH read (MMOVE-26) left 23% of the damage Hadur takes with no inferred shot behind it. To see why, the 12
+census fields were fought again (seed 5300, 20 rounds) with the recorder, so Hadur's own scans and hit events
+(the replay transcript) sit beside the trace's truth of every bullet. Every one of the 1,831 hits found its
+bullet in the trace, so each unseen hit can be put against the two scans of its shooter that bracket the fire.
+
+| why the inferred shot is missing | hits | damage | share of unseen damage |
+|---|---:|---:|---:|
+| another robot's bullet hit the shooter in the same scan gap (drop over 3, read as damage) | 71 | 755 | 30% |
+| the shooter's own bullet hit another robot in the gap (3 x power back, read as a gain) | 60 | 642 | 26% |
+| the shooter's own bullet hit Hadur in the gap (3 x power back; Hadur knows this one exactly) | 47 | 360 | 14% |
+| the shooter was not scanned again before the bullet arrived | 28 | 242 | 10% |
+| both: hit and landed in the gap | 20 | 217 | 9% |
+| drop over 3 with no bullet event in the trace (wall or ram) | 17 | 167 | 7% |
+| other | 22 | 118 | 4% |
+
+The same classifier over the 1,569 seen hits puts 95% of them in "drop equals the power", so the split is
+sound. Over every pair of consecutive scans of every robot (238,400 pairs, 54,225 with a shot in the gap),
+MSENSE-2 reads the shot cleanly 80% of the time; the lost fifth splits the same way: the shooter's bullet
+landed on another robot 38% (its shot was itself tracked in two thirds of those), the shooter was hit 29%
+(the hitting shot tracked in 70%), two bullet events in one gap 12%, wall or ram 8%, its bullet hit Hadur 5%.
+A drop over 3 with the shooter's gun cool holds a shot 73% of the time; with the gun hot, never.
+
+MSENSE-3 (`MeleeController.ENERGY_LEDGER`, arm `mledger`, suffix lg) books what Hadur knows of those
+changes. A hit on Hadur by a shooter of power q gives it 3q, exactly. A drop over 3 is put against the one
+other tracked shot whose wave reached the shooter between its two scans (the same geometry as MMOVE-19), and
+what is left over the bullet's damage is the shot. A gain is put against the one tracked shot of the shooter's
+own whose wave reached another living robot in the gap, and 3 x its power less the gain is the shot. A shot is
+read only when one power explains the change, that power is a bullet's, and the shooter's gun, by its last
+tracked shot, could have cooled. The ledger's own measure is the MH record: the unseen share should fall from
+23% to about 10%.
+
+Tools: scratchpad `ms/unseen.py` (hits against the trace and transcript), `ms/gaps.py` (every scan pair),
+`ms/cadence.py` (each robot's power constancy, 69%, and how often it fires within a tick of its gun cooling, 84%).
+
