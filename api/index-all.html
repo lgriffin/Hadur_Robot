@@ -6998,6 +6998,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Per-enemy Markov rows, kept across rounds.</div>
 </dd>
+<dt><a href="hadur/bench/Bench.html#markSuiteFieldDone(java.util.Map)" class="member-name-link">markSuiteFieldDone(Map&lt;String, String&gt;)</a> - Static method in class hadur.bench.<a href="hadur/bench/Bench.html" title="class in hadur.bench">Bench</a></dt>
+<dd>
+<div class="block">BENCH-219: records a suite field as finished, written whole or not at all.</div>
+</dd>
 <dt><a href="hadur/bench/Affinity.html#mask(int,int,int)" class="member-name-link">mask(int, int, int)</a> - Static method in class hadur.bench.<a href="hadur/bench/Affinity.html" title="class in hadur.bench">Affinity</a></dt>
 <dd>
 <div class="block">Worker <code>worker</code>'s processor mask; refused when it would need more than 64 processors.</div>
@@ -13366,10 +13370,22 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Returns the value of the <code>suggestedParallel</code> record component.</div>
 </dd>
-<dt><a href="hadur/bench/Bench.html#suiteLinesAtOnce(java.util.Map,java.util.List,java.util.Map)" class="member-name-link">suiteLinesAtOnce(Map&lt;String, String&gt;, List&lt;Map&lt;String, String&gt;&gt;, Map&lt;String, String&gt;)</a> - Static method in class hadur.bench.<a href="hadur/bench/Bench.html" title="class in hadur.bench">Bench</a></dt>
+<dt><a href="hadur/bench/Bench.html#SUITE_DONE" class="member-name-link">SUITE_DONE</a> - Static variable in class hadur.bench.<a href="hadur/bench/Bench.html" title="class in hadur.bench">Bench</a></dt>
 <dd>
-<div class="block"><a class="req" href="../requirements.html#BENCH-108">BENCH-108</a>: how many suite lines run at once.</div>
+<div class="block">BENCH-219: the file a suite field writes in its output folder once it has finished with exit 0.</div>
 </dd>
+<dt><a href="hadur/bench/Bench.html#suiteFieldDone(java.util.Map)" class="member-name-link">suiteFieldDone(Map&lt;String, String&gt;)</a> - Static method in class hadur.bench.<a href="hadur/bench/Bench.html" title="class in hadur.bench">Bench</a></dt>
+<dd>
+<div class="block">BENCH-219: whether a suite field may be kept: resume is on for the line and its done stamp matches.</div>
+</dd>
+<dt><a href="hadur/bench/Bench.html#suiteFieldStamp(java.util.Map)" class="member-name-link">suiteFieldStamp(Map&lt;String, String&gt;)</a> - Static method in class hadur.bench.<a href="hadur/bench/Bench.html" title="class in hadur.bench">Bench</a></dt>
+<dd>
+<div class="block">BENCH-219: what a finished suite field was run with: its merged options in key order, and the
+ size and modification time of every option value that names a file (the robot jar among them),
+ so a rebuilt arm or changed seeds never reuse an older field's report.</div>
+</dd>
+<dt><a href="hadur/bench/Bench.html#suiteLinesAtOnce(java.util.Map,java.util.List,java.util.Map)" class="member-name-link">suiteLinesAtOnce(Map&lt;String, String&gt;, List&lt;Map&lt;String, String&gt;&gt;, Map&lt;String, String&gt;)</a> - Static method in class hadur.bench.<a href="hadur/bench/Bench.html" title="class in hadur.bench">Bench</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/memory/OpponentProfile.html#sum(float%5B%5D)" class="member-name-link">sum(float[])</a> - Static method in class hadur117.core.memory.<a href="hadur117/core/memory/OpponentProfile.html" title="class in hadur117.core.memory">OpponentProfile</a></dt>
 <dd>
 <div class="block">The sum of a count group, in double precision.</div>
