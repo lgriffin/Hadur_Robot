@@ -107,6 +107,8 @@ public class MinimumRiskMovement {
     static final double SOFT_FLOOR = 0.1;
     /** Cloud arm pwall: wall room, px, under which the candidates gain the wall set (0 on master: none). */
     static final double WALL_SET_ROOM = 0;
+    /** Index in the last candidate list where the wall set starts, -1 when there is none. */
+    private int wallSetFrom = -1;
     static final double SWITCH_GAIN = 0.9;
     static final double REACHED = 20;
 
@@ -659,7 +661,12 @@ public class MinimumRiskMovement {
                 out.add(clip(p));
             }
         }
-        if (WALL_SET_ROOM > 0) addWallSet(me, out);
+        wallSetFrom = -1;
+        if (WALL_SET_ROOM > 0) {
+            int before = out.size();
+            addWallSet(me, out);
+            if (out.size() > before) wallSetFrom = before;
+        }
         return out;
     }
 
@@ -738,6 +745,10 @@ public class MinimumRiskMovement {
         List<Integer> picked = new ArrayList<>();
         for (int i = 0; i < order.length && picked.size() < rerank; i++) picked.add(order[i]);
         if (hold && !picked.contains(pool.size() - 1)) picked.add(pool.size() - 1);
+        // The wall set (pwall) is always wave-scored: its short steps rarely rank among the least risky.
+        if (wallSetFrom >= 0) {
+            for (int i = wallSetFrom; i < candidates.size(); i++) if (!picked.contains(i)) picked.add(i);
+        }
         double[] damage = new double[picked.size()];
         double[] r = new double[picked.size()];
         for (int k = 0; k < picked.size(); k++) {

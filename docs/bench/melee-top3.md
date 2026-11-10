@@ -593,3 +593,20 @@ damage a round over one seed with no change in place or crowd deaths; `plinwall`
 constant were removed. The wall dodge is not a constant away: the surfer's two guesses and its candidate ring are
 the design that fails there, and the next step is a candidate set for little wall room (a reversal along the wall
 and a stop, scored against the waves the way ScalarR's five steps are), read by this table before any score.
+
+### The wall candidate set (2026-11-10)
+
+Arm `pwall` (`MinimumRiskMovement.WALL_SET_ROOM` 60, 0 on master): with under 60 px of wall room the mover's
+candidates gain a stop and 40 and 80 px steps either way along the wall, the moves the ring (nearest points 100 px
+out, clipped onto the wall) does not hold. First build: the wall set joined the candidate list only, so it reached
+the wave check only when it ranked among the eight least risky points, which short steps at a wall (wall, corner
+and past-position risk) rarely do. Same 12 ScalarR fields, seed 5800, 20 rounds:
+
+| Hadur arm | hit per aimed bullet, under 60 px | linear aims there: share / hit | mid aims there: hit | damage taken / round | crowd deaths | place |
+|---|---:|---:|---:|---:|---:|---:|
+| master | 13% | 9% / 29% | 15% | 66.9 | 21% | 2.76 |
+| pwall, ring-ranked | 12% | 7% / 27% | 16% | 64.7 | 22% | 2.73 |
+
+Nothing the table can tell from noise (about 2,200 aimed bullets a cell, so one point either way). Second build:
+the wall set is always wave-scored, added to the re-rank pool the way the held destination is, so the stop and the
+short reversals are judged by the waves and not by the ring's risk. Read below when it lands.
