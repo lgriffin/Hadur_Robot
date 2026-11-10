@@ -22,18 +22,21 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import aes_rank as A  # noqa: E402
 import aes_round as R  # noqa: E402
 
-DIR_RE = re.compile(r"^(?P<slug>.+)-(?P<seed>\d+)-(?P<arm>[A-Za-z0-9]+)$")
+DIR_RE = re.compile(r"^(?P<slug>.+)-(?P<seed>\d+)-(?P<arm>[A-Za-z0-9._]+)$")
 
 
 def read_rounds(path):
-    """{round: stats} from a truth log: aimed, hit, dmg, dist (sum at fire), ours, ticks, h_end, e_end."""
+    """{round: stats} from a truth log: aimed, hit, dmg, dist (sum at fire), ours, ticks, h_end, e_end; {} when
+    the log is missing or does not parse to its end (a truncated battle is left out rather than counted in part).
+
+    The harvester writes each turn's T record before that turn's F records, and a bullet is first listed on the
+    same turn as its F record, so the F record's turn is the turn read_outcomes keys the bullet by."""
     hits = R.read_outcomes(path)
     rounds = defaultdict(lambda: {"aimed": 0, "hit": 0, "dmg": 0.0, "dist": 0.0, "ours": 0, "ticks": 0,
                                   "h_end": 0.0, "e_end": 0.0})
-    for (r, first, heading), hit in hits.items():
-        pass  # counted below by bullet, where the power is known
-    ours = {}
     powers = {}
+    last = None  # (round, turn, hx, hy, ex, ey) of the last T record, for the F record that follows it
+    live = set()  # our bullets listed on the last turn, by heading and power
     try:
         f = gzip.open(path, "rt", encoding="utf-8")
     except OSError:
@@ -43,9 +46,11 @@ def read_rounds(path):
             for line in f:
                 p = line.rstrip("\n").split(",")
                 if p[0] == "F" and len(p) >= 5 and p[3] == "E":
-                    r = int(p[1])
+                    r, t = int(p[1]), int(p[2])
                     rounds[r]["aimed"] += 1
-                    powers[(r, int(p[2]) + 1)] = float(p[4])
+                    powers[(r, t)] = float(p[4])
+                    if last is not None and last[0] == r and last[1] == t:
+                        rounds[r]["dist"] += math.hypot(last[2] - last[4], last[3] - last[5])
                 elif p[0] == "T" and len(p) >= 13:
                     r, t = int(p[1]), int(p[2])
                     hx, hy, he, ex, ey, ee = (float(p[3]), float(p[4]), float(p[7]), float(p[8]), float(p[9]),
@@ -53,24 +58,29 @@ def read_rounds(path):
                     st = rounds[r]
                     st["ticks"] = t
                     st["h_end"], st["e_end"] = he, ee
-                    if (r, t) in powers:
-                        st["dist"] += math.hypot(hx - ex, hy - ey)
+                    if last is None or last[0] != r:
+                        live = set()
+                    last = (r, t, hx, hy, ex, ey)
+                    now = set()
                     if len(p) > 13 and p[13]:
                         for b in p[13].split(" "):
                             q = b.split(":")
                             if q[0] == "H" and len(q) >= 5:
-                                k = (r, round(float(q[3]), 3), round(float(q[4]), 2))
-                                if k not in ours:
-                                    ours[k] = t
-                                    st["ours"] += 1
+                                now.add((round(float(q[3]), 3), round(float(q[4]), 2)))
+                    # A bullet of ours is new when its heading and power were not listed last turn; two shots
+                    # at the same heading and power count twice as long as the first has gone by the second.
+                    st["ours"] += len(now - live)
+                    live = now
         except (EOFError, OSError, ValueError):
-            pass
-    # Hits and their damage: read_outcomes keys hold the heading; the power comes from the F line at first - 1.
+            return {}
     for (r, first, heading), hit in hits.items():
         if not hit:
             continue
         rounds[r]["hit"] += 1
-        rounds[r]["dmg"] += A.bullet_damage(powers.get((r, first), 1.0))
+        power = powers.get((r, first))
+        if power is None:
+            raise ValueError("%s: no F record at round %d turn %d for a hit" % (path, r, first))
+        rounds[r]["dmg"] += A.bullet_damage(power)
     return dict(rounds)
 
 
@@ -84,8 +94,24 @@ def read_bands(path):
                 continue
             name, tag = [x.strip() for x in line.split("|")[:2]]
             m = re.search(r"band(\d+)", tag)
-            bands[A.SLUG_RUN.sub("_", name)] = int(m.group(1)) if m else 0
+            bands[battle_slug(name)] = int(m.group(1)) if m else 0
     return bands
+
+
+def battle_slug(name):
+    """A robot's name as the bench names its battle directories: every run of characters outside letters,
+    digits, dots and underscores becomes one underscore, so a dash in a version does too."""
+    return re.sub(r"[^A-Za-z0-9._]+", "_", name)
+
+
+def battle_ok(dirpath):
+    """Whether the battle finished: its arm-row.tsv says ok (column 8), as the multi-arm results reader requires."""
+    try:
+        with open(os.path.join(dirpath, "arm-row.tsv"), encoding="utf-8") as f:
+            row = f.readline().rstrip("\n").split("\t")
+        return len(row) > 7 and row[7] == "true"
+    except OSError:
+        return False
 
 
 def main(argv=None):
@@ -101,7 +127,7 @@ def main(argv=None):
     base = os.path.join(args.work, "battles")
     for name in sorted(os.listdir(base)):
         m = DIR_RE.match(name)
-        if m is None or m.group("arm") not in (args.base, args.other):
+        if m is None or m.group("arm") not in (args.base, args.other) or not battle_ok(os.path.join(base, name)):
             continue
         rs = read_rounds(os.path.join(base, name, "truth.log.gz"))
         if rs:
@@ -149,7 +175,10 @@ def main(argv=None):
             tot[a] = (hit / max(1, aimed), aimed / max(1, n), dmg / max(1, n))
         d = tot[args.other][0] - tot[args.base][0]
         diffs.append(d)
-        band = bands.get(slug, 0)
+        band = bands.get(slug)
+        if band is None:
+            band = 0
+            print("warning: %s is not in the set file; shown as band 0" % slug, file=sys.stderr)
         by_band[band].append((tot[args.base], tot[args.other]))
         lines.append("| %s | %d | %d | %.3f | %.3f | %+.3f | %.1f | %.1f | %.1f | %.1f |" % (
             slug, band, len(seeds), tot[args.base][0], tot[args.other][0], d, tot[args.base][1],

@@ -1,0 +1,4 @@
+# Cloud check (docs/bench/local/2026-11-09_view-rank.md trace study): BeepBoop shields lechu.Ala 0.0.4 and takes 0.4% of its
+# bullets against Hadur's 9.4%. c is 3.21 (aa); mt the same with Ala added to the shield list (slistadd, SHIELD_ADD = Ala).
+c | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
+mt | hadur117.Hadur 3.21mt | bisect/hadur117.Hadur_3.21mt.jar
