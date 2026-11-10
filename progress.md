@@ -1,15 +1,15 @@
 # Queue pc-learn-trace: progress
 
-Updated 2026-11-10 20:44:48 PC time (20:44 UTC), runner pid 37852.
+Updated 2026-11-10 20:45:00 PC time (20:45 UTC), runner pid 37852.
 
 - `prep` done, exit 0 in 0 min
-- `trace` running
+- `trace` interrupted, exit 130 in 30 min
 - `read` pending
 - `pr` pending
 
 ### trace
 
-**2387 of 2386 battles** (100%), 1 failed, 2386 read back from an earlier run. Running 30 min, 2 battles/h, about -30 min left (ends ~20:14 PC time). Last battle 24 min ago.
+**2387 of 2386 battles** (100%), 1 failed, 2386 read back from an earlier run. Running 30 min, 2 battles/h, about -30 min left (ends ~20:15 PC time). Last battle 24 min ago.
 
 | arm | battles | failed | share | vs control (pts) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
@@ -29,8 +29,6 @@ Stopping now would leave -1 battles unrun (about -30 min); every battle already 
 ### Queue log (last lines)
 
 ```
-19:37:48 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
-19:37:48 skip prep (already exit=0)
 19:37:48 start trace
 19:37:48 watching trace: 3 stop rule(s)
 19:37:50 progress pushed to origin claude/pc-learn-trace-progress (every 15 min)
@@ -44,4 +42,6 @@ Stopping now would leave -1 battles unrun (about -30 min); every battle already 
 20:14:31 watching trace: 3 stop rule(s)
 20:14:33 progress pushed to origin claude/pc-learn-trace-progress (every 15 min)
 20:15:31 progress trace: 2387/2386 (100%) battles, 0 failed, bb +1.87
+20:45:00 trace exit=130 in 1829 s (stopped)
+20:45:00 stopped; rerun to resume from the interrupted steps
 ```

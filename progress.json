@@ -1,6 +1,6 @@
 {
  "plan": "pc-learn-trace",
- "updated": 1794343488.008511,
+ "updated": 1794343500.4316947,
  "steps": {
   "prep": {
    "status": "done",
@@ -9,8 +9,10 @@
    "end": "2026-11-10T15:39:49"
   },
   "trace": {
-   "status": "running",
-   "start": "2026-11-10T20:14:31"
+   "status": "interrupted",
+   "exit": 130,
+   "seconds": 1829,
+   "end": "2026-11-10T20:45:00"
   },
   "read": {
    "status": "pending"
@@ -23,8 +25,8 @@
   {
    "step": "trace",
    "started": 1794341671.0563612,
-   "updated": 1794343487.834362,
-   "elapsed": 1816.778000831604,
+   "updated": 1794343500.2772675,
+   "elapsed": 1829.2209062576294,
    "expected": 2386,
    "panel": 1193,
    "field": null,
@@ -66,7 +68,7 @@
    "rate": 2.0,
    "eta": -1800.0,
    "fraction": 1.0004191114836547,
-   "last_battle_age": 1421.953756570816,
+   "last_battle_age": 1434.3966619968414,
    "rules": [
     {
      "rule": "fails 30",
