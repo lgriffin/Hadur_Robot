@@ -2053,8 +2053,8 @@ failed and are removed (3.22 cleanup); the mimics live on in MOVE-33 and MOVE-34
   `ShieldTableData.racePowers()` carries the 8. pc-shield-audit (BENCH-209, PR #697): Princess +7.0 ships with still
   and exit off; Musashi -3.0 stays off.
 - **BENCH-220 result (pc-ala-shield, PR #733, 2026-11-10): Ala ships with a still line.** 12 fresh seeds from 11700
-  against master and its A/A copy pooled: mz (list add with a `shield-still:` line) +7.34 points (low end +4.19,
-  90.9 against 83.6), mt (list add alone) +3.72; A/A -1.85, inside its band. The 3-point pick locks mz. The card's APS
+  against master and its A/A copy pooled: mz (list add with a `shield-still:` line) +7.34 points (low end +4.19;
+  Ala's pooled control 83.6, mz 90.9), mt (list add alone) +3.72; A/A -1.85, inside its band. The 3-point pick locks mz. The card's APS
   gate printed "no battles" for both arms: `shield_s2.py gate` takes its interval across robots, which one robot
   cannot give, so on a one-robot card the per-robot pick is the read. Ala joins `ShieldListData` and
   `ShieldTableData.stills()`.
