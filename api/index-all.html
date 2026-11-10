@@ -78,6 +78,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/move/GunMimics.Feature.html#ACCEL" class="member-name-link">ACCEL</a> - Enum constant in enum class hadur117.core.move.<a href="hadur117/core/move/GunMimics.Feature.html" title="enum class in hadur117.core.move">GunMimics.Feature</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#ACCEL" class="member-name-link">ACCEL</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/physics/Rules.html#ACCELERATION" class="member-name-link">ACCELERATION</a> - Static variable in class hadur117.core.physics.<a href="hadur117/core/physics/Rules.html" title="class in hadur117.core.physics">Rules</a></dt>
 <dd>
 <div class="block">How much a robot can speed up in one tick, in px/tick per tick.</div>
@@ -353,6 +355,12 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/gun/TripHammerGun.Aimed.html#%3Cinit%3E(double,hadur117.core.gun.ShadowAim.Mass)" class="member-name-link">Aimed(double, ShadowAim.Mass)</a> - Constructor for class hadur117.core.gun.<a href="hadur117/core/gun/TripHammerGun.Aimed.html" title="class in hadur117.core.gun">TripHammerGun.Aimed</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#AIMED" class="member-name-link">AIMED</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>
+<div class="block">The chance a shot is at Hadur given k living opponents nearer its shooter, from 63,408
+ traced census shots (docs/bench/melee-top3.md): the surf rides every shot at this weight,
+ where the ring mover drops a shot under 1/(1+k)^2 = 0.1.</div>
+</dd>
 <dt><a href="hadur117/mini/DeiseLab.html#AIMED" class="member-name-link">AIMED</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/DeiseLab.html" title="class in hadur117.mini">DeiseLab</a></dt>
 <dd>
 <div class="block">Whether a wave from a robot unlikely to aim at us weighs 0.25, not 1 (DEISE-5); false for arm WH.</div>
@@ -363,6 +371,8 @@ loadScripts(document, 'script');</script>
  fired, rather than at the teammate nearest its source: a teammate takes it only when
  <a href="hadur117/core/melee/TeamDanger.html#NEAREST_MARGIN"><code>TeamDanger.NEAREST_MARGIN</code></a> times nearer.</div>
 </dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#aimedWeight(int)" class="member-name-link">aimedWeight(int)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/AimExperts.html" class="type-name-link" title="class in hadur117.core.melee">AimExperts</a> - Class in <a href="hadur117/core/melee/package-summary.html">hadur117.core.melee</a></dt>
 <dd>
 <div class="block">TMODE-27, Ogi's danger model: the ways an enemy class may aim at a member, each weighted by
@@ -553,6 +563,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/gun/GunController.Opening.html#ANTI_SURFER" class="member-name-link">ANTI_SURFER</a> - Enum constant in enum class hadur117.core.gun.<a href="hadur117/core/gun/GunController.Opening.html" title="enum class in hadur117.core.gun">GunController.Opening</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#antiGravity(java.awt.geom.Point2D.Double,java.util.List,hadur117.core.physics.BattleField)" class="member-name-link">antiGravity(Point2D.Double, List&lt;StepSurf.Foe&gt;, BattleField)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>
+<div class="block">The direction pushed by every opponent at 1/d^2 and drawn weakly to the nearest corner.</div>
+</dd>
 <dt><a href="hadur117/core/gun/AntiSurferFormula.html" class="type-name-link" title="class in hadur117.core.gun">AntiSurferFormula</a> - Class in <a href="hadur117/core/gun/package-summary.html">hadur117.core.gun</a></dt>
 <dd>
 <div class="block">The anti-surfer views' feature space: the first nine features of <a href="hadur117/core/gun/GunFormula.html" title="class in hadur117.core.gun"><code>GunFormula</code></a>,
@@ -655,10 +669,14 @@ loadScripts(document, 'script');</script>
 <div class="block">A gun whose neighbours are not read: one point at <code>angle</code> of peak
  <a href="hadur117/core/gun/ShadowAim.html#FALLBACK_PEAK"><code>ShadowAim.FALLBACK_PEAK</code></a>.</div>
 </dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#arrival(java.awt.geom.Point2D.Double,hadur117.core.melee.MinimumRiskMovement.Wave)" class="member-name-link">arrival(Point2D.Double, MinimumRiskMovement.Wave)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/physics/SimpleAims.html#ASIN_LINEAR" class="member-name-link">ASIN_LINEAR</a> - Static variable in class hadur117.core.physics.<a href="hadur117/core/physics/SimpleAims.html" title="class in hadur117.core.physics">SimpleAims</a></dt>
 <dd>
 <div class="block">One-line linear with the arcsine.</div>
 </dd>
+<dt><a href="hadur117/core/melee/StepSurf.Foe.html#at" class="member-name-link">at</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.Foe.html" title="class in hadur117.core.melee">StepSurf.Foe</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/TeamRisk.Pull.html#at" class="member-name-link">at</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/TeamRisk.Pull.html" title="class in hadur117.core.melee">TeamRisk.Pull</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/gun/ShadowAim.Mass.html#at(double)" class="member-name-link">at(double)</a> - Method in class hadur117.core.gun.<a href="hadur117/core/gun/ShadowAim.Mass.html" title="class in hadur117.core.gun">ShadowAim.Mass</a></dt>
@@ -1467,6 +1485,10 @@ loadScripts(document, 'script');</script>
 <div class="block">As above, where the nearest of <code>mates</code> caps the ring like the nearest opponent
  (MMOVE-7); <code>mates</code> are the living teammates whose position is fresh at <code>now</code>.</div>
 </dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#candidates(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,java.util.List,hadur117.core.physics.BattleField,java.util.function.UnaryOperator)" class="member-name-link">candidates(Point2D.Double, Point2D.Double, List&lt;StepSurf.Foe&gt;, BattleField, UnaryOperator&lt;Point2D.Double&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>
+<div class="block">The five steps: anti-gravity with the corner pull, on, back, left and right; each clipped.</div>
+</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#CANDIDATES" class="member-name-link">CANDIDATES</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>
 <div class="block">Points scored per decision (<a class="req" href="../requirements.html#MMOVE-1">MMOVE-1</a>).</div>
@@ -1654,6 +1676,16 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/move/RamEscape.html#choose(hadur117.core.model.RobotState,hadur117.core.model.RobotState)" class="member-name-link">choose(RobotState, RobotState)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/RamEscape.html" title="class in hadur117.core.move">RamEscape</a></dt>
 <dd>
 <div class="block">The heading, wall-smoothed for this tick, that keeps the rammer furthest away.</div>
+</dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#choose(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,double,java.util.List,long,java.util.List,hadur117.core.physics.BattleField,java.util.function.UnaryOperator)" class="member-name-link">choose(Point2D.Double, Point2D.Double, double, List&lt;StepSurf.Foe&gt;, long, List&lt;MinimumRiskMovement.Wave&gt;, BattleField, UnaryOperator&lt;Point2D.Double&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>
+<div class="block">The step to drive to.</div>
+</dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#choose(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,double,java.util.List,long,java.util.List,hadur117.core.physics.BattleField,java.util.function.UnaryOperator)" class="member-name-link">choose(Point2D.Double, Point2D.Double, Point2D.Double, double, List&lt;StepSurf.Foe&gt;, long, List&lt;MinimumRiskMovement.Wave&gt;, BattleField, UnaryOperator&lt;Point2D.Double&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>
+<div class="block">As above, holding the direction of <code>held</code>, the step chosen last tick: a fresh step
+ that way is scored again from here and kept unless another step's danger is under
+ <a href="hadur117/core/melee/StepSurf.html#HOLD_GAIN"><code>StepSurf.HOLD_GAIN</code></a> of its own.</div>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#chooseDestination(java.awt.geom.Point2D.Double,double,int,java.util.List,long,hadur117.core.melee.MeleeStrategy.Plan)" class="member-name-link">chooseDestination(Point2D.Double, double, int, List&lt;EnemyInfo&gt;, long, MeleeStrategy.Plan)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>
@@ -1871,10 +1903,14 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">One seed's cold and warm battles of one build, and the shelf the warm one started on.</div>
 </dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#COLLIDE" class="member-name-link">COLLIDE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/move/ShotDodgePlanner.html#COLLIDE" class="member-name-link">COLLIDE</a> - Static variable in class hadur117.core.move.<a href="hadur117/core/move/ShotDodgePlanner.html" title="class in hadur117.core.move">ShotDodgePlanner</a></dt>
 <dd>
 <div class="block">Centres closer than this collide, px (a robot is 36 px square).</div>
 </dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#COLLIDE_K" class="member-name-link">COLLIDE_K</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/MeleeMemory.html#collisions()" class="member-name-link">collisions()</a> - Method in class hadur117.core.<a href="hadur117/core/MeleeMemory.html" title="class in hadur117.core">MeleeMemory</a></dt>
 <dd>
 <div class="block">Saves refused because the file held another opponent's block (a file-name collision).</div>
@@ -2022,7 +2058,11 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#CORNER_K" class="member-name-link">CORNER_K</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#CORNER_PULL" class="member-name-link">CORNER_PULL</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#CORNER_RANGE" class="member-name-link">CORNER_RANGE</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#CORNER_SOFT" class="member-name-link">CORNER_SOFT</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#cornerRisk(java.awt.geom.Point2D.Double)" class="member-name-link">cornerRisk(Point2D.Double)</a> - Method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
@@ -2160,10 +2200,18 @@ loadScripts(document, 'script');</script>
  at <code>p1</code>: along the straight line from its previous scan (<code>p0</code> at <code>t0</code>)
  if the wave had not yet reached it there, else <code>p0</code>; <code>p1</code> with no previous scan.</div>
 </dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#crowd(java.awt.geom.Point2D.Double,double,java.util.List)" class="member-name-link">crowd(Point2D.Double, double, List&lt;StepSurf.Foe&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>
+<div class="block">The crowd at <code>p</code>: each opponent's energy against ours over its distance squared, plus collision penalties.</div>
+</dd>
 <dt><a href="hadur117/mini/core/Move.html#CROWD" class="member-name-link">CROWD</a> - Static variable in class hadur117.mini.core.<a href="hadur117/mini/core/Move.html" title="class in hadur117.mini.core">Move</a></dt>
 <dd>
 <div class="block">Opponents left at or above which the corners pull (DEISE-4).</div>
 </dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#CROWD_MAX" class="member-name-link">CROWD_MAX</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#CROWD_MIN" class="member-name-link">CROWD_MIN</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/MeleeEnergyPolicy.html#CROWD_OGI" class="member-name-link">CROWD_OGI</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeEnergyPolicy.html" title="class in hadur117.core.melee">MeleeEnergyPolicy</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MGUN-13">MGUN-13</a>: off a team with three or more opponents and <a href="hadur117/core/melee/MeleeEnergyPolicy.html#CROWD_RULE_ENERGY"><code>MeleeEnergyPolicy.CROWD_RULE_ENERGY</code></a> or more, fire
@@ -2393,6 +2441,8 @@ loadScripts(document, 'script');</script>
 <div class="block">How fast older neighbours lose weight in <a href="hadur117/core/knn/KnnView.html#getDecayWeights(java.util.List)"><code>KnnView.getDecayWeights(List)</code></a>: each step
  back in time divides the weight by this.</div>
 </dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#DECEL" class="member-name-link">DECEL</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/physics/Rules.html#DECELERATION" class="member-name-link">DECELERATION</a> - Static variable in class hadur117.core.physics.<a href="hadur117/core/physics/Rules.html" title="class in hadur117.core.physics">Rules</a></dt>
 <dd>
 <div class="block">How much a robot can slow down in one tick, in px/tick per tick: braking is twice as fast as speeding up.</div>
@@ -2804,6 +2854,15 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The driving role only: this tick's orders (<a class="req" href="../requirements.html#WEAVE-1">WEAVE-1</a>), shooting only with the permission (<a class="req" href="../requirements.html#WEAVE-3">WEAVE-3</a>).</div>
 </dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#drive(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,double,java.util.List,long,java.util.List)" class="member-name-link">drive(Point2D.Double, Point2D.Double, Point2D.Double, double, List&lt;StepSurf.Foe&gt;, long, List&lt;MinimumRiskMovement.Wave&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>
+<div class="block">Drive from <code>me</code> to <code>to</code> the way the seam drives (MeleeSeam.goTo): the body turns
+ toward the step at Robocode's rate (10 - 0.75 |v| degrees a tick), backwards when that is
+ the shorter turn, at most 4 px a tick while the turn left is over 45 degrees, 1 px a tick
+ faster to 8 and braking 2 a tick (through zero on a reversal), for at most <a href="hadur117/core/melee/StepSurf.html#TICKS"><code>StepSurf.TICKS</code></a>
+ ticks or until the waves have passed: the waves' damage on the way, and the mean crowd
+ along the path.</div>
+</dd>
 <dt><a href="hadur117/core/role/RoleResolver.html#driven()" class="member-name-link">driven()</a> - Method in class hadur117.core.role.<a href="hadur117/core/role/RoleResolver.html" title="class in hadur117.core.role">RoleResolver</a></dt>
 <dd>
 <div class="block">The lowest role that has driven this round, or null before any has.</div>
@@ -3183,6 +3242,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/melee/MeleeController.Situation.html#energy" class="member-name-link">energy</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeController.Situation.html" title="class in hadur117.core.melee">MeleeController.Situation</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.View.html#energy" class="member-name-link">energy</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.View.html" title="class in hadur117.core.melee">MinimumRiskMovement.View</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/StepSurf.Foe.html#energy" class="member-name-link">energy</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.Foe.html" title="class in hadur117.core.melee">StepSurf.Foe</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/shieldmode/ShieldMode.Situation.html#energy" class="member-name-link">energy</a> - Variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldMode.Situation.html" title="class in hadur117.core.shieldmode">ShieldMode.Situation</a></dt>
 <dd>&nbsp;</dd>
@@ -4188,6 +4249,8 @@ loadScripts(document, 'script');</script>
 <div class="block">The duel's focus among the living opponents, re-chosen when it dies (<a class="req" href="../requirements.html#GATE-3">GATE-3</a>, <a class="req" href="../requirements.html#GATE-4">GATE-4</a>),
  read from the World.</div>
 </dd>
+<dt><a href="hadur117/core/melee/StepSurf.Foe.html#%3Cinit%3E(java.awt.geom.Point2D.Double,double)" class="member-name-link">Foe(Point2D.Double, double)</a> - Constructor for class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.Foe.html" title="class in hadur117.core.melee">StepSurf.Foe</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/memory/ProfileFolder.html#fold(boolean)" class="member-name-link">fold(boolean)</a> - Method in class hadur117.core.memory.<a href="hadur117/core/memory/ProfileFolder.html" title="class in hadur117.core.memory">ProfileFolder</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MEM-2">MEM-2</a>: adds this round to the profile and starts the next one.</div>
@@ -5604,6 +5667,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/twin/core/Team.html#HOLD_ARC" class="member-name-link">HOLD_ARC</a> - Static variable in class hadur117.twin.core.<a href="hadur117/twin/core/Team.html" title="class in hadur117.twin.core">Team</a></dt>
 <dd>
 <div class="block">The arc either side of the gun inside which a nearer partner holds fire (TWIN-11).</div>
+</dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#HOLD_GAIN" class="member-name-link">HOLD_GAIN</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>
+<div class="block">The held step's danger is scaled by this: another step must be clearly safer to take over.</div>
 </dd>
 <dt><a href="hadur117/core/shieldmode/ShieldBudget.html#HOLD_SHARE" class="member-name-link">HOLD_SHARE</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldBudget.html" title="class in hadur117.core.shieldmode">ShieldBudget</a></dt>
 <dd>
@@ -7262,6 +7329,8 @@ loadScripts(document, 'script');</script>
 <div class="block">A robot's top speed, and the most drift an unseen opponent's position is given beyond
  the usual <a href="hadur117/core/melee/MinimumRiskMovement.html#SWEEP_TICKS"><code>MinimumRiskMovement.SWEEP_TICKS</code></a> between scans, which every position shares.</div>
 </dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#MAX_SPEED" class="member-name-link">MAX_SPEED</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/world/Roster.html#MAX_SPEED" class="member-name-link">MAX_SPEED</a> - Static variable in class hadur117.core.world.<a href="hadur117/core/world/Roster.html" title="class in hadur117.core.world">Roster</a></dt>
 <dd>
 <div class="block">A robot's top speed, px a tick: the most a prediction may move a teammate (WORLD-9).</div>
@@ -10503,6 +10572,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#REACHED" class="member-name-link">REACHED</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#REACHED" class="member-name-link">REACHED</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>
+<div class="block">A held step this close no longer gives a direction: the steps are chosen afresh.</div>
+</dd>
 <dt><a href="hadur117/core/physics/ShotDodger.html#read()" class="member-name-link">read()</a> - Method in class hadur117.core.physics.<a href="hadur117/core/physics/ShotDodger.html" title="class in hadur117.core.physics">ShotDodger</a></dt>
 <dd>
 <div class="block">Bullets read this battle.</div>
@@ -12898,6 +12971,18 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Turn the angle away from the wall until a STICK ahead stays inside the field (JAYLEXI-7).</div>
 </dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#smooth(java.awt.geom.Point2D.Double,double,hadur117.core.physics.BattleField,java.util.function.UnaryOperator)" class="member-name-link">smooth(Point2D.Double, double, BattleField, UnaryOperator&lt;Point2D.Double&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>
+<div class="block">A full <a href="hadur117/core/melee/StepSurf.html#STEP"><code>StepSurf.STEP</code></a> at <code>angle</code>, turned the least that keeps it inside the field's
+ margin (the wall slides the step along itself instead of cutting it short, which left the
+ first build standing in corners); clipped only when no turn within a right angle fits.</div>
+</dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#SMOOTH_STEPS" class="member-name-link">SMOOTH_STEPS</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#SMOOTH_TURN" class="member-name-link">SMOOTH_TURN</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>
+<div class="block">Wall smoothing: the step turns in these increments, up to a right angle, to stay inside the margin.</div>
+</dd>
 <dt><a href="hadur117/core/move/StopAndGo.html#smoothed(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,int)" class="member-name-link">smoothed(Point2D.Double, Point2D.Double, int)</a> - Method in class hadur117.core.move.<a href="hadur117/core/move/StopAndGo.html" title="class in hadur117.core.move">StopAndGo</a></dt>
 <dd>
 <div class="block">The heading to the go point, wall-smoothed on the orbit's side.</div>
@@ -12936,6 +13021,10 @@ loadScripts(document, 'script');</script>
  (<code>ox</code>, <code>oy</code>) at <code>enemyHeading</code>, for our bullet of speed
  <code>mySpeed</code> fired in the tick <code>fireTime</code> code from (<code>px</code>, <code>py</code>),
  meeting no later than turn <code>lastTurn</code>; null if there is none.</div>
+</dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#soonest(java.awt.geom.Point2D.Double,java.util.List)" class="member-name-link">soonest(Point2D.Double, List&lt;MinimumRiskMovement.Wave&gt;)</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>
+<div class="block">The <a href="hadur117/core/melee/StepSurf.html#WAVES"><code>StepSurf.WAVES</code></a> waves that reach <code>me</code> first, none more than <a href="hadur117/core/melee/StepSurf.html#WAVE_SPAN"><code>StepSurf.WAVE_SPAN</code></a> ticks after the first.</div>
 </dd>
 <dt><a href="hadur117/core/melee/MeleeWaves.Wave.html#source" class="member-name-link">source</a> - Variable in class hadur117.core.melee.<a href="hadur117/core/melee/MeleeWaves.Wave.html" title="class in hadur117.core.melee">MeleeWaves.Wave</a></dt>
 <dd>&nbsp;</dd>
@@ -13118,9 +13207,24 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The flavour now: the last step added, or <a href="hadur117/core/policy/MoveFlavour.Step.html#BASE"><code>MoveFlavour.Step.BASE</code></a>.</div>
 </dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#STEP" class="member-name-link">STEP</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/policy/DistancePolicy.html#STEP" class="member-name-link">STEP</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/DistancePolicy.html" title="class in hadur117.core.policy">DistancePolicy</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#DIST-1">DIST-1</a>: how far one wave moves the target, in px, in or out.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#STEP_SURF" class="member-name-link">STEP_SURF</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-28">MMOVE-28</a>: the step surf (<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee"><code>StepSurf</code></a>) in place of the ring and its wave check, in melee
+ off a team with the surfer; arm <code>mstep</code>.</div>
+</dd>
+<dt><a href="hadur117/core/melee/StepSurf.html" class="type-name-link" title="class in hadur117.core.melee">StepSurf</a> - Class in <a href="hadur117/core/melee/package-summary.html">hadur117.core.melee</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-28">MMOVE-28</a>: the step surf, the melee mover behind <a href="hadur117/core/melee/MinimumRiskMovement.html#STEP_SURF"><code>MinimumRiskMovement.STEP_SURF</code></a>.</div>
+</dd>
+<dt><a href="hadur117/core/melee/StepSurf.Foe.html" class="type-name-link" title="class in hadur117.core.melee">StepSurf.Foe</a> - Class in <a href="hadur117/core/melee/package-summary.html">hadur117.core.melee</a></dt>
+<dd>
+<div class="block">One opponent as the surf sees it.</div>
 </dd>
 <dt><a href="hadur117/mini/JayLexi.html#STICK" class="member-name-link">STICK</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/JayLexi.html" title="class in hadur117.mini">JayLexi</a></dt>
 <dd>&nbsp;</dd>
@@ -13132,6 +13236,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#SHIELD-21">SHIELD-21</a>: whether shield mode plans its shots still (<a class="req" href="../requirements.html#SHIELD-20">SHIELD-20</a>) against <code>robotName</code>,
  by the rule of <a href="hadur117/core/shieldmode/ShieldList.html#matches(java.lang.String)"><code>ShieldList.matches(java.lang.String)</code></a>.</div>
+</dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#STILL" class="member-name-link">STILL</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>
+<div class="block">A move slower than this a tick counts as standing: the step's own direction replaces the heading.</div>
 </dd>
 <dt><a href="hadur117/core/shieldmode/ShieldList.html#STILL" class="member-name-link">STILL</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
 <dd>
@@ -14132,6 +14240,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Ticks this round spent in <code>phase</code>, for the round's <code>WP</code> record.</div>
 </dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#TICKS" class="member-name-link">TICKS</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/policy/RammerPolicy.html#TICKS" class="member-name-link">TICKS</a> - Static variable in class hadur117.core.policy.<a href="hadur117/core/policy/RammerPolicy.html" title="class in hadur117.core.policy">RammerPolicy</a></dt>
 <dd>
 <div class="block">How many scans running the closing rate must hold before the response activates.</div>
@@ -14414,6 +14524,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Test support: makes <code>name</code> look written at <code>sequence</code>, as if its file's
  modification time were set back, so <a class="req" href="../requirements.html#MEM-13">MEM-13</a>'s order can be arranged directly.</div>
 </dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#TOUCH" class="member-name-link">TOUCH</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#TOUCH_K" class="member-name-link">TOUCH_K</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur/bench/Stats.html#tQuantile(double,double)" class="member-name-link">tQuantile(double, double)</a> - Static method in class hadur.bench.<a href="hadur/bench/Stats.html" title="class in hadur.bench">Stats</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#BENCH-38">BENCH-38</a>: the <code>p</code>-quantile of Student's t with <code>df</code> degrees of freedom,
@@ -14579,6 +14693,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/core/TeamLink.html#TURN_SLACK" class="member-name-link">TURN_SLACK</a> - Static variable in class hadur117.core.<a href="hadur117/core/TeamLink.html" title="class in hadur117.core">TeamLink</a></dt>
 <dd>
 <div class="block">WEAVE-7: how far, px for each tick of the bullet's flight, a teammate may turn off its predicted track.</div>
+</dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#TURN_SPEED" class="member-name-link">TURN_SPEED</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>
+<div class="block">The seam's speed cap while the turn left is over 45 degrees.</div>
 </dd>
 <dt><a href="hadur117/core/physics/ShotDodger.html#TURNED" class="member-name-link">TURNED</a> - Static variable in class hadur117.core.physics.<a href="hadur117/core/physics/ShotDodger.html" title="class in hadur117.core.physics">ShotDodger</a></dt>
 <dd>
@@ -15417,12 +15535,16 @@ the order they are declared.</div>
 <dd>
 <div class="block">TMODE-11: a robot's half-width, px: a wave hits the box it crosses.</div>
 </dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#WAVE_K" class="member-name-link">WAVE_K</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#WAVE_MEDIAN_FLOOR" class="member-name-link">WAVE_MEDIAN_FLOOR</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#WAVE_RERANK" class="member-name-link">WAVE_RERANK</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>
 <div class="block">TMODE-11: the lowest-risk candidates driven to, the ticks each drive is checked, and the damage term's weight.</div>
 </dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#WAVE_SPAN" class="member-name-link">WAVE_SPAN</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#WAVE_TICKS" class="member-name-link">WAVE_TICKS</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/core/melee/MinimumRiskMovement.html#WAVE_UNIFORM" class="member-name-link">WAVE_UNIFORM</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
@@ -15455,6 +15577,10 @@ the order they are declared.</div>
 <div class="block">TMODE-11: the damage the <code>waves</code> are expected to do Hadur driving from <code>me</code>
  straight to <code>to</code> (accelerating 1 px a tick to 8, stopping there) for
  <a href="hadur117/core/melee/MinimumRiskMovement.html#WAVE_TICKS"><code>MinimumRiskMovement.WAVE_TICKS</code></a> ticks.</div>
+</dd>
+<dt><a href="hadur117/core/melee/MinimumRiskMovement.html#waveHits(double,double,long,java.util.List,boolean%5B%5D)" class="member-name-link">waveHits(double, double, long, List&lt;MinimumRiskMovement.Wave&gt;, boolean[])</a> - Static method in class hadur117.core.melee.<a href="hadur117/core/melee/MinimumRiskMovement.html" title="class in hadur117.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">The mass of the <code>waves</code> not yet <code>done</code> whose front crosses Hadur's box at (<code>x</code>, <code>y</code>) on <code>tick</code>; marks them done.</div>
 </dd>
 <dt><a href="hadur117/core/model/WaveManager.html" class="type-name-link" title="class in hadur117.core.model">WaveManager</a> - Class in <a href="hadur117/core/model/package-summary.html">hadur117.core.model</a></dt>
 <dd>
@@ -15494,6 +15620,8 @@ the order they are declared.</div>
 <dd>
 <div class="block">The waves in flight that may still reach Hadur.</div>
 </dd>
+<dt><a href="hadur117/core/melee/StepSurf.html#WAVES" class="member-name-link">WAVES</a> - Static variable in class hadur117.core.melee.<a href="hadur117/core/melee/StepSurf.html" title="class in hadur117.core.melee">StepSurf</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/mini/core/Move.html#WAVES" class="member-name-link">WAVES</a> - Static variable in class hadur117.mini.core.<a href="hadur117/mini/core/Move.html" title="class in hadur117.mini.core">Move</a></dt>
 <dd>
 <div class="block">How much the seen-shot waves count (DEISE-5): 1 since 0.3 (E0 to E1b's arm W, +0.44 to +0.59);
