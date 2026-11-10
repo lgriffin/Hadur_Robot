@@ -1,6 +1,6 @@
 {
  "plan": "pc-learn-trace",
- "updated": 1794337406.2459877,
+ "updated": 1794339468.318437,
  "steps": {
   "prep": {
    "status": "done",
@@ -22,76 +22,5 @@
    "status": "pending"
   }
  },
- "watched": [
-  {
-   "step": "trace",
-   "started": 1794325189.4637609,
-   "updated": 1794337403.8455198,
-   "elapsed": 12214.381758928299,
-   "expected": 2388,
-   "panel": 1194,
-   "field": null,
-   "multiarm": true,
-   "arms": [
-    {
-     "arm": "c",
-     "battles": 1194,
-     "failed": 0,
-     "level": 92.84463986599665,
-     "skips": 53.31658291457286,
-     "fresh": 1194,
-     "scored": 1194,
-     "diff": null
-    },
-    {
-     "arm": "bb",
-     "battles": 1193,
-     "failed": 5,
-     "level": 94.73659932659933,
-     "skips": 37.677609427609426,
-     "fresh": 1193,
-     "scored": 1188,
-     "diff": 1.8727861952861948,
-     "n": 1188,
-     "ci95": 0.339568875729435,
-     "half_stop": 0.5197482791777066,
-     "scale": null
-    }
-   ],
-   "aa": null,
-   "warnings": [
-    "arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 842 h before this step started: check it is not stale"
-   ],
-   "battles": 2387,
-   "resumed": 0,
-   "failed": 5,
-   "disables": 460,
-   "rate": 703.5313100246489,
-   "eta": 5.117043049404398,
-   "fraction": 0.9995812395309883,
-   "last_battle_age": 1806.7957010269165,
-   "rules": [
-    {
-     "rule": "fails 30",
-     "action": "halt",
-     "state": "ok",
-     "detail": "5 failed of 2387"
-    },
-    {
-     "rule": "skips 60 over 200 arms c",
-     "action": "halt",
-     "state": "ok",
-     "detail": "58.1 a battle over the last 200 (first 200: 56.8)"
-    },
-    {
-     "rule": "stall 30m",
-     "action": "halt",
-     "state": "TRIPPED",
-     "detail": "last battle 30 min ago"
-    }
-   ],
-   "skips_mean": 45.51679261125105,
-   "skips_last100": 49.18
-  }
- ]
+ "watched": []
 }
