@@ -1,0 +1,5 @@
+# Cloud AES forensic for MOVE-38 opponent prior (docs/bench/local/2026-11-09_view-rank.md): c is 3.21 with the AES
+# recorder on (aa,aesrec), op the same with each opponent's own prior table as a member (oprior,aesrec). The 32 guns
+# are the ones the tables were fitted on, from other battles; scored on real hits by round with the truth logs on.
+c | hadur117.Hadur 3.21aaar | bisect/hadur117.Hadur_3.21aaar.jar
+op | hadur117.Hadur 3.21opar | bisect/hadur117.Hadur_3.21opar.jar

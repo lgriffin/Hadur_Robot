@@ -70,6 +70,15 @@ final class MoveDesign {
      */
     static final boolean MIMIC_MEMBERS = false;
 
+    /**
+     * MOVE-38 (K3 of the road to king, docs/bench/gun-oracle.md; candidate, cloud forensic only): with
+     * {@link #AIM_MEMBERS}, an opponent we have a recorded table for (OpponentPriorData, fitted offline
+     * on the oracle's bullets of that gun) gets its own prior as the last aim member, standing weight
+     * 2, scored on the bullets as the aims are, from the first wave of the battle. An opponent without
+     * a table is surfed as before. Duel only, off.
+     */
+    static final boolean OPPONENT_PRIOR = false;
+
     private MoveDesign() { }
 
     /**

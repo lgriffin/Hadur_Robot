@@ -15,6 +15,8 @@ import hadur117.core.memory.ProfileLibrary;
 import hadur117.core.memory.Tiers;
 import hadur117.core.model.*;
 import hadur117.core.move.AimMembers;
+import hadur117.core.move.FieldPrior;
+import hadur117.core.move.OpponentPriorData;
 import hadur117.core.move.GunMimics;
 import hadur117.core.move.StopAndGo;
 import hadur117.core.physics.ShotDodger;
@@ -206,6 +208,8 @@ public final class DuelController {
     private boolean ram1Active;
     /** The robot the windows and the distance controller are about; null before a duel scan. */
     private String duelOpponent;
+    /** MOVE-38: whether the aim members hold a slot for the opponent's prior. */
+    private final boolean opponentPrior;
     /** R2: recognising and countering a charging rammer, no profile needed (RAM-1). */
     private final RammerPolicy rammer = new RammerPolicy();
     /** RAM-1: whether the rammer response is active, as of the last scan. */
@@ -320,9 +324,13 @@ public final class DuelController {
         // MOVE-33: the learning-gun mimics join the aim members when both switches are on.
         GunMimics memberMimics = duelOnly(MoveDesign.AIM_MEMBERS && MoveDesign.MIMIC_MEMBERS, enemiesTotal)
             ? new GunMimics() : null;
+        // MOVE-38: the opponent's prior is the last aim member when both switches are on; the table
+        // itself is set when the opponent is known (switchOpponent).
+        this.opponentPrior = duelOnly(MoveDesign.AIM_MEMBERS && MoveDesign.OPPONENT_PRIOR, enemiesTotal);
         this.moveController.setAimMembers(duelOnly(MoveDesign.AIM_MEMBERS, enemiesTotal)
-            ? new AimMembers(memberMimics == null ? 0 : memberMimics.size()) : null);
+            ? new AimMembers(memberMimics == null ? 0 : memberMimics.size(), opponentPrior) : null);
         this.moveController.setMemberMimics(memberMimics);
+        this.moveController.setFieldPrior(null);
         this.surfMover = new SurfMover(battleField, predictor);
         this.surfMover.setAesRecord(MoveDesign.AES_RECORD);
         this.surfMover.setOracleRecord(MoveDesign.ORACLE_RECORD);
@@ -461,6 +469,11 @@ public final class DuelController {
     public void switchOpponent(String name) {
         // S5: the windows and the distance controller are about one robot's gun.
         if (duelOpponent != null && !duelOpponent.equals(name)) forgetDuelOpponent();
+        if (opponentPrior && !name.equals(duelOpponent)) {
+            // MOVE-38: this opponent's own prior table, or none for a gun the oracle never recorded.
+            String[] rows = OpponentPriorData.rows(name);
+            moveController.setFieldPrior(rows == null ? null : new FieldPrior(rows));
+        }
         duelOpponent = name;
     }
 
@@ -1359,7 +1372,7 @@ public final class DuelController {
         if (duelOnly(MoveDesign.AIM_MEMBERS && stackList.mimicOn(name), enemiesTotal)
                 && (moveController.aimMembers() == null || moveController.aimMembers().mimics() == 0)) {
             GunMimics mimics = new GunMimics();
-            moveController.setAimMembers(new AimMembers(mimics.size()));
+            moveController.setAimMembers(new AimMembers(mimics.size(), opponentPrior));
             moveController.setMemberMimics(mimics);
             mimicOn = true;
         }
