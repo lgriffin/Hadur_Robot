@@ -1,0 +1,8 @@
+tobe.Saturn lambda | rank482-band5 | tobe.Saturn_lambda.jar
+zeze2.OperatorZeze 1.05 | rank712-band6 | zeze2.OperatorZeze_1.05.jar
+apv.Aspid 1.7 | rank251-band4 | apv.Aspid_1.7.jar
+robar.micro.Topaz 0.25 | rank326-band4 | robar.micro.Topaz_0.25.jar
+krzysiek.robbo2.Robbo 1.0.0 | rank454-band5 | krzysiek.robbo2.Robbo_1.0.0.jar
+dmh.robocode.robot.YellowBird 0.12 | rank617-band5 | dmh.robocode.robot.YellowBird_0.12.jar
+dmp.nano.Eve 3.41 | rank683-band5 | dmp.nano.Eve_3.41.jar
+tobe.calypso.Calypso 4.1 | rank834-band6 | tobe.calypso.Calypso_4.1.jar
