@@ -27,6 +27,13 @@ public class MeleeController {
 
     /** Scans older than this are too stale to fire on. */
     static final long MAX_FIRE_AGE = 5;
+    /**
+     * MGUN-27: off a team, the gun holds until two opponents have died this round, a finisher
+     * excepted; arm {@code mopen}. Off: the gun fires from the first scan as on 3.21.
+     */
+    public static final boolean OPENING_HOLD = false;
+    /** MGUN-27: the opponents alive at the round's first tick; -1 until then. */
+    private int openingOthers = -1;
 
     /** What Hadur knows about itself this tick. */
     public static final class Situation {
@@ -143,6 +150,7 @@ public class MeleeController {
     }
 
     public void newRound() {
+        openingOthers = -1;
         tracker.newRound();
         radar.newRound();
         mover.newRound();
@@ -477,6 +485,7 @@ public class MeleeController {
         myPath.addState(RobotState.newBuilder().setLocation(s.me).setHeading(s.heading)
             .setVelocity(s.velocity).setTime(s.time).build());
         Command c = new Command();
+        if (openingOthers < 0) openingOthers = s.others;
         ghostsDropped += tracker.pruneGhosts(s.others, s.time, s.me);
         EnemyInfo last = tracker.get(lastTarget);
         String finisher = last != null && last.energy <= FINISHER_ENERGY ? last.name : null;
@@ -539,8 +548,17 @@ public class MeleeController {
         boolean hold = target.age(s.time) > MAX_FIRE_AGE
             || s.energy < MeleeEnergyPolicy.MIN_OWN_ENERGY
             || s.energy <= power + 0.1;
+        if (OPENING_HOLD && !onTeam && openingHold(openingOthers, s.others, target.energy)) hold = true;
         c.firePower = hold ? 0 : power;
         return c;
+    }
+
+    /**
+     * MGUN-27: whether the gun holds in the opening: fewer than two of the {@code starting}
+     * opponents have died ({@code others} still alive) and the target is no finisher.
+     */
+    static boolean openingHold(int starting, int others, double targetEnergy) {
+        return others > starting - 2 && targetEnergy > FINISHER_ENERGY;
     }
 
     /** A shot left from {@code at} on {@code time} along {@code gunHeading}, at the last target. */

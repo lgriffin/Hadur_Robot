@@ -1583,6 +1583,7 @@ gun as it was (docs/bench/melee-gun-3.13.md).
 | MGUN-13 | State | While off a team with three or more opponents alive and 20 energy or more, for a target that is not a finisher, the melee gun shall fire power 3 at a target within 200 px and 1.92 beyond, in place of the table, still capped by the power that kills the target, by the lead over it and by its own energy. | M7 |
 | MGUN-16 | State | While MGUN-13 applies, it shall fire power 3 at a target within 300 px in place of 200. | M7 |
 | MGUN-25 | State | While in melee off a team with three or more opponents alive and 60 energy or more, a shot at a target beyond 300 px that is neither a hold nor a finisher shall have at least `FAR_SPARE_POWER` (2.5), still capped by what kills the target, by Hadur's lead over it and by Hadur's own energy, and never lower than the rules before it gave (on from 3.22: pc-melee-far y5 +0.30 ± 0.17, PR #647). | M7 |
+| MGUN-27 | Optional | Where the `OPENING_HOLD` switch is on, while in melee off a team, the gun shall hold fire until two of the opponents alive at the round's first tick have died, except at a target at or under the finisher energy (arm `mopen`, ships off). | M7 |
 
 - **MGUN-7.** `FieldGun.MELEE_K` (12) beside `FieldGun.K` (3), chosen by `FieldGun.k()` from
   `onTeam`. More situations spread each opponent over the angles it is likely to reach, so the

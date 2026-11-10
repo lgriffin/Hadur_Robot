@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import hadur117.core.physics.DiaUtils;
 import java.awt.geom.Point2D;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import hadur117.core.physics.Angles;
@@ -82,6 +83,17 @@ class MeleeControllerTest {
         scan(controller.tracker, "b", 100, 100, 100, 0);
         scan(controller.tracker, "c", 700, 100, 100, 0);
         assertEquals(MeleeEnergyPolicy.killPower(1.0), tick(0, 3).firePower, 1e-9);
+    }
+
+    @Test
+    @Tag("MGUN-27")
+    @DisplayName("MGUN-27: off; on, the gun holds until two have died unless the target is a finisher")
+    void openingHold() {
+        assertFalse(MeleeController.OPENING_HOLD);
+        assertTrue(MeleeController.openingHold(9, 9, 80), "nobody dead yet");
+        assertTrue(MeleeController.openingHold(9, 8, 80), "one dead");
+        assertFalse(MeleeController.openingHold(9, 7, 80), "two dead: the gun fires");
+        assertFalse(MeleeController.openingHold(9, 9, MeleeController.FINISHER_ENERGY), "a finisher is shot");
     }
 
     @Test
