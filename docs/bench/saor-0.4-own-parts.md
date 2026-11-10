@@ -21,10 +21,11 @@ and WDG), `-wat.md` and `-wau.md`.
 |---|---|---|---|
 | Gun vote | GV: each playout's vote spread over 2 + ticks / 8 bins a side (at most 8) | +0.40 ± 0.41 | **pass** |
 | Movement + gun vote | WAG: WTA with GV | -0.12, -0.03, -0.32, -0.13, +0.01, -0.04, -0.34 over seven blocks: about **-0.14 ± 0.16** | **pass** |
+| Movement + vote + target + power | WAE: WAG with the target distance × (shots + 6) / (hits + 2) and power for the best expected energy gain from that robot's hit rate and range | -0.01, +0.06, -0.10, +0.41, -0.08, +0.05, -0.13 over seven blocks: about **+0.03 ± 0.16** | **pass** |
 | Target | TH: the robot we hit best for its distance, sticky by name | -0.29 ± 0.43 | miss (nearest) |
 | Movement | WTA: corner-wall legs whose depth is, every tick, half the range of the nearest robot whose own nearest robot is us | -0.28, -0.06, -0.29, -0.18, -0.16, -0.24, -0.29 over seven blocks: about **-0.21 ± 0.16** | mean inside the gate; interval just short of 0 |
 | Gun chain | none: second-order, pattern match and wall-band chains all cost 1 to 4 | | fail |
-| Power | none: hit-rate and distance-band rules cost 0.5 to 1.1 | | fail |
+| Power | alone: hit-rate and distance-band rules cost 0.5 to 1.1; with the target, expected-gain power (WAE) passes | | pass in WAE |
 
 All own parts together (OWN: WNF + GV + TH) read -1.05 ± 0.39: GV and TH add nothing on top of
 WNF, and WTB + GV (WBG) reads about -0.44 over five blocks against WTB's -0.32 (section 10). The
@@ -134,6 +135,16 @@ The movement went from -3.0 to about -0.6 over about 45 designs. The steps that 
     - TH with a stronger pull toward the nearest until hit rates build, distance x (shots + 6) /
       (hits + 2) (WAU -0.25, -0.01, -0.49, -0.32, +0.04, +0.16, -0.33, about -0.17 ± 0.16, interval
       -0.33 to -0.01): within 0.03 of WAG, the interval misses 0 by 0.01.
+    - WAU with the PC power, (1 + 4 x hit rate) x 200 / distance (WAP -0.41, -0.14, -0.60, -0.29,
+      -0.57, -0.11, -0.30, about -0.35 ± 0.16): fails; it costs about 0.18 on WAU.
+    - **WAU with power for the best expected energy gain (WAE -0.01, +0.06, -0.10, +0.41, -0.08,
+      +0.05, -0.13, about +0.03 ± 0.16, interval -0.13 to +0.19): passes the gate**, about 0.17 better
+      than WAG and 0.20 better than WAU on the same blocks. The rule takes a hit chance of
+      k (20 - 3p) / d, with k from the target's hit rate, (hits + 1) / (shots + 4), scaled to a
+      typical 400 px; the gain k (20 - 3p) 7p / d - p peaks at p = (20 - d / 7k) / 6, held to
+      [0.1, 3] and a sixth of our energy. It fires harder at robots we hit and near, and softer far
+      and at robots we miss. With WAE, movement, gun vote, target and power are all our own; the
+      gun chain (the Markov state packing and the play-it-forward playout) is the last Figment part.
 
 **Where WNF still loses** (C against WNF over the three blocks, 11,340 rounds each): duels end in a
 win equally often (85.9% and 85.8%). WNF dies 13% more often in the crowd (4,778 deaths against
@@ -143,7 +154,8 @@ DustBunny, Wisdom, Troodon). The remaining gap is survival in the crowd, not the
 ## Code kept
 
 `hadur-bench/saor-arms/` keeps GV (pass), TH (nearest miss), WTA (best movement, which replaced
-WNF and then WTB) and WAG (WTA + GV, which passes). The failed arm sources and the stage cards were
+WNF and then WTB), WAG (WTA + GV, which passes) and WAE (WAG with the own target and power,
+which passes). The failed arm sources and the stage cards were
 removed with each result.
 
 ## JayLexi k-NN (same run, BENCH-204)
