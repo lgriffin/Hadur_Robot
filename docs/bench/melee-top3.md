@@ -577,6 +577,19 @@ the fire, master Hadur and ScalarR in the same fields (scratchpad `sc/wallgf.py`
 At a wall, Hadur is hit by 29% of the linear aims fired at it, ScalarR by 14%; head-on and mid aims hit the two
 alike. Hadur is not slower there (mean speed 5.7 against ScalarR's 5.0; still 5% of ticks against 12%): it runs
 along the wall at a steady speed and is led. Two cloud arms test the two obvious causes on the same fields, read by
-this table: `pnopast` drops the past-position penalty (`PAST_K` 0.02 to 0), which charges Hadur for reversing over
-ground it has just covered; `plinwall` doubles the linear guess's weight for shots fired while Hadur had under
-60 px of wall room (`WALL_LINEAR_BOOST`, 1 on master).
+this table: `pnopast` dropped the past-position penalty (`PAST_K` 0.02 to 0), which charges Hadur for reversing over
+ground it has just covered; `plinwall` doubled the linear guess's weight for shots fired while Hadur had under
+60 px of wall room.
+
+| Hadur arm | hit per aimed bullet, under 60 px | linear aims there: share / hit | mid aims there: hit | damage taken / round | crowd deaths | place |
+|---|---:|---:|---:|---:|---:|---:|
+| master | 13% | 9% / 29% | 15% | 66.9 | 21% | 2.76 |
+| pnopast | 13% | 5% / 25% | 19% | 62.6 | 23% | 2.80 |
+| plinwall | 13% | 8% / 25% | 19% | 66.5 | 25% | 2.96 |
+
+Neither moved the gate: the hit rate per aimed bullet at the wall stayed 13%. Both took hits off the linear band and
+put them on the mid band, which is what a surfer does when it is told to fear one aim more. `pnopast` took 4 less
+damage a round over one seed with no change in place or crowd deaths; `plinwall` changed nothing. Both arms and the
+constant were removed. The wall dodge is not a constant away: the surfer's two guesses and its candidate ring are
+the design that fails there, and the next step is a candidate set for little wall room (a reversal along the wall
+and a stop, scored against the waves the way ScalarR's five steps are), read by this table before any score.

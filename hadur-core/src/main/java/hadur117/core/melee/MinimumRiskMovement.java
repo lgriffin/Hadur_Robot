@@ -105,8 +105,6 @@ public class MinimumRiskMovement {
     static final double MATE_FAN = 120;
     /** TMODE-2: a shot's weight is 1/(1+k)^2 for k teammates nearer its shooter; under this it makes no bullets. */
     static final double SOFT_FLOOR = 0.1;
-    /** Cloud arm plinwall: the linear guess of a shot fired while Hadur had under WALL_LINEAR_ROOM px of wall room weighs this much more (1 on master). */
-    static final double WALL_LINEAR_BOOST = 1, WALL_LINEAR_ROOM = 60;
     static final double SWITCH_GAIN = 0.9;
     static final double REACHED = 20;
 
@@ -418,13 +416,7 @@ public class MinimumRiskMovement {
         double linear = at == null ? hot : VirtualBullet.linearHeading(s.source, target,
             at.heading, at.velocity, s.speed(), field.width, field.height);
         add(new VirtualBullet(s, VirtualBullet.Aim.HEAD_ON, hot, w));
-        double lw = w;
-        if (WALL_LINEAR_BOOST != 1 && at != null) {
-            double room = Math.min(Math.min(at.location.x, field.width - at.location.x),
-                Math.min(at.location.y, field.height - at.location.y));
-            if (room < WALL_LINEAR_ROOM) lw *= WALL_LINEAR_BOOST;
-        }
-        add(new VirtualBullet(s, VirtualBullet.Aim.LINEAR, linear, lw));
+        add(new VirtualBullet(s, VirtualBullet.Aim.LINEAR, linear, w));
     }
 
     /**
