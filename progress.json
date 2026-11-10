@@ -1,12 +1,16 @@
 {
  "plan": "pc-learn-trace",
- "updated": 1794325166.6414514,
+ "updated": 1794326073.8497574,
  "steps": {
   "prep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 22,
+   "end": "2026-11-10T15:39:49"
   },
   "trace": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-10T15:39:49"
   },
   "read": {
    "status": "pending"
@@ -15,5 +19,76 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "trace",
+   "started": 1794325189.4637609,
+   "updated": 1794326073.706131,
+   "elapsed": 884.2423701286316,
+   "expected": 2388,
+   "panel": 1194,
+   "field": null,
+   "multiarm": true,
+   "arms": [
+    {
+     "arm": "c",
+     "battles": 142,
+     "failed": 0,
+     "level": 93.37154929577464,
+     "skips": 54.74647887323944,
+     "fresh": 142,
+     "scored": 142,
+     "diff": null
+    },
+    {
+     "arm": "bb",
+     "battles": 137,
+     "failed": 0,
+     "level": 94.7721897810219,
+     "skips": 64.94890510948905,
+     "fresh": 137,
+     "scored": 137,
+     "diff": 1.4357352941176462,
+     "n": 136,
+     "ci95": 1.2144585344184722,
+     "half_stop": 1.8588651037017432,
+     "scale": null
+    }
+   ],
+   "aa": null,
+   "warnings": [
+    "arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 842 h before this step started: check it is not stale"
+   ],
+   "battles": 279,
+   "resumed": 0,
+   "failed": 0,
+   "disables": 56,
+   "rate": 1135.8876637565884,
+   "eta": 6684.111679574496,
+   "fraction": 0.11683417085427136,
+   "last_battle_age": 1.0027098655700684,
+   "rules": [
+    {
+     "rule": "fails 30",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 279"
+    },
+    {
+     "rule": "skips 60 over 200 arms c",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "142 of 200 battles to read"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    }
+   ],
+   "skips_mean": 59.75627240143369,
+   "skips_last100": 84.37
+  }
+ ]
 }
