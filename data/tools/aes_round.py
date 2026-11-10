@@ -114,18 +114,17 @@ def tally(key, rec, hit, present, dmg, real=None):
         key["known"] += 1
         key["real"] += real
         key["realdmg"] += dmg * real
-    n = len(present)
-    key["avoidable"] += hit[ch] and any(present[o] and not hit[o] for o in range(n))
-    key["allhit"] += all(hit[o] for o in range(n) if present[o])
-    hits = [o for o in range(n) if present[o] and hit[o]]
+    key["avoidable"] += hit[ch] and any(present[o] and not hit[o] for o in range(3))
+    key["allhit"] += all(hit[o] for o in range(3) if present[o])
+    hits = [o for o in range(3) if present[o] and hit[o]]
     if len(hits) == 1 and sum(present) >= 2:
         opts = rec["options"]
         key["ranked"] += 1
-        vs = [opts[o][1][A.VIEW_SCORE] if present[o] else -math.inf for o in range(n)]
+        vs = [opts[o][1][A.VIEW_SCORE] if present[o] else -math.inf for o in range(3)]
         key["top"] += strictly_top(vs, hits[0])
-        fs = [opts[o][1][A.FIRST] if present[o] else -math.inf for o in range(n)]
+        fs = [opts[o][1][A.FIRST] if present[o] else -math.inf for o in range(3)]
         key["topfirst"] += strictly_top(fs, hits[0])
-        vo = [views_only(opts[o][1], rec["views"]) if present[o] else -math.inf for o in range(n)]
+        vo = [views_only(opts[o][1], rec["views"]) if present[o] else -math.inf for o in range(3)]
         key["topviews"] += strictly_top(vo, hits[0])
 
 

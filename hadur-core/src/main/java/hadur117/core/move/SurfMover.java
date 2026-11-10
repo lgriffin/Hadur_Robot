@@ -77,8 +77,6 @@ public class SurfMover {
     private final Map<SurfOption, Point2D.Double> surfOptionDestinations = new HashMap<>();
     /** The wave surfed last tick; a different one resets the destinations and the cache. */
     private Wave lastWaveSurfed;
-    /** MOVE-37: whether the half-speed orbit options are rated beside the classic three. */
-    private boolean slowOptions;
     /** AES-1: whether each wave's first three-option rating is recorded (bench builds only; off by default). */
     private boolean aesRecord;
     /** AES-1: while an option is rated for the record, where its first wave's terms go; else null. */
@@ -168,20 +166,6 @@ public class SurfMover {
      */
     public void setAesRecord(boolean on) {
         this.aesRecord = on;
-    }
-
-    /**
-     * MOVE-37: whether the surf also rates a half-speed orbit each way round.
-     *
-     * @param on true to rate five options, false for the classic three
-     */
-    public void setSlowOptions(boolean on) {
-        this.slowOptions = on;
-    }
-
-    /** The options the surf rates: the classic three, or all five with MOVE-37 on. */
-    private SurfOption[] options() {
-        return slowOptions ? SurfOption.values() : SurfOption.CLASSIC;
     }
 
     /** AES-1: the records made since the last call, oldest first; the list is then emptied. */
@@ -437,7 +421,7 @@ public class SurfMover {
             stopDestination = null;
         }
 
-        boolean goingClockwise = lastSurfOption.direction > 0;
+        boolean goingClockwise = lastSurfOption == SurfOption.CLOCKWISE;
         // AES-1: the wave's first rating is recorded, with every option's terms.
         double[][] captures = null;
         if (aesRecord && !moveCtrl.hasOptions(surfWave)) {
@@ -451,23 +435,8 @@ public class SurfMover {
         double stopDanger = surfOptionDangers.getOrDefault(SurfOption.STOP, 0.0);
         double cwDanger = surfOptionDangers.getOrDefault(SurfOption.CLOCKWISE, 0.0);
 
-        // The cheapest drive: clockwise beats counter-clockwise only when strictly cheaper, and
-        // (MOVE-37) a half-speed orbit only when strictly cheaper than both full-speed ones.
-        SurfOption drive = SurfOption.COUNTER_CLOCKWISE;
-        double driveDanger = ccwDanger;
-        if (cwDanger < driveDanger) {
-            drive = SurfOption.CLOCKWISE;
-            driveDanger = cwDanger;
-        }
-        for (SurfOption o : options()) {
-            if (o.speed == 0 || o.speed == 8.0) continue;
-            double d = surfOptionDangers.getOrDefault(o, 0.0);
-            if (d < driveDanger) {
-                drive = o;
-                driveDanger = d;
-            }
-        }
-        boolean takeStop = stopDanger <= driveDanger;
+        boolean takeStop = stopDanger <= ccwDanger && stopDanger <= cwDanger;
+        boolean takeClockwise = cwDanger < ccwDanger;
 
         Point2D.Double surfDest;
         SurfOption chosen;
@@ -482,8 +451,9 @@ public class SurfMover {
             orders.maxVelocity(0.0);
             lastSurfDestination = null;
         } else {
-            orders.maxVelocity(drive.speed);
-            lastSurfOption = drive;
+            orders.maxVelocity(8.0);
+            lastSurfOption = takeClockwise
+                ? SurfOption.CLOCKWISE : SurfOption.COUNTER_CLOCKWISE;
             chosen = lastSurfOption;
             lastSurfDestination = surfOptionDestinations.get(lastSurfOption);
             surfDest = lastSurfDestination;
@@ -493,14 +463,14 @@ public class SurfMover {
         // MOVE-8: the plan just chosen, for the gun to read.
         moveCtrl.publishPlan(surfOptionChains.getOrDefault(chosen, List.of()));
         // MOVE-10: what each option planned on this wave, for the hit forensics.
-        PlanInterval[] firsts = new PlanInterval[options().length];
-        for (SurfOption o : options()) {
+        PlanInterval[] firsts = new PlanInterval[SurfOption.values().length];
+        for (SurfOption o : SurfOption.values()) {
             List<PlanInterval> c = surfOptionChains.getOrDefault(o, List.of());
             if (!c.isEmpty() && c.get(0).wave == surfWave) firsts[o.ordinal()] = c.get(0);
         }
         boolean first = moveCtrl.publishOptions(firsts, chosen.ordinal());
         if (first && captures != null) {
-            SurfOption[] all = options();
+            SurfOption[] all = SurfOption.values();
             boolean[] present = new boolean[all.length];
             double[] totals = new double[all.length];
             for (SurfOption o : all) {
@@ -541,7 +511,7 @@ public class SurfMover {
                                     int wavesToSurf, boolean goingClockwise, boolean complete,
                                     double[][] captures) {
         double bestDanger = Double.POSITIVE_INFINITY;
-        for (SurfOption option : options()) {
+        for (SurfOption option : SurfOption.values()) {
             // AES-1: the first wave's terms go to this option's capture, if recording.
             aesCapture = captures == null ? null : captures[option.ordinal()];
             double danger = checkDanger(myState, moveCtrl, myState, option,
@@ -603,11 +573,11 @@ public class SurfMover {
         // A stop keeps the side it was on (for wall smoothing and its destination); an
         // orbit takes its own.
         boolean predictClockwise = option == SurfOption.STOP
-            ? prevClockwise : (option.direction > 0);
+            ? prevClockwise : (option == SurfOption.CLOCKWISE);
         SurfOption smoothOption = option == SurfOption.STOP
             ? (predictClockwise ? SurfOption.CLOCKWISE : SurfOption.COUNTER_CLOCKWISE)
             : option;
-        double maxVelocity = option.speed;
+        double maxVelocity = option == SurfOption.STOP ? 0 : 8.0;
 
         // The destination: a stop already under way keeps its point; otherwise the precise
         // escape point for this side (see surfDestination).
@@ -928,7 +898,7 @@ public class SurfMover {
         boolean clockwise = side == SurfOption.CLOCKWISE;
         double best = Double.POSITIVE_INFINITY;
         List<PlanInterval> bestChain = List.of();
-        for (SurfOption option : options()) {
+        for (SurfOption option : SurfOption.values()) {
             double d = checkDanger(myState, moveCtrl, o.passed, option, clockwise, 1, 2,
                 cutoff, (RobotStateLog) o.log.clone());
             if (d < best) bestChain = lastChain;
@@ -1119,18 +1089,11 @@ public class SurfMover {
     /** The three-option surf's choices; {@link #direction} is the orbit sign. */
     public enum SurfOption {
         /** Orbit counter-clockwise round the source at full speed. */
-        COUNTER_CLOCKWISE(-1, 8.0),
+        COUNTER_CLOCKWISE(-1),
         /** Brake and stay. */
-        STOP(0, 0.0),
+        STOP(0),
         /** Orbit clockwise round the source at full speed. */
-        CLOCKWISE(1, 8.0),
-        /** MOVE-37: orbit counter-clockwise at half speed (only with the slow options on). */
-        SLOW_COUNTER_CLOCKWISE(-1, 4.0),
-        /** MOVE-37: orbit clockwise at half speed (only with the slow options on). */
-        SLOW_CLOCKWISE(1, 4.0);
-
-        /** The three options the surf has always had, in ordinal order. */
-        static final SurfOption[] CLASSIC = {COUNTER_CLOCKWISE, STOP, CLOCKWISE};
+        CLOCKWISE(1);
 
         /**
          * +1 clockwise, -1 counter-clockwise, 0 for a stop: the sign that turns the bearing
@@ -1138,12 +1101,9 @@ public class SurfMover {
          * and the side wall smoothing turns to.
          */
         public final int direction;
-        /** The speed the option drives at, 0 for a stop. */
-        public final double speed;
 
-        SurfOption(int direction, double speed) {
+        SurfOption(int direction) {
             this.direction = direction;
-            this.speed = speed;
         }
     }
 }

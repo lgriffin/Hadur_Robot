@@ -33,14 +33,6 @@ final class MoveDesign {
     static final boolean AES_RECORD = false;
 
     /**
-     * MOVE-37 (candidate, cloud forensic only, docs/bench/local/2026-11-09_view-rank.md): the
-     * three-option surf also rates a half-speed orbit each way round, five options in all, so
-     * it has somewhere to go between a stop and full speed when the three classic options are
-     * rated close. Off ships the surf as it is; the bench arm slow sets it. Duel only.
-     */
-    static final boolean SLOW_OPTIONS = false;
-
-    /**
      * ORACLE-1 (measurement, K0 of the road to king): each wave's first three-option rating also
      * prints an {@code ORC} record with every danger view's neighbours on the wave, for the offline
      * enemy-gun oracle ({@code data/tools/gun_oracle.py}). Behaviour unchanged.

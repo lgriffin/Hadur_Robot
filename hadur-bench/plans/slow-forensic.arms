@@ -1,5 +1,0 @@
-# Cloud AES forensic for MOVE-37 slow options (docs/bench/local/2026-11-09_view-rank.md): c is 3.21 with the AES
-# recorder on (aa,aesrec), sl the same with the two half-speed orbit options rated too (slow,aesrec). Scored on
-# real hits by round with the truth logs on.
-c | hadur117.Hadur 3.21aaar | bisect/hadur117.Hadur_3.21aaar.jar
-sl | hadur117.Hadur 3.21slar | bisect/hadur117.Hadur_3.21slar.jar
