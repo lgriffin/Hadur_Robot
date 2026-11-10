@@ -1,0 +1,5 @@
+# Cloud trace study (docs/bench/local/2026-11-09_view-rank.md summary): the same 32 learning guns and seeds against
+# Hadur 3.21 (aa, AES recorder on) and against BeepBoop 2.0, truth logs on, to compare each gun's real hit rate by
+# round and the bullets it aims at each of us. No robot change.
+c | hadur117.Hadur 3.21aaar | bisect/hadur117.Hadur_3.21aaar.jar
+bb | kc.mega.BeepBoop 2.0 | opponents/kc.mega.BeepBoop_2.0.jar

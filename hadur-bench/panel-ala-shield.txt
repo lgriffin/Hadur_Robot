@@ -1,0 +1,3 @@
+# pc-ala-shield (BENCH-220): the one robot the trace study found BeepBoop shields and Hadur surfs
+# (docs/bench/local/2026-11-09_view-rank.md, "Ala on the shield list").
+lechu.Ala 0.0.4 | rank516-band5 | lechu.Ala_0.0.4.jar

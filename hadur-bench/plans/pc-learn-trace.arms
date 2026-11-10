@@ -1,0 +1,5 @@
+# pc-learn-trace (BENCH-221): the trace study over the whole 1v1 field. c is master (no switch, truth log on); bb is
+# BeepBoop 2.0 itself, fighting the same opponents at the same seed, so each gun's real hit rate by round and the
+# bullets it aims at each of us can be read side by side (data/tools/learn_trace.py). No robot change.
+c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
+bb | kc.mega.BeepBoop 2.0 | opponents/kc.mega.BeepBoop_2.0.jar
