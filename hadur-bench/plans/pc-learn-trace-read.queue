@@ -11,7 +11,7 @@ set W = work/learn-trace-pc
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
 
-read | python3 tools/arms_from_battles.py ${W} && python3 -I ../data/tools/learn_trace.py ${W} --base c --other bb --set census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_learn-trace-field-read.md && python3 ../data/tools/multiarm.py ${W}/arms.tsv --census census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_learn-trace-field.md
+read | python3 tools/arms_from_battles.py ${W} --force --report ${OUT}/$(date +%Y-%m-%d)_learn-trace-field-kept.md && python3 -I ../data/tools/learn_trace.py ${W} --base c --other bb --set census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_learn-trace-field-read.md && python3 ../data/tools/multiarm.py ${W}/arms.tsv --census census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_learn-trace-field.md
 
-pr | bash tools/open_results_pr.sh claude/pc-learn-trace-results "1v1 trace study over the whole field: every gun against Hadur and against BeepBoop" ${OUT}/*_learn-trace-field*.md
+pr | bash tools/open_results_pr.sh claude/pc-learn-trace-results "1v1 trace study over the whole field, on the battles kept (the kept note names any left out)" ${OUT}/*_learn-trace-field*.md
   after: read

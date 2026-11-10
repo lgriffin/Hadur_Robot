@@ -56,8 +56,11 @@ class LearnTracePlanTest {
         String rest = Files.readString(Path.of("plans/pc-learn-trace-read.queue"));
         assertTrue(Files.isRegularFile(Path.of("tools/arms_from_battles.py")));
         assertTrue(queue.contains("read | python3 tools/arms_from_battles.py ${W} && "), "the card's own read rebuilds too");
-        assertTrue(rest.contains("set W = work/learn-trace-pc\n") && rest.contains("read | python3 tools/arms_from_battles.py ${W} && "));
-        assertTrue(rest.contains(step(queue, "read", "pr").replaceAll("\\s*after: trace\\s*", "").trim()), "the same read as the card");
+        assertTrue(rest.contains("set W = work/learn-trace-pc\n")
+            && rest.contains("read | python3 tools/arms_from_battles.py ${W} --force --report ${OUT}/$(date +%Y-%m-%d)_learn-trace-field-kept.md && "));
+        String kept = "python3 tools/arms_from_battles.py ${W} --force --report ${OUT}/$(date +%Y-%m-%d)_learn-trace-field-kept.md && ";
+        assertTrue(rest.replace(kept, "").contains(step(queue, "read", "pr").replaceAll("\\s*after: trace\\s*", "")
+            .replace("python3 tools/arms_from_battles.py ${W} && ", "").trim()), "the same read as the card");
         assertTrue(rest.contains("open_results_pr.sh claude/pc-learn-trace-results") && rest.contains("  after: read"));
         assertTrue(!rest.contains("bench-top20.sh"), "no battles");
     }
