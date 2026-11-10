@@ -860,3 +860,53 @@ head-on at the wall). The wave danger is where the two differ, and the wave mode
 the crowd (above). MMOVE-28 is retired; `StepSurf`, the `STEP_SURF` switch, the `mstep` arm and the tests are
 removed. The decision stands as it was before the surf: the paying melee levers since 3.19 have been firepower, and
 no movement built from ScalarR's posture or geometry has paid on Hadur's own danger model.
+
+### The crowd energy ledger, and how the crowd deaths happen (2026-11-10, sc/ledger.py, sc/death.py)
+
+Before the next route, the whole budget. On the traced ScalarR fields (ring mover, 240 rounds), per round while
+three or more are alive:
+
+| | Hadur | ScalarR |
+|---|---:|---:|
+| energy fired (shots, mean power) | 86.7 (48.9, 1.77) | 105.0 (49.6, 2.12) |
+| energy regained from hits landed (hits) | 76.3 (12.8) | 96.6 (13.2) |
+| firing, net | -10.4 | -8.4 |
+| damage taken | 64.0 | 55.5 |
+| net energy over the crowd phase | -74.4 | -64.0 |
+| crowd deaths | 42% | 24% |
+| energy of the survivors when the crowd ends | 37.8 | 47.1 |
+
+The gun is not the survival gap: firing nets the same for both (a 26% hit rate returns 0.78 of each unit fired,
+at any power), so the 22% harder shots cost ScalarR 18 more and return 20 more. The whole 10-point gap in net
+energy is the damage taken, 8.5 a round, and the survivors enter the endgame 9 energy apart.
+
+The crowd deaths themselves (the last 120 ticks before each, three or more alive): Hadur 100, ScalarR 57 over the
+same rounds. Both die the same way: from 23-26 energy 120 ticks out, 24-29 damage from 1.6-1.9 shooters, having
+been under 30 energy for 250-300 ticks. Per tick spent under 30 energy in the crowd, ScalarR takes more damage
+(7.1 against 6.1 per 100 ticks) and dies at the same rate (2.0 against 2.3 deaths per 1,000 such ticks); Hadur
+simply spends 53% more ticks there (43,408 against 28,450). There is no low-energy escape in ScalarR's movement to
+copy: it reaches low energy later because it was hit less at full energy, and that is the same 13% fewer bullets
+aimed at it that the posture reads found.
+
+### What has not been tried on melee survival, and why
+
+Reported so the line is not called closed without saying what was left:
+
+- **ScalarR's own wave danger: per-(shooter, target) learning from every robot's hits, the wave in the air a
+  mixture over its possible targets.** Not built. Hadur's surfer weights each shot by a field-wide curve in k
+  (robots nearer the shooter than Hadur) and its own per-class danger views. The unbuilt part is which target
+  each gun chooses, learned per shooter. A cloud read of it is running (sc/choice.py): how much better than the
+  field curve a per-class model predicts that a shot is at Hadur. If it is sharper, the surfer's weighting is the
+  member to build, as an arm on the ring mover, not the step geometry.
+- **Two waves deep.** ScalarR scores a step through the next two waves per shooter; the step surf scored the nine
+  soonest at arrival only, and the ring's wave check eight. Not tried; the step surf's failure was at the dodge per
+  bullet, which depth would not change on the traces (88% of hits landed inside the last plan in the 1v1 read, and
+  the melee hit paths showed the same).
+- **Bullet shadows in melee.** Not tried: the same-crowd read found shadows take 8-9% of the bullets aimed at each
+  robot equally, so there is no gap there to close.
+- **A low-energy posture (retreat or hide when under 30 energy).** Not tried, and the death read above says it is
+  flat: ScalarR dodges no better than Hadur when low.
+- **Being the nearest robot of fewer opponents without the corner.** Hadur is the nearest robot of 0.91 opponents
+  against ScalarR's 0.66; every posture arm reached that only by standing in corners, where its hit rate per bullet
+  rose. An arm that pays distance only against the robots whose guns shoot their nearest (the per-class read above
+  says which) has not been tried; it depends on the choice read.
