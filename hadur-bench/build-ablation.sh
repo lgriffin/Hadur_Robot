@@ -664,12 +664,6 @@ for a in "${list[@]}"; do
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEnergyPolicy.java" \
                 "if (ownEnergy > targetEnergy) {" "if (others <= 2 && ownEnergy > targetEnergy) {"
             ;;
-        mopen)
-            # MGUN-27: off a team the gun holds until two opponents have died, a finisher excepted
-            # (cloud paired smoke first). Suffix mo.
-            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeController.java" \
-                "public static final boolean OPENING_HOLD = false;" "public static final boolean OPENING_HOLD = true;"
-            version="${version}mo" ;;
         mhold)
             version="${version}mh"
             edit "$fgun" "if (!finisher && rams(e, me)) continue;" \

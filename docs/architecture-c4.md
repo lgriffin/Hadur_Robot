@@ -683,7 +683,6 @@ endgame MEND-1, 2).
 | `MeleeEnergyPolicy.CROWD_OGI` | MGUN-13 | **on** | Ogi's crowd power, 3 up close |
 | `MeleeEnergyPolicy.OGI_WIDE` | MGUN-16 | **on** (3.19) | Power 3 out to 300 px |
 | `MeleeEnergyPolicy.FAR_SPARE` | MGUN-25 | **on**, master only (3.22) | At least power 2.5 beyond 300 px while Hadur has 60+ energy |
-| `MeleeController.OPENING_HOLD` | MGUN-27 | off, arm `mopen` | Off a team the gun holds until two opponents have died, a finisher excepted |
 | `MeleeEndgame.THREE_FAR` | MEND-3 | **on** | With two left, closest-robot factor 4 |
 | `MinimumRiskMovement.MELEE_DAMAGE_MEMORY` | MMOVE-22 | **on**, master only (3.21) | Each opponent's risk weighs by the damage it has done Hadur this battle (Diamond) |
 
