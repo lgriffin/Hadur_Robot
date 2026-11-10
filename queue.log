@@ -21,3 +21,6 @@
 19:37:48 watching trace: 3 stop rule(s)
 19:37:50 progress pushed to origin claude/pc-learn-trace-progress (every 15 min)
 19:38:49 progress trace: 2387/2388 (100%) battles, 0 failed, bb +1.87
+20:09:05 progress trace: 2387/2388 (100%) battles, 2/h, ETA 30 min, 1 failed, bb +1.87
+20:14:18 trace exit=130 in 2190 s (stopped)
+20:14:18 stopped; rerun to resume from the interrupted steps
