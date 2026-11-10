@@ -2059,6 +2059,10 @@ failed and are removed (3.22 cleanup); the mimics live on in MOVE-33 and MOVE-34
   gate printed "no battles" for both arms: `shield_s2.py gate` takes its interval across robots, which one robot
   cannot give, so on a one-robot card the per-robot pick is the read. Ala joins `ShieldListData` and
   `ShieldTableData.stills()`.
+- **BENCH-222 result (pc-shield-rescreen, PR #739, 2026-11-10): both ship with still lines.** 12 fresh seeds from 12000
+  against master and its A/A copy pooled: Saturn +10.54 points (low end +7.16, control 81.4), OperatorZeze +3.48
+  (low end +0.57, control 86.2); the 3-point pick locks both, the gate passes (+0.01 APS, low end above 0), A/A +0.84,
+  inside its band. Both join `ShieldListData` and `ShieldTableData.stills()`.
 - **BENCH-209.** The shield audit's cloud read (docs/bench/shield-recent.md): the still shield beat master on
   Musashi (+20 on 6 seeds) and Princess (+11 on 2 seeds; with the damage exit off +5 on one seed and +2 on 4 fresh ones) and lost on the other five
   BeepBoop-only robots read. `pc-shield-audit` re-measures the two on 12 fresh PC seeds against c and aa before any

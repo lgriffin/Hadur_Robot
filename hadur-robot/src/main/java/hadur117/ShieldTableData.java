@@ -599,6 +599,9 @@ final class ShieldTableData {
             "cx.Princess 1.0",
             // pc-ala-shield (BENCH-220, PR #733): +7.34 points on 12 fresh seeds, low end +4.19
             "lechu.Ala 0.0.4",
+            // pc-shield-rescreen (BENCH-222, PR #739): Saturn +10.5, OperatorZeze +3.5 on 12 fresh seeds
+            "tobe.Saturn lambda",
+            "zeze2.OperatorZeze 1.05",
         };
     }
 
