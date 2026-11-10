@@ -111,6 +111,8 @@ public class MoveController {
     private Consumer<double[]> sampleSink;
     /** SKEY-2: the kernel width's multiplier in the views' danger; 1 unless a surf key is set. */
     private double keyWidth = 1.0;
+    /** MOVE-41 (cloud forensic): every view's kernel width multiplier; 1 ships. */
+    private double kernelScale = 1.0;
     /** SKEY-2: the hit views' default key weights, the {@link MoveFormula}'s. */
     private static final double[] KEY_DEFAULTS = new MoveFormula().weights.clone();
 
@@ -154,7 +156,17 @@ public class MoveController {
 
     /** SKEY-2: the kernel width {@code view} uses: the key's width on a keyed view, else the bare bandwidth. */
     private double viewBandwidth(KnnView<TimestampedGuessFactor> view, double bandwidth) {
-        return keyed(view) ? bandwidth * keyWidth : bandwidth;
+        return (keyed(view) ? bandwidth * keyWidth : bandwidth) * kernelScale;
+    }
+
+    /**
+     * MOVE-41 (cloud forensic only): how wide every view's danger kernel is, as a multiple of
+     * the intersection's bandwidth (the hit box as seen from the source); 1 ships.
+     *
+     * @param scale the multiplier, above 0
+     */
+    public void setKernelScale(double scale) {
+        this.kernelScale = scale;
     }
 
     /** SKEY-2: the kernel width's multiplier now in force (1 with no surf key). */
