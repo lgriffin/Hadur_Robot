@@ -1,6 +1,6 @@
 {
  "plan": "pc-learn-trace",
- "updated": 1794339468.318437,
+ "updated": 1794340376.7188525,
  "steps": {
   "prep": {
    "status": "done",
@@ -9,11 +9,8 @@
    "end": "2026-11-10T15:39:49"
   },
   "trace": {
-   "status": "halted",
-   "exit": 75,
-   "seconds": 12214,
-   "end": "2026-11-10T19:03:23",
-   "halted_by": "stall 30m: last battle 30 min ago"
+   "status": "running",
+   "start": "2026-11-10T19:37:48"
   },
   "read": {
    "status": "pending"
@@ -22,5 +19,76 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "trace",
+   "started": 1794339468.3239877,
+   "updated": 1794340376.516888,
+   "elapsed": 908.1929001808167,
+   "expected": 2388,
+   "panel": 1194,
+   "field": null,
+   "multiarm": true,
+   "arms": [
+    {
+     "arm": "c",
+     "battles": 1194,
+     "failed": 0,
+     "level": 92.84463986599665,
+     "skips": 53.31658291457286,
+     "fresh": 0,
+     "scored": 0,
+     "diff": null
+    },
+    {
+     "arm": "bb",
+     "battles": 1193,
+     "failed": 5,
+     "level": 94.73659932659933,
+     "skips": 37.677609427609426,
+     "fresh": 1,
+     "scored": 0,
+     "diff": 1.8727861952861948,
+     "n": 1188,
+     "ci95": 0.339568875729435,
+     "half_stop": 0.5197482791777066,
+     "scale": null
+    }
+   ],
+   "aa": null,
+   "warnings": [
+    "arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 846 h before this step started: check it is not stale"
+   ],
+   "battles": 2387,
+   "resumed": 2386,
+   "failed": 1,
+   "disables": 0,
+   "rate": 3.9639155946751603,
+   "eta": 908.1929001808167,
+   "fraction": 0.9995812395309883,
+   "last_battle_age": 493.6846764087677,
+   "rules": [
+    {
+     "rule": "fails 30",
+     "action": "halt",
+     "state": "ok",
+     "detail": "1 failed of 2387"
+    },
+    {
+     "rule": "skips 60 over 200 arms c",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "0 of 200 battles to read"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 8 min ago"
+    }
+   ],
+   "skips_mean": null,
+   "skips_last100": null
+  }
+ ]
 }
