@@ -94,10 +94,12 @@ class StepSurfTest {
         // Quiet field: the crowd alone prefers straight away (south); a held step 30 degrees off it is kept.
         Point2D.Double held = pt(570, 373);
         Point2D.Double step = StepSurf.choose(me, null, held, 100, foes, 5, List.of(), field, move::clip);
-        assertEquals(held, step);
-        // A held step within reach is not held: the steps are chosen afresh.
-        Point2D.Double fresh = StepSurf.choose(me, null, pt(510, 500), 100, foes, 5, List.of(), field, move::clip);
-        assertNotEquals(pt(510, 500), fresh);
+        // The direction is held, as a fresh full step that way.
+        assertEquals(StepSurf.STEP, me.distance(step), 1e-6);
+        assertEquals(Math.atan2(70, -127), Math.atan2(step.x - me.x, step.y - me.y), 1e-6);
+        // A held step within reach gives no direction: the steps are chosen afresh.
+        Point2D.Double fresh = StepSurf.choose(me, null, pt(502, 500), 100, foes, 5, List.of(), field, move::clip);
+        assertTrue(fresh.y < 400, "away: " + fresh);
     }
 
     @Test

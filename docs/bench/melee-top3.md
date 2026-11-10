@@ -720,3 +720,19 @@ against is a Gaussian a box half-width over 2 wide (about one degree at 500 px),
 head-on line reads as safe, and a tick of the shooter's latency or a bot of lead puts the bullet there. The leader's
 kernel is over a bot wide with fat tails. Build 6 scores the step surf's waves through a kernel three times as wide
 (`StepSurf.SPREAD`, the ring mover's profile untouched).
+
+| Hadur arm | place | crowd deaths | damage taken / round | hit per aimed bullet | at the wall (<60 px) | head-on there |
+|---|---:|---:|---:|---:|---:|---:|
+| mstep build 5 (held step) | 3.30 | 32% | 78.3 | 18% | 20% | 23% |
+| mstep build 6 (kernel three times wider) | 3.69 | 43% | 86.4 | 19% | 21% | 24% |
+
+The wider kernel did not help (a point worse everywhere, more reversals); the spread constant and its plumbing were
+removed. The per-shooter read on build 5 (scratchpad sc/shooter.py: for each gun, bullets aimed at Hadur and at
+ScalarR in the same battles and the hit rate on each) says which guns find the surf: the simple ones. NanoAndrew hits
+Hadur with 31% of its aimed bullets and ScalarR with 7%, JollyNinja 25% against 8%, Predator 21% against 8%,
+Firestarter 19% against 7%, Anomaly 27% against 14%; ScalarR's own gun hits Hadur at 15%, the same as Hadur's hits
+ScalarR (14%). Head-on and linear guns fire where the target is or will be at a steady speed, and build 5 gave them
+that: it held the step as a point, so the seam braked to it at every leg's end (every 140 px, about 20 ticks, twice
+in a bullet's flight) and the next leg began from rest. Build 7 holds the step's direction instead: each tick the
+held step is a fresh 140 px step the same way (slid along a wall as the others), so the robot never brakes but to
+turn, and still changes direction only when another step is clearly safer.

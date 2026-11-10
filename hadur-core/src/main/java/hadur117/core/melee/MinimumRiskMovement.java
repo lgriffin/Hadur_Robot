@@ -810,11 +810,6 @@ public class MinimumRiskMovement {
 
     /** The mass of the {@code waves} not yet {@code done} whose front crosses Hadur's box at ({@code x}, {@code y}) on {@code tick}; marks them done. */
     static double waveHits(double x, double y, long tick, List<Wave> waves, boolean[] done) {
-        return waveHits(x, y, tick, waves, done, 1.0);
-    }
-
-    /** As above, each wave's profile through a kernel {@code spread} times as wide (MMOVE-28). */
-    static double waveHits(double x, double y, long tick, List<Wave> waves, boolean[] done, double spread) {
         double total = 0;
         for (int i = 0; i < waves.size(); i++) {
             if (done[i]) continue;
@@ -826,7 +821,7 @@ public class MinimumRiskMovement {
             if (front - w.speed > d + WAVE_HALF) continue;
             double bearing = Math.atan2(x - w.source.x, y - w.source.y);
             double half = Math.atan(WAVE_HALF / Math.max(d, WAVE_HALF));
-            total += w.mass(bearing, half, spread);
+            total += w.mass(bearing, half);
         }
         return total;
     }
@@ -910,13 +905,8 @@ public class MinimumRiskMovement {
 
         /** The expected damage to a box at {@code bearing} from the source, {@code half} radians each side. */
         double mass(double bearing, double half) {
-            return mass(bearing, half, 1.0);
-        }
-
-        /** As above with the kernel's width scaled by {@code spread} (1: the box's half-width over 2). */
-        double mass(double bearing, double half, double spread) {
             double m = 0;
-            double sigma = Math.max(1e-3, half / 2 * spread);
+            double sigma = Math.max(1e-3, half / 2);
             for (int i = 0; i < headings.length; i++) {
                 double off = Angles.normalRelativeAngle(bearing - headings[i]);
                 m += shares[i] * (phi((off + half) / sigma) - phi((off - half) / sigma));

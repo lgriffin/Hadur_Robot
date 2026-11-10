@@ -39,16 +39,10 @@ final class StepSurf {
     static final double TURN_SPEED = 4;
     /** A move slower than this a tick counts as standing: the step's own direction replaces the heading. */
     static final double STILL = 0.5;
-    /**
-     * The wave profile's kernel width, as a multiple of the ring mover's (a box half-width over
-     * 2, about one degree at 500 px). Build 5 sat a bot's width beside the head-on line and was
-     * hit there; the leader's kernel is over a bot wide with fat tails.
-     */
-    static final double SPREAD = 3;
     /** The held step's danger is scaled by this: another step must be clearly safer to take over. */
     static final double HOLD_GAIN = 0.8;
-    /** A held step this close is reached: the steps are chosen afresh. */
-    static final double REACHED = 20;
+    /** A held step this close no longer gives a direction: the steps are chosen afresh. */
+    static final double REACHED = 5;
     /** Wall smoothing: the step turns in these increments, up to a right angle, to stay inside the margin. */
     static final double SMOOTH_TURN = Math.PI / 18;
     static final int SMOOTH_STEPS = 9;
@@ -86,9 +80,11 @@ final class StepSurf {
     }
 
     /**
-     * As above, holding {@code held}, the step chosen last tick: it is scored again from here and
-     * kept unless another step's danger is under {@link #HOLD_GAIN} of its own. Without the hold the
-     * surf reversed three times a bullet flight and never got up to speed (build 4's read).
+     * As above, holding the direction of {@code held}, the step chosen last tick: a fresh step
+     * that way is scored again from here and kept unless another step's danger is under
+     * {@link #HOLD_GAIN} of its own. Without the hold the surf reversed three times a bullet
+     * flight and never got up to speed (build 4's read); holding the point itself braked the
+     * robot at every leg's end, where the head-on guns found it (build 5's read).
      */
     static Point2D.Double choose(Point2D.Double me, Point2D.Double prev, Point2D.Double held, double energy,
                                  List<Foe> foes, long now, List<Wave> waves, BattleField field,
@@ -99,7 +95,7 @@ final class StepSurf {
         double crowdNow = Math.max(1e-9, crowd(me, energy, foes));
         List<Point2D.Double> steps = candidates(me, prev, foes, field, clip);
         boolean hold = held != null && held.distance(me) > REACHED;
-        if (hold) steps.add(held);
+        if (hold) steps.add(smooth(me, Math.atan2(held.x - me.x, held.y - me.y), field, clip));
         Point2D.Double best = null;
         double bestDanger = Double.POSITIVE_INFINITY;
         for (int i = 0; i < steps.size(); i++) {
@@ -250,7 +246,7 @@ final class StepSurf {
             }
             crowd += crowd(new Point2D.Double(x, y), energy, foes);
             ticks = t;
-            waveDamage += MinimumRiskMovement.waveHits(x, y, now + t, waves, done, SPREAD);
+            waveDamage += MinimumRiskMovement.waveHits(x, y, now + t, waves, done);
             boolean all = true;
             for (boolean b : done) all &= b;
             if (all && left <= 0.01) break;
