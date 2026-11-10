@@ -854,14 +854,6 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeController.java" \
                 "public static final boolean MELEE_CROSS = false;" "public static final boolean MELEE_CROSS = true;"
             version="${version}xh" ;;
-        mspow)
-            # The leader's crowd power shape under the step surf (cloud only, with mstep): power 3 out to 433 px
-            # and 3 beyond it while Hadur has 30 energy or more (master: 3 to 300 px, 2.5 beyond from 60). Suffix sp.
-            mpol="$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEnergyPolicy.java"
-            edit "$mpol" "static final double OGI_WIDE_CLOSE = 300;" "static final double OGI_WIDE_CLOSE = 433;"
-            edit "$mpol" "static final double FAR_SPARE_POWER = 2.5;" "static final double FAR_SPARE_POWER = 3.0;"
-            edit "$mpol" "static final double FAR_SPARE_ENERGY = 60.0;" "static final double FAR_SPARE_ENERGY = 30.0;"
-            version="${version}sp" ;;
         mstep)
             # MMOVE-28: the step surf in place of the ring mover in melee off a team (cloud first, read by
             # scratchpad sc/wallgf.py and sc/posture.py under the posture it chooses). Suffix st.

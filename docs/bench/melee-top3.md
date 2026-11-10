@@ -794,3 +794,21 @@ alive) ScalarR lands 29% of its shots on some robot to Hadur's 27%, and the per-
 endgame duels at close range). The gun's extra damage is power (2.11 against 1.81, 17% more a hit), cadence (46.7
 against 43.1 shots a round) and the endgame it reaches more often. Under the step surf's posture the power rule is
 the cheap test: arm `mspow` (power 3 to 433 px and beyond it from 30 energy, the leader's shape) with `mstep`.
+
+| Hadur arm | place | crowd deaths | damage taken / round | damage dealt / round | power | shots / round | hit per aimed bullet |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| mstep build 7 | 3.29 | 34% | 72.5 | 114.9 | 1.81 | 43.1 | 16% |
+| mstep + mspow (power 3 to 433 px, beyond it from 30 energy) | 3.38 | 37% | 74.3 | 120.7 | 1.96 | 41.9 | 17% |
+| master | 2.76 | 21% | 66.9 | 129.9 | 1.76 | 48.2 | 12% |
+| ScalarR | 1.94 | 14% | 54.4 | 164.1 | 2.12 | 46.7 | 13% |
+
+The leader's power shape under the surf dealt 6 more a round and died 3 points more: place flat. The arm was
+removed. The damage dealt by phase (sc/dealt.py) settles where the crowd gun's gap is. With three or more alive,
+ScalarR lands 3,163 hits in 240 rounds at power 2.42 for 165.8 a round; master Hadur lands 3,101, almost the same
+count, at 1.99 for 132.3; the step surf lands 2,556 (shooting from farther) at 2.21 for 122.6. Per shot the two
+crowd guns are equal (30% against 28%); ScalarR fires 9% more shots a round and 22% harder. So the crowd gun gap is
+power and cadence, not prediction, and the surf's posture costs 18% of the hits that its range gives back only in
+part. The one-part power imitation failed on the ring posture before (MGUN-22) and is flat on the surf's: the power
+has to come with the hits, which means the gun must keep its hit count at the surf's range (ScalarR's does at 765 px)
+or the surf must hold the posture nearer the crowd. Next: the gun's hold rules (why Hadur fires 9% less with lighter
+shots) and the hit rate by range for the two crowd guns at equal distance.
