@@ -12,13 +12,15 @@ Seed blocks: r1 4100, r2 4200, r3 4300, r1x 4500, r1z 4600. Reports: `docs/bench
 `saor-r1x-wfr.md`, `saor-r1z-wfr.md`, and for section 9 `saor-r1x-wng.md`, `saor-r1z-wng.md`,
 `saor-r1x-wnh.md`, `saor-r1z-wnh.md`, `saor-r1x-wgv.md`, `saor-r1z-wgv.md`,
 `saor-r1x-wnz.md`, `saor-r1z-wnz.md`, and for section 10 `saor-<block>-wcd.md`, `-wtd.md`, `-wtb.md`,
-`-wte.md`, `-wbg.md`, `-wto.md`, `-wtr.md` (which also carries WTN) and `-wta.md` (r1-r5, r1x, r1z).
+`-wte.md`, `-wbg.md`, `-wto.md`, `-wtr.md` (which also carries WTN) `-wta.md` (r1-r5, r1x, r1z), and for section 11 `-was.md` and `-wag.md` (which carries WAD
+and WDG).
 
 ## Result
 
 | Part | Best own design | vs 0.3 | Gate |
 |---|---|---|---|
 | Gun vote | GV: each playout's vote spread over 2 + ticks / 8 bins a side (at most 8) | +0.40 ± 0.41 | **pass** |
+| Movement + gun vote | WAG: WTA with GV | -0.12, -0.03, -0.32, -0.13, +0.01, -0.04, -0.34 over seven blocks: about **-0.14 ± 0.16** | **pass** |
 | Target | TH: the robot we hit best for its distance, sticky by name | -0.29 ± 0.43 | miss (nearest) |
 | Movement | WTA: corner-wall legs whose depth is, every tick, half the range of the nearest robot whose own nearest robot is us | -0.28, -0.06, -0.29, -0.18, -0.16, -0.24, -0.29 over seven blocks: about **-0.21 ± 0.16** | mean inside the gate; interval just short of 0 |
 | Gun chain | none: second-order, pattern match and wall-band chains all cost 1 to 4 | | fail |
@@ -117,6 +119,15 @@ The movement went from -3.0 to about -0.6 over about 45 designs. The steps that 
       inside the gate's -0.25 bar, the interval ends just short of 0 (-0.37 to -0.05).
     Following who is shooting, or likely to shoot, at us is the signal that closed the gap, from
     WNF's -0.62 to WTA's -0.21. WTA replaces WTB as the kept movement.
+11. **The own parts together** (2026-11-10, seven blocks r1, r2, r3, r4, r5, r1x, r1z; WTA -0.28,
+    -0.06, -0.29, -0.24, -0.29, -0.18, -0.16):
+    - **WAG = WTA + GV: -0.12, -0.03, -0.32, -0.13, +0.01, -0.04, -0.34, about -0.14 ± 0.16
+      (-0.30 to +0.02): passes the gate.** GV, which added nothing on WNF or WTB, adds about 0.07
+      on WTA;
+    - deeper legs, range / 1.7 at most 320 (WAD -0.09, -0.12, -0.03 on r1, r1z, r4; WTA -0.28,
+      -0.16, -0.24) read better alone, but with GV (WDG -0.39, -0.09, -0.68, +0.19, -0.56, -0.13,
+      -0.53, about -0.31) worse than WAG; shallower legs, range / 2.4 (WAS -0.46, -0.67, -0.19),
+      lose.
 
 **Where WNF still loses** (C against WNF over the three blocks, 11,340 rounds each): duels end in a
 win equally often (85.9% and 85.8%). WNF dies 13% more often in the crowd (4,778 deaths against
@@ -125,8 +136,8 @@ DustBunny, Wisdom, Troodon). The remaining gap is survival in the crowd, not the
 
 ## Code kept
 
-`hadur-bench/saor-arms/` keeps GV (pass), TH (nearest miss) and WTA (best movement, which replaced
-WNF and then WTB there on 2026-11-09 and 11-10). The failed arm sources and the stage cards were
+`hadur-bench/saor-arms/` keeps GV (pass), TH (nearest miss), WTA (best movement, which replaced
+WNF and then WTB) and WAG (WTA + GV, which passes). The failed arm sources and the stage cards were
 removed with each result.
 
 ## JayLexi k-NN (same run, BENCH-204)

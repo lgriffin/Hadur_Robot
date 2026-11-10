@@ -380,3 +380,6 @@ GV adds nothing on top of it. The arms still in play are GV, TH and WTB, which r
 Status 2026-11-10: legs whose depth follows the nearest robot whose own nearest robot is us (WTA)
 cost about 0.21 ± 0.16 over seven seed sets: the mean is inside the gate's -0.25 bar and the
 interval ends just short of 0. The arms still in play are GV, TH and WTA, which replaces WTB.
+WTA with GV's vote width (WAG) reads about -0.14 ± 0.16 over seven seed sets and passes the gate:
+own movement and own gun vote together are at parity with 0.3. The arms in play are GV, TH, WTA
+and WAG; the target (TH) is screened on WAG next.
