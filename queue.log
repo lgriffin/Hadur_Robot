@@ -13,3 +13,5 @@
 18:42:11 progress trace: 2387/2388 (100%) battles, 60/h, ETA 1 min, 5 failed, skips 49.2/battle (last 100), bb +1.87
 19:03:23 STOP trace by rule stall 30m: last battle 30 min ago; 2387 battles fought and kept, 1 battles left unrun (about 0 min)
 19:03:23 trace exit=75 in 12214 s (halted, stall 30m)
+19:03:26 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/738
+19:03:26 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)

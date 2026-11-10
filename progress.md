@@ -1,6 +1,6 @@
 # Queue pc-learn-trace: progress
 
-Updated 2026-11-10 19:03:23 PC time (19:03 UTC), runner pid 19896.
+Updated 2026-11-10 19:03:26 PC time (19:03 UTC), runner pid 19896.
 
 - `prep` done, exit 0 in 0 min
 - `trace` halted, exit 75 in 3.4 h, HALTED by stall 30m: last battle 30 min ago
@@ -30,8 +30,6 @@ Stopping now would leave 1 battles unrun (about 0 min); every battle already fou
 ### Queue log (last lines)
 
 ```
-15:39:26 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
-15:39:26 start prep
 15:39:29 progress pushed to origin claude/pc-learn-trace-progress (every 15 min)
 15:39:49 prep exit=0 in 22 s
 15:39:49 start trace
@@ -45,4 +43,6 @@ Stopping now would leave 1 battles unrun (about 0 min); every battle already fou
 18:42:11 progress trace: 2387/2388 (100%) battles, 60/h, ETA 1 min, 5 failed, skips 49.2/battle (last 100), bb +1.87
 19:03:23 STOP trace by rule stall 30m: last battle 30 min ago; 2387 battles fought and kept, 1 battles left unrun (about 0 min)
 19:03:23 trace exit=75 in 12214 s (halted, stall 30m)
+19:03:26 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/738
+19:03:26 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 ```
