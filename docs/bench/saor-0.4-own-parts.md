@@ -13,7 +13,7 @@ Seed blocks: r1 4100, r2 4200, r3 4300, r1x 4500, r1z 4600. Reports: `docs/bench
 `saor-r1x-wnh.md`, `saor-r1z-wnh.md`, `saor-r1x-wgv.md`, `saor-r1z-wgv.md`,
 `saor-r1x-wnz.md`, `saor-r1z-wnz.md`, and for section 10 `saor-<block>-wcd.md`, `-wtd.md`, `-wtb.md`,
 `-wte.md`, `-wbg.md`, `-wto.md`, `-wtr.md` (which also carries WTN) `-wta.md` (r1-r5, r1x, r1z), and for section 11 `-was.md`, `-wag.md` (which carries WAD
-and WDG) and `-wat.md`.
+and WDG), `-wat.md` and `-wau.md`.
 
 ## Result
 
@@ -131,6 +131,9 @@ The movement went from -3.0 to about -0.6 over about 45 designs. The steps that 
     - WAG with the TH target (WAT -0.38, -0.29, -0.38, +0.03, -0.24, +0.05, -0.28, about -0.21 ±
       0.16, interval -0.37 to -0.05): the mean is inside the bar but the interval misses 0; TH costs
       about 0.07 on WAG, the nearest miss again.
+    - TH with a stronger pull toward the nearest until hit rates build, distance x (shots + 6) /
+      (hits + 2) (WAU -0.25, -0.01, -0.49, -0.32, +0.04, +0.16, -0.33, about -0.17 ± 0.16, interval
+      -0.33 to -0.01): within 0.03 of WAG, the interval misses 0 by 0.01.
 
 **Where WNF still loses** (C against WNF over the three blocks, 11,340 rounds each): duels end in a
 win equally often (85.9% and 85.8%). WNF dies 13% more often in the crowd (4,778 deaths against
