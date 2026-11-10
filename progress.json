@@ -1,0 +1,19 @@
+{
+ "plan": "pc-still-field",
+ "updated": 1794354341.6968532,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "confirm": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
