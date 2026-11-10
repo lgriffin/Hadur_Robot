@@ -37,6 +37,9 @@ final class StepSurf {
     static final double MAX_SPEED = 8, ACCEL = 1, DECEL = 2;
     /** A move slower than this a tick counts as standing: the step's own direction replaces the heading. */
     static final double STILL = 0.5;
+    /** Wall smoothing: the step turns in these increments, up to a right angle, to stay inside the margin. */
+    static final double SMOOTH_TURN = Math.PI / 18;
+    static final int SMOOTH_STEPS = 9;
 
     private StepSurf() {}
 
@@ -84,11 +87,30 @@ final class StepSurf {
             if (moved >= STILL && moved <= MAX_SPEED + 0.5) heading = Math.atan2(me.x - prev.x, me.y - prev.y);
         }
         List<Point2D.Double> out = new ArrayList<>(5);
-        out.add(clip.apply(DiaUtils.project(me, away, STEP)));
+        out.add(smooth(me, away, field, clip));
         for (double turn : new double[] {0, Math.PI, Math.PI / 2, -Math.PI / 2}) {
-            out.add(clip.apply(DiaUtils.project(me, heading + turn, STEP)));
+            out.add(smooth(me, heading + turn, field, clip));
         }
         return out;
+    }
+
+    /**
+     * A full {@link #STEP} at {@code angle}, turned the least that keeps it inside the field's
+     * margin (the wall slides the step along itself instead of cutting it short, which left the
+     * first build standing in corners); clipped only when no turn within a right angle fits.
+     */
+    static Point2D.Double smooth(Point2D.Double me, double angle, BattleField field, UnaryOperator<Point2D.Double> clip) {
+        for (int k = 0; k <= SMOOTH_STEPS; k++) {
+            for (double sign : new double[] {1, -1}) {
+                Point2D.Double p = DiaUtils.project(me, angle + sign * k * SMOOTH_TURN, STEP);
+                if (p.x >= MinimumRiskMovement.WALL_MARGIN && p.x <= field.width - MinimumRiskMovement.WALL_MARGIN
+                    && p.y >= MinimumRiskMovement.WALL_MARGIN && p.y <= field.height - MinimumRiskMovement.WALL_MARGIN) {
+                    return p;
+                }
+                if (k == 0) break;
+            }
+        }
+        return clip.apply(DiaUtils.project(me, angle, STEP));
     }
 
     /** The direction pushed by every opponent at 1/d^2 and drawn weakly to the nearest corner. */

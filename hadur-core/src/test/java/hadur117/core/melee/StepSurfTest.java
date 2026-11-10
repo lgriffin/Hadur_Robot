@@ -52,6 +52,17 @@ class StepSurfTest {
 
     @Test
     @Tag("MMOVE-28")
+    @DisplayName("MMOVE-28: a step into a wall slides along it at full length")
+    void smooth() {
+        Point2D.Double me = pt(500, 50);
+        Point2D.Double p = StepSurf.smooth(me, Math.PI, field, move::clip);
+        assertEquals(StepSurf.STEP, me.distance(p), 1e-6);
+        assertTrue(p.y >= MinimumRiskMovement.WALL_MARGIN, "inside: " + p);
+        assertTrue(Math.abs(p.x - 500) > 100, "along the wall: " + p);
+    }
+
+    @Test
+    @Tag("MMOVE-28")
     @DisplayName("MMOVE-28: the soonest nine waves within 30 ticks of the first are surfed")
     void soonest() {
         Point2D.Double me = pt(500, 500);

@@ -645,3 +645,23 @@ points by a risk sum, hands eight of them to the waves, and drives in straight l
 other way round: five short steps, each scored by the waves two deep plus a crowd term, re-chosen every tick. Hadur
 dodges as well as ScalarR in the open with the mover it has; it cannot hold ScalarR's posture with it. The remaining
 lever is that surf, a build and not an arm, read by the same wall table before any score.
+
+## The step surf (MMOVE-28, 2026-11-10)
+
+The build the wall study ends in: `StepSurf` behind `MinimumRiskMovement.STEP_SURF` (off; arm `mstep`). Five 140 px
+steps a tick (the anti-gravity direction with a weak pull to the nearest corner, on, back, left, right), each driven
+through the nine soonest shots in flight and scored `(20 x wave damage / damage in air + crowd / crowd now) x
+(1 + crowd / crowd now)`, the crowd being each opponent's energy over Hadur's (0.25..4) over distance squared plus
+collision penalties. No wall, corner or centre term. Read on the same 12 ScalarR fields, seed 5800, 20 rounds.
+
+| Hadur arm | place | crowd deaths | damage taken / round | hit per aimed bullet | at the wall (<60 px) | head-on there | corner share | speed | nearest px |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| master | 2.76 | 21% | 66.9 | 12% | 13% | 12% | 17% | 6.2 | 443 |
+| ScalarR | 1.94 | 14% | 54.4 | 13% | 14% | 15% | 43% | 5.3 | 521 |
+| mstep build 1 (steps clipped at the wall) | 3.97 | 48% | 98.9 | 23% | 24% | 29% | 64% | 3.8 | 490 |
+
+Build 1 took ScalarR's posture (corner 64%, nearest 490) and was shot to pieces there: 29% of head-on aims hit it at
+the wall, its speed fell to 3.8. The cause is the wall: a 140 px step into it was clipped to a short or empty move,
+so in a corner all five steps collapsed onto the spot, and the surf stood. Build 2 slides a step along the wall at
+full length instead (turned by the least angle that keeps it inside the margin), as the leader's "orbital smoothing"
+does.
