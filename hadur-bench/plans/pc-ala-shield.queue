@@ -1,0 +1,52 @@
+# 1v1, one shield list add from the trace study on fresh PC seeds (BENCH-220, docs/bench/local/2026-11-09_view-rank.md,
+# "Ala on the shield list"). Leigh starts it once the PC is free (one card at a time, from master):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-ala-shield        (or  ./queue.sh run pc-ala-shield)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes; no step needs a
+# decision. About 5 minutes of battles (1 robot x 4 arms x 12 seeds = 48).
+#
+# Why it should win (the PC card rule of 2026-11-03):
+#   - Per-opponent tailoring: each line names lechu.Ala 0.0.4 alone; every other robot, team and melee play bit for bit
+#     as master.
+#   - Measured four times, up every time, never locked: pc-1to1 (2026-10-29, 6 seeds, the 3.19 shield) +2.3 and +2.6;
+#     pc-shield-still (2026-10-31, 3 seeds) +8.6; pc-shield-still2 (2026-10-31, 4 seeds) +6.0, short of that card's
+#     5-point lock; the cloud check of 2026-11-10 on the 3.21 shield (6 seeds from 11601, list add alone, arm mt)
+#     +6.85 +- 5.08, up on 5 of 6 seeds, Ala's bullet damage down from 530-830 a battle to 83-230 on those five.
+#   - Mechanism: the trace study (PR #731) shows BeepBoop 2.0 stands still against Ala for the whole battle, every Ala
+#     bullet comes at guess factor 0 and 0.4% of them hit (share 94.6); Hadur surfs Ala and takes 9.5% (share 84).
+#     Ala's guess-factor gun converges on a still target, so the shield intercepts it, as it does for the listed robots.
+#   - Risk: on one cloud seed the shield did not hold (594 damage, share 81 against 84), and the still2 read missed its
+#     lock at 4 seeds. 12 fresh seeds against master and its A/A copy decide it; two arms, list add alone (mt) and
+#     with a SHIELD-21 still line (mz), and the pick names the better. A line ships only at a 3-point margin with its
+#     95% low end above 0.
+# gate: the per-robot pick (`mode_table.py --margin 3`, interval above 0) names the line to ship, mt or mz; the APS
+# gate reads each arm over the 1,217-robot field at a 0.002 bar (3 points on one robot is +0.0025 APS; `watch:
+# field=1217` is that normalisation, not a battle count) with the 95% low end above 0, A/A inside its band. No pilot or
+# futility rule: one robot is too few for an interim read (as pc-shield-audit).
+# Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle
+# over the last 200, or no battle in 30 minutes; every battle fought is kept and a rerun resumes. ALERT opens an
+# issue for Leigh on any stop. Nothing here ships: on a pass a PR adds the held line to ShieldListData (and
+# ShieldTableData's stills when mz is the pick) for the next release.
+
+set V = 3.21
+set P = --parallel 12 --no-truth-log --failed-ok
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
+set W = work/ala-shield-pc
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && SHIELD_ADD=plans/ala-shield-add.txt bash ./build-ablation.sh slistadd && SHIELD_ADD=plans/ala-shield-add.txt SHIELD_STILL=plans/ala-shield-still.txt bash ./build-ablation.sh slistadd,szlist && test -f bisect/hadur117.Hadur_${V}mt.jar && test -f bisect/hadur117.Hadur_${V}mtzl.jar && ./fetch-opponents.sh --set panel-ala-shield.txt && mvn -q compile
+
+confirm | ./bench-top20.sh ${C} ${P} --set panel-ala-shield.txt --seeds 12 --seed-base 11700 --arms plans/pc-ala-shield.arms --out ${W} --label ala-shield-pc --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_ala-shield-pc.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm mt --panel panel-ala-shield.txt --bar 0.002 --out ${OUT}/$(date +%Y-%m-%d)_ala-shield-pc-gate-mt.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm mz --panel panel-ala-shield.txt --bar 0.002 --out ${OUT}/$(date +%Y-%m-%d)_ala-shield-pc-gate-mz.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 3 --out-tsv ${OUT}/ala-shield-pc-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_ala-shield-pc-pick.md && python3 tools/per_robot.py ${W}/arms.tsv --arms mt mz --out ${OUT}/$(date +%Y-%m-%d)_ala-shield-pc-per-robot.md --out-tsv ${OUT}/ala-shield-pc-per-robot.tsv
+  after: confirm
+
+pr | bash tools/open_results_pr.sh claude/pc-ala-shield-results "1v1 Ala on the shield list, 12 fresh seeds" ${OUT}/*_ala-shield-pc*.md ${OUT}/ala-shield-pc-per-robot.tsv $(find ${OUT} -maxdepth 1 -name ala-shield-pc-pick.tsv -size +0c)
+  after: gate
