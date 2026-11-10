@@ -854,6 +854,12 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeController.java" \
                 "public static final boolean MELEE_CROSS = false;" "public static final boolean MELEE_CROSS = true;"
             version="${version}xh" ;;
+        pwall)
+            # Wall candidate set (cloud only, read by scratchpad sc/wallgf.py): with under 60 px of wall room the
+            # mover's candidates gain a stop and 40 and 80 px steps either way along the wall. Suffix pw.
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
+                "static final double WALL_SET_ROOM = 0;" "static final double WALL_SET_ROOM = 60;"
+            version="${version}pw" ;;
         msurf)
             # The melee surfer (MMOVE-15), off a team only; duel and team fixtures bit for bit. It ships
             # on from 3.21, so on master msurf builds the robot as it is.
