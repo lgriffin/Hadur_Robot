@@ -609,4 +609,18 @@ and past-position risk) rarely do. Same 12 ScalarR fields, seed 5800, 20 rounds:
 
 Nothing the table can tell from noise (about 2,200 aimed bullets a cell, so one point either way). Second build:
 the wall set is always wave-scored, added to the re-rank pool the way the held destination is, so the stop and the
-short reversals are judged by the waves and not by the ring's risk. Read below when it lands.
+short reversals are judged by the waves and not by the ring's risk:
+
+| Hadur arm | hit per aimed bullet, under 60 px | linear aims there: share / hit | mid aims there: hit | damage taken / round | crowd deaths | place |
+|---|---:|---:|---:|---:|---:|---:|
+| master | 13% | 9% / 29% | 15% | 66.9 | 21% | 2.76 |
+| pwall, wave-scored | 14% | 8% / 27% | 18% | 64.2 | 22% | 2.95 |
+
+Wave-scoring the stop and the short steps did not lower the hit rate at the wall (14%, mid aims 18%) and cost
+place (2.95). Under Hadur's own posture the wall table does not move with candidates any more than with constants.
+
+Reading the posture tables again puts the gap where it is: under its OWN posture Hadur is hit at the wall as
+rarely as ScalarR (13% vs 14% per aimed bullet); it is under ScalarR's posture (`pfar`, 57% of ticks in a corner)
+that Hadur's wall dodge fails (18%), and there the bands that fail are head-on (21% vs ScalarR's 15%) and linear
+(21% vs 14%): standing still at the apex, or driving along one wall. So the wall set is read where it was built for,
+under the posture: arm `pwallpf` = `pfar` plus the wall set, same fields, same seed.

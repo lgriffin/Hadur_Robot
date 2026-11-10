@@ -854,6 +854,17 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeController.java" \
                 "public static final boolean MELEE_CROSS = false;" "public static final boolean MELEE_CROSS = true;"
             version="${version}xh" ;;
+        pwallpf)
+            # Wall candidate set under the pfar posture (cloud only): ScalarR's posture (corner pull over
+            # 400 px, no wall penalty, closest factor 3) with the wall set, read by scratchpad sc/wallgf.py
+            # against pfar's 18% hit rate at the wall. Suffix pq.
+            mrm="$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java"
+            edit "$mrm" "static final double WALL_K = 0.3;" "static final double WALL_K = 0;"
+            edit "$mrm" "static final double CORNER_K = 0.5;" "static final double CORNER_K = -0.5;"
+            edit "$mrm" "static final double CORNER_RANGE = 120;" "static final double CORNER_RANGE = 400;"
+            edit "$mrm" "static final double CLOSEST_FACTOR = 2.0;" "static final double CLOSEST_FACTOR = 3.0;"
+            edit "$mrm" "static final double WALL_SET_ROOM = 0;" "static final double WALL_SET_ROOM = 60;"
+            version="${version}pq" ;;
         pwall)
             # Wall candidate set (cloud only, read by scratchpad sc/wallgf.py): with under 60 px of wall room the
             # mover's candidates gain a stop and 40 and 80 px steps either way along the wall, always wave-scored. Suffix pw.
