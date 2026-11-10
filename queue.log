@@ -26,3 +26,7 @@
 20:14:18 stopped; rerun to resume from the interrupted steps
 20:14:31 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
 20:14:31 skip prep (already exit=0)
+20:14:31 start trace
+20:14:31 watching trace: 3 stop rule(s)
+20:14:33 progress pushed to origin claude/pc-learn-trace-progress (every 15 min)
+20:15:31 progress trace: 2387/2386 (100%) battles, 0 failed, bb +1.87
