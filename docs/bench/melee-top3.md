@@ -930,3 +930,14 @@ model to build: which robot a gun shoots at is, for the surfer's purposes, the n
 the arm that would pay distance only against nearest-shooters has nothing to hold on to. Of the five untried
 routes above this closes the first and the last offline; the low-energy posture and the shadows were closed by the
 reads before it; two waves deep remains, with the stated reason it is not expected to move the dodge per bullet.
+
+### Two waves deep, measured (MMOVE-29, 2026-11-10, sc/depth.py)
+
+Of the 1,752 hits on Hadur in the crowd on the traced ScalarR fields, 77% were bullets fired while their shooter
+already had an earlier wave in the air, and for 52% that earlier wave was within 20 ticks of reaching Hadur. The
+ring's wave check drives each candidate 30 ticks, so the shooter's second wave is usually outside the horizon
+when the first is dodged; it enters it a few ticks later, with the candidate already chosen. That is a measurable
+difference from ScalarR's two waves deep, so it is measured rather than reasoned away: `MELEE_WAVE_TICKS` (30, the
+robot as on 3.21) is the melee surfer's own horizon, the team dodge keeps `WAVE_TICKS`, and arm `mdeep` sets it to
+60. The same paired census smoke as the step surf's runs on it (12 fields, 2 seeds from 5900, 35 rounds); if it is
+flat or worse the switch and arm come out.

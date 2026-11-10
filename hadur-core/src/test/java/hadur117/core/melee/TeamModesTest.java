@@ -278,6 +278,22 @@ class TeamModesTest {
     }
 
     @Test
+    @Tag("MMOVE-29")
+    @DisplayName("MMOVE-29: the melee surfer's horizon scores a wave that 30 ticks never reach; at 30 it is the robot as on 3.21")
+    void waveDamageHorizon() {
+        // Fired north from (600, 200) on tick 0 at power 3 (11 px a tick): it reaches y = 600 near tick 35, so
+        // from tick 0 a 30-tick drive never meets it and a 60-tick one does.
+        EnemyShot shot = new EnemyShot("e", pt(600, 200), 0, 3.0);
+        List<MinimumRiskMovement.Wave> waves = MinimumRiskMovement.Wave.of(List.of(
+            new VirtualBullet(shot, VirtualBullet.Aim.HEAD_ON, 0.0)));
+        assertEquals(0.0, MinimumRiskMovement.waveDamage(pt(600, 600), pt(600, 600), 0, waves, 30), 0.0);
+        assertTrue(MinimumRiskMovement.waveDamage(pt(600, 600), pt(600, 600), 0, waves, 60) > 0);
+        assertEquals(30, MinimumRiskMovement.MELEE_WAVE_TICKS);
+        assertEquals(MinimumRiskMovement.waveDamage(pt(600, 600), pt(600, 600), 20, waves),
+            MinimumRiskMovement.waveDamage(pt(600, 600), pt(600, 600), 20, waves, MinimumRiskMovement.WAVE_TICKS), 0.0);
+    }
+
+    @Test
     @Tag("TMODE-11")
     @DisplayName("TMODE-11: a wave counts its aimed share where the drive crosses its heading, and only the even spread aside")
     void waveDamage() {
@@ -408,8 +424,8 @@ class TeamModesTest {
         List<EnemyInfo> far = enemies(pt(100, 1100)).alive();
         MinimumRiskMovement.View v = move.view(pt(600, 700), 100, 100, 3, far, MeleeStrategy.Plan.normal(), mates(pt(600, 300)));
         List<Point2D.Double> candidates = List.of(pt(600, 400), pt(300, 700));
-        assertEquals(pt(300, 700), move.rerankBest(candidates, v, 12, List.of(), b, true));
-        assertEquals(pt(300, 700), move.rerankBest(candidates, v, 12, List.of(), b, false));
+        assertEquals(pt(300, 700), move.rerankBest(candidates, v, 12, List.of(), b, true, MinimumRiskMovement.WAVE_TICKS));
+        assertEquals(pt(300, 700), move.rerankBest(candidates, v, 12, List.of(), b, false, MinimumRiskMovement.WAVE_TICKS));
         assertTrue(TeamDodge.OWN_FIRE, "on in the shipped build since TMODE-30");
     }
 

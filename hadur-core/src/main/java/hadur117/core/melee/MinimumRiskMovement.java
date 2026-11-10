@@ -152,6 +152,12 @@ public class MinimumRiskMovement {
     /** TMODE-11: the lowest-risk candidates driven to, the ticks each drive is checked, and the damage term's weight. */
     static final int WAVE_RERANK = 8;
     static final int WAVE_TICKS = 30;
+    /**
+     * MMOVE-29: the ticks the melee surfer's wave check (TMODE-11, off a team) drives each
+     * candidate, so that a shooter's next wave in the air is scored too; the team dodge keeps
+     * {@link #WAVE_TICKS}. Arm {@code mdeep} doubles it to 60; 30 is the robot as on 3.21.
+     */
+    static final int MELEE_WAVE_TICKS = 30;
     static final double WAVE_DAMAGE_K = 3.0;
     /** TMODE-11: the share of a shot spread evenly over its escape angle, and the least median damage. */
     static final double WAVE_UNIFORM = 0.3;
@@ -678,7 +684,7 @@ public class MinimumRiskMovement {
      * can make risks negative), times {@link #SWITCH_GAIN} for the held destination.
      */
     Point2D.Double waveBest(List<Point2D.Double> candidates, View v) {
-        return rerankBest(candidates, v, WAVE_RERANK, Wave.of(v.bullets), List.of(), false);
+        return rerankBest(candidates, v, WAVE_RERANK, Wave.of(v.bullets), List.of(), false, MELEE_WAVE_TICKS);
     }
 
     /**
@@ -689,7 +695,7 @@ public class MinimumRiskMovement {
      * {@link #SWITCH_GAIN}.
      */
     Point2D.Double dodgeBest(List<Point2D.Double> candidates, View v, List<Wave> waves) {
-        return rerankBest(candidates, v, TeamDodge.RERANK, waves, v.pathBullets, TeamDodge.OWN_FIRE);
+        return rerankBest(candidates, v, TeamDodge.RERANK, waves, v.pathBullets, TeamDodge.OWN_FIRE, WAVE_TICKS);
     }
 
     /**
@@ -701,7 +707,7 @@ public class MinimumRiskMovement {
      * risk, as PATH scores them, instead of joining the waves' damage.
      */
     Point2D.Double rerankBest(List<Point2D.Double> candidates, View v, int rerank, List<Wave> waves,
-                              List<VirtualBullet> mateBullets, boolean ownFire) {
+                              List<VirtualBullet> mateBullets, boolean ownFire, int ticks) {
         List<Point2D.Double> pool = new ArrayList<>(candidates);
         boolean hold = destination != null && destination.distance(v.me) > REACHED;
         if (hold) pool.add(destination);
@@ -720,7 +726,7 @@ public class MinimumRiskMovement {
         for (int k = 0; k < picked.size(); k++) {
             Point2D.Double p = pool.get(picked.get(k));
             r[k] = risk[picked.get(k)];
-            damage[k] = waveDamage(v.me, p, v.now, waves);
+            damage[k] = waveDamage(v.me, p, v.now, waves, ticks);
             if (mateBullets.isEmpty()) continue;
             double own = pathDamage(v.me, p, v.now, mateBullets);
             if (ownFire) r[k] += PATH_K * own;
@@ -773,11 +779,16 @@ public class MinimumRiskMovement {
      * {@link #WAVE_TICKS} ticks. Each wave counts once, on the tick its front crosses the box.
      */
     static double waveDamage(Point2D.Double me, Point2D.Double to, long now, List<Wave> waves) {
+        return waveDamage(me, to, now, waves, WAVE_TICKS);
+    }
+
+    /** As above, driving for {@code ticks} ticks (MMOVE-29: the melee surfer's own horizon). */
+    static double waveDamage(Point2D.Double me, Point2D.Double to, long now, List<Wave> waves, int ticks) {
         if (waves.isEmpty()) return 0;
         boolean[] done = new boolean[waves.size()];
         double total = 0;
         double x = me.x, y = me.y, speed = 0;
-        for (int t = 1; t <= WAVE_TICKS; t++) {
+        for (int t = 1; t <= ticks; t++) {
             double left = Math.hypot(to.x - x, to.y - y);
             if (left > 0.5) {
                 speed = Math.min(MAX_SPEED, Math.min(speed + 1, left));
