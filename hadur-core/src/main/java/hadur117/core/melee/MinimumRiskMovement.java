@@ -119,6 +119,14 @@ public class MinimumRiskMovement {
      */
     public static final boolean MELEE_SURF = true;
     /**
+     * MMOVE-28: the step surf ({@link StepSurf}) in place of the ring and its wave check, in melee
+     * off a team with the surfer; arm {@code mstep}. Off: the ring mover as on 3.21.
+     */
+    public static final boolean STEP_SURF = false;
+    /** MMOVE-28: Hadur's position at the step surf's last decision, for its heading and speed; null at a round's start. */
+    private Point2D.Double stepPrev;
+    private long stepPrevTime = -1;
+    /**
      * MMOVE-22 (arm mdmg), inspired by Diamond's melee movement: off a team, each opponent's risk
      * term weighs by the damage its bullets have done to Hadur over the whole battle, plus
      * {@link #DAMAGE_BASE}, times its mean distance from Hadur (a gun that hits from afar is the
@@ -577,6 +585,16 @@ public class MinimumRiskMovement {
         List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
         lastCandidates = candidates.size();
         if (surf && !onTeam(mates)) {
+            if (STEP_SURF) {
+                // MMOVE-28: the step surf; the ring is not used.
+                Point2D.Double prev = stepPrevTime == now - 1 ? stepPrev : null;
+                stepPrev = new Point2D.Double(me.x, me.y);
+                stepPrevTime = now;
+                List<StepSurf.Foe> foes = new ArrayList<>(enemies.size());
+                for (EnemyInfo e : enemies) foes.add(new StepSurf.Foe(e.location, e.energy));
+                destination = StepSurf.choose(me, prev, energy, foes, now, Wave.of(v.bullets), field, this::clip);
+                return destination;
+            }
             // MMOVE-15: the melee surfer picks by the wave check.
             destination = waveBest(candidates, v);
             return destination;
@@ -789,7 +807,7 @@ public class MinimumRiskMovement {
     }
 
     /** The mass of the {@code waves} not yet {@code done} whose front crosses Hadur's box at ({@code x}, {@code y}) on {@code tick}; marks them done. */
-    private static double waveHits(double x, double y, long tick, List<Wave> waves, boolean[] done) {
+    static double waveHits(double x, double y, long tick, List<Wave> waves, boolean[] done) {
         double total = 0;
         for (int i = 0; i < waves.size(); i++) {
             if (done[i]) continue;
