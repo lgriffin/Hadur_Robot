@@ -39,6 +39,10 @@ final class StepSurf {
     static final double TURN_SPEED = 4;
     /** A move slower than this a tick counts as standing: the step's own direction replaces the heading. */
     static final double STILL = 0.5;
+    /** The held step's danger is scaled by this: another step must be clearly safer to take over. */
+    static final double HOLD_GAIN = 0.8;
+    /** A held step this close is reached: the steps are chosen afresh. */
+    static final double REACHED = 20;
     /** Wall smoothing: the step turns in these increments, up to a right angle, to stay inside the margin. */
     static final double SMOOTH_TURN = Math.PI / 18;
     static final int SMOOTH_STEPS = 9;
@@ -72,16 +76,32 @@ final class StepSurf {
      */
     static Point2D.Double choose(Point2D.Double me, Point2D.Double prev, double energy, List<Foe> foes,
                                  long now, List<Wave> waves, BattleField field, UnaryOperator<Point2D.Double> clip) {
+        return choose(me, prev, null, energy, foes, now, waves, field, clip);
+    }
+
+    /**
+     * As above, holding {@code held}, the step chosen last tick: it is scored again from here and
+     * kept unless another step's danger is under {@link #HOLD_GAIN} of its own. Without the hold the
+     * surf reversed three times a bullet flight and never got up to speed (build 4's read).
+     */
+    static Point2D.Double choose(Point2D.Double me, Point2D.Double prev, Point2D.Double held, double energy,
+                                 List<Foe> foes, long now, List<Wave> waves, BattleField field,
+                                 UnaryOperator<Point2D.Double> clip) {
         List<Wave> soon = soonest(me, waves);
         double inAir = 0;
         for (Wave w : soon) inAir += w.damage;
         double crowdNow = Math.max(1e-9, crowd(me, energy, foes));
+        List<Point2D.Double> steps = candidates(me, prev, foes, field, clip);
+        boolean hold = held != null && held.distance(me) > REACHED;
+        if (hold) steps.add(held);
         Point2D.Double best = null;
         double bestDanger = Double.POSITIVE_INFINITY;
-        for (Point2D.Double to : candidates(me, prev, foes, field, clip)) {
+        for (int i = 0; i < steps.size(); i++) {
+            Point2D.Double to = steps.get(i);
             double[] path = drive(me, prev, to, energy, foes, now, soon);
             double crowd = path[1] / crowdNow;
             double danger = ((inAir > 0 ? WAVE_K * path[0] / inAir : 0) + crowd) * (1 + crowd);
+            if (hold && i == steps.size() - 1) danger *= HOLD_GAIN;
             if (danger < bestDanger) {
                 bestDanger = danger;
                 best = to;

@@ -87,6 +87,21 @@ class StepSurfTest {
 
     @Test
     @Tag("MMOVE-28")
+    @DisplayName("MMOVE-28: the step chosen last tick is held unless another is clearly safer")
+    void holds() {
+        Point2D.Double me = pt(500, 500);
+        List<StepSurf.Foe> foes = List.of(new StepSurf.Foe(pt(500, 900), 100));
+        // Quiet field: the crowd alone prefers straight away (south); a held step 30 degrees off it is kept.
+        Point2D.Double held = pt(570, 373);
+        Point2D.Double step = StepSurf.choose(me, null, held, 100, foes, 5, List.of(), field, move::clip);
+        assertEquals(held, step);
+        // A held step within reach is not held: the steps are chosen afresh.
+        Point2D.Double fresh = StepSurf.choose(me, null, pt(510, 500), 100, foes, 5, List.of(), field, move::clip);
+        assertNotEquals(pt(510, 500), fresh);
+    }
+
+    @Test
+    @Tag("MMOVE-28")
     @DisplayName("MMOVE-28: the soonest nine waves within 30 ticks of the first are surfed")
     void soonest() {
         Point2D.Double me = pt(500, 500);

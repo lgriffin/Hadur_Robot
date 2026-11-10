@@ -692,3 +692,17 @@ seam drives to a destination over 45 degrees off the heading at 4 px a tick whil
 side steps it believed would clear a wave and the robot swung slowly through it: head-on hits. Build 4 simulates the
 drive as the seam makes it (turn rate, the 4 px cap under a sharp turn, reversal through zero), so the on and back
 steps, which need no turn, win when the wave is close and the side steps only when there is time.
+
+| Hadur arm | place | crowd deaths | damage taken / round | hit per aimed bullet | at the wall (<60 px) | head-on there | ticks at speed 8 at the wall | reversals per bullet flight (hit / miss) | net lateral px in flight (hit / miss) |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| master | 2.76 | 21% | 66.9 | 12% | 13% | 12% | 50% | 0.28 / 0.37 | 64 / 128 |
+| ScalarR | 1.94 | 14% | 54.4 | 13% | 14% | 15% | 39% | 0.71 / 0.73 | 47 / 92 |
+| mstep build 4 (seam's drive simulated) | 4.08 | 50% | 92.7 | 22% | 23% | 28% | 28% | 2.94 / 2.60 | 28 / 75 |
+
+Build 4 read the same as 2 and 3. The flight forensic (scratchpad sc/hitpath.py: what the target did between a
+bullet's fire and its pass, for bullets aimed at it with under 60 px of wall room) names the fault: the surf
+reverses about three times in one bullet's flight, ScalarR 0.7 and the ring mover 0.3; its speed in flight is 3.6
+against 4.9 and 5.8; it ends 28 px to the side of where it was aimed at when it is hit, ScalarR 47 and the ring mover
+64. A step chosen afresh every tick from five directions flips between on and back as the waves come and go, so the
+robot shuttles and the head-on aim finds it. Build 5 holds the step chosen last tick: it is scored again from the
+current state and kept unless another step's danger is under 0.8 of its own, until it is within 20 px.

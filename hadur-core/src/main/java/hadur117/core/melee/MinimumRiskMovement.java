@@ -594,7 +594,7 @@ public class MinimumRiskMovement {
                 stepPrevTime = now;
                 List<StepSurf.Foe> foes = new ArrayList<>(enemies.size());
                 for (EnemyInfo e : enemies) foes.add(new StepSurf.Foe(e.location, e.energy));
-                destination = StepSurf.choose(me, prev, energy, foes, now, Wave.of(v.bullets), field, this::clip);
+                destination = StepSurf.choose(me, prev, destination, energy, foes, now, Wave.of(v.bullets), field, this::clip);
                 return destination;
             }
             // MMOVE-15: the melee surfer picks by the wave check.
