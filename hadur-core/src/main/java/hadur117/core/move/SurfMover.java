@@ -59,6 +59,8 @@ public class SurfMover {
      * the distance to the source, above 1 when it closes in, below 1 when it backs off.
      */
     private static final double DISTANCING_DANGER_BASE = 2.5;
+    /** MOVE-40: the distancing base with the lean terms on, nearly flat. */
+    private static final double LEAN_DISTANCING_BASE = 1.1;
     /** The largest attack angle, in radians: 0.45 pi, 81 degrees off perpendicular. */
     private static final double MAX_ATTACK_ANGLE = Math.PI * 0.45;
 
@@ -77,6 +79,10 @@ public class SurfMover {
     private final Map<SurfOption, Point2D.Double> surfOptionDestinations = new HashMap<>();
     /** The wave surfed last tick; a different one resets the destinations and the cache. */
     private Wave lastWaveSurfed;
+    /** MOVE-40: whether the time-to-impact scaling of a wave's danger is off (cloud forensic only). */
+    private boolean noTimeScaling;
+    /** MOVE-40: whether the lean terms are on (no hit-rate term, no time scaling, distancing base 1.1, uncertain 0.15). */
+    private boolean leanTerms;
     /** AES-1: whether each wave's first three-option rating is recorded (bench builds only; off by default). */
     private boolean aesRecord;
     /** AES-1: while an option is rated for the record, where its first wave's terms go; else null. */
@@ -166,6 +172,19 @@ public class SurfMover {
      */
     public void setAesRecord(boolean on) {
         this.aesRecord = on;
+    }
+
+    /**
+     * MOVE-40 (cloud forensic): the fixed terms of the danger blend refitted offline
+     * (docs/bench/local/2026-11-10_aes-fit-fixed-terms.md).
+     *
+     * @param noTimeScaling true to stop dividing a wave's danger by its time to impact
+     * @param leanTerms true for the four refitted terms together: no hit-rate term, no time
+     *     scaling, distancing base 1.1 and an uncertain wave trusted at 0.15
+     */
+    public void setLeanTerms(boolean noTimeScaling, boolean leanTerms) {
+        this.noTimeScaling = noTimeScaling || leanTerms;
+        this.leanTerms = leanTerms;
     }
 
     /** AES-1: the records made since the last call, oldest first; the list is then emptied. */
@@ -692,20 +711,22 @@ public class SurfMover {
                 hitRate = 0;
             }
         }
+        // MOVE-40: the lean terms drop the hit-rate term.
+        if (leanTerms) hitRate = 0;
         double danger = hitRate * (1 - shadowed) + viewScore;
         // MOVE-8: what the gun is told about this wave, before the damage and timing scale it.
         lastLeg = intersection == null ? null : PlanInterval.of(surfWave, intersection, danger);
         // Robocode's damage: 4 * power, plus 2 * (power - 1) above power 1.
         danger *= Rules.getBulletDamage(surfWave.bulletPower());
         // WAVE-3: a wave whose power came from an ambiguous wall-hit split is trusted at half.
-        if (surfWave.uncertain) danger *= 0.5;
+        if (surfWave.uncertain) danger *= leanTerms ? 0.15 : 0.5;
 
         // Ticks until the wave reaches our centre as we stand now, at least 1: a wave about
         // to arrive weighs more than one far off.
         double currentDist = myState.location.distance(surfWave.sourceLocation);
         double currentWaveDist = currentDist - surfWave.distanceTraveled(myState.time);
         double timeToImpact = Math.max(1.0, currentWaveDist / surfWave.bulletSpeed());
-        danger /= timeToImpact;
+        if (!noTimeScaling) danger /= timeToImpact;
 
         Point2D.Double distancingFrom = surfWave.sourceLocation;
         danger *= distancingDanger(start, passed, distancingFrom);
@@ -1063,7 +1084,8 @@ public class SurfMover {
         double distToEnemy = enemy.distance(start);
         double predictedDist = enemy.distance(predicted);
         double quotient = distToEnemy / predictedDist;
-        return Math.pow(DISTANCING_DANGER_BASE, quotient) / DISTANCING_DANGER_BASE;
+        double base = leanTerms ? LEAN_DISTANCING_BASE : DISTANCING_DANGER_BASE;
+        return Math.pow(base, quotient) / base;
     }
 
     /**
