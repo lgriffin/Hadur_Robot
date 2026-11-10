@@ -833,3 +833,130 @@ gun gap is power that ScalarR can afford because it is hit less; the step surf b
 pays 18% of the hits for it at the range it chooses. The two have to be scored together: a paired census smoke of
 `mstep` against master (12 fields, 2 seeds, 35 rounds) runs next, knowing that 24-pair melee smokes have over-read
 the PC three times.
+
+### The paired census smoke: the step surf fails (2026-11-10)
+
+`mstep` (build 7) against master, 12 census fields, 2 seeds from 5900, 35 rounds, paired by seed. The repo's
+paired view reproduces the headline from the smoke's work directory (`python3 data/tools/melee_pairwise.py --work
+<smoke dir> --hadur hadur117.Hadur`): APS 65.9 against 68.5, -2.6 +/- 0.4 over the 24 cells, every field down. The
+rows below add the bench's exposure columns (`exposure.csv`, `rounds.csv`), read per (field, seed) pair the same way:
+
+| | step surf | master | diff (95%) |
+|---|---:|---:|---|
+| score share | 17.10 | 18.91 | -1.81 ± 0.31 |
+| rounds won | 40.8% | 47.0% | -6.2 ± 3.9 |
+| survival score | 12,273 | 13,342 | -1,069 ± 222 |
+| crowd deaths (3+ alive, not first) | 40.7% | 28.0% | +12.7 ± 3.3 |
+| nearest load (per crowd tick) | 0.70 | 0.81 | -0.10 ± 0.03 |
+| crowd damage taken (per 100 crowd ticks) | 9.14 | 8.13 | +1.00 ± 0.49 |
+
+23 of 24 pairs are down (the one up is +0.03), every field is down. What the traced ScalarR fields showed in
+the small (damage taken 72.5 against 66.9) holds over the census: the surf reaches ScalarR's posture, is shot at
+less (nearest load down 13%), and still takes more damage in the crowd and dies there 45% more often. With the
+gun's 18% fewer hits from that range on top, the place is worse on every field. The 24-pair smoke over-reads the
+PC in Hadur's favour, so this is a floor on the loss, not a ceiling.
+
+The reading is that posture is not what ScalarR's movement buys; the step-surf geometry under Hadur's danger model
+loses the dodge the ring mover has (16% against 14% hit per aimed bullet on the traced fields, 21% against 15%
+head-on at the wall). The wave danger is where the two differ, and the wave model was shown not to be the gap in
+the crowd (above). MMOVE-28 is retired; `StepSurf`, the `STEP_SURF` switch, the `mstep` arm and the tests are
+removed. The decision stands as it was before the surf: the paying melee levers since 3.19 have been firepower, and
+no movement built from ScalarR's posture or geometry has paid on Hadur's own danger model.
+
+### The crowd energy ledger, and how the crowd deaths happen (2026-11-10, sc/ledger.py, sc/death.py)
+
+Before the next route, the whole budget. On the traced ScalarR fields (ring mover, 240 rounds), per round while
+three or more are alive:
+
+| | Hadur | ScalarR |
+|---|---:|---:|
+| energy fired (shots, mean power) | 86.7 (48.9, 1.77) | 105.0 (49.6, 2.12) |
+| energy regained from hits landed (hits) | 76.3 (12.8) | 96.6 (13.2) |
+| firing, net | -10.4 | -8.4 |
+| damage taken | 64.0 | 55.5 |
+| net energy over the crowd phase | -74.4 | -64.0 |
+| crowd deaths | 42% | 24% |
+| energy of the survivors when the crowd ends | 37.8 | 47.1 |
+
+The gun is not the survival gap: firing nets the same for both (a 26% hit rate returns 0.78 of each unit fired,
+at any power), so the 22% harder shots cost ScalarR 18 more and return 20 more. The whole 10-point gap in net
+energy is the damage taken, 8.5 a round, and the survivors enter the endgame 9 energy apart.
+
+The crowd deaths themselves (the last 120 ticks before each, three or more alive): Hadur 100, ScalarR 57 over the
+same rounds. Both die the same way: from 23-26 energy 120 ticks out, 24-29 damage from 1.6-1.9 shooters, having
+been under 30 energy for 250-300 ticks. Per tick spent under 30 energy in the crowd, ScalarR takes more damage
+(7.1 against 6.1 per 100 ticks) and dies at the same rate (2.0 against 2.3 deaths per 1,000 such ticks); Hadur
+simply spends 53% more ticks there (43,408 against 28,450). There is no low-energy escape in ScalarR's movement to
+copy: it reaches low energy later because it was hit less at full energy, and that is the same 13% fewer bullets
+aimed at it that the posture reads found.
+
+### What has not been tried on melee survival, and why
+
+Reported so the line is not called closed without saying what was left:
+
+- **ScalarR's own wave danger: per-(shooter, target) learning from every robot's hits, the wave in the air a
+  mixture over its possible targets.** Not built. Hadur's surfer weights each shot by a field-wide curve in k
+  (robots nearer the shooter than Hadur) and its own per-class danger views. The unbuilt part is which target
+  each gun chooses, learned per shooter. A cloud read of it is running (sc/choice.py): how much better than the
+  field curve a per-class model predicts that a shot is at Hadur. If it is sharper, the surfer's weighting is the
+  member to build, as an arm on the ring mover, not the step geometry.
+- **Two waves deep.** ScalarR scores a step through the next two waves per shooter; the step surf scored the nine
+  soonest at arrival only, and the ring's wave check eight. Not tried; the step surf's failure was at the dodge per
+  bullet, which depth would not change on the traces (88% of hits landed inside the last plan in the 1v1 read, and
+  the melee hit paths showed the same).
+- **Bullet shadows in melee.** Not tried: the same-crowd read found shadows take 8-9% of the bullets aimed at each
+  robot equally, so there is no gap there to close.
+- **A low-energy posture (retreat or hide when under 30 energy).** Not tried, and the death read above says it is
+  flat: ScalarR dodges no better than Hadur when low.
+- **Being the nearest robot of fewer opponents without the corner.** Hadur is the nearest robot of 0.91 opponents
+  against ScalarR's 0.66; every posture arm reached that only by standing in corners, where its hit rate per bullet
+  rose. An arm that pays distance only against the robots whose guns shoot their nearest (the per-class read above
+  says which) has not been tried; it depends on the choice read.
+
+### The per-shooter target choice (2026-11-10, sc/choice.py): the field curve already has it
+
+54,823 shots with an inferred target on the traced ScalarR fields, Hadur alive and three or more alive. Per
+shooter class the shares at its nearest robot run from 5% (stelo.Wang) to 65% (jok.PheonixM), at the weakest 6% to
+51%, at Hadur 3% to 31%, ScalarR 32/32/19%. Predicting "this shot is at Hadur", fitted on even rounds and scored on
+odd:
+
+| model | Brier | log loss |
+|---|---:|---:|
+| constant | 0.1529 | 0.484 |
+| field k-curve (robots nearer the shooter than Hadur; the MMOVE-27 weighting) | 0.1323 | 0.424 |
+| per-class k-curve | 0.1305 | 0.422 |
+| per-class k, whether Hadur is its nearest, whether its weakest | 0.1286 | 0.417 |
+
+Learning each gun's choice buys 3% of the Brier over the curve Hadur already uses. There is no per-shooter target
+model to build: which robot a gun shoots at is, for the surfer's purposes, the nearness order and little else, and
+the arm that would pay distance only against nearest-shooters has nothing to hold on to. Of the five untried
+routes above this closes the first and the last offline; the low-energy posture and the shadows were closed by the
+reads before it; two waves deep remains, with the stated reason it is not expected to move the dodge per bullet.
+
+### Two waves deep, measured (MMOVE-29, 2026-11-10, sc/depth.py)
+
+Of the 1,752 hits on Hadur in the crowd on the traced ScalarR fields, 77% were bullets fired while their shooter
+already had an earlier wave in the air, and for 52% that earlier wave was within 20 ticks of reaching Hadur. The
+ring's wave check drives each candidate 30 ticks, so the shooter's second wave is usually outside the horizon
+when the first is dodged; it enters it a few ticks later, with the candidate already chosen. That is a measurable
+difference from ScalarR's two waves deep, so it is measured rather than reasoned away: `MELEE_WAVE_TICKS` (30, the
+robot as on 3.21) is the melee surfer's own horizon, the team dodge keeps `WAVE_TICKS`, and arm `mdeep` sets it to
+60. The same paired census smoke as the step surf's runs on it (12 fields, 2 seeds from 5900, 35 rounds); if it is
+flat or worse the switch and arm come out.
+
+The smoke, `mdeep` against master, 12 fields, 2 seeds from 5900, 35 rounds, 24 pairs (same reader as the step
+surf's, and the repo's paired view):
+
+| | mdeep (60 ticks) | master (30) | diff (95%) |
+|---|---:|---:|---|
+| score share | 19.10 | 19.04 | +0.06 ± 0.47 |
+| APS (data/tools/melee_pairwise.py) | 68.8 | 68.7 | +0.1 ± 0.6 |
+| crowd deaths | 26.9% | 27.1% | -0.2 ± 4.5 |
+| crowd damage taken (per 100 crowd ticks) | 8.18 | 8.31 | -0.13 ± 0.62 |
+| survival score | 13,435 | 13,338 | +98 ± 243 |
+
+Flat on every column. Scoring the shooter's second wave while dodging the first changes nothing the candidate
+re-choice each tick was not already doing once the wave came into the 30-tick horizon. MMOVE-29 is retired and
+the switch, arm and test are removed. With that, every route on the not-tried list is measured: the melee
+survival line is closed on the cloud until a new direction is chosen, and the melee levers that have paid since
+3.19 remain the firepower ones (MGUN-25 banked, unreleased).
