@@ -854,12 +854,6 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeController.java" \
                 "public static final boolean MELEE_CROSS = false;" "public static final boolean MELEE_CROSS = true;"
             version="${version}xh" ;;
-        mstep)
-            # MMOVE-28: the step surf in place of the ring mover in melee off a team (cloud first, read by
-            # scratchpad sc/wallgf.py and sc/posture.py under the posture it chooses). Suffix st.
-            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
-                "public static final boolean STEP_SURF = false;" "public static final boolean STEP_SURF = true;"
-            version="${version}st" ;;
         msurf)
             # The melee surfer (MMOVE-15), off a team only; duel and team fixtures bit for bit. It ships
             # on from 3.21, so on master msurf builds the robot as it is.

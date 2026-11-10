@@ -833,3 +833,30 @@ gun gap is power that ScalarR can afford because it is hit less; the step surf b
 pays 18% of the hits for it at the range it chooses. The two have to be scored together: a paired census smoke of
 `mstep` against master (12 fields, 2 seeds, 35 rounds) runs next, knowing that 24-pair melee smokes have over-read
 the PC three times.
+
+### The paired census smoke: the step surf fails (2026-11-10)
+
+`mstep` (build 7) against master, 12 census fields, 2 seeds from 5900, 35 rounds, paired by seed (scratchpad
+mc/pair.py):
+
+| | step surf | master | diff (95%) |
+|---|---:|---:|---|
+| score share | 17.10 | 18.91 | -1.81 ± 0.31 |
+| rounds won | 40.8% | 47.0% | -6.2 ± 3.9 |
+| survival score | 12,273 | 13,342 | -1,069 ± 222 |
+| crowd deaths (3+ alive, not first) | 40.7% | 28.0% | +12.7 ± 3.3 |
+| nearest load (per crowd tick) | 0.70 | 0.81 | -0.10 ± 0.03 |
+| crowd damage taken (per 100 crowd ticks) | 9.14 | 8.13 | +1.00 ± 0.49 |
+
+23 of 24 pairs are down (the one up is +0.03), every field is down. What the traced ScalarR fields showed in
+the small (damage taken 72.5 against 66.9) holds over the census: the surf reaches ScalarR's posture, is shot at
+less (nearest load down 13%), and still takes more damage in the crowd and dies there 45% more often. With the
+gun's 18% fewer hits from that range on top, the place is worse on every field. The 24-pair smoke over-reads the
+PC in Hadur's favour, so this is a floor on the loss, not a ceiling.
+
+The reading is that posture is not what ScalarR's movement buys; the step-surf geometry under Hadur's danger model
+loses the dodge the ring mover has (16% against 14% hit per aimed bullet on the traced fields, 21% against 15%
+head-on at the wall). The wave danger is where the two differ, and the wave model was shown not to be the gap in
+the crowd (above). MMOVE-28 is retired; `StepSurf`, the `STEP_SURF` switch, the `mstep` arm and the tests are
+removed. The decision stands as it was before the surf: the paying melee levers since 3.19 have been firepower, and
+no movement built from ScalarR's posture or geometry has paid on Hadur's own danger model.
