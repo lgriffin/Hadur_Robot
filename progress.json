@@ -1,0 +1,19 @@
+{
+ "plan": "pc-shield-rescreen",
+ "updated": 1794337422.5857692,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "confirm": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
