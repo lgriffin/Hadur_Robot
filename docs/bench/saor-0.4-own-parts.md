@@ -156,6 +156,11 @@ The movement went from -3.0 to about -0.6 over about 45 designs. The steps that 
     - WGC with each row sampled toward its latest entries, index n - 1 - n x r1 x r2 (WGR -0.41,
       -0.01, -0.32, -0.37, -0.31, -0.25, -0.52, about -0.31 ± 0.16): fails, below WGC on all seven
       blocks. Uniform sampling of the whole row beats following recent habits.
+    - WGC with a wall bit in the state, the target within 100 px of a wall (WGW -0.29, -0.02, -0.57,
+      -0.16, -0.31, -0.27, -0.34, about -0.28 ± 0.16): fails, below WGC on all seven blocks. Like GW's
+      wall bands, every extra split of the rows costs more in thinner rows than it gains; the one
+      change that held was a coarser state (WGC). Coarser speed (4 px steps) and coarser turn (3 bins)
+      are screened next.
 
 **Where WNF still loses** (C against WNF over the three blocks, 11,340 rounds each): duels end in a
 win equally often (85.9% and 85.8%). WNF dies 13% more often in the crowd (4,778 deaths against
