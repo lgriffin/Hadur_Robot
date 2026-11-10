@@ -105,10 +105,6 @@ public class MinimumRiskMovement {
     static final double MATE_FAN = 120;
     /** TMODE-2: a shot's weight is 1/(1+k)^2 for k teammates nearer its shooter; under this it makes no bullets. */
     static final double SOFT_FLOOR = 0.1;
-    /** Cloud arm pwall: wall room, px, under which the candidates gain the wall set (0 on master: none). */
-    static final double WALL_SET_ROOM = 0;
-    /** Index in the last candidate list where the wall set starts, -1 when there is none. */
-    private int wallSetFrom = -1;
     static final double SWITCH_GAIN = 0.9;
     static final double REACHED = 20;
 
@@ -661,34 +657,7 @@ public class MinimumRiskMovement {
                 out.add(clip(p));
             }
         }
-        wallSetFrom = -1;
-        if (WALL_SET_ROOM > 0) {
-            int before = out.size();
-            addWallSet(me, out);
-            if (out.size() > before) wallSetFrom = before;
-        }
         return out;
-    }
-
-    /**
-     * Cloud arm pwall: with under {@link #WALL_SET_ROOM} px of wall room the ring, whose nearest
-     * points lie {@link #RING_MIN} px away and get clipped onto the wall, gains the short moves a
-     * robot at a wall has: a stop, and 40 and 80 px either way along each wall it is close to.
-     */
-    void addWallSet(Point2D.Double me, List<Point2D.Double> out) {
-        double left = me.x, right = field.width - me.x, bottom = me.y, top = field.height - me.y;
-        if (Math.min(Math.min(left, right), Math.min(bottom, top)) >= WALL_SET_ROOM) return;
-        out.add(new Point2D.Double(me.x, me.y));
-        for (double step : new double[] {40, 80}) {
-            if (left < WALL_SET_ROOM || right < WALL_SET_ROOM) {
-                out.add(clip(new Point2D.Double(me.x, me.y + step)));
-                out.add(clip(new Point2D.Double(me.x, me.y - step)));
-            }
-            if (bottom < WALL_SET_ROOM || top < WALL_SET_ROOM) {
-                out.add(clip(new Point2D.Double(me.x + step, me.y)));
-                out.add(clip(new Point2D.Double(me.x - step, me.y)));
-            }
-        }
     }
 
     Point2D.Double clip(Point2D.Double p) {
@@ -745,10 +714,6 @@ public class MinimumRiskMovement {
         List<Integer> picked = new ArrayList<>();
         for (int i = 0; i < order.length && picked.size() < rerank; i++) picked.add(order[i]);
         if (hold && !picked.contains(pool.size() - 1)) picked.add(pool.size() - 1);
-        // The wall set (pwall) is always wave-scored: its short steps rarely rank among the least risky.
-        if (wallSetFrom >= 0) {
-            for (int i = wallSetFrom; i < candidates.size(); i++) if (!picked.contains(i)) picked.add(i);
-        }
         double[] damage = new double[picked.size()];
         double[] r = new double[picked.size()];
         for (int k = 0; k < picked.size(); k++) {

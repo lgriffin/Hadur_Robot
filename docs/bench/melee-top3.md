@@ -624,3 +624,24 @@ rarely as ScalarR (13% vs 14% per aimed bullet); it is under ScalarR's posture (
 that Hadur's wall dodge fails (18%), and there the bands that fail are head-on (21% vs ScalarR's 15%) and linear
 (21% vs 14%): standing still at the apex, or driving along one wall. So the wall set is read where it was built for,
 under the posture: arm `pwallpf` = `pfar` plus the wall set, same fields, same seed.
+
+| Hadur arm | hit per aimed bullet, under 60 px | head-on aims there: hit | linear aims there: hit | mid aims there: hit | aimed bullets at the wall | damage taken / round | crowd deaths | place |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| master (own posture) | 13% | 12% | 29% | 15% | 2,128 | 66.9 | 21% | 2.76 |
+| pfar (ScalarR's posture) | 18% | 21% | 21% | 17% | 5,552 | 74.3 | 29% | 3.08 |
+| pwallpf (posture + wall set) | 17% | 19% | 22% | 17% | 6,000 | 73.2 | 25% | 2.91 |
+| ScalarR, same fields | 14% | 15% | 14% | 16% | 5,558 | 54.4 | 14% | 1.95 |
+
+Under the posture the wall set takes one point off the hit rate at the wall (18% to 17%) and the head-on band
+(21% to 19%), inside the noise of 6,000 bullets, and Hadur is still hit 3 points more than ScalarR per aimed bullet
+and takes 19 more damage a round. The stop and the short steps along the wall are not the wall dodge either. All
+wall-set code (`WALL_SET_ROOM`, `addWallSet`, the re-rank pool entry) and the `pwall`/`pwallpf` arms were removed;
+the mover is as on master.
+
+**What the wall study leaves.** Three quick fixes (no past-position penalty, a doubled linear guess, a wall
+candidate set ring-ranked and then wave-scored) and the set under the posture all leave Hadur's hit rate at the wall
+where it was. The design that fails there is the min-risk mover with a wave check bolted on: it ranks 160 ring
+points by a risk sum, hands eight of them to the waves, and drives in straight lines. ScalarR's melee surf is the
+other way round: five short steps, each scored by the waves two deep plus a crowd term, re-chosen every tick. Hadur
+dodges as well as ScalarR in the open with the mover it has; it cannot hold ScalarR's posture with it. The remaining
+lever is that surf, a build and not an arm, read by the same wall table before any score.
