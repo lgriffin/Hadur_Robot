@@ -12,7 +12,7 @@ Seed blocks: r1 4100, r2 4200, r3 4300, r1x 4500, r1z 4600. Reports: `docs/bench
 `saor-r1x-wfr.md`, `saor-r1z-wfr.md`, and for section 9 `saor-r1x-wng.md`, `saor-r1z-wng.md`,
 `saor-r1x-wnh.md`, `saor-r1z-wnh.md`, `saor-r1x-wgv.md`, `saor-r1z-wgv.md`,
 `saor-r1x-wnz.md`, `saor-r1z-wnz.md`, and for section 10 `saor-<block>-wcd.md`, `-wtd.md`, `-wtb.md`,
-`-wte.md`, `-wbg.md`, `-wto.md` and `-wtr.md` (which also carries WTN).
+`-wte.md`, `-wbg.md`, `-wto.md`, `-wtr.md` (which also carries WTN) and `-wta.md` (r1-r5, r1x, r1z).
 
 ## Result
 
@@ -20,7 +20,7 @@ Seed blocks: r1 4100, r2 4200, r3 4300, r1x 4500, r1z 4600. Reports: `docs/bench
 |---|---|---|---|
 | Gun vote | GV: each playout's vote spread over 2 + ticks / 8 bins a side (at most 8) | +0.40 ± 0.41 | **pass** |
 | Target | TH: the robot we hit best for its distance, sticky by name | -0.29 ± 0.43 | miss (nearest) |
-| Movement | WTB: corner-wall legs whose depth is, every tick, half the range of the robot that last hit us | -0.69, -0.06, -0.45, -0.06, -0.36 over five blocks: about **-0.32 ± 0.19** | fail (closest) |
+| Movement | WTA: corner-wall legs whose depth is, every tick, half the range of the nearest robot whose own nearest robot is us | -0.28, -0.06, -0.29, -0.18, -0.16, -0.24, -0.29 over seven blocks: about **-0.21 ± 0.16** | mean inside the gate; interval just short of 0 |
 | Gun chain | none: second-order, pattern match and wall-band chains all cost 1 to 4 | | fail |
 | Power | none: hit-rate and distance-band rules cost 0.5 to 1.1 | | fail |
 
@@ -110,8 +110,13 @@ The movement went from -3.0 to about -0.6 over about 45 designs. The steps that 
       -0.45);
     - WTB with the threat cleared at each round start and its range set from its last seen position
       on the hit (WTR -0.50, -0.15, -0.78, -0.67, -0.33, about -0.49).
-    Following who actually hits us is the first signal that closed the gap. WTB, WTN and WTR sit
-    within noise of each other (about -0.3 to -0.5); WTB's -0.32 is the best read of the family.
+    - **the nearest robot whose own nearest robot is us** (the one most likely aiming at us), else
+      the last hitter, else the nearest: WTA -0.28, -0.06, -0.29, -0.18, -0.16 on the five blocks
+      (WTB -0.69, -0.06, -0.45, -0.06, -0.36), and on two fresh blocks with their own 0.3 control
+      (r4 4700, r5 4800) -0.24 and -0.29. Over seven blocks about **-0.21 ± 0.16**: the mean is
+      inside the gate's -0.25 bar, the interval ends just short of 0 (-0.37 to -0.05).
+    Following who is shooting, or likely to shoot, at us is the signal that closed the gap, from
+    WNF's -0.62 to WTA's -0.21. WTA replaces WTB as the kept movement.
 
 **Where WNF still loses** (C against WNF over the three blocks, 11,340 rounds each): duels end in a
 win equally often (85.9% and 85.8%). WNF dies 13% more often in the crowd (4,778 deaths against
@@ -120,9 +125,9 @@ DustBunny, Wisdom, Troodon). The remaining gap is survival in the crowd, not the
 
 ## Code kept
 
-`hadur-bench/saor-arms/` keeps GV (pass), TH (nearest miss) and WTB (best movement, which replaces
-WNF there on 2026-11-09). The failed arm sources and the stage cards were removed with each result;
-WTB's source was tidied for the commit with the same behaviour (the unused per-leg offset is gone).
+`hadur-bench/saor-arms/` keeps GV (pass), TH (nearest miss) and WTA (best movement, which replaced
+WNF and then WTB there on 2026-11-09 and 11-10). The failed arm sources and the stage cards were
+removed with each result.
 
 ## JayLexi k-NN (same run, BENCH-204)
 

@@ -376,3 +376,7 @@ with the failed arms; the arms still in play are GV, TH and WNF.
 Status 2026-11-09: legs whose depth follows, every tick, half the range of the robot that last hit
 us (WTB) cost about 0.32 over five seed sets, the closest own movement yet, still short of the gate.
 GV adds nothing on top of it. The arms still in play are GV, TH and WTB, which replaces WNF.
+
+Status 2026-11-10: legs whose depth follows the nearest robot whose own nearest robot is us (WTA)
+cost about 0.21 ± 0.16 over seven seed sets: the mean is inside the gate's -0.25 bar and the
+interval ends just short of 0. The arms still in play are GV, TH and WTA, which replaces WTB.
