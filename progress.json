@@ -1,0 +1,19 @@
+{
+ "plan": "pc-ala-shield",
+ "updated": 1794324924.345978,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "confirm": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
