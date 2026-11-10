@@ -389,3 +389,7 @@ distance × (shots + 6) / (hits + 2) and power for the best expected energy gain
 hit rate and range) reads about +0.03 ± 0.16 over the seven seed sets. The PC hit-rate power on the
 same target (WAP) fails at about -0.35. The gun chain is the last Figment part; it is designed and
 screened on WAE next.
+
+Status 2026-11-10 evening: a coarser chain speed (2 px/tick steps, WGC) stays inside the gate at
+about -0.05 ± 0.16, and dropping the acceleration sign (WGN) fails. WGC only changes Figment's
+state; a chain of our own design (a different state or a different predictor) is still to find.

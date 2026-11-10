@@ -58,3 +58,4 @@ TH | stage 3, target: the robot we hit best for its distance (distance x (shots 
 WTA | stage 1, movement (best own design, about -0.21 over seven seed sets: mean inside the gate, interval just short of 0): legs between the corner's two walls whose depth is, every tick, half the range of the nearest robot whose own nearest is us (else the last robot to hit us, else the nearest, at most 260); an orbit from two robots left | =saor-arms/SaorWTA.java
 WAG | stages 1+2 (passes the gate: about -0.14 over seven seed sets): WTA movement with the GV vote width, the own movement and gun vote together | =saor-arms/SaorWAG.java
 WAE | stages 1-4: WAU with power for the best expected energy gain from the target's hit rate and range | =saor-arms/SaorWAE.java
+WGC | stages 1-5: WAE with the chain's velocity in 2 px/tick steps (9 values, not 17), so each row fills twice as fast | =saor-arms/SaorWGC.java

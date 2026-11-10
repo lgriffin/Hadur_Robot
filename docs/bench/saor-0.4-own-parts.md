@@ -145,6 +145,14 @@ The movement went from -3.0 to about -0.6 over about 45 designs. The steps that 
       [0.1, 3] and a sixth of our energy. It fires harder at robots we hit and near, and softer far
       and at robots we miss. With WAE, movement, gun vote, target and power are all our own; the
       gun chain (the Markov state packing and the play-it-forward playout) is the last Figment part.
+12. **The gun chain on WAE** (2026-11-10 evening, same seven blocks; WAE -0.01, +0.06, -0.10, +0.41,
+    -0.08, +0.05, -0.13):
+    - the chain's speed kept in 2 px/tick steps, 9 values instead of 17, so each row fills about twice
+      as fast (WGC -0.11, +0.08, -0.29, +0.08, -0.00, +0.01, -0.12, about **-0.05 ± 0.16**, interval
+      -0.21 to +0.11): inside the gate, about 0.08 below WAE. It is a change to Figment's state, not a
+      new chain: the playout and the state's shape are still Figment's;
+    - the state without the acceleration sign (WGN -0.84, -0.13, -0.96 on r1, r2, r3): fails, dropped
+      after three blocks. The acceleration sign carries real information.
 
 **Where WNF still loses** (C against WNF over the three blocks, 11,340 rounds each): duels end in a
 win equally often (85.9% and 85.8%). WNF dies 13% more often in the crowd (4,778 deaths against
@@ -155,7 +163,7 @@ DustBunny, Wisdom, Troodon). The remaining gap is survival in the crowd, not the
 
 `hadur-bench/saor-arms/` keeps GV (pass), TH (nearest miss), WTA (best movement, which replaced
 WNF and then WTB), WAG (WTA + GV, which passes) and WAE (WAG with the own target and power,
-which passes). The failed arm sources and the stage cards were
+which passes) and WGC (WAE with coarser chain speed, inside the gate). The failed arm sources and the stage cards were
 removed with each result.
 
 ## JayLexi k-NN (same run, BENCH-204)
