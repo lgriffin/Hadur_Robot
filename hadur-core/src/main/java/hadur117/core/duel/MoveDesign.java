@@ -33,14 +33,6 @@ final class MoveDesign {
     static final boolean AES_RECORD = false;
 
     /**
-     * MOVE-41 (candidate, cloud forensic only, docs/bench/local/2026-11-09_view-rank.md): the
-     * width of every danger view's kernel as a multiple of the intersection's bandwidth, the
-     * views' smoothing of each logged hit along the wave. 1 ships the surf as it is; the bench
-     * arms kw05 and kw2 set 0.5 and 2. Duel only.
-     */
-    static final double KERNEL_WIDTH = 1.0;
-
-    /**
      * ORACLE-1 (measurement, K0 of the road to king): each wave's first three-option rating also
      * prints an {@code ORC} record with every danger view's neighbours on the wave, for the offline
      * enemy-gun oracle ({@code data/tools/gun_oracle.py}). Behaviour unchanged.
