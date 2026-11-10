@@ -383,3 +383,9 @@ interval ends just short of 0. The arms still in play are GV, TH and WTA, which 
 WTA with GV's vote width (WAG) reads about -0.14 ± 0.16 over seven seed sets and passes the gate:
 own movement and own gun vote together are at parity with 0.3. The arms in play are GV, TH, WTA
 and WAG; the target (TH) is screened on WAG next.
+
+Status 2026-11-10 afternoon: the target and power parts pass together. WAE (WAG with the target
+distance × (shots + 6) / (hits + 2) and power for the best expected energy gain from that robot's
+hit rate and range) reads about +0.03 ± 0.16 over the seven seed sets. The PC hit-rate power on the
+same target (WAP) fails at about -0.35. The gun chain is the last Figment part; it is designed and
+screened on WAE next.
