@@ -736,3 +736,28 @@ that: it held the step as a point, so the seam braked to it at every leg's end (
 in a bullet's flight) and the next leg began from rest. Build 7 holds the step's direction instead: each tick the
 held step is a fresh 140 px step the same way (slid along a wall as the others), so the robot never brakes but to
 turn, and still changes direction only when another step is clearly safer.
+
+| Hadur arm | place | crowd deaths | damage taken / round | hit per aimed bullet | at the wall (<60 px) | head-on there | wall share of ticks | damage dealt / round |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| master | 2.76 | 21% | 66.9 | 12% | 13% | 12% | 27% | 129.9 |
+| ScalarR (in the master fields) | 1.94 | 14% | 54.4 | 13% | 14% | 15% | 79% | 164.1 |
+| mstep build 7 (direction held) | 3.29 | 34% | 72.5 | 16% | 18% | 21% | 67% | 114.9 |
+| ScalarR (in the build 7 fields) | | | 63.1 (3+ alive) | 14% | | | 76% | 176.1 (guns.py) |
+
+Build 7 is the best step surf so far: damage taken 92.7 (build 4) to 78.3 (5) to 72.5, hit per aimed bullet 22% to
+16%, and the per-shooter read is now mixed (Figment 20% on Hadur against 16% on ScalarR, Scimitar 10% against 13%,
+Numbat 18% against 22%; overall 16% against 14%). In the same battles ScalarR takes 63.1 a round in the crowd to
+Hadur's 73.5 (sc/dmg.py): 6% more hits on Hadur and bullets 10% heavier (power 1.98 against 1.81). So the dodge
+under ScalarR's posture is within about 14% of ScalarR's, from 70% behind at build 1.
+
+**Why the place is still worse, and what it says about the gap.** With the posture reached, Hadur's place falls
+(3.29 against the ring mover's 2.76) because its gun does less from the corner: 114.9 damage dealt a round against
+129.9 under its own posture, where ScalarR deals 164-176 from the same corners. The gun read (sc/guns.py,
+targets.py) puts the whole of that on the gun, not the posture: ScalarR hits 39% of its shots to Hadur's 30% at a
+longer target distance (755 px against 666), and on every target both shot thirty times or more ScalarR's hit rate
+is 8 to 15 points higher (Scimitar 28% against 12%, Numbat 24% against 11%, Predator 28% against 18%, Mercutio 23%
+against 15%), at every distance band and every target speed; the gap is widest on targets moving at 4-5 px a tick
+(31% against 24%) and smallest on still ones (33% against 31%). In energy a round, ScalarR's gun returns about 25
+more than Hadur's and its dodge saves about 10: under the leader's posture the gun is the larger half of the gap,
+and it is the same gap under Hadur's own posture (30% against 38% in the master fields). The step surf stays off
+behind its switch as the movement for that posture; the next build is the gun's prediction of a moving target.
