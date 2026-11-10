@@ -12,8 +12,8 @@ Seed blocks: r1 4100, r2 4200, r3 4300, r1x 4500, r1z 4600. Reports: `docs/bench
 `saor-r1x-wfr.md`, `saor-r1z-wfr.md`, and for section 9 `saor-r1x-wng.md`, `saor-r1z-wng.md`,
 `saor-r1x-wnh.md`, `saor-r1z-wnh.md`, `saor-r1x-wgv.md`, `saor-r1z-wgv.md`,
 `saor-r1x-wnz.md`, `saor-r1z-wnz.md`, and for section 10 `saor-<block>-wcd.md`, `-wtd.md`, `-wtb.md`,
-`-wte.md`, `-wbg.md`, `-wto.md`, `-wtr.md` (which also carries WTN) `-wta.md` (r1-r5, r1x, r1z), and for section 11 `-was.md` and `-wag.md` (which carries WAD
-and WDG).
+`-wte.md`, `-wbg.md`, `-wto.md`, `-wtr.md` (which also carries WTN) `-wta.md` (r1-r5, r1x, r1z), and for section 11 `-was.md`, `-wag.md` (which carries WAD
+and WDG) and `-wat.md`.
 
 ## Result
 
@@ -128,6 +128,9 @@ The movement went from -3.0 to about -0.6 over about 45 designs. The steps that 
       -0.16, -0.24) read better alone, but with GV (WDG -0.39, -0.09, -0.68, +0.19, -0.56, -0.13,
       -0.53, about -0.31) worse than WAG; shallower legs, range / 2.4 (WAS -0.46, -0.67, -0.19),
       lose.
+    - WAG with the TH target (WAT -0.38, -0.29, -0.38, +0.03, -0.24, +0.05, -0.28, about -0.21 ±
+      0.16, interval -0.37 to -0.05): the mean is inside the bar but the interval misses 0; TH costs
+      about 0.07 on WAG, the nearest miss again.
 
 **Where WNF still loses** (C against WNF over the three blocks, 11,340 rounds each): duels end in a
 win equally often (85.9% and 85.8%). WNF dies 13% more often in the crowd (4,778 deaths against
