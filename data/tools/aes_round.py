@@ -11,12 +11,14 @@ aes_rank.join_battle.  Per arm and round bucket: waves, the share whose chosen o
 share where another present option would have missed (avoidable), the share where every option was hit,
 how often the blend's danger (VIEW_SCORE, the views mixed with the members) ranked the hit option
 strictly top when exactly one option was hit (a tie for top is not top), the same for the views alone
-(rebuilt from the logged parts) and for the option's whole first-wave danger, and the bullet damage taken
-per wave.  Then the same over all rounds, and per opponent the hit share of each arm against the
+(rebuilt from the logged parts) and for the option's whole first-wave danger, the bullet damage taken
+per wave as the first rating foresaw it, and the share of waves whose bullet really hit us (the truth log's
+enemy bullet vanishes within HIT_PX of us as our energy falls by its damage).  Then the same over all rounds, and per opponent the hit share of each arm against the
 reference arm (--ref, `c` when the run has one) over the seeds both arms fought, with a paired mean and
-interval over opponents.
+interval over opponents, for the first rating's hits and for the real ones.
 """
 import argparse
+import gzip
 import math
 import os
 import re
@@ -31,6 +33,51 @@ DIR = re.compile(r"^(?P<slug>.+)-(?P<seed>\d+)-(?P<arm>[A-Za-z0-9._]+)$")
 BUCKETS = [(0, 0), (1, 2), (3, 6), (7, 14), (15, 34)]
 LATE = "35+"
 LABELS = ["%2d-%2d" % x for x in BUCKETS] + [LATE]
+# A vanished enemy bullet this close to us (at its last position, to us then or a tick before) hit us.
+HIT_PX = 45.0
+FIELD_W, FIELD_H = 800.0, 600.0
+
+
+def read_outcomes(path):
+    """{(round, first turn, heading rounded to 3): hit} for every enemy bullet that vanished on the field in the
+    truth log: a hit when its last position lies within HIT_PX of us at that tick or the one before and our energy
+    fell by at least its damage. A bullet appears one turn after the wave's fire time."""
+    out, alive, prev = {}, {}, None
+    try:
+        f = gzip.open(path, "rt", encoding="utf-8")
+    except OSError:
+        return out
+    with f:
+        try:
+            for line in f:
+                if not line.startswith("T,"):
+                    continue
+                p = line.rstrip("\n").split(",")
+                if len(p) < 13:
+                    continue
+                r, t = int(p[1]), int(p[2])
+                hx, hy, energy = float(p[3]), float(p[4]), float(p[7])
+                if prev is None or prev[0] != r:
+                    alive = {}
+                cur = {}
+                if len(p) > 13 and p[13]:
+                    for b in p[13].split(" "):
+                        q = b.split(":")
+                        if q[0] == "E" and len(q) >= 5:
+                            cur[(round(float(q[3]), 3), round(float(q[4]), 2))] = (float(q[1]), float(q[2]))
+                for k in [k for k in alive if k not in cur]:
+                    first, bx, by = alive.pop(k)
+                    onfield = 0 < bx < FIELD_W and 0 < by < FIELD_H
+                    near = math.hypot(bx - hx, by - hy) < HIT_PX or (
+                        prev is not None and math.hypot(bx - prev[2], by - prev[3]) < HIT_PX)
+                    fell = prev is not None and prev[4] - energy >= A.bullet_damage(k[1]) - 0.05
+                    out[(r, first, k[0])] = bool(onfield and near and fell)
+                for k, (bx, by) in cur.items():
+                    alive[k] = (alive[k][0], bx, by) if k in alive else (t, bx, by)
+                prev = (r, t, hx, hy, energy)
+        except (EOFError, OSError, ValueError):
+            pass  # a truncated log keeps what was read
+    return out
 
 
 def bucket(rnd):
@@ -57,23 +104,28 @@ def views_only(terms, views):
     return fb if fb == fb else -math.inf
 
 
-def tally(key, rec, hit, present, dmg):
-    """Adds one matched wave to a counter dict."""
+def tally(key, rec, hit, present, dmg, real=None):
+    """Adds one matched wave to a counter dict; real is whether the bullet hit us (None unknown)."""
     ch = rec["chosen"]
     key["waves"] += 1
     key["hit"] += hit[ch]
     key["dmg"] += dmg * hit[ch]
-    key["avoidable"] += hit[ch] and any(present[o] and not hit[o] for o in range(3))
-    key["allhit"] += all(hit[o] for o in range(3) if present[o])
-    hits = [o for o in range(3) if present[o] and hit[o]]
+    if real is not None:
+        key["known"] += 1
+        key["real"] += real
+        key["realdmg"] += dmg * real
+    n = len(present)
+    key["avoidable"] += hit[ch] and any(present[o] and not hit[o] for o in range(n))
+    key["allhit"] += all(hit[o] for o in range(n) if present[o])
+    hits = [o for o in range(n) if present[o] and hit[o]]
     if len(hits) == 1 and sum(present) >= 2:
         opts = rec["options"]
         key["ranked"] += 1
-        vs = [opts[o][1][A.VIEW_SCORE] if present[o] else -math.inf for o in range(3)]
+        vs = [opts[o][1][A.VIEW_SCORE] if present[o] else -math.inf for o in range(n)]
         key["top"] += strictly_top(vs, hits[0])
-        fs = [opts[o][1][A.FIRST] if present[o] else -math.inf for o in range(3)]
+        fs = [opts[o][1][A.FIRST] if present[o] else -math.inf for o in range(n)]
         key["topfirst"] += strictly_top(fs, hits[0])
-        vo = [views_only(opts[o][1], rec["views"]) if present[o] else -math.inf for o in range(3)]
+        vo = [views_only(opts[o][1], rec["views"]) if present[o] else -math.inf for o in range(n)]
         key["topviews"] += strictly_top(vo, hits[0])
 
 
@@ -89,6 +141,7 @@ def read(workdir):
             continue
         arm, slug, seed = m.group("arm"), m.group("slug"), int(m.group("seed"))
         rows, st = A.join_battle(os.path.join(base, name))
+        outcomes = read_outcomes(os.path.join(base, name, "truth.log.gz"))
         for k, v in st.items():
             totals[arm][k] += v
         for rec, heading, power in rows:
@@ -98,8 +151,9 @@ def read(workdir):
                 continue
             hit = [o is not None and A.inside(heading, o[1][A.LOW], o[1][A.HIGH]) for o in opts]
             dmg = A.bullet_damage(power)
-            tally(stats[arm][bucket(rec["round"])], rec, hit, present, dmg)
-            tally(perbot[arm][slug][seed], rec, hit, present, dmg)
+            real = outcomes.get((rec["round"], rec["fire"] + 1, round(heading, 3)))
+            tally(stats[arm][bucket(rec["round"])], rec, hit, present, dmg, real)
+            tally(perbot[arm][slug][seed], rec, hit, present, dmg, real)
     return stats, perbot, totals
 
 
@@ -127,44 +181,50 @@ def report(stats, perbot, totals, ref=None):
     for arm in sorted(totals):
         t = totals[arm]
         lines.append("arm %s: records %d, real %d, matched %d of %d bullets" % (arm, t["records"], t["real"], t["matched"], t["bullets"]))
-    lines += ["", "| arm | rounds | waves | hit chosen | avoidable | all hit | blend ranks hit top | views-only top | first ranks hit top | dmg/wave |",
-              "|---|---|---|---|---|---|---|---|---|---|"]
+    lines += ["", "| arm | rounds | waves | hit chosen | real hit | avoidable | all hit | blend ranks hit top | views-only top | first ranks hit top | dmg/wave | real dmg/wave |",
+              "|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for b in LABELS:
         for arm in sorted(stats):
             s = stats[arm].get(b)
             if not s or not s["waves"]:
                 continue
-            lines.append("| %s | %s | %d | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f |" % (
-                arm, b, s["waves"], rate(s, "hit"), rate(s, "avoidable"), rate(s, "allhit"),
-                rate(s, "top", "ranked"), rate(s, "topviews", "ranked"), rate(s, "topfirst", "ranked"), rate(s, "dmg")))
-    lines += ["", "| arm | waves | hit chosen | avoidable | blend ranks hit top | views-only top | dmg/wave |", "|---|---|---|---|---|---|---|"]
+            lines.append("| %s | %s | %d | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f |" % (
+                arm, b, s["waves"], rate(s, "hit"), rate(s, "real", "known"), rate(s, "avoidable"), rate(s, "allhit"),
+                rate(s, "top", "ranked"), rate(s, "topviews", "ranked"), rate(s, "topfirst", "ranked"), rate(s, "dmg"),
+                rate(s, "realdmg", "known")))
+    lines += ["", "| arm | waves | hit chosen | real hit | avoidable | blend ranks hit top | views-only top | dmg/wave | real dmg/wave |",
+              "|---|---|---|---|---|---|---|---|---|"]
     for arm in sorted(stats):
         s = pooled(stats[arm].values())
-        lines.append("| %s | %d | %.3f | %.3f | %.3f | %.3f | %.3f |" % (
-            arm, s["waves"], rate(s, "hit"), rate(s, "avoidable"), rate(s, "top", "ranked"), rate(s, "topviews", "ranked"), rate(s, "dmg")))
+        lines.append("| %s | %d | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f |" % (
+            arm, s["waves"], rate(s, "hit"), rate(s, "real", "known"), rate(s, "avoidable"), rate(s, "top", "ranked"),
+            rate(s, "topviews", "ranked"), rate(s, "dmg"), rate(s, "realdmg", "known")))
     if ref is not None and len(arms) >= 2:
         for arm in arms:
             if arm == ref:
                 continue
-            lines += ["", "## Per opponent: hit share of the chosen option, %s minus %s (seeds both fought)" % (arm, ref), "",
-                      "| opponent | seeds | waves | %s | %s | diff |" % (ref, arm), "|---|---|---|---|---|---|"]
-            diffs = []
-            for slug in sorted(perbot[ref]):
-                seeds = sorted(set(perbot[ref][slug]) & set(perbot[arm].get(slug, {})))
-                if not seeds:
-                    continue
-                sc = pooled(perbot[ref][slug][x] for x in seeds)
-                sp = pooled(perbot[arm][slug][x] for x in seeds)
-                if not sc["waves"] or not sp["waves"]:
-                    continue
-                hc, hp = rate(sc, "hit"), rate(sp, "hit")
-                diffs.append(hp - hc)
-                lines.append("| %s | %d | %d | %.3f | %.3f | %+.3f |" % (slug, len(seeds), sc["waves"], hc, hp, hp - hc))
-            if diffs:
-                n = len(diffs)
-                mean = sum(diffs) / n
-                sd = (sum((d - mean) ** 2 for d in diffs) / max(1, n - 1)) ** 0.5
-                lines += ["", "mean diff %+.4f +- %.4f (95%%), fewer hits on %d of %d opponents" % (mean, 1.96 * sd / n ** 0.5, sum(d < 0 for d in diffs), n)]
+            for what, num, den in (("hit share of the chosen option at the first rating", "hit", "waves"),
+                                   ("real hit share", "real", "known")):
+                lines += ["", "## Per opponent: %s, %s minus %s (seeds both fought)" % (what, arm, ref), "",
+                          "| opponent | seeds | waves | %s | %s | diff |" % (ref, arm), "|---|---|---|---|---|---|"]
+                diffs = []
+                for slug in sorted(perbot[ref]):
+                    seeds = sorted(set(perbot[ref][slug]) & set(perbot[arm].get(slug, {})))
+                    if not seeds:
+                        continue
+                    sc = pooled(perbot[ref][slug][x] for x in seeds)
+                    sp = pooled(perbot[arm][slug][x] for x in seeds)
+                    if not sc[den] or not sp[den]:
+                        continue
+                    hc, hp = rate(sc, num, den), rate(sp, num, den)
+                    diffs.append(hp - hc)
+                    lines.append("| %s | %d | %d | %.3f | %.3f | %+.3f |" % (slug, len(seeds), sc[den], hc, hp, hp - hc))
+                if diffs:
+                    n = len(diffs)
+                    mean = sum(diffs) / n
+                    sd = (sum((d - mean) ** 2 for d in diffs) / max(1, n - 1)) ** 0.5
+                    lines += ["", "mean diff %+.4f +- %.4f (95%%), fewer hits on %d of %d opponents" % (
+                        mean, 1.96 * sd / n ** 0.5, sum(d < 0 for d in diffs), n)]
     return "\n".join(lines) + "\n"
 
 
