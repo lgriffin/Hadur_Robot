@@ -960,3 +960,61 @@ re-choice each tick was not already doing once the wave came into the 30-tick ho
 the switch, arm and test are removed. With that, every route on the not-tried list is measured: the melee
 survival line is closed on the cloud until a new direction is chosen, and the melee levers that have paid since
 3.19 remain the firepower ones (MGUN-25 banked, unreleased).
+
+## Survive the crowd by doing little in the opening (MGUN-27, 2026-11-10)
+
+The direction set on 2026-11-10 15:34 UTC: survive in the crowd by dealing minimal damage until the first two
+robots die. Two trace reads on the ring mover's ScalarR fields (240 rounds) before the build (sc/revenge.py,
+sc/phase.py):
+
+**Does hitting a robot draw its fire?** For every shot with an inferred target, the chance the target is X given
+X's nearness rank from the shooter and whether X landed a bullet on the shooter in the last 60 ticks:
+
+| X is the shooter's | not hit it | hit it in the last 60 ticks |
+|---|---:|---:|
+| nearest | 42.5% (55,908) | 48.8% (14,239) |
+| 2nd nearest | 19.1% | 24.3% |
+| 3rd nearest | 13.1% | 15.7% |
+| 4th or further | 8.7% | 10.5% |
+| Hadur as X: nearest / 2nd / 3rd / further | 48.6 / 19.5 / 12.6 / 8.4% | 53.9 / 24.0 / 16.1 / 11.6% |
+
+A hit buys 5 to 6 points of the victim's next targets for 60 ticks; nearness buys 30. Per class the lift among
+non-nearest targets runs from +20 (TheTeacher) to +0.5; Hadur's own gun is one of the stronger revenge shooters
+(+7), ScalarR's hardly one (+2).
+
+**The opening phase, until two have died (218 ticks a round):**
+
+| | Hadur | ScalarR |
+|---|---:|---:|
+| shots; energy fired | 11.9; 29.0 | 11.7; 34.0 |
+| energy regained; damage dealt | 34.0; 59.1 | 39.9; 70.8 |
+| damage taken; bullets aimed at it | 21.6; 10.5 | 23.8; 12.2 |
+| alive when two have died; energy then | 98%; 83.6 | 98%; 84.5 |
+
+The opening is not where Hadur dies, its firing there nets energy (regained above fired), and it is aimed at
+less than ScalarR. Holding fire until two die would give up 59 damage a round (half the score) and about 5 net
+energy, and by the revenge read spare Hadur a fraction of a bullet. The 2026-11-08 fire-hold half (hold with five
+or more alive) lost -2.10 ± 0.50. The direction is still measured rather than argued: MGUN-27 `OPENING_HOLD`
+(arm `mopen`) holds the gun off a team until two of the round's starting opponents have died, a finisher
+excepted, and runs on the 24-pair census smoke.
+
+### The opening hold, measured: it loses (2026-11-10)
+
+`mopen` against master, 12 census fields, 2 seeds from 5900, 35 rounds, 24 pairs:
+
+| | opening hold | master | diff (95%) |
+|---|---:|---:|---|
+| score share | 15.54 | 19.24 | -3.70 ± 0.33 |
+| APS (data/tools/melee_pairwise.py) | 63.3 | 69.0 | -5.7 ± 0.6 |
+| rounds won | 38.3% | 49.8% | -11.4 ± 4.5 |
+| crowd deaths | 35.4% | 25.5% | +9.9 ± 3.0 |
+| survival score | 12,490 | 13,477 | -988 ± 231 |
+| nearest load; crowd damage taken per 100 ticks | 0.83; 8.45 | 0.80; 8.16 | +0.03; +0.28 |
+
+Every field down, and the loss is in survival, not only in the damage given up: holding fire until two have died
+leaves Hadur in a crowd that is stronger for longer, it is aimed at no less (the nearest load is up), and it dies
+in the crowd 10 points more often. This is the same shape as the 2026-11-08 fire-hold arm (-2.10 with five or
+more alive), now worse with the hold confined to the opening, where Hadur's firing was netting energy. Doing less
+damage in the crowd does not buy survival; it costs it. MGUN-27 is retired and the switch, arm and test are
+removed. The direction's other half, surviving the crowd, has every measured route above closed; the lever that
+has paid is the opposite one, firepower early.
