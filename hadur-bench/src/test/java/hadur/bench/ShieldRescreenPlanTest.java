@@ -45,6 +45,12 @@ class ShieldRescreenPlanTest {
         assertTrue(queue.contains("--arm mz --panel panel-shield-rescreen.txt --bar 0.005"), "gate mz");
         assertTrue(queue.contains("mode_table.py ${W}/arms.tsv --margin 3 --out-tsv ${OUT}/shield-rescreen-pc-pick.tsv"));
         assertTrue(queue.contains("per_robot.py ${W}/arms.tsv --arms mz "));
+        // A panel robot already on master's list would shield in the control arm too; only those this card shipped may be.
+        List<String> shipped = names("plans/shield-rescreen-shipped.txt");
+        String listData = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldListData.java"));
+        for (String n : panel) {
+            assertTrue(shipped.contains(n) || !listData.contains("\"" + n + "\","), n + " is not on master's shield list yet");
+        }
         String arms = Files.readString(Path.of("plans/pc-shield-rescreen.arms"));
         for (String arm : new String[] {"c | hadur117.Hadur " + version + " |", "aa | hadur117.Hadur " + version + "aa |",
                                         "mz | hadur117.Hadur " + version + "mtzl |"}) {
