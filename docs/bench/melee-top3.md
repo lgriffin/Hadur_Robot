@@ -678,3 +678,17 @@ more robots nearer its shooter, and in a corner most shots at Hadur come from su
 hittability, not nearness, as the ScalarR read found). Build 3 rides every shot, weighted by the field's measured
 chance it is at Hadur given k nearer robots (the MMOVE-27 curve, 1 to 0.15), as the leader surfs every wave in the
 air as a mixture over its possible targets.
+
+| Hadur arm | place | crowd deaths | damage taken / round | hit per aimed bullet | at the wall (<60 px) | head-on there | net move in 25 ticks at the wall | reversals / 100 ticks |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| ScalarR | 1.94 | 14% | 54.4 | 13% | 14% | 15% | 104 px | 1.7 |
+| mstep build 3 (every shot ridden) | 3.84 | 45% | 84.8 | 21% | 22% | 27% | 86 px | 4.2 |
+
+Riding every shot changed nothing (22% at the wall, head-on 27%), so the dropped shots were not the cause. The
+oscillation reader (scratchpad sc/osc.py) shows the surf is not standing or shuttling: 86 px net in a bullet's
+flight against ScalarR's 104, reversals 4.2 against 1.7 per 100 ticks. What it does do is ask for side steps: the
+seam drives to a destination over 45 degrees off the heading at 4 px a tick while the body turns at Robocode's
+10 - 0.75 |v| degrees a tick, and the first drive simulation turned on the spot at full speed. So the surf chose
+side steps it believed would clear a wave and the robot swung slowly through it: head-on hits. Build 4 simulates the
+drive as the seam makes it (turn rate, the 4 px cap under a sharp turn, reversal through zero), so the on and back
+steps, which need no turn, win when the wave is close and the side steps only when there is time.

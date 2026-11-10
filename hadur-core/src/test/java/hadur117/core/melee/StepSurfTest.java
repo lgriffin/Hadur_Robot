@@ -73,6 +73,20 @@ class StepSurfTest {
 
     @Test
     @Tag("MMOVE-28")
+    @DisplayName("MMOVE-28: the drive turns at Robocode's rate: a side step from speed 8 is slower than the step ahead")
+    void driveTurns() {
+        Point2D.Double me = pt(500, 500), prev = pt(500, 492);
+        List<StepSurf.Foe> foes = List.of(new StepSurf.Foe(pt(900, 500), 100));
+        // A wave from the east due at the start in about 30 ticks: the step ahead (north) outruns it, the side step east drives into it.
+        EnemyShot shot = new EnemyShot("a", pt(900, 500), 0, 2.0);
+        Wave wave = new Wave(shot, 1.0, new double[] {-Math.PI / 2}, new double[] {1}, -Math.PI / 2);
+        double[] ahead = StepSurf.drive(me, prev, pt(500, 640), 100, foes, 1, List.of(wave));
+        double[] side = StepSurf.drive(me, prev, pt(640, 500), 100, foes, 1, List.of(wave));
+        assertTrue(ahead[0] < side[0], "ahead " + ahead[0] + " side " + side[0]);
+    }
+
+    @Test
+    @Tag("MMOVE-28")
     @DisplayName("MMOVE-28: the soonest nine waves within 30 ticks of the first are surfed")
     void soonest() {
         Point2D.Double me = pt(500, 500);

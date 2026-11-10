@@ -35,6 +35,8 @@ final class StepSurf {
     static final double TOUCH = 52, TOUCH_K = 100, COLLIDE = 37, COLLIDE_K = 100_000;
     static final double CORNER_PULL = 0.5, CORNER_SOFT = 500;
     static final double MAX_SPEED = 8, ACCEL = 1, DECEL = 2;
+    /** The seam's speed cap while the turn left is over 45 degrees. */
+    static final double TURN_SPEED = 4;
     /** A move slower than this a tick counts as standing: the step's own direction replaces the heading. */
     static final double STILL = 0.5;
     /** Wall smoothing: the step turns in these increments, up to a right angle, to stay inside the margin. */
@@ -174,22 +176,25 @@ final class StepSurf {
     }
 
     /**
-     * Drive from {@code me} to {@code to} (1 px a tick faster to 8, braking 2 a tick to stop
-     * there) for at most {@link #TICKS} ticks or until the waves have passed: the waves' damage
-     * on the way, and the mean crowd along the path.
+     * Drive from {@code me} to {@code to} the way the seam drives (MeleeSeam.goTo): the body turns
+     * toward the step at Robocode's rate (10 - 0.75 |v| degrees a tick), backwards when that is
+     * the shorter turn, at most 4 px a tick while the turn left is over 45 degrees, 1 px a tick
+     * faster to 8 and braking 2 a tick (through zero on a reversal), for at most {@link #TICKS}
+     * ticks or until the waves have passed: the waves' damage on the way, and the mean crowd
+     * along the path. The first build turned on the spot at full speed, so it chose side steps
+     * the robot could not make in time.
      */
     static double[] drive(Point2D.Double me, Point2D.Double prev, Point2D.Double to, double energy,
                           List<Foe> foes, long now, List<Wave> waves) {
         boolean[] done = new boolean[waves.size()];
         double x = me.x, y = me.y;
         double heading = Math.atan2(to.x - me.x, to.y - me.y);
-        double speed = 0;
+        double v = 0;
         if (prev != null) {
             double moved = me.distance(prev);
             if (moved >= STILL && moved <= MAX_SPEED + 0.5) {
-                double was = Math.atan2(me.x - prev.x, me.y - prev.y);
-                // Keep the speed we have when the step is in front of us; a turn-around starts from rest.
-                if (Math.abs(Angles.normalRelativeAngle(was - heading)) < Math.PI / 2) speed = moved;
+                heading = Math.atan2(me.x - prev.x, me.y - prev.y);
+                v = moved;
             }
         }
         double waveDamage = 0, crowd = 0;
@@ -197,13 +202,25 @@ final class StepSurf {
         for (int t = 1; t <= TICKS; t++) {
             double left = Math.hypot(to.x - x, to.y - y);
             if (left > 0.01) {
-                double stopIn = speed * speed / (2 * DECEL);
-                speed = left <= stopIn ? Math.max(0, speed - DECEL) : Math.min(MAX_SPEED, speed + ACCEL);
-                double step = Math.min(speed, left);
+                double turn = Angles.normalRelativeAngle(Math.atan2(to.x - x, to.y - y) - heading);
+                double want = 1;
+                if (Math.abs(turn) > Math.PI / 2) {
+                    turn = Angles.normalRelativeAngle(turn + Math.PI);
+                    want = -1;
+                }
+                double rate = Math.toRadians(10 - 0.75 * Math.abs(v));
+                heading += DiaUtils.limit(-rate, turn, rate);
+                double cap = Math.abs(turn) > Math.PI / 4 ? TURN_SPEED : MAX_SPEED;
+                double stopIn = v * v / (2 * DECEL);
+                if (v * want < 0) v = v > 0 ? Math.max(0, v - DECEL) : Math.min(0, v + DECEL);
+                else if (left <= stopIn) v = want * Math.max(0, Math.abs(v) - DECEL);
+                else v = want * Math.min(cap, Math.abs(v) + ACCEL);
+                if (Math.abs(v) > cap) v = want * Math.max(cap, Math.abs(v) - DECEL);
+                double step = Math.min(Math.abs(v), left) * Math.signum(v == 0 ? 1 : v);
                 x += Math.sin(heading) * step;
                 y += Math.cos(heading) * step;
             } else {
-                speed = 0;
+                v = 0;
             }
             crowd += crowd(new Point2D.Double(x, y), energy, foes);
             ticks = t;
