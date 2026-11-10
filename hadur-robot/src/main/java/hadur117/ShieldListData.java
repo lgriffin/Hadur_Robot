@@ -347,6 +347,8 @@ final class ShieldListData {
             "sL300.Mozart life",
             // pc-shield-audit (BENCH-209, PR #697): +7.0 points on 12 fresh seeds with still and exit off; Musashi read -3.0 and stays off
             "cx.Princess 1.0",
+            // pc-ala-shield (BENCH-220, PR #733): +7.34 points on 12 fresh seeds with a still line (low end +4.19); list add alone +3.7
+            "lechu.Ala 0.0.4",
         };
     }
 }
