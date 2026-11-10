@@ -349,6 +349,9 @@ final class ShieldListData {
             "cx.Princess 1.0",
             // pc-ala-shield (BENCH-220, PR #733): +7.34 points on 12 fresh seeds with a still line (low end +4.19); list add alone +3.7
             "lechu.Ala 0.0.4",
+            // pc-shield-rescreen (BENCH-222, PR #739): with still lines on 12 fresh seeds, Saturn +10.5 (low end +7.2), OperatorZeze +3.5 (low end +0.6)
+            "tobe.Saturn lambda",
+            "zeze2.OperatorZeze 1.05",
         };
     }
 }

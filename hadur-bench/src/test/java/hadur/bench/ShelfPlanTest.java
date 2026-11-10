@@ -45,9 +45,11 @@ class ShelfPlanTest {
             .map(l -> l.substring(1, l.length() - 2)).toList();
         // Issue #630: pilot-u found these two do not load; the bench drops them, the panel keeps its first run's names.
         List<String> foundBroken = List.of("zen.Mirage 0.9.5", "zen.Ronin 1.0.0");
-        // pc-shield-audit (PR #697) shielded Princess and pc-ala-shield (PR #733) Ala after this card ran; U was the
+        // pc-shield-audit (PR #697) shielded Princess, pc-ala-shield (PR #733) Ala and pc-shield-rescreen (PR #739)
+        // Saturn and OperatorZeze after this card ran; U was the
         // unshielded panel at run time.
-        List<String> shieldedSince = List.of("cx.Princess 1.0", "lechu.Ala 0.0.4");
+        List<String> shieldedSince = List.of("cx.Princess 1.0", "lechu.Ala 0.0.4", "tobe.Saturn lambda",
+            "zeze2.OperatorZeze 1.05");
         for (String n : u) {
             assertTrue(shieldedSince.contains(n) || !shield.contains(n), n + " is off the shield list");
             assertTrue(!s.contains(n), n + " on one panel only");
