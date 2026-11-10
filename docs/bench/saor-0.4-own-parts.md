@@ -153,6 +153,9 @@ The movement went from -3.0 to about -0.6 over about 45 designs. The steps that 
       new chain: the playout and the state's shape are still Figment's;
     - the state without the acceleration sign (WGN -0.84, -0.13, -0.96 on r1, r2, r3): fails, dropped
       after three blocks. The acceleration sign carries real information.
+    - WGC with each row sampled toward its latest entries, index n - 1 - n x r1 x r2 (WGR -0.41,
+      -0.01, -0.32, -0.37, -0.31, -0.25, -0.52, about -0.31 ± 0.16): fails, below WGC on all seven
+      blocks. Uniform sampling of the whole row beats following recent habits.
 
 **Where WNF still loses** (C against WNF over the three blocks, 11,340 rounds each): duels end in a
 win equally often (85.9% and 85.8%). WNF dies 13% more often in the crowd (4,778 deaths against
