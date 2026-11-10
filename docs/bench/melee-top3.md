@@ -223,8 +223,8 @@ energy. The trace is the input for the death-forensics pass.
 
 ## The hide posture (MHIDE-1..3, 2026-11-08): three cloud smokes, all losses, not merged
 
-Leigh, on the traces: "there are huge empty spaces that we don't try and move into, why?" and "We have no
-mechanic to try and hide and survive until the field whittles down." Built as a switch on the thread branch:
+The question from the traces was whether Hadur should use the field's empty spaces to hide and survive until
+the crowd thins. Built as a switch on the thread branch:
 with five or more alive, or three or more and Hadur under the median energy, the mover's candidates gained a
 7 × 7 field grid and each point paid 2 units of risk for every opponent it would make Hadur the nearest of,
 and the gun held unless the target was a finisher or already had Hadur as its nearest robot. Cloud smokes,
@@ -483,3 +483,281 @@ Read (24 pairs each): `mnolearn` -0.28 ± 0.59 share, crowd deaths +4.6 ± 4.4 p
 learned aims may be worth a few crowd deaths, and a third guess buys nothing visible. The arms and the
 `MID_GUESS` constant were removed. Four wave-model changes in a row (weights, sensing, aims, learning) read
 flat on the cloud: the melee gap is not in the wave model. Tools: scratchpad `ms-lg2/persist3.py`, `ms-lg2/gf.py`.
+
+## ScalarR and Hadur in the same crowds (2026-11-09)
+
+The 12 census fields were fought again (seed 5800, 20 rounds, traced) with ScalarR 0.005g.047 seated in each in
+place of the field's lowest-ranked robot, so both robots stand in the same ten-robot crowds. Over 240 rounds each,
+ticks with three or more alive (scratchpad `sc/posture.py`, `sc/guns.py`, `sc/targets.py`, `sc/shadow.py`):
+
+| in the crowd | ScalarR | Hadur |
+|---|---:|---:|
+| score share in these battles | 20.2 | 16.2 |
+| survival score / bullet damage score per battle | 7,883 / 2,968 | 7,062 / 2,366 |
+| mean place, deaths in the crowd (4+ alive) | 1.95, 14% | 2.76, 21% |
+| damage taken / dealt per round | 54 / 164 | 67 / 130 |
+| distance to the nearest robot | 521 px | 443 px |
+| robots within 400 px | 0.65 | 0.91 |
+| robots whose nearest robot it is | 0.66 | 0.91 |
+| wall room; share of ticks in a corner (both walls under 150 px) | 51 px; 43% | 102 px; 17% |
+| speed; energy | 5.3; 68 | 6.2; 59 |
+| bullets aimed at it (within the escape angle), per 240 rounds | 6,976 | 7,917 |
+| of those: hit it / taken by another robot on the way | 13% / 9% | 12% / 8% |
+| shots per round; mean power; landed anywhere (crowd only) | 49; 2.12; 28% | 48; 1.76; 27% |
+| landed anywhere, all phases (the endgame duel included) | 38% | 30% |
+| distance to the target at the fire; shots at its nearest robot | 772 px; 33% | 607 px; 51% |
+
+Three things follow. **Dodging per bullet is equal:** of the bullets aimed at each, ScalarR is hit by 13% and Hadur
+by 12%, and bot shadows take 9% and 8%. That is the fourth and last way the wave model turns out not to be the gap.
+**ScalarR is shot at less:** 12% fewer bullets are aimed at it because it stands 80 px further from everyone, in a
+corner two ticks in five, and is the nearest robot of 0.66 opponents against Hadur's 0.91. **ScalarR fires harder
+at the same crowd hit rate:** power 2.12 against 1.76 at 28% against 27%, and it chooses its target by hittability
+rather than nearness (a third of its shots go to robots with three or more others nearer), so it does 26% more
+damage; it also reaches the final duel more often, where its gun lands 38% overall against Hadur's 30%.
+
+Every one-part imitation of this has failed on the PC: ScalarR's power rule (MGUN-22), its step search with the
+corner pull (MMOVE-21), the nearest-target factor (MMOVE-24), and the hide posture on the cloud. None of those
+arms was checked against the posture numbers above; the hide posture, for one, raised the nearest load it was
+meant to lower. The posture was therefore built to the numbers above and read against them first.
+
+### Posture arms (2026-11-09): ScalarR's posture reached, and it costs Hadur more
+
+Three cloud arms on the mover's constants, fought traced on the same twelve ScalarR fields (seed 5800, 240 rounds
+each): `pc` drops the corner and wall penalties (`CORNER_K`, `WALL_K` to 0); `pp` also turns the corner term into
+a pull over 400 px; `pf` adds the closest-robot factor 3.
+
+| Hadur arm | nearest px | nearest-of | corner ticks | wall room | bullets aimed at it | hit per aimed bullet | damage taken / round | crowd deaths | place |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| master | 443 | 0.91 | 17% | 102 | 7,917 | 12% | 66.9 | 21% | 2.77 |
+| pc | 455 | 0.79 | 28% | 64 | | | 68.3 | 20% | 2.68 |
+| pp | 499 | 0.68 | 58% | 50 | 6,998 | 17% | 72.5 | 23% | 2.92 |
+| pf | 510 | 0.68 | 57% | 52 | 7,012 | 17% | 74.3 | 29% | 3.08 |
+| ScalarR, same fields | 509-524 | 0.66-0.76 | 39-43% | 51-55 | 6,976-8,035 | 13% | 54-60 | 14-16% | 1.94-2.02 |
+
+The pull reaches ScalarR's posture to the pixel and cuts the bullets aimed at Hadur by 12%, the same 12% ScalarR
+enjoys. Hadur then takes more damage, not less: the hit rate per aimed bullet rises from 12% to 17%, all of it at
+the walls (under 60 px of wall room: master 13%, `pf` 18%, ScalarR 13-14%). A constant pull parks Hadur at the
+corner's apex, where its candidate ring has nowhere to go; ScalarR sits in the same corners and keeps dodging.
+The posture is not the lever on its own, and a pull is the wrong way to it; the arms were removed. What ScalarR's
+corner buys depends on a dodge that still works with 50 px of wall room, which Hadur's mover does not have.
+
+A second round kept Hadur moving: `pg` (penalties off, a gentle pull of -0.15 over 400 px) and `pe` (penalties off,
+the centre push doubled, no pull). Same fields and seed:
+
+| Hadur arm | nearest px | nearest-of | corner ticks | wall room | bullets aimed at it | hit per aimed bullet | hit, under 60 px of wall | damage taken / round | crowd deaths |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| master | 443 | 0.91 | 17% | 102 | 7,917 | 12% | 13% of 2,128 | 66.9 | 21% |
+| pc | 455 | 0.79 | 28% | 64 | 7,350 | 14% | 16% of 5,041 | 68.3 | 20% |
+| pg | 478 | 0.79 | 38% | 59 | 7,046 | 15% | 16% of 5,095 | 72.9 | 24% |
+| pe | 470 | 0.79 | 30% | 52 | 7,470 | 15% | 15% of 5,515 | 70.7 | 27% |
+
+Every step toward the walls trades 6 to 11% fewer bullets aimed at Hadur for a higher hit rate on the ones that
+are, and the trade never pays: with its wall room under 60 px Hadur is hit by 15 to 18% of the bullets aimed at it
+against 13% in master's rare visits and ScalarR's 13 to 14% at the same wall room. The posture arms were all
+removed. The melee lever, as far as these crowds can show it, is the dodge with little wall room: the surfer's
+candidate ring and its guesses were made for the open field, and Hadur pays for every tick it spends at a wall.
+
+Four parts of the melee gap have now been measured in the same crowds and tried one at a time: the wave model
+(four flat arms), the firepower (MGUN-22, failed on the PC), the target choice, and the posture (this section).
+Each of ScalarR's parts imitated alone has lost; its edge is the parts together. The next design is the dodge at the
+walls (the per-aimed-bullet hit rate under 60 px of wall room, 15 to 18% today against ScalarR's 13%), read by the
+same traced numbers before any posture change or score.
+
+### Which aims hit Hadur at the wall (2026-11-09)
+
+The bullets aimed at each robot (within the escape angle), by the aim's guess factor and the target's wall room at
+the fire, master Hadur and ScalarR in the same fields (scratchpad `sc/wallgf.py`, `sc/wallspeed.py`):
+
+| wall room under 60 px | aimed | hit | behind (GF < -0.15) | head-on | mid (0.15 to 0.6) | linear (0.6+) |
+|---|---:|---:|---:|---:|---:|---:|
+| Hadur: share of aims / hit rate | 2,128 | 13% | 16% / 5% | 51% / 12% | 24% / 15% | 9% / **29%** |
+| ScalarR: share of aims / hit rate | 5,558 | 14% | 15% / 7% | 56% / 15% | 22% / 16% | 6% / 14% |
+| Hadur in the open (150 px or more) | 1,301 | 10% | 14% / 4% | 61% / 8% | 21% / 16% | 4% / 22% |
+
+At a wall, Hadur is hit by 29% of the linear aims fired at it, ScalarR by 14%; head-on and mid aims hit the two
+alike. Hadur is not slower there (mean speed 5.7 against ScalarR's 5.0; still 5% of ticks against 12%): it runs
+along the wall at a steady speed and is led. Two cloud arms test the two obvious causes on the same fields, read by
+this table: `pnopast` dropped the past-position penalty (`PAST_K` 0.02 to 0), which charges Hadur for reversing over
+ground it has just covered; `plinwall` doubled the linear guess's weight for shots fired while Hadur had under
+60 px of wall room.
+
+| Hadur arm | hit per aimed bullet, under 60 px | linear aims there: share / hit | mid aims there: hit | damage taken / round | crowd deaths | place |
+|---|---:|---:|---:|---:|---:|---:|
+| master | 13% | 9% / 29% | 15% | 66.9 | 21% | 2.76 |
+| pnopast | 13% | 5% / 25% | 19% | 62.6 | 23% | 2.80 |
+| plinwall | 13% | 8% / 25% | 19% | 66.5 | 25% | 2.96 |
+
+Neither moved the gate: the hit rate per aimed bullet at the wall stayed 13%. Both took hits off the linear band and
+put them on the mid band, which is what a surfer does when it is told to fear one aim more. `pnopast` took 4 less
+damage a round over one seed with no change in place or crowd deaths; `plinwall` changed nothing. Both arms and the
+constant were removed. The wall dodge is not a constant away: the surfer's two guesses and its candidate ring are
+the design that fails there, and the next step is a candidate set for little wall room (a reversal along the wall
+and a stop, scored against the waves the way ScalarR's five steps are), read by this table before any score.
+
+### The wall candidate set (2026-11-10)
+
+Arm `pwall` (`MinimumRiskMovement.WALL_SET_ROOM` 60, 0 on master): with under 60 px of wall room the mover's
+candidates gain a stop and 40 and 80 px steps either way along the wall, the moves the ring (nearest points 100 px
+out, clipped onto the wall) does not hold. First build: the wall set joined the candidate list only, so it reached
+the wave check only when it ranked among the eight least risky points, which short steps at a wall (wall, corner
+and past-position risk) rarely do. Same 12 ScalarR fields, seed 5800, 20 rounds:
+
+| Hadur arm | hit per aimed bullet, under 60 px | linear aims there: share / hit | mid aims there: hit | damage taken / round | crowd deaths | place |
+|---|---:|---:|---:|---:|---:|---:|
+| master | 13% | 9% / 29% | 15% | 66.9 | 21% | 2.76 |
+| pwall, ring-ranked | 12% | 7% / 27% | 16% | 64.7 | 22% | 2.73 |
+
+Nothing the table can tell from noise (about 2,200 aimed bullets a cell, so one point either way). Second build:
+the wall set is always wave-scored, added to the re-rank pool the way the held destination is, so the stop and the
+short reversals are judged by the waves and not by the ring's risk:
+
+| Hadur arm | hit per aimed bullet, under 60 px | linear aims there: share / hit | mid aims there: hit | damage taken / round | crowd deaths | place |
+|---|---:|---:|---:|---:|---:|---:|
+| master | 13% | 9% / 29% | 15% | 66.9 | 21% | 2.76 |
+| pwall, wave-scored | 14% | 8% / 27% | 18% | 64.2 | 22% | 2.95 |
+
+Wave-scoring the stop and the short steps did not lower the hit rate at the wall (14%, mid aims 18%) and cost
+place (2.95). Under Hadur's own posture the wall table does not move with candidates any more than with constants.
+
+Reading the posture tables again puts the gap where it is: under its OWN posture Hadur is hit at the wall as
+rarely as ScalarR (13% vs 14% per aimed bullet); it is under ScalarR's posture (`pfar`, 57% of ticks in a corner)
+that Hadur's wall dodge fails (18%), and there the bands that fail are head-on (21% vs ScalarR's 15%) and linear
+(21% vs 14%): standing still at the apex, or driving along one wall. So the wall set is read where it was built for,
+under the posture: arm `pwallpf` = `pfar` plus the wall set, same fields, same seed.
+
+| Hadur arm | hit per aimed bullet, under 60 px | head-on aims there: hit | linear aims there: hit | mid aims there: hit | aimed bullets at the wall | damage taken / round | crowd deaths | place |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| master (own posture) | 13% | 12% | 29% | 15% | 2,128 | 66.9 | 21% | 2.76 |
+| pfar (ScalarR's posture) | 18% | 21% | 21% | 17% | 5,552 | 74.3 | 29% | 3.08 |
+| pwallpf (posture + wall set) | 17% | 19% | 22% | 17% | 6,000 | 73.2 | 25% | 2.91 |
+| ScalarR, same fields | 14% | 15% | 14% | 16% | 5,558 | 54.4 | 14% | 1.95 |
+
+Under the posture the wall set takes one point off the hit rate at the wall (18% to 17%) and the head-on band
+(21% to 19%), inside the noise of 6,000 bullets, and Hadur is still hit 3 points more than ScalarR per aimed bullet
+and takes 19 more damage a round. The stop and the short steps along the wall are not the wall dodge either. All
+wall-set code (`WALL_SET_ROOM`, `addWallSet`, the re-rank pool entry) and the `pwall`/`pwallpf` arms were removed;
+the mover is as on master.
+
+**What the wall study leaves.** Three quick fixes (no past-position penalty, a doubled linear guess, a wall
+candidate set ring-ranked and then wave-scored) and the set under the posture all leave Hadur's hit rate at the wall
+where it was. The design that fails there is the min-risk mover with a wave check bolted on: it ranks 160 ring
+points by a risk sum, hands eight of them to the waves, and drives in straight lines. ScalarR's melee surf is the
+other way round: five short steps, each scored by the waves two deep plus a crowd term, re-chosen every tick. Hadur
+dodges as well as ScalarR in the open with the mover it has; it cannot hold ScalarR's posture with it. The remaining
+lever is that surf, a build and not an arm, read by the same wall table before any score.
+
+## The step surf (MMOVE-28, 2026-11-10)
+
+The build the wall study ends in: `StepSurf` behind `MinimumRiskMovement.STEP_SURF` (off; arm `mstep`). Five 140 px
+steps a tick (the anti-gravity direction with a weak pull to the nearest corner, on, back, left, right), each driven
+through the nine soonest shots in flight and scored `(20 x wave damage / damage in air + crowd / crowd now) x
+(1 + crowd / crowd now)`, the crowd being each opponent's energy over Hadur's (0.25..4) over distance squared plus
+collision penalties. No wall, corner or centre term. Read on the same 12 ScalarR fields, seed 5800, 20 rounds.
+
+| Hadur arm | place | crowd deaths | damage taken / round | hit per aimed bullet | at the wall (<60 px) | head-on there | corner share | speed | nearest px |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| master | 2.76 | 21% | 66.9 | 12% | 13% | 12% | 17% | 6.2 | 443 |
+| ScalarR | 1.94 | 14% | 54.4 | 13% | 14% | 15% | 43% | 5.3 | 521 |
+| mstep build 1 (steps clipped at the wall) | 3.97 | 48% | 98.9 | 23% | 24% | 29% | 64% | 3.8 | 490 |
+
+Build 1 took ScalarR's posture (corner 64%, nearest 490) and was shot to pieces there: 29% of head-on aims hit it at
+the wall, its speed fell to 3.8. The cause is the wall: a 140 px step into it was clipped to a short or empty move,
+so in a corner all five steps collapsed onto the spot, and the surf stood. Build 2 slides a step along the wall at
+full length instead (turned by the least angle that keeps it inside the margin), as the leader's "orbital smoothing"
+does.
+
+| Hadur arm | place | crowd deaths | damage taken / round | hit per aimed bullet | at the wall (<60 px) | head-on there | wall share of ticks | speed | still ticks at the wall |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| ScalarR | 1.94 | 14% | 54.4 | 13% | 14% | 15% | 76% | 5.0 | 12% |
+| mstep build 2 (steps slide along the wall) | 3.80 | 44% | 86.5 | 21% | 23% | 27% | 77% | 4.4 | 17% |
+
+Build 2 holds ScalarR's posture to the tick (77% of ticks under 60 px of wall room against 76%, speed 4.4 against
+5.0) and is still hit by 27% of the head-on aims there against ScalarR's 15%. Head-on hits on a robot that moves are
+the waves it does not see: the surfer drops a shot whose crowd weight is under 0.1, that is any shot with three or
+more robots nearer its shooter, and in a corner most shots at Hadur come from such shooters (they pick targets by
+hittability, not nearness, as the ScalarR read found). Build 3 rides every shot, weighted by the field's measured
+chance it is at Hadur given k nearer robots (the MMOVE-27 curve, 1 to 0.15), as the leader surfs every wave in the
+air as a mixture over its possible targets.
+
+| Hadur arm | place | crowd deaths | damage taken / round | hit per aimed bullet | at the wall (<60 px) | head-on there | net move in 25 ticks at the wall | reversals / 100 ticks |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| ScalarR | 1.94 | 14% | 54.4 | 13% | 14% | 15% | 104 px | 1.7 |
+| mstep build 3 (every shot ridden) | 3.84 | 45% | 84.8 | 21% | 22% | 27% | 86 px | 4.2 |
+
+Riding every shot changed nothing (22% at the wall, head-on 27%), so the dropped shots were not the cause. The
+oscillation reader (scratchpad sc/osc.py) shows the surf is not standing or shuttling: 86 px net in a bullet's
+flight against ScalarR's 104, reversals 4.2 against 1.7 per 100 ticks. What it does do is ask for side steps: the
+seam drives to a destination over 45 degrees off the heading at 4 px a tick while the body turns at Robocode's
+10 - 0.75 |v| degrees a tick, and the first drive simulation turned on the spot at full speed. So the surf chose
+side steps it believed would clear a wave and the robot swung slowly through it: head-on hits. Build 4 simulates the
+drive as the seam makes it (turn rate, the 4 px cap under a sharp turn, reversal through zero), so the on and back
+steps, which need no turn, win when the wave is close and the side steps only when there is time.
+
+| Hadur arm | place | crowd deaths | damage taken / round | hit per aimed bullet | at the wall (<60 px) | head-on there | ticks at speed 8 at the wall | reversals per bullet flight (hit / miss) | net lateral px in flight (hit / miss) |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| master | 2.76 | 21% | 66.9 | 12% | 13% | 12% | 50% | 0.28 / 0.37 | 64 / 128 |
+| ScalarR | 1.94 | 14% | 54.4 | 13% | 14% | 15% | 39% | 0.71 / 0.73 | 47 / 92 |
+| mstep build 4 (seam's drive simulated) | 4.08 | 50% | 92.7 | 22% | 23% | 28% | 28% | 2.94 / 2.60 | 28 / 75 |
+
+Build 4 read the same as 2 and 3. The flight forensic (scratchpad sc/hitpath.py: what the target did between a
+bullet's fire and its pass, for bullets aimed at it with under 60 px of wall room) names the fault: the surf
+reverses about three times in one bullet's flight, ScalarR 0.7 and the ring mover 0.3; its speed in flight is 3.6
+against 4.9 and 5.8; it ends 28 px to the side of where it was aimed at when it is hit, ScalarR 47 and the ring mover
+64. A step chosen afresh every tick from five directions flips between on and back as the waves come and go, so the
+robot shuttles and the head-on aim finds it. Build 5 holds the step chosen last tick: it is scored again from the
+current state and kept unless another step's danger is under 0.8 of its own, until it is within 20 px.
+
+| Hadur arm | place | crowd deaths | damage taken / round | hit per aimed bullet | at the wall (<60 px) | head-on there | speed at the wall | lateral speed | reversals per flight (hit / miss) | net lateral px (hit / miss) |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| ScalarR | 1.94 | 14% | 54.4 | 13% | 14% | 15% | 5.0 | 3.7 | 0.71 / 0.73 | 47 / 92 |
+| mstep build 5 (held step) | 3.30 | 32% | 78.3 | 18% | 20% | 23% | 5.4 | 3.7 | 0.64 / 0.44 | 38 / 91 |
+
+The hold moved every number (place 4.08 to 3.30, crowd deaths 50% to 32%, damage 92.7 to 78.3, hit per aimed
+bullet 22% to 18%) and brings the movement itself level with ScalarR's: the same speed, the same lateral speed, the
+same reversals, the same lateral distance on a miss. What is left is the dodge's choice: hit by 23% of head-on aims
+at the wall against 15%, ending within 0.15 of the head-on line on 71% of its hits. The wave profile the surf scores
+against is a Gaussian a box half-width over 2 wide (about one degree at 500 px), so a step a bot's width beside the
+head-on line reads as safe, and a tick of the shooter's latency or a bot of lead puts the bullet there. The leader's
+kernel is over a bot wide with fat tails. Build 6 scores the step surf's waves through a kernel three times as wide
+(`StepSurf.SPREAD`, the ring mover's profile untouched).
+
+| Hadur arm | place | crowd deaths | damage taken / round | hit per aimed bullet | at the wall (<60 px) | head-on there |
+|---|---:|---:|---:|---:|---:|---:|
+| mstep build 5 (held step) | 3.30 | 32% | 78.3 | 18% | 20% | 23% |
+| mstep build 6 (kernel three times wider) | 3.69 | 43% | 86.4 | 19% | 21% | 24% |
+
+The wider kernel did not help (a point worse everywhere, more reversals); the spread constant and its plumbing were
+removed. The per-shooter read on build 5 (scratchpad sc/shooter.py: for each gun, bullets aimed at Hadur and at
+ScalarR in the same battles and the hit rate on each) says which guns find the surf: the simple ones. NanoAndrew hits
+Hadur with 31% of its aimed bullets and ScalarR with 7%, JollyNinja 25% against 8%, Predator 21% against 8%,
+Firestarter 19% against 7%, Anomaly 27% against 14%; ScalarR's own gun hits Hadur at 15%, the same as Hadur's hits
+ScalarR (14%). Head-on and linear guns fire where the target is or will be at a steady speed, and build 5 gave them
+that: it held the step as a point, so the seam braked to it at every leg's end (every 140 px, about 20 ticks, twice
+in a bullet's flight) and the next leg began from rest. Build 7 holds the step's direction instead: each tick the
+held step is a fresh 140 px step the same way (slid along a wall as the others), so the robot never brakes but to
+turn, and still changes direction only when another step is clearly safer.
+
+| Hadur arm | place | crowd deaths | damage taken / round | hit per aimed bullet | at the wall (<60 px) | head-on there | wall share of ticks | damage dealt / round |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| master | 2.76 | 21% | 66.9 | 12% | 13% | 12% | 27% | 129.9 |
+| ScalarR (in the master fields) | 1.94 | 14% | 54.4 | 13% | 14% | 15% | 79% | 164.1 |
+| mstep build 7 (direction held) | 3.29 | 34% | 72.5 | 16% | 18% | 21% | 67% | 114.9 |
+| ScalarR (in the build 7 fields) | | | 63.1 (3+ alive) | 14% | | | 76% | 176.1 (guns.py) |
+
+Build 7 is the best step surf so far: damage taken 92.7 (build 4) to 78.3 (5) to 72.5, hit per aimed bullet 22% to
+16%, and the per-shooter read is now mixed (Figment 20% on Hadur against 16% on ScalarR, Scimitar 10% against 13%,
+Numbat 18% against 22%; overall 16% against 14%). In the same battles ScalarR takes 63.1 a round in the crowd to
+Hadur's 73.5 (sc/dmg.py): 6% more hits on Hadur and bullets 10% heavier (power 1.98 against 1.81). So the dodge
+under ScalarR's posture is within about 14% of ScalarR's, from 70% behind at build 1.
+
+**Why the place is still worse, and what it says about the gap.** With the posture reached, Hadur's place falls
+(3.29 against the ring mover's 2.76) because its gun does less from the corner: 114.9 damage dealt a round against
+129.9 under its own posture, where ScalarR deals 164-176 from the same corners. The gun read (sc/guns.py,
+targets.py) puts the whole of that on the gun, not the posture: ScalarR hits 39% of its shots to Hadur's 30% at a
+longer target distance (755 px against 666), and on every target both shot thirty times or more ScalarR's hit rate
+is 8 to 15 points higher (Scimitar 28% against 12%, Numbat 24% against 11%, Predator 28% against 18%, Mercutio 23%
+against 15%), at every distance band and every target speed; the gap is widest on targets moving at 4-5 px a tick
+(31% against 24%) and smallest on still ones (33% against 31%). In energy a round, ScalarR's gun returns about 25
+more than Hadur's and its dodge saves about 10: under the leader's posture the gun is the larger half of the gap,
+and it is the same gap under Hadur's own posture (30% against 38% in the master fields). The step surf stays off
+behind its switch as the movement for that posture; the next build is the gun's prediction of a moving target.
