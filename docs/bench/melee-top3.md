@@ -706,3 +706,17 @@ against 4.9 and 5.8; it ends 28 px to the side of where it was aimed at when it 
 64. A step chosen afresh every tick from five directions flips between on and back as the waves come and go, so the
 robot shuttles and the head-on aim finds it. Build 5 holds the step chosen last tick: it is scored again from the
 current state and kept unless another step's danger is under 0.8 of its own, until it is within 20 px.
+
+| Hadur arm | place | crowd deaths | damage taken / round | hit per aimed bullet | at the wall (<60 px) | head-on there | speed at the wall | lateral speed | reversals per flight (hit / miss) | net lateral px (hit / miss) |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| ScalarR | 1.94 | 14% | 54.4 | 13% | 14% | 15% | 5.0 | 3.7 | 0.71 / 0.73 | 47 / 92 |
+| mstep build 5 (held step) | 3.30 | 32% | 78.3 | 18% | 20% | 23% | 5.4 | 3.7 | 0.64 / 0.44 | 38 / 91 |
+
+The hold moved every number (place 4.08 to 3.30, crowd deaths 50% to 32%, damage 92.7 to 78.3, hit per aimed
+bullet 22% to 18%) and brings the movement itself level with ScalarR's: the same speed, the same lateral speed, the
+same reversals, the same lateral distance on a miss. What is left is the dodge's choice: hit by 23% of head-on aims
+at the wall against 15%, ending within 0.15 of the head-on line on 71% of its hits. The wave profile the surf scores
+against is a Gaussian a box half-width over 2 wide (about one degree at 500 px), so a step a bot's width beside the
+head-on line reads as safe, and a tick of the shooter's latency or a bot of lead puts the bullet there. The leader's
+kernel is over a bot wide with fat tails. Build 6 scores the step surf's waves through a kernel three times as wide
+(`StepSurf.SPREAD`, the ring mover's profile untouched).

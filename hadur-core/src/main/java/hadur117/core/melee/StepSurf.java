@@ -39,6 +39,12 @@ final class StepSurf {
     static final double TURN_SPEED = 4;
     /** A move slower than this a tick counts as standing: the step's own direction replaces the heading. */
     static final double STILL = 0.5;
+    /**
+     * The wave profile's kernel width, as a multiple of the ring mover's (a box half-width over
+     * 2, about one degree at 500 px). Build 5 sat a bot's width beside the head-on line and was
+     * hit there; the leader's kernel is over a bot wide with fat tails.
+     */
+    static final double SPREAD = 3;
     /** The held step's danger is scaled by this: another step must be clearly safer to take over. */
     static final double HOLD_GAIN = 0.8;
     /** A held step this close is reached: the steps are chosen afresh. */
@@ -244,7 +250,7 @@ final class StepSurf {
             }
             crowd += crowd(new Point2D.Double(x, y), energy, foes);
             ticks = t;
-            waveDamage += MinimumRiskMovement.waveHits(x, y, now + t, waves, done);
+            waveDamage += MinimumRiskMovement.waveHits(x, y, now + t, waves, done, SPREAD);
             boolean all = true;
             for (boolean b : done) all &= b;
             if (all && left <= 0.01) break;
