@@ -63,10 +63,11 @@ public class Saor extends AdvancedRobot {
     }
 
     /**
-     * WTB, Saor's own movement (0.4 candidate, docs/bench/saor-0.4-own-parts.md). In the crowd: legs
+     * WTA, Saor's own movement (0.4 candidate, docs/bench/saor-0.4-own-parts.md). In the crowd: legs
      * between the two walls of the corner we are in, 25 off the wall, crossing to the other wall at
-     * each leg end; the depth along the wall is recomputed every tick as half the range of the robot
-     * that last hit us (the nearest until one has, at most 260). From two robots left: an orbit,
+     * each leg end; the depth along the wall is recomputed every tick as half the range of the
+     * nearest robot whose own nearest robot is us (the one most likely aiming at us), else of the
+     * robot that last hit us, else of the nearest, at most 260. From two robots left: an orbit,
      * perpendicular to the target and edging to 300 away, reversing at the walls and at random
      * about every 25 ticks.
      */
@@ -89,7 +90,24 @@ public class Saor extends AdvancedRobot {
             if (getDistanceRemaining() == 0) {
                 axis ^= 1;
             }
-            double x = Math.min(260, (threat == null ? targetDistance : threatRange) / 2);
+            // The nearest robot whose own nearest robot is us.
+            double aim = Double.POSITIVE_INFINITY;
+            for (int i = 0; i < 512; i++) {
+                if (seenE[i] > 0) {
+                    double d = Point2D.distance(myX, myY, seenX[i], seenY[i]);
+                    boolean ours = d < aim;
+                    for (int j = 0; ours && j < 512; j++) {
+                        if (j != i && seenE[j] > 0
+                                && Point2D.distance(seenX[i], seenY[i], seenX[j], seenY[j]) < d) {
+                            ours = false;
+                        }
+                    }
+                    if (ours) {
+                        aim = d;
+                    }
+                }
+            }
+            double x = Math.min(260, (aim < 1e9 ? aim : threat == null ? targetDistance : threatRange) / 2);
             double y = 25;
             if (axis > 0) {
                 y = x;
