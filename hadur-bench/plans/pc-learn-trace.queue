@@ -24,6 +24,9 @@
 # (bb is another robot's jar and skips by design), or no battle in 30 minutes; every battle fought is kept and a rerun
 # resumes. No dead-arm rule: bb scoring nothing against a robot is a finding, not a defect. ALERT opens an issue for
 # Leigh on any stop. The bench drops broken-1.11.2.txt's robots from the set before it starts (BENCH-169).
+# If the trace step cannot finish (a robot that never ends its battle), stop the queue and run the rest on the
+# kept battles: .\queue.ps1 run pc-learn-trace-read (the same read and results PR, with arms.tsv rebuilt from
+# the battles' rows by tools/arms_from_battles.py, since the bench writes it only when every battle has run).
 
 set V = 3.21
 set P = --parallel 12 --failed-ok
@@ -40,7 +43,7 @@ trace | ./bench-top20.sh ${C} ${P} --set census-312.txt --seeds 1 --seed-base 11
   stop: skips 60 over 200 arms c
   stop: stall 30m
 
-read | python3 -I ../data/tools/learn_trace.py ${W} --base c --other bb --set census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_learn-trace-field-read.md && python3 ../data/tools/multiarm.py ${W}/arms.tsv --census census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_learn-trace-field.md
+read | python3 tools/arms_from_battles.py ${W} && python3 -I ../data/tools/learn_trace.py ${W} --base c --other bb --set census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_learn-trace-field-read.md && python3 ../data/tools/multiarm.py ${W}/arms.tsv --census census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_learn-trace-field.md
   after: trace
 
 pr | bash tools/open_results_pr.sh claude/pc-learn-trace-results "1v1 trace study over the whole field: every gun against Hadur and against BeepBoop" ${OUT}/*_learn-trace-field*.md

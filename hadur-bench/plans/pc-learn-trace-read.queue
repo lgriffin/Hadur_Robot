@@ -1,0 +1,17 @@
+# The read and results PR of pc-learn-trace (BENCH-221) on the battles it kept, for when its trace step cannot finish
+# (2026-11-10: one battle never ended, twice, and the stall rule halted the step at 2,387 of 2,388). Leigh stops the
+# stuck queue first, then (from master):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-learn-trace-read        (or  ./queue.sh run pc-learn-trace-read)
+# No battles. tools/arms_from_battles.py writes work/learn-trace-pc/arms.tsv from the battles' own rows (the bench
+# writes it only when every battle has run); the read and the results PR are pc-learn-trace's own.
+
+set V = 3.21
+set W = work/learn-trace-pc
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+read | python3 tools/arms_from_battles.py ${W} && python3 -I ../data/tools/learn_trace.py ${W} --base c --other bb --set census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_learn-trace-field-read.md && python3 ../data/tools/multiarm.py ${W}/arms.tsv --census census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_learn-trace-field.md
+
+pr | bash tools/open_results_pr.sh claude/pc-learn-trace-results "1v1 trace study over the whole field: every gun against Hadur and against BeepBoop" ${OUT}/*_learn-trace-field*.md
+  after: read
