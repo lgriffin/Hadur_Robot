@@ -1,15 +1,15 @@
 # Queue pc-learn-trace: progress
 
-Updated 2026-11-10 18:56:19 PC time (18:56 UTC), runner pid 19896.
+Updated 2026-11-10 19:03:23 PC time (19:03 UTC), runner pid 19896.
 
 - `prep` done, exit 0 in 0 min
-- `trace` running
+- `trace` halted, exit 75 in 3.4 h, HALTED by stall 30m: last battle 30 min ago
 - `read` pending
 - `pr` pending
 
 ### trace
 
-**2387 of 2388 battles** (100%), 5 failed. Running 3.3 h, 4 battles/h, about 15 min left (ends ~19:11 PC time). Last battle 23 min ago.
+**2387 of 2388 battles** (100%), 5 failed. Running 3.4 h, 704 battles/h, about 0 min left (ends ~19:03 PC time). Last battle 30 min ago.
 Skipped turns a battle: 45.5 overall, first 100 56.4, last 100 49.2; engine disables 460.
 
 | arm | battles | failed | share | vs control (pts) | 95% | stop-rule bound (z 3) | skips |
@@ -21,9 +21,9 @@ Skipped turns a battle: 45.5 overall, first 100 56.4, last 100 49.2; engine disa
 |---|---|---|---|
 | `fails 30` | halt | ok | 5 failed of 2387 |
 | `skips 60 over 200 arms c` | halt | ok | 58.1 a battle over the last 200 (first 200: 56.8) |
-| `stall 30m` | halt | ok | last battle 23 min ago |
+| `stall 30m` | halt | TRIPPED | last battle 30 min ago |
 
-Stopping now would leave 1 battles unrun (about 15 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 1 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 > warning: arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 842 h before this step started: check it is not stale
 
@@ -43,4 +43,6 @@ Stopping now would leave 1 battles unrun (about 15 min); every battle already fo
 17:41:36 progress trace: 1960/2388 (82%) battles, 876/h, ETA 29 min, 4 failed, skips 38.4/battle (last 100), bb +1.84
 18:11:54 progress trace: 2349/2388 (98%) battles, 772/h, ETA 3 min, 4 failed, skips 53.1/battle (last 100), bb +1.89
 18:42:11 progress trace: 2387/2388 (100%) battles, 60/h, ETA 1 min, 5 failed, skips 49.2/battle (last 100), bb +1.87
+19:03:23 STOP trace by rule stall 30m: last battle 30 min ago; 2387 battles fought and kept, 1 battles left unrun (about 0 min)
+19:03:23 trace exit=75 in 12214 s (halted, stall 30m)
 ```

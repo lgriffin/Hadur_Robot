@@ -11,3 +11,5 @@
 17:41:36 progress trace: 1960/2388 (82%) battles, 876/h, ETA 29 min, 4 failed, skips 38.4/battle (last 100), bb +1.84
 18:11:54 progress trace: 2349/2388 (98%) battles, 772/h, ETA 3 min, 4 failed, skips 53.1/battle (last 100), bb +1.89
 18:42:11 progress trace: 2387/2388 (100%) battles, 60/h, ETA 1 min, 5 failed, skips 49.2/battle (last 100), bb +1.87
+19:03:23 STOP trace by rule stall 30m: last battle 30 min ago; 2387 battles fought and kept, 1 battles left unrun (about 0 min)
+19:03:23 trace exit=75 in 12214 s (halted, stall 30m)
