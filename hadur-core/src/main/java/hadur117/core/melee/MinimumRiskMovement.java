@@ -390,9 +390,11 @@ public class MinimumRiskMovement {
             RobotState at = myPath.getState(s.fireTime);
             if (at == null) at = myPath.getState(s.fireTime + 1);
             Point2D.Double target = at == null ? me : at.location;
-            double w = crowdWeight(s, target, enemies);
-            weighed.put(s, new Weighed(nearer(s, target, enemies), w));
-            if (w < SOFT_FLOOR) continue;
+            int k = nearer(s, target, enemies);
+            // MMOVE-28: the step surf rides every shot, each at the field's measured chance it is at Hadur.
+            double w = STEP_SURF ? StepSurf.aimedWeight(k) : crowdWeight(s, target, enemies);
+            weighed.put(s, new Weighed(k, w));
+            if (!STEP_SURF && w < SOFT_FLOOR) continue;
             List<TeamDanger.Aim> aims = at != null ? danger.aims(s, at) : null;
             if (aims != null) {
                 // The SURF_AIMS nearest aims carry the shot's whole weight: melee has many shots

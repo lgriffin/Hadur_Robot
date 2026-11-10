@@ -41,7 +41,18 @@ final class StepSurf {
     static final double SMOOTH_TURN = Math.PI / 18;
     static final int SMOOTH_STEPS = 9;
 
+    /**
+     * The chance a shot is at Hadur given k living opponents nearer its shooter, from 63,408
+     * traced census shots (docs/bench/melee-top3.md): the surf rides every shot at this weight,
+     * where the ring mover drops a shot under 1/(1+k)^2 = 0.1.
+     */
+    static final double[] AIMED = {1, 0.42, 0.29, 0.25, 0.25, 0.21, 0.19, 0.19, 0.15};
+
     private StepSurf() {}
+
+    static double aimedWeight(int k) {
+        return AIMED[Math.min(k, AIMED.length - 1)];
+    }
 
     /** One opponent as the surf sees it. */
     static final class Foe {

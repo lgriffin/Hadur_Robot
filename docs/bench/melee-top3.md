@@ -665,3 +665,16 @@ the wall, its speed fell to 3.8. The cause is the wall: a 140 px step into it wa
 so in a corner all five steps collapsed onto the spot, and the surf stood. Build 2 slides a step along the wall at
 full length instead (turned by the least angle that keeps it inside the margin), as the leader's "orbital smoothing"
 does.
+
+| Hadur arm | place | crowd deaths | damage taken / round | hit per aimed bullet | at the wall (<60 px) | head-on there | wall share of ticks | speed | still ticks at the wall |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| ScalarR | 1.94 | 14% | 54.4 | 13% | 14% | 15% | 76% | 5.0 | 12% |
+| mstep build 2 (steps slide along the wall) | 3.80 | 44% | 86.5 | 21% | 23% | 27% | 77% | 4.4 | 17% |
+
+Build 2 holds ScalarR's posture to the tick (77% of ticks under 60 px of wall room against 76%, speed 4.4 against
+5.0) and is still hit by 27% of the head-on aims there against ScalarR's 15%. Head-on hits on a robot that moves are
+the waves it does not see: the surfer drops a shot whose crowd weight is under 0.1, that is any shot with three or
+more robots nearer its shooter, and in a corner most shots at Hadur come from such shooters (they pick targets by
+hittability, not nearness, as the ScalarR read found). Build 3 rides every shot, weighted by the field's measured
+chance it is at Hadur given k nearer robots (the MMOVE-27 curve, 1 to 0.15), as the leader surfs every wave in the
+air as a mixture over its possible targets.

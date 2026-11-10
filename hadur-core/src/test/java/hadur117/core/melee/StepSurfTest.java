@@ -63,6 +63,16 @@ class StepSurfTest {
 
     @Test
     @Tag("MMOVE-28")
+    @DisplayName("MMOVE-28: every shot is ridden, at the field's chance it is at Hadur given the nearer robots")
+    void aimedWeight() {
+        assertEquals(1.0, StepSurf.aimedWeight(0), 1e-12);
+        assertEquals(0.42, StepSurf.aimedWeight(1), 1e-12);
+        assertEquals(0.15, StepSurf.aimedWeight(8), 1e-12);
+        assertEquals(0.15, StepSurf.aimedWeight(20), 1e-12);
+    }
+
+    @Test
+    @Tag("MMOVE-28")
     @DisplayName("MMOVE-28: the soonest nine waves within 30 ticks of the first are surfed")
     void soonest() {
         Point2D.Double me = pt(500, 500);
