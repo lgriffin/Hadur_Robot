@@ -70,8 +70,6 @@ public final class AimMembers {
     private final double[] score;
     /** MOVE-33: the mimic members after the aims (0 without them). */
     private final int mimics;
-    /** MOVE-35: whether the field prior is the last member. */
-    private final boolean fieldPrior;
     private int bullets;
 
     /** The views and the aims (MOVE-29). */
@@ -81,17 +79,8 @@ public final class AimMembers {
 
     /** MOVE-33: the views, the aims, then {@code mimics} learning-gun mimics. */
     public AimMembers(int mimics) {
-        this(mimics, false);
-    }
-
-    /**
-     * MOVE-35: the views, the aims, {@code mimics} learning-gun mimics, then the field prior
-     * ({@link FieldPrior}, standing weight {@value FieldPrior#WEIGHT}) when {@code fieldPrior}.
-     */
-    public AimMembers(int mimics, boolean fieldPrior) {
         this.mimics = Math.max(0, mimics);
-        this.fieldPrior = fieldPrior;
-        this.score = new double[MEMBERS + this.mimics + (fieldPrior ? 1 : 0)];
+        this.score = new double[MEMBERS + this.mimics];
     }
 
     /** Every member: the views, the aims, then the mimics. */
@@ -104,15 +93,9 @@ public final class AimMembers {
         return mimics;
     }
 
-    /** MOVE-35: whether the field prior is the last member. */
-    public boolean fieldPrior() {
-        return fieldPrior;
-    }
-
     /** Each member's weight now: its standing weight times 2^(POWER x score). */
     public double weight(int member) {
-        double standing = member == 0 ? 1.0 : member < MEMBERS ? PRIOR
-            : member < MEMBERS + mimics ? MIMIC_PRIOR / mimics : FieldPrior.WEIGHT;
+        double standing = member == 0 ? 1.0 : member < MEMBERS ? PRIOR : MIMIC_PRIOR / mimics;
         return standing * Math.pow(2.0, POWER * score[member]);
     }
 

@@ -672,7 +672,6 @@ endgame MEND-1, 2).
 | `GunDesign.TRIPHAMMER`, `FREE_GUN`, `UNDECAYED` | GUN-8..11 | off | The gun stack; per-opponent `gun-stack:` slot, empty |
 | `MoveDesign.HEAT_WAVE` | MOVE-11 | off | Forces heat-jit on everyone; per-opponent picks come from the table (`heat-jit:`, MOVE-28) |
 | `MoveDesign.MIMIC_MEMBERS` | MOVE-33 | off | Forces the learning-gun mimics among the aim members; per-opponent `mimic-on:` (MOVE-34) |
-| `MoveDesign.OPPONENT_PRIOR` | MOVE-38 | off | The opponent's own prior (an offline table of where that gun shot in recorded battles) as the last aim member |
 | `MoveDesign.AES_RECORD`, `ORACLE_RECORD` | AES-1, ORACLE-1 | off | Telemetry recorders for the bench's studies |
 
 **Melee (off a team only)**
