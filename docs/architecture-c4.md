@@ -679,7 +679,6 @@ endgame MEND-1, 2).
 | Switch | Req | State | What it does |
 |---|---|---|---|
 | `MinimumRiskMovement.MELEE_SURF` | MMOVE-15 | **on**, master only (3.21) | The melee surfer: crowd-weighted shots, learned aims, wave re-rank |
-| `MinimumRiskMovement.MELEE_WAVE_TICKS` | MMOVE-29 | 30, arm `mdeep` 60 | Ticks the melee surfer's wave check drives each candidate; two waves deep at 60 |
 | `MeleeController.MELEE_CROSS` | MMOVE-19 | **on**, master only (3.21) | Learn a shooter's aim from its hits on others |
 | `MeleeEnergyPolicy.CROWD_OGI` | MGUN-13 | **on** | Ogi's crowd power, 3 up close |
 | `MeleeEnergyPolicy.OGI_WIDE` | MGUN-16 | **on** (3.19) | Power 3 out to 300 px |

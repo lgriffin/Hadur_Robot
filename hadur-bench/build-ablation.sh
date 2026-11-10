@@ -854,12 +854,6 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeController.java" \
                 "public static final boolean MELEE_CROSS = false;" "public static final boolean MELEE_CROSS = true;"
             version="${version}xh" ;;
-        mdeep)
-            # MMOVE-29: the melee surfer's wave check drives each candidate 60 ticks instead of 30, so a
-            # shooter's next wave in the air is scored too (cloud paired smoke first). Suffix md.
-            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
-                "static final int MELEE_WAVE_TICKS = 30;" "static final int MELEE_WAVE_TICKS = 60;"
-            version="${version}md" ;;
         msurf)
             # The melee surfer (MMOVE-15), off a team only; duel and team fixtures bit for bit. It ships
             # on from 3.21, so on master msurf builds the robot as it is.

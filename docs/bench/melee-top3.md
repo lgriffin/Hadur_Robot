@@ -836,8 +836,10 @@ the PC three times.
 
 ### The paired census smoke: the step surf fails (2026-11-10)
 
-`mstep` (build 7) against master, 12 census fields, 2 seeds from 5900, 35 rounds, paired by seed (scratchpad
-mc/pair.py):
+`mstep` (build 7) against master, 12 census fields, 2 seeds from 5900, 35 rounds, paired by seed. The repo's
+paired view reproduces the headline from the smoke's work directory (`python3 data/tools/melee_pairwise.py --work
+<smoke dir> --hadur hadur117.Hadur`): APS 65.9 against 68.5, -2.6 +/- 0.4 over the 24 cells, every field down. The
+rows below add the bench's exposure columns (`exposure.csv`, `rounds.csv`), read per (field, seed) pair the same way:
 
 | | step surf | master | diff (95%) |
 |---|---:|---:|---|
@@ -941,3 +943,20 @@ difference from ScalarR's two waves deep, so it is measured rather than reasoned
 robot as on 3.21) is the melee surfer's own horizon, the team dodge keeps `WAVE_TICKS`, and arm `mdeep` sets it to
 60. The same paired census smoke as the step surf's runs on it (12 fields, 2 seeds from 5900, 35 rounds); if it is
 flat or worse the switch and arm come out.
+
+The smoke, `mdeep` against master, 12 fields, 2 seeds from 5900, 35 rounds, 24 pairs (same reader as the step
+surf's, and the repo's paired view):
+
+| | mdeep (60 ticks) | master (30) | diff (95%) |
+|---|---:|---:|---|
+| score share | 19.10 | 19.04 | +0.06 ± 0.47 |
+| APS (data/tools/melee_pairwise.py) | 68.8 | 68.7 | +0.1 ± 0.6 |
+| crowd deaths | 26.9% | 27.1% | -0.2 ± 4.5 |
+| crowd damage taken (per 100 crowd ticks) | 8.18 | 8.31 | -0.13 ± 0.62 |
+| survival score | 13,435 | 13,338 | +98 ± 243 |
+
+Flat on every column. Scoring the shooter's second wave while dodging the first changes nothing the candidate
+re-choice each tick was not already doing once the wave came into the 30-tick horizon. MMOVE-29 is retired and
+the switch, arm and test are removed. With that, every route on the not-tried list is measured: the melee
+survival line is closed on the cloud until a new direction is chosen, and the melee levers that have paid since
+3.19 remain the firepower ones (MGUN-25 banked, unreleased).
