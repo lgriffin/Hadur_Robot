@@ -812,3 +812,24 @@ part. The one-part power imitation failed on the ring posture before (MGUN-22) a
 has to come with the hits, which means the gun must keep its hit count at the surf's range (ScalarR's does at 765 px)
 or the surf must hold the posture nearer the crowd. Next: the gun's hold rules (why Hadur fires 9% less with lighter
 shots) and the hit rate by range for the two crowd guns at equal distance.
+
+### Why Hadur fires fewer shots: the gun-hold record (2026-11-10)
+
+The `gwhy` arm prints one line for every tick the gun is cool with energy to spare, saying what happened (F fired,
+A still turning to the aim, H the brain held fire, T no target). On the traced ScalarR fields, with the ring mover
+and under the step surf:
+
+| mover | cool ticks | fired | turning | held | no target |
+|---|---:|---:|---:|---:|---:|
+| ring (master) | 27,355 | 43% | 29% | 16% | 12% |
+| step surf | 23,424 | 44% | 30% | 18% | 8% |
+
+The shares are the same; the surf has 14% fewer cool ticks because Hadur is dead sooner. So the lower cadence is
+survival, not a hold rule, and the aim-turning share (a third of cool ticks) is the one the 3.13 study already
+tried to cut (gtol, gwin: firing sooner added the poor shots and left damage level). At equal range the two crowd
+guns are within a few points at every band (sc/range.py: 400-599 px 29% against 35%, 600-799 28% against 30%,
+800-999 30% against 29%) and differ in power by 0.3 to 0.6 beyond 400 px (1.96-2.05 against 2.28-2.58). The crowd
+gun gap is power that ScalarR can afford because it is hit less; the step surf buys that survival in the crowd and
+pays 18% of the hits for it at the range it chooses. The two have to be scored together: a paired census smoke of
+`mstep` against master (12 fields, 2 seeds, 35 rounds) runs next, knowing that 24-pair melee smokes have over-read
+the PC three times.
