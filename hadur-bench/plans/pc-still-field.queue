@@ -1,0 +1,48 @@
+# 1v1, six shield list adds from the cloud still-shield field screen on fresh PC seeds (BENCH-223,
+# docs/bench/local/2026-11-09_view-rank.md, "Still-shield field screen"). Leigh starts it once the PC is free (one card
+# at a time, from master):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-still-field        (or  ./queue.sh run pc-still-field)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes; no step needs a
+# decision. About 15 minutes of battles (6 robots x 3 arms x 12 seeds = 216).
+#
+# Why it should win (the PC card rule of 2026-11-03):
+#   - Per-opponent tailoring: each line names one robot; every other robot, team and melee play bit for bit as master.
+#   - Same route as Ala (+7.34, PR #733/#734) and Saturn and OperatorZeze (PR #739/#740), which held on 12 PC seeds.
+#   - The cloud screen of 2026-11-10 put all 202 robots that BeepBoop 2.0 beats us on by 5+ points live (and that we do
+#     not shield) on the 3.21 shield with still lines, 3 seeds from 12100. Across all 202 the shield costs 3.7 points,
+#     so it is no field-wide switch; seven robots locked at 3 points. Six are on this card: X2 +13.9, Parallax +8.3,
+#     Aardvark +6.6, MoojukNano +6.2, Che +4.6, SmallDevil +3.7. Musashi (+21.3) already failed this arm on 12 PC
+#     seeds (BENCH-209, -3.0) and stays off.
+#   - Risk: three cloud seeds over-read; this card decides each robot on 12 fresh PC seeds against master and its A/A
+#     copy; a robot ships only at a 3-point margin with its 95% low end above 0.
+# gate: the per-robot pick (`mode_table.py --margin 3`, interval above 0) names the lines to ship; the APS gate reads mz
+# over the 1,217-robot field at a 0.005 bar with the 95% low end above 0, A/A inside its band. No pilot or futility
+# rule: six robots are too few for an interim read.
+# Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle
+# over the last 200, or no battle in 30 minutes; every battle fought is kept and a rerun resumes. ALERT opens an
+# issue for Leigh on any stop. Nothing here ships: on a pass a PR adds the held lines to ShieldListData and
+# ShieldTableData's stills for the next release.
+
+set V = 3.21
+set P = --parallel 12 --no-truth-log --failed-ok
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
+set W = work/still-field-pc
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && SHIELD_ADD=plans/still-field-add.txt SHIELD_STILL=plans/still-field-still.txt bash ./build-ablation.sh slistadd,szlist && test -f bisect/hadur117.Hadur_${V}mtzl.jar && ./fetch-opponents.sh --set panel-still-field.txt && mvn -q compile
+
+confirm | ./bench-top20.sh ${C} ${P} --set panel-still-field.txt --seeds 12 --seed-base 12200 --arms plans/pc-still-field.arms --out ${W} --label still-field-pc --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_still-field-pc.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm mz --panel panel-still-field.txt --bar 0.005 --out ${OUT}/$(date +%Y-%m-%d)_still-field-pc-gate.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 3 --out-tsv ${OUT}/still-field-pc-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_still-field-pc-pick.md && python3 tools/per_robot.py ${W}/arms.tsv --arms mz --out ${OUT}/$(date +%Y-%m-%d)_still-field-pc-per-robot.md --out-tsv ${OUT}/still-field-pc-per-robot.tsv
+  after: confirm
+
+pr | bash tools/open_results_pr.sh claude/pc-still-field-results "1v1 six field-screen robots on the shield list, 12 fresh seeds" ${OUT}/*_still-field-pc*.md ${OUT}/still-field-pc-per-robot.tsv $(find ${OUT} -maxdepth 1 -name still-field-pc-pick.tsv -size +0c)
+  after: gate

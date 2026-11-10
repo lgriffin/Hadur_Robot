@@ -1,0 +1,5 @@
+# Cloud still-shield field screen (2026-11-10): c is 3.21 (aa); mz the same with all 202 robots of plans/still-field.txt
+# on the shield list with SHIELD-21 still lines (each line acts on its own robot only). A per-robot 3-point pick names
+# candidates for a PC confirm card, as Ala (pc-ala-shield, +7.34) and the rescreen (Saturn, OperatorZeze) were.
+c | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
+mz | hadur117.Hadur 3.21mtzl | bisect/hadur117.Hadur_3.21mtzl.jar

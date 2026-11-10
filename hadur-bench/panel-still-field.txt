@@ -1,0 +1,8 @@
+# pc-still-field (BENCH-223): six of the seven robots the cloud still-shield field screen of 2026-11-10 locked at 3 points
+# (Musashi, the seventh, already failed this arm on 12 PC seeds, BENCH-209, and stays off).
+cjm.Che 1.2 | rank253-band4 | cjm.Che_1.2.jar
+djc.Aardvark 0.3.6 | rank678-band5 | djc.Aardvark_0.3.6.jar
+florent.XSeries.X2 0.17 | rank50-band2 | florent.XSeries.X2_0.17.jar
+rz.SmallDevil 1.502 | rank590-band5 | rz.SmallDevil_1.502.jar
+slugzilla.Parallax 0.1 | rank499-band5 | slugzilla.Parallax_0.1.jar
+stelo.MoojukNano 1.2 | rank793-band6 | stelo.MoojukNano_1.2.jar
