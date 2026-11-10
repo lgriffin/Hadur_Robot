@@ -61,8 +61,8 @@ def num(s):
 def parse_record(line):
     """One AES line (anything before 'AES,' is the harvester's prefix) as a dict, or None.
 
-    Keys: round, tick, fire, power, firing, sx, sy, chosen, views, options (3 entries, each None
-    or (total, terms list)).
+    Keys: round, tick, fire, power, firing, sx, sy, chosen, views, options (one entry per option the
+    surf rated, three or five, each None or (total, terms list)).
     """
     i = line.find("AES,")
     if i < 0:
@@ -74,7 +74,7 @@ def parse_record(line):
                "chosen": int(p[8]), "views": int(p[9])}
         width = FIXED + 2 * rec["views"] + 1
         at, options = 10, []
-        for _ in range(3):
+        while at < len(p):
             if p[at] == "0":
                 options.append(None)
                 at += 1
@@ -85,7 +85,7 @@ def parse_record(line):
                 return None
             options.append((total, terms))
             at += 2 + width
-        if at != len(p):
+        if len(options) < 3 or rec["chosen"] >= len(options):
             return None
         rec["options"] = options
         return rec
