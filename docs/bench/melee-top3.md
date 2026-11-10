@@ -910,3 +910,23 @@ Reported so the line is not called closed without saying what was left:
   against ScalarR's 0.66; every posture arm reached that only by standing in corners, where its hit rate per bullet
   rose. An arm that pays distance only against the robots whose guns shoot their nearest (the per-class read above
   says which) has not been tried; it depends on the choice read.
+
+### The per-shooter target choice (2026-11-10, sc/choice.py): the field curve already has it
+
+54,823 shots with an inferred target on the traced ScalarR fields, Hadur alive and three or more alive. Per
+shooter class the shares at its nearest robot run from 5% (stelo.Wang) to 65% (jok.PheonixM), at the weakest 6% to
+51%, at Hadur 3% to 31%, ScalarR 32/32/19%. Predicting "this shot is at Hadur", fitted on even rounds and scored on
+odd:
+
+| model | Brier | log loss |
+|---|---:|---:|
+| constant | 0.1529 | 0.484 |
+| field k-curve (robots nearer the shooter than Hadur; the MMOVE-27 weighting) | 0.1323 | 0.424 |
+| per-class k-curve | 0.1305 | 0.422 |
+| per-class k, whether Hadur is its nearest, whether its weakest | 0.1286 | 0.417 |
+
+Learning each gun's choice buys 3% of the Brier over the curve Hadur already uses. There is no per-shooter target
+model to build: which robot a gun shoots at is, for the surfer's purposes, the nearness order and little else, and
+the arm that would pay distance only against nearest-shooters has nothing to hold on to. Of the five untried
+routes above this closes the first and the last offline; the low-energy posture and the shadows were closed by the
+reads before it; two waves deep remains, with the stated reason it is not expected to move the dodge per bullet.
