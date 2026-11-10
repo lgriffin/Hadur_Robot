@@ -44,7 +44,6 @@ from collections import defaultdict
 from multiprocessing import Pool
 
 FIXED = 11  # AesRecord.FIXED
-RECORDED_VIEWS = False  # fit --recorded-views: keep the recorded view score, refit the fixed terms only
 LOW, HIGH, FIRST, HIT_RATE, SHADOWED, VIEW_SCORE, DAMAGE, UNCERTAIN, TTI, DIST_Q, ESCAPE = range(FIXED)
 VIEWS = ["simple", "normal", "recent1", "recent2", "recent3", "recent4", "recent5", "recent6",
          "lightFlattener", "flattener", "flattener2"]
@@ -339,10 +338,6 @@ def totals(d, x):
     with np.errstate(invalid="ignore", divide="ignore"):
         views = np.where(np.isnan(d.fallback), num_ / den, d.fallback)
     views = np.nan_to_num(views, nan=0.0)
-    if RECORDED_VIEWS:
-        # The views' score as the robot recorded it (after the simple-aim dodger and the
-        # members, which the re-blend above does not model): only the fixed terms are refitted.
-        views = np.nan_to_num(f[:, :, VIEW_SCORE], nan=0.0)
     first = ((alpha * f[:, :, HIT_RATE] * (1 - f[:, :, SHADOWED]) + views)
              * np.power(f[:, :, DAMAGE], beta) * np.where(f[:, :, UNCERTAIN] > 0, u, 1.0)
              / np.power(f[:, :, TTI], gamma) * np.power(big_b, f[:, :, DIST_Q]) / big_b * f[:, :, ESCAPE])
@@ -448,8 +443,6 @@ def read_ranks(path):
 
 def fit(args):
     import numpy as np
-    global RECORDED_VIEWS
-    RECORDED_VIEWS = bool(getattr(args, 'recorded_views', False))
     d = Data(args.data, args.groups)
     if args.bots:
         keep = set(read_ranks(args.bots))
@@ -550,9 +543,6 @@ def main(argv=None):
     fp.add_argument("--evals", type=int, default=3000)
     fp.add_argument("--sigma", type=float, default=0.5)
     fp.add_argument("--seed", type=int, default=1)
-    fp.add_argument("--recorded-views", action="store_true",
-                    help="keep each option's recorded view score (members and the simple-aim dodger included) "
-                         "and refit only alpha, beta, gamma, B, nu and u; the group multipliers then do nothing")
     a = ap.parse_args(argv)
     if a.cmd == "join":
         join(a.work, a.out, a.jobs)

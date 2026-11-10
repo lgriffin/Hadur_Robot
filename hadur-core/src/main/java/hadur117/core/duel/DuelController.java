@@ -325,8 +325,6 @@ public final class DuelController {
         this.moveController.setMemberMimics(memberMimics);
         this.surfMover = new SurfMover(battleField, predictor);
         this.surfMover.setAesRecord(MoveDesign.AES_RECORD);
-        this.surfMover.setLeanTerms(duelOnly(MoveDesign.NO_TIME_SCALING, enemiesTotal),
-            duelOnly(MoveDesign.LEAN_TERMS, enemiesTotal));
         this.surfMover.setOracleRecord(MoveDesign.ORACLE_RECORD);
         this.surfMover.setSurfKeyRecord(MoveDesign.SURF_KEY_RECORD);
         this.shadowAvoidance = new ShadowAvoidance(fieldWidth, fieldHeight);

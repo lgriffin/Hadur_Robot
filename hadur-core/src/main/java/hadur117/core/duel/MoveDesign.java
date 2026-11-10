@@ -33,17 +33,6 @@ final class MoveDesign {
     static final boolean AES_RECORD = false;
 
     /**
-     * MOVE-40 (candidate, cloud forensic only, docs/bench/local/2026-11-10_aes-fit-fixed-terms.md):
-     * the fixed terms of the surf's danger blend as the offline refit on 588,855 recorded waves
-     * found them. NO_TIME_SCALING alone stops dividing a wave's danger by its time to impact
-     * (the one change better on every held-out gun); LEAN_TERMS adds no hit-rate term, a
-     * distancing base of 1.1 and an uncertain wave trusted at 0.15. Off ships the surf as it
-     * is; the bench arms notti and lean set them. Duel only.
-     */
-    static final boolean NO_TIME_SCALING = false;
-    static final boolean LEAN_TERMS = false;
-
-    /**
      * ORACLE-1 (measurement, K0 of the road to king): each wave's first three-option rating also
      * prints an {@code ORC} record with every danger view's neighbours on the wave, for the offline
      * enemy-gun oracle ({@code data/tools/gun_oracle.py}). Behaviour unchanged.
