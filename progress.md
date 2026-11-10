@@ -1,6 +1,6 @@
 # Queue pc-learn-trace: progress
 
-Updated 2026-11-10 19:52:56 PC time (19:52 UTC), runner pid 19728.
+Updated 2026-11-10 20:08:05 PC time (20:08 UTC), runner pid 19728.
 
 - `prep` done, exit 0 in 0 min
 - `trace` running
@@ -9,7 +9,7 @@ Updated 2026-11-10 19:52:56 PC time (19:52 UTC), runner pid 19728.
 
 ### trace
 
-**2387 of 2388 battles** (100%), 1 failed, 2386 read back from an earlier run. Running 15 min, 4 battles/h, about 15 min left (ends ~20:08 PC time). Last battle 8 min ago.
+**2387 of 2388 battles** (100%), 1 failed, 2386 read back from an earlier run. Running 30 min, 2 battles/h, about 30 min left (ends ~20:38 PC time). Last battle 23 min ago.
 
 | arm | battles | failed | share | vs control (pts) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
@@ -20,9 +20,9 @@ Updated 2026-11-10 19:52:56 PC time (19:52 UTC), runner pid 19728.
 |---|---|---|---|
 | `fails 30` | halt | ok | 1 failed of 2387 |
 | `skips 60 over 200 arms c` | halt | waiting | 0 of 200 battles to read |
-| `stall 30m` | halt | ok | last battle 8 min ago |
+| `stall 30m` | halt | ok | last battle 23 min ago |
 
-Stopping now would leave 1 battles unrun (about 15 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 1 battles unrun (about 30 min); every battle already fought is kept and a rerun resumes from it.
 
 > warning: arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 846 h before this step started: check it is not stale
 

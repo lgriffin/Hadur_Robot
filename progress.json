@@ -1,6 +1,6 @@
 {
  "plan": "pc-learn-trace",
- "updated": 1794340376.7188525,
+ "updated": 1794341285.099296,
  "steps": {
   "prep": {
    "status": "done",
@@ -23,8 +23,8 @@
   {
    "step": "trace",
    "started": 1794339468.3239877,
-   "updated": 1794340376.516888,
-   "elapsed": 908.1929001808167,
+   "updated": 1794341284.9106116,
+   "elapsed": 1816.5866239070892,
    "expected": 2388,
    "panel": 1194,
    "field": null,
@@ -63,10 +63,10 @@
    "resumed": 2386,
    "failed": 1,
    "disables": 0,
-   "rate": 3.9639155946751603,
-   "eta": 908.1929001808167,
+   "rate": 2.0,
+   "eta": 1800.0,
    "fraction": 0.9995812395309883,
-   "last_battle_age": 493.6846764087677,
+   "last_battle_age": 1402.0784001350403,
    "rules": [
     {
      "rule": "fails 30",
@@ -84,7 +84,7 @@
      "rule": "stall 30m",
      "action": "halt",
      "state": "ok",
-     "detail": "last battle 8 min ago"
+     "detail": "last battle 23 min ago"
     }
    ],
    "skips_mean": null,
