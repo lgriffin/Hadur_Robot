@@ -597,6 +597,8 @@ final class ShieldTableData {
             "shinh.Entangled 0.3",
             // pc-shield-audit (BENCH-209, PR #697): +7.0 points on 12 fresh seeds, with exit off
             "cx.Princess 1.0",
+            // pc-ala-shield (BENCH-220, PR #733): +7.34 points on 12 fresh seeds, low end +4.19
+            "lechu.Ala 0.0.4",
         };
     }
 

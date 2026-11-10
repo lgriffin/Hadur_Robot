@@ -2052,6 +2052,12 @@ failed and are removed (3.22 cleanup); the mimics live on in MOVE-33 and MOVE-34
   +24.3, Nullstride +16.7, Neutrino +15.5, Diamond +15.3, Combat +13.8, Tomcat +10.8, Dookious +6.4, FoilistMC +5.9.
   `ShieldTableData.racePowers()` carries the 8. pc-shield-audit (BENCH-209, PR #697): Princess +7.0 ships with still
   and exit off; Musashi -3.0 stays off.
+- **BENCH-220 result (pc-ala-shield, PR #733, 2026-11-10): Ala ships with a still line.** 12 fresh seeds from 11700
+  against master and its A/A copy pooled: mz (list add with a `shield-still:` line) +7.34 points (low end +4.19,
+  90.9 against 83.6), mt (list add alone) +3.72; A/A -1.85, inside its band. The 3-point pick locks mz. The card's APS
+  gate printed "no battles" for both arms: `shield_s2.py gate` takes its interval across robots, which one robot
+  cannot give, so on a one-robot card the per-robot pick is the read. Ala joins `ShieldListData` and
+  `ShieldTableData.stills()`.
 - **BENCH-209.** The shield audit's cloud read (docs/bench/shield-recent.md): the still shield beat master on
   Musashi (+20 on 6 seeds) and Princess (+11 on 2 seeds; with the damage exit off +5 on one seed and +2 on 4 fresh ones) and lost on the other five
   BeepBoop-only robots read. `pc-shield-audit` re-measures the two on 12 fresh PC seeds against c and aa before any

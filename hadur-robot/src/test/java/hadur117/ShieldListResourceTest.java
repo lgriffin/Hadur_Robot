@@ -50,7 +50,8 @@ class ShieldListResourceTest {
         // SHIELD-21 (pc-shield-still2, PR #515): 7 of BeepBoop's shield robots join with still plans.
         // pc-rival-confirm (PR #537): claire, TestNano and GlowBlowMelee join with still plans; DuelistMicroMkII and
         // Vanessa03 leave for their stop-and-go lines. pc-shield-audit (PR #697): Princess joins with still and exit off.
-        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1, list.size());
+        // pc-ala-shield (PR #733): Ala joins with a still line.
+        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
@@ -221,7 +222,9 @@ class ShieldListResourceTest {
         // pc-rival-confirm (PR #537): 9 more, 5 of them with exit off. pc-rival-near (PR #545): 5 more, 2 with
         // exit off; Hydrogen's line goes, since it left the list for stop-and-go and a still line reads only shielded.
         // pc-shelf (PR #636): Entangled. pc-shield-audit (PR #697): Princess, with exit off.
-        assertEquals(17 + 9 + 5 - 1 + 1 + 1, ShieldTableData.stills().length);
+        // pc-ala-shield (PR #733): Ala.
+        assertEquals(17 + 9 + 5 - 1 + 1 + 1 + 1, ShieldTableData.stills().length);
+        assertTrue(list.matches("lechu.Ala 0.0.4") && list.still("lechu.Ala 0.0.4"));
         assertTrue(list.matches("cx.Princess 1.0") && Arrays.asList(ShieldTableData.exitOffs()).contains("cx.Princess 1.0"));
         for (String n : ShieldTableData.stills()) {
             assertTrue(list.matches(n), n + " is shielded");
