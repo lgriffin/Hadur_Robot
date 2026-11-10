@@ -77,6 +77,12 @@ public class SurfMover {
     private final Map<SurfOption, Point2D.Double> surfOptionDestinations = new HashMap<>();
     /** The wave surfed last tick; a different one resets the destinations and the cache. */
     private Wave lastWaveSurfed;
+    /** MOVE-39: whether the hold-then-brake orbit options are rated beside the classic three. */
+    private boolean holdOptions;
+    /** MOVE-39: the tick a chosen hold option brakes at, fixed from its first choice; -1 while none. */
+    private long holdBrakeTime = -1;
+    /** MOVE-39: this tick's hold, in ticks, for each hold option on the first wave. */
+    private final Map<SurfOption, Integer> surfOptionHoldTicks = new HashMap<>();
     /** AES-1: whether each wave's first three-option rating is recorded (bench builds only; off by default). */
     private boolean aesRecord;
     /** AES-1: while an option is rated for the record, where its first wave's terms go; else null. */
@@ -166,6 +172,21 @@ public class SurfMover {
      */
     public void setAesRecord(boolean on) {
         this.aesRecord = on;
+    }
+
+    /**
+     * MOVE-39: whether the surf also rates an orbit each way round that holds full speed for
+     * half the wave's remaining flight and then brakes.
+     *
+     * @param on true to rate five options, false for the classic three
+     */
+    public void setHoldOptions(boolean on) {
+        this.holdOptions = on;
+    }
+
+    /** The options the surf rates: the classic three, or all five with MOVE-39 on. */
+    private SurfOption[] options() {
+        return holdOptions ? SurfOption.values() : SurfOption.CLASSIC;
     }
 
     /** AES-1: the records made since the last call, oldest first; the list is then emptied. */
@@ -419,9 +440,10 @@ public class SurfMover {
             lastWaveSurfed = surfWave;
             lastSurfDestination = null;
             stopDestination = null;
+            holdBrakeTime = -1;
         }
 
-        boolean goingClockwise = lastSurfOption == SurfOption.CLOCKWISE;
+        boolean goingClockwise = lastSurfOption.direction > 0;
         // AES-1: the wave's first rating is recorded, with every option's terms.
         double[][] captures = null;
         if (aesRecord && !moveCtrl.hasOptions(surfWave)) {
@@ -435,8 +457,23 @@ public class SurfMover {
         double stopDanger = surfOptionDangers.getOrDefault(SurfOption.STOP, 0.0);
         double cwDanger = surfOptionDangers.getOrDefault(SurfOption.CLOCKWISE, 0.0);
 
-        boolean takeStop = stopDanger <= ccwDanger && stopDanger <= cwDanger;
-        boolean takeClockwise = cwDanger < ccwDanger;
+        // The cheapest drive: clockwise beats counter-clockwise only when strictly cheaper, and
+        // (MOVE-39) a hold-then-brake orbit only when strictly cheaper than both full orbits.
+        SurfOption drive = SurfOption.COUNTER_CLOCKWISE;
+        double driveDanger = ccwDanger;
+        if (cwDanger < driveDanger) {
+            drive = SurfOption.CLOCKWISE;
+            driveDanger = cwDanger;
+        }
+        for (SurfOption o : options()) {
+            if (!o.hold) continue;
+            double d = surfOptionDangers.getOrDefault(o, 0.0);
+            if (d < driveDanger) {
+                drive = o;
+                driveDanger = d;
+            }
+        }
+        boolean takeStop = stopDanger <= driveDanger;
 
         Point2D.Double surfDest;
         SurfOption chosen;
@@ -450,10 +487,20 @@ public class SurfMover {
             surfDest = stopDestination;
             orders.maxVelocity(0.0);
             lastSurfDestination = null;
+            holdBrakeTime = -1;
         } else {
-            orders.maxVelocity(8.0);
-            lastSurfOption = takeClockwise
-                ? SurfOption.CLOCKWISE : SurfOption.COUNTER_CLOCKWISE;
+            // MOVE-39: a hold option drives until its brake tick, fixed when it is first
+            // chosen on this wave so the hold predicted next tick is the same hold.
+            if (drive.hold) {
+                if (holdBrakeTime < 0) {
+                    holdBrakeTime = myState.time + surfOptionHoldTicks.getOrDefault(drive, 0);
+                }
+                orders.maxVelocity(myState.time < holdBrakeTime ? drive.speed : 0.0);
+            } else {
+                orders.maxVelocity(drive.speed);
+                holdBrakeTime = -1;
+            }
+            lastSurfOption = drive;
             chosen = lastSurfOption;
             lastSurfDestination = surfOptionDestinations.get(lastSurfOption);
             surfDest = lastSurfDestination;
@@ -463,14 +510,14 @@ public class SurfMover {
         // MOVE-8: the plan just chosen, for the gun to read.
         moveCtrl.publishPlan(surfOptionChains.getOrDefault(chosen, List.of()));
         // MOVE-10: what each option planned on this wave, for the hit forensics.
-        PlanInterval[] firsts = new PlanInterval[SurfOption.values().length];
-        for (SurfOption o : SurfOption.values()) {
+        PlanInterval[] firsts = new PlanInterval[options().length];
+        for (SurfOption o : options()) {
             List<PlanInterval> c = surfOptionChains.getOrDefault(o, List.of());
             if (!c.isEmpty() && c.get(0).wave == surfWave) firsts[o.ordinal()] = c.get(0);
         }
         boolean first = moveCtrl.publishOptions(firsts, chosen.ordinal());
         if (first && captures != null) {
-            SurfOption[] all = SurfOption.values();
+            SurfOption[] all = options();
             boolean[] present = new boolean[all.length];
             double[] totals = new double[all.length];
             for (SurfOption o : all) {
@@ -511,7 +558,7 @@ public class SurfMover {
                                     int wavesToSurf, boolean goingClockwise, boolean complete,
                                     double[][] captures) {
         double bestDanger = Double.POSITIVE_INFINITY;
-        for (SurfOption option : SurfOption.values()) {
+        for (SurfOption option : options()) {
             // AES-1: the first wave's terms go to this option's capture, if recording.
             aesCapture = captures == null ? null : captures[option.ordinal()];
             double danger = checkDanger(myState, moveCtrl, myState, option,
@@ -573,11 +620,26 @@ public class SurfMover {
         // A stop keeps the side it was on (for wall smoothing and its destination); an
         // orbit takes its own.
         boolean predictClockwise = option == SurfOption.STOP
-            ? prevClockwise : (option == SurfOption.CLOCKWISE);
+            ? prevClockwise : (option.direction > 0);
         SurfOption smoothOption = option == SurfOption.STOP
             ? (predictClockwise ? SurfOption.CLOCKWISE : SurfOption.COUNTER_CLOCKWISE)
             : option;
-        double maxVelocity = option == SurfOption.STOP ? 0 : 8.0;
+        double maxVelocity = option.speed;
+        // MOVE-39: a hold option drives at full speed for holdTicks, then brakes. On the first
+        // wave a hold already under way keeps its brake tick; otherwise the hold is half the
+        // wave's remaining flight to where this leg starts.
+        int holdTicks = 0;
+        if (option.hold) {
+            if (surfWaveIndex == 0 && holdBrakeTime >= 0) {
+                holdTicks = (int) Math.max(0, holdBrakeTime - myState.time);
+            } else {
+                double flight = startState.location.distance(surfWave.sourceLocation)
+                    - surfWave.distanceTraveled(startState.time);
+                holdTicks = (int) Math.max(0, Math.floor(flight / surfWave.bulletSpeed() / 2));
+            }
+            if (surfWaveIndex == 0) surfOptionHoldTicks.put(option, holdTicks);
+        }
+        int tick = 0;
 
         // The destination: a stop already under way keeps its point; otherwise the precise
         // escape point for this side (see surfDestination).
@@ -620,7 +682,9 @@ public class SurfMover {
                 continue;
             }
             predictedLog.addState(predicted);
-            predicted = predictSurfLocation(predicted, surfDest, maxVelocity, smoothOption);
+            double v = option.hold && tick >= holdTicks ? 0.0 : maxVelocity;
+            predicted = predictSurfLocation(predicted, surfDest, v, smoothOption);
+            tick++;
         } while (!wavePassed);
 
         double danger = waveDanger(myState, moveCtrl, surfWave, surfWaveIndex, dangerStates,
@@ -898,7 +962,7 @@ public class SurfMover {
         boolean clockwise = side == SurfOption.CLOCKWISE;
         double best = Double.POSITIVE_INFINITY;
         List<PlanInterval> bestChain = List.of();
-        for (SurfOption option : SurfOption.values()) {
+        for (SurfOption option : options()) {
             double d = checkDanger(myState, moveCtrl, o.passed, option, clockwise, 1, 2,
                 cutoff, (RobotStateLog) o.log.clone());
             if (d < best) bestChain = lastChain;
@@ -1089,11 +1153,18 @@ public class SurfMover {
     /** The three-option surf's choices; {@link #direction} is the orbit sign. */
     public enum SurfOption {
         /** Orbit counter-clockwise round the source at full speed. */
-        COUNTER_CLOCKWISE(-1),
+        COUNTER_CLOCKWISE(-1, 8.0, false),
         /** Brake and stay. */
-        STOP(0),
+        STOP(0, 0.0, false),
         /** Orbit clockwise round the source at full speed. */
-        CLOCKWISE(1);
+        CLOCKWISE(1, 8.0, false),
+        /** MOVE-39: orbit counter-clockwise at full speed, then brake partway (hold options only). */
+        HOLD_COUNTER_CLOCKWISE(-1, 8.0, true),
+        /** MOVE-39: orbit clockwise at full speed, then brake partway (hold options only). */
+        HOLD_CLOCKWISE(1, 8.0, true);
+
+        /** The three options the surf has always had, in ordinal order. */
+        static final SurfOption[] CLASSIC = {COUNTER_CLOCKWISE, STOP, CLOCKWISE};
 
         /**
          * +1 clockwise, -1 counter-clockwise, 0 for a stop: the sign that turns the bearing
@@ -1101,9 +1172,15 @@ public class SurfMover {
          * and the side wall smoothing turns to.
          */
         public final int direction;
+        /** The speed the option drives at, 0 for a stop. */
+        public final double speed;
+        /** MOVE-39: whether the option brakes partway through the wave's flight. */
+        public final boolean hold;
 
-        SurfOption(int direction) {
+        SurfOption(int direction, double speed, boolean hold) {
             this.direction = direction;
+            this.speed = speed;
+            this.hold = hold;
         }
     }
 }
