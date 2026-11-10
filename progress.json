@@ -1,0 +1,19 @@
+{
+ "plan": "pc-learn-trace",
+ "updated": 1794325166.6414514,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "trace": {
+   "status": "pending"
+  },
+  "read": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
