@@ -1,6 +1,6 @@
 # Queue pc-learn-trace: progress
 
-Updated 2026-11-10 16:55:12 PC time (16:55 UTC), runner pid 19896.
+Updated 2026-11-10 17:10:16 PC time (17:10 UTC), runner pid 19896.
 
 - `prep` done, exit 0 in 0 min
 - `trace` running
@@ -9,21 +9,21 @@ Updated 2026-11-10 16:55:12 PC time (16:55 UTC), runner pid 19896.
 
 ### trace
 
-**1281 of 2388 battles** (54%), 2 failed. Running 1.3 h, 934 battles/h, about 1.2 h left (ends ~18:06 PC time). Last battle 0 min ago.
-Skipped turns a battle: 41.7 overall, first 100 56.4, last 100 37.0; engine disables 223.
+**1503 of 2388 battles** (63%), 2 failed. Running 1.5 h, 910 battles/h, about 58 min left (ends ~18:08 PC time). Last battle 0 min ago.
+Skipped turns a battle: 44.6 overall, first 100 56.4, last 100 52.8; engine disables 268.
 
 | arm | battles | failed | share | vs control (pts) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 641 | 0 | 92.88 | - | - | - | 52.5 |
-| bb | 640 | 2 | 94.85 | +1.90 (634 robots) | ±0.48 | +1.17 .. +2.64 | 30.8 |
+| c | 753 | 0 | 92.82 | - | - | - | 52.6 |
+| bb | 750 | 2 | 94.78 | +1.89 (746 robots) | ±0.44 | +1.22 .. +2.55 | 36.5 |
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 2 failed of 1281 |
-| `skips 60 over 200 arms c` | halt | ok | 45.4 a battle over the last 200 (first 200: 56.8) |
+| `fails 30` | halt | ok | 2 failed of 1503 |
+| `skips 60 over 200 arms c` | halt | ok | 50.7 a battle over the last 200 (first 200: 56.8) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 1107 battles unrun (about 1.2 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 885 battles unrun (about 58 min); every battle already fought is kept and a rerun resumes from it.
 
 > warning: arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 842 h before this step started: check it is not stale
 
