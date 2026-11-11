@@ -352,6 +352,10 @@ final class ShieldListData {
             // pc-shield-rescreen (BENCH-222, PR #739): with still lines on 12 fresh seeds, Saturn +10.5 (low end +7.2), OperatorZeze +3.5 (low end +0.6)
             "tobe.Saturn lambda",
             "zeze2.OperatorZeze 1.05",
+            // pc-still-field (BENCH-223, PR #746): with still lines on 12 fresh seeds, X2 +5.7 (low end +1.1), Che +3.8 (low end +1.4), Aardvark +3.6 (low end +0.9)
+            "florent.XSeries.X2 0.17",
+            "cjm.Che 1.2",
+            "djc.Aardvark 0.3.6",
         };
     }
 }

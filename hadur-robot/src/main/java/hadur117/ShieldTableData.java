@@ -602,6 +602,10 @@ final class ShieldTableData {
             // pc-shield-rescreen (BENCH-222, PR #739): Saturn +10.5, OperatorZeze +3.5 on 12 fresh seeds
             "tobe.Saturn lambda",
             "zeze2.OperatorZeze 1.05",
+            // pc-still-field (BENCH-223, PR #746): X2 +5.7, Che +3.8, Aardvark +3.6 on 12 fresh seeds
+            "florent.XSeries.X2 0.17",
+            "cjm.Che 1.2",
+            "djc.Aardvark 0.3.6",
         };
     }
 

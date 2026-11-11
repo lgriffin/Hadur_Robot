@@ -284,3 +284,6 @@ cx.Princess 1.0 | rank207-band4 | cx.Princess_1.0.jar
 lechu.Ala 0.0.4 | rank516-band5 | lechu.Ala_0.0.4.jar
 tobe.Saturn lambda | rank482-band5 | tobe.Saturn_lambda.jar
 zeze2.OperatorZeze 1.05 | rank712-band6 | zeze2.OperatorZeze_1.05.jar
+cjm.Che 1.2 | rank253-band4 | cjm.Che_1.2.jar
+djc.Aardvark 0.3.6 | rank678-band5 | djc.Aardvark_0.3.6.jar
+florent.XSeries.X2 0.17 | rank50-band2 | florent.XSeries.X2_0.17.jar

@@ -2060,6 +2060,10 @@ failed and are removed (3.22 cleanup); the mimics live on in MOVE-33 and MOVE-34
   gate printed "no battles" for both arms: `shield_s2.py gate` takes its interval across robots, which one robot
   cannot give, so on a one-robot card the per-robot pick is the read. Ala joins `ShieldListData` and
   `ShieldTableData.stills()`.
+- **BENCH-223 result (pc-still-field, PR #746, 2026-11-10): X2, Che and Aardvark ship with still lines.** 12 fresh
+  seeds from 12200 against master and its A/A copy pooled: X2 +5.7 points (low end +1.1, control 64.1), Che +3.8 (low
+  end +1.4), Aardvark +3.6 (low end +0.9); SmallDevil +1.4, Parallax -0.2 and MoojukNano -0.9 do not ship. The gate
+  passes (+0.01 ± 0.01 APS), A/A -1.07, inside its band. The three join `ShieldListData` and `ShieldTableData.stills()`.
 - **BENCH-224 result (pc-mirror-off, PR #750, 2026-11-11): all three ship with mirror-off lines.** 12 fresh seeds from 12700
   against master and its A/A copy pooled: Jammy +11.4 points (low end +9.8, control 86.7), MirrorH +3.8 (low end +3.1),
   MirrorL +3.6 (low end +2.9); the 3-point pick locks all three, the gate passes (+0.02 ± 0.01 APS), A/A -0.47, inside
