@@ -10,3 +10,6 @@
 20:30:09 start tpqt
 20:30:09 watching tpqt: 3 stop rule(s)
 20:53:45 progress tpqt: 294 battles, 747/h, 0 failed, skips 16.9/battle (last 100)
+21:06:55 tpqt exit=0 in 2206 s
+21:06:55 start tpga
+21:06:55 watching tpga: 3 stop rule(s)
