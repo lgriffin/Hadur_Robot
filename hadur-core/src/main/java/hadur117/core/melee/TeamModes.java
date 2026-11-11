@@ -64,7 +64,15 @@ public final class TeamModes {
          * GrofGroup +5.2 ± 2.6 the one team clear on its own; own-member bullet hits +4.2 ± 1.7 a
          * battle, accepted. Off through {@link #FORCE_CLOSE} (ablation tmnoclose).
          */
-        CLOSE
+        CLOSE,
+        /**
+         * TMODE-45, close quarters: while an armed enemy is inside
+         * {@link MinimumRiskMovement#QUARTERS_RANGE} px and closing, it no longer caps the
+         * member's ring, a destination inside {@link MinimumRiskMovement#QUARTERS_KEEP} px of it
+         * pays, and a sharp turn is driven at full speed. Only through the table, per team;
+         * on every team through {@link #FORCE_QUARTERS} (ablation tmquarters, pc-team-quarters).
+         */
+        QUARTERS
     }
 
     /**
@@ -79,6 +87,8 @@ public final class TeamModes {
     public static final boolean FORCE_CONCORD = true;
     /** TMODE-42: CLOSE on every team, as pc-team-close measured it (PR #696). */
     public static final boolean FORCE_CLOSE = true;
+    /** TMODE-45: QUARTERS on every team; off in the shipped build (ablation tmquarters turns it on). */
+    public static final boolean FORCE_QUARTERS = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -86,7 +96,8 @@ public final class TeamModes {
     /** The modes for teams the table does not name. */
     static final Set<Mode> DEFAULT = of(
         FORCE_MATEFIRE ? Mode.MATEFIRE : null, FORCE_HUNT ? Mode.HUNT : null, FORCE_PATH ? Mode.PATH : null,
-        FORCE_DODGE ? Mode.DODGE : null, FORCE_CONCORD ? Mode.CONCORD : null, FORCE_CLOSE ? Mode.CLOSE : null);
+        FORCE_DODGE ? Mode.DODGE : null, FORCE_CONCORD ? Mode.CONCORD : null, FORCE_CLOSE ? Mode.CLOSE : null,
+        FORCE_QUARTERS ? Mode.QUARTERS : null);
 
     /** Opposing member class to its team's modes; filled from the per-team screens. */
     static final Map<String, Set<Mode>> TABLE = table();

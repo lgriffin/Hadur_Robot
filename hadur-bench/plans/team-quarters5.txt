@@ -1,0 +1,6 @@
+# pc-team-quarters (BENCH-225, TMODE-45): the five teams that fire nearly all the point-blank shots at HadurTeam (the safety read of 2026-11-11 on pc-team-close's tc logs: 61 to 91% of their aimed damage is fired from under 150 px).
+ustimaw.NightmareTeam 3.3 | team-5 | ustimaw.NightmareTeam_3.3.jar
+ags.polylunar.Polylunar 1.6 | team-7 | ags.polylunar.Polylunar_1.6.jar
+mn.nano.perceptual.ImpactTeam 1.3.0 | team | mn.nano.perceptual.ImpactTeam_1.3.0.jar
+amz.TeamDeathTeam 1 | team | amz.TeamDeathTeam_1.jar
+jab.Enjambre 3 | team | jab.Enjambre_3.jar

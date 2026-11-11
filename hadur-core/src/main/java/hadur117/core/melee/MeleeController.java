@@ -86,6 +86,8 @@ public class MeleeController {
         public MeleeStrategy.Posture posture;
         /** Whether the aim came from learned movement rather than circular or linear prediction. */
         public boolean learnedAim;
+        /** TMODE-45: a chaser is inside close quarters: the drive keeps full speed through a turn. */
+        public boolean quarters;
     }
 
     public final EnemyTracker tracker;
@@ -520,6 +522,7 @@ public class MeleeController {
         }
         c.destination = alive.isEmpty() ? null
             : mover.chooseDestination(s.me, s.energy, s.others, alive, s.time, plan, s.teammates, modes);
+        c.quarters = c.destination != null && mover.quartered();
         gun.onTeam(!s.teammates.isEmpty());
         gun.concord(TeamConcord.GUN && modes.contains(TeamModes.Mode.CONCORD));
         waves.tick(s.me, s.time, s.gunHeat, alive, gun, s.energy, s.others);
