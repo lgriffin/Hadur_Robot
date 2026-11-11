@@ -1,0 +1,33 @@
+# Melee: the states robots are hit in (BENCH-232; the safety read of 2026-11-11, card 3). No robot change.
+# The team's guards came from reading every enemy bullet with the member's distance, speed and heading at the fire.
+# The melee PC logs keep no positions, so the same read was never made for melee: we know Hadur takes as much crowd
+# damage as Firestarter, Diamond, Portia, Shadow and Glacier, and that ScalarR, Neuromancer and Ogi take 14 to 26%
+# less from the same opponents, and not in which states. This card fights the census once with the trace on and
+# reads, for Hadur and every robot aimed at often enough: hit rate by distance, by its speed across the shooter's
+# line, by the fired guess factor, and the share of its damage that was aimed at another robot.
+#   msprep   build aa (master under another name), fetch the fields
+#   mstrace  master on the 46 census fields, 1 seed (3330), 20 rounds, --melee-trace true: 46 battles,
+#            about 140 MB of traces, about 20 minutes
+#   msread   tools/melee_states.py over the traces
+#   mspr     the results PR
+# What the result decides: build a keep-moving arm for melee if Hadur is slow across the line or met head-on in the
+# crowd clearly more often than ScalarR, Neuromancer and Ogi; if its rows match theirs, the melee has no state guard
+# to build and the shot-profile card stands alone.
+# Stop rules: 10 failed battles or no battle in 30 minutes. Every step resumes.
+# The melee thread reads claude/pc-melee-states-results.
+#   ./queue.sh run pc-melee-states        (or  .\queue.ps1 run pc-melee-states)
+# Run it from master (one bench queue at a time, RoboRumble workers at 0):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+
+msprep  | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur117.Hadur_"$V"aa.jar && bash ./build-ablation.sh aa && test -f bisect/hadur117.Hadur_"$V"aa.jar && mkdir -p work && rm -rf work/melee-states-"$V" && sed -e "s/@V@/$V/g" -e "s/@C@/${MELEE_WORKERS}/g" plans/melee-states.args > work/melee-states.args && rm -f ${OUT}/melee-states-census.md ${OUT}/melee-states-read.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+mstrace | mvn -q exec:java "-Dexec.args=@work/melee-states.args"
+  after: msprep
+  watch:
+  stop: fails 10
+  stop: stall 30m
+msread  | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && python3 tools/melee_states.py work/melee-states-"$V" --ours hadur117.Hadur --min-shots 2000 --out ${OUT}/melee-states-read.md
+  after: mstrace
+mspr    | bash tools/open_results_pr.sh claude/pc-melee-states-results "Melee: the states robots are hit in, from a traced census" ${OUT}/melee-states-read.md $(ls ${OUT}/melee-states-census.md 2>/dev/null)
+  after: msread

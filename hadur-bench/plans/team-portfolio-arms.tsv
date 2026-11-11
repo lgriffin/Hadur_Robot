@@ -1,0 +1,13 @@
+# pc-team-portfolio (BENCH-231): the arms, each a change to every team's current table entry (the shipped
+# TeamModes.TABLE entry, else the default MATEFIRE,HUNT,PATH,DODGE,CONCORD,CLOSE). add/remove are modes; needs names a
+# mode the change only means something with (a team without it skips the arm). Every mode here exists on master.
+name	add	remove	needs
+qt	QUARTERS	-	-
+ga	GANG	-	-
+ho	OWN,HEADON	LINEAR	-
+li	OWN,LINEAR	HEADON	-
+nd	-	DODGE	-
+nc	-	CONCORD	-
+nk	-	CLOSE	HUNT
+nh	-	HUNT	-
+np	-	PATH	-
