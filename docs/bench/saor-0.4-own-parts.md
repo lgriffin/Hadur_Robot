@@ -161,6 +161,11 @@ The movement went from -3.0 to about -0.6 over about 45 designs. The steps that 
       wall bands, every extra split of the rows costs more in thinner rows than it gains; the one
       change that held was a coarser state (WGC). Coarser speed (4 px steps) and coarser turn (3 bins)
       are screened next.
+    - **coarser turn, 3 bins (left, straight, right) on WGC: WGT +0.10, +0.26, -0.45, +0.09, +0.13,
+      +0.22, +0.07, about +0.06 ± 0.16 (interval -0.10 to +0.22): passes the gate**, about 0.11 above
+      WGC and the best arm of the rewrite so far. Coarser speed, 4 px steps (WG4 -0.09, +0.10, -0.32,
+      +0.03, -0.38, +0.03, -0.48, about -0.16), loses: speed needs its 2 px resolution, turn does not
+      need five bins. The chain's playout is still Figment's design; its state is now ours in shape.
 
 **Where WNF still loses** (C against WNF over the three blocks, 11,340 rounds each): duels end in a
 win equally often (85.9% and 85.8%). WNF dies 13% more often in the crowd (4,778 deaths against
@@ -171,7 +176,7 @@ DustBunny, Wisdom, Troodon). The remaining gap is survival in the crowd, not the
 
 `hadur-bench/saor-arms/` keeps GV (pass), TH (nearest miss), WTA (best movement, which replaced
 WNF and then WTB), WAG (WTA + GV, which passes) and WAE (WAG with the own target and power,
-which passes) and WGC (WAE with coarser chain speed, inside the gate). The failed arm sources and the stage cards were
+which passes) WGC (WAE with coarser chain speed, inside the gate) and WGT (WGC with a 3-bin turn, which passes). The failed arm sources and the stage cards were
 removed with each result.
 
 ## JayLexi k-NN (same run, BENCH-204)

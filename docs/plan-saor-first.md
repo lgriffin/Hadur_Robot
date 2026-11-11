@@ -393,3 +393,7 @@ screened on WAE next.
 Status 2026-11-10 evening: a coarser chain speed (2 px/tick steps, WGC) stays inside the gate at
 about -0.05 ± 0.16, and dropping the acceleration sign (WGN) fails. WGC only changes Figment's
 state; a chain of our own design (a different state or a different predictor) is still to find.
+
+Status 2026-11-11 night: a 3-bin turn on WGC (WGT) passes at about +0.06 ± 0.16 over the seven
+seed sets, the best arm so far; 4 px speed steps (WG4) lose. Movement, vote, target, power and the
+chain's state are now our own designs; the play-it-forward playout is the remaining Figment part.

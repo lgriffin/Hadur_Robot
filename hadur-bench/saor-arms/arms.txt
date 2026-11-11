@@ -59,3 +59,4 @@ WTA | stage 1, movement (best own design, about -0.21 over seven seed sets: mean
 WAG | stages 1+2 (passes the gate: about -0.14 over seven seed sets): WTA movement with the GV vote width, the own movement and gun vote together | =saor-arms/SaorWAG.java
 WAE | stages 1-4: WAU with power for the best expected energy gain from the target's hit rate and range | =saor-arms/SaorWAE.java
 WGC | stages 1-5: WAE with the chain's velocity in 2 px/tick steps (9 values, not 17), so each row fills twice as fast | =saor-arms/SaorWGC.java
+WGT | stages 1-5 (passes the gate: about +0.06 over seven seed sets): WGC with the chain turn in 3 bins (left, straight, right) | =saor-arms/SaorWGT.java
