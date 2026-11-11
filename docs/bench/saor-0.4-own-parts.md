@@ -17,6 +17,8 @@ and WDG), `-wat.md` and `-wau.md`; for section 13 the per-arm census reports `sa
 
 ## Result
 
+**Status (2026-11-11): the 0.4 rewrite is stopped.** No own design fits the 749-byte micro limit while keeping its own parts (item 13). Saor 0.3 stays the live entry, with Figment's credit carried in its README, robot properties and source header; the credited jar reaches the rumble only with the next Saor release. The own parts and their measurements stay documented below.
+
 | Part | Best own design | vs 0.3 | Gate |
 |---|---|---|---|
 | Gun vote | GV: each playout's vote spread over 2 + ticks / 8 bins a side (at most 8) | +0.40 ± 0.41 | **pass** |

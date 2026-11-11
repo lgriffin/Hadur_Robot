@@ -341,6 +341,8 @@ plan is built so that each stage's verdict shows how much is left before the nex
 
 ## 8. Saor 0.4: our own algorithm, part by part (2026-11-06)
 
+**Stopped 2026-11-11.** Five compact own guns failed or grew back to the old size, so an all-own Saor cannot fit 749 bytes. Saor 0.3 stays live with full Figment credit; see docs/bench/saor-0.4-own-parts.md item 13.
+
 The code comparison of 2026-11-06 found that about 90 of Saor's 103 lines restate Figment 1.0
 (Kev): the corner oscillation (MeleeSeed's), the Markov state packing, the play-it-forward
 playout, the 1,024-bin vote and the power rule. Saor's own parts (sampling any seen row, the
