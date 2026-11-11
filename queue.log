@@ -26,3 +26,7 @@
 22:55:50 tpli exit=0 in 2144 s
 22:55:50 start tpnd
 22:55:50 watching tpnd: 3 stop rule(s)
+23:24:50 progress tpnd: 351 battles, 726/h, 0 failed, skips 14.4/battle (last 100)
+23:31:47 tpnd exit=0 in 2157 s
+23:31:47 start tpnc
+23:31:47 watching tpnc: 3 stop rule(s)
