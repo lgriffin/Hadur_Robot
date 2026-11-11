@@ -271,6 +271,13 @@ class ShieldListResourceTest {
         assertTrue(!list.flatOn("lxx.Tomcat 3.68"), "Tomcat lost on the confirm (-3.9)");
     }
     @Test
+    @Tag("MIR-2")
+    @DisplayName("no robot carries a mirror-off line until a card holds one")
+    void mirrorOffPicks() {
+        assertEquals(0, ShieldTableData.mirrorOffs().length, "MIR-2 waits on pc-mirror-off (BENCH-224)");
+    }
+
+    @Test
     @Tag("POW-17")
     @DisplayName("the 8 pc-race-power picks carry race-power lines and no other robot does")
     void racePowerPicks() {

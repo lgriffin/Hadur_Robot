@@ -96,6 +96,21 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("MIR-2")
+    @DisplayName("mirror-off lines name the opponents the duel never runs MIR-1 against, matched as shield entries")
+    void perOpponentMirrorOff() {
+        ShieldList l = ShieldList.parse(List.of("mirror-off: a.B 1.0", "mirror-off: c.D", "flat-on: c.D", "mirror-off:"));
+        assertTrue(l.mirrorOff("a.B 1.0"));
+        assertFalse(l.mirrorOff("a.B 1.1"), "a versioned line matches that version only");
+        assertTrue(l.mirrorOff("c.D 2.3"), "a bare name matches every version");
+        assertTrue(l.flatOn("c.D 2.3"), "switches on one robot combine");
+        assertFalse(l.flatOn("a.B 1.0") || l.racePower("a.B 1.0"), "no other switch");
+        assertFalse(l.mirrorOff(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.mirrorOff("a.B 1.0"));
+    }
+
+    @Test
     @Tag("MOVE-32")
     @DisplayName("flat-on lines name the opponents the duel surfs with the flatteners on, matched as shield entries")
     void perOpponentFlatOn() {

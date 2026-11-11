@@ -76,6 +76,8 @@ public final class ShieldList {
     public static final String X5_POWER_PREFIX = "x5-power:";
     /** POW-17: a line starting with this names an opponent the duel picks its power against by the energy race. */
     public static final String RACE_POWER_PREFIX = "race-power:";
+    /** MIR-2: a line starting with this names an opponent the duel never runs MIR-1 against. */
+    public static final String MIRROR_OFF_PREFIX = "mirror-off:";
     /**
      * SKEY-2: a line starting with this gives an opponent's surf key: nine multipliers on the hit
      * views' key weights, one on the kernel width, then the name ({@code "m1 ... m9 bw name"}).
@@ -102,6 +104,8 @@ public final class ShieldList {
     static final int X5_POWER = 256;
     /** POW-17: the per-opponent energy-race power switch's bit in {@link #switches}. */
     static final int RACE_POWER = 1024;
+    /** MIR-2: the per-opponent mirror-off switch's bit in {@link #switches}. */
+    static final int MIRROR_OFF = 2048;
 
     private final Set<String> entries;
     /** SHIELD-17: the opening-drive list. */
@@ -154,7 +158,8 @@ public final class ShieldList {
                     : entry.startsWith(MIMIC_ON_PREFIX) ? MIMIC_ON
                     : entry.startsWith(FULL_OFF_PREFIX) ? FULL_OFF
                     : entry.startsWith(X5_POWER_PREFIX) ? X5_POWER
-                    : entry.startsWith(RACE_POWER_PREFIX) ? RACE_POWER : 0;
+                    : entry.startsWith(RACE_POWER_PREFIX) ? RACE_POWER
+                    : entry.startsWith(MIRROR_OFF_PREFIX) ? MIRROR_OFF : 0;
                 if (bit != 0) {
                     String name = entry.substring(entry.indexOf(':') + 1).trim();
                     if (!name.isEmpty() && (switches.containsKey(name) || switches.size() < MAX_ENTRIES)) {
@@ -383,6 +388,16 @@ public final class ShieldList {
      */
     public boolean still(String robotName) {
         return (switchBits(robotName) & STILL) != 0;
+    }
+
+    /**
+     * MIR-2: whether the duel never runs MIR-1 (mirror detection, its drive and its aim) against
+     * {@code robotName}, by the rule of {@link #matches}.
+     *
+     * @param robotName the scanned robot's name, or null
+     */
+    public boolean mirrorOff(String robotName) {
+        return (switchBits(robotName) & MIRROR_OFF) != 0;
     }
 
     /**

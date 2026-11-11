@@ -1,0 +1,49 @@
+# 1v1, mirror drive off against three mirror bots, on fresh PC seeds (BENCH-224, MIR-2,
+# docs/bench/local/2026-11-09_view-rank.md, "Band-6 trace"). Leigh starts it once the PC is free (one card at a time,
+# from master):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-mirror-off        (or  ./queue.sh run pc-mirror-off)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes; no step needs a
+# decision. About 10 minutes of battles (3 robots x 3 arms x 12 seeds = 108).
+#
+# Why it should win (the PC card rule of 2026-11-03):
+#   - Per-opponent tailoring: each line names one robot; every other robot, team and melee play bit for bit as master.
+#   - pc-learn-trace (PR #745) put most of BeepBoop's lead on bands 5 and 6. The cloud trace of the 40 band-6 robots
+#     that cost us most there found a third of their hits on us land while the surf is not driving; against the three
+#     mirror bots MIR-1's planned drive is the driver, and BeepBoop, which has no mirror drive, is hit by them almost
+#     never (MirrorH 0.1% of bullets against our 9.2%).
+#   - Cloud screen (2026-11-11, 40 robots, 3 seeds from 12400): MIR-1 off locked exactly these three at 3 points and
+#     moved no other robot (it never switches on against them). Fresh cloud seeds with the shipped mirror-off lines
+#     (6 seeds from 12600): Jammy +11.5 (low end +8.4), MirrorH +4.0 (+3.6), MirrorL +3.8 (+3.0).
+#   - Risk: MIR-1's aim hit MirrorNano and MirrorMicro 75-87% when it was built, so mirror drive stays for every robot
+#     not named; this card decides only these three, each at a 3-point margin with its 95% low end above 0.
+# gate: the per-robot pick (`mode_table.py --margin 3`, interval above 0) names the lines to ship; the APS gate reads mo
+# over the 1,217-robot field at a 0.005 bar with the 95% low end above 0, A/A inside its band. No pilot or futility
+# rule: three robots are too few for an interim read.
+# Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle
+# over the last 200, or no battle in 30 minutes; every battle fought is kept and a rerun resumes. ALERT opens an
+# issue for Leigh on any stop. Nothing here ships: on a pass a PR adds the held lines to ShieldTableData.mirrorOffs()
+# for the next release.
+
+set V = 3.21
+set P = --parallel 12 --no-truth-log --failed-ok
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
+set W = work/mirror-off-pc
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && MIRROR_OFF=plans/mirror-off-add.txt bash ./build-ablation.sh mirofflist && test -f bisect/hadur117.Hadur_${V}mo.jar && ./fetch-opponents.sh --set panel-mirror-off.txt && mvn -q compile
+
+confirm | ./bench-top20.sh ${C} ${P} --set panel-mirror-off.txt --seeds 12 --seed-base 12700 --arms plans/pc-mirror-off.arms --out ${W} --label mirror-off-pc --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_mirror-off-pc.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm mo --panel panel-mirror-off.txt --bar 0.005 --out ${OUT}/$(date +%Y-%m-%d)_mirror-off-pc-gate.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 3 --out-tsv ${OUT}/mirror-off-pc-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_mirror-off-pc-pick.md && python3 tools/per_robot.py ${W}/arms.tsv --arms mo --out ${OUT}/$(date +%Y-%m-%d)_mirror-off-pc-per-robot.md --out-tsv ${OUT}/mirror-off-pc-per-robot.tsv
+  after: confirm
+
+pr | bash tools/open_results_pr.sh claude/pc-mirror-off-results "1v1 mirror drive off against three mirror bots, 12 fresh seeds" ${OUT}/*_mirror-off-pc*.md ${OUT}/mirror-off-pc-per-robot.tsv $(find ${OUT} -maxdepth 1 -name mirror-off-pc-pick.tsv -size +0c)
+  after: gate

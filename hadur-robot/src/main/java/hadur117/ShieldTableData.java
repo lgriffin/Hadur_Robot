@@ -606,6 +606,18 @@ final class ShieldTableData {
     }
 
     /**
+     * MIR-2: the opponents the duel never runs MIR-1 (the mirror detector, its drive and its aim)
+     * against. Empty until a card holds robots; candidate builds add lines here (build-ablation.sh
+     * mirofflist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] mirrorOffs() {
+        return new String[] {
+        };
+    }
+
+    /**
      * MOVE-32: the opponents the duel surfs with the flattener views on (MOVE-24 undone for them):
      * the two pc-flat-on (PR #554) robots that gained on every read. Candidate builds add lines here
      * (build-ablation.sh fllist).
