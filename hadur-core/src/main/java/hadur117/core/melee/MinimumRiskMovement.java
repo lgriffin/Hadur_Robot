@@ -861,8 +861,11 @@ public class MinimumRiskMovement {
                 Wave w = waves.get(i);
                 if (done[i] || w.target == null) continue;
                 double d = Math.hypot(x - w.source.x, y - w.source.y);
-                if (w.speed * (now + t - w.fireTime) < d - WAVE_HALF) continue;
+                double front = w.speed * (now + t - w.fireTime);
+                if (front < d - WAVE_HALF) continue;
                 done[i] = true;
+                // As waveHits: a front already past on the tick before never crosses the drive.
+                if (front - w.speed > d + WAVE_HALF) continue;
                 if (Math.hypot(x - w.target.x, y - w.target.y) <= MOVING_BACK) back += MOVING_BACK_K * w.aimed * w.damage;
             }
         }

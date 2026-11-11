@@ -78,6 +78,11 @@ class TeamGuardTest {
         assertEquals(0, MinimumRiskMovement.movingDamage(ME, pt(740, 500), NOW, List.of(), List.of(), List.of(w), n -> 0), 0);
         w.target = null;
         assertEquals(0, MinimumRiskMovement.movingDamage(ME, ME, NOW, List.of(), List.of(), List.of(w), n -> 0), 0);
+        // A wave the dodge still holds whose front went past Hadur before the drive starts pays nothing.
+        MinimumRiskMovement.Wave past = new MinimumRiskMovement.Wave(new EnemyShot("e 1.0", pt(500, 900), NOW - 32, 2),
+            0.8, new double[] {Math.PI}, new double[] {1}, Math.PI);
+        past.target = ME;
+        assertEquals(0, MinimumRiskMovement.movingDamage(ME, ME, NOW, List.of(), List.of(), List.of(past), n -> 0), 0);
     }
 
     @Test
