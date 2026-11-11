@@ -5,3 +5,9 @@
 19:22:13 start mstrace
 19:22:13 watching mstrace: 2 stop rule(s)
 19:22:30 progress mstrace: 0 battles, 0 failed
+19:45:29 mstrace exit=0 in 1396 s
+19:45:29 start msread
+19:46:04 msread exit=0 in 34 s
+19:46:04 start mspr
+19:46:11 mspr exit=0 in 6 s
+19:46:11 ALLDONE
