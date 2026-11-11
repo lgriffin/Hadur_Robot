@@ -167,5 +167,62 @@ class X5CardTest(unittest.TestCase):
         self.assertEqual("h.H 1\thj\nr.R 1\trp\n", open(out).read(), "moves is not a lever; blank entries are skipped")
 
 
+    def test_portfolio_keeps_by_shrunk_gain_and_leaves_out_carried_shielded_and_short(self):
+        # hj: four robots whose gains differ far beyond their noise (+10, +6, -6, -10): spread kept, sign decides.
+        # mm: three robots with the same small gain and no spread: all kept on the lever's mean.
+        # fl: two robots, both losing: none kept.
+        gains = {"a.A 1": ("hj", 10), "b.B 1": ("hj", 6), "c.C 1": ("hj", -6), "d.D 1": ("hj", -10),
+                 "e.E 1": ("mm", 1), "f.F 1": ("mm", 1), "g.G 1": ("mm", 1),
+                 "h.H 1": ("fl", -2), "i.I 1": ("fl", -2),
+                 "k.K 1": ("hj", 9), "s.S 1": ("gs", 9), "t.T 1": ("hj", 9)}
+        rows = ""
+        for o, (k, g) in gains.items():
+            for seed, wob in ((1, 0.2), (2, -0.2), (3, 0.1), (4, -0.1)):
+                if o == "t.T 1" and seed > 1:
+                    continue   # one battle only: short
+                rows += row("c", o, seed, (70 + wob) / 100.0) + row("ln", o, seed, (70 + g - wob) / 100.0)
+        run = self.path("arms.tsv", HEAD + rows)
+        lean = self.path("lean.tsv", "".join("%s\t%s\t1.0\t0\t2\t2\n" % (o, k) for o, (k, g) in gains.items()))
+        census = self.path("census.txt", "# census\n" + "".join("%s | n | x.jar\n" % o for o in gains))
+        carry = self.path("carry.tsv", "k.K 1\tx5\n")
+        shield = self.path("shield.txt", "s.S 1 | n | s.jar\n")
+        out = {n: os.path.join(self.d, n) for n in ("pick.tsv", "set.txt", "pilot.txt", "r.md")}
+        args = ["portfolio", "--lean", lean, "--run", run + "@ln", "--census", census, "--carry", carry,
+                "--shielded", shield, "--pick-out", out["pick.tsv"], "--set-out", out["set.txt"],
+                "--pilot-out", out["pilot.txt"], "--pilot-every", "2", "--out", out["r.md"], "--field", "100"]
+        self.assertEqual(0, x5_card.main(args))
+        picked = {l.split("\t")[0]: l.split("\t") for l in open(out["pick.tsv"])}
+        self.assertEqual({"a.A 1", "b.B 1", "e.E 1", "f.F 1", "g.G 1"}, set(picked))
+        self.assertEqual("hj", picked["a.A 1"][1])
+        # Shrunk toward the lever's mean (0): never past the raw +10, and barely moved when the noise is small.
+        self.assertTrue(9.0 < float(picked["a.A 1"][2]) <= 10.0)
+        self.assertAlmostEqual(10.0, float(picked["a.A 1"][3]), places=1)
+        self.assertAlmostEqual(1.0, float(picked["e.E 1"][2]), places=1)
+        text = open(out["r.md"]).read()
+        self.assertIn("Kept: **5 robots**", text)
+        self.assertIn("1 the table already carries a lever for, 1 shield-mode robots on gs or fl, 1 with under two", text)
+        self.assertEqual(5, len([l for l in open(out["set.txt"]) if not l.startswith("#")]))
+        self.assertEqual(3, len([l for l in open(out["pilot.txt"]) if not l.startswith("#")]))
+
+    def test_portfolio_pools_runs_and_exits_1_when_nothing_is_kept(self):
+        def run(name, arm, g):
+            rows = ""
+            for o in ("a.A 1", "b.B 1"):
+                for seed, wob in ((1, 0.3), (2, -0.3)):
+                    rows += row("c", o, seed, (60 + wob) / 100.0) + row(arm, o, seed, (60 + g - wob) / 100.0)
+            return self.path(name, HEAD + rows)
+        lean = self.path("lean.tsv", "a.A 1\tmm\t1\t0\t2\t2\nb.B 1\tmm\t1\t0\t2\t2\n")
+        census = self.path("census.txt", "a.A 1 | n | a.jar\nb.B 1 | n | b.jar\n")
+        out = {n: os.path.join(self.d, n) for n in ("pick.tsv", "set.txt", "pilot.txt", "r.md")}
+        tail = ["--lean", lean, "--census", census, "--pick-out", out["pick.tsv"], "--set-out", out["set.txt"],
+                "--pilot-out", out["pilot.txt"], "--out", out["r.md"]]
+        # +4 on one run and -2 on the other pool to +1: kept; two losing runs: nothing kept.
+        self.assertEqual(0, x5_card.main(["portfolio", "--run", run("r1.tsv", "ln", 4) + "@ln",
+                                          "--run", run("r2.tsv", "xr", -2) + "@xr"] + tail))
+        self.assertAlmostEqual(1.0, float(open(out["pick.tsv"]).readline().split("\t")[3]), places=1)
+        self.assertEqual(1, x5_card.main(["portfolio", "--run", run("r3.tsv", "ln", -3) + "@ln"] + tail))
+        self.assertEqual(2, x5_card.main(["portfolio", "--run", "noarm"] + tail))
+
+
 if __name__ == "__main__":
     unittest.main()

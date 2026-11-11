@@ -1,0 +1,68 @@
+# 1v1, the leaning field banked as one portfolio (BENCH-230). pc-tailor-near (BENCH-207, PR #704) fought 491 leaning
+# robots each on its own lever, on 4 new seeds: together they read +0.10 +/- 0.10 APS over master. Its 2-point
+# per-robot rule then kept 32 of them and +0.03 was banked (PR #706): a robot at 4 seeds is noisy by 4 to 5 points, so
+# a real gain of 1 or 2 points fails that test most of the time, and the rest of a real pooled gain went back to
+# playing as master. The ladder scores the mean over the field, so this card asks the group, not the robot.
+# Leigh starts it once the PC is free (one card at a time, from master):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-portfolio        (or  ./queue.sh run pc-portfolio)
+# It needs pc-tailor-near's battles in work/tnr (prep stops with a message when work/tnr/arms.tsv is missing). No new
+# screen: the only new battles are the confirm.
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes; no step needs a
+# decision. Size: the kept robots (at most about 430: the 491 less those the table carries since) x 3 arms (c, aa, xr)
+# x 6 seeds; at 300 robots 5,400 battles, about 8 h at ~650 battles/h. The first fifth is the pilot.
+#
+# The arms: c is master; aa its A/A copy; xr is ONE build in which each kept robot is on the lever it leaned to
+# (tools/x5_card.py portfolio, then lists). Which robots are kept (x5_card.py portfolio): each robot's gain on
+# work/tnr's seeds (its lever chosen earlier, on pc-tailor-field's seeds, so the gain is unbiased) is shrunk toward its
+# lever's mean by the share of the gains' variance that is spread between robots and not noise; a robot is kept when
+# its shrunk gain is above 0. Left out: every robot the table already carries a lever for (one lever a robot,
+# pc-tailor-stack), and shield-mode robots on gs or fl.
+#
+# Why it should win (the PC card rule of 2026-11-03):
+#   - It is per-opponent on every robot: each robot plays its own lever or none; no lever goes on the whole field.
+#   - The signal is already measured: +0.10 +/- 0.10 APS over the 491 on fresh seeds, of which +0.03 is banked.
+#   - Shrinking drops the robots whose lean was noise, so the kept group should read above the whole 491's mean.
+#   - No winner's curse in the gate: the lever was chosen on pc-tailor-field's seeds, the robots on pc-tailor-near's,
+#     and the gate is measured on 6 seeds neither has seen (from 14500), against c and aa.
+#   - Risk: the group passes or fails together. On a FAIL nothing ships and every robot stays as master plays it.
+# Pilot (stop rule): every fifth kept robot x c, aa, xr x 6 seeds from 14500. When xr's mean gain over c and aa there
+#   is under 0, work/pf.stop is written, every later step skips and the results PR carries the pilot alone.
+# confirm: all the kept robots, same arms and seeds (it resumes the pilot's battles); gate +0.03 APS over 1,217
+#   pairings with the 95% low end above 0 (tools/shield_s2.py gate), per-robot results beside it.
+# On a PASS a PR adds the kept robots' lines to ShieldTableData. The per-robot file then feeds the next pass:
+#   x5_card.py portfolio --run work/tnr/arms.tsv@ln --run work/pf/arms.tsv@xr pools both runs and prunes again.
+# Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 90+ skipped turns a battle
+# over the last 200, or no battle in 30 minutes; every battle fought is kept and a rerun resumes. Nothing here ships:
+# the release rule stands.
+
+set V = 3.21
+set P = --parallel 12 --no-truth-log --failed-ok
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
+set W = work/pf
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && rm -f work/pf.stop && if [ ! -f work/tnr/arms.tsv ]; then echo 'needs work/tnr/arms.tsv, the pc-tailor-near battles'; exit 1; fi && python3 tools/x5_card.py carried ../hadur-robot/src/main/java/hadur117/ShieldTableData.java --out work/pf-carried.tsv && python3 tools/x5_card.py portfolio --lean ${OUT}/tnr-lean.tsv --run work/tnr/arms.tsv@ln --census census-312.txt --carry work/pf-carried.tsv --shielded panel-shield-listed-321.txt --min 0 --field 1217 --pick-out work/pf-pick.tsv --set-out work/panel-pf.txt --pilot-out work/panel-pf-pilot.txt --out ${OUT}/$(date +%Y-%m-%d)_pf-portfolio.md && cp work/pf-pick.tsv ${OUT}/pf-pick.tsv && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && python3 tools/x5_card.py lists work/pf-pick.tsv --list-prefix work/pfl --env-out work/pfl-env.sh --abl-out work/pfl-abl.txt --arms-out work/pf.arms --version ${V} && (. ./work/pfl-env.sh && bash ./build-ablation.sh $(cat work/pfl-abl.txt)) && test -f bisect/hadur117.Hadur_${V}aa.jar && test -f "$(awk -F'|' '/^xr /{gsub(/ /, "", $3); print $3}' work/pf.arms)" && ./fetch-opponents.sh --set census-312.txt && mvn -q compile
+
+pilot | ./bench-top20.sh ${C} ${P} --set work/panel-pf-pilot.txt --seeds 6 --seed-base 14500 --arms work/pf.arms --out ${W} --label pf --shuffle-jobs && python3 tools/x5_card.py pilot ${W}/arms.tsv --names work/panel-pf-pilot.txt --check xr=work/panel-pf-pilot.txt@0 --ref c,aa --out ${OUT}/$(date +%Y-%m-%d)_pf-pilot.md --stop-file work/pf.stop
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 90 over 200
+  stop: stall 30m
+
+confirm | if [ -f work/pf.stop ]; then echo 'pilot: xr under 0 over c and aa, no confirm'; exit 0; fi && ./bench-top20.sh ${C} ${P} --set work/panel-pf.txt --seeds 6 --seed-base 14500 --arms work/pf.arms --out ${W} --label pf --shuffle-jobs
+  after: pilot
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 90 over 200
+  stop: stall 30m
+
+gate | if [ -f work/pf.stop ]; then echo 'stopped (see work/pf.stop): skipped'; exit 0; fi && python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pf.md && python3 tools/per_robot.py ${W}/arms.tsv --arms xr --out ${OUT}/$(date +%Y-%m-%d)_pf-per-robot.md --out-tsv ${OUT}/pf-per-robot.tsv && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm xr --panel work/panel-pf.txt --bar 0.03 --out ${OUT}/$(date +%Y-%m-%d)_pf-gate.md
+  after: confirm
+
+pr | bash tools/open_results_pr.sh claude/pc-portfolio-results "1v1 the leaning field as one portfolio: every kept robot on its lever, fresh seeds" ${OUT}/*_pf*.md $(find ${OUT} -maxdepth 1 -name 'pf*.tsv' -size +0c)
+  after: gate

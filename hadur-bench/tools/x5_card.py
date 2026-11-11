@@ -11,6 +11,9 @@ already carries and the per-robot build's lists.
       [--carry CARRIED.tsv [--only-carried]] [--shielded PANEL.txt] [--req BENCH-207] \
       --pick-out LEAN.tsv --set-out SET.txt --pilot-out PILOT.txt [--pilot-every 5]
   python3 tools/x5_card.py carried ../hadur-robot/src/main/java/hadur117/ShieldTableData.java --out CARRIED.tsv
+  python3 tools/x5_card.py portfolio --lean LEAN.tsv --run work/tnr/arms.tsv@ln [--run RUN@ARM ...] --census census-312.txt \
+      [--carry CARRIED.tsv] [--shielded PANEL.txt] [--min 0] [--field 1217] \
+      --pick-out PICK.tsv --set-out SET.txt --pilot-out PILOT.txt --out REPORT.md
 
 pilot: each --check ARM=MEMBERS@BAR takes the PILOT robots (name | note | jar) that MEMBERS also lists and their mean
 of the arm's score share minus the reference arms' (--ref, comma separated, pooled). The card goes on when any check
@@ -21,6 +24,7 @@ list ablation), writes one name list per lever that won a robot (PREFIX-ARM.list
 variable, the build-ablation.sh argument for those ablations, and the confirm arms file whose xr line names the jar
 that build makes. Exits 1 when no robot picked any lever.
 lean (pc-tailor-near, BENCH-207; pc-tailor-stack, BENCH-214): see lean().
+portfolio (pc-portfolio, BENCH-230): see portfolio().
 carried (pc-tailor-stack, BENCH-214): see carried(). Standard library only.
 """
 import argparse
@@ -243,6 +247,109 @@ def lean(a):
     return 0
 
 
+def portfolio(a):
+    """BENCH-230: the whole leaning field as one portfolio, banked together instead of robot by robot.
+
+    --lean names each robot's lever (robot, lever: the lean an EARLIER screen chose). Each --run RUN@ARM is a later
+    run in which ARM is one build with every such robot on its own lever, beside c; the robot's gain there is the
+    mean of ARM's score share less c's over that run's battles, pooled over the runs by battle count. Because the
+    lever was chosen on other seeds, that gain is unbiased, but at a few seeds it is mostly noise: a 2-point lock
+    keeps a robot in fifteen and throws the rest of a real pooled gain away.
+
+    Here no robot has to lock. Per lever (empirical Bayes): the noise variance of a robot's gain is the pooled
+    within-arm variance of its battles over its battle counts; the spread tau^2 between robots is the variance of the
+    gains less the mean noise variance, floored at 0; each robot's gain is shrunk toward its lever's mean by
+    tau^2 / (tau^2 + its noise variance). A robot joins the portfolio when its shrunk gain is above --min. A lever
+    with no spread keeps all its robots when its mean is above --min and none otherwise.
+
+    Left out: a robot the table already carries a lever for (--carry: one lever a robot, pc-tailor-stack), a
+    shield-mode robot on gs or fl (--shielded), a robot with under two battles of either arm. Writes the pick TSV
+    (robot, lever, shrunk gain, raw gain, n lever, n c) that `lists` turns into one build, the robots' census lines,
+    every --pilot-every'th of them as the pilot set, and a report with each lever's robots, mean, spread and the
+    APS the kept robots project over --field pairings. Exits 1 when no robot is kept."""
+    lever_of = dict(read_pick(a.lean))
+    carried_names = set()
+    for path in a.carry or []:
+        carried_names.update(n for n, _ in read_pick(path))
+    shielded = set(panel_names(a.shielded)) if a.shielded else set()
+    obs = defaultdict(lambda: {"x": [], "c": []})
+    for spec in a.run:
+        path, _, arm = spec.rpartition("@")
+        if not path:
+            print("--run wants RUN@ARM, got %s" % spec, file=sys.stderr)
+            return 2
+        for name, arms in shares(path).items():
+            if name in lever_of and arms.get(arm) and arms.get("c"):
+                obs[name]["x"] += arms[arm]
+                obs[name]["c"] += arms["c"]
+    rows = defaultdict(list)   # lever -> [(name, gain, noise variance, n lever, n c)]
+    skipped = {"carried": 0, "shielded": 0, "short": 0}
+    for name, o in obs.items():
+        k = lever_of[name]
+        if k not in LEVERS:
+            continue
+        if name in carried_names:
+            skipped["carried"] += 1
+        elif name in shielded and k in SHIELD_FREE:
+            skipped["shielded"] += 1
+        elif len(o["x"]) < 2 or len(o["c"]) < 2:
+            skipped["short"] += 1
+        else:
+            rows[k].append([name, st.mean(o["x"]) - st.mean(o["c"]), o["x"], o["c"]])
+    kept, md = {}, ["# The leaning field as one portfolio (BENCH-230)", "",
+                    "Each robot's gain is its lever's score share less master's over the runs given, shrunk toward its "
+                    "lever's mean by how much of the gains' variance is spread between robots and not noise. A robot is "
+                    "kept when its shrunk gain is above %+.1f points." % a.min, "",
+                    "| Lever | Robots | Mean gain | Noise sd a robot | Spread between robots | Kept | Kept robots' shrunk gain, sum |",
+                    "|---|---:|---:|---:|---:|---:|---:|"]
+    for k in LEVERS:
+        rs = rows.get(k)
+        if not rs:
+            continue
+        # One within-arm variance for the lever, pooled over its robots and both arms.
+        ss = sum(sum((v - st.mean(xs)) ** 2 for v in xs) for r in rs for xs in (r[2], r[3]))
+        df = sum(len(xs) - 1 for r in rs for xs in (r[2], r[3]))
+        var = ss / df if df else 0.0
+        noise = [var * (1.0 / len(r[2]) + 1.0 / len(r[3])) for r in rs]
+        gains = [r[1] for r in rs]
+        mu = st.mean(gains)
+        tau2 = max(0.0, (st.pvariance(gains) if len(gains) > 1 else 0.0) - st.mean(noise))
+        n_kept, total = 0, 0.0
+        for r, nv in zip(rs, noise):
+            b = tau2 / (tau2 + nv) if tau2 + nv > 0 else 0.0
+            shrunk = mu + b * (r[1] - mu)
+            if shrunk > a.min:
+                kept[r[0]] = (k, shrunk, r[1], len(r[2]), len(r[3]))
+                n_kept += 1
+                total += shrunk
+        md.append("| %s | %d | %+.2f | %.2f | %.2f | %d | %+.1f |" % (
+            k, len(rs), mu, st.mean(noise) ** 0.5, tau2 ** 0.5, n_kept, total))
+    aps = sum(v[1] for v in kept.values()) / a.field
+    md += ["", "Kept: **%d robots**, projected **%+.3f APS** over %d pairings (the sum of the shrunk gains; the "
+               "confirm on fresh seeds is the measurement)." % (len(kept), aps, a.field),
+           "Left out: %d the table already carries a lever for, %d shield-mode robots on gs or fl, %d with under two "
+           "battles of an arm." % (skipped["carried"], skipped["shielded"], skipped["short"])]
+    open(a.out, "w", encoding="utf-8").write("\n".join(md) + "\n")
+    if not kept:
+        print("no robot kept", file=sys.stderr)
+        return 1
+    picks, lines = [], []
+    for line in open(a.census, encoding="utf-8"):
+        if line.strip() and not line.startswith("#") and "|" in line:
+            name = line.split("|")[0].strip()
+            if name in kept:
+                k, shrunk, raw, nx, nc = kept[name]
+                picks.append("%s\t%s\t%.2f\t%.2f\t%d\t%d\n" % (name, k, shrunk, raw, nx, nc))
+                lines.append(line if line.endswith("\n") else line + "\n")
+    open(a.pick_out, "w", encoding="utf-8").write("".join(picks))
+    head = "# %s: the portfolio, %d robots each on the lever it leaned to (x5_card.py portfolio).\n"
+    open(a.set_out, "w", encoding="utf-8").write(head % (a.req, len(lines)) + "".join(lines))
+    open(a.pilot_out, "w", encoding="utf-8").write(
+        "# %s pilot: every %dth robot of %s.\n" % (a.req, a.pilot_every, a.set_out) + "".join(lines[::a.pilot_every]))
+    print("%d robots kept, projected %+.3f APS; pilot %d" % (len(lines), aps, len(lines[::a.pilot_every])))
+    return 0
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -279,8 +386,22 @@ def main(argv=None):
     c = sub.add_parser("carried")
     c.add_argument("source", help="ShieldTableData.java")
     c.add_argument("--out", required=True)
+    f = sub.add_parser("portfolio")
+    f.add_argument("--lean", required=True, help="robot, lever TSV: the lever an earlier screen chose for each robot")
+    f.add_argument("--run", action="append", required=True, help="RUN/arms.tsv@ARM: a run with each robot on its lever as ARM, beside c")
+    f.add_argument("--census", required=True)
+    f.add_argument("--carry", action="append", help="a robot, lever TSV the table carries: those robots are left out")
+    f.add_argument("--shielded", help="a census panel of the shield-mode robots, which take neither gs nor fl")
+    f.add_argument("--min", type=float, default=0.0, help="keep a robot whose shrunk gain is above this many points")
+    f.add_argument("--field", type=int, default=1217)
+    f.add_argument("--pick-out", required=True)
+    f.add_argument("--set-out", required=True)
+    f.add_argument("--pilot-out", required=True)
+    f.add_argument("--pilot-every", type=int, default=5)
+    f.add_argument("--out", required=True)
+    f.add_argument("--req", default="BENCH-230")
     a = ap.parse_args(argv)
-    return {"pilot": pilot, "lists": lists, "lean": lean, "carried": carried}[a.cmd](a)
+    return {"pilot": pilot, "lists": lists, "lean": lean, "carried": carried, "portfolio": portfolio}[a.cmd](a)
 
 
 if __name__ == "__main__":
