@@ -41,23 +41,29 @@ class MeleeStatesTest(unittest.TestCase):
         self.assertEqual("cz.libors.Ogi", melee_states.base("cz.libors.Ogi 1.0"))
 
     def test_a_trace_counts_the_aimed_hit_the_miss_the_crossfire_and_skips_the_duel(self):
-        still = lambda alive_b=True: [(US, 500.0, 600.0, 0.0, 0.0, 100.0, True), (A, 500.0, 500.0, 0.0, 0.0, 100.0, True),
-                                      (B, 900.0, 500.0, 0.0, 0.0, 100.0, alive_b)]
-        lines = ["V,1\n"]
-        # Round 0. A fires north at Hadur 100 px away (seen at y 511, then 522 ... gone after 577: 588 is within 40 of 600).
+        def bots(us=(500.0, 600.0), e_us=100.0, alive_b=True, us_v=0.0, us_h=0.0):
+            return [(US, us[0], us[1], us_h, us_v, e_us, True), (A, 500.0, 500.0, 0.0, 0.0, 100.0, True),
+                    (B, 900.0, 500.0, 0.0, 0.0, 100.0, alive_b)]
+        lines = ["V,1\n", rec(0, 0, bots(), [])]
+        # Round 0. A fires north at Hadur 100 px away: seen from y 511 to 577, gone on the turn Hadur loses 16.
         for i, y in enumerate((511, 522, 533, 544, 555, 566, 577)):
-            lines.append(rec(0, i + 1, still(), [(A, 500.0, float(y), 0.0, 3.0)]))
-        lines.append(rec(0, 8, still(), []))
-        # A fires south at nobody: unaimed, gone at the wall, nothing counted.
-        lines.append(rec(0, 9, still(), [(A, 500.0, 489.0, math.pi, 3.0)]))
-        lines.append(rec(0, 10, still(), []))
-        # B fires west, aimed at A (400 px), and it is gone next to Hadur instead: crossfire on Hadur.
-        lines.append(rec(0, 11, still(), [(B, 889.0, 500.0, -math.pi / 2, 3.0)]))
-        lines.append(rec(0, 12, [(US, 860.0, 500.0, 0.0, 0.0, 100.0, True), still()[1], still()[2]], []))
+            lines.append(rec(0, i + 1, bots(), [(A, 500.0, float(y), 0.0, 3.0)]))
+        lines.append(rec(0, 8, bots(e_us=84.0), []))
+        # A fires north again; the bullet is gone beside Hadur but Hadur's energy does not fall: a miss, not a hit.
+        for i, y in enumerate((511, 522, 533, 544, 555, 566, 577)):
+            lines.append(rec(0, 9 + i, bots(e_us=84.0), [(A, 500.0, float(y), 0.0, 3.0)]))
+        lines.append(rec(0, 16, bots(e_us=84.0), []))
+        # A fires south at nobody: unaimed, nothing counted.
+        lines.append(rec(0, 17, bots(e_us=84.0), [(A, 500.0, 489.0, math.pi, 3.0)]))
+        lines.append(rec(0, 18, bots(e_us=84.0), []))
+        # B fires west, aimed at A (400 px), and it is gone next to Hadur, which loses 16: crossfire on Hadur.
+        lines.append(rec(0, 19, bots(e_us=84.0), [(B, 889.0, 500.0, -math.pi / 2, 3.0)]))
+        lines.append(rec(0, 20, bots(us=(860.0, 500.0), e_us=68.0), []))
         # Round 1, two alive: the last duel, not counted.
-        lines.append(rec(1, 1, still(False), [(A, 500.0, 511.0, 0.0, 3.0)]))
-        lines.append(rec(1, 2, still(False), [(A, 500.0, 589.0, 0.0, 3.0)]))
-        lines.append(rec(1, 3, still(False), []))
+        lines.append(rec(1, 0, bots(alive_b=False), []))
+        lines.append(rec(1, 1, bots(alive_b=False), [(A, 500.0, 511.0, 0.0, 3.0)]))
+        lines.append(rec(1, 2, bots(alive_b=False), [(A, 500.0, 589.0, 0.0, 3.0)]))
+        lines.append(rec(1, 3, bots(e_us=84.0, alive_b=False), []))
         d = tempfile.mkdtemp()
         os.makedirs(os.path.join(d, "f01", "battles", "melee-3330"))
         with gzip.open(os.path.join(d, "f01", "battles", "melee-3330", "trace.log.gz"), "wt", encoding="utf-8") as f:
@@ -65,18 +71,33 @@ class MeleeStatesTest(unittest.TestCase):
         stats, traces = melee_states.read([d])
         self.assertEqual(1, traces)
         h = stats["hadur117.Hadur"]
-        self.assertEqual((1, 1), (h["shots"], h["hits"]), "one aimed shot, one hit; the duel's is not counted")
-        self.assertEqual((1, 1), (h["dist0"], h["hdist0"]), "fired from under 150 px")
-        self.assertEqual((1, 1), (h["lat0"], h["gf0"]), "standing still, head-on")
+        self.assertEqual((2, 1), (h["shots"], h["hits"]), "two aimed shots, one hit: no energy fell on the second")
+        self.assertEqual((2, 1), (h["dist0"], h["hdist0"]), "fired from under 150 px")
+        self.assertEqual((2, 2), (h["lat0"], h["gf0"]), "standing still, head-on")
         self.assertEqual(32.0, h["damage"])
         self.assertEqual(16.0, h["cross"], "half of it was aimed at A")
         self.assertEqual((1, 0), (stats["a.A"]["shots"], stats["a.A"]["hits"]))
         out = os.path.join(d, "r.md")
         melee_states.main([d, "--min-shots", "1", "--out", out])
-        text = open(out).read()
-        self.assertIn("| hadur117.Hadur | 1 | 100.0% |", text)
+        with open(out) as f:
+            text = f.read()
+        self.assertIn("| hadur117.Hadur | 2 | 50.0% |", text)
         self.assertIn("| hadur117.Hadur | 100% | 100% | 50% |", text)
         self.assertLess(text.index("| hadur117.Hadur |"), text.index("| a.A |"), "ours first")
+
+    def test_the_firing_turn_is_the_turn_before_the_bullet_is_first_seen(self):
+        # Hadur drives east at 8: on the firing turn it is at x 500, dead ahead of A; when the bullet is first seen
+        # it has moved to 508. The shot is read on the firing turn: head-on, 100 px, 8 px a tick across the line.
+        def bots(x):
+            return [(US, x, 600.0, math.pi / 2, 8.0, 100.0, True), (A, 500.0, 500.0, 0.0, 0.0, 100.0, True),
+                    (B, 900.0, 900.0, 0.0, 0.0, 100.0, True)]
+        d = tempfile.mkdtemp()
+        with gzip.open(os.path.join(d, "trace.log.gz"), "wt", encoding="utf-8") as f:
+            f.writelines(["V,1\n", rec(0, 0, bots(500.0), []), rec(0, 1, bots(508.0), [(A, 500.0, 511.0, 0.0, 3.0)]),
+                          rec(0, 2, bots(516.0), [])])
+        stats, _ = melee_states.read([d])
+        h = stats["hadur117.Hadur"]
+        self.assertEqual((1, 1, 1, 1), (h["shots"], h["dist0"], h["lat4"], h["gf0"]))
 
 
 if __name__ == "__main__":

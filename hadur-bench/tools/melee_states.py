@@ -5,11 +5,17 @@ sideways speed, head-on bullets) could not be made for melee. A trace has every 
 turn. This tool follows each bullet from the turn it is first seen to the turn it is gone:
 
 - aimed at: the living robot, not the owner, whose bearing from the bullet lies nearest its heading, if within
-  AIMED_DEG degrees; its distance and its speed across the shooter's line are taken on that turn;
+  AIMED_DEG degrees. The trace first shows a bullet one turn after it was fired, so the bullet is stepped back one
+  turn and the robots are read from the turn before: the distance and the target's speed across the shooter's line
+  are those of the firing turn;
 - guess factor: the bullet's heading less that bearing, over the largest angle the target could reach
   (asin(8 / bullet speed)), signed by the way the target was moving across the line;
-- hit: when the bullet is gone and a living robot, not the owner, stands within HIT_PX of where it would have been.
-  A trace carries no hit event, so this is inferred; a bullet that ends on a wall or meets another bullet counts as a miss.
+- hit: when the bullet is gone, a robot, not the owner, stands within HIT_PX of where it would have been, AND that
+  robot's energy fell by at least the bullet's damage on that turn. A trace carries no hit event, so this is
+  inferred; the energy test keeps a bullet that ends on a wall beside a robot, or meets another bullet there, from
+  counting as a hit.
+- not seen: the trace leaves out a bullet that hits on the very turn it is fired, so shots from touching distance
+  are missing from both the shots and the hits. The under-150 px column is a floor for every robot alike.
 
 Only bullets first seen with three or more robots alive are counted (the crowd; the last duel is the 1v1's).
 Writes, for every robot aimed at --min-shots times or more (--ours first): its hit rate by distance, by sideways
@@ -94,11 +100,14 @@ def aim(bullet, robots):
 
 def battle(path, stats):
     """Adds one trace's bullets to stats: {robot: Counter}."""
-    live, rnd_now = {}, None
+    live, rnd_now, prev = {}, None, None
     for rnd, _turn, robots, bullets in records(path):
         if rnd != rnd_now:
-            live, rnd_now = {}, rnd
-        alive = [r for r in robots if r[6]]
+            live, rnd_now, prev = {}, rnd, None
+        # The firing turn's robots: the record before this one (the first record of a round has none).
+        then = prev if prev is not None else robots
+        energy_then = {r[0]: r[5] for r in then}
+        alive = [r for r in then if r[6]]
         seen = set()
         for b in bullets:
             key = (b[0], round(b[3], 4), b[4])
@@ -106,7 +115,9 @@ def battle(path, stats):
             if key in live:
                 live[key]["at"] = (b[1], b[2])
                 continue
-            shot = {"at": (b[1], b[2]), "aim": aim(b, robots) if len(alive) >= 3 else None, "crowd": len(alive) >= 3}
+            step = (20.0 - 3.0 * b[4]) if prev is not None else 0.0
+            fired = (b[0], b[1] - step * math.sin(b[3]), b[2] - step * math.cos(b[3]), b[3], b[4])
+            shot = {"at": (b[1], b[2]), "aim": aim(fired, then) if len(alive) >= 3 else None, "crowd": len(alive) >= 3}
             live[key] = shot
             if shot["aim"]:
                 name, dist, lat, gf = shot["aim"]
@@ -123,11 +134,13 @@ def battle(path, stats):
             speed = 20.0 - 3.0 * power
             nx, ny = shot["at"][0] + speed * math.sin(heading), shot["at"][1] + speed * math.cos(heading)
             victim = None
-            for name, rx, ry, _, _, _, was_alive in robots:
+            for name, rx, ry, _, _, e, _alive in robots:
                 if name == owner:
                     continue
                 d = math.hypot(rx - nx, ry - ny)
-                if d <= HIT_PX and (victim is None or d < victim[0]):
+                # A hit takes the bullet's damage off the victim this turn; a wall or a bullet beside it takes none.
+                fell = energy_then.get(name, e) - e
+                if d <= HIT_PX and fell >= damage(power) - 0.05 and (victim is None or d < victim[0]):
                     victim = (d, name)
             if victim is None:
                 continue
@@ -141,6 +154,7 @@ def battle(path, stats):
                 v["hgf%d" % band(GF, abs(gf))] += 1
             else:
                 v["cross"] += damage(power)
+        prev = robots
 
 
 def read(runs):
@@ -164,7 +178,9 @@ def report(stats, traces, ours, min_shots):
     names.sort(key=lambda n: (not n.startswith(ours), stats[n]["hits"] / stats[n]["shots"]))
     md = ["# The states melee robots are hit in (BENCH-232)", "",
           "%d traces. A bullet is aimed at the living robot nearest its heading (within %.0f degrees) when first seen; "
-          "a hit is inferred when it is gone within %.0f px of a robot. Only bullets fired with three or more alive. "
+          "a hit is inferred when it is gone within %.0f px of a robot whose energy fell by its damage that turn. Bullets "
+          "that hit on the turn they are fired are not in a trace, so point-blank fire is undercounted for every robot. "
+          "Only bullets fired with three or more alive. "
           "Robots aimed at %d times or more, %s first, then by hit rate. A cell under 50 shots is left blank."
           % (traces, AIMED_DEG, HIT_PX, min_shots, ours), ""]
     for kind, title in (("dist", "Hit rate by the distance at the fire (px)"),
