@@ -330,6 +330,13 @@ class TeamModesTest(unittest.TestCase):
         s = team_modes.shrink({"x": {"a": (2.0, 9.8), "b": (1.0, 9.8), "c": (0.0, 9.8)}})
         for t in "abc":
             self.assertAlmostEqual(1.0, s["x"][t], places=6)
+        # The bench's half-widths are Student's t: at 6 paired seeds +/-2.571 is a noise variance of 1, not 1.72.
+        self.assertAlmostEqual(2.571, team_modes.t95(6))
+        self.assertAlmostEqual(1.96, team_modes.t95(None))
+        self.assertAlmostEqual(1.96, team_modes.t95(100))
+        six = {"x": {"a": 6, "b": 6, "c": 6}}
+        s = team_modes.shrink({"x": {"a": (6.0, 2.571), "b": (0.0, 2.571), "c": (-6.0, 2.571)}}, six)
+        self.assertAlmostEqual(5.75, s["x"]["a"], places=2)
 
     def test_pick_shrink_takes_teams_no_interval_would_and_records_the_shrunk_gain(self):
         out = Path(self.d)

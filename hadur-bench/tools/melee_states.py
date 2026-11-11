@@ -108,17 +108,29 @@ def battle(path, stats):
         then = prev if prev is not None else robots
         energy_then = {r[0]: r[5] for r in then}
         alive = [r for r in then if r[6]]
-        seen = set()
+        # One owner can have several bullets with the same recorded heading and power in flight, so a key holds
+        # a list and each bullet is matched to the shot that should be nearest it this turn.
+        seen = collections.defaultdict(list)
         for b in bullets:
-            key = (b[0], round(b[3], 4), b[4])
-            seen.add(key)
-            if key in live:
-                live[key]["at"] = (b[1], b[2])
+            key = (b[0], round(b[3], 3), b[4])
+            speed = 20.0 - 3.0 * b[4]
+            match = None
+            for shot in live.get(key, []):
+                if any(shot is s for s in seen[key]):
+                    continue
+                ex, ey = shot["at"][0] + speed * math.sin(b[3]), shot["at"][1] + speed * math.cos(b[3])
+                d = math.hypot(b[1] - ex, b[2] - ey)
+                if d <= speed and (match is None or d < match[0]):
+                    match = (d, shot)
+            if match:
+                match[1]["at"] = (b[1], b[2])
+                seen[key].append(match[1])
                 continue
-            step = (20.0 - 3.0 * b[4]) if prev is not None else 0.0
+            step = speed if prev is not None else 0.0
             fired = (b[0], b[1] - step * math.sin(b[3]), b[2] - step * math.cos(b[3]), b[3], b[4])
             shot = {"at": (b[1], b[2]), "aim": aim(fired, then) if len(alive) >= 3 else None, "crowd": len(alive) >= 3}
-            live[key] = shot
+            live.setdefault(key, []).append(shot)
+            seen[key].append(shot)
             if shot["aim"]:
                 name, dist, lat, gf = shot["aim"]
                 s = stats[base(name)]
@@ -126,34 +138,40 @@ def battle(path, stats):
                 s["dist%d" % band(DIST, dist)] += 1
                 s["lat%d" % band(LATERAL, lat)] += 1
                 s["gf%d" % band(GF, abs(gf))] += 1
-        for key in [k for k in live if k not in seen]:
-            shot = live.pop(key)
-            if not shot["crowd"]:
-                continue
-            owner, heading, power = key
-            speed = 20.0 - 3.0 * power
-            nx, ny = shot["at"][0] + speed * math.sin(heading), shot["at"][1] + speed * math.cos(heading)
-            victim = None
-            for name, rx, ry, _, _, e, _alive in robots:
-                if name == owner:
+        alive_then = {r[0] for r in alive}
+        for key in list(live):
+            gone = [shot for shot in live[key] if not any(shot is s for s in seen[key])]
+            live[key] = [shot for shot in live[key] if any(shot is s for s in seen[key])]
+            if not live[key]:
+                del live[key]
+            for shot in gone:
+                if not shot["crowd"]:
                     continue
-                d = math.hypot(rx - nx, ry - ny)
-                # A hit takes the bullet's damage off the victim this turn; a wall or a bullet beside it takes none.
-                fell = energy_then.get(name, e) - e
-                if d <= HIT_PX and fell >= damage(power) - 0.05 and (victim is None or d < victim[0]):
-                    victim = (d, name)
-            if victim is None:
-                continue
-            v = stats[base(victim[1])]
-            v["damage"] += damage(power)
-            if shot["aim"] and shot["aim"][0] == victim[1]:
-                _, dist, lat, gf = shot["aim"]
-                v["hits"] += 1
-                v["hdist%d" % band(DIST, dist)] += 1
-                v["hlat%d" % band(LATERAL, lat)] += 1
-                v["hgf%d" % band(GF, abs(gf))] += 1
-            else:
-                v["cross"] += damage(power)
+                owner, heading, power = key
+                speed = 20.0 - 3.0 * power
+                nx, ny = shot["at"][0] + speed * math.sin(heading), shot["at"][1] + speed * math.cos(heading)
+                victim = None
+                for name, rx, ry, _, _, e, _alive in robots:
+                    # A robot that was dead before this turn takes no bullet, wherever it lies.
+                    if name == owner or name not in alive_then:
+                        continue
+                    d = math.hypot(rx - nx, ry - ny)
+                    # A hit takes the bullet's damage off the victim this turn; a wall or a bullet beside it takes none.
+                    fell = energy_then.get(name, e) - e
+                    if d <= HIT_PX and fell >= damage(power) - 0.05 and (victim is None or d < victim[0]):
+                        victim = (d, name)
+                if victim is None:
+                    continue
+                v = stats[base(victim[1])]
+                v["damage"] += damage(power)
+                if shot["aim"] and shot["aim"][0] == victim[1]:
+                    _, dist, lat, gf = shot["aim"]
+                    v["hits"] += 1
+                    v["hdist%d" % band(DIST, dist)] += 1
+                    v["hlat%d" % band(LATERAL, lat)] += 1
+                    v["hgf%d" % band(GF, abs(gf))] += 1
+                else:
+                    v["cross"] += damage(power)
         prev = robots
 
 

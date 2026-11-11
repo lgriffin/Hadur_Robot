@@ -99,6 +99,26 @@ class MeleeStatesTest(unittest.TestCase):
         h = stats["hadur117.Hadur"]
         self.assertEqual((1, 1, 1, 1), (h["shots"], h["dist0"], h["lat4"], h["gf0"]))
 
+    def test_two_bullets_on_one_heading_are_two_shots_and_a_dead_robot_takes_none(self):
+        def bots(e_us=100.0, b_alive=True):
+            return [(US, 500.0, 900.0, 0.0, 0.0, e_us, True), (A, 500.0, 500.0, 0.0, 0.0, 100.0, True),
+                    (B, 500.0, 700.0, 0.0, 0.0, 0.0, b_alive), ("c.C 1", 100.0, 100.0, 0.0, 0.0, 100.0, True)]
+        d = tempfile.mkdtemp()
+        # B died earlier and lies on the line 200 px north of A. A fires two power-3 bullets north, 11 turns apart,
+        # both in flight at once on the same heading: two shots at Hadur (400 px), neither taken by the dead robot.
+        lines = ["V,1\n", rec(0, 0, bots(b_alive=False), [])]
+        first = [511.0 + 11 * i for i in range(40)]
+        for t in range(1, 30):
+            bl = [(A, 500.0, first[t - 1], 0.0, 3.0)]
+            if t >= 12:
+                bl.append((A, 500.0, first[t - 12], 0.0, 3.0))
+            lines.append(rec(0, t, bots(b_alive=False), bl))
+        with gzip.open(os.path.join(d, "trace.log.gz"), "wt", encoding="utf-8") as f:
+            f.writelines(lines)
+        stats, _ = melee_states.read([d])
+        self.assertEqual(2, stats["hadur117.Hadur"]["shots"])
+        self.assertEqual(0, stats["b.B"]["shots"] + stats["b.B"]["damage"])
+
 
 if __name__ == "__main__":
     unittest.main()

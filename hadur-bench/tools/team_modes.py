@@ -300,11 +300,13 @@ def cmd_arms(a):
 def cmd_pick(a):
     screens = {}
     names, table = counters(a.counters) if a.counters else ((), {})
+    seeds = {}
     for spec in a.report:
         mode, path = spec.split("=", 1)
         if mode not in MODES and mode not in names:
             raise SystemExit(f"unknown mode {mode}")
         screens[mode] = paired(path)
+        seeds[mode] = pair_counts(path)
     for spec in a.control or ():
         mode, path = spec.split("=", 1)
         if mode not in screens:
@@ -312,7 +314,7 @@ def cmd_pick(a):
         control = paired(path)
         screens[mode] = {t: (m - control[t][0] / 2, (c * c + (control[t][1] / 2) ** 2) ** 0.5)
                          for t, (m, c) in screens[mode].items() if t in control}
-    decide = shrink(screens) if a.shrink else None
+    decide = shrink(screens, seeds) if a.shrink else None
     aa = paired(a.aa) if a.aa else {}
     rows = census(a.census)
     classes = classes_for(rows, a.opponents)
@@ -421,11 +423,24 @@ def cmd_lock(a):
     print(f"kept {len(kept)} of {len(picks)} picks", file=sys.stderr)
 
 
-def shrink(screens):
+# Student's t, 95% two-sided, by degrees of freedom: the bench's half-widths are t-based (Stats.java).
+T95 = (12.706, 4.303, 3.182, 2.776, 2.571, 2.447, 2.365, 2.306, 2.262, 2.228, 2.201, 2.179, 2.160, 2.145, 2.131,
+       2.120, 2.110, 2.101, 2.093, 2.086, 2.080, 2.074, 2.069, 2.064, 2.060, 2.056, 2.052, 2.048, 2.045, 2.042)
+
+
+def t95(n):
+    """The 95% two-sided critical value for n paired seeds (n - 1 degrees of freedom); 1.96 when n is unknown."""
+    if not n or n < 2:
+        return 1.96
+    return T95[n - 2] if n - 2 < len(T95) else 1.96
+
+
+def shrink(screens, seeds=None):
     """Each mode's paired gains, shrunk toward the mode's mean over its teams (empirical Bayes): the spread
-    between teams is the variance of the gains less the mean noise variance (a gain's 95% half-width over 1.96,
-    squared), floored at 0; a team's gain keeps spread / (spread + its noise variance) of its distance from the
-    mean. A mode with no spread gives every team the mode's mean. {mode: {team: shrunk gain}}."""
+    between teams is the variance of the gains less the mean noise variance, floored at 0; a team's gain keeps
+    spread / (spread + its noise variance) of its distance from the mean. A gain's noise variance is its 95%
+    half-width over the t value for its paired seeds (`seeds`: {mode: {team: n}}; 1.96 where unknown), squared.
+    A mode with no spread gives every team the mode's mean. {mode: {team: shrunk gain}}."""
     out = {}
     for mode, r in screens.items():
         if not r:
@@ -433,7 +448,7 @@ def shrink(screens):
             continue
         gains = [m for m, _ in r.values()]
         mu = sum(gains) / len(gains)
-        noise = {t: (c / 1.96) ** 2 for t, (_, c) in r.items()}
+        noise = {t: (c / t95((seeds or {}).get(mode, {}).get(t))) ** 2 for t, (_, c) in r.items()}
         var = sum((g - mu) ** 2 for g in gains) / len(gains)
         tau2 = max(0.0, var - sum(noise.values()) / len(noise))
         out[mode] = {t: mu + (tau2 / (tau2 + noise[t]) if tau2 + noise[t] > 0 else 0.0) * (m - mu)
