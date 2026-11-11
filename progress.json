@@ -1,22 +1,228 @@
 {
  "plan": "pc-portfolio",
- "updated": 1794422222.3814085,
+ "updated": 1794422817.9570801,
  "steps": {
   "prep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 99,
+   "end": "2026-11-11T18:38:41"
   },
   "pilot": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 489,
+   "end": "2026-11-11T18:46:50"
   },
   "confirm": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-11-11T18:46:51"
   },
   "gate": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-11-11T18:46:51"
   },
   "pr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 6,
+   "end": "2026-11-11T18:46:57"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "pilot",
+   "started": 1794422321.411297,
+   "updated": 1794422810.7216687,
+   "elapsed": 489.31037163734436,
+   "expected": 540,
+   "panel": 30,
+   "field": 1217,
+   "multiarm": true,
+   "arms": [
+    {
+     "arm": "c",
+     "battles": 180,
+     "failed": 0,
+     "level": 91.22144444444444,
+     "skips": 31.116666666666667,
+     "fresh": 180,
+     "scored": 180,
+     "diff": null
+    },
+    {
+     "arm": "aa",
+     "battles": 180,
+     "failed": 0,
+     "level": 91.23244444444444,
+     "skips": 30.72222222222222,
+     "fresh": 180,
+     "scored": 180,
+     "diff": 0.010999999999996627,
+     "n": 30,
+     "ci95": 0.6228287936034317,
+     "half_stop": 0.9533093779644363,
+     "scale": 0.024650780608052588
+    },
+    {
+     "arm": "xr",
+     "battles": 180,
+     "failed": 0,
+     "level": 91.02,
+     "skips": 32.138888888888886,
+     "fresh": 180,
+     "scored": 180,
+     "diff": -0.20694444444444476,
+     "n": 30,
+     "ci95": 0.9002779991029409,
+     "half_stop": 1.3779765292391952,
+     "scale": 0.024650780608052588
+    }
+   ],
+   "aa": {
+    "diff": 0.010999999999996627,
+    "ci": 0.6228287936034317,
+    "n": 30,
+    "band": 0.870258812078338,
+    "ok": true,
+    "band_stop": 1.0119288512538813
+   },
+   "warnings": [],
+   "battles": 540,
+   "resumed": 0,
+   "failed": 0,
+   "disables": 30,
+   "rate": 3972.9384715368524,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 4.762256145477295,
+   "rules": [
+    {
+     "rule": "fails 30",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 540"
+    },
+    {
+     "rule": "dead 8",
+     "action": "halt",
+     "state": "ok",
+     "detail": "every arm scoring"
+    },
+    {
+     "rule": "skips 90 over 200",
+     "action": "halt",
+     "state": "ok",
+     "detail": "30.5 a battle over the last 200 (first 200: 31.8)"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    }
+   ],
+   "skips_mean": 31.325925925925926,
+   "skips_last100": 29.94
+  },
+  {
+   "step": "confirm",
+   "started": 1794422810.85536,
+   "updated": 1794422811.067183,
+   "elapsed": 0.2118229866027832,
+   "expected": 2646,
+   "panel": 147,
+   "field": 1217,
+   "multiarm": true,
+   "arms": [
+    {
+     "arm": "c",
+     "battles": 180,
+     "failed": 0,
+     "level": 91.22144444444444,
+     "skips": 31.116666666666667,
+     "fresh": 0,
+     "scored": 0,
+     "diff": null
+    },
+    {
+     "arm": "aa",
+     "battles": 180,
+     "failed": 0,
+     "level": 91.23244444444444,
+     "skips": 30.72222222222222,
+     "fresh": 0,
+     "scored": 0,
+     "diff": 0.010999999999996627,
+     "n": 30,
+     "ci95": 0.6228287936034317,
+     "half_stop": 0.9533093779644363,
+     "scale": 0.12078882497945768
+    },
+    {
+     "arm": "xr",
+     "battles": 180,
+     "failed": 0,
+     "level": 91.02,
+     "skips": 32.138888888888886,
+     "fresh": 0,
+     "scored": 0,
+     "diff": -0.20694444444444476,
+     "n": 30,
+     "ci95": 0.9002779991029409,
+     "half_stop": 1.3779765292391952,
+     "scale": 0.12078882497945768
+    }
+   ],
+   "aa": {
+    "diff": 0.010999999999996627,
+    "ci": 0.6228287936034317,
+    "n": 30,
+    "band": 0.870258812078338,
+    "ok": true,
+    "band_stop": 1.0119288512538813
+   },
+   "warnings": [],
+   "battles": 540,
+   "resumed": 540,
+   "failed": 0,
+   "disables": 0,
+   "rate": null,
+   "eta": null,
+   "fraction": 0.20408163265306123,
+   "last_battle_age": 0.2118229866027832,
+   "rules": [
+    {
+     "rule": "fails 30",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 540"
+    },
+    {
+     "rule": "dead 8",
+     "action": "halt",
+     "state": "ok",
+     "detail": "every arm scoring"
+    },
+    {
+     "rule": "skips 90 over 200",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "0 of 200 battles to read"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    }
+   ],
+   "skips_mean": null,
+   "skips_last100": null
+  }
+ ]
 }
