@@ -1,0 +1,19 @@
+{
+ "plan": "pc-mirror-off",
+ "updated": 1794392450.6023135,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "confirm": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
