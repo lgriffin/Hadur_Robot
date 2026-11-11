@@ -166,6 +166,17 @@ The movement went from -3.0 to about -0.6 over about 45 designs. The steps that 
       WGC and the best arm of the rewrite so far. Coarser speed, 4 px steps (WG4 -0.09, +0.10, -0.32,
       +0.03, -0.38, +0.03, -0.48, about -0.16), loses: speed needs its 2 px resolution, turn does not
       need five bins. The chain's playout is still Figment's design; its state is now ours in shape.
+    - the 3-bin turn with the speed back at 1 px/tick, 17 values (WT7 +0.19, +0.37, -0.20, +0.30,
+      +0.06, +0.14, -0.21, about **+0.09 ± 0.16**): passes, level with WGT within the noise; with three
+      turn bins the rows are thick enough for full speed. WGT firing only once the gun has been aimed
+      at the current target, so each shot is charged to the robot aimed at (WGA -0.18, -0.00, +0.00,
+      +0.22, -0.13, +0.16, +0.17, about +0.03): inside the gate, no better than WGT.
+13. **Bytes** (javac, before ProGuard, as Robocode's codesize counts them): 0.3's control 738, WAG 1,302,
+    WAE 1,441, WGT 1,438, WT7 1,434 against the 749 limit. The own movement adds about 360 bytes in
+    onStatus (501 against 139: the nearest-whose-nearest-is-us search over every seen robot) and the
+    own target and power about 190 in onScannedRobot. The own parts play at parity but are about
+    twice the micro's size; the next step is fitting WT7's behaviour into 749 bytes, re-gating each
+    cut.
 
 **Where WNF still loses** (C against WNF over the three blocks, 11,340 rounds each): duels end in a
 win equally often (85.9% and 85.8%). WNF dies 13% more often in the crowd (4,778 deaths against
@@ -176,7 +187,7 @@ DustBunny, Wisdom, Troodon). The remaining gap is survival in the crowd, not the
 
 `hadur-bench/saor-arms/` keeps GV (pass), TH (nearest miss), WTA (best movement, which replaced
 WNF and then WTB), WAG (WTA + GV, which passes) and WAE (WAG with the own target and power,
-which passes) WGC (WAE with coarser chain speed, inside the gate) and WGT (WGC with a 3-bin turn, which passes). The failed arm sources and the stage cards were
+which passes) WGC (WAE with coarser chain speed, inside the gate) WGT (WGC with a 3-bin turn, which passes) and WT7 (WAE with a 3-bin turn, the best read). The failed arm sources and the stage cards were
 removed with each result.
 
 ## JayLexi k-NN (same run, BENCH-204)

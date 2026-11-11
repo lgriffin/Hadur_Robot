@@ -23,9 +23,10 @@ import robocode.util.Utils;
  *
  * <p>Credit: this arm is built on Saor 0.3, which restates Figment 1.0 by Kevin Clark (Kev),
  * kc.micro.Figment (source in its jar, no licence stated). In this arm the play-it-forward
- * playout and the shape of the Markov state are still Figment's design; the speed is kept in
- * 2 px/tick steps. The movement (corner-wall legs whose depth follows the robot most likely aiming at us), the vote width, the target rule and the
- * expected-gain power rule are our own, written for the 0.4 plan (docs/plan-saor-first.md).</p>
+ * playout is still Figment's design; the Markov state keeps the speed at 1 px/tick and the turn in
+ * 3 bins. The movement (corner-wall legs whose depth follows the robot most likely aiming at us),
+ * the vote width, the target rule and the expected-gain power rule are our own, written for the
+ * 0.4 plan (docs/plan-saor-first.md).</p>
  *
  * <p>Byte idioms, each mirrored in the core and listed in docs/saor.md: statics over fields;
  * the axis toggles with {@code ^= 1} so it needs no initialiser; 1024 angle bins wrap with

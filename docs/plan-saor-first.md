@@ -397,3 +397,7 @@ state; a chain of our own design (a different state or a different predictor) is
 Status 2026-11-11 night: a 3-bin turn on WGC (WGT) passes at about +0.06 ± 0.16 over the seven
 seed sets, the best arm so far; 4 px speed steps (WG4) lose. Movement, vote, target, power and the
 chain's state are now our own designs; the play-it-forward playout is the remaining Figment part.
+
+Status 2026-11-11 morning: the 3-bin turn with full-resolution speed (WT7) reads about +0.09 ± 0.16,
+the best arm. The own arms measure about 1,434 bytes against the 749 limit (0.3's control 738 before
+ProGuard), so fitting WT7 into a micro is the next step before any 0.4 candidate.
