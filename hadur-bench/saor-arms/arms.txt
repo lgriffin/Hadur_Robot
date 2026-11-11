@@ -60,3 +60,4 @@ WAG | stages 1+2 (passes the gate: about -0.14 over seven seed sets): WTA moveme
 WAE | stages 1-4: WAU with power for the best expected energy gain from the target's hit rate and range | =saor-arms/SaorWAE.java
 WGC | stages 1-5: WAE with the chain's velocity in 2 px/tick steps (9 values, not 17), so each row fills twice as fast | =saor-arms/SaorWGC.java
 WGT | stages 1-5 (passes the gate: about +0.06 over seven seed sets): WGC with the chain turn in 3 bins (left, straight, right) | =saor-arms/SaorWGT.java
+WT7 | stages 1-5 (passes the gate: about +0.09 over seven seed sets, best read): WAE with the chain turn in 3 bins, speed at 1 px/tick | =saor-arms/SaorWT7.java
