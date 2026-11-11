@@ -1,0 +1,1191 @@
+name	route	status	levers	cls	band	battles	hadur	bb	best	best_rival	median8	gap_bb	gap_best	gap_median	aps_bb	hit_us	hit_bb	dmg_us	dmg_bb
+bvh.mini.Mjolnir 0.3	R1 rebuild	lever	stopGos	close	5	4	26.0	84.0	86.9	og	85.2	58.0	60.9	59.2	0.0487	0.238	0.192	31.5	23.9
+pez.rumble.CassiusClay 2rho.02no	R1 rebuild	untouched		mid	2	4	60.4	96.6	97.1	ns	69.7	36.2	36.7	9.3	0.0304	0.086	0.001	26.6	1.2
+slugzilla.Basilite 0.13	R1 rebuild	shield	aims	low	3	1	68.6	100.0	100.0	bb	93.8	31.4	31.4	25.2	0.0264	0.013	0.0	0.4	0.3
+cb.fire.Firestarter 2.0f	R1 rebuild	lever	mimicOns	mid	1	5	51.1	80.8	80.8	bb	58.5	29.7	29.7	7.4	0.025	0.083	0.062	23.2	20.0
+zen.Mirage 0.9.5	R1 rebuild	untouched		-		3	57.5	85.5	85.5	bb	73.7	28.0	28.0	16.2	0.0235				
+jk.melee.Neuromancer 7.12	R1 rebuild	surfkey	surfKeys	close	2	3	55.0	80.8	82.1	ns	63.8	25.8	27.1	8.8	0.0217	0.101	0.07	28.1	21.8
+rsalesc.roborio.Roborio 1.2.4	R1 rebuild	lever	flatOns	mid	2	3	61.5	86.7	86.7	bb	71.9	25.2	25.2	10.4	0.0212	0.09	0.079	23.0	18.1
+cb.Domogled 1.2	R1 rebuild	lever	fullOffs,surfKeys	mid	2	5	61.5	85.4	85.5	ns	73.4	23.9	24.0	11.9	0.0201	0.079	0.061	21.7	16.3
+aw.Gilgalad 1.99.5c	R1 rebuild	untouched		close	2	3	53.6	77.3	77.3	bb	64.5	23.7	23.7	10.9	0.0199	0.106	0.078	33.2	21.7
+lxx.Tomcat 3.68	R1 rebuild	lever	racePowers,surfKeys	mid	1	2	56.6	80.0	80.9	ns	66.0	23.4	24.3	9.4	0.0197	0.088	0.072	33.2	28.7
+jw.Booring 1.11	R1 rebuild	lever	heatJits	mid	5	3	76.4	99.6	99.6	bb	78.7	23.2	23.2	2.3	0.0195	0.092	0.001	23.6	0.1
+abc.Shadow 3.83c	R1 rebuild	lever	gunStacks	mid	2	3	51.8	74.5	80.1	ns	58.2	22.7	28.3	6.5	0.0191	0.086	0.054	42.3	22.8
+damij.mega.Boque aaah	R1 rebuild	untouched		mid	3	3	61.7	84.2	84.7	ns	76.2	22.5	23.0	14.5	0.0189	0.075	0.061	27.0	16.1
+mn.Combat 3.25.0	R1 rebuild	lever	flatOns,racePowers	mid	2	1	61.6	83.5	83.5	bb	67.8	21.9	21.9	6.2	0.0184	0.091	0.048	36.8	17.9
+kenran.mega.Pantheist 1.1	R1 rebuild	shield	moves	mid	3	2	73.9	94.6	94.6	bb	90.2	20.7	20.7	16.3	0.0174	0.061	0.065	19.9	6.6
+gh.GresSuffurd 0.4.13	R1 rebuild	lever	mimicOns,surfKeys	mid	2	5	57.6	78.3	78.3	ns	67.1	20.7	20.7	9.5	0.0174	0.084	0.059	28.2	20.8
+zyx.mega.YersiniaPestis 3.0	R1 rebuild	untouched		mid	2	3	55.0	75.2	75.2	bb	66.3	20.2	20.2	11.3	0.017	0.075	0.053	34.6	21.2
+cx.Princess 1.0	R1 rebuild	shield	exitOffs,stills	low	4	4	68.5	88.6	91.6	sg	77.5	20.1	23.1	9.0	0.0169	0.032	0.042	9.4	18.5
+apv.AspidReloaded 0.6	R1 rebuild	untouched		mid	4	2	79.9	100.0	100.0	bb	90.6	20.1	20.1	10.7	0.0169	0.064	0.0	22.2	0.0
+ary.SMG 1.01	R1 rebuild	shield	moves,aims	low	3	2	74.8	94.0	97.5	sg	91.6	19.2	22.7	16.8	0.0161	0.004	0.105	0.8	9.3
+rampancy.Durandal 2.2d	R1 rebuild	lever	x5Powers,surfKeys	mid	4	2	74.7	93.9	94.2	ns	84.8	19.2	19.5	10.1	0.0161	0.084	0.063	14.7	10.2
+dragonbyte.Neutrino 4	R1 rebuild	lever	heatJits,racePowers,surfKeys	low	4	3	81.2	99.8	99.9	ns	93.9	18.6	18.7	12.7	0.0156	0.004	0.007	0.5	0.4
+suh.mega.WaveSurferPG 1.06	R1 rebuild	untouched		mid	3	2	71.0	89.2	94.5	sg	89.0	18.2	23.5	18.0	0.0153	0.087	0.063	17.4	21.0
+voidious.Dookious 1.573c	R1 rebuild	lever	flatOns,mimicOns,racePowers,surfKeys	mid	2	3	58.2	76.4	76.4	bb	66.3	18.2	18.2	8.1	0.0153	0.071	0.052	33.9	20.3
+cs.s2.Seraphim 2.4.0	R1 rebuild	untouched		-		4	56.8	74.5	78.9	ns	69.8	17.7	22.1	13.0	0.0149				
+axeBots.Musashi 2.18	R1 rebuild	lever	fullOffs	mid	3	3	80.7	98.1	98.1	bb	80.8	17.4	17.4	0.1	0.0146	0.081	0.063	24.2	19.7
+cs.Nene 1.1.0	R1 rebuild	untouched		-		3	57.9	75.0	77.3	ns	67.1	17.1	19.4	9.2	0.0144				
+darkcanuck.Pris 0.92	R1 rebuild	lever	mimicOns,surfKeys	mid	2	5	59.4	76.3	80.4	ns	63.0	16.9	21.0	3.6	0.0142	0.088	0.066	33.9	25.1
+stelo.PastFuture 2.3.2	R1 rebuild	lever	stopGoShifts	low	3	2	60.4	77.3	78.5	ns	72.1	16.9	18.1	11.7	0.0142	0.022	0.057	6.7	20.8
+sheldor.mini.Foilist 1.3.1	R1 rebuild	lever	flatOns,surfKeys	mid	2	6	64.1	81.0	81.0	bb	74.2	16.9	16.9	10.1	0.0142	0.08	0.067	27.2	21.8
+axeBots.SilverSurfer 2.53.33fix	R1 rebuild	untouched		mid	2	5	64.1	80.6	80.6	bb	72.9	16.5	16.5	8.8	0.0139	0.076	0.05	30.6	18.0
+jcs.AutoBot 4.2.1	R1 rebuild	untouched		mid	4	2	76.4	92.5	92.5	bb	79.6	16.1	16.1	3.2	0.0135	0.096	0.037	32.4	10.3
+kc.micro.rammer.MaxRisk 0.6	R1 rebuild	untouched		close	5	4	73.3	89.3	89.3	bb	81.8	16.0	16.0	8.5	0.0134	0.4	0.154	49.8	18.2
+cx.mini.BlackSwans 0.60	R1 rebuild	untouched		mid	4	1	77.4	93.3	95.5	ds	83.3	15.9	18.1	5.9	0.0134	0.07	0.042	27.6	16.5
+rz.GlowBlow 2.31	R1 rebuild	untouched		mid	4	3	80.3	96.2	96.8	sg	86.7	15.9	16.5	6.4	0.0134	0.076	0.058	24.3	23.4
+eem.EvBotNG v12.8	R1 rebuild	untouched		mid	3	1	60.8	76.5	79.1	ns	71.5	15.7	18.3	10.7	0.0132	0.093	0.068	32.2	22.2
+ags.rougedc.RougeDC willow	R1 rebuild	lever	gunStacks,mimicOns,surfKeys	mid	3	4	67.2	82.9	84.2	ns	70.4	15.7	17.0	3.2	0.0132	0.098	0.089	25.9	24.3
+pl.Patton.GeneralPatton 1.54	R1 rebuild	lever	x5Powers,surfKeys	mid	4	2	79.0	94.5	94.5	bb	90.3	15.5	15.5	11.3	0.013	0.096	0.087	13.8	9.7
+jk.precise.Wintermute 0.8	R1 rebuild	lever	mimicOns,surfKeys	mid	2	4	65.9	81.3	81.3	bb	71.9	15.4	15.4	6.0	0.0129	0.093	0.069	33.6	23.9
+EFD.AdvancedEFD 0.4.5a	R1 rebuild	untouched		close	3	2	65.1	80.4	80.4	bb	73.9	15.3	15.3	8.8	0.0129	0.107	0.086	31.3	22.4
+dft.Cardigan 1.09	R1 rebuild	untouched		mid	3	2	68.9	84.0	84.6	ns	75.8	15.1	15.7	6.9	0.0127	0.063	0.062	21.7	23.1
+kc.serpent.WaveSerpent 2.11	R1 rebuild	surfkey	surfKeys	mid	2	3	60.2	75.2	75.8	ns	64.0	15.0	15.6	3.8	0.0126	0.071	0.058	29.6	23.1
+catcat20.Rabbit 0.001	R1 rebuild	surfkey	surfKeys	mid	4	4	76.7	91.6	92.8	ns	89.7	14.9	16.1	13.0	0.0125	0.072	0.055	15.8	9.8
+ary.Crisis 1.0	R1 rebuild	lever	x5Powers	mid	4	2	81.3	96.0	96.9	jh	95.2	14.7	15.6	14.0	0.0124	0.079	0.06	12.5	6.0
+davidalves.PhoenixOS 1.1	R1 rebuild	untouched		mid	3	3	65.9	80.4	80.4	bb	72.3	14.5	14.5	6.4	0.0122	0.074	0.067	29.7	23.6
+fromHell.BlackBox 0.0.2	R1 rebuild	lever	mimicOns	mid	2	2	67.7	81.9	82.1	ns	73.3	14.2	14.4	5.6	0.0119	0.079	0.057	26.1	18.4
+cx.CigaretBH 1.03	R1 rebuild	untouched		mid	3	5	74.1	88.0	93.4	sg	75.7	13.9	19.3	1.6	0.0117	0.081	0.06	31.8	18.4
+kc.micro.Needle 0.101	R1 rebuild	untouched		mid	3	2	72.1	86.0	86.0	bb	81.8	13.9	13.9	9.8	0.0117	0.082	0.047	30.0	14.2
+darkcanuck.Gaff 1.50	R1 rebuild	lever	mimicOns,surfKeys	mid	3	3	68.3	81.9	81.9	bb	73.3	13.6	13.6	5.0	0.0114	0.075	0.068	26.2	21.4
+darkcanuck.Holden 1.13a	R1 rebuild	shield	aims	low	3	3	69.7	83.2	89.7	ns	74.1	13.5	20.0	4.4	0.0113	0.04	0.001	13.5	0.9
+suzushin7.nano.Galaxy03 1.01	R1 rebuild	untouched		close	5	4	80.1	93.2	94.0	jh	86.9	13.1	13.9	6.8	0.011	0.342	0.106	39.5	10.4
+step.nanoPri 1.0	R1 rebuild	surfkey	surfKeys	close	5	1	78.0	90.9	95.7	jh	86.3	12.9	17.7	8.3	0.0108	0.451	0.116	54.7	11.9
+pe.SandboxDT 3.02	R1 rebuild	lever	heatJits,surfKeys	mid	3	5	67.8	80.5	80.8	ns	73.2	12.7	13.0	5.4	0.0107	0.068	0.064	26.9	21.9
+suh.nano.RammingC 1.00	R1 rebuild	untouched		close	5	2	80.2	92.8	93.7	jh	88.7	12.6	13.5	8.5	0.0106	0.458	0.126	49.1	12.4
+rh.Intra 2.1DomoKN	R1 rebuild	untouched		mid	3	2	71.0	83.5	84.8	ns	77.2	12.5	13.8	6.2	0.0105	0.077	0.053	26.8	17.9
+mz.NanoDeath 2.56	R1 rebuild	untouched		close	5	1	77.5	89.9	95.0	jh	84.9	12.4	17.5	7.4	0.0104	0.308	0.149	39.1	16.8
+stelo.MatchupMicro 1.2	R1 rebuild	lever	fullOffs	mid	5	2	83.6	96.0	97.8	og	88.7	12.4	14.2	5.1	0.0104	0.088	0.001	18.9	0.3
+ultra.Defender 1.2	R1 rebuild	untouched		mid	5	2	85.4	97.8	98.3	sg	97.1	12.4	12.9	11.7	0.0104	0.072	0.008	15.5	2.6
+hp.Athena 0.1	R1 rebuild	lever	x5Powers,surfKeys	low	5	2	85.8	98.2	98.2	bb	92.0	12.4	12.4	6.2	0.0104	0.033	0.031	7.6	4.1
+ags.Midboss 1q.fast	R1 rebuild	untouched		mid	2	4	73.0	85.3	86.5	ns	77.2	12.3	13.5	4.2	0.0103	0.094	0.076	32.0	21.1
+cs.PumpkinPie 1.0	R1 rebuild	surfkey	surfKeys	mid	4	2	74.4	86.7	86.7	bb	78.2	12.3	12.3	3.8	0.0103	0.061	0.041	21.6	13.0
+tw.Exterminator 1.0	R1 rebuild	shield	moves,aims,x5Powers	low	4	3	82.6	94.8	96.9	ns	94.4	12.2	14.3	11.8	0.0103	0.041	0.007	6.3	5.2
+ebo.Sparse 0.02	R1 rebuild	lever	x5Powers,surfKeys	mid	4	2	82.7	94.8	95.7	sr	90.6	12.1	13.0	7.9	0.0102	0.079	0.073	11.3	6.6
+DM.mega.Regicide 2.0rrr	R1 rebuild	lever	mimicOns	mid	3	2	71.6	83.7	83.7	bb	74.6	12.1	12.1	3.0	0.0102	0.071	0.053	23.3	18.5
+lazarecki.mega.PinkerStinker 0.7	R1 rebuild	lever	heatJits,mimicOns,surfKeys	mid	3	4	72.1	84.2	84.2	bb	76.5	12.1	12.1	4.4	0.0102	0.072	0.063	20.4	18.7
+cw.megas.Silhouette 1.1	R1 rebuild	untouched		mid	3	2	72.5	84.5	92.8	og	82.8	12.0	20.3	10.2	0.0101	0.073	0.051	24.3	17.3
+arthord.NanoSatan Mu	R1 rebuild	untouched		mid	5	3	81.1	93.1	93.1	bb	87.7	12.0	12.0	6.6	0.0101	0.056	0.031	15.2	9.1
+dsekercioglu.mini.Partial 0.1.3	R1 rebuild	lever	fullOffs,surfKeys	mid	3	4	84.9	96.8	97.9	og	86.7	11.9	13.0	1.8	0.01	0.081	0.018	22.7	5.4
+stelo.MatchupAGF 1.1	R1 rebuild	untouched		mid	4	2	69.1	81.0	81.0	bb	79.0	11.9	11.9	9.9	0.01	0.089	0.071	28.3	22.5
+EH.Fusion 0.32	R1 rebuild	surfkey	surfKeys	close	6	2	83.7	95.5	98.1	jh	91.4	11.8	14.4	7.7	0.0099	0.244	0.058	31.9	6.6
+sheldor.mini.FoilistMC 1.0	R1 rebuild	lever	racePowers,surfKeys	mid	2	2	77.0	88.7	88.7	bb	81.6	11.7	11.7	4.6	0.0098	0.066	0.041	22.4	12.5
+jab.micro.Sanguijuela 0.8	R1 rebuild	untouched		close	5	1	77.5	89.1	92.0	jh	82.8	11.6	14.5	5.3	0.0097	0.414	0.155	48.0	16.9
+stelo.MatchupMini 1.1	R1 rebuild	lever	fullOffs	mid	4	3	69.0	80.6	82.2	ns	75.8	11.6	13.2	6.8	0.0097	0.082	0.069	31.5	23.5
+simonton.micro.WeeklongObsession 3.4.1	R1 rebuild	untouched		mid	3	1	72.3	83.9	84.2	ns	77.0	11.6	11.9	4.8	0.0097	0.085	0.066	31.1	20.1
+dft.Immortal 1.40	R1 rebuild	untouched		mid	3	6	71.0	82.5	82.5	bb	75.2	11.5	11.5	4.2	0.0097	0.073	0.049	32.0	19.6
+pulsar.PulsarMax 0.8.9	R1 rebuild	lever	stopGoShifts,x5Powers	mid	2	2	67.8	79.3	79.3	bb	74.7	11.5	11.5	6.9	0.0097	0.062	0.06	24.0	22.7
+janm.Jammy 1.0	R1 rebuild	lever	stopGoShifts,mirrorOffs	mid	6	2	86.8	98.2	98.8	og	97.8	11.4	12.0	11.0	0.0096	0.074	0.007	19.3	2.3
+demetrix.nano.SledgeHammer 0.22	R1 rebuild	untouched		close	5	3	75.3	86.6	88.4	ns	83.6	11.3	13.1	8.3	0.0095	0.307	0.219	40.6	23.9
+supersample.SuperRamFire 1.0	R1 rebuild	surfkey	surfKeys	close	5	6	87.0	98.3	98.5	ns	94.6	11.3	11.5	7.6	0.0095	0.122	0.014	20.4	2.3
+theo.Tungsten 1.0a	R1 rebuild	shield	aims	low	3	3	87.8	99.0	100.0	og	97.3	11.2	12.2	9.5	0.0094	0.001	0.001	0.3	0.6
+wiki.WaveRammer 1.0	R1 rebuild	untouched		close	4	2	73.7	84.8	85.3	ns	83.8	11.1	11.6	10.1	0.0093	0.232	0.137	42.7	26.4
+sul.Bicephal 1.2	R1 rebuild	untouched		close	5	5	75.5	86.5	90.0	jh	83.3	11.0	14.5	7.8	0.0092	0.305	0.181	36.6	21.1
+alpha.BlackIce 1.0	R1 rebuild	shield	aims	low	5	3	88.1	99.1	99.4	ns	92.7	11.0	11.3	4.6	0.0092	0.008	0.001	3.8	0.4
+rc.yoda.Yoda 1.0.6c.fix	R1 rebuild	shield		low	3	3	79.1	90.0	98.9	og	95.3	10.9	19.8	16.2	0.0092	0.001	0.067	0.5	12.0
+da.NewBGank 1.4	R1 rebuild	lever	stopGoShifts	mid	3	1	83.0	93.5	96.4	ds	93.0	10.5	13.4	10.0	0.0088	0.062	0.109	15.3	10.5
+sheldor.micro.Continuation 1.1	R1 rebuild	untouched		mid	3	3	70.2	80.7	82.0	ns	73.0	10.5	11.8	2.8	0.0088	0.083	0.063	32.5	21.8
+pa3k.Viper 5.03	R1 rebuild	lever	fullOffs,surfKeys	mid	4	5	81.1	91.4	91.4	bb	86.7	10.3	10.3	5.6	0.0087	0.088	0.062	24.6	15.5
+cjm.Che 1.2	R1 rebuild	shield	stills,fullOffs	mid	4	4	78.5	88.7	95.2	sg	85.1	10.2	16.7	6.6	0.0086	0.089	0.051	22.7	15.9
+positive.Portia 1.26e	R1 rebuild	untouched		mid	3	3	71.7	81.9	82.3	ns	71.4	10.2	10.6	-0.3	0.0086	0.077	0.056	26.6	19.7
+ags.Glacier 0.3.2	R1 rebuild	lever	gunStacks,surfKeys	close	3	6	66.2	76.3	81.8	ns	73.3	10.1	15.6	7.1	0.0085	0.103	0.083	36.3	27.7
+mn.nano.perceptual.Impact 1.3.0	R1 rebuild	untouched		close	5	3	74.9	85.0	86.8	jh	81.2	10.1	11.9	6.2	0.0085	0.511	0.246	48.9	26.5
+xander.cat.Mikey 1.2	R1 rebuild	lever	gunStacks	close	4	4	83.8	93.9	93.9	bb	90.6	10.1	10.1	6.8	0.0085	0.104	0.049	18.3	7.4
+sgp.JollyNinja 3.53	R1 rebuild	surfkey	surfKeys	mid	5	2	82.2	92.3	92.3	bb	89.3	10.1	10.1	7.1	0.0085	0.052	0.031	15.9	8.4
+maribo.FollowFire 1.11	R1 rebuild	untouched		close	5	4	79.7	89.7	89.7	bb	84.1	10.0	10.0	4.4	0.0084	0.325	0.154	43.5	18.3
+rdm.Dueler 0.4x	R1 rebuild	surfkey	surfKeys	low	4	2	86.6	96.6	96.6	bb	90.0	10.0	10.0	3.5	0.0084	0.042	0.009	15.4	2.7
+gre.svman4.Morfeas 1.4.3	R1 rebuild	lever	mimicOns	mid	3	6	73.9	83.9	83.9	bb	78.2	10.0	10.0	4.3	0.0084	0.065	0.061	17.9	16.1
+cx.BlestPain 1.41	R3 keys	untouched		mid	3	3	73.3	83.2	83.2	bb	77.5	9.9	9.9	4.2	0.0083	0.053	0.056	18.6	21.7
+ds.Versatile RB1.0.1	R3 keys	untouched		mid	3	2	82.5	92.4	92.4	bb	89.0	9.9	9.9	6.5	0.0083	0.053	0.044	13.8	11.0
+dmh.robocode.robot.PinkPanther 1.1	R3 keys	surfkey	surfKeys	mid	4	4	76.1	86.0	86.0	bb	77.7	9.9	9.9	1.6	0.0083	0.062	0.062	28.6	19.7
+sL300.Mozart life	R4 portfolio	shield	stills	low	5	3	81.9	91.7	92.7	ns	85.8	9.8	10.8	3.9	0.0082	0.001	0.071	0.5	12.4
+stelo.Lifestealer 1.0	R2 chaser	surfkey	surfKeys	close	6	2	83.3	93.0	94.2	jh	91.2	9.7	10.9	8.0	0.0082	0.205	0.081	25.6	9.1
+cx.mini.Cigaret 1.31	R3 keys	untouched		mid	3	2	71.4	81.0	92.9	sg	76.8	9.6	21.5	5.4	0.0081	0.063	0.05	25.1	20.2
+asm.Statistas 0.1	R4 portfolio	shield	aims	low	5	1	87.7	97.3	99.6	og	96.5	9.6	11.9	8.8	0.0081	0.001	0.005	0.5	2.7
+sheldor.nano.SabreuseNano 1.1	R2 chaser	untouched		close	4	2	78.0	87.6	88.7	jh	83.6	9.6	10.7	5.6	0.0081	0.224	0.138	26.4	15.5
+zezinho.QuerMePegarKKKK 1.0	R3 keys	surfkey	surfKeys	mid	4	3	80.4	90.0	90.0	bb	85.1	9.6	9.6	4.7	0.0081	0.09	0.052	22.7	9.6
+dummy.mini.Parakeet 2.40	R3 keys	surfkey	surfKeys	mid	5	2	81.1	90.7	90.7	bb	85.0	9.6	9.6	3.9	0.0081	0.07	0.064	19.8	11.1
+kc.nano.Splinter 1.2	R3 keys	surfkey	surfKeys	mid	5	3	81.4	90.9	90.9	bb	87.8	9.5	9.5	6.4	0.008	0.068	0.049	17.5	13.3
+oog.micro.MagicD3 0.41	R4 portfolio	shield	moves,aims	low	4	6	86.8	96.2	100.0	jh	95.6	9.4	13.2	8.8	0.0079	0.037	0.001	14.1	0.5
+stelo.FretNano 1.1	R3 keys	surfkey	surfKeys	mid	6	2	88.0	97.4	97.6	ns	94.8	9.4	9.6	6.8	0.0079	0.066	0.022	18.5	4.1
+kvk.HebusLeTroll 0.41	R3 keys	surfkey	surfKeys	mid	4	3	83.1	92.4	92.4	ns	89.0	9.3	9.3	5.9	0.0078	0.057	0.043	17.4	12.5
+mue.Hyperion 0.8	R4 portfolio	shield	stills	low	3	5	72.0	81.3	81.3	bb	71.3	9.3	9.3	-0.7	0.0078	0.045	0.063	17.3	19.8
+as.xbots 1.0	R2 chaser	untouched		close	5	1	82.2	91.4	96.0	jh	88.3	9.2	13.8	6.1	0.0077	0.309	0.121	42.6	15.5
+tornyil.bottomup.BottomUp 1.05	R3 keys	lever	flatOns	mid	4	2	76.0	85.1	85.7	sg	82.6	9.1	9.7	6.6	0.0076	0.069	0.058	24.2	19.6
+unarmedlad.nano.VirginSteele 2.2	R3 keys	surfkey	surfKeys	mid	5	2	90.2	99.3	99.4	ns	94.5	9.1	9.2	4.3	0.0076	0.06	0.0	16.7	0.0
+zen.Ronin 1.0.0	R4 portfolio	untouched		-		3	71.4	80.5	80.5	bb	73.4	9.1	9.1	2.0	0.0076				
+EH.kms.LightningStorm 0.11B	R4 portfolio	shield	aims	low	4	3	79.7	88.7	92.6	og	87.6	9.0	12.9	7.9	0.0076	0.009	0.001	4.3	0.3
+justin.DemonicRage 3.20	R3 keys	surfkey	surfKeys	mid	3	3	73.7	82.7	83.1	ns	80.3	9.0	9.4	6.6	0.0076	0.071	0.053	25.4	18.8
+ghent.ArthurPanzergon 1.0.0	R3 keys	surfkey	surfKeys	mid	6	2	87.4	96.4	96.4	bb	93.5	9.0	9.0	6.1	0.0076	0.086	0.037	14.4	5.2
+ary.nano.ColorNanoP 1.1	R3 keys	untouched		mid	5	3	89.4	98.4	98.4	bb	94.5	9.0	9.0	5.1	0.0076	0.071	0.002	16.7	0.8
+demetrix.ForceMajeure 0.75	R3 keys	untouched		mid	3	2	75.8	84.7	84.7	bb	78.1	8.9	8.9	2.3	0.0075	0.089	0.058	23.1	15.9
+lancel.Lynx 1.09	R3 keys	surfkey	surfKeys	mid	3	2	69.6	78.5	78.5	bb	72.5	8.9	8.9	2.9	0.0075	0.085	0.069	31.0	24.8
+kawigi.sbf.FloodSonnet 0.9	R2 chaser	shield	aims,mimicOns	close	4	3	87.3	96.1	99.2	og	95.1	8.8	11.9	7.8	0.0074	0.13	0.009	4.3	4.1
+benhorner.PureAggression 0.2.6	R2 chaser	untouched		close	5	3	77.3	86.1	88.9	jh	83.9	8.8	11.6	6.6	0.0074	0.524	0.26	50.8	22.9
+simonton.nano.WeekendObsession_S 1.7	R4 portfolio	shield	aims	low	5	2	89.3	98.1	99.9	jh	94.8	8.8	10.6	5.5	0.0074	0.01	0.003	0.1	0.5
+ers.nano.sunderer.Sunderer 1.23a	R2 chaser	surfkey	surfKeys	close	4	5	81.2	90.0	90.0	bb	87.5	8.8	8.8	6.3	0.0074	0.251	0.114	32.5	14.1
+emp.Yngwie 1.11	R3 keys	surfkey	surfKeys	mid	4	1	81.7	90.5	90.5	bb	86.9	8.8	8.8	5.2	0.0074	0.075	0.054	17.8	9.3
+gh.micro.GrubbmThree 1.01	R2 chaser	untouched		close	5	2	72.6	81.3	85.9	sr	77.7	8.7	13.3	5.1	0.0073	0.521	0.422	62.8	46.0
+ara.Shera 0.88	R3 keys	surfkey	surfKeys	mid	4	3	79.7	88.3	89.3	ns	81.6	8.6	9.6	1.9	0.0072	0.063	0.042	17.5	10.7
+kawigi.sbf.FloodHT 0.9.2	R3 keys	shield	aims	mid	3	2	74.0	82.6	83.6	og	81.7	8.6	9.6	7.7	0.0072	0.055	0.04	22.3	15.4
+cw.megas.Gridd 0.4	R3 keys	untouched		mid	5	3	77.9	86.4	88.6	og	80.3	8.5	10.7	2.4	0.0071	0.086	0.057	24.4	19.6
+catcat20.atom.Atom 0.51	R3 keys	surfkey	surfKeys	mid	3	4	80.6	89.1	89.1	bb	84.7	8.5	8.5	4.1	0.0071	0.076	0.058	16.4	13.2
+ur4n0.UR4NO 1.0	R3 keys	surfkey	surfKeys	mid	3	1	76.3	84.8	84.8	bb	80.7	8.5	8.5	4.4	0.0071	0.063	0.054	19.4	17.1
+slugzilla.Parallax 0.1	R4 portfolio	surfkey	surfKeys	low	5	2	84.6	93.0	99.4	sg	91.8	8.4	14.8	7.2	0.0071	0.047	0.028	18.6	10.3
+oog.nano.Caligula 1.15	R2 chaser	lever	heatJits	close	4	2	81.9	90.3	91.4	ns	87.1	8.4	9.5	5.2	0.0071	0.241	0.11	29.4	14.5
+pl.Drum 0.1	R2 chaser	lever	x5Powers	close	4	3	84.2	92.6	92.8	ns	90.8	8.4	8.6	6.6	0.0071	0.169	0.094	21.5	12.5
+nova.Snow 1.0	R3 keys	surfkey	surfKeys	mid	5	3	79.9	88.3	88.3	bb	84.7	8.4	8.4	4.8	0.0071	0.079	0.061	22.4	16.0
+axeBots.Okami 1.04	R3 keys	untouched		mid	3	3	74.3	82.7	82.7	bb	76.2	8.4	8.4	1.9	0.0071	0.08	0.067	25.4	21.1
+jk.nano.Machete 2.0	R2 chaser	untouched		close	4	4	79.9	88.2	89.2	jh	84.8	8.3	9.3	4.9	0.007	0.263	0.155	30.4	18.2
+cuoq.Kakera 1.0	R4 portfolio	shield	moves,aims	low	3	2	89.6	97.9	98.9	ns	85.1	8.3	9.3	-4.5	0.007	0.004	0.001	1.6	0.6
+fromHell.CHCl3 1.4.2	R3 keys	lever	mimicOns,surfKeys	mid	2	2	73.3	81.5	81.5	bb	74.7	8.2	8.2	1.4	0.0069	0.063	0.054	20.8	17.4
+lrem.micro.FalseProphet Alpha	R2 chaser	untouched		close	5	3	87.2	95.3	97.5	ns	89.4	8.1	10.3	2.2	0.0068	0.11	0.003	21.5	1.4
+racso.Crono 1.0	R4 portfolio	shield	moves,aims	low	6	4	90.8	98.9	99.9	ns	96.8	8.1	9.1	6.0	0.0068	0.0	0.001	0.0	0.1
+mahrgell.mahrram 1.3	R2 chaser	untouched		close	5	1	83.1	91.2	91.6	sr	87.8	8.1	8.5	4.7	0.0068	0.21	0.122	21.9	11.8
+nat.Samekh 0.4	R3 keys	untouched		mid	3	3	70.7	78.7	81.8	sg	73.0	8.0	11.1	2.3	0.0067	0.072	0.058	28.2	23.5
+eem.IWillFireNoBullet v2.4	R4 portfolio	lever	stopGos	low	6	3	91.8	99.8	100.0	ds	99.8	8.0	8.2	8.0	0.0067	0.0	0.0	0.0	0.0
+jaara.LambdaBot 1.1	R3 keys	surfkey	surfKeys	mid	5	3	83.6	91.6	91.6	bb	85.7	8.0	8.0	2.1	0.0067	0.054	0.035	16.0	10.0
+fromHell.C4H10O 1.5.1	R3 keys	surfkey	surfKeys	mid	3	4	74.8	82.7	83.7	ns	79.3	7.9	8.9	4.5	0.0066	0.075	0.054	30.1	19.8
+pez.mini.Gouldingi 1.5	R4 portfolio	untouched		low	5	4	91.2	99.0	100.0	jh	98.7	7.8	8.8	7.5	0.0066	0.029	0.001	10.2	0.9
+sheldor.nano.Sabreur 1.1.2	R2 chaser	untouched		close	4	2	80.2	88.0	89.0	ns	84.8	7.8	8.8	4.5	0.0066	0.309	0.152	35.6	19.0
+shinh.Entangled 0.3	R4 portfolio	shield	aims,stills	low	4	2	88.7	96.5	96.5	bb	91.1	7.8	7.8	2.4	0.0066	0.004	0.006	1.4	2.6
+tm.Yuugao 1.0	R3 keys	untouched		mid	4	2	75.4	83.1	92.4	sg	81.5	7.7	17.0	6.1	0.0065	0.084	0.056	30.6	16.9
+stelo.RamTrackSurfer 1.2	R2 chaser	lever	x5Powers,surfKeys	close	4	1	88.1	95.8	96.2	ns	93.2	7.7	8.1	5.1	0.0065	0.144	0.052	15.9	5.3
+florent.XSeries.X2 0.17	R3 keys	shield	stills	mid	2	2	71.8	79.5	79.5	bb	71.6	7.7	7.7	-0.2	0.0065	0.074	0.049	29.9	18.2
+kawigi.sbf.Teancum 1.3	R3 keys	surfkey	surfKeys	mid	5	5	79.5	87.2	87.2	ns	81.5	7.7	7.7	2.0	0.0065	0.077	0.083	19.5	18.7
+kenran.Bakko v1.0.1	R4 portfolio	shield	heatJits	low	3	3	86.0	93.6	94.5	sr	90.2	7.6	8.5	4.2	0.0064	0.005	0.088	1.9	8.7
+oog.micro.Maui 1.2	R3 keys	untouched		mid	4	2	85.6	93.2	94.0	ns	87.2	7.6	8.4	1.6	0.0064	0.098	0.033	24.1	7.7
+dz.GalbaMini 0.121	R3 keys	lever	x5Powers	mid	4	3	72.4	80.0	80.0	bb	74.3	7.6	7.6	1.9	0.0064	0.083	0.05	31.0	18.5
+hamilton.Hamilton 1.0	R3 keys	surfkey	surfKeys	mid	5	3	87.0	94.5	95.0	sr	92.6	7.5	8.0	5.6	0.0063	0.071	0.053	13.8	8.2
+Polkwane.Piyane 0.7b	R4 portfolio	untouched		low	5	1	92.3	99.8	99.8	bb	96.0	7.5	7.5	3.8	0.0063	0.031	0.001	10.7	0.5
+krzysiek.robbo2.Robbo 1.0.0	R3 keys	untouched		mid	5	7	89.2	96.6	99.3	og	92.5	7.4	10.1	3.3	0.0062	0.057	0.039	14.2	10.1
+dz.GalbaMicro 0.11	R4 portfolio	lever	fullOffs	low	4	1	83.4	90.8	90.9	ns	87.9	7.4	7.5	4.5	0.0062	0.049	0.041	15.7	12.0
+bvh.fry.Freya 0.82	R3 keys	surfkey	surfKeys	mid	4	4	81.1	88.5	88.5	bb	85.1	7.4	7.4	4.0	0.0062	0.068	0.04	23.8	13.3
+tobe.Saturn lambda	R3 keys	shield	stills	mid	5	3	79.5	86.8	94.0	og	85.7	7.3	14.5	6.2	0.0061	0.068	0.033	19.6	14.6
+rz.Artist 0.2	R4 portfolio	shield	stills	low	4	2	83.7	91.0	96.7	og	90.5	7.3	13.0	6.8	0.0061	0.005	0.032	2.0	11.4
+buba.Archivist 0.1	R4 portfolio	shield	aims	low	5	2	91.6	98.9	98.9	bb	96.7	7.3	7.3	5.1	0.0061	0.004	0.0	1.4	0.0
+stelo.MatchupWS 1.2c	R4 portfolio	shield	moves,aims,exitLates	low	3	5	84.0	91.2	93.6	ds	90.2	7.2	9.6	6.2	0.0061	0.013	0.035	7.0	10.5
+dmh.robocode.robot.GreenDragon 1.0	R4 portfolio	surfkey	surfKeys	low	5	2	89.5	96.7	97.6	ns	95.5	7.2	8.1	6.0	0.0061	0.046	0.015	13.3	3.1
+xander.cat.Fiona 1.4	R2 chaser	lever	fullOffs,surfKeys	close	4	3	86.0	93.2	93.7	ns	90.3	7.2	7.7	4.3	0.0061	0.1	0.044	20.4	7.0
+am.Miedzix 3.0	R3 keys	surfkey	surfKeys	mid	6	4	89.3	96.5	96.5	bb	94.2	7.2	7.2	4.9	0.0061	0.084	0.023	14.5	5.0
+ratosh.nano.Debo 1.36	R3 keys	surfkey	surfKeys	mid	5	4	89.1	96.2	98.9	sg	93.9	7.1	9.8	4.8	0.006	0.057	0.008	13.9	1.4
+zeze2.OperatorZeze 1.05	R3 keys	shield	stills	mid	6	2	86.1	93.2	95.7	ds	92.4	7.1	9.6	6.3	0.006	0.078	0.014	19.3	8.3
+wompi.Kowari 1.6	R2 chaser	untouched		close	4	2	75.9	83.0	84.9	sr	80.1	7.1	9.0	4.2	0.006	0.45	0.286	51.4	36.3
+arthord.NanoSatanMelee Beta	R4 portfolio	lever	gunStacks,surfKeys	low	6	2	83.3	90.3	92.6	sg	91.2	7.0	9.3	7.9	0.0059	0.04	0.026	13.7	6.8
+dcs.PM.Eater_of_Worlds_PM 1.2	R3 keys	untouched		mid	5	4	77.1	84.1	85.6	ns	80.3	7.0	8.5	3.2	0.0059	0.076	0.034	28.6	12.5
+slugzilla.SquirmyToad 3.9	R3 keys	shield	aims	mid	4	4	88.5	95.5	96.3	ns	90.2	7.0	7.8	1.7	0.0059	0.072	0.004	25.0	1.9
+bts.wiki.RipCurl 0.9b	R3 keys	surfkey	surfKeys	mid	4	3	79.6	86.6	86.6	bb	83.1	7.0	7.0	3.5	0.0059	0.054	0.047	22.1	17.8
+lechu.Ala 0.0.4	R3 keys	shield	stills	mid	5	9	81.0	87.9	90.1	dm	86.3	6.9	9.1	5.3	0.0058	0.099	0.077	20.1	14.0
+barontrozo.BaronTrozo 1.7.6	R2 chaser	untouched		close	3	3	71.4	78.1	97.7	sg	74.8	6.7	26.3	3.4	0.0056	0.101	0.073	35.4	24.4
+staticline.whiskey.Whiskey 0.6	R3 keys	lever	heatJits,surfKeys	mid	4	3	81.4	88.1	88.3	ns	86.3	6.7	6.9	4.9	0.0056	0.066	0.044	16.1	9.4
+divineomega.TrialBot 0.003	R2 chaser	untouched		close	5	1	82.1	88.8	88.9	ns	86.5	6.7	6.8	4.4	0.0056	0.103	0.081	21.2	20.5
+starpkg.StarViewerZ 1.26	R4 portfolio	shield	aims	low	5	1	91.9	98.6	98.6	ns	94.9	6.7	6.7	3.0	0.0056	0.0	0.001	0.5	2.3
+tobe.Fusion 1.0	R3 keys	surfkey	surfKeys	mid	5	1	81.2	87.8	90.2	ns	84.8	6.6	9.0	3.6	0.0055	0.069	0.048	11.5	11.1
+pedersen.Ugluk 1.0	R3 keys	untouched		mid	3	2	76.3	82.9	84.2	ns	78.0	6.6	7.9	1.8	0.0055	0.074	0.056	24.5	19.2
+infovk.s_schwarzm16.silverbird 1.0	R3 keys	untouched		mid	4	2	82.1	88.7	88.7	bb	84.7	6.6	6.6	2.6	0.0055	0.069	0.053	20.3	16.7
+SHAM.WOW 1.4	R4 portfolio	shield	moves,aims	low	4	6	89.1	95.7	95.7	bb	91.4	6.6	6.6	2.3	0.0055	0.034	0.081	10.5	7.9
+synnalagma.test.MiniNeural 1.1	R4 portfolio	untouched		low	5	1	89.2	95.7	95.8	ns	93.4	6.5	6.6	4.2	0.0055	0.042	0.022	13.5	6.0
+tad.Dalek98 0.98	R4 portfolio	untouched		low	4	2	84.0	90.5	90.5	bb	87.9	6.5	6.5	3.9	0.0055	0.044	0.032	15.7	9.8
+suh.micro.MirrorPM 1.00	R4 portfolio	shield	moves	low	4	4	86.2	92.6	95.7	sg	91.4	6.4	9.5	5.2	0.0054	0.035	0.07	8.6	12.1
+sheldor.nano.PointInLineRRAL 1.0.0	R3 keys	surfkey	surfKeys	mid	5	1	87.2	93.6	94.8	sg	92.5	6.4	7.6	5.2	0.0054	0.053	0.007	11.7	3.3
+cbot.cbot.CBot 0.8	R3 keys	untouched		mid	5	5	79.4	85.8	85.8	bb	83.1	6.4	6.4	3.7	0.0054	0.05	0.056	15.4	20.7
+tobe.calypso.Calypso 4.1	R3 keys	untouched		mid	6	2	87.7	94.0	96.2	ns	91.7	6.3	8.5	4.0	0.0053	0.056	0.004	16.5	1.8
+eem.zapper v6.03	R3 keys	lever	x5Powers,surfKeys	mid	3	3	75.0	81.3	83.1	ns	73.3	6.3	8.1	-1.7	0.0053	0.067	0.052	23.6	18.9
+mue.Ascendant 1.2.27	R3 keys	untouched		mid	2	1	69.4	75.7	77.0	ns	65.2	6.3	7.6	-4.2	0.0053	0.081	0.067	35.3	27.3
+cb.mega.RandomBot 1.0	R3 keys	lever	gunStacks,surfKeys	mid	5	3	72.3	78.5	81.0	ns	73.7	6.2	8.7	1.4	0.0052	0.077	0.063	28.2	19.0
+jekl.Jekyl .70	R4 portfolio	shield	aims,fullOffs	low	4	2	92.8	99.0	99.9	og	97.6	6.2	7.1	4.8	0.0052	0.0	0.004	0.0	3.2
+myl.nano.Kakuru 1.20	R3 keys	surfkey	surfKeys	mid	5	2	78.6	84.8	85.6	ns	83.9	6.2	7.0	5.3	0.0052	0.057	0.06	18.9	19.9
+sheldor.micro.PointInLineRRAL 1.0	R4 portfolio	untouched		low	4	4	85.5	91.7	92.2	sr	90.4	6.2	6.7	4.9	0.0052	0.045	0.035	13.6	11.8
+Fenix.FenixTrack 1.0	R4 portfolio	untouched		low	6	1	93.4	99.5	99.7	sr	99.2	6.1	6.3	5.8	0.0051	0.013	0.0	2.3	0.0
+paulk.PaulV3 1.7	R3 keys	surfkey	surfKeys	mid	3	4	77.9	84.0	84.1	ns	80.7	6.1	6.2	2.8	0.0051	0.081	0.062	28.2	21.2
+nz.jdc.nano.NeophytePRAL 1.4	R3 keys	untouched		mid	4	2	90.5	96.6	96.6	bb	91.1	6.1	6.1	0.6	0.0051	0.09	0.004	13.4	0.7
+whind.StrengthBee 0.6.4	R3 keys	lever	mimicOns,surfKeys	mid	3	2	75.5	81.5	81.6	ns	75.7	6.0	6.1	0.2	0.005	0.078	0.053	30.5	20.5
+nanoskank.NanoSkank 1.0	R4 portfolio	untouched		low	6	1	88.5	94.4	96.9	jh	95.0	5.9	8.4	6.5	0.005	0.038	0.025	8.2	5.1
+sadoner.killer 0.2	R3 keys	untouched		mid	5	2	86.1	92.0	94.4	sr	91.5	5.9	8.3	5.4	0.005	0.063	0.05	13.9	7.6
+oog.PricklyPear 1.0.6	R3 keys	surfkey	surfKeys	mid	3	2	77.3	83.2	85.2	ns	78.7	5.9	7.9	1.4	0.005	0.082	0.072	25.0	18.3
+fushi.PvP1.PvP1 2004-02-16	R3 keys	lever	fullOffs,surfKeys	mid	5	4	85.3	91.2	92.2	ns	88.8	5.9	6.9	3.5	0.005	0.079	0.061	14.9	13.2
+deo.FlowerBot 1.0	R4 portfolio	shield	moves,aims	low	4	1	90.6	96.5	96.5	bb	91.4	5.9	5.9	0.8	0.005	0.019	0.044	9.3	5.0
+robar.micro.Topaz 0.25	R3 keys	surfkey	surfKeys	mid	4	3	76.8	82.6	85.2	sg	81.1	5.8	8.4	4.3	0.0049	0.082	0.091	26.3	16.3
+supersample.SuperSpinBot 1.0	R4 portfolio	untouched		low	6	4	92.0	97.8	97.8	bb	96.2	5.8	5.8	4.2	0.0049	0.039	0.01	7.8	2.8
+spinnercat.haiku.Refrigerator 1.1	R4 portfolio	surfkey	surfKeys	low	6	3	87.8	93.5	95.3	sr	91.6	5.7	7.5	3.8	0.0048	0.035	0.029	9.8	8.3
+catcat20.helios.Helios 1.5	R3 keys	surfkey	surfKeys	mid	3	5	81.8	87.5	88.8	sr	86.3	5.7	7.0	4.5	0.0048	0.082	0.061	24.4	12.0
+lrem.quickhack.QuickHack 1.0	R2 chaser	shield	aims	close	5	3	93.3	99.0	100.0	og	97.7	5.7	6.7	4.4	0.0048	0.161	0.0	3.5	0.0
+fromHell.C22H30N2O2S 2.2	R4 portfolio	shield	aims	low	4	3	92.4	98.1	99.1	og	96.7	5.7	6.7	4.3	0.0048	0.007	0.003	3.4	1.5
+strider.Festis 1.2.1	R4 portfolio	surfkey	surfKeys	low	6	3	92.0	97.7	97.9	ns	95.1	5.7	5.9	3.1	0.0048	0.042	0.014	12.6	3.7
+com.arsenic.NewTest 1.0	R4 portfolio	untouched		low	6	3	92.3	98.0	98.0	bb	95.9	5.7	5.7	3.6	0.0048	0.033	0.008	8.0	2.1
+suh.micro.WallPM 1.00	R4 portfolio	surfkey	surfKeys	-		4	85.5	91.1	92.2	ns	88.0	5.6	6.7	2.5	0.0047				
+test.Fuzzer 1.0.1	R3 keys	lever	x5Powers	mid	5	2	92.1	97.7	98.3	sr	94.5	5.6	6.2	2.5	0.0047	0.066	0.052	7.8	4.7
+davidalves.Firebird 0.25	R4 portfolio	shield	aims	low	2	2	94.2	99.8	100.0	ns	99.0	5.6	5.8	4.8	0.0047	0.006	0.001	3.1	0.3
+kano.gamma.KanoGamma 1.8	R3 keys	lever	stopGoShifts	mid	5	2	91.4	97.0	97.0	bb	94.3	5.6	5.6	2.9	0.0047	0.055	0.02	10.3	4.8
+sm.Devil 7.3	R4 portfolio	shield	moves,aims	low	5	3	93.9	99.5	99.5	bb	94.0	5.6	5.6	0.1	0.0047	0.013	0.007	5.8	1.0
+apc.Colossus2 0.12	R2 chaser	lever	stopGoShifts	close	6	1	93.4	99.0	99.0	bb	97.2	5.6	5.6	3.8	0.0047	0.149	0.052	5.7	2.7
+doka.Test 1.0	R3 keys	untouched		mid	6	4	84.9	90.4	93.2	jh	90.3	5.5	8.3	5.4	0.0046	0.071	0.05	19.8	12.0
+blir.nano.Bruce R1.0.0	R2 chaser	untouched		close	6	3	88.1	93.6	95.4	jh	92.6	5.5	7.3	4.5	0.0046	0.231	0.123	23.1	12.7
+GarmBox.Oranges 1.0.1	R4 portfolio	lever	heatJits	low	6	6	93.3	98.8	98.8	bb	96.3	5.5	5.5	3.0	0.0046	0.029	0.006	5.4	1.5
+apc.LeeroyJenkins2 1.0	R3 keys	surfkey	surfKeys	mid	5	2	83.9	89.4	89.4	bb	85.9	5.5	5.5	2.0	0.0046	0.078	0.072	20.2	18.2
+bzdp.BoxCar 2.0	R3 keys	surfkey	surfKeys	mid	6	2	92.2	97.7	97.7	bb	95.3	5.5	5.5	3.1	0.0046	0.091	0.018	12.5	2.7
+cx.micro.Blur 0.2	R4 portfolio	surfkey	surfKeys	low	5	1	86.7	92.1	99.4	sg	89.8	5.4	12.7	3.1	0.0045	0.043	0.021	14.3	7.8
+bayen.nut.Squirrel 1.621	R3 keys	shield	moves,aims	mid	3	2	89.4	94.8	99.7	og	96.2	5.4	10.3	6.8	0.0045	0.056	0.075	13.0	10.0
+ms.Ares 0.19	R3 keys	untouched		mid	5	3	92.8	98.2	98.2	bb	96.9	5.4	5.4	4.1	0.0045	0.055	0.039	9.5	2.7
+tango.Recrimpo 2.51	R3 keys	untouched		mid	5	5	88.4	93.7	98.5	ds	96.7	5.3	10.1	8.2	0.0045	0.057	0.046	16.0	12.0
+nz.jdc.nano.PralDeGuerre 1.2	R4 portfolio	shield	aims,mimicOns	low	4	5	82.5	87.8	89.8	og	85.3	5.3	7.3	2.8	0.0045	0.018	0.029	8.3	11.7
+mcb.Audace 1.3	R4 portfolio	untouched		low	5	1	92.0	97.3	98.5	og	96.7	5.3	6.5	4.7	0.0045	0.043	0.032	7.1	5.5
+com.syncleus.robocode.Dreadnaught 0.1	R2 chaser	untouched		close	6	5	90.7	96.0	97.2	sr	94.8	5.3	6.5	4.1	0.0045	0.209	0.059	18.9	7.4
+conscience.Bulldozer 1.0a	R2 chaser	untouched		close	6	3	86.3	91.6	92.6	ns	87.9	5.3	6.3	1.6	0.0045	0.357	0.21	23.4	14.8
+dans.Cinnamon 1.2	R4 portfolio	untouched		low	6	2	90.2	95.5	96.2	ns	95.2	5.3	6.0	5.0	0.0045	0.026	0.039	6.9	9.6
+cx.Lacrimas 1.36	R3 keys	lever	fullOffs	mid	3	2	76.7	82.0	82.4	ns	74.7	5.3	5.7	-2.0	0.0045	0.061	0.035	25.6	13.3
+rtk.Tachikoma 1.0	R4 portfolio	shield	aims	low	5	3	93.2	98.5	98.5	bb	90.7	5.3	5.3	-2.5	0.0045	0.015	0.005	1.6	3.9
+bayen.UbaRamLT 1.0	R2 chaser	untouched		close	5	3	86.2	91.4	94.9	jh	88.7	5.2	8.7	2.5	0.0044	0.273	0.135	23.0	13.3
+stelo.MoojukNano 1.2	R3 keys	surfkey	surfKeys	mid	6	4	86.2	91.4	93.7	og	91.1	5.2	7.5	4.9	0.0044	0.059	0.041	16.4	9.3
+cx.nano.Smog 2.6	R4 portfolio	lever	stopGoShifts	low	5	3	90.6	95.8	96.8	ns	95.2	5.2	6.2	4.6	0.0044	0.021	0.032	4.6	9.0
+bvh.tyr.Tyr 1.74	R3 keys	surfkey	surfKeys	mid	6	2	93.3	98.5	98.5	bb	94.9	5.2	5.2	1.6	0.0044	0.08	0.014	8.1	1.0
+nan.Ihivatar_Mk_1 1.0	R4 portfolio	untouched		low	5	3	94.7	99.9	99.9	bb	95.5	5.2	5.2	0.8	0.0044	0.021	0.0	6.1	0.0
+florent.FloatingTadpole 1.2.6	R3 keys	surfkey	surfKeys	mid	3	2	81.5	86.6	87.5	ns	83.2	5.1	6.0	1.7	0.0043	0.064	0.048	21.2	14.2
+cre.Karolos 0.32	R4 portfolio	lever	x5Powers,surfKeys	low	5	5	93.1	98.2	98.8	ns	96.2	5.1	5.7	3.1	0.0043	0.048	0.039	4.9	3.7
+doka.KillerRabbit 1.0	R3 keys	surfkey	surfKeys	mid	5	2	83.0	88.1	88.1	bb	86.8	5.1	5.1	3.8	0.0043	0.06	0.051	16.0	17.0
+stelo.SteloTestNano 1.0	R4 portfolio	shield		low	5	1	90.0	95.0	97.5	sg	95.1	5.0	7.5	5.1	0.0042	0.009	0.001	5.0	0.5
+rdt.Wraith.Wraith 0.3	R3 keys	untouched		mid	3	4	84.0	89.0	90.5	ns	85.0	5.0	6.5	1.0	0.0042	0.073	0.058	19.0	16.0
+dz.Caedo 1.4	R2 chaser	shield	aims	close	4	4	91.9	96.9	97.5	og	95.9	5.0	5.6	4.0	0.0042	0.124	0.003	6.1	1.1
+wiki.nano.Flick 1.0	R4 portfolio	lever	fullOffs	low	5	5	94.4	99.4	99.8	sr	99.3	5.0	5.4	4.9	0.0042	0.008	0.008	0.4	0.5
+bvh.mini.Wodan 0.50	R3 keys	lever	heatJits,surfKeys	mid	4	3	80.1	85.1	85.4	ns	79.6	5.0	5.3	-0.5	0.0042	0.086	0.057	27.9	17.7
+robar.nano.Assertive 0.3	R3 keys	untouched		mid	5	7	84.3	89.3	89.3	bb	83.8	5.0	5.0	-0.5	0.0042	0.095	0.047	20.5	11.1
+eem.EvBot v4.6.4	R3 keys	untouched		mid	4	3	87.1	92.1	92.1	bb	87.3	5.0	5.0	0.2	0.0042	0.067	0.046	15.1	10.6
+theo.simple.Lucid 1.0	R4 portfolio	shield	aims,stills,mimicOns	low	3	5	87.5	92.4	99.0	og	90.3	4.9	11.5	2.8	0.0041	0.0	0.003	0.0	1.3
+test.Podgy 4.0	R4 portfolio	lever	heatJits	low	6	3	86.3	91.2	92.4	ns	89.1	4.9	6.1	2.8	0.0041	0.048	0.034	14.6	10.1
+ncj.MoxieBot 1.0	R2 chaser	surfkey	surfKeys	close	6	3	94.3	99.2	99.9	dm	99.5	4.9	5.6	5.2	0.0041	0.125	0.058	0.2	0.3
+krillr.mega.Psyche 0.0.3	R4 portfolio	untouched		low	6	4	94.8	99.7	99.8	sr	99.1	4.9	5.0	4.3	0.0041	0.023	0.003	5.8	0.0
+elloco.Flower 0.1r1	R4 portfolio	lever	heatJits,surfKeys	low	5	6	94.5	99.4	99.4	bb	98.3	4.9	4.9	3.8	0.0041	0.026	0.005	4.6	0.9
+Grystrion.RandomTrackerNOREV 1.0	R3 keys	untouched		mid	6	2	91.8	96.6	97.4	jh	96.0	4.8	5.6	4.2	0.004	0.067	0.025	6.4	3.3
+nz.jdc.nano.AralR 1.1	R3 keys	surfkey	surfKeys	mid	5	3	89.2	94.0	94.0	bb	92.8	4.8	4.8	3.6	0.004	0.09	0.065	14.8	8.5
+lrem.Spectre 0.4.4	R3 keys	surfkey	surfKeys	mid	5	3	87.8	92.5	93.1	ns	89.3	4.7	5.3	1.5	0.0039	0.055	0.044	14.5	10.6
+ar.QuantumChromodynamics 1.2.1	R4 portfolio	untouched		low	6	3	94.8	99.5	99.5	bb	95.0	4.7	4.7	0.2	0.0039	0.011	0.003	2.4	0.9
+marcinek.TopGun 1.3	R4 portfolio	untouched		low	6	2	94.5	99.2	99.2	bb	97.5	4.7	4.7	3.0	0.0039	0.017	0.014	2.9	2.4
+apc.botM 3.0	R3 keys	untouched		mid	5	2	87.7	92.3	95.2	sr	92.8	4.6	7.5	5.1	0.0039	0.061	0.033	19.1	8.6
+muf.CrazyKitten 0.9	R3 keys	surfkey	surfKeys	mid	4	4	86.2	90.8	92.6	jh	89.8	4.6	6.4	3.5	0.0039	0.056	0.04	17.7	11.6
+DTF.Kludgy 1.2b	R3 keys	lever	fullOffs	mid	4	1	79.2	83.8	85.2	ns	81.0	4.6	6.0	1.8	0.0039	0.085	0.078	21.8	20.5
+divineomega.DivineBot 1.9.5	R4 portfolio	lever	stopGoShifts	low	4	4	90.9	95.5	96.1	ns	95.2	4.6	5.2	4.2	0.0039	0.042	0.059	9.7	8.3
+seed.Weed 3.0.2	R3 keys	surfkey	surfKeys	mid	4	5	90.3	94.9	94.9	bb	91.6	4.6	4.6	1.3	0.0039	0.05	0.029	11.4	5.9
+ntc.Knowledge 1.1	R3 keys	surfkey	surfKeys	mid	5	3	90.4	94.9	97.7	ds	94.6	4.5	7.3	4.2	0.0038	0.077	0.048	13.9	9.4
+shrub.Vapour v159	R3 keys	surfkey	surfKeys	mid	5	3	86.6	91.1	92.7	sr	91.5	4.5	6.1	4.9	0.0038	0.074	0.047	17.8	12.8
+gadsky.Gadsky 1.01	R3 keys	untouched		mid	4	6	84.0	88.5	88.5	bb	84.3	4.5	4.5	0.3	0.0038	0.071	0.051	20.8	15.9
+ags.micro.Carpet 1.1	R4 portfolio	shield	aims,stills	low	4	5	95.3	99.8	99.8	bb	95.0	4.5	4.5	-0.2	0.0038	0.024	0.015	2.9	6.9
+nkn.mini.Jskr0 0.1	R4 portfolio	shield	aims	low	4	2	94.8	99.2	100.0	og	98.4	4.4	5.2	3.6	0.0037	0.0	0.001	0.0	0.3
+jep.nano.Hawkwing 0.4.1	R4 portfolio	untouched		low	6	3	95.2	99.6	99.8	sr	99.2	4.4	4.6	4.0	0.0037	0.02	0.0	3.1	0.0
+pez.mini.VertiLeach 0.4.0	R4 portfolio	lever	stopGoShifts	low	4	1	82.4	86.8	86.9	ns	83.2	4.4	4.5	0.8	0.0037	0.043	0.062	12.1	18.1
+alk.lap.LoudAndProud 2.23	R3 keys	untouched		mid	4	3	82.9	87.3	87.3	ns	83.2	4.4	4.4	0.2	0.0037	0.063	0.034	21.9	12.4
+pez.mini.ChironexFleckeri 0.5	R3 keys	lever	stopGoShifts	mid	4	3	84.1	88.5	88.5	bb	85.7	4.4	4.4	1.6	0.0037	0.079	0.051	18.3	15.7
+stf.PanzerGeneral 0.1	R3 keys	lever	heatJits,surfKeys	mid	5	4	88.7	93.1	93.1	bb	90.1	4.4	4.4	1.4	0.0037	0.089	0.052	18.5	10.1
+ers.nano.meroka.Meroka 1.8a	R4 portfolio	shield	moves,aims	low	4	2	85.0	89.3	96.9	sg	88.4	4.3	11.9	3.4	0.0036	0.009	0.094	3.5	21.2
+rz.SmallDevil 1.502	R4 portfolio	untouched		low	5	3	95.1	99.4	99.4	bb	98.4	4.3	4.3	3.3	0.0036	0.026	0.001	6.2	0.5
+slugzilla.SNGPattern 1.0	R3 keys	untouched		mid	5	6	94.6	98.9	98.9	bb	95.7	4.3	4.3	1.1	0.0036	0.087	0.002	9.4	0.9
+nz.jdc.nano.AralT 1.1	R3 keys	untouched		mid	5	3	91.3	95.6	95.6	bb	93.8	4.3	4.3	2.5	0.0036	0.066	0.035	15.3	7.3
+stelo.MirrorMicro 1.1	R3 keys	untouched		mid	5	2	91.6	95.9	95.9	bb	92.2	4.3	4.3	0.6	0.0036	0.082	0.028	14.8	5.8
+de.erdega.robocode.Polyphemos 0.4	R4 portfolio	shield	aims	low	5	3	94.4	98.6	100.0	jh	98.0	4.2	5.6	3.6	0.0035	0.026	0.001	0.1	0.5
+sos.SOS 1.0	R3 keys	untouched		mid	4	3	92.4	96.6	97.3	ns	94.8	4.2	4.9	2.4	0.0035	0.065	0.048	13.9	5.2
+stranger.nano.TestBot 1.0	R3 keys	lever	heatJits,surfKeys	mid	6	7	93.4	97.6	98.2	sg	97.1	4.2	4.8	3.7	0.0035	0.069	0.014	11.3	2.0
+vft.Valkyrie 1.0	R3 keys	untouched		mid	6	6	90.6	94.8	94.8	bb	91.4	4.2	4.2	0.8	0.0035	0.06	0.029	15.2	8.2
+scheronimus.AntiRebel 1.1	R4 portfolio	lever	stopGoShifts	low	5	5	95.4	99.6	99.6	bb	97.5	4.2	4.2	2.0	0.0035	0.018	0.003	4.2	0.6
+cw.megas.GhostShell GT	R3 keys	untouched		mid	5	2	86.3	90.4	94.7	og	86.2	4.1	8.4	-0.0	0.0034	0.087	0.047	17.6	10.2
+genprog.Gajeel 1.0	R4 portfolio	untouched		low	6	2	94.2	98.3	99.0	sr	98.5	4.1	4.8	4.2	0.0034	0.029	0.01	4.2	1.7
+jmcd.BeoWulf 2.8	R3 keys	surfkey	surfKeys	mid	5	1	85.3	89.4	90.1	ns	87.5	4.1	4.8	2.2	0.0034	0.075	0.061	21.8	15.7
+ph.Thinker 0.2.5	R4 portfolio	untouched		low	6	2	93.7	97.8	98.3	sr	97.1	4.1	4.6	3.4	0.0034	0.035	0.012	9.8	2.6
+lion.Kresnanano 1.0	R4 portfolio	surfkey	surfKeys	low	6	4	92.2	96.3	96.6	sg	95.3	4.1	4.4	3.1	0.0034	0.031	0.018	7.2	4.6
+exauge.Leopard 1.1.019	R2 chaser	untouched		close	5	5	85.0	89.0	90.0	jh	87.4	4.0	5.0	2.4	0.0034	0.346	0.196	33.0	17.2
+Krabb.fe4r.Fe4r 0.4	R4 portfolio	untouched		low	5	3	91.5	95.5	95.7	sr	94.8	4.0	4.2	3.3	0.0034	0.032	0.02	9.0	5.7
+ebo.Tahoe 1.1.79	R3 keys	lever	gunStacks	mid	3	1	77.8	81.8	81.8	bb	76.0	4.0	4.0	-1.8	0.0034	0.096	0.062	35.7	20.0
+spinnercat.Robovirus 2.718	R4 portfolio	shield	moves	low	4	2	91.3	95.2	100.0	jh	95.2	3.9	8.7	4.0	0.0033	0.007	0.063	0.8	4.3
+gh.GrubbmGrb 1.2.4	R4 portfolio	shield		low	3	1	94.6	98.5	98.5	bb	90.0	3.9	3.9	-4.6	0.0033	0.002	0.002	1.3	1.3
+sgp.SleepingGoat 1.1	R4 portfolio	untouched		low	6	3	91.5	95.3	99.2	sg	95.2	3.8	7.7	3.7	0.0032	0.041	0.039	9.3	9.5
+spinnercat.mega.Tardis 1.2	R4 portfolio	shield	moves,aims	low	4	4	90.1	93.9	96.8	jh	94.1	3.8	6.7	4.0	0.0032	0.004	0.065	2.1	8.2
+dam.MogBot 2.9	R3 keys	untouched		mid	5	5	82.0	85.8	88.2	ns	82.2	3.8	6.2	0.2	0.0032	0.095	0.071	20.8	18.3
+simonton.micro.GFMicro 1.0	R4 portfolio	shield	aims	low	3	3	93.7	97.5	99.8	ns	94.3	3.8	6.1	0.6	0.0032	0.022	0.0	3.2	0.2
+seed.Anastasia 1.0	R3 keys	surfkey	surfKeys	mid	6	4	91.5	95.3	97.0	jh	95.5	3.8	5.5	4.0	0.0032	0.051	0.035	8.7	5.9
+davidalves.net.DuelistMicro 1.22	R3 keys	untouched		mid	4	3	82.7	86.4	96.0	sg	86.3	3.7	13.3	3.6	0.0031	0.054	0.046	19.3	18.2
+myl.micro.NekoNinja 1.30	R4 portfolio	shield	aims	low	5	5	94.7	98.4	100.0	og	94.8	3.7	5.3	0.1	0.0031	0.0	0.002	0.0	1.8
+ph.musketeer.Musketeer 0.6	R4 portfolio	shield	aims	low	4	4	95.8	99.5	100.0	jh	99.2	3.7	4.2	3.4	0.0031	0.031	0.0	0.6	0.3
+tornyil.Lajcsi2.Lajcsi2sm 1.0	R3 keys	surfkey	surfKeys	mid	6	3	89.7	93.4	93.9	ns	93.1	3.7	4.2	3.4	0.0031	0.077	0.06	15.5	10.2
+kinsen.nano.Senticous 1.0	R3 keys	untouched		mid	5	2	83.6	87.3	87.3	bb	85.4	3.7	3.7	1.8	0.0031	0.068	0.055	18.5	16.0
+bts.mega.Gnarly 1.4	R2 chaser	surfkey	surfKeys	close	5	4	84.2	87.9	87.9	bb	85.4	3.7	3.7	1.2	0.0031	0.122	0.078	20.2	15.9
+suh.nano.MirrorH 1.01	R3 keys	lever	mirrorOffs	mid	6	5	96.3	100.0	100.0	ns	100.0	3.7	3.7	3.7	0.0031	0.091	0.001	7.1	0.5
+asd.Cthulhu 1.2	R4 portfolio	untouched		low	6	3	94.9	98.6	98.6	bb	95.4	3.7	3.7	0.5	0.0031	0.038	0.011	10.1	2.7
+kjc.etc.Dharok 1.0	R4 portfolio	surfkey	surfKeys	low	6	4	94.2	97.8	99.0	sr	97.8	3.6	4.8	3.6	0.003	0.03	0.017	6.5	3.7
+knackibot.KnackOnOne 0.8.1	R4 portfolio	untouched		low	6	2	95.7	99.3	99.8	sr	99.3	3.6	4.1	3.6	0.003	0.031	0.001	6.2	0.3
+kneels.ToNoone 0.2	R3 keys	untouched		mid	6	4	95.1	98.7	99.0	sr	97.9	3.6	3.9	2.8	0.003	0.05	0.009	9.6	1.8
+suh.nano.MirrorL 1.00	R3 keys	lever	mirrorOffs	mid	6	3	96.3	99.9	99.9	ns	99.2	3.6	3.6	2.9	0.003	0.089	0.003	7.7	0.3
+KiraNL.SpaceKees 0.1	R2 chaser	untouched		close	5	3	89.1	92.7	92.7	bb	90.0	3.6	3.6	1.0	0.003	0.102	0.067	19.5	11.3
+rcp.Kuramatron 1.0	R2 chaser	untouched		close	5	3	89.0	92.5	96.4	jh	92.8	3.5	7.4	3.8	0.0029	0.223	0.105	22.9	11.0
+ahf.Acero 1.0	R4 portfolio	untouched		low	5	3	95.2	98.7	99.8	sr	98.5	3.5	4.6	3.2	0.0029	0.012	0.006	3.0	1.7
+ary.micro.Weak 1.2	R3 keys	surfkey	surfKeys	mid	3	1	81.7	85.2	86.1	ns	81.1	3.5	4.4	-0.6	0.0029	0.071	0.053	25.5	19.4
+oog.nano.MagicD2 2.4	R3 keys	untouched		mid	5	5	91.4	94.9	95.6	ns	94.8	3.5	4.2	3.3	0.0029	0.075	0.051	13.3	10.0
+qohnil.blot.BlotBot 3.61	R2 chaser	untouched		close	4	4	85.0	88.5	88.7	ns	86.2	3.5	3.7	1.2	0.0029	0.132	0.095	25.7	19.0
+sam.ChipmunkDuelist 1.0	R3 keys	surfkey	surfKeys	mid	5	1	92.6	96.1	96.2	ns	95.6	3.5	3.6	3.0	0.0029	0.056	0.03	9.8	5.2
+lorneswork.Predator 1.0	R3 keys	lever	stopGos	mid	6	4	96.0	99.5	99.5	bb	98.0	3.5	3.5	2.0	0.0029	0.054	0.004	7.1	0.7
+populations.TrainStoopidbot 0.01	R3 keys	lever	stopGoShifts	mid	6	2	95.4	98.9	98.9	bb	98.3	3.5	3.5	2.9	0.0029	0.052	0.022	4.9	2.3
+EH.Pegasus 0.113	R4 portfolio	untouched		low	6	3	95.8	99.3	99.3	bb	97.4	3.5	3.5	1.6	0.0029	0.03	0.01	4.3	1.2
+wiki.mako.MakoHT 1.2.2.1	R4 portfolio	shield	moves,aims	low	5	2	95.0	98.4	100.0	jh	97.2	3.4	5.0	2.2	0.0029	0.039	0.0	3.9	0.0
+ntw.Sighup 1.5	R3 keys	surfkey	surfKeys	mid	6	1	90.9	94.3	95.6	sr	94.3	3.4	4.7	3.4	0.0029	0.081	0.043	16.3	9.0
+fw.Number1 1.0b	R3 keys	untouched		mid	6	2	95.1	98.5	99.3	sr	98.7	3.4	4.2	3.6	0.0029	0.088	0.029	6.2	2.5
+lk.nano.Avesnar 1.1	R4 portfolio	surfkey	surfKeys	low	5	7	94.8	98.2	98.9	sr	98.0	3.4	4.1	3.2	0.0029	0.023	0.008	5.0	1.9
+jcs.Decepticon 2.5.3	R4 portfolio	shield	aims	low	3	2	96.3	99.7	99.7	bb	96.6	3.4	3.4	0.3	0.0029	0.03	0.0	0.8	0.0
+alpha.RainingFire 1.0	R3 keys	untouched		mid	3	3	79.2	82.6	82.6	bb	76.5	3.4	3.4	-2.7	0.0029	0.078	0.076	22.2	26.8
+Legend.X_FireFly 1.3	R4 portfolio	surfkey	surfKeys	low	5	2	94.9	98.3	98.3	bb	96.7	3.4	3.4	1.8	0.0029	0.039	0.012	9.4	3.0
+gio.RealGioBot 1.0	R4 portfolio	lever	heatJits,surfKeys	low	6	3	96.3	99.7	99.7	bb	99.2	3.4	3.4	2.9	0.0029	0.016	0.007	1.6	1.1
+maribo.IotaCT 1.0	R3 keys	untouched		mid	6	5	96.3	99.7	99.7	bb	97.6	3.4	3.4	1.3	0.0029	0.05	0.011	6.1	1.3
+dk.stable.Gorgatron 1.1	R3 keys	untouched		mid	5	2	89.6	92.9	95.8	ns	91.9	3.3	6.2	2.3	0.0028	0.08	0.04	18.1	9.6
+jam.RaikoMX 0.32	R4 portfolio	lever	stopGoShifts,gunStacks	low	3	1	78.8	82.1	84.8	ns	78.3	3.3	6.0	-0.5	0.0028	0.033	0.049	10.9	18.2
+mbro.BelajarBot 0.0.3	R4 portfolio	untouched		low	6	3	96.5	99.8	99.8	bb	99.5	3.3	3.3	3.0	0.0028	0.03	0.005	2.6	0.3
+az.Ololobot 0.2.4	R3 keys	surfkey	surfKeys	mid	5	1	91.8	95.1	95.1	bb	92.5	3.3	3.3	0.7	0.0028	0.073	0.062	12.3	7.7
+projectx.ProjectNano 2.0	R4 portfolio	lever	stopGos	low	6	1	96.2	99.5	99.5	bb	98.1	3.3	3.3	1.9	0.0028	0.031	0.002	6.1	0.5
+qwaker00.Gandhi 1.2	R4 portfolio	untouched		low	5	3	94.9	98.2	98.2	bb	97.6	3.3	3.3	2.7	0.0028	0.036	0.021	6.5	4.1
+nosteel.Welby 0.0.3	R3 keys	untouched		mid	6	4	96.1	99.3	99.4	ns	96.7	3.2	3.3	0.6	0.0027	0.059	0.004	8.7	0.7
+jcz.linio.Linio 2.0.H	R2 chaser	untouched		close	5	4	92.0	95.2	95.2	bb	93.4	3.2	3.2	1.4	0.0027	0.121	0.1	14.0	7.7
+doka.Shinigami 2.2	R4 portfolio	surfkey	surfKeys	low	4	5	90.2	93.4	93.4	bb	91.2	3.2	3.2	1.0	0.0027	0.035	0.031	10.0	9.5
+kawigi.mini.Fhqwhgads 1.1	R3 keys	shield	aims	mid	4	2	92.4	95.5	99.5	og	94.8	3.1	7.1	2.3	0.0026	0.071	0.004	0.8	2.7
+ry.LightningBug 1.0	R4 portfolio	lever	stopGoShifts	low	4	2	94.0	97.1	99.3	og	94.2	3.1	5.3	0.2	0.0026	0.042	0.002	7.9	0.8
+pmc.SniperBot 1.0	R2 chaser	untouched		close	6	2	93.7	96.8	98.6	sr	96.5	3.1	4.9	2.8	0.0026	0.113	0.066	11.3	5.6
+kawigi.robot.Girl 1.2	R4 portfolio	untouched		low	6	3	92.5	95.6	95.9	ns	95.2	3.1	3.4	2.7	0.0026	0.046	0.018	8.5	3.9
+squidM.SquidmanNano 1.0	R3 keys	untouched		mid	6	4	96.1	99.2	99.3	ns	98.6	3.1	3.2	2.5	0.0026	0.09	0.006	11.6	0.7
+kawigi.nano.FunkyChicken 1.1	R3 keys	shield	aims	mid	5	2	91.4	94.5	94.5	bb	89.5	3.1	3.1	-1.9	0.0026	0.066	0.001	3.8	0.5
+romz.robot.guessfactor.TeasingFox 0.2	R2 chaser	untouched		close	6	3	88.8	91.9	91.9	bb	89.3	3.1	3.1	0.5	0.0026	0.102	0.079	16.9	13.2
+bjl.LoneDragon 0.5	R3 keys	surfkey	surfKeys	mid	4	2	93.2	96.3	96.3	bb	94.2	3.1	3.1	1.0	0.0026	0.083	0.074	8.0	8.7
+acid.Bl4ck 1.0	R4 portfolio	surfkey	surfKeys	low	6	5	95.4	98.5	98.5	ns	98.0	3.1	3.1	2.6	0.0026	0.032	0.024	4.7	3.2
+mme.NikeEnhanced 2.0	R4 portfolio	untouched		low	6	2	96.6	99.7	99.7	sr	99.2	3.1	3.1	2.7	0.0026	0.022	0.002	3.0	0.0
+jab.DiamondStealer 5	R3 keys	surfkey	surfKeys	mid	5	5	87.8	90.9	90.9	bb	86.6	3.1	3.1	-1.2	0.0026	0.097	0.063	29.5	15.9
+ender.EnderRobot 1.1	R4 portfolio	lever	stopGos	low	6	2	95.6	98.7	98.7	bb	96.8	3.1	3.1	1.2	0.0026	0.044	0.007	8.8	1.7
+dft.Krazy 1.5	R3 keys	untouched		mid	6	6	90.9	94.0	94.0	bb	92.7	3.1	3.1	1.8	0.0026	0.055	0.047	11.6	11.2
+dft.Freddie 1.32	R4 portfolio	lever	stopGos	low	5	2	92.6	95.6	97.6	sg	95.0	3.0	5.0	2.4	0.0025	0.008	0.022	1.4	5.8
+robar.haiku.Spike 1.0	R4 portfolio	untouched		low	6	2	92.9	95.9	97.7	sr	95.4	3.0	4.8	2.5	0.0025	0.043	0.039	8.1	8.6
+Grystrion.TrackerWO 1.0	R3 keys	surfkey	surfKeys	mid	6	2	93.3	96.3	97.6	jh	96.8	3.0	4.3	3.5	0.0025	0.087	0.032	11.3	3.7
+casey.Flump 1.0	R3 keys	lever	stopGoShifts	mid	5	2	88.9	91.9	92.6	ns	89.5	3.0	3.7	0.5	0.0025	0.081	0.029	18.3	8.0
+ntc.Lasers.Lasers 0.9	R3 keys	untouched		mid	5	3	90.0	93.0	93.2	ds	92.0	3.0	3.2	2.0	0.0025	0.085	0.062	12.7	11.1
+suh.nano.CornerRL 1.00	R3 keys	untouched		mid	6	2	94.4	97.4	97.5	ns	96.6	3.0	3.1	2.2	0.0025	0.06	0.028	9.6	3.0
+dmh.robocode.robot.YellowBird 0.12	R4 portfolio	untouched		low	5	4	96.6	99.6	99.7	ds	98.1	3.0	3.1	1.5	0.0025	0.024	0.001	4.7	0.5
+josago.Jorgito 0.16	R3 keys	untouched		mid	5	3	91.2	94.2	94.2	ns	91.0	3.0	3.0	-0.2	0.0025	0.08	0.049	13.6	7.2
+panzer.Panzer 0.2	R4 portfolio	surfkey	surfKeys	low	6	3	95.8	98.8	98.8	bb	95.9	3.0	3.0	0.1	0.0025	0.019	0.004	4.6	0.9
+ary.Help 1.0	R4 portfolio	shield	aims	low	3	3	94.0	97.0	97.0	bb	90.1	3.0	3.0	-3.9	0.0025	0.009	0.002	2.9	1.5
+radnor.RamRod 1.0	R2 chaser	lever	gunStacks	close	5	3	80.3	83.2	86.6	sr	82.5	2.9	6.3	2.2	0.0024	0.443	0.249	58.1	30.6
+dmh.robocode.robot.BlueBerry 0.5	R4 portfolio	surfkey	surfKeys	low	6	1	93.6	96.5	98.1	sr	96.0	2.9	4.5	2.5	0.0024	0.048	0.024	8.5	4.8
+ne.Chimera 1.2	R3 keys	surfkey	surfKeys	mid	5	3	88.1	91.0	92.0	ns	88.3	2.9	3.9	0.2	0.0024	0.066	0.054	13.9	11.3
+kurios.DOSexe .9a	R2 chaser	untouched		close	6	2	92.3	95.2	96.2	ns	93.6	2.9	3.9	1.3	0.0024	0.204	0.064	18.6	6.1
+stuff.Vlad 0.1	R3 keys	untouched		mid	6	4	89.5	92.4	93.2	sr	91.6	2.9	3.7	2.1	0.0024	0.076	0.068	14.1	13.0
+slugzilla.SNGGF 1.0	R4 portfolio	lever	stopGoShifts	low	5	2	96.0	98.9	99.5	sg	98.1	2.9	3.5	2.1	0.0024	0.032	0.0	3.1	0.0
+oog.nano.SavantWS 0.1	R4 portfolio	surfkey	surfKeys	low	6	3	95.8	98.7	99.1	sr	98.3	2.9	3.3	2.5	0.0024	0.032	0.003	7.2	0.7
+rus.vv.Snezhok 1.1	R4 portfolio	surfkey	surfKeys	low	6	4	95.4	98.3	98.7	dm	98.1	2.9	3.3	2.7	0.0024	0.025	0.009	4.5	1.6
+mz.Movement 1.8	R4 portfolio	untouched		low	6	2	96.5	99.4	99.4	bb	98.1	2.9	2.9	1.6	0.0024	0.017	0.001	3.5	0.3
+nic.Nicator 2.4	R4 portfolio	untouched		low	5	1	95.4	98.3	98.3	bb	96.0	2.9	2.9	0.6	0.0024	0.031	0.008	5.2	1.1
+sgp.ShiningBeetle 1.1	R3 keys	surfkey	surfKeys	mid	6	3	92.2	95.0	99.3	sg	95.1	2.8	7.1	2.9	0.0024	0.072	0.023	15.1	5.1
+spinnercat.CopyKat 1.2.3	R3 keys	shield	aims	mid	5	1	90.0	92.8	94.5	sg	89.1	2.8	4.5	-0.9	0.0024	0.058	0.039	20.1	14.9
+ethdsy.Malacka 2.4	R3 keys	surfkey	surfKeys	mid	5	3	93.9	96.7	97.9	jh	96.0	2.8	4.0	2.0	0.0024	0.087	0.037	9.2	4.0
+vort.Chaser 0.0.3	R2 chaser	untouched		close	6	3	96.5	99.3	99.8	sr	99.1	2.8	3.3	2.6	0.0024	0.129	0.03	4.3	1.8
+kawigi.mini.Coriantumr 1.1	R4 portfolio	shield	aims	low	4	4	96.8	99.6	100.0	jh	99.2	2.8	3.2	2.4	0.0024	0.0	0.003	0.0	2.1
+sheldor.melee.nano.TestMelee 0.1	R4 portfolio	untouched		low	6	5	93.8	96.6	96.8	ns	96.1	2.8	3.0	2.3	0.0024	0.048	0.032	7.1	4.9
+agrach.MicroDalek 1.0	R4 portfolio	untouched		low	6	3	97.0	99.8	99.8	bb	99.2	2.8	2.8	2.2	0.0024	0.011	0.0	1.2	0.0
+lrem.micro.MoggFanatic 0.2	R3 keys	untouched		mid	5	4	95.1	97.9	97.9	bb	95.4	2.8	2.8	0.3	0.0024	0.095	0.011	14.7	1.4
+slugzilla.OrbitLinear 1.1	R4 portfolio	shield		low	6	4	97.2	100.0	100.0	bb	99.8	2.8	2.8	2.6	0.0024	0.0	0.001	0.0	0.3
+gf.Centaur.Centaur 0.6.7	R3 keys	untouched		mid	3	3	85.1	87.9	87.9	bb	86.0	2.8	2.8	0.9	0.0024	0.082	0.057	19.4	16.1
+davidalves.net.DuelistNano 1.0	R4 portfolio	surfkey	surfKeys	low	6	2	88.4	91.1	94.8	sg	91.2	2.7	6.4	2.8	0.0023	0.028	0.016	9.5	4.6
+adt.Ar2 1.0	R3 keys	untouched		mid	6	2	93.1	95.8	98.6	sr	95.7	2.7	5.5	2.6	0.0023	0.055	0.065	9.0	10.5
+urdos.URDOS 1.3	R3 keys	lever	stopGos	mid	5	5	92.8	95.5	97.8	jh	95.7	2.7	5.0	2.9	0.0023	0.053	0.1	12.4	7.0
+jbot.Rabbit2 1.1	R4 portfolio	shield	aims	low	4	2	96.3	99.0	99.5	og	94.3	2.7	3.2	-2.0	0.0023	0.01	0.002	2.7	1.2
+EBBU.Sim2 1.02	R3 keys	lever	stopGos	mid	6	3	96.4	99.1	99.3	sr	98.4	2.7	2.9	2.0	0.0023	0.057	0.008	8.5	0.7
+KiraNL.Chupacabra 0.5	R4 portfolio	shield	aims	low	4	4	97.3	100.0	100.0	bb	96.7	2.7	2.7	-0.6	0.0023	0.0	0.001	0.0	0.3
+wcsv.Stampede 1.3.3	R3 keys	surfkey	surfKeys	mid	5	4	85.9	88.5	90.3	ns	87.3	2.6	4.4	1.4	0.0022	0.053	0.039	20.5	11.4
+genprog.Zafaran 1.0	R4 portfolio	untouched		low	6	3	95.3	97.9	99.0	jh	98.0	2.6	3.7	2.7	0.0022	0.039	0.017	5.5	2.9
+PkKillers.PkAssassin 1.0	R4 portfolio	shield		low	5	2	95.2	97.8	98.7	sg	95.8	2.6	3.5	0.6	0.0022	0.006	0.003	2.1	1.4
+js.PinBall 1.6	R4 portfolio	untouched		low	5	2	96.7	99.3	99.6	ns	98.6	2.6	2.9	1.9	0.0022	0.027	0.006	3.0	1.1
+md.Pasta 1.1	R3 keys	untouched		mid	5	3	88.9	91.5	91.6	ns	89.3	2.6	2.7	0.4	0.0022	0.07	0.054	18.4	13.9
+TCMI.Enyo 0.4	R4 portfolio	untouched		low	4	7	97.3	99.9	100.0	ds	99.8	2.6	2.7	2.5	0.0022	0.018	0.0	4.0	0.0
+toz.Gnome 1.1	R4 portfolio	untouched		low	5	5	94.6	97.2	97.2	bb	96.2	2.6	2.6	1.7	0.0022	0.014	0.012	3.7	3.4
+joe.ADinosaur 1.0	R4 portfolio	untouched		low	6	2	97.2	99.8	99.8	ns	97.8	2.6	2.6	0.6	0.0022	0.022	0.006	3.8	1.4
+eld.Hmm 1.0	R3 keys	lever	fullOffs	mid	6	5	92.9	95.4	97.0	dm	96.0	2.5	4.1	3.1	0.0021	0.071	0.041	4.3	4.0
+zyx.nano.RedBull 1.0	R3 keys	untouched		mid	6	2	95.5	98.0	99.5	sr	97.6	2.5	4.0	2.1	0.0021	0.089	0.022	8.2	2.3
+dcs.Eater_of_Worlds 1.1.3-A	R3 keys	untouched		mid	6	2	95.5	98.0	99.1	sg	98.2	2.5	3.6	2.7	0.0021	0.057	0.006	8.2	1.1
+romz.robot.Test 0.1.0	R2 chaser	lever	mimicOns	close	6	3	89.7	92.2	93.2	ns	90.2	2.5	3.5	0.5	0.0021	0.12	0.06	18.5	8.8
+dummy.micro.HummingBird 2.14	R3 keys	untouched		mid	5	3	87.7	90.2	91.0	ns	87.7	2.5	3.3	-0.0	0.0021	0.07	0.06	22.0	17.0
+lucasslf.HariSeldon 0.2.1	R4 portfolio	shield	aims	low	3	3	96.5	99.0	99.8	ns	98.5	2.5	3.3	2.0	0.0021	0.01	0.001	0.5	0.6
+Ex.Survival 3.7	R4 portfolio	untouched		low	6	3	96.4	98.9	99.5	sg	98.7	2.5	3.1	2.2	0.0021	0.016	0.005	3.0	1.1
+hapiel.Spiral 0.1	R4 portfolio	untouched		low	6	6	95.6	98.1	98.5	ns	97.1	2.5	2.9	1.5	0.0021	0.045	0.02	3.9	2.1
+omens.CannonfodderMicro 1.4	R4 portfolio	untouched		low	6	5	96.0	98.5	98.8	sr	97.5	2.5	2.8	1.5	0.0021	0.014	0.034	1.9	5.2
+vft.Hrist 1.0	R4 portfolio	untouched		low	6	3	91.2	93.7	93.9	jh	93.3	2.5	2.7	2.1	0.0021	0.046	0.027	10.7	6.9
+repositorio.NanoStep 1.0	R4 portfolio	untouched		low	6	3	97.1	99.6	99.7	sr	99.3	2.5	2.6	2.2	0.0021	0.008	0.003	0.8	0.5
+tkt.RedShift 1.1.CS.0	R3 keys	untouched		mid	5	2	97.3	99.8	99.9	ns	99.2	2.5	2.6	1.9	0.0021	0.094	0.001	7.9	0.3
+jcs.Seth 1.8	R4 portfolio	untouched		low	6	3	97.0	99.5	99.5	bb	98.7	2.5	2.5	1.7	0.0021	0.034	0.006	1.8	0.6
+EH.nano.NightBird M	R4 portfolio	untouched		low	6	1	97.2	99.7	99.7	bb	99.2	2.5	2.5	2.0	0.0021	0.006	0.003	1.1	0.6
+wilson.Chameleon 0.91	R4 portfolio	shield	aims	low	3	3	94.1	96.5	98.8	sg	90.9	2.4	4.7	-3.2	0.002	0.04	0.001	15.3	0.9
+elloco.Kabuto 0.2r	R3 keys	surfkey	surfKeys	mid	6	2	90.1	92.5	94.6	jh	92.5	2.4	4.5	2.5	0.002	0.061	0.066	11.6	14.9
+ar.TheoryOfEverything 1.2.1	R4 portfolio	lever	stopGoShifts	low	5	3	93.0	95.4	97.0	ns	90.2	2.4	4.0	-2.8	0.002	0.046	0.019	13.1	5.9
+lj.Dapps 0.2	R3 keys	untouched		mid	4	5	86.1	88.5	89.3	ns	86.5	2.4	3.2	0.5	0.002	0.073	0.055	23.2	17.1
+gg.Squaraus 0.6	R4 portfolio	untouched		low	6	1	95.9	98.3	98.9	jh	98.5	2.4	3.0	2.6	0.002	0.037	0.02	4.4	2.1
+step.NanoBidu 1.0	R4 portfolio	untouched		low	5	3	96.9	99.3	99.9	jh	96.8	2.4	3.0	-0.1	0.002	0.02	0.001	4.9	0.9
+evd.X1 0.01	R4 portfolio	untouched		low	6	4	96.9	99.3	99.8	sr	98.7	2.4	2.9	1.8	0.002	0.02	0.002	3.2	0.5
+mld.Infinity 2.2	R3 keys	untouched		mid	6	1	96.5	98.9	99.3	ns	97.8	2.4	2.8	1.3	0.002	0.051	0.012	6.0	1.6
+el33t.EL33tGangstarr2 2.0	R4 portfolio	surfkey	surfKeys	low	6	2	94.5	96.9	97.2	sr	96.4	2.4	2.7	1.9	0.002	0.033	0.052	5.0	7.5
+boe.Minerva 0.80	R4 portfolio	surfkey	surfKeys	low	5	3	89.7	92.1	92.4	ns	91.8	2.4	2.7	2.0	0.002	0.049	0.058	9.5	13.0
+xiongan.Xiongan 1.1	R4 portfolio	untouched		low	6	5	97.0	99.4	99.5	ns	98.4	2.4	2.5	1.4	0.002	0.016	0.003	2.3	0.9
+Gecko.ultimateGeckoBot 1.0	R4 portfolio	untouched		low	6	1	97.2	99.6	99.7	ns	99.2	2.4	2.5	2.0	0.002	0.009	0.0	1.2	0.0
+jje.BagPuss 1.2	R4 portfolio	surfkey	surfKeys	low	6	3	97.0	99.4	99.4	bb	96.9	2.4	2.4	-0.1	0.002	0.022	0.002	2.6	0.9
+Krabb.krabby.Krabby 1.18b	R4 portfolio	shield	aims	low	4	2	96.3	98.7	98.7	bb	90.6	2.4	2.4	-5.7	0.002	0.001	0.001	0.9	0.5
+theo.real.Ahab 1.0	R4 portfolio	shield	aims,heatJits	low	3	4	97.4	99.8	99.8	bb	97.3	2.4	2.4	-0.1	0.002	0.008	0.016	3.9	7.0
+fullsail.LaxativeTeaTwo 1.0	R4 portfolio	surfkey	surfKeys	low	6	2	95.9	98.3	98.3	bb	96.5	2.4	2.4	0.6	0.002	0.044	0.001	7.8	0.2
+rdt.AgentSmith.AgentSmithRedux 0.02	R4 portfolio	untouched		low	4	1	97.1	99.5	99.5	bb	97.2	2.4	2.4	0.2	0.002	0.026	0.002	5.1	0.5
+drm.CobraBora 1.12	R3 keys	surfkey	surfKeys	mid	4	4	82.1	84.4	95.2	og	83.6	2.3	13.1	1.5	0.0019	0.074	0.049	24.9	15.4
+mnt.AHEB 0.6a	R4 portfolio	shield	aims,heatJits	low	4	5	93.7	96.0	100.0	jh	94.5	2.3	6.3	0.8	0.0019	0.022	0.002	8.9	1.2
+cf.OldMan.OldManXP 0.1	R3 keys	untouched		mid	5	4	87.8	90.1	93.0	sg	82.8	2.3	5.2	-5.0	0.0019	0.078	0.055	20.5	17.8
+whind.Wisdom 0.5.1	R4 portfolio	lever	stopGoShifts	low	5	4	84.1	86.4	89.3	ns	80.2	2.3	5.2	-3.8	0.0019	0.047	0.038	15.2	13.9
+hirataatsushi.Trinity 0.003	R2 chaser	untouched		close	6	4	95.6	97.9	98.9	dm	97.8	2.3	3.3	2.2	0.0019	0.107	0.066	6.8	4.1
+apollokidd.ApolloKidd 0.9	R3 keys	untouched		mid	6	3	96.3	98.6	99.1	dm	98.5	2.3	2.8	2.2	0.0019	0.087	0.027	11.6	2.7
+mld.LittleBlackBook 1.69e	R3 keys	untouched		mid	5	2	94.2	96.5	96.9	sg	95.8	2.3	2.7	1.6	0.0019	0.094	0.063	10.6	7.1
+cjk.Merkava 0.1.1	R4 portfolio	untouched		low	6	7	96.8	99.1	99.5	sr	98.7	2.3	2.7	1.9	0.0019	0.016	0.006	2.3	0.9
+penguin.Ivy 1.1r	R3 keys	surfkey	surfKeys	mid	4	1	87.6	89.9	90.3	ns	86.7	2.3	2.7	-0.9	0.0019	0.069	0.052	16.2	12.5
+bbo.TheRoof 1.4.3	R4 portfolio	untouched		low	6	1	95.2	97.5	97.9	ns	97.0	2.3	2.7	1.8	0.0019	0.04	0.035	6.2	5.0
+wcsv.Stampede2.Stampede2 1.1.0	R3 keys	surfkey	surfKeys	mid	3	2	82.0	84.3	84.3	bb	81.2	2.3	2.3	-0.8	0.0019	0.072	0.035	29.0	12.4
+kawam.kmBot9 1.0	R4 portfolio	surfkey	surfKeys	low	6	2	96.7	99.0	99.0	jh	98.0	2.3	2.3	1.3	0.0019	0.028	0.01	4.8	1.4
+lunchie.Lunchbox 0.93	R4 portfolio	untouched		low	6	1	94.1	96.4	96.4	bb	95.2	2.3	2.3	1.1	0.0019	0.041	0.035	5.1	5.6
+uccc.Scrapple 1.0	R4 portfolio	untouched		low	6	4	97.7	100.0	100.0	ds	100.0	2.3	2.3	2.3	0.0019	0.0	0.0	0.0	0.0
+nat.nano.OcnirpSNG 1.0b	R4 portfolio	shield	aims	low	4	1	97.1	99.4	99.4	bb	91.7	2.3	2.3	-5.4	0.0019	0.002	0.005	0.7	2.2
+amc.ROBv301 1.1	R3 keys	untouched		mid	6	4	97.4	99.7	99.7	bb	99.2	2.3	2.3	1.8	0.0019	0.064	0.01	6.3	0.9
+rz.GlowBlowMelee 1.4	R4 portfolio	shield	stills	low	4	1	87.0	89.2	92.5	og	89.0	2.2	5.5	2.0	0.0018	0.03	0.014	14.1	7.3
+pez.gloom.GloomyDark 0.9.2	R4 portfolio	shield	aims	low	4	4	94.7	96.9	99.7	og	97.8	2.2	5.0	3.1	0.0018	0.003	0.0	2.3	0.0
+m3thos.mini.Eva01 0.5.5	R3 keys	surfkey	surfKeys	mid	6	3	95.2	97.4	99.3	sg	97.2	2.2	4.1	2.0	0.0018	0.071	0.001	10.5	0.3
+cw.megas.Polar 3.2	R3 keys	untouched		mid	5	2	84.2	86.4	88.0	ns	80.7	2.2	3.8	-3.5	0.0018	0.08	0.061	22.9	18.0
+nexus.Prototype 1.0	R4 portfolio	untouched		low	6	4	94.5	96.7	97.8	sr	96.8	2.2	3.3	2.3	0.0018	0.032	0.024	4.5	3.3
+genprog.Rinmorikazu 1.0	R4 portfolio	untouched		low	6	1	96.0	98.2	99.2	jh	98.3	2.2	3.2	2.3	0.0018	0.04	0.014	6.5	2.6
+maribo.Omicron 1.0	R4 portfolio	untouched		low	5	2	97.1	99.3	99.9	og	99.2	2.2	2.8	2.2	0.0018	0.025	0.001	4.7	0.5
+jeremyreeder.Bully 1	R3 keys	untouched		mid	6	2	96.7	98.9	99.5	sr	98.2	2.2	2.8	1.5	0.0018	0.058	0.015	4.8	1.4
+bbo.RamboT 0.3	R3 keys	untouched		mid	6	1	97.3	99.5	99.9	jh	99.5	2.2	2.6	2.2	0.0018	0.058	0.022	3.0	0.7
+matt.BlueMind 0.8.00	R4 portfolio	untouched		low	6	5	97.0	99.2	99.5	jh	98.8	2.2	2.5	1.8	0.0018	0.025	0.005	3.8	1.1
+robar.nano.Pugio 1.49	R4 portfolio	shield	aims	low	4	4	92.0	94.2	94.2	bb	89.0	2.2	2.2	-3.0	0.0018	0.008	0.006	3.7	3.0
+amk.ShizzleStiX.ShizzleStiX 0.6	R4 portfolio	untouched		low	6	4	96.6	98.8	98.9	ns	96.0	2.2	2.3	-0.6	0.0018	0.023	0.01	6.0	2.7
+dft.Calliope 5.6	R3 keys	untouched		mid	5	2	94.7	96.9	96.9	bb	95.1	2.2	2.2	0.4	0.0018	0.074	0.033	9.2	4.4
+sanyi.mikrobi.Roberto 1.0	R3 keys	untouched		mid	6	5	95.8	98.0	98.0	bb	97.6	2.2	2.2	1.8	0.0018	0.078	0.059	6.0	3.1
+rdt199.Warlord 0.73	R4 portfolio	shield	stills	low	5	4	96.5	98.7	98.7	bb	94.4	2.2	2.2	-2.1	0.0018	0.035	0.005	0.9	2.8
+amarok.Rookie 1.1	R4 portfolio	surfkey	surfKeys	low	5	1	94.1	96.2	98.2	sg	96.1	2.1	4.1	2.0	0.0018	0.048	0.022	11.0	5.5
+marksteam.Phoenix 1.0	R4 portfolio	lever	stopGoShifts	low	6	3	96.4	98.5	99.1	ns	96.3	2.1	2.7	-0.1	0.0018	0.032	0.009	5.1	0.5
+zch.Hirkan 0.11	R4 portfolio	untouched		-		2	97.3	99.4	99.7	sr	99.2	2.1	2.4	2.0	0.0018				
+nz.jdc.micro.HedgehogGF 1.5	R4 portfolio	shield		low	3	4	96.6	98.7	98.7	bb	90.7	2.1	2.1	-5.9	0.0018	0.046	0.002	2.3	1.4
+drm.Magazine 0.39	R4 portfolio	surfkey	surfKeys	low	4	5	83.4	85.5	85.5	bb	79.7	2.1	2.1	-3.8	0.0018	0.049	0.039	18.3	15.6
+robin.SCALPBot 1.0	R4 portfolio	surfkey	surfKeys	low	6	2	94.7	96.7	98.5	sr	97.1	2.0	3.8	2.4	0.0017	0.024	0.021	3.0	3.7
+jaemcrb.nano.M1Abrams 1.0	R4 portfolio	untouched		low	6	5	95.9	97.9	98.7	sr	97.2	2.0	2.8	1.3	0.0017	0.046	0.011	8.4	1.7
+racso.Frog 0.9	R4 portfolio	shield	aims	low	6	4	97.2	99.2	99.9	og	97.3	2.0	2.7	0.1	0.0017	0.001	0.001	0.5	0.5
+kawigi.sbf.FloodMini 1.4	R4 portfolio	shield	aims	low	4	1	96.9	98.9	99.2	og	96.8	2.0	2.3	-0.1	0.0017	0.047	0.001	0.9	0.9
+amc.ROBv400 1.0	R4 portfolio	untouched		low	6	2	97.6	99.6	99.8	sr	99.1	2.0	2.2	1.5	0.0017	0.03	0.0	2.7	0.0
+dsx724.VSAB_EP3_ATR 1.1	R3 keys	surfkey	surfKeys	mid	5	1	97.8	99.8	99.8	bb	98.9	2.0	2.0	1.1	0.0017	0.053	0.004	4.2	0.2
+testantiswapgun.AntiSwap 1.0	R4 portfolio	untouched		low	6	3	97.2	99.2	99.2	sr	98.9	2.0	2.0	1.7	0.0017	0.022	0.012	1.8	1.1
+tobe.mini.Charon 0.9	R4 portfolio	untouched		low	6	4	97.8	99.8	99.8	bb	99.0	2.0	2.0	1.2	0.0017	0.004	0.003	0.9	0.9
+non.mega.NoName 0.0	R3 keys	untouched		mid	5	1	86.1	88.1	88.1	bb	86.6	2.0	2.0	0.5	0.0017	0.064	0.045	19.5	13.1
+ajs.Solveit 1.3	R3 keys	untouched		mid	5	2	91.8	93.7	96.5	jh	93.7	1.9	4.7	1.9	0.0016	0.089	0.063	12.9	10.5
+dft.Cyprus 3.0	R4 portfolio	shield	aims,exitOffs,stills	low	4	3	95.7	97.6	100.0	og	91.4	1.9	4.3	-4.3	0.0016	0.003	0.04	1.8	14.0
+wiki.mini.GouldingiHT 1.0	R4 portfolio	untouched		low	5	1	96.0	97.9	99.7	sr	98.0	1.9	3.7	2.0	0.0016	0.01	0.005	2.8	1.9
+tobe.Relativity 3.9	R4 portfolio	untouched		low	5	2	92.8	94.7	95.9	sr	94.3	1.9	3.1	1.5	0.0016	0.047	0.047	12.8	10.2
+winamp32.micro.MicroMacro 1.0	R3 keys	untouched		mid	6	3	96.8	98.7	99.5	sg	98.7	1.9	2.7	1.9	0.0016	0.051	0.0	4.6	0.5
+oog.mini.AlphaDragon 0.1	R4 portfolio	shield	aims	low	3	2	97.5	99.4	100.0	jh	98.9	1.9	2.5	1.4	0.0016	0.03	0.002	1.1	0.6
+bumblebee.Bumblebee 1.0	R3 keys	untouched		mid	6	2	92.9	94.8	95.3	ns	91.8	1.9	2.4	-1.1	0.0016	0.06	0.042	9.8	9.1
+mrm.MightyMoose .2	R4 portfolio	untouched		low	6	3	97.8	99.7	100.0	ns	99.1	1.9	2.2	1.3	0.0016	0.016	0.001	3.2	0.5
+sgp.MadHatter 4.13	R3 keys	untouched		mid	5	3	96.4	98.3	98.6	ns	96.2	1.9	2.2	-0.2	0.0016	0.056	0.014	6.4	1.6
+geep.mini.GPBotA 1.0	R4 portfolio	untouched		low	6	4	97.8	99.7	100.0	sr	99.6	1.9	2.2	1.8	0.0016	0.011	0.0	2.2	0.0
+mb.Beast 0.4.1	R4 portfolio	untouched		low	5	4	97.6	99.5	99.7	sg	98.7	1.9	2.1	1.1	0.0016	0.021	0.005	3.4	0.7
+jp.Perpy 16.0	R3 keys	untouched		mid	5	1	86.1	88.0	88.0	ns	86.2	1.9	1.9	0.1	0.0016	0.081	0.057	17.2	11.1
+mbro.Detektor3 0.1.1	R3 keys	untouched		mid	6	1	98.0	99.9	99.9	jh	99.7	1.9	1.9	1.7	0.0016	0.052	0.008	9.2	0.5
+pi.Dark 10	R3 keys	untouched		mid	5	4	82.8	84.6	90.6	sg	83.2	1.8	7.8	0.4	0.0015	0.068	0.056	24.1	21.5
+ua.kiiv.kosyak.robocode.tn1.Tn1 2.0	R4 portfolio	untouched		low	6	2	95.9	97.7	98.7	sg	97.2	1.8	2.8	1.3	0.0015	0.041	0.01	8.6	2.3
+suh.nano.AngularMirrorC 1.00	R4 portfolio	lever	fullOffs	low	6	4	96.7	98.5	99.2	sr	97.9	1.8	2.5	1.2	0.0015	0.024	0.0	5.1	0.0
+stelo.Chord 1.0	R4 portfolio	shield	moves,aims	low	3	3	94.3	96.1	96.7	ds	96.2	1.8	2.4	2.0	0.0015	0.001	0.03	0.5	3.0
+labg.Cataclysm 2.05	R3 keys	untouched		mid	5	3	90.2	92.0	92.5	ns	88.8	1.8	2.3	-1.5	0.0015	0.063	0.054	11.1	12.6
+ratosh.Wesco 1.4	R4 portfolio	untouched		low	6	2	97.5	99.3	99.5	sr	98.9	1.8	2.0	1.4	0.0015	0.011	0.004	1.4	1.2
+acid.Syzygy 1.0.4	R4 portfolio	untouched		low	6	3	97.8	99.6	99.8	sr	99.5	1.8	2.0	1.7	0.0015	0.034	0.002	3.0	0.2
+timmit.nano.TimCat 0.13	R4 portfolio	untouched		low	6	2	97.8	99.6	99.7	sr	99.3	1.8	1.9	1.5	0.0015	0.001	0.002	0.5	0.5
+bayen.nano.Squirrel 0.2	R4 portfolio	surfkey	surfKeys	low	5	3	90.4	92.2	92.2	bb	89.8	1.8	1.8	-0.6	0.0015	0.037	0.036	9.6	10.1
+djdjdj.NanoSkunk10 1.0	R4 portfolio	lever	mimicOns,surfKeys	low	6	3	97.8	99.6	99.6	bb	99.3	1.8	1.8	1.5	0.0015	0.015	0.001	1.5	0.1
+dft.Cyanide 1.90	R4 portfolio	shield	aims	low	3	3	98.2	100.0	100.0	bb	99.2	1.8	1.8	1.0	0.0015	0.008	0.0	0.2	0.0
+nz.jdc.nano.PatternAdept 1.0	R4 portfolio	shield	aims	low	4	4	95.1	96.9	96.9	bb	91.9	1.8	1.8	-3.2	0.0015	0.001	0.002	0.4	1.1
+csm.NthGeneration 0.04	R4 portfolio	untouched		low	5	4	98.2	100.0	100.0	bb	98.8	1.8	1.8	0.6	0.0015	0.026	0.001	4.2	0.5
+amk.ChumbaMini 0.2	R4 portfolio	shield	moves,aims,mimicOns	low	5	3	87.6	89.3	92.7	sg	88.9	1.7	5.1	1.3	0.0014	0.006	0.047	3.2	14.8
+tvv.nano.Polaris 1.2	R3 keys	untouched		mid	6	4	96.1	97.8	98.8	sr	97.8	1.7	2.7	1.8	0.0014	0.073	0.058	6.1	3.8
+dcs.Eater_of_Worlds_Mini 1.0	R4 portfolio	untouched		low	6	3	97.5	99.2	99.9	sr	99.2	1.7	2.4	1.7	0.0014	0.016	0.0	3.2	0.0
+ruc.nano.Zealot 0.2	R4 portfolio	untouched		low	6	3	96.2	97.9	98.5	ns	97.7	1.7	2.3	1.5	0.0014	0.046	0.029	8.1	6.0
+zch.David 0.21	R3 keys	untouched		mid	6	4	97.5	99.2	99.7	sr	99.2	1.7	2.2	1.7	0.0014	0.055	0.063	3.3	2.3
+rdm.Grasshopper 0.5e	R4 portfolio	untouched		low	5	2	96.1	97.8	98.3	ns	96.7	1.7	2.2	0.6	0.0014	0.029	0.018	7.5	4.1
+doka.ShinigamiKNN 1.0	R4 portfolio	untouched		low	5	1	97.1	98.8	99.1	ds	98.2	1.7	2.0	1.2	0.0014	0.025	0.004	5.5	0.9
+jdw.Hornet 1.0	R4 portfolio	untouched		low	6	5	98.0	99.7	99.8	sr	98.9	1.7	1.8	0.9	0.0014	0.008	0.004	1.6	0.9
+bayen.UbaMicro 1.4	R4 portfolio	untouched		low	6	3	97.7	99.4	99.4	bb	98.5	1.7	1.7	0.8	0.0014	0.031	0.001	5.5	0.5
+patson.PatsonTestBot 1.0	R3 keys	surfkey	surfKeys	mid	6	4	95.0	96.7	96.8	ns	95.7	1.7	1.8	0.7	0.0014	0.064	0.03	11.1	5.6
+yarhoslav.YaroBot 1.2	R4 portfolio	untouched		low	6	3	96.5	98.2	98.2	bb	97.1	1.7	1.7	0.6	0.0014	0.019	0.006	3.7	1.1
+dy.LevelOne 2.0	R4 portfolio	untouched		low	5	3	98.1	99.8	99.8	bb	98.2	1.7	1.7	0.2	0.0014	0.014	0.005	1.7	0.5
+mladjo.iRobot 0.3	R4 portfolio	lever	stopGoShifts	low	3	4	93.5	95.1	98.1	og	95.1	1.6	4.6	1.6	0.0013	0.041	0.064	7.9	6.6
+sheldor.nano.PointInLine 1.0	R4 portfolio	shield	aims,exitOffs,stills	low	5	4	95.9	97.5	99.2	og	92.2	1.6	3.3	-3.8	0.0013	0.0	0.001	0.0	0.5
+pb.Oscillator 1.0	R4 portfolio	untouched		low	6	4	96.6	98.2	99.4	sr	98.3	1.6	2.8	1.8	0.0013	0.044	0.029	3.9	3.0
+wiki.mini.BlackDestroyer 0.9.0	R4 portfolio	shield	aims	low	4	4	96.8	98.4	99.5	og	96.3	1.6	2.7	-0.5	0.0013	0.02	0.002	1.3	0.6
+pez.mini2.Pugilist 2.5.15	R4 portfolio	lever	stopGoShifts	low	3	3	88.2	89.8	90.6	ns	79.2	1.6	2.4	-9.0	0.0013	0.023	0.057	6.5	15.0
+kawigi.sbf.Barracuda 1.0	R4 portfolio	untouched		low	5	3	98.1	99.7	100.0	jh	99.7	1.6	1.9	1.6	0.0013	0.002	0.004	0.5	1.2
+oog.micro.SavantMicro 1.1	R3 keys	shield	aims	mid	4	1	96.6	98.2	98.2	bb	95.8	1.6	1.6	-0.8	0.0013	0.083	0.0	2.6	0.4
+ep.MyFirstRobot 1.0	R2 chaser	untouched		close	6	2	98.4	100.0	100.0	jh	99.8	1.6	1.6	1.4	0.0013	0.118	0.0	3.3	0.0
+casey.Flee 1.0	R4 portfolio	shield	aims	low	5	3	96.7	98.3	98.3	bb	93.1	1.6	1.6	-3.6	0.0013	0.008	0.005	4.5	2.6
+sul.Pinkbot 1.1	R4 portfolio	untouched		low	6	2	98.3	99.9	99.9	bb	98.5	1.6	1.6	0.2	0.0013	0.014	0.002	2.7	0.5
+jgap.JGAP6139 1.0	R4 portfolio	surfkey	surfKeys	low	6	5	89.7	91.2	93.4	jh	91.3	1.5	3.7	1.6	0.0013	0.043	0.037	10.5	9.9
+supersample.SuperTracker 1.0	R3 keys	untouched		mid	6	3	96.6	98.1	99.9	ds	98.2	1.5	3.3	1.7	0.0013	0.053	0.014	8.6	2.7
+povik.nano.Smilee 0.2.1	R3 keys	surfkey	surfKeys	mid	6	3	88.2	89.7	90.7	sr	89.3	1.5	2.5	1.1	0.0013	0.073	0.036	17.5	7.9
+uccc.Dorito 1.12	R4 portfolio	untouched		low	6	1	97.5	99.0	99.6	jh	99.1	1.5	2.1	1.6	0.0013	0.047	0.038	4.5	1.9
+trab.nano.AinippeNano 1.3	R4 portfolio	shield	aims	low	5	5	96.9	98.4	98.9	ns	92.8	1.5	2.0	-4.2	0.0013	0.032	0.002	0.8	1.1
+pfvicm.Sobieski 7.2.3b	R4 portfolio	untouched		low	5	3	98.1	99.6	100.0	og	98.9	1.5	1.9	0.8	0.0013	0.017	0.0	2.9	0.0
+robar.nano.Prestige 1.0	R4 portfolio	shield	aims	low	5	2	96.7	98.2	98.4	ns	95.5	1.5	1.7	-1.2	0.0013	0.007	0.004	2.6	1.9
+dummy.micro.Sparrow 2.5	R4 portfolio	shield	aims	low	5	4	98.3	99.8	100.0	ds	98.8	1.5	1.7	0.5	0.0013	0.028	0.0	0.5	0.0
+slugzilla.RandomLinear 1.0	R4 portfolio	untouched		low	5	5	98.5	100.0	100.0	bb	99.5	1.5	1.5	1.0	0.0013	0.007	0.0	1.5	0.0
+pac.ABC 2.1	R4 portfolio	untouched		low	6	3	98.4	99.9	99.9	ns	99.5	1.5	1.5	1.1	0.0013	0.024	0.0	0.4	0.0
+dukie.Ambassador 1.0	R4 portfolio	untouched		low	6	2	97.8	99.3	99.3	bb	98.2	1.5	1.5	0.5	0.0013	0.037	0.004	5.6	0.5
+disan.Chair 2.2.0	R4 portfolio	untouched		low	6	4	98.2	99.7	99.7	bb	98.9	1.5	1.5	0.7	0.0013	0.022	0.018	2.8	1.6
+jt.SpearmintCT Alpha	R3 keys	untouched		mid	6	6	97.3	98.8	98.8	bb	98.0	1.5	1.5	0.7	0.0013	0.058	0.015	8.7	2.3
+rz.GlowBlowAPM 1.0	R4 portfolio	shield	aims,exitOffs,stills	low	4	2	96.0	97.4	99.2	ds	93.1	1.4	3.2	-2.9	0.0012	0.003	0.01	1.9	6.4
+robin.ScalpBotC 1.0	R4 portfolio	untouched		low	6	3	96.2	97.6	98.9	jh	97.6	1.4	2.7	1.4	0.0012	0.034	0.034	4.3	3.3
+matt.advanced.Katana 1.0	R3 keys	untouched		mid	6	5	94.6	96.0	97.0	jh	95.1	1.4	2.4	0.5	0.0012	0.077	0.047	9.1	7.6
+nz.jdc.micro.HedgehogP 1.2	R4 portfolio	shield	moves,aims,flatOns	low	4	1	90.4	91.8	92.6	ns	88.8	1.4	2.2	-1.6	0.0012	0.021	0.059	9.0	16.6
+jep.Terrible 0.4.1	R4 portfolio	untouched		low	6	1	97.3	98.7	99.3	sr	98.4	1.4	2.0	1.1	0.0012	0.015	0.007	3.6	2.3
+kc.micro.Thorn 1.252	R4 portfolio	shield		low	3	5	96.6	98.0	98.6	jh	93.3	1.4	2.0	-3.3	0.0012	0.003	0.002	1.4	0.9
+velas.Alpha 1.0	R3 keys	untouched		mid	6	6	97.2	98.6	99.3	sr	99.2	1.4	2.1	2.0	0.0012	0.058	0.018	7.0	1.8
+mb.Monte 0.1.0	R3 keys	lever	stopGoShifts	mid	5	2	94.3	95.7	96.3	og	93.8	1.4	2.0	-0.5	0.0012	0.073	0.03	15.6	10.1
+PSW.Relentless 0.1	R2 chaser	untouched		close	6	6	97.9	99.3	99.9	sr	99.2	1.4	2.0	1.3	0.0012	0.154	0.039	3.1	1.4
+amk.jointstrike.JointStrike 0.2	R4 portfolio	untouched		low	6	4	97.2	98.6	98.9	ns	96.8	1.4	1.7	-0.4	0.0012	0.037	0.022	3.4	1.6
+rus.vv.Dzhigit 1.1	R4 portfolio	untouched		low	6	3	98.2	99.6	99.9	sr	99.4	1.4	1.7	1.2	0.0012	0.011	0.0	1.5	0.0
+mc2.enemy.Original 0.9	R3 keys	surfkey	surfKeys	mid	5	1	96.4	97.8	98.1	ds	97.7	1.4	1.7	1.2	0.0012	0.072	0.047	6.2	3.8
+ndn.DyslexicMonkey 1.1	R4 portfolio	untouched		low	6	1	97.1	98.5	98.8	ns	97.7	1.4	1.7	0.6	0.0012	0.014	0.006	2.2	1.2
+kms.Royal 0.15M	R2 chaser	untouched		close	6	1	94.2	95.6	95.9	sr	94.8	1.4	1.7	0.5	0.0012	0.116	0.082	14.2	8.3
+conscience.Idem 1.0a	R4 portfolio	untouched		low	6	2	98.2	99.6	99.8	sr	99.2	1.4	1.6	1.0	0.0012	0.014	0.001	1.3	0.4
+oog.nano.SavantVS 1.1	R4 portfolio	untouched		low	5	6	97.9	99.3	99.4	ns	98.8	1.4	1.5	0.8	0.0012	0.015	0.003	3.6	0.7
+blr.Chicken001 0.1	R3 keys	untouched		mid	6	5	98.3	99.7	99.8	sr	99.5	1.4	1.5	1.2	0.0012	0.085	0.034	2.2	0.7
+WidowMakersAtWar.EpicCow 1.0	R4 portfolio	untouched		low	6	3	98.4	99.8	99.9	sr	99.6	1.4	1.5	1.2	0.0012	0.02	0.0	3.2	0.0
+hvilela.HVilela 0.9	R4 portfolio	untouched		low	6	5	98.4	99.8	99.8	bb	98.8	1.4	1.4	0.3	0.0012	0.028	0.0	5.1	0.0
+sng.arco.Arco 0.0	R4 portfolio	untouched		low	6	3	98.5	99.9	99.9	bb	99.8	1.4	1.4	1.3	0.0012	0.022	0.004	2.8	0.9
+gg.Wolverine 2.0	R4 portfolio	lever	stopGos	low	6	8	98.2	99.6	99.6	bb	97.7	1.4	1.4	-0.5	0.0012	0.013	0.001	2.3	0.5
+serenity.serenityFire 1.29	R4 portfolio	lever	stopGoShifts	low	5	2	95.7	97.1	97.1	bb	95.5	1.4	1.4	-0.2	0.0012	0.04	0.016	8.9	3.5
+jeremyreeder.Vincent 2011.12.09	R3 keys	untouched		mid	6	2	98.4	99.8	99.8	bb	98.7	1.4	1.4	0.3	0.0012	0.05	0.0	6.9	0.0
+bvh.fnr.Fenrir 0.36l	R4 portfolio	shield	aims,stills	low	4	3	91.6	92.9	97.2	ns	84.7	1.3	5.6	-6.9	0.0011	0.006	0.006	4.0	3.7
+divineomega.PatrollerBot 1.0	R3 keys	untouched		mid	6	3	92.6	93.9	98.1	jh	94.1	1.3	5.5	1.5	0.0011	0.068	0.054	13.5	5.6
+yk.JahMicro 1.0	R3 keys	surfkey	surfKeys	mid	6	2	94.5	95.8	98.8	sg	96.0	1.3	4.3	1.5	0.0011	0.063	0.04	9.1	4.5
+deo.CloudBot 1.3	R4 portfolio	lever	stopGoShifts	low	3	4	94.7	96.0	97.4	og	95.4	1.3	2.7	0.7	0.0011	0.029	0.095	6.0	9.7
+supersample.SuperTrackFire 1.0	R4 portfolio	untouched		low	6	3	95.8	97.1	98.4	ns	96.8	1.3	2.6	1.0	0.0011	0.018	0.021	4.5	5.1
+bvh.micro.Freya 0.3	R4 portfolio	untouched		low	6	3	96.0	97.3	98.5	sg	96.5	1.3	2.5	0.5	0.0011	0.022	0.008	5.1	2.0
+kawigi.spare.SpareParts 0.7.6nosnd	R4 portfolio	untouched		low	6	4	94.1	95.4	96.3	sg	95.8	1.3	2.2	1.7	0.0011	0.04	0.012	5.6	3.2
+Heal.TekitokaBot 1.0	R4 portfolio	untouched		low	6	4	97.6	98.9	99.6	jh	98.8	1.3	2.0	1.2	0.0011	0.021	0.007	3.2	1.1
+gjr.Cephalosporin 0.2	R3 keys	untouched		mid	6	4	96.6	97.9	98.6	og	97.1	1.3	2.0	0.5	0.0011	0.087	0.032	7.0	2.8
+oog.melee.Mercutio 1.0	R4 portfolio	untouched		low	5	2	96.7	98.0	98.3	sr	97.8	1.3	1.6	1.1	0.0011	0.028	0.031	2.8	2.9
+pa.Improved 1.1	R4 portfolio	untouched		low	6	4	98.5	99.8	99.9	sr	99.7	1.3	1.4	1.2	0.0011	0.018	0.002	1.7	0.3
+jp.SineWall 1.0	R3 keys	untouched		mid	6	3	97.4	98.7	98.8	sr	98.4	1.3	1.4	1.0	0.0011	0.06	0.029	2.8	1.7
+sanja.First 0.1	R4 portfolio	untouched		low	6	1	98.3	99.6	99.7	jh	99.4	1.3	1.4	1.1	0.0011	0.021	0.017	1.7	2.7
+mdouet.BotKicker 2.0	R4 portfolio	untouched		low	6	2	95.2	96.5	96.5	bb	95.8	1.3	1.3	0.5	0.0011	0.025	0.016	4.6	3.9
+slugzilla.RandomPattern 1.0	R4 portfolio	shield	aims	low	4	3	98.6	99.9	99.9	ns	98.7	1.3	1.3	0.1	0.0011	0.0	0.001	0.0	0.3
+acogdev.alpha 0.2	R4 portfolio	untouched		low	6	4	98.6	99.9	99.9	bb	99.7	1.3	1.3	1.1	0.0011	0.023	0.0	2.1	0.0
+dz.MostlyHarmlessNano 2.1	R4 portfolio	lever	stopGoShifts	low	5	3	96.3	97.6	97.6	bb	96.3	1.3	1.3	0.0	0.0011	0.029	0.014	5.2	2.9
+mld.DustBunny 3.8	R4 portfolio	untouched		low	6	6	98.4	99.7	99.7	bb	99.1	1.3	1.3	0.7	0.0011	0.01	0.001	1.7	0.2
+ntc.Swim 0.9	R3 keys	untouched		mid	6	2	89.5	90.7	93.7	jh	90.8	1.2	4.2	1.2	0.001	0.072	0.051	13.4	11.2
+erdnis.Rover 0.3	R4 portfolio	surfkey	surfKeys	low	5	5	89.0	90.2	92.7	sr	91.0	1.2	3.7	2.0	0.001	0.044	0.039	13.0	11.6
+pulsar.Nanis 0.3	R3 keys	untouched		mid	5	1	96.6	97.8	99.4	sg	96.5	1.2	2.8	-0.0	0.001	0.081	0.027	9.3	3.6
+rnatest.MendelBot 1.0	R4 portfolio	untouched		low	6	2	95.4	96.6	97.9	sr	97.4	1.2	2.5	2.0	0.001	0.042	0.012	5.9	1.5
+dmh.robocode.robot.BlackDeath 9.2	R4 portfolio	shield	aims	low	4	3	97.5	98.7	99.7	og	97.3	1.2	2.2	-0.2	0.001	0.002	0.003	1.8	1.8
+rdm.WallRider 0.5c	R3 keys	untouched		mid	6	1	94.8	96.0	96.9	sr	96.1	1.2	2.1	1.3	0.001	0.064	0.033	10.1	6.9
+mbh.Mbh 0.1	R4 portfolio	surfkey	surfKeys	low	6	1	97.9	99.1	99.7	sr	98.8	1.2	1.8	0.9	0.001	0.04	0.042	2.7	2.5
+mld.jdc.nano.LittleBlackBook 1.0	R3 keys	untouched		mid	5	4	95.3	96.5	97.0	sg	96.0	1.2	1.7	0.7	0.001	0.077	0.059	8.6	6.7
+ejbots.AngryGrandpappy 1.2	R4 portfolio	shield		low	6	4	98.3	99.5	99.8	ns	99.0	1.2	1.5	0.7	0.001	0.001	0.0	0.5	0.0
+hlavko.nano.Phoenix 1.0	R4 portfolio	untouched		low	6	4	98.6	99.8	99.9	sr	99.7	1.2	1.3	1.1	0.001	0.034	0.004	5.8	0.9
+exauge.LemonDrop 1.6.130	R4 portfolio	shield	aims	low	4	6	96.7	97.9	97.9	bb	96.7	1.2	1.2	-0.0	0.001	0.004	0.002	1.0	1.4
+TCMI.nano.Copper 0.2	R4 portfolio	untouched		low	6	2	98.4	99.6	99.6	bb	98.7	1.2	1.2	0.2	0.001	0.01	0.003	1.9	0.6
+robar.nano.Breeze 0.3	R4 portfolio	untouched		low	5	6	90.0	91.2	91.2	bb	89.8	1.2	1.2	-0.2	0.001	0.038	0.034	7.8	9.0
+scheronimus.NanoScheroBot 1.0	R4 portfolio	untouched		low	6	2	98.7	99.9	99.9	bb	98.7	1.2	1.2	-0.0	0.001	0.01	0.0	1.8	0.0
+awesomeness.Elite 1.0	R4 portfolio	untouched		low	5	3	98.4	99.6	99.6	bb	98.9	1.2	1.2	0.5	0.001	0.006	0.001	1.4	0.3
+satan.White 0.26	R4 portfolio	shield	moves,aims	low	5	3	93.1	94.2	98.0	og	92.8	1.1	4.9	-0.2	0.0009	0.016	0.045	0.4	10.3
+NG.LegatusLegionis 1.2	R4 portfolio	untouched		low	6	3	96.0	97.1	98.5	sr	96.8	1.1	2.5	0.8	0.0009	0.038	0.035	5.0	6.3
+sul.NanoR2 1.32	R4 portfolio	untouched		low	6	3	97.1	98.2	99.4	sr	98.1	1.1	2.3	1.0	0.0009	0.017	0.0	4.4	0.0
+reeder.colin.WallGuy3 1.0	R4 portfolio	untouched		low	6	3	96.8	97.9	98.7	jh	97.8	1.1	1.9	1.0	0.0009	0.025	0.018	2.9	2.3
+zzx.Gron 1.14	R4 portfolio	untouched		low	6	2	98.1	99.2	99.6	sr	99.0	1.1	1.5	0.9	0.0009	0.033	0.007	7.4	1.8
+supersample.SuperCorners 1.0	R3 keys	untouched		mid	6	1	95.5	96.6	97.0	sr	96.3	1.1	1.5	0.8	0.0009	0.061	0.023	8.0	3.8
+pez.nano.LittleEvilBrother 0.1	R4 portfolio	untouched		low	6	3	98.5	99.6	99.9	sr	99.1	1.1	1.4	0.6	0.0009	0.012	0.0	2.1	0.0
+md.November 1.0	R4 portfolio	lever	stopGos	low	6	2	91.8	92.9	93.2	sg	90.9	1.1	1.4	-0.9	0.0009	0.046	0.035	10.7	12.3
+ratosh.Nobo 0.21	R4 portfolio	untouched		low	5	3	97.4	98.5	98.7	sg	97.8	1.1	1.3	0.4	0.0009	0.008	0.011	0.5	2.8
+mz.NanoGod 2.02	R4 portfolio	untouched		low	5	5	98.5	99.6	99.7	ns	99.2	1.1	1.2	0.7	0.0009	0.012	0.0	1.2	0.0
+sigterm.Sigterm 1.0	R4 portfolio	untouched		low	6	4	93.7	94.8	95.0	ns	94.5	1.1	1.3	0.8	0.0009	0.047	0.033	9.5	6.8
+sample.RamFire 1.0	R2 chaser	untouched		close	6	3	98.8	99.9	100.0	sr	99.8	1.1	1.2	1.0	0.0009	0.812	0.0	5.3	0.0
+AD.CodaFirst 1.1	R4 portfolio	untouched		low	6	2	98.8	99.9	100.0	sr	99.7	1.1	1.2	0.9	0.0009	0.04	0.0	3.7	0.0
+PK.Twardy 0.4.2	R4 portfolio	untouched		low	6	5	98.6	99.7	99.8	sg	98.5	1.1	1.2	-0.1	0.0009	0.01	0.003	1.6	0.6
+ntc.Plains 0.9	R4 portfolio	untouched		low	6	3	98.7	99.8	99.9	sr	99.4	1.1	1.2	0.7	0.0009	0.005	0.003	0.7	0.7
+sam.Samspin 1.0	R4 portfolio	untouched		low	6	5	98.5	99.6	99.6	bb	99.1	1.1	1.1	0.6	0.0009	0.013	0.002	1.5	0.5
+slugzilla.OrbitGF 1.0	R4 portfolio	shield	aims	low	5	4	98.8	99.9	100.0	og	99.1	1.1	1.2	0.3	0.0009	0.0	0.0	0.0	0.0
+apv.MicroAspid 1.8	R4 portfolio	shield	aims	low	4	2	98.9	100.0	100.0	bb	93.9	1.1	1.1	-5.0	0.0009	0.003	0.001	1.4	0.5
+blir.micro.blixi.Blixi 1.2	R4 portfolio	untouched		low	6	5	98.6	99.7	99.8	ds	99.3	1.1	1.2	0.8	0.0009	0.026	0.002	3.3	0.0
+robar.nano.MosquitoPM 1.0	R4 portfolio	shield	aims	low	5	3	98.4	99.5	99.5	bb	94.2	1.1	1.1	-4.2	0.0009	0.001	0.001	0.0	0.7
+blir.mini.oops.Splooshlu 2.0	R4 portfolio	untouched		low	5	4	98.8	99.9	99.9	bb	99.1	1.1	1.1	0.3	0.0009	0.042	0.013	3.5	0.5
+bvh.loki.Loki 0.5	R4 portfolio	untouched		low	6	1	98.3	99.4	99.4	bb	98.4	1.1	1.1	0.1	0.0009	0.023	0.006	2.2	0.7
+japs.Serenity 1.0	R4 portfolio	untouched		low	6	2	98.9	100.0	100.0	sr	100.0	1.1	1.1	1.1	0.0009	0.0	0.0	0.0	0.0
+sp.AstherNano 1.0	R3 keys	untouched		mid	6	7	98.2	99.3	99.3	bb	98.8	1.1	1.1	0.6	0.0009	0.058	0.041	3.5	2.1
+ola.Puffin 1.0	R3 keys	untouched		mid	6	3	98.7	99.8	99.8	bb	99.1	1.1	1.1	0.4	0.0009	0.061	0.016	2.7	0.6
+steff.Rebel 2.1	R4 portfolio	lever	stopGos	low	5	4	95.7	96.7	99.2	og	96.2	1.0	3.5	0.5	0.0008	0.038	0.022	5.3	4.0
+yk.JahRoslav 1.1	R4 portfolio	surfkey	surfKeys	low	6	4	94.4	95.4	97.6	sg	96.2	1.0	3.2	1.8	0.0008	0.049	0.039	7.8	6.5
+axeBots.HataMoto 3.09	R3 keys	untouched		mid	5	3	88.9	89.9	91.9	ns	87.2	1.0	3.0	-1.7	0.0008	0.05	0.047	12.2	11.2
+robar.nano.Scytodes 0.3	R3 keys	untouched		mid	5	3	95.6	96.6	98.3	ns	95.7	1.0	2.7	0.1	0.0008	0.073	0.003	10.3	1.8
+matt.UnderDark4 0.4.00	R4 portfolio	untouched		low	6	3	97.9	98.9	99.6	jh	98.5	1.0	1.7	0.6	0.0008	0.023	0.02	1.9	2.3
+hlavko.nano.Ringo 2.0	R4 portfolio	untouched		low	6	2	98.3	99.3	99.8	sr	99.0	1.0	1.5	0.7	0.0008	0.018	0.008	2.8	1.8
+t3.Ripper 1.0	R4 portfolio	untouched		low	6	1	98.5	99.5	99.9	sg	99.0	1.0	1.4	0.5	0.0008	0.008	0.007	0.7	0.9
+apv.Aspid 1.7	R3 keys	surfkey	surfKeys	mid	4	1	79.0	80.0	80.2	ds	79.2	1.0	1.2	0.2	0.0008	0.071	0.053	24.5	17.5
+shu.nitro.LENIN .T34	R3 keys	surfkey	surfKeys	mid	5	3	92.5	93.5	93.5	og	92.5	1.0	1.0	0.0	0.0008	0.082	0.084	12.8	10.8
+rz.Aleph 0.34	R4 portfolio	shield	aims	low	3	4	98.9	99.9	99.9	bb	98.6	1.0	1.0	-0.3	0.0008	0.005	0.002	2.1	1.2
+goblin.Bender 2.4	R4 portfolio	untouched		low	6	2	98.8	99.8	99.8	jh	99.8	1.0	1.0	1.0	0.0008	0.029	0.002	3.6	0.1
+Legend.Biogon 1.5	R4 portfolio	untouched		low	5	5	98.6	99.6	99.6	bb	99.1	1.0	1.0	0.5	0.0008	0.008	0.009	1.2	1.5
+bvh.mini.Fenrir 0.39	R4 portfolio	shield	aims	low	5	6	96.9	97.9	97.9	bb	93.1	1.0	1.0	-3.8	0.0008	0.003	0.002	1.7	1.0
+tcf.Repat3 2	R4 portfolio	shield	aims	low	4	3	98.9	99.9	99.9	bb	97.2	1.0	1.0	-1.7	0.0008	0.0	0.0	0.0	0.5
+strider.Mer 1.1.0	R3 keys	untouched		mid	6	3	94.8	95.8	95.8	ns	95.2	1.0	1.0	0.4	0.0008	0.085	0.049	12.1	7.2
+geep.mini.GPBotB 1.1	R3 keys	untouched		mid	6	3	93.3	94.2	96.8	sg	94.2	0.9	3.5	1.0	0.0008	0.089	0.062	12.5	11.9
+nz.jdc.nano.NeophyteSRAL 1.3	R4 portfolio	untouched		low	5	2	96.6	97.5	99.5	ns	98.0	0.9	2.9	1.5	0.0008	0.01	0.006	1.2	3.9
+robar.nano.BlackWidow 1.3	R4 portfolio	shield	aims	low	4	3	96.8	97.7	98.7	ds	89.0	0.9	1.9	-7.8	0.0008	0.001	0.001	0.7	0.4
+discan.mini.Exode 0.25	R4 portfolio	untouched		low	6	2	97.9	98.8	99.7	sr	98.8	0.9	1.8	0.8	0.0008	0.012	0.008	2.3	2.2
+tlp.ThreeLeggedPig 1	R4 portfolio	untouched		low	6	2	97.3	98.2	98.9	sr	97.9	0.9	1.6	0.6	0.0008	0.047	0.042	4.8	2.3
+froh.micro.Aversari 0.31	R4 portfolio	untouched		low	6	2	98.2	99.1	99.7	jh	98.9	0.9	1.5	0.7	0.0008	0.019	0.004	3.6	0.7
+lechu.Lechu 1.1	R4 portfolio	untouched		low	6	2	97.7	98.6	98.9	sg	98.1	0.9	1.2	0.4	0.0008	0.031	0.026	3.0	3.6
+qualidafial.MajorDick 1.0.1	R3 keys	untouched		mid	6	2	98.8	99.7	100.0	jh	99.5	0.9	1.2	0.7	0.0008	0.051	0.038	2.3	1.4
+jaw.Mouse 0.11	R4 portfolio	untouched		low	6	3	98.2	99.1	99.4	sg	98.2	0.9	1.2	0.0	0.0008	0.021	0.016	3.7	2.3
+wit.Chuliath 1.0	R4 portfolio	untouched		low	6	3	98.5	99.4	99.6	sg	99.0	0.9	1.1	0.5	0.0008	0.007	0.003	1.2	0.5
+kinsen.nano.Hoplomachy 1.6	R4 portfolio	untouched		low	5	3	97.8	98.7	98.8	sr	98.3	0.9	1.0	0.5	0.0008	0.042	0.018	4.3	3.0
+cbot.agile.Nibbler 0.2	R4 portfolio	shield	aims	low	4	2	97.5	98.4	98.5	sg	87.3	0.9	1.0	-10.2	0.0008	0.0	0.002	0.0	1.4
+nexus.One 1.0	R4 portfolio	untouched		low	6	2	98.5	99.4	99.5	ns	99.1	0.9	1.0	0.6	0.0008	0.022	0.006	3.4	0.9
+pak.JakeTheTestingRobot .1b	R4 portfolio	untouched		low	6	1	98.3	99.2	99.2	bb	97.8	0.9	0.9	-0.5	0.0008	0.019	0.003	4.6	0.9
+velas.Beta_2_0 2.0	R4 portfolio	surfkey	surfKeys	low	6	4	96.9	97.8	97.8	bb	96.1	0.9	0.9	-0.8	0.0008	0.032	0.007	7.1	1.9
+amk.Punbot.Punbot 0.01	R3 keys	untouched		mid	6	2	98.9	99.8	99.8	ns	99.3	0.9	0.9	0.4	0.0008	0.078	0.0	1.6	0.0
+WdV.Lesserbee 0.01	R4 portfolio	untouched		low	6	2	96.2	97.1	97.2	sg	96.5	0.9	1.0	0.3	0.0008	0.039	0.046	4.6	5.9
+Legend.BoulderZY 1.4.9	R4 portfolio	untouched		low	6	3	98.6	99.5	99.5	bb	98.4	0.9	0.9	-0.2	0.0008	0.019	0.006	2.3	1.2
+ha2.T2b 0.2b	R4 portfolio	untouched		low	5	5	99.0	99.9	99.9	bb	98.8	0.9	0.9	-0.2	0.0008	0.013	0.0	2.4	0.0
+daemons.DizzyA 1.0	R3 keys	untouched		mid	6	2	99.1	100.0	100.0	sr	100.0	0.9	0.9	0.9	0.0008	0.089	0.045	0.5	0.1
+jrm.Test0 1.0	R4 portfolio	untouched		low	6	1	98.0	98.9	98.9	bb	97.3	0.9	0.9	-0.7	0.0008	0.011	0.003	2.2	0.7
+mladjo.Startko 1.0	R4 portfolio	shield		low	5	2	98.8	99.7	99.7	bb	99.0	0.9	0.9	0.2	0.0008	0.002	0.001	0.6	0.6
+nexus.Two 0.2	R4 portfolio	untouched		low	6	6	98.0	98.9	98.9	bb	98.0	0.9	0.9	0.0	0.0008	0.018	0.004	2.8	0.9
+bvh.hdr.Hodur 0.4	R4 portfolio	untouched		low	6	6	93.9	94.7	99.5	sg	96.4	0.8	5.6	2.5	0.0007	0.044	0.027	7.6	6.1
+synapse.Geomancy 15	R3 keys	lever	stopGoShifts	mid	3	3	78.4	79.2	82.3	ns	73.8	0.8	3.9	-4.6	0.0007	0.061	0.078	23.8	24.3
+com.cohesiva.robocode.ManOwaR 1.0	R4 portfolio	untouched		low	5	2	94.6	95.4	97.2	sr	95.8	0.8	2.6	1.2	0.0007	0.035	0.027	5.9	4.9
+theo.QuarkSoup 1.5fga	R4 portfolio	shield	aims	low	3	3	98.2	99.0	99.8	og	98.3	0.8	1.6	0.1	0.0007	0.001	0.004	0.3	1.8
+deo.virtual.RainbowBot 1.0	R4 portfolio	shield	moves,aims,mimicOns	low	4	1	95.7	96.5	96.7	sr	93.9	0.8	1.0	-1.8	0.0007	0.042	0.062	15.6	5.9
+supersample.SuperWalls 1.0	R4 portfolio	untouched		low	6	4	98.5	99.3	99.5	ns	97.9	0.8	1.0	-0.6	0.0007	0.015	0.0	2.0	0.0
+mmb.Roskilde 0.5	R4 portfolio	surfkey	surfKeys	low	6	5	98.6	99.4	99.6	sr	99.2	0.8	1.0	0.6	0.0007	0.015	0.0	1.5	0.0
+nexus.Experimental 0.2	R4 portfolio	untouched		low	6	3	98.8	99.6	99.8	sr	99.3	0.8	1.0	0.5	0.0007	0.007	0.004	1.3	0.5
+sample.Crazy 1.0	R4 portfolio	untouched		low	6	1	99.0	99.8	99.9	sr	99.7	0.8	0.9	0.7	0.0007	0.048	0.025	0.8	0.6
+shrub.Silver v048	R4 portfolio	untouched		low	6	4	98.3	99.1	99.2	sg	98.3	0.8	0.9	0.0	0.0007	0.015	0.008	2.1	0.7
+supersample.SuperBoxBot 1.0	R4 portfolio	untouched		low	6	4	99.2	100.0	100.0	bb	99.4	0.8	0.8	0.2	0.0007	0.007	0.002	1.0	0.4
+dsx724.VSAB_EP3a 1.0	R4 portfolio	untouched		low	5	4	99.2	100.0	100.0	bb	99.5	0.8	0.8	0.2	0.0007	0.01	0.0	1.5	0.0
+myl.nano.KomoriNinja 1.1	R4 portfolio	untouched		low	6	3	98.2	99.0	99.0	bb	97.7	0.8	0.8	-0.5	0.0007	0.016	0.005	2.6	0.6
+kinsen.melee.Angsaichmophobia 1.8c	R4 portfolio	surfkey	surfKeys	low	5	1	92.8	93.5	95.8	ns	91.2	0.7	3.0	-1.5	0.0006	0.047	0.033	11.1	7.7
+ahf.r2d2.R2d2 0.86	R4 portfolio	shield	aims	low	4	3	96.6	97.3	99.1	og	96.2	0.7	2.5	-0.4	0.0006	0.004	0.001	2.0	0.3
+ntw.Sigsys 1.6	R4 portfolio	untouched		low	6	4	96.5	97.2	98.1	sg	97.3	0.7	1.6	0.8	0.0006	0.033	0.023	6.3	5.4
+dz.OthoMicro 0.12	R3 keys	untouched		mid	5	2	84.0	84.7	85.2	ns	81.6	0.7	1.2	-2.4	0.0006	0.062	0.045	19.8	17.0
+mld.Wisdom 1.0	R4 portfolio	untouched		low	6	5	98.2	98.9	99.3	sg	98.8	0.7	1.1	0.5	0.0006	0.012	0.001	1.0	0.5
+jgap.JGAP7958 1.0	R4 portfolio	untouched		low	6	2	92.7	93.4	93.8	dm	91.0	0.7	1.1	-1.8	0.0006	0.046	0.025	11.9	7.0
+logiblocs.Fire 1.0	R4 portfolio	untouched		low	6	3	98.4	99.1	99.4	jh	99.0	0.7	1.0	0.6	0.0006	0.012	0.035	1.4	4.5
+dks.MicroDanMK2 1.0	R4 portfolio	untouched		low	6	3	98.9	99.6	99.8	sr	99.1	0.7	0.9	0.2	0.0006	0.023	0.006	2.1	0.7
+dittman.BlindSquirl Retired	R4 portfolio	untouched		low	6	3	98.0	98.7	98.9	ns	98.1	0.7	0.9	0.1	0.0006	0.032	0.019	2.7	1.7
+fire219.cymba.Cymba 1.8	R4 portfolio	untouched		low	6	1	95.2	95.9	95.9	bb	94.4	0.7	0.7	-0.8	0.0006	0.046	0.019	8.8	3.8
+pe.minimelee.SandboxMiniMelee 1.1	R4 portfolio	shield		low	5	2	99.2	99.9	100.0	jh	99.2	0.7	0.8	-0.0	0.0006	0.0	0.003	0.0	1.2
+wcsv.Engineer.Engineer 0.5.4	R4 portfolio	shield	aims	low	3	3	98.5	99.2	99.2	bb	89.9	0.7	0.7	-8.6	0.0006	0.017	0.0	0.3	0.0
+gh.nano.Grofvuil 0.2	R4 portfolio	untouched		low	5	6	99.1	99.8	99.9	jh	99.4	0.7	0.8	0.3	0.0006	0.016	0.006	2.0	0.1
+ap.Frederick 1.1	R4 portfolio	untouched		low	6	4	99.3	100.0	100.0	bb	100.0	0.7	0.7	0.7	0.0006	0.0	0.0	0.0	0.0
+amk.superstrike.SuperStrike 0.3	R4 portfolio	untouched		low	6	3	98.7	99.4	99.4	bb	97.5	0.7	0.7	-1.2	0.0006	0.017	0.0	2.9	0.0
+mz.AdeptBSB 1.03	R4 portfolio	untouched		low	5	3	99.3	100.0	100.0	bb	99.6	0.7	0.7	0.3	0.0006	0.009	0.0	1.6	0.0
+nz.jdc.nano.NeophytePattern 1.1	R4 portfolio	shield	aims	low	4	2	97.8	98.5	98.5	bb	92.1	0.7	0.7	-5.7	0.0006	0.002	0.001	1.4	0.3
+whitesquare.robots.SkynetAdvanced 1.1	R4 portfolio	untouched		low	6	5	99.1	99.8	99.8	bb	98.6	0.7	0.7	-0.5	0.0006	0.038	0.007	3.7	0.6
+amc.ROBv202 1.01	R2 chaser	untouched		close	6	4	99.2	99.9	99.9	sr	99.8	0.7	0.7	0.6	0.0006	0.467	0.026	2.9	0.6
+lundal.Mark8 2012.09.15	R4 portfolio	untouched		low	6	3	99.3	100.0	100.0	bb	99.0	0.7	0.7	-0.3	0.0006	0.018	0.0	0.8	0.0
+Noran.RandomTargeting 0.02	R4 portfolio	untouched		low	6	4	99.3	100.0	100.0	og	100.0	0.7	0.7	0.7	0.0006	0.003	0.0	0.1	0.0
+cb.nano.Insomnia 1.0	R4 portfolio	untouched		low	6	4	92.7	93.3	99.3	sg	94.3	0.6	6.6	1.6	0.0005	0.021	0.019	4.6	4.1
+jab.avk.ManuelGallegus 0.6	R4 portfolio	lever	stopGos	low	3	4	95.2	95.8	96.9	sg	93.2	0.6	1.7	-2.0	0.0005	0.02	0.046	5.5	5.9
+alex.Diabolo5 1.1	R4 portfolio	untouched		low	5	1	96.6	97.2	98.2	sg	96.4	0.6	1.6	-0.2	0.0005	0.045	0.01	9.7	2.3
+bndl.LostLion 1.2	R4 portfolio	untouched		low	6	3	95.5	96.1	96.8	ns	94.8	0.6	1.3	-0.7	0.0005	0.038	0.029	5.1	5.3
+brainfade.melee.Dusk 0.44	R4 portfolio	shield	aims	low	5	3	98.7	99.3	100.0	og	98.3	0.6	1.3	-0.4	0.0005	0.001	0.0	0.9	0.5
+jgap.JGAP130166 1.0	R4 portfolio	untouched		low	6	2	98.4	99.0	99.7	jh	99.0	0.6	1.3	0.6	0.0005	0.042	0.034	2.3	1.8
+jsal.Jsalbot 1.0	R3 keys	untouched		mid	6	2	97.5	98.1	98.8	jh	98.0	0.6	1.3	0.5	0.0005	0.062	0.033	4.8	2.7
+kcn.percept.PerceptBot 2.3	R4 portfolio	untouched		low	6	1	98.6	99.2	99.8	sg	99.1	0.6	1.2	0.5	0.0005	0.008	0.015	1.2	1.7
+buba.Buba 0.3	R4 portfolio	untouched		low	6	3	98.8	99.4	99.9	sr	99.4	0.6	1.1	0.6	0.0005	0.02	0.0	4.1	0.0
+braaropolis.Abot 1.0	R4 portfolio	untouched		low	6	4	98.0	98.6	99.0	sr	98.1	0.6	1.0	0.1	0.0005	0.032	0.021	3.7	3.1
+wiki.Wolverine 2.1	R4 portfolio	lever	stopGos	low	6	2	98.6	99.2	99.6	og	98.3	0.6	1.0	-0.3	0.0005	0.024	0.001	4.1	0.5
+gtf.robocode.Strafer 2.1.1	R4 portfolio	surfkey	surfKeys	low	6	1	95.4	96.0	96.3	ns	95.3	0.6	0.9	-0.1	0.0005	0.041	0.035	5.5	5.5
+dhn.Immortal 1.0	R3 keys	untouched		mid	6	2	98.0	98.6	98.8	dm	98.4	0.6	0.8	0.4	0.0005	0.051	0.03	3.7	3.0
+cs.Wren 1.0	R4 portfolio	untouched		low	6	2	99.3	99.9	99.9	ds	99.7	0.6	0.6	0.4	0.0005	0.012	0.0	1.4	0.0
+kneels.nano.Derp 0.2	R3 keys	shield	aims	mid	5	2	96.6	97.2	97.2	ns	89.8	0.6	0.6	-6.8	0.0005	0.078	0.005	1.7	2.4
+apv.test.Virus 0.6.1	R4 portfolio	shield	aims	low	3	3	99.2	99.8	99.8	bb	98.3	0.6	0.6	-0.9	0.0005	0.006	0.0	0.1	0.0
+simonton.beta.LifelongObsession 0.5.1	R4 portfolio	shield	aims	low	3	1	99.1	99.7	99.7	og	97.2	0.6	0.6	-1.9	0.0005	0.008	0.001	0.2	0.7
+sample.Walls 1.0	R4 portfolio	untouched		-		7	99.4	100.0	100.0	sr	99.8	0.6	0.6	0.4	0.0005				
+zzx.Ignohis 8.0	R4 portfolio	untouched		low	6	3	99.1	99.7	99.7	bb	98.9	0.6	0.6	-0.2	0.0005	0.018	0.001	3.7	0.3
+simonton.GFNano_D 3.1b	R4 portfolio	shield	aims	low	5	4	98.2	98.8	98.8	bb	93.0	0.6	0.6	-5.2	0.0005	0.004	0.003	0.6	1.4
+jgap.JGAP7247_2 1.0	R4 portfolio	untouched		low	6	4	96.3	96.9	96.9	bb	96.3	0.6	0.6	0.0	0.0005	0.044	0.053	6.3	7.8
+serenity.moonlightBat 1.17	R4 portfolio	untouched		low	5	2	97.8	98.4	98.4	bb	97.8	0.6	0.6	0.0	0.0005	0.022	0.011	3.6	1.5
+suh.nano.OscillatorL 1.00	R4 portfolio	untouched		low	6	4	99.4	100.0	100.0	bb	99.2	0.6	0.6	-0.2	0.0005	0.013	0.0	1.1	0.0
+deewiant.Anomaly 0.2	R4 portfolio	lever	stopGoShifts	low	5	1	99.4	100.0	100.0	og	99.8	0.6	0.6	0.4	0.0005	0.005	0.0	1.1	0.0
+agrach.Dalek 1.0	R4 portfolio	untouched		low	6	4	99.4	100.0	100.0	bb	99.4	0.6	0.6	0.0	0.0005	0.005	0.0	0.3	0.0
+suzushin7.nano.Galaxy02 1.01	R4 portfolio	untouched		low	6	2	99.3	99.9	99.9	bb	99.2	0.6	0.6	-0.0	0.0005	0.005	0.0	0.7	0.0
+suh.nano.CrossC 1.00	R4 portfolio	untouched		low	6	5	99.1	99.7	99.7	sr	98.7	0.6	0.6	-0.4	0.0005	0.013	0.002	1.2	0.2
+lessonz.robocode.Oz 0.5.0	R4 portfolio	untouched		low	5	2	98.8	99.4	99.4	bb	99.0	0.6	0.6	0.2	0.0005	0.007	0.005	1.2	1.1
+myl.micro.Troodon 1.10	R4 portfolio	untouched		low	6	2	99.3	99.9	99.9	bb	99.4	0.6	0.6	0.1	0.0005	0.007	0.003	1.1	0.6
+dft.Virgin 1.25	R4 portfolio	shield	aims	low	4	1	96.4	96.9	98.4	ds	95.0	0.5	2.0	-1.4	0.0004	0.001	0.001	0.4	0.4
+takeBot.SpinSpiral 1.2	R4 portfolio	untouched		low	6	2	97.6	98.1	99.4	sg	98.2	0.5	1.8	0.6	0.0004	0.027	0.029	2.6	2.5
+dvogon.GangBang 1.0	R3 keys	untouched		mid	6	5	98.3	98.8	99.8	sr	99.0	0.5	1.5	0.8	0.0004	0.062	0.029	4.1	2.3
+Legend.Qetro 1.6	R4 portfolio	untouched		low	6	4	98.8	99.3	100.0	og	99.3	0.5	1.2	0.5	0.0004	0.034	0.009	6.4	1.1
+cjm.Chomsky 1.5	R4 portfolio	shield	aims	low	4	1	98.4	98.9	99.3	ds	96.0	0.5	0.9	-2.4	0.0004	0.002	0.001	1.0	0.6
+ajs.Guessit 1.3	R4 portfolio	lever	stopGoShifts	low	5	3	95.8	96.3	96.7	dm	95.8	0.5	0.9	-0.0	0.0004	0.042	0.075	9.1	9.0
+gwah.GerryBotMkII 1.5.1	R4 portfolio	untouched		low	6	2	98.5	99.0	99.3	sg	98.7	0.5	0.8	0.2	0.0004	0.033	0.04	1.7	2.3
+sch.Simone 0.3d	R4 portfolio	untouched		low	6	2	98.7	99.2	99.5	ns	99.0	0.5	0.8	0.3	0.0004	0.011	0.011	1.0	1.1
+rapture.Rapture 2.13	R4 portfolio	untouched		low	5	3	98.7	99.2	99.4	sr	98.5	0.5	0.7	-0.2	0.0004	0.015	0.003	1.1	0.7
+jep.nano.Hotspur 0.1	R4 portfolio	untouched		low	6	2	99.3	99.8	100.0	sr	99.6	0.5	0.7	0.3	0.0004	0.008	0.0	1.3	0.0
+pl.robocode.Pacyfista 1.0	R4 portfolio	untouched		low	6	6	99.3	99.8	100.0	sr	99.8	0.5	0.7	0.5	0.0004	0.004	0.007	0.2	0.7
+wcsv.PowerHouse.PowerHouse 1.7e3	R4 portfolio	shield	aims	low	2	2	98.5	99.0	99.2	ds	92.9	0.5	0.7	-5.6	0.0004	0.017	0.001	0.3	0.6
+And.BasicSurfer FF1.6	R4 portfolio	untouched		low	5	2	99.2	99.7	99.8	sg	98.8	0.5	0.6	-0.4	0.0004	0.01	0.0	1.5	0.0
+sgp.nano.FurryLeech 1.0	R4 portfolio	untouched		low	6	2	99.3	99.8	99.9	ns	99.0	0.5	0.6	-0.2	0.0004	0.003	0.003	0.9	0.9
+jcs.Megatron 1.2	R4 portfolio	shield	aims	low	3	2	99.3	99.8	99.9	ns	97.8	0.5	0.6	-1.5	0.0004	0.003	0.0	0.4	0.3
+kronenthaler.Basilisk 1.0	R4 portfolio	untouched		low	4	1	99.4	99.9	99.9	bb	99.3	0.5	0.5	-0.1	0.0004	0.006	0.005	0.5	0.3
+scheronimus.ScheroBot 2.3	R4 portfolio	untouched		low	6	3	99.3	99.8	99.8	ns	98.5	0.5	0.5	-0.8	0.0004	0.021	0.002	2.6	0.3
+EH.mini.Panther 0.2	R4 portfolio	untouched		low	5	4	99.5	100.0	100.0	bb	99.6	0.5	0.5	0.1	0.0004	0.004	0.007	0.5	0.6
+bvh.micro.Svadilfari 0.2	R4 portfolio	untouched		low	6	1	99.1	99.6	99.6	bb	99.5	0.5	0.5	0.4	0.0004	0.008	0.002	1.0	0.4
+maye.SlashBot 1.0	R4 portfolio	untouched		low	6	3	99.5	100.0	100.0	bb	99.8	0.5	0.5	0.3	0.0004	0.019	0.0	0.6	0.0
+com.timothyveletta.FuzzyBot 1.1	R4 portfolio	untouched		low	6	4	99.3	99.8	99.8	bb	98.8	0.5	0.5	-0.5	0.0004	0.005	0.005	0.5	0.5
+jeremyreeder.collective.Prophet 5	R4 portfolio	untouched		low	6	5	99.1	99.6	99.6	bb	99.0	0.5	0.5	-0.1	0.0004	0.003	0.005	0.5	0.9
+SuperSample.SuperCrazy 1.0	R4 portfolio	shield	aims	low	6	1	99.4	99.9	99.9	og	98.2	0.5	0.5	-1.2	0.0004	0.0	0.001	0.0	0.2
+baal.nano.N 1.42	R4 portfolio	untouched		low	6	4	99.5	100.0	100.0	bb	99.3	0.5	0.5	-0.2	0.0004	0.009	0.0	1.2	0.0
+banshee.micro.Nexus6 0.3.0	R4 portfolio	lever	stopGoShifts	low	5	3	99.0	99.5	99.5	og	98.8	0.5	0.5	-0.2	0.0004	0.016	0.0	2.5	0.0
+robar.micro.Kirbyi 1.0	R4 portfolio	shield	aims	low	4	4	97.2	97.7	97.7	bb	94.4	0.5	0.5	-2.8	0.0004	0.015	0.004	1.1	2.2
+ahf.NanoAndrew .4	R4 portfolio	untouched		low	6	2	99.5	100.0	100.0	bb	99.8	0.5	0.5	0.3	0.0004	0.002	0.0	0.1	0.0
+squidM.SurfinUSA 1.0	R4 portfolio	untouched		low	5	1	99.5	100.0	100.0	bb	99.2	0.5	0.5	-0.2	0.0004	0.007	0.0	1.7	0.0
+reaper.Reaper 1.1	R4 portfolio	shield	aims	low	4	2	99.1	99.6	99.6	bb	95.3	0.5	0.5	-3.8	0.0004	0.005	0.0	2.5	0.0
+stordy.StordyBot 1.0	R4 portfolio	untouched		low	6	5	99.4	99.9	99.9	bb	98.8	0.5	0.5	-0.6	0.0004	0.007	0.006	1.1	1.4
+com.spp.robocode.MostlyHarmless 010	R5 hold	untouched		low	6	2	96.7	97.1	100.0	og	96.9	0.4	3.3	0.2	0.0003	0.043	0.03	6.0	5.3
+abud.ThirdRobo 1.0	R5 hold	untouched		close	6	1	98.1	98.5	99.8	sr	99.1	0.4	1.7	1.0	0.0003	0.107	0.07	3.8	2.9
+grybgoofy.GoofyBot 0.10	R5 hold	untouched		low	6	4	92.8	93.2	94.4	sr	93.0	0.4	1.6	0.2	0.0003	0.042	0.045	7.7	9.5
+bons.NanoStalker 1.2	R5 hold	untouched		low	6	3	97.2	97.6	98.6	sr	97.9	0.4	1.4	0.7	0.0003	0.018	0.023	2.7	3.7
+acid.Null 1.0	R5 hold	surfkey	surfKeys	low	6	6	96.4	96.8	97.8	sg	96.5	0.4	1.4	0.1	0.0003	0.03	0.041	2.7	3.7
+voidious.mini.Komarious 1.88	R5 hold	shield	aims,exitOffs,stills	low	3	3	96.5	96.9	97.9	og	94.4	0.4	1.4	-2.1	0.0003	0.004	0.002	0.4	1.5
+hirataatsushi.Neo 1.6	R5 hold	untouched		low	6	2	98.1	98.5	99.5	sg	98.5	0.4	1.4	0.5	0.0003	0.025	0.044	2.1	3.7
+omens.CannonfodderNano 1.4	R5 hold	surfkey	surfKeys	low	6	5	98.2	98.6	99.3	sg	98.4	0.4	1.1	0.2	0.0003	0.03	0.013	2.9	2.2
+amc.ROBv300 1.1	R5 hold	untouched		low	6	1	98.8	99.2	99.8	sr	99.4	0.4	1.0	0.6	0.0003	0.015	0.0	1.4	0.0
+suh.nano.TargetC 1.00	R5 hold	untouched		low	6	2	99.1	99.5	100.0	jh	99.2	0.4	0.9	0.1	0.0003	0.021	0.007	2.1	0.9
+dggp.haiku.gpBot_0 1.1	R5 hold	untouched		low	6	2	95.9	96.3	96.7	dm	96.3	0.4	0.8	0.4	0.0003	0.043	0.02	9.6	4.6
+myl.micro.Predator 1.50	R5 hold	untouched		low	5	3	99.2	99.6	100.0	sg	99.6	0.4	0.8	0.4	0.0003	0.004	0.003	0.7	1.2
+oa.weak.FlyMk1 0.1	R5 hold	untouched		low	6	4	98.7	99.1	99.3	jh	98.9	0.4	0.6	0.2	0.0003	0.01	0.005	1.2	0.7
+ak.Fermat 2.0	R5 hold	shield	aims	low	4	1	99.4	99.8	100.0	og	96.9	0.4	0.6	-2.5	0.0003	0.004	0.0	1.9	0.0
+suh.nano.AntiGravityL 1.01	R5 hold	shield		low	6	5	99.4	99.8	100.0	jh	99.9	0.4	0.6	0.5	0.0003	0.001	0.0	0.0	0.2
+robar.nano.Mosquito 1.1	R5 hold	untouched		low	5	8	99.4	99.8	100.0	jh	99.2	0.4	0.6	-0.2	0.0003	0.009	0.004	1.9	0.7
+vic.Locke 0.7.5.5	R5 hold	shield	aims	low	3	3	99.4	99.8	100.0	og	99.1	0.4	0.6	-0.3	0.0003	0.0	0.0	0.0	0.0
+ntc.Evader 1.2	R5 hold	untouched		low	6	4	99.4	99.8	100.0	jh	98.9	0.4	0.6	-0.5	0.0003	0.014	0.0	1.6	0.0
+suh.nano.MyFirstAdvancedRobot 1.00	R5 hold	untouched		low	6	2	99.4	99.8	99.9	sr	99.7	0.4	0.5	0.3	0.0003	0.032	0.002	1.9	0.1
+jam.micro.RaikoMicro 1.44	R5 hold	shield	aims	low	3	1	99.5	99.9	100.0	og	98.8	0.4	0.5	-0.7	0.0003	0.0	0.001	0.0	0.3
+microtestbotpack.MicroTestBot 1.0	R5 hold	untouched		low	6	3	99.4	99.8	99.8	bb	99.7	0.4	0.4	0.3	0.0003	0.009	0.003	0.6	0.1
+myl.nano.Graviton 1.10	R5 hold	untouched		low	6	4	99.4	99.8	99.9	ns	99.7	0.4	0.5	0.2	0.0003	0.007	0.002	0.7	0.2
+satan.R0 0.2	R5 hold	untouched		mid	6	1	91.6	92.0	92.0	bb	90.7	0.4	0.4	-0.9	0.0003	0.087	0.063	13.3	11.5
+cjm.Charo 1.1	R5 hold	shield	aims	low	4	3	99.5	99.9	99.9	bb	99.0	0.4	0.4	-0.5	0.0003	0.0	0.0	0.0	0.0
+wiki.mini.Sedan 1.0	R5 hold	shield	aims	low	3	6	99.6	100.0	100.0	bb	97.2	0.4	0.4	-2.4	0.0003	0.041	0.001	0.3	0.5
+mc.Messapia 0.1.8	R5 hold	untouched		low	6	2	99.6	100.0	100.0	bb	99.8	0.4	0.4	0.2	0.0003	0.009	0.0	0.3	0.0
+rampancy.micro.Epiphron 1.0	R5 hold	untouched		low	6	2	99.3	99.7	99.7	bb	98.9	0.4	0.4	-0.4	0.0003	0.027	0.013	0.6	0.6
+gh.mini.Grimmig 0.3.6	R5 hold	lever	stopGoShifts,mimicOns	mid	3	3	92.5	92.9	92.9	bb	91.3	0.4	0.4	-1.2	0.0003	0.054	0.032	14.7	7.3
+donjezza.Jezza 1.0	R5 hold	untouched		low	6	2	99.6	100.0	100.0	sr	99.6	0.4	0.4	0.0	0.0003	0.027	0.0	1.2	0.0
+agrach.RobotSlayer 1.0	R5 hold	untouched		low	6	4	99.6	100.0	100.0	bb	99.5	0.4	0.4	-0.1	0.0003	0.007	0.001	1.1	0.3
+pkbots.BoyTDSurfer 1.0	R5 hold	shield	aims	low	3	3	99.6	100.0	100.0	jh	99.8	0.4	0.4	0.2	0.0003	0.0	0.0	0.0	0.3
+kjc.MailManX 2.0	R5 hold	surfkey	surfKeys	mid	6	3	94.9	95.2	97.7	jh	95.2	0.3	2.8	0.3	0.0003	0.091	0.056	7.2	5.6
+jaybot.adv.bots.JayBot 2.0	R5 hold	untouched		low	6	3	97.5	97.8	100.0	og	97.1	0.3	2.5	-0.4	0.0003	0.019	0.004	5.0	2.2
+ary.nano.AceSurf 1.2	R5 hold	untouched		mid	5	3	91.5	91.8	93.8	sg	91.2	0.3	2.3	-0.3	0.0003	0.066	0.034	16.3	8.1
+wiki.mini.Griffon 0.1	R5 hold	shield	aims	low	4	3	98.0	98.3	100.0	jh	98.8	0.3	2.0	0.8	0.0003	0.001	0.004	0.6	2.2
+dz.OthoMini 0.15	R5 hold	surfkey	surfKeys	mid	4	2	81.9	82.2	83.3	ns	79.0	0.3	1.4	-3.0	0.0003	0.06	0.067	19.7	22.3
+blir.nano.Cabbage R1.0.1	R5 hold	untouched		low	6	6	98.5	98.8	99.8	sg	98.3	0.3	1.3	-0.2	0.0003	0.015	0.013	1.7	1.8
+timmit.mini.TimVA 0.43	R5 hold	surfkey	surfKeys	mid	4	1	86.1	86.4	87.4	ns	83.3	0.3	1.3	-2.8	0.0003	0.061	0.046	24.9	16.6
+tvv.micro.Antares 1.1.1	R5 hold	untouched		low	5	3	98.7	99.0	99.6	sg	98.8	0.3	0.9	0.1	0.0003	0.017	0.017	1.8	1.6
+csp.Eagle 3.30	R5 hold	surfkey	surfKeys	mid	6	2	97.8	98.1	98.6	sr	97.8	0.3	0.8	-0.0	0.0003	0.068	0.025	6.2	3.3
+matt.UnderDark3 2.4.34	R5 hold	untouched		low	6	3	98.1	98.4	98.9	jh	98.0	0.3	0.8	-0.1	0.0003	0.024	0.023	2.6	2.1
+timmit.TimmiT 0.22	R5 hold	shield	aims	low	5	5	99.4	99.7	100.0	og	96.8	0.3	0.6	-2.7	0.0003	0.0	0.001	0.0	0.5
+zyx.nano.Ant 1.1	R5 hold	untouched		low	6	3	99.2	99.5	99.7	sr	99.5	0.3	0.5	0.2	0.0003	0.02	0.009	2.2	1.3
+zignd.ZigIndexOutOfRange 1.1	R5 hold	untouched		low	6	3	99.6	99.9	100.0	sr	99.8	0.3	0.4	0.2	0.0003	0.018	0.0	0.5	0.0
+dsw.StaticD 1.0	R5 hold	untouched		low	6	2	99.3	99.6	99.7	ns	99.4	0.3	0.4	0.1	0.0003	0.015	0.005	1.0	0.4
+FatalFlaw.FatalFlaw 1.0.5	R5 hold	untouched		mid	6	3	96.4	96.7	96.8	ns	96.3	0.3	0.4	-0.1	0.0003	0.067	0.034	5.8	3.7
+reeder.caden.Elmo 1	R5 hold	untouched		low	6	4	99.6	99.9	100.0	jh	99.7	0.3	0.4	0.1	0.0003	0.015	0.004	1.1	0.5
+simonton.mega.SniperFrog 1.0.fix2	R5 hold	shield	aims	low	3	1	99.6	99.9	100.0	og	98.3	0.3	0.4	-1.2	0.0003	0.0	0.001	0.0	0.3
+fowl3628800.SitAndGo 1.0.0	R5 hold	untouched		low	6	2	99.6	99.9	99.9	bb	99.5	0.3	0.3	-0.1	0.0003	0.01	0.005	0.6	0.5
+extra.LightSauce 0.01	R5 hold	untouched		low	6	2	99.7	100.0	100.0	bb	99.3	0.3	0.3	-0.4	0.0003	0.006	0.002	0.0	0.0
+lmk.ACPFinal 0.2	R5 hold	untouched		low	6	3	99.7	100.0	100.0	bb	99.5	0.3	0.3	-0.2	0.0003	0.01	0.0	1.0	0.0
+css.Delitioner 0.11	R5 hold	shield	aims	low	4	2	99.6	99.9	99.9	bb	96.6	0.3	0.3	-3.0	0.0003	0.0	0.001	0.0	0.2
+ha2.T2 0.2	R5 hold	untouched		low	6	3	99.6	99.9	99.9	bb	98.8	0.3	0.3	-0.8	0.0003	0.006	0.002	0.5	0.5
+quietus.NarrowRadar 0.1	R5 hold	untouched		low	6	2	99.6	99.9	99.9	bb	98.7	0.3	0.3	-0.9	0.0003	0.031	0.007	2.6	0.9
+vishius.Orbiter 1.0	R5 hold	untouched		low	6	2	99.5	99.8	99.8	ns	98.9	0.3	0.3	-0.6	0.0003	0.014	0.003	1.4	0.3
+fm.mammillarias 1.3	R5 hold	untouched		low	6	1	99.7	100.0	100.0	bb	99.7	0.3	0.3	-0.0	0.0003	0.0	0.0	0.0	0.0
+kid.Gladiator .7.2	R5 hold	shield	aims	low	3	2	99.6	99.9	99.9	bb	93.8	0.3	0.3	-5.8	0.0003	0.004	0.016	1.7	7.3
+tcf.Drifter 29	R5 hold	shield		low	4	5	99.6	99.9	99.9	bb	98.3	0.3	0.3	-1.2	0.0003	0.0	0.001	0.0	0.1
+timmit.nano.TimDog 0.33	R5 hold	untouched		low	5	1	99.6	99.9	99.9	bb	99.4	0.3	0.3	-0.2	0.0003	0.009	0.0	1.4	0.0
+maribo.melee.BMV 0.1	R5 hold	untouched		low	6	2	99.5	99.8	99.8	bb	99.1	0.3	0.3	-0.4	0.0003	0.012	0.003	2.6	0.9
+banshee.mini.Nexus6 0.2.0	R5 hold	untouched		low	6	3	99.7	100.0	100.0	bb	99.7	0.3	0.3	0.0	0.0003	0.001	0.0	0.1	0.0
+traker.Eraser 1	R5 hold	untouched		low	5	2	99.7	100.0	100.0	bb	99.7	0.3	0.3	-0.0	0.0003	0.007	0.0	0.8	0.0
+techdude.kombat.FlamingKombat 1.5	R5 hold	untouched		low	6	1	99.6	99.9	99.9	bb	99.5	0.3	0.3	-0.0	0.0003	0.011	0.007	0.7	0.8
+bp.Kuma 1.0	R5 hold	untouched		low	6	1	99.7	100.0	100.0	bb	99.7	0.3	0.3	-0.0	0.0003	0.002	0.003	0.2	0.5
+suh.nano.CrossH 1.00	R5 hold	untouched		low	6	3	99.7	100.0	100.0	bb	99.8	0.3	0.3	0.1	0.0003	0.007	0.0	0.5	0.0
+germ.TheMind .2	R5 hold	untouched		low	6	2	99.6	99.9	99.9	sr	99.6	0.3	0.3	0.0	0.0003	0.002	0.004	0.5	0.9
+McS.Spanky_test 0.1a	R5 hold	untouched		low	6	3	99.7	100.0	100.0	ns	100.0	0.3	0.3	0.3	0.0003	0.013	0.0	0.4	0.0
+WarfaJibril.Jibril_Warfa_Andromeda 1.11	R5 hold	shield	aims	low	6	5	99.5	99.8	99.8	bb	97.8	0.3	0.3	-1.7	0.0003	0.0	0.001	0.0	0.5
+donjezza.Muncho 1.0	R5 hold	untouched		low	6	3	99.6	99.9	99.9	bb	99.5	0.3	0.3	-0.1	0.0003	0.016	0.002	1.3	0.3
+paolord.TheHulk 1.0	R5 hold	untouched		low	6	3	99.7	100.0	100.0	bb	99.7	0.3	0.3	-0.0	0.0003	0.002	0.003	0.1	0.9
+slugzilla.SNGLinear 1.0	R5 hold	untouched		low	6	3	99.7	100.0	100.0	bb	99.4	0.3	0.3	-0.3	0.0003	0.011	0.0	1.1	0.0
+amc.ROBv203 1.0	R5 hold	untouched		low	6	1	99.4	99.7	99.7	bb	99.1	0.3	0.3	-0.3	0.0003	0.024	0.0	3.1	0.0
+rz.Apollon 0.23	R5 hold	shield	aims	low	3	4	96.9	97.1	99.2	ds	94.8	0.2	2.3	-2.2	0.0002	0.003	0.002	2.1	0.9
+ph.mini.Archer 0.6.6	R5 hold	shield	aims	low	3	2	98.7	98.9	100.0	og	98.3	0.2	1.3	-0.4	0.0002	0.039	0.0	0.7	0.3
+kjc.Karaykan 1.0	R5 hold	surfkey	surfKeys	mid	6	3	95.8	96.0	97.0	jh	95.8	0.2	1.2	0.0	0.0002	0.065	0.058	7.4	8.5
+fnc.bandit2002.Bandit2002 4.0.2	R5 hold	shield	stills	low	5	5	98.3	98.5	99.2	og	92.2	0.2	0.9	-6.0	0.0002	0.0	0.001	0.0	0.3
+lucasslf.Dodger 1.0	R5 hold	shield	aims	low	4	3	99.1	99.3	100.0	og	98.3	0.2	0.9	-0.8	0.0002	0.014	0.0	1.6	0.0
+pulsar.PulsarNano 0.2.4	R5 hold	untouched		low	5	2	99.0	99.2	99.8	sg	97.9	0.2	0.8	-1.1	0.0002	0.005	0.01	0.7	1.6
+Polkwane.Intensive 1.0	R5 hold	shield	aims	low	4	5	99.2	99.4	100.0	og	99.2	0.2	0.8	-0.0	0.0002	0.0	0.002	0.0	1.1
+jgap.JGAP23423 1.0	R5 hold	untouched		mid	6	2	98.1	98.3	98.7	sr	98.0	0.2	0.6	-0.1	0.0002	0.054	0.024	7.1	3.7
+gh.micro.Grinnik 1.0	R5 hold	shield	aims	low	4	3	99.0	99.2	99.6	og	98.5	0.2	0.6	-0.5	0.0002	0.001	0.003	0.3	1.3
+DM.Capriite 3.7.2	R5 hold	untouched		low	6	5	99.4	99.6	99.9	sr	99.4	0.2	0.5	0.0	0.0002	0.011	0.001	2.7	0.4
+franzor.Lizt 1.3.1	R5 hold	untouched		mid	6	1	99.3	99.5	99.8	sr	99.3	0.2	0.5	0.0	0.0002	0.054	0.014	1.1	0.6
+sul.BlueBot 1.0	R5 hold	untouched		low	6	3	99.6	99.8	100.0	sr	99.7	0.2	0.4	0.1	0.0002	0.021	0.0	2.3	0.0
+adt.Ar1 2.1	R5 hold	untouched		low	6	2	99.6	99.8	100.0	sr	99.4	0.2	0.4	-0.2	0.0002	0.009	0.008	1.0	1.4
+bk.Shooter 1.0	R5 hold	untouched		low	6	1	99.1	99.3	99.4	sr	99.0	0.2	0.3	-0.1	0.0002	0.019	0.01	2.0	1.1
+yagami.Tidus 0.11	R5 hold	untouched		low	6	3	99.6	99.8	99.9	sr	99.8	0.2	0.3	0.2	0.0002	0.0	0.0	0.0	0.0
+m3thos.Eva00 1.1	R5 hold	untouched		low	6	3	99.6	99.8	99.9	ns	99.5	0.2	0.3	-0.1	0.0002	0.0	0.004	0.0	0.9
+homerbots.h1 1.0	R5 hold	untouched		low	6	4	99.7	99.9	100.0	sg	99.9	0.2	0.3	0.2	0.0002	0.006	0.0	0.2	0.0
+trab.Crusader 0.1.7	R5 hold	shield	aims	mid	3	2	99.7	99.9	100.0	og	98.0	0.2	0.3	-1.7	0.0002	0.056	0.034	22.7	12.1
+cyragia.Bot 1.1	R5 hold	untouched		low	6	5	99.5	99.7	99.7	bb	99.1	0.2	0.2	-0.4	0.0002	0.012	0.005	0.8	0.4
+fowl3628800.StopAndGo 1.0.0	R5 hold	untouched		low	6	4	99.7	99.9	100.0	jh	99.5	0.2	0.3	-0.2	0.0002	0.012	0.002	0.9	0.1
+kc.serpent.Hydra 0.21	R5 hold	shield	aims	low	2	2	99.5	99.7	99.8	og	99.5	0.2	0.3	0.0	0.0002	0.0	0.001	0.0	0.5
+pbg.NinjaX 1.2	R5 hold	untouched		low	6	3	99.7	99.9	100.0	ns	99.8	0.2	0.3	0.1	0.0002	0.005	0.004	0.5	0.0
+kawigi.micro.Shiz 1.1	R5 hold	untouched		low	6	3	99.7	99.9	99.9	bb	99.3	0.2	0.2	-0.4	0.0002	0.004	0.0	0.6	0.0
+bigpete.Stewie 1.0	R5 hold	untouched		low	5	7	99.5	99.7	99.7	bb	98.3	0.2	0.2	-1.2	0.0002	0.006	0.001	1.2	0.2
+jaw.KarenCain 0.11	R5 hold	untouched		low	6	1	99.7	99.9	99.9	ns	99.5	0.2	0.2	-0.2	0.0002	0.003	0.003	0.5	0.5
+nzeemin.Izh 0.5	R5 hold	untouched		low	6	6	99.6	99.8	99.8	sg	99.2	0.2	0.2	-0.4	0.0002	0.008	0.005	1.0	0.8
+kb.PingPong 1.0	R5 hold	untouched		-		3	99.8	100.0	100.0	bb	100.0	0.2	0.2	0.2	0.0002				
+suh.nano.TargetL 1.00	R5 hold	untouched		low	6	1	99.7	99.9	99.9	bb	99.3	0.2	0.2	-0.4	0.0002	0.016	0.007	1.5	0.9
+slugzilla.OscillateLinear 1.0	R5 hold	untouched		low	6	2	99.8	100.0	100.0	bb	99.8	0.2	0.2	0.0	0.0002	0.009	0.0	0.9	0.0
+mym.EdgeStalker 1.0	R5 hold	untouched		low	6	3	99.8	100.0	100.0	sr	99.8	0.2	0.2	-0.0	0.0002	0.011	0.0	0.3	0.0
+suh.nano.CrossL 1.00	R5 hold	untouched		low	6	2	99.8	100.0	100.0	bb	99.7	0.2	0.2	-0.1	0.0002	0.006	0.0	0.3	0.0
+Lo_Ian.Gandalf_V4 4.0	R5 hold	untouched		low	6	3	99.7	99.9	99.9	bb	99.0	0.2	0.2	-0.8	0.0002	0.02	0.0	0.5	0.0
+extra.Sauce .01	R5 hold	untouched		low	6	3	99.8	100.0	100.0	bb	99.5	0.2	0.2	-0.3	0.0002	0.004	0.004	0.7	0.4
+apv.NanoLauLectrikTheCannibal 1.1	R5 hold	shield	aims,flatOns	mid	5	2	86.4	86.5	92.5	ds	87.5	0.1	6.1	1.1	0.0001	0.061	0.036	7.3	12.2
+techdude.Class2C.Class2C 0.1	R5 hold	untouched		mid	6	1	92.1	92.2	96.0	jh	93.1	0.1	3.9	1.0	0.0001	0.091	0.039	12.3	10.5
+leb.ShootAnArrow 0.1	R5 hold	untouched		low	6	5	94.9	95.0	98.6	jh	96.4	0.1	3.7	1.5	0.0001	0.018	0.016	3.5	4.1
+fullsail.TimbotNoPrediction 1.0	R5 hold	untouched		mid	6	1	91.6	91.7	93.6	sg	91.3	0.1	2.0	-0.2	0.0001	0.074	0.048	17.6	13.3
+md.VelociRaptor 1.3	R5 hold	lever	heatJits	mid	6	3	95.7	95.8	97.4	sr	96.3	0.1	1.7	0.6	0.0001	0.07	0.066	7.6	7.3
+av.RobAtHome 1.2	R5 hold	surfkey	surfKeys	low	6	5	96.7	96.8	98.0	sg	96.4	0.1	1.3	-0.3	0.0001	0.045	0.02	7.5	3.9
+fcr.First 1.0	R5 hold	untouched		low	5	2	98.8	98.9	99.9	sg	98.6	0.1	1.1	-0.2	0.0001	0.021	0.002	2.9	0.9
+jasolo.Sonda 0.55	R5 hold	shield	aims	low	5	2	99.1	99.2	100.0	jh	98.7	0.1	0.9	-0.4	0.0001	0.002	0.0	0.9	0.0
+fire219.CatBot 1.0	R5 hold	untouched		low	6	2	98.9	99.0	99.6	ns	99.0	0.1	0.7	0.1	0.0001	0.042	0.027	3.6	2.3
+kawigi.sbf.FloodMicro 1.5	R5 hold	untouched		low	6	3	99.4	99.5	100.0	sr	99.3	0.1	0.6	-0.1	0.0001	0.005	0.004	0.6	1.0
+jgap.JGAP12584 1.0	R5 hold	untouched		low	6	2	99.0	99.1	99.6	sg	99.0	0.1	0.6	0.0	0.0001	0.003	0.003	0.1	0.5
+pak.Dargon 1.0b	R5 hold	untouched		low	6	4	99.4	99.5	99.8	sr	99.2	0.1	0.4	-0.2	0.0001	0.016	0.012	1.7	1.8
+sample.VelociRobot 1.0	R5 hold	untouched		low	6	4	98.9	99.0	99.4	sr	99.0	0.1	0.5	0.1	0.0001	0.024	0.023	1.4	1.8
+jf.Dodger 1.3	R5 hold	untouched		low	6	4	99.5	99.6	99.9	sr	99.6	0.1	0.4	0.1	0.0001	0.013	0.007	1.7	0.9
+bvh.frg.Friga 0.112dev	R5 hold	shield	aims	low	4	3	99.6	99.7	100.0	og	99.0	0.1	0.4	-0.6	0.0001	0.0	0.0	0.0	0.0
+mk.Alpha 0.2.1	R5 hold	shield	aims	low	4	3	99.7	99.8	100.0	jh	99.3	0.1	0.3	-0.4	0.0001	0.0	0.0	0.0	0.0
+arthord.KostyaTszyu Beta2	R5 hold	shield	aims	low	4	2	99.7	99.8	100.0	og	99.3	0.1	0.3	-0.4	0.0001	0.0	0.001	0.0	0.4
+ej.ChocolateBar 1.1	R5 hold	shield	aims	low	3	2	99.8	99.9	100.0	ds	100.0	0.1	0.2	0.2	0.0001	0.0	0.001	0.0	0.3
+wiki.SuperSampleBot.SuperSittingDuck 1.0	R5 hold	untouched		low	6	2	99.8	99.9	100.0	jh	100.0	0.1	0.2	0.2	0.0001	0.0	0.0	0.0	0.0
+jcw.ArcherOne 1.0	R5 hold	untouched		low	6	3	99.7	99.8	99.9	sr	99.8	0.1	0.2	0.0	0.0001	0.006	0.015	0.2	0.7
+reeder.caden.Grover 1.0	R5 hold	untouched		low	6	6	99.8	99.9	100.0	jh	99.8	0.1	0.2	0.0	0.0001	0.005	0.0	0.3	0.0
+robo.PartsBot 1.1	R5 hold	untouched		low	6	3	99.7	99.8	99.9	sg	99.5	0.1	0.2	-0.2	0.0001	0.012	0.007	1.7	1.0
+ao.T100 0.9	R5 hold	untouched		low	6	2	99.8	99.9	100.0	jh	99.8	0.1	0.2	0.0	0.0001	0.027	0.005	2.3	0.2
+ds.OoV4 0.3b	R5 hold	shield		low	5	2	99.8	99.9	100.0	ns	99.5	0.1	0.2	-0.3	0.0001	0.001	0.0	0.0	0.0
+suzushin7.nano.TargetC 1.00	R5 hold	untouched		low	6	5	99.5	99.6	99.6	bb	98.8	0.1	0.1	-0.8	0.0001	0.024	0.004	2.1	0.5
+davv.DOne b002	R5 hold	untouched		mid	6	4	99.8	99.9	100.0	ns	99.9	0.1	0.2	0.1	0.0001	0.053	0.033	0.7	0.4
+nammyung.ModelT 0.23	R5 hold	untouched		low	6	2	99.8	99.9	100.0	ns	99.8	0.1	0.2	0.0	0.0001	0.003	0.018	0.1	1.1
+slugzilla.RandomGF 1.0	R5 hold	shield	aims	low	4	6	99.8	99.9	100.0	ds	99.3	0.1	0.2	-0.5	0.0001	0.0	0.0	0.0	0.0
+synapse.rsim.GeomancyBS 0.11	R5 hold	shield	moves,aims,stills	low	3	1	97.6	97.7	97.7	bb	86.7	0.1	0.1	-10.9	0.0001	0.002	0.004	1.1	2.0
+cli.Dancer 1.1	R5 hold	untouched		low	6	3	99.8	99.9	99.9	bb	99.6	0.1	0.1	-0.2	0.0001	0.004	0.0	0.2	0.0
+uccc.MilkyWay 1.01	R5 hold	untouched		low	6	2	99.2	99.3	99.3	dm	99.1	0.1	0.1	-0.1	0.0001	0.038	0.024	2.6	2.2
+fowl3628800.ThunderStruck 3.0.0	R5 hold	untouched		low	6	2	99.8	99.9	99.9	bb	99.4	0.1	0.1	-0.4	0.0001	0.004	0.0	0.2	0.0
+sample.Corners 1.0	R5 hold	untouched		low	6	2	99.9	100.0	100.0	bb	99.8	0.1	0.1	-0.1	0.0001	0.043	0.0	1.3	0.0
+lw.LuthersTest 0.1	R5 hold	untouched		low	6	1	99.9	100.0	100.0	bb	99.9	0.1	0.1	0.0	0.0001	0.005	0.005	0.1	0.1
+origin.SleepSiphon 1.7b	R5 hold	shield	aims	low	4	5	99.8	99.9	99.9	jh	99.8	0.1	0.1	0.0	0.0001	0.002	0.0	0.5	0.0
+is.fon.rs.Kamikaza 1.0	R5 hold	untouched		low	6	1	99.9	100.0	100.0	bb	99.8	0.1	0.1	-0.1	0.0001	0.012	0.005	0.9	0.5
+mwj.A1176183 1.0	R5 hold	untouched		low	6	4	99.9	100.0	100.0	sr	99.8	0.1	0.1	-0.2	0.0001	0.0	0.0	0.0	0.0
+hlavko.micro.Flex 1.5	R5 hold	surfkey	surfKeys	mid	4	1	88.0	88.1	88.1	bb	85.5	0.1	0.1	-2.5	0.0001	0.078	0.051	19.6	13.4
+suh.nano.StopAndGoL 1.01	R5 hold	untouched		low	6	4	99.9	100.0	100.0	bb	99.8	0.1	0.1	-0.1	0.0001	0.011	0.0	0.5	0.0
+ayk.WallHugger 1.0	R5 hold	untouched		low	6	4	99.7	99.8	99.8	bb	98.9	0.1	0.1	-0.8	0.0001	0.007	0.008	0.6	1.2
+ch.rhj.rbc.RHJ1 1.0	R5 hold	untouched		low	6	1	99.8	99.9	99.9	bb	99.8	0.1	0.1	-0.0	0.0001	0.028	0.016	0.3	0.3
+sample.MyFirstJuniorRobot 1.0	R5 hold	untouched		low	6	3	99.4	99.5	99.5	bb	99.2	0.1	0.1	-0.2	0.0001	0.021	0.014	1.7	1.3
+jwirde.Gort 2.0	R5 hold	untouched		low	6	2	99.6	99.7	99.7	bb	99.4	0.1	0.1	-0.2	0.0001	0.008	0.001	0.8	0.3
+conscience.Electron 1.3g	R5 hold	untouched		mid	5	4	96.6	96.6	99.5	sg	96.2	0.0	2.9	-0.4	0.0	0.067	0.009	6.8	1.5
+rfj.Sunburn 1.1	R5 hold	untouched		mid	6	4	93.4	93.4	95.6	sr	93.6	0.0	2.2	0.2	0.0	0.074	0.052	11.1	8.2
+bots.UberBot 1.2c	R5 hold	untouched		low	6	1	98.0	98.0	99.6	sg	98.2	0.0	1.6	0.2	0.0	0.033	0.014	6.7	2.1
+ngf.nano.Sparky 0.1.5	R5 hold	shield	aims	low	5	3	98.7	98.7	100.0	og	93.6	0.0	1.3	-5.1	0.0	0.001	0.0	0.5	0.0
+demetrix.nano.Neutrino 0.27	R5 hold	lever	stopGoShifts	mid	5	1	92.1	92.1	93.0	ns	88.9	0.0	0.9	-3.2	0.0	0.052	0.027	12.4	8.6
+simonton.mini.WeeksOnEnd 1.10.4	R5 hold	shield	aims	low	3	2	99.2	99.2	100.0	og	97.2	0.0	0.8	-2.0	0.0	0.006	0.0	0.2	0.0
+spin.Bugstard 0.012b	R5 hold	untouched		low	6	5	96.1	96.1	96.8	ns	95.2	0.0	0.7	-0.8	0.0	0.043	0.027	5.6	6.9
+taqho.taqbot 1.0	R5 hold	untouched		mid	6	1	94.6	94.6	95.2	ns	92.8	0.0	0.6	-1.8	0.0	0.061	0.048	10.9	9.6
+com.blogspot.malinkody.DestrobotMalin 1.0	R5 hold	untouched		-		5	99.7	99.7	100.0	sr	99.7	0.0	0.3	0.0	0.0				
+cx.mini.Nimrod 0.55	R5 hold	shield	aims	low	4	2	99.7	99.7	100.0	og	97.9	0.0	0.3	-1.8	0.0	0.0	0.002	0.0	1.4
+bzdp.Pansy 2.1	R5 hold	untouched		low	6	4	99.3	99.3	99.6	sr	99.3	0.0	0.3	0.0	0.0	0.017	0.012	2.3	1.4
+davidalves.Phoenix 1.02	R5 hold	shield		low	2	3	98.7	98.7	98.9	ns	80.8	0.0	0.2	-18.0	0.0	0.003	0.056	1.2	18.9
+syl.Centipede 0.5	R5 hold	shield	aims	low	5	4	99.8	99.8	100.0	jh	99.8	0.0	0.2	-0.0	0.0	0.0	0.001	0.0	0.5
+el.JumpShoot 0.2	R5 hold	untouched		low	6	4	99.8	99.8	100.0	sr	99.8	0.0	0.2	0.0	0.0	0.005	0.0	0.3	0.0
+pe.mini.SandboxMini 1.2	R5 hold	shield		low	4	5	99.8	99.8	100.0	jh	99.1	0.0	0.2	-0.7	0.0	0.0	0.001	0.0	0.5
+skm.Ryubot 1.0	R5 hold	untouched		low	6	7	99.9	99.9	100.0	sr	99.8	0.0	0.1	-0.1	0.0	0.0	0.0	0.0	0.0
+jaybot.bots.Oddball 4.0	R5 hold	untouched		low	6	3	99.7	99.7	99.8	sg	99.5	0.0	0.1	-0.2	0.0	0.038	0.021	0.8	0.4
+metal.small.MCool 1.21	R5 hold	shield	aims	low	5	3	99.9	99.9	100.0	og	99.3	0.0	0.1	-0.6	0.0	0.0	0.001	0.0	0.5
+skm.PateranBotlock2 1.0	R5 hold	untouched		low	6	6	99.9	99.9	100.0	sr	99.9	0.0	0.1	0.0	0.0	0.0	0.0	0.0	0.0
+uccc.RingDing 1.12	R5 hold	untouched		low	6	3	99.8	99.8	99.8	bb	99.7	0.0	0.0	-0.1	0.0	0.014	0.002	1.0	0.1
+robots.Lucky 1.2	R5 hold	untouched		low	6	2	98.6	98.6	98.7	ns	98.2	0.0	0.1	-0.4	0.0	0.038	0.014	3.2	1.4
+suh.nano.TargetH 1.00	R5 hold	untouched		low	6	5	99.9	99.9	100.0	sr	99.8	0.0	0.1	-0.1	0.0	0.008	0.0	0.7	0.0
+fowl3628800.LightningBolt 2.6.0	R5 hold	untouched		low	6	3	99.9	99.9	99.9	bb	99.6	0.0	0.0	-0.3	0.0	0.01	0.002	0.5	0.1
+chickenfuego.UrChicken2 1.0	R5 hold	untouched		low	6	2	100.0	100.0	100.0	sr	99.9	0.0	0.0	-0.1	0.0	0.0	0.007	0.0	0.1
+Queens_teamrobot.UltraRazor 1.0	R5 hold	untouched		low	6	2	99.9	99.9	99.9	bb	99.7	0.0	0.0	-0.2	0.0	0.014	0.005	0.5	0.2
+hfgrobots.HFG 1.0	R5 hold	untouched		low	6	3	100.0	100.0	100.0	bb	99.9	0.0	0.0	-0.1	0.0	0.005	0.0	0.1	0.0
+sample.MyFirstRobot 1.0	R5 hold	untouched		low	6	3	100.0	100.0	100.0	jh	100.0	0.0	0.0	-0.0	0.0	0.006	0.0	0.1	0.0
+spinnercat.Limit .01	R5 hold	untouched		low	6	1	99.7	99.7	99.7	bb	99.1	0.0	0.0	-0.6	0.0	0.015	0.0	1.9	0.0
+pl.mskiba.Hilton 0.4	R5 hold	untouched		low	6	2	100.0	100.0	100.0	sr	99.8	0.0	0.0	-0.2	0.0	0.005	0.006	0.3	0.8
+elvbot.ElverionBot 0.3	R5 hold	untouched		low	6	3	99.9	99.9	100.0	sg	99.9	0.0	0.1	0.0	0.0	0.0	0.003	0.0	0.1
+com.sociesc.T1000 1.0.0	R5 hold	untouched		low	6	4	100.0	100.0	100.0	bb	100.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0
+fullsail.SweetTea 1.1	R5 hold	untouched		low	6	3	100.0	100.0	100.0	sr	99.8	0.0	0.0	-0.2	0.0	0.002	0.0	0.2	0.0
+wiki.BasicBulletShielder 1.0	R5 hold	untouched		low	6	4	100.0	100.0	100.0	bb	100.0	0.0	0.0	0.0	0.0	0.006	0.0	0.0	0.0
+ArchAlpha.ArchimedesAlpha 1.0	R5 hold	untouched		low	6	3	100.0	100.0	100.0	bb	100.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0
+ad.last.Bottom 1.0	R5 hold	untouched		close	6	3	100.0	100.0	100.0	bb	100.0	0.0	0.0	0.0	0.0	0.2	0.25	0.0	0.0
+bh.PencilRain 0.01	R5 hold	untouched		low	6	2	100.0	100.0	100.0	sr	100.0	0.0	0.0	0.0	0.0	0.006	0.004	0.0	0.0
+cjm.chalk.Chalk 2.6.Be	R5 hold	shield	aims	low	2	2	100.0	100.0	100.0	og	99.6	0.0	0.0	-0.4	0.0	0.001	0.0	0.3	0.0
+cli.WasteOfAmmo 1.0	R5 hold	untouched		low	6	2	100.0	100.0	100.0	bb	100.0	0.0	0.0	-0.0	0.0	0.0	0.0	0.0	0.0
+conscience.Suicidal 1.1	R5 hold	untouched		low	6	1	100.0	100.0	100.0	bb	100.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0
+disan.Ghost .01	R5 hold	untouched		low	6	3	100.0	100.0	100.0	bb	100.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0
+eem.awful v1.2	R5 hold	untouched		low	6	3	100.0	100.0	100.0	bb	100.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0
+exauge.GateKeeper 1.1.121g	R5 hold	shield	aims	low	5	4	98.0	98.0	98.0	bb	94.8	0.0	0.0	-3.2	0.0	0.001	0.002	0.4	0.7
+is.fon.rs.FonDestroyer3084 1.0	R5 hold	untouched		low	6	2	100.0	100.0	100.0	sr	100.0	0.0	0.0	-0.0	0.0	0.005	0.0	0.1	0.0
+jam.mini.Raiko 0.43	R5 hold	shield	aims	low	3	2	100.0	100.0	100.0	ns	99.4	0.0	0.0	-0.6	0.0	0.0	0.0	0.0	0.0
+jk.precise.EnergyDome 1.8	R5 hold	untouched		low	5	2	100.0	100.0	100.0	sr	100.0	0.0	0.0	0.0	0.0	0.003	0.003	0.0	0.3
+logiblocs.SittingDroid 1.0	R5 hold	untouched		low	6	2	100.0	100.0	100.0	bb	100.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0
+ma.is.fon.rs.RobotA 0.01	R5 hold	untouched		low	6	6	100.0	100.0	100.0	sg	99.6	0.0	0.0	-0.4	0.0	0.024	0.0	2.1	0.0
+mn.nano.SkippedTurns 1.1.0	R5 hold	untouched		low	6	2	100.0	100.0	100.0	bb	100.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0
+mnt.SurferBot 0.2.5	R5 hold	shield	aims	low	4	2	100.0	100.0	100.0	jh	99.2	0.0	0.0	-0.8	0.0	0.0	0.0	0.0	0.0
+quietus.Invader 0.1	R5 hold	untouched		low	6	2	100.0	100.0	100.0	bb	100.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0
+rsim.micro.uCatcher 0.1	R5 hold	untouched		low	6	4	100.0	100.0	100.0	bb	100.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0
+ry.Worst 1.0	R5 hold	untouched		low	6	2	100.0	100.0	100.0	ns	100.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0
+rz.HawkOnFire 0.1	R5 hold	untouched		low	5	4	100.0	100.0	100.0	sr	99.7	0.0	0.0	-0.3	0.0	0.003	0.0	0.4	0.0
+sample.Fire 1.0	R5 hold	untouched		low	6	1	100.0	100.0	100.0	sg	100.0	0.0	0.0	0.0	0.0	0.008	0.005	0.1	0.1
+sample.SittingDuck 1.0	R5 hold	untouched		low	6	2	100.0	100.0	100.0	bb	100.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0
+sample.Target 1.0	R5 hold	untouched		low	6	2	100.0	100.0	100.0	bb	100.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0
+sample.TrackFire 1.0	R5 hold	untouched		low	6	6	100.0	100.0	100.0	sr	99.8	0.0	0.0	-0.2	0.0	0.005	0.0	0.4	0.0
+sample.Tracker 1.0	R5 hold	untouched		mid	6	2	100.0	100.0	100.0	sr	99.8	0.0	0.0	-0.2	0.0	0.071	0.0	0.5	0.0
+sheldor.nano.Retreat 1.0	R5 hold	untouched		low	6	2	100.0	100.0	100.0	bb	100.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0
+snowman.Snowman 1.0	R5 hold	untouched		low	6	4	100.0	100.0	100.0	ns	100.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0
+spartancompany.Spartan2 1.0	R5 hold	untouched		low	6	3	99.9	99.9	99.9	bb	99.7	0.0	0.0	-0.2	0.0	0.0	0.014	0.0	1.3
+stelo.PatternRobot 1.0	R5 hold	untouched		low	6	4	100.0	100.0	100.0	bb	99.8	0.0	0.0	-0.2	0.0	0.0	0.0	0.0	0.0
+suh.nano.Worst 1.02	R5 hold	untouched		low	6	4	100.0	100.0	100.0	sr	100.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0
+suzushin7.nano.Galaxy01 1.01	R5 hold	untouched		low	6	2	100.0	100.0	100.0	bb	100.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0
+tzu.TheArtOfWar 1.2	R5 hold	shield	aims	low	5	1	100.0	100.0	100.0	bb	99.2	0.0	0.0	-0.8	0.0	0.0	0.001	0.0	0.5
+xander.cat.Spitfire 1.4	R5 hold	untouched		low	6	3	100.0	100.0	100.0	ds	100.0	0.0	0.0	0.0	0.0	0.006	0.005	0.0	0.1
+RobotMarco.MarcoV 0.1	R5 hold	untouched		low	6	1	100.0	100.0	100.0	ns	99.8	0.0	0.0	-0.2	0.0	0.0	0.0	0.0	0.0
+drd.Dreadknoght 0.9	R5 hold	untouched		low	6	5	100.0	100.0	100.0	bb	99.8	0.0	0.0	-0.2	0.0	0.021	0.0	0.3	0.0
+paket.MojRobot 1.0	R5 hold	untouched		low	6	2	100.0	100.0	100.0	bb	99.9	0.0	0.0	-0.1	0.0	0.009	0.008	0.2	0.2
+agd.Mooserwirt2 2.7	R5 hold	untouched		low	5	1	98.6	98.6	98.6	bb	97.2	0.0	0.0	-1.4	0.0	0.02	0.011	3.1	2.2
+sample.SpinBot 1.0	R5 hold	untouched		low	6	4	100.0	100.0	100.0	bb	99.8	0.0	0.0	-0.2	0.0	0.0	0.0	0.0	0.0
+yarghard.Y101 1.0	R5 hold	untouched		low	6	2	100.0	100.0	100.0	bb	99.8	0.0	0.0	-0.2	0.0	0.003	0.0	0.1	0.0
+slugzilla.OrbitPattern 1.1	R5 hold	shield	aims	low	5	1	100.0	100.0	100.0	bb	98.3	0.0	0.0	-1.7	0.0	0.0	0.001	0.0	0.3
+xander.cat.XanderCat 12.9	R5 hold	lever	stopGos	low	1	7	71.9	71.8	83.8	sg	64.0	-0.1	11.9	-7.9	-0.0001	0.039	0.077	9.8	27.0
+gimp.GimpBot 0.1	R5 hold	untouched		low	6	2	98.1	98.0	98.6	sr	97.8	-0.1	0.5	-0.2	-0.0001	0.047	0.049	3.6	3.4
+wiki.nano.DevilFISH 1.0	R5 hold	untouched		low	5	2	98.9	98.8	99.4	sg	98.8	-0.1	0.5	-0.1	-0.0001	0.014	0.006	2.3	1.1
+gwah.GBotMarkIV 1.0	R5 hold	untouched		low	6	4	99.5	99.4	100.0	sr	99.4	-0.1	0.5	-0.1	-0.0001	0.017	0.009	1.0	0.5
+vjik.UnViolation 1.1	R5 hold	lever	stopGoShifts	mid	6	2	96.9	96.8	97.3	sg	96.7	-0.1	0.4	-0.2	-0.0001	0.08	0.07	5.4	6.2
+radnor.DoctorBob 1.42	R5 hold	untouched		low	5	2	99.6	99.5	99.9	sg	99.6	-0.1	0.3	0.0	-0.0001	0.009	0.0	1.1	0.0
+nic.SnippetBot 1.0	R5 hold	untouched		low	6	5	99.3	99.2	99.5	sg	99.2	-0.1	0.2	-0.0	-0.0001	0.015	0.017	1.0	1.3
+aetos.AetosFirstBot 1.0	R5 hold	untouched		low	6	4	99.8	99.7	100.0	sr	99.6	-0.1	0.2	-0.2	-0.0001	0.015	0.008	1.1	0.6
+fm.claire 1.7	R5 hold	shield	stills	low	5	5	98.5	98.4	98.6	ns	96.3	-0.1	0.1	-2.2	-0.0001	0.005	0.009	1.9	2.7
+tjk.AFlatNatural 1.0	R5 hold	untouched		close	5	3	91.5	91.4	91.6	og	90.7	-0.1	0.1	-0.8	-0.0001	0.156	0.12	23.6	17.7
+fruits.NanoStrawbery 1.3	R5 hold	untouched		mid	6	2	99.3	99.2	99.3	sr	99.2	-0.1	0.0	-0.1	-0.0001	0.063	0.023	2.6	1.1
+kanishk.Fr0z3n 1.1	R5 hold	untouched		low	6	7	100.0	99.9	100.0	sr	99.9	-0.1	0.0	-0.1	-0.0001	0.013	0.0	0.1	0.0
+etienne72230.Wall_street 1.0	R5 hold	untouched		low	6	1	100.0	99.9	100.0	sr	99.8	-0.1	0.0	-0.2	-0.0001	0.0	0.0	0.0	0.0
+slugzilla.OscillateGF 1.0	R5 hold	shield	aims	low	5	3	100.0	99.9	100.0	jh	99.5	-0.1	0.0	-0.5	-0.0001	0.0	0.001	0.0	0.3
+mjhjd.MattHussey1 1.1	R5 hold	untouched		mid	6	3	100.0	99.9	100.0	sr	99.8	-0.1	0.0	-0.2	-0.0001	0.075	0.025	1.0	0.6
+eskimo.micro.Echo 0.1	R5 hold	untouched		low	6	1	100.0	99.9	100.0	sr	99.6	-0.1	0.0	-0.4	-0.0001	0.005	0.0	0.7	0.0
+yabot.YaBot 0.1	R5 hold	untouched		low	6	3	100.0	99.9	100.0	sr	99.8	-0.1	0.0	-0.2	-0.0001	0.017	0.009	0.3	0.2
+wit.Deep7 2.0	R5 hold	untouched		low	6	2	99.9	99.8	99.9	jh	99.8	-0.1	0.0	-0.1	-0.0001	0.009	0.016	0.2	0.5
+skm.butterfly 1.0	R5 hold	untouched		low	6	3	100.0	99.9	99.9	sr	99.8	-0.1	-0.1	-0.2	-0.0001	0.004	0.004	0.5	0.5
+rc.RCBot 2.0	R5 hold	shield		low	5	2	100.0	99.9	99.9	bb	99.8	-0.1	-0.1	-0.2	-0.0001	0.0	0.0	0.0	0.3
+m3thos.Eva02 0.7.1	R5 hold	untouched		mid	5	2	94.0	93.8	98.8	jh	94.1	-0.2	4.8	0.1	-0.0002	0.051	0.074	6.3	10.1
+cw.megas.Blade 0.8	R5 hold	shield	aims	low	4	4	88.6	88.4	92.2	ns	87.3	-0.2	3.6	-1.3	-0.0002	0.007	0.024	4.1	13.1
+bwbaugh.nano.Tirunculus 0.0.0a	R5 hold	untouched		close	6	3	85.9	85.7	89.4	jh	85.6	-0.2	3.5	-0.3	-0.0002	0.765	0.521	33.1	30.4
+oog.micro.Claudius 1.11	R5 hold	shield	aims	low	3	3	94.2	94.0	95.5	sg	85.0	-0.2	1.3	-9.2	-0.0002	0.01	0.004	2.6	2.9
+pez.rumble.Ali 0.4.9	R5 hold	shield		low	2	3	97.5	97.3	98.7	og	84.3	-0.2	1.2	-13.2	-0.0002	0.027	0.005	13.7	2.6
+robar.micro.Gladius 1.15	R5 hold	shield	aims	low	4	6	99.1	98.9	100.0	jh	98.3	-0.2	0.9	-0.8	-0.0002	0.002	0.0	0.5	0.0
+learn.ISmart 2.0s	R5 hold	shield	aims	low	4	3	98.2	98.0	98.8	og	96.0	-0.2	0.6	-2.2	-0.0002	0.019	0.0	3.0	0.0
+ahr.ice.Ice 1.0	R5 hold	lever	stopGoShifts	low	5	3	96.5	96.3	97.0	sg	94.1	-0.2	0.5	-2.4	-0.0002	0.031	0.025	6.7	6.7
+SFS.SamsSecondRobot 1.0	R5 hold	untouched		low	6	5	99.5	99.3	99.8	sr	99.3	-0.2	0.3	-0.2	-0.0002	0.012	0.019	0.8	1.2
+zzx.Serunyr 2.0.2	R5 hold	untouched		low	6	4	99.4	99.2	99.7	sg	98.3	-0.2	0.3	-1.1	-0.0002	0.005	0.01	0.9	1.8
+bvh.mini.Freya 0.55	R5 hold	shield	aims	low	4	3	99.8	99.6	100.0	jh	99.5	-0.2	0.2	-0.3	-0.0002	0.001	0.001	0.4	0.4
+bots.UnterExBot 1.0	R5 hold	untouched		low	6	2	99.2	99.0	99.3	sg	98.9	-0.2	0.1	-0.3	-0.0002	0.013	0.018	0.6	0.8
+tide.pear.Pear 0.62.1	R5 hold	shield	aims	low	3	3	99.5	99.3	99.4	og	98.2	-0.2	-0.1	-1.3	-0.0002	0.004	0.001	1.7	0.5
+ers.nano.lig.LigMA 1.9	R5 hold	shield		low	5	2	98.6	98.4	98.4	bb	93.2	-0.2	-0.2	-5.4	-0.0002	0.001	0.009	0.5	2.0
+de.simpleworks.robocode.bots.swiBot 1.1	R5 hold	untouched		mid	6	3	99.8	99.6	99.7	sr	99.3	-0.2	-0.1	-0.5	-0.0002	0.052	0.04	1.6	0.9
+chase.pm.Pytko 1.0	R5 hold	shield	aims,stills	low	4	3	98.4	98.2	98.2	bb	87.5	-0.2	-0.2	-11.0	-0.0002	0.006	0.007	3.2	3.9
+stelo.MirrorNano 1.4	R5 hold	untouched		mid	6	5	93.3	93.0	98.4	sg	92.6	-0.3	5.1	-0.7	-0.0003	0.069	0.033	12.8	9.6
+dmp.nano.Eve 3.41	R5 hold	untouched		low	5	2	94.0	93.7	96.5	sr	94.0	-0.3	2.5	0.0	-0.0003	0.034	0.023	6.0	8.0
+nat.micro.Reepicheep 0.1a	R5 hold	lever	stopGoShifts	mid	5	3	93.9	93.6	95.8	jh	92.2	-0.3	1.9	-1.7	-0.0003	0.053	0.03	11.9	8.3
+rijteam.SmartDodge 1.1	R5 hold	untouched		low	6	3	98.9	98.6	99.6	sg	98.8	-0.3	0.7	-0.1	-0.0003	0.045	0.043	1.2	1.6
+caimano.Furia_Ceca 0.22	R5 hold	untouched		low	6	3	99.3	99.0	99.8	sr	99.0	-0.3	0.5	-0.2	-0.0003	0.013	0.0	1.6	0.0
+el.Attackr 0.1	R5 hold	untouched		mid	6	6	99.1	98.8	99.5	jh	99.0	-0.3	0.4	-0.1	-0.0003	0.054	0.036	2.7	1.8
+pez.nano.Icarus 0.3	R5 hold	untouched		low	6	3	99.3	99.0	99.4	sg	98.3	-0.3	0.1	-1.0	-0.0003	0.009	0.008	1.8	2.1
+blir.nano.inch.Inchworm 1.0	R5 hold	untouched		low	6	3	99.0	98.7	99.1	sr	98.5	-0.3	0.1	-0.5	-0.0003	0.036	0.008	3.2	0.9
+nat.nano.Ocnirp 1.73	R5 hold	shield	aims	low	5	3	98.8	98.5	98.8	ns	90.4	-0.3	0.0	-8.4	-0.0003	0.006	0.005	1.5	2.2
+jekl.DarkHallow .90.9	R5 hold	shield	aims	low	3	1	99.9	99.6	99.9	og	97.8	-0.3	0.0	-2.1	-0.0003	0.007	0.001	0.8	0.7
+slugzilla.OscillatePattern 1.0	R5 hold	shield	aims	low	5	2	99.8	99.5	99.8	ns	98.4	-0.3	0.0	-1.4	-0.0003	0.001	0.001	0.3	0.3
+apv.NanoLauLectrik 1.0	R5 hold	shield	aims	low	5	4	97.9	97.6	97.6	bb	86.1	-0.3	-0.3	-11.8	-0.0003	0.001	0.006	0.5	3.2
+ad.Quest 0.10	R5 hold	shield	aims	low	3	6	96.2	95.9	95.9	bb	88.3	-0.3	-0.3	-7.9	-0.0003	0.033	0.034	2.5	15.1
+jwst.DAD.DarkAndDarker 1.1	R5 hold	shield		mid	4	2	95.7	95.3	97.6	jh	92.8	-0.4	1.9	-2.9	-0.0003	0.062	0.096	18.9	8.4
+fala.robocode.FalaRobot 1.0	R5 hold	lever	stopGos	low	6	1	98.4	98.0	100.0	og	97.8	-0.4	1.6	-0.6	-0.0003	0.023	0.001	1.0	0.5
+takeBot.SpiralCrash 1.0	R5 hold	untouched		mid	6	2	96.9	96.5	98.3	sg	96.8	-0.4	1.4	-0.1	-0.0003	0.061	0.078	5.2	7.1
+bots.UnterBot 1.0	R5 hold	untouched		low	6	1	98.0	97.6	99.2	sg	97.5	-0.4	1.2	-0.5	-0.0003	0.038	0.03	3.7	5.0
+deith.Czolgzilla 0.11	R5 hold	untouched		mid	5	2	96.2	95.8	97.1	jh	95.5	-0.4	0.9	-0.7	-0.0003	0.075	0.053	7.1	7.6
+wiki.nano.RaikoNano 1.1	R5 hold	shield	aims	low	5	3	93.7	93.3	94.5	og	92.1	-0.4	0.8	-1.6	-0.0003	0.023	0.006	4.4	2.1
+oog.nano.Fuatisha 1.1	R5 hold	shield	aims	low	4	4	97.8	97.4	98.4	og	92.7	-0.4	0.6	-5.1	-0.0003	0.002	0.0	0.4	0.0
+pa3k.Manta 1.20	R5 hold	untouched		mid	6	2	91.8	91.4	92.1	ns	89.5	-0.4	0.3	-2.2	-0.0003	0.05	0.044	10.4	13.2
+kcn.unnamed.Unnamed 1.21	R5 hold	shield	aims	low	4	1	100.0	99.6	100.0	og	98.9	-0.4	0.0	-1.1	-0.0003	0.0	0.001	0.0	0.2
+mae.Mae1 1.1	R5 hold	untouched		low	6	2	100.0	99.6	99.9	ns	99.7	-0.4	-0.1	-0.3	-0.0003	0.007	0.0	0.3	0.0
+ha2.T3 0.2	R5 hold	shield	aims	low	5	4	98.8	98.4	98.5	og	95.2	-0.4	-0.3	-3.5	-0.0003	0.002	0.006	1.4	3.5
+djc.Aardvark 0.3.6	R5 hold	shield	stills,surfKeys	mid	5	1	93.0	92.5	98.5	og	91.7	-0.5	5.5	-1.3	-0.0004	0.052	0.029	15.9	9.8
+kawigi.f.FhqwhgadsMicro 1.0	R5 hold	shield	aims	mid	4	6	96.9	96.4	99.6	og	94.8	-0.5	2.7	-2.1	-0.0004	0.057	0.001	1.9	0.5
+dft.Guppy 1.0	R5 hold	surfkey	surfKeys	mid	5	2	96.0	95.5	97.6	sg	95.5	-0.5	1.6	-0.5	-0.0004	0.053	0.024	10.1	4.9
+ICS4U1.Patrick_White_Schrodinger 1.1	R5 hold	untouched		low	6	3	98.1	97.6	99.4	sg	97.7	-0.5	1.3	-0.4	-0.0004	0.024	0.001	4.0	0.6
+davidalves.net.DuelistMini 1.1	R5 hold	shield	aims	low	4	2	100.0	99.5	100.0	og	99.2	-0.5	0.0	-0.8	-0.0004	0.0	0.0	0.0	0.0
+Noran.BitchingElk 0.054	R5 hold	shield	aims	low	6	1	100.0	99.5	99.8	ds	99.3	-0.5	-0.2	-0.7	-0.0004	0.0	0.001	0.0	0.2
+krillr.mini.JointStrike 2.0.0	R5 hold	untouched		low	5	2	90.1	89.6	89.9	sr	89.0	-0.5	-0.2	-1.1	-0.0004	0.027	0.025	9.3	9.5
+nz.A7Ibwenape A7Ibwen1.0	R5 hold	untouched		low	6	3	99.8	99.3	99.4	sr	99.1	-0.5	-0.4	-0.7	-0.0004	0.032	0.014	2.1	1.2
+rsk1.RSK1 4.0	R5 hold	shield	aims	low	5	2	97.0	96.4	98.8	ns	94.8	-0.6	1.8	-2.2	-0.0005	0.005	0.002	1.9	0.6
+takeBot.WeavingWiggle 1.1	R5 hold	untouched		mid	6	2	98.8	98.2	99.5	sg	98.2	-0.6	0.7	-0.6	-0.0005	0.052	0.016	4.9	1.3
+oa.weak.BotherBot 0.1	R5 hold	untouched		low	6	3	98.7	98.1	99.0	sr	98.3	-0.6	0.3	-0.4	-0.0005	0.027	0.009	3.4	0.9
+DM.Chicken 4.0	R5 hold	untouched		low	6	1	99.6	99.0	99.9	sg	99.0	-0.6	0.3	-0.5	-0.0005	0.019	0.028	1.4	2.1
+vuen.Fractal 0.55	R5 hold	shield	aims	low	5	4	99.8	99.2	100.0	jh	98.0	-0.6	0.2	-1.8	-0.0005	0.003	0.001	0.3	0.5
+ph.micro.Pikeman 0.4.5	R5 hold	shield	aims	low	4	1	100.0	99.4	100.0	og	99.2	-0.6	0.0	-0.8	-0.0005	0.0	0.001	0.0	0.3
+mz.Adept 2.65	R5 hold	shield		low	5	3	99.5	98.9	99.4	sg	98.3	-0.6	-0.1	-1.2	-0.0005	0.003	0.001	1.4	0.5
+pkdeken.Paladin 1.0	R5 hold	lever	stopGos	low	5	4	98.8	98.2	98.6	sg	94.7	-0.6	-0.2	-4.1	-0.0005	0.012	0.003	2.3	1.4
+whind.Strength 0.6.4	R5 hold	shield	aims	low	4	3	98.5	97.9	97.9	bb	97.0	-0.6	-0.6	-1.5	-0.0005	0.001	0.003	0.3	1.7
+wcsv.mega.PowerHouse2 0.2	R5 hold	shield	aims	low	3	7	98.5	97.9	97.9	bb	92.8	-0.6	-0.6	-5.8	-0.0005	0.003	0.0	1.2	0.0
+trm.Wrekt 1.1.6.f	R5 hold	shield	aims	low	3	7	99.5	98.9	98.9	bb	88.7	-0.6	-0.6	-10.8	-0.0005	0.004	0.002	1.5	1.0
+lucasslf.Wiggins 0.6	R5 hold	shield	aims	low	3	4	99.6	99.0	99.0	bb	90.9	-0.6	-0.6	-8.7	-0.0005	0.019	0.001	0.4	1.1
+pez.clean.Swiffer 0.2.9	R5 hold	shield	aims	low	4	3	97.2	96.5	99.5	og	96.8	-0.7	2.3	-0.4	-0.0006	0.004	0.01	0.7	3.5
+SK.SimpleKiller 1.0	R5 hold	untouched		mid	6	6	98.0	97.3	98.5	sg	97.9	-0.7	0.5	-0.1	-0.0006	0.064	0.03	5.0	3.1
+davidalves.net.Duelist 0.1.6src	R5 hold	surfkey	surfKeys	mid	4	2	91.4	90.7	91.5	ns	86.8	-0.7	0.1	-4.7	-0.0006	0.051	0.021	15.8	6.6
+frag.FragBot 1.0	R5 hold	shield	aims	low	5	3	100.0	99.3	100.0	jh	98.9	-0.7	0.0	-1.1	-0.0006	0.003	0.001	0.0	0.3
+ouroboros.Dragon 0.0.3	R5 hold	shield	aims	low	3	1	99.2	98.5	99.1	og	93.1	-0.7	-0.1	-6.1	-0.0006	0.006	0.001	0.3	1.4
+suh.nano.RandomPM 1.02	R5 hold	shield	aims	low	5	3	99.4	98.7	98.9	ns	94.4	-0.7	-0.5	-5.0	-0.0006	0.001	0.001	0.3	0.6
+voidious.perceptual.RetroGirl 1.0.0	R5 hold	lever	stopGoShifts	low	5	3	97.1	96.4	96.4	ns	95.4	-0.7	-0.7	-1.7	-0.0006	0.024	0.036	4.1	7.8
+hs.SimpleHBot 1.3	R5 hold	untouched		low	6	2	99.5	98.8	98.8	bb	98.5	-0.7	-0.7	-1.0	-0.0006	0.025	0.03	2.7	3.3
+cf.proto.Shiva 2.2	R5 hold	shield	stopGoShifts,stills	low	3	1	89.2	88.4	93.1	sg	83.5	-0.8	3.9	-5.7	-0.0007	0.005	0.02	3.2	8.7
+myl.micro.Avipes 1.00	R5 hold	shield	aims,exitOffs,stills	low	4	3	91.8	91.0	95.3	sg	86.8	-0.8	3.5	-5.0	-0.0007	0.006	0.005	4.5	3.6
+japs.Sjonniebot 0.9.1	R5 hold	surfkey	surfKeys	low	6	3	95.1	94.3	96.3	sg	94.4	-0.8	1.2	-0.7	-0.0007	0.049	0.026	11.1	6.5
+fnc.bandit.Bandit 5.2.0	R5 hold	untouched		low	6	2	97.2	96.4	97.5	sr	96.1	-0.8	0.3	-1.1	-0.0007	0.023	0.025	4.3	4.9
+madmath.Cow 0.1.1	R5 hold	untouched		low	6	2	98.8	98.0	98.8	jh	97.7	-0.8	0.0	-1.1	-0.0007	0.046	0.021	5.1	2.8
+spinnercat.Kitten 1.6	R5 hold	shield	aims	low	5	3	99.0	98.2	98.6	ns	92.9	-0.8	-0.4	-6.1	-0.0007	0.002	0.002	1.1	0.7
+element.Earth 1.1	R5 hold	lever	stopGoShifts	low	3	2	96.6	95.8	95.8	bb	92.4	-0.8	-0.8	-4.2	-0.0007	0.037	0.075	8.0	7.8
+metal.small.dna2.MCoolDNA 1.5	R5 hold	shield	aims	low	4	4	99.7	98.8	100.0	og	98.2	-0.9	0.3	-1.5	-0.0008	0.003	0.002	2.3	1.4
+apc.Caan 1.0	R5 hold	surfkey	surfKeys	mid	6	1	97.1	96.2	97.1	dm	95.2	-0.9	0.0	-1.9	-0.0008	0.052	0.037	8.0	3.8
+kinsen.nano.Quarrelet 1.0	R5 hold	shield	aims	low	5	3	97.6	96.7	96.7	bb	87.5	-0.9	-0.9	-10.1	-0.0008	0.004	0.006	1.3	3.2
+pa3k.Quark 1.02	R5 hold	shield	aims	low	5	3	95.5	94.6	94.6	bb	91.0	-0.9	-0.9	-4.5	-0.0008	0.001	0.001	0.5	0.4
+KiraNL.ChupaLite 0.4	R5 hold	shield	aims	low	4	2	100.0	99.0	100.0	ns	98.7	-1.0	0.0	-1.3	-0.0008	0.0	0.001	0.0	0.9
+pedersen.Hubris 2.4	R5 hold	shield	aims	low	4	2	96.9	95.8	99.9	og	85.8	-1.1	3.0	-11.1	-0.0009	0.001	0.001	0.6	0.0
+bing2.Melody 1.3.1	R5 hold	lever	stopGoShifts	low	4	4	97.7	96.6	100.0	jh	96.7	-1.1	2.3	-1.0	-0.0009	0.007	0.055	1.9	5.4
+mladjo.GnuKlub 0.1	R5 hold	lever	stopGos	low	4	4	96.9	95.8	98.6	jh	95.8	-1.1	1.7	-1.2	-0.0009	0.01	0.052	2.4	6.7
+pla.Memnoch 0.5	R5 hold	untouched		low	6	1	98.6	97.5	99.3	sg	96.9	-1.1	0.7	-1.7	-0.0009	0.015	0.015	2.3	2.4
+GarmBox.Anger 1.0	R5 hold	untouched		close	6	4	96.2	95.1	96.0	og	95.3	-1.1	-0.2	-0.9	-0.0009	0.224	0.084	22.5	9.1
+throxbot.ThroxBot 0.1	R5 hold	shield		low	6	2	99.7	98.5	100.0	jh	96.8	-1.2	0.3	-2.9	-0.001	0.008	0.0	3.9	0.0
+ry.VirtualGunExperiment 1.2.0	R5 hold	shield	aims	low	3	1	99.7	98.5	99.7	og	95.5	-1.2	0.0	-4.2	-0.001	0.0	0.002	0.0	0.8
+suh.nano.TargetR 1.00	R5 hold	untouched		mid	6	7	96.8	95.6	96.6	sr	96.3	-1.2	-0.2	-0.5	-0.001	0.064	0.056	7.8	7.3
+nat.nano.OcnirpPM 1.0	R5 hold	shield	aims	low	5	2	100.0	98.8	99.6	ns	91.7	-1.2	-0.4	-8.3	-0.001	0.006	0.003	2.6	1.5
+stefw.Tigger 0.0.23	R5 hold	shield	aims	low	3	3	99.5	98.3	98.7	ns	97.0	-1.2	-0.8	-2.5	-0.001	0.004	0.002	2.2	1.2
+mld.Moebius 2.9.3	R5 hold	shield	aims	low	4	1	100.0	98.8	99.0	ns	95.6	-1.2	-1.0	-4.4	-0.001	0.001	0.001	0.4	0.7
+ab.DengerousRoBatra 1.3	R5 hold	lever	stopGoShifts	low	3	2	95.9	94.6	97.0	sg	94.4	-1.3	1.1	-1.5	-0.0011	0.022	0.082	3.7	9.1
+zyx.micro.Ant 1.1	R5 hold	lever	stopGoShifts	low	5	2	97.7	96.4	98.7	ds	95.3	-1.3	1.0	-2.4	-0.0011	0.014	0.006	2.3	2.9
+vStar.RAFzilla 2.15	R5 hold	untouched		low	6	1	99.4	98.1	99.8	sg	98.3	-1.3	0.4	-1.1	-0.0011	0.016	0.035	1.5	5.0
+kid.Toa .0.5	R5 hold	shield	aims,stills	low	3	2	98.6	97.3	97.3	bb	91.8	-1.3	-1.3	-6.8	-0.0011	0.003	0.004	1.3	1.7
+tex.Longbot 0.4	R5 hold	untouched		low	6	5	98.1	96.7	98.4	sg	96.3	-1.4	0.3	-1.8	-0.0012	0.029	0.02	5.5	4.1
+eat.HumblePieLite 1.0	R5 hold	lever	mimicOns	mid	5	4	94.5	93.0	99.4	og	91.4	-1.5	4.9	-3.1	-0.0013	0.079	0.057	12.5	14.0
+timmit.micro.TimXJ 0.22	R5 hold	shield		low	5	2	88.1	86.6	91.3	ds	86.9	-1.5	3.2	-1.2	-0.0013	0.012	0.053	4.5	18.4
+et.Predator 1.8	R5 hold	shield	stills	low	5	2	97.7	96.2	97.2	sg	96.2	-1.5	-0.5	-1.5	-0.0013	0.002	0.006	0.9	3.8
+theo.Hydrogen 2.1r	R5 hold	lever	stopGos	low	3	3	92.9	91.3	97.6	sg	80.0	-1.6	4.7	-13.0	-0.0013	0.024	0.004	7.4	1.5
+klein.GottesKrieger 1.1	R5 hold	lever	stopGos	low	5	3	98.2	96.5	97.2	sg	95.4	-1.7	-1.0	-2.8	-0.0014	0.012	0.028	2.7	5.5
+jk.sheldor.nano.Yatagan 1.2.3	R5 hold	shield	aims	low	4	3	96.6	94.9	94.9	bb	85.0	-1.7	-1.7	-11.5	-0.0014	0.004	0.004	1.9	1.7
+rjw.RabidWombat 0.71	R5 hold	shield	aims	low	5	1	100.0	98.2	100.0	og	98.4	-1.8	0.0	-1.6	-0.0015	0.0	0.027	0.0	5.5
+rsim.mini.BulletCatcher 0.4	R5 hold	shield		low	4	1	98.1	96.2	99.6	ns	96.6	-1.9	1.5	-1.5	-0.0016	0.029	0.0	0.9	0.0
+dmp.micro.Aurora 1.41	R5 hold	shield	stills	low	5	4	90.6	88.6	95.4	sg	90.8	-2.0	4.8	0.2	-0.0017	0.012	0.007	5.2	3.9
+zyx.nano.EscherichiaColi 1.0	R5 hold	untouched		mid	6	2	92.3	90.3	94.1	sr	92.3	-2.0	1.8	0.0	-0.0017	0.066	0.058	11.9	15.1
+jekl.mini.BlackPearl .91	R5 hold	shield	moves,aims	low	4	4	99.5	97.5	99.3	og	96.8	-2.0	-0.2	-2.8	-0.0017	0.001	0.002	0.5	1.2
+ary.mini.Nimi 1.0	R5 hold	shield	moves,aims	low	3	5	99.8	97.8	98.9	jh	96.2	-2.0	-0.9	-3.6	-0.0017	0.0	0.0	0.3	0.1
+gh.GrypRepetyf 0.13	R5 hold	untouched		low	4	2	94.8	92.7	97.8	og	95.4	-2.1	3.0	0.6	-0.0018	0.011	0.031	3.3	8.2
+EE.LittleBig 1.0	R5 hold	lever	stopGos	mid	5	3	96.0	93.9	98.5	og	94.3	-2.1	2.5	-1.7	-0.0018	0.091	0.019	9.4	5.1
+kinsen.nano.Charp 1.0	R5 hold	shield	aims	low	5	1	100.0	97.9	98.4	ns	83.8	-2.1	-1.6	-16.2	-0.0018	0.007	0.001	3.2	0.5
+sheldor.micro.Epeeist 3.7	R5 hold	lever	stopGoShifts	mid	3	4	86.0	83.9	83.9	bb	80.0	-2.1	-2.1	-6.0	-0.0018	0.064	0.05	19.1	17.8
+kawigi.nano.ThnikkaBot 0.9	R5 hold	untouched		low	5	2	96.3	94.1	99.2	ds	97.0	-2.2	2.9	0.8	-0.0018	0.02	0.034	4.4	10.4
+non.mega.NaN 0.1	R5 hold	untouched		mid	4	1	91.9	89.7	94.7	sg	85.3	-2.2	2.8	-6.6	-0.0018	0.079	0.05	14.1	13.1
+arthord.MannyPacquiao Delta2	R5 hold	surfkey	surfKeys	mid	6	1	85.4	83.2	86.4	ds	83.9	-2.2	1.0	-1.5	-0.0018	0.064	0.052	23.8	18.6
+mn.micro.perceptual.Mimic 1.0.0	R5 hold	untouched		mid	6	2	95.8	93.6	96.7	sg	91.0	-2.2	0.9	-4.8	-0.0018	0.078	0.067	8.1	9.5
+intruder.PrairieWolf 2.61	R5 hold	shield	moves,aims,exitOffs,stills	low	4	7	97.4	95.1	97.9	og	91.5	-2.3	0.5	-6.0	-0.0019	0.002	0.007	0.2	3.9
+florent.small.LittleAngel 1.8	R5 hold	shield	moves,aims	low	3	4	97.0	94.6	97.4	ds	93.4	-2.4	0.4	-3.6	-0.002	0.003	0.007	1.3	3.5
+lxx.Emerald 0.6.5	R5 hold	lever	stopGos	low	3	4	99.4	97.0	99.2	sg	96.9	-2.4	-0.2	-2.5	-0.002	0.008	0.033	0.9	4.7
+tk.BotOX 0.3	R5 hold	untouched		mid	6	2	99.8	97.4	99.2	jh	97.6	-2.4	-0.6	-2.2	-0.002	0.061	0.102	2.4	6.9
+oog.melee.Capulet 1.2	R5 hold	lever	stopGoShifts	low	5	3	95.9	93.5	94.9	sg	92.6	-2.4	-1.0	-3.3	-0.002	0.049	0.054	6.3	9.6
+penguin.MrFreeze 1.0a	R5 hold	untouched		mid	3	3	90.1	87.7	88.5	dm	87.2	-2.4	-1.6	-2.8	-0.002	0.08	0.058	17.7	14.3
+zen.Lindada 0.2	R5 hold	shield	aims	low	5	1	98.5	96.0	100.0	jh	95.2	-2.5	1.5	-3.3	-0.0021	0.004	0.008	2.7	5.2
+nat.Hikari dev0001	R5 hold	lever	stopGoShifts	low	4	1	97.0	94.5	96.9	sg	91.0	-2.5	-0.1	-6.0	-0.0021	0.021	0.01	4.6	4.3
+kawigi.sbf.FloodNano 1.2	R5 hold	surfkey	surfKeys	low	6	2	92.8	90.2	95.9	jh	92.6	-2.6	3.1	-0.2	-0.0022	0.033	0.038	8.1	11.9
+theo.simple.Bones 1.0	R5 hold	shield	moves,aims,stills	low	4	4	99.3	96.7	99.0	og	96.7	-2.6	-0.3	-2.6	-0.0022	0.002	0.004	0.8	2.0
+KiraNL.Cataris 1.0	R5 hold	shield	aims	low	5	1	100.0	97.4	98.1	ns	96.3	-2.6	-1.9	-3.7	-0.0022	0.004	0.005	1.9	2.6
+robar.nano.Vespa 0.95	R5 hold	shield	aims	low	5	1	100.0	97.4	97.8	ds	96.7	-2.6	-2.2	-3.3	-0.0022	0.004	0.004	1.3	2.0
+stelo.UnfoolableNano 1.0	R5 hold	shield	stills	low	6	3	98.0	95.3	98.4	og	95.7	-2.7	0.4	-2.3	-0.0023	0.001	0.004	0.5	2.3
+ins.MobyNano 0.8	R5 hold	shield	aims	low	5	1	99.7	97.0	97.0	bb	94.0	-2.7	-2.7	-5.7	-0.0023	0.009	0.002	0.9	1.4
+stelo.PianistNano 1.3	R5 hold	shield	aims	low	5	2	99.2	96.5	96.5	bb	93.2	-2.7	-2.7	-6.0	-0.0023	0.002	0.007	0.9	3.7
+lrem.magic.TormentedAngel Antiquitie	R5 hold	shield	aims	low	5	1	100.0	97.2	100.0	ns	97.2	-2.8	0.0	-2.8	-0.0024	0.002	0.006	0.9	3.1
+usa.nano.Nemo 2.0	R5 hold	shield	moves,aims	low	5	4	98.9	96.1	97.8	sg	95.8	-2.8	-1.1	-3.1	-0.0024	0.0	0.017	0.0	4.6
+jk.mini.CunobelinDC 1.2	R5 hold	shield	aims	low	2	3	99.7	96.9	97.9	ns	86.3	-2.8	-1.8	-13.4	-0.0024	0.011	0.001	0.2	1.1
+whind.Constitution 0.7.1	R5 hold	shield		mid	5	2	96.8	93.9	97.7	og	90.8	-2.9	0.9	-6.0	-0.0024	0.058	0.007	20.0	3.1
+theo.avenge.Pequod 1.0	R5 hold	shield	aims,stills	low	3	1	100.0	97.1	100.0	og	94.2	-2.9	0.0	-5.8	-0.0024	0.005	0.005	2.7	2.7
+romz.robot.circular.WildRabbit 0.9.6	R5 hold	lever	stopGos	low	6	2	98.0	95.1	95.8	sr	94.8	-2.9	-2.2	-3.2	-0.0024	0.043	0.047	5.4	6.8
+projectx.TestNano 1.0	R5 hold	shield	stills	low	6	1	97.7	94.7	99.8	sg	93.8	-3.0	2.1	-4.0	-0.0025	0.002	0.022	0.9	7.3
+pez.mako.Mako 1.5	R5 hold	shield	aims	low	4	4	98.8	95.8	99.0	og	93.8	-3.0	0.2	-5.0	-0.0025	0.021	0.005	10.5	2.3
+serenity.nonSense 1.39	R5 hold	lever	stopGoShifts	low	5	4	95.6	92.4	95.3	sg	91.8	-3.2	-0.3	-3.8	-0.0027	0.009	0.036	3.2	8.9
+gu.MicroScoob 1.3	R5 hold	shield	moves,aims	low	5	2	97.3	94.0	99.2	og	95.0	-3.3	1.9	-2.3	-0.0028	0.006	0.042	3.2	9.2
+ags.polished.PolishedRuby 1	R5 hold	untouched		close	3	2	93.1	89.8	94.9	sg	84.1	-3.3	1.8	-9.0	-0.0028	0.106	0.105	10.4	19.5
+cf.star.Star2 1.23	R5 hold	shield	moves,aims	low	3	3	91.1	87.8	87.8	bb	84.5	-3.3	-3.3	-6.5	-0.0028	0.023	0.041	3.0	14.0
+xander.cat.SamAxe 1.1	R5 hold	lever	stopGos	low	4	4	97.3	93.9	98.2	sg	91.2	-3.4	0.9	-6.1	-0.0029	0.017	0.061	2.6	10.3
+qwaker00.Ahchoo 1.6	R5 hold	shield	aims	low	5	2	99.6	96.2	100.0	og	96.2	-3.4	0.4	-3.4	-0.0029	0.0	0.003	0.3	3.0
+wompi.Numbat 1.9	R5 hold	shield	stopGoShifts,stills	low	4	4	97.8	94.3	99.0	og	89.9	-3.5	1.2	-7.9	-0.0029	0.001	0.006	0.5	2.8
+supersample.SuperMercutio 1.0	R5 hold	shield	aims,stills	low	5	3	99.4	95.8	97.6	og	96.2	-3.6	-1.8	-3.2	-0.003	0.001	0.002	0.6	0.9
+stelo.UntouchableNano 1.4	R5 hold	shield		low	5	4	99.4	95.6	98.6	sg	95.3	-3.8	-0.8	-4.1	-0.0032	0.001	0.004	0.5	2.3
+ary.FourWD 1.3d	R5 hold	shield	moves,aims	low	3	3	100.0	96.2	98.7	jh	95.1	-3.8	-1.3	-4.9	-0.0032	0.002	0.0	2.7	0.0
+lxx.ConceptA 0.8	R5 hold	lever	stopGos	low	3	3	96.7	92.9	93.2	ns	90.5	-3.8	-3.5	-6.2	-0.0032	0.007	0.016	2.3	4.9
+brainfade.Fallen 0.63	R5 hold	shield	moves,aims	low	3	4	99.9	96.0	97.3	jh	94.5	-3.9	-2.6	-5.4	-0.0033	0.0	0.001	0.0	0.4
+codemojo.nano.Woot 1.0	R5 hold	untouched		low	6	5	95.9	91.8	99.0	sg	96.5	-4.1	3.1	0.6	-0.0034	0.015	0.001	2.3	0.5
+DM.Mijit .3	R5 hold	lever	stopGoShifts	low	5	3	96.4	92.3	96.0	jh	92.5	-4.1	-0.4	-3.9	-0.0034	0.042	0.037	7.8	8.3
+awl.Locutus 1.5	R5 hold	shield	moves,aims	low	5	1	99.5	95.2	96.5	og	94.9	-4.3	-3.0	-4.6	-0.0036	0.0	0.037	0.0	7.5
+TJ.Exupery 1.39	R5 hold	shield	moves,aims	low	4	3	92.8	88.2	89.8	ds	88.3	-4.6	-3.0	-4.5	-0.0039	0.011	0.053	2.8	13.1
+suh.mega.WaveSurferGF 1.04	R5 hold	lever	stopGoShifts	low	4	2	96.9	92.1	97.4	sg	90.5	-4.8	0.5	-6.4	-0.004	0.011	0.051	1.6	11.0
+pez.mini.Tityus 0.9.1	R5 hold	lever	stopGoShifts	low	3	3	90.0	84.9	90.2	sg	80.8	-5.1	0.2	-9.2	-0.0043	0.023	0.039	7.8	14.9
+stelo.Mirror 1.1	R5 hold	untouched		close	4	1	93.2	88.0	95.0	sg	82.8	-5.2	1.8	-10.5	-0.0044	0.127	0.097	15.1	24.1
+NDH.GuessFactor 1.0	R5 hold	shield		mid	6	2	94.8	89.5	92.7	sg	87.3	-5.3	-2.1	-7.5	-0.0045	0.05	0.0	18.3	0.0
+apv.LauLectrik 1.2	R5 hold	lever	stopGos,flatOns	low	4	3	91.7	86.0	87.0	sg	85.0	-5.7	-4.7	-6.8	-0.0048	0.02	0.044	7.3	16.2
+mladjo.AIR 0.7	R5 hold	lever	stopGos	low	5	4	95.4	89.5	99.2	og	91.3	-5.9	3.8	-4.1	-0.005	0.019	0.042	4.9	12.1
+arthord.micro.Apoptygma 0.4	R5 hold	lever	stopGoShifts	low	5	2	93.8	87.9	91.0	sg	86.3	-5.9	-2.8	-7.5	-0.005	0.038	0.052	8.2	17.4
+arthord.micro.Muffin 0.6.1	R5 hold	lever	stopGoShifts	low	4	1	91.7	85.6	92.2	sg	82.6	-6.1	0.5	-9.1	-0.0051	0.03	0.038	8.3	14.4
+slugzilla.ButtHead 2.0	R5 hold	shield	aims	low	4	2	99.3	93.2	98.6	og	92.8	-6.1	-0.7	-6.5	-0.0051	0.006	0.006	3.1	3.6
+amk.ChumbaWumba 0.3	R5 hold	shield	moves,aims	low	5	3	99.5	93.3	100.0	jh	93.5	-6.2	0.5	-6.0	-0.0052	0.003	0.005	1.4	2.7
+DM.mega.Bezier 1.618fprrr	R5 hold	shield	aims	low	3	2	91.1	84.8	100.0	og	85.4	-6.3	8.9	-5.7	-0.0053	0.0	0.057	0.0	19.7
+voidious.micro.Jen 1.11	R5 hold	shield	moves,aims	low	3	2	93.8	87.5	93.2	ds	87.6	-6.3	-0.6	-6.2	-0.0053	0.004	0.042	2.7	12.7
+sheldor.nano.FoilistNano 3.2	R5 hold	shield	aims	low	4	1	98.1	91.5	92.5	sg	85.7	-6.6	-5.6	-12.4	-0.0055	0.002	0.04	0.9	10.0
+davidalves.net.DuelistMicroMkII 1.1	R5 hold	lever	stopGos	low	4	1	95.3	88.6	96.6	sg	88.3	-6.7	1.3	-7.0	-0.0056	0.018	0.007	4.0	2.9
+wiki.BasicGFSurfer 1.02	R5 hold	lever	stopGoShifts	low	3	4	95.3	88.5	96.5	sg	88.7	-6.8	1.2	-6.6	-0.0057	0.016	0.042	2.8	14.3
+cx.micro.Spark 0.6	R5 hold	shield	stills	low	4	1	95.5	88.7	94.7	sg	82.8	-6.8	-0.8	-12.7	-0.0057	0.014	0.007	6.8	4.3
+cx.micro.Smoke 0.96	R5 hold	shield	moves,aims,exitOffs,stills	low	4	3	88.6	81.5	91.8	sg	75.7	-7.1	3.2	-12.9	-0.006	0.008	0.049	4.1	20.2
+ers.micro.speusippus.Speusippus 0.3	R5 hold	shield		low	3	2	95.3	88.0	96.8	sg	88.0	-7.3	1.5	-7.3	-0.0061	0.003	0.068	0.9	15.7
+can.Pookie 1.1	R5 hold	shield	moves,aims	low	4	4	97.6	90.3	98.0	og	93.7	-7.3	0.4	-3.9	-0.0061	0.007	0.037	3.7	10.0
+pe.SandboxLump 1.52	R5 hold	lever	stopGoShifts	low	4	4	94.5	87.2	93.9	sg	84.9	-7.3	-0.6	-9.6	-0.0061	0.034	0.053	4.4	14.3
+mladjo.Grrrrr 0.9	R5 hold	shield	moves,aims	low	4	3	99.4	92.0	99.4	og	89.2	-7.4	0.0	-10.2	-0.0062	0.005	0.005	2.3	2.7
+penguin.Joker .611wr	R5 hold	lever	stopGos	low	3	1	95.1	87.7	92.0	sg	85.8	-7.4	-3.1	-9.3	-0.0062	0.028	0.043	7.9	13.9
+ers.micro.ISuck.ISuckMicro 0.1f	R5 hold	shield		low	4	1	97.7	90.2	99.3	og	92.0	-7.5	1.6	-5.8	-0.0063	0.002	0.067	0.9	14.4
+ers.nano.nekolh.Nekolh 1.4d	R5 hold	shield		low	4	4	94.4	86.2	94.2	ds	87.3	-8.2	-0.2	-7.1	-0.0069	0.001	0.071	0.6	16.1
+stelo.Randomness 1.1	R5 hold	shield	moves,aims	low	4	1	99.2	90.4	97.6	og	91.9	-8.8	-1.6	-7.3	-0.0074	0.002	0.046	1.8	12.1
+slugzilla.Basilisk 3.9	R5 hold	lever	stopGoShifts	low	3	6	92.2	83.2	91.7	sg	77.6	-9.0	-0.5	-14.6	-0.0076	0.021	0.047	7.1	17.9
+cf.mini.Chiva 1.0	R5 hold	shield	moves,aims	low	3	1	99.2	89.8	91.4	jh	89.3	-9.4	-7.8	-9.9	-0.0079	0.003	0.051	2.3	15.8
+areb.Union 1.06	R5 hold	lever	stopGos	low	4	1	96.7	87.0	96.5	sg	86.5	-9.7	-0.2	-10.2	-0.0082	0.009	0.063	2.9	17.4
+pez.frankie.Frankie 0.9.6.1	R5 hold	shield	moves,aims	low	4	1	93.9	84.0	97.0	sg	84.5	-9.9	3.1	-9.4	-0.0083	0.007	0.045	3.5	15.3
+CharlieN.Omega.Omega 1.03	R5 hold	shield	moves,aims	low	5	3	99.8	89.7	96.4	og	90.7	-10.1	-3.4	-9.1	-0.0085	0.0	0.036	0.0	11.7
+AIR.iRobot 1.0	R5 hold	shield	moves,aims	low	4	2	99.2	89.0	99.2	og	91.1	-10.2	0.0	-8.1	-0.0086	0.005	0.031	2.9	11.0
+ers.nano.iSuck.ISuckNano 1.0a	R5 hold	shield	aims	low	4	2	98.2	87.8	97.3	ds	87.4	-10.4	-0.9	-10.8	-0.0087	0.004	0.077	2.2	18.3
+sheldor.nano.Feint 1.2.1	R5 hold	shield	aims	low	4	5	95.6	85.2	90.4	sg	82.7	-10.4	-5.2	-12.9	-0.0087	0.001	0.055	0.6	17.4
+kms.Golden 0.10	R5 hold	shield	moves,aims	low	3	3	97.2	86.6	100.0	jh	86.6	-10.6	2.8	-10.6	-0.0089	0.001	0.041	0.5	15.6
+kc.micro.WaveShark 0.5	R5 hold	shield		low	3	1	98.1	87.1	87.1	bb	78.2	-11.0	-11.0	-19.9	-0.0092	0.006	0.053	3.1	20.3
+rcb.Vanessa03 0	R5 hold	lever	stopGos	low	4	3	98.0	86.7	96.8	sg	84.7	-11.3	-1.2	-13.3	-0.0095	0.008	0.054	1.8	18.4
+pez.micro.Aristocles 0.3.9	R5 hold	lever	stopGoShifts	low	3	3	96.7	84.3	96.5	sg	86.5	-12.4	-0.2	-10.2	-0.0104	0.011	0.039	2.0	14.4
+stelo.Spread 0.9	R5 hold	lever	stopGos	low	3	4	96.2	82.9	97.2	sg	79.7	-13.3	1.0	-16.5	-0.0112	0.007	0.06	1.5	20.0
+stelo.Liblix 0.3.1	R5 hold	lever	stopGoShifts	low	3	5	95.5	81.6	95.9	sg	80.2	-13.9	0.4	-15.2	-0.0117	0.025	0.063	6.9	21.4
+ntc.Cannon 1.12test	R5 hold	lever	stopGos	low	4	3	97.0	82.9	95.2	sg	79.7	-14.1	-1.8	-17.3	-0.0118	0.009	0.067	2.3	21.8
+ar.horizon.Horizon 1.2.2	R5 hold	lever	stopGoShifts	low	2	6	94.5	80.3	91.8	sg	74.3	-14.2	-2.7	-20.2	-0.0119	0.02	0.052	8.4	18.8
+sheldor.micro.EpeeistDC 3.0	R5 hold	lever	stopGoShifts	low	3	2	95.3	81.0	94.6	sg	75.5	-14.3	-0.7	-19.8	-0.012	0.017	0.053	3.7	19.7
+rh.abs.Xwing 2.1	R5 hold	lever	stopGos	low	3	1	95.9	81.0	95.3	sg	78.1	-14.9	-0.6	-17.8	-0.0125	0.018	0.059	6.2	19.7
+nat.BlackHole 2.0gamma	R5 hold	lever	stopGoShifts	low	3	3	96.3	80.7	95.9	sg	75.3	-15.6	-0.4	-21.0	-0.0131	0.018	0.047	5.4	16.5
+ers.nano.gokdeniz.Gokdeniz 1.5b	R5 hold	shield	aims	low	4	3	99.8	83.5	94.4	ds	87.9	-16.3	-5.4	-11.9	-0.0137	0.001	0.079	0.7	22.6
+jk.micro.Cotillion 0.8	R5 hold	shield	aims	low	3	3	97.5	80.2	97.9	ds	76.0	-17.3	0.4	-21.5	-0.0145	0.002	0.048	1.3	18.3
+tjk.deBroglie rev0108	R5 hold	lever	stopGoShifts	low	3	7	95.7	75.6	96.8	sg	65.7	-20.1	1.1	-30.0	-0.0169	0.023	0.06	5.0	24.4
