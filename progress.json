@@ -1,0 +1,58 @@
+{
+ "plan": "pc-team-portfolio",
+ "updated": 1794426376.8387918,
+ "steps": {
+  "tpprep": {
+   "status": "pending"
+  },
+  "tpbb": {
+   "status": "pending"
+  },
+  "tpqt": {
+   "status": "pending"
+  },
+  "tpga": {
+   "status": "pending"
+  },
+  "tpho": {
+   "status": "pending"
+  },
+  "tpli": {
+   "status": "pending"
+  },
+  "tpnd": {
+   "status": "pending"
+  },
+  "tpnc": {
+   "status": "pending"
+  },
+  "tpnk": {
+   "status": "pending"
+  },
+  "tpnh": {
+   "status": "pending"
+  },
+  "tpnp": {
+   "status": "pending"
+  },
+  "tppick": {
+   "status": "pending"
+  },
+  "tpcprep": {
+   "status": "pending"
+  },
+  "tpcbb": {
+   "status": "pending"
+  },
+  "tpcfx": {
+   "status": "pending"
+  },
+  "tpgate": {
+   "status": "pending"
+  },
+  "tppr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
