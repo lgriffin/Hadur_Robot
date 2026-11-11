@@ -96,6 +96,20 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("SHIELD-25")
+    @DisplayName("shield-floor lines name the opponents shield mode fires no shot under 0.4 at, matched as shield entries")
+    void perOpponentFloor() {
+        ShieldList l = ShieldList.parse(List.of("shield-floor: a.B 1.0", "shield-floor: c.D", "shield-floor:"));
+        assertTrue(l.floor("a.B 1.0"));
+        assertFalse(l.floor("a.B 1.1"), "a versioned line matches that version only");
+        assertTrue(l.floor("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.still("a.B 1.0") || l.mirrorOff("a.B 1.0"), "no other switch");
+        assertFalse(l.floor(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.floor("a.B 1.0"));
+    }
+
+    @Test
     @Tag("MIR-2")
     @DisplayName("mirror-off lines name the opponents the duel never runs MIR-1 against, matched as shield entries")
     void perOpponentMirrorOff() {

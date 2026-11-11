@@ -610,6 +610,16 @@ final class ShieldTableData {
     }
 
     /**
+     * SHIELD-25: the opponents shield mode fires no shot under 0.4 power at, one name each.
+     *
+     * @return a fresh array of names
+     */
+    static String[] shieldFloors() {
+        return new String[] {
+        };
+    }
+
+    /**
      * MIR-2: the opponents the duel never runs MIR-1 (the mirror detector, its drive and its aim)
      * against. Empty until a card holds robots; candidate builds add lines here (build-ablation.sh
      * mirofflist).
