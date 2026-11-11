@@ -11,7 +11,8 @@
 #           of bb's) with the 95% low end above zero; the picked teams' member classes get their
 #           current entry plus QUARTERS (work/team-quarters-table.java). Also the read of what
 #           the guard is for: aimed damage fired from under 150 px, qt beside aa, per team
-#           (tools/team_quarters.py). No team picked: the results PR opens and the card ends there.
+#           (tools/team_quarters.py). No team picked: the gate steps do nothing and the results PR
+#           carries the screen, the pick and the damage read.
 #   qtgprep build qg: tmtab with the picked table
 #   qtgbb   bb vs aa on the picked teams x 16 fresh seeds (base 9800); qtgqg the same for qg
 #   qtsum   projected team APS change = (sum of each picked team's qg gain less half its bb gain) / 45
@@ -47,23 +48,23 @@ qtqt   | mvn -q exec:java "-Dexec.args=@work/team-quarters-qt.args"
   stop: fails 20
   stop: stall 30m
   stop: skips 40 over 100
-qtpick | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && python3 tools/team_quarters.py work/team-quarters-"$V"-qt > ${OUT}/team-quarters-damage.md && ${T} pick --report QUARTERS=${OUT}/team-quarters-qt.md --control QUARTERS=${OUT}/team-quarters-bb.md --census plans/team-quarters5.txt --opponents opponents --min-mean 3.0 --low-end 0 --base MATEFIRE,HUNT,PATH,DODGE,CONCORD,CLOSE --shipped ${MODES} --out-md ${OUT}/team-quarters-pick.md --out-tsv ${OUT}/team-quarters-pick.tsv --out-java work/team-quarters-table.java --out-set work/team-quarters-picked.txt && { test -s work/team-quarters-table.java || { bash tools/open_results_pr.sh claude/pc-team-quarters-results "Close quarters on five teams: no team picked" $(ls ${OUT}/team-quarters-*.md 2>/dev/null); echo "pc-team-quarters: no team picked, the card ends here" >&2; exit 4; }; }
+qtpick | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && python3 tools/team_quarters.py work/team-quarters-"$V"-qt > ${OUT}/team-quarters-damage.md && ${T} pick --report QUARTERS=${OUT}/team-quarters-qt.md --control QUARTERS=${OUT}/team-quarters-bb.md --census plans/team-quarters5.txt --opponents opponents --min-mean 3.0 --low-end 0 --base MATEFIRE,HUNT,PATH,DODGE,CONCORD,CLOSE --shipped ${MODES} --out-md ${OUT}/team-quarters-pick.md --out-tsv ${OUT}/team-quarters-pick.tsv --out-java work/team-quarters-table.java --out-set work/team-quarters-picked.txt && if [ -s work/team-quarters-table.java ]; then echo "picked: the gate runs"; else echo "nothing picked: no gate"; fi
   after: qtqt
-qtgprep | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && TEAM_MODE_TABLE="$(pwd)/work/team-quarters-table.java" TEAM_MODE_SUFFIX=qg bash ./build-ablation.sh tmtab && test -f bisect/hadur117.HadurTeam_"$V"qg.jar
+qtgprep | if [ -s work/team-quarters-table.java ]; then V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && TEAM_MODE_TABLE="$(pwd)/work/team-quarters-table.java" TEAM_MODE_SUFFIX=qg bash ./build-ablation.sh tmtab && test -f bisect/hadur117.HadurTeam_"$V"qg.jar; else echo "nothing picked: no gate"; fi
   after: qtpick
-qtgbb  | mvn -q exec:java "-Dexec.args=@work/team-quarters-gbb.args"
+qtgbb  | if [ -s work/team-quarters-table.java ]; then mvn -q exec:java "-Dexec.args=@work/team-quarters-gbb.args"; else echo "nothing picked: no gate"; fi
   after: qtgprep
   watch:
   stop: fails 20
   stop: stall 30m
   stop: skips 40 over 100
-qtgqg  | mvn -q exec:java "-Dexec.args=@work/team-quarters-gqg.args"
+qtgqg  | if [ -s work/team-quarters-table.java ]; then mvn -q exec:java "-Dexec.args=@work/team-quarters-gqg.args"; else echo "nothing picked: no gate"; fi
   after: qtgbb
   watch:
   stop: fails 20
   stop: stall 30m
   stop: skips 40 over 100
-qtsum  | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && python3 tools/team_quarters.py work/team-quarters-"$V"-gqg > ${OUT}/team-quarters-gate-damage.md && ${T} gate --report ${OUT}/team-quarters-gqg.md --control ${OUT}/team-quarters-gbb.md --set work/team-quarters-picked.txt --seeds 16 --teams 45 --min-aps 0.15 --out-md ${OUT}/team-quarters-verdict.md
+qtsum  | if [ -s work/team-quarters-table.java ]; then V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && python3 tools/team_quarters.py work/team-quarters-"$V"-gqg > ${OUT}/team-quarters-gate-damage.md && ${T} gate --report ${OUT}/team-quarters-gqg.md --control ${OUT}/team-quarters-gbb.md --set work/team-quarters-picked.txt --seeds 16 --teams 45 --min-aps 0.15 --out-md ${OUT}/team-quarters-verdict.md; else echo "nothing picked: no gate"; fi
   after: qtgqg
 qtpr   | bash tools/open_results_pr.sh claude/pc-team-quarters-results "Close quarters on five teams: screen, pick and fresh-seed gate" $(ls ${OUT}/team-quarters-*.md 2>/dev/null)
   after: qtsum

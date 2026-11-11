@@ -41,8 +41,13 @@ class TeamQuartersPlanTest {
             + " --census plans/team-quarters5.txt --opponents opponents --min-mean 3.0 --low-end 0"
             + " --base MATEFIRE,HUNT,PATH,DODGE,CONCORD,CLOSE --shipped ${MODES}"),
             "a team is picked at +3.0 over both baselines with the low end above zero, and keeps its entry's modes");
-        assertTrue(queue.contains("test -s work/team-quarters-table.java || { bash tools/open_results_pr.sh claude/pc-team-quarters-results"),
-            "no team picked: the results PR opens and the card ends");
+        for (String step : List.of("qtgprep", "qtgbb", "qtgqg", "qtsum")) {
+            int at = queue.indexOf("\n" + step + " ");
+            String line = queue.substring(at + 1, queue.indexOf("\n", at + 1));
+            assertTrue(line.contains("| if [ -s work/team-quarters-table.java ]; then ") && line.endsWith("; else echo \"nothing picked: no gate\"; fi"),
+                step + " does nothing, and does not fail, when no team was picked");
+        }
+        assertFalse(queue.contains("exit 4"), "no pick is a result, not a failed step");
         assertTrue(queue.contains("gate --report ${OUT}/team-quarters-gqg.md --control ${OUT}/team-quarters-gbb.md"
             + " --set work/team-quarters-picked.txt --seeds 16 --teams 45 --min-aps 0.15"),
             "the gate pools the picked teams over 45 pairings");

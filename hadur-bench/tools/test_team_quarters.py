@@ -24,6 +24,7 @@ class TeamQuartersTest(unittest.TestCase):
         self.assertEqual(16.0, team_quarters.damage(3.0))
         self.assertEqual("jab.Enjambre", team_quarters.opponent("jab.Enjambre_3-9701-baseline"))
         self.assertEqual("jab.Enjambre", team_quarters.opponent("jab.Enjambre_3-9701"))
+        self.assertEqual("x.Two_Words", team_quarters.opponent("x.Two_Words_1.0-9701"))
 
     def test_aimed_picks_the_member_on_the_line(self):
         # Fired north from (500, 500): the member 100 px north is aimed at, the one east is not.

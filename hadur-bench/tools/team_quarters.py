@@ -30,9 +30,10 @@ def damage(power):
 
 
 def opponent(dirname):
-    """'cz.libors.OgiTeam_v1-3-baseline' -> 'cz.libors.OgiTeam', as team_losses.py names it."""
+    """'cz.libors.OgiTeam_v1-3-baseline' -> 'cz.libors.OgiTeam': the seed, then the version after
+    the last underscore, so a class name with an underscore of its own stays whole."""
     name = dirname[:-len("-baseline")] if dirname.endswith("-baseline") else dirname
-    return name.rsplit("-", 1)[0].split("_", 1)[0]
+    return name.rsplit("-", 1)[0].rsplit("_", 1)[0]
 
 
 def aimed(x, y, heading, members):
