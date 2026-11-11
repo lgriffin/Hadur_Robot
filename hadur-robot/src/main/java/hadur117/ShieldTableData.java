@@ -597,6 +597,31 @@ final class ShieldTableData {
             "shinh.Entangled 0.3",
             // pc-shield-audit (BENCH-209, PR #697): +7.0 points on 12 fresh seeds, with exit off
             "cx.Princess 1.0",
+            // pc-ala-shield (BENCH-220, PR #733): +7.34 points on 12 fresh seeds, low end +4.19
+            "lechu.Ala 0.0.4",
+            // pc-shield-rescreen (BENCH-222, PR #739): Saturn +10.5, OperatorZeze +3.5 on 12 fresh seeds
+            "tobe.Saturn lambda",
+            "zeze2.OperatorZeze 1.05",
+            // pc-still-field (BENCH-223, PR #746): X2 +5.7, Che +3.8, Aardvark +3.6 on 12 fresh seeds
+            "florent.XSeries.X2 0.17",
+            "cjm.Che 1.2",
+            "djc.Aardvark 0.3.6",
+        };
+    }
+
+    /**
+     * MIR-2: the opponents the duel never runs MIR-1 (the mirror detector, its drive and its aim)
+     * against. Empty until a card holds robots; candidate builds add lines here (build-ablation.sh
+     * mirofflist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] mirrorOffs() {
+        return new String[] {
+            // pc-mirror-off (BENCH-224, PR #750): 12 PC seeds against master and its A/A copy pooled
+            "janm.Jammy 1.0",         // +11.4
+            "suh.nano.MirrorH 1.01",  // +3.8
+            "suh.nano.MirrorL 1.00",  // +3.6
         };
     }
 

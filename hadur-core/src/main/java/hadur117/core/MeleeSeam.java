@@ -339,7 +339,7 @@ final class MeleeSeam implements Role {
         if (c.target != null && core.diedThisRound(c.target)) ghostTicks++;
         orders.turnRadarRight(c.radarTurn);
         orders.turnGunRight(c.gunTurn);
-        if (c.destination != null) goTo(in, c.destination, orders);
+        if (c.destination != null) goTo(in, c.destination, orders, c.quarters);
         lastCommand = c;
     }
 
@@ -347,8 +347,9 @@ final class MeleeSeam implements Role {
      * Drives toward {@code destination}, backwards if that is the shorter turn. A robot can
      * drive either way at the same speed, so it never needs to turn more than 90 degrees.
      * This is where melee lowers the speed limit that MELEE-2 lifts on hand-over.
+     * With {@code quarters} (TMODE-45) a sharp turn is driven at full speed.
      */
-    private static void goTo(BotInput in, Point2D.Double destination, BotOrders.Builder orders) {
+    private static void goTo(BotInput in, Point2D.Double destination, BotOrders.Builder orders, boolean quarters) {
         Point2D.Double me = in.location();
         double turn = Angles.normalRelativeAngle(
             DiaUtils.absoluteBearing(me, destination) - in.heading());
@@ -360,7 +361,8 @@ final class MeleeSeam implements Role {
         orders.turnRight(turn);
         // Slow down for sharp turns so the robot doesn't swing wide.
         // (Robocode turns a body slower the faster it goes: 10 - 0.75 * |velocity| degrees a tick.)
-        orders.maxVelocity(Math.abs(turn) > Math.PI / 4 ? 4.0 : Rules.MAX_VELOCITY);
+        // TMODE-45: with a chaser at close quarters, speed is worth more than a tight turn.
+        orders.maxVelocity(!quarters && Math.abs(turn) > Math.PI / 4 ? 4.0 : Rules.MAX_VELOCITY);
         orders.ahead(distance);
     }
 

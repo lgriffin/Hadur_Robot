@@ -55,4 +55,10 @@ LAU | 0.2 learning on every scan, no end-game power cap (723) | s#if (getGunHeat
 AA | 0.3 rebuilt, the A/A control | s#/\*\* Per-opponent Markov rows#/** A/A. Per-opponent Markov rows#
 GV | stage 2, gun: each playout's vote spread over 2 + ticks / 8 bins a side (at most 8) instead of a fixed 4, so a long shot votes wider | =saor-arms/SaorGV.java
 TH | stage 3, target: the robot we hit best for its distance (distance x (shots + 2) / (hits + 1), per robot across rounds), sticky by name | =saor-arms/SaorTH.java
-WTB | stage 1, movement (best own design, about -0.32 over five seed sets, gate not passed): legs between the corner's two walls whose depth is, every tick, half the range of the robot that last hit us (the nearest until hit, at most 260); an orbit from two robots left | =saor-arms/SaorWTB.java
+WTA | stage 1, movement (best own design, about -0.21 over seven seed sets: mean inside the gate, interval just short of 0): legs between the corner's two walls whose depth is, every tick, half the range of the nearest robot whose own nearest is us (else the last robot to hit us, else the nearest, at most 260); an orbit from two robots left | =saor-arms/SaorWTA.java
+WAG | stages 1+2 (passes the gate: about -0.14 over seven seed sets): WTA movement with the GV vote width, the own movement and gun vote together | =saor-arms/SaorWAG.java
+WAE | stages 1-4: WAU with power for the best expected energy gain from the target's hit rate and range | =saor-arms/SaorWAE.java
+WGC | stages 1-5: WAE with the chain's velocity in 2 px/tick steps (9 values, not 17), so each row fills twice as fast | =saor-arms/SaorWGC.java
+WGT | stages 1-5 (passes the gate: about +0.06 over seven seed sets): WGC with the chain turn in 3 bins (left, straight, right) | =saor-arms/SaorWGT.java
+WT7 | stages 1-5 (passes the gate: about +0.09 over seven seed sets, best read): WAE with the chain turn in 3 bins, speed at 1 px/tick | =saor-arms/SaorWT7.java
+WD1 | first byte cut of WT7 (inside the gate: about -0.07 over seven seed sets, 1,146 bytes): no duel orbit, no last-hitter fallback, the nearest-whose-nearest-is-us test once per scan | =saor-arms/SaorWD1.java

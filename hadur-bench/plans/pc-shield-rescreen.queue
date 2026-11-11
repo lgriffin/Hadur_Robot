@@ -1,0 +1,50 @@
+# 1v1, two shield list adds from the cloud rescreen on fresh PC seeds (BENCH-222, docs/bench/local/2026-11-09_view-rank.md,
+# "Shield rescreen"). Leigh starts it once the PC is free (one card at a time, from master):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-shield-rescreen        (or  ./queue.sh run pc-shield-rescreen)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes; no step needs a
+# decision. About 5 minutes of battles (2 robots x 3 arms x 12 seeds = 72).
+#
+# Why it should win (the PC card rule of 2026-11-03):
+#   - Per-opponent tailoring: each line names one robot; every other robot, team and melee play bit for bit as master.
+#   - Same route as Ala (pc-ala-shield, PR #733, banked PR #734: +7.34 on 12 PC seeds after four earlier reads up and
+#     never locked). BeepBoop 2.0 shields both robots and we do not. On pc-shield-still (2026-10-31, 3 seeds, the older
+#     shield) both read up but under that card's 5-point lock: Saturn +3.6, OperatorZeze +3.1. The cloud rescreen of
+#     2026-11-10 put the eight such robots on the 3.21 shield with still lines (6 seeds from 11900): Saturn +8.1 (low
+#     end +3.4), OperatorZeze +6.5 (low end +4.2) locked at 3 points; Robbo +2.2, Aspid +1.7, YellowBird +0.7, Eve -0.1,
+#     Calypso -1.0, Topaz -2.4 did not and stay off.
+#   - Risk: cloud and PC have disagreed on shield robots before (Musashi: cloud +20 on 6 seeds, PC -3.0 on 12). This
+#     card decides it on 12 fresh PC seeds against master and its A/A copy; a robot ships only at a 3-point margin with
+#     its 95% low end above 0.
+# gate: the per-robot pick (`mode_table.py --margin 3`, interval above 0) names the lines to ship; the APS gate reads mz
+# over the 1,217-robot field at a 0.005 bar (two robots at 3 points each; `watch: field=1217` is that normalisation, not
+# a battle count) with the 95% low end above 0, A/A inside its band. With two robots the gate's interval across robots
+# is wide; the pick is the read per robot, as on pc-shield-audit and pc-ala-shield. No pilot or futility rule: two
+# robots are too few for an interim read.
+# Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle
+# over the last 200, or no battle in 30 minutes; every battle fought is kept and a rerun resumes. ALERT opens an
+# issue for Leigh on any stop. Nothing here ships: on a pass a PR adds the held lines to ShieldListData and
+# ShieldTableData's stills for the next release.
+
+set V = 3.21
+set P = --parallel 12 --no-truth-log --failed-ok
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
+set W = work/shield-rescreen-pc
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && SHIELD_ADD=plans/shield-rescreen-add.txt SHIELD_STILL=plans/shield-rescreen-still.txt bash ./build-ablation.sh slistadd,szlist && test -f bisect/hadur117.Hadur_${V}mtzl.jar && ./fetch-opponents.sh --set panel-shield-rescreen.txt && mvn -q compile
+
+confirm | ./bench-top20.sh ${C} ${P} --set panel-shield-rescreen.txt --seeds 12 --seed-base 12000 --arms plans/pc-shield-rescreen.arms --out ${W} --label shield-rescreen-pc --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-rescreen-pc.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm mz --panel panel-shield-rescreen.txt --bar 0.005 --out ${OUT}/$(date +%Y-%m-%d)_shield-rescreen-pc-gate.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 3 --out-tsv ${OUT}/shield-rescreen-pc-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-rescreen-pc-pick.md && python3 tools/per_robot.py ${W}/arms.tsv --arms mz --out ${OUT}/$(date +%Y-%m-%d)_shield-rescreen-pc-per-robot.md --out-tsv ${OUT}/shield-rescreen-pc-per-robot.tsv
+  after: confirm
+
+pr | bash tools/open_results_pr.sh claude/pc-shield-rescreen-results "1v1 Saturn and OperatorZeze on the shield list, 12 fresh seeds" ${OUT}/*_shield-rescreen-pc*.md ${OUT}/shield-rescreen-pc-per-robot.tsv $(find ${OUT} -maxdepth 1 -name shield-rescreen-pc-pick.tsv -size +0c)
+  after: gate

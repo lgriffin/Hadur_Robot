@@ -1,0 +1,5 @@
+# Cloud AES forensic for MOVE-33 mimic members (docs/bench/local/2026-11-09_view-rank.md): c is 3.21 with the AES
+# recorder on (aa,aesrec), mm the same with the six learning-gun mimics among the aim members for every opponent
+# (mimmem,aesrec). Scored on real hits by round with the truth logs on.
+c | hadur117.Hadur 3.21aaar | bisect/hadur117.Hadur_3.21aaar.jar
+mm | hadur117.Hadur 3.21mmar | bisect/hadur117.Hadur_3.21mmar.jar

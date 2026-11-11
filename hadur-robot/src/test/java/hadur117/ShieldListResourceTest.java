@@ -50,7 +50,9 @@ class ShieldListResourceTest {
         // SHIELD-21 (pc-shield-still2, PR #515): 7 of BeepBoop's shield robots join with still plans.
         // pc-rival-confirm (PR #537): claire, TestNano and GlowBlowMelee join with still plans; DuelistMicroMkII and
         // Vanessa03 leave for their stop-and-go lines. pc-shield-audit (PR #697): Princess joins with still and exit off.
-        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1, list.size());
+        // pc-ala-shield (PR #733): Ala joins with a still line. pc-shield-rescreen (PR #739): Saturn and OperatorZeze.
+        // pc-still-field (PR #746): X2, Che and Aardvark.
+        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
@@ -123,9 +125,10 @@ class ShieldListResourceTest {
             assertTrue(list.matches(name), name);
         }
         // Locked on the first pick, dropped on the 8 fresh seeds of the confirm. TJ.Exupery 1.39 was
-        // too, and joined with shield part 2's opening drive (PR #256).
+        // too, and joined with shield part 2's opening drive (PR #256). X2 joined later with a still line
+        // (pc-still-field, PR #746).
         for (String name : new String[] {
-            "ar.horizon.Horizon 1.2.2", "stelo.Spread 0.9", "florent.XSeries.X2 0.17"}) {
+            "ar.horizon.Horizon 1.2.2", "stelo.Spread 0.9"}) {
             assertTrue(!list.matches(name), name);
         }
     }
@@ -221,7 +224,10 @@ class ShieldListResourceTest {
         // pc-rival-confirm (PR #537): 9 more, 5 of them with exit off. pc-rival-near (PR #545): 5 more, 2 with
         // exit off; Hydrogen's line goes, since it left the list for stop-and-go and a still line reads only shielded.
         // pc-shelf (PR #636): Entangled. pc-shield-audit (PR #697): Princess, with exit off.
-        assertEquals(17 + 9 + 5 - 1 + 1 + 1, ShieldTableData.stills().length);
+        // pc-ala-shield (PR #733): Ala. pc-shield-rescreen (PR #739): Saturn and OperatorZeze.
+        // pc-still-field (PR #746): X2, Che and Aardvark.
+        assertEquals(17 + 9 + 5 - 1 + 1 + 1 + 1 + 2 + 3, ShieldTableData.stills().length);
+        assertTrue(list.matches("lechu.Ala 0.0.4") && list.still("lechu.Ala 0.0.4"));
         assertTrue(list.matches("cx.Princess 1.0") && Arrays.asList(ShieldTableData.exitOffs()).contains("cx.Princess 1.0"));
         for (String n : ShieldTableData.stills()) {
             assertTrue(list.matches(n), n + " is shielded");
@@ -267,6 +273,14 @@ class ShieldListResourceTest {
         }
         assertTrue(!list.flatOn("lxx.Tomcat 3.68"), "Tomcat lost on the confirm (-3.9)");
     }
+    @Test
+    @Tag("MIR-2")
+    @DisplayName("the 3 pc-mirror-off picks carry mirror-off lines and no other robot does")
+    void mirrorOffPicks() {
+        assertEquals(java.util.Set.of("janm.Jammy 1.0", "suh.nano.MirrorH 1.01", "suh.nano.MirrorL 1.00"),
+            java.util.Set.of(ShieldTableData.mirrorOffs()), "MIR-2 lines held by pc-mirror-off (BENCH-224, PR #750)");
+    }
+
     @Test
     @Tag("POW-17")
     @DisplayName("the 8 pc-race-power picks carry race-power lines and no other robot does")

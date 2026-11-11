@@ -347,6 +347,15 @@ final class ShieldListData {
             "sL300.Mozart life",
             // pc-shield-audit (BENCH-209, PR #697): +7.0 points on 12 fresh seeds with still and exit off; Musashi read -3.0 and stays off
             "cx.Princess 1.0",
+            // pc-ala-shield (BENCH-220, PR #733): +7.34 points on 12 fresh seeds with a still line (low end +4.19); list add alone +3.7
+            "lechu.Ala 0.0.4",
+            // pc-shield-rescreen (BENCH-222, PR #739): with still lines on 12 fresh seeds, Saturn +10.5 (low end +7.2), OperatorZeze +3.5 (low end +0.6)
+            "tobe.Saturn lambda",
+            "zeze2.OperatorZeze 1.05",
+            // pc-still-field (BENCH-223, PR #746): with still lines on 12 fresh seeds, X2 +5.7 (low end +1.1), Che +3.8 (low end +1.4), Aardvark +3.6 (low end +0.9)
+            "florent.XSeries.X2 0.17",
+            "cjm.Che 1.2",
+            "djc.Aardvark 0.3.6",
         };
     }
 }

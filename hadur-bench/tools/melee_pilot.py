@@ -64,7 +64,7 @@ def main(argv=None):
     ap.add_argument('root')
     ap.add_argument('--out', required=True)
     ap.add_argument('--title', default='Melee pilot')
-    ap.add_argument('--expect', type=int, help='the pairs the pilot schedules; under 95% of them is no data')
+    ap.add_argument('--expect', type=int, help='the pairs the pilot schedules; under 95%% of them is no data')
     ap.add_argument('--rounds', type=int, help='the rounds a battle fights; a shorter one is left out')
     ap.add_argument('--share-only', action='store_true',
                     help='BENCH-186: pass on the score share alone, for a lever not aimed at crowd deaths')

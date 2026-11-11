@@ -321,5 +321,43 @@ class TeamModesTest(unittest.TestCase):
         self.assertIn("the card stops here", (out / "s.md").read_text())
 
 
+    def test_shrink_pulls_noisy_gains_to_the_mode_mean_and_keeps_real_spread(self):
+        # Gains +6, 0, -6 read to +/-1.96 (noise variance 1): spread 24 - 1 = 23, so each keeps 23/24 of its gain.
+        s = team_modes.shrink({"x": {"a": (6.0, 1.96), "b": (0.0, 1.96), "c": (-6.0, 1.96)}})
+        self.assertAlmostEqual(5.75, s["x"]["a"], places=2)
+        self.assertAlmostEqual(-5.75, s["x"]["c"], places=2)
+        # Gains +2, +1, 0 read to +/-9.8 (noise variance 25): no spread shows, every team gets the mean, +1.
+        s = team_modes.shrink({"x": {"a": (2.0, 9.8), "b": (1.0, 9.8), "c": (0.0, 9.8)}})
+        for t in "abc":
+            self.assertAlmostEqual(1.0, s["x"][t], places=6)
+        # The bench's half-widths are Student's t: at 6 paired seeds +/-2.571 is a noise variance of 1, not 1.72.
+        self.assertAlmostEqual(2.571, team_modes.t95(6))
+        self.assertAlmostEqual(1.96, team_modes.t95(None))
+        self.assertAlmostEqual(1.96, team_modes.t95(100))
+        six = {"x": {"a": 6, "b": 6, "c": 6}}
+        s = team_modes.shrink({"x": {"a": (6.0, 2.571), "b": (0.0, 2.571), "c": (-6.0, 2.571)}}, six)
+        self.assertAlmostEqual(5.75, s["x"]["a"], places=2)
+
+    def test_pick_shrink_takes_teams_no_interval_would_and_records_the_shrunk_gain(self):
+        out = Path(self.d)
+        # No team's low end clears zero, so the interval rule picks nothing; the mean is +2 and nothing but noise
+        # separates the teams, so the portfolio rule picks all three at the mode's mean.
+        fo = report(self.d, "fo.md", {"a.ATeam 1": (3.0, 6.0), "b.BTeam 2": (2.0, 6.0), "c.CTeam 3": (1.0, 6.0)})
+        base = ["pick", "--report", f"GANG={fo}", "--census", str(out / "census.txt"), "--opponents", self.d,
+                "--out-tsv", str(out / "p.tsv"), "--out-md", str(out / "p.md")]
+        team_modes.main(base + ["--low-end", "0", "--margin", "0"])
+        self.assertEqual(1, len((out / "p.tsv").read_text().splitlines()), "the lock keeps none")
+        team_modes.main(base + ["--shrink", "--margin", "0"])
+        rows = (out / "p.tsv").read_text().splitlines()[1:]
+        self.assertEqual(3, len(rows))
+        self.assertTrue(all(r.split("\t")[2] == "2.00" for r in rows), rows)
+        self.assertIn("portfolio, BENCH-231", (out / "p.md").read_text())
+        # A losing mode picks no team however it is shrunk.
+        lose = report(self.d, "lose.md", {"a.ATeam 1": (-1.0, 6.0), "b.BTeam 2": (-2.0, 6.0), "c.CTeam 3": (-3.0, 6.0)})
+        team_modes.main(["pick", "--report", f"GANG={lose}", "--census", str(out / "census.txt"), "--opponents", self.d,
+                         "--out-tsv", str(out / "q.tsv"), "--shrink", "--margin", "0"])
+        self.assertEqual(1, len((out / "q.tsv").read_text().splitlines()))
+
+
 if __name__ == "__main__":
     unittest.main()

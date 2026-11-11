@@ -376,3 +376,28 @@ with the failed arms; the arms still in play are GV, TH and WNF.
 Status 2026-11-09: legs whose depth follows, every tick, half the range of the robot that last hit
 us (WTB) cost about 0.32 over five seed sets, the closest own movement yet, still short of the gate.
 GV adds nothing on top of it. The arms still in play are GV, TH and WTB, which replaces WNF.
+
+Status 2026-11-10: legs whose depth follows the nearest robot whose own nearest robot is us (WTA)
+cost about 0.21 ± 0.16 over seven seed sets: the mean is inside the gate's -0.25 bar and the
+interval ends just short of 0. The arms still in play are GV, TH and WTA, which replaces WTB.
+WTA with GV's vote width (WAG) reads about -0.14 ± 0.16 over seven seed sets and passes the gate:
+own movement and own gun vote together are at parity with 0.3. The arms in play are GV, TH, WTA
+and WAG; the target (TH) is screened on WAG next.
+
+Status 2026-11-10 afternoon: the target and power parts pass together. WAE (WAG with the target
+distance × (shots + 6) / (hits + 2) and power for the best expected energy gain from that robot's
+hit rate and range) reads about +0.03 ± 0.16 over the seven seed sets. The PC hit-rate power on the
+same target (WAP) fails at about -0.35. The gun chain is the last Figment part; it is designed and
+screened on WAE next.
+
+Status 2026-11-10 evening: a coarser chain speed (2 px/tick steps, WGC) stays inside the gate at
+about -0.05 ± 0.16, and dropping the acceleration sign (WGN) fails. WGC only changes Figment's
+state; a chain of our own design (a different state or a different predictor) is still to find.
+
+Status 2026-11-11 night: a 3-bin turn on WGC (WGT) passes at about +0.06 ± 0.16 over the seven
+seed sets, the best arm so far; 4 px speed steps (WG4) lose. Movement, vote, target, power and the
+chain's state are now our own designs; the play-it-forward playout is the remaining Figment part.
+
+Status 2026-11-11 morning: the 3-bin turn with full-resolution speed (WT7) reads about +0.09 ± 0.16,
+the best arm. The own arms measure about 1,434 bytes against the 749 limit (0.3's control 738 before
+ProGuard), so fitting WT7 into a micro is the next step before any 0.4 candidate.

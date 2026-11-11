@@ -1,0 +1,8 @@
+tobe.Saturn lambda
+zeze2.OperatorZeze 1.05
+apv.Aspid 1.7
+robar.micro.Topaz 0.25
+krzysiek.robbo2.Robbo 1.0.0
+dmh.robocode.robot.YellowBird 0.12
+dmp.nano.Eve 3.41
+tobe.calypso.Calypso 4.1

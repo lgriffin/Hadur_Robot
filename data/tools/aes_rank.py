@@ -44,6 +44,7 @@ from collections import defaultdict
 from multiprocessing import Pool
 
 FIXED = 11  # AesRecord.FIXED
+RECORDED_VIEWS = False  # fit --recorded-views: keep the recorded view score, refit the fixed terms only
 LOW, HIGH, FIRST, HIT_RATE, SHADOWED, VIEW_SCORE, DAMAGE, UNCERTAIN, TTI, DIST_Q, ESCAPE = range(FIXED)
 VIEWS = ["simple", "normal", "recent1", "recent2", "recent3", "recent4", "recent5", "recent6",
          "lightFlattener", "flattener", "flattener2"]
@@ -61,8 +62,8 @@ def num(s):
 def parse_record(line):
     """One AES line (anything before 'AES,' is the harvester's prefix) as a dict, or None.
 
-    Keys: round, tick, fire, power, firing, sx, sy, chosen, views, options (3 entries, each None
-    or (total, terms list)).
+    Keys: round, tick, fire, power, firing, sx, sy, chosen, views, options (one entry per option the
+    surf rated, three or five, each None or (total, terms list)).
     """
     i = line.find("AES,")
     if i < 0:
@@ -74,7 +75,7 @@ def parse_record(line):
                "chosen": int(p[8]), "views": int(p[9])}
         width = FIXED + 2 * rec["views"] + 1
         at, options = 10, []
-        for _ in range(3):
+        while at < len(p):
             if p[at] == "0":
                 options.append(None)
                 at += 1
@@ -85,7 +86,7 @@ def parse_record(line):
                 return None
             options.append((total, terms))
             at += 2 + width
-        if at != len(p):
+        if len(options) < 3 or rec["chosen"] >= len(options):
             return None
         rec["options"] = options
         return rec
@@ -338,6 +339,10 @@ def totals(d, x):
     with np.errstate(invalid="ignore", divide="ignore"):
         views = np.where(np.isnan(d.fallback), num_ / den, d.fallback)
     views = np.nan_to_num(views, nan=0.0)
+    if RECORDED_VIEWS:
+        # The views' score as the robot recorded it (after the simple-aim dodger and the
+        # members, which the re-blend above does not model): only the fixed terms are refitted.
+        views = np.nan_to_num(f[:, :, VIEW_SCORE], nan=0.0)
     first = ((alpha * f[:, :, HIT_RATE] * (1 - f[:, :, SHADOWED]) + views)
              * np.power(f[:, :, DAMAGE], beta) * np.where(f[:, :, UNCERTAIN] > 0, u, 1.0)
              / np.power(f[:, :, TTI], gamma) * np.power(big_b, f[:, :, DIST_Q]) / big_b * f[:, :, ESCAPE])
@@ -443,6 +448,8 @@ def read_ranks(path):
 
 def fit(args):
     import numpy as np
+    global RECORDED_VIEWS
+    RECORDED_VIEWS = bool(getattr(args, 'recorded_views', False))
     d = Data(args.data, args.groups)
     if args.bots:
         keep = set(read_ranks(args.bots))
@@ -543,6 +550,9 @@ def main(argv=None):
     fp.add_argument("--evals", type=int, default=3000)
     fp.add_argument("--sigma", type=float, default=0.5)
     fp.add_argument("--seed", type=int, default=1)
+    fp.add_argument("--recorded-views", action="store_true",
+                    help="keep each option's recorded view score (members and the simple-aim dodger included) "
+                         "and refit only alpha, beta, gamma, B, nu and u; the group multipliers then do nothing")
     a = ap.parse_args(argv)
     if a.cmd == "join":
         join(a.work, a.out, a.jobs)

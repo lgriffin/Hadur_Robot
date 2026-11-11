@@ -160,6 +160,12 @@ public class MinimumRiskMovement {
     static final double WAVE_HALF = 18;
     /** The ring never shrinks below a robot's width, so Hadur can always move. */
     static final double MIN_RING = 36.0;
+    /** TMODE-45: an armed enemy this near and closing is a chaser. */
+    static final double QUARTERS_RANGE = 200.0;
+    /** TMODE-45: a destination nearer the chaser than this pays. */
+    static final double QUARTERS_KEEP = 150.0;
+    /** TMODE-45: what a destination on the chaser pays; it falls to nothing at {@link #QUARTERS_KEEP}. */
+    static final double QUARTERS_K = 10.0;
 
     /** What the movement sees this tick. */
     public static final class View {
@@ -182,6 +188,8 @@ public class MinimumRiskMovement {
         List<VirtualBullet> pathBullets = List.of();
         /** TMODE-33: whether the enemy terms count every robot between an enemy and the point; only on a team. */
         boolean concord;
+        /** TMODE-45: the enemy closing inside {@link #QUARTERS_RANGE}, or null; only on a team under QUARTERS. */
+        EnemyInfo chaser;
 
         View(Point2D.Double me, double energy, long now, int others, List<EnemyInfo> enemies,
              List<VirtualBullet> bullets, MeleeStrategy.Plan plan) {
@@ -216,6 +224,8 @@ public class MinimumRiskMovement {
 
     private final BattleField field;
     private final Point2D.Double centre;
+    /** TMODE-45: whether the last decision had a chaser. */
+    private boolean quartered;
     private final Deque<VirtualBullet> bullets = new ArrayDeque<>();
     /** TMODE-9: the teammates' bullets from their reports, oldest first. */
     private final Deque<VirtualBullet> mateBullets = new ArrayDeque<>();
@@ -575,7 +585,10 @@ public class MinimumRiskMovement {
         if (!mates.isEmpty() && !modes.isEmpty()) v.pull = pull(me, teamName, energy, others, enemies, now, mates, modes);
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.MATEFIRE)) v.mateBullets = relevant(mateBullets(me, now), me, now);
         v.concord = TeamConcord.MOVE && TeamConcord.RISK && !mates.isEmpty() && modes.contains(TeamModes.Mode.CONCORD);
-        List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
+        // TMODE-45: a chaser no longer caps the ring, so the far rings are there to flee to.
+        v.chaser = !mates.isEmpty() && modes.contains(TeamModes.Mode.QUARTERS) ? chaser(me, enemies, now) : null;
+        quartered = v.chaser != null;
+        List<Point2D.Double> candidates = candidates(me, others, quartered ? without(enemies, v.chaser) : enemies, now, mates);
         lastCandidates = candidates.size();
         if (surf && !onTeam(mates)) {
             // MMOVE-15: the melee surfer picks by the wave check.
@@ -938,7 +951,48 @@ public class MinimumRiskMovement {
         // TMODE-3, TMODE-4: the pull scales every term but the posture's, which may be negative.
         if (v.pull != null) r *= v.pull.factor(v.me, p);
         if (apart) r += shots;
+        // TMODE-45: after the pull, so FINISH and GANG cannot scale the chaser's term away.
+        if (v.chaser != null) r += quartersRisk(p, v.chaser);
         return r + postureRisk(p, v.enemies, v.plan);
+    }
+
+    /**
+     * TMODE-45: the nearest armed enemy scanned within {@link #CAP_MAX_AGE} ticks that is inside
+     * {@link #QUARTERS_RANGE} of {@code me} and driving toward it, or null. An enemy with no
+     * energy cannot fire, and one standing still or backing off is not closing.
+     */
+    static EnemyInfo chaser(Point2D.Double me, List<EnemyInfo> enemies, long now) {
+        EnemyInfo best = null;
+        double bestD = QUARTERS_RANGE;
+        for (EnemyInfo e : enemies) {
+            if (e.energy <= 0 || e.age(now) >= CAP_MAX_AGE) continue;
+            double d = e.location.distance(me);
+            if (d >= bestD) continue;
+            double closing = e.velocity * Math.cos(e.heading - DiaUtils.absoluteBearing(e.location, me));
+            if (closing <= 0) continue;
+            best = e;
+            bestD = d;
+        }
+        return best;
+    }
+
+    /** TMODE-45: what {@code p} pays for ending inside {@link #QUARTERS_KEEP} of the chaser. */
+    static double quartersRisk(Point2D.Double p, EnemyInfo chaser) {
+        double d = p.distance(chaser.location);
+        return d >= QUARTERS_KEEP ? 0 : QUARTERS_K * (1 - d / QUARTERS_KEEP);
+    }
+
+    private static List<EnemyInfo> without(List<EnemyInfo> enemies, EnemyInfo one) {
+        List<EnemyInfo> out = new ArrayList<>(enemies.size());
+        for (EnemyInfo e : enemies) {
+            if (e != one) out.add(e);
+        }
+        return out;
+    }
+
+    /** TMODE-45: whether the last decision had a chaser; the drive then keeps full speed through a turn. */
+    public boolean quartered() {
+        return quartered;
     }
 
     /** Opponent {@code i}'s term: energy over distance squared, with the closest-robot factor (MMOVE-2). */

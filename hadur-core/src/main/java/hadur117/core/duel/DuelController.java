@@ -358,6 +358,7 @@ public final class DuelController {
         if (stopAndGo != null) on.add("stopgo");
         if (heatJitOn) on.add("heatjit");
         if (flatOn) on.add("flat");
+        if (mirrorOff) on.add("mirroff");
         if (mimicOn) on.add("mimic");
         if (fullOff) on.add("fulloff");
         if (x5Power) on.add("x5");
@@ -898,6 +899,8 @@ public final class DuelController {
     private boolean heatJitOn;
     /** MOVE-32: the table turned the flattener views on for this opponent. */
     private boolean flatOn;
+    /** MIR-2: the table turned MIR-1 off for this opponent. */
+    private boolean mirrorOff;
     /** MOVE-34: whether the table put the learning-gun mimics among the aim members for this opponent. */
     private boolean mimicOn;
     /** POW-15: whether the table turned the full-power rules off for this opponent. */
@@ -1308,6 +1311,8 @@ public final class DuelController {
         if (enemiesTotal == 1) duelModes(name);
         // MOVE-32: a P record says the table turned the flattener views on for this opponent.
         if (flatOn) emitPolicy(round, time, "flat-on", Double.NaN, Double.NaN, "flat_on");
+        // MIR-2: a P record says the table turned MIR-1 off for this opponent.
+        if (mirrorOff) emitPolicy(round, time, "mirror-off", Double.NaN, Double.NaN, "mirror_off");
         // MOVE-34: a P record says the table put the mimics among the aim members for this opponent.
         if (mimicOn) emitPolicy(round, time, "mimic-on", Double.NaN, Double.NaN, "mimic_on");
         // POW-15: a P record says the table turned the full-power rules off for this opponent.
@@ -1349,6 +1354,8 @@ public final class DuelController {
         if (dodgePlanOn) shotDodger.prime(dodgePlan);
         // MOVE-28: stop-and-start (MOVE-13) for the opponents the table names.
         heatJitOn = duelOnly(stackList.heatJit(name), enemiesTotal);
+        // MIR-2: no mirror detection, drive or aim against the opponents the table names.
+        mirrorOff = duelOnly(stackList.mirrorOff(name), enemiesTotal);
         // MOVE-32: the flattener views back on for the opponents the table names.
         if (duelOnly(stackList.flatOn(name), enemiesTotal)) {
             moveController.setFlattenerOff(false);
@@ -1578,6 +1585,8 @@ public final class DuelController {
      */
     private void checkMirror(int round, long time, Point2D.Double enemyPos, double ourEnergy,
                              double enemyEnergy) {
+        // MIR-2: the table turned the mirror response off for this opponent; it never switches on.
+        if (mirrorOff) return;
         int n = 0;
         double[] xs = new double[MirrorDetector.MAX_LAG + 1];
         double[] ys = new double[MirrorDetector.MAX_LAG + 1];
