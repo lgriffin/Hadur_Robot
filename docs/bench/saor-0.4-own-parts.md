@@ -177,6 +177,15 @@ The movement went from -3.0 to about -0.6 over about 45 designs. The steps that 
     own target and power about 190 in onScannedRobot. The own parts play at parity but are about
     twice the micro's size; the next step is fitting WT7's behaviour into 749 bytes, re-gating each
     cut.
+    - First cut, WD1 (2026-11-11): no duel orbit, no last-hitter fallback (the target's range
+      instead), and the nearest-whose-nearest-is-us test done once per scan instead of every tick
+      over every pair. 1,146 bytes (onStatus 209). Reads -0.26, -0.04, +0.03, +0.16, -0.00, -0.17,
+      -0.19, about -0.07 ± 0.16: still inside the gate, about 0.16 below WT7.
+    - Where the rest goes: the Markov playout gun with its radar and firing is about 500 bytes, the
+      own movement with its per-scan bookkeeping about 310, the own target and power about 100, the
+      class set-up about 80. The playout alone leaves about 250 bytes for everything else, so WT7
+      cannot reach 749 by trimming the own parts; it needs a gun of about 200 bytes, which would also
+      replace the last Figment part.
 
 **Where WNF still loses** (C against WNF over the three blocks, 11,340 rounds each): duels end in a
 win equally often (85.9% and 85.8%). WNF dies 13% more often in the crowd (4,778 deaths against
