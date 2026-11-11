@@ -1,12 +1,16 @@
 {
  "plan": "pc-melee-states",
- "updated": 1794424890.7496002,
+ "updated": 1794425796.3891082,
  "steps": {
   "msprep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 43,
+   "end": "2026-11-11T19:22:13"
   },
   "mstrace": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-11T19:22:13"
   },
   "msread": {
    "status": "pending"
@@ -15,5 +19,43 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "mstrace",
+   "started": 1794424933.8198884,
+   "updated": 1794425796.3830297,
+   "elapsed": 862.5631413459778,
+   "expected": null,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 26,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 108.51379512222472,
+   "eta": null,
+   "fraction": null,
+   "last_battle_age": 6.656047105789185,
+   "rules": [
+    {
+     "rule": "fails 10",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 26"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    }
+   ],
+   "skips_mean": 39.46153846153846,
+   "skips_last100": 39.46153846153846
+  }
+ ]
 }
