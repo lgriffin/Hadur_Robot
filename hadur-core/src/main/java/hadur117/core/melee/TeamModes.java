@@ -69,8 +69,9 @@ public final class TeamModes {
          * TMODE-45, close quarters: while an armed enemy is inside
          * {@link MinimumRiskMovement#QUARTERS_RANGE} px and closing, it no longer caps the
          * member's ring, a destination inside {@link MinimumRiskMovement#QUARTERS_KEEP} px of it
-         * pays, and a sharp turn is driven at full speed. Only through the table, per team;
-         * on every team through {@link #FORCE_QUARTERS} (ablation tmquarters, pc-team-quarters).
+         * pays, and a sharp turn is driven at full speed. Only through the table, per team:
+         * NightmareTeam since pc-team-quarters (PR #759). On every team through {@link #FORCE_QUARTERS}
+         * (ablation tmquarters).
          */
         QUARTERS
     }
@@ -124,8 +125,10 @@ public final class TeamModes {
         t.put("myl.micro.TroodonDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE));
         // pc-team-nododge (PR #465), 24 fresh seeds: DODGE off, NightmareTeam +3.9 ± 3.2, ImpactTeam +3.1 ± 1.4.
         // pc-team-noconcord (PR #538), 24 fresh seeds: CONCORD off too (TMODE-35), NightmareTeam +2.4 ± 4.3.
-        t.put("ustimaw.Nightmare", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CLOSE));
-        t.put("ustimaw.NigitmareDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CLOSE));
+        // pc-team-quarters (PR #759): QUARTERS (TMODE-45), NightmareTeam +4.0 ± 3.2 on 24 seeds and +4.3 ± 3.7 on
+        // 16 fresh ones, aimed damage from under 150 px down 25%; the other four teams screened did not move.
+        t.put("ustimaw.Nightmare", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CLOSE, Mode.QUARTERS));
+        t.put("ustimaw.NigitmareDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CLOSE, Mode.QUARTERS));
         t.put("mn.nano.perceptual.Impact", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CONCORD, Mode.CLOSE));
         // pc-team-noconcord (PR #538), 24 fresh seeds: CONCORD off (TMODE-35), OgiTeam +4.2 ± 3.0,
         // CombatTeam +2.6 ± 3.8, FirestarterTeam +1.7 ± 3.3; +0.24 ± 0.16 APS with NightmareTeam.
