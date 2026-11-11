@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-quarters",
- "updated": 1794420206.137452,
+ "updated": 1794420900.893689,
  "steps": {
   "qtprep": {
    "status": "done",
@@ -15,26 +15,46 @@
    "end": "2026-11-11T17:59:45"
   },
   "qtqt": {
-   "status": "running",
-   "start": "2026-11-11T17:59:45"
+   "status": "done",
+   "exit": 0,
+   "seconds": 588,
+   "end": "2026-11-11T18:09:33"
   },
   "qtpick": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 2,
+   "end": "2026-11-11T18:09:36"
   },
   "qtgprep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 32,
+   "end": "2026-11-11T18:10:08"
   },
   "qtgbb": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 140,
+   "end": "2026-11-11T18:12:29"
   },
   "qtgqg": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 143,
+   "end": "2026-11-11T18:14:53"
   },
   "qtsum": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-11-11T18:14:54"
   },
   "qtpr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 6,
+   "end": "2026-11-11T18:15:00"
   }
  },
  "watched": [
@@ -84,8 +104,8 @@
   {
    "step": "qtqt",
    "started": 1794419985.433884,
-   "updated": 1794420206.1297631,
-   "elapsed": 220.69587922096252,
+   "updated": 1794420573.961893,
+   "elapsed": 588.5280091762543,
    "expected": 240,
    "panel": null,
    "field": null,
@@ -93,20 +113,63 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 67,
+   "battles": 240,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 1092.9066770590157,
-   "eta": 569.8565239586046,
-   "fraction": 0.2791666666666667,
-   "last_battle_age": 0.1289074420928955,
+   "rate": 1468.0694657325078,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 1.6304080486297607,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 67"
+     "detail": "0 failed of 240"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "ok",
+     "detail": "13.0 a battle over the last 100 (first 100: 27.1)"
+    }
+   ],
+   "skips_mean": 18.975,
+   "skips_last100": 12.99
+  },
+  {
+   "step": "qtgbb",
+   "started": 1794420608.8831413,
+   "updated": 1794420749.7098885,
+   "elapsed": 140.82674717903137,
+   "expected": null,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 32,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 818.0264211708846,
+   "eta": null,
+   "fraction": null,
+   "last_battle_age": 1.6066811084747314,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 32"
     },
     {
      "rule": "stall 30m",
@@ -118,11 +181,54 @@
      "rule": "skips 40 over 100",
      "action": "halt",
      "state": "waiting",
-     "detail": "67 of 100 battles to read"
+     "detail": "32 of 100 battles to read"
     }
    ],
-   "skips_mean": 24.417910447761194,
-   "skips_last100": 24.417910447761194
+   "skips_mean": 20.15625,
+   "skips_last100": 20.15625
+  },
+  {
+   "step": "qtgqg",
+   "started": 1794420749.7255273,
+   "updated": 1794420893.3591025,
+   "elapsed": 143.63357520103455,
+   "expected": null,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 32,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 802.0408866016325,
+   "eta": null,
+   "fraction": null,
+   "last_battle_age": 1.601078748703003,
+   "rules": [
+    {
+     "rule": "fails 20",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 32"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 40 over 100",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "32 of 100 battles to read"
+    }
+   ],
+   "skips_mean": 21.09375,
+   "skips_last100": 21.09375
   }
  ]
 }

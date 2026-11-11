@@ -8,3 +8,19 @@
 17:59:45 qtbb exit=0 in 585 s
 17:59:45 start qtqt
 17:59:45 watching qtqt: 3 stop rule(s)
+18:09:33 qtqt exit=0 in 588 s
+18:09:33 start qtpick
+18:09:36 qtpick exit=0 in 2 s
+18:09:36 start qtgprep
+18:10:08 qtgprep exit=0 in 32 s
+18:10:08 start qtgbb
+18:10:08 watching qtgbb: 3 stop rule(s)
+18:12:29 qtgbb exit=0 in 140 s
+18:12:29 start qtgqg
+18:12:29 watching qtgqg: 3 stop rule(s)
+18:14:53 qtgqg exit=0 in 143 s
+18:14:53 start qtsum
+18:14:54 qtsum exit=0 in 0 s
+18:14:54 start qtpr
+18:15:00 qtpr exit=0 in 6 s
+18:15:00 ALLDONE
