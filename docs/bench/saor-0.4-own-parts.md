@@ -13,7 +13,7 @@ Seed blocks: r1 4100, r2 4200, r3 4300, r1x 4500, r1z 4600. Reports: `docs/bench
 `saor-r1x-wnh.md`, `saor-r1z-wnh.md`, `saor-r1x-wgv.md`, `saor-r1z-wgv.md`,
 `saor-r1x-wnz.md`, `saor-r1z-wnz.md`, and for section 10 `saor-<block>-wcd.md`, `-wtd.md`, `-wtb.md`,
 `-wte.md`, `-wbg.md`, `-wto.md`, `-wtr.md` (which also carries WTN) `-wta.md` (r1-r5, r1x, r1z), and for section 11 `-was.md`, `-wag.md` (which carries WAD
-and WDG), `-wat.md` and `-wau.md`; for section 13 the per-arm census reports `saor-<block>-census-<ARM>.md` (WD1, OG1, OG2 over r1-r5, r1x, r1z).
+and WDG), `-wat.md` and `-wau.md`; for section 13 the per-arm census reports `saor-<block>-census-<ARM>.md` (WD1 and OG1 over r1-r5, r1x, r1z; OG2 over r1-r5 and r1x, its r1z stopped).
 
 ## Result
 
