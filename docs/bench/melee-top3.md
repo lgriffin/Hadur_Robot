@@ -1018,3 +1018,52 @@ more alive), now worse with the hold confined to the opening, where Hadur's firi
 damage in the crowd does not buy survival; it costs it. MGUN-27 is retired and the switch, arm and test are
 removed. The direction's other half, surviving the crowd, has every measured route above closed; the lever that
 has paid is the opposite one, firepower early.
+
+## The states Hadur is hit in, against ScalarR (2026-11-11)
+
+The pc-melee-states card (BENCH-232, results PR #766) traced master on the 46 census fields at one seed. Hadur was
+the only robot aimed at 2,000 times: ScalarR, Neuromancer and Ogi sit in too few census fields to be read there.
+The same tool (`hadur-bench/tools/melee_states.py --min-shots 1000`) run on the cloud trace with ScalarR seated in
+each of 12 census fields (seed 5800, 20 rounds, 240 rounds in all) gives the comparison the card's rule asks for:
+
+| | Hadur | ScalarR |
+|---|---:|---:|
+| bullets aimed at it (three or more alive) | 10,171 | 9,901 |
+| hit rate | 9.8% | 9.9% |
+| shots taken under 3 px a tick sideways | 36% | 46% |
+| shots taken within 0.2 of head-on | 60% | 64% |
+| hit rate when the fired guess factor is 0.5 to 0.8 | 14.1% | 9.5% |
+| damage on it from bullets aimed at another robot | 44% | 27% |
+
+Hadur is not slow across the line or head-on more often than ScalarR: ScalarR is the slower and the more head-on
+of the two, and the hit rate a bullet is the same. By the card's rule no keep-moving arm is built and card 4 (the
+shot profiles in the crowd, MMOVE-30) stands alone. Two differences remain. Hadur is hit half again as often by
+bullets fired at the wide guesses (0.5 to 0.8), the aims a linear or circular gun takes at a robot moving
+across its line, which is what the aim experts of MMOVE-30 profile and the two guesses do not. And 44% of the
+damage Hadur takes comes from bullets aimed at someone else, against 27% for ScalarR, the stray fire of the
+crowd measured before (23% of hits never seen as aimed at Hadur). The PC trace agrees on Hadur's own row:
+10.1% a bullet, 36% slow, 61% head-on, 43% stray, 14.6% and 18.7% at guess factors 0.5 to 0.8 and over 0.8.
+
+## The shot profiles in the crowd (MMOVE-30), cloud smoke (2026-11-11)
+
+Card 4 of the melee plan. Off a team the surfer turns each seen shot into head-on and linear guesses until five
+of that shooter's hits are logged, then its learned aims. `MELEE_DODGE` (arm `mdodge`, md) puts the team's dodge
+(TMODE-27) there instead: each shot is profiled once with the six aim experts, each weighted by how close it came
+on that shooter's hits, weighed by the crowd weight, and the 12 lowest-risk candidates are driven through the
+profiles. The experts learn from Hadur's own hits and from the cross-hits (MMOVE-19).
+
+`mdodge` against master, 12 census fields, 2 seeds from 5900, 35 rounds, 24 pairs:
+
+| | md | master | diff (95%) |
+|---|---:|---:|---|
+| score share | 19.02 | 19.17 | -0.15 ± 0.43 |
+| APS (data/tools/melee_pairwise.py) | 68.5 | 68.9 | -0.3 ± 0.6 |
+| rounds won | 49.3% | 48.8% | +0.5 ± 4.6 |
+| crowd deaths | 27.5% | 27.3% | +0.2 ± 4.4 |
+| nearest load; crowd damage taken per 100 ticks | 0.81; 8.54 | 0.83; 7.93 | -0.02; +0.61 ± 0.55 |
+| skipped turns a battle | 20.6 | 22.4 | |
+
+Level within the smoke's noise, with the skipped turns held, which is the bar the plan set for the PC card. The
+crowd damage taken a tick is 7% up, at the edge of the interval: the warning sign the pilot will read. The card is
+pc-melee-dodge (BENCH-233, pilot BENCH-234): a pilot of md against aa on the 46 census fields at seeds 3346-3347
+that stops the card unless Hadur's share is up, then aa, bb and md alone at seeds 3340-3345.

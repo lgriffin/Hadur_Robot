@@ -1,0 +1,63 @@
+# The shot profiles in the crowd (docs/bench/melee-top3.md, MMOVE-30, BENCH-233), card 4 of the melee plan.
+# Why it should win: off a team the melee surfer turns each seen shot into two guesses (head-on and
+# linear) until five of that shooter's hits are logged, then its learned aims. The team's dodge (TMODE-27,
+# on against every team since it passed) instead profiles each shot once with six aim experts (head-on,
+# linear, circular, average, half speed and learned), each weighted by how close it came on the hits that
+# shooter has landed. pc-melee-states (BENCH-232, PR #766) and the same tool on a cloud trace with ScalarR
+# seated show Hadur is no slower and no more head-on than ScalarR and is hit at the same rate a bullet,
+# but is hit half again as often by bullets fired at the wide guesses (GF 0.5-0.8: 14.1% against ScalarR's
+# 9.5%), the aims a linear, circular or averaged gun takes at a robot crossing its line, which the two
+# guesses miss and the experts cover. MELEE_DODGE (arm mdodge, md) drives the team's profiles off a team,
+# weighed by MMOVE-15's crowd weight; the experts learn from Hadur's own hits and the cross-hits (MMOVE-19).
+# Cloud smoke 2026-11-11 (12 census fields x 2 seeds against master, 24 pairs): share -0.15 +- 0.43,
+# APS -0.3 +- 0.6, rounds won +0.5 +- 4.6, crowd deaths +0.2 +- 4.4, skipped turns 20.6 against 22.4 a
+# battle: level, and skips held. Crowd damage taken a tick +7% (+0.61 +- 0.55 per 100 ticks) is the
+# warning sign. Expected +0.2 to +0.5 APS, pass about 1 in 3; a cloud melee smoke has over-read the PC.
+# Reads only in melee off a team; the duel and the team are bit for bit.
+#   aa      the baseline (master)
+#   bb      its A/A copy
+#   md      MMOVE-30 MELEE_DODGE
+# Pilot (BENCH-234): dgpilot fights md against an aa baseline battle for battle on 46 fields x 2 seeds
+# (3346-3347; 184 battles, about 1 h), and dgcheck stops the card unless Hadur's score share is up
+# (--share-only), on at least 95% of the 92 pairs with all 35 rounds each. On a stop the check opens
+# the results PR with the pilot read and fails, so no arm after it runs.
+# Each build fights the 46 census fields x 6 fresh seeds alone (3340-3345; 276 battles, 828 in all,
+# about 2.5 h at the PC's ~370 battles/h). The read pairs bb with aa (A/A) and md with the mean of aa
+# and bb (--base2), battle for battle.
+# Verdict: md passes with its 95% low end above 0 (--gain 0), Hadur's share of others outlived no more
+# than 1 point lower and the 1-30 endgame wins no more than 3 points lower; skipped turns more than 20%
+# over aa's fail it. The card ends in a results PR on claude/pc-melee-dodge-results.
+#   git checkout master && git pull
+#   ./queue.sh run pc-melee-dodge        (or  .\queue.ps1 run pc-melee-dodge)
+# Stop rules (docs/bench/watch.md), halts only, each keeping every battle fought: fails 20 and
+# stall 30m on the pilot and each arm.
+
+set OUT = ../docs/bench/local
+
+dgprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb md; do rm -f bisect/hadur117.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh mdodge && mkdir -p work && rm -rf work/melee-dodge-"$V"-pilot work/melee-dodge-"$V"-aa work/melee-dodge-"$V"-bb work/melee-dodge-"$V"-md && echo "$V" > work/melee-dodge.version && for a in aa bb md; do test -f bisect/hadur117.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-dodge.args > work/melee-dodge-$a.args || exit 1; done && sed -e "s/@V@/$V/g" -e "s/@C@/$C/g" plans/melee-dodge-pilot.args > work/melee-dodge-pilot.args && rm -f ${OUT}/melee-dodge-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+dgpilot | mvn -q exec:java "-Dexec.args=@work/melee-dodge-pilot.args" || echo "pilot: some battles failed; dgcheck reads what finished"
+  after: dgprep
+  watch: battles=184
+  stop: fails 20
+  stop: stall 30m
+dgcheck | V=$(cat work/melee-dodge.version) && test -n "$V" && { python3 tools/melee_pilot.py work/melee-dodge-"$V"-pilot --expect 92 --rounds 35 --share-only --out ${OUT}/melee-dodge-pilot.md --title "pc-melee-dodge pilot: md against aa on $V" || { bash tools/open_results_pr.sh claude/pc-melee-dodge-results "The shot profiles in the crowd (MMOVE-30): pilot stopped the card" ${OUT}/melee-dodge-pilot.md; exit 1; }; }
+  after: dgpilot
+dgaa   | mvn -q exec:java "-Dexec.args=@work/melee-dodge-aa.args"
+  after: dgcheck
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+dgbb   | mvn -q exec:java "-Dexec.args=@work/melee-dodge-bb.args"
+  after: dgaa
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+dgmd   | mvn -q exec:java "-Dexec.args=@work/melee-dodge-md.args"
+  after: dgbb
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+dgread | V=$(cat work/melee-dodge.version) && test -n "$V" && W=work/melee-dodge-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm md="$W"-md --census melee-census-317.txt --seeds 6 --gain 0 --survival-slack 1 --out ${OUT}/melee-dodge-read.md --title "The shot profiles in the crowd on $V" || true; } && test -s ${OUT}/melee-dodge-read.md
+  after: dgmd
+dgpr   | bash tools/open_results_pr.sh claude/pc-melee-dodge-results "The shot profiles in the crowd (MMOVE-30)" ${OUT}/melee-dodge-read.md ${OUT}/melee-dodge-pilot.md $(ls ${OUT}/melee-dodge-aa.md ${OUT}/melee-dodge-bb.md ${OUT}/melee-dodge-md.md 2>/dev/null)
+  after: dgread

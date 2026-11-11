@@ -4,6 +4,7 @@ import hadur117.core.model.RobotState;
 import hadur117.core.model.RobotStateLog;
 import hadur117.core.physics.BattleField;
 import hadur117.core.physics.DiaUtils;
+import hadur117.core.world.EnemyInfo;
 import hadur117.core.world.EnemyShot;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * TMODE-27, Ogi's dodge as one piece: the team movement that replaces the virtual bullets of
@@ -32,7 +34,8 @@ import java.util.Map;
  *     (TMODE-25), and the score is Ogi's {@code risk/median + 3 x damage/median}.</li>
  * </ol>
  *
- * <p>Team-only, like every mode: the controller reaches it only with a living teammate.</p>
+ * <p>Team-only, like every mode, except that MMOVE-30 ({@link MinimumRiskMovement#MELEE_DODGE})
+ * drives the same profiles off a team, each shot weighed by the crowd.</p>
  */
 final class TeamDodge {
 
@@ -75,11 +78,30 @@ final class TeamDodge {
      */
     void update(List<EnemyShot> shots, RobotStateLog path, Point2D.Double me, long now,
                 List<Point2D.Double> mates, TeamDanger danger, boolean own, VirtualBullet.Aim only) {
+        update(shots, me, now, s -> profile(s, path, me, mates, danger, own, only));
+    }
+
+    /**
+     * MMOVE-30, off a team: profiles the shots not seen before, each weighed by the melee
+     * surfer's {@link MinimumRiskMovement#crowdWeight} where Hadur stood when it was fired, and
+     * drops those gone past Hadur.
+     */
+    void updateMelee(List<EnemyShot> shots, RobotStateLog path, Point2D.Double me, long now,
+                     List<EnemyInfo> enemies, TeamDanger danger) {
+        update(shots, me, now, s -> {
+            RobotState at = at(path, s);
+            Point2D.Double target = at == null ? me : at.location;
+            return profile(s, at, target, MinimumRiskMovement.crowdWeight(s, target, enemies), path, danger, null);
+        });
+    }
+
+    private void update(List<EnemyShot> shots, Point2D.Double me, long now,
+                        Function<EnemyShot, MinimumRiskMovement.Wave> maker) {
         IdentityHashMap<EnemyShot, Boolean> live = new IdentityHashMap<>();
         for (EnemyShot s : shots) {
             live.put(s, Boolean.TRUE);
             if (profiles.containsKey(s)) continue;
-            profiles.put(s, profile(s, path, me, mates, danger, own, only));
+            profiles.put(s, maker.apply(s));
         }
         for (Iterator<Map.Entry<EnemyShot, MinimumRiskMovement.Wave>> it = profiles.entrySet().iterator(); it.hasNext(); ) {
             Map.Entry<EnemyShot, MinimumRiskMovement.Wave> e = it.next();
@@ -89,6 +111,11 @@ final class TeamDodge {
                 it.remove();
             }
         }
+    }
+
+    private static RobotState at(RobotStateLog path, EnemyShot s) {
+        RobotState at = path.getState(s.fireTime);
+        return at == null ? path.getState(s.fireTime + 1) : at;
     }
 
     /** The waves in flight that may still reach Hadur. */
@@ -101,11 +128,16 @@ final class TeamDodge {
     MinimumRiskMovement.Wave profile(EnemyShot s, RobotStateLog path, Point2D.Double me,
                                      List<Point2D.Double> mates, TeamDanger danger,
                                      boolean own, VirtualBullet.Aim only) {
-        RobotState at = path.getState(s.fireTime);
-        if (at == null) at = path.getState(s.fireTime + 1);
+        RobotState at = at(path, s);
         Point2D.Double target = at == null ? me : at.location;
         double aimed = own ? (TeamDanger.aimedAtMe(s, target, mates) ? 1.0 : 0.0)
             : TeamRisk.softWeight(s, target, mates);
+        return profile(s, at, target, aimed, path, danger, only);
+    }
+
+    /** The profile of {@code s}, aimed at Hadur in state {@code at} (or null) by the share {@code aimed}; null under the floor. */
+    MinimumRiskMovement.Wave profile(EnemyShot s, RobotState at, Point2D.Double target, double aimed,
+                                     RobotStateLog path, TeamDanger danger, VirtualBullet.Aim only) {
         if (aimed < MinimumRiskMovement.SOFT_FLOOR) return null;
         double hot = DiaUtils.absoluteBearing(s.source, target);
         if (at == null) return new MinimumRiskMovement.Wave(s, aimed, new double[] {hot}, new double[] {1.0}, hot);

@@ -1,0 +1,23 @@
+# PC card pc-melee-dodge (docs/bench/melee-top3.md, MMOVE-30, BENCH-233): one build alone on today's whole melee field, 46 fields x 6 fresh seeds (3340-3345, after pc-melee-states' 3330), at the machine's melee width (@C@, fixed at prep) and CPU constant; the bench drops the robots broken-1.11.2.txt lists (BENCH-169). Template: dgprep writes work/melee-dodge-<arm>.args with @V@ = the robot.release in hadur-robot/pom.xml and @A@ = the arm's suffix (aa, bb, md); every arm fights the same fields and seeds, so the read pairs them battle for battle.
+--suite
+melee-census-317.txt
+--seeds
+6
+--seed-base
+3339
+--rounds
+35
+--parallel
+@C@
+--child-heap
+2G
+--cpu-constant
+auto
+--robot-jar
+bisect/hadur117.Hadur_@V@@A@.jar
+--robot
+hadur117.Hadur @V@@A@
+--out
+work/melee-dodge-@V@-@A@
+--report
+../docs/bench/local/melee-dodge-@A@.md
