@@ -1018,3 +1018,28 @@ more alive), now worse with the hold confined to the opening, where Hadur's firi
 damage in the crowd does not buy survival; it costs it. MGUN-27 is retired and the switch, arm and test are
 removed. The direction's other half, surviving the crowd, has every measured route above closed; the lever that
 has paid is the opposite one, firepower early.
+
+## The states Hadur is hit in, against ScalarR (2026-11-11)
+
+The pc-melee-states card (BENCH-232, results PR #766) traced master on the 46 census fields at one seed. Hadur was
+the only robot aimed at 2,000 times: ScalarR, Neuromancer and Ogi sit in too few census fields to be read there.
+The same tool (`hadur-bench/tools/melee_states.py --min-shots 1000`) run on the cloud trace with ScalarR seated in
+each of 12 census fields (seed 5800, 20 rounds, 240 rounds in all) gives the comparison the card's rule asks for:
+
+| | Hadur | ScalarR |
+|---|---:|---:|
+| bullets aimed at it (three or more alive) | 10,171 | 9,901 |
+| hit rate | 9.8% | 9.9% |
+| shots taken under 3 px a tick sideways | 36% | 46% |
+| shots taken within 0.2 of head-on | 60% | 64% |
+| hit rate when the fired guess factor is 0.5 to 0.8 | 14.1% | 9.5% |
+| damage on it from bullets aimed at another robot | 44% | 27% |
+
+Hadur is not slow across the line or head-on more often than ScalarR: ScalarR is the slower and the more head-on
+of the two, and the hit rate a bullet is the same. By the card's rule no keep-moving arm is built and card 4 (the
+shot profiles in the crowd, MMOVE-30) stands alone. Two differences remain. Hadur is hit half again as often by
+bullets fired at the wide guesses (0.5 to 0.8), the aims a linear or circular gun takes at a robot moving
+across its line, which is what the aim experts of MMOVE-30 profile and the two guesses do not. And 44% of the
+damage Hadur takes comes from bullets aimed at someone else, against 27% for ScalarR, the stray fire of the
+crowd measured before (23% of hits never seen as aimed at Hadur). The PC trace agrees on Hadur's own row:
+10.1% a bullet, 36% slow, 61% head-on, 43% stray, 14.6% and 18.7% at guess factors 0.5 to 0.8 and over 0.8.
