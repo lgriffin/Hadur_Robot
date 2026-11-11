@@ -159,6 +159,10 @@
 #   tmclose (team only) TMODE-42: CLOSE on every team, the hunt place 250 px from the prey instead
 #         of 350 (FORCE_CLOSE, and Mode.CLOSE on every shipped table entry). Suffix tc (pc-team-close).
 #         Ships since PR #696, so on master it builds the robot as it is.
+#   tmquarters (team only) TMODE-45: QUARTERS on every team (FORCE_QUARTERS, and Mode.QUARTERS on every
+#         shipped table entry): a member with an armed enemy closing inside 200 px gets an uncapped
+#         ring, a term against ending within 150 px of it, and full speed through a turn. Suffix qt
+#         (pc-team-quarters, BENCH-225).
 #   tmnoclose (team only) TMODE-42 off: the hunt place 350 px on every team, the build before CLOSE
 #         shipped. Suffix ncl.
 #   tmlock (team only) the confirmed table, $TEAM_MODE_LOCKED (default work/team-modes-locked.java,
@@ -893,6 +897,12 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             sed -i -E '/^        t\.put\(/{/Mode\.CLOSE/!s/\)\);$/, Mode.CLOSE));/}' "$modes"
             fi
             ;;
+        tmquarters)
+            # TMODE-45 on every team: the default and every shipped entry play QUARTERS. Suffix qt.
+            version="${version}qt"
+            edit "$modes" "public static final boolean FORCE_QUARTERS = false;" "public static final boolean FORCE_QUARTERS = true;"
+            sed -i -E '/^        t\.put\(/{/Mode\.QUARTERS/!s/\)\);$/, Mode.QUARTERS));/}' "$modes"
+            ;;
         tmnoclose)
             # TMODE-42 off: the hunt place 350 px on every team, the build before CLOSE shipped. Suffix ncl.
             version="${version}ncl"
@@ -914,7 +924,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean THREE_FAR = false;" "public static final boolean THREE_FAR = true;"
             version="${version}ef" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, mirofflist)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, mirofflist)" >&2; exit 2 ;;
     esac
 done
 

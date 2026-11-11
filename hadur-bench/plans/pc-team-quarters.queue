@@ -1,0 +1,69 @@
+# Close quarters on the five teams that fire point blank (TMODE-45, BENCH-225; the safety read of
+# 2026-11-11). Team thread: team-only; duel and melee play bit for bit, and so does every team the
+# pick leaves out. On pc-team-close's tc logs, NightmareTeam, Polylunar, ImpactTeam, TeamDeathTeam
+# and Enjambre fire 61 to 91% of their aimed damage on us from under 150 px, where almost every
+# second bullet hits; the team mover has no rule for a robot that closes on it. QUARTERS gives a
+# member with an armed enemy closing inside 200 px an uncapped ring, a term against ending within
+# 150 px of it, and full speed through a turn.
+#   qtprep  build aa, bb and qt (tmquarters: QUARTERS forced on every team)
+#   qtbb    bb vs aa on the five teams x 24 fresh seeds (base 9700), 12 rounds; qtqt the same for qt
+#   qtpick  a team is picked at +3.0 share points over both baselines (qt's paired gain less half
+#           of bb's) with the 95% low end above zero; the picked teams' member classes get their
+#           current entry plus QUARTERS (work/team-quarters-table.java). Also the read of what
+#           the guard is for: aimed damage fired from under 150 px, qt beside aa, per team
+#           (tools/team_quarters.py). No team picked: the results PR opens and the card ends there.
+#   qtgprep build qg: tmtab with the picked table
+#   qtgbb   bb vs aa on the picked teams x 16 fresh seeds (base 9800); qtgqg the same for qg
+#   qtsum   projected team APS change = (sum of each picked team's qg gain less half its bb gain) / 45
+#           (gate: +0.15 with the 95% low end above zero). The card changes nothing: on a PASS a PR
+#           adds QUARTERS to the picked teams' entries in TeamModes.TABLE.
+# What the result decides: ship on a PASS; rebuild if the damage from under 150 px falls by a
+# third or more and the share does not move; close if that damage does not fall.
+# Each seed is a pair (the arm and aa). Screen: 2 x 5 x 24 x 2 = 480 battles, about 35 minutes at
+# 12 workers; gate with all five picked: 2 x 5 x 16 x 2 = 320, about 22 minutes. Every step resumes
+# where it stopped.
+# Stop rules on every battle step (halt; every battle fought is kept and a rerun resumes): 20 failed
+# battles (a broken jar), no battle in 30 minutes (a hung step), or 40+ skipped turns a battle over the
+# last 100. No early finish on score.
+# The team thread reads claude/pc-team-quarters-results.
+#   ./queue.sh run pc-team-quarters        (or  .\queue.ps1 run pc-team-quarters)
+# Run it from master (one bench queue at a time, RoboRumble workers at 0):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+set T = python3 tools/team_modes.py
+set MODES = ../hadur-core/src/main/java/hadur117/core/melee/TeamModes.java
+
+qtprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur117.HadurTeam_"$V"aa.jar bisect/hadur117.HadurTeam_"$V"bb.jar bisect/hadur117.HadurTeam_"$V"qt.jar bisect/hadur117.HadurTeam_"$V"qg.jar && rm -f ${OUT}/team-quarters-*.md && ./fetch-opponents.sh --set plans/team-quarters5.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmquarters && mkdir -p work && rm -rf work/team-quarters-"$V"-bb work/team-quarters-"$V"-qt work/team-quarters-"$V"-gbb work/team-quarters-"$V"-gqg && rm -f work/team-quarters-table.java work/team-quarters-picked.txt && for a in bb qt gbb gqg; do sed "s/@V@/$V/g" plans/team-quarters-$a.args > work/team-quarters-$a.args || exit 1; done && for j in aa bb qt; do test -f bisect/hadur117.HadurTeam_"$V"$j.jar || exit 1; done && mvn -q compile
+qtbb   | mvn -q exec:java "-Dexec.args=@work/team-quarters-bb.args"
+  after: qtprep
+  watch: battles=240
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+qtqt   | mvn -q exec:java "-Dexec.args=@work/team-quarters-qt.args"
+  after: qtbb
+  watch: battles=240
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+qtpick | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && python3 tools/team_quarters.py work/team-quarters-"$V"-qt > ${OUT}/team-quarters-damage.md && ${T} pick --report QUARTERS=${OUT}/team-quarters-qt.md --control QUARTERS=${OUT}/team-quarters-bb.md --census plans/team-quarters5.txt --opponents opponents --min-mean 3.0 --low-end 0 --base MATEFIRE,HUNT,PATH,DODGE,CONCORD,CLOSE --shipped ${MODES} --out-md ${OUT}/team-quarters-pick.md --out-tsv ${OUT}/team-quarters-pick.tsv --out-java work/team-quarters-table.java --out-set work/team-quarters-picked.txt && { test -s work/team-quarters-table.java || { bash tools/open_results_pr.sh claude/pc-team-quarters-results "Close quarters on five teams: no team picked" $(ls ${OUT}/team-quarters-*.md 2>/dev/null); echo "pc-team-quarters: no team picked, the card ends here" >&2; exit 4; }; }
+  after: qtqt
+qtgprep | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && TEAM_MODE_TABLE="$(pwd)/work/team-quarters-table.java" TEAM_MODE_SUFFIX=qg bash ./build-ablation.sh tmtab && test -f bisect/hadur117.HadurTeam_"$V"qg.jar
+  after: qtpick
+qtgbb  | mvn -q exec:java "-Dexec.args=@work/team-quarters-gbb.args"
+  after: qtgprep
+  watch:
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+qtgqg  | mvn -q exec:java "-Dexec.args=@work/team-quarters-gqg.args"
+  after: qtgbb
+  watch:
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+qtsum  | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && python3 tools/team_quarters.py work/team-quarters-"$V"-gqg > ${OUT}/team-quarters-gate-damage.md && ${T} gate --report ${OUT}/team-quarters-gqg.md --control ${OUT}/team-quarters-gbb.md --set work/team-quarters-picked.txt --seeds 16 --teams 45 --min-aps 0.15 --out-md ${OUT}/team-quarters-verdict.md
+  after: qtgqg
+qtpr   | bash tools/open_results_pr.sh claude/pc-team-quarters-results "Close quarters on five teams: screen, pick and fresh-seed gate" $(ls ${OUT}/team-quarters-*.md 2>/dev/null)
+  after: qtsum
