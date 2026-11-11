@@ -14,7 +14,10 @@ under 5%), a status (shield, lever, surfkey, untouched) and one route by its gap
   R2 chaser     close class            R3 keys   mid class            R4 portfolio   low class or no trace row
 
 Rows are sorted by the gap to BeepBoop, largest first. aps_bb is the gap over the robots in the ledger.
-Refresh it after each release, once name-ledger.tsv is rebuilt from the new live pages:
+Refresh it after each release, once name-ledger.tsv is rebuilt from the new live pages. The scores and the status
+then follow the release, but the class, band, hit rates and damage are whatever --trace measured: give it a trace
+read of the released build (a pc-learn-trace run) or the classes stay those of the build the old trace fought with.
+The command that built the file in the repo (Hadur 3.21, traced 2026-11-10):
 
   python3 tools/field_ledger.py --names name-ledger.tsv \\
       --trace ../docs/bench/local/2026-11-10_learn-trace-field-read.md \\
@@ -95,7 +98,7 @@ def route(gap, cls):
     return {"close": "R2 chaser", "mid": "R3 keys"}.get(cls, "R4 portfolio")
 
 
-def build(names_tsv, trace_md, tables_java, shield_java):
+def build(names_tsv, trace_md, tables_java, shield_java, min_cover=0.5):
     led = list(csv.DictReader(open(names_tsv, encoding="utf-8"), delimiter="\t"))
     names = {r["name"] for r in led}
     carried = defaultdict(list)
@@ -105,6 +108,10 @@ def build(names_tsv, trace_md, tables_java, shield_java):
             if n:
                 carried[n].append(table)
     tr = trace(trace_md)
+    found = sum(1 for r in led if slug(r["name"]) in tr)
+    if found < min_cover * len(led):
+        sys.exit("field_ledger.py: %s has a trace row for %d of %d robots (under %.0f%%): not a per-opponent trace "
+                 "read of this field, so no ledger is written" % (trace_md, found, len(led), 100 * min_cover))
     rows = []
     for r in led:
         name = r["name"]
@@ -136,8 +143,10 @@ def main(argv=None):
     ap.add_argument("--tables", required=True, help="ShieldTableData.java")
     ap.add_argument("--shield", required=True, help="ShieldListData.java")
     ap.add_argument("--out", required=True)
+    ap.add_argument("--min-cover", type=float, default=0.5,
+                    help="stop unless the trace has a row for this share of the ledger's robots")
     a = ap.parse_args(argv)
-    rows = build(a.names, a.trace, a.tables, a.shield)
+    rows = build(a.names, a.trace, a.tables, a.shield, a.min_cover)
     with open(a.out, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=COLUMNS, delimiter="\t", lineterminator="\n")
         w.writeheader()

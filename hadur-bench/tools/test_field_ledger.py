@@ -50,6 +50,11 @@ class FieldLedgerTest(unittest.TestCase):
         self.assertEqual(("R5 hold", -4.0), (rows["e.Ahead 1"]["route"], rows["e.Ahead 1"]["gap_bb"]))
         self.assertEqual(("R4 portfolio", "-", "untouched", ""), tuple(rows["f.NoTrace 1"][k] for k in ("route", "cls", "status", "hit_us")))
         self.assertAlmostEqual(15.0 / 6, rows["a.Ram 1.0"]["aps_bb"], places=3)
+        # A trace that is not a per-opponent read of this field writes no ledger.
+        empty = self.write("empty.md", "# read\n\nnothing here\n")
+        with self.assertRaises(SystemExit) as cm:
+            field_ledger.build(names, empty, tables, shield)
+        self.assertIn("0 of 6 robots", str(cm.exception.code))
         out = os.path.join(self.d, "out.tsv")
         field_ledger.main(["--names", names, "--trace", trace, "--tables", tables, "--shield", shield, "--out", out])
         with open(out, encoding="utf-8") as f:
