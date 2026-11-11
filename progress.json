@@ -1,0 +1,22 @@
+{
+ "plan": "pc-portfolio",
+ "updated": 1794422222.3814085,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "pilot": {
+   "status": "pending"
+  },
+  "confirm": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
