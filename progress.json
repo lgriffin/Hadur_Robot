@@ -1,0 +1,34 @@
+{
+ "plan": "pc-team-quarters",
+ "updated": 1794419299.0749655,
+ "steps": {
+  "qtprep": {
+   "status": "pending"
+  },
+  "qtbb": {
+   "status": "pending"
+  },
+  "qtqt": {
+   "status": "pending"
+  },
+  "qtpick": {
+   "status": "pending"
+  },
+  "qtgprep": {
+   "status": "pending"
+  },
+  "qtgbb": {
+   "status": "pending"
+  },
+  "qtgqg": {
+   "status": "pending"
+  },
+  "qtsum": {
+   "status": "pending"
+  },
+  "qtpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
