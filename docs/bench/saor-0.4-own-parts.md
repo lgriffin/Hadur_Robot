@@ -13,7 +13,7 @@ Seed blocks: r1 4100, r2 4200, r3 4300, r1x 4500, r1z 4600. Reports: `docs/bench
 `saor-r1x-wnh.md`, `saor-r1z-wnh.md`, `saor-r1x-wgv.md`, `saor-r1z-wgv.md`,
 `saor-r1x-wnz.md`, `saor-r1z-wnz.md`, and for section 10 `saor-<block>-wcd.md`, `-wtd.md`, `-wtb.md`,
 `-wte.md`, `-wbg.md`, `-wto.md`, `-wtr.md` (which also carries WTN) `-wta.md` (r1-r5, r1x, r1z), and for section 11 `-was.md`, `-wag.md` (which carries WAD
-and WDG), `-wat.md` and `-wau.md`; for section 13 the per-arm census reports `saor-<block>-census-<ARM>.md` (WD1 and OG1 over r1-r5, r1x, r1z; OG2 over r1-r5 and r1x, its r1z stopped).
+and WDG), `-wat.md` and `-wau.md`; for section 13 the per-arm census reports `saor-<block>-census-<ARM>.md` (WD1 and OG1 over r1-r5, r1x, r1z; OG2 over r1-r5 and r1x, its r1z stopped; OG3 over r1-r4).
 
 ## Result
 
@@ -199,6 +199,12 @@ The movement went from -3.0 to about -0.6 over about 45 designs. The steps that 
       recent pattern and misses; sampling many paths and pooling them is what carries the gun.
       Next: OG3 (1,020 bytes), 64 sampled playouts of the own chain, aimed at the mean end bearing
       with no angle bins and no vote.
+    - OG3 (2026-11-11, 1,020 bytes): 64 sampled playouts of the own chain, aimed at the mean end
+      bearing. Reads -1.14, -0.90, -1.62, -1.16 (r5, r1x, r1z stopped), about **-1.2: fails, but
+      five points better than OG2**. Sampling is most of the gun; the mean blurs two likely lanes into
+      the gap between them, which costs about a point against WD1's vote. Next: OG4 (1,063 bytes), the
+      same 64 samples aimed at the fullest 0.05-radian cell, a plain histogram mode with no kernel
+      and no weights.
 
 **Where WNF still loses** (C against WNF over the three blocks, 11,340 rounds each): duels end in a
 win equally often (85.9% and 85.8%). WNF dies 13% more often in the crowd (4,778 deaths against
