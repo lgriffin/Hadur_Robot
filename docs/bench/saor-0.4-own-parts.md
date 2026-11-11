@@ -186,6 +186,13 @@ The movement went from -3.0 to about -0.6 over about 45 designs. The steps that 
       class set-up about 80. The playout alone leaves about 250 bytes for everything else, so WT7
       cannot reach 749 by trimming the own parts; it needs a gun of about 200 bytes, which would also
       replace the last Figment part.
+    - Own compact gun OG1 (2026-11-11, 881 bytes): WD1 with the Markov playout replaced by one
+      playout on the target's averaged speed and turn rate (each decayed by a quarter a scan),
+      stopped at the walls. Reads -4.28, -3.77, -4.28, -3.87, -3.91, -3.77, -3.78, about **-3.95 ±
+      0.17: fails by a wide margin**. A gun with no memory of how each robot moves gives back about
+      four points; the learned state chain is what carries Saor's gun. The two byte cuts queued on
+      OG1 were stopped unrun. Next: OG2, the own state chain kept but played forward once along each
+      state's most recent successor (no sampling, no vote), 972 bytes, screened before any byte cuts.
 
 **Where WNF still loses** (C against WNF over the three blocks, 11,340 rounds each): duels end in a
 win equally often (85.9% and 85.8%). WNF dies 13% more often in the crowd (4,778 deaths against
