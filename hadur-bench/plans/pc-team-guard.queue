@@ -1,0 +1,67 @@
+# Team: the two safety guards still to build, keep moving and last enemy (BENCH-233). Team thread: team-only, duel and
+# melee fixtures bit for bit.
+#   aa      the baseline (master); bb its A/A copy
+#   mv      MOVING on every team (TMODE-46, tmmoving): the DODGE re-rank pays for creeping across a cool gun's
+#           line (under 3 px a tick) and for meeting a wave back within 30 px of where it was fired at
+#   la      LAST on every team (TMODE-47, tmlast): with one enemy left and a teammate alive the members keep the
+#           melee role (spacing, own-fire paths, DODGE) instead of each handing over to the duel, and close on it
+# Pilot: mv and la on all 46 teams, 3 fresh seeds from 15200, 12 rounds, paired with aa. An arm whose projected
+#   team APS change is under 0 stops there (team_modes.py gate --stop-below 0); one that is not leaves a marker
+#   (work/team-guard-go-ARM) and goes on. Both under 0: the screen does nothing and the PR carries the pilot.
+# Screen: bb and each surviving arm against aa on all 46 teams, 12 fresh seeds from 15300, 12 rounds; each arm is
+#   gated on its own at +0.15 APS with the 95% low end above zero over 46 pairings, scored against both baselines.
+# Why it should win: both guards act where the team loses most and the modes never look. Simple and linear guns
+#   are a large share of the team field, and they hit a member that creeps across their line or comes back to
+#   where it stood; the dodge today counts a wave only once it is in flight, never the gun that is about to fire.
+#   And with one enemy left every member drops to the duel controller on its own: no spacing from its mates, no
+#   check of its mates' bullets, no shared aim, which is where our own fire hits us. Risk: both are global
+#   switches, so a pilot screens them before any long run, and shipping either is Leigh's call, as DODGE's was.
+# Size: pilot 2 x 138 battles; screen bb 552 and up to 2 x 552: about 1,900 battles at most, about 1.3 h at the
+#   1,470 team battles/h pc-team-quarters ran at. Every step resumes where it stopped.
+# Stop rules on every battle step (halt; every battle fought is kept and a rerun resumes): 60 failed battles, no
+# battle in 30 minutes, or 60+ skipped turns a battle over the last 200.
+# The team thread reads claude/pc-team-guard-results.
+#   ./queue.sh run pc-team-guard        (or  .\queue.ps1 run pc-team-guard)
+# Run it from master after pc-team-portfolio (one bench queue at a time, RoboRumble workers at 0):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+set T = python3 tools/team_modes.py
+
+tgprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && for a in aa bb mv la; do rm -f bisect/hadur117.HadurTeam_"$V"$a.jar; done && rm -f ${OUT}/team-guard-*.md && mkdir -p work && rm -rf work/team-guard-"$V"-* && rm -f work/team-guard-*.args work/team-guard-go-* && ./fetch-opponents.sh --set team-census46.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmmoving && bash ./build-ablation.sh tmlast && for a in mv la; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" plans/team-guard-pilot.args > work/team-guard-p$a.args || exit 1; done && for a in bb mv la; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" plans/team-guard-screen.args > work/team-guard-$a.args || exit 1; done && for a in aa bb mv la; do test -f bisect/hadur117.HadurTeam_"$V"$a.jar || exit 1; done && mvn -q compile
+tgpmv | mvn -q exec:java "-Dexec.args=@work/team-guard-pmv.args"
+  after: tgprep
+  watch: battles=138
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tgpla | mvn -q exec:java "-Dexec.args=@work/team-guard-pla.args"
+  after: tgpmv
+  watch: battles=138
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tgpilot | for a in mv la; do ${T} gate --report ${OUT}/team-guard-p$a.md --set team-census46.txt --seeds 3 --teams 46 --min-aps 0 --stop-below 0 --out-md ${OUT}/team-guard-pilot-$a.md && touch work/team-guard-go-$a || test $? -eq 3 || exit 1; done
+  after: tgpla
+tgbb | if [ -f work/team-guard-go-mv ] || [ -f work/team-guard-go-la ]; then mvn -q exec:java "-Dexec.args=@work/team-guard-bb.args"; else echo "both arms under 0 on the pilot: no screen"; fi
+  after: tgpilot
+  watch:
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tgmv | if [ -f work/team-guard-go-mv ]; then mvn -q exec:java "-Dexec.args=@work/team-guard-mv.args"; else echo "mv under 0 on the pilot: no screen"; fi
+  after: tgbb
+  watch:
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tgla | if [ -f work/team-guard-go-la ]; then mvn -q exec:java "-Dexec.args=@work/team-guard-la.args"; else echo "la under 0 on the pilot: no screen"; fi
+  after: tgmv
+  watch:
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tggate | for a in mv la; do if [ -f work/team-guard-go-$a ]; then ${T} gate --report ${OUT}/team-guard-$a.md --control ${OUT}/team-guard-bb.md --set team-census46.txt --seeds 12 --teams 46 --min-aps 0.15 --out-md ${OUT}/team-guard-verdict-$a.md || exit 1; else echo "$a: no screen"; fi; done
+  after: tgla
+tgpr | bash tools/open_results_pr.sh claude/pc-team-guard-results "Team: the keep-moving and last-enemy guards" $(ls ${OUT}/team-guard-*.md 2>/dev/null)
+  after: tggate

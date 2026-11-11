@@ -163,6 +163,13 @@
 #         shipped table entry): a member with an armed enemy closing inside 200 px gets an uncapped
 #         ring, a term against ending within 150 px of it, and full speed through a turn. Suffix qt
 #         (pc-team-quarters, BENCH-225).
+#   tmmoving (team only) TMODE-46: MOVING on every team (FORCE_MOVING, and Mode.MOVING on every
+#         shipped table entry): the DODGE re-rank pays for creeping across a cool gun's line and for
+#         meeting a wave back near where it was fired at. Teams without DODGE are unchanged. Suffix mv
+#         (pc-team-guard, BENCH-233).
+#   tmlast (team only) TMODE-47: LAST on every team (FORCE_LAST, and Mode.LAST on every shipped
+#         table entry): with one enemy left and a teammate alive the members keep the melee role and
+#         close on it. Suffix la (pc-team-guard, BENCH-233).
 #   tmnoclose (team only) TMODE-42 off: the hunt place 350 px on every team, the build before CLOSE
 #         shipped. Suffix ncl.
 #   tmlock (team only) the confirmed table, $TEAM_MODE_LOCKED (default work/team-modes-locked.java,
@@ -903,6 +910,18 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$modes" "public static final boolean FORCE_QUARTERS = false;" "public static final boolean FORCE_QUARTERS = true;"
             sed -i -E '/^        t\.put\(/{/Mode\.QUARTERS/!s/\)\);$/, Mode.QUARTERS));/}' "$modes"
             ;;
+        tmmoving)
+            # TMODE-46 on every team: the default and every shipped entry play MOVING. Suffix mv.
+            version="${version}mv"
+            edit "$modes" "public static final boolean FORCE_MOVING = false;" "public static final boolean FORCE_MOVING = true;"
+            sed -i -E '/^        t\.put\(/{/Mode\.MOVING/!s/\)\);$/, Mode.MOVING));/}' "$modes"
+            ;;
+        tmlast)
+            # TMODE-47 on every team: the default and every shipped entry play LAST. Suffix la.
+            version="${version}la"
+            edit "$modes" "public static final boolean FORCE_LAST = false;" "public static final boolean FORCE_LAST = true;"
+            sed -i -E '/^        t\.put\(/{/Mode\.LAST/!s/\)\);$/, Mode.LAST));/}' "$modes"
+            ;;
         tmnoclose)
             # TMODE-42 off: the hunt place 350 px on every team, the build before CLOSE shipped. Suffix ncl.
             version="${version}ncl"
@@ -924,7 +943,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean THREE_FAR = false;" "public static final boolean THREE_FAR = true;"
             version="${version}ef" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, mirofflist)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmmoving, tmlast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, mirofflist)" >&2; exit 2 ;;
     esac
 done
 

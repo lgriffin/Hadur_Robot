@@ -166,6 +166,11 @@ final class TeamRisk {
     /** As above, with {@code name} this member's name for TMODE-13's order (null: first). */
     static Pull pull(Point2D.Double me, String name, double energy, int others, List<EnemyInfo> enemies,
                      long now, List<Roster.Mate> mates, Set<TeamModes.Mode> modes) {
+        // TMODE-47: under LAST the members close on the one enemy left as FINISH would.
+        if (modes.contains(TeamModes.Mode.LAST) && others == 1 && enemies.size() == 1
+                && enemies.get(0).age(now) < CAP_MAX_AGE && energy >= FINISH_ENERGY) {
+            return new Pull(enemies.get(0).location, FINISH_FLOOR, FINISH_PULL);
+        }
         if (modes.contains(TeamModes.Mode.FINISH) && enemies.size() == 1 && others - mates.size() == 1
                 && enemies.get(0).age(now) < CAP_MAX_AGE && energy >= FINISH_ENERGY) {
             return new Pull(enemies.get(0).location, FINISH_FLOOR, FINISH_PULL);

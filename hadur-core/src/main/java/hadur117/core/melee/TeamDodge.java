@@ -55,6 +55,8 @@ final class TeamDodge {
      * the same order every run (CORE-2).
      */
     private final Map<EnemyShot, MinimumRiskMovement.Wave> profiles = new LinkedHashMap<>();
+    /** TMODE-46: each shooter's latest shot seen this round. */
+    private final Map<String, EnemyShot> latest = new java.util.HashMap<>();
 
     TeamDodge(BattleField field) {
         this.field = field;
@@ -66,6 +68,17 @@ final class TeamDodge {
 
     void newRound() {
         profiles.clear();
+        latest.clear();
+    }
+
+    /**
+     * TMODE-46: the tick {@code shooter}'s gun is next cool, from its latest shot seen this
+     * round (heat 1 + power/5 cooling 0.1 a tick); a shooter not seen firing is cool now.
+     */
+    long readyAt(String shooter) {
+        EnemyShot s = latest.get(shooter);
+        if (s == null) return Long.MIN_VALUE;
+        return s.fireTime + (long) Math.ceil(10 * (1 + s.power / 5));
     }
 
     /**
@@ -78,8 +91,15 @@ final class TeamDodge {
         IdentityHashMap<EnemyShot, Boolean> live = new IdentityHashMap<>();
         for (EnemyShot s : shots) {
             live.put(s, Boolean.TRUE);
+            EnemyShot last = latest.get(s.shooter);
+            if (last == null || s.fireTime > last.fireTime) latest.put(s.shooter, s);
             if (profiles.containsKey(s)) continue;
-            profiles.put(s, profile(s, path, me, mates, danger, own, only));
+            MinimumRiskMovement.Wave w = profile(s, path, me, mates, danger, own, only);
+            if (w != null) {
+                RobotState at = path.getState(s.fireTime);
+                if (at != null) w.target = at.location;
+            }
+            profiles.put(s, w);
         }
         for (Iterator<Map.Entry<EnemyShot, MinimumRiskMovement.Wave>> it = profiles.entrySet().iterator(); it.hasNext(); ) {
             Map.Entry<EnemyShot, MinimumRiskMovement.Wave> e = it.next();
