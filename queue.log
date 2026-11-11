@@ -1,1 +1,10 @@
 17:48:19 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
+17:48:19 start qtprep
+17:48:21 progress pushed to origin claude/pc-team-quarters-progress (every 15 min)
+17:50:00 qtprep exit=0 in 101 s
+17:50:00 start qtbb
+17:50:00 watching qtbb: 3 stop rule(s)
+17:50:20 progress qtbb: 0/240 (0%) battles, 0 failed
+17:59:45 qtbb exit=0 in 585 s
+17:59:45 start qtqt
+17:59:45 watching qtqt: 3 stop rule(s)
