@@ -61,3 +61,4 @@ WAE | stages 1-4: WAU with power for the best expected energy gain from the targ
 WGC | stages 1-5: WAE with the chain's velocity in 2 px/tick steps (9 values, not 17), so each row fills twice as fast | =saor-arms/SaorWGC.java
 WGT | stages 1-5 (passes the gate: about +0.06 over seven seed sets): WGC with the chain turn in 3 bins (left, straight, right) | =saor-arms/SaorWGT.java
 WT7 | stages 1-5 (passes the gate: about +0.09 over seven seed sets, best read): WAE with the chain turn in 3 bins, speed at 1 px/tick | =saor-arms/SaorWT7.java
+WD1 | first byte cut of WT7 (inside the gate: about -0.07 over seven seed sets, 1,146 bytes): no duel orbit, no last-hitter fallback, the nearest-whose-nearest-is-us test once per scan | =saor-arms/SaorWD1.java
