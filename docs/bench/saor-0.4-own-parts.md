@@ -217,8 +217,8 @@ The movement went from -3.0 to about -0.6 over about 45 designs. The steps that 
       OG1 -3.95, OG3 -1.2, OG4 -0.68, OG5 -0.63, WD1 -0.07), but the bytes came back with them: OG5
       saves only 64 bytes on WD1. The remaining 0.6 points sit in the smoothed, weighted vote that
       WD1 already carries; an own gun that matched it would be about WD1's size again (a smoothed
-      OG6 measured 1,117 bytes and was not run). Even a gun at parity leaves the bot about 330 bytes
-      over 749, and those bytes are the own movement and target. Fitting an all-own Saor under 749
+      OG6 measured 1,117 bytes and was not run). OG5 itself is 333 bytes over 749; a gun at parity, near
+      OG6's or WD1's size, would leave the bot about 370 to 400 bytes over, and those bytes are the own movement and target. Fitting an all-own Saor under 749
       therefore costs the own parts it was built to keep; the choice of how to proceed went to Leigh.
 
 **Where WNF still loses** (C against WNF over the three blocks, 11,340 rounds each): duels end in a
