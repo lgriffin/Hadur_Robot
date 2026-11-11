@@ -1,6 +1,6 @@
 # Queue pc-team-portfolio: progress
 
-Updated 2026-11-11 20:46:42 PC time (20:46 UTC), runner pid 48912.
+Updated 2026-11-11 21:01:48 PC time (21:01 UTC), runner pid 48912.
 
 - `tpprep` done, exit 0 in 6 min
 - `tpbb` done, exit 0 in 38 min
@@ -35,14 +35,14 @@ Stopping now would leave 12 battles unrun (about 1 min); every battle already fo
 
 ### tpqt
 
-**176 battles**, 0 failed. Running 17 min, 638 battles/h. Last battle 0 min ago.
-Skipped turns a battle: 18.5 overall, first 100 19.4, last 100 17.4.
+**405 battles**, 0 failed. Running 32 min, 767 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 17.5 overall, first 100 19.4, last 100 16.3.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 176 |
+| `fails 60` | halt | ok | 0 failed of 405 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | waiting | 176 of 200 battles to read |
+| `skips 60 over 200` | halt | ok | 16.5 a battle over the last 200 (first 200: 18.6) |
 
 ### Queue log (last lines)
 
@@ -58,4 +58,5 @@ Skipped turns a battle: 18.5 overall, first 100 19.4, last 100 17.4.
 20:30:09 tpbb exit=0 in 2256 s
 20:30:09 start tpqt
 20:30:09 watching tpqt: 3 stop rule(s)
+20:53:45 progress tpqt: 294 battles, 747/h, 0 failed, skips 16.9/battle (last 100)
 ```
