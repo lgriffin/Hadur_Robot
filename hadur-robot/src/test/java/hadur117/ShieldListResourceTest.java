@@ -272,9 +272,10 @@ class ShieldListResourceTest {
     }
     @Test
     @Tag("MIR-2")
-    @DisplayName("no robot carries a mirror-off line until a card holds one")
+    @DisplayName("the 3 pc-mirror-off picks carry mirror-off lines and no other robot does")
     void mirrorOffPicks() {
-        assertEquals(0, ShieldTableData.mirrorOffs().length, "MIR-2 waits on pc-mirror-off (BENCH-224)");
+        assertEquals(java.util.Set.of("janm.Jammy 1.0", "suh.nano.MirrorH 1.01", "suh.nano.MirrorL 1.00"),
+            java.util.Set.of(ShieldTableData.mirrorOffs()), "MIR-2 lines held by pc-mirror-off (BENCH-224, PR #750)");
     }
 
     @Test

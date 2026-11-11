@@ -43,11 +43,12 @@ class MirrorOffPlanTest {
         assertTrue(queue.contains("--arm mo --panel panel-mirror-off.txt --bar 0.005"), "gate mo");
         assertTrue(queue.contains("mode_table.py ${W}/arms.tsv --margin 3 --out-tsv ${OUT}/mirror-off-pc-pick.tsv"));
         assertTrue(queue.contains("per_robot.py ${W}/arms.tsv --arms mo "));
-        // A robot already carrying a mirror-off line on master would be off in the control arm too.
+        // A robot already carrying a mirror-off line on master would be off in the control arm too; only those this card shipped may.
+        List<String> shipped = names("plans/mirror-off-shipped.txt");
         String table = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldTableData.java"));
         String offs = table.substring(table.indexOf("static String[] mirrorOffs()"));
         offs = offs.substring(0, offs.indexOf("};"));
-        for (String n : panel) assertTrue(!offs.contains("\"" + n + "\","), n + " has no mirror-off line on master yet");
+        for (String n : panel) assertTrue(shipped.contains(n) || !offs.contains("\"" + n + "\","), n + " has no mirror-off line on master yet");
         String arms = Files.readString(Path.of("plans/pc-mirror-off.arms"));
         for (String arm : new String[] {"c | hadur117.Hadur " + version + " |", "aa | hadur117.Hadur " + version + "aa |",
                                         "mo | hadur117.Hadur " + version + "mo |"}) {

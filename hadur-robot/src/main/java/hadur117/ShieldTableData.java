@@ -614,6 +614,10 @@ final class ShieldTableData {
      */
     static String[] mirrorOffs() {
         return new String[] {
+            // pc-mirror-off (BENCH-224, PR #750): 12 PC seeds against master and its A/A copy pooled
+            "janm.Jammy 1.0",         // +11.4
+            "suh.nano.MirrorH 1.01",  // +3.8
+            "suh.nano.MirrorL 1.00",  // +3.6
         };
     }
 
