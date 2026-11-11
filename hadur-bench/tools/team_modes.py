@@ -312,12 +312,17 @@ def cmd_pick(a):
         control = paired(path)
         screens[mode] = {t: (m - control[t][0] / 2, (c * c + (control[t][1] / 2) ** 2) ** 0.5)
                          for t, (m, c) in screens[mode].items() if t in control}
+    decide = shrink(screens) if a.shrink else None
     aa = paired(a.aa) if a.aa else {}
     rows = census(a.census)
     classes = classes_for(rows, a.opponents)
     picks = {}
     md = ["# Team mode table: screen picks", "",
-          (f"Pick: the mode with the largest paired gain over aa, at least {a.min_mean:+.1f} points." if a.min_mean is not None
+          (f"Pick (portfolio, BENCH-231): the mode whose shrunk gain is largest and above {a.margin:+.1f} points. A gain is "
+           "shrunk toward its mode's mean over the teams by the share of the gains' variance that is spread between "
+           "teams and not noise; no team has to clear an interval, the fresh-seed gate judges the picked group."
+           if decide is not None else
+           f"Pick: the mode with the largest paired gain over aa, at least {a.min_mean:+.1f} points." if a.min_mean is not None
            else f"Pick: the mode whose paired gain over aa has its 95% low end above {a.margin:+.1f} points; ties to the larger mean."), "",
           "| Team | " + " | ".join(screens) + (" | A/A |" if aa else " |") + " Pick |",
           "|---|" + "---|" * len(screens) + ("---|" if aa else "") + "---|"]
@@ -333,6 +338,10 @@ def cmd_pick(a):
             clears = mean >= a.min_mean if a.min_mean is not None else mean - ci > a.margin
             if a.low_end is not None:
                 clears = clears and mean - ci > a.low_end
+            if decide is not None:
+                # The portfolio rule: the shrunk gain decides, and it is the gain the pick records.
+                mean = decide[mode][team]
+                clears = mean > a.margin
             if names and mode not in table.get(team, {}):
                 clears = False
             if clears and (best is None or mean > best[1]):
@@ -412,6 +421,26 @@ def cmd_lock(a):
     print(f"kept {len(kept)} of {len(picks)} picks", file=sys.stderr)
 
 
+def shrink(screens):
+    """Each mode's paired gains, shrunk toward the mode's mean over its teams (empirical Bayes): the spread
+    between teams is the variance of the gains less the mean noise variance (a gain's 95% half-width over 1.96,
+    squared), floored at 0; a team's gain keeps spread / (spread + its noise variance) of its distance from the
+    mean. A mode with no spread gives every team the mode's mean. {mode: {team: shrunk gain}}."""
+    out = {}
+    for mode, r in screens.items():
+        if not r:
+            out[mode] = {}
+            continue
+        gains = [m for m, _ in r.values()]
+        mu = sum(gains) / len(gains)
+        noise = {t: (c / 1.96) ** 2 for t, (_, c) in r.items()}
+        var = sum((g - mu) ** 2 for g in gains) / len(gains)
+        tau2 = max(0.0, var - sum(noise.values()) / len(noise))
+        out[mode] = {t: mu + (tau2 / (tau2 + noise[t]) if tau2 + noise[t] > 0 else 0.0) * (m - mu)
+                     for t, (m, _) in r.items()}
+    return out
+
+
 def cmd_gate(a):
     table = paired(a.report)
     control = paired(a.control) if a.control else {}
@@ -469,6 +498,8 @@ def main(argv=None):
     pk.add_argument("--control", action="append", help="MODE=bb.md, the A/A arm of the card that screened MODE")
     pk.add_argument("--min-mean", type=float, help="pick on the mean alone, at least this many points")
     pk.add_argument("--low-end", type=float, help="also require the 95%% low end above this many points")
+    pk.add_argument("--shrink", action="store_true",
+                    help="the portfolio rule: pick on each gain shrunk toward its mode's mean, above --margin; no interval test")
     pk.add_argument("--counters", help="the per-opponent counters TSV: --report names its screens")
     pk.add_argument("--base", default="", help="modes every entry also plays, as MATEFIRE,HUNT")
     pk.add_argument("--shipped", help="TeamModes.java: a picked team the table already names keeps that entry's modes")

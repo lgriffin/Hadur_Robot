@@ -1,0 +1,31 @@
+# PC card team-portfolio (BENCH-231): one screen arm @A@ (the tmtab build of work/team-portfolio-@A@.java, every team's entry changed one way) on the teams the arm changes, 6 seeds from 15000, 12 rounds, against master (the aa build). Template: the card's prep writes the work copy with @V@ = the robot.release in hadur-robot/pom.xml and @A@ = the arm.
+--team
+true
+--seeds
+6
+--seed-base
+15000
+--rounds
+12
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+work/team-portfolio-@A@.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@@A@.jar
+--robot
+hadur117.HadurTeam @V@@A@
+--member
+hadur117.Hadur
+--out
+work/team-portfolio-@V@-@A@
+--report
+../docs/bench/local/team-portfolio-@A@.md
+--baseline
+bisect/hadur117.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur117.HadurTeam @V@aa

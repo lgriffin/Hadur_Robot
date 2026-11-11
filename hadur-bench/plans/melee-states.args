@@ -1,0 +1,25 @@
+# PC card pc-melee-states (BENCH-232): master on today's whole melee field with the melee trace on, 46 fields x 1 seed (3330), 20 rounds, no baseline: the card reads the traces, it compares no builds. Template: msprep writes work/melee-states.args with @V@ = the robot.release in hadur-robot/pom.xml and @C@ = the host's melee width.
+--suite
+melee-census-317.txt
+--seeds
+1
+--seed-base
+3330
+--rounds
+20
+--parallel
+@C@
+--child-heap
+2G
+--cpu-constant
+auto
+--melee-trace
+true
+--robot-jar
+bisect/hadur117.Hadur_@V@aa.jar
+--robot
+hadur117.Hadur @V@aa
+--out
+work/melee-states-@V@
+--report
+../docs/bench/local/melee-states-census.md
