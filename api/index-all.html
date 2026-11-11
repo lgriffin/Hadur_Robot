@@ -7875,6 +7875,14 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MMOVE-26">MMOVE-26</a>: what the surfer saw of a shot when it first processed it.</div>
 </dd>
+<dt><a href="hadur117/core/shieldmode/ShieldList.html#MIRROR_OFF" class="member-name-link">MIRROR_OFF</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MIR-2">MIR-2</a>: the per-opponent mirror-off switch's bit in <code>ShieldList.switches</code>.</div>
+</dd>
+<dt><a href="hadur117/core/shieldmode/ShieldList.html#MIRROR_OFF_PREFIX" class="member-name-link">MIRROR_OFF_PREFIX</a> - Static variable in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MIR-2">MIR-2</a>: a line starting with this names an opponent the duel never runs <a class="req" href="../requirements.html#MIR-1">MIR-1</a> against.</div>
+</dd>
 <dt><a href="hadur117/core/policy/MirrorDetector.html" class="type-name-link" title="class in hadur117.core.policy">MirrorDetector</a> - Class in <a href="hadur117/core/policy/package-summary.html">hadur117.core.policy</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MIR-1">MIR-1</a>: recognising a robot that moves as a mirror image of us.</div>
@@ -7887,6 +7895,16 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/core/move/MirrorDrive.html#%3Cinit%3E(hadur117.core.physics.BattleField,hadur117.core.physics.MovementPredictor)" class="member-name-link">MirrorDrive(BattleField, MovementPredictor)</a> - Constructor for class hadur117.core.move.<a href="hadur117/core/move/MirrorDrive.html" title="class in hadur117.core.move">MirrorDrive</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/core/shieldmode/ShieldList.html#mirrorOff(java.lang.String)" class="member-name-link">mirrorOff(String)</a> - Method in class hadur117.core.shieldmode.<a href="hadur117/core/shieldmode/ShieldList.html" title="class in hadur117.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MIR-2">MIR-2</a>: whether the duel never runs <a class="req" href="../requirements.html#MIR-1">MIR-1</a> (mirror detection, its drive and its aim) against
+ <code>robotName</code>, by the rule of <a href="hadur117/core/shieldmode/ShieldList.html#matches(java.lang.String)"><code>ShieldList.matches(java.lang.String)</code></a>.</div>
+</dd>
+<dt><a href="hadur117/ShieldTableData.html#mirrorOffs()" class="member-name-link">mirrorOffs()</a> - Static method in class hadur117.<a href="hadur117/ShieldTableData.html" title="class in hadur117">ShieldTableData</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MIR-2">MIR-2</a>: the opponents the duel never runs <a class="req" href="../requirements.html#MIR-1">MIR-1</a> (the mirror detector, its drive and its aim)
+ against.</div>
+</dd>
 <dt><a href="hadur117/core/model/RoundStats.html#mirrorShots" class="member-name-link">mirrorShots</a> - Variable in class hadur117.core.model.<a href="hadur117/core/model/RoundStats.html" title="class in hadur117.core.model">RoundStats</a></dt>
 <dd>
 <div class="block">3.5: shots aimed at the mirror of our own position (<a class="req" href="../requirements.html#MIR-1">MIR-1</a>).</div>
