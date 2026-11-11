@@ -1043,3 +1043,27 @@ across its line, which is what the aim experts of MMOVE-30 profile and the two g
 damage Hadur takes comes from bullets aimed at someone else, against 27% for ScalarR, the stray fire of the
 crowd measured before (23% of hits never seen as aimed at Hadur). The PC trace agrees on Hadur's own row:
 10.1% a bullet, 36% slow, 61% head-on, 43% stray, 14.6% and 18.7% at guess factors 0.5 to 0.8 and over 0.8.
+
+## The shot profiles in the crowd (MMOVE-30), cloud smoke (2026-11-11)
+
+Card 4 of the melee plan. Off a team the surfer turns each seen shot into head-on and linear guesses until five
+of that shooter's hits are logged, then its learned aims. `MELEE_DODGE` (arm `mdodge`, md) puts the team's dodge
+(TMODE-27) there instead: each shot is profiled once with the six aim experts, each weighted by how close it came
+on that shooter's hits, weighed by the crowd weight, and the 12 lowest-risk candidates are driven through the
+profiles. The experts learn from Hadur's own hits and from the cross-hits (MMOVE-19).
+
+`mdodge` against master, 12 census fields, 2 seeds from 5900, 35 rounds, 24 pairs:
+
+| | md | master | diff (95%) |
+|---|---:|---:|---|
+| score share | 19.02 | 19.17 | -0.15 ± 0.43 |
+| APS (data/tools/melee_pairwise.py) | 68.5 | 68.9 | -0.3 ± 0.6 |
+| rounds won | 49.3% | 48.8% | +0.5 ± 4.6 |
+| crowd deaths | 27.5% | 27.3% | +0.2 ± 4.4 |
+| nearest load; crowd damage taken per 100 ticks | 0.81; 8.54 | 0.83; 7.93 | -0.02; +0.61 ± 0.55 |
+| skipped turns a battle | 20.6 | 22.4 | |
+
+Level within the smoke's noise, with the skipped turns held, which is the bar the plan set for the PC card. The
+crowd damage taken a tick is 7% up, at the edge of the interval: the warning sign the pilot will read. The card is
+pc-melee-dodge (BENCH-233, pilot BENCH-234): a pilot of md against aa on the 46 census fields at seeds 3346-3347
+that stops the card unless Hadur's share is up, then aa, bb and md alone at seeds 3340-3345.
