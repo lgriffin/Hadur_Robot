@@ -13,7 +13,7 @@ Seed blocks: r1 4100, r2 4200, r3 4300, r1x 4500, r1z 4600. Reports: `docs/bench
 `saor-r1x-wnh.md`, `saor-r1z-wnh.md`, `saor-r1x-wgv.md`, `saor-r1z-wgv.md`,
 `saor-r1x-wnz.md`, `saor-r1z-wnz.md`, and for section 10 `saor-<block>-wcd.md`, `-wtd.md`, `-wtb.md`,
 `-wte.md`, `-wbg.md`, `-wto.md`, `-wtr.md` (which also carries WTN) `-wta.md` (r1-r5, r1x, r1z), and for section 11 `-was.md`, `-wag.md` (which carries WAD
-and WDG), `-wat.md` and `-wau.md`; for section 13 the per-arm census reports `saor-<block>-census-<ARM>.md` (WD1 and OG1 over r1-r5, r1x, r1z; OG2 over r1-r5 and r1x, its r1z stopped; OG3 over r1-r4).
+and WDG), `-wat.md` and `-wau.md`; for section 13 the per-arm census reports `saor-<block>-census-<ARM>.md` (WD1 and OG1 over r1-r5, r1x, r1z; OG2 over r1-r5 and r1x, its r1z stopped; OG3 over r1-r4; OG4 over all seven).
 
 ## Result
 
@@ -205,6 +205,12 @@ The movement went from -3.0 to about -0.6 over about 45 designs. The steps that 
       the gap between them, which costs about a point against WD1's vote. Next: OG4 (1,063 bytes), the
       same 64 samples aimed at the fullest 0.05-radian cell, a plain histogram mode with no kernel
       and no weights.
+    - OG4 (2026-11-11, 1,063 bytes): the same 64 samples aimed at the fullest 0.05-radian cell.
+      Reads -0.95, -0.47, -0.90, -0.31, -0.67, -0.68, -0.76, about **-0.68 ± 0.16: fails**, but half
+      a point better than OG3. Taking the mode of the samples instead of their mean recovers most of
+      the gap; about 0.6 still separates it from WD1's weighted, smoothed vote. Its 83-byte saving over
+      WD1 is small against the 400 bytes still to cut. Next: OG5 (1,082 bytes), OG4 with Saor's graded
+      vote (a playout counts 5 + 12 a sample of its thinnest row, at most 100; SAOR-7).
 
 **Where WNF still loses** (C against WNF over the three blocks, 11,340 rounds each): duels end in a
 win equally often (85.9% and 85.8%). WNF dies 13% more often in the crowd (4,778 deaths against
