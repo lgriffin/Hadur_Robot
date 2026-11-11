@@ -602,6 +602,10 @@ final class ShieldTableData {
             // pc-shield-rescreen (BENCH-222, PR #739): Saturn +10.5, OperatorZeze +3.5 on 12 fresh seeds
             "tobe.Saturn lambda",
             "zeze2.OperatorZeze 1.05",
+            // pc-still-field (BENCH-223, PR #746): X2 +5.7, Che +3.8, Aardvark +3.6 on 12 fresh seeds
+            "florent.XSeries.X2 0.17",
+            "cjm.Che 1.2",
+            "djc.Aardvark 0.3.6",
         };
     }
 
@@ -614,6 +618,10 @@ final class ShieldTableData {
      */
     static String[] mirrorOffs() {
         return new String[] {
+            // pc-mirror-off (BENCH-224, PR #750): 12 PC seeds against master and its A/A copy pooled
+            "janm.Jammy 1.0",         // +11.4
+            "suh.nano.MirrorH 1.01",  // +3.8
+            "suh.nano.MirrorL 1.00",  // +3.6
         };
     }
 

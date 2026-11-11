@@ -48,7 +48,9 @@ class StillFieldPlanTest {
         assertTrue(queue.contains("per_robot.py ${W}/arms.tsv --arms mz "));
         // A panel robot already on master's list would shield in the control arm too.
         String listData = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldListData.java"));
-        for (String n : panel) assertTrue(!listData.contains("\"" + n + "\","), n + " is not on master's shield list yet");
+        // Only the robots this card shipped may already be on master's list.
+        List<String> shipped = names("plans/still-field-shipped.txt");
+        for (String n : panel) assertTrue(shipped.contains(n) || !listData.contains("\"" + n + "\","), n + " is not on master's shield list yet");
         assertTrue(!panel.contains("axeBots.Musashi 2.18"), "Musashi failed this arm on the PC (BENCH-209)");
         String arms = Files.readString(Path.of("plans/pc-still-field.arms"));
         for (String arm : new String[] {"c | hadur117.Hadur " + version + " |", "aa | hadur117.Hadur " + version + "aa |",
