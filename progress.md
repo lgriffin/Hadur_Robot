@@ -1,6 +1,6 @@
 # Queue pc-team-portfolio: progress
 
-Updated 2026-11-11 21:47:07 PC time (21:47 UTC), runner pid 48912.
+Updated 2026-11-11 22:02:13 PC time (22:02 UTC), runner pid 48912.
 
 - `tpprep` done, exit 0 in 6 min
 - `tpbb` done, exit 0 in 38 min
@@ -57,19 +57,18 @@ Skipped turns a battle: 17.4 overall, first 100 20.3, last 100 15.6.
 
 ### tpho
 
-**12 battles**, 0 failed. Running 3 min, 255 battles/h. Last battle 0 min ago.
-Skipped turns a battle: 10.0 overall, first 12 10.0, last 12 10.0.
+**210 battles**, 0 failed. Running 18 min, 703 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 17.7 overall, first 100 18.6, last 100 17.0.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 12 |
+| `fails 60` | halt | ok | 0 failed of 210 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | waiting | 12 of 200 battles to read |
+| `skips 60 over 200` | halt | ok | 18.1 a battle over the last 200 (first 200: 17.9) |
 
 ### Queue log (last lines)
 
 ```
-19:52:32 start tpbb
 19:52:32 watching tpbb: 3 stop rule(s)
 19:53:19 progress tpbb: 0/552 (0%) battles, 0 failed
 20:23:32 progress tpbb: 389/552 (70%) battles, 753/h, ETA 13 min, 0 failed, skips 13.9/battle (last 100)
@@ -84,4 +83,5 @@ Skipped turns a battle: 10.0 overall, first 12 10.0, last 12 10.0.
 21:44:18 tpga exit=0 in 2242 s
 21:44:18 start tpho
 21:44:18 watching tpho: 3 stop rule(s)
+21:54:10 progress tpho: 96 battles, 583/h, 0 failed, skips 18.7/battle (last 100)
 ```
