@@ -18,3 +18,7 @@
 21:44:18 start tpho
 21:44:18 watching tpho: 3 stop rule(s)
 21:54:10 progress tpho: 96 battles, 583/h, 0 failed, skips 18.7/battle (last 100)
+22:20:05 tpho exit=0 in 2147 s
+22:20:05 start tpli
+22:20:05 watching tpli: 3 stop rule(s)
+22:24:24 progress tpli: 19 battles, 264/h, 0 failed, skips 14.8/battle (last 100)
