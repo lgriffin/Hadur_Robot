@@ -1,12 +1,12 @@
 # Queue pc-team-portfolio: progress
 
-Updated 2026-11-11 21:32:00 PC time (21:32 UTC), runner pid 48912.
+Updated 2026-11-11 21:47:07 PC time (21:47 UTC), runner pid 48912.
 
 - `tpprep` done, exit 0 in 6 min
 - `tpbb` done, exit 0 in 38 min
 - `tpqt` done, exit 0 in 37 min
-- `tpga` running
-- `tpho` pending
+- `tpga` done, exit 0 in 37 min
+- `tpho` running
 - `tpli` pending
 - `tpnd` pending
 - `tpnc` pending
@@ -46,21 +46,29 @@ Skipped turns a battle: 17.2 overall, first 100 19.4, last 100 15.6.
 
 ### tpga
 
-**327 battles**, 0 failed. Running 25 min, 782 battles/h. Last battle 0 min ago.
-Skipped turns a battle: 18.5 overall, first 100 20.3, last 100 16.6.
+**516 battles**, 0 failed. Running 37 min, 828 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 17.4 overall, first 100 20.3, last 100 15.6.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 327 |
+| `fails 60` | halt | ok | 0 failed of 516 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | ok | 17.8 a battle over the last 200 (first 200: 19.4) |
+| `skips 60 over 200` | halt | ok | 15.6 a battle over the last 200 (first 200: 19.4) |
+
+### tpho
+
+**12 battles**, 0 failed. Running 3 min, 255 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 10.0 overall, first 12 10.0, last 12 10.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 60` | halt | ok | 0 failed of 12 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 60 over 200` | halt | waiting | 12 of 200 battles to read |
 
 ### Queue log (last lines)
 
 ```
-19:46:16 start tpprep
-19:46:19 progress pushed to origin claude/pc-team-portfolio-progress (every 15 min)
-19:52:32 tpprep exit=0 in 375 s
 19:52:32 start tpbb
 19:52:32 watching tpbb: 3 stop rule(s)
 19:53:19 progress tpbb: 0/552 (0%) battles, 0 failed
@@ -73,4 +81,7 @@ Skipped turns a battle: 18.5 overall, first 100 20.3, last 100 16.6.
 21:06:55 start tpga
 21:06:55 watching tpga: 3 stop rule(s)
 21:23:57 progress tpga: 188 battles, 662/h, 0 failed, skips 18.3/battle (last 100)
+21:44:18 tpga exit=0 in 2242 s
+21:44:18 start tpho
+21:44:18 watching tpho: 3 stop rule(s)
 ```

@@ -14,3 +14,6 @@
 21:06:55 start tpga
 21:06:55 watching tpga: 3 stop rule(s)
 21:23:57 progress tpga: 188 battles, 662/h, 0 failed, skips 18.3/battle (last 100)
+21:44:18 tpga exit=0 in 2242 s
+21:44:18 start tpho
+21:44:18 watching tpho: 3 stop rule(s)
