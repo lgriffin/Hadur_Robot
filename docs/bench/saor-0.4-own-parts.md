@@ -13,7 +13,7 @@ Seed blocks: r1 4100, r2 4200, r3 4300, r1x 4500, r1z 4600. Reports: `docs/bench
 `saor-r1x-wnh.md`, `saor-r1z-wnh.md`, `saor-r1x-wgv.md`, `saor-r1z-wgv.md`,
 `saor-r1x-wnz.md`, `saor-r1z-wnz.md`, and for section 10 `saor-<block>-wcd.md`, `-wtd.md`, `-wtb.md`,
 `-wte.md`, `-wbg.md`, `-wto.md`, `-wtr.md` (which also carries WTN) `-wta.md` (r1-r5, r1x, r1z), and for section 11 `-was.md`, `-wag.md` (which carries WAD
-and WDG), `-wat.md` and `-wau.md`.
+and WDG), `-wat.md` and `-wau.md`; for section 13 the per-arm census reports `saor-<block>-census-<ARM>.md` (WD1, OG1, OG2 over r1-r5, r1x, r1z).
 
 ## Result
 
@@ -193,6 +193,12 @@ The movement went from -3.0 to about -0.6 over about 45 designs. The steps that 
       four points; the learned state chain is what carries Saor's gun. The two byte cuts queued on
       OG1 were stopped unrun. Next: OG2, the own state chain kept but played forward once along each
       state's most recent successor (no sampling, no vote), 972 bytes, screened before any byte cuts.
+    - OG2 (2026-11-11, 972 bytes): the own state chain played forward once, each step taking the
+      state's most recent successor. Reads -6.07, -5.99, -6.03, -6.06, -6.02, -6.12 (r1z stopped),
+      about **-6.05: worse than OG1**. One deterministic path through the chain follows a single
+      recent pattern and misses; sampling many paths and pooling them is what carries the gun.
+      Next: OG3 (1,020 bytes), 64 sampled playouts of the own chain, aimed at the mean end bearing
+      with no angle bins and no vote.
 
 **Where WNF still loses** (C against WNF over the three blocks, 11,340 rounds each): duels end in a
 win equally often (85.9% and 85.8%). WNF dies 13% more often in the crowd (4,778 deaths against
