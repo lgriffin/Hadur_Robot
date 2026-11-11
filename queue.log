@@ -5,3 +5,7 @@
 19:52:32 start tpbb
 19:52:32 watching tpbb: 3 stop rule(s)
 19:53:19 progress tpbb: 0/552 (0%) battles, 0 failed
+20:23:32 progress tpbb: 389/552 (70%) battles, 753/h, ETA 13 min, 0 failed, skips 13.9/battle (last 100)
+20:30:09 tpbb exit=0 in 2256 s
+20:30:09 start tpqt
+20:30:09 watching tpqt: 3 stop rule(s)
