@@ -1,6 +1,6 @@
 # Queue pc-team-portfolio: progress
 
-Updated 2026-11-11 21:16:54 PC time (21:16 UTC), runner pid 48912.
+Updated 2026-11-11 21:32:00 PC time (21:32 UTC), runner pid 48912.
 
 - `tpprep` done, exit 0 in 6 min
 - `tpbb` done, exit 0 in 38 min
@@ -46,19 +46,18 @@ Skipped turns a battle: 17.2 overall, first 100 19.4, last 100 15.6.
 
 ### tpga
 
-**90 battles**, 0 failed. Running 10 min, 541 battles/h. Last battle 0 min ago.
-Skipped turns a battle: 20.5 overall, first 90 20.5, last 90 20.5.
+**327 battles**, 0 failed. Running 25 min, 782 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 18.5 overall, first 100 20.3, last 100 16.6.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 90 |
+| `fails 60` | halt | ok | 0 failed of 327 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | waiting | 90 of 200 battles to read |
+| `skips 60 over 200` | halt | ok | 17.8 a battle over the last 200 (first 200: 19.4) |
 
 ### Queue log (last lines)
 
 ```
-19:46:16 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
 19:46:16 start tpprep
 19:46:19 progress pushed to origin claude/pc-team-portfolio-progress (every 15 min)
 19:52:32 tpprep exit=0 in 375 s
@@ -73,4 +72,5 @@ Skipped turns a battle: 20.5 overall, first 90 20.5, last 90 20.5.
 21:06:55 tpqt exit=0 in 2206 s
 21:06:55 start tpga
 21:06:55 watching tpga: 3 stop rule(s)
+21:23:57 progress tpga: 188 battles, 662/h, 0 failed, skips 18.3/battle (last 100)
 ```
