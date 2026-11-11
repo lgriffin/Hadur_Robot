@@ -341,6 +341,21 @@ class ShieldModeTest {
     }
 
     @Test
+    @Tag("SHIELD-25")
+    @DisplayName("a floor line raises every shield shot against that enemy to 0.4; without it the shot stays at 0.1")
+    void powerFloor() {
+        ShieldMode.Command plain = planAfterShot(9, 10, 1.0);
+        assertNotNull(plain);
+        assertEquals(0.1, plain.firePower, 1e-9, "a still enemy is shielded at 0.1");
+        records.clear();
+        mode = new ShieldMode(ShieldList.parse(List.of("list.Target", "shield-floor: list.Target")), records::add, 0,
+            ShieldDesign.NONE);
+        ShieldMode.Command floored = planAfterShot(9, 10, 1.0);
+        assertNotNull(floored, "the floor still finds a plan");
+        assertTrue(floored.firePower >= ShieldMode.FLOOR_POWER - 1e-9, "at least the floor: " + floored.firePower);
+    }
+
+    @Test
     @Tag("SHIELD-5")
     @DisplayName("a shot whose firing tick was missed but whose tick before was scanned is shielded")
     void shotMissingOnlyTheFiringScan() {
