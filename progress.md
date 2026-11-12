@@ -1,6 +1,6 @@
 # Queue pc-team-guard: progress
 
-Updated 2026-11-12 15:50:17 PC time (15:50 UTC), runner pid 65320.
+Updated 2026-11-12 16:05:25 PC time (16:05 UTC), runner pid 65320.
 
 - `tgprep` done, exit 0 in 3 min
 - `tgpmv` done, exit 0 in 22 min
@@ -61,19 +61,18 @@ Skipped turns a battle: 2.0 overall, first 100 13.6, last 100 2.2.
 
 ### tgla
 
-**662 battles**, 0 failed. Running 57 min, 703 battles/h. Last battle 0 min ago.
-Skipped turns a battle: 16.8 overall, first 100 0.2, last 100 29.3.
+**814 battles**, 0 failed. Running 1.2 h, 682 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 16.1 overall, first 100 0.2, last 100 14.4.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 662 |
+| `fails 60` | halt | ok | 0 failed of 814 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | ok | 29.8 a battle over the last 200 (first 200: 0.2) |
+| `skips 60 over 200` | halt | ok | 17.9 a battle over the last 200 (first 200: 0.2) |
 
 ### Queue log (last lines)
 
 ```
-13:34:07 tgpla exit=0 in 1217 s
 13:34:07 start tgpilot
 13:34:08 tgpilot exit=0 in 0 s
 13:34:08 start tgbb
@@ -88,4 +87,5 @@ Skipped turns a battle: 16.8 overall, first 100 0.2, last 100 29.3.
 14:53:47 start tgla
 14:53:47 watching tgla: 3 stop rule(s)
 15:23:01 progress tgla: 291 battles, 597/h, 0 failed, skips 0.5/battle (last 100)
+15:53:19 progress tgla: 681 battles, 686/h, 0 failed, skips 26.0/battle (last 100)
 ```
