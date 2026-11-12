@@ -39,3 +39,7 @@
 00:42:46 start tpnh
 00:42:46 watching tpnh: 3 stop rule(s)
 00:55:30 progress tpnh: 115 battles, 542/h, 0 failed, skips 23.4/battle (last 100)
+01:21:37 tpnh exit=0 in 2331 s
+01:21:37 start tpnp
+01:21:37 watching tpnp: 3 stop rule(s)
+01:25:44 progress tpnp: 18 battles, 263/h, 0 failed, skips 20.5/battle (last 100)
