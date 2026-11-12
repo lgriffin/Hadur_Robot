@@ -25,3 +25,9 @@
 14:53:47 watching tgla: 3 stop rule(s)
 15:23:01 progress tgla: 291 battles, 597/h, 0 failed, skips 0.5/battle (last 100)
 15:53:19 progress tgla: 681 battles, 686/h, 0 failed, skips 26.0/battle (last 100)
+16:17:18 tgla exit=0 in 5010 s
+16:17:18 start tggate
+16:17:18 tggate exit=0 in 0 s
+16:17:18 start tgpr
+16:17:26 tgpr exit=0 in 7 s
+16:17:26 ALLDONE
