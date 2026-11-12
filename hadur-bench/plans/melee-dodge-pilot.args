@@ -1,0 +1,27 @@
+# PC card pc-melee-dodge pilot (BENCH-234): md against an aa baseline battle for battle on the 46 census fields x 2 seeds (3346-3347, after the card's 3340-3345), 184 battles, about 22% of the card. tools/melee_pilot.py --share-only stops the card unless Hadur's score share is up. Template: dgprep writes work/melee-dodge-pilot.args with @V@ = the robot.release in hadur-robot/pom.xml and @C@ = the machine's melee width.
+--suite
+melee-census-317.txt
+--seeds
+2
+--seed-base
+3345
+--rounds
+35
+--parallel
+@C@
+--child-heap
+2G
+--cpu-constant
+auto
+--robot-jar
+bisect/hadur117.Hadur_@V@md.jar
+--robot
+hadur117.Hadur @V@md
+--baseline
+bisect/hadur117.Hadur_@V@aa.jar
+--baseline-robot
+hadur117.Hadur @V@aa
+--out
+work/melee-dodge-@V@-pilot
+--report
+../docs/bench/local/melee-dodge-pilot-battles.md

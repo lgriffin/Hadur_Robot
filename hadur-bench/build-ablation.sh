@@ -21,6 +21,7 @@
 #   The brain's shipped parts (TeamConcord): movement and gun on, group radar off, hunt kept.
 #   tmnoconcord (team only) TMODE-34 off: CONCORD on no team, as before it shipped. Suffix ncn.
 #   mdmg   MMOVE-22: each opponent's risk weighs by the damage it has done to Hadur this battle x its mean distance (Diamond). Suffix dm. Ships on from 3.21, so on master dm is the robot as it is.
+#   mdodge MMOVE-30: off a team the melee surfer profiles each shot once with the aim experts, crowd-weighted, in place of its virtual bullets (the team dodge in the crowd). Suffix md.
 #   e3far  MEND-3: with two opponents left off a team, the closest-robot factor 4 (not 2). Suffix ef.
 #   aa    no change: the same robot under another name (suffix aa), the A/A arm of a multi-arm run
 #         (BENCH-92, docs/plan-top5.md section 6.1), so a run prices its own noise.
@@ -166,10 +167,10 @@
 #   tmmoving (team only) TMODE-46: MOVING on every team (FORCE_MOVING, and Mode.MOVING on every
 #         shipped table entry): the DODGE re-rank pays for creeping across a cool gun's line and for
 #         meeting a wave back near where it was fired at. Teams without DODGE are unchanged. Suffix mv
-#         (pc-team-guard, BENCH-233).
+#         (pc-team-guard, BENCH-237).
 #   tmlast (team only) TMODE-47: LAST on every team (FORCE_LAST, and Mode.LAST on every shipped
 #         table entry): with one enemy left and a teammate alive the members keep the melee role and
-#         close on it. Suffix la (pc-team-guard, BENCH-233).
+#         close on it. Suffix la (pc-team-guard, BENCH-237).
 #   tmnoclose (team only) TMODE-42 off: the hunt place 350 px on every team, the build before CLOSE
 #         shipped. Suffix ncl.
 #   tmlock (team only) the confirmed table, $TEAM_MODE_LOCKED (default work/team-modes-locked.java,
@@ -250,6 +251,9 @@
 #         key, for data/tools/surf_key_fit.py (measurement only; pair with oracle). Suffix kr.
 #   sklist the lines of $SURF_KEY ("m1 ... m9 bw name", from data/tools/surf_key_fit.py) become per-opponent
 #         surf keys (SKEY-2, ShieldTableData.surfKeys()). Suffix kl.
+#   sfloorlist the robots named in $SHIELD_FLOOR get SHIELD-25's 0.4 shield power floor. Suffix sf.
+#   pcaplist the robots named in $POWER_CAP get POW-18's 0.2 duel power cap. Suffix pk.
+#   pcap5list the robots named in $POWER_CAP5 get POW-18's 0.5 duel power cap. Suffix p5.
 #   szlist the robots named in $SHIELD_STILL get SHIELD-20's still shot plans (SHIELD-21,
 #         ShieldTableData.stills()). Suffix zl.
 #   fllist the robots named in $FLAT_ON get the flattener views back on in the duel (MOVE-32,
@@ -772,7 +776,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
                 edit "$movedesign" "static final int STOP_AND_GO_PREFIRE = 1;" "static final int STOP_AND_GO_PREFIRE = 2;"
                 version="${version}ws"
             else version="${version}wp"; fi ;;
-        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist|mirofflist)
+        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist|mirofflist|sfloorlist|pcaplist|pcap5list)
             # Shield part 2 (docs/plan-shield-quality.md): per-opponent opening drive or shipped aims;
             # the mode table's simple-aim dodge (DODGE-3).
             if [[ "$a" == smovelist ]]; then file="${SHIELD_MOVE:-}"; method="moves"; version="${version}mv"
@@ -786,6 +790,9 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
             elif [[ "$a" == szlist ]]; then file="${SHIELD_STILL:-}"; method="stills"; version="${version}zl"
             elif [[ "$a" == sklist ]]; then file="${SURF_KEY:-}"; method="surfKeys"; version="${version}kl"
             elif [[ "$a" == fllist ]]; then file="${FLAT_ON:-}"; method="flatOns"; version="${version}fq"
+            elif [[ "$a" == sfloorlist ]]; then file="${SHIELD_FLOOR:-}"; method="shieldFloors"; version="${version}sf"
+            elif [[ "$a" == pcaplist ]]; then file="${POWER_CAP:-}"; method="powerCaps"; version="${version}pk"
+            elif [[ "$a" == pcap5list ]]; then file="${POWER_CAP5:-}"; method="powerCapHalves"; version="${version}p5"
             elif [[ "$a" == mirofflist ]]; then file="${MIRROR_OFF:-}"; method="mirrorOffs"; version="${version}mo"
             elif [[ "$a" == mmlist ]]; then file="${MIMIC_ON:-}"; method="mimicOns"; version="${version}mq"
             elif [[ "$a" == fplist ]]; then file="${FULL_OFF:-}"; method="fullOffs"; version="${version}fp"
@@ -866,6 +873,13 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeController.java" \
                 "public static final boolean MELEE_CROSS = false;" "public static final boolean MELEE_CROSS = true;"
             version="${version}xh" ;;
+        mdodge)
+            # MMOVE-30, the team's dodge in the crowd (card 4 of the melee plan): off a team the melee
+            # surfer profiles each shot once with the six aim experts, weighed by the crowd, in place of
+            # its virtual bullets. Duel and team fixtures bit for bit. Suffix md.
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
+                "public static final boolean MELEE_DODGE = false;" "public static final boolean MELEE_DODGE = true;"
+            version="${version}md" ;;
         msurf)
             # The melee surfer (MMOVE-15), off a team only; duel and team fixtures bit for bit. It ships
             # on from 3.21, so on master msurf builds the robot as it is.
@@ -943,7 +957,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean THREE_FAR = false;" "public static final boolean THREE_FAR = true;"
             version="${version}ef" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmmoving, tmlast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, mirofflist)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmmoving, tmlast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, mdodge, x5list, rplist, mirofflist, sfloorlist, pcaplist, pcap5list)" >&2; exit 2 ;;
     esac
 done
 

@@ -1,4 +1,4 @@
-# PC card team-guard (BENCH-233): the screen, arm @A@ (bb, the A/A, or mv or la) on all 46 teams, 12 seeds from 15300, 12 rounds, against master (the aa build). Template: the card's prep writes the work copy with @V@ = the robot.release in hadur-robot/pom.xml.
+# PC card team-guard (BENCH-237): the screen, arm @A@ (bb, the A/A, or mv or la) on all 46 teams, 12 seeds from 15300, 12 rounds, against master (the aa build). Template: the card's prep writes the work copy with @V@ = the robot.release in hadur-robot/pom.xml.
 --team
 true
 --seeds

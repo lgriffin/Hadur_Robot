@@ -119,6 +119,15 @@ public class MinimumRiskMovement {
      */
     public static final boolean MELEE_SURF = true;
     /**
+     * MMOVE-30 (arm mdodge), the team's dodge in the crowd: off a team, with the melee surfer, each
+     * shot is profiled once by {@link TeamDodge} (the six aim experts weighted by what has hit
+     * Hadur, the learned aims among them) and weighed by {@link #crowdWeight}, in place of the
+     * learned or head-on and linear virtual bullets; the base risk ranks without bullets and the
+     * {@link TeamDodge#RERANK} safest candidates are driven through the profiles. The experts
+     * learn from Hadur's own hits and from the cross-hits (MMOVE-19).
+     */
+    public static final boolean MELEE_DODGE = false;
+    /**
      * MMOVE-22 (arm mdmg), inspired by Diamond's melee movement: off a team, each opponent's risk
      * term weighs by the damage its bullets have done to Hadur over the whole battle, plus
      * {@link #DAMAGE_BASE}, times its mean distance from Hadur (a gun that hits from afar is the
@@ -269,6 +278,7 @@ public class MinimumRiskMovement {
     private long round = -1;
     /** MMOVE-15: whether this movement surfs off a team. */
     private boolean surf = MELEE_SURF;
+    private boolean meleeDodge = MELEE_DODGE;
     /** MMOVE-22: whether this movement remembers the damage each gun has done. */
     private boolean damageMemory = MELEE_DAMAGE_MEMORY;
     /** MMOVE-22: this tick's weight per opponent, averaging 1; empty when the switch is off. */
@@ -379,6 +389,16 @@ public class MinimumRiskMovement {
         return surf;
     }
 
+    /** MMOVE-30: sets the crowd dodge, for tests. */
+    void meleeDodge(boolean on) {
+        this.meleeDodge = on;
+    }
+
+    /** MMOVE-30: whether the surfer dodges by the shot profiles off a team. */
+    public boolean meleeDodging() {
+        return surf && meleeDodge;
+    }
+
     /**
      * Off a team: {@link #updateBullets(List, RobotStateLog, Point2D.Double, long)}, MMOVE-3.
      * {@code enemies} are the living opponents.
@@ -397,6 +417,21 @@ public class MinimumRiskMovement {
         boolean learn = surf && danger != null;
         if (!learn) {
             updateBullets(shots, myPath, me, now);
+            return;
+        }
+        if (meleeDodge) {
+            // MMOVE-30: the profiles stand in for the virtual bullets; MMOVE-26 still reads the weights.
+            for (EnemyShot s : shots) {
+                if (!seenShots.add(s)) continue;
+                RobotState at = myPath.getState(s.fireTime);
+                if (at == null) at = myPath.getState(s.fireTime + 1);
+                Point2D.Double target = at == null ? me : at.location;
+                weighed.put(s, new Weighed(nearer(s, target, enemies), crowdWeight(s, target, enemies)));
+            }
+            dodge.updateMelee(shots, myPath, me, now, enemies, danger);
+            bullets.clear();
+            seenShots.retainAll(shots);
+            weighed.keySet().retainAll(shots);
             return;
         }
         for (EnemyShot s : shots) {
@@ -603,8 +638,9 @@ public class MinimumRiskMovement {
         List<Point2D.Double> candidates = candidates(me, others, quartered ? without(enemies, v.chaser) : enemies, now, mates);
         lastCandidates = candidates.size();
         if (surf && !onTeam(mates)) {
-            // MMOVE-15: the melee surfer picks by the wave check.
-            destination = waveBest(candidates, v);
+            // MMOVE-15: the melee surfer picks by the wave check; MMOVE-30 by the shot profiles.
+            destination = meleeDodge ? rerankBest(candidates, v, TeamDodge.RERANK, dodge.waves(), List.of(), false)
+                : waveBest(candidates, v);
             return destination;
         }
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.DODGE)) {

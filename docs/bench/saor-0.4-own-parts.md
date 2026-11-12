@@ -13,9 +13,11 @@ Seed blocks: r1 4100, r2 4200, r3 4300, r1x 4500, r1z 4600. Reports: `docs/bench
 `saor-r1x-wnh.md`, `saor-r1z-wnh.md`, `saor-r1x-wgv.md`, `saor-r1z-wgv.md`,
 `saor-r1x-wnz.md`, `saor-r1z-wnz.md`, and for section 10 `saor-<block>-wcd.md`, `-wtd.md`, `-wtb.md`,
 `-wte.md`, `-wbg.md`, `-wto.md`, `-wtr.md` (which also carries WTN) `-wta.md` (r1-r5, r1x, r1z), and for section 11 `-was.md`, `-wag.md` (which carries WAD
-and WDG), `-wat.md` and `-wau.md`; for section 13 the per-arm census reports `saor-<block>-census-<ARM>.md` (WD1 and OG1 over r1-r5, r1x, r1z; OG2 over r1-r5 and r1x, its r1z stopped; OG3 over r1-r4; OG4 over all seven).
+and WDG), `-wat.md` and `-wau.md`; for section 13 the per-arm census reports `saor-<block>-census-<ARM>.md` (WD1 and OG1 over r1-r5, r1x, r1z; OG2 over r1-r5 and r1x, its r1z stopped; OG3 over r1-r4; OG4 over all seven; OG5 over r1-r5).
 
 ## Result
+
+**Status (2026-11-11): the 0.4 rewrite is stopped.** No own design fits the 749-byte micro limit while keeping its own parts (item 13). Saor 0.3 stays the live entry, with Figment's credit carried in its README, robot properties and source header; the credited jar reaches the rumble only with the next Saor release. The own parts and their measurements stay documented below.
 
 | Part | Best own design | vs 0.3 | Gate |
 |---|---|---|---|
@@ -211,6 +213,15 @@ The movement went from -3.0 to about -0.6 over about 45 designs. The steps that 
       the gap; about 0.6 still separates it from WD1's weighted, smoothed vote. Its 83-byte saving over
       WD1 is small against the 400 bytes still to cut. Next: OG5 (1,082 bytes), OG4 with Saor's graded
       vote (a playout counts 5 + 12 a sample of its thinnest row, at most 100; SAOR-7).
+    - OG5 (2026-11-11, 1,082 bytes): reads -0.73, -0.86, -0.66, -0.41, -0.47 (r1x, r1z stopped),
+      about **-0.63: no better than OG4**. The graded vote alone does not close the gap.
+    - **Where the own-gun line stands.** Each step back toward a full vote won points (OG2 -6.05,
+      OG1 -3.95, OG3 -1.2, OG4 -0.68, OG5 -0.63, WD1 -0.07), but the bytes came back with them: OG5
+      saves only 64 bytes on WD1. The remaining 0.6 points sit in the smoothed, weighted vote that
+      WD1 already carries; an own gun that matched it would be about WD1's size again (a smoothed
+      OG6 measured 1,117 bytes and was not run). OG5 itself is 333 bytes over 749; a gun at parity, near
+      OG6's or WD1's size, would leave the bot about 370 to 400 bytes over, and those bytes are the own movement and target. Fitting an all-own Saor under 749
+      therefore costs the own parts it was built to keep; the choice of how to proceed went to Leigh.
 
 **Where WNF still loses** (C against WNF over the three blocks, 11,340 rounds each): duels end in a
 win equally often (85.9% and 85.8%). WNF dies 13% more often in the crowd (4,778 deaths against

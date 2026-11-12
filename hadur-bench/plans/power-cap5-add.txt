@@ -1,0 +1,3 @@
+# pc-power-cap (BENCH-236): each robot gets a POW-18 power-cap5: line, the 0.5 cap (arm pk).
+stelo.MatchupAGF 1.1
+suh.mega.WaveSurferPG 1.06

@@ -226,7 +226,17 @@ public class MeleeController {
             best.fireTime + Math.round(best.source.distance(victim.location) / best.speed())));
         RobotState hit = path.getState(arrival);
         Point2D.Double struck = hit == null ? victim.location : hit.location;
-        danger.add(danger.sample(best, at, DiaUtils.absoluteBearing(best.source, struck)));
+        double heading = DiaUtils.absoluteBearing(best.source, struck);
+        // MMOVE-30: the crowd dodge's aim experts learn from the cross-hits too.
+        if (mover.meleeDodging()) mover.dodge().experts().observe(best.shooter, expertErrors(best, at, path, heading));
+        danger.add(danger.sample(best, at, heading));
+    }
+
+    /** TMODE-27, MMOVE-30: each aim expert's error on {@code shot}, which went along {@code heading} at a robot in state {@code at} on {@code path}. */
+    private double[] expertErrors(EnemyShot shot, RobotState at, RobotStateLog path, double heading) {
+        double[] predicted = AimExperts.headings(shot, at, path, field);
+        predicted[AimExperts.Expert.LEARNED.ordinal()] = AimExperts.strongest(danger.aims(shot, at));
+        return AimExperts.errors(shot, at, predicted, heading);
     }
 
     /**
@@ -381,7 +391,10 @@ public class MeleeController {
         RobotState at = myPath.getState(best.fireTime);
         if (at == null) return;
         TeamDanger.Sample sample = danger.sample(best, at, heading);
-        if (report && modes.contains(TeamModes.Mode.DODGE)) {
+        if (!report && mover.meleeDodging()) {
+            // MMOVE-30: off a team the crowd dodge scores its aim experts on Hadur's own hits.
+            mover.dodge().experts().observe(name, expertErrors(best, at, myPath, heading));
+        } else if (report && modes.contains(TeamModes.Mode.DODGE)) {
             // TMODE-27: score every aim expert on this hit, the learned one before it learns it.
             double[] predicted = AimExperts.headings(best, at, myPath, field);
             predicted[AimExperts.Expert.LEARNED.ordinal()] = AimExperts.strongest(danger.aims(best, at));

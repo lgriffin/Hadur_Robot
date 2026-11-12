@@ -11,11 +11,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-233: the pc-team-guard card (keep moving and last enemy, piloted then screened) is complete before it reaches the PC. */
+/** BENCH-237: the pc-team-guard card (keep moving and last enemy, piloted then screened) is complete before it reaches the PC. */
 class TeamGuardPlanTest {
 
     @Test
-    @Tag("BENCH-233")
+    @Tag("BENCH-237")
     @DisplayName("a 3-seed pilot of mv and la that stops an arm under 0, then bb and the surviving arms on 12 fresh seeds, each gated on its own")
     void cardIsComplete() throws IOException {
         String queue = Files.readString(Path.of("plans/pc-team-guard.queue"));
@@ -49,7 +49,7 @@ class TeamGuardPlanTest {
     }
 
     @Test
-    @Tag("BENCH-233")
+    @Tag("BENCH-237")
     @DisplayName("the pilot is 3 seeds from 15200 and the screen 12 fresh seeds from 15300, all 46 teams against aa")
     void args() throws IOException {
         String pilot = Files.readString(Path.of("plans/team-guard-pilot.args"));

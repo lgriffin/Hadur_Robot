@@ -161,10 +161,11 @@ class X5CardTest(unittest.TestCase):
     def test_carried_reads_the_table_methods(self):
         src = self.path("T.java", "class T {\n    static String[] moves() {\n        return new String[] {\n            \"m.M 1\",\n        };\n    }\n"
                                   "    static String[] heatJits() {\n        return new String[] {\n            // a note\n            \"h.H 1\",  // +2\n            \"\",\n        };\n    }\n"
-                                  "    static String[] racePowers() {\n        return new String[] {\n            \"r.R 1\",\n        };\n    }\n}\n")
+                                  "    static String[] racePowers() {\n        return new String[] {\n            \"r.R 1\",\n        };\n    }\n"
+                                  "    static String[] powerCaps() {\n        return new String[] {\n            \"p.P 1\",\n        };\n    }\n}\n")
         out = os.path.join(self.d, "carried.tsv")
         self.assertEqual(0, x5_card.main(["carried", src, "--out", out]))
-        self.assertEqual("h.H 1\thj\nr.R 1\trp\n", open(out).read(), "moves is not a lever; blank entries are skipped")
+        self.assertEqual("h.H 1\thj\nr.R 1\trp\np.P 1\tpk\n", open(out).read(), "moves is not a lever; blank entries are skipped")
 
 
     def test_portfolio_keeps_by_shrunk_gain_and_leaves_out_carried_shielded_and_short(self):

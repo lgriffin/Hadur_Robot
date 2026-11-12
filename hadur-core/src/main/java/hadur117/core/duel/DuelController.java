@@ -363,6 +363,7 @@ public final class DuelController {
         if (fullOff) on.add("fulloff");
         if (x5Power) on.add("x5");
         if (racePower) on.add("race");
+        if (!Double.isNaN(powerCap)) on.add("cap");
         if (shield != null && shield.active()) on.add("shield");
         return on.isEmpty() ? "-" : String.join(",", on);
     }
@@ -656,6 +657,8 @@ public final class DuelController {
         // POW-10: a power our energy cannot pay for is lowered, not held. END-4 (D2) will be the
         // one rule that holds a shot we could pay for, and it holds where the shot leaves, in
         // fireIfGunTurned: every scan still makes its wave, which teaches the gun.
+        // POW-18: against an opponent the table names, every shot is capped, after every rule above.
+        if (!Double.isNaN(powerCap) && enemiesTotal <= 1) bulletPower = Math.min(bulletPower, powerCap);
         double payable = PowerPolicy.payable(bulletPower, in.energy());
         if (!Double.isNaN(payable)) bulletPower = payable;
 
@@ -909,6 +912,16 @@ public final class DuelController {
     private boolean x5Power;
     /** POW-17: the table names this opponent for the energy-race power pick. */
     private boolean racePower;
+    /** POW-18: the cap the table sets on our power against this opponent, NaN for none. */
+    private double powerCap = Double.NaN;
+    /**
+     * POW-18: the most the duel fires at an opponent the table names with a power-cap line. In a
+     * long war of low-power shots where both guns hit about one bullet in eight, a heavier shot
+     * of ours is dodged more often than a light one, so it returns less energy than it costs.
+     */
+    public static final double CAP_POWER = 0.2;
+    /** POW-18: the softer cap of a power-cap5 line, for a robot where 0.2 starves the gun. */
+    public static final double CAP_POWER_HALF = 0.5;
     /** POW-17: whether the race picked the last power, for the P record on a change. */
     private boolean raceApplied;
     /** POW-17: the energy race, fed every resolved duel bullet whether or not it is on. */
@@ -1376,6 +1389,9 @@ public final class DuelController {
         x5Power = duelOnly(stackList.x5Power(name), enemiesTotal);
         // POW-17: the energy-race power pick for the opponents the table names.
         racePower = duelOnly(stackList.racePower(name), enemiesTotal);
+        // POW-18: the power cap for the opponents the table names.
+        powerCap = duelOnly(stackList.powerCap(name), enemiesTotal) ? CAP_POWER
+            : duelOnly(stackList.powerCapHalf(name), enemiesTotal) ? CAP_POWER_HALF : Double.NaN;
         // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names, never a shield-mode one
         // (its TripHammer aims break the shield's bullet hits); the gun keeps them 1v1-only.
         if (duelOnly(stackList.gunStack(name) && !stackList.matches(name), enemiesTotal)) {
