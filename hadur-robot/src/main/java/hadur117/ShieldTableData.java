@@ -631,6 +631,12 @@ final class ShieldTableData {
      */
     static String[] powerCaps() {
         return new String[] {
+            // pc-power-cap (BENCH-236, PR #784): 12 PC seeds against master and its A/A copy pooled
+            "rsalesc.roborio.Roborio 1.2.4",  // +11.0
+            "cb.fire.Firestarter 2.0f",       // +9.6
+            "aw.Gilgalad 1.99.5c",            // +7.1
+            "catcat20.Rabbit 0.001",          // +4.7
+            "cb.Domogled 1.2",                // +3.7
         };
     }
 
@@ -642,6 +648,9 @@ final class ShieldTableData {
      */
     static String[] powerCapHalves() {
         return new String[] {
+            // pc-power-cap (BENCH-236, PR #784): 12 PC seeds against master and its A/A copy pooled
+            "suh.mega.WaveSurferPG 1.06",  // +6.8
+            "stelo.MatchupAGF 1.1",        // +5.0
         };
     }
 

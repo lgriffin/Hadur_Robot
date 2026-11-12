@@ -43,10 +43,12 @@ class PowerCapPlanTest {
         for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE)).contains(n), n + " loads on 1.11.2");
         // A robot already capped on master would be capped in the control arm too.
         String table = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldTableData.java"));
+        List<String> shipped = names("plans/power-cap-shipped.txt");
         for (String method : new String[] {"powerCaps", "powerCapHalves"}) {
             String caps = table.substring(table.indexOf("static String[] " + method + "()"));
             caps = caps.substring(0, caps.indexOf("}"));
-            for (String n : panel) assertTrue(!caps.contains("\"" + n + "\""), n + " is not capped on master yet");
+            // Only the robots this card shipped may already be capped on master.
+            for (String n : panel) assertTrue(shipped.contains(n) || !caps.contains("\"" + n + "\""), n + " is not capped on master yet");
         }
         assertTrue(queue.contains("build-ablation.sh aa ")
             && queue.contains("POWER_CAP=plans/power-cap-add.txt POWER_CAP5=plans/power-cap5-add.txt bash ./build-ablation.sh pcaplist,pcap5list &&"));
