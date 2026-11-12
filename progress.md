@@ -1,12 +1,12 @@
 # Queue pc-team-guard: progress
 
-Updated 2026-11-12 13:19:05 PC time (13:19 UTC), runner pid 65320.
+Updated 2026-11-12 13:34:13 PC time (13:34 UTC), runner pid 65320.
 
 - `tgprep` done, exit 0 in 3 min
 - `tgpmv` done, exit 0 in 22 min
-- `tgpla` running
-- `tgpilot` pending
-- `tgbb` pending
+- `tgpla` done, exit 0 in 20 min
+- `tgpilot` done, exit 0 in 0 min
+- `tgbb` running
 - `tgmv` pending
 - `tgla` pending
 - `tggate` pending
@@ -27,21 +27,30 @@ Stopping now would leave -132 battles unrun (about -11 min); every battle alread
 
 ### tgpla
 
-**29 of 138 battles** (21%), 0 failed. Running 5 min, 332 battles/h, about 20 min left (ends ~13:38 PC time). Last battle 0 min ago.
-Skipped turns a battle: 0.1 overall, first 29 0.1, last 29 0.1.
+**270 of 138 battles** (196%), 0 failed. Running 20 min, 799 battles/h, about -10 min left (ends ~13:24 PC time). Last battle 0 min ago.
+Skipped turns a battle: 9.0 overall, first 100 4.7, last 100 10.9.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 29 |
+| `fails 60` | halt | ok | 0 failed of 270 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | waiting | 29 of 200 battles to read |
+| `skips 60 over 200` | halt | ok | 11.6 a battle over the last 200 (first 200: 8.0) |
 
-Stopping now would leave 109 battles unrun (about 20 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave -132 battles unrun (about -10 min); every battle already fought is kept and a rerun resumes from it.
+
+### tgbb
+
+**0 battles**, 0 failed. Running 0 min. Last battle 0 min ago.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 60` | halt | ok | 0 failed of 0 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 60 over 200` | halt | waiting | 0 of 200 battles to read |
 
 ### Queue log (last lines)
 
 ```
-12:48:51 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
 12:48:51 start tgprep
 12:48:53 progress pushed to origin claude/pc-team-guard-progress (every 15 min)
 12:51:41 tgprep exit=0 in 170 s
@@ -51,4 +60,10 @@ Stopping now would leave 109 battles unrun (about 20 min); every battle already 
 13:13:50 tgpmv exit=0 in 1329 s
 13:13:50 start tgpla
 13:13:50 watching tgpla: 3 stop rule(s)
+13:22:06 progress tgpla: 68/138 (49%) battles, 494/h, ETA 9 min, 0 failed, skips 1.2/battle (last 100)
+13:34:07 tgpla exit=0 in 1217 s
+13:34:07 start tgpilot
+13:34:08 tgpilot exit=0 in 0 s
+13:34:08 start tgbb
+13:34:08 watching tgbb: 3 stop rule(s)
 ```
