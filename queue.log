@@ -43,3 +43,11 @@
 01:21:37 start tpnp
 01:21:37 watching tpnp: 3 stop rule(s)
 01:25:44 progress tpnp: 18 battles, 263/h, 0 failed, skips 20.5/battle (last 100)
+01:55:57 progress tpnp: 453 battles, 792/h, 0 failed, skips 17.2/battle (last 100)
+01:59:11 tpnp exit=0 in 2253 s
+01:59:11 start tppick
+01:59:11 tppick exit=0 in 0 s
+01:59:11 start tpcprep
+01:59:45 tpcprep exit=0 in 34 s
+01:59:45 start tpcbb
+01:59:45 watching tpcbb: 3 stop rule(s)

@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-portfolio",
- "updated": 1794448134.5250187,
+ "updated": 1794449040.6449077,
  "steps": {
   "tpprep": {
    "status": "done",
@@ -63,17 +63,26 @@
    "end": "2026-11-12T01:21:37"
   },
   "tpnp": {
-   "status": "running",
-   "start": "2026-11-12T01:21:37"
+   "status": "done",
+   "exit": 0,
+   "seconds": 2253,
+   "end": "2026-11-12T01:59:11"
   },
   "tppick": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-11-12T01:59:11"
   },
   "tpcprep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 34,
+   "end": "2026-11-12T01:59:45"
   },
   "tpcbb": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-12T01:59:45"
   },
   "tpcfx": {
    "status": "pending"
@@ -476,8 +485,8 @@
   {
    "step": "tpnp",
    "started": 1794446497.848658,
-   "updated": 1794448134.5149941,
-   "elapsed": 1636.6663360595703,
+   "updated": 1794448751.0345418,
+   "elapsed": 2253.1858837604523,
    "expected": null,
    "panel": null,
    "field": null,
@@ -485,20 +494,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 338,
+   "battles": 516,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 743.4624719718753,
+   "rate": 824.4326459651702,
    "eta": null,
    "fraction": null,
-   "last_battle_age": 8.782923221588135,
+   "last_battle_age": 1.6700172424316406,
    "rules": [
     {
      "rule": "fails 60",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 338"
+     "detail": "0 failed of 516"
     },
     {
      "rule": "stall 30m",
@@ -510,11 +519,54 @@
      "rule": "skips 60 over 200",
      "action": "halt",
      "state": "ok",
-     "detail": "17.3 a battle over the last 200 (first 200: 19.4)"
+     "detail": "15.6 a battle over the last 200 (first 200: 19.4)"
     }
    ],
-   "skips_mean": 18.130177514792898,
-   "skips_last100": 15.22
+   "skips_mean": 17.28875968992248,
+   "skips_last100": 15.45
+  },
+  {
+   "step": "tpcbb",
+   "started": 1794448785.8439393,
+   "updated": 1794449040.6350093,
+   "elapsed": 254.79106998443604,
+   "expected": null,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 24,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 339.1013664854022,
+   "eta": null,
+   "fraction": null,
+   "last_battle_age": 55.2693829536438,
+   "rules": [
+    {
+     "rule": "fails 60",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 24"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 1 min ago"
+    },
+    {
+     "rule": "skips 60 over 200",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "24 of 200 battles to read"
+    }
+   ],
+   "skips_mean": 16.416666666666668,
+   "skips_last100": 16.416666666666668
   }
  ]
 }

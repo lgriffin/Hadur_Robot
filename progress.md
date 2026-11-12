@@ -1,6 +1,6 @@
 # Queue pc-team-portfolio: progress
 
-Updated 2026-11-12 01:48:54 PC time (01:48 UTC), runner pid 48912.
+Updated 2026-11-12 02:04:00 PC time (02:04 UTC), runner pid 48912.
 
 - `tpprep` done, exit 0 in 6 min
 - `tpbb` done, exit 0 in 38 min
@@ -12,10 +12,10 @@ Updated 2026-11-12 01:48:54 PC time (01:48 UTC), runner pid 48912.
 - `tpnc` done, exit 0 in 32 min
 - `tpnk` done, exit 0 in 39 min
 - `tpnh` done, exit 0 in 39 min
-- `tpnp` running
-- `tppick` pending
-- `tpcprep` pending
-- `tpcbb` pending
+- `tpnp` done, exit 0 in 38 min
+- `tppick` done, exit 0 in 0 min
+- `tpcprep` done, exit 0 in 1 min
+- `tpcbb` running
 - `tpcfx` pending
 - `tpgate` pending
 - `tppr` pending
@@ -123,26 +123,29 @@ Skipped turns a battle: 18.8 overall, first 100 23.2, last 100 17.4.
 
 ### tpnp
 
-**338 battles**, 0 failed. Running 27 min, 743 battles/h. Last battle 0 min ago.
-Skipped turns a battle: 18.1 overall, first 100 20.5, last 100 15.2.
+**516 battles**, 0 failed. Running 38 min, 824 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 17.3 overall, first 100 20.5, last 100 15.4.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 338 |
+| `fails 60` | halt | ok | 0 failed of 516 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | ok | 17.3 a battle over the last 200 (first 200: 19.4) |
+| `skips 60 over 200` | halt | ok | 15.6 a battle over the last 200 (first 200: 19.4) |
+
+### tpcbb
+
+**24 battles**, 0 failed. Running 4 min, 339 battles/h. Last battle 1 min ago.
+Skipped turns a battle: 16.4 overall, first 24 16.4, last 24 16.4.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 60` | halt | ok | 0 failed of 24 |
+| `stall 30m` | halt | ok | last battle 1 min ago |
+| `skips 60 over 200` | halt | waiting | 24 of 200 battles to read |
 
 ### Queue log (last lines)
 
 ```
-23:31:47 start tpnc
-23:31:47 watching tpnc: 3 stop rule(s)
-23:55:04 progress tpnc: 300 battles, 773/h, 0 failed, skips 15.0/battle (last 100)
-00:04:12 tpnc exit=0 in 1944 s
-00:04:12 start tpnk
-00:04:12 watching tpnk: 3 stop rule(s)
-00:25:16 progress tpnk: 240 battles, 684/h, 0 failed, skips 20.3/battle (last 100)
-00:42:46 tpnk exit=0 in 2314 s
 00:42:46 start tpnh
 00:42:46 watching tpnh: 3 stop rule(s)
 00:55:30 progress tpnh: 115 battles, 542/h, 0 failed, skips 23.4/battle (last 100)
@@ -150,4 +153,12 @@ Skipped turns a battle: 18.1 overall, first 100 20.5, last 100 15.2.
 01:21:37 start tpnp
 01:21:37 watching tpnp: 3 stop rule(s)
 01:25:44 progress tpnp: 18 battles, 263/h, 0 failed, skips 20.5/battle (last 100)
+01:55:57 progress tpnp: 453 battles, 792/h, 0 failed, skips 17.2/battle (last 100)
+01:59:11 tpnp exit=0 in 2253 s
+01:59:11 start tppick
+01:59:11 tppick exit=0 in 0 s
+01:59:11 start tpcprep
+01:59:45 tpcprep exit=0 in 34 s
+01:59:45 start tpcbb
+01:59:45 watching tpcbb: 3 stop rule(s)
 ```
