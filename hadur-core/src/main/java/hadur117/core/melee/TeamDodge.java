@@ -4,7 +4,6 @@ import hadur117.core.model.RobotState;
 import hadur117.core.model.RobotStateLog;
 import hadur117.core.physics.BattleField;
 import hadur117.core.physics.DiaUtils;
-import hadur117.core.world.EnemyInfo;
 import hadur117.core.world.EnemyShot;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -34,8 +33,7 @@ import java.util.function.Function;
  *     (TMODE-25), and the score is Ogi's {@code risk/median + 3 x damage/median}.</li>
  * </ol>
  *
- * <p>Team-only, like every mode, except that MMOVE-30 ({@link MinimumRiskMovement#MELEE_DODGE})
- * drives the same profiles off a team, each shot weighed by the crowd.</p>
+ * <p>Team-only, like every mode: the controller reaches it only with a living teammate.</p>
  */
 final class TeamDodge {
 
@@ -97,20 +95,6 @@ final class TeamDodge {
             RobotState at = w == null ? null : path.getState(s.fireTime);
             if (at != null) w.target = at.location;
             return w;
-        });
-    }
-
-    /**
-     * MMOVE-30, off a team: profiles the shots not seen before, each weighed by the melee
-     * surfer's {@link MinimumRiskMovement#crowdWeight} where Hadur stood when it was fired, and
-     * drops those gone past Hadur.
-     */
-    void updateMelee(List<EnemyShot> shots, RobotStateLog path, Point2D.Double me, long now,
-                     List<EnemyInfo> enemies, TeamDanger danger) {
-        update(shots, me, now, s -> {
-            RobotState at = at(path, s);
-            Point2D.Double target = at == null ? me : at.location;
-            return profile(s, at, target, MinimumRiskMovement.crowdWeight(s, target, enemies), path, danger, null);
         });
     }
 

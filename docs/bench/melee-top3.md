@@ -1067,3 +1067,19 @@ Level within the smoke's noise, with the skipped turns held, which is the bar th
 crowd damage taken a tick is 7% up, at the edge of the interval: the warning sign the pilot will read. The card is
 pc-melee-dodge (BENCH-233, pilot BENCH-234): a pilot of md against aa on the 46 census fields at seeds 3346-3347
 that stops the card unless Hadur's share is up, then aa, bb and md alone at seeds 3340-3345.
+
+### The shot profiles on the PC: they fail (pc-melee-dodge, PR #779, 2026-11-12)
+
+| | md | A/A bb |
+|---|---|---|
+| pilot share against aa (92 pairs) | +0.16 ± 0.25 | |
+| paired APS against aa and bb (46 fields x 6 seeds) | -0.07 ± 0.19 | -0.11 ± 0.16 |
+| 1-30 endgame wins | +0.2 | -0.8 |
+| others outlived | -0.2 | -0.2 |
+| skipped turns a battle | -3% | 0% |
+
+The pilot let the card run, and the screen reads md as flat: nothing gained, nothing lost, at every measure. The
+six-expert profiles in place of the two guesses and the learned aims do not move Hadur's melee score. The wide-guess
+hits they were built for are either too few to matter or are not dodged any better by the profiles than by the
+learned aims they replace. MMOVE-30 is retired and `MELEE_DODGE`, its arm, the card and the tests are removed. The
+melee plan's card 4 is closed; the keep-moving arm was never built because the states read did not call for it.
