@@ -82,6 +82,8 @@ public final class ShieldList {
     public static final String FLOOR_PREFIX = "shield-floor:";
     /** POW-18: a line starting with this names an opponent the duel's main gun never fires above {@code DuelController.CAP_POWER} at (shield interceptions keep their own power). */
     public static final String POWER_CAP_PREFIX = "power-cap:";
+    /** POW-18: a line starting with this names an opponent the main gun never fires above {@code DuelController.CAP_POWER_HALF} at. */
+    public static final String POWER_CAP5_PREFIX = "power-cap5:";
     /**
      * SKEY-2: a line starting with this gives an opponent's surf key: nine multipliers on the hit
      * views' key weights, one on the kernel width, then the name ({@code "m1 ... m9 bw name"}).
@@ -114,6 +116,8 @@ public final class ShieldList {
     static final int FLOOR = 4096;
     /** POW-18: the per-opponent power-cap switch's bit in {@link #switches}. */
     static final int POWER_CAP = 8192;
+    /** POW-18: the per-opponent 0.5 power-cap switch's bit in {@link #switches}. */
+    static final int POWER_CAP5 = 16384;
 
     private final Set<String> entries;
     /** SHIELD-17: the opening-drive list. */
@@ -169,6 +173,7 @@ public final class ShieldList {
                     : entry.startsWith(RACE_POWER_PREFIX) ? RACE_POWER
                     : entry.startsWith(MIRROR_OFF_PREFIX) ? MIRROR_OFF
                     : entry.startsWith(FLOOR_PREFIX) ? FLOOR
+                    : entry.startsWith(POWER_CAP5_PREFIX) ? POWER_CAP5
                     : entry.startsWith(POWER_CAP_PREFIX) ? POWER_CAP : 0;
                 if (bit != 0) {
                     String name = entry.substring(entry.indexOf(':') + 1).trim();
@@ -468,6 +473,17 @@ public final class ShieldList {
      */
     public boolean powerCap(String robotName) {
         return (switchBits(robotName) & POWER_CAP) != 0;
+    }
+
+    /**
+     * POW-18: whether the table names this opponent with a {@link #POWER_CAP5_PREFIX} line: the main
+     * gun never fires above {@code DuelController.CAP_POWER_HALF} at it.
+     *
+     * @param robotName the robot's name as scanned
+     * @return true when its power is capped at 0.5
+     */
+    public boolean powerCapHalf(String robotName) {
+        return (switchBits(robotName) & POWER_CAP5) != 0;
     }
 
     /**

@@ -28,7 +28,7 @@ class PowerCapPlanTest {
 
     @Test
     @Tag("BENCH-236")
-    @DisplayName("five low-hit R1 robots, three arms, 12 fresh seeds, the 3-point pick and the stop rules")
+    @DisplayName("seven low-hit R1 robots, three arms, 12 fresh seeds, the 3-point pick and the stop rules")
     void cardIsComplete() throws IOException {
         String queue = Files.readString(Path.of("plans/pc-power-cap.queue"));
         String version = Files.readString(Path.of("../hadur-robot/pom.xml"))
@@ -36,22 +36,26 @@ class PowerCapPlanTest {
         assertTrue(queue.contains("set V = " + version + "\n"), "the card builds the current release");
         List<String> panel = names("panel-power-cap.txt");
         assertEquals(List.of("rsalesc.roborio.Roborio 1.2.4", "aw.Gilgalad 1.99.5c", "cb.fire.Firestarter 2.0f",
-            "catcat20.Rabbit 0.001", "cb.Domogled 1.2"), panel);
-        assertEquals(panel, names("plans/power-cap-add.txt"), "each panel robot gets a power-cap line");
+            "catcat20.Rabbit 0.001", "cb.Domogled 1.2", "stelo.MatchupAGF 1.1", "suh.mega.WaveSurferPG 1.06"), panel);
+        List<String> lines = new java.util.ArrayList<>(names("plans/power-cap-add.txt"));
+        lines.addAll(names("plans/power-cap5-add.txt"));
+        assertEquals(panel, lines, "each panel robot gets one power-cap or power-cap5 line");
         for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE)).contains(n), n + " loads on 1.11.2");
         // A robot already capped on master would be capped in the control arm too.
         String table = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldTableData.java"));
-        String caps = table.substring(table.indexOf("static String[] powerCaps()"));
-        caps = caps.substring(0, caps.indexOf("}"));
-        for (String n : panel) assertTrue(!caps.contains("\"" + n + "\""), n + " is not capped on master yet");
+        for (String method : new String[] {"powerCaps", "powerCapHalves"}) {
+            String caps = table.substring(table.indexOf("static String[] " + method + "()"));
+            caps = caps.substring(0, caps.indexOf("}"));
+            for (String n : panel) assertTrue(!caps.contains("\"" + n + "\""), n + " is not capped on master yet");
+        }
         assertTrue(queue.contains("build-ablation.sh aa ")
-            && queue.contains("POWER_CAP=plans/power-cap-add.txt bash ./build-ablation.sh pcaplist &&"));
+            && queue.contains("POWER_CAP=plans/power-cap-add.txt POWER_CAP5=plans/power-cap5-add.txt bash ./build-ablation.sh pcaplist,pcap5list &&"));
         assertTrue(queue.contains("--set panel-power-cap.txt --seeds 12 --seed-base 16000 --arms plans/pc-power-cap.arms"));
         assertTrue(queue.contains("mode_table.py ${W}/arms.tsv --margin 3 --out-tsv ${OUT}/power-cap-pc-pick.tsv"));
         assertTrue(queue.contains("per_robot.py ${W}/arms.tsv --arms pk "));
         String arms = Files.readString(Path.of("plans/pc-power-cap.arms"));
         for (String arm : new String[] {"c | hadur117.Hadur " + version + " |", "aa | hadur117.Hadur " + version + "aa |",
-                                        "pk | hadur117.Hadur " + version + "pk |"}) {
+                                        "pk | hadur117.Hadur " + version + "pkp5 |"}) {
             assertTrue(arms.contains("\n" + arm), arm);
         }
         String[] steps = {"prep", "confirm", "gate", "pr"};
