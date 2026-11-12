@@ -42,6 +42,11 @@ orbit char carries 2 pi more, which switches on up to 0.125 rad of random gun tu
 ([docs/bench/local/2026-11-04_jaylexi-jit.md](../docs/bench/local/2026-11-04_jaylexi-jit.md)). It is 1,507 bytes
 with javac, so the jar is built through ProGuard again (`jaylexi/proguard.pro`) to 1,494 bytes.
 
+0.7 (built 2026-11-12, not released) adds a walls segment to the surf (JAYLEXI-20): the surf stats are
+also kept by how much of our orbit ahead is still in the field, as the enemy sees it. +0.53, +0.29, +0.31 and +0.48 over 0.6
+on four fresh cloud seed sets, and the fitted build read +0.55 ± 0.49
+([docs/bench/jaylexi-own-movement.md](../docs/bench/jaylexi-own-movement.md)). 1,495 bytes through ProGuard.
+
 ## Standing
 
 | Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | Next up | Gap |
