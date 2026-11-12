@@ -20,3 +20,7 @@ Difference against the reference by band (points, opponents):
 | Jw | - | - | - | - | - | - |
 | Jw2 | - | - | - | - | - | - |
 | aa | - | - | - | - | - | - |
+
+## Conditions
+
+Conditions: robocode.cpu.constant=3675111. Host: Intel(R) Xeon(R) Processor @ 2.10GHz, 4 logical cores, Linux 6.18.44-fc-v378, no other Robocode JVMs running, parallel 3. Battle JVM flags: -XX:ActiveProcessorCount=2 -Xmx512M -Dhadur.bench.truth=false. Rounds 35, field 800x600, 6 seed(s) an arm.
