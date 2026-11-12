@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-portfolio",
- "updated": 1794440880.9668162,
+ "updated": 1794441787.710293,
  "steps": {
   "tpprep": {
    "status": "done",
@@ -338,8 +338,8 @@
   {
    "step": "tpnc",
    "started": 1794439907.7812796,
-   "updated": 1794440880.9578876,
-   "elapsed": 973.1766080856323,
+   "updated": 1794441787.70183,
+   "elapsed": 1879.9205503463745,
    "expected": null,
    "panel": null,
    "field": null,
@@ -347,20 +347,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 210,
+   "battles": 463,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 776.8374144207519,
+   "rate": 886.6332142030645,
    "eta": null,
    "fraction": null,
-   "last_battle_age": 0.014401912689208984,
+   "last_battle_age": 10.097602367401123,
    "rules": [
     {
      "rule": "fails 60",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 210"
+     "detail": "0 failed of 463"
     },
     {
      "rule": "stall 30m",
@@ -372,11 +372,11 @@
      "rule": "skips 60 over 200",
      "action": "halt",
      "state": "ok",
-     "detail": "19.0 a battle over the last 200 (first 200: 19.3)"
+     "detail": "16.2 a battle over the last 200 (first 200: 19.3)"
     }
    ],
-   "skips_mean": 18.947619047619046,
-   "skips_last100": 18.17
+   "skips_mean": 17.451403887688986,
+   "skips_last100": 16.41
   }
  ]
 }
