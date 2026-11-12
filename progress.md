@@ -1,6 +1,6 @@
 # Queue pc-team-portfolio: progress
 
-Updated 2026-11-12 05:35:30 PC time (05:35 UTC), runner pid 48912.
+Updated 2026-11-12 05:44:10 PC time (05:44 UTC), runner pid 48912.
 
 - `tpprep` done, exit 0 in 6 min
 - `tpbb` done, exit 0 in 38 min
@@ -16,9 +16,9 @@ Updated 2026-11-12 05:35:30 PC time (05:35 UTC), runner pid 48912.
 - `tppick` done, exit 0 in 0 min
 - `tpcprep` done, exit 0 in 1 min
 - `tpcbb` done, exit 0 in 1.9 h
-- `tpcfx` running
-- `tpgate` pending
-- `tppr` pending
+- `tpcfx` done, exit 0 in 1.9 h
+- `tpgate` done, exit 0 in 0 min
+- `tppr` done, exit 0 in 0 min
 
 ### tpbb
 
@@ -145,24 +145,18 @@ Skipped turns a battle: 18.6 overall, first 100 18.6, last 100 29.0.
 
 ### tpcfx
 
-**1510 battles**, 0 failed. Running 1.7 h, 877 battles/h. Last battle 0 min ago.
-Skipped turns a battle: 17.9 overall, first 100 17.4, last 100 13.2.
+**1680 battles**, 0 failed. Running 1.9 h, 901 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 18.6 overall, first 100 17.4, last 100 28.5.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 1510 |
+| `fails 60` | halt | ok | 0 failed of 1680 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | ok | 17.1 a battle over the last 200 (first 200: 18.2) |
+| `skips 60 over 200` | halt | ok | 23.3 a battle over the last 200 (first 200: 18.2) |
 
 ### Queue log (last lines)
 
 ```
-01:59:11 tppick exit=0 in 0 s
-01:59:11 start tpcprep
-01:59:45 tpcprep exit=0 in 34 s
-01:59:45 start tpcbb
-01:59:45 watching tpcbb: 3 stop rule(s)
-02:26:10 progress tpcbb: 225 battles, 511/h, 0 failed, skips 20.2/battle (last 100)
 02:56:23 progress tpcbb: 634 battles, 672/h, 0 failed, skips 16.4/battle (last 100)
 03:26:36 progress tpcbb: 1129 battles, 780/h, 0 failed, skips 13.0/battle (last 100)
 03:52:11 tpcbb exit=0 in 6745 s
@@ -172,4 +166,10 @@ Skipped turns a battle: 17.9 overall, first 100 17.4, last 100 13.2.
 04:27:01 progress tpcfx: 320 battles, 551/h, 0 failed, skips 20.7/battle (last 100)
 04:57:14 progress tpcfx: 773 battles, 713/h, 0 failed, skips 22.0/battle (last 100)
 05:27:26 progress tpcfx: 1333 battles, 840/h, 0 failed, skips 12.3/battle (last 100)
+05:44:03 tpcfx exit=0 in 6711 s
+05:44:03 start tpgate
+05:44:03 tpgate exit=0 in 0 s
+05:44:03 start tppr
+05:44:10 tppr exit=0 in 6 s
+05:44:10 ALLDONE
 ```
