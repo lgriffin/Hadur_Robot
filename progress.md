@@ -1,6 +1,6 @@
 # Queue pc-melee-dodge: progress
 
-Updated 2026-11-12 06:30:19 PC time (06:30 UTC), runner pid 52528.
+Updated 2026-11-12 06:45:25 PC time (06:45 UTC), runner pid 52528.
 
 - `dgprep` done, exit 0 in 2 min
 - `dgpilot` running
@@ -13,15 +13,15 @@ Updated 2026-11-12 06:30:19 PC time (06:30 UTC), runner pid 52528.
 
 ### dgpilot
 
-**114 of 184 battles** (62%), 0 failed. Running 43 min, 158 battles/h, about 27 min left (ends ~06:56 PC time). Last battle 0 min ago.
-Skipped turns a battle: 34.4 overall, first 100 36.3, last 100 36.7.
+**168 of 184 battles** (91%), 0 failed. Running 59 min, 172 battles/h, about 6 min left (ends ~06:51 PC time). Last battle 0 min ago.
+Skipped turns a battle: 34.3 overall, first 100 36.3, last 100 34.6.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 114 |
+| `fails 20` | halt | ok | 0 failed of 168 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 70 battles unrun (about 27 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 16 battles unrun (about 6 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
