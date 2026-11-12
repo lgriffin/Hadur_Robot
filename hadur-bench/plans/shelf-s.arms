@@ -2,10 +2,10 @@
 # against every robot of plans/shelf-s.list (all on the shield list): md off the shield list (slistdrop),
 # zl still shots (szlist, SHIELD-21), x0 no damage exit (sx0list, SHIELD-19), x4 exit at 400 damage (sx4list),
 # mv the opening drive (smovelist, SHIELD-17).
-c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
-aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
-md | hadur117.Hadur 3.21md | bisect/hadur117.Hadur_3.21md.jar
-zl | hadur117.Hadur 3.21zl | bisect/hadur117.Hadur_3.21zl.jar
-x0 | hadur117.Hadur 3.21x0 | bisect/hadur117.Hadur_3.21x0.jar
-x4 | hadur117.Hadur 3.21x4 | bisect/hadur117.Hadur_3.21x4.jar
-mv | hadur117.Hadur 3.21mv | bisect/hadur117.Hadur_3.21mv.jar
+c | hadur117.Hadur 3.22 | bisect/hadur117.Hadur_3.22.jar
+aa | hadur117.Hadur 3.22aa | bisect/hadur117.Hadur_3.22aa.jar
+md | hadur117.Hadur 3.22md | bisect/hadur117.Hadur_3.22md.jar
+zl | hadur117.Hadur 3.22zl | bisect/hadur117.Hadur_3.22zl.jar
+x0 | hadur117.Hadur 3.22x0 | bisect/hadur117.Hadur_3.22x0.jar
+x4 | hadur117.Hadur 3.22x4 | bisect/hadur117.Hadur_3.22x4.jar
+mv | hadur117.Hadur 3.22mv | bisect/hadur117.Hadur_3.22mv.jar

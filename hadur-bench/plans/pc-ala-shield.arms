@@ -1,7 +1,7 @@
 # pc-ala-shield: c is master, aa its A/A copy, mt master with Ala on the shield list (the arm the cloud check read,
 # +6.85 +- 5.08 on 6 seeds), mz the same with a SHIELD-21 still line too (the arm pc-shield-still2 read +6.0 on).
 # Each line acts on Ala alone; every other robot plays bit for bit as master.
-c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
-aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
-mt | hadur117.Hadur 3.21mt | bisect/hadur117.Hadur_3.21mt.jar
-mz | hadur117.Hadur 3.21mtzl | bisect/hadur117.Hadur_3.21mtzl.jar
+c | hadur117.Hadur 3.22 | bisect/hadur117.Hadur_3.22.jar
+aa | hadur117.Hadur 3.22aa | bisect/hadur117.Hadur_3.22aa.jar
+mt | hadur117.Hadur 3.22mt | bisect/hadur117.Hadur_3.22mt.jar
+mz | hadur117.Hadur 3.22mtzl | bisect/hadur117.Hadur_3.22mtzl.jar
