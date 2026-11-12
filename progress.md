@@ -1,6 +1,6 @@
 # Queue pc-melee-dodge: progress
 
-Updated 2026-11-12 07:45:52 PC time (07:45 UTC), runner pid 52528.
+Updated 2026-11-12 08:00:58 PC time (08:00 UTC), runner pid 52528.
 
 - `dgprep` done, exit 0 in 2 min
 - `dgpilot` done, exit 0 in 1.1 h
@@ -37,20 +37,19 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### dgbb
 
-**66 of 276 battles** (24%), 0 failed. Running 11 min, 362 battles/h, about 35 min left (ends ~08:20 PC time). Last battle 0 min ago.
-Skipped turns a battle: 28.9 overall, first 66 28.9, last 66 28.9.
+**138 of 276 battles** (50%), 0 failed. Running 26 min, 318 battles/h, about 26 min left (ends ~08:27 PC time). Last battle 0 min ago.
+Skipped turns a battle: 29.7 overall, first 100 29.4, last 100 31.2.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 66 |
+| `fails 20` | halt | ok | 0 failed of 138 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 210 battles unrun (about 35 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 138 battles unrun (about 26 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-05:46:54 dgprep exit=0 in 113 s
 05:46:54 start dgpilot
 05:46:54 watching dgpilot: 2 stop rule(s)
 05:47:01 progress dgpilot: 0/184 (0%) battles, 0 failed
@@ -65,4 +64,5 @@ Stopping now would leave 210 battles unrun (about 35 min); every battle already 
 07:34:56 dgaa exit=0 in 2669 s
 07:34:56 start dgbb
 07:34:56 watching dgbb: 2 stop rule(s)
+07:47:53 progress dgbb: 84/276 (30%) battles, 389/h, ETA 30 min, 0 failed, skips 29.1/battle (last 100)
 ```
