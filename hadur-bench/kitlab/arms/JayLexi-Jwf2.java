@@ -40,7 +40,7 @@ public class JayLexi extends AdvancedRobot {
     static JayLexi bot;
     // Where this opponent's row starts in AIM.
     static int row;
-    // Surf stats [distance band][our lateral speed band][bin] (JAYLEXI-6).
+    // Surf stats [distance band][walls along our orbit, 0 to 3][our lateral speed band][bin] (JAYLEXI-6, own walls segment).
     static double[][][][] surf = new double[4][4][5][BINS];
     // Gun stats [velocity history][lateral speed][walls ahead][distance][bin] (JAYLEXI-4).
     static double[][] gun = new double[480][BINS];
@@ -88,6 +88,8 @@ public class JayLexi extends AdvancedRobot {
         // Surfing (JAYLEXI-5): the less dangerous of back and forward on the two nearest waves; with
         // no wave in flight, straight away from the enemy (a stop option measured 2 APS worse).
         lateral = lastBearing = absBearing + Math.PI;
+        // band holds the raw distance / 50 bucket (the gun takes band / 5, power takes POWER.charAt(band)); only the
+        // surf index maps it through BAND.
         w.bins = surf[BAND.charAt(band = (int) (distance / 50))][clear(enemy, lastBearing, direction)][LAT.charAt((int) (lastLateral * direction))];
         try {
             lateral = wave(0).angle(me) + orbit * (direction = Math.signum(both(-1) - both(1)));
