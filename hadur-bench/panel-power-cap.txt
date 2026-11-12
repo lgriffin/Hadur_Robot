@@ -5,3 +5,6 @@ aw.Gilgalad 1.99.5c | r1 | aw.Gilgalad_1.99.5c.jar
 cb.fire.Firestarter 2.0f | r1 | cb.fire.Firestarter_2.0f.jar
 catcat20.Rabbit 0.001 | r1 | catcat20.Rabbit_0.001.jar
 cb.Domogled 1.2 | r1 | cb.Domogled_1.2.jar
+# 0.5 cap (power-cap5:), locked or near on 4 fresh seeds from 16200 after a 66-robot screen at 16100.
+stelo.MatchupAGF 1.1 | r1 | stelo.MatchupAGF_1.1.jar
+suh.mega.WaveSurferPG 1.06 | r1 | suh.mega.WaveSurferPG_1.06.jar

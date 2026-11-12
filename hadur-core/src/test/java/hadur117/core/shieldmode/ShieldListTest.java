@@ -121,6 +121,9 @@ class ShieldListTest {
         assertFalse(l.powerCap(null));
         assertFalse(l.matches("a.B 1.0"), "not a shield entry");
         assertFalse(ShieldList.NONE.powerCap("a.B 1.0"));
+        ShieldList h = ShieldList.parse(List.of("power-cap5: e.F", "power-cap: g.H"));
+        assertTrue(h.powerCapHalf("e.F 1.0") && !h.powerCap("e.F 1.0"), "a power-cap5 line is the 0.5 cap only");
+        assertTrue(h.powerCap("g.H 1.0") && !h.powerCapHalf("g.H 1.0"));
     }
 
     @Test
