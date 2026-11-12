@@ -54,3 +54,7 @@
 02:26:10 progress tpcbb: 225 battles, 511/h, 0 failed, skips 20.2/battle (last 100)
 02:56:23 progress tpcbb: 634 battles, 672/h, 0 failed, skips 16.4/battle (last 100)
 03:26:36 progress tpcbb: 1129 battles, 780/h, 0 failed, skips 13.0/battle (last 100)
+03:52:11 tpcbb exit=0 in 6745 s
+03:52:11 start tpcfx
+03:52:11 watching tpcfx: 3 stop rule(s)
+03:56:49 progress tpcfx: 36 battles, 466/h, 0 failed, skips 16.4/battle (last 100)
