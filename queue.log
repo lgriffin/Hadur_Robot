@@ -31,3 +31,6 @@
 23:31:47 start tpnc
 23:31:47 watching tpnc: 3 stop rule(s)
 23:55:04 progress tpnc: 300 battles, 773/h, 0 failed, skips 15.0/battle (last 100)
+00:04:12 tpnc exit=0 in 1944 s
+00:04:12 start tpnk
+00:04:12 watching tpnk: 3 stop rule(s)

@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-portfolio",
- "updated": 1794441787.710293,
+ "updated": 1794442693.9231427,
  "steps": {
   "tpprep": {
    "status": "done",
@@ -45,11 +45,14 @@
    "end": "2026-11-11T23:31:47"
   },
   "tpnc": {
-   "status": "running",
-   "start": "2026-11-11T23:31:47"
+   "status": "done",
+   "exit": 0,
+   "seconds": 1944,
+   "end": "2026-11-12T00:04:12"
   },
   "tpnk": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-12T00:04:12"
   },
   "tpnh": {
    "status": "pending"
@@ -338,8 +341,8 @@
   {
    "step": "tpnc",
    "started": 1794439907.7812796,
-   "updated": 1794441787.70183,
-   "elapsed": 1879.9205503463745,
+   "updated": 1794441852.671544,
+   "elapsed": 1944.8902645111084,
    "expected": null,
    "panel": null,
    "field": null,
@@ -347,20 +350,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 463,
+   "battles": 468,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 886.6332142030645,
+   "rate": 866.2699540138385,
    "eta": null,
    "fraction": null,
-   "last_battle_age": 10.097602367401123,
+   "last_battle_age": 1.6875250339508057,
    "rules": [
     {
      "rule": "fails 60",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 463"
+     "detail": "0 failed of 468"
     },
     {
      "rule": "stall 30m",
@@ -372,11 +375,54 @@
      "rule": "skips 60 over 200",
      "action": "halt",
      "state": "ok",
-     "detail": "16.2 a battle over the last 200 (first 200: 19.3)"
+     "detail": "15.9 a battle over the last 200 (first 200: 19.3)"
     }
    ],
-   "skips_mean": 17.451403887688986,
-   "skips_last100": 16.41
+   "skips_mean": 17.28846153846154,
+   "skips_last100": 15.79
+  },
+  {
+   "step": "tpnk",
+   "started": 1794441852.6826596,
+   "updated": 1794442693.9136946,
+   "elapsed": 841.2310349941254,
+   "expected": null,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 138,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 590.5630906775442,
+   "eta": null,
+   "fraction": null,
+   "last_battle_age": 11.766620635986328,
+   "rules": [
+    {
+     "rule": "fails 60",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 138"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 60 over 200",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "138 of 200 battles to read"
+    }
+   ],
+   "skips_mean": 19.869565217391305,
+   "skips_last100": 19.56
   }
  ]
 }
