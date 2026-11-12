@@ -1,6 +1,6 @@
 # Queue pc-team-guard: progress
 
-Updated 2026-11-12 14:04:28 PC time (14:04 UTC), runner pid 65320.
+Updated 2026-11-12 14:19:34 PC time (14:19 UTC), runner pid 65320.
 
 - `tgprep` done, exit 0 in 3 min
 - `tgpmv` done, exit 0 in 22 min
@@ -40,14 +40,14 @@ Stopping now would leave -132 battles unrun (about -10 min); every battle alread
 
 ### tgbb
 
-**310 battles**, 0 failed. Running 30 min, 613 battles/h. Last battle 0 min ago.
-Skipped turns a battle: 4.6 overall, first 100 13.6, last 100 0.5.
+**526 battles**, 0 failed. Running 45 min, 695 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 3.0 overall, first 100 13.6, last 100 0.6.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 310 |
+| `fails 60` | halt | ok | 0 failed of 526 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | ok | 0.4 a battle over the last 200 (first 200: 6.9) |
+| `skips 60 over 200` | halt | ok | 0.7 a battle over the last 200 (first 200: 6.9) |
 
 ### Queue log (last lines)
 
