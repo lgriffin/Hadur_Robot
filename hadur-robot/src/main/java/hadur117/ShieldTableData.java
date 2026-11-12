@@ -606,6 +606,8 @@ final class ShieldTableData {
             "florent.XSeries.X2 0.17",
             "cjm.Che 1.2",
             "djc.Aardvark 0.3.6",
+            // pc-shield-floor (BENCH-235, PR #781): CassiusClay +37.7 on 12 fresh seeds with the floor line
+            "pez.rumble.CassiusClay 2rho.02no",
         };
     }
 
@@ -616,6 +618,8 @@ final class ShieldTableData {
      */
     static String[] shieldFloors() {
         return new String[] {
+            // pc-shield-floor (BENCH-235, PR #781): 12 PC seeds against master and its A/A copy pooled
+            "pez.rumble.CassiusClay 2rho.02no",  // +37.7 (control 60.9, floor arm 98.6)
         };
     }
 

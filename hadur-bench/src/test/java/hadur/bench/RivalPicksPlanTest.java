@@ -59,6 +59,8 @@ class RivalPicksPlanTest {
         shipped.addAll(names("plans/shield-rescreen-shipped.txt"));
         // pc-still-field (PR #746) shipped X2, Che and Aardvark.
         shipped.addAll(names("plans/still-field-shipped.txt"));
+        // pc-shield-floor (PR #781) shipped CassiusClay.
+        shipped.addAll(names("plans/shield-floor-shipped.txt"));
         for (String n : drop) {
             if (!shipped.contains(n)) assertTrue(listData.contains("\"" + n + "\","), n + " is on the shield list to drop");
         }
