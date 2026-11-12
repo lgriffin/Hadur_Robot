@@ -1329,7 +1329,7 @@ traceability check reads. 280 of 287 live requirements have a tagged test. The r
 </article>
 <article class="req-card" id="ROLE-3">
 <div class="req-head"><span class="rid">ROLE-3</span><span class="badge">State</span><span class="badge stage">A1</span></div>
-<p>While the Team role&#x27;s own conditions do not hold, the Melee role is built and has not failed this round, two or more enemies are alive, no sentry robot is alive or has been scanned this round, and the Duel role has not driven this round, the core shall drive the robot with the Melee role.</p>
+<p>While the Team role&#x27;s own conditions do not hold, the Melee role is built and has not failed this round, two or more enemies are alive (or one, on a team whose modes against it carry LAST while a teammate lives, TMODE-47), no sentry robot is alive or has been scanned this round, and the Duel role has not driven this round, the core shall drive the robot with the Melee role.</p>
 <dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/role/RoleResolver.html" title="hadur117.core.role.RoleResolver">RoleResolver</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/role/RoleResolverTest.java">RoleResolverTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/resources/features/melee.feature">melee.feature</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/resources/features/posture.feature">posture.feature</a></dd></dl>
 </article>
 <article class="req-card" id="ROLE-4">
