@@ -1,0 +1,34 @@
+{
+ "plan": "pc-team-guard",
+ "updated": 1794487731.1588023,
+ "steps": {
+  "tgprep": {
+   "status": "pending"
+  },
+  "tgpmv": {
+   "status": "pending"
+  },
+  "tgpla": {
+   "status": "pending"
+  },
+  "tgpilot": {
+   "status": "pending"
+  },
+  "tgbb": {
+   "status": "pending"
+  },
+  "tgmv": {
+   "status": "pending"
+  },
+  "tgla": {
+   "status": "pending"
+  },
+  "tggate": {
+   "status": "pending"
+  },
+  "tgpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
