@@ -13,8 +13,12 @@ import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 
 /**
- * The readable JayLexi 0.6: 0.4 with each robot's orbit angle read from ORB (pc-jaylexi-orb, PR #644),
- * and aim jitter against bullet catchers read from the same char (JAYLEXI-19).
+ * The readable JayLexi 0.7: 0.6 with its surf stats also segmented by how much of our orbit ahead is still
+ * in the field, as the enemy sees it (JAYLEXI-20, docs/bench/jaylexi-own-movement.md), the lateral-speed
+ * signs read with copySign and the prediction's heading left unnormalised (both only to fit the shipped
+ * build in 1,499 bytes).
+ * 0.6 was 0.4 with each robot's orbit angle read from ORB (pc-jaylexi-orb, PR #644), and aim jitter
+ * against bullet catchers read from the same char (JAYLEXI-19).
  * 0.3, as benched (docs/bench/kitlab-priors.md, arm PALL), was 0.2 (arm J2w) with
  * the field's first-shot bin for each gun segment and a per-opponent surf danger row for each of the
  * 669 MiniRumble robots, read from constant-pool strings. It is over the MiniRumble limit, so the
@@ -40,8 +44,8 @@ public class JayLexi extends AdvancedRobot {
     // The robot, so a wave can take itself off the event list.
     static JayLexi bot;
     static Wave next;
-    // Surf stats [distance band][our lateral speed band][bin] (JAYLEXI-6).
-    static double[][][] surf = new double[4][5][BINS];
+    // Surf stats [distance band][walls along our orbit][our lateral speed band][bin] (JAYLEXI-6, JAYLEXI-20).
+    static double[][][][] surf = new double[4][4][5][BINS];
     // Gun stats [velocity history][lateral speed][walls ahead][distance][bin] (JAYLEXI-4).
     static double[][][][][] gun = new double[6][4][4][5][BINS];
     // Where this opponent's row starts in AIM.
@@ -74,8 +78,7 @@ public class JayLexi extends AdvancedRobot {
             waves.add(w);
         }
         (next = w = new Wave()).bearing = lastBearing;
-        w.bins = surf[(int) Math.min((distance + 50) / 200, 3)][(int) ((Math.abs(lastLateral) + 1) / 2)];
-        w.dir = Math.signum(lastLateral + 1e-9);
+        w.dir = Math.copySign(1, lastLateral);
         w.source = enemy = project(me = new Point2D.Double(getX(), getY()),
                 absBearing = getHeadingRadians() + e.getBearingRadians(), distance = e.getDistance());
 
@@ -90,6 +93,10 @@ public class JayLexi extends AdvancedRobot {
         // wave in flight, straight away from the enemy (a stop option measured 2 APS worse).
         direction = w.dir;
         angle = absBearing + Math.PI;
+        // The wave's stats (JAYLEXI-20): by this scan's distance, by how much of our orbit ahead of us, as the
+        // enemy sees it, is still in the field (0 to 3 clear fractions), and by our lateral speed.
+        w.bins = surf[(int) Math.min((distance + 50) / 200, 3)][clear(enemy, angle, direction)]
+                [(int) ((Math.abs(lastLateral) + 1) / 2)];
         try {
             Wave s = waves.get(0);
             angle = s.angle(me) + orbit * (direction = Math.signum(both(-1) - both(1)));
@@ -102,7 +109,7 @@ public class JayLexi extends AdvancedRobot {
         double lateral = e.getVelocity() * Math.sin(e.getHeadingRadians() - absBearing);
         (w = new Wave()).source = me;
         w.bearing = absBearing;
-        w.dir = Math.signum(lateral + 1e-9);
+        w.dir = Math.copySign(1, lateral);
         int history = (int) Math.min(3, Math.pow(280 * vChangeTime++ / distance, .7));
         if (enemySpeed != (lateral = (int) Math.abs(lateral))) {
             history = enemySpeed > lateral ? 5 : 4;
@@ -110,7 +117,7 @@ public class JayLexi extends AdvancedRobot {
         }
         enemySpeed = lateral;
         int speedBand = (int) (1.4427 * Math.log(lateral + 1.5));
-        int walls = wall(w, 0.18) ? wall(w, 0.36) ? wall(w, 0.64) ? 3 : 2 : 1 : 0;
+        int walls = clear(me, w.bearing, w.dir);
         int band = (int) (distance / 250);
         w.bins = gun[history][speedBand][walls][band];
         // Until the segment has a visit, aim at the field's first-shot bin for it.
@@ -151,8 +158,7 @@ public class JayLexi extends AdvancedRobot {
                 angle += Math.PI;
                 move = -1;
             }
-            p = project(p, heading = Utils.normalRelativeAngle(heading
-                            + Math.max(-(turn = Rules.getTurnRateRadians(Math.abs(v))), Math.min(Utils.normalRelativeAngle(angle), turn))),
+            p = project(p, heading += Math.max(-(turn = Rules.getTurnRateRadians(Math.abs(v))), Math.min(Utils.normalRelativeAngle(angle), turn)),
                     v = Math.max(-8, Math.min(8, v + (v * move < 0 ? 2 * move : move))));
         } while (s.source.distance(p) >= s.travelled + ++tick * s.speed);
         int i = s.index(p);
@@ -210,10 +216,21 @@ public class JayLexi extends AdvancedRobot {
         return angle;
     }
 
-    /** Is the point a fraction of the escape angle along the enemy's way still in the field? */
-    static boolean wall(Wave w, double fraction) {
-        return FIELD.contains(project(me, w.bearing + w.dir * fraction, distance));
+    /**
+     * Walls along an orbit: how many of the points 0.18, 0.36 and 0.64 rad past bearing (in dir), at the
+     * enemy's distance from the point from, are still in the field, counting only while the ones before
+     * are clear (0 to 3). The gun asks it about the enemy's orbit seen from us, the surf about ours seen
+     * from the enemy (JAYLEXI-4, JAYLEXI-20).
+     */
+    static int clear(Point2D.Double from, double bearing, double dir) {
+        int k = 0;
+        while (k < 3 && FIELD.contains(project(from, bearing + dir * FRACTIONS[k], distance))) {
+            k++;
+        }
+        return k;
     }
+
+    static final double[] FRACTIONS = {0.18, 0.36, 0.64};
 
     /** A wave: ours at the enemy (gun), or the enemy's at us (surfing). */
     static class Wave extends Condition {
