@@ -1,6 +1,6 @@
 # Queue pc-power-cap: progress
 
-Updated 2026-11-12 11:32:04 PC time (11:32 UTC), runner pid 53860.
+Updated 2026-11-12 11:47:10 PC time (11:47 UTC), runner pid 53860.
 
 - `prep` done, exit 0 in 2 min
 - `confirm` running
@@ -9,26 +9,26 @@ Updated 2026-11-12 11:32:04 PC time (11:32 UTC), runner pid 53860.
 
 ### confirm
 
-**99 of 252 battles** (39%), 0 failed. Running 13 min, 441 battles/h, about 21 min left (ends ~11:52 PC time). Last battle 0 min ago.
-Skipped turns a battle: 8.7 overall, first 99 8.7, last 99 8.7; engine disables 0.
+**197 of 252 battles** (78%), 0 failed. Running 29 min, 413 battles/h, about 8 min left (ends ~11:55 PC time). Last battle 0 min ago.
+Skipped turns a battle: 8.9 overall, first 100 8.8, last 100 9.2; engine disables 0.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 35 | 0 | 63.77 | - | - | - | 8.7 |
-| aa | 33 | 0 | 63.90 | +0.00 (7 robots) | ±0.02 | -0.03 .. +0.03 | 8.9 |
-| pk | 31 | 0 | 69.61 | +0.05 (6 robots) | ±0.02 | +0.02 .. +0.07 | 8.5 |
+| c | 66 | 0 | 63.72 | - | - | - | 9.1 |
+| aa | 67 | 0 | 63.36 | -0.00 (7 robots) | ±0.01 | -0.02 .. +0.01 | 8.9 |
+| pk | 64 | 0 | 70.77 | +0.04 (7 robots) | ±0.01 | +0.02 .. +0.06 | 8.8 |
 
 APS = mean difference over the robots read x 7 panel robots / 1217 pairings.
-A/A: aa - c +0.14 pts over 7 robots; 1% band ±2.00 (inside).
+A/A: aa - c -0.36 pts over 7 robots; 1% band ±1.43 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 99 |
+| `fails 30` | halt | ok | 0 failed of 197 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 60 over 200` | halt | waiting | 99 of 200 battles to read |
+| `skips 60 over 200` | halt | waiting | 197 of 200 battles to read |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 153 battles unrun (about 21 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 55 battles unrun (about 8 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
