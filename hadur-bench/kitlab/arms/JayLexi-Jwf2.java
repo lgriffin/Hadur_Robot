@@ -41,7 +41,7 @@ public class JayLexi extends AdvancedRobot {
     // Where this opponent's row starts in AIM.
     static int row;
     // Surf stats [distance band][our lateral speed band][bin] (JAYLEXI-6).
-    static double[][][] surf = new double[4][20][BINS];
+    static double[][][][] surf = new double[4][4][5][BINS];
     // Gun stats [velocity history][lateral speed][walls ahead][distance][bin] (JAYLEXI-4).
     static double[][] gun = new double[480][BINS];
     // Learned from the field (docs/bench/kitlab-priors.md): each gun segment's first-shot bin, the
@@ -65,6 +65,7 @@ public class JayLexi extends AdvancedRobot {
         Wave w;
         // lateral first: the most used double gets slot 3, whose loads take one byte.
         double lateral, absBearing, direction;
+        int band;
 
         // An enemy shot (JAYLEXI-3): last tick's wave, from where the enemy was, at the bullet's speed.
         if ((lateral = enemyEnergy - (enemyEnergy = e.getEnergy())) <= 3 && lateral > 0.09) {
@@ -73,16 +74,10 @@ public class JayLexi extends AdvancedRobot {
             waves.add(w);
         }
         (next = w = new Wave()).bearing = lastBearing;
-        w.bins = surf[BAND.charAt((int) (distance / 50))][LAT.charAt((int) Math.abs(lastLateral))];
-        direction = w.dir = Math.copySign(1, lastLateral + 0.0);
+        direction = w.dir = Math.copySign(1, lastLateral);
         w.source = enemy = project(me = new Point2D.Double(getX(), getY()),
                 absBearing = getHeadingRadians() + e.getBearingRadians(), distance = e.getDistance());
         // Own arm: walls along our orbit as the enemy sees it, 0 to 3 clear fractions, as a surf segment.
-        int clear = 0;
-        while (clear < 3 && FIELD.contains(project(enemy, absBearing + Math.PI + direction * FRAC.charAt(clear) / 100, distance))) {
-            clear++;
-        }
-        w.bins = surf[BAND.charAt((int) (distance / 50))][clear * 5 + LAT.charAt((int) Math.abs(lastLateral))];
 
         // This robot's orbit angle, hundredths of a radian (JAYLEXI-5: 1.15 off the wave's bearing).
         orbit = ORB.charAt((row = BINS * (NAMES.indexOf((char) e.getName().hashCode()) + 1)) / BINS) / 100.0;
@@ -93,6 +88,7 @@ public class JayLexi extends AdvancedRobot {
         // Surfing (JAYLEXI-5): the less dangerous of back and forward on the two nearest waves; with
         // no wave in flight, straight away from the enemy (a stop option measured 2 APS worse).
         lateral = lastBearing = absBearing + Math.PI;
+        w.bins = surf[BAND.charAt(band = (int) (distance / 50))][clear(enemy, lastBearing, direction)][LAT.charAt((int) (lastLateral * direction))];
         try {
             lateral = wave(0).angle(me) + orbit * (direction = Math.signum(both(-1) - both(1)));
         } catch (Exception ex) {
@@ -105,19 +101,16 @@ public class JayLexi extends AdvancedRobot {
         lateral = e.getVelocity() * Math.sin(e.getHeadingRadians() - absBearing);
         (w = new Wave()).source = me;
         w.bearing = absBearing;
-        w.dir = Math.copySign(1, lateral + 0.0);
+        w.dir = direction = Math.copySign(1, lateral);
         int history = (int) Math.min(3, Math.pow(280 * vChangeTime++ / distance, .7));
         if (enemySpeed != (lateral = (int) Math.abs(lateral))) {
             history = enemySpeed > lateral ? 5 : 4;
             vChangeTime = 0;
         }
         enemySpeed = lateral;
-        int best = 0;
-        while (best < 3 && FIELD.contains(project(me, w.bearing + w.dir * FRAC.charAt(best) / 100, distance))) {
-            best++;
-        }
+        int best;
         double[] b = w.bins = gun[best = ((history * 4 + LOG2.charAt((int) lateral)) * 4
-                + best) * 5 + (int) (distance / 250)];
+                + clear(me, absBearing, direction)) * 5 + band / 5];
         best = GUN.charAt(best);
         for (int i = BINS - 1; i >= 0; i--) {
             if (b[i] > b[best]) {
@@ -126,12 +119,12 @@ public class JayLexi extends AdvancedRobot {
         }
         // Power (JAYLEXI-8): 3 close in, else 2; a fifteenth of our energy at most, so we never disable
         // ourselves; no more than finishes the enemy.
-        lateral = Math.min(Math.min(POWER.charAt((int) (distance / 50)), getEnergy() / 15), enemyEnergy / 4 + 0.1);
+        lateral = Math.min(Math.min(POWER.charAt(band), getEnergy() / 15), enemyEnergy / 4 + 0.1);
         w.travelled = -1.5 * (w.speed = Rules.getBulletSpeed(lateral));
         addCustomEvent(w);
         // Up to 0.125 rad of aim jitter against a robot whose orbit char carries 2 pi more: a bullet catcher (JAYLEXI-19).
         setTurnGunRightRadians(Utils.normalRelativeAngle(absBearing - getGunHeadingRadians()
-                + (Math.random() - 0.5) * ((int) orbit >> 2) / 4 + w.dir * (best - MID) * Math.asin(8 / w.speed) / MID));
+                + (Math.random() - 0.5) * ((int) orbit >> 2) / 4 + direction * (best - MID) * Math.asin(8 / w.speed) / MID));
         if (Math.abs(getGunTurnRemaining()) < 3 && setFireBullet(lateral) != null) {
             w.weight = 4;
         }
@@ -158,8 +151,7 @@ public class JayLexi extends AdvancedRobot {
             if ((move = Math.copySign(1, Math.cos(angle = smooth(p, s.angle(p) + dir * orbit, dir) - heading))) < 0) {
                 angle += Math.PI;
             }
-            p = project(p, heading = Utils.normalRelativeAngle(heading
-                            + Math.max(-(turn = Rules.getTurnRateRadians(Math.abs(v))), Math.min(Utils.normalRelativeAngle(angle), turn))),
+            p = project(p, heading += Math.max(-(turn = Rules.getTurnRateRadians(Math.abs(v))), Math.min(Utils.normalRelativeAngle(angle), turn)),
                     v = Math.max(-8, Math.min(8, v + (v * move < 0 ? 2 * move : move))));
         } while (s.source.distance(p) >= s.travelled + ++tick * s.speed);
         int i = s.index(p);
@@ -205,6 +197,15 @@ public class JayLexi extends AdvancedRobot {
 
     public void onBulletHit(BulletHitEvent e) {
         enemyEnergy -= Rules.getBulletDamage(e.getBullet().getPower());
+    }
+
+    /** Walls along an orbit: how many of the fractions 0.18, 0.36, 0.64 rad past bearing, at distance from s, stay in the field (0 to 3). */
+    static int clear(Point2D.Double s, double bearing, double dir) {
+        int k = 0;
+        while (k < 3 && FIELD.contains(project(s, bearing + dir * FRAC.charAt(k) / 100, distance))) {
+            k++;
+        }
+        return k;
     }
 
     static Point2D.Double project(Point2D.Double p, double angle, double length) {

@@ -62,11 +62,31 @@ A/A +0.10 ± 0.18 (2,688 battles).
 Jw holds up at about half its first read: +0.29 on 6 fresh seeds after +0.53 on 3, about +0.37 over the 9 seeds
 together, low end just above 0. Jw2 does not add to it.
 
+## 5. Fitting the walls segment under 1,499 bytes (cloud-jaylexi-wfit, cloud-jaylexi-wfit2)
+
+Two fits, each run beside Jw against 0.6 on 6 fresh seeds (45000 and 46000).
+
+| Arm | How it fits | Bytes | vs 0.6 (A/A) |
+|---|---|---:|---:|
+| Jw (seeds 45000) | not fitted | 1,585 | +0.31 ± 0.46 (-0.08) |
+| Jwf | play-identical golf plus diet rows 2 (our hit reads the enemy's energy from the event) and 9 (a hit wave is left for test() to drop) | 1,491 | +0.21 ± 0.47 |
+| Jw (seeds 46000) | not fitted | 1,585 | +0.48 ± 0.44 (+0.11) |
+| **Jwf2** | play-identical golf only, plus three near-neutral changes (below) | **1,497** | **+0.55 ± 0.49** |
+
+Jwf2's golf: one wall-count method shared by the gun and the surf; the distance band computed once; surf stats stored
+as `[band][walls][lateral]`; the gun's lateral sign held in a local; the gun's wall test reads the absolute bearing local.
+The three changes in play: no `+ 0.0` on our own and on the enemy's lateral-speed sign (only a stopped robot's -0.0 is
+affected), and the prediction's heading is not normalised (only sin and cos read it).
+
+Jw over four fresh seed sets: +0.53, +0.29, +0.31, +0.48, about +0.40 over 0.6. Jwf2 matches it.
+
 ## Where this leaves JayLexi
 
 - FoilistMC's lead does not come apart into pieces we can transplant. Of its five differences from 0.6, only the wall
-  features carry over to our own surfs, worth about +0.3 on 0.6.
-- Jw (`hadur-bench/kitlab/arms/JayLexi-Jw.java`) is the one candidate kept; it is 86 bytes over the 1,499 limit. The
-  other arms are removed (no dead experiment code) and their cards are summarised here.
-- The rest of the lead sits in how FoilistMC's surf is built as a whole (its kernel and how it weighs old hits),
-  which our k-NN surf does not match.
+  features carry over to our own surfs.
+- That piece, our walls segment, holds at about +0.4 over 0.6 on the cloud, and Jwf2
+  (`hadur-bench/kitlab/arms/JayLexi-Jwf2.java`, 1,497 B) fits it under the limit with the same play. It is the 0.7
+  candidate; nothing is built into `jaylexi/` or released without the owner's word.
+- The other arms and all the cards are removed (no dead experiment code) and summarised here.
+- The rest of the leader's lead sits in how its surf is built as a whole (its kernel and how it weighs old hits), which
+  our k-NN surf does not match.
