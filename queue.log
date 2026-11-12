@@ -17,3 +17,7 @@
 07:34:56 start dgbb
 07:34:56 watching dgbb: 2 stop rule(s)
 07:47:53 progress dgbb: 84/276 (30%) battles, 389/h, ETA 30 min, 0 failed, skips 29.1/battle (last 100)
+08:18:06 progress dgbb: 264/276 (96%) battles, 367/h, ETA 2 min, 0 failed, skips 26.9/battle (last 100)
+08:19:49 dgbb exit=0 in 2693 s
+08:19:49 start dgmd
+08:19:49 watching dgmd: 2 stop rule(s)
