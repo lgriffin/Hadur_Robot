@@ -51,8 +51,8 @@ class ShieldListResourceTest {
         // pc-rival-confirm (PR #537): claire, TestNano and GlowBlowMelee join with still plans; DuelistMicroMkII and
         // Vanessa03 leave for their stop-and-go lines. pc-shield-audit (PR #697): Princess joins with still and exit off.
         // pc-ala-shield (PR #733): Ala joins with a still line. pc-shield-rescreen (PR #739): Saturn and OperatorZeze.
-        // pc-still-field (PR #746): X2, Che and Aardvark.
-        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3, list.size());
+        // pc-still-field (PR #746): X2, Che and Aardvark. pc-shield-floor (PR #781): CassiusClay.
+        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
@@ -225,8 +225,8 @@ class ShieldListResourceTest {
         // exit off; Hydrogen's line goes, since it left the list for stop-and-go and a still line reads only shielded.
         // pc-shelf (PR #636): Entangled. pc-shield-audit (PR #697): Princess, with exit off.
         // pc-ala-shield (PR #733): Ala. pc-shield-rescreen (PR #739): Saturn and OperatorZeze.
-        // pc-still-field (PR #746): X2, Che and Aardvark.
-        assertEquals(17 + 9 + 5 - 1 + 1 + 1 + 1 + 2 + 3, ShieldTableData.stills().length);
+        // pc-still-field (PR #746): X2, Che and Aardvark. pc-shield-floor (PR #781): CassiusClay.
+        assertEquals(17 + 9 + 5 - 1 + 1 + 1 + 1 + 2 + 3 + 1, ShieldTableData.stills().length);
         assertTrue(list.matches("lechu.Ala 0.0.4") && list.still("lechu.Ala 0.0.4"));
         assertTrue(list.matches("cx.Princess 1.0") && Arrays.asList(ShieldTableData.exitOffs()).contains("cx.Princess 1.0"));
         for (String n : ShieldTableData.stills()) {
@@ -279,6 +279,16 @@ class ShieldListResourceTest {
     void mirrorOffPicks() {
         assertEquals(java.util.Set.of("janm.Jammy 1.0", "suh.nano.MirrorH 1.01", "suh.nano.MirrorL 1.00"),
             java.util.Set.of(ShieldTableData.mirrorOffs()), "MIR-2 lines held by pc-mirror-off (BENCH-224, PR #750)");
+    }
+
+    @Test
+    @Tag("SHIELD-25")
+    @DisplayName("CassiusClay, the one pc-shield-floor pick, is shielded with a still line and the 0.4 floor; no other robot is floored")
+    void shieldFloorPick() {
+        assertEquals(java.util.Set.of("pez.rumble.CassiusClay 2rho.02no"), java.util.Set.of(ShieldTableData.shieldFloors()),
+            "SHIELD-25 line held by pc-shield-floor (BENCH-235, PR #781)");
+        assertTrue(Arrays.asList(ShieldTableData.stills()).contains("pez.rumble.CassiusClay 2rho.02no"));
+        assertTrue(Arrays.asList(ShieldListData.lines()).contains("pez.rumble.CassiusClay 2rho.02no"));
     }
 
     @Test

@@ -2069,6 +2069,11 @@ failed and are removed (3.22 cleanup); the mimics live on in MOVE-33 and MOVE-34
   seeds from 12200 against master and its A/A copy pooled: X2 +5.7 points (low end +1.1, control 64.1), Che +3.8 (low
   end +1.4), Aardvark +3.6 (low end +0.9); SmallDevil +1.4, Parallax -0.2 and MoojukNano -0.9 do not ship. The gate
   passes (+0.01 ± 0.01 APS), A/A -1.07, inside its band. The three join `ShieldListData` and `ShieldTableData.stills()`.
+- **BENCH-235 result (pc-shield-floor, PR #781, 2026-11-12): CassiusClay ships with still and floor lines.** 12 fresh
+  seeds from 14800 against master and its A/A copy pooled: list + still + floor (sf) +37.7 points (control 60.9, sf
+  98.6; the cloud read +40.4), list + still alone (mz) +0.3; the 3-point pick locks sf, A/A -1.94, inside its band. A
+  one-robot card has no cross-robot gate; the pick is worth about +0.03 APS over the field. CassiusClay joins
+  `ShieldListData`, `ShieldTableData.stills()` and `ShieldTableData.shieldFloors()` (SHIELD-25).
 - **BENCH-224 result (pc-mirror-off, PR #750, 2026-11-11): all three ship with mirror-off lines.** 12 fresh seeds from 12700
   against master and its A/A copy pooled: Jammy +11.4 points (low end +9.8, control 86.7), MirrorH +3.8 (low end +3.1),
   MirrorL +3.6 (low end +2.9); the 3-point pick locks all three, the gate passes (+0.02 ± 0.01 APS), A/A -0.47, inside
