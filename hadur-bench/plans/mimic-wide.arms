@@ -1,5 +1,5 @@
 # MOVE-34 (pc-mimic-wide): c is master, aa its A/A copy, mq the learning-gun mimics among the aim members against the
 # robots of plans/mimic-wide.list only (mimic-on: lines, ablation mmlist).
-c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
-aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
-mq | hadur117.Hadur 3.21mq | bisect/hadur117.Hadur_3.21mq.jar
+c | hadur117.Hadur 3.22 | bisect/hadur117.Hadur_3.22.jar
+aa | hadur117.Hadur 3.22aa | bisect/hadur117.Hadur_3.22aa.jar
+mq | hadur117.Hadur 3.22mq | bisect/hadur117.Hadur_3.22mq.jar

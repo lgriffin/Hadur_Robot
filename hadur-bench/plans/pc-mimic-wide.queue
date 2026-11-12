@@ -29,7 +29,7 @@
 # fewer robots at most, so it carries the halt rules only. prep2 first clears any confirm reports an earlier
 # run left, so with no picks confirm and gate pass straight through and the PR carries this run's screen only. ALERT opens an issue for Leigh on any stop.
 
-set V = 3.21
+set V = 3.22
 set P = --parallel 12 --no-truth-log
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
 set W = work/mimic-wide

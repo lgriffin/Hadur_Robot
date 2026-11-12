@@ -1,5 +1,5 @@
 # Cloud rescreen (2026-11-10, after pc-ala-shield passed): the BeepBoop-only shield robots that read +1 to +3.6 on
 # pc-shield-still (3 seeds, older shield) and never shipped, as Ala had read +8.6 there and +6.0 on still2 before
 # passing at +7.3 on the PC. c is 3.21 (aa); mz the same with the eight on the shield list with still lines.
-c | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
-mz | hadur117.Hadur 3.21mtzl | bisect/hadur117.Hadur_3.21mtzl.jar
+c | hadur117.Hadur 3.22aa | bisect/hadur117.Hadur_3.22aa.jar
+mz | hadur117.Hadur 3.22mtzl | bisect/hadur117.Hadur_3.22mtzl.jar

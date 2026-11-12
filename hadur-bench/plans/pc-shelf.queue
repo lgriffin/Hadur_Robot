@@ -41,7 +41,7 @@
 # --failed-ok (BENCH-187): a robot that will not load on 1.11.2 leaves failed rows the readers skip, and the step
 # still passes while under 1 battle in 20 fails (zen.Mirage and zen.Ronin did this, issue #630; now in broken-1.11.2.txt).
 
-set V = 3.21
+set V = 3.22
 set P = --parallel 12 --no-truth-log --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
 set W = work/shelf
