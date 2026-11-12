@@ -292,6 +292,17 @@ class ShieldListResourceTest {
     }
 
     @Test
+    @Tag("POW-18")
+    @DisplayName("the 7 pc-power-cap picks carry power-cap lines (five at 0.2, two at 0.5) and no other robot does")
+    void powerCapPicks() {
+        assertEquals(java.util.Set.of("rsalesc.roborio.Roborio 1.2.4", "cb.fire.Firestarter 2.0f", "aw.Gilgalad 1.99.5c",
+            "catcat20.Rabbit 0.001", "cb.Domogled 1.2"), java.util.Set.of(ShieldTableData.powerCaps()),
+            "POW-18 0.2 caps held by pc-power-cap (BENCH-236, PR #784)");
+        assertEquals(java.util.Set.of("suh.mega.WaveSurferPG 1.06", "stelo.MatchupAGF 1.1"),
+            java.util.Set.of(ShieldTableData.powerCapHalves()), "POW-18 0.5 caps held by pc-power-cap (BENCH-236, PR #784)");
+    }
+
+    @Test
     @Tag("POW-17")
     @DisplayName("the 8 pc-race-power picks carry race-power lines and no other robot does")
     void racePowerPicks() {
