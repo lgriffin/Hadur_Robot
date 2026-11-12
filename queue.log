@@ -1,1 +1,13 @@
 10:19:29 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
+10:19:29 start prep
+10:19:31 progress pushed to origin claude/pc-shield-floor-progress (every 15 min)
+10:21:48 prep exit=0 in 139 s
+10:21:48 start confirm
+10:21:48 watching confirm: 4 stop rule(s)
+10:22:31 progress confirm: 9/48 (19%) battles, 766/h, ETA 3 min, 0 failed, skips 12.0/battle (last 100), mz +0.00, sf +0.03
+10:24:04 confirm exit=0 in 136 s
+10:24:04 start gate
+10:24:05 gate exit=0 in 0 s
+10:24:05 start pr
+10:24:11 pr exit=0 in 6 s
+10:24:11 ALLDONE
