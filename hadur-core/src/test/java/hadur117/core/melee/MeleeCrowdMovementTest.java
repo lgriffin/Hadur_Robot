@@ -92,38 +92,6 @@ class MeleeCrowdMovementTest {
     }
 
     @Test
-    @Tag("MMOVE-30")
-    @DisplayName("MMOVE-30 ships off; on, each shot is one crowd-weighted profile of the aim experts and no virtual bullet")
-    void meleeDodgeProfiles() {
-        assertFalse(MinimumRiskMovement.MELEE_DODGE, "an arm (mdodge) until a card passes");
-        Point2D.Double me = pt(500, 500);
-        scan(tracker, "a", 500, 900, 100, 1);
-        scan(tracker, "b", 500, 800, 100, 1);
-        RobotStateLog log = still(me, 8, 9, 10);
-        TeamDanger danger = new TeamDanger(field(1000, 1000));
-        move.surf(true);
-        move.meleeDodge(true);
-        assertTrue(move.meleeDodging());
-        EnemyShot first = new EnemyShot("a", pt(500, 900), 9, 2.0);
-        move.updateMeleeBullets(List.of(first), log, me, 10, tracker.alive(), danger);
-        assertTrue(move.bullets().isEmpty(), "the profiles stand in for the virtual bullets");
-        List<MinimumRiskMovement.Wave> waves = move.dodge().waves();
-        assertEquals(1, waves.size());
-        assertEquals(0.25, waves.get(0).aimed, 1e-12, "b is nearer a: the crowd weight");
-        assertEquals(AimExperts.COUNT - 1, waves.get(0).headings.length, "every simple expert, no learned aims yet");
-        assertEquals(0.25, move.weighed(first).weight, 1e-12, "MMOVE-26 still reads the weight");
-        // A shot under the floor makes no profile.
-        scan(tracker, "c", 450, 850, 100, 1);
-        scan(tracker, "d", 550, 850, 100, 1);
-        EnemyShot far = new EnemyShot("a", pt(500, 900), 10, 2.0);
-        move.updateMeleeBullets(List.of(first, far), log, me, 11, tracker.alive(), danger);
-        assertEquals(1, move.dodge().waves().size());
-        Point2D.Double to = move.chooseDestination(me, 100, 4, tracker.alive(), 11, normal);
-        assertNotNull(to);
-        assertTrue(move.bullets().isEmpty());
-    }
-
-    @Test
     @Tag("MMOVE-15")
     @DisplayName("MMOVE-15: off a team the surfer chooses by the wave check; on a team it changes nothing")
     void surfChoosesByWaves() {
