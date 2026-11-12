@@ -2073,6 +2073,11 @@ failed and are removed (3.22 cleanup); the mimics live on in MOVE-33 and MOVE-34
   seeds from 12200 against master and its A/A copy pooled: X2 +5.7 points (low end +1.1, control 64.1), Che +3.8 (low
   end +1.4), Aardvark +3.6 (low end +0.9); SmallDevil +1.4, Parallax -0.2 and MoojukNano -0.9 do not ship. The gate
   passes (+0.01 ± 0.01 APS), A/A -1.07, inside its band. The three join `ShieldListData` and `ShieldTableData.stills()`.
+- **BENCH-236 result (pc-power-cap, PR #784, 2026-11-12): all seven ship with power-cap lines.** 12 fresh seeds from
+  16000 against master and its A/A copy pooled: at the 0.2 cap Roborio +11.0 points (low end +8.0, control 61.3),
+  Firestarter +9.6 (+6.7), Gilgalad +7.1 (+3.4), Rabbit +4.7 (+0.8), Domogled +3.7 (+0.6); at the 0.5 cap WaveSurferPG
+  +6.8 (+4.2), MatchupAGF +5.0 (+2.5). The 3-point pick locks all seven (+6.86 ± 1.98 pooled, about +0.04 APS over the
+  field), A/A -0.38, inside its band. The five join `ShieldTableData.powerCaps()` and the two `powerCapHalves()` (POW-18).
 - **BENCH-235 result (pc-shield-floor, PR #781, 2026-11-12): CassiusClay ships with still and floor lines.** 12 fresh
   seeds from 14800 against master and its A/A copy pooled: list + still + floor (sf) +37.7 points (control 60.9, sf
   98.6; the cloud read +40.4), list + still alone (mz) +0.3; the 3-point pick locks sf, A/A -1.94, inside its band. A
