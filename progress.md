@@ -1,6 +1,6 @@
 # Queue pc-team-guard: progress
 
-Updated 2026-11-12 15:04:53 PC time (15:04 UTC), runner pid 65320.
+Updated 2026-11-12 15:20:00 PC time (15:20 UTC), runner pid 65320.
 
 - `tgprep` done, exit 0 in 3 min
 - `tgpmv` done, exit 0 in 22 min
@@ -61,14 +61,14 @@ Skipped turns a battle: 2.0 overall, first 100 13.6, last 100 2.2.
 
 ### tgla
 
-**69 battles**, 0 failed. Running 11 min, 373 battles/h. Last battle 0 min ago.
-Skipped turns a battle: 0.2 overall, first 69 0.2, last 69 0.2.
+**250 battles**, 0 failed. Running 26 min, 572 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 0.2 overall, first 100 0.2, last 100 0.4.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 69 |
+| `fails 60` | halt | ok | 0 failed of 250 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | waiting | 69 of 200 battles to read |
+| `skips 60 over 200` | halt | ok | 0.2 a battle over the last 200 (first 200: 0.2) |
 
 ### Queue log (last lines)
 
