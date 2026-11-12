@@ -58,6 +58,8 @@ final class TeamDodge {
      * the same order every run (CORE-2).
      */
     private final Map<EnemyShot, MinimumRiskMovement.Wave> profiles = new LinkedHashMap<>();
+    /** TMODE-46: each shooter's latest shot seen this round. */
+    private final Map<String, EnemyShot> latest = new java.util.HashMap<>();
 
     TeamDodge(BattleField field) {
         this.field = field;
@@ -69,6 +71,17 @@ final class TeamDodge {
 
     void newRound() {
         profiles.clear();
+        latest.clear();
+    }
+
+    /**
+     * TMODE-46: the tick {@code shooter}'s gun is next cool, from its latest shot seen this
+     * round (heat 1 + power/5 cooling 0.1 a tick); a shooter not seen firing is cool now.
+     */
+    long readyAt(String shooter) {
+        EnemyShot s = latest.get(shooter);
+        if (s == null) return Long.MIN_VALUE;
+        return s.fireTime + (long) Math.ceil(10 * (1 + s.power / 5));
     }
 
     /**
@@ -78,7 +91,13 @@ final class TeamDodge {
      */
     void update(List<EnemyShot> shots, RobotStateLog path, Point2D.Double me, long now,
                 List<Point2D.Double> mates, TeamDanger danger, boolean own, VirtualBullet.Aim only) {
-        update(shots, me, now, s -> profile(s, path, me, mates, danger, own, only));
+        update(shots, me, now, s -> {
+            MinimumRiskMovement.Wave w = profile(s, path, me, mates, danger, own, only);
+            // TMODE-46: where Hadur stood when the shot was fired, for the going-back term.
+            RobotState at = w == null ? null : path.getState(s.fireTime);
+            if (at != null) w.target = at.location;
+            return w;
+        });
     }
 
     /**
@@ -100,6 +119,8 @@ final class TeamDodge {
         IdentityHashMap<EnemyShot, Boolean> live = new IdentityHashMap<>();
         for (EnemyShot s : shots) {
             live.put(s, Boolean.TRUE);
+            EnemyShot last = latest.get(s.shooter);
+            if (last == null || s.fireTime > last.fireTime) latest.put(s.shooter, s);
             if (profiles.containsKey(s)) continue;
             profiles.put(s, maker.apply(s));
         }
