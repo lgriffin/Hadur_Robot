@@ -2078,6 +2078,12 @@ failed and are removed (3.22 cleanup); the mimics live on in MOVE-33 and MOVE-34
   98.6; the cloud read +40.4), list + still alone (mz) +0.3; the 3-point pick locks sf, A/A -1.94, inside its band. A
   one-robot card has no cross-robot gate; the pick is worth about +0.03 APS over the field. CassiusClay joins
   `ShieldListData`, `ShieldTableData.stills()` and `ShieldTableData.shieldFloors()` (SHIELD-25).
+- **BENCH-236 result (pc-power-cap, PR #784, 2026-11-12): all seven robots ship a power cap.** 12 fresh seeds from
+  16000 against master and its A/A copy pooled: pk +6.86 ±1.98 points a robot (about +0.04 APS over the field), A/A
+  -0.38, inside its band. The 3-point pick locks all seven with the interval above 0: Roborio +11.01, Firestarter
+  +9.61, Gilgalad +7.15, WaveSurferPG +6.85, MatchupAGF +4.99, Rabbit +4.72, Domogled +3.72. Roborio, Gilgalad,
+  Firestarter, Rabbit and Domogled join `ShieldTableData.powerCaps()` (0.2); MatchupAGF and WaveSurferPG join
+  `ShieldTableData.powerCapHalves()` (0.5).
 - **BENCH-224 result (pc-mirror-off, PR #750, 2026-11-11): all three ship with mirror-off lines.** 12 fresh seeds from 12700
   against master and its A/A copy pooled: Jammy +11.4 points (low end +9.8, control 86.7), MirrorH +3.8 (low end +3.1),
   MirrorL +3.6 (low end +2.9); the 3-point pick locks all three, the gate passes (+0.02 ± 0.01 APS), A/A -0.47, inside

@@ -624,24 +624,31 @@ final class ShieldTableData {
     }
 
     /**
-     * POW-18: the opponents the duel never fires above 0.2 power at, one name each. Empty until a
-     * card holds robots; candidate builds add lines here (build-ablation.sh pcaplist).
+     * POW-18: the opponents the duel never fires above 0.2 power at, one name each. Shipped by
+     * pc-power-cap (BENCH-236); candidate builds add lines here (build-ablation.sh pcaplist).
      *
      * @return a fresh array of names
      */
     static String[] powerCaps() {
         return new String[] {
+            "rsalesc.roborio.Roborio 1.2.4",
+            "aw.Gilgalad 1.99.5c",
+            "cb.fire.Firestarter 2.0f",
+            "catcat20.Rabbit 0.001",
+            "cb.Domogled 1.2",
         };
     }
 
     /**
-     * POW-18: the opponents the duel never fires above 0.5 power at, one name each. Empty until a
-     * card holds robots; candidate builds add lines here (build-ablation.sh pcap5list).
+     * POW-18: the opponents the duel never fires above 0.5 power at, one name each. Shipped by
+     * pc-power-cap (BENCH-236); candidate builds add lines here (build-ablation.sh pcap5list).
      *
      * @return a fresh array of names
      */
     static String[] powerCapHalves() {
         return new String[] {
+            "stelo.MatchupAGF 1.1",
+            "suh.mega.WaveSurferPG 1.06",
         };
     }
 
