@@ -13,3 +13,6 @@
 06:50:27 start dgaa
 06:50:27 watching dgaa: 2 stop rule(s)
 07:17:40 progress dgaa: 145/276 (53%) battles, 320/h, ETA 25 min, 0 failed, skips 29.8/battle (last 100)
+07:34:56 dgaa exit=0 in 2669 s
+07:34:56 start dgbb
+07:34:56 watching dgbb: 2 stop rule(s)

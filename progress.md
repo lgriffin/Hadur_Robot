@@ -1,12 +1,12 @@
 # Queue pc-melee-dodge: progress
 
-Updated 2026-11-12 07:30:45 PC time (07:30 UTC), runner pid 52528.
+Updated 2026-11-12 07:45:52 PC time (07:45 UTC), runner pid 52528.
 
 - `dgprep` done, exit 0 in 2 min
 - `dgpilot` done, exit 0 in 1.1 h
 - `dgcheck` done, exit 0 in 0 min
-- `dgaa` running
-- `dgbb` pending
+- `dgaa` done, exit 0 in 44 min
+- `dgbb` running
 - `dgmd` pending
 - `dgread` pending
 - `dgpr` pending
@@ -25,22 +25,31 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### dgaa
 
-**246 of 276 battles** (89%), 0 failed. Running 40 min, 366 battles/h, about 5 min left (ends ~07:35 PC time). Last battle 0 min ago.
-Skipped turns a battle: 28.8 overall, first 100 28.5, last 100 29.1.
+**276 of 276 battles** (100%), 0 failed. Running 44 min, 372 battles/h, about 0 min left (ends ~07:34 PC time). Last battle 0 min ago.
+Skipped turns a battle: 28.5 overall, first 100 28.5, last 100 28.6.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 246 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 30 battles unrun (about 5 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### dgbb
+
+**66 of 276 battles** (24%), 0 failed. Running 11 min, 362 battles/h, about 35 min left (ends ~08:20 PC time). Last battle 0 min ago.
+Skipped turns a battle: 28.9 overall, first 66 28.9, last 66 28.9.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 66 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 210 battles unrun (about 35 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-05:45:01 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
-05:45:01 start dgprep
-05:45:03 progress pushed to origin claude/pc-melee-dodge-progress (every 15 min)
 05:46:54 dgprep exit=0 in 113 s
 05:46:54 start dgpilot
 05:46:54 watching dgpilot: 2 stop rule(s)
@@ -53,4 +62,7 @@ Stopping now would leave 30 battles unrun (about 5 min); every battle already fo
 06:50:27 start dgaa
 06:50:27 watching dgaa: 2 stop rule(s)
 07:17:40 progress dgaa: 145/276 (53%) battles, 320/h, ETA 25 min, 0 failed, skips 29.8/battle (last 100)
+07:34:56 dgaa exit=0 in 2669 s
+07:34:56 start dgbb
+07:34:56 watching dgbb: 2 stop rule(s)
 ```
