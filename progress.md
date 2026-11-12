@@ -1,14 +1,14 @@
 # Queue pc-team-guard: progress
 
-Updated 2026-11-12 14:49:46 PC time (14:49 UTC), runner pid 65320.
+Updated 2026-11-12 15:04:53 PC time (15:04 UTC), runner pid 65320.
 
 - `tgprep` done, exit 0 in 3 min
 - `tgpmv` done, exit 0 in 22 min
 - `tgpla` done, exit 0 in 20 min
 - `tgpilot` done, exit 0 in 0 min
-- `tgbb` running
-- `tgmv` pending
-- `tgla` pending
+- `tgbb` done, exit 0 in 1.3 h
+- `tgmv` done, exit 0 in 0 min
+- `tgla` running
 - `tggate` pending
 - `tgpr` pending
 
@@ -40,25 +40,39 @@ Stopping now would leave -132 battles unrun (about -10 min); every battle alread
 
 ### tgbb
 
-**984 battles**, 0 failed. Running 1.3 h, 781 battles/h. Last battle 0 min ago.
-Skipped turns a battle: 1.9 overall, first 100 13.6, last 100 1.1.
+**1080 battles**, 0 failed. Running 1.3 h, 814 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 2.0 overall, first 100 13.6, last 100 2.2.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 984 |
+| `fails 60` | halt | ok | 0 failed of 1080 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | ok | 0.8 a battle over the last 200 (first 200: 6.9) |
+| `skips 60 over 200` | halt | ok | 1.6 a battle over the last 200 (first 200: 6.9) |
+
+### tgmv
+
+**0 battles**, 0 failed. Running 0 min. Last battle 0 min ago.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 60` | halt | ok | 0 failed of 0 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 60 over 200` | halt | waiting | 0 of 200 battles to read |
+
+### tgla
+
+**69 battles**, 0 failed. Running 11 min, 373 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 0.2 overall, first 69 0.2, last 69 0.2.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 60` | halt | ok | 0 failed of 69 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 60 over 200` | halt | waiting | 69 of 200 battles to read |
 
 ### Queue log (last lines)
 
 ```
-12:51:41 tgprep exit=0 in 170 s
-12:51:41 start tgpmv
-12:51:41 watching tgpmv: 3 stop rule(s)
-12:51:53 progress tgpmv: 0/138 (0%) battles, 0 failed
-13:13:50 tgpmv exit=0 in 1329 s
-13:13:50 start tgpla
-13:13:50 watching tgpla: 3 stop rule(s)
 13:22:06 progress tgpla: 68/138 (49%) battles, 494/h, ETA 9 min, 0 failed, skips 1.2/battle (last 100)
 13:34:07 tgpla exit=0 in 1217 s
 13:34:07 start tgpilot
@@ -67,4 +81,11 @@ Skipped turns a battle: 1.9 overall, first 100 13.6, last 100 1.1.
 13:34:08 watching tgbb: 3 stop rule(s)
 13:52:22 progress tgbb: 148 battles, 487/h, 0 failed, skips 4.3/battle (last 100)
 14:22:35 progress tgbb: 577 battles, 715/h, 0 failed, skips 0.7/battle (last 100)
+14:52:47 progress tgbb: 1031 battles, 786/h, 0 failed, skips 1.3/battle (last 100)
+14:53:47 tgbb exit=0 in 4778 s
+14:53:47 start tgmv
+14:53:47 watching tgmv: 3 stop rule(s)
+14:53:47 tgmv exit=0 in 0 s
+14:53:47 start tgla
+14:53:47 watching tgla: 3 stop rule(s)
 ```

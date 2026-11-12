@@ -16,3 +16,10 @@
 13:34:08 watching tgbb: 3 stop rule(s)
 13:52:22 progress tgbb: 148 battles, 487/h, 0 failed, skips 4.3/battle (last 100)
 14:22:35 progress tgbb: 577 battles, 715/h, 0 failed, skips 0.7/battle (last 100)
+14:52:47 progress tgbb: 1031 battles, 786/h, 0 failed, skips 1.3/battle (last 100)
+14:53:47 tgbb exit=0 in 4778 s
+14:53:47 start tgmv
+14:53:47 watching tgmv: 3 stop rule(s)
+14:53:47 tgmv exit=0 in 0 s
+14:53:47 start tgla
+14:53:47 watching tgla: 3 stop rule(s)
