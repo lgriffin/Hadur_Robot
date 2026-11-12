@@ -1,6 +1,6 @@
 {
  "plan": "pc-melee-dodge",
- "updated": 1794470458.562282,
+ "updated": 1794471365.174585,
  "steps": {
   "dgprep": {
    "status": "done",
@@ -118,8 +118,8 @@
   {
    "step": "dgbb",
    "started": 1794468896.7435489,
-   "updated": 1794470458.5555828,
-   "elapsed": 1561.8120338916779,
+   "updated": 1794471365.1667426,
+   "elapsed": 2468.423193693161,
    "expected": 276,
    "panel": null,
    "field": null,
@@ -127,20 +127,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 138,
+   "battles": 252,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 318.09205539420014,
-   "eta": 1561.812033891678,
-   "fraction": 0.5,
-   "last_battle_age": 5.545577049255371,
+   "rate": 367.52206927803246,
+   "eta": 235.0879232088725,
+   "fraction": 0.9130434782608695,
+   "last_battle_age": 0.11481809616088867,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 138"
+     "detail": "0 failed of 252"
     },
     {
      "rule": "stall 30m",
@@ -149,8 +149,8 @@
      "detail": "last battle 0 min ago"
     }
    ],
-   "skips_mean": 29.695652173913043,
-   "skips_last100": 31.17
+   "skips_mean": 28.849206349206348,
+   "skips_last100": 27.72
   }
  ]
 }
