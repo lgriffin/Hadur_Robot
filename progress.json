@@ -1,0 +1,19 @@
+{
+ "plan": "pc-shield-floor",
+ "updated": 1794478769.0437813,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "confirm": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
