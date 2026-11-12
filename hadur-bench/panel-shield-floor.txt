@@ -1,0 +1,2 @@
+# pc-shield-floor (BENCH-235): the one robot whose gun copies our bullet power under 0.4 and that the SHIELD-25 floor locked on the cloud.
+pez.rumble.CassiusClay 2rho.02no | r1 | pez.rumble.CassiusClay_2rho.02no.jar

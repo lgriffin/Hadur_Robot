@@ -287,7 +287,11 @@ public final class ShieldMode {
     /** SHIELD-11, SHIELD-19: this opponent's battle exit, from the shield list. */
     private double stayDamage = ShieldDesign.STAY_DAMAGE;
     /** SHIELD-20, SHIELD-21: whether shot plans from where we stand come first against this opponent. */
+    /** SHIELD-25: the least power of a shield shot against an enemy on the floor list. */
+    public static final double FLOOR_POWER = 0.4;
     private boolean still;
+    /** SHIELD-25: no shield shot under {@link #FLOOR_POWER} against this enemy. */
+    private boolean floor;
     private boolean listed;
     private boolean battleOff;
     private boolean roundOff;
@@ -538,6 +542,7 @@ public final class ShieldMode {
             opening = listed && (design.move || list.moves(name));
             stayDamage = list.stayDamage(name, ShieldDesign.STAY_DAMAGE);
             still = design.still || list.still(name);
+            floor = list.floor(name);
             if (listed) seedAim(list.aimFor(name));
         }
         if (!listed) return;
@@ -1062,6 +1067,14 @@ public final class ShieldMode {
         // behind on energy spends less on each crossing.
         double pref = Math.max(0.1, Math.min(maxPower, w.power * s.energy / Math.max(s.enemyEnergy, 0.1)));
         if (design.ratio) maxPower = Math.min(maxPower, pref);
+        // SHIELD-25: an enemy that copies a power under 0.4 (CassiusClay's Bee gun) fires its
+        // cheapest bullets back at a 0.1 shield; at the floor it keeps firing its own, dearer ones.
+        double minPower = 0.1;
+        if (floor) {
+            maxPower = Math.max(maxPower, Math.min(FLOOR_POWER, s.energy - 0.1));
+            minPower = FLOOR_POWER;
+            if (maxPower < FLOOR_POWER) return null;
+        }
         if (maxPower < 0.1) return null;
         Plan best = null;
         // SHIELD-22: with cheap, every plan is kept, so the cheapest one wide enough can win
@@ -1076,8 +1089,8 @@ public final class ShieldMode {
             double x = s.x + Math.sin(s.heading) * wiggle;
             double y = s.y + Math.cos(s.heading) * wiggle;
             for (int i = 0; i < POWER_SAMPLES; i++) {
-                double power = 0.1 * Math.pow(maxPower / 0.1, i / (double) (POWER_SAMPLES - 1));
-                if (i > 0 && maxPower <= 0.1) break;
+                double power = minPower * Math.pow(maxPower / minPower, i / (double) (POWER_SAMPLES - 1));
+                if (i > 0 && maxPower <= minPower) break;
                 ShieldGeometry.Shadow sh = shadow(w, x, y, fireTime, power);
                 if (sh == null) continue;
                 double turn = Math.abs(Angles.normalRelativeAngle(sh.fireAngle - s.gunHeading));

@@ -1,0 +1,6 @@
+# pc-power-cap (BENCH-236): each robot gets a POW-18 power-cap: line (arm pk).
+rsalesc.roborio.Roborio 1.2.4
+aw.Gilgalad 1.99.5c
+cb.fire.Firestarter 2.0f
+catcat20.Rabbit 0.001
+cb.Domogled 1.2
