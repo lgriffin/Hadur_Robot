@@ -1,15 +1,15 @@
 # Queue pc-melee-dodge: progress
 
-Updated 2026-11-12 09:01:24 PC time (09:01 UTC), runner pid 52528.
+Updated 2026-11-12 09:02:30 PC time (09:02 UTC), runner pid 52528.
 
 - `dgprep` done, exit 0 in 2 min
 - `dgpilot` done, exit 0 in 1.1 h
 - `dgcheck` done, exit 0 in 0 min
 - `dgaa` done, exit 0 in 44 min
 - `dgbb` done, exit 0 in 45 min
-- `dgmd` running
-- `dgread` pending
-- `dgpr` pending
+- `dgmd` done, exit 0 in 42 min
+- `dgread` done, exit 0 in 0 min
+- `dgpr` done, exit 0 in 0 min
 
 ### dgpilot
 
@@ -49,25 +49,19 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### dgmd
 
-**266 of 276 battles** (96%), 0 failed. Running 42 min, 384 battles/h, about 2 min left (ends ~09:02 PC time). Last battle 0 min ago.
-Skipped turns a battle: 27.8 overall, first 100 28.8, last 100 26.6.
+**276 of 276 battles** (100%), 0 failed. Running 42 min, 390 battles/h, about 0 min left (ends ~09:02 PC time). Last battle 0 min ago.
+Skipped turns a battle: 27.6 overall, first 100 28.8, last 100 26.1.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 266 |
+| `fails 20` | halt | ok | 0 failed of 276 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 10 battles unrun (about 2 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-06:50:26 dgpilot exit=0 in 3812 s
-06:50:26 start dgcheck
-06:50:27 dgcheck exit=0 in 0 s
-06:50:27 start dgaa
-06:50:27 watching dgaa: 2 stop rule(s)
-07:17:40 progress dgaa: 145/276 (53%) battles, 320/h, ETA 25 min, 0 failed, skips 29.8/battle (last 100)
 07:34:56 dgaa exit=0 in 2669 s
 07:34:56 start dgbb
 07:34:56 watching dgbb: 2 stop rule(s)
@@ -77,4 +71,10 @@ Stopping now would leave 10 battles unrun (about 2 min); every battle already fo
 08:19:49 start dgmd
 08:19:49 watching dgmd: 2 stop rule(s)
 08:48:18 progress dgmd: 168/276 (61%) battles, 354/h, ETA 18 min, 0 failed, skips 28.6/battle (last 100)
+09:02:18 dgmd exit=0 in 2548 s
+09:02:18 start dgread
+09:02:23 dgread exit=0 in 4 s
+09:02:23 start dgpr
+09:02:30 dgpr exit=0 in 6 s
+09:02:30 ALLDONE
 ```

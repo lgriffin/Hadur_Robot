@@ -1,6 +1,6 @@
 {
  "plan": "pc-melee-dodge",
- "updated": 1794474084.4729428,
+ "updated": 1794474150.32173,
  "steps": {
   "dgprep": {
    "status": "done",
@@ -33,14 +33,22 @@
    "end": "2026-11-12T08:19:49"
   },
   "dgmd": {
-   "status": "running",
-   "start": "2026-11-12T08:19:49"
+   "status": "done",
+   "exit": 0,
+   "seconds": 2548,
+   "end": "2026-11-12T09:02:18"
   },
   "dgread": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 4,
+   "end": "2026-11-12T09:02:23"
   },
   "dgpr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 6,
+   "end": "2026-11-12T09:02:30"
   }
  },
  "watched": [
@@ -158,8 +166,8 @@
   {
    "step": "dgmd",
    "started": 1794471589.8096657,
-   "updated": 1794474084.464406,
-   "elapsed": 2494.654740333557,
+   "updated": 1794474138.5149505,
+   "elapsed": 2548.705284833908,
    "expected": 276,
    "panel": null,
    "field": null,
@@ -167,20 +175,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 266,
+   "battles": 276,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 383.86073411984876,
-   "eta": 93.78401279449464,
-   "fraction": 0.9637681159420289,
-   "last_battle_age": 0.6085150241851807,
+   "rate": 389.84499538350906,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 0.20424771308898926,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 266"
+     "detail": "0 failed of 276"
     },
     {
      "rule": "stall 30m",
@@ -189,8 +197,8 @@
      "detail": "last battle 0 min ago"
     }
    ],
-   "skips_mean": 27.804511278195488,
-   "skips_last100": 26.63
+   "skips_mean": 27.583333333333332,
+   "skips_last100": 26.14
   }
  ]
 }

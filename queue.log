@@ -22,3 +22,9 @@
 08:19:49 start dgmd
 08:19:49 watching dgmd: 2 stop rule(s)
 08:48:18 progress dgmd: 168/276 (61%) battles, 354/h, ETA 18 min, 0 failed, skips 28.6/battle (last 100)
+09:02:18 dgmd exit=0 in 2548 s
+09:02:18 start dgread
+09:02:23 dgread exit=0 in 4 s
+09:02:23 start dgpr
+09:02:30 dgpr exit=0 in 6 s
+09:02:30 ALLDONE
