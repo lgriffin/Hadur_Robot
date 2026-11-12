@@ -1,6 +1,6 @@
 # Queue pc-team-portfolio: progress
 
-Updated 2026-11-12 04:35:05 PC time (04:35 UTC), runner pid 48912.
+Updated 2026-11-12 04:50:11 PC time (04:50 UTC), runner pid 48912.
 
 - `tpprep` done, exit 0 in 6 min
 - `tpbb` done, exit 0 in 38 min
@@ -145,14 +145,14 @@ Skipped turns a battle: 18.6 overall, first 100 18.6, last 100 29.0.
 
 ### tpcfx
 
-**450 battles**, 0 failed. Running 43 min, 629 battles/h. Last battle 0 min ago.
-Skipped turns a battle: 19.9 overall, first 100 17.4, last 100 21.2.
+**676 battles**, 0 failed. Running 58 min, 699 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 19.4 overall, first 100 17.4, last 100 21.3.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 450 |
+| `fails 60` | halt | ok | 0 failed of 676 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | ok | 21.6 a battle over the last 200 (first 200: 18.2) |
+| `skips 60 over 200` | halt | ok | 18.5 a battle over the last 200 (first 200: 18.2) |
 
 ### Queue log (last lines)
 
