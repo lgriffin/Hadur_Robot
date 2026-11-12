@@ -356,6 +356,8 @@ final class ShieldListData {
             "florent.XSeries.X2 0.17",
             "cjm.Che 1.2",
             "djc.Aardvark 0.3.6",
+            // pc-shield-floor (BENCH-235, PR #781): with still and floor lines on 12 fresh seeds, +37.7 (control 60.9); still alone +0.3
+            "pez.rumble.CassiusClay 2rho.02no",
         };
     }
 }

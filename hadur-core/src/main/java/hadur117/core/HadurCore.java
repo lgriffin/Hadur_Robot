@@ -3,6 +3,7 @@ package hadur117.core;
 import hadur117.core.adapt.Opening;
 import hadur117.core.duel.DuelController;
 import hadur117.core.melee.MeleeController;
+import hadur117.core.melee.TeamModes;
 import hadur117.core.memory.Estimate;
 import hadur117.core.memory.ProfileLibrary;
 import hadur117.core.model.Baton;
@@ -415,7 +416,11 @@ public final class HadurCore {
         // ROLE-2 to ROLE-4: the role from the charter, the counts, the vetoes and the latch.
         // Off a team the enemies are the engine's others. No adapter supplies a roster before
         // A4, so there are no teammates yet; A5 brings the team's count (WORLD-2, WORLD-8).
-        posture = RoleResolver.posture(gate.resolve(in.others(), 0, in.numSentries()));
+        // TMODE-47: on a team under LAST the members fight the last enemy together while a
+        // teammate lives; the last member alone still hands over to the duel.
+        boolean lastEnemy = teamLink != null && world != null && in.others() == 1 && teamLink.hasLivingTeammate()
+            && TeamModes.against(world.alive()).contains(TeamModes.Mode.LAST);
+        posture = RoleResolver.posture(gate.resolve(in.others(), 0, in.numSentries(), lastEnemy));
         boolean melee = posture == Posture.MELEE;
         if (melee) meleeSeam.measureScanGap(in.time(), in.others());
         // Checked before this tick's scans are handled, so the survivor's scan on this tick

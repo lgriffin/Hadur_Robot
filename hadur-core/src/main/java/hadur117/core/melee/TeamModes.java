@@ -73,7 +73,22 @@ public final class TeamModes {
          * NightmareTeam since pc-team-quarters (PR #759). On every team through {@link #FORCE_QUARTERS}
          * (ablation tmquarters).
          */
-        QUARTERS
+        QUARTERS,
+        /**
+         * TMODE-46, keep moving: in the DODGE re-rank each candidate's drive also pays for the
+         * ticks it creeps across the line of an armed enemy whose gun is cool
+         * ({@link MinimumRiskMovement#MOVING_SLOW}), and for crossing a shot's front back near
+         * the spot it was fired at, where head-on and linear aim land. Off in the shipped build;
+         * on every team through {@link #FORCE_MOVING} (ablation tmmoving).
+         */
+        MOVING,
+        /**
+         * TMODE-47, last enemy: with one enemy left and a teammate alive the members keep the
+         * melee role (spacing, teammates' bullets, PATH, DODGE) instead of each handing over to
+         * the duel, and close on it to {@link TeamRisk#FINISH_FLOOR}. The last member alone still
+         * duels. Off in the shipped build; on every team through {@link #FORCE_LAST} (ablation tmlast).
+         */
+        LAST
     }
 
     /**
@@ -90,6 +105,10 @@ public final class TeamModes {
     public static final boolean FORCE_CLOSE = true;
     /** TMODE-45: QUARTERS on every team; off in the shipped build (ablation tmquarters turns it on). */
     public static final boolean FORCE_QUARTERS = false;
+    /** TMODE-46: MOVING on every team; off in the shipped build (ablation tmmoving turns it on). */
+    public static final boolean FORCE_MOVING = false;
+    /** TMODE-47: LAST on every team; off in the shipped build (ablation tmlast turns it on). */
+    public static final boolean FORCE_LAST = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -98,7 +117,7 @@ public final class TeamModes {
     static final Set<Mode> DEFAULT = of(
         FORCE_MATEFIRE ? Mode.MATEFIRE : null, FORCE_HUNT ? Mode.HUNT : null, FORCE_PATH ? Mode.PATH : null,
         FORCE_DODGE ? Mode.DODGE : null, FORCE_CONCORD ? Mode.CONCORD : null, FORCE_CLOSE ? Mode.CLOSE : null,
-        FORCE_QUARTERS ? Mode.QUARTERS : null);
+        FORCE_QUARTERS ? Mode.QUARTERS : null, FORCE_MOVING ? Mode.MOVING : null, FORCE_LAST ? Mode.LAST : null);
 
     /** Opposing member class to its team's modes; filled from the per-team screens. */
     static final Map<String, Set<Mode>> TABLE = table();
