@@ -110,6 +110,20 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("POW-18")
+    @DisplayName("power-cap lines name the opponents the duel caps its power against, matched as shield entries")
+    void perOpponentPowerCap() {
+        ShieldList l = ShieldList.parse(List.of("power-cap: a.B 1.0", "power-cap: c.D", "power-cap:"));
+        assertTrue(l.powerCap("a.B 1.0"));
+        assertFalse(l.powerCap("a.B 1.1"), "a versioned line matches that version only");
+        assertTrue(l.powerCap("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.floor("a.B 1.0") || l.racePower("a.B 1.0"), "no other switch");
+        assertFalse(l.powerCap(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.powerCap("a.B 1.0"));
+    }
+
+    @Test
     @Tag("MIR-2")
     @DisplayName("mirror-off lines name the opponents the duel never runs MIR-1 against, matched as shield entries")
     void perOpponentMirrorOff() {
