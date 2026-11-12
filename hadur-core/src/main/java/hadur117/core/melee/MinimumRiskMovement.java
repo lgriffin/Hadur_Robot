@@ -166,16 +166,6 @@ public class MinimumRiskMovement {
     static final double QUARTERS_KEEP = 150.0;
     /** TMODE-45: what a destination on the chaser pays; it falls to nothing at {@link #QUARTERS_KEEP}. */
     static final double QUARTERS_K = 10.0;
-    /** TMODE-46: lateral speed, px a tick, below which a member creeps across an enemy's line. */
-    static final double MOVING_SLOW = 3.0;
-    /** TMODE-46: the extra share of a cool gun's next shot that lands on a member creeping across its line. */
-    static final double MOVING_HIT = 0.3;
-    /** TMODE-46: the damage of the shot a cool gun is taken to fire (power 2). */
-    static final double MOVING_SHOT = 10.0;
-    /** TMODE-46: a shot's front crossed this near the spot it was fired at pays. */
-    static final double MOVING_BACK = 30.0;
-    /** TMODE-46: the share of that shot's aimed damage it pays. */
-    static final double MOVING_BACK_K = 0.5;
 
     /** What the movement sees this tick. */
     public static final class View {
@@ -200,8 +190,6 @@ public class MinimumRiskMovement {
         boolean concord;
         /** TMODE-45: the enemy closing inside {@link #QUARTERS_RANGE}, or null; only on a team under QUARTERS. */
         EnemyInfo chaser;
-        /** TMODE-46: whether the DODGE re-rank pays for creeping and for going back; only on a team under MOVING. */
-        boolean moving;
 
         View(Point2D.Double me, double energy, long now, int others, List<EnemyInfo> enemies,
              List<VirtualBullet> bullets, MeleeStrategy.Plan plan) {
@@ -610,7 +598,6 @@ public class MinimumRiskMovement {
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.DODGE)) {
             v.pathBullets = mateBullets(me, now);
             if (!TeamDodge.OWN_FIRE) v.mateBullets = List.of();
-            v.moving = modes.contains(TeamModes.Mode.MOVING);
             destination = dodgeBest(candidates, v, dodge.waves());
             return destination;
         }
@@ -747,7 +734,6 @@ public class MinimumRiskMovement {
             Point2D.Double p = pool.get(picked.get(k));
             r[k] = risk[picked.get(k)];
             damage[k] = waveDamage(v.me, p, v.now, waves);
-            if (v.moving) damage[k] += movingDamage(v.me, p, v.now, v.enemies, v.mates, waves, dodge::readyAt);
             if (mateBullets.isEmpty()) continue;
             double own = pathDamage(v.me, p, v.now, mateBullets);
             if (ownFire) r[k] += PATH_K * own;
@@ -816,71 +802,6 @@ public class MinimumRiskMovement {
         return total;
     }
 
-    /**
-     * TMODE-46, keep moving: what the drive from {@code me} to {@code to} (as
-     * {@link #waveDamage} drives it, for {@link #WAVE_TICKS} ticks) pays beyond the waves' own
-     * damage. Each armed, freshly scanned enemy whose gun {@code readyAt} says is cool pays
-     * {@link #MOVING_HIT} of a {@link #MOVING_SHOT} shot, times the share of its cool ticks the
-     * drive spends under {@link #MOVING_SLOW} px a tick across its line, times 1/(1+k)^2 for the
-     * k teammates nearer it (TMODE-2). Each wave fired at a known spot pays {@link #MOVING_BACK_K}
-     * of its aimed damage when its front crosses the drive within {@link #MOVING_BACK} px of
-     * that spot, where head-on and linear aim land on a member that came back.
-     */
-    static double movingDamage(Point2D.Double me, Point2D.Double to, long now, List<EnemyInfo> enemies,
-                               List<Roster.Mate> mates, List<Wave> waves, java.util.function.ToLongFunction<String> readyAt) {
-        List<EnemyInfo> armed = new ArrayList<>();
-        for (EnemyInfo e : enemies) {
-            if (e.alive && e.energy > 0 && e.age(now) < CAP_MAX_AGE) armed.add(e);
-        }
-        int[] cool = new int[armed.size()];
-        int[] slow = new int[armed.size()];
-        long[] ready = new long[armed.size()];
-        for (int i = 0; i < armed.size(); i++) ready[i] = readyAt.applyAsLong(armed.get(i).name);
-        boolean[] done = new boolean[waves.size()];
-        double back = 0;
-        double x = me.x, y = me.y, speed = 0;
-        for (int t = 1; t <= WAVE_TICKS; t++) {
-            double left = Math.hypot(to.x - x, to.y - y);
-            double vx = 0, vy = 0;
-            if (left > 0.5) {
-                speed = Math.min(MAX_SPEED, Math.min(speed + 1, left));
-                vx = (to.x - x) / left * speed;
-                vy = (to.y - y) / left * speed;
-                x += vx;
-                y += vy;
-            }
-            for (int i = 0; i < armed.size(); i++) {
-                if (ready[i] > now + t) continue;
-                cool[i]++;
-                Point2D.Double e = armed.get(i).location;
-                double d = Math.hypot(x - e.x, y - e.y);
-                double lateral = d < 1e-9 ? 0 : Math.abs(vx * (y - e.y) - vy * (x - e.x)) / d;
-                if (lateral < MOVING_SLOW) slow[i]++;
-            }
-            for (int i = 0; i < waves.size(); i++) {
-                Wave w = waves.get(i);
-                if (done[i] || w.target == null) continue;
-                double d = Math.hypot(x - w.source.x, y - w.source.y);
-                double front = w.speed * (now + t - w.fireTime);
-                if (front < d - WAVE_HALF) continue;
-                done[i] = true;
-                // As waveHits: a front already past on the tick before never crosses the drive.
-                if (front - w.speed > d + WAVE_HALF) continue;
-                if (Math.hypot(x - w.target.x, y - w.target.y) <= MOVING_BACK) back += MOVING_BACK_K * w.aimed * w.damage;
-            }
-        }
-        double creep = 0;
-        Point2D.Double end = new Point2D.Double(x, y);
-        for (int i = 0; i < armed.size(); i++) {
-            if (cool[i] == 0 || slow[i] == 0) continue;
-            Point2D.Double e = armed.get(i).location;
-            int k = 0;
-            for (Roster.Mate m : mates) if (m.at(now).distance(e) < end.distance(e)) k++;
-            creep += MOVING_HIT * MOVING_SHOT * slow[i] / (double) cool[i] / ((1 + k) * (1 + k));
-        }
-        return creep + back;
-    }
-
     /** The mass of the {@code waves} not yet {@code done} whose front crosses Hadur's box at ({@code x}, {@code y}) on {@code tick}; marks them done. */
     private static double waveHits(double x, double y, long tick, List<Wave> waves, boolean[] done) {
         double total = 0;
@@ -912,8 +833,6 @@ public class MinimumRiskMovement {
         final double[] shares;
         final double centre;
         final double escape;
-        /** TMODE-46: where Hadur stood when the shot was fired, or null when not known. */
-        Point2D.Double target;
 
         Wave(EnemyShot shot, List<VirtualBullet> bullets) {
             source = shot.source;

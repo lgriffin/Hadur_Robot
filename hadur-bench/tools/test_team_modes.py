@@ -112,6 +112,14 @@ class TeamModesTest(unittest.TestCase):
                            '        t.put("a.B", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN));\n', encoding="utf-8")
             self.assertEqual({"a.B": {"MATEFIRE", "HUNT", "OWN"}}, team_modes.shipped_table(src))
 
+    def test_every_mode_the_shipped_robot_names_is_known(self):
+        src = Path(__file__).resolve().parents[2] / "hadur-core/src/main/java/hadur117/core/melee/TeamModes.java"
+        table = team_modes.shipped_table(src)
+        self.assertTrue(table)
+        for team, modes in table.items():
+            self.assertTrue(modes <= set(team_modes.MODES), team)
+            self.assertIn("LAST", modes, team)
+
     def test_min_mean_picks_on_the_mean_alone(self):
         lanep = report(self.d, "lp.md", {"a.ATeam 1": (4.0, 9.0), "b.BTeam 2": (2.0, 1.0), "c.CTeam 3": (3.5, 9.0)})
         lines = report(self.d, "ml.md", {"a.ATeam 1": (3.0, 1.0), "b.BTeam 2": (-1.0, 1.0), "c.CTeam 3": (1.0, 9.0)})

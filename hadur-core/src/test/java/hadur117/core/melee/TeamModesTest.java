@@ -67,7 +67,7 @@ class TeamModesTest {
         assertSame(gang, TeamModes.against(t.alive(), table, TeamModes.NONE));
         assertSame(TeamModes.NONE, TeamModes.against(List.of(t.get("x.Other 2.0 (1)")), table, TeamModes.NONE));
         assertEquals(EnumSet.of(TeamModes.Mode.MATEFIRE, TeamModes.Mode.HUNT, TeamModes.Mode.PATH, TeamModes.Mode.DODGE,
-            TeamModes.Mode.CONCORD, TeamModes.Mode.CLOSE), TeamModes.DEFAULT);
+            TeamModes.Mode.CONCORD, TeamModes.Mode.CLOSE, TeamModes.Mode.LAST), TeamModes.DEFAULT);
         // The table names only the teams whose counters passed on fresh seeds (PR #370), and the two
         // teams DODGE lost to, confirmed on fresh seeds (PR #465).
         Set<String> dodgeOff = Set.of("ustimaw.Nightmare", "ustimaw.NigitmareDroid", "mn.nano.perceptual.Impact");
