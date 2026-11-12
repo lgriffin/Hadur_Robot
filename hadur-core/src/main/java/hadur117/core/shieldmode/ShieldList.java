@@ -80,7 +80,7 @@ public final class ShieldList {
     public static final String MIRROR_OFF_PREFIX = "mirror-off:";
     /** SHIELD-25: a line starting with this names an opponent shield mode never fires a shot under {@link ShieldMode#FLOOR_POWER} at. */
     public static final String FLOOR_PREFIX = "shield-floor:";
-    /** POW-18: a line starting with this names an opponent the duel never fires above {@code DuelController.CAP_POWER} at. */
+    /** POW-18: a line starting with this names an opponent the duel's main gun never fires above {@code DuelController.CAP_POWER} at (shield interceptions keep their own power). */
     public static final String POWER_CAP_PREFIX = "power-cap:";
     /**
      * SKEY-2: a line starting with this gives an opponent's surf key: nine multipliers on the hit

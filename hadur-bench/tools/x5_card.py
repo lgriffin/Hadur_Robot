@@ -106,19 +106,21 @@ LEVERS = {
     "fl": ("fllist", "FLAT_ON", "fq"),     # MOVE-32 flattener on (movement)
     "mm": ("mmlist", "MIMIC_ON", "mq"),    # MOVE-34 mimic aims in the surf (movement)
     "rp": ("rplist", "RACE_POWER", "rp"),  # POW-17 energy-race power pick (gun)
+    "pk": ("pcaplist", "POWER_CAP", "pk"), # POW-18 0.2 power cap (gun)
 }
 
 # BENCH-214: the levers that work the same part of the robot. A robot stacks a second lever only from another
-# family: one bullet-power rule (x5, fp and rp each replace the power choice), one stop-and-go variant (sw is sg's
+# family: one bullet-power rule (x5, fp, rp and pk each replace or cap the power choice), one stop-and-go variant (sw is sg's
 # shifted form); gs, hj, fl and mm each stand alone.
-FAMILY = {"x5": "power", "fp": "power", "rp": "power", "sg": "stopgo", "sw": "stopgo",
+FAMILY = {"x5": "power", "fp": "power", "rp": "power", "pk": "power", "sg": "stopgo", "sw": "stopgo",
           "gs": "gs", "hj": "hj", "fl": "fl", "mm": "mm"}
 # GUN-11's TripHammer aims and MOVE-32's flattener never apply to a shield-mode robot (DuelController).
 SHIELD_FREE = {"gs", "fl"}
 
 # ShieldTableData method -> lever, for carried().
 METHODS = {"x5Powers": "x5", "gunStacks": "gs", "fullOffs": "fp", "stopGos": "sg", "stopGoShifts": "sw",
-           "heatJits": "hj", "flatOns": "fl", "mimicOns": "mm", "racePowers": "rp"}
+           "heatJits": "hj", "flatOns": "fl", "mimicOns": "mm", "racePowers": "rp",
+           "powerCaps": "pk"}
 
 
 def lists(a):
