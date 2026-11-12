@@ -1,0 +1,31 @@
+{
+ "plan": "pc-melee-dodge",
+ "updated": 1794462301.0843723,
+ "steps": {
+  "dgprep": {
+   "status": "pending"
+  },
+  "dgpilot": {
+   "status": "pending"
+  },
+  "dgcheck": {
+   "status": "pending"
+  },
+  "dgaa": {
+   "status": "pending"
+  },
+  "dgbb": {
+   "status": "pending"
+  },
+  "dgmd": {
+   "status": "pending"
+  },
+  "dgread": {
+   "status": "pending"
+  },
+  "dgpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
