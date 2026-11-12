@@ -1,0 +1,8 @@
+# pc-power-cap (BENCH-236, PR #784): the robots it shipped power-cap (0.2) and power-cap5 (0.5) lines for.
+rsalesc.roborio.Roborio 1.2.4
+aw.Gilgalad 1.99.5c
+cb.fire.Firestarter 2.0f
+catcat20.Rabbit 0.001
+cb.Domogled 1.2
+stelo.MatchupAGF 1.1
+suh.mega.WaveSurferPG 1.06
