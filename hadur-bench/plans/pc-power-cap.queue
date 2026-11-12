@@ -1,0 +1,47 @@
+# 1v1, a 0.2 power cap against five low-hit R1 robots on fresh PC seeds (BENCH-236, POW-18,
+# docs/bench/local/2026-11-09_view-rank.md, "R1: the low-power war and the power cap"). Leigh starts it once the PC
+# is free (one card at a time, from master):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-power-cap        (or  ./queue.sh run pc-power-cap)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes; no step needs a
+# decision. About 30 minutes of battles (5 robots x 3 arms x 12 seeds = 180; capped rounds run long).
+#
+# Why it should win (the PC card rule of 2026-11-03):
+#   - Per-opponent tailoring: every line names one robot; every other robot, team and melee play bit for bit as master.
+#   - All five are on the field ledger's R1 route (gap to BeepBoop 10+). Against Roborio both guns hit about one bullet
+#     in eight and the round is a long war of light shots: BeepBoop fires 0.2 on average and gets 0.94 energy back
+#     (refunds plus damage) per energy it fires; we fire 0.4 to 0.5, our heavier shots are dodged more often, and we
+#     get 0.65 back, so we lose rounds while dealing as much damage as we take (cloud truth trace, seeds 15300).
+#   - Cloud: Roborio +11.8 +- 8.3 on 6 fresh seeds (60.7 -> 72.4); from a 66-robot screen, on 4 fresh seeds each:
+#     Gilgalad +12.4 +- 1.8, Rabbit +10.4 +- 2.5, Firestarter +13.3 +- 11.7, Domogled +3.0 +- 3.1 (borderline).
+#   - Risk: the cap costs -12.0 pooled over the 66 screened robots (Patton -60, AutoBot -56), so it ships only where the
+#     per-robot pick holds it at a 3-point margin with its 95% low end above 0.
+# gate: the per-robot pick (`mode_table.py --margin 3`, interval above 0) names the lines to ship. No pilot or futility
+# rule: five robots are too few for an interim read.
+# Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle
+# over the last 200, or no battle in 30 minutes; every battle fought is kept and a rerun resumes. ALERT opens an
+# issue for Leigh on any stop. Nothing here ships: on a pass a PR adds the held lines to ShieldTableData.powerCaps()
+# for the next release.
+
+set V = 3.21
+set P = --parallel 12 --no-truth-log --failed-ok
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
+set W = work/power-cap-pc
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && POWER_CAP=plans/power-cap-add.txt bash ./build-ablation.sh pcaplist && test -f bisect/hadur117.Hadur_${V}pk.jar && ./fetch-opponents.sh --set panel-power-cap.txt && mvn -q compile
+
+confirm | ./bench-top20.sh ${C} ${P} --set panel-power-cap.txt --seeds 12 --seed-base 16000 --arms plans/pc-power-cap.arms --out ${W} --label power-cap-pc --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_power-cap-pc.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 3 --out-tsv ${OUT}/power-cap-pc-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_power-cap-pc-pick.md && python3 tools/per_robot.py ${W}/arms.tsv --arms pk --out ${OUT}/$(date +%Y-%m-%d)_power-cap-pc-per-robot.md --out-tsv ${OUT}/power-cap-pc-per-robot.tsv
+  after: confirm
+
+pr | bash tools/open_results_pr.sh claude/pc-power-cap-results "1v1 power cap 0.2 against five low-hit R1 robots, 12 fresh seeds" ${OUT}/*_power-cap-pc*.md ${OUT}/power-cap-pc-per-robot.tsv $(find ${OUT} -maxdepth 1 -name power-cap-pc-pick.tsv -size +0c)
+  after: gate

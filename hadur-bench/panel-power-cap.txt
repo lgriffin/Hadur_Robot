@@ -1,0 +1,7 @@
+# pc-power-cap (BENCH-236): the robots where POW-18's 0.2 power cap locked on the cloud (Roborio 6 seeds from 15600,
+# the other four 4 seeds from 15800, after a 66-robot screen at seed 15700).
+rsalesc.roborio.Roborio 1.2.4 | r1 | rsalesc.roborio.Roborio_1.2.4.jar
+aw.Gilgalad 1.99.5c | r1 | aw.Gilgalad_1.99.5c.jar
+cb.fire.Firestarter 2.0f | r1 | cb.fire.Firestarter_2.0f.jar
+catcat20.Rabbit 0.001 | r1 | catcat20.Rabbit_0.001.jar
+cb.Domogled 1.2 | r1 | cb.Domogled_1.2.jar

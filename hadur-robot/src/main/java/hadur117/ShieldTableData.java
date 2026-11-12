@@ -620,6 +620,17 @@ final class ShieldTableData {
     }
 
     /**
+     * POW-18: the opponents the duel never fires above 0.2 power at, one name each. Empty until a
+     * card holds robots; candidate builds add lines here (build-ablation.sh pcaplist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] powerCaps() {
+        return new String[] {
+        };
+    }
+
+    /**
      * MIR-2: the opponents the duel never runs MIR-1 (the mirror detector, its drive and its aim)
      * against. Empty until a card holds robots; candidate builds add lines here (build-ablation.sh
      * mirofflist).

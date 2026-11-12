@@ -1,0 +1,5 @@
+# pc-power-cap: c is master, aa its A/A copy, pk master with a POW-18 power-cap: line (every duel shot at most 0.2)
+# for each robot of plans/power-cap-add.txt. Each line acts on its own robot only.
+c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
+aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
+pk | hadur117.Hadur 3.21pk | bisect/hadur117.Hadur_3.21pk.jar
