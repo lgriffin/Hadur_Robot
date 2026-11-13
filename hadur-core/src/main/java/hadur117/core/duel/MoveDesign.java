@@ -71,19 +71,6 @@ final class MoveDesign {
     static final boolean MIMIC_MEMBERS = false;
 
     /**
-     * MOVE-41: with {@link #AIM_MEMBERS}, each danger view's weight is its standing weight times
-     * 2^(its rolling score on the bullets that hit us), so a view that predicted the last few hits
-     * counts for more (MoveController.setViewRolling). Duel only, off; the ablation viewroll turns it on.
-     */
-    static final boolean VIEW_ROLL = false;
-
-    /**
-     * MOVE-42: with {@link #AIM_MEMBERS}, the members' rolling scores remember about 50 bullets
-     * (decay 0.98), not 5 (0.8). Duel only, off; the ablation memlong turns it on.
-     */
-    static final boolean MEMBER_LONG = false;
-
-    /**
      * MOVE-43: one of our bullets that hit, missed or met a bullet keeps the shadows it cast on
      * enemy waves on the turns before it died, instead of taking them with it (the fix DrussGT
      * 3.1.18 made). Off for the screen; the ablation shkeep turns it on.
