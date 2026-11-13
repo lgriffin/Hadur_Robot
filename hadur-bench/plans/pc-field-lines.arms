@@ -1,0 +1,8 @@
+# pc-field-lines (BENCH-239): c is master, aa its A/A copy; each other arm is master with one candidate line per
+# robot of plans/field-lines-add.txt: pk a POW-18 power-cap: line (0.2), p5 a power-cap5: line (0.5), mtzl the
+# robot on the shield list with a stand-still line (stills). Each line acts on its own robot only.
+c | hadur117.Hadur 3.22 | bisect/hadur117.Hadur_3.22.jar
+aa | hadur117.Hadur 3.22aa | bisect/hadur117.Hadur_3.22aa.jar
+pk | hadur117.Hadur 3.22pk | bisect/hadur117.Hadur_3.22pk.jar
+p5 | hadur117.Hadur 3.22p5 | bisect/hadur117.Hadur_3.22p5.jar
+mtzl | hadur117.Hadur 3.22mtzl | bisect/hadur117.Hadur_3.22mtzl.jar
