@@ -1,0 +1,14 @@
+# BENCH-241 pc-class-1: one candidate line per robot of panel-class-cap.txt.
+jk.melee.Neuromancer 7.12
+ags.rougedc.RougeDC willow
+lrem.micro.FalseProphet Alpha
+stelo.MatchupMicro 1.2
+mc2.enemy.Original 0.9
+nz.jdc.nano.NeophytePRAL 1.4
+m3thos.mini.Eva01 0.5.5
+ms.Ares 0.19
+ry.LightningBug 1.0
+tkt.RedShift 1.1.CS.0
+divineomega.DivineBot 1.9.5
+sheldor.nano.PointInLineRRAL 1.0.0
+dsx724.VSAB_EP3_ATR 1.1
