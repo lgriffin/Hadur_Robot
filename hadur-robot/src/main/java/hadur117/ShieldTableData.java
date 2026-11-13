@@ -611,6 +611,8 @@ final class ShieldTableData {
             "pez.rumble.CassiusClay 2rho.02no",
             // pc-class-1 (BENCH-241, PR #803): +24.3 on 8 fresh PC seeds with the shield list line (low end +19.9)
             "hadur117.micro.Eveimear 0.5",
+            // pc-class-2 (BENCH-242, PR #806): +5.9 on 12 fresh PC seeds with the shield list line (+5.2 on pc-class-1's 8)
+            "pez.mini.Gouldingi 1.5",
         };
     }
 
@@ -641,17 +643,6 @@ final class ShieldTableData {
             "cb.Domogled 1.2",
             // pc-lines (BENCH-238, PR #798): JKHydra +8.6 +- 5.5 on 8 fresh PC seeds (cloud +10.6 on 8 more)
             "jkong.JKHydra 1.4",
-        };
-    }
-
-    /**
-     * MOVE-40: the opponents the duel's surf orbits closer along the walls against, one name each.
-     * Empty until a card holds robots; candidate builds add lines here (build-ablation.sh whlist).
-     *
-     * @return a fresh array of names
-     */
-    static String[] wallHugs() {
-        return new String[] {
         };
     }
 
@@ -801,6 +792,8 @@ final class ShieldTableData {
             "rampancy.Durandal 2.2d",
             "stelo.RamTrackSurfer 1.2",
             "test.Fuzzer 1.0.1",
+            // pc-class-2 (BENCH-242, PR #806): +3.1 on 12 fresh PC seeds (+4.2 on pc-class-1's 8)
+            "sos.SOS 1.0",
             "tw.Exterminator 1.0",
             // BENCH-207 pc-tailor-near (PR #704): leaned on pc-tailor-field's screen, picked on 4 new seeds, kept on 4 fresh ones (screen / confirm points).
             "pl.Patton.GeneralPatton 1.54",                // +7.1 / +8.1

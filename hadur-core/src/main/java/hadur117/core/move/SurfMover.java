@@ -51,7 +51,7 @@ public class SurfMover {
      * Wall smoothing's reach, in px, for the surf's and the orbit's heading: the heading is
      * turned until a point this far along it stays 18 px (half a robot) inside the field.
      */
-    public static final double WALL_STICK = 160.0;
+    private static final double WALL_STICK = 160.0;
     /** Wall smoothing's reach, in px, when predicting an orbit's escape point. */
     private static final double MEA_WALL_STICK = 100.0;
     /**
@@ -123,8 +123,6 @@ public class SurfMover {
 
     /** The distance, in px, the attack angles steer toward. */
     private double desiredDistance = DEFAULT_DISTANCE;
-    /** MOVE-40: the wall stick of the surf's orbit and its prediction; a wall-hug line lowers it. */
-    private double wallStick = WALL_STICK;
     /** The surf mode for the wave being surfed, and the one the next wave starts with (MOVE-2). */
     private Mode mode = Mode.OPTIONS;
     private Mode nextMode = Mode.OPTIONS;
@@ -148,16 +146,6 @@ public class SurfMover {
     public SurfMover(BattleField battleField, MovementPredictor predictor) {
         this.battleField = battleField;
         this.predictor = predictor;
-    }
-
-    /**
-     * MOVE-40: the wall stick of the surf's orbit headings and their prediction (160 px as shipped;
-     * a wall-hug line lowers it so the orbit runs closer along the walls).
-     *
-     * @param stick the stick, in px
-     */
-    public void setWallStick(double stick) {
-        this.wallStick = stick;
     }
 
     /**
@@ -395,12 +383,12 @@ public class SurfMover {
         double ccwAngle = orbitAbsBearing + SurfOption.COUNTER_CLOCKWISE.direction
             * (Math.PI / 2 + retreatAngle);
         ccwAngle = battleField.wallSmoothing(myLocation, ccwAngle,
-            SurfOption.COUNTER_CLOCKWISE.direction, wallStick);
+            SurfOption.COUNTER_CLOCKWISE.direction, WALL_STICK);
 
         double cwAngle = orbitAbsBearing + SurfOption.CLOCKWISE.direction
             * (Math.PI / 2 + retreatAngle);
         cwAngle = battleField.wallSmoothing(myLocation, cwAngle,
-            SurfOption.CLOCKWISE.direction, wallStick);
+            SurfOption.CLOCKWISE.direction, WALL_STICK);
 
         // Take the side whose heading, after wall smoothing, stays closer to straight away
         // from the enemy (a wall bends a heading toward it); ties go counter-clockwise.
@@ -508,7 +496,7 @@ public class SurfMover {
         // the orbit's side, reversing rather than turning more than 90 degrees.
         double goAngle = DiaUtils.absoluteBearing(myState.location, surfDest);
         goAngle = battleField.wallSmoothing(myState.location, goAngle,
-            lastSurfOption.direction, wallStick);
+            lastSurfOption.direction, WALL_STICK);
         DiaUtils.setBackAsFront(orders, myState.heading, goAngle);
     }
 
@@ -1054,7 +1042,7 @@ public class SurfMover {
                                     double maxVelocity, SurfOption smoothOption) {
         double goAngle = battleField.wallSmoothing(state.location,
             DiaUtils.absoluteBearing(state.location, surfDest),
-            smoothOption.direction, wallStick);
+            smoothOption.direction, WALL_STICK);
         return predictor.nextLocation(state, maxVelocity, goAngle, false);
     }
 
