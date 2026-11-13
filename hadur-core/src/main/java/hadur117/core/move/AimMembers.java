@@ -29,8 +29,6 @@ public final class AimMembers {
     public static final int MEMBERS;
     /** Each new bullet's share of a member's rolling score is 1 - DECAY. */
     static final double DECAY = 0.8;
-    /** MOVE-42: the long memory, about 50 bullets, that the member-memory switch gives. */
-    public static final double LONG_DECAY = 0.98;
     /** The power of 2 on the score in a member's weight. */
     static final double POWER = 2.0;
     /** An aim's standing weight against the views' 1, for the three narrow aims. */
@@ -70,8 +68,6 @@ public final class AimMembers {
     static final double MIMIC_PRIOR = 0.3;
 
     private final double[] score;
-    /** This set's decay: {@link #DECAY}, or {@link #LONG_DECAY} under MOVE-42. */
-    private final double decay;
     /** MOVE-33: the mimic members after the aims (0 without them). */
     private final int mimics;
     private int bullets;
@@ -83,24 +79,8 @@ public final class AimMembers {
 
     /** MOVE-33: the views, the aims, then {@code mimics} learning-gun mimics. */
     public AimMembers(int mimics) {
-        this(mimics, DECAY);
-    }
-
-    /** MOVE-42: as {@link #AimMembers(int)}, each new bullet's share of a score being 1 - {@code decay}. */
-    public AimMembers(int mimics, double decay) {
         this.mimics = Math.max(0, mimics);
         this.score = new double[MEMBERS + this.mimics];
-        this.decay = decay;
-    }
-
-    /** The shipped decay, {@value #DECAY}. */
-    public static double decayDefault() {
-        return DECAY;
-    }
-
-    /** MOVE-42: this set's decay. */
-    public double decay() {
-        return decay;
     }
 
     /** Every member: the views, the aims, then the mimics. */
@@ -147,7 +127,7 @@ public final class AimMembers {
         for (int m = 0; m < score.length && m < scores.length; m++) {
             if (Double.isNaN(scores[m])) continue;
             double ratio = (1 - EPS) * Math.max(0.0, scores[m]) / 2.0 / uniform + EPS;
-            score[m] = decay * score[m] + (1 - decay) * (Math.log(ratio) / Math.log(2.0));
+            score[m] = DECAY * score[m] + (1 - DECAY) * (Math.log(ratio) / Math.log(2.0));
         }
         bullets++;
     }
