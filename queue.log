@@ -11,3 +11,7 @@
 21:14:04 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 21:37:12 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
 21:37:12 skip prep (already exit=0)
+21:37:12 start field
+21:37:12 watching field: 5 stop rule(s)
+21:37:14 progress pushed to origin claude/pc-shadow-progress (every 15 min)
+21:38:12 progress field: 206/7158 (3%) battles, 0 failed, aa +0.45, kp +0.68
