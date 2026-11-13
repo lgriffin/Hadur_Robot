@@ -165,7 +165,7 @@ def main(argv=None):
     ap.add_argument("--out", required=True)
     ap.add_argument("--out-tsv", required=True)
     args = ap.parse_args(argv)
-    per = defaultdict(lambda: defaultdict(list))  # slug -> arm -> [battle stats]
+    per = defaultdict(lambda: defaultdict(dict))  # slug -> arm -> seed -> battle stats
     base = os.path.join(args.work, "battles")
     for name in sorted(os.listdir(base)):
         m = DIR_RE.match(name)
@@ -173,14 +173,17 @@ def main(argv=None):
             continue
         st = battle(os.path.join(base, name))
         if st:
-            per[m.group("slug")][m.group("arm")].append(st)
+            per[m.group("slug")][m.group("arm")][int(m.group("seed"))] = st
     gaps, lined = read_ledger(args.ledger)
     rows = []
     for slug, arms in per.items():
         if args.base not in arms or args.other not in arms:
             continue
-        c = {k: mean([s[k] for s in arms[args.base]]) for k in METRICS}
-        b = {k: mean([s[k] for s in arms[args.other]]) for k in METRICS}
+        seeds = sorted(set(arms[args.base]) & set(arms[args.other]))  # only seeds both arms fought
+        if not seeds:
+            continue
+        c = {k: mean([arms[args.base][sd][k] for sd in seeds]) for k in METRICS}
+        b = {k: mean([arms[args.other][sd][k] for sd in seeds]) for k in METRICS}
         rows.append((gaps.get(slug, float("nan")), slug, c, b, diagnose(c, b), lined.get(slug, "")))
     rows.sort(key=lambda r: -(r[0] if r[0] == r[0] else -1e9))
     with open(args.out_tsv, "w", encoding="utf-8") as f:
