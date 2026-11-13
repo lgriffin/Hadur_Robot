@@ -129,6 +129,17 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("MOVE-40")
+    @DisplayName("a wall-hug: line names its opponent for the closer wall orbit, by name, and sets no other switch")
+    void wallHugLines() {
+        ShieldList l = ShieldList.parse(List.of("wall-hug: a.B 1.0", "power-cap: c.D"));
+        assertTrue(l.wallHug("a.B 1.0") && l.wallHug("a.B 2.0"), "matched by name (SHIELD-26)");
+        assertFalse(l.powerCap("a.B 1.0") || l.matches("a.B 1.0"), "no other switch");
+        assertFalse(l.wallHug("c.D 1.0"));
+        assertFalse(ShieldList.NONE.wallHug("a.B 1.0"));
+    }
+
+    @Test
     @Tag("MIR-2")
     @DisplayName("mirror-off lines name the opponents the duel never runs MIR-1 against, matched as shield entries")
     void perOpponentMirrorOff() {

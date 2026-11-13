@@ -1,0 +1,56 @@
+# 1v1, the second class card (BENCH-242): the WALL class. pc-diagnose (BENCH-240, PR #801) found BeepBoop near a wall
+# 15+ points more of its turns than us against 236 robots it beats by 2+ points (about 1.4 APS of bench gap; the
+# robots unlined for movement carry 0.59 APS of it). MOVE-40's wall-hug line orbits with 100 px of wall stick, not
+# 160, so the surf runs closer along the walls against the robot it names.
+#   wall   236 robots   c / aa / wh                      8 seeds from 18800
+#   lock     2 robots   c / aa / mtzl (Gouldingi) / x5 (SOS), pc-class-1's in-sample picks   12 seeds from 18900
+# Leigh starts it once the PC is free (one card at a time, from master):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-class-2        (or  ./queue.sh run pc-class-2)
+# One bench queue, RoboRumble workers at 0, unpinned, 16 workers, truth log off. Every step resumes; no step needs a
+# decision. About 5,760 battles (236x3x8 + 2x4x12), 1.5 to 3 hours.
+#
+# Why it should win (the PC card rule of 2026-11-03):
+#   - Per-opponent tailoring: every line names one robot; every other robot, team and melee play bit for bit as master.
+#   - The line goes only where the diagnosis says BeepBoop wins by running along the walls.
+#   - The cloud screen on the 40 biggest WALL robots (2 seeds, docs/bench/local/2026-11-13_wh.md) was level pooled
+#     (-0.16) with a tail of robots at +3 to +10; this card reads all 236 on 8 seeds so the tail is picked on
+#     evidence, not on 2 seeds.
+#   - Picks need the 3-point margin with the 95% low end above 0 on 8 seeds; the rest stay as master.
+# Pilot and stop rules (docs/bench/watch.md): each step's aa arm halts the card after 20% if master and its copy
+# disagree; halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle over the last 200, or
+# no battle in 30 minutes. ALERT opens an issue for Leigh on any stop.
+# Bank: the owning cloud thread adds the held lines on this card's results PR. Nothing is released by the card.
+
+set V = 3.22
+set P = --parallel 16 --no-truth-log --failed-ok
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
+set W = work/pc-class-2
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && WALL_HUG=plans/class-wall-add.txt bash ./build-ablation.sh whlist && SHIELD_ADD=plans/class-lock2-shield.txt SHIELD_STILL=plans/class-lock2-shield.txt bash ./build-ablation.sh slistadd,szlist && X5_POWER=plans/class-lock2-x5.txt bash ./build-ablation.sh x5list && test -f bisect/hadur117.Hadur_${V}wh.jar && test -f bisect/hadur117.Hadur_${V}mtzl.jar && test -f bisect/hadur117.Hadur_${V}x5.jar && ./fetch-opponents.sh --set panel-class-wall.txt && ./fetch-opponents.sh --set panel-class-lock2.txt && mvn -q compile
+
+wall | ./bench-top20.sh ${C} ${P} --set panel-class-wall.txt --seeds 8 --seed-base 18800 --arms plans/pc-class-wall.arms --out ${W}-wall --label pc-class-wall --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+lock | ./bench-top20.sh ${C} ${P} --set panel-class-lock2.txt --seeds 12 --seed-base 18900 --arms plans/pc-class-lock2.arms --out ${W}-lock --label pc-class-lock2 --shuffle-jobs
+  after: wall
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+gate | python3 ../data/tools/multiarm.py ${W}-wall/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-class-2-wall.md && python3 ../data/tools/mode_table.py ${W}-wall/arms.tsv --margin 3 --out-tsv ${OUT}/pc-class-2-wall-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-class-2-wall-pick.md && python3 tools/per_robot.py ${W}-wall/arms.tsv --arms wh --out ${OUT}/$(date +%Y-%m-%d)_pc-class-2-wall-per-robot.md --out-tsv ${OUT}/pc-class-2-wall-per-robot.tsv && python3 ../data/tools/multiarm.py ${W}-lock/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-class-2-lock.md && python3 tools/per_robot.py ${W}-lock/arms.tsv --arms mtzl x5 --out ${OUT}/$(date +%Y-%m-%d)_pc-class-2-lock-per-robot.md --out-tsv ${OUT}/pc-class-2-lock-per-robot.tsv
+  after: lock
+
+pr | bash tools/open_results_pr.sh claude/pc-class-2-results "1v1 second class card: wall-hug line on the 236 WALL robots, two class-1 locks" ${OUT}/*_pc-class-2-*.md ${OUT}/pc-class-2-*-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-class-2-*-pick.tsv' -size +0c)
+  after: gate
