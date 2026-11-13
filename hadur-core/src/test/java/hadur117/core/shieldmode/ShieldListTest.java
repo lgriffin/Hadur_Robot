@@ -129,6 +129,17 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("MOVE-39")
+    @DisplayName("a dist-far: line names its opponent for the farther stand-off, by name, and sets no other switch")
+    void distFarLines() {
+        ShieldList l = ShieldList.parse(List.of("dist-far: a.B 1.0", "power-cap: c.D"));
+        assertTrue(l.distFar("a.B 1.0") && l.distFar("a.B 2.0"), "matched by name (SHIELD-26)");
+        assertFalse(l.powerCap("a.B 1.0") || l.matches("a.B 1.0"), "no other switch");
+        assertFalse(l.distFar("c.D 1.0"));
+        assertFalse(ShieldList.NONE.distFar("a.B 1.0"));
+    }
+
+    @Test
     @Tag("MIR-2")
     @DisplayName("mirror-off lines name the opponents the duel never runs MIR-1 against, matched as shield entries")
     void perOpponentMirrorOff() {

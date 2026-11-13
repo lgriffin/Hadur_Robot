@@ -646,6 +646,18 @@ final class ShieldTableData {
      *
      * @return a fresh array of names
      */
+    /**
+     * MOVE-39: the opponents the duel's surf keeps DuelController.DIST_FAR px farther from, one name
+     * each. Empty until a card holds robots; candidate builds add lines here (build-ablation.sh
+     * dflist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] distFars() {
+        return new String[] {
+        };
+    }
+
     static String[] powerCapHalves() {
         return new String[] {
             "stelo.MatchupAGF 1.1",
