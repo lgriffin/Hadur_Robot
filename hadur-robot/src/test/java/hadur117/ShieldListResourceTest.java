@@ -52,8 +52,8 @@ class ShieldListResourceTest {
         // Vanessa03 leave for their stop-and-go lines. pc-shield-audit (PR #697): Princess joins with still and exit off.
         // pc-ala-shield (PR #733): Ala joins with a still line. pc-shield-rescreen (PR #739): Saturn and OperatorZeze.
         // pc-still-field (PR #746): X2, Che and Aardvark. pc-shield-floor (PR #781): CassiusClay.
-        // Seraphim leaves: its lines lost on 2.4.0 (docs/bench/local/2026-11-13_vr.md).
-        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1 - 1, list.size());
+        // Seraphim leaves: its lines lost on 2.4.0 (docs/bench/local/2026-11-13_vr.md). pc-class-1 (PR #803): Eveimear.
+        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1 - 1 + 1, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
@@ -229,8 +229,8 @@ class ShieldListResourceTest {
         // exit off; Hydrogen's line goes, since it left the list for stop-and-go and a still line reads only shielded.
         // pc-shelf (PR #636): Entangled. pc-shield-audit (PR #697): Princess, with exit off.
         // pc-ala-shield (PR #733): Ala. pc-shield-rescreen (PR #739): Saturn and OperatorZeze.
-        // pc-still-field (PR #746): X2, Che and Aardvark. pc-shield-floor (PR #781): CassiusClay.
-        assertEquals(17 + 9 + 5 - 1 + 1 + 1 + 1 + 2 + 3 + 1, ShieldTableData.stills().length);
+        // pc-still-field (PR #746): X2, Che and Aardvark. pc-shield-floor (PR #781): CassiusClay. pc-class-1 (PR #803): Eveimear.
+        assertEquals(17 + 9 + 5 - 1 + 1 + 1 + 1 + 2 + 3 + 1 + 1, ShieldTableData.stills().length);
         assertTrue(list.matches("lechu.Ala 0.0.4") && list.still("lechu.Ala 0.0.4"));
         assertTrue(list.matches("cx.Princess 1.0") && Arrays.asList(ShieldTableData.exitOffs()).contains("cx.Princess 1.0"));
         for (String n : ShieldTableData.stills()) {
