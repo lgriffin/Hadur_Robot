@@ -43,8 +43,14 @@ class PcLinesPlanTest {
         java.util.Set<String> broken = Broken.names(Path.of(Broken.FILE));
         String list = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldListData.java"));
         String table = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldTableData.java"));
+        // After the results PR: the robots this card shipped lines for (plans/lines-cap-shipped.txt) carry them on master.
+        List<String> shipped = names("plans/lines-cap-shipped.txt");
         for (String n : panel) {
             assertTrue(!broken.contains(n), n + " loads on 1.11.2");
+            if (shipped.contains(n)) {
+                assertTrue(table.contains("\"" + n + "\""), n + " ships its power-cap line");
+                continue;
+            }
             String bare = n.split(" ", 2)[0];
             // SHIELD-26: a line matches by name, so a robot with any line would change the control arm too.
             assertTrue(!list.contains("\"" + bare + " ") && !list.contains("\"" + bare + "\"")

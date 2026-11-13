@@ -2082,6 +2082,7 @@ failed and are removed (3.22 cleanup); the mimics live on in MOVE-33 and MOVE-34
   98.6; the cloud read +40.4), list + still alone (mz) +0.3; the 3-point pick locks sf, A/A -1.94, inside its band. A
   one-robot card has no cross-robot gate; the pick is worth about +0.03 APS over the field. CassiusClay joins
   `ShieldListData`, `ShieldTableData.stills()` and `ShieldTableData.shieldFloors()` (SHIELD-25).
+- **BENCH-238 result (pc-lines, PR #798, 2026-11-13): JKHydra 1.4 ships a 0.2 power cap.** 8 fresh PC seeds from 17600, A/A +0.48 +- 0.94 inside its band: JKHydra +8.6 +- 5.5 at the 3-point pick (cloud +10.6 +- 6.2 on 8 more). The 28 screened robots all lose with the cap (-4 to -68; rammers and nanos worst), so none ships. The line is in `ShieldTableData.powerCaps()`; `plans/lines-cap-shipped.txt` records it for the card test.
 - **BENCH-236 result (pc-power-cap, PR #784, 2026-11-12): all seven robots ship a power cap.** 12 fresh seeds from
   16000 against master and its A/A copy pooled: pk +6.86 ±1.98 points a robot (about +0.04 APS over the field), A/A
   -0.38, inside its band. The 3-point pick locks all seven with the interval above 0: Roborio +11.01, Firestarter
