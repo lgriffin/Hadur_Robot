@@ -18,8 +18,9 @@
 #     whole field.
 #   - Gate: kp's census-weighted field gain, A/A inside its band; ship on the 95% low end above 0.
 # Pilot and stop rules (docs/bench/watch.md): the aa arm halts the card after 20% if master and its copy disagree;
-# halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle over the last 200, or no battle
-# in 30 minutes. ALERT opens an issue for Leigh on any stop.
+# halt on 30 failed battles, an arm scoring nothing in 8, 80+ skipped turns a battle over the last 200 (60 on the
+# panels; the whole field runs master near 56-60, issue #808), or no battle in 30 minutes. ALERT opens an issue
+# for Leigh on any stop.
 # Bank: the owning cloud thread turns MOVE-43 on (or removes it) on this card's results PR. Nothing is released.
 
 set V = 3.22
@@ -36,7 +37,7 @@ field | ./bench-top20.sh ${C} ${P} --set panel-shadow.txt --seeds 2 --seed-base 
   watch: field=1217
   stop: fails 30
   stop: dead 8
-  stop: skips 60 over 200
+  stop: skips 80 over 200
   stop: stall 30m
   stop: aa after 20%
 
