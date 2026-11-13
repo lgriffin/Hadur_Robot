@@ -132,7 +132,6 @@ final class ShieldTableData {
             "0 0.000000000 cjm.Charo 1.1",
             "0 0.000000000 cjm.Chomsky 1.5",
             "0 0.000000000 cjm.chalk.Chalk 2.6.Be",
-            "0 0.000000000 cs.s2.Seraphim 2.3.1",
             "0 0.000000000 css.Delitioner 0.11",
             "0 0.000000000 cuoq.Kakera 1.0",
             "0 0.000000000 cx.micro.Smoke 0.96",

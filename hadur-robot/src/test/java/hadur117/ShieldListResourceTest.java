@@ -52,7 +52,8 @@ class ShieldListResourceTest {
         // Vanessa03 leave for their stop-and-go lines. pc-shield-audit (PR #697): Princess joins with still and exit off.
         // pc-ala-shield (PR #733): Ala joins with a still line. pc-shield-rescreen (PR #739): Saturn and OperatorZeze.
         // pc-still-field (PR #746): X2, Che and Aardvark. pc-shield-floor (PR #781): CassiusClay.
-        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1, list.size());
+        // Seraphim leaves: its lines lost on 2.4.0 (docs/bench/local/2026-11-13_vr.md).
+        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1 - 1, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
@@ -119,11 +120,14 @@ class ShieldListResourceTest {
         ShieldList list = ShieldList.parse(Arrays.asList(ShieldListData.lines()));
         // The largest confirmed gains (PR #244), and Saguaro shield bots that lost to SHIELD-16 before.
         for (String name : new String[] {
-            "cs.s2.Seraphim 2.3.1", "slugzilla.ButtHead 2.0", "jk.micro.Cotillion 0.8",
+            "slugzilla.ButtHead 2.0", "jk.micro.Cotillion 0.8",
             "ers.nano.gokdeniz.Gokdeniz 1.5b", "oog.micro.SavantMicro 1.1", "exauge.GateKeeper 1.1.121g",
             "dz.Caedo 1.4", "cuoq.Kakera 1.0"}) {
             assertTrue(list.matches(name), name);
         }
+        // Seraphim 2.3.1 was confirmed here; its lines lost on 2.4.0 (-5.0 over 16 cloud seeds,
+        // docs/bench/local/2026-11-13_vr.md) and left the tables.
+        assertTrue(!list.matches("cs.s2.Seraphim 2.4.0"));
         // Locked on the first pick, dropped on the 8 fresh seeds of the confirm. TJ.Exupery 1.39 was
         // too, and joined with shield part 2's opening drive (PR #256). X2 joined later with a still line
         // (pc-still-field, PR #746).
@@ -150,7 +154,7 @@ class ShieldListResourceTest {
         for (String name : ShieldTableData.moves()) {
             assertTrue(list.moves(name) && list.matches(name), "an opening drive is for a shielded robot: " + name);
         }
-        assertEquals(221 + 11, ShieldTableData.aims().length);
+        assertEquals(221 + 11 - 1, ShieldTableData.aims().length, "Seraphim's aim left with its entry");
         for (String aim : ShieldTableData.aims()) {
             String name = aim.split(" ", 3)[2];
             assertTrue(list.aimFor(name) != null && list.matches(name), "a shipped aim is for a shielded robot: " + name);
