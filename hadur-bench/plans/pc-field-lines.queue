@@ -1,0 +1,45 @@
+# 1v1, the whole-field line screen (BENCH-239): the three per-robot line types that came after the 3.21 whole-field
+# screen (pc-tailor-field, BENCH-197) on every robot that still trails BeepBoop by a point or more and carries no
+# line. Leigh starts it once the PC is free (one card at a time, from master):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-field-lines        (or  ./queue.sh run pc-field-lines)
+# One bench queue, RoboRumble workers at 0, unpinned, 16 workers, truth log off. Every step resumes; no step needs a
+# decision. About 3.5 hours of battles (281 robots x 5 arms x 2 seeds = 2,810).
+#
+# Why it should win (the PC card rule of 2026-11-03):
+#   - Per-opponent tailoring: every line names one robot; every other robot, team and melee play bit for bit as master.
+#   - The panel is every robot with a live gap of 1+ point to BeepBoop (3.21 and 3.22 pairings, 13 Nov), no line on
+#     master, loading on 1.11.2 and not on pc-lines: 281 robots, together about 0.85 APS of gap.
+#   - The 3.21 whole-field screen tried ten line types (x5, rd, gl, fp, wl, wm, hl, dg, fq, mq) on all of them and
+#     none held. Three line types shipped since then were only ever screened on parts of the field: the 0.2 cap
+#     (POW-18, +6.9 on 7 PC robots), the 0.5 cap (+5.0/+6.9 on 2) and shield list plus stand still (+3.6..+10.5 on 6).
+#     Their cloud screens on 144 and 202 robots were 1 seed each; this is 2 seeds on 281 robots on the PC.
+#   - Risk: the caps cost -12 and -6 pooled and stand-still -3.7 on earlier panels, so nothing ships from this
+#     screen. Its 5-point picks go to a fresh-seed lock (the next rolling line card) before any bank.
+# Pilot and stop rules (docs/bench/watch.md): the aa arm halts the card after 20% if master and its copy disagree;
+# halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle over the last 200, or no battle
+# in 30 minutes. Every battle fought is kept and a rerun resumes. ALERT opens an issue for Leigh on any stop.
+
+set V = 3.22
+set P = --parallel 16 --no-truth-log --failed-ok
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
+set W = work/pc-field-lines
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && POWER_CAP=plans/field-lines-add.txt bash ./build-ablation.sh pcaplist && POWER_CAP5=plans/field-lines-add.txt bash ./build-ablation.sh pcap5list && SHIELD_ADD=plans/field-lines-add.txt SHIELD_STILL=plans/field-lines-add.txt bash ./build-ablation.sh slistadd,szlist && test -f bisect/hadur117.Hadur_${V}pk.jar && test -f bisect/hadur117.Hadur_${V}p5.jar && test -f bisect/hadur117.Hadur_${V}mtzl.jar && ./fetch-opponents.sh --set panel-pc-field-lines.txt && mvn -q compile
+
+screen | ./bench-top20.sh ${C} ${P} --set panel-pc-field-lines.txt --seeds 2 --seed-base 17800 --arms plans/pc-field-lines.arms --out ${W} --label pc-field-lines --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-field-lines.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 5 --out-tsv ${OUT}/pc-field-lines-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-field-lines-pick.md && python3 tools/per_robot.py ${W}/arms.tsv --arms pk p5 mtzl --out ${OUT}/$(date +%Y-%m-%d)_pc-field-lines-per-robot.md --out-tsv ${OUT}/pc-field-lines-per-robot.tsv
+  after: screen
+
+pr | bash tools/open_results_pr.sh claude/pc-field-lines-results "1v1 whole-field line screen: 0.2 cap, 0.5 cap and shield+still on 281 unlined gap robots, 2 seeds" ${OUT}/*_pc-field-lines*.md ${OUT}/pc-field-lines-per-robot.tsv $(find ${OUT} -maxdepth 1 -name pc-field-lines-pick.tsv -size +0c)
+  after: gate
