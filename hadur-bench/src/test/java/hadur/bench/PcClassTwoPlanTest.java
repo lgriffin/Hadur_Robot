@@ -35,9 +35,9 @@ class PcClassTwoPlanTest {
         assertEquals(wall, names("plans/class-wall-add.txt"), "one wall-hug line per panel robot");
         for (String n : wall) assertTrue(!broken.contains(n), n + " loads on 1.11.2");
         String table = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldTableData.java"));
-        String hugs = table.substring(table.indexOf("static String[] wallHugs()"));
-        hugs = hugs.substring(0, hugs.indexOf("}"));
-        assertTrue(!hugs.contains("\""), "master ships no wall-hug line before the card");
+        // After the results PR (#806): the wall-hug line held on none and MOVE-40 is gone; the two locks ship.
+        assertTrue(!table.contains("wallHugs()"), "MOVE-40 removed");
+        for (String n : names("plans/class-2-shipped.txt")) assertTrue(table.contains("\"" + n + "\""), n + " ships its line");
         assertEquals(List.of("pez.mini.Gouldingi 1.5", "sos.SOS 1.0"), names("panel-class-lock2.txt"));
         assertEquals(List.of("pez.mini.Gouldingi 1.5"), names("plans/class-lock2-shield.txt"));
         assertEquals(List.of("sos.SOS 1.0"), names("plans/class-lock2-x5.txt"));
