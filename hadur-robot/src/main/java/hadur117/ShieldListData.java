@@ -5,8 +5,9 @@ package hadur117;
  * sitting still and shooting the enemy's bullets down (docs/bullet-shielding.md, D5 in
  * docs/druss-route-plan.md).
  *
- * <p>One robot per entry, as Robocode names it. {@code "package.Class 1.2"} matches that
- * version only; {@code "package.Class"} with no version matches every version. Exact and
+ * <p>One robot per entry, as Robocode names it. An entry matches every version of its robot
+ * (SHIELD-26): the version an entry carries is the one it was benched on, and the entry
+ * carries over when the robot ships a new version. Exact and
  * case-sensitive, never a prefix. Blank entries and entries starting with {@code #} are
  * ignored.</p>
  *

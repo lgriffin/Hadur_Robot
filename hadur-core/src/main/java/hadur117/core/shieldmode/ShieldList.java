@@ -15,10 +15,11 @@ import java.util.TreeSet;
  *
  * <p>One robot per line; blank lines and lines starting with {@code #} are ignored. A line is
  * a robot's name as Robocode lists it, {@code package.Class version}, or the name alone
- * without the version. A name alone matches every version of the robot ({@code apv.test.Virus}
- * matches {@code apv.test.Virus 0.6.1} and any other); a name with a version matches that
- * version only, so a robot that changes its aim in a new release is not on the list until the
- * bench says so. Matching is exact and case-sensitive: never a prefix, so
+ * without the version. Every line matches every version of its robot (SHIELD-26): the version
+ * a line carries records the version it was benched on, and a line carries over when the
+ * robot ships a new version, because a robot's name never changes while its version does
+ * ({@code apv.test.Virus 0.6.1} and {@code apv.test.Virus} both match {@code apv.test.Virus
+ * 0.6.2}). Matching is exact and case-sensitive: never a prefix, so
  * {@code apv.test.Virus} does not match {@code apv.test.VirusX}. Runs of white space in a
  * line count as one space.</p>
  *
@@ -176,7 +177,7 @@ public final class ShieldList {
                     : entry.startsWith(POWER_CAP5_PREFIX) ? POWER_CAP5
                     : entry.startsWith(POWER_CAP_PREFIX) ? POWER_CAP : 0;
                 if (bit != 0) {
-                    String name = entry.substring(entry.indexOf(':') + 1).trim();
+                    String name = withoutVersion(entry.substring(entry.indexOf(':') + 1).trim());
                     if (!name.isEmpty() && (switches.containsKey(name) || switches.size() < MAX_ENTRIES)) {
                         switches.merge(name, bit, (a, b) -> a | b);
                     }
@@ -192,7 +193,7 @@ public final class ShieldList {
                                 key[i] = Double.parseDouble(p[i]);
                                 ok &= key[i] > 0 && !Double.isInfinite(key[i]);
                             }
-                            if (ok) surfKeys.put(p[SURF_KEY_VALUES], key);
+                            if (ok) surfKeys.put(withoutVersion(p[SURF_KEY_VALUES]), key);
                         } catch (NumberFormatException e) {
                             // A malformed surf-key line is skipped.
                         }
@@ -201,14 +202,14 @@ public final class ShieldList {
                 }
                 if (entry.startsWith(MOVE_PREFIX)) {
                     String name = entry.substring(MOVE_PREFIX.length()).trim();
-                    if (!name.isEmpty() && moves.size() < MAX_ENTRIES) moves.add(name);
+                    if (!name.isEmpty() && moves.size() < MAX_ENTRIES) moves.add(withoutVersion(name));
                     continue;
                 }
                 // The shift prefix first: "stop-go2:" also starts with "stop-go".
                 if (entry.startsWith(STOP_GO_SHIFT_PREFIX) || entry.startsWith(STOP_GO_PREFIX)) {
                     boolean shift = entry.startsWith(STOP_GO_SHIFT_PREFIX);
                     String name = entry.substring((shift ? STOP_GO_SHIFT_PREFIX : STOP_GO_PREFIX).length()).trim();
-                    if (!name.isEmpty() && stopGo.size() < MAX_ENTRIES) stopGo.put(name, shift ? 2 : 1);
+                    if (!name.isEmpty() && stopGo.size() < MAX_ENTRIES) stopGo.put(withoutVersion(name), shift ? 2 : 1);
                     continue;
                 }
                 // Before the dodge prefix: "shot-dodge2:" does not start with "shot-dodge:", but keep the order safe.
@@ -217,7 +218,7 @@ public final class ShieldList {
                     if (p.length == 2 && !p[1].isEmpty() && dodgePlans.size() < MAX_ENTRIES) {
                         try {
                             int expert = Integer.parseInt(p[0]);
-                            if (expert >= -1 && expert < ShotDodger.EXPERTS) dodgePlans.put(p[1], expert);
+                            if (expert >= -1 && expert < ShotDodger.EXPERTS) dodgePlans.put(withoutVersion(p[1]), expert);
                         } catch (NumberFormatException e) {
                             // A malformed plan line is skipped.
                         }
@@ -226,7 +227,7 @@ public final class ShieldList {
                 }
                 if (entry.startsWith(DODGE_PREFIX)) {
                     String name = entry.substring(DODGE_PREFIX.length()).trim();
-                    if (!name.isEmpty() && dodges.size() < MAX_ENTRIES) dodges.add(name);
+                    if (!name.isEmpty() && dodges.size() < MAX_ENTRIES) dodges.add(withoutVersion(name));
                     continue;
                 }
                 if (entry.startsWith(AIM_PREFIX)) {
@@ -236,7 +237,7 @@ public final class ShieldList {
                             int predictor = Integer.parseInt(p[0]);
                             double offset = Double.parseDouble(p[1]);
                             if (predictor >= 0 && !Double.isNaN(offset) && !Double.isInfinite(offset)) {
-                                aims.put(p[2], new double[] {predictor, offset});
+                                aims.put(withoutVersion(p[2]), new double[] {predictor, offset});
                             }
                         } catch (NumberFormatException e) {
                             // A malformed aim line is skipped.
@@ -245,7 +246,7 @@ public final class ShieldList {
                     continue;
                 }
                 if (entries.size() >= MAX_ENTRIES) continue;
-                entries.add(entry);
+                entries.add(withoutVersion(entry));
             }
         }
         if (entries.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()

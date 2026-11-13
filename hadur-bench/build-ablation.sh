@@ -722,14 +722,15 @@ for a in "${list[@]}"; do
         slistdrop)
             # Gap to 2nd re-pick: the robots named one per line in $SHIELD_DROP leave ShieldListData.
             [[ -n "${SHIELD_DROP:-}" && -f "$SHIELD_DROP" ]] || { echo "slistdrop needs SHIELD_DROP=<file>" >&2; exit 2; }
-            python3 -c 'import sys,json
+            # Matched by name alone (SHIELD-26): the entry may record another version of the robot.
+            python3 -c 'import sys,re
 p,f=sys.argv[1:]
 names=[l.split("\t")[0].strip() for l in open(f) if l.strip() and not l.startswith("#")]
 s=open(p).read()
 for n in names:
-    line="            %s,\n" % json.dumps(n)
-    if s.count(line)!=1: sys.exit("slistdrop: %s is not on the shield list exactly once" % n)
-    s=s.replace(line,"")
+    found=re.findall(r"^            \"%s(?: [^\"\n]*)?\",\n" % re.escape(n.split(" ",1)[0]), s, re.M)
+    if len(found)!=1: sys.exit("slistdrop: %s is not on the shield list exactly once" % n)
+    s=s.replace(found[0],"")
 open(p,"w").write(s)' "$listdata" "$SHIELD_DROP" || exit 2
             version="${version}md" ;;
         slistadd)

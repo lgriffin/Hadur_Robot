@@ -732,7 +732,8 @@ flowchart LR
 | `gunStacks()` | `gun-stack:` | GUN-11 | 0 | TripHammer gun stack (never for a shield opponent) |
 | `exitLates()`, `exitOffs()` | `shield-exit4:`, `shield-exit0:` | SHIELD-19 | 0 | Later or no damage exit from shield mode |
 
-Matching is exact: `pkg.Bot 1.2` matches that version only, `pkg.Bot` every version, never a prefix.
+Matching is by name (SHIELD-26): `pkg.Bot 1.2` and `pkg.Bot` both match every version of the robot, and
+the version records the one benched; never a prefix.
 Entries arrive from bench screens: the table ablations (`smovelist`, `saimlist`, `sgolist`,
 `sgo2list`, `sdodgelist`, `sdplanlist`, `hjlist`, `gslist`, `sx4list`, `sx0list`, `slistadd`,
 `slistdrop`) fill a slot from a pick file for an arm; a pick that passes is pasted into the class.

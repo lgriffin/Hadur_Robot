@@ -88,8 +88,8 @@ class ShieldListResourceTest {
             "ratosh.Nobo 0.21", "dy.LevelOne 2.0"}) {
             assertTrue(!list.matches(name), name);
         }
-        // Entries carry a version: a robot's next release is not on the list until benched.
-        assertTrue(!list.matches("dft.Cyanide 1.91"));
+        // An entry's version is the one it was benched on; it carries over to the next (SHIELD-26).
+        assertTrue(list.matches("dft.Cyanide 1.91"));
     }
 
     @Test
