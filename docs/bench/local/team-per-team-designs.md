@@ -92,3 +92,24 @@ All four were removed (none reached the repo). Every lever that changes who we s
 ## Why (same teams and seeds, OgiTeam as the subject)
 
 Our gun hits as often as Ogi's (about 20% of shots). The same enemy guns hit our members about 40% more often from the same distance, from round 0 and flat across rounds; our members die 0.68 times a round against Ogi's 0.43, 87% to enemy bullets. 70 to 80% of mid-team shots match no simple aim. Tool: hadur-bench/tools/team_phases.py.
+
+## Range line and dodge study (cloud, 2026-11-13)
+
+RANGE (hunt place 450 px instead of 250/350) against the four close-range teams (Polylunar, Impact, Nightmare, TeamDeath), 3 seeds from 17700, paired with master: -0.29 ± 1.93 share points (Nightmare +2.1, TeamDeath +1.1, Impact -1.6, Polylunar -2.8). Removed.
+
+Dodge study on PhoenixTeam, ArmyOfShiz, HOFSwarm and OmegaSquad (seeds 17000), our members against OgiTeam's, each enemy bullet matched to the member it was aimed at and to where that member stood when it arrived:
+
+| Range | Member's move while the bullet flew | Share (ours / Ogi) | Hit rate (ours / Ogi) |
+|---|---|---|---|
+| under 300 px | turned back | 30% / 25% | 17.8% / 6.9% |
+| under 300 px | slowed under 2 px/tick | 25% / 13% | 20.2% / 11.0% |
+| under 300 px | kept driving | 56% / 66% | 10.4% / 9.3% |
+| 300-700 px | turned back | 41% / 39% | 10.7% / 6.7% |
+| 300-700 px | slowed under 2 px/tick | 26% / 24% | 10.6% / 6.7% |
+| 300-700 px | kept driving | 50% / 48% | 7.4% / 4.2% |
+
+Where the members end up (guess factor spread) is as wide as OgiTeam's (3.03 vs 3.08 bits), yet the same spots are hit about twice as often.
+
+Seen shots (study build that prints each enemy shot the first time a member's tracker lists it; not shipped): the member a shot was aimed at saw it 90% of the time (any member 92%), 2 ticks after firing (90th percentile 4). Shots never seen account for 10% of the hits on our members (14% inside 300 px). Detection is not the gap; dodging the seen shots is.
+
+Not tried: changing how members pick among safe paths (a random near-best pick failed in 1v1 as RAM-10), a new danger model for team members.
