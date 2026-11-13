@@ -1,0 +1,47 @@
+team	live_hadur_3.22	live_n	live_ogi	ogi_n	live_gap	live_combat	live_fire	bench_gap_3.21	bench_lever	part_their_survival	part_their_bullets	members_lost_ogi/hadur	damage_taken_ogi/hadur	own_fire_ogi/hadur	round_end_ogi/hadur	droids	members
+rz.AlephTeam	57.41	5	73.18	10	15.77	58.59	54.52	+15.7	their survival	+5.5	+2.2	2.33/4.17	276/359	8/31	892/1236	0	Aleph x5: rz.a.AbstractRobot [50975B]
+ustimaw.NightmareTeam	49.86	2	63.4	8	13.54	40.69	38.9	+13.0	their survival	+4.0	+2.4	2.12/3.26	327/449	21/26	566/790	1	Nightmare x4: TeamRobot [85195B] | NigitmareDroid x1: ustimaw.Nightmare implements Droid [85195B]
+kawigi.micro.ArmyOfShiz	87.04	1	89.99	7	2.95	80.91	78.2	+11.5	their survival	+4.9	+4.4	0.45/1.73	148/260	11/45	652/998	0	
+gh.nano.GrofGroup	82.9	4	92.15	4	9.25	84.71	90.11	+10.8	their bullets	+4.6	+4.6	0.11/1.17	127/246	11/42	571/866	0	
+apvteam.MambaTeam	85.92	1	87.6	7	1.68	75.06	81.74	+9.8	their survival	+4.4	+3.0	0.60/1.88	199/285	12/44	660/964	0	
+florent.XSeries.Xmen	63.09	1	76.37	7	13.28	67.71	62.97	+9.8	their survival	+3.3	+1.9	2.17/3.28	281/348	6/30	842/1144	0	
+cx.mini.DemoniacNimrods	71.87	1	82.76	4	10.89	78.11	70.31	+9.5	their survival	+3.5	+2.7	1.13/2.62	259/339	7/30	654/1082	0	
+rz.HOFSwarm	84.51	1	90.26	6	5.75	72.99	80.24	+9.5	their survival	+4.1	+3.5	0.37/1.73	165/256	8/44	627/1012	0	HOFMember x5: TeamRobot [5011B]
+gh.mini.GrubbmGroup	87.57	1	92.99	6	5.42	83.19	90.41	+8.5	their bullets	+3.2	+4.4	0.08/0.89	98/204	11/48	630/930	0	
+tmnr.TMNR	87.84	2	92.7	7	4.86	85.57	83.3	+8.4	their bullets	+3.5	+3.6	0.20/1.23	137/227	10/40	587/858	0	Donatello x1: TeamRobot [54688B] | Giovanni x1: TeamRobot [54688B] | Leonardo x1: TeamRobot [54688B] | Michelangelo x1: TeamRobot [54688B] | Raphael x1: TeamRobot [54688B]
+ags.polylunar.Polylunar	57.33	1	67.9	8	10.57	59.79	53.84	+8.3	their survival	+3.1	+2.4	2.08/2.72	386/496	37/34	422/598	0	
+kid.team.OmegaSquad	83.27	1	87.83	7	4.56	79.23	80.31	+8.2	their survival	+3.3	+3.0	0.95/2.33	147/213	7/48	774/1204	0	Niner x1: TeamRobot [212733B] | Darman x1: kid.team.Niner [212733B] | Fi x1: kid.team.Niner [212733B] | Atin x1: kid.team.Niner [212733B]
+mn.CombatTeam	44.71	1	69.34	6	24.63		45.68	+7.8	their survival	+3.1	+1.1	3.20/4.02	279/316	6/31	1150/1142	0	Combat x5: TeamRobot [99822B]
+davidalves.PhoenixTeam	84.98	1	88.12	8	3.14	81.88	79.58	+7.7	their survival	+3.2	+2.8	0.34/1.43	192/268	9/36	620/964	0	
+radnor.RadnorMedSchool	89.51	3	97.45	3	7.94	89.1	96.54	+6.7	their bullets	+1.1	+5.4	0.00/0.40	62/192	8/51	459/764	0	DoctorBobTeam x5: TeamRobot [1926B]
+abc.ShadowTeam	59.31	2	64.55	5	5.24	54.13	51.33	+6.4	their bullets	+1.5	+1.7	2.70/3.52	290/349	5/38	958/1213	0	
+Krabb.sliNk.SlartibartfassTeam	83.31	3	84.45	5	1.14	79.76	84.44	+6.0	their survival	+2.4	+2.0	0.69/1.66	210/266	10/47	710/1017	0	
+myl.micro.TroodonPack	88.69	2	93.59	5	4.9	85.02	88.39	+6.0	their bullets	+1.7	+3.6	0.10/0.62	117/203	9/39	538/806	3	Troodon x2: TeamRobot [5260B] | TroodonDroid x3: TeamRobot implements Droid [4748B]
+bvh.team.Valkiries	87.13	3	88.63	6	1.5	80.43	81.28	+5.9	their survival	+2.8	+2.0	0.61/1.66	156/209	10/45	708/1110	0	
+pedersen.ImWithStupidTeam	88.97	3	92.03	6	3.06	91.36	85.94	+5.7	their bullets	+2.3	+2.6	0.07/0.53	139/205	7/38	466/646	0	ImWithStupid x5: pedersen.core.Foundation [362585B]
+rz.GlowingHawks	85.19	2	86.36	7	1.17	76.73	80.47	+5.2	their survival	+2.2	+1.9	0.52/1.57	208/259	8/44	662/1026	0	GHMember x5: TeamRobot [7656B]
+jab.DiamondStealers	82.29	1	87.04	3	4.75	87.0	87.13	+4.1	their bullets	+1.4	+1.9	0.41/0.95	203/254	9/39	543/746	0	
+pedersen.ImWithDroidTeam	88.02	4	90.6	6	2.58	88.1	83.75	+3.8	their bullets	+1.6	+1.6	0.27/0.58	163/206	10/40	528/675	4	ImWithStupid x1: pedersen.core.Foundation [362585B] | Stupid x4: pedersen.core.Foundation implements Droid [360808B]
+jeremyreeder.collective.FourProphetsAndADiscliple	91.37	3	94.85	4	3.48	90.7	93.68	+3.4	their bullets	+0.3	+3.1	0.03/0.10	95/168	10/38	394/560	0	
+sp.Minis.GeneBotUpgrade	94.62	1	95.03	8	0.41	89.76	91.16	+2.5	their bullets	+0.6	+1.7	0.05/0.26	105/145	8/42	480/627	0	geneticBot x5: AdvancedRobot [5565B]
+cb.fire.FirestarterTeam	48.02	1	62.04	5	14.02	54.32		+2.3	bonuses	+0.3	+0.0	3.40/4.42	318/323	8/31	1039/1304	0	
+mn.nano.perceptual.ImpactTeam	74.99	2	81.6	7	6.61	75.91	76.85	+2.3	their bullets	+0.2	+1.9	0.87/1.05	209/267	21/39	294/432	0	Impact x5: TeamRobot [1969B]
+vuen.Bakery	93.09	3	95.69	6	2.6	92.89	96.22	+1.7	their bullets	+0.2	+1.4	0.01/0.18	103/136	10/52	650/815	3	Cake x2: coop.CoopRobot [73635B] | CupCake x3: vuen.Cake implements Droid [73635B]
+ethdsy.MalackaTeam	91.61	2	93.61	4	2.0	87.64	85.51	+1.6	their bullets	+0.7	+0.8	0.07/0.29	133/153	13/58	518/770	0	
+CharlieN.OmegaTeam.OmegaTeam	92.24	2	94.32	4	2.08	94.23	94.02	+1.3	their bullets	+0.3	+1.0	0.19/0.46	120/143	11/47	570/796	0	
+jab.Enjambre	90.07	2	89.72	9	-0.35	90.78	80.56	+1.2	their bullets	+0.1	+1.5	0.20/0.47	176/218	14/69	465/668	0	
+Polkwane.PTeam	95.48	3	96.4	4	0.92	96.59	94.34	+1.0	their survival	+0.7	+0.2	0.01/0.13	16/18	9/56	204/285	0	
+dummy_team.BlindFighters	95.74	1	98.01	5	2.27	97.86	97.41	+1.0	their bullets	+0.1	+0.9	0.00/0.03	50/70	11/35	378/518	0	
+lxx.ConceptATeam	93.98	1	93.74	7	-0.24	90.45	88.65	+1.0	their survival	+0.7	+0.4	0.13/0.31	103/114	15/37	340/473	0	ConceptA x5: TeamRobot [157530B]
+mskwik.BumblingIdiots	95.15	3	96.36	3	1.21	91.53	96.57	+1.0	their bullets	+0.0	+1.0	0.00/0.01	73/96	10/28	316/435	0	Idiot x5: TeamRobot [8028B]
+gimp.GimpTeam	93.41	4	95.0	6	1.59	92.81	95.88	+0.9	their bullets	+0.1	+0.9	0.02/0.17	107/126	9/52	604/840	0	
+ms.AresHaikuTeam	95.62	3	95.94	5	0.32	94.66	95.69	+0.8	their bullets	+0.1	+0.7	0.00/0.04	86/100	11/38	344/522	0	AresHaiku x5: TeamRobot [3422B]
+bugger.BuggerHive	95.56	3	96.29	4	0.73	91.72	96.2	+0.6	their bullets	-0.1	+0.7	0.06/0.06	79/95	14/38	550/901	0	
+ntc.slippery.Slippery	95.98	3	96.37	5	0.39	96.21	96.87	+0.6	their bullets	+0.0	+0.6	0.00/0.01	73/85	13/33	400/534	3	Leader2 x1: TeamRobot [18590B] | Leader1 x1: TeamRobot [18590B] | TeamDroid1 x1: ntc.slippery.TeamDroid implements Droid [18590B] | TeamDroid2 x1: ntc.slippery.TeamDroid implements Droid [18590B] | TeamDroid3 x1: ntc.slippery.TeamDroid implements Droid [18590B]
+sampleteam.MyFirstTeam	97.21	3	97.7	4	0.49	97.78	97.18	+0.6	their bullets	+0.0	+0.6	0.00/0.00	45/59	8/28	400/624	0	
+logiblocs.SittingDroidTeam	100.0	3	100.0	4	0.0	100.0	100.0	+0.0	their survival	+0.0	+0.0	0.00/0.00	0/0	13/25	296/419	5	SittingDroid x5: AdvancedRobot implements Droid [2295B]
+mn.SuperSittingDuckTeam	100.0	3	100.0	3	0.0	100.0	99.91	+0.0	their survival	+0.0	+0.0	0.00/0.00	0/0	0/5	75/171	0	SuperSittingDuck x5: Robot [384B]
+amz.TeamDeathTeam	80.82	2	81.37	7	0.55	81.81	71.7	-0.4	their bullets	-0.7	+1.2	0.85/0.89	243/276	33/49	270/410	0	
+sgp.DrunkenTeam	90.28	2	92.31	3	2.03	89.74	90.13	-0.6	their bullets	-0.5	+0.1	0.18/0.18	172/176	9/32	496/603	0	Drunken x5: TeamRobot [48844B]
+isw.BoobTeam	None	0	97.43	2		96.8	97.2									0	
+kawigi.sbf.TidalWave	80.59	1	87.8	6	7.21	86.54	84.51									0	
