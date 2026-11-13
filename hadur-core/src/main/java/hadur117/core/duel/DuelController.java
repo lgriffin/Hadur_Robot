@@ -321,7 +321,11 @@ public final class DuelController {
         GunMimics memberMimics = duelOnly(MoveDesign.AIM_MEMBERS && MoveDesign.MIMIC_MEMBERS, enemiesTotal)
             ? new GunMimics() : null;
         this.moveController.setAimMembers(duelOnly(MoveDesign.AIM_MEMBERS, enemiesTotal)
-            ? new AimMembers(memberMimics == null ? 0 : memberMimics.size()) : null);
+            ? new AimMembers(memberMimics == null ? 0 : memberMimics.size(), memberDecay()) : null);
+        // MOVE-41: the views' rolling weights.
+        this.moveController.setViewRolling(duelOnly(MoveDesign.AIM_MEMBERS && MoveDesign.VIEW_ROLL, enemiesTotal));
+        // MOVE-43: a gone bullet keeps the shadows it already cast.
+        this.moveController.setKeepShadows(MoveDesign.KEEP_SHADOWS);
         this.moveController.setMemberMimics(memberMimics);
         this.surfMover = new SurfMover(battleField, predictor);
         this.surfMover.setAesRecord(MoveDesign.AES_RECORD);
@@ -930,6 +934,10 @@ public final class DuelController {
      * found BeepBoop near a wall 30 points more of its turns than the duel against 236 robots it beats.
      */
     public static final double WALL_HUG_STICK = 100.0;
+    /** MOVE-42: the aim members' decay, the long memory under {@code MoveDesign.MEMBER_LONG}. */
+    private static double memberDecay() {
+        return MoveDesign.MEMBER_LONG ? AimMembers.LONG_DECAY : AimMembers.decayDefault();
+    }
     /** POW-17: whether the race picked the last power, for the P record on a change. */
     private boolean raceApplied;
     /** POW-17: the energy race, fed every resolved duel bullet whether or not it is on. */
@@ -1387,7 +1395,7 @@ public final class DuelController {
         if (duelOnly(MoveDesign.AIM_MEMBERS && stackList.mimicOn(name), enemiesTotal)
                 && (moveController.aimMembers() == null || moveController.aimMembers().mimics() == 0)) {
             GunMimics mimics = new GunMimics();
-            moveController.setAimMembers(new AimMembers(mimics.size()));
+            moveController.setAimMembers(new AimMembers(mimics.size(), memberDecay()));
             moveController.setMemberMimics(mimics);
             mimicOn = true;
         }
