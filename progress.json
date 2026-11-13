@@ -1,0 +1,22 @@
+{
+ "plan": "pc-class-2",
+ "updated": 1794599592.132896,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "wall": {
+   "status": "pending"
+  },
+  "lock": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
