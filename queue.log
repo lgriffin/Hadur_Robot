@@ -5,3 +5,9 @@
 15:19:14 start confirm
 15:19:14 watching confirm: 5 stop rule(s)
 15:19:25 progress confirm: 0/696 (0%) battles, 0 failed
+15:35:02 confirm exit=0 in 947 s
+15:35:02 start gate
+15:35:03 gate exit=0 in 0 s
+15:35:03 start pr
+15:35:10 pr exit=0 in 7 s
+15:35:10 ALLDONE
