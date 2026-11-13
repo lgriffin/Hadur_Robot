@@ -1004,7 +1004,8 @@ strand, in the `shieldmode` package, and applies to a 1v1 battle only.
   security violation and the robot is killed (seen in the BENCH-11 smoke run), while class
   loading always works. The adapter passes the lines on and the core only parses them
   (`ShieldList`; RES-6 keeps I/O out of the core). A line is a robot's name as Robocode lists it:
-  `apv.test.Virus 0.6.1` matches that version only, and `apv.test.Virus` matches every version.
+  `apv.test.Virus 0.6.1` and `apv.test.Virus` both match every version (SHIELD-26: the version a
+  line carries records the version it was benched on).
   Matching is exact and case-sensitive, never a prefix. A list that cannot be loaded is an empty
   list. It ships with 14 robots: the 8 the BENCH-11 probe marked "wins" and 6 "open" ones with a
   mean gain of 9 points or more (docs/bench/d5-probe.md, docs/bench/d5-gate.md). 3.10 adds 83: every

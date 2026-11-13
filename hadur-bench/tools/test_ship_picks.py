@@ -58,6 +58,24 @@ class ShipPicksTest(unittest.TestCase):
         ts = open(tp).read()
         self.assertIn("d.Free 1.0", sp.body(ts, "stopGos"))
         self.assertNotIn("d.Free 1.0", sp.body(ts, "stopGoShifts"), "one stop-and-go variant per robot")
+
+    def test_new_version_matches_by_name(self):
+        # SHIELD-26: a pick on a robot's new version finds the line recorded on its old one.
+        d = tempfile.mkdtemp()
+        lp, tp = os.path.join(d, "L.java"), os.path.join(d, "T.java")
+        open(lp, "w").write(LIST)
+        open(tp, "w").write(TABLE)
+        sp.apply([("d.Free 1.0", "wm")], lp, tp, "old version")
+        sp.apply([("d.Free 2.0", "wl"), ("b.StopGo 2.0", "md"), ("a.Listed 2.0", "zl")], lp, tp, "new version")
+        ls, ts = open(lp).read(), open(tp).read()
+        self.assertIn("d.Free 2.0", sp.body(ts, "stopGos"))
+        self.assertNotIn("d.Free", sp.body(ts, "stopGoShifts"), "the old version's other variant leaves")
+        self.assertNotIn("b.StopGo", ls, "a drop finds the entry recorded on the old version")
+        self.assertIn('"a.Listed 1.0",', ls)
+        with self.assertRaises(SystemExit):
+            sp.apply([("a.Listed 3.0", "mt")], lp, tp, "already listed")
+        self.assertEqual(sp.entries_of(ls, "a.Listed 9"), ['            "a.Listed 1.0",\n'])
+        self.assertEqual(sp.entries_of('            "a.ListedX 1.0",\n', "a.Listed 1.0"), [], "never a prefix")
         with self.assertRaises(SystemExit):
             sp.apply([("a.Listed 1.0", "mt")], lp, tp, "again")
 
