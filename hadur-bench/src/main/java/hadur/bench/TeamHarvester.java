@@ -74,6 +74,10 @@ public class TeamHarvester extends BattleAdaptor {
     private final BufferedWriter debug;
     private final BufferedWriter bulletLog;
     private final Set<Integer> hits = new HashSet<>();
+    /** TMODE-48 read: each robot's energy when first seen this round (200 marks a team leader) and the dead. */
+    private final Map<Integer, Double> startEnergy = new HashMap<>();
+    private final Set<Integer> dead = new HashSet<>();
+    private final BufferedWriter deathLog;
     private int round;
     private int ourTeam = -1;
     private int membersAlive, enemiesAlive, shots, inLane, belowTruth, countReports, bulletsOnMates;
@@ -85,6 +89,7 @@ public class TeamHarvester extends BattleAdaptor {
         rounds.write(HEADER + "\n");
         this.debug = Files.newBufferedWriter(dir.resolve("friendly.log"), StandardCharsets.UTF_8);
         this.bulletLog = Files.newBufferedWriter(dir.resolve("bullets.log"), StandardCharsets.UTF_8);
+        this.deathLog = Files.newBufferedWriter(dir.resolve("deaths.log"), StandardCharsets.UTF_8);
     }
 
     @Override
@@ -97,6 +102,8 @@ public class TeamHarvester extends BattleAdaptor {
         fireGeometry.clear();
         damaging.clear();
         damageByEnemy.clear();
+        startEnergy.clear();
+        dead.clear();
         membersAlive = enemiesAlive = shots = inLane = belowTruth = countReports = bulletsOnMates = 0;
     }
 
@@ -114,6 +121,12 @@ public class TeamHarvester extends BattleAdaptor {
             if (ourTeam < 0 && ours(r)) ourTeam = r.getTeamIndex();
         }
         for (IRobotSnapshot r : robots) {
+            startEnergy.putIfAbsent(r.getRobotIndex(), r.getEnergy());
+            // deaths.log: round,turn,robot index,mine,leader,name, one line as each robot dies.
+            if (!r.getState().isAlive() && dead.add(r.getRobotIndex())) {
+                write(deathLog, String.format(Locale.ROOT, "%d,%d,%d,%d,%d,%s%n", round, turn, r.getRobotIndex(),
+                    r.getTeamIndex() == ourTeam ? 1 : 0, startEnergy.get(r.getRobotIndex()) > 150 ? 1 : 0, r.getName()));
+            }
             boolean alive = r.getState().isAlive();
             boolean mine = r.getTeamIndex() == ourTeam;
             if (alive && mine) mates++;
@@ -301,6 +314,7 @@ public class TeamHarvester extends BattleAdaptor {
         rounds.close();
         debug.close();
         bulletLog.close();
+        deathLog.close();
         for (BufferedWriter w : logs.values()) w.close();
     }
 }
