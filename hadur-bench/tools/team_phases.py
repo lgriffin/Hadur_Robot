@@ -2,7 +2,8 @@
 """Per opposing team, read a team bench's battle logs (bullets.log, deaths.log) by phase: how many
 enemies are alive (5 = all). For each team: ticks a round in each phase, our fire (shots a tick,
 mean power, hit rate), the enemies' hit rate on our members and their damage a tick, our member
-deaths a round by phase and by cause (enemy bullet, a teammate's bullet, neither), the enemies'
+deaths a round by phase and an inferred cause (the last bullet that hit the member in its last
+three turns: an enemy's, a teammate's, or none; the engine logs no killing blow), the enemies'
 hit rate on us by how near our nearest member stood when they fired, and the share of enemy
 bullets that match a simple aim (head-on, linear, circular) at one of our members.
 
@@ -56,12 +57,31 @@ def read(d, subj, acc):
         r, t, _i, mine, _lead, name = line.strip().split(",", 5)
         deaths[int(r)].append((int(t), mine == "1", name))
     rows = [l.rstrip("\n").split(",") for l in open(os.path.join(d, "bullets.log"))]
+    # A round ends at its last bullet or death; rounds.csv adds rounds with neither.
     ends = collections.Counter()
     for f in rows:
         ends[int(f[0])] = max(ends[int(f[0])], int(f[1]))
+    for r, ev in deaths.items():
+        for tt, _mine, _name in ev:
+            ends[r] = max(ends[r], tt)
+    rounds_csv = os.path.join(d, "rounds.csv")
+    if os.path.exists(rounds_csv):
+        for line in list(open(rounds_csv))[1:]:
+            if line.strip():
+                ends.setdefault(int(line.split(",")[0]), 0)
+    # Enemies at the start of a round: the most living enemies any of our shots listed, else 5.
+    start = collections.defaultdict(lambda: 5)
+    seen = collections.defaultdict(int)
+    for f in rows:
+        if f[2] == "F" and f[4].startswith(subj) and len(f) > 10:
+            live = [e for e in ",".join(f[10:]).split(";") if e and e != "-"]
+            seen[int(f[0])] = max(seen[int(f[0])], len(live))
+    for r, n in seen.items():
+        start[r] = n
 
     def phase(r, t):
-        return 5 - sum(1 for tt, mine, _ in deaths[r] if not mine and tt <= t)
+        # Phases are named by enemies alive, top phase = the team's own size (5 for most).
+        return start[r] - sum(1 for tt, mine, _ in deaths[r] if not mine and tt <= t)
 
     fired, last_head, hits_on = {}, {}, collections.defaultdict(list)
     for f in rows:
@@ -135,8 +155,9 @@ def read(d, subj, acc):
         acc["rounds"] += 1
         ts = sorted(tt for tt, mine, _ in deaths[r] if not mine)
         prev = 0
-        for k, t in enumerate(ts[:4] + [end]):
-            acc["ticks", 5 - k] += max(0, min(t, end) - prev)
+        n0 = start[r]
+        for k, t in enumerate(ts[:n0 - 1] + [end]):
+            acc["ticks", n0 - k] += max(0, min(t, end) - prev)
             prev = min(t, end)
         for tt, mine, name in deaths[r]:
             if not mine:
@@ -158,7 +179,7 @@ def main():
             read(d, a.subject, teams.setdefault(team_of(d), collections.Counter()))
     cols = ["team", "rounds", "ticks/round"] + ["ticks%d" % p for p in PHASES] + ["our hit%", "power",
             "enemy hit%"] + ["enemy hit%% p%d" % p for p in PHASES] + ["deaths/round"] + \
-           ["deaths p%d" % p for p in PHASES] + ["death by mate", "mate hits/round",
+           ["deaths p%d" % p for p in PHASES] + ["death after mate hit (inferred)", "mate hits/round",
            "enemy hit% <200", "200-399", "400-599", "600+", "aim headon", "linear", "circular", "none"]
     out = ["\t".join(cols)]
     for team, c in teams.items():

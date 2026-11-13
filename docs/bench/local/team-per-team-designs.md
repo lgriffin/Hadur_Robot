@@ -13,7 +13,7 @@ Designed: none of today's lines fit; the gap is how often their guns hit our mem
 | cb.fire.FirestarterTeam | 48.02 / 62.04 | +2.3 | bonuses |  | +3.0 ± 3.9 | np | not run |
 | abc.ShadowTeam | 59.31 / 64.55 | +6.4 | their bullets |  | +1.9 ± 5.8 | np | not run |
 | rz.AlephTeam | 57.41 / 73.18 | +15.7 | their survival | Aleph x5: rz.a.AbstractRobot  | +3.9 ± 4.5 | qt | not run |
-| ustimaw.NightmareTeam | 49.86 / 63.4 | +13.0 | their survival | Nightmare x4  | NigitmareDroid x1: ustimaw.Nightmare (droid)  | +1.3 ± 4.4 | np | not run |
+| ustimaw.NightmareTeam | 49.86 / 63.4 | +13.0 | their survival | Nightmare x4; NigitmareDroid x1: ustimaw.Nightmare (droid) | +1.3 ± 4.4 | np | not run |
 | florent.XSeries.Xmen | 63.09 / 76.37 | +9.8 | their survival |  | +1.6 ± 5.5 | ga | not run |
 | ags.polylunar.Polylunar | 57.33 / 67.9 | +8.3 | their survival |  | +0.6 ± 4.1 | qt | not run |
 | jab.DiamondStealers | 82.29 / 87.04 | +4.1 | their bullets |  | +0.9 ± 3.6 | nd | not run |
@@ -26,12 +26,12 @@ Designed: EYES, kill the members with radar first so the droids go blind (and th
 
 | Team | Live H / Ogi | Bench gap | Where it goes | Make-up | CLOSE | Portfolio pick | Today |
 |---|---|---|---|---|---|---|---|
-| myl.micro.TroodonPack | 88.69 / 93.59 | +6.0 | their bullets | Troodon x2  | TroodonDroid x3 (droid)  | -0.1 ± 1.5 | np | FLOOR +1.1; EYES -4.5 |
-| pedersen.ImWithDroidTeam | 88.02 / 90.6 | +3.8 | their bullets | ImWithStupid x1: pedersen.core.Foundation  | Stupid x4: pedersen.core.Foundation (droid)  | +1.5 ± 3.1 | none | EYES -0.1 |
+| myl.micro.TroodonPack | 88.69 / 93.59 | +6.0 | their bullets | Troodon x2; TroodonDroid x3 (droid) | -0.1 ± 1.5 | np | FLOOR +1.1; EYES -4.5 |
+| pedersen.ImWithDroidTeam | 88.02 / 90.6 | +3.8 | their bullets | ImWithStupid x1: pedersen.core.Foundation; Stupid x4: pedersen.core.Foundation (droid) | +1.5 ± 3.1 | none | EYES -0.1 |
 | Krabb.sliNk.SlartibartfassTeam | 83.31 / 84.45 | +6.0 | their survival |  | -1.6 ± 3.3 | nh | FLOOR +2.3; EYES -4.5 |
-| vuen.Bakery | 93.09 / 95.69 | +1.7 | their bullets | Cake x2: coop.CoopRobot  | CupCake x3: vuen.Cake (droid)  | -0.6 ± 0.9 | nh | EYES -0.2 |
+| vuen.Bakery | 93.09 / 95.69 | +1.7 | their bullets | Cake x2: coop.CoopRobot; CupCake x3: vuen.Cake (droid) | -0.6 ± 0.9 | nh | EYES -0.2 |
 | jab.Enjambre | 90.07 / 89.72 | +1.2 | their bullets |  | -0.5 ± 1.6 | nk | EYES +1.8 |
-| ntc.slippery.Slippery | 95.98 / 96.37 | +0.6 | their bullets | Leader2 x1  | Leader1 x1  | TeamDroid1 x1: ntc.slippery.TeamDroid (droid)  | TeamDroid2 x1 | +0.3 ± 0.6 | ga | EYES -0.0 |
+| ntc.slippery.Slippery | 95.98 / 96.37 | +0.6 | their bullets | Leader2 x1; Leader1 x1; TeamDroid1 x1: ntc.slippery.TeamDroid (droid); TeamDroid2 x1 | +0.3 ± 0.6 | ga | EYES -0.0 |
 | bugger.BuggerHive | 95.56 / 96.29 | +0.6 | their bullets |  | +0.2 ± 0.7 | np | not run |
 | jeremyreeder.collective.FourProphetsAndADiscliple | 91.37 / 94.85 | +3.4 | their bullets |  | -0.1 ± 1.2 | none | EYES -2.4 |
 | dummy_team.BlindFighters | 95.74 / 98.01 | +1.0 | their bullets |  | +0.0 ± 0.4 | qt | not run |
@@ -46,13 +46,13 @@ Designed: LEADER (leader first), FLOOR (power floor 1.9, Ogi fires 1.84 to our 1
 | kawigi.micro.ArmyOfShiz | 87.04 / 89.99 | +11.5 | their survival |  | +2.8 ± 3.1 | ho | LEADER -9.1; FLOOR +2.7; SHELTER +2.8 |
 | rz.HOFSwarm | 84.51 / 90.26 | +9.5 | their survival | HOFMember x5  | +2.6 ± 3.2 | np | LEADER -3.8; FLOOR +1.0; SHELTER -3.0 |
 | davidalves.PhoenixTeam | 84.98 / 88.12 | +7.7 | their survival |  | +0.0 ± 2.7 | nk | FLOOR -3.7; SHELTER -3.0 |
-| kid.team.OmegaSquad | 83.27 / 87.83 | +8.2 | their survival | Niner x1  | Darman x1: kid.team.Niner  | Fi x1: kid.team.Niner  | Atin x1: kid.team.Niner  | +0.8 ± 3.1 | np | FLOOR -5.3; SHELTER +0.5 |
+| kid.team.OmegaSquad | 83.27 / 87.83 | +8.2 | their survival | Niner x1; Darman x1: kid.team.Niner; Fi x1: kid.team.Niner; Atin x1: kid.team.Niner | +0.8 ± 3.1 | np | FLOOR -5.3; SHELTER +0.5 |
 | cx.mini.DemoniacNimrods | 71.87 / 82.76 | +9.5 | their survival |  | -1.2 ± 4.0 | none | FLOOR -0.1 |
 | bvh.team.Valkiries | 87.13 / 88.63 | +5.9 | their survival |  | +0.3 ± 3.1 | np | FLOOR -6.0 |
 | apvteam.MambaTeam | 85.92 / 87.6 | +9.8 | their survival |  | -0.3 ± 4.1 | nk | not run |
 | gh.nano.GrofGroup | 82.9 / 92.15 | +10.8 | their bullets |  | +5.2 ± 2.6 | np | not run |
 | rz.GlowingHawks | 85.19 / 86.36 | +5.2 | their survival | GHMember x5  | +1.9 ± 2.5 | li | SHELTER -4.1 |
-| tmnr.TMNR | 87.84 / 92.7 | +8.4 | their bullets | Donatello x1  | Giovanni x1  | Leonardo x1  | Michelangelo x1  | Raphael x1  | +1.8 ± 2.5 | ho | FLOOR -0.8 |
+| tmnr.TMNR | 87.84 / 92.7 | +8.4 | their bullets | Donatello x1; Giovanni x1; Leonardo x1; Michelangelo x1; Raphael x1 | +1.8 ± 2.5 | ho | FLOOR -0.8 |
 | gh.mini.GrubbmGroup | 87.57 / 92.99 | +8.5 | their bullets |  | -0.2 ± 2.3 | ga | not run |
 | radnor.RadnorMedSchool | 89.51 / 97.45 | +6.7 | their bullets | DoctorBobTeam x5  | +0.1 ± 1.0 | none | FLOOR -0.5 |
 | mn.nano.perceptual.ImpactTeam | 74.99 / 81.6 | +2.3 | their bullets | Impact x5  | -0.2 ± 2.9 | np | not run |
