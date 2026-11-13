@@ -635,6 +635,8 @@ final class ShieldTableData {
             "cb.fire.Firestarter 2.0f",
             "catcat20.Rabbit 0.001",
             "cb.Domogled 1.2",
+            // pc-lines (BENCH-238, PR #798): JKHydra +8.6 +- 5.5 on 8 fresh PC seeds (cloud +10.6 on 8 more)
+            "jkong.JKHydra 1.4",
         };
     }
 
