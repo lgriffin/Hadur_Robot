@@ -61,6 +61,13 @@ class PcClassOnePlanTest {
                 assertTrue(body.contains("stop: " + rule), step + " " + rule);
             }
         }
+        // After the results PR (#803): the robots whose lines held carry them on master.
+        String list = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldListData.java"));
+        String table = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldTableData.java"));
+        for (String n : names("plans/class-1-shipped.txt")) {
+            assertTrue(table.contains("\"" + n + "\""), n + " ships its line");
+        }
+        assertTrue(list.contains("\"hadur117.micro.Eveimear 0.5\""), "Eveimear is shielded");
         assertTrue(queue.contains("open_results_pr.sh claude/pc-class-1-results") && queue.contains("set P = --parallel 16 --no-truth-log"));
     }
 }
