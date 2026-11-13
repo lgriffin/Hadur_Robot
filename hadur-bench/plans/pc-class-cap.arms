@@ -1,0 +1,6 @@
+# pc-class-1 (BENCH-241), cap class: c is master, aa its A/A copy; each other arm is master with one candidate line per
+# robot of plans/class-cap-add.txt. Each line acts on its own robot only.
+c | hadur117.Hadur 3.22 | bisect/hadur117.Hadur_3.22.jar
+aa | hadur117.Hadur 3.22aa | bisect/hadur117.Hadur_3.22aa.jar
+pk | hadur117.Hadur 3.22pk | bisect/hadur117.Hadur_3.22pk.jar
+p5 | hadur117.Hadur 3.22p5 | bisect/hadur117.Hadur_3.22p5.jar

@@ -1,0 +1,15 @@
+# BENCH-241 pc-class-1, CAP class: pc-diagnose (PR #801) diagnosed CAP on these robots (BeepBoop 2+ points ahead in
+# the learn-trace run, no cap line on master yet); a lock row is a cloud lock on fresh seeds. name | role | jar
+jk.melee.Neuromancer 7.12 | cap bench 19.3 | jk.melee.Neuromancer_7.12.jar
+ags.rougedc.RougeDC willow | cap bench 15.3 | ags.rougedc.RougeDC_willow.jar
+lrem.micro.FalseProphet Alpha | cap bench 11.4 | lrem.micro.FalseProphet_Alpha.jar
+stelo.MatchupMicro 1.2 | cap bench 11.2 | stelo.MatchupMicro_1.2.jar
+mc2.enemy.Original 0.9 | cap bench 7.7 | mc2.enemy.Original_0.9.jar
+nz.jdc.nano.NeophytePRAL 1.4 | cap bench 7.3 | nz.jdc.nano.NeophytePRAL_1.4.jar
+m3thos.mini.Eva01 0.5.5 | cap bench 5.8 | m3thos.mini.Eva01_0.5.5.jar
+ms.Ares 0.19 | cap bench 5.7 | ms.Ares_0.19.jar
+ry.LightningBug 1.0 | cap bench 5.0 | ry.LightningBug_1.0.jar
+tkt.RedShift 1.1.CS.0 | cap bench 3.8 | tkt.RedShift_1.1.CS.0.jar
+divineomega.DivineBot 1.9.5 | cap bench 3.2 | divineomega.DivineBot_1.9.5.jar
+sheldor.nano.PointInLineRRAL 1.0.0 | cap bench 2.7 | sheldor.nano.PointInLineRRAL_1.0.0.jar
+dsx724.VSAB_EP3_ATR 1.1 | cap bench 2.3 | dsx724.VSAB_EP3_ATR_1.1.jar
