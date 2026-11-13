@@ -144,7 +144,7 @@ class ShieldOpeningTest {
         ShieldList l = ShieldList.parse(List.of("a.B", "shield-aim: 7 0.0125 a.B 1.0",
             "shield-aim: 2 -0.5 c.D", "shield-aim: x 0 e.F", "shield-aim: 3 e.F", "shield-move: c.D"));
         assertArrayEquals(new double[] {7, 0.0125}, l.aimFor("a.B 1.0"), 0.0);
-        assertNull(l.aimFor("a.B 2.0"), "a versioned aim is for that version only");
+        assertArrayEquals(new double[] {7, 0.0125}, l.aimFor("a.B 2.0"), 0.0, "an aim carries over to a new version (SHIELD-26)");
         assertArrayEquals(new double[] {2, -0.5}, l.aimFor("c.D 9"), 0.0);
         assertNull(l.aimFor("e.F 1"));
         assertTrue(l.moves("c.D 1.2"));

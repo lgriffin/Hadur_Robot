@@ -43,12 +43,17 @@ is the short version plus the house rules, which matter more than the tooling.
    says so.
 7. **Every run opens a results PR.** The card's last step (`tools/open_results_pr.sh`) does it. If
    it fails (no `gh`, a missing report), open it by hand from the same reports. One PR per run.
+   The owning cloud thread may bank a pass on that same PR (the held table lines added to it),
+   so one PR carries both the results and the bank.
 8. **Release-bound cards carry `set V`.** It must equal `robot.release` in `hadur-robot/pom.xml` on
    master (3.20 as of 2026-11-01). When master bumps the version, `prep` fails to find
    `hadur117.Hadur_${V}.jar`. Do not fix it locally; tell Leigh the card needs `set V` moved on
    master.
 9. **Releases are not yours.** Sessions cannot push tags. A Hadur release goes through the
    `release.yml` workflow on Leigh's word, and only when 1v1, team and melee are all ready.
+   Leigh sets when a formal release goes out; one may bundle several banked iterations, each
+   aimed at about +0.2 APS in 1v1. A release that only adds per-opponent table lines (no new
+   strategy code) is acceptable in principle.
 10. **A failed card leaves no code behind.** Failed experiment code in the robot
     is bloat. The owning cloud thread's results PR for a failed arm removes its switch, the
     code behind it, its ablation arm, its card and plan test, and moves its requirement to the
@@ -129,8 +134,8 @@ him the choices and wait for his pick:
    The owning cloud thread reads your comment, so say plainly what passed and what failed.
 4. Tell Leigh: the PR number, a small table (arm, size, gain, low end, verdict), run quality in one
    line, and what decision is his. Leigh routes results by PR number, so always give it.
-5. Do not merge the results PR or act on the result: shipping a pass is a cloud thread's PR,
-   census-gated, and releases need Leigh's go.
+5. Do not merge the results PR or act on the result: shipping a pass is the owning cloud
+   thread's job (it may bank on the results PR itself), and releases need Leigh's go.
 
 ## 7. Talking to Leigh
 

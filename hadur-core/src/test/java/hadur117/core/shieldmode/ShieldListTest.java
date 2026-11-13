@@ -26,12 +26,14 @@ class ShieldListTest {
     }
 
     @Test
-    @DisplayName("a name with its version matches that version only")
+    @Tag("SHIELD-26")
+    @DisplayName("a name with its version matches every version of that robot: lines carry over to a new version")
     void withVersion() {
         ShieldList list = ShieldList.parse(List.of("apv.test.Virus 0.6.1"));
         assertTrue(list.matches("apv.test.Virus 0.6.1"));
-        assertFalse(list.matches("apv.test.Virus 0.6.2"));
-        assertFalse(list.matches("apv.test.Virus"));
+        assertTrue(list.matches("apv.test.Virus 0.6.2"));
+        assertTrue(list.matches("apv.test.Virus"));
+        assertFalse(list.matches("apv.test.VirusX 0.6.1"), "still never a prefix");
     }
 
     @Test
@@ -85,7 +87,7 @@ class ShieldListTest {
             "heat-jit:", "gun-stack:   "));
         assertTrue(l.heatJit("a.B 1.0"));
         assertTrue(l.gunStack("a.B 1.0"));
-        assertFalse(l.heatJit("a.B 1.1"), "a versioned line matches that version only");
+        assertTrue(l.heatJit("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
         assertTrue(l.gunStack("c.D 2.3"), "a bare name matches every version");
         assertFalse(l.heatJit("c.D 2.3"));
         assertFalse(l.matches("a.B 1.0"), "not a shield entry");
@@ -101,7 +103,7 @@ class ShieldListTest {
     void perOpponentFloor() {
         ShieldList l = ShieldList.parse(List.of("shield-floor: a.B 1.0", "shield-floor: c.D", "shield-floor:"));
         assertTrue(l.floor("a.B 1.0"));
-        assertFalse(l.floor("a.B 1.1"), "a versioned line matches that version only");
+        assertTrue(l.floor("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
         assertTrue(l.floor("c.D 2.3"), "a bare name matches every version");
         assertFalse(l.still("a.B 1.0") || l.mirrorOff("a.B 1.0"), "no other switch");
         assertFalse(l.floor(null));
@@ -115,7 +117,7 @@ class ShieldListTest {
     void perOpponentPowerCap() {
         ShieldList l = ShieldList.parse(List.of("power-cap: a.B 1.0", "power-cap: c.D", "power-cap:"));
         assertTrue(l.powerCap("a.B 1.0"));
-        assertFalse(l.powerCap("a.B 1.1"), "a versioned line matches that version only");
+        assertTrue(l.powerCap("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
         assertTrue(l.powerCap("c.D 2.3"), "a bare name matches every version");
         assertFalse(l.floor("a.B 1.0") || l.racePower("a.B 1.0"), "no other switch");
         assertFalse(l.powerCap(null));
@@ -132,7 +134,7 @@ class ShieldListTest {
     void perOpponentMirrorOff() {
         ShieldList l = ShieldList.parse(List.of("mirror-off: a.B 1.0", "mirror-off: c.D", "flat-on: c.D", "mirror-off:"));
         assertTrue(l.mirrorOff("a.B 1.0"));
-        assertFalse(l.mirrorOff("a.B 1.1"), "a versioned line matches that version only");
+        assertTrue(l.mirrorOff("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
         assertTrue(l.mirrorOff("c.D 2.3"), "a bare name matches every version");
         assertTrue(l.flatOn("c.D 2.3"), "switches on one robot combine");
         assertFalse(l.flatOn("a.B 1.0") || l.racePower("a.B 1.0"), "no other switch");
@@ -147,7 +149,7 @@ class ShieldListTest {
     void perOpponentFlatOn() {
         ShieldList l = ShieldList.parse(List.of("flat-on: a.B 1.0", "flat-on: c.D", "heat-jit: c.D", "flat-on:"));
         assertTrue(l.flatOn("a.B 1.0"));
-        assertFalse(l.flatOn("a.B 1.1"), "a versioned line matches that version only");
+        assertTrue(l.flatOn("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
         assertTrue(l.flatOn("c.D 2.3"), "a bare name matches every version");
         assertTrue(l.heatJit("c.D 2.3"), "switches on one robot combine");
         assertFalse(l.heatJit("a.B 1.0") || l.still("a.B 1.0"), "no other switch");
@@ -162,7 +164,7 @@ class ShieldListTest {
     void perOpponentMimicOn() {
         ShieldList l = ShieldList.parse(List.of("mimic-on: a.B 1.0", "mimic-on: c.D", "flat-on: c.D", "mimic-on:"));
         assertTrue(l.mimicOn("a.B 1.0"));
-        assertFalse(l.mimicOn("a.B 1.1"), "a versioned line matches that version only");
+        assertTrue(l.mimicOn("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
         assertTrue(l.mimicOn("c.D 2.3"), "a bare name matches every version");
         assertTrue(l.flatOn("c.D 2.3"), "switches on one robot combine");
         assertFalse(l.flatOn("a.B 1.0") || l.heatJit("a.B 1.0"), "no other switch");
@@ -177,7 +179,7 @@ class ShieldListTest {
     void perOpponentFullOff() {
         ShieldList l = ShieldList.parse(List.of("full-off: a.B 1.0", "full-off: c.D", "mimic-on: c.D", "full-off:"));
         assertTrue(l.fullOff("a.B 1.0"));
-        assertFalse(l.fullOff("a.B 1.1"), "a versioned line matches that version only");
+        assertTrue(l.fullOff("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
         assertTrue(l.fullOff("c.D 2.3"), "a bare name matches every version");
         assertTrue(l.mimicOn("c.D 2.3"), "switches on one robot combine");
         assertFalse(l.mimicOn("a.B 1.0") || l.flatOn("a.B 1.0"), "no other switch");
@@ -192,7 +194,7 @@ class ShieldListTest {
     void perOpponentX5() {
         ShieldList l = ShieldList.parse(List.of("x5-power: a.B 1.0", "full-off: c.D", "x5-power:"));
         assertTrue(l.x5Power("a.B 1.0"));
-        assertFalse(l.x5Power("a.B 1.1"), "a versioned line matches that version only");
+        assertTrue(l.x5Power("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
         assertTrue(l.fullOff("c.D 2.3"), "switches on one robot combine");
         assertFalse(l.x5Power("c.D 2.3") || l.fullOff("a.B 1.0"), "no other switch");
         assertFalse(l.x5Power(null));
@@ -207,7 +209,7 @@ class ShieldListTest {
         ShieldList l = ShieldList.parse(List.of("a.B", "shield-exit4: a.B 1.0", "shield-exit0: c.D", "shield-exit4: c.D",
             "shield-exit0:"));
         assertEquals(400, l.stayDamage("a.B 1.0", 150));
-        assertEquals(150, l.stayDamage("a.B 1.1", 150), "a versioned line matches that version only");
+        assertEquals(400, l.stayDamage("a.B 1.1", 150), "a line carries over to a new version (SHIELD-26)");
         assertEquals(Double.MAX_VALUE, l.stayDamage("c.D 2.3", 150), "no exit wins over the later exit");
         assertEquals(150, l.stayDamage("e.F 1", 150));
         assertEquals(150, l.stayDamage(null, 150));
@@ -232,7 +234,7 @@ class ShieldListTest {
         assertEquals(1.4, k[9]);
         k[1] = 9;
         assertEquals(2.0, l.surfKeyFor("a.B 1.0")[1], "a fresh copy each call");
-        assertEquals(null, l.surfKeyFor("a.B 1.1"), "a versioned line matches that version only");
+        assertEquals(2.0, l.surfKeyFor("a.B 1.1")[1], "a line carries over to a new version (SHIELD-26)");
         assertEquals(2.0, l.surfKeyFor("c.D 3")[9], "a versionless line matches every version");
         assertEquals(null, l.surfKeyFor("e.F 1.0"), "nine values: the name would be a number");
         assertEquals(null, l.surfKeyFor("g.H 1"), "a zero multiplier is skipped");
