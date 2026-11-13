@@ -229,7 +229,31 @@ public class MoveController {
     /** MOVE-16: the view's weight in the danger average: its own, times its multiplier when on. */
     private double effectiveWeight(int i) {
         KnnView<TimestampedGuessFactor> view = views.get(i);
-        return view.weight;
+        if (viewRoll == null) return view.weight;
+        return view.weight * Math.pow(2.0, VIEW_ROLL_POWER * viewRoll[i]);
+    }
+
+    /**
+     * MOVE-41: each view's rolling score on the bullets that hit us (and, with MOVE-30, the bullets
+     * our bullets met), as {@link AimMembers} scores its members: a decaying mean of log2 of the
+     * view's probability at the bullet over a uniform guess's. Null when off. The offline rolling
+     * blend (docs/bench/local/2026-10-29_k1-rolling-cloud.md, decay 0.8, power 1, times the shipped
+     * weights) scored +0.025 bits with no robot worse of 36; the robot's views kept fixed weights.
+     */
+    private double[] viewRoll;
+    /** MOVE-41: each new bullet's share of a view's rolling score is 1 - this. */
+    static final double VIEW_ROLL_DECAY = 0.8;
+    /** MOVE-41: the power of 2 on a view's rolling score in its weight. */
+    static final double VIEW_ROLL_POWER = 1.0;
+
+    /** MOVE-41: turns the views' rolling weights on (scores from 0) or off. */
+    public void setViewRolling(boolean on) {
+        viewRoll = on ? new double[views.size()] : null;
+    }
+
+    /** MOVE-41: view {@code i}'s rolling score, 0 with the switch off. */
+    double viewRollScore(int i) {
+        return viewRoll == null ? 0.0 : viewRoll[i];
     }
 
     /**
@@ -517,6 +541,7 @@ public class MoveController {
         brokenWaveOutcomes.clear();
         brokenWavePowers.clear();
         ourBullets.clear();
+        deathTurns.clear();
         plan = List.of();
         lastPlans.clear();
         lastPlanTimes.clear();
@@ -633,12 +658,31 @@ public class MoveController {
         // Oldest first, so of two matching bullets the older one goes.
         for (Iterator<OurBullet> it = ourBullets.iterator(); it.hasNext(); ) {
             OurBullet b = it.next();
+            if (deathTurns.containsKey(b)) continue;
             if (Double.isNaN(heading) ? Math.abs(b.power - power) < 1e-6 : b.is(heading, power)) {
-                it.remove();
+                // MOVE-43: the bullet stays for the shadows it cast before it died; the event
+                // comes on the turn it died, the tick after the last updateShadows.
+                if (keepShadows) deathTurns.put(b, shadowTime + 1);
+                else it.remove();
                 bulletsVersion++;
                 return;
             }
         }
+    }
+
+    /**
+     * MOVE-43: whether a bullet that has hit, missed or met a bullet keeps the shadows it cast
+     * on the turns before (DrussGT 3.1.18's fix); off, it takes them with it, as before.
+     */
+    private boolean keepShadows;
+    /** MOVE-43: the turn each gone bullet died on; a bullet in here casts only before it. */
+    private final java.util.IdentityHashMap<OurBullet, Long> deathTurns = new java.util.IdentityHashMap<>();
+    /** MOVE-43: the tick of the last {@link #updateShadows}. */
+    private long shadowTime = -1;
+
+    /** MOVE-43: turns kept shadows on or off. */
+    public void setKeepShadows(boolean on) {
+        this.keepShadows = on;
     }
 
     /**
@@ -745,9 +789,32 @@ public class MoveController {
      * @param time the current tick
      */
     public void updateShadows(long time) {
-        // RES-2: a bullet whose event we never get (or have not got yet) still leaves the
-        // list once it is off the field.
-        if (ourBullets.removeIf(b -> {
+        shadowTime = time;
+        if (keepShadows) {
+            // MOVE-43: a bullet off the field dies now (its walk already stops at the edge); a
+            // dead one leaves once no firing wave in the air was fired before it died, since
+            // it can shadow none of them (and none fired later).
+            for (OurBullet b : ourBullets) {
+                if (deathTurns.containsKey(b)) continue;
+                java.awt.geom.Point2D.Double p = b.at(time);
+                if (p.x < 0 || p.y < 0 || p.x > battleField.width || p.y > battleField.height) {
+                    deathTurns.put(b, time);
+                    bulletsVersion++;
+                }
+            }
+            long[] firstFire = {Long.MAX_VALUE};
+            waveManager.forAllWaves(w -> {
+                if (w.firingWave) firstFire[0] = Math.min(firstFire[0], w.fireTime);
+            });
+            ourBullets.removeIf(b -> {
+                Long d = deathTurns.get(b);
+                if (d == null || (firstFire[0] != Long.MAX_VALUE && d > firstFire[0] + 1)) return false;
+                deathTurns.remove(b);
+                return true;
+            });
+        } else if (ourBullets.removeIf(b -> {
+            // RES-2: a bullet whose event we never get (or have not got yet) still leaves the
+            // list once it is off the field.
             java.awt.geom.Point2D.Double p = b.at(time);
             return p.x < 0 || p.y < 0 || p.x > battleField.width || p.y > battleField.height;
         })) {
@@ -762,7 +829,8 @@ public class MoveController {
                 w.setShadows(new ArrayList<>());
             } else {
                 List<List<double[]>> shadows =
-                    BulletShadows.of(w, ourBullets, battleField.width, battleField.height);
+                    BulletShadows.of(w, ourBullets, b -> deathTurns.getOrDefault(b, Long.MAX_VALUE),
+                        battleField.width, battleField.height);
                 w.setShadows(shadows.get(0), shadows.get(1));
             }
             // Count each wave once per round, the first time it has any shadow at all.
@@ -1306,7 +1374,8 @@ public class MoveController {
             for (KnnView<TimestampedGuessFactor> view : views) {
                 if (view.effectiveSize() > 0 && viewOn(view, estimate)) viewsHaveData = true;
             }
-            scores[0] = viewsHaveData ? getDangerScore(w, at, FORENSICS_CACHE, null, false) : Double.NaN;
+            double[] parts = viewRoll != null && viewsHaveData ? new double[2 * views.size() + 1] : null;
+            scores[0] = viewsHaveData ? getDangerScore(w, at, FORENSICS_CACHE, parts, false) : Double.NaN;
             double[] aims = aimScores(w, at.angle, bandwidth, w.transmission(at));
             double[] aimAngles = w.simpleAims();
             for (int a = 0; a < AimMembers.AIMS.length; a++) {
@@ -1317,9 +1386,25 @@ public class MoveController {
             System.arraycopy(aims, 0, scores, 1, aims.length);
             double escape = w.maxEscapeAngle();
             aimMembers.learn(scores, escape > 0 ? bandwidth / escape : Double.NaN);
+            if (parts != null && escape > 0) learnViewRoll(parts, bandwidth / escape);
         } finally {
             for (KnnView<TimestampedGuessFactor> view : views) view.cachedNeighbors.remove(FORENSICS_CACHE);
             cacheOwners.remove(FORENSICS_CACHE);
+        }
+    }
+
+    /**
+     * MOVE-41: scores each view that had a say on a bullet: its density there (its share of the
+     * danger over its share of the scan weight, so its weight cancels) against a uniform guess's,
+     * mixed with {@link AimMembers#EPS} of the uniform, as the aim members are scored.
+     */
+    private void learnViewRoll(double[] parts, double uniform) {
+        int n = views.size();
+        for (int vi = 0; vi < n; vi++) {
+            if (!(parts[n + vi] > 0)) continue;
+            double density = parts[vi] / parts[n + vi];
+            double ratio = (1 - AimMembers.EPS) * Math.max(0.0, density) / 2.0 / uniform + AimMembers.EPS;
+            viewRoll[vi] = VIEW_ROLL_DECAY * viewRoll[vi] + (1 - VIEW_ROLL_DECAY) * (Math.log(ratio) / Math.log(2.0));
         }
     }
 
