@@ -641,23 +641,22 @@ final class ShieldTableData {
     }
 
     /**
+     * MOVE-40: the opponents the duel's surf orbits closer along the walls against, one name each.
+     * Empty until a card holds robots; candidate builds add lines here (build-ablation.sh whlist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] wallHugs() {
+        return new String[] {
+        };
+    }
+
+    /**
      * POW-18: the opponents the duel never fires above 0.5 power at, one name each. Shipped by
      * pc-power-cap (BENCH-236); candidate builds add lines here (build-ablation.sh pcap5list).
      *
      * @return a fresh array of names
      */
-    /**
-     * MOVE-39: the opponents the duel's surf keeps DuelController.DIST_FAR px farther from, one name
-     * each. Empty until a card holds robots; candidate builds add lines here (build-ablation.sh
-     * dflist).
-     *
-     * @return a fresh array of names
-     */
-    static String[] distFars() {
-        return new String[] {
-        };
-    }
-
     static String[] powerCapHalves() {
         return new String[] {
             "stelo.MatchupAGF 1.1",

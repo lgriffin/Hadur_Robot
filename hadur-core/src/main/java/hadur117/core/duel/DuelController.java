@@ -364,7 +364,7 @@ public final class DuelController {
         if (x5Power) on.add("x5");
         if (racePower) on.add("race");
         if (!Double.isNaN(powerCap)) on.add("cap");
-        if (distShift != 0) on.add("far");
+        if (wallHug) on.add("wall");
         if (shield != null && shield.active()) on.add("shield");
         return on.isEmpty() ? "-" : String.join(",", on);
     }
@@ -923,13 +923,13 @@ public final class DuelController {
     public static final double CAP_POWER = 0.2;
     /** POW-18: the softer cap of a power-cap5 line, for a robot where 0.2 starves the gun. */
     public static final double CAP_POWER_HALF = 0.5;
-    /** MOVE-39: the px the table adds to the surf's distance against this opponent, 0 for none. */
-    private double distShift;
+    /** MOVE-40: whether the table names this opponent with a wall-hug line. */
+    private boolean wallHug;
     /**
-     * MOVE-39: what a dist-far line adds to the distance the surf keeps. pc-diagnose (BENCH-240) found
-     * BeepBoop fighting about 110 px farther than the duel against 111 robots it beats by 2+ points.
+     * MOVE-40: the surf's wall stick under a wall-hug line (160 px otherwise). pc-diagnose (BENCH-240)
+     * found BeepBoop near a wall 30 points more of its turns than the duel against 236 robots it beats.
      */
-    public static final double DIST_FAR = 110;
+    public static final double WALL_HUG_STICK = 100.0;
     /** POW-17: whether the race picked the last power, for the P record on a change. */
     private boolean raceApplied;
     /** POW-17: the energy race, fed every resolved duel bullet whether or not it is on. */
@@ -1400,8 +1400,9 @@ public final class DuelController {
         // POW-18: the power cap for the opponents the table names.
         powerCap = duelOnly(stackList.powerCap(name), enemiesTotal) ? CAP_POWER
             : duelOnly(stackList.powerCapHalf(name), enemiesTotal) ? CAP_POWER_HALF : Double.NaN;
-        // MOVE-39: the farther stand-off for the opponents the table names.
-        distShift = duelOnly(stackList.distFar(name), enemiesTotal) ? DIST_FAR : 0;
+        // MOVE-40: the closer wall orbit for the opponents the table names.
+        wallHug = duelOnly(stackList.wallHug(name), enemiesTotal);
+        surfMover.setWallStick(wallHug ? WALL_HUG_STICK : SurfMover.WALL_STICK);
         // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names, never a shield-mode one
         // (its TripHammer aims break the shield's bullet hits); the gun keeps them 1v1-only.
         if (duelOnly(stackList.gunStack(name) && !stackList.matches(name), enemiesTotal)) {
@@ -1672,9 +1673,7 @@ public final class DuelController {
         if (now == Endgame.State.FINISH) stats.finishTicks++;
         if (now == Endgame.State.RAM) stats.ramTicks++;
         // END-1 overrides the controller's target with the finishing distance, 150 px.
-        // MOVE-39 adds a dist-far line's stand-off outside the finish.
-        surfMover.setDesiredDistance(distance.target(now == Endgame.State.FINISH)
-            + (now == Endgame.State.FINISH ? 0 : distShift));
+        surfMover.setDesiredDistance(distance.target(now == Endgame.State.FINISH));
         // RAM-1: the no-wave orbit takes the other side while a rammer is closing.
         surfMover.setRammerActive(ramActive);
     }

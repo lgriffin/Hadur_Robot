@@ -248,7 +248,7 @@
 #   sfloorlist the robots named in $SHIELD_FLOOR get SHIELD-25's 0.4 shield power floor. Suffix sf.
 #   pcaplist the robots named in $POWER_CAP get POW-18's 0.2 duel power cap. Suffix pk.
 #   pcap5list the robots named in $POWER_CAP5 get POW-18's 0.5 duel power cap. Suffix p5.
-#   dflist the robots named in $DIST_FAR get MOVE-39's farther duel stand-off. Suffix df.
+#   whlist the robots named in $WALL_HUG get MOVE-40's closer wall orbit. Suffix wh.
 #   szlist the robots named in $SHIELD_STILL get SHIELD-20's still shot plans (SHIELD-21,
 #         ShieldTableData.stills()). Suffix zl.
 #   fllist the robots named in $FLAT_ON get the flattener views back on in the duel (MOVE-32,
@@ -772,7 +772,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
                 edit "$movedesign" "static final int STOP_AND_GO_PREFIRE = 1;" "static final int STOP_AND_GO_PREFIRE = 2;"
                 version="${version}ws"
             else version="${version}wp"; fi ;;
-        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist|mirofflist|sfloorlist|pcaplist|pcap5list|dflist)
+        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist|mirofflist|sfloorlist|pcaplist|pcap5list|whlist)
             # Shield part 2 (docs/plan-shield-quality.md): per-opponent opening drive or shipped aims;
             # the mode table's simple-aim dodge (DODGE-3).
             if [[ "$a" == smovelist ]]; then file="${SHIELD_MOVE:-}"; method="moves"; version="${version}mv"
@@ -789,14 +789,14 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
             elif [[ "$a" == sfloorlist ]]; then file="${SHIELD_FLOOR:-}"; method="shieldFloors"; version="${version}sf"
             elif [[ "$a" == pcaplist ]]; then file="${POWER_CAP:-}"; method="powerCaps"; version="${version}pk"
             elif [[ "$a" == pcap5list ]]; then file="${POWER_CAP5:-}"; method="powerCapHalves"; version="${version}p5"
-            elif [[ "$a" == dflist ]]; then file="${DIST_FAR:-}"; method="distFars"; version="${version}df"
+            elif [[ "$a" == whlist ]]; then file="${WALL_HUG:-}"; method="wallHugs"; version="${version}wh"
             elif [[ "$a" == mirofflist ]]; then file="${MIRROR_OFF:-}"; method="mirrorOffs"; version="${version}mo"
             elif [[ "$a" == mmlist ]]; then file="${MIMIC_ON:-}"; method="mimicOns"; version="${version}mq"
             elif [[ "$a" == fplist ]]; then file="${FULL_OFF:-}"; method="fullOffs"; version="${version}fp"
             elif [[ "$a" == x5list ]]; then file="${X5_POWER:-}"; method="x5Powers"; version="${version}x5"
             elif [[ "$a" == rplist ]]; then file="${RACE_POWER:-}"; method="racePowers"; version="${version}${RACE_POWER_SUFFIX:-rp}"
             else file="${STOP_GO2:-}"; method="stopGoShifts"; version="${version}wm"; fi
-            [[ -n "$file" && -f "$file" ]] || { echo "$a needs SHIELD_MOVE / SHIELD_AIM / SHOT_DODGE / STOP_GO / STOP_GO2 / HEAT_JIT / GUN_STACK / SHIELD_EXIT4 / SHIELD_EXIT0 / SHIELD_STILL / SURF_KEY / FLAT_ON / MIMIC_ON / FULL_OFF / X5_POWER / RACE_POWER / MIRROR_OFF / DIST_FAR=<file>" >&2; exit 2; }
+            [[ -n "$file" && -f "$file" ]] || { echo "$a needs SHIELD_MOVE / SHIELD_AIM / SHOT_DODGE / STOP_GO / STOP_GO2 / HEAT_JIT / GUN_STACK / SHIELD_EXIT4 / SHIELD_EXIT0 / SHIELD_STILL / SURF_KEY / FLAT_ON / MIMIC_ON / FULL_OFF / X5_POWER / RACE_POWER / MIRROR_OFF / WALL_HUG=<file>" >&2; exit 2; }
             add="$(python3 -c 'import sys,json
 lines=[l.split("\t")[0].strip() for l in open(sys.argv[1]) if l.strip() and not l.startswith("#")]
 print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines)), end="")' "$file")"
