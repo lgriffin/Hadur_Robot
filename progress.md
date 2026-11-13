@@ -1,6 +1,6 @@
 # Queue pc-shadow: progress
 
-Updated 2026-11-13 21:14:02 PC time (21:14 UTC), runner pid 63312.
+Updated 2026-11-13 21:14:04 PC time (21:14 UTC), runner pid 63312.
 
 - `prep` done, exit 0 in 2 min
 - `field` halted, exit 75 in 14 min, HALTED by skips 60 over 200: 61.2 a battle over the last 200 (first 200: 60.3)
@@ -43,4 +43,6 @@ Stopping now would leave 6952 battles unrun (about 8.1 h); every battle already 
 20:59:52 progress field: 0/7158 (0%) battles, 0 failed
 21:14:02 STOP field by rule skips 60 over 200: 61.2 a battle over the last 200 (first 200: 60.3); 206 battles fought and kept, 6952 battles left unrun (about 8.1 h)
 21:14:02 field exit=75 in 865 s (halted, skips 60 over 200)
+21:14:04 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/808
+21:14:04 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 ```
