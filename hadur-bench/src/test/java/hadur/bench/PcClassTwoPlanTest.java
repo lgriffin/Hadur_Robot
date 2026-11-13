@@ -12,7 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-242: the second class card (plans/pc-class-2.queue): the WALL class with wall-hug lines, two locks. */
+/** BENCH-242: the second class card (plans/pc-class-2.queue): wall-hug cloud locks and two class-1 locks. */
 class PcClassTwoPlanTest {
 
     private static List<String> names(String file) throws IOException {
@@ -22,7 +22,7 @@ class PcClassTwoPlanTest {
 
     @Test
     @Tag("BENCH-242")
-    @DisplayName("236 WALL robots with c/aa/wh on 8 seeds, Gouldingi and SOS locked on 12 fresh seeds, picks and stop rules")
+    @DisplayName("the 3 cloud-locked WALL robots with c/aa/wh on 12 seeds, Gouldingi and SOS locked on 12 fresh seeds, picks and stop rules")
     void cardIsComplete() throws IOException {
         String queue = Files.readString(Path.of("plans/pc-class-2.queue"));
         String version = Files.readString(Path.of("../hadur-robot/pom.xml"))
@@ -30,7 +30,7 @@ class PcClassTwoPlanTest {
         assertTrue(queue.contains("set V = " + version + "\n"), "the card builds the current release");
         java.util.Set<String> broken = Broken.names(Path.of(Broken.FILE));
         List<String> wall = names("panel-class-wall.txt");
-        assertEquals(236, wall.size());
+        assertEquals(List.of("florent.XSeries.X2 0.17", "jk.precise.Wintermute 0.8", "whind.StrengthBee 0.6.4"), wall, "the cloud locks");
         assertEquals(wall.size(), new HashSet<>(wall).size(), "no robot twice");
         assertEquals(wall, names("plans/class-wall-add.txt"), "one wall-hug line per panel robot");
         for (String n : wall) assertTrue(!broken.contains(n), n + " loads on 1.11.2");
@@ -51,7 +51,7 @@ class PcClassTwoPlanTest {
         assertTrue(queue.contains("WALL_HUG=plans/class-wall-add.txt bash ./build-ablation.sh whlist &&")
             && queue.contains("SHIELD_ADD=plans/class-lock2-shield.txt SHIELD_STILL=plans/class-lock2-shield.txt bash ./build-ablation.sh slistadd,szlist &&")
             && queue.contains("X5_POWER=plans/class-lock2-x5.txt bash ./build-ablation.sh x5list &&"));
-        assertTrue(queue.contains("--set panel-class-wall.txt --seeds 8 --seed-base 18800 --arms plans/pc-class-wall.arms --out ${W}-wall "));
+        assertTrue(queue.contains("--set panel-class-wall.txt --seeds 12 --seed-base 18800 --arms plans/pc-class-wall.arms --out ${W}-wall "));
         assertTrue(queue.contains("--set panel-class-lock2.txt --seeds 12 --seed-base 18900 --arms plans/pc-class-lock2.arms --out ${W}-lock "));
         assertTrue(queue.contains("mode_table.py ${W}-wall/arms.tsv --margin 3 "));
         for (String step : new String[] {"wall", "lock"}) {
