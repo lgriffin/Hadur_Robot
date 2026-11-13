@@ -260,7 +260,6 @@ final class ShieldListData {
             "PkKillers.PkAssassin 1.0",
             "apv.NanoLauLectrik 1.0",
             "ary.Help 1.0",
-            "cs.s2.Seraphim 2.3.1",
             "cuoq.Kakera 1.0",
             "dz.Caedo 1.4",
             "ers.micro.ISuck.ISuckMicro 0.1f",
