@@ -12,3 +12,9 @@
 18:18:57 start gun
 18:18:57 watching gun: 5 stop rule(s)
 18:32:24 progress gun: 587/960 (61%) battles, 2620/h, ETA 9 min, 0 failed, skips 35.8/battle (last 100), aa -0.01, gl +0.01, x5 +0.02
+18:45:14 gun exit=0 in 1577 s
+18:45:14 start gate
+18:45:15 gate exit=0 in 1 s
+18:45:15 start pr
+18:45:23 pr exit=0 in 7 s
+18:45:23 ALLDONE
