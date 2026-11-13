@@ -1,0 +1,19 @@
+{
+ "plan": "pc-shadow",
+ "updated": 1794603471.8217201,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "field": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
