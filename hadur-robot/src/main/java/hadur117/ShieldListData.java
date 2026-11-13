@@ -358,6 +358,8 @@ final class ShieldListData {
             "djc.Aardvark 0.3.6",
             // pc-shield-floor (BENCH-235, PR #781): with still and floor lines on 12 fresh seeds, +37.7 (control 60.9); still alone +0.3
             "pez.rumble.CassiusClay 2rho.02no",
+            // pc-class-1 (BENCH-241, PR #803): with a still line on 8 fresh PC seeds, +24.3 (low end +19.9); cloud lock held first
+            "hadur117.micro.Eveimear 0.5",
         };
     }
 }

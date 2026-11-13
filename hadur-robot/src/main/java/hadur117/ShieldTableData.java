@@ -512,6 +512,8 @@ final class ShieldTableData {
             // BENCH-207 pc-tailor-near (PR #704): leaned on pc-tailor-field's screen, picked on 4 new seeds, kept on 4 fresh ones (screen / confirm points).
             "xander.cat.Mikey 1.2",                        // +2.9 / +4.3
             "kc.mega.BeepBoop 2.0",                        // +15.2 / +3.1
+            // pc-class-1 (BENCH-241, PR #803): +14.1 on 8 fresh PC seeds (low end +10.4); cloud lock held first
+            "cz.libors.Ogi v1",
         };
     }
 
@@ -607,6 +609,8 @@ final class ShieldTableData {
             "djc.Aardvark 0.3.6",
             // pc-shield-floor (BENCH-235, PR #781): CassiusClay +37.7 on 12 fresh seeds with the floor line
             "pez.rumble.CassiusClay 2rho.02no",
+            // pc-class-1 (BENCH-241, PR #803): +24.3 on 8 fresh PC seeds with the shield list line (low end +19.9)
+            "hadur117.micro.Eveimear 0.5",
         };
     }
 

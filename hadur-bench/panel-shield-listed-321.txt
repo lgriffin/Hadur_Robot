@@ -287,3 +287,4 @@ cjm.Che 1.2 | rank253-band4 | cjm.Che_1.2.jar
 djc.Aardvark 0.3.6 | rank678-band5 | djc.Aardvark_0.3.6.jar
 florent.XSeries.X2 0.17 | rank50-band2 | florent.XSeries.X2_0.17.jar
 pez.rumble.CassiusClay 2rho.02no | rank35-band2 | pez.rumble.CassiusClay_2rho.02no.jar
+hadur117.micro.Eveimear 0.5 | pc-class-1 | hadur117.micro.Eveimear_0.5.jar
