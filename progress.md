@@ -1,6 +1,6 @@
 # Queue pc-modes-check: progress
 
-Updated 2026-11-14 14:52:37 PC time (14:52 UTC), runner pid 46572.
+Updated 2026-11-14 15:08:45 PC time (15:08 UTC), runner pid 46572.
 
 - `mcprep` done, exit 0 in 2 min
 - `maa` done, exit 0 in 46 min
@@ -33,18 +33,17 @@ Skipped turns a battle: 52.6 overall, first 100 51.3, last 100 54.8.
 
 ### mso
 
-**8 battles**, 0 failed. Running 9 min, 56 battles/h. Last battle 0 min ago.
-Skipped turns a battle: 28.0 overall, first 8 28.0, last 8 28.0.
+**28 battles**, 0 failed. Running 25 min, 68 battles/h. Last battle 1 min ago.
+Skipped turns a battle: 41.2 overall, first 28 41.2, last 28 41.2.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 8 |
-| `stall 30m` | halt | ok | last battle 0 min ago |
+| `fails 20` | halt | ok | 0 failed of 28 |
+| `stall 30m` | halt | ok | last battle 1 min ago |
 
 ### Queue log (last lines)
 
 ```
-12:19:20 progress pushed to origin claude/pc-modes-check-progress (every 15 min)
 12:21:33 mcprep exit=0 in 135 s
 12:21:33 start maa
 12:21:33 watching maa: 2 stop rule(s)
@@ -59,4 +58,5 @@ Skipped turns a battle: 28.0 overall, first 8 28.0, last 8 28.0.
 14:44:05 mbb exit=0 in 5807 s
 14:44:05 start mso
 14:44:05 watching mso: 2 stop rule(s)
+14:53:38 progress mso: 8 battles, 50/h, 0 failed, skips 28.0/battle (last 100)
 ```
