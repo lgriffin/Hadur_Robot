@@ -53,7 +53,8 @@ class ShieldListResourceTest {
         // pc-ala-shield (PR #733): Ala joins with a still line. pc-shield-rescreen (PR #739): Saturn and OperatorZeze.
         // pc-still-field (PR #746): X2, Che and Aardvark. pc-shield-floor (PR #781): CassiusClay.
         // Seraphim leaves: its lines lost on 2.4.0 (docs/bench/local/2026-11-13_vr.md). pc-class-1 (PR #803): Eveimear. pc-class-2 (PR #806): Gouldingi.
-        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1 - 1 + 1 + 1, list.size());
+        // pc-r31 (PR #817): Musashi.
+        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1 - 1 + 1 + 1 + 1, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
@@ -229,8 +230,8 @@ class ShieldListResourceTest {
         // exit off; Hydrogen's line goes, since it left the list for stop-and-go and a still line reads only shielded.
         // pc-shelf (PR #636): Entangled. pc-shield-audit (PR #697): Princess, with exit off.
         // pc-ala-shield (PR #733): Ala. pc-shield-rescreen (PR #739): Saturn and OperatorZeze.
-        // pc-still-field (PR #746): X2, Che and Aardvark. pc-shield-floor (PR #781): CassiusClay. pc-class-1 (PR #803): Eveimear. pc-class-2 (PR #806): Gouldingi.
-        assertEquals(17 + 9 + 5 - 1 + 1 + 1 + 1 + 2 + 3 + 1 + 1 + 1, ShieldTableData.stills().length);
+        // pc-still-field (PR #746): X2, Che and Aardvark. pc-shield-floor (PR #781): CassiusClay. pc-class-1 (PR #803): Eveimear. pc-class-2 (PR #806): Gouldingi. pc-r31 (PR #817): Musashi.
+        assertEquals(17 + 9 + 5 - 1 + 1 + 1 + 1 + 2 + 3 + 1 + 1 + 1 + 1, ShieldTableData.stills().length);
         assertTrue(list.matches("lechu.Ala 0.0.4") && list.still("lechu.Ala 0.0.4"));
         assertTrue(list.matches("cx.Princess 1.0") && Arrays.asList(ShieldTableData.exitOffs()).contains("cx.Princess 1.0"));
         for (String n : ShieldTableData.stills()) {
@@ -268,7 +269,7 @@ class ShieldListResourceTest {
         java.util.List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
         for (String n : ShieldTableData.flatOns()) lines.add(ShieldList.FLAT_ON_PREFIX + " " + n);
         ShieldList list = ShieldList.parse(lines);
-        assertEquals(2 + 4 + 2, ShieldTableData.flatOns().length, "pc-flat-on, pc-tailor-field (BENCH-197) and pc-tailor-near (BENCH-207) picks");
+        assertEquals(2 + 4 + 2 + 1, ShieldTableData.flatOns().length, "pc-flat-on, pc-tailor-field (BENCH-197), pc-tailor-near (BENCH-207) and pc-r31 (BENCH-244) picks");
         for (String n : ShieldTableData.flatOns()) {
             assertTrue(list.flatOn(n), n + " surfs with the flatteners on");
             // pc-tailor-field (BENCH-197) banked two flat-on picks on shielded robots, acting when the shield is not driving.
@@ -313,7 +314,7 @@ class ShieldListResourceTest {
         java.util.List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
         for (String n : ShieldTableData.racePowers()) lines.add(ShieldList.RACE_POWER_PREFIX + " " + n);
         ShieldList list = ShieldList.parse(lines);
-        assertEquals(8, ShieldTableData.racePowers().length, "pc-race-power (BENCH-206, PR #695) confirm picks");
+        assertEquals(8 + 1, ShieldTableData.racePowers().length, "pc-race-power (BENCH-206, PR #695) confirm picks and pc-r31 (BENCH-244, PR #817)");
         for (String n : ShieldTableData.racePowers()) assertTrue(list.racePower(n), n);
         assertTrue(!list.racePower("abc.Shadow 3.83c"), "a pilot robot that did not hold the 3-point margin");
     }

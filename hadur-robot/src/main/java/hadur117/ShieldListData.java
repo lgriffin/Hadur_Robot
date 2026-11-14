@@ -362,6 +362,8 @@ final class ShieldListData {
             "hadur117.micro.Eveimear 0.5",
             // pc-class-2 (BENCH-242, PR #806): with a still line, +5.9 on 12 fresh PC seeds (+5.2 on pc-class-1's 8)
             "pez.mini.Gouldingi 1.5",
+            // pc-r31 (BENCH-244, PR #817): with a still line, +21.0 on 12 fresh PC seeds at the live turn time
+            "axeBots.Musashi 2.18",
         };
     }
 }
