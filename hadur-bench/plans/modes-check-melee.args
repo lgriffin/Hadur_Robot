@@ -1,0 +1,23 @@
+# PC card pc-modes-check (BENCH-246): one build alone on the whole melee field, 46 census fields x 4 seeds from 40000, at the machine's melee width (@C@) and CPU constant. Template: mcprep writes work/modes-check-melee-<arm>.args with @V@ = the robot.release in hadur-robot/pom.xml and @A@ = aa (master), bb (its copy) or so (master with MOVE-43's shadow fix off).
+--suite
+melee-census-317.txt
+--seeds
+4
+--seed-base
+40000
+--rounds
+35
+--parallel
+@C@
+--child-heap
+2G
+--cpu-constant
+auto
+--robot-jar
+bisect/hadur117.Hadur_@V@@A@.jar
+--robot
+hadur117.Hadur @V@@A@
+--out
+work/modes-check-melee-@V@-@A@
+--report
+../docs/bench/local/modes-check-melee-@A@.md

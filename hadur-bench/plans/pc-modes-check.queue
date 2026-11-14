@@ -1,0 +1,50 @@
+# battle: melee
+# Release check for team and melee (BENCH-246): does master's 1v1 work change the team and melee end games?
+# MOVE-43's shadow fix (PR #814) lives in the duel controller, which team and melee both hand over to when one enemy
+# is left; it was measured in 1v1 only. Every other change since 3.22 is a per-opponent 1v1 line. The card reads:
+#   melee  aa (master), bb (its copy) and so (master with the shadow fix off), each alone on the 46 census fields,
+#          4 seeds from 40000 (184 battles an arm); melee_s0.py pairs so with the mean of aa and bb.
+#   team   bb and so against aa on all 46 census teams, 8 seeds from 7400 (368 battles an arm).
+# The fix ships unless an end game loses to it: melee so above master by more than the A/A spread, or team so above
+# master beyond its 95% interval. Nothing is banked or released by this card.
+# Leigh starts it once the PC is free (one card at a time, from master):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-modes-check        (or  ./queue.sh run pc-modes-check)
+# About 1,300 battles, 2 to 3 hours. Stop rules (docs/bench/watch.md): halt on 20 failed battles or no battle in
+# 30 minutes. ALERT opens an issue on any stop. The card ends in a results PR, whatever the read.
+
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+mcprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && for a in aa bb so; do rm -f bisect/hadur117.Hadur_"$V"$a.jar bisect/hadur117.HadurTeam_"$V"$a.jar; done && rm -f ${OUT}/modes-check-*.md && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh shoff && for a in aa bb so; do test -f bisect/hadur117.Hadur_"$V"$a.jar && test -f bisect/hadur117.HadurTeam_"$V"$a.jar || exit 1; done && mkdir -p work && for a in aa bb so; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/${MELEE_WORKERS}/g" plans/modes-check-melee.args > work/modes-check-melee-$a.args; done && for a in bb so; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" plans/modes-check-team.args > work/modes-check-team-$a.args; done && ./fetch-opponents.sh --set team-census46.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+
+maa | mvn -q exec:java "-Dexec.args=@work/modes-check-melee-aa.args"
+  after: mcprep
+  stop: fails 20
+  stop: stall 30m
+
+mbb | mvn -q exec:java "-Dexec.args=@work/modes-check-melee-bb.args"
+  after: maa
+  stop: fails 20
+  stop: stall 30m
+
+mso | mvn -q exec:java "-Dexec.args=@work/modes-check-melee-so.args"
+  after: mbb
+  stop: fails 20
+  stop: stall 30m
+
+tbb | mvn -q exec:java "-Dexec.args=@work/modes-check-team-bb.args"
+  after: mso
+  stop: fails 20
+  stop: stall 30m
+
+tso | mvn -q exec:java "-Dexec.args=@work/modes-check-team-so.args"
+  after: tbb
+  stop: fails 20
+  stop: stall 30m
+
+mcread | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && W=work/modes-check-melee-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm so="$W"-so --census melee-census-317.txt --seeds 4 --gain 0 --survival-slack 1 --out ${OUT}/modes-check-melee-read.md --title "Melee: the shadow fix off against master, $V"; test -s ${OUT}/modes-check-melee-read.md; }
+  after: tso
+
+mcpr | bash tools/open_results_pr.sh claude/pc-modes-check-results "Release check: the shadow fix in team and melee end games" ${OUT}/modes-check-melee-read.md $(ls ${OUT}/modes-check-team-*.md ${OUT}/modes-check-melee-*.md 2>/dev/null | grep -v melee-read)
+  after: mcread
