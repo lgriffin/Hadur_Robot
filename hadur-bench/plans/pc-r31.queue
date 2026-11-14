@@ -1,0 +1,61 @@
+# 1v1, the 31 real-gap robots (BENCH-244): screen every per-opponent lever on each robot, then lock each robot's best
+# lever on 12 fresh seeds in the same card. The 31 are the robots whose live gap to BeepBoop held on our own bench
+# (5+ points; together about 430 points, 0.36 APS): strong learning guns (Seraphim, Neuromancer, Shadow, Gilgalad,
+# Firestarter, Foilist, Ascendant, Musashi, ...). Their bullets hit us 8.9% of the time against 5.2% for BeepBoop.
+#   screen  31 robots   c / aa / mtzl / fq / gl / mq / x5 / wl / hl / rp     6 seeds from 20800
+#   pick    each robot's best lever at a 3-point margin, 95% low end above 0 (mode_table.py)
+#   lock    the picked robots   c / aa / the picked arms, each rebuilt with only its picks   12 fresh seeds from 21000
+#   gate    a robot ships its line only where the lock's 95% low end is above 0 (mode_table.py --margin 0)
+# Leigh starts it once the PC is free (one card at a time, from master):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-r31        (or  ./queue.sh run pc-r31)
+# One bench queue, RoboRumble workers at 0, unpinned, 16 workers, truth log off. Every step resumes; no step needs a
+# decision. About 1,860 screen battles plus a lock of up to ~1,000, 2 to 3 hours.
+#
+# Why it should win (the PC card rule of 2026-11-03):
+#   - Per-opponent tailoring: every line names one robot; every other robot, team and melee play bit for bit as master.
+#   - The robots are the ones where the gap is real (bench, not 1-battle live noise), and each keeps a line only after
+#     12 fresh seeds with the 95% low end above 0 (the 13 Nov lock bar), measured on the PC rather than on the 4-core
+#     cloud, which runs these strong robots at about 30 battles an hour.
+#   - A cloud 2-seed screen of 5 of these levers on all 31 runs alongside; its leads are not a lock and do not pick here.
+# Pilot and stop rules (docs/bench/watch.md): each step's aa arm halts the card after 20% if master and its copy
+# disagree; halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle over the last 200, or
+# no battle in 30 minutes. ALERT opens an issue for Leigh on any stop.
+# Bank: the owning cloud thread adds the gate's lines on this card's results PR. Nothing is released by the card.
+
+set V = 3.22
+set P = --parallel 16 --no-truth-log --failed-ok
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
+set W = work/pc-r31
+set L = work/pc-r31-lock
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && SHIELD_ADD=plans/r31-add.txt SHIELD_STILL=plans/r31-add.txt bash ./build-ablation.sh slistadd,szlist && FLAT_ON=plans/r31-add.txt bash ./build-ablation.sh fllist && GUN_STACK=plans/r31-add.txt bash ./build-ablation.sh gslist && MIMIC_ON=plans/r31-add.txt bash ./build-ablation.sh mmlist && X5_POWER=plans/r31-add.txt bash ./build-ablation.sh x5list && STOP_GO=plans/r31-add.txt bash ./build-ablation.sh sgolist && HEAT_JIT=plans/r31-add.txt bash ./build-ablation.sh hjlist && RACE_POWER=plans/r31-add.txt bash ./build-ablation.sh rplist && for a in mtzl fq gl mq x5 wl hl rp; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; done && ./fetch-opponents.sh --set panel-r31.txt && mvn -q compile
+
+screen | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 6 --seed-base 20800 --arms plans/pc-r31.arms --out ${W} --label pc-r31 --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+pick | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-r31-screen.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 3 --out-tsv ${OUT}/pc-r31-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-r31-pick.md && python3 tools/per_robot.py ${W}/arms.tsv --arms mtzl fq gl mq x5 wl hl rp --out ${OUT}/$(date +%Y-%m-%d)_pc-r31-screen-per-robot.md --out-tsv ${OUT}/pc-r31-screen-per-robot.tsv && python3 tools/lock_prep.py ${OUT}/pc-r31-pick.tsv panel-r31.txt plans/pc-r31.arms ${L}-prep && bash ${L}-prep/build.sh
+  after: screen
+
+lock | if [ -s ${L}-prep/picks-panel.txt ]; then ./bench-top20.sh ${C} ${P} --set ${L}-prep/picks-panel.txt --seeds 12 --seed-base 21000 --arms ${L}-prep/lock.arms --out ${L} --label pc-r31-lock --shuffle-jobs; fi
+  after: pick
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+gate | if [ -s ${L}-prep/picks-panel.txt ]; then python3 ../data/tools/multiarm.py ${L}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-r31-lock.md && python3 ../data/tools/mode_table.py ${L}/arms.tsv --margin 0 --out-tsv ${OUT}/pc-r31-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-r31-lock-pick.md && python3 tools/per_robot.py ${L}/arms.tsv --arms $(grep -v '^#' ${L}-prep/lock.arms | cut -d'|' -f1 | grep -v -w -e c -e aa | tr -d ' ' | tr '\n' ' ') --out ${OUT}/$(date +%Y-%m-%d)_pc-r31-lock-per-robot.md --out-tsv ${OUT}/pc-r31-lock-per-robot.tsv; fi
+  after: lock
+
+pr | bash tools/open_results_pr.sh claude/pc-r31-results "1v1 the 31 real-gap robots: every lever screened, the best per robot locked on 12 fresh seeds" ${OUT}/*_pc-r31-*.md ${OUT}/pc-r31-*-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-r31-*pick.tsv' -size +0c)
+  after: gate
