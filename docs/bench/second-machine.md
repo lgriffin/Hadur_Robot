@@ -26,6 +26,11 @@ Why the laptop needs its own CPU constant: the constant is the time a robot gets
 PC's 1488498 ns on a slower CPU gives every robot less work a turn than it needs, and skipped turns
 pile up. A rumble client on the laptop would calibrate its own, so the bench does too.
 
+The PC's own 1488498 is an idle calibration, and the PC runs 12 to 16 battles at once, so under
+load it is too tight as well: BeepBoop skips about 500 turns a battle there. 1v1 PC cards since
+14 Nov pin `--cpu-constant live` (3272413 ns, the value that matched LiteRumble) and run a
+live-match check first (BENCH-245, `docs/bench/live-match.md`).
+
 ## Cards that scale
 
 A card written with the host variables runs 12 wide on the PC and narrower on the laptop with no

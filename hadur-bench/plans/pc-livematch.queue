@@ -1,0 +1,50 @@
+# 1v1 live-match check of the PC itself (BENCH-245): does the PC bench, with 16 workers, score us AND BeepBoop as
+# LiteRumble does? Master (c) and BeepBoop 2.0 (bb) on the 31 real-gap robots, 2 seeds from 21700, at two turn times:
+#   live   --cpu-constant live (3272413 ns, the value that matched LiteRumble on the cloud on 14 Nov)
+#   old    --cpu-constant 1488498 (the pin every PC card used until now)
+# tools/live_match.py reads each against live (plans/live-1v1-2026-11-13.tsv): the gap BeepBoop minus us within 4
+# points of live, BeepBoop within 3 points of its live level, BeepBoop skipping at most 100 turns a battle.
+# Leigh starts it once the PC is free (one card at a time, from master):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-livematch        (or  ./queue.sh run pc-livematch)
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 248 battles, about 25 minutes.
+#
+# Why it is needed (docs/bench/local/2026-11-14_night.md, section 5): every earlier PC check compared Hadur arms with
+# each other, never us or BeepBoop with live. On the cloud, 1488498 made BeepBoop skip ~500 turns a battle and
+# read 4.5 points below live while we stayed level, so the bench shrank the gap from 17.4 to 9.7 and under-read any
+# CPU-heavy line of ours (the shield lines most). The cloud's calibrated 3272413 matched live. This card checks the
+# same on the PC with its 16 workers: if `live` passes, every new 1v1 PC card runs at it; if it fails, the report
+# says which way and the next card raises or lowers the constant.
+# Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, or no battle in 30
+# minutes. No skips rule: BeepBoop's skips at the old constant are the measurement. ALERT opens an issue on any stop.
+# The read step always opens the results PR, pass or fail; the reports in it carry the verdict. Nothing is banked
+# or released by this card.
+
+set V = 3.22
+set P = --parallel 16 --no-truth-log --failed-ok
+set C = --skip-build --skip-fetch --rounds 35 --child-heap 2G
+set W = work/pc-livematch
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && mvn -q compile
+
+live | ./bench-top20.sh ${C} --cpu-constant live ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out ${W}-live --label pc-livematch-live --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: stall 30m
+
+old | ./bench-top20.sh ${C} --cpu-constant 1488498 ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out ${W}-old --label pc-livematch-old --shuffle-jobs
+  after: live
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: stall 30m
+
+read | python3 tools/live_match.py ${W}-old/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-livematch-old.md; python3 tools/live_match.py ${W}-live/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-livematch-live.md; true
+  after: old
+
+pr | bash tools/open_results_pr.sh claude/pc-livematch-results "1v1 live-match check of the PC bench: us and BeepBoop against live at two turn times" ${OUT}/*_pc-livematch-*.md
+  after: read
