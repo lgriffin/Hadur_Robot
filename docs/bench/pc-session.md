@@ -9,7 +9,10 @@ is the short version plus the house rules, which matter more than the tooling.
 
 - **Machine:** `lgriffin_home`, AMD Threadripper PRO 9965WX, 24 cores / 48 threads, 127 GB RAM.
   The bench auto-sizes to 12 workers for duel, team and melee, CPU constant 1488498
-  (`.\queue.ps1 host` prints it). Never pin workers and never change the width on your own.
+  (`.\queue.ps1 host` prints it). 1v1 cards written after 14 Nov pin `--cpu-constant live`
+  (3272413) instead and run a live-match step first: at 1488498 with 16 workers BeepBoop skips
+  about 500 turns a battle and the bench under-reads the gap to it by half (BENCH-245,
+  `docs/bench/live-match.md`). Never pin workers and never change the width on your own.
 - **Checkout:** `D:\code\Hadur_Robot`. The bench runs from `D:\code\Hadur_Robot\hadur-bench`; its
   `work\` folder holds every battle (`.\queue.ps1 host` and the first `host` line of each queue log
   show where it really lives).
