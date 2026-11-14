@@ -33,3 +33,5 @@
 09:52:32 start lock
 09:52:32 watching lock: 5 stop rule(s)
 09:53:14 progress lock: 14/924 (2%) battles, 1221/h, ETA 45 min, 0 failed, skips 13.1/battle (last 100)
+10:17:28 STOP lock by rule aa after 20%: aa - c -1.39 pts over 11 robots, stop band ±1.38 (observed spread); 717 battles fought and kept, 207 battles left unrun (about 7 min)
+10:17:28 lock exit=75 in 1496 s (halted, aa after 20%)
