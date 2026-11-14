@@ -8,3 +8,9 @@
 12:11:01 live exit=0 in 504 s
 12:11:01 start old
 12:11:01 watching old: 3 stop rule(s)
+12:19:07 old exit=0 in 485 s
+12:19:07 start read
+12:19:08 read exit=0 in 0 s
+12:19:08 start pr
+12:19:14 pr exit=0 in 6 s
+12:19:14 ALLDONE

@@ -1,12 +1,12 @@
 # Queue pc-livematch: progress
 
-Updated 2026-11-14 12:17:25 PC time (12:17 UTC), runner pid 59328.
+Updated 2026-11-14 12:19:14 PC time (12:19 UTC), runner pid 59328.
 
 - `prep` done, exit 0 in 0 min
 - `live` done, exit 0 in 8 min
-- `old` running
-- `read` pending
-- `pr` pending
+- `old` done, exit 0 in 8 min
+- `read` done, exit 0 in 0 min
+- `pr` done, exit 0 in 0 min
 
 ### live
 
@@ -32,30 +32,29 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### old
 
-**120 of 124 battles** (97%), 0 failed. Running 6 min, 1127 battles/h, about 0 min left (ends ~12:17 PC time). Last battle 0 min ago.
-Skipped turns a battle: 140.8 overall, first 100 61.0, last 100 165.1; engine disables 0.
+**124 of 124 battles** (100%), 0 failed. Running 8 min, 919 battles/h, about 0 min left (ends ~12:19 PC time). Last battle 0 min ago.
+Skipped turns a battle: 172.4 overall, first 100 61.0, last 100 209.0; engine disables 0.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 59 | 0 | 74.08 | - | - | - | 31.5 |
-| bb | 61 | 0 | 81.17 | +0.19 (30 robots) | ±0.06 | +0.10 .. +0.28 | 246.6 |
+| c | 62 | 0 | 73.60 | - | - | - | 31.5 |
+| bb | 62 | 0 | 81.19 | +0.19 (31 robots) | ±0.06 | +0.10 .. +0.28 | 313.3 |
 
 APS = mean difference over the robots read x 31 panel robots / 1217 pairings.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 120 |
+| `fails 30` | halt | ok | 0 failed of 124 |
 | `dead 8` | halt | ok | every arm scoring |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 4 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 > warning: arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 935 h before this step started: check it is not stale
 
 ### Queue log (last lines)
 
 ```
-12:02:18 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant calibrated; work D:\code\Hadur_Robot\hadur-bench\work
 12:02:18 start prep
 12:02:20 progress pushed to origin claude/pc-livematch-progress (every 15 min)
 12:02:36 prep exit=0 in 18 s
@@ -65,4 +64,10 @@ Stopping now would leave 4 battles unrun (about 0 min); every battle already fou
 12:11:01 live exit=0 in 504 s
 12:11:01 start old
 12:11:01 watching old: 3 stop rule(s)
+12:19:07 old exit=0 in 485 s
+12:19:07 start read
+12:19:08 read exit=0 in 0 s
+12:19:08 start pr
+12:19:14 pr exit=0 in 6 s
+12:19:14 ALLDONE
 ```

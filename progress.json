@@ -1,6 +1,6 @@
 {
  "plan": "pc-livematch",
- "updated": 1794658645.0493808,
+ "updated": 1794658754.7507524,
  "steps": {
   "prep": {
    "status": "done",
@@ -15,14 +15,22 @@
    "end": "2026-11-14T12:11:01"
   },
   "old": {
-   "status": "running",
-   "start": "2026-11-14T12:11:01"
+   "status": "done",
+   "exit": 0,
+   "seconds": 485,
+   "end": "2026-11-14T12:19:07"
   },
   "read": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-11-14T12:19:08"
   },
   "pr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 6,
+   "end": "2026-11-14T12:19:14"
   }
  },
  "watched": [
@@ -99,8 +107,8 @@
   {
    "step": "old",
    "started": 1794658261.8606486,
-   "updated": 1794658645.0190458,
-   "elapsed": 383.1583971977234,
+   "updated": 1794658747.7025084,
+   "elapsed": 485.8418598175049,
    "expected": 124,
    "panel": 31,
    "field": 1217,
@@ -108,26 +116,26 @@
    "arms": [
     {
      "arm": "c",
-     "battles": 59,
+     "battles": 62,
      "failed": 0,
-     "level": 74.08366666666667,
-     "skips": 31.45762711864407,
-     "fresh": 59,
-     "scored": 59,
+     "level": 73.59693548387096,
+     "skips": 31.5,
+     "fresh": 62,
+     "scored": 62,
      "diff": null
     },
     {
      "arm": "bb",
-     "battles": 61,
+     "battles": 62,
      "failed": 0,
-     "level": 81.17129032258065,
-     "skips": 246.60655737704917,
-     "fresh": 61,
-     "scored": 61,
-     "diff": 7.351166666666666,
-     "n": 30,
-     "ci95": 2.3452527602167357,
-     "half_stop": 3.5896725921684727,
+     "level": 81.19306451612903,
+     "skips": 313.3225806451613,
+     "fresh": 62,
+     "scored": 62,
+     "diff": 7.596129032258064,
+     "n": 31,
+     "ci95": 2.3020005781775854,
+     "half_stop": 3.523470272720793,
      "scale": 0.025472473294987676
     }
    ],
@@ -135,20 +143,20 @@
    "warnings": [
     "arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 935 h before this step started: check it is not stale"
    ],
-   "battles": 120,
+   "battles": 124,
    "resumed": 0,
    "failed": 0,
    "disables": 0,
-   "rate": 1127.4710489434285,
-   "eta": 12.771946573257447,
-   "fraction": 0.967741935483871,
-   "last_battle_age": 1.8641538619995117,
+   "rate": 918.8174937574948,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 3.5098016262054443,
    "rules": [
     {
      "rule": "fails 30",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 120"
+     "detail": "0 failed of 124"
     },
     {
      "rule": "dead 8",
@@ -163,8 +171,8 @@
      "detail": "last battle 0 min ago"
     }
    ],
-   "skips_mean": 140.825,
-   "skips_last100": 165.07
+   "skips_mean": 172.41129032258064,
+   "skips_last100": 209
   }
  ]
 }
