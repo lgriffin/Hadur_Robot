@@ -13,10 +13,13 @@ and every Hadur-only A/B on that bench under-reads CPU-heavy play. That is what 
 against 17.4 live.
 
 The check PASSES when the gap is within --gap-tol points of live, BeepBoop's level within --level-tol points
-of its live level, and BeepBoop skips at most --bb-skips turns a battle. It exits 1 on FAIL, so a queue step
-that runs it halts every step after it.
+of its live level, and BeepBoop skips at most --bb-skips turns a battle. Battles are paired by opponent AND
+seed: a seed one arm finished and the other did not is left out, and every robot of --panel (default
+panel-r31.txt; "none" to skip) must keep at least one paired seed, or the check fails. It exits 3 on FAIL
+(any other non-zero exit is an error), so a queue step that runs it halts every step after it.
 
-Usage: live_match.py ARMS.tsv [--live plans/live-1v1-2026-11-13.tsv] [--us c] [--bb bb] [--out REPORT.md]
+Usage: live_match.py ARMS.tsv [--live plans/live-1v1-2026-11-13.tsv] [--panel panel-r31.txt] [--us c] [--bb bb]
+                     [--out REPORT.md]
 """
 import argparse
 import csv
@@ -27,6 +30,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent.parent
 DEFAULT_LIVE = HERE / "plans" / "live-1v1-2026-11-13.tsv"
+DEFAULT_PANEL = HERE / "panel-r31.txt"
+FAIL_EXIT = 3
 
 
 def base_name(robot):
@@ -46,9 +51,19 @@ def read_live(path):
     return live
 
 
+def read_panel(path):
+    """Base names of a set file's robots (name | rank | jar)."""
+    names = []
+    for line in open(path):
+        if line.strip() and not line.startswith("#"):
+            names.append(base_name(line.split("|")[0]))
+    return names
+
+
 def read_arms(path, us, bb):
-    """Per arm, per opponent base name: list of (score share in points, skipped turns)."""
-    out = {us: defaultdict(list), bb: defaultdict(list)}
+    """Per arm, per opponent base name, per seed: (score share in points, skipped turns). Seeds an arm did not
+    finish are absent; read_arms keeps only seeds BOTH arms finished."""
+    out = {us: defaultdict(dict), bb: defaultdict(dict)}
     with open(path, newline="") as f:
         for r in csv.DictReader(f, delimiter="\t"):
             if r.get("arm") not in out or r.get("ok", "true").lower() != "true":
@@ -61,8 +76,13 @@ def read_arms(path, us, bb):
                 skips = float(r.get("skippedTurns") or 0)
             except ValueError:
                 skips = 0.0
-            out[r["arm"]][base_name(r["opponent"])].append((share, skips))
-    return out
+            out[r["arm"]][base_name(r["opponent"])][r.get("seed", "1")] = (share, skips)
+    paired = {us: defaultdict(list), bb: defaultdict(list)}
+    for opp, seeds in out[us].items():
+        for seed in sorted(set(seeds) & set(out[bb].get(opp, {}))):
+            paired[us][opp].append(out[us][opp][seed])
+            paired[bb][opp].append(out[bb][opp][seed])
+    return paired
 
 
 def mean_ci(xs):
@@ -76,7 +96,8 @@ def mean_ci(xs):
     return m, 1.96 * sd / math.sqrt(n)
 
 
-def check(arms, live, us, bb, gap_tol, level_tol, bb_skip_max):
+def check(arms, live, us, bb, gap_tol, level_tol, bb_skip_max, panel=None):
+    missing = [r for r in (panel or []) if r not in live or not arms[us].get(r)]
     robots = sorted(r for r in live if arms[us].get(r) and arms[bb].get(r))
     rows = []
     for r in robots:
@@ -99,6 +120,9 @@ def check(arms, live, us, bb, gap_tol, level_tol, bb_skip_max):
     res["skips_us"] = sum(skips[us]) / max(1, len(skips[us]))
     res["skips_bb"] = sum(skips[bb]) / max(1, len(skips[bb]))
     reasons = []
+    if missing:
+        reasons.append(f"{len(missing)} panel robots have no seed both arms finished, or no live score: "
+                       + ", ".join(missing[:8]) + (" ..." if len(missing) > 8 else ""))
     if abs(res["d_gap"][0]) > gap_tol:
         reasons.append(f"gap off live by {res['d_gap'][0]:+.2f} points (tolerance {gap_tol})")
     if abs(res["d_bb"][0]) > level_tol:
@@ -132,6 +156,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("arms")
     ap.add_argument("--live", default=str(DEFAULT_LIVE))
+    ap.add_argument("--panel", default=str(DEFAULT_PANEL))
     ap.add_argument("--us", default="c")
     ap.add_argument("--bb", default="bb")
     ap.add_argument("--gap-tol", type=float, default=4.0)
@@ -139,13 +164,14 @@ def main(argv=None):
     ap.add_argument("--bb-skips", type=float, default=100.0)
     ap.add_argument("--out")
     a = ap.parse_args(argv)
-    res = check(read_arms(a.arms, a.us, a.bb), read_live(a.live), a.us, a.bb, a.gap_tol, a.level_tol, a.bb_skips)
+    panel = None if a.panel == "none" else read_panel(a.panel)
+    res = check(read_arms(a.arms, a.us, a.bb), read_live(a.live), a.us, a.bb, a.gap_tol, a.level_tol, a.bb_skips, panel)
     text = report(res, a.arms, a.us, a.bb)
     if a.out:
         Path(a.out).parent.mkdir(parents=True, exist_ok=True)
         Path(a.out).write_text(text + "\n")
     print(text)
-    return 0 if res["verdict"] == "PASS" else 1
+    return 0 if res["verdict"] == "PASS" else FAIL_EXIT
 
 
 if __name__ == "__main__":

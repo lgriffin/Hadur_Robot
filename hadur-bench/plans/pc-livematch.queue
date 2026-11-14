@@ -17,7 +17,8 @@
 # says which way and the next card raises or lowers the constant.
 # Stop rules (docs/bench/watch.md): halt on 30 failed battles, an arm scoring nothing in 8, or no battle in 30
 # minutes. No skips rule: BeepBoop's skips at the old constant are the measurement. ALERT opens an issue on any stop.
-# The read step always opens the results PR, pass or fail; the reports in it carry the verdict. Nothing is banked
+# The read step writes both reports fresh and goes on to the results PR whether each passes (exit 0) or fails
+# (exit 3); any other error stops the card. The reports carry the verdict. Nothing is banked
 # or released by this card.
 
 set V = 3.22
@@ -43,8 +44,8 @@ old | ./bench-top20.sh ${C} --cpu-constant 1488498 ${P} --set panel-r31.txt --se
   stop: dead 8
   stop: stall 30m
 
-read | python3 tools/live_match.py ${W}-old/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-livematch-old.md; python3 tools/live_match.py ${W}-live/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-livematch-live.md; true
+read | rm -f ${OUT}/pc-livematch-old.md ${OUT}/pc-livematch-live.md && for t in old live; do python3 tools/live_match.py ${W}-$t/arms.tsv --out ${OUT}/pc-livematch-$t.md; rc=$?; if [ $rc -ne 0 ] && [ $rc -ne 3 ]; then exit $rc; fi; test -s ${OUT}/pc-livematch-$t.md || exit 1; done
   after: old
 
-pr | bash tools/open_results_pr.sh claude/pc-livematch-results "1v1 live-match check of the PC bench: us and BeepBoop against live at two turn times" ${OUT}/*_pc-livematch-*.md
+pr | bash tools/open_results_pr.sh claude/pc-livematch-results "1v1 live-match check of the PC bench: us and BeepBoop against live at two turn times" ${OUT}/pc-livematch-old.md ${OUT}/pc-livematch-live.md
   after: read
