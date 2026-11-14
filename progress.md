@@ -1,6 +1,6 @@
 # Queue pc-modes-check: progress
 
-Updated 2026-11-14 14:05:29 PC time (14:05 UTC), runner pid 46572.
+Updated 2026-11-14 14:21:20 PC time (14:21 UTC), runner pid 46572.
 
 - `mcprep` done, exit 0 in 2 min
 - `maa` done, exit 0 in 46 min
@@ -23,13 +23,13 @@ Skipped turns a battle: 29.0 overall, first 100 28.6, last 100 28.6.
 
 ### mbb
 
-**152 battles**, 0 failed. Running 58 min, 157 battles/h. Last battle 1 min ago.
-Skipped turns a battle: 52.7 overall, first 100 51.3, last 100 54.7.
+**164 battles**, 0 failed. Running 1.2 h, 133 battles/h. Last battle 0 min ago.
+Skipped turns a battle: 51.7 overall, first 100 51.3, last 100 53.5.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 152 |
-| `stall 30m` | halt | ok | last battle 1 min ago |
+| `fails 20` | halt | ok | 0 failed of 164 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
 
 ### Queue log (last lines)
 
