@@ -1,6 +1,6 @@
 {
  "plan": "pc-r31",
- "updated": 1794652752.3465238,
+ "updated": 1794653659.9911144,
  "steps": {
   "prep": {
    "status": "done",
@@ -21,11 +21,8 @@
    "end": "2026-11-14T09:52:32"
   },
   "lock": {
-   "status": "halted",
-   "exit": 75,
-   "seconds": 1496,
-   "end": "2026-11-14T10:17:28",
-   "halted_by": "aa after 20%: aa - c -1.39 pts over 11 robots, stop band \u00b11.38 (observed spread)"
+   "status": "running",
+   "start": "2026-11-14T10:39:12"
   },
   "gate": {
    "status": "skipped",
@@ -36,5 +33,166 @@
    "reason": "after gate"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "lock",
+   "started": 1794652752.3523607,
+   "updated": 1794653659.932614,
+   "elapsed": 907.5802533626556,
+   "expected": 924,
+   "panel": 11,
+   "field": 1217,
+   "multiarm": true,
+   "arms": [
+    {
+     "arm": "c",
+     "battles": 128,
+     "failed": 0,
+     "level": 68.02378787878789,
+     "skips": 11.09375,
+     "fresh": 27,
+     "scored": 27,
+     "diff": null
+    },
+    {
+     "arm": "aa",
+     "battles": 128,
+     "failed": 0,
+     "level": 66.74253787878789,
+     "skips": 10.875,
+     "fresh": 25,
+     "scored": 25,
+     "diff": -1.2812499999999987,
+     "n": 11,
+     "ci95": 0.8717002289355349,
+     "half_stop": 1.334235044289084,
+     "scale": 0.009038619556285949
+    },
+    {
+     "arm": "mtzl",
+     "battles": 131,
+     "failed": 0,
+     "level": 70.19974517906336,
+     "skips": 11.114503816793894,
+     "fresh": 29,
+     "scored": 29,
+     "diff": 2.8165823002754844,
+     "n": 11,
+     "ci95": 3.7025184785217626,
+     "half_stop": 5.667120120186371,
+     "scale": 0.009038619556285949
+    },
+    {
+     "arm": "fq",
+     "battles": 128,
+     "failed": 0,
+     "level": 68.37299242424243,
+     "skips": 10.546875,
+     "fresh": 26,
+     "scored": 26,
+     "diff": 0.9898295454545469,
+     "n": 11,
+     "ci95": 1.7388396929296406,
+     "half_stop": 2.6614893259127155,
+     "scale": 0.009038619556285949
+    },
+    {
+     "arm": "gl",
+     "battles": 130,
+     "failed": 0,
+     "level": 70.01184848484849,
+     "skips": 11.069230769230769,
+     "fresh": 25,
+     "scored": 25,
+     "diff": 2.6286856060606083,
+     "n": 11,
+     "ci95": 1.897292907737952,
+     "half_stop": 2.904019756741763,
+     "scale": 0.009038619556285949
+    },
+    {
+     "arm": "x5",
+     "battles": 126,
+     "failed": 0,
+     "level": 68.63280303030302,
+     "skips": 10.46031746031746,
+     "fresh": 25,
+     "scored": 25,
+     "diff": 1.2496401515151532,
+     "n": 11,
+     "ci95": 1.5916423148090613,
+     "half_stop": 2.436187216544482,
+     "scale": 0.009038619556285949
+    },
+    {
+     "arm": "rp",
+     "battles": 132,
+     "failed": 0,
+     "level": 68.75515151515151,
+     "skips": 11.121212121212121,
+     "fresh": 28,
+     "scored": 28,
+     "diff": 1.3719886363636398,
+     "n": 11,
+     "ci95": 1.329165603900064,
+     "half_stop": 2.034437148826629,
+     "scale": 0.009038619556285949
+    }
+   ],
+   "aa": {
+    "diff": -1.2812499999999987,
+    "ci": 0.8717002289355349,
+    "n": 11,
+    "band": 1.032,
+    "ok": false,
+    "band_stop": 1.334235044289084,
+    "band_from": "observed spread"
+   },
+   "warnings": [
+    "jobs are in set order (no --shuffle-jobs): running means read the set's first robots"
+   ],
+   "battles": 903,
+   "resumed": 718,
+   "failed": 0,
+   "disables": 6,
+   "rate": 733.8194033336645,
+   "eta": 103.02262335467984,
+   "fraction": 0.9772727272727273,
+   "last_battle_age": 103.40027189254761,
+   "rules": [
+    {
+     "rule": "fails 30",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 903"
+    },
+    {
+     "rule": "dead 8",
+     "action": "halt",
+     "state": "ok",
+     "detail": "every arm scoring"
+    },
+    {
+     "rule": "skips 60 over 200",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "185 of 200 battles to read"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 2 min ago"
+    },
+    {
+     "rule": "aa after 20%",
+     "action": "halt",
+     "state": "ok",
+     "detail": "aa - c -1.28 pts over 11 robots, stop band \u00b11.33 (observed spread)"
+    }
+   ],
+   "skips_mean": 12.85945945945946,
+   "skips_last100": 13.64
+  }
+ ]
 }
