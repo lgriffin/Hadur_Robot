@@ -140,7 +140,9 @@ public final class FixtureReplay {
             }
         }
         if (store != null) {
-            for (String name : store.names()) r.store.put(name, store.read(name));
+            // store.hx is the adapter's file (see above): a warm fixture's starting store can carry
+            // one from the battle before, which the replay passes through untouched, so it is left out too.
+            for (String name : store.names()) if (!"store.hx".equals(name)) r.store.put(name, store.read(name));
             // A battle that ends with no file left still says so.
             if (r.recordedStore == null && lines.stream().anyMatch(l -> l.startsWith("HE,"))) {
                 r.recordedStore = Collections.emptyMap();
