@@ -11,6 +11,12 @@ BASE.arms the screen's arms file. Writes into OUTDIR:
   build.sh          the build-ablation.sh calls that rebuild each picked arm with only its own robots
 Always exits 0, so a card with no pick carries on to its results PR; the lock and gate steps test
 picks-panel.txt for content.
+
+  python3 tools/lock_prep.py --restrict ARMS.tsv OUTDIR PICKED.tsv
+
+keeps the lock's c and aa rows and, for each lever arm, only the rows of the robots picked for it
+(OUTDIR/<arm>.list), so the gate judges each robot on its own pick and never on an arm that carries
+no line for it.
 """
 import os
 import sys
@@ -56,5 +62,28 @@ def main(pick, panel, base_arms, outdir):
     return 0
 
 
+def restrict(arms_tsv, outdir, out):
+    lists = {}
+    for arm in LEVERS:
+        path = os.path.join(outdir, arm + ".list")
+        if os.path.exists(path):
+            lists[arm] = {l.strip() for l in open(path) if l.strip()}
+    kept = 0
+    with open(arms_tsv) as f, open(out, "w") as g:
+        head = f.readline()
+        g.write(head)
+        cols = head.rstrip("\n").split("\t")
+        ai, oi = cols.index("arm"), cols.index("opponent")
+        for line in f:
+            p = line.rstrip("\n").split("\t")
+            if p[ai] in ("c", "aa") or p[oi] in lists.get(p[ai], ()):
+                g.write(line)
+                kept += 1
+    print("lock_prep: kept %d rows" % kept)
+    return 0
+
+
 if __name__ == "__main__":
+    if sys.argv[1:2] == ["--restrict"]:
+        sys.exit(restrict(*sys.argv[2:5]))
     sys.exit(main(*sys.argv[1:5]))
