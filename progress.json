@@ -1,0 +1,25 @@
+{
+ "plan": "pc-r31",
+ "updated": 1794643577.2584996,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "screen": {
+   "status": "pending"
+  },
+  "pick": {
+   "status": "pending"
+  },
+  "lock": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
