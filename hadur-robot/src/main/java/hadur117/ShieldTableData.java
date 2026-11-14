@@ -514,6 +514,11 @@ final class ShieldTableData {
             "kc.mega.BeepBoop 2.0",                        // +15.2 / +3.1
             // pc-class-1 (BENCH-241, PR #803): +14.1 on 8 fresh PC seeds (low end +10.4); cloud lock held first
             "cz.libors.Ogi v1",
+            // pc-r31 (BENCH-244, PR #817): 12 fresh PC seeds at the live turn time, beating master and its A/A copy
+            "cb.fire.Firestarter 2.0f",                    // +8.6
+            "kc.serpent.WaveSerpent 2.11",                 // +4.7
+            "sheldor.mini.Foilist 1.3.1",                  // +4.1
+            "jk.precise.Wintermute 0.8",                   // +4.0
         };
     }
 
@@ -613,6 +618,8 @@ final class ShieldTableData {
             "hadur117.micro.Eveimear 0.5",
             // pc-class-2 (BENCH-242, PR #806): +5.9 on 12 fresh PC seeds with the shield list line (+5.2 on pc-class-1's 8)
             "pez.mini.Gouldingi 1.5",
+            // pc-r31 (BENCH-244, PR #817): +21.0 on 12 fresh PC seeds at the live turn time, with the shield list line
+            "axeBots.Musashi 2.18",
         };
     }
 
@@ -696,6 +703,8 @@ final class ShieldTableData {
             // BENCH-207 pc-tailor-near (PR #704): leaned on pc-tailor-field's screen, picked on 4 new seeds, kept on 4 fresh ones (screen / confirm points).
             "rsalesc.roborio.Roborio 1.2.4",               // +5.1 / +1.8
             "apv.LauLectrik 1.2",                          // +7.8 / -1.8
+            // pc-r31 (BENCH-244, PR #817): +7.0 on 12 fresh PC seeds at the live turn time
+            "mue.Ascendant 1.2.27",
         };
     }
 
@@ -819,6 +828,8 @@ final class ShieldTableData {
             "lxx.Tomcat 3.68",               // +10.8
             "voidious.Dookious 1.573c",      // +6.4
             "sheldor.mini.FoilistMC 1.0",    // +5.9
+            // pc-r31 (BENCH-244, PR #817): 12 fresh PC seeds at the live turn time
+            "eem.zapper v6.03",              // +4.1
         };
     }
 

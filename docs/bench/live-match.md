@@ -47,7 +47,10 @@ livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 1 --seed-base
   after: prep
 ```
 
-  The card's prep also runs `./fetch-opponents.sh --set livematch-bb.txt`, and every bench step waits for
+  Arm c is the released jar that is live, fetched by `bash tools/fetch_live_jar.sh` (checked by sha256), never
+  a master build: on 14 Nov (PR #819) a master build with the shadow fix and seven new lines read 6.8 points
+  above live 3.22 on this panel while BeepBoop matched live, and the gap test failed for that reason alone.
+  The card's prep also runs `./fetch-opponents.sh --set livematch-bb.txt` and `bash tools/fetch_live_jar.sh`, and every bench step waits for
   `livematch`, directly or through the steps before it.
 - `pc-livematch` checks the PC itself, at the live constant and at 1488498, 2 seeds, about 25 minutes. If the
   live constant fails on the PC, its report shows which way, and the constant moves before the next card.
