@@ -50,7 +50,9 @@ class StillFieldPlanTest {
         String listData = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldListData.java"));
         // Only the robots this card shipped may already be on master's list.
         List<String> shipped = names("plans/still-field-shipped.txt");
-        for (String n : panel) assertTrue(shipped.contains(n) || !listData.contains("\"" + n + "\","), n + " is not on master's shield list yet");
+        // The 14 Nov night lock shipped Parallax later, on 12 fresh seeds at the bench's own timing.
+        List<String> shippedLater = List.of("slugzilla.Parallax 0.1");
+        for (String n : panel) assertTrue(shipped.contains(n) || shippedLater.contains(n) || !listData.contains("\"" + n + "\","), n + " is not on master's shield list yet");
         assertTrue(!panel.contains("axeBots.Musashi 2.18"), "Musashi failed this arm on the PC (BENCH-209)");
         String arms = Files.readString(Path.of("plans/pc-still-field.arms"));
         for (String arm : new String[] {"c | hadur117.Hadur " + version + " |", "aa | hadur117.Hadur " + version + "aa |",

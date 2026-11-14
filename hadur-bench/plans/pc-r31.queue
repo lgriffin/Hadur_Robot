@@ -21,11 +21,14 @@
 # Pilot and stop rules (docs/bench/watch.md): each step's aa arm halts the card after 20% if master and its copy
 # disagree; halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle over the last 200, or
 # no battle in 30 minutes. ALERT opens an issue for Leigh on any stop.
+# Timing: the CPU constant is 2397234 ns, not the usual 1488498. On 31 paired battles (docs/bench/local/2026-11-14_night.md)
+# 1488498 with full load made BeepBoop skip ~500 turns a battle and lose 4.5 points, and us lose shield lines, while
+# 2397234 reproduced the live scores on these robots (we 68.5 / live 66.2, BeepBoop 84.3 / live 83.6).
 # Bank: the owning cloud thread adds the gate's lines on this card's results PR. Nothing is released by the card.
 
 set V = 3.22
 set P = --parallel 16 --no-truth-log --failed-ok
-set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 2397234 --child-heap 2G
 set W = work/pc-r31
 set L = work/pc-r31-lock
 set OUT = ../docs/bench/local
