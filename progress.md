@@ -1,6 +1,6 @@
 # Queue pc-modes-check: progress
 
-Updated 2026-11-14 15:37:13 PC time (15:37 UTC), runner pid 46572.
+Updated 2026-11-14 16:43:15 PC time (16:43 UTC), runner pid 46572.
 
 - `mcprep` done, exit 0 in 2 min
 - `maa` done, exit 0 in 46 min
@@ -33,20 +33,17 @@ Skipped turns a battle: 52.6 overall, first 100 51.3, last 100 54.8.
 
 ### mso
 
-**60 battles**, 0 failed. Running 53 min, 68 battles/h. Last battle 5 min ago.
-Skipped turns a battle: 50.8 overall, first 60 50.8, last 60 50.8.
+**72 battles**, 0 failed. Running 2.0 h, 36 battles/h. Last battle 1 min ago.
+Skipped turns a battle: 78.6 overall, first 72 78.6, last 72 78.6.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 60 |
-| `stall 30m` | halt | ok | last battle 5 min ago |
+| `fails 20` | halt | ok | 0 failed of 72 |
+| `stall 30m` | halt | ok | last battle 1 min ago |
 
 ### Queue log (last lines)
 
 ```
-12:21:33 start maa
-12:21:33 watching maa: 2 stop rule(s)
-12:22:19 progress maa: 0 battles, 0 failed
 12:52:31 progress maa: 116 battles, 225/h, 0 failed, skips 29.1/battle (last 100)
 13:07:17 maa exit=0 in 2744 s
 13:07:17 start mbb
@@ -59,4 +56,7 @@ Skipped turns a battle: 50.8 overall, first 60 50.8, last 60 50.8.
 14:44:05 watching mso: 2 stop rule(s)
 14:53:38 progress mso: 8 battles, 50/h, 0 failed, skips 28.0/battle (last 100)
 15:23:54 progress mso: 48 battles, 72/h, 0 failed, skips 44.8/battle (last 100)
+15:54:11 progress mso: 64 battles, 55/h, 0 failed, skips 83.9/battle (last 100)
+16:00:59 progress push failed (the run is unaffected; later failures not logged): Command '['git', 'hash-object', '-w', '--stdin']' timed out after 120 seconds
+16:24:42 progress mso: 68 battles, 41/h, 0 failed, skips 79.9/battle (last 100)
 ```

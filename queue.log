@@ -17,3 +17,6 @@
 14:44:05 watching mso: 2 stop rule(s)
 14:53:38 progress mso: 8 battles, 50/h, 0 failed, skips 28.0/battle (last 100)
 15:23:54 progress mso: 48 battles, 72/h, 0 failed, skips 44.8/battle (last 100)
+15:54:11 progress mso: 64 battles, 55/h, 0 failed, skips 83.9/battle (last 100)
+16:00:59 progress push failed (the run is unaffected; later failures not logged): Command '['git', 'hash-object', '-w', '--stdin']' timed out after 120 seconds
+16:24:42 progress mso: 68 battles, 41/h, 0 failed, skips 79.9/battle (last 100)
