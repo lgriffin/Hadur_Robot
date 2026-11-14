@@ -54,7 +54,8 @@ class PcR31PlanTest {
         assertTrue(queue.contains("python3 tools/lock_prep.py ${OUT}/pc-r31-pick.tsv panel-r31.txt plans/pc-r31.arms ${L}-prep && bash ${L}-prep/build.sh"));
         assertTrue(Files.exists(Path.of("tools/lock_prep.py")));
         assertTrue(queue.contains("--set ${L}-prep/picks-panel.txt --seeds 12 --seed-base 21000 --arms ${L}-prep/lock.arms --out ${L} "), "the lock");
-        assertTrue(queue.contains("mode_table.py ${L}/arms.tsv --margin 0 --out-tsv ${OUT}/pc-r31-lock-pick.tsv"), "the gate");
+        assertTrue(queue.contains("lock_prep.py --restrict ${L}/arms.tsv ${L}-prep ${L}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${L}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-r31-lock-pick.tsv"), "the gate, each robot on its own pick");
+        assertTrue(queue.contains("set W = work/pc-r31-t3\n") && queue.contains("set L = work/pc-r31-t3-lock\n"), "fresh folders for the new constant");
         for (String step : new String[] {"screen", "lock"}) {
             int at = queue.indexOf("\n" + step + " | ");
             String body = queue.substring(at, queue.indexOf("\n\n", at + 1));
@@ -62,7 +63,7 @@ class PcR31PlanTest {
                 assertTrue(body.contains("stop: " + rule), step + " " + rule);
             }
         }
-        assertTrue(queue.contains("--cpu-constant 2397234 "), "the live-like turn time (docs/bench/local/2026-11-14_night.md)");
+        assertTrue(queue.contains("--cpu-constant 3272413 "), "the live-like turn time (docs/bench/local/2026-11-14_night.md)");
         assertTrue(queue.contains("open_results_pr.sh claude/pc-r31-results") && queue.contains("set P = --parallel 16 --no-truth-log"));
     }
 }
