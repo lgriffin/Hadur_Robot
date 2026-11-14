@@ -39,6 +39,17 @@ class LockPrepTest(unittest.TestCase):
         self.assertIn("GUN_STACK=%s bash ./build-ablation.sh gslist" % os.path.join(out, "gl.list"), build)
         self.assertNotIn("fllist", build)
 
+    def test_restrict_keeps_only_each_robots_own_pick(self):
+        out = self.run_prep([("a.A 1", "mtzl", "6.1"), ("c.C 3", "gl", "4.0")])
+        arms = os.path.join(self.d, "arms.tsv")
+        rows = [("c", "a.A 1"), ("aa", "c.C 3"), ("mtzl", "a.A 1"), ("mtzl", "c.C 3"), ("gl", "a.A 1"), ("gl", "c.C 3")]
+        with open(arms, "w") as f:
+            f.write("arm\trobot\topponent\n" + "".join("%s\tH\t%s\n" % r for r in rows))
+        picked = os.path.join(self.d, "picked.tsv")
+        self.assertEqual(0, lock_prep.restrict(arms, out, picked))
+        kept = [tuple(l.rstrip("\n").split("\t")[::2]) for l in open(picked)][1:]
+        self.assertEqual([("c", "a.A 1"), ("aa", "c.C 3"), ("mtzl", "a.A 1"), ("gl", "c.C 3")], kept)
+
     def test_no_pick_leaves_an_empty_panel(self):
         for rows in ([], None):
             out = self.run_prep(rows)

@@ -21,16 +21,18 @@
 # Pilot and stop rules (docs/bench/watch.md): each step's aa arm halts the card after 20% if master and its copy
 # disagree; halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle over the last 200, or
 # no battle in 30 minutes. ALERT opens an issue for Leigh on any stop.
-# Timing: the CPU constant is 2397234 ns, not the usual 1488498. On 31 paired battles (docs/bench/local/2026-11-14_night.md)
-# 1488498 with full load made BeepBoop skip ~500 turns a battle and lose 4.5 points, and us lose shield lines, while
-# 2397234 reproduced the live scores on these robots (we 68.5 / live 66.2, BeepBoop 84.3 / live 83.6).
+# Timing: the CPU constant is 3272413 ns, not the usual 1488498. On 31 robots paired with BeepBoop
+# (docs/bench/local/2026-11-14_night.md), 1488498 made BeepBoop skip ~500 turns a battle and lose 4.5 points, while the
+# cloud's calibrated 3272413 reproduced the live scores on these robots (we 68.5 / live 66.2, BeepBoop 84.3 / live 83.6).
+# The PC skips as often at 1488498 as the cloud does, so the same constant should match. Output folders are new
+# (work/pc-r31-t3*), so nothing resumes from a run at another constant. The gate judges each robot on its own pick only.
 # Bank: the owning cloud thread adds the gate's lines on this card's results PR. Nothing is released by the card.
 
 set V = 3.22
 set P = --parallel 16 --no-truth-log --failed-ok
-set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 2397234 --child-heap 2G
-set W = work/pc-r31
-set L = work/pc-r31-lock
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 3272413 --child-heap 2G
+set W = work/pc-r31-t3
+set L = work/pc-r31-t3-lock
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
 
@@ -57,7 +59,7 @@ lock | if [ -s ${L}-prep/picks-panel.txt ]; then ./bench-top20.sh ${C} ${P} --se
   stop: stall 30m
   stop: aa after 20%
 
-gate | if [ -s ${L}-prep/picks-panel.txt ]; then python3 ../data/tools/multiarm.py ${L}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-r31-lock.md && python3 ../data/tools/mode_table.py ${L}/arms.tsv --margin 0 --out-tsv ${OUT}/pc-r31-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-r31-lock-pick.md && python3 tools/per_robot.py ${L}/arms.tsv --arms $(grep -v '^#' ${L}-prep/lock.arms | cut -d'|' -f1 | grep -v -w -e c -e aa | tr -d ' ' | tr '\n' ' ') --out ${OUT}/$(date +%Y-%m-%d)_pc-r31-lock-per-robot.md --out-tsv ${OUT}/pc-r31-lock-per-robot.tsv; fi
+gate | if [ -s ${L}-prep/picks-panel.txt ]; then python3 ../data/tools/multiarm.py ${L}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-r31-lock.md && python3 tools/lock_prep.py --restrict ${L}/arms.tsv ${L}-prep ${L}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${L}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-r31-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-r31-lock-pick.md && python3 tools/per_robot.py ${L}/arms-picked.tsv --arms $(grep -v '^#' ${L}-prep/lock.arms | cut -d'|' -f1 | grep -v -w -e c -e aa | tr -d ' ' | tr '\n' ' ') --out ${OUT}/$(date +%Y-%m-%d)_pc-r31-lock-per-robot.md --out-tsv ${OUT}/pc-r31-lock-per-robot.tsv; fi
   after: lock
 
 pr | bash tools/open_results_pr.sh claude/pc-r31-results "1v1 the 31 real-gap robots: every lever screened, the best per robot locked on 12 fresh seeds" ${OUT}/*_pc-r31-*.md ${OUT}/pc-r31-*-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-r31-*pick.tsv' -size +0c)
