@@ -360,6 +360,8 @@ final class ShieldListData {
             "pez.rumble.CassiusClay 2rho.02no",
             // pc-class-1 (BENCH-241, PR #803): with a still line on 8 fresh PC seeds, +24.3 (low end +19.9); cloud lock held first
             "hadur117.micro.Eveimear 0.5",
+            // pc-class-2 (BENCH-242, PR #806): with a still line, +5.9 on 12 fresh PC seeds (+5.2 on pc-class-1's 8)
+            "pez.mini.Gouldingi 1.5",
         };
     }
 }

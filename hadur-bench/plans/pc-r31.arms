@@ -1,0 +1,13 @@
+# pc-r31 (BENCH-244): c is master, aa its A/A copy; each other arm is master with one lever's line on every robot of
+# plans/r31-add.txt (mtzl shield list + still, fq flatteners on, gl gun stack, mq mimic members, x5 x.x5 power,
+# wl stop-and-go, hl heat jitter, rp race power). Each line acts on its own robot only.
+c | hadur117.Hadur 3.22 | bisect/hadur117.Hadur_3.22.jar
+aa | hadur117.Hadur 3.22aa | bisect/hadur117.Hadur_3.22aa.jar
+mtzl | hadur117.Hadur 3.22mtzl | bisect/hadur117.Hadur_3.22mtzl.jar
+fq | hadur117.Hadur 3.22fq | bisect/hadur117.Hadur_3.22fq.jar
+gl | hadur117.Hadur 3.22gl | bisect/hadur117.Hadur_3.22gl.jar
+mq | hadur117.Hadur 3.22mq | bisect/hadur117.Hadur_3.22mq.jar
+x5 | hadur117.Hadur 3.22x5 | bisect/hadur117.Hadur_3.22x5.jar
+wl | hadur117.Hadur 3.22wl | bisect/hadur117.Hadur_3.22wl.jar
+hl | hadur117.Hadur 3.22hl | bisect/hadur117.Hadur_3.22hl.jar
+rp | hadur117.Hadur 3.22rp | bisect/hadur117.Hadur_3.22rp.jar

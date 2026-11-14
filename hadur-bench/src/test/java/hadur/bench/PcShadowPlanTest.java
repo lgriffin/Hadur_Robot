@@ -38,7 +38,7 @@ class PcShadowPlanTest {
             && arms.contains("\nkp | hadur117.Hadur " + version + "kp |"));
         assertTrue(queue.contains("bash ./build-ablation.sh shkeep &&") && queue.contains("bash ./build-ablation.sh aa &&"));
         assertTrue(queue.contains("--set panel-shadow.txt --seeds 2 --seed-base 19300 --arms plans/pc-shadow.arms --out ${W} "));
-        for (String rule : new String[] {"fails 30", "dead 8", "skips 60 over 200", "stall 30m", "aa after 20%"}) {
+        for (String rule : new String[] {"fails 30", "dead 8", "skips 80 over 200", "stall 30m", "aa after 20%"}) {
             assertTrue(queue.contains("stop: " + rule), rule);
         }
         assertTrue(queue.contains("open_results_pr.sh claude/pc-shadow-results") && queue.contains("set P = --parallel 16 --no-truth-log"));
