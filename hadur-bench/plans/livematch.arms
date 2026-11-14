@@ -1,0 +1,4 @@
+# BENCH-245 live-match arms: master (c) and BeepBoop 2.0 (bb) on the same opponents and seeds. tools/live_match.py
+# compares both with live LiteRumble (plans/live-1v1-2026-11-13.tsv). Every new 1v1 PC card runs these first.
+c | hadur117.Hadur 3.22 | bisect/hadur117.Hadur_3.22.jar
+bb | kc.mega.BeepBoop 2.0 | opponents/kc.mega.BeepBoop_2.0.jar

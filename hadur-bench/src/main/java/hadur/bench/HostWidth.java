@@ -15,13 +15,22 @@ final class HostWidth {
 
     private HostWidth() {}
 
+    /**
+     * BENCH-245: the 1v1 turn time that reproduces live LiteRumble, in nanoseconds. On the 31 real-gap
+     * robots (docs/bench/local/2026-11-14_night.md, section 5) this constant gave Hadur 68.5 and BeepBoop
+     * 84.3 against 66.2 and 83.6 live; the PC's old pin, 1488498 with 16 workers, gave 70.2 and 79.8 and made
+     * BeepBoop skip about 500 turns a battle. {@code --cpu-constant live} pins it.
+     */
+    static final String LIVE_CPU_CONSTANT = "3272413";
+
     /** The kind of battle the options ask for, as the queue runner's variables name it. */
     static String kind(Map<String, String> opts) {
         return opts.containsKey("melee") ? "melee" : opts.containsKey("team") ? "team" : "duel";
     }
 
     /**
-     * Replaces {@code parallel=auto} by a width and {@code cpu-constant=auto} by a constant (or
+     * Replaces {@code parallel=auto} by a width, {@code cpu-constant=live} by {@link #LIVE_CPU_CONSTANT}
+     * and {@code cpu-constant=auto} by a constant (or
      * drops it, so the bench calibrates), and records where each came from under
      * {@code parallel-source} and {@code cpu-constant-source}. Other values are left alone.
      */
@@ -40,6 +49,10 @@ final class HostWidth {
             }
             opts.put("parallel", width.trim());
             opts.put("parallel-source", "auto: " + source);
+        }
+        if ("live".equalsIgnoreCase(opts.getOrDefault("cpu-constant", "").trim())) {
+            opts.put("cpu-constant", LIVE_CPU_CONSTANT);
+            opts.put("cpu-constant-source", "live: the turn time that matched LiteRumble (BENCH-245)");
         }
         if ("auto".equalsIgnoreCase(opts.getOrDefault("cpu-constant", "").trim())) {
             String cc = blankToNull(env.get("HADUR_BENCH_CPU_CONSTANT"));
