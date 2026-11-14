@@ -35,3 +35,9 @@
 06:42:53 progress field: 6224/7158 (87%) battles, 662/h, ETA 1.4 h, 0 failed, skips 61.6/battle (last 100), aa +0.07, kp +0.30
 07:12:59 progress field: 6579/7158 (92%) battles, 710/h, ETA 49 min, 0 failed, skips 58.0/battle (last 100), aa +0.09, kp +0.29
 07:43:09 progress field: 6911/7158 (97%) battles, 660/h, ETA 22 min, 0 failed, skips 58.3/battle (last 100), aa +0.03, kp +0.28
+08:05:53 field exit=0 in 37721 s
+08:05:53 start gate
+08:05:54 gate exit=0 in 0 s
+08:05:54 start pr
+08:06:00 pr exit=0 in 5 s
+08:06:00 ALLDONE
