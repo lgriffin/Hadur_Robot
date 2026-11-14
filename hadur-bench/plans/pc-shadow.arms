@@ -1,4 +1,0 @@
-# pc-shadow (BENCH-243): c is master, aa its A/A copy, kp master with MOVE-43 on (a gone bullet keeps its shadows).
-c | hadur117.Hadur 3.22 | bisect/hadur117.Hadur_3.22.jar
-aa | hadur117.Hadur 3.22aa | bisect/hadur117.Hadur_3.22aa.jar
-kp | hadur117.Hadur 3.22kp | bisect/hadur117.Hadur_3.22kp.jar

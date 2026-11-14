@@ -123,7 +123,6 @@ pc-saor-u3.queue
 pc-saor-u3b.queue
 pc-sg-aim.queue
 pc-sg-wide.queue
-pc-shadow.queue
 pc-shelf.queue
 pc-shield-audit.queue
 pc-shield-exit.queue
