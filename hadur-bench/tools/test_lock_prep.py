@@ -35,8 +35,10 @@ class LockPrepTest(unittest.TestCase):
         self.assertEqual(["c", "aa", "mtzl", "gl"], arms)
         self.assertEqual("a.A 1\n", open(os.path.join(out, "mtzl.list")).read())
         build = open(os.path.join(out, "build.sh")).read()
-        self.assertIn("SHIELD_ADD=%s SHIELD_STILL=%s bash ./build-ablation.sh slistadd,szlist" % ((os.path.join(out, "mtzl.list"),) * 2), build)
-        self.assertIn("GUN_STACK=%s bash ./build-ablation.sh gslist" % os.path.join(out, "gl.list"), build)
+        posix = lambda name: os.path.join(out, name).replace(os.sep, "/")  # build.sh runs in bash, Windows too
+        self.assertIn("SHIELD_ADD=%s SHIELD_STILL=%s bash ./build-ablation.sh slistadd,szlist" % ((posix("mtzl.list"),) * 2), build)
+        self.assertIn("GUN_STACK=%s bash ./build-ablation.sh gslist" % posix("gl.list"), build)
+        self.assertNotIn("\\", build, "no backslash path reaches bash")
         self.assertNotIn("fllist", build)
 
     def test_restrict_keeps_only_each_robots_own_pick(self):

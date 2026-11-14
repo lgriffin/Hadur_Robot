@@ -1,0 +1,31 @@
+# PC card pc-modes-check (BENCH-246): HadurTeam built as @A@ (bb = master's copy, so = master with MOVE-43's shadow fix off) against master (aa) on all 46 census teams, 8 seeds from 7400. Template: mcprep writes work/modes-check-team-<arm>.args with @V@ = the robot.release in hadur-robot/pom.xml.
+--team
+true
+--seeds
+8
+--seed-base
+7400
+--rounds
+12
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+team-census46.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@@A@.jar
+--robot
+hadur117.HadurTeam @V@@A@
+--member
+hadur117.Hadur
+--out
+work/modes-check-team-@V@-@A@
+--report
+../docs/bench/local/modes-check-team-@A@.md
+--baseline
+bisect/hadur117.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur117.HadurTeam @V@aa

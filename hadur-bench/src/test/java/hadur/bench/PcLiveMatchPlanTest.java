@@ -207,7 +207,7 @@ class PcLiveMatchPlanTest {
 
     @Test
     @Tag("BENCH-245")
-    @DisplayName("the legacy list is frozen at the 170 cards of 14 Nov and names only cards that exist")
+    @DisplayName("the legacy list never grows past the 170 cards of 14 Nov and names only cards that exist")
     void legacyListIsClosed() throws IOException {
         List<String> missing = new ArrayList<>();
         int n = 0;
@@ -217,7 +217,7 @@ class PcLiveMatchPlanTest {
             if (!Files.exists(Path.of("plans", l.trim()))) missing.add(l.trim());
         }
         assertEquals(List.of(), missing);
-        assertEquals(170, n, "no card joins the legacy list after the rule");
+        assertTrue(n <= 170, "no card joins the legacy list after the rule; retired cards leave it");
         assertTrue(!Files.readString(Path.of("plans/timing-legacy.txt")).contains("pc-livematch.queue"));
     }
 }
