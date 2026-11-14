@@ -1,0 +1,2 @@
+# BeepBoop 2.0 for the live-match check (BENCH-245); one line in fetch-opponents set form.
+kc.mega.BeepBoop 2.0 | rank1-band1 | kc.mega.BeepBoop_2.0.jar

@@ -66,6 +66,16 @@ class HostWidthTest {
     }
 
     @Test
+    @Tag("BENCH-245")
+    @DisplayName("--cpu-constant live pins the turn time that matched LiteRumble, whatever the host says")
+    void liveConstant() {
+        Map<String, String> o = opts("cpu-constant", "live");
+        HostWidth.resolve(o, Map.of("HADUR_BENCH_CPU_CONSTANT", "1488498"), 48);
+        assertEquals("3272413", o.get("cpu-constant"));
+        assertTrue(o.get("cpu-constant-source").startsWith("live"));
+    }
+
+    @Test
     @Tag("BENCH-105")
     @DisplayName("--cpu-constant auto pins the host's constant, or leaves the engine to calibrate")
     void autoCpuConstant() {
