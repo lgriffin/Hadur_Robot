@@ -46,7 +46,8 @@ class PcLinesPlanTest {
         // After the results PR: the robots this card shipped lines for (plans/lines-cap-shipped.txt) carry them on master.
         List<String> shipped = names("plans/lines-cap-shipped.txt");
         // A later card (pc-class-1, plans/class-1-shipped.txt) may ship another line type to a robot this card read.
-        List<String> later = names("plans/class-1-shipped.txt");
+        List<String> later = new java.util.ArrayList<>(names("plans/class-1-shipped.txt"));
+        later.addAll(names("plans/r31-shipped.txt")); // pc-r31 (PR #817) shipped lines to robots this card read
         for (String n : panel) {
             assertTrue(!broken.contains(n), n + " loads on 1.11.2");
             if (shipped.contains(n)) {
