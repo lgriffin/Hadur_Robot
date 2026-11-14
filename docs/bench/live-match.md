@@ -31,10 +31,12 @@ machines, not about the PC's own parallel load.
 ## The fix
 
 - `--cpu-constant live` pins 3272413 ns, the value that matched live. Every 1v1 PC card written from now on
-  uses it. `PcLiveMatchPlanTest` fails the build otherwise. The 170 earlier cards are frozen in
-  `hadur-bench/plans/timing-legacy.txt`.
+  uses it on every bench step, and runs every bench through `bench-top20.sh`. `PcLiveMatchPlanTest` fails the
+  build otherwise. A melee or team card says so with a `# battle: melee` or `# battle: team` line. The 170
+  earlier cards are frozen in `hadur-bench/plans/timing-legacy.txt`.
 - `tools/live_match.py ARMS.tsv` sets our arm and BeepBoop's arm against live
-  (`plans/live-1v1-2026-11-13.tsv`), paired by robot. It fails, and exits 1, when either holds:
+  (`plans/live-1v1-2026-11-13.tsv`), paired by robot and seed. Every robot of the panel must keep a seed both
+  arms finished. It fails, and exits 3, when any of these holds:
   - the gap is more than 4 points off live;
   - BeepBoop is more than 3 points off its live level, or skips more than 100 turns a battle.
 - Every new 1v1 PC card runs this check first, and its benches wait for it. A failing check halts the card
@@ -45,7 +47,7 @@ livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 1 --seed-base
   after: prep
 ```
 
-  The card's prep also runs `./fetch-opponents.sh --set livematch-bb.txt`, and its bench steps carry
-  `after: livematch`.
+  The card's prep also runs `./fetch-opponents.sh --set livematch-bb.txt`, and every bench step waits for
+  `livematch`, directly or through the steps before it.
 - `pc-livematch` checks the PC itself, at the live constant and at 1488498, 2 seeds, about 25 minutes. If the
   live constant fails on the PC, its report shows which way, and the constant moves before the next card.
