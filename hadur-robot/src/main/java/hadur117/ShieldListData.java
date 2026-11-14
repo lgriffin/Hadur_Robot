@@ -362,8 +362,7 @@ final class ShieldListData {
             "hadur117.micro.Eveimear 0.5",
             // pc-class-2 (BENCH-242, PR #806): with a still line, +5.9 on 12 fresh PC seeds (+5.2 on pc-class-1's 8)
             "pez.mini.Gouldingi 1.5",
-            // cloud night lock (14 Nov, docs/bench/local/2026-11-14_night.md): with a still line on 12 fresh seeds, Musashi +20.3 (low end +17.4), Parallax +5.7 (low end +1.8)
-            "axeBots.Musashi 2.18",
+            // cloud night lock (14 Nov, docs/bench/local/2026-11-14_night.md): with a still line, Parallax +4.0 over 24 fresh seeds (low end +1.4)
             "slugzilla.Parallax 0.1",
         };
     }
