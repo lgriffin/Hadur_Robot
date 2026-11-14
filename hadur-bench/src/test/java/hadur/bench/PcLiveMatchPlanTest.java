@@ -1,6 +1,7 @@
 package hadur.bench;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -26,9 +27,10 @@ import org.junit.jupiter.api.Test;
  */
 class PcLiveMatchPlanTest {
 
+    /** The live version the card checks: its own {@code set V}, not the pom, which runs ahead of live. */
     private static String version() throws IOException {
-        return Files.readString(Path.of("../hadur-robot/pom.xml"))
-            .replaceAll("(?s).*<robot.release>(.*?)</robot.release>.*", "$1");
+        return Files.readString(Path.of("plans/pc-livematch.queue"))
+            .replaceAll("(?s).*\nset V = ([^\n]+)\n.*", "$1");
     }
 
     @Test
@@ -36,7 +38,11 @@ class PcLiveMatchPlanTest {
     @DisplayName("pc-livematch: c and BeepBoop on the 31 robots, 2 seeds, at the live constant and at 1488498, both read against live, a results PR")
     void cardIsComplete() throws IOException {
         String q = Files.readString(Path.of("plans/pc-livematch.queue"));
-        assertTrue(q.contains("set V = " + version() + "\n"), "the card builds the current release");
+        assertTrue(version().matches("\\d+\\.\\d+"), "the card names a released version");
+        assertTrue(q.contains(" && bash tools/fetch_live_jar.sh && "), "c is the released jar, fetched and checked by sha256");
+        String f = Files.readString(Path.of("tools/fetch_live_jar.sh"));
+        assertTrue(f.contains("\nLIVE_V=" + version() + "\n") && f.matches("(?s).*\nLIVE_SHA=[0-9a-f]{64}\n.*"), "the fetch names the card's version and a sha256");
+        assertFalse(q.contains("mvn -q -DskipTests package"), "c is never a master build");
         assertTrue(q.contains("./fetch-opponents.sh --set livematch-bb.txt") && q.contains("test -f opponents/kc.mega.BeepBoop_2.0.jar"));
         for (String step : List.of("live", "old")) {
             String cc = step.equals("live") ? "live" : "1488498";
@@ -54,15 +60,16 @@ class PcLiveMatchPlanTest {
         assertTrue(q.contains("tools/open_results_pr.sh claude/pc-livematch-results ") 
             && q.contains(" ${OUT}/pc-livematch-old.md ${OUT}/pc-livematch-live.md\n"), "the PR carries only this run's two reports");
         assertTrue(q.contains("set ALERT = lgriffin"));
+        assertTrue(q.contains("\nset W = work/pc-livematch-rel\n"), "released-jar rows never resume from the master-build folders of #819");
     }
 
     @Test
     @Tag("BENCH-245")
-    @DisplayName("the live-match arms are master and BeepBoop 2.0, and the live reference covers the 31-robot panel")
+    @DisplayName("the live-match arms are the released jar and BeepBoop 2.0, and the live reference covers the 31-robot panel")
     void armsAndReference() throws IOException {
         String arms = Files.readString(Path.of("plans/livematch.arms"));
         String v = version();
-        assertTrue(arms.contains("\nc | hadur117.Hadur " + v + " | bisect/hadur117.Hadur_" + v + ".jar\n"), "c is the current release");
+        assertTrue(arms.contains("\nc | hadur117.Hadur " + v + " | bisect/live/hadur117.Hadur_" + v + ".jar\n"), "c is the released jar, not a master build");
         assertTrue(arms.contains("\nbb | kc.mega.BeepBoop 2.0 | opponents/kc.mega.BeepBoop_2.0.jar\n"));
         Set<String> live = new HashSet<>();
         for (String l : Files.readAllLines(Path.of("plans/live-1v1-2026-11-13.tsv"))) {
