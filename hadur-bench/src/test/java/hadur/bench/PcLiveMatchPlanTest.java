@@ -60,6 +60,7 @@ class PcLiveMatchPlanTest {
         assertTrue(q.contains("tools/open_results_pr.sh claude/pc-livematch-results ") 
             && q.contains(" ${OUT}/pc-livematch-old.md ${OUT}/pc-livematch-live.md\n"), "the PR carries only this run's two reports");
         assertTrue(q.contains("set ALERT = lgriffin"));
+        assertTrue(q.contains("\nset W = work/pc-livematch-rel\n"), "released-jar rows never resume from the master-build folders of #819");
     }
 
     @Test
