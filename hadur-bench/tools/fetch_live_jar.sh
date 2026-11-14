@@ -8,9 +8,12 @@ LIVE_V=3.22
 LIVE_SHA=976498919049c66cbda72f4f8808ff030e753f4ac411e9332eb753900c7ce8ca
 JAR=bisect/live/hadur117.Hadur_${LIVE_V}.jar
 mkdir -p bisect/live
+ok() { python3 -c "import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1],'rb').read()).hexdigest()!=sys.argv[2])" "$1" "$LIVE_SHA"; }
+if [ -f "$JAR" ] && ! ok "$JAR"; then echo "cached $JAR fails sha256, fetching again"; rm -f "$JAR"; fi
 if [ ! -f "$JAR" ]; then
+  rm -f "$JAR.part"
   curl -fsSL -o "$JAR.part" "https://github.com/lgriffin/Hadur_Robot/releases/download/v${LIVE_V}/hadur117.Hadur_${LIVE_V}.jar"
+  if ! ok "$JAR.part"; then rm -f "$JAR.part"; echo "downloaded jar fails sha256" >&2; exit 1; fi
   mv "$JAR.part" "$JAR"
 fi
-python3 -c "import hashlib,sys; h=hashlib.sha256(open(sys.argv[1],'rb').read()).hexdigest(); sys.exit(0 if h==sys.argv[2] else 'sha256 mismatch: '+h)" "$JAR" "$LIVE_SHA"
 echo "live jar $JAR ok"
