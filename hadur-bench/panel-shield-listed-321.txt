@@ -289,4 +289,3 @@ florent.XSeries.X2 0.17 | rank50-band2 | florent.XSeries.X2_0.17.jar
 pez.rumble.CassiusClay 2rho.02no | rank35-band2 | pez.rumble.CassiusClay_2rho.02no.jar
 hadur117.micro.Eveimear 0.5 | pc-class-1 | hadur117.micro.Eveimear_0.5.jar
 pez.mini.Gouldingi 1.5 | pc-class-2 | pez.mini.Gouldingi_1.5.jar
-slugzilla.Parallax 0.1 | night-lock | slugzilla.Parallax_0.1.jar
