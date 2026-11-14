@@ -1,6 +1,6 @@
 {
  "plan": "pc-r31",
- "updated": 1794649650.5314023,
+ "updated": 1794649696.2855825,
  "steps": {
   "prep": {
    "status": "done",
@@ -9,12 +9,16 @@
    "end": "2026-11-14T08:22:42"
   },
   "screen": {
-   "status": "running",
-   "start": "2026-11-14T08:22:42"
+   "status": "done",
+   "exit": 0,
+   "seconds": 5115,
+   "end": "2026-11-14T09:47:58"
   },
   "pick": {
-   "status": "skipped",
-   "reason": "after screen"
+   "status": "failed",
+   "exit": 2,
+   "seconds": 18,
+   "end": "2026-11-14T09:48:16"
   },
   "lock": {
    "status": "skipped",
@@ -33,8 +37,8 @@
   {
    "step": "screen",
    "started": 1794644562.5466962,
-   "updated": 1794649650.4089372,
-   "elapsed": 5087.862241029739,
+   "updated": 1794649678.042058,
+   "elapsed": 5115.495361804962,
    "expected": 1860,
    "panel": 31,
    "field": 1217,
@@ -80,16 +84,16 @@
     },
     {
      "arm": "fq",
-     "battles": 184,
+     "battles": 186,
      "failed": 0,
-     "level": 71.31779569892473,
-     "skips": 11.25,
-     "fresh": 184,
-     "scored": 184,
-     "diff": 1.1583870967741943,
+     "level": 71.34935483870967,
+     "skips": 11.225806451612904,
+     "fresh": 186,
+     "scored": 186,
+     "diff": 1.1899462365591407,
      "n": 31,
-     "ci95": 0.9635963862251816,
-     "half_stop": 1.474892427895686,
+     "ci95": 0.967561331825389,
+     "half_stop": 1.4809612221817177,
      "scale": 0.025472473294987676
     },
     {
@@ -187,20 +191,20 @@
     "band_from": "observed spread"
    },
    "warnings": [],
-   "battles": 1858,
+   "battles": 1860,
    "resumed": 0,
    "failed": 0,
    "disables": 0,
-   "rate": 798.0,
-   "eta": 9.022556390977442,
-   "fraction": 0.9989247311827957,
-   "last_battle_age": 34.43285822868347,
+   "rate": 792.0,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 8.576165437698364,
    "rules": [
     {
      "rule": "fails 30",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 1858"
+     "detail": "0 failed of 1860"
     },
     {
      "rule": "dead 8",
@@ -218,7 +222,7 @@
      "rule": "stall 30m",
      "action": "halt",
      "state": "ok",
-     "detail": "last battle 1 min ago"
+     "detail": "last battle 0 min ago"
     },
     {
      "rule": "aa after 20%",
@@ -227,8 +231,8 @@
      "detail": "aa - c -0.07 pts over 31 robots, stop band \u00b11.28 (observed spread)"
     }
    ],
-   "skips_mean": 10.510764262648008,
-   "skips_last100": 10.36
+   "skips_mean": 10.509139784946237,
+   "skips_last100": 10.34
   }
  ]
 }

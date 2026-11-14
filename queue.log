@@ -17,3 +17,10 @@
 08:23:41 progress screen: 22/1860 (1%) battles, 1357/h, ETA 1.4 h, 0 failed, skips 9.7/battle (last 100), gl -0.24, mq -0.02, x5 -0.25
 08:53:58 progress screen: 894/1860 (48%) battles, 1726/h, ETA 34 min, 0 failed, skips 11.7/battle (last 100), aa -0.02, mtzl -0.05, fq +0.04, gl +0.01, mq +0.01, x5 +0.04, wl -1.21, hl +0.02, rp +0.02
 09:24:17 progress screen: 1534/1860 (82%) battles, 1258/h, ETA 16 min, 0 failed, skips 8.1/battle (last 100), aa +0.00, mtzl -0.04, fq +0.03, gl +0.04, mq +0.01, x5 +0.02, wl -1.23, hl +0.01, rp +0.00
+09:47:58 screen exit=0 in 5115 s
+09:47:58 start pick
+09:48:16 pick exit=2 in 18 s
+09:48:16 skip lock (after pick, which has not finished exit=0)
+09:48:16 skip gate (after lock, which has not finished exit=0)
+09:48:16 skip pr (after gate, which has not finished exit=0)
+09:48:16 ALLDONE
