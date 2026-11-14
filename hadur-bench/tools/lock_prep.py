@@ -57,7 +57,7 @@ def main(pick, panel, base_arms, outdir):
             with open(path, "w") as g:
                 g.write("".join(n + "\n" for n in picks[arm]))
             flavours, envs = LEVERS[arm]
-            f.write("%s bash ./build-ablation.sh %s\n" % (" ".join("%s=%s" % (e, path) for e in envs), flavours))
+            f.write("%s bash ./build-ablation.sh %s\n" % (" ".join("%s=%s" % (e, path.replace(os.sep, "/")) for e in envs), flavours))
     print("lock_prep: %d robots, arms %s" % (len(rows), ",".join(sorted(picks)) or "none"))
     return 0
 
