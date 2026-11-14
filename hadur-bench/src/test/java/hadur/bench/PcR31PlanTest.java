@@ -62,6 +62,7 @@ class PcR31PlanTest {
                 assertTrue(body.contains("stop: " + rule), step + " " + rule);
             }
         }
+        assertTrue(queue.contains("--cpu-constant 2397234 "), "the live-like turn time (docs/bench/local/2026-11-14_night.md)");
         assertTrue(queue.contains("open_results_pr.sh claude/pc-r31-results") && queue.contains("set P = --parallel 16 --no-truth-log"));
     }
 }
