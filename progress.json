@@ -1,24 +1,32 @@
 {
  "plan": "pc-r31",
- "updated": 1794643577.2584996,
+ "updated": 1794643945.9136174,
  "steps": {
   "prep": {
-   "status": "pending"
+   "status": "failed",
+   "exit": 1,
+   "seconds": 368,
+   "end": "2026-11-14T08:12:25"
   },
   "screen": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after prep"
   },
   "pick": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after screen"
   },
   "lock": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after pick"
   },
   "gate": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after lock"
   },
   "pr": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after gate"
   }
  },
  "watched": []
