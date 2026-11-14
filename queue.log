@@ -46,3 +46,9 @@
 10:39:14 progress pushed to origin claude/pc-r31-progress (every 15 min)
 10:40:12 progress lock: 730/924 (79%) battles, 714/h, ETA 16 min, 0 failed, skips 11.2/battle (last 100), aa -0.01, mtzl +0.02, fq +0.01, gl +0.02, x5 +0.00, rp +0.01
 10:41:13 stop rule aa after 20% would trip on lock (aa - c -1.42 pts over 11 robots, stop band ±1.36 (observed spread)); not acted on
+11:02:46 lock exit=0 in 1413 s
+11:02:46 start gate
+11:02:47 gate exit=0 in 0 s
+11:02:47 start pr
+11:02:54 pr exit=0 in 7 s
+11:02:54 ALLDONE
