@@ -1,6 +1,6 @@
 # Queue pc-shadow: progress
 
-Updated 2026-11-14 02:43:11 PC time (02:43 UTC), runner pid 63172.
+Updated 2026-11-14 02:58:19 PC time (02:58 UTC), runner pid 63172.
 
 - `prep` done, exit 0 in 2 min
 - `field` running
@@ -9,27 +9,27 @@ Updated 2026-11-14 02:43:11 PC time (02:43 UTC), runner pid 63172.
 
 ### field
 
-**3700 of 7158 battles** (52%), 0 failed, 206 read back from an earlier run. Running 5.1 h, 642 battles/h, about 5.4 h left (ends ~08:06 PC time). Last battle 0 min ago.
-Skipped turns a battle: 63.3 overall, first 100 62.0, last 100 75.2; engine disables 2149.
+**3860 of 7158 battles** (54%), 0 failed, 206 read back from an earlier run. Running 5.4 h, 640 battles/h, about 5.2 h left (ends ~08:07 PC time). Last battle 0 min ago.
+Skipped turns a battle: 63.5 overall, first 100 62.0, last 100 71.0; engine disables 2247.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 1234 | 0 | 93.09 | - | - | - | 64.9 |
-| aa | 1236 | 0 | 93.20 | +0.13 (917 robots) | ±0.21 | -0.19 .. +0.44 | 60.3 |
-| kp | 1230 | 0 | 93.29 | +0.14 (917 robots) | ±0.19 | -0.15 .. +0.43 | 64.2 |
+| c | 1287 | 0 | 93.16 | - | - | - | 64.9 |
+| aa | 1286 | 0 | 93.25 | +0.12 (941 robots) | ±0.20 | -0.19 .. +0.44 | 60.7 |
+| kp | 1287 | 0 | 93.32 | +0.10 (941 robots) | ±0.19 | -0.18 .. +0.39 | 64.4 |
 
 APS = mean difference over the robots read x 1193 panel robots / 1217 pairings.
-A/A: aa - c +0.13 pts over 917 robots; 1% band ±0.33 (inside).
+A/A: aa - c +0.13 pts over 941 robots; 1% band ±0.33 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 3700 |
+| `fails 30` | halt | ok | 0 failed of 3860 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 80 over 200` | halt | ok | 68.3 a battle over the last 200 (first 200: 61.2) |
+| `skips 80 over 200` | halt | ok | 71.8 a battle over the last 200 (first 200: 61.2) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `aa after 20%` | halt | ok | aa - c +0.13 pts over 917 robots, stop band ±0.39 |
+| `aa after 20%` | halt | ok | aa - c +0.13 pts over 941 robots, stop band ±0.38 |
 
-Stopping now would leave 3458 battles unrun (about 5.4 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 3298 battles unrun (about 5.2 h); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
