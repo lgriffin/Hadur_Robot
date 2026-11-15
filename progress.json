@@ -1,130 +1,34 @@
 {
  "plan": "pc-team-momentum",
- "updated": 1793680668.3487518,
+ "updated": 1794730483.7856722,
  "steps": {
-  "mtprep": {
-   "status": "done",
-   "exit": 0,
-   "seconds": 100,
-   "end": "2026-11-03T02:23:24"
+  "tmprep": {
+   "status": "pending"
   },
-  "mtbb": {
-   "status": "done",
-   "exit": 0,
-   "seconds": 4038,
-   "end": "2026-11-03T03:30:43"
+  "tmpmo": {
+   "status": "pending"
   },
-  "mtmo": {
-   "status": "done",
-   "exit": 0,
-   "seconds": 4014,
-   "end": "2026-11-03T04:37:37"
+  "tmpmod": {
+   "status": "pending"
   },
-  "mtff": {
-   "status": "done",
-   "exit": 0,
-   "seconds": 4,
-   "end": "2026-11-03T04:37:42"
+  "tmpilot": {
+   "status": "pending"
   },
-  "mtsum": {
-   "status": "done",
-   "exit": 0,
-   "seconds": 0,
-   "end": "2026-11-03T04:37:42"
+  "tmbb": {
+   "status": "pending"
   },
-  "mtpr": {
-   "status": "done",
-   "exit": 0,
-   "seconds": 5,
-   "end": "2026-11-03T04:37:48"
+  "tmmo": {
+   "status": "pending"
+  },
+  "tmmod": {
+   "status": "pending"
+  },
+  "tmgate": {
+   "status": "pending"
+  },
+  "tmpr": {
+   "status": "pending"
   }
  },
- "watched": [
-  {
-   "step": "mtbb",
-   "started": 1793672604.727785,
-   "updated": 1793676643.0138793,
-   "elapsed": 4038.28609418869,
-   "expected": 1080,
-   "panel": null,
-   "field": null,
-   "multiarm": false,
-   "arms": [],
-   "aa": null,
-   "warnings": [],
-   "battles": 1080,
-   "resumed": 0,
-   "failed": 0,
-   "disables": null,
-   "rate": 962.7846837288324,
-   "eta": 0.0,
-   "fraction": 1.0,
-   "last_battle_age": 1.6688241958618164,
-   "rules": [
-    {
-     "rule": "fails 60",
-     "action": "halt",
-     "state": "ok",
-     "detail": "0 failed of 1080"
-    },
-    {
-     "rule": "stall 30m",
-     "action": "halt",
-     "state": "ok",
-     "detail": "last battle 0 min ago"
-    },
-    {
-     "rule": "skips 40 over 100",
-     "action": "halt",
-     "state": "ok",
-     "detail": "8.9 a battle over the last 100 (first 100: 17.4)"
-    }
-   ],
-   "skips_mean": 17.116666666666667,
-   "skips_last100": 8.89
-  },
-  {
-   "step": "mtmo",
-   "started": 1793676643.0372717,
-   "updated": 1793680657.5028887,
-   "elapsed": 4014.465616941452,
-   "expected": 1080,
-   "panel": null,
-   "field": null,
-   "multiarm": false,
-   "arms": [],
-   "aa": null,
-   "warnings": [],
-   "battles": 1080,
-   "resumed": 0,
-   "failed": 0,
-   "disables": null,
-   "rate": 968.4975214614483,
-   "eta": 0.0,
-   "fraction": 1.0,
-   "last_battle_age": 1.6674959659576416,
-   "rules": [
-    {
-     "rule": "fails 60",
-     "action": "halt",
-     "state": "ok",
-     "detail": "0 failed of 1080"
-    },
-    {
-     "rule": "stall 30m",
-     "action": "halt",
-     "state": "ok",
-     "detail": "last battle 0 min ago"
-    },
-    {
-     "rule": "skips 40 over 100",
-     "action": "halt",
-     "state": "ok",
-     "detail": "9.3 a battle over the last 100 (first 100: 17.6)"
-    }
-   ],
-   "skips_mean": 17.362037037037037,
-   "skips_last100": 9.33
-  }
- ]
+ "watched": []
 }
