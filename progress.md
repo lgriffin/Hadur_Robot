@@ -1,6 +1,6 @@
 # Queue pc-team-momentum: progress
 
-Updated 2026-11-15 14:17:09 PC time (14:17 UTC), runner pid 55920.
+Updated 2026-11-15 14:32:15 PC time (14:32 UTC), runner pid 55920.
 
 - `tmprep` done, exit 0 in 3 min
 - `tmpmo` done, exit 0 in 37 min
@@ -53,21 +53,20 @@ Stopping now would leave 24 battles unrun (about 4 min); every battle already fo
 
 ### tmmo
 
-**767 of 1104 battles** (69%), 0 failed. Running 2.1 h, 370 battles/h, about 55 min left (ends ~15:11 PC time). Last battle 0 min ago.
-Skipped turns a battle: 8.1 overall, first 100 16.3, last 100 3.2.
+**884 of 1104 battles** (80%), 0 failed. Running 2.3 h, 380 battles/h, about 35 min left (ends ~15:06 PC time). Last battle 0 min ago.
+Skipped turns a battle: 7.5 overall, first 100 16.3, last 100 3.1.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 767 |
+| `fails 60` | halt | ok | 0 failed of 884 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | ok | 3.3 a battle over the last 200 (first 200: 14.6) |
+| `skips 60 over 200` | halt | ok | 3.4 a battle over the last 200 (first 200: 14.6) |
 
-Stopping now would leave 337 battles unrun (about 55 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 220 battles unrun (about 35 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-09:33:09 tmpilot exit=0 in 0 s
 09:33:09 start tmbb
 09:33:09 watching tmbb: 3 stop rule(s)
 09:48:20 progress tmbb: 66/1104 (6%) battles, 261/h, ETA 4.0 h, 0 failed, skips 13.9/battle (last 100)
@@ -82,4 +81,5 @@ Stopping now would leave 337 battles unrun (about 55 min); every battle already 
 12:49:34 progress tmmo: 191/1104 (17%) battles, 312/h, ETA 2.9 h, 0 failed, skips 14.0/battle (last 100)
 13:19:45 progress tmmo: 409/1104 (37%) battles, 367/h, ETA 1.9 h, 0 failed, skips 6.8/battle (last 100)
 13:49:58 progress tmmo: 638/1104 (58%) battles, 394/h, ETA 1.2 h, 0 failed, skips 3.6/battle (last 100)
+14:20:10 progress tmmo: 790/1104 (72%) battles, 372/h, ETA 51 min, 0 failed, skips 3.8/battle (last 100)
 ```
