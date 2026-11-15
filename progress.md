@@ -1,6 +1,6 @@
 # Queue pc-team-momentum: progress
 
-Updated 2026-11-15 16:48:10 PC time (16:48 UTC), runner pid 55920.
+Updated 2026-11-15 17:03:16 PC time (17:03 UTC), runner pid 55920.
 
 - `tmprep` done, exit 0 in 3 min
 - `tmpmo` done, exit 0 in 37 min
@@ -66,21 +66,20 @@ Stopping now would leave 24 battles unrun (about 4 min); every battle already fo
 
 ### tmmod
 
-**696 of 1104 battles** (63%), 0 failed. Running 1.9 h, 373 battles/h, about 1.1 h left (ends ~17:53 PC time). Last battle 1 min ago.
-Skipped turns a battle: 8.6 overall, first 100 16.1, last 100 3.3.
+**781 of 1104 battles** (71%), 0 failed. Running 2.1 h, 369 battles/h, about 53 min left (ends ~17:55 PC time). Last battle 0 min ago.
+Skipped turns a battle: 8.0 overall, first 100 16.1, last 100 3.4.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 696 |
-| `stall 30m` | halt | ok | last battle 1 min ago |
-| `skips 60 over 200` | halt | ok | 3.8 a battle over the last 200 (first 200: 14.8) |
+| `fails 60` | halt | ok | 0 failed of 781 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 60 over 200` | halt | ok | 3.5 a battle over the last 200 (first 200: 14.8) |
 
-Stopping now would leave 408 battles unrun (about 1.1 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 323 battles unrun (about 53 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-12:12:48 tmbb exit=0 in 9579 s
 12:12:48 start tmmo
 12:12:48 watching tmmo: 3 stop rule(s)
 12:19:22 progress tmmo: 25/1104 (2%) battles, 229/h, ETA 4.7 h, 0 failed, skips 14.0/battle (last 100)
@@ -95,4 +94,5 @@ Stopping now would leave 408 battles unrun (about 1.1 h); every battle already f
 15:20:34 progress tmmod: 132/1104 (12%) battles, 324/h, ETA 3.0 h, 0 failed, skips 17.0/battle (last 100)
 15:50:47 progress tmmod: 329/1104 (30%) battles, 361/h, ETA 2.1 h, 0 failed, skips 8.4/battle (last 100)
 16:20:58 progress tmmod: 546/1104 (49%) battles, 386/h, ETA 1.4 h, 0 failed, skips 6.1/battle (last 100)
+16:51:11 progress tmmod: 705/1104 (64%) battles, 368/h, ETA 1.1 h, 0 failed, skips 3.4/battle (last 100)
 ```
