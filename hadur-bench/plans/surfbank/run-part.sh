@@ -33,9 +33,21 @@ if [[ "$(cat "$WT/.sb-built" 2>/dev/null)" != "$WANT" ]]; then
 fi
 [[ -n "${BUILD_ONLY:-}" ]] && exit 0
 cd "$WT/hadur-bench"
-./fetch-opponents.sh --set "plans/surfbank/field-$N.txt" 2>&1 | tail -1 | tee -a "$OUT/status.txt" || true
+# Opponent jars: the shared copy first (1,193 of the 1,194, fetched once), then the archive; a robot whose jar
+# is still missing (jd.Nullstride 2.3.3 is 404 on the archive) is dropped from this box's panel.
+SHARED=/mnt/project-files/coverage/shards/surf-field/opponents
+PANEL="work/field-$N-present.txt"
+mkdir -p work
+grep -v '^#' "plans/surfbank/field-$N.txt" | awk -F'|' '{gsub(/ /,"",$3); print $3}' | while read -r j; do
+    [[ -f "opponents/$j" || ! -f "$SHARED/$j" ]] || cp "$SHARED/$j" opponents/
+done
+./fetch-opponents.sh --set "plans/surfbank/field-$N.txt" 2>&1 | tail -n 1 | tee -a "$OUT/status.txt" || true
+grep -v '^#' "plans/surfbank/field-$N.txt" | while IFS= read -r line; do
+    j=$(echo "$line" | awk -F'|' '{gsub(/ /,"",$3); print $3}')
+    if [[ -f "opponents/$j" ]]; then echo "$line"; else log "dropped (no jar): $line"; fi
+done > "$PANEL"
 log "running part $N"
-mvn -q -Drobocode.version=1.11.2 exec:java -Dexec.args="--set plans/surfbank/field-$N.txt --seeds 2 --seed-base 37900 --out work/surf-field-$N --arms plans/surfbank/surfbank.arms --truth-log false --rounds 35 --parallel 2 --child-cpus 2 --cpu-constant live --job-order shuffled --failed-ok true" || rc=$?
+mvn -q -Drobocode.version=1.11.2 exec:java -Dexec.args="--set $PANEL --seeds 2 --seed-base 37900 --out work/surf-field-$N --arms plans/surfbank/surfbank.arms --truth-log false --rounds 35 --parallel 2 --child-cpus 2 --cpu-constant live --job-order shuffled --failed-ok true" || rc=$?
 [[ ${rc:-0} -ne 0 ]] && log "bench exit $rc"
 cd "work/surf-field-$N"
 mkdir -p "$OUT/battles"
