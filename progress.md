@@ -1,12 +1,12 @@
 # Queue pc-team-momentum: progress
 
-Updated 2026-11-15 09:30:13 PC time (09:30 UTC), runner pid 55920.
+Updated 2026-11-15 09:45:19 PC time (09:45 UTC), runner pid 55920.
 
 - `tmprep` done, exit 0 in 3 min
 - `tmpmo` done, exit 0 in 37 min
-- `tmpmod` running
-- `tmpilot` pending
-- `tmbb` pending
+- `tmpmod` done, exit 0 in 38 min
+- `tmpilot` done, exit 0 in 0 min
+- `tmbb` running
 - `tmmo` pending
 - `tmmod` pending
 - `tmgate` pending
@@ -27,25 +27,33 @@ Stopping now would leave 6 battles unrun (about 1 min); every battle already fou
 
 ### tmpmod
 
-**243 of 276 battles** (88%), 0 failed. Running 36 min, 410 battles/h, about 5 min left (ends ~09:35 PC time). Last battle 0 min ago.
-Skipped turns a battle: 8.0 overall, first 100 12.7, last 100 4.2.
+**270 of 276 battles** (98%), 0 failed. Running 39 min, 421 battles/h, about 1 min left (ends ~09:34 PC time). Last battle 0 min ago.
+Skipped turns a battle: 7.5 overall, first 100 12.7, last 100 4.2.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 243 |
+| `fails 60` | halt | ok | 0 failed of 270 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | ok | 6.0 a battle over the last 200 (first 200: 8.7) |
+| `skips 60 over 200` | halt | ok | 5.0 a battle over the last 200 (first 200: 8.7) |
 
-Stopping now would leave 33 battles unrun (about 5 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 6 battles unrun (about 1 min); every battle already fought is kept and a rerun resumes from it.
+
+### tmbb
+
+**53 of 1104 battles** (5%), 0 failed. Running 12 min, 261 battles/h, about 4.0 h left (ends ~13:46 PC time). Last battle 0 min ago.
+Skipped turns a battle: 15.0 overall, first 53 15.0, last 53 15.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 60` | halt | ok | 0 failed of 53 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 60 over 200` | halt | waiting | 53 of 200 battles to read |
+
+Stopping now would leave 1051 battles unrun (about 4.0 h); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-04:37:42 start mtpr
-04:37:48 mtpr exit=0 in 5 s
-04:37:48 ALLDONE
-08:14:43 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
-08:14:43 start tmprep
 08:14:46 progress pushed to origin claude/pc-team-momentum-progress (every 15 min)
 08:17:26 tmprep exit=0 in 162 s
 08:17:26 start tmpmo
@@ -56,4 +64,9 @@ Stopping now would leave 33 battles unrun (about 5 min); every battle already fo
 08:54:38 start tmpmod
 08:54:38 watching tmpmod: 3 stop rule(s)
 09:18:08 progress tmpmod: 162/276 (59%) battles, 414/h, ETA 17 min, 0 failed, skips 6.1/battle (last 100)
+09:33:08 tmpmod exit=0 in 2310 s
+09:33:08 start tmpilot
+09:33:09 tmpilot exit=0 in 0 s
+09:33:09 start tmbb
+09:33:09 watching tmbb: 3 stop rule(s)
 ```

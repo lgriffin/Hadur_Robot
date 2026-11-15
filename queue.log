@@ -32,3 +32,8 @@
 08:54:38 start tmpmod
 08:54:38 watching tmpmod: 3 stop rule(s)
 09:18:08 progress tmpmod: 162/276 (59%) battles, 414/h, ETA 17 min, 0 failed, skips 6.1/battle (last 100)
+09:33:08 tmpmod exit=0 in 2310 s
+09:33:08 start tmpilot
+09:33:09 tmpilot exit=0 in 0 s
+09:33:09 start tmbb
+09:33:09 watching tmbb: 3 stop rule(s)
