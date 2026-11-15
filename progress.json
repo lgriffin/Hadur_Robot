@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-momentum",
- "updated": 1794743168.412802,
+ "updated": 1794744074.4437525,
  "steps": {
   "tmprep": {
    "status": "done",
@@ -133,8 +133,8 @@
   {
    "step": "tmbb",
    "started": 1794735189.2838812,
-   "updated": 1794743168.4049203,
-   "elapsed": 7979.121039152145,
+   "updated": 1794744074.4352245,
+   "elapsed": 8885.151343345642,
    "expected": 1104,
    "panel": null,
    "field": null,
@@ -142,20 +142,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 860,
+   "battles": 979,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 388.01266264899,
-   "eta": 2263.843643666423,
-   "fraction": 0.7789855072463768,
-   "last_battle_age": 4.283214092254639,
+   "rate": 396.66178591764,
+   "eta": 1134.467740468034,
+   "fraction": 0.8867753623188406,
+   "last_battle_age": 9.905425548553467,
    "rules": [
     {
      "rule": "fails 60",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 860"
+     "detail": "0 failed of 979"
     },
     {
      "rule": "stall 30m",
@@ -167,11 +167,11 @@
      "rule": "skips 60 over 200",
      "action": "halt",
      "state": "ok",
-     "detail": "3.1 a battle over the last 200 (first 200: 14.8)"
+     "detail": "4.8 a battle over the last 200 (first 200: 14.8)"
     }
    ],
-   "skips_mean": 7.459302325581396,
-   "skips_last100": 3.35
+   "skips_mean": 7.278855975485189,
+   "skips_last100": 6.36
   }
  ]
 }
