@@ -79,6 +79,8 @@ public final class ShieldList {
     public static final String RACE_POWER_PREFIX = "race-power:";
     /** RAM-11: the prefix of a line naming an opponent whose shots the rammer escape also dodges as circular aims. */
     public static final String RAM_CIRC_PREFIX = "ram-circ:";
+    /** RAM-12: the prefix of a line naming an opponent whose shots the rammer escape breaks with a jinked speed. */
+    public static final String RAM_JINK_PREFIX = "ram-jink:";
     /** MIR-2: a line starting with this names an opponent the duel never runs MIR-1 against. */
     public static final String MIRROR_OFF_PREFIX = "mirror-off:";
     /** SHIELD-25: a line starting with this names an opponent shield mode never fires a shot under {@link ShieldMode#FLOOR_POWER} at. */
@@ -123,6 +125,8 @@ public final class ShieldList {
     static final int POWER_CAP5 = 16384;
     /** RAM-11: the per-opponent circular-aim dodge switch's bit in {@link #switches}. */
     static final int RAM_CIRC = 32768;
+    /** RAM-12: the per-opponent jinked-speed escape switch's bit in {@link #switches}. */
+    static final int RAM_JINK = 65536;
 
     private final Set<String> entries;
     /** SHIELD-17: the opening-drive list. */
@@ -177,6 +181,7 @@ public final class ShieldList {
                     : entry.startsWith(X5_POWER_PREFIX) ? X5_POWER
                     : entry.startsWith(RACE_POWER_PREFIX) ? RACE_POWER
                     : entry.startsWith(RAM_CIRC_PREFIX) ? RAM_CIRC
+                    : entry.startsWith(RAM_JINK_PREFIX) ? RAM_JINK
                     : entry.startsWith(MIRROR_OFF_PREFIX) ? MIRROR_OFF
                     : entry.startsWith(FLOOR_PREFIX) ? FLOOR
                     : entry.startsWith(POWER_CAP5_PREFIX) ? POWER_CAP5
@@ -510,6 +515,16 @@ public final class ShieldList {
      */
     public boolean ramCirc(String robotName) {
         return (switchBits(robotName) & RAM_CIRC) != 0;
+    }
+
+    /**
+     * RAM-12: whether the table names this opponent for the rammer escape's jinked speed.
+     *
+     * @param robotName the opponent's name as Robocode lists it
+     * @return true when a {@code ram-jink:} line matches it
+     */
+    public boolean ramJink(String robotName) {
+        return (switchBits(robotName) & RAM_JINK) != 0;
     }
 
     private int switchBits(String robotName) {

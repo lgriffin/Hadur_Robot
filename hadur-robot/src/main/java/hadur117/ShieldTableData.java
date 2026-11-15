@@ -845,6 +845,17 @@ final class ShieldTableData {
     }
 
     /**
+     * RAM-12: the rammers the escape jinks its speed against ({@code ram-jink:} lines). Empty until a PC card locks
+     * entries.
+     *
+     * @return a fresh array of names
+     */
+    static String[] ramJinks() {
+        return new String[] {
+        };
+    }
+
+    /**
      * SKEY-2: per-opponent surf keys, each line {@code "m1 ... m9 bw name"}: nine multipliers on the
      * hit views' key weights ({@code MoveFormula}) and one on the kernel width, fitted offline from that
      * opponent's bullets ({@code data/tools/surf_key_fit.py}). The 175 keys of pc-surf-key (BENCH-160,

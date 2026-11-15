@@ -166,4 +166,31 @@ class RamEscapeTest {
         double lead = on.lastCircularLead();
         assertTrue(!Double.isNaN(lead) && Math.abs(lead) > 0.02, "circular aim leads off the linear one: " + lead);
     }
+
+    @Test
+    @Tag("RAM-12")
+    @DisplayName("RAM-12: with the jink on, full and slow stretches alternate within their bounds; off, full speed throughout")
+    void jinksTheSpeed() {
+        RamEscape off = new RamEscape(FIELD, PREDICTOR);
+        RamEscape on = new RamEscape(FIELD, PREDICTOR);
+        on.setJink(true);
+        int slow = 0;
+        int run = 0;
+        double last = -1;
+        for (long t = 0; t < 400; t++) {
+            assertEquals(8.0, off.jinkSpeed(t), 1e-9);
+            double v = on.jinkSpeed(t);
+            if (v == last) run++;
+            else {
+                if (last == RamEscape.JINK_SLOW) assertTrue(run >= RamEscape.JINK_SLOW_MIN && run <= RamEscape.JINK_SLOW_MAX, "slow run " + run);
+                if (last == 8.0) assertTrue(run >= RamEscape.JINK_FULL_MIN && run <= RamEscape.JINK_FULL_MAX, "full run " + run);
+                run = 1;
+            }
+            last = v;
+            if (v == RamEscape.JINK_SLOW) slow++;
+        }
+        assertTrue(slow > 40 && slow < 200, "slow ticks " + slow);
+        // A gap in the escape's ticks starts afresh at full speed.
+        assertEquals(8.0, on.jinkSpeed(1000), 1e-9);
+    }
 }

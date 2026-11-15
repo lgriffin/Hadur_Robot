@@ -328,4 +328,15 @@ class ShieldListResourceTest {
         assertTrue(list.ramCirc("suh.nano.RammingC 1.00"));
         assertTrue(!list.ramCirc("step.nanoPri 1.0"));
     }
+
+    @Test
+    @Tag("RAM-12")
+    @DisplayName("RAM-12: ram-jink lines parse per opponent; the shipped table names none until a PC card locks them")
+    void ramJinkLines() {
+        assertEquals(0, ShieldTableData.ramJinks().length, "no ram-jink line ships before its PC card");
+        ShieldList list = ShieldList.parse(Arrays.asList(ShieldList.RAM_JINK_PREFIX + " wompi.Kowari 1.6"));
+        assertTrue(list.ramJink("wompi.Kowari 1.6"));
+        assertTrue(!list.ramJink("step.nanoPri 1.0"));
+        assertTrue(!list.ramCirc("wompi.Kowari 1.6"));
+    }
 }
