@@ -44,10 +44,12 @@ class PcRam11PlanTest {
         assertTrue(queue.contains("mode_table.py ${W}/arms.tsv --margin 0 --out-tsv ${OUT}/pc-ram11-lock-pick.tsv"), "the gate");
         int at = queue.indexOf("\nlock | ");
         String body = queue.substring(at, queue.indexOf("\n\n", at + 1));
-        for (String rule : new String[] {"fails 30", "dead 8", "skips 60 over 200", "stall 30m", "aa after 20%"}) {
+        for (String rule : new String[] {"fails 30", "dead 8", "skips 60 over 24", "stall 30m"}) {
             assertTrue(body.contains("stop: " + rule), rule);
         }
         assertTrue(body.contains("  after: livematch"), "the lock waits for the live-match check");
+        assertTrue(panel.size() * 3 * 12 >= 24, "the skips window is reachable within the lock");
+        assertTrue(!body.contains("stop: aa"), "under 10 robots the watcher's A/A stop never reads; aa is read in the gate");
         assertEquals(List.of(), PcLiveMatchPlanTest.violations("pc-ram11.queue", queue), "BENCH-245 timing rule");
         assertTrue(queue.contains("Why it should win") && queue.contains("set ALERT = lgriffin"));
         assertTrue(queue.contains("open_results_pr.sh claude/pc-ram11-results") && queue.contains("set P = --parallel 16 --no-truth-log"));

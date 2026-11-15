@@ -1,0 +1,3 @@
+# BENCH-249 pc-ram11b: field rammers whose RAM-11 line (the rammer escape also dodges a circular aim) locked on the cloud
+# after pc-ram11 was written: 12 fresh seeds from 23200 at the live turn time, 95% low end above 0. Census rows. name | rank | jar
+EH.Fusion 0.32 | rank705-band6 | EH.Fusion_0.32.jar
