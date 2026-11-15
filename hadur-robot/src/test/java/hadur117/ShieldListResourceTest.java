@@ -321,11 +321,13 @@ class ShieldListResourceTest {
 
     @Test
     @Tag("RAM-11")
-    @DisplayName("RAM-11: ram-circ lines parse per opponent; the shipped table names none until a PC card locks them")
+    @DisplayName("RAM-11: ram-circ lines parse per opponent; the shipped table names the rammers its PC cards locked")
     void ramCircLines() {
-        assertEquals(0, ShieldTableData.ramCircs().length, "no ram-circ line ships before its PC card");
-        ShieldList list = ShieldList.parse(Arrays.asList(ShieldList.RAM_CIRC_PREFIX + " suh.nano.RammingC 1.00"));
-        assertTrue(list.ramCirc("suh.nano.RammingC 1.00"));
-        assertTrue(!list.ramCirc("step.nanoPri 1.0"));
+        assertEquals(3 + 1, ShieldTableData.ramCircs().length, "pc-ram11 (BENCH-248, PR #827) and pc-ram11b (BENCH-249, PR #828)");
+        java.util.List<String> lines = new java.util.ArrayList<>();
+        for (String n : ShieldTableData.ramCircs()) lines.add(ShieldList.RAM_CIRC_PREFIX + " " + n);
+        ShieldList list = ShieldList.parse(lines);
+        for (String n : ShieldTableData.ramCircs()) assertTrue(list.ramCirc(n), n);
+        assertTrue(!list.ramCirc("EH.Bolt 0.1"), "a robot with no ram-circ line");
     }
 }

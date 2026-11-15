@@ -48,6 +48,8 @@ class PcLinesPlanTest {
         // A later card (pc-class-1, plans/class-1-shipped.txt) may ship another line type to a robot this card read.
         List<String> later = new java.util.ArrayList<>(names("plans/class-1-shipped.txt"));
         later.addAll(names("plans/r31-shipped.txt")); // pc-r31 (PR #817) shipped lines to robots this card read
+        later.addAll(names("plans/ram11-shipped.txt")); // pc-ram11/ram11b (PR #827, #828) shipped RAM-11 lines
+        later.addAll(names("plans/gl-lines-shipped.txt")); // pc-gl-lines (PR #829) shipped a gun-stack line
         for (String n : panel) {
             assertTrue(!broken.contains(n), n + " loads on 1.11.2");
             if (shipped.contains(n)) {

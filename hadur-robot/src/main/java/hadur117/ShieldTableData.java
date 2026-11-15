@@ -519,6 +519,8 @@ final class ShieldTableData {
             "kc.serpent.WaveSerpent 2.11",                 // +4.7
             "sheldor.mini.Foilist 1.3.1",                  // +4.1
             "jk.precise.Wintermute 0.8",                   // +4.0
+            // pc-gl-lines (BENCH-250, PR #829): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "fromHell.BlackBox 0.0.2",                     // +4.5
         };
     }
 
@@ -834,13 +836,19 @@ final class ShieldTableData {
     }
 
     /**
-     * RAM-11: the rammers whose shots the escape also dodges as circular aims ({@code ram-circ:} lines). Empty until a
-     * PC card locks entries.
+     * RAM-11: the rammers whose shots the escape also dodges as circular aims ({@code ram-circ:} lines), each locked on
+     * 12 fresh PC seeds at the live turn time after a 12-seed cloud lock.
      *
      * @return a fresh array of names
      */
     static String[] ramCircs() {
         return new String[] {
+            // pc-ram11 (BENCH-248, PR #827)
+            "step.nanoPri 1.0",                // +6.4
+            "suh.nano.RammingC 1.00",          // +5.8
+            "suzushin7.nano.Galaxy03 1.01",    // +4.3
+            // pc-ram11b (BENCH-249, PR #828)
+            "EH.Fusion 0.32",                  // +4.7
         };
     }
 
