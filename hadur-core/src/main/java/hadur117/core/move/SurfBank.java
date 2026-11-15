@@ -26,7 +26,7 @@ public final class SurfBank {
     /** Guess-factor bins, -1 to 1. */
     public static final int BINS = 61;
     /** The exponent on the bank's mass in the option multiplier. */
-    static final double POWER = 0.5;
+    static final double POWER = 0.25;
     /** Added to the mass before the exponent, so an empty interval still keeps some danger. */
     static final double FLOOR = 0.02;
     /** Known bullets the k-NN member keeps. */

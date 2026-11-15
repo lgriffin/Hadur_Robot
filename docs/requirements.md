@@ -1540,14 +1540,15 @@ checks the re-blend picks what the surf picked, and fits.
 
 The surf design note (15 Nov 2026) found that learning guns hit us about a quarter more than they hit
 BeepBoop at the same spots, walls and distances, so the gap is how well the surf's danger reads the
-enemy's real gun. A replay of 31 shard-E learners' recorded options against the real bullets (AES-1
-records, 65,531 waves) found that scaling each option's total by the square root of a bank's share of
-its first-wave interval cut the chosen option's hit rate from 8.77% to 8.49% (better on 24 robots,
-worse on 6); weighting the head-on and linear aims up instead raised it to 9.65%.
+enemy's real gun. A replay of the 33 shard-E learners' recorded options against the real bullets (AES-1
+records, 84,555 waves) found that scaling each option's total by the fourth root of a bank's share of
+its first-wave interval cut the chosen option's hit rate from 8.69% to 8.41% (better on 28 robots,
+worse on 3; the square root read 8.37% but was worse on 9); weighting the head-on and linear aims up
+instead raised it to 9.65% on 31 robots.
 
 | ID | Pattern | Requirement | Stage |
 |---|---|---|---|
-| SURF-BANK-1 | State | While the surf-bank switch is on, in a 1v1 battle (one enemy, no team), the three-option surf shall multiply each option's total danger by `(mass + 0.02) ^ 0.5`, where `mass` is the bank's share of the option's first-wave plan interval, and shall rate every option without the cutoff; the bank shall blend a population prior keyed on our lateral speed, acceleration, flight time, wall room and time since reversal, an online table on the same key, and a k-nearest-neighbour member over the enemy's last 400 known bullets, each weighted by its decayed log score on the known bullets (those that hit us or hit one of ours). In a team or melee battle no bank shall be built. Ablation `surfbank` (suffix sb); `MoveDesign.SURF_BANK` is off in every shipped jar until a card passes. | R9 |
+| SURF-BANK-1 | State | While the surf-bank switch is on, in a 1v1 battle (one enemy, no team), the three-option surf shall multiply each option's total danger by `(mass + 0.02) ^ 0.25`, where `mass` is the bank's share of the option's first-wave plan interval, and shall rate every option without the cutoff; the bank shall blend a population prior keyed on our lateral speed, acceleration, flight time, wall room and time since reversal, an online table on the same key, and a k-nearest-neighbour member over the enemy's last 400 known bullets, each weighted by its decayed log score on the known bullets (those that hit us or hit one of ours). In a team or melee battle no bank shall be built. Ablation `surfbank` (suffix sb); `MoveDesign.SURF_BANK` is off in every shipped jar until a card passes. | R9 |
 
 ## The enemy-gun oracle (ORACLE-1 to ORACLE-4, MOVE-29, BENCH-134, BENCH-138, BENCH-140, BENCH-141)
 

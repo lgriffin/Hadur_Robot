@@ -10,10 +10,11 @@ N="$1"
 MAIN=/home/user/Hadur_Robot
 WT=/home/user/sbwt
 BR=claude/project-thread-y0plb3
+WANT=power25
 OUT=/mnt/project-files/coverage/shards/surf-field/part$N
 mkdir -p "$OUT"
 log() { echo "$(date -u +%FT%TZ) $*" | tee -a "$OUT/status.txt"; }
-if [[ ! -f "$WT/.sb-built" ]]; then
+if [[ "$(cat "$WT/.sb-built" 2>/dev/null)" != "$WANT" ]]; then
     log "building"
     git -C "$MAIN" fetch -q origin "$BR"
     git -C "$MAIN" worktree remove --force "$WT" 2>/dev/null || rm -rf "$WT"
@@ -27,11 +28,12 @@ if [[ ! -f "$WT/.sb-built" ]]; then
     ./build-ablation.sh surfbank
     ls bisect/hadur117.Hadur_3.22.jar bisect/hadur117.Hadur_3.22aa.jar bisect/hadur117.Hadur_3.22sb.jar
     rm -rf opponents && ln -s "$MAIN/hadur-bench/opponents" opponents
-    touch "$WT/.sb-built"
+    echo "$WANT" > "$WT/.sb-built"
     log "built $(git -C "$WT" rev-parse --short HEAD)"
 fi
 [[ -n "${BUILD_ONLY:-}" ]] && exit 0
 cd "$WT/hadur-bench"
+./fetch-opponents.sh --set "plans/surfbank/field-$N.txt" 2>&1 | tail -1 | tee -a "$OUT/status.txt" || true
 log "running part $N"
 mvn -q -Drobocode.version=1.11.2 exec:java -Dexec.args="--set plans/surfbank/field-$N.txt --seeds 2 --seed-base 37900 --out work/surf-field-$N --arms plans/surfbank/surfbank.arms --truth-log false --rounds 35 --parallel 2 --child-cpus 2 --cpu-constant live --job-order shuffled --failed-ok true" || log "bench exit $?"
 cd "work/surf-field-$N"

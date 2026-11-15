@@ -66,7 +66,7 @@
 #   nodecay  GUN-10: gun ratings are lifetime hits over shots, without GUN-1's 100-shot half-life (Diamond's form). Sets
 #         only UNDECAYED. Suffix nk (not nd: nodur has it). Suffixes follow the order given, so stack as thgun,freegun,
 #         nodecay for th, fg, nk (heatjit,swall,thgun,freegun,nodecay -> hjswthfgnk).
-#   surfbank SURF-BANK-1: in 1v1 only, the three-option surf multiplies each option's danger by the square root of
+#   surfbank SURF-BANK-1: in 1v1 only, the three-option surf multiplies each option's danger by the fourth root of
 #         a learned bank's share of its first-wave interval (population prior + online table + k-NN over the
 #         enemy's known bullets). Sets only SURF_BANK. Suffix sb.
 #   aesrec  AES-1 (measurement, docs/plan-aes.md): each wave's first three-option rating is printed as an AES

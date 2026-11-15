@@ -28,7 +28,7 @@ final class MoveDesign {
 
     /**
      * SURF-BANK-1: in a 1v1 battle only, the three-option surf multiplies each option's danger
-     * by the square root of a learned bank's share of its first-wave interval (a population
+     * by the fourth root of a learned bank's share of its first-wave interval (a population
      * prior, an online table and a k-NN over the enemy's known bullets). Team and melee never
      * build the bank.
      */
