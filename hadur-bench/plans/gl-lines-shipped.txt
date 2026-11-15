@@ -1,0 +1,2 @@
+# pc-gl-lines (BENCH-250, PR #829): robots whose gun-stack lines shipped on 12 fresh PC seeds at the live turn time
+fromHell.BlackBox 0.0.2
