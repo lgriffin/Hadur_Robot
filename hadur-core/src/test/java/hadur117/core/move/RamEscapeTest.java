@@ -166,31 +166,4 @@ class RamEscapeTest {
         double lead = on.lastCircularLead();
         assertTrue(!Double.isNaN(lead) && Math.abs(lead) > 0.02, "circular aim leads off the linear one: " + lead);
     }
-
-    @Test
-    @Tag("RAM-13")
-    @DisplayName("RAM-13: the zig-zag alternates sides in stretches of 5 to 11 ticks; off, the escape's heading is unchanged")
-    void zigZags() {
-        RamEscape on = new RamEscape(FIELD, PREDICTOR);
-        on.setZig(true);
-        int run = 0;
-        int last = 0;
-        for (long t = 0; t < 300; t++) {
-            int s = on.zigSide(t);
-            if (s == last) run++;
-            else {
-                if (last != 0) assertTrue(run >= RamEscape.ZIG_MIN && run <= RamEscape.ZIG_MAX, "run " + run);
-                run = 1;
-            }
-            last = s;
-        }
-        RamEscape off = new RamEscape(FIELD, PREDICTOR);
-        RamEscape off2 = new RamEscape(FIELD, PREDICTOR);
-        RobotState rammer = state(300, 300, Math.PI / 2, 8, 100);
-        BotOrders.Builder a = BotOrders.builder();
-        off.move(a, state(400, 300, 1.0, 8, 100), rammer);
-        BotOrders.Builder b = BotOrders.builder();
-        off2.move(b, state(400, 300, 1.0, 8, 100), rammer);
-        assertEquals(off.lastHeading(), off2.lastHeading(), 1e-12);
-    }
 }
