@@ -1,0 +1,2 @@
+# BENCH-249 pc-ram11b: the rcl arm gives its RAM-11 line (ram-circ) to each panel robot.
+EH.Fusion 0.32
