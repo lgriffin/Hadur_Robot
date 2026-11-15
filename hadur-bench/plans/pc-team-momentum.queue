@@ -1,11 +1,12 @@
+# battle: team
 # Team: momentum, after the 2026-11-15 read of OgiTeam (BENCH-247). Team thread: team-only, duel and melee untouched
 # (MOMENTUM is read only while a teammate lives; off in the shipped build).
 #   aa      the baseline (master); bb its A/A copy
 #   mo      MOMENTUM on every team (TMODE-49, tmmomentum): members keep full speed through a turn over 45 degrees
 #           instead of braking to 4 px a tick, and each candidate's drive through the shot profiles and teammates'
 #           bullets is simulated from the member's real heading and velocity (turn rate, brake 2, accelerate 1)
-#   mos     the speed part alone (tmmomentums)
-# Pilot: mo and mos on all 46 teams, 3 fresh seeds from 21900, 12 rounds, paired with aa. An arm whose projected
+#   mod     the simulated drive alone, no full speed through turns (tmmomentumd)
+# Pilot: mo and mod on all 46 teams, 3 fresh seeds from 21900, 12 rounds, paired with aa. An arm whose projected
 #   team APS change is under 0 stops there (team_modes.py gate --stop-below 0); one that is not leaves a marker
 #   (work/team-momentum-go-ARM) and goes on. Both under 0: the screen does nothing and the PR carries the pilot.
 # Screen: bb and each surviving arm against aa on all 46 teams, 12 fresh seeds from 22000, 12 rounds; each arm is
@@ -16,7 +17,12 @@
 #   full speed through every turn and its wave check simulates the robot's real physics. Ours brake to 4 px a tick
 #   on any turn over 45 degrees, and our wave check drives each candidate from a standstill already pointed at it,
 #   so a turn back looks as cheap as going on. MOMENTUM removes both. Field-wide team card (team cards may be).
-#   Cloud smoke: see docs/bench/local/team-momentum-smoke.md.
+#   Cloud smoke (docs/bench/local/team-momentum-smoke.md; 8 gap teams x 2 seeds from 21800, 16 pairs an arm):
+#   share flat for every arm, A/A included (mo -0.9 +- 2.8, speed alone -1.1 +- 2.7, A/A -0.7 +- 3.3), so the cloud
+#   cannot see a team APS step; the mechanism moved the right way with the simulated drive: our own bullets on
+#   our members 51 -> 37 a battle (-13.6 +- 5.7) and enemy hits on members under 200 px 28.1% -> 25.4%, while
+#   speed alone raised own hits (+5.1 +- 6.5). So the second arm is the drive alone (mod), not the speed alone.
+#   The pilot's stop rule is the guard: an arm under 0 APS over 46 teams x 3 seeds goes no further.
 # Size: pilot 2 x 138 battles; screen bb 552 and up to 2 x 552: about 1,900 battles at most, about 1.3 h at the
 #   1,470 team battles/h pc-team-quarters ran at. Every step resumes where it stopped.
 # Stop rules on every battle step (halt; every battle fought is kept and a rerun resumes): 60 failed battles, no
@@ -27,24 +33,25 @@
 #   git checkout master && git pull
 
 set OUT = ../docs/bench/local
+set ALERT = lgriffin
 set T = python3 tools/team_modes.py
 
-tmprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && for a in aa bb mo mos; do rm -f bisect/hadur117.HadurTeam_"$V"$a.jar; done && rm -f ${OUT}/team-momentum-*.md && mkdir -p work && rm -rf work/team-momentum-"$V"-* && rm -f work/team-momentum-*.args work/team-momentum-go-* && ./fetch-opponents.sh --set team-census46.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmmomentum && bash ./build-ablation.sh tmmomentums && for a in mo mos; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" plans/team-momentum-pilot.args > work/team-momentum-p$a.args || exit 1; done && for a in bb mo mos; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" plans/team-momentum-screen.args > work/team-momentum-$a.args || exit 1; done && for a in aa bb mo mos; do test -f bisect/hadur117.HadurTeam_"$V"$a.jar || exit 1; done && mvn -q compile
+tmprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && for a in aa bb mo mod; do rm -f bisect/hadur117.HadurTeam_"$V"$a.jar; done && rm -f ${OUT}/team-momentum-*.md && mkdir -p work && rm -rf work/team-momentum-"$V"-* && rm -f work/team-momentum-*.args work/team-momentum-go-* && ./fetch-opponents.sh --set team-census46.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmmomentum && bash ./build-ablation.sh tmmomentumd && for a in mo mod; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" plans/team-momentum-pilot.args > work/team-momentum-p$a.args || exit 1; done && for a in bb mo mod; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" plans/team-momentum-screen.args > work/team-momentum-$a.args || exit 1; done && for a in aa bb mo mod; do test -f bisect/hadur117.HadurTeam_"$V"$a.jar || exit 1; done && mvn -q compile
 tmpmo | mvn -q exec:java "-Dexec.args=@work/team-momentum-pmo.args"
   after: tmprep
   watch: battles=138
   stop: fails 60
   stop: stall 30m
   stop: skips 60 over 200
-tmpmos | mvn -q exec:java "-Dexec.args=@work/team-momentum-pmos.args"
+tmpmod | mvn -q exec:java "-Dexec.args=@work/team-momentum-pmod.args"
   after: tmpmo
   watch: battles=138
   stop: fails 60
   stop: stall 30m
   stop: skips 60 over 200
-tmpilot | for a in mo mos; do ${T} gate --report ${OUT}/team-momentum-p$a.md --set team-census46.txt --seeds 3 --teams 46 --min-aps 0 --stop-below 0 --out-md ${OUT}/team-momentum-pilot-$a.md && touch work/team-momentum-go-$a || test $? -eq 3 || exit 1; done
-  after: tmpmos
-tmbb | if [ -f work/team-momentum-go-mo ] || [ -f work/team-momentum-go-mos ]; then mvn -q exec:java "-Dexec.args=@work/team-momentum-bb.args"; else echo "both arms under 0 on the pilot: no screen"; fi
+tmpilot | for a in mo mod; do ${T} gate --report ${OUT}/team-momentum-p$a.md --set team-census46.txt --seeds 3 --teams 46 --min-aps 0 --stop-below 0 --out-md ${OUT}/team-momentum-pilot-$a.md && touch work/team-momentum-go-$a || test $? -eq 3 || exit 1; done
+  after: tmpmod
+tmbb | if [ -f work/team-momentum-go-mo ] || [ -f work/team-momentum-go-mod ]; then mvn -q exec:java "-Dexec.args=@work/team-momentum-bb.args"; else echo "both arms under 0 on the pilot: no screen"; fi
   after: tmpilot
   watch:
   stop: fails 60
@@ -56,13 +63,13 @@ tmmo | if [ -f work/team-momentum-go-mo ]; then mvn -q exec:java "-Dexec.args=@w
   stop: fails 60
   stop: stall 30m
   stop: skips 60 over 200
-tmmos | if [ -f work/team-momentum-go-mos ]; then mvn -q exec:java "-Dexec.args=@work/team-momentum-mos.args"; else echo "mos under 0 on the pilot: no screen"; fi
+tmmod | if [ -f work/team-momentum-go-mod ]; then mvn -q exec:java "-Dexec.args=@work/team-momentum-mod.args"; else echo "mod under 0 on the pilot: no screen"; fi
   after: tmmo
   watch:
   stop: fails 60
   stop: stall 30m
   stop: skips 60 over 200
-tmgate | for a in mo mos; do if [ -f work/team-momentum-go-$a ]; then ${T} gate --report ${OUT}/team-momentum-$a.md --control ${OUT}/team-momentum-bb.md --set team-census46.txt --seeds 12 --teams 46 --min-aps 0.15 --out-md ${OUT}/team-momentum-verdict-$a.md || exit 1; else echo "$a: no screen"; fi; done
-  after: tmmos
+tmgate | for a in mo mod; do if [ -f work/team-momentum-go-$a ]; then ${T} gate --report ${OUT}/team-momentum-$a.md --control ${OUT}/team-momentum-bb.md --set team-census46.txt --seeds 12 --teams 46 --min-aps 0.15 --out-md ${OUT}/team-momentum-verdict-$a.md || exit 1; else echo "$a: no screen"; fi; done
+  after: tmmod
 tmpr | bash tools/open_results_pr.sh claude/pc-team-momentum-results "Team: momentum (TMODE-49)" $(ls ${OUT}/team-momentum-*.md 2>/dev/null)
   after: tmgate

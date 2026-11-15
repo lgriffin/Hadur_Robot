@@ -168,6 +168,7 @@
 #         shipped table entry): members keep full speed through a turn, and each candidate's drive through the
 #         shot profiles and teammates' bullets is simulated from the member's real heading and velocity. Suffix mo.
 #   tmmomentums (team only) TMODE-49's speed part alone (MOMENTUM_DRIVE off). Suffix mos.
+#   tmmomentumd (team only) TMODE-49's simulated drive alone (MOMENTUM_SPEED off). Suffix mod.
 #   tmnolast (team only) TMODE-47 off: with one enemy left each member hands over to the duel,
 #         the build before LAST shipped (FORCE_LAST, and Mode.LAST off every shipped entry). Suffix nla.
 #   tmnoclose (team only) TMODE-42 off: the hunt place 350 px on every team, the build before CLOSE
@@ -921,11 +922,14 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$modes" "public static final boolean FORCE_QUARTERS = false;" "public static final boolean FORCE_QUARTERS = true;"
             sed -i -E '/^        t\.put\(/{/Mode\.QUARTERS/!s/\)\);$/, Mode.QUARTERS));/}' "$modes"
             ;;
-        tmmomentum|tmmomentums)
+        tmmomentum|tmmomentums|tmmomentumd)
             # TMODE-49 on every team: the default and every shipped entry play MOMENTUM. Suffix mo (mos: speed only).
             if [ "$a" = tmmomentums ]; then
                 version="${version}mos"
                 edit "$modes" "public static final boolean MOMENTUM_DRIVE = true;" "public static final boolean MOMENTUM_DRIVE = false;"
+            elif [ "$a" = tmmomentumd ]; then
+                version="${version}mod"
+                edit "$modes" "public static final boolean MOMENTUM_SPEED = true;" "public static final boolean MOMENTUM_SPEED = false;"
             else
                 version="${version}mo"
             fi
@@ -959,7 +963,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean THREE_FAR = false;" "public static final boolean THREE_FAR = true;"
             version="${version}ef" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmmomentum, tmmomentums, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, shoff, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, mirofflist, sfloorlist, pcaplist, pcap5list)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmmomentum, tmmomentums, tmmomentumd, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, shoff, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, mirofflist, sfloorlist, pcaplist, pcap5list)" >&2; exit 2 ;;
     esac
 done
 

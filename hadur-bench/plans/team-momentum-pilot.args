@@ -1,4 +1,4 @@
-# PC card team-momentum (BENCH-247): the pilot, arm @A@ (mo or mos) on all 46 teams, 3 seeds from 21900, 12 rounds, against master (the aa build). Template: the card's prep writes the work copy with @V@ = the robot.release in hadur-robot/pom.xml.
+# PC card team-momentum (BENCH-247): the pilot, arm @A@ (mo or mod) on all 46 teams, 3 seeds from 21900, 12 rounds, against master (the aa build). Template: the card's prep writes the work copy with @V@ = the robot.release in hadur-robot/pom.xml.
 --team
 true
 --seeds
