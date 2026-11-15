@@ -27,3 +27,7 @@
 08:17:26 start tmpmo
 08:17:26 watching tmpmo: 3 stop rule(s)
 08:17:44 progress tmpmo: 0/276 (0%) battles, 0 failed
+08:47:56 progress tmpmo: 215/276 (78%) battles, 423/h, ETA 9 min, 0 failed, skips 3.8/battle (last 100)
+08:54:38 tmpmo exit=0 in 2231 s
+08:54:38 start tmpmod
+08:54:38 watching tmpmod: 3 stop rule(s)
