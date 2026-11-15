@@ -1,6 +1,6 @@
 # Queue pc-team-momentum: progress
 
-Updated 2026-11-15 14:02:03 PC time (14:02 UTC), runner pid 55920.
+Updated 2026-11-15 14:17:09 PC time (14:17 UTC), runner pid 55920.
 
 - `tmprep` done, exit 0 in 3 min
 - `tmpmo` done, exit 0 in 37 min
@@ -53,16 +53,16 @@ Stopping now would leave 24 battles unrun (about 4 min); every battle already fo
 
 ### tmmo
 
-**691 of 1104 battles** (63%), 0 failed. Running 1.8 h, 380 battles/h, about 1.1 h left (ends ~15:07 PC time). Last battle 0 min ago.
-Skipped turns a battle: 8.6 overall, first 100 16.3, last 100 3.1.
+**767 of 1104 battles** (69%), 0 failed. Running 2.1 h, 370 battles/h, about 55 min left (ends ~15:11 PC time). Last battle 0 min ago.
+Skipped turns a battle: 8.1 overall, first 100 16.3, last 100 3.2.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 691 |
+| `fails 60` | halt | ok | 0 failed of 767 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | ok | 4.0 a battle over the last 200 (first 200: 14.6) |
+| `skips 60 over 200` | halt | ok | 3.3 a battle over the last 200 (first 200: 14.6) |
 
-Stopping now would leave 413 battles unrun (about 1.1 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 337 battles unrun (about 55 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
