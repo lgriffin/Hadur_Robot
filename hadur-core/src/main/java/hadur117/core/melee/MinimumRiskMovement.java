@@ -190,6 +190,12 @@ public class MinimumRiskMovement {
         boolean concord;
         /** TMODE-45: the enemy closing inside {@link #QUARTERS_RANGE}, or null; only on a team under QUARTERS. */
         EnemyInfo chaser;
+        /** TMODE-49: whether each candidate's drive is simulated from the member's heading and velocity; only on a team under MOMENTUM. */
+        boolean momentum;
+        /** TMODE-49: whether the drive keeps full speed through a sharp turn (MOMENTUM's speed, or QUARTERS with a chaser). */
+        boolean fullSpeed;
+        /** TMODE-49: the member's body heading and velocity this tick. */
+        double heading, velocity;
 
         View(Point2D.Double me, double energy, long now, int others, List<EnemyInfo> enemies,
              List<VirtualBullet> bullets, MeleeStrategy.Plan plan) {
@@ -226,6 +232,8 @@ public class MinimumRiskMovement {
     private final Point2D.Double centre;
     /** TMODE-45: whether the last decision had a chaser. */
     private boolean quartered;
+    /** TMODE-49: the member's body heading and velocity, set by the controller each tick. */
+    private double heading, velocity;
     private final Deque<VirtualBullet> bullets = new ArrayDeque<>();
     /** TMODE-9: the teammates' bullets from their reports, oldest first. */
     private final Deque<VirtualBullet> mateBullets = new ArrayDeque<>();
@@ -360,6 +368,28 @@ public class MinimumRiskMovement {
     /** MMOVE-15: sets the melee surfer, for tests. */
     void surf(boolean on) {
         this.surf = on;
+    }
+
+    /** TMODE-49: the member's body heading (radians) and velocity this tick, for MOMENTUM's simulated drive. */
+    public void motion(double heading, double velocity) {
+        this.heading = heading;
+        this.velocity = velocity;
+    }
+
+    /**
+     * TMODE-49: the member's positions driving to {@code to} for {@code ticks} ticks from its
+     * heading and velocity ({@link Momentum#drive}).
+     */
+    double[][] drivePath(View v, Point2D.Double to, int ticks) {
+        return Momentum.drive(v.me.x, v.me.y, v.heading, v.velocity, to.x, to.y, ticks, v.fullSpeed,
+            field.width, field.height);
+    }
+
+    /** TMODE-25, TMODE-49: the teammates' bullets met driving to {@code to}, simulated under MOMENTUM, else from a standstill. */
+    double pathDamageFor(View v, Point2D.Double to, List<VirtualBullet> bullets) {
+        if (bullets.isEmpty()) return 0;
+        return v.momentum ? TeamRisk.pathDamage(drivePath(v, to, TeamRisk.PATH_TICKS), v.now, bullets)
+            : TeamRisk.pathDamage(v.me, to, v.now, bullets);
     }
 
     /** MMOVE-15: whether this movement surfs off a team. */
@@ -588,6 +618,12 @@ public class MinimumRiskMovement {
         // TMODE-45: a chaser no longer caps the ring, so the far rings are there to flee to.
         v.chaser = !mates.isEmpty() && modes.contains(TeamModes.Mode.QUARTERS) ? chaser(me, enemies, now) : null;
         quartered = v.chaser != null;
+        if (!mates.isEmpty() && modes.contains(TeamModes.Mode.MOMENTUM) && TeamModes.MOMENTUM_DRIVE) {
+            v.momentum = true;
+            v.heading = heading;
+            v.velocity = velocity;
+            v.fullSpeed = quartered || TeamModes.MOMENTUM_SPEED;
+        }
         List<Point2D.Double> candidates = candidates(me, others, quartered ? without(enemies, v.chaser) : enemies, now, mates);
         lastCandidates = candidates.size();
         if (surf && !onTeam(mates)) {
@@ -733,9 +769,10 @@ public class MinimumRiskMovement {
         for (int k = 0; k < picked.size(); k++) {
             Point2D.Double p = pool.get(picked.get(k));
             r[k] = risk[picked.get(k)];
-            damage[k] = waveDamage(v.me, p, v.now, waves);
+            double[][] path = v.momentum ? drivePath(v, p, Math.max(WAVE_TICKS, TeamRisk.PATH_TICKS)) : null;
+            damage[k] = path != null ? waveDamage(path, v.now, waves) : waveDamage(v.me, p, v.now, waves);
             if (mateBullets.isEmpty()) continue;
-            double own = pathDamage(v.me, p, v.now, mateBullets);
+            double own = path != null ? TeamRisk.pathDamage(path, v.now, mateBullets) : pathDamage(v.me, p, v.now, mateBullets);
             if (ownFire) r[k] += PATH_K * own;
             else damage[k] += own;
         }
@@ -798,6 +835,17 @@ public class MinimumRiskMovement {
                 y += (to.y - y) / left * speed;
             }
             total += waveHits(x, y, now + t, waves, done);
+        }
+        return total;
+    }
+
+    /** TMODE-49: as {@link #waveDamage(Point2D.Double, Point2D.Double, long, List)} along a simulated {@code path} ({@link Momentum#drive}), up to {@link #WAVE_TICKS} ticks. */
+    static double waveDamage(double[][] path, long now, List<Wave> waves) {
+        if (waves.isEmpty()) return 0;
+        boolean[] done = new boolean[waves.size()];
+        double total = 0;
+        for (int t = 1; t <= Math.min(WAVE_TICKS, path.length); t++) {
+            total += waveHits(path[t - 1][0], path[t - 1][1], now + t, waves, done);
         }
         return total;
     }
