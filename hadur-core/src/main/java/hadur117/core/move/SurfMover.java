@@ -79,6 +79,8 @@ public class SurfMover {
     private Wave lastWaveSurfed;
     /** AES-1: whether each wave's first three-option rating is recorded (bench builds only; off by default). */
     private boolean aesRecord;
+    /** SURF-BANK-1: the bank that re-weights the three options, or null (off). */
+    private SurfBank surfBank;
     /** AES-1: while an option is rated for the record, where its first wave's terms go; else null. */
     private double[] aesCapture;
     /** AES-1: records made since the last {@link #drainAesRecords}. */
@@ -157,6 +159,11 @@ public class SurfMover {
      */
     public void setDesiredDistance(double desiredDistance) {
         this.desiredDistance = desiredDistance;
+    }
+
+    /** SURF-BANK-1: the bank that re-weights the three options' dangers; null turns it off. */
+    public void setSurfBank(SurfBank bank) {
+        this.surfBank = bank;
     }
 
     /**
@@ -428,8 +435,9 @@ public class SurfMover {
             captures = new double[SurfOption.values().length][];
             for (int o = 0; o < captures.length; o++) captures[o] = AesRecord.capture(moveCtrl.viewCount());
         }
+        // SURF-BANK-1: the bank re-weights whole totals, so none is cut off part-way.
         updateSurfDangers(myState, moveCtrl, wavesToSurf, goingClockwise,
-            captures != null, captures);
+            captures != null || surfBank != null, captures);
 
         double ccwDanger = surfOptionDangers.getOrDefault(SurfOption.COUNTER_CLOCKWISE, 0.0);
         double stopDanger = surfOptionDangers.getOrDefault(SurfOption.STOP, 0.0);
@@ -517,6 +525,13 @@ public class SurfMover {
             double danger = checkDanger(myState, moveCtrl, myState, option,
                 goingClockwise, 0, wavesToSurf, bestDanger, new RobotStateLog());
             aesCapture = null;
+            // SURF-BANK-1: the bank's share of the option's first-wave interval re-weights it.
+            if (surfBank != null && !lastChain.isEmpty()) {
+                PlanInterval first = lastChain.get(0);
+                if (first.wave == moveCtrl.findSurfableWave(0, myState)) {
+                    danger *= surfBank.multiplier(first.wave, first.low, first.high);
+                }
+            }
             surfOptionDangers.put(option, danger);
             surfOptionChains.put(option, lastChain);
             if (!complete) bestDanger = Math.min(bestDanger, danger);

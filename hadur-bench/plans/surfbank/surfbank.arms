@@ -1,0 +1,4 @@
+# SURF-BANK-1 whole-field cloud test: c is the branch with the switch off (master behaviour), aa its A/A copy, sb the bank on.
+c | hadur117.Hadur 3.22 | bisect/hadur117.Hadur_3.22.jar
+aa | hadur117.Hadur 3.22aa | bisect/hadur117.Hadur_3.22aa.jar
+sb | hadur117.Hadur 3.22sb | bisect/hadur117.Hadur_3.22sb.jar
