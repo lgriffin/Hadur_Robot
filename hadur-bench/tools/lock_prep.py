@@ -31,6 +31,7 @@ LEVERS = {
     "wl": ("sgolist", ("STOP_GO",)),
     "hl": ("hjlist", ("HEAT_JIT",)),
     "rp": ("rplist", ("RACE_POWER",)),
+    "dg": ("sdodgelist", ("SHOT_DODGE",)),
 }
 
 
