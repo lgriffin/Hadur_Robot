@@ -30,6 +30,7 @@ if [[ ! -f "$WT/.sb-built" ]]; then
     touch "$WT/.sb-built"
     log "built $(git -C "$WT" rev-parse --short HEAD)"
 fi
+[[ -n "${BUILD_ONLY:-}" ]] && exit 0
 cd "$WT/hadur-bench"
 log "running part $N"
 mvn -q -Drobocode.version=1.11.2 exec:java -Dexec.args="--set plans/surfbank/field-$N.txt --seeds 2 --seed-base 37900 --out work/surf-field-$N --arms plans/surfbank/surfbank.arms --truth-log false --rounds 35 --parallel 2 --child-cpus 2 --cpu-constant live --job-order shuffled --failed-ok true" || log "bench exit $?"
