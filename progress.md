@@ -1,6 +1,6 @@
 # Queue pc-team-momentum: progress
 
-Updated 2026-11-15 13:46:56 PC time (13:46 UTC), runner pid 55920.
+Updated 2026-11-15 14:02:03 PC time (14:02 UTC), runner pid 55920.
 
 - `tmprep` done, exit 0 in 3 min
 - `tmpmo` done, exit 0 in 37 min
@@ -53,21 +53,20 @@ Stopping now would leave 24 battles unrun (about 4 min); every battle already fo
 
 ### tmmo
 
-**617 of 1104 battles** (56%), 0 failed. Running 1.6 h, 393 battles/h, about 1.2 h left (ends ~15:01 PC time). Last battle 0 min ago.
-Skipped turns a battle: 9.2 overall, first 100 16.3, last 100 4.2.
+**691 of 1104 battles** (63%), 0 failed. Running 1.8 h, 380 battles/h, about 1.1 h left (ends ~15:07 PC time). Last battle 0 min ago.
+Skipped turns a battle: 8.6 overall, first 100 16.3, last 100 3.1.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 617 |
+| `fails 60` | halt | ok | 0 failed of 691 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | ok | 5.5 a battle over the last 200 (first 200: 14.6) |
+| `skips 60 over 200` | halt | ok | 4.0 a battle over the last 200 (first 200: 14.6) |
 
-Stopping now would leave 487 battles unrun (about 1.2 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 413 battles unrun (about 1.1 h); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-09:33:08 start tmpilot
 09:33:09 tmpilot exit=0 in 0 s
 09:33:09 start tmbb
 09:33:09 watching tmbb: 3 stop rule(s)
@@ -82,4 +81,5 @@ Stopping now would leave 487 battles unrun (about 1.2 h); every battle already f
 12:19:22 progress tmmo: 25/1104 (2%) battles, 229/h, ETA 4.7 h, 0 failed, skips 14.0/battle (last 100)
 12:49:34 progress tmmo: 191/1104 (17%) battles, 312/h, ETA 2.9 h, 0 failed, skips 14.0/battle (last 100)
 13:19:45 progress tmmo: 409/1104 (37%) battles, 367/h, ETA 1.9 h, 0 failed, skips 6.8/battle (last 100)
+13:49:58 progress tmmo: 638/1104 (58%) battles, 394/h, ETA 1.2 h, 0 failed, skips 3.6/battle (last 100)
 ```
