@@ -328,4 +328,15 @@ class ShieldListResourceTest {
         assertTrue(list.ramCirc("suh.nano.RammingC 1.00"));
         assertTrue(!list.ramCirc("step.nanoPri 1.0"));
     }
+
+    @Test
+    @Tag("RAM-13")
+    @DisplayName("RAM-13: ram-zig lines parse per opponent; the shipped table names none until a PC card locks them")
+    void ramZigLines() {
+        assertEquals(0, ShieldTableData.ramZigs().length, "no ram-zig line ships before its PC card");
+        ShieldList list = ShieldList.parse(Arrays.asList(ShieldList.RAM_ZIG_PREFIX + " wompi.Kowari 1.6"));
+        assertTrue(list.ramZig("wompi.Kowari 1.6"));
+        assertTrue(!list.ramZig("step.nanoPri 1.0"));
+        assertTrue(!list.ramCirc("wompi.Kowari 1.6"));
+    }
 }

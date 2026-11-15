@@ -68,6 +68,28 @@ public final class RamEscape {
     static final boolean FORCE_CIRCULAR = false;
     /** RAM-11: whether this opponent's shots are also dodged as circular aims. */
     private boolean circular;
+    /**
+     * RAM-13: a zig-zag on the escape's heading. The field's close-range rammers lead us linearly from our velocity when
+     * they fire, and the escape's straight full-speed runs are what that aim predicts; RAM-12 broke the line by slowing
+     * and let them close. This keeps full speed and swings the heading {@link #ZIG} radians either side of the chosen
+     * one, switching side every {@link #ZIG_MIN} to {@link #ZIG_MAX} ticks. On per opponent ({@code ram-zig:} lines,
+     * {@link #setZig}); this forces it on every rammer, for the bench's screen only.
+     */
+    static final boolean FORCE_ZIG = false;
+    /** RAM-13: the swing either side, radians. */
+    static final double ZIG = 0.45;
+    /** RAM-13: the shortest stretch on one side, ticks. */
+    static final int ZIG_MIN = 5;
+    /** RAM-13: the longest stretch on one side, ticks. */
+    static final int ZIG_MAX = 11;
+    /** RAM-13: whether this opponent gets the zig-zag. */
+    private boolean zig;
+    /** RAM-13: the draws for the stretch lengths. */
+    private final java.util.Random zigRandom = new java.util.Random();
+    /** RAM-13: the tick the current side ends, and the side (+1 or -1). */
+    private long zigUntil = Long.MIN_VALUE;
+    private int zigSide = 1;
+
     /** RAM-11: our heading at the last move, for the turn rate a circular aim extrapolates; NaN before the first. */
     private double prevHeading = Double.NaN;
     /** RAM-11: the tick of {@link #prevHeading}. */
@@ -90,6 +112,7 @@ public final class RamEscape {
         shots.clear();
         prevHeading = Double.NaN;
         turnRate = 0;
+        zigUntil = Long.MIN_VALUE;
     }
 
     /** The heading chosen on the last {@link #move}, NaN before the first. */
@@ -125,6 +148,11 @@ public final class RamEscape {
         // A shot that has flown past the field's diagonal can hit nothing more.
         while (!shots.isEmpty() && (me.time - shots.peekFirst()[0]) * shots.peekFirst()[3] > 1000) shots.removeFirst();
         double heading = choose(me, enemy);
+        if (zig) {
+            // RAM-13: swing off the chosen heading, wall-smoothed on the swing's side so it never drives into a wall.
+            int side = zigSide(me.time);
+            heading = battleField.wallSmoothing(me.location, Angles.normalAbsoluteAngle(heading + side * ZIG), side, WALL_STICK);
+        }
         orders.maxVelocity(8.0);
         DiaUtils.setBackAsFront(orders, me.heading, heading);
     }
@@ -174,6 +202,29 @@ public final class RamEscape {
      */
     public void setCircular(boolean on) {
         circular = on;
+    }
+
+    /**
+     * RAM-13: turns the zig-zag on or off for this opponent ({@link #FORCE_ZIG} keeps it on).
+     *
+     * @param on whether the table names the opponent
+     */
+    public void setZig(boolean on) {
+        zig = on || FORCE_ZIG;
+    }
+
+    /**
+     * RAM-13: the swing's side for {@code time}, drawing the next stretch's length once this one has run out.
+     *
+     * @param time the tick
+     * @return +1 or -1
+     */
+    int zigSide(long time) {
+        if (time >= zigUntil) {
+            zigSide = -zigSide;
+            zigUntil = time + ZIG_MIN + zigRandom.nextInt(ZIG_MAX - ZIG_MIN + 1);
+        }
+        return zigSide;
     }
 
     /** RAM-11: the newest shot's circular aim minus its linear aim, NaN when it carries none; for tests. */
