@@ -1,6 +1,6 @@
 # Queue pc-team-momentum: progress
 
-Updated 2026-11-15 15:47:45 PC time (15:47 UTC), runner pid 55920.
+Updated 2026-11-15 16:02:51 PC time (16:02 UTC), runner pid 55920.
 
 - `tmprep` done, exit 0 in 3 min
 - `tmpmo` done, exit 0 in 37 min
@@ -66,21 +66,20 @@ Stopping now would leave 24 battles unrun (about 4 min); every battle already fo
 
 ### tmmod
 
-**306 of 1104 battles** (28%), 0 failed. Running 52 min, 356 battles/h, about 2.2 h left (ends ~18:02 PC time). Last battle 0 min ago.
-Skipped turns a battle: 12.6 overall, first 100 16.1, last 100 8.3.
+**414 of 1104 battles** (38%), 0 failed. Running 1.1 h, 372 battles/h, about 1.9 h left (ends ~17:54 PC time). Last battle 0 min ago.
+Skipped turns a battle: 11.0 overall, first 100 16.1, last 100 6.1.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 306 |
+| `fails 60` | halt | ok | 0 failed of 414 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | ok | 10.6 a battle over the last 200 (first 200: 14.8) |
+| `skips 60 over 200` | halt | ok | 7.1 a battle over the last 200 (first 200: 14.8) |
 
-Stopping now would leave 798 battles unrun (about 2.2 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 690 battles unrun (about 1.9 h); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-11:18:57 progress tmbb: 691/1104 (63%) battles, 392/h, ETA 1.1 h, 0 failed, skips 3.6/battle (last 100)
 11:49:09 progress tmbb: 887/1104 (80%) battles, 391/h, ETA 33 min, 0 failed, skips 3.0/battle (last 100)
 12:12:48 tmbb exit=0 in 9579 s
 12:12:48 start tmmo
@@ -95,4 +94,5 @@ Stopping now would leave 798 battles unrun (about 2.2 h); every battle already f
 14:56:08 start tmmod
 14:56:08 watching tmmod: 3 stop rule(s)
 15:20:34 progress tmmod: 132/1104 (12%) battles, 324/h, ETA 3.0 h, 0 failed, skips 17.0/battle (last 100)
+15:50:47 progress tmmod: 329/1104 (30%) battles, 361/h, ETA 2.1 h, 0 failed, skips 8.4/battle (last 100)
 ```
