@@ -1,0 +1,28 @@
+{
+ "plan": "pc-shards",
+ "updated": 1794774647.431797,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "livematch": {
+   "status": "pending"
+  },
+  "screen": {
+   "status": "pending"
+  },
+  "pick": {
+   "status": "pending"
+  },
+  "lock": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
