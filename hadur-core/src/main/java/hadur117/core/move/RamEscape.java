@@ -70,7 +70,9 @@ public final class RamEscape {
     private boolean circular;
     /** RAM-11: our heading at the last move, for the turn rate a circular aim extrapolates; NaN before the first. */
     private double prevHeading = Double.NaN;
-    /** RAM-11: our turn rate at the last move, radians a tick. */
+    /** RAM-11: the tick of {@link #prevHeading}. */
+    private long prevTime;
+    /** RAM-11: our turn rate at the last move, radians a tick, averaged over the ticks since the move before. */
     private double turnRate;
 
     /**
@@ -86,6 +88,8 @@ public final class RamEscape {
     public void initRound() {
         lastHeading = Double.NaN;
         shots.clear();
+        prevHeading = Double.NaN;
+        turnRate = 0;
     }
 
     /** The heading chosen on the last {@link #move}, NaN before the first. */
@@ -112,8 +116,12 @@ public final class RamEscape {
      */
     public void move(BotOrders.Builder orders, RobotState me, RobotState enemy, boolean dodge) {
         this.dodge = dodge;
-        if (!Double.isNaN(prevHeading)) turnRate = Angles.normalRelativeAngle(me.heading - prevHeading);
+        // Another driver may have moved us since the last escape move: average the turn over the ticks between.
+        if (!Double.isNaN(prevHeading) && me.time > prevTime) {
+            turnRate = Angles.normalRelativeAngle(me.heading - prevHeading) / (me.time - prevTime);
+        }
         prevHeading = me.heading;
+        prevTime = me.time;
         // A shot that has flown past the field's diagonal can hit nothing more.
         while (!shots.isEmpty() && (me.time - shots.peekFirst()[0]) * shots.peekFirst()[3] > 1000) shots.removeFirst();
         double heading = choose(me, enemy);
