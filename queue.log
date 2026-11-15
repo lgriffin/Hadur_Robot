@@ -9,3 +9,9 @@
 18:01:47 watching screen: 5 stop rule(s)
 18:01:50 progress screen: 0/4464 (0%) battles, 0 failed
 18:32:12 progress screen: 2173/4464 (49%) battles, 4302/h, ETA 32 min, 0 failed, skips 14.7/battle (last 100), aa +0.01, fq +0.01, x5 -0.08, hl +0.03, dg +0.01, gl -0.01, mq -0.03
+19:02:18 progress screen: 4458/4464 (100%) battles, 4554/h, ETA 0 min, 0 failed, skips 12.3/battle (last 100), aa +0.01, fq -0.00, x5 -0.08, hl +0.01, dg -0.01, gl -0.04, mq -0.04
+19:03:57 screen exit=0 in 3730 s
+19:03:57 start pick
+19:07:13 pick exit=0 in 195 s
+19:07:13 start lock
+19:07:13 watching lock: 4 stop rule(s)
