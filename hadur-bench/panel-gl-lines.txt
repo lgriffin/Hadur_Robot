@@ -1,0 +1,3 @@
+# BENCH-250 pc-gl-lines: robots whose gun-stack line (gl) locked on the cloud, 12 fresh seeds at the live turn time,
+# 95% low end above 0. Census rows. name | rank | jar
+fromHell.BlackBox 0.0.2 | rank27-band2 | fromHell.BlackBox_0.0.2.jar
