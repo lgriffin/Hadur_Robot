@@ -166,6 +166,11 @@ final class TeamRisk {
     /** As above, with {@code name} this member's name for TMODE-13's order (null: first). */
     static Pull pull(Point2D.Double me, String name, double energy, int others, List<EnemyInfo> enemies,
                      long now, List<Roster.Mate> mates, Set<TeamModes.Mode> modes) {
+        // TMODE-47: under LAST the members close on the one enemy left as FINISH would.
+        if (modes.contains(TeamModes.Mode.LAST) && others == 1 && enemies.size() == 1
+                && enemies.get(0).age(now) < CAP_MAX_AGE && energy >= FINISH_ENERGY) {
+            return new Pull(enemies.get(0).location, FINISH_FLOOR, FINISH_PULL);
+        }
         if (modes.contains(TeamModes.Mode.FINISH) && enemies.size() == 1 && others - mates.size() == 1
                 && enemies.get(0).age(now) < CAP_MAX_AGE && energy >= FINISH_ENERGY) {
             return new Pull(enemies.get(0).location, FINISH_FLOOR, FINISH_PULL);
@@ -308,14 +313,14 @@ final class TeamRisk {
         Point2D.Double best = null;
         double bestScore = Double.POSITIVE_INFINITY;
         for (int k = 0; k < picked.size(); k++) {
-            double sc = pickedRisk.get(k) + PATH_K * pathDamage(v.me, picked.get(k), v.now, v.pathBullets);
+            double sc = pickedRisk.get(k) + PATH_K * move.pathDamageFor(v, picked.get(k), v.pathBullets);
             if (sc < bestScore) {
                 bestScore = sc;
                 best = picked.get(k);
             }
         }
         if (hold) {
-            double held = PATH_K * pathDamage(v.me, destination, v.now, v.pathBullets);
+            double held = PATH_K * move.pathDamageFor(v, destination, v.pathBullets);
             if (bestScore >= SWITCH_GAIN * move.risk(destination, v) + held) return destination;
         }
         return best;
@@ -339,6 +344,28 @@ final class TeamRisk {
                 x += (to.x - x) / left * speed;
                 y += (to.y - y) / left * speed;
             }
+            long tick = now + t;
+            for (int i = 0; i < bullets.size(); i++) {
+                VirtualBullet b = bullets.get(i);
+                if (done[i] || tick <= b.shot.fireTime) continue;
+                Point2D.Double from = b.position(tick - 1);
+                Point2D.Double at = b.position(tick);
+                if (!crossesBox(from, at, x, y, PATH_HALF)) continue;
+                done[i] = true;
+                double p = b.shot.power;
+                total += 4 * p + Math.max(0, 2 * (p - 1));
+            }
+        }
+        return total;
+    }
+
+    /** TMODE-49: as {@link #pathDamage(Point2D.Double, Point2D.Double, long, List)} along a simulated {@code path} ({@link Momentum#drive}), up to {@link #PATH_TICKS} ticks. */
+    static double pathDamage(double[][] path, long now, List<VirtualBullet> bullets) {
+        if (bullets.isEmpty()) return 0;
+        boolean[] done = new boolean[bullets.size()];
+        double total = 0;
+        for (int t = 1; t <= Math.min(PATH_TICKS, path.length); t++) {
+            double x = path[t - 1][0], y = path[t - 1][1];
             long tick = now + t;
             for (int i = 0; i < bullets.size(); i++) {
                 VirtualBullet b = bullets.get(i);

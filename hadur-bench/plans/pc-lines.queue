@@ -1,0 +1,47 @@
+# 1v1, the first rolling PC line card (BENCH-238, POW-18): the 0.2 power cap on JKHydra (locked on the cloud) and a
+# screen-and-lock of the same cap on the 28 next biggest live gaps to BeepBoop that carry no line. Leigh starts it
+# once the PC is free (one card at a time, from master):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-lines        (or  ./queue.sh run pc-lines)
+# One bench queue, RoboRumble workers at 0, unpinned, 16 workers, truth log off. Every step resumes; no step needs a
+# decision. About an hour of battles (29 robots x 3 arms x 8 seeds = 696).
+#
+# Why it should win (the PC card rule of 2026-11-03):
+#   - Per-opponent tailoring: every line names one robot; every other robot, team and melee play bit for bit as master.
+#   - The panel is the 29 biggest live gaps to BeepBoop (3.22 pairings, 13 Nov) with no line, loading on 1.11.2.
+#     A cloud trace of the top three (seeds 17200) found long low-energy wars: against JKHydra 3.22 survives 34 of
+#     140 rounds and BeepBoop 138, though 3.22 takes less bullet damage than it deals; both end near 0 energy and we
+#     are disabled first. That is the Roborio pattern the 0.2 cap fixed on seven robots (pc-power-cap, PR #784).
+#   - Cloud: JKHydra +14.5 +- 3.5 on 4 seeds (17300), then +10.6 +- 6.2 on 8 fresh seeds (17400). Saguaro 1.1.2
+#     (+2.1) and Ogi (+1.3) did not lock and are left out. The other 28 have no cloud read: this card is their screen.
+#   - Risk: the cap cost -12.0 pooled on 66 earlier low-hit robots, so it ships only where the per-robot pick holds it
+#     at a 3-point margin with its 95% low end above 0; the rest stay as master.
+# Pilot and stop rules (docs/bench/watch.md): the aa arm halts the card after 20% if master and its copy disagree;
+# halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle over the last 200, or no battle
+# in 30 minutes. Every battle fought is kept and a rerun resumes. ALERT opens an issue for Leigh on any stop.
+# Bank: the owning cloud thread adds the held lines to ShieldTableData.powerCaps() on this card's results PR, so one
+# PR carries both the results and the bank. Nothing is released by the card.
+
+set V = 3.22
+set P = --parallel 16 --no-truth-log --failed-ok
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
+set W = work/pc-lines
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && POWER_CAP=plans/lines-cap-add.txt bash ./build-ablation.sh pcaplist && test -f bisect/hadur117.Hadur_${V}pk.jar && ./fetch-opponents.sh --set panel-pc-lines.txt && mvn -q compile
+
+confirm | ./bench-top20.sh ${C} ${P} --set panel-pc-lines.txt --seeds 8 --seed-base 17600 --arms plans/pc-lines.arms --out ${W} --label pc-lines --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-lines.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 3 --out-tsv ${OUT}/pc-lines-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-lines-pick.md && python3 tools/per_robot.py ${W}/arms.tsv --arms pk --out ${OUT}/$(date +%Y-%m-%d)_pc-lines-per-robot.md --out-tsv ${OUT}/pc-lines-per-robot.tsv
+  after: confirm
+
+pr | bash tools/open_results_pr.sh claude/pc-lines-results "1v1 rolling line card: 0.2 power cap on JKHydra and 28 unlined gap robots, 8 fresh seeds" ${OUT}/*_pc-lines*.md ${OUT}/pc-lines-per-robot.tsv $(find ${OUT} -maxdepth 1 -name pc-lines-pick.tsv -size +0c)
+  after: gate

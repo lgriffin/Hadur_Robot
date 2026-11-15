@@ -1,6 +1,6 @@
 # pc-shield-floor: c is master, aa its A/A copy, mz master with CassiusClay on the shield list and a shield-still: line,
 # sf the same with a SHIELD-25 shield-floor: line. Each line acts on CassiusClay only.
-c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
-aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
-mz | hadur117.Hadur 3.21mtzl | bisect/hadur117.Hadur_3.21mtzl.jar
-sf | hadur117.Hadur 3.21mtzlsf | bisect/hadur117.Hadur_3.21mtzlsf.jar
+c | hadur117.Hadur 3.22 | bisect/hadur117.Hadur_3.22.jar
+aa | hadur117.Hadur 3.22aa | bisect/hadur117.Hadur_3.22aa.jar
+mz | hadur117.Hadur 3.22mtzl | bisect/hadur117.Hadur_3.22mtzl.jar
+sf | hadur117.Hadur 3.22mtzlsf | bisect/hadur117.Hadur_3.22mtzlsf.jar

@@ -1,0 +1,3 @@
+# BENCH-242 pc-class-2, lock step: the in-sample picks of pc-class-1 (PR #803) on fresh seeds. name | line | jar
+pez.mini.Gouldingi 1.5 | mtzl +5.2 | pez.mini.Gouldingi_1.5.jar
+sos.SOS 1.0 | x5 +4.2 | sos.SOS_1.0.jar

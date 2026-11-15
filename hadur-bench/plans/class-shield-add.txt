@@ -1,0 +1,22 @@
+# BENCH-241 pc-class-1: one candidate line per robot of panel-class-shield.txt.
+hadur117.micro.Eveimear 0.5
+tobe.calypso.Calypso 4.1
+lrem.micro.FalseProphet Alpha
+stelo.MatchupMicro 1.2
+pez.mini.Gouldingi 1.5
+ary.nano.ColorNanoP 1.1
+robar.micro.Topaz 0.25
+nz.jdc.nano.NeophytePRAL 1.4
+m3thos.mini.Eva01 0.5.5
+mb.Monte 0.1.0
+ry.LightningBug 1.0
+tkt.RedShift 1.1.CS.0
+rz.SmallDevil 1.502
+step.NanoBidu 1.0
+slugzilla.SNGPattern 1.0
+sheldor.nano.PointInLineRRAL 1.0.0
+bayen.UbaMicro 1.4
+robar.nano.Scytodes 0.3
+maribo.Omicron 1.0
+wiki.Wolverine 2.1
+pfvicm.Sobieski 7.2.3b

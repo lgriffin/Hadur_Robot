@@ -145,6 +145,20 @@ class RoleResolverTest {
     }
 
     @Test
+    @Tag("TMODE-47")
+    @DisplayName("TMODE-47: with the last-enemy flag one enemy keeps the melee row; never with none, a sentry, a veto, or once the duel drove")
+    void lastEnemyKeepsMelee() {
+        RoleResolver team = new RoleResolver(Charter.TEAM);
+        assertEquals(RoleId.MELEE, team.resolve(1, 4, 0, true));
+        assertEquals(RoleId.DUEL, team.resolve(1, 4, 0, false));
+        assertEquals(RoleId.DUEL, team.resolve(0, 4, 0, true));
+        assertEquals(RoleId.DUEL, team.resolve(1, 4, 1, true));
+        assertEquals(RoleId.DUEL, RoleResolver.resolve(Charter.TEAM, 1, 4, 0, Veto.FAULT, false, null, true));
+        assertEquals(RoleId.DUEL, RoleResolver.resolve(Charter.TEAM, 1, 4, 0, Veto.NONE, false, RoleId.DUEL, true));
+        assertEquals(RoleId.DUEL, RoleResolver.resolve(Charter.DUEL, 1, 0, 0, Veto.NONE, false, null, true));
+    }
+
+    @Test
     @DisplayName("the core's posture accessor keeps the melee extension's two postures")
     void postureOfARole() {
         assertEquals(Posture.MELEE, RoleResolver.posture(RoleId.MELEE));

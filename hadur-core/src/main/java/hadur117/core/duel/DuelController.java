@@ -322,6 +322,8 @@ public final class DuelController {
             ? new GunMimics() : null;
         this.moveController.setAimMembers(duelOnly(MoveDesign.AIM_MEMBERS, enemiesTotal)
             ? new AimMembers(memberMimics == null ? 0 : memberMimics.size()) : null);
+        // MOVE-43: a gone bullet keeps the shadows it already cast.
+        this.moveController.setKeepShadows(MoveDesign.KEEP_SHADOWS);
         this.moveController.setMemberMimics(memberMimics);
         this.surfMover = new SurfMover(battleField, predictor);
         this.surfMover.setAesRecord(MoveDesign.AES_RECORD);

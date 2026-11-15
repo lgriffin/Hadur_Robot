@@ -13,25 +13,6 @@ class MeleeCrossTest {
 
     private static final Point2D.Double ME = new Point2D.Double(100, 100);
 
-    @Test
-    @Tag("MMOVE-30")
-    @DisplayName("MMOVE-30: off a team the crowd dodge's aim experts learn from the cross-hits")
-    void crossHitsScoreExperts() {
-        double hit = hadur117.core.physics.Rules.getBulletDamage(2.0);
-        MeleeController c = new MeleeController(field(1000, 1000));
-        c.cross(true);
-        c.mover().meleeDodge(true);
-        c.onScan("a", pt(500, 900), ME.distance(500, 900), 100, 0, 0, 10);
-        c.onScan("b", pt(500, 500), ME.distance(500, 500), 100, Math.PI / 2, 8, 10);
-        c.onScan("a", pt(500, 900), ME.distance(500, 900), 98, 0, 0, 11);
-        for (long t : new long[] {20, 30, 38}) c.onScan("b", pt(500, 500), ME.distance(500, 500), 100, Math.PI / 2, 8, t);
-        c.onScan("b", pt(500, 500), ME.distance(500, 500), 100 - hit, Math.PI / 2, 8, 40);
-        assertEquals(1, c.danger().size("a"));
-        double[] l = c.mover().dodge().experts().losses("a");
-        assertEquals(0.0, l[AimExperts.Expert.HEAD_ON.ordinal()], 1e-12, "head-on was right: b was where it stood");
-        assertTrue(l[AimExperts.Expert.LINEAR.ordinal()] > 0, "linear led b sideways, but b stayed put");
-    }
-
     /** a fires power 2 at tick 10 from (500, 900); b, 400 px away, is scanned until it loses {@code loss} at 40. */
     private static MeleeController fight(boolean cross, double loss, Point2D.Double bAt) {
         MeleeController c = new MeleeController(field(1000, 1000));
@@ -55,8 +36,6 @@ class MeleeCrossTest {
         assertEquals(0, fight(true, hit + 1, pt(500, 500)).danger().size("a"), "a loss no shot's damage explains");
         assertEquals(0, fight(true, hit, pt(500, 100)).danger().size("a"), "a's wave has not reached b");
         assertEquals(0, fight(true, hit, pt(500, 500)).danger().size("b"), "a robot never learns from its own loss");
-        assertArrayEquals(new double[AimExperts.COUNT], fight(true, hit, pt(500, 500)).mover().dodge().experts().losses("a"),
-            "without MMOVE-30 the experts learn nothing off a team");
         MeleeController two = new MeleeController(field(1000, 1000));
         two.cross(true);
         for (String s : new String[] {"a", "c"}) {

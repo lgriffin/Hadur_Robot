@@ -1,0 +1,65 @@
+# 1v1, the first class card (BENCH-241): each robot gets only the line type its diagnosis prescribes. pc-diagnose
+# (BENCH-240, PR #801) read the learn-trace logs and named, per robot, what BeepBoop does that we do not. This card
+# tests the three classes whose line type already exists, each on its own robots:
+#   shield  BeepBoop stands still where we move           mtzl (shield list + stand still)   21 robots
+#   cap     BeepBoop fires <= 0.6x our power, long rounds  pk (0.2) and p5 (0.5)              13 robots
+#   gun     BeepBoop deals >= 1.25x our damage a round     gl (gun stack) and x5              30 robots
+# Each panel holds the class's robots that BeepBoop led by 2+ points in that run, load on 1.11.2 and carry no line of
+# that type on master, plus the cloud locks of 13 Nov (Eveimear shield +23.4, Ogi gun stack +8.9).
+# Leigh starts it once the PC is free (one card at a time, from master):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-class-1        (or  ./queue.sh run pc-class-1)
+# One bench queue, RoboRumble workers at 0, unpinned, 16 workers, truth log off. Every step resumes; no step needs a
+# decision. About 2 hours of battles (21x3 + 13x4 + 30x4 robots-arms x 8 seeds = 1,880).
+#
+# Why it should win (the PC card rule of 2026-11-03):
+#   - Per-opponent tailoring: every line names one robot; every other robot, team and melee play bit for bit as master.
+#   - Each line goes only where the diagnosis says BeepBoop wins by doing that thing; pc-lines gave one line to 28
+#     robots picked by gap and lost on all 28.
+#   - Picks need the 3-point margin with the 95% low end above 0 on 8 seeds; the rest stay as master.
+# Pilot and stop rules (docs/bench/watch.md): each class's aa arm halts the card after 20% if master and its copy
+# disagree; halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle over the last 200, or
+# no battle in 30 minutes. ALERT opens an issue for Leigh on any stop.
+# Bank: the owning cloud thread adds the held lines on this card's results PR. Nothing is released by the card.
+
+set V = 3.22
+set P = --parallel 16 --no-truth-log --failed-ok
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
+set W = work/pc-class-1
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && SHIELD_ADD=plans/class-shield-add.txt SHIELD_STILL=plans/class-shield-add.txt bash ./build-ablation.sh slistadd,szlist && POWER_CAP=plans/class-cap-add.txt bash ./build-ablation.sh pcaplist && POWER_CAP5=plans/class-cap-add.txt bash ./build-ablation.sh pcap5list && GUN_STACK=plans/class-gun-add.txt bash ./build-ablation.sh gslist && X5_POWER=plans/class-gun-add.txt bash ./build-ablation.sh x5list && test -f bisect/hadur117.Hadur_${V}mtzl.jar && test -f bisect/hadur117.Hadur_${V}pk.jar && test -f bisect/hadur117.Hadur_${V}p5.jar && test -f bisect/hadur117.Hadur_${V}gl.jar && test -f bisect/hadur117.Hadur_${V}x5.jar && ./fetch-opponents.sh --set panel-class-shield.txt && ./fetch-opponents.sh --set panel-class-cap.txt && ./fetch-opponents.sh --set panel-class-gun.txt && mvn -q compile
+
+shield | ./bench-top20.sh ${C} ${P} --set panel-class-shield.txt --seeds 8 --seed-base 18600 --arms plans/pc-class-shield.arms --out ${W}-shield --label pc-class-shield --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+cap | ./bench-top20.sh ${C} ${P} --set panel-class-cap.txt --seeds 8 --seed-base 18600 --arms plans/pc-class-cap.arms --out ${W}-cap --label pc-class-cap --shuffle-jobs
+  after: shield
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+gun | ./bench-top20.sh ${C} ${P} --set panel-class-gun.txt --seeds 8 --seed-base 18600 --arms plans/pc-class-gun.arms --out ${W}-gun --label pc-class-gun --shuffle-jobs
+  after: cap
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+gate | for k in shield cap gun; do python3 ../data/tools/multiarm.py ${W}-$k/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-class-1-$k.md && python3 ../data/tools/mode_table.py ${W}-$k/arms.tsv --margin 3 --out-tsv ${OUT}/pc-class-1-$k-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-class-1-$k-pick.md || exit 1; done && python3 tools/per_robot.py ${W}-shield/arms.tsv --arms mtzl --out ${OUT}/$(date +%Y-%m-%d)_pc-class-1-shield-per-robot.md --out-tsv ${OUT}/pc-class-1-shield-per-robot.tsv && python3 tools/per_robot.py ${W}-cap/arms.tsv --arms pk p5 --out ${OUT}/$(date +%Y-%m-%d)_pc-class-1-cap-per-robot.md --out-tsv ${OUT}/pc-class-1-cap-per-robot.tsv && python3 tools/per_robot.py ${W}-gun/arms.tsv --arms gl x5 --out ${OUT}/$(date +%Y-%m-%d)_pc-class-1-gun-per-robot.md --out-tsv ${OUT}/pc-class-1-gun-per-robot.tsv
+  after: gun
+
+pr | bash tools/open_results_pr.sh claude/pc-class-1-results "1v1 first class card: shield, cap and gun lines on the robots diagnosed for each, 8 seeds" ${OUT}/*_pc-class-1-*.md ${OUT}/pc-class-1-*-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-class-1-*-pick.tsv' -size +0c)
+  after: gate

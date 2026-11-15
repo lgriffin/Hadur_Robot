@@ -1,0 +1,5 @@
+# BENCH-242 pc-class-2, WALL class: the robots whose wall-hug line held on the cloud, screen (2 seeds from 19000) /
+# lock (6 fresh seeds from 19100) points, out of the 40 biggest WALL robots pc-diagnose (PR #801) named. name | cloud | jar
+florent.XSeries.X2 0.17 | wh +9.9 / +4.0 | florent.XSeries.X2_0.17.jar
+jk.precise.Wintermute 0.8 | wh +4.4 / +5.8 | jk.precise.Wintermute_0.8.jar
+whind.StrengthBee 0.6.4 | wh +3.0 / +3.0 | whind.StrengthBee_0.6.4.jar

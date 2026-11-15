@@ -1,0 +1,8 @@
+# pc-r31 (BENCH-244, PR #817): robots whose lines shipped on 12 fresh PC seeds at the live turn time
+axeBots.Musashi 2.18
+cb.fire.Firestarter 2.0f
+kc.serpent.WaveSerpent 2.11
+sheldor.mini.Foilist 1.3.1
+jk.precise.Wintermute 0.8
+mue.Ascendant 1.2.27
+eem.zapper v6.03

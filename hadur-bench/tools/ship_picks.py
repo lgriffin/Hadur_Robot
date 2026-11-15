@@ -21,6 +21,7 @@ Usage: ship_picks.py PICK.tsv [--only NAMES.txt] [--codes-from PREFIX] [--label 
 
 import argparse
 import json
+import re
 import os
 import sys
 
@@ -92,6 +93,16 @@ def entry(name):
     return "            %s,\n" % json.dumps(name)
 
 
+def bare(name):
+    """The robot's name without its version: lines match by name alone (SHIELD-26)."""
+    return name.split(" ", 1)[0]
+
+
+def entries_of(text, name):
+    """Every entry line in text for the robot name, whatever version it records."""
+    return re.findall(r'^            "%s(?: [^"\n]*)?",\n' % re.escape(bare(name)), text, re.M)
+
+
 def body(ts, method):
     head = ts.index("static String[] %s()" % method)
     return ts[head:ts.index("        };", head)]
@@ -100,7 +111,10 @@ def body(ts, method):
 def drop(ts, method, name):
     head = ts.index("static String[] %s()" % method)
     end = ts.index("        };", head)
-    return ts[:head] + ts[head:end].replace(entry(name), "") + ts[end:]
+    seg = ts[head:end]
+    for line in entries_of(seg, name):
+        seg = seg.replace(line, "")
+    return ts[:head] + seg + ts[end:]
 
 
 def apply(picks, listdata, tabledata, label):
@@ -108,7 +122,7 @@ def apply(picks, listdata, tabledata, label):
     added = {k: [] for k in CODES}
     for name, arm in picks:
         codes = parts(arm)
-        listed = ls.count(entry(name)) == 1
+        listed = len(entries_of(ls, name)) == 1
         if "mt" in codes:
             if listed:
                 raise SystemExit("%s is already on the shield list" % name)
@@ -116,9 +130,9 @@ def apply(picks, listdata, tabledata, label):
         if "md" in codes:
             if listed:
                 added["md"].append(name)
-                ls = ls.replace(entry(name), "")
+                ls = ls.replace(entries_of(ls, name)[0], "")
         for c in codes:
-            if c in TABLE and entry(name) not in body(ts, TABLE[c]):
+            if c in TABLE and not entries_of(body(ts, TABLE[c]), name):
                 added[c].append(name)
         # One stop-and-go variant per robot: the parse reads shifts last, so a new variant drops the other.
         for c, other in (("wl", "wm"), ("wm", "wl")):

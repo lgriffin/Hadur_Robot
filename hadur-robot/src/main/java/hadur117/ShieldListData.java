@@ -5,8 +5,9 @@ package hadur117;
  * sitting still and shooting the enemy's bullets down (docs/bullet-shielding.md, D5 in
  * docs/druss-route-plan.md).
  *
- * <p>One robot per entry, as Robocode names it. {@code "package.Class 1.2"} matches that
- * version only; {@code "package.Class"} with no version matches every version. Exact and
+ * <p>One robot per entry, as Robocode names it. An entry matches every version of its robot
+ * (SHIELD-26): the version an entry carries is the one it was benched on, and the entry
+ * carries over when the robot ships a new version. Exact and
  * case-sensitive, never a prefix. Blank entries and entries starting with {@code #} are
  * ignored.</p>
  *
@@ -259,7 +260,6 @@ final class ShieldListData {
             "PkKillers.PkAssassin 1.0",
             "apv.NanoLauLectrik 1.0",
             "ary.Help 1.0",
-            "cs.s2.Seraphim 2.3.1",
             "cuoq.Kakera 1.0",
             "dz.Caedo 1.4",
             "ers.micro.ISuck.ISuckMicro 0.1f",
@@ -356,6 +356,14 @@ final class ShieldListData {
             "florent.XSeries.X2 0.17",
             "cjm.Che 1.2",
             "djc.Aardvark 0.3.6",
+            // pc-shield-floor (BENCH-235, PR #781): with still and floor lines on 12 fresh seeds, +37.7 (control 60.9); still alone +0.3
+            "pez.rumble.CassiusClay 2rho.02no",
+            // pc-class-1 (BENCH-241, PR #803): with a still line on 8 fresh PC seeds, +24.3 (low end +19.9); cloud lock held first
+            "hadur117.micro.Eveimear 0.5",
+            // pc-class-2 (BENCH-242, PR #806): with a still line, +5.9 on 12 fresh PC seeds (+5.2 on pc-class-1's 8)
+            "pez.mini.Gouldingi 1.5",
+            // pc-r31 (BENCH-244, PR #817): with a still line, +21.0 on 12 fresh PC seeds at the live turn time
+            "axeBots.Musashi 2.18",
         };
     }
 }

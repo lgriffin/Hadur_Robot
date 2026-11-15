@@ -59,6 +59,8 @@ class RivalPicksPlanTest {
         shipped.addAll(names("plans/shield-rescreen-shipped.txt"));
         // pc-still-field (PR #746) shipped X2, Che and Aardvark.
         shipped.addAll(names("plans/still-field-shipped.txt"));
+        // pc-shield-floor (PR #781) shipped CassiusClay.
+        shipped.addAll(names("plans/shield-floor-shipped.txt"));
         for (String n : drop) {
             if (!shipped.contains(n)) assertTrue(listData.contains("\"" + n + "\","), n + " is on the shield list to drop");
         }
@@ -73,7 +75,7 @@ class RivalPicksPlanTest {
         for (String[] a : arms) {
             String text = Files.readString(Path.of(a[0]));
             for (int i = 1; i < a.length; i++) {
-                assertTrue(text.contains("\n" + a[i] + " | hadur117.Hadur 3.21" + (i == 1 ? "" : a[i]) + " | "), a[0] + " " + a[i]);
+                assertTrue(text.contains("\n" + a[i] + " | hadur117.Hadur 3.22" + (i == 1 ? "" : a[i]) + " | "), a[0] + " " + a[i]);
             }
         }
 

@@ -36,7 +36,7 @@
 # Nullstride has no archive jar: prep copies it from the RoboRumble client's robots directory when it is there and
 # adds the ns arm; without it the mirror runs c, aa, bb and sg.
 
-set V = 3.21
+set V = 3.22
 set P = --parallel 12 --no-truth-log --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
 set W = work/mirror

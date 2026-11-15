@@ -21,7 +21,6 @@
 #   The brain's shipped parts (TeamConcord): movement and gun on, group radar off, hunt kept.
 #   tmnoconcord (team only) TMODE-34 off: CONCORD on no team, as before it shipped. Suffix ncn.
 #   mdmg   MMOVE-22: each opponent's risk weighs by the damage it has done to Hadur this battle x its mean distance (Diamond). Suffix dm. Ships on from 3.21, so on master dm is the robot as it is.
-#   mdodge MMOVE-30: off a team the melee surfer profiles each shot once with the aim experts, crowd-weighted, in place of its virtual bullets (the team dodge in the crowd). Suffix md.
 #   e3far  MEND-3: with two opponents left off a team, the closest-robot factor 4 (not 2). Suffix ef.
 #   aa    no change: the same robot under another name (suffix aa), the A/A arm of a multi-arm run
 #         (BENCH-92, docs/plan-top5.md section 6.1), so a run prices its own noise.
@@ -77,6 +76,7 @@
 #         and circular aims', each weighted by its rolling score at the bullets that hit us. Sets only AIM_MEMBERS.
 #   noaim  MOVE-29 off (it ships on from 3.20): the three-option surf rates on the views alone. Suffix kx.
 #   aimp3, aimp1  (with aimmem) MOVE-29's standing weight of each aim 0.1 -> 0.3 or 1.0. Suffix q3, q1.
+#   shoff   BENCH-246: MOVE-43's shadow fix off (KEEP_SHADOWS false). Suffix so.
 #   mimmem  MOVE-33: the six visit-trained learning-gun mimics (GunMimics) join the aim members. Suffix mm.
 #         Suffix pf.
 #   aimbhb  MOVE-30: an enemy bullet ours met also scores the aim members, as a hit does. Sets only AIM_INTERCEPTS.
@@ -164,6 +164,13 @@
 #         shipped table entry): a member with an armed enemy closing inside 200 px gets an uncapped
 #         ring, a term against ending within 150 px of it, and full speed through a turn. Suffix qt
 #         (pc-team-quarters, BENCH-225).
+#   tmmomentum (team only) TMODE-49: MOMENTUM on every team (FORCE_MOMENTUM, and Mode.MOMENTUM on every
+#         shipped table entry): members keep full speed through a turn, and each candidate's drive through the
+#         shot profiles and teammates' bullets is simulated from the member's real heading and velocity. Suffix mo.
+#   tmmomentums (team only) TMODE-49's speed part alone (MOMENTUM_DRIVE off). Suffix mos.
+#   tmmomentumd (team only) TMODE-49's simulated drive alone (MOMENTUM_SPEED off). Suffix mod.
+#   tmnolast (team only) TMODE-47 off: with one enemy left each member hands over to the duel,
+#         the build before LAST shipped (FORCE_LAST, and Mode.LAST off every shipped entry). Suffix nla.
 #   tmnoclose (team only) TMODE-42 off: the hunt place 350 px on every team, the build before CLOSE
 #         shipped. Suffix ncl.
 #   tmlock (team only) the confirmed table, $TEAM_MODE_LOCKED (default work/team-modes-locked.java,
@@ -424,6 +431,10 @@ for a in "${list[@]}"; do
         nodecay)
             edit "$gundesign" "static final boolean UNDECAYED = false;" "static final boolean UNDECAYED = true;"
             version="${version}nk" ;;
+        shoff)
+            # BENCH-246 pc-modes-check: MOVE-43's shadow fix off again, to read what it does to team and melee end games.
+            edit "$movedesign" "static final boolean KEEP_SHADOWS = true;" "static final boolean KEEP_SHADOWS = false;"
+            version="${version}so" ;;
         mimmem)
             # MOVE-33: the learning-gun mimics as aim members.
             edit "$movedesign" "static final boolean MIMIC_MEMBERS = false;" "static final boolean MIMIC_MEMBERS = true;"
@@ -721,14 +732,15 @@ for a in "${list[@]}"; do
         slistdrop)
             # Gap to 2nd re-pick: the robots named one per line in $SHIELD_DROP leave ShieldListData.
             [[ -n "${SHIELD_DROP:-}" && -f "$SHIELD_DROP" ]] || { echo "slistdrop needs SHIELD_DROP=<file>" >&2; exit 2; }
-            python3 -c 'import sys,json
+            # Matched by name alone (SHIELD-26): the entry may record another version of the robot.
+            python3 -c 'import sys,re
 p,f=sys.argv[1:]
 names=[l.split("\t")[0].strip() for l in open(f) if l.strip() and not l.startswith("#")]
 s=open(p).read()
 for n in names:
-    line="            %s,\n" % json.dumps(n)
-    if s.count(line)!=1: sys.exit("slistdrop: %s is not on the shield list exactly once" % n)
-    s=s.replace(line,"")
+    found=re.findall(r"^            \"%s(?: [^\"\n]*)?\",\n" % re.escape(n.split(" ",1)[0]), s, re.M)
+    if len(found)!=1: sys.exit("slistdrop: %s is not on the shield list exactly once" % n)
+    s=s.replace(found[0],"")
 open(p,"w").write(s)' "$listdata" "$SHIELD_DROP" || exit 2
             version="${version}md" ;;
         slistadd)
@@ -866,13 +878,6 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeController.java" \
                 "public static final boolean MELEE_CROSS = false;" "public static final boolean MELEE_CROSS = true;"
             version="${version}xh" ;;
-        mdodge)
-            # MMOVE-30, the team's dodge in the crowd (card 4 of the melee plan): off a team the melee
-            # surfer profiles each shot once with the six aim experts, weighed by the crowd, in place of
-            # its virtual bullets. Duel and team fixtures bit for bit. Suffix md.
-            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
-                "public static final boolean MELEE_DODGE = false;" "public static final boolean MELEE_DODGE = true;"
-            version="${version}md" ;;
         msurf)
             # The melee surfer (MMOVE-15), off a team only; duel and team fixtures bit for bit. It ships
             # on from 3.21, so on master msurf builds the robot as it is.
@@ -917,6 +922,26 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$modes" "public static final boolean FORCE_QUARTERS = false;" "public static final boolean FORCE_QUARTERS = true;"
             sed -i -E '/^        t\.put\(/{/Mode\.QUARTERS/!s/\)\);$/, Mode.QUARTERS));/}' "$modes"
             ;;
+        tmmomentum|tmmomentums|tmmomentumd)
+            # TMODE-49 on every team: the default and every shipped entry play MOMENTUM. Suffix mo (mos: speed only).
+            if [ "$a" = tmmomentums ]; then
+                version="${version}mos"
+                edit "$modes" "public static final boolean MOMENTUM_DRIVE = true;" "public static final boolean MOMENTUM_DRIVE = false;"
+            elif [ "$a" = tmmomentumd ]; then
+                version="${version}mod"
+                edit "$modes" "public static final boolean MOMENTUM_SPEED = true;" "public static final boolean MOMENTUM_SPEED = false;"
+            else
+                version="${version}mo"
+            fi
+            edit "$modes" "public static final boolean FORCE_MOMENTUM = false;" "public static final boolean FORCE_MOMENTUM = true;"
+            sed -i -E '/^        t\.put\(/{/Mode\.MOMENTUM/!s/\)\);$/, Mode.MOMENTUM));/}' "$modes"
+            ;;
+        tmnolast)
+            # TMODE-47 off: every member hands over to the duel with one enemy left. Suffix nla.
+            version="${version}nla"
+            edit "$modes" "public static final boolean FORCE_LAST = true;" "public static final boolean FORCE_LAST = false;"
+            sed -i -E '/^        t\.put\(/s/, Mode\.LAST([,)])/\1/' "$modes"
+            ;;
         tmnoclose)
             # TMODE-42 off: the hunt place 350 px on every team, the build before CLOSE shipped. Suffix ncl.
             version="${version}ncl"
@@ -938,7 +963,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean THREE_FAR = false;" "public static final boolean THREE_FAR = true;"
             version="${version}ef" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, mdodge, x5list, rplist, mirofflist, sfloorlist, pcaplist, pcap5list)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmmomentum, tmmomentums, tmmomentumd, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, shoff, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, mirofflist, sfloorlist, pcaplist, pcap5list)" >&2; exit 2 ;;
     esac
 done
 

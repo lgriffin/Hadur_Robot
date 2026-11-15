@@ -22,7 +22,7 @@
 # ALERT opens an issue for Leigh on any stop. Nothing here ships: a pass goes on master by PR for the next census
 # (the switch reaches every surfed opponent, so the census is its real gate); the release rule stands.
 
-set V = 3.21
+set V = 3.22
 set P = --parallel 12 --no-truth-log
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
 set W = work/mimic

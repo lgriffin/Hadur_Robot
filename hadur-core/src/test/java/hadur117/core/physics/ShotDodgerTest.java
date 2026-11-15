@@ -147,7 +147,7 @@ class ShotDodgerTest {
         ShieldList l = ShieldList.parse(List.of("shot-dodge: a.B", "shot-dodge: c.D 1.2"));
         assertTrue(l.dodges("a.B 1.0"));
         assertTrue(l.dodges("c.D 1.2"));
-        assertFalse(l.dodges("c.D 1.3"));
+        assertTrue(l.dodges("c.D 1.3"), "a line carries over to a new version (SHIELD-26)");
         assertFalse(l.matches("a.B 1.0"));
         assertTrue(l.isEmpty(), "no shield entry");
         assertFalse(ShieldList.NONE.dodges("a.B 1.0"));
@@ -209,7 +209,7 @@ class ShotDodgerTest {
             "shot-dodge2: " + ShotDodger.EXPERTS + " i.J"));
         assertEquals(15, l.dodgePlan("a.B 1.0"));
         assertEquals(-1, l.dodgePlan("c.D 1.2"));
-        assertEquals(ShieldList.NO_DODGE_PLAN, l.dodgePlan("c.D 1.3"));
+        assertEquals(-1, l.dodgePlan("c.D 1.3"), "a line carries over to a new version (SHIELD-26)");
         assertEquals(ShieldList.NO_DODGE_PLAN, l.dodgePlan("e.F"));
         assertEquals(ShieldList.NO_DODGE_PLAN, l.dodgePlan("g.H"));
         assertEquals(ShieldList.NO_DODGE_PLAN, l.dodgePlan("i.J"), "an expert past the last is skipped");

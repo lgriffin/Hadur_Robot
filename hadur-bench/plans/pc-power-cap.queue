@@ -25,7 +25,7 @@
 # issue for Leigh on any stop. Nothing here ships: on a pass a PR adds the held lines to ShieldTableData.powerCaps()
 # and powerCapHalves() for the next release.
 
-set V = 3.21
+set V = 3.22
 set P = --parallel 12 --no-truth-log --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
 set W = work/power-cap-pc

@@ -1,0 +1,3 @@
+# pc-class-1 (BENCH-241, PR #803): the robots whose class lines held and ship on master.
+hadur117.micro.Eveimear 0.5
+cz.libors.Ogi v1

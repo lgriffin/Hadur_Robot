@@ -1,0 +1,3 @@
+# pc-class-2 (BENCH-242, PR #806): the robots whose lines held and ship on master.
+pez.mini.Gouldingi 1.5
+sos.SOS 1.0

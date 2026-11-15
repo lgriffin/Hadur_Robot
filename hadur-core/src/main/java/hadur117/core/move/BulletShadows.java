@@ -56,10 +56,21 @@ public final class BulletShadows {
      */
     public static List<List<double[]>> of(Wave wave, List<OurBullet> bullets, double fieldWidth,
                                           double fieldHeight) {
+        return of(wave, bullets, b -> Long.MAX_VALUE, fieldWidth, fieldHeight);
+    }
+
+    /**
+     * MOVE-43: as {@link #of(Wave, List, double, double)}, each bullet walked only over the turns
+     * before {@code deathTurn} gives for it (the turn it hit, missed or met a bullet; Long.MAX_VALUE
+     * for a bullet in flight).
+     */
+    public static List<List<double[]>> of(Wave wave, List<OurBullet> bullets,
+                                          java.util.function.ToLongFunction<OurBullet> deathTurn,
+                                          double fieldWidth, double fieldHeight) {
         List<double[]> certain = new ArrayList<>();
         List<double[]> possible = new ArrayList<>();
         for (OurBullet b : bullets) {
-            cast(wave, b, fieldWidth, fieldHeight, certain, possible);
+            cast(wave, b, deathTurn.applyAsLong(b), fieldWidth, fieldHeight, certain, possible);
         }
         // The possible shadow includes the certain one, so Wave can read "possible" as every
         // angle that might be stopped and count the certain part twice (as 1, not 1/2).
@@ -82,6 +93,12 @@ public final class BulletShadows {
      */
     static void cast(Wave wave, OurBullet b, double fieldWidth, double fieldHeight,
                      List<double[]> certain, List<double[]> possible) {
+        cast(wave, b, Long.MAX_VALUE, fieldWidth, fieldHeight, certain, possible);
+    }
+
+    /** MOVE-43: as above, walking only the turns before {@code deathTurn}. */
+    static void cast(Wave wave, OurBullet b, long deathTurn, double fieldWidth, double fieldHeight,
+                     List<double[]> certain, List<double[]> possible) {
         Point2D.Double s = wave.sourceLocation;
         // The engine moves every bullet before any robot, so turn k moves the enemy's bullet
         // from radius r(k - 1) to r(k) and ours from at(k - 1) to at(k). (A robot at its
@@ -100,7 +117,7 @@ public final class BulletShadows {
         Point2D.Double before = first - 2 >= b.fireTime ? b.at(first - 2) : null;
         Point2D.Double from = b.at(first - 1);
         Point2D.Double to = null;
-        for (long k = first; k < first + MAX_TURNS; k++) {
+        for (long k = first; k < first + MAX_TURNS && k < deathTurn; k++) {
             if (k > first) {
                 before = from;
                 from = to;

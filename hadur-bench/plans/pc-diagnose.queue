@@ -1,0 +1,20 @@
+# 1v1, the field diagnosis (BENCH-240): no battles. It reads the truth logs pc-learn-trace (BENCH-221) left in
+# work/learn-trace-pc, master and BeepBoop against the same 1,188 robots at the same seed, and says for each robot
+# what BeepBoop does that we do not: bullet power, stand-still share, distance, wall time, round length, their hit
+# rate, damage taken and dealt. Each robot gets a diagnosis and the line type that fits it (data/tools/
+# diagnose_field.py); robots that share a diagnosis form one class, and each class becomes one card that tests
+# one prescription. Leigh starts it on the PC (minutes, one core):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-diagnose        (or  ./queue.sh run pc-diagnose)
+#
+# Why: the rolling cards picked robots by gap size and gave them the line that won elsewhere; pc-lines lost 28 of
+# 28 that way. Diagnosis first, then a card per class.
+
+set W = work/learn-trace-pc
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+read | test -d ${W}/battles && python3 -I ../data/tools/diagnose_field.py ${W} --base c --other bb --ledger field-ledger.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-diagnose.md --out-tsv ${OUT}/pc-diagnose.tsv
+
+pr | bash tools/open_results_pr.sh claude/pc-diagnose-results "1v1 field diagnosis: what BeepBoop does that we do not, per robot, from the learn-trace logs" ${OUT}/*_pc-diagnose.md ${OUT}/pc-diagnose.tsv
+  after: read

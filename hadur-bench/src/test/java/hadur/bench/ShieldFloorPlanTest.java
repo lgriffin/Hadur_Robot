@@ -40,7 +40,9 @@ class ShieldFloorPlanTest {
         for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE)).contains(n), n + " loads on 1.11.2");
         // A robot already listed on master would be shielded in the control arm too.
         String list = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldListData.java"));
-        for (String n : panel) assertTrue(!list.contains("\"" + n + "\","), n + " is not on master's shield list yet");
+        // Only the robots this card shipped may already be on master's list.
+        List<String> shipped = names("plans/shield-floor-shipped.txt");
+        for (String n : panel) assertTrue(shipped.contains(n) || !list.contains("\"" + n + "\","), n + " is not on master's shield list yet");
         assertTrue(queue.contains("build-ablation.sh aa ")
             && queue.contains("SHIELD_STILL=plans/shield-floor-add.txt bash ./build-ablation.sh slistadd,szlist &&")
             && queue.contains("SHIELD_FLOOR=plans/shield-floor-add.txt bash ./build-ablation.sh slistadd,szlist,sfloorlist"));

@@ -70,6 +70,13 @@ final class MoveDesign {
      */
     static final boolean MIMIC_MEMBERS = false;
 
+    /**
+     * MOVE-43: one of our bullets that hit, missed or met a bullet keeps the shadows it cast on
+     * enemy waves on the turns before it died, instead of taking them with it (the fix DrussGT
+     * 3.1.18 made). On since 2026-11-14: +0.27 +- 0.14 APS over the whole 1v1 field (pc-shadow, PR #814).
+     */
+    static final boolean KEEP_SHADOWS = true;
+
     private MoveDesign() { }
 
     /**

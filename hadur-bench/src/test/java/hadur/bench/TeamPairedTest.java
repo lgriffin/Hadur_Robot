@@ -111,6 +111,7 @@ class TeamPairedTest {
                 case "getRobotIndex" -> index;
                 case "getTeamIndex" -> team;
                 case "getX", "getY", "getVelocity", "getBodyHeading" -> 0.0;
+                case "getEnergy" -> 100.0;
                 case "getState" -> alive ? RobotState.ACTIVE : RobotState.DEAD;
                 case "isSentryRobot" -> false;
                 case "getOutputStreamSnapshot" -> "";
@@ -187,6 +188,7 @@ class TeamPairedTest {
                 case "getX" -> x;
                 case "getY" -> y;
                 case "getVelocity", "getBodyHeading" -> 0.0;
+                case "getEnergy" -> 100.0;
                 case "getState" -> RobotState.ACTIVE;
                 case "isSentryRobot" -> false;
                 case "getOutputStreamSnapshot" -> "";

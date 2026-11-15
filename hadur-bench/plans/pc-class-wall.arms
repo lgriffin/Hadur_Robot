@@ -1,0 +1,5 @@
+# pc-class-2 (BENCH-242), wall class: c is master, aa its A/A copy; wh is master with a wall-hug line (MOVE-40) per
+# robot of plans/class-wall-add.txt. Each line acts on its own robot only.
+c | hadur117.Hadur 3.22 | bisect/hadur117.Hadur_3.22.jar
+aa | hadur117.Hadur 3.22aa | bisect/hadur117.Hadur_3.22aa.jar
+wh | hadur117.Hadur 3.22wh | bisect/hadur117.Hadur_3.22wh.jar

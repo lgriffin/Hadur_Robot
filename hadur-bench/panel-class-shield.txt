@@ -1,0 +1,23 @@
+# BENCH-241 pc-class-1, SHIELD class: pc-diagnose (PR #801) diagnosed SHIELD on these robots (BeepBoop 2+ points ahead in
+# the learn-trace run, no shield line on master yet); a lock row is a cloud lock on fresh seeds. name | role | jar
+hadur117.micro.Eveimear 0.5 | lock | hadur117.micro.Eveimear_0.5.jar
+tobe.calypso.Calypso 4.1 | shield bench 12.5 | tobe.calypso.Calypso_4.1.jar
+lrem.micro.FalseProphet Alpha | shield bench 11.4 | lrem.micro.FalseProphet_Alpha.jar
+stelo.MatchupMicro 1.2 | shield bench 11.2 | stelo.MatchupMicro_1.2.jar
+pez.mini.Gouldingi 1.5 | shield bench 10.9 | pez.mini.Gouldingi_1.5.jar
+ary.nano.ColorNanoP 1.1 | shield bench 10.8 | ary.nano.ColorNanoP_1.1.jar
+robar.micro.Topaz 0.25 | shield bench 7.4 | robar.micro.Topaz_0.25.jar
+nz.jdc.nano.NeophytePRAL 1.4 | shield bench 7.3 | nz.jdc.nano.NeophytePRAL_1.4.jar
+m3thos.mini.Eva01 0.5.5 | shield bench 5.8 | m3thos.mini.Eva01_0.5.5.jar
+mb.Monte 0.1.0 | shield bench 5.4 | mb.Monte_0.1.0.jar
+ry.LightningBug 1.0 | shield bench 5.0 | ry.LightningBug_1.0.jar
+tkt.RedShift 1.1.CS.0 | shield bench 3.8 | tkt.RedShift_1.1.CS.0.jar
+rz.SmallDevil 1.502 | shield bench 3.6 | rz.SmallDevil_1.502.jar
+step.NanoBidu 1.0 | shield bench 3.0 | step.NanoBidu_1.0.jar
+slugzilla.SNGPattern 1.0 | shield bench 2.9 | slugzilla.SNGPattern_1.0.jar
+sheldor.nano.PointInLineRRAL 1.0.0 | shield bench 2.7 | sheldor.nano.PointInLineRRAL_1.0.0.jar
+bayen.UbaMicro 1.4 | shield bench 2.6 | bayen.UbaMicro_1.4.jar
+robar.nano.Scytodes 0.3 | shield bench 2.6 | robar.nano.Scytodes_0.3.jar
+maribo.Omicron 1.0 | shield bench 2.5 | maribo.Omicron_1.0.jar
+wiki.Wolverine 2.1 | shield bench 2.3 | wiki.Wolverine_2.1.jar
+pfvicm.Sobieski 7.2.3b | shield bench 2.1 | pfvicm.Sobieski_7.2.3b.jar

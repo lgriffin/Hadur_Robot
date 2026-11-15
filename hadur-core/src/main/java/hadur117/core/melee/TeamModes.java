@@ -73,8 +73,32 @@ public final class TeamModes {
          * NightmareTeam since pc-team-quarters (PR #759). On every team through {@link #FORCE_QUARTERS}
          * (ablation tmquarters).
          */
-        QUARTERS
+        QUARTERS,
+        /**
+         * TMODE-47, last enemy: with one enemy left and a teammate alive the members keep the
+         * melee role (spacing, teammates' bullets, PATH, DODGE) instead of each handing over to
+         * the duel, and close on it to {@link TeamRisk#FINISH_FLOOR}. The last member alone still
+         * duels. On every team since pc-team-guard (PR #790): +0.41 ± 0.44 APS over 45 teams at
+         * 12 seeds, own-member bullet hits down from 86 to 50 a battle. Off through
+         * {@link #FORCE_LAST} (ablation tmnolast).
+         */
+        LAST,
+        /**
+         * TMODE-49, momentum: a member drives a turn over 45 degrees at full speed instead of
+         * braking to 4 px a tick, and each candidate's drive through the shot profiles and the
+         * teammates' bullets is simulated with the engine's rules from the member's real heading and
+         * velocity (turn rate, deceleration 2, acceleration 1, backwards when shorter), not from a
+         * standstill pointed at the spot. Our own design after the 2026-11-15 read of OgiTeam,
+         * whose members never brake and whose wave check drives the robot's real physics. Off in
+         * the shipped build ({@link #FORCE_MOMENTUM}; ablation tmmomentum, and tmmomentumd for the
+         * drive without the speed).
+         */
+        MOMENTUM
     }
+
+    /** TMODE-49: the two parts of MOMENTUM, for the ablations: full speed through a turn, and the simulated drive. */
+    public static final boolean MOMENTUM_SPEED = true;
+    public static final boolean MOMENTUM_DRIVE = true;
 
     /**
      * Ablation switches: the mode for every team the table does not name. MATEFIRE is on in
@@ -90,6 +114,10 @@ public final class TeamModes {
     public static final boolean FORCE_CLOSE = true;
     /** TMODE-45: QUARTERS on every team; off in the shipped build (ablation tmquarters turns it on). */
     public static final boolean FORCE_QUARTERS = false;
+    /** TMODE-47: LAST on every team, as pc-team-guard measured it (PR #790). */
+    public static final boolean FORCE_LAST = true;
+    /** TMODE-49: MOMENTUM on every team; off in the shipped build (ablation tmmomentum turns it on). */
+    public static final boolean FORCE_MOMENTUM = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -98,7 +126,8 @@ public final class TeamModes {
     static final Set<Mode> DEFAULT = of(
         FORCE_MATEFIRE ? Mode.MATEFIRE : null, FORCE_HUNT ? Mode.HUNT : null, FORCE_PATH ? Mode.PATH : null,
         FORCE_DODGE ? Mode.DODGE : null, FORCE_CONCORD ? Mode.CONCORD : null, FORCE_CLOSE ? Mode.CLOSE : null,
-        FORCE_QUARTERS ? Mode.QUARTERS : null);
+        FORCE_QUARTERS ? Mode.QUARTERS : null, FORCE_LAST ? Mode.LAST : null,
+        FORCE_MOMENTUM ? Mode.MOMENTUM : null);
 
     /** Opposing member class to its team's modes; filled from the per-team screens. */
     static final Map<String, Set<Mode>> TABLE = table();
@@ -118,23 +147,24 @@ public final class TeamModes {
     private static Map<String, Set<Mode>> table() {
         Map<String, Set<Mode>> t = new HashMap<>();
         // Every entry plays CONCORD on top (TMODE-34), as pc-team-concord measured it (PR #494),
-        // but the four teams it lost to (TMODE-35), and CLOSE (TMODE-42) since pc-team-close (PR #696).
+        // but the four teams it lost to (TMODE-35), CLOSE (TMODE-42) since pc-team-close (PR #696),
+        // and LAST (TMODE-47) since pc-team-guard (PR #790).
         // pc-team-counters (PR #370), 16 fresh seeds: TroodonPack +4.7 ± 3.8, GrofGroup +2.5 ± 3.0.
-        t.put("gh.nano.GrofGroupMember", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.LINEAR, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE));
-        t.put("myl.micro.Troodon", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE));
-        t.put("myl.micro.TroodonDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE));
+        t.put("gh.nano.GrofGroupMember", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.LINEAR, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST));
+        t.put("myl.micro.Troodon", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST));
+        t.put("myl.micro.TroodonDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST));
         // pc-team-nododge (PR #465), 24 fresh seeds: DODGE off, NightmareTeam +3.9 ± 3.2, ImpactTeam +3.1 ± 1.4.
         // pc-team-noconcord (PR #538), 24 fresh seeds: CONCORD off too (TMODE-35), NightmareTeam +2.4 ± 4.3.
         // pc-team-quarters (PR #759): QUARTERS (TMODE-45), NightmareTeam +4.0 ± 3.2 on 24 seeds and +4.3 ± 3.7 on
         // 16 fresh ones, aimed damage from under 150 px down 25%; the other four teams screened did not move.
-        t.put("ustimaw.Nightmare", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CLOSE, Mode.QUARTERS));
-        t.put("ustimaw.NigitmareDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CLOSE, Mode.QUARTERS));
-        t.put("mn.nano.perceptual.Impact", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CONCORD, Mode.CLOSE));
+        t.put("ustimaw.Nightmare", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CLOSE, Mode.QUARTERS, Mode.LAST));
+        t.put("ustimaw.NigitmareDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CLOSE, Mode.QUARTERS, Mode.LAST));
+        t.put("mn.nano.perceptual.Impact", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CONCORD, Mode.CLOSE, Mode.LAST));
         // pc-team-noconcord (PR #538), 24 fresh seeds: CONCORD off (TMODE-35), OgiTeam +4.2 ± 3.0,
         // CombatTeam +2.6 ± 3.8, FirestarterTeam +1.7 ± 3.3; +0.24 ± 0.16 APS with NightmareTeam.
-        t.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE));
-        t.put("mn.Combat", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE));
-        t.put("cb.fire.Firestarter", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE));
+        t.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST));
+        t.put("mn.Combat", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST));
+        t.put("cb.fire.Firestarter", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST));
         return Collections.unmodifiableMap(t);
     }
 

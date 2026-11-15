@@ -140,7 +140,8 @@ class TeamLinkTest {
     @Test
     @Tag("WORLD-2")
     @Tag("WORLD-8")
-    @DisplayName("WORLD-2, WORLD-8: a role is told the enemies alive, never fewer than the truth")
+    @Tag("TMODE-47")
+    @DisplayName("WORLD-2, WORLD-8, TMODE-47: a role is told the enemies alive, never fewer than the truth; one enemy left keeps the melee role while a teammate lives")
     void rolesCountEnemies() {
         Recording melee = new Recording();
         HadurCore core = new HadurCore(facts(), line -> {}, null, melee);
@@ -154,8 +155,11 @@ class TeamLinkTest {
             new BotEvent.RobotDeath("e.C"))));
         assertEquals("others:2", last(melee.seen, "others:"));
         assertEquals(Posture.MELEE, core.posture());
-        // A second enemy dies: one left, so the Duel takes over, as a melee does.
+        // A second enemy dies: one left, but teammates live, so the team keeps the melee role (TMODE-47).
         core.tick(input(3, 3, List.of(new BotEvent.RobotDeath("e.B"), scan("e.A", 1.0, 300))));
+        assertEquals(Posture.MELEE, core.posture());
+        // Both teammates die: the last member alone hands over to the Duel, as a melee does.
+        core.tick(input(4, 1, List.of(new BotEvent.RobotDeath(MATE), new BotEvent.RobotDeath(MATE2), scan("e.A", 1.0, 300))));
         assertEquals(Posture.DUEL, core.posture());
     }
 

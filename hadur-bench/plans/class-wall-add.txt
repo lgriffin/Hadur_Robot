@@ -1,0 +1,4 @@
+# BENCH-242 pc-class-2: one wall-hug line per robot of panel-class-wall.txt.
+florent.XSeries.X2 0.17
+jk.precise.Wintermute 0.8
+whind.StrengthBee 0.6.4

@@ -1,5 +1,5 @@
 # pc-shield-rescreen: c is master, aa its A/A copy, mz master with Saturn and OperatorZeze on the shield list with
 # SHIELD-21 still lines (the arm the cloud rescreen locked). Each line acts on its own robot only.
-c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
-aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
-mz | hadur117.Hadur 3.21mtzl | bisect/hadur117.Hadur_3.21mtzl.jar
+c | hadur117.Hadur 3.22 | bisect/hadur117.Hadur_3.22.jar
+aa | hadur117.Hadur 3.22aa | bisect/hadur117.Hadur_3.22aa.jar
+mz | hadur117.Hadur 3.22mtzl | bisect/hadur117.Hadur_3.22mtzl.jar

@@ -13,7 +13,8 @@ import java.util.Set;
  *     neither Melee nor Duel has driven this round. Until the Team strand exists the Team
  *     role is never built, so this row never holds.</li>
  * <li>Melee (ROLE-3): the charter has the Melee role, it has not been vetoed this round, two
- *     or more enemies are alive, no sentry is, and the Duel has not driven this round.</li>
+ *     or more enemies are alive (or one, on a team under LAST while a teammate lives,
+ *     TMODE-47), no sentry is, and the Duel has not driven this round.</li>
  * <li>Duel: otherwise. The Duel is the floor and is never vetoed.</li>
  * </ol>
  *
@@ -104,7 +105,15 @@ public final class RoleResolver {
      * @return the role that drives this tick
      */
     public RoleId resolve(int enemies, int teammates, int sentriesAlive) {
-        return resolve(charter, enemies, teammates, sentriesAlive, veto, false, driven);
+        return resolve(enemies, teammates, sentriesAlive, false);
+    }
+
+    /**
+     * As above, where {@code lastEnemy} keeps the Melee row with one enemy alive (TMODE-47):
+     * on a team under LAST, while a teammate lives, the members fight the last enemy as a team.
+     */
+    public RoleId resolve(int enemies, int teammates, int sentriesAlive, boolean lastEnemy) {
+        return resolve(charter, enemies, teammates, sentriesAlive, veto, false, driven, lastEnemy);
     }
 
     /**
@@ -123,13 +132,22 @@ public final class RoleResolver {
      */
     public static RoleId resolve(Charter charter, int enemies, int teammates, int sentriesAlive,
                                  Veto meleeVeto, boolean teamVetoed, RoleId driven) {
+        return resolve(charter, enemies, teammates, sentriesAlive, meleeVeto, teamVetoed, driven, false);
+    }
+
+    /**
+     * As above, where {@code lastEnemy} lets the Melee row hold with one enemy alive (ROLE-3,
+     * TMODE-47). The core sets it only on a team under LAST while a teammate lives.
+     */
+    public static RoleId resolve(Charter charter, int enemies, int teammates, int sentriesAlive,
+                                 Veto meleeVeto, boolean teamVetoed, RoleId driven, boolean lastEnemy) {
         // Row 1: the Team role is built only by the Team plan; no strand holds it yet.
         if (TEAM_BUILT && charter.has(RoleId.TEAM) && !teamVetoed && teammates > 0 && enemies > 0
                 && (driven == null || driven == RoleId.TEAM)) {
             return RoleId.TEAM;
         }
         // Row 2, ROLE-3.
-        if (charter.has(RoleId.MELEE) && meleeVeto == Veto.NONE && enemies >= 2
+        if (charter.has(RoleId.MELEE) && meleeVeto == Veto.NONE && (enemies >= 2 || lastEnemy && enemies == 1)
                 && sentriesAlive == 0 && driven != RoleId.DUEL) {
             return RoleId.MELEE;
         }

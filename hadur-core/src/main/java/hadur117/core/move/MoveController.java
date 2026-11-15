@@ -517,6 +517,7 @@ public class MoveController {
         brokenWaveOutcomes.clear();
         brokenWavePowers.clear();
         ourBullets.clear();
+        deathTurns.clear();
         plan = List.of();
         lastPlans.clear();
         lastPlanTimes.clear();
@@ -633,12 +634,31 @@ public class MoveController {
         // Oldest first, so of two matching bullets the older one goes.
         for (Iterator<OurBullet> it = ourBullets.iterator(); it.hasNext(); ) {
             OurBullet b = it.next();
+            if (deathTurns.containsKey(b)) continue;
             if (Double.isNaN(heading) ? Math.abs(b.power - power) < 1e-6 : b.is(heading, power)) {
-                it.remove();
+                // MOVE-43: the bullet stays for the shadows it cast before it died; the event
+                // comes on the turn it died, the tick after the last updateShadows.
+                if (keepShadows) deathTurns.put(b, shadowTime + 1);
+                else it.remove();
                 bulletsVersion++;
                 return;
             }
         }
+    }
+
+    /**
+     * MOVE-43: whether a bullet that has hit, missed or met a bullet keeps the shadows it cast
+     * on the turns before (DrussGT 3.1.18's fix); off, it takes them with it, as before.
+     */
+    private boolean keepShadows;
+    /** MOVE-43: the turn each gone bullet died on; a bullet in here casts only before it. */
+    private final java.util.IdentityHashMap<OurBullet, Long> deathTurns = new java.util.IdentityHashMap<>();
+    /** MOVE-43: the tick of the last {@link #updateShadows}. */
+    private long shadowTime = -1;
+
+    /** MOVE-43: turns kept shadows on or off. */
+    public void setKeepShadows(boolean on) {
+        this.keepShadows = on;
     }
 
     /**
@@ -745,9 +765,32 @@ public class MoveController {
      * @param time the current tick
      */
     public void updateShadows(long time) {
-        // RES-2: a bullet whose event we never get (or have not got yet) still leaves the
-        // list once it is off the field.
-        if (ourBullets.removeIf(b -> {
+        shadowTime = time;
+        if (keepShadows) {
+            // MOVE-43: a bullet off the field dies now (its walk already stops at the edge); a
+            // dead one leaves once no firing wave in the air was fired before it died, since
+            // it can shadow none of them (and none fired later).
+            for (OurBullet b : ourBullets) {
+                if (deathTurns.containsKey(b)) continue;
+                java.awt.geom.Point2D.Double p = b.at(time);
+                if (p.x < 0 || p.y < 0 || p.x > battleField.width || p.y > battleField.height) {
+                    deathTurns.put(b, time);
+                    bulletsVersion++;
+                }
+            }
+            long[] firstFire = {Long.MAX_VALUE};
+            waveManager.forAllWaves(w -> {
+                if (w.firingWave) firstFire[0] = Math.min(firstFire[0], w.fireTime);
+            });
+            ourBullets.removeIf(b -> {
+                Long d = deathTurns.get(b);
+                if (d == null || (firstFire[0] != Long.MAX_VALUE && d > firstFire[0] + 1)) return false;
+                deathTurns.remove(b);
+                return true;
+            });
+        } else if (ourBullets.removeIf(b -> {
+            // RES-2: a bullet whose event we never get (or have not got yet) still leaves the
+            // list once it is off the field.
             java.awt.geom.Point2D.Double p = b.at(time);
             return p.x < 0 || p.y < 0 || p.x > battleField.width || p.y > battleField.height;
         })) {
@@ -762,7 +805,8 @@ public class MoveController {
                 w.setShadows(new ArrayList<>());
             } else {
                 List<List<double[]>> shadows =
-                    BulletShadows.of(w, ourBullets, battleField.width, battleField.height);
+                    BulletShadows.of(w, ourBullets, b -> deathTurns.getOrDefault(b, Long.MAX_VALUE),
+                        battleField.width, battleField.height);
                 w.setShadows(shadows.get(0), shadows.get(1));
             }
             // Count each wave once per round, the first time it has any shadow at all.

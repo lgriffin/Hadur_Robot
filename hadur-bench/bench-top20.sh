@@ -26,7 +26,8 @@
 #   --robot NAME           the robot's name as Robocode lists it
 #   --baseline FILE        a baseline jar for a paired A/B run (needs --baseline-robot)
 #   --baseline-robot NAME  the baseline robot's name, distinct from --robot
-#   --cpu-constant NANOS|auto  pin robocode.cpu.constant in every worker home; auto takes the host's
+#   --cpu-constant NANOS|auto|live  pin robocode.cpu.constant in every worker home; live = the turn time that
+#                          matched LiteRumble (BENCH-245, 1v1 PC cards use it); auto takes the host's
 #                          (HADUR_BENCH_CPU_CONSTANT, else hostprofile.py), or calibrates when none is known
 #   --label NAME           used in the default --out, --report and --per-opponent, default top20
 #   --out DIR              working directory, default work/<label>-<timestamp>

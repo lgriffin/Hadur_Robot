@@ -30,7 +30,7 @@
 # (warm beats cold), whether memory needs a fix first (warm loses), whether lukewarm is that fix, and which robots
 # each applies to.
 
-set V = 3.21
+set V = 3.22
 set P = --parallel 12 --no-truth-log
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
 set W = work/warm

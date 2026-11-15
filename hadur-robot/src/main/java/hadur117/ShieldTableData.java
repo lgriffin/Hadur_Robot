@@ -132,7 +132,6 @@ final class ShieldTableData {
             "0 0.000000000 cjm.Charo 1.1",
             "0 0.000000000 cjm.Chomsky 1.5",
             "0 0.000000000 cjm.chalk.Chalk 2.6.Be",
-            "0 0.000000000 cs.s2.Seraphim 2.3.1",
             "0 0.000000000 css.Delitioner 0.11",
             "0 0.000000000 cuoq.Kakera 1.0",
             "0 0.000000000 cx.micro.Smoke 0.96",
@@ -513,6 +512,13 @@ final class ShieldTableData {
             // BENCH-207 pc-tailor-near (PR #704): leaned on pc-tailor-field's screen, picked on 4 new seeds, kept on 4 fresh ones (screen / confirm points).
             "xander.cat.Mikey 1.2",                        // +2.9 / +4.3
             "kc.mega.BeepBoop 2.0",                        // +15.2 / +3.1
+            // pc-class-1 (BENCH-241, PR #803): +14.1 on 8 fresh PC seeds (low end +10.4); cloud lock held first
+            "cz.libors.Ogi v1",
+            // pc-r31 (BENCH-244, PR #817): 12 fresh PC seeds at the live turn time, beating master and its A/A copy
+            "cb.fire.Firestarter 2.0f",                    // +8.6
+            "kc.serpent.WaveSerpent 2.11",                 // +4.7
+            "sheldor.mini.Foilist 1.3.1",                  // +4.1
+            "jk.precise.Wintermute 0.8",                   // +4.0
         };
     }
 
@@ -606,6 +612,14 @@ final class ShieldTableData {
             "florent.XSeries.X2 0.17",
             "cjm.Che 1.2",
             "djc.Aardvark 0.3.6",
+            // pc-shield-floor (BENCH-235, PR #781): CassiusClay +37.7 on 12 fresh seeds with the floor line
+            "pez.rumble.CassiusClay 2rho.02no",
+            // pc-class-1 (BENCH-241, PR #803): +24.3 on 8 fresh PC seeds with the shield list line (low end +19.9)
+            "hadur117.micro.Eveimear 0.5",
+            // pc-class-2 (BENCH-242, PR #806): +5.9 on 12 fresh PC seeds with the shield list line (+5.2 on pc-class-1's 8)
+            "pez.mini.Gouldingi 1.5",
+            // pc-r31 (BENCH-244, PR #817): +21.0 on 12 fresh PC seeds at the live turn time, with the shield list line
+            "axeBots.Musashi 2.18",
         };
     }
 
@@ -616,28 +630,39 @@ final class ShieldTableData {
      */
     static String[] shieldFloors() {
         return new String[] {
+            // pc-shield-floor (BENCH-235, PR #781): 12 PC seeds against master and its A/A copy pooled
+            "pez.rumble.CassiusClay 2rho.02no",  // +37.7 (control 60.9, floor arm 98.6)
         };
     }
 
     /**
-     * POW-18: the opponents the duel never fires above 0.2 power at, one name each. Empty until a
-     * card holds robots; candidate builds add lines here (build-ablation.sh pcaplist).
+     * POW-18: the opponents the duel never fires above 0.2 power at, one name each. Shipped by
+     * pc-power-cap (BENCH-236); candidate builds add lines here (build-ablation.sh pcaplist).
      *
      * @return a fresh array of names
      */
     static String[] powerCaps() {
         return new String[] {
+            "rsalesc.roborio.Roborio 1.2.4",
+            "aw.Gilgalad 1.99.5c",
+            "cb.fire.Firestarter 2.0f",
+            "catcat20.Rabbit 0.001",
+            "cb.Domogled 1.2",
+            // pc-lines (BENCH-238, PR #798): JKHydra +8.6 +- 5.5 on 8 fresh PC seeds (cloud +10.6 on 8 more)
+            "jkong.JKHydra 1.4",
         };
     }
 
     /**
-     * POW-18: the opponents the duel never fires above 0.5 power at, one name each. Empty until a
-     * card holds robots; candidate builds add lines here (build-ablation.sh pcap5list).
+     * POW-18: the opponents the duel never fires above 0.5 power at, one name each. Shipped by
+     * pc-power-cap (BENCH-236); candidate builds add lines here (build-ablation.sh pcap5list).
      *
      * @return a fresh array of names
      */
     static String[] powerCapHalves() {
         return new String[] {
+            "stelo.MatchupAGF 1.1",
+            "suh.mega.WaveSurferPG 1.06",
         };
     }
 
@@ -678,6 +703,8 @@ final class ShieldTableData {
             // BENCH-207 pc-tailor-near (PR #704): leaned on pc-tailor-field's screen, picked on 4 new seeds, kept on 4 fresh ones (screen / confirm points).
             "rsalesc.roborio.Roborio 1.2.4",               // +5.1 / +1.8
             "apv.LauLectrik 1.2",                          // +7.8 / -1.8
+            // pc-r31 (BENCH-244, PR #817): +7.0 on 12 fresh PC seeds at the live turn time
+            "mue.Ascendant 1.2.27",
         };
     }
 
@@ -774,6 +801,8 @@ final class ShieldTableData {
             "rampancy.Durandal 2.2d",
             "stelo.RamTrackSurfer 1.2",
             "test.Fuzzer 1.0.1",
+            // pc-class-2 (BENCH-242, PR #806): +3.1 on 12 fresh PC seeds (+4.2 on pc-class-1's 8)
+            "sos.SOS 1.0",
             "tw.Exterminator 1.0",
             // BENCH-207 pc-tailor-near (PR #704): leaned on pc-tailor-field's screen, picked on 4 new seeds, kept on 4 fresh ones (screen / confirm points).
             "pl.Patton.GeneralPatton 1.54",                // +7.1 / +8.1
@@ -799,6 +828,8 @@ final class ShieldTableData {
             "lxx.Tomcat 3.68",               // +10.8
             "voidious.Dookious 1.573c",      // +6.4
             "sheldor.mini.FoilistMC 1.0",    // +5.9
+            // pc-r31 (BENCH-244, PR #817): 12 fresh PC seeds at the live turn time
+            "eem.zapper v6.03",              // +4.1
         };
     }
 

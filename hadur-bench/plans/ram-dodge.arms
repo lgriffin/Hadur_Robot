@@ -1,4 +1,4 @@
 # pc-1v1-ram (BENCH-132): rk = 3.19 with RAM-5 on (the rammer escape steers off the rammer's shots in flight).
-c | hadur117.Hadur 3.21 | bisect/hadur117.Hadur_3.21.jar
-aa | hadur117.Hadur 3.21aa | bisect/hadur117.Hadur_3.21aa.jar
-rk | hadur117.Hadur 3.21rk | bisect/hadur117.Hadur_3.21rk.jar
+c | hadur117.Hadur 3.22 | bisect/hadur117.Hadur_3.22.jar
+aa | hadur117.Hadur 3.22aa | bisect/hadur117.Hadur_3.22aa.jar
+rk | hadur117.Hadur 3.22rk | bisect/hadur117.Hadur_3.22rk.jar

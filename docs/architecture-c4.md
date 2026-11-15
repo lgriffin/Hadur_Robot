@@ -679,7 +679,6 @@ endgame MEND-1, 2).
 | Switch | Req | State | What it does |
 |---|---|---|---|
 | `MinimumRiskMovement.MELEE_SURF` | MMOVE-15 | **on**, master only (3.21) | The melee surfer: crowd-weighted shots, learned aims, wave re-rank |
-| `MinimumRiskMovement.MELEE_DODGE` | MMOVE-30 | off (arm mdodge) | The team's dodge in the crowd: one aim-expert profile per shot, crowd-weighted, in place of the virtual bullets |
 | `MeleeController.MELEE_CROSS` | MMOVE-19 | **on**, master only (3.21) | Learn a shooter's aim from its hits on others |
 | `MeleeEnergyPolicy.CROWD_OGI` | MGUN-13 | **on** | Ogi's crowd power, 3 up close |
 | `MeleeEnergyPolicy.OGI_WIDE` | MGUN-16 | **on** (3.19) | Power 3 out to 300 px |
@@ -733,7 +732,8 @@ flowchart LR
 | `gunStacks()` | `gun-stack:` | GUN-11 | 0 | TripHammer gun stack (never for a shield opponent) |
 | `exitLates()`, `exitOffs()` | `shield-exit4:`, `shield-exit0:` | SHIELD-19 | 0 | Later or no damage exit from shield mode |
 
-Matching is exact: `pkg.Bot 1.2` matches that version only, `pkg.Bot` every version, never a prefix.
+Matching is by name (SHIELD-26): `pkg.Bot 1.2` and `pkg.Bot` both match every version of the robot, and
+the version records the one benched; never a prefix.
 Entries arrive from bench screens: the table ablations (`smovelist`, `saimlist`, `sgolist`,
 `sgo2list`, `sdodgelist`, `sdplanlist`, `hjlist`, `gslist`, `sx4list`, `sx0list`, `slistadd`,
 `slistdrop`) fill a slot from a pick file for an arm; a pick that passes is pasted into the class.

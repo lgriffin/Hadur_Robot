@@ -1,0 +1,33 @@
+# BENCH-244 pc-r31: the 31 robots whose live gap to BeepBoop held on our own bench (5+ points, aa vs BeepBoop 2.0, 2 seeds,
+# /mnt/project-files/points-budget/bench-check-top40.log), census rows; Seraphim at its live 2.4.0. name | rank | jar
+cs.s2.Seraphim 2.4.0 | rank39-band2 | cs.s2.Seraphim_2.4.0.jar
+jk.melee.Neuromancer 7.12 | rank18-band2 | jk.melee.Neuromancer_7.12.jar
+abc.Shadow 3.83c | rank25-band2 | abc.Shadow_3.83c.jar
+aw.Gilgalad 1.99.5c | rank12-band2 | aw.Gilgalad_1.99.5c.jar
+cb.fire.Firestarter 2.0f | rank7-band1 | cb.fire.Firestarter_2.0f.jar
+sheldor.mini.Foilist 1.3.1 | rank42-band2 | sheldor.mini.Foilist_1.3.1.jar
+mue.Ascendant 1.2.27 | rank24-band2 | mue.Ascendant_1.2.27.jar
+axeBots.Musashi 2.18 | rank156-band3 | axeBots.Musashi_2.18.jar
+nat.Samekh 0.4 | rank108-band3 | nat.Samekh_0.4.jar
+kc.serpent.WaveSerpent 2.11 | rank15-band2 | kc.serpent.WaveSerpent_2.11.jar
+eem.EvBotNG v12.8 | rank74-band3 | eem.EvBotNG_v12.8.jar
+pe.SandboxDT 3.02 | rank90-band3 | pe.SandboxDT_3.02.jar
+slugzilla.Parallax 0.1 | rank499-band5 | slugzilla.Parallax_0.1.jar
+eem.zapper v6.03 | rank66-band3 | eem.zapper_v6.03.jar
+rsalesc.roborio.Roborio 1.2.4 | rank22-band2 | rsalesc.roborio.Roborio_1.2.4.jar
+mn.Combat 3.25.0 | rank38-band2 | mn.Combat_3.25.0.jar
+jcs.AutoBot 4.2.1 | rank281-band4 | jcs.AutoBot_4.2.1.jar
+dft.Cardigan 1.09 | rank51-band3 | dft.Cardigan_1.09.jar
+cx.Lacrimas 1.36 | rank118-band3 | cx.Lacrimas_1.36.jar
+arthord.NanoSatanMelee Beta | rank891-band6 | arthord.NanoSatanMelee_Beta.jar
+voidious.Diamond 1.8.22 | rank6-band1 | voidious.Diamond_1.8.22.jar
+jk.precise.Wintermute 0.8 | rank28-band2 | jk.precise.Wintermute_0.8.jar
+kenran.Bakko v1.0.1 | rank106-band3 | kenran.Bakko_v1.0.1.jar
+cw.megas.Silhouette 1.1 | rank178-band3 | cw.megas.Silhouette_1.1.jar
+darkcanuck.Holden 1.13a | rank54-band3 | darkcanuck.Holden_1.13a.jar
+lancel.Lynx 1.09 | rank93-band3 | lancel.Lynx_1.09.jar
+ags.rougedc.RougeDC willow | rank53-band3 | ags.rougedc.RougeDC_willow.jar
+barontrozo.BaronTrozo 1.7.6 | rank169-band3 | barontrozo.BaronTrozo_1.7.6.jar
+sheldor.nano.PointInLineRRAL 1.0.0 | rank457-band5 | sheldor.nano.PointInLineRRAL_1.0.0.jar
+ers.nano.meroka.Meroka 1.8a | rank327-band4 | ers.nano.meroka.Meroka_1.8a.jar
+dft.Cyprus 3.0 | rank337-band4 | dft.Cyprus_3.0.jar
