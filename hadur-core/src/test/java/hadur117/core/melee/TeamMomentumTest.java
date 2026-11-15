@@ -79,14 +79,12 @@ class TeamMomentumTest {
 
     @Test
     @Tag("TMODE-49")
-    @DisplayName("TMODE-49: MOMENTUM is not in the default and on no shipped entry; both parts are on when it plays")
-    void shippedOff() {
-        assertFalse(TeamModes.FORCE_MOMENTUM);
-        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.MOMENTUM));
+    @DisplayName("TMODE-49: MOMENTUM is in the default and on every shipped entry (PR #826)")
+    void shippedOn() {
+        assertTrue(TeamModes.FORCE_MOMENTUM);
+        assertTrue(TeamModes.DEFAULT.contains(TeamModes.Mode.MOMENTUM));
         for (Map.Entry<String, Set<TeamModes.Mode>> e : TeamModes.TABLE.entrySet()) {
-            assertFalse(e.getValue().contains(TeamModes.Mode.MOMENTUM), e.getKey());
+            assertTrue(e.getValue().contains(TeamModes.Mode.MOMENTUM), e.getKey());
         }
-        assertTrue(TeamModes.MOMENTUM_SPEED);
-        assertTrue(TeamModes.MOMENTUM_DRIVE);
     }
 }

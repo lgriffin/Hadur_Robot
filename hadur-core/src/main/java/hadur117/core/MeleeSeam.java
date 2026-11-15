@@ -339,7 +339,7 @@ final class MeleeSeam implements Role {
         if (c.target != null && core.diedThisRound(c.target)) ghostTicks++;
         orders.turnRadarRight(c.radarTurn);
         orders.turnGunRight(c.gunTurn);
-        if (c.destination != null) goTo(in, c.destination, orders, c.quarters || c.fullSpeed);
+        if (c.destination != null) goTo(in, c.destination, orders, c.quarters);
         lastCommand = c;
     }
 
@@ -347,7 +347,7 @@ final class MeleeSeam implements Role {
      * Drives toward {@code destination}, backwards if that is the shorter turn. A robot can
      * drive either way at the same speed, so it never needs to turn more than 90 degrees.
      * This is where melee lowers the speed limit that MELEE-2 lifts on hand-over.
-     * With {@code quarters} (TMODE-45, or MOMENTUM's speed, TMODE-49) a sharp turn is driven at full speed.
+     * With {@code quarters} (TMODE-45) a sharp turn is driven at full speed.
      */
     private static void goTo(BotInput in, Point2D.Double destination, BotOrders.Builder orders, boolean quarters) {
         Point2D.Double me = in.location();

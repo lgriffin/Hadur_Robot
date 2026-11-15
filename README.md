@@ -148,7 +148,7 @@ go to the duel (MMEM-1, MMEM-2).
 
 Ideas credited: several team modes are our own code on ideas read in OgiTeam
 (cz.libors): the dodge re-rank through shot profiles (TMODE-27), the team brain (TMODE-33),
-and momentum (TMODE-49, testing, off by default), which drives each escape spot from the
+and momentum (TMODE-49, on since PR #826), which drives each escape spot from the
 member's real heading and speed as OgiTeam's wave check does. No OgiTeam code is copied.
 
 
