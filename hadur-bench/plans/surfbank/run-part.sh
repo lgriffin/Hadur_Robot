@@ -35,7 +35,8 @@ fi
 cd "$WT/hadur-bench"
 ./fetch-opponents.sh --set "plans/surfbank/field-$N.txt" 2>&1 | tail -1 | tee -a "$OUT/status.txt" || true
 log "running part $N"
-mvn -q -Drobocode.version=1.11.2 exec:java -Dexec.args="--set plans/surfbank/field-$N.txt --seeds 2 --seed-base 37900 --out work/surf-field-$N --arms plans/surfbank/surfbank.arms --truth-log false --rounds 35 --parallel 2 --child-cpus 2 --cpu-constant live --job-order shuffled --failed-ok true" || log "bench exit $?"
+mvn -q -Drobocode.version=1.11.2 exec:java -Dexec.args="--set plans/surfbank/field-$N.txt --seeds 2 --seed-base 37900 --out work/surf-field-$N --arms plans/surfbank/surfbank.arms --truth-log false --rounds 35 --parallel 2 --child-cpus 2 --cpu-constant live --job-order shuffled --failed-ok true" || rc=$?
+[[ ${rc:-0} -ne 0 ]] && log "bench exit $rc"
 cd "work/surf-field-$N"
 mkdir -p "$OUT/battles"
 cp -f arms.tsv conditions.json "$OUT/" 2>/dev/null || true
@@ -45,3 +46,4 @@ for d in battles/*/; do
     mkdir -p "$OUT/battles/$b"; cp -f "$d"/result.csv "$d"/rounds.tsv "$d"/arm-row.tsv "$OUT/battles/$b/" 2>/dev/null || true
 done
 log "done part $N: $(ls "$OUT/battles" | wc -l) battles copied"
+exit ${rc:-0}
