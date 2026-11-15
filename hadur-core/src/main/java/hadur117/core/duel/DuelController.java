@@ -366,7 +366,6 @@ public final class DuelController {
         if (x5Power) on.add("x5");
         if (racePower) on.add("race");
         if (ramCirc) on.add("ramcirc");
-        if (ramJink) on.add("ramjink");
         if (!Double.isNaN(powerCap)) on.add("cap");
         if (shield != null && shield.active()) on.add("shield");
         return on.isEmpty() ? "-" : String.join(",", on);
@@ -918,8 +917,6 @@ public final class DuelController {
     private boolean racePower;
     /** RAM-11: whether this opponent has a {@code ram-circ:} line. */
     private boolean ramCirc;
-    /** RAM-12: whether this opponent has a {@code ram-jink:} line. */
-    private boolean ramJink;
     /** POW-18: the cap the table sets on our power against this opponent, NaN for none. */
     private double powerCap = Double.NaN;
     /**
@@ -1400,9 +1397,6 @@ public final class DuelController {
         // RAM-11: the rammer escape also dodges circular aims from the opponents the table names.
         ramCirc = duelOnly(stackList.ramCirc(name), enemiesTotal);
         ramEscape.setCircular(ramCirc);
-        // RAM-12: the rammer escape jinks its speed against the opponents the table names.
-        ramJink = duelOnly(stackList.ramJink(name), enemiesTotal);
-        ramEscape.setJink(ramJink);
         // POW-18: the power cap for the opponents the table names.
         powerCap = duelOnly(stackList.powerCap(name), enemiesTotal) ? CAP_POWER
             : duelOnly(stackList.powerCapHalf(name), enemiesTotal) ? CAP_POWER_HALF : Double.NaN;

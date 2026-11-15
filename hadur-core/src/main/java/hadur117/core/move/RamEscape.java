@@ -68,33 +68,6 @@ public final class RamEscape {
     static final boolean FORCE_CIRCULAR = false;
     /** RAM-11: whether this opponent's shots are also dodged as circular aims. */
     private boolean circular;
-    /**
-     * RAM-12: a jinked speed. The field's close-range rammers lead us linearly from our speed when they fire, and the
-     * escape's full-speed straight runs are exactly what that aim predicts (truth logs, shard E: under 20 px off the
-     * linear aim at arrival on 35-56% of their 80-250 px shots, BeepBoop 9-27%). With the jink on, the escape holds full
-     * speed for {@link #JINK_FULL_MIN} to {@link #JINK_FULL_MAX} ticks, then {@link #JINK_SLOW} px/tick for
-     * {@link #JINK_SLOW_MIN} to {@link #JINK_SLOW_MAX}, drawn afresh each time. On per opponent ({@code ram-jink:}
-     * lines, {@link #setJink}); this forces it on every rammer, for the bench's screen only.
-     */
-    static final boolean FORCE_JINK = false;
-    /** RAM-12: the shortest full-speed stretch, in ticks. */
-    static final int JINK_FULL_MIN = 6;
-    /** RAM-12: the longest full-speed stretch, in ticks. */
-    static final int JINK_FULL_MAX = 14;
-    /** RAM-12: the speed cap of a slow stretch, px a tick. */
-    static final double JINK_SLOW = 2.0;
-    /** RAM-12: the shortest slow stretch, in ticks. */
-    static final int JINK_SLOW_MIN = 3;
-    /** RAM-12: the longest slow stretch, in ticks. */
-    static final int JINK_SLOW_MAX = 7;
-    /** RAM-12: whether this opponent gets the jinked speed. */
-    private boolean jink;
-    /** RAM-12: the draws for the stretch lengths. */
-    private final java.util.Random jinkRandom = new java.util.Random();
-    /** RAM-12: the tick the current stretch ends, and whether it is a slow one. */
-    private long jinkUntil = Long.MIN_VALUE;
-    private boolean jinkSlow;
-
     /** RAM-11: our heading at the last move, for the turn rate a circular aim extrapolates; NaN before the first. */
     private double prevHeading = Double.NaN;
     /** RAM-11: the tick of {@link #prevHeading}. */
@@ -117,8 +90,6 @@ public final class RamEscape {
         shots.clear();
         prevHeading = Double.NaN;
         turnRate = 0;
-        jinkUntil = Long.MIN_VALUE;
-        jinkSlow = false;
     }
 
     /** The heading chosen on the last {@link #move}, NaN before the first. */
@@ -154,7 +125,7 @@ public final class RamEscape {
         // A shot that has flown past the field's diagonal can hit nothing more.
         while (!shots.isEmpty() && (me.time - shots.peekFirst()[0]) * shots.peekFirst()[3] > 1000) shots.removeFirst();
         double heading = choose(me, enemy);
-        orders.maxVelocity(jinkSpeed(me.time));
+        orders.maxVelocity(8.0);
         DiaUtils.setBackAsFront(orders, me.heading, heading);
     }
 
@@ -203,34 +174,6 @@ public final class RamEscape {
      */
     public void setCircular(boolean on) {
         circular = on;
-    }
-
-    /**
-     * RAM-12: turns the jinked speed on or off for this opponent ({@link #FORCE_JINK} keeps it on).
-     *
-     * @param on whether the table names the opponent
-     */
-    public void setJink(boolean on) {
-        jink = on || FORCE_JINK;
-    }
-
-    /**
-     * RAM-12: the speed cap for {@code time}: 8 without the jink; with it, the current stretch's cap, drawing the next
-     * stretch once this one has run out (a full one after a slow one and the other way round).
-     *
-     * @param time the tick
-     * @return the cap, px a tick
-     */
-    double jinkSpeed(long time) {
-        if (!jink) return 8.0;
-        if (time >= jinkUntil) {
-            // A gap in the escape's ticks (another driver took over) starts afresh on a full stretch.
-            jinkSlow = time == jinkUntil && !jinkSlow;
-            int min = jinkSlow ? JINK_SLOW_MIN : JINK_FULL_MIN;
-            int max = jinkSlow ? JINK_SLOW_MAX : JINK_FULL_MAX;
-            jinkUntil = time + min + jinkRandom.nextInt(max - min + 1);
-        }
-        return jinkSlow ? JINK_SLOW : 8.0;
     }
 
     /** RAM-11: the newest shot's circular aim minus its linear aim, NaN when it carries none; for tests. */
