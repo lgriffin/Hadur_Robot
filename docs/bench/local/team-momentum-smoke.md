@@ -46,3 +46,11 @@ The score cannot separate any arm from the A/A at this size. Mechanism reads (to
 
 Speed alone raised own-member hits (+5.1 ± 6.5). So the PC card carries mo and the drive alone (mod), each behind a
 46-team pilot that stops below 0 APS.
+
+## PC result (pc-team-momentum, BENCH-247, PR #826, 2026-11-15)
+
+46 teams, 12 fresh seeds from 22000, gated at +0.15 APS with the 95% low end above zero against both baselines:
+mod (simulated drive alone) **+0.44 ± 0.43 APS, PASS**; mo (drive plus full speed through turns) +0.34 ± 0.46, FAIL.
+The drive ships on every team (TMODE-49); the full-speed part is removed. Note: an earlier drive-from-motion
+switch (TMODE-39, PR #584/#599, 3 Nov) failed on the master of that day; this one also drives the teammates'-bullet
+path check from real motion and stops at walls along the heading.
