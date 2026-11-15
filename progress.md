@@ -1,6 +1,6 @@
 # Queue pc-team-momentum: progress
 
-Updated 2026-11-15 15:17:33 PC time (15:17 UTC), runner pid 55920.
+Updated 2026-11-15 15:32:39 PC time (15:32 UTC), runner pid 55920.
 
 - `tmprep` done, exit 0 in 3 min
 - `tmpmo` done, exit 0 in 37 min
@@ -66,21 +66,20 @@ Stopping now would leave 24 battles unrun (about 4 min); every battle already fo
 
 ### tmmod
 
-**106 of 1104 battles** (10%), 0 failed. Running 21 min, 297 battles/h, about 3.4 h left (ends ~18:39 PC time). Last battle 0 min ago.
-Skipped turns a battle: 16.4 overall, first 100 16.1, last 100 16.6.
+**196 of 1104 battles** (18%), 0 failed. Running 37 min, 322 battles/h, about 2.8 h left (ends ~18:21 PC time). Last battle 0 min ago.
+Skipped turns a battle: 14.8 overall, first 100 16.1, last 100 13.7.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 106 |
+| `fails 60` | halt | ok | 0 failed of 196 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | waiting | 106 of 200 battles to read |
+| `skips 60 over 200` | halt | waiting | 196 of 200 battles to read |
 
-Stopping now would leave 998 battles unrun (about 3.4 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 908 battles unrun (about 2.8 h); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-10:48:44 progress tmbb: 496/1104 (45%) battles, 394/h, ETA 1.5 h, 0 failed, skips 7.2/battle (last 100)
 11:18:57 progress tmbb: 691/1104 (63%) battles, 392/h, ETA 1.1 h, 0 failed, skips 3.6/battle (last 100)
 11:49:09 progress tmbb: 887/1104 (80%) battles, 391/h, ETA 33 min, 0 failed, skips 3.0/battle (last 100)
 12:12:48 tmbb exit=0 in 9579 s
@@ -95,4 +94,5 @@ Stopping now would leave 998 battles unrun (about 3.4 h); every battle already f
 14:56:08 tmmo exit=0 in 9799 s
 14:56:08 start tmmod
 14:56:08 watching tmmod: 3 stop rule(s)
+15:20:34 progress tmmod: 132/1104 (12%) battles, 324/h, ETA 3.0 h, 0 failed, skips 17.0/battle (last 100)
 ```
