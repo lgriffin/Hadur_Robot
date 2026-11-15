@@ -18,9 +18,11 @@
 #   - Diagnosis first: like the pc-ram11 rammers, these aim circularly from our turn rate, and our rammer escape dodged
 #     only head-on and linear aims while driving smooth arcs (the full diagnosis is in plans/pc-ram11.queue).
 #   - Each robot passed the cloud lock bar (12 fresh seeds, 95% low end above 0, live turn time).
-# Pilot and stop rules (docs/bench/watch.md): the lock's aa arm halts the card after 20% if master and its copy
-# disagree; halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle over the last 200, or
-# no battle in 30 minutes. The live-match step stops the card if the PC no longer scores us and BeepBoop as live
+# Stop rules (docs/bench/watch.md): the panel is under 10 robots, so the watcher's A/A stop cannot read; aa is read in the
+# gate (multiarm.py prints aa against c) and pooled with c as the control. The skips window is 24 battles, which the
+# lock reaches. The card halts on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle over the
+# last 24, or no battle in 30 minutes.
+# The live-match step stops the card if the PC no longer scores us and BeepBoop as live
 # does (tools/live_match.py exit 3). ALERT opens an issue for Leigh on any stop.
 # Bank: the owning cloud thread adds the gate's lines (ShieldTableData.ramCircs) on this card's results PR.
 # Nothing is released by the card.
@@ -45,9 +47,8 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-ram11b.txt --seeds 12 --seed-base 
   watch: field=1217
   stop: fails 30
   stop: dead 8
-  stop: skips 60 over 200
+  stop: skips 60 over 24
   stop: stall 30m
-  stop: aa after 20%
 
 gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-ram11b-lock.md && python3 ../data/tools/mode_table.py ${W}/arms.tsv --margin 0 --out-tsv ${OUT}/pc-ram11b-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-ram11b-lock-pick.md && python3 tools/per_robot.py ${W}/arms.tsv --arms rcl --out ${OUT}/$(date +%Y-%m-%d)_pc-ram11b-lock-per-robot.md --out-tsv ${OUT}/pc-ram11b-lock-per-robot.tsv
   after: lock
