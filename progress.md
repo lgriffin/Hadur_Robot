@@ -1,6 +1,6 @@
 # Queue pc-shards: progress
 
-Updated 2026-11-15 23:16:57 PC time (23:16 UTC), runner pid 20660.
+Updated 2026-11-15 23:32:07 PC time (23:32 UTC), runner pid 20660.
 
 - `prep` done, exit 0 in 6 min
 - `livematch` done, exit 0 in 0 min
@@ -33,33 +33,33 @@ Stopping now would leave 0 battles unrun; every battle already fought is kept an
 
 ### screen
 
-**7663 of 25380 battles** (30%), 0 failed. Running 2.7 h, 2264 battles/h, about 7.8 h left (ends ~07:06 PC time). Last battle -0 min ago.
-Skipped turns a battle: 23.5 overall, first 100 22.7, last 100 39.3; engine disables 757.
+**8371 of 25380 battles** (33%), 0 failed. Running 2.9 h, 2556 battles/h, about 6.7 h left (ends ~06:11 PC time). Last battle 0 min ago.
+Skipped turns a battle: 23.7 overall, first 100 22.7, last 100 24.1; engine disables 850.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 851 | 0 | 91.54 | - | - | - | 24.1 |
-| aa | 851 | 0 | 91.53 | -0.00 (411 robots) | ±0.10 | -0.15 .. +0.14 | 22.6 |
-| fq | 853 | 0 | 91.36 | -0.05 (411 robots) | ±0.10 | -0.20 .. +0.09 | 22.7 |
-| x5 | 852 | 0 | 91.44 | -0.03 (411 robots) | ±0.09 | -0.17 .. +0.12 | 24.0 |
-| hl | 852 | 0 | 91.67 | +0.06 (411 robots) | ±0.09 | -0.08 .. +0.19 | 23.7 |
-| dg | 850 | 0 | 91.32 | -0.08 (411 robots) | ±0.10 | -0.24 .. +0.07 | 23.4 |
-| gl | 853 | 0 | 91.23 | -0.11 (411 robots) | ±0.10 | -0.26 .. +0.04 | 23.6 |
-| mq | 852 | 0 | 91.11 | -0.16 (411 robots) | ±0.10 | -0.31 .. -0.01 | 24.3 |
-| mtzl | 849 | 0 | 87.46 | -1.57 (411 robots) | ±0.19 | -1.86 .. -1.28 | 23.1 |
+| c | 929 | 0 | 91.34 | - | - | - | 24.4 |
+| aa | 933 | 0 | 91.35 | +0.00 (426 robots) | ±0.09 | -0.14 .. +0.14 | 22.6 |
+| fq | 927 | 0 | 91.23 | -0.05 (426 robots) | ±0.10 | -0.19 .. +0.10 | 22.9 |
+| x5 | 931 | 0 | 91.27 | -0.03 (426 robots) | ±0.09 | -0.17 .. +0.11 | 24.1 |
+| hl | 927 | 0 | 91.55 | +0.08 (426 robots) | ±0.09 | -0.05 .. +0.22 | 23.9 |
+| dg | 930 | 0 | 91.14 | -0.05 (426 robots) | ±0.09 | -0.20 .. +0.09 | 23.6 |
+| gl | 934 | 0 | 91.04 | -0.09 (426 robots) | ±0.09 | -0.23 .. +0.06 | 23.9 |
+| mq | 929 | 0 | 90.92 | -0.16 (426 robots) | ±0.09 | -0.31 .. -0.02 | 24.4 |
+| mtzl | 931 | 0 | 87.33 | -1.52 (426 robots) | ±0.20 | -1.82 .. -1.22 | 23.4 |
 
 APS = mean difference over the robots read x 470 panel robots / 1217 pairings.
-A/A: aa - c -0.01 pts over 411 robots; 1% band ±0.40 (inside).
+A/A: aa - c +0.01 pts over 426 robots; 1% band ±0.38 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 7663 |
+| `fails 30` | halt | ok | 0 failed of 8371 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 60 over 200` | halt | ok | 38.2 a battle over the last 200 (first 200: 20.5) |
-| `stall 30m` | halt | ok | last battle -0 min ago |
-| `aa after 20%` | halt | ok | aa - c -0.01 pts over 411 robots, stop band ±0.47 |
+| `skips 60 over 200` | halt | ok | 24.7 a battle over the last 200 (first 200: 20.5) |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `aa after 20%` | halt | ok | aa - c +0.01 pts over 426 robots, stop band ±0.44 |
 
-Stopping now would leave 17717 battles unrun (about 7.8 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 17009 battles unrun (about 6.7 h); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
