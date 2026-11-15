@@ -1,0 +1,2 @@
+# BENCH-250 pc-gl-lines: the gl arm gives its gun-stack line (GUN_STACK, ShieldTableData.gunStacks) to each panel robot.
+fromHell.BlackBox 0.0.2

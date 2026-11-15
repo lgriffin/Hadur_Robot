@@ -1,0 +1,10 @@
+# pc-field-screen (BENCH-251): c is master, aa its A/A copy; each other arm is master with one lever's line on every robot of
+# plans/field-e-add.txt (fq flatteners on, x5 x.x5 power, hl heat jitter, dg simple-aim dodge, gl gun stack, mq mimic members).
+c | hadur117.Hadur 3.22 | bisect/hadur117.Hadur_3.22.jar
+aa | hadur117.Hadur 3.22aa | bisect/hadur117.Hadur_3.22aa.jar
+fq | hadur117.Hadur 3.22fq | bisect/hadur117.Hadur_3.22fq.jar
+x5 | hadur117.Hadur 3.22x5 | bisect/hadur117.Hadur_3.22x5.jar
+hl | hadur117.Hadur 3.22hl | bisect/hadur117.Hadur_3.22hl.jar
+dg | hadur117.Hadur 3.22dg | bisect/hadur117.Hadur_3.22dg.jar
+gl | hadur117.Hadur 3.22gl | bisect/hadur117.Hadur_3.22gl.jar
+mq | hadur117.Hadur 3.22mq | bisect/hadur117.Hadur_3.22mq.jar
