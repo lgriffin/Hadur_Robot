@@ -1,6 +1,6 @@
 # Queue pc-team-momentum: progress
 
-Updated 2026-11-15 16:17:57 PC time (16:17 UTC), runner pid 55920.
+Updated 2026-11-15 16:33:03 PC time (16:33 UTC), runner pid 55920.
 
 - `tmprep` done, exit 0 in 3 min
 - `tmpmo` done, exit 0 in 37 min
@@ -66,21 +66,20 @@ Stopping now would leave 24 battles unrun (about 4 min); every battle already fo
 
 ### tmmod
 
-**529 of 1104 battles** (48%), 0 failed. Running 1.4 h, 388 battles/h, about 1.5 h left (ends ~17:46 PC time). Last battle 0 min ago.
-Skipped turns a battle: 10.1 overall, first 100 16.1, last 100 6.9.
+**638 of 1104 battles** (58%), 0 failed. Running 1.6 h, 395 battles/h, about 1.2 h left (ends ~17:43 PC time). Last battle 0 min ago.
+Skipped turns a battle: 9.0 overall, first 100 16.1, last 100 3.8.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 529 |
+| `fails 60` | halt | ok | 0 failed of 638 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | ok | 6.2 a battle over the last 200 (first 200: 14.8) |
+| `skips 60 over 200` | halt | ok | 5.2 a battle over the last 200 (first 200: 14.8) |
 
-Stopping now would leave 575 battles unrun (about 1.5 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 466 battles unrun (about 1.2 h); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-11:49:09 progress tmbb: 887/1104 (80%) battles, 391/h, ETA 33 min, 0 failed, skips 3.0/battle (last 100)
 12:12:48 tmbb exit=0 in 9579 s
 12:12:48 start tmmo
 12:12:48 watching tmmo: 3 stop rule(s)
@@ -95,4 +94,5 @@ Stopping now would leave 575 battles unrun (about 1.5 h); every battle already f
 14:56:08 watching tmmod: 3 stop rule(s)
 15:20:34 progress tmmod: 132/1104 (12%) battles, 324/h, ETA 3.0 h, 0 failed, skips 17.0/battle (last 100)
 15:50:47 progress tmmod: 329/1104 (30%) battles, 361/h, ETA 2.1 h, 0 failed, skips 8.4/battle (last 100)
+16:20:58 progress tmmod: 546/1104 (49%) battles, 386/h, ETA 1.4 h, 0 failed, skips 6.1/battle (last 100)
 ```
