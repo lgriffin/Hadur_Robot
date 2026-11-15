@@ -52,16 +52,22 @@ final class Momentum {
             double maxTurn = Math.toRadians(10 - 0.75 * Math.abs(v));
             h += Math.max(-maxTurn, Math.min(maxTurn, turn));
             v = newVelocity(v, distance, cap);
-            x += Math.sin(h) * v;
-            y += Math.cos(h) * v;
-            if (x < HALF_BOT || x > width - HALF_BOT || y < HALF_BOT || y > height - HALF_BOT) {
-                x = Math.max(HALF_BOT, Math.min(width - HALF_BOT, x));
-                y = Math.max(HALF_BOT, Math.min(height - HALF_BOT, y));
-                v = 0;
-            }
+            double dx = Math.sin(h) * v, dy = Math.cos(h) * v;
+            // A wall stops the member where its step first meets the edge, along its heading.
+            double f = Math.min(Math.min(share(x, dx, width), share(y, dy, height)), 1);
+            x += dx * f;
+            y += dy * f;
+            if (f < 1) v = 0;
             out[t] = new double[] {x, y};
         }
         return out;
+    }
+
+    /** The share of a step {@code d} from {@code p} that stays within the field's edge on one axis of length {@code size}. */
+    private static double share(double p, double d, double size) {
+        if (d > 0 && p + d > size - HALF_BOT) return Math.max(0, (size - HALF_BOT - p) / d);
+        if (d < 0 && p + d < HALF_BOT) return Math.max(0, (HALF_BOT - p) / d);
+        return 1;
     }
 
     /** The engine's next velocity from {@code velocity} with {@code distance} left to drive (negative: backwards), under {@code cap}. */

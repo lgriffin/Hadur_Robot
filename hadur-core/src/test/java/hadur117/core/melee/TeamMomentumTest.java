@@ -58,6 +58,10 @@ class TeamMomentumTest {
     void wall() {
         double[][] p = Momentum.drive(30, 600, -Math.PI / 2, 8, -200, 600, 10, true, W, H);
         assertEquals(Momentum.HALF_BOT, p[9][0], 1e-9);
+        // Diagonally into a corner's wall: the member stops on its heading's line, not slid along the wall.
+        double[][] d = Momentum.drive(30, 600, -Math.PI / 4, 8, -300, 930, 3, true, W, H);
+        assertEquals(Momentum.HALF_BOT, d[2][0], 1e-9);
+        assertEquals(600 + (30 - d[2][0]), d[2][1], 1e-6);
     }
 
     @Test

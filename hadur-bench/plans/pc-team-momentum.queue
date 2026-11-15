@@ -36,16 +36,16 @@ set OUT = ../docs/bench/local
 set ALERT = lgriffin
 set T = python3 tools/team_modes.py
 
-tmprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && for a in aa bb mo mod; do rm -f bisect/hadur117.HadurTeam_"$V"$a.jar; done && rm -f ${OUT}/team-momentum-*.md && mkdir -p work && rm -rf work/team-momentum-"$V"-* && rm -f work/team-momentum-*.args work/team-momentum-go-* && ./fetch-opponents.sh --set team-census46.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmmomentum && bash ./build-ablation.sh tmmomentumd && for a in mo mod; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" plans/team-momentum-pilot.args > work/team-momentum-p$a.args || exit 1; done && for a in bb mo mod; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" plans/team-momentum-screen.args > work/team-momentum-$a.args || exit 1; done && for a in aa bb mo mod; do test -f bisect/hadur117.HadurTeam_"$V"$a.jar || exit 1; done && mvn -q compile
+tmprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && for a in aa bb mo mod; do rm -f bisect/hadur117.HadurTeam_"$V"$a.jar; done && rm -f ${OUT}/team-momentum-p*.md ${OUT}/team-momentum-bb.md ${OUT}/team-momentum-mo.md ${OUT}/team-momentum-mod.md ${OUT}/team-momentum-verdict-*.md && mkdir -p work && rm -rf work/team-momentum-"$V"-* && rm -f work/team-momentum-*.args work/team-momentum-go-* && ./fetch-opponents.sh --set team-census46.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmmomentum && bash ./build-ablation.sh tmmomentumd && for a in mo mod; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" plans/team-momentum-pilot.args > work/team-momentum-p$a.args || exit 1; done && for a in bb mo mod; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" plans/team-momentum-screen.args > work/team-momentum-$a.args || exit 1; done && for a in aa bb mo mod; do test -f bisect/hadur117.HadurTeam_"$V"$a.jar || exit 1; done && mvn -q compile
 tmpmo | mvn -q exec:java "-Dexec.args=@work/team-momentum-pmo.args"
   after: tmprep
-  watch: battles=138
+  watch: battles=276
   stop: fails 60
   stop: stall 30m
   stop: skips 60 over 200
 tmpmod | mvn -q exec:java "-Dexec.args=@work/team-momentum-pmod.args"
   after: tmpmo
-  watch: battles=138
+  watch: battles=276
   stop: fails 60
   stop: stall 30m
   stop: skips 60 over 200
@@ -53,23 +53,23 @@ tmpilot | for a in mo mod; do ${T} gate --report ${OUT}/team-momentum-p$a.md --s
   after: tmpmod
 tmbb | if [ -f work/team-momentum-go-mo ] || [ -f work/team-momentum-go-mod ]; then mvn -q exec:java "-Dexec.args=@work/team-momentum-bb.args"; else echo "both arms under 0 on the pilot: no screen"; fi
   after: tmpilot
-  watch:
+  watch: battles=1104
   stop: fails 60
   stop: stall 30m
   stop: skips 60 over 200
 tmmo | if [ -f work/team-momentum-go-mo ]; then mvn -q exec:java "-Dexec.args=@work/team-momentum-mo.args"; else echo "mo under 0 on the pilot: no screen"; fi
   after: tmbb
-  watch:
+  watch: battles=1104
   stop: fails 60
   stop: stall 30m
   stop: skips 60 over 200
 tmmod | if [ -f work/team-momentum-go-mod ]; then mvn -q exec:java "-Dexec.args=@work/team-momentum-mod.args"; else echo "mod under 0 on the pilot: no screen"; fi
   after: tmmo
-  watch:
+  watch: battles=1104
   stop: fails 60
   stop: stall 30m
   stop: skips 60 over 200
 tmgate | for a in mo mod; do if [ -f work/team-momentum-go-$a ]; then ${T} gate --report ${OUT}/team-momentum-$a.md --control ${OUT}/team-momentum-bb.md --set team-census46.txt --seeds 12 --teams 46 --min-aps 0.15 --out-md ${OUT}/team-momentum-verdict-$a.md || exit 1; else echo "$a: no screen"; fi; done
   after: tmmod
-tmpr | bash tools/open_results_pr.sh claude/pc-team-momentum-results "Team: momentum (TMODE-49)" $(ls ${OUT}/team-momentum-*.md 2>/dev/null)
+tmpr | bash tools/open_results_pr.sh claude/pc-team-momentum-results "Team: momentum (TMODE-49)" $(ls ${OUT}/team-momentum-*.md 2>/dev/null | grep -v smoke)
   after: tmgate

@@ -370,7 +370,6 @@ public class MinimumRiskMovement {
         this.surf = on;
     }
 
-    /** MMOVE-15: whether this movement surfs off a team. */
     /** TMODE-49: the member's body heading (radians) and velocity this tick, for MOMENTUM's simulated drive. */
     public void motion(double heading, double velocity) {
         this.heading = heading;
@@ -393,6 +392,7 @@ public class MinimumRiskMovement {
             : TeamRisk.pathDamage(v.me, to, v.now, bullets);
     }
 
+    /** MMOVE-15: whether this movement surfs off a team. */
     public boolean surfing() {
         return surf;
     }
