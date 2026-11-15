@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-momentum",
- "updated": 1794733201.529129,
+ "updated": 1794734107.4997473,
  "steps": {
   "tmprep": {
    "status": "done",
@@ -84,8 +84,8 @@
   {
    "step": "tmpmod",
    "started": 1794732878.434886,
-   "updated": 1794733201.5229726,
-   "elapsed": 323.088086605072,
+   "updated": 1794734107.4928055,
+   "elapsed": 1229.0579195022583,
    "expected": 276,
    "panel": null,
    "field": null,
@@ -93,20 +93,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 21,
+   "battles": 136,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 233.9919146954185,
-   "eta": 3923.212480204446,
-   "fraction": 0.07608695652173914,
-   "last_battle_age": 21.163832187652588,
+   "rate": 398.3538873402137,
+   "eta": 1265.20668184056,
+   "fraction": 0.4927536231884058,
+   "last_battle_age": 22.353725910186768,
    "rules": [
     {
      "rule": "fails 60",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 21"
+     "detail": "0 failed of 136"
     },
     {
      "rule": "stall 30m",
@@ -118,11 +118,11 @@
      "rule": "skips 60 over 200",
      "action": "halt",
      "state": "waiting",
-     "detail": "21 of 200 battles to read"
+     "detail": "136 of 200 battles to read"
     }
    ],
-   "skips_mean": 19.714285714285715,
-   "skips_last100": 19.714285714285715
+   "skips_mean": 10.955882352941176,
+   "skips_last100": 8.43
   }
  ]
 }
