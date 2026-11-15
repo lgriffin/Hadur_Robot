@@ -1,0 +1,22 @@
+{
+ "plan": "pc-gl-lines",
+ "updated": 1794765245.108866,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "livematch": {
+   "status": "pending"
+  },
+  "lock": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
