@@ -21,3 +21,9 @@
 04:37:48 mtpr exit=0 in 5 s
 04:37:48 ALLDONE
 08:14:43 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
+08:14:43 start tmprep
+08:14:46 progress pushed to origin claude/pc-team-momentum-progress (every 15 min)
+08:17:26 tmprep exit=0 in 162 s
+08:17:26 start tmpmo
+08:17:26 watching tmpmo: 3 stop rule(s)
+08:17:44 progress tmpmo: 0/276 (0%) battles, 0 failed
