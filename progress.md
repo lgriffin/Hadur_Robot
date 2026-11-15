@@ -1,6 +1,6 @@
 # Queue pc-shards: progress
 
-Updated 2026-11-15 23:01:49 PC time (23:01 UTC), runner pid 20660.
+Updated 2026-11-15 23:16:57 PC time (23:16 UTC), runner pid 20660.
 
 - `prep` done, exit 0 in 6 min
 - `livematch` done, exit 0 in 0 min
@@ -33,33 +33,33 @@ Stopping now would leave 0 battles unrun; every battle already fought is kept an
 
 ### screen
 
-**7082 of 25380 battles** (28%), 0 failed. Running 2.4 h, 2330 battles/h, about 7.9 h left (ends ~06:52 PC time). Last battle 0 min ago.
-Skipped turns a battle: 22.7 overall, first 100 22.7, last 100 34.6; engine disables 575.
+**7663 of 25380 battles** (30%), 0 failed. Running 2.7 h, 2264 battles/h, about 7.8 h left (ends ~07:06 PC time). Last battle -0 min ago.
+Skipped turns a battle: 23.5 overall, first 100 22.7, last 100 39.3; engine disables 757.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 789 | 0 | 91.60 | - | - | - | 23.4 |
-| aa | 787 | 0 | 91.52 | -0.03 (401 robots) | ±0.10 | -0.18 .. +0.12 | 21.7 |
-| fq | 786 | 0 | 91.51 | -0.05 (400 robots) | ±0.10 | -0.20 .. +0.11 | 21.7 |
-| x5 | 790 | 0 | 91.52 | -0.02 (401 robots) | ±0.10 | -0.16 .. +0.13 | 22.8 |
-| hl | 787 | 0 | 91.72 | +0.06 (401 robots) | ±0.10 | -0.08 .. +0.21 | 23.2 |
-| dg | 787 | 0 | 91.41 | -0.06 (401 robots) | ±0.10 | -0.21 .. +0.10 | 22.7 |
-| gl | 785 | 0 | 91.35 | -0.11 (400 robots) | ±0.10 | -0.26 .. +0.04 | 22.8 |
-| mq | 786 | 0 | 91.23 | -0.15 (400 robots) | ±0.10 | -0.31 .. -0.00 | 23.6 |
-| mtzl | 785 | 0 | 87.65 | -1.53 (399 robots) | ±0.20 | -1.83 .. -1.23 | 22.2 |
+| c | 851 | 0 | 91.54 | - | - | - | 24.1 |
+| aa | 851 | 0 | 91.53 | -0.00 (411 robots) | ±0.10 | -0.15 .. +0.14 | 22.6 |
+| fq | 853 | 0 | 91.36 | -0.05 (411 robots) | ±0.10 | -0.20 .. +0.09 | 22.7 |
+| x5 | 852 | 0 | 91.44 | -0.03 (411 robots) | ±0.09 | -0.17 .. +0.12 | 24.0 |
+| hl | 852 | 0 | 91.67 | +0.06 (411 robots) | ±0.09 | -0.08 .. +0.19 | 23.7 |
+| dg | 850 | 0 | 91.32 | -0.08 (411 robots) | ±0.10 | -0.24 .. +0.07 | 23.4 |
+| gl | 853 | 0 | 91.23 | -0.11 (411 robots) | ±0.10 | -0.26 .. +0.04 | 23.6 |
+| mq | 852 | 0 | 91.11 | -0.16 (411 robots) | ±0.10 | -0.31 .. -0.01 | 24.3 |
+| mtzl | 849 | 0 | 87.46 | -1.57 (411 robots) | ±0.19 | -1.86 .. -1.28 | 23.1 |
 
 APS = mean difference over the robots read x 470 panel robots / 1217 pairings.
-A/A: aa - c -0.07 pts over 401 robots; 1% band ±0.42 (inside).
+A/A: aa - c -0.01 pts over 411 robots; 1% band ±0.40 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 7082 |
+| `fails 30` | halt | ok | 0 failed of 7663 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 60 over 200` | halt | ok | 34.6 a battle over the last 200 (first 200: 20.5) |
-| `stall 30m` | halt | ok | last battle 0 min ago |
-| `aa after 20%` | halt | ok | aa - c -0.07 pts over 401 robots, stop band ±0.48 |
+| `skips 60 over 200` | halt | ok | 38.2 a battle over the last 200 (first 200: 20.5) |
+| `stall 30m` | halt | ok | last battle -0 min ago |
+| `aa after 20%` | halt | ok | aa - c -0.01 pts over 411 robots, stop band ±0.47 |
 
-Stopping now would leave 18298 battles unrun (about 7.9 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 17717 battles unrun (about 7.8 h); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -78,4 +78,5 @@ Stopping now would leave 18298 battles unrun (about 7.9 h); every battle already
 21:37:19 progress screen: 3222/25380 (13%) battles, 3210/h, ETA 6.9 h, 0 failed, skips 24.1/battle (last 100), aa -0.01, fq -0.08, x5 -0.00, hl +0.07, dg -0.16, gl -0.12, mq -0.14, mtzl -1.56
 22:07:28 progress screen: 4775/25380 (19%) battles, 3090/h, ETA 6.7 h, 0 failed, skips 19.9/battle (last 100), aa -0.06, fq -0.02, x5 -0.03, hl +0.03, dg -0.12, gl -0.07, mq -0.13, mtzl -1.57
 22:37:38 progress screen: 6167/25380 (24%) battles, 2762/h, ETA 7.0 h, 0 failed, skips 19.3/battle (last 100), aa -0.05, fq -0.02, x5 -0.03, hl +0.04, dg -0.08, gl -0.07, mq -0.18, mtzl -1.54
+23:07:56 progress screen: 7302/25380 (29%) battles, 2252/h, ETA 8.0 h, 0 failed, skips 24.9/battle (last 100), aa -0.02, fq -0.05, x5 -0.04, hl +0.06, dg -0.08, gl -0.11, mq -0.16, mtzl -1.58
 ```
