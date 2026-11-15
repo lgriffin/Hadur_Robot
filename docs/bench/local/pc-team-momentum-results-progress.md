@@ -1,56 +1,98 @@
 # Queue pc-team-momentum: progress
 
-Updated 2026-11-03 04:37:40 PC time (04:37 UTC), runner pid 43904.
+Updated 2026-11-15 17:39:32 PC time (17:39 UTC), runner pid 55920.
 
-- `mtprep` done, exit 0 in 2 min
-- `mtbb` done, exit 0 in 1.1 h
-- `mtmo` done, exit 0 in 1.1 h
-- `mtff` running
-- `mtsum` pending
-- `mtpr` pending
+- `tmprep` done, exit 0 in 3 min
+- `tmpmo` done, exit 0 in 37 min
+- `tmpmod` done, exit 0 in 38 min
+- `tmpilot` done, exit 0 in 0 min
+- `tmbb` done, exit 0 in 2.7 h
+- `tmmo` done, exit 0 in 2.7 h
+- `tmmod` running
+- `tmgate` pending
+- `tmpr` pending
 
-### mtbb
+### tmpmo
 
-**1080 of 1080 battles** (100%), 0 failed. Running 1.1 h, 963 battles/h, about 0 min left (ends ~03:30 PC time). Last battle 0 min ago.
-Skipped turns a battle: 17.1 overall, first 100 17.4, last 100 8.9.
+**270 of 276 battles** (98%), 0 failed. Running 37 min, 436 battles/h, about 1 min left (ends ~08:55 PC time). Last battle 0 min ago.
+Skipped turns a battle: 7.1 overall, first 100 11.9, last 100 4.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 60` | halt | ok | 0 failed of 270 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 60 over 200` | halt | ok | 4.9 a battle over the last 200 (first 200: 8.2) |
+
+Stopping now would leave 6 battles unrun (about 1 min); every battle already fought is kept and a rerun resumes from it.
+
+### tmpmod
+
+**270 of 276 battles** (98%), 0 failed. Running 39 min, 421 battles/h, about 1 min left (ends ~09:34 PC time). Last battle 0 min ago.
+Skipped turns a battle: 7.5 overall, first 100 12.7, last 100 4.2.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 60` | halt | ok | 0 failed of 270 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 60 over 200` | halt | ok | 5.0 a battle over the last 200 (first 200: 8.7) |
+
+Stopping now would leave 6 battles unrun (about 1 min); every battle already fought is kept and a rerun resumes from it.
+
+### tmbb
+
+**1080 of 1104 battles** (98%), 0 failed. Running 2.7 h, 406 battles/h, about 4 min left (ends ~12:16 PC time). Last battle 0 min ago.
+Skipped turns a battle: 6.8 overall, first 100 16.4, last 100 2.4.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
 | `fails 60` | halt | ok | 0 failed of 1080 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 8.9 a battle over the last 100 (first 100: 17.4) |
+| `skips 60 over 200` | halt | ok | 4.3 a battle over the last 200 (first 200: 14.8) |
 
-Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 24 battles unrun (about 4 min); every battle already fought is kept and a rerun resumes from it.
 
-### mtmo
+### tmmo
 
-**1080 of 1080 battles** (100%), 0 failed. Running 1.1 h, 968 battles/h, about 0 min left (ends ~04:37 PC time). Last battle 0 min ago.
-Skipped turns a battle: 17.4 overall, first 100 17.6, last 100 9.3.
+**1080 of 1104 battles** (98%), 0 failed. Running 2.7 h, 397 battles/h, about 4 min left (ends ~14:59 PC time). Last battle 0 min ago.
+Skipped turns a battle: 6.9 overall, first 100 16.3, last 100 2.4.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
 | `fails 60` | halt | ok | 0 failed of 1080 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 40 over 100` | halt | ok | 9.3 a battle over the last 100 (first 100: 17.6) |
+| `skips 60 over 200` | halt | ok | 4.2 a battle over the last 200 (first 200: 14.6) |
 
-Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 24 battles unrun (about 4 min); every battle already fought is kept and a rerun resumes from it.
+
+### tmmod
+
+**1071 of 1104 battles** (97%), 0 failed. Running 2.7 h, 393 battles/h, about 5 min left (ends ~17:44 PC time). Last battle 0 min ago.
+Skipped turns a battle: 7.0 overall, first 100 16.1, last 100 2.5.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 60` | halt | ok | 0 failed of 1071 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 60 over 200` | halt | ok | 4.8 a battle over the last 200 (first 200: 14.8) |
+
+Stopping now would leave 33 battles unrun (about 5 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-02:21:43 start mtprep
-02:21:46 progress pushed to origin claude/pc-team-momentum-progress (every 15 min)
-02:23:24 mtprep exit=0 in 100 s
-02:23:24 start mtbb
-02:23:24 watching mtbb: 3 stop rule(s)
-02:23:44 progress mtbb: 0/1080 (0%) battles, 0 failed
-02:53:57 progress mtbb: 399/1080 (37%) battles, 784/h, ETA 52 min, 0 failed, skips 21.6/battle (last 100)
-03:24:10 progress mtbb: 910/1080 (84%) battles, 899/h, ETA 11 min, 0 failed, skips 12.4/battle (last 100)
-03:30:43 mtbb exit=0 in 4038 s
-03:30:43 start mtmo
-03:30:43 watching mtmo: 3 stop rule(s)
-03:54:23 progress mtmo: 281/1080 (26%) battles, 712/h, ETA 1.1 h, 0 failed, skips 17.8/battle (last 100)
-04:24:35 progress mtmo: 747/1080 (69%) battles, 832/h, ETA 24 min, 0 failed, skips 14.2/battle (last 100)
-04:37:37 mtmo exit=0 in 4014 s
-04:37:37 start mtff
+12:12:48 watching tmmo: 3 stop rule(s)
+12:19:22 progress tmmo: 25/1104 (2%) battles, 229/h, ETA 4.7 h, 0 failed, skips 14.0/battle (last 100)
+12:49:34 progress tmmo: 191/1104 (17%) battles, 312/h, ETA 2.9 h, 0 failed, skips 14.0/battle (last 100)
+13:19:45 progress tmmo: 409/1104 (37%) battles, 367/h, ETA 1.9 h, 0 failed, skips 6.8/battle (last 100)
+13:49:58 progress tmmo: 638/1104 (58%) battles, 394/h, ETA 1.2 h, 0 failed, skips 3.6/battle (last 100)
+14:20:10 progress tmmo: 790/1104 (72%) battles, 372/h, ETA 51 min, 0 failed, skips 3.8/battle (last 100)
+14:50:23 progress tmmo: 1024/1104 (93%) battles, 390/h, ETA 12 min, 0 failed, skips 4.8/battle (last 100)
+14:56:08 tmmo exit=0 in 9799 s
+14:56:08 start tmmod
+14:56:08 watching tmmod: 3 stop rule(s)
+15:20:34 progress tmmod: 132/1104 (12%) battles, 324/h, ETA 3.0 h, 0 failed, skips 17.0/battle (last 100)
+15:50:47 progress tmmod: 329/1104 (30%) battles, 361/h, ETA 2.1 h, 0 failed, skips 8.4/battle (last 100)
+16:20:58 progress tmmod: 546/1104 (49%) battles, 386/h, ETA 1.4 h, 0 failed, skips 6.1/battle (last 100)
+16:51:11 progress tmmod: 705/1104 (64%) battles, 368/h, ETA 1.1 h, 0 failed, skips 3.4/battle (last 100)
+17:21:24 progress tmmod: 922/1104 (84%) battles, 381/h, ETA 29 min, 0 failed, skips 4.5/battle (last 100)
 ```
