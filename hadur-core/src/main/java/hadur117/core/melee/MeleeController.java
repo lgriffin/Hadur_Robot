@@ -88,6 +88,8 @@ public class MeleeController {
         public boolean learnedAim;
         /** TMODE-45: a chaser is inside close quarters: the drive keeps full speed through a turn. */
         public boolean quarters;
+        /** TMODE-49: MOMENTUM plays: the drive keeps full speed through a turn. */
+        public boolean fullSpeed;
     }
 
     public final EnemyTracker tracker;
@@ -520,9 +522,12 @@ public class MeleeController {
             mover.damageWeights(MinimumRiskMovement.damageWeights(alive,
                 n -> book.get(n).damageReceivedFrom(), n -> book.get(n).averageDistance()));
         }
+        mover.motion(s.heading, s.velocity);
         c.destination = alive.isEmpty() ? null
             : mover.chooseDestination(s.me, s.energy, s.others, alive, s.time, plan, s.teammates, modes);
         c.quarters = c.destination != null && mover.quartered();
+        c.fullSpeed = c.destination != null && onTeam && modes.contains(TeamModes.Mode.MOMENTUM)
+            && TeamModes.MOMENTUM_SPEED;
         gun.onTeam(!s.teammates.isEmpty());
         gun.concord(TeamConcord.GUN && modes.contains(TeamModes.Mode.CONCORD));
         waves.tick(s.me, s.time, s.gunHeat, alive, gun, s.energy, s.others);

@@ -1,0 +1,4 @@
+# BENCH-248 pc-ram11: the rcl arm gives its RAM-11 line (ram-circ) to each panel robot.
+step.nanoPri 1.0
+suh.nano.RammingC 1.00
+suzushin7.nano.Galaxy03 1.01

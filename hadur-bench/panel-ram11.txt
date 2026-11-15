@@ -1,0 +1,5 @@
+# BENCH-248 pc-ram11: field rammers whose RAM-11 line (the rammer escape also dodges a circular aim) locked on the cloud,
+# 12 fresh seeds at the live turn time, 95% low end above 0. Census rows. name | rank | jar
+step.nanoPri 1.0 | rank676-band5 | step.nanoPri_1.0.jar
+suh.nano.RammingC 1.00 | rank637-band5 | suh.nano.RammingC_1.00.jar
+suzushin7.nano.Galaxy03 1.01 | rank615-band5 | suzushin7.nano.Galaxy03_1.01.jar
