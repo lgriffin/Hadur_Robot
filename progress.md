@@ -1,14 +1,14 @@
 # Queue pc-team-momentum: progress
 
-Updated 2026-11-15 14:47:21 PC time (14:47 UTC), runner pid 55920.
+Updated 2026-11-15 15:02:27 PC time (15:02 UTC), runner pid 55920.
 
 - `tmprep` done, exit 0 in 3 min
 - `tmpmo` done, exit 0 in 37 min
 - `tmpmod` done, exit 0 in 38 min
 - `tmpilot` done, exit 0 in 0 min
 - `tmbb` done, exit 0 in 2.7 h
-- `tmmo` running
-- `tmmod` pending
+- `tmmo` done, exit 0 in 2.7 h
+- `tmmod` running
 - `tmgate` pending
 - `tmpr` pending
 
@@ -53,24 +53,33 @@ Stopping now would leave 24 battles unrun (about 4 min); every battle already fo
 
 ### tmmo
 
-**1001 of 1104 battles** (91%), 0 failed. Running 2.6 h, 389 battles/h, about 16 min left (ends ~15:03 PC time). Last battle 0 min ago.
-Skipped turns a battle: 7.2 overall, first 100 16.3, last 100 5.9.
+**1080 of 1104 battles** (98%), 0 failed. Running 2.7 h, 397 battles/h, about 4 min left (ends ~14:59 PC time). Last battle 0 min ago.
+Skipped turns a battle: 6.9 overall, first 100 16.3, last 100 2.4.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 1001 |
+| `fails 60` | halt | ok | 0 failed of 1080 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | ok | 4.5 a battle over the last 200 (first 200: 14.6) |
+| `skips 60 over 200` | halt | ok | 4.2 a battle over the last 200 (first 200: 14.6) |
 
-Stopping now would leave 103 battles unrun (about 16 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 24 battles unrun (about 4 min); every battle already fought is kept and a rerun resumes from it.
+
+### tmmod
+
+**24 of 1104 battles** (2%), 0 failed. Running 6 min, 228 battles/h, about 4.7 h left (ends ~19:47 PC time). Last battle 1 min ago.
+Skipped turns a battle: 13.1 overall, first 24 13.1, last 24 13.1.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 60` | halt | ok | 0 failed of 24 |
+| `stall 30m` | halt | ok | last battle 1 min ago |
+| `skips 60 over 200` | halt | waiting | 24 of 200 battles to read |
+
+Stopping now would leave 1080 battles unrun (about 4.7 h); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-09:33:09 start tmbb
-09:33:09 watching tmbb: 3 stop rule(s)
-09:48:20 progress tmbb: 66/1104 (6%) battles, 261/h, ETA 4.0 h, 0 failed, skips 13.9/battle (last 100)
-10:18:32 progress tmbb: 269/1104 (24%) battles, 356/h, ETA 2.3 h, 0 failed, skips 8.2/battle (last 100)
 10:48:44 progress tmbb: 496/1104 (45%) battles, 394/h, ETA 1.5 h, 0 failed, skips 7.2/battle (last 100)
 11:18:57 progress tmbb: 691/1104 (63%) battles, 392/h, ETA 1.1 h, 0 failed, skips 3.6/battle (last 100)
 11:49:09 progress tmbb: 887/1104 (80%) battles, 391/h, ETA 33 min, 0 failed, skips 3.0/battle (last 100)
@@ -82,4 +91,8 @@ Stopping now would leave 103 battles unrun (about 16 min); every battle already 
 13:19:45 progress tmmo: 409/1104 (37%) battles, 367/h, ETA 1.9 h, 0 failed, skips 6.8/battle (last 100)
 13:49:58 progress tmmo: 638/1104 (58%) battles, 394/h, ETA 1.2 h, 0 failed, skips 3.6/battle (last 100)
 14:20:10 progress tmmo: 790/1104 (72%) battles, 372/h, ETA 51 min, 0 failed, skips 3.8/battle (last 100)
+14:50:23 progress tmmo: 1024/1104 (93%) battles, 390/h, ETA 12 min, 0 failed, skips 4.8/battle (last 100)
+14:56:08 tmmo exit=0 in 9799 s
+14:56:08 start tmmod
+14:56:08 watching tmmod: 3 stop rule(s)
 ```

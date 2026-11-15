@@ -50,3 +50,7 @@
 13:19:45 progress tmmo: 409/1104 (37%) battles, 367/h, ETA 1.9 h, 0 failed, skips 6.8/battle (last 100)
 13:49:58 progress tmmo: 638/1104 (58%) battles, 394/h, ETA 1.2 h, 0 failed, skips 3.6/battle (last 100)
 14:20:10 progress tmmo: 790/1104 (72%) battles, 372/h, ETA 51 min, 0 failed, skips 3.8/battle (last 100)
+14:50:23 progress tmmo: 1024/1104 (93%) battles, 390/h, ETA 12 min, 0 failed, skips 4.8/battle (last 100)
+14:56:08 tmmo exit=0 in 9799 s
+14:56:08 start tmmod
+14:56:08 watching tmmod: 3 stop rule(s)
