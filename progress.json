@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-momentum",
- "updated": 1794764009.4514625,
+ "updated": 1794764421.83445,
  "steps": {
   "tmprep": {
    "status": "done",
@@ -39,14 +39,22 @@
    "end": "2026-11-15T14:56:08"
   },
   "tmmod": {
-   "status": "running",
-   "start": "2026-11-15T14:56:08"
+   "status": "done",
+   "exit": 0,
+   "seconds": 9846,
+   "end": "2026-11-15T17:40:14"
   },
   "tmgate": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-11-15T17:40:14"
   },
   "tmpr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 6,
+   "end": "2026-11-15T17:40:21"
   }
  },
  "watched": [
@@ -225,8 +233,8 @@
   {
    "step": "tmmod",
    "started": 1794754568.3667462,
-   "updated": 1794764009.354708,
-   "elapsed": 9440.987961769104,
+   "updated": 1794764414.468747,
+   "elapsed": 9846.102000713348,
    "expected": 1104,
    "panel": null,
    "field": null,
@@ -234,20 +242,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 1015,
+   "battles": 1080,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 387.0357651971091,
-   "eta": 827.8304715245815,
-   "fraction": 0.9193840579710145,
-   "last_battle_age": 7.1228015422821045,
+   "rate": 394.8770792460118,
+   "eta": 218.80226668251882,
+   "fraction": 0.9782608695652174,
+   "last_battle_age": 1.7546679973602295,
    "rules": [
     {
      "rule": "fails 60",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 1015"
+     "detail": "0 failed of 1080"
     },
     {
      "rule": "stall 30m",
@@ -259,11 +267,11 @@
      "rule": "skips 60 over 200",
      "action": "halt",
      "state": "ok",
-     "detail": "5.0 a battle over the last 200 (first 200: 14.8)"
+     "detail": "4.7 a battle over the last 200 (first 200: 14.8)"
     }
    ],
-   "skips_mean": 7.2738916256157635,
-   "skips_last100": 6.39
+   "skips_mean": 6.975,
+   "skips_last100": 2.28
   }
  ]
 }

@@ -59,3 +59,9 @@
 16:20:58 progress tmmod: 546/1104 (49%) battles, 386/h, ETA 1.4 h, 0 failed, skips 6.1/battle (last 100)
 16:51:11 progress tmmod: 705/1104 (64%) battles, 368/h, ETA 1.1 h, 0 failed, skips 3.4/battle (last 100)
 17:21:24 progress tmmod: 922/1104 (84%) battles, 381/h, ETA 29 min, 0 failed, skips 4.5/battle (last 100)
+17:40:14 tmmod exit=0 in 9846 s
+17:40:14 start tmgate
+17:40:14 tmgate exit=0 in 0 s
+17:40:14 start tmpr
+17:40:21 tmpr exit=0 in 6 s
+17:40:21 ALLDONE
