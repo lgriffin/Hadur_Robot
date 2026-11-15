@@ -52,11 +52,11 @@ final class Momentum {
             double maxTurn = Math.toRadians(10 - 0.75 * Math.abs(v));
             h += Math.max(-maxTurn, Math.min(maxTurn, turn));
             v = newVelocity(v, distance, cap);
-            double dx = Math.sin(h) * v, dy = Math.cos(h) * v;
+            double sx = Math.sin(h) * v, sy = Math.cos(h) * v;
             // A wall stops the member where its step first meets the edge, along its heading.
-            double f = Math.min(Math.min(share(x, dx, width), share(y, dy, height)), 1);
-            x += dx * f;
-            y += dy * f;
+            double f = Math.min(Math.min(share(x, sx, width), share(y, sy, height)), 1);
+            x += sx * f;
+            y += sy * f;
             if (f < 1) v = 0;
             out[t] = new double[] {x, y};
         }
