@@ -1,0 +1,8 @@
+# BENCH-253 pc-locks: robots whose per-robot line locked on the cloud (12+ fresh seeds, 95% low end above 0, live turn
+# time) and is on no PC card yet (coverage/shards/locks.tsv, 15 Nov). Census rows. name | rank | jar
+rz.GlowBlow 2.31 | rank248-band4 | rz.GlowBlow_2.31.jar
+Grystrion.TrackerWO 1.0 | rank1037-band6 | Grystrion.TrackerWO_1.0.jar
+cx.micro.Blur 0.2 | rank405-band5 | cx.micro.Blur_0.2.jar
+com.spp.robocode.MostlyHarmless 010 | rank773-band6 | com.spp.robocode.MostlyHarmless_010.jar
+tm.Yuugao 1.0 | rank325-band4 | tm.Yuugao_1.0.jar
+davidalves.net.DuelistMicro 1.22 | rank273-band4 | davidalves.net.DuelistMicro_1.22.jar

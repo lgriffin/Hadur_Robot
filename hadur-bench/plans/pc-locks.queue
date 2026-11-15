@@ -1,0 +1,55 @@
+# 1v1, cloud locks to the PC (BENCH-253): every per-robot line that locked on the cloud (12+ fresh seeds, 95% low end
+# above 0, live turn time; coverage/shards/locks.tsv) and is on no PC card yet, locked on 12 fresh PC seeds in one card:
+#   GlowBlow mtzl +11.5 (low +7.9), MostlyHarmless mtzl +3.1 (+2.6), Yuugao mtzl +3.4 (+1.1), DuelistMicro mtzl +2.6
+#   (+0.5), TrackerWO hl +2.0 (+0.7), Blur gl +1.9 (+0.1, 24 seeds, marginal).
+# Seraphim's mtzl lock (+32) stays off: it was read against 2.3.1 while live runs 2.4.0, whose jar the archive lacks.
+#   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live
+#   lock       the 6 robots   c / aa / mtzl / gl / hl (each lever arm built with only its own robots)   12 fresh seeds
+#              from 43000, --cpu-constant live
+#   gate       each robot judged on its own arm only (lock_prep.py --restrict); it keeps its line where the 95% low end
+#              is above 0 (mode_table.py --margin 0)
+# Leigh starts it once the PC is free, after pc-shards (one card at a time, from master):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-locks        (or  ./queue.sh run pc-locks)
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 360 lock battles, about 10 minutes.
+#
+# Why it should win (the PC card rule of 2026-11-03):
+#   - Per-opponent tailoring: every line names one robot; every other robot, team and melee play bit for bit as master.
+#   - Diagnosis first: each robot's shard box read why we lose from truth logs (coverage/shards/diag-X.md); GlowBlow,
+#     MostlyHarmless, Yuugao and DuelistMicro diagnose SHIELD (a shieldable gun), so they take the shield-list line;
+#     TrackerWO and Blur take the lever their screen and 12-seed cloud lock led with.
+#   - Every robot passed the cloud lock bar first; on 15 Nov the PC held 5 of 5 such cloud locks (#827-#829).
+# Stop rules (docs/bench/watch.md): the panel is under 10 robots, so the watcher's A/A stop cannot read; aa is read in the
+# gate (multiarm.py prints aa against c). The card halts on 30 failed battles, an arm scoring nothing in 8, 60+ skipped
+# turns a battle over the last 24, or no battle in 30 minutes. The live-match step stops the card if the PC no longer
+# scores us and BeepBoop as live does (tools/live_match.py exit 3). ALERT opens an issue for Leigh on any stop.
+# Bank: the owning cloud thread adds the gate's lines on this card's results PR. Nothing is released by the card.
+set V = 3.22
+set P = --parallel 16 --no-truth-log --failed-ok
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 2G
+set W = work/pc-locks
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && python3 tools/lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh && for a in mtzl gl hl; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; done && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set panel-locks.txt && mvn -q compile
+
+livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out work/pc-livematch-rel-live --label pc-locks-livematch --shuffle-jobs && python3 tools/live_match.py work/pc-livematch-rel-live/arms.tsv --out ${OUT}/pc-locks-livematch.md
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: stall 30m
+
+lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 43000 --arms ${W}-prep/lock.arms --out ${W} --label pc-locks --shuffle-jobs
+  after: livematch
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 24
+  stop: stall 30m
+
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms mtzl gl hl --out ${OUT}/$(date +%Y-%m-%d)_pc-locks-lock-per-robot.md --out-tsv ${OUT}/pc-locks-lock-per-robot.tsv
+  after: lock
+
+pr | bash tools/open_results_pr.sh claude/pc-locks-results "1v1 cloud locks (GlowBlow, MostlyHarmless, Yuugao, DuelistMicro, TrackerWO, Blur) locked on 12 fresh PC seeds" ${OUT}/pc-locks-livematch.md ${OUT}/*_pc-locks-*.md ${OUT}/pc-locks-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks-lock-pick.tsv' -size +0c)
+  after: gate
