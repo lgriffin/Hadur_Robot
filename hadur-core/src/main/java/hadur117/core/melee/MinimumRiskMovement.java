@@ -192,7 +192,7 @@ public class MinimumRiskMovement {
         EnemyInfo chaser;
         /** TMODE-49: whether each candidate's drive is simulated from the member's heading and velocity; only on a team under MOMENTUM. */
         boolean momentum;
-        /** TMODE-49: whether the drive keeps full speed through a sharp turn (MOMENTUM's speed, or QUARTERS with a chaser). */
+        /** TMODE-49: whether the drive keeps full speed through a sharp turn (QUARTERS with a chaser, TMODE-45). */
         boolean fullSpeed;
         /** TMODE-49: the member's body heading and velocity this tick. */
         double heading, velocity;
@@ -618,11 +618,11 @@ public class MinimumRiskMovement {
         // TMODE-45: a chaser no longer caps the ring, so the far rings are there to flee to.
         v.chaser = !mates.isEmpty() && modes.contains(TeamModes.Mode.QUARTERS) ? chaser(me, enemies, now) : null;
         quartered = v.chaser != null;
-        if (!mates.isEmpty() && modes.contains(TeamModes.Mode.MOMENTUM) && TeamModes.MOMENTUM_DRIVE) {
+        if (!mates.isEmpty() && modes.contains(TeamModes.Mode.MOMENTUM)) {
             v.momentum = true;
             v.heading = heading;
             v.velocity = velocity;
-            v.fullSpeed = quartered || TeamModes.MOMENTUM_SPEED;
+            v.fullSpeed = quartered;
         }
         List<Point2D.Double> candidates = candidates(me, others, quartered ? without(enemies, v.chaser) : enemies, now, mates);
         lastCandidates = candidates.size();

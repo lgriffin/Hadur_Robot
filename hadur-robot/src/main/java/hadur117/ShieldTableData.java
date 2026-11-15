@@ -809,6 +809,8 @@ final class ShieldTableData {
             // BENCH-207 pc-tailor-near (PR #704): leaned on pc-tailor-field's screen, picked on 4 new seeds, kept on 4 fresh ones (screen / confirm points).
             "pl.Patton.GeneralPatton 1.54",                // +7.1 / +8.1
             "cre.Karolos 0.32",                            // +5.2 / +4.0
+            // pc-field-screen (BENCH-251, PR #832): picked on 6 PC seeds, +3.7 on 12 fresh PC seeds at the live turn time (low end +0.2)
+            "justin.DemonicRage 3.20",
         };
     }
 
