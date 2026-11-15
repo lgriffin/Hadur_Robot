@@ -318,4 +318,14 @@ class ShieldListResourceTest {
         for (String n : ShieldTableData.racePowers()) assertTrue(list.racePower(n), n);
         assertTrue(!list.racePower("abc.Shadow 3.83c"), "a pilot robot that did not hold the 3-point margin");
     }
+
+    @Test
+    @Tag("RAM-11")
+    @DisplayName("RAM-11: ram-circ lines parse per opponent; the shipped table names none until a PC card locks them")
+    void ramCircLines() {
+        assertEquals(0, ShieldTableData.ramCircs().length, "no ram-circ line ships before its PC card");
+        ShieldList list = ShieldList.parse(Arrays.asList(ShieldList.RAM_CIRC_PREFIX + " suh.nano.RammingC 1.00"));
+        assertTrue(list.ramCirc("suh.nano.RammingC 1.00"));
+        assertTrue(!list.ramCirc("step.nanoPri 1.0"));
+    }
 }

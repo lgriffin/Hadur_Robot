@@ -62,10 +62,12 @@ public final class RamEscape {
     private boolean dodge;
     /**
      * RAM-11: a third aim per shot, circular: the rammers that lead us (RammingC, MaxRisk and their kind) extrapolate
-     * our turn rate, and the escape's smooth wall-smoothed arcs are exactly what that aim predicts. Off in the shipped
-     * build; the cloud probe turns it on.
+     * our turn rate, and the escape's smooth wall-smoothed arcs are exactly what that aim predicts. On per opponent
+     * ({@code ram-circ:} lines, {@link #setCircular}); this forces it on every rammer, for the bench's screen only.
      */
-    static final boolean CIRCULAR_AIM = false;
+    static final boolean FORCE_CIRCULAR = false;
+    /** RAM-11: whether this opponent's shots are also dodged as circular aims. */
+    private boolean circular;
     /** RAM-11: our heading at the last move, for the turn rate a circular aim extrapolates; NaN before the first. */
     private double prevHeading = Double.NaN;
     /** RAM-11: our turn rate at the last move, radians a tick. */
@@ -139,8 +141,8 @@ public final class RamEscape {
             ty = DiaUtils.limit(18.0, me.location.y + Math.cos(me.heading) * me.velocity * k, battleField.height - 18.0);
             if (Point2D.distance(enemyX, enemyY, tx, ty) <= speed * k) break;
         }
-        double circular = Double.NaN;
-        if (CIRCULAR_AIM) {
+        double circAim = Double.NaN;
+        if (FORCE_CIRCULAR || circular) {
             double cx = me.location.x;
             double cy = me.location.y;
             double ch = me.velocity < 0 ? me.heading + Math.PI : me.heading;
@@ -151,10 +153,25 @@ public final class RamEscape {
                 cy = DiaUtils.limit(18.0, cy + Math.cos(ch) * cv, battleField.height - 18.0);
                 if (Point2D.distance(enemyX, enemyY, cx, cy) <= speed * k) break;
             }
-            circular = Math.atan2(cx - enemyX, cy - enemyY);
+            circAim = Math.atan2(cx - enemyX, cy - enemyY);
         }
         if (shots.size() >= MAX_SHOTS) shots.removeFirst();
-        shots.addLast(new double[] {fireTime, enemyX, enemyY, speed, headOn, Math.atan2(tx - enemyX, ty - enemyY), circular});
+        shots.addLast(new double[] {fireTime, enemyX, enemyY, speed, headOn, Math.atan2(tx - enemyX, ty - enemyY), circAim});
+    }
+
+    /**
+     * RAM-11: dodge this opponent's shots as circular aims too (its {@code ram-circ:} line).
+     *
+     * @param on true for an opponent the table names
+     */
+    public void setCircular(boolean on) {
+        circular = on;
+    }
+
+    /** RAM-11: the newest shot's circular aim minus its linear aim, NaN when it carries none; for tests. */
+    double lastCircularLead() {
+        double[] s = shots.peekLast();
+        return s == null ? Double.NaN : Angles.normalRelativeAngle(s[6] - s[5]);
     }
 
     /** RAM-5: the shots in flight, for tests. */

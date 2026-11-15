@@ -365,6 +365,7 @@ public final class DuelController {
         if (fullOff) on.add("fulloff");
         if (x5Power) on.add("x5");
         if (racePower) on.add("race");
+        if (ramCirc) on.add("ramcirc");
         if (!Double.isNaN(powerCap)) on.add("cap");
         if (shield != null && shield.active()) on.add("shield");
         return on.isEmpty() ? "-" : String.join(",", on);
@@ -914,6 +915,8 @@ public final class DuelController {
     private boolean x5Power;
     /** POW-17: the table names this opponent for the energy-race power pick. */
     private boolean racePower;
+    /** RAM-11: whether this opponent has a {@code ram-circ:} line. */
+    private boolean ramCirc;
     /** POW-18: the cap the table sets on our power against this opponent, NaN for none. */
     private double powerCap = Double.NaN;
     /**
@@ -1391,6 +1394,9 @@ public final class DuelController {
         x5Power = duelOnly(stackList.x5Power(name), enemiesTotal);
         // POW-17: the energy-race power pick for the opponents the table names.
         racePower = duelOnly(stackList.racePower(name), enemiesTotal);
+        // RAM-11: the rammer escape also dodges circular aims from the opponents the table names.
+        ramCirc = duelOnly(stackList.ramCirc(name), enemiesTotal);
+        ramEscape.setCircular(ramCirc);
         // POW-18: the power cap for the opponents the table names.
         powerCap = duelOnly(stackList.powerCap(name), enemiesTotal) ? CAP_POWER
             : duelOnly(stackList.powerCapHalf(name), enemiesTotal) ? CAP_POWER_HALF : Double.NaN;

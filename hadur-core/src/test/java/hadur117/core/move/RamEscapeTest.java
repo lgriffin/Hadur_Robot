@@ -147,4 +147,23 @@ class RamEscapeTest {
         on.initRound();
         assertEquals(0, on.shotsInFlight(), "a new round carries no shot");
     }
+
+    @Test
+    @Tag("RAM-11")
+    @DisplayName("RAM-11: a named opponent's shot also carries a circular aim, led along our turn; an unnamed one does not")
+    void keepsTheCircularAim() {
+        RobotState rammer = state(300, 300, Math.PI / 2, 8, 100);
+        RamEscape off = new RamEscape(FIELD, PREDICTOR);
+        RamEscape on = new RamEscape(FIELD, PREDICTOR);
+        on.setCircular(true);
+        // Two ticks of a left turn of 0.1 rad a tick at full speed: the turn a circular aim extrapolates.
+        for (RamEscape e : new RamEscape[] {off, on}) {
+            e.move(BotOrders.builder(), state(500, 300, 1.0, 8, 98), rammer, true);
+            e.move(BotOrders.builder(), state(500, 300, 0.9, 8, 99), rammer, true);
+            e.onEnemyShot(99, 300, 300, 3.0, state(500, 300, 0.9, 8, 99));
+        }
+        assertTrue(Double.isNaN(off.lastCircularLead()), "no circular aim without a ram-circ line");
+        double lead = on.lastCircularLead();
+        assertTrue(!Double.isNaN(lead) && Math.abs(lead) > 0.02, "circular aim leads off the linear one: " + lead);
+    }
 }

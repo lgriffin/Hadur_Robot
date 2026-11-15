@@ -274,6 +274,7 @@ public class Hadur extends TeamRobot {
             for (String name : ShieldTableData.x5Powers()) lines.add(ShieldList.X5_POWER_PREFIX + " " + name);
             // POW-17: per-opponent energy-race power.
             for (String name : ShieldTableData.racePowers()) lines.add(ShieldList.RACE_POWER_PREFIX + " " + name);
+            for (String name : ShieldTableData.ramCircs()) lines.add(ShieldList.RAM_CIRC_PREFIX + " " + name);
             // SKEY-2: per-opponent surf keys.
             for (String key : ShieldTableData.surfKeys()) lines.add(ShieldList.SURF_KEY_PREFIX + " " + key);
             return ShieldList.parse(lines);
