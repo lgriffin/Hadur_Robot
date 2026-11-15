@@ -146,6 +146,11 @@ opponent at once, with an energy table and exact kill shots (MGUN-1..5); and a m
 profile per opponent. When one opponent is left, its 1v1 profile and its shots in flight
 go to the duel (MMEM-1, MMEM-2).
 
+Ideas credited: several team modes are our own code on ideas read in OgiTeam
+(cz.libors): the dodge re-rank through shot profiles (TMODE-27), the team brain (TMODE-33),
+and momentum (TMODE-49, testing, off by default), which drives each escape spot from the
+member's real heading and speed as OgiTeam's wave check does. No OgiTeam code is copied.
+
 
 ## Architecture
 
