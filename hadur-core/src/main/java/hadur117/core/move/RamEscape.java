@@ -60,6 +60,16 @@ public final class RamEscape {
     private final java.util.ArrayDeque<double[]> shots = new java.util.ArrayDeque<>();
     /** RAM-5: whether the escape scores paths against the shots in flight. */
     private boolean dodge;
+    /**
+     * RAM-11: a third aim per shot, circular: the rammers that lead us (RammingC, MaxRisk and their kind) extrapolate
+     * our turn rate, and the escape's smooth wall-smoothed arcs are exactly what that aim predicts. Off in the shipped
+     * build; the cloud probe turns it on.
+     */
+    static final boolean CIRCULAR_AIM = false;
+    /** RAM-11: our heading at the last move, for the turn rate a circular aim extrapolates; NaN before the first. */
+    private double prevHeading = Double.NaN;
+    /** RAM-11: our turn rate at the last move, radians a tick. */
+    private double turnRate;
 
     /**
      * @param battleField the field, for wall smoothing
@@ -100,6 +110,8 @@ public final class RamEscape {
      */
     public void move(BotOrders.Builder orders, RobotState me, RobotState enemy, boolean dodge) {
         this.dodge = dodge;
+        if (!Double.isNaN(prevHeading)) turnRate = Angles.normalRelativeAngle(me.heading - prevHeading);
+        prevHeading = me.heading;
         // A shot that has flown past the field's diagonal can hit nothing more.
         while (!shots.isEmpty() && (me.time - shots.peekFirst()[0]) * shots.peekFirst()[3] > 1000) shots.removeFirst();
         double heading = choose(me, enemy);
@@ -127,8 +139,22 @@ public final class RamEscape {
             ty = DiaUtils.limit(18.0, me.location.y + Math.cos(me.heading) * me.velocity * k, battleField.height - 18.0);
             if (Point2D.distance(enemyX, enemyY, tx, ty) <= speed * k) break;
         }
+        double circular = Double.NaN;
+        if (CIRCULAR_AIM) {
+            double cx = me.location.x;
+            double cy = me.location.y;
+            double ch = me.velocity < 0 ? me.heading + Math.PI : me.heading;
+            double cv = Math.abs(me.velocity);
+            for (int k = 1; k < 100; k++) {
+                ch += turnRate;
+                cx = DiaUtils.limit(18.0, cx + Math.sin(ch) * cv, battleField.width - 18.0);
+                cy = DiaUtils.limit(18.0, cy + Math.cos(ch) * cv, battleField.height - 18.0);
+                if (Point2D.distance(enemyX, enemyY, cx, cy) <= speed * k) break;
+            }
+            circular = Math.atan2(cx - enemyX, cy - enemyY);
+        }
         if (shots.size() >= MAX_SHOTS) shots.removeFirst();
-        shots.addLast(new double[] {fireTime, enemyX, enemyY, speed, headOn, Math.atan2(tx - enemyX, ty - enemyY)});
+        shots.addLast(new double[] {fireTime, enemyX, enemyY, speed, headOn, Math.atan2(tx - enemyX, ty - enemyY), circular});
     }
 
     /** RAM-5: the shots in flight, for tests. */
@@ -226,7 +252,7 @@ public final class RamEscape {
 
     /**
      * RAM-5: which of the shots in flight would hit us at {@code (x, y)} on {@code time}, two bits
-     * a shot (head-on, linear).
+     * a shot (head-on, linear and, with RAM-11, circular).
      */
     private int hits(double x, double y, long time) {
         int bits = 0;
@@ -234,10 +260,11 @@ public final class RamEscape {
         for (double[] s : shots) {
             double flown = (time - s[0]) * s[3];
             if (flown > 0) {
-                for (int a = 0; a < 2; a++) {
+                for (int a = 0; a < 3; a++) {
+                    if (Double.isNaN(s[4 + a])) continue;
                     double bx = s[1] + Math.sin(s[4 + a]) * flown;
                     double by = s[2] + Math.cos(s[4 + a]) * flown;
-                    if (Math.abs(bx - x) < HIT_BOX && Math.abs(by - y) < HIT_BOX) bits |= 1 << (2 * i + a);
+                    if (Math.abs(bx - x) < HIT_BOX && Math.abs(by - y) < HIT_BOX) bits |= 1 << (3 * i + a);
                 }
             }
             i++;
