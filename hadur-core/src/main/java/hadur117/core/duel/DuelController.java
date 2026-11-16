@@ -664,7 +664,7 @@ public final class DuelController {
         // POW-18: against an opponent the table names, every shot is capped, after every rule above.
         if (!Double.isNaN(powerCap) && enemiesTotal <= 1) bulletPower = Math.min(bulletPower, powerCap);
         // POW-19: the low-energy end game's cap, for an opponent the table names, after every rule above.
-        if (endGame && enemiesTotal <= 1) bulletPower = PowerPolicy.endGamePower(bulletPower, in.energy());
+        if (endGame && enemiesTotal <= 1 && in.energy() >= e.energy()) bulletPower = PowerPolicy.endGamePower(bulletPower, in.energy());
         double payable = PowerPolicy.payable(bulletPower, in.energy());
         if (!Double.isNaN(payable)) bulletPower = payable;
 
