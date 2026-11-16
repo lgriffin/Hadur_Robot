@@ -703,13 +703,13 @@ final class ShieldTableData {
     /**
      * MOVE-44: the opponents whose pattern matcher only replays history at exactly our current velocity; the duel
      * never drives at exactly full speed or exactly zero against them, so the matcher finds nothing and falls back
-     * (Booring falls back to linear aim, which the surf dodges). Candidate builds add lines here (build-ablation.sh vjlist).
+     * (Booring falls back to linear aim, which the surf dodges). Empty on master until a PC card holds a line: Booring
+     * locked on the cloud and rides the pc-locks card's vj arm (build-ablation.sh vjlist adds lines here).
      *
      * @return a fresh array of names
      */
     static String[] velocityJitters() {
         return new String[] {
-            "jw.Booring 1.11",
         };
     }
 
