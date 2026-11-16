@@ -53,7 +53,7 @@ class PcLocksPlanTest {
         }
         assertTrue(body.contains("  after: livematch"), "the lock waits for the live-match check");
         assertTrue(panel.size() * 7 * 12 >= 24, "the skips window is reachable within the lock");
-        assertTrue(!body.contains("stop: aa"), "on a panel this small the watcher's A/A stop never reads; aa is read in the gate");
+        assertTrue(!body.contains("stop: aa"), "the watcher reads A/A only once 10 robots are read in both arms, near the end of this lock; aa is read in the gate");
         assertEquals(List.of(), PcLiveMatchPlanTest.violations("pc-locks.queue", queue), "BENCH-245 timing rule");
         assertTrue(queue.contains("Why it should win") && queue.contains("set ALERT = lgriffin"));
         assertTrue(queue.contains("open_results_pr.sh claude/pc-locks-results") && queue.contains("set P = --parallel 16 --no-truth-log"));
