@@ -76,6 +76,10 @@ final class ShieldTableData {
             "racso.Crono 1.0",
             "spinnercat.Robovirus 2.718",
             "suh.micro.MirrorPM 1.00",
+            // pc-locks round 2 (BENCH-253, PR #845): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "EH.kms.LightningStorm 0.11B",    // +8.8
+            "theo.simple.Lucid 1.0",          // +8.7
+            "whind.Constitution 0.7.1",       // +5.4
         };
     }
 
@@ -561,6 +565,9 @@ final class ShieldTableData {
             // pc-shield-audit (BENCH-209, PR #697): Princess's learned aim moves after three exact rounds and the
             // shield re-learns it only if the mode stays; +7.0 points on 12 fresh seeds
             "cx.Princess 1.0",
+            // pc-locks round 2 (BENCH-253, PR #845): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "nz.jdc.nano.PralDeGuerre 1.2",   // +6.5
+            "ers.nano.meroka.Meroka 1.8a",    // +4.3
         };
     }
 
@@ -702,6 +709,8 @@ final class ShieldTableData {
      */
     static String[] powerBands() {
         return new String[] {
+            // pc-locks round 2 (BENCH-253, PR #845): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "0.40 0.30 0.30 0.30 ncj.MoxieBot 1.0",  // +13.4
         };
     }
 

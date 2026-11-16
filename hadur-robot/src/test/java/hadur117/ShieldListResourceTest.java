@@ -151,8 +151,8 @@ class ShieldListResourceTest {
         for (String name : new String[] {"CharlieN.Omega.Omega 1.03", "SHAM.WOW 1.4", "voidious.micro.Jen 1.11"}) {
             assertTrue(list.matches(name), name);
         }
-        // pc-shelf (PR #636): 6 more opening drives held on the confirm's fresh seeds.
-        assertEquals(31 + 8 + 6, ShieldTableData.moves().length);
+        // pc-shelf (PR #636): 6 more opening drives held on the confirm's fresh seeds. pc-locks round 2 (PR #845): 3 more.
+        assertEquals(31 + 8 + 6 + 3, ShieldTableData.moves().length);
         for (String name : ShieldTableData.moves()) {
             assertTrue(list.moves(name) && list.matches(name), "an opening drive is for a shielded robot: " + name);
         }

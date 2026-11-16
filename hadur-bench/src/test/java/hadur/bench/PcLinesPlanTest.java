@@ -52,6 +52,7 @@ class PcLinesPlanTest {
         later.addAll(names("plans/gl-lines-shipped.txt")); // pc-gl-lines (PR #829) shipped a gun-stack line
         later.addAll(names("plans/shards-shipped.txt")); // pc-shards (PR #840) shipped lines to robots this card read
         later.addAll(names("plans/locks-shipped.txt")); // pc-locks (PR #843) likewise
+        later.addAll(names("plans/locks2-shipped.txt")); // pc-locks round 2 (PR #845) likewise
         for (String n : panel) {
             assertTrue(!broken.contains(n), n + " loads on 1.11.2");
             if (shipped.contains(n)) {
