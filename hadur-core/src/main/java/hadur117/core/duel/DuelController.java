@@ -350,6 +350,16 @@ public final class DuelController {
     }
 
     /**
+     * MOVE-44: whether the body should never drive at exactly full speed or exactly zero this
+     * battle, so an opponent's exact-velocity pattern matcher finds no match and falls back.
+     *
+     * @return true against an opponent the table names with a velocity-jitter line, one on one
+     */
+    public boolean velocityJitter() {
+        return velJitterOn;
+    }
+
+    /**
      * The movement's live per-opponent modes, for tests: which of the dodger, the dodge
      * planner, stop-and-go, heat-jit and shield mode are on now, comma-separated, "-" for none.
      */
@@ -359,6 +369,7 @@ public final class DuelController {
         if (dodgePlanOn) on.add("plan");
         if (stopAndGo != null) on.add("stopgo");
         if (heatJitOn) on.add("heatjit");
+        if (velJitterOn) on.add("veljit");
         if (flatOn) on.add("flat");
         if (mirrorOff) on.add("mirroff");
         if (mimicOn) on.add("mimic");
@@ -918,6 +929,8 @@ public final class DuelController {
     private boolean dodgePlanOn;
     /** MOVE-28: the table names this opponent for stop-and-start. */
     private boolean heatJitOn;
+    /** MOVE-44: the table names this opponent for velocity jitter. */
+    private boolean velJitterOn;
     /** MOVE-32: the table turned the flattener views on for this opponent. */
     private boolean flatOn;
     /** MIR-2: the table turned MIR-1 off for this opponent. */
@@ -1307,6 +1320,7 @@ public final class DuelController {
         surfMover.setDodgePlanner(false);
         dodgePlanOn = false;
         heatJitOn = false;
+        velJitterOn = false;
         stopAndGo = null;
         gunController.setTripHammer(GunDesign.TRIPHAMMER);
         gunController.setFreeGun(GunDesign.FREE_GUN);
@@ -1423,6 +1437,8 @@ public final class DuelController {
             : duelOnly(stackList.powerCapHalf(name), enemiesTotal) ? CAP_POWER_HALF : Double.NaN;
         // POW-19: the hard-fire floor for the opponents the table names.
         hardPower = duelOnly(stackList.hardFire(name), enemiesTotal) ? HARD_POWER : Double.NaN;
+        // MOVE-44: velocity jitter for the opponents the table names.
+        velJitterOn = duelOnly(stackList.velocityJitter(name), enemiesTotal);
         // POW-20: the power bands for the opponents the table names.
         powerBand = enemiesTotal <= 1 ? stackList.powerBandFor(name) : null;
         // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names, never a shield-mode one

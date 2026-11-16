@@ -701,6 +701,19 @@ final class ShieldTableData {
     }
 
     /**
+     * MOVE-44: the opponents whose pattern matcher only replays history at exactly our current velocity; the duel
+     * never drives at exactly full speed or exactly zero against them, so the matcher finds nothing and falls back
+     * (Booring falls back to linear aim, which the surf dodges). Candidate builds add lines here (build-ablation.sh vjlist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] velocityJitters() {
+        return new String[] {
+            "jw.Booring 1.11",
+        };
+    }
+
+    /**
      * POW-20: per-opponent power bands, one line each: four multipliers on the duel's chosen power while our energy
      * is 20-40, 40-60, 60-80 and 80 or more, then the name. Each copies BeepBoop's power by its own energy against
      * that robot (from truth logs). Candidate builds add lines here (build-ablation.sh pblist).
