@@ -11,3 +11,4 @@ sm.Devil 7.3 | rank598-band5 | sm.Devil_7.3.jar
 kenran.Bakko v1.0.1 | rank106-band3 | kenran.Bakko_v1.0.1.jar
 mue.Ascendant 1.2.27 | rank24-band2 | mue.Ascendant_1.2.27.jar
 cb.Domogled 1.2 | rank23-band2 | cb.Domogled_1.2.jar
+aw.Gilgalad 1.99.5c | rank12-band2 | aw.Gilgalad_1.99.5c.jar

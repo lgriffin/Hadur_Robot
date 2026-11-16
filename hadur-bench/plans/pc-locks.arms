@@ -1,5 +1,5 @@
 # pc-locks (BENCH-253): c is master, aa its A/A copy; each lever arm is master with its line on the panel robots that
-# locked with it on the cloud (plans/locks-pick.tsv; mtzl shield list + still shot plans, gl gun stack, hl heat jitter, x5 x.x5 power, mq mimic on).
+# locked with it on the cloud (plans/locks-pick.tsv; mtzl shield list + still shot plans, gl gun stack, hl heat jitter, x5 x.x5 power, mq mimic on, hf POW-19 hard fire).
 c | hadur117.Hadur 3.22 | bisect/hadur117.Hadur_3.22.jar
 aa | hadur117.Hadur 3.22aa | bisect/hadur117.Hadur_3.22aa.jar
 mtzl | hadur117.Hadur 3.22mtzl | bisect/hadur117.Hadur_3.22mtzl.jar
@@ -7,3 +7,4 @@ gl | hadur117.Hadur 3.22gl | bisect/hadur117.Hadur_3.22gl.jar
 hl | hadur117.Hadur 3.22hl | bisect/hadur117.Hadur_3.22hl.jar
 x5 | hadur117.Hadur 3.22x5 | bisect/hadur117.Hadur_3.22x5.jar
 mq | hadur117.Hadur 3.22mq | bisect/hadur117.Hadur_3.22mq.jar
+hf | hadur117.Hadur 3.22hf | bisect/hadur117.Hadur_3.22hf.jar
