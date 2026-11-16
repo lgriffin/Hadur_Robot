@@ -253,7 +253,7 @@ class ShieldListResourceTest {
         java.util.List<String> lines = new java.util.ArrayList<>();
         for (String key : ShieldTableData.surfKeys()) lines.add(ShieldList.SURF_KEY_PREFIX + " " + key);
         ShieldList list = ShieldList.parse(lines);
-        assertEquals(175, ShieldTableData.surfKeys().length);
+        assertEquals(176, ShieldTableData.surfKeys().length);
         for (String key : ShieldTableData.surfKeys()) {
             String name = key.split(" ", ShieldList.SURF_KEY_VALUES + 1)[ShieldList.SURF_KEY_VALUES];
             double[] k = list.surfKeyFor(name);
