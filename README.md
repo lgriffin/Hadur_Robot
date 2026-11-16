@@ -152,6 +152,10 @@ Ideas credited: several team modes are our own code on ideas read in OgiTeam
 and momentum (TMODE-49, on since PR #826), which drives each escape spot from the
 member's real heading and speed as OgiTeam's wave check does. No OgiTeam code is copied.
 
+On a team the dodge also knows eight readable enemy guns (TMODE-50, on since PR #865): each
+team's aim was read from its own jar and fitted on bench bullet logs (`hadur-bench/tools/team_aimfit.py`),
+and the fitted aim joins that team's shot profiles.
+
 
 ## Architecture
 
