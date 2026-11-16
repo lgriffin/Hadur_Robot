@@ -264,6 +264,12 @@ public class Hadur extends TeamRobot {
             for (String name : ShieldTableData.powerCapHalves()) lines.add(ShieldList.POWER_CAP5_PREFIX + " " + name);
             // POW-19: per-opponent hard fire while our energy is high.
             for (String name : ShieldTableData.hardFires()) lines.add(ShieldList.HARD_FIRE_PREFIX + " " + name);
+            // MOVE-44: per-opponent velocity jitter against exact-velocity pattern matchers.
+            for (String name : ShieldTableData.velocityJitters()) lines.add(ShieldList.VEL_JITTER_PREFIX + " " + name);
+            // MOVE-45: per-opponent speed-band jitter.
+            for (String name : ShieldTableData.speedBands()) lines.add(ShieldList.SPEED_BAND_PREFIX + " " + name);
+            // DIST-4: per-opponent pinned duel distance.
+            for (String pin : ShieldTableData.distPins()) lines.add(ShieldList.DIST_PIN_PREFIX + " " + pin);
             // POW-20: per-opponent power bands.
             for (String band : ShieldTableData.powerBands()) lines.add(ShieldList.POWER_BAND_PREFIX + " " + band);
             // MOVE-32: per-opponent flattener views on.
@@ -357,6 +363,9 @@ public class Hadur extends TeamRobot {
         return in;
     }
 
+    /** MOVE-44: the last max velocity the core asked for (the engine's default is full speed). */
+    private double lastMaxVelocity = Rules.MAX_VELOCITY;
+
     /**
      * Turns the core's orders into Robocode setter calls. A NaN field means "leave the
      * previous setting in place", exactly as not calling that setter; a fire power of 0 (or
@@ -364,9 +373,24 @@ public class Hadur extends TeamRobot {
      * out.
      */
     private void apply(BotOrders o) {
-        if (!Double.isNaN(o.maxVelocity())) setMaxVelocity(o.maxVelocity());
+        if (!Double.isNaN(o.maxVelocity())) lastMaxVelocity = o.maxVelocity();
+        // MOVE-44: against a table-named exact-velocity pattern matcher, never drive at exactly 8 or exactly 0.
+        boolean jitter = core != null && core.duel() != null && core.duel().velocityJitter();
+        // MOVE-45: against a table-named rounded-velocity pattern matcher, a full-speed order becomes a random 7 to 8.
+        boolean band = core != null && core.duel() != null && core.duel().speedBand();
+        // The offset is 1e-12 to 2e-12: far above the double spacing at 8 (1.8e-15), so it never rounds back to 8.
+        if (band && lastMaxVelocity >= Rules.MAX_VELOCITY) {
+            setMaxVelocity(Rules.MAX_VELOCITY - Math.random());
+        } else if (jitter && lastMaxVelocity >= Rules.MAX_VELOCITY) {
+            setMaxVelocity(Rules.MAX_VELOCITY - (1 + Math.random()) / 1e12);
+        } else if (jitter && lastMaxVelocity <= 0) {
+            // A stop order (max velocity 0) becomes a crawl too small to move us but never exactly 0.
+            setMaxVelocity((1 + Math.random()) / 1e12);
+        } else if (!Double.isNaN(o.maxVelocity())) {
+            setMaxVelocity(o.maxVelocity());
+        }
         if (!Double.isNaN(o.bodyTurn())) setTurnRightRadians(o.bodyTurn());
-        if (!Double.isNaN(o.ahead())) setAhead(o.ahead());
+        if (!Double.isNaN(o.ahead())) setAhead(jitter && o.ahead() == 0 ? (Math.random() - 0.5) / 1e12 : o.ahead());
         if (!Double.isNaN(o.gunTurn())) setTurnGunRightRadians(o.gunTurn());
         if (!Double.isNaN(o.radarTurn())) setTurnRadarRightRadians(o.radarTurn());
         if (o.firePower() > 0) setFire(o.firePower());

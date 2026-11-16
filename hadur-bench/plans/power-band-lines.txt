@@ -1,8 +1,11 @@
-# POW-20 power-band lines (m20 m40 m60 m80 name): BeepBoop's power-by-own-energy curve against the robot over ours,
-# fitted from paired truth logs on 16 Nov. Only robots that locked on the cloud are kept here; lock_prep.py reads it for pb picks.
+# POW-20 power-band lines (m20 m40 m60 m80 name): a stronger robot's power-by-own-energy curve against the robot over
+# ours, fitted from paired truth logs on 16 Nov. The reference is BeepBoop unless noted (shard G fitted toward the best of
+# DrussGT and Saguaro, tools/powfit.py); each line is the one the cloud lock measured. Only robots that locked on the cloud are kept here; lock_prep.py reads it for pb picks.
 0.40 0.30 0.30 0.30 ncj.MoxieBot 1.0
 1.37 1.09 0.76 0.76 fromHell.CHCl3 1.4.2
 1.00 0.64 0.70 0.80 xander.cat.Mikey 1.2
 0.93 0.95 1.07 1.31 mn.Combat 3.25.0
 1.29 0.86 0.67 0.64 positive.Portia 1.26e
 1.00 0.43 0.31 0.26 catcat20.atom.Atom 0.51
+# Tron: fitted toward Saguaro (1.37 against our 0.66 at 20-40 energy; shards/free4/pb-tron.txt).
+2.08 1.00 1.00 1.00 abc.tron3.Tron 3.11

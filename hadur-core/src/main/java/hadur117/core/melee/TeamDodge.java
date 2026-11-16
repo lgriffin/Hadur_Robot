@@ -126,10 +126,12 @@ final class TeamDodge {
         double hot = DiaUtils.absoluteBearing(s.source, target);
         if (at == null) return new MinimumRiskMovement.Wave(s, aimed, new double[] {hot}, new double[] {1.0}, hot);
         double[] h = AimExperts.headings(s, at, path, field);
+        TeamModes.FittedAim fit = TeamModes.fitted(s.shooter);
         if (only != null) {
             double one = only == VirtualBullet.Aim.HEAD_ON ? h[AimExperts.Expert.HEAD_ON.ordinal()]
                 : h[AimExperts.Expert.LINEAR.ordinal()];
-            return new MinimumRiskMovement.Wave(s, aimed, new double[] {one}, new double[] {1.0}, hot);
+            return withFitted(new MinimumRiskMovement.Wave(s, aimed, new double[] {one}, new double[] {1.0}, hot),
+                fit, s, at, path);
         }
         List<TeamDanger.Aim> learned = danger.aims(s, at);
         boolean[] available = new boolean[AimExperts.COUNT];
@@ -156,6 +158,33 @@ final class TeamDodge {
                 shares[k++] = w[li] * (total > 0 ? a.weight / total : 1.0 / learned.size());
             }
         }
-        return new MinimumRiskMovement.Wave(s, aimed, headings, shares, hot);
+        return withFitted(new MinimumRiskMovement.Wave(s, aimed, headings, shares, hot), fit, s, at, path);
+    }
+
+    /**
+     * TMODE-50: {@code wave} with the class's fitted aim added at its share, the other aims scaled to
+     * the rest; {@code wave} itself when there is none.
+     */
+    private static MinimumRiskMovement.Wave withFitted(MinimumRiskMovement.Wave wave, TeamModes.FittedAim fit,
+                                                       EnemyShot s, RobotState at, RobotStateLog path) {
+        if (fit == null) return wave;
+        int n = wave.headings.length;
+        double[] headings = java.util.Arrays.copyOf(wave.headings, n + 1);
+        double[] shares = new double[n + 1];
+        for (int i = 0; i < n; i++) shares[i] = wave.shares[i] * (1 - fit.share);
+        headings[n] = fittedHeading(fit, s, at, path);
+        shares[n] = fit.share;
+        return new MinimumRiskMovement.Wave(s, wave.aimed, headings, shares, wave.centre);
+    }
+
+    /** TMODE-50: where {@code fit} aims {@code s} at the member, {@code at} its state at the fire tick. */
+    static double fittedHeading(TeamModes.FittedAim fit, EnemyShot s, RobotState at, RobotStateLog path) {
+        RobotState then = path == null ? null : path.getState(at.time - fit.lag);
+        if (then == null) then = at;
+        double bearing = DiaUtils.absoluteBearing(s.source, then.location);
+        double lateral = then.velocity * Math.sin(then.heading - bearing);
+        double speed = fit.speed > 0 ? fit.speed : s.speed();
+        double f = fit.a + fit.b * s.source.distance(then.location) / 1200.0;
+        return bearing + f * Math.asin(Math.max(-1, Math.min(1, lateral / speed)));
     }
 }

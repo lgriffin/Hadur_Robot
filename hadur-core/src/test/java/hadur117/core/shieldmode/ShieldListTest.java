@@ -146,6 +146,52 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("MOVE-44")
+    @DisplayName("velocity-jitter lines name the exact-velocity pattern matchers the duel jitters its speed against, matched as shield entries")
+    void perOpponentVelocityJitter() {
+        ShieldList l = ShieldList.parse(List.of("velocity-jitter: a.B 1.0", "velocity-jitter: c.D", "velocity-jitter:", "hard-fire: e.F"));
+        assertTrue(l.velocityJitter("a.B 1.0"));
+        assertTrue(l.velocityJitter("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertTrue(l.velocityJitter("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.velocityJitter("e.F 1.0"), "a hard-fire line is not a velocity-jitter line");
+        assertFalse(l.hardFire("a.B 1.0") || l.powerCap("a.B 1.0"), "no other switch");
+        assertFalse(l.velocityJitter(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.velocityJitter("a.B 1.0"));
+    }
+
+    @Test
+    @Tag("MOVE-45")
+    @DisplayName("speed-band lines name the rounded-velocity pattern matchers the duel bands its top speed against, matched as shield entries")
+    void perOpponentSpeedBand() {
+        ShieldList l = ShieldList.parse(List.of("speed-band: a.B 1.0", "speed-band: c.D", "speed-band:", "velocity-jitter: e.F"));
+        assertTrue(l.speedBand("a.B 1.0"));
+        assertTrue(l.speedBand("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertTrue(l.speedBand("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.speedBand("e.F 1.0"), "a velocity-jitter line is not a speed-band line");
+        assertFalse(l.velocityJitter("a.B 1.0") || l.hardFire("a.B 1.0"), "no other switch");
+        assertFalse(l.speedBand(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.speedBand("a.B 1.0"));
+    }
+
+    @Test
+    @Tag("DIST-4")
+    @DisplayName("dist-pin lines pin one duel distance per opponent, matched as shield entries, held to 150-900 px")
+    void perOpponentDistPin() {
+        ShieldList l = ShieldList.parse(List.of("dist-pin: 300 a.B 1.0", "dist-pin: 800 c.D", "dist-pin: 100 e.F",
+            "dist-pin: x g.H", "dist-pin: 500", "dist-pin:"));
+        assertEquals(300, l.distPinFor("a.B 1.0"));
+        assertEquals(300, l.distPinFor("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertEquals(800, l.distPinFor("c.D 2.3"), "a bare name matches every version");
+        assertTrue(Double.isNaN(l.distPinFor("e.F 1.0")), "a pin under 150 px is refused");
+        assertTrue(Double.isNaN(l.distPinFor("g.H 1.0")), "a malformed line is skipped");
+        assertTrue(Double.isNaN(l.distPinFor(null)));
+        assertTrue(Double.isNaN(ShieldList.NONE.distPinFor("a.B 1.0")));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+    }
+
+    @Test
     @Tag("POW-20")
     @DisplayName("power-band lines carry four energy-band multipliers per opponent, matched as shield entries")
     void perOpponentPowerBand() {
