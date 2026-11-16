@@ -22,7 +22,7 @@
 # Bank: the owning cloud thread adds the held lines to ShieldTableData.powerCaps() on this card's results PR, so one
 # PR carries both the results and the bank. Nothing is released by the card.
 
-set V = 3.22
+set V = 3.23
 set P = --parallel 16 --no-truth-log --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
 set W = work/pc-lines

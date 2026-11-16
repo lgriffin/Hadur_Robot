@@ -1,6 +1,6 @@
 # Cloud AES forensic for MOVE-40 lean terms (docs/bench/local/2026-11-10_aes-fit-fixed-terms.md): c is 3.21 with the
 # AES recorder on (aa,aesrec); nt drops the time-to-impact scaling (notti,aesrec); le the four refitted fixed terms
 # (lean,aesrec). Scored on real hits by round with the truth logs on.
-c | hadur117.Hadur 3.22aaar | bisect/hadur117.Hadur_3.22aaar.jar
-nt | hadur117.Hadur 3.22ntar | bisect/hadur117.Hadur_3.22ntar.jar
-le | hadur117.Hadur 3.22lear | bisect/hadur117.Hadur_3.22lear.jar
+c | hadur117.Hadur 3.23aaar | bisect/hadur117.Hadur_3.23aaar.jar
+nt | hadur117.Hadur 3.23ntar | bisect/hadur117.Hadur_3.23ntar.jar
+le | hadur117.Hadur 3.23lear | bisect/hadur117.Hadur_3.23lear.jar

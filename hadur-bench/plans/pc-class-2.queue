@@ -21,7 +21,7 @@
 # no battle in 30 minutes. ALERT opens an issue for Leigh on any stop.
 # Bank: the owning cloud thread adds the held lines on this card's results PR. Nothing is released by the card.
 
-set V = 3.22
+set V = 3.23
 set P = --parallel 16 --no-truth-log --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
 set W = work/pc-class-2
