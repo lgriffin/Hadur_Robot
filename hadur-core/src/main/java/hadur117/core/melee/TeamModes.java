@@ -114,6 +114,62 @@ public final class TeamModes {
     /** TMODE-49: MOMENTUM on every team, as pc-team-momentum measured it (PR #826). */
     public static final boolean FORCE_MOMENTUM = true;
 
+    /**
+     * TMODE-50: the fitted enemy aims ({@link #FITTED}) join the dodge's profile; off in the shipped build
+     * (ablation tmfitted turns it on).
+     */
+    public static final boolean FORCE_FITTED = false;
+
+    /**
+     * TMODE-50: one enemy class's gun, read from its code and fitted on bench bullet logs: it fires at
+     * bearing(source, P) + f(d) asin(v_lat / s), P and v_lat the member's position and lateral velocity
+     * {@code lag} ticks before the shot's fire tick, s {@code speed} (0: the bullet's own speed) and
+     * f(d) = {@code a} + {@code b} d / 1200. The aim takes {@code share} of the shot's profile.
+     */
+    static final class FittedAim {
+        final int lag;
+        final double speed, a, b, share;
+
+        FittedAim(int lag, double speed, double a, double b, double share) {
+            this.lag = lag;
+            this.speed = speed;
+            this.a = a;
+            this.b = b;
+            this.share = share;
+        }
+    }
+
+    /** TMODE-50: opposing member class to its fitted aim. */
+    static final Map<String, FittedAim> FITTED = fittedAims();
+
+    private static Map<String, FittedAim> fittedAims() {
+        Map<String, FittedAim> t = new HashMap<>();
+        // Cloud mirror of 3.23 against OgiTeam (2026-11-16, 2 seeds from 22200, OgiTeam's battles): the aim that
+        // explains most of each team's shots within half a bot width, beside a 0.25 rad null control.
+        // Shiz: head-on at the spot 6 ticks back (its spinning radar), 70% of shots (null 4%, head-on now 33%).
+        t.put("kawigi.micro.Shiz", new FittedAim(6, 0, 0.0, 0.0, 0.65));
+        // GrofGroupMember: its nano lead atan2(v cos, 14 + sin), linear at 15 px a tick, 2 back: 60% (linear now 25%).
+        t.put("gh.nano.GrofGroupMember", new FittedAim(2, 15, 1.0, 0.0, 0.6));
+        // DoctorBobTeam: linear at the bullet's speed, 2 back: 67% (linear now 49%).
+        t.put("radnor.DoctorBobTeam", new FittedAim(2, 0, 1.0, 0.0, 0.65));
+        // HOFMember: linear at 13 px a tick scaled by (1 - d / 1200), 5 back: 51% (linear now 12%).
+        t.put("rz.HOFMember", new FittedAim(5, 13, 1.0, -1.0, 0.45));
+        // TMNR: head-on 3 back: 54% (head-on now 46%).
+        for (String m : new String[] {"Donatello", "Giovanni", "Leonardo", "Michelangelo", "Raphael"}) {
+            t.put("tmnr." + m, new FittedAim(3, 0, 0.0, 0.0, 0.45));
+        }
+        // Polylunar: linear at the bullet's speed, 2 back: 77% (null 36% at its close range; linear now 66%).
+        for (String m : new String[] {"Luna", "Phobos", "Io", "Europa", "Charon"}) {
+            t.put("ags.polylunar." + m, new FittedAim(2, 0, 1.0, 0.0, 0.6));
+        }
+        return Collections.unmodifiableMap(t);
+    }
+
+    /** TMODE-50: the fitted aim of {@code shooter}'s class, or null (none, or FITTED off). */
+    static FittedAim fitted(String shooter) {
+        return FORCE_FITTED ? FITTED.get(key(shooter)) : null;
+    }
+
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
 
