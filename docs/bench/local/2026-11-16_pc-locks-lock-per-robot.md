@@ -1,19 +1,18 @@
-# Per robot: mtzl, gl, hl, x5, mq, hf, fp minus control
+# Per robot: pb, x0, mv minus control
 
-Every opponent, wins and losses, sorted by mtzl. Points of score share.
+Every opponent, wins and losses, sorted by pb. Points of score share.
 
-| Opponent | Control | mtzl | gl | hl | x5 | mq | hf | fp |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| rz.GlowBlow 2.31 | 78.3 | +18.6 | - | - | - | - | - | - |
-| com.spp.robocode.MostlyHarmless 010 | 96.2 | +3.7 | - | - | - | - | - | - |
-| davidalves.net.DuelistMicro 1.22 | 82.0 | +3.4 | - | - | - | - | - | - |
-| sm.Devil 7.3 | 94.3 | +3.4 | - | - | - | - | - | - |
-| tm.Yuugao 1.0 | 78.7 | +1.8 | - | - | - | - | - | - |
-| Grystrion.TrackerWO 1.0 | 94.1 | - | - | +1.5 | - | - | - | - |
-| aw.Gilgalad 1.99.5c | 57.5 | - | - | - | - | - | +2.9 | - |
-| cb.Domogled 1.2 | 72.4 | - | - | - | - | +3.9 | - | - |
-| cx.micro.Blur 0.2 | 85.8 | - | +1.1 | - | - | - | - | - |
-| deo.FlowerBot 1.0 | 86.5 | - | - | - | - | - | - | +3.5 |
-| deo.virtual.RainbowBot 1.0 | 87.0 | - | - | - | +3.5 | - | - | - |
-| kenran.Bakko v1.0.1 | 83.8 | - | - | - | +5.9 | - | - | - |
-| mue.Ascendant 1.2.27 | 60.5 | - | - | - | +0.3 | - | - | - |
+| Opponent | Control | pb | x0 | mv |
+|---|---:|---:|---:|---:|
+| ncj.MoxieBot 1.0 | 81.9 | +13.4 | - | - |
+| positive.Portia 1.26e | 70.3 | +0.8 | - | - |
+| xander.cat.Mikey 1.2 | 89.3 | -0.0 | - | - |
+| mn.Combat 3.25.0 | 72.2 | -0.0 | - | - |
+| fromHell.CHCl3 1.4.2 | 75.8 | -1.6 | - | - |
+| EH.kms.LightningStorm 0.11B | 80.7 | - | - | +8.8 |
+| cw.megas.Blade 0.8 | 86.9 | - | - | -0.0 |
+| ers.nano.meroka.Meroka 1.8a | 88.0 | - | +4.2 | - |
+| nz.jdc.nano.PralDeGuerre 1.2 | 82.8 | - | +6.5 | - |
+| robar.nano.Vespa 0.95 | 93.3 | - | +0.3 | - |
+| theo.simple.Lucid 1.0 | 88.1 | - | - | +8.7 |
+| whind.Constitution 0.7.1 | 91.2 | - | - | +5.4 |

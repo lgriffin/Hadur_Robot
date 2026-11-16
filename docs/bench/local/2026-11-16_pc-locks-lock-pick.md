@@ -1,12 +1,11 @@
-# Mode table pick (work/pc-locks/arms-picked.tsv)
+# Mode table pick (work/pc-locks2/arms-picked.tsv)
 
-Opponents in the panel: 13. Margin 0.0 points, interval above 0.
+Opponents in the panel: 12. Margin 0.0 points, interval above 0.
 
 | Mode arm | Opponents locked | Mean gain there (pts) | Panel-mean gain (pts) |
 |---|---|---|---|
-| hl | 1 | +1.5 | +0.11 |
-| mq | 1 | +3.9 | +0.30 |
-| mtzl | 4 | +7.3 | +2.24 |
-| x5 | 2 | +4.7 | +0.73 |
+| mv | 3 | +7.6 | +1.91 |
+| pb | 1 | +13.4 | +1.12 |
+| x0 | 2 | +5.4 | +0.89 |
 
-Table total, in sample: 8 entries, +3.38 points over the panel, +0.04 APS over a 1,212-bot field. Re-measure on fresh seeds.
+Table total, in sample: 6 entries, +3.92 points over the panel, +0.04 APS over a 1,212-bot field. Re-measure on fresh seeds.
