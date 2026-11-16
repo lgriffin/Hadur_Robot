@@ -1,0 +1,31 @@
+# PC card pc-team-fitted (BENCH-254): the pilot, fit against master (aa) on the six fitted teams, 4 seeds from 22500, 12 rounds. Template: the card's prep writes the work copy with @V@ = the robot.release in hadur-robot/pom.xml.
+--team
+true
+--seeds
+4
+--seed-base
+22500
+--rounds
+12
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+plans/team-fitted-set.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@fit.jar
+--robot
+hadur117.HadurTeam @V@fit
+--member
+hadur117.Hadur
+--out
+work/team-fitted-@V@-pfit
+--report
+../docs/bench/local/team-fitted-pfit.md
+--baseline
+bisect/hadur117.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur117.HadurTeam @V@aa
