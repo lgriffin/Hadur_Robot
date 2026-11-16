@@ -55,12 +55,13 @@ class TeamFittedTest {
 
     @Test
     @Tag("TMODE-50")
-    @DisplayName("TMODE-50: off in the shipped build; the table names the six fitted teams' member classes")
-    void shippedOff() {
-        assertFalse(TeamModes.FORCE_FITTED);
-        assertNull(TeamModes.fitted("kawigi.micro.Shiz 1.1 (1)"));
+    @DisplayName("TMODE-50: on in the shipped build; the table names the eight fitted teams' member classes, no others")
+    void shippedOn() {
+        assertTrue(TeamModes.FORCE_FITTED);
+        assertNotNull(TeamModes.fitted("kawigi.micro.Shiz 1.1 (1)"));
+        assertNull(TeamModes.fitted("cz.libors.Ogi v1 (1)"));
         for (String c : new String[] {"kawigi.micro.Shiz", "gh.nano.GrofGroupMember", "radnor.DoctorBobTeam", "rz.HOFMember",
-                "tmnr.Leonardo", "ags.polylunar.Luna"}) {
+                "tmnr.Leonardo", "ags.polylunar.Luna", "myl.micro.Troodon", "jeremyreeder.collective.Prophet"}) {
             assertNotNull(TeamModes.FITTED.get(c), c);
             assertTrue(TeamModes.FITTED.get(c).share > 0 && TeamModes.FITTED.get(c).share < 1, c);
         }
