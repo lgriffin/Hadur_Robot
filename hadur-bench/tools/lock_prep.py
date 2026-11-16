@@ -35,6 +35,7 @@ LEVERS = {
     "rp": ("rplist", ("RACE_POWER",)),
     "dg": ("sdodgelist", ("SHOT_DODGE",)),
     "pb": ("pblist", ("POWER_BAND",)),
+    "x0": ("sx0list", ("SHIELD_EXIT0",)),
 }
 
 # POW-20: a power-band pick carries its fitted line ("m20 m40 m60 m80 name") from this file, so pb.list

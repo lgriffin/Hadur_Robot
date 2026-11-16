@@ -6,3 +6,5 @@ work-*.log
 # BENCH-105: work may be a link to another disk; host.local is one machine's overrides
 /work
 host.local
+# The downloaded opponents folder (a real folder, or a local symlink to a shared one) is never tracked.
+/opponents
