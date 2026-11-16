@@ -19,3 +19,6 @@ mn.Combat 3.25.0 | rank38-band2 | mn.Combat_3.25.0.jar
 xander.cat.Mikey 1.2 | rank228-band4 | xander.cat.Mikey_1.2.jar
 nz.jdc.nano.PralDeGuerre 1.2 | rank275-band4 | nz.jdc.nano.PralDeGuerre_1.2.jar
 robar.nano.Vespa 0.95 | rank483-band5 | robar.nano.Vespa_0.95.jar
+positive.Portia 1.26e | rank63-band3 | positive.Portia_1.26e.jar
+EH.kms.LightningStorm 0.11B | rank355-band4 | EH.kms.LightningStorm_0.11B.jar
+cw.megas.Blade 0.8 | rank386-band4 | cw.megas.Blade_0.8.jar
