@@ -80,6 +80,20 @@ final class ShieldTableData {
             "EH.kms.LightningStorm 0.11B",    // +8.8
             "theo.simple.Lucid 1.0",          // +8.7
             "whind.Constitution 0.7.1",       // +5.4
+            // pc-locks round 3 (BENCH-253, PR #860): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "rz.Artist 0.2",                 // +13.5
+            "DM.mega.Bezier 1.618fprrr",     // +11.0
+            "mue.Hyperion 0.8",              // +9.3
+            "cx.Princess 1.0",               // +8.2
+            "wilson.Chameleon 0.91",         // +7.9
+            "jwst.DAD.DarkAndDarker 1.1",    // +7.4
+            "ha2.T3 0.2",                    // +6.2
+            "cbot.agile.Nibbler 0.2",        // +6.1
+            "kawigi.sbf.FloodHT 0.9.2",      // +4.3
+            "racso.Frog 0.9",                // +4.1
+            "ahf.r2d2.R2d2 0.86",            // +3.5
+            "cf.proto.Shiva 2.2",            // +2.8
+            "asm.Statistas 0.1",             // +1.9
         };
     }
 
@@ -497,6 +511,11 @@ final class ShieldTableData {
             "dragonbyte.Neutrino 4",                       // +4.5 / +0.0
             // pc-locks (BENCH-253, PR #843): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "Grystrion.TrackerWO 1.0",       // +1.5
+            // pc-locks round 3 (BENCH-253, PR #860): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "EH.Pegasus 0.113",              // +2.1
+            // pc-locks round 4 (BENCH-253, PR #866): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "genprog.Rinmorikazu 1.0",       // +1.4
+            "yk.JahMicro 1.0",               // +1.3
         };
     }
 
@@ -703,13 +722,44 @@ final class ShieldTableData {
     /**
      * MOVE-44: the opponents whose pattern matcher only replays history at exactly our current velocity; the duel
      * never drives at exactly full speed or exactly zero against them, so the matcher finds nothing and falls back
-     * (Booring falls back to linear aim, which the surf dodges). Empty on master until a PC card holds a line: Booring
-     * locked on the cloud and rides the pc-locks card's vj arm (build-ablation.sh vjlist adds lines here).
+     * (Booring falls back to linear aim, which the surf dodges). Booring held on the PC
+     * (pc-locks round 3, PR #860); candidate builds add lines here (build-ablation.sh vjlist).
      *
      * @return a fresh array of names
      */
     static String[] velocityJitters() {
         return new String[] {
+            // pc-locks round 3 (BENCH-253, PR #860): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "jw.Booring 1.11",               // +13.7
+            // pc-locks round 4 (BENCH-253, PR #866): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "apv.AspidReloaded 0.6",         // +18.0
+        };
+    }
+
+    /**
+     * MOVE-45: the opponents whose rounded-velocity pattern matcher the duel defeats by a random top speed of 7 to 8
+     * each tick ({@code speed-band:} lines). Knowledge held on the PC (pc-locks round 4, PR #866).
+     *
+     * @return a fresh array of names
+     */
+    static String[] speedBands() {
+        return new String[] {
+            // pc-locks round 4 (BENCH-253, PR #866): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "ntc.Knowledge 1.1",             // +2.6
+        };
+    }
+
+    /**
+     * DIST-4: per-opponent pinned duel distance, one line each: the surf's desired distance in px, then the name.
+     * The pin replaces DIST-1's controller target against that robot in a duel (END-1's finish still closes in).
+     * Candidate builds add lines here (build-ablation.sh dplist).
+     *
+     * @return a fresh array of lines
+     */
+    static String[] distPins() {
+        return new String[] {
+            // pc-locks round 4 (BENCH-253, PR #866): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "625 az.Ololobot 0.2.4",         // +3.2
         };
     }
 
@@ -898,6 +948,9 @@ final class ShieldTableData {
             "sheldor.mini.FoilistMC 1.0",    // +5.9
             // pc-r31 (BENCH-244, PR #817): 12 fresh PC seeds at the live turn time
             "eem.zapper v6.03",              // +4.1
+            // pc-locks round 3 (BENCH-253, PR #860): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "eem.EvBotNG v12.8",             // +4.9
+            "DM.mega.Regicide 2.0rrr",       // +4.2
         };
     }
 

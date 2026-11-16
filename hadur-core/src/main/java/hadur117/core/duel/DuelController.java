@@ -360,6 +360,16 @@ public final class DuelController {
     }
 
     /**
+     * MOVE-45: whether the body's full-speed orders should become a random top speed of 7 to 8 each tick this battle,
+     * so an opponent's pattern matcher keyed on our rounded lateral velocity sees noise.
+     *
+     * @return true against an opponent the table names with a speed-band line, one on one
+     */
+    public boolean speedBand() {
+        return speedBandOn;
+    }
+
+    /**
      * The movement's live per-opponent modes, for tests: which of the dodger, the dodge
      * planner, stop-and-go, heat-jit and shield mode are on now, comma-separated, "-" for none.
      */
@@ -370,6 +380,7 @@ public final class DuelController {
         if (stopAndGo != null) on.add("stopgo");
         if (heatJitOn) on.add("heatjit");
         if (velJitterOn) on.add("veljit");
+        if (speedBandOn) on.add("speedband");
         if (flatOn) on.add("flat");
         if (mirrorOff) on.add("mirroff");
         if (mimicOn) on.add("mimic");
@@ -931,6 +942,8 @@ public final class DuelController {
     private boolean heatJitOn;
     /** MOVE-44: the table names this opponent for velocity jitter. */
     private boolean velJitterOn;
+    /** MOVE-45: the table names this opponent for speed-band jitter. */
+    private boolean speedBandOn;
     /** MOVE-32: the table turned the flattener views on for this opponent. */
     private boolean flatOn;
     /** MIR-2: the table turned MIR-1 off for this opponent. */
@@ -961,6 +974,8 @@ public final class DuelController {
     private double hardPower = Double.NaN;
     /** POW-20: the power-band multipliers for this opponent, or null. */
     private double[] powerBand;
+    /** DIST-4: this duel opponent's pinned surf distance in px, or NaN. */
+    private double distPin = Double.NaN;
     /** POW-17: whether the race picked the last power, for the P record on a change. */
     private boolean raceApplied;
     /** POW-17: the energy race, fed every resolved duel bullet whether or not it is on. */
@@ -1321,6 +1336,7 @@ public final class DuelController {
         dodgePlanOn = false;
         heatJitOn = false;
         velJitterOn = false;
+        speedBandOn = false;
         stopAndGo = null;
         gunController.setTripHammer(GunDesign.TRIPHAMMER);
         gunController.setFreeGun(GunDesign.FREE_GUN);
@@ -1439,8 +1455,11 @@ public final class DuelController {
         hardPower = duelOnly(stackList.hardFire(name), enemiesTotal) ? HARD_POWER : Double.NaN;
         // MOVE-44: velocity jitter for the opponents the table names.
         velJitterOn = duelOnly(stackList.velocityJitter(name), enemiesTotal);
+        // MOVE-45: speed-band jitter for the opponents the table names.
+        speedBandOn = duelOnly(stackList.speedBand(name), enemiesTotal);
         // POW-20: the power bands for the opponents the table names.
         powerBand = enemiesTotal <= 1 ? stackList.powerBandFor(name) : null;
+        distPin = enemiesTotal <= 1 ? stackList.distPinFor(name) : Double.NaN;
         // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names, never a shield-mode one
         // (its TripHammer aims break the shield's bullet hits); the gun keeps them 1v1-only.
         if (duelOnly(stackList.gunStack(name) && !stackList.matches(name), enemiesTotal)) {
@@ -1711,7 +1730,9 @@ public final class DuelController {
         if (now == Endgame.State.FINISH) stats.finishTicks++;
         if (now == Endgame.State.RAM) stats.ramTicks++;
         // END-1 overrides the controller's target with the finishing distance, 150 px.
-        surfMover.setDesiredDistance(distance.target(now == Endgame.State.FINISH));
+        // DIST-4: a pinned opponent's surf holds its pinned distance instead of DIST-1's (not while finishing).
+        surfMover.setDesiredDistance(!Double.isNaN(distPin) && now != Endgame.State.FINISH
+            ? distPin : distance.target(now == Endgame.State.FINISH));
         // RAM-1: the no-wave orbit takes the other side while a rammer is closing.
         surfMover.setRammerActive(ramActive);
     }

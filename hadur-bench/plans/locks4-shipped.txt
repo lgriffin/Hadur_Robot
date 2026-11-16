@@ -1,0 +1,6 @@
+# pc-locks round 4 (BENCH-253, PR #866): robots whose lines shipped on 12 fresh PC seeds at the live turn time
+ntc.Knowledge 1.1
+az.Ololobot 0.2.4
+genprog.Rinmorikazu 1.0
+yk.JahMicro 1.0
+apv.AspidReloaded 0.6
