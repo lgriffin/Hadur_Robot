@@ -87,6 +87,8 @@ public final class ShieldList {
     public static final String POWER_CAP_PREFIX = "power-cap:";
     /** POW-18: a line starting with this names an opponent the main gun never fires above {@code DuelController.CAP_POWER_HALF} at. */
     public static final String POWER_CAP5_PREFIX = "power-cap5:";
+    /** POW-19: a line starting with this names an opponent the duel fires at least {@code DuelController.HARD_POWER} at while our energy is high. */
+    public static final String HARD_FIRE_PREFIX = "hard-fire:";
     /**
      * SKEY-2: a line starting with this gives an opponent's surf key: nine multipliers on the hit
      * views' key weights, one on the kernel width, then the name ({@code "m1 ... m9 bw name"}).
@@ -123,6 +125,8 @@ public final class ShieldList {
     static final int POWER_CAP5 = 16384;
     /** RAM-11: the per-opponent circular-aim dodge switch's bit in {@link #switches}. */
     static final int RAM_CIRC = 32768;
+    /** POW-19: the per-opponent hard-fire switch's bit in {@link #switches}. */
+    static final int HARD_FIRE = 65536;
 
     private final Set<String> entries;
     /** SHIELD-17: the opening-drive list. */
@@ -180,6 +184,7 @@ public final class ShieldList {
                     : entry.startsWith(MIRROR_OFF_PREFIX) ? MIRROR_OFF
                     : entry.startsWith(FLOOR_PREFIX) ? FLOOR
                     : entry.startsWith(POWER_CAP5_PREFIX) ? POWER_CAP5
+                    : entry.startsWith(HARD_FIRE_PREFIX) ? HARD_FIRE
                     : entry.startsWith(POWER_CAP_PREFIX) ? POWER_CAP : 0;
                 if (bit != 0) {
                     String name = withoutVersion(entry.substring(entry.indexOf(':') + 1).trim());
@@ -490,6 +495,16 @@ public final class ShieldList {
      */
     public boolean powerCapHalf(String robotName) {
         return (switchBits(robotName) & POWER_CAP5) != 0;
+    }
+
+    /**
+     * POW-19: whether the table names this opponent with a {@link #HARD_FIRE_PREFIX} line.
+     *
+     * @param robotName the opponent's name as Robocode lists it
+     * @return true when a {@code hard-fire:} line matches it
+     */
+    public boolean hardFire(String robotName) {
+        return (switchBits(robotName) & HARD_FIRE) != 0;
     }
 
     /**

@@ -662,6 +662,11 @@ public final class DuelController {
         // fireIfGunTurned: every scan still makes its wave, which teaches the gun.
         // POW-18: against an opponent the table names, every shot is capped, after every rule above.
         if (!Double.isNaN(powerCap) && enemiesTotal <= 1) bulletPower = Math.min(bulletPower, powerCap);
+        // POW-19: against an opponent the table names, while our energy is high, never under its hard power (never
+        // past the least power that kills): BeepBoop fires hard while its energy is high, light once it is low.
+        if (!Double.isNaN(hardPower) && enemiesTotal <= 1 && in.energy() >= HARD_ENERGY) {
+            bulletPower = Math.max(bulletPower, Double.isNaN(killPower) ? hardPower : Math.min(hardPower, killPower));
+        }
         double payable = PowerPolicy.payable(bulletPower, in.energy());
         if (!Double.isNaN(payable)) bulletPower = payable;
 
@@ -927,6 +932,10 @@ public final class DuelController {
     public static final double CAP_POWER = 0.2;
     /** POW-18: the softer cap of a power-cap5 line, for a robot where 0.2 starves the gun. */
     public static final double CAP_POWER_HALF = 0.5;
+    /** POW-19: the hard-fire floor and the energy it needs. */
+    public static final double HARD_POWER = 0.6;
+    public static final double HARD_ENERGY = 60.0;
+    private double hardPower = Double.NaN;
     /** POW-17: whether the race picked the last power, for the P record on a change. */
     private boolean raceApplied;
     /** POW-17: the energy race, fed every resolved duel bullet whether or not it is on. */
@@ -1400,6 +1409,8 @@ public final class DuelController {
         // POW-18: the power cap for the opponents the table names.
         powerCap = duelOnly(stackList.powerCap(name), enemiesTotal) ? CAP_POWER
             : duelOnly(stackList.powerCapHalf(name), enemiesTotal) ? CAP_POWER_HALF : Double.NaN;
+        // POW-19: the hard-fire floor for the opponents the table names.
+        hardPower = duelOnly(stackList.hardFire(name), enemiesTotal) ? HARD_POWER : Double.NaN;
         // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names, never a shield-mode one
         // (its TripHammer aims break the shield's bullet hits); the gun keeps them 1v1-only.
         if (duelOnly(stackList.gunStack(name) && !stackList.matches(name), enemiesTotal)) {

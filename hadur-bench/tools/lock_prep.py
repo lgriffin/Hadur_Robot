@@ -30,6 +30,8 @@ LEVERS = {
     "x5": ("x5list", ("X5_POWER",)),
     "wl": ("sgolist", ("STOP_GO",)),
     "hl": ("hjlist", ("HEAT_JIT",)),
+    "hf": ("hflist", ("HARD_FIRE",)),
+    "fp": ("fplist", ("FULL_OFF",)),
     "rp": ("rplist", ("RACE_POWER",)),
     "dg": ("sdodgelist", ("SHOT_DODGE",)),
 }
