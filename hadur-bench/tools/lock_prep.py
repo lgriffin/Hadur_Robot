@@ -34,7 +34,27 @@ LEVERS = {
     "fp": ("fplist", ("FULL_OFF",)),
     "rp": ("rplist", ("RACE_POWER",)),
     "dg": ("sdodgelist", ("SHOT_DODGE",)),
+    "pb": ("pblist", ("POWER_BAND",)),
+    "x0": ("sx0list", ("SHIELD_EXIT0",)),
+    "mv": ("smovelist", ("SHIELD_MOVE",)),
 }
+
+# POW-20: a power-band pick carries its fitted line ("m20 m40 m60 m80 name") from this file, so pb.list
+# holds whole lines rather than names.
+PB_LINES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "plans", "power-band-lines.txt")
+
+
+def _pb_name(line):
+    p = line.strip().split(" ", 4)
+    return p[4] if len(p) == 5 else line.strip()
+
+
+def _pb_lines(names):
+    lines = {_pb_name(l): l.strip() for l in open(PB_LINES) if l.strip() and not l.startswith("#")}
+    missing = [n for n in names if n not in lines]
+    if missing:
+        raise SystemExit("lock_prep: no power-band line for %s in %s" % (", ".join(missing), PB_LINES))
+    return [lines[n] for n in names]
 
 
 def main(pick, panel, base_arms, outdir):
@@ -58,7 +78,7 @@ def main(pick, panel, base_arms, outdir):
         for arm in sorted(picks):
             path = os.path.join(outdir, arm + ".list")
             with open(path, "w") as g:
-                g.write("".join(n + "\n" for n in picks[arm]))
+                g.write("".join(n + "\n" for n in (_pb_lines(picks[arm]) if arm == "pb" else picks[arm])))
             flavours, envs = LEVERS[arm]
             f.write("%s bash ./build-ablation.sh %s\n" % (" ".join("%s=%s" % (e, path.replace(os.sep, "/")) for e in envs), flavours))
     print("lock_prep: %d robots, arms %s" % (len(rows), ",".join(sorted(picks)) or "none"))
@@ -70,7 +90,7 @@ def restrict(arms_tsv, outdir, out):
     for arm in LEVERS:
         path = os.path.join(outdir, arm + ".list")
         if os.path.exists(path):
-            lists[arm] = {l.strip() for l in open(path) if l.strip()}
+            lists[arm] = {(_pb_name(l) if arm == "pb" else l.strip()) for l in open(path) if l.strip()}
     kept = 0
     with open(arms_tsv) as f, open(out, "w") as g:
         head = f.readline()

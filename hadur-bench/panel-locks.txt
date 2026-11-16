@@ -13,3 +13,12 @@ mue.Ascendant 1.2.27 | rank24-band2 | mue.Ascendant_1.2.27.jar
 cb.Domogled 1.2 | rank23-band2 | cb.Domogled_1.2.jar
 aw.Gilgalad 1.99.5c | rank12-band2 | aw.Gilgalad_1.99.5c.jar
 deo.FlowerBot 1.0 | rank223-band4 | deo.FlowerBot_1.0.jar
+ncj.MoxieBot 1.0 | rank1183-band6 | ncj.MoxieBot_1.0.jar
+fromHell.CHCl3 1.4.2 | rank40-band2 | fromHell.CHCl3_1.4.2.jar
+mn.Combat 3.25.0 | rank38-band2 | mn.Combat_3.25.0.jar
+xander.cat.Mikey 1.2 | rank228-band4 | xander.cat.Mikey_1.2.jar
+nz.jdc.nano.PralDeGuerre 1.2 | rank275-band4 | nz.jdc.nano.PralDeGuerre_1.2.jar
+robar.nano.Vespa 0.95 | rank483-band5 | robar.nano.Vespa_0.95.jar
+positive.Portia 1.26e | rank63-band3 | positive.Portia_1.26e.jar
+EH.kms.LightningStorm 0.11B | rank355-band4 | EH.kms.LightningStorm_0.11B.jar
+cw.megas.Blade 0.8 | rank386-band4 | cw.megas.Blade_0.8.jar

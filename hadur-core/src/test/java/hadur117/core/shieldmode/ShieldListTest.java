@@ -1,7 +1,9 @@
 package hadur117.core.shieldmode;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -141,6 +143,24 @@ class ShieldListTest {
         assertFalse(l.hardFire(null));
         assertFalse(l.matches("a.B 1.0"), "not a shield entry");
         assertFalse(ShieldList.NONE.hardFire("a.B 1.0"));
+    }
+
+    @Test
+    @Tag("POW-20")
+    @DisplayName("power-band lines carry four energy-band multipliers per opponent, matched as shield entries")
+    void perOpponentPowerBand() {
+        ShieldList l = ShieldList.parse(List.of("power-band: 1.5 1.2 0.8 0.5 a.B 1.0", "power-band: 1 1 1 2 c.D",
+            "power-band: 1 1 1 a.B", "power-band: 0 1 1 1 e.F", "power-band: x 1 1 1 g.H", "power-band:"));
+        assertArrayEquals(new double[] {1.5, 1.2, 0.8, 0.5}, l.powerBandFor("a.B 1.0"));
+        assertArrayEquals(new double[] {1.5, 1.2, 0.8, 0.5}, l.powerBandFor("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertArrayEquals(new double[] {1, 1, 1, 2}, l.powerBandFor("c.D 2.3"), "a bare name matches every version");
+        assertNull(l.powerBandFor("e.F 1.0"), "a zero multiplier is refused");
+        assertNull(l.powerBandFor("g.H 1.0"), "a malformed line is skipped");
+        assertNull(l.powerBandFor(null));
+        assertFalse(l.matches("a.B 1.0") || l.hardFire("a.B 1.0"), "not a shield entry, no other switch");
+        l.powerBandFor("a.B 1.0")[0] = 9;
+        assertEquals(1.5, l.powerBandFor("a.B 1.0")[0], "callers get a copy");
+        assertNull(ShieldList.NONE.powerBandFor("a.B 1.0"));
     }
 
     @Test
