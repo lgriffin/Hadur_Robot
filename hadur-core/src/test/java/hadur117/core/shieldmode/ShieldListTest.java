@@ -176,6 +176,21 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("MOVE-46")
+    @DisplayName("ram-wait lines name the opponents a disabled enemy is rammed only after its last waves, matched as shield entries")
+    void perOpponentRamWait() {
+        ShieldList l = ShieldList.parse(List.of("ram-wait: a.B 1.0", "ram-wait: c.D", "ram-wait:", "speed-band: e.F"));
+        assertTrue(l.ramWait("a.B 1.0"));
+        assertTrue(l.ramWait("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertTrue(l.ramWait("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.ramWait("e.F 1.0"), "a speed-band line is not a ram-wait line");
+        assertFalse(l.speedBand("a.B 1.0") || l.ramCirc("a.B 1.0"), "no other switch");
+        assertFalse(l.ramWait(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.ramWait("a.B 1.0"));
+    }
+
+    @Test
     @Tag("RAM-14")
     @DisplayName("ram-heavy lines name the rammers whose shots the escape weighs twice as heavily, matched as shield entries")
     void perOpponentRamHeavy() {

@@ -52,6 +52,15 @@ class LockPrepTest(unittest.TestCase):
         kept = [tuple(l.rstrip("\n").split("\t")[::2]) for l in open(picked)][1:]
         self.assertEqual([("c", "a.A 1"), ("aa", "c.C 3"), ("mtzl", "a.A 1"), ("gl", "c.C 3")], kept)
 
+    def test_ram_wait_pick_builds_its_list(self):
+        # MOVE-46: a ram-wait pick (arm rwl) gets its own list and an rwlist rebuild.
+        with open(self.arms, "a") as f:
+            f.write("rwl | hadur117.Hadur 3.22rwl | x\n")
+        out = self.run_prep([("b.B 2", "rwl", "1.2")])
+        self.assertEqual("b.B 2\n", open(os.path.join(out, "rwl.list")).read())
+        posix = os.path.join(out, "rwl.list").replace(os.sep, "/")
+        self.assertIn("RAM_WAIT=%s bash ./build-ablation.sh rwlist" % posix, open(os.path.join(out, "build.sh")).read())
+
     def test_no_pick_leaves_an_empty_panel(self):
         for rows in ([], None):
             out = self.run_prep(rows)

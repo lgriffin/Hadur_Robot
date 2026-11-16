@@ -95,6 +95,8 @@ public final class ShieldList {
     public static final String VEL_JITTER_PREFIX = "velocity-jitter:";
     /** MOVE-45: a line starting with this names an opponent whose rounded-velocity pattern matcher the duel defeats by a random top speed of 7 to 8 each tick. */
     public static final String SPEED_BAND_PREFIX = "speed-band:";
+    /** MOVE-46: a line starting with this names an opponent the duel rams, once disabled, only after its last waves have passed. */
+    public static final String RAM_WAIT_PREFIX = "ram-wait:";
     /**
      * SKEY-2: a line starting with this gives an opponent's surf key: nine multipliers on the hit
      * views' key weights, one on the kernel width, then the name ({@code "m1 ... m9 bw name"}).
@@ -155,6 +157,8 @@ public final class ShieldList {
     static final int SPEED_BAND = 262144;
     /** RAM-14: the per-opponent heavy rammer-dodge switch's bit in {@link #switches}. */
     static final int RAM_HEAVY = 524288;
+    /** MOVE-46: the per-opponent ram-wait switch's bit in {@link #switches}. */
+    static final int RAM_WAIT = 1048576;
 
     private final Set<String> entries;
     /** SHIELD-17: the opening-drive list. */
@@ -222,6 +226,7 @@ public final class ShieldList {
                     : entry.startsWith(HARD_FIRE_PREFIX) ? HARD_FIRE
                     : entry.startsWith(VEL_JITTER_PREFIX) ? VEL_JITTER
                     : entry.startsWith(SPEED_BAND_PREFIX) ? SPEED_BAND
+                    : entry.startsWith(RAM_WAIT_PREFIX) ? RAM_WAIT
                     : entry.startsWith(POWER_CAP_PREFIX) ? POWER_CAP : 0;
                 if (bit != 0) {
                     String name = withoutVersion(entry.substring(entry.indexOf(':') + 1).trim());
@@ -622,6 +627,16 @@ public final class ShieldList {
      */
     public boolean speedBand(String robotName) {
         return (switchBits(robotName) & SPEED_BAND) != 0;
+    }
+
+    /**
+     * MOVE-46: whether the table names this opponent with a {@link #RAM_WAIT_PREFIX} line.
+     *
+     * @param robotName the opponent's name as Robocode lists it
+     * @return true when a {@code ram-wait:} line matches it
+     */
+    public boolean ramWait(String robotName) {
+        return (switchBits(robotName) & RAM_WAIT) != 0;
     }
 
     /**

@@ -381,6 +381,7 @@ public final class DuelController {
         if (heatJitOn) on.add("heatjit");
         if (velJitterOn) on.add("veljit");
         if (speedBandOn) on.add("speedband");
+        if (ramWaitOn) on.add("ramwait");
         if (flatOn) on.add("flat");
         if (mirrorOff) on.add("mirroff");
         if (mimicOn) on.add("mimic");
@@ -846,7 +847,14 @@ public final class DuelController {
         moveController.updateShadows(in.time());
         // MOVE-8: the plan is republished by the surf on each tick it drives.
         moveController.clearPlan();
-        if (endgame == Endgame.State.RAM) {
+        // MOVE-46: against the opponents the table names, a disabled enemy is rammed only once none
+        // of its waves can still reach us; until then the surf keeps dodging its last bullets. A
+        // disabled enemy fires no more, so MOVE-11's provisional wave is dropped first: only real
+        // waves hold the ram.
+        if (ramWaitOn && endgame == Endgame.State.RAM) moveController.setProvisionalReady(false, in.time());
+        boolean wavesInAir = ramWaitOn
+            && moveController.findSurfableWave(0, currentState(in)) != null;
+        if (endgame == Endgame.State.RAM && !wavesInAir) {
             surfMover.ram(orders, currentState(in), lastEnemyLocation);
         } else if (mirrorActive) {
             // MIR-1: a planned path, so the gun knows where the mirror image will be. It
@@ -945,6 +953,8 @@ public final class DuelController {
     private boolean velJitterOn;
     /** MOVE-45: the table names this opponent for speed-band jitter. */
     private boolean speedBandOn;
+    /** MOVE-46: whether the ram on a disabled enemy waits for its last waves this battle. */
+    private boolean ramWaitOn;
     /** MOVE-32: the table turned the flattener views on for this opponent. */
     private boolean flatOn;
     /** MIR-2: the table turned MIR-1 off for this opponent. */
@@ -1340,6 +1350,7 @@ public final class DuelController {
         heatJitOn = false;
         velJitterOn = false;
         speedBandOn = false;
+        ramWaitOn = false;
         stopAndGo = null;
         gunController.setTripHammer(GunDesign.TRIPHAMMER);
         gunController.setFreeGun(GunDesign.FREE_GUN);
@@ -1463,6 +1474,8 @@ public final class DuelController {
         velJitterOn = duelOnly(stackList.velocityJitter(name), enemiesTotal);
         // MOVE-45: speed-band jitter for the opponents the table names.
         speedBandOn = duelOnly(stackList.speedBand(name), enemiesTotal);
+        // MOVE-46: ram a disabled enemy only after its last waves, for the opponents the table names.
+        ramWaitOn = duelOnly(stackList.ramWait(name), enemiesTotal);
         // POW-20: the power bands for the opponents the table names.
         powerBand = enemiesTotal <= 1 ? stackList.powerBandFor(name) : null;
         distPin = enemiesTotal <= 1 ? stackList.distPinFor(name) : Double.NaN;
