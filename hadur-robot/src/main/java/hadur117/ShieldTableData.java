@@ -680,6 +680,18 @@ final class ShieldTableData {
     }
 
     /**
+     * POW-20: per-opponent power bands, one line each: four multipliers on the duel's chosen power while our energy
+     * is 20-40, 40-60, 60-80 and 80 or more, then the name. Each copies BeepBoop's power by its own energy against
+     * that robot (from truth logs). Candidate builds add lines here (build-ablation.sh pblist).
+     *
+     * @return a fresh array of lines
+     */
+    static String[] powerBands() {
+        return new String[] {
+        };
+    }
+
+    /**
      * MIR-2: the opponents the duel never runs MIR-1 (the mirror detector, its drive and its aim)
      * against. Empty until a card holds robots; candidate builds add lines here (build-ablation.sh
      * mirofflist).

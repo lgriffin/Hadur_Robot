@@ -96,6 +96,13 @@ public final class ShieldList {
     public static final String SURF_KEY_PREFIX = "surf-key:";
     /** SKEY-2: the numbers a surf-key line carries before the name. */
     public static final int SURF_KEY_VALUES = 10;
+    /**
+     * POW-20: a line starting with this gives an opponent's power bands: four multipliers on the duel's chosen power
+     * while our energy is 20-40, 40-60, 60-80 and 80 or more, then the name ({@code "m1 m2 m3 m4 name"}).
+     */
+    public static final String POWER_BAND_PREFIX = "power-band:";
+    /** POW-20: the numbers a power-band line carries before the name. */
+    public static final int POWER_BAND_VALUES = 4;
     /** MOVE-28: the per-opponent switch's bit in {@link #switches}. */
     static final int HEAT_JIT = 1;
     /** GUN-11: the per-opponent switch's bit in {@link #switches}. */
@@ -143,6 +150,8 @@ public final class ShieldList {
     private Map<String, Integer> switches = Collections.emptyMap();
     /** SKEY-2: name to its surf key (nine weight multipliers, then the kernel width's). */
     private Map<String, double[]> surfKeys = Collections.emptyMap();
+    /** POW-20: name to its four power-band multipliers. */
+    private Map<String, double[]> powerBands = Collections.emptyMap();
 
     private ShieldList(Set<String> entries, Set<String> moves, Map<String, double[]> aims,
                        Set<String> dodges, Map<String, Integer> stopGo) {
@@ -168,6 +177,7 @@ public final class ShieldList {
         Map<String, Integer> dodgePlans = new TreeMap<>();
         Map<String, Integer> switches = new TreeMap<>();
         Map<String, double[]> surfKeys = new TreeMap<>();
+        Map<String, double[]> powerBands = new TreeMap<>();
         if (lines != null) {
             for (String line : lines) {
                 if (line == null) continue;
@@ -190,6 +200,23 @@ public final class ShieldList {
                     String name = withoutVersion(entry.substring(entry.indexOf(':') + 1).trim());
                     if (!name.isEmpty() && (switches.containsKey(name) || switches.size() < MAX_ENTRIES)) {
                         switches.merge(name, bit, (a, b) -> a | b);
+                    }
+                    continue;
+                }
+                if (entry.startsWith(POWER_BAND_PREFIX)) {
+                    String[] p = entry.substring(POWER_BAND_PREFIX.length()).trim().split(" ", POWER_BAND_VALUES + 1);
+                    if (p.length == POWER_BAND_VALUES + 1 && !p[POWER_BAND_VALUES].isEmpty() && powerBands.size() < MAX_ENTRIES) {
+                        try {
+                            double[] band = new double[POWER_BAND_VALUES];
+                            boolean ok = true;
+                            for (int i = 0; i < POWER_BAND_VALUES; i++) {
+                                band[i] = Double.parseDouble(p[i]);
+                                ok &= band[i] > 0 && !Double.isInfinite(band[i]);
+                            }
+                            if (ok) powerBands.put(withoutVersion(p[POWER_BAND_VALUES]), band);
+                        } catch (NumberFormatException e) {
+                            // A malformed power-band line is skipped.
+                        }
                     }
                     continue;
                 }
@@ -260,13 +287,15 @@ public final class ShieldList {
             }
         }
         if (entries.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()
-            && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty() && surfKeys.isEmpty()) return NONE;
+            && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty() && surfKeys.isEmpty()
+            && powerBands.isEmpty()) return NONE;
         ShieldList list = new ShieldList(Collections.unmodifiableSet(entries),
             Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims), Collections.unmodifiableSet(dodges),
             Collections.unmodifiableMap(stopGo));
         list.dodgePlans = Collections.unmodifiableMap(dodgePlans);
         list.switches = Collections.unmodifiableMap(switches);
         list.surfKeys = Collections.unmodifiableMap(surfKeys);
+        list.powerBands = Collections.unmodifiableMap(powerBands);
         return list;
     }
 
@@ -294,6 +323,20 @@ public final class ShieldList {
         if (robotName == null || moves.isEmpty()) return false;
         String name = robotName.trim().replaceAll("\\s+", " ");
         return moves.contains(name) || moves.contains(withoutVersion(name));
+    }
+
+    /**
+     * POW-20: {@code robotName}'s power bands, by the rule of {@link #matches}.
+     *
+     * @param robotName the scanned robot's name, or null
+     * @return a fresh array of the four band multipliers, or null when none is shipped
+     */
+    public double[] powerBandFor(String robotName) {
+        if (robotName == null || powerBands.isEmpty()) return null;
+        String name = robotName.trim().replaceAll("\\s+", " ");
+        double[] k = powerBands.get(name);
+        if (k == null) k = powerBands.get(withoutVersion(name));
+        return k == null ? null : k.clone();
     }
 
     /**

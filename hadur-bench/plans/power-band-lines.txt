@@ -1,0 +1,6 @@
+# POW-20 power-band lines (m20 m40 m60 m80 name): BeepBoop's power-by-own-energy curve against the robot over ours,
+# fitted from paired truth logs on 16 Nov. Only robots that locked on the cloud are kept here; lock_prep.py reads it for pb picks.
+0.40 0.30 0.30 0.30 ncj.MoxieBot 1.0
+1.37 1.09 0.76 0.76 fromHell.CHCl3 1.4.2
+1.00 0.64 0.70 0.80 xander.cat.Mikey 1.2
+0.93 0.95 1.07 1.31 mn.Combat 3.25.0

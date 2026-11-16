@@ -667,6 +667,16 @@ public final class DuelController {
         if (!Double.isNaN(hardPower) && enemiesTotal <= 1 && in.energy() >= HARD_ENERGY) {
             bulletPower = Math.max(bulletPower, Double.isNaN(killPower) ? hardPower : Math.min(hardPower, killPower));
         }
+        // POW-20: against an opponent the table names, while our energy is 20 or more, the power is scaled by its band's
+        // multiplier (BeepBoop's power over ours there), kept within 0.1 to 3.0 and never raised past the least power
+        // that kills. Under 20 energy the endgame rules decide alone.
+        if (powerBand != null && enemiesTotal <= 1 && in.energy() >= 20) {
+            double e0 = in.energy();
+            double m = powerBand[e0 < 40 ? 0 : e0 < 60 ? 1 : e0 < 80 ? 2 : 3];
+            double scaled = Math.max(0.1, Math.min(3.0, bulletPower * m));
+            if (scaled > bulletPower && !Double.isNaN(killPower)) scaled = Math.max(bulletPower, Math.min(scaled, killPower));
+            bulletPower = scaled;
+        }
         double payable = PowerPolicy.payable(bulletPower, in.energy());
         if (!Double.isNaN(payable)) bulletPower = payable;
 
@@ -936,6 +946,8 @@ public final class DuelController {
     public static final double HARD_POWER = 0.6;
     public static final double HARD_ENERGY = 60.0;
     private double hardPower = Double.NaN;
+    /** POW-20: the power-band multipliers for this opponent, or null. */
+    private double[] powerBand;
     /** POW-17: whether the race picked the last power, for the P record on a change. */
     private boolean raceApplied;
     /** POW-17: the energy race, fed every resolved duel bullet whether or not it is on. */
@@ -1411,6 +1423,8 @@ public final class DuelController {
             : duelOnly(stackList.powerCapHalf(name), enemiesTotal) ? CAP_POWER_HALF : Double.NaN;
         // POW-19: the hard-fire floor for the opponents the table names.
         hardPower = duelOnly(stackList.hardFire(name), enemiesTotal) ? HARD_POWER : Double.NaN;
+        // POW-20: the power bands for the opponents the table names.
+        powerBand = enemiesTotal <= 1 ? stackList.powerBandFor(name) : null;
         // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names, never a shield-mode one
         // (its TripHammer aims break the shield's bullet hits); the gun keeps them 1v1-only.
         if (duelOnly(stackList.gunStack(name) && !stackList.matches(name), enemiesTotal)) {
