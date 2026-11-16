@@ -1,0 +1,9 @@
+# pc-locks (BENCH-253, PR #843): robots whose lines shipped on 12 fresh PC seeds at the live turn time
+rz.GlowBlow 2.31
+com.spp.robocode.MostlyHarmless 010
+davidalves.net.DuelistMicro 1.22
+sm.Devil 7.3
+Grystrion.TrackerWO 1.0
+cb.Domogled 1.2
+kenran.Bakko v1.0.1
+deo.virtual.RainbowBot 1.0

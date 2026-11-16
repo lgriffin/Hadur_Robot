@@ -290,3 +290,10 @@ pez.rumble.CassiusClay 2rho.02no | rank35-band2 | pez.rumble.CassiusClay_2rho.02
 hadur117.micro.Eveimear 0.5 | pc-class-1 | hadur117.micro.Eveimear_0.5.jar
 pez.mini.Gouldingi 1.5 | pc-class-2 | pez.mini.Gouldingi_1.5.jar
 axeBots.Musashi 2.18 | pc-r31 | axeBots.Musashi_2.18.jar
+rz.GlowBlow 2.31 | pc-locks | rz.GlowBlow_2.31.jar
+com.spp.robocode.MostlyHarmless 010 | pc-locks | com.spp.robocode.MostlyHarmless_010.jar
+davidalves.net.DuelistMicro 1.22 | pc-locks | davidalves.net.DuelistMicro_1.22.jar
+cx.mini.BlackSwans 0.60 | pc-shards | cx.mini.BlackSwans_0.60.jar
+pa3k.Manta 1.20 | pc-shards | pa3k.Manta_1.20.jar
+bndl.LostLion 1.2 | pc-shards | bndl.LostLion_1.2.jar
+nz.jdc.nano.AralR 1.1 | pc-shards | nz.jdc.nano.AralR_1.1.jar

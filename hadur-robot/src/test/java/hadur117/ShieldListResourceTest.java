@@ -53,8 +53,9 @@ class ShieldListResourceTest {
         // pc-ala-shield (PR #733): Ala joins with a still line. pc-shield-rescreen (PR #739): Saturn and OperatorZeze.
         // pc-still-field (PR #746): X2, Che and Aardvark. pc-shield-floor (PR #781): CassiusClay.
         // Seraphim leaves: its lines lost on 2.4.0 (docs/bench/local/2026-11-13_vr.md). pc-class-1 (PR #803): Eveimear. pc-class-2 (PR #806): Gouldingi.
-        // pc-r31 (PR #817): Musashi.
-        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1 - 1 + 1 + 1 + 1, list.size());
+        // pc-r31 (PR #817): Musashi. pc-locks (PR #843): GlowBlow, MostlyHarmless and DuelistMicro.
+        // pc-shards (PR #840): BlackSwans, Manta, LostLion and AralR.
+        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1 - 1 + 1 + 1 + 1 + 3 + 4, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
@@ -106,10 +107,10 @@ class ShieldListResourceTest {
             "pedersen.Hubris 2.4", "rsk1.RSK1 4.0"}) {
             assertTrue(list.matches(name), name);
         }
-        // Robots of Nullstride's list the sweep found worse or open with a small mean.
+        // Robots of Nullstride's list the sweep found worse or open with a small mean. BlackSwans joined later with a
+        // still line (pc-shards, PR #840: +21.3 on 12 fresh PC seeds).
         for (String name : new String[] {
-            "aaa.r.ScalarR 0.005h.053-noshield", "stelo.MatchupMicro 1.2",
-            "cx.mini.BlackSwans 0.60"}) {
+            "aaa.r.ScalarR 0.005h.053-noshield", "stelo.MatchupMicro 1.2"}) {
             assertTrue(!list.matches(name), name);
         }
     }
@@ -231,7 +232,8 @@ class ShieldListResourceTest {
         // pc-shelf (PR #636): Entangled. pc-shield-audit (PR #697): Princess, with exit off.
         // pc-ala-shield (PR #733): Ala. pc-shield-rescreen (PR #739): Saturn and OperatorZeze.
         // pc-still-field (PR #746): X2, Che and Aardvark. pc-shield-floor (PR #781): CassiusClay. pc-class-1 (PR #803): Eveimear. pc-class-2 (PR #806): Gouldingi. pc-r31 (PR #817): Musashi.
-        assertEquals(17 + 9 + 5 - 1 + 1 + 1 + 1 + 2 + 3 + 1 + 1 + 1 + 1, ShieldTableData.stills().length);
+        // pc-locks (PR #843): GlowBlow, MostlyHarmless, DuelistMicro and Devil. pc-shards (PR #840): BlackSwans, Manta, LostLion, AralR.
+        assertEquals(17 + 9 + 5 - 1 + 1 + 1 + 1 + 2 + 3 + 1 + 1 + 1 + 1 + 4 + 4, ShieldTableData.stills().length);
         assertTrue(list.matches("lechu.Ala 0.0.4") && list.still("lechu.Ala 0.0.4"));
         assertTrue(list.matches("cx.Princess 1.0") && Arrays.asList(ShieldTableData.exitOffs()).contains("cx.Princess 1.0"));
         for (String n : ShieldTableData.stills()) {

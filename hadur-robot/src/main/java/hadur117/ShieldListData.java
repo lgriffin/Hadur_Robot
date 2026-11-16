@@ -364,6 +364,15 @@ final class ShieldListData {
             "pez.mini.Gouldingi 1.5",
             // pc-r31 (BENCH-244, PR #817): with a still line, +21.0 on 12 fresh PC seeds at the live turn time
             "axeBots.Musashi 2.18",
+            // pc-locks (BENCH-253, PR #843): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first, with still lines
+            "rz.GlowBlow 2.31",                    // +18.6
+            "com.spp.robocode.MostlyHarmless 010", // +3.7
+            "davidalves.net.DuelistMicro 1.22",    // +3.4
+            // pc-shards (BENCH-252, PR #840): 12 fresh PC seeds at the live turn time after the 470-robot screen, with still lines
+            "cx.mini.BlackSwans 0.60",             // +21.3
+            "pa3k.Manta 1.20",                     // +4.2
+            "bndl.LostLion 1.2",                   // +3.5
+            "nz.jdc.nano.AralR 1.1",               // +3.0
         };
     }
 }

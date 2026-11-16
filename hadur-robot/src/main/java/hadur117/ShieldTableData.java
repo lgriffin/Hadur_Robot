@@ -327,6 +327,8 @@ final class ShieldTableData {
      */
     static String[] dodges() {
         return new String[] {
+            // pc-shards (BENCH-252, PR #840): 12 fresh PC seeds at the live turn time after the 470-robot screen
+            "panzer.Panzer 0.2",             // +1.9
         };
     }
 
@@ -489,6 +491,8 @@ final class ShieldTableData {
             "theo.real.Ahab 1.0",                          // +8.9 / +1.0
             "test.Podgy 4.0",                              // +4.4 / +0.9
             "dragonbyte.Neutrino 4",                       // +4.5 / +0.0
+            // pc-locks (BENCH-253, PR #843): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "Grystrion.TrackerWO 1.0",       // +1.5
         };
     }
 
@@ -622,6 +626,16 @@ final class ShieldTableData {
             "pez.mini.Gouldingi 1.5",
             // pc-r31 (BENCH-244, PR #817): +21.0 on 12 fresh PC seeds at the live turn time, with the shield list line
             "axeBots.Musashi 2.18",
+            // pc-locks (BENCH-253, PR #843): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "rz.GlowBlow 2.31",                    // +18.6
+            "com.spp.robocode.MostlyHarmless 010", // +3.7
+            "davidalves.net.DuelistMicro 1.22",    // +3.4
+            "sm.Devil 7.3",                        // +3.4 (already shielded)
+            // pc-shards (BENCH-252, PR #840): 12 fresh PC seeds at the live turn time after the 470-robot screen
+            "cx.mini.BlackSwans 0.60",             // +21.3
+            "pa3k.Manta 1.20",                     // +4.2
+            "bndl.LostLion 1.2",                   // +3.5
+            "nz.jdc.nano.AralR 1.1",               // +3.0
         };
     }
 
@@ -773,6 +787,8 @@ final class ShieldTableData {
             "djdjdj.NanoSkunk10 1.0",                      // +3.6 / +0.3
             "eat.HumblePieLite 1.0",                       // +2.9 / -0.2
             "amk.ChumbaMini 0.2",                          // +5.2 / -0.5
+            // pc-locks (BENCH-253, PR #843): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first (pc-shards PR #840 held it too, +2.6)
+            "cb.Domogled 1.2",               // +3.9
         };
     }
 
@@ -834,6 +850,9 @@ final class ShieldTableData {
             "cre.Karolos 0.32",                            // +5.2 / +4.0
             // pc-field-screen (BENCH-251, PR #832): picked on 6 PC seeds, +3.7 on 12 fresh PC seeds at the live turn time (low end +0.2)
             "justin.DemonicRage 3.20",
+            // pc-locks (BENCH-253, PR #843): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "kenran.Bakko v1.0.1",           // +5.9
+            "deo.virtual.RainbowBot 1.0",    // +3.5 (on top of its line)
         };
     }
 
