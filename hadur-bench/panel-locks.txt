@@ -1,8 +1,8 @@
-# BENCH-253 pc-locks, round 4: robots whose per-robot line locked on the cloud (12+ fresh seeds, 95% low end above 0,
-# live turn time) after round 3 ran (PR #860) (coverage/shards/locks.tsv, 16 Nov). Census rows. name | rank | jar
-ntc.Knowledge 1.1 | rank639-band5 | ntc.Knowledge_1.1.jar
-az.Ololobot 0.2.4 | rank554-band5 | az.Ololobot_0.2.4.jar
-cx.micro.Spark 0.6 | rank282-band4 | cx.micro.Spark_0.6.jar
-apv.AspidReloaded 0.6 | rank343-band4 | apv.AspidReloaded_0.6.jar
-yk.JahMicro 1.0 | rank1026-band6 | yk.JahMicro_1.0.jar
-genprog.Rinmorikazu 1.0 | rank1077-band6 | genprog.Rinmorikazu_1.0.jar
+# BENCH-253 pc-locks, round 5: robots whose per-robot line locked on the cloud (24 fresh seeds pooled, 95% low end above 0,
+# live turn time) after round 4 ran (PR #866) (coverage/shards/locks.tsv, 16 Nov). Census rows. name | rank | jar
+nosteel.Welby 0.0.3 | rank713-band6 | nosteel.Welby_0.0.3.jar
+uccc.Dorito 1.12 | rank952-band6 | uccc.Dorito_1.12.jar
+knackibot.KnackOnOne 0.8.1 | rank882-band6 | knackibot.KnackOnOne_0.8.1.jar
+tkt.RedShift 1.1.CS.0 | rank565-band5 | tkt.RedShift_1.1.CS.0.jar
+ph.Thinker 0.2.5 | rank761-band6 | ph.Thinker_0.2.5.jar
+cb.nano.Insomnia 1.0 | rank1087-band6 | cb.nano.Insomnia_1.0.jar
