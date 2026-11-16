@@ -513,6 +513,9 @@ final class ShieldTableData {
             "Grystrion.TrackerWO 1.0",       // +1.5
             // pc-locks round 3 (BENCH-253, PR #860): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "EH.Pegasus 0.113",              // +2.1
+            // pc-locks round 4 (BENCH-253, PR #866): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "genprog.Rinmorikazu 1.0",       // +1.4
+            "yk.JahMicro 1.0",               // +1.3
         };
     }
 
@@ -728,17 +731,21 @@ final class ShieldTableData {
         return new String[] {
             // pc-locks round 3 (BENCH-253, PR #860): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "jw.Booring 1.11",               // +13.7
+            // pc-locks round 4 (BENCH-253, PR #866): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "apv.AspidReloaded 0.6",         // +18.0
         };
     }
 
     /**
      * MOVE-45: the opponents whose rounded-velocity pattern matcher the duel defeats by a random top speed of 7 to 8
-     * each tick ({@code speed-band:} lines). Empty on master: a cloud lock goes to the PC card first.
+     * each tick ({@code speed-band:} lines). Knowledge held on the PC (pc-locks round 4, PR #866).
      *
      * @return a fresh array of names
      */
     static String[] speedBands() {
         return new String[] {
+            // pc-locks round 4 (BENCH-253, PR #866): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "ntc.Knowledge 1.1",             // +2.6
         };
     }
 
@@ -751,6 +758,8 @@ final class ShieldTableData {
      */
     static String[] distPins() {
         return new String[] {
+            // pc-locks round 4 (BENCH-253, PR #866): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "625 az.Ololobot 0.2.4",         // +3.2
         };
     }
 
