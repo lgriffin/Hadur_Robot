@@ -7,11 +7,13 @@
 # battle results to /mnt/project-files/coverage/shards/surf-field/partN/ for the owning thread to read.
 set -euo pipefail
 N="$1"
+X="${2:-}"          # "b": the extra seeds 37902-3, into partNb
+SB=37900; [[ "$X" == b ]] && SB=37902
 MAIN=/home/user/Hadur_Robot
 WT=/home/user/sbwt
 BR=claude/project-thread-y0plb3
 WANT=power25
-OUT=/mnt/project-files/coverage/shards/surf-field/part$N
+OUT=/mnt/project-files/coverage/shards/surf-field/part$N$X
 mkdir -p "$OUT"
 log() { echo "$(date -u +%FT%TZ) $*" | tee -a "$OUT/status.txt"; }
 if [[ "$(cat "$WT/.sb-built" 2>/dev/null)" != "$WANT" ]]; then
@@ -46,10 +48,10 @@ grep -v '^#' "plans/surfbank/field-$N.txt" | while IFS= read -r line; do
     j=$(echo "$line" | awk -F'|' '{gsub(/ /,"",$3); print $3}')
     if [[ -f "opponents/$j" ]]; then echo "$line"; else log "dropped (no jar): $line"; fi
 done > "$PANEL"
-log "running part $N"
-mvn -q -Drobocode.version=1.11.2 exec:java -Dexec.args="--set $PANEL --seeds 2 --seed-base 37900 --out work/surf-field-$N --arms plans/surfbank/surfbank.arms --truth-log false --rounds 35 --parallel 2 --child-cpus 2 --cpu-constant live --job-order shuffled --failed-ok true" || rc=$?
+log "running part $N$X (seeds from $SB)"
+mvn -q -Drobocode.version=1.11.2 exec:java -Dexec.args="--set $PANEL --seeds 2 --seed-base $SB --out work/surf-field-$N$X --arms plans/surfbank/surfbank.arms --truth-log false --rounds 35 --parallel 2 --child-cpus 2 --cpu-constant live --job-order shuffled --failed-ok true" || rc=$?
 [[ ${rc:-0} -ne 0 ]] && log "bench exit $rc"
-cd "work/surf-field-$N"
+cd "work/surf-field-$N$X"
 mkdir -p "$OUT/battles"
 cp -f arms.tsv conditions.json "$OUT/" 2>/dev/null || true
 [[ -f report.md ]] && cp -f report.md "$OUT/"
