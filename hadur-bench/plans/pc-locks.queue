@@ -2,13 +2,13 @@
 # low end above 0, live turn time; coverage/shards/locks.tsv) after round 2 (PR #845) ran, locked on 12 fresh PC seeds:
 #   mv (SHIELD-17 moving shield): Chameleon +9.7 (low +5.7), Artist +7.5 (+2.8), Frog +4.3 (+2.5), Tigger +3.9 (+0.4),
 #      Mako +3.0 (+0.4), all on master 3.23
-#   rp (POW-17 race power): EvBotNG +3.2 (+0.7, 24 seeds)
+#   rp (POW-17 race power): EvBotNG +3.2 (+0.7, 24 seeds), WaveSerpent +4.6 (+1.9)
 #   pb (POW-20 power band): Atom +2.8 (+1.3), line 1.00 0.43 0.31 0.26 (BeepBoop fires about 0.5 at it)
 #   hl (MOVE-28 stop-and-start): Flex +2.6 (+0.5, 24 seeds), JointStrike +1.8 (+0.4, 24 seeds)
 #   Older unbanked cloud locks that already failed on the PC (Yuugao, Blur, FlowerBot) or were read on the wrong
 #   version (Seraphim) stay off.
 #   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live
-#   lock       the 9 robots   c / aa / mv / rp / pb / hl (each lever arm built with only its own robots)   12 fresh seeds
+#   lock       the 10 robots   c / aa / mv / rp / pb / hl (each lever arm built with only its own robots)   12 fresh seeds
 #              from 43300, --cpu-constant live, in work/pc-locks3 (earlier rounds' battles stay in work/pc-locks, -locks2)
 #   gate       each robot judged on its own arm only (lock_prep.py --restrict); it keeps its line where the 95% low end
 #              is above 0 (mode_table.py --margin 0)
@@ -16,7 +16,7 @@
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
 #   --fresh because round 2 left this plan's queue state marked complete; an interrupted round 3 resumes without it.
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 648 lock battles (9 robots, 6 arms, 12 seeds), about 18 minutes.
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 720 lock battles (10 robots, 6 arms, 12 seeds), about 20 minutes.
 #
 # Why it should win (the PC card rule of 2026-11-03):
 #   - Per-opponent tailoring: every line names one robot; every other robot, team and melee play bit for bit as master.
@@ -24,7 +24,7 @@
 #     mv: these shield-list robots land unshielded hits on us within 130 px (shards/shield-unshielded-C.tsv); the
 #     opening drive keeps us off that range. Of 24 such robots screened on 4 seeds, 7 leads went to 12 fresh seeds and
 #     five held (shards/movefield/screen.txt). mv held 3 of 3 cloud locks on the PC in round 2 (#845).
-#     rp: EvBotNG wins the low-energy fights from behind that BeepBoop wins (5/22 for us against 24/30); the race power
+#     rp: EvBotNG and WaveSerpent win the low-energy fights from behind that BeepBoop wins (5/22 for us against 24/30); the race power
 #     pick spends less energy there (shards/attrition/).
 #     pb: per energy band, BeepBoop's bullet power against Atom over ours, from paired truth logs (plans/power-band-lines.txt).
 #     hl: Flex and JointStrike screened +3.3 and +3.2 on stop-and-start and held over 24 fresh seeds (shard A).
@@ -62,5 +62,5 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 4
 gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks3-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks3-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks3-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms mv rp pb hl --out ${OUT}/$(date +%Y-%m-%d)_pc-locks3-lock-per-robot.md --out-tsv ${OUT}/pc-locks3-lock-per-robot.tsv
   after: lock
 
-pr | bash tools/open_results_pr.sh claude/pc-locks3-results "1v1 cloud locks, round 3 (9 robots from the field shards) locked on 12 fresh PC seeds" ${OUT}/pc-locks3-livematch.md ${OUT}/*_pc-locks3-*.md ${OUT}/pc-locks3-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks3-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks3-results "1v1 cloud locks, round 3 (10 robots from the field shards) locked on 12 fresh PC seeds" ${OUT}/pc-locks3-livematch.md ${OUT}/*_pc-locks3-*.md ${OUT}/pc-locks3-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks3-lock-pick.tsv' -size +0c)
   after: gate
