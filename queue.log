@@ -31,3 +31,4 @@
 05:48:58 pick exit=0 in 268 s
 05:48:58 start lock
 05:48:58 watching lock: 4 stop rule(s)
+06:11:50 progress lock: 1253/1824 (69%) battles, 3288/h, ETA 10 min, 0 failed, skips 12.2/battle (last 100), aa -0.01, x5 -0.00, hl +0.00, dg +0.00, gl +0.01, mq -0.00, mtzl +0.08
