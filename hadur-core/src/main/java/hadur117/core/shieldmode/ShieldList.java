@@ -89,8 +89,6 @@ public final class ShieldList {
     public static final String POWER_CAP5_PREFIX = "power-cap5:";
     /** POW-19: a line starting with this names an opponent the duel fires at least {@code DuelController.HARD_POWER} at while our energy is high. */
     public static final String HARD_FIRE_PREFIX = "hard-fire:";
-    /** POW-19: a line starting with this names an opponent the duel fires at least {@code DuelController.HARD_POWER2} at while our energy is high. */
-    public static final String HARD_FIRE2_PREFIX = "hard-fire2:";
     /**
      * SKEY-2: a line starting with this gives an opponent's surf key: nine multipliers on the hit
      * views' key weights, one on the kernel width, then the name ({@code "m1 ... m9 bw name"}).
@@ -127,9 +125,8 @@ public final class ShieldList {
     static final int POWER_CAP5 = 16384;
     /** RAM-11: the per-opponent circular-aim dodge switch's bit in {@link #switches}. */
     static final int RAM_CIRC = 32768;
-    /** POW-19: the per-opponent hard-fire switches' bits in {@link #switches}. */
+    /** POW-19: the per-opponent hard-fire switch's bit in {@link #switches}. */
     static final int HARD_FIRE = 65536;
-    static final int HARD_FIRE2 = 131072;
 
     private final Set<String> entries;
     /** SHIELD-17: the opening-drive list. */
@@ -187,7 +184,6 @@ public final class ShieldList {
                     : entry.startsWith(MIRROR_OFF_PREFIX) ? MIRROR_OFF
                     : entry.startsWith(FLOOR_PREFIX) ? FLOOR
                     : entry.startsWith(POWER_CAP5_PREFIX) ? POWER_CAP5
-                    : entry.startsWith(HARD_FIRE2_PREFIX) ? HARD_FIRE2
                     : entry.startsWith(HARD_FIRE_PREFIX) ? HARD_FIRE
                     : entry.startsWith(POWER_CAP_PREFIX) ? POWER_CAP : 0;
                 if (bit != 0) {
@@ -502,15 +498,13 @@ public final class ShieldList {
     }
 
     /**
-     * POW-19: which hard-fire line names this opponent: 2 for a {@link #HARD_FIRE2_PREFIX} line, 1 for a
-     * {@link #HARD_FIRE_PREFIX} line, 0 for neither.
+     * POW-19: whether the table names this opponent with a {@link #HARD_FIRE_PREFIX} line.
      *
      * @param robotName the opponent's name as Robocode lists it
-     * @return the hard-fire level
+     * @return true when a {@code hard-fire:} line matches it
      */
-    public int hardFire(String robotName) {
-        int bits = switchBits(robotName);
-        return (bits & HARD_FIRE2) != 0 ? 2 : (bits & HARD_FIRE) != 0 ? 1 : 0;
+    public boolean hardFire(String robotName) {
+        return (switchBits(robotName) & HARD_FIRE) != 0;
     }
 
     /**

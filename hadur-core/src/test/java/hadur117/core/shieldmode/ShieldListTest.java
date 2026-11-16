@@ -129,6 +129,21 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("POW-19")
+    @DisplayName("hard-fire lines name the opponents the duel fires hard at while its energy is high, matched as shield entries")
+    void perOpponentHardFire() {
+        ShieldList l = ShieldList.parse(List.of("hard-fire: a.B 1.0", "hard-fire: c.D", "hard-fire:", "power-cap: e.F"));
+        assertTrue(l.hardFire("a.B 1.0"));
+        assertTrue(l.hardFire("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertTrue(l.hardFire("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.hardFire("e.F 1.0"), "a power-cap line is not a hard-fire line");
+        assertFalse(l.powerCap("a.B 1.0") || l.racePower("a.B 1.0"), "no other switch");
+        assertFalse(l.hardFire(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.hardFire("a.B 1.0"));
+    }
+
+    @Test
     @Tag("MIR-2")
     @DisplayName("mirror-off lines name the opponents the duel never runs MIR-1 against, matched as shield entries")
     void perOpponentMirrorOff() {

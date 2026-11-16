@@ -932,9 +932,8 @@ public final class DuelController {
     public static final double CAP_POWER = 0.2;
     /** POW-18: the softer cap of a power-cap5 line, for a robot where 0.2 starves the gun. */
     public static final double CAP_POWER_HALF = 0.5;
-    /** POW-19: the hard-fire floors and the energy they need. */
+    /** POW-19: the hard-fire floor and the energy it needs. */
     public static final double HARD_POWER = 0.6;
-    public static final double HARD_POWER2 = 1.95;
     public static final double HARD_ENERGY = 60.0;
     private double hardPower = Double.NaN;
     /** POW-17: whether the race picked the last power, for the P record on a change. */
@@ -1411,8 +1410,7 @@ public final class DuelController {
         powerCap = duelOnly(stackList.powerCap(name), enemiesTotal) ? CAP_POWER
             : duelOnly(stackList.powerCapHalf(name), enemiesTotal) ? CAP_POWER_HALF : Double.NaN;
         // POW-19: the hard-fire floor for the opponents the table names.
-        int hard = duelOnly(true, enemiesTotal) ? stackList.hardFire(name) : 0;
-        hardPower = hard == 2 ? HARD_POWER2 : hard == 1 ? HARD_POWER : Double.NaN;
+        hardPower = duelOnly(stackList.hardFire(name), enemiesTotal) ? HARD_POWER : Double.NaN;
         // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names, never a shield-mode one
         // (its TripHammer aims break the shield's bullet hits); the gun keeps them 1v1-only.
         if (duelOnly(stackList.gunStack(name) && !stackList.matches(name), enemiesTotal)) {
