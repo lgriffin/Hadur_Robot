@@ -1,0 +1,2 @@
+# DIST-4 distance pins for pc-locks picks: px name (shard D, coverage/shards/dist/lock.txt; BeepBoop's range band)
+625 az.Ololobot 0.2.4
