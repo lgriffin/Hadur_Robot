@@ -13,7 +13,9 @@ import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 
 /**
- * The readable JayLexi 0.7: 0.6 with its surf stats also segmented by how much of our orbit ahead is still
+ * The readable JayLexi 0.8: 0.7 with per-robot orbit lines for RammingC, LightningBug and MirrorMicro and,
+ * inside 200 px, a 0.4 rad wider orbit for Bruce and Lifestealer (JAYLEXI-21, docs/bench/jaylexi-tailoring.md).
+ * 0.7 was 0.6 with its surf stats also segmented by how much of our orbit ahead is still
  * in the field, as the enemy sees it (JAYLEXI-20, docs/bench/jaylexi-own-movement.md), the lateral-speed
  * signs read with copySign and the prediction's heading left unnormalised (both only to fit the shipped
  * build in 1,499 bytes).
@@ -33,7 +35,9 @@ public class JayLexi extends AdvancedRobot {
     // outward, or this robot's own angle from ORB, in hundredths of a radian, by its AIM row
     // (pc-jaylexi-orb, PR #644); 2 pi more where the gun jitters (JAYLEXI-19).
     static double orbit;
-    static final String ORB = "ssssssssssss\207sssssssssssssssssssssssssssssssssssssssssssssssssssssssssss_ssssssssssssssssssssssss\207ssssssssssssssssssssssssssssssssssss_sssssssssssssssssssssssssss_ssssssssssssssss\207ss\207s\207sssssssssssssssssssssss_ssss\u02e7ssssssssssssssssssssssssssssss_s\207ssssssssss\207ssssssssssssssssssssssssssssssssssssssssssss\207sss_ssssss\207sssssssssss_ssssssssssssssss\207sssssssssssssssssssssss\207ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss_sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss\207sssssssssssssssssssssssssssssssssssssssssssssss_ssssssss\207sssssssssssssssssssssssssssss";
+    public static final String ORB = "ssssssssssss\u0087sssssssssssssssssssssssssssssssssssssssssssssssssssssssssss_ssssssssssssssssssssssss\u0087ssssssssssssssssssssssssssssssssssss_ssssssssssssss\u0087ssssssssssss_ssssssssssssssss\u0087ss\u0087s\u0087sssssssssssssssssssssss_ssss\u02e7ssssssssssssssssssssssssssssss_s\u0087ssssssssss\u0087sssssssssssssssss_ssssssssssssssssssssssssss\u0087sss_ssssss\u0087sssssssssss_ssssssssssssssss\u0087sssssssssssssssssssssss\u0087ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss_sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss\u0087ssssssssKssssssssssssssssssssssssssssssssssssss_ssssssss\u0087sssssssssssssssssssssssssssss";
+    // Where the orbit opens 0.4 rad further out inside 200 px (JAYLEXI-21): 40 at the robot's ORB index, else 0.
+    public static final String NEAR = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0(\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0(\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
     // Wall smoothing: the stick that must stay inside the field (JAYLEXI-7).
     static final double STICK = 140;
     static final Rectangle2D.Double FIELD = new Rectangle2D.Double(18, 18, 764, 564);
@@ -84,7 +88,9 @@ public class JayLexi extends AdvancedRobot {
 
         // This opponent's aim row in AIM: its name hash in NAMES, or the field's row when not found.
         row = BINS * (NAMES.indexOf((char) e.getName().hashCode()) + 1);
-        orbit = ORB.charAt(row / BINS) / 100.0;
+        // Inside 200 px a picked robot's orbit opens 0.4 rad further out (JAYLEXI-21). The shipped build keeps a
+        // slot per robot per 50 px of distance in ORB, which carries the same rule.
+        orbit = (ORB.charAt(row / BINS) - (distance < 200 ? NEAR.charAt(row / BINS) : 0)) / 100.0;
 
         // Radar: twice the turn to the enemy, so it never slips off (JAYLEXI-2).
         setTurnRadarRightRadians(2 * Utils.normalRelativeAngle(absBearing - getRadarHeadingRadians()));

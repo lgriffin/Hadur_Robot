@@ -47,6 +47,11 @@ also kept by how much of our orbit ahead is still in the field, as the enemy see
 on four fresh cloud seed sets, and the fitted build read +0.55 ± 0.49
 ([docs/bench/jaylexi-own-movement.md](../docs/bench/jaylexi-own-movement.md)). 1,495 bytes through ProGuard.
 
+0.8 (built 2026-11-16, not released) adds per-robot tailoring (JAYLEXI-21). The orbit table now has a slot per robot per
+50 px of distance at no extra code bytes. RammingC, LightningBug and MirrorMicro get orbits of their own, and Bruce and
+Lifestealer a wider orbit inside 200 px (+3.1 to +5.4 points each on 12 fresh cloud seeds, about +0.03 APS). 1,495 bytes
+([docs/bench/jaylexi-tailoring.md](../docs/bench/jaylexi-tailoring.md)).
+
 ## Standing
 
 | Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | Next up | Gap |
