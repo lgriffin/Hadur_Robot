@@ -1,21 +1,28 @@
 {
  "plan": "pc-locks",
- "updated": 1794810506.4486825,
+ "updated": 1794810872.3265839,
  "steps": {
   "prep": {
-   "status": "pending"
+   "status": "failed",
+   "exit": 1,
+   "seconds": 365,
+   "end": "2026-11-16T06:34:32"
   },
   "livematch": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after prep"
   },
   "lock": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after livematch"
   },
   "gate": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after lock"
   },
   "pr": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after gate"
   }
  },
  "watched": []
