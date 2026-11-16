@@ -1,0 +1,66 @@
+# battle: team
+# Team: fitted enemy aims, per team (BENCH-254). Team thread: team-only, duel and melee untouched (FITTED is read only
+# while a teammate lives, inside the team dodge; off in the shipped build).
+#   aa      the baseline (master); bb its A/A copy
+#   fit     TMODE-50 on (tmfitted): each shot by a class TeamModes.FITTED names adds that class's fitted aim to the
+#           dodge's profile at its share (ArmyOfShiz, GrofGroup, RadnorMedSchool, HOFSwarm, TMNR, Polylunar,
+#           TroodonPack, FourProphetsAndADiscliple)
+# Only those eight teams change, so the card runs only them (plans/team-fitted-set.txt); the gate spreads the summed
+#   share change over 46 pairings, as a 46-team card would.
+# Pilot: fit on the eight teams, 4 fresh seeds from 22500, 12 rounds, paired with aa. A projected team APS change
+#   under 0 stops the card there (team_modes.py gate --stop-below 0), and the PR carries the pilot.
+# Screen: bb and fit against aa on the eight teams, 24 fresh seeds from 22600, 12 rounds; fit is gated at +0.15 APS
+#   with the 95% low end above zero, scored against both baselines.
+# Why it should win: the 2026-11-16 per-team plan read each gap team's gun from its jar and fitted its aim on the
+#   cloud mirror's bullet logs (3.23 and OgiTeam, 2 seeds from 22200). Six teams fire simple guns that aim at where
+#   our member was 2 to 6 ticks before the shot (spinning radars, fire before the gun has turned): ArmyOfShiz
+#   head-on 6 back explains 70% of its shots (our head-on model 33%), HOFSwarm linear at 13 px scaled by
+#   1 - d/1200 five back 51% (16%), GrofGroup linear at 15 two back 60% (25%), RadnorMedSchool 67% (49%), TMNR 54%
+#   (46%), Polylunar 77% (66%); a control that turns every heading 0.25 rad explains 4-7% (36% at Polylunar's close
+#   range). Our dodge prices every shot at the fire tick, so it steers round the wrong spot. These six teams take
+#   1.3x to 3x OgiTeam's bullet damage a round. Per-team tailoring from each team's own code.
+#   Cloud smoke (docs/bench/local/team-fitted-smoke.md; 6 teams x 3 seeds from 22300, paired with aa):
+#   +2.6 +- 2.1 share points, all six teams positive (ArmyOfShiz +3.0, GrofGroup +3.3, RadnorMedSchool +0.4,
+#   HOFSwarm +5.5, TMNR +2.2, Polylunar +1.2), enemy hit rate on our members down on five of six. Projected about
+#   +0.34 APS over 46 pairings. Read-across (3.23 alone, 1 seed from 22400, 17 more teams): TroodonPack head-on 5 back explains
+#   80% (head-on now 39%), FourProphets linear at 13 px 62% (34%); their smoke (3 seeds from 22300): TroodonPack
+#   +3.1 +- 5.1, FourProphets +0.8 +- 4.7, enemy hit rate 12.4% -> 10.8% and 14.2% -> 13.4%. The other 15 fits gained
+#   under 12 points over the fire-tick aims and are left out. The pilot's stop rule is the guard.
+# Size: pilot 64 battles, screen 2 x 384: about 830 battles, about 35 minutes at the 1,470 team battles/h
+#   pc-team-quarters ran at. Every step resumes where it stopped.
+# Stop rules on every battle step (halt; every battle fought is kept and a rerun resumes): 60 failed battles, no
+# battle in 30 minutes, or 60+ skipped turns a battle over the last 200.
+# The team thread reads claude/pc-team-fitted-results.
+#   ./queue.sh run pc-team-fitted        (or  .\queue.ps1 run pc-team-fitted)
+# Run it from master (one bench queue at a time, RoboRumble workers at 0):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set T = python3 tools/team_modes.py
+
+tfprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && for a in aa bb fit; do rm -f bisect/hadur117.HadurTeam_"$V"$a.jar; done && rm -f ${OUT}/team-fitted-p*.md ${OUT}/team-fitted-bb.md ${OUT}/team-fitted-fit.md ${OUT}/team-fitted-verdict.md && mkdir -p work && rm -rf work/team-fitted-"$V"-* && rm -f work/team-fitted-*.args work/team-fitted-go && ./fetch-opponents.sh --set team-census46.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmfitted && sed -e "s/@V@/$V/g" plans/team-fitted-pilot.args > work/team-fitted-pfit.args && for a in bb fit; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" plans/team-fitted-screen.args > work/team-fitted-$a.args || exit 1; done && for a in aa bb fit; do test -f bisect/hadur117.HadurTeam_"$V"$a.jar || exit 1; done && mvn -q compile
+tfpfit | mvn -q exec:java "-Dexec.args=@work/team-fitted-pfit.args"
+  after: tfprep
+  watch: battles=64
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tfpilot | ${T} gate --report ${OUT}/team-fitted-pfit.md --set plans/team-fitted-set.txt --seeds 4 --teams 46 --min-aps 0 --stop-below 0 --out-md ${OUT}/team-fitted-pilot.md && touch work/team-fitted-go || test $? -eq 3 || exit 1
+  after: tfpfit
+tfbb | if [ -f work/team-fitted-go ]; then mvn -q exec:java "-Dexec.args=@work/team-fitted-bb.args"; else echo "fit under 0 on the pilot: no screen"; fi
+  after: tfpilot
+  watch: battles=384
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tffit | if [ -f work/team-fitted-go ]; then mvn -q exec:java "-Dexec.args=@work/team-fitted-fit.args"; else echo "fit under 0 on the pilot: no screen"; fi
+  after: tfbb
+  watch: battles=384
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tfgate | if [ -f work/team-fitted-go ]; then ${T} gate --report ${OUT}/team-fitted-fit.md --control ${OUT}/team-fitted-bb.md --set plans/team-fitted-set.txt --seeds 24 --teams 46 --min-aps 0.15 --out-md ${OUT}/team-fitted-verdict.md || exit 1; else echo "no screen"; fi
+  after: tffit
+tfpr | bash tools/open_results_pr.sh claude/pc-team-fitted-results "Team: fitted enemy aims (TMODE-50)" $(ls ${OUT}/team-fitted-*.md 2>/dev/null | grep -v smoke)
+  after: tfgate
