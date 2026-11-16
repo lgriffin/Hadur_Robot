@@ -24,7 +24,7 @@
 #     mimic line it locked with on the shard L box (+2.6, low +0.3, on top of its master lines); pc-mimic9 read it at
 #     -0.8 on 12 seeds before its power-cap and surf-key lines shipped, so this card is its fresh test.
 #   - Every robot passed the cloud lock bar first; on 15 Nov the PC held 5 of 5 such cloud locks (#827-#829).
-# Stop rules (docs/bench/watch.md): the panel is 11 robots, too few for the watcher's A/A stop to read; aa is read in the
+# Stop rules (docs/bench/watch.md): the watcher's A/A rule needs 10 robots read in both c and aa, which on 11 shuffled robots comes only near the end; aa is read in the
 # gate (multiarm.py prints aa against c). The card halts on 30 failed battles, an arm scoring nothing in 8, 60+ skipped
 # turns a battle over the last 24, or no battle in 30 minutes. The live-match step stops the card if the PC no longer
 # scores us and BeepBoop as live does (tools/live_match.py exit 3). ALERT opens an issue for Leigh on any stop.
