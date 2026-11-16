@@ -20,9 +20,11 @@
 #   - Diagnosis first: each robot's shard box read why we lose from truth logs (coverage/shards/diag-X.md); GlowBlow,
 #     MostlyHarmless, Yuugao and DuelistMicro diagnose SHIELD (a shieldable gun), so they take the shield-list line;
 #     Devil's diagnosis is the same, and it is already shielded, so its line adds the still shot plans; TrackerWO, Blur,
-#     Bakko, Ascendant and RainbowBot take the lever their screen and 12-seed cloud lock led with.
+#     Bakko, Ascendant and RainbowBot take the lever their screen and 12-seed cloud lock led with. Domogled takes the
+#     mimic line it locked with on the shard L box (+2.6, low +0.3, on top of its master lines); pc-mimic9 read it at
+#     -0.8 on 12 seeds before its power-cap and surf-key lines shipped, so this card is its fresh test.
 #   - Every robot passed the cloud lock bar first; on 15 Nov the PC held 5 of 5 such cloud locks (#827-#829).
-# Stop rules (docs/bench/watch.md): the panel is under 10 robots, so the watcher's A/A stop cannot read; aa is read in the
+# Stop rules (docs/bench/watch.md): the panel is 11 robots, too few for the watcher's A/A stop to read; aa is read in the
 # gate (multiarm.py prints aa against c). The card halts on 30 failed battles, an arm scoring nothing in 8, 60+ skipped
 # turns a battle over the last 24, or no battle in 30 minutes. The live-match step stops the card if the PC no longer
 # scores us and BeepBoop as live does (tools/live_match.py exit 3). ALERT opens an issue for Leigh on any stop.
@@ -34,7 +36,7 @@ set W = work/pc-locks
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
 
-prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && python3 tools/lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh && for a in mtzl gl hl x5; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; done && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set panel-locks.txt && mvn -q compile
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && python3 tools/lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh && for a in mtzl gl hl x5 mq; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; done && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set panel-locks.txt && mvn -q compile
 
 livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out work/pc-livematch-rel-live --label pc-locks-livematch --shuffle-jobs && python3 tools/live_match.py work/pc-livematch-rel-live/arms.tsv --out ${OUT}/pc-locks-livematch.md
   after: prep
@@ -51,7 +53,7 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 4
   stop: skips 60 over 24
   stop: stall 30m
 
-gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms mtzl gl hl x5 --out ${OUT}/$(date +%Y-%m-%d)_pc-locks-lock-per-robot.md --out-tsv ${OUT}/pc-locks-lock-per-robot.tsv
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms mtzl gl hl x5 mq --out ${OUT}/$(date +%Y-%m-%d)_pc-locks-lock-per-robot.md --out-tsv ${OUT}/pc-locks-lock-per-robot.tsv
   after: lock
 
 pr | bash tools/open_results_pr.sh claude/pc-locks-results "1v1 cloud locks (10 robots from the field shards) locked on 12 fresh PC seeds" ${OUT}/pc-locks-livematch.md ${OUT}/*_pc-locks-*.md ${OUT}/pc-locks-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks-lock-pick.tsv' -size +0c)
