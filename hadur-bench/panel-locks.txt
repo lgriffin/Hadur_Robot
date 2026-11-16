@@ -6,3 +6,7 @@ cx.micro.Blur 0.2 | rank405-band5 | cx.micro.Blur_0.2.jar
 com.spp.robocode.MostlyHarmless 010 | rank773-band6 | com.spp.robocode.MostlyHarmless_010.jar
 tm.Yuugao 1.0 | rank325-band4 | tm.Yuugao_1.0.jar
 davidalves.net.DuelistMicro 1.22 | rank273-band4 | davidalves.net.DuelistMicro_1.22.jar
+deo.virtual.RainbowBot 1.0 | rank328-band4 | deo.virtual.RainbowBot_1.0.jar
+sm.Devil 7.3 | rank598-band5 | sm.Devil_7.3.jar
+kenran.Bakko v1.0.1 | rank106-band3 | kenran.Bakko_v1.0.1.jar
+mue.Ascendant 1.2.27 | rank24-band2 | mue.Ascendant_1.2.27.jar
