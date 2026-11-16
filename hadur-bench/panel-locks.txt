@@ -1,14 +1,11 @@
-# BENCH-253 pc-locks, round 2: robots whose per-robot line locked on the cloud (12+ fresh seeds, 95% low end above 0,
-# live turn time) after round 1 ran (PR #843) (coverage/shards/locks.tsv, 16 Nov). Census rows. name | rank | jar
-ncj.MoxieBot 1.0 | rank1183-band6 | ncj.MoxieBot_1.0.jar
-fromHell.CHCl3 1.4.2 | rank40-band2 | fromHell.CHCl3_1.4.2.jar
-mn.Combat 3.25.0 | rank38-band2 | mn.Combat_3.25.0.jar
-xander.cat.Mikey 1.2 | rank228-band4 | xander.cat.Mikey_1.2.jar
-nz.jdc.nano.PralDeGuerre 1.2 | rank275-band4 | nz.jdc.nano.PralDeGuerre_1.2.jar
-robar.nano.Vespa 0.95 | rank483-band5 | robar.nano.Vespa_0.95.jar
-positive.Portia 1.26e | rank63-band3 | positive.Portia_1.26e.jar
-EH.kms.LightningStorm 0.11B | rank355-band4 | EH.kms.LightningStorm_0.11B.jar
-cw.megas.Blade 0.8 | rank386-band4 | cw.megas.Blade_0.8.jar
-ers.nano.meroka.Meroka 1.8a | rank327-band4 | ers.nano.meroka.Meroka_1.8a.jar
-theo.simple.Lucid 1.0 | rank175-band3 | theo.simple.Lucid_1.0.jar
-whind.Constitution 0.7.1 | rank511-band5 | whind.Constitution_0.7.1.jar
+# BENCH-253 pc-locks, round 3: robots whose per-robot line locked on the cloud (12+ fresh seeds, 95% low end above 0,
+# live turn time) after round 2 ran (PR #845) (coverage/shards/locks.tsv, 16 Nov). Census rows. name | rank | jar
+wilson.Chameleon 0.91 | rank193-band3 | wilson.Chameleon_0.91.jar
+rz.Artist 0.2 | rank283-band4 | rz.Artist_0.2.jar
+racso.Frog 0.9 | rank750-band6 | racso.Frog_0.9.jar
+stefw.Tigger 0.0.23 | rank113-band3 | stefw.Tigger_0.0.23.jar
+pez.mako.Mako 1.5 | rank371-band4 | pez.mako.Mako_1.5.jar
+eem.EvBotNG v12.8 | rank74-band3 | eem.EvBotNG_v12.8.jar
+catcat20.atom.Atom 0.51 | rank117-band3 | catcat20.atom.Atom_0.51.jar
+hlavko.micro.Flex 1.5 | rank302-band4 | hlavko.micro.Flex_1.5.jar
+krillr.mini.JointStrike 2.0.0 | rank610-band5 | krillr.mini.JointStrike_2.0.0.jar
