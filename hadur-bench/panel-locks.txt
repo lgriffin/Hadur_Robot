@@ -21,3 +21,6 @@ ha2.T3 0.2 | rank434-band5 | ha2.T3_0.2.jar
 EH.Pegasus 0.113 | rank883-band6 | EH.Pegasus_0.113.jar
 abc.tron3.Tron 3.11 | shard-G | abc.tron3.Tron_3.11.jar
 kc.nano.Splinter 1.2 | rank437-band5 | kc.nano.Splinter_1.2.jar
+kawigi.sbf.FloodHT 0.9.2 | shard-D | kawigi.sbf.FloodHT_0.9.2.jar
+deo.virtual.RainbowBot 1.0 | rank328-band4 | deo.virtual.RainbowBot_1.0.jar
+mnt.AHEB 0.6a | rank353-band4 | mnt.AHEB_0.6a.jar
