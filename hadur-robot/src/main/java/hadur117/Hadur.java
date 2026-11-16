@@ -266,6 +266,8 @@ public class Hadur extends TeamRobot {
             for (String name : ShieldTableData.hardFires()) lines.add(ShieldList.HARD_FIRE_PREFIX + " " + name);
             // MOVE-44: per-opponent velocity jitter against exact-velocity pattern matchers.
             for (String name : ShieldTableData.velocityJitters()) lines.add(ShieldList.VEL_JITTER_PREFIX + " " + name);
+            // DIST-4: per-opponent pinned duel distance.
+            for (String pin : ShieldTableData.distPins()) lines.add(ShieldList.DIST_PIN_PREFIX + " " + pin);
             // POW-20: per-opponent power bands.
             for (String band : ShieldTableData.powerBands()) lines.add(ShieldList.POWER_BAND_PREFIX + " " + band);
             // MOVE-32: per-opponent flattener views on.
