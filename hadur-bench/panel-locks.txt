@@ -22,3 +22,4 @@ robar.nano.Vespa 0.95 | rank483-band5 | robar.nano.Vespa_0.95.jar
 positive.Portia 1.26e | rank63-band3 | positive.Portia_1.26e.jar
 EH.kms.LightningStorm 0.11B | rank355-band4 | EH.kms.LightningStorm_0.11B.jar
 cw.megas.Blade 0.8 | rank386-band4 | cw.megas.Blade_0.8.jar
+ers.nano.meroka.Meroka 1.8a | rank327-band4 | ers.nano.meroka.Meroka_1.8a.jar

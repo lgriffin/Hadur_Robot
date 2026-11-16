@@ -13,7 +13,7 @@
 # Leigh starts it once the PC is free, after pc-shards (one card at a time, from master):
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-locks        (or  ./queue.sh run pc-locks)
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 3,168 lock battles (22 robots, 12 arms, 12 seeds), about 65 minutes.
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 3,312 lock battles (23 robots, 12 arms, 12 seeds), about 70 minutes.
 #
 # Why it should win (the PC card rule of 2026-11-03):
 #   - Per-opponent tailoring: every line names one robot; every other robot, team and melee play bit for bit as master.
@@ -31,14 +31,15 @@
 #     on 8 seeds (field mean -0.2, so never a global switch), 23 leads went to 12 fresh seeds on four boxes and these
 #     held: MoxieBot +8.0 (low +5.9; BeepBoop fires a third of our power at it), CHCl3 +3.8 (+0.8), Combat +3.3
 #     (+1.1), Mikey +1.3 (+0.2, marginal); Portia +3.1 on 12 seeds, then +3.8 (low +0.7) on 12 more. With 23 robots locked, about one marginal lock may be luck; the PC decides.
-#     PralDeGuerre and Vespa (both already shielded) take the shield exit-off line (SHIELD-19, x0) from the shard C
+#     PralDeGuerre, Vespa and Meroka (all already shielded) take the shield exit-off line (SHIELD-19, x0) from the shard C
 #     box: the shield leaks slowly, the 150-damage exit fires mid-battle and the surf then takes 2.4-3.5x more damage a
-#     round. PralDeGuerre +4.1 (low +1.0, 12 seeds); Vespa +2.1 (low +0.6, 24 seeds, marginal).
+#     round. PralDeGuerre +4.1 (low +1.0, 12 seeds); Vespa +2.1 (low +0.6, 24 seeds, marginal); Meroka +5.9 (low
+#     +1.9, 12 seeds; 4.9x the damage a round after the exit).
 #     LightningStorm and Blade (both already shielded) take the moving shield line (SHIELD-17, mv) from the shard D
 #     box: they close to 70-100 px and hit the still shield there. LightningStorm +4.8 (low +1.1), Blade +3.4 (low
 #     +0.5), each on 24 fresh seeds.
 #   - Every robot passed the cloud lock bar first; on 15 Nov the PC held 5 of 5 such cloud locks (#827-#829).
-# Stop rules (docs/bench/watch.md): the watcher's A/A rule needs 10 robots read in both c and aa, which on 22 shuffled robots comes only near the end; aa is read in the
+# Stop rules (docs/bench/watch.md): the watcher's A/A rule needs 10 robots read in both c and aa, which on 23 shuffled robots comes only near the end; aa is read in the
 # gate (multiarm.py prints aa against c). The card halts on 30 failed battles, an arm scoring nothing in 8, 60+ skipped
 # turns a battle over the last 24, or no battle in 30 minutes. The live-match step stops the card if the PC no longer
 # scores us and BeepBoop as live does (tools/live_match.py exit 3). ALERT opens an issue for Leigh on any stop.
@@ -70,5 +71,5 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 4
 gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms mtzl gl hl x5 mq hf fp pb x0 mv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks-lock-per-robot.md --out-tsv ${OUT}/pc-locks-lock-per-robot.tsv
   after: lock
 
-pr | bash tools/open_results_pr.sh claude/pc-locks-results "1v1 cloud locks (22 robots from the field shards) locked on 12 fresh PC seeds" ${OUT}/pc-locks-livematch.md ${OUT}/*_pc-locks-*.md ${OUT}/pc-locks-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks-results "1v1 cloud locks (23 robots from the field shards) locked on 12 fresh PC seeds" ${OUT}/pc-locks-livematch.md ${OUT}/*_pc-locks-*.md ${OUT}/pc-locks-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks-lock-pick.tsv' -size +0c)
   after: gate
