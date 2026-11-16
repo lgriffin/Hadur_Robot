@@ -1,6 +1,6 @@
 # Queue pc-locks: progress
 
-Updated 2026-11-16 06:34:32 PC time (06:34 UTC), runner pid 16800.
+Updated 2026-11-16 06:35:22 PC time (06:35 UTC), runner pid 38916.
 
 - `prep` failed, exit 1 in 6 min
 - `livematch` skipped
@@ -20,4 +20,5 @@ Updated 2026-11-16 06:34:32 PC time (06:34 UTC), runner pid 16800.
 06:34:32 skip gate (after lock, which has not finished exit=0)
 06:34:32 skip pr (after gate, which has not finished exit=0)
 06:34:32 ALLDONE
+06:35:22 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
 ```
