@@ -374,8 +374,12 @@ public class Hadur extends TeamRobot {
         if (!Double.isNaN(o.maxVelocity())) lastMaxVelocity = o.maxVelocity();
         // MOVE-44: against a table-named exact-velocity pattern matcher, never drive at exactly 8 or exactly 0.
         boolean jitter = core != null && core.duel() != null && core.duel().velocityJitter();
+        // The offset is 1e-12 to 2e-12: far above the double spacing at 8 (1.8e-15), so it never rounds back to 8.
         if (jitter && lastMaxVelocity >= Rules.MAX_VELOCITY) {
-            setMaxVelocity(Rules.MAX_VELOCITY - Math.random() / 1e12);
+            setMaxVelocity(Rules.MAX_VELOCITY - (1 + Math.random()) / 1e12);
+        } else if (jitter && lastMaxVelocity <= 0) {
+            // A stop order (max velocity 0) becomes a crawl too small to move us but never exactly 0.
+            setMaxVelocity((1 + Math.random()) / 1e12);
         } else if (!Double.isNaN(o.maxVelocity())) {
             setMaxVelocity(o.maxVelocity());
         }
