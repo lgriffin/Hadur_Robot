@@ -42,6 +42,7 @@ LEVERS = {
     "dp": ("dplist", ("DIST_PIN",)),
     "kl": ("sklist", ("SURF_KEY",)),
     "rh": ("rhlist", ("RAM_HEAVY",)),
+    "sp2": ("sdplanlist", ("SHOT_DODGE_PLAN",)),
 }
 
 # POW-20: a power-band pick carries its fitted line ("m20 m40 m60 m80 name") from this file, so pb.list

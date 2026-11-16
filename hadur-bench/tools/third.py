@@ -122,7 +122,7 @@ def main(argv=None):
                                env=dict(os.environ, SHOT_DODGE_PLAN=rel))
         if code:
             return code
-        shield_s2.write(a.out, candidate_arms(a.base, "dp"))
+        shield_s2.write(a.out, candidate_arms(a.base, "sp2"))
     elif a.cmd == "panel":
         names = plan_names(shield_s2.read_lines(a.plans)) if os.path.exists(a.plans) else []
         rows = panel(a.set, names)
