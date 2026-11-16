@@ -27,14 +27,6 @@ final class MoveDesign {
     static final boolean FLATTENER_OFF = true;
 
     /**
-     * SURF-BANK-1: in a 1v1 battle only, the three-option surf multiplies each option's danger
-     * by the fourth root of a learned bank's share of its first-wave interval (a population
-     * prior, an online table and a k-NN over the enemy's known bullets). Team and melee never
-     * build the bank.
-     */
-    static final boolean SURF_BANK = false;
-
-    /**
      * AES-1 (measurement): each wave's first three-option rating is printed as an {@code AES}
      * record with every term of each option's danger (docs/plan-aes.md). Behaviour unchanged.
      */

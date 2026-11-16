@@ -25,7 +25,6 @@ import hadur117.core.move.PlanInterval;
 import hadur117.core.move.MirrorDrive;
 import hadur117.core.move.RamEscape;
 import hadur117.core.move.ShotDodgePlanner;
-import hadur117.core.move.SurfBank;
 import hadur117.core.move.SurfMover;
 import hadur117.core.physics.*;
 import hadur117.core.port.Telemetry;
@@ -83,8 +82,6 @@ public final class DuelController {
     private final MoveController moveController;
     /** Turns the enemy waves' danger into movement orders, or rams (END-2). */
     private final SurfMover surfMover;
-    /** SURF-BANK-1: the surf's learned bank, in a 1v1 battle with the switch on; else null. */
-    private final SurfBank surfBank;
     /** GUN-7: the gun's view of the plan movement publishes (MOVE-8); the duel is the only seam. */
     private final ShadowAvoidance shadowAvoidance;
     /** Our gun waves, one per duel scan, broken as the enemy crosses them to teach the gun. */
@@ -330,9 +327,6 @@ public final class DuelController {
         this.moveController.setMemberMimics(memberMimics);
         this.surfMover = new SurfMover(battleField, predictor);
         this.surfMover.setAesRecord(MoveDesign.AES_RECORD);
-        // SURF-BANK-1: a 1v1 battle only; a team or melee duel never builds the bank.
-        this.surfBank = MoveDesign.SURF_BANK && enemiesTotal == 1 ? new SurfBank() : null;
-        this.surfMover.setSurfBank(surfBank);
         this.surfMover.setOracleRecord(MoveDesign.ORACLE_RECORD);
         this.surfMover.setSurfKeyRecord(MoveDesign.SURF_KEY_RECORD);
         this.shadowAvoidance = new ShadowAvoidance(fieldWidth, fieldHeight);
@@ -410,7 +404,6 @@ public final class DuelController {
         gunController.initRound();
         moveController.initRound();
         surfMover.initRound();
-        if (surfBank != null) surfBank.initRound();
         gunWaveManager.initRound();
         aimCarriesJitter = false;
         resetTracking();
@@ -1010,7 +1003,6 @@ public final class DuelController {
             // DODGE-2: the bullet's heading says which simple aim fired it.
             if (moveController.shotDodger() != null) shotDodger.observe(hitWave.simpleAims(), e.heading(), dodgeEscape(hitWave));
             moveController.logBulletHit(hitWave, bulletLoc, round, in.time());
-            if (surfBank != null) surfBank.learn(hitWave, DiaUtils.absoluteBearing(hitWave.sourceLocation, bulletLoc));
         }
         if (folder != null && driving) {
             // File the hit under the distance and movement at the wave's fire time when known.
@@ -1113,7 +1105,6 @@ public final class DuelController {
             if (moveController.shotDodger() != null) shotDodger.observe(hitWave.simpleAims(), e.enemyHeading(), dodgeEscape(hitWave));
             // MOVE-30: the bullet's angle scores the aim members, where the switch is on.
             if (MoveDesign.AIM_INTERCEPTS) moveController.scoreInterceptAims(hitWave, hitLoc);
-            if (surfBank != null) surfBank.learn(hitWave, DiaUtils.absoluteBearing(hitWave.sourceLocation, hitLoc));
         }
     }
 
