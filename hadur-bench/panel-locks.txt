@@ -10,3 +10,4 @@ deo.virtual.RainbowBot 1.0 | rank328-band4 | deo.virtual.RainbowBot_1.0.jar
 sm.Devil 7.3 | rank598-band5 | sm.Devil_7.3.jar
 kenran.Bakko v1.0.1 | rank106-band3 | kenran.Bakko_v1.0.1.jar
 mue.Ascendant 1.2.27 | rank24-band2 | mue.Ascendant_1.2.27.jar
+cb.Domogled 1.2 | rank23-band2 | cb.Domogled_1.2.jar
