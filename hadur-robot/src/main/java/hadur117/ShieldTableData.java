@@ -669,6 +669,28 @@ final class ShieldTableData {
     }
 
     /**
+     * POW-19: the opponents the duel fires at least 0.6 power at while our energy is 60 or more (BeepBoop's
+     * hard opening against strong surfers). Candidate builds add lines here (build-ablation.sh hflist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] hardFires() {
+        return new String[] {
+        };
+    }
+
+    /**
+     * POW-19: the opponents the duel fires at least 1.95 power at while our energy is 60 or more.
+     * Candidate builds add lines here (build-ablation.sh hf2list).
+     *
+     * @return a fresh array of names
+     */
+    static String[] hardFire2s() {
+        return new String[] {
+        };
+    }
+
+    /**
      * MIR-2: the opponents the duel never runs MIR-1 (the mirror detector, its drive and its aim)
      * against. Empty until a card holds robots; candidate builds add lines here (build-ablation.sh
      * mirofflist).
