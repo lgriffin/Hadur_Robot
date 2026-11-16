@@ -27,7 +27,7 @@
 # (the lock: the last 24, as its panel can be small), or no battle in 30 minutes. The live-match step stops the card
 # if the PC no longer scores us and BeepBoop as live does (tools/live_match.py exit 3). ALERT opens an issue on any stop.
 # Bank: the owning cloud thread adds the gate's lines on this card's results PR. Nothing is released by the card.
-set V = 3.22
+set V = 3.23
 set P = --parallel 16 --no-truth-log --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 2G
 set W = work/pc-shards

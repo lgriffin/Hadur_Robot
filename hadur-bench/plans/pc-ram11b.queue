@@ -26,7 +26,7 @@
 # does (tools/live_match.py exit 3). ALERT opens an issue for Leigh on any stop.
 # Bank: the owning cloud thread adds the gate's lines (ShieldTableData.ramCircs) on this card's results PR.
 # Nothing is released by the card.
-set V = 3.22
+set V = 3.23
 set P = --parallel 16 --no-truth-log --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 2G
 set W = work/pc-ram11b
