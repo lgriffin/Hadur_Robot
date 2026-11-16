@@ -6,3 +6,4 @@ racso.Frog 0.9 | rank750-band6 | racso.Frog_0.9.jar
 stefw.Tigger 0.0.23 | rank113-band3 | stefw.Tigger_0.0.23.jar
 pez.mako.Mako 1.5 | rank371-band4 | pez.mako.Mako_1.5.jar
 eem.EvBotNG v12.8 | rank74-band3 | eem.EvBotNG_v12.8.jar
+catcat20.atom.Atom 0.51 | rank117-band3 | catcat20.atom.Atom_0.51.jar

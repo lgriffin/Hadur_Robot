@@ -5,3 +5,4 @@
 1.00 0.64 0.70 0.80 xander.cat.Mikey 1.2
 0.93 0.95 1.07 1.31 mn.Combat 3.25.0
 1.29 0.86 0.67 0.64 positive.Portia 1.26e
+1.00 0.43 0.31 0.26 catcat20.atom.Atom 0.51
