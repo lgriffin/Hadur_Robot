@@ -164,6 +164,8 @@
 #         shipped table entry): a member with an armed enemy closing inside 200 px gets an uncapped
 #         ring, a term against ending within 150 px of it, and full speed through a turn. Suffix qt
 #         (pc-team-quarters, BENCH-225).
+#   tmfitted (team only) TMODE-50: each fitted enemy aim (TeamModes.FITTED: the class's gun read from its
+#         code and fitted on bench bullet logs) joins the dodge's profile at its share. Suffix fit.
 #   tmnomomentum (team only) TMODE-49 off: each candidate's drive starts from a standstill pointed at it, the
 #         build before MOMENTUM shipped (FORCE_MOMENTUM, and Mode.MOMENTUM off every shipped entry). Suffix nmo.
 #   tmnolast (team only) TMODE-47 off: with one enemy left each member hands over to the duel,
@@ -933,6 +935,11 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$modes" "public static final boolean FORCE_QUARTERS = false;" "public static final boolean FORCE_QUARTERS = true;"
             sed -i -E '/^        t\.put\(/{/Mode\.QUARTERS/!s/\)\);$/, Mode.QUARTERS));/}' "$modes"
             ;;
+        tmfitted)
+            # TMODE-50 on: the fitted enemy aims join the dodge's profile. Suffix fit.
+            version="${version}fit"
+            edit "$modes" "public static final boolean FORCE_FITTED = false;" "public static final boolean FORCE_FITTED = true;"
+            ;;
         tmnomomentum)
             # TMODE-49 off: every candidate driven from a standstill. Suffix nmo.
             version="${version}nmo"
@@ -966,7 +973,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean THREE_FAR = false;" "public static final boolean THREE_FAR = true;"
             version="${version}ef" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, dplist)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmfitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, dplist)" >&2; exit 2 ;;
     esac
 done
 
