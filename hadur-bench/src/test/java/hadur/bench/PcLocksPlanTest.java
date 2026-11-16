@@ -56,6 +56,8 @@ class PcLocksPlanTest {
         assertTrue(!body.contains("stop: aa"), "the watcher reads A/A only once 10 robots are read in both arms, near the end of this lock; aa is read in the gate");
         assertEquals(List.of(), PcLiveMatchPlanTest.violations("pc-locks.queue", queue), "BENCH-245 timing rule");
         assertTrue(queue.contains("Why it should win") && queue.contains("set ALERT = lgriffin"));
+        assertTrue(queue.contains("run pc-locks --fresh"), "round 2 left the plan state complete, so round 3 starts fresh");
+        assertTrue(!queue.contains("pc-locks-lock") && !queue.contains("/pc-locks-livematch.md") && queue.contains("${OUT}/*_pc-locks3-*.md"), "round 3 reports never replace round 2's");
         assertTrue(queue.contains("open_results_pr.sh claude/pc-locks3-results") && queue.contains("set P = --parallel 16 --no-truth-log"));
     }
 }

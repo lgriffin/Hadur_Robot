@@ -13,7 +13,8 @@
 #              is above 0 (mode_table.py --margin 0)
 # Leigh starts it once the PC is free (one card at a time, from master):
 #   git checkout master && git pull
-#   .\queue.ps1 run pc-locks        (or  ./queue.sh run pc-locks)
+#   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
+#   --fresh because round 2 left this plan's queue state marked complete; an interrupted round 3 resumes without it.
 # One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 420 lock battles (7 robots, 5 arms, 12 seeds), about 12 minutes.
 #
 # Why it should win (the PC card rule of 2026-11-03):
@@ -41,7 +42,7 @@ set ALERT = lgriffin
 
 prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && python3 tools/lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh && for a in mv rp pb; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; done && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set panel-locks.txt && mvn -q compile
 
-livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out work/pc-livematch-rel-live --label pc-locks-livematch --shuffle-jobs && python3 tools/live_match.py work/pc-livematch-rel-live/arms.tsv --out ${OUT}/pc-locks-livematch.md
+livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out work/pc-livematch-rel-live --label pc-locks-livematch --shuffle-jobs && python3 tools/live_match.py work/pc-livematch-rel-live/arms.tsv --out ${OUT}/pc-locks3-livematch.md
   after: prep
   watch: field=1217
   stop: fails 30
@@ -56,8 +57,8 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 4
   stop: skips 60 over 24
   stop: stall 30m
 
-gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms mv rp pb --out ${OUT}/$(date +%Y-%m-%d)_pc-locks-lock-per-robot.md --out-tsv ${OUT}/pc-locks-lock-per-robot.tsv
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks3-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks3-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks3-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms mv rp pb --out ${OUT}/$(date +%Y-%m-%d)_pc-locks3-lock-per-robot.md --out-tsv ${OUT}/pc-locks3-lock-per-robot.tsv
   after: lock
 
-pr | bash tools/open_results_pr.sh claude/pc-locks3-results "1v1 cloud locks, round 3 (7 robots from the field shards) locked on 12 fresh PC seeds" ${OUT}/pc-locks-livematch.md ${OUT}/*_pc-locks-*.md ${OUT}/pc-locks-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks3-results "1v1 cloud locks, round 3 (7 robots from the field shards) locked on 12 fresh PC seeds" ${OUT}/pc-locks3-livematch.md ${OUT}/*_pc-locks3-*.md ${OUT}/pc-locks3-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks3-lock-pick.tsv' -size +0c)
   after: gate
