@@ -161,6 +161,21 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("MOVE-45")
+    @DisplayName("speed-band lines name the rounded-velocity pattern matchers the duel bands its top speed against, matched as shield entries")
+    void perOpponentSpeedBand() {
+        ShieldList l = ShieldList.parse(List.of("speed-band: a.B 1.0", "speed-band: c.D", "speed-band:", "velocity-jitter: e.F"));
+        assertTrue(l.speedBand("a.B 1.0"));
+        assertTrue(l.speedBand("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertTrue(l.speedBand("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.speedBand("e.F 1.0"), "a velocity-jitter line is not a speed-band line");
+        assertFalse(l.velocityJitter("a.B 1.0") || l.hardFire("a.B 1.0"), "no other switch");
+        assertFalse(l.speedBand(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.speedBand("a.B 1.0"));
+    }
+
+    @Test
     @Tag("DIST-4")
     @DisplayName("dist-pin lines pin one duel distance per opponent, matched as shield entries, held to 150-900 px")
     void perOpponentDistPin() {

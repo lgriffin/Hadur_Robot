@@ -152,7 +152,7 @@ class ShieldListResourceTest {
             assertTrue(list.matches(name), name);
         }
         // pc-shelf (PR #636): 6 more opening drives held on the confirm's fresh seeds. pc-locks round 2 (PR #845): 3 more.
-        assertEquals(31 + 8 + 6 + 3, ShieldTableData.moves().length);
+        assertEquals(31 + 8 + 6 + 3 + 13, ShieldTableData.moves().length);
         for (String name : ShieldTableData.moves()) {
             assertTrue(list.moves(name) && list.matches(name), "an opening drive is for a shielded robot: " + name);
         }
@@ -316,7 +316,7 @@ class ShieldListResourceTest {
         java.util.List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
         for (String n : ShieldTableData.racePowers()) lines.add(ShieldList.RACE_POWER_PREFIX + " " + n);
         ShieldList list = ShieldList.parse(lines);
-        assertEquals(8 + 1, ShieldTableData.racePowers().length, "pc-race-power (BENCH-206, PR #695) confirm picks and pc-r31 (BENCH-244, PR #817)");
+        assertEquals(8 + 1 + 2, ShieldTableData.racePowers().length, "pc-race-power (BENCH-206, PR #695) confirm picks and pc-r31 (BENCH-244, PR #817) and pc-locks round 3 (PR #860)");
         for (String n : ShieldTableData.racePowers()) assertTrue(list.racePower(n), n);
         assertTrue(!list.racePower("abc.Shadow 3.83c"), "a pilot robot that did not hold the 3-point margin");
     }

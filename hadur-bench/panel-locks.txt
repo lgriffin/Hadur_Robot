@@ -1,27 +1,5 @@
-# BENCH-253 pc-locks, round 3: robots whose per-robot line locked on the cloud (12+ fresh seeds, 95% low end above 0,
-# live turn time) after round 2 ran (PR #845) (coverage/shards/locks.tsv, 16 Nov). Census rows. name | rank | jar
-wilson.Chameleon 0.91 | rank193-band3 | wilson.Chameleon_0.91.jar
-rz.Artist 0.2 | rank283-band4 | rz.Artist_0.2.jar
-racso.Frog 0.9 | rank750-band6 | racso.Frog_0.9.jar
-stefw.Tigger 0.0.23 | rank113-band3 | stefw.Tigger_0.0.23.jar
-pez.mako.Mako 1.5 | rank371-band4 | pez.mako.Mako_1.5.jar
-eem.EvBotNG v12.8 | rank74-band3 | eem.EvBotNG_v12.8.jar
-catcat20.atom.Atom 0.51 | rank117-band3 | catcat20.atom.Atom_0.51.jar
-hlavko.micro.Flex 1.5 | rank302-band4 | hlavko.micro.Flex_1.5.jar
-kc.serpent.WaveSerpent 2.11 | rank15-band2 | kc.serpent.WaveSerpent_2.11.jar
-cf.proto.Shiva 2.2 | rank75-band3 | cf.proto.Shiva_2.2.jar
-jwst.DAD.DarkAndDarker 1.1 | shard-D | jwst.DAD.DarkAndDarker_1.1.jar
-asm.Statistas 0.1 | shard-D | asm.Statistas_0.1.jar
-ahf.r2d2.R2d2 0.86 | shard-D | ahf.r2d2.R2d2_0.86.jar
-mue.Hyperion 0.8 | rank112-band3 | mue.Hyperion_0.8.jar
-cbot.agile.Nibbler 0.2 | rank298-band4 | cbot.agile.Nibbler_0.2.jar
-DM.mega.Bezier 1.618fprrr | rank86-band3 | DM.mega.Bezier_1.618fprrr.jar
-ha2.T3 0.2 | rank434-band5 | ha2.T3_0.2.jar
-EH.Pegasus 0.113 | rank883-band6 | EH.Pegasus_0.113.jar
-abc.tron3.Tron 3.11 | shard-G | abc.tron3.Tron_3.11.jar
-kawigi.sbf.FloodHT 0.9.2 | shard-D | kawigi.sbf.FloodHT_0.9.2.jar
-mnt.AHEB 0.6a | rank353-band4 | mnt.AHEB_0.6a.jar
-cx.Princess 1.0 | shard-L | cx.Princess_1.0.jar
-DM.mega.Regicide 2.0rrr | rank71-band3 | DM.mega.Regicide_2.0rrr.jar
-jw.Booring 1.11 | rank414-band5 | jw.Booring_1.11.jar
-ad.Quest 0.10 | rank167-band3 | ad.Quest_0.10.jar
+# BENCH-253 pc-locks, round 4: robots whose per-robot line locked on the cloud (12+ fresh seeds, 95% low end above 0,
+# live turn time) after round 3 ran (PR #860) (coverage/shards/locks.tsv, 16 Nov). Census rows. name | rank | jar
+ntc.Knowledge 1.1 | rank639-band5 | ntc.Knowledge_1.1.jar
+az.Ololobot 0.2.4 | rank554-band5 | az.Ololobot_0.2.4.jar
+cx.micro.Spark 0.6 | rank282-band4 | cx.micro.Spark_0.6.jar

@@ -91,6 +91,8 @@ public final class ShieldList {
     public static final String HARD_FIRE_PREFIX = "hard-fire:";
     /** MOVE-44: a line starting with this names an opponent whose exact-velocity pattern matcher the duel defeats by never driving at exactly full speed or exactly zero. */
     public static final String VEL_JITTER_PREFIX = "velocity-jitter:";
+    /** MOVE-45: a line starting with this names an opponent whose rounded-velocity pattern matcher the duel defeats by a random top speed of 7 to 8 each tick. */
+    public static final String SPEED_BAND_PREFIX = "speed-band:";
     /**
      * SKEY-2: a line starting with this gives an opponent's surf key: nine multipliers on the hit
      * views' key weights, one on the kernel width, then the name ({@code "m1 ... m9 bw name"}).
@@ -147,6 +149,8 @@ public final class ShieldList {
     static final int HARD_FIRE = 65536;
     /** MOVE-44: the per-opponent velocity-jitter switch's bit in {@link #switches}. */
     static final int VEL_JITTER = 131072;
+    /** MOVE-45: the per-opponent speed-band jitter switch's bit in {@link #switches}. */
+    static final int SPEED_BAND = 262144;
 
     private final Set<String> entries;
     /** SHIELD-17: the opening-drive list. */
@@ -212,6 +216,7 @@ public final class ShieldList {
                     : entry.startsWith(POWER_CAP5_PREFIX) ? POWER_CAP5
                     : entry.startsWith(HARD_FIRE_PREFIX) ? HARD_FIRE
                     : entry.startsWith(VEL_JITTER_PREFIX) ? VEL_JITTER
+                    : entry.startsWith(SPEED_BAND_PREFIX) ? SPEED_BAND
                     : entry.startsWith(POWER_CAP_PREFIX) ? POWER_CAP : 0;
                 if (bit != 0) {
                     String name = withoutVersion(entry.substring(entry.indexOf(':') + 1).trim());
@@ -602,6 +607,16 @@ public final class ShieldList {
      */
     public boolean velocityJitter(String robotName) {
         return (switchBits(robotName) & VEL_JITTER) != 0;
+    }
+
+    /**
+     * MOVE-45: whether the table names this opponent with a {@link #SPEED_BAND_PREFIX} line.
+     *
+     * @param robotName the opponent's name as Robocode lists it
+     * @return true when a {@code speed-band:} line matches it
+     */
+    public boolean speedBand(String robotName) {
+        return (switchBits(robotName) & SPEED_BAND) != 0;
     }
 
     /**
