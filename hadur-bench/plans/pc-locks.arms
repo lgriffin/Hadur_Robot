@@ -1,7 +1,9 @@
 # pc-locks (BENCH-253) round 4: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots
-# that locked with it on the cloud (plans/locks-pick.tsv; sb MOVE-45 speed band, dp DIST-4 distance pin, x0 SHIELD-11 battle exit off).
+# that locked with it on the cloud (plans/locks-pick.tsv; sb MOVE-45 speed band, dp DIST-4 distance pin, x0 SHIELD-11 battle exit off, vj MOVE-44 velocity jitter, hl MOVE-28 stop-and-start).
 c | hadur117.Hadur 3.23 | bisect/hadur117.Hadur_3.23.jar
 aa | hadur117.Hadur 3.23aa | bisect/hadur117.Hadur_3.23aa.jar
 sb | hadur117.Hadur 3.23sb | bisect/hadur117.Hadur_3.23sb.jar
 dp | hadur117.Hadur 3.23dp | bisect/hadur117.Hadur_3.23dp.jar
 x0 | hadur117.Hadur 3.23x0 | bisect/hadur117.Hadur_3.23x0.jar
+vj | hadur117.Hadur 3.23vj | bisect/hadur117.Hadur_3.23vj.jar
+hl | hadur117.Hadur 3.23hl | bisect/hadur117.Hadur_3.23hl.jar

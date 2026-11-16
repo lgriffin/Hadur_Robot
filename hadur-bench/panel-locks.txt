@@ -3,3 +3,6 @@
 ntc.Knowledge 1.1 | rank639-band5 | ntc.Knowledge_1.1.jar
 az.Ololobot 0.2.4 | rank554-band5 | az.Ololobot_0.2.4.jar
 cx.micro.Spark 0.6 | rank282-band4 | cx.micro.Spark_0.6.jar
+apv.AspidReloaded 0.6 | rank343-band4 | apv.AspidReloaded_0.6.jar
+yk.JahMicro 1.0 | rank1026-band6 | yk.JahMicro_1.0.jar
+genprog.Rinmorikazu 1.0 | rank1077-band6 | genprog.Rinmorikazu_1.0.jar
