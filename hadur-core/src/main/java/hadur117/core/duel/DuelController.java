@@ -974,6 +974,8 @@ public final class DuelController {
     private double hardPower = Double.NaN;
     /** POW-20: the power-band multipliers for this opponent, or null. */
     private double[] powerBand;
+    /** DIST-4: this duel opponent's pinned surf distance in px, or NaN. */
+    private double distPin = Double.NaN;
     /** POW-17: whether the race picked the last power, for the P record on a change. */
     private boolean raceApplied;
     /** POW-17: the energy race, fed every resolved duel bullet whether or not it is on. */
@@ -1457,6 +1459,7 @@ public final class DuelController {
         speedBandOn = duelOnly(stackList.speedBand(name), enemiesTotal);
         // POW-20: the power bands for the opponents the table names.
         powerBand = enemiesTotal <= 1 ? stackList.powerBandFor(name) : null;
+        distPin = enemiesTotal <= 1 ? stackList.distPinFor(name) : Double.NaN;
         // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names, never a shield-mode one
         // (its TripHammer aims break the shield's bullet hits); the gun keeps them 1v1-only.
         if (duelOnly(stackList.gunStack(name) && !stackList.matches(name), enemiesTotal)) {
@@ -1727,7 +1730,9 @@ public final class DuelController {
         if (now == Endgame.State.FINISH) stats.finishTicks++;
         if (now == Endgame.State.RAM) stats.ramTicks++;
         // END-1 overrides the controller's target with the finishing distance, 150 px.
-        surfMover.setDesiredDistance(distance.target(now == Endgame.State.FINISH));
+        // DIST-4: a pinned opponent's surf holds its pinned distance instead of DIST-1's (not while finishing).
+        surfMover.setDesiredDistance(!Double.isNaN(distPin) && now != Endgame.State.FINISH
+            ? distPin : distance.target(now == Endgame.State.FINISH));
         // RAM-1: the no-wave orbit takes the other side while a rammer is closing.
         surfMover.setRammerActive(ramActive);
     }

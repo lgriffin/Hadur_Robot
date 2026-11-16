@@ -743,6 +743,18 @@ final class ShieldTableData {
     }
 
     /**
+     * DIST-4: per-opponent pinned duel distance, one line each: the surf's desired distance in px, then the name.
+     * The pin replaces DIST-1's controller target against that robot in a duel (END-1's finish still closes in).
+     * Candidate builds add lines here (build-ablation.sh dplist).
+     *
+     * @return a fresh array of lines
+     */
+    static String[] distPins() {
+        return new String[] {
+        };
+    }
+
+    /**
      * POW-20: per-opponent power bands, one line each: four multipliers on the duel's chosen power while our energy
      * is 20-40, 40-60, 60-80 and 80 or more, then the name. Each copies BeepBoop's power by its own energy against
      * that robot (from truth logs). Candidate builds add lines here (build-ablation.sh pblist).

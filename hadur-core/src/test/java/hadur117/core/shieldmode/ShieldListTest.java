@@ -176,6 +176,22 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("DIST-4")
+    @DisplayName("dist-pin lines pin one duel distance per opponent, matched as shield entries, held to 150-900 px")
+    void perOpponentDistPin() {
+        ShieldList l = ShieldList.parse(List.of("dist-pin: 300 a.B 1.0", "dist-pin: 800 c.D", "dist-pin: 100 e.F",
+            "dist-pin: x g.H", "dist-pin: 500", "dist-pin:"));
+        assertEquals(300, l.distPinFor("a.B 1.0"));
+        assertEquals(300, l.distPinFor("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertEquals(800, l.distPinFor("c.D 2.3"), "a bare name matches every version");
+        assertTrue(Double.isNaN(l.distPinFor("e.F 1.0")), "a pin under 150 px is refused");
+        assertTrue(Double.isNaN(l.distPinFor("g.H 1.0")), "a malformed line is skipped");
+        assertTrue(Double.isNaN(l.distPinFor(null)));
+        assertTrue(Double.isNaN(ShieldList.NONE.distPinFor("a.B 1.0")));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+    }
+
+    @Test
     @Tag("POW-20")
     @DisplayName("power-band lines carry four energy-band multipliers per opponent, matched as shield entries")
     void perOpponentPowerBand() {

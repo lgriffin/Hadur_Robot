@@ -107,6 +107,15 @@ public final class ShieldList {
     public static final String POWER_BAND_PREFIX = "power-band:";
     /** POW-20: the numbers a power-band line carries before the name. */
     public static final int POWER_BAND_VALUES = 4;
+    /**
+     * DIST-4: a line starting with this pins an opponent's duel distance: the surf's desired
+     * distance in px, then the name ({@code "px name"}). Held to [{@link #DIST_PIN_MIN}, {@link #DIST_PIN_MAX}].
+     */
+    public static final String DIST_PIN_PREFIX = "dist-pin:";
+    /** DIST-4: the closest a pin may ask for, in px. */
+    public static final double DIST_PIN_MIN = 150;
+    /** DIST-4: the furthest a pin may ask for, in px. */
+    public static final double DIST_PIN_MAX = 900;
     /** MOVE-28: the per-opponent switch's bit in {@link #switches}. */
     static final int HEAT_JIT = 1;
     /** GUN-11: the per-opponent switch's bit in {@link #switches}. */
@@ -160,6 +169,8 @@ public final class ShieldList {
     private Map<String, double[]> surfKeys = Collections.emptyMap();
     /** POW-20: name to its four power-band multipliers. */
     private Map<String, double[]> powerBands = Collections.emptyMap();
+    /** DIST-4: name to its pinned duel distance, in px. */
+    private Map<String, Double> distPins = Collections.emptyMap();
 
     private ShieldList(Set<String> entries, Set<String> moves, Map<String, double[]> aims,
                        Set<String> dodges, Map<String, Integer> stopGo) {
@@ -186,6 +197,7 @@ public final class ShieldList {
         Map<String, Integer> switches = new TreeMap<>();
         Map<String, double[]> surfKeys = new TreeMap<>();
         Map<String, double[]> powerBands = new TreeMap<>();
+        Map<String, Double> distPins = new TreeMap<>();
         if (lines != null) {
             for (String line : lines) {
                 if (line == null) continue;
@@ -210,6 +222,18 @@ public final class ShieldList {
                     String name = withoutVersion(entry.substring(entry.indexOf(':') + 1).trim());
                     if (!name.isEmpty() && (switches.containsKey(name) || switches.size() < MAX_ENTRIES)) {
                         switches.merge(name, bit, (a, b) -> a | b);
+                    }
+                    continue;
+                }
+                if (entry.startsWith(DIST_PIN_PREFIX)) {
+                    String[] p = entry.substring(DIST_PIN_PREFIX.length()).trim().split(" ", 2);
+                    if (p.length == 2 && !p[1].isEmpty() && distPins.size() < MAX_ENTRIES) {
+                        try {
+                            double px = Double.parseDouble(p[0]);
+                            if (px >= DIST_PIN_MIN && px <= DIST_PIN_MAX) distPins.put(withoutVersion(p[1]), px);
+                        } catch (NumberFormatException e) {
+                            // A malformed dist-pin line is skipped.
+                        }
                     }
                     continue;
                 }
@@ -298,7 +322,7 @@ public final class ShieldList {
         }
         if (entries.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()
             && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty() && surfKeys.isEmpty()
-            && powerBands.isEmpty()) return NONE;
+            && powerBands.isEmpty() && distPins.isEmpty()) return NONE;
         ShieldList list = new ShieldList(Collections.unmodifiableSet(entries),
             Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims), Collections.unmodifiableSet(dodges),
             Collections.unmodifiableMap(stopGo));
@@ -306,6 +330,7 @@ public final class ShieldList {
         list.switches = Collections.unmodifiableMap(switches);
         list.surfKeys = Collections.unmodifiableMap(surfKeys);
         list.powerBands = Collections.unmodifiableMap(powerBands);
+        list.distPins = Collections.unmodifiableMap(distPins);
         return list;
     }
 
@@ -333,6 +358,20 @@ public final class ShieldList {
         if (robotName == null || moves.isEmpty()) return false;
         String name = robotName.trim().replaceAll("\\s+", " ");
         return moves.contains(name) || moves.contains(withoutVersion(name));
+    }
+
+    /**
+     * DIST-4: {@code robotName}'s pinned duel distance, by the rule of {@link #matches}.
+     *
+     * @param robotName the scanned robot's name, or null
+     * @return the pinned distance in px, or NaN when none is shipped
+     */
+    public double distPinFor(String robotName) {
+        if (robotName == null || distPins.isEmpty()) return Double.NaN;
+        String name = robotName.trim().replaceAll("\\s+", " ");
+        Double px = distPins.get(name);
+        if (px == null) px = distPins.get(withoutVersion(name));
+        return px == null ? Double.NaN : px;
     }
 
     /**
