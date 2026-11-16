@@ -58,6 +58,29 @@ class LockPrepTest(unittest.TestCase):
             self.assertEqual("", open(os.path.join(out, "picks-panel.txt")).read())
             self.assertEqual("set -e\n", open(os.path.join(out, "build.sh")).read())
 
+    def test_power_band_picks_carry_their_fitted_lines(self):
+        lines = os.path.join(self.d, "pb.txt")
+        with open(lines, "w") as f:
+            f.write("# fitted\n0.40 0.30 0.30 0.30 a.A 1\n1.0 1.0 1.0 2.0 b.B 2\n")
+        with open(self.arms, "a") as f:
+            f.write("pb | hadur117.Hadur 3.22pb | x\n")
+        old, lock_prep.PB_LINES = lock_prep.PB_LINES, lines
+        try:
+            out = self.run_prep([("a.A 1", "pb", "8.0")])
+            self.assertEqual("0.40 0.30 0.30 0.30 a.A 1\n", open(os.path.join(out, "pb.list")).read())
+            self.assertIn("POWER_BAND=%s bash ./build-ablation.sh pblist" % os.path.join(out, "pb.list").replace(os.sep, "/"),
+                          open(os.path.join(out, "build.sh")).read())
+            arms = os.path.join(self.d, "arms.tsv")
+            with open(arms, "w") as f:
+                f.write("arm\trobot\topponent\npb\tH\ta.A 1\npb\tH\tb.B 2\n")
+            picked = os.path.join(self.d, "picked.tsv")
+            lock_prep.restrict(arms, out, picked)
+            self.assertEqual(["pb\tH\ta.A 1\n"], open(picked).readlines()[1:])
+            with self.assertRaises(SystemExit):
+                self.run_prep([("c.C 3", "pb", "5.0")])
+        finally:
+            lock_prep.PB_LINES = old
+
 
 if __name__ == "__main__":
     unittest.main()
