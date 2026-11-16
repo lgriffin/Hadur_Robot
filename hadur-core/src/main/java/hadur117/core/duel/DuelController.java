@@ -848,7 +848,10 @@ public final class DuelController {
         // MOVE-8: the plan is republished by the surf on each tick it drives.
         moveController.clearPlan();
         // MOVE-46: against the opponents the table names, a disabled enemy is rammed only once none
-        // of its waves can still reach us; until then the surf keeps dodging its last bullets.
+        // of its waves can still reach us; until then the surf keeps dodging its last bullets. A
+        // disabled enemy fires no more, so MOVE-11's provisional wave is dropped first: only real
+        // waves hold the ram.
+        if (ramWaitOn && endgame == Endgame.State.RAM) moveController.setProvisionalReady(false, in.time());
         boolean wavesInAir = ramWaitOn
             && moveController.findSurfableWave(0, currentState(in)) != null;
         if (endgame == Endgame.State.RAM && !wavesInAir) {

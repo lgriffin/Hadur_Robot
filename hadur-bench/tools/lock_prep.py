@@ -42,6 +42,7 @@ LEVERS = {
     "dp": ("dplist", ("DIST_PIN",)),
     "kl": ("sklist", ("SURF_KEY",)),
     "rh": ("rhlist", ("RAM_HEAVY",)),
+    "rwl": ("rwlist", ("RAM_WAIT",)),
     "sp2": ("sdplanlist", ("SHOT_DODGE_PLAN",)),
 }
 
