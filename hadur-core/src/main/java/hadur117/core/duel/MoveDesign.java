@@ -2,12 +2,6 @@ package hadur117.core.duel;
 
 /** Duel-side switches for movement experiments; the move package never reads them. */
 final class MoveDesign {
-    /**
-     * END-4: in a duel, a disabled enemy is rammed (END-2) only once none of its waves is still
-     * surfable; until then the surf keeps dodging its last bullets. Off: END-2 rams at once.
-     */
-    static final boolean RAM_WAIT_WAVES = false;
-
     /** MOVE-11: surf the enemy's next shot before it leaves, when its gun is about to be cool. */
     static final boolean HEAT_WAVE = false;
 

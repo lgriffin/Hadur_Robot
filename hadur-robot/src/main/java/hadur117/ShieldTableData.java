@@ -750,6 +750,18 @@ final class ShieldTableData {
     }
 
     /**
+     * MOVE-46: the opponents the duel rams, once they are disabled, only after their last waves have passed
+     * ({@code ram-wait:} lines). Empty until a card holds robots; candidate builds add lines here
+     * (build-ablation.sh rwlist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] ramWaits() {
+        return new String[] {
+        };
+    }
+
+    /**
      * DIST-4: per-opponent pinned duel distance, one line each: the surf's desired distance in px, then the name.
      * The pin replaces DIST-1's controller target against that robot in a duel (END-1's finish still closes in).
      * Candidate builds add lines here (build-ablation.sh dplist).
