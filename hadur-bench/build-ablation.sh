@@ -802,7 +802,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
             elif [[ "$a" == sfloorlist ]]; then file="${SHIELD_FLOOR:-}"; method="shieldFloors"; version="${version}sf"
             elif [[ "$a" == pcaplist ]]; then file="${POWER_CAP:-}"; method="powerCaps"; version="${version}pk"
             elif [[ "$a" == pcap5list ]]; then file="${POWER_CAP5:-}"; method="powerCapHalves"; version="${version}p5"
-            elif [[ "$a" == eglist ]]; then file="${END_GAME:-}"; method="endGames"; version="${version}eg"
+            elif [[ "$a" == eglist ]]; then file="${END_GAME:-}"; method="endGames"; version="${version}${END_GAME_SUFFIX:-eg}"
             elif [[ "$a" == mirofflist ]]; then file="${MIRROR_OFF:-}"; method="mirrorOffs"; version="${version}mo"
             elif [[ "$a" == mmlist ]]; then file="${MIMIC_ON:-}"; method="mimicOns"; version="${version}mq"
             elif [[ "$a" == fplist ]]; then file="${FULL_OFF:-}"; method="fullOffs"; version="${version}fp"
