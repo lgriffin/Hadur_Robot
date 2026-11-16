@@ -960,6 +960,17 @@ final class ShieldTableData {
     }
 
     /**
+     * RAM-14: the rammers whose shots the escape weighs twice as heavily ({@code ram-heavy:} lines). Empty on master
+     * until a PC card holds a line.
+     *
+     * @return a fresh array of names
+     */
+    static String[] ramHeavies() {
+        return new String[] {
+        };
+    }
+
+    /**
      * RAM-11: the rammers whose shots the escape also dodges as circular aims ({@code ram-circ:} lines), each locked on
      * 12 fresh PC seeds at the live turn time after a 12-seed cloud lock.
      *
