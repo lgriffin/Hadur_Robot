@@ -6,3 +6,6 @@ step.nanoPri 1.0 | rank676-band5 | step.nanoPri_1.0.jar
 mc2.enemy.Original 0.9 | rank634-band5 | mc2.enemy.Original_0.9.jar
 supersample.SuperTracker 1.0 | rank890-band6 | supersample.SuperTracker_1.0.jar
 uccc.MilkyWay 1.01 | rank1034-band6 | uccc.MilkyWay_1.01.jar
+nexus.One 1.0 | rank875-band6 | nexus.One_1.0.jar
+oog.nano.SavantVS 1.1 | rank626-band5 | oog.nano.SavantVS_1.1.jar
+ab.DengerousRoBatra 1.3 | rank155-band3 | ab.DengerousRoBatra_1.3.jar
