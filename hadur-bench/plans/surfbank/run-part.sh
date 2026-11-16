@@ -9,6 +9,9 @@ set -euo pipefail
 N="$1"
 X="${2:-}"          # "b": the extra seeds 37902-3, into partNb
 SB=37900; [[ "$X" == b ]] && SB=37902
+SEEDS=2; ARMS=plans/surfbank/surfbank.arms
+# "low c": the low-gap confirm, field-low.txt, c and sb only, 1 seed 37904
+[[ "$X" == c ]] && { SB=37904; SEEDS=1; ARMS=plans/surfbank/surfbank2.arms; }
 MAIN=/home/user/Hadur_Robot
 WT=/home/user/sbwt
 BR=claude/project-thread-y0plb3
@@ -49,7 +52,7 @@ grep -v '^#' "plans/surfbank/field-$N.txt" | while IFS= read -r line; do
     if [[ -f "opponents/$j" ]]; then echo "$line"; else log "dropped (no jar): $line"; fi
 done > "$PANEL"
 log "running part $N$X (seeds from $SB)"
-mvn -q -Drobocode.version=1.11.2 exec:java -Dexec.args="--set $PANEL --seeds 2 --seed-base $SB --out work/surf-field-$N$X --arms plans/surfbank/surfbank.arms --truth-log false --rounds 35 --parallel 2 --child-cpus 2 --cpu-constant live --job-order shuffled --failed-ok true" || rc=$?
+mvn -q -Drobocode.version=1.11.2 exec:java -Dexec.args="--set $PANEL --seeds $SEEDS --seed-base $SB --out work/surf-field-$N$X --arms $ARMS --truth-log false --rounds 35 --parallel 2 --child-cpus 2 --cpu-constant live --job-order shuffled --failed-ok true" || rc=$?
 [[ ${rc:-0} -ne 0 ]] && log "bench exit $rc"
 cd "work/surf-field-$N$X"
 mkdir -p "$OUT/battles"

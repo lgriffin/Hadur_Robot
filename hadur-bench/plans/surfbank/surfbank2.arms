@@ -1,0 +1,3 @@
+# SURF-BANK-1 low-gap confirm: c (switch off) and sb (bank on) only.
+c | hadur117.Hadur 3.22 | bisect/hadur117.Hadur_3.22.jar
+sb | hadur117.Hadur 3.22sb | bisect/hadur117.Hadur_3.22sb.jar
