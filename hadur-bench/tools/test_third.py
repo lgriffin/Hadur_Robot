@@ -44,8 +44,8 @@ class ThirdTest(unittest.TestCase):
             self.assertEqual(["a.B 1.0 | r1 | a.jar\n"], third.panel(s, ["a.B 1.0"]))
 
     def test_candidate_arms(self):
-        arms = third.candidate_arms("3.17.1", "dp")
-        self.assertIn("t4 | hadur117.Hadur 3.17.1dp | bisect/hadur117.Hadur_3.17.1dp.jar\n", arms)
+        arms = third.candidate_arms("3.17.1", "sp2")
+        self.assertIn("t4 | hadur117.Hadur 3.17.1sp2 | bisect/hadur117.Hadur_3.17.1sp2.jar\n", arms)
 
 
 if __name__ == "__main__":
