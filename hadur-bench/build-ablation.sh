@@ -236,7 +236,7 @@
 #   sdkeep0 with sdplan: the planner neither keeps a close enemy away with no wave nor drives ahead of
 #         RAM-2's escape. Suffix k0.
 #   sdplanlist the lines of $SHOT_DODGE_PLAN ("expert name", or a name alone for -1, or a pick TSV)
-#         get the planner per opponent (ShieldTableData.dodgePlans()). Suffix dp.
+#         get the planner per opponent (ShieldTableData.dodgePlans()). Suffix sp2 (dp until 16 Nov, when DIST-4 took dp).
 #   sgo    POISON-2: stop-and-go (POISON-1, WavePoison: reverse crawl 1 tick before the enemy's gun
 #         is ready) against every duel opponent. Suffix wp.
 #   sgo2   the same, WavePoisonShift's variant (2 ticks). Suffix ws.
@@ -785,7 +785,7 @@ for l in open(sys.argv[1]):
 print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), end="")' "$SHOT_DODGE_PLAN")"
             [[ -n "$add" ]] || { echo "sdplanlist: $SHOT_DODGE_PLAN has no line" >&2; exit 2; }
             printf '%s' "$add" | python3 -c 'import sys; p,m=sys.argv[1:]; a=sys.stdin.read(); s=open(p).read(); k=s.index("        };", s.index("static String[] %s()" % m)); open(p,"w").write(s[:k]+a+s[k:])' "$tabledata" dodgePlans
-            version="${version}dp" ;;
+            version="${version}sp2" ;;
         sgo|sgo2)
             edit "$movedesign" "static final boolean STOP_AND_GO = false;" "static final boolean STOP_AND_GO = true;"
             if [[ "$a" == sgo2 ]]; then
