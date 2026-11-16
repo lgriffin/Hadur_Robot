@@ -669,13 +669,13 @@ public final class DuelController {
         }
         // POW-20: against an opponent the table names, while our energy is 20 or more, the power is scaled by its band's
         // multiplier (BeepBoop's power over ours there), kept within 0.1 to 3.0 and never raised past the least power
-        // that kills. Under 20 energy the endgame rules decide alone.
+        // that kills nor past a POW-18 cap. Under 20 energy the endgame rules decide alone.
         if (powerBand != null && enemiesTotal <= 1 && in.energy() >= 20) {
             double e0 = in.energy();
             double m = powerBand[e0 < 40 ? 0 : e0 < 60 ? 1 : e0 < 80 ? 2 : 3];
             double scaled = Math.max(0.1, Math.min(3.0, bulletPower * m));
             if (scaled > bulletPower && !Double.isNaN(killPower)) scaled = Math.max(bulletPower, Math.min(scaled, killPower));
-            bulletPower = scaled;
+            bulletPower = Double.isNaN(powerCap) ? scaled : Math.min(scaled, powerCap); // a POW-18 cap still holds
         }
         double payable = PowerPolicy.payable(bulletPower, in.energy());
         if (!Double.isNaN(payable)) bulletPower = payable;
