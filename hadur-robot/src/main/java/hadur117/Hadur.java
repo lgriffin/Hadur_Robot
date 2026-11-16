@@ -266,6 +266,8 @@ public class Hadur extends TeamRobot {
             for (String name : ShieldTableData.hardFires()) lines.add(ShieldList.HARD_FIRE_PREFIX + " " + name);
             // MOVE-44: per-opponent velocity jitter against exact-velocity pattern matchers.
             for (String name : ShieldTableData.velocityJitters()) lines.add(ShieldList.VEL_JITTER_PREFIX + " " + name);
+            // MOVE-45: per-opponent speed-band jitter.
+            for (String name : ShieldTableData.speedBands()) lines.add(ShieldList.SPEED_BAND_PREFIX + " " + name);
             // POW-20: per-opponent power bands.
             for (String band : ShieldTableData.powerBands()) lines.add(ShieldList.POWER_BAND_PREFIX + " " + band);
             // MOVE-32: per-opponent flattener views on.
@@ -372,7 +374,11 @@ public class Hadur extends TeamRobot {
         if (!Double.isNaN(o.maxVelocity())) lastMaxVelocity = o.maxVelocity();
         // MOVE-44: against a table-named exact-velocity pattern matcher, never drive at exactly 8 or exactly 0.
         boolean jitter = core != null && core.duel() != null && core.duel().velocityJitter();
-        if (jitter && lastMaxVelocity >= Rules.MAX_VELOCITY) {
+        // MOVE-45: against a table-named rounded-velocity pattern matcher, a full-speed order becomes a random 7 to 8.
+        boolean band = core != null && core.duel() != null && core.duel().speedBand();
+        if (band && lastMaxVelocity >= Rules.MAX_VELOCITY) {
+            setMaxVelocity(Rules.MAX_VELOCITY - Math.random());
+        } else if (jitter && lastMaxVelocity >= Rules.MAX_VELOCITY) {
             setMaxVelocity(Rules.MAX_VELOCITY - Math.random() / 1e12);
         } else if (!Double.isNaN(o.maxVelocity())) {
             setMaxVelocity(o.maxVelocity());
