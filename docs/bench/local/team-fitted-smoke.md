@@ -39,7 +39,7 @@ against these guns it steers round the wrong spot. TMODE-50 adds each fitted aim
 | Polylunar | 62.1 / 60.9 | +1.2 +- 19.3 | 39.8% / 41.1% |
 | All | 84.8 / 82.2 | **+2.6 +- 2.1** | |
 
-All six positive; about +0.33 APS spread over 47 pairings. A smoke cannot pass a line (no A/A on the cloud at
+All six positive; about +0.34 APS spread over 46 pairings, as the gate counts. A smoke cannot pass a line (no A/A on the cloud at
 this size); the PC card pc-team-fitted (BENCH-254) screens it.
 
 ## Read-across: 17 more teams (3.23 alone, 1 seed from 22400)
