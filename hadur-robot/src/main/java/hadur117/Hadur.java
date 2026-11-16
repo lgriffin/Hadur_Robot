@@ -262,6 +262,9 @@ public class Hadur extends TeamRobot {
             // POW-18: per-opponent power cap.
             for (String name : ShieldTableData.powerCaps()) lines.add(ShieldList.POWER_CAP_PREFIX + " " + name);
             for (String name : ShieldTableData.powerCapHalves()) lines.add(ShieldList.POWER_CAP5_PREFIX + " " + name);
+            // POW-19: per-opponent hard fire while our energy is high.
+            for (String name : ShieldTableData.hardFires()) lines.add(ShieldList.HARD_FIRE_PREFIX + " " + name);
+            for (String name : ShieldTableData.hardFire2s()) lines.add(ShieldList.HARD_FIRE2_PREFIX + " " + name);
             // MOVE-32: per-opponent flattener views on.
             for (String name : ShieldTableData.flatOns()) lines.add(ShieldList.FLAT_ON_PREFIX + " " + name);
             // MIR-2: per-opponent MIR-1 off.
