@@ -162,6 +162,12 @@ public final class TeamModes {
         for (String m : new String[] {"Luna", "Phobos", "Io", "Europa", "Charon"}) {
             t.put("ags.polylunar." + m, new FittedAim(2, 0, 1.0, 0.0, 0.6));
         }
+        // Read-across (3.23 alone, 1 seed from 22400): TroodonPack head-on 5 back explains 80% (control 4%, head-on now
+        // 39%); FourProphetsAndADiscliple linear at 13 px at the fire tick 62% (5%; linear now 34%).
+        t.put("myl.micro.Troodon", new FittedAim(5, 0, 0.0, 0.0, 0.7));
+        t.put("myl.micro.TroodonDroid", new FittedAim(5, 0, 0.0, 0.0, 0.7));
+        t.put("jeremyreeder.collective.Prophet", new FittedAim(0, 13, 1.0, 0.0, 0.6));
+        t.put("jeremyreeder.collective.Disciple", new FittedAim(0, 13, 1.0, 0.0, 0.6));
         return Collections.unmodifiableMap(t);
     }
 
