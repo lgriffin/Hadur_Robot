@@ -1,14 +1,13 @@
-opponent	control	control_n	mtzl_minus_c	mtzl_n	gl_minus_c	gl_n	hl_minus_c	hl_n	x5_minus_c	x5_n	mq_minus_c	mq_n	hf_minus_c	hf_n	fp_minus_c	fp_n
-rz.GlowBlow 2.31	78.32	24	18.56	12		0		0		0		0		0		0
-com.spp.robocode.MostlyHarmless 010	96.20	24	3.67	12		0		0		0		0		0		0
-davidalves.net.DuelistMicro 1.22	82.05	24	3.43	12		0		0		0		0		0		0
-sm.Devil 7.3	94.35	24	3.40	12		0		0		0		0		0		0
-tm.Yuugao 1.0	78.69	24	1.79	12		0		0		0		0		0		0
-Grystrion.TrackerWO 1.0	94.09	24		0		0	1.48	12		0		0		0		0
-aw.Gilgalad 1.99.5c	57.53	24		0		0		0		0		0	2.90	12		0
-cb.Domogled 1.2	72.40	24		0		0		0		0	3.89	12		0		0
-cx.micro.Blur 0.2	85.85	24		0	1.06	12		0		0		0		0		0
-deo.FlowerBot 1.0	86.47	24		0		0		0		0		0		0	3.54	12
-deo.virtual.RainbowBot 1.0	87.01	24		0		0		0	3.55	12		0		0		0
-kenran.Bakko v1.0.1	83.83	24		0		0		0	5.90	12		0		0		0
-mue.Ascendant 1.2.27	60.51	24		0		0		0	0.27	12		0		0		0
+opponent	control	control_n	pb_minus_c	pb_n	x0_minus_c	x0_n	mv_minus_c	mv_n
+ncj.MoxieBot 1.0	81.94	24	13.38	12		0		0
+positive.Portia 1.26e	70.30	24	0.82	12		0		0
+xander.cat.Mikey 1.2	89.31	24	-0.00	12		0		0
+mn.Combat 3.25.0	72.22	24	-0.01	12		0		0
+fromHell.CHCl3 1.4.2	75.84	24	-1.60	12		0		0
+EH.kms.LightningStorm 0.11B	80.71	24		0		0	8.80	12
+cw.megas.Blade 0.8	86.91	24		0		0	-0.02	12
+ers.nano.meroka.Meroka 1.8a	88.03	24		0	4.25	12		0
+nz.jdc.nano.PralDeGuerre 1.2	82.79	24		0	6.48	12		0
+robar.nano.Vespa 0.95	93.32	24		0	0.33	12		0
+theo.simple.Lucid 1.0	88.10	24		0		0	8.67	12
+whind.Constitution 0.7.1	91.21	24		0		0	5.44	12
