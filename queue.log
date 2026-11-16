@@ -10,3 +10,6 @@
 18:54:34 tfpilot exit=0 in 0 s
 18:54:34 start tfbb
 18:54:34 watching tfbb: 3 stop rule(s)
+19:16:40 tfbb exit=0 in 1325 s
+19:16:40 start tffit
+19:16:40 watching tffit: 3 stop rule(s)
