@@ -23,7 +23,7 @@ class PcLocksPlanTest {
 
     @Test
     @Tag("BENCH-253")
-    @DisplayName("pc-locks: loadable robots, c/aa/mtzl/gl/hl/x5/mq/hf on 12 fresh seeds at the live constant after the live-match check, a 0-margin gate, stop rules, a results PR")
+    @DisplayName("pc-locks: loadable robots, c/aa/mtzl/gl/hl/x5/mq/hf/fp on 12 fresh seeds at the live constant after the live-match check, a 0-margin gate, stop rules, a results PR")
     void cardIsComplete() throws IOException {
         String queue = Files.readString(Path.of("plans/pc-locks.queue"));
         String version = Files.readString(Path.of("../hadur-robot/pom.xml"))
@@ -38,11 +38,11 @@ class PcLocksPlanTest {
         Set<String> broken = Broken.names(Path.of(Broken.FILE));
         for (String n : panel) assertTrue(!broken.contains(n), n + " loads on 1.11.2");
         String arms = Files.readString(Path.of("plans/pc-locks.arms"));
-        for (String a : new String[] {"c", "aa", "mtzl", "gl", "hl", "x5", "mq", "hf"}) {
+        for (String a : new String[] {"c", "aa", "mtzl", "gl", "hl", "x5", "mq", "hf", "fp"}) {
             String v = a.equals("c") ? version : version + a;
             assertTrue(arms.contains("\n" + a + " | hadur117.Hadur " + v + " |"), a);
         }
-        assertEquals(8, names("plans/pc-locks.arms").size(), "c, aa, mtzl, gl, hl, x5, mq and hf");
+        assertEquals(9, names("plans/pc-locks.arms").size(), "c, aa, mtzl, gl, hl, x5, mq, hf and fp");
         assertTrue(queue.contains("lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh"), "each arm built with only its robots");
         assertTrue(queue.contains("--set panel-locks.txt --seeds 12 --seed-base 43000 --arms ${W}-prep/lock.arms --out ${W} "), "the lock");
         assertTrue(queue.contains("lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0"), "the gate, each robot on its own arm");
@@ -52,7 +52,7 @@ class PcLocksPlanTest {
             assertTrue(body.contains("stop: " + rule), rule);
         }
         assertTrue(body.contains("  after: livematch"), "the lock waits for the live-match check");
-        assertTrue(panel.size() * 8 * 12 >= 24, "the skips window is reachable within the lock");
+        assertTrue(panel.size() * 9 * 12 >= 24, "the skips window is reachable within the lock");
         assertTrue(!body.contains("stop: aa"), "the watcher reads A/A only once 10 robots are read in both arms, near the end of this lock; aa is read in the gate");
         assertEquals(List.of(), PcLiveMatchPlanTest.violations("pc-locks.queue", queue), "BENCH-245 timing rule");
         assertTrue(queue.contains("Why it should win") && queue.contains("set ALERT = lgriffin"));
