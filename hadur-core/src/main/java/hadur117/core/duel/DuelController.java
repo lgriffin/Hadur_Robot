@@ -823,7 +823,11 @@ public final class DuelController {
         moveController.updateShadows(in.time());
         // MOVE-8: the plan is republished by the surf on each tick it drives.
         moveController.clearPlan();
-        if (endgame == Endgame.State.RAM) {
+        // END-4: a disabled enemy is rammed only once none of its waves can still reach us; until
+        // then the surf keeps dodging the bullets it fired before it ran dry (1v1 only).
+        boolean wavesInAir = duelOnly(MoveDesign.RAM_WAIT_WAVES, enemiesTotal)
+            && moveController.findSurfableWave(0, currentState(in)) != null;
+        if (endgame == Endgame.State.RAM && !wavesInAir) {
             surfMover.ram(orders, currentState(in), lastEnemyLocation);
         } else if (mirrorActive) {
             // MIR-1: a planned path, so the gun knows where the mirror image will be. It
