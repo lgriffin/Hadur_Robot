@@ -1,7 +1,9 @@
-# pc-team-fitted (BENCH-254): the six teams whose gun aim TMODE-50 fits (docs/bench/local/team-fitted-smoke.md).
+# pc-team-fitted (BENCH-254): the eight teams whose gun aim TMODE-50 fits (docs/bench/local/team-fitted-smoke.md).
 kawigi.micro.ArmyOfShiz 1.1 | team-9 | kawigi.micro.ArmyOfShiz_1.1.jar
 gh.nano.GrofGroup 1.1 | team | gh.nano.GrofGroup_1.1.jar
 radnor.RadnorMedSchool 1.0 | team-18 | radnor.RadnorMedSchool_1.0.jar
 rz.HOFSwarm 1.1 | team-10 | rz.HOFSwarm_1.1.jar
 tmnr.TMNR 1.01 | team-14 | tmnr.TMNR_1.01.jar
 ags.polylunar.Polylunar 1.6 | team-7 | ags.polylunar.Polylunar_1.6.jar
+myl.micro.TroodonPack 1.10 | team-15 | myl.micro.TroodonPack_1.10.jar
+jeremyreeder.collective.FourProphetsAndADiscliple 5 | team | jeremyreeder.collective.FourProphetsAndADiscliple_5.jar

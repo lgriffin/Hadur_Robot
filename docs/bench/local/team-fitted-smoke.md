@@ -41,3 +41,12 @@ against these guns it steers round the wrong spot. TMODE-50 adds each fitted aim
 
 All six positive; about +0.33 APS spread over 47 pairings. A smoke cannot pass a line (no A/A on the cloud at
 this size); the PC card pc-team-fitted (BENCH-254) screens it.
+
+## Read-across: 17 more teams (3.23 alone, 1 seed from 22400)
+
+TroodonPack fits head-on 5 ticks back for 80% of its shots (control 4%, head-on at the fire tick 39%) and
+FourProphetsAndADiscliple linear at 13 px a tick at the fire tick for 62% (5%; linear now 34%). The other 15
+teams' best fits gain under 12 points over the fire-tick aims (ImWithStupid head-on 4 back 47% vs 35%, Impact
+69% vs 64%) and are left out. Smoke of the two (3 seeds from 22300, paired with aa; team-fitted-smoke-fit2.md):
+TroodonPack +3.1 +- 5.1, FourProphets +0.8 +- 4.7 (+1.9 +- 2.3 together); enemy hit rate on our members 12.4% ->
+10.8% and 14.2% -> 13.4%. Both join the card, which screens eight teams.

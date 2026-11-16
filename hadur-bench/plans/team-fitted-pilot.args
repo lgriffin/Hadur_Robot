@@ -1,4 +1,4 @@
-# PC card pc-team-fitted (BENCH-254): the pilot, fit against master (aa) on the six fitted teams, 4 seeds from 22500, 12 rounds. Template: the card's prep writes the work copy with @V@ = the robot.release in hadur-robot/pom.xml.
+# PC card pc-team-fitted (BENCH-254): the pilot, fit against master (aa) on the eight fitted teams, 4 seeds from 22500, 12 rounds. Template: the card's prep writes the work copy with @V@ = the robot.release in hadur-robot/pom.xml.
 --team
 true
 --seeds
