@@ -1,6 +1,6 @@
 # Queue pc-team-fitted: progress
 
-Updated 2026-11-16 19:18:13 PC time (19:18 UTC), runner pid 71280.
+Updated 2026-11-16 19:33:22 PC time (19:33 UTC), runner pid 71280.
 
 - `tfprep` done, exit 0 in 3 min
 - `tfpfit` done, exit 0 in 4 min
@@ -38,21 +38,20 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### tffit
 
-**12 of 384 battles** (3%), 0 failed. Running 2 min, 465 battles/h, about 48 min left (ends ~20:06 PC time). Last battle 1 min ago.
-Skipped turns a battle: 7.8 overall, first 12 7.8, last 12 7.8.
+**283 of 384 battles** (74%), 0 failed. Running 17 min, 1017 battles/h, about 6 min left (ends ~19:39 PC time). Last battle 0 min ago.
+Skipped turns a battle: 6.6 overall, first 100 5.6, last 100 6.5.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 12 |
-| `stall 30m` | halt | ok | last battle 1 min ago |
-| `skips 60 over 200` | halt | waiting | 12 of 200 battles to read |
+| `fails 60` | halt | ok | 0 failed of 283 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 60 over 200` | halt | ok | 7.1 a battle over the last 200 (first 200: 6.7) |
 
-Stopping now would leave 372 battles unrun (about 48 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 101 battles unrun (about 6 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-18:47:55 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
 18:47:55 start tfprep
 18:47:58 progress pushed to origin claude/pc-team-fitted-progress (every 15 min)
 18:50:34 tfprep exit=0 in 158 s
@@ -67,4 +66,5 @@ Stopping now would leave 372 battles unrun (about 48 min); every battle already 
 19:16:40 tfbb exit=0 in 1325 s
 19:16:40 start tffit
 19:16:40 watching tffit: 3 stop rule(s)
+19:21:15 progress tffit: 69/384 (18%) battles, 904/h, ETA 21 min, 0 failed, skips 5.9/battle (last 100)
 ```
