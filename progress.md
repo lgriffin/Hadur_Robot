@@ -1,14 +1,14 @@
 # Queue pc-team-fitted: progress
 
-Updated 2026-11-16 19:33:22 PC time (19:33 UTC), runner pid 71280.
+Updated 2026-11-16 19:38:24 PC time (19:38 UTC), runner pid 71280.
 
 - `tfprep` done, exit 0 in 3 min
 - `tfpfit` done, exit 0 in 4 min
 - `tfpilot` done, exit 0 in 0 min
 - `tfbb` done, exit 0 in 22 min
-- `tffit` running
-- `tfgate` pending
-- `tfpr` pending
+- `tffit` done, exit 0 in 22 min
+- `tfgate` done, exit 0 in 0 min
+- `tfpr` done, exit 0 in 0 min
 
 ### tfpfit
 
@@ -38,26 +38,20 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### tffit
 
-**283 of 384 battles** (74%), 0 failed. Running 17 min, 1017 battles/h, about 6 min left (ends ~19:39 PC time). Last battle 0 min ago.
-Skipped turns a battle: 6.6 overall, first 100 5.6, last 100 6.5.
+**384 of 384 battles** (100%), 0 failed. Running 22 min, 1066 battles/h, about 0 min left (ends ~19:38 PC time). Last battle 0 min ago.
+Skipped turns a battle: 5.7 overall, first 100 5.6, last 100 3.3.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 283 |
+| `fails 60` | halt | ok | 0 failed of 384 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | ok | 7.1 a battle over the last 200 (first 200: 6.7) |
+| `skips 60 over 200` | halt | ok | 4.9 a battle over the last 200 (first 200: 6.7) |
 
-Stopping now would leave 101 battles unrun (about 6 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-18:47:55 start tfprep
-18:47:58 progress pushed to origin claude/pc-team-fitted-progress (every 15 min)
-18:50:34 tfprep exit=0 in 158 s
-18:50:34 start tfpfit
-18:50:34 watching tfpfit: 3 stop rule(s)
-18:50:57 progress tfpfit: 0/64 (0%) battles, 0 failed
 18:54:34 tfpfit exit=0 in 239 s
 18:54:34 start tfpilot
 18:54:34 tfpilot exit=0 in 0 s
@@ -67,4 +61,10 @@ Stopping now would leave 101 battles unrun (about 6 min); every battle already f
 19:16:40 start tffit
 19:16:40 watching tffit: 3 stop rule(s)
 19:21:15 progress tffit: 69/384 (18%) battles, 904/h, ETA 21 min, 0 failed, skips 5.9/battle (last 100)
+19:38:17 tffit exit=0 in 1296 s
+19:38:17 start tfgate
+19:38:17 tfgate exit=0 in 0 s
+19:38:17 start tfpr
+19:38:24 tfpr exit=0 in 6 s
+19:38:24 ALLDONE
 ```
