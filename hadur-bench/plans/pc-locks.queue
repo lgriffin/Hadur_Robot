@@ -31,7 +31,8 @@
 #     rp: EvBotNG wins 5/22 of the low-energy fights from behind that BeepBoop wins 24/30; WaveSerpent and Splinter lose the same
 #     end game (shard B attrition reads); the race power
 #     pick spends less energy there (shards/attrition/).
-#     pb: per energy band, BeepBoop's bullet power against Atom over ours, from paired truth logs (plans/power-band-lines.txt).
+#     pb: per energy band, a stronger robot's bullet power over ours, from paired truth logs (plans/power-band-lines.txt):
+#     BeepBoop for Atom, Saguaro for Tron; the PC tests the same line the cloud lock measured.
 #     hl: Flex and JointStrike screened +3.3 and +3.2 on stop-and-start and held over 24 fresh seeds (shard A); Pegasus
 #     rams, and stop-and-start is the rammer escape's answer.
 #     pb (Tron): against Tron Saguaro fires 1.37 at 20-40 energy where we fire 0.66 (shards/free4/pb-tron.txt).
