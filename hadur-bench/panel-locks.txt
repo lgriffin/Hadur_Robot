@@ -1,18 +1,5 @@
-# BENCH-253 pc-locks: robots whose per-robot line locked on the cloud (12+ fresh seeds, 95% low end above 0, live turn
-# time) and is on no PC card yet (coverage/shards/locks.tsv, 15 Nov). Census rows. name | rank | jar
-rz.GlowBlow 2.31 | rank248-band4 | rz.GlowBlow_2.31.jar
-Grystrion.TrackerWO 1.0 | rank1037-band6 | Grystrion.TrackerWO_1.0.jar
-cx.micro.Blur 0.2 | rank405-band5 | cx.micro.Blur_0.2.jar
-com.spp.robocode.MostlyHarmless 010 | rank773-band6 | com.spp.robocode.MostlyHarmless_010.jar
-tm.Yuugao 1.0 | rank325-band4 | tm.Yuugao_1.0.jar
-davidalves.net.DuelistMicro 1.22 | rank273-band4 | davidalves.net.DuelistMicro_1.22.jar
-deo.virtual.RainbowBot 1.0 | rank328-band4 | deo.virtual.RainbowBot_1.0.jar
-sm.Devil 7.3 | rank598-band5 | sm.Devil_7.3.jar
-kenran.Bakko v1.0.1 | rank106-band3 | kenran.Bakko_v1.0.1.jar
-mue.Ascendant 1.2.27 | rank24-band2 | mue.Ascendant_1.2.27.jar
-cb.Domogled 1.2 | rank23-band2 | cb.Domogled_1.2.jar
-aw.Gilgalad 1.99.5c | rank12-band2 | aw.Gilgalad_1.99.5c.jar
-deo.FlowerBot 1.0 | rank223-band4 | deo.FlowerBot_1.0.jar
+# BENCH-253 pc-locks, round 2: robots whose per-robot line locked on the cloud (12+ fresh seeds, 95% low end above 0,
+# live turn time) after round 1 ran (PR #843) (coverage/shards/locks.tsv, 16 Nov). Census rows. name | rank | jar
 ncj.MoxieBot 1.0 | rank1183-band6 | ncj.MoxieBot_1.0.jar
 fromHell.CHCl3 1.4.2 | rank40-band2 | fromHell.CHCl3_1.4.2.jar
 mn.Combat 3.25.0 | rank38-band2 | mn.Combat_3.25.0.jar
@@ -22,3 +9,6 @@ robar.nano.Vespa 0.95 | rank483-band5 | robar.nano.Vespa_0.95.jar
 positive.Portia 1.26e | rank63-band3 | positive.Portia_1.26e.jar
 EH.kms.LightningStorm 0.11B | rank355-band4 | EH.kms.LightningStorm_0.11B.jar
 cw.megas.Blade 0.8 | rank386-band4 | cw.megas.Blade_0.8.jar
+ers.nano.meroka.Meroka 1.8a | rank327-band4 | ers.nano.meroka.Meroka_1.8a.jar
+theo.simple.Lucid 1.0 | rank175-band3 | theo.simple.Lucid_1.0.jar
+whind.Constitution 0.7.1 | rank511-band5 | whind.Constitution_0.7.1.jar

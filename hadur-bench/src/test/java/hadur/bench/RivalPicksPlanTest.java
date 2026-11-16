@@ -61,6 +61,9 @@ class RivalPicksPlanTest {
         shipped.addAll(names("plans/still-field-shipped.txt"));
         // pc-shield-floor (PR #781) shipped CassiusClay.
         shipped.addAll(names("plans/shield-floor-shipped.txt"));
+        // pc-shards (PR #840) and pc-locks (PR #843) shipped shield lines to robots this card read.
+        shipped.addAll(names("plans/shards-shipped.txt"));
+        shipped.addAll(names("plans/locks-shipped.txt"));
         for (String n : drop) {
             if (!shipped.contains(n)) assertTrue(listData.contains("\"" + n + "\","), n + " is on the shield list to drop");
         }
