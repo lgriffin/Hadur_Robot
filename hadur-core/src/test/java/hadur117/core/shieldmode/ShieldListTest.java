@@ -129,6 +129,20 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("POW-19")
+    @DisplayName("end-game lines name the opponents the duel plays the low-energy end game against")
+    void perOpponentEndGame() {
+        ShieldList l = ShieldList.parse(List.of("end-game: a.B 1.0", "end-game: c.D", "power-cap: e.F", "end-game:"));
+        assertTrue(l.endGame("a.B 1.0"));
+        assertTrue(l.endGame("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertTrue(l.endGame("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.endGame("e.F 1.0") || l.powerCap("a.B 1.0"), "no other switch");
+        assertFalse(l.endGame(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.endGame("a.B 1.0"));
+    }
+
+    @Test
     @Tag("MIR-2")
     @DisplayName("mirror-off lines name the opponents the duel never runs MIR-1 against, matched as shield entries")
     void perOpponentMirrorOff() {

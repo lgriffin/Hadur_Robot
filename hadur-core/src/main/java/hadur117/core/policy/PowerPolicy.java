@@ -293,6 +293,46 @@ public final class PowerPolicy {
         return ourEnergy - firePower - enemyEnergy < END_4_MARGIN;
     }
 
+    /** POW-19: below this energy of ours the end-game cap applies. */
+    public static final double END_GAME_ENERGY = 20;
+    /** POW-19: the cap is our energy divided by this, so a shot never costs more than a fifteenth of what is left. */
+    public static final double END_GAME_DIVISOR = 15;
+    /** POW-19: below this energy of ours a lead over the enemy's energy is never fired away. */
+    public static final double END_GAME_HOLD_ENERGY = 5;
+    /** POW-19: the energy kept above the enemy's while the lead is held. */
+    public static final double END_GAME_HOLD_MARGIN = 0.11;
+
+    /**
+     * POW-19: the low-energy end game's cap, for an opponent the table names with an end-game line.
+     * In a long war where both guns hit rarely, the side that fires itself out first loses; below
+     * {@link #END_GAME_ENERGY} the power is capped at our energy over {@link #END_GAME_DIVISOR},
+     * never below the minimum bullet, so each shot risks less as the round runs down.
+     *
+     * @param power the power chosen so far
+     * @param ourEnergy our energy now
+     * @return the power to carry on with, never above what was chosen
+     */
+    public static double endGamePower(double power, double ourEnergy) {
+        if (!(ourEnergy < END_GAME_ENERGY)) return power;
+        return Math.min(power, Math.max(Rules.MIN_BULLET_POWER, ourEnergy / END_GAME_DIVISOR));
+    }
+
+    /**
+     * POW-19: whether to hold a shot that would give up our energy lead at low energy, for an
+     * opponent the table names with an end-game line. Unlike END-4 it does not wait for the enemy to
+     * be unable to fire: below {@link #END_GAME_HOLD_ENERGY}, ahead, a shot that would leave us less
+     * than {@link #END_GAME_HOLD_MARGIN} above the enemy's energy is held.
+     *
+     * @param ourEnergy our energy now
+     * @param firePower the power the shot would leave at
+     * @param enemyEnergy their energy at the last scan
+     * @return whether to hold the shot
+     */
+    public static boolean holdsLead(double ourEnergy, double firePower, double enemyEnergy) {
+        if (!(ourEnergy < END_GAME_HOLD_ENERGY) || !(ourEnergy > enemyEnergy)) return false;
+        return ourEnergy - firePower < enemyEnergy + END_GAME_HOLD_MARGIN;
+    }
+
     /**
      * END-4 for a shot that does not go through the main gun's own hold: shield mode's attack
      * shots. The power that would really leave is the one asked for,

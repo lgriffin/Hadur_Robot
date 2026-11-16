@@ -367,6 +367,7 @@ public final class DuelController {
         if (racePower) on.add("race");
         if (ramCirc) on.add("ramcirc");
         if (!Double.isNaN(powerCap)) on.add("cap");
+        if (endGame) on.add("endgame");
         if (shield != null && shield.active()) on.add("shield");
         return on.isEmpty() ? "-" : String.join(",", on);
     }
@@ -662,6 +663,8 @@ public final class DuelController {
         // fireIfGunTurned: every scan still makes its wave, which teaches the gun.
         // POW-18: against an opponent the table names, every shot is capped, after every rule above.
         if (!Double.isNaN(powerCap) && enemiesTotal <= 1) bulletPower = Math.min(bulletPower, powerCap);
+        // POW-19: the low-energy end game's cap, for an opponent the table names, after every rule above.
+        if (endGame && enemiesTotal <= 1) bulletPower = PowerPolicy.endGamePower(bulletPower, in.energy());
         double payable = PowerPolicy.payable(bulletPower, in.energy());
         if (!Double.isNaN(payable)) bulletPower = payable;
 
@@ -919,6 +922,8 @@ public final class DuelController {
     private boolean ramCirc;
     /** POW-18: the cap the table sets on our power against this opponent, NaN for none. */
     private double powerCap = Double.NaN;
+    /** POW-19: whether this opponent has an {@code end-game:} line. */
+    private boolean endGame;
     /**
      * POW-18: the most the duel fires at an opponent the table names with a power-cap line. In a
      * long war of low-power shots where both guns hit about one bullet in eight, a heavier shot
@@ -1400,6 +1405,8 @@ public final class DuelController {
         // POW-18: the power cap for the opponents the table names.
         powerCap = duelOnly(stackList.powerCap(name), enemiesTotal) ? CAP_POWER
             : duelOnly(stackList.powerCapHalf(name), enemiesTotal) ? CAP_POWER_HALF : Double.NaN;
+        // POW-19: the low-energy end game for the opponents the table names.
+        endGame = duelOnly(stackList.endGame(name), enemiesTotal);
         // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names, never a shield-mode one
         // (its TripHammer aims break the shield's bullet hits); the gun keeps them 1v1-only.
         if (duelOnly(stackList.gunStack(name) && !stackList.matches(name), enemiesTotal)) {
@@ -1964,8 +1971,10 @@ public final class DuelController {
         double firePower = PowerPolicy.payable(bulletPower, in.energy());
         // POW-16: an x.x5 power whose speed the opponent misreads from our energy drop, for an opponent the table names.
         if (x5Power && !Double.isNaN(firePower)) firePower = PowerPolicy.x5(firePower, in.energy());
-        boolean end4 = !Double.isNaN(firePower) && PowerPolicy.holdsLastShot(in.energy(), firePower,
-            lastEnemyEnergy, smallestEnemyPower);
+        boolean end4 = !Double.isNaN(firePower) && (PowerPolicy.holdsLastShot(in.energy(), firePower,
+            lastEnemyEnergy, smallestEnemyPower)
+            // POW-19: the end game also keeps a low-energy lead while the enemy can still fire.
+            || (endGame && enemiesTotal <= 1 && PowerPolicy.holdsLead(in.energy(), firePower, lastEnemyEnergy)));
         if (end4 != end4Holding) {
             end4Holding = end4;
             emitPolicy(round, in.time(), "power", firePower, Double.NaN, end4 ? "end_4" : "end_4_off");

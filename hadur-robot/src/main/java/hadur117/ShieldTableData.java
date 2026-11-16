@@ -669,6 +669,18 @@ final class ShieldTableData {
     }
 
     /**
+     * POW-19: the opponents the duel plays the low-energy end game against (cap below 20 energy,
+     * lead hold below 5), one name each. Empty until a card holds robots; candidate builds add
+     * lines here (build-ablation.sh eglist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] endGames() {
+        return new String[] {
+        };
+    }
+
+    /**
      * MIR-2: the opponents the duel never runs MIR-1 (the mirror detector, its drive and its aim)
      * against. Empty until a card holds robots; candidate builds add lines here (build-ablation.sh
      * mirofflist).
