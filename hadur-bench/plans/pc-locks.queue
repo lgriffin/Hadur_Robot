@@ -5,16 +5,19 @@
 #      DarkAndDarker +4.0 (+1.8), T3 +3.7 (+0.2), R2d2 +2.7 (+0.6), Statistas +2.7 (+0.1), FloodHT +5.6 (+1.1, 24 seeds),
 #      AHEB +4.8 (+0.5),
 #      Princess +5.8 (+1.2), all on master 3.23
-#   rp (POW-17 race power): EvBotNG +3.2 (+0.7, 24 seeds), WaveSerpent +4.6 (+1.9)
+#   rp (POW-17 race power): EvBotNG +3.2 (+0.7, 24 seeds), WaveSerpent +4.6 (+1.9), Regicide +5.3 (+2.3; found by
+#      round forensics: it loses low-energy wars it enters ahead)
 #   pb (POW-20 power band): Atom +2.8 (+1.3), line 1.00 0.43 0.31 0.26 (BeepBoop fires about 0.5 at it); Tron +3.1
 #      (+0.2, 24 seeds), line 2.08 1.00 1.00 1.00 (Saguaro fires twice our power at 20-40 energy)
 #   hl (MOVE-28 stop-and-start): Flex +2.6 (+0.5, 24 seeds), Pegasus +3.6 (+2.2)
+#   vj (MOVE-44 velocity jitter, off on master until this card holds it): Booring +14.0 (+12.0)
+#   x0 (SHIELD-11 battle exit off): Quest +6.8 (+3.2)
 #   Older unbanked cloud locks that already failed on the PC (Yuugao, Blur, FlowerBot) or were read on the wrong
 #   version (Seraphim) stay off. JointStrike hl and Splinter rp were marginal and failed 12 more cloud seeds (pooled
 #   low ends -0.4 and -0.8), so they are dropped. RainbowBot mv
 #   adds only +0.7 (low -0.9) on top of its shipped x5 line over 24 cloud seeds (the two fix the same loss), so it is off.
 #   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live
-#   lock       the 22 robots   c / aa / mv / rp / pb / hl (each lever arm built with only its own robots)   12 fresh seeds
+#   lock       the 25 robots   c / aa / mv / rp / pb / hl / vj / x0 (each lever arm built with only its own robots)   12 fresh seeds
 #              from 43300, --cpu-constant live, in work/pc-locks3 (earlier rounds' battles stay in work/pc-locks, -locks2)
 #   gate       each robot judged on its own arm only (lock_prep.py --restrict); it keeps its line where the 95% low end
 #              is above 0 (mode_table.py --margin 0)
@@ -22,7 +25,7 @@
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
 #   --fresh because round 2 left this plan's queue state marked complete; an interrupted round 3 resumes without it.
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 1584 lock battles (22 robots, 6 arms, 12 seeds), about 45 minutes.
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 2400 lock battles (25 robots, 8 arms, 12 seeds), about 68 minutes.
 #
 # Why it should win (the PC card rule of 2026-11-03):
 #   - Per-opponent tailoring: every line names one robot; every other robot, team and melee play bit for bit as master.
@@ -37,6 +40,11 @@
 #     BeepBoop for Atom, Saguaro for Tron; the PC tests the same line the cloud lock measured.
 #     hl: Flex screened +3.3 on stop-and-start and held over 24 fresh seeds (shard A); Pegasus
 #     rams, and stop-and-start is the rammer escape's answer.
+#     vj: Booring's pattern gun replays only history recorded at exactly our current velocity (exact double compare,
+#     decompiled); BeepBoop never drives at exactly 8 or 0, so Booring falls back to linear aim, which the surf dodges.
+#     The jitter moved Booring's linear share from 0.18 to 0.52 (shard A, PR #854).
+#     x0: against Quest our shield leaves for the battle once 150 damage is taken (hadur.log off,damage); BeepBoop never
+#     leaves; keeping the shield on screened +4.4 and locked +6.8 on 12 fresh seeds (shard A).
 #     pb (Tron): against Tron Saguaro fires 1.37 at 20-40 energy where we fire 0.66 (shards/free4/pb-tron.txt).
 #   - Every robot passed the cloud lock bar first; round 1 held 8 of 13 such cloud locks on the PC (#843), round 2 held 6 of 12 (#845).
 # Stop rules (docs/bench/watch.md): the watcher's A/A rule needs 10 robots read in both c and aa, which on 12 shuffled
@@ -52,7 +60,7 @@ set W = work/pc-locks3
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
 
-prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && python3 tools/lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh && for a in mv rp pb hl; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; done && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set panel-locks.txt && mvn -q compile
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && python3 tools/lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh && for a in mv rp pb hl vj x0; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; done && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set panel-locks.txt && mvn -q compile
 
 livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out work/pc-livematch-rel-live --label pc-locks-livematch --shuffle-jobs && python3 tools/live_match.py work/pc-livematch-rel-live/arms.tsv --out ${OUT}/pc-locks3-livematch.md
   after: prep
@@ -69,8 +77,8 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 4
   stop: skips 60 over 24
   stop: stall 30m
 
-gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks3-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks3-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks3-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms mv rp pb hl --out ${OUT}/$(date +%Y-%m-%d)_pc-locks3-lock-per-robot.md --out-tsv ${OUT}/pc-locks3-lock-per-robot.tsv
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks3-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks3-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks3-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms mv rp pb hl vj x0 --out ${OUT}/$(date +%Y-%m-%d)_pc-locks3-lock-per-robot.md --out-tsv ${OUT}/pc-locks3-lock-per-robot.tsv
   after: lock
 
-pr | bash tools/open_results_pr.sh claude/pc-locks3-results "1v1 cloud locks, round 3 (22 robots from the field shards) locked on 12 fresh PC seeds" ${OUT}/pc-locks3-livematch.md ${OUT}/*_pc-locks3-*.md ${OUT}/pc-locks3-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks3-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks3-results "1v1 cloud locks, round 3 (25 robots from the field shards) locked on 12 fresh PC seeds" ${OUT}/pc-locks3-livematch.md ${OUT}/*_pc-locks3-*.md ${OUT}/pc-locks3-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks3-lock-pick.tsv' -size +0c)
   after: gate

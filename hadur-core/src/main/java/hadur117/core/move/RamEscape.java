@@ -35,6 +35,16 @@ import java.awt.geom.Point2D;
  */
 public final class RamEscape {
 
+    /**
+     * RAM-14 experiment (off): while moving faster than {@link #KEEP_SPEED}, the escape only takes headings
+     * within a quarter turn of its direction of travel, so it turns rather than braking through zero
+     * into a reverse (a reversal sits still on the rammer's point-blank aim for several ticks). Falls back
+     * to every heading when none of those survives the play-out.
+     */
+    static final boolean KEEP_TRAVEL = false;
+    /** RAM-14: the speed above which the escape keeps its direction of travel. */
+    static final double KEEP_SPEED = 2.0;
+
     /** Absolute headings tried, evenly spaced. */
     static final int HEADINGS = 24;
     /** Ticks each candidate is played forward. */
@@ -195,6 +205,17 @@ public final class RamEscape {
      * @return the absolute heading to drive, in radians
      */
     double choose(RobotState me, RobotState enemy) {
+        if (KEEP_TRAVEL && Math.abs(me.velocity) > KEEP_SPEED) {
+            double travel = me.velocity < 0 ? Angles.normalAbsoluteAngle(me.heading + Math.PI) : me.heading;
+            double kept = choose(me, enemy, travel);
+            if (!Double.isNaN(kept)) return kept;
+        }
+        return choose(me, enemy, Double.NaN);
+    }
+
+    /** As {@link #choose(RobotState, RobotState)}; with {@code travel} set, only headings within a quarter turn of it (NaN when none survives). */
+    private double choose(RobotState me, RobotState enemy, double travel) {
+        boolean found = false;
         double bestMin = Double.NEGATIVE_INFINITY;
         double bestMean = Double.NEGATIVE_INFINITY;
         double bestTurn = Double.POSITIVE_INFINITY;
@@ -212,6 +233,7 @@ public final class RamEscape {
                     orientation = -1;
                 }
                 double first = battleField.wallSmoothing(me.location, raw, orientation, WALL_STICK);
+                if (!Double.isNaN(travel) && Math.abs(Angles.normalRelativeAngle(first - travel)) > Math.PI / 2) continue;
                 double turn = Double.isNaN(lastHeading) ? 0
                     : Math.abs(Angles.normalRelativeAngle(first - lastHeading));
                 boolean better;
@@ -226,9 +248,11 @@ public final class RamEscape {
                     bestMean = score[1];
                     bestTurn = turn;
                     bestHeading = first;
+                    found = true;
                 }
             }
         }
+        if (!Double.isNaN(travel) && !found) return Double.NaN;
         lastHeading = bestHeading;
         return bestHeading;
     }

@@ -146,6 +146,21 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("MOVE-44")
+    @DisplayName("velocity-jitter lines name the exact-velocity pattern matchers the duel jitters its speed against, matched as shield entries")
+    void perOpponentVelocityJitter() {
+        ShieldList l = ShieldList.parse(List.of("velocity-jitter: a.B 1.0", "velocity-jitter: c.D", "velocity-jitter:", "hard-fire: e.F"));
+        assertTrue(l.velocityJitter("a.B 1.0"));
+        assertTrue(l.velocityJitter("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertTrue(l.velocityJitter("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.velocityJitter("e.F 1.0"), "a hard-fire line is not a velocity-jitter line");
+        assertFalse(l.hardFire("a.B 1.0") || l.powerCap("a.B 1.0"), "no other switch");
+        assertFalse(l.velocityJitter(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.velocityJitter("a.B 1.0"));
+    }
+
+    @Test
     @Tag("POW-20")
     @DisplayName("power-band lines carry four energy-band multipliers per opponent, matched as shield entries")
     void perOpponentPowerBand() {

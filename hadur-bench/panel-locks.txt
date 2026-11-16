@@ -22,3 +22,6 @@ abc.tron3.Tron 3.11 | shard-G | abc.tron3.Tron_3.11.jar
 kawigi.sbf.FloodHT 0.9.2 | shard-D | kawigi.sbf.FloodHT_0.9.2.jar
 mnt.AHEB 0.6a | rank353-band4 | mnt.AHEB_0.6a.jar
 cx.Princess 1.0 | shard-L | cx.Princess_1.0.jar
+DM.mega.Regicide 2.0rrr | rank71-band3 | DM.mega.Regicide_2.0rrr.jar
+jw.Booring 1.11 | rank414-band5 | jw.Booring_1.11.jar
+ad.Quest 0.10 | rank167-band3 | ad.Quest_0.10.jar

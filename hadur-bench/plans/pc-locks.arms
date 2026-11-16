@@ -1,8 +1,10 @@
 # pc-locks (BENCH-253) round 3: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots
-# that locked with it on the cloud (plans/locks-pick.tsv; mv SHIELD-17 moving shield, rp per-opponent race power, pb POW-20 power band, hl MOVE-28 stop-and-start).
+# that locked with it on the cloud (plans/locks-pick.tsv; mv SHIELD-17 moving shield, rp per-opponent race power, pb POW-20 power band, hl MOVE-28 stop-and-start, vj MOVE-44 velocity jitter, x0 SHIELD-11 battle exit off).
 c | hadur117.Hadur 3.23 | bisect/hadur117.Hadur_3.23.jar
 aa | hadur117.Hadur 3.23aa | bisect/hadur117.Hadur_3.23aa.jar
 mv | hadur117.Hadur 3.23mv | bisect/hadur117.Hadur_3.23mv.jar
 rp | hadur117.Hadur 3.23rp | bisect/hadur117.Hadur_3.23rp.jar
 pb | hadur117.Hadur 3.23pb | bisect/hadur117.Hadur_3.23pb.jar
 hl | hadur117.Hadur 3.23hl | bisect/hadur117.Hadur_3.23hl.jar
+vj | hadur117.Hadur 3.23vj | bisect/hadur117.Hadur_3.23vj.jar
+x0 | hadur117.Hadur 3.23x0 | bisect/hadur117.Hadur_3.23x0.jar
