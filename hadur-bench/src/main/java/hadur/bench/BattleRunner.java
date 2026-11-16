@@ -9,6 +9,7 @@ import robocode.BattleResults;
 import robocode.control.BattleSpecification;
 import robocode.control.BattlefieldSpecification;
 import robocode.control.RobocodeEngine;
+import robocode.control.RobotSetup;
 import robocode.control.RobotSpecification;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleCompletedEvent;
@@ -77,8 +78,7 @@ public final class BattleRunner {
                 out.println(BattleResult.failed("expected 2 robots, found " + robots.length));
                 exit = 2;
             } else {
-                engine.runBattle(new BattleSpecification(rounds,
-                    new BattlefieldSpecification(width, height), robots), true);
+                engine.runBattle(spec(rounds, width, height, robots), true);
                 // G14: let the engine finish reporting before the log is read and closed.
                 harvester.awaitDrain(5000, 250);
                 harvester.close();
@@ -103,5 +103,21 @@ public final class BattleRunner {
         }
         engine.close();
         System.exit(exit);
+    }
+
+    /**
+     * The battle, with both robots at a fixed start every round when {@code hadur.bench.start}
+     * names placements ("x1,y1,x2,y2", several joined by '|', one per seed in turn).
+     */
+    static BattleSpecification spec(int rounds, int width, int height, RobotSpecification[] robots) {
+        String start = System.getProperty("hadur.bench.start", "");
+        BattlefieldSpecification field = new BattlefieldSpecification(width, height);
+        if (start.isEmpty()) return new BattleSpecification(rounds, field, robots);
+        String[] picks = start.split("\\|");
+        String[] v = picks[Math.floorMod(Integer.getInteger("RANDOMSEED", 0), picks.length)].split(",");
+        RobotSetup[] setups = {
+            new RobotSetup(Double.parseDouble(v[0]), Double.parseDouble(v[1]), null),
+            new RobotSetup(Double.parseDouble(v[2]), Double.parseDouble(v[3]), null)};
+        return new BattleSpecification(field, rounds, 450, 0.1, 100, false, robots, setups);
     }
 }

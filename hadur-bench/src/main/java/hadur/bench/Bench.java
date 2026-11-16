@@ -1233,6 +1233,9 @@ public final class Bench {
         if ("false".equalsIgnoreCase(opts.getOrDefault("truth-log", "true"))) flags.add("-Dhadur.bench.truth=false");
         // BENCH-213: --melee-trace true makes a melee battle write trace.log.gz (every robot, every turn).
         if ("true".equalsIgnoreCase(opts.getOrDefault("melee-trace", "false"))) flags.add("-Dhadur.bench.melee.trace=true");
+        // Experiment (SHIELD-27 test): --start "x1,y1,x2,y2|..." places both duel robots at fixed
+        // starts every round, one placement per seed in turn.
+        if (opts.containsKey("start")) flags.add("-Dhadur.bench.start=" + opts.get("start"));
         return flags;
     }
 
