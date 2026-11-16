@@ -191,6 +191,21 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("RAM-14")
+    @DisplayName("ram-heavy lines name the rammers whose shots the escape weighs twice as heavily, matched as shield entries")
+    void perOpponentRamHeavy() {
+        ShieldList l = ShieldList.parse(List.of("ram-heavy: a.B 1.0", "ram-heavy: c.D", "ram-heavy:", "ram-circ: e.F"));
+        assertTrue(l.ramHeavy("a.B 1.0"));
+        assertTrue(l.ramHeavy("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertTrue(l.ramHeavy("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.ramHeavy("e.F 1.0"), "a ram-circ line is not a ram-heavy line");
+        assertFalse(l.ramCirc("a.B 1.0") || l.speedBand("a.B 1.0"), "no other switch");
+        assertFalse(l.ramHeavy(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.ramHeavy("a.B 1.0"));
+    }
+
+    @Test
     @Tag("DIST-4")
     @DisplayName("dist-pin lines pin one duel distance per opponent, matched as shield entries, held to 150-900 px")
     void perOpponentDistPin() {
