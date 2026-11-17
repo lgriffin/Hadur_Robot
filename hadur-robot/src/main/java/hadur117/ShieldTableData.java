@@ -775,6 +775,8 @@ final class ShieldTableData {
      */
     static String[] steadyOrbits() {
         return new String[] {
+            // 24 fresh cloud seeds at the live turn time (56000, 56100): +3.1 +- 1.1, low end +2.0
+            "dmh.robocode.robot.GreenDragon 1.0",
         };
     }
 
