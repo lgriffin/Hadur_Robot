@@ -41,3 +41,5 @@ ebo.Tahoe 1.1.79 | rank139-band3 | ebo.Tahoe_1.1.79.jar
 dmh.robocode.robot.PinkPanther 1.1 | rank385-band4 | dmh.robocode.robot.PinkPanther_1.1.jar
 damij.mega.Boque aaah | rank60-band3 | damij.mega.Boque_aaah.jar
 krzysiek.robbo2.Robbo 1.0.0 | rank454-band5 | krzysiek.robbo2.Robbo_1.0.0.jar
+mb.Monte 0.1.0 | rank406-band5 | mb.Monte_0.1.0.jar
+pez.nano.LittleEvilBrother 0.1 | rank828-band6 | pez.nano.LittleEvilBrother_0.1.jar
