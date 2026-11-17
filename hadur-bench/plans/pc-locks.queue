@@ -8,10 +8,11 @@
 #   gl (GUN-11 gun stack): EL33tGangstarr2 +0.65 (+0.03, 24 seeds)
 #   mtx0 (shield on, with its 150-damage battle exit off): NeophytePRAL +4.3 (+1.3)
 #   rwl (MOVE-46 ram wait on a disabled enemy, off on master until this card holds it): One +1.22 (+0.68),
-#      SavantVS +0.62 (+0.26), DengerousRoBatra +0.81 (+0.14), each over 24 fresh cloud seeds
+#      SavantVS +0.62 (+0.26), DengerousRoBatra +0.81 (+0.14), Smog +1.13 (+0.44), JGAP23423 +0.78 (+0.21),
+#      each over 24 fresh cloud seeds
 #   nanoPri, RammingC, DengerousRoBatra and EL33tGangstarr2 only just clear 0 over 24 cloud seeds; the PC decides them.
 #   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live
-#   lock       the 12 robots  c / aa / rh / dp / sp2 / rwl / gl / mtx0 (each lever arm built with only its own robots)   12 fresh seeds
+#   lock       the 14 robots  c / aa / rh / dp / sp2 / rwl / gl / mtx0 (each lever arm built with only its own robots)   12 fresh seeds
 #              from 43600, --cpu-constant live, in work/pc-locks6 (earlier rounds' battles stay in work/pc-locks to -locks5)
 #   gate       each robot judged on its own arm only (lock_prep.py --restrict); it keeps its line where the 95% low end
 #              is above 0 (mode_table.py --margin 0)
@@ -19,7 +20,7 @@
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
 #   --fresh because round 5 left this plan's queue state marked complete; an interrupted round 6 resumes without it.
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 1152 lock battles (12 robots, 8 arms, 12 seeds), about 30 minutes
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 1344 lock battles (14 robots, 8 arms, 12 seeds), about 35 minutes
 # with the live-match check.
 #
 # Why it should win (the PC card rule of 2026-11-03):
@@ -39,7 +40,7 @@
 #     mtx0: the shield alone was level on NeophytePRAL (-0.7) because the 150-damage exit turns it off and 143 hits
 #     leak after; with the exit off, damage taken fell from 15.8 to 3.1 a round (shard M, move/shield-M.md).
 #   - Every robot passed the cloud lock bar first; round 4 held 5 of 6 (#866), round 5 held 4 of 6 (#870).
-# Stop rules (docs/bench/watch.md): the watcher's A/A rule needs 10 robots read in both c and aa, which this 12-robot
+# Stop rules (docs/bench/watch.md): the watcher's A/A rule needs 10 robots read in both c and aa, which this 14-robot
 # lock reaches only near its end (shuffled jobs), so no aa stop rule is set; aa is read in the gate (multiarm.py prints aa against c). The card halts on 30 failed
 # battles, an arm scoring nothing in 8, 60+ skipped turns a battle over the last 24, or no battle in 30 minutes. The
 # live-match step stops the card if the PC no longer scores us and BeepBoop as live does (tools/live_match.py exit 3).
@@ -72,5 +73,5 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 4
 gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks6-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks6-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks6-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms rh dp sp2 rwl gl mtx0 --out ${OUT}/$(date +%Y-%m-%d)_pc-locks6-lock-per-robot.md --out-tsv ${OUT}/pc-locks6-lock-per-robot.tsv
   after: lock
 
-pr | bash tools/open_results_pr.sh claude/pc-locks6-results "1v1 cloud locks, round 6 (12 robots from the field shards) locked on 12 fresh PC seeds" ${OUT}/pc-locks6-livematch.md ${OUT}/*_pc-locks6-*.md ${OUT}/pc-locks6-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks6-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks6-results "1v1 cloud locks, round 6 (14 robots from the field shards) locked on 12 fresh PC seeds" ${OUT}/pc-locks6-livematch.md ${OUT}/*_pc-locks6-*.md ${OUT}/pc-locks6-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks6-lock-pick.tsv' -size +0c)
   after: gate
