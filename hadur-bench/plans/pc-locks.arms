@@ -1,8 +1,11 @@
 # pc-locks (BENCH-253) round 6: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots
-# that locked with it on the cloud (plans/locks-pick.tsv; rh RAM-14 heavy rammer dodge, dp DIST-4 distance pin, sp2 DODGE-6 shot-dodge planner, rwl MOVE-46 ram wait).
+# that locked with it on the cloud (plans/locks-pick.tsv; rh RAM-14 heavy rammer dodge, dp DIST-4 distance pin, sp2 DODGE-6 shot-dodge planner, rwl MOVE-46 ram wait,
+# gl GUN-11 gun stack, mtx0 SHIELD-17 shield add with SHIELD-11 battle exit off).
 c | hadur117.Hadur 3.23 | bisect/hadur117.Hadur_3.23.jar
 aa | hadur117.Hadur 3.23aa | bisect/hadur117.Hadur_3.23aa.jar
 rh | hadur117.Hadur 3.23rh | bisect/hadur117.Hadur_3.23rh.jar
 dp | hadur117.Hadur 3.23dp | bisect/hadur117.Hadur_3.23dp.jar
 sp2 | hadur117.Hadur 3.23sp2 | bisect/hadur117.Hadur_3.23sp2.jar
 rwl | hadur117.Hadur 3.23rwl | bisect/hadur117.Hadur_3.23rwl.jar
+gl | hadur117.Hadur 3.23gl | bisect/hadur117.Hadur_3.23gl.jar
+mtx0 | hadur117.Hadur 3.23mtx0 | bisect/hadur117.Hadur_3.23mtx0.jar
