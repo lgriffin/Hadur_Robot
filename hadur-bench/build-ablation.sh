@@ -412,6 +412,15 @@ for a in "${list[@]}"; do
         w3)
             edit "$movedesign" "static final int WAVE_AHEAD_DEPTH = 2;" "static final int WAVE_AHEAD_DEPTH = 3;"
             version="${version}w3" ;;
+        nv0|hv0)
+            # VIEWS-1 screen: the normal view (nv0), and with it recent4 to recent6 (hv0), on from the first hit.
+            edit "$move" ".setWeight(40).setK(20).setKDivisor(5).setHitThreshold(3.0).bulletHitsOn()" ".setWeight(40).setK(20).setKDivisor(5).setHitThreshold(0.0).bulletHitsOn()"
+            if [[ "$a" == hv0 ]]; then
+                edit "$move" ".setWeight(100).setK(7).setKDivisor(4).setHitThreshold(2.5)" ".setWeight(100).setK(7).setKDivisor(4).setHitThreshold(0.0)"
+                edit "$move" ".setWeight(100).setK(35).setKDivisor(3).setHitThreshold(2.5)" ".setWeight(100).setK(35).setKDivisor(3).setHitThreshold(0.0)"
+                edit "$move" ".setWeight(100).setK(100).setKDivisor(2).setHitThreshold(2.5)" ".setWeight(100).setK(100).setKDivisor(2).setHitThreshold(0.0)"
+            fi
+            version="${version}${a}" ;;
         heat)
             edit "$movedesign" "static final boolean HEAT_WAVE = false;" "static final boolean HEAT_WAVE = true;"
             version="${version}hw" ;;
