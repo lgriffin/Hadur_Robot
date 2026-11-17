@@ -999,6 +999,34 @@ public class MoveController {
         return out;
     }
 
+    /** DPF-1 (measurement): the profile's samples, evenly over guess factors [-{@link #PROFILE_SPAN}, {@link #PROFILE_SPAN}]. */
+    public static final int PROFILE_SAMPLES = 81;
+    /** DPF-1: the profile's reach each side of guess factor 0. */
+    public static final double PROFILE_SPAN = 1.2;
+
+    /**
+     * DPF-1 (measurement): the views' danger for a robot-wide intersection centred on each of
+     * {@link #PROFILE_SAMPLES} guess factors of {@code w}, as the surf would score it. Read-only: it
+     * uses the forensics cache slot and empties it after, so the surf's choices are untouched.
+     *
+     * @param w the wave
+     * @return the danger at each sample, lowest guess factor first
+     */
+    public double[] dangerProfile(Wave w) {
+        double bandwidth = Math.atan(HitForensics.HALF_WIDTH / Math.max(w.targetDistance, HitForensics.HALF_WIDTH));
+        double[] samples = new double[PROFILE_SAMPLES];
+        try {
+            for (int i = 0; i < samples.length; i++) {
+                double gf = -PROFILE_SPAN + 2 * PROFILE_SPAN * i / (PROFILE_SAMPLES - 1);
+                samples[i] = getDangerScore(w, new Wave.Intersection(w.firingAngle(gf), bandwidth), FORENSICS_CACHE);
+            }
+            return samples;
+        } finally {
+            for (KnnView<TimestampedGuessFactor> view : views) view.cachedNeighbors.remove(FORENSICS_CACHE);
+            cacheOwners.remove(FORENSICS_CACHE);
+        }
+    }
+
     /** MOVE-9: the neighbour-cache key the HF danger reading uses, apart from every surf index. */
     private static final int FORENSICS_CACHE = -1;
 

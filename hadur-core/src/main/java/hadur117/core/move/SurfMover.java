@@ -83,6 +83,8 @@ public class SurfMover {
     private double[] aesCapture;
     /** AES-1: records made since the last {@link #drainAesRecords}. */
     private final List<String> aesRecords = new ArrayList<>();
+    /** DPF-1: the danger profiles recorded with the AES records since the last {@link #drainProfileRecords}. */
+    private final List<String> profileRecords = new ArrayList<>();
     /** ORACLE-1: whether each wave's first three-option rating also records the views' neighbours (bench builds only; off by default). */
     private boolean oracleRecord;
     /** ORACLE-1: records made since the last {@link #drainOracleRecords}. */
@@ -243,6 +245,14 @@ public class SurfMover {
         if (surfKeyRecords.isEmpty()) return List.of();
         List<String> out = new ArrayList<>(surfKeyRecords);
         surfKeyRecords.clear();
+        return out;
+    }
+
+    /** DPF-1: the profile records made since the last call, oldest first; the list is then emptied. */
+    public List<String> drainProfileRecords() {
+        if (profileRecords.isEmpty()) return List.of();
+        List<String> out = new ArrayList<>(profileRecords);
+        profileRecords.clear();
         return out;
     }
 
@@ -521,6 +531,18 @@ public class SurfMover {
             }
             aesRecords.add(AesRecord.line(surfWave, chosen.ordinal(), moveCtrl.viewCount(),
                 present, totals, captures));
+        }
+
+        // DPF-1: the views' danger across the wave's guess factors, once, at the same first rating.
+        if (first && captures != null) {
+            StringBuilder b = new StringBuilder(1024);
+            b.append(surfWave.fireTime).append(',').append(AesRecord.num(surfWave.bulletPower()))
+             .append(',').append(surfWave.firingWave ? 1 : 0)
+             .append(',').append(AesRecord.num(surfWave.firingAngle(-MoveController.PROFILE_SPAN)))
+             .append(',').append(AesRecord.num(surfWave.firingAngle(MoveController.PROFILE_SPAN)))
+             .append(',').append(AesRecord.num(moveCtrl.normalizedEnemyHitRate()));
+            for (double v : moveCtrl.dangerProfile(surfWave)) b.append(',').append(AesRecord.num(v));
+            profileRecords.add(b.toString());
         }
 
         // ORACLE-1: the views' neighbours on the wave, once, at the same first rating.

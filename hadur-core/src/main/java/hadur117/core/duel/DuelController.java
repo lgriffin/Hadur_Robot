@@ -892,6 +892,10 @@ public final class DuelController {
             for (String r : surfMover.drainAesRecords()) {
                 telemetry.emit("AES," + round + "," + in.time() + "," + r);
             }
+            // DPF-1: the danger profiles the surf recorded this tick (none unless the AES switch is on).
+            for (String r : surfMover.drainProfileRecords()) {
+                telemetry.emit("DPF," + round + "," + in.time() + "," + r);
+            }
             // ORACLE-1: the views' neighbours the surf recorded this tick (none unless the switch is on).
             for (String r : surfMover.drainOracleRecords()) {
                 telemetry.emit("ORC," + round + "," + in.time() + "," + r);
