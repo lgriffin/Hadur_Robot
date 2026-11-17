@@ -2,7 +2,6 @@
 # after round 5 ran (PR #870) (coverage/shards/locks.tsv, 16 Nov). Census rows. name | rank | jar
 suzushin7.nano.Galaxy03 1.01 | rank615-band5 | suzushin7.nano.Galaxy03_1.01.jar
 suh.nano.RammingC 1.00 | rank637-band5 | suh.nano.RammingC_1.00.jar
-step.nanoPri 1.0 | rank676-band5 | step.nanoPri_1.0.jar
 mc2.enemy.Original 0.9 | rank634-band5 | mc2.enemy.Original_0.9.jar
 supersample.SuperTracker 1.0 | rank890-band6 | supersample.SuperTracker_1.0.jar
 uccc.MilkyWay 1.01 | rank1034-band6 | uccc.MilkyWay_1.01.jar
@@ -16,3 +15,5 @@ cx.nano.Smog 2.6 | rank546-band5 | cx.nano.Smog_2.6.jar
 jgap.JGAP23423 1.0 | rank1063-band6 | jgap.JGAP23423_1.0.jar
 ap.Frederick 1.1 | rank1154-band6 | ap.Frederick_1.1.jar
 tvv.nano.Polaris 1.2 | rank708-band6 | tvv.nano.Polaris_1.2.jar
+bzdp.BoxCar 2.0 | rank865-band6 | bzdp.BoxCar_2.0.jar
+sanyi.mikrobi.Roberto 1.0 | rank1051-band6 | sanyi.mikrobi.Roberto_1.0.jar

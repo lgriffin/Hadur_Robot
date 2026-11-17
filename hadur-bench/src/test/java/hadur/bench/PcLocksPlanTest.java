@@ -23,7 +23,7 @@ class PcLocksPlanTest {
 
     @Test
     @Tag("BENCH-253")
-    @DisplayName("pc-locks: loadable robots, c/aa/rh/dp/sp2/rwl/gl/mtx0 on 12 fresh seeds at the live constant after the live-match check, a 0-margin gate, stop rules, a results PR")
+    @DisplayName("pc-locks: loadable robots, c/aa/rh/dp/sp2/rwl/gl/hl/mtx0 on 12 fresh seeds at the live constant after the live-match check, a 0-margin gate, stop rules, a results PR")
     void cardIsComplete() throws IOException {
         String queue = Files.readString(Path.of("plans/pc-locks.queue"));
         String version = Files.readString(Path.of("../hadur-robot/pom.xml"))
@@ -38,11 +38,11 @@ class PcLocksPlanTest {
         Set<String> broken = Broken.names(Path.of(Broken.FILE));
         for (String n : panel) assertTrue(!broken.contains(n), n + " loads on 1.11.2");
         String arms = Files.readString(Path.of("plans/pc-locks.arms"));
-        for (String a : new String[] {"c", "aa", "rh", "dp", "sp2", "rwl", "gl", "mtx0"}) {
+        for (String a : new String[] {"c", "aa", "rh", "dp", "sp2", "rwl", "gl", "hl", "mtx0"}) {
             String v = a.equals("c") ? version : version + a;
             assertTrue(arms.contains("\n" + a + " | hadur117.Hadur " + v + " |"), a);
         }
-        assertEquals(8, names("plans/pc-locks.arms").size(), "c, aa, rh, dp, sp2, rwl, gl and mtx0");
+        assertEquals(9, names("plans/pc-locks.arms").size(), "c, aa, rh, dp, sp2, rwl, gl, hl and mtx0");
         assertTrue(queue.contains("lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh"), "each arm built with only its robots");
         assertTrue(queue.contains("--set panel-locks.txt --seeds 12 --seed-base 43600 --arms ${W}-prep/lock.arms --out ${W} "), "the lock");
         assertTrue(queue.contains("lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0"), "the gate, each robot on its own arm");
