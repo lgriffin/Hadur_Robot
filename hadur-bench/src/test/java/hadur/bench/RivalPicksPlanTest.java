@@ -64,6 +64,7 @@ class RivalPicksPlanTest {
         // pc-shards (PR #840) and pc-locks (PR #843) shipped shield lines to robots this card read.
         shipped.addAll(names("plans/shards-shipped.txt"));
         shipped.addAll(names("plans/locks-shipped.txt"));
+        shipped.addAll(names("plans/locks6-shipped.txt")); // pc-locks round 6 (PR #890) shipped Recrimpo
         for (String n : drop) {
             if (!shipped.contains(n)) assertTrue(listData.contains("\"" + n + "\","), n + " is on the shield list to drop");
         }
