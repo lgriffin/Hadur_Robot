@@ -426,6 +426,15 @@ for a in "${list[@]}"; do
             k="${a#kw}"; k="${k:0:1}.${k:1}"
             edit "$move" "return keyed(view) ? bandwidth * keyWidth : bandwidth;" "return (keyed(view) ? bandwidth * keyWidth : bandwidth) * ${k};"
             version="${version}${a}" ;;
+        sk2|sk10)
+            # SIMPLE-VIEW screen: the simple view's neighbour divisor (n/2 smoother, n/10 sharper; today n/5).
+            edit "$move" ".setWeight(3).setK(25).setKDivisor(5).bulletHitsOn()" ".setWeight(3).setK(25).setKDivisor(${a#sk}).bulletHitsOn()"
+            version="${version}${a}" ;;
+        sv131|sv311|sv113)
+            # SIMPLE-VIEW screen: the simple view's dimension weights (flight time, lateral velocity, acceleration; today 1, 1, 1).
+            w="${a#sv}"
+            edit "$src/hadur-core/src/main/java/$pkg/core/move/SimpleFormula.java" "this.weights = new double[]{1, 1, 1};" "this.weights = new double[]{${w:0:1}, ${w:1:1}, ${w:2:1}};"
+            version="${version}${a}" ;;
         heat)
             edit "$movedesign" "static final boolean HEAT_WAVE = false;" "static final boolean HEAT_WAVE = true;"
             version="${version}hw" ;;
