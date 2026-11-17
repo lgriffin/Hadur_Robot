@@ -269,7 +269,7 @@
 #   x5list the robots named in $X5_POWER get, shot by shot, an x.x5 power whose speed they misread
 #         from our energy drop (POW-16, ShieldTableData.x5Powers()). Suffix x5.
 #   rclist the robots named in $RAM_CIRC get RAM-11, the rammer escape's circular-aim dodge (suffix rcl)
-#   rflist the robots named in $RAM_FLEE get RAM-15's flee (back away at full speed from a slow charger). Suffix rf.
+#   rflist the robots named in $RAM_FLEE get RAM-15's flee (back away at full speed from a charger). Suffix rf, or $RAM_FLEE_SUFFIX.
 #   rwlist the robots named in $RAM_WAIT get MOVE-46's ram wait (a disabled enemy is rammed only after its last waves pass). Suffix rwl.
 #   orlist the robots named in $STEADY_ORBIT get MOVE-47's steady orbit (no stop option, reversal only when the other way is under half as dangerous). Suffix or.
 #   rhlist the robots named in $RAM_HEAVY get RAM-14, the rammer escape weighing their shots twice as heavily. Suffix rh.
@@ -824,7 +824,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
             elif [[ "$a" == rclist ]]; then file="${RAM_CIRC:-}"; method="ramCircs"; version="${version}rcl"
             elif [[ "$a" == rhlist ]]; then file="${RAM_HEAVY:-}"; method="ramHeavies"; version="${version}rh"
             elif [[ "$a" == rwlist ]]; then file="${RAM_WAIT:-}"; method="ramWaits"; version="${version}rwl"
-            elif [[ "$a" == rflist ]]; then file="${RAM_FLEE:-}"; method="ramFlees"; version="${version}rf"
+            elif [[ "$a" == rflist ]]; then file="${RAM_FLEE:-}"; method="ramFlees"; version="${version}${RAM_FLEE_SUFFIX:-rf}"
             elif [[ "$a" == orlist ]]; then file="${STEADY_ORBIT:-}"; method="steadyOrbits"; version="${version}or"
             else file="${STOP_GO2:-}"; method="stopGoShifts"; version="${version}wm"; fi
             [[ -n "$file" && -f "$file" ]] || { echo "$a needs SHIELD_MOVE / SHIELD_AIM / SHOT_DODGE / STOP_GO / STOP_GO2 / HEAT_JIT / GUN_STACK / SHIELD_EXIT4 / SHIELD_EXIT0 / SHIELD_STILL / SURF_KEY / FLAT_ON / MIMIC_ON / FULL_OFF / X5_POWER / RACE_POWER / MIRROR_OFF / VEL_JITTER / SPEED_BAND / DIST_PIN / RAM_HEAVY / RAM_WAIT / STEADY_ORBIT=<file>" >&2; exit 2; }
