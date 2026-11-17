@@ -36,6 +36,7 @@ LEVERS = {
     "dg": ("sdodgelist", ("SHOT_DODGE",)),
     "pb": ("pblist", ("POWER_BAND",)),
     "x0": ("sx0list", ("SHIELD_EXIT0",)),
+    "mtx0": ("slistadd,sx0list", ("SHIELD_ADD", "SHIELD_EXIT0")),
     "mv": ("smovelist", ("SHIELD_MOVE",)),
     "vj": ("vjlist", ("VEL_JITTER",)),
     "sb": ("sblist", ("SPEED_BAND",)),
