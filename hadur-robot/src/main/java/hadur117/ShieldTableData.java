@@ -767,6 +767,18 @@ final class ShieldTableData {
     }
 
     /**
+     * MOVE-47: the opponents the duel surfs with a steady orbit: no stop option, and a reversal only when the other
+     * way round is under half as dangerous ({@code steady-orbit:} lines). Empty until a card holds robots; candidate
+     * builds add lines here (build-ablation.sh orlist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] steadyOrbits() {
+        return new String[] {
+        };
+    }
+
+    /**
      * DIST-4: per-opponent pinned duel distance, one line each: the surf's desired distance in px, then the name.
      * The pin replaces DIST-1's controller target against that robot in a duel (END-1's finish still closes in).
      * Candidate builds add lines here (build-ablation.sh dplist).

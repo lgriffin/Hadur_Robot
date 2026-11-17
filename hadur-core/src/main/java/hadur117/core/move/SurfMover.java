@@ -106,6 +106,47 @@ public class SurfMover {
     }
 
     /**
+     * MOVE-47: the steady orbit. The three-option surf never takes the stop and keeps its way
+     * round unless the other way is under {@link #ORBIT_REVERSE_SHARE} of its danger, so a
+     * known bullet or a wall still turns it.
+     *
+     * @param on true against an opponent the table names with a steady-orbit line
+     */
+    public void setSteadyOrbit(boolean on) {
+        steadyOrbit = on;
+    }
+
+    /** MOVE-47: whether the steady orbit is on. */
+    public boolean steadyOrbit() {
+        return steadyOrbit;
+    }
+
+    /**
+     * MOVE-47: the choice between the three options' dangers, with the steady orbit's rule when
+     * {@code steady}: no stop, and a reversal only when the other way round is under
+     * {@link #ORBIT_REVERSE_SHARE} of the current way's danger.
+     *
+     * @return the option taken
+     */
+    static SurfOption choose(double ccw, double stop, double cw, SurfOption current, boolean steady) {
+        if (!steady) {
+            if (stop <= ccw && stop <= cw) return SurfOption.STOP;
+            return cw < ccw ? SurfOption.CLOCKWISE : SurfOption.COUNTER_CLOCKWISE;
+        }
+        SurfOption way = current == SurfOption.CLOCKWISE ? SurfOption.CLOCKWISE : SurfOption.COUNTER_CLOCKWISE;
+        double here = way == SurfOption.CLOCKWISE ? cw : ccw;
+        double there = way == SurfOption.CLOCKWISE ? ccw : cw;
+        if (there < ORBIT_REVERSE_SHARE * here) {
+            return way == SurfOption.CLOCKWISE ? SurfOption.COUNTER_CLOCKWISE : SurfOption.CLOCKWISE;
+        }
+        return way;
+    }
+
+    /** MOVE-47: the other way round must be under this share of the current way's danger to reverse. */
+    static final double ORBIT_REVERSE_SHARE = 0.5;
+    private boolean steadyOrbit;
+
+    /**
      * DODGE-6: whether the shot-dodge planner ({@link ShotDodgePlanner}) drives the surfed ticks
      * the tick budget allows go-to on, while the duel's dodger has an expert. With it on, the
      * three-option surf leaves DODGE-2's danger out and keeps its views. Off by default.
@@ -435,8 +476,9 @@ public class SurfMover {
         double stopDanger = surfOptionDangers.getOrDefault(SurfOption.STOP, 0.0);
         double cwDanger = surfOptionDangers.getOrDefault(SurfOption.CLOCKWISE, 0.0);
 
-        boolean takeStop = stopDanger <= ccwDanger && stopDanger <= cwDanger;
-        boolean takeClockwise = cwDanger < ccwDanger;
+        SurfOption pick = choose(ccwDanger, stopDanger, cwDanger, lastSurfOption, steadyOrbit);
+        boolean takeStop = pick == SurfOption.STOP;
+        boolean takeClockwise = pick == SurfOption.CLOCKWISE;
 
         Point2D.Double surfDest;
         SurfOption chosen;

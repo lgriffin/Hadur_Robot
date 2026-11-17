@@ -97,6 +97,8 @@ public final class ShieldList {
     public static final String SPEED_BAND_PREFIX = "speed-band:";
     /** MOVE-46: a line starting with this names an opponent the duel rams, once disabled, only after its last waves have passed. */
     public static final String RAM_WAIT_PREFIX = "ram-wait:";
+    /** MOVE-47: the prefix of a per-opponent steady-orbit line. */
+    public static final String STEADY_ORBIT_PREFIX = "steady-orbit:";
     /**
      * SKEY-2: a line starting with this gives an opponent's surf key: nine multipliers on the hit
      * views' key weights, one on the kernel width, then the name ({@code "m1 ... m9 bw name"}).
@@ -159,6 +161,8 @@ public final class ShieldList {
     static final int RAM_HEAVY = 524288;
     /** MOVE-46: the per-opponent ram-wait switch's bit in {@link #switches}. */
     static final int RAM_WAIT = 1048576;
+    /** MOVE-47: the per-opponent steady-orbit switch's bit in {@link #switches}. */
+    static final int STEADY_ORBIT = 2097152;
 
     private final Set<String> entries;
     /** SHIELD-17: the opening-drive list. */
@@ -227,6 +231,7 @@ public final class ShieldList {
                     : entry.startsWith(VEL_JITTER_PREFIX) ? VEL_JITTER
                     : entry.startsWith(SPEED_BAND_PREFIX) ? SPEED_BAND
                     : entry.startsWith(RAM_WAIT_PREFIX) ? RAM_WAIT
+                    : entry.startsWith(STEADY_ORBIT_PREFIX) ? STEADY_ORBIT
                     : entry.startsWith(POWER_CAP_PREFIX) ? POWER_CAP : 0;
                 if (bit != 0) {
                     String name = withoutVersion(entry.substring(entry.indexOf(':') + 1).trim());
@@ -637,6 +642,16 @@ public final class ShieldList {
      */
     public boolean ramWait(String robotName) {
         return (switchBits(robotName) & RAM_WAIT) != 0;
+    }
+
+    /**
+     * MOVE-47: whether the table names this opponent with a {@link #STEADY_ORBIT_PREFIX} line.
+     *
+     * @param robotName the opponent's name as Robocode lists it
+     * @return true when a {@code steady-orbit:} line matches it
+     */
+    public boolean steadyOrbit(String robotName) {
+        return (switchBits(robotName) & STEADY_ORBIT) != 0;
     }
 
     /**
