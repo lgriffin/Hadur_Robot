@@ -27,13 +27,6 @@ final class MoveDesign {
     static final boolean FLATTENER_OFF = true;
 
     /**
-     * MOVE-50 (danger-model exploration, off): the gated flattener's tau; 0 is off. Above 0, in a
-     * duel, the flatteners' score is added where the hit views are silent, times exp(-viewScore / tau).
-     * Ablations gf05 (0.05) and gf30 (0.3).
-     */
-    static final double GATED_FLATTENER = 0.0;
-
-    /**
      * AES-1 (measurement): each wave's first three-option rating is printed as an {@code AES}
      * record with every term of each option's danger (docs/plan-aes.md). Behaviour unchanged.
      */
