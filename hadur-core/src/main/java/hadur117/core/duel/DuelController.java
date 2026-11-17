@@ -441,6 +441,7 @@ public final class DuelController {
         ramActive = false;
         ramEscaping = false;
         ramEscape.initRound();
+        fleeing = false;
         lastEnemyState = null;
         mirror.newRound();
         mirrorDrive.initRound();
@@ -669,6 +670,14 @@ public final class DuelController {
         lastOurEnergy = in.energy();
         ramEscaping = rammer.escape(e.distance(), enemyClosingSpeed, in.energy(), e.energy())
             && trialRound && trialArm == EscapeTrial.Arm.ESCAPE;
+        // RAM-15: a slow charger the table names (one that closes in under RAM-1's 6 px/tick, so it is never
+        // confirmed) is backed away from at full speed while it closes in, by the same escape; the power stays RAM-1's.
+        boolean escapeByPolicy = ramEscaping;
+        if (ramFleeOn) {
+            if (e.distance() < FLEE_START && enemyClosingSpeed >= FLEE_RATE) fleeing = true;
+            else if (e.distance() > FLEE_RELEASE) fleeing = false;
+            ramEscaping = ramEscaping || fleeing;
+        }
         if (ramEscaping != wasEscaping) {
             emitPolicy(round, time, "ram-escape", e.distance(), Double.NaN,
                 ramEscaping ? "ram_2" : "off");
@@ -676,7 +685,7 @@ public final class DuelController {
         // Gated and capped exactly as the other full-power rules are (PowerPolicy#power):
         // never past our own energy's threshold, never past a quarter of theirs, never below
         // what was already chosen.
-        boolean ram1 = (ramActive || ramEscaping) && in.energy() > PowerPolicy.MIN_OUR_ENERGY;
+        boolean ram1 = (ramActive || escapeByPolicy) && in.energy() > PowerPolicy.MIN_OUR_ENERGY;
         if (ram1) bulletPower = Math.max(bulletPower, Math.min(RammerPolicy.POWER, e.energy() / 4.0));
         if (ram1 != ram1Active) {
             ram1Active = ram1;
@@ -958,6 +967,16 @@ public final class DuelController {
     private boolean speedBandOn;
     /** MOVE-46: whether the ram on a disabled enemy waits for its last waves this battle. */
     private boolean ramWaitOn;
+    /** RAM-15: whether the table names this opponent for the slow-charger flee. */
+    private boolean ramFleeOn;
+    /** RAM-15: whether the flee is on this tick (starts inside {@link #FLEE_START}, ends past {@link #FLEE_RELEASE}). */
+    private boolean fleeing;
+    /** RAM-15: the range, in px, inside which a closing named charger starts the flee. */
+    static final double FLEE_START = 200;
+    /** RAM-15: the enemy's own closing speed, px/tick, that starts the flee. */
+    static final double FLEE_RATE = 2.0;
+    /** RAM-15: the range, in px, beyond which the flee stops. */
+    static final double FLEE_RELEASE = 300;
     /** MOVE-32: the table turned the flattener views on for this opponent. */
     private boolean flatOn;
     /** MIR-2: the table turned MIR-1 off for this opponent. */
@@ -1354,6 +1373,7 @@ public final class DuelController {
         velJitterOn = false;
         speedBandOn = false;
         ramWaitOn = false;
+        ramFleeOn = false;
         steadyOrbitOn = false;
         surfMover.setSteadyOrbit(false);
         stopAndGo = null;
@@ -1481,6 +1501,8 @@ public final class DuelController {
         speedBandOn = duelOnly(stackList.speedBand(name), enemiesTotal);
         // MOVE-46: ram a disabled enemy only after its last waves, for the opponents the table names.
         ramWaitOn = duelOnly(stackList.ramWait(name), enemiesTotal);
+        // RAM-15: back away from a slow charger, for the opponents the table names.
+        ramFleeOn = duelOnly(stackList.ramFlee(name), enemiesTotal);
         // MOVE-47: the steady orbit for the opponents the table names.
         steadyOrbitOn = duelOnly(stackList.steadyOrbit(name), enemiesTotal);
         surfMover.setSteadyOrbit(steadyOrbitOn);

@@ -769,6 +769,17 @@ final class ShieldTableData {
     }
 
     /**
+     * RAM-15: the slow chargers the duel backs away from at full speed while they close in ({@code ram-flee:}
+     * lines). Empty until a card holds robots; candidate builds add lines here (build-ablation.sh rflist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] ramFlees() {
+        return new String[] {
+        };
+    }
+
+    /**
      * MOVE-46: the opponents the duel rams, once they are disabled, only after their last waves have passed
      * ({@code ram-wait:} lines). Empty until a card holds robots; candidate builds add lines here
      * (build-ablation.sh rwlist).
