@@ -99,6 +99,8 @@ public final class ShieldList {
     public static final String RAM_WAIT_PREFIX = "ram-wait:";
     /** MOVE-47: the prefix of a per-opponent steady-orbit line. */
     public static final String STEADY_ORBIT_PREFIX = "steady-orbit:";
+    /** RAM-15: a line starting with this names a slow charger the duel backs away from at full speed while it closes in. */
+    public static final String RAM_FLEE_PREFIX = "ram-flee:";
     /**
      * SKEY-2: a line starting with this gives an opponent's surf key: nine multipliers on the hit
      * views' key weights, one on the kernel width, then the name ({@code "m1 ... m9 bw name"}).
@@ -163,6 +165,8 @@ public final class ShieldList {
     static final int RAM_WAIT = 1048576;
     /** MOVE-47: the per-opponent steady-orbit switch's bit in {@link #switches}. */
     static final int STEADY_ORBIT = 2097152;
+    /** RAM-15: the per-opponent ram-flee switch's bit in {@link #switches}. */
+    static final int RAM_FLEE = 4194304;
 
     private final Set<String> entries;
     /** SHIELD-17: the opening-drive list. */
@@ -232,6 +236,7 @@ public final class ShieldList {
                     : entry.startsWith(SPEED_BAND_PREFIX) ? SPEED_BAND
                     : entry.startsWith(RAM_WAIT_PREFIX) ? RAM_WAIT
                     : entry.startsWith(STEADY_ORBIT_PREFIX) ? STEADY_ORBIT
+                    : entry.startsWith(RAM_FLEE_PREFIX) ? RAM_FLEE
                     : entry.startsWith(POWER_CAP_PREFIX) ? POWER_CAP : 0;
                 if (bit != 0) {
                     String name = withoutVersion(entry.substring(entry.indexOf(':') + 1).trim());
@@ -642,6 +647,16 @@ public final class ShieldList {
      */
     public boolean ramWait(String robotName) {
         return (switchBits(robotName) & RAM_WAIT) != 0;
+    }
+
+    /**
+     * RAM-15: whether the table names this opponent with a {@link #RAM_FLEE_PREFIX} line.
+     *
+     * @param robotName the opponent's name as Robocode lists it
+     * @return true when a {@code ram-flee:} line matches it
+     */
+    public boolean ramFlee(String robotName) {
+        return (switchBits(robotName) & RAM_FLEE) != 0;
     }
 
     /**
