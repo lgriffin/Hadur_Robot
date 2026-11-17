@@ -26,3 +26,6 @@ amc.ROBv203 1.0 | rank860-band6 | amc.ROBv203_1.0.jar
 tango.Recrimpo 2.51 | rank669-band5 | tango.Recrimpo_2.51.jar
 sul.Pinkbot 1.1 | rank745-band6 | sul.Pinkbot_1.1.jar
 geep.mini.GPBotA 1.0 | rank789-band6 | geep.mini.GPBotA_1.0.jar
+projectx.ProjectNano 2.0 | rank866-band6 | projectx.ProjectNano_2.0.jar
+jgap.JGAP7958 1.0 | rank967-band6 | jgap.JGAP7958_1.0.jar
+sheldor.nano.PointInLineRRAL 1.0.0 | rank457-band5 | sheldor.nano.PointInLineRRAL_1.0.0.jar
