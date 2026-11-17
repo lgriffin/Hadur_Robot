@@ -421,6 +421,11 @@ for a in "${list[@]}"; do
                 edit "$move" ".setWeight(100).setK(100).setKDivisor(2).setHitThreshold(2.5)" ".setWeight(100).setK(100).setKDivisor(2).setHitThreshold(0.0)"
             fi
             version="${version}${a}" ;;
+        kw07|kw15|kw25)
+            # KERNEL-1 screen: every danger view's kernel width scaled (0.7, 1.5, 2.5 of the bot's angular half-width).
+            k="${a#kw}"; k="${k:0:1}.${k:1}"
+            edit "$move" "return keyed(view) ? bandwidth * keyWidth : bandwidth;" "return (keyed(view) ? bandwidth * keyWidth : bandwidth) * ${k};"
+            version="${version}${a}" ;;
         heat)
             edit "$movedesign" "static final boolean HEAT_WAVE = false;" "static final boolean HEAT_WAVE = true;"
             version="${version}hw" ;;
