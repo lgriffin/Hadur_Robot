@@ -1,0 +1,28 @@
+{
+ "plan": "pc-team-endpower",
+ "updated": 1794957614.4965591,
+ "steps": {
+  "teprep": {
+   "status": "pending"
+  },
+  "tepep": {
+   "status": "pending"
+  },
+  "tepilot": {
+   "status": "pending"
+  },
+  "tebb": {
+   "status": "pending"
+  },
+  "teep": {
+   "status": "pending"
+  },
+  "tegate": {
+   "status": "pending"
+  },
+  "tepr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
