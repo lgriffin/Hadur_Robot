@@ -191,6 +191,21 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("RAM-15")
+    @DisplayName("ram-flee lines name the slow chargers the duel backs away from, matched as shield entries")
+    void perOpponentRamFlee() {
+        ShieldList l = ShieldList.parse(List.of("ram-flee: a.B 1.0", "ram-flee: c.D", "ram-flee:", "ram-wait: e.F"));
+        assertTrue(l.ramFlee("a.B 1.0"));
+        assertTrue(l.ramFlee("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertTrue(l.ramFlee("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.ramFlee("e.F 1.0"), "a ram-wait line is not a ram-flee line");
+        assertFalse(l.ramWait("a.B 1.0") || l.ramCirc("a.B 1.0"), "no other switch");
+        assertFalse(l.ramFlee(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.ramFlee("a.B 1.0"));
+    }
+
+    @Test
     @Tag("MOVE-47")
     @DisplayName("steady-orbit lines name the opponents the surf orbits without stops, matched as shield entries")
     void perOpponentSteadyOrbit() {
