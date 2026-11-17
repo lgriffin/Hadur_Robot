@@ -177,6 +177,23 @@ public class GunController {
         this.undecayed = on && is1v1;
     }
 
+    /** GUN-12: the distance from which {@link #setRangeHeadOn} aims head-on. */
+    public static final double RANGE_HEAD_ON_PX = 300;
+    /** GUN-12: whether the duel's real shots go head-on from {@link #RANGE_HEAD_ON_PX} or more. */
+    private boolean rangeHeadOn;
+
+    /**
+     * GUN-12: in a duel, every real shot fired from {@link #RANGE_HEAD_ON_PX} or more goes
+     * head-on from our next position. A homing mover turns toward us while the bullet flies, so
+     * the learned guns, which replay a straight escape, lead it wide; head-on meets it. The
+     * virtual guns still learn and rate as before.
+     *
+     * @param on whether long shots go head-on
+     */
+    public void setRangeHeadOn(boolean on) {
+        this.rangeHeadOn = on && is1v1;
+    }
+
     /**
      * ADAPT-1: the gun to use from the first firing wave, until the live virtual-gun ratings
      * disagree by more than their margin of error. Null (the default) keeps 1.20's choice:
@@ -324,6 +341,10 @@ public class GunController {
      * @return an absolute bearing in radians
      */
     public double aim(Wave w, Point2D.Double myNextLocation, long currentTime, ShadowValue shadow) {
+        if (rangeHeadOn && myNextLocation.distance(w.targetLocation) >= RANGE_HEAD_ON_PX) {
+            aimedGun = null;
+            return DiaUtils.absoluteBearing(myNextLocation, w.targetLocation);
+        }
         boolean shadowed = SHADOW_AIM && shadow != null && shadow.active();
         aimedGun = null;
         aimMass = null;
