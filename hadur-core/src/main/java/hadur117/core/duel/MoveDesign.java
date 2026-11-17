@@ -27,13 +27,6 @@ final class MoveDesign {
     static final boolean FLATTENER_OFF = true;
 
     /**
-     * MOVE-51 (danger-model exploration, off): the reversal-predictability penalty's strength; 0 is
-     * off. Above 0, in a duel, at speed, the stop and the turn cost more at the run lengths we
-     * usually turn at (our own hazard over its mean). Ablations rv1 (1.0) and rv3 (3.0).
-     */
-    static final double REVERSAL_PENALTY = 0.0;
-
-    /**
      * AES-1 (measurement): each wave's first three-option rating is printed as an {@code AES}
      * record with every term of each option's danger (docs/plan-aes.md). Behaviour unchanged.
      */

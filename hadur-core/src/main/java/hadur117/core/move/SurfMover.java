@@ -142,56 +142,6 @@ public class SurfMover {
         return way;
     }
 
-    /**
-     * MOVE-51: the reversal-predictability penalty's strength; 0 is off. While we drive at
-     * {@link #REVERSAL_SPEED} or more, the stop and the other way round are multiplied by
-     * {@code 1 + beta * min(3, max(0, h / hMean - 1))}, where {@code h} is our own hazard of
-     * leaving the way at the current run length (ticks since we last turned or stopped) and
-     * {@code hMean} its mean over the battle: a turn at the run length we usually turn at is
-     * what a gun segmented on time since direction change aims at.
-     *
-     * @param beta the strength, at least 0
-     */
-    public void setReversalPenalty(double beta) {
-        reversalPenalty = beta;
-    }
-
-    /** MOVE-51: the run-length buckets' upper bounds, in ticks (the last is open). */
-    static final int[] RUN_BUCKETS = {4, 8, 12, 16, 22, 30, 40, 55, 75, 100, 140, Integer.MAX_VALUE};
-    /** MOVE-51: the lateral speed from which the penalty applies, px a tick. */
-    static final double REVERSAL_SPEED = 4.0;
-    /** MOVE-51: the prior's weight in exposure ticks per bucket, pulling a thin bucket to the mean. */
-    static final double REVERSAL_PRIOR = 40.0;
-    private double reversalPenalty;
-    private int runTicks;
-    private final double[] runExposure = new double[RUN_BUCKETS.length];
-    private final double[] runLeaves = new double[RUN_BUCKETS.length];
-
-    static int runBucket(int ticks) {
-        int b = 0;
-        while (ticks >= RUN_BUCKETS[b]) b++;
-        return b;
-    }
-
-    /** MOVE-51: the multiplier on leaving the way at run length {@code ticks}; 1 with no history. */
-    double reversalFactor(int ticks) {
-        double exp = 0, leaves = 0;
-        for (int i = 0; i < RUN_BUCKETS.length; i++) { exp += runExposure[i]; leaves += runLeaves[i]; }
-        if (exp <= 0 || leaves <= 0) return 1;
-        double mean = leaves / exp;
-        int b = runBucket(ticks);
-        double h = (runLeaves[b] + REVERSAL_PRIOR * mean) / (runExposure[b] + REVERSAL_PRIOR);
-        return 1 + reversalPenalty * Math.min(3, Math.max(0, h / mean - 1));
-    }
-
-    /** MOVE-51: counts this surfed tick at the current run length, and whether we left the way on it. */
-    void recordRun(boolean moving, boolean left) {
-        if (!moving) { runTicks = 0; return; }
-        int b = runBucket(runTicks);
-        runExposure[b]++;
-        if (left) { runLeaves[b]++; runTicks = 0; } else runTicks++;
-    }
-
     /** MOVE-47: the other way round must be under this share of the current way's danger to reverse. */
     static final double ORBIT_REVERSE_SHARE = 0.5;
     private boolean steadyOrbit;
@@ -367,7 +317,6 @@ public class SurfMover {
 
     /** Forgets the wave surfed and its destinations; the mode and distance are kept. */
     public void initRound() {
-        runTicks = 0;
         lastSurfDestination = null;
         stopDestination = null;
         lastWaveSurfed = null;
@@ -527,19 +476,7 @@ public class SurfMover {
         double stopDanger = surfOptionDangers.getOrDefault(SurfOption.STOP, 0.0);
         double cwDanger = surfOptionDangers.getOrDefault(SurfOption.CLOCKWISE, 0.0);
 
-        // MOVE-51: leaving the way at the run length we usually leave it at costs more.
-        boolean fast = Math.abs(myState.velocity) >= REVERSAL_SPEED;
-        if (reversalPenalty > 0 && fast) {
-            double f = reversalFactor(runTicks);
-            stopDanger *= f;
-            if (goingClockwise) ccwDanger *= f; else cwDanger *= f;
-        }
         SurfOption pick = choose(ccwDanger, stopDanger, cwDanger, lastSurfOption, steadyOrbit);
-        if (reversalPenalty > 0) {
-            boolean left = pick == SurfOption.STOP
-                || (pick == SurfOption.CLOCKWISE) != goingClockwise;
-            recordRun(Math.abs(myState.velocity) >= 1, left);
-        }
         boolean takeStop = pick == SurfOption.STOP;
         boolean takeClockwise = pick == SurfOption.CLOCKWISE;
 
