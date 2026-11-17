@@ -406,7 +406,7 @@ for a in "${list[@]}"; do
             edit "$detector" "public static final int MIN_INTERCEPTS = 4;" "public static final int MIN_INTERCEPTS = 10;"
             edit "$detector" "public static final double MIN_SHARE = 0.25;" "public static final double MIN_SHARE = 0.5;"
             version="${version}s5" ;;
-        wa4|wa8|wa16)
+        wa4|wa8|wa16|wa32|wa64)
             edit "$movedesign" "static final double WAVE_AHEAD_SOFTEN = 0.0;" "static final double WAVE_AHEAD_SOFTEN = ${a#wa}.0;"
             version="${version}${a}" ;;
         w3)
