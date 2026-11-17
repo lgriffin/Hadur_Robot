@@ -1,33 +1,13 @@
-# BENCH-253 pc-locks, round 7: robots whose per-robot line locked on the cloud (95% low end above 0, live turn time)
-# after round 6 ran (PR #890) (coverage/shards/locks.tsv, 17 Nov). Census rows. name | rank | jar
-tobe.calypso.Calypso 4.1 | rank834-band6 | tobe.calypso.Calypso_4.1.jar
-am.Miedzix 3.0 | rank756-band6 | am.Miedzix_3.0.jar
-rcp.Kuramatron 1.0 | rank647-band5 | rcp.Kuramatron_1.0.jar
-genprog.Gajeel 1.0 | rank1072-band6 | genprog.Gajeel_1.0.jar
-kurios.DOSexe .9a | rank759-band6 | kurios.DOSexe_.9a.jar
-uccc.Scrapple 1.0 | rank1208-band6 | uccc.Scrapple_1.0.jar
-oog.nano.Caligula 1.15 | leak | oog.nano.Caligula_1.15.jar
-sheldor.nano.SabreuseNano 1.1 | rank321-band4 | sheldor.nano.SabreuseNano_1.1.jar
-supersample.SuperRamFire 1.0 | leak | supersample.SuperRamFire_1.0.jar
-ghent.ArthurPanzergon 1.0.0 | rank706-band6 | ghent.ArthurPanzergon_1.0.0.jar
-ua.kiiv.kosyak.robocode.tn1.Tn1 2.0 | rank948-band6 | ua.kiiv.kosyak.robocode.tn1.Tn1_2.0.jar
-mbro.Detektor3 0.1.1 | beep-gap 2.83 | mbro.Detektor3_0.1.1.jar
-conscience.Bulldozer 1.0a | rank728-band6 | conscience.Bulldozer_1.0a.jar
-stelo.Lifestealer 1.0 | floor | stelo.Lifestealer_1.0.jar
-amarok.Rookie 1.1 | rank618-band5 | amarok.Rookie_1.1.jar
-sul.NanoR2 1.32 | rank743-band6 | sul.NanoR2_1.32.jar
-bbo.RamboT 0.3 | rank1048-band6 | bbo.RamboT_0.3.jar
-as.xbots 1.0 | rank532-band5 | as.xbots_1.0.jar
-reeder.colin.WallGuy3 1.0 | rank1003-band6 | reeder.colin.WallGuy3_1.0.jar
-vort.Chaser 0.0.3 | rank1044-band6 | vort.Chaser_0.0.3.jar
-sanyi.mikrobi.Roberto 1.0 | rank1051-band6 | sanyi.mikrobi.Roberto_1.0.jar
-robin.SCALPBot 1.0 | rank1054-band6 | robin.SCALPBot_1.0.jar
-hirataatsushi.Trinity 0.003 | rank981-band6 | hirataatsushi.Trinity_0.003.jar
-jgap.JGAP130166 1.0 | rank1090-band6 | jgap.JGAP130166_1.0.jar
-demetrix.nano.SledgeHammer 0.22 | rank523-band5 | demetrix.nano.SledgeHammer_0.22.jar
-daemons.DizzyA 1.0 | rank1178-band6 | daemons.DizzyA_1.0.jar
+# BENCH-253 pc-locks, round 8: robots whose per-robot line locked on the cloud (95% low end above 0, live turn time)
+# after round 7 ran (PR #902), plus cloud-locked lines whose earlier 12-seed PC read was +1 or more but not clear of 0 (coverage/shards/round8-draft.md). Census rows. name | rank | jar
+maribo.Omicron 1.0 | rank561-band5 | maribo.Omicron_1.0.jar
+pfvicm.Sobieski 7.2.3b | rank607-band5 | pfvicm.Sobieski_7.2.3b.jar
+rz.SmallDevil 1.502 | rank590-band5 | rz.SmallDevil_1.502.jar
 urdos.URDOS 1.3 | rank412-band5 | urdos.URDOS_1.3.jar
-bvh.hdr.Hodur 0.4 | rank1111-band6 | bvh.hdr.Hodur_0.4.jar
-maribo.FollowFire 1.11 | leak | maribo.FollowFire_1.11.jar
-gg.Squaraus 0.6 | rank1047-band6 | gg.Squaraus_0.6.jar
-csp.Eagle 3.30 | rank965-band6 | csp.Eagle_3.30.jar
+sanyi.mikrobi.Roberto 1.0 | rank1051-band6 | sanyi.mikrobi.Roberto_1.0.jar
+mnt.AHEB 0.6a | rank353-band4 | mnt.AHEB_0.6a.jar
+pez.mako.Mako 1.5 | rank371-band4 | pez.mako.Mako_1.5.jar
+kc.serpent.WaveSerpent 2.11 | rank15-band2 | kc.serpent.WaveSerpent_2.11.jar
+dmh.robocode.robot.PinkPanther 1.1 | rank385-band4 | dmh.robocode.robot.PinkPanther_1.1.jar
+ebo.Tahoe 1.1.79 | rank139-band3 | ebo.Tahoe_1.1.79.jar
+Polkwane.Piyane 0.7b | rank429-band5 | Polkwane.Piyane_0.7b.jar
