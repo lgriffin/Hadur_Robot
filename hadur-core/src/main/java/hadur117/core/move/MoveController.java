@@ -102,16 +102,6 @@ public class MoveController {
     private boolean flattenerFirst;
     /** MOVE-24: the flattener views off (set per battle by the duel, duel only). */
     private boolean flattenerOff;
-    /**
-     * MOVE-49: the visit softener {@code c}, or 0 for off. When on, every real-bullet wave that
-     * breaks without hitting us (nor meeting our bullet) teaches {@link #missView} where we were,
-     * and the views' danger is divided by {@code c} plus that view's kernel mass on the option
-     * (a soft hits-per-visit), so a spot is not rated dangerous only because we stood there often.
-     */
-    private double visitNorm;
-    /** MOVE-49: our positions on the waves that missed us, in the {@link MoveFormula} space. */
-    private final KnnView<TimestampedGuessFactor> missView = new KnnView<TimestampedGuessFactor>(new MoveFormula())
-        .setWeight(1).setK(25).setKDivisor(5).setName("miss");
     private KnnView<TimestampedGuessFactor> flattener, flattener2;
     /** Seeded samples so far; their time, so the decaying views see them oldest first. */
     private int seedsLoaded;
@@ -330,26 +320,6 @@ public class MoveController {
      */
     public void setFlattenerOff(boolean flattenerOff) {
         this.flattenerOff = flattenerOff;
-    }
-
-    /**
-     * MOVE-49: divide the views' danger by {@code c} plus the miss view's mass on the option; 0 is off.
-     * The duel sets it, in a duel only.
-     *
-     * @param c the softener, at least 0
-     */
-    public void setVisitNorm(double c) {
-        this.visitNorm = c;
-    }
-
-    /** MOVE-49: teaches the miss view that a bullet on {@code w} missed us at guess factor {@code gf}. */
-    void logMiss(Wave w, double gf, int round, long time) {
-        missView.logWave(w, new TimestampedGuessFactor(round, time, gf));
-    }
-
-    /** MOVE-49: the miss view's size, for tests. */
-    int missCount() {
-        return missView.size();
     }
 
     /** MOVE-24: whether the flatteners are kept off. */
@@ -607,7 +577,6 @@ public class MoveController {
         for (KnnView<TimestampedGuessFactor> view : views) {
             view.clearCache();
         }
-        missView.clearCache();
         cacheOwners.clear();
     }
 
@@ -621,7 +590,6 @@ public class MoveController {
     private void validateCache(Wave w, int surfWaveIndex) {
         if (cacheOwners.get(surfWaveIndex) == w) return;
         for (KnnView<TimestampedGuessFactor> view : views) view.cachedNeighbors.remove(surfWaveIndex);
-        missView.cachedNeighbors.remove(surfWaveIndex);
         cacheOwners.put(surfWaveIndex, w);
     }
 
@@ -922,10 +890,6 @@ public class MoveController {
             view.logWave(w, new TimestampedGuessFactor(currentRound, currentTime, gf));
         }
 
-        // MOVE-49: a real bullet that passed us: where we were was safe from it.
-        if (visitNorm > 0 && !w.hitByBullet && !w.bulletHitBullet) {
-            logMiss(w, w.guessFactor(intersection.angle), currentRound, currentTime);
-        }
         // A bullet that met one of ours never had its chance at us, so it is no shot at us.
         if (!w.bulletHitBullet) {
             raw1v1ShotsFired++;
@@ -1321,27 +1285,8 @@ public class MoveController {
         }
         if (parts != null) parts[2 * views.size()] = Double.NaN;
         double viewScore = totalDanger / totalScanWeight;
-        if (visitNorm > 0) viewScore /= visitNorm + missMass(w, surfWaveIndex, dangerAngle, bandwidth, segments);
         if (!mixAims || aimMembers == null) return viewScore;
         return aimMembers.danger(viewScore, aimScores(w, dangerAngle, bandwidth, segments));
-    }
-
-    /**
-     * MOVE-49: the miss view's kernel mass on the option, an average over its neighbours (0 to 1);
-     * 0 while it holds nothing.
-     */
-    private double missMass(Wave w, int surfWaveIndex, double dangerAngle, double bandwidth,
-                            List<double[]> segments) {
-        if (missView.size() == 0) return 0;
-        List<KdTree.Entry<TimestampedGuessFactor>> neighbors = getNearestNeighbors(missView, w, surfWaveIndex);
-        double mass = 0, total = 0;
-        for (KdTree.Entry<TimestampedGuessFactor> entry : neighbors) {
-            double sw = 1 / Math.sqrt(Math.max(entry.distance, MIN_DISTANCE));
-            double at = DiaUtils.normalizeAngle(w.firingAngle(entry.value.guessFactor), dangerAngle);
-            mass += sw * kernel(at, bandwidth, segments);
-            total += sw;
-        }
-        return total > 0 ? mass / total : 0;
     }
 
     /**
