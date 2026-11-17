@@ -133,3 +133,9 @@
 22:52:47 livematch exit=0 in 7 s
 22:52:47 start lock
 22:52:47 watching lock: 4 stop rule(s)
+23:07:48 lock exit=0 in 900 s
+23:07:48 start gate
+23:07:49 gate exit=0 in 1 s
+23:07:49 start pr
+23:07:56 pr exit=0 in 6 s
+23:07:56 ALLDONE
