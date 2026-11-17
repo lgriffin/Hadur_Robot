@@ -20,3 +20,7 @@ sanyi.mikrobi.Roberto 1.0 | rank1051-band6 | sanyi.mikrobi.Roberto_1.0.jar
 erdnis.Rover 0.3 | rw4 | erdnis.Rover_0.3.jar
 sng.arco.Arco 0.0 | rank958-band6 | sng.arco.Arco_0.0.jar
 yarhoslav.YaroBot 1.2 | rank945-band6 | yarhoslav.YaroBot_1.2.jar
+ahf.Acero 1.0 | rank666-band5 | ahf.Acero_1.0.jar
+myl.nano.KomoriNinja 1.1 | rank757-band6 | myl.nano.KomoriNinja_1.1.jar
+amc.ROBv203 1.0 | rank860-band6 | amc.ROBv203_1.0.jar
+tango.Recrimpo 2.51 | rank669-band5 | tango.Recrimpo_2.51.jar
