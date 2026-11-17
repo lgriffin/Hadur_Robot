@@ -17,6 +17,15 @@ ap.Frederick 1.1 | rank1154-band6 | ap.Frederick_1.1.jar
 tvv.nano.Polaris 1.2 | rank708-band6 | tvv.nano.Polaris_1.2.jar
 bzdp.BoxCar 2.0 | rank865-band6 | bzdp.BoxCar_2.0.jar
 sanyi.mikrobi.Roberto 1.0 | rank1051-band6 | sanyi.mikrobi.Roberto_1.0.jar
-erdnis.Rover 0.3 | rw4 | erdnis.Rover_0.3.jar
+erdnis.Rover 0.3 | rank651-band5 | erdnis.Rover_0.3.jar
 sng.arco.Arco 0.0 | rank958-band6 | sng.arco.Arco_0.0.jar
 yarhoslav.YaroBot 1.2 | rank945-band6 | yarhoslav.YaroBot_1.2.jar
+ahf.Acero 1.0 | rank666-band5 | ahf.Acero_1.0.jar
+myl.nano.KomoriNinja 1.1 | rank757-band6 | myl.nano.KomoriNinja_1.1.jar
+amc.ROBv203 1.0 | rank860-band6 | amc.ROBv203_1.0.jar
+tango.Recrimpo 2.51 | rank669-band5 | tango.Recrimpo_2.51.jar
+sul.Pinkbot 1.1 | rank745-band6 | sul.Pinkbot_1.1.jar
+geep.mini.GPBotA 1.0 | rank789-band6 | geep.mini.GPBotA_1.0.jar
+projectx.ProjectNano 2.0 | rank866-band6 | projectx.ProjectNano_2.0.jar
+jgap.JGAP7958 1.0 | rank967-band6 | jgap.JGAP7958_1.0.jar
+sheldor.nano.PointInLineRRAL 1.0.0 | rank457-band5 | sheldor.nano.PointInLineRRAL_1.0.0.jar

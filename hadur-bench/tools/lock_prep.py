@@ -24,6 +24,7 @@ import sys
 # Lever arm suffix -> (build-ablation flavours, the list variables they read).
 LEVERS = {
     "mtzl": ("slistadd,szlist", ("SHIELD_ADD", "SHIELD_STILL")),
+    "mt": ("slistadd", ("SHIELD_ADD",)),
     "fq": ("fllist", ("FLAT_ON",)),
     "gl": ("gslist", ("GUN_STACK",)),
     "mq": ("mmlist", ("MIMIC_ON",)),

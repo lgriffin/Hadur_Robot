@@ -61,6 +61,15 @@ class LockPrepTest(unittest.TestCase):
         posix = os.path.join(out, "rwl.list").replace(os.sep, "/")
         self.assertIn("RAM_WAIT=%s bash ./build-ablation.sh rwlist" % posix, open(os.path.join(out, "build.sh")).read())
 
+    def test_shield_add_pick_builds_its_list(self):
+        # SHIELD-17: a plain shield-add pick (arm mt) gets its own list and an slistadd rebuild.
+        with open(self.arms, "a") as f:
+            f.write("mt | hadur117.Hadur 3.22mt | x\n")
+        out = self.run_prep([("c.C 1", "mt", "2.8")])
+        self.assertEqual("c.C 1\n", open(os.path.join(out, "mt.list")).read())
+        posix = os.path.join(out, "mt.list").replace(os.sep, "/")
+        self.assertIn("SHIELD_ADD=%s bash ./build-ablation.sh slistadd" % posix, open(os.path.join(out, "build.sh")).read())
+
     def test_no_pick_leaves_an_empty_panel(self):
         for rows in ([], None):
             out = self.run_prep(rows)
