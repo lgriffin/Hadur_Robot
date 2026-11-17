@@ -65,6 +65,7 @@ class RivalPicksPlanTest {
         shipped.addAll(names("plans/shards-shipped.txt"));
         shipped.addAll(names("plans/locks-shipped.txt"));
         shipped.addAll(names("plans/locks6-shipped.txt")); // pc-locks round 6 (PR #890) shipped Recrimpo
+        shipped.addAll(names("plans/locks8-shipped.txt")); // pc-locks round 8 (PR #905) shipped Omicron, Sobieski and SmallDevil
         for (String n : drop) {
             if (!shipped.contains(n)) assertTrue(listData.contains("\"" + n + "\","), n + " is on the shield list to drop");
         }

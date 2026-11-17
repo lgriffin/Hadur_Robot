@@ -375,6 +375,10 @@ final class ShieldListData {
             "nz.jdc.nano.AralR 1.1",               // +3.0
             // pc-locks round 6 (BENCH-253, PR #890): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "tango.Recrimpo 2.51",           // +5.1
+            // pc-locks round 8 (BENCH-253, PR #905): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "maribo.Omicron 1.0",            // +1.4
+            "pfvicm.Sobieski 7.2.3b",        // +2.3
+            "rz.SmallDevil 1.502",           // +2.1
         };
     }
 }
