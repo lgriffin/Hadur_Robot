@@ -369,4 +369,17 @@ class ShieldListTest {
         assertEquals(0, l.size(), "no shield entry");
         assertEquals(null, ShieldList.NONE.surfKeyFor("a.B 1.0"));
     }
+
+    @Test
+    @Tag("SHIELD-29")
+    @DisplayName("shield-lag lines name the opponents whose late shots the shield predicts from the earlier aim")
+    void perOpponentShieldLag() {
+        ShieldList l = ShieldList.parse(List.of("shield-lag: a.B 1.0", "ram-wait: e.F"));
+        assertTrue(l.shieldLag("a.B 1.0"));
+        assertTrue(l.shieldLag("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertFalse(l.shieldLag("e.F 1.0"), "a ram-wait line is not a shield-lag line");
+        assertFalse(l.ramWait("a.B 1.0"), "no other switch");
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.shieldLag("a.B 1.0"));
+    }
 }

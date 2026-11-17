@@ -779,6 +779,18 @@ final class ShieldTableData {
     }
 
     /**
+     * SHIELD-29: the opponents whose late shots (fired after their gun was due, from skipped turns) the shield
+     * predicts from the enemy's position that many ticks earlier ({@code shield-lag:} lines). Empty until a card
+     * holds robots; candidate builds add lines here (build-ablation.sh slaglist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] shieldLags() {
+        return new String[] {
+        };
+    }
+
+    /**
      * DIST-4: per-opponent pinned duel distance, one line each: the surf's desired distance in px, then the name.
      * The pin replaces DIST-1's controller target against that robot in a duel (END-1's finish still closes in).
      * Candidate builds add lines here (build-ablation.sh dplist).
