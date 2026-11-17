@@ -5,10 +5,10 @@
 #      SuperRamFire +5.0 (+2.0), Detektor3 +2.6 (+1.6), Bulldozer +1.9 (+0.9, 24), Lifestealer +2.0 (+0.9, 36), Roberto +1.6 (+0.9),
 #      RamboT +1.6 (+0.9, 24), xbots +4.1 (+0.8), WallGuy3 +0.9 (+0.3, 36), Chaser +2.1 (+1.6), SCALPBot +2.1 (+0.9),
 #      Trinity +1.7 (+1.0), JGAP130166 +1.7 (+1.0), SledgeHammer +2.2 (+0.9), DizzyA +1.2 (+0.8, 24), URDOS +2.3 (+1.1, 24),
-#      Hodur +2.5 (+1.5, 24), FollowFire +1.7 (+0.9, 24), Squaraus +1.3 (+0.5), Eagle +1.2 (+0.6, 24); 12 seeds unless marked
+#      Hodur +2.5 (+1.5, 24), FollowFire +1.7 (+0.9, 24), Squaraus +1.0 (+0.5, 24), Eagle +1.2 (+0.6, 24); 12 seeds unless marked
 #   sp2 (DODGE-6 shot-dodge planner): ArthurPanzergon +3.9 (+2.4), Tn1 +1.8 (+1.1, 24 seeds), Rookie +2.6 (+1.7), NanoR2 +2.6 (+1.6)
 #   rwl (MOVE-46 ram wait on a disabled enemy): Calypso +1.1 (+0.2, 48 seeds)
-#   Each gain is the smaller of the reads against c and against an A/A twin. WallGuy3 and Calypso only just clear 0; the PC decides them.
+#   Each gain is the smaller of the reads against c and against an A/A twin. WallGuy3, Calypso and Squaraus only just clear 0; the PC decides them.
 #   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live
 #   lock       the 31 robots  c / aa / rf / sp2 / rwl (each lever arm built with only its own robots)   12 fresh seeds
 #              from 43700, --cpu-constant live, in work/pc-locks7 (earlier rounds' battles stay in work/pc-locks to -locks6)
