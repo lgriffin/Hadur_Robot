@@ -406,12 +406,6 @@ for a in "${list[@]}"; do
             edit "$detector" "public static final int MIN_INTERCEPTS = 4;" "public static final int MIN_INTERCEPTS = 10;"
             edit "$detector" "public static final double MIN_SHARE = 0.25;" "public static final double MIN_SHARE = 0.5;"
             version="${version}s5" ;;
-        wa4|wa8|wa16|wa32|wa64)
-            edit "$movedesign" "static final double WAVE_AHEAD_SOFTEN = 0.0;" "static final double WAVE_AHEAD_SOFTEN = ${a#wa}.0;"
-            version="${version}${a}" ;;
-        w3)
-            edit "$movedesign" "static final int WAVE_AHEAD_DEPTH = 2;" "static final int WAVE_AHEAD_DEPTH = 3;"
-            version="${version}w3" ;;
         nv0|hv0)
             # VIEWS-1 screen: the normal view (nv0), and with it recent4 to recent6 (hv0), on from the first hit.
             edit "$move" ".setWeight(40).setK(20).setKDivisor(5).setHitThreshold(3.0).bulletHitsOn()" ".setWeight(40).setK(20).setKDivisor(5).setHitThreshold(0.0).bulletHitsOn()"

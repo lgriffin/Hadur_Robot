@@ -83,19 +83,6 @@ public class SurfMover {
     private double[] aesCapture;
     /** AES-1: records made since the last {@link #drainAesRecords}. */
     private final List<String> aesRecords = new ArrayList<>();
-    /** WAVES-1: ticks added to every wave's time to impact in the danger; 0 as shipped. */
-    private double timeSoften;
-
-    /**
-     * WAVES-1: ticks added to every wave's time to impact where the danger is divided by it, so a
-     * wave about to pass does not outweigh the ones behind it as much.
-     *
-     * @param ticks 0 for the shipped weighting
-     */
-    public void setTimeSoften(double ticks) {
-        this.timeSoften = ticks;
-    }
-
     /** DPF-1: the danger profiles recorded with the AES records since the last {@link #drainProfileRecords}. */
     private final List<String> profileRecords = new ArrayList<>();
     /** ORACLE-1: whether each wave's first three-option rating also records the views' neighbours (bench builds only; off by default). */
@@ -782,7 +769,7 @@ public class SurfMover {
         double currentDist = myState.location.distance(surfWave.sourceLocation);
         double currentWaveDist = currentDist - surfWave.distanceTraveled(myState.time);
         double timeToImpact = Math.max(1.0, currentWaveDist / surfWave.bulletSpeed());
-        danger /= timeToImpact + timeSoften;
+        danger /= timeToImpact;
 
         Point2D.Double distancingFrom = surfWave.sourceLocation;
         danger *= distancingDanger(start, passed, distancingFrom);

@@ -27,19 +27,6 @@ final class MoveDesign {
     static final boolean FLATTENER_OFF = true;
 
     /**
-     * WAVES-1 (off at 0): ticks added to every wave's time to impact in the three-option surf's
-     * danger, duel only. The danger is over the time to impact, so a wave 2 ticks off outweighs
-     * one 18 ticks off nine to one and the surf spends the first wave's last ticks on it alone;
-     * with 8 added the ratio is 2.6. The 17 Nov three-robot traces (docs/bench/wave-ahead.md):
-     * our hit rate rises with the enemy bullets already in flight (2.2% with none, 3.3% with two),
-     * BeepBoop's does not (1.6%, 1.5%).
-     */
-    static final double WAVE_AHEAD_SOFTEN = 0.0;
-
-    /** WAVES-1: the waves the three-option surf looks ahead at full computation, duel only (2 as shipped). */
-    static final int WAVE_AHEAD_DEPTH = 2;
-
-    /**
      * AES-1 (measurement): each wave's first three-option rating is printed as an {@code AES}
      * record with every term of each option's danger (docs/plan-aes.md). Behaviour unchanged.
      */
