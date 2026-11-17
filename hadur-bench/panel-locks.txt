@@ -14,3 +14,5 @@ ar.QuantumChromodynamics 1.2.1 | rank776-band6 | ar.QuantumChromodynamics_1.2.1.
 el33t.EL33tGangstarr2 2.0 | rank1000-band6 | el33t.EL33tGangstarr2_2.0.jar
 cx.nano.Smog 2.6 | rank546-band5 | cx.nano.Smog_2.6.jar
 jgap.JGAP23423 1.0 | rank1063-band6 | jgap.JGAP23423_1.0.jar
+ap.Frederick 1.1 | rank1154-band6 | ap.Frederick_1.1.jar
+tvv.nano.Polaris 1.2 | rank708-band6 | tvv.nano.Polaris_1.2.jar
