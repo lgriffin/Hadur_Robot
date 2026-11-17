@@ -326,6 +326,7 @@ public final class DuelController {
         this.moveController.setKeepShadows(MoveDesign.KEEP_SHADOWS);
         this.moveController.setMemberMimics(memberMimics);
         this.surfMover = new SurfMover(battleField, predictor);
+        this.surfMover.setTimeSoften(duelOnly(true, enemiesTotal) ? MoveDesign.WAVE_AHEAD_SOFTEN : 0.0);
         this.surfMover.setAesRecord(MoveDesign.AES_RECORD);
         this.surfMover.setOracleRecord(MoveDesign.ORACLE_RECORD);
         this.surfMover.setSurfKeyRecord(MoveDesign.SURF_KEY_RECORD);
@@ -887,7 +888,7 @@ public final class DuelController {
                 && enemyGunHeat(in).at(in.time()) <= in.gunCoolingRate(), in.time());
             if (dodgePlanOn) surfMover.setDodgeEnemy(lastEnemyState);
             surfMover.move(orders, currentState(in), moveController, lastEnemyLocation,
-                TickBudget.wavesToSurf(level), TickBudget.goToAllowed(level));
+                wavesAhead(level), TickBudget.goToAllowed(level));
             // AES-1: the decision records the surf made this tick (none unless the switch is on).
             for (String r : surfMover.drainAesRecords()) {
                 telemetry.emit("AES," + round + "," + in.time() + "," + r);
@@ -938,6 +939,12 @@ public final class DuelController {
             if (aimRingTime[k] == t) states[lag] = aimRing[k];
         }
         return states;
+    }
+
+    /** WAVES-1: the waves the surf looks ahead: the tick budget's, or the duel's deeper look at full computation. */
+    private int wavesAhead(int level) {
+        int waves = TickBudget.wavesToSurf(level);
+        return level == 0 && duelOnly(true, enemiesTotal) ? Math.max(waves, MoveDesign.WAVE_AHEAD_DEPTH) : waves;
     }
 
     /** A duel-only move switch: in effect only in a duel; melee and team endgames play as with it off. */
