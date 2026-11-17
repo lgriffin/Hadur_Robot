@@ -33,3 +33,9 @@ kneels.ToNoone 0.2 | rank989-band6 | kneels.ToNoone_0.2.jar
 hlavko.nano.Phoenix 1.0 | rank893-band6 | hlavko.nano.Phoenix_1.0.jar
 nexus.Experimental 0.2 | rank837-band6 | nexus.Experimental_0.2.jar
 dukie.Ambassador 1.0 | rank905-band6 | dukie.Ambassador_1.0.jar
+dmh.robocode.robot.GreenDragon 1.0 | rank668-band5 | dmh.robocode.robot.GreenDragon_1.0.jar
+davidalves.net.DuelistNano 1.0 | rank753-band6 | davidalves.net.DuelistNano_1.0.jar
+Polkwane.Piyane 0.7b | rank429-band5 | Polkwane.Piyane_0.7b.jar
+evd.X1 0.01 | rank956-band6 | evd.X1_0.01.jar
+ebo.Tahoe 1.1.79 | rank139-band3 | ebo.Tahoe_1.1.79.jar
+dmh.robocode.robot.PinkPanther 1.1 | rank385-band4 | dmh.robocode.robot.PinkPanther_1.1.jar
