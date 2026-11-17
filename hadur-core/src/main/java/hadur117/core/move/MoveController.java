@@ -102,6 +102,13 @@ public class MoveController {
     private boolean flattenerFirst;
     /** MOVE-24: the flattener views off (set per battle by the duel, duel only). */
     private boolean flattenerOff;
+    /**
+     * MOVE-50: the gated flattener's scale tau, or 0 for off. When on, with the flatteners off in the
+     * average (MOVE-24), the two flattener views' own score is added to the views' danger on an
+     * option, times exp(-viewScore / tau): it speaks where the hit views are silent (spots the enemy
+     * has never hit) and fades where they already rate the spot dangerous.
+     */
+    private double gatedFlat;
     private KnnView<TimestampedGuessFactor> flattener, flattener2;
     /** Seeded samples so far; their time, so the decaying views see them oldest first. */
     private int seedsLoaded;
@@ -320,6 +327,22 @@ public class MoveController {
      */
     public void setFlattenerOff(boolean flattenerOff) {
         this.flattenerOff = flattenerOff;
+    }
+
+    /**
+     * MOVE-50: the gated flattener's tau; 0 is off. The duel sets it, in a duel only.
+     *
+     * @param tau the hit-view score at which the flatteners' say falls to 1/e, above 0 to turn it on
+     */
+    public void setGatedFlattener(double tau) {
+        this.gatedFlat = tau;
+    }
+
+    /** MOVE-50: teaches every visit-logging view that we stood at {@code gf} on {@code w}, for tests. */
+    void logVisit(Wave w, double gf, int round, long time) {
+        for (KnnView<TimestampedGuessFactor> view : views) {
+            if (view.logVisits) view.logWave(w, new TimestampedGuessFactor(round, time, gf));
+        }
     }
 
     /** MOVE-24: whether the flatteners are kept off. */
@@ -1285,8 +1308,37 @@ public class MoveController {
         }
         if (parts != null) parts[2 * views.size()] = Double.NaN;
         double viewScore = totalDanger / totalScanWeight;
+        if (gatedFlat > 0) viewScore += gatedFlatterScore(w, surfWaveIndex, dangerAngle, bandwidth, segments, estimate)
+            * Math.exp(-viewScore / gatedFlat);
         if (!mixAims || aimMembers == null) return viewScore;
         return aimMembers.danger(viewScore, aimScores(w, dangerAngle, bandwidth, segments));
+    }
+
+    /**
+     * MOVE-50: the two flattener views' weighted score on the option, as the danger average would
+     * weigh them, counting a view only once its own threshold is met and it holds data; 0 if neither.
+     */
+    private double gatedFlatterScore(Wave w, int surfWaveIndex, double dangerAngle, double bandwidth,
+                                     List<double[]> segments, double[] estimate) {
+        double danger = 0, total = 0;
+        for (int vi = 0; vi < views.size(); vi++) {
+            KnnView<TimestampedGuessFactor> view = views.get(vi);
+            if (view != flattener && view != flattener2) continue;
+            if (view.effectiveSize() == 0 || !view.thresholdsMet(estimate[0], estimate[1])) continue;
+            List<KdTree.Entry<TimestampedGuessFactor>> neighbors = getNearestNeighbors(view, w, surfWaveIndex);
+            double[] decay = view.getDecayWeights(neighbors);
+            double density = 0, scan = 0;
+            for (int k = 0; k < decay.length; k++) {
+                KdTree.Entry<TimestampedGuessFactor> entry = neighbors.get(k);
+                double sw = decay[k] / Math.sqrt(Math.max(entry.distance, MIN_DISTANCE)) * entry.value.weight();
+                double at = DiaUtils.normalizeAngle(w.firingAngle(entry.value.guessFactor), dangerAngle);
+                density += sw * kernel(at, viewBandwidth(view, bandwidth), segments);
+                scan += sw;
+            }
+            danger += view.weight * density;
+            total += view.weight * scan;
+        }
+        return total > 0 ? danger / total : 0;
     }
 
     /**
