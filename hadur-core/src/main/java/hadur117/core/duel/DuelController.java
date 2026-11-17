@@ -1356,7 +1356,6 @@ public final class DuelController {
         ramWaitOn = false;
         steadyOrbitOn = false;
         surfMover.setSteadyOrbit(false);
-        surfMover.setStopMargin(1.0);
         stopAndGo = null;
         gunController.setTripHammer(GunDesign.TRIPHAMMER);
         gunController.setFreeGun(GunDesign.FREE_GUN);
@@ -1485,8 +1484,6 @@ public final class DuelController {
         // MOVE-47: the steady orbit for the opponents the table names.
         steadyOrbitOn = duelOnly(stackList.steadyOrbit(name), enemiesTotal);
         surfMover.setSteadyOrbit(steadyOrbitOn);
-        // MOVE-48: stop less often, one on one only.
-        surfMover.setStopMargin(duelOnly(MoveDesign.STOP_MARGIN < 1.0, enemiesTotal) ? MoveDesign.STOP_MARGIN : 1.0);
         // POW-20: the power bands for the opponents the table names.
         powerBand = enemiesTotal <= 1 ? stackList.powerBandFor(name) : null;
         distPin = enemiesTotal <= 1 ? stackList.distPinFor(name) : Double.NaN;

@@ -129,18 +129,8 @@ public class SurfMover {
      * @return the option taken
      */
     static SurfOption choose(double ccw, double stop, double cw, SurfOption current, boolean steady) {
-        return choose(ccw, stop, cw, current, steady, 1.0);
-    }
-
-    /**
-     * The three-option choice with MOVE-48's stop margin: the stop is taken only when its danger is
-     * at most {@code stopMargin} times each way round's (1 keeps the shipped rule, where the stop
-     * wins ties).
-     */
-    static SurfOption choose(double ccw, double stop, double cw, SurfOption current, boolean steady,
-            double stopMargin) {
         if (!steady) {
-            if (stop <= stopMargin * ccw && stop <= stopMargin * cw) return SurfOption.STOP;
+            if (stop <= ccw && stop <= cw) return SurfOption.STOP;
             return cw < ccw ? SurfOption.CLOCKWISE : SurfOption.COUNTER_CLOCKWISE;
         }
         SurfOption way = current == SurfOption.CLOCKWISE ? SurfOption.CLOCKWISE : SurfOption.COUNTER_CLOCKWISE;
@@ -155,23 +145,6 @@ public class SurfMover {
     /** MOVE-47: the other way round must be under this share of the current way's danger to reverse. */
     static final double ORBIT_REVERSE_SHARE = 0.5;
     private boolean steadyOrbit;
-    /** MOVE-48: the stop's danger must be at most this share of each way round's; 1 is the shipped rule. */
-    private double stopMargin = 1.0;
-
-    /**
-     * MOVE-48: stop less often. The three-option surf takes the stop only when its danger is at most
-     * {@code margin} times each way round's; 1 keeps the shipped rule.
-     *
-     * @param margin the share, in (0, 1]
-     */
-    public void setStopMargin(double margin) {
-        stopMargin = margin;
-    }
-
-    /** MOVE-48: the stop margin in use. */
-    public double stopMargin() {
-        return stopMargin;
-    }
 
     /**
      * DODGE-6: whether the shot-dodge planner ({@link ShotDodgePlanner}) drives the surfed ticks
@@ -503,7 +476,7 @@ public class SurfMover {
         double stopDanger = surfOptionDangers.getOrDefault(SurfOption.STOP, 0.0);
         double cwDanger = surfOptionDangers.getOrDefault(SurfOption.CLOCKWISE, 0.0);
 
-        SurfOption pick = choose(ccwDanger, stopDanger, cwDanger, lastSurfOption, steadyOrbit, stopMargin);
+        SurfOption pick = choose(ccwDanger, stopDanger, cwDanger, lastSurfOption, steadyOrbit);
         boolean takeStop = pick == SurfOption.STOP;
         boolean takeClockwise = pick == SurfOption.CLOCKWISE;
 
