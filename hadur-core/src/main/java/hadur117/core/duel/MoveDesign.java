@@ -27,6 +27,13 @@ final class MoveDesign {
     static final boolean FLATTENER_OFF = true;
 
     /**
+     * MOVE-49 (danger-model exploration, off): the visit softener; 0 is off. Above 0, in a duel,
+     * the views' danger is divided by it plus the mass of our past positions on waves that missed
+     * us, so hit counts stop counting our own habits. Ablations vn25 (0.25) and vn100 (1.0).
+     */
+    static final double VISIT_NORM = 0.0;
+
+    /**
      * AES-1 (measurement): each wave's first three-option rating is printed as an {@code AES}
      * record with every term of each option's danger (docs/plan-aes.md). Behaviour unchanged.
      */
