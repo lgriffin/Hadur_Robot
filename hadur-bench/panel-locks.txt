@@ -33,3 +33,4 @@ kneels.ToNoone 0.2 | rank989-band6 | kneels.ToNoone_0.2.jar
 hlavko.nano.Phoenix 1.0 | rank893-band6 | hlavko.nano.Phoenix_1.0.jar
 nexus.Experimental 0.2 | rank837-band6 | nexus.Experimental_0.2.jar
 dukie.Ambassador 1.0 | rank905-band6 | dukie.Ambassador_1.0.jar
+dmh.robocode.robot.GreenDragon 1.0 | rank668-band5 | dmh.robocode.robot.GreenDragon_1.0.jar
