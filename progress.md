@@ -1,6 +1,6 @@
 # Queue pc-team-endpower: progress
 
-Updated 2026-11-17 23:35:20 PC time (23:35 UTC), runner pid 48596.
+Updated 2026-11-17 23:50:27 PC time (23:50 UTC), runner pid 48596.
 
 - `teprep` done, exit 0 in 2 min
 - `tepep` running
@@ -12,16 +12,16 @@ Updated 2026-11-17 23:35:20 PC time (23:35 UTC), runner pid 48596.
 
 ### tepep
 
-**71 of 276 battles** (26%), 0 failed. Running 13 min, 326 battles/h, about 38 min left (ends ~00:13 PC time). Last battle 0 min ago.
-Skipped turns a battle: 14.5 overall, first 71 14.5, last 71 14.5.
+**178 of 276 battles** (64%), 0 failed. Running 28 min, 379 battles/h, about 16 min left (ends ~00:05 PC time). Last battle 0 min ago.
+Skipped turns a battle: 9.1 overall, first 100 12.8, last 100 5.3.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 71 |
+| `fails 60` | halt | ok | 0 failed of 178 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | waiting | 71 of 200 battles to read |
+| `skips 60 over 200` | halt | waiting | 178 of 200 battles to read |
 
-Stopping now would leave 205 battles unrun (about 38 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 98 battles unrun (about 16 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
