@@ -255,7 +255,6 @@
 #   pcap5list the robots named in $POWER_CAP5 get POW-18's 0.5 duel power cap. Suffix p5.
 #   hflist the robots named in $HARD_FIRE get POW-19's hard fire (0.6 floor while our energy is 60+). Suffix hf.
 #   sblist the robots named in $SPEED_BAND get MOVE-45's speed band (a random top speed of 7 to 8 each tick against rounded-velocity pattern matchers). Suffix sb.
-#   holist the robots named in $RANGE_HEAD_ON get GUN-12's head-on aim for real shots from 300 px or more. Suffix ho.
 #   vjlist the robots named in $VEL_JITTER get MOVE-44's velocity jitter (never exactly 8 or 0 against exact-velocity pattern matchers). Suffix vj.
 #   dplist the lines in $DIST_PIN ("px name") pin DIST-4's per-opponent duel distance. Suffix dp, or $DIST_PIN_SUFFIX.
 #   pblist the lines in $POWER_BAND ("m1 m2 m3 m4 name") become POW-20 power bands. Suffix pb.
@@ -793,7 +792,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
                 edit "$movedesign" "static final int STOP_AND_GO_PREFIRE = 1;" "static final int STOP_AND_GO_PREFIRE = 2;"
                 version="${version}ws"
             else version="${version}wp"; fi ;;
-        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist|rclist|mirofflist|sfloorlist|pcaplist|pcap5list|hflist|pblist|vjlist|sblist|dplist|rhlist|holist|rwlist)
+        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist|rclist|mirofflist|sfloorlist|pcaplist|pcap5list|hflist|pblist|vjlist|sblist|dplist|rhlist|rwlist)
             # Shield part 2 (docs/plan-shield-quality.md): per-opponent opening drive or shipped aims;
             # the mode table's simple-aim dodge (DODGE-3).
             if [[ "$a" == smovelist ]]; then file="${SHIELD_MOVE:-}"; method="moves"; version="${version}mv"
@@ -815,7 +814,6 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
             elif [[ "$a" == dplist ]]; then file="${DIST_PIN:-}"; method="distPins"; version="${version}${DIST_PIN_SUFFIX:-dp}"
             elif [[ "$a" == vjlist ]]; then file="${VEL_JITTER:-}"; method="velocityJitters"; version="${version}vj"
             elif [[ "$a" == sblist ]]; then file="${SPEED_BAND:-}"; method="speedBands"; version="${version}sb"
-            elif [[ "$a" == holist ]]; then file="${RANGE_HEAD_ON:-}"; method="rangeHeadOns"; version="${version}ho"
             elif [[ "$a" == mirofflist ]]; then file="${MIRROR_OFF:-}"; method="mirrorOffs"; version="${version}mo"
             elif [[ "$a" == mmlist ]]; then file="${MIMIC_ON:-}"; method="mimicOns"; version="${version}mq"
             elif [[ "$a" == fplist ]]; then file="${FULL_OFF:-}"; method="fullOffs"; version="${version}fp"
@@ -981,7 +979,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean THREE_FAR = false;" "public static final boolean THREE_FAR = true;"
             version="${version}ef" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, rhlist, holist, rwlist)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, rhlist, rwlist)" >&2; exit 2 ;;
     esac
 done
 

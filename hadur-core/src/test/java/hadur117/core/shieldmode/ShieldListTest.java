@@ -176,21 +176,6 @@ class ShieldListTest {
     }
 
     @Test
-    @Tag("GUN-12")
-    @DisplayName("range-head-on lines name the homing movers the duel's gun aims head-on at from range, matched as shield entries")
-    void perOpponentRangeHeadOn() {
-        ShieldList l = ShieldList.parse(List.of("range-head-on: a.B 1.0", "range-head-on: c.D", "range-head-on:", "speed-band: e.F"));
-        assertTrue(l.rangeHeadOn("a.B 1.0"));
-        assertTrue(l.rangeHeadOn("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
-        assertTrue(l.rangeHeadOn("c.D 2.3"), "a bare name matches every version");
-        assertFalse(l.rangeHeadOn("e.F 1.0"), "a speed-band line is not a range-head-on line");
-        assertFalse(l.speedBand("a.B 1.0"), "no other switch");
-        assertFalse(l.rangeHeadOn(null));
-        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
-        assertFalse(ShieldList.NONE.rangeHeadOn("a.B 1.0"));
-    }
-
-    @Test
     @Tag("MOVE-46")
     @DisplayName("ram-wait lines name the opponents a disabled enemy is rammed only after its last waves, matched as shield entries")
     void perOpponentRamWait() {

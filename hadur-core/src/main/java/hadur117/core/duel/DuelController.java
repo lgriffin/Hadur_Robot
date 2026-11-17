@@ -1474,8 +1474,6 @@ public final class DuelController {
         velJitterOn = duelOnly(stackList.velocityJitter(name), enemiesTotal);
         // MOVE-45: speed-band jitter for the opponents the table names.
         speedBandOn = duelOnly(stackList.speedBand(name), enemiesTotal);
-        // GUN-12: head-on long shots for the opponents the table names, never a shield-mode one.
-        gunController.setRangeHeadOn(duelOnly(stackList.rangeHeadOn(name) && !stackList.matches(name), enemiesTotal));
         // MOVE-46: ram a disabled enemy only after its last waves, for the opponents the table names.
         ramWaitOn = duelOnly(stackList.ramWait(name), enemiesTotal);
         // POW-20: the power bands for the opponents the table names.

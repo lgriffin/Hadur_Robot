@@ -95,8 +95,6 @@ public final class ShieldList {
     public static final String VEL_JITTER_PREFIX = "velocity-jitter:";
     /** MOVE-45: a line starting with this names an opponent whose rounded-velocity pattern matcher the duel defeats by a random top speed of 7 to 8 each tick. */
     public static final String SPEED_BAND_PREFIX = "speed-band:";
-    /** GUN-12: a line starting with this names an opponent the duel's gun aims head-on at from 300 px or more (a homing mover the learned gun leads wrongly). */
-    public static final String RANGE_HEAD_ON_PREFIX = "range-head-on:";
     /** MOVE-46: a line starting with this names an opponent the duel rams, once disabled, only after its last waves have passed. */
     public static final String RAM_WAIT_PREFIX = "ram-wait:";
     /**
@@ -157,8 +155,6 @@ public final class ShieldList {
     static final int VEL_JITTER = 131072;
     /** MOVE-45: the per-opponent speed-band jitter switch's bit in {@link #switches}. */
     static final int SPEED_BAND = 262144;
-    /** GUN-12: the per-opponent head-on-at-range switch's bit in {@link #switches}. */
-    static final int RANGE_HEAD_ON = 524288;
     /** RAM-14: the per-opponent heavy rammer-dodge switch's bit in {@link #switches}. */
     static final int RAM_HEAVY = 524288;
     /** MOVE-46: the per-opponent ram-wait switch's bit in {@link #switches}. */
@@ -230,7 +226,6 @@ public final class ShieldList {
                     : entry.startsWith(HARD_FIRE_PREFIX) ? HARD_FIRE
                     : entry.startsWith(VEL_JITTER_PREFIX) ? VEL_JITTER
                     : entry.startsWith(SPEED_BAND_PREFIX) ? SPEED_BAND
-                    : entry.startsWith(RANGE_HEAD_ON_PREFIX) ? RANGE_HEAD_ON
                     : entry.startsWith(RAM_WAIT_PREFIX) ? RAM_WAIT
                     : entry.startsWith(POWER_CAP_PREFIX) ? POWER_CAP : 0;
                 if (bit != 0) {
@@ -632,16 +627,6 @@ public final class ShieldList {
      */
     public boolean speedBand(String robotName) {
         return (switchBits(robotName) & SPEED_BAND) != 0;
-    }
-
-    /**
-     * GUN-12: whether the table names this opponent with a {@link #RANGE_HEAD_ON_PREFIX} line.
-     *
-     * @param robotName the opponent's name as Robocode lists it
-     * @return true when a {@code range-head-on:} line matches it
-     */
-    public boolean rangeHeadOn(String robotName) {
-        return (switchBits(robotName) & RANGE_HEAD_ON) != 0;
     }
 
     /**

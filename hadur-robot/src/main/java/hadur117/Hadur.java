@@ -268,8 +268,6 @@ public class Hadur extends TeamRobot {
             for (String name : ShieldTableData.velocityJitters()) lines.add(ShieldList.VEL_JITTER_PREFIX + " " + name);
             // MOVE-45: per-opponent speed-band jitter.
             for (String name : ShieldTableData.speedBands()) lines.add(ShieldList.SPEED_BAND_PREFIX + " " + name);
-            // GUN-12: per-opponent head-on aim from 300 px or more.
-            for (String name : ShieldTableData.rangeHeadOns()) lines.add(ShieldList.RANGE_HEAD_ON_PREFIX + " " + name);
             // MOVE-46: per-opponent ram wait on a disabled enemy.
             for (String name : ShieldTableData.ramWaits()) lines.add(ShieldList.RAM_WAIT_PREFIX + " " + name);
             // DIST-4: per-opponent pinned duel distance.

@@ -742,18 +742,6 @@ final class ShieldTableData {
     }
 
     /**
-     * GUN-12: the opponents that home in on us, so the learned guns lead them wide from range; the duel's real
-     * shots from 300 px or more go head-on ({@code range-head-on:} lines). Candidate builds add lines here
-     * (build-ablation.sh rhlist).
-     *
-     * @return a fresh array of names
-     */
-    static String[] rangeHeadOns() {
-        return new String[] {
-        };
-    }
-
-    /**
      * MOVE-45: the opponents whose rounded-velocity pattern matcher the duel defeats by a random top speed of 7 to 8
      * each tick ({@code speed-band:} lines). Knowledge held on the PC (pc-locks round 4, PR #866).
      *
