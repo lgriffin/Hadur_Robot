@@ -270,6 +270,7 @@ public class Hadur extends TeamRobot {
             for (String name : ShieldTableData.speedBands()) lines.add(ShieldList.SPEED_BAND_PREFIX + " " + name);
             // MOVE-46: per-opponent ram wait on a disabled enemy.
             for (String name : ShieldTableData.ramWaits()) lines.add(ShieldList.RAM_WAIT_PREFIX + " " + name);
+            for (String name : ShieldTableData.ramFlees()) lines.add(ShieldList.RAM_FLEE_PREFIX + " " + name);
             // MOVE-47: per-opponent steady orbit.
             for (String name : ShieldTableData.steadyOrbits()) lines.add(ShieldList.STEADY_ORBIT_PREFIX + " " + name);
             // DIST-4: per-opponent pinned duel distance.
