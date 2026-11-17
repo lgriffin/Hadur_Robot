@@ -173,6 +173,7 @@ public class FieldGun {
             if (power <= 0) continue;
             if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);
             else power = MeleeEnergyPolicy.crowdPower(power, distance, energy, e.energy, others);
+            if (onTeam && TeamModes.FORCE_ENDPOWER) power = MeleeEnergyPolicy.teamEndPower(power, energy, e.energy, others);
             if (onTeam && concord && TeamConcord.POWER && power > CONCORD_POWER && distance > CONCORD_CLOSE && !readsWell(e.name)) {
                 power = CONCORD_POWER;
             }

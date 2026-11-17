@@ -1,0 +1,60 @@
+# battle: team
+# Team: endgame power, per the 2026-11-17 diagnosis of the ten learning-gun teams (BENCH-256). Team thread: team-only,
+# duel and melee untouched (TMODE-51 is read only while a teammate lives; off in the shipped build).
+#   aa      the baseline (master); bb its A/A copy
+#   ep      TMODE-51 on (tmendpower): with two or fewer enemies left a member fires up to 1.9, capped by what kills
+#           the target and a third of its own energy, instead of the duel's power-down
+# Pilot: ep on all 46 teams, 3 fresh seeds from 23500, 12 rounds, paired with aa. A projected team APS change under
+#   0 stops the card there (team_modes.py gate --stop-below 0), and the PR carries the pilot.
+# Screen: bb and ep against aa on all 46 teams, 12 fresh seeds from 23600, 12 rounds; ep is gated at +0.15 APS with
+#   the 95% low end above zero over 46 pairings, scored against both baselines.
+# Why it should win: on the cloud mirror of 3.23 and OgiTeam (16 gap teams), against the ten learning-gun teams
+#   (Xmen, Combat, Aleph, Firestarter, Nightmare, OmegaSquad, Slartibartfass, DemoniacNimrods, Phoenix, Mamba)
+#   16-25% of our members' shots are power 0.1 and 25% under 0.5, against OgiTeam's 4%; our mean power is 1.28-1.50
+#   where OgiTeam fires 1.79-1.83, our rounds run 15-35% longer, and we lose more members to the same hit rate. A
+#   logged build put 93% of the light shots in the endgame: two or fewer enemies left and the member under 30 energy
+#   (mean 16), where the team member still takes the duel table's power-down beyond 325 px ((energy/63)^3 x 1.95).
+#   OgiTeam fires about 1.9 there. Per-team diagnosis; the change only acts in that endgame.
+#   Cloud smoke (team-endpower/ep-230*.md on the project files; the ten teams x 16 seeds from 23000, 23100, 23200,
+#   23300, 10 rounds, paired with aa): the mechanism moved as diagnosed (shots under 0.5 25% -> 4%, mean power
+#   1.51 -> 1.87, mid-band rounds 782 -> 728 ticks, damage taken a round 290 -> 277, dealt 371 -> 383) and our
+#   bullets on our own members fell 6-9 a battle on every seed block; share +0.7 +- 1.0 points on the ten teams
+#   (about +0.15 APS over 46 pairings), too small for the cloud to settle. The pilot's stop rule is the guard.
+# Size: pilot 138 battles, screen 2 x 552: about 1,250 battles, about 1 h at the team rate pc-team-fitted ran at.
+#   Every step resumes where it stopped.
+# Stop rules on every battle step (halt; every battle fought is kept and a rerun resumes): 60 failed battles, no
+# battle in 30 minutes, or 60+ skipped turns a battle over the last 200.
+# The team thread reads claude/pc-team-endpower-results.
+#   ./queue.sh run pc-team-endpower        (or  .\queue.ps1 run pc-team-endpower)
+# Run it from master (one bench queue at a time, RoboRumble workers at 0):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set T = python3 tools/team_modes.py
+
+teprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && for a in aa bb ep; do rm -f bisect/hadur117.HadurTeam_"$V"$a.jar; done && rm -f ${OUT}/team-endpower-p*.md ${OUT}/team-endpower-bb.md ${OUT}/team-endpower-ep.md ${OUT}/team-endpower-verdict.md && mkdir -p work && rm -rf work/team-endpower-"$V"-* && rm -f work/team-endpower-*.args work/team-endpower-go && ./fetch-opponents.sh --set team-census46.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmendpower && sed -e "s/@V@/$V/g" plans/team-endpower-pilot.args > work/team-endpower-pep.args && for a in bb ep; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" plans/team-endpower-screen.args > work/team-endpower-$a.args || exit 1; done && for a in aa bb ep; do test -f bisect/hadur117.HadurTeam_"$V"$a.jar || exit 1; done && mvn -q compile
+tepep | mvn -q exec:java "-Dexec.args=@work/team-endpower-pep.args"
+  after: teprep
+  watch: battles=276
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tepilot | ${T} gate --report ${OUT}/team-endpower-pep.md --set team-census46.txt --seeds 3 --teams 46 --min-aps 0 --stop-below 0 --out-md ${OUT}/team-endpower-pilot.md && touch work/team-endpower-go || test $? -eq 3 || exit 1
+  after: tepep
+tebb | if [ -f work/team-endpower-go ]; then mvn -q exec:java "-Dexec.args=@work/team-endpower-bb.args"; else echo "ep under 0 on the pilot: no screen"; fi
+  after: tepilot
+  watch: battles=1104
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+teep | if [ -f work/team-endpower-go ]; then mvn -q exec:java "-Dexec.args=@work/team-endpower-ep.args"; else echo "ep under 0 on the pilot: no screen"; fi
+  after: tebb
+  watch: battles=1104
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tegate | if [ -f work/team-endpower-go ]; then ${T} gate --report ${OUT}/team-endpower-ep.md --control ${OUT}/team-endpower-bb.md --set team-census46.txt --seeds 12 --teams 46 --min-aps 0.15 --out-md ${OUT}/team-endpower-verdict.md || exit 1; else echo "no screen"; fi
+  after: teep
+tepr | bash tools/open_results_pr.sh claude/pc-team-endpower-results "Team: endgame power (TMODE-51)" $(ls ${OUT}/team-endpower-*.md 2>/dev/null | grep -v smoke)
+  after: tegate
