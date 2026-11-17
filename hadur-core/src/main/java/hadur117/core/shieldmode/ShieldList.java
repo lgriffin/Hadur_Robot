@@ -79,6 +79,8 @@ public final class ShieldList {
     public static final String RACE_POWER_PREFIX = "race-power:";
     /** RAM-11: the prefix of a line naming an opponent whose shots the rammer escape also dodges as circular aims. */
     public static final String RAM_CIRC_PREFIX = "ram-circ:";
+    /** RAM-14: a line starting with this names a rammer whose shots the escape weighs twice as heavily (HIT_COST 120 px, not 60). */
+    public static final String RAM_HEAVY_PREFIX = "ram-heavy:";
     /** MIR-2: a line starting with this names an opponent the duel never runs MIR-1 against. */
     public static final String MIRROR_OFF_PREFIX = "mirror-off:";
     /** SHIELD-25: a line starting with this names an opponent shield mode never fires a shot under {@link ShieldMode#FLOOR_POWER} at. */
@@ -93,6 +95,12 @@ public final class ShieldList {
     public static final String VEL_JITTER_PREFIX = "velocity-jitter:";
     /** MOVE-45: a line starting with this names an opponent whose rounded-velocity pattern matcher the duel defeats by a random top speed of 7 to 8 each tick. */
     public static final String SPEED_BAND_PREFIX = "speed-band:";
+    /** MOVE-46: a line starting with this names an opponent the duel rams, once disabled, only after its last waves have passed. */
+    public static final String RAM_WAIT_PREFIX = "ram-wait:";
+    /** MOVE-47: the prefix of a per-opponent steady-orbit line. */
+    public static final String STEADY_ORBIT_PREFIX = "steady-orbit:";
+    /** RAM-15: a line starting with this names a slow charger the duel backs away from at full speed while it closes in. */
+    public static final String RAM_FLEE_PREFIX = "ram-flee:";
     /**
      * SKEY-2: a line starting with this gives an opponent's surf key: nine multipliers on the hit
      * views' key weights, one on the kernel width, then the name ({@code "m1 ... m9 bw name"}).
@@ -151,6 +159,14 @@ public final class ShieldList {
     static final int VEL_JITTER = 131072;
     /** MOVE-45: the per-opponent speed-band jitter switch's bit in {@link #switches}. */
     static final int SPEED_BAND = 262144;
+    /** RAM-14: the per-opponent heavy rammer-dodge switch's bit in {@link #switches}. */
+    static final int RAM_HEAVY = 524288;
+    /** MOVE-46: the per-opponent ram-wait switch's bit in {@link #switches}. */
+    static final int RAM_WAIT = 1048576;
+    /** MOVE-47: the per-opponent steady-orbit switch's bit in {@link #switches}. */
+    static final int STEADY_ORBIT = 2097152;
+    /** RAM-15: the per-opponent ram-flee switch's bit in {@link #switches}. */
+    static final int RAM_FLEE = 4194304;
 
     private final Set<String> entries;
     /** SHIELD-17: the opening-drive list. */
@@ -211,12 +227,16 @@ public final class ShieldList {
                     : entry.startsWith(X5_POWER_PREFIX) ? X5_POWER
                     : entry.startsWith(RACE_POWER_PREFIX) ? RACE_POWER
                     : entry.startsWith(RAM_CIRC_PREFIX) ? RAM_CIRC
+                    : entry.startsWith(RAM_HEAVY_PREFIX) ? RAM_HEAVY
                     : entry.startsWith(MIRROR_OFF_PREFIX) ? MIRROR_OFF
                     : entry.startsWith(FLOOR_PREFIX) ? FLOOR
                     : entry.startsWith(POWER_CAP5_PREFIX) ? POWER_CAP5
                     : entry.startsWith(HARD_FIRE_PREFIX) ? HARD_FIRE
                     : entry.startsWith(VEL_JITTER_PREFIX) ? VEL_JITTER
                     : entry.startsWith(SPEED_BAND_PREFIX) ? SPEED_BAND
+                    : entry.startsWith(RAM_WAIT_PREFIX) ? RAM_WAIT
+                    : entry.startsWith(STEADY_ORBIT_PREFIX) ? STEADY_ORBIT
+                    : entry.startsWith(RAM_FLEE_PREFIX) ? RAM_FLEE
                     : entry.startsWith(POWER_CAP_PREFIX) ? POWER_CAP : 0;
                 if (bit != 0) {
                     String name = withoutVersion(entry.substring(entry.indexOf(':') + 1).trim());
@@ -620,6 +640,36 @@ public final class ShieldList {
     }
 
     /**
+     * MOVE-46: whether the table names this opponent with a {@link #RAM_WAIT_PREFIX} line.
+     *
+     * @param robotName the opponent's name as Robocode lists it
+     * @return true when a {@code ram-wait:} line matches it
+     */
+    public boolean ramWait(String robotName) {
+        return (switchBits(robotName) & RAM_WAIT) != 0;
+    }
+
+    /**
+     * RAM-15: whether the table names this opponent with a {@link #RAM_FLEE_PREFIX} line.
+     *
+     * @param robotName the opponent's name as Robocode lists it
+     * @return true when a {@code ram-flee:} line matches it
+     */
+    public boolean ramFlee(String robotName) {
+        return (switchBits(robotName) & RAM_FLEE) != 0;
+    }
+
+    /**
+     * MOVE-47: whether the table names this opponent with a {@link #STEADY_ORBIT_PREFIX} line.
+     *
+     * @param robotName the opponent's name as Robocode lists it
+     * @return true when a {@code steady-orbit:} line matches it
+     */
+    public boolean steadyOrbit(String robotName) {
+        return (switchBits(robotName) & STEADY_ORBIT) != 0;
+    }
+
+    /**
      * POW-17: whether the table names this opponent for the energy-race power pick.
      *
      * @param robotName the opponent's name as Robocode lists it
@@ -637,6 +687,16 @@ public final class ShieldList {
      */
     public boolean ramCirc(String robotName) {
         return (switchBits(robotName) & RAM_CIRC) != 0;
+    }
+
+    /**
+     * RAM-14: whether the table names this rammer with a {@link #RAM_HEAVY_PREFIX} line.
+     *
+     * @param robotName the opponent's name as Robocode lists it
+     * @return true when a {@code ram-heavy:} line matches it
+     */
+    public boolean ramHeavy(String robotName) {
+        return (switchBits(robotName) & RAM_HEAVY) != 0;
     }
 
     private int switchBits(String robotName) {

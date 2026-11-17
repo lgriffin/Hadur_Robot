@@ -91,16 +91,6 @@ public final class ShieldMode {
     public static final double CLOSE_RANGE = 100;
     /** Ticks without an enemy shot after which the round leaves shield mode. */
     public static final int QUIET_TICKS = 120;
-    /**
-     * SHIELD-27 (experiment, off): a round that starts with the enemy closer than
-     * {@link #BREAK_RANGE} px hands the drive to the duel until the gap first opens past it,
-     * then shields as usual. At point blank no interception can fly in time.
-     */
-    static final boolean CLOSE_BREAK = false;
-    /** SHIELD-27: the gap, px, a close start is opened to before the shield stands still. */
-    public static final double BREAK_RANGE = 150;
-    /** SHIELD-27: the last tick of a round the break-off may run; after it the shield stands. */
-    public static final long BREAK_TICKS = 60;
     /** Ticks without an enemy shot after which we fire at it anyway. */
     public static final int IDLE_TICKS = 32;
 
@@ -300,8 +290,6 @@ public final class ShieldMode {
     /** SHIELD-25: the least power of a shield shot against an enemy on the floor list. */
     public static final double FLOOR_POWER = 0.4;
     private boolean still;
-    /** SHIELD-27: the gap has been at least {@link #BREAK_RANGE} px this round. */
-    private boolean opened;
     /** SHIELD-25: no shield shot under {@link #FLOOR_POWER} against this enemy. */
     private boolean floor;
     private boolean listed;
@@ -405,7 +393,6 @@ public final class ShieldMode {
         lastEnemyShot = 0;
         enemyMoved = false;
         roundOff = false;
-        opened = false;
         exitReason = "-";
         announced = false;
         now = 0;
@@ -692,8 +679,6 @@ public final class ShieldMode {
         }
         telemetry.emit(String.format(Locale.ROOT, "SB,%d,%d,%s,%d,%d,%.2f", round, time,
             hitClass(wasActive, w), w == null ? -1 : w.ordinal, predicted ? 1 : 0, power));
-        // SHIELD-27: a hit taken while the break-off has the drive is the duel's, not the shield's.
-        if (CLOSE_BREAK && !opened) return;
         budget.damageTaken(power);
         if (onTrial && !battleOff) {
             trialDamage += Rules.getBulletDamage(power);
@@ -953,7 +938,6 @@ public final class ShieldMode {
     public Command tick(Situation s) {
         now = s.time;
         coolingRate = s.coolingRate;
-        if (breaking(s)) return null;
         if (design.stay) {
             // SHIELD-11: no exit inside the round; an enemy that has not fired by tick 300
             // ends the mode for the battle.
@@ -1019,17 +1003,6 @@ public final class ShieldMode {
             return new Command(towardParallel(s), back, gunTurn, power, true);
         }
         return new Command(towardParallel(s), back, gunTurn, 0, false);
-    }
-
-    /**
-     * SHIELD-27: whether the break-off keeps the drive this tick: a round that starts inside
-     * {@link #BREAK_RANGE} px, until the gap first opens past it or {@link #BREAK_TICKS} pass.
-     */
-    private boolean breaking(Situation s) {
-        if (!CLOSE_BREAK || opened) return false;
-        if (s.time <= BREAK_TICKS && Math.hypot(s.enemyX - s.x, s.enemyY - s.y) < BREAK_RANGE) return true;
-        opened = true;
-        return false;
     }
 
     private boolean canFire(Plan p, Situation s) {

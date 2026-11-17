@@ -268,6 +268,11 @@ public class Hadur extends TeamRobot {
             for (String name : ShieldTableData.velocityJitters()) lines.add(ShieldList.VEL_JITTER_PREFIX + " " + name);
             // MOVE-45: per-opponent speed-band jitter.
             for (String name : ShieldTableData.speedBands()) lines.add(ShieldList.SPEED_BAND_PREFIX + " " + name);
+            // MOVE-46: per-opponent ram wait on a disabled enemy.
+            for (String name : ShieldTableData.ramWaits()) lines.add(ShieldList.RAM_WAIT_PREFIX + " " + name);
+            for (String name : ShieldTableData.ramFlees()) lines.add(ShieldList.RAM_FLEE_PREFIX + " " + name);
+            // MOVE-47: per-opponent steady orbit.
+            for (String name : ShieldTableData.steadyOrbits()) lines.add(ShieldList.STEADY_ORBIT_PREFIX + " " + name);
             // DIST-4: per-opponent pinned duel distance.
             for (String pin : ShieldTableData.distPins()) lines.add(ShieldList.DIST_PIN_PREFIX + " " + pin);
             // POW-20: per-opponent power bands.
@@ -285,6 +290,8 @@ public class Hadur extends TeamRobot {
             // POW-17: per-opponent energy-race power.
             for (String name : ShieldTableData.racePowers()) lines.add(ShieldList.RACE_POWER_PREFIX + " " + name);
             for (String name : ShieldTableData.ramCircs()) lines.add(ShieldList.RAM_CIRC_PREFIX + " " + name);
+            // RAM-14: per-opponent heavy rammer dodge.
+            for (String name : ShieldTableData.ramHeavies()) lines.add(ShieldList.RAM_HEAVY_PREFIX + " " + name);
             // SKEY-2: per-opponent surf keys.
             for (String key : ShieldTableData.surfKeys()) lines.add(ShieldList.SURF_KEY_PREFIX + " " + key);
             return ShieldList.parse(lines);

@@ -24,6 +24,7 @@ import sys
 # Lever arm suffix -> (build-ablation flavours, the list variables they read).
 LEVERS = {
     "mtzl": ("slistadd,szlist", ("SHIELD_ADD", "SHIELD_STILL")),
+    "mt": ("slistadd", ("SHIELD_ADD",)),
     "fq": ("fllist", ("FLAT_ON",)),
     "gl": ("gslist", ("GUN_STACK",)),
     "mq": ("mmlist", ("MIMIC_ON",)),
@@ -36,10 +37,17 @@ LEVERS = {
     "dg": ("sdodgelist", ("SHOT_DODGE",)),
     "pb": ("pblist", ("POWER_BAND",)),
     "x0": ("sx0list", ("SHIELD_EXIT0",)),
+    "mtx0": ("slistadd,sx0list", ("SHIELD_ADD", "SHIELD_EXIT0")),
     "mv": ("smovelist", ("SHIELD_MOVE",)),
     "vj": ("vjlist", ("VEL_JITTER",)),
     "sb": ("sblist", ("SPEED_BAND",)),
     "dp": ("dplist", ("DIST_PIN",)),
+    "kl": ("sklist", ("SURF_KEY",)),
+    "rh": ("rhlist", ("RAM_HEAVY",)),
+    "rwl": ("rwlist", ("RAM_WAIT",)),
+    "rf": ("rflist", ("RAM_FLEE",)),
+    "or": ("orlist", ("STEADY_ORBIT",)),
+    "sp2": ("sdplanlist", ("SHOT_DODGE_PLAN",)),
 }
 
 # POW-20: a power-band pick carries its fitted line ("m20 m40 m60 m80 name") from this file, so pb.list
@@ -77,12 +85,30 @@ def _dp_lines(names):
     return [lines[n] for n in names]
 
 
+# SKEY-2: a surf-key pick carries its fitted key ("m1 ... m9 bw name") from this file, so kl.list holds whole lines.
+KL_LINES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "plans", "surf-key-lines.txt")
+
+
+def _kl_name(line):
+    p = line.strip().split(" ", 10)
+    return p[10] if len(p) == 11 else line.strip()
+
+
+def _kl_lines(names):
+    lines = {_kl_name(l): l.strip() for l in open(KL_LINES) if l.strip() and not l.startswith("#")}
+    missing = [n for n in names if n not in lines]
+    if missing:
+        raise SystemExit("lock_prep: no surf-key line for %s in %s" % (", ".join(missing), KL_LINES))
+    return [lines[n] for n in names]
+
+
 def _list_lines(arm, names):
-    return _pb_lines(names) if arm == "pb" else _dp_lines(names) if arm == "dp" else names
+    return _pb_lines(names) if arm == "pb" else _dp_lines(names) if arm == "dp" else _kl_lines(names) if arm == "kl" else names
 
 
 def _list_name(arm, line):
-    return _pb_name(line) if arm == "pb" else _dp_name(line) if arm == "dp" else line.strip()
+    return (_pb_name(line) if arm == "pb" else _dp_name(line) if arm == "dp" else _kl_name(line) if arm == "kl"
+            else line.strip())
 
 
 def main(pick, panel, base_arms, outdir):

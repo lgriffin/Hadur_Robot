@@ -176,6 +176,19 @@ public final class RamEscape {
         circular = on;
     }
 
+    /** RAM-14: the closest-approach cost of each kept aim that hits a path; {@link #HIT_COST} unless doubled. */
+    private double hitCost = HIT_COST;
+
+    /**
+     * RAM-14: weigh this opponent's shots twice as heavily, {@code 2 * HIT_COST} px of closest approach for each aim
+     * that hits a path (its {@code ram-heavy:} line).
+     *
+     * @param on whether the table names this opponent
+     */
+    public void setHeavy(boolean on) {
+        hitCost = on ? 2 * HIT_COST : HIT_COST;
+    }
+
     /** RAM-11: the newest shot's circular aim minus its linear aim, NaN when it carries none; for tests. */
     double lastCircularLead() {
         double[] s = shots.peekLast();
@@ -272,7 +285,7 @@ public final class RamEscape {
             if (min < floor) return null;
             sum += d;
         }
-        return new double[] {min - HIT_COST * Integer.bitCount(hits), sum / HORIZON, bent};
+        return new double[] {min - hitCost * Integer.bitCount(hits), sum / HORIZON, bent};
     }
 
     /**

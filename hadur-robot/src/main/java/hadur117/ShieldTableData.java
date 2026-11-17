@@ -516,6 +516,9 @@ final class ShieldTableData {
             // pc-locks round 4 (BENCH-253, PR #866): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "genprog.Rinmorikazu 1.0",       // +1.4
             "yk.JahMicro 1.0",               // +1.3
+            // pc-locks round 5 (BENCH-253, PR #870): 12 fresh PC seeds at the live turn time; 24-seed cloud lock held first
+            "uccc.Dorito 1.12",              // +1.4
+            "knackibot.KnackOnOne 0.8.1",    // +1.2
         };
     }
 
@@ -733,6 +736,8 @@ final class ShieldTableData {
             "jw.Booring 1.11",               // +13.7
             // pc-locks round 4 (BENCH-253, PR #866): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "apv.AspidReloaded 0.6",         // +18.0
+            // pc-locks round 5 (BENCH-253, PR #870): 12 fresh PC seeds at the live turn time; 24-seed cloud lock held first
+            "nosteel.Welby 0.0.3",           // +2.7
         };
     }
 
@@ -746,6 +751,41 @@ final class ShieldTableData {
         return new String[] {
             // pc-locks round 4 (BENCH-253, PR #866): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "ntc.Knowledge 1.1",             // +2.6
+        };
+    }
+
+    /**
+     * RAM-15: the slow chargers the duel backs away from at full speed while they close in ({@code ram-flee:}
+     * lines). Empty until a card holds robots; candidate builds add lines here (build-ablation.sh rflist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] ramFlees() {
+        return new String[] {
+        };
+    }
+
+    /**
+     * MOVE-46: the opponents the duel rams, once they are disabled, only after their last waves have passed
+     * ({@code ram-wait:} lines). Empty until a card holds robots; candidate builds add lines here
+     * (build-ablation.sh rwlist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] ramWaits() {
+        return new String[] {
+        };
+    }
+
+    /**
+     * MOVE-47: the opponents the duel surfs with a steady orbit: no stop option, and a reversal only when the other
+     * way round is under half as dangerous ({@code steady-orbit:} lines). Empty until a card holds robots; candidate
+     * builds add lines here (build-ablation.sh orlist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] steadyOrbits() {
+        return new String[] {
         };
     }
 
@@ -955,6 +995,17 @@ final class ShieldTableData {
     }
 
     /**
+     * RAM-14: the rammers whose shots the escape weighs twice as heavily ({@code ram-heavy:} lines). Empty on master
+     * until a PC card holds a line.
+     *
+     * @return a fresh array of names
+     */
+    static String[] ramHeavies() {
+        return new String[] {
+        };
+    }
+
+    /**
      * RAM-11: the rammers whose shots the escape also dodges as circular aims ({@code ram-circ:} lines), each locked on
      * 12 fresh PC seeds at the live turn time after a 12-seed cloud lock.
      *
@@ -1156,6 +1207,8 @@ final class ShieldTableData {
             "2.378 2.378 0.5 1.682 0.25 0.8409 1.189 0.8409 2 2 hamilton.Hamilton 1.0",
             "0.5 0.8409 4 1 1 0.7071 0.5946 0.1768 2.828 2 mc2.enemy.Original 0.9",
             "2.828 1.189 0.5 0.7071 1.414 1.414 2 0.25 0.2102 1 pc.Wavelet 1.5",
+            // pc-locks round 5 (BENCH-253, PR #870): 12 fresh PC seeds at the live turn time, +3.2; 12-seed cloud lock held first (shard M)
+            "0.8409 0.4204 0.2102 0.2973 0.25 1.414 2.828 0.5 0.2973 2.8 cb.nano.Insomnia 1.0",
         };
     }
 }
