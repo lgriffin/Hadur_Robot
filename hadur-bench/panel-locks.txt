@@ -30,7 +30,6 @@ projectx.ProjectNano 2.0 | rank866-band6 | projectx.ProjectNano_2.0.jar
 jgap.JGAP7958 1.0 | rank967-band6 | jgap.JGAP7958_1.0.jar
 sheldor.nano.PointInLineRRAL 1.0.0 | rank457-band5 | sheldor.nano.PointInLineRRAL_1.0.0.jar
 kneels.ToNoone 0.2 | rank989-band6 | kneels.ToNoone_0.2.jar
-hlavko.nano.Phoenix 1.0 | rank893-band6 | hlavko.nano.Phoenix_1.0.jar
 nexus.Experimental 0.2 | rank837-band6 | nexus.Experimental_0.2.jar
 dukie.Ambassador 1.0 | rank905-band6 | dukie.Ambassador_1.0.jar
 dmh.robocode.robot.GreenDragon 1.0 | rank668-band5 | dmh.robocode.robot.GreenDragon_1.0.jar
