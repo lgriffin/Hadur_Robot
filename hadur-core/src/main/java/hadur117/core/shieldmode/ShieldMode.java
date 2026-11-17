@@ -290,10 +290,6 @@ public final class ShieldMode {
     /** SHIELD-25: the least power of a shield shot against an enemy on the floor list. */
     public static final double FLOOR_POWER = 0.4;
     private boolean still;
-    /** SHIELD-29: the table's {@code shield-lag:} line names this opponent. */
-    private boolean lagAware;
-    /** SHIELD-29: the largest delay, in ticks, the lagged bases reach back for. */
-    static final int MAX_LAG = 3;
     /** SHIELD-25: no shield shot under {@link #FLOOR_POWER} against this enemy. */
     private boolean floor;
     private boolean listed;
@@ -546,7 +542,6 @@ public final class ShieldMode {
             opening = listed && (design.move || list.moves(name));
             stayDamage = list.stayDamage(name, ShieldDesign.STAY_DAMAGE);
             still = design.still || list.still(name);
-            lagAware = list.shieldLag(name);
             floor = list.floor(name);
             if (listed) seedAim(list.aimFor(name));
         }
@@ -622,9 +617,6 @@ public final class ShieldMode {
         enemyFiredThisRound = true;
         if (onTrial) trialShots++;
         lastEnemyPower = power;
-        // SHIELD-29: how many ticks after its gun was due this shot left; a late shot was
-        // aimed that many ticks earlier (the enemy skipped turns), so its bases look back too.
-        long delay = fireTime - enemyNextFire;
         enemyNextFire = fireTime + (long) Math.ceil((1 + power / 5) / coolingRate - 1e-9);
         if (!active()) return;
         // The scans of the firing tick and the tick before it are what the predictors want. A
@@ -637,11 +629,6 @@ public final class ShieldMode {
         if (beforeSlot < 0) return;
         double[] at = scan[atSlot].clone();
         double[] before = scan[beforeSlot];
-        double[] aimFrom = before;
-        if (lagAware && delay >= 1 && delay <= MAX_LAG) {
-            int lagSlot = scanSlotAtOrBefore(scanTime[beforeSlot] - delay);
-            if (lagSlot >= 0) aimFrom = scan[lagSlot];
-        }
         long gap = fireTime - scanTime[atSlot];
         if (gap > 0) {
             at[2] += Math.sin(at[4]) * at[5] * gap;
@@ -654,10 +641,10 @@ public final class ShieldMode {
         w.power = power;
         w.uncertain = uncertain;
         w.speed = 20 - 3 * power;
-        w.headings[0] = ShieldGeometry.bearing(aimFrom[2], aimFrom[3], before[0], before[1]);
+        w.headings[0] = ShieldGeometry.bearing(before[2], before[3], before[0], before[1]);
         w.headings[1] = ShieldGeometry.bearing(at[2], at[3], before[0], before[1]);
-        double projX = aimFrom[2] + Math.sin(aimFrom[4]) * aimFrom[5];
-        double projY = aimFrom[3] + Math.cos(aimFrom[4]) * aimFrom[5];
+        double projX = before[2] + Math.sin(before[4]) * before[5];
+        double projY = before[3] + Math.cos(before[4]) * before[5];
         w.headings[2] = ShieldGeometry.bearing(projX, projY, before[0], before[1]);
         w.headings[3] = ShieldGeometry.bearing(at[2], at[3], at[0], at[1]);
         // SHIELD-12: the firing-point base turned by the enemy's body turn on the firing tick;

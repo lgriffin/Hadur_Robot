@@ -405,42 +405,4 @@ class ShieldModeTest {
         scan(1);
         assertFalse(mode.ownBulletResolved(1.9, 0.5));
     }
-
-    // ---- SHIELD-29: lag-aware bases for late shots
-
-    /** The enemy drives east at 8 px a tick along y = 500; its x at {@code t}. */
-    private static double eastX(long t) {
-        return 100 + 8 * t;
-    }
-
-    /** Scans of the eastbound enemy up to {@code fireTime}, a late shot aimed from where it was {@code lag} ticks before the usual, and its hit. */
-    private void lateShotHit(ShieldMode m, long fireTime, int lag) {
-        shotOnly(m, fireTime);
-        long aimTick = fireTime - 1 - lag;
-        double heading = ShieldGeometry.bearing(eastX(aimTick), ENEMY_Y, MY_X, MY_Y);
-        double d = (20 - 3 * 0.1) * 20;
-        m.onHitByBullet(fireTime + 20, 0.1, eastX(fireTime) + Math.sin(heading) * d, ENEMY_Y + Math.cos(heading) * d, heading);
-    }
-
-    /** Scans of the eastbound enemy up to {@code fireTime} and its shot then, which misses. */
-    private void shotOnly(ShieldMode m, long fireTime) {
-        for (long t = fireTime - 6; t <= fireTime; t++) m.onScan(ENEMY, t, MY_X, MY_Y, 0, 0, eastX(t), ENEMY_Y, Math.PI / 2, 8);
-        m.onEnemyShot(fireTime, 0.1);
-    }
-
-    @Test
-    @Tag("SHIELD-29")
-    @DisplayName("with a shield-lag line, shots two ticks late aimed from two ticks earlier are foreseen; without it they end the round")
-    void lateShotsUseLaggedBase() {
-        ShieldMode lag = new ShieldMode(ShieldList.parse(List.of("list.Target", "shield-lag: list.Target")), records::add, 0, ShieldDesign.NONE);
-        shotOnly(lag, 30);
-        lateShotHit(lag, 43, 2);
-        lateShotHit(lag, 56, 2);
-        assertTrue(lag.active(), "the late shots matched the lagged head-on base");
-        ShieldMode plain = new ShieldMode(ShieldList.parse(List.of("list.Target")), records::add, 0, ShieldDesign.NONE);
-        shotOnly(plain, 30);
-        lateShotHit(plain, 43, 2);
-        lateShotHit(plain, 56, 2);
-        assertFalse(plain.active(), "no base looks back, so two late hits are unpredicted");
-    }
 }
