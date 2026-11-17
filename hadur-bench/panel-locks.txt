@@ -39,3 +39,5 @@ Polkwane.Piyane 0.7b | rank429-band5 | Polkwane.Piyane_0.7b.jar
 evd.X1 0.01 | rank956-band6 | evd.X1_0.01.jar
 ebo.Tahoe 1.1.79 | rank139-band3 | ebo.Tahoe_1.1.79.jar
 dmh.robocode.robot.PinkPanther 1.1 | rank385-band4 | dmh.robocode.robot.PinkPanther_1.1.jar
+damij.mega.Boque aaah | rank60-band3 | damij.mega.Boque_aaah.jar
+krzysiek.robbo2.Robbo 1.0.0 | rank454-band5 | krzysiek.robbo2.Robbo_1.0.0.jar
