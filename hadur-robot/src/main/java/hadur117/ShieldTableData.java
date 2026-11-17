@@ -359,6 +359,15 @@ final class ShieldTableData {
      */
     static String[] dodgePlans() {
         return new String[] {
+            // pc-locks round 6 (BENCH-253, PR #890): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "-1 ahf.Acero 1.0",              // +1.4
+            "-1 ar.QuantumChromodynamics 1.2.1",// +2.0
+            "-1 bzdp.BoxCar 2.0",            // +1.9
+            "-1 kneels.ToNoone 0.2",         // +2.3
+            "-1 myl.nano.KomoriNinja 1.1",   // +1.0
+            "-1 sng.arco.Arco 0.0",          // +1.2
+            "-1 supersample.SuperTracker 1.0",// +3.5
+            "-1 uccc.MilkyWay 1.01",         // +1.0
         };
     }
 
@@ -519,6 +528,8 @@ final class ShieldTableData {
             // pc-locks round 5 (BENCH-253, PR #870): 12 fresh PC seeds at the live turn time; 24-seed cloud lock held first
             "uccc.Dorito 1.12",              // +1.4
             "knackibot.KnackOnOne 0.8.1",    // +1.2
+            // pc-locks round 6 (BENCH-253, PR #890): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "sanyi.mikrobi.Roberto 1.0",     // +0.9
         };
     }
 
@@ -551,6 +562,9 @@ final class ShieldTableData {
             "jk.precise.Wintermute 0.8",                   // +4.0
             // pc-gl-lines (BENCH-250, PR #829): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "fromHell.BlackBox 0.0.2",                     // +4.5
+            // pc-locks round 6 (BENCH-253, PR #890): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "ap.Frederick 1.1",              // +0.7
+            "el33t.EL33tGangstarr2 2.0",     // +1.0
         };
     }
 
@@ -763,6 +777,14 @@ final class ShieldTableData {
      */
     static String[] ramWaits() {
         return new String[] {
+            // pc-locks round 6 (BENCH-253, PR #890): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "cx.nano.Smog 2.6",              // +1.3
+            "dukie.Ambassador 1.0",          // +1.0
+            "geep.mini.GPBotA 1.0",          // +1.4
+            "nexus.Experimental 0.2",        // +1.4
+            "pez.nano.LittleEvilBrother 0.1",// +1.4
+            "projectx.ProjectNano 2.0",      // +0.9
+            "sul.Pinkbot 1.1",               // +0.8
         };
     }
 
@@ -775,6 +797,9 @@ final class ShieldTableData {
      */
     static String[] steadyOrbits() {
         return new String[] {
+            // pc-locks round 6 (BENCH-253, PR #890): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "davidalves.net.DuelistNano 1.0",// +5.1
+            "dmh.robocode.robot.GreenDragon 1.0",// +2.9
         };
     }
 
@@ -789,6 +814,8 @@ final class ShieldTableData {
         return new String[] {
             // pc-locks round 4 (BENCH-253, PR #866): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "625 az.Ololobot 0.2.4",         // +3.2
+            // pc-locks round 6 (BENCH-253, PR #890): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "600 mc2.enemy.Original 0.9",    // +1.2
         };
     }
 
@@ -980,6 +1007,8 @@ final class ShieldTableData {
             // pc-locks round 3 (BENCH-253, PR #860): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "eem.EvBotNG v12.8",             // +4.9
             "DM.mega.Regicide 2.0rrr",       // +4.2
+            // pc-locks round 6 (BENCH-253, PR #890): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "damij.mega.Boque aaah",         // +4.3
         };
     }
 
