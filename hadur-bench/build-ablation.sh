@@ -256,7 +256,7 @@
 #   hflist the robots named in $HARD_FIRE get POW-19's hard fire (0.6 floor while our energy is 60+). Suffix hf.
 #   sblist the robots named in $SPEED_BAND get MOVE-45's speed band (a random top speed of 7 to 8 each tick against rounded-velocity pattern matchers). Suffix sb.
 #   vjlist the robots named in $VEL_JITTER get MOVE-44's velocity jitter (never exactly 8 or 0 against exact-velocity pattern matchers). Suffix vj.
-#   dplist the lines in $DIST_PIN ("px name") pin DIST-4's per-opponent duel distance. Suffix dp, or $DIST_PIN_SUFFIX.
+#   dplist the lines in $DIST_PIN ("px name") pin DIST-4's per-opponent duel distance. Suffix dn (dp is sdplanlist's), or $DIST_PIN_SUFFIX.
 #   pblist the lines in $POWER_BAND ("m1 m2 m3 m4 name") become POW-20 power bands. Suffix pb.
 #   szlist the robots named in $SHIELD_STILL get SHIELD-20's still shot plans (SHIELD-21,
 #         ShieldTableData.stills()). Suffix zl.
@@ -812,7 +812,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
             elif [[ "$a" == pcap5list ]]; then file="${POWER_CAP5:-}"; method="powerCapHalves"; version="${version}p5"
             elif [[ "$a" == hflist ]]; then file="${HARD_FIRE:-}"; method="hardFires"; version="${version}hf"
             elif [[ "$a" == pblist ]]; then file="${POWER_BAND:-}"; method="powerBands"; version="${version}pb"
-            elif [[ "$a" == dplist ]]; then file="${DIST_PIN:-}"; method="distPins"; version="${version}${DIST_PIN_SUFFIX:-dp}"
+            elif [[ "$a" == dplist ]]; then file="${DIST_PIN:-}"; method="distPins"; version="${version}${DIST_PIN_SUFFIX:-dn}"
             elif [[ "$a" == vjlist ]]; then file="${VEL_JITTER:-}"; method="velocityJitters"; version="${version}vj"
             elif [[ "$a" == sblist ]]; then file="${SPEED_BAND:-}"; method="speedBands"; version="${version}sb"
             elif [[ "$a" == mirofflist ]]; then file="${MIRROR_OFF:-}"; method="mirrorOffs"; version="${version}mo"
