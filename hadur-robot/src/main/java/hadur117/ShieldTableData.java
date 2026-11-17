@@ -94,6 +94,8 @@ final class ShieldTableData {
             "ahf.r2d2.R2d2 0.86",            // +3.5
             "cf.proto.Shiva 2.2",            // +2.8
             "asm.Statistas 0.1",             // +1.9
+            // pc-locks round 8 (BENCH-253, PR #905): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "maribo.Omicron 1.0",            // +1.4
         };
     }
 
@@ -775,7 +777,7 @@ final class ShieldTableData {
 
     /**
      * RAM-15: the slow chargers the duel backs away from at full speed while they close in ({@code ram-flee:}
-     * lines). 24 robots held in pc-locks round 7 (PR #902); candidate builds add lines here (build-ablation.sh rflist).
+     * lines). 24 robots held in pc-locks round 7 (PR #902), 1 more in round 8 (PR #905); candidate builds add lines here (build-ablation.sh rflist).
      *
      * @return a fresh array of names
      */
@@ -806,6 +808,8 @@ final class ShieldTableData {
             "supersample.SuperRamFire 1.0",  // +7.2
             "uccc.Scrapple 1.0",             // +1.6
             "vort.Chaser 0.0.3",             // +2.5
+            // pc-locks round 8 (BENCH-253, PR #905): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "urdos.URDOS 1.3",               // +3.9
         };
     }
 
@@ -826,6 +830,8 @@ final class ShieldTableData {
             "pez.nano.LittleEvilBrother 0.1",// +1.4
             "projectx.ProjectNano 2.0",      // +0.9
             "sul.Pinkbot 1.1",               // +0.8
+            // pc-locks round 8 (BENCH-253, PR #905): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "Polkwane.Piyane 0.7b",          // +2.9
         };
     }
 
@@ -1050,6 +1056,8 @@ final class ShieldTableData {
             "DM.mega.Regicide 2.0rrr",       // +4.2
             // pc-locks round 6 (BENCH-253, PR #890): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "damij.mega.Boque aaah",         // +4.3
+            // pc-locks round 8 (BENCH-253, PR #905): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "kc.serpent.WaveSerpent 2.11",   // +5.2
         };
     }
 
