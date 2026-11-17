@@ -429,10 +429,6 @@ for a in "${list[@]}"; do
             w="${a#sv}"
             edit "$src/hadur-core/src/main/java/$pkg/core/move/SimpleFormula.java" "this.weights = new double[]{1, 1, 1};" "this.weights = new double[]{${w:0:1}, ${w:1:1}, ${w:2:1}};"
             version="${version}${a}" ;;
-        mix)
-            # MIX-1 screen: aim members weighed as a mixture (share of bullets seen) instead of a rolling log score.
-            edit "$src/hadur-core/src/main/java/$pkg/core/move/AimMembers.java" "static final boolean MIXTURE = false;" "static final boolean MIXTURE = true;"
-            version="${version}mx" ;;
         heat)
             edit "$movedesign" "static final boolean HEAT_WAVE = false;" "static final boolean HEAT_WAVE = true;"
             version="${version}hw" ;;

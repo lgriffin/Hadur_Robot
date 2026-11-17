@@ -67,18 +67,7 @@ public final class AimMembers {
     /** MOVE-33: the total standing weight of the learning-gun mimic members, shared out over them. */
     static final double MIMIC_PRIOR = 0.3;
 
-    /**
-     * MIX-1 (screen only, off): weigh each member by its share of the bullets seen, as a mixture
-     * (online EM over the same likelihood ratios), in place of the rolling log score. A gun that
-     * mixes two or three simple aims then keeps weight on each of them.
-     */
-    static final boolean MIXTURE = false;
-    /** MIX-1: the standing weights count as this many bullets. */
-    static final double MIX_PRIOR_BULLETS = 4.0;
-
     private final double[] score;
-    /** MIX-1: each member's share of the bullets learnt (its summed responsibility). */
-    private double[] seen;
     /** MOVE-33: the mimic members after the aims (0 without them). */
     private final int mimics;
     private int bullets;
@@ -107,10 +96,6 @@ public final class AimMembers {
     /** Each member's weight now: its standing weight times 2^(POWER x score). */
     public double weight(int member) {
         double standing = member == 0 ? 1.0 : member < MEMBERS ? PRIOR : MIMIC_PRIOR / mimics;
-        if (MIXTURE) {
-            double n = seen == null ? 0.0 : seen[member];
-            return (standing * MIX_PRIOR_BULLETS + n) / (MIX_PRIOR_BULLETS + bullets);
-        }
         return standing * Math.pow(2.0, POWER * score[member]);
     }
 
@@ -139,21 +124,6 @@ public final class AimMembers {
      */
     public void learn(double[] scores, double uniform) {
         if (!(uniform > 0)) return;
-        if (MIXTURE) {
-            if (seen == null) seen = new double[score.length];
-            double[] part = new double[score.length];
-            double total = 0;
-            for (int m = 0; m < score.length && m < scores.length; m++) {
-                if (Double.isNaN(scores[m])) continue;
-                part[m] = weight(m) * ((1 - EPS) * Math.max(0.0, scores[m]) / 2.0 / uniform + EPS);
-                total += part[m];
-            }
-            if (total > 0) {
-                for (int m = 0; m < score.length; m++) seen[m] += part[m] / total;
-                bullets++;
-            }
-            return;
-        }
         for (int m = 0; m < score.length && m < scores.length; m++) {
             if (Double.isNaN(scores[m])) continue;
             double ratio = (1 - EPS) * Math.max(0.0, scores[m]) / 2.0 / uniform + EPS;
