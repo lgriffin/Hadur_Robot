@@ -1,1 +1,7 @@
 23:20:14 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
+23:20:14 start teprep
+23:20:16 progress pushed to origin claude/pc-team-endpower-progress (every 15 min)
+23:22:16 teprep exit=0 in 121 s
+23:22:16 start tepep
+23:22:16 watching tepep: 3 stop rule(s)
+23:23:15 progress tepep: 0/276 (0%) battles, 0 failed
