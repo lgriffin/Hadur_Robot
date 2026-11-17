@@ -100,4 +100,11 @@ final class MoveDesign {
     static final boolean STOP_AND_GO = false;
     /** POISON-2: the forced stop-and-go's variant: 1 WavePoison, 2 WavePoisonShift. */
     static final int STOP_AND_GO_PREFIRE = 1;
+
+    /**
+     * MOVE-48: stop less often. In a duel the three-option surf takes the stop only when its danger is
+     * at most this share of each way round's. 1.0 keeps the shipped rule (the stop wins ties); the
+     * ablations {@code stop90} and {@code stop80} set 0.9 and 0.8 for the screen.
+     */
+    static final double STOP_MARGIN = 1.0;
 }

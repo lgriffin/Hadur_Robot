@@ -270,6 +270,8 @@
 #         from our energy drop (POW-16, ShieldTableData.x5Powers()). Suffix x5.
 #   rclist the robots named in $RAM_CIRC get RAM-11, the rammer escape's circular-aim dodge (suffix rcl)
 #   rwlist the robots named in $RAM_WAIT get MOVE-46's ram wait (a disabled enemy is rammed only after its last waves pass). Suffix rwl.
+#   stop90 / stop80 MOVE-48 stop less often: in a duel the three-option surf takes the stop only when its
+#         danger is at most 0.9 / 0.8 of each way round's. Suffix s9 / s8.
 #   orlist the robots named in $STEADY_ORBIT get MOVE-47's steady orbit (no stop option, reversal only when the other way is under half as dangerous). Suffix or.
 #   rhlist the robots named in $RAM_HEAVY get RAM-14, the rammer escape weighing their shots twice as heavily. Suffix rh.
 #   rplist the robots named in $RACE_POWER get the energy race's power pick (POW-17,
@@ -346,6 +348,10 @@ for a in "${list[@]}"; do
     case "$a" in
         aa)
             version="${version}aa" ;;
+        stop90|stop80)
+            m="0.9"; sfx="s9"; [[ "$a" == stop80 ]] && { m="0.8"; sfx="s8"; }
+            edit "$movedesign" "static final double STOP_MARGIN = 1.0;" "static final double STOP_MARGIN = $m;"
+            version="${version}${sfx}" ;;
         bb)
             # A second A/A copy under its own name, for a run whose baseline is itself an aa build.
             version="${version}bb" ;;
@@ -981,7 +987,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean THREE_FAR = false;" "public static final boolean THREE_FAR = true;"
             version="${version}ef" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, rhlist, rwlist, orlist)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, stop90, stop80, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, rhlist, rwlist, orlist)" >&2; exit 2 ;;
     esac
 done
 
