@@ -49,8 +49,9 @@ class RivalNearPlanTest {
         String listData = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldListData.java"));
         // Picks shipped from the card's results (PR #545) have already made these edits.
         Set<String> shipped = new HashSet<>(names("plans/rival-near-shipped.txt"));
-        // Robots a later card shipped onto the list: pc-still-field (PR #746) shipped Che.
+        // Robots a later card shipped onto the list: pc-still-field (PR #746) shipped Che; pc-locks round 6 (PR #890) Recrimpo.
         Set<String> laterAdds = new HashSet<>(names("plans/still-field-shipped.txt"));
+        laterAdds.addAll(names("plans/locks6-shipped.txt")); // pc-locks round 6 (PR #890) shipped Recrimpo onto the list
         for (String n : names("plans/rival-near-drop.txt")) {
             if (shipped.contains(n)) {
                 assertTrue(!listData.contains("\"" + n + "\","), n + " shipped: off master's shield list");

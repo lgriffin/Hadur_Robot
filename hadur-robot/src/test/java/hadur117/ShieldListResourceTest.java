@@ -55,7 +55,8 @@ class ShieldListResourceTest {
         // Seraphim leaves: its lines lost on 2.4.0 (docs/bench/local/2026-11-13_vr.md). pc-class-1 (PR #803): Eveimear. pc-class-2 (PR #806): Gouldingi.
         // pc-r31 (PR #817): Musashi. pc-locks (PR #843): GlowBlow, MostlyHarmless and DuelistMicro.
         // pc-shards (PR #840): BlackSwans, Manta, LostLion and AralR.
-        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1 - 1 + 1 + 1 + 1 + 3 + 4, list.size());
+        // pc-locks round 6 (PR #890): Recrimpo.
+        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1 - 1 + 1 + 1 + 1 + 3 + 4 + 1, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
@@ -316,7 +317,7 @@ class ShieldListResourceTest {
         java.util.List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
         for (String n : ShieldTableData.racePowers()) lines.add(ShieldList.RACE_POWER_PREFIX + " " + n);
         ShieldList list = ShieldList.parse(lines);
-        assertEquals(8 + 1 + 2, ShieldTableData.racePowers().length, "pc-race-power (BENCH-206, PR #695) confirm picks and pc-r31 (BENCH-244, PR #817) and pc-locks round 3 (PR #860)");
+        assertEquals(8 + 1 + 2 + 1, ShieldTableData.racePowers().length, "pc-race-power (BENCH-206, PR #695) confirm picks and pc-r31 (BENCH-244, PR #817) and pc-locks rounds 3 (PR #860) and 6 (PR #890)");
         for (String n : ShieldTableData.racePowers()) assertTrue(list.racePower(n), n);
         assertTrue(!list.racePower("abc.Shadow 3.83c"), "a pilot robot that did not hold the 3-point margin");
     }
