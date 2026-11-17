@@ -368,6 +368,11 @@ final class ShieldTableData {
             "-1 sng.arco.Arco 0.0",          // +1.2
             "-1 supersample.SuperTracker 1.0",// +3.5
             "-1 uccc.MilkyWay 1.01",         // +1.0
+            // pc-locks round 7 (BENCH-253, PR #902): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "-1 amarok.Rookie 1.1",          // +1.5
+            "-1 ghent.ArthurPanzergon 1.0.0",// +3.6
+            "-1 sul.NanoR2 1.32",            // +1.4
+            "-1 ua.kiiv.kosyak.robocode.tn1.Tn1 2.0",// +2.5
         };
     }
 
@@ -770,12 +775,37 @@ final class ShieldTableData {
 
     /**
      * RAM-15: the slow chargers the duel backs away from at full speed while they close in ({@code ram-flee:}
-     * lines). Empty until a card holds robots; candidate builds add lines here (build-ablation.sh rflist).
+     * lines). 24 robots held in pc-locks round 7 (PR #902); candidate builds add lines here (build-ablation.sh rflist).
      *
      * @return a fresh array of names
      */
     static String[] ramFlees() {
         return new String[] {
+            // pc-locks round 7 (BENCH-253, PR #902): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "am.Miedzix 3.0",                // +3.2
+            "as.xbots 1.0",                  // +2.1
+            "bbo.RamboT 0.3",                // +1.7
+            "bvh.hdr.Hodur 0.4",             // +3.0
+            "conscience.Bulldozer 1.0a",     // +2.9
+            "csp.Eagle 3.30",                // +2.4
+            "daemons.DizzyA 1.0",            // +1.1
+            "demetrix.nano.SledgeHammer 0.22",// +2.1
+            "genprog.Gajeel 1.0",            // +2.1
+            "gg.Squaraus 0.6",               // +0.9
+            "hirataatsushi.Trinity 0.003",   // +1.7
+            "jgap.JGAP130166 1.0",           // +0.9
+            "kurios.DOSexe .9a",             // +1.2
+            "maribo.FollowFire 1.11",        // +2.8
+            "mbro.Detektor3 0.1.1",          // +3.4
+            "oog.nano.Caligula 1.15",        // +4.5
+            "rcp.Kuramatron 1.0",            // +2.3
+            "reeder.colin.WallGuy3 1.0",     // +1.3
+            "robin.SCALPBot 1.0",            // +1.8
+            "sheldor.nano.SabreuseNano 1.1", // +1.8
+            "stelo.Lifestealer 1.0",         // +1.7
+            "supersample.SuperRamFire 1.0",  // +7.2
+            "uccc.Scrapple 1.0",             // +1.6
+            "vort.Chaser 0.0.3",             // +2.5
         };
     }
 
