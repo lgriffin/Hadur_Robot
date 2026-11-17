@@ -142,18 +142,6 @@ public final class TickBudget {
     }
 
     /**
-     * TIME-10: with the keep-second-wave switch on, level 1 still surfs two waves and the second
-     * is dropped only from level 2; off, this is {@link #wavesToSurf(int)}.
-     *
-     * @param level a computation level
-     * @param keepSecond whether the keep-second-wave switch applies (a duel with the switch on)
-     * @return how many waves the surf scores
-     */
-    public static int wavesToSurf(int level, boolean keepSecond) {
-        return keepSecond ? (level >= 2 ? 1 : 2) : wavesToSurf(level);
-    }
-
-    /**
      * Go-to surfing only at full computation; it costs the most.
      *
      * @param level a computation level

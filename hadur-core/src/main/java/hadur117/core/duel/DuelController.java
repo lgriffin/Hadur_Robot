@@ -146,8 +146,6 @@ public final class DuelController {
     private final double fieldHeight;
     /** Opponents at the battle's start; a melee survivor's dead rivals' bullets are told apart by it. */
     private final int enemiesTotal;
-    /** TIME-10: keep the second surfed wave at computation level 1; a duel with the switch on only. */
-    private final boolean keepSecondWave;
     /** This battle's round observations for the profile (MEM-2); null without memory or before the first scan. */
     private ProfileFolder folder;
     /** Whether the store held a profile for this opponent's lineage (MEM-1). */
@@ -341,7 +339,6 @@ public final class DuelController {
         this.ledger = new EnergyLedger(fieldWidth, fieldHeight);
         this.telemetry = telemetry;
         this.enemiesTotal = enemiesTotal;
-        this.keepSecondWave = duelOnly(MoveDesign.KEEP_SECOND_WAVE, enemiesTotal);
         this.library = library;
         this.survivorLibrary = survivorLibrary;
         this.fieldWidth = fieldWidth;
@@ -890,7 +887,7 @@ public final class DuelController {
                 && enemyGunHeat(in).at(in.time()) <= in.gunCoolingRate(), in.time());
             if (dodgePlanOn) surfMover.setDodgeEnemy(lastEnemyState);
             surfMover.move(orders, currentState(in), moveController, lastEnemyLocation,
-                TickBudget.wavesToSurf(level, keepSecondWave), TickBudget.goToAllowed(level));
+                TickBudget.wavesToSurf(level), TickBudget.goToAllowed(level));
             // AES-1: the decision records the surf made this tick (none unless the switch is on).
             for (String r : surfMover.drainAesRecords()) {
                 telemetry.emit("AES," + round + "," + in.time() + "," + r);

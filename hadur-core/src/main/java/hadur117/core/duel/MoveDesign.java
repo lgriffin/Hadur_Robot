@@ -93,13 +93,6 @@ final class MoveDesign {
     static final boolean SHOT_DODGE_PLAN = false;
 
     /**
-     * TIME-10: in a duel, a computation level of 1 (a skipped turn held for the round, or a slow
-     * tick) still surfs two waves; the second is dropped from level 2. Off by default; the
-     * ablation {@code twowave} turns it on for the screen.
-     */
-    static final boolean KEEP_SECOND_WAVE = false;
-
-    /**
      * POISON-2: stop-and-go (POISON-1) against every opponent, not only those the table names,
      * with the reverse crawl {@link #STOP_AND_GO_PREFIRE} ticks before the enemy's gun is ready.
      * Off by default; the ablations {@code sgo} and {@code sgo2} turn it on for the screen.

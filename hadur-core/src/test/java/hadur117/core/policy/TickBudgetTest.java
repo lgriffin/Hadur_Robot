@@ -141,17 +141,4 @@ class TickBudgetTest {
         assertEquals(1_000_000L, b.learnedAllowanceNanos());
     }
 
-
-    @Test
-    @Tag("TIME-10")
-    @DisplayName("TIME-10: keep-second-wave surfs two waves at level 1 and one from level 2; off, level 1 surfs one")
-    void keepSecondWave() {
-        assertEquals(2, TickBudget.wavesToSurf(0, true));
-        assertEquals(2, TickBudget.wavesToSurf(1, true));
-        assertEquals(1, TickBudget.wavesToSurf(2, true));
-        assertEquals(1, TickBudget.wavesToSurf(3, true));
-        assertEquals(2, TickBudget.wavesToSurf(0, false));
-        assertEquals(1, TickBudget.wavesToSurf(1, false));
-        assertEquals(1, TickBudget.wavesToSurf(2, false));
-    }
 }

@@ -54,8 +54,6 @@
 #         firing waves are in the air, the surf also dodges the shot it has not fired yet. Suffix hw.
 #   flt59  MOVE-5's flattener threshold 4.5% -> 5.9% (Diamond's). Suffix f5.
 #   flt8  MOVE-5's flattener threshold 4.5% -> 8% (near DrussGT's 8-9%). Suffix f8.
-#   twowave  TIME-10: in a duel a computation level of 1 still surfs two waves (the second dropped from
-#         level 2). Suffix tw.
 #   rambrk  RAM-5: RAM-2's escape weighs its paths against the rammer's shots in flight (head-on and
 #         linear aims). Suffix rk.
 #   heatjit  MOVE-13: the gun-heat wave taken afresh each tick (the first MOVE-11 build): the surf
@@ -425,9 +423,6 @@ for a in "${list[@]}"; do
             # SHIELD-14 off: 3.15's shipped wall shot undone (the shield as 3.14 plays it).
             edit "$design" 'parse("wall,hold,learn,mode,stay")' 'parse("hold,learn,mode,stay")'
             version="${version}xs" ;;
-        twowave)
-            edit "$movedesign" "static final boolean KEEP_SECOND_WAVE = false;" "static final boolean KEEP_SECOND_WAVE = true;"
-            version="${version}tw" ;;
         rambrk)
             edit "$movedesign" "static final boolean RAM_BREAK = false;" "static final boolean RAM_BREAK = true;"
             version="${version}rk" ;;
