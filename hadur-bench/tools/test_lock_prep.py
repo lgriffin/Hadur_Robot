@@ -61,6 +61,15 @@ class LockPrepTest(unittest.TestCase):
         posix = os.path.join(out, "rwl.list").replace(os.sep, "/")
         self.assertIn("RAM_WAIT=%s bash ./build-ablation.sh rwlist" % posix, open(os.path.join(out, "build.sh")).read())
 
+    def test_steady_orbit_pick_builds_its_list(self):
+        # MOVE-47: a steady-orbit pick (arm or) gets its own list and an orlist rebuild.
+        with open(self.arms, "a") as f:
+            f.write("or | hadur117.Hadur 3.23or | x\n")
+        out = self.run_prep([("d.D 1", "or", "3.1")])
+        self.assertEqual("d.D 1\n", open(os.path.join(out, "or.list")).read())
+        posix = os.path.join(out, "or.list").replace(os.sep, "/")
+        self.assertIn("STEADY_ORBIT=%s bash ./build-ablation.sh orlist" % posix, open(os.path.join(out, "build.sh")).read())
+
     def test_shield_add_pick_builds_its_list(self):
         # SHIELD-17: a plain shield-add pick (arm mt) gets its own list and an slistadd rebuild.
         with open(self.arms, "a") as f:

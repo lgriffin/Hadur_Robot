@@ -45,6 +45,7 @@ LEVERS = {
     "kl": ("sklist", ("SURF_KEY",)),
     "rh": ("rhlist", ("RAM_HEAVY",)),
     "rwl": ("rwlist", ("RAM_WAIT",)),
+    "or": ("orlist", ("STEADY_ORBIT",)),
     "sp2": ("sdplanlist", ("SHOT_DODGE_PLAN",)),
 }
 
