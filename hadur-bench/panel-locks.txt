@@ -37,3 +37,5 @@ dmh.robocode.robot.GreenDragon 1.0 | rank668-band5 | dmh.robocode.robot.GreenDra
 davidalves.net.DuelistNano 1.0 | rank753-band6 | davidalves.net.DuelistNano_1.0.jar
 Polkwane.Piyane 0.7b | rank429-band5 | Polkwane.Piyane_0.7b.jar
 evd.X1 0.01 | rank956-band6 | evd.X1_0.01.jar
+ebo.Tahoe 1.1.79 | rank139-band3 | ebo.Tahoe_1.1.79.jar
+dmh.robocode.robot.PinkPanther 1.1 | rank385-band4 | dmh.robocode.robot.PinkPanther_1.1.jar
