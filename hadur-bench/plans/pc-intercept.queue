@@ -7,7 +7,8 @@
 # One bench queue, RoboRumble workers at 0, 16 workers, truth log off. About 4,400 battles, roughly 1 h 40 min:
 #   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live
 #   pilot      panel-r31 (31 strong robots) x c, aa, ic x 6 fresh seeds from 49100 (558 battles, about 12 min)
-#   pilotstop  STOP RULE: the card halts unless ic minus pooled c and aa is 0 or more a robot over 25+ robots
+#   pilotstop  STOP RULE: unless ic minus pooled c and aa is 0 or more a robot over 25+ robots, the field steps and
+#              their gates are skipped and the card goes straight to its results PR with the pilot's verdict
 #   fielde     panel-field-e (93 robots) x c, aa, ic x 6 fresh seeds from 49200 (1,674 battles)
 #   midfield   panel-midfield (167 mid-field learners) x c, aa, ic x 4 fresh seeds from 49300 (2,004 battles)
 #   gate       multiarm on each panel, and the field gate (shield_s2.py gate: ic minus pooled c and aa over each
@@ -51,10 +52,10 @@ pilot | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 6 --seed-base 491
   stop: skips 60 over 200
   stop: stall 30m
 
-pilotstop | python3 tools/arm_floor.py ${W}-r31/arms.tsv --arm ic --floor 0 --min 25 --out ${OUT}/$(date +%Y-%m-%d)_pc-intercept-pilot.md
+pilotstop | python3 tools/arm_floor.py ${W}-r31/arms.tsv --arm ic --floor 0 --min 25 --out ${OUT}/pc-intercept-pilot.md || true
   after: pilot
 
-fielde | ./bench-top20.sh ${C} ${P} --set panel-field-e.txt --seeds 6 --seed-base 49200 --arms plans/pc-intercept.arms --out ${W}-fe --label pc-intercept-fe --shuffle-jobs
+fielde | grep -q "^GO ON" ${OUT}/pc-intercept-pilot.md || { echo "the pilot stopped the card: no field battles"; exit 0; }; ./bench-top20.sh ${C} ${P} --set panel-field-e.txt --seeds 6 --seed-base 49200 --arms plans/pc-intercept.arms --out ${W}-fe --label pc-intercept-fe --shuffle-jobs
   after: pilotstop
   watch: field=1217
   stop: fails 30
@@ -62,7 +63,7 @@ fielde | ./bench-top20.sh ${C} ${P} --set panel-field-e.txt --seeds 6 --seed-bas
   stop: skips 60 over 200
   stop: stall 30m
 
-midfield | ./bench-top20.sh ${C} ${P} --set panel-midfield.txt --seeds 4 --seed-base 49300 --arms plans/pc-intercept.arms --out ${W}-mf --label pc-intercept-mf --shuffle-jobs
+midfield | grep -q "^GO ON" ${OUT}/pc-intercept-pilot.md || { echo "the pilot stopped the card: no field battles"; exit 0; }; ./bench-top20.sh ${C} ${P} --set panel-midfield.txt --seeds 4 --seed-base 49300 --arms plans/pc-intercept.arms --out ${W}-mf --label pc-intercept-mf --shuffle-jobs
   after: fielde
   watch: field=1217
   stop: fails 30
@@ -70,8 +71,8 @@ midfield | ./bench-top20.sh ${C} ${P} --set panel-midfield.txt --seeds 4 --seed-
   stop: skips 60 over 200
   stop: stall 30m
 
-gate | for p in r31:panel-r31.txt fe:panel-field-e.txt mf:panel-midfield.txt; do k=${p%%:*}; s=${p#*:}; python3 ../data/tools/multiarm.py ${W}-$k/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-intercept-$k.md && python3 tools/shield_s2.py gate ${W}-$k/arms.tsv --arm ic --panel $s --field 1217 --bar 0.03 --out ${OUT}/$(date +%Y-%m-%d)_pc-intercept-$k-gate.md || exit 1; done
+gate | python3 ../data/tools/multiarm.py ${W}-r31/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-intercept-r31.md || exit 1; grep -q "^GO ON" ${OUT}/pc-intercept-pilot.md || { echo "the pilot stopped the card: no field battles"; exit 0; }; python3 ../data/tools/multiarm.py ${W}-fe/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-intercept-fe.md && python3 tools/shield_s2.py gate ${W}-fe/arms.tsv --arm ic --panel panel-field-e.txt --field 1217 --bar 0.03 --out ${OUT}/$(date +%Y-%m-%d)_pc-intercept-fe-gate.md && python3 ../data/tools/multiarm.py ${W}-mf/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-intercept-mf.md && python3 tools/shield_s2.py gate ${W}-mf/arms.tsv --arm ic --panel panel-midfield.txt --field 1217 --bar 0.03 --out ${OUT}/$(date +%Y-%m-%d)_pc-intercept-mf-gate.md
   after: midfield
 
-pr | bash tools/open_results_pr.sh claude/pc-intercept-results "1v1 MOVE-52 intercept views on the field: c, aa and ic on r31, field-e and the mid-field" ${OUT}/pc-intercept-livematch.md ${OUT}/*_pc-intercept-*.md
+pr | bash tools/open_results_pr.sh claude/pc-intercept-results "1v1 MOVE-52 intercept views on the field: c, aa and ic on r31, field-e and the mid-field" ${OUT}/pc-intercept-livematch.md ${OUT}/pc-intercept-pilot.md ${OUT}/*_pc-intercept-*.md
   after: gate

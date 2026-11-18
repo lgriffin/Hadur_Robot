@@ -38,6 +38,12 @@ class PcInterceptPlanTest {
         String stop = step(queue, "pilotstop");
         assertTrue(stop.contains("tools/arm_floor.py ${W}-r31/arms.tsv --arm ic --floor 0 --min 25"), "the pilot's stop rule");
         assertTrue(step(queue, "fielde").contains("  after: pilotstop"), "the field runs only past the stop rule");
+        String guard = "grep -q \"^GO ON\" ${OUT}/pc-intercept-pilot.md || { echo \"the pilot stopped the card: no field battles\"; exit 0; }; ";
+        for (String s : new String[] {"fielde", "midfield", "gate"}) {
+            assertTrue(step(queue, s).contains(guard), s + " is skipped when the pilot stops the card");
+        }
+        assertTrue(stop.contains("--out ${OUT}/pc-intercept-pilot.md || true"), "a stopped pilot still reaches the results PR");
+        assertTrue(step(queue, "pr").contains("${OUT}/pc-intercept-pilot.md"), "the results PR carries the pilot's verdict");
         assertTrue(step(queue, "midfield").contains("  after: fielde"), "then the mid-field");
         for (String s : new String[] {"pilot", "fielde", "midfield"}) {
             String t = step(queue, s);
