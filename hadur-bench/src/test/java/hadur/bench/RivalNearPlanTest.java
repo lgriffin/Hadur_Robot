@@ -51,8 +51,8 @@ class RivalNearPlanTest {
         Set<String> shipped = new HashSet<>(names("plans/rival-near-shipped.txt"));
         // Robots a later card shipped onto the list: pc-still-field (PR #746) shipped Che; pc-locks round 6 (PR #890) Recrimpo.
         Set<String> laterAdds = new HashSet<>(names("plans/still-field-shipped.txt"));
-        laterAdds.addAll(names("plans/locks6-shipped.txt")); // pc-locks round 6 (PR #890) shipped Recrimpo onto the list
-        laterAdds.addAll(names("plans/locks8-shipped.txt")); // pc-locks round 8 (PR #905) shipped Omicron, Sobieski and SmallDevil
+        // pc-locks rounds 6 and 8 (PR #890, #905) shipped Recrimpo, Omicron, Sobieski and SmallDevil onto the list.
+        laterAdds.addAll(names("plans/locks-shield-shipped.txt"));
         for (String n : names("plans/rival-near-drop.txt")) {
             if (shipped.contains(n)) {
                 assertTrue(!listData.contains("\"" + n + "\","), n + " shipped: off master's shield list");

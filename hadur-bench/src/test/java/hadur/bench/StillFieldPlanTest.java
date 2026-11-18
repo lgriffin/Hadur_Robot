@@ -50,7 +50,7 @@ class StillFieldPlanTest {
         String listData = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldListData.java"));
         // Only the robots this card shipped may already be on master's list.
         List<String> shipped = new java.util.ArrayList<>(names("plans/still-field-shipped.txt"));
-        shipped.addAll(names("plans/locks8-shipped.txt")); // pc-locks round 8 (PR #905) later shipped SmallDevil onto the list
+        shipped.addAll(names("plans/locks-shield-shipped.txt")); // pc-locks rounds 6 and 8 shield-list adds (SmallDevil is in this card)
         for (String n : panel) assertTrue(shipped.contains(n) || !listData.contains("\"" + n + "\","), n + " is not on master's shield list yet");
         assertTrue(!panel.contains("axeBots.Musashi 2.18"), "Musashi failed this arm on the PC (BENCH-209)");
         String arms = Files.readString(Path.of("plans/pc-still-field.arms"));
