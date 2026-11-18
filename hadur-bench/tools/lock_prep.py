@@ -40,6 +40,7 @@ LEVERS = {
     "mtx0": ("slistadd,sx0list", ("SHIELD_ADD", "SHIELD_EXIT0")),
     "mtmv": ("slistadd,smovelist", ("SHIELD_ADD", "SHIELD_MOVE")),
     "mv": ("smovelist", ("SHIELD_MOVE",)),
+    "md": ("slistdrop", ("SHIELD_DROP",)),
     "vj": ("vjlist", ("VEL_JITTER",)),
     "sb": ("sblist", ("SPEED_BAND",)),
     "dp": ("dplist", ("DIST_PIN",)),
