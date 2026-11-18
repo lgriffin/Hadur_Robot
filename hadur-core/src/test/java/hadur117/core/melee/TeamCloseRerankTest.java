@@ -21,7 +21,7 @@ class TeamCloseRerankTest {
 
     @Test
     @Tag("TMODE-52")
-    @DisplayName("a wave landing within 35 ticks is close; one further out, one past, or none is not; off in the shipped build")
+    @DisplayName("a wave landing within 35 ticks is close; one further out, one past, or none is not; on in the shipped build")
     void closeWaves() {
         Point2D.Double me = new Point2D.Double(100, 100);
         double speed = 20 - 3 * 2.0;
@@ -32,6 +32,6 @@ class TeamCloseRerankTest {
         assertTrue(MinimumRiskMovement.closeWave(me, 10, List.of(wave(speed * 40, 0, 2.0))));
         assertFalse(MinimumRiskMovement.closeWave(me, 50, List.of(wave(speed * 40, 0, 2.0))), "front already past");
         assertFalse(MinimumRiskMovement.closeWave(me, 0, List.of()));
-        assertFalse(TeamModes.FORCE_CLOSERERANK);
+        assertTrue(TeamModes.FORCE_CLOSERERANK);
     }
 }
