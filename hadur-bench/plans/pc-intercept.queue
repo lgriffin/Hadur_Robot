@@ -1,0 +1,77 @@
+# 1v1, MOVE-52 intercept views on the field (BENCH-260). A global switch (MoveDesign.INTERCEPT_VIEWS, off on master,
+# PR #926): when our bullet meets an enemy bullet, the danger views learn that bullet's guess factor as if it had hit
+# us. Today an intercepted bullet teaches nothing, so the surf never learns where those shots were going.
+# Leigh starts it once the PC is free, after pc-locks round 11 (one card at a time, from master):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-intercept        (or  ./queue.sh run pc-intercept)
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. About 4,400 battles, roughly 1 h 40 min:
+#   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live
+#   pilot      panel-r31 (31 strong robots) x c, aa, ic x 6 fresh seeds from 49100 (558 battles, about 12 min)
+#   pilotstop  STOP RULE: the card halts unless ic minus pooled c and aa is 0 or more a robot over 25+ robots
+#   fielde     panel-field-e (93 robots) x c, aa, ic x 6 fresh seeds from 49200 (1,674 battles)
+#   midfield   panel-midfield (167 mid-field learners) x c, aa, ic x 4 fresh seeds from 49300 (2,004 battles)
+#   gate       multiarm on each panel, and the field gate (shield_s2.py gate: ic minus pooled c and aa over each
+#              panel / 1,217 pairings, bar +0.03 APS, low end above 0)
+# Stop rules (docs/bench/watch.md): 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle over
+# the last 200, no battle in 30 minutes; every battle fought is kept and a rerun resumes. ALERT opens an issue on a stop.
+# Nothing ships from this card: if it passes, a PR turns the switch on; the release rule stands.
+#
+# Why it should win (the PC card rule of 2026-11-03):
+#   - Diagnosis (18 Nov danger lane, coverage/shards/dzlane): the field's guns predict us better than BeepBoop's
+#     surf is predicted, most in the first rounds, when the danger views have seen few hits. Bullets we shoot down
+#     are the same guns' aims, and a learning gun aims there again; MOVE-52 lets the views learn them.
+#   - Cloud reads at the live turn time, ic minus the patched build with the switch off (aa) and minus master (c):
+#       danger44 (44 robots), 24 seeds: +0.35 +- 0.15 vs off (36/44 up), +0.40 +- 0.18 vs c
+#       panel-r31 (30 strong robots), 12 seeds: +1.58 +- 0.97 vs off (24/30 up), +1.19 +- 1.00 vs c
+#       panel-field-e (93 robots), 12 seeds: +0.33 +- 0.18 vs off (57/93 up)
+#       panel-midfield (167 robots), 3 seeds so far: about +0.5 vs off
+#     No skipped-turn cost (3.0 vs 3.3 a battle). Duel only: melee and team never call it.
+
+set V = 3.23
+set P = --parallel 16 --no-truth-log --failed-ok
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 2G
+set W = work/pc-intercept
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh icpt && test -f bisect/hadur117.Hadur_${V}ic.jar && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set panel-field-e.txt && ./fetch-opponents.sh --set panel-midfield.txt && mvn -q compile
+
+livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out work/pc-livematch-rel-live --label pc-intercept-livematch --shuffle-jobs && python3 tools/live_match.py work/pc-livematch-rel-live/arms.tsv --out ${OUT}/pc-intercept-livematch.md
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: stall 30m
+
+pilot | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 6 --seed-base 49100 --arms plans/pc-intercept.arms --out ${W}-r31 --label pc-intercept-r31 --shuffle-jobs
+  after: livematch
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+
+pilotstop | python3 tools/arm_floor.py ${W}-r31/arms.tsv --arm ic --floor 0 --min 25 --out ${OUT}/$(date +%Y-%m-%d)_pc-intercept-pilot.md
+  after: pilot
+
+fielde | ./bench-top20.sh ${C} ${P} --set panel-field-e.txt --seeds 6 --seed-base 49200 --arms plans/pc-intercept.arms --out ${W}-fe --label pc-intercept-fe --shuffle-jobs
+  after: pilotstop
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+
+midfield | ./bench-top20.sh ${C} ${P} --set panel-midfield.txt --seeds 4 --seed-base 49300 --arms plans/pc-intercept.arms --out ${W}-mf --label pc-intercept-mf --shuffle-jobs
+  after: fielde
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+
+gate | for p in r31:panel-r31.txt fe:panel-field-e.txt mf:panel-midfield.txt; do k=${p%%:*}; s=${p#*:}; python3 ../data/tools/multiarm.py ${W}-$k/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-intercept-$k.md && python3 tools/shield_s2.py gate ${W}-$k/arms.tsv --arm ic --panel $s --field 1217 --bar 0.03 --out ${OUT}/$(date +%Y-%m-%d)_pc-intercept-$k-gate.md || exit 1; done
+  after: midfield
+
+pr | bash tools/open_results_pr.sh claude/pc-intercept-results "1v1 MOVE-52 intercept views on the field: c, aa and ic on r31, field-e and the mid-field" ${OUT}/pc-intercept-livematch.md ${OUT}/*_pc-intercept-*.md
+  after: gate
