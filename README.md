@@ -156,6 +156,10 @@ On a team the dodge also knows eight readable enemy guns (TMODE-50, on since PR 
 team's aim was read from its own jar and fitted on bench bullet logs (`hadur-bench/tools/team_aimfit.py`),
 and the fitted aim joins that team's shot profiles.
 
+While an enemy wave will land within 35 ticks, the team dodge drives 40 candidate spots through the waves
+instead of 12 (TMODE-52, on since PR #919): most of our hits taken against the gap teams came from shots landing
+inside 30 ticks.
+
 
 ## Architecture
 
