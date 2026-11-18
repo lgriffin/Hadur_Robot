@@ -10,3 +10,4 @@ mahrgell.mahrram 1.3 | rank609-band5 | mahrgell.mahrram_1.3.jar
 nexus.Prototype 1.0 | rank979-band6 | nexus.Prototype_1.0.jar
 av.RobAtHome 1.2 | rank947-band6 | av.RobAtHome_1.2.jar
 qwaker00.Gandhi 1.2 | rank642-band5 | qwaker00.Gandhi_1.2.jar
+hadur117.mini.JayLexi 0.6 | relevA | hadur117.mini.JayLexi_0.6.jar
