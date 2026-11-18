@@ -1,13 +1,12 @@
-# BENCH-253 pc-locks, round 8: robots whose per-robot line locked on the cloud (95% low end above 0, live turn time)
-# after round 7 ran (PR #902), plus cloud-locked lines whose earlier 12-seed PC read was +1 or more but not clear of 0 (coverage/shards/round8-draft.md). Census rows. name | rank | jar
-maribo.Omicron 1.0 | rank561-band5 | maribo.Omicron_1.0.jar
-pfvicm.Sobieski 7.2.3b | rank607-band5 | pfvicm.Sobieski_7.2.3b.jar
-rz.SmallDevil 1.502 | rank590-band5 | rz.SmallDevil_1.502.jar
-urdos.URDOS 1.3 | rank412-band5 | urdos.URDOS_1.3.jar
-sanyi.mikrobi.Roberto 1.0 | rank1051-band6 | sanyi.mikrobi.Roberto_1.0.jar
-mnt.AHEB 0.6a | rank353-band4 | mnt.AHEB_0.6a.jar
-pez.mako.Mako 1.5 | rank371-band4 | pez.mako.Mako_1.5.jar
-kc.serpent.WaveSerpent 2.11 | rank15-band2 | kc.serpent.WaveSerpent_2.11.jar
-dmh.robocode.robot.PinkPanther 1.1 | rank385-band4 | dmh.robocode.robot.PinkPanther_1.1.jar
-ebo.Tahoe 1.1.79 | rank139-band3 | ebo.Tahoe_1.1.79.jar
-Polkwane.Piyane 0.7b | rank429-band5 | Polkwane.Piyane_0.7b.jar
+# BENCH-253 pc-locks, round 9: robots whose per-robot line locked on the cloud (95% low end above 0, live turn time)
+# after round 8 ran (PR #905) (coverage/shards/locks.tsv, coverage/shards/round9-draft.md). Census rows. name | rank | jar
+robin.ScalpBotC 1.0 | rank1056-band6 | robin.ScalpBotC_1.0.jar
+genprog.Zafaran 1.0 | rank1086-band6 | genprog.Zafaran_1.0.jar
+japs.Serenity 1.0 | rank1180-band6 | japs.Serenity_1.0.jar
+zch.David 0.21 | rank1110-band6 | zch.David_0.21.jar
+blir.nano.Bruce R1.0.0 | rank771-band6 | blir.nano.Bruce_R1.0.0.jar
+rus.vv.Snezhok 1.1 | rank1035-band6 | rus.vv.Snezhok_1.1.jar
+mahrgell.mahrram 1.3 | rank609-band5 | mahrgell.mahrram_1.3.jar
+nexus.Prototype 1.0 | rank979-band6 | nexus.Prototype_1.0.jar
+av.RobAtHome 1.2 | rank947-band6 | av.RobAtHome_1.2.jar
+qwaker00.Gandhi 1.2 | rank642-band5 | qwaker00.Gandhi_1.2.jar
