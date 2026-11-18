@@ -1,1 +1,16 @@
 22:51:49 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
+22:51:49 start ttprep
+22:51:51 progress pushed to origin claude/pc-team-tempo-read-progress (every 15 min)
+22:52:34 ttprep exit=0 in 44 s
+22:52:34 start ttogi
+22:52:34 watching ttogi: 3 stop rule(s)
+22:52:49 progress ttogi: 0/72 (0%) battles, 0 failed
+22:54:56 ttogi exit=0 in 141 s
+22:54:56 start tthad
+22:54:56 watching tthad: 3 stop rule(s)
+22:58:37 tthad exit=0 in 221 s
+22:58:37 start ttread
+22:58:40 ttread exit=0 in 2 s
+22:58:40 start ttpr
+22:58:46 ttpr exit=0 in 6 s
+22:58:46 ALLDONE
