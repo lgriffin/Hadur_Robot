@@ -10,9 +10,12 @@ import team_tempo
 M1, M2, E1, E2 = "hadur117.Hadur 3.23 (1)", "hadur117.Hadur 3.23 (2)", "e.Bot 1 (1)", "e.Bot 1 (2)"
 
 
-def battle(root, name, bullets, deaths):
+def battle(root, name, bullets, deaths, done=True):
     d = os.path.join(root, "battles", name)
     os.makedirs(d)
+    if done:
+        with open(os.path.join(d, team_tempo.DONE), "w", encoding="utf-8") as f:
+            f.write("team\n")
     with open(os.path.join(d, "bullets.log"), "w", encoding="utf-8") as f:
         f.write("".join(l + "\n" for l in bullets))
     with open(os.path.join(d, "deaths.log"), "w", encoding="utf-8") as f:
@@ -63,10 +66,32 @@ class TeamTempoTest(unittest.TestCase):
         self.assertEqual(160, acc["gun ticks"])
         self.assertEqual(16 + 16 + 12, acc["cooling"])
         f = team_tempo.factors(acc)
-        self.assertAlmostEqual(16.0 / 130, f[0])
+        self.assertAlmostEqual(16.0 / 100, f[0])
         self.assertAlmostEqual(1.6, f[1])
-        self.assertAlmostEqual(f[0], f[1] * f[2] * f[3] * f[4] * (130 - 30) / 130.0)
+        self.assertAlmostEqual(f[0], f[1] * f[2] * f[3] * f[4], msg="the four factors multiply to damage a fight tick")
         self.assertEqual((2, 600.0), (acc["opening shots"], acc["opening range"]), "member 2 fired at nobody")
+
+    def test_a_member_that_never_fires_or_dies_is_still_a_gun(self):
+        root = tempfile.mkdtemp()
+        bullets = [fire(40, 1, M1, 3.0, 500.0, 511.0, 0.0, E1 + ":500.0:800.0:0.0000:0.00"),
+                   "0,45,F,2,%s,2.00,500.0,786.0,3.1416,%s:500.0:500.0:0.0000:0.00;%s:100.0:100.0:0.0000:0.00"
+                   % (E1, M1, M2)]
+        acc = collections.Counter()
+        team_tempo.read(battle(root, "e.Team_1-100", bullets, ["0,130,2,0,0," + E1]), "hadur117", acc)
+        self.assertEqual(200, acc["gun ticks"], "two guns alive for the 100 fight ticks, though one never fired")
+
+    def test_duty_counts_cooling_only_while_its_gun_lives_in_the_fight(self):
+        root = tempfile.mkdtemp()
+        enemies = E1 + ":500.0:800.0:0.0000:0.00"
+        # Fired at 20, cooling to 36: 6 turns past turn 30. Fired at 85 by a member that dies at 90: 5 turns.
+        # Fired at 125 in a round that ends at 130: 5 turns.
+        bullets = [fire(20, 1, M1, 3.0, 500.0, 511.0, 0.0, enemies), fire(85, 2, M2, 3.0, 100.0, 111.0, 0.0, enemies),
+                   fire(125, 3, M1, 3.0, 500.0, 511.0, 0.0, enemies)]
+        acc = collections.Counter()
+        team_tempo.read(battle(root, "e.Team_1-100", bullets, ["0,90,1,1,0," + M2, "0,130,2,0,0," + E1]),
+                        "hadur117", acc)
+        self.assertEqual(6 + 5 + 5, acc["cooling"])
+        self.assertLessEqual(acc["cooling"], acc["gun ticks"])
 
     def test_the_report_reads_only_battles_both_subjects_finished(self):
         a, b = tempfile.mkdtemp(), tempfile.mkdtemp()
@@ -76,6 +101,8 @@ class TeamTempoTest(unittest.TestCase):
         battle(a, "e.Team_1-100", theirs, ["0,60,2,0,0," + E1])
         battle(a, "e.Team_1-101", theirs, ["0,60,2,0,0," + E1])
         battle(b, "e.Team_1-100", ours, ["0,90,2,0,0," + E1])
+        # Both logs, no completion marker: a failed or partial battle, not read.
+        battle(b, "e.Team_1-101", ours, ["0,90,2,0,0," + E1], done=False)
         out = os.path.join(a, "r.md")
         team_tempo.main(["--a", "OgiTeam=cz.libors=" + a, "--b", "HadurTeam=hadur117=" + b, "--out", out])
         with open(out, encoding="utf-8") as f:

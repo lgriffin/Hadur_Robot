@@ -5,12 +5,15 @@ The Ogi mirror (BENCH-166) found OgiTeam and HadurTeam deal the same damage a ro
 and the same against SittingDroidTeam, which does no damage to either (296 ticks against 419). This tool reads two
 subjects fought against the same teams and seeds and splits each one's damage a tick into four factors:
 
-    damage a tick = guns alive x shots a gun-tick x hit rate x damage a hit
+    damage a fight tick = guns alive x shots a gun-tick x hit rate x damage a hit
 
 - round length: the turn of the round's last bullet or death; kill 1..5: the mean turn of each enemy death;
-- guns alive: the subject's living members, averaged over the round's turns from GUN_COOL (the guns start hot);
+- fight ticks: the round's turns from GUN_COOL (the guns start hot), the one clock all four factors share;
+- guns alive: the subject's living members, averaged over the fight ticks. The roster is every member that fired,
+  died, or was alive at an enemy's fire, so a member is missed only if it did none of those in the whole battle;
 - shots a gun-tick, and duty: the share of those gun-ticks a gun spent cooling a shot it had fired
-  (10 x (1 + power / 5) turns a shot), so 100% is a gun that fires the turn it cools;
+  (10 x (1 + power / 5) turns a shot, cut at its owner's death and the round's end), so 100% is a gun that fires
+  the turn it cools;
 - hit rate and damage a hit: on enemies only;
 - overkill: the subject's shots that hit nobody and whose target (the living enemy nearest the bullet's heading
   within AIMED_DEG at the fire) died while the bullet was in flight;
@@ -20,7 +23,8 @@ subjects fought against the same teams and seeds and splits each one's damage a 
     python3 tools/team_tempo.py --a "OgiTeam=cz.libors=work/tempo-ogi" --b "HadurTeam=hadur117=work/tempo-hadur" > report.md
 
 Each subject is LABEL=PREFIX=RUN: PREFIX picks its members from the logs' robot names, RUN is walked for battle
-directories that hold bullets.log and deaths.log. Only (team, seed) battles both subjects finished are read.
+directories that hold bullets.log, deaths.log and the bench's team-done.txt, which it writes only beside a battle
+that read back as a good result. Only (team, seed) battles both subjects finished are read.
 Standard library only.
 """
 import argparse
@@ -34,6 +38,7 @@ AIMED_DEG = 25.0
 GUN_COOL = 30
 OPENING = 100
 KILLS = 5
+DONE = "team-done.txt"
 
 
 def damage(p):
@@ -57,7 +62,7 @@ def team_seed(d):
 def battles(run):
     out = {}
     for root, _dirs, files in os.walk(run):
-        if "bullets.log" in files and "deaths.log" in files:
+        if "bullets.log" in files and "deaths.log" in files and DONE in files:
             out[team_seed(root)] = root
     return out
 
@@ -95,6 +100,12 @@ def read(d, subj, acc):
         ends[int(f[0])] = max(ends[int(f[0])], int(f[1]))
         if f[4].startswith(subj):
             members.add(f[4])
+        elif f[2] == "F" and len(f) > 9:
+            # An enemy's fire lists the subject's living members: one that never fires or dies is still a gun.
+            for m in ",".join(f[9:]).split(";"):
+                name = m.rsplit(":", 4)[0]
+                if name.startswith(subj):
+                    members.add(name)
     for r, ev in deaths.items():
         for t, mine, name in ev:
             ends[r] = max(ends[r], t)
@@ -116,7 +127,8 @@ def read(d, subj, acc):
             shots[(r, bid)] = (t, p, tg)
             acc["shots"] += 1
             acc["power"] += p
-            acc["cooling"] += cooling(p)
+            gone = min([dt for dt, mine, name in deaths[r] if mine and name == owner] + [ends[r]])
+            acc["cooling"] += max(0, min(t + cooling(p), gone) - max(t, GUN_COOL))
             first.setdefault(r, t)
             if t <= OPENING and tg:
                 acc["opening shots"] += 1
@@ -156,10 +168,12 @@ def read(d, subj, acc):
 
 
 def factors(a):
-    """(damage a tick, guns alive, shots a gun-tick, hit rate, damage a hit, duty) of an accumulator."""
-    if not a["ticks"] or not a["gun ticks"] or not a["shots"] or not a["hits"]:
+    """(damage a fight tick, guns alive, shots a gun-tick, hit rate, damage a hit, duty) of an accumulator.
+
+    The first is the product of the next four: each is over the same fight ticks."""
+    if not a["fight ticks"] or not a["gun ticks"] or not a["shots"] or not a["hits"]:
         return None
-    return (a["dealt"] / a["ticks"], a["gun ticks"] / max(a["fight ticks"], 1), a["shots"] / a["gun ticks"],
+    return (a["dealt"] / a["fight ticks"], a["gun ticks"] / a["fight ticks"], a["shots"] / a["gun ticks"],
             a["hits"] / a["shots"], a["dealt"] / a["hits"], a["cooling"] / a["gun ticks"])
 
 
@@ -190,12 +204,13 @@ def report(a_label, b_label, per_team, total):
           row(a_label, total["a"]), row(b_label, total["b"]), ""]
     fa, fb = factors(total["a"]), factors(total["b"])
     if fa and fb:
-        md += ["## The four factors of damage a tick", "",
+        md += ["## The four factors of damage a fight tick", "",
                "| | %s | %s | Ratio |" % (a_label, b_label), "|---|---:|---:|---:|"]
-        for name, i, fmt in (("Damage a tick", 0, "%.3f"), ("Guns alive", 1, "%.2f"), ("Shots a gun-tick", 2, "%.4f"),
+        for name, i, fmt in (("Damage a fight tick", 0, "%.3f"), ("Guns alive", 1, "%.2f"), ("Shots a gun-tick", 2, "%.4f"),
                              ("Hit rate", 3, "%.3f"), ("Damage a hit", 4, "%.2f")):
             md.append("| %s | %s | %s | %.2f |" % (name, fmt % fa[i], fmt % fb[i], fa[i] / fb[i] if fb[i] else 0))
-        md += ["", "The last four ratios multiply to the first: the largest is where %s's extra ticks go." % b_label, ""]
+        md += ["", "A fight tick is a turn of the round from turn %d, when the guns have cooled. The last four ratios "
+               "multiply to the first: the largest is where %s's extra ticks go." % (GUN_COOL, b_label), ""]
     md += ["## Per opposing team", "", HEAD % "Team, subject", "|---|" + "---:|" * 17]
     for team in sorted(per_team):
         md.append(row("%s, %s" % (team, a_label), per_team[team]["a"]))
