@@ -751,7 +751,7 @@ p,f=sys.argv[1:]
 names=[l.split("\t")[0].strip() for l in open(f) if l.strip() and not l.startswith("#")]
 s=open(p).read()
 for n in names:
-    found=re.findall(r"^            \"%s(?: [^\"\n]*)?\",\n" % re.escape(n.split(" ",1)[0]), s, re.M)
+    found=re.findall(r"^            \"%s(?: [^\"\n]*)?\",[^\n]*\n" % re.escape(n.split(" ",1)[0]), s, re.M)
     if len(found)!=1: sys.exit("slistdrop: %s is not on the shield list exactly once" % n)
     s=s.replace(found[0],"")
 open(p,"w").write(s)' "$listdata" "$SHIELD_DROP" || exit 2
@@ -983,6 +983,24 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean THREE_FAR = false;" "public static final boolean THREE_FAR = true;"
             version="${version}ef" ;;
+        tdrop)
+            # Line audit: each "method<TAB>entry" line of $LINE_DROP leaves that method's array in ShieldTableData
+            # (method LIST = ShieldListData). The entry must appear exactly once in that method.
+            [[ -n "${LINE_DROP:-}" && -f "$LINE_DROP" ]] || { echo "tdrop needs LINE_DROP=<file>" >&2; exit 2; }
+            python3 -c 'import sys,re
+t,l,f=sys.argv[1:]
+S={t:open(t).read(),l:open(l).read()}
+for row in open(f):
+    row=row.rstrip("\n")
+    if not row or row.startswith("#"): continue
+    m,e=row.split("\t",1); p=l if m=="LIST" else t; s=S[p]
+    a=0 if m=="LIST" else s.index("static String[] %s()" % m); b=s.index("        };",a)
+    pat=re.compile(r"^ +\"%s\",[^\n]*\n" % re.escape(e), re.M)
+    hits=list(pat.finditer(s,a,b))
+    if len(hits)!=1: sys.exit("tdrop: %s / %s found %d times" % (m,e,len(hits)))
+    S[p]=s[:hits[0].start()]+s[hits[0].end():]
+for p in S: open(p,"w").write(S[p])' "$tabledata" "$listdata" "$LINE_DROP" || exit 2
+            version="${version}td" ;;
         *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, rhlist, rwlist, orlist, rflist)" >&2; exit 2 ;;
     esac
 done
