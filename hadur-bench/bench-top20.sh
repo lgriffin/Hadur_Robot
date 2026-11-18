@@ -44,6 +44,7 @@
 #   --skip-build           skip `mvn package` at the repo root
 #   --skip-fetch           skip fetching the set's opponent jars
 #   --engine VERSION       run the battles on this Robocode release from Maven Central (e.g. 1.11.2)
+#   --keep-broken          keep the robots listed in broken-1.11.2.txt (for an --engine 1.12.0 run, where they load)
 #   --arms FILE            a multi-arm run (BENCH-92): every arm in FILE (label | robot | jar) on every
 #                          opponent and seed, in a shuffled order; writes arms.tsv. Replaces --robot/--baseline
 #   --pin                  bind each battle JVM to its worker's own processors (BENCH-93)
@@ -96,6 +97,7 @@ PIN_OFFSET=""
 TRUTH_LOG=1
 SHUFFLE_JOBS=0
 FAILED_OK=0
+KEEP_BROKEN=0
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -126,6 +128,7 @@ while [ $# -gt 0 ]; do
         --child-cpus) CHILD_CPUS="${2:?--child-cpus needs a number}"; shift 2 ;;
         --force-memory) FORCE_MEMORY=1; shift ;;
         --engine) ENGINE="${2:?--engine needs a Robocode version}"; shift 2 ;;
+        --keep-broken) KEEP_BROKEN=1; shift ;;
         --arms) ARMS="${2:?--arms needs a file}"; shift 2 ;;
         --pin) PIN=1; shift ;;
         --no-resume) RESUME=0; shift ;;
@@ -211,6 +214,7 @@ if [ -n "$PIN_OFFSET" ]; then ARGS="$ARGS --pin-offset $PIN_OFFSET"; fi
 if [ "$TRUTH_LOG" -eq 0 ]; then ARGS="$ARGS --truth-log false"; fi
 if [ "$SHUFFLE_JOBS" -eq 1 ]; then ARGS="$ARGS --job-order shuffled"; fi
 if [ "$FAILED_OK" -eq 1 ]; then ARGS="$ARGS --failed-ok true"; fi
+if [ "$KEEP_BROKEN" -eq 1 ]; then ARGS="$ARGS --keep-broken true"; fi
 
 # The engine is the bench's own Maven dependency, so another release is a property away;
 # the bench's classpath file is rebuilt with it on this compile (issue #109).
