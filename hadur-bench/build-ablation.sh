@@ -945,6 +945,12 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$modes" "public static final boolean FORCE_QUARTERS = false;" "public static final boolean FORCE_QUARTERS = true;"
             sed -i -E '/^        t\.put\(/{/Mode\.QUARTERS/!s/\)\);$/, Mode.QUARTERS));/}' "$modes"
             ;;
+        tmcloserr35)
+            # TMODE-52 on, waves landing within 35 ticks count as close. Suffix cr35.
+            version="${version}cr35"
+            edit "$modes" "public static final boolean FORCE_CLOSERERANK = false;" "public static final boolean FORCE_CLOSERERANK = true;"
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/TeamDodge.java" "static final int CLOSE_TICKS = 25;" "static final int CLOSE_TICKS = 35;"
+            ;;
         tmcloserr)
             # TMODE-52 on: the dodge drives 40 candidates while a wave lands within 25 ticks. Suffix cr.
             version="${version}cr"
