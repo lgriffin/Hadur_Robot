@@ -16,3 +16,7 @@
 17:38:05 progress tcbb: 497/1104 (45%) battles, 370/h, ETA 1.6 h, 0 failed, skips 7.9/battle (last 100)
 18:08:22 progress tcbb: 684/1104 (62%) battles, 370/h, ETA 1.1 h, 0 failed, skips 4.0/battle (last 100)
 18:38:40 progress tcbb: 862/1104 (78%) battles, 367/h, ETA 40 min, 0 failed, skips 5.0/battle (last 100)
+19:06:06 tcbb exit=0 in 10112 s
+19:06:06 start tccr
+19:06:06 watching tccr: 3 stop rule(s)
+19:08:57 progress tccr: 0/1104 (0%) battles, 0 failed

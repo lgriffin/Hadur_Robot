@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-closerr",
- "updated": 1795028755.6520476,
+ "updated": 1795029663.9324608,
  "steps": {
   "tcprep": {
    "status": "done",
@@ -21,11 +21,14 @@
    "end": "2026-11-18T16:17:34"
   },
   "tcbb": {
-   "status": "running",
-   "start": "2026-11-18T16:17:34"
+   "status": "done",
+   "exit": 0,
+   "seconds": 10112,
+   "end": "2026-11-18T19:06:06"
   },
   "tccr": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-18T19:06:06"
   },
   "tcgate": {
    "status": "pending"
@@ -81,8 +84,8 @@
   {
    "step": "tcbb",
    "started": 1795018654.0299354,
-   "updated": 1795028755.645031,
-   "elapsed": 10101.615095615387,
+   "updated": 1795028766.6675234,
+   "elapsed": 10112.63758802414,
    "expected": 1104,
    "panel": null,
    "field": null,
@@ -94,10 +97,10 @@
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 384.88894728206276,
-   "eta": 224.4803354581197,
+   "rate": 384.46942908389724,
+   "eta": 224.72527973386974,
    "fraction": 0.9782608695652174,
-   "last_battle_age": 0.1308002471923828,
+   "last_battle_age": 9.679494142532349,
    "rules": [
     {
      "rule": "fails 60",
@@ -120,6 +123,49 @@
    ],
    "skips_mean": 7.347222222222222,
    "skips_last100": 2.36
+  },
+  {
+   "step": "tccr",
+   "started": 1795028766.6789687,
+   "updated": 1795029663.9246168,
+   "elapsed": 897.2456481456757,
+   "expected": 1104,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 52,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 208.63851542426923,
+   "eta": 18151.969650947132,
+   "fraction": 0.04710144927536232,
+   "last_battle_age": 21.372028589248657,
+   "rules": [
+    {
+     "rule": "fails 60",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 52"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 60 over 200",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "52 of 200 battles to read"
+    }
+   ],
+   "skips_mean": 32.01923076923077,
+   "skips_last100": 32.01923076923077
   }
  ]
 }

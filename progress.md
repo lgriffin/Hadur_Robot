@@ -1,12 +1,12 @@
 # Queue pc-team-closerr: progress
 
-Updated 2026-11-18 19:05:55 PC time (19:05 UTC), runner pid 85476.
+Updated 2026-11-18 19:21:03 PC time (19:21 UTC), runner pid 85476.
 
 - `tcprep` done, exit 0 in 2 min
 - `tcpcr` done, exit 0 in 41 min
 - `tcpilot` done, exit 0 in 0 min
-- `tcbb` running
-- `tccr` pending
+- `tcbb` done, exit 0 in 2.8 h
+- `tccr` running
 - `tcgate` pending
 - `tcpr` pending
 
@@ -25,7 +25,7 @@ Stopping now would leave 6 battles unrun (about 1 min); every battle already fou
 
 ### tcbb
 
-**1080 of 1104 battles** (98%), 0 failed. Running 2.8 h, 385 battles/h, about 4 min left (ends ~19:09 PC time). Last battle 0 min ago.
+**1080 of 1104 battles** (98%), 0 failed. Running 2.8 h, 384 battles/h, about 4 min left (ends ~19:09 PC time). Last battle 0 min ago.
 Skipped turns a battle: 7.3 overall, first 100 18.0, last 100 2.4.
 
 | stop rule | on trip | state | now |
@@ -36,13 +36,22 @@ Skipped turns a battle: 7.3 overall, first 100 18.0, last 100 2.4.
 
 Stopping now would leave 24 battles unrun (about 4 min); every battle already fought is kept and a rerun resumes from it.
 
+### tccr
+
+**52 of 1104 battles** (5%), 0 failed. Running 15 min, 209 battles/h, about 5.0 h left (ends ~00:23 PC time). Last battle 0 min ago.
+Skipped turns a battle: 32.0 overall, first 52 32.0, last 52 32.0.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 60` | halt | ok | 0 failed of 52 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 60 over 200` | halt | waiting | 52 of 200 battles to read |
+
+Stopping now would leave 1052 battles unrun (about 5.0 h); every battle already fought is kept and a rerun resumes from it.
+
 ### Queue log (last lines)
 
 ```
-15:36:10 tcprep exit=0 in 130 s
-15:36:10 start tcpcr
-15:36:10 watching tcpcr: 3 stop rule(s)
-15:37:02 progress tcpcr: 0/276 (0%) battles, 0 failed
 16:07:16 progress tcpcr: 189/276 (68%) battles, 365/h, ETA 14 min, 0 failed, skips 5.5/battle (last 100)
 16:17:33 tcpcr exit=0 in 2482 s
 16:17:33 start tcpilot
@@ -54,4 +63,8 @@ Stopping now would leave 24 battles unrun (about 4 min); every battle already fo
 17:38:05 progress tcbb: 497/1104 (45%) battles, 370/h, ETA 1.6 h, 0 failed, skips 7.9/battle (last 100)
 18:08:22 progress tcbb: 684/1104 (62%) battles, 370/h, ETA 1.1 h, 0 failed, skips 4.0/battle (last 100)
 18:38:40 progress tcbb: 862/1104 (78%) battles, 367/h, ETA 40 min, 0 failed, skips 5.0/battle (last 100)
+19:06:06 tcbb exit=0 in 10112 s
+19:06:06 start tccr
+19:06:06 watching tccr: 3 stop rule(s)
+19:08:57 progress tccr: 0/1104 (0%) battles, 0 failed
 ```
