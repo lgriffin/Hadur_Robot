@@ -1,16 +1,4 @@
-# BENCH-253 pc-locks, round 10: robots whose per-robot line locked on the cloud (95% low end above 0, live turn time)
-# after round 9 ran (PR #913), plus four round 6/8 PC near-misses retried (coverage/shards/locks.tsv, coverage/shards/round10-draft.md). name | note | jar
-mbh.Mbh 0.1 | rank1089-band6 | mbh.Mbh_0.1.jar
-ntw.Sighup 1.5 | learning-stat-prone | ntw.Sighup_1.5.jar
-repositorio.NanoStep 1.0 | rank924-band6 | repositorio.NanoStep_1.0.jar
-shrub.Silver v048 | rank873-band6 | shrub.Silver_v048.jar
-Fenix.FenixTrack 1.0 | rank999-band6 | Fenix.FenixTrack_1.0.jar
-aw.Gilgalad 1.99.5c | gun bench 26.9 | aw.Gilgalad_1.99.5c.jar
-ultra.Defender 1.2 | rank472-band5 | ultra.Defender_1.2.jar
-hope.Identity .pope69 | drgap | hope.Identity_.pope69.jar
-ebo.Tahoe 1.1.79 | rank139-band3 | ebo.Tahoe_1.1.79.jar
-dmh.robocode.robot.PinkPanther 1.1 | gun bench 15.2 | dmh.robocode.robot.PinkPanther_1.1.jar
-mnt.AHEB 0.6a | rank353-band4 | mnt.AHEB_0.6a.jar
-pez.mako.Mako 1.5 | rank371-band4 | pez.mako.Mako_1.5.jar
-deo.virtual.RainbowBot 1.0 | gun bench 14.0 | deo.virtual.RainbowBot_1.0.jar
-kawigi.nano.ThnikkaBot 0.9 | rank700-band5 | kawigi.nano.ThnikkaBot_0.9.jar
+# BENCH-253 pc-locks, round 11: robots that load on Robocode 1.11.2 whose per-robot line locked on the cloud (95% low end
+# above 0, live turn time; coverage/shards/locks.tsv, coverage/shards/round11-draft.md). name | note | jar
+stelo.Lifestealer 1.0 | rank991-band6 | stelo.Lifestealer_1.0.jar
+step.nanoPri 1.0 | rank676-band5 | step.nanoPri_1.0.jar
