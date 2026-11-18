@@ -361,10 +361,15 @@ final class TeamRisk {
 
     /** TMODE-49: as {@link #pathDamage(Point2D.Double, Point2D.Double, long, List)} along a simulated {@code path} ({@link Momentum#drive}), up to {@link #PATH_TICKS} ticks. */
     static double pathDamage(double[][] path, long now, List<VirtualBullet> bullets) {
+        return pathDamage(path, now, bullets, PATH_TICKS);
+    }
+
+    /** TVETO-1: as above, up to {@code ticks} ticks of the {@code path}. */
+    static double pathDamage(double[][] path, long now, List<VirtualBullet> bullets, int ticks) {
         if (bullets.isEmpty()) return 0;
         boolean[] done = new boolean[bullets.size()];
         double total = 0;
-        for (int t = 1; t <= Math.min(PATH_TICKS, path.length); t++) {
+        for (int t = 1; t <= Math.min(ticks, path.length); t++) {
             double x = path[t - 1][0], y = path[t - 1][1];
             long tick = now + t;
             for (int i = 0; i < bullets.size(); i++) {
