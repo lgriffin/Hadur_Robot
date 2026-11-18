@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-closerr",
- "updated": 1795036019.3239477,
+ "updated": 1795036927.4547236,
  "steps": {
   "tcprep": {
    "status": "done",
@@ -127,8 +127,8 @@
   {
    "step": "tccr",
    "started": 1795028766.6789687,
-   "updated": 1795036019.3161278,
-   "elapsed": 7252.637159109116,
+   "updated": 1795036927.446208,
+   "elapsed": 8160.767239332199,
    "expected": 1104,
    "panel": null,
    "field": null,
@@ -136,20 +136,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 704,
+   "battles": 798,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 349.44530443203854,
-   "eta": 4120.816567675634,
-   "fraction": 0.6376811594202898,
-   "last_battle_age": 27.333720922470093,
+   "rate": 352.02572451203537,
+   "eta": 3129.3167609469333,
+   "fraction": 0.7228260869565217,
+   "last_battle_age": 3.895693302154541,
    "rules": [
     {
      "rule": "fails 60",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 704"
+     "detail": "0 failed of 798"
     },
     {
      "rule": "stall 30m",
@@ -161,11 +161,11 @@
      "rule": "skips 60 over 200",
      "action": "halt",
      "state": "ok",
-     "detail": "7.6 a battle over the last 200 (first 200: 28.5)"
+     "detail": "8.1 a battle over the last 200 (first 200: 28.5)"
     }
    ],
-   "skips_mean": 17.71875,
-   "skips_last100": 7.31
+   "skips_mean": 16.721804511278197,
+   "skips_last100": 9.41
   }
  ]
 }
