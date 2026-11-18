@@ -1,0 +1,28 @@
+{
+ "plan": "pc-team-closerr",
+ "updated": 1795016040.0921166,
+ "steps": {
+  "tcprep": {
+   "status": "pending"
+  },
+  "tcpcr": {
+   "status": "pending"
+  },
+  "tcpilot": {
+   "status": "pending"
+  },
+  "tcbb": {
+   "status": "pending"
+  },
+  "tccr": {
+   "status": "pending"
+  },
+  "tcgate": {
+   "status": "pending"
+  },
+  "tcpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
