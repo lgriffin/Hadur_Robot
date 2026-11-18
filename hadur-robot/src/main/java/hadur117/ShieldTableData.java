@@ -455,7 +455,6 @@ final class ShieldTableData {
             "pez.mini.Tityus 0.9.1",
             "pez.mini2.Pugilist 2.5.15",
             "ry.LightningBug 1.0",
-            "scheronimus.AntiRebel 1.1",
             "serenity.nonSense 1.39",
             "sheldor.micro.Epeeist 3.7",
             "sheldor.micro.EpeeistDC 3.0",
@@ -556,7 +555,6 @@ final class ShieldTableData {
             "cb.mega.RandomBot 1.0",
             "ebo.Tahoe 1.1.79",
             "jam.RaikoMX 0.32",
-            "radnor.RamRod 1.0",
             // BENCH-207 pc-tailor-near (PR #704): leaned on pc-tailor-field's screen, picked on 4 new seeds, kept on 4 fresh ones (screen / confirm points).
             "xander.cat.Mikey 1.2",                        // +2.9 / +4.3
             "kc.mega.BeepBoop 2.0",                        // +15.2 / +3.1
