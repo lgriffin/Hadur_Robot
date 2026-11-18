@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-endpower",
- "updated": 1794959427.0528786,
+ "updated": 1794960180.460594,
  "steps": {
   "teprep": {
    "status": "done",
@@ -9,31 +9,48 @@
    "end": "2026-11-17T23:22:16"
   },
   "tepep": {
-   "status": "running",
-   "start": "2026-11-17T23:22:16"
+   "status": "done",
+   "exit": 0,
+   "seconds": 2435,
+   "end": "2026-11-18T00:02:51"
   },
   "tepilot": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-11-18T00:02:52"
   },
   "tebb": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-11-18T00:02:52"
   },
   "teep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-11-18T00:02:53"
   },
   "tegate": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-11-18T00:02:53"
   },
   "tepr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 6,
+   "end": "2026-11-18T00:03:00"
   }
  },
  "watched": [
   {
    "step": "tepep",
    "started": 1794957736.2847385,
-   "updated": 1794959427.04621,
-   "elapsed": 1690.7614715099335,
+   "updated": 1794960171.9810903,
+   "elapsed": 2435.6963517665863,
    "expected": 276,
    "panel": null,
    "field": null,
@@ -41,20 +58,63 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 178,
+   "battles": 270,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 379.000829388272,
-   "eta": 930.8686753256937,
-   "fraction": 0.644927536231884,
-   "last_battle_age": 1.6635067462921143,
+   "rate": 399.06452185430174,
+   "eta": 54.12658559481304,
+   "fraction": 0.9782608695652174,
+   "last_battle_age": 1.895909309387207,
    "rules": [
     {
      "rule": "fails 60",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 178"
+     "detail": "0 failed of 270"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 60 over 200",
+     "action": "halt",
+     "state": "ok",
+     "detail": "5.1 a battle over the last 200 (first 200: 8.6)"
+    }
+   ],
+   "skips_mean": 7.57037037037037,
+   "skips_last100": 4.43
+  },
+  {
+   "step": "tebb",
+   "started": 1794960172.5730948,
+   "updated": 1794960172.9677413,
+   "elapsed": 0.39464640617370605,
+   "expected": 1104,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 0,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": null,
+   "eta": null,
+   "fraction": 0.0,
+   "last_battle_age": 0.39464640617370605,
+   "rules": [
+    {
+     "rule": "fails 60",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 0"
     },
     {
      "rule": "stall 30m",
@@ -66,11 +126,54 @@
      "rule": "skips 60 over 200",
      "action": "halt",
      "state": "waiting",
-     "detail": "178 of 200 battles to read"
+     "detail": "0 of 200 battles to read"
     }
    ],
-   "skips_mean": 9.123595505617978,
-   "skips_last100": 5.33
+   "skips_mean": null,
+   "skips_last100": null
+  },
+  {
+   "step": "teep",
+   "started": 1794960172.9782138,
+   "updated": 1794960173.35687,
+   "elapsed": 0.37865614891052246,
+   "expected": 1104,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 0,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": null,
+   "eta": null,
+   "fraction": 0.0,
+   "last_battle_age": 0.37865614891052246,
+   "rules": [
+    {
+     "rule": "fails 60",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 0"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 60 over 200",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "0 of 200 battles to read"
+    }
+   ],
+   "skips_mean": null,
+   "skips_last100": null
   }
  ]
 }

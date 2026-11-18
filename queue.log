@@ -5,3 +5,18 @@
 23:22:16 start tepep
 23:22:16 watching tepep: 3 stop rule(s)
 23:23:15 progress tepep: 0/276 (0%) battles, 0 failed
+23:53:28 progress tepep: 192/276 (70%) battles, 369/h, ETA 14 min, 0 failed, skips 4.7/battle (last 100)
+00:02:51 tepep exit=0 in 2435 s
+00:02:51 start tepilot
+00:02:52 tepilot exit=0 in 0 s
+00:02:52 start tebb
+00:02:52 watching tebb: 3 stop rule(s)
+00:02:52 tebb exit=0 in 0 s
+00:02:52 start teep
+00:02:52 watching teep: 3 stop rule(s)
+00:02:53 teep exit=0 in 0 s
+00:02:53 start tegate
+00:02:53 tegate exit=0 in 0 s
+00:02:53 start tepr
+00:03:00 tepr exit=0 in 6 s
+00:03:00 ALLDONE
