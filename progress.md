@@ -1,6 +1,6 @@
 # Queue pc-team-closerr: progress
 
-Updated 2026-11-18 21:37:15 PC time (21:37 UTC), runner pid 85476.
+Updated 2026-11-18 21:52:22 PC time (21:52 UTC), runner pid 85476.
 
 - `tcprep` done, exit 0 in 2 min
 - `tcpcr` done, exit 0 in 41 min
@@ -38,21 +38,20 @@ Stopping now would leave 24 battles unrun (about 4 min); every battle already fo
 
 ### tccr
 
-**911 of 1104 battles** (83%), 0 failed. Running 2.5 h, 362 battles/h, about 32 min left (ends ~22:09 PC time). Last battle 0 min ago.
-Skipped turns a battle: 15.6 overall, first 100 34.0, last 100 8.5.
+**1021 of 1104 battles** (92%), 0 failed. Running 2.8 h, 368 battles/h, about 14 min left (ends ~22:05 PC time). Last battle 0 min ago.
+Skipped turns a battle: 15.1 overall, first 100 34.0, last 100 8.4.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 911 |
+| `fails 60` | halt | ok | 0 failed of 1021 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | ok | 8.6 a battle over the last 200 (first 200: 28.5) |
+| `skips 60 over 200` | halt | ok | 10.0 a battle over the last 200 (first 200: 28.5) |
 
-Stopping now would leave 193 battles unrun (about 32 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 83 battles unrun (about 14 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-16:17:34 start tcbb
 16:17:34 watching tcbb: 3 stop rule(s)
 16:37:31 progress tcbb: 87/1104 (8%) battles, 261/h, ETA 3.9 h, 0 failed, skips 17.6/battle (last 100)
 17:07:47 progress tcbb: 289/1104 (26%) battles, 345/h, ETA 2.4 h, 0 failed, skips 6.4/battle (last 100)
@@ -67,4 +66,5 @@ Stopping now would leave 193 battles unrun (about 32 min); every battle already 
 20:09:29 progress tccr: 359/1104 (33%) battles, 340/h, ETA 2.2 h, 0 failed, skips 17.7/battle (last 100)
 20:39:44 progress tccr: 569/1104 (52%) battles, 365/h, ETA 1.5 h, 0 failed, skips 10.3/battle (last 100)
 21:10:01 progress tccr: 710/1104 (64%) battles, 344/h, ETA 1.1 h, 0 failed, skips 7.6/battle (last 100)
+21:40:16 progress tccr: 933/1104 (85%) battles, 363/h, ETA 28 min, 0 failed, skips 13.7/battle (last 100)
 ```
