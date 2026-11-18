@@ -1,0 +1,22 @@
+{
+ "plan": "pc-team-tempo-read",
+ "updated": 1795042309.3641782,
+ "steps": {
+  "ttprep": {
+   "status": "pending"
+  },
+  "ttogi": {
+   "status": "pending"
+  },
+  "tthad": {
+   "status": "pending"
+  },
+  "ttread": {
+   "status": "pending"
+  },
+  "ttpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
