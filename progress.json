@@ -1,0 +1,22 @@
+{
+ "plan": "pc-melee-stray-read",
+ "updated": 1795041734.7076993,
+ "steps": {
+  "srprep": {
+   "status": "pending"
+  },
+  "srtrace": {
+   "status": "pending"
+  },
+  "srseat": {
+   "status": "pending"
+  },
+  "srread": {
+   "status": "pending"
+  },
+  "srpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
