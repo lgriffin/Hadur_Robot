@@ -63,6 +63,14 @@ final class MoveDesign {
     static final boolean AIM_INTERCEPTS = true;
 
     /**
+     * MOVE-52 (danger lane, 18 Nov): an enemy bullet our bullet met also teaches the danger views,
+     * as a hit does: the bot sees that bullet's exact firing angle, and in an offline replay of the danger model
+     * learning those angles rates the true aim of later bullets well 1.6 pp more often, 2.9 pp in
+     * rounds 0-2. Duel only, off; the ablation icpt turns it on.
+     */
+    static final boolean INTERCEPT_VIEWS = false;
+
+    /**
      * MOVE-33: with {@link #AIM_MEMBERS}, the six visit-trained learning-gun mimics of MOVE-27
      * (GunMimics) join the aim members after the aims, sharing a standing weight of 0.3, each
      * scored on the bullets as the aims are. BeepBoop's surf blends such mimics of named guns

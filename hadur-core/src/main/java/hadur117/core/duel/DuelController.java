@@ -1192,6 +1192,8 @@ public final class DuelController {
             if (moveController.shotDodger() != null) shotDodger.observe(hitWave.simpleAims(), e.enemyHeading(), dodgeEscape(hitWave));
             // MOVE-30: the bullet's angle scores the aim members, where the switch is on.
             if (MoveDesign.AIM_INTERCEPTS) moveController.scoreInterceptAims(hitWave, hitLoc);
+            // MOVE-52: and teaches the danger views, where the switch is on.
+            if (MoveDesign.INTERCEPT_VIEWS) moveController.learnInterceptViews(hitWave, hitLoc, round, in.time());
         }
     }
 

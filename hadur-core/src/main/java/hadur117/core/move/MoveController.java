@@ -1415,6 +1415,20 @@ public class MoveController {
         learnAimMembers(w, w.guessFactor(bulletLocation));
     }
 
+    /**
+     * MOVE-52: an enemy bullet our bullet met at {@code bulletLocation} teaches the danger views
+     * that log hits, as {@link #logBulletHit} does for a hit (the aim members are scored apart, by
+     * {@link #scoreInterceptAims}). The bullet lies on its firing line, so its angle is exact.
+     */
+    public void learnInterceptViews(Wave w, Point2D.Double bulletLocation, int currentRound, long currentTime) {
+        if (w == null) return;
+        double gf = w.guessFactor(bulletLocation);
+        for (KnnView<TimestampedGuessFactor> view : views) {
+            if (!view.logBulletHits) continue;
+            view.logWave(w, new TimestampedGuessFactor(currentRound, currentTime, gf));
+        }
+    }
+
     /** Floor for a neighbour's squared distance, so an exact match weighs a lot but not infinitely. */
     private static final double MIN_DISTANCE = 1e-12;
 
