@@ -5,3 +5,9 @@
 15:36:10 start tcpcr
 15:36:10 watching tcpcr: 3 stop rule(s)
 15:37:02 progress tcpcr: 0/276 (0%) battles, 0 failed
+16:07:16 progress tcpcr: 189/276 (68%) battles, 365/h, ETA 14 min, 0 failed, skips 5.5/battle (last 100)
+16:17:33 tcpcr exit=0 in 2482 s
+16:17:33 start tcpilot
+16:17:34 tcpilot exit=0 in 0 s
+16:17:34 start tcbb
+16:17:34 watching tcbb: 3 stop rule(s)
