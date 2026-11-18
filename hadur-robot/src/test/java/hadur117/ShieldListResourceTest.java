@@ -55,8 +55,8 @@ class ShieldListResourceTest {
         // Seraphim leaves: its lines lost on 2.4.0 (docs/bench/local/2026-11-13_vr.md). pc-class-1 (PR #803): Eveimear. pc-class-2 (PR #806): Gouldingi.
         // pc-r31 (PR #817): Musashi. pc-locks (PR #843): GlowBlow, MostlyHarmless and DuelistMicro.
         // pc-shards (PR #840): BlackSwans, Manta, LostLion and AralR.
-        // pc-locks round 6 (PR #890): Recrimpo. pc-locks round 8 (PR #905): Omicron, Sobieski and SmallDevil.
-        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1 - 1 + 1 + 1 + 1 + 3 + 4 + 1 + 3, list.size());
+        // pc-locks round 6 (PR #890): Recrimpo. pc-locks round 8 (PR #905): Omicron, Sobieski and SmallDevil. pc-locks round 9 (PR #913): JayLexi.
+        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1 - 1 + 1 + 1 + 1 + 3 + 4 + 1 + 3 + 1, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",

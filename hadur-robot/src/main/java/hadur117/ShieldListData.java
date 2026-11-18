@@ -379,6 +379,8 @@ final class ShieldListData {
             "maribo.Omicron 1.0",            // +1.4
             "pfvicm.Sobieski 7.2.3b",        // +2.3
             "rz.SmallDevil 1.502",           // +2.1
+            // pc-locks round 9 (BENCH-253, PR #913): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "hadur117.mini.JayLexi 0.6",     // +15.8
         };
     }
 }
