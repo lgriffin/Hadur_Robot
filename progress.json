@@ -1,12 +1,16 @@
 {
  "plan": "pc-team-closerr",
- "updated": 1795016040.0921166,
+ "updated": 1795016947.6082034,
  "steps": {
   "tcprep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 130,
+   "end": "2026-11-18T15:36:10"
   },
   "tcpcr": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-18T15:36:10"
   },
   "tcpilot": {
    "status": "pending"
@@ -24,5 +28,49 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "tcpcr",
+   "started": 1795016170.6731207,
+   "updated": 1795016947.601091,
+   "elapsed": 776.9279701709747,
+   "expected": 276,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 66,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": 305.81985605140784,
+   "eta": 2472.0435414531016,
+   "fraction": 0.2391304347826087,
+   "last_battle_age": 2.8887722492218018,
+   "rules": [
+    {
+     "rule": "fails 60",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 66"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 60 over 200",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "66 of 200 battles to read"
+    }
+   ],
+   "skips_mean": 6.636363636363637,
+   "skips_last100": 6.636363636363637
+  }
+ ]
 }

@@ -1,1 +1,7 @@
 15:34:00 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
+15:34:00 start tcprep
+15:34:02 progress pushed to origin claude/pc-team-closerr-progress (every 15 min)
+15:36:10 tcprep exit=0 in 130 s
+15:36:10 start tcpcr
+15:36:10 watching tcpcr: 3 stop rule(s)
+15:37:02 progress tcpcr: 0/276 (0%) battles, 0 failed
