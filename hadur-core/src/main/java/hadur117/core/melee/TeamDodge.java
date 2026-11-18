@@ -45,6 +45,10 @@ final class TeamDodge {
     static final boolean OWN_FIRE = true;
     /** Candidates driven through the waves: more than WAVES' 8, since the base ranking no longer sees bullets. */
     static final int RERANK = 12;
+    /** TMODE-52: candidates driven through the waves while one arrives within {@link #CLOSE_TICKS}. */
+    static final int CLOSE_RERANK = 40;
+    /** TMODE-52: ticks to arrival under which a wave counts as close. */
+    static final int CLOSE_TICKS = 25;
     /** Past this, px, beyond Hadur a wave is gone. */
     static final double GONE = 100;
 

@@ -738,7 +738,17 @@ public class MinimumRiskMovement {
      * {@link #SWITCH_GAIN}.
      */
     Point2D.Double dodgeBest(List<Point2D.Double> candidates, View v, List<Wave> waves) {
-        return rerankBest(candidates, v, TeamDodge.RERANK, waves, v.pathBullets, TeamDodge.OWN_FIRE);
+        int rerank = TeamModes.FORCE_CLOSERERANK && closeWave(v.me, v.now, waves) ? TeamDodge.CLOSE_RERANK : TeamDodge.RERANK;
+        return rerankBest(candidates, v, rerank, waves, v.pathBullets, TeamDodge.OWN_FIRE);
+    }
+
+    /** TMODE-52: whether a wave's front reaches {@code me} within {@link TeamDodge#CLOSE_TICKS} ticks. */
+    static boolean closeWave(Point2D.Double me, long now, List<Wave> waves) {
+        for (Wave w : waves) {
+            double left = me.distance(w.source) - w.speed * (now - w.fireTime);
+            if (left > 0 && left <= w.speed * TeamDodge.CLOSE_TICKS) return true;
+        }
+        return false;
     }
 
     /**
