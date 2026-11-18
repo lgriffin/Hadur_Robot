@@ -17,12 +17,14 @@ class KeepBrokenScriptTest {
 
     @Test
     @Tag("BENCH-169")
-    @DisplayName("bench-top20.sh passes --keep-broken to Bench as --keep-broken true, off by default")
+    @DisplayName("bench-top20.sh passes --keep-broken to Bench as --keep-broken true, off by default and only with another --engine")
     void keepBroken() throws IOException {
         String script = Files.readString(Path.of("bench-top20.sh"));
         assertTrue(script.contains("--keep-broken) KEEP_BROKEN=1"), "the option");
         assertTrue(script.contains("\nKEEP_BROKEN=0\n"), "off by default");
         assertTrue(script.contains("if [ \"$KEEP_BROKEN\" -eq 1 ]; then ARGS=\"$ARGS --keep-broken true\"; fi"), "passed to Bench");
+        assertTrue(script.contains("if [ \"$KEEP_BROKEN\" -eq 1 ] && { [ -z \"$ENGINE\" ] || [ \"$ENGINE\" = \"1.11.2\" ]; }; then"),
+            "refused without another engine");
         assertTrue(Files.readString(Path.of("src/main/java/hadur/bench/Bench.java"))
             .contains("opts.getOrDefault(\"keep-broken\", \"false\")"), "Bench reads it");
     }

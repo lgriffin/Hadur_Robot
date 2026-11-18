@@ -146,6 +146,10 @@ if [ -n "$BASELINE" ] && [ -z "$BASELINE_ROBOT" ]; then
     exit 2
 fi
 
+# --keep-broken is for a run on another engine, where the 1.11.2 broken list's robots load; on 1.11.2 they cannot.
+if [ "$KEEP_BROKEN" -eq 1 ] && { [ -z "$ENGINE" ] || [ "$ENGINE" = "1.11.2" ]; }; then
+    echo "--keep-broken needs --engine with a release other than 1.11.2 (e.g. --engine 1.12.0)" >&2; exit 2
+fi
 HERE_DIR=$(cd "$(dirname "$0")" && pwd)
 PYTHON=$(command -v python3 || command -v python || true)
 if [ "$PARALLEL" = "auto" ] || [ "$PARALLEL" = "0" ]; then
