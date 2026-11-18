@@ -1,0 +1,43 @@
+# battle: melee
+# Melee: stray fire in the crowd (BENCH-258; read M0 of "Hadur melee and team: finding the APS", 2026-11-18).
+# No robot change.
+# On the traced ScalarR fields of 2026-11-09 and 2026-11-11 Hadur and ScalarR take the same damage from bullets
+# aimed at them (about 38 a round with three or more alive) and Hadur takes about 29 more from bullets aimed at
+# another robot, ScalarR about 15. Hadur's surfer (MMOVE-15) draws head-on and linear bullets at Hadur only, and
+# none for a shot with three or more robots nearer its shooter, so those bullets are on no map. This card fights
+# the census once with the trace on, and twelve census fields again with ScalarR seated, and reads every stray hit.
+#   srprep    build aa (master under another name), seat ScalarR in twelve census fields, fetch the fields
+#   srtrace   master on the 46 census fields, 1 seed (3360), 20 rounds, --melee-trace true: 46 battles
+#   srseat    master on the 12 seated fields, 1 seed (3361), 20 rounds, traced: 12 battles
+#   srread    tools/melee_strays.py over each run
+#   srpr      the results PR
+# 58 battles, about 170 MB of traces, about 25 minutes.
+# What the result decides: build the third-party bullets (the surfer draws each seen shot at every robot it may
+# be for) if the strays that head-on or linear aim at the true target predicts, and that fly ten turns or more,
+# are 30% or more of Hadur's stray damage; the verdict line of melee-stray-census.md says BUILD or DO NOT BUILD.
+# The lane-risk term is built after it only if the top tenth of Hadur's turns by lane exposure holds 30% or more
+# of its stray damage and ScalarR stands at 70% or less of Hadur's exposure in the seated fields.
+# Stop rules: 10 failed battles or no battle in 30 minutes. Every step resumes.
+# The melee thread reads claude/pc-melee-stray-read-results.
+#   ./queue.sh run pc-melee-stray-read        (or  .\queue.ps1 run pc-melee-stray-read)
+# Run it from master (one bench queue at a time, RoboRumble workers at 0):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+set S = python3 tools/melee_strays.py
+
+srprep  | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur117.Hadur_"$V"aa.jar && bash ./build-ablation.sh aa && test -f bisect/hadur117.Hadur_"$V"aa.jar && mkdir -p work && rm -rf work/melee-stray-"$V" work/melee-stray-seat-"$V" work/melee-stray-seat work/melee-stray-seat.txt && ${S} seat --suite melee-census-317.txt --fields 12 --robot "aaa.r.ScalarR 0.005g.047 | melee-1 | aaa.r.ScalarR_0.005g.047.jar" --out-dir work/melee-stray-seat --out-suite work/melee-stray-seat.txt && for a in stray stray-seat; do sed -e "s/@V@/$V/g" -e "s/@C@/${MELEE_WORKERS}/g" plans/melee-$a.args > work/melee-$a.args || exit 1; done && rm -f ${OUT}/melee-stray-*.md && for f in melee-census-317/f*.txt work/melee-stray-seat/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+srtrace | mvn -q exec:java "-Dexec.args=@work/melee-stray.args"
+  after: srprep
+  watch:
+  stop: fails 10
+  stop: stall 30m
+srseat  | mvn -q exec:java "-Dexec.args=@work/melee-stray-seat.args"
+  after: srtrace
+  watch:
+  stop: fails 10
+  stop: stall 30m
+srread  | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && ${S} work/melee-stray-"$V" --ours hadur117.Hadur --compare aaa.r.ScalarR --compare jk.melee.Neuromancer --compare cz.libors.Ogi --out ${OUT}/melee-stray-census.md && ${S} work/melee-stray-seat-"$V" --ours hadur117.Hadur --compare aaa.r.ScalarR --out ${OUT}/melee-stray-seat.md
+  after: srseat
+srpr    | bash tools/open_results_pr.sh claude/pc-melee-stray-read-results "Melee: stray fire in the crowd, from a traced census" ${OUT}/melee-stray-census.md ${OUT}/melee-stray-seat.md
+  after: srread
