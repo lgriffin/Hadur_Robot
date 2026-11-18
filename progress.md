@@ -1,6 +1,6 @@
 # Queue pc-team-closerr: progress
 
-Updated 2026-11-18 21:22:07 PC time (21:22 UTC), runner pid 85476.
+Updated 2026-11-18 21:37:15 PC time (21:37 UTC), runner pid 85476.
 
 - `tcprep` done, exit 0 in 2 min
 - `tcpcr` done, exit 0 in 41 min
@@ -38,16 +38,16 @@ Stopping now would leave 24 battles unrun (about 4 min); every battle already fo
 
 ### tccr
 
-**798 of 1104 battles** (72%), 0 failed. Running 2.3 h, 352 battles/h, about 52 min left (ends ~22:14 PC time). Last battle 0 min ago.
-Skipped turns a battle: 16.7 overall, first 100 34.0, last 100 9.4.
+**911 of 1104 battles** (83%), 0 failed. Running 2.5 h, 362 battles/h, about 32 min left (ends ~22:09 PC time). Last battle 0 min ago.
+Skipped turns a battle: 15.6 overall, first 100 34.0, last 100 8.5.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 798 |
+| `fails 60` | halt | ok | 0 failed of 911 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | ok | 8.1 a battle over the last 200 (first 200: 28.5) |
+| `skips 60 over 200` | halt | ok | 8.6 a battle over the last 200 (first 200: 28.5) |
 
-Stopping now would leave 306 battles unrun (about 52 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 193 battles unrun (about 32 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
