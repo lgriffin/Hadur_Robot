@@ -25,3 +25,9 @@
 20:39:44 progress tccr: 569/1104 (52%) battles, 365/h, ETA 1.5 h, 0 failed, skips 10.3/battle (last 100)
 21:10:01 progress tccr: 710/1104 (64%) battles, 344/h, ETA 1.1 h, 0 failed, skips 7.6/battle (last 100)
 21:40:16 progress tccr: 933/1104 (85%) battles, 363/h, ETA 28 min, 0 failed, skips 13.7/battle (last 100)
+21:59:00 tccr exit=0 in 10373 s
+21:59:00 start tcgate
+21:59:00 tcgate exit=0 in 0 s
+21:59:00 start tcpr
+21:59:08 tcpr exit=0 in 7 s
+21:59:08 ALLDONE
