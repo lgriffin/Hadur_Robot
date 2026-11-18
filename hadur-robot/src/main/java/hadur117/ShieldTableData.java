@@ -1082,6 +1082,17 @@ final class ShieldTableData {
     }
 
     /**
+     * RAM-17: the rammers whose linear and circular aims the escape dodges as +-4 degree fans, at RAM-14's weight
+     * ({@code ram-fan:} lines). Empty on master until a PC card holds a line.
+     *
+     * @return a fresh array of names
+     */
+    static String[] ramFans() {
+        return new String[] {
+        };
+    }
+
+    /**
      * RAM-11: the rammers whose shots the escape also dodges as circular aims ({@code ram-circ:} lines), each locked on
      * 12 fresh PC seeds at the live turn time after a 12-seed cloud lock.
      *
