@@ -63,9 +63,10 @@ class PcLocksPlanTest {
         assertTrue(!body112.contains("stop: aa"), "the watcher reads A/A only once 10 robots are read in both arms; aa is read in the gate");
         int atg = queue.indexOf("\ngate112 | ");
         String gate112 = queue.substring(atg, queue.indexOf("\n\n", atg + 1));
-        assertTrue(gate112.contains("robocode.host/1.12.0"), "the gate fails a battle that did not run on 1.12.0");
+        assertTrue(gate112.contains("[ \"$n\" -gt 0 ] && [ \"$m\" -eq \"$n\" ]"), "the gate needs every battle's engine.log to name 1.12.0");
+        assertTrue(gate112.contains("grep -qv \"robocode.host/1.12.0\""), "the gate fails a battle that ran on another host");
         assertTrue(gate112.contains("lock_prep.py --restrict ${W}-112/arms.tsv ${W}-prep ${W}-112/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}-112/arms-picked.tsv --margin 0"), "the gate, each robot on its own arm");
-        assertTrue(gate112.contains("&& mvn -q compile\n"), "the gate compiles back on 1.11.2");
+        assertTrue(gate112.contains("); rc=$?; mvn -q compile; exit $rc\n"), "the gate compiles back on 1.11.2 even when it fails");
         assertTrue(queue.contains("./fetch-opponents.sh --set panel-locks-112.txt"), "prep fetches the 1.12.0 robots");
         int atp = queue.indexOf("\npr | ");
         assertTrue(queue.substring(atp).contains("  after: gate112"), "the results PR waits for the gate");

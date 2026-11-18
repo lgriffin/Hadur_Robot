@@ -2,8 +2,8 @@
 # turn time; coverage/shards/locks.tsv, coverage/shards/round11-draft.md) after round 10's card (PR #915):
 #   rfn (RAM-17 ram-fan, PR #918): Lifestealer +1.6 (low +0.8, 36 seeds), nanoPri +2.4 (+1.1, 12 seeds; on top of its
 #      shipped ram lines)
-#   rp (race power), Robocode 1.12.0 only (each on broken-1.11.2.txt; live runs 1.12.0): KurtBot +2.6 (low +1.8, 24 seeds),
-#      Garm +3.7 (+1.1, 24 seeds), Raven +4.9 (+1.8, 24 seeds), WhiteFang +3.6 (+1.6, 24 seeds)
+#   rp (race power), Robocode 1.12.0 only (each on broken-1.11.2.txt; live runs 1.12.0): KurtBot +2.5 (low +0.6, 24 seeds),
+#      Garm +5.2 (+1.7, 24 seeds), Raven +4.9 (+1.8, 24 seeds), WhiteFang +3.6 (+1.6, 24 seeds)
 #   Each cloud gain is the smaller of the reads against c and against an A/A twin.
 #   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live
 #   lock       the 1.11.2 robots (panel-locks.txt)  c / aa / rp / rfn, 12 fresh seeds from 47900, --cpu-constant live, in
@@ -13,7 +13,8 @@
 #   lock112    the robots that load only on Robocode 1.12.0 (panel-locks-112.txt), same arms and seeds on --engine 1.12.0
 #              --keep-broken, in work/pc-locks11-112. The 18 Nov engine check found no score or timing difference between
 #              1.11.2 and 1.12.0, so the 1.11.2 livematch certifies the PC's timing for this step too
-#   gate112    fails if any battle's engine.log names a host other than 1.12.0; then the same gate; then compiles back on 1.11.2
+#   gate112    fails unless every battle's engine.log names robocode.host/1.12.0 and none names another host; then the
+#              same gate; compiles back on 1.11.2 whether or not the gate passes, and keeps the gate's exit status
 # Leigh starts it once the PC is free (one card at a time, from master):
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
@@ -69,7 +70,7 @@ lock112 | ./bench-top20.sh ${C} ${P} --engine 1.12.0 --keep-broken --set panel-l
   stop: dead 8
   stop: stall 30m
 
-gate112 | grep -h "robocode.host/" ${W}-112/battles/*/engine.log | grep -v "robocode.host/1.12.0" | (! grep -q .) && python3 ../data/tools/multiarm.py ${W}-112/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks11-112-lock.md && python3 tools/lock_prep.py --restrict ${W}-112/arms.tsv ${W}-prep ${W}-112/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}-112/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks11-112-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks11-112-lock-pick.md && python3 tools/per_robot.py ${W}-112/arms-picked.tsv --arms rp rfn --out ${OUT}/$(date +%Y-%m-%d)_pc-locks11-112-lock-per-robot.md --out-tsv ${OUT}/pc-locks11-112-lock-per-robot.tsv && mvn -q compile
+gate112 | n=$(ls -d ${W}-112/battles/*/ 2>/dev/null | wc -l); m=$(grep -l "robocode.host/1.12.0" ${W}-112/battles/*/engine.log 2>/dev/null | wc -l); ( [ "$n" -gt 0 ] && [ "$m" -eq "$n" ] && ! grep -h "robocode.host/" ${W}-112/battles/*/engine.log | grep -qv "robocode.host/1.12.0" && python3 ../data/tools/multiarm.py ${W}-112/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks11-112-lock.md && python3 tools/lock_prep.py --restrict ${W}-112/arms.tsv ${W}-prep ${W}-112/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}-112/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks11-112-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks11-112-lock-pick.md && python3 tools/per_robot.py ${W}-112/arms-picked.tsv --arms rp rfn --out ${OUT}/$(date +%Y-%m-%d)_pc-locks11-112-lock-per-robot.md --out-tsv ${OUT}/pc-locks11-112-lock-per-robot.tsv ); rc=$?; mvn -q compile; exit $rc
   after: lock112
 
 pr | bash tools/open_results_pr.sh claude/pc-locks11-results "1v1 cloud locks, round 11 (6 robots, 4 on Robocode 1.12.0) locked on 12 fresh PC seeds" ${OUT}/pc-locks11-livematch.md ${OUT}/*_pc-locks11-*.md ${OUT}/pc-locks11-lock-per-robot.tsv ${OUT}/pc-locks11-112-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks11-*lock-pick.tsv' -size +0c)
