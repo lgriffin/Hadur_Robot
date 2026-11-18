@@ -375,6 +375,9 @@ final class ShieldTableData {
             "-1 ghent.ArthurPanzergon 1.0.0",// +3.6
             "-1 sul.NanoR2 1.32",            // +1.4
             "-1 ua.kiiv.kosyak.robocode.tn1.Tn1 2.0",// +2.5
+            // pc-locks round 9 (BENCH-253, PR #913): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "-1 av.RobAtHome 1.2",           // +2.8
+            "-1 qwaker00.Gandhi 1.2",        // +1.2
         };
     }
 
@@ -775,7 +778,7 @@ final class ShieldTableData {
 
     /**
      * RAM-15: the slow chargers the duel backs away from at full speed while they close in ({@code ram-flee:}
-     * lines). 24 robots held in pc-locks round 7 (PR #902), 1 more in round 8 (PR #905); candidate builds add lines here (build-ablation.sh rflist).
+     * lines). 24 robots held in pc-locks round 7 (PR #902), 1 more in round 8 (PR #905), 7 in round 9 (PR #913); candidate builds add lines here (build-ablation.sh rflist).
      *
      * @return a fresh array of names
      */
@@ -808,6 +811,14 @@ final class ShieldTableData {
             "vort.Chaser 0.0.3",             // +2.5
             // pc-locks round 8 (BENCH-253, PR #905): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "urdos.URDOS 1.3",               // +3.9
+            // pc-locks round 9 (BENCH-253, PR #913): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "blir.nano.Bruce R1.0.0",        // +2.0
+            "genprog.Zafaran 1.0",           // +2.0
+            "japs.Serenity 1.0",             // +0.9
+            "mahrgell.mahrram 1.3",          // +2.6
+            "nexus.Prototype 1.0",           // +3.5
+            "rus.vv.Snezhok 1.1",            // +2.0
+            "zch.David 0.21",                // +1.3
         };
     }
 
