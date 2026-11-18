@@ -945,7 +945,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$modes" "public static final boolean FORCE_QUARTERS = false;" "public static final boolean FORCE_QUARTERS = true;"
             sed -i -E '/^        t\.put\(/{/Mode\.QUARTERS/!s/\)\);$/, Mode.QUARTERS));/}' "$modes"
             ;;
-        tmclose)
+        tmcloserr)
             # TMODE-52 on: the dodge drives 40 candidates while a wave lands within 25 ticks. Suffix cr.
             version="${version}cr"
             edit "$modes" "public static final boolean FORCE_CLOSERERANK = false;" "public static final boolean FORCE_CLOSERERANK = true;"
@@ -988,7 +988,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean THREE_FAR = false;" "public static final boolean THREE_FAR = true;"
             version="${version}ef" ;;
-        *) echo "unknown ablation: $a (aa, bb, tmclose, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, rhlist, rwlist, orlist, rflist)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, tmcloserr, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, rhlist, rwlist, orlist, rflist)" >&2; exit 2 ;;
     esac
 done
 
