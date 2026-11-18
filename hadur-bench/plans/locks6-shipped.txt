@@ -1,0 +1,24 @@
+# pc-locks round 6 (BENCH-253, PR #890): robots whose lines shipped on 12 fresh PC seeds at the live turn time
+ahf.Acero 1.0
+ar.QuantumChromodynamics 1.2.1
+bzdp.BoxCar 2.0
+kneels.ToNoone 0.2
+myl.nano.KomoriNinja 1.1
+sng.arco.Arco 0.0
+supersample.SuperTracker 1.0
+uccc.MilkyWay 1.01
+ap.Frederick 1.1
+el33t.EL33tGangstarr2 2.0
+cx.nano.Smog 2.6
+dukie.Ambassador 1.0
+geep.mini.GPBotA 1.0
+nexus.Experimental 0.2
+pez.nano.LittleEvilBrother 0.1
+projectx.ProjectNano 2.0
+sul.Pinkbot 1.1
+damij.mega.Boque aaah
+davidalves.net.DuelistNano 1.0
+dmh.robocode.robot.GreenDragon 1.0
+mc2.enemy.Original 0.9
+sanyi.mikrobi.Roberto 1.0
+tango.Recrimpo 2.51

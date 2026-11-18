@@ -236,6 +236,21 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("RAM-17")
+    @DisplayName("ram-fan lines name the rammers whose aims the escape dodges as fans, matched as shield entries")
+    void perOpponentRamFan() {
+        ShieldList l = ShieldList.parse(List.of("ram-fan: a.B 1.0", "ram-fan: c.D", "ram-fan:", "ram-heavy: e.F"));
+        assertTrue(l.ramFan("a.B 1.0"));
+        assertTrue(l.ramFan("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertTrue(l.ramFan("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.ramFan("e.F 1.0"), "a ram-heavy line is not a ram-fan line");
+        assertFalse(l.ramHeavy("a.B 1.0") || l.ramCirc("a.B 1.0"), "no other switch");
+        assertFalse(l.ramFan(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.ramFan("a.B 1.0"));
+    }
+
+    @Test
     @Tag("DIST-4")
     @DisplayName("dist-pin lines pin one duel distance per opponent, matched as shield entries, held to 150-900 px")
     void perOpponentDistPin() {

@@ -297,3 +297,9 @@ cx.mini.BlackSwans 0.60 | pc-shards | cx.mini.BlackSwans_0.60.jar
 pa3k.Manta 1.20 | pc-shards | pa3k.Manta_1.20.jar
 bndl.LostLion 1.2 | pc-shards | bndl.LostLion_1.2.jar
 nz.jdc.nano.AralR 1.1 | pc-shards | nz.jdc.nano.AralR_1.1.jar
+tango.Recrimpo 2.51 | pc-locks6 | tango.Recrimpo_2.51.jar
+maribo.Omicron 1.0 | pc-locks8 | maribo.Omicron_1.0.jar
+pfvicm.Sobieski 7.2.3b | pc-locks8 | pfvicm.Sobieski_7.2.3b.jar
+rz.SmallDevil 1.502 | pc-locks8 | rz.SmallDevil_1.502.jar
+hadur117.mini.JayLexi 0.6 | pc-locks9 | hadur117.mini.JayLexi_0.6.jar
+kawigi.nano.ThnikkaBot 0.9 | pc-locks10 | kawigi.nano.ThnikkaBot_0.9.jar
