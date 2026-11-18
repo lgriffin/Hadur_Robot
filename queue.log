@@ -165,3 +165,10 @@
 22:06:04 start lock
 22:06:04 watching lock: 4 stop rule(s)
 22:06:25 progress lock: 13/1680 (1%) battles, 2314/h, ETA 43 min, 0 failed, skips 19.2/battle (last 100)
+22:36:44 progress lock: 1660/1680 (99%) battles, 3232/h, ETA 0 min, 0 failed, skips 11.7/battle (last 100), aa +0.01, rf +0.01, sp2 +0.01, hf +0.01, or +0.00, rp +0.01, mv +0.01, md +0.00, mtmv +0.00
+22:40:29 lock exit=0 in 2064 s
+22:40:29 start gate
+22:40:30 gate exit=0 in 0 s
+22:40:30 start pr
+22:40:36 pr exit=0 in 6 s
+22:40:36 ALLDONE
