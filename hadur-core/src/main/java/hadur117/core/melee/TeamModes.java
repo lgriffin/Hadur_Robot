@@ -119,7 +119,7 @@ public final class TeamModes {
      * (PR #865: +0.32 +- 0.10 APS over 46 pairings at 24 fresh seeds); ablation tmnofitted turns it off.
      */
     public static final boolean FORCE_FITTED = true;
-    /** TMODE-52: the dodge drives {@link TeamDodge#CLOSE_RERANK} candidates while a wave is close; off (ablation tmclose). */
+    /** TMODE-52: the dodge drives {@link TeamDodge#CLOSE_RERANK} candidates while a wave is close; off in the shipped build (ablation tmcloserr turns it on). */
     public static final boolean FORCE_CLOSERERANK = false;
 
     /**

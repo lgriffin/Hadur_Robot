@@ -164,6 +164,8 @@
 #         shipped table entry): a member with an armed enemy closing inside 200 px gets an uncapped
 #         ring, a term against ending within 150 px of it, and full speed through a turn. Suffix qt
 #         (pc-team-quarters, BENCH-225).
+#   tmcloserr (team only) TMODE-52 on: while a wave lands within 35 ticks the team dodge drives 40 candidates
+#              instead of 12. Suffix cr.
 #   tmnofitted (team only) TMODE-50 off: the fitted enemy aims (TeamModes.FITTED) leave the dodge's profile,
 #         the build before FITTED shipped (FORCE_FITTED). Suffix nfi.
 #   tmnomomentum (team only) TMODE-49 off: each candidate's drive starts from a standstill pointed at it, the
@@ -945,14 +947,8 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$modes" "public static final boolean FORCE_QUARTERS = false;" "public static final boolean FORCE_QUARTERS = true;"
             sed -i -E '/^        t\.put\(/{/Mode\.QUARTERS/!s/\)\);$/, Mode.QUARTERS));/}' "$modes"
             ;;
-        tmcloserr35)
-            # TMODE-52 on, waves landing within 35 ticks count as close. Suffix cr35.
-            version="${version}cr35"
-            edit "$modes" "public static final boolean FORCE_CLOSERERANK = false;" "public static final boolean FORCE_CLOSERERANK = true;"
-            edit "$src/hadur-core/src/main/java/$pkg/core/melee/TeamDodge.java" "static final int CLOSE_TICKS = 25;" "static final int CLOSE_TICKS = 35;"
-            ;;
         tmcloserr)
-            # TMODE-52 on: the dodge drives 40 candidates while a wave lands within 25 ticks. Suffix cr.
+            # TMODE-52 on: the team dodge drives 40 candidates while a wave lands within 35 ticks. Suffix cr.
             version="${version}cr"
             edit "$modes" "public static final boolean FORCE_CLOSERERANK = false;" "public static final boolean FORCE_CLOSERERANK = true;"
             ;;
