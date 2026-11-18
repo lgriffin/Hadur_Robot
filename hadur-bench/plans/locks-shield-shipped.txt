@@ -8,3 +8,5 @@ pfvicm.Sobieski 7.2.3b
 rz.SmallDevil 1.502
 # round 9 (PR #913)
 hadur117.mini.JayLexi 0.6
+# round 10 (PR #922)
+kawigi.nano.ThnikkaBot 0.9
