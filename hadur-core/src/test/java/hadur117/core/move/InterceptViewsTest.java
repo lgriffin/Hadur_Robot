@@ -35,10 +35,22 @@ class InterceptViewsTest {
         int before = met.viewSize("normal");
         assertTrue(before >= 0, "the normal view exists");
         hit.logBulletHit(wave(), new Point2D.Double(400, 480), 0, 40);
-        met.learnInterceptViews(wave(), new Point2D.Double(400, 300), 0, 40);
+        met.learnInterceptViews(wave(), new Point2D.Double(400, 300), "enemy", 0, 40);
         assertEquals(hit.viewSize("normal"), met.viewSize("normal"));
         assertEquals(before + 1, met.viewSize("normal"));
-        met.learnInterceptViews(null, new Point2D.Double(400, 300), 0, 41);
+        met.learnInterceptViews(null, new Point2D.Double(400, 300), "enemy", 0, 41);
         assertEquals(before + 1, met.viewSize("normal"), "no wave, nothing learnt");
+        met.learnInterceptViews(wave(), new Point2D.Double(400, 300), null, 0, 42);
+        assertEquals(before + 2, met.viewSize("normal"), "unknown owner (older transcripts) still learns");
+    }
+
+    @Test
+    @Tag("MOVE-52")
+    @DisplayName("another enemy's bullet of the same power teaches the focused enemy's views nothing")
+    void otherOwnerTeachesNothing() {
+        MoveController met = new MoveController(FIELD, new MovementPredictor(FIELD));
+        int before = met.viewSize("normal");
+        met.learnInterceptViews(wave(), new Point2D.Double(400, 300), "someoneElse", 0, 40);
+        assertEquals(before, met.viewSize("normal"));
     }
 }

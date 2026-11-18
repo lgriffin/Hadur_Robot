@@ -1193,7 +1193,7 @@ public final class DuelController {
             // MOVE-30: the bullet's angle scores the aim members, where the switch is on.
             if (MoveDesign.AIM_INTERCEPTS) moveController.scoreInterceptAims(hitWave, hitLoc);
             // MOVE-52: and teaches the danger views, where the switch is on.
-            if (MoveDesign.INTERCEPT_VIEWS) moveController.learnInterceptViews(hitWave, hitLoc, round, in.time());
+            if (MoveDesign.INTERCEPT_VIEWS) moveController.learnInterceptViews(hitWave, hitLoc, e.owner(), round, in.time());
         }
     }
 
