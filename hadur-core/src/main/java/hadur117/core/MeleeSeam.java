@@ -332,6 +332,8 @@ final class MeleeSeam implements Role {
             melee.shotFired(in.location(), in.time(), in.gunHeading(), previous.firePower, previous.target);
         }
 
+        // TMODE-53: the team dodge reads the tick budget's level.
+        melee.mover().budgetLevel(tick.level());
         MeleeController.Command c = melee.tick(new MeleeController.Situation(
             in.location(), in.gunHeading(), in.radarHeading(), in.energy(), in.time(),
             in.others(), in.heading(), in.velocity(), in.gunHeat(), core.livingTeammates()));

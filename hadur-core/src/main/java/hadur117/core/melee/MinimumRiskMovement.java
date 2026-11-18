@@ -232,6 +232,8 @@ public class MinimumRiskMovement {
     private final Point2D.Double centre;
     /** TMODE-45: whether the last decision had a chaser. */
     private boolean quartered;
+    /** TMODE-53: the tick budget's level, as {@link #budgetLevel(int)} last set it. */
+    private int budgetLevel;
     /** TMODE-49: the member's body heading and velocity, set by the controller each tick. */
     private double heading, velocity;
     private final Deque<VirtualBullet> bullets = new ArrayDeque<>();
@@ -738,8 +740,24 @@ public class MinimumRiskMovement {
      * {@link #SWITCH_GAIN}.
      */
     Point2D.Double dodgeBest(List<Point2D.Double> candidates, View v, List<Wave> waves) {
-        int rerank = TeamModes.FORCE_CLOSERERANK && closeWave(v.me, v.now, waves) ? TeamDodge.CLOSE_RERANK : TeamDodge.RERANK;
+        int rerank = TeamModes.FORCE_CLOSERERANK && closeAllowed(budgetLevel) && closeWave(v.me, v.now, waves)
+            ? TeamDodge.CLOSE_RERANK : TeamDodge.RERANK;
         return rerankBest(candidates, v, rerank, waves, v.pathBullets, TeamDodge.OWN_FIRE);
+    }
+
+    /**
+     * TMODE-53: whether the tick budget leaves room for the close rerank. With
+     * {@link TeamModes#FORCE_CLOSEBUDGET} on, only a tick at computation level 0 drives the
+     * {@link TeamDodge#CLOSE_RERANK} candidates; after a skipped turn or a slow tick the dodge
+     * keeps to {@link TeamDodge#RERANK}.
+     */
+    static boolean closeAllowed(int level) {
+        return !TeamModes.FORCE_CLOSEBUDGET || level <= 0;
+    }
+
+    /** TMODE-53: the tick budget's computation level for this tick (TIME-1, TIME-2); 0 until told. */
+    public void budgetLevel(int level) {
+        budgetLevel = level;
     }
 
     /** TMODE-52: whether a wave's front reaches {@code me} within {@link TeamDodge#CLOSE_TICKS} ticks. */
