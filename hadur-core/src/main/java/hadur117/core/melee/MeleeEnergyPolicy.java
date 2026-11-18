@@ -55,9 +55,6 @@ public final class MeleeEnergyPolicy {
     static final double FAR_SPARE_POWER = 2.5;
     static final double FAR_SPARE_ENERGY = 60.0;
 
-    /** TMODE-51: the team endgame's power ceiling, about OgiTeam's 1.92. */
-    public static final double TEAM_END_POWER = 1.9;
-
     private MeleeEnergyPolicy() {}
 
     /** The power to fire at a target {@code distance} away with {@code targetEnergy}, or 0 to hold. */
@@ -97,18 +94,6 @@ public final class MeleeEnergyPolicy {
     public static double teamPower(double tablePower, double ownEnergy, double targetEnergy) {
         if (tablePower <= 0 || ownEnergy < TEAM_FULL_POWER_ENERGY) return tablePower;
         return Math.min(MAX_POWER, killPower(targetEnergy));
-    }
-
-    /**
-     * TMODE-51: on a team with {@code others} (two or fewer) enemies left, {@code p} raised to
-     * {@link #TEAM_END_POWER}, capped by what kills the target and by a third of the member's own
-     * energy. Against learning teams the duel's power-down left a quarter of the team's shots at
-     * 0.1 in these endgames (OgiTeam: 4% under 0.5), so the rounds ran 15-35% longer. A hold (0)
-     * stands, it never lowers {@code p}, and with three or more enemies left {@code p} stands.
-     */
-    public static double teamEndPower(double p, double ownEnergy, double targetEnergy, int others) {
-        if (p <= 0 || others > 2 || p >= TEAM_END_POWER) return p;
-        return Math.max(p, Math.min(TEAM_END_POWER, Math.min(killPower(targetEnergy), ownEnergy / 3)));
     }
 
     /**

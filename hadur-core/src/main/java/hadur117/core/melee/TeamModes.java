@@ -119,12 +119,6 @@ public final class TeamModes {
      * (PR #865: +0.32 +- 0.10 APS over 46 pairings at 24 fresh seeds); ablation tmnofitted turns it off.
      */
     public static final boolean FORCE_FITTED = true;
-    /**
-     * TMODE-51: with two or fewer enemies left, a member with a living teammate fires up to
-     * {@link MeleeEnergyPolicy#TEAM_END_POWER} instead of the duel's power-down ({@link MeleeEnergyPolicy#teamEndPower});
-     * off in the shipped build (ablation tmendpower turns it on).
-     */
-    public static final boolean FORCE_ENDPOWER = false;
 
     /**
      * TMODE-50: one enemy class's gun, read from its code and fitted on bench bullet logs: it fires at
