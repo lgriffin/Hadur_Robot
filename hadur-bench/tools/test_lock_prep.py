@@ -61,6 +61,15 @@ class LockPrepTest(unittest.TestCase):
         posix = os.path.join(out, "rwl.list").replace(os.sep, "/")
         self.assertIn("RAM_WAIT=%s bash ./build-ablation.sh rwlist" % posix, open(os.path.join(out, "build.sh")).read())
 
+    def test_ram_fan_pick_builds_its_list(self):
+        # RAM-17: a ram-fan pick (arm rfn) gets its own list and an rfanlist rebuild.
+        with open(self.arms, "a") as f:
+            f.write("rfn | hadur117.Hadur 3.23rfn | x\n")
+        out = self.run_prep([("b.B 2", "rfn", "1.4")])
+        self.assertEqual("b.B 2\n", open(os.path.join(out, "rfn.list")).read())
+        posix = os.path.join(out, "rfn.list").replace(os.sep, "/")
+        self.assertIn("RAM_FAN=%s bash ./build-ablation.sh rfanlist" % posix, open(os.path.join(out, "build.sh")).read())
+
     def test_steady_orbit_pick_builds_its_list(self):
         # MOVE-47: a steady-orbit pick (arm or) gets its own list and an orlist rebuild.
         with open(self.arms, "a") as f:

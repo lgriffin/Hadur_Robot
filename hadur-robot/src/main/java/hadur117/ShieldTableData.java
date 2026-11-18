@@ -375,6 +375,9 @@ final class ShieldTableData {
             "-1 ghent.ArthurPanzergon 1.0.0",// +3.6
             "-1 sul.NanoR2 1.32",            // +1.4
             "-1 ua.kiiv.kosyak.robocode.tn1.Tn1 2.0",// +2.5
+            // pc-locks round 9 (BENCH-253, PR #913): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "-1 av.RobAtHome 1.2",           // +2.8
+            "-1 qwaker00.Gandhi 1.2",        // +1.2
         };
     }
 
@@ -455,7 +458,6 @@ final class ShieldTableData {
             "pez.mini.Tityus 0.9.1",
             "pez.mini2.Pugilist 2.5.15",
             "ry.LightningBug 1.0",
-            "scheronimus.AntiRebel 1.1",
             "serenity.nonSense 1.39",
             "sheldor.micro.Epeeist 3.7",
             "sheldor.micro.EpeeistDC 3.0",
@@ -556,7 +558,6 @@ final class ShieldTableData {
             "cb.mega.RandomBot 1.0",
             "ebo.Tahoe 1.1.79",
             "jam.RaikoMX 0.32",
-            "radnor.RamRod 1.0",
             // BENCH-207 pc-tailor-near (PR #704): leaned on pc-tailor-field's screen, picked on 4 new seeds, kept on 4 fresh ones (screen / confirm points).
             "xander.cat.Mikey 1.2",                        // +2.9 / +4.3
             "kc.mega.BeepBoop 2.0",                        // +15.2 / +3.1
@@ -777,7 +778,7 @@ final class ShieldTableData {
 
     /**
      * RAM-15: the slow chargers the duel backs away from at full speed while they close in ({@code ram-flee:}
-     * lines). 24 robots held in pc-locks round 7 (PR #902), 1 more in round 8 (PR #905); candidate builds add lines here (build-ablation.sh rflist).
+     * lines). 24 robots held in pc-locks round 7 (PR #902), 1 more in round 8 (PR #905), 7 in round 9 (PR #913); candidate builds add lines here (build-ablation.sh rflist).
      *
      * @return a fresh array of names
      */
@@ -810,6 +811,14 @@ final class ShieldTableData {
             "vort.Chaser 0.0.3",             // +2.5
             // pc-locks round 8 (BENCH-253, PR #905): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "urdos.URDOS 1.3",               // +3.9
+            // pc-locks round 9 (BENCH-253, PR #913): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "blir.nano.Bruce R1.0.0",        // +2.0
+            "genprog.Zafaran 1.0",           // +2.0
+            "japs.Serenity 1.0",             // +0.9
+            "mahrgell.mahrram 1.3",          // +2.6
+            "nexus.Prototype 1.0",           // +3.5
+            "rus.vv.Snezhok 1.1",            // +2.0
+            "zch.David 0.21",                // +1.3
         };
     }
 
@@ -1068,6 +1077,17 @@ final class ShieldTableData {
      * @return a fresh array of names
      */
     static String[] ramHeavies() {
+        return new String[] {
+        };
+    }
+
+    /**
+     * RAM-17: the rammers whose linear and circular aims the escape dodges as +-4 degree fans, at RAM-14's weight
+     * ({@code ram-fan:} lines). Empty on master until a PC card holds a line.
+     *
+     * @return a fresh array of names
+     */
+    static String[] ramFans() {
         return new String[] {
         };
     }

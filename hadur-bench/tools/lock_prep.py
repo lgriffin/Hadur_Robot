@@ -40,6 +40,7 @@ LEVERS = {
     "mtx0": ("slistadd,sx0list", ("SHIELD_ADD", "SHIELD_EXIT0")),
     "mtmv": ("slistadd,smovelist", ("SHIELD_ADD", "SHIELD_MOVE")),
     "mv": ("smovelist", ("SHIELD_MOVE",)),
+    "md": ("slistdrop", ("SHIELD_DROP",)),
     "vj": ("vjlist", ("VEL_JITTER",)),
     "sb": ("sblist", ("SPEED_BAND",)),
     "dp": ("dplist", ("DIST_PIN",)),
@@ -47,6 +48,7 @@ LEVERS = {
     "rh": ("rhlist", ("RAM_HEAVY",)),
     "rwl": ("rwlist", ("RAM_WAIT",)),
     "rf": ("rflist", ("RAM_FLEE",)),
+    "rfn": ("rfanlist", ("RAM_FAN",)),
     "or": ("orlist", ("STEADY_ORBIT",)),
     "sp2": ("sdplanlist", ("SHOT_DODGE_PLAN",)),
 }

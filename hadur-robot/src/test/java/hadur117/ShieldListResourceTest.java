@@ -55,8 +55,8 @@ class ShieldListResourceTest {
         // Seraphim leaves: its lines lost on 2.4.0 (docs/bench/local/2026-11-13_vr.md). pc-class-1 (PR #803): Eveimear. pc-class-2 (PR #806): Gouldingi.
         // pc-r31 (PR #817): Musashi. pc-locks (PR #843): GlowBlow, MostlyHarmless and DuelistMicro.
         // pc-shards (PR #840): BlackSwans, Manta, LostLion and AralR.
-        // pc-locks round 6 (PR #890): Recrimpo. pc-locks round 8 (PR #905): Omicron, Sobieski and SmallDevil.
-        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1 - 1 + 1 + 1 + 1 + 3 + 4 + 1 + 3, list.size());
+        // pc-locks round 6 (PR #890): Recrimpo. pc-locks round 8 (PR #905): Omicron, Sobieski and SmallDevil. pc-locks round 9 (PR #913): JayLexi.
+        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1 - 1 + 1 + 1 + 1 + 3 + 4 + 1 + 3 + 1, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
@@ -174,9 +174,10 @@ class ShieldListResourceTest {
         for (String name : ShieldTableData.stopGoShifts()) lines.add(ShieldList.STOP_GO_SHIFT_PREFIX + " " + name);
         ShieldList list = ShieldList.parse(lines);
         assertEquals(18 + 8 + 1 + 3 + 1 + 2, ShieldTableData.stopGos().length);
-        assertEquals(35 + 12 + 2 + 2 + 1 + 3 + 4, ShieldTableData.stopGoShifts().length);
+        // - 1: the 18 Nov line audit removed AntiRebel (interval wholly below 0 on 12 fresh seeds).
+        assertEquals(35 + 12 + 2 + 2 + 1 + 3 + 4 - 1, ShieldTableData.stopGoShifts().length);
         assertEquals(18 + 8 + 1 + 3 + 1 + 2, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGos())).size(), "no duplicates");
-        assertEquals(35 + 12 + 2 + 2 + 1 + 3 + 4, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGoShifts())).size(), "no duplicates");
+        assertEquals(35 + 12 + 2 + 2 + 1 + 3 + 4 - 1, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGoShifts())).size(), "no duplicates");
         // DuelistMicroMkII (PR #263) and Vanessa03 (PR #276) were on both; pc-rival-confirm (PR #537) measured
         // them off the shield list, so stop-and-go now drives. The set stays as a guard.
         // pc-tailor-field (BENCH-197, PR #686) banked two stop-and-go picks on shielded robots as measured: they act
