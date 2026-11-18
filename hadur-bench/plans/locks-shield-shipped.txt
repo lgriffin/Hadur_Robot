@@ -1,0 +1,8 @@
+# Shield-list lines shipped by pc-locks rounds (BENCH-253): only robots added to ShieldListData, for the shield-list plan tests.
+# Other round lines (ram-flee, planner, ram-wait, race power, moves) are in locksN-shipped.txt and must not exempt a robot from a shield-list absence check.
+# round 6 (PR #890)
+tango.Recrimpo 2.51
+# round 8 (PR #905)
+maribo.Omicron 1.0
+pfvicm.Sobieski 7.2.3b
+rz.SmallDevil 1.502
