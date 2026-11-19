@@ -1,0 +1,28 @@
+{
+ "plan": "pc-rc-confirm",
+ "updated": 1795129606.8418958,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "livematch": {
+   "status": "pending"
+  },
+  "field": {
+   "status": "pending"
+  },
+  "ret": {
+   "status": "pending"
+  },
+  "gate112": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
