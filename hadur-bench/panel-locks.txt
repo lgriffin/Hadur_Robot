@@ -1,9 +1,12 @@
-# BENCH-253 pc-locks, round 12: robots that load on Robocode 1.11.2 whose per-robot line locked on the cloud (95% low end
-# above 0, live turn time, MOVE-52 on; coverage/shards/locks.tsv, coverage/shards/briefs.md). name | note | jar
-synnalagma.test.MiniNeural 1.1 | rank614-band5 | synnalagma.test.MiniNeural_1.1.jar
-nan.Ihivatar_Mk_1 1.0 | rank486-band5 | nan.Ihivatar_Mk_1_1.0.jar
-goblin.Bender 2.4 | gap2.8 | goblin.Bender_2.4.jar
-kjc.etc.Dharok 1.0 | gap3.5 | kjc.etc.Dharok_1.0.jar
-mbro.BelajarBot 0.0.3 | gap2.4 | mbro.BelajarBot_0.0.3.jar
-acogdev.alpha 0.2 | gap1.4 | acogdev.alpha_0.2.jar
-marcinek.TopGun 1.3 | gap12.8 | marcinek.TopGun_1.3.jar
+# BENCH-253 pc-locks, round 13: robots that load on Robocode 1.11.2 whose per-robot line locked on the cloud (95% low end
+# above 0, live turn time, MOVE-52 on; coverage/shards/locks.tsv, coverage/shards/briefs.md). Hawkwing and Syzygy last:
+# both await a cloud recheck and drop from the end of this file and plans/locks-pick.tsv if it fails. name | note | jar
+jgap.JGAP23423 1.0 | gap1.6 | jgap.JGAP23423_1.0.jar
+maye.SlashBot 1.0 | gap0.8 | maye.SlashBot_1.0.jar
+agd.Mooserwirt2 2.7 | gap3.9 | agd.Mooserwirt2_2.7.jar
+suh.nano.MyFirstAdvancedRobot 1.00 | gap0.5 | suh.nano.MyFirstAdvancedRobot_1.00.jar
+mld.Infinity 2.2 | gap1.1 | mld.Infinity_2.2.jar
+ola.Puffin 1.0 | gap2.0 | ola.Puffin_1.0.jar
+com.blogspot.malinkody.DestrobotMalin 1.0 | gap-0.2 | com.blogspot.malinkody.DestrobotMalin_1.0.jar
+jep.nano.Hawkwing 0.4.1 | gap6.2 | jep.nano.Hawkwing_0.4.1.jar
+acid.Syzygy 1.0.4 | gap2.5 | acid.Syzygy_1.0.4.jar
