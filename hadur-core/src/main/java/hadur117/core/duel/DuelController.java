@@ -946,6 +946,19 @@ public final class DuelController {
         return states;
     }
 
+    /** TMODE-53: this core plays for a team (the TEAM charter); set once by the core after it builds the duel. */
+    private boolean teamCharter;
+
+    /** TMODE-53: whether this core plays for a team, so the team-only switches apply. */
+    public void teamCharter(boolean on) {
+        teamCharter = on;
+    }
+
+    /** MOVE-52, TMODE-53: whether an intercepted enemy bullet teaches the danger views, for a team member or not. */
+    static boolean interceptViews(boolean team) {
+        return MoveDesign.INTERCEPT_VIEWS || team && MoveDesign.TEAM_INTERCEPT_VIEWS;
+    }
+
     /** A duel-only move switch: in effect only in a duel; melee and team endgames play as with it off. */
     static boolean duelOnly(boolean switchOn, int enemiesTotal) {
         return switchOn && enemiesTotal <= 1;
@@ -1193,7 +1206,7 @@ public final class DuelController {
             // MOVE-30: the bullet's angle scores the aim members, where the switch is on.
             if (MoveDesign.AIM_INTERCEPTS) moveController.scoreInterceptAims(hitWave, hitLoc);
             // MOVE-52: and teaches the danger views, where the switch is on.
-            if (MoveDesign.INTERCEPT_VIEWS) moveController.learnInterceptViews(hitWave, hitLoc, e.owner(), round, in.time());
+            if (interceptViews(teamCharter)) moveController.learnInterceptViews(hitWave, hitLoc, e.owner(), round, in.time());
         }
     }
 
