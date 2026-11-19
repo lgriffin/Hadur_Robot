@@ -150,7 +150,7 @@ public class JayLexi extends AdvancedRobot {
     static double danger(Wave s, double dir) {
         Point2D.Double p = me;
         double heading = bot.getHeadingRadians(), v = bot.getVelocity(), turn, angle, move;
-        int tick = 3;
+        int tick = 2;
         do {
             if ((move = Math.copySign(1, Math.cos(angle = smooth(p, s.angle(p) + dir * orbit, dir) - heading))) < 0) {
                 angle += Math.PI;

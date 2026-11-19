@@ -125,6 +125,15 @@ class JayLexiReplayTest {
     }
 
     @Test
+    @Tag("JAYLEXI-22")
+    @DisplayName("the shipped build counts its danger prediction from tick 2: 0.8's tick 3 gives other orders")
+    void predictionCountsFromTickTwo() throws Exception {
+        String lead3 = Replay.run(hadur117.mini.ref.JayLexi.class, hadur117.mini.ref.ReplayBot.Lead3::new, 1, 6, 1500);
+        assertNotEquals(-1, firstDifference(shipped(1), lead3));
+        assertEquals(-1, firstDifference(shipped(1), readable(1)));
+    }
+
+    @Test
     @Tag("JAYLEXI-11")
     @DisplayName("the replay tells builds apart: the second wave at a third instead of a quarter gives other orders")
     void replayDiscriminates() throws Exception {

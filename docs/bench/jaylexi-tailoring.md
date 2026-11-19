@@ -125,10 +125,58 @@ That comes to about +0.03 APS. The readable reference keeps one orbit char a rob
 Lifestealer). A replay test checks that every slot of the shipped table follows that rule (JAYLEXI-21). Nothing is
 released.
 
+## 8. Movement screens on 0.8 (2026-11-18 and 19)
+
+All on `mini-wide3` (112 robots), 3 seeds a set, each set fresh, against 0.8 (c). The reports are in
+`docs/bench/local/2026-11-18_jaylexi-n1.md` to `n4.md`.
+
+| Set (seeds) | A/A | Arm | Change | Bytes | vs 0.8 |
+|---|---:|---|---|---:|---:|
+| n1 (54000) | -0.13 | D3 | surf log depth 0.85 to 3 | 1,495 | +0.37 ± 0.35 |
+| | | D10, D30 | depth 10, 30 | 1,495 | -0.22, -0.74 |
+| | | P2 | danger over distance squared, not to the 4th | 1,495 | -0.03 |
+| | | WH | drop waves that are wall hits or rams | 1,559 | +0.10 |
+| n2 (55000) | +0.22 | D2, D3, D5 | depth 2, 3, 5 | 1,495 | -0.22, -0.02, -0.23 |
+| | | K4, Kq | surf kernel 4 times narrower, 4 times wider | 1,495 | -0.42, -0.03 |
+| | | W3 | third wave at a ninth | over | +0.16 |
+| n3 (56000) | -0.16 | DC1 | orbit += (distance - 450) / 1000 | 1,511 | +0.30 ± 0.40 |
+| | | DC2 | the same over 500 | 1,511 | -0.20 |
+| | | FL20, FL5 | flattener: log missed waves too, depth 20, 5 | 1,512 | -0.17, -0.85 |
+| n4 (57000) | -0.06 | TI2 | danger prediction counted from tick 2, not 3 | 1,495 | +0.50 ± 0.44 |
+| | | ST160, ST120 | wall stick 160, 120 (from 140) | 1,495 | +0.40, -0.24 |
+| | | DC1 | (repeat) | 1,511 | +0.20 ± 0.39 |
+| | | DC3 | distance control centred on 350 | 1,511 | +0.15 |
+| | | TI4 | counted from 4 | 1,495 | -0.33 |
+
+The surf's own settings (depth, kernel, a third wave, a flattener) are dead: D3 did not repeat. Lock, 12 fresh seeds
+(6 from 58000, 6 from 59000), report `docs/bench/local/2026-11-19_jaylexi-lock12.md`:
+
+| Arm | Seeds 58000 | Seeds 59000 | 12 seeds |
+|---|---:|---:|---:|
+| TI2 | +0.32 ± 0.25 | +0.26 ± 0.36 | **+0.29 ± 0.23** |
+| DC1 | +0.31 ± 0.27 | +0.02 ± 0.29 | +0.16 ± 0.22 |
+| DST (TI2 + ST160 + DC1) | +0.28 ± 0.33 | +0.01 ± 0.39 | +0.15 ± 0.25 |
+| ST160 | +0.19 ± 0.28 | | |
+| aa | -0.28 ± 0.25 | -0.18 ± 0.29 | -0.23 ± 0.18 |
+
+TI2 holds on all three sets (15 seeds), with its 12-seed low end above 0, and costs no bytes. DC1 and ST160 do not hold
+and are not shipped.
+
+Why it should help: the prediction walks our path one tick at a time until the wave reaches us and reads the danger
+at that spot. The start tick sets how far the wave is taken to have come already. From 3, the wave is a tick further
+along than from 2, so the scored spot is a tick short of where we will be. That is our reading of the result, not a
+measured timing trace; TI4 (a tick earlier still) losing -0.33 fits it.
+
+## JayLexi 0.9
+
+0.9 is 0.8 with TI2 (JAYLEXI-22), at 1,495 B. The readable reference holds the start tick in a field, and a replay test
+shows that 0.8's tick 3 gives other orders. Nothing is released.
+
 ## Where this leaves JayLexi
 
 - The gap to FoilistMC on its gap robots is real, about 1 APS, and it is movement: damage taken.
 - Per-robot tailoring through the free strings closes very little of it: 5 lines, about +0.03 APS. The rest of the
   gap is spread thin. Most robots show 3 to 10 points, and on 12 fresh seeds those fall back to noise.
+- A field-wide movement fix does exist: the prediction count in 0.9, +0.29 on 12 seeds.
 - None of the levers tested close the gap against learning guns: orbit angle, path noise and gun jitter. The leader's
   lead there is in how its surf is built (docs/bench/jaylexi-own-movement.md).

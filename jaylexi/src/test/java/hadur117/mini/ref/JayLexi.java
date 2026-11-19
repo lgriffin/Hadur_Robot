@@ -13,7 +13,8 @@ import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 
 /**
- * The readable JayLexi 0.8: 0.7 with per-robot orbit lines for RammingC, LightningBug and MirrorMicro and,
+ * The readable JayLexi 0.9: 0.8 with the danger prediction counted from tick 2 instead of 3 (JAYLEXI-22).
+ * 0.8 was 0.7 with per-robot orbit lines for RammingC, LightningBug and MirrorMicro and,
  * inside 200 px, a 0.4 rad wider orbit for Bruce and Lifestealer (JAYLEXI-21, docs/bench/jaylexi-tailoring.md).
  * 0.7 was 0.6 with its surf stats also segmented by how much of our orbit ahead is still
  * in the field, as the enemy sees it (JAYLEXI-20, docs/bench/jaylexi-own-movement.md), the lateral-speed
@@ -153,11 +154,17 @@ public class JayLexi extends AdvancedRobot {
         lastBearing = absBearing + Math.PI;
     }
 
+    /**
+     * The tick the prediction counts from: 2, one less than 0.8's 3, so each predicted spot is taken a tick
+     * later along our path (JAYLEXI-22, docs/bench/jaylexi-tailoring.md).
+     */
+    int lead = 2;
+
     /** Where the robot would be when wave s reaches it, orbiting dir, and how dangerous that is. */
     double danger(Wave s, double dir) {
         Point2D.Double p = me;
         double heading = getHeadingRadians(), v = getVelocity(), turn, angle, move;
-        int tick = 3;
+        int tick = lead;
         do {
             move = 1;
             if (Math.cos(angle = smooth(p, s.angle(p) + dir * orbit, dir) - heading) < 0) {
