@@ -1080,6 +1080,11 @@ final class ShieldTableData {
             "kc.serpent.WaveSerpent 2.11",   // +5.2
             // pc-locks round 10 (BENCH-253, PR #922): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "hope.Identity .pope69",         // +6.8
+            // pc-locks round 11 (BENCH-253, PR #929): 12 fresh PC seeds on Robocode 1.12.0 at the live turn time; 24-seed cloud lock held first
+            "dsekercioglu.mega.Raven 3.56j8",    // +4.8
+            "dsekercioglu.mega.WhiteFang 2.8.1", // +4.3
+            "Krabb.sliNk.Garm 0.9u",             // +4.2
+            "dev.kurtw.KurtBot 0.2",             // +3.7
         };
     }
 
@@ -1096,12 +1101,16 @@ final class ShieldTableData {
 
     /**
      * RAM-17: the rammers whose linear and circular aims the escape dodges as +-4 degree fans, at RAM-14's weight
-     * ({@code ram-fan:} lines). Empty on master until a PC card holds a line.
+     * ({@code ram-fan:} lines). Lifestealer and nanoPri held in pc-locks round 11 (PR #929); candidate builds add
+     * lines here (build-ablation.sh rfanlist).
      *
      * @return a fresh array of names
      */
     static String[] ramFans() {
         return new String[] {
+            // pc-locks round 11 (BENCH-253, PR #929): 12 fresh PC seeds at the live turn time; cloud lock held first
+            "step.nanoPri 1.0",              // +2.4
+            "stelo.Lifestealer 1.0",         // +1.9
         };
     }
 
