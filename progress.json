@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-icpt",
- "updated": 1795091712.7914007,
+ "updated": 1795091733.9168613,
  "steps": {
   "tcprep": {
    "status": "done",
@@ -9,31 +9,48 @@
    "end": "2026-11-19T11:51:52"
   },
   "tcptic": {
-   "status": "running",
-   "start": "2026-11-19T11:51:52"
+   "status": "done",
+   "exit": 0,
+   "seconds": 2612,
+   "end": "2026-11-19T12:35:24"
   },
   "tcpilot": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-11-19T12:35:25"
   },
   "tcbb": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-11-19T12:35:25"
   },
   "tctic": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-11-19T12:35:26"
   },
   "tcgate": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-11-19T12:35:26"
   },
   "tcpr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 7,
+   "end": "2026-11-19T12:35:33"
   }
  },
  "watched": [
   {
    "step": "tcptic",
    "started": 1795089112.821331,
-   "updated": 1795091712.783603,
-   "elapsed": 2599.9622719287872,
+   "updated": 1795091724.9917417,
+   "elapsed": 2612.170410633087,
    "expected": 276,
    "panel": null,
    "field": null,
@@ -41,20 +58,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 264,
+   "battles": 270,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 365.54376586970386,
-   "eta": 118.18010326949035,
-   "fraction": 0.9565217391304348,
-   "last_battle_age": 9.231118440628052,
+   "rate": 372.1043604365864,
+   "eta": 58.04823134740194,
+   "fraction": 0.9782608695652174,
+   "last_battle_age": 1.854867696762085,
    "rules": [
     {
      "rule": "fails 60",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 264"
+     "detail": "0 failed of 270"
     },
     {
      "rule": "stall 30m",
@@ -66,11 +83,97 @@
      "rule": "skips 60 over 200",
      "action": "halt",
      "state": "ok",
-     "detail": "18.7 a battle over the last 200 (first 200: 26.8)"
+     "detail": "17.8 a battle over the last 200 (first 200: 26.8)"
     }
    ],
-   "skips_mean": 23.931818181818183,
-   "skips_last100": 14.76
+   "skips_mean": 23.437037037037037,
+   "skips_last100": 14.33
+  },
+  {
+   "step": "tcbb",
+   "started": 1795091725.569144,
+   "updated": 1795091725.934921,
+   "elapsed": 0.36577701568603516,
+   "expected": 1104,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 0,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": null,
+   "eta": null,
+   "fraction": 0.0,
+   "last_battle_age": 0.36577701568603516,
+   "rules": [
+    {
+     "rule": "fails 60",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 0"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 60 over 200",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "0 of 200 battles to read"
+    }
+   ],
+   "skips_mean": null,
+   "skips_last100": null
+  },
+  {
+   "step": "tctic",
+   "started": 1795091725.9441493,
+   "updated": 1795091726.3232388,
+   "elapsed": 0.3790895938873291,
+   "expected": 1104,
+   "panel": null,
+   "field": null,
+   "multiarm": false,
+   "arms": [],
+   "aa": null,
+   "warnings": [],
+   "battles": 0,
+   "resumed": 0,
+   "failed": 0,
+   "disables": null,
+   "rate": null,
+   "eta": null,
+   "fraction": 0.0,
+   "last_battle_age": 0.3790895938873291,
+   "rules": [
+    {
+     "rule": "fails 60",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 0"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "skips 60 over 200",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "0 of 200 battles to read"
+    }
+   ],
+   "skips_mean": null,
+   "skips_last100": null
   }
  ]
 }

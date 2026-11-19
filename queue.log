@@ -6,3 +6,17 @@
 11:51:52 watching tcptic: 3 stop rule(s)
 11:52:47 progress tcptic: 0/276 (0%) battles, 0 failed
 12:23:05 progress tcptic: 183/276 (66%) battles, 352/h, ETA 16 min, 0 failed, skips 19.2/battle (last 100)
+12:35:24 tcptic exit=0 in 2612 s
+12:35:24 start tcpilot
+12:35:25 tcpilot exit=0 in 0 s
+12:35:25 start tcbb
+12:35:25 watching tcbb: 3 stop rule(s)
+12:35:25 tcbb exit=0 in 0 s
+12:35:25 start tctic
+12:35:25 watching tctic: 3 stop rule(s)
+12:35:26 tctic exit=0 in 0 s
+12:35:26 start tcgate
+12:35:26 tcgate exit=0 in 0 s
+12:35:26 start tcpr
+12:35:33 tcpr exit=0 in 7 s
+12:35:33 ALLDONE
