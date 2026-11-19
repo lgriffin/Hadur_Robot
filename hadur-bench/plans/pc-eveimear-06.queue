@@ -33,7 +33,7 @@ set ALERT = lgriffin
 
 prep | git checkout -q master && rm -f ${OUT}/*_eveimear-06*.md && mkdir -p ${W} kitlab/jars bisect work && (cd ../eveimear && mvn -q verify) && test "$(grep -c '120 \* Math' ${SRC})" = 2 && sed 's/120 \* Math/160 * Math/g' ${SRC} > ${W}/Eveimear.java && test "$(grep -c '160 \* Math' ${W}/Eveimear.java)" = 2 && bash kitlab/build_arm_pg.sh ${W}/Eveimear.java hadur117.micro.Eveimear 0.5c && bash kitlab/build_arm_pg.sh ${W}/Eveimear.java hadur117.micro.Eveimear 0.5aa && bash kitlab/build_arm_pg.sh ${SRC} hadur117.micro.Eveimear 0.6n && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set kitlab/micro-pw-field.txt && mvn -q compile
 
-livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out work/pc-livematch-rel-live --label pc-eveimear-06-livematch --shuffle-jobs && python3 tools/live_match.py work/pc-livematch-rel-live/arms.tsv --out ${OUT}/pc-eveimear-06-livematch.md
+livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out ${W}-livematch --label pc-eveimear-06-livematch --shuffle-jobs && python3 tools/live_match.py ${W}-livematch/arms.tsv --out ${OUT}/pc-eveimear-06-livematch.md
   after: prep
   watch: field=1217
   stop: fails 30
