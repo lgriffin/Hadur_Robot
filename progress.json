@@ -1,0 +1,28 @@
+{
+ "plan": "pc-team-icpt",
+ "updated": 1795088986.2462814,
+ "steps": {
+  "tcprep": {
+   "status": "pending"
+  },
+  "tcptic": {
+   "status": "pending"
+  },
+  "tcpilot": {
+   "status": "pending"
+  },
+  "tcbb": {
+   "status": "pending"
+  },
+  "tctic": {
+   "status": "pending"
+  },
+  "tcgate": {
+   "status": "pending"
+  },
+  "tcpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
