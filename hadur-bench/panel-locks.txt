@@ -6,3 +6,4 @@ goblin.Bender 2.4 | gap2.8 | goblin.Bender_2.4.jar
 kjc.etc.Dharok 1.0 | gap3.5 | kjc.etc.Dharok_1.0.jar
 mbro.BelajarBot 0.0.3 | gap2.4 | mbro.BelajarBot_0.0.3.jar
 acogdev.alpha 0.2 | gap1.4 | acogdev.alpha_0.2.jar
+marcinek.TopGun 1.3 | gap12.8 | marcinek.TopGun_1.3.jar

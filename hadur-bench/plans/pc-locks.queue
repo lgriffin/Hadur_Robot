@@ -2,7 +2,7 @@
 # turn time, all with MOVE-52 intercept views on, master 539198f1a; coverage/shards/briefs.md) after round 11's card:
 #   rwl (MOVE-46 ram-wait): MiniNeural +0.83 (low +0.18, 24 seeds), Ihivatar +1.32 (low +0.42, 36 seeds)
 #   rf (RAM-15 ram-flee): Bender +0.84 (low +0.53, 24 seeds), Dharok +1.07 (low +0.29, 24 seeds), BelajarBot +1.49
-#      (low +0.96, 12 seeds), acogdev.alpha +0.88 (low +0.53, 12 seeds)
+#      (low +0.96, 12 seeds), acogdev.alpha +0.88 (low +0.53, 12 seeds), TopGun +1.05 (low +0.38, 24 seeds)
 #   Each cloud gain is the smaller of the reads against c and against an A/A twin.
 #   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live
 #   lock       panel-locks.txt  c / aa / rwl / rf, 12 fresh seeds from 81900, --cpu-constant live, in work/pc-locks12
@@ -14,7 +14,7 @@
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
 #   --fresh because round 11 left this plan's queue state marked complete; an interrupted round 12 resumes without it.
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 288 lock battles (6 robots, 4 arms, 12 seeds), about
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 336 lock battles (7 robots, 4 arms, 12 seeds), about
 # 15 minutes with the live-match check.
 #
 # Why it should win (the PC card rule of 2026-11-03):
@@ -23,9 +23,10 @@
 #     of 19 Nov):
 #     rwl: MiniNeural and Ihivatar are among the robots whose bullets most often hit us after they run dry, because END-2
 #     rams a disabled enemy straight into the bullets it fired last; ram-wait holds the ram until those waves pass.
-#     rf: Bender, Dharok, BelajarBot and acogdev.alpha are simple aimers that charge us (in the 20 ticks before they get inside
-#     150 px they close 60 to 140 px to our 5 to 80; Bender and BelajarBot often pin us on a wall); under 150 px no drive escapes most of their shots, and
-#     BeepBoop backs away. Ram-flee backs away at full speed from a charger within 200 px.
+#     rf: Bender, Dharok, BelajarBot, acogdev.alpha and TopGun are simple aimers that charge us: in the 20 ticks
+#     before they get inside 150 px they close 60 to 140 px themselves, and Bender and BelajarBot often pin us on a
+#     wall. Under 150 px no drive escapes most of their shots; BeepBoop holds further out (BelajarBot +60 px, TopGun
+#     +27, Dharok +42). Ram-flee backs away at full speed from a charger within 200 px.
 #   - Every robot passed the cloud lock bar on 12+ fresh seeds, and every line was locked with MOVE-52 on (master
 #     539198f1a), so the card reads the lines on the master they would ship on.
 # Stop rules (docs/bench/watch.md): the watcher's A/A rule needs 10 robots read in both c and aa, which this lock never
@@ -61,5 +62,5 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 8
 gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks12-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks12-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks12-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms rwl rf --out ${OUT}/$(date +%Y-%m-%d)_pc-locks12-lock-per-robot.md --out-tsv ${OUT}/pc-locks12-lock-per-robot.tsv
   after: lock
 
-pr | bash tools/open_results_pr.sh claude/pc-locks12-results "1v1 cloud locks, round 12 (6 robots on rwl and rf) locked on 12 fresh PC seeds" ${OUT}/pc-locks12-livematch.md ${OUT}/*_pc-locks12-*.md ${OUT}/pc-locks12-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks12-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks12-results "1v1 cloud locks, round 12 (7 robots on rwl and rf) locked on 12 fresh PC seeds" ${OUT}/pc-locks12-livematch.md ${OUT}/*_pc-locks12-*.md ${OUT}/pc-locks12-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks12-lock-pick.tsv' -size +0c)
   after: gate
