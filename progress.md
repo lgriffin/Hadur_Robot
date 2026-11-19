@@ -1,6 +1,6 @@
 # Queue pc-eveimear-06: progress
 
-Updated 2026-11-19 21:03:58 PC time (21:03 UTC), runner pid 40328.
+Updated 2026-11-19 21:19:08 PC time (21:19 UTC), runner pid 40328.
 
 - `prep` done, exit 0 in 0 min
 - `livematch` done, exit 0 in 8 min
@@ -34,26 +34,26 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### bench
 
-**947 of 9252 battles** (10%), 0 failed. Running 6 min, 8972 battles/h, about 56 min left (ends ~21:59 PC time). Last battle 0 min ago.
+**3649 of 9252 battles** (39%), 0 failed. Running 21 min, 10187 battles/h, about 33 min left (ends ~21:52 PC time). Last battle 0 min ago.
 Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0; engine disables 0.
 
 | arm | battles | failed | share | vs control (pts) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 316 | 0 | 85.52 | - | - | - | 0.0 |
-| aa | 317 | 0 | 85.64 | +0.11 (248 robots) | ±0.20 | -0.19 .. +0.40 | 0.0 |
-| n | 314 | 0 | 85.88 | +0.38 (246 robots) | ±0.49 | -0.36 .. +1.13 | 0.0 |
-A/A: aa - c +0.11 pts over 248 robots; 1% band ±0.66 (inside).
+| c | 1214 | 0 | 85.90 | - | - | - | 0.0 |
+| aa | 1217 | 0 | 85.94 | +0.04 (489 robots) | ±0.10 | -0.12 .. +0.20 | 0.0 |
+| n | 1218 | 0 | 86.27 | +0.34 (489 robots) | ±0.25 | -0.03 .. +0.72 | 0.0 |
+A/A: aa - c +0.04 pts over 489 robots; 1% band ±0.33 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 947 |
+| `fails 30` | halt | ok | 0 failed of 3649 |
 | `dead 8` | halt | ok | every arm scoring |
 | `skips 60 over 200` | halt | ok | 0.0 a battle over the last 200 (first 200: 0.0) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `aa after 20%` | halt | waiting | checks from 20% of the battles (now 10%) |
-| `futility n below -0.5 after 20%` | finish | waiting | checks from 20% of the battles (now 10%) |
+| `aa after 20%` | halt | ok | aa - c +0.04 pts over 489 robots, stop band ±0.39 |
+| `futility n below -0.5 after 20%` | finish | ok | n +0.34, best case +0.72 pts vs bar -0.50 |
 
-Stopping now would leave 8305 battles unrun (about 56 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 5603 battles unrun (about 33 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
