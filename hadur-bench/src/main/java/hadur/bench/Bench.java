@@ -541,7 +541,8 @@ public final class Bench {
             System.err.println("refusing to start: " + memory.message());
             return 2;
         }
-        installRobots(opponents);
+        // BENCH-265: with --failed-ok, an opponent whose jar is missing (an archive 404) is dropped and logged, not fatal.
+        installRobots(opponents, Boolean.parseBoolean(opts.getOrDefault("failed-ok", "false")));
         startedAt = Instant.now();
         startShelf = Conditions.shelf(home.resolve("robots/.data"));
         sampler = Host.Sampler.system();
