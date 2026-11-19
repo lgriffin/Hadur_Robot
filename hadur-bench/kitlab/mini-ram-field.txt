@@ -1,0 +1,26 @@
+# 25 rammers from the JayLexi gap census (our bullet damage dealt over 80 a round)
+mz.NanoDeath 2.56 | gap:9.2 | mz.NanoDeath_2.56.jar | 1.0000
+wompi.Kowari 1.6 | gap:7.6 | wompi.Kowari_1.6.jar | 1.0000
+EH.Fusion 0.32 | gap:10.5 | EH.Fusion_0.32.jar | 1.0000
+maribo.FollowFire 1.11 | gap:10.9 | maribo.FollowFire_1.11.jar | 1.0000
+step.nanoPri 1.0 | gap:9.1 | step.nanoPri_1.0.jar | 1.0000
+mn.nano.perceptual.Impact 1.3.0 | gap:7.0 | mn.nano.perceptual.Impact_1.3.0.jar | 1.0000
+bayen.UbaRamLT 1.0 | gap:3.0 | bayen.UbaRamLT_1.0.jar | 1.0000
+kc.micro.rammer.MaxRisk 0.6 | gap:3.0 | kc.micro.rammer.MaxRisk_0.6.jar | 1.0000
+sul.Bicephal 1.2 | gap:5.2 | sul.Bicephal_1.2.jar | 1.0000
+blir.nano.Bruce R1.0.0 | gap:3.5 | blir.nano.Bruce_R1.0.0.jar | 1.0000
+pmc.SniperBot 1.0 | gap:7.0 | pmc.SniperBot_1.0.jar | 1.0000
+oog.nano.Caligula 1.15 | gap:5.4 | oog.nano.Caligula_1.15.jar | 1.0000
+suzushin7.nano.Galaxy03 1.01 | gap:2.7 | suzushin7.nano.Galaxy03_1.01.jar | 1.0000
+stelo.Lifestealer 1.0 | gap:4.9 | stelo.Lifestealer_1.0.jar | 1.0000
+suh.nano.RammingC 1.00 | gap:2.4 | suh.nano.RammingC_1.00.jar | 1.0000
+sheldor.nano.SabreuseNano 1.1 | gap:4.2 | sheldor.nano.SabreuseNano_1.1.jar | 1.0000
+as.xbots 1.0 | gap:6.5 | as.xbots_1.0.jar | 1.0000
+rsim.micro.uCatcher 0.1 | gap:3.3 | rsim.micro.uCatcher_0.1.jar | 1.0000
+zyx.nano.RedBull 1.0 | gap:2.3 | zyx.nano.RedBull_1.0.jar | 1.0000
+etienne72230.Wall_street 1.0 | gap:3.1 | etienne72230.Wall_street_1.0.jar | 1.0000
+radnor.RamRod 1.0 | gap:3.4 | radnor.RamRod_1.0.jar | 1.0000
+snowman.Snowman 1.0 | gap:2.1 | snowman.Snowman_1.0.jar | 1.0000
+amc.ROBv202 1.01 | gap:4.5 | amc.ROBv202_1.01.jar | 1.0000
+demetrix.nano.SledgeHammer 0.22 | gap:2.0 | demetrix.nano.SledgeHammer_0.22.jar | 1.0000
+gh.micro.GrubbmThree 1.01 | gap:3.4 | gh.micro.GrubbmThree_1.01.jar | 1.0000

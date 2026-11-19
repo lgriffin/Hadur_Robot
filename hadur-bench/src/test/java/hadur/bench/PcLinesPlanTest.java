@@ -60,6 +60,8 @@ class PcLinesPlanTest {
         later.addAll(names("plans/locks7-shipped.txt")); // pc-locks round 7 (PR #902) likewise
         later.addAll(names("plans/locks8-shipped.txt")); // pc-locks round 8 (PR #905) likewise
         later.addAll(names("plans/locks9-shipped.txt")); // pc-locks round 9 (PR #913) likewise
+        later.addAll(names("plans/locks10-shipped.txt")); // pc-locks round 10 (PR #922) likewise
+        later.addAll(names("plans/locks11-shipped.txt")); // pc-locks round 11 (PR #929) likewise
         for (String n : panel) {
             assertTrue(!broken.contains(n), n + " loads on 1.11.2");
             if (shipped.contains(n)) {

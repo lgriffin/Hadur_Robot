@@ -1,13 +1,6 @@
-# pc-locks (BENCH-253) round 10: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots
-# that locked with it (plans/locks-pick.tsv; rf RAM-15 ram-flee, sp2 DODGE-6 shot-dodge planner, hf hard fire, or MOVE-47
-# steady orbit, rp race power, mv moving shield, md shield-list drop, mtmv shield add plus moving shield).
+# pc-locks (BENCH-253) round 12: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots
+# that locked with it (plans/locks-pick.tsv; rwl MOVE-46 ram-wait, rf RAM-15 ram-flee).
 c | hadur117.Hadur 3.23 | bisect/hadur117.Hadur_3.23.jar
 aa | hadur117.Hadur 3.23aa | bisect/hadur117.Hadur_3.23aa.jar
+rwl | hadur117.Hadur 3.23rwl | bisect/hadur117.Hadur_3.23rwl.jar
 rf | hadur117.Hadur 3.23rf | bisect/hadur117.Hadur_3.23rf.jar
-sp2 | hadur117.Hadur 3.23sp2 | bisect/hadur117.Hadur_3.23sp2.jar
-hf | hadur117.Hadur 3.23hf | bisect/hadur117.Hadur_3.23hf.jar
-or | hadur117.Hadur 3.23or | bisect/hadur117.Hadur_3.23or.jar
-rp | hadur117.Hadur 3.23rp | bisect/hadur117.Hadur_3.23rp.jar
-mv | hadur117.Hadur 3.23mv | bisect/hadur117.Hadur_3.23mv.jar
-md | hadur117.Hadur 3.23md | bisect/hadur117.Hadur_3.23md.jar
-mtmv | hadur117.Hadur 3.23mtmv | bisect/hadur117.Hadur_3.23mtmv.jar

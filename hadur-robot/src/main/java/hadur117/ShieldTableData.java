@@ -96,6 +96,8 @@ final class ShieldTableData {
             "asm.Statistas 0.1",             // +1.9
             // pc-locks round 8 (BENCH-253, PR #905): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "maribo.Omicron 1.0",            // +1.4
+            // pc-locks round 10 (BENCH-253, PR #922): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "kawigi.nano.ThnikkaBot 0.9",    // +1.7 (with the shield add)
         };
     }
 
@@ -378,6 +380,10 @@ final class ShieldTableData {
             // pc-locks round 9 (BENCH-253, PR #913): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "-1 av.RobAtHome 1.2",           // +2.8
             "-1 qwaker00.Gandhi 1.2",        // +1.2
+            // pc-locks round 10 (BENCH-253, PR #922): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "-1 Fenix.FenixTrack 1.0",       // +2.0
+            "-1 repositorio.NanoStep 1.0",   // +1.1
+            "-1 shrub.Silver v048",          // +1.9
         };
     }
 
@@ -735,12 +741,14 @@ final class ShieldTableData {
 
     /**
      * POW-19: the opponents the duel fires at least 0.6 power at while our energy is 60 or more (BeepBoop's
-     * hard opening against strong surfers). Candidate builds add lines here (build-ablation.sh hflist).
+     * hard opening against strong surfers). Gilgalad held in pc-locks round 10 (PR #922); candidate builds add lines here (build-ablation.sh hflist).
      *
      * @return a fresh array of names
      */
     static String[] hardFires() {
         return new String[] {
+            // pc-locks round 10 (BENCH-253, PR #922): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "aw.Gilgalad 1.99.5c",           // +7.1
         };
     }
 
@@ -778,7 +786,7 @@ final class ShieldTableData {
 
     /**
      * RAM-15: the slow chargers the duel backs away from at full speed while they close in ({@code ram-flee:}
-     * lines). 24 robots held in pc-locks round 7 (PR #902), 1 more in round 8 (PR #905), 7 in round 9 (PR #913); candidate builds add lines here (build-ablation.sh rflist).
+     * lines). 24 robots held in pc-locks round 7 (PR #902), 1 more in round 8 (PR #905), 7 in round 9 (PR #913), 2 in round 10 (PR #922); candidate builds add lines here (build-ablation.sh rflist).
      *
      * @return a fresh array of names
      */
@@ -819,6 +827,9 @@ final class ShieldTableData {
             "nexus.Prototype 1.0",           // +3.5
             "rus.vv.Snezhok 1.1",            // +2.0
             "zch.David 0.21",                // +1.3
+            // pc-locks round 10 (BENCH-253, PR #922): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "mbh.Mbh 0.1",                   // +1.7
+            "ntw.Sighup 1.5",                // +2.6
         };
     }
 
@@ -1067,6 +1078,13 @@ final class ShieldTableData {
             "damij.mega.Boque aaah",         // +4.3
             // pc-locks round 8 (BENCH-253, PR #905): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "kc.serpent.WaveSerpent 2.11",   // +5.2
+            // pc-locks round 10 (BENCH-253, PR #922): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "hope.Identity .pope69",         // +6.8
+            // pc-locks round 11 (BENCH-253, PR #929): 12 fresh PC seeds on Robocode 1.12.0 at the live turn time; 24-seed cloud lock held first
+            "dsekercioglu.mega.Raven 3.56j8",    // +4.8
+            "dsekercioglu.mega.WhiteFang 2.8.1", // +4.3
+            "Krabb.sliNk.Garm 0.9u",             // +4.2
+            "dev.kurtw.KurtBot 0.2",             // +3.7
         };
     }
 
@@ -1083,12 +1101,16 @@ final class ShieldTableData {
 
     /**
      * RAM-17: the rammers whose linear and circular aims the escape dodges as +-4 degree fans, at RAM-14's weight
-     * ({@code ram-fan:} lines). Empty on master until a PC card holds a line.
+     * ({@code ram-fan:} lines). Lifestealer and nanoPri held in pc-locks round 11 (PR #929); candidate builds add
+     * lines here (build-ablation.sh rfanlist).
      *
      * @return a fresh array of names
      */
     static String[] ramFans() {
         return new String[] {
+            // pc-locks round 11 (BENCH-253, PR #929): 12 fresh PC seeds at the live turn time; cloud lock held first
+            "step.nanoPri 1.0",              // +2.4
+            "stelo.Lifestealer 1.0",         // +1.9
         };
     }
 

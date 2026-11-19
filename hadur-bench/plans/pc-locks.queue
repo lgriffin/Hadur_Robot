@@ -1,61 +1,57 @@
-# 1v1, cloud locks to the PC (BENCH-253), round 10: per-robot lines that locked on the cloud (95% low end above 0, live
-# turn time; coverage/shards/locks.tsv, coverage/shards/round10-draft.md) after round 9 (PR #913) ran, plus four PC near-misses:
-#   rf (RAM-15 ram-flee): Sighup +2.1 (low +1.2, 24 seeds), Mbh +1.3 (+0.7, 12 seeds)
-#   sp2 (DODGE-6 shot-dodge planner): Silver +1.7 (+0.8), NanoStep +1.2 (+0.7), FenixTrack +1.3 (+0.3, 48 seeds)
-#   hf (hard fire): Gilgalad +3.6 (+1.4, 24 seeds)       or (MOVE-47 steady orbit): Defender +1.5 (+0.2, 24 seeds)
-#   rp (race power): Identity +5.0 (+1.9, 24 seeds)
-#   md (shield-list drop; its other table lines stay): RainbowBot +3.1 (+1.4, 24 seeds)
-#   mtmv (shield add plus moving shield): ThnikkaBot +0.9 (+0.1, 24 seeds)
-#   PC near-misses, a third PC run: Tahoe rp (+1.8 in rounds 6 and 8), PinkPanther rp (+2.3, +0.6), AHEB mv (+2.7, +2.0),
-#      Mako mv (+2.0, +1.1); positive on both earlier PC runs, each 12-seed run short of the bar alone.
+# 1v1, cloud locks to the PC (BENCH-253), round 12: per-robot lines that locked on the cloud (95% low end above 0, live
+# turn time, all with MOVE-52 intercept views on, master 539198f1a; coverage/shards/briefs.md) after round 11's card:
+#   rwl (MOVE-46 ram-wait): MiniNeural +0.83 (low +0.18, 24 seeds), Ihivatar +1.32 (low +0.42, 36 seeds)
+#   rf (RAM-15 ram-flee): Bender +0.84 (low +0.53, 24 seeds), Dharok +1.07 (low +0.29, 24 seeds), BelajarBot +1.49
+#      (low +0.96, 12 seeds), acogdev.alpha +0.88 (low +0.53, 12 seeds), TopGun +1.05 (low +0.38, 24 seeds)
 #   Each cloud gain is the smaller of the reads against c and against an A/A twin.
 #   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live
-#   lock       the 14 robots  c / aa / rf / sp2 / hf / or / rp / mv / md / mtmv (each lever arm built with only its own robots)
-#              12 fresh seeds from 46900, --cpu-constant live, in work/pc-locks10 (earlier rounds' battles stay in work/pc-locks to -locks9)
+#   lock       panel-locks.txt  c / aa / rwl / rf, 12 fresh seeds from 81900, --cpu-constant live, in work/pc-locks12
+#              (earlier rounds' battles stay in work/pc-locks to -locks11)
 #   gate       each robot judged on its own arm only (lock_prep.py --restrict); it keeps its line where the 95% low end
 #              is above 0 (mode_table.py --margin 0)
+#   No 1.12.0 step: every robot on this card loads on Robocode 1.11.2.
 # Leigh starts it once the PC is free (one card at a time, from master):
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
-#   --fresh because round 9 left this plan's queue state marked complete; an interrupted round 10 resumes without it.
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 1,680 lock battles (14 robots, 10 arms, 12 seeds), about
-# 20 minutes with the live-match check.
+#   --fresh because round 11 left this plan's queue state marked complete; an interrupted round 12 resumes without it.
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 336 lock battles (7 robots, 4 arms, 12 seeds), about
+# 15 minutes with the live-match check.
 #
 # Why it should win (the PC card rule of 2026-11-03):
 #   - Per-opponent tailoring: every line names one robot; every other robot, team and melee play bit for bit as master.
-#   - Diagnosis first (truth logs against BeepBoop 2.0 and Saguaro 1.1.4; re-lever, recent-line and field re-gap lanes 17-18 Nov):
-#     rf: slow chargers RAM-2 never confirms; we stay in contact and take their rams (Sighup: 96 ram damage a battle on us,
-#     4 on BeepBoop); BeepBoop backs away.
-#     sp2: simple or partial aims beyond 300 px hit us above BeepBoop's rate; the planner steps off the aimed line.
-#     hf: Gilgalad out-trades us at range; full power wins the energy race. rp: Identity's energy wars go to BeepBoop.
-#     or: Defender reads our stops; a steady orbit gives it no stop to aim at.
-#     md: with RainbowBot shielded we are hit 3.1% but deal 1,275 to BeepBoop's 2,955; BeepBoop moves and out-fires it.
-#     mtmv: ThnikkaBot's close unshielded hits; shield plus moving shield (marginal; the PC decides).
-#     mv/rp retries: the earlier PC runs' diagnoses (rounds 3, 6 and 8) stand; a third 12-seed read settles them.
-#   - Every new robot passed the cloud lock bar first; round 9 held 10 of 11 (#913, banked #914).
-# Stop rules (docs/bench/watch.md): the watcher's A/A rule needs 10 robots read in both c and aa, which this 14-robot
-# lock reaches only near its end (shuffled jobs), so no aa stop rule is set; aa is read in the gate (multiarm.py prints aa against c). The card halts on 30 failed
-# battles, an arm scoring nothing in 8, 60+ skipped turns a battle over the last 24, or no battle in 30 minutes. The
+#   - Diagnosis first (truth logs against BeepBoop 2.0; field-e unplanned-hit census and the simple-aimer close-range study
+#     of 19 Nov):
+#     rwl: MiniNeural and Ihivatar are among the robots whose bullets most often hit us after they run dry, because END-2
+#     rams a disabled enemy straight into the bullets it fired last; ram-wait holds the ram until those waves pass.
+#     rf: Bender, Dharok, BelajarBot, acogdev.alpha and TopGun are simple aimers that charge us: in the 20 ticks
+#     before they get inside 150 px they close 60 to 140 px themselves, and Bender and BelajarBot often pin us on a
+#     wall. Under 150 px no drive escapes most of their shots; BeepBoop holds further out (BelajarBot +60 px, TopGun
+#     +27, Dharok +42). Ram-flee backs away at full speed from a charger within 200 px.
+#   - Every robot passed the cloud lock bar on 12+ fresh seeds, and every line was locked with MOVE-52 on (master
+#     539198f1a), so the card reads the lines on the master they would ship on.
+# Stop rules (docs/bench/watch.md): the watcher's A/A rule needs 10 robots read in both c and aa, which this lock never
+# reaches, so no aa stop rule is set; aa is read in the gate (multiarm.py prints aa against c). The lock halts on 30 failed
+# battles, an arm scoring nothing in 8, 60+ skipped turns a battle over the last 24 or no battle in 30 minutes. The
 # live-match step stops the card if the PC no longer scores us and BeepBoop as live does (tools/live_match.py exit 3).
 # ALERT opens an issue for Leigh on any stop.
 # Bank: the owning cloud thread adds the gate's lines on this card's results PR. Nothing is released by the card.
 set V = 3.23
 set P = --parallel 16 --no-truth-log --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 2G
-set W = work/pc-locks10
+set W = work/pc-locks12
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
 
-prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && python3 tools/lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh && for a in rf sp2 hf or rp mv md mtmv; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; done && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set panel-locks.txt && mvn -q compile
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && python3 tools/lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh && for a in rwl rf; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; done && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set panel-locks.txt && mvn -q compile
 
-livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out work/pc-livematch-rel-live --label pc-locks-livematch --shuffle-jobs && python3 tools/live_match.py work/pc-livematch-rel-live/arms.tsv --out ${OUT}/pc-locks10-livematch.md
+livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out work/pc-livematch-rel-live --label pc-locks-livematch --shuffle-jobs && python3 tools/live_match.py work/pc-livematch-rel-live/arms.tsv --out ${OUT}/pc-locks12-livematch.md
   after: prep
   watch: field=1217
   stop: fails 30
   stop: dead 8
   stop: stall 30m
 
-lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 46900 --arms ${W}-prep/lock.arms --out ${W} --label pc-locks --shuffle-jobs
+lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 81900 --arms ${W}-prep/lock.arms --out ${W} --label pc-locks --shuffle-jobs
   after: livematch
   watch: field=1217
   stop: fails 30
@@ -63,8 +59,8 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 4
   stop: skips 60 over 24
   stop: stall 30m
 
-gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks10-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks10-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks10-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms rf sp2 hf or rp mv md mtmv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks10-lock-per-robot.md --out-tsv ${OUT}/pc-locks10-lock-per-robot.tsv
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks12-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks12-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks12-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms rwl rf --out ${OUT}/$(date +%Y-%m-%d)_pc-locks12-lock-per-robot.md --out-tsv ${OUT}/pc-locks12-lock-per-robot.tsv
   after: lock
 
-pr | bash tools/open_results_pr.sh claude/pc-locks10-results "1v1 cloud locks, round 10 (14 robots: new cloud locks and PC retries) locked on 12 fresh PC seeds" ${OUT}/pc-locks10-livematch.md ${OUT}/*_pc-locks10-*.md ${OUT}/pc-locks10-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks10-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks12-results "1v1 cloud locks, round 12 (7 robots on rwl and rf) locked on 12 fresh PC seeds" ${OUT}/pc-locks12-livematch.md ${OUT}/*_pc-locks12-*.md ${OUT}/pc-locks12-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks12-lock-pick.tsv' -size +0c)
   after: gate

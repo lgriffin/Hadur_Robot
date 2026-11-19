@@ -55,8 +55,8 @@ class ShieldListResourceTest {
         // Seraphim leaves: its lines lost on 2.4.0 (docs/bench/local/2026-11-13_vr.md). pc-class-1 (PR #803): Eveimear. pc-class-2 (PR #806): Gouldingi.
         // pc-r31 (PR #817): Musashi. pc-locks (PR #843): GlowBlow, MostlyHarmless and DuelistMicro.
         // pc-shards (PR #840): BlackSwans, Manta, LostLion and AralR.
-        // pc-locks round 6 (PR #890): Recrimpo. pc-locks round 8 (PR #905): Omicron, Sobieski and SmallDevil. pc-locks round 9 (PR #913): JayLexi.
-        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1 - 1 + 1 + 1 + 1 + 3 + 4 + 1 + 3 + 1, list.size());
+        // pc-locks round 6 (PR #890): Recrimpo. pc-locks round 8 (PR #905): Omicron, Sobieski and SmallDevil. pc-locks round 9 (PR #913): JayLexi. pc-locks round 10 (PR #922): ThnikkaBot.
+        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1 - 1 + 1 + 1 + 1 + 3 + 4 + 1 + 3 + 1 + 1, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
@@ -153,7 +153,7 @@ class ShieldListResourceTest {
             assertTrue(list.matches(name), name);
         }
         // pc-shelf (PR #636): 6 more opening drives held on the confirm's fresh seeds. pc-locks round 2 (PR #845): 3 more.
-        assertEquals(31 + 8 + 6 + 3 + 13 + 1, ShieldTableData.moves().length);
+        assertEquals(31 + 8 + 6 + 3 + 13 + 1 + 1, ShieldTableData.moves().length);
         for (String name : ShieldTableData.moves()) {
             assertTrue(list.moves(name) && list.matches(name), "an opening drive is for a shielded robot: " + name);
         }
@@ -318,7 +318,7 @@ class ShieldListResourceTest {
         java.util.List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
         for (String n : ShieldTableData.racePowers()) lines.add(ShieldList.RACE_POWER_PREFIX + " " + n);
         ShieldList list = ShieldList.parse(lines);
-        assertEquals(8 + 1 + 2 + 1 + 1, ShieldTableData.racePowers().length, "pc-race-power (BENCH-206, PR #695) confirm picks and pc-r31 (BENCH-244, PR #817) and pc-locks rounds 3 (PR #860), 6 (PR #890) and 8 (PR #905)");
+        assertEquals(8 + 1 + 2 + 1 + 1 + 1 + 4, ShieldTableData.racePowers().length, "pc-race-power (BENCH-206, PR #695) confirm picks and pc-r31 (BENCH-244, PR #817) and pc-locks rounds 3 (PR #860), 6 (PR #890), 8 (PR #905), 10 (PR #922) and 11 (PR #929)");
         for (String n : ShieldTableData.racePowers()) assertTrue(list.racePower(n), n);
         assertTrue(!list.racePower("abc.Shadow 3.83c"), "a pilot robot that did not hold the 3-point margin");
     }
@@ -333,5 +333,17 @@ class ShieldListResourceTest {
         ShieldList list = ShieldList.parse(lines);
         for (String n : ShieldTableData.ramCircs()) assertTrue(list.ramCirc(n), n);
         assertTrue(!list.ramCirc("EH.Bolt 0.1"), "a robot with no ram-circ line");
+    }
+
+    @Test
+    @Tag("RAM-17")
+    @DisplayName("RAM-17: ram-fan lines parse per opponent; the shipped table names the rammers pc-locks round 11 locked")
+    void ramFanLines() {
+        assertEquals(2, ShieldTableData.ramFans().length, "pc-locks round 11 (BENCH-253, PR #929)");
+        java.util.List<String> lines = new java.util.ArrayList<>();
+        for (String n : ShieldTableData.ramFans()) lines.add(ShieldList.RAM_FAN_PREFIX + " " + n);
+        ShieldList list = ShieldList.parse(lines);
+        for (String n : ShieldTableData.ramFans()) assertTrue(list.ramFan(n), n);
+        assertTrue(!list.ramFan("bayen.UbaRamLT 1.0"), "a rammer the cloud screen dropped");
     }
 }
