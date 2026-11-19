@@ -43,12 +43,6 @@ final class TeamDodge {
      * the risk at {@link TeamRisk#PATH_K} rather than to the median-scaled damage.
      */
     static final boolean OWN_FIRE = true;
-    /**
-     * TVETO-1 (bench switch, ablation tmveto): a teammate's bullet is the one bullet a member knows exactly, so
-     * a reranked destination whose drive meets one within {@link MinimumRiskMovement#WAVE_TICKS} ticks is
-     * refused while another reranked destination meets none.
-     */
-    static final boolean VETO = false;
     /** Candidates driven through the waves: more than WAVES' 8, since the base ranking no longer sees bullets. */
     static final int RERANK = 12;
     /**

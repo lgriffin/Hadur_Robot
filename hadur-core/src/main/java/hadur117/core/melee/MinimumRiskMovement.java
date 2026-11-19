@@ -119,16 +119,6 @@ public class MinimumRiskMovement {
      */
     public static final boolean MELEE_SURF = true;
     /**
-     * MSTRAY-1, MSTRAY-2 (bench switch, ablation mthird): with three or more opponents alive, each seen shot also
-     * makes head-on and linear bullets at each other living robot it may be for, weighted by that robot's nearness
-     * rank from the shooter ({@link #STRAY_CURVE}, Hadur ranked among them), kept only while their line can cross
-     * Hadur's reach before their front passes. In the census Hadur takes about 29 damage a round from bullets
-     * aimed at another robot, ScalarR about 15, and the surfer drew none of them.
-     */
-    public static final boolean THIRD_PARTY = false;
-    /** MSTRAY-1: the field's measured target curve (melee_targets.py, 63,408 shots): nearest robot first. */
-    static final double[] STRAY_CURVE = {0.41, 0.17, 0.12, 0.09};
-    /**
      * MMOVE-22 (arm mdmg), inspired by Diamond's melee movement: off a team, each opponent's risk
      * term weighs by the damage its bullets have done to Hadur over the whole battle, plus
      * {@link #DAMAGE_BASE}, times its mean distance from Hadur (a gun that hits from afar is the
@@ -435,7 +425,6 @@ public class MinimumRiskMovement {
             int k = nearer(s, target, enemies);
             double w = crowdWeight(s, target, enemies);
             weighed.put(s, new Weighed(k, w));
-            if (THIRD_PARTY && enemies.size() >= 3) addStrays(s, target, me, now, enemies);
             if (w < SOFT_FLOOR) continue;
             List<TeamDanger.Aim> aims = at != null ? danger.aims(s, at) : null;
             if (aims != null) {
@@ -461,45 +450,6 @@ public class MinimumRiskMovement {
         }
         seenShots.retainAll(shots);
         weighed.keySet().retainAll(shots);
-    }
-
-    /**
-     * MSTRAY-1: head-on and linear bullets of {@code s} at each other living robot, at its nearness rank's
-     * {@link #STRAY_CURVE} weight among the robots round the shooter, Hadur at {@code target} included.
-     * MSTRAY-2: only a line Hadur, at {@code me}, could reach before the bullet's front passes is kept.
-     */
-    private void addStrays(EnemyShot s, Point2D.Double target, Point2D.Double me, long now, List<EnemyInfo> enemies) {
-        double mine = s.source.distance(target);
-        for (EnemyInfo e : enemies) {
-            if (e.location == null || e.name.equals(s.shooter)) continue;
-            double d = s.source.distance(e.location);
-            int rank = d > mine ? 1 : 0;
-            for (EnemyInfo o : enemies) {
-                if (o == e || o.location == null || o.name.equals(s.shooter)) continue;
-                if (s.source.distance(o.location) < d) rank++;
-            }
-            if (rank >= STRAY_CURVE.length) continue;
-            double w = STRAY_CURVE[rank];
-            // Its own wave: the bullet's spread centres on that robot, not on Hadur.
-            EnemyShot at = new EnemyShot(s.shooter, s.source, s.fireTime, s.power, s.window);
-            double hot = DiaUtils.absoluteBearing(s.source, e.location);
-            double linear = VirtualBullet.linearHeading(s.source, e.location, e.heading, e.velocity, s.speed(),
-                field.width, field.height);
-            if (canCross(s, hot, me, now)) add(new VirtualBullet(at, VirtualBullet.Aim.HEAD_ON, hot, w));
-            if (canCross(s, linear, me, now)) add(new VirtualBullet(at, VirtualBullet.Aim.LINEAR, linear, w));
-        }
-    }
-
-    /** MSTRAY-2: whether a bullet of {@code s} along {@code heading} passes within Hadur's reach of {@code me}. */
-    static boolean canCross(EnemyShot s, double heading, Point2D.Double me, long now) {
-        double dx = Math.sin(heading), dy = Math.cos(heading);
-        double rx = me.x - s.source.x, ry = me.y - s.source.y;
-        double along = rx * dx + ry * dy;
-        double flown = s.speed() * (now - s.fireTime);
-        if (along + HIT_RADIUS < flown) return false;
-        double ticks = Math.max(0, (along - flown) / s.speed());
-        double across = Math.abs(rx * dy - ry * dx);
-        return across <= HIT_RADIUS + MAX_SPEED * ticks;
     }
 
     private void addGuesses(EnemyShot s, RobotState at, Point2D.Double target, double w) {
@@ -826,9 +776,6 @@ public class MinimumRiskMovement {
         if (hold && !picked.contains(pool.size() - 1)) picked.add(pool.size() - 1);
         double[] damage = new double[picked.size()];
         double[] r = new double[picked.size()];
-        boolean veto = TeamDodge.VETO && ownFire && v.momentum && !mateBullets.isEmpty();
-        boolean[] crosses = new boolean[picked.size()];
-        boolean anyClear = false;
         for (int k = 0; k < picked.size(); k++) {
             Point2D.Double p = pool.get(picked.get(k));
             r[k] = risk[picked.get(k)];
@@ -838,17 +785,11 @@ public class MinimumRiskMovement {
             double own = path != null ? TeamRisk.pathDamage(path, v.now, mateBullets) : pathDamage(v.me, p, v.now, mateBullets);
             if (ownFire) r[k] += PATH_K * own;
             else damage[k] += own;
-            if (veto) {
-                // TVETO-1: the whole drive, not only PATH_TICKS of it.
-                crosses[k] = own > 0 || TeamRisk.pathDamage(path, v.now, mateBullets, WAVE_TICKS) > 0;
-                anyClear |= !crosses[k];
-            }
         }
         double[] score = waveScores(r, damage);
         Point2D.Double best = null;
         double bestScore = Double.POSITIVE_INFINITY;
         for (int k = 0; k < picked.size(); k++) {
-            if (veto && anyClear && crosses[k]) continue;
             double sc = score[k];
             if (hold && picked.get(k) == pool.size() - 1) sc *= SWITCH_GAIN;
             if (sc < bestScore) {
