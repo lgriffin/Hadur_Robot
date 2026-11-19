@@ -128,8 +128,6 @@ public class MinimumRiskMovement {
     public static final boolean THIRD_PARTY = false;
     /** MSTRAY-1: the field's measured target curve (melee_targets.py, 63,408 shots): nearest robot first. */
     static final double[] STRAY_CURVE = {0.41, 0.17, 0.12, 0.09};
-    /** MSTRAY-1: the curve's scale on a stray bullet (bench ablation mthird2 doubles it). */
-    static final double STRAY_K = 1.0;
     /**
      * MMOVE-22 (arm mdmg), inspired by Diamond's melee movement: off a team, each opponent's risk
      * term weighs by the damage its bullets have done to Hadur over the whole battle, plus
@@ -481,7 +479,7 @@ public class MinimumRiskMovement {
                 if (s.source.distance(o.location) < d) rank++;
             }
             if (rank >= STRAY_CURVE.length) continue;
-            double w = Math.min(1.0, STRAY_K * STRAY_CURVE[rank]);
+            double w = STRAY_CURVE[rank];
             // Its own wave: the bullet's spread centres on that robot, not on Hadur.
             EnemyShot at = new EnemyShot(s.shooter, s.source, s.fireTime, s.power, s.window);
             double hot = DiaUtils.absoluteBearing(s.source, e.location);
