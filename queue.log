@@ -8,3 +8,9 @@
 13:05:59 start pilot
 13:05:59 watching pilot: 4 stop rule(s)
 13:06:26 progress pilot: 11/558 (2%) battles, 1452/h, ETA 23 min, 0 failed, skips 14.4/battle (last 100), aa +0.10, ic -0.03
+13:35:45 pilot exit=0 in 1785 s
+13:35:45 start pilotstop
+13:35:46 pilotstop exit=0 in 0 s
+13:35:46 start fielde
+13:35:46 watching fielde: 4 stop rule(s)
+13:36:44 progress fielde: 64/1674 (4%) battles, 3945/h, ETA 24 min, 0 failed, skips 2.0/battle (last 100), aa -0.01, ic +0.07
