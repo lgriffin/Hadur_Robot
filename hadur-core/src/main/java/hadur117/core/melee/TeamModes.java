@@ -121,11 +121,6 @@ public final class TeamModes {
     public static final boolean FORCE_FITTED = true;
     /** TMODE-52: the dodge drives {@link TeamDodge#CLOSE_RERANK} candidates while a wave is close; on since PR #919 (ablation tmnocloserr turns it off). */
     public static final boolean FORCE_CLOSERERANK = true;
-    /**
-     * TMODE-53: the close rerank runs only at tick-budget level 0, so a member that has just
-     * skipped a turn or run slow keeps to the plain rerank. Off; ablation tmclosebud turns it on.
-     */
-    public static final boolean FORCE_CLOSEBUDGET = false;
 
     /**
      * TMODE-50: one enemy class's gun, read from its code and fitted on bench bullet logs: it fires at

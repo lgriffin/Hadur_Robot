@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import hadur117.core.policy.TickBudget;
 import hadur117.core.world.EnemyShot;
 import java.awt.geom.Point2D;
 import java.util.List;
@@ -34,13 +33,5 @@ class TeamCloseRerankTest {
         assertFalse(MinimumRiskMovement.closeWave(me, 50, List.of(wave(speed * 40, 0, 2.0))), "front already past");
         assertFalse(MinimumRiskMovement.closeWave(me, 0, List.of()));
         assertTrue(TeamModes.FORCE_CLOSERERANK);
-    }
-
-    @Test
-    @DisplayName("TMODE-53: with the budget guard on, the close rerank runs only at tick-budget level 0")
-    void closeRerankBudgetGuard() {
-        assertTrue(MinimumRiskMovement.closeAllowed(0));
-        assertEquals(!TeamModes.FORCE_CLOSEBUDGET, MinimumRiskMovement.closeAllowed(1));
-        assertEquals(!TeamModes.FORCE_CLOSEBUDGET, MinimumRiskMovement.closeAllowed(TickBudget.MAX_LEVEL));
     }
 }
