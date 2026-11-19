@@ -169,7 +169,8 @@ measured timing trace; TI4 (a tick earlier still) losing -0.33 fits it.
 
 Around 0.9 (seeds 61000, 3 seeds, against 0.9, A/A +0.13 ± 0.42; `docs/bench/local/2026-11-19_jaylexi-n7.md`): counting
 from tick 1 reads -0.06, so tick 2 is the peak (1 -0.06, 2 +0.29, 3 0, 4 -0.33 against 0.8). The second wave at a half
-reads +0.11 and at a third +0.26 ± 0.44; the third goes on to 6 fresh seeds from 62000.
+reads +0.11 and at a third +0.26 ± 0.44, but the third reads +0.04 ± 0.27 on 6 fresh seeds from 62000
+(`2026-11-19_jaylexi-n8.md`): flat, not shipped.
 
 ## JayLexi 0.9
 
