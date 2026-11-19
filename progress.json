@@ -1,36 +1,27 @@
 {
  "plan": "pc-rc-confirm",
- "updated": 1795129897.386186,
+ "updated": 1795130239.192171,
  "steps": {
   "prep": {
-   "status": "failed",
-   "exit": 1,
-   "seconds": 290,
-   "end": "2026-11-19T23:11:37"
+   "status": "pending"
   },
   "livematch": {
-   "status": "skipped",
-   "reason": "after prep"
+   "status": "pending"
   },
   "field": {
-   "status": "skipped",
-   "reason": "after livematch"
+   "status": "pending"
   },
   "ret": {
-   "status": "skipped",
-   "reason": "after field"
+   "status": "pending"
   },
   "gate112": {
-   "status": "skipped",
-   "reason": "after ret"
+   "status": "pending"
   },
   "gate": {
-   "status": "skipped",
-   "reason": "after gate112"
+   "status": "pending"
   },
   "pr": {
-   "status": "skipped",
-   "reason": "after gate"
+   "status": "pending"
   }
  },
  "watched": []
