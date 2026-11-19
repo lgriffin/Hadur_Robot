@@ -3,9 +3,9 @@
 # coverage/shards/dzlane/M/close-next.md, dzlane/T/close-next*-T.md) after round 12's card (PRs #937, #938):
 #   rf (RAM-15 ram-flee): JGAP23423 +1.22 (low +0.68, 24 seeds), SlashBot +0.35 (+0.18, 24), Mooserwirt2 +0.83 (+0.17,
 #      24), MyFirstAdvancedRobot +0.40 (+0.21, 24), Infinity +0.89 (+0.44, 24), Puffin +0.59 (+0.34, 12), DestrobotMalin
-#      +0.40 (+0.13, 24), Hawkwing +1.06 (+0.12, 24), Syzygy +0.79 (+0.04, 24)
-#   Each cloud gain is the smaller of the reads against c and against an A/A twin. Hawkwing and Syzygy are last in the
-#   panel and picks: both await a cloud recheck and drop from the end of both files if it fails.
+#      +0.40 (+0.13, 24), SineWall +1.04 (+0.70, 24), Hawkwing +1.06 (+0.12, 24; held again on a 36-seed recheck),
+#      Syzygy +0.79 (+0.04, 24; held again on a 36-seed recheck)
+#   Each cloud gain is the smaller of the reads against c and against an A/A twin.
 #   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live
 #   lock       panel-locks.txt  c / aa / rf, 12 fresh seeds from 82000, --cpu-constant live, in work/pc-locks13
 #              (earlier rounds' battles stay in work/pc-locks to -locks12)
@@ -16,13 +16,13 @@
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
 #   --fresh because round 12 left this plan's queue state marked complete; an interrupted round 13 resumes without it.
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 324 lock battles (9 robots, 3 arms, 12 seeds), about
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 360 lock battles (10 robots, 3 arms, 12 seeds), about
 # 15 minutes with the live-match check.
 #
 # Why it should win (the PC card rule of 2026-11-03):
 #   - Per-opponent tailoring: every line names one robot; every other robot, team and melee play bit for bit as master.
-#   - Diagnosis first (census of our hit damage taken under 150 px across the simple-aimer class, then truth logs of c and
-#     BeepBoop 2.0 against each robot, 19 Nov): inside 150 px no drive escapes most simple-aimer shots, so the class gap
+#   - Diagnosis first (census of our hit damage taken under 150 px across the simple-aimer class and a field-wide charge
+#     census, then truth logs of c and BeepBoop 2.0 against each robot, 19 Nov): inside 150 px no drive escapes most simple-aimer shots, so the class gap
 #     is how often they get there. Every robot here charges us: in the 20 ticks before it gets inside 150 px it closes
 #     80 to 145 px itself while we hold or back off, and BeepBoop either holds 40 to 90 px further out or is inside
 #     150 px less often. Ram-flee backs away at full speed from a charger within 200 px. Distance pins to BeepBoop's band
@@ -62,5 +62,5 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 8
 gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks13-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks13-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks13-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms rf --out ${OUT}/$(date +%Y-%m-%d)_pc-locks13-lock-per-robot.md --out-tsv ${OUT}/pc-locks13-lock-per-robot.tsv
   after: lock
 
-pr | bash tools/open_results_pr.sh claude/pc-locks13-results "1v1 cloud locks, round 13 (9 robots on rf) locked on 12 fresh PC seeds" ${OUT}/pc-locks13-livematch.md ${OUT}/*_pc-locks13-*.md ${OUT}/pc-locks13-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks13-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks13-results "1v1 cloud locks, round 13 (10 robots on rf) locked on 12 fresh PC seeds" ${OUT}/pc-locks13-livematch.md ${OUT}/*_pc-locks13-*.md ${OUT}/pc-locks13-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks13-lock-pick.tsv' -size +0c)
   after: gate
