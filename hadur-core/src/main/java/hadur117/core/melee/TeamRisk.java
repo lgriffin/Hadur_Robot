@@ -364,6 +364,30 @@ final class TeamRisk {
         return pathDamage(path, now, bullets, PATH_TICKS);
     }
 
+    /**
+     * TVETO-1: in one pass, the damage met in the first {@link #PATH_TICKS} ticks of the {@code path} and
+     * whether any bullet is met in its first {@code ticks}.
+     */
+    static double pathDamageVeto(double[][] path, long now, List<VirtualBullet> bullets, int ticks, boolean[] crosses) {
+        crosses[0] = false;
+        if (bullets.isEmpty()) return 0;
+        boolean[] done = new boolean[bullets.size()];
+        double total = 0;
+        for (int t = 1; t <= Math.min(Math.max(ticks, PATH_TICKS), path.length); t++) {
+            double x = path[t - 1][0], y = path[t - 1][1];
+            long tick = now + t;
+            for (int i = 0; i < bullets.size(); i++) {
+                VirtualBullet b = bullets.get(i);
+                if (done[i] || tick <= b.shot.fireTime) continue;
+                if (!crossesBox(b.position(tick - 1), b.position(tick), x, y, PATH_HALF)) continue;
+                done[i] = true;
+                if (t <= ticks) crosses[0] = true;
+                if (t <= PATH_TICKS) total += 4 * b.shot.power + Math.max(0, 2 * (b.shot.power - 1));
+            }
+        }
+        return total;
+    }
+
     /** TVETO-1: as above, up to {@code ticks} ticks of the {@code path}. */
     static double pathDamage(double[][] path, long now, List<VirtualBullet> bullets, int ticks) {
         if (bullets.isEmpty()) return 0;

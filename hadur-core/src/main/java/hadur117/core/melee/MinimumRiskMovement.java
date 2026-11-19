@@ -829,20 +829,33 @@ public class MinimumRiskMovement {
         boolean veto = TeamDodge.VETO && ownFire && v.momentum && !mateBullets.isEmpty();
         boolean[] crosses = new boolean[picked.size()];
         boolean anyClear = false;
+        if (veto) {
+            // TVETO-1: only a bullet that comes within a drive's reach of the member can be met.
+            double reach = MAX_SPEED * WAVE_TICKS + 2 * TeamRisk.PATH_HALF;
+            List<VirtualBullet> near = new ArrayList<>();
+            for (VirtualBullet b : mateBullets) {
+                if (b.closestApproach(v.me, v.now, v.now + WAVE_TICKS) <= reach) near.add(b);
+            }
+            mateBullets = near;
+        }
         for (int k = 0; k < picked.size(); k++) {
             Point2D.Double p = pool.get(picked.get(k));
             r[k] = risk[picked.get(k)];
             double[][] path = v.momentum ? drivePath(v, p, Math.max(WAVE_TICKS, TeamRisk.PATH_TICKS)) : null;
             damage[k] = path != null ? waveDamage(path, v.now, waves) : waveDamage(v.me, p, v.now, waves);
             if (mateBullets.isEmpty()) continue;
-            double own = path != null ? TeamRisk.pathDamage(path, v.now, mateBullets) : pathDamage(v.me, p, v.now, mateBullets);
+            double own;
+            if (veto) {
+                // TVETO-1: the whole drive, not only PATH_TICKS of it, in the same pass.
+                boolean[] met = new boolean[1];
+                own = TeamRisk.pathDamageVeto(path, v.now, mateBullets, WAVE_TICKS, met);
+                crosses[k] = met[0];
+                anyClear |= !crosses[k];
+            } else {
+                own = path != null ? TeamRisk.pathDamage(path, v.now, mateBullets) : pathDamage(v.me, p, v.now, mateBullets);
+            }
             if (ownFire) r[k] += PATH_K * own;
             else damage[k] += own;
-            if (veto) {
-                // TVETO-1: the whole drive, not only PATH_TICKS of it.
-                crosses[k] = own > 0 || TeamRisk.pathDamage(path, v.now, mateBullets, WAVE_TICKS) > 0;
-                anyClear |= !crosses[k];
-            }
         }
         double[] score = waveScores(r, damage);
         Point2D.Double best = null;
