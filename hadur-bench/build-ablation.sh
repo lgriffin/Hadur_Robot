@@ -83,6 +83,7 @@
 #         Suffix ki.
 #   aimwide  MOVE-31: the aim members read all six simple angles at all three lags (18 aims, the same 0.3 total
 #         standing weight) in place of head-on, linear and circular one tick back. Sets only WIDE. Suffix kw.
+#   icpt  MOVE-52: an enemy bullet our bullet met also teaches the danger views, as a hit does. Suffix ic.
 #   sgoff  MOVE-30 and MOVE-31 off (both on for the census after 3.20): the aim members are MOVE-29's three,
 #         scored on hits only. Suffix kj.
 #         Suffix km.
@@ -164,6 +165,12 @@
 #         shipped table entry): a member with an armed enemy closing inside 200 px gets an uncapped
 #         ring, a term against ending within 150 px of it, and full speed through a turn. Suffix qt
 #         (pc-team-quarters, BENCH-225).
+#   tmnocloserr (team only) TMODE-52 off: the team dodge drives 12 candidates even against a close wave, the
+#              build before the close rerank shipped (FORCE_CLOSERERANK). Suffix ncr.
+#   tmicpt (team only) TMODE-53 on: MOVE-52's intercept views in the team members' duels alone
+#              (MoveDesign.TEAM_INTERCEPT_VIEWS). Suffix tic.
+#   tmnofitted (team only) TMODE-50 off: the fitted enemy aims (TeamModes.FITTED) leave the dodge's profile,
+#         the build before FITTED shipped (FORCE_FITTED). Suffix nfi.
 #   tmnomomentum (team only) TMODE-49 off: each candidate's drive starts from a standstill pointed at it, the
 #         build before MOMENTUM shipped (FORCE_MOMENTUM, and Mode.MOMENTUM off every shipped entry). Suffix nmo.
 #   tmnolast (team only) TMODE-47 off: with one enemy left each member hands over to the duel,
@@ -234,7 +241,7 @@
 #   sdkeep0 with sdplan: the planner neither keeps a close enemy away with no wave nor drives ahead of
 #         RAM-2's escape. Suffix k0.
 #   sdplanlist the lines of $SHOT_DODGE_PLAN ("expert name", or a name alone for -1, or a pick TSV)
-#         get the planner per opponent (ShieldTableData.dodgePlans()). Suffix dp.
+#         get the planner per opponent (ShieldTableData.dodgePlans()). Suffix sp2 (dp until 16 Nov, when DIST-4 took dp).
 #   sgo    POISON-2: stop-and-go (POISON-1, WavePoison: reverse crawl 1 tick before the enemy's gun
 #         is ready) against every duel opponent. Suffix wp.
 #   sgo2   the same, WavePoisonShift's variant (2 ticks). Suffix ws.
@@ -252,7 +259,9 @@
 #   pcaplist the robots named in $POWER_CAP get POW-18's 0.2 duel power cap. Suffix pk.
 #   pcap5list the robots named in $POWER_CAP5 get POW-18's 0.5 duel power cap. Suffix p5.
 #   hflist the robots named in $HARD_FIRE get POW-19's hard fire (0.6 floor while our energy is 60+). Suffix hf.
+#   sblist the robots named in $SPEED_BAND get MOVE-45's speed band (a random top speed of 7 to 8 each tick against rounded-velocity pattern matchers). Suffix sb.
 #   vjlist the robots named in $VEL_JITTER get MOVE-44's velocity jitter (never exactly 8 or 0 against exact-velocity pattern matchers). Suffix vj.
+#   dplist the lines in $DIST_PIN ("px name") pin DIST-4's per-opponent duel distance. Suffix dn (dp is sdplanlist's), or $DIST_PIN_SUFFIX.
 #   pblist the lines in $POWER_BAND ("m1 m2 m3 m4 name") become POW-20 power bands. Suffix pb.
 #   szlist the robots named in $SHIELD_STILL get SHIELD-20's still shot plans (SHIELD-21,
 #         ShieldTableData.stills()). Suffix zl.
@@ -265,6 +274,11 @@
 #   x5list the robots named in $X5_POWER get, shot by shot, an x.x5 power whose speed they misread
 #         from our energy drop (POW-16, ShieldTableData.x5Powers()). Suffix x5.
 #   rclist the robots named in $RAM_CIRC get RAM-11, the rammer escape's circular-aim dodge (suffix rcl)
+#   rflist the robots named in $RAM_FLEE get RAM-15's flee (back away at full speed from a charger). Suffix rf, or $RAM_FLEE_SUFFIX.
+#   rwlist the robots named in $RAM_WAIT get MOVE-46's ram wait (a disabled enemy is rammed only after its last waves pass). Suffix rwl.
+#   orlist the robots named in $STEADY_ORBIT get MOVE-47's steady orbit (no stop option, reversal only when the other way is under half as dangerous). Suffix or.
+#   rhlist the robots named in $RAM_HEAVY get RAM-14, the rammer escape weighing their shots twice as heavily. Suffix rh.
+#   rfanlist the robots named in $RAM_FAN get RAM-17, the rammer escape dodging their linear/circular aims as +-4 deg fans at RAM-14's weight. Suffix rfn.
 #   rplist the robots named in $RACE_POWER get the energy race's power pick (POW-17,
 #         ShieldTableData.racePowers()). Suffix rp, or $RACE_POWER_SUFFIX.
 #   snull  all five at once: Nullstride's design as read from its jar.
@@ -467,6 +481,10 @@ for a in "${list[@]}"; do
             grep -qF "static final boolean WIDE = true;" "$aimmembers" \
                 || edit "$aimmembers" "static final boolean WIDE = false;" "static final boolean WIDE = true;"
             version="${version}kw" ;;
+        icpt)
+            # MOVE-52 (danger lane, 18 Nov): enemy bullets ours met also teach the danger views. Suffix ic.
+            edit "$movedesign" "static final boolean INTERCEPT_VIEWS = false;" "static final boolean INTERCEPT_VIEWS = true;"
+            version="${version}ic" ;;
         sgoff)
             edit "$movedesign" "static final boolean AIM_INTERCEPTS = true;" "static final boolean AIM_INTERCEPTS = false;"
             edit "$aimmembers" "static final boolean WIDE = true;" "static final boolean WIDE = false;"
@@ -779,14 +797,14 @@ for l in open(sys.argv[1]):
 print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), end="")' "$SHOT_DODGE_PLAN")"
             [[ -n "$add" ]] || { echo "sdplanlist: $SHOT_DODGE_PLAN has no line" >&2; exit 2; }
             printf '%s' "$add" | python3 -c 'import sys; p,m=sys.argv[1:]; a=sys.stdin.read(); s=open(p).read(); k=s.index("        };", s.index("static String[] %s()" % m)); open(p,"w").write(s[:k]+a+s[k:])' "$tabledata" dodgePlans
-            version="${version}dp" ;;
+            version="${version}sp2" ;;
         sgo|sgo2)
             edit "$movedesign" "static final boolean STOP_AND_GO = false;" "static final boolean STOP_AND_GO = true;"
             if [[ "$a" == sgo2 ]]; then
                 edit "$movedesign" "static final int STOP_AND_GO_PREFIRE = 1;" "static final int STOP_AND_GO_PREFIRE = 2;"
                 version="${version}ws"
             else version="${version}wp"; fi ;;
-        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist|rclist|mirofflist|sfloorlist|pcaplist|pcap5list|hflist|pblist|vjlist)
+        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist|rclist|mirofflist|sfloorlist|pcaplist|pcap5list|hflist|pblist|vjlist|sblist|dplist|rhlist|rwlist|orlist|rflist|rfanlist)
             # Shield part 2 (docs/plan-shield-quality.md): per-opponent opening drive or shipped aims;
             # the mode table's simple-aim dodge (DODGE-3).
             if [[ "$a" == smovelist ]]; then file="${SHIELD_MOVE:-}"; method="moves"; version="${version}mv"
@@ -805,15 +823,22 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
             elif [[ "$a" == pcap5list ]]; then file="${POWER_CAP5:-}"; method="powerCapHalves"; version="${version}p5"
             elif [[ "$a" == hflist ]]; then file="${HARD_FIRE:-}"; method="hardFires"; version="${version}hf"
             elif [[ "$a" == pblist ]]; then file="${POWER_BAND:-}"; method="powerBands"; version="${version}pb"
+            elif [[ "$a" == dplist ]]; then file="${DIST_PIN:-}"; method="distPins"; version="${version}${DIST_PIN_SUFFIX:-dn}"
             elif [[ "$a" == vjlist ]]; then file="${VEL_JITTER:-}"; method="velocityJitters"; version="${version}vj"
+            elif [[ "$a" == sblist ]]; then file="${SPEED_BAND:-}"; method="speedBands"; version="${version}sb"
             elif [[ "$a" == mirofflist ]]; then file="${MIRROR_OFF:-}"; method="mirrorOffs"; version="${version}mo"
             elif [[ "$a" == mmlist ]]; then file="${MIMIC_ON:-}"; method="mimicOns"; version="${version}mq"
             elif [[ "$a" == fplist ]]; then file="${FULL_OFF:-}"; method="fullOffs"; version="${version}fp"
             elif [[ "$a" == x5list ]]; then file="${X5_POWER:-}"; method="x5Powers"; version="${version}x5"
             elif [[ "$a" == rplist ]]; then file="${RACE_POWER:-}"; method="racePowers"; version="${version}${RACE_POWER_SUFFIX:-rp}"
             elif [[ "$a" == rclist ]]; then file="${RAM_CIRC:-}"; method="ramCircs"; version="${version}rcl"
+            elif [[ "$a" == rhlist ]]; then file="${RAM_HEAVY:-}"; method="ramHeavies"; version="${version}rh"
+            elif [[ "$a" == rfanlist ]]; then file="${RAM_FAN:-}"; method="ramFans"; version="${version}rfn"
+            elif [[ "$a" == rwlist ]]; then file="${RAM_WAIT:-}"; method="ramWaits"; version="${version}rwl"
+            elif [[ "$a" == rflist ]]; then file="${RAM_FLEE:-}"; method="ramFlees"; version="${version}${RAM_FLEE_SUFFIX:-rf}"
+            elif [[ "$a" == orlist ]]; then file="${STEADY_ORBIT:-}"; method="steadyOrbits"; version="${version}or"
             else file="${STOP_GO2:-}"; method="stopGoShifts"; version="${version}wm"; fi
-            [[ -n "$file" && -f "$file" ]] || { echo "$a needs SHIELD_MOVE / SHIELD_AIM / SHOT_DODGE / STOP_GO / STOP_GO2 / HEAT_JIT / GUN_STACK / SHIELD_EXIT4 / SHIELD_EXIT0 / SHIELD_STILL / SURF_KEY / FLAT_ON / MIMIC_ON / FULL_OFF / X5_POWER / RACE_POWER / MIRROR_OFF / VEL_JITTER=<file>" >&2; exit 2; }
+            [[ -n "$file" && -f "$file" ]] || { echo "$a needs SHIELD_MOVE / SHIELD_AIM / SHOT_DODGE / STOP_GO / STOP_GO2 / HEAT_JIT / GUN_STACK / SHIELD_EXIT4 / SHIELD_EXIT0 / SHIELD_STILL / SURF_KEY / FLAT_ON / MIMIC_ON / FULL_OFF / X5_POWER / RACE_POWER / MIRROR_OFF / VEL_JITTER / SPEED_BAND / DIST_PIN / RAM_HEAVY / RAM_FAN / RAM_WAIT / STEADY_ORBIT=<file>" >&2; exit 2; }
             add="$(python3 -c 'import sys,json
 lines=[l.split("\t")[0].strip() for l in open(sys.argv[1]) if l.strip() and not l.startswith("#")]
 print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines)), end="")' "$file")"
@@ -931,6 +956,21 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$modes" "public static final boolean FORCE_QUARTERS = false;" "public static final boolean FORCE_QUARTERS = true;"
             sed -i -E '/^        t\.put\(/{/Mode\.QUARTERS/!s/\)\);$/, Mode.QUARTERS));/}' "$modes"
             ;;
+        tmicpt)
+            # TMODE-53 on: the intercept views for team members only. Suffix tic.
+            version="${version}tic"
+            edit "$movedesign" "static final boolean TEAM_INTERCEPT_VIEWS = false;" "static final boolean TEAM_INTERCEPT_VIEWS = true;"
+            ;;
+        tmnocloserr)
+            # TMODE-52 off: the team dodge drives 12 candidates against close waves too. Suffix ncr.
+            version="${version}ncr"
+            edit "$modes" "public static final boolean FORCE_CLOSERERANK = true;" "public static final boolean FORCE_CLOSERERANK = false;"
+            ;;
+        tmnofitted)
+            # TMODE-50 off: the fitted enemy aims leave the dodge's profile. Suffix nfi.
+            version="${version}nfi"
+            edit "$modes" "public static final boolean FORCE_FITTED = true;" "public static final boolean FORCE_FITTED = false;"
+            ;;
         tmnomomentum)
             # TMODE-49 off: every candidate driven from a standstill. Suffix nmo.
             version="${version}nmo"
@@ -964,7 +1004,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean THREE_FAR = false;" "public static final boolean THREE_FAR = true;"
             version="${version}ef" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, tmicpt, tmnocloserr, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, icpt, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, rhlist, rwlist, orlist, rflist)" >&2; exit 2 ;;
     esac
 done
 

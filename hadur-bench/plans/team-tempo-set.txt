@@ -1,0 +1,8 @@
+# pc-team-tempo-read (BENCH-259): the drill. SittingDroidTeam does no damage to either subject; the other five are
+# weak teams both subjects beat in every round, where the Ogi mirror read HadurTeam's rounds 32 to 64% longer.
+logiblocs.SittingDroidTeam 1.0 | team | logiblocs.SittingDroidTeam_1.0.jar
+mskwik.BumblingIdiots 1.0 | team | mskwik.BumblingIdiots_1.0.jar
+ms.AresHaikuTeam 0.3 | team | ms.AresHaikuTeam_0.3.jar
+dummy_team.BlindFighters 1.01 | team | dummy_team.BlindFighters_1.01.jar
+ntc.slippery.Slippery 1.0 | team | ntc.slippery.Slippery_1.0.jar
+gimp.GimpTeam 0.1 | team | gimp.GimpTeam_0.1.jar

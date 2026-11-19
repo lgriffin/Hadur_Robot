@@ -24,6 +24,7 @@ import sys
 # Lever arm suffix -> (build-ablation flavours, the list variables they read).
 LEVERS = {
     "mtzl": ("slistadd,szlist", ("SHIELD_ADD", "SHIELD_STILL")),
+    "mt": ("slistadd", ("SHIELD_ADD",)),
     "fq": ("fllist", ("FLAT_ON",)),
     "gl": ("gslist", ("GUN_STACK",)),
     "mq": ("mmlist", ("MIMIC_ON",)),
@@ -36,8 +37,20 @@ LEVERS = {
     "dg": ("sdodgelist", ("SHOT_DODGE",)),
     "pb": ("pblist", ("POWER_BAND",)),
     "x0": ("sx0list", ("SHIELD_EXIT0",)),
+    "mtx0": ("slistadd,sx0list", ("SHIELD_ADD", "SHIELD_EXIT0")),
+    "mtmv": ("slistadd,smovelist", ("SHIELD_ADD", "SHIELD_MOVE")),
     "mv": ("smovelist", ("SHIELD_MOVE",)),
+    "md": ("slistdrop", ("SHIELD_DROP",)),
     "vj": ("vjlist", ("VEL_JITTER",)),
+    "sb": ("sblist", ("SPEED_BAND",)),
+    "dn": ("dplist", ("DIST_PIN",)),  # dplist builds suffix dn (#891); dp is sdplanlist's
+    "kl": ("sklist", ("SURF_KEY",)),
+    "rh": ("rhlist", ("RAM_HEAVY",)),
+    "rwl": ("rwlist", ("RAM_WAIT",)),
+    "rf": ("rflist", ("RAM_FLEE",)),
+    "rfn": ("rfanlist", ("RAM_FAN",)),
+    "or": ("orlist", ("STEADY_ORBIT",)),
+    "sp2": ("sdplanlist", ("SHOT_DODGE_PLAN",)),
 }
 
 # POW-20: a power-band pick carries its fitted line ("m20 m40 m60 m80 name") from this file, so pb.list
@@ -56,6 +69,49 @@ def _pb_lines(names):
     if missing:
         raise SystemExit("lock_prep: no power-band line for %s in %s" % (", ".join(missing), PB_LINES))
     return [lines[n] for n in names]
+
+
+# DIST-4: a distance-pin pick carries its pinned distance ("px name") from this file, so dp.list holds whole lines.
+DP_LINES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "plans", "dist-pin-lines.txt")
+
+
+def _dp_name(line):
+    p = line.strip().split(" ", 1)
+    return p[1] if len(p) == 2 else line.strip()
+
+
+def _dp_lines(names):
+    lines = {_dp_name(l): l.strip() for l in open(DP_LINES) if l.strip() and not l.startswith("#")}
+    missing = [n for n in names if n not in lines]
+    if missing:
+        raise SystemExit("lock_prep: no distance-pin line for %s in %s" % (", ".join(missing), DP_LINES))
+    return [lines[n] for n in names]
+
+
+# SKEY-2: a surf-key pick carries its fitted key ("m1 ... m9 bw name") from this file, so kl.list holds whole lines.
+KL_LINES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "plans", "surf-key-lines.txt")
+
+
+def _kl_name(line):
+    p = line.strip().split(" ", 10)
+    return p[10] if len(p) == 11 else line.strip()
+
+
+def _kl_lines(names):
+    lines = {_kl_name(l): l.strip() for l in open(KL_LINES) if l.strip() and not l.startswith("#")}
+    missing = [n for n in names if n not in lines]
+    if missing:
+        raise SystemExit("lock_prep: no surf-key line for %s in %s" % (", ".join(missing), KL_LINES))
+    return [lines[n] for n in names]
+
+
+def _list_lines(arm, names):
+    return _pb_lines(names) if arm == "pb" else _dp_lines(names) if arm == "dn" else _kl_lines(names) if arm == "kl" else names
+
+
+def _list_name(arm, line):
+    return (_pb_name(line) if arm == "pb" else _dp_name(line) if arm == "dn" else _kl_name(line) if arm == "kl"
+            else line.strip())
 
 
 def main(pick, panel, base_arms, outdir):
@@ -79,7 +135,7 @@ def main(pick, panel, base_arms, outdir):
         for arm in sorted(picks):
             path = os.path.join(outdir, arm + ".list")
             with open(path, "w") as g:
-                g.write("".join(n + "\n" for n in (_pb_lines(picks[arm]) if arm == "pb" else picks[arm])))
+                g.write("".join(n + "\n" for n in _list_lines(arm, picks[arm])))
             flavours, envs = LEVERS[arm]
             f.write("%s bash ./build-ablation.sh %s\n" % (" ".join("%s=%s" % (e, path.replace(os.sep, "/")) for e in envs), flavours))
     print("lock_prep: %d robots, arms %s" % (len(rows), ",".join(sorted(picks)) or "none"))
@@ -91,7 +147,7 @@ def restrict(arms_tsv, outdir, out):
     for arm in LEVERS:
         path = os.path.join(outdir, arm + ".list")
         if os.path.exists(path):
-            lists[arm] = {(_pb_name(l) if arm == "pb" else l.strip()) for l in open(path) if l.strip()}
+            lists[arm] = {_list_name(arm, l) for l in open(path) if l.strip()}
     kept = 0
     with open(arms_tsv) as f, open(out, "w") as g:
         head = f.readline()

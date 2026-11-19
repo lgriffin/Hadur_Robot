@@ -176,6 +176,37 @@ public final class RamEscape {
         circular = on;
     }
 
+    /**
+     * RAM-17: the half-width of the fan a linear or circular aim is widened to, in radians. The point-blank rammers'
+     * guns lag our state by a tick and turn at a limited rate, so their bullets scatter a few degrees about the aim.
+     */
+    static final double FAN = Math.toRadians(4);
+    /** RAM-17: whether the linear and circular aims are dodged as fans. */
+    private boolean fan;
+
+    /**
+     * RAM-17: dodge this opponent's linear and circular aims as +-{@link #FAN} fans (its {@code ram-fan:} line). The
+     * line also weighs its shots as RAM-14 does, the pairing that held on the cloud.
+     *
+     * @param on whether the table names this opponent
+     */
+    public void setFan(boolean on) {
+        fan = on;
+    }
+
+    /** RAM-14: the closest-approach cost of each kept aim that hits a path; {@link #HIT_COST} unless doubled. */
+    private double hitCost = HIT_COST;
+
+    /**
+     * RAM-14: weigh this opponent's shots twice as heavily, {@code 2 * HIT_COST} px of closest approach for each aim
+     * that hits a path (its {@code ram-heavy:} line).
+     *
+     * @param on whether the table names this opponent
+     */
+    public void setHeavy(boolean on) {
+        hitCost = on ? 2 * HIT_COST : HIT_COST;
+    }
+
     /** RAM-11: the newest shot's circular aim minus its linear aim, NaN when it carries none; for tests. */
     double lastCircularLead() {
         double[] s = shots.peekLast();
@@ -272,7 +303,7 @@ public final class RamEscape {
             if (min < floor) return null;
             sum += d;
         }
-        return new double[] {min - HIT_COST * Integer.bitCount(hits), sum / HORIZON, bent};
+        return new double[] {min - hitCost * Integer.bitCount(hits), sum / HORIZON, bent};
     }
 
     /**
@@ -287,9 +318,14 @@ public final class RamEscape {
             if (flown > 0) {
                 for (int a = 0; a < 3; a++) {
                     if (Double.isNaN(s[4 + a])) continue;
-                    double bx = s[1] + Math.sin(s[4 + a]) * flown;
-                    double by = s[2] + Math.cos(s[4 + a]) * flown;
-                    if (Math.abs(bx - x) < HIT_BOX && Math.abs(by - y) < HIT_BOX) bits |= 1 << (3 * i + a);
+                    // RAM-17: with a fan, the linear and circular aims are each three rays, the aim and +-FAN.
+                    int rays = fan && a > 0 ? 1 : 0;
+                    for (int k = -rays; k <= rays; k++) {
+                        double angle = s[4 + a] + k * FAN;
+                        double bx = s[1] + Math.sin(angle) * flown;
+                        double by = s[2] + Math.cos(angle) * flown;
+                        if (Math.abs(bx - x) < HIT_BOX && Math.abs(by - y) < HIT_BOX) bits |= 1 << (3 * i + a);
+                    }
                 }
             }
             i++;
