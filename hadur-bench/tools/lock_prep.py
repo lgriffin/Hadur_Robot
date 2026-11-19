@@ -43,7 +43,7 @@ LEVERS = {
     "md": ("slistdrop", ("SHIELD_DROP",)),
     "vj": ("vjlist", ("VEL_JITTER",)),
     "sb": ("sblist", ("SPEED_BAND",)),
-    "dp": ("dplist", ("DIST_PIN",)),
+    "dn": ("dplist", ("DIST_PIN",)),  # dplist builds suffix dn (#891); dp is sdplanlist's
     "kl": ("sklist", ("SURF_KEY",)),
     "rh": ("rhlist", ("RAM_HEAVY",)),
     "rwl": ("rwlist", ("RAM_WAIT",)),
@@ -106,11 +106,11 @@ def _kl_lines(names):
 
 
 def _list_lines(arm, names):
-    return _pb_lines(names) if arm == "pb" else _dp_lines(names) if arm == "dp" else _kl_lines(names) if arm == "kl" else names
+    return _pb_lines(names) if arm == "pb" else _dp_lines(names) if arm == "dn" else _kl_lines(names) if arm == "kl" else names
 
 
 def _list_name(arm, line):
-    return (_pb_name(line) if arm == "pb" else _dp_name(line) if arm == "dp" else _kl_name(line) if arm == "kl"
+    return (_pb_name(line) if arm == "pb" else _dp_name(line) if arm == "dn" else _kl_name(line) if arm == "kl"
             else line.strip())
 
 

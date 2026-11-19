@@ -1,0 +1,15 @@
+opponent	control	control_n	rf_minus_c	rf_n	sp2_minus_c	sp2_n	hf_minus_c	hf_n	or_minus_c	or_n	rp_minus_c	rp_n	mv_minus_c	mv_n	md_minus_c	md_n	mtmv_minus_c	mtmv_n
+ntw.Sighup 1.5	90.42	24	2.55	12		0		0		0		0		0		0		0
+mbh.Mbh 0.1	97.32	24	1.72	12		0		0		0		0		0		0		0
+Fenix.FenixTrack 1.0	94.98	24		0	2.04	12		0		0		0		0		0		0
+aw.Gilgalad 1.99.5c	55.99	24		0		0	7.13	12		0		0		0		0		0
+deo.virtual.RainbowBot 1.0	91.17	24		0		0		0		0		0		0	1.21	12		0
+dmh.robocode.robot.PinkPanther 1.1	75.44	24		0		0		0		0	0.83	12		0		0		0
+ebo.Tahoe 1.1.79	71.34	24		0		0		0		0	0.84	12		0		0		0
+hope.Identity .pope69	64.95	24		0		0		0		0	6.84	12		0		0		0
+kawigi.nano.ThnikkaBot 0.9	96.11	24		0		0		0		0		0		0		0	1.75	12
+mnt.AHEB 0.6a	89.32	24		0		0		0		0		0	3.16	12		0		0
+pez.mako.Mako 1.5	96.56	24		0		0		0		0		0	-0.21	12		0		0
+repositorio.NanoStep 1.0	98.35	24		0	1.12	12		0		0		0		0		0		0
+shrub.Silver v048	97.59	24		0	1.87	12		0		0		0		0		0		0
+ultra.Defender 1.2	88.22	24		0		0		0	0.75	12		0		0		0		0

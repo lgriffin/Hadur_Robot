@@ -1,0 +1,25 @@
+# PC card pc-melee-stray-read (BENCH-258): master on twelve census fields with ScalarR seated in place of each field's lowest-ranked robot (work/melee-stray-seat.txt, written by melee_strays.py seat), melee trace on, 1 seed (3361), 20 rounds, no baseline. Template: srprep writes work/melee-stray-seat.args with @V@ = the robot.release in hadur-robot/pom.xml and @C@ = the host's melee width.
+--suite
+work/melee-stray-seat.txt
+--seeds
+1
+--seed-base
+3361
+--rounds
+20
+--parallel
+@C@
+--child-heap
+2G
+--cpu-constant
+auto
+--melee-trace
+true
+--robot-jar
+bisect/hadur117.Hadur_@V@aa.jar
+--robot
+hadur117.Hadur @V@aa
+--out
+work/melee-stray-seat-@V@
+--report
+../docs/bench/local/melee-stray-seat-battles.md
