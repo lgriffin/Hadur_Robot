@@ -1,0 +1,17 @@
+# pc-rc-confirm (BENCH-264): the 16 1v1 rumble returners; 15 load only on Robocode 1.12.0 (broken-1.11.2.txt), plus DumDum. Benched on --engine 1.12.0 --keep-broken.
+dsekercioglu.mega.Raven 3.56j8 | ret | dsekercioglu.mega.Raven_3.56j8.jar
+dsekercioglu.mega.WhiteFang 2.8.1 | ret | dsekercioglu.mega.WhiteFang_2.8.1.jar
+rsalesc.mega.Knight 0.6.28 | ret | rsalesc.mega.Knight_0.6.28.jar
+pc.Wavelet 1.5 | ret | pc.Wavelet_1.5.jar
+Krabb.sliNk.Garm 0.9u | ret | Krabb.sliNk.Garm_0.9u.jar
+florent.test.Toad 0.14t | ret | florent.test.Toad_0.14t.jar
+apv.ScruchiPu 1.0 | ret | apv.ScruchiPu_1.0.jar
+apv.TheBrainPi 0.5fix | ret | apv.TheBrainPi_0.5fix.jar
+dev.kurtw.KurtBot 0.2 | ret | dev.kurtw.KurtBot_0.2.jar
+ag.Gir 0.99 | ret | ag.Gir_0.99.jar
+synnalagma.NeuralPremier 0.51 | ret | synnalagma.NeuralPremier_0.51.jar
+sqTank.waveSurfing.LionWWSVMvoid 0.01 | ret | sqTank.waveSurfing.LionWWSVMvoid_0.01.jar
+dsekercioglu.shield.ColdBreath 1.0 | ret | dsekercioglu.shield.ColdBreath_1.0.jar
+gre.svman4.Leonidas 1.3.2 | ret | gre.svman4.Leonidas_1.3.2.jar
+rdt.AgentSmith.AgentSmith 0.5 | ret | rdt.AgentSmith.AgentSmith_0.5.jar
+fnh.mega.DumDum 1.0.1 | ret | fnh.mega.DumDum_1.0.1.jar
