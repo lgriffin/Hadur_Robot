@@ -1930,10 +1930,18 @@ public final class Bench {
                 Files.copy(s, robots.resolve(s.getFileName()), StandardCopyOption.REPLACE_EXISTING);
             }
         }
+        installOpponents(opponents, benchDir.resolve("opponents"), robots, lenient);
+    }
+
+    /**
+     * Copies each opponent's jar from {@code from} into {@code robots}. A missing jar is fatal unless
+     * {@code lenient}; then (BENCH-265) the opponent is logged and dropped from {@code opponents}.
+     */
+    static void installOpponents(List<Opponent> opponents, Path from, Path robots, boolean lenient) throws IOException {
         for (Iterator<Opponent> it = opponents.iterator(); it.hasNext();) {
             Opponent o = it.next();
             if (o.jar == null) continue;
-            Path jar = benchDir.resolve("opponents").resolve(o.jar);
+            Path jar = from.resolve(o.jar);
             if (!Files.exists(jar)) {
                 if (!lenient) throw new IllegalStateException("Missing opponent jar " + jar);
                 System.out.println("  no jar for " + o.name + "; dropped from the session");
