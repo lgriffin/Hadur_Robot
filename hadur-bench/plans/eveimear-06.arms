@@ -1,0 +1,5 @@
+# BENCH-263 (pc-eveimear-06): c is the shipped source with the 160 px wall stick (0.5's play), aa its A/A rebuild,
+# n the shipped 0.6 (120 px, EVEIMEAR-5). All built with ProGuard by kitlab/build_arm_pg.sh, as a release ships.
+c | hadur117.micro.Eveimear 0.5c | kitlab/jars/hadur117.micro.Eveimear_0.5c.jar
+aa | hadur117.micro.Eveimear 0.5aa | kitlab/jars/hadur117.micro.Eveimear_0.5aa.jar
+n | hadur117.micro.Eveimear 0.6n | kitlab/jars/hadur117.micro.Eveimear_0.6n.jar

@@ -1,0 +1,57 @@
+# Eveimear 0.6 confirm on the whole MicroRumble field (thread "Take 1st with JayLexi, Eveimear and Sanaro"; BENCH-263).
+# 0.6 closes its drive off the enemy until a 120 px stick stays in the field, where 0.5 used 160 (EVEIMEAR-5, 0 code
+# bytes, 749 B). This card checks it on the PC over every MicroRumble robot before any release.
+#   ./queue.sh run pc-eveimear-06        (or  .\queue.ps1 run pc-eveimear-06)
+# Run it from master with this card merged: git checkout master && git pull
+# One bench queue, RoboRumble workers at 0. Nothing is uploaded or released. About 1 h to the end.
+#
+# Why it should win:
+# - Field-wide movement, one constant. The 160 px stick turns the drive away from a wall early, so the random orbit
+#   flattens and reverses off walls more often than it needs to; a shorter stick keeps more of the orbit's spread.
+#   That is our reading; the bench result is the evidence.
+# - Cloud, 112 MicroRumble robots (kitlab/micro-wide2-field.txt), against 0.5: screen 140 px +0.30 +- 0.49, 180 px
+#   -0.28 (3 seeds 63000); 120 px +0.33 +- 0.37 (6 seeds 64000) and +0.41 +- 0.35 (6 seeds 66000), 12 seeds
+#   +0.37 +- 0.28; 100 px +0.35 +- 0.31. docs/bench/local/2026-11-19_eveimear-*.md.
+# - n is the shipped source; c is the same source with 160 (0.5's play, checked by grep); aa is c rebuilt.
+# - Risk: the cloud field is 112 of 515 robots; the rest of the field could read flat. The whole-field read settles it.
+#
+# Timing: --cpu-constant live (BENCH-245); the livematch step is Hadur's and BeepBoop's check of the PC's turn time.
+# Pilot: shuffled jobs. A/A outside its band at 20% halts; n below -0.5 points at 20% finishes early (futility).
+# Panel: kitlab/micro-pw-field.txt (515 MicroRumble robots). 3 arms x 515 x 6 fresh seeds from 67000 x 35 rounds
+# = 9,270 battles.
+# Gate: n against c and aa pooled, mean over the 515 robots with its 95% low end above 0. A pass ships as 0.6 on
+# Leigh's word only.
+# Stop rules: fails 30, dead 8, skips 60 over 200, stall 30m (halt; every battle fought is kept and a rerun resumes),
+# aa after 20% (halt), futility n below -0.5 after 20% (finish). ALERT opens an issue for Leigh on a stop.
+
+set P = --parallel 16 --no-truth-log --failed-ok
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 512M
+set SRC = ../eveimear/src/main/java/hadur117/micro/Eveimear.java
+set W = work/eveimear-06
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && rm -f ${OUT}/*_eveimear-06*.md && mkdir -p ${W} kitlab/jars bisect work && (cd ../eveimear && mvn -q verify) && test "$(grep -c '120 \* Math' ${SRC})" = 2 && sed 's/120 \* Math/160 * Math/g' ${SRC} > ${W}/Eveimear.java && test "$(grep -c '160 \* Math' ${W}/Eveimear.java)" = 2 && bash kitlab/build_arm_pg.sh ${W}/Eveimear.java hadur117.micro.Eveimear 0.5c && bash kitlab/build_arm_pg.sh ${W}/Eveimear.java hadur117.micro.Eveimear 0.5aa && bash kitlab/build_arm_pg.sh ${SRC} hadur117.micro.Eveimear 0.6n && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set kitlab/micro-pw-field.txt && mvn -q compile
+
+livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out ${W}-livematch --label pc-eveimear-06-livematch --shuffle-jobs && python3 tools/live_match.py ${W}-livematch/arms.tsv --out ${OUT}/pc-eveimear-06-livematch.md
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: stall 30m
+
+bench | ./bench-top20.sh ${C} ${P} --set kitlab/micro-pw-field.txt --seeds 6 --seed-base 67000 --arms plans/eveimear-06.arms --out ${W}/run --label eveimear-06 --shuffle-jobs
+  after: livematch
+  watch:
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+  stop: futility n below -0.5 after 20%
+
+gate | python3 ../data/tools/multiarm.py ${W}/run/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_eveimear-06.md && printf '\n## Gate\n\nn (0.6) ships when its mean against c and aa pooled over the 515 robots has its 95%% low end above 0.\n' >> ${OUT}/$(date +%Y-%m-%d)_eveimear-06.md && { [ ! -f ${W}/run/EARLY-STOP.md ] || cat ${W}/run/EARLY-STOP.md >> ${OUT}/$(date +%Y-%m-%d)_eveimear-06.md; }
+  after: bench
+
+pr | bash tools/open_results_pr.sh claude/pc-eveimear-06-results "Eveimear 0.6 on the whole MicroRumble field (pc-eveimear-06)" ${OUT}/*_eveimear-06.md ${OUT}/pc-eveimear-06-livematch.md
+  after: gate

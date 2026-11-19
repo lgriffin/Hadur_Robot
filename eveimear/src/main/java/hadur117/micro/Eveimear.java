@@ -52,13 +52,13 @@ public class Eveimear extends AdvancedRobot {
         double eOffset, absbearing, eDistance, goAngle;
 
         // Movement. Under 100 px the enemy is ramming: tempIndex is 1, the orbit opens out and every tick
-        // steps (EVEIMEAR-7). Smoothing closes the angle off the enemy until a 160 px stick stays in the
+        // steps (EVEIMEAR-7). Smoothing closes the angle off the enemy until a 120 px stick stays in the
         // field (EVEIMEAR-5).
         eOffset = 2 + (tempIndex = (int) (100 / (eDistance = e.getDistance())));
         Rectangle2D.Double field;
         while (!(field = new Rectangle2D.Double(18 - getX(), 18 - getY(), 764, 564))
-                .contains(160 * Math.sin(goAngle = (absbearing = e.getBearingRadians() + getHeadingRadians())
-                        + direction * (eOffset -= .02)), 160 * Math.cos(goAngle))) {
+                .contains(120 * Math.sin(goAngle = (absbearing = e.getBearingRadians() + getHeadingRadians())
+                        + direction * (eOffset -= .02)), 120 * Math.cos(goAngle))) {
         }
         // Random orbit reverses at 0.6 sqrt(bullet speed / distance) - 0.04 a tick; any mode reverses off a
         // wall it cannot clear (EVEIMEAR-4).
