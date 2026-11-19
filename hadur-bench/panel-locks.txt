@@ -1,4 +1,6 @@
-# BENCH-253 pc-locks, round 11: robots that load on Robocode 1.11.2 whose per-robot line locked on the cloud (95% low end
-# above 0, live turn time; coverage/shards/locks.tsv, coverage/shards/round11-draft.md). name | note | jar
-stelo.Lifestealer 1.0 | rank991-band6 | stelo.Lifestealer_1.0.jar
-step.nanoPri 1.0 | rank676-band5 | step.nanoPri_1.0.jar
+# BENCH-253 pc-locks, round 12: robots that load on Robocode 1.11.2 whose per-robot line locked on the cloud (95% low end
+# above 0, live turn time, MOVE-52 on; coverage/shards/locks.tsv, coverage/shards/briefs.md). name | note | jar
+synnalagma.test.MiniNeural 1.1 | rank614-band5 | synnalagma.test.MiniNeural_1.1.jar
+nan.Ihivatar_Mk_1 1.0 | rank486-band5 | nan.Ihivatar_Mk_1_1.0.jar
+goblin.Bender 2.4 | gap2.8 | goblin.Bender_2.4.jar
+kjc.etc.Dharok 1.0 | gap3.5 | kjc.etc.Dharok_1.0.jar

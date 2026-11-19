@@ -1,6 +1,6 @@
-# pc-locks (BENCH-253) round 11: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots
-# that locked with it (plans/locks-pick.tsv; rp race power, rfn RAM-17 ram-fan).
+# pc-locks (BENCH-253) round 12: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots
+# that locked with it (plans/locks-pick.tsv; rwl MOVE-46 ram-wait, rf RAM-15 ram-flee).
 c | hadur117.Hadur 3.23 | bisect/hadur117.Hadur_3.23.jar
 aa | hadur117.Hadur 3.23aa | bisect/hadur117.Hadur_3.23aa.jar
-rp | hadur117.Hadur 3.23rp | bisect/hadur117.Hadur_3.23rp.jar
-rfn | hadur117.Hadur 3.23rfn | bisect/hadur117.Hadur_3.23rfn.jar
+rwl | hadur117.Hadur 3.23rwl | bisect/hadur117.Hadur_3.23rwl.jar
+rf | hadur117.Hadur 3.23rf | bisect/hadur117.Hadur_3.23rf.jar

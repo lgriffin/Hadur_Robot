@@ -1,6 +1,0 @@
-# BENCH-253 pc-locks, round 11, lock112 step: cloud-locked robots that load only on Robocode 1.12.0 (each is on
-# broken-1.11.2.txt; live runs 1.12.0). Benched with --engine 1.12.0 --keep-broken. name | note | jar
-dev.kurtw.KurtBot 0.2 | ret-112 | dev.kurtw.KurtBot_0.2.jar
-Krabb.sliNk.Garm 0.9u | ret-112 | Krabb.sliNk.Garm_0.9u.jar
-dsekercioglu.mega.Raven 3.56j8 | ret-112 | dsekercioglu.mega.Raven_3.56j8.jar
-dsekercioglu.mega.WhiteFang 2.8.1 | ret-112 | dsekercioglu.mega.WhiteFang_2.8.1.jar
