@@ -177,6 +177,12 @@ reads +0.11 and at a third +0.26 ± 0.44, but the third reads +0.04 ± 0.27 on 6
 0.9 is 0.8 with TI2 (JAYLEXI-22), at 1,495 B. The readable reference holds the start tick in a field, and a replay test
 shows that 0.8's tick 3 gives other orders. Nothing is released.
 
+## 9. More constants on 0.9 (seeds 65000, 3 seeds, A/A -0.09)
+
+`docs/bench/local/2026-11-19_jaylexi-n9.md`. All 1,495 B, all flat: danger over distance cubed +0.20 ± 0.46, to the 5th
++0.07; the aim prior at twice its weight +0.12, at half -0.00; wall smoothing step 0.03 +0.07, 0.08 -0.20. With n1 to
+n8, the 0-byte constants of the surf are tuned out: only the prediction's start tick (0.9) moved the score.
+
 ## Where this leaves JayLexi
 
 - The gap to FoilistMC on its gap robots is real, about 1 APS, and it is movement: damage taken.
