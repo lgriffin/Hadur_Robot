@@ -1,6 +1,6 @@
 # Overnight cloud tests, 18-19 Nov: own-fire veto (T2) and third-party bullets (M1)
 
-Both arms were bench switches, off by default (ablations tmveto, suffix tv; mthird and mthird2, suffixes mt and m2). Neither passed, so the code was reverted on this branch (commits a6606537, 2f..., kept in history) and nothing reaches master but this record. Cloud box, 4 cores, parallel 2, live CPU constant, paired against aa (master under another name).
+Both arms were bench switches, off by default (ablations tmveto, suffix tv; mthird and mthird2, suffixes mt and m2). Neither passed, so the code was reverted before this record (the switch commits stay in the branch history) and nothing reaches master but this record. Cloud box, 4 cores, parallel 2, live CPU constant, paired against aa (master under another name).
 
 ## Team: own-fire veto (TVETO-1, tv)
 A reranked destination whose 30-tick drive meets a teammate's bullet is refused while another reranked destination meets none.
