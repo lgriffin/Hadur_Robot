@@ -1,6 +1,6 @@
 # Queue pc-team-icpt: progress
 
-Updated 2026-11-19 12:04:54 PC time (12:04 UTC), runner pid 95276.
+Updated 2026-11-19 12:20:03 PC time (12:20 UTC), runner pid 95276.
 
 - `tcprep` done, exit 0 in 2 min
 - `tcptic` running
@@ -12,16 +12,16 @@ Updated 2026-11-19 12:04:54 PC time (12:04 UTC), runner pid 95276.
 
 ### tcptic
 
-**63 of 276 battles** (23%), 0 failed. Running 13 min, 290 battles/h, about 44 min left (ends ~12:48 PC time). Last battle 0 min ago.
-Skipped turns a battle: 40.4 overall, first 63 40.4, last 63 40.4.
+**164 of 276 battles** (59%), 0 failed. Running 28 min, 349 battles/h, about 19 min left (ends ~12:39 PC time). Last battle 0 min ago.
+Skipped turns a battle: 29.5 overall, first 100 35.6, last 100 22.6.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 60` | halt | ok | 0 failed of 63 |
+| `fails 60` | halt | ok | 0 failed of 164 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | waiting | 63 of 200 battles to read |
+| `skips 60 over 200` | halt | waiting | 164 of 200 battles to read |
 
-Stopping now would leave 213 battles unrun (about 44 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 112 battles unrun (about 19 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
