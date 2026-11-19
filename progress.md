@@ -1,6 +1,6 @@
 # Queue pc-intercept: progress
 
-Updated 2026-11-19 14:19:15 PC time (14:19 UTC), runner pid 49364.
+Updated 2026-11-19 14:34:28 PC time (14:34 UTC), runner pid 49364.
 
 - `prep` done, exit 0 in 2 min
 - `livematch` done, exit 0 in 0 min
@@ -82,26 +82,26 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### midfield
 
-**1182 of 2004 battles** (59%), 0 failed. Running 20 min, 3604 battles/h, about 14 min left (ends ~14:32 PC time). Last battle 0 min ago.
-Skipped turns a battle: 1.2 overall, first 100 0.7, last 100 1.3; engine disables 0.
+**1992 of 2004 battles** (99%), 0 failed. Running 35 min, 3314 battles/h, about 0 min left (ends ~14:34 PC time). Last battle 0 min ago.
+Skipped turns a battle: 1.3 overall, first 100 0.7, last 100 1.6; engine disables 0.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 395 | 0 | 91.07 | - | - | - | 1.2 |
-| aa | 392 | 0 | 91.28 | +0.03 (160 robots) | ±0.04 | -0.03 .. +0.09 | 1.2 |
-| ic | 395 | 0 | 91.58 | +0.05 (160 robots) | ±0.03 | +0.00 .. +0.11 | 1.2 |
+| c | 662 | 0 | 91.08 | - | - | - | 1.3 |
+| aa | 664 | 0 | 91.08 | +0.02 (166 robots) | ±0.03 | -0.03 .. +0.06 | 1.4 |
+| ic | 666 | 0 | 91.44 | +0.05 (166 robots) | ±0.03 | +0.01 .. +0.09 | 1.3 |
 
 APS = mean difference over the robots read x 167 panel robots / 1217 pairings.
-A/A: aa - c +0.21 pts over 160 robots; 1% band ±0.59 (inside).
+A/A: aa - c +0.12 pts over 166 robots; 1% band ±0.45 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 1182 |
+| `fails 30` | halt | ok | 0 failed of 1992 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 60 over 200` | halt | ok | 1.3 a battle over the last 200 (first 200: 0.7) |
+| `skips 60 over 200` | halt | ok | 1.5 a battle over the last 200 (first 200: 0.7) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 822 battles unrun (about 14 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 12 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
