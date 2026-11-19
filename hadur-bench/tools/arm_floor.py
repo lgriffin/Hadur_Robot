@@ -1,4 +1,4 @@
-"""BENCH-260: a pilot stop rule. Reads an arms.tsv and fails (exit 1) when ARM minus pooled c and aa,
+"""A pilot stop rule (first used by the pc-intercept card, now retired). Reads an arms.tsv and fails (exit 1) when ARM minus pooled c and aa,
 averaged over the robots all three arms read, is below FLOOR points, or when fewer than MIN robots
 are read; otherwise exit 0. Writes a one-line verdict to OUT.
 
