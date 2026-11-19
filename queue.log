@@ -19,3 +19,9 @@
 23:19:03 start field
 23:19:03 watching field: 5 stop rule(s)
 23:19:06 field exit=1 in 2 s
+23:19:08 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/945
+23:19:08 skip ret (after field, which has not finished exit=0)
+23:19:08 skip gate112 (after ret, which has not finished exit=0)
+23:19:08 skip gate (after gate112, which has not finished exit=0)
+23:19:08 skip pr (after gate, which has not finished exit=0)
+23:19:08 ALLDONE

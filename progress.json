@@ -1,6 +1,6 @@
 {
  "plan": "pc-rc-confirm",
- "updated": 1795130346.5795345,
+ "updated": 1795130348.604313,
  "steps": {
   "prep": {
    "status": "done",
@@ -21,16 +21,20 @@
    "end": "2026-11-19T23:19:06"
   },
   "ret": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after field"
   },
   "gate112": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after ret"
   },
   "gate": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after gate112"
   },
   "pr": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after gate"
   }
  },
  "watched": [
