@@ -1,0 +1,55 @@
+# battle: team
+# Team: MOVE-52's intercept views in the team members' duels alone (TMODE-53, BENCH-261).
+# Team thread: team-only; 1v1 and melee untouched (the team switch reads the TEAM charter; MOVE-52's own switch stays off).
+#   aa      the baseline (master); bb its A/A copy
+#   tic     TMODE-53 on (tmicpt): when a member's bullet meets an enemy bullet in a duel it plays, that bullet's
+#           firing angle also teaches the danger views, as a hit does
+# Pilot: tic on all 46 teams, 3 fresh seeds from 29000, 12 rounds, paired with aa. A projected team APS change under
+#   0 stops the card there (team_modes.py gate --stop-below 0), and the PR carries the pilot.
+# Screen: bb and tic against aa on all 46 teams, 12 fresh seeds from 29100, 12 rounds; tic is gated at +0.15 APS with
+#   the 95% low end above zero over 46 pairings, scored against both baselines.
+# Why it should win: an intercepted bullet shows the enemy's exact firing angle, and in the offline replay of the
+#   danger model learning those angles rated the true aim of later bullets well 1.6 pp more often (2.9 pp in rounds
+#   0-2). In 1v1 that did not turn into fewer hits, but team members fight their endgame duels against the
+#   strong teams' leaders with little time to learn, which is where early angles count. Cloud A/B against master
+#   (teamdz-B/ on the project files; the 16 gap teams, 10 rounds, live CPU constant, paired): +1.2 +- 1.6 and
+#   +0.6 +- 1.3 share points on two 4-seed blocks, +0.94 +- 0.50 pooled by seed with all 8 seeds at or above 0;
+#   skipped turns unchanged.
+# Size: pilot 138 battles, screen 2 x 552: about 1,250 battles, about 1 h at the rate pc-team-closerr ran at.
+#   Every step resumes where it stopped.
+# Stop rules on every battle step (halt; every battle fought is kept and a rerun resumes): 60 failed battles, no
+# battle in 30 minutes, or 60+ skipped turns a battle over the last 200.
+# The team thread reads claude/pc-team-icpt-results.
+#   ./queue.sh run pc-team-icpt        (or  .\queue.ps1 run pc-team-icpt)
+# Run it from master (one bench queue at a time, RoboRumble workers at 0):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set T = python3 tools/team_modes.py
+
+tcprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && for a in aa bb tic; do rm -f bisect/hadur117.HadurTeam_"$V"$a.jar; done && rm -f ${OUT}/team-icpt-p*.md ${OUT}/team-icpt-bb.md ${OUT}/team-icpt-tic.md ${OUT}/team-icpt-verdict.md && mkdir -p work && rm -rf work/team-icpt-"$V"-* && rm -f work/team-icpt-*.args work/team-icpt-go && ./fetch-opponents.sh --set team-census46.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmicpt && sed -e "s/@V@/$V/g" plans/team-icpt-pilot.args > work/team-icpt-pep.args && for a in bb tic; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" plans/team-icpt-screen.args > work/team-icpt-$a.args || exit 1; done && for a in aa bb tic; do test -f bisect/hadur117.HadurTeam_"$V"$a.jar || exit 1; done && mvn -q compile
+tcptic | mvn -q exec:java "-Dexec.args=@work/team-icpt-pep.args"
+  after: tcprep
+  watch: battles=276
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tcpilot | ${T} gate --report ${OUT}/team-icpt-pep.md --set team-census46.txt --seeds 3 --teams 46 --min-aps 0 --stop-below 0 --out-md ${OUT}/team-icpt-pilot.md && touch work/team-icpt-go || test $? -eq 3 || exit 1
+  after: tcptic
+tcbb | if [ -f work/team-icpt-go ]; then mvn -q exec:java "-Dexec.args=@work/team-icpt-bb.args"; else echo "tic under 0 on the pilot: no screen"; fi
+  after: tcpilot
+  watch: battles=1104
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tctic | if [ -f work/team-icpt-go ]; then mvn -q exec:java "-Dexec.args=@work/team-icpt-tic.args"; else echo "tic under 0 on the pilot: no screen"; fi
+  after: tcbb
+  watch: battles=1104
+  stop: fails 60
+  stop: stall 30m
+  stop: skips 60 over 200
+tcgate | if [ -f work/team-icpt-go ]; then ${T} gate --report ${OUT}/team-icpt-tic.md --control ${OUT}/team-icpt-bb.md --set team-census46.txt --seeds 12 --teams 46 --min-aps 0.15 --out-md ${OUT}/team-icpt-verdict.md || exit 1; else echo "no screen"; fi
+  after: tctic
+tcpr | bash tools/open_results_pr.sh claude/pc-team-icpt-results "Team: intercept views for team members (TMODE-53)" $(ls ${OUT}/team-icpt-*.md 2>/dev/null | grep -v smoke)
+  after: tcgate

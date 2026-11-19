@@ -71,6 +71,13 @@ final class MoveDesign {
     static final boolean INTERCEPT_VIEWS = false;
 
     /**
+     * TMODE-53 (team lane, 19 Nov): {@link #INTERCEPT_VIEWS} for the team's members alone, in the duel a member
+     * plays once its team's charter hands it one; 1v1 and melee are untouched. On the cloud against the 16 gap
+     * teams, the intercept views read +0.94 pp of score share over 8 seeds. Off; the ablation tmicpt turns it on.
+     */
+    static final boolean TEAM_INTERCEPT_VIEWS = false;
+
+    /**
      * MOVE-33: with {@link #AIM_MEMBERS}, the six visit-trained learning-gun mimics of MOVE-27
      * (GunMimics) join the aim members after the aims, sharing a standing weight of 0.3, each
      * scored on the bullets as the aims are. BeepBoop's surf blends such mimics of named guns

@@ -1,0 +1,31 @@
+# PC card pc-team-icpt (BENCH-261): the screen, arm @A@ (bb, the A/A, or tic) on all 46 teams, 12 seeds from 29100, 12 rounds, against master (the aa build). Template: the card's prep writes the work copy with @V@ and @A@.
+--team
+true
+--seeds
+12
+--seed-base
+29100
+--rounds
+12
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+team-census46.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@@A@.jar
+--robot
+hadur117.HadurTeam @V@@A@
+--member
+hadur117.Hadur
+--out
+work/team-icpt-@V@-@A@
+--report
+../docs/bench/local/team-icpt-@A@.md
+--baseline
+bisect/hadur117.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur117.HadurTeam @V@aa
