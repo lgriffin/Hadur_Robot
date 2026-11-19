@@ -543,6 +543,10 @@ public final class Bench {
         }
         // BENCH-265: with --failed-ok, an opponent whose jar is missing (an archive 404) is dropped and logged, not fatal.
         installRobots(opponents, Boolean.parseBoolean(opts.getOrDefault("failed-ok", "false")));
+        if (opponents.isEmpty()) {
+            System.err.println("refusing to start: no opponent jar found for any robot in the set");
+            return 2;
+        }
         startedAt = Instant.now();
         startShelf = Conditions.shelf(home.resolve("robots/.data"));
         sampler = Host.Sampler.system();
@@ -1885,12 +1889,10 @@ public final class Bench {
         return benchDir.resolve("target/classes") + File.pathSeparator + deps;
     }
 
-    /** Sets up a Robocode home with Hadur's jar, the sample bots and any opponent jars. */
-    private void installRobots(List<Opponent> opponents) throws IOException {
-        installRobots(opponents, false);
-    }
-
-    /** As above; {@code lenient} drops opponents whose jar is missing instead of failing (a session's sample). */
+    /**
+     * Sets up a Robocode home with Hadur's jar, the sample bots and any opponent jars; {@code lenient} drops
+     * opponents whose jar is missing instead of failing (a session's sample, or a run with --failed-ok).
+     */
     private void installRobots(List<Opponent> opponents, boolean lenient) throws IOException {
         Path robots = home.resolve("robots");
         Files.createDirectories(robots);
