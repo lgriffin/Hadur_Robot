@@ -1,0 +1,7 @@
+# BENCH-262 (pc-jaylexi-09): c is the shipped source with the danger prediction counted from tick 3 (0.8's play), aa
+# its A/A rebuild, n the shipped 0.9 source (tick 2, JAYLEXI-22), r6 the released 0.6. All but r6 built with ProGuard
+# by kitlab/build_arm_pg.sh, as a release ships.
+c | hadur117.mini.JayLexi 0.8c | kitlab/jars/hadur117.mini.JayLexi_0.8c.jar
+aa | hadur117.mini.JayLexi 0.8aa | kitlab/jars/hadur117.mini.JayLexi_0.8aa.jar
+n | hadur117.mini.JayLexi 0.9n | kitlab/jars/hadur117.mini.JayLexi_0.9n.jar
+r6 | hadur117.mini.JayLexi 0.6 | kitlab/jars/hadur117.mini.JayLexi_0.6.jar

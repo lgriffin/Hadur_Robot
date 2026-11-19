@@ -44,4 +44,12 @@ public class ReplayBot extends JayLexi {
             return r;
         }
     }
+
+    /** The readable JayLexi with 0.8's prediction counted from tick 3, to show the 0.9 rule plays. */
+    public static class Lead3 extends ReplayBot {
+        public Lead3(ReplayBody b) {
+            super(b);
+            lead = 3;
+        }
+    }
 }
