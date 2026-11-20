@@ -21,3 +21,5 @@ cjk.Merkava 0.1.1 | charge-B | cjk.Merkava_0.1.1.jar
 kawam.kmBot9 1.0 | charge-B | kawam.kmBot9_1.0.jar
 sanja.First 0.1 | charge-B | sanja.First_0.1.jar
 tkt.RedShift 1.1.CS.0 | bdiff-C | tkt.RedShift_1.1.CS.0.jar
+kjc.Karaykan 1.0 | charge-B | kjc.Karaykan_1.0.jar
+sheldor.melee.nano.TestMelee 0.1 | charge-B | sheldor.melee.nano.TestMelee_0.1.jar
