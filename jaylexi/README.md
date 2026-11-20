@@ -62,6 +62,12 @@ learns from every other, whatever the range, so the stats fill four times as fas
 cloud lock over 112 MiniRumble robots, +0.56 ± 0.24 on a 12-seed head-to-head, about +0.2 pooled over every read.
 1,486 bytes, 9 fewer than 0.9 ([docs/bench/jaylexi-tailoring.md](../docs/bench/jaylexi-tailoring.md)).
 
+1.1 (built 2026-11-20, not released) fires once its gun is within 1200 / distance degrees of the aim instead of a flat 3
+(JAYLEXI-24), so it fires sooner at robots that close in: +0.35 ± 0.26 over 1.0 on a 12-seed cloud lock, +3 to +4 points
+on chargers. It also orbits Leopard 0.4 rad closer inside 200 px and jitters its aim against uCatcher, a bullet catcher
+(per-robot lines, +2.9 and +1.0 points on their own robots). 43 bytes of 1.0 were rewritten with identical play to make
+room: 1,447 bytes ([docs/bench/jaylexi-tailoring.md](../docs/bench/jaylexi-tailoring.md)).
+
 ## Standing
 
 | Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | Next up | Gap |

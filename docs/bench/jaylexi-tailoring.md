@@ -212,6 +212,39 @@ four ways, so each band's stats stay thin for most of a battle; where an enemy's
 walls and lateral speed segments already carry most of it. pc-jaylexi-10 (BENCH-266) checks it on all 668 MiniRumble
 robots against 0.9 before any release.
 
+## JayLexi 1.1
+
+1.1 is 1.0 with three changes, at 1,447 B. Box A rewrote 43 bytes of 1.0 with identical play (the replay tests compare
+orders bit for bit), for example surf stats in spare gun rows and a Wave constructor. The fire gate is JAYLEXI-24, and
+two per-robot lines go in the free strings. The readable reference holds the gate behind a switch, and a replay test
+shows 1.0's flat gate gives other orders.
+
+## 11. Movement and gun on 1.0 (2026-11-20, seeds 96000 to 107999)
+
+Two gap runs against FoilistMC (C 97000, D 96000; 6 seeds each) put the 1.0 gap at -0.8 to -0.9 APS. It was mostly
+damage taken: chargers hit us under 150 px after 40+ ticks without a reversal, and learning guns hit us 20 to 40% more
+at every range.
+
+Movement levers, all level or worse:
+- forced reversals at any range (FR15 -15.7, FR20 -9.1, FR30 -7.6), soft (SP20 -0.14, SP40 0.00), close-only (FC10 -1.72,
+  FC15 -1.10, FC20 -0.59) and on enemy fire (RF8 -8.82, RF15 -4.96);
+- a light flattener (F1 +0.09, F2 +0.04, F3 -0.17);
+- danger averaged over our body width: K3 led on 3 seeds (+0.39), then read +0.06 ± 0.20 over 12; the 1,499 B form T4
+  failed its 12-seed lock (-0.04 ± 0.26).
+
+Gun: a truth-logged gap run found no missing segment. It found a 3 degree fire gate and a power gap.
+- Tighter gates lose: 600/d -0.59, min(3, 860/d) -0.07.
+- Looser gates up close pay: 1200/d (F12) +0.66 ± 0.34 on 6 seeds, then +0.35 ± 0.26 (low end +0.09) on a 12-seed lock.
+  The gain is +3 to +4 points on chargers (xbots, UbaRamLT, FollowFire, Mjolnir, Leopard); learning guns give a little back.
+- Power 3 / 2.5 / 2 read +0.05 on its 12-seed lock: dead.
+
+Per-robot lines (0 code bytes):
+- Leopard 0.75 rad inside 200 px: +4.39 ± 1.68 on 12 seeds.
+- uCatcher aim jitter: +0.93 ± 0.53 on 24 seeds.
+- BasicBulletShielder and RingDing jitter were level.
+
+pc-jaylexi-11 (BENCH-268) checks 1.1 against 1.0 on all 668 MiniRumble robots.
+
 ## Where this leaves JayLexi
 
 - The gap to FoilistMC on its gap robots is real, about 1 APS, and it is movement: damage taken.

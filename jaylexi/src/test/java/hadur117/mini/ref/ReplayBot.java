@@ -60,4 +60,12 @@ public class ReplayBot extends JayLexi {
             lead = 3;
         }
     }
+
+    /** The readable JayLexi with 1.0's flat 3 degree fire gate, to show the 1.1 gate plays. */
+    public static class Gate3 extends ReplayBot {
+        public Gate3(ReplayBody b) {
+            super(b);
+            flatGate = true;
+        }
+    }
 }
