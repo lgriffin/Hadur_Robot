@@ -1,6 +1,6 @@
 {
  "plan": "pc-jaylexi-10",
- "updated": 1795169943.9772599,
+ "updated": 1795170851.95824,
  "steps": {
   "prep": {
    "status": "done",
@@ -100,8 +100,8 @@
   {
    "step": "bench",
    "started": 1795167266.059151,
-   "updated": 1795169943.0496018,
-   "elapsed": 2676.99045085907,
+   "updated": 1795170850.6630678,
+   "elapsed": 3584.6039168834686,
    "expected": 16008,
    "panel": 667,
    "field": null,
@@ -109,80 +109,80 @@
    "arms": [
     {
      "arm": "c",
-     "battles": 949,
+     "battles": 1279,
      "failed": 0,
-     "level": 88.13193254688446,
-     "skips": 0.001053740779768177,
-     "fresh": 949,
-     "scored": 949,
+     "level": 88.17340765391015,
+     "skips": 0.0007818608287724785,
+     "fresh": 1279,
+     "scored": 1279,
      "diff": null
     },
     {
      "arm": "aa",
-     "battles": 951,
+     "battles": 1276,
      "failed": 0,
-     "level": 88.07473303030304,
-     "skips": 0.0010515247108307045,
-     "fresh": 951,
-     "scored": 951,
-     "diff": -0.040203030303030365,
-     "n": 550,
-     "ci95": 0.036126181440855255,
-     "half_stop": 0.05529517567477845,
+     "level": 88.14823294509151,
+     "skips": 0.0007836990595611285,
+     "fresh": 1276,
+     "scored": 1276,
+     "diff": -0.0251747088186356,
+     "n": 601,
+     "ci95": 0.026792893655102942,
+     "half_stop": 0.041009531104749405,
      "scale": null
     },
     {
      "arm": "n",
-     "battles": 950,
+     "battles": 1277,
      "failed": 0,
-     "level": 88.50984513006655,
-     "skips": 0.003157894736842105,
-     "fresh": 950,
-     "scored": 950,
-     "diff": 0.40294090909090874,
-     "n": 550,
-     "ci95": 0.26987309202502735,
-     "half_stop": 0.4130710592219806,
+     "level": 88.60016306156406,
+     "skips": 0.0023492560689115116,
+     "fresh": 1277,
+     "scored": 1277,
+     "diff": 0.43934787259329705,
+     "n": 601,
+     "ci95": 0.22513352383102633,
+     "half_stop": 0.3445921283127954,
      "scale": null
     },
     {
      "arm": "r6",
-     "battles": 949,
+     "battles": 1278,
      "failed": 0,
-     "level": 88.33177676950999,
-     "skips": 0,
-     "fresh": 949,
-     "scored": 949,
-     "diff": 0.22491242424242364,
-     "n": 550,
-     "ci95": 0.2787189025421599,
-     "half_stop": 0.4266105651155509,
+     "level": 88.39456350526899,
+     "skips": 0.001564945226917058,
+     "fresh": 1278,
+     "scored": 1278,
+     "diff": 0.2337483162982329,
+     "n": 601,
+     "ci95": 0.24319695753961576,
+     "half_stop": 0.37224024113206494,
      "scale": null
     }
    ],
    "aa": {
-    "diff": -0.040203030303030365,
-    "ci": 0.036126181440855255,
-    "n": 550,
-    "band": 0.3789114591333395,
+    "diff": -0.0251747088186356,
+    "ci": 0.026792893655102942,
+    "n": 601,
+    "band": 0.326666445612045,
     "ok": true,
-    "band_stop": 0.4405947199224878
+    "band_stop": 0.37984470420005234
    },
    "warnings": [],
-   "battles": 3799,
+   "battles": 5110,
    "resumed": 0,
    "failed": 0,
    "disables": 0,
-   "rate": 5062.0,
-   "eta": 8682.813117344922,
-   "fraction": 0.23731884057971014,
-   "last_battle_age": 0.15747690200805664,
+   "rate": 5146.0,
+   "eta": 7623.940924990283,
+   "fraction": 0.3192153923038481,
+   "last_battle_age": 1.3610939979553223,
    "rules": [
     {
      "rule": "fails 30",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 3799"
+     "detail": "0 failed of 5110"
     },
     {
      "rule": "dead 8",
@@ -206,16 +206,16 @@
      "rule": "aa after 20%",
      "action": "halt",
      "state": "ok",
-     "detail": "aa - c -0.04 pts over 550 robots, stop band \u00b10.44"
+     "detail": "aa - c -0.03 pts over 601 robots, stop band \u00b10.38"
     },
     {
      "rule": "futility n below -0.5 after 20%",
      "action": "finish",
      "state": "ok",
-     "detail": "n +0.40, best case +0.82 pts vs bar -0.50"
+     "detail": "n +0.44, best case +0.78 pts vs bar -0.50"
     }
    ],
-   "skips_mean": 0.0013161358252171624,
+   "skips_mean": 0.0013698630136986301,
    "skips_last100": 0
   }
  ]
