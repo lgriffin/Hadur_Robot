@@ -1,6 +1,6 @@
 {
  "plan": "pc-jaylexi-10",
- "updated": 1795173577.50238,
+ "updated": 1795174485.3329375,
  "steps": {
   "prep": {
    "status": "done",
@@ -100,8 +100,8 @@
   {
    "step": "bench",
    "started": 1795167266.059151,
-   "updated": 1795173576.1380472,
-   "elapsed": 6310.078896284103,
+   "updated": 1795174483.5683699,
+   "elapsed": 7217.509218931198,
    "expected": 16008,
    "panel": 667,
    "field": null,
@@ -109,80 +109,80 @@
    "arms": [
     {
      "arm": "c",
-     "battles": 2291,
+     "battles": 2631,
      "failed": 0,
-     "level": 88.22296430367018,
-     "skips": 0.001745962461807071,
-     "fresh": 2291,
-     "scored": 2291,
+     "level": 88.27084387550201,
+     "skips": 0.002280501710376283,
+     "fresh": 2631,
+     "scored": 2631,
      "diff": null
     },
     {
      "arm": "aa",
-     "battles": 2292,
+     "battles": 2632,
      "failed": 0,
-     "level": 88.21985067873302,
-     "skips": 0.0004363001745200698,
-     "fresh": 2292,
-     "scored": 2292,
-     "diff": -0.0031136249371543443,
-     "n": 663,
-     "ci95": 0.024628233680494053,
-     "half_stop": 0.03769627604157253,
+     "level": 88.25733534136546,
+     "skips": 0.0011398176291793312,
+     "fresh": 2632,
+     "scored": 2632,
+     "diff": -0.013508534136546188,
+     "n": 664,
+     "ci95": 0.027594429179734644,
+     "half_stop": 0.042236371193471386,
      "scale": null
     },
     {
      "arm": "n",
-     "battles": 2291,
+     "battles": 2630,
      "failed": 0,
-     "level": 88.45353594771242,
-     "skips": 0.0013094718463553033,
-     "fresh": 2291,
-     "scored": 2291,
-     "diff": 0.23209320907850325,
-     "n": 663,
-     "ci95": 0.17210501338099773,
-     "half_stop": 0.26342604088928223,
+     "level": 88.45600351405622,
+     "skips": 0.0019011406844106464,
+     "fresh": 2630,
+     "scored": 2630,
+     "diff": 0.1920342500956207,
+     "n": 664,
+     "ci95": 0.15295499422946088,
+     "half_stop": 0.23411478708590952,
      "scale": null
     },
     {
      "arm": "r6",
-     "battles": 2290,
+     "battles": 2632,
      "failed": 0,
-     "level": 88.32423629964806,
-     "skips": 0.0008733624454148472,
-     "fresh": 2290,
-     "scored": 2290,
-     "diff": 0.10279356101414902,
-     "n": 663,
-     "ci95": 0.1889398753781045,
-     "half_stop": 0.28919368680322116,
+     "level": 88.28111972891566,
+     "skips": 0.001899696048632219,
+     "fresh": 2632,
+     "scored": 2632,
+     "diff": 0.01715046495505797,
+     "n": 664,
+     "ci95": 0.18055487172251866,
+     "half_stop": 0.2763594975344673,
      "scale": null
     }
    ],
    "aa": {
-    "diff": -0.0031136249371543443,
-    "ci": 0.024628233680494053,
-    "n": 663,
-    "band": 0.24390727920899338,
+    "diff": -0.013508534136546188,
+    "ci": 0.027594429179734644,
+    "n": 664,
+    "band": 0.2276056312130545,
     "ok": true,
-    "band_stop": 0.2836131153592946
+    "band_stop": 0.26465771071285404
    },
    "warnings": [],
-   "battles": 9164,
+   "battles": 10525,
    "resumed": 0,
    "failed": 0,
    "disables": 0,
-   "rate": 5404.0,
-   "eta": 4559.289415247964,
-   "fraction": 0.572463768115942,
-   "last_battle_age": -0.008139848709106445,
+   "rate": 5470.0,
+   "eta": 3608.555758683729,
+   "fraction": 0.6574837581209395,
+   "last_battle_age": 1.1433892250061035,
    "rules": [
     {
      "rule": "fails 30",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 9164"
+     "detail": "0 failed of 10525"
     },
     {
      "rule": "dead 8",
@@ -200,22 +200,22 @@
      "rule": "stall 30m",
      "action": "halt",
      "state": "ok",
-     "detail": "last battle -0 min ago"
+     "detail": "last battle 0 min ago"
     },
     {
      "rule": "aa after 20%",
      "action": "halt",
      "state": "ok",
-     "detail": "aa - c -0.00 pts over 663 robots, stop band \u00b10.28"
+     "detail": "aa - c -0.01 pts over 664 robots, stop band \u00b10.26"
     },
     {
      "rule": "futility n below -0.5 after 20%",
      "action": "finish",
      "state": "ok",
-     "detail": "n +0.23, best case +0.50 pts vs bar -0.50"
+     "detail": "n +0.19, best case +0.43 pts vs bar -0.50"
     }
    ],
-   "skips_mean": 0.0010912265386294195,
+   "skips_mean": 0.0018052256532066508,
    "skips_last100": 0
   }
  ]
