@@ -35,3 +35,5 @@
 00:02:11 start field
 00:02:11 watching field: 5 stop rule(s)
 00:02:23 progress field: 0/7158 (0%) battles, 0 failed
+00:27:39 STOP field by rule skips 60 over 200: 60.6 a battle over the last 200 (first 200: 46.1); 308 battles fought and kept, 6850 battles left unrun (about 9.4 h)
+00:27:40 field exit=75 in 1529 s (halted, skips 60 over 200)

@@ -1,10 +1,10 @@
 # Queue pc-rc-confirm: progress
 
-Updated 2026-11-20 00:15:31 PC time (00:15 UTC), runner pid 72544.
+Updated 2026-11-20 00:27:40 PC time (00:27 UTC), runner pid 72544.
 
 - `prep` done, exit 0 in 2 min
 - `livematch` done, exit 0 in 0 min
-- `field` running
+- `field` halted, exit 75 in 25 min, HALTED by skips 60 over 200: 60.6 a battle over the last 200 (first 200: 46.1)
 - `ret` pending
 - `gate112` pending
 - `gate` pending
@@ -35,33 +35,31 @@ Stopping now would leave 0 battles unrun; every battle already fought is kept an
 
 ### field
 
-**165 of 7158 battles** (2%), 0 failed. Running 13 min, 743 battles/h, about 9.4 h left (ends ~09:40 PC time). Last battle 0 min ago.
-Skipped turns a battle: 43.7 overall, first 100 40.2, last 100 45.0; engine disables 74.
+**308 of 7158 battles** (4%), 0 failed. Running 25 min, 725 battles/h, about 9.4 h left (ends ~09:54 PC time). Last battle 0 min ago.
+Skipped turns a battle: 52.9 overall, first 100 40.2, last 100 69.2; engine disables 173.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| rel | 56 | 0 | 93.16 | -0.59 (49 robots) | ±0.84 | -1.88 .. +0.71 | 50.9 |
-| c | 55 | 0 | 94.28 | - | - | - | 45.3 |
-| aa | 54 | 0 | 93.68 | +0.35 (50 robots) | ±0.65 | -0.65 .. +1.35 | 34.6 |
+| rel | 106 | 0 | 93.67 | +0.09 (95 robots) | ±0.71 | -0.99 .. +1.18 | 59.0 |
+| c | 102 | 0 | 93.63 | - | - | - | 57.3 |
+| aa | 100 | 0 | 93.52 | +0.05 (95 robots) | ±0.52 | -0.75 .. +0.85 | 41.9 |
 
 APS = mean difference over the robots read x 1193 panel robots / 1217 pairings.
-A/A: aa - c +0.36 pts over 50 robots; 1% band ±1.63 (inside).
+A/A: aa - c +0.05 pts over 95 robots; 1% band ±1.18 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 165 |
+| `fails 30` | halt | ok | 0 failed of 308 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 60 over 200` | halt | waiting | 165 of 200 battles to read |
+| `skips 60 over 200` | halt | TRIPPED | 60.6 a battle over the last 200 (first 200: 46.1) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `aa after 20%` | halt | waiting | checks from 20% of the battles (now 2%) |
+| `aa after 20%` | halt | waiting | checks from 20% of the battles (now 4%) |
 
-Stopping now would leave 6993 battles unrun (about 9.4 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 6850 battles unrun (about 9.4 h); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-23:19:08 skip ret (after field, which has not finished exit=0)
-23:19:08 skip gate112 (after ret, which has not finished exit=0)
 23:19:08 skip gate (after gate112, which has not finished exit=0)
 23:19:08 skip pr (after gate, which has not finished exit=0)
 23:19:08 ALLDONE
@@ -75,4 +73,6 @@ Stopping now would leave 6993 battles unrun (about 9.4 h); every battle already 
 00:02:11 start field
 00:02:11 watching field: 5 stop rule(s)
 00:02:23 progress field: 0/7158 (0%) battles, 0 failed
+00:27:39 STOP field by rule skips 60 over 200: 60.6 a battle over the last 200 (first 200: 46.1); 308 battles fought and kept, 6850 battles left unrun (about 9.4 h)
+00:27:40 field exit=75 in 1529 s (halted, skips 60 over 200)
 ```
