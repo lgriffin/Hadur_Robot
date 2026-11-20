@@ -13,3 +13,7 @@
 11:05:28 progress bench: 7863/16008 (49%) battles, 5322/h, ETA 1.5 h, 0 failed, skips 0.0/battle (last 100), aa -0.01, n +0.30, r6 +0.17
 11:35:45 progress bench: 10622/16008 (66%) battles, 5480/h, ETA 59 min, 0 failed, skips 0.0/battle (last 100), aa -0.02, n +0.20, r6 +0.03
 12:06:01 progress bench: 13384/16008 (84%) battles, 5478/h, ETA 29 min, 0 failed, skips 0.0/battle (last 100), aa -0.02, n +0.19, r6 +0.01
+12:35:11 bench exit=0 in 10845 s
+12:35:11 start gate
+12:35:12 gate exit=0 in 0 s
+12:35:12 start pr
