@@ -1,0 +1,62 @@
+# JayLexi 1.0 confirm on the whole MiniRumble field (thread "Take 1st with JayLexi, Eveimear and Sanaro"; BENCH-266).
+# 1.0 keeps the surf stats in one distance band where 0.9 split them into four (JAYLEXI-23, 1,486 B, 9 fewer). This card
+# checks it on the PC over every MiniRumble robot against 0.9 (which passed pc-jaylexi-09, #931) before any release.
+#   ./queue.sh run pc-jaylexi-10        (or  .\queue.ps1 run pc-jaylexi-10)
+# Run it from master with this card merged: git checkout master && git pull
+# One bench queue, RoboRumble workers at 0. Nothing is uploaded or released. About 1 h 20 min to the end.
+#
+# Why it should win:
+# - Field-wide movement, no new code. A battle gives about 30 enemy waves a round; four distance bands split them four
+#   ways, so each band's danger stats stay thin for most of the battle. One band learns from every wave at once. Walls
+#   and our lateral speed stay as segments: dropping either lost 0.3 to 0.8 points, dropping distance did not.
+# - Cloud, 112 MiniRumble robots (kitlab/mini-wide3-field.txt), against 0.9: 12-seed lock +0.23 +- 0.20 (84000, low end
+#   +0.03), head to head +0.56 +- 0.24 (12 seeds 93000), five more reads from +0.38 to -0.01, about +0.2 pooled.
+#   docs/bench/jaylexi-tailoring.md section 10.
+# - n is the shipped source; c is 0.9's source read from master at 70a0008f8 (checked by grep for its bands); aa is c
+#   rebuilt. The replay test (JAYLEXI-23) shows 0.9's four bands play other orders and that the shipped build is the
+#   readable one.
+# - Risk: the gain is small and the cloud field is 112 of 668 robots; the whole field could read flat. This settles it.
+#
+# Timing: --cpu-constant live (BENCH-245). The livematch step is Hadur's and BeepBoop's 1v1 check of the PC's turn time;
+# MiniRumble runs on the same LiteRumble clients, so the same constant holds for it.
+# Pilot: shuffled jobs, so the first 20% is a fair sample. A/A outside its band at 20% halts; n below -0.5 points at 20%
+# finishes the run early (futility).
+# Panel: kitlab/mini-pw-field.txt (668 MiniRumble robots, none ours or in broken-1.11.2.txt). 4 arms x 668 x 6 fresh
+# seeds from 61000 x 35 rounds = 16,032 battles.
+# Gate: n against c and aa pooled, mean over the 668 robots with its 95% low end above 0. r6 (the released 0.6) shows what
+# 0.7 to 1.0 add over live. A pass ships as 1.0 on Leigh's word only.
+# Stop rules: fails 30, dead 8, skips 60 over 200, stall 30m (halt; every battle fought is kept and a rerun resumes),
+# aa after 20% (halt), futility n below -0.5 after 20% (finish). ALERT opens an issue for Leigh on a stop.
+
+set P = --parallel 16 --no-truth-log --failed-ok
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 512M
+set SRC = ../jaylexi/src/main/java/hadur117/mini/JayLexi.java
+set W = work/jaylexi-10
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set REL = https://github.com/lgriffin/Hadur_Robot/releases/download
+
+prep | git checkout -q master && rm -f ${OUT}/*_jaylexi-10*.md && mkdir -p ${W} kitlab/jars bisect work && (cd ../jaylexi && mvn -q verify) && ! grep -q "BAND" ${SRC} && git show 70a0008f8:jaylexi/src/main/java/hadur117/mini/JayLexi.java > ${W}/JayLexi.java && grep -q "surf\[BAND.charAt(band)\]" ${W}/JayLexi.java && bash kitlab/build_arm_pg.sh ${W}/JayLexi.java hadur117.mini.JayLexi 0.9c && bash kitlab/build_arm_pg.sh ${W}/JayLexi.java hadur117.mini.JayLexi 0.9aa && bash kitlab/build_arm_pg.sh ${SRC} hadur117.mini.JayLexi 1.0n && curl -fsSL -o kitlab/jars/hadur117.mini.JayLexi_0.6.jar ${REL}/jaylexi-v0.6/hadur117.mini.JayLexi_0.6.jar && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set kitlab/mini-pw-field.txt && mvn -q compile
+
+livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out work/pc-livematch-rel-live --label pc-jaylexi-10-livematch --shuffle-jobs && python3 tools/live_match.py work/pc-livematch-rel-live/arms.tsv --out ${OUT}/pc-jaylexi-10-livematch.md
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: stall 30m
+
+bench | ./bench-top20.sh ${C} ${P} --set kitlab/mini-pw-field.txt --seeds 6 --seed-base 61000 --arms plans/jaylexi-10.arms --out ${W}/run --label jaylexi-10 --shuffle-jobs
+  after: livematch
+  watch:
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+  stop: futility n below -0.5 after 20%
+
+gate | python3 ../data/tools/multiarm.py ${W}/run/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_jaylexi-10.md && printf '\n## Gate\n\nn (1.0) ships when its mean against c and aa pooled over the 668 robots has its 95%% low end above 0. r6 is the released 0.6.\n' >> ${OUT}/$(date +%Y-%m-%d)_jaylexi-10.md && { [ ! -f ${W}/run/EARLY-STOP.md ] || cat ${W}/run/EARLY-STOP.md >> ${OUT}/$(date +%Y-%m-%d)_jaylexi-10.md; }
+  after: bench
+
+pr | bash tools/open_results_pr.sh claude/pc-jaylexi-10-results "JayLexi 1.0 on the whole MiniRumble field (pc-jaylexi-10)" ${OUT}/*_jaylexi-10.md ${OUT}/pc-jaylexi-10-livematch.md
+  after: gate

@@ -13,7 +13,8 @@ import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 
 /**
- * The readable JayLexi 0.9: 0.8 with the danger prediction counted from tick 2 instead of 3 (JAYLEXI-22).
+ * The readable JayLexi 1.0: 0.9 with one surf distance band instead of four (JAYLEXI-23).
+ * 0.9 was 0.8 with the danger prediction counted from tick 2 instead of 3 (JAYLEXI-22).
  * 0.8 was 0.7 with per-robot orbit lines for RammingC, LightningBug and MirrorMicro and,
  * inside 200 px, a 0.4 rad wider orbit for Bruce and Lifestealer (JAYLEXI-21, docs/bench/jaylexi-tailoring.md).
  * 0.7 was 0.6 with its surf stats also segmented by how much of our orbit ahead is still
@@ -49,7 +50,8 @@ public class JayLexi extends AdvancedRobot {
     // The robot, so a wave can take itself off the event list.
     static JayLexi bot;
     static Wave next;
-    // Surf stats [distance band][walls along our orbit][our lateral speed band][bin] (JAYLEXI-6, JAYLEXI-20).
+    // Surf stats [distance band][walls along our orbit][our lateral speed band][bin] (JAYLEXI-6, JAYLEXI-20). 1.0
+    // reads only band 0 (JAYLEXI-23); the bands stay here so the replay can show 0.9's four still play.
     static double[][][][] surf = new double[4][4][5][BINS];
     // Gun stats [velocity history][lateral speed][walls ahead][distance][bin] (JAYLEXI-4).
     static double[][][][][] gun = new double[6][4][4][5][BINS];
@@ -102,7 +104,7 @@ public class JayLexi extends AdvancedRobot {
         angle = absBearing + Math.PI;
         // The wave's stats (JAYLEXI-20): by this scan's distance, by how much of our orbit ahead of us, as the
         // enemy sees it, is still in the field (0 to 3 clear fractions), and by our lateral speed.
-        w.bins = surf[(int) Math.min((distance + 50) / 200, 3)][clear(enemy, angle, direction)]
+        w.bins = surf[bands ? (int) Math.min((distance + 50) / 200, 3) : 0][clear(enemy, angle, direction)]
                 [(int) ((Math.abs(lastLateral) + 1) / 2)];
         try {
             Wave s = waves.get(0);
@@ -159,6 +161,12 @@ public class JayLexi extends AdvancedRobot {
      * later along our path (JAYLEXI-22, docs/bench/jaylexi-tailoring.md).
      */
     int lead = 2;
+
+    /**
+     * Whether the surf stats are split by distance, as 0.9's four bands under 150, 350 and 550 px were. 1.0 keeps
+     * one band: on 61 cloud seeds over 112 mini robots the single band read about +0.25 (JAYLEXI-23).
+     */
+    boolean bands;
 
     /** Where the robot would be when wave s reaches it, orbiting dir, and how dangerous that is. */
     double danger(Wave s, double dir) {
@@ -256,8 +264,10 @@ public class JayLexi extends AdvancedRobot {
         }
 
         int index(Point2D.Double p) {
-            return (int) Math.max(0, Math.min(BINS - 1,
-                    Utils.normalRelativeAngle(angle(p) - bearing) * dir / Math.asin(8 / speed) * MID + MID));
+            // The shipped build adds MID + 160 before it truncates and looks the clamp up in CLAMP; the 160
+            // rounds a bin just under a boundary up to it, so the readable one adds it too, to the same bit.
+            return Math.max(0, Math.min(BINS - 1,
+                    (int) (Utils.normalRelativeAngle(angle(p) - bearing) * dir / Math.asin(8 / speed) * MID + (MID + 160)) - 160));
         }
 
         void log(Point2D.Double p, double depth) {

@@ -125,6 +125,15 @@ class JayLexiReplayTest {
     }
 
     @Test
+    @Tag("JAYLEXI-23")
+    @DisplayName("the shipped build keeps one surf distance band: 0.9's four give other orders")
+    void surfHasOneDistanceBand() throws Exception {
+        String bands = Replay.run(hadur117.mini.ref.JayLexi.class, hadur117.mini.ref.ReplayBot.Bands::new, 1, 6, 1500);
+        assertNotEquals(-1, firstDifference(shipped(1), bands));
+        assertEquals(-1, firstDifference(shipped(1), readable(1)));
+    }
+
+    @Test
     @Tag("JAYLEXI-22")
     @DisplayName("the shipped build counts its danger prediction from tick 2: 0.8's tick 3 gives other orders")
     void predictionCountsFromTickTwo() throws Exception {
