@@ -35,7 +35,7 @@ class RcConfirmPlanTest {
         assertTrue(body.contains("--shuffle-jobs") && body.contains("--arms plans/pc-rc-confirm.arms")
             && body.contains("--set census-312.txt") && body.contains("--seeds 2 --seed-base 83000"));
         assertTrue(body.contains("  after: livematch"));
-        for (String rule : new String[] {"fails 30", "dead 8", "skips 60 over 200", "stall 30m", "aa after 20%"}) {
+        for (String rule : new String[] {"fails 30", "dead 8", "skips 90 over 200", "stall 30m", "aa after 20%"}) {
             assertTrue(body.contains("stop: " + rule), rule);
         }
         assertTrue(queue.contains("--engine 1.12.0 --keep-broken --set panel-ret16.txt"), "the returners run on 1.12.0");
