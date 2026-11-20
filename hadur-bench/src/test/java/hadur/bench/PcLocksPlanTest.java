@@ -38,11 +38,11 @@ class PcLocksPlanTest {
         Set<String> broken = Broken.names(Path.of(Broken.FILE));
         for (String n : panel) assertTrue(!broken.contains(n), n + " loads on 1.11.2");
         String arms = Files.readString(Path.of("plans/pc-locks.arms"));
-        for (String a : new String[] {"c", "aa", "rf"}) {
+        for (String a : new String[] {"c", "aa", "rf", "mt"}) {
             String v = a.equals("c") ? version : version + a;
             assertTrue(arms.contains("\n" + a + " | hadur117.Hadur " + v + " |"), a);
         }
-        assertEquals(3, names("plans/pc-locks.arms").size(), "c, aa and the lever arm");
+        assertEquals(4, names("plans/pc-locks.arms").size(), "c, aa and the lever arms rf and mt");
         assertTrue(queue.contains("lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh"), "each arm built with only its robots");
         assertTrue(queue.contains("--set panel-locks.txt --seeds 12 --seed-base 82000 --arms ${W}-prep/lock.arms --out ${W} "), "the lock");
         assertTrue(queue.contains("lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0"), "the gate, each robot on its own arm");
@@ -50,7 +50,7 @@ class PcLocksPlanTest {
         String body = queue.substring(at, queue.indexOf("\n\n", at + 1));
         for (String rule : new String[] {"fails 30", "dead 8", "skips 60 over 24", "stall 30m"}) assertTrue(body.contains("stop: " + rule), rule);
         assertTrue(body.contains("  after: livematch"), "the lock waits for the live-match check");
-        assertTrue(panel.size() * 3 * 12 >= 24, "the skips window is reachable within the lock");
+        assertTrue(panel.size() * 4 * 12 >= 24, "the skips window is reachable within the lock");
         assertTrue(!body.contains("stop: aa"), "the watcher reads A/A only once 10 robots are read in both arms; aa is read in the gate");
         int atp = queue.indexOf("\npr | ");
         assertTrue(queue.substring(atp).contains("  after: gate"), "the results PR waits for the gate");
