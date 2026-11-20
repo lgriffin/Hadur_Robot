@@ -114,13 +114,18 @@ public final class BulletShadows {
         // at(t) is a pure function of t, so each turn's points are carried into the next
         // rather than built again: one new point a turn instead of up to four (it was the
         // core's largest source of garbage in a duel). before = at(k - 2), when it is used.
-        Point2D.Double before = first - 2 >= b.fireTime ? b.at(first - 2) : null;
-        Point2D.Double from = b.at(first - 1);
-        Point2D.Double to = null;
+        // TIME-12: three points reused in rotation, filled in place by at(t, into); none is
+        // kept past this call (pair reads them and stores only bearings).
+        Point2D.Double before = first - 2 >= b.fireTime ? b.at(first - 2, new Point2D.Double()) : null;
+        Point2D.Double from = b.at(first - 1, new Point2D.Double());
+        Point2D.Double to = new Point2D.Double();
+        Point2D.Double spare = before == null ? new Point2D.Double() : null;
         for (long k = first; k < first + MAX_TURNS && k < deathTurn; k++) {
             if (k > first) {
+                Point2D.Double free = before != null ? before : spare;
                 before = from;
                 from = to;
+                to = free;
             }
             // Once ours is off the field the engine has removed it: nothing further to shadow.
             if (!inField(from, fieldWidth, fieldHeight)) return;
@@ -129,7 +134,7 @@ public final class BulletShadows {
             double v = wave.bulletSpeed();
             // Certain: both of turn k's segments, ours from at(k - 1) to at(k), theirs the
             // ring [r - v, r].
-            to = b.at(k);
+            b.at(k, to);
             pair(s, from, to, r - v, r, certain);
             // Possible: their turn-k move against our turn-(k - 1) segment (ours moves second)...
             if (k - 2 >= b.fireTime) pair(s, before, from, r - v, r, possible);
