@@ -68,6 +68,21 @@ public final class OurBullet {
     }
 
     /**
+     * {@link #at(long)} written into {@code into} instead of a new point (TIME-12), with the
+     * same arithmetic.
+     *
+     * @param time the turn, in ticks
+     * @param into the point to fill
+     * @return {@code into}
+     */
+    public Point2D.Double at(long time, Point2D.Double into) {
+        double d = speed * (time - fireTime);
+        into.x = source.x + Math.sin(heading) * d;
+        into.y = source.y + Math.cos(heading) * d;
+        return into;
+    }
+
+    /**
      * Whether this is the bullet an engine event names by its heading and power. Both are
      * compared to within 1e-6, a tolerance for rounding on the way through the adapter. Two
      * bullets in flight that match the same event are not told apart:
