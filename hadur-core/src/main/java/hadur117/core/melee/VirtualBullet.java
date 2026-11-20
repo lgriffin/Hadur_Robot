@@ -36,6 +36,14 @@ public final class VirtualBullet {
         return DiaUtils.project(shot.source, heading, flown);
     }
 
+    /** {@link #position(double)} written into {@code into} (TIME-12), with the same arithmetic. */
+    public Point2D.Double position(double time, Point2D.Double into) {
+        double flown = Math.max(0, time - shot.fireTime) * shot.speed();
+        into.x = shot.source.x + Math.sin(heading) * flown;
+        into.y = shot.source.y + Math.cos(heading) * flown;
+        return into;
+    }
+
     /**
      * Whether the bullet has flown past {@code p}, or left a field no larger than
      * {@code reach}, even if it was fired at the latest tick its shot's window allows.
