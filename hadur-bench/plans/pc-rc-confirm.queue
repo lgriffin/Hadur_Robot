@@ -4,7 +4,8 @@
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-rc-confirm --fresh        (or  ./queue.sh run pc-rc-confirm --fresh)
 # Fetches tolerate a missing archive jar (Seraphim 2.4.0 and Nullstride 2.3.3 404 there); --failed-ok skips them.
-# One bench queue, RoboRumble workers at 0, 12 workers, truth log off. About 7,500 battles, roughly 7 to 8 hours:
+# One bench queue, RoboRumble workers at 0, 12 workers, truth log off. About 7,500 battles; at the 624 an hour the
+# census fought at 12 workers, run 2's ~7,100 unrun battles take about 11 hours:
 #   livematch  the live-match check (BENCH-245) on the 31-robot panel, read against live
 #   field      census-312.txt (the 1,212-robot 1v1 field; broken-1.11.2 robots skipped) x rel, c, aa x 2 fresh
 #              seeds from 83000 (about 7,000 battles)
@@ -19,7 +20,10 @@
 # Run 1 (issue #947, 20 Nov 00:27) halted on the skips rule at 16 workers: the field read 46.1 skipped turns a battle
 # over its first 200 battles and 60.6 over the last 200, with rel skipping as badly as c and aa, so the host was
 # loaded, not master. The whole field skips 31 to 40 a battle on a healthy PC at 12 workers (pc-census-320), so run 2
-# uses 12. A rerun WITHOUT --fresh resumes: prep and livematch are done, and the field keeps its 308 battles.
+# uses 12. That census pinned another cpu constant and engine, so 12 is not proven for this card: run the short
+# round 13 card (pc-locks, live constant, 16 workers) first as the health check. If it skips well above round 12's
+# ~17 a battle, the PC is still loaded; fix that before this card, since fewer workers alone may not hold it under 60.
+# A rerun WITHOUT --fresh resumes: prep and livematch are done, and the field keeps its 308 battles.
 #
 # Why it should win (the PC card rule of 2026-11-03): master carries MOVE-52 intercept views (PC #934 pass) and the
 # round 3-12 per-opponent lines. The cloud release check on 19 Nov (coverage/shards/dzlane, 4-12 seeds a panel at the
