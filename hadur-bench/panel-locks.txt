@@ -8,7 +8,6 @@ mld.Infinity 2.2 | gap1.1 | mld.Infinity_2.2.jar
 ola.Puffin 1.0 | gap2.0 | ola.Puffin_1.0.jar
 com.blogspot.malinkody.DestrobotMalin 1.0 | gap-0.2 | com.blogspot.malinkody.DestrobotMalin_1.0.jar
 jp.SineWall 1.0 | charge-G | jp.SineWall_1.0.jar
-zeze2.OperatorZeze 1.05 | charge-L | zeze2.OperatorZeze_1.05.jar
 mmb.Roskilde 0.5 | charge-G | mmb.Roskilde_0.5.jar
 jep.nano.Hawkwing 0.4.1 | gap6.2 | jep.nano.Hawkwing_0.4.1.jar
 acid.Syzygy 1.0.4 | gap2.5 | acid.Syzygy_1.0.4.jar
