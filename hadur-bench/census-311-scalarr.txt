@@ -17,7 +17,7 @@ pc.Wavelet 1.5 | rank13-band2 | pc.Wavelet_1.5.jar
 gh.GresSuffurd 0.4.13 | rank14-band2 | gh.GresSuffurd_0.4.13.jar
 kc.serpent.WaveSerpent 2.11 | rank15-band2 | kc.serpent.WaveSerpent_2.11.jar
 dsekercioglu.mega.WhiteFang 2.8.1 | rank16-band2 | dsekercioglu.mega.WhiteFang_2.8.1.jar
-cs.Nene 1.0.5 | rank17-band2 | cs.Nene_1.0.5.jar
+cs.Nene 1.1.0 | rank17-band2 | cs.Nene_1.1.0.jar
 jk.melee.Neuromancer 7.12 | rank18-band2 | jk.melee.Neuromancer_7.12.jar
 voidious.Dookious 1.573c | rank19-band2 | voidious.Dookious_1.573c.jar
 davidalves.Phoenix 1.02 | rank21-band2 | davidalves.Phoenix_1.02.jar

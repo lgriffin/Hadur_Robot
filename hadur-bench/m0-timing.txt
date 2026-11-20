@@ -9,7 +9,7 @@ cb.fire.Firestarter 2.0f | rank7-band1 | cb.fire.Firestarter_2.0f.jar
 dsekercioglu.mega.Raven 3.56j8 | rank8-band1 | dsekercioglu.mega.Raven_3.56j8.jar
 lxx.Tomcat 3.68 | rank10-band1 | lxx.Tomcat_3.68.jar
 pc.Wavelet 1.5 | rank13-band2 | pc.Wavelet_1.5.jar
-cs.Nene 1.0.5 | rank17-band2 | cs.Nene_1.0.5.jar
+cs.Nene 1.1.0 | rank17-band2 | cs.Nene_1.1.0.jar
 davidalves.Phoenix 1.02 | rank21-band2 | davidalves.Phoenix_1.02.jar
 darkcanuck.Pris 0.92 | rank26-band2 | darkcanuck.Pris_0.92.jar
 pulsar.PulsarMax 0.8.9 | rank31-band2 | pulsar.PulsarMax_0.8.9.jar

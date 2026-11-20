@@ -28,7 +28,7 @@ pc.Wavelet 1.5 | rumble-13 | pc.Wavelet_1.5.jar
 gh.GresSuffurd 0.4.13 | rumble-14 | gh.GresSuffurd_0.4.13.jar
 kc.serpent.WaveSerpent 2.11 | rumble-15 | kc.serpent.WaveSerpent_2.11.jar
 dsekercioglu.mega.WhiteFang 2.8.1 | rumble-17 | dsekercioglu.mega.WhiteFang_2.8.1.jar
-cs.Nene 1.0.5 | rumble-18 | cs.Nene_1.0.5.jar
+cs.Nene 1.1.0 | rumble-18 | cs.Nene_1.1.0.jar
 jk.melee.Neuromancer 7.12 | rumble-19 | jk.melee.Neuromancer_7.12.jar
 voidious.Dookious 1.573c | rumble-20 | voidious.Dookious_1.573c.jar
 davidalves.Phoenix 1.02 | rumble-21 | davidalves.Phoenix_1.02.jar
