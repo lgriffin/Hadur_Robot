@@ -118,6 +118,8 @@ One on one (the duel):
 - **Makes itself harder to hit.** Its own bullets in flight shadow the enemy's waves: the
   angles where an enemy bullet would be shot down are scored as safe (MOVE-1). When a
   known opponent hits it more than its profile says, the movement changes flavour (MOVE-2).
+  An enemy bullet that ours shoots down shows that bullet's exact firing angle, and the danger
+  views learn it as they learn a hit (MOVE-52, on since PR #934).
 - **Remembers every opponent.** A profile per opponent (hit rates, gun and movement tiers,
   gun and surf samples) is folded in at each round's end and saved within Robocode's data
   quota, crash-safe (MEM-1..5, RES-3).

@@ -383,6 +383,8 @@ final class ShieldListData {
             "hadur117.mini.JayLexi 0.6",     // +15.8
             // pc-locks round 10 (BENCH-253, PR #922): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "kawigi.nano.ThnikkaBot 0.9",    // +1.7 (with the moving shield)
+            // pc-locks round 13 (BENCH-253, PR #951): 12 fresh PC seeds at the live turn time; 24-seed cloud lock held first
+            "tkt.RedShift 1.1.CS.0",         // +1.1
         };
     }
 }

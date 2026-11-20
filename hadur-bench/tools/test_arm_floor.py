@@ -1,4 +1,4 @@
-"""BENCH-260: arm_floor.py stops a card when the candidate arm is below the floor."""
+"""arm_floor.py stops a card when the candidate arm is below the floor."""
 import os
 import sys
 import tempfile

@@ -57,6 +57,7 @@
 #                          so a run cut short is a fair sample of the panel and the queue's watch can read it
 #   --failed-ok            with --arms, exit 0 when fewer than 1 battle in 20 failed (BENCH-187): a robot that
 #                          will not load leaves failed rows, which the readers skip, instead of failing the step
+#                          (BENCH-265); an opponent whose jar is missing (an archive 404) is dropped and logged
 set -u
 
 HERE=$(cd "$(dirname "$0")" && pwd)

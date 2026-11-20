@@ -541,7 +541,12 @@ public final class Bench {
             System.err.println("refusing to start: " + memory.message());
             return 2;
         }
-        installRobots(opponents);
+        // BENCH-265: with --failed-ok, an opponent whose jar is missing (an archive 404) is dropped and logged, not fatal.
+        installRobots(opponents, Boolean.parseBoolean(opts.getOrDefault("failed-ok", "false")));
+        if (opponents.isEmpty()) {
+            System.err.println("refusing to start: no opponent jar found for any robot in the set");
+            return 2;
+        }
         startedAt = Instant.now();
         startShelf = Conditions.shelf(home.resolve("robots/.data"));
         sampler = Host.Sampler.system();
@@ -1884,12 +1889,10 @@ public final class Bench {
         return benchDir.resolve("target/classes") + File.pathSeparator + deps;
     }
 
-    /** Sets up a Robocode home with Hadur's jar, the sample bots and any opponent jars. */
-    private void installRobots(List<Opponent> opponents) throws IOException {
-        installRobots(opponents, false);
-    }
-
-    /** As above; {@code lenient} drops opponents whose jar is missing instead of failing (a session's sample). */
+    /**
+     * Sets up a Robocode home with Hadur's jar, the sample bots and any opponent jars; {@code lenient} drops
+     * opponents whose jar is missing instead of failing (a session's sample, or a run with --failed-ok).
+     */
     private void installRobots(List<Opponent> opponents, boolean lenient) throws IOException {
         Path robots = home.resolve("robots");
         Files.createDirectories(robots);
@@ -1929,10 +1932,18 @@ public final class Bench {
                 Files.copy(s, robots.resolve(s.getFileName()), StandardCopyOption.REPLACE_EXISTING);
             }
         }
+        installOpponents(opponents, benchDir.resolve("opponents"), robots, lenient);
+    }
+
+    /**
+     * Copies each opponent's jar from {@code from} into {@code robots}. A missing jar is fatal unless
+     * {@code lenient}; then (BENCH-265) the opponent is logged and dropped from {@code opponents}.
+     */
+    static void installOpponents(List<Opponent> opponents, Path from, Path robots, boolean lenient) throws IOException {
         for (Iterator<Opponent> it = opponents.iterator(); it.hasNext();) {
             Opponent o = it.next();
             if (o.jar == null) continue;
-            Path jar = benchDir.resolve("opponents").resolve(o.jar);
+            Path jar = from.resolve(o.jar);
             if (!Files.exists(jar)) {
                 if (!lenient) throw new IllegalStateException("Missing opponent jar " + jar);
                 System.out.println("  no jar for " + o.name + "; dropped from the session");

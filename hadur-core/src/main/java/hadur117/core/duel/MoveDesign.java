@@ -66,16 +66,10 @@ final class MoveDesign {
      * MOVE-52 (danger lane, 18 Nov): an enemy bullet our bullet met also teaches the danger views,
      * as a hit does: the bot sees that bullet's exact firing angle, and in an offline replay of the danger model
      * learning those angles rates the true aim of later bullets well 1.6 pp more often, 2.9 pp in
-     * rounds 0-2. Duel only, off; the ablation icpt turns it on.
+     * rounds 0-2. Duel only (and so in every team member's duel too). On since the pc-intercept card
+     * (PR #934); the ablation icoff turns it off.
      */
-    static final boolean INTERCEPT_VIEWS = false;
-
-    /**
-     * TMODE-53 (team lane, 19 Nov): {@link #INTERCEPT_VIEWS} for the team's members alone, in the duel a member
-     * plays once its team's charter hands it one; 1v1 and melee are untouched. On the cloud against the 16 gap
-     * teams, the intercept views read +0.94 pp of score share over 8 seeds. Off; the ablation tmicpt turns it on.
-     */
-    static final boolean TEAM_INTERCEPT_VIEWS = false;
+    static final boolean INTERCEPT_VIEWS = true;
 
     /**
      * MOVE-33: with {@link #AIM_MEMBERS}, the six visit-trained learning-gun mimics of MOVE-27

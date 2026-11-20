@@ -1,4 +1,23 @@
-# BENCH-253 pc-locks, round 11: robots that load on Robocode 1.11.2 whose per-robot line locked on the cloud (95% low end
-# above 0, live turn time; coverage/shards/locks.tsv, coverage/shards/round11-draft.md). name | note | jar
-stelo.Lifestealer 1.0 | rank991-band6 | stelo.Lifestealer_1.0.jar
-step.nanoPri 1.0 | rank676-band5 | step.nanoPri_1.0.jar
+# BENCH-253 pc-locks, round 13: robots that load on Robocode 1.11.2 whose per-robot line locked on the cloud (95% low end
+# above 0, live turn time, MOVE-52 on; coverage/shards/locks.tsv, coverage/shards/briefs.md). name | note | jar
+jgap.JGAP23423 1.0 | gap1.6 | jgap.JGAP23423_1.0.jar
+maye.SlashBot 1.0 | gap0.8 | maye.SlashBot_1.0.jar
+agd.Mooserwirt2 2.7 | gap3.9 | agd.Mooserwirt2_2.7.jar
+suh.nano.MyFirstAdvancedRobot 1.00 | gap0.5 | suh.nano.MyFirstAdvancedRobot_1.00.jar
+mld.Infinity 2.2 | gap1.1 | mld.Infinity_2.2.jar
+ola.Puffin 1.0 | gap2.0 | ola.Puffin_1.0.jar
+com.blogspot.malinkody.DestrobotMalin 1.0 | gap-0.2 | com.blogspot.malinkody.DestrobotMalin_1.0.jar
+jp.SineWall 1.0 | charge-G | jp.SineWall_1.0.jar
+mmb.Roskilde 0.5 | charge-G | mmb.Roskilde_0.5.jar
+jep.nano.Hawkwing 0.4.1 | gap6.2 | jep.nano.Hawkwing_0.4.1.jar
+acid.Syzygy 1.0.4 | gap2.5 | acid.Syzygy_1.0.4.jar
+sng.arco.Arco 0.0 | charge-C | sng.arco.Arco_0.0.jar
+yk.JahRoslav 1.1 | charge-B | yk.JahRoslav_1.1.jar
+robin.ScalpBotC 1.0 | charge-B | robin.ScalpBotC_1.0.jar
+knackibot.KnackOnOne 0.8.1 | charge-B | knackibot.KnackOnOne_0.8.1.jar
+cjk.Merkava 0.1.1 | charge-B | cjk.Merkava_0.1.1.jar
+kawam.kmBot9 1.0 | charge-B | kawam.kmBot9_1.0.jar
+sanja.First 0.1 | charge-B | sanja.First_0.1.jar
+tkt.RedShift 1.1.CS.0 | bdiff-C | tkt.RedShift_1.1.CS.0.jar
+kjc.Karaykan 1.0 | charge-B | kjc.Karaykan_1.0.jar
+sheldor.melee.nano.TestMelee 0.1 | charge-B | sheldor.melee.nano.TestMelee_0.1.jar
