@@ -4,7 +4,7 @@
 #   rf (RAM-15 ram-flee): JGAP23423 +1.22 (low +0.68, 24 seeds), SlashBot +0.35 (+0.18, 24), Mooserwirt2 +0.83 (+0.17,
 #      24), MyFirstAdvancedRobot +0.40 (+0.21, 24), Infinity +0.89 (+0.44, 24), Puffin +0.59 (+0.34, 12), DestrobotMalin
 #      +0.40 (+0.13, 24), SineWall +1.04 (+0.70, 24), OperatorZeze +1.35 (+0.13,
-#      24), Hawkwing +1.06 (+0.12, 24; held again on a 36-seed recheck),
+#      24), Roskilde +1.16 (+0.53, 36), Hawkwing +1.06 (+0.12, 24; held again on a 36-seed recheck),
 #      Syzygy +0.79 (+0.04, 24; held again on a 36-seed recheck)
 #   Each cloud gain is the smaller of the reads against c and against an A/A twin.
 #   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live
@@ -17,7 +17,7 @@
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
 #   --fresh because round 12 left this plan's queue state marked complete; an interrupted round 13 resumes without it.
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 396 lock battles (11 robots, 3 arms, 12 seeds), about
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 432 lock battles (12 robots, 3 arms, 12 seeds), about
 # 15 minutes with the live-match check.
 #
 # Why it should win (the PC card rule of 2026-11-03):
@@ -28,7 +28,7 @@
 #     80 to 145 px itself while we hold or back off, and BeepBoop either holds 40 to 90 px further out or is inside
 #     150 px less often. Ram-flee backs away at full speed from a charger within 200 px. Distance pins to BeepBoop's band
 #     were screened on six of these robots and failed on all six, so the cure is backing away, not a wider orbit.
-#   - Every robot passed the cloud lock bar on 12+ fresh seeds (24 for all but Puffin), and every line was locked with
+#   - Every robot passed the cloud lock bar on 12+ fresh seeds (24 or more for all but Puffin), and every line was locked with
 #     MOVE-52 on (master 539198f1a), so the card reads the lines on the master they would ship on.
 # Stop rules (docs/bench/watch.md): the watcher's A/A rule needs 10 robots read in both c and aa, which this lock never
 # reaches, so no aa stop rule is set; aa is read in the gate (multiarm.py prints aa against c). The lock halts on 30 failed
@@ -63,5 +63,5 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 8
 gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks13-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks13-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks13-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms rf --out ${OUT}/$(date +%Y-%m-%d)_pc-locks13-lock-per-robot.md --out-tsv ${OUT}/pc-locks13-lock-per-robot.tsv
   after: lock
 
-pr | bash tools/open_results_pr.sh claude/pc-locks13-results "1v1 cloud locks, round 13 (11 robots on rf) locked on 12 fresh PC seeds" ${OUT}/pc-locks13-livematch.md ${OUT}/*_pc-locks13-*.md ${OUT}/pc-locks13-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks13-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks13-results "1v1 cloud locks, round 13 (12 robots on rf) locked on 12 fresh PC seeds" ${OUT}/pc-locks13-livematch.md ${OUT}/*_pc-locks13-*.md ${OUT}/pc-locks13-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks13-lock-pick.tsv' -size +0c)
   after: gate
