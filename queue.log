@@ -9,3 +9,4 @@
 09:34:26 watching bench: 6 stop rule(s)
 09:34:47 progress bench: 15/16008 (0%) battles, 2673/h, ETA 6.0 h, 0 failed, skips 0.0/battle (last 100)
 10:04:59 progress bench: 2616/16008 (16%) battles, 5168/h, ETA 2.6 h, 0 failed, skips 0.0/battle (last 100), aa -0.03, n +0.37, r6 +0.27
+10:35:15 progress bench: 5187/16008 (32%) battles, 5110/h, ETA 2.1 h, 0 failed, skips 0.0/battle (last 100), aa -0.01, n +0.43, r6 +0.23
