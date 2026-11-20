@@ -49,3 +49,13 @@ Census 46 fields x 3 seeds (29100-29300) vs aa: APS -0.05 ± 0.33 (per seed +0.0
 ## Verdict
 
 T2 (own-fire veto) and M1 (third-party bullets, both weights) are closed. The stray read's avoidable damage is real, but drawing the bullets in the surfer cuts only 11-13% of it and gains nothing; a later melee try needs a different mechanism, not a heavier weight.
+
+## Team: bullet power past 200 px (TPOW-1), 19-20 Nov
+The tempo read (#925) found HadurTeam's damage a hit 10% under OgiTeam's (power 1.95 against 2.13) at the same hit rate. The team brain caps power at 1.9 beyond 200 px (TMODE-33's CONCORD_POWER). Two arms moved that cap, team-only, paired against aa on the 16 gap teams, 10 rounds, live CPU constant:
+
+| Arm | Cap | Blocks (4 seeds each) | 12 seeds |
+|---|---|---|---|
+| p22 | 2.2 | -0.6, -0.6, -1.2 | **-0.82 ± 0.55 pp** |
+| p16 | 1.6 | -0.8, -0.6, -0.4 | **-0.59 ± 0.77 pp** |
+
+Both directions lose; 1.9 sits at the top. The gap in damage a hit is not a lever on its own. Both stopped at 12 seeds; switch not kept.
