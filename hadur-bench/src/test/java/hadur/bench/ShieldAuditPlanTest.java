@@ -39,7 +39,7 @@ class ShieldAuditPlanTest {
         assertEquals(panel, names("plans/shield-audit-add.txt"), "both join the list");
         assertEquals(panel, names("plans/shield-audit-still.txt"), "both get still lines");
         assertEquals(List.of("cx.Princess 1.0"), names("plans/shield-audit-exit0.txt"), "Princess alone gets exit off");
-        for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE)).contains(n), n + " loads on 1.11.2");
+        for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE_1112)).contains(n), n + " loads on 1.11.2");
         assertTrue(queue.contains("build-ablation.sh aa ") && queue.contains("SHIELD_ADD=plans/shield-audit-add.txt"
             + " SHIELD_STILL=plans/shield-audit-still.txt SHIELD_EXIT0=plans/shield-audit-exit0.txt"
             + " bash ./build-ablation.sh slistadd,szlist,sx0list"));

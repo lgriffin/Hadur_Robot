@@ -37,7 +37,7 @@ class MirrorOffPlanTest {
         List<String> panel = names("panel-mirror-off.txt");
         assertEquals(List.of("janm.Jammy 1.0", "suh.nano.MirrorL 1.00", "suh.nano.MirrorH 1.01"), panel);
         assertEquals(java.util.Set.copyOf(panel), java.util.Set.copyOf(names("plans/mirror-off-add.txt")), "each gets a mirror-off line");
-        for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE)).contains(n), n + " loads on 1.11.2");
+        for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE_1112)).contains(n), n + " loads on 1.11.2");
         assertTrue(queue.contains("build-ablation.sh aa ") && queue.contains("MIRROR_OFF=plans/mirror-off-add.txt bash ./build-ablation.sh mirofflist"));
         assertTrue(queue.contains("--set panel-mirror-off.txt --seeds 12 --seed-base 12700 --arms plans/pc-mirror-off.arms"));
         assertTrue(queue.contains("--arm mo --panel panel-mirror-off.txt --bar 0.005"), "gate mo");

@@ -49,7 +49,10 @@ for jar in $JARS; do
         present=$((present + 1))
         continue
     fi
-    if curl -fsSL --retry 2 -o "$DIR/$jar.part" "$BASE_URL/$jar"; then
+    # BENCH-267: a jar the archive lacks takes its URL from opponent-urls.txt (the participants list's).
+    URL=$(awk -v j="$jar" '$1 == j { print $2; exit }' "$HERE/opponent-urls.txt" 2>/dev/null)
+    [ -n "$URL" ] || URL="$BASE_URL/$jar"
+    if curl -fsSL --retry 2 -o "$DIR/$jar.part" "$URL"; then
         if mv "$DIR/$jar.part" "$DIR/$jar"; then
             downloaded=$((downloaded + 1))
             echo "downloaded $jar"

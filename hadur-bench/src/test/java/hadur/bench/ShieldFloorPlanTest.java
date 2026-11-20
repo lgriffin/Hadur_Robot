@@ -37,7 +37,7 @@ class ShieldFloorPlanTest {
         List<String> panel = names("panel-shield-floor.txt");
         assertEquals(List.of("pez.rumble.CassiusClay 2rho.02no"), panel);
         assertEquals(panel, names("plans/shield-floor-add.txt"), "CassiusClay joins the list, still and floor");
-        for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE)).contains(n), n + " loads on 1.11.2");
+        for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE_1112)).contains(n), n + " loads on 1.11.2");
         // A robot already listed on master would be shielded in the control arm too.
         String list = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldListData.java"));
         // Only the robots this card shipped may already be on master's list.

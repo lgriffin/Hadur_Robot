@@ -28,7 +28,7 @@ class PcClassTwoPlanTest {
         String version = Files.readString(Path.of("../hadur-robot/pom.xml"))
             .replaceAll("(?s).*<robot.release>(.*?)</robot.release>.*", "$1");
         assertTrue(queue.contains("set V = " + version + "\n"), "the card builds the current release");
-        java.util.Set<String> broken = Broken.names(Path.of(Broken.FILE));
+        java.util.Set<String> broken = Broken.names(Path.of(Broken.FILE_1112));
         List<String> wall = names("panel-class-wall.txt");
         assertEquals(List.of("florent.XSeries.X2 0.17", "jk.precise.Wintermute 0.8", "whind.StrengthBee 0.6.4"), wall, "the cloud locks");
         assertEquals(wall.size(), new HashSet<>(wall).size(), "no robot twice");

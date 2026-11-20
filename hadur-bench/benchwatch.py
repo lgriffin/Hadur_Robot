@@ -77,9 +77,11 @@ class WatchError(ValueError):
     pass
 
 
-def broken_names(home):
-    """BENCH-169: the robots broken-1.11.2.txt lists (name and version before a line's first bar)."""
-    path = home / "broken-1.11.2.txt"
+def broken_names(home, engine=None):
+    """BENCH-169: the robots the engine's broken list names (name and version before a line's first bar).
+    BENCH-267: broken-1.12.0.txt on the default 1.12.0, broken-1.11.2.txt for a 1.11.x (or older) --engine."""
+    old = bool(engine) and re.match(r"1\.([0-9]|10|11)(\.|$)", engine) is not None
+    path = home / ("broken-1.11.2.txt" if old else "broken-1.12.0.txt")
     if not path.is_file():
         return set()
     out = set()
@@ -185,8 +187,10 @@ class Spec:
                     self.arm_labels.append(f[0])
                     self.arm_jars[f[0]] = f[2]
         if self.set_file and (self.home / self.set_file).is_file():
-            # BENCH-169: the bench drops robots broken-1.11.2.txt lists, so the panel leaves them out too.
-            broken = set() if flags.get("--keep-broken", "false").lower() == "true" else broken_names(self.home)
+            # BENCH-169: the bench drops robots the engine's broken list names, so the panel leaves them out too.
+            # bench-top20.sh takes a bare --keep-broken, Bench "--keep-broken true".
+            broken = (set() if flags.get("--keep-broken", "false").lower() in ("true", "")
+                      else broken_names(self.home, flags.get("--engine")))
             self.panel = sum(1 for raw in (self.home / self.set_file).read_text(encoding="utf-8-sig").splitlines()
                              if raw.strip() and not raw.lstrip().startswith("#")
                              and " ".join(raw.split("|")[0].split()) not in broken)

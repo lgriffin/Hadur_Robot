@@ -1,6 +1,6 @@
 # Stage F stall panel (docs/plan-top5.md): opponents with a round-0 start-up disable in work/round0-pc1018.tsv.
 # 73 opponents
-cs.Nene 1.0.5 | rank17-band2 | cs.Nene_1.0.5.jar
+cs.Nene 1.1.0 | rank17-band2 | cs.Nene_1.1.0.jar
 jekl.Jekyl .70 | rank215-band4 | jekl.Jekyl_.70.jar
 cjm.Che 1.2 | rank253-band4 | cjm.Che_1.2.jar
 dmh.robocode.robot.BlackDeath 9.2 | rank303-band4 | dmh.robocode.robot.BlackDeath_9.2.jar

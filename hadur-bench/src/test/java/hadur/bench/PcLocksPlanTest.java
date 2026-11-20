@@ -35,7 +35,7 @@ class PcLocksPlanTest {
         List<String> picks = Files.readAllLines(Path.of("plans/locks-pick.tsv")).stream().filter(l -> !l.isBlank())
             .map(l -> l.split("\t")[0]).toList();
         assertEquals(panel, picks, "one cloud-locked pick per panel robot");
-        Set<String> broken = Broken.names(Path.of(Broken.FILE));
+        Set<String> broken = Broken.names(Path.of(Broken.FILE_1112));
         for (String n : panel) assertTrue(!broken.contains(n), n + " loads on 1.11.2");
         String arms = Files.readString(Path.of("plans/pc-locks.arms"));
         for (String a : new String[] {"c", "aa", "rf", "mt"}) {

@@ -26,7 +26,7 @@ apv.AspidReloaded 0.6 | rank343-band4 | apv.AspidReloaded_0.6.jar
 darkcanuck.Holden 1.13a | rank54-band3 | darkcanuck.Holden_1.13a.jar
 rc.yoda.Yoda 1.0.6c.fix | rank123-band3 | rc.yoda.Yoda_1.0.6c.fix.jar
 rampancy.Durandal 2.2d | rank216-band4 | rampancy.Durandal_2.2d.jar
-cs.Nene 1.0.5 | rank17-band2 | cs.Nene_1.0.5.jar
+cs.Nene 1.1.0 | rank17-band2 | cs.Nene_1.1.0.jar
 cx.CigaretBH 1.03 | rank197-band3 | cx.CigaretBH_1.03.jar
 dragonbyte.Neutrino 4 | rank383-band4 | dragonbyte.Neutrino_4.jar
 eem.EvBotNG v12.8 | rank74-band3 | eem.EvBotNG_v12.8.jar

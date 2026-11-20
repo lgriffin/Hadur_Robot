@@ -1,0 +1,5 @@
+# Opponent jars the archive mirror does not hold, with the URL the RoboRumble participants list gives
+# (robowiki.net RoboRumble/Participants, read 2026-11-20). One per line: jar url. fetch-opponents.sh and
+# fetch-opponents.ps1 use this URL for a listed jar instead of the archive (BENCH-267: bench the version live plays).
+cs.Nene_1.1.0.jar https://file.csdgn.org/robocode/cs.Nene_1.1.0.jar
+cs.s2.Seraphim_2.4.0.jar http://file.csdgn.org/robocode/cs.s2.Seraphim_2.4.0.jar
