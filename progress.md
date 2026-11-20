@@ -1,6 +1,6 @@
 # Queue pc-rc-confirm: progress
 
-Updated 2026-11-20 22:11:40 PC time (22:11 UTC), runner pid 48084.
+Updated 2026-11-20 22:26:51 PC time (22:26 UTC), runner pid 48084.
 
 - `prep` done, exit 0 in 2 min
 - `livematch` done, exit 0 in 0 min
@@ -12,27 +12,27 @@ Updated 2026-11-20 22:11:40 PC time (22:11 UTC), runner pid 48084.
 
 ### field
 
-**6711 of 7158 battles** (94%), 0 failed, 521 read back from an earlier run. Running 9.6 h, 668 battles/h, about 40 min left (ends ~22:51 PC time). Last battle 0 min ago.
-Skipped turns a battle: 43.7 overall, first 100 47.4, last 100 43.9; engine disables 2925.
+**6858 of 7158 battles** (96%), 0 failed, 521 read back from an earlier run. Running 9.9 h, 620 battles/h, about 29 min left (ends ~22:55 PC time). Last battle 0 min ago.
+Skipped turns a battle: 43.9 overall, first 100 47.4, last 100 52.1; engine disables 3017.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| rel | 2237 | 0 | 93.26 | -0.49 (1190 robots) | ±0.14 | -0.71 .. -0.27 | 45.5 |
-| c | 2237 | 0 | 93.73 | - | - | - | 45.3 |
-| aa | 2237 | 0 | 93.79 | +0.06 (1190 robots) | ±0.15 | -0.17 .. +0.29 | 43.2 |
+| rel | 2285 | 0 | 93.25 | -0.49 (1190 robots) | ±0.14 | -0.71 .. -0.27 | 45.6 |
+| c | 2290 | 0 | 93.73 | - | - | - | 45.5 |
+| aa | 2283 | 0 | 93.79 | +0.06 (1190 robots) | ±0.15 | -0.17 .. +0.28 | 43.4 |
 
 APS = mean difference over the robots read x 1193 panel robots / 1217 pairings.
-A/A: aa - c +0.06 pts over 1190 robots; 1% band ±0.25 (inside).
+A/A: aa - c +0.06 pts over 1190 robots; 1% band ±0.24 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 6711 |
+| `fails 30` | halt | ok | 0 failed of 6858 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 90 over 200` | halt | ok | 48.1 a battle over the last 200 (first 200: 42.8) |
+| `skips 90 over 200` | halt | ok | 49.9 a battle over the last 200 (first 200: 42.8) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `aa after 20%` | halt | ok | aa - c +0.06 pts over 1190 robots, stop band ±0.29 |
+| `aa after 20%` | halt | ok | aa - c +0.06 pts over 1190 robots, stop band ±0.28 |
 
-Stopping now would leave 447 battles unrun (about 40 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 300 battles unrun (about 29 min); every battle already fought is kept and a rerun resumes from it.
 
 > warning: arm rel's jar bisect/rel/hadur117.Hadur_3.23.jar was built 13 h before this step started: check it is not stale
 
