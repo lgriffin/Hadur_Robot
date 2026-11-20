@@ -1,12 +1,12 @@
 # Queue pc-jaylexi-10: progress
 
-Updated 2026-11-20 12:35:15 PC time (12:35 UTC), runner pid 61244.
+Updated 2026-11-20 12:35:20 PC time (12:35 UTC), runner pid 61244.
 
 - `prep` done, exit 0 in 1 min
 - `livematch` done, exit 0 in 0 min
 - `bench` done, exit 0 in 3.0 h
 - `gate` done, exit 0 in 0 min
-- `pr` running
+- `pr` done, exit 0 in 0 min
 
 ### livematch
 
@@ -58,8 +58,6 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 ### Queue log (last lines)
 
 ```
-09:34:17 start livematch
-09:34:17 watching livematch: 3 stop rule(s)
 09:34:26 livematch exit=0 in 8 s
 09:34:26 start bench
 09:34:26 watching bench: 6 stop rule(s)
@@ -73,4 +71,6 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 12:35:11 start gate
 12:35:12 gate exit=0 in 0 s
 12:35:12 start pr
+12:35:20 pr exit=0 in 7 s
+12:35:20 ALLDONE
 ```
