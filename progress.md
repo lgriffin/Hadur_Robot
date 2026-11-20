@@ -1,6 +1,6 @@
 # Queue pc-rc-confirm: progress
 
-Updated 2026-11-20 09:01:55 PC time (09:01 UTC), runner pid 81432.
+Updated 2026-11-20 09:01:57 PC time (09:01 UTC), runner pid 81432.
 
 - `prep` done, exit 0 in 2 min
 - `livematch` done, exit 0 in 0 min
@@ -37,8 +37,6 @@ Stopping now would leave 6637 battles unrun (about 10.5 h); every battle already
 ### Queue log (last lines)
 
 ```
-00:02:11 watching field: 5 stop rule(s)
-00:02:23 progress field: 0/7158 (0%) battles, 0 failed
 00:27:39 STOP field by rule skips 60 over 200: 60.6 a battle over the last 200 (first 200: 46.1); 308 battles fought and kept, 6850 battles left unrun (about 9.4 h)
 00:27:40 field exit=75 in 1529 s (halted, skips 60 over 200)
 00:27:43 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/947
@@ -52,4 +50,6 @@ Stopping now would leave 6637 battles unrun (about 10.5 h); every battle already
 08:42:41 progress field: 308/7158 (4%) battles, 0 failed, rel +0.09, aa +0.05
 09:01:54 STOP field by rule skips 60 over 200: 61.4 a battle over the last 200 (first 200: 59.2); 521 battles fought and kept, 6637 battles left unrun (about 10.5 h)
 09:01:55 field exit=75 in 1213 s (halted, skips 60 over 200)
+09:01:57 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/953
+09:01:57 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 ```
