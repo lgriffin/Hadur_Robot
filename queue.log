@@ -46,3 +46,5 @@
 08:41:41 watching field: 5 stop rule(s)
 08:41:43 progress pushed to origin claude/pc-rc-confirm-progress (every 15 min)
 08:42:41 progress field: 308/7158 (4%) battles, 0 failed, rel +0.09, aa +0.05
+09:01:54 STOP field by rule skips 60 over 200: 61.4 a battle over the last 200 (first 200: 59.2); 521 battles fought and kept, 6637 battles left unrun (about 10.5 h)
+09:01:55 field exit=75 in 1213 s (halted, skips 60 over 200)
