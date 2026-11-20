@@ -17,9 +17,10 @@
     <description>Headless Robocode battles for measuring Hadur: cold and warm runs, seeded, with console and ground-truth logs.</description>
 
     <properties>
-        <!-- The full engine, from Maven Central: 1.11.2, a release LiteRumble takes uploads from (issue #151,
-             BENCH-79; since 2026-11-01 the server takes only 1.11.2 and 1.12.0). Robots compiled against the 1.9.3.0 API run on it. -Drobocode.version=... swaps it. -->
-        <robocode.version>1.11.2</robocode.version>
+        <!-- The full engine, from Maven Central: 1.12.0, the release every live rumble client runs (BENCH-266; the
+             server refuses 1.11.2 clients since mid November 2026, issue #151, BENCH-79). Robots compiled against the
+             1.9.3.0 API run on it. -Drobocode.version=... swaps it (an older engine drops broken-1.11.2.txt's robots). -->
+        <robocode.version>1.12.0</robocode.version>
         <!-- The bench never ships, so it keeps Java 17. -->
         <maven.compiler.release>17</maven.compiler.release>
     </properties>
@@ -60,6 +61,14 @@
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.samples</artifactId>
             <version>${robocode.version}</version>
+        </dependency>
+        <!-- BENCH-266: the live rumble client puts kotlin-stdlib beside the engine (rumble-client/pom.xml, same
+             version), so the Kotlin robots (zen.Mirage, zen.Ronin, e32.Omni) load; without it they fail with
+             "expected 2 robots; found 1" and the bench never sees them. -->
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>2.4.21</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

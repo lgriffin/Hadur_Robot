@@ -39,7 +39,7 @@ class StillFieldPlanTest {
             "rz.SmallDevil 1.502", "slugzilla.Parallax 0.1", "stelo.MoojukNano 1.2"), panel);
         assertEquals(panel, names("plans/still-field-add.txt"), "all join the list");
         assertEquals(panel, names("plans/still-field-still.txt"), "all get still lines");
-        for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE)).contains(n), n + " loads on 1.11.2");
+        for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE_1112)).contains(n), n + " loads on 1.11.2");
         assertTrue(queue.contains("build-ablation.sh aa ") && queue.contains("SHIELD_ADD=plans/still-field-add.txt"
             + " SHIELD_STILL=plans/still-field-still.txt bash ./build-ablation.sh slistadd,szlist"));
         assertTrue(queue.contains("--set panel-still-field.txt --seeds 12 --seed-base 12200 --arms plans/pc-still-field.arms"));

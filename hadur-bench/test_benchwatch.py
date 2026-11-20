@@ -90,11 +90,16 @@ class SpecTest(unittest.TestCase):
         self.assertEqual(sp.arm_labels, ["c", "aa", "s4"])
 
     def test_panel_leaves_out_broken_robots(self):
-        """BENCH-169: the bench drops robots broken-1.11.2.txt lists, so the expected count does too."""
-        (self.home / "broken-1.11.2.txt").write_text("# broken\nb  1 | 1v1 | invalid robot\n")
+        """BENCH-169: the bench drops robots the engine's broken list names, so the expected count does too.
+        BENCH-266: broken-1.12.0.txt on the default engine, broken-1.11.2.txt on a 1.11.x --engine."""
+        (self.home / "broken-1.12.0.txt").write_text("# broken\nb  1 | 1v1 | invalid robot\n")
+        (self.home / "broken-1.11.2.txt").write_text("# broken\nb  1 | 1v1 | invalid robot\nc  1 | 1v1 | x\n")
         cmd = "./bench-top20.sh --set panel.txt --seeds 3 --arms x.arms --out work/x"
         self.assertEqual(benchwatch.Spec("", cmd, self.home).panel, 2)
+        self.assertEqual(benchwatch.Spec("", cmd + " --engine 1.12.0", self.home).panel, 2)
+        self.assertEqual(benchwatch.Spec("", cmd + " --engine 1.11.2", self.home).panel, 1)
         self.assertEqual(benchwatch.Spec("", cmd + " --keep-broken true", self.home).panel, 3)
+        self.assertEqual(benchwatch.Spec("", cmd + " --keep-broken", self.home).panel, 3)
 
     def test_futility_needs_shuffled_jobs_and_known_arms(self):
         cmd = "./bench-top20.sh --set panel.txt --seeds 3 --arms x.arms --out work/x"

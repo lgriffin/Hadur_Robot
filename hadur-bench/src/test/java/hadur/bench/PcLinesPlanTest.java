@@ -40,7 +40,7 @@ class PcLinesPlanTest {
         assertEquals(panel.size(), new HashSet<>(panel).size(), "no robot twice");
         assertEquals("jkong.JKHydra 1.4", panel.get(0), "the cloud lock leads the panel");
         assertEquals(panel, names("plans/lines-cap-add.txt"), "each panel robot gets one power-cap line");
-        java.util.Set<String> broken = Broken.names(Path.of(Broken.FILE));
+        java.util.Set<String> broken = Broken.names(Path.of(Broken.FILE_1112));
         String list = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldListData.java"));
         String table = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldTableData.java"));
         // After the results PR: the robots this card shipped lines for (plans/lines-cap-shipped.txt) carry them on master.

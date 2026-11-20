@@ -43,8 +43,10 @@
 #   --dry-run              print what would be built, fetched and run, and run nothing
 #   --skip-build           skip `mvn package` at the repo root
 #   --skip-fetch           skip fetching the set's opponent jars
-#   --engine VERSION       run the battles on this Robocode release from Maven Central (e.g. 1.11.2)
-#   --keep-broken          keep the robots listed in broken-1.11.2.txt (for an --engine 1.12.0 run, where they load)
+#   --engine VERSION       run the battles on this Robocode release from Maven Central; default the bench pom's,
+#                          1.12.0, the live clients' engine (BENCH-266)
+#   --keep-broken          keep the robots the engine's broken list names (broken-1.12.0.txt, or broken-1.11.2.txt
+#                          on a 1.11.x engine, where it is refused); they fail to load, so this is for load checks
 #   --arms FILE            a multi-arm run (BENCH-92): every arm in FILE (label | robot | jar) on every
 #                          opponent and seed, in a shuffled order; writes arms.tsv. Replaces --robot/--baseline
 #   --pin                  bind each battle JVM to its worker's own processors (BENCH-93)
@@ -147,10 +149,14 @@ if [ -n "$BASELINE" ] && [ -z "$BASELINE_ROBOT" ]; then
     exit 2
 fi
 
-# --keep-broken is for a run on another engine, where the 1.11.2 broken list's robots load; on 1.11.2 they cannot.
-if [ "$KEEP_BROKEN" -eq 1 ] && { [ -z "$ENGINE" ] || [ "$ENGINE" = "1.11.2" ]; }; then
-    echo "--keep-broken needs --engine with a release other than 1.11.2 (e.g. --engine 1.12.0)" >&2; exit 2
-fi
+# --keep-broken keeps the engine's broken list (BENCH-266: broken-1.12.0.txt on the default 1.12.0, the few robots
+# 1.12.0 rejects). On a 1.11.x engine the list's robots cannot load at all, so it is refused there.
+case "$ENGINE" in
+    1.11*|1.10*|1.9*)
+        if [ "$KEEP_BROKEN" -eq 1 ]; then
+            echo "--keep-broken cannot run on $ENGINE, which will not load broken-1.11.2.txt's robots (drop --engine: the default is 1.12.0)" >&2; exit 2
+        fi ;;
+esac
 HERE_DIR=$(cd "$(dirname "$0")" && pwd)
 PYTHON=$(command -v python3 || command -v python || true)
 if [ "$PARALLEL" = "auto" ] || [ "$PARALLEL" = "0" ]; then

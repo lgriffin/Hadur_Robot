@@ -34,7 +34,7 @@ class PcFieldScreenPlanTest {
         assertEquals(93, panel.size(), "the shard-E robots");
         assertEquals(panel.size(), new HashSet<>(panel).size(), "no robot twice");
         assertEquals(panel, names("plans/field-e-add.txt"), "one line per panel robot");
-        java.util.Set<String> broken = Broken.names(Path.of(Broken.FILE));
+        java.util.Set<String> broken = Broken.names(Path.of(Broken.FILE_1112));
         for (String n : panel) assertTrue(!broken.contains(n), n + " loads on 1.11.2");
         String arms = Files.readString(Path.of("plans/pc-field-screen.arms"));
         assertTrue(arms.contains("\nc | hadur117.Hadur " + version + " |") && arms.contains("\naa | hadur117.Hadur " + version + "aa |"));

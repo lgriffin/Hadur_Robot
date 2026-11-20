@@ -38,7 +38,7 @@ class AlaShieldPlanTest {
         assertEquals(List.of("lechu.Ala 0.0.4"), panel);
         assertEquals(panel, names("plans/ala-shield-add.txt"), "Ala joins the list");
         assertEquals(panel, names("plans/ala-shield-still.txt"), "Ala gets the still line on mz");
-        for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE)).contains(n), n + " loads on 1.11.2");
+        for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE_1112)).contains(n), n + " loads on 1.11.2");
         assertTrue(queue.contains("build-ablation.sh aa ")
             && queue.contains("SHIELD_ADD=plans/ala-shield-add.txt bash ./build-ablation.sh slistadd ")
             && queue.contains("SHIELD_ADD=plans/ala-shield-add.txt SHIELD_STILL=plans/ala-shield-still.txt"

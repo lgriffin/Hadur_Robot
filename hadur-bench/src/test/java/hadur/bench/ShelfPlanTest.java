@@ -54,11 +54,11 @@ class ShelfPlanTest {
         for (String n : u) {
             assertTrue(shieldedSince.contains(n) || !shield.contains(n), n + " is off the shield list");
             assertTrue(!s.contains(n), n + " on one panel only");
-            assertTrue(foundBroken.contains(n) || !Broken.names(Path.of(Broken.FILE)).contains(n), n + " loads on 1.11.2");
+            assertTrue(foundBroken.contains(n) || !Broken.names(Path.of(Broken.FILE_1112)).contains(n), n + " loads on 1.11.2");
         }
         for (String n : s) {
             assertTrue(shield.contains(n), n + " is on the shield list");
-            assertTrue(!Broken.names(Path.of(Broken.FILE)).contains(n), n + " loads on 1.11.2");
+            assertTrue(!Broken.names(Path.of(Broken.FILE_1112)).contains(n), n + " loads on 1.11.2");
         }
         assertEquals(List.of("c", "aa", "mt", "wl", "hl", "gl"), names("plans/shelf-u.arms", "\\|"));
         assertEquals(List.of("c", "aa", "md", "zl", "x0", "x4", "mv"), names("plans/shelf-s.arms", "\\|"));

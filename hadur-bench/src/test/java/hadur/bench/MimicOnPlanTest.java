@@ -31,7 +31,7 @@ class MimicOnPlanTest {
         assertEquals(28, panel.size());
         assertEquals(panel.size(), panel.stream().distinct().count(), "no robot twice");
         assertEquals(panel, names("plans/mimic-on.list", "\t"), "mq names exactly the panel");
-        for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE)).contains(n), n + " loads on 1.11.2");
+        for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE_1112)).contains(n), n + " loads on 1.11.2");
         assertTrue(queue.contains("build-ablation.sh aa ") && queue.contains("MIMIC_ON=plans/mimic-on.list bash ./build-ablation.sh mmlist"));
         assertTrue(queue.contains("--set panel-mimic-on.txt --seeds 8 --seed-base 7800 --arms plans/mimic-on.arms"));
         String arms = Files.readString(Path.of("plans/mimic-on.arms"));
@@ -117,7 +117,7 @@ class MimicOnPlanTest {
         List<String> tried = names("plans/mimic-on.list", "\t");
         for (String n : panel) {
             assertTrue(!tried.contains(n), n + " was not tried on pc-mimic-on");
-            assertTrue(!Broken.names(Path.of(Broken.FILE)).contains(n), n + " loads on 1.11.2");
+            assertTrue(!Broken.names(Path.of(Broken.FILE_1112)).contains(n), n + " loads on 1.11.2");
         }
         assertTrue(queue.contains("MIMIC_ON=plans/mimic-wide.list bash ./build-ablation.sh mmlist"));
         assertTrue(queue.contains("--set panel-mimic-wide.txt --seeds 8 --seed-base 8600 --arms plans/mimic-wide.arms"));

@@ -1,0 +1,14 @@
+# Robots that do not load on Robocode 1.12.0, the engine every live rumble client runs and the bench default
+# (BENCH-266). One robot per line: name version | mode | reason, as in broken-1.11.2.txt. Bench drops these from a
+# set on 1.12.0; on a 1.11.x engine it reads broken-1.11.2.txt instead.
+#
+# Cloud load of broken-1.11.2.txt's 27 robots on 1.12.0 with kotlin-stdlib on the classpath (as the live client
+# has it), 1 round each, 2026-11-20: 20 load, these 7 fail. None of them is in the
+# live 1v1 rumble (LiteRumble BotDetails, 2026-11-20); they stay listed so the melee and team censuses skip them.
+catcat20.Lambda 0.017 | 1v1 | 1.12.0 load: verifier (bundled gson uses java.sql.Timestamp)
+catcat20.Lambda 0.024 | melee | 1.12.0 load: verifier (bundled gson uses java.sql.Timestamp)
+catcat20.Matcha 0.006 | melee | 1.12.0 load: verifier (bundled gson uses java.sql.Timestamp)
+catcat20.shape.Theta 0.018 | 1v1, melee | 1.12.0 load: verifier (bundled gson uses java.sql.Timestamp)
+morbid.MorbidPriest 1.0 | 1v1, melee | 1.12.0 load: verifier (ClassLoader.loadClass)
+inonit.robocode.javascript.MyFirstRobot 1.1 | melee | 1.12.0 load: "invalid robot or team"
+zh.UnderDog 0.0.2 | 1v1 | 1.12.0 load: "invalid robot or team"

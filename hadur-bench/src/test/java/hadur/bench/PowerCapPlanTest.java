@@ -40,7 +40,7 @@ class PowerCapPlanTest {
         List<String> lines = new java.util.ArrayList<>(names("plans/power-cap-add.txt"));
         lines.addAll(names("plans/power-cap5-add.txt"));
         assertEquals(panel, lines, "each panel robot gets one power-cap or power-cap5 line");
-        for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE)).contains(n), n + " loads on 1.11.2");
+        for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE_1112)).contains(n), n + " loads on 1.11.2");
         // A robot already capped on master would be capped in the control arm too; only the robots
         // this card shipped may already be there.
         List<String> shipped = names("plans/power-cap-shipped.txt");
