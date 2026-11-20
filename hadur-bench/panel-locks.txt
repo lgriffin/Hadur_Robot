@@ -12,7 +12,6 @@ zeze2.OperatorZeze 1.05 | charge-L | zeze2.OperatorZeze_1.05.jar
 mmb.Roskilde 0.5 | charge-G | mmb.Roskilde_0.5.jar
 jep.nano.Hawkwing 0.4.1 | gap6.2 | jep.nano.Hawkwing_0.4.1.jar
 acid.Syzygy 1.0.4 | gap2.5 | acid.Syzygy_1.0.4.jar
-kms.Royal 0.15M | charge-C | kms.Royal_0.15M.jar
 sng.arco.Arco 0.0 | charge-C | sng.arco.Arco_0.0.jar
 yk.JahRoslav 1.1 | charge-B | yk.JahRoslav_1.1.jar
 robin.ScalpBotC 1.0 | charge-B | robin.ScalpBotC_1.0.jar

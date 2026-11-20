@@ -6,9 +6,12 @@
 #      24), MyFirstAdvancedRobot +0.40 (+0.21, 24), Infinity +0.89 (+0.44, 24), Puffin +0.59 (+0.34, 12), DestrobotMalin
 #      +0.40 (+0.13, 24), SineWall +1.04 (+0.70, 24), OperatorZeze +1.35 (+0.13, 24), Roskilde +1.16 (+0.53, 36),
 #      Hawkwing +1.06 (+0.12, 24; held again on a 36-seed recheck), Syzygy +0.79 (+0.04, 24; held again on a 36-seed
-#      recheck), Royal +0.43 (+0.03, 36), Arco +0.37 (+0.08, 24), JahRoslav +1.82 (+0.98, 24), ScalpBotC +1.22 (+0.76,
+#      recheck and again on 12 more, 74900-11), Arco +0.37 (+0.08, 24; +0.31, low +0.09 over 36 with
+#      74900-11), JahRoslav +1.82 (+0.98, 24), ScalpBotC +1.22 (+0.76,
 #      24), KnackOnOne +0.94 (+0.19, 24), Merkava +0.84 (+0.11, 24), kmBot9 +0.54 (+0.12, 24), First +0.72 (+0.35, 24)
 #      Karaykan +0.74 (+0.17, 36), TestMelee +0.68 (+0.13, 36)
+#   Royal (rf +0.43, low +0.03 on 36 seeds) was dropped before the run: 12 more seeds (74900-11) read +0.00, pooling
+#      to a low end below 0.
 #   mt (shield-list add, slistadd): RedShift +1.63 (+1.17, 24)
 #   Each cloud gain is the smaller of the reads against c and against an A/A twin.
 #   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live
@@ -21,7 +24,7 @@
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
 #   --fresh because round 12 left this plan's queue state marked complete; an interrupted round 13 resumes without it.
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 1104 lock battles (23 robots, 4 arms, 12 seeds), about
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 1056 lock battles (22 robots, 4 arms, 12 seeds), about
 # 30 minutes with the live-match check.
 #
 # Why it should win (the PC card rule of 2026-11-03):
@@ -72,5 +75,5 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 8
 gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks13-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks13-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks13-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms rf mt --out ${OUT}/$(date +%Y-%m-%d)_pc-locks13-lock-per-robot.md --out-tsv ${OUT}/pc-locks13-lock-per-robot.tsv
   after: lock
 
-pr | bash tools/open_results_pr.sh claude/pc-locks13-results "1v1 cloud locks, round 13 (22 robots on rf, 1 on mt) locked on 12 fresh PC seeds" ${OUT}/pc-locks13-livematch.md ${OUT}/*_pc-locks13-*.md ${OUT}/pc-locks13-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks13-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks13-results "1v1 cloud locks, round 13 (21 robots on rf, 1 on mt) locked on 12 fresh PC seeds" ${OUT}/pc-locks13-livematch.md ${OUT}/*_pc-locks13-*.md ${OUT}/pc-locks13-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks13-lock-pick.tsv' -size +0c)
   after: gate
