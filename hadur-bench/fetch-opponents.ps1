@@ -61,7 +61,7 @@ foreach ($jar in $jars) {
         continue
     }
     $part = "$target.part"
-    # BENCH-266: a jar the archive lacks takes its URL from opponent-urls.txt (the participants list's).
+    # BENCH-267: a jar the archive lacks takes its URL from opponent-urls.txt (the participants list's).
     $url = "$baseUrl/$jar"
     $urlFile = Join-Path $PSScriptRoot "opponent-urls.txt"
     if (Test-Path -LiteralPath $urlFile) {

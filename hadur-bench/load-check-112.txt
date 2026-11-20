@@ -1,4 +1,4 @@
-# BENCH-266: every robot in broken-1.11.2.txt, for a load check on 1.12.0 (1 round each, --keep-broken).
+# BENCH-267: every robot in broken-1.11.2.txt, for a load check on 1.12.0 (1 round each, --keep-broken).
 Krabb.sliNk.Garm 0.9u | load | Krabb.sliNk.Garm_0.9u.jar
 ag.Gir 0.99 | load | ag.Gir_0.99.jar
 apv.ScruchiPu 1.0 | load | apv.ScruchiPu_1.0.jar

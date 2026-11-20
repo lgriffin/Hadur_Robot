@@ -44,7 +44,7 @@
 #   --skip-build           skip `mvn package` at the repo root
 #   --skip-fetch           skip fetching the set's opponent jars
 #   --engine VERSION       run the battles on this Robocode release from Maven Central; default the bench pom's,
-#                          1.12.0, the live clients' engine (BENCH-266)
+#                          1.12.0, the live clients' engine (BENCH-267)
 #   --keep-broken          keep the robots the engine's broken list names (broken-1.12.0.txt, or broken-1.11.2.txt
 #                          on a 1.11.x engine, where it is refused); they fail to load, so this is for load checks
 #   --arms FILE            a multi-arm run (BENCH-92): every arm in FILE (label | robot | jar) on every
@@ -149,10 +149,11 @@ if [ -n "$BASELINE" ] && [ -z "$BASELINE_ROBOT" ]; then
     exit 2
 fi
 
-# --keep-broken keeps the engine's broken list (BENCH-266: broken-1.12.0.txt on the default 1.12.0, the few robots
+# --keep-broken keeps the engine's broken list (BENCH-267: broken-1.12.0.txt on the default 1.12.0, the few robots
 # 1.12.0 rejects). On a 1.11.x engine the list's robots cannot load at all, so it is refused there.
+# Same rule as Broken.file: 1.0 to 1.11.x read broken-1.11.2.txt.
 case "$ENGINE" in
-    1.11*|1.10*|1.9*)
+    1.[0-9]|1.[0-9].*|1.10|1.10.*|1.11|1.11.*)
         if [ "$KEEP_BROKEN" -eq 1 ]; then
             echo "--keep-broken cannot run on $ENGINE, which will not load broken-1.11.2.txt's robots (drop --engine: the default is 1.12.0)" >&2; exit 2
         fi ;;

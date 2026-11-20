@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-/** BENCH-169: robots the engine will not load leave a set before the bench starts (BENCH-266: per engine). */
+/** BENCH-169: robots the engine will not load leave a set before the bench starts (BENCH-267: per engine). */
 class BrokenTest {
 
     @Test
@@ -46,7 +46,7 @@ class BrokenTest {
     }
 
     @Test
-    @Tag("BENCH-266")
+    @Tag("BENCH-267")
     @DisplayName("the list follows the engine: 1.11.x reads broken-1.11.2.txt, 1.12.0 (the default) broken-1.12.0.txt")
     void listFollowsEngine() throws IOException {
         assertEquals("broken-1.11.2.txt", Broken.file("1.11.2"));
@@ -55,8 +55,9 @@ class BrokenTest {
         assertEquals("broken-1.11.2.txt", Broken.file("1.9.5.6"));
         assertEquals("broken-1.12.0.txt", Broken.file("1.12.0"));
         assertEquals("broken-1.12.0.txt", Broken.file("unknown"));
-        assertEquals("1.12.0", Report.ENGINE, "the bench runs on the live clients' engine");
-        assertEquals(Broken.FILE_112, Broken.FILE);
+        assertTrue(Files.readString(Path.of("pom.xml")).contains("<robocode.version>1.12.0</robocode.version>"),
+            "the default engine is the live clients'");
+        assertEquals(Broken.file(Report.ENGINE), Broken.FILE, "the list follows the engine this run is on");
         List<String> lines = Files.readAllLines(Path.of(Broken.FILE_112)).stream()
             .filter(l -> !l.isBlank() && !l.startsWith("#")).toList();
         for (String l : lines) assertEquals(3, l.split("\\|").length, l);

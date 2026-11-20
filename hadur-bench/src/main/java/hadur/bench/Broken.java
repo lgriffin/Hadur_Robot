@@ -12,7 +12,7 @@ import java.util.Set;
  * against one fails, so a card's {@code fails} stop rule halts on them (pc-mimic, issue #570); the bench drops
  * them from a set before it starts, and says which.
  *
- * <p>BENCH-266: the list follows the engine. On 1.12.0, the live clients' engine and the bench default, it is
+ * <p>BENCH-267: the list follows the engine. On 1.12.0, the live clients' engine and the bench default, it is
  * {@value #FILE_112} (the few robots 1.12.0 rejects, none of them in the live 1v1 rumble); on 1.11.x it is
  * {@value #FILE_1112}, which also holds the robots only 1.12.0 loads.
  */
@@ -21,7 +21,7 @@ final class Broken {
     /** The 1.11.x list, beside the sets. */
     static final String FILE_1112 = "broken-1.11.2.txt";
 
-    /** The 1.12.0 list, beside the sets (BENCH-266). */
+    /** The 1.12.0 list, beside the sets (BENCH-267). */
     static final String FILE_112 = "broken-1.12.0.txt";
 
     /** The list for the engine the battles run on (Report.ENGINE). */

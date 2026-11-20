@@ -1726,7 +1726,14 @@ public final class Bench {
             List<Thread> load = startLoad(c.load());
             try {
                 Map<Opponent, List<BattleResult>> results = new LinkedHashMap<>();
-                for (Opponent o : opponents) {
+                // BENCH-267: a condition on another engine drops that engine's broken list, not the bench's.
+                List<Opponent> condOpponents = new ArrayList<>(opponents);
+                if (c.engine() != null && !Broken.file(c.engine()).equals(Broken.FILE)
+                        && !Boolean.parseBoolean(opts.getOrDefault("keep-broken", "false"))) {
+                    int dropped = Broken.drop(condOpponents, Broken.names(benchDir.resolve(Broken.file(c.engine()))));
+                    if (dropped > 0) System.out.println("  dropped " + dropped + " robot(s) listed in " + Broken.file(c.engine()));
+                }
+                for (Opponent o : condOpponents) {
                     List<BattleResult> list = new ArrayList<>();
                     results.put(o, list);
                     for (int i = 1; i <= runs; i++) {

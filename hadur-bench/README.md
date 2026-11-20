@@ -3,7 +3,7 @@
 Headless Robocode battles for measuring Hadur (stage S0 of the Hadur 2 plan), and the
 recorder that captures the core's replay fixtures (S1).
 
-The bench runs the full Robocode 1.12.0 engine from Maven Central (BENCH-79, BENCH-266), the release
+The bench runs the full Robocode 1.12.0 engine from Maven Central (BENCH-79, BENCH-267), the release
 every live rumble client runs (the server refused 1.11.1 and older from 2026-11-01 and 1.11.2 by mid
 November; the default was 1.11.2 until 2026-11-20), with `kotlin-stdlib` beside it as the live client
 has it, so the Kotlin robots load. Robots the engine rejects leave a set first: `broken-1.12.0.txt` on

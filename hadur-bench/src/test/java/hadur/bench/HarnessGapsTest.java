@@ -134,7 +134,7 @@ class HarnessGapsTest {
 
     @Test
     @Tag("BENCH-79")
-    @Tag("BENCH-266")
+    @Tag("BENCH-267")
     @DisplayName("the default engine is 1.12.0, the live clients' release, with kotlin-stdlib as they have it; others are flagged")
     void defaultEngineIsARumbleRelease() throws Exception {
         String pom = Files.readString(Path.of("pom.xml"));

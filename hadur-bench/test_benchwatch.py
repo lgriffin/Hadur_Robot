@@ -91,7 +91,7 @@ class SpecTest(unittest.TestCase):
 
     def test_panel_leaves_out_broken_robots(self):
         """BENCH-169: the bench drops robots the engine's broken list names, so the expected count does too.
-        BENCH-266: broken-1.12.0.txt on the default engine, broken-1.11.2.txt on a 1.11.x --engine."""
+        BENCH-267: broken-1.12.0.txt on the default engine, broken-1.11.2.txt on a 1.11.x --engine."""
         (self.home / "broken-1.12.0.txt").write_text("# broken\nb  1 | 1v1 | invalid robot\n")
         (self.home / "broken-1.11.2.txt").write_text("# broken\nb  1 | 1v1 | invalid robot\nc  1 | 1v1 | x\n")
         cmd = "./bench-top20.sh --set panel.txt --seeds 3 --arms x.arms --out work/x"

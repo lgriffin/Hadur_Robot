@@ -1,4 +1,4 @@
-# BENCH-266: the live 1v1 field. Every robot on the LiteRumble roborumble rankings page read 2026-11-20 19:45 UTC
+# BENCH-267: the live 1v1 field. Every robot on the LiteRumble roborumble rankings page read 2026-11-20 19:45 UTC
 # (1,213 robots), less hadur117.Hadur itself: the robots and versions live clients play, on Robocode 1.12.0.
 # Role: rank<N>-band<B> from that page, band 1 = ranks 1-10, 2 = 11-50, 3 = 51-200, 4 = 201-400, 5 = 401-700, 6 = 701+.
 # Against census-312.txt: adds the 1.12.0 returners and newcomers (Mirage, Ronin, Omni, KurtBot, DumDum, Tron 3.11,
