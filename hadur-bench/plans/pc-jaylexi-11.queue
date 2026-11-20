@@ -1,0 +1,64 @@
+# JayLexi 1.1 confirm on the whole MiniRumble field (thread "Take 1st with JayLexi, Eveimear and Sanaro"; BENCH-268).
+# 1.1 is 1.0 byte-trimmed with identical play (43 B), firing within 1200 / distance degrees of its aim instead of a flat 3
+# (JAYLEXI-24), with two per-robot lines in the free strings: Leopard's orbit 0.4 rad closer inside 200 px and aim
+# jitter against uCatcher. 1,447 B. This card checks it against 1.0 (which passed pc-jaylexi-10, #956) on every
+# MiniRumble robot before any release.
+#   ./queue.sh run pc-jaylexi-11        (or  .\queue.ps1 run pc-jaylexi-11)
+# Run it from master with this card merged: git checkout master && git pull
+# One bench queue, RoboRumble workers at 0. Nothing is uploaded or released. About 1 h 20 min to the end.
+#
+# Why it should win:
+# - Diagnosed, not tuned. The cloud gap runs against FoilistMC showed chargers hitting us close in; a truth-logged gun
+#   run showed the flat 3 degree gate holding fire while a robot closes. Firing within 1200 / distance degrees opens the
+#   gate inside 400 px (8.6 degrees at 140 px) so the first shots land before the rammer does.
+# - Cloud, 112 MiniRumble robots (kitlab/mini-wide3-field.txt), against 1.0: screen +0.66 +- 0.34 (6 seeds), 12-seed lock
+#   +0.35 +- 0.26 (low end +0.09), about +0.3 over 24 seeds; chargers +3 to +4 points each. Tighter gates lost.
+#   Leopard's line +4.39 +- 1.68 (12 seeds), uCatcher's +0.93 +- 0.53 (24 seeds). docs/bench/jaylexi-tailoring.md section 11.
+# - n is the shipped source; c is 1.0's source read from master at 299c55f3c (checked by grep for its 3 degree gate);
+#   aa is c rebuilt. The replay tests show the byte trim plays 1.0's orders bit for bit and the new gate plays others.
+# - Risk: learning guns give back a little (-1 to -3 points on some); D's 6-seed set read F12 level (+0.02). The
+#   whole-field read settles it.
+#
+# Timing: --cpu-constant live (BENCH-245). The livematch step is Hadur's and BeepBoop's 1v1 check of the PC's turn time;
+# MiniRumble runs on the same LiteRumble clients, so the same constant holds for it.
+# Pilot: shuffled jobs, so the first 20% is a fair sample. A/A outside its band at 20% halts; n below -0.5 points at 20%
+# finishes the run early (futility).
+# Panel: kitlab/mini-pw-field.txt (668 MiniRumble robots, none ours or in broken-1.11.2.txt). 4 arms x 668 x 6 fresh
+# seeds from 62000 x 35 rounds = 16,032 battles.
+# Gate: n against c and aa pooled, mean over the 668 robots with its 95% low end above 0. r6 (the released 0.6) shows what
+# 0.7 to 1.1 add over live. A pass is banked; release only on Leigh's word.
+# Stop rules: fails 30, dead 8, skips 60 over 200, stall 30m (halt; every battle fought is kept and a rerun resumes),
+# aa after 20% (halt), futility n below -0.5 after 20% (finish). ALERT opens an issue for Leigh on a stop.
+
+set P = --parallel 16 --no-truth-log --failed-ok
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 512M
+set SRC = ../jaylexi/src/main/java/hadur117/mini/JayLexi.java
+set W = work/jaylexi-11
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set REL = https://github.com/lgriffin/Hadur_Robot/releases/download
+
+prep | git checkout -q master && rm -f ${OUT}/*_jaylexi-11*.md && mkdir -p ${W} kitlab/jars bisect work && (cd ../jaylexi && mvn -q verify) && grep -q "< 1200 / distance" ${SRC} && git show 299c55f3c:jaylexi/src/main/java/hadur117/mini/JayLexi.java > ${W}/JayLexi.java && grep -q "getGunTurnRemaining()) < 3 &&" ${W}/JayLexi.java && bash kitlab/build_arm_pg.sh ${W}/JayLexi.java hadur117.mini.JayLexi 1.0c && bash kitlab/build_arm_pg.sh ${W}/JayLexi.java hadur117.mini.JayLexi 1.0aa && bash kitlab/build_arm_pg.sh ${SRC} hadur117.mini.JayLexi 1.1n && curl -fsSL -o kitlab/jars/hadur117.mini.JayLexi_0.6.jar ${REL}/jaylexi-v0.6/hadur117.mini.JayLexi_0.6.jar && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set kitlab/mini-pw-field.txt && mvn -q compile
+
+livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out work/pc-livematch-rel-live --label pc-jaylexi-11-livematch --shuffle-jobs && python3 tools/live_match.py work/pc-livematch-rel-live/arms.tsv --out ${OUT}/pc-jaylexi-11-livematch.md
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: stall 30m
+
+bench | ./bench-top20.sh ${C} ${P} --set kitlab/mini-pw-field.txt --seeds 6 --seed-base 62000 --arms plans/jaylexi-11.arms --out ${W}/run --label jaylexi-11 --shuffle-jobs
+  after: livematch
+  watch:
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+  stop: futility n below -0.5 after 20%
+
+gate | python3 ../data/tools/multiarm.py ${W}/run/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_jaylexi-11.md && printf '\n## Gate\n\nn (1.1) ships when its mean against c and aa pooled over the 668 robots has its 95%% low end above 0. r6 is the released 0.6.\n' >> ${OUT}/$(date +%Y-%m-%d)_jaylexi-11.md && { [ ! -f ${W}/run/EARLY-STOP.md ] || cat ${W}/run/EARLY-STOP.md >> ${OUT}/$(date +%Y-%m-%d)_jaylexi-11.md; }
+  after: bench
+
+pr | bash tools/open_results_pr.sh claude/pc-jaylexi-11-results "JayLexi 1.1 on the whole MiniRumble field (pc-jaylexi-11)" ${OUT}/*_jaylexi-11.md ${OUT}/pc-jaylexi-11-livematch.md
+  after: gate

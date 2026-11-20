@@ -29,7 +29,7 @@ class JayLexiTest {
     }
 
     static JayLexi.Wave wave(double x, double y, double bearing, double speed) {
-        JayLexi.Wave w = new JayLexi.Wave();
+        JayLexi.Wave w = new JayLexi.Wave(null, 0, 0);
         w.source = new Point2D.Double(x, y);
         w.bearing = bearing;
         w.dir = 1;
@@ -93,7 +93,7 @@ class JayLexiTest {
         JayLexi.Wave w = wave(0, 0, 0, 14);
         Point2D.Double atOne = new Point2D.Double(Math.sin(Math.asin(8 / 14.0)) * 300, Math.cos(Math.asin(8 / 14.0)) * 300);
         assertEquals(JayLexi.BINS - 1, w.index(atOne));
-        w.log(w.index(atOne), 600);
+        w.log(atOne, 600);
         for (int i = 0; i < JayLexi.BINS - 1; i++) {
             assertTrue(w.bins[i] < w.bins[JayLexi.BINS - 1]);
         }
