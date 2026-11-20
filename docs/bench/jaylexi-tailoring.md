@@ -183,6 +183,35 @@ shows that 0.8's tick 3 gives other orders. Nothing is released.
 +0.07; the aim prior at twice its weight +0.12, at half -0.00; wall smoothing step 0.03 +0.07, 0.08 -0.20. With n1 to
 n8, the 0-byte constants of the surf are tuned out: only the prediction's start tick (0.9) moved the score.
 
+## JayLexi 1.0
+
+1.0 is 0.9 with SB1 (JAYLEXI-23), at 1,486 B: the surf stats keep one distance band instead of 0.9's four (under 150,
+350 and 550 px). The readable reference keeps the four in a switch, and a replay test shows they give other orders.
+
+## 10. Coarser surf stats on 0.9 (2026-11-20, seeds 73000 to 95000)
+
+Each segment of the surf stats was dropped in turn (n12, n12b; 3 seeds each). Walls (SW0 -0.77, -0.68) and our lateral
+speed (SL1 -0.72, -0.33) carry their weight; the distance bands do not (SB1 +0.01, +0.33). Re-using the freed slot
+for other keys read flat or worse: our advancing speed SV -0.02, enemy energy SE -0.29, finer close bands SD +0.37 then
++0.01, and SD2 to SD5 failed (SD2's 12-seed lock +0.03 ± 0.24).
+
+SB1 alone:
+
+| Read | Seeds | SB1 against 0.9 |
+|---|---|---|
+| n16 (L) | 3 from 83000 | +0.38 |
+| lock (L) | 12 from 84000 | +0.23 ± 0.20, low end +0.03: passes |
+| sb1x (A) | 6 from 85000 | +0.18 ± 0.30 |
+| bxc (C) | 6 from 88000 | +0.20 ± 0.29 |
+| bxo | 4 from 90000 | -0.01 |
+| sbsd head to head (L) | 12 from 93000 | +0.56 ± 0.24 |
+| sb1y | 6 from 95000 | +0.04 |
+
+Small but the same sign on almost every read: about +0.2 pooled. The reading: four bands split about 30 waves a round
+four ways, so each band's stats stay thin for most of a battle; where an enemy's aim does change with distance, the
+walls and lateral speed segments already carry most of it. pc-jaylexi-10 (BENCH-266) checks it on all 668 MiniRumble
+robots against 0.9 before any release.
+
 ## Where this leaves JayLexi
 
 - The gap to FoilistMC on its gap robots is real, about 1 APS, and it is movement: damage taken.

@@ -45,6 +45,14 @@ public class ReplayBot extends JayLexi {
         }
     }
 
+    /** The readable JayLexi with 0.9's four surf distance bands, to show the 1.0 rule plays. */
+    public static class Bands extends ReplayBot {
+        public Bands(ReplayBody b) {
+            super(b);
+            bands = true;
+        }
+    }
+
     /** The readable JayLexi with 0.8's prediction counted from tick 3, to show the 0.9 rule plays. */
     public static class Lead3 extends ReplayBot {
         public Lead3(ReplayBody b) {

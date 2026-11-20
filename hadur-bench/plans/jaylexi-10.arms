@@ -1,0 +1,7 @@
+# BENCH-266 (pc-jaylexi-10): c is JayLexi 0.9's source (master at 70a0008f8, four surf distance bands), aa its A/A
+# rebuild, n the shipped 1.0 source (one band, JAYLEXI-23), r6 the released 0.6. All but r6 built with ProGuard by
+# kitlab/build_arm_pg.sh, as a release ships.
+c | hadur117.mini.JayLexi 0.9c | kitlab/jars/hadur117.mini.JayLexi_0.9c.jar
+aa | hadur117.mini.JayLexi 0.9aa | kitlab/jars/hadur117.mini.JayLexi_0.9aa.jar
+n | hadur117.mini.JayLexi 1.0n | kitlab/jars/hadur117.mini.JayLexi_1.0n.jar
+r6 | hadur117.mini.JayLexi 0.6 | kitlab/jars/hadur117.mini.JayLexi_0.6.jar

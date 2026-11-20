@@ -57,6 +57,11 @@ predicted spot is taken one tick further along our path. +0.29 ± 0.23 over 0.8 
 robots, after +0.50 on its 3-seed screen. 1,495 bytes, the same as 0.8
 ([docs/bench/jaylexi-tailoring.md](../docs/bench/jaylexi-tailoring.md)).
 
+1.0 (built 2026-11-20, not released) drops the surf stats' four distance bands for one (JAYLEXI-23): every wave at us
+learns from every other, whatever the range, so the stats fill four times as fast. +0.23 ± 0.20 over 0.9 on its 12-seed
+cloud lock over 112 MiniRumble robots, +0.56 ± 0.24 on a 12-seed head-to-head, about +0.2 pooled over every read.
+1,486 bytes, 9 fewer than 0.9 ([docs/bench/jaylexi-tailoring.md](../docs/bench/jaylexi-tailoring.md)).
+
 ## Standing
 
 | Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | Next up | Gap |
