@@ -1,6 +1,6 @@
 {
  "plan": "pc-rc-confirm",
- "updated": 1795178139.2751474,
+ "updated": 1795179048.4121435,
  "steps": {
   "prep": {
    "status": "done",
@@ -15,11 +15,8 @@
    "end": "2026-11-20T00:02:11"
   },
   "field": {
-   "status": "halted",
-   "exit": 75,
-   "seconds": 1213,
-   "end": "2026-11-20T09:01:55",
-   "halted_by": "skips 60 over 200: 61.4 a battle over the last 200 (first 200: 59.2)"
+   "status": "running",
+   "start": "2026-11-20T12:35:39"
   },
   "ret": {
    "status": "pending"
@@ -34,5 +31,110 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "field",
+   "started": 1795178139.2810893,
+   "updated": 1795179048.261639,
+   "elapsed": 908.9805498123169,
+   "expected": 7158,
+   "panel": 1193,
+   "field": 1217,
+   "multiarm": true,
+   "arms": [
+    {
+     "arm": "rel",
+     "battles": 217,
+     "failed": 0,
+     "level": 93.38779126213592,
+     "skips": 56.87096774193548,
+     "fresh": 41,
+     "scored": 41,
+     "diff": -0.26084577114427876,
+     "n": 201,
+     "ci95": 0.4794427742321771,
+     "half_stop": 0.7338409809676182,
+     "scale": 0.9802793755135579
+    },
+    {
+     "arm": "c",
+     "battles": 221,
+     "failed": 0,
+     "level": 93.85162679425838,
+     "skips": 53.036199095022624,
+     "fresh": 48,
+     "scored": 48,
+     "diff": null
+    },
+    {
+     "arm": "aa",
+     "battles": 218,
+     "failed": 0,
+     "level": 93.47873786407767,
+     "skips": 49.98623853211009,
+     "fresh": 46,
+     "scored": 46,
+     "diff": -0.3970588235294124,
+     "n": 204,
+     "ci95": 0.4561170101840958,
+     "half_stop": 0.6981382808940242,
+     "scale": 0.9802793755135579
+    }
+   ],
+   "aa": {
+    "diff": -0.3970588235294124,
+    "ci": 0.4561170101840958,
+    "n": 204,
+    "band": 0.794433970404925,
+    "ok": true,
+    "band_stop": 0.9237604307034012
+   },
+   "warnings": [
+    "arm rel's jar bisect/rel/hadur117.Hadur_3.23.jar was built 13 h before this step started: check it is not stale",
+    "arm aa's jar bisect/hadur117.Hadur_3.23bb.jar was built 13 h before this step started: check it is not stale"
+   ],
+   "battles": 656,
+   "resumed": 521,
+   "failed": 0,
+   "disables": 60,
+   "rate": 534.6649057566166,
+   "eta": 43779.19655466434,
+   "fraction": 0.09164571109248393,
+   "last_battle_age": 6.7408607006073,
+   "rules": [
+    {
+     "rule": "fails 30",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 656"
+    },
+    {
+     "rule": "dead 8",
+     "action": "halt",
+     "state": "ok",
+     "detail": "every arm scoring"
+    },
+    {
+     "rule": "skips 90 over 200",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "135 of 200 battles to read"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    },
+    {
+     "rule": "aa after 20%",
+     "action": "halt",
+     "state": "waiting",
+     "detail": "checks from 20% of the battles (now 9%)"
+    }
+   ],
+   "skips_mean": 43.385185185185186,
+   "skips_last100": 44.29
+  }
+ ]
 }
