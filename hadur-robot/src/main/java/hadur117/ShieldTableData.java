@@ -1136,6 +1136,17 @@ final class ShieldTableData {
     }
 
     /**
+     * RAM-18: the rammers the escape bends away from its own line of travel after each of their shots
+     * ({@code ram-bend:} lines); candidate builds add lines here (build-ablation.sh rbendlist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] ramBends() {
+        return new String[] {
+        };
+    }
+
+    /**
      * RAM-11: the rammers whose shots the escape also dodges as circular aims ({@code ram-circ:} lines), each locked on
      * 12 fresh PC seeds at the live turn time after a 12-seed cloud lock.
      *

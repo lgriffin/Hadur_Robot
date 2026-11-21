@@ -392,6 +392,7 @@ public final class DuelController {
         if (ramCirc) on.add("ramcirc");
         if (ramHeavy) on.add("ramheavy");
         if (ramFan) on.add("ramfan");
+        if (ramBend) on.add("rambend");
         if (!Double.isNaN(powerCap)) on.add("cap");
         if (shield != null && shield.active()) on.add("shield");
         return on.isEmpty() ? "-" : String.join(",", on);
@@ -996,6 +997,8 @@ public final class DuelController {
     private boolean ramHeavy;
     /** RAM-17: whether this opponent has a {@code ram-fan:} line. */
     private boolean ramFan;
+    /** RAM-18: whether this opponent has a {@code ram-bend:} line. */
+    private boolean ramBend;
     /** POW-18: the cap the table sets on our power against this opponent, NaN for none. */
     private double powerCap = Double.NaN;
     /**
@@ -1498,6 +1501,9 @@ public final class DuelController {
         ramFan = duelOnly(stackList.ramFan(name), enemiesTotal);
         ramEscape.setHeavy(ramHeavy || ramFan);
         ramEscape.setFan(ramFan);
+        // RAM-18: a ram-bend line makes the escape leave its line of travel after each of the rammer's shots.
+        ramBend = duelOnly(stackList.ramBend(name), enemiesTotal);
+        ramEscape.setBend(ramBend);
         // POW-18: the power cap for the opponents the table names.
         powerCap = duelOnly(stackList.powerCap(name), enemiesTotal) ? CAP_POWER
             : duelOnly(stackList.powerCapHalf(name), enemiesTotal) ? CAP_POWER_HALF : Double.NaN;
