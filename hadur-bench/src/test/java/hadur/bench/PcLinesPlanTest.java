@@ -65,6 +65,7 @@ class PcLinesPlanTest {
         later.addAll(names("plans/locks12-shipped.txt")); // pc-locks round 12 (PR #940) likewise
         later.addAll(names("plans/locks13-shipped.txt")); // pc-locks round 13 (PR #951) likewise
         later.addAll(names("plans/locks14-shipped.txt")); // pc-locks round 14 (PR #964) likewise
+        later.addAll(names("plans/move56-shipped.txt")); // MOVE-56 pm-mimic line likewise
         for (String n : panel) {
             assertTrue(!broken.contains(n), n + " loads on 1.11.2");
             if (shipped.contains(n)) {
