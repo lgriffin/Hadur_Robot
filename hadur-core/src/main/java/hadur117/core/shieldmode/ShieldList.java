@@ -109,6 +109,8 @@ public final class ShieldList {
     public static final String RAM_BEND_PREFIX = "ram-bend:";
     /** MOVE-56: a line starting with this names an opponent whose truncated-lateral-velocity pattern matcher a mimic joins the danger for. */
     public static final String PATTERN_MIMIC_PREFIX = "pm-mimic:";
+    /** MOVE-58: a line starting with this names an opponent whose cw.megas-form pattern matcher a mimic joins the danger for. */
+    public static final String PATTERN_MEGAS_PREFIX = "pm-megas:";
     /**
      * SKEY-2: a line starting with this gives an opponent's surf key: nine multipliers on the hit
      * views' key weights, one on the kernel width, then the name ({@code "m1 ... m9 bw name"}).
@@ -183,6 +185,8 @@ public final class ShieldList {
     static final int PATTERN_MIMIC = 33554432;
     /** SHIELD-33: the per-opponent tiny-shot wave switch's bit in {@link #switches}. */
     static final int TINY = 268435456;
+    /** MOVE-58: the cw.megas-form mimic's bit. */
+    static final int PATTERN_MEGAS = 536870912;
 
     private final Set<String> entries;
     /** SHIELD-17: the opening-drive list. */
@@ -256,6 +260,7 @@ public final class ShieldList {
                     : entry.startsWith(RAM_FAN_PREFIX) ? RAM_FAN
                     : entry.startsWith(RAM_BEND_PREFIX) ? RAM_BEND
                     : entry.startsWith(PATTERN_MIMIC_PREFIX) ? PATTERN_MIMIC
+                    : entry.startsWith(PATTERN_MEGAS_PREFIX) ? PATTERN_MEGAS
                     : entry.startsWith(POWER_CAP_PREFIX) ? POWER_CAP : 0;
                 if (bit != 0) {
                     String name = withoutVersion(entry.substring(entry.indexOf(':') + 1).trim());
@@ -755,6 +760,11 @@ public final class ShieldList {
      */
     public boolean patternMimic(String robotName) {
         return (switchBits(robotName) & PATTERN_MIMIC) != 0;
+    }
+
+    /** MOVE-58: whether a {@code pm-megas:} line names this opponent. */
+    public boolean patternMegas(String robotName) {
+        return (switchBits(robotName) & PATTERN_MEGAS) != 0;
     }
 
     private int switchBits(String robotName) {

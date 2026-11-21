@@ -1520,10 +1520,11 @@ public final class DuelController {
         }
         // MOVE-56: the pattern-matcher mimic joins the aim members for the opponents the table names.
         // Set once, at the battle's first scan, before any wave has passed us; its history runs across rounds.
-        if (duelOnly(MoveDesign.AIM_MEMBERS && stackList.patternMimic(name), enemiesTotal) && patternMimic == null) {
+        boolean megas = stackList.patternMegas(name);
+        if (duelOnly(MoveDesign.AIM_MEMBERS && (stackList.patternMimic(name) || megas), enemiesTotal) && patternMimic == null) {
             AimMembers members = moveController.aimMembers();
             moveController.setAimMembers(new AimMembers(members == null ? 0 : members.mimics(), true));
-            patternMimic = new PatternMimic();
+            patternMimic = new PatternMimic(megas);
         }
         // POW-15: the full-power rules off for the opponents the table names.
         fullOff = duelOnly(stackList.fullOff(name), enemiesTotal);

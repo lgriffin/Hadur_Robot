@@ -67,6 +67,7 @@ class PcLinesPlanTest {
         later.addAll(names("plans/locks14-shipped.txt")); // pc-locks round 14 (PR #964) likewise
         later.addAll(names("plans/move56-shipped.txt")); // MOVE-56 pm-mimic line likewise
         later.addAll(names("plans/shield33-shipped.txt")); // SHIELD-33 shield-tiny lines likewise
+        later.addAll(names("plans/move58-shipped.txt")); // MOVE-58 pm-megas lines likewise
         for (String n : panel) {
             assertTrue(!broken.contains(n), n + " loads on 1.11.2");
             if (shipped.contains(n)) {
