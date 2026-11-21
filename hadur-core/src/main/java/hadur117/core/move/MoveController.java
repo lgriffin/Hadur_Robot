@@ -187,6 +187,14 @@ public class MoveController {
     /** MOVE-29: the simple aims as danger members beside the views, or null when off (duel only). */
     private AimMembers aimMembers;
 
+    /** MOVE-59: the weight of a missed wave's lesson for the aim members; 0 is off. */
+    private double missLearn;
+
+    /** MOVE-59: sets how strongly a wave that missed us scores the aim members; 0 turns it off. */
+    public void setMissLearn(double missLearn) {
+        this.missLearn = missLearn;
+    }
+
     /** MOVE-29: sets the aim members; null turns them off. */
     public void setAimMembers(AimMembers members) {
         this.aimMembers = members;
@@ -899,6 +907,10 @@ public class MoveController {
         if (dodgePasses && shotDodger != null && !w.hitByBullet && !w.bulletHitBullet) {
             shotDodger.observePass(w.simpleAims(), intersection.angle, intersection.bandwidth);
         }
+        // MOVE-59: a real bullet that passed us without hitting us or meeting ours scores the members on where we were.
+        if (missLearn > 0 && aimMembers != null && !w.hitByBullet && !w.bulletHitBullet) {
+            learnAimMembersMiss(w, intersection);
+        }
         // MOVE-33: the mimic members learn every visit too, as the guns they copy do.
         if (memberMimics != null) memberMimics.learnVisit(w, w.guessFactor(intersection.angle));
         for (KnnView<TimestampedGuessFactor> view : views) {
@@ -1423,6 +1435,36 @@ public class MoveController {
             System.arraycopy(aims, 0, scores, 1, aims.length);
             double escape = w.maxEscapeAngle();
             aimMembers.learn(scores, escape > 0 ? bandwidth / escape : Double.NaN);
+        } finally {
+            for (KnnView<TimestampedGuessFactor> view : views) view.cachedNeighbors.remove(FORENSICS_CACHE);
+            cacheOwners.remove(FORENSICS_CACHE);
+        }
+    }
+
+    /**
+     * MOVE-59: teaches the aim members a wave that missed us: every member's score over the
+     * range of angles we covered while it crossed us, as {@link #learnAimMembers} reads a hit.
+     */
+    private void learnAimMembersMiss(Wave w, Wave.Intersection at) {
+        try {
+            double[] scores = new double[aimMembers.members()];
+            boolean viewsHaveData = false;
+            double[] estimate = viewEstimate();
+            for (KnnView<TimestampedGuessFactor> view : views) {
+                if (view.effectiveSize() > 0 && viewOn(view, estimate)) viewsHaveData = true;
+            }
+            scores[0] = viewsHaveData ? getDangerScore(w, at, FORENSICS_CACHE, null, false) : Double.NaN;
+            double[] aims = aimScores(w, at.angle, at.bandwidth, w.transmission(at));
+            double[] aimAngles = w.simpleAims();
+            for (int a = 0; a < AimMembers.AIMS.length; a++) {
+                if (!Double.isNaN(aims[a])) aims[a] /= reachableShare(w, aimAngles[AimMembers.AIMS[a]], at.bandwidth);
+            }
+            if (aimMembers.pattern() && !Double.isNaN(aims[aims.length - 1])) {
+                aims[aims.length - 1] /= reachableShare(w, w.patternAngle(), at.bandwidth);
+            }
+            System.arraycopy(aims, 0, scores, 1, aims.length);
+            double escape = w.maxEscapeAngle();
+            if (escape > 0) aimMembers.learnMiss(scores, at.bandwidth / escape, missLearn);
         } finally {
             for (KnnView<TimestampedGuessFactor> view : views) view.cachedNeighbors.remove(FORENSICS_CACHE);
             cacheOwners.remove(FORENSICS_CACHE);

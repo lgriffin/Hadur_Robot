@@ -326,6 +326,8 @@ public final class DuelController {
             ? new GunMimics() : null;
         this.moveController.setAimMembers(duelOnly(MoveDesign.AIM_MEMBERS, enemiesTotal)
             ? new AimMembers(memberMimics == null ? 0 : memberMimics.size()) : null);
+        // MOVE-59: the aim members also learn the waves that missed us.
+        this.moveController.setMissLearn(duelOnly(MoveDesign.MISS_LEARN > 0, enemiesTotal) ? MoveDesign.MISS_LEARN : 0);
         // MOVE-43: a gone bullet keeps the shadows it already cast.
         this.moveController.setKeepShadows(MoveDesign.KEEP_SHADOWS);
         this.moveController.setMemberMimics(memberMimics);
