@@ -601,6 +601,22 @@ final class ShieldTableData {
      *
      * @return a fresh array of names
      */
+    /**
+     * SHIELD-33: opponents whose sub-0.1 shots shield mode builds waves for ({@code shield-tiny:} lines), each
+     * locked on 12 or more fresh cloud seeds (build-ablation.sh stinylist adds candidate lines here).
+     *
+     * @return a fresh array of names
+     */
+    static String[] tinies() {
+        return new String[] {
+            "lrem.quickhack.QuickHack 1.0",
+            "wiki.mako.MakoHT 1.2.2.1",
+            "dz.Caedo 1.4",
+            "kawigi.sbf.FloodSonnet 0.9",
+            "oog.micro.SavantMicro 1.1",
+        };
+    }
+
     static String[] exitOffs() {
         return new String[] {
             // pc-rival-confirm (PR #537): held at a 3-point margin on 8 fresh seeds

@@ -1,0 +1,6 @@
+# SHIELD-33 (shield-tiny lines, cloud locks dzlane/G/finish, PC card to follow): robots whose shield-tiny line is on master
+lrem.quickhack.QuickHack 1.0
+wiki.mako.MakoHT 1.2.2.1
+dz.Caedo 1.4
+kawigi.sbf.FloodSonnet 0.9
+oog.micro.SavantMicro 1.1
