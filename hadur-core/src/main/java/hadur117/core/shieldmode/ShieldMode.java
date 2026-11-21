@@ -286,6 +286,8 @@ public final class ShieldMode {
     private String decidedFor;
     /** SHIELD-11, SHIELD-19: this opponent's battle exit, from the shield list. */
     private double stayDamage = ShieldDesign.STAY_DAMAGE;
+    /** SHIELD-33: waves for this opponent's sub-0.1 shots. */
+    private boolean tiny;
     /** SHIELD-20, SHIELD-21: whether shot plans from where we stand come first against this opponent. */
     /** SHIELD-25: the least power of a shield shot against an enemy on the floor list. */
     public static final double FLOOR_POWER = 0.4;
@@ -542,6 +544,7 @@ public final class ShieldMode {
             opening = listed && (design.move || list.moves(name));
             stayDamage = list.stayDamage(name, ShieldDesign.STAY_DAMAGE);
             still = design.still || list.still(name);
+            tiny = list.tiny(name);
             floor = list.floor(name);
             if (listed) seedAim(list.aimFor(name));
         }
@@ -582,6 +585,11 @@ public final class ShieldMode {
      * The enemy fired a bullet whose power is not sure (a wall hit inferred on the same scan
      * interval): no wave is built from it, but the enemy is not silent (SHIELD-11).
      */
+    /** SHIELD-33: whether the duel should pass this opponent's sub-0.1 drops as shots. */
+    public boolean tiny() {
+        return listed && tiny;
+    }
+
     public void onEnemyFired() {
         if (!listed) return;
         enemyFiredThisRound = true;

@@ -825,6 +825,11 @@ public final class DuelController {
             telemetry.emit(String.format(Locale.ROOT,
                 "EW,%d,%d,%d,%d,%.4f,%.4f,%.4f,%.1f", round, time, fireTime, fireTime,
                 reading.raw(), reading.corrected(), reading.corrected(), e.distance()));
+        } else if (shield != null && shield.tiny() && !reading.uncertain()
+                && reading.corrected() >= TINY_SHOT_MIN && reading.corrected() < EnergyLedger.MIN_SHOT - 1e-6) {
+            // SHIELD-33: a drop under 0.1 the ledger cannot explain is a bullet fired from under 0.1
+            // energy's worth; shield mode alone gets a wave for it (the surf and the ledger never see it).
+            shield.onEnemyShot(previousScanTime, reading.corrected());
         }
 
         // The radar lock: turn twice the angle to the enemy, so the radar overshoots and its
@@ -964,6 +969,9 @@ public final class DuelController {
         }
         return states;
     }
+
+    /** SHIELD-33: the smallest unexplained drop read as a sub-0.1 shot. */
+    static final double TINY_SHOT_MIN = 0.005;
 
     /** A duel-only move switch: in effect only in a duel; melee and team endgames play as with it off. */
     static boolean duelOnly(boolean switchOn, int enemiesTotal) {

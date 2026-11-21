@@ -67,6 +67,8 @@ public final class ShieldList {
     public static final String EXIT_OFF_PREFIX = "shield-exit0:";
     /** SHIELD-21: a line starting with this names an opponent shield mode plans its shots still against (SHIELD-20). */
     public static final String STILL_PREFIX = "shield-still:";
+    /** SHIELD-33: a line starting with this names an opponent whose sub-0.1 shots shield mode builds waves for. */
+    public static final String TINY_PREFIX = "shield-tiny:";
     /** MOVE-32: a line starting with this names an opponent the duel surfs with the flattener views on (MOVE-24 undone). */
     public static final String FLAT_ON_PREFIX = "flat-on:";
     /** MOVE-34: a line starting with this names an opponent the duel surfs with the learning-gun mimics as aim members (MOVE-33). */
@@ -179,6 +181,8 @@ public final class ShieldList {
     static final int RAM_BEND = 16777216;
     /** MOVE-56: the per-opponent pattern-matcher mimic's bit in {@link #switches}. */
     static final int PATTERN_MIMIC = 33554432;
+    /** SHIELD-33: the per-opponent tiny-shot wave switch's bit in {@link #switches}. */
+    static final int TINY = 268435456;
 
     private final Set<String> entries;
     /** SHIELD-17: the opening-drive list. */
@@ -233,7 +237,7 @@ public final class ShieldList {
                 if (entry.isEmpty() || entry.startsWith("#")) continue;
                 int bit = entry.startsWith(HEAT_JIT_PREFIX) ? HEAT_JIT : entry.startsWith(GUN_STACK_PREFIX) ? GUN_STACK
                     : entry.startsWith(EXIT_LATE_PREFIX) ? EXIT_LATE : entry.startsWith(EXIT_OFF_PREFIX) ? EXIT_OFF
-                    : entry.startsWith(STILL_PREFIX) ? STILL : entry.startsWith(FLAT_ON_PREFIX) ? FLAT_ON
+                    : entry.startsWith(STILL_PREFIX) ? STILL : entry.startsWith(TINY_PREFIX) ? TINY : entry.startsWith(FLAT_ON_PREFIX) ? FLAT_ON
                     : entry.startsWith(MIMIC_ON_PREFIX) ? MIMIC_ON
                     : entry.startsWith(FULL_OFF_PREFIX) ? FULL_OFF
                     : entry.startsWith(X5_POWER_PREFIX) ? X5_POWER
@@ -541,6 +545,15 @@ public final class ShieldList {
      */
     public boolean still(String robotName) {
         return (switchBits(robotName) & STILL) != 0;
+    }
+
+    /**
+     * SHIELD-33: whether shield mode builds waves for {@code robotName}'s shots under 0.1 power.
+     *
+     * @param robotName the scanned robot's name, or null
+     */
+    public boolean tiny(String robotName) {
+        return (switchBits(robotName) & TINY) != 0;
     }
 
     /**
