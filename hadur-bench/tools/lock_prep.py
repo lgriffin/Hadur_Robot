@@ -51,6 +51,7 @@ LEVERS = {
     "rfn": ("rfanlist", ("RAM_FAN",)),
     "rbd": ("rbendlist", ("RAM_BEND",)),
     "pm": ("pmlist", ("PM_MIMIC",)),  # MOVE-56 pattern-matcher mimic
+    "pmx": ("pmxlist", ("PM_MEGAS",)),  # MOVE-58 cw.megas-form pattern-matcher mimic
     "or": ("orlist", ("STEADY_ORBIT",)),
     "sp2": ("sdplanlist", ("SHOT_DODGE_PLAN",)),
 }

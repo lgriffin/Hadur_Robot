@@ -23,15 +23,32 @@ public final class PatternMimic {
     /** A match must start at least this many symbols before the end of the history. */
     static final int SEARCH_END_BUFFER = 102;
 
+    /** MOVE-58: the cw.megas form's longest match. */
+    static final int MEGAS_DEPTH = 30;
+
+    /** MOVE-58: the cw.megas form (rounded symbols, flight-time gap, future rebuilt from the symbols) in place of AutoBot's. */
+    private final boolean megas;
+
+    /** AutoBot's form. */
+    public PatternMimic() {
+        this(false);
+    }
+
+    /** MOVE-58: with {@code megas}, the cw.megas form. */
+    public PatternMimic(boolean megas) {
+        this.megas = megas;
+    }
+
     private final StringBuilder symbols = new StringBuilder();
     private double[] arc = new double[1024];
     private int size;
 
     /** Adds one scan: our lateral velocity seen from the enemy, px/tick, positive clockwise. */
     public void observe(double lateral) {
-        symbols.append((char) (int) lateral);
+        int symbol = megas ? (int) Math.round(lateral) : (int) lateral;
+        symbols.append((char) symbol);
         if (size + 1 >= arc.length) arc = java.util.Arrays.copyOf(arc, arc.length * 2);
-        arc[size + 1] = arc[size] + lateral;
+        arc[size + 1] = arc[size] + (megas ? symbol : lateral);
         size++;
     }
 
@@ -48,6 +65,7 @@ public final class PatternMimic {
      */
     public double offset(int history, double distance, double bulletSpeed) {
         if (history <= 0 || history > size || !(distance > 0) || !(bulletSpeed > 0)) return Double.NaN;
+        if (megas) return megasOffset(history, distance, bulletSpeed);
         int from = history - SEARCH_END_BUFFER;
         if (from < 0) return Double.NaN;
         for (int len = SEARCH_DEPTH - 1; len > 0; len--) {
@@ -58,6 +76,24 @@ public final class PatternMimic {
             int ahead = end + (int) (distance / bulletSpeed);
             if (ahead > history) return Double.NaN;
             return (arc[ahead] - arc[end]) / distance;
+        }
+        return Double.NaN;
+    }
+
+    /**
+     * MOVE-58: cw.megas's search: the newest match of the latest 30 symbols, then 29 and so on, that ends at least a
+     * bullet flight before the scan, and the sum of the flight's symbols after it over the distance.
+     */
+    private double megasOffset(int history, double distance, double bulletSpeed) {
+        int flight = (int) (distance / bulletSpeed);
+        for (int len = MEGAS_DEPTH; len > 0; len--) {
+            if (len > history) continue;
+            int from = history - flight - len;
+            if (from < 0) continue;
+            int at = symbols.lastIndexOf(symbols.substring(history - len, history), from);
+            if (at < 0) continue;
+            int end = at + len;
+            return (arc[end + flight] - arc[end]) / distance;
         }
         return Double.NaN;
     }

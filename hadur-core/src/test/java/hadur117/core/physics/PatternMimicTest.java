@@ -43,4 +43,26 @@ class PatternMimicTest {
         for (int i = 0; i < 200; i++) a.observe(i % 2 == 0 ? 7.9 : 7.1);
         assertEquals(7.5 * 10 / 150.0, a.offset(200, 150, 15), 1e-9);
     }
+
+    @Test
+    @Tag("MOVE-58")
+    @DisplayName("the cw.megas form needs only a bullet flight of history before the match, not 102 ticks")
+    void megasFlightGap() {
+        PatternMimic pm = new PatternMimic(true);
+        for (int i = 0; i < 50; i++) pm.observe(8);
+        // flight 27 ticks: the newest match ends at most 27 ticks back, and the flight after it sums 27 symbols of 8
+        assertEquals(8.0 * 27 / 300, pm.offset(50, 300, 11), 1e-9);
+        assertTrue(Double.isNaN(new PatternMimic().offset(0, 300, 11)));
+        assertTrue(Double.isNaN(pm.offset(50, 9000, 11)));
+    }
+
+    @Test
+    @Tag("MOVE-58")
+    @DisplayName("the cw.megas form rounds its symbols and rebuilds the future from them")
+    void megasRoundsAndRebuildsFromSymbols() {
+        PatternMimic pm = new PatternMimic(true);
+        for (int i = 0; i < 200; i++) pm.observe(7.6);
+        // 7.6 rounds to 8, and the flight of 10 ticks sums ten symbols of 8, not ten of 7.6
+        assertEquals(80.0 / 150, pm.offset(200, 150, 15), 1e-9);
+    }
 }

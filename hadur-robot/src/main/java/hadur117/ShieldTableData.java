@@ -1390,4 +1390,19 @@ final class ShieldTableData {
             "0.8409 0.4204 0.2102 0.2973 0.25 1.414 2.828 0.5 0.2973 2.8 cb.nano.Insomnia 1.0",
         };
     }
+
+    /**
+     * MOVE-58: opponents whose cw.megas-form pattern matcher a mimic joins the danger for ({@code pm-megas:} lines), each
+     * locked on 12 fresh cloud seeds (build-ablation.sh pmxlist adds candidate lines here).
+     *
+     * @return a fresh array of names
+     */
+    static String[] patternMegas() {
+        return new String[] {
+            "cw.megas.GhostShell GT",
+            "cw.megas.Gridd 0.4",
+            "cw.megas.Polar 3.2",
+            "cw.megas.Silhouette 1.1",
+        };
+    }
 }
