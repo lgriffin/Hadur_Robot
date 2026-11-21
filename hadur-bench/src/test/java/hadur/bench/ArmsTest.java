@@ -146,6 +146,7 @@ class ArmsTest {
 
     @Test
     @Tag("BENCH-95")
+    @Tag("BENCH-272")
     @Tag("BENCH-128")
     @DisplayName("a finished battle's kept row is read back for the same arm, opponent and seed; a failed, foreign or missing one is fought again")
     void resumesOnlyFinishedBattles(@TempDir Path dir) throws IOException {
@@ -154,22 +155,62 @@ class ArmsTest {
         Opponent o = new Opponent("x.Bot 1.0", "rank1-band1", "x.Bot_1.0.jar", 0);
         Opponent other = new Opponent("y.Bot 2.0", "rank2-band1", "y.Bot_2.0.jar", 0);
         BattleResult ok = BattleResult.parse("true" + BattleResult.failed("none").substring("false".length()));
+        String one = "1111", two = "2222";
         String row = Arms.row(c, o, 1, 3, 2, ok);
-        assertEquals(null, Arms.resumed(dir, c, o, 1), "no file: fought");
+        assertEquals(null, Arms.resumed(dir, c, o, 1, one), "no file: fought");
         Files.writeString(dir.resolve(Arms.ROW_FILE), row + "\n");
-        assertEquals(row, Arms.resumed(dir, c, o, 1));
+        assertEquals(null, Arms.resumed(dir, c, o, 1, one), "no jar stamp: fought again (BENCH-272)");
+        Arms.keep(dir, row, one);
+        assertEquals(row, Arms.resumed(dir, c, o, 1, one));
         // BENCH-128: a clean battle's row ends in an empty errors column (a trailing tab), as on the PC.
         ok.errors = "";
         String clean = Arms.row(c, o, 1, 3, 2, ok);
         assertTrue(clean.endsWith("\t"), "an empty errors column ends the row with a tab");
         Files.writeString(dir.resolve(Arms.ROW_FILE), clean + "\r\n");
-        assertEquals(clean, Arms.resumed(dir, c, o, 1), "a clean battle is read back, not fought again");
-        assertEquals(null, Arms.resumed(dir, rc, o, 1), "another arm's row");
-        assertEquals(null, Arms.resumed(dir, c, other, 1), "another opponent's row");
-        assertEquals(null, Arms.resumed(dir, c, o, 2), "another seed's row");
+        assertEquals(clean, Arms.resumed(dir, c, o, 1, one), "a clean battle is read back, not fought again");
+        assertEquals(null, Arms.resumed(dir, c, o, 1, two), "another build of the arm's jar: fought again (BENCH-272)");
+        assertEquals(null, Arms.resumed(dir, c, o, 1, null), "no digest for the arm: fought again");
+        Arms.keep(dir, clean, two);
+        assertEquals(clean, Arms.resumed(dir, c, o, 1, two), "restamped by the new build: read back");
+        assertEquals(null, Arms.resumed(dir, c, o, 1, one), "and the old build no longer matches");
+        assertEquals(null, Arms.resumed(dir, rc, o, 1, two), "another arm's row");
+        assertEquals(null, Arms.resumed(dir, c, other, 1, two), "another opponent's row");
+        assertEquals(null, Arms.resumed(dir, c, o, 2, two), "another seed's row");
         Files.writeString(dir.resolve(Arms.ROW_FILE), Arms.row(c, o, 1, 3, 2, BattleResult.parse(BattleResult.failed("boom"))) + "\n");
-        assertEquals(null, Arms.resumed(dir, c, o, 1), "a failed battle is fought again");
+        assertEquals(null, Arms.resumed(dir, c, o, 1, two), "a failed battle is fought again");
         Files.writeString(dir.resolve(Arms.ROW_FILE), "c\thadur2.Hadur 3.14\tx.Bot 1.0");
-        assertEquals(null, Arms.resumed(dir, c, o, 1), "a half-written row is fought again");
+        assertEquals(null, Arms.resumed(dir, c, o, 1, two), "a half-written row is fought again");
+    }
+
+    @Test
+    @Tag("BENCH-272")
+    @DisplayName("a row this run will not read back is moved aside before the run, and a jar's digest follows its bytes")
+    void retiresRowsOfAnotherBuild(@TempDir Path dir) throws IOException {
+        Arms.Arm c = new Arms.Arm("c", "hadur2.Hadur 3.14", dir.resolve("a.jar"));
+        Opponent o = new Opponent("x.Bot 1.0", "rank1-band1", "x.Bot_1.0.jar", 0);
+        BattleResult ok = BattleResult.parse("true" + BattleResult.failed("none").substring("false".length()));
+        String row = Arms.row(c, o, 1, 3, 2, ok);
+        Files.writeString(dir.resolve("a.jar"), "build one");
+        String one = Arms.sha256(dir.resolve("a.jar"));
+        Files.writeString(dir.resolve("a.jar"), "build two");
+        Files.setLastModifiedTime(dir.resolve("a.jar"), java.nio.file.attribute.FileTime.fromMillis(0));
+        String two = Arms.sha256(dir.resolve("a.jar"));
+        assertTrue(one != null && two != null && !one.equals(two), "same length, other bytes: another digest");
+
+        Arms.keep(dir, row, one);
+        assertEquals(false, Arms.retire(dir, c, o, 1, one), "this build's row stays");
+        assertTrue(Files.isRegularFile(dir.resolve(Arms.ROW_FILE)));
+        assertEquals(true, Arms.retire(dir, c, o, 1, two), "another build's row is set aside");
+        assertTrue(!Files.exists(dir.resolve(Arms.ROW_FILE)) && Files.isRegularFile(dir.resolve(Arms.STALE_FILE)));
+        assertTrue(!Files.exists(dir.resolve(Arms.JAR_FILE)), "and its stamp goes with it");
+        assertEquals(false, Arms.retire(dir, c, o, 1, two), "nothing left to set aside");
+
+        Files.writeString(dir.resolve(Arms.ROW_FILE), row + "\n");
+        assertEquals(true, Arms.retire(dir, c, o, 1, null), "with resume off every kept row is set aside");
+
+        // A save cut short after the old stamp went leaves no stamp, so the old row is never read back.
+        Arms.keep(dir, row, one);
+        Files.delete(dir.resolve(Arms.JAR_FILE));
+        assertEquals(null, Arms.resumed(dir, c, o, 1, one));
     }
 }
