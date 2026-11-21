@@ -96,14 +96,6 @@ final class MoveDesign {
     static final boolean MIMIC_MEMBERS = false;
 
     /**
-     * MOVE-59 (DrussGT 3.1.20's member re-weighting): with the aim members on, every real enemy
-     * wave that passes us without hitting us or meeting our bullet also scores the members:
-     * each loses score by the share of its danger that lay on where we were. The value
-     * multiplies the miss's log-ratio; 0 is off. Duel only.
-     */
-    static final double MISS_LEARN = 0;
-
-    /**
      * MOVE-43: one of our bullets that hit, missed or met a bullet keeps the shadows it cast on
      * enemy waves on the turns before it died, instead of taking them with it (the fix DrussGT
      * 3.1.18 made). On since 2026-11-14: +0.27 +- 0.14 APS over the whole 1v1 field (pc-shadow, PR #814).

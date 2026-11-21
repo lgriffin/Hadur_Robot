@@ -149,26 +149,6 @@ public final class AimMembers {
         bullets++;
     }
 
-    /** MOVE-59: each missed wave's share of a member's rolling score is 1 - MISS_DECAY. */
-    static final double MISS_DECAY = 0.98;
-
-    /**
-     * MOVE-59: learns a wave that missed us: {@code scores[m]} is member m's score over the
-     * angles we covered (units as in {@link #learn}), {@code uniform} a uniform guess's
-     * probability for them. A member's score moves toward {@code weight} times log2 of the
-     * chance it gave the bullet of missing us over the uniform guess's, so a member that put
-     * its danger where we stood unharmed loses weight.
-     */
-    public void learnMiss(double[] scores, double uniform, double weight) {
-        if (!(uniform > 0) || !(uniform < 1)) return;
-        for (int m = 0; m < score.length && m < scores.length; m++) {
-            if (Double.isNaN(scores[m])) continue;
-            double p = Math.min(1.0 - 1e-6, (1 - EPS) * Math.max(0.0, scores[m]) / 2.0 + EPS * uniform);
-            double lesson = weight * Math.log((1 - p) / (1 - uniform)) / Math.log(2.0);
-            score[m] = MISS_DECAY * score[m] + (1 - MISS_DECAY) * lesson;
-        }
-    }
-
     /** Member m's rolling score. */
     public double score(int member) {
         return score[member];
