@@ -105,6 +105,8 @@ public final class ShieldList {
     public static final String RAM_FAN_PREFIX = "ram-fan:";
     /** RAM-18: a line starting with this names a rammer the escape bends away from its own line of travel after each of its shots. */
     public static final String RAM_BEND_PREFIX = "ram-bend:";
+    /** MOVE-56: a line starting with this names an opponent whose truncated-lateral-velocity pattern matcher a mimic joins the danger for. */
+    public static final String PATTERN_MIMIC_PREFIX = "pm-mimic:";
     /**
      * SKEY-2: a line starting with this gives an opponent's surf key: nine multipliers on the hit
      * views' key weights, one on the kernel width, then the name ({@code "m1 ... m9 bw name"}).
@@ -175,6 +177,8 @@ public final class ShieldList {
     static final int RAM_FAN = 8388608;
     /** RAM-18: the per-opponent escape-bend switch's bit in {@link #switches}. */
     static final int RAM_BEND = 16777216;
+    /** MOVE-56: the per-opponent pattern-matcher mimic's bit in {@link #switches}. */
+    static final int PATTERN_MIMIC = 33554432;
 
     private final Set<String> entries;
     /** SHIELD-17: the opening-drive list. */
@@ -247,6 +251,7 @@ public final class ShieldList {
                     : entry.startsWith(RAM_FLEE_PREFIX) ? RAM_FLEE
                     : entry.startsWith(RAM_FAN_PREFIX) ? RAM_FAN
                     : entry.startsWith(RAM_BEND_PREFIX) ? RAM_BEND
+                    : entry.startsWith(PATTERN_MIMIC_PREFIX) ? PATTERN_MIMIC
                     : entry.startsWith(POWER_CAP_PREFIX) ? POWER_CAP : 0;
                 if (bit != 0) {
                     String name = withoutVersion(entry.substring(entry.indexOf(':') + 1).trim());
@@ -727,6 +732,16 @@ public final class ShieldList {
      */
     public boolean ramBend(String robotName) {
         return (switchBits(robotName) & RAM_BEND) != 0;
+    }
+
+    /**
+     * MOVE-56: whether the table names this opponent with a {@link #PATTERN_MIMIC_PREFIX} line.
+     *
+     * @param robotName the opponent's name as Robocode lists it
+     * @return true when a {@code pm-mimic:} line matches it
+     */
+    public boolean patternMimic(String robotName) {
+        return (switchBits(robotName) & PATTERN_MIMIC) != 0;
     }
 
     private int switchBits(String robotName) {
