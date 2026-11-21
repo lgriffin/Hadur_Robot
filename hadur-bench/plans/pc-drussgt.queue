@@ -7,7 +7,8 @@
 #   screen     panel-r31 (the 31 robots with the largest bench gap to BeepBoop)   c / aa / ml16 / fb2 / df1
 #              6 seeds from 85400, --cpu-constant live, in work/pc-drussgt
 #   confirm    panel-midfield (167 mid-field learning guns, where DrussGT gained most)   same arms, 2 seeds from 85500
-#   gate       multiarm.py on each panel: an arm passes where it beats both c and aa with the 95% low end above 0 on
+#   gate       multiarm.py on each panel (each arm against c and aa pooled)
+#   pairs      arm_pair.py: each arm against c and against aa on its own, per panel; an arm passes where it beats both c and aa with the 95% low end above 0 on
 #              both panels; only a passing arm goes to Leigh for master (new code needs Leigh's OK)
 # Leigh starts it once the PC is free (one card at a time, from master):
 #   git checkout master && git pull
@@ -65,5 +66,8 @@ confirm | ./bench-top20.sh ${C} ${P} --set panel-midfield.txt --seeds 2 --seed-b
 gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-drussgt-r31.md && python3 ../data/tools/multiarm.py ${M}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-drussgt-mid.md && python3 tools/per_robot.py ${W}/arms.tsv --arms ml16 fb2 df1 --out ${OUT}/$(date +%Y-%m-%d)_pc-drussgt-r31-per-robot.md --out-tsv ${OUT}/pc-drussgt-r31-per-robot.tsv && cp ${W}/arms.tsv ${OUT}/pc-drussgt-r31-arms.tsv && cp ${M}/arms.tsv ${OUT}/pc-drussgt-mid-arms.tsv
   after: confirm
 
-pr | bash tools/open_results_pr.sh claude/pc-drussgt-results "1v1 DrussGT 3.1.20 movement ideas (miss-scored members, flattener blend, danger shape) on panel-r31 and the mid-field" ${OUT}/pc-drussgt-livematch.md ${OUT}/*_pc-drussgt-*.md ${OUT}/pc-drussgt-r31-per-robot.tsv ${OUT}/pc-drussgt-r31-arms.tsv ${OUT}/pc-drussgt-mid-arms.tsv
+pairs | for f in ${W}/arms.tsv ${M}/arms.tsv; do for a in ml16 fb2 df1; do for b in c aa; do python3 tools/arm_pair.py $f --candidate $a --baseline $b --out ${OUT}/$(date +%Y-%m-%d)_pc-drussgt-pairs.md || exit 1; done; done; done
   after: gate
+
+pr | bash tools/open_results_pr.sh claude/pc-drussgt-results "1v1 DrussGT 3.1.20 movement ideas (miss-scored members, flattener blend, danger shape) on panel-r31 and the mid-field" ${OUT}/pc-drussgt-livematch.md ${OUT}/*_pc-drussgt-*.md ${OUT}/pc-drussgt-r31-per-robot.tsv ${OUT}/pc-drussgt-r31-arms.tsv ${OUT}/pc-drussgt-mid-arms.tsv
+  after: pairs
