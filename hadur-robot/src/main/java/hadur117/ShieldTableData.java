@@ -1148,27 +1148,6 @@ final class ShieldTableData {
     }
 
     /**
-     * MOVE-54: opponents the surf never stops against ({@code surf-nostop:} lines); build-ablation.sh nostoplist.
-     *
-     * @return a fresh array of names
-     */
-    static String[] surfNoStops() {
-        return new String[] {
-        };
-    }
-
-    /**
-     * MOVE-54: opponents against which the surf finishes every stop it begins ({@code surf-stopcommit:} lines);
-     * build-ablation.sh stopcommitlist.
-     *
-     * @return a fresh array of names
-     */
-    static String[] surfStopCommits() {
-        return new String[] {
-        };
-    }
-
-    /**
      * RAM-11: the rammers whose shots the escape also dodges as circular aims ({@code ram-circ:} lines), each locked on
      * 12 fresh PC seeds at the live turn time after a 12-seed cloud lock.
      *
