@@ -47,6 +47,13 @@ final class MoveDesign {
     static final boolean SURF_KEY_RECORD = false;
 
     /**
+     * MOVE-60 (experiment, DrussGT 3.1.20's danger shape): 0 keeps our wave danger (score times damage over the ticks
+     * to impact); 1 takes 0.68 * score^0.61 and a gentle time weight, (tta^2 - 200 tta + 10000) / 10000 with tta at most
+     * 100, in place of 1 / tta; 2 the gentle time weight only. Duel only.
+     */
+    static final int DANGER_FORM = 0;
+
+    /**
      * MOVE-29 (K1 of the road to king, docs/bench/gun-oracle.md): the three-option surf's danger
      * mixes the views' score with the head-on, linear and circular aims' (AimMembers), each member
      * weighted by how well it predicted the bullets that hit us. Duel only. On from 3.20:

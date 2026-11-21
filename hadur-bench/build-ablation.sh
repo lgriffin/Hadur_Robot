@@ -425,6 +425,14 @@ for a in "${list[@]}"; do
         flt8)
             edit "$move" "public static final double FLATTENER_THRESHOLD = 4.5;" "public static final double FLATTENER_THRESHOLD = 8.0;"
             version="${version}f8" ;;
+        df1)
+            # MOVE-60: DrussGT 3.1.20's danger shape (score^0.61, gentle time weight).
+            edit "$movedesign" "static final int DANGER_FORM = 0;" "static final int DANGER_FORM = 1;"
+            version="${version}df1" ;;
+        df2)
+            # MOVE-60: the gentle time weight only.
+            edit "$movedesign" "static final int DANGER_FORM = 0;" "static final int DANGER_FORM = 2;"
+            version="${version}df2" ;;
         flaton)
             # MOVE-24 off: 3.15's duel flattener-off undone (the flatteners as 3.14 plays them).
             edit "$movedesign" "static final boolean FLATTENER_OFF = true;" "static final boolean FLATTENER_OFF = false;"
