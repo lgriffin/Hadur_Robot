@@ -1,6 +1,6 @@
 {
  "plan": "pc-rc-confirm",
- "updated": 1795297771.3857646,
+ "updated": 1795298681.3163369,
  "steps": {
   "prep": {
    "status": "done",
@@ -106,8 +106,8 @@
   {
    "step": "field",
    "started": 1795292413.7521644,
-   "updated": 1795297771.044102,
-   "elapsed": 5357.291937589645,
+   "updated": 1795298680.9828124,
+   "elapsed": 6267.2306480407715,
    "expected": 7248,
    "panel": 1208,
    "field": 1217,
@@ -115,68 +115,68 @@
    "arms": [
     {
      "arm": "rel",
-     "battles": 627,
+     "battles": 730,
      "failed": 0,
-     "level": 93.64924632352941,
-     "skips": 33.601275917065394,
-     "fresh": 627,
-     "scored": 627,
-     "diff": -0.501626543209877,
-     "n": 540,
-     "ci95": 0.2626474079022843,
-     "half_stop": 0.4020113386259454,
+     "level": 93.5048220064725,
+     "skips": 33.74109589041096,
+     "fresh": 730,
+     "scored": 730,
+     "diff": -0.4542781402936382,
+     "n": 613,
+     "ci95": 0.23452713065760022,
+     "half_stop": 0.3589700979453065,
      "scale": 0.9926047658175843
     },
     {
      "arm": "c",
-     "battles": 625,
+     "battles": 726,
      "failed": 0,
-     "level": 94.15297970479705,
-     "skips": 34.968,
-     "fresh": 625,
-     "scored": 625,
+     "level": 93.96997572815533,
+     "skips": 34.72865013774105,
+     "fresh": 726,
+     "scored": 726,
      "diff": null
     },
     {
      "arm": "aa",
-     "battles": 625,
+     "battles": 726,
      "failed": 0,
-     "level": 93.97524907749077,
-     "skips": 35.2528,
-     "fresh": 625,
-     "scored": 625,
-     "diff": -0.16944547134935287,
-     "n": 541,
-     "ci95": 0.29593821332587883,
-     "half_stop": 0.45296665304981454,
+     "level": 93.75444715447155,
+     "skips": 35.16942148760331,
+     "fresh": 726,
+     "scored": 726,
+     "diff": -0.16522022838499179,
+     "n": 613,
+     "ci95": 0.2712849780190832,
+     "half_stop": 0.41523210921288245,
      "scale": 0.9926047658175843
     }
    ],
    "aa": {
-    "diff": -0.16944547134935287,
-    "ci": 0.29593821332587883,
-    "n": 541,
-    "band": 0.4674039596948891,
+    "diff": -0.16522022838499179,
+    "ci": 0.2712849780190832,
+    "n": 613,
+    "band": 0.4343768707877495,
     "ok": true,
-    "band_stop": 0.543492976389406
+    "band_stop": 0.505089384636918
    },
    "warnings": [
     "arm rel's jar bisect/rel/hadur117.Hadur_3.23.jar was built 45 h before this step started: check it is not stale"
    ],
-   "battles": 1877,
+   "battles": 2182,
    "resumed": 0,
    "failed": 0,
-   "disables": 584,
-   "rate": 1246.0,
-   "eta": 15518.138041733548,
-   "fraction": 0.25896799116997793,
-   "last_battle_age": 0.3040921688079834,
+   "disables": 673,
+   "rate": 1220.0,
+   "eta": 14948.852459016392,
+   "fraction": 0.3010485651214128,
+   "last_battle_age": 0.7715256214141846,
    "rules": [
     {
      "rule": "fails 30",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 1877"
+     "detail": "0 failed of 2182"
     },
     {
      "rule": "dead 8",
@@ -188,7 +188,7 @@
      "rule": "skips 90 over 200",
      "action": "halt",
      "state": "ok",
-     "detail": "34.1 a battle over the last 200 (first 200: 34.9)"
+     "detail": "33.0 a battle over the last 200 (first 200: 34.9)"
     },
     {
      "rule": "stall 30m",
@@ -200,11 +200,11 @@
      "rule": "aa after 20%",
      "action": "halt",
      "state": "ok",
-     "detail": "aa - c -0.17 pts over 541 robots, stop band \u00b10.54"
+     "detail": "aa - c -0.17 pts over 613 robots, stop band \u00b10.51"
     }
    ],
-   "skips_mean": 34.60628662759723,
-   "skips_last100": 34.09
+   "skips_mean": 34.54491292392301,
+   "skips_last100": 31.9
   }
  ]
 }
