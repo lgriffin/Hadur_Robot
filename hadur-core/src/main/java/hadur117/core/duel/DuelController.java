@@ -320,6 +320,8 @@ public final class DuelController {
         // MOVE-33: the learning-gun mimics join the aim members when both switches are on.
         GunMimics memberMimics = duelOnly(MoveDesign.AIM_MEMBERS && MoveDesign.MIMIC_MEMBERS, enemiesTotal)
             ? new GunMimics() : null;
+        // MOVE-65: the EM danger mixture, set before the aim members so they take it.
+        this.moveController.setEmMixture(duelOnly(MoveDesign.AIM_MEMBERS && MoveDesign.EM_MIXTURE, enemiesTotal));
         this.moveController.setAimMembers(duelOnly(MoveDesign.AIM_MEMBERS, enemiesTotal)
             ? new AimMembers(memberMimics == null ? 0 : memberMimics.size()) : null);
         // MOVE-43: a gone bullet keeps the shadows it already cast.
