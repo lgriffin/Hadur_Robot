@@ -38,13 +38,13 @@ class PcLocksPlanTest {
         Set<String> broken = Broken.names(Path.of(Broken.FILE_1112));
         for (String n : panel) assertTrue(!broken.contains(n), n + " loads on 1.11.2");
         String arms = Files.readString(Path.of("plans/pc-locks.arms"));
-        for (String a : new String[] {"c", "aa", "rbd", "rf"}) {
+        for (String a : new String[] {"c", "aa", "rbd", "rp"}) {
             String v = a.equals("c") ? version : version + a;
             assertTrue(arms.contains("\n" + a + " | hadur117.Hadur " + v + " |"), a);
         }
-        assertEquals(4, names("plans/pc-locks.arms").size(), "c, aa and the lever arms rbd and rf");
+        assertEquals(4, names("plans/pc-locks.arms").size(), "c, aa and the lever arms rbd and rp");
         assertTrue(queue.contains("lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh"), "each arm built with only its robots");
-        assertTrue(queue.contains("--set panel-locks.txt --seeds 12 --seed-base 85000 --arms ${W}-prep/lock.arms --out ${W} "), "the lock");
+        assertTrue(queue.contains("--set panel-locks.txt --seeds 12 --seed-base 85100 --arms ${W}-prep/lock.arms --out ${W} "), "the lock");
         assertTrue(queue.contains("lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0"), "the gate, each robot on its own arm");
         int at = queue.indexOf("\nlock | ");
         String body = queue.substring(at, queue.indexOf("\n\n", at + 1));
@@ -56,8 +56,8 @@ class PcLocksPlanTest {
         assertTrue(queue.substring(atp).contains("  after: gate"), "the results PR waits for the gate");
         assertEquals(List.of(), PcLiveMatchPlanTest.violations("pc-locks.queue", queue), "BENCH-245 timing rule");
         assertTrue(queue.contains("Why it should win") && queue.contains("set ALERT = lgriffin"));
-        assertTrue(queue.contains("run pc-locks --fresh"), "round 13 left the plan state complete, so round 14 starts fresh");
-        assertTrue(!queue.contains("pc-locks13-") && !queue.contains("/pc-locks-livematch.md") && queue.contains("${OUT}/*_pc-locks14-*.md"), "round 14 reports never replace round 13's");
-        assertTrue(queue.contains("open_results_pr.sh claude/pc-locks14-results") && queue.contains("set P = --parallel 16 --no-truth-log"));
+        assertTrue(queue.contains("run pc-locks --fresh"), "round 14 left the plan state complete, so round 15 starts fresh");
+        assertTrue(!queue.contains("pc-locks14-") && !queue.contains("/pc-locks-livematch.md") && queue.contains("${OUT}/*_pc-locks15-*.md"), "round 15 reports never replace round 14's");
+        assertTrue(queue.contains("open_results_pr.sh claude/pc-locks15-results") && queue.contains("set P = --parallel 16 --no-truth-log"));
     }
 }
