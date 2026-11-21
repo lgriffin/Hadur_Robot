@@ -1,0 +1,28 @@
+{
+ "plan": "pc-em",
+ "updated": 1795288377.022889,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "livematch": {
+   "status": "pending"
+  },
+  "screen": {
+   "status": "pending"
+  },
+  "confirm": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pairs": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
