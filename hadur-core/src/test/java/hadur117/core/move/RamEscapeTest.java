@@ -187,4 +187,33 @@ class RamEscapeTest {
         assertEquals(ene, line.lastHeading(), 1e-9);
         assertTrue(Math.abs(Angles.normalRelativeAngle(fan.lastHeading() - ene)) > 0.2, "fan pick " + fan.lastHeading());
     }
+
+    @Test
+    @Tag("RAM-18")
+    @DisplayName("RAM-18: with the bend on, the escape leaves the line it was travelling when the rammer fired, "
+        + "for BEND_TICKS ticks, and only then may take it again")
+    void bendLeavesTheLineOfTravel() {
+        double ene = 5 * Math.PI / 12;
+        RobotState rammer = state(300, 300, Math.PI / 2, 8, 100);
+        RamEscape plain = new RamEscape(FIELD, PREDICTOR);
+        RamEscape bent = new RamEscape(FIELD, PREDICTOR);
+        bent.setBend(true);
+        // Fired with no dodge: only the bend can move the escape off its plain pick.
+        bent.onEnemyShot(99, 300, 300, 3.0, state(400 - 8 * Math.sin(ene), 300 - 8 * Math.cos(ene), ene, 8, 99));
+        RobotState me = state(400, 300, ene, 8, 100);
+        plain.move(BotOrders.builder(), me, rammer, false);
+        bent.move(BotOrders.builder(), me, rammer, false);
+        assertEquals(ene, plain.lastHeading(), 1e-9);
+        assertTrue(Math.abs(Angles.normalRelativeAngle(bent.lastHeading() - ene)) >= RamEscape.BEND - 1e-9,
+            "bent pick " + bent.lastHeading());
+        // Past the bend's ticks the escape chooses as it would without it.
+        RobotState later = state(400, 300, ene, 8, 99 + RamEscape.BEND_TICKS + 1);
+        RobotState rammerLater = state(300, 300, Math.PI / 2, 8, 99 + RamEscape.BEND_TICKS + 1);
+        RamEscape twin = new RamEscape(FIELD, PREDICTOR);
+        twin.setBend(true);
+        twin.onEnemyShot(99, 300, 300, 3.0, state(400 - 8 * Math.sin(ene), 300 - 8 * Math.cos(ene), ene, 8, 99));
+        twin.move(BotOrders.builder(), me, rammer, false);
+        twin.setBend(false);
+        assertEquals(twin.choose(later, rammerLater), bent.choose(later, rammerLater), 1e-9);
+    }
 }

@@ -49,6 +49,7 @@ LEVERS = {
     "rwl": ("rwlist", ("RAM_WAIT",)),
     "rf": ("rflist", ("RAM_FLEE",)),
     "rfn": ("rfanlist", ("RAM_FAN",)),
+    "rbd": ("rbendlist", ("RAM_BEND",)),
     "or": ("orlist", ("STEADY_ORBIT",)),
     "sp2": ("sdplanlist", ("SHOT_DODGE_PLAN",)),
 }
