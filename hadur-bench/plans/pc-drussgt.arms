@@ -1,0 +1,10 @@
+# pc-drussgt (BENCH-270): c is master, aa its A/A copy; ml16, fb2 and df1 are master plus three duel-only experiments
+# built from the experiment commit the queue names (DRX), each with only its own switch on:
+#   ml16 MOVE-59 danger members also learn from waves that missed us (weight 16)
+#   fb2  FLAT-BLEND-1 the off flatteners join the danger as one member, 0.08 per percent of enemy hit rate, cap 0.4
+#   df1  MOVE-60 wave danger shaped as 0.68 * score^0.61 with a gentle time weight instead of 1 / ticks to impact
+c | hadur117.Hadur 3.23 | bisect/hadur117.Hadur_3.23.jar
+aa | hadur117.Hadur 3.23aa | bisect/hadur117.Hadur_3.23aa.jar
+ml16 | hadur117.Hadur 3.23ml16 | bisect/hadur117.Hadur_3.23ml16.jar
+fb2 | hadur117.Hadur 3.23fb2 | bisect/hadur117.Hadur_3.23fb2.jar
+df1 | hadur117.Hadur 3.23df1 | bisect/hadur117.Hadur_3.23df1.jar

@@ -1,0 +1,69 @@
+# 1v1, DrussGT 3.1.20 movement ideas on the PC (BENCH-270). DrussGT gained +0.35 APS live from movement alone (danger
+# members re-weighted after every wave, misses included; flatteners always in the mix; a reshaped danger formula). The
+# cloud cannot screen the field in time (panel-r31 battles run 4-5 minutes on a 4-core box), so the PC screens the three
+# ideas at once. None is on master: the arms are built from experiment commit DRX on branch claude/project-thread-n97hk6,
+# each switch off by default and duel only, so team and melee are untouched.
+#   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live
+#   screen     panel-r31 (the 31 robots with the largest bench gap to BeepBoop)   c / aa / ml16 / fb2 / df1
+#              6 seeds from 85400, --cpu-constant live, in work/pc-drussgt
+#   confirm    panel-midfield (167 mid-field learning guns, where DrussGT gained most)   same arms, 2 seeds from 85500
+#   gate       multiarm.py on each panel: an arm passes where it beats both c and aa with the 95% low end above 0 on
+#              both panels; only a passing arm goes to Leigh for master (new code needs Leigh's OK)
+# Leigh starts it once the PC is free (one card at a time, from master):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-drussgt        (or  ./queue.sh run pc-drussgt)
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 930 screen battles and 1,670 confirm battles,
+# about 4 to 5 hours.
+#
+# Why it should win (the PC card rule of 2026-11-03; approved fixes, Leigh 21 Nov):
+#   - ml16: our danger members learn only from bullets whose angle we see. Offline on 64 c and 64 BeepBoop truth-log
+#     battles, scoring misses too lifted the share of enemy bullets whose true aim sits in our top-fifth danger from
+#     44.9% to 51.7% (16 robots up, 2 down); earlier estimator knobs never moved it more than 0.4 points.
+#   - fb2: in the duel our flatteners are off but still learn; DrussGT 3.1.20 dropped its on/off switch and keeps them
+#     as a weighted member, and its gain came where enemies still hit it (learning guns +0.20 APS).
+#   - df1: DrussGT's new danger compresses hit chance (power 0.61), so a slightly safer spot is not near-free beside a
+#     dangerous one, and weighs time gently rather than by 1 / ticks to impact.
+# Pilot and stop rules (docs/bench/watch.md): the screen's aa arm halts the card after 20% if master and its copy
+# disagree; halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle over the last 200, or no
+# battle in 30 minutes. The live-match step stops the card if the PC no longer scores us and BeepBoop as live does.
+# ALERT opens an issue on any stop. Nothing is released or banked by the card.
+set V = 3.23
+set DRX = 8b1a7a9973bda1e5c39f8dfcbb39740f0c926f58
+set P = --parallel 16 --no-truth-log --failed-ok
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 2G
+set W = work/pc-drussgt
+set M = work/pc-drussgt-mid
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && git fetch -q origin claude/project-thread-n97hk6 && git cat-file -e ${DRX}^{commit} && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && git show ${DRX}:hadur-bench/build-ablation.sh > work/build-ablation-drx.sh && for a in ml16 fb2 df1; do cp work/build-ablation-drx.sh ./build-ablation-drx.sh && bash ./build-ablation-drx.sh --ref ${DRX} $a || exit 1; done && rm -f ./build-ablation-drx.sh && for a in aa ml16 fb2 df1; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; done && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set panel-midfield.txt && mvn -q compile
+
+livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out work/pc-livematch-rel-live --label pc-drussgt-livematch --shuffle-jobs && python3 tools/live_match.py work/pc-livematch-rel-live/arms.tsv --out ${OUT}/pc-drussgt-livematch.md
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: stall 30m
+
+screen | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 6 --seed-base 85400 --arms plans/pc-drussgt.arms --out ${W} --label pc-drussgt --shuffle-jobs
+  after: livematch
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+confirm | ./bench-top20.sh ${C} ${P} --set panel-midfield.txt --seeds 2 --seed-base 85500 --arms plans/pc-drussgt.arms --out ${M} --label pc-drussgt-mid --shuffle-jobs
+  after: screen
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200
+  stop: stall 30m
+
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-drussgt-r31.md && python3 ../data/tools/multiarm.py ${M}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-drussgt-mid.md && python3 tools/per_robot.py ${W}/arms.tsv --arms ml16 fb2 df1 --out ${OUT}/$(date +%Y-%m-%d)_pc-drussgt-r31-per-robot.md --out-tsv ${OUT}/pc-drussgt-r31-per-robot.tsv && cp ${W}/arms.tsv ${OUT}/pc-drussgt-r31-arms.tsv && cp ${M}/arms.tsv ${OUT}/pc-drussgt-mid-arms.tsv
+  after: confirm
+
+pr | bash tools/open_results_pr.sh claude/pc-drussgt-results "1v1 DrussGT 3.1.20 movement ideas (miss-scored members, flattener blend, danger shape) on panel-r31 and the mid-field" ${OUT}/pc-drussgt-livematch.md ${OUT}/*_pc-drussgt-*.md ${OUT}/pc-drussgt-r31-per-robot.tsv ${OUT}/pc-drussgt-r31-arms.tsv ${OUT}/pc-drussgt-mid-arms.tsv
+  after: gate
