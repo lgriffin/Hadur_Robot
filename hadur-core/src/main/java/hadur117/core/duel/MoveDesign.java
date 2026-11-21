@@ -79,6 +79,15 @@ final class MoveDesign {
     static final boolean INTERCEPT_VIEWS = true;
 
     /**
+     * FLAT-BLEND-1 (DrussGT 3.1.20 idea 2, 21 Nov): with the flatteners off in the duel, they still join the
+     * danger as one member whose share is min(cap, fixed + slope * enemy hit %). All 0 = off (today's build).
+     * Duel only. The ablations fb1 (fixed 0.15) and fb2 (0.08 per percent, cap 0.4) turn it on.
+     */
+    static final double FLAT_BLEND_FIXED = 0.0;
+    static final double FLAT_BLEND_SLOPE = 0.0;
+    static final double FLAT_BLEND_CAP = 0.0;
+
+    /**
      * MOVE-33: with {@link #AIM_MEMBERS}, the six visit-trained learning-gun mimics of MOVE-27
      * (GunMimics) join the aim members after the aims, sharing a standing weight of 0.3, each
      * scored on the bullets as the aims are. BeepBoop's surf blends such mimics of named guns
