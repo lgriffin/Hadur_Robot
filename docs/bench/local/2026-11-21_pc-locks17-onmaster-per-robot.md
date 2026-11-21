@@ -1,0 +1,10 @@
+# On-master lines: control minus bb
+
+Points of score share, 95% interval; positive means the line pays.
+
+| Opponent | Control - bb | 95% | Battles | Verdict |
+|---|---:|---:|---:|---|
+| cw.megas.GhostShell GT | +11.82 | ± 1.06 | 24 / 12 | keep |
+| cw.megas.Gridd 0.4 | +11.84 | ± 2.18 | 24 / 12 | keep |
+| cw.megas.Polar 3.2 | +12.04 | ± 1.71 | 24 / 12 | keep |
+| cw.megas.Silhouette 1.1 | +21.53 | ± 1.79 | 24 / 12 | keep |
