@@ -784,6 +784,8 @@ final class ShieldTableData {
             "apv.AspidReloaded 0.6",         // +18.0
             // pc-locks round 5 (BENCH-253, PR #870): 12 fresh PC seeds at the live turn time; 24-seed cloud lock held first
             "nosteel.Welby 0.0.3",           // +2.7
+            // pc-locks round 16 (BENCH-253, PR #975): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "sgp.MadHatter 4.13",            // +2.7
         };
     }
 
@@ -1169,6 +1171,10 @@ final class ShieldTableData {
             "mz.NanoDeath 2.56",             // +3.1
             "sul.Bicephal 1.2",              // +2.5
             "wompi.Kowari 1.6",              // +2.9
+            // pc-locks round 16 (BENCH-253, PR #975): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "benhorner.PureAggression 0.2.6",// +1.3
+            "gh.micro.GrubbmThree 1.01",     // +3.4
+            "suh.nano.RammingC 1.00",        // +3.0
         };
     }
 
@@ -1181,6 +1187,8 @@ final class ShieldTableData {
     static String[] patternMimics() {
         return new String[] {
             "jcs.AutoBot 4.2.1",
+            // pc-locks round 16 (BENCH-253, PR #975): 12 fresh PC seeds at the live turn time, +10.3
+            "oog.micro.Maui 1.2",
         };
     }
 
