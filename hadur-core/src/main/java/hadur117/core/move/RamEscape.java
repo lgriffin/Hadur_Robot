@@ -88,6 +88,8 @@ public final class RamEscape {
     public void initRound() {
         lastHeading = Double.NaN;
         shots.clear();
+        bendFrom = Double.NaN;
+        bendUntil = Long.MIN_VALUE;
         prevHeading = Double.NaN;
         turnRate = 0;
     }
@@ -163,6 +165,10 @@ public final class RamEscape {
             }
             circAim = Math.atan2(cx - enemyX, cy - enemyY);
         }
+        if (bend) {
+            bendFrom = Angles.normalAbsoluteAngle(me.velocity < 0 ? me.heading + Math.PI : me.heading);
+            bendUntil = fireTime + BEND_TICKS;
+        }
         if (shots.size() >= MAX_SHOTS) shots.removeFirst();
         shots.addLast(new double[] {fireTime, enemyX, enemyY, speed, headOn, Math.atan2(tx - enemyX, ty - enemyY), circAim});
     }
@@ -192,6 +198,30 @@ public final class RamEscape {
      */
     public void setFan(boolean on) {
         fan = on;
+    }
+
+    /**
+     * RAM-18: after a shot, the escape keeps this far, in radians, off the line it was travelling when the rammer
+     * fired. Nano rammers aim linear (the bench's truth logs: under 150 px a linear aim would hit 32% of our escape
+     * paths against 10% of BB's); a fixed escape heading is exactly the path that aim predicts.
+     */
+    static final double BEND = Math.toRadians(25);
+    /** RAM-18: ticks after a shot for which the bend holds; a point-blank shot lands in about 15. */
+    static final int BEND_TICKS = 10;
+    /** RAM-18: whether this opponent's shots bend the escape. */
+    private boolean bend;
+    /** RAM-18: our direction of travel when the rammer last fired, NaN when there is none. */
+    private double bendFrom = Double.NaN;
+    /** RAM-18: the last tick the bend holds. */
+    private long bendUntil = Long.MIN_VALUE;
+
+    /**
+     * RAM-18: bend the escape off its line of travel after each of this opponent's shots (its {@code ram-bend:} line).
+     *
+     * @param on whether the table names this opponent
+     */
+    public void setBend(boolean on) {
+        bend = on;
     }
 
     /** RAM-14: the closest-approach cost of each kept aim that hits a path; {@link #HIT_COST} unless doubled. */
@@ -226,6 +256,15 @@ public final class RamEscape {
      * @return the absolute heading to drive, in radians
      */
     double choose(RobotState me, RobotState enemy) {
+        // RAM-18: while a bend holds, the candidates on the line the rammer's last shot was aimed along are left out;
+        // when every candidate is, the escape chooses as it would without the bend.
+        boolean bending = bend && !Double.isNaN(bendFrom) && me.time <= bendUntil;
+        double heading = choose(me, enemy, bending);
+        return Double.isNaN(heading) ? choose(me, enemy, false) : heading;
+    }
+
+    private double choose(RobotState me, RobotState enemy, boolean bending) {
+        boolean found = false;
         double bestMin = Double.NEGATIVE_INFINITY;
         double bestMean = Double.NEGATIVE_INFINITY;
         double bestTurn = Double.POSITIVE_INFINITY;
@@ -243,6 +282,7 @@ public final class RamEscape {
                     orientation = -1;
                 }
                 double first = battleField.wallSmoothing(me.location, raw, orientation, WALL_STICK);
+                if (bending && Math.abs(Angles.normalRelativeAngle(first - bendFrom)) < BEND) continue;
                 double turn = Double.isNaN(lastHeading) ? 0
                     : Math.abs(Angles.normalRelativeAngle(first - lastHeading));
                 boolean better;
@@ -252,6 +292,7 @@ public final class RamEscape {
                 else if (score[1] < bestMean - TIE) better = false;
                 else better = turn < bestTurn;
                 if (better) {
+                    found = true;
                     // Keep the best closest approach, not the tied one, so ties cannot drift.
                     bestMin = Math.max(bestMin, score[0]);
                     bestMean = score[1];
@@ -260,6 +301,7 @@ public final class RamEscape {
                 }
             }
         }
+        if (!found && bending) return Double.NaN;
         lastHeading = bestHeading;
         return bestHeading;
     }
