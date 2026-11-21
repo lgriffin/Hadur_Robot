@@ -78,7 +78,7 @@ public class MeleeHarvester extends BattleAdaptor {
         "round,robot,crowdTicks,nearestLoad,takenCrowd,takenNearest,takenSecond";
 
     /** Every bullet hit Hadur gave or took, by shooter and victim (BENCH-156). */
-    public static final String HIT_HEADER = "round,shooter,victim,damage";
+    public static final String HIT_HEADER = "round,shooter,victim,damage,tick,aliveFired,aliveNow";
 
     public static final String SHOT_HEADER =
         "round,turn,alive,ownEnergy,target,targetEnergy,distance,power";
@@ -104,6 +104,11 @@ public class MeleeHarvester extends BattleAdaptor {
     private final Map<Integer, Double> energyBefore = new java.util.HashMap<>();
     /** Bullet id to whether it was fired in a crowd. */
     private final Map<Integer, Boolean> crowdShot = new java.util.HashMap<>();
+    /** BENCH-266: fighters alive when each bullet left, the current turn, and our alive ticks by field size. */
+    private final Map<Integer, Integer> shotAlive = new java.util.HashMap<>();
+    private int curTurn, curAlive;
+    private final long[] phaseTicks = new long[3];
+    private BufferedWriter phases;
     /** Sentry names: the snapshots' own sentry flag is not reliable in 1.9.5.6. */
     private final Set<String> sentries;
     private final BufferedWriter hadurLog;
@@ -139,6 +144,8 @@ public class MeleeHarvester extends BattleAdaptor {
         shots.write(SHOT_HEADER + "\n");
         this.hits = Files.newBufferedWriter(dir.resolve("hits.csv"), StandardCharsets.UTF_8);
         hits.write(HIT_HEADER + "\n");
+        this.phases = Files.newBufferedWriter(dir.resolve("phases.csv"), StandardCharsets.UTF_8);
+        phases.write("round,ticks6,ticks45,ticks3\n");
         if (traceOn()) {
             this.trace = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(
                 Files.newOutputStream(dir.resolve("trace.log.gz"))), StandardCharsets.UTF_8));
@@ -195,6 +202,8 @@ public class MeleeHarvester extends BattleAdaptor {
         seenShots.clear();
         endedShots.clear();
         crowdShot.clear();
+        shotAlive.clear();
+        java.util.Arrays.fill(phaseTicks, 0);
         exposed.clear();
         shotRank.clear();
         aliveBefore = 0;
@@ -223,6 +232,9 @@ public class MeleeHarvester extends BattleAdaptor {
         aliveAtEnd = alive;
         boolean meAlive = me.getState() != robocode.control.snapshot.RobotState.DEAD;
         boolean diedNow = !placed && !meAlive;
+        curTurn = snap.getTurn();
+        curAlive = alive;
+        if (meAlive) phaseTicks[alive >= 6 ? 0 : alive >= 4 ? 1 : 2]++;
         if (diedNow) {
             // Hadur died this turn: it placed behind everyone still alive.
             place = alive + 1;
@@ -363,6 +375,7 @@ public class MeleeHarvester extends BattleAdaptor {
                 // previous turn's fighters were still alive.
                 boolean crowd = Math.max(alive, aliveBefore) >= 5;
                 crowdShot.put(id, crowd);
+                shotAlive.put(id, Math.max(alive, aliveBefore));
                 t[0]++;
                 t[1] += b.getPower();
                 if (crowd) {
@@ -386,8 +399,10 @@ public class MeleeHarvester extends BattleAdaptor {
                     t[3] += dmg;
                     if (owner.getName().equals(us) || victim.getName().equals(us)) {
                         try {
-                            hits.write(String.format(java.util.Locale.ROOT, "%d,%s,%s,%.2f%n",
-                                round, field(owner.getName()), field(victim.getName()), dmg));
+                            Integer af = shotAlive.get(id);
+                            hits.write(String.format(java.util.Locale.ROOT, "%d,%s,%s,%.2f,%d,%d,%d%n",
+                                round, field(owner.getName()), field(victim.getName()), dmg, curTurn,
+                                af == null ? -1 : af, curAlive));
                         } catch (IOException ex) {
                             throw new UncheckedIOException(ex);
                         }
@@ -490,6 +505,7 @@ public class MeleeHarvester extends BattleAdaptor {
                 duel ? String.valueOf(duelTick) : "-",
                 duel ? String.format(Locale.ROOT, "%.2f", duelEnergy) : "-",
                 duel ? String.format(Locale.ROOT, "%.2f", duelOppEnergy) : "-", takenCrowd, takenDuel));
+            phases.write(String.format(Locale.ROOT, "%d,%d,%d,%d%n", round, phaseTicks[0], phaseTicks[1], phaseTicks[2]));
             for (Map.Entry<String, double[]> en : tally.entrySet()) {
                 double[] t = en.getValue();
                 bullets.write(String.format(Locale.ROOT, "%d,%s,%d,%.2f,%d,%.2f,%d,%d,%.2f,%d,%.2f,%d,%d%n", round,
@@ -513,6 +529,7 @@ public class MeleeHarvester extends BattleAdaptor {
         exposure.close();
         shots.close();
         hits.close();
+        phases.close();
         if (trace != null) trace.close();
     }
 }
