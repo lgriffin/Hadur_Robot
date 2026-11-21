@@ -1,4 +1,4 @@
-# BENCH-253 pc-locks, round 15: robots whose line locked on the cloud (95% low end above 0, live turn time, master;
+# BENCH-253 pc-locks, round 16: robots whose line locked on the cloud (95% low end above 0, live turn time, master;
 # coverage/shards/locks.tsv, coverage/shards/briefs.md). name | note | jar
 radnor.RamRod 1.0 | ram18-A | radnor.RamRod_1.0.jar
 oog.mega.saguaro.Saguaro 1.1.4 | racepower-A | oog.mega.saguaro.Saguaro_1.1.4.jar
@@ -6,3 +6,11 @@ gh.micro.GrubbmThree 1.01 | ram18-L-r14-marginal | gh.micro.GrubbmThree_1.01.jar
 kc.micro.rammer.MaxRisk 0.6 | ram18-L-r14-marginal | kc.micro.rammer.MaxRisk_0.6.jar
 benhorner.PureAggression 0.2.6 | ram18-L-r14-marginal | benhorner.PureAggression_0.2.6.jar
 exauge.Leopard 1.1.019 | ram18-L-r14-cloud | exauge.Leopard_1.1.019.jar
+suh.nano.RammingC 1.00 | ram18-A-rbx | suh.nano.RammingC_1.00.jar
+sgp.MadHatter 4.13 | veljit-A-gapother | sgp.MadHatter_4.13.jar
+jcs.AutoBot 4.2.1 | move56-G-on-master | jcs.AutoBot_4.2.1.jar
+lrem.quickhack.QuickHack 1.0 | shield33-G-on-master | lrem.quickhack.QuickHack_1.0.jar
+wiki.mako.MakoHT 1.2.2.1 | shield33-G-on-master | wiki.mako.MakoHT_1.2.2.1.jar
+dz.Caedo 1.4 | shield33-G-on-master | dz.Caedo_1.4.jar
+kawigi.sbf.FloodSonnet 0.9 | shield33-G-on-master | kawigi.sbf.FloodSonnet_0.9.jar
+oog.micro.SavantMicro 1.1 | shield33-G-on-master | oog.micro.SavantMicro_1.1.jar
