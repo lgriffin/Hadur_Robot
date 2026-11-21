@@ -105,6 +105,10 @@ public final class ShieldList {
     public static final String RAM_FAN_PREFIX = "ram-fan:";
     /** RAM-18: a line starting with this names a rammer the escape bends away from its own line of travel after each of its shots. */
     public static final String RAM_BEND_PREFIX = "ram-bend:";
+    /** MOVE-55: a line starting with this names an opponent the surf pushes a second reversal under one wave against. */
+    public static final String SURF_REV2_PREFIX = "surf-rev2:";
+    /** MOVE-55: the same with the wider share. */
+    public static final String SURF_REV2W_PREFIX = "surf-rev2w:";
     /**
      * SKEY-2: a line starting with this gives an opponent's surf key: nine multipliers on the hit
      * views' key weights, one on the kernel width, then the name ({@code "m1 ... m9 bw name"}).
@@ -175,6 +179,10 @@ public final class ShieldList {
     static final int RAM_FAN = 8388608;
     /** RAM-18: the per-opponent escape-bend switch's bit in {@link #switches}. */
     static final int RAM_BEND = 16777216;
+    /** MOVE-55: the per-opponent second-reversal switch's bit in {@link #switches}. */
+    static final int SURF_REV2 = 33554432;
+    /** MOVE-55: the wider variant's bit. */
+    static final int SURF_REV2W = 67108864;
 
     private final Set<String> entries;
     /** SHIELD-17: the opening-drive list. */
@@ -247,6 +255,8 @@ public final class ShieldList {
                     : entry.startsWith(RAM_FLEE_PREFIX) ? RAM_FLEE
                     : entry.startsWith(RAM_FAN_PREFIX) ? RAM_FAN
                     : entry.startsWith(RAM_BEND_PREFIX) ? RAM_BEND
+                    : entry.startsWith(SURF_REV2W_PREFIX) ? SURF_REV2W
+                    : entry.startsWith(SURF_REV2_PREFIX) ? SURF_REV2
                     : entry.startsWith(POWER_CAP_PREFIX) ? POWER_CAP : 0;
                 if (bit != 0) {
                     String name = withoutVersion(entry.substring(entry.indexOf(':') + 1).trim());
@@ -727,6 +737,17 @@ public final class ShieldList {
      */
     public boolean ramBend(String robotName) {
         return (switchBits(robotName) & RAM_BEND) != 0;
+    }
+
+    /**
+     * MOVE-55: the second-reversal mode the table sets for this opponent.
+     *
+     * @param robotName the opponent's name as Robocode lists it
+     * @return 1 for a {@code surf-rev2:} line, 2 for a {@code surf-rev2w:} line, else 0
+     */
+    public int surfRev2Mode(String robotName) {
+        int bits = switchBits(robotName);
+        return (bits & SURF_REV2) != 0 ? 1 : (bits & SURF_REV2W) != 0 ? 2 : 0;
     }
 
     private int switchBits(String robotName) {

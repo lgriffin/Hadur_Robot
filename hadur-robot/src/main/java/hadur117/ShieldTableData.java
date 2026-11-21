@@ -1136,6 +1136,27 @@ final class ShieldTableData {
     }
 
     /**
+     * MOVE-55: opponents the surf pushes a second reversal under one wave against ({@code surf-rev2:} lines);
+     * build-ablation.sh rev2list.
+     *
+     * @return a fresh array of names
+     */
+    static String[] surfRev2s() {
+        return new String[] {
+        };
+    }
+
+    /**
+     * MOVE-55: the same with the wider share ({@code surf-rev2w:} lines); build-ablation.sh rev2wlist.
+     *
+     * @return a fresh array of names
+     */
+    static String[] surfRev2Wides() {
+        return new String[] {
+        };
+    }
+
+    /**
      * RAM-18: the rammers the escape bends away from its own line of travel after each of their shots
      * ({@code ram-bend:} lines). Empty until a PC card holds them: the 11 rammers of the cloud class lock are on
      * pc-locks round 14 (build-ablation.sh rbendlist adds candidate lines here).
