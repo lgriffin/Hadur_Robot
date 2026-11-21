@@ -386,6 +386,7 @@ public final class DuelController {
         if (flatOn) on.add("flat");
         if (mirrorOff) on.add("mirroff");
         if (mimicOn) on.add("mimic");
+        if (patternMimic != null) on.add("pm");
         if (fullOff) on.add("fulloff");
         if (x5Power) on.add("x5");
         if (racePower) on.add("race");
@@ -445,6 +446,9 @@ public final class DuelController {
         ramEscape.initRound();
         fleeing = false;
         lastEnemyState = null;
+        // MOVE-56: the history spans rounds, but a new round has no scan before its first.
+        patternLastBearing = Double.NaN;
+        patternLastDistance = Double.NaN;
         mirror.newRound();
         mirrorDrive.initRound();
         mirrorActive = false;
@@ -1450,6 +1454,7 @@ public final class DuelController {
         if (mirrorOff) emitPolicy(round, time, "mirror-off", Double.NaN, Double.NaN, "mirror_off");
         // MOVE-34: a P record says the table put the mimics among the aim members for this opponent.
         if (mimicOn) emitPolicy(round, time, "mimic-on", Double.NaN, Double.NaN, "mimic_on");
+        if (patternMimic != null) emitPolicy(round, time, "pm-mimic", Double.NaN, Double.NaN, "pm_mimic");
         // POW-15: a P record says the table turned the full-power rules off for this opponent.
         if (fullOff) emitPolicy(round, time, "full-off", Double.NaN, Double.NaN, "full_off");
         // Without memory the B record still goes out, with '-' for what memory would say.
