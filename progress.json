@@ -1,6 +1,6 @@
 {
  "plan": "pc-jaylexi-11",
- "updated": 1795221643.91073,
+ "updated": 1795222551.5647137,
  "steps": {
   "prep": {
    "status": "done",
@@ -100,8 +100,8 @@
   {
    "step": "bench",
    "started": 1795216246.6629894,
-   "updated": 1795221641.81616,
-   "elapsed": 5395.153170585632,
+   "updated": 1795222549.1736457,
+   "elapsed": 6302.5106563568115,
    "expected": 16032,
    "panel": 668,
    "field": null,
@@ -109,80 +109,80 @@
    "arms": [
     {
      "arm": "c",
-     "battles": 1925,
+     "battles": 2179,
      "failed": 0,
-     "level": 88.54740206445116,
-     "skips": 0.015584415584415584,
-     "fresh": 1925,
-     "scored": 1925,
+     "level": 88.57584884884885,
+     "skips": 0.016521340064249657,
+     "fresh": 2179,
+     "scored": 2179,
      "diff": null
     },
     {
      "arm": "aa",
-     "battles": 1921,
+     "battles": 2179,
      "failed": 0,
-     "level": 88.58207124874119,
-     "skips": 0.015096304008328995,
-     "fresh": 1921,
-     "scored": 1921,
-     "diff": 0.0346691842900302,
-     "n": 662,
-     "ci95": 0.045440673397319185,
-     "half_stop": 0.0695520511183457,
+     "level": 88.61491591591592,
+     "skips": 0.016062413951353834,
+     "fresh": 2179,
+     "scored": 2179,
+     "diff": 0.03906706706706707,
+     "n": 666,
+     "ci95": 0.041799225347308976,
+     "half_stop": 0.06397840614384027,
      "scale": null
     },
     {
      "arm": "n",
-     "battles": 1923,
+     "battles": 2180,
      "failed": 0,
-     "level": 88.60445342396777,
-     "skips": 0.019760790431617263,
-     "fresh": 1923,
-     "scored": 1923,
-     "diff": 0.03931702273054251,
-     "n": 662,
-     "ci95": 0.19368701593200713,
-     "half_stop": 0.2964597182632762,
+     "level": 88.66620345345345,
+     "skips": 0.01834862385321101,
+     "fresh": 2180,
+     "scored": 2180,
+     "diff": 0.07117941155441158,
+     "n": 666,
+     "ci95": 0.18333282774355805,
+     "half_stop": 0.2806114710360582,
      "scale": null
     },
     {
      "arm": "r6",
-     "battles": 1921,
+     "battles": 2174,
      "failed": 0,
-     "level": 88.33408710976838,
-     "skips": 0.010411244143675169,
-     "fresh": 1921,
-     "scored": 1921,
-     "diff": -0.23104929146885325,
-     "n": 662,
-     "ci95": 0.2202376725082495,
-     "half_stop": 0.33709847832895334,
+     "level": 88.38971771771772,
+     "skips": 0.009659613615455382,
+     "fresh": 2174,
+     "scored": 2174,
+     "diff": -0.2053063241813243,
+     "n": 666,
+     "ci95": 0.2038764205784514,
+     "half_stop": 0.312055745783344,
      "scale": null
     }
    ],
    "aa": {
-    "diff": 0.0346691842900302,
-    "ci": 0.045440673397319185,
-    "n": 662,
-    "band": 0.2662534690009979,
+    "diff": 0.03906706706706707,
+    "ci": 0.041799225347308976,
+    "n": 666,
+    "band": 0.2501244041091903,
     "ok": true,
-    "band_stop": 0.3095970569779045
+    "band_stop": 0.29084233035952356
    },
    "warnings": [],
-   "battles": 7690,
+   "battles": 8712,
    "resumed": 0,
    "failed": 0,
    "disables": 0,
-   "rate": 4402.0,
-   "eta": 6822.171740118129,
-   "fraction": 0.4796656686626746,
-   "last_battle_age": 0.9549160003662109,
+   "rate": 4258.0,
+   "eta": 6188.821042743071,
+   "fraction": 0.5434131736526946,
+   "last_battle_age": 9.784562826156616,
    "rules": [
     {
      "rule": "fails 30",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 7690"
+     "detail": "0 failed of 8712"
     },
     {
      "rule": "dead 8",
@@ -206,16 +206,16 @@
      "rule": "aa after 20%",
      "action": "halt",
      "state": "ok",
-     "detail": "aa - c +0.03 pts over 662 robots, stop band \u00b10.31"
+     "detail": "aa - c +0.04 pts over 666 robots, stop band \u00b10.29"
     },
     {
      "rule": "futility n below -0.5 after 20%",
      "action": "finish",
      "state": "ok",
-     "detail": "n +0.04, best case +0.34 pts vs bar -0.50"
+     "detail": "n +0.07, best case +0.35 pts vs bar -0.50"
     }
    ],
-   "skips_mean": 0.015214564369310794,
+   "skips_mean": 0.015151515151515152,
    "skips_last100": 0.02
   }
  ]
