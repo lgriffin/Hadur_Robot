@@ -154,9 +154,9 @@ public class SurfMover {
      */
     static final double REV2_SHARE = 1.25;
     /** MOVE-55: the wider variant's share. */
-    static final double REV2_SHARE_WIDE = 1.6;
+    static final double REV2_SHARE_WIDE = 3.0;
     /** MOVE-55: ticks after the first reversal before a second one is pushed. */
-    static final int REV2_GAP = 8;
+    static final int REV2_GAP = 6;
     /** MOVE-55: 0 off, 1 share {@link #REV2_SHARE}, 2 share {@link #REV2_SHARE_WIDE}. */
     private int rev2Mode;
     /** MOVE-55: orbit reversals taken under the wave surfed now, and the tick of the last one. */

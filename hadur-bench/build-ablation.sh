@@ -278,7 +278,7 @@
 #   orlist the robots named in $STEADY_ORBIT get MOVE-47's steady orbit (no stop option, reversal only when the other way is under half as dangerous). Suffix or.
 #   rhlist the robots named in $RAM_HEAVY get RAM-14, the rammer escape weighing their shots twice as heavily. Suffix rh.
 #   rbendlist the robots named in $RAM_BEND get RAM-18, the rammer escape bending off its line of travel after each of their shots. Suffix rbd.
-#   rev2list / rev2wlist the robots named in $SURF_REV2 / $SURF_REV2W get MOVE-55: a second reversal under one wave at share 1.25 / 1.6. Suffix r2 / r2w.
+#   rev2list / rev2wlist the robots named in $SURF_REV2 / $SURF_REV2W get MOVE-55: a second reversal under one wave at share 1.25 / 3.0. Suffix r2 / r2w.
 #   rfanlist the robots named in $RAM_FAN get RAM-17, the rammer escape dodging their linear/circular aims as +-4 deg fans at RAM-14's weight. Suffix rfn.
 #   rplist the robots named in $RACE_POWER get the energy race's power pick (POW-17,
 #         ShieldTableData.racePowers()). Suffix rp, or $RACE_POWER_SUFFIX.
