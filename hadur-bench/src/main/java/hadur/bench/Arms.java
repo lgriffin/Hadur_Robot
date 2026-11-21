@@ -100,12 +100,19 @@ final class Arms {
     /**
      * BENCH-95: the row a finished battle left in {@code dir}, when it was this arm's (same label and
      * robot), this opponent's and this seed's, and it finished ok; otherwise null, and the battle is
-     * fought again. A failed or half-written battle never stands in for a fought one.
+     * fought again. A failed or half-written battle never stands in for a fought one, and neither does one
+     * fought by another build of the arm's jar, or one with no jar stamp (BENCH-272).
      */
     static String resumed(Path dir, Arm arm, Opponent o, int seed) {
         Path f = dir.resolve(ROW_FILE);
         try {
             if (!Files.isRegularFile(f)) return null;
+            // BENCH-272: a battle is read back only when the jar that fought it is the arm's jar now. Labels and
+            // seeds repeat across runs of a card; a run on a rebuilt master must not inherit the old build's rows.
+            Path stamp = dir.resolve(JAR_FILE);
+            String now = jarHash(arm.jar());
+            if (now == null || !Files.isRegularFile(stamp)
+                || !Files.readString(stamp, StandardCharsets.UTF_8).strip().equals(now)) return null;
             // Only the line break goes: strip() also took the tab before an empty errors column, the usual
             // case for a battle that went well, so no clean battle was ever read back (BENCH-128).
             String row = Files.readString(f, StandardCharsets.UTF_8).replaceAll("[\\r\\n]+$", "");
@@ -115,6 +122,39 @@ final class Arms {
                 && c[4].equals(String.valueOf(seed));
             return same && c[7].equals("true") ? row : null;
         } catch (IOException e) {
+            return null;
+        }
+    }
+
+    /** BENCH-272: beside {@link #ROW_FILE}, the sha256 of the jar that fought the battle. */
+    static final String JAR_FILE = "arm-jar.sha256";
+
+    private static final java.util.concurrent.ConcurrentHashMap<String, String> HASHES =
+        new java.util.concurrent.ConcurrentHashMap<>();
+
+    /** BENCH-95/272: keeps a fought battle's row and the hash of the jar that fought it, for a resumed run. */
+    static void keep(Path dir, Arm arm, String row) throws IOException {
+        Files.createDirectories(dir);
+        String h = jarHash(arm.jar());
+        if (h != null) Files.writeString(dir.resolve(JAR_FILE), h + "\n");
+        Files.writeString(dir.resolve(ROW_FILE), row + "\n");
+    }
+
+    /** The jar's sha256 in hex, or null when it cannot be read; cached by path, size and modified time. */
+    static String jarHash(Path jar) {
+        if (jar == null) return null;
+        try {
+            Path p = jar.toAbsolutePath().normalize();
+            String key = p + "|" + Files.size(p) + "|" + Files.getLastModifiedTime(p).toMillis();
+            return HASHES.computeIfAbsent(key, k -> {
+                try {
+                    byte[] d = java.security.MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(p));
+                    return java.util.HexFormat.of().formatHex(d);
+                } catch (IOException | java.security.NoSuchAlgorithmException e) {
+                    throw new IllegalStateException(e);
+                }
+            });
+        } catch (IOException | IllegalStateException e) {
             return null;
         }
     }

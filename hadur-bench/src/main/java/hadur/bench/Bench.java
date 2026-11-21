@@ -787,8 +787,7 @@ public final class Bench {
                         BattleResult r = fight(h, o, seed, dir, a.robot(), true);
                         String row = Arms.row(a, o, seed, workerIndex.getOrDefault(h, 1), pos + 1, r);
                         rows.add(row);
-                        Files.createDirectories(dir);
-                        Files.writeString(dir.resolve(Arms.ROW_FILE), row + "\n");
+                        Arms.keep(dir, a, row);
                         say(String.format(Locale.ROOT, "%s seed %d %s: score share %.1f%%, skipped %d%s%s", o.name, seed,
                             a.label(), r.scoreShare() * 100, r.skippedTurns,
                             r.engineDisables > 0 ? ", engine disables " + r.engineDisables : "",

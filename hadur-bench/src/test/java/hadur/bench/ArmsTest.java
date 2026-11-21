@@ -154,9 +154,13 @@ class ArmsTest {
         Opponent o = new Opponent("x.Bot 1.0", "rank1-band1", "x.Bot_1.0.jar", 0);
         Opponent other = new Opponent("y.Bot 2.0", "rank2-band1", "y.Bot_2.0.jar", 0);
         BattleResult ok = BattleResult.parse("true" + BattleResult.failed("none").substring("false".length()));
+        Files.writeString(dir.resolve("a.jar"), "build one");
+        Files.writeString(dir.resolve("b.jar"), "other arm");
         String row = Arms.row(c, o, 1, 3, 2, ok);
         assertEquals(null, Arms.resumed(dir, c, o, 1), "no file: fought");
         Files.writeString(dir.resolve(Arms.ROW_FILE), row + "\n");
+        assertEquals(null, Arms.resumed(dir, c, o, 1), "no jar stamp: fought again (BENCH-272)");
+        Arms.keep(dir, c, row);
         assertEquals(row, Arms.resumed(dir, c, o, 1));
         // BENCH-128: a clean battle's row ends in an empty errors column (a trailing tab), as on the PC.
         ok.errors = "";
@@ -164,6 +168,11 @@ class ArmsTest {
         assertTrue(clean.endsWith("\t"), "an empty errors column ends the row with a tab");
         Files.writeString(dir.resolve(Arms.ROW_FILE), clean + "\r\n");
         assertEquals(clean, Arms.resumed(dir, c, o, 1), "a clean battle is read back, not fought again");
+        Files.writeString(dir.resolve("a.jar"), "build two, a rebuilt master");
+        Files.setLastModifiedTime(dir.resolve("a.jar"), java.nio.file.attribute.FileTime.fromMillis(1_000_000L));
+        assertEquals(null, Arms.resumed(dir, c, o, 1), "another build of the arm's jar: fought again (BENCH-272)");
+        Arms.keep(dir, c, clean);
+        assertEquals(clean, Arms.resumed(dir, c, o, 1), "restamped by the new build: read back");
         assertEquals(null, Arms.resumed(dir, rc, o, 1), "another arm's row");
         assertEquals(null, Arms.resumed(dir, c, other, 1), "another opponent's row");
         assertEquals(null, Arms.resumed(dir, c, o, 2), "another seed's row");
