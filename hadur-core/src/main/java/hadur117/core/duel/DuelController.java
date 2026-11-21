@@ -393,7 +393,6 @@ public final class DuelController {
         if (ramHeavy) on.add("ramheavy");
         if (ramFan) on.add("ramfan");
         if (ramBend) on.add("rambend");
-        if (rev2Mode != 0) on.add(rev2Mode == 1 ? "rev2" : "rev2w");
         if (!Double.isNaN(powerCap)) on.add("cap");
         if (shield != null && shield.active()) on.add("shield");
         return on.isEmpty() ? "-" : String.join(",", on);
@@ -1000,8 +999,6 @@ public final class DuelController {
     private boolean ramFan;
     /** RAM-18: whether this opponent has a {@code ram-bend:} line. */
     private boolean ramBend;
-    /** MOVE-55: the second-reversal mode against this opponent. */
-    private int rev2Mode;
     /** POW-18: the cap the table sets on our power against this opponent, NaN for none. */
     private double powerCap = Double.NaN;
     /**
@@ -1387,7 +1384,6 @@ public final class DuelController {
         ramFleeOn = false;
         steadyOrbitOn = false;
         surfMover.setSteadyOrbit(false);
-        surfMover.setRev2Mode(0);
         stopAndGo = null;
         gunController.setTripHammer(GunDesign.TRIPHAMMER);
         gunController.setFreeGun(GunDesign.FREE_GUN);
@@ -1524,9 +1520,6 @@ public final class DuelController {
         // MOVE-47: the steady orbit for the opponents the table names.
         steadyOrbitOn = duelOnly(stackList.steadyOrbit(name), enemiesTotal);
         surfMover.setSteadyOrbit(steadyOrbitOn);
-        // MOVE-55: the table's second-reversal mode for this opponent.
-        rev2Mode = enemiesTotal == 1 ? stackList.surfRev2Mode(name) : 0;
-        surfMover.setRev2Mode(rev2Mode);
         // POW-20: the power bands for the opponents the table names.
         powerBand = enemiesTotal <= 1 ? stackList.powerBandFor(name) : null;
         distPin = enemiesTotal <= 1 ? stackList.distPinFor(name) : Double.NaN;

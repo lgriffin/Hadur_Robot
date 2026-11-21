@@ -144,48 +144,6 @@ public class SurfMover {
 
     /** MOVE-47: the other way round must be under this share of the current way's danger to reverse. */
     static final double ORBIT_REVERSE_SHARE = 0.5;
-
-    /**
-     * MOVE-55: against learning guns we are hit as rarely as BeepBoop only in flights where we reverse twice or
-     * more (4.7 vs 4.9%); one reversal is hit 8.4 vs 6.5% (coverage/shards/dzlane/L/learn). With the switch on,
-     * once we have reversed once under the wave we surf, the second reversal is taken while that wave is still
-     * in flight whenever the other way round costs under {@link #REV2_SHARE} (or {@link #REV2_SHARE_WIDE}) of
-     * the current way's danger, at least {@link #REV2_GAP} ticks after the first.
-     */
-    static final double REV2_SHARE = 1.25;
-    /** MOVE-55: the wider variant's share. */
-    static final double REV2_SHARE_WIDE = 1.6;
-    /** MOVE-55: ticks after the first reversal before a second one is pushed. */
-    static final int REV2_GAP = 8;
-    /** MOVE-55: 0 off, 1 share {@link #REV2_SHARE}, 2 share {@link #REV2_SHARE_WIDE}. */
-    private int rev2Mode;
-    /** MOVE-55: orbit reversals taken under the wave surfed now, and the tick of the last one. */
-    private int rev2Count;
-    private long rev2Tick;
-
-    /**
-     * MOVE-55: sets the second-reversal push for this opponent.
-     *
-     * @param mode 0 off, 1 or 2 for the two shares
-     */
-    public void setRev2Mode(int mode) {
-        rev2Mode = mode;
-        rev2Count = 0;
-    }
-
-    /**
-     * MOVE-55: the pick with the second-reversal push: after one reversal under this wave, the other way round
-     * is taken when it costs under {@code share} of the current way.
-     */
-    static SurfOption pushSecondReversal(SurfOption pick, SurfOption way, double ccw, double cw, double share) {
-        if (pick != way) return pick;
-        double here = way == SurfOption.CLOCKWISE ? cw : ccw;
-        double there = way == SurfOption.CLOCKWISE ? ccw : cw;
-        if (there < share * here) {
-            return way == SurfOption.CLOCKWISE ? SurfOption.COUNTER_CLOCKWISE : SurfOption.CLOCKWISE;
-        }
-        return pick;
-    }
     private boolean steadyOrbit;
 
     /**
@@ -364,7 +322,6 @@ public class SurfMover {
         lastWaveSurfed = null;
         goToPoint = null;
         rammerActive = false;
-        rev2Count = 0;
         if (dodgePlanner != null) dodgePlanner.reset();
         dodgePlanTicks = 0;
     }
@@ -503,7 +460,6 @@ public class SurfMover {
             lastWaveSurfed = surfWave;
             lastSurfDestination = null;
             stopDestination = null;
-            rev2Count = 0;
         }
 
         boolean goingClockwise = lastSurfOption == SurfOption.CLOCKWISE;
@@ -521,11 +477,6 @@ public class SurfMover {
         double cwDanger = surfOptionDangers.getOrDefault(SurfOption.CLOCKWISE, 0.0);
 
         SurfOption pick = choose(ccwDanger, stopDanger, cwDanger, lastSurfOption, steadyOrbit);
-        // MOVE-55: the second reversal under this wave, while it is still in flight.
-        if (rev2Mode != 0 && rev2Count == 1 && myState.time - rev2Tick >= REV2_GAP) {
-            pick = pushSecondReversal(pick, lastSurfOption, ccwDanger, cwDanger,
-                rev2Mode == 1 ? REV2_SHARE : REV2_SHARE_WIDE);
-        }
         boolean takeStop = pick == SurfOption.STOP;
         boolean takeClockwise = pick == SurfOption.CLOCKWISE;
 
@@ -543,12 +494,8 @@ public class SurfMover {
             lastSurfDestination = null;
         } else {
             orders.maxVelocity(8.0);
-            SurfOption way = takeClockwise ? SurfOption.CLOCKWISE : SurfOption.COUNTER_CLOCKWISE;
-            if (way != lastSurfOption) {
-                rev2Count++;
-                rev2Tick = myState.time;
-            }
-            lastSurfOption = way;
+            lastSurfOption = takeClockwise
+                ? SurfOption.CLOCKWISE : SurfOption.COUNTER_CLOCKWISE;
             chosen = lastSurfOption;
             lastSurfDestination = surfOptionDestinations.get(lastSurfOption);
             surfDest = lastSurfDestination;
