@@ -13,3 +13,11 @@
 17:03:01 start confirm
 17:03:01 watching confirm: 4 stop rule(s)
 17:15:39 progress confirm: 908/1670 (54%) battles, 4313/h, ETA 11 min, 0 failed, skips 17.8/battle (last 100), aa -0.03, ml16 +0.00, fb2 -0.02, df1 +0.01
+17:40:45 confirm exit=0 in 2263 s
+17:40:45 start gate
+17:40:46 gate exit=0 in 0 s
+17:40:46 start pairs
+17:40:48 pairs exit=0 in 2 s
+17:40:48 start pr
+17:40:54 pr exit=0 in 6 s
+17:40:54 ALLDONE
