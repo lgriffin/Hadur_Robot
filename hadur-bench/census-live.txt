@@ -2,12 +2,12 @@
 # (1,213 robots), less hadur117.Hadur itself: the robots and versions live clients play, on Robocode 1.12.0.
 # Role: rank<N>-band<B> from that page, band 1 = ranks 1-10, 2 = 11-50, 3 = 51-200, 4 = 201-400, 5 = 401-700, 6 = 701+.
 # Against census-312.txt: adds the 1.12.0 returners and newcomers (Mirage, Ronin, Omni, KurtBot, DumDum, Tron 3.11,
-# JKHydra, Ogi, HadMatter, Identity, JayLexi 0.6, Eveimear 0.6), live versions of DrussGT 3.1.18, Saguaro 1.1.4,
+# JKHydra, Ogi, HadMatter, Identity, JayLexi 0.6, Eveimear 0.6), live versions of DrussGT 3.1.20 (live from 21 Nov, replacing 3.1.18), Saguaro 1.1.4,
 # Seraphim 2.4.0 and Nene 1.1.0, and leaves out the 10 robots no longer in the rumble. Jars the archive lacks
 # come from opponent-urls.txt (the participants list's URLs).
 kc.mega.BeepBoop 2.0 | rank1-band1 | kc.mega.BeepBoop_2.0.jar
 oog.mega.saguaro.Saguaro 1.1.4 | rank2-band1 | oog.mega.saguaro.Saguaro_1.1.4.jar
-jk.mega.DrussGT 3.1.18 | rank4-band1 | jk.mega.DrussGT_3.1.18.jar
+jk.mega.DrussGT 3.1.20 | rank4-band1 | jk.mega.DrussGT_3.1.20.jar
 aaa.r.ScalarR 0.005h.053-noshield | rank5-band1 | aaa.r.ScalarR_0.005h.053-noshield.jar
 jkong.JKHydra 1.4 | rank6-band1 | jkong.JKHydra_1.4.jar
 cz.libors.Ogi v1 | rank7-band1 | cz.libors.Ogi_v1.jar
