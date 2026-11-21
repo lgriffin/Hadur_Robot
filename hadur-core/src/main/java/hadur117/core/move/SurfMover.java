@@ -142,6 +142,31 @@ public class SurfMover {
         return way;
     }
 
+    /**
+     * MOVE-54: the surf's stop option for this opponent: {@link #STOP_FREE} as before, {@link #STOP_NONE} never
+     * stops (the cheaper way round instead), {@link #STOP_COMMIT} keeps a stop it has begun until we stand still.
+     * Learning guns hit our flights that slow down and pick up again without reversing 9.2% of the time, BeepBoop's
+     * 4.6% (coverage/shards/dzlane/L/learn): a stop given up halfway is that shape.
+     */
+    public static final int STOP_FREE = 0;
+    /** MOVE-54: no stop option. */
+    public static final int STOP_NONE = 1;
+    /** MOVE-54: a begun stop is finished. */
+    public static final int STOP_COMMIT = 2;
+    private int stopMode = STOP_FREE;
+    /** MOVE-54: whether the last pick was the stop. */
+    private boolean stopping;
+
+    /**
+     * MOVE-54: sets the stop option's mode for this opponent.
+     *
+     * @param mode {@link #STOP_FREE}, {@link #STOP_NONE} or {@link #STOP_COMMIT}
+     */
+    public void setStopMode(int mode) {
+        stopMode = mode;
+        stopping = false;
+    }
+
     /** MOVE-47: the other way round must be under this share of the current way's danger to reverse. */
     static final double ORBIT_REVERSE_SHARE = 0.5;
     private boolean steadyOrbit;
@@ -322,6 +347,7 @@ public class SurfMover {
         lastWaveSurfed = null;
         goToPoint = null;
         rammerActive = false;
+        stopping = false;
         if (dodgePlanner != null) dodgePlanner.reset();
         dodgePlanTicks = 0;
     }
@@ -477,6 +503,13 @@ public class SurfMover {
         double cwDanger = surfOptionDangers.getOrDefault(SurfOption.CLOCKWISE, 0.0);
 
         SurfOption pick = choose(ccwDanger, stopDanger, cwDanger, lastSurfOption, steadyOrbit);
+        // MOVE-54: the opponent's stop mode.
+        if (stopMode == STOP_NONE && pick == SurfOption.STOP) {
+            pick = cwDanger < ccwDanger ? SurfOption.CLOCKWISE : SurfOption.COUNTER_CLOCKWISE;
+        } else if (stopMode == STOP_COMMIT && stopping && Math.abs(myState.velocity) > 0.5) {
+            pick = SurfOption.STOP;
+        }
+        stopping = pick == SurfOption.STOP;
         boolean takeStop = pick == SurfOption.STOP;
         boolean takeClockwise = pick == SurfOption.CLOCKWISE;
 

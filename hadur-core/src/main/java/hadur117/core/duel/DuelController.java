@@ -393,6 +393,7 @@ public final class DuelController {
         if (ramHeavy) on.add("ramheavy");
         if (ramFan) on.add("ramfan");
         if (ramBend) on.add("rambend");
+        if (surfStopMode != 0) on.add(surfStopMode == 1 ? "nostop" : "stopcommit");
         if (!Double.isNaN(powerCap)) on.add("cap");
         if (shield != null && shield.active()) on.add("shield");
         return on.isEmpty() ? "-" : String.join(",", on);
@@ -999,6 +1000,8 @@ public final class DuelController {
     private boolean ramFan;
     /** RAM-18: whether this opponent has a {@code ram-bend:} line. */
     private boolean ramBend;
+    /** MOVE-54: the surf's stop mode against this opponent (SurfMover.STOP_*). */
+    private int surfStopMode;
     /** POW-18: the cap the table sets on our power against this opponent, NaN for none. */
     private double powerCap = Double.NaN;
     /**
@@ -1384,6 +1387,7 @@ public final class DuelController {
         ramFleeOn = false;
         steadyOrbitOn = false;
         surfMover.setSteadyOrbit(false);
+        surfMover.setStopMode(0);
         stopAndGo = null;
         gunController.setTripHammer(GunDesign.TRIPHAMMER);
         gunController.setFreeGun(GunDesign.FREE_GUN);
@@ -1520,6 +1524,9 @@ public final class DuelController {
         // MOVE-47: the steady orbit for the opponents the table names.
         steadyOrbitOn = duelOnly(stackList.steadyOrbit(name), enemiesTotal);
         surfMover.setSteadyOrbit(steadyOrbitOn);
+        // MOVE-54: the table's stop mode for this opponent.
+        surfStopMode = enemiesTotal == 1 ? stackList.surfStopMode(name) : 0;
+        surfMover.setStopMode(surfStopMode);
         // POW-20: the power bands for the opponents the table names.
         powerBand = enemiesTotal <= 1 ? stackList.powerBandFor(name) : null;
         distPin = enemiesTotal <= 1 ? stackList.distPinFor(name) : Double.NaN;

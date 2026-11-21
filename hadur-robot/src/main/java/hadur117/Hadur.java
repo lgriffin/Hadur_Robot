@@ -296,6 +296,9 @@ public class Hadur extends TeamRobot {
             for (String name : ShieldTableData.ramFans()) lines.add(ShieldList.RAM_FAN_PREFIX + " " + name);
             // RAM-18: per-opponent escape bend.
             for (String name : ShieldTableData.ramBends()) lines.add(ShieldList.RAM_BEND_PREFIX + " " + name);
+            // MOVE-54: per-opponent surf stop modes.
+            for (String name : ShieldTableData.surfNoStops()) lines.add(ShieldList.SURF_NOSTOP_PREFIX + " " + name);
+            for (String name : ShieldTableData.surfStopCommits()) lines.add(ShieldList.SURF_STOPCOMMIT_PREFIX + " " + name);
             // SKEY-2: per-opponent surf keys.
             for (String key : ShieldTableData.surfKeys()) lines.add(ShieldList.SURF_KEY_PREFIX + " " + key);
             return ShieldList.parse(lines);
