@@ -327,24 +327,6 @@ public class MoveController {
         return flattenerOff;
     }
 
-    /** FLAT-BLEND-1: the flatteners' share of the danger while they are off: fixed part, part per hit percent, cap. */
-    private double flatBlendFixed, flatBlendSlope, flatBlendCap;
-
-    /**
-     * FLAT-BLEND-1 (DrussGT 3.1.20 idea 2): while the flattener views are not on, they still join
-     * the danger as one member: the views' score becomes {@code (1 - s)} times itself plus {@code s}
-     * times the flatteners' own score, where {@code s = min(cap, fixed + slope * hit%)}. All 0 is off.
-     *
-     * @param fixed the share at a 0% enemy hit rate
-     * @param slope the share added per percent of enemy hit rate
-     * @param cap the largest share
-     */
-    public void setFlatBlend(double fixed, double slope, double cap) {
-        this.flatBlendFixed = fixed;
-        this.flatBlendSlope = slope;
-        this.flatBlendCap = cap;
-    }
-
     /**
      * ADAPT-2: while the prior stands, turn on the flattener views (the ones that learn from
      * every wave, not only hits) as soon as they hold data, whatever their thresholds say.
@@ -1256,25 +1238,11 @@ public class MoveController {
         int enabledSize = 0;
         double[] estimate = viewEstimate();
 
-        double flatDanger = 0, flatScan = 0;
-        boolean blend = flatBlendCap > 0;
         for (int vi = 0; vi < views.size(); vi++) {
             KnnView<TimestampedGuessFactor> view = views.get(vi);
             // RES-4: a view holding only faded seeds is as good as empty.
-            if (view.effectiveSize() == 0) continue;
-            // FLAT-BLEND-1: a flattener that is off still scores, apart, for the blend.
-            boolean blendOnly = false;
-            if (!viewOn(view, estimate)) {
-                if (!blend || (view != flattener && view != flattener2)) continue;
-                blendOnly = true;
-            }
+            if (view.effectiveSize() == 0 || !viewOn(view, estimate)) continue;
             double viewWeight = effectiveWeight(vi);
-            if (blendOnly) {
-                double[] fs = viewDensity(w, view, surfWaveIndex, dangerAngle, bandwidth, segments);
-                flatDanger += viewWeight * fs[0];
-                flatScan += viewWeight * fs[1];
-                continue;
-            }
             enabledSize += view.effectiveSize();
 
             List<KdTree.Entry<TimestampedGuessFactor>> neighbors =
@@ -1317,28 +1285,8 @@ public class MoveController {
         }
         if (parts != null) parts[2 * views.size()] = Double.NaN;
         double viewScore = totalDanger / totalScanWeight;
-        if (flatScan > 0) {
-            double share = Math.min(flatBlendCap, flatBlendFixed + flatBlendSlope * Math.max(0, estimate[0]));
-            viewScore = (1 - share) * viewScore + share * (flatDanger / flatScan);
-        }
         if (!mixAims || aimMembers == null) return viewScore;
         return aimMembers.danger(viewScore, aimScores(w, dangerAngle, bandwidth, segments));
-    }
-
-    /** FLAT-BLEND-1: one view's kernel density and scan weight at an intersection, as the danger loop sums them. */
-    private double[] viewDensity(Wave w, KnnView<TimestampedGuessFactor> view, int surfWaveIndex,
-                                 double dangerAngle, double bandwidth, List<double[]> segments) {
-        List<KdTree.Entry<TimestampedGuessFactor>> neighbors = getNearestNeighbors(view, w, surfWaveIndex);
-        double[] decay = view.getDecayWeights(neighbors);
-        double density = 0, scan = 0;
-        for (int k = 0; k < decay.length; k++) {
-            KdTree.Entry<TimestampedGuessFactor> entry = neighbors.get(k);
-            double scanWeight = decay[k] / Math.sqrt(Math.max(entry.distance, MIN_DISTANCE)) * entry.value.weight();
-            double xFiringAngle = DiaUtils.normalizeAngle(w.firingAngle(entry.value.guessFactor), dangerAngle);
-            density += scanWeight * kernel(xFiringAngle, viewBandwidth(view, bandwidth), segments);
-            scan += scanWeight;
-        }
-        return new double[] {density, scan};
     }
 
     /**

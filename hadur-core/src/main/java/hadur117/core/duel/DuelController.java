@@ -317,10 +317,6 @@ public final class DuelController {
         this.gunController.setUndecayed(GunDesign.UNDECAYED);
         this.moveController = new MoveController(battleField, predictor);
         moveController.setFlattenerOff(duelOnly(MoveDesign.FLATTENER_OFF, enemiesTotal));
-        // FLAT-BLEND-1: the off flatteners as one danger member (off at all 0).
-        if (duelOnly(MoveDesign.FLAT_BLEND_CAP > 0, enemiesTotal)) {
-            moveController.setFlatBlend(MoveDesign.FLAT_BLEND_FIXED, MoveDesign.FLAT_BLEND_SLOPE, MoveDesign.FLAT_BLEND_CAP);
-        }
         // MOVE-33: the learning-gun mimics join the aim members when both switches are on.
         GunMimics memberMimics = duelOnly(MoveDesign.AIM_MEMBERS && MoveDesign.MIMIC_MEMBERS, enemiesTotal)
             ? new GunMimics() : null;
