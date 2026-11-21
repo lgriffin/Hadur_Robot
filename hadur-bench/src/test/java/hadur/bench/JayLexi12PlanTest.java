@@ -50,6 +50,8 @@ class JayLexi12PlanTest {
         }
         assertTrue(PcLiveMatchPlanTest.violations("pc-jaylexi-12.queue", queue).isEmpty(),
             String.valueOf(PcLiveMatchPlanTest.violations("pc-jaylexi-12.queue", queue)));
+        assertTrue(queue.contains("tools/arm_pair.py ${W}/run/arms.tsv --candidate t --baseline n --robots FoilistMC CunobelinDC Mark8"
+            + " CannonfodderMicro Charo"), "the results read 1.2 against 1.1 on the field and on each line robot");
         assertTrue(queue.contains("open_results_pr.sh claude/pc-jaylexi-12-results"));
         assertTrue(queue.contains("set ALERT = lgriffin"));
     }

@@ -32,7 +32,7 @@
 # Panel: kitlab/mini-pw-field.txt (668 MiniRumble robots, none ours or in broken-1.11.2.txt). 5 arms x 668 x 6 fresh
 # seeds from 62000 x 35 rounds = 20,040 battles.
 # Gate: t (1.2) against c and aa pooled, mean over the 668 robots with its 95% low end above 0. n shows what 1.1 adds and
-# t against n what the lines add; r6 (the released 0.6) shows what 0.7 to 1.2 add over live. A pass is banked; release
+# t against n what the lines add (tools/arm_pair.py: the field and each line robot on its own); r6 (the released 0.6) shows what 0.7 to 1.2 add over live. A pass is banked; release
 # only on Leigh's word.
 # Stop rules: fails 30, dead 8, skips 60 over 200, stall 30m (halt; every battle fought is kept and a rerun resumes),
 # aa after 20% (halt), futility t below -0.5 after 20% (finish). ALERT opens an issue for Leigh on a stop.
@@ -64,7 +64,7 @@ bench | ./bench-top20.sh ${C} ${P} --set kitlab/mini-pw-field.txt --seeds 6 --se
   stop: aa after 20%
   stop: futility t below -0.5 after 20%
 
-gate | python3 ../data/tools/multiarm.py ${W}/run/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_jaylexi-12.md && printf '\n## Gate\n\nt (1.2) ships when its mean against c and aa pooled over the 668 robots has its 95%% low end above 0. n is 1.1; r6 is the released 0.6.\n' >> ${OUT}/$(date +%Y-%m-%d)_jaylexi-12.md && { [ ! -f ${W}/run/EARLY-STOP.md ] || cat ${W}/run/EARLY-STOP.md >> ${OUT}/$(date +%Y-%m-%d)_jaylexi-12.md; }
+gate | python3 ../data/tools/multiarm.py ${W}/run/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_jaylexi-12.md && printf '\n## Gate\n\nt (1.2) ships when its mean against c and aa pooled over the 668 robots has its 95%% low end above 0. n is 1.1; r6 is the released 0.6.\n' >> ${OUT}/$(date +%Y-%m-%d)_jaylexi-12.md && python3 tools/arm_pair.py ${W}/run/arms.tsv --candidate t --baseline n --robots FoilistMC CunobelinDC Mark8 CannonfodderMicro Charo --out ${OUT}/$(date +%Y-%m-%d)_jaylexi-12.md && python3 tools/arm_pair.py ${W}/run/arms.tsv --candidate n --baseline c --out ${OUT}/$(date +%Y-%m-%d)_jaylexi-12.md && { [ ! -f ${W}/run/EARLY-STOP.md ] || cat ${W}/run/EARLY-STOP.md >> ${OUT}/$(date +%Y-%m-%d)_jaylexi-12.md; }
   after: bench
 
 pr | bash tools/open_results_pr.sh claude/pc-jaylexi-12-results "JayLexi 1.2 and 1.1 on the whole MiniRumble field (pc-jaylexi-12)" ${OUT}/*_jaylexi-12.md ${OUT}/pc-jaylexi-12-livematch.md
