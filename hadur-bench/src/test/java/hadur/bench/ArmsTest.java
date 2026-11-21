@@ -146,6 +146,7 @@ class ArmsTest {
 
     @Test
     @Tag("BENCH-95")
+    @Tag("BENCH-272")
     @Tag("BENCH-128")
     @DisplayName("a finished battle's kept row is read back for the same arm, opponent and seed; a failed, foreign or missing one is fought again")
     void resumesOnlyFinishedBattles(@TempDir Path dir) throws IOException {
