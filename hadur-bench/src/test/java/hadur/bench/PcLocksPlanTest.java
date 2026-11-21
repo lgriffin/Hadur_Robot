@@ -44,7 +44,7 @@ class PcLocksPlanTest {
         }
         assertEquals(6, names("plans/pc-locks.arms").size(), "c, aa, bb (master before MOVE-56 and SHIELD-33) and the lever arms rbd, rp and vj");
         assertTrue(queue.contains("build-ablation.sh --ref 4d6a3ca76 bb && grep \"^bb \" plans/pc-locks.arms >> ${W}-prep/lock.arms"), "bb is master before the two on-master lines");
-        assertTrue(queue.contains("per_robot.py ${W}/arms.tsv --arms bb"), "the on-master lines read per robot as bb minus control");
+        assertTrue(queue.contains("onmaster_ci.py ${W}/arms.tsv --without bb --robots"), "the on-master lines read per robot as control minus bb with a 95% interval");
         assertTrue(queue.contains("test -f opponents/$j || { echo \"missing jar $j\"; exit 1; }"), "no panel robot silently dropped");
         assertTrue(queue.contains("lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh"), "each arm built with only its robots");
         assertTrue(queue.contains("--set panel-locks.txt --seeds 12 --seed-base 85200 --arms ${W}-prep/lock.arms --out ${W} "), "the lock");
