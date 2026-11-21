@@ -67,9 +67,14 @@ public final class AimMembers {
     /** MOVE-33: the total standing weight of the learning-gun mimic members, shared out over them. */
     static final double MIMIC_PRIOR = 0.3;
 
+    /** MOVE-56: the pattern-matcher mimic's standing weight, against the views' 1. */
+    static final double PATTERN_PRIOR = 1.0;
+
     private final double[] score;
     /** MOVE-33: the mimic members after the aims (0 without them). */
     private final int mimics;
+    /** MOVE-56: whether the pattern-matcher mimic is the last member. */
+    private final boolean pattern;
     private int bullets;
 
     /** The views and the aims (MOVE-29). */
@@ -79,8 +84,19 @@ public final class AimMembers {
 
     /** MOVE-33: the views, the aims, then {@code mimics} learning-gun mimics. */
     public AimMembers(int mimics) {
+        this(mimics, false);
+    }
+
+    /** MOVE-56: the views, the aims, {@code mimics} learning-gun mimics, then with {@code pattern} the pattern-matcher mimic. */
+    public AimMembers(int mimics, boolean pattern) {
         this.mimics = Math.max(0, mimics);
-        this.score = new double[MEMBERS + this.mimics];
+        this.pattern = pattern;
+        this.score = new double[MEMBERS + this.mimics + (pattern ? 1 : 0)];
+    }
+
+    /** MOVE-56: whether the pattern-matcher mimic is a member (the last). */
+    public boolean pattern() {
+        return pattern;
     }
 
     /** Every member: the views, the aims, then the mimics. */
@@ -95,7 +111,8 @@ public final class AimMembers {
 
     /** Each member's weight now: its standing weight times 2^(POWER x score). */
     public double weight(int member) {
-        double standing = member == 0 ? 1.0 : member < MEMBERS ? PRIOR : MIMIC_PRIOR / mimics;
+        double standing = member == 0 ? 1.0 : member < MEMBERS ? PRIOR
+            : member < MEMBERS + mimics ? MIMIC_PRIOR / mimics : PATTERN_PRIOR;
         return standing * Math.pow(2.0, POWER * score[member]);
     }
 

@@ -386,6 +386,7 @@ public final class DuelController {
         if (flatOn) on.add("flat");
         if (mirrorOff) on.add("mirroff");
         if (mimicOn) on.add("mimic");
+        if (patternMimic != null) on.add("pm");
         if (fullOff) on.add("fulloff");
         if (x5Power) on.add("x5");
         if (racePower) on.add("race");
@@ -445,6 +446,9 @@ public final class DuelController {
         ramEscape.initRound();
         fleeing = false;
         lastEnemyState = null;
+        // MOVE-56: the history spans rounds, but a new round has no scan before its first.
+        patternLastBearing = Double.NaN;
+        patternLastDistance = Double.NaN;
         mirror.newRound();
         mirrorDrive.initRound();
         mirrorActive = false;
@@ -764,6 +768,20 @@ public final class DuelController {
         if (moveController.shotDodger() != null || moveController.aimMembers() != null) {
             moveWave.aimStates = aimStates(time, myPos, myHead, myVel, enemyPos, enemyHead);
         }
+        // MOVE-56: the mimic aims a shot from this tick with the history and geometry of the scan before;
+        // then this scan's lateral velocity, seen from the enemy, joins its history.
+        if (patternMimic != null) {
+            if (!Double.isNaN(patternLastBearing)) {
+                moveWave.patternMimic = patternMimic;
+                moveWave.patternHistory = patternMimic.size();
+                moveWave.patternBearing = patternLastBearing;
+                moveWave.patternDistance = patternLastDistance;
+            }
+            double fromEnemy = DiaUtils.absoluteBearing(enemyPos, myPos);
+            patternMimic.observe(myVel * Math.sin(myHead - fromEnemy));
+            patternLastBearing = fromEnemy;
+            patternLastDistance = e.distance();
+        }
         moveController.addWave(moveWave);
 
         // WAVE-1, WAVE-2: only the part of the drop the ledger can't explain is a shot.
@@ -985,6 +1003,11 @@ public final class DuelController {
     private boolean mirrorOff;
     /** MOVE-34: whether the table put the learning-gun mimics among the aim members for this opponent. */
     private boolean mimicOn;
+    /** MOVE-56: the pattern-matcher mimic, null unless the table names the opponent. */
+    private PatternMimic patternMimic;
+    /** MOVE-56: the enemy's bearing to us and distance on the last scan, the tick its gun aimed a shot fired now. */
+    private double patternLastBearing = Double.NaN;
+    private double patternLastDistance = Double.NaN;
     /** POW-15: whether the table turned the full-power rules off for this opponent. */
     private boolean fullOff;
     /** POW-16: whether the table holds the duel's shots to x.x5 powers for this opponent. */
@@ -1431,6 +1454,7 @@ public final class DuelController {
         if (mirrorOff) emitPolicy(round, time, "mirror-off", Double.NaN, Double.NaN, "mirror_off");
         // MOVE-34: a P record says the table put the mimics among the aim members for this opponent.
         if (mimicOn) emitPolicy(round, time, "mimic-on", Double.NaN, Double.NaN, "mimic_on");
+        if (patternMimic != null) emitPolicy(round, time, "pm-mimic", Double.NaN, Double.NaN, "pm_mimic");
         // POW-15: a P record says the table turned the full-power rules off for this opponent.
         if (fullOff) emitPolicy(round, time, "full-off", Double.NaN, Double.NaN, "full_off");
         // Without memory the B record still goes out, with '-' for what memory would say.
@@ -1485,6 +1509,13 @@ public final class DuelController {
             moveController.setAimMembers(new AimMembers(mimics.size()));
             moveController.setMemberMimics(mimics);
             mimicOn = true;
+        }
+        // MOVE-56: the pattern-matcher mimic joins the aim members for the opponents the table names.
+        // Set once, at the battle's first scan, before any wave has passed us; its history runs across rounds.
+        if (duelOnly(MoveDesign.AIM_MEMBERS && stackList.patternMimic(name), enemiesTotal) && patternMimic == null) {
+            AimMembers members = moveController.aimMembers();
+            moveController.setAimMembers(new AimMembers(members == null ? 0 : members.mimics(), true));
+            patternMimic = new PatternMimic();
         }
         // POW-15: the full-power rules off for the opponents the table names.
         fullOff = duelOnly(stackList.fullOff(name), enemiesTotal);

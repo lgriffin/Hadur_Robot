@@ -221,6 +221,23 @@ public class Wave implements Cloneable {
      * wave's tick and the ticks before; null when the duel did not set them.
      */
     public double[][] aimStates;
+    /** MOVE-56: the pattern-matcher mimic and its history length, bearing and distance on the enemy's aiming tick; null when off. */
+    public hadur117.core.physics.PatternMimic patternMimic;
+    public int patternHistory;
+    public double patternBearing;
+    public double patternDistance;
+    private double patternAim = Double.NaN;
+    private double patternSpeed = Double.NaN;
+
+    /** MOVE-56: where the pattern-matcher mimic sends this wave's bullet, absolute radians; NaN when off or no match. */
+    public double patternAngle() {
+        if (patternMimic == null) return Double.NaN;
+        if (patternSpeed != bulletSpeed) {
+            patternAim = patternBearing + patternMimic.offset(patternHistory, patternDistance, bulletSpeed);
+            patternSpeed = bulletSpeed;
+        }
+        return patternAim;
+    }
     /** DODGE-1: the simple aims at {@link #aimSpeed}, once computed. */
     private double[] aims;
     /** DODGE-1: the bullet speed the cached aims were computed for. */
@@ -1033,6 +1050,10 @@ public class Wave implements Cloneable {
         w.targetWallDistance = targetWallDistance;
         w.targetRevWallDistance = targetRevWallDistance;
         w.aimStates = aimStates;
+        w.patternMimic = patternMimic;
+        w.patternHistory = patternHistory;
+        w.patternBearing = patternBearing;
+        w.patternDistance = patternDistance;
         return w;
     }
 
