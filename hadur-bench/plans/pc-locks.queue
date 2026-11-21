@@ -1,8 +1,9 @@
 # 1v1, cloud locks to the PC (BENCH-253), round 15: two cloud locks from 21 Nov morning, RamRod on rbd (RAM-18 escape
 # bend) and Saguaro on rp (POW-17 race power), plus 12 more seeds for round 14's three marginal rammers on rbd.
 # Round 14 (PR #964) held rbd on 6 of its 11 rammers and rf on ScalpBotC; GrubbmThree +1.6, MaxRisk +1.0 and
-# PureAggression +0.8 read positive with the 95% low end under 0 (the marginal rule: 12 more seeds); Leopard -0.6 and
-# Sabreur -0.8 are dropped (on the cloud's truth logs the bend did not cut Sabreur's close hit rate, 38% vs 39%).
+# PureAggression +0.8 read positive with the 95% low end under 0 (the marginal rule: 12 more seeds); Sabreur -0.8 is
+# dropped. Leopard read -0.6 on the PC but locked on 12 fresh cloud seeds afterwards (84300, below), so it gets a
+# second PC read.
 # Cloud locks (master, Robocode 1.12.0, live turn time; coverage/shards/locks.tsv):
 #   rbd on RamRod (box A, coverage/shards/dzlane/A/power4): 12 fresh seeds 81300 +3.10 +- 2.13 against c and +2.33 +- 1.90
 #      against aa; screen 81200 +5.0 / +1.6.
@@ -11,6 +12,8 @@
 #      pooled 95% low end is above 0. On the cloud screen's truth logs (rbend, 6 seeds) the bend cut their close-range
 #      (<150 px) hit rate on GrubbmThree 53 -> 45% and PureAggression 66 -> 53%; MaxRisk stayed at 41% but its
 #      linear-aimed close shots fell from 46% to 34% hits.
+#   rbd on Leopard (box L, coverage/shards/dzlane/L/rbend-r14): 12 fresh cloud seeds 84300 +1.54 +- 0.59 against c (24
+#      control battles) and +1.16 +- 0.75 against aa; the class screen read +0.78. The bank pools its rounds 14 and 15.
 #   rp (POW-17 race power) on Saguaro (boxes A and L): pooled 60 seeds (81300-81347, 84000-84011) +4.76 +- 2.64 against c
 #      and +3.26 +- 2.29 against aa (A/A +1.50 +- 2.69); screen 81200 +11.2 / +6.3.
 #   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live
@@ -22,7 +25,7 @@
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
 #   --fresh because round 14 left this plan's queue state marked complete; an interrupted round 15 resumes without it.
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 240 lock battles (5 robots, 4 arms, 12 seeds), about
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 288 lock battles (6 robots, 4 arms, 12 seeds), about
 # 15 minutes with the live-match check.
 #
 # Why it should win (the PC card rule of 2026-11-03):
@@ -37,7 +40,7 @@
 #   - Saguaro: an energy race. BeepBoop holds power 0.7-0.85 whatever the energies, its rounds run longer, and it wins
 #     them; we open at 2.0 and lose the race (box A truth logs, 6 seeds 81400). POW-17's race power is the table's
 #     existing answer to an energy race; on the cloud it beat the POW-20 power band on Saguaro against both twins.
-# Stop rules (docs/bench/watch.md): the watcher's A/A rule needs 10 robots read in both c and aa, which this five-robot lock
+# Stop rules (docs/bench/watch.md): the watcher's A/A rule needs 10 robots read in both c and aa, which this six-robot lock
 # never reaches, so no aa stop rule is set; aa is read in the gate (multiarm.py prints aa against c). The lock halts on 30 failed
 # battles, an arm scoring nothing in 8, 60+ skipped turns a battle over the last 24 or no battle in 30 minutes. The
 # live-match step stops the card if the PC no longer scores us and BeepBoop as live does (tools/live_match.py exit 3).
@@ -70,5 +73,5 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 8
 gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks15-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks15-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks15-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms rbd rp --out ${OUT}/$(date +%Y-%m-%d)_pc-locks15-lock-per-robot.md --out-tsv ${OUT}/pc-locks15-lock-per-robot.tsv
   after: lock
 
-pr | bash tools/open_results_pr.sh claude/pc-locks15-results "1v1 cloud locks, round 15 (4 robots on rbd, 1 on rp) locked on 12 fresh PC seeds" ${OUT}/pc-locks15-livematch.md ${OUT}/*_pc-locks15-*.md ${OUT}/pc-locks15-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks15-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks15-results "1v1 cloud locks, round 15 (5 robots on rbd, 1 on rp) locked on 12 fresh PC seeds" ${OUT}/pc-locks15-livematch.md ${OUT}/*_pc-locks15-*.md ${OUT}/pc-locks15-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks15-lock-pick.tsv' -size +0c)
   after: gate
