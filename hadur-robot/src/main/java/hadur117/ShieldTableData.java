@@ -1175,7 +1175,7 @@ final class ShieldTableData {
             "benhorner.PureAggression 0.2.6",// +1.3
             "gh.micro.GrubbmThree 1.01",     // +3.4
             "suh.nano.RammingC 1.00",        // +3.0
-            // pc-locks round 17 (BENCH-253, PR #978): +1.2 on 12 fresh PC seeds; pooled with rounds 14 and 16 about +0.8, low end above 0
+            // pc-locks round 17 (BENCH-253, PR #978): +1.24 (low +0.33) on 12 fresh PC seeds; rounds 14/16/17 (-0.59, +1.73, +1.24) pool to +0.79, low end +0.1 to +0.3
             "exauge.Leopard 1.1.019",        // +1.2
         };
     }
