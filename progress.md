@@ -1,12 +1,12 @@
 # Queue pc-jaylexi-11: progress
 
-Updated 2026-11-21 02:11:28 PC time (02:11 UTC), runner pid 90400.
+Updated 2026-11-21 02:24:08 PC time (02:24 UTC), runner pid 90400.
 
 - `prep` done, exit 0 in 1 min
 - `livematch` done, exit 0 in 0 min
-- `bench` running
-- `gate` pending
-- `pr` pending
+- `bench` done, exit 0 in 3.2 h
+- `gate` done, exit 0 in 0 min
+- `pr` done, exit 0 in 0 min
 
 ### livematch
 
@@ -33,38 +33,31 @@ Stopping now would leave 0 battles unrun; every battle already fought is kept an
 
 ### bench
 
-**15191 of 16032 battles** (95%), 0 failed. Running 3.0 h, 5478 battles/h, about 9 min left (ends ~02:20 PC time). Last battle 0 min ago.
+**16032 of 16032 battles** (100%), 0 failed. Running 3.2 h, 4896 battles/h, about 0 min left (ends ~02:23 PC time). Last battle 1 min ago.
 Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0; engine disables 0.
 
 | arm | battles | failed | share | vs control (pts) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 3798 | 0 | 88.54 | - | - | - | 0.0 |
-| aa | 3799 | 0 | 88.56 | +0.02 (668 robots) | ±0.03 | -0.03 .. +0.07 | 0.0 |
-| n | 3798 | 0 | 88.66 | +0.11 (668 robots) | ±0.14 | -0.11 .. +0.32 | 0.0 |
-| r6 | 3796 | 0 | 88.34 | -0.21 (668 robots) | ±0.16 | -0.46 .. +0.03 | 0.0 |
-A/A: aa - c +0.02 pts over 668 robots; 1% band ±0.19 (inside).
+| c | 4008 | 0 | 88.53 | - | - | - | 0.0 |
+| aa | 4008 | 0 | 88.55 | +0.02 (668 robots) | ±0.03 | -0.03 .. +0.07 | 0.0 |
+| n | 4008 | 0 | 88.66 | +0.12 (668 robots) | ±0.14 | -0.09 .. +0.33 | 0.0 |
+| r6 | 4008 | 0 | 88.35 | -0.19 (668 robots) | ±0.15 | -0.42 .. +0.04 | 0.0 |
+A/A: aa - c +0.02 pts over 668 robots; 1% band ±0.18 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 15191 |
+| `fails 30` | halt | ok | 0 failed of 16032 |
 | `dead 8` | halt | ok | every arm scoring |
 | `skips 60 over 200` | halt | ok | 0.0 a battle over the last 200 (first 200: 0.0) |
-| `stall 30m` | halt | ok | last battle 0 min ago |
-| `aa after 20%` | halt | ok | aa - c +0.02 pts over 668 robots, stop band ±0.22 |
-| `futility n below -0.5 after 20%` | finish | ok | n +0.11, best case +0.32 pts vs bar -0.50 |
+| `stall 30m` | halt | ok | last battle 1 min ago |
+| `aa after 20%` | halt | ok | aa - c +0.02 pts over 668 robots, stop band ±0.21 |
+| `futility n below -0.5 after 20%` | finish | ok | n +0.12, best case +0.33 pts vs bar -0.50 |
 
-Stopping now would leave 841 battles unrun (about 9 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-23:10:04 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
-23:10:04 start prep
-23:10:07 progress pushed to origin claude/pc-jaylexi-11-progress (every 15 min)
-23:10:37 prep exit=0 in 32 s
-23:10:37 start livematch
-23:10:37 watching livematch: 3 stop rule(s)
-23:10:46 livematch exit=0 in 9 s
 23:10:46 start bench
 23:10:46 watching bench: 6 stop rule(s)
 23:11:04 progress bench: 4/16032 (0%) battles, 792/h, ETA 20.2 h, 0 failed, skips 0.0/battle (last 100)
@@ -73,4 +66,11 @@ Stopping now would leave 841 battles unrun (about 9 min); every battle already f
 00:41:43 progress bench: 7757/16032 (48%) battles, 4356/h, ETA 1.9 h, 0 failed, skips 0.0/battle (last 100), aa +0.04, n +0.05, r6 -0.22
 01:11:58 progress bench: 9782/16032 (61%) battles, 4018/h, ETA 1.6 h, 0 failed, skips 0.0/battle (last 100), aa +0.03, n +0.07, r6 -0.22
 01:42:16 progress bench: 12521/16032 (78%) battles, 5420/h, ETA 39 min, 0 failed, skips 0.0/battle (last 100), aa +0.01, n +0.08, r6 -0.22
+02:12:27 progress bench: 15280/16032 (95%) battles, 5486/h, ETA 8 min, 0 failed, skips 0.0/battle (last 100), aa +0.02, n +0.11, r6 -0.21
+02:23:59 bench exit=0 in 11593 s
+02:23:59 start gate
+02:24:00 gate exit=0 in 0 s
+02:24:00 start pr
+02:24:08 pr exit=0 in 7 s
+02:24:08 ALLDONE
 ```
