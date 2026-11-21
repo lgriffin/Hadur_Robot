@@ -45,6 +45,11 @@ EDITS = [
         "                new OurBullet(in.time(), in.location(), in.gunHeading(), firedPower));\n"
         "            if (aimCarriesJitter) aimJitter.shotFired();\n",
     ),
+    # External gun: Hadur's gun still aims and learns, but never fires or counts a shot.
+    (
+        "            TickBudget.shadowAim(level) && !matchWon, mayFire);\n",
+        "            TickBudget.shadowAim(level) && !matchWon, mayFire && !hadur117.core.HybridHooks.externalGun);\n",
+    ),
     # External movement: Hadur's shield needs Hadur's body, so it never starts.
     (
         "        this.shield = enemiesTotal == 1 && shieldList != null && !shieldList.isEmpty()\n",

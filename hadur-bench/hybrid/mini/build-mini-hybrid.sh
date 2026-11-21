@@ -73,8 +73,10 @@ EOF
 done
 
 find "$WORK/src" -name '*.java' > "$WORK/sources.txt"
-javac -nowarn --release 8 -encoding UTF-8 -cp "$API" -d "$WORK/classes" @"$WORK/sources.txt" 2>&1 \
-    | grep -v -e '^Note:' -e 'warning: \[options\]' -e '^1 warning' || true
+JAVAC_OK=0
+javac -nowarn --release 8 -encoding UTF-8 -cp "$API" -d "$WORK/classes" @"$WORK/sources.txt" > "$WORK/javac.log" 2>&1 || JAVAC_OK=$?
+grep -v -e '^Note:' -e 'warning: \[options\]' -e '^1 warning' "$WORK/javac.log" || true
+[ "$JAVAC_OK" -eq 0 ] || { echo "javac failed" >&2; exit 1; }
 
 mkdir -p "$OUT"
 while IFS='|' read -r CLS DESC; do

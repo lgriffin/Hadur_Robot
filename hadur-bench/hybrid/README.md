@@ -38,9 +38,8 @@ Hadur's shell and core with BeepBoop 2.0's subsystems beside it: `BeepMoveHadurG
 movement and shield, Hadur's gun, power and radar), `HadurMoveBeepGun` (Hadur's movement, shield and
 lines, BeepBoop's gun and power) and `HadurPlain` (control). The script copies Hadur's sources to a
 scratch directory and patches a seam in (`patch/`); master is not changed. Started before the
-MiniRumble ask; it compiles but has not been run on the bench. Known gap before any run: in
-`HadurMoveBeepGun` Hadur's gun still counts and learns from the shots it orders but the hybrid drops
-(only their shadows are removed), so validate against `HadurPlain` first.
+MiniRumble ask; it compiles but has not been run on the bench. In `HadurMoveBeepGun` Hadur's
+gun still aims and learns but never fires; validate against `HadurPlain` before reading results.
 
 ## Credits
 

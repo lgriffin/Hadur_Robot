@@ -54,8 +54,10 @@ cp -r "$WORK/beep/." "$WORK/src/"
 cp -r "$HERE/src/." "$WORK/src/"
 
 find "$WORK/src" -name '*.java' > "$WORK/sources.txt"
-javac -nowarn --release 11 -encoding UTF-8 -cp "$API:$WORK/classes" -d "$WORK/classes" @"$WORK/sources.txt" 2>&1 \
-    | grep -v '^Note:' || true
+JAVAC_OK=0
+javac -nowarn --release 11 -encoding UTF-8 -cp "$API:$WORK/classes" -d "$WORK/classes" @"$WORK/sources.txt" > "$WORK/javac.log" 2>&1 || JAVAC_OK=$?
+grep -v '^Note:' "$WORK/javac.log" || true
+[ "$JAVAC_OK" -eq 0 ] || { echo "javac failed" >&2; exit 1; }
 [ -f "$WORK/classes/hybrid/BeepMoveHadurGun.class" ] || { echo "compile failed" >&2; exit 1; }
 
 mkdir -p "$OUT"
