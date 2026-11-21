@@ -36,17 +36,25 @@ re-indexed by the top 14 bits of the name's hash (the 515 MicroRumble names keep
 (pc-eveimear-port, PR #676, 112 robots x 12 seeds): +2.22 ± 0.76 points over 0.4, Cotillion itself +1.90.
 0.4's catcher jitter (EVEIMEAR-13) is gone with its gun.
 
-0.6 (built 2026-11-19, not released) closes the drive off the enemy until a 120 px stick stays in the field,
-where 0.5 (and Cotillion) used 160 (EVEIMEAR-5). On 112 MicroRumble robots: +0.37 ± 0.28 over 0.5 on 12 fresh
-cloud seeds (140 px +0.21, 100 px +0.35, 180 px -0.28; docs/bench/local/2026-11-19_eveimear-*.md). 749 bytes, as 0.5.
+0.6 (released 2026-11-19, tag `eveimear-v0.6`) closes the drive off the enemy until a 120 px stick stays in the
+field, where 0.5 (and Cotillion) used 160 (EVEIMEAR-5). On 112 MicroRumble robots: +0.37 ± 0.28 over 0.5 on 12 fresh
+cloud seeds (140 px +0.21, 100 px +0.35, 180 px -0.28; docs/bench/local/2026-11-19_eveimear-*.md); the PC read it
++0.25 ± 0.15 over 0.5 on the whole field (pc-eveimear-06, PR #942). 749 bytes, as 0.5.
 
 ## Standing
 
 | Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | 5th place | Gap to 5th |
 |---|---|---|---|---|---|---|---|---|
+| 0.6 | 2026-11-21 14:03 (API) | **MicroRumble** | **1st of 515** | **86.20 ± 0.17** | 514 | 2,109 | sheldor.micro.Epeeist 3.7, 84.98 | +1.22 |
+| 0.5 | 2026-11-06 03:05 (first pass, API) | **MicroRumble** | **1st of 516** | **86.03 ± 0.34** | 515 | 565 | - | - |
 | 0.2 | 2026-11-02 14:40 (first pass, API) | **MicroRumble** | **9th of 516** | **83.39 ± 0.31** | 515 | 737 | nz.jdc.micro.HedgehogGF 1.5, 84.94 | +1.55 |
 | 0.1 | 2026-10-30 21:50 (API) | **MicroRumble** | **9th of 516** | **83.28** | 515 | 2,362 | nz.jdc.micro.HedgehogGF 1.5, 84.96 | +1.68 |
 | 0.1 | 2026-10-29 07:23 | **MicroRumble** | **9th of 516** | **83.36 ± 0.33** | 515 | 608 | nz.jdc.micro.HedgehogGF 1.5, 84.93 | +1.57 |
+
+**Eveimear 0.6 keeps 1st in MicroRumble** at 86.20 ± 0.17 (2,109 battles, 2026-11-21 14:03 UTC), 0.64 ahead of
+jk.micro.Cotillion 0.8 (85.56) and 0.68 ahead of kc.micro.WaveShark 0.5 (85.52). Paired over the 514 opponents it
+shares with 0.5's first pass, it is +0.19 ± 0.26 (survival +0.12); against 0.5's settled 86.07 it is +0.13. The PC
+predicted +0.25 ± 0.15, so the live gain sits inside that interval. Rows: `data/rumble/parsed/2026-11-21T1403Z_*`.
 
 **Eveimear 0.2 is 9th in MicroRumble** on its first pass (83.39 ± 0.31, 2026-11-02), +0.08 over 0.1
 on the 515 shared opponents where the bench said +0.36, so the self-taught mode table is about flat
