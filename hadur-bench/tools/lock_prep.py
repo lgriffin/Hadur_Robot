@@ -52,6 +52,7 @@ LEVERS = {
     "rbd": ("rbendlist", ("RAM_BEND",)),
     "pm": ("pmlist", ("PM_MIMIC",)),  # MOVE-56 pattern-matcher mimic
     "pmx": ("pmxlist", ("PM_MEGAS",)),  # MOVE-58 cw.megas-form pattern-matcher mimic
+    "ty": ("stinylist", ("SHIELD_TINY",)),  # SHIELD-33 tiny-shot shield waves
     "or": ("orlist", ("STEADY_ORBIT",)),
     "sp2": ("sdplanlist", ("SHOT_DODGE_PLAN",)),
 }
