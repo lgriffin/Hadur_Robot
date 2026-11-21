@@ -19,7 +19,7 @@
 #              work/pc-locks16 (earlier rounds' battles stay in work/pc-locks to -locks15)
 #   gate       each robot judged on its own lever arm only (lock_prep.py --restrict); it keeps its line where the 95%
 #              low end is above 0 (mode_table.py --margin 0). The MOVE-56 and SHIELD-33 robots are read per robot as bb
-#              minus control (per_robot.py --arms bb); a line stays on master where c beats bb with the 95% low end
+#              minus control (per_robot.py --arms bb, with the per-battle rows for the 95% interval); a line stays on master where c beats bb with the 95% low end
 #              above 0, and comes off where its interval is wholly below 0.
 # Leigh starts it once the PC is free (one card at a time, from master):
 #   git checkout master && git pull
@@ -69,8 +69,8 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 8
   stop: skips 60 over 24
   stop: stall 30m
 
-gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks16-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks16-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks16-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms rbd rp vj --out ${OUT}/$(date +%Y-%m-%d)_pc-locks16-lock-per-robot.md --out-tsv ${OUT}/pc-locks16-lock-per-robot.tsv && python3 tools/per_robot.py ${W}/arms.tsv --arms bb --out ${OUT}/$(date +%Y-%m-%d)_pc-locks16-onmaster-per-robot.md --out-tsv ${OUT}/pc-locks16-onmaster-per-robot.tsv
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks16-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks16-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks16-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms rbd rp vj --out ${OUT}/$(date +%Y-%m-%d)_pc-locks16-lock-per-robot.md --out-tsv ${OUT}/pc-locks16-lock-per-robot.tsv && python3 tools/per_robot.py ${W}/arms.tsv --arms bb --out ${OUT}/$(date +%Y-%m-%d)_pc-locks16-onmaster-per-robot.md --out-tsv ${OUT}/pc-locks16-onmaster-per-robot.tsv && head -1 ${W}/arms.tsv > ${OUT}/pc-locks16-onmaster-rows.tsv && grep -E "AutoBot|QuickHack|MakoHT|Caedo|FloodSonnet|SavantMicro" ${W}/arms.tsv >> ${OUT}/pc-locks16-onmaster-rows.tsv
   after: lock
 
-pr | bash tools/open_results_pr.sh claude/pc-locks16-results "1v1 cloud locks, round 16 (6 rbd, 1 rp, 1 vj; MOVE-56 and SHIELD-33 confirm) on 12 fresh PC seeds" ${OUT}/pc-locks16-livematch.md ${OUT}/*_pc-locks16-*.md ${OUT}/pc-locks16-lock-per-robot.tsv ${OUT}/pc-locks16-onmaster-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks16-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks16-results "1v1 cloud locks, round 16 (6 rbd, 1 rp, 1 vj; MOVE-56 and SHIELD-33 confirm) on 12 fresh PC seeds" ${OUT}/pc-locks16-livematch.md ${OUT}/*_pc-locks16-*.md ${OUT}/pc-locks16-lock-per-robot.tsv ${OUT}/pc-locks16-onmaster-per-robot.tsv ${OUT}/pc-locks16-onmaster-rows.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks16-lock-pick.tsv' -size +0c)
   after: gate
