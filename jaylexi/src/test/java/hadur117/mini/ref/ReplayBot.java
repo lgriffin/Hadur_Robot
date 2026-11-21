@@ -68,4 +68,12 @@ public class ReplayBot extends JayLexi {
             flatGate = true;
         }
     }
+
+    /** The readable JayLexi with 1.1's power against every robot, to show the 1.2 power rows play. */
+    public static class Power2 extends ReplayBot {
+        public Power2(ReplayBody b) {
+            super(b);
+            noFar = true;
+        }
+    }
 }

@@ -243,7 +243,51 @@ Per-robot lines (0 code bytes):
 - uCatcher aim jitter: +0.93 ± 0.53 on 24 seeds.
 - BasicBulletShielder and RingDing jitter were level.
 
-pc-jaylexi-11 (BENCH-268) checks 1.1 against 1.0 on all 668 MiniRumble robots.
+pc-jaylexi-11 (BENCH-268) never ran. pc-jaylexi-12 (BENCH-269) replaces it and checks 1.1 and 1.2 against 1.0 together.
+
+## JayLexi 1.2
+
+1.2 is 1.1 with five per-robot lines, at 1,451 B. POWER is now one row per robot, read at POWER.charAt(row + band) like
+AIM and ORB, which costs 4 bytes. FoilistMC and CunobelinDC get power 1 from 500 px (JAYLEXI-25). Mark8,
+CannonfodderMicro and Charo get orbit 1.35 rad in every slot. Every other robot's tables are 1.1's. The readable
+reference holds the power rows behind a switch, and a replay test against FoilistMC's row shows 1.1's power gives other
+orders.
+
+## 12. Gate locks, energy and lines on 1.1 (2026-11-21, seeds 100300 to 113999)
+
+Gate head to head on 1.1, 12 fresh seeds each (boxes A, B, C, D):
+- 1.1 held against 1.0 on three fresh locks: +0.36 ± 0.26, +0.31 ± 0.29 and +0.27 ± 0.25 (GM, its twin on 1.0), every
+  low end above 0.
+- No other gate beat 1.1: max(3, 860/d) -0.00 ± 0.18, max(3, 1200/d) +0.01 ± 0.16, 10 degrees flat +0.11 ± 0.30,
+  30 degrees under 300 px -0.04 ± 0.20, under 200 px -0.18 ± 0.20. The gain is close range, and 1.1 already has it.
+- The wider gate cuts damage taken, not hit count: shots per round barely move and hits stay flat. Bullet-on-bullet
+  collisions do not explain it (2.31 and 2.35 a round).
+
+Learning guns (box C, truth logs, 65 robots, 6 seeds from 108000):
+- They do not hit JayLexi more often per shot than FoilistMC: 0.072 against 0.070. No split shows a real difference
+  (distance, corners, surfed or second wave, ticks since reversal, round).
+- The gap is the energy race against ten strong learners. Past 500 px, where about 90% of our shots go, we fire 1.47 and
+  FoilistMC 0.97, so we die 50 to 200 ticks sooner.
+- Power 1 past 600 or 500 px as a field rule loses (-0.51, -0.90): +0.7 on the ten, -0.6 to -1.0 on the rest. Cut only
+  while the enemy has more energy, it is level (-0.08, -0.12): too late. As a ten-robot line it is level (+0.18 ± 1.24).
+- Per robot, it holds on CunobelinDC (+2.64 ± 2.02, 48 seeds) and FoilistMC (+6.62 ± 2.21, 24 fresh seeds).
+
+Lines through the tables, by gap rank against FoilistMC:
+- Top 15 plus Needle, WaveShark, Freya and CopyKat (box G): Charo orbit 1.35, +3.4 ± 1.7 over 24 seeds. Continuation
+  and Apollon failed.
+- Ranks 16 to 35 (box D): Mark8 +1.41 ± 0.76 and CannonfodderMicro +1.19 ± 0.47 (orbit 1.35, 24 seeds each). Orbit 1.35
+  on all 18 diagnosed robots averaged +0.01: closing in is not a general fix.
+- Ranks 36 to 55 (box B): none held. Past rank 35 the gap is under a point a robot, so the tranches stop there.
+- The MiniRumble top ten (box C): only FoilistMC's power line held. Orbit -0.20 and +0.20 past 450 px both failed.
+
+Whole-field cloud lock of 1.2 against 1.1 and an A/A copy (12 seeds from 112300): -0.05 ± 0.21 and -0.02 ± 0.17. The
+107 robots without a line move no more than the A/A does, as they should. The line robots read +6.62 (FoilistMC),
++1.41 (CunobelinDC), +0.90 (Mark8) and +0.59 (CannonfodderMicro), and Charo -1.16, so Charo pools to about +1.9 over
+36 seeds. The lines come to about +0.07 APS on the field.
+
+Also closed on 1.1: orbit 0.95 or 1.35 by distance band at 200 to 500 px (level), and a deeper surf hit memory (depth 3
++0.23, depth 10 -0.11 on 3 seeds; linear aimers level). Linear aimers do hit JayLexi more than FoilistMC from round 5
+on (3.7% against 2.6%), and the data points at reach: the surf picks only full speed back or forward.
 
 ## Where this leaves JayLexi
 

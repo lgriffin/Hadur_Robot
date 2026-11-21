@@ -146,6 +146,54 @@ class JayLexiReplayTest {
     }
 
     @Test
+    @Tag("JAYLEXI-25")
+    @DisplayName("against FoilistMC's row the two agree, and 1.1's power 2 from 500 px gives other orders")
+    void farPowerRowPlays() throws Exception {
+        Replay.name = farName();
+        try {
+            String power2 = Replay.run(hadur117.mini.ref.JayLexi.class, hadur117.mini.ref.ReplayBot.Power2::new, 1, 6, 1500);
+            assertEquals(-1, firstDifference(shipped(1), readable(1)));
+            assertNotEquals(-1, firstDifference(shipped(1), power2), "the power row changes the orders");
+        } finally {
+            Replay.name = "e";
+        }
+    }
+
+    @Test
+    @Tag("JAYLEXI-25")
+    @DisplayName("the shipped power table is the readable rule: 3 under 150 px, else 2, and 1 from 500 px for FAR only")
+    void powerRowsFollowTheReadableRule() {
+        for (int k = 0; k <= JayLexi.NAMES.length(); k++) {
+            boolean far = k > 0 && hadur117.mini.ref.JayLexi.FAR.indexOf(JayLexi.NAMES.charAt(k - 1)) >= 0;
+            for (int j = 0; j < SLOTS; j++) {
+                assertEquals(j < 3 ? 3 : far && j >= 10 ? 1 : 2, JayLexi.POWER.charAt(JayLexi.BINS * k + j), "row " + k + " slot " + j);
+            }
+        }
+        assertEquals("sheldor.mini.FoilistMC 1.0", nameFor(0), "FAR's first robot");
+        assertEquals("jk.mini.CunobelinDC 1.2", nameFor(1), "FAR's second robot");
+    }
+
+    static String nameFor(int i) {
+        char c = hadur117.mini.ref.JayLexi.FAR.charAt(i);
+        for (String n : new String[] {"sheldor.mini.FoilistMC 1.0", "jk.mini.CunobelinDC 1.2"}) {
+            if ((char) n.hashCode() == c) {
+                return n;
+            }
+        }
+        return null;
+    }
+
+    /** A name that hashes to FoilistMC's char, so it reads FoilistMC's rows. */
+    static String farName() {
+        for (int i = 0; ; i++) {
+            String n = "e" + i;
+            if ((char) n.hashCode() == hadur117.mini.ref.JayLexi.FAR.charAt(0)) {
+                return n;
+            }
+        }
+    }
+
+    @Test
     @Tag("JAYLEXI-22")
     @DisplayName("the shipped build counts its danger prediction from tick 2: 0.8's tick 3 gives other orders")
     void predictionCountsFromTickTwo() throws Exception {
