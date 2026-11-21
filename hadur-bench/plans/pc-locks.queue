@@ -11,8 +11,8 @@
 #      pooled 95% low end is above 0. On the cloud screen's truth logs (rbend, 6 seeds) the bend cut their close-range
 #      (<150 px) hit rate on GrubbmThree 53 -> 45% and PureAggression 66 -> 53%; MaxRisk stayed at 41% but its
 #      linear-aimed close shots fell from 46% to 34% hits.
-#   rp (POW-17 race power) on Saguaro (boxes A and L): pooled 48 seeds (81300-81335, 84000-84011) +4.86 +- 3.03 against c
-#      and +3.04 +- 2.66 against aa (A/A +1.82 +- 3.26); screen 81200 +11.2 / +6.3.
+#   rp (POW-17 race power) on Saguaro (boxes A and L): pooled 60 seeds (81300-81347, 84000-84011) +4.76 +- 2.64 against c
+#      and +3.26 +- 2.29 against aa (A/A +1.50 +- 2.69); screen 81200 +11.2 / +6.3.
 #   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live
 #   lock       panel-locks.txt  c / aa / rbd / rp, 12 fresh seeds from 85100, --cpu-constant live, in work/pc-locks15
 #              (earlier rounds' battles stay in work/pc-locks to -locks14)
