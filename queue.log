@@ -12,3 +12,12 @@
 19:50:08 screen exit=0 in 2103 s
 19:50:08 start confirm
 19:50:08 watching confirm: 4 stop rule(s)
+20:16:34 progress confirm: 495/496 (100%) battles, 1124/h, ETA 0 min, 0 failed, skips 11.4/battle (last 100), aa +0.01, em -0.03, em2 -0.01
+20:18:08 confirm exit=0 in 1679 s
+20:18:08 start gate
+20:18:09 gate exit=0 in 0 s
+20:18:09 start pairs
+20:18:10 pairs exit=0 in 1 s
+20:18:10 start pr
+20:18:18 pr exit=0 in 8 s
+20:18:18 ALLDONE
