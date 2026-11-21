@@ -5,3 +5,4 @@ oog.mega.saguaro.Saguaro 1.1.4 | racepower-A | oog.mega.saguaro.Saguaro_1.1.4.ja
 gh.micro.GrubbmThree 1.01 | ram18-L-r14-marginal | gh.micro.GrubbmThree_1.01.jar
 kc.micro.rammer.MaxRisk 0.6 | ram18-L-r14-marginal | kc.micro.rammer.MaxRisk_0.6.jar
 benhorner.PureAggression 0.2.6 | ram18-L-r14-marginal | benhorner.PureAggression_0.2.6.jar
+exauge.Leopard 1.1.019 | ram18-L-r14-cloud | exauge.Leopard_1.1.019.jar
