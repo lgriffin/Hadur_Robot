@@ -107,18 +107,8 @@ public final class AimMembers {
         return pattern;
     }
 
-    /**
-     * MOVE-65 em2: DrussGT 3.1.20's prior ratio (its two view models at 0.5 each against 0.06 for
-     * all the rest) and a hit learnt once per tick of the bullet's flight, as DrussGT scores a hit at
-     * every surf evaluation of its wave; off is em's views 0.5, 0.01 a member, one step a hit.
-     */
-    static final boolean EM2 = false;
-    /** MOVE-65 em2: every member but the views shares this prior. */
-    static final double EM2_OTHERS = 0.06;
-    /** MOVE-65 em2: the most steps a hit is learnt in. */
-    static final int EM2_MAX_STEPS = 60;
     /** MOVE-65: the views' prior in the EM mixture. */
-    static final double EM_VIEW_PRIOR = EM2 ? 1.0 : 0.5;
+    static final double EM_VIEW_PRIOR = 0.5;
     /** MOVE-65: every other member's prior in the EM mixture. */
     static final double EM_PRIOR = 0.01;
     /** MOVE-65: the mixture's learning rate a wave once the first {@value #EM_FIRST_HITS} hits are in (1/n before). */
@@ -136,7 +126,7 @@ public final class AimMembers {
         this.flats = Math.max(0, flats);
         this.score = new double[MEMBERS + mimics + (pattern ? 1 : 0) + this.flats];
         this.mix = new double[score.length];
-        for (int m = 0; m < mix.length; m++) mix[m] = prior(m, mix.length);
+        for (int m = 0; m < mix.length; m++) mix[m] = prior(m);
         priorSum = 0;
         for (double p : mix) priorSum += p;
         mixSum = priorSum;
@@ -152,9 +142,9 @@ public final class AimMembers {
         return flats;
     }
 
-    /** MOVE-65: member m's prior in a mixture of {@code members}. */
-    static double prior(int member, int members) {
-        return member == 0 ? EM_VIEW_PRIOR : EM2 ? EM2_OTHERS / Math.max(1, members - 1) : EM_PRIOR;
+    /** MOVE-65: member m's prior in the mixture. */
+    static double prior(int member) {
+        return member == 0 ? EM_VIEW_PRIOR : EM_PRIOR;
     }
 
     /** Every member: the views, the aims, then the mimics. */
@@ -171,7 +161,7 @@ public final class AimMembers {
     public double weight(int member) {
         if (mix != null) {
             double trust = bullets / (bullets + EM_TRUST);
-            return trust * mix[member] / mixSum + (1 - trust) * prior(member, mix.length) / priorSum;
+            return trust * mix[member] / mixSum + (1 - trust) * prior(member) / priorSum;
         }
         double standing = member == 0 ? 1.0 : member < MEMBERS ? PRIOR
             : member < MEMBERS + mimics ? MIMIC_PRIOR / mimics : PATTERN_PRIOR;
@@ -202,19 +192,9 @@ public final class AimMembers {
      * uniform guess's probability for the same window.
      */
     public void learn(double[] scores, double uniform) {
-        learn(scores, uniform, 1);
-    }
-
-    /**
-     * As {@link #learn(double[], double)}; with the mixture on and em2, a hit is learnt in
-     * {@code flightTicks} steps (at most {@value #EM2_MAX_STEPS}), the last at the hit's own rate.
-     */
-    public void learn(double[] scores, double uniform, int flightTicks) {
         if (!(uniform > 0)) return;
         if (mix != null) {
             bullets++;
-            int steps = EM2 ? Math.max(1, Math.min(EM2_MAX_STEPS, flightTicks)) : 1;
-            for (int k = 1; k < steps; k++) mixUpdate(scores, uniform, false, EM_RATE);
             mixUpdate(scores, uniform, false, bullets <= EM_FIRST_HITS ? 1.0 / bullets : EM_RATE);
             return;
         }
