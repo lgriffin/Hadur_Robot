@@ -1,6 +1,6 @@
 # Queue pc-em: progress
 
-Updated 2026-11-21 19:58:24 PC time (19:58 UTC), runner pid 49956.
+Updated 2026-11-21 20:13:32 PC time (20:13 UTC), runner pid 49956.
 
 - `prep` done, exit 0 in 2 min
 - `livematch` done, exit 0 in 0 min
@@ -60,27 +60,27 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### confirm
 
-**221 of 496 battles** (45%), 0 failed. Running 8 min, 1606 battles/h, about 10 min left (ends ~20:08 PC time). Last battle 0 min ago.
-Skipped turns a battle: 11.4 overall, first 100 11.2, last 100 11.8; engine disables 0.
+**489 of 496 battles** (99%), 0 failed. Running 23 min, 1254 battles/h, about 0 min left (ends ~20:13 PC time). Last battle 0 min ago.
+Skipped turns a battle: 11.6 overall, first 100 11.2, last 100 11.5; engine disables 0.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 57 | 0 | 76.73 | - | - | - | 11.4 |
-| aa | 57 | 0 | 77.39 | +0.01 (28 robots) | ±0.04 | -0.05 .. +0.08 | 11.4 |
-| em | 53 | 0 | 77.86 | -0.01 (25 robots) | ±0.03 | -0.05 .. +0.04 | 11.7 |
-| em2 | 54 | 0 | 77.99 | +0.02 (26 robots) | ±0.03 | -0.04 .. +0.07 | 11.4 |
+| c | 123 | 0 | 75.78 | - | - | - | 11.6 |
+| aa | 120 | 0 | 76.08 | +0.01 (31 robots) | ±0.02 | -0.02 .. +0.04 | 11.7 |
+| em | 124 | 0 | 74.60 | -0.03 (31 robots) | ±0.03 | -0.08 .. +0.01 | 11.8 |
+| em2 | 122 | 0 | 75.43 | -0.01 (31 robots) | ±0.04 | -0.08 .. +0.05 | 11.5 |
 
 APS = mean difference over the robots read x 31 panel robots / 1217 pairings.
-A/A: aa - c +0.54 pts over 28 robots; 1% band ±1.55 (inside).
+A/A: aa - c +0.30 pts over 31 robots; 1% band ±1.06 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 221 |
+| `fails 30` | halt | ok | 0 failed of 489 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 60 over 200` | halt | ok | 11.3 a battle over the last 200 (first 200: 11.3) |
+| `skips 60 over 200` | halt | ok | 11.7 a battle over the last 200 (first 200: 11.3) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 275 battles unrun (about 10 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 7 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
