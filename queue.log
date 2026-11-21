@@ -1,1 +1,10 @@
 07:53:13 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
+07:53:13 start prep
+07:53:15 progress pushed to origin claude/pc-jaylexi-12-progress (every 15 min)
+07:53:44 prep exit=0 in 31 s
+07:53:44 start livematch
+07:53:44 watching livematch: 3 stop rule(s)
+07:53:52 livematch exit=0 in 7 s
+07:53:52 start bench
+07:53:52 watching bench: 6 stop rule(s)
+07:54:14 progress bench: 16/20040 (0%) battles, 2604/h, ETA 7.7 h, 0 failed, skips 0.0/battle (last 100)
