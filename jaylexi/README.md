@@ -68,6 +68,11 @@ on chargers. It also orbits Leopard 0.4 rad closer inside 200 px and jitters its
 (per-robot lines, +2.9 and +1.0 points on their own robots). 43 bytes of 1.0 were rewritten with identical play to make
 room: 1,447 bytes ([docs/bench/jaylexi-tailoring.md](../docs/bench/jaylexi-tailoring.md)).
 
+1.2 (built 2026-11-21, not released) fires power 1 from 500 px at FoilistMC and CunobelinDC, the two robots above it in
+the MiniRumble, which out-last it on energy at range (JAYLEXI-25: +6.6 and +2.6 points on their own robots). It orbits
+Mark8, CannonfodderMicro and Charo at 1.35 rad (+1.4, +1.2 and about +1.9 points). Every other robot plays as 1.1.
+1,451 bytes ([docs/bench/jaylexi-tailoring.md](../docs/bench/jaylexi-tailoring.md)).
+
 ## Standing
 
 | Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | Next up | Gap |

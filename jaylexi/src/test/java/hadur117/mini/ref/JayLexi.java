@@ -13,7 +13,9 @@ import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 
 /**
- * The readable JayLexi 1.1: 1.0 firing within 1200 / distance degrees of its aim instead of a flat 3 (JAYLEXI-24),
+ * The readable JayLexi 1.2: 1.1 firing power 1 from 500 px at FoilistMC and CunobelinDC (JAYLEXI-25), and
+ * orbiting at 1.35 rad against Mark8, CannonfodderMicro and Charo.
+ * 1.1 was 1.0 firing within 1200 / distance degrees of its aim instead of a flat 3 (JAYLEXI-24),
  * with a closer orbit inside 200 px for Leopard and aim jitter against uCatcher.
  * 1.0 was 0.9 with one surf distance band instead of four (JAYLEXI-23).
  * 0.9 was 0.8 with the danger prediction counted from tick 2 instead of 3 (JAYLEXI-22).
@@ -39,9 +41,15 @@ public class JayLexi extends AdvancedRobot {
     // outward, or this robot's own angle from ORB, in hundredths of a radian, by its AIM row
     // (pc-jaylexi-orb, PR #644); 2 pi more where the gun jitters (JAYLEXI-19).
     static double orbit;
-    public static final String ORB = "ssssssssssss\u0087sssssssssssssssssssssssssssssssssssssssssssssssssssssssssss_ssssssssssssssssssssssss\u0087ssssssssssssssssssssssssssssssssssss_ssssssssssssss\u0087ssssssssssss_ssssssssssssssss\u0087ss\u0087s\u0087sssssssssssssssssssssss_ssss\u02e7ssssssssssssssssssssssssssssss_s\u0087ssssssssss\u0087sssssssssssssssss_ssssssssssssssssssssssssss\u0087sss_ssssss\u0087sssssssssss_ssssssssssssssss\u0087sssssssssssssssssssssss\u0087ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss_sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss\u02e7sssssssssssssssssssssssssssssssssssss\u0087ssssssssKssssssssssssssssssssssssssssssssssssss_ssssssss\u0087sssssssssssssssssssssssssssss";
+    public static final String ORB = "ssssssssssss\u0087ssssssssssssssssssssssssssssssssssssssssssssssssss\u0087ssssssss_ssssssssssssssssssssssss\u0087ssssssssssssssssssssssssssssssssssss_ssssssssssssss\u0087ssssssssssss_ssssssssssssssss\u0087ss\u0087s\u0087sssssssssssssssssssssss_ssss\u02e7ssssssssssssssssssssssssssssss_s\u0087ssssssssss\u0087sssssssssssssssss_ssssssssssssssssssssssssss\u0087sss_ssssss\u0087sss\u0087sssssss_sssssssssssssss\u0087\u0087sssssssssssssssssssssss\u0087ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss_sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss\u02e7sssssssssssssssssssssssssssssssssssss\u0087ssssssssKssssssssssssssssssssssssssssssssssssss_ssssssss\u0087sssssssssssssssssssssssssssss";
     // Where the orbit opens 0.4 rad further out inside 200 px (JAYLEXI-21): 40 at the robot's ORB index, else 0.
     public static final String NEAR = "\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000(\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000(\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000(\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000";
+    // Robots fired at with power 1 from 500 px (JAYLEXI-25), by name hash: FoilistMC 1.0 and CunobelinDC 1.2,
+    // strong learners that out-last us on energy at range. The shipped build keeps a POWER row per robot.
+    public static final String FAR = "\u2653\u36c5";
+    // Whether this opponent is one of FAR; noFar plays 1.1's power against everyone.
+    static boolean far;
+    boolean noFar;
     // Wall smoothing: the stick that must stay inside the field (JAYLEXI-7).
     static final double STICK = 140;
     static final Rectangle2D.Double FIELD = new Rectangle2D.Double(18, 18, 764, 564);
@@ -93,6 +101,7 @@ public class JayLexi extends AdvancedRobot {
 
         // This opponent's aim row in AIM: its name hash in NAMES, or the field's row when not found.
         row = BINS * (NAMES.indexOf((char) e.getName().hashCode()) + 1);
+        far = !noFar && FAR.indexOf((char) e.getName().hashCode()) >= 0;
         // Inside 200 px a picked robot's orbit opens 0.4 rad further out (JAYLEXI-21). The shipped build keeps a
         // slot per robot per 50 px of distance in ORB, which carries the same rule.
         orbit = (ORB.charAt(row / BINS) - (distance < 200 ? NEAR.charAt(row / BINS) : 0)) / 100.0;
@@ -138,9 +147,10 @@ public class JayLexi extends AdvancedRobot {
                 best = i;
             }
         }
-        // Power (JAYLEXI-8): 3 close in, else 2; a fifteenth of our energy at most, so we never disable
-        // ourselves; no more than finishes the enemy.
-        double power = Math.min(Math.min(distance < 150 ? 3 : 2, getEnergy() / 15), enemyEnergy / 4 + 0.1);
+        // Power (JAYLEXI-8): 3 close in, else 2, and 1 from 500 px against FAR (JAYLEXI-25); a fifteenth of our
+        // energy at most, so we never disable ourselves; no more than finishes the enemy.
+        double power = Math.min(Math.min(distance < 150 ? 3 : far && distance >= 500 ? 1 : 2, getEnergy() / 15),
+                enemyEnergy / 4 + 0.1);
         w.speed = Rules.getBulletSpeed(power);
         w.travelled = -1.5 * w.speed;
         addCustomEvent(w);
