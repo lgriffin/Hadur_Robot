@@ -1,6 +1,6 @@
 # Queue pc-jaylexi-11: progress
 
-Updated 2026-11-21 01:41:14 PC time (01:41 UTC), runner pid 90400.
+Updated 2026-11-21 01:56:20 PC time (01:56 UTC), runner pid 90400.
 
 - `prep` done, exit 0 in 1 min
 - `livematch` done, exit 0 in 0 min
@@ -33,27 +33,27 @@ Stopping now would leave 0 battles unrun; every battle already fought is kept an
 
 ### bench
 
-**12435 of 16032 battles** (78%), 0 failed. Running 2.5 h, 5430 battles/h, about 40 min left (ends ~02:20 PC time). Last battle -0 min ago.
+**13781 of 16032 battles** (86%), 0 failed. Running 2.8 h, 5398 battles/h, about 25 min left (ends ~02:21 PC time). Last battle 0 min ago.
 Skipped turns a battle: 0.0 overall, first 100 0.0, last 100 0.0; engine disables 0.
 
 | arm | battles | failed | share | vs control (pts) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 3111 | 0 | 88.56 | - | - | - | 0.0 |
-| aa | 3108 | 0 | 88.57 | +0.02 (668 robots) | ±0.04 | -0.04 .. +0.07 | 0.0 |
-| n | 3108 | 0 | 88.66 | +0.10 (668 robots) | ±0.15 | -0.13 .. +0.32 | 0.0 |
-| r6 | 3108 | 0 | 88.34 | -0.22 (668 robots) | ±0.18 | -0.49 .. +0.05 | 0.0 |
-A/A: aa - c +0.02 pts over 668 robots; 1% band ±0.21 (inside).
+| c | 3444 | 0 | 88.57 | - | - | - | 0.0 |
+| aa | 3446 | 0 | 88.59 | +0.02 (668 robots) | ±0.03 | -0.03 .. +0.07 | 0.0 |
+| n | 3447 | 0 | 88.65 | +0.07 (668 robots) | ±0.14 | -0.15 .. +0.29 | 0.0 |
+| r6 | 3444 | 0 | 88.35 | -0.23 (668 robots) | ±0.17 | -0.49 .. +0.03 | 0.0 |
+A/A: aa - c +0.02 pts over 668 robots; 1% band ±0.20 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 12435 |
+| `fails 30` | halt | ok | 0 failed of 13781 |
 | `dead 8` | halt | ok | every arm scoring |
 | `skips 60 over 200` | halt | ok | 0.0 a battle over the last 200 (first 200: 0.0) |
-| `stall 30m` | halt | ok | last battle -0 min ago |
-| `aa after 20%` | halt | ok | aa - c +0.02 pts over 668 robots, stop band ±0.24 |
-| `futility n below -0.5 after 20%` | finish | ok | n +0.10, best case +0.32 pts vs bar -0.50 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `aa after 20%` | halt | ok | aa - c +0.02 pts over 668 robots, stop band ±0.23 |
+| `futility n below -0.5 after 20%` | finish | ok | n +0.07, best case +0.29 pts vs bar -0.50 |
 
-Stopping now would leave 3597 battles unrun (about 40 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 2251 battles unrun (about 25 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -72,4 +72,5 @@ Stopping now would leave 3597 battles unrun (about 40 min); every battle already
 00:11:27 progress bench: 5551/16032 (35%) battles, 5480/h, ETA 1.9 h, 0 failed, skips 0.0/battle (last 100), aa +0.05, n +0.11, r6 -0.11
 00:41:43 progress bench: 7757/16032 (48%) battles, 4356/h, ETA 1.9 h, 0 failed, skips 0.0/battle (last 100), aa +0.04, n +0.05, r6 -0.22
 01:11:58 progress bench: 9782/16032 (61%) battles, 4018/h, ETA 1.6 h, 0 failed, skips 0.0/battle (last 100), aa +0.03, n +0.07, r6 -0.22
+01:42:16 progress bench: 12521/16032 (78%) battles, 5420/h, ETA 39 min, 0 failed, skips 0.0/battle (last 100), aa +0.01, n +0.08, r6 -0.22
 ```

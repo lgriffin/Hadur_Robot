@@ -1,6 +1,6 @@
 {
  "plan": "pc-jaylexi-11",
- "updated": 1795225274.7152572,
+ "updated": 1795226180.3608723,
  "steps": {
   "prep": {
    "status": "done",
@@ -100,8 +100,8 @@
   {
    "step": "bench",
    "started": 1795216246.6629894,
-   "updated": 1795225273.1333477,
-   "elapsed": 9026.470358371735,
+   "updated": 1795226178.2393727,
+   "elapsed": 9931.57638335228,
    "expected": 16032,
    "panel": 668,
    "field": null,
@@ -109,80 +109,80 @@
    "arms": [
     {
      "arm": "c",
-     "battles": 3111,
+     "battles": 3444,
      "failed": 0,
-     "level": 88.55615868263473,
-     "skips": 0.01671488267438123,
-     "fresh": 3111,
-     "scored": 3111,
+     "level": 88.57037150698602,
+     "skips": 0.016260162601626018,
+     "fresh": 3444,
+     "scored": 3444,
      "diff": null
     },
     {
      "arm": "aa",
-     "battles": 3108,
+     "battles": 3446,
      "failed": 0,
-     "level": 88.57380489021956,
-     "skips": 0.01866151866151866,
-     "fresh": 3108,
-     "scored": 3108,
-     "diff": 0.017646207584830265,
+     "level": 88.5932000998004,
+     "skips": 0.017701683110853163,
+     "fresh": 3446,
+     "scored": 3446,
+     "diff": 0.022828592814371298,
      "n": 668,
-     "ci95": 0.03672064072795368,
-     "half_stop": 0.05620506233870462,
+     "ci95": 0.0329472571169796,
+     "half_stop": 0.050429475179050415,
      "scale": null
     },
     {
      "arm": "n",
-     "battles": 3108,
+     "battles": 3447,
      "failed": 0,
-     "level": 88.66082709580839,
-     "skips": 0.016087516087516088,
-     "fresh": 3108,
-     "scored": 3108,
-     "diff": 0.09567301274075246,
+     "level": 88.65089645708584,
+     "skips": 0.015375689004931825,
+     "fresh": 3447,
+     "scored": 3447,
+     "diff": 0.06925912352783609,
      "n": 668,
-     "ci95": 0.14948817949323512,
-     "half_stop": 0.22880843799984965,
+     "ci95": 0.1432370722692195,
+     "half_stop": 0.21924041673860126,
      "scale": null
     },
     {
      "arm": "r6",
-     "battles": 3108,
+     "battles": 3444,
      "failed": 0,
-     "level": 88.34440194610778,
-     "skips": 0.009974259974259974,
-     "fresh": 3108,
-     "scored": 3108,
-     "diff": -0.22075213695984644,
+     "level": 88.35225174650698,
+     "skips": 0.010452961672473868,
+     "fresh": 3444,
+     "scored": 3444,
+     "diff": -0.22938558705100615,
      "n": 668,
-     "ci95": 0.17874329034575037,
-     "half_stop": 0.2735866688965567,
+     "ci95": 0.1672376034615953,
+     "half_stop": 0.25597592366570704,
      "scale": null
     }
    ],
    "aa": {
-    "diff": 0.017646207584830265,
-    "ci": 0.03672064072795368,
+    "diff": 0.022828592814371298,
+    "ci": 0.0329472571169796,
     "n": 668,
-    "band": 0.20938205218311282,
+    "band": 0.19892533004546403,
     "ok": true,
-    "band_stop": 0.24346750253850327
+    "band_stop": 0.23130852330867907
    },
    "warnings": [],
-   "battles": 12435,
+   "battles": 13781,
    "resumed": 0,
    "failed": 0,
    "disables": 0,
-   "rate": 5430.0,
-   "eta": 2384.7513812154693,
-   "fraction": 0.7756362275449101,
-   "last_battle_age": -0.27197742462158203,
+   "rate": 5398.0,
+   "eta": 1501.222675064839,
+   "fraction": 0.8595933133732535,
+   "last_battle_age": 2.0272529125213623,
    "rules": [
     {
      "rule": "fails 30",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 12435"
+     "detail": "0 failed of 13781"
     },
     {
      "rule": "dead 8",
@@ -200,22 +200,22 @@
      "rule": "stall 30m",
      "action": "halt",
      "state": "ok",
-     "detail": "last battle -0 min ago"
+     "detail": "last battle 0 min ago"
     },
     {
      "rule": "aa after 20%",
      "action": "halt",
      "state": "ok",
-     "detail": "aa - c +0.02 pts over 668 robots, stop band \u00b10.24"
+     "detail": "aa - c +0.02 pts over 668 robots, stop band \u00b10.23"
     },
     {
      "rule": "futility n below -0.5 after 20%",
      "action": "finish",
      "state": "ok",
-     "detail": "n +0.10, best case +0.32 pts vs bar -0.50"
+     "detail": "n +0.07, best case +0.29 pts vs bar -0.50"
     }
    ],
-   "skips_mean": 0.015359871330920788,
+   "skips_mean": 0.014948116972643494,
    "skips_last100": 0.01
   }
  ]
