@@ -36,7 +36,7 @@ class PcEmPlanTest {
         String body = queue.substring(at, queue.indexOf("\n\n", at + 1));
         for (String rule : new String[] {"fails 30", "dead 8", "skips 60 over 200", "stall 30m", "aa after 20%"}) assertTrue(body.contains("stop: " + rule), rule);
         assertTrue(body.contains("  after: livematch"), "the screen waits for the live-match check");
-        assertTrue(queue.contains("for b in c aa; do python3 tools/arm_pair.py $f --candidate $a --baseline $b"), "each arm is read against c and aa separately, not pooled");
+        assertTrue(queue.contains("for b in c aa; do python3 tools/arm_pair.py ${W}/arms.tsv --candidate $a --baseline $b --out ${OUT}/$(date +%Y-%m-%d)_pc-em-pairs-mid.md && python3 tools/arm_pair.py ${M}/arms.tsv --candidate $a --baseline $b --out ${OUT}/$(date +%Y-%m-%d)_pc-em-pairs-r31.md"), "each arm is read against c and aa separately, one file per panel");
         assertEquals(List.of(), PcLiveMatchPlanTest.violations("pc-em.queue", queue), "BENCH-245 timing rule");
         assertTrue(queue.contains("Why it should win") && queue.contains("set ALERT = lgriffin"));
         assertTrue(queue.contains("open_results_pr.sh claude/pc-em-results") && queue.contains("set P = --parallel 16 --no-truth-log"));

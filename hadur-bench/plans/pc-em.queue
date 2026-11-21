@@ -7,7 +7,7 @@
 #              3 seeds from 85600, --cpu-constant live, in work/pc-em
 #   confirm    panel-r31 (the 31 robots with the largest bench gap to BeepBoop)   same arms, 4 seeds from 85700
 #   gate       multiarm.py on each panel (each arm against c and aa pooled)
-#   pairs      arm_pair.py: each arm against c and against aa on its own, per panel; an arm passes where it beats both
+#   pairs      arm_pair.py: each arm against c and against aa on its own, one file per panel; an arm passes where it beats both
 #              c and aa with the 95% low end above 0 on the mid-field and is not below 0 on panel-r31; only a passing
 #              arm goes to Leigh for master (new code needs Leigh's OK)
 # Leigh starts it once the PC is free (one card at a time, from master):
@@ -68,7 +68,7 @@ confirm | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 4 --seed-base 8
 gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-em-mid.md && python3 ../data/tools/multiarm.py ${M}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-em-r31.md && python3 tools/per_robot.py ${W}/arms.tsv --arms em em2 --out ${OUT}/$(date +%Y-%m-%d)_pc-em-mid-per-robot.md --out-tsv ${OUT}/pc-em-mid-per-robot.tsv && cp ${W}/arms.tsv ${OUT}/pc-em-mid-arms.tsv && cp ${M}/arms.tsv ${OUT}/pc-em-r31-arms.tsv
   after: confirm
 
-pairs | for f in ${W}/arms.tsv ${M}/arms.tsv; do for a in em em2; do for b in c aa; do python3 tools/arm_pair.py $f --candidate $a --baseline $b --out ${OUT}/$(date +%Y-%m-%d)_pc-em-pairs.md || exit 1; done; done; done
+pairs | for a in em em2; do for b in c aa; do python3 tools/arm_pair.py ${W}/arms.tsv --candidate $a --baseline $b --out ${OUT}/$(date +%Y-%m-%d)_pc-em-pairs-mid.md && python3 tools/arm_pair.py ${M}/arms.tsv --candidate $a --baseline $b --out ${OUT}/$(date +%Y-%m-%d)_pc-em-pairs-r31.md || exit 1; done; done
   after: gate
 
 pr | bash tools/open_results_pr.sh claude/pc-em-results "1v1 MOVE-65 coupled danger mixture (em, em2) on the mid-field and panel-r31" ${OUT}/pc-em-livematch.md ${OUT}/*_pc-em-*.md ${OUT}/pc-em-mid-per-robot.tsv ${OUT}/pc-em-mid-arms.tsv ${OUT}/pc-em-r31-arms.tsv
