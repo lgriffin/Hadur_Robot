@@ -187,23 +187,8 @@ public class MoveController {
     /** MOVE-29: the simple aims as danger members beside the views, or null when off (duel only). */
     private AimMembers aimMembers;
 
-    /** MOVE-65: the EM danger mixture over the aim members, the flatteners as members of their own (duel only). */
-    private boolean emMixture;
-
-    /** MOVE-65: turns the EM danger mixture on or off; set before the aim members. */
-    public void setEmMixture(boolean emMixture) {
-        this.emMixture = emMixture;
-    }
-
-    /** MOVE-65: whether the aim members run the EM mixture. */
-    private boolean emOn() {
-        return aimMembers != null && aimMembers.em();
-    }
-
     /** MOVE-29: sets the aim members; null turns them off. */
     public void setAimMembers(AimMembers members) {
-        // MOVE-65: the two flattener views join as members of their own.
-        if (emMixture && members != null && !members.em()) members.enableEm(2);
         this.aimMembers = members;
     }
 
@@ -896,8 +881,6 @@ public class MoveController {
         if (dodgePasses && shotDodger != null && !w.hitByBullet && !w.bulletHitBullet) {
             shotDodger.observePass(w.simpleAims(), intersection.angle, intersection.bandwidth);
         }
-        // MOVE-65: a real bullet that passed us without hitting us or meeting ours teaches the mixture where we were.
-        if (emOn() && !w.hitByBullet && !w.bulletHitBullet) learnAimMembersPass(w, intersection);
         // MOVE-33: the mimic members learn every visit too, as the guns they copy do.
         if (memberMimics != null) memberMimics.learnVisit(w, w.guessFactor(intersection.angle));
         for (KnnView<TimestampedGuessFactor> view : views) {
@@ -1254,14 +1237,11 @@ public class MoveController {
         double totalScanWeight = 0;
         int enabledSize = 0;
         double[] estimate = viewEstimate();
-        boolean em = emOn();
 
         for (int vi = 0; vi < views.size(); vi++) {
             KnnView<TimestampedGuessFactor> view = views.get(vi);
             // RES-4: a view holding only faded seeds is as good as empty.
             if (view.effectiveSize() == 0 || !viewOn(view, estimate)) continue;
-            // MOVE-65: the flatteners are members of their own in the mixture.
-            if (em && (view == flattener || view == flattener2)) continue;
             double viewWeight = effectiveWeight(vi);
             enabledSize += view.effectiveSize();
 
@@ -1301,26 +1281,23 @@ public class MoveController {
         if (enabledSize == 0 || !(totalScanWeight > 0)) {
             double fallback = defaultDanger(w, segments, bandwidth);
             if (parts != null) parts[2 * views.size()] = fallback;
-            // MOVE-65: in the mixture every member has its say from the first wave, the fallback standing for the views.
-            if (em && mixAims) return aimMembers.danger(fallback, aimScores(w, dangerAngle, bandwidth, segments, surfWaveIndex));
             return fallback;
         }
         if (parts != null) parts[2 * views.size()] = Double.NaN;
         double viewScore = totalDanger / totalScanWeight;
         if (!mixAims || aimMembers == null) return viewScore;
-        return aimMembers.danger(viewScore, aimScores(w, dangerAngle, bandwidth, segments, surfWaveIndex));
+        return aimMembers.danger(viewScore, aimScores(w, dangerAngle, bandwidth, segments));
     }
 
     /**
      * MOVE-29: each aim member's score at an intersection: the surf's kernel on the aim's angle
      * over the intersection's segments; NaN for an aim the wave has no angle for.
      */
-    private double[] aimScores(Wave w, double dangerAngle, double bandwidth, List<double[]> segments, int surfWaveIndex) {
+    private double[] aimScores(Wave w, double dangerAngle, double bandwidth, List<double[]> segments) {
         double[] aims = w.simpleAims();
         int mimics = memberMimics == null ? 0 : aimMembers.mimics();
         boolean pattern = aimMembers.pattern();
-        int flats = aimMembers.flats();
-        double[] out = new double[AimMembers.AIMS.length + mimics + (pattern ? 1 : 0) + flats];
+        double[] out = new double[AimMembers.AIMS.length + mimics + (pattern ? 1 : 0)];
         for (int a = 0; a < AimMembers.AIMS.length; a++) {
             double angle = aims == null ? Double.NaN : aims[AimMembers.AIMS[a]];
             out[a] = Double.isNaN(angle) ? Double.NaN
@@ -1330,36 +1307,10 @@ public class MoveController {
         if (pattern) {
             // MOVE-56: the pattern-matcher mimic's kernel on its angle, NaN with no match.
             double angle = w.patternAngle();
-            out[AimMembers.AIMS.length + mimics] = Double.isNaN(angle) ? Double.NaN
+            out[out.length - 1] = Double.isNaN(angle) ? Double.NaN
                 : kernel(DiaUtils.normalizeAngle(angle, dangerAngle), bandwidth, segments);
         }
-        if (flats > 0) {
-            // MOVE-65: each flattener's own density, whatever the hit-rate gate says; NaN while empty.
-            out[out.length - 2] = viewOwnScore(flattener, w, dangerAngle, bandwidth, segments, surfWaveIndex);
-            out[out.length - 1] = viewOwnScore(flattener2, w, dangerAngle, bandwidth, segments, surfWaveIndex);
-        }
         return out;
-    }
-
-    /**
-     * MOVE-65: one view's danger on its own over an intersection, as {@link #getDangerScore} reads
-     * each view; NaN while it holds nothing. Its neighbours come from the same per-wave cache.
-     */
-    private double viewOwnScore(KnnView<TimestampedGuessFactor> view, Wave w, double dangerAngle,
-                                double bandwidth, List<double[]> segments, int surfWaveIndex) {
-        if (view == null || view.effectiveSize() == 0) return Double.NaN;
-        List<KdTree.Entry<TimestampedGuessFactor>> neighbors = getNearestNeighbors(view, w, surfWaveIndex);
-        double[] decay = view.getDecayWeights(neighbors);
-        double density = 0;
-        double total = 0;
-        for (int k = 0; k < decay.length; k++) {
-            KdTree.Entry<TimestampedGuessFactor> entry = neighbors.get(k);
-            double scanWeight = decay[k] / Math.sqrt(Math.max(entry.distance, MIN_DISTANCE)) * entry.value.weight();
-            double xFiringAngle = DiaUtils.normalizeAngle(w.firingAngle(entry.value.guessFactor), dangerAngle);
-            density += scanWeight * kernel(xFiringAngle, viewBandwidth(view, bandwidth), segments);
-            total += scanWeight;
-        }
-        return total > 0 ? density / total : Double.NaN;
     }
 
     /**
@@ -1406,47 +1357,20 @@ public class MoveController {
             for (KnnView<TimestampedGuessFactor> view : views) {
                 if (view.effectiveSize() > 0 && viewOn(view, estimate)) viewsHaveData = true;
             }
-            scores[0] = viewsHaveData || emOn() ? getDangerScore(w, at, FORENSICS_CACHE, null, false) : Double.NaN;
-            double[] aims = aimScores(w, at.angle, bandwidth, w.transmission(at), FORENSICS_CACHE);
+            scores[0] = viewsHaveData ? getDangerScore(w, at, FORENSICS_CACHE, null, false) : Double.NaN;
+            double[] aims = aimScores(w, at.angle, bandwidth, w.transmission(at));
             double[] aimAngles = w.simpleAims();
             for (int a = 0; a < AimMembers.AIMS.length; a++) {
                 // An aim's kernel is a probability over the reachable angles only, so a kernel
                 // running past an escape angle is scaled up by the share it keeps inside.
                 if (!Double.isNaN(aims[a])) aims[a] /= reachableShare(w, aimAngles[AimMembers.AIMS[a]], bandwidth);
             }
-            int pm = AimMembers.AIMS.length + (memberMimics == null ? 0 : aimMembers.mimics());
-            if (aimMembers.pattern() && !Double.isNaN(aims[pm])) {
-                aims[pm] /= reachableShare(w, w.patternAngle(), bandwidth);
+            if (aimMembers.pattern() && !Double.isNaN(aims[aims.length - 1])) {
+                aims[aims.length - 1] /= reachableShare(w, w.patternAngle(), bandwidth);
             }
             System.arraycopy(aims, 0, scores, 1, aims.length);
             double escape = w.maxEscapeAngle();
             aimMembers.learn(scores, escape > 0 ? bandwidth / escape : Double.NaN);
-        } finally {
-            for (KnnView<TimestampedGuessFactor> view : views) view.cachedNeighbors.remove(FORENSICS_CACHE);
-            cacheOwners.remove(FORENSICS_CACHE);
-        }
-    }
-
-    /**
-     * MOVE-65: teaches the mixture a wave that passed us: every member's score over the angles we
-     * covered while it crossed us, as {@link #learnAimMembers} reads a hit.
-     */
-    private void learnAimMembersPass(Wave w, Wave.Intersection at) {
-        try {
-            double[] scores = new double[aimMembers.members()];
-            scores[0] = getDangerScore(w, at, FORENSICS_CACHE, null, false);
-            double[] aims = aimScores(w, at.angle, at.bandwidth, w.transmission(at), FORENSICS_CACHE);
-            double[] aimAngles = w.simpleAims();
-            for (int a = 0; a < AimMembers.AIMS.length; a++) {
-                if (!Double.isNaN(aims[a])) aims[a] /= reachableShare(w, aimAngles[AimMembers.AIMS[a]], at.bandwidth);
-            }
-            int pm = AimMembers.AIMS.length + (memberMimics == null ? 0 : aimMembers.mimics());
-            if (aimMembers.pattern() && !Double.isNaN(aims[pm])) {
-                aims[pm] /= reachableShare(w, w.patternAngle(), at.bandwidth);
-            }
-            System.arraycopy(aims, 0, scores, 1, aims.length);
-            double escape = w.maxEscapeAngle();
-            if (escape > 0) aimMembers.learnPass(scores, Math.min(1.0, at.bandwidth / escape));
         } finally {
             for (KnnView<TimestampedGuessFactor> view : views) view.cachedNeighbors.remove(FORENSICS_CACHE);
             cacheOwners.remove(FORENSICS_CACHE);

@@ -70,15 +70,7 @@ public final class AimMembers {
     /** MOVE-56: the pattern-matcher mimic's standing weight, against the views' 1. */
     static final double PATTERN_PRIOR = 1.0;
 
-    private double[] score;
-    /** MOVE-65: the EM mixture's learnt weights (null with it off), one per member. */
-    private double[] mix;
-    /** MOVE-65: the flattener members after all the others (0 with the mixture off). */
-    private int flats;
-    /** MOVE-65: the waves learnt by the mixture this battle, hits and passes. */
-    private int waves;
-    /** MOVE-65: the sums of the learnt weights and of the priors. */
-    private double mixSum, priorSum;
+    private final double[] score;
     /** MOVE-33: the mimic members after the aims (0 without them). */
     private final int mimics;
     /** MOVE-56: whether the pattern-matcher mimic is the last member. */
@@ -107,46 +99,6 @@ public final class AimMembers {
         return pattern;
     }
 
-    /** MOVE-65: the views' prior in the EM mixture. */
-    static final double EM_VIEW_PRIOR = 0.5;
-    /** MOVE-65: every other member's prior in the EM mixture. */
-    static final double EM_PRIOR = 0.01;
-    /** MOVE-65: the mixture's learning rate a wave once the first {@value #EM_FIRST_HITS} hits are in (1/n before). */
-    static final double EM_RATE = 0.01;
-    /** MOVE-65: the hits learnt at rate 1/n. */
-    static final int EM_FIRST_HITS = 5;
-    /** MOVE-65: the learnt weights count n/(n + EM_TRUST) against the priors, n the hits learnt. */
-    static final double EM_TRUST = 20.0;
-
-    /**
-     * MOVE-65: turns on the EM danger mixture (DrussGT 3.1.20 style) with {@code flats} flattener
-     * views as members of their own after the others. Call before anything is learnt.
-     */
-    public void enableEm(int flats) {
-        this.flats = Math.max(0, flats);
-        this.score = new double[MEMBERS + mimics + (pattern ? 1 : 0) + this.flats];
-        this.mix = new double[score.length];
-        for (int m = 0; m < mix.length; m++) mix[m] = prior(m);
-        priorSum = 0;
-        for (double p : mix) priorSum += p;
-        mixSum = priorSum;
-    }
-
-    /** MOVE-65: whether the EM mixture is on. */
-    public boolean em() {
-        return mix != null;
-    }
-
-    /** MOVE-65: the flattener members (0 with the mixture off). */
-    public int flats() {
-        return flats;
-    }
-
-    /** MOVE-65: member m's prior in the mixture. */
-    static double prior(int member) {
-        return member == 0 ? EM_VIEW_PRIOR : EM_PRIOR;
-    }
-
     /** Every member: the views, the aims, then the mimics. */
     public int members() {
         return score.length;
@@ -159,10 +111,6 @@ public final class AimMembers {
 
     /** Each member's weight now: its standing weight times 2^(POWER x score). */
     public double weight(int member) {
-        if (mix != null) {
-            double trust = bullets / (bullets + EM_TRUST);
-            return trust * mix[member] / mixSum + (1 - trust) * prior(member) / priorSum;
-        }
         double standing = member == 0 ? 1.0 : member < MEMBERS ? PRIOR
             : member < MEMBERS + mimics ? MIMIC_PRIOR / mimics : PATTERN_PRIOR;
         return standing * Math.pow(2.0, POWER * score[member]);
@@ -193,61 +141,12 @@ public final class AimMembers {
      */
     public void learn(double[] scores, double uniform) {
         if (!(uniform > 0)) return;
-        if (mix != null) {
-            bullets++;
-            mixUpdate(scores, uniform, false, bullets <= EM_FIRST_HITS ? 1.0 / bullets : EM_RATE);
-            return;
-        }
         for (int m = 0; m < score.length && m < scores.length; m++) {
             if (Double.isNaN(scores[m])) continue;
             double ratio = (1 - EPS) * Math.max(0.0, scores[m]) / 2.0 / uniform + EPS;
             score[m] = DECAY * score[m] + (1 - DECAY) * (Math.log(ratio) / Math.log(2.0));
         }
         bullets++;
-    }
-
-    /**
-     * MOVE-65: learns a wave that passed us without hitting us: {@code scores} as {@link #learn}
-     * reads them, over the angles our body covered while the wave crossed us. Each member's weight
-     * scales with its share of mass NOT on our body. Does nothing with the mixture off.
-     */
-    public void learnPass(double[] scores, double uniform) {
-        if (mix == null || !(uniform > 0) || !(uniform < 1)) return;
-        mixUpdate(scores, uniform, true, EM_RATE);
-    }
-
-    /**
-     * MOVE-65: one multiplicative mixture step at rate {@code rate}: the members with a say keep
-     * their total weight, shared out by weight times their share on (hit) or off (pass) our body,
-     * each share mixed with {@value #EPS} of a uniform guess's.
-     */
-    private void mixUpdate(double[] scores, double uniform, boolean pass, double rate) {
-        double held = 0;
-        double fit = 0;
-        double[] share = new double[mix.length];
-        for (int m = 0; m < mix.length && m < scores.length; m++) {
-            if (Double.isNaN(scores[m])) {
-                share[m] = Double.NaN;
-                continue;
-            }
-            double on = Math.min(1.0, Math.max(0.0, scores[m] / 2.0));
-            share[m] = pass ? (1 - EPS) * (1 - on) + EPS * (1 - uniform) : (1 - EPS) * on + EPS * uniform;
-            held += mix[m];
-            fit += mix[m] * share[m];
-        }
-        if (!(fit > 0)) return;
-        for (int m = 0; m < mix.length && m < scores.length; m++) {
-            if (Double.isNaN(share[m])) continue;
-            mix[m] = (1 - rate) * mix[m] + rate * held * mix[m] * share[m] / fit;
-        }
-        mixSum = 0;
-        for (double x : mix) mixSum += x;
-        waves++;
-    }
-
-    /** MOVE-65: the waves the mixture learnt. */
-    public int waves() {
-        return waves;
     }
 
     /** Member m's rolling score. */

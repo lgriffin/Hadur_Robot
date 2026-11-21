@@ -56,14 +56,6 @@ final class MoveDesign {
     static final boolean AIM_MEMBERS = true;
 
     /**
-     * MOVE-65 (DrussGT 3.1.20 idea 2): with {@link #AIM_MEMBERS}, the members are weighted by one
-     * EM mixture step after every real enemy wave (a hit scales each member by its share on our body,
-     * a pass by its share off it), blended from fixed priors as hits come in; the two flattener views
-     * join as members of their own with no hit-rate gate. Duel only. Off: the ablation em turns it on.
-     */
-    static final boolean EM_MIXTURE = false;
-
-    /**
      * MOVE-30: with the aim members on, an enemy bullet our bullet met also scores the members
      * (the views included, as member 0), as a hit does, without teaching the views. On for the
      * next census (simple-gun dodge part 2, pc-sg-wide passed, PR #480); the ablation sgoff turns it off.
