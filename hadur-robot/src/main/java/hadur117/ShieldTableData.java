@@ -1175,6 +1175,8 @@ final class ShieldTableData {
             "benhorner.PureAggression 0.2.6",// +1.3
             "gh.micro.GrubbmThree 1.01",     // +3.4
             "suh.nano.RammingC 1.00",        // +3.0
+            // pc-locks round 17 (BENCH-253, PR #978): +1.2 on 12 fresh PC seeds; pooled with rounds 14 and 16 about +0.8, low end above 0
+            "exauge.Leopard 1.1.019",        // +1.2
         };
     }
 
@@ -1189,6 +1191,8 @@ final class ShieldTableData {
             "jcs.AutoBot 4.2.1",
             // pc-locks round 16 (BENCH-253, PR #975): 12 fresh PC seeds at the live turn time, +10.3
             "oog.micro.Maui 1.2",
+            // pc-locks round 17 (BENCH-253, PR #978): 12 fresh PC seeds at the live turn time, +11.1
+            "arthord.NanoSatan Mu",
         };
     }
 
