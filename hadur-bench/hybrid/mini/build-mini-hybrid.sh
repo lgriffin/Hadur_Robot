@@ -28,6 +28,7 @@ WORK=$(mktemp -d)
 trap 'rm -rf "$WORK"' EXIT
 mkdir -p "$WORK/src" "$WORK/classes"
 
+mkdir -p "$OPP"
 for J in sheldor.mini.FoilistMC_1.0 jk.mini.CunobelinDC_1.2; do
     [ -f "$OPP/$J.jar" ] || curl -fsSL -o "$OPP/$J.jar" "https://robocode-archive.strangeautomata.com/robots/$J.jar"
     (cd "$WORK/src" && unzip -qo "$OPP/$J.jar" '*.java')
