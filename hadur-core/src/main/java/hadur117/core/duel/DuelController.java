@@ -329,7 +329,6 @@ public final class DuelController {
         this.surfMover.setAesRecord(MoveDesign.AES_RECORD);
         this.surfMover.setOracleRecord(MoveDesign.ORACLE_RECORD);
         this.surfMover.setSurfKeyRecord(MoveDesign.SURF_KEY_RECORD);
-        this.surfMover.setDangerForm(duelOnly(MoveDesign.DANGER_FORM != 0, enemiesTotal) ? MoveDesign.DANGER_FORM : 0);
         this.shadowAvoidance = new ShadowAvoidance(fieldWidth, fieldHeight);
         this.ramEscape = new RamEscape(battleField, predictor);
         this.mirror = new MirrorDetector(fieldWidth, fieldHeight);

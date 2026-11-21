@@ -238,14 +238,6 @@ public class SurfMover {
         this.surfKeyRecord = on;
     }
 
-    /** MOVE-60: the wave danger's shape, 0 (ours), 1 (score^0.61 and the gentle time weight) or 2 (time weight only). */
-    private int dangerForm;
-
-    /** MOVE-60: sets the wave danger's shape; 0 is ours. */
-    public void setDangerForm(int form) {
-        this.dangerForm = form;
-    }
-
     /** SKEY-1: the records made since the last call, oldest first; the list is then emptied. */
     public List<String> drainSurfKeyRecords() {
         if (surfKeyRecords.isEmpty()) return List.of();
@@ -745,8 +737,6 @@ public class SurfMover {
         double danger = hitRate * (1 - shadowed) + viewScore;
         // MOVE-8: what the gun is told about this wave, before the damage and timing scale it.
         lastLeg = intersection == null ? null : PlanInterval.of(surfWave, intersection, danger);
-        // MOVE-60: a compressed hit chance, so a low-danger spot is not near-free next to a high one.
-        if (dangerForm == 1) danger = 0.68 * Math.pow(Math.max(0.0, danger), 0.61);
         // Robocode's damage: 4 * power, plus 2 * (power - 1) above power 1.
         danger *= Rules.getBulletDamage(surfWave.bulletPower());
         // WAVE-3: a wave whose power came from an ambiguous wall-hit split is trusted at half.
@@ -757,13 +747,7 @@ public class SurfMover {
         double currentDist = myState.location.distance(surfWave.sourceLocation);
         double currentWaveDist = currentDist - surfWave.distanceTraveled(myState.time);
         double timeToImpact = Math.max(1.0, currentWaveDist / surfWave.bulletSpeed());
-        if (dangerForm == 0) {
-            danger /= timeToImpact;
-        } else {
-            // MOVE-60: a gentle time weight, 1 at impact falling to 0.25 at 50 ticks and 0.01 by 100.
-            double tta = Math.min(timeToImpact, 99.0);
-            danger *= (tta * tta - 200 * tta + 10000) * 1e-4;
-        }
+        danger /= timeToImpact;
 
         Point2D.Double distancingFrom = surfWave.sourceLocation;
         danger *= distancingDanger(start, passed, distancingFrom);
