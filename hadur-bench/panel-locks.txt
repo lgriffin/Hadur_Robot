@@ -1,16 +1,7 @@
-# BENCH-253 pc-locks, round 14: robots whose line locked on the cloud (95% low end above 0, live turn time, master;
+# BENCH-253 pc-locks, round 15: robots whose line locked on the cloud (95% low end above 0, live turn time, master;
 # coverage/shards/locks.tsv, coverage/shards/briefs.md). name | note | jar
-benhorner.PureAggression 0.2.6 | ram18-L | benhorner.PureAggression_0.2.6.jar
-bayen.UbaRamLT 1.0 | ram18-L | bayen.UbaRamLT_1.0.jar
-exauge.Leopard 1.1.019 | ram18-L | exauge.Leopard_1.1.019.jar
-gh.micro.GrubbmThree 1.01 | ram18-L | gh.micro.GrubbmThree_1.01.jar
-jab.micro.Sanguijuela 0.8 | ram18-L | jab.micro.Sanguijuela_0.8.jar
-kc.micro.rammer.MaxRisk 0.6 | ram18-L | kc.micro.rammer.MaxRisk_0.6.jar
-mn.nano.perceptual.Impact 1.3.0 | ram18-L | mn.nano.perceptual.Impact_1.3.0.jar
-mz.NanoDeath 2.56 | ram18-L | mz.NanoDeath_2.56.jar
-sheldor.nano.Sabreur 1.1.2 | ram18-L | sheldor.nano.Sabreur_1.1.2.jar
-sul.Bicephal 1.2 | ram18-L | sul.Bicephal_1.2.jar
-wompi.Kowari 1.6 | ram18-L | wompi.Kowari_1.6.jar
-robin.ScalpBotC 1.0 | charge-B | robin.ScalpBotC_1.0.jar
 radnor.RamRod 1.0 | ram18-A | radnor.RamRod_1.0.jar
 oog.mega.saguaro.Saguaro 1.1.4 | racepower-A | oog.mega.saguaro.Saguaro_1.1.4.jar
+gh.micro.GrubbmThree 1.01 | ram18-L-r14-marginal | gh.micro.GrubbmThree_1.01.jar
+kc.micro.rammer.MaxRisk 0.6 | ram18-L-r14-marginal | kc.micro.rammer.MaxRisk_0.6.jar
+benhorner.PureAggression 0.2.6 | ram18-L-r14-marginal | benhorner.PureAggression_0.2.6.jar
