@@ -50,6 +50,7 @@ LEVERS = {
     "rf": ("rflist", ("RAM_FLEE",)),
     "rfn": ("rfanlist", ("RAM_FAN",)),
     "rbd": ("rbendlist", ("RAM_BEND",)),
+    "pm": ("pmlist", ("PM_MIMIC",)),  # MOVE-56 pattern-matcher mimic
     "or": ("orlist", ("STEADY_ORBIT",)),
     "sp2": ("sdplanlist", ("SHOT_DODGE_PLAN",)),
 }

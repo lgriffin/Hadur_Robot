@@ -14,3 +14,4 @@ wiki.mako.MakoHT 1.2.2.1 | shield33-G-on-master | wiki.mako.MakoHT_1.2.2.1.jar
 dz.Caedo 1.4 | shield33-G-on-master | dz.Caedo_1.4.jar
 kawigi.sbf.FloodSonnet 0.9 | shield33-G-on-master | kawigi.sbf.FloodSonnet_0.9.jar
 oog.micro.SavantMicro 1.1 | shield33-G-on-master | oog.micro.SavantMicro_1.1.jar
+oog.micro.Maui 1.2 | move56-C-maui | oog.micro.Maui_1.2.jar

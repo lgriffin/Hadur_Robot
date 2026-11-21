@@ -38,11 +38,11 @@ class PcLocksPlanTest {
         Set<String> broken = Broken.names(Path.of(Broken.FILE_1112));
         for (String n : panel) assertTrue(!broken.contains(n), n + " loads on 1.11.2");
         String arms = Files.readString(Path.of("plans/pc-locks.arms"));
-        for (String a : new String[] {"c", "aa", "bb", "rbd", "rp", "vj"}) {
+        for (String a : new String[] {"c", "aa", "bb", "rbd", "rp", "vj", "pm"}) {
             String v = a.equals("c") ? version : version + a;
             assertTrue(arms.contains("\n" + a + " | hadur117.Hadur " + v + " |"), a);
         }
-        assertEquals(6, names("plans/pc-locks.arms").size(), "c, aa, bb (master before MOVE-56 and SHIELD-33) and the lever arms rbd, rp and vj");
+        assertEquals(7, names("plans/pc-locks.arms").size(), "c, aa, bb (master before MOVE-56 and SHIELD-33) and the lever arms rbd, rp, vj and pm");
         assertTrue(queue.contains("build-ablation.sh --ref 4d6a3ca76 bb && grep \"^bb \" plans/pc-locks.arms >> ${W}-prep/lock.arms"), "bb is master before the two on-master lines");
         assertTrue(queue.contains("onmaster_ci.py ${W}/arms.tsv --without bb --robots"), "the on-master lines read per robot as control minus bb with a 95% interval");
         assertTrue(queue.contains("test -f opponents/$j || { echo \"missing jar $j\"; exit 1; }"), "no panel robot silently dropped");
@@ -53,7 +53,7 @@ class PcLocksPlanTest {
         String body = queue.substring(at, queue.indexOf("\n\n", at + 1));
         for (String rule : new String[] {"fails 30", "dead 8", "skips 60 over 24", "stall 30m"}) assertTrue(body.contains("stop: " + rule), rule);
         assertTrue(body.contains("  after: livematch"), "the lock waits for the live-match check");
-        assertTrue(panel.size() * 6 * 12 >= 24, "the skips window is reachable within the lock");
+        assertTrue(panel.size() * 7 * 12 >= 24, "the skips window is reachable within the lock");
         assertTrue(!body.contains("stop: aa"), "the watcher reads A/A only once 10 robots are read in both arms; aa is read in the gate");
         int atp = queue.indexOf("\npr | ");
         assertTrue(queue.substring(atp).contains("  after: gate"), "the results PR waits for the gate");
