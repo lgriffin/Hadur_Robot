@@ -1148,6 +1148,17 @@ final class ShieldTableData {
     }
 
     /**
+     * MOVE-56: the opponents whose truncated-lateral-velocity pattern matcher a mimic joins the danger for
+     * ({@code pm-mimic:} lines). Empty until a lock holds (build-ablation.sh pmlist adds candidate lines here).
+     *
+     * @return a fresh array of names
+     */
+    static String[] patternMimics() {
+        return new String[] {
+        };
+    }
+
+    /**
      * RAM-11: the rammers whose shots the escape also dodges as circular aims ({@code ram-circ:} lines), each locked on
      * 12 fresh PC seeds at the live turn time after a 12-seed cloud lock.
      *
