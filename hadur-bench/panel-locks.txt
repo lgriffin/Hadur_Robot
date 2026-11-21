@@ -1,15 +1,15 @@
-# BENCH-253 pc-locks, round 17: robots whose line locked on the cloud (95% low end above 0, live turn time, master;
-# coverage/shards/locks.tsv, coverage/shards/briefs.md), round 16's three re-reads, the MOVE-58 four (on master, read as
-# c minus bb) and three round 14 lines on master that carry only c and aa, so the A/A check reads 12 robots. name | note | jar
-arthord.NanoSatan Mu | pm-D | arthord.NanoSatan_Mu.jar
-kawigi.sbf.FloodMini 1.4 | tiny-G+A | kawigi.sbf.FloodMini_1.4.jar
-exauge.Leopard 1.1.019 | ram18-r16-pooled-marginal | exauge.Leopard_1.1.019.jar
-radnor.RamRod 1.0 | ram18-r16-reread | radnor.RamRod_1.0.jar
-oog.mega.saguaro.Saguaro 1.1.4 | racepower-r16-reread | oog.mega.saguaro.Saguaro_1.1.4.jar
-cw.megas.GhostShell GT | move58-onmaster | cw.megas.GhostShell_GT.jar
-cw.megas.Gridd 0.4 | move58-onmaster | cw.megas.Gridd_0.4.jar
-cw.megas.Polar 3.2 | move58-onmaster | cw.megas.Polar_3.2.jar
-cw.megas.Silhouette 1.1 | move58-onmaster | cw.megas.Silhouette_1.1.jar
+# BENCH-253 pc-locks, round 18: robots whose line locked on the cloud (95% low end above 0, live turn time, master;
+# coverage/shards/locks.tsv, coverage/shards/briefs.md) and eight robots whose line is already on master, read only in c
+# and aa, so the A/A check reads 12 robots. name | note | jar
+nova.Snow 1.0 | pm-D | nova.Snow_1.0.jar
+stf.PanzerGeneral 0.1 | pm-D | stf.PanzerGeneral_0.1.jar
+robar.nano.Assertive 0.3 | pm-D-24seeds | robar.nano.Assertive_0.3.jar
+KiraNL.SpaceKees 0.1 | pmx-G | KiraNL.SpaceKees_0.1.jar
+arthord.NanoSatan Mu | aa-pad-r17-line | arthord.NanoSatan_Mu.jar
+exauge.Leopard 1.1.019 | aa-pad-r17-line | exauge.Leopard_1.1.019.jar
+cw.megas.GhostShell GT | aa-pad-move58-line | cw.megas.GhostShell_GT.jar
+cw.megas.Gridd 0.4 | aa-pad-move58-line | cw.megas.Gridd_0.4.jar
+cw.megas.Polar 3.2 | aa-pad-move58-line | cw.megas.Polar_3.2.jar
 jab.micro.Sanguijuela 0.8 | aa-pad-r14-line | jab.micro.Sanguijuela_0.8.jar
 bayen.UbaRamLT 1.0 | aa-pad-r14-line | bayen.UbaRamLT_1.0.jar
 robin.ScalpBotC 1.0 | aa-pad-r14-line | robin.ScalpBotC_1.0.jar
