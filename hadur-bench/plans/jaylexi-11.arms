@@ -1,7 +1,0 @@
-# BENCH-268 (pc-jaylexi-11): c is JayLexi 1.0's source (master at 299c55f3c, flat 3 degree fire gate), aa its A/A
-# rebuild, n the shipped 1.1 source (JAYLEXI-24 gate, Leopard and uCatcher lines, byte-trimmed), r6 the released 0.6.
-# All but r6 built with ProGuard by kitlab/build_arm_pg.sh, as a release ships.
-c | hadur117.mini.JayLexi 1.0c | kitlab/jars/hadur117.mini.JayLexi_1.0c.jar
-aa | hadur117.mini.JayLexi 1.0aa | kitlab/jars/hadur117.mini.JayLexi_1.0aa.jar
-n | hadur117.mini.JayLexi 1.1n | kitlab/jars/hadur117.mini.JayLexi_1.1n.jar
-r6 | hadur117.mini.JayLexi 0.6 | kitlab/jars/hadur117.mini.JayLexi_0.6.jar
