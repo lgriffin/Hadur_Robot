@@ -1137,25 +1137,13 @@ final class ShieldTableData {
 
     /**
      * RAM-18: the rammers the escape bends away from its own line of travel after each of their shots
-     * ({@code ram-bend:} lines); candidate builds add lines here (build-ablation.sh rbendlist).
+     * ({@code ram-bend:} lines). Empty until a PC card holds them: the 11 rammers of the cloud class lock are on
+     * pc-locks round 14 (build-ablation.sh rbendlist adds candidate lines here).
      *
      * @return a fresh array of names
      */
     static String[] ramBends() {
         return new String[] {
-            // RAM-18 class lock, 12 fresh cloud seeds 79700 at the live turn time: pooled +1.85+-0.60 vs base,
-            // +1.83+-0.65 vs the A/A twin; per robot vs base / vs twin below. Machete (-0.7) left out.
-            "benhorner.PureAggression 0.2.6", // +3.6 / +0.7
-            "bayen.UbaRamLT 1.0",             // +1.6 / +1.7
-            "exauge.Leopard 1.1.019",         // +1.6 / +0.8
-            "gh.micro.GrubbmThree 1.01",      // +2.7 / +2.3
-            "jab.micro.Sanguijuela 0.8",      // +2.2 / +3.0
-            "kc.micro.rammer.MaxRisk 0.6",    // +0.4 / +1.4
-            "mn.nano.perceptual.Impact 1.3.0", // +3.2 / +3.8
-            "mz.NanoDeath 2.56",              // +2.3 / +2.2
-            "sheldor.nano.Sabreur 1.1.2",     // +0.6 / +1.2
-            "sul.Bicephal 1.2",               // +1.9 / +2.6
-            "wompi.Kowari 1.6",               // +2.8 / +2.7
         };
     }
 
