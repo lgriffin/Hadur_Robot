@@ -75,17 +75,35 @@ class JayLexiReplayTest {
 
     @Test
     @Tag("JAYLEXI-19")
-    @DisplayName("the aim jitter rides BulletCatcher's orbit char alone, and its orbit stays 2 pi from a picked one")
+    @DisplayName("the aim jitter rides the catchers' orbit slots alone (BulletCatcher, uCatcher since 1.1), each 2 pi from 1.15")
     void jitterOnlyAgainstTheCatcher() {
-        int k = JayLexi.NAMES.indexOf((char) "rsim.mini.BulletCatcher 0.4".hashCode());
-        assertTrue(k >= 0, "BulletCatcher has a row");
+        int r = JayLexi.BINS * (JayLexi.NAMES.indexOf((char) "rsim.mini.BulletCatcher 0.4".hashCode()) + 1);
+        int u = JayLexi.BINS * (JayLexi.NAMES.indexOf((char) "rsim.micro.uCatcher 0.1".hashCode()) + 1);
+        assertTrue(r > 0 && u > 0, "both catchers have a row");
         for (int i = 0; i < JayLexi.ORB.length(); i++) {
             int c = JayLexi.ORB.charAt(i);
-            assertEquals(i == k + 1, c >= 400, "row " + i);
+            assertEquals(i >= r && i < r + SLOTS || i >= u && i < u + SLOTS, c >= 400, "slot " + i);
         }
-        double orbit = (JayLexi.ORB.charAt(k + 1) - 2 * Math.PI * 100) / 100.0;
-        assertEquals(1.15, orbit, 0.005, "1.15 plus 2 pi, to 0.003 rad");
+        for (int at : new int[] {r, u}) {
+            double orbit = (JayLexi.ORB.charAt(at + 4) - 2 * Math.PI * 100) / 100.0;
+            assertEquals(1.15, orbit, 0.005, "1.15 plus 2 pi, to 0.003 rad");
+        }
     }
+
+    @Test
+    @Tag("JAYLEXI-21")
+    @DisplayName("the shipped orbit table is the readable one, a slot per 50 px, opened 0.4 rad inside 200 px where NEAR says")
+    void orbitSlotsFollowTheReadableRule() {
+        for (int k = 0; k <= JayLexi.NAMES.length(); k++) {
+            for (int j = 0; j < SLOTS; j++) {
+                assertEquals(hadur117.mini.ref.JayLexi.ORB.charAt(k) - (j < 4 ? hadur117.mini.ref.JayLexi.NEAR.charAt(k) : 0),
+                        JayLexi.ORB.charAt(JayLexi.BINS * k + j), "row " + k + " slot " + j);
+            }
+        }
+    }
+
+    /** Distance slots per robot in the shipped ORB: one per 50 px, past the field's diagonal. */
+    static final int SLOTS = 24;
 
     /** A name whose row has an orbit other than 1.15. */
     static String orbitName() {
@@ -93,7 +111,7 @@ class JayLexiReplayTest {
             String n = "e" + i;
             int k = JayLexi.NAMES.indexOf((char) n.hashCode());
             // Not a jitter row (JAYLEXI-19): its Math.random() draws are not seeded, so it does not replay.
-            if (k >= 0 && JayLexi.ORB.charAt(k + 1) != 115 && JayLexi.ORB.charAt(k + 1) < 400) {
+            if (k >= 0 && JayLexi.ORB.charAt(JayLexi.BINS * (k + 1) + 4) != 115 && JayLexi.ORB.charAt(JayLexi.BINS * (k + 1) + 4) < 400) {
                 return n;
             }
         }
@@ -107,6 +125,33 @@ class JayLexiReplayTest {
                 return n;
             }
         }
+    }
+
+    @Test
+    @Tag("JAYLEXI-23")
+    @DisplayName("the shipped build keeps one surf distance band: 0.9's four give other orders")
+    void surfHasOneDistanceBand() throws Exception {
+        String bands = Replay.run(hadur117.mini.ref.JayLexi.class, hadur117.mini.ref.ReplayBot.Bands::new, 1, 6, 1500);
+        assertNotEquals(-1, firstDifference(shipped(1), bands));
+        assertEquals(-1, firstDifference(shipped(1), readable(1)));
+    }
+
+    @Test
+    @Tag("JAYLEXI-24")
+    @DisplayName("the shipped build fires within 1200 / distance degrees: 1.0's flat 3 gives other orders")
+    void fireGateFollowsDistance() throws Exception {
+        String flat = Replay.run(hadur117.mini.ref.JayLexi.class, hadur117.mini.ref.ReplayBot.Gate3::new, 1, 6, 1500);
+        assertNotEquals(-1, firstDifference(shipped(1), flat));
+        assertEquals(-1, firstDifference(shipped(1), readable(1)));
+    }
+
+    @Test
+    @Tag("JAYLEXI-22")
+    @DisplayName("the shipped build counts its danger prediction from tick 2: 0.8's tick 3 gives other orders")
+    void predictionCountsFromTickTwo() throws Exception {
+        String lead3 = Replay.run(hadur117.mini.ref.JayLexi.class, hadur117.mini.ref.ReplayBot.Lead3::new, 1, 6, 1500);
+        assertNotEquals(-1, firstDifference(shipped(1), lead3));
+        assertEquals(-1, firstDifference(shipped(1), readable(1)));
     }
 
     @Test

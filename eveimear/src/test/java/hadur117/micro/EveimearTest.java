@@ -93,7 +93,7 @@ class EveimearTest {
 
     @Test
     @Tag("EVEIMEAR-5")
-    @DisplayName("against a wall the drive turns until a 160 px stick stays inside the field")
+    @DisplayName("against a wall the drive turns until a 120 px stick stays inside the field")
     void smoothing() {
         Probe p = new Probe();
         p.x = 30;
@@ -101,8 +101,8 @@ class EveimearTest {
         p.onScannedRobot(scan(100, 0, 400));
         double drive = Math.atan(p.turn) + p.heading;
         Rectangle2D.Double field = new Rectangle2D.Double(18, 18, 764, 564);
-        assertTrue(field.contains(p.x + 160 * Math.sin(drive), p.y + 160 * Math.cos(drive))
-                || field.contains(p.x - 160 * Math.sin(drive), p.y - 160 * Math.cos(drive)));
+        assertTrue(field.contains(p.x + 120 * Math.sin(drive), p.y + 120 * Math.cos(drive))
+                || field.contains(p.x - 120 * Math.sin(drive), p.y - 120 * Math.cos(drive)));
     }
 
     @Test

@@ -47,6 +47,27 @@ also kept by how much of our orbit ahead is still in the field, as the enemy see
 on four fresh cloud seed sets, and the fitted build read +0.55 ± 0.49
 ([docs/bench/jaylexi-own-movement.md](../docs/bench/jaylexi-own-movement.md)). 1,495 bytes through ProGuard.
 
+0.8 (built 2026-11-16, not released) adds per-robot tailoring (JAYLEXI-21). The orbit table now has a slot per robot per
+50 px of distance at no extra code bytes. RammingC, LightningBug and MirrorMicro get orbits of their own, and Bruce and
+Lifestealer a wider orbit inside 200 px (+3.1 to +5.4 points each on 12 fresh cloud seeds, about +0.03 APS). 1,495 bytes
+([docs/bench/jaylexi-tailoring.md](../docs/bench/jaylexi-tailoring.md)).
+
+0.9 (built 2026-11-19, not released) counts the surf's danger prediction from tick 2 instead of 3 (JAYLEXI-22): each
+predicted spot is taken one tick further along our path. +0.29 ± 0.23 over 0.8 on 12 fresh cloud seeds over 112 MiniRumble
+robots, after +0.50 on its 3-seed screen. 1,495 bytes, the same as 0.8
+([docs/bench/jaylexi-tailoring.md](../docs/bench/jaylexi-tailoring.md)).
+
+1.0 (built 2026-11-20, not released) drops the surf stats' four distance bands for one (JAYLEXI-23): every wave at us
+learns from every other, whatever the range, so the stats fill four times as fast. +0.23 ± 0.20 over 0.9 on its 12-seed
+cloud lock over 112 MiniRumble robots, +0.56 ± 0.24 on a 12-seed head-to-head, about +0.2 pooled over every read.
+1,486 bytes, 9 fewer than 0.9 ([docs/bench/jaylexi-tailoring.md](../docs/bench/jaylexi-tailoring.md)).
+
+1.1 (built 2026-11-20, not released) fires once its gun is within 1200 / distance degrees of the aim instead of a flat 3
+(JAYLEXI-24), so it fires sooner at robots that close in: +0.35 ± 0.26 over 1.0 on a 12-seed cloud lock, +3 to +4 points
+on chargers. It also orbits Leopard 0.4 rad closer inside 200 px and jitters its aim against uCatcher, a bullet catcher
+(per-robot lines, +2.9 and +1.0 points on their own robots). 43 bytes of 1.0 were rewritten with identical play to make
+room: 1,447 bytes ([docs/bench/jaylexi-tailoring.md](../docs/bench/jaylexi-tailoring.md)).
+
 ## Standing
 
 | Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | Next up | Gap |

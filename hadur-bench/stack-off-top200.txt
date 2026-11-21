@@ -20,7 +20,7 @@
 14 gh.GresSuffurd 0.4.13
 15 kc.serpent.WaveSerpent 2.11
 16 dsekercioglu.mega.WhiteFang 2.8.1
-17 cs.Nene 1.0.5
+17 cs.Nene 1.1.0
 18 jk.melee.Neuromancer 7.12
 19 voidious.Dookious 1.573c
 21 davidalves.Phoenix 1.02

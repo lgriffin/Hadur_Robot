@@ -38,7 +38,7 @@ class FullOffPlanTest {
         assertEquals(167, panel.size());
         assertEquals(panel.size(), panel.stream().distinct().count(), "no robot twice");
         assertEquals(panel, names("plans/full-off-all.list", "\t"), "the screen arm names exactly the panel");
-        for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE)).contains(n), n + " loads on 1.11.2");
+        for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE_1112)).contains(n), n + " loads on 1.11.2");
         assertTrue(queue.contains("build-ablation.sh aa ")
             && queue.contains("FULL_OFF=plans/full-off-all.list bash ./build-ablation.sh fplist"));
         assertTrue(queue.contains("--set panel-midfield.txt --seeds 3 --seed-base 8000 --arms plans/full-off.arms"));

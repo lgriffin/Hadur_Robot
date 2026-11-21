@@ -38,7 +38,7 @@ class ShieldRescreenPlanTest {
         assertEquals(List.of("tobe.Saturn lambda", "zeze2.OperatorZeze 1.05"), panel);
         assertEquals(panel, names("plans/shield-rescreen-add.txt"), "both join the list");
         assertEquals(panel, names("plans/shield-rescreen-still.txt"), "both get still lines");
-        for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE)).contains(n), n + " loads on 1.11.2");
+        for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE_1112)).contains(n), n + " loads on 1.11.2");
         assertTrue(queue.contains("build-ablation.sh aa ") && queue.contains("SHIELD_ADD=plans/shield-rescreen-add.txt"
             + " SHIELD_STILL=plans/shield-rescreen-still.txt bash ./build-ablation.sh slistadd,szlist"));
         assertTrue(queue.contains("--set panel-shield-rescreen.txt --seeds 12 --seed-base 12000 --arms plans/pc-shield-rescreen.arms"));

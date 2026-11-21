@@ -1,14 +1,23 @@
-# BENCH-253 pc-locks, round 6: robots whose per-robot line locked on the cloud (95% low end above 0, live turn time)
-# after round 5 ran (PR #870) (coverage/shards/locks.tsv, 16 Nov). Census rows. name | rank | jar
-suzushin7.nano.Galaxy03 1.01 | rank615-band5 | suzushin7.nano.Galaxy03_1.01.jar
-suh.nano.RammingC 1.00 | rank637-band5 | suh.nano.RammingC_1.00.jar
-step.nanoPri 1.0 | rank676-band5 | step.nanoPri_1.0.jar
-mc2.enemy.Original 0.9 | rank634-band5 | mc2.enemy.Original_0.9.jar
-supersample.SuperTracker 1.0 | rank890-band6 | supersample.SuperTracker_1.0.jar
-uccc.MilkyWay 1.01 | rank1034-band6 | uccc.MilkyWay_1.01.jar
-nexus.One 1.0 | rank875-band6 | nexus.One_1.0.jar
-oog.nano.SavantVS 1.1 | rank626-band5 | oog.nano.SavantVS_1.1.jar
-ab.DengerousRoBatra 1.3 | rank155-band3 | ab.DengerousRoBatra_1.3.jar
-nz.jdc.nano.NeophytePRAL 1.4 | rank329-band4 | nz.jdc.nano.NeophytePRAL_1.4.jar
-ar.QuantumChromodynamics 1.2.1 | rank776-band6 | ar.QuantumChromodynamics_1.2.1.jar
-el33t.EL33tGangstarr2 2.0 | rank1000-band6 | el33t.EL33tGangstarr2_2.0.jar
+# BENCH-253 pc-locks, round 13: robots that load on Robocode 1.11.2 whose per-robot line locked on the cloud (95% low end
+# above 0, live turn time, MOVE-52 on; coverage/shards/locks.tsv, coverage/shards/briefs.md). name | note | jar
+jgap.JGAP23423 1.0 | gap1.6 | jgap.JGAP23423_1.0.jar
+maye.SlashBot 1.0 | gap0.8 | maye.SlashBot_1.0.jar
+agd.Mooserwirt2 2.7 | gap3.9 | agd.Mooserwirt2_2.7.jar
+suh.nano.MyFirstAdvancedRobot 1.00 | gap0.5 | suh.nano.MyFirstAdvancedRobot_1.00.jar
+mld.Infinity 2.2 | gap1.1 | mld.Infinity_2.2.jar
+ola.Puffin 1.0 | gap2.0 | ola.Puffin_1.0.jar
+com.blogspot.malinkody.DestrobotMalin 1.0 | gap-0.2 | com.blogspot.malinkody.DestrobotMalin_1.0.jar
+jp.SineWall 1.0 | charge-G | jp.SineWall_1.0.jar
+mmb.Roskilde 0.5 | charge-G | mmb.Roskilde_0.5.jar
+jep.nano.Hawkwing 0.4.1 | gap6.2 | jep.nano.Hawkwing_0.4.1.jar
+acid.Syzygy 1.0.4 | gap2.5 | acid.Syzygy_1.0.4.jar
+sng.arco.Arco 0.0 | charge-C | sng.arco.Arco_0.0.jar
+yk.JahRoslav 1.1 | charge-B | yk.JahRoslav_1.1.jar
+robin.ScalpBotC 1.0 | charge-B | robin.ScalpBotC_1.0.jar
+knackibot.KnackOnOne 0.8.1 | charge-B | knackibot.KnackOnOne_0.8.1.jar
+cjk.Merkava 0.1.1 | charge-B | cjk.Merkava_0.1.1.jar
+kawam.kmBot9 1.0 | charge-B | kawam.kmBot9_1.0.jar
+sanja.First 0.1 | charge-B | sanja.First_0.1.jar
+tkt.RedShift 1.1.CS.0 | bdiff-C | tkt.RedShift_1.1.CS.0.jar
+kjc.Karaykan 1.0 | charge-B | kjc.Karaykan_1.0.jar
+sheldor.melee.nano.TestMelee 0.1 | charge-B | sheldor.melee.nano.TestMelee_0.1.jar

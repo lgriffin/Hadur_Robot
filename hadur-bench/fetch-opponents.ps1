@@ -61,8 +61,17 @@ foreach ($jar in $jars) {
         continue
     }
     $part = "$target.part"
+    # BENCH-267: a jar the archive lacks takes its URL from opponent-urls.txt (the participants list's).
+    $url = "$baseUrl/$jar"
+    $urlFile = Join-Path $PSScriptRoot "opponent-urls.txt"
+    if (Test-Path -LiteralPath $urlFile) {
+        foreach ($line in Get-Content -LiteralPath $urlFile) {
+            $f = $line.Trim() -split '\s+'
+            if (-not $line.TrimStart().StartsWith("#") -and $f.Count -ge 2 -and $f[0] -eq $jar) { $url = $f[1]; break }
+        }
+    }
     try {
-        Invoke-WebRequest -UseBasicParsing -Uri "$baseUrl/$jar" -OutFile $part -ErrorAction Stop
+        Invoke-WebRequest -UseBasicParsing -Uri $url -OutFile $part -ErrorAction Stop
         Move-Item -LiteralPath $part -Destination $target -Force -ErrorAction Stop
         $downloaded++
         Write-Host "downloaded $jar"

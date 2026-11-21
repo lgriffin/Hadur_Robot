@@ -1,0 +1,28 @@
+# PC card pc-team-tempo-read (BENCH-259): HadurTeam master (aa) as the subject team against the six drill teams (plans/team-tempo-set.txt),
+# 12 seeds from 27000, 12 rounds, no baseline. tools/team_tempo.py reads it beside the other subject's run.
+--team
+true
+--seeds
+12
+--seed-base
+27000
+--rounds
+12
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+plans/team-tempo-set.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@aa.jar
+--robot
+hadur117.HadurTeam @V@aa
+--member
+hadur117.Hadur
+--out
+work/team-tempo-@V@-hadur
+--report
+../docs/bench/local/team-tempo-hadur.md

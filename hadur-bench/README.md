@@ -3,9 +3,11 @@
 Headless Robocode battles for measuring Hadur (stage S0 of the Hadur 2 plan), and the
 recorder that captures the core's replay fixtures (S1).
 
-The bench runs the full Robocode 1.11.2 engine from Maven Central (BENCH-79), one of the
-releases LiteRumble takes uploads from (1.11.2, 1.12.0; since 2026-11-01 it refuses 1.11.1 and older,
-and the default was 1.11.1 until then); `-Drobocode.version=...`
+The bench runs the full Robocode 1.12.0 engine from Maven Central (BENCH-79, BENCH-267), the release
+every live rumble client runs (the server refused 1.11.1 and older from 2026-11-01 and 1.11.2 by mid
+November; the default was 1.11.2 until 2026-11-20), with `kotlin-stdlib` beside it as the live client
+has it, so the Kotlin robots load. Robots the engine rejects leave a set first: `broken-1.12.0.txt` on
+1.12.0, `broken-1.11.2.txt` on a 1.11.x engine. `-Drobocode.version=...`
 (the scripts' `--engine`) swaps it, and every report names the engine it ran, flagging any
 release the rumble does not take. Until 2026-10-08 the default was 1.9.5.6, so earlier
 reports without an `--engine` ran on that (issue #151). The security manager is on.

@@ -43,7 +43,10 @@
 #   --dry-run              print what would be built, fetched and run, and run nothing
 #   --skip-build           skip `mvn package` at the repo root
 #   --skip-fetch           skip fetching the set's opponent jars
-#   --engine VERSION       run the battles on this Robocode release from Maven Central (e.g. 1.11.2)
+#   --engine VERSION       run the battles on this Robocode release from Maven Central; default the bench pom's,
+#                          1.12.0, the live clients' engine (BENCH-267)
+#   --keep-broken          keep the robots the engine's broken list names (broken-1.12.0.txt, or broken-1.11.2.txt
+#                          on a 1.11.x engine, where it is refused); they fail to load, so this is for load checks
 #   --arms FILE            a multi-arm run (BENCH-92): every arm in FILE (label | robot | jar) on every
 #                          opponent and seed, in a shuffled order; writes arms.tsv. Replaces --robot/--baseline
 #   --pin                  bind each battle JVM to its worker's own processors (BENCH-93)
@@ -56,6 +59,7 @@
 #                          so a run cut short is a fair sample of the panel and the queue's watch can read it
 #   --failed-ok            with --arms, exit 0 when fewer than 1 battle in 20 failed (BENCH-187): a robot that
 #                          will not load leaves failed rows, which the readers skip, instead of failing the step
+#                          (BENCH-265); an opponent whose jar is missing (an archive 404) is dropped and logged
 set -u
 
 HERE=$(cd "$(dirname "$0")" && pwd)
@@ -96,6 +100,7 @@ PIN_OFFSET=""
 TRUTH_LOG=1
 SHUFFLE_JOBS=0
 FAILED_OK=0
+KEEP_BROKEN=0
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -126,6 +131,7 @@ while [ $# -gt 0 ]; do
         --child-cpus) CHILD_CPUS="${2:?--child-cpus needs a number}"; shift 2 ;;
         --force-memory) FORCE_MEMORY=1; shift ;;
         --engine) ENGINE="${2:?--engine needs a Robocode version}"; shift 2 ;;
+        --keep-broken) KEEP_BROKEN=1; shift ;;
         --arms) ARMS="${2:?--arms needs a file}"; shift 2 ;;
         --pin) PIN=1; shift ;;
         --no-resume) RESUME=0; shift ;;
@@ -143,6 +149,15 @@ if [ -n "$BASELINE" ] && [ -z "$BASELINE_ROBOT" ]; then
     exit 2
 fi
 
+# --keep-broken keeps the engine's broken list (BENCH-267: broken-1.12.0.txt on the default 1.12.0, the few robots
+# 1.12.0 rejects). On a 1.11.x engine the list's robots cannot load at all, so it is refused there.
+# Same rule as Broken.file: 1.0 to 1.11.x read broken-1.11.2.txt.
+case "$ENGINE" in
+    1.[0-9]|1.[0-9].*|1.10|1.10.*|1.11|1.11.*)
+        if [ "$KEEP_BROKEN" -eq 1 ]; then
+            echo "--keep-broken cannot run on $ENGINE, which will not load broken-1.11.2.txt's robots (drop --engine: the default is 1.12.0)" >&2; exit 2
+        fi ;;
+esac
 HERE_DIR=$(cd "$(dirname "$0")" && pwd)
 PYTHON=$(command -v python3 || command -v python || true)
 if [ "$PARALLEL" = "auto" ] || [ "$PARALLEL" = "0" ]; then
@@ -211,6 +226,7 @@ if [ -n "$PIN_OFFSET" ]; then ARGS="$ARGS --pin-offset $PIN_OFFSET"; fi
 if [ "$TRUTH_LOG" -eq 0 ]; then ARGS="$ARGS --truth-log false"; fi
 if [ "$SHUFFLE_JOBS" -eq 1 ]; then ARGS="$ARGS --job-order shuffled"; fi
 if [ "$FAILED_OK" -eq 1 ]; then ARGS="$ARGS --failed-ok true"; fi
+if [ "$KEEP_BROKEN" -eq 1 ]; then ARGS="$ARGS --keep-broken true"; fi
 
 # The engine is the bench's own Maven dependency, so another release is a property away;
 # the bench's classpath file is rebuilt with it on this compile (issue #109).

@@ -36,6 +36,10 @@ re-indexed by the top 14 bits of the name's hash (the 515 MicroRumble names keep
 (pc-eveimear-port, PR #676, 112 robots x 12 seeds): +2.22 ± 0.76 points over 0.4, Cotillion itself +1.90.
 0.4's catcher jitter (EVEIMEAR-13) is gone with its gun.
 
+0.6 (built 2026-11-19, not released) closes the drive off the enemy until a 120 px stick stays in the field,
+where 0.5 (and Cotillion) used 160 (EVEIMEAR-5). On 112 MicroRumble robots: +0.37 ± 0.28 over 0.5 on 12 fresh
+cloud seeds (140 px +0.21, 100 px +0.35, 180 px -0.28; docs/bench/local/2026-11-19_eveimear-*.md). 749 bytes, as 0.5.
+
 ## Standing
 
 | Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | 5th place | Gap to 5th |

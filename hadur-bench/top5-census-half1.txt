@@ -8,7 +8,7 @@ xander.cat.XanderCat 12.9 | rank9-band1 | xander.cat.XanderCat_12.9.jar
 rsalesc.mega.Knight 0.6.28 | rank11-band2 | rsalesc.mega.Knight_0.6.28.jar
 pc.Wavelet 1.5 | rank13-band2 | pc.Wavelet_1.5.jar
 kc.serpent.WaveSerpent 2.11 | rank15-band2 | kc.serpent.WaveSerpent_2.11.jar
-cs.Nene 1.0.5 | rank17-band2 | cs.Nene_1.0.5.jar
+cs.Nene 1.1.0 | rank17-band2 | cs.Nene_1.1.0.jar
 voidious.Dookious 1.573c | rank19-band2 | voidious.Dookious_1.573c.jar
 rsalesc.roborio.Roborio 1.2.4 | rank22-band2 | rsalesc.roborio.Roborio_1.2.4.jar
 mue.Ascendant 1.2.27 | rank24-band2 | mue.Ascendant_1.2.27.jar

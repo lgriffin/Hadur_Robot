@@ -33,7 +33,7 @@ class PcRam11bPlanTest {
         assertTrue(panel.size() >= 1, "the follow-up cloud-locked rammers");
         assertEquals(panel.size(), new HashSet<>(panel).size(), "no robot twice");
         assertEquals(panel, names("plans/ram11b-add.txt"), "one line per panel robot");
-        Set<String> broken = Broken.names(Path.of(Broken.FILE));
+        Set<String> broken = Broken.names(Path.of(Broken.FILE_1112));
         for (String n : panel) assertTrue(!broken.contains(n), n + " loads on 1.11.2");
         String arms = Files.readString(Path.of("plans/pc-ram11b.arms"));
         assertTrue(arms.contains("\nc | hadur117.Hadur " + version + " |") && arms.contains("\naa | hadur117.Hadur " + version + "aa |")

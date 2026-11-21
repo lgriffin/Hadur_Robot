@@ -29,8 +29,7 @@ class Probe extends JayLexi {
         enemySpeed = 0;
         next = null;
         waves = new ArrayList<>();
-        surf = new double[4][4][5][BINS];
-        JayLexi.gun = new double[480][BINS];
+        JayLexi.gun = new double[JayLexi.gun.length][BINS];
         row = 0;
     }
 

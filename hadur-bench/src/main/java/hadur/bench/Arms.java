@@ -64,13 +64,23 @@ final class Arms {
     /**
      * The order a job fights its arms in: a shuffle seeded from the run's seed base, the seed and
      * the opponent, so a rerun of the same job fights them in the same order and two jobs rarely
-     * share one.
+     * share one. BENCH-255: the key is mixed (SplitMix64 finalizer) before it seeds the shuffle.
+     * java.util.Random's first draws are strongly correlated across nearby seeds, so the raw key
+     * put one arm of a two-arm run first in up to 43 of 48 jobs; mixed, every arm leads about
+     * equally often.
      */
     static List<Arm> order(List<Arm> arms, int seedBase, int seed, String opponent) {
         List<Arm> out = new ArrayList<>(arms);
         long key = ((long) seedBase * 1_000_003L + seed) * 31L + opponent.hashCode();
-        Collections.shuffle(out, new Random(key));
+        Collections.shuffle(out, new Random(mix(key)));
         return out;
+    }
+
+    /** SplitMix64's finalizer: spreads nearby keys over the whole 64-bit range. */
+    static long mix(long z) {
+        z = (z ^ (z >>> 30)) * 0xbf58476d1ce4e5b9L;
+        z = (z ^ (z >>> 27)) * 0x94d049bb133111ebL;
+        return z ^ (z >>> 31);
     }
 
     /** One battle's row of {@code arms.tsv}; the errors column has tabs and line breaks blanked. */

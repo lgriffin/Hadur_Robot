@@ -29,7 +29,7 @@ class PcClassOnePlanTest {
         String version = Files.readString(Path.of("../hadur-robot/pom.xml"))
             .replaceAll("(?s).*<robot.release>(.*?)</robot.release>.*", "$1");
         assertTrue(queue.contains("set V = " + version + "\n"), "the card builds the current release");
-        java.util.Set<String> broken = Broken.names(Path.of(Broken.FILE));
+        java.util.Set<String> broken = Broken.names(Path.of(Broken.FILE_1112));
         Map<String, List<String>> armsOf = Map.of("shield", List.of("mtzl"), "cap", List.of("pk", "p5"), "gun", List.of("gl", "x5"));
         Map<String, Integer> sizes = Map.of("shield", 21, "cap", 13, "gun", 30);
         for (var e : armsOf.entrySet()) {

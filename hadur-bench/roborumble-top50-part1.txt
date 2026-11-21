@@ -5,7 +5,7 @@ oog.mega.saguaro.Saguaro 1.0 | rumble-4 | oog.mega.saguaro.Saguaro_1.0.jar
 voidious.Diamond 1.8.22 | rumble-6 | voidious.Diamond_1.8.22.jar
 rsalesc.mega.Knight 0.6.28 | rumble-9 | rsalesc.mega.Knight_0.6.28.jar
 dsekercioglu.mega.WhiteFang 2.8.1 | rumble-16 | dsekercioglu.mega.WhiteFang_2.8.1.jar
-cs.Nene 1.0.5 | rumble-17 | cs.Nene_1.0.5.jar
+cs.Nene 1.1.0 | rumble-17 | cs.Nene_1.1.0.jar
 mue.Ascendant 1.2.27 | rumble-23 | mue.Ascendant_1.2.27.jar
 darkcanuck.Pris 0.92 | rumble-25 | darkcanuck.Pris_0.92.jar
 ags.Midboss 1q.fast | rumble-32 | ags.Midboss_1q.fast.jar

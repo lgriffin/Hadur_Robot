@@ -26,12 +26,13 @@ a robot on the 100 robots DrussGT scores under 80 against, and reads level on th
 ### Gaps to the top three
 
 Each figure is the rival's score minus 3.23's, summed over shared opponents. Opponents are banded by
-DrussGT's score against them, or by BeepBoop's in the DrussGT column.
+DrussGT's score against them, or by BeepBoop's in the DrussGT column. The Robots column counts the
+DrussGT bands; by BeepBoop's score the bands hold 29, 196, 172, 232 and 573 robots.
 
 | Opponent band | Robots | BeepBoop ahead by | Saguaro 1.1.4 ahead by | DrussGT 3.1.18 ahead by |
 |---|---|---|---|---|
 | Under 80 | 111 | +0.61 | -0.27 | -0.02 |
-| 80 to 90 | 182 | +0.37 | -0.07 | +0.23 |
+| 80 to 90 | 182 | +0.37 | -0.07 | -0.23 |
 | 90 to 95 | 196 | +0.44 | +0.32 | +0.07 |
 | 95 to 98 | 270 | +0.22 | +0.17 | +0.03 |
 | 98 and up | 443 | +0.29 | +0.10 | +0.02 |

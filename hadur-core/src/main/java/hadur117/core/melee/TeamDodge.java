@@ -45,6 +45,14 @@ final class TeamDodge {
     static final boolean OWN_FIRE = true;
     /** Candidates driven through the waves: more than WAVES' 8, since the base ranking no longer sees bullets. */
     static final int RERANK = 12;
+    /**
+     * TMODE-52: candidates driven through the waves while one lands within {@link #CLOSE_TICKS}. Against the
+     * gap teams our members took 23% of the shots that land inside 30 ticks where OgiTeam took 16%, at the same
+     * speed and range (level beyond 50 ticks); the {@link #RERANK} lowest-risk candidates seldom hold the escape.
+     */
+    static final int CLOSE_RERANK = 40;
+    /** TMODE-52: ticks to arrival under which a wave counts as close. */
+    static final int CLOSE_TICKS = 35;
     /** Past this, px, beyond Hadur a wave is gone. */
     static final double GONE = 100;
 

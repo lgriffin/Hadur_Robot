@@ -39,7 +39,7 @@ class StillFieldPlanTest {
             "rz.SmallDevil 1.502", "slugzilla.Parallax 0.1", "stelo.MoojukNano 1.2"), panel);
         assertEquals(panel, names("plans/still-field-add.txt"), "all join the list");
         assertEquals(panel, names("plans/still-field-still.txt"), "all get still lines");
-        for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE)).contains(n), n + " loads on 1.11.2");
+        for (String n : panel) assertTrue(!Broken.names(Path.of(Broken.FILE_1112)).contains(n), n + " loads on 1.11.2");
         assertTrue(queue.contains("build-ablation.sh aa ") && queue.contains("SHIELD_ADD=plans/still-field-add.txt"
             + " SHIELD_STILL=plans/still-field-still.txt bash ./build-ablation.sh slistadd,szlist"));
         assertTrue(queue.contains("--set panel-still-field.txt --seeds 12 --seed-base 12200 --arms plans/pc-still-field.arms"));
@@ -49,7 +49,8 @@ class StillFieldPlanTest {
         // A panel robot already on master's list would shield in the control arm too.
         String listData = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldListData.java"));
         // Only the robots this card shipped may already be on master's list.
-        List<String> shipped = names("plans/still-field-shipped.txt");
+        List<String> shipped = new java.util.ArrayList<>(names("plans/still-field-shipped.txt"));
+        shipped.addAll(names("plans/locks-shield-shipped.txt")); // pc-locks rounds 6 and 8 shield-list adds (SmallDevil is in this card)
         for (String n : panel) assertTrue(shipped.contains(n) || !listData.contains("\"" + n + "\","), n + " is not on master's shield list yet");
         assertTrue(!panel.contains("axeBots.Musashi 2.18"), "Musashi failed this arm on the PC (BENCH-209)");
         String arms = Files.readString(Path.of("plans/pc-still-field.arms"));

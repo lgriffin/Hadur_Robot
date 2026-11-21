@@ -166,4 +166,25 @@ class RamEscapeTest {
         double lead = on.lastCircularLead();
         assertTrue(!Double.isNaN(lead) && Math.abs(lead) > 0.02, "circular aim leads off the linear one: " + lead);
     }
+
+    @Test
+    @Tag("RAM-17")
+    @DisplayName("RAM-17: a shot led a few degrees off the escape's line misses it as a line but hits it as a fan")
+    void fanDodgesTheNearMiss() {
+        // As RAM-5's case, but the shot was led for half our speed, so its linear aim passes a few degrees behind
+        // the plain escape's line: the line dodge keeps the line, the fan turns off it.
+        double ene = 5 * Math.PI / 12;
+        RobotState me = state(400, 300, ene, 8, 100);
+        RobotState rammer = state(300, 300, Math.PI / 2, 8, 100);
+        RobotState aimedAt = state(400 - 8 * Math.sin(ene), 300 - 8 * Math.cos(ene), ene, 4, 99);
+        RamEscape line = new RamEscape(FIELD, PREDICTOR);
+        RamEscape fan = new RamEscape(FIELD, PREDICTOR);
+        fan.setFan(true);
+        line.onEnemyShot(99, 300, 300, 3.0, aimedAt);
+        fan.onEnemyShot(99, 300, 300, 3.0, aimedAt);
+        line.move(BotOrders.builder(), me, rammer, true);
+        fan.move(BotOrders.builder(), me, rammer, true);
+        assertEquals(ene, line.lastHeading(), 1e-9);
+        assertTrue(Math.abs(Angles.normalRelativeAngle(fan.lastHeading() - ene)) > 0.2, "fan pick " + fan.lastHeading());
+    }
 }

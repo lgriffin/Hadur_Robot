@@ -40,7 +40,7 @@ class PcLinesPlanTest {
         assertEquals(panel.size(), new HashSet<>(panel).size(), "no robot twice");
         assertEquals("jkong.JKHydra 1.4", panel.get(0), "the cloud lock leads the panel");
         assertEquals(panel, names("plans/lines-cap-add.txt"), "each panel robot gets one power-cap line");
-        java.util.Set<String> broken = Broken.names(Path.of(Broken.FILE));
+        java.util.Set<String> broken = Broken.names(Path.of(Broken.FILE_1112));
         String list = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldListData.java"));
         String table = Files.readString(Path.of("../hadur-robot/src/main/java/hadur117/ShieldTableData.java"));
         // After the results PR: the robots this card shipped lines for (plans/lines-cap-shipped.txt) carry them on master.
@@ -56,6 +56,14 @@ class PcLinesPlanTest {
         later.addAll(names("plans/locks3-shipped.txt")); // pc-locks round 3 (PR #860) likewise
         later.addAll(names("plans/locks4-shipped.txt")); // pc-locks round 4 (PR #866) likewise
         later.addAll(names("plans/locks5-shipped.txt")); // pc-locks round 5 (PR #870) likewise
+        later.addAll(names("plans/locks6-shipped.txt")); // pc-locks round 6 (PR #890) likewise
+        later.addAll(names("plans/locks7-shipped.txt")); // pc-locks round 7 (PR #902) likewise
+        later.addAll(names("plans/locks8-shipped.txt")); // pc-locks round 8 (PR #905) likewise
+        later.addAll(names("plans/locks9-shipped.txt")); // pc-locks round 9 (PR #913) likewise
+        later.addAll(names("plans/locks10-shipped.txt")); // pc-locks round 10 (PR #922) likewise
+        later.addAll(names("plans/locks11-shipped.txt")); // pc-locks round 11 (PR #929) likewise
+        later.addAll(names("plans/locks12-shipped.txt")); // pc-locks round 12 (PR #940) likewise
+        later.addAll(names("plans/locks13-shipped.txt")); // pc-locks round 13 (PR #951) likewise
         for (String n : panel) {
             assertTrue(!broken.contains(n), n + " loads on 1.11.2");
             if (shipped.contains(n)) {

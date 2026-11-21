@@ -1,0 +1,12 @@
+opponent	control	control_n	rf_minus_c	rf_n	rp_minus_c	rp_n	rwl_minus_c	rwl_n	mv_minus_c	mv_n	mt_minus_c	mt_n	mtmv_minus_c	mtmv_n
+urdos.URDOS 1.3	93.21	24	3.87	12		0		0		0		0		0
+sanyi.mikrobi.Roberto 1.0	96.89	24	0.57	12		0		0		0		0		0
+Polkwane.Piyane 0.7b	95.19	24		0		0	2.89	12		0		0		0
+dmh.robocode.robot.PinkPanther 1.1	74.37	24		0	0.57	12		0		0		0		0
+ebo.Tahoe 1.1.79	71.48	24		0	1.77	12		0		0		0		0
+kc.serpent.WaveSerpent 2.11	59.64	24		0	5.25	12		0		0		0		0
+maribo.Omicron 1.0	97.92	24		0		0		0		0		0	1.35	12
+mnt.AHEB 0.6a	91.59	24		0		0		0	1.95	12		0		0
+pez.mako.Mako 1.5	96.03	24		0		0		0	1.14	12		0		0
+pfvicm.Sobieski 7.2.3b	96.81	24		0		0		0		0	2.31	12		0
+rz.SmallDevil 1.502	94.56	24		0		0		0		0	2.11	12		0

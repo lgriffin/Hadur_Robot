@@ -1,0 +1,28 @@
+# PC card pc-team-tempo-read (BENCH-259): OgiTeam as the subject team against the six drill teams (plans/team-tempo-set.txt),
+# 12 seeds from 27000, 12 rounds, no baseline. tools/team_tempo.py reads it beside the other subject's run.
+--team
+true
+--seeds
+12
+--seed-base
+27000
+--rounds
+12
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+plans/team-tempo-set.txt
+--robot-jar
+opponents/cz.libors.OgiTeam_v1.jar
+--robot
+cz.libors.OgiTeam v1
+--member
+cz.libors.Ogi
+--out
+work/team-tempo-@V@-ogi
+--report
+../docs/bench/local/team-tempo-ogi.md

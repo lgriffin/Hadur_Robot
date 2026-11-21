@@ -191,6 +191,36 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("RAM-15")
+    @DisplayName("ram-flee lines name the slow chargers the duel backs away from, matched as shield entries")
+    void perOpponentRamFlee() {
+        ShieldList l = ShieldList.parse(List.of("ram-flee: a.B 1.0", "ram-flee: c.D", "ram-flee:", "ram-wait: e.F"));
+        assertTrue(l.ramFlee("a.B 1.0"));
+        assertTrue(l.ramFlee("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertTrue(l.ramFlee("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.ramFlee("e.F 1.0"), "a ram-wait line is not a ram-flee line");
+        assertFalse(l.ramWait("a.B 1.0") || l.ramCirc("a.B 1.0"), "no other switch");
+        assertFalse(l.ramFlee(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.ramFlee("a.B 1.0"));
+    }
+
+    @Test
+    @Tag("MOVE-47")
+    @DisplayName("steady-orbit lines name the opponents the surf orbits without stops, matched as shield entries")
+    void perOpponentSteadyOrbit() {
+        ShieldList l = ShieldList.parse(List.of("steady-orbit: a.B 1.0", "steady-orbit: c.D", "steady-orbit:", "ram-wait: e.F"));
+        assertTrue(l.steadyOrbit("a.B 1.0"));
+        assertTrue(l.steadyOrbit("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertTrue(l.steadyOrbit("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.steadyOrbit("e.F 1.0"), "a ram-wait line is not a steady-orbit line");
+        assertFalse(l.ramWait("a.B 1.0") || l.velocityJitter("a.B 1.0"), "no other switch");
+        assertFalse(l.steadyOrbit(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.steadyOrbit("a.B 1.0"));
+    }
+
+    @Test
     @Tag("RAM-14")
     @DisplayName("ram-heavy lines name the rammers whose shots the escape weighs twice as heavily, matched as shield entries")
     void perOpponentRamHeavy() {
@@ -203,6 +233,21 @@ class ShieldListTest {
         assertFalse(l.ramHeavy(null));
         assertFalse(l.matches("a.B 1.0"), "not a shield entry");
         assertFalse(ShieldList.NONE.ramHeavy("a.B 1.0"));
+    }
+
+    @Test
+    @Tag("RAM-17")
+    @DisplayName("ram-fan lines name the rammers whose aims the escape dodges as fans, matched as shield entries")
+    void perOpponentRamFan() {
+        ShieldList l = ShieldList.parse(List.of("ram-fan: a.B 1.0", "ram-fan: c.D", "ram-fan:", "ram-heavy: e.F"));
+        assertTrue(l.ramFan("a.B 1.0"));
+        assertTrue(l.ramFan("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertTrue(l.ramFan("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.ramFan("e.F 1.0"), "a ram-heavy line is not a ram-fan line");
+        assertFalse(l.ramHeavy("a.B 1.0") || l.ramCirc("a.B 1.0"), "no other switch");
+        assertFalse(l.ramFan(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.ramFan("a.B 1.0"));
     }
 
     @Test

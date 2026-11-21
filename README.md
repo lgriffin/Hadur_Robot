@@ -118,6 +118,8 @@ One on one (the duel):
 - **Makes itself harder to hit.** Its own bullets in flight shadow the enemy's waves: the
   angles where an enemy bullet would be shot down are scored as safe (MOVE-1). When a
   known opponent hits it more than its profile says, the movement changes flavour (MOVE-2).
+  An enemy bullet that ours shoots down shows that bullet's exact firing angle, and the danger
+  views learn it as they learn a hit (MOVE-52, on since PR #934).
 - **Remembers every opponent.** A profile per opponent (hit rates, gun and movement tiers,
   gun and surf samples) is folded in at each round's end and saved within Robocode's data
   quota, crash-safe (MEM-1..5, RES-3).
@@ -155,6 +157,10 @@ member's real heading and speed as OgiTeam's wave check does. No OgiTeam code is
 On a team the dodge also knows eight readable enemy guns (TMODE-50, on since PR #865): each
 team's aim was read from its own jar and fitted on bench bullet logs (`hadur-bench/tools/team_aimfit.py`),
 and the fitted aim joins that team's shot profiles.
+
+While an enemy wave will land within 35 ticks, the team dodge drives 40 candidate spots through the waves
+instead of 12 (TMODE-52, on since PR #919): most of our hits taken against the gap teams came from shots landing
+inside 30 ticks.
 
 
 ## Architecture

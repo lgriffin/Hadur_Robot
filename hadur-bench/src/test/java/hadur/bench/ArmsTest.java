@@ -82,6 +82,23 @@ class ArmsTest {
     }
 
     @Test
+    @Tag("BENCH-255")
+    @DisplayName("a two-arm run puts each arm first in about half its jobs, over many opponents and few seeds")
+    void twoArmOrderIsBalancedAcrossOpponents() {
+        List<Arms.Arm> arms = List.of(new Arms.Arm("aa", "x.A 1", Path.of("a")), new Arms.Arm("rwl", "x.B 1", Path.of("b")));
+        for (int base : new int[] {41000, 43600, 47920, 48400}) {
+            int aaFirst = 0, jobs = 0;
+            for (int r = 0; r < 100; r++) {
+                for (int seed = 1; seed <= 6; seed++) {
+                    if (Arms.order(arms, base, seed, "opp.Robot" + r + " 1.0").get(0).label().equals("aa")) aaFirst++;
+                    jobs++;
+                }
+            }
+            assertTrue(aaFirst > jobs * 0.42 && aaFirst < jobs * 0.58, "aa first in " + aaFirst + " of " + jobs + " jobs, seed base " + base);
+        }
+    }
+
+    @Test
     @Tag("BENCH-92")
     @DisplayName("each battle is one tab-separated row, and the report counts each arm's battles, disables and skips")
     void rowsAndReport() {

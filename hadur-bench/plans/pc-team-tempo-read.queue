@@ -1,0 +1,47 @@
+# battle: team
+# Team: where the ticks go (BENCH-259; read T1 of "Hadur melee and team: finding the APS", 2026-11-18).
+# Diagnostic only: it builds nothing that ships.
+# The Ogi mirror (BENCH-166, 3.21) read the same bullet damage dealt a round by OgiTeam and HadurTeam (426 and
+# 425) in 552 and 784 ticks: HadurTeam's rounds run 42% longer, and the same against SittingDroidTeam, which does
+# no damage to either (last shot at tick 296 and 419). Three team gains have shipped since. This card fights
+# OgiTeam and master against SittingDroidTeam and five weak teams on the same seeds and splits each subject's
+# damage a tick into guns alive, shots a gun-tick, hit rate and damage a hit, with the tick of each kill, the
+# shots that reached a robot already dead, own hits and the range of the first volley.
+#   ttprep   build aa (master), write the args, fetch the six team jars and OgiTeam
+#   ttogi    OgiTeam vs the six teams, 12 seeds from 27000, 12 rounds (72 battles)
+#   tthad    HadurTeam aa vs the same teams and seeds (72 battles)
+#   ttread   tools/team_tempo.py -> docs/bench/local/team-tempo.md
+#   ttpr     results PR on claude/pc-team-tempo-read-results
+# 144 battles, about 15 minutes. Every step resumes where it stopped.
+# What the result decides: the largest of the four factor ratios names the first tempo build. Shots a gun-tick
+# with overkill over 10% of shots: booked kills (members share the damage each has in flight per enemy). Shots a
+# gun-tick with low overkill: the gun's idle turns (the gwhy ledger on master is the next read). Damage a hit:
+# the power rule. Own damage a round over twice OgiTeam's: the own-fire veto first.
+# Stop rules on both battle steps (halt; every battle fought is kept and a rerun resumes): 20 failed battles,
+# no battle in 30 minutes, or 60+ skipped turns a battle over the last 200. A battle step's exit 1 (some battles
+# failed) lets the card go on: team_tempo.py reads only battles both subjects finished.
+# The team thread reads claude/pc-team-tempo-read-results.
+#   ./queue.sh run pc-team-tempo-read        (or  .\queue.ps1 run pc-team-tempo-read)
+# Run it from master (one bench queue at a time, RoboRumble workers at 0):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+ttprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur117.HadurTeam_"$V"aa.jar && rm -f ${OUT}/team-tempo*.md && mkdir -p work && rm -rf work/team-tempo-"$V"-ogi work/team-tempo-"$V"-hadur && ./fetch-opponents.sh --set plans/team-tempo-set.txt && ./fetch-opponents.sh --set team-census46.txt && bash ./build-ablation.sh aa && for a in ogi hadur; do sed "s/@V@/$V/g" plans/team-tempo-$a.args > work/team-tempo-$a.args || exit 1; done && test -f bisect/hadur117.HadurTeam_"$V"aa.jar && test -f opponents/cz.libors.OgiTeam_v1.jar && mvn -q compile
+ttogi  | mvn -q exec:java "-Dexec.args=@work/team-tempo-ogi.args" || test $? -eq 1
+  after: ttprep
+  watch: battles=72
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 60 over 200
+tthad  | mvn -q exec:java "-Dexec.args=@work/team-tempo-hadur.args" || test $? -eq 1
+  after: ttogi
+  watch: battles=72
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 60 over 200
+ttread | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && python3 tools/team_tempo.py --a "OgiTeam=cz.libors=work/team-tempo-$V-ogi" --b "HadurTeam=hadur117=work/team-tempo-$V-hadur" --out ${OUT}/team-tempo.md
+  after: tthad
+ttpr   | bash tools/open_results_pr.sh claude/pc-team-tempo-read-results "Team: where the ticks go, OgiTeam beside master on the drill" ${OUT}/team-tempo.md
+  after: ttread

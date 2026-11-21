@@ -34,7 +34,7 @@ class PcR31PlanTest {
         assertEquals(31, panel.size(), "the 31 real-gap robots");
         assertEquals(panel.size(), new HashSet<>(panel).size(), "no robot twice");
         assertEquals(panel, names("plans/r31-add.txt"), "one line per panel robot");
-        java.util.Set<String> broken = Broken.names(Path.of(Broken.FILE));
+        java.util.Set<String> broken = Broken.names(Path.of(Broken.FILE_1112));
         for (String n : panel) assertTrue(!broken.contains(n), n + " loads on 1.11.2");
         String arms = Files.readString(Path.of("plans/pc-r31.arms"));
         assertTrue(arms.contains("\nc | hadur117.Hadur " + version + " |") && arms.contains("\naa | hadur117.Hadur " + version + "aa |"));

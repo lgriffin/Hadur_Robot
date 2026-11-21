@@ -13,7 +13,13 @@ import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 
 /**
- * The readable JayLexi 0.7: 0.6 with its surf stats also segmented by how much of our orbit ahead is still
+ * The readable JayLexi 1.1: 1.0 firing within 1200 / distance degrees of its aim instead of a flat 3 (JAYLEXI-24),
+ * with a closer orbit inside 200 px for Leopard and aim jitter against uCatcher.
+ * 1.0 was 0.9 with one surf distance band instead of four (JAYLEXI-23).
+ * 0.9 was 0.8 with the danger prediction counted from tick 2 instead of 3 (JAYLEXI-22).
+ * 0.8 was 0.7 with per-robot orbit lines for RammingC, LightningBug and MirrorMicro and,
+ * inside 200 px, a 0.4 rad wider orbit for Bruce and Lifestealer (JAYLEXI-21, docs/bench/jaylexi-tailoring.md).
+ * 0.7 was 0.6 with its surf stats also segmented by how much of our orbit ahead is still
  * in the field, as the enemy sees it (JAYLEXI-20, docs/bench/jaylexi-own-movement.md), the lateral-speed
  * signs read with copySign and the prediction's heading left unnormalised (both only to fit the shipped
  * build in 1,499 bytes).
@@ -33,7 +39,9 @@ public class JayLexi extends AdvancedRobot {
     // outward, or this robot's own angle from ORB, in hundredths of a radian, by its AIM row
     // (pc-jaylexi-orb, PR #644); 2 pi more where the gun jitters (JAYLEXI-19).
     static double orbit;
-    static final String ORB = "ssssssssssss\207sssssssssssssssssssssssssssssssssssssssssssssssssssssssssss_ssssssssssssssssssssssss\207ssssssssssssssssssssssssssssssssssss_sssssssssssssssssssssssssss_ssssssssssssssss\207ss\207s\207sssssssssssssssssssssss_ssss\u02e7ssssssssssssssssssssssssssssss_s\207ssssssssss\207ssssssssssssssssssssssssssssssssssssssssssss\207sss_ssssss\207sssssssssss_ssssssssssssssss\207sssssssssssssssssssssss\207ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss_sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss\207sssssssssssssssssssssssssssssssssssssssssssssss_ssssssss\207sssssssssssssssssssssssssssss";
+    public static final String ORB = "ssssssssssss\u0087sssssssssssssssssssssssssssssssssssssssssssssssssssssssssss_ssssssssssssssssssssssss\u0087ssssssssssssssssssssssssssssssssssss_ssssssssssssss\u0087ssssssssssss_ssssssssssssssss\u0087ss\u0087s\u0087sssssssssssssssssssssss_ssss\u02e7ssssssssssssssssssssssssssssss_s\u0087ssssssssss\u0087sssssssssssssssss_ssssssssssssssssssssssssss\u0087sss_ssssss\u0087sssssssssss_ssssssssssssssss\u0087sssssssssssssssssssssss\u0087ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss_sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss\u02e7sssssssssssssssssssssssssssssssssssss\u0087ssssssssKssssssssssssssssssssssssssssssssssssss_ssssssss\u0087sssssssssssssssssssssssssssss";
+    // Where the orbit opens 0.4 rad further out inside 200 px (JAYLEXI-21): 40 at the robot's ORB index, else 0.
+    public static final String NEAR = "\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000(\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000(\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000(\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000";
     // Wall smoothing: the stick that must stay inside the field (JAYLEXI-7).
     static final double STICK = 140;
     static final Rectangle2D.Double FIELD = new Rectangle2D.Double(18, 18, 764, 564);
@@ -44,7 +52,8 @@ public class JayLexi extends AdvancedRobot {
     // The robot, so a wave can take itself off the event list.
     static JayLexi bot;
     static Wave next;
-    // Surf stats [distance band][walls along our orbit][our lateral speed band][bin] (JAYLEXI-6, JAYLEXI-20).
+    // Surf stats [distance band][walls along our orbit][our lateral speed band][bin] (JAYLEXI-6, JAYLEXI-20). 1.0
+    // reads only band 0 (JAYLEXI-23); the bands stay here so the replay can show 0.9's four still play.
     static double[][][][] surf = new double[4][4][5][BINS];
     // Gun stats [velocity history][lateral speed][walls ahead][distance][bin] (JAYLEXI-4).
     static double[][][][][] gun = new double[6][4][4][5][BINS];
@@ -84,7 +93,9 @@ public class JayLexi extends AdvancedRobot {
 
         // This opponent's aim row in AIM: its name hash in NAMES, or the field's row when not found.
         row = BINS * (NAMES.indexOf((char) e.getName().hashCode()) + 1);
-        orbit = ORB.charAt(row / BINS) / 100.0;
+        // Inside 200 px a picked robot's orbit opens 0.4 rad further out (JAYLEXI-21). The shipped build keeps a
+        // slot per robot per 50 px of distance in ORB, which carries the same rule.
+        orbit = (ORB.charAt(row / BINS) - (distance < 200 ? NEAR.charAt(row / BINS) : 0)) / 100.0;
 
         // Radar: twice the turn to the enemy, so it never slips off (JAYLEXI-2).
         setTurnRadarRightRadians(2 * Utils.normalRelativeAngle(absBearing - getRadarHeadingRadians()));
@@ -95,7 +106,7 @@ public class JayLexi extends AdvancedRobot {
         angle = absBearing + Math.PI;
         // The wave's stats (JAYLEXI-20): by this scan's distance, by how much of our orbit ahead of us, as the
         // enemy sees it, is still in the field (0 to 3 clear fractions), and by our lateral speed.
-        w.bins = surf[(int) Math.min((distance + 50) / 200, 3)][clear(enemy, angle, direction)]
+        w.bins = surf[bands ? (int) Math.min((distance + 50) / 200, 3) : 0][clear(enemy, angle, direction)]
                 [(int) ((Math.abs(lastLateral) + 1) / 2)];
         try {
             Wave s = waves.get(0);
@@ -139,7 +150,9 @@ public class JayLexi extends AdvancedRobot {
         double jitter = (Math.random() - 0.5) * ((int) orbit >> 2) / 4;
         setTurnGunRightRadians(Utils.normalRelativeAngle(absBearing - getGunHeadingRadians()
                 + jitter + w.dir * (best - MID) * Math.asin(8 / w.speed) / MID));
-        if (Math.abs(getGunTurnRemaining()) < 3 && setFireBullet(power) != null) {
+        // Fire once the gun is within 1200 / distance degrees of its aim (JAYLEXI-24): wider than 0.9's 3 inside 400 px,
+        // so we fire sooner up close, narrower beyond.
+        if (Math.abs(getGunTurnRemaining()) < (flatGate ? 3 : 1200 / distance) && setFireBullet(power) != null) {
             w.weight = 4;
         }
 
@@ -147,11 +160,26 @@ public class JayLexi extends AdvancedRobot {
         lastBearing = absBearing + Math.PI;
     }
 
+    /**
+     * The tick the prediction counts from: 2, one less than 0.8's 3, so each predicted spot is taken a tick
+     * later along our path (JAYLEXI-22, docs/bench/jaylexi-tailoring.md).
+     */
+    int lead = 2;
+
+    /**
+     * Whether the surf stats are split by distance, as 0.9's four bands under 150, 350 and 550 px were. 1.0 keeps
+     * one band: on 61 cloud seeds over 112 mini robots the single band read about +0.25 (JAYLEXI-23).
+     */
+    boolean bands;
+
+    /** Whether the gun fires within a flat 3 degrees, as 1.0 did, instead of 1200 / distance (JAYLEXI-24). */
+    boolean flatGate;
+
     /** Where the robot would be when wave s reaches it, orbiting dir, and how dangerous that is. */
     double danger(Wave s, double dir) {
         Point2D.Double p = me;
         double heading = getHeadingRadians(), v = getVelocity(), turn, angle, move;
-        int tick = 3;
+        int tick = lead;
         do {
             move = 1;
             if (Math.cos(angle = smooth(p, s.angle(p) + dir * orbit, dir) - heading) < 0) {
@@ -243,8 +271,10 @@ public class JayLexi extends AdvancedRobot {
         }
 
         int index(Point2D.Double p) {
-            return (int) Math.max(0, Math.min(BINS - 1,
-                    Utils.normalRelativeAngle(angle(p) - bearing) * dir / Math.asin(8 / speed) * MID + MID));
+            // The shipped build adds MID + 160 before it truncates and looks the clamp up in CLAMP; the 160
+            // rounds a bin just under a boundary up to it, so the readable one adds it too, to the same bit.
+            return Math.max(0, Math.min(BINS - 1,
+                    (int) (Utils.normalRelativeAngle(angle(p) - bearing) * dir / Math.asin(8 / speed) * MID + (MID + 160)) - 160));
         }
 
         void log(Point2D.Double p, double depth) {
