@@ -25,9 +25,9 @@ class AimMembersEmTest {
         assertTrue(m.em());
         assertEquals(AimMembers.MEMBERS + 2, m.members());
         double total = 0;
-        for (int i = 0; i < m.members(); i++) total += AimMembers.prior(i);
+        for (int i = 0; i < m.members(); i++) total += AimMembers.prior(i, m.members());
         assertEquals(AimMembers.EM_VIEW_PRIOR / total, m.weight(0), 1e-12);
-        assertEquals(AimMembers.EM_PRIOR / total, m.weight(1), 1e-12);
+        assertEquals(AimMembers.prior(1, m.members()) / total, m.weight(1), 1e-12);
     }
 
     @Test

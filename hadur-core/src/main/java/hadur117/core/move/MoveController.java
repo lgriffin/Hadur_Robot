@@ -1420,7 +1420,8 @@ public class MoveController {
             }
             System.arraycopy(aims, 0, scores, 1, aims.length);
             double escape = w.maxEscapeAngle();
-            aimMembers.learn(scores, escape > 0 ? bandwidth / escape : Double.NaN);
+            aimMembers.learn(scores, escape > 0 ? bandwidth / escape : Double.NaN,
+                (int) (w.targetDistance / w.bulletSpeed()));
         } finally {
             for (KnnView<TimestampedGuessFactor> view : views) view.cachedNeighbors.remove(FORENSICS_CACHE);
             cacheOwners.remove(FORENSICS_CACHE);
