@@ -205,7 +205,10 @@ def write_site(site, repo, entries_files):
             with open(os.path.join(d, name), "w", encoding="utf-8", newline="\n") as f:
                 f.write(body)
         entry["path"] = "runs/%s/" % entry["id"]
-        entry["published"] = now
+        # Republishing an unchanged run keeps its stamp, so a second publish is a no-op even across a minute boundary.
+        prev = runs.get(entry["id"])
+        same = prev is not None and {k: v for k, v in prev.items() if k != "published"} == entry
+        entry["published"] = prev["published"] if same and "published" in prev else now
         runs[entry["id"]] = entry
     ordered = sorted(runs.values(), key=lambda r: (r["date"], r["id"]), reverse=True)
     with open(os.path.join(bench, "runs.json"), "w", encoding="utf-8", newline="\n") as f:
