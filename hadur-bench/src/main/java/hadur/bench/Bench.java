@@ -769,6 +769,25 @@ public final class Bench {
     private int runArms(List<Opponent> opponents) throws Exception {
         List<String> rows = Collections.synchronizedList(new ArrayList<>());
         List<Job> jobs = new ArrayList<>();
+        // BENCH-272: each arm's digest is pinned once, from the copy installRobots put in the bench home (the
+        // bytes every worker fights with), and decides both what is read back and what a fought battle is
+        // stamped with. Rows this run will not read back are moved aside first, so the watch never counts them.
+        Map<String, String> digests = new HashMap<>();
+        for (Arms.Arm a : arms) {
+            String[] parts = a.robot().split(" ");
+            Path installed = home.resolve("robots").resolve(parts[0] + "_" + parts[1] + ".jar");
+            digests.put(a.label(), Arms.sha256(Files.isRegularFile(installed) ? installed : a.jar()));
+        }
+        int retired = 0;
+        for (Opponent o : opponents) {
+            for (int s = 1; s <= runs; s++) {
+                for (Arms.Arm a : arms) {
+                    Path dir = out.resolve("battles").resolve(o.slug() + "-" + s + "-" + a.label());
+                    if (Arms.retire(dir, a, o, s, resume ? digests.get(a.label()) : null)) retired++;
+                }
+            }
+        }
+        if (retired > 0) say(retired + " kept battles set aside to fight again: another build, no jar stamp, or failed (BENCH-272)");
         for (Opponent o : opponents) {
             for (int s = 1; s <= runs; s++) {
                 int seed = s;
@@ -778,7 +797,7 @@ public final class Bench {
                         Arms.Arm a = order.get(pos);
                         Path dir = out.resolve("battles").resolve(o.slug() + "-" + seed + "-" + a.label());
                         // BENCH-95: a battle a stopped run already finished is read back, not fought again.
-                        String kept = resume ? Arms.resumed(dir, a, o, seed) : null;
+                        String kept = resume ? Arms.resumed(dir, a, o, seed, digests.get(a.label())) : null;
                         if (kept != null) {
                             rows.add(kept);
                             resumedBattles.incrementAndGet();
@@ -787,7 +806,7 @@ public final class Bench {
                         BattleResult r = fight(h, o, seed, dir, a.robot(), true);
                         String row = Arms.row(a, o, seed, workerIndex.getOrDefault(h, 1), pos + 1, r);
                         rows.add(row);
-                        Arms.keep(dir, a, row);
+                        Arms.keep(dir, row, digests.get(a.label()));
                         say(String.format(Locale.ROOT, "%s seed %d %s: score share %.1f%%, skipped %d%s%s", o.name, seed,
                             a.label(), r.scoreShare() * 100, r.skippedTurns,
                             r.engineDisables > 0 ? ", engine disables " + r.engineDisables : "",

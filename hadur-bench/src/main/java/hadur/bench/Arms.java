@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -101,18 +102,19 @@ final class Arms {
      * BENCH-95: the row a finished battle left in {@code dir}, when it was this arm's (same label and
      * robot), this opponent's and this seed's, and it finished ok; otherwise null, and the battle is
      * fought again. A failed or half-written battle never stands in for a fought one, and neither does one
-     * fought by another build of the arm's jar, or one with no jar stamp (BENCH-272).
+     * whose jar stamp is missing or is not {@code digest}, the sha256 of the arm's jar this run installed
+     * (BENCH-272).
      */
-    static String resumed(Path dir, Arm arm, Opponent o, int seed) {
+    static String resumed(Path dir, Arm arm, Opponent o, int seed, String digest) {
         Path f = dir.resolve(ROW_FILE);
         try {
-            if (!Files.isRegularFile(f)) return null;
-            // BENCH-272: a battle is read back only when the jar that fought it is the arm's jar now. Labels and
-            // seeds repeat across runs of a card; a run on a rebuilt master must not inherit the old build's rows.
+            if (digest == null || !Files.isRegularFile(f)) return null;
+            // BENCH-272: labels and seeds repeat across runs of a card; a run on a rebuilt master must not
+            // inherit the old build's rows.
             Path stamp = dir.resolve(JAR_FILE);
-            String now = jarHash(arm.jar());
-            if (now == null || !Files.isRegularFile(stamp)
-                || !Files.readString(stamp, StandardCharsets.UTF_8).strip().equals(now)) return null;
+            if (!Files.isRegularFile(stamp) || !Files.readString(stamp, StandardCharsets.UTF_8).strip().equals(digest)) {
+                return null;
+            }
             // Only the line break goes: strip() also took the tab before an empty errors column, the usual
             // case for a battle that went well, so no clean battle was ever read back (BENCH-128).
             String row = Files.readString(f, StandardCharsets.UTF_8).replaceAll("[\\r\\n]+$", "");
@@ -129,32 +131,49 @@ final class Arms {
     /** BENCH-272: beside {@link #ROW_FILE}, the sha256 of the jar that fought the battle. */
     static final String JAR_FILE = "arm-jar.sha256";
 
-    private static final java.util.concurrent.ConcurrentHashMap<String, String> HASHES =
-        new java.util.concurrent.ConcurrentHashMap<>();
+    /** BENCH-272: where a row this run will not read back is moved, so the queue's watch no longer counts it. */
+    static final String STALE_FILE = "arm-row.stale.tsv";
 
-    /** BENCH-95/272: keeps a fought battle's row and the hash of the jar that fought it, for a resumed run. */
-    static void keep(Path dir, Arm arm, String row) throws IOException {
+    /**
+     * BENCH-95/272: keeps a fought battle's row and the digest of the jar that fought it. The old stamp goes
+     * first and the new one is published last, each file replaced whole, so a save cut short never leaves an
+     * old row beside a new stamp.
+     */
+    static void keep(Path dir, String row, String digest) throws IOException {
         Files.createDirectories(dir);
-        String h = jarHash(arm.jar());
-        if (h != null) Files.writeString(dir.resolve(JAR_FILE), h + "\n");
-        Files.writeString(dir.resolve(ROW_FILE), row + "\n");
+        Files.deleteIfExists(dir.resolve(JAR_FILE));
+        replace(dir, ROW_FILE, row + "\n");
+        if (digest != null) replace(dir, JAR_FILE, digest + "\n");
     }
 
-    /** The jar's sha256 in hex, or null when it cannot be read; cached by path, size and modified time. */
-    static String jarHash(Path jar) {
-        if (jar == null) return null;
+    /**
+     * BENCH-272: moves aside a row this run will not read back (another build's, unstamped, failed or
+     * foreign), so nothing that reads {@link #ROW_FILE} counts it before the battle is fought again.
+     */
+    static boolean retire(Path dir, Arm arm, Opponent o, int seed, String digest) throws IOException {
+        Path f = dir.resolve(ROW_FILE);
+        if (!Files.isRegularFile(f) || resumed(dir, arm, o, seed, digest) != null) return false;
+        Files.move(f, dir.resolve(STALE_FILE), StandardCopyOption.REPLACE_EXISTING);
+        Files.deleteIfExists(dir.resolve(JAR_FILE));
+        return true;
+    }
+
+    private static void replace(Path dir, String name, String text) throws IOException {
+        Path tmp = dir.resolve(name + ".tmp");
+        Files.writeString(tmp, text, StandardCharsets.UTF_8);
         try {
-            Path p = jar.toAbsolutePath().normalize();
-            String key = p + "|" + Files.size(p) + "|" + Files.getLastModifiedTime(p).toMillis();
-            return HASHES.computeIfAbsent(key, k -> {
-                try {
-                    byte[] d = java.security.MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(p));
-                    return java.util.HexFormat.of().formatHex(d);
-                } catch (IOException | java.security.NoSuchAlgorithmException e) {
-                    throw new IllegalStateException(e);
-                }
-            });
-        } catch (IOException | IllegalStateException e) {
+            Files.move(tmp, dir.resolve(name), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+        } catch (java.nio.file.AtomicMoveNotSupportedException e) {
+            Files.move(tmp, dir.resolve(name), StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+
+    /** The file's sha256 in hex, or null when it cannot be read. */
+    static String sha256(Path file) {
+        try {
+            byte[] d = java.security.MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(file));
+            return java.util.HexFormat.of().formatHex(d);
+        } catch (IOException | java.security.NoSuchAlgorithmException e) {
             return null;
         }
     }
