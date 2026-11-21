@@ -1296,13 +1296,20 @@ public class MoveController {
     private double[] aimScores(Wave w, double dangerAngle, double bandwidth, List<double[]> segments) {
         double[] aims = w.simpleAims();
         int mimics = memberMimics == null ? 0 : aimMembers.mimics();
-        double[] out = new double[AimMembers.AIMS.length + mimics];
+        boolean pattern = aimMembers.pattern();
+        double[] out = new double[AimMembers.AIMS.length + mimics + (pattern ? 1 : 0)];
         for (int a = 0; a < AimMembers.AIMS.length; a++) {
             double angle = aims == null ? Double.NaN : aims[AimMembers.AIMS[a]];
             out[a] = Double.isNaN(angle) ? Double.NaN
                 : kernel(DiaUtils.normalizeAngle(angle, dangerAngle), bandwidth, segments);
         }
         mimicScores(w, dangerAngle, bandwidth, out, AimMembers.AIMS.length, mimics);
+        if (pattern) {
+            // MOVE-56: the pattern-matcher mimic's kernel on its angle, NaN with no match.
+            double angle = w.patternAngle();
+            out[out.length - 1] = Double.isNaN(angle) ? Double.NaN
+                : kernel(DiaUtils.normalizeAngle(angle, dangerAngle), bandwidth, segments);
+        }
         return out;
     }
 
@@ -1357,6 +1364,9 @@ public class MoveController {
                 // An aim's kernel is a probability over the reachable angles only, so a kernel
                 // running past an escape angle is scaled up by the share it keeps inside.
                 if (!Double.isNaN(aims[a])) aims[a] /= reachableShare(w, aimAngles[AimMembers.AIMS[a]], bandwidth);
+            }
+            if (aimMembers.pattern() && !Double.isNaN(aims[aims.length - 1])) {
+                aims[aims.length - 1] /= reachableShare(w, w.patternAngle(), bandwidth);
             }
             System.arraycopy(aims, 0, scores, 1, aims.length);
             double escape = w.maxEscapeAngle();

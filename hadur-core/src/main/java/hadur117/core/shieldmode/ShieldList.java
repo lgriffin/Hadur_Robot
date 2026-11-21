@@ -67,6 +67,8 @@ public final class ShieldList {
     public static final String EXIT_OFF_PREFIX = "shield-exit0:";
     /** SHIELD-21: a line starting with this names an opponent shield mode plans its shots still against (SHIELD-20). */
     public static final String STILL_PREFIX = "shield-still:";
+    /** SHIELD-33: a line starting with this names an opponent whose sub-0.1 shots shield mode builds waves for. */
+    public static final String TINY_PREFIX = "shield-tiny:";
     /** MOVE-32: a line starting with this names an opponent the duel surfs with the flattener views on (MOVE-24 undone). */
     public static final String FLAT_ON_PREFIX = "flat-on:";
     /** MOVE-34: a line starting with this names an opponent the duel surfs with the learning-gun mimics as aim members (MOVE-33). */
@@ -105,6 +107,8 @@ public final class ShieldList {
     public static final String RAM_FAN_PREFIX = "ram-fan:";
     /** RAM-18: a line starting with this names a rammer the escape bends away from its own line of travel after each of its shots. */
     public static final String RAM_BEND_PREFIX = "ram-bend:";
+    /** MOVE-56: a line starting with this names an opponent whose truncated-lateral-velocity pattern matcher a mimic joins the danger for. */
+    public static final String PATTERN_MIMIC_PREFIX = "pm-mimic:";
     /**
      * SKEY-2: a line starting with this gives an opponent's surf key: nine multipliers on the hit
      * views' key weights, one on the kernel width, then the name ({@code "m1 ... m9 bw name"}).
@@ -175,6 +179,10 @@ public final class ShieldList {
     static final int RAM_FAN = 8388608;
     /** RAM-18: the per-opponent escape-bend switch's bit in {@link #switches}. */
     static final int RAM_BEND = 16777216;
+    /** MOVE-56: the per-opponent pattern-matcher mimic's bit in {@link #switches}. */
+    static final int PATTERN_MIMIC = 33554432;
+    /** SHIELD-33: the per-opponent tiny-shot wave switch's bit in {@link #switches}. */
+    static final int TINY = 268435456;
 
     private final Set<String> entries;
     /** SHIELD-17: the opening-drive list. */
@@ -229,7 +237,7 @@ public final class ShieldList {
                 if (entry.isEmpty() || entry.startsWith("#")) continue;
                 int bit = entry.startsWith(HEAT_JIT_PREFIX) ? HEAT_JIT : entry.startsWith(GUN_STACK_PREFIX) ? GUN_STACK
                     : entry.startsWith(EXIT_LATE_PREFIX) ? EXIT_LATE : entry.startsWith(EXIT_OFF_PREFIX) ? EXIT_OFF
-                    : entry.startsWith(STILL_PREFIX) ? STILL : entry.startsWith(FLAT_ON_PREFIX) ? FLAT_ON
+                    : entry.startsWith(STILL_PREFIX) ? STILL : entry.startsWith(TINY_PREFIX) ? TINY : entry.startsWith(FLAT_ON_PREFIX) ? FLAT_ON
                     : entry.startsWith(MIMIC_ON_PREFIX) ? MIMIC_ON
                     : entry.startsWith(FULL_OFF_PREFIX) ? FULL_OFF
                     : entry.startsWith(X5_POWER_PREFIX) ? X5_POWER
@@ -247,6 +255,7 @@ public final class ShieldList {
                     : entry.startsWith(RAM_FLEE_PREFIX) ? RAM_FLEE
                     : entry.startsWith(RAM_FAN_PREFIX) ? RAM_FAN
                     : entry.startsWith(RAM_BEND_PREFIX) ? RAM_BEND
+                    : entry.startsWith(PATTERN_MIMIC_PREFIX) ? PATTERN_MIMIC
                     : entry.startsWith(POWER_CAP_PREFIX) ? POWER_CAP : 0;
                 if (bit != 0) {
                     String name = withoutVersion(entry.substring(entry.indexOf(':') + 1).trim());
@@ -539,6 +548,15 @@ public final class ShieldList {
     }
 
     /**
+     * SHIELD-33: whether shield mode builds waves for {@code robotName}'s shots under 0.1 power.
+     *
+     * @param robotName the scanned robot's name, or null
+     */
+    public boolean tiny(String robotName) {
+        return (switchBits(robotName) & TINY) != 0;
+    }
+
+    /**
      * SHIELD-25: whether shield mode fires no shot under {@link ShieldMode#FLOOR_POWER} at
      * {@code robotName}, by the rule of {@link #matches}.
      *
@@ -727,6 +745,16 @@ public final class ShieldList {
      */
     public boolean ramBend(String robotName) {
         return (switchBits(robotName) & RAM_BEND) != 0;
+    }
+
+    /**
+     * MOVE-56: whether the table names this opponent with a {@link #PATTERN_MIMIC_PREFIX} line.
+     *
+     * @param robotName the opponent's name as Robocode lists it
+     * @return true when a {@code pm-mimic:} line matches it
+     */
+    public boolean patternMimic(String robotName) {
+        return (switchBits(robotName) & PATTERN_MIMIC) != 0;
     }
 
     private int switchBits(String robotName) {

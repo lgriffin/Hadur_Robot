@@ -601,6 +601,22 @@ final class ShieldTableData {
      *
      * @return a fresh array of names
      */
+    /**
+     * SHIELD-33: opponents whose sub-0.1 shots shield mode builds waves for ({@code shield-tiny:} lines), each
+     * locked on 12 or more fresh cloud seeds (build-ablation.sh stinylist adds candidate lines here).
+     *
+     * @return a fresh array of names
+     */
+    static String[] tinies() {
+        return new String[] {
+            "lrem.quickhack.QuickHack 1.0",
+            "wiki.mako.MakoHT 1.2.2.1",
+            "dz.Caedo 1.4",
+            "kawigi.sbf.FloodSonnet 0.9",
+            "oog.micro.SavantMicro 1.1",
+        };
+    }
+
     static String[] exitOffs() {
         return new String[] {
             // pc-rival-confirm (PR #537): held at a 3-point margin on 8 fresh seeds
@@ -849,6 +865,8 @@ final class ShieldTableData {
             "sanja.First 0.1",               // +0.9
             "sheldor.melee.nano.TestMelee 0.1",// +0.9
             "yk.JahRoslav 1.1",              // +1.7
+            // pc-locks round 14 (BENCH-253, PR #964): 12 fresh PC seeds at the live turn time; cloud lock held first
+            "robin.ScalpBotC 1.0",           // +1.0
         };
     }
 
@@ -1137,13 +1155,32 @@ final class ShieldTableData {
 
     /**
      * RAM-18: the rammers the escape bends away from its own line of travel after each of their shots
-     * ({@code ram-bend:} lines). Empty until a PC card holds them: the 11 rammers of the cloud class lock are on
-     * pc-locks round 14 (build-ablation.sh rbendlist adds candidate lines here).
+     * ({@code ram-bend:} lines). Each held a PC card after a cloud class lock (build-ablation.sh rbendlist adds
+     * candidate lines here).
      *
      * @return a fresh array of names
      */
     static String[] ramBends() {
         return new String[] {
+            // pc-locks round 14 (BENCH-253, PR #964): 12 fresh PC seeds at the live turn time; 12-seed cloud class lock held first
+            "bayen.UbaRamLT 1.0",            // +1.4
+            "jab.micro.Sanguijuela 0.8",     // +1.4
+            "mn.nano.perceptual.Impact 1.3.0",// +3.2
+            "mz.NanoDeath 2.56",             // +3.1
+            "sul.Bicephal 1.2",              // +2.5
+            "wompi.Kowari 1.6",              // +2.9
+        };
+    }
+
+    /**
+     * MOVE-56: the opponents whose truncated-lateral-velocity pattern matcher a mimic joins the danger for
+     * ({@code pm-mimic:} lines), each locked on 12 fresh cloud seeds with a round-by-round forensic (build-ablation.sh pmlist adds candidate lines here).
+     *
+     * @return a fresh array of names
+     */
+    static String[] patternMimics() {
+        return new String[] {
+            "jcs.AutoBot 4.2.1",
         };
     }
 

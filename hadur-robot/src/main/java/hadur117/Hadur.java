@@ -257,6 +257,7 @@ public class Hadur extends TeamRobot {
             for (String name : ShieldTableData.exitOffs()) lines.add(ShieldList.EXIT_OFF_PREFIX + " " + name);
             // SHIELD-21: per-opponent still shot plans (SHIELD-20).
             for (String name : ShieldTableData.stills()) lines.add(ShieldList.STILL_PREFIX + " " + name);
+            for (String name : ShieldTableData.tinies()) lines.add(ShieldList.TINY_PREFIX + " " + name);
             // SHIELD-25: per-opponent shield power floor.
             for (String name : ShieldTableData.shieldFloors()) lines.add(ShieldList.FLOOR_PREFIX + " " + name);
             // POW-18: per-opponent power cap.
@@ -296,6 +297,8 @@ public class Hadur extends TeamRobot {
             for (String name : ShieldTableData.ramFans()) lines.add(ShieldList.RAM_FAN_PREFIX + " " + name);
             // RAM-18: per-opponent escape bend.
             for (String name : ShieldTableData.ramBends()) lines.add(ShieldList.RAM_BEND_PREFIX + " " + name);
+            // MOVE-56: per-opponent pattern-matcher mimic.
+            for (String name : ShieldTableData.patternMimics()) lines.add(ShieldList.PATTERN_MIMIC_PREFIX + " " + name);
             // SKEY-2: per-opponent surf keys.
             for (String key : ShieldTableData.surfKeys()) lines.add(ShieldList.SURF_KEY_PREFIX + " " + key);
             return ShieldList.parse(lines);

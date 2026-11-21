@@ -1,6 +1,11 @@
-# pc-locks (BENCH-253) round 14: c is master, aa its A/A copy; the lever arm is master with its line on the panel robots
-# that locked with it (plans/locks-pick.tsv; rbd RAM-18 escape bend, rf RAM-15 ram-flee).
+# pc-locks (BENCH-253) round 16: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots
+# that locked with it (plans/locks-pick.tsv; rbd RAM-18 escape bend, rp POW-17 race power, vj VEL-JIT velocity jitter, pm MOVE-56 pattern-matcher mimic).
+# bb is master as it was before MOVE-56 and SHIELD-33 (4d6a3ca76): those two lines are already on master (PRs #970, #971),
+# so their robots are read as c minus bb.
 c | hadur117.Hadur 3.23 | bisect/hadur117.Hadur_3.23.jar
 aa | hadur117.Hadur 3.23aa | bisect/hadur117.Hadur_3.23aa.jar
+bb | hadur117.Hadur 3.23bb | bisect/hadur117.Hadur_3.23bb.jar
 rbd | hadur117.Hadur 3.23rbd | bisect/hadur117.Hadur_3.23rbd.jar
-rf | hadur117.Hadur 3.23rf | bisect/hadur117.Hadur_3.23rf.jar
+rp | hadur117.Hadur 3.23rp | bisect/hadur117.Hadur_3.23rp.jar
+vj | hadur117.Hadur 3.23vj | bisect/hadur117.Hadur_3.23vj.jar
+pm | hadur117.Hadur 3.23pm | bisect/hadur117.Hadur_3.23pm.jar
