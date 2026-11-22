@@ -1,10 +1,11 @@
-# BENCH-253 pc-locks, round 19: AntiRebel, Nicator, AgentSmithRedux and Loki on qw (MOVE-67, 24 cloud seeds each), WaveRammer on rf, a cloud candidate (36 seeds, 95% low end above 0 vs c, just under vs aa;
+# BENCH-253 pc-locks, round 19: AntiRebel, Nicator, AgentSmithRedux, Loki and Dreadnaught on qw (MOVE-67, 24 cloud seeds each), WaveRammer on rf, a cloud candidate (36 seeds, 95% low end above 0 vs c, just under vs aa;
 # coverage/shards/locks.tsv, coverage/shards/briefs.md), and eleven robots whose line is already on master, read only in c
 # and aa, so the A/A check reads 12. name | note | jar
 scheronimus.AntiRebel 1.1 | qw-C-24seeds | scheronimus.AntiRebel_1.1.jar
 nic.Nicator 2.4 | qw-C-24seeds | nic.Nicator_2.4.jar
 rdt.AgentSmith.AgentSmithRedux 0.02 | qw-A-24seeds | rdt.AgentSmith.AgentSmithRedux_0.02.jar
 bvh.loki.Loki 0.5 | qw-G-24seeds | bvh.loki.Loki_0.5.jar
+com.syncleus.robocode.Dreadnaught 0.1 | qw-A-24seeds | com.syncleus.robocode.Dreadnaught_0.1.jar
 wiki.WaveRammer 1.0 | rf-D-36seeds-candidate | wiki.WaveRammer_1.0.jar
 oog.micro.Maui 1.2 | aa-pad-r16-line | oog.micro.Maui_1.2.jar
 sgp.MadHatter 4.13 | aa-pad-r16-line | sgp.MadHatter_4.13.jar
