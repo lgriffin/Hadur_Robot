@@ -1,12 +1,12 @@
 # Queue pc-locks: progress
 
-Updated 2026-11-22 07:59:42 PC time (07:59 UTC), runner pid 85196.
+Updated 2026-11-22 07:59:44 PC time (07:59 UTC), runner pid 85196.
 
 - `prep` done, exit 0 in 2 min
 - `livematch` failed, exit 3 in 8 min
-- `lock` pending
-- `gate` pending
-- `pr` pending
+- `lock` skipped
+- `gate` skipped
+- `pr` skipped
 
 ### livematch
 
@@ -35,11 +35,6 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 ### Queue log (last lines)
 
 ```
-15:54:02 progress lock: 49/1008 (5%) battles, 4492/h, ETA 13 min, 0 failed, skips 25.0/battle (last 100), aa +0.02, pm -0.01, ty -0.01, rbd +0.01, rp -0.01, bb -0.06
-16:11:35 lock exit=0 in 1092 s
-16:11:35 start gate
-16:11:36 gate exit=0 in 1 s
-16:11:36 start pr
 16:11:43 pr exit=0 in 6 s
 16:11:43 ALLDONE
 07:49:39 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
@@ -50,4 +45,9 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 07:51:48 watching livematch: 3 stop rule(s)
 07:52:41 progress livematch: 26/124 (21%) battles, 1788/h, ETA 3 min, 0 failed, skips 5.5/battle (last 100), bb +0.27
 07:59:42 livematch exit=3 in 473 s
+07:59:44 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/989
+07:59:44 skip lock (after livematch, which has not finished exit=0)
+07:59:44 skip gate (after lock, which has not finished exit=0)
+07:59:44 skip pr (after gate, which has not finished exit=0)
+07:59:44 ALLDONE
 ```

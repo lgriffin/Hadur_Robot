@@ -1,6 +1,6 @@
 {
  "plan": "pc-locks",
- "updated": 1795334382.6933808,
+ "updated": 1795334384.3137822,
  "steps": {
   "prep": {
    "status": "done",
@@ -15,13 +15,16 @@
    "end": "2026-11-22T07:59:42"
   },
   "lock": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after livematch"
   },
   "gate": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after lock"
   },
   "pr": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after gate"
   }
  },
  "watched": [
