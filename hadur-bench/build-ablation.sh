@@ -965,6 +965,29 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$modes" "public static final boolean FORCE_QUARTERS = false;" "public static final boolean FORCE_QUARTERS = true;"
             sed -i -E '/^        t\.put\(/{/Mode\.QUARTERS/!s/\)\);$/, Mode.QUARTERS));/}' "$modes"
             ;;
+        ogr350)
+            # scratch (OgiTeam dive): hunt place 350 px. Suffix o35.
+            version="${version}o35"
+            edit "$trisk" "static final double HUNT_CLOSE = 250;" "static final double HUNT_CLOSE = 350;"
+            ;;
+        ogr500)
+            version="${version}o50"
+            edit "$trisk" "static final double HUNT_CLOSE = 250;" "static final double HUNT_CLOSE = 500;"
+            ;;
+        ogr650)
+            version="${version}o65"
+            edit "$trisk" "static final double HUNT_CLOSE = 250;" "static final double HUNT_CLOSE = 650;"
+            ;;
+        ognohunt)
+            # scratch: no HUNT against OgiTeam. Suffix onh.
+            version="${version}onh"
+            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH,' 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.PATH,'
+            ;;
+        ogspread)
+            # scratch: teammates repel four times as hard. Suffix osp.
+            version="${version}osp"
+            edit "$trisk" "static final double MATE_K = 0.6;" "static final double MATE_K = 2.4;"
+            ;;
         tmthrottle)
             # TMODE-55: every team member keeps full speed through sharp turns. Suffix th.
             version="${version}th"
