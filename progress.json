@@ -1,6 +1,6 @@
 {
  "plan": "pc-melee-race",
- "updated": 1795367075.0199323,
+ "updated": 1795381617.14952,
  "steps": {
   "mrprep": {
    "status": "done",
@@ -37,117 +37,5 @@
    "status": "pending"
   }
  },
- "watched": [
-  {
-   "step": "mraa",
-   "started": 1795357631.0643911,
-   "updated": 1795360485.0483212,
-   "elapsed": 2853.9839301109314,
-   "expected": 460,
-   "panel": null,
-   "field": null,
-   "multiarm": false,
-   "arms": [],
-   "aa": null,
-   "warnings": [],
-   "battles": 460,
-   "resumed": 0,
-   "failed": 0,
-   "disables": null,
-   "rate": 580.2415292281036,
-   "eta": 0.0,
-   "fraction": 1.0,
-   "last_battle_age": 0.4459395408630371,
-   "rules": [
-    {
-     "rule": "fails 20",
-     "action": "halt",
-     "state": "ok",
-     "detail": "0 failed of 460"
-    },
-    {
-     "rule": "stall 30m",
-     "action": "halt",
-     "state": "ok",
-     "detail": "last battle 0 min ago"
-    }
-   ],
-   "skips_mean": 35.5,
-   "skips_last100": 35.21
-  },
-  {
-   "step": "mrbb",
-   "started": 1795360485.0610054,
-   "updated": 1795363307.2425923,
-   "elapsed": 2822.1815869808197,
-   "expected": 460,
-   "panel": null,
-   "field": null,
-   "multiarm": false,
-   "arms": [],
-   "aa": null,
-   "warnings": [],
-   "battles": 460,
-   "resumed": 0,
-   "failed": 0,
-   "disables": null,
-   "rate": 586.7801021873985,
-   "eta": 0.0,
-   "fraction": 1.0,
-   "last_battle_age": 0.46613454818725586,
-   "rules": [
-    {
-     "rule": "fails 20",
-     "action": "halt",
-     "state": "ok",
-     "detail": "0 failed of 460"
-    },
-    {
-     "rule": "stall 30m",
-     "action": "halt",
-     "state": "ok",
-     "detail": "last battle 0 min ago"
-    }
-   ],
-   "skips_mean": 35.469565217391306,
-   "skips_last100": 33.53
-  },
-  {
-   "step": "mren",
-   "started": 1795363307.2572033,
-   "updated": 1795367075.0034697,
-   "elapsed": 3767.7462663650513,
-   "expected": 460,
-   "panel": null,
-   "field": null,
-   "multiarm": false,
-   "arms": [],
-   "aa": null,
-   "warnings": [],
-   "battles": 259,
-   "resumed": 0,
-   "failed": 0,
-   "disables": null,
-   "rate": 247.468893625774,
-   "eta": 2924.0038592253873,
-   "fraction": 0.5630434782608695,
-   "last_battle_age": 1852.8005464076996,
-   "rules": [
-    {
-     "rule": "fails 20",
-     "action": "halt",
-     "state": "ok",
-     "detail": "0 failed of 259"
-    },
-    {
-     "rule": "stall 30m",
-     "action": "halt",
-     "state": "TRIPPED",
-     "detail": "last battle 31 min ago"
-    }
-   ],
-   "skips_mean": 36.76061776061776,
-   "skips_last100": 36.84
-  }
- ]
+ "watched": []
 }
