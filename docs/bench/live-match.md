@@ -37,8 +37,12 @@ machines, not about the PC's own parallel load.
 - `tools/live_match.py ARMS.tsv` sets our arm and BeepBoop's arm against live
   (`plans/live-1v1-2026-11-13.tsv`), paired by robot and seed. Every robot of the panel must keep a seed both
   arms finished. It fails, and exits 3, when any of these holds:
-  - the gap is more than 4 points off live;
-  - BeepBoop is more than 3 points off its live level, or skips more than 100 turns a battle.
+  - the whole 95% interval of the paired gap difference is more than 4 points off live;
+  - the whole 95% interval of BeepBoop's level is more than 3 points off its live level, or BeepBoop skips
+    more than 100 turns a battle.
+
+  A point estimate past a tolerance whose interval still reaches it passes, with a "Marginal" note in the
+  report: on 2 seeds the gap reads about +- 2.4, and pc-locks round 18 stopped on -4.08, seed noise (#989).
 - Every new 1v1 PC card runs this check first, and its benches wait for it. A failing check halts the card
   before any A/B result is read. The step costs 62 battles, about 6 minutes on the PC:
 
