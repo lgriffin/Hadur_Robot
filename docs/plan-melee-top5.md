@@ -6,7 +6,7 @@ This plan starts from what is already measured: the 3.13 gap read
 ([melee-gap-3.13.md](bench/melee-gap-3.13.md)), the melee gun stage M7
 ([melee-gun-3.13.md](bench/melee-gun-3.13.md)), the PC census of 3.14 against 3.13
 (`bench/local/2026-10-17_melee-census-314-vs-313.md`, 46 fields, 4 seeds), the Ogi deep dive
-([ogi-deep-dive.md](bench/ogi-deep-dive.md): Ogi's melee, team and 1v1 entries are one jar), and
+(Ogi's melee, team and 1v1 entries are one jar), and
 the lessons from the 1v1, team and Saor work. The new numbers come from the live pages read at
 20:31 UTC today (archived in `data/rumble/pages/2026-10-25T2031Z_meleerumble_*`) and from a
 re-read of the 3.14 census with `data/tools/melee_gap.py` (new, tests in CI).

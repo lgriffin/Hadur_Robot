@@ -1,6 +1,6 @@
 # Movement lab, first reads: the gun-heat wave and the escape-room term
 
-2026-10-16. The movement lab (`docs/bench/move-lab.md`, BENCH-90): Hadur 3.13 with its duel gun
+2026-10-16. The movement lab (`docs/bench/move-lab.md`, BENCH-280): Hadur 3.13 with its duel gun
 silenced (`silent`, 3.13si) against the six `lab.*` reference shooters, each firing power 2.0. Variants
 are `silent,heat` (3.13sihw, MOVE-11) and `silent,wallesc` (3.13siwe, MOVE-12). Cloud, 35 rounds,
 12 seeds 305-316. Read with `python3 data/tools/move_lab.py --set lab-panel.txt si=... x=...`. Hit

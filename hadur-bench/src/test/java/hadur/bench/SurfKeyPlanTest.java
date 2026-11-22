@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-160: the per-opponent surf-key card (plans/pc-surf-key.queue) is complete before it reaches the PC. */
+/** BENCH-281: the per-opponent surf-key card (plans/pc-surf-key.queue) is complete before it reaches the PC. */
 class SurfKeyPlanTest {
 
     private static final Path QUEUE = Path.of("plans/pc-surf-key.queue");
@@ -29,7 +29,7 @@ class SurfKeyPlanTest {
     }
 
     @Test
-    @Tag("BENCH-160")
+    @Tag("BENCH-281")
     @DisplayName("record with the truth log, fit both key sets, build them, confirm on fresh seeds, gate, pick, stop rules")
     void cardIsComplete() throws IOException {
         String queue = Files.readString(QUEUE);

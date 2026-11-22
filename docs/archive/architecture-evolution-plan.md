@@ -1,6 +1,6 @@
 # Hadur — Architecture Evolution: one identity, three strands
 
-_This is the repository copy of Leigh's plan doc, [Hadur — Architecture Evolution](https://claude.ai/artifact/S9G69XWVcAVLgBevsWQL8e), as it stood on 5 October 2026 after the ladder plans moved behind A5. The doc's three diagrams are redrawn here in Mermaid. Where the two differ, the doc is the plan and this file is its record. Progress through the stages is in [Stage log](#stage-log) at the end._
+_This is the repository copy of Leigh's plan doc, "Hadur — Architecture Evolution", as it stood on 5 October 2026 after the ladder plans moved behind A5. The doc's three diagrams are redrawn here in Mermaid. Where the two differ, the doc is the plan and this file is its record. Progress through the stages is in [Stage log](#stage-log) at the end._
 
 2026-10-05 · Leigh
 
@@ -337,7 +337,7 @@ Each strand is a loadout on the same contract. A ladder plan fills one column an
 
 **The duelist sits under every ladder.** A melee round Hadur survives ends in the Duel role, and so does a team round that comes down to one against one. The target is one Duel configuration in every charter. Removing the `is1v1` branches is a Duel change that the Melee bench gates.
 
-**Where the Druss route plugs in.** [The Druss work](https://claude.ai/artifact/KARFCbDaXVnDMvAj85oG48) finds the gap to DrussGT is energy management, not aim: Hadur overspends 11.8 energy a round, in ticks 200 to 800. The code that finding points at is Duel-owned: `policy.PowerPolicy`, `policy.EnemyGunHeat`, `gun`, and the power chain now inline in `HadurCore.onScan`. After A2 that chain lives in `duel.DuelController`, and the route re-pins the duel alone. It becomes a kernel change only if it alters how a shot is detected in `ledger` or what a profile stores in `memory`.
+**Where the Druss route plugs in.** The Druss work finds the gap to DrussGT is energy management, not aim: Hadur overspends 11.8 energy a round, in ticks 200 to 800. The code that finding points at is Duel-owned: `policy.PowerPolicy`, `policy.EnemyGunHeat`, `gun`, and the power chain now inline in `HadurCore.onScan`. After A2 that chain lives in `duel.DuelController`, and the route re-pins the duel alone. It becomes a kernel change only if it alters how a shot is detected in `ledger` or what a profile stores in `memory`.
 
 **The team baseline needs no Team strand.** After A5 five Hadurs can fight as a team with no team tactics. Each plays the Melee role with teammates off its target list, eyes shared through the World, and the fire-lane check. It writes no profile. Firestarter's 1.14 began the same way: "Implement basic team play." The Team plan then adds seats, target allocation and formation in its own package.
 
@@ -543,7 +543,7 @@ Everything was read on 4 and 5 October 2026.
 - Read for single claims: [Guard.java](https://github.com/lgriffin/Hadur_Robot/blob/11e7c68/hadur-core/src/main/java/hadur2/core/Guard.java), [ProfileLibrary.java](https://github.com/lgriffin/Hadur_Robot/blob/11e7c68/hadur-core/src/main/java/hadur2/core/memory/ProfileLibrary.java), [MeleeMemory.java](https://github.com/lgriffin/Hadur_Robot/blob/11e7c68/hadur-core/src/main/java/hadur2/core/MeleeMemory.java), [Replay.java](https://github.com/lgriffin/Hadur_Robot/blob/11e7c68/hadur-core/src/main/java/hadur2/core/replay/Replay.java) and [PostureGateTest.java](https://github.com/lgriffin/Hadur_Robot/blob/11e7c68/hadur-core/src/test/java/hadur2/core/posture/PostureGateTest.java).
 - For the status line and the release steps: [rumble-submission.md](https://github.com/lgriffin/Hadur_Robot/blob/11e7c68/docs/rumble-submission.md) and [the top-30 plan](https://github.com/lgriffin/Hadur_Robot/blob/11e7c68/docs/rumble-climb-top30-plan.md).
 - [The top-15 plan](https://github.com/lgriffin/Hadur_Robot/blob/claude/plan-top-15-7gdh3i/docs/rumble-climb-top15-plan.md) (R10, R11), proposed on its own branch.
-- Earlier plans: [Hadur 2, a duelist that remembers](https://claude.ai/artifact/KDkC1j5Yj8vWH6XQydyYH8), [the Melee Extension Plan](https://claude.ai/code/artifact/0eb1c942-b15b-4386-b995-7e71b46bb0c3) and [Hadur vs DrussGT 3.1.16](https://claude.ai/artifact/KARFCbDaXVnDMvAj85oG48), which is still being written.
+- Earlier plans: "Hadur 2, a duelist that remembers", the Melee Extension Plan and "Hadur vs DrussGT 3.1.16", which is still being written.
 - The replay timing was run for this document: two builds of the core from 11e7c68, the six fixtures, the median of 15 passes each.
 
 **Robocode engine, tag VER_1_9_5_6**

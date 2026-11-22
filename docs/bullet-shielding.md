@@ -7,7 +7,7 @@ and which opponents a shield of Hadur's own could beat.
 
 ## How Saguaro shields
 
-Read from the decompiled 1.0 jar (`oog.mega.saguaro.mode.shield.BulletShieldMode`).
+Saguaro 1.0's bullet-shield mode.
 
 - **It starts every new opponent in shield mode** and keeps it while it scores; a mode
   selector moves to other modes (score-max, shot dodger, wave poison, perfect prediction)

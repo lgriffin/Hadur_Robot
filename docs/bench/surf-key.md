@@ -39,7 +39,7 @@ The keys are fitted on 2 seeds of our own play, so a learner that adapts to us b
 PC card has 4 seeds a robot to fit on, a weights-only arm, and a 3-point per-robot pick, so only robots whose key pays
 on fresh seeds would ship.
 
-## Card pc-surf-key (BENCH-160)
+## Card pc-surf-key (BENCH-281)
 
 `hadur-bench/plans/pc-surf-key.queue`, about 1.5 h. Leigh starts it.
 

@@ -37,6 +37,9 @@ class TwinPickTest(unittest.TestCase):
         self.assertAlmostEqual(r["diff"], 14 / 3)
         self.assertGreater(r["se"], 0)
 
+    # TWIN-14: a mode table entry ships only on a read whose 95% low end is above zero. This checks
+    # the pick against the control; the confirm against the release before is read the same way.
+    # @Tag("TWIN-14")
     def test_the_pick_needs_the_gain_and_a_low_end_above_zero(self):
         control = {"t": battles([40, 50, 60, 45])}
         big_noisy = battles([60, 40, 80, 45])  # +7.5 but a low end below zero

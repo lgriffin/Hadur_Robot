@@ -1,5 +1,7 @@
 # Saor: a MicroMelee entry
 
+> Architecture diagrams for every small bot: [architecture-c4.md, The small bots](architecture-c4.md#the-small-bots).
+
 `hadur117.micro.Saor` is a second robot, separate from Hadur: a melee micro bot for the
 MicroMelee rumble (codesize under 750 bytes, ten robots on a 1000 x 1000 field). The design is
 the spec doc "MicroMelee Rumble Entry: Figment, Wallaby, Capulet dissected and a hex-built

@@ -1,5 +1,5 @@
 # Nullstride's shield list as a bench set: the robots in the 1v1 rumble on 2026-10-11 whose names match
-# the 298 name hashes in jd.Nullstride 2.3.3 (class jd.l in its jar; Java string hash of the name, with
+# the 298 name hashes on Nullstride 2.3.3's shield list (Java string hash of the name, with
 # or without the version). 287 match; the rows and both robots' live scores are in
 # data/rumble/parsed/2026-10-11_nullstride-2.3.3_shield-list_vs_hadur-3.12.tsv.
 # Roles: null-both = also on Hadur's shield list (ShieldListData, 3.12); null-only = on Nullstride's alone.

@@ -10,13 +10,16 @@ sys.path.insert(0, HERE)
 from jaylexi_power2 import java_hash, table  # noqa: E402
 from kitlab_prior_arm import unjava  # noqa: E402
 
-SRC = os.path.join(HERE, "..", "..", "jaylexi", "src", "main", "java", "hadur117", "mini", "JayLexi.java")
+# The tool reads the source of the release it shipped in (git tag jaylexi-v0.6); later releases
+# reshaped the lines it edits, so the test reads a pinned copy, not master's JayLexi.java.
+SRC = os.path.join(HERE, "fixtures", "JayLexi-0.6.java.txt")
 
 
 def orb(path):
     return list(unjava(table(open(path).read(), "ORB").group(1)))
 
 
+# @Tag("BENCH-190")
 class Jit(unittest.TestCase):
     def run_tool(self, *args):
         out = os.path.join(tempfile.mkdtemp(), "o.java")

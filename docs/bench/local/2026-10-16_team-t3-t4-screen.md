@@ -1,6 +1,6 @@
 # Team stages T3 and T4: cloud screen (2026-10-16)
 
-Screens of the first two stages proposed in `docs/bench/combatteam-3.25.md`. Every switch is
+Screens of the first two team gun-depth stages (T3, T4). Every switch is
 team-only. T3 changes `FieldGun.K`, which `FieldGun.k()` reads only while a teammate lives;
 `MELEE_K` is unchanged. T4 changes `HadurCore`'s lane test and `TeamLink.laneClear`, both of
 which exist only in a team battle. So 1v1 and melee play exactly as 3.13 does.

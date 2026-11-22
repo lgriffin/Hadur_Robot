@@ -2,8 +2,7 @@
 # that should land within 2 points of the live rumble APS, not just a top-10 snapshot.
 #   <robot name as Robocode lists it> | <role> | <jar file in opponents/, or - for bundled samples> | <weight>
 # Weight is the stratum's share of the ~1,216-bot population (RoboRumble/Rankings, 2026-09-28),
-# split evenly across the opponents standing in for it here, per the rumble climb plan
-# (https://claude.ai/artifact/RrAnDpngzZjcf9hYL3pLcW):
+# split evenly across the opponents standing in for it here, per the rumble climb plan:
 #   top 30            2.5%  total
 #   ranks 31-150      10%   total
 #   ranks 151-500     29%   total

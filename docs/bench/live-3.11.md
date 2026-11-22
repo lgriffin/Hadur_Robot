@@ -3,8 +3,7 @@
 Pages saved by Leigh at 02:23 UTC: Hadur 3.11's BotDetails page and the 1v1 rankings, archived
 in `data/rumble/pages/2026-10-11T0223Z_*` and parsed to `data/rumble/parsed/2026-10-11T0223Z_*`.
 All 1,216 pairings are in, 4,306 battles (3.5 a pairing; only 51 pairings still have one battle).
-The first battle was at 14:59 UTC on 2026-10-10. Leigh's chart of the late slide:
-https://claude.ai/artifact/XYCmFu9uZp5gFvxt6Sh1i2.
+The first battle was at 14:59 UTC on 2026-10-10.
 
 | Release | APS | Rank | Battles |
 |---|---|---|---|

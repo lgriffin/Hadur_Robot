@@ -39,23 +39,6 @@
         <jacoco.version>0.8.12</jacoco.version>
         <!-- The API the robot is built against; vendored in repo/. -->
         <robocode.api.version>1.9.3.0</robocode.api.version>
-        <!-- Requirements from docs/requirements.md up to this stage must be covered by a test. -->
-        <hadur.stage>S7</hadur.stage>
-        <!-- The melee extension's stage (M0-M7): its requirements up to here must be covered too. -->
-        <hadur.melee.stage>M7</hadur.melee.stage>
-        <!-- The RoboRumble climb plan's stage (R0-R5): its requirements up to here must be covered too. -->
-        <hadur.climb.stage>R9</hadur.climb.stage>
-        <!-- The architecture evolution's stage (A0-A5, docs/architecture-evolution.md). -->
-        <hadur.arch.stage>A5</hadur.arch.stage>
-        <!-- The DrussGT route's stage (D1-D7, docs/druss-route-plan.md): its requirements up to here must be covered too. -->
-        <hadur.druss.stage>D8</hadur.druss.stage>
-        <!-- The Team plan's stage (T1-T2, docs/team-plan-t1.md; T2 in docs/requirements.md). -->
-        <hadur.team.stage>T7</hadur.team.stage>
-        <!-- Saor's stage (U0-U5, the spec's M0-M5; docs/saor.md): its requirements up to here must be covered too. -->
-        <hadur.saor.stage>U4</hadur.saor.stage>
-        <hadur.twin.stage>W0</hadur.twin.stage>
-        <!-- Deise's stages (docs/deise.md): E0 the design measured, E1 tuned, E2 fitted to 1,499, E3 released. -->
-        <hadur.deise.stage>E0</hadur.deise.stage>
     </properties>
 
     <repositories>
@@ -132,15 +115,6 @@
                             <include>**/*Properties.java</include>
                         </includes>
                         <systemPropertyVariables>
-                            <hadur.stage>${hadur.stage}</hadur.stage>
-                            <hadur.melee.stage>${hadur.melee.stage}</hadur.melee.stage>
-                            <hadur.climb.stage>${hadur.climb.stage}</hadur.climb.stage>
-                            <hadur.arch.stage>${hadur.arch.stage}</hadur.arch.stage>
-                            <hadur.druss.stage>${hadur.druss.stage}</hadur.druss.stage>
-                            <hadur.team.stage>${hadur.team.stage}</hadur.team.stage>
-                            <hadur.saor.stage>${hadur.saor.stage}</hadur.saor.stage>
-                            <hadur.twin.stage>${hadur.twin.stage}</hadur.twin.stage>
-                            <hadur.deise.stage>${hadur.deise.stage}</hadur.deise.stage>
                             <hadur.root>${maven.multiModuleProjectDirectory}</hadur.root>
                         </systemPropertyVariables>
                     </configuration>
@@ -171,5 +145,23 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <!-- Coverage on every module: the agent instruments classes as the tests load them
+                 (the jars that ship are not touched), and the report lands in
+                 target/site/jacoco/ of each module. hadur-core adds a floor (its own pom). -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>coverage</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 </project>

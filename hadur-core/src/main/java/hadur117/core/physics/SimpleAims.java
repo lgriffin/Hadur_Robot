@@ -2,7 +2,7 @@ package hadur117.core.physics;
 
 /**
  * DODGE-1: where the simple guns would have aimed a wave's bullet at us, as Saguaro's
- * ShotDodger reads them (docs/bench/rivals-source-read.md): head-on, linear, circular and
+ * ShotDodger reads them: head-on, linear, circular and
  * averaged linear predicted tick by tick, and the two one-line linear aims small robots use
  * (bearing plus lateral velocity over bullet speed, and its arcsine), each aimed on the wave's tick or one or two ticks before it (the enemy reads
  * our scan a tick late, and its gun turns a tick after it aims), from where the enemy stood on

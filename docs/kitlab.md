@@ -1,12 +1,14 @@
 # JayLexi and Eveimear: the MiniRumble and MicroRumble 1v1 entries
 
+> Architecture diagrams for every small bot: [architecture-c4.md, The small bots](architecture-c4.md#the-small-bots).
+
 Built from the design plan
 "JayLexi & Eveimear — MiniRumble and MicroRumble 1v1 Design Plan"
-(https://claude.ai/artifact/C2YjT4PxhV2AX4WQdE9aWX) and `kitlab.zip` (the J1, E1, E2 and E2b
+and `kitlab.zip` (the J1, E1, E2 and E2b
 drafts, API stubs, a codesize counter and RoboRunner scripts). This page records what was built
 from them, how the cloud box measured it, and what stands between each bot and the plan's
 submission gate. The requirements are JAYLEXI-1 to JAYLEXI-10 and EVEIMEAR-1 to EVEIMEAR-12 in
-[requirements.md](requirements.md); the plan's K, J and E statements map onto them there.
+[requirements/](requirements/README.md); the plan's K, J and E statements map onto them there.
 
 Both are separate robots in their own modules (`jaylexi/`, `eveimear/`). Nothing of Hadur, Saor,
 TwinSaor, Deise or Sanaro changes; Hadur's 1v1 build is untouched. Nothing has been submitted or
