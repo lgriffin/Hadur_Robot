@@ -925,6 +925,8 @@ public final class DuelController {
             if (!planned) {
                 stats.ramEscapeTicks++;
                 ramEscape.move(orders, currentState(in), lastEnemyState, duelOnly(MoveDesign.RAM_BREAK, enemiesTotal));
+                String note = ramEscape.drainChoiceNote();
+                if (note != null) telemetry.emit("RC," + round + "," + in.time() + "," + note);
             }
         } else if (stopAndGo != null) {
             // POISON-1: stop while the enemy's gun cools, go once it has fired; the waves still teach the views.
