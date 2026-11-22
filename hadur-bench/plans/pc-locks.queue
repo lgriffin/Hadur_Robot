@@ -1,9 +1,9 @@
 # 1v1, cloud locks to the PC (BENCH-253), round 19. Round 18 (PR #986) carries Snow, PanzerGeneral and Assertive on pm
 # and SpaceKees on pmx; round 19 runs after it and after pc-rc-confirm run 5.
-# Round 19 carries six MOVE-67 locks and one candidate, padded to 18 for the A/A check.
+# Round 19 carries six MOVE-67 locks and one rf lock, padded to 18 for the A/A check.
 # Cloud read (Robocode 1.12.0, live turn time, master 053343eaf; coverage/shards/locks.tsv), vs c / vs aa:
-#   rf (RAM-15 ram-flee, shipped) on WaveRammer (box D u7: 36 seeds 87870, 87882, 87894 +2.47 +- 2.23 / +1.93 +- 2.09;
-#      95% low end +0.25 vs c, -0.15 vs aa, so a candidate, not a cloud lock: the PC decides).
+#   rf (RAM-15 ram-flee, shipped) on WaveRammer (boxes D and B: 48 seeds, 87870, 87882, 87894 and box B's 12 more,
+#      +2.27 +- 1.90 / +2.14 +- 1.92, A/A +0.13; dzlane/D/u7, B/r19pre).
 #   qw (MOVE-67 per-opponent aim weight: the simple aim members at standing weight 1.0) on AntiRebel (box C: 24 seeds
 #      88250, 88262 +0.98 +- 0.39 / +1.04 +- 0.45) and Nicator (24 seeds +1.22 +- 0.73 / +0.87 +- 0.68); first read with
 #      the cloud ablation aimp1, then rebuilt as the qw table flavour and checked on 6 seeds 88280 (dzlane/C/blind/q1five);
@@ -44,8 +44,7 @@
 #   - WaveRammer: we let it close in (52% of the time under 250 px against BeepBoop's 42%, mean distance 253 against
 #     305), and under 250 px it hits us 22.6% of the time against 14.1% on BeepBoop (box D u7 truth logs, 4 seeds 87850).
 #     RAM-15's flee backs away from a charger, the way BeepBoop stands off. The rbd bend failed on it (21 Nov). The cloud
-#     lead held over three 12-seed blocks (+3.57, then pooled +2.47 vs c), but the aa low end is -0.15, so the line
-#     ships only if the PC's own 12 seeds clear 0.
+#     lead held over four 12-seed blocks, pooled +2.27 vs c and +2.14 vs aa (low ends +0.37 and +0.22).
 # Stop rules (docs/bench/watch.md): the watcher's A/A rule needs 10 robots read in both c and aa; this lock reads 12, but
 # the gate reads aa (multiarm.py prints aa against c), so no aa stop rule is set. The lock halts on 30 failed battles, an
 # arm scoring nothing in 8, 60+ skipped turns a battle over the last 24 or no battle in 30 minutes. The live-match step
@@ -79,5 +78,5 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 8
 gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks19-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks19-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks19-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms rf qw --out ${OUT}/$(date +%Y-%m-%d)_pc-locks19-lock-per-robot.md --out-tsv ${OUT}/pc-locks19-lock-per-robot.tsv
   after: lock
 
-pr | bash tools/open_results_pr.sh claude/pc-locks19-results "1v1 cloud locks, round 19 (6 qw, WaveRammer rf candidate) on 12 fresh PC seeds" ${OUT}/pc-locks19-livematch.md ${OUT}/*_pc-locks19-*.md ${OUT}/pc-locks19-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks19-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks19-results "1v1 cloud locks, round 19 (6 qw, WaveRammer rf) on 12 fresh PC seeds" ${OUT}/pc-locks19-livematch.md ${OUT}/*_pc-locks19-*.md ${OUT}/pc-locks19-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks19-lock-pick.tsv' -size +0c)
   after: gate
