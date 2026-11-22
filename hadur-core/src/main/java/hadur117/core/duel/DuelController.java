@@ -1604,7 +1604,7 @@ public final class DuelController {
         ramEscape.setBend(ramBend);
         // RAM-20: a ram-learn line makes the escape dodge the aims learned from the rammer's own bullets.
         ramLearn = duelOnly(stackList.ramLearn(name), enemiesTotal);
-        ramEscape.setLearned(ramLearn, false);
+        ramEscape.setLearned(ramLearn);
         // POW-18: the power cap for the opponents the table names.
         powerCap = duelOnly(stackList.powerCap(name), enemiesTotal) ? CAP_POWER
             : duelOnly(stackList.powerCapHalf(name), enemiesTotal) ? CAP_POWER_HALF : Double.NaN;

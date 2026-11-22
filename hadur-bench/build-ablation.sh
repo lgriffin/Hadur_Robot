@@ -284,8 +284,7 @@
 #   aimwlist the robots named in $AIM_WEIGHT get MOVE-67, the simple aim members at standing weight 1.0 (aimp1's, MOVE-29's 0.1 otherwise). Suffix qw.
 #   pmxlist the robots named in $PM_MEGAS get MOVE-58, a mimic of the cw.megas-form pattern matcher (rounded lateral-velocity symbols, flight-time gap, symbol rebuild) among the aim members. Suffix pmx.
 #   ramlearn  RAM-20: the rammer escape dodges every rammer's shots by the aims learned in the battle from its own
-#         bullets (ShotModel) in place of RAM-5's fixed head-on and linear pair. Suffix rl. rambrake (with it): braking
-#         paths are weighed too while a shot is in flight. Suffix rq.
+#         bullets (ShotModel) in place of RAM-5's fixed head-on and linear pair. Suffix rl.
 #   rlearnlist the robots named in $RAM_LEARN get RAM-20's learned shot model. Suffix rln.
 #   rbendlist the robots named in $RAM_BEND get RAM-18, the rammer escape bending off its line of travel after each of their shots. Suffix rbd.
 #   rfanlist the robots named in $RAM_FAN get RAM-17, the rammer escape dodging their linear/circular aims as +-4 deg fans at RAM-14's weight. Suffix rfn.
@@ -468,10 +467,6 @@ for a in "${list[@]}"; do
             # RAM-20 screen: the learned model's cost for a sure hit, 300, 600 or 1200 px of closest approach (120 shipped).
             edit "$src/hadur-core/src/main/java/$pkg/core/move/RamEscape.java" "static final double LEARNED_COST = 120.0;" "static final double LEARNED_COST = ${a#rlc}00.0;"
             version="${version}${a#rl}" ;;
-        rambrake)
-            # RAM-20: with ramlearn, the escape also weighs braking paths while a shot is in flight.
-            edit "$src/hadur-core/src/main/java/$pkg/core/move/RamEscape.java" "static final boolean FORCE_BRAKE = false;" "static final boolean FORCE_BRAKE = true;"
-            version="${version}rq" ;;
         shoff)
             # BENCH-246 pc-modes-check: MOVE-43's shadow fix off again, to read what it does to team and melee end games.
             edit "$movedesign" "static final boolean KEEP_SHADOWS = true;" "static final boolean KEEP_SHADOWS = false;"

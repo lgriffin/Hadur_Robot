@@ -28,6 +28,8 @@ public final class ShotModel {
     public static final int TOP = 3;
     /** The leading candidate's score before the model speaks: two clean matches. */
     static final double MIN_SCORE = 2.0;
+    /** The share of the bullets read the leading candidate must explain for the model to speak. */
+    static final double MIN_SHARE = 0.2;
 
     private final double[] score = new double[EXPERTS];
     private int read;
@@ -74,10 +76,14 @@ public final class ShotModel {
         return b;
     }
 
-    /** Whether the model has read enough to replace the fixed aims. */
+    /**
+     * Whether the model may replace the fixed aims: its leading candidate has matched {@link #MIN_SCORE} bullets'
+     * worth and at least {@link #MIN_SHARE} of those read. A gun none of the simple aims explains (a pattern
+     * matcher, a guess-factor gun) never clears the share, and the escape keeps RAM-5's pair against it.
+     */
     public boolean ready() {
         int b = best();
-        return b >= 0 && score[b] >= MIN_SCORE;
+        return b >= 0 && score[b] >= MIN_SCORE && score[b] >= MIN_SHARE * read;
     }
 
     /**
