@@ -1,0 +1,100 @@
+# Requirements: Core, architecture and resilience
+
+The hexagonal core, its values and ports, determinism, memory, the conductor's roles and strands, the World, the team link and the build's own guarantees. These hold in every style of battle.
+
+EARS requirements, one row each; [README](README.md) gives the rules. IDs never change meaning and are never reused; a requirement that is dropped moves to [retired.md](retired.md).
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| ADAPT-1 | State | While the loaded profile's movement tier is M2 or M3, the gun shall use the anti-surfer aim from the first firing wave. | S4 |
+| CORE-1 | Ubiquitous | The core shall not import any class from `robocode.*`. | S1 |
+| DIAL-1 | Ubiquitous | Every policy input shall carry a value and a margin of error, and each policy shall select its conservative setting while the margin exceeds the policy's threshold. | S4 |
+| LINK-1 | Ubiquitous | Team messages shall be byte arrays in a versioned, checksummed format that the core encodes and decodes. | A4 |
+| MEM-1 | Event | When the first scan of a battle names an opponent, the core shall load the profile for that opponent's lineage key before producing orders for that tick. | S3 |
+| NAME-1 | Ubiquitous | The solo robot, the team, the recorder and the core shall be in package `hadur117` (`hadur117.Hadur`, `hadur117.HadurTeam` of five `hadur117.Hadur`, `hadur117.core`), with jars named `hadur117.Hadur_<release>.jar` and `hadur117.HadurTeam_<release>.jar`, and the rename shall change no decision: every duel, melee and team fixture replays bit for bit. | R9 |
+| PHYS-1 | Ubiquitous | The movement predictor shall stop a predicted robot at a wall as the engine does. | R6 |
+| RADAR-1 | Unwanted | If no scan of the enemy arrived on the previous tick, then the core shall turn the radar toward the enemy's last known bearing until it scans the enemy again. | S2 |
+| REL-1 | Ubiquitous | The robot jar shall contain only class files that a Java 11 runtime can load, so that every RoboRumble client can run it. | S2 |
+| RES-1 | Unwanted | If the core throws on any tick, then the adapter shall issue the safe order set for that tick and record the fault. | S1 |
+| ROLE-1 | Event | When a battle starts, the core shall fix the battle's charter from the battle facts before the first tick. | A1 |
+| SHELF-1 | Ubiquitous | A shelf shall be written only on behalf of its own strand's role. | A4 |
+| STRAND-1 | Ubiquitous | Every package of the core shall have exactly one owner: the kernel, one strand, or the conductor. | A0 |
+| TIME-1 | Unwanted | If the previous tick exceeded 70% of the tick allowance, then the core shall reduce its computation level for the next tick. | S6 |
+| WAVE-1 | Event | When an enemy energy drop is observed, the core shall subtract damage dealt by our bullets, enemy wall damage and enemy hit refunds before classifying it as a fired bullet. | S2 |
+| WEAVE-1 | Ubiquitous | Only the driving role shall originate a tick's body, gun, radar and fire orders, apart from the full-speed order the conductor gives at a change of role. | A2 |
+| WORLD-1 | Ubiquitous | The core shall feed one model of the field with every scan, hit and death that ROLE-5 offers the Melee role, before any role is offered it. | A3 |
+| ADAPT-2 | State | While the loaded profile's gun tier is T3, movement shall enable the flattener views from the first surfable wave. | S4 |
+| CORE-2 | Ubiquitous | The core shall produce identical `BotOrders` for identical `BotInput` sequences and identical profile state. | S1 |
+| DIAL-2 | Ubiquitous | The core shall not condition any policy on elapsed ticks or round number alone. | S4 |
+| GATE-2 | Unwanted | If fewer than two enemies are alive as the core counts them (WORLD-8), then the core shall drive the robot with the duel subsystems from that same tick. | M1 |
+| LINK-2 | Unwanted | If a message fails its checksum or carries an unknown version, then the core shall ignore it and count it. | A4 |
+| MEM-2 | Event | When a round ends, the core shall fold that round's gun, movement and outcome statistics into the opponent profile. | S3 |
+| RES-2 | Ubiquitous | The core shall bound every data structure that grows during a battle. | S1 |
+| ROLE-2 | Ubiquitous | The core shall choose each tick's role from the charter, the counts of enemies, teammates and sentries alive, the round's vetoes and the roles that have already driven this round, and from nothing else. | A1 |
+| SHELF-2 | State | While in a team battle, a member that is not the team's leader shall neither write to nor delete from the store. | A5 |
+| STRAND-2 | Ubiquitous | No strand's package shall depend on another strand's or on the conductor's, and no kernel package on a strand's or the conductor's. | A0 |
+| TIME-2 | Event | When a skipped-turn event is received, the core shall drop one computation level for the remainder of the round and record it. | S6 |
+| WAVE-2 | Unwanted | If a corrected energy drop is outside [0.1, 3.0], then the core shall not create a firing wave. | S2 |
+| WEAVE-2 | Ubiquitous | A fence shall only replace a drive; it shall never touch the gun, the radar, the fire order or the messages. | A2 |
+| WORLD-2 | Ubiquitous | The core shall report to a role, as its count of others, the engine's count off a team and the count of enemies alive that WORLD-8 defines on a team. | A5 |
+| ADAPT-3 | Ubiquitous | The core shall weight seeded samples lower than samples observed in the current battle. | S4 |
+| DIAL-3 | Unwanted | If a margin used in a policy comparison is not a finite number, then the policy shall take its conservative branch rather than treat the comparison as settled. | R1 |
+| GATE-3 | Unwanted | If a scanned robot reports that it is a sentry, then the core shall use the duel subsystems for the rest of the round and shall treat the sentry border as a wall. | M1 |
+| LINK-3 | Unwanted | If no teammate's report has arrived, then the core shall still resolve its role from the engine's facts alone. | A5 |
+| MEM-3 | Event | When a battle ends, the store shall persist the profile atomically within the data quota. | S3 |
+| RES-3 | Ubiquitous | The store shall write a profile to a temporary file before replacing it, and remove the temporary file only once the profile is complete, so that an interrupted write leaves the previous profile, or the complete new one, loadable. | S3 |
+| ROLE-3 | State | While the Team role's own conditions do not hold, the Melee role is built and has not failed this round, two or more enemies are alive (or one, on a team whose modes against it carry LAST while a teammate lives, TMODE-47), no sentry robot is alive or has been scanned this round, and the Duel role has not driven this round, the core shall drive the robot with the Melee role. | A1 |
+| SHELF-3 | Ubiquitous | The `.hp` shelf shall be written only in a Duel-charter battle, the `.hm` shelf only in a Melee-charter battle and the `.ht` shelf only in a Team-charter battle. | A4 |
+| STRAND-3 | Ubiquitous | Each owner's sources shall be pinned by hash. | A0 |
+| TIME-3 | Event | When the engine skips a turn for the first time in a battle, the core shall learn the tick allowance from the tick that caused it and use that allowance, not the adapter's guess, for the rest of the battle. | R1 |
+| WAVE-3 | Unwanted | If a shot is found on the same interval as an inferred wall hit, then the movement wave it becomes shall be marked uncertain and surfed at half weight. | R2 |
+| WEAVE-3 | Ubiquitous | The driving role shall order a shot only on a tick for which the conductor has given the fire permission. | A2 |
+| WORLD-3 | Unwanted | If a teammate has sent no report for a set number of ticks while the engine's count of others has fallen, then the core shall count it dead. | A5 |
+| ADAPT-4 | Event | When a profile with a known gun tier and no seeds loads, the core shall apply the opening book's choices from the first tick without replaying samples. | R5 |
+| GATE-4 | Unwanted | If the melee subsystems throw, then the core shall record the fault and use the duel subsystems for the rest of the round. | M1 |
+| LINK-4 | State | While it has a living teammate, the core shall broadcast its own state, its fresh sightings, the deaths it knows of this round and its bullet events with the orders of every tick it completes. | A5 |
+| MEM-4 | Unwanted | If a profile fails to load or fails its checksum, then the core shall proceed with an empty profile and record the failure. | S3 |
+| RES-4 | Unwanted | If the live hit-rate estimate diverges from the profile's by more than the margin of error, then the core shall decay the seed weight to zero within 20 waves. | S4 |
+| ROLE-4 | State | While a role has driven in the current round, the core shall not drive with a role above it in the order Team, Melee, Duel. | A1 |
+| SHELF-4 | Ubiquitous | The `.hm` and `.ht` shelves shall each stay within a fixed byte budget. | A4 |
+| STRAND-4 | Ubiquitous | A recorded duel battle and a recorded melee battle shall each replay to identical orders, telemetry and store files. | A0 |
+| TIME-4 | Ubiquitous | The core shall cap the bytes written at a round's end and shall write seeds only at battle end or on every tenth surviving round. | R1 |
+| WAVE-4 | Event | When a movement wave's bullet power is updated, its wall distances shall be recomputed. | R6 |
+| WEAVE-4 | Optional | Where the wide fire lane is played (WEAVE-9 off), while a living teammate's last known position is no older than the WORLD-3 window and lies in the fire lane, the conductor shall withhold the fire permission. | A5 |
+| WORLD-4 | Event | When teammates' reports arrive, the core shall merge each report once, in the order of their stated ticks, and keep the newer of two sightings of a robot. | A5 |
+| ADAPT-5 | Event | When a profile that records POW-7's hit-rate condition as met loads, the core shall apply POW-7 to POW-9 from the first shot, until this battle's rates contradict it by more than their margins. | D1 |
+| GATE-5 | Ubiquitous | The core shall never target, count or profile a sentry robot as an opponent. | M1 |
+| MEM-5 | State | While the store is above 90% of quota, the store shall evict gun and surf seeds from the least-recently-fought profiles before writing. | S3 |
+| RES-5 | Ubiquitous | Every degradation and fault counter shall be included in the round statistics and the bench report. | S1 |
+| ROLE-5 | Ubiquitous | The core shall offer each of its events to the roles of the charter, Melee before Duel, in the engine's order, except that a sentry's scan and a sentry's bullet are offered to no role (GATE-5) and Hadur's hit on a robot the Duel is ignoring is not offered to the Melee role. | A2 |
+| STRAND-5 | Ubiquitous | A recorded team battle shall replay to identical orders and telemetry for each recorded member. | A5 |
+| TIME-5 | Ubiquitous | The adapter shall run one warm-up tick for each role of the charter through a discarded core before the first round, so that class loading and JIT warm-up do not cost the first real tick a role drives. | R1 |
+| WAVE-5 | Event | When our own energy falls by exactly 0.1 on a tick of a duel and no shot of ours, bullet hit, wall hit or robot hit explains it, the core shall take 0.1 off the enemy's energy drop for that tick (the engine's inactivity drain) before classifying the drop as a fired bullet, for every such tick since the last scan. | R9 |
+| WEAVE-5 | State | While in a team battle, the Guard's safe orders shall hold fire. | A5 |
+| WORLD-5 | Event | When a role hands over with bullets of its own still in flight, the core shall keep the first bullet outcomes that follow, one for each of those bullets, out of the next role's gun evidence. | A2 |
+| MEM-6 | Ubiquitous | The store shall keep statistics loadable at quota by evicting seeds from every profile before any statistics are skipped. | R1 |
+| RES-6 | Ubiquitous | The core shall contain no use of unseeded randomness, threads, reflection, or file I/O. | S1 |
+| ROLE-6 | Ubiquitous | The core shall hold no role outside its charter. | A3 |
+| STRAND-6 | Unwanted | If a constant that a retired requirement names in backticks (`X`, or `Owner.X` to tie it to one source file) is still declared `static final` in the robot's main sources and no live requirement names it, then the build shall fail: a failed card's results PR removes the switch, its code, ablation arm, card and tests with its requirement. | A5 |
+| WEAVE-6 | Unwanted | If the driving role orders a shot on a tick without the fire permission, then the core shall treat it as that role's fault. | A2 |
+| WORLD-6 | Event | When one of our bullets ends on a teammate or on a teammate's bullet, the core shall report it to the role that fired it as a bullet that missed. | A5 |
+| MEM-7 | Ubiquitous | The profile codec shall be able to write a profile in the format a previous release can read. | R1 |
+| RES-7 | Unwanted | If the core has faulted on three ticks of a round off a team (WEAVE-5), then the guard's safe orders shall also fire power 1.0 at the enemy's last scanned bearing whenever the gun is cool. | R4 |
+| WEAVE-7 | Optional | Where the wide fire lane is played (WEAVE-9 off), while a living teammate's predicted track, over the time a bullet of any power would take to pass it, comes within the fire lane's half-width of the lane, the conductor shall withhold the fire permission. | T1 |
+| WORLD-7 | Ubiquitous | The core shall offer an event that names a teammate to the World alone. | A5 |
+| MEM-8 | Ubiquitous | The store shall keep seeds only for at most five opponents met at least twice with a recorded score share under 60%, and shall keep every other profile as statistics of at most 1 KB. | R5 |
+| RES-8 | Event | When a battle ends, the adapter shall write a battle-health record of at most 64 bytes with rounds, rounds survived, faults, skipped turns, memory failures and the learned tick allowance. | R4 |
+| TIME-8 | Event | When the robot finishes its first-round setup, it shall print one `SETUP,0,0,warmMs,coreMs,memoryMs,totalMs` record giving the time spent warming up, building the core and loading memory. | R9 |
+| WEAVE-8 | Unwanted | If the driving role's drive, simulated a set number of ticks ahead, would bring Hadur within a robot's width and a margin of a living teammate's predicted position, then the conductor shall replace the drive with the nearest of a brake or a reversal that stays clear, keeping the gun, radar, fire and message orders. | T1 |
+| WORLD-8 | State | While in a team battle, the core shall take as its count of enemies alive the smaller of the engine's count of others less the teammates heard from on that tick, and the enemies at the start less the distinct enemies known dead that round. | A5 |
+| MEM-9 | Ubiquitous | The store shall keep its files under a subdirectory named for the profile-format version and shall not read or write another version's subdirectory except to carry tiers forward once. | R5 |
+| TIME-9 | Ubiquitous | The core's surf, bullet-shadow and wave hit-box code shall reuse arrays and plain coordinates instead of building a map, point or line per neighbour, bullet or corner on every tick, with the same arithmetic in the same order, so that every duel, melee and team fixture replays bit for bit. | R9 |
+| WEAVE-9 | State | While a living teammate lies ahead of the gun within 30 px of its line, at the teammate's distance, and nearer Hadur than the nearest enemy within 36 px of that line (at any distance when no enemy is), the conductor shall withhold the fire permission. | T7 |
+| WORLD-9 | Event | When a teammate's state is scanned or reported, the World shall keep its heading and velocity with its position and shall predict its position at a later tick from them, moved no further than a robot's top speed allows. | T1 |
+| MEM-10 | Ubiquitous | The adapter shall do at most one profile read and two profile writes per battle, each at most 2 KB, apart from MEM-8's seeded profiles. | R5 |
+| RES-10 | Ubiquitous | The robot shall leave no reference to its classes in the process after a battle, so that the number of classes loaded in one JVM stays flat across a session of battles. | R7 |
+| MEM-11 | Ubiquitous | The adapter shall list the data directory at most once per battle and answer every later name, size and age question from an index it keeps current. | R8 |
+| MEM-12 | Ubiquitous | The library shall read a stored profile to look for seeds only when its file is larger than 1 KB. | R8 |
+| MEM-13 | Unwanted | If a save would take the store past 90% of its quota after every other seed is gone, then the library shall delete the least recently written profiles until it fits, and write. | R8 |
+| MEM-15 | Event | When a battle starts, the robot's store shall build its index from one saved index file and the directory's names, asking no file its size or age, unless the saved index is damaged or was written for other names. | R9 |
+| RES-15 | Event | When a battle ends, the health record shall add the setup time, the first turn the main loop ran and the longest run of consecutive skipped turns, and stay within 64 bytes. | R9 |

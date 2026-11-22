@@ -97,6 +97,8 @@ final class TeamRisk {
     static final double ONE_AIM_WEIGHT = 2.0;
 
     static final double HUNT_PULL = 0.3;
+    /** TMODE-59: HUNT's pull under {@link TeamModes.Mode#TIGHT}. */
+    static final double HUNT_TIGHT_PULL = 1.0;
 
     static final double HUNT_CROWD = 1.6;
 
@@ -150,6 +152,11 @@ final class TeamRisk {
         return 1.0 / ((1 + k) * (1 + k));
     }
 
+    /** TMODE-59: whether the hunt pull is the tight one: TIGHT in {@code modes} and the switch {@code on}. */
+    static boolean tight(Set<TeamModes.Mode> modes, boolean on) {
+        return on && modes.contains(TeamModes.Mode.TIGHT);
+    }
+
     /**
      * TMODE-3, TMODE-4: the point a team member is drawn to, or null. With
      * {@link TeamModes.Mode#FINISH}, one enemy left by the engine's count ({@code others} less
@@ -166,16 +173,6 @@ final class TeamRisk {
     /** As above, with {@code name} this member's name for TMODE-13's order (null: first). */
     static Pull pull(Point2D.Double me, String name, double energy, int others, List<EnemyInfo> enemies,
                      long now, List<Roster.Mate> mates, Set<TeamModes.Mode> modes) {
-        if (TeamModes.mobbing(mates.size(), enemies.size(), now)) {
-            // TMODE-58: the whole team on the weakest enemy left; the bullets' risk stays as it is.
-            EnemyInfo prey = null;
-            for (EnemyInfo e : enemies) {
-                if (e.age(now) >= CAP_MAX_AGE) continue;
-                if (prey == null || e.energy < prey.energy
-                        || (e.energy == prey.energy && e.name.compareTo(prey.name) < 0)) prey = e;
-            }
-            if (prey != null) return new Pull(prey.location, TeamModes.MOB_FLOOR, TeamModes.MOB_PULL, false);
-        }
         // TMODE-47: under LAST the members close on the one enemy left as FINISH would.
         if (modes.contains(TeamModes.Mode.LAST) && others == 1 && enemies.size() == 1
                 && enemies.get(0).age(now) < CAP_MAX_AGE && energy >= FINISH_ENERGY) {
@@ -189,7 +186,9 @@ final class TeamRisk {
             // TMODE-42: CLOSE brings the place in.
             double radius = modes.contains(TeamModes.Mode.CLOSE) ? HUNT_CLOSE : HUNT_RADIUS;
             Point2D.Double slot = huntSlot(me, name, enemies, now, mates, radius);
-            if (slot != null) return new Pull(slot, PACK_FLOOR, HUNT_PULL, false);
+            // TMODE-59: TIGHT, while it plays, draws the member to its place at full strength.
+            double strength = tight(modes, TeamModes.TIGHT_ON) ? HUNT_TIGHT_PULL : HUNT_PULL;
+            if (slot != null) return new Pull(slot, PACK_FLOOR, strength, false);
         }
         boolean gang = modes.contains(TeamModes.Mode.GANG);
         if (!gang) return null;

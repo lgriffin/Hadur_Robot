@@ -1,0 +1,59 @@
+# battle: team
+# Team: the tight pack, per the 2026-11-22 dive into the five teams below (TMODE-59, BENCH-274).
+# Team thread: team-only, duel and melee untouched (TMODE-59 acts in the team hunt pull only; off in the shipped build).
+#   aa      the baseline (master); bb its A/A copy
+#   tp      TMODE-59 on (tmtight): against OgiTeam, ShadowTeam, Xmen, AlephTeam and DemoniacNimrods the pull to
+#           a member's hunt place is 1.0 strong, not 0.3
+# Every other pairing plays the same code as aa, so the card fights only the five teams (plans/team-tight-set.txt)
+# and spreads their gain over the 47 TeamRumble pairings.
+# Pilot: tp on the five teams, 4 fresh seeds from 31000, 12 rounds, paired with aa. A projected team APS change
+#   under 0 stops the card there (team_modes.py gate --stop-below 0), and the PR carries the pilot.
+# Screen: bb and tp against aa on the five teams, 24 fresh seeds from 31100, 12 rounds; tp is gated at +0.3 APS with
+#   the 95% low end above zero over 47 pairings, scored against both baselines.
+# Why it should win: against these five teams 37-44% of our shots left from beyond 650 px and hit 11-12%, while the
+#   same guns hit 19-28% from 200-350 px; the members drifted off their hunt place because the pull to it was weak
+#   beside the other risks. With the pull at 1.0 the share of our shots from 200-350 px doubles (18% -> 37% on
+#   AlephTeam, 25% -> 46% on DemoniacNimrods, 20% -> 38% on ShadowTeam), our hit rate there holds or rises, and
+#   the opponent's does not rise to match. Cloud locks, each 12 fresh seeds beside the same box's baseline, 10 rounds,
+#   score share points: OgiTeam +7.4 +- 5.7 (and 42.8 and 42.7 against 36.1 on two more boxes), ShadowTeam
+#   +12.1 +- 4.2, Xmen +9.3 +- 4.7, AlephTeam +6.2 +- 5.5, DemoniacNimrods +5.6 +- 4.4: about +0.85 APS over 47
+#   pairings. On the rest of the field the same pull read level (28 easy teams -0.0 +- 0.7 at 3 seeds) and it did
+#   not help NightmareTeam, CombatTeam or Polylunar, so it is a table line and not a default.
+# Size: pilot 40 battles, screen 2 x 240: about 520 battles, about 25 minutes at the team rate. Every step resumes
+#   where it stopped.
+# Stop rules on every battle step (halt; every battle fought is kept and a rerun resumes): 10 failed battles, no
+# battle in 30 minutes, or 60+ skipped turns a battle over the last 200.
+# The team thread reads claude/pc-team-tight-results.
+#   ./queue.sh run pc-team-tight        (or  .\queue.ps1 run pc-team-tight)
+# Run it from master (one bench queue at a time, RoboRumble workers at 0):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set T = python3 tools/team_modes.py
+
+ttprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && for a in aa bb tp; do rm -f bisect/hadur117.HadurTeam_"$V"$a.jar; done && rm -f ${OUT}/team-tight-p*.md ${OUT}/team-tight-bb.md ${OUT}/team-tight-tp.md ${OUT}/team-tight-verdict.md && mkdir -p work && rm -rf work/team-tight-"$V"-* && rm -f work/team-tight-*.args work/team-tight-go && ./fetch-opponents.sh --set plans/team-tight-set.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmtight && sed -e "s/@V@/$V/g" plans/team-tight-pilot.args > work/team-tight-pep.args && for a in bb tp; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" plans/team-tight-screen.args > work/team-tight-$a.args || exit 1; done && for a in aa bb tp; do test -f bisect/hadur117.HadurTeam_"$V"$a.jar || exit 1; done && mvn -q compile
+ttptp | mvn -q exec:java "-Dexec.args=@work/team-tight-pep.args"
+  after: ttprep
+  watch: battles=40
+  stop: fails 10
+  stop: stall 30m
+  stop: skips 60 over 200
+ttpilot | ${T} gate --report ${OUT}/team-tight-pep.md --set plans/team-tight-set.txt --seeds 4 --teams 47 --min-aps 0 --stop-below 0 --out-md ${OUT}/team-tight-pilot.md && touch work/team-tight-go || test $? -eq 3 || exit 1
+  after: ttptp
+ttbb | if [ -f work/team-tight-go ]; then mvn -q exec:java "-Dexec.args=@work/team-tight-bb.args"; else echo "tp under 0 on the pilot: no screen"; fi
+  after: ttpilot
+  watch: battles=240
+  stop: fails 10
+  stop: stall 30m
+  stop: skips 60 over 200
+tttp | if [ -f work/team-tight-go ]; then mvn -q exec:java "-Dexec.args=@work/team-tight-tp.args"; else echo "tp under 0 on the pilot: no screen"; fi
+  after: ttbb
+  watch: battles=240
+  stop: fails 10
+  stop: stall 30m
+  stop: skips 60 over 200
+ttgate | if [ -f work/team-tight-go ]; then ${T} gate --report ${OUT}/team-tight-tp.md --control ${OUT}/team-tight-bb.md --set plans/team-tight-set.txt --seeds 24 --teams 47 --min-aps 0.3 --out-md ${OUT}/team-tight-verdict.md || exit 1; else echo "no screen"; fi
+  after: tttp
+ttpr | bash tools/open_results_pr.sh claude/pc-team-tight-results "Team: tight pack (TMODE-59)" $(ls ${OUT}/team-tight-*.md 2>/dev/null | grep -v smoke)
+  after: ttgate

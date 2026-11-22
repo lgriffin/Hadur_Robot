@@ -21,27 +21,24 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
- * Keeps docs/requirements.md and the tests in step. Every requirement whose stage is at
- * or before the build's stage ({@code hadur.stage}, set in the root pom) must be named by
- * at least one test: an {@code @Tag("ID")} on a JUnit or jqwik test, or an {@code @ID} tag
- * on a Cucumber scenario. A tag that names no requirement fails too, so IDs can't drift.
- * The duel plan's stages S0-S7 are compared with {@code hadur.stage}, the melee
- * extension's M0-M6 with {@code hadur.melee.stage}, the RoboRumble climb plan's R0-R5
- * with {@code hadur.climb.stage}, and the architecture evolution's A0-A5 with
- * {@code hadur.arch.stage}, the DrussGT route's D0-D6 with {@code hadur.druss.stage}, and the
- * Team plan's T1 with {@code hadur.team.stage}, and Saor's U0-U5 (docs/saor.md) with
- * {@code hadur.saor.stage}, and TwinSaor's W0-W3 (docs/twinsaor.md) with {@code hadur.twin.stage}, and Deise's E0-E3
- * (docs/deise.md) with {@code hadur.deise.stage},
- * all set in the root pom. Saor's module is scanned with the
- * others, and so are the bench tools' Python tests ({@code hadur-bench/tools/test_*.py}),
- * where a comment {@code @Tag("ID")} names what a bench gate's evaluator covers.
+ * Keeps the requirements (docs/requirements/, one file per area) and the tests in step. Every active requirement must be named
+ * by at least one test: an {@code @Tag("ID")} on a JUnit or jqwik test, an {@code @ID} tag
+ * on a Cucumber scenario, or a comment {@code @Tag("ID")} in a bench tool's Python test
+ * ({@code hadur-bench/tools/test_*.py}, {@code data/tools/test_*.py}), where it names the
+ * bench gate that tool's evaluator reads. A tag that names no requirement fails too, so IDs
+ * can't drift, and no ID may open two rows or be both active and retired.
+ *
+ * <p>Every module of the build is scanned, found from the root pom's folder. Stages no
+ * longer gate the check: every plan has shipped, so every active row is due.</p>
  *
  * <p>Writes the coverage table to {@code target/requirements-coverage.md}.</p>
  */
 class RequirementsTraceabilityTest {
 
-    static final Pattern ROW = Pattern.compile(
-        "^\\|\\s*([A-Z]+-\\d+)\\s*\\|[^|]*\\|[^|]*\\|\\s*([SMRADTUWE]\\d)\\s*\\|\\s*$");
+    /** Any table row that opens with a requirement ID; group 2 is its last cell. */
+    static final Pattern ROW = Pattern.compile("^\\|\\s*([A-Z]+-\\d+)\\s*\\|.*\\|\\s*([^|]*?)\\s*\\|\\s*$");
+    /** The retired table's file in docs/requirements/; every other .md there but README is an area. */
+    static final String RETIRED_FILE = "retired.md";
     static final Pattern JAVA_TAG = Pattern.compile("@Tag\\(\"([A-Z]+-\\d+)\"\\)");
     // Split so this file's own source doesn't match them.
     static final String JQWIK_PROPERTY = "import net.jqwik.api." + "Property;";
@@ -49,16 +46,11 @@ class RequirementsTraceabilityTest {
     static final Pattern FEATURE_TAG = Pattern.compile("@([A-Z]+-\\d+)\\b");
 
     static Path root;
-    static String stage;
-    static String meleeStage;
-    static String climbStage;
-    static String archStage;
-    static String drussStage;
-    static String teamStage;
-    static String saorStage;
-    static String twinStage;
-    static String deiseStage;
     static Map<String, String> requirements;
+    /** Every ID in the retired table. */
+    static Set<String> retired;
+    /** Every ID that opens more than one row, active or retired. */
+    static Set<String> repeated;
     static Map<String, Set<String>> coverage;
     /** jqwik test files that tag with JUnit's {@code @Tag}, which makes jqwik skip them. */
     static List<String> junitTaggedProperties;
@@ -66,21 +58,10 @@ class RequirementsTraceabilityTest {
     @BeforeAll
     static void scan() throws IOException {
         root = findRoot();
-        stage = System.getProperty("hadur.stage", "S1");
-        meleeStage = System.getProperty("hadur.melee.stage", "M0");
-        climbStage = System.getProperty("hadur.climb.stage", "R0");
-        archStage = System.getProperty("hadur.arch.stage", "A0");
-        drussStage = System.getProperty("hadur.druss.stage", "D0");
-        teamStage = System.getProperty("hadur.team.stage", "T0");
-        saorStage = System.getProperty("hadur.saor.stage", "U0");
-        twinStage = System.getProperty("hadur.twin.stage", "W0");
-        deiseStage = System.getProperty("hadur.deise.stage", "E0");
-        requirements = readRequirements(root.resolve("docs/requirements.md"));
+        requirements = readRequirements(root.resolve("docs/requirements"));
         coverage = new TreeMap<>();
         junitTaggedProperties = new ArrayList<>();
-        for (Path module : List.of(root.resolve("hadur-core"), root.resolve("hadur-robot"),
-                root.resolve("hadur-bench"), root.resolve("saor"), root.resolve("twinsaor"),
-                root.resolve("deise"))) {
+        for (Path module : modules(root)) {
             Path tests = module.resolve("src/test");
             if (!Files.isDirectory(tests)) continue;
             try (Stream<Path> files = Files.walk(tests)) {
@@ -97,8 +78,8 @@ class RequirementsTraceabilityTest {
                 }
             }
         }
-        Path tools = root.resolve("hadur-bench/tools");
-        if (Files.isDirectory(tools)) {
+        for (Path tools : List.of(root.resolve("hadur-bench/tools"), root.resolve("data/tools"))) {
+            if (!Files.isDirectory(tools)) continue;
             try (Stream<Path> files = Files.list(tools)) {
                 for (Path f : (Iterable<Path>) files::iterator) {
                     String name = f.getFileName().toString();
@@ -110,15 +91,13 @@ class RequirementsTraceabilityTest {
     }
 
     @Test
-    @DisplayName("every requirement up to this stage is covered by a test")
-    void everyRequirementUpToStageIsCovered() {
+    @DisplayName("every active requirement is covered by a test")
+    void everyRequirementIsCovered() {
         List<String> missing = new ArrayList<>();
-        requirements.forEach((id, s) -> {
-            if (due(s) && !coverage.containsKey(id)) missing.add(id + " (" + s + ")");
+        requirements.keySet().forEach(id -> {
+            if (!coverage.containsKey(id)) missing.add(id);
         });
-        assertTrue(missing.isEmpty(), "No test names " + missing + "; stages are " + stage
-            + ", " + meleeStage + ", " + climbStage + ", " + archStage + ", " + drussStage + ", " + teamStage
-            + ", " + saorStage + ", " + twinStage + " and " + deiseStage);
+        assertTrue(missing.isEmpty(), "No test names " + missing);
     }
 
     @Test
@@ -145,26 +124,63 @@ class RequirementsTraceabilityTest {
         assertTrue(requirements.size() >= 28, "found only " + requirements.keySet());
     }
 
-    /** Whether a requirement of stage {@code s} is due at this build's stages. */
-    static boolean due(String s) {
-        char plan = s.charAt(0);
-        return atOrBefore(s, plan == 'M' ? meleeStage : plan == 'R' ? climbStage
-            : plan == 'A' ? archStage : plan == 'D' ? drussStage : plan == 'T' ? teamStage
-            : plan == 'U' ? saorStage : plan == 'W' ? twinStage : plan == 'E' ? deiseStage : stage);
+    @Test
+    @DisplayName("no ID opens two rows, active or retired")
+    void noIdTwice() {
+        assertTrue(repeated.isEmpty(), "IDs on more than one row: " + repeated);
     }
 
-    static boolean atOrBefore(String s, String stage) {
-        return s.charAt(0) == stage.charAt(0)
-            && Integer.parseInt(s.substring(1)) <= Integer.parseInt(stage.substring(1));
+    @Test
+    @DisplayName("no ID is both active and retired")
+    void noIdActiveAndRetired() {
+        Set<String> both = new TreeSet<>(retired);
+        both.retainAll(requirements.keySet());
+        assertTrue(both.isEmpty(), "IDs both active and retired: " + both);
     }
 
-    static Map<String, String> readRequirements(Path file) throws IOException {
+    @Test
+    @DisplayName("every module of the build is scanned for tags")
+    void everyModuleScanned() throws IOException {
+        List<String> names = modules(root).stream().map(p -> p.getFileName().toString()).toList();
+        for (String m : List.of("hadur-core", "hadur-robot", "hadur-bench", "saor", "twinsaor", "deise",
+                "sanaro", "jaylexi", "eveimear")) {
+            assertTrue(names.contains(m), "module " + m + " not found among " + names);
+        }
+    }
+
+    /**
+     * Reads the active rows (ID to last cell) of every area file in {@code dir} and fills
+     * {@link #retired} from the retired table and {@link #repeated} over all of them.
+     */
+    static Map<String, String> readRequirements(Path dir) throws IOException {
         Map<String, String> reqs = new LinkedHashMap<>();
-        for (String line : Files.readAllLines(file)) {
-            Matcher m = ROW.matcher(line);
-            if (m.matches()) reqs.put(m.group(1), m.group(2));
+        retired = new TreeSet<>();
+        repeated = new TreeSet<>();
+        Set<String> seen = new TreeSet<>();
+        List<Path> files;
+        try (Stream<Path> s = Files.list(dir)) {
+            files = s.filter(f -> f.toString().endsWith(".md") && !f.getFileName().toString().equals("README.md"))
+                .sorted().toList();
+        }
+        for (Path file : files) {
+            boolean isRetired = file.getFileName().toString().equals(RETIRED_FILE);
+            for (String line : Files.readAllLines(file)) {
+                Matcher m = ROW.matcher(line);
+                if (!m.matches()) continue;
+                String id = m.group(1);
+                if (!seen.add(id)) repeated.add(id);
+                if (isRetired) retired.add(id);
+                else reqs.put(id, m.group(2));
+            }
         }
         return reqs;
+    }
+
+    /** Every module of the build: a folder beside the root pom holding a pom of its own. */
+    static List<Path> modules(Path root) throws IOException {
+        try (Stream<Path> dirs = Files.list(root)) {
+            return dirs.filter(d -> Files.isRegularFile(d.resolve("pom.xml"))).sorted().toList();
+        }
     }
 
     static void collect(Path f, Pattern p) {
@@ -194,42 +210,31 @@ class RequirementsTraceabilityTest {
     }
 
     static void writeReport() throws IOException {
-        StringBuilder b = new StringBuilder("# Requirement coverage at stages ").append(stage)
-            .append(", ").append(meleeStage).append(", ").append(climbStage)
-            .append(", ").append(archStage).append(", ").append(drussStage).append(", ").append(teamStage)
-            .append(" and ").append(saorStage).append("\n\n| ID | Stage | Covered by |\n|---|---|---|\n");
-        int due = 0, covered = 0;
-        for (Map.Entry<String, String> e : requirements.entrySet()) {
-            Set<String> by = coverage.get(e.getKey());
-            boolean isDue = due(e.getValue());
-            if (isDue) {
-                due++;
-                if (by != null) covered++;
-            }
-            b.append("| ").append(e.getKey()).append(" | ").append(e.getValue()).append(" | ")
-                .append(by == null ? (isDue ? "**missing**" : "later stage") : String.join("<br>", by))
-                .append(" |\n");
+        StringBuilder b = new StringBuilder("# Requirement coverage\n\n| ID | Covered by |\n|---|---|\n");
+        int covered = 0;
+        for (String id : requirements.keySet()) {
+            Set<String> by = coverage.get(id);
+            if (by != null) covered++;
+            b.append("| ").append(id).append(" | ")
+                .append(by == null ? "**missing**" : String.join("<br>", by)).append(" |\n");
         }
-        b.append("\n").append(covered).append(" of ").append(due)
-            .append(" requirements due by ").append(stage).append(", ").append(meleeStage)
-            .append(", ").append(climbStage).append(", ").append(archStage).append(", ").append(drussStage)
-            .append(", ").append(teamStage).append(" and ").append(saorStage).append(" are covered.\n");
+        b.append("\n").append(covered).append(" of ").append(requirements.size())
+            .append(" active requirements are covered.\n");
         Path out = Path.of("target/requirements-coverage.md");
         Files.createDirectories(out.getParent());
         Files.writeString(out, b);
-        System.out.println(covered + " of " + due + " requirements due by " + stage + ", " + meleeStage
-            + ", " + climbStage + ", " + archStage + ", " + drussStage + ", " + teamStage + " and " + saorStage
-            + " are covered; see " + out.toAbsolutePath());
+        System.out.println(covered + " of " + requirements.size()
+            + " active requirements are covered; see " + out.toAbsolutePath());
     }
 
     static Path findRoot() {
         String prop = System.getProperty("hadur.root");
-        if (prop != null && Files.exists(Path.of(prop, "docs/requirements.md"))) {
+        if (prop != null && Files.isDirectory(Path.of(prop, "docs/requirements"))) {
             return Path.of(prop).toAbsolutePath();
         }
         for (Path p = Path.of("").toAbsolutePath(); p != null; p = p.getParent()) {
-            if (Files.exists(p.resolve("docs/requirements.md"))) return p;
+            if (Files.isDirectory(p.resolve("docs/requirements"))) return p;
         }
-        throw new IllegalStateException("docs/requirements.md not found; set hadur.root");
+        throw new IllegalStateException("docs/requirements/ not found; set hadur.root");
     }
 }

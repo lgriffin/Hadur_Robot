@@ -7,7 +7,7 @@ import java.awt.geom.Point2D;
 
 /**
  * POISON-1: stop-and-go against an opponent whose gun learns from where we are when it fires,
- * as Saguaro's WavePoison and WavePoisonShift play it (docs/bench/rivals-source-read.md).
+ * as Saguaro's WavePoison and WavePoisonShift play it.
  *
  * <p>We crawl (half a pixel a tick along the orbit) while the enemy's gun cools, so it always
  * fires at a robot that is all but stopped; one or two ticks before its gun is ready we crawl

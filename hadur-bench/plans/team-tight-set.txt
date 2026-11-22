@@ -1,0 +1,6 @@
+# pc-team-tight (BENCH-274): the five teams whose table entry carries TIGHT (TMODE-59); lines as in team-census46.txt.
+cz.libors.OgiTeam v1 | team-0 | cz.libors.OgiTeam_v1.jar
+abc.ShadowTeam 3.83 | team-3 | abc.ShadowTeam_3.83.jar
+rz.AlephTeam 0.34 | team-4 | rz.AlephTeam_0.34.jar
+florent.XSeries.Xmen 0.9 | team-6 | florent.XSeries.Xmen_0.9.jar
+cx.mini.DemoniacNimrods 0.50 | team-13 | cx.mini.DemoniacNimrods_0.50.jar

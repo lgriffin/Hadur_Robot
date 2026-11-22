@@ -88,8 +88,6 @@ public class MeleeController {
         public boolean learnedAim;
         /** TMODE-45: a chaser is inside close quarters: the drive keeps full speed through a turn. */
         public boolean quarters;
-        /** TMODE-55: on a team with the throttle and no-brake on, the drive goes at least this far (0: to the spot). */
-        public double minAhead;
     }
 
     public final EnemyTracker tracker;
@@ -525,8 +523,7 @@ public class MeleeController {
         mover.motion(s.heading, s.velocity);
         c.destination = alive.isEmpty() ? null
             : mover.chooseDestination(s.me, s.energy, s.others, alive, s.time, plan, s.teammates, modes);
-        c.quarters = c.destination != null && (mover.quartered() || mover.throttled());
-        c.minAhead = c.destination != null && mover.throttled() && TeamModes.THROTTLE_NOBRAKE ? TeamModes.THROTTLE_AHEAD : 0;
+        c.quarters = c.destination != null && mover.quartered();
         gun.onTeam(!s.teammates.isEmpty());
         gun.concord(TeamConcord.GUN && modes.contains(TeamModes.Mode.CONCORD));
         waves.tick(s.me, s.time, s.gunHeat, alive, gun, s.energy, s.others);
@@ -546,22 +543,6 @@ public class MeleeController {
         boolean hold = target.age(s.time) > MAX_FIRE_AGE
             || s.energy < MeleeEnergyPolicy.MIN_OWN_ENERGY
             || s.energy <= power + 0.1;
-        if (onTeam && TeamModes.mobbing(s.teammates.size(), alive.size(), s.time)
-                && target.age(s.time) <= MAX_FIRE_AGE && s.energy >= MeleeEnergyPolicy.MIN_OWN_ENERGY) {
-            // TMODE-58: full power point blank, and a drained member keeps its energy for that.
-            if (target.distance(s.me) <= TeamModes.MOB_NEAR) {
-                power = Math.min(Math.min(3.0, MeleeEnergyPolicy.killPower(target.energy)), Math.max(0.1, s.energy - 0.2));
-                hold = false;
-            } else if (s.energy < TeamModes.MOB_SAVE && target.energy > FINISHER_ENERGY) {
-                hold = true;
-            }
-        }
-        if (onTeam && TeamModes.FORCE_PICK && TeamModes.PICK_HOLD > 0 && !hold
-                && target.energy > FINISHER_ENERGY && target.distance(s.me) > TeamModes.PICK_NEAR) {
-            // TMODE-56: a shot at an enemy running away (or, at 2, not closing) is energy spent for little.
-            double radial = TeamModes.radial(target, s.me);
-            hold = TeamModes.PICK_HOLD >= 2 ? radial >= -TeamModes.PICK_SPEED : radial > TeamModes.PICK_SPEED;
-        }
         c.firePower = hold ? 0 : power;
         return c;
     }

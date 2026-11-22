@@ -1,6 +1,6 @@
-# Hadur 2: evolution of strategy
+# Hadur: evolution of strategy
 
-As of 2026-09-27 (after S7, release 2.2). The living copy is the [Claude Doc](https://claude.ai/code/artifact/bc581157-b352-49c9-acaf-9f77035202c5); this file is its snapshot for evaluation. The living copy also covers the melee extension, R9, the top-15 plan and the architecture evolution (A0 to A5, releases 3.6 and 3.7). For the stages since this snapshot, see the stage log in [architecture-evolution.md](architecture-evolution.md#stage-log) and [what 3.7 should score](bench/expected-3.7.md).
+As of 2026-09-27 (after S7, release 2.2). This file is a snapshot of the living strategy doc, which also covers the melee extension, R9, the top-15 plan and the architecture evolution (A0 to A5, releases 3.6 and 3.7). For the stages since this snapshot, see the stage log in [architecture-evolution.md](architecture-evolution.md#stage-log) and [what 3.7 should score](bench/expected-3.7.md).
 
 ## Summary
 
@@ -29,7 +29,7 @@ Three weaknesses shaped what came next:
 
 ## Direction: a duelist that remembers
 
-Hadur 2 is a 1v1 duelist that is measured at every step. Its goal is to learn each opponent across battles and adapt. The plan comes from the [Hadur 2 artifact](https://claude.ai/artifact/KDkC1j5Yj8vWH6XQydyYH8). It is staged: each stage has a bench gate and EARS requirements, and each is merged only when its gate is met.
+Hadur 2 is a 1v1 duelist that is measured at every step. Its goal is to learn each opponent across battles and adapt. The plan comes from the Hadur 2 plan doc. It is staged: each stage has a bench gate and EARS requirements, and each is merged only when its gate is met.
 
 | Stage | Focus | State |
 | --- | --- | --- |
@@ -155,7 +155,7 @@ Every strategic claim is backed by a requirement, a test that proves it and a be
 
 | Layer | What it guards | Tooling |
 | --- | --- | --- |
-| EARS requirements | What Hadur must do, stage by stage (28 at S1, 29 with RADAR-1) | [requirements.md](requirements.md) |
+| EARS requirements | What Hadur must do, stage by stage (28 at S1, 29 with RADAR-1) | [requirements/](requirements/README.md) |
 | Traceability | Each requirement due by the current stage names a test; unknown tags fail; jqwik tests must use jqwik's own tag, or jqwik silently skips them | RequirementsTraceabilityTest |
 | Architecture | No Robocode, randomness, threads, reflection, I/O or clock in the core; the ledger may depend only on physics | ArchUnit |
 | Properties | Physics equals the engine's bit for bit; the ledger recovers exact shot power under any mix of events | jqwik |
@@ -208,8 +208,8 @@ The plan's last gate, reference APS 60, is not met. The next levers are the rada
 
 ## The RoboRumble climb plan (R0-R5)
 
-3.0 placed 64th of 1,216 in the 1v1 RoboRumble on 2026-09-28. The [climb plan
-artifact](https://claude.ai/artifact/RrAnDpngzZjcf9hYL3pLcW) reads that placement against
+3.0 placed 64th of 1,216 in the 1v1 RoboRumble on 2026-09-28. The climb plan
+reads that placement against
 the bench's own results and stages six releases (R0-R5) to close the gap, each still bench-
 gated and EARS-traced like the duel and melee plans. Stage PRs on this plan merge without
 waiting for review, per standing instruction, once CI is green and any bot review findings
@@ -290,7 +290,7 @@ robot that just drives at us.
 
 ## The DrussGT route (D1 to D6)
 
-The plan is [druss-route-plan.md](druss-route-plan.md); the requirements are in [requirements.md](requirements.md#the-drussgt-route-d1-to-d6).
+The plan is [druss-route-plan.md](druss-route-plan.md); the requirements are in [requirements/](requirements/README.md) (stage notes in [archive/requirements-notes.md](archive/requirements-notes.md#the-drussgt-route-d1-to-d6)).
 
 <a id="d1"></a>
 
@@ -332,7 +332,7 @@ Still release 3.8; `hadur.druss.stage` was `D3` when this stage was built (it st
 
 - **GUN-5** rates the virtual guns separately for bullets under 0.2 and for the rest, and fires the gun rated highest for the class of the shot about to be fired. The duel decides power before it aims (D1), so the gun wave already carries the class when `GunController.aim` runs. Each class keeps GUN-1's decayed ratings and margin gate; the combined table of D2 is now the rest class's.
 - **The new gun** is `SampledGun`, the probe's sampled aim (one neighbour of the hybrid view picked by a golden-ratio phase, its guess factor scaled by the escape angle). It competes for light bullets only, so it is used where it rates highest rather than unconditionally as in the probe. The phase is core state and advances with real shots, so replays are deterministic.
-- **Not kept in the profile:** the format and its size are unchanged; see the D3 notes in `docs/requirements.md` for why.
+- **Not kept in the profile:** the format and its size are unchanged; see the D3 notes in `docs/archive/requirements-notes.md` for why.
 - **Re-recorded fixtures:** none. All 68 replay checks pass unchanged: the fixtures' opponents are fought at ordinary power, where the rest class's table is what D2's single table was, and the sampled gun is never fired before it is rated best.
 - **Re-snapshotted:** nothing.
 - **Re-pinned:** `pins/duel.sha256` (`-Dhadur.pin=duel`) and `duel-sources.sha256` (`-Dhadur.duel.snapshot=write`). The kernel, conductor, melee and team pins did not change.
@@ -367,7 +367,7 @@ ships in robot 3.8 with 14 names, chosen from BENCH-11's paired probe (`--shield
 [d5-probe.md](bench/d5-probe.md), gate in [d5-gate.md](bench/d5-gate.md)): the 8 it shows shield mode
 winning against and 6 more with a mean gain of 9 points or more. It ships as a class, `hadur2.ShieldListData`, because Robocode's
 sandbox kills a robot that reads a resource of its own jar. Requirements are in the D5 subsection of
-`docs/requirements.md`.
+`docs/archive/requirements-notes.md` (the area files in `docs/requirements/` hold the rows).
 
 - **Gate** ([d5-gate.md](bench/d5-gate.md)): 46 panel robots, 3 seeds of 35 rounds, shield mode on against off, paired: weighted mean **+2.9 ± 2.7** points over the panel (stratified APS 86.8 against 83.9). Eight robots win; the list takes those and six more at +9 or better, and leaves off the seven it loses against (Hubris, TimCat, RSK1, ThroxBot, Grofvuil, sample.Fire, OscillatorL). D6 is not built: it stays a research item.
 
@@ -411,7 +411,7 @@ research. The stage gates ran on jars built before the later stages and the revi
 merged, so the shipped build was benched once against 3.7 ([release-check-3.8.md](bench/release-check-3.8.md)):
 DrussGT **+10.5 ± 3.1** points over 10 battles (10 of 10 up), the top-10 set **+7.2 ± 6.3**
 over 20 (14 up). Skipped turns against DrussGT rose from 314 to 447 over 350 rounds (the top 10 was 298 against 335), the cost to watch live.
-Open items are in `followup.md` under the DrussGT route.
+Open items from that time are in `archive/followup.md` under the DrussGT route; open work is tracked as GitHub issues.
 
 ## 3.8 live: the top rose, the field fell
 
@@ -526,7 +526,7 @@ the stored verdict (P6) were level. Re-pinned: `pins/duel.sha256` (`-Dhadur.pin=
 ## 3.13: Nullstride's shield on Nullstride's list
 
 The plan "the road from 87.7 to 90" (docs/plan-90.md) found the gap to 90 APS in bullet
-shielding. It built each difference between Hadur's shield and the decompiled Nullstride 2.3.3's as
+shielding. It built each difference between Hadur's shield and Nullstride 2.3.3's as
 one switch (SHIELD-8 to SHIELD-12, `shieldmode.ShieldDesign`). On the PC at 8 seeds, on the 89 robots
 both lists shield, holding fire while shielding (SHIELD-8) was worth +4 points a robot. Learning from
 intercepted bullets, the most frequent offset, staying in the mode and the body-turn base were each

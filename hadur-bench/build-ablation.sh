@@ -21,6 +21,8 @@
 #   The brain's shipped parts (TeamConcord): movement and gun on, group radar off, hunt kept.
 #   tmnoconcord (team only) TMODE-34 off: CONCORD on no team, as before it shipped. Suffix ncn.
 #   mdmg   MMOVE-22: each opponent's risk weighs by the damage it has done to Hadur this battle x its mean distance (Diamond). Suffix dm. Ships on from 3.21, so on master dm is the robot as it is.
+#   mrace / mracex  MEND-6: a melee's final duel races for power (POW-17's energy race), after 8
+#         resolved shots a side (suffix en) or at once from the priors (ez).
 #   e3far  MEND-3: with two opponents left off a team, the closest-robot factor 4 (not 2). Suffix ef.
 #   aa    no change: the same robot under another name (suffix aa), the A/A arm of a multi-arm run
 #         (BENCH-92, docs/plan-top5.md section 6.1), so a run prices its own noise.
@@ -134,13 +136,13 @@
 #         situations per opponent, not 3. MGUN-7 ships it off a team.
 #   tk12, tk21 (team only) T3, the field gun's kNN depth on a team: 12 or 21 situations per opponent,
 #         not 3 (FieldGun.K is read only while a teammate lives; MGUN-7's 12 off a team stays).
-#         CombatTeam takes 21 (docs/bench/combatteam-3.25.md). MGUN-9 ships 21: use --ref v3.15.
+#         CombatTeam takes 21 (CombatTeam's choice). MGUN-9 ships 21: use --ref v3.15.
 #   tshare0 (team only) MGUN-8 off: teammates' sightings no longer reach the field gun's histories
 #         (the World still takes them), so each member learns only from its own radar, as 3.13.
 #   tlane0 (team only) T4, no fire lane: a member fires whatever teammates lie ahead, as CombatTeam does.
 #   tlane4 (team only) T4, WEAVE-4's lane alone: a teammate's last known point still holds the shot,
 #         its predicted track (WEAVE-7) no longer does.
-#   tlaneo (team only) team step C, Ogi's lane (docs/bench/ogi-deep-dive.md 4.6): the shot holds only for a
+#   tlaneo (team only) team step C, Ogi-style lane: the shot holds only for a
 #         teammate nearer than the target (the nearest enemy within atan2(36, d) of the gun line) and
 #         within atan2(30, d) of the gun line; no drift, no predicted track. Suffix lo.
 #   tram  (team only) TR1, shoot rammers: the field gun no longer skips an enemy closing on the member
@@ -166,8 +168,8 @@
 #         shipped table entry): a member with an armed enemy closing inside 200 px gets an uncapped
 #         ring, a term against ending within 150 px of it, and full speed through a turn. Suffix qt
 #         (pc-team-quarters, BENCH-225).
-#   tmthrottle (team only) TMODE-55: every team member keeps full speed through a sharp turn. Suffix th.
-#   tmnobrake (team only) TMODE-55 throttle plus no-brake (drive at least 120 px). Suffix nb.
+#   tmtight (team only) TMODE-59 on: the tight pack, hunt pull 1.0 against the five teams whose table entry
+#              carries TIGHT (pc-team-tight, BENCH-274). Suffix tp.
 #   tmnocloserr (team only) TMODE-52 off: the team dodge drives 12 candidates even against a close wave, the
 #              build before the close rerank shipped (FORCE_CLOSERERANK). Suffix ncr.
 #   tmnofitted (team only) TMODE-50 off: the fitted enemy aims (TeamModes.FITTED) leave the dodge's profile,
@@ -281,12 +283,13 @@
 #   orlist the robots named in $STEADY_ORBIT get MOVE-47's steady orbit (no stop option, reversal only when the other way is under half as dangerous). Suffix or.
 #   rhlist the robots named in $RAM_HEAVY get RAM-14, the rammer escape weighing their shots twice as heavily. Suffix rh.
 #   pmlist the robots named in $PM_MIMIC get MOVE-56, a mimic of a truncated-lateral-velocity pattern matcher among the aim members. Suffix pm.
+#   aimwlist the robots named in $AIM_WEIGHT get MOVE-67, the simple aim members at standing weight 1.0 (aimp1's, MOVE-29's 0.1 otherwise). Suffix qw.
 #   pmxlist the robots named in $PM_MEGAS get MOVE-58, a mimic of the cw.megas-form pattern matcher (rounded lateral-velocity symbols, flight-time gap, symbol rebuild) among the aim members. Suffix pmx.
 #   rbendlist the robots named in $RAM_BEND get RAM-18, the rammer escape bending off its line of travel after each of their shots. Suffix rbd.
 #   rfanlist the robots named in $RAM_FAN get RAM-17, the rammer escape dodging their linear/circular aims as +-4 deg fans at RAM-14's weight. Suffix rfn.
 #   rplist the robots named in $RACE_POWER get the energy race's power pick (POW-17,
 #         ShieldTableData.racePowers()). Suffix rp, or $RACE_POWER_SUFFIX.
-#   snull  all five at once: Nullstride's design as read from its jar.
+#   snull  all five at once: Nullstride-style design.
 #   strim (3.13) the 22 listed robots that 3.13 lost to in both plan90-gate runs come off the shield
 #         list, so they are fought in normal mode: does the shield still pay against them
 #         (docs/bench/local/2026-10-13_plan90-gate-read.md)? Suffix tr.
@@ -809,7 +812,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
                 edit "$movedesign" "static final int STOP_AND_GO_PREFIRE = 1;" "static final int STOP_AND_GO_PREFIRE = 2;"
                 version="${version}ws"
             else version="${version}wp"; fi ;;
-        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist|rclist|mirofflist|sfloorlist|pcaplist|pcap5list|hflist|pblist|vjlist|sblist|dplist|rhlist|rwlist|orlist|rflist|rfanlist|rbendlist|pmlist|pmxlist|stinylist)
+        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist|rclist|mirofflist|sfloorlist|pcaplist|pcap5list|hflist|pblist|vjlist|sblist|dplist|rhlist|rwlist|orlist|rflist|rfanlist|rbendlist|pmlist|pmxlist|aimwlist|stinylist)
             # Shield part 2 (docs/plan-shield-quality.md): per-opponent opening drive or shipped aims;
             # the mode table's simple-aim dodge (DODGE-3).
             if [[ "$a" == smovelist ]]; then file="${SHIELD_MOVE:-}"; method="moves"; version="${version}mv"
@@ -843,11 +846,12 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
             elif [[ "$a" == rbendlist ]]; then file="${RAM_BEND:-}"; method="ramBends"; version="${version}rbd"
             elif [[ "$a" == pmlist ]]; then file="${PM_MIMIC:-}"; method="patternMimics"; version="${version}pm"
             elif [[ "$a" == pmxlist ]]; then file="${PM_MEGAS:-}"; method="patternMegas"; version="${version}pmx"
+            elif [[ "$a" == aimwlist ]]; then file="${AIM_WEIGHT:-}"; method="aimWeights"; version="${version}qw"
             elif [[ "$a" == rwlist ]]; then file="${RAM_WAIT:-}"; method="ramWaits"; version="${version}rwl"
             elif [[ "$a" == rflist ]]; then file="${RAM_FLEE:-}"; method="ramFlees"; version="${version}${RAM_FLEE_SUFFIX:-rf}"
             elif [[ "$a" == orlist ]]; then file="${STEADY_ORBIT:-}"; method="steadyOrbits"; version="${version}or"
             else file="${STOP_GO2:-}"; method="stopGoShifts"; version="${version}wm"; fi
-            [[ -n "$file" && -f "$file" ]] || { echo "$a needs SHIELD_MOVE / SHIELD_AIM / SHOT_DODGE / STOP_GO / STOP_GO2 / HEAT_JIT / GUN_STACK / SHIELD_EXIT4 / SHIELD_EXIT0 / SHIELD_STILL / SURF_KEY / FLAT_ON / MIMIC_ON / FULL_OFF / X5_POWER / RACE_POWER / MIRROR_OFF / VEL_JITTER / SPEED_BAND / DIST_PIN / RAM_HEAVY / RAM_FAN / RAM_BEND / PM_MIMIC / PM_MEGAS / SHIELD_TINY / RAM_WAIT / STEADY_ORBIT=<file>" >&2; exit 2; }
+            [[ -n "$file" && -f "$file" ]] || { echo "$a needs SHIELD_MOVE / SHIELD_AIM / SHOT_DODGE / STOP_GO / STOP_GO2 / HEAT_JIT / GUN_STACK / SHIELD_EXIT4 / SHIELD_EXIT0 / SHIELD_STILL / SURF_KEY / FLAT_ON / MIMIC_ON / FULL_OFF / X5_POWER / RACE_POWER / MIRROR_OFF / VEL_JITTER / SPEED_BAND / DIST_PIN / RAM_HEAVY / RAM_FAN / RAM_BEND / PM_MIMIC / PM_MEGAS / AIM_WEIGHT / SHIELD_TINY / RAM_WAIT / STEADY_ORBIT=<file>" >&2; exit 2; }
             add="$(python3 -c 'import sys,json
 lines=[l.split("\t")[0].strip() for l in open(sys.argv[1]) if l.strip() and not l.startswith("#")]
 print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines)), end="")' "$file")"
@@ -912,7 +916,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
         mcross)
-            # ScalarR-inspired learning (docs/bench/scalarr-melee-decompile.md, MMOVE-19): the melee
+            # ScalarR-inspired learning (MMOVE-19): the melee
             # surfer also learns each shooter's aim from its hits on other opponents, off a team
             # only; duel and team fixtures bit for bit. Suffix xh. Ships on from 3.21 (pc-melee-scal
             # +0.19 +- 0.14, PR #484), so on master xh builds the robot as it is.
@@ -965,334 +969,10 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$modes" "public static final boolean FORCE_QUARTERS = false;" "public static final boolean FORCE_QUARTERS = true;"
             sed -i -E '/^        t\.put\(/{/Mode\.QUARTERS/!s/\)\);$/, Mode.QUARTERS));/}' "$modes"
             ;;
-        ogr350)
-            # scratch (OgiTeam dive): hunt place 350 px. Suffix o35.
-            version="${version}o35"
-            edit "$trisk" "static final double HUNT_CLOSE = 250;" "static final double HUNT_CLOSE = 350;"
-            ;;
-        ogr500)
-            version="${version}o50"
-            edit "$trisk" "static final double HUNT_CLOSE = 250;" "static final double HUNT_CLOSE = 500;"
-            ;;
-        ogr650)
-            version="${version}o65"
-            edit "$trisk" "static final double HUNT_CLOSE = 250;" "static final double HUNT_CLOSE = 650;"
-            ;;
-        ognohunt)
-            # scratch: no HUNT against OgiTeam. Suffix onh.
-            version="${version}onh"
-            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH,' 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.PATH,'
-            ;;
-        ogspread)
-            # scratch: teammates repel four times as hard. Suffix osp.
-            version="${version}osp"
-            edit "$trisk" "static final double MATE_K = 0.6;" "static final double MATE_K = 2.4;"
-            ;;
-        ogt1)
-            # scratch (OgiTeam dive): OgiTeam's table entry as: no modes. Suffix ot1.
-            version="${version}ot1"
-            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of());'
-            ;;
-        ogt2)
-            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.MATEFIRE, Mode.PATH, Mode.LAST, Mode.MOMENTUM. Suffix ot2.
-            version="${version}ot2"
-            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.PATH, Mode.LAST, Mode.MOMENTUM));'
-            ;;
-        ogt3)
-            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM. Suffix ot3.
-            version="${version}ot3"
-            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));'
-            ;;
-        ogt4)
-            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.MATEFIRE, Mode.PATH, Mode.DODGE, Mode.LAST, Mode.MOMENTUM. Suffix ot4.
-            version="${version}ot4"
-            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.PATH, Mode.DODGE, Mode.LAST, Mode.MOMENTUM));'
-            ;;
-        ogt5)
-            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.MATEFIRE, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.LAST, Mode.MOMENTUM. Suffix ot5.
-            version="${version}ot5"
-            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.LAST, Mode.MOMENTUM));'
-            ;;
-        tmpick)
-            # TMODE-56: the team gun leans to closing enemies. Suffix pk.
-            version="${version}pk"
-            edit "$modes" "public static final boolean FORCE_PICK = false;" "public static final boolean FORCE_PICK = true;"
-            ;;
-        tmpickh)
-            # TMODE-56 and holds a shot at a fleeing enemy beyond 300 px. Suffix pkh.
-            version="${version}pkh"
-            edit "$modes" "public static final boolean FORCE_PICK = false;" "public static final boolean FORCE_PICK = true;"
-            edit "$modes" "public static final int PICK_HOLD = 0;" "public static final int PICK_HOLD = 1;"
-            ;;
-        tmpickc)
-            # TMODE-56 and fires beyond 300 px only at a closing enemy. Suffix pkc.
-            version="${version}pkc"
-            edit "$modes" "public static final boolean FORCE_PICK = false;" "public static final boolean FORCE_PICK = true;"
-            edit "$modes" "public static final int PICK_HOLD = 0;" "public static final int PICK_HOLD = 2;"
-            ;;
-        tmshy)
-            # TMODE-57: driving at an enemy costs more than driving away. Suffix sh.
-            version="${version}sh"
-            edit "$modes" "public static final boolean FORCE_SHY = false;" "public static final boolean FORCE_SHY = true;"
-            ;;
-        ogr150)
-            # scratch (OgiTeam dive): hunt place 150 px. Suffix o15.
-            version="${version}o15"
-            edit "$trisk" "static final double HUNT_CLOSE = 250;" "static final double HUNT_CLOSE = 150;"
-            ;;
-        ogsw1)
-            # scratch: swarm, up to five members on one prey at 120 px, pull doubled. Suffix sw1.
-            version="${version}sw1"
-            edit "$trisk" "static final double HUNT_CLOSE = 250;" "static final double HUNT_CLOSE = 120;"
-            edit "$trisk" "static final int HUNT_MAX_GROUP = 3;" "static final int HUNT_MAX_GROUP = 5;"
-            edit "$trisk" "static final double HUNT_PULL = 0.3;" "static final double HUNT_PULL = 0.6;"
-            ;;
-        ogsw2)
-            # scratch: swarm on the weakest enemy (energy weighs 50x), five members at 120 px, pull doubled. Suffix sw2.
-            version="${version}sw2"
-            edit "$trisk" "static final double HUNT_CLOSE = 250;" "static final double HUNT_CLOSE = 120;"
-            edit "$trisk" "static final int HUNT_MAX_GROUP = 3;" "static final int HUNT_MAX_GROUP = 5;"
-            edit "$trisk" "static final double HUNT_PULL = 0.3;" "static final double HUNT_PULL = 0.6;"
-            edit "$trisk" "static final double PACK_ENERGY_WEIGHT = 1.2;" "static final double PACK_ENERGY_WEIGHT = 50;"
-            ;;
-        ogp6)
-            # scratch (OgiTeam dive): hunt pull 0.6. Suffix op6.
-            version="${version}op6"
-            edit "$trisk" "static final double HUNT_PULL = 0.3;" "static final double HUNT_PULL = 0.6;"
-            ;;
-        ogp10)
-            # scratch (OgiTeam dive): hunt pull 1.0. Suffix op10.
-            version="${version}op10"
-            edit "$trisk" "static final double HUNT_PULL = 0.3;" "static final double HUNT_PULL = 1.0;"
-            ;;
-        oge0)
-            # scratch (OgiTeam dive): hunt at any energy. Suffix oe0.
-            version="${version}oe0"
-            edit "$trisk" "static final double PACK_ENERGY = 20;" "static final double PACK_ENERGY = 0;"
-            ;;
-        ogg5)
-            # scratch (OgiTeam dive): hunt groups up to five. Suffix og5.
-            version="${version}og5"
-            edit "$trisk" "static final int HUNT_MAX_GROUP = 3;" "static final int HUNT_MAX_GROUP = 5;"
-            ;;
-        ogg5w)
-            # scratch (OgiTeam dive): hunt groups up to five on the weakest enemy. Suffix og5w.
-            version="${version}og5w"
-            edit "$trisk" "static final int HUNT_MAX_GROUP = 3;" "static final int HUNT_MAX_GROUP = 5;"
-            edit "$trisk" "static final double PACK_ENERGY_WEIGHT = 1.2;" "static final double PACK_ENERGY_WEIGHT = 50;"
-            ;;
-        ogg2)
-            # scratch (OgiTeam dive): hunt groups of two. Suffix og2.
-            version="${version}og2"
-            edit "$trisk" "static final int HUNT_MAX_GROUP = 3;" "static final int HUNT_MAX_GROUP = 2;"
-            ;;
-        ogpw19)
-            # scratch (OgiTeam dive): team power capped at 1.92 beyond 300 px. Suffix ow19.
-            version="${version}ow19"
-            edit "$fgun" "if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);" "if (onTeam) { power = MeleeEnergyPolicy.teamPower(power, energy, e.energy); if (distance > 300 && e.energy > MeleeEnergyPolicy.FINISHER_ENERGY) power = Math.min(power, 1.92); }"
-            ;;
-        ogpw15)
-            # scratch (OgiTeam dive): team power capped at 1.5 beyond 300 px. Suffix ow15.
-            version="${version}ow15"
-            edit "$fgun" "if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);" "if (onTeam) { power = MeleeEnergyPolicy.teamPower(power, energy, e.energy); if (distance > 300 && e.energy > MeleeEnergyPolicy.FINISHER_ENERGY) power = Math.min(power, 1.5); }"
-            ;;
-        ogpw10)
-            # scratch (OgiTeam dive): team power capped at 1.0 beyond 300 px. Suffix ow10.
-            version="${version}ow10"
-            edit "$fgun" "if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);" "if (onTeam) { power = MeleeEnergyPolicy.teamPower(power, energy, e.energy); if (distance > 300 && e.energy > MeleeEnergyPolicy.FINISHER_ENERGY) power = Math.min(power, 1.0); }"
-            ;;
-        ogpw25)
-            # scratch (OgiTeam dive): team power capped at 2.5 beyond 300 px. Suffix ow25.
-            version="${version}ow25"
-            edit "$fgun" "if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);" "if (onTeam) { power = MeleeEnergyPolicy.teamPower(power, energy, e.energy); if (distance > 300 && e.energy > MeleeEnergyPolicy.FINISHER_ENERGY) power = Math.min(power, 2.5); }"
-            ;;
-        tmpick3)
-            # TMODE-56 with weights 3.0 closing, 0.33 fleeing. Suffix pk3.
-            version="${version}pk3"
-            edit "$modes" "public static final boolean FORCE_PICK = false;" "public static final boolean FORCE_PICK = true;"
-            edit "$modes" "PICK_CLOSING = 2.0, PICK_FLEEING = 0.5;" "PICK_CLOSING = 3.0, PICK_FLEEING = 0.33;"
-            ;;
-        tmpickc2)
-            # TMODE-56 leaning to closing enemies only (2.0, fleeing 1.0). Suffix pkx.
-            version="${version}pkx"
-            edit "$modes" "public static final boolean FORCE_PICK = false;" "public static final boolean FORCE_PICK = true;"
-            edit "$modes" "PICK_CLOSING = 2.0, PICK_FLEEING = 0.5;" "PICK_CLOSING = 2.0, PICK_FLEEING = 1.0;"
-            ;;
-        ogp15)
-            # scratch (OgiTeam dive): hunt pull 1.5. Suffix op15.
-            version="${version}op15"
-            edit "$trisk" "static final double HUNT_PULL = 0.3;" "static final double HUNT_PULL = 1.5;"
-            ;;
-        tmmob)
-            # TMODE-58: a team two or more up mobs the weakest enemy. Suffix mob.
-            version="${version}mob"
-            edit "$modes" "public static final boolean FORCE_MOB = false;" "public static final boolean FORCE_MOB = true;"
-            ;;
-        ogt6)
-            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM. Suffix ot6.
-            version="${version}ot6"
-            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));'
-            ;;
-        ogt7)
-            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.HUNT, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM. Suffix ot7.
-            version="${version}ot7"
-            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.HUNT, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));'
-            ;;
-        ogt8)
-            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM. Suffix ot8.
-            version="${version}ot8"
-            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));'
-            ;;
-        ogt11)
-            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM. Suffix ot11.
-            version="${version}ot11"
-            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));'
-            ;;
-        ogt12)
-            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.HUNT, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM. Suffix ot12.
-            version="${version}ot12"
-            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.HUNT, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));'
-            ;;
-        ogt13)
-            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.HUNT, Mode.OWN, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM. Suffix ot13.
-            version="${version}ot13"
-            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.HUNT, Mode.OWN, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));'
-            ;;
-        ogcm)
-            # scratch (OgiTeam dive): team brain part or power variant. Suffix ocm.
-            version="${version}ocm"
-            edit "$src/hadur-core/src/main/java/$pkg/core/melee/TeamConcord.java" "MOVE = true, GUN = true;" "MOVE = true, GUN = false;"
-            ;;
-        ogcg)
-            # scratch (OgiTeam dive): team brain part or power variant. Suffix ocg.
-            version="${version}ocg"
-            edit "$src/hadur-core/src/main/java/$pkg/core/melee/TeamConcord.java" "MOVE = true, GUN = true;" "MOVE = false, GUN = true;"
-            ;;
-        ogcnp)
-            # scratch (OgiTeam dive): team brain part or power variant. Suffix ocnp.
-            version="${version}ocnp"
-            edit "$src/hadur-core/src/main/java/$pkg/core/melee/TeamConcord.java" "POWER = true, POOL = true;" "POWER = false, POOL = true;"
-            ;;
-        ogcp15)
-            # scratch (OgiTeam dive): team brain part or power variant. Suffix ocp15.
-            version="${version}ocp15"
-            edit "$src/hadur-core/src/main/java/$pkg/core/melee/FieldGun.java" "CONCORD_POWER = 1.9;" "CONCORD_POWER = 1.5;"
-            ;;
-        ogcp25)
-            # scratch (OgiTeam dive): team brain part or power variant. Suffix ocp25.
-            version="${version}ocp25"
-            edit "$src/hadur-core/src/main/java/$pkg/core/melee/FieldGun.java" "CONCORD_POWER = 1.9;" "CONCORD_POWER = 2.5;"
-            ;;
-        nmq1)
-            # scratch (NightmareTeam dive): close quarters sees the chaser from 350 px and keeps 250. Suffix nq1.
-            version="${version}nq1"
-            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" "QUARTERS_RANGE = 200.0;" "QUARTERS_RANGE = 350.0;"
-            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" "QUARTERS_KEEP = 150.0;" "QUARTERS_KEEP = 250.0;"
-            ;;
-        nmq2)
-            # scratch (NightmareTeam dive): close quarters cost 30. Suffix nq2.
-            version="${version}nq2"
-            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" "QUARTERS_K = 10.0;" "QUARTERS_K = 30.0;"
-            ;;
-        nmresc)
-            # scratch (NightmareTeam dive): before the hunt, a member with two enemies inside 250 px runs to its nearest mate and the mates close on it to 150 px. Suffix nrs.
-            version="${version}nrs"
-            python3 - "$trisk" <<'PY'
-import sys
-p=sys.argv[1]; s=open(p).read()
-a="        if (modes.contains(TeamModes.Mode.HUNT) && energy >= PACK_ENERGY) {"
-assert s.count(a)==1
-b="""        {
-            Point2D.Double rn = null, rg = null;
-            for (Roster.Mate m : mates) {
-                Point2D.Double q = m.at(now);
-                if (rn == null || q.distance(me) < rn.distance(me)) rn = q;
-                if (enemiesNear(q, enemies, now) >= GANG_SIZE && (rg == null || q.distance(me) < rg.distance(me))) rg = q;
-            }
-            if (rn != null && enemiesNear(me, enemies, now) >= GANG_SIZE) return new Pull(rn, 0, 1.0, false);
-            if (rg != null) return new Pull(rg, 150, 1.0, false);
-        }
-"""
-open(p,"w").write(s.replace(a,b+a))
-PY
-            ;;
-        nmresc2)
-            # scratch (NightmareTeam dive): before the hunt, a member with two enemies inside 250 px keeps its own drive and the mates close on it to 150 px. Suffix nr2.
-            version="${version}nr2"
-            python3 - "$trisk" <<'PY'
-import sys
-p=sys.argv[1]; s=open(p).read()
-a="        if (modes.contains(TeamModes.Mode.HUNT) && energy >= PACK_ENERGY) {"
-assert s.count(a)==1
-b="""        {
-            Point2D.Double rn = null, rg = null;
-            for (Roster.Mate m : mates) {
-                Point2D.Double q = m.at(now);
-                if (rn == null || q.distance(me) < rn.distance(me)) rn = q;
-                if (enemiesNear(q, enemies, now) >= GANG_SIZE && (rg == null || q.distance(me) < rg.distance(me))) rg = q;
-            }
-            if (rg != null) return new Pull(rg, 150, 1.0, false);
-        }
-"""
-open(p,"w").write(s.replace(a,b+a))
-PY
-            ;;
-        nmresc3)
-            # scratch (NightmareTeam dive): before the hunt, a member with two enemies inside 250 px keeps its own drive and the mates close on it to 150 px. Suffix nr3.
-            version="${version}nr3"
-            python3 - "$trisk" <<'PY'
-import sys
-p=sys.argv[1]; s=open(p).read()
-a="        if (modes.contains(TeamModes.Mode.HUNT) && energy >= PACK_ENERGY) {"
-assert s.count(a)==1
-b="""        {
-            Point2D.Double rn = null, rg = null;
-            for (Roster.Mate m : mates) {
-                Point2D.Double q = m.at(now);
-                if (rn == null || q.distance(me) < rn.distance(me)) rn = q;
-                if (enemiesNear(q, enemies, now) >= GANG_SIZE && (rg == null || q.distance(me) < rg.distance(me))) rg = q;
-            }
-            if (rg != null) return new Pull(rg, 150, 0.3, false);
-        }
-"""
-open(p,"w").write(s.replace(a,b+a))
-PY
-            ;;
-        ogt9)
-            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.GANG, Mode.FINISH, Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM. Suffix ot9.
-            version="${version}ot9"
-            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.GANG, Mode.FINISH, Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));'
-            ;;
-        ogt10)
-            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM. Suffix ot10.
-            version="${version}ot10"
-            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM));'
-            ;;
-        ogpast10)
-            # scratch (OgiTeam dive): past positions repel 10x. Suffix opa10.
-            version="${version}opa10"
-            edit "$mrm" "static final double PAST_K = 0.02;" "static final double PAST_K = 0.2;"
-            ;;
-        ogpast40)
-            # scratch (OgiTeam dive): past positions repel 40x. Suffix opa40.
-            version="${version}opa40"
-            edit "$mrm" "static final double PAST_K = 0.02;" "static final double PAST_K = 0.8;"
-            ;;
-        ogring)
-            # scratch (OgiTeam dive): candidate rings 160-400 px. Suffix orng.
-            version="${version}orng"
-            edit "$mrm" "static final double RING_MIN = 100, RING_MAX = 300;" "static final double RING_MIN = 160, RING_MAX = 400;"
-            ;;
-        tmthrottle)
-            # TMODE-55: every team member keeps full speed through sharp turns. Suffix th.
-            version="${version}th"
-            edit "$modes" "public static final boolean FORCE_THROTTLE = false;" "public static final boolean FORCE_THROTTLE = true;"
-            ;;
-        tmnobrake)
-            # TMODE-55 throttle plus no-brake: also drive at least THROTTLE_AHEAD px. Suffix nb.
-            version="${version}nb"
-            edit "$modes" "public static final boolean FORCE_THROTTLE = false;" "public static final boolean FORCE_THROTTLE = true;"
-            edit "$modes" "public static final boolean THROTTLE_NOBRAKE = false;" "public static final boolean THROTTLE_NOBRAKE = true;"
+        tmtight)
+            # TMODE-59 on (team only): TIGHT plays in the five table entries that carry it (hunt pull 1.0). Suffix tp.
+            version="${version}tp"
+            edit "$modes" "public static final boolean TIGHT_ON = false;" "public static final boolean TIGHT_ON = true;"
             ;;
         tmnocloserr)
             # TMODE-52 off: the team dodge drives 12 candidates against close waves too. Suffix ncr.
@@ -1328,6 +1008,17 @@ PY
             edit "$modes" "public static final boolean FORCE_CONCORD = true;" "public static final boolean FORCE_CONCORD = false;"
             sed -i -E '/^        t\.put\(/s/, Mode\.CONCORD([,)])/\1/' "$modes"
             ;;
+        mrace|mracex)
+            # MEND-6: a melee's final duel (after the hand-off) takes its power from POW-17's energy
+            # race; mrace once each side has 8 resolved shots (en), mracex at once from the race's
+            # priors (ez). Duel and team fixtures bit for bit.
+            edit "$duel" "public static final boolean ENDGAME_RACE = false;" "public static final boolean ENDGAME_RACE = true;"
+            if [ "$a" = mracex ]; then
+                edit "$duel" "static final int ENDGAME_RACE_SHOTS = 8;" "static final int ENDGAME_RACE_SHOTS = 0;"
+                version="${version}ez"
+            else
+                version="${version}en"
+            fi ;;
         e3far)
             # Melee Stage 1 (docs/plan-melee-top5.md, MEND-3): with two opponents left off a team,
             # being an opponent's closest robot weighs 4; duel and team fixtures bit for bit. It ships
@@ -1337,7 +1028,7 @@ PY
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean THREE_FAR = false;" "public static final boolean THREE_FAR = true;"
             version="${version}ef" ;;
-        *) echo "unknown ablation: $a (aa, bb, tmnocloserr, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmthrottle, tmnobrake, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, icoff, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, rhlist, rwlist, orlist, rflist, rfanlist, rbendlist, pmlist|stinylist)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, tmtight, tmnocloserr, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, icoff, shoff, ramcirc, mrace, mracex, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, rhlist, rwlist, orlist, rflist, rfanlist, rbendlist, pmlist, pmxlist, aimwlist|stinylist)" >&2; exit 2 ;;
     esac
 done
 

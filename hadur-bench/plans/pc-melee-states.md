@@ -1,0 +1,5 @@
+# The `pc-melee-states` card (BENCH-232)
+
+The bench shall carry the `pc-melee-states` card and `tools/melee_states.py`: master on the 46 fields of `melee-census-317.txt` at one seed (3330), 20 rounds, with the melee trace on (BENCH-213) and no baseline; the tool shall follow each bullet of a trace from the turn it is first seen, with three or more robots alive, to the turn it is gone, take as its target the living robot nearest its heading within 25 degrees, read the firing turn's distance and speeds from the turn before the bullet is first seen, infer a hit when it is gone within 40 px of a robot whose energy fell by the bullet's damage that turn, and report, for every robot aimed at 2,000 times or more (Hadur first), the hit rate by distance at the fire, by the target's speed across the shooter's line and by the size of the fired guess factor, and the share of its bullet damage that was aimed at another robot; the card shall change no robot code and end in a results PR.
+
+Stage or check: T7

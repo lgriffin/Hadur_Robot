@@ -11,7 +11,9 @@ import jaylexi_orbit as jo  # noqa: E402
 from jaylexi_power2 import java_hash, table  # noqa: E402
 from kitlab_prior_arm import unjava  # noqa: E402
 
-SRC = os.path.join(HERE, "..", "..", "jaylexi", "src", "main", "java", "hadur117", "mini", "JayLexi.java")
+# The tool rewrites the source of the release it was written for (git tag jaylexi-v0.4); later
+# releases carry its change already, so the test reads a pinned copy, not master's JayLexi.java.
+SRC = os.path.join(HERE, "fixtures", "JayLexi-0.4.java.txt")
 
 
 def orb(path):

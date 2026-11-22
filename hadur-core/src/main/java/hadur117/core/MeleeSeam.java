@@ -339,7 +339,7 @@ final class MeleeSeam implements Role {
         if (c.target != null && core.diedThisRound(c.target)) ghostTicks++;
         orders.turnRadarRight(c.radarTurn);
         orders.turnGunRight(c.gunTurn);
-        if (c.destination != null) goTo(in, c.destination, orders, c.quarters, c.minAhead);
+        if (c.destination != null) goTo(in, c.destination, orders, c.quarters);
         lastCommand = c;
     }
 
@@ -347,11 +347,9 @@ final class MeleeSeam implements Role {
      * Drives toward {@code destination}, backwards if that is the shorter turn. A robot can
      * drive either way at the same speed, so it never needs to turn more than 90 degrees.
      * This is where melee lowers the speed limit that MELEE-2 lifts on hand-over.
-     * With {@code quarters} (TMODE-45, or TMODE-55's throttle) a sharp turn is driven at full speed;
-     * with {@code minAhead} over 0 (TMODE-55) the drive goes at least that far.
+     * With {@code quarters} (TMODE-45) a sharp turn is driven at full speed.
      */
-    private static void goTo(BotInput in, Point2D.Double destination, BotOrders.Builder orders, boolean quarters,
-                             double minAhead) {
+    private static void goTo(BotInput in, Point2D.Double destination, BotOrders.Builder orders, boolean quarters) {
         Point2D.Double me = in.location();
         double turn = Angles.normalRelativeAngle(
             DiaUtils.absoluteBearing(me, destination) - in.heading());
@@ -365,8 +363,6 @@ final class MeleeSeam implements Role {
         // (Robocode turns a body slower the faster it goes: 10 - 0.75 * |velocity| degrees a tick.)
         // TMODE-45: with a chaser at close quarters, speed is worth more than a tight turn.
         orders.maxVelocity(!quarters && Math.abs(turn) > Math.PI / 4 ? 4.0 : Rules.MAX_VELOCITY);
-        // TMODE-55: a throttled member with no-brake drives past the spot rather than braking into it.
-        if (minAhead > 0 && Math.abs(distance) < minAhead) distance = Math.copySign(minAhead, distance == 0 ? 1 : distance);
         orders.ahead(distance);
     }
 

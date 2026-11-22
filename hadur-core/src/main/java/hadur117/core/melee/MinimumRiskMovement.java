@@ -232,8 +232,6 @@ public class MinimumRiskMovement {
     private final Point2D.Double centre;
     /** TMODE-45: whether the last decision had a chaser. */
     private boolean quartered;
-    /** TMODE-55: this tick's pick was made on a team with the throttle on. */
-    private boolean throttled;
     /** TMODE-49: the member's body heading and velocity, set by the controller each tick. */
     private double heading, velocity;
     private final Deque<VirtualBullet> bullets = new ArrayDeque<>();
@@ -620,12 +618,11 @@ public class MinimumRiskMovement {
         // TMODE-45: a chaser no longer caps the ring, so the far rings are there to flee to.
         v.chaser = !mates.isEmpty() && modes.contains(TeamModes.Mode.QUARTERS) ? chaser(me, enemies, now) : null;
         quartered = v.chaser != null;
-        throttled = TeamModes.FORCE_THROTTLE && !mates.isEmpty();
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.MOMENTUM)) {
             v.momentum = true;
             v.heading = heading;
             v.velocity = velocity;
-            v.fullSpeed = quartered || throttled;
+            v.fullSpeed = quartered;
         }
         List<Point2D.Double> candidates = candidates(me, others, quartered ? without(enemies, v.chaser) : enemies, now, mates);
         lastCandidates = candidates.size();
@@ -1056,11 +1053,6 @@ public class MinimumRiskMovement {
         return quartered;
     }
 
-    /** TMODE-55: whether the last destination was picked on a team with the throttle on. */
-    public boolean throttled() {
-        return throttled;
-    }
-
     /** Opponent {@code i}'s term: energy over distance squared, with the closest-robot factor (MMOVE-2). */
     double enemyRisk(Point2D.Double p, View v, int i) {
         EnemyInfo e = v.enemies.get(i);
@@ -1073,13 +1065,7 @@ public class MinimumRiskMovement {
         if (p.distance(v.me) > 1) {
             double lateral = v.others == 2 ? ENDGAME_LATERAL : LATERAL;
             double a = DiaUtils.absoluteBearing(p, e.location) - DiaUtils.absoluteBearing(v.me, p);
-            double c = Math.cos(a);
-            if (TeamModes.FORCE_SHY && onTeam(v.mates)) {
-                // TMODE-57: driving at an enemy costs more than driving away from it.
-                r *= 1.0 + lateral * (c > 0 ? TeamModes.SHY_TOWARD * c : -TeamModes.SHY_AWAY * c);
-            } else {
-                r *= 1.0 + lateral * Math.abs(c);
-            }
+            r *= 1.0 + lateral * Math.abs(Math.cos(a));
         }
         return r;
     }

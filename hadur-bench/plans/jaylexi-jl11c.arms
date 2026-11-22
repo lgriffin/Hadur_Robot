@@ -1,0 +1,6 @@
+# JayLexi 1.1 reversal screen: c/aa = 1.0, FCn_R = forced reversal after n ticks one way, only under R px (FC10,FC15 <200; FC20 <150). Measure only.
+c | hadur117.mini.JayLexi 1.0c | kitlab/jars/hadur117.mini.JayLexi_1.0c.jar
+aa | hadur117.mini.JayLexi 1.0aa | kitlab/jars/hadur117.mini.JayLexi_1.0aa.jar
+FC10 | hadur117.mini.JayLexi 1.1FC10 | kitlab/jars/hadur117.mini.JayLexi_1.1FC10.jar
+FC15 | hadur117.mini.JayLexi 1.1FC15 | kitlab/jars/hadur117.mini.JayLexi_1.1FC15.jar
+FC20 | hadur117.mini.JayLexi 1.1FC20 | kitlab/jars/hadur117.mini.JayLexi_1.1FC20.jar

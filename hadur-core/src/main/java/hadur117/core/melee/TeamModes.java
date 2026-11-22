@@ -92,7 +92,15 @@ public final class TeamModes {
          * 0.43 APS over 45 teams at 12 fresh seeds. Off through {@link #FORCE_MOMENTUM} (ablation
          * tmnomomentum).
          */
-        MOMENTUM
+        MOMENTUM,
+        /**
+         * TMODE-59, tight pack: HUNT's pull to its place is {@link TeamRisk#HUNT_TIGHT_PULL}, not
+         * {@link TeamRisk#HUNT_PULL}, so the members reach and hold their place round the prey and
+         * fire from it instead of from across the field. Only through the table, per team: the
+         * five teams that held on 12 fresh cloud seeds each (OgiTeam, ShadowTeam, Xmen, AlephTeam,
+         * DemoniacNimrods). Means nothing without HUNT, and nothing while {@link #TIGHT_ON} is off.
+         */
+        TIGHT
     }
 
     /**
@@ -109,74 +117,13 @@ public final class TeamModes {
     public static final boolean FORCE_CLOSE = true;
     /** TMODE-45: QUARTERS on every team; off in the shipped build (ablation tmquarters turns it on). */
     public static final boolean FORCE_QUARTERS = false;
-    /**
-     * TMODE-55, throttle: on a team, every member keeps full speed through a sharp turn (as QUARTERS
-     * does with a chaser near), and the dodge's drive is predicted that way. Off in the shipped build
-     * (ablation tmthrottle turns it on). Never read off a team.
-     */
-    public static final boolean FORCE_THROTTLE = false;
-    /**
-     * TMODE-55, no brake: with {@link #FORCE_THROTTLE}, a member also drives at least {@link #THROTTLE_AHEAD}
-     * px past where it is, so it does not brake into the spot it picked. Off in the shipped build
-     * (ablation tmnobrake turns both on).
-     */
-    public static final boolean THROTTLE_NOBRAKE = false;
-    /** TMODE-55: the least distance, in px, a throttled member is told to drive. */
-    public static final double THROTTLE_AHEAD = 120.0;
-    /**
-     * TMODE-56, pick: on a team the gun leans to the enemy closing on the member and away from the one
-     * running from it (an enemy closing inside 650 px is hit about twice as often as one fleeing, on
-     * every team read), and may hold a shot at a poor target ({@link #PICK_HOLD}). Off in the shipped
-     * build (ablations tmpick, tmpickh, tmpickc). Never read off a team.
-     */
-    public static final boolean FORCE_PICK = false;
-    /** TMODE-56: 0 never hold; 1 hold a shot at a fleeing enemy beyond {@link #PICK_NEAR}; 2 hold any shot beyond it at an enemy not closing. */
-    public static final int PICK_HOLD = 0;
-    /** TMODE-56: the weight of a closing enemy, and of a fleeing one. */
-    public static final double PICK_CLOSING = 2.0, PICK_FLEEING = 0.5;
-    /** TMODE-56: closing or fleeing means this many px a tick along the line between the two. */
-    public static final double PICK_SPEED = 3.0;
-    /** TMODE-56: inside this range a shot is never held. */
-    public static final double PICK_NEAR = 300.0;
-
-    /** TMODE-56: {@code e}'s speed away from {@code me}, px a tick; negative when it closes. */
-    public static double radial(EnemyInfo e, java.awt.geom.Point2D.Double me) {
-        double bearing = Math.atan2(e.location.x - me.x, e.location.y - me.y);
-        return e.velocity * Math.cos(e.heading - bearing);
-    }
-
-    /**
-     * TMODE-57, shy: on a team, a destination reached by driving at an enemy pays {@link #SHY_TOWARD}
-     * times the lateral term and one reached by driving away {@link #SHY_AWAY} times (a member closing
-     * on its shooter is hit about half again as often as one backing off). Off in the shipped build
-     * (ablation tmshy). Never read off a team.
-     */
-    public static final boolean FORCE_SHY = false;
-    /** TMODE-57: the lateral term's weight driving at an enemy, and away from it. */
-    public static final double SHY_TOWARD = 3.0, SHY_AWAY = 0.3;
-    /**
-     * TMODE-58, mob: once the team outnumbers the enemies left by {@link #MOB_LEAD} or more, every
-     * member closes on the weakest of them to {@link #MOB_FLOOR} px whatever its own energy, fires
-     * full power inside {@link #MOB_NEAR} px and, under {@link #MOB_SAVE} energy, holds its fire
-     * beyond that (against OgiTeam the team led by two or more in half its rounds and won a quarter of
-     * those, its drained members trading light shots from 800 px). Off in the shipped build (ablation
-     * tmmob). Never read off a team.
-     */
-    public static final boolean FORCE_MOB = false;
-    public static final int MOB_LEAD = 2;
-    public static final double MOB_FLOOR = 100.0, MOB_PULL = 1.0, MOB_NEAR = 220.0, MOB_SAVE = 30.0;
-    /** TMODE-58: before this tick the tracker may not have seen every enemy. */
-    public static final long MOB_FROM = 100;
-
-    /** TMODE-58: whether a team of {@code mates} + 1 mobs {@code enemies} enemies on tick {@code now}. */
-    public static boolean mobbing(int mates, int enemies, long now) {
-        return FORCE_MOB && now >= MOB_FROM && enemies >= 1 && mates >= 1 && mates + 1 - enemies >= MOB_LEAD;
-    }
-
     /** TMODE-47: LAST on every team, as pc-team-guard measured it (PR #790). */
     public static final boolean FORCE_LAST = true;
     /** TMODE-49: MOMENTUM on every team, as pc-team-momentum measured it (PR #826). */
     public static final boolean FORCE_MOMENTUM = true;
+
+    /** TMODE-59: whether TIGHT in a table entry plays; off in the shipped build until pc-team-tight reads (ablation tmtight turns it on). */
+    public static final boolean TIGHT_ON = false;
 
     /**
      * TMODE-50: the fitted enemy aims ({@link #FITTED}) join the dodge's profile. On since pc-team-fitted
@@ -285,9 +232,17 @@ public final class TeamModes {
         t.put("mn.nano.perceptual.Impact", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         // pc-team-noconcord (PR #538), 24 fresh seeds: CONCORD off (TMODE-35), OgiTeam +4.2 ± 3.0,
         // CombatTeam +2.6 ± 3.8, FirestarterTeam +1.7 ± 3.3; +0.24 ± 0.16 APS with NightmareTeam.
-        t.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
+        t.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         t.put("mn.Combat", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         t.put("cb.fire.Firestarter", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
+        // TMODE-59, tight pack: the default modes with TIGHT, for the teams it held against on 12 fresh
+        // cloud seeds each beside the same box's baseline (score share points): ShadowTeam +12.1 ± 4.2,
+        // Xmen +9.3 ± 4.7, AlephTeam +6.2 ± 5.5, DemoniacNimrods +5.6 ± 4.4; OgiTeam above +7.4 ± 5.7.
+        for (String m : new String[] {"abc.Shadow", "florent.XSeries.X2", "rz.Aleph", "cx.mini.Nimrod"}) {
+            EnumSet<Mode> tight = EnumSet.copyOf(DEFAULT);
+            tight.add(Mode.TIGHT);
+            t.put(m, Collections.unmodifiableSet(tight));
+        }
         return Collections.unmodifiableMap(t);
     }
 

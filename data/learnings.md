@@ -88,8 +88,7 @@ them, live minus bench +1.0 (SD 4.4), no gap beyond one battle's noise (bench 3.
 old top 10, 3.0 otherwise). The top 19 cost only 0.82 of the 14.1 APS Hadur gives up; the
 447 opponents at 50 to 70 APS cost 6.78. Passing 19th (86.41) needs about 620 points: 33
 per top-19 pairing or about 1.4 per 50-to-70 pairing.
-Evidence: `rumble/parsed/2026-10-01_hadur-3.4_vs_top19.tsv`; report artifact
-https://claude.ai/artifact/R1RPjQhCyb8eohTN2eJgtY.
+Evidence: `rumble/parsed/2026-10-01_hadur-3.4_vs_top19.tsv`.
 
 ## The bench against the field
 

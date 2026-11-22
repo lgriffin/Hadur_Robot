@@ -6,7 +6,7 @@ gap read put two-thirds of BeepBoop's 5.4-point lead over 3.16 on mid-field defe
 Nullstride 6.8 (`docs/top3-movement-study.md`). This note reads the two strongest surfs from the
 source their rumble jars ship (BeepBoop 2.0, DrussGT 3.1.16), compares them with Hadur's, and
 says what the second surf built for it (MOVE-25, `move/StopPointSurf.java`) takes from each.
-In the style of `docs/bench/rivals-source-read.md`. Line references: **B** = `kc/mega/` in
+Line references: **B** = `kc/mega/` in
 BeepBoop's jar, **D** = `jk/mega/dMove/` in DrussGT's, **H** = `hadur-core/src/main/java/hadur2/core/`.
 
 ## The three surfs side by side

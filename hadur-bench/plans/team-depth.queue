@@ -1,4 +1,4 @@
-# Team gun depth, stage T3 (docs/bench/combatteam-3.25.md section 4, cloud screen
+# Team gun depth, stage T3 (cloud screen
 # docs/bench/local/2026-10-16_team-t3-t4-screen.md). Team-only ablations of 3.13
 # (build-ablation.sh tk12, tk21: FieldGun.K is read only while a member has a living teammate, so
 # 1v1 and melee are untouched). TeamRumble settings: 1200x1200, 10 rounds, engine 1.11.1, 6 seeds,

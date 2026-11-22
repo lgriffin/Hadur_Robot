@@ -14,7 +14,7 @@ loaded all nine robots; 10 fields loaded eight.
 
 | Melee rank (2026-11-02) | Robot | Rejected for |
 |---:|---|---|
-| 13 | rsalesc.melee.Medina 0.4.5 | `java.awt.AWTKeyStroke` in an obfuscated class |
+| 13 | rsalesc.melee.Medina 0.4.5 | `java.awt.AWTKeyStroke` |
 | 16 | catcat20.Matcha 0.006 | bundled gson: `java.sql`, `java.net.URL`, `AccessController` |
 | 21 | catcat20.Lambda 0.024 | bundled gson, as Matcha |
 | 56 | catcat20.shape.Theta 0.018 | bundled gson, as Matcha |

@@ -1,15 +1,20 @@
-# BENCH-253 pc-locks, round 18: robots whose line locked on the cloud (95% low end above 0, live turn time, master;
-# coverage/shards/locks.tsv, coverage/shards/briefs.md) and eight robots whose line is already on master, read only in c
-# and aa, so the A/A check reads 12 robots. name | note | jar
-nova.Snow 1.0 | pm-D | nova.Snow_1.0.jar
-stf.PanzerGeneral 0.1 | pm-D | stf.PanzerGeneral_0.1.jar
-robar.nano.Assertive 0.3 | pm-D-24seeds | robar.nano.Assertive_0.3.jar
-KiraNL.SpaceKees 0.1 | pmx-G | KiraNL.SpaceKees_0.1.jar
-arthord.NanoSatan Mu | aa-pad-r17-line | arthord.NanoSatan_Mu.jar
-exauge.Leopard 1.1.019 | aa-pad-r17-line | exauge.Leopard_1.1.019.jar
+# BENCH-253 pc-locks, round 22: Cephalosporin on qw (MOVE-67 aim weight, 24 cloud seeds 89220-43 on box A, +0.82 vs c and
+# +0.65 vs aa, real-hit forensic passed on box C), and sixteen robots whose line is already on master, read only in c and aa,
+# so the A/A check reads 17. name | note | jar
+gjr.Cephalosporin 0.2 | qw-A-24seeds | gjr.Cephalosporin_0.2.jar
+oog.micro.Maui 1.2 | aa-pad-r16-line | oog.micro.Maui_1.2.jar
+sgp.MadHatter 4.13 | aa-pad-r16-line | sgp.MadHatter_4.13.jar
+suh.nano.RammingC 1.00 | aa-pad-r16-line | suh.nano.RammingC_1.00.jar
+jcs.AutoBot 4.2.1 | aa-pad-move56-line | jcs.AutoBot_4.2.1.jar
+mn.nano.perceptual.Impact 1.3.0 | aa-pad-r14-line | mn.nano.perceptual.Impact_1.3.0.jar
+mz.NanoDeath 2.56 | aa-pad-r14-line | mz.NanoDeath_2.56.jar
+wompi.Kowari 1.6 | aa-pad-r14-line | wompi.Kowari_1.6.jar
+sul.Bicephal 1.2 | aa-pad-r14-line | sul.Bicephal_1.2.jar
 cw.megas.GhostShell GT | aa-pad-move58-line | cw.megas.GhostShell_GT.jar
 cw.megas.Gridd 0.4 | aa-pad-move58-line | cw.megas.Gridd_0.4.jar
 cw.megas.Polar 3.2 | aa-pad-move58-line | cw.megas.Polar_3.2.jar
-jab.micro.Sanguijuela 0.8 | aa-pad-r14-line | jab.micro.Sanguijuela_0.8.jar
-bayen.UbaRamLT 1.0 | aa-pad-r14-line | bayen.UbaRamLT_1.0.jar
-robin.ScalpBotC 1.0 | aa-pad-r14-line | robin.ScalpBotC_1.0.jar
+com.syncleus.robocode.Dreadnaught 0.1 | aa-pad-r19-line | com.syncleus.robocode.Dreadnaught_0.1.jar
+nic.Nicator 2.4 | aa-pad-r19-line | nic.Nicator_2.4.jar
+lrem.micro.MoggFanatic 0.2 | aa-pad-r20-line | lrem.micro.MoggFanatic_0.2.jar
+alpha.BlackIce 1.0 | aa-pad-r20-line | alpha.BlackIce_1.0.jar
+mue.Hyperion 0.8 | aa-pad-r21-line | mue.Hyperion_0.8.jar

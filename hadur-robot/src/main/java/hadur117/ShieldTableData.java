@@ -634,6 +634,10 @@ final class ShieldTableData {
             // pc-locks round 2 (BENCH-253, PR #845): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "nz.jdc.nano.PralDeGuerre 1.2",   // +6.5
             "ers.nano.meroka.Meroka 1.8a",    // +4.3
+            // pc-locks round 20 (BENCH-253, PR #994): 12 fresh PC seeds at the live turn time; 36-seed cloud lock held first
+            "alpha.BlackIce 1.0",             // +3.5
+            // pc-locks round 21 (BENCH-253, PR #1001): 12 fresh PC seeds at the live turn time; 24-seed cloud lock held first
+            "mue.Hyperion 0.8",               // +8.1
         };
     }
 
@@ -1193,6 +1197,10 @@ final class ShieldTableData {
             "oog.micro.Maui 1.2",
             // pc-locks round 17 (BENCH-253, PR #978): 12 fresh PC seeds at the live turn time, +11.1
             "arthord.NanoSatan Mu",
+            // pc-locks round 19 (BENCH-253, PR #991): 12 fresh PC seeds at the live turn time, +6.8, +3.6, +1.7
+            "nova.Snow 1.0",
+            "robar.nano.Assertive 0.3",
+            "stf.PanzerGeneral 0.1",
         };
     }
 
@@ -1415,6 +1423,24 @@ final class ShieldTableData {
             "cw.megas.Gridd 0.4",
             "cw.megas.Polar 3.2",
             "cw.megas.Silhouette 1.1",
+            // pc-locks round 19 (BENCH-253, PR #991): 12 fresh PC seeds at the live turn time, +2.6
+            "KiraNL.SpaceKees 0.1",
+        };
+    }
+
+    /**
+     * MOVE-67: opponents against which the simple aim members stand at weight 1.0 ({@code aim-weight:} lines), each
+     * locked on fresh cloud seeds (build-ablation.sh aimwlist adds candidate lines here).
+     *
+     * @return a fresh array of names
+     */
+    static String[] aimWeights() {
+        return new String[] {
+            // pc-locks round 19 (BENCH-253, PR #991): 12 fresh PC seeds at the live turn time, +1.6, +1.2
+            "com.syncleus.robocode.Dreadnaught 0.1",
+            "nic.Nicator 2.4",
+            // pc-locks round 20 (BENCH-253, PR #994): 12 fresh PC seeds at the live turn time, +2.4
+            "lrem.micro.MoggFanatic 0.2",
         };
     }
 }

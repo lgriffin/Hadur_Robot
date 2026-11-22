@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-160: the per-opponent surf-key card (plans/pc-surf-key.queue) is complete before it reaches the PC. */
+/** BENCH-281: the per-opponent surf-key card (plans/pc-surf-key.queue) is complete before it reaches the PC. */
 class SurfKeyPlanTest {
 
     private static final Path QUEUE = Path.of("plans/pc-surf-key.queue");
@@ -29,7 +29,7 @@ class SurfKeyPlanTest {
     }
 
     @Test
-    @Tag("BENCH-160")
+    @Tag("BENCH-281")
     @DisplayName("record with the truth log, fit both key sets, build them, confirm on fresh seeds, gate, pick, stop rules")
     void cardIsComplete() throws IOException {
         String queue = Files.readString(QUEUE);
@@ -53,8 +53,8 @@ class SurfKeyPlanTest {
         }
         assertTrue(confirm.contains("stop: dead 8"));
         String arms = Files.readString(Path.of("plans/surf-key.arms"));
-        for (String a : new String[] {"c | hadur117.Hadur 3.23 | ", "aa | hadur117.Hadur 3.23aa | ",
-            "kl | hadur117.Hadur 3.23kl | ", "klbb | hadur117.Hadur 3.23klbb | "}) {
+        for (String a : new String[] {"c | hadur117.Hadur 3.24 | ", "aa | hadur117.Hadur 3.24aa | ",
+            "kl | hadur117.Hadur 3.24kl | ", "klbb | hadur117.Hadur 3.24klbb | "}) {
             assertTrue(arms.contains("\n" + a), a);
         }
         String gate = step(queue, "gate", "pr");

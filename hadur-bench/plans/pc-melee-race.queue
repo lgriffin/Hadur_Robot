@@ -1,0 +1,58 @@
+# battle: melee
+# Melee final-duel energy race (MEND-6, BENCH-273). In a melee's final duel Hadur fires heavy and
+# loses from behind: against the same survivors ScalarR wins 50% of final duels it enters behind on
+# energy and Hadur 18%, ScalarR firing power 0.16 at a 22% hit rate where Hadur fires 0.66 at 13%
+# (docs/bench/melee-top3.md). en and ez let POW-17's energy race pick the power in that duel.
+# Cloud screens (46 fields x 2 seeds a block, live timing): final-duel power 0.91 -> 0.57, final
+# duels won 72.5% -> 78.6%, wins against survivors ranked 1-30 +12 to +17 points in every block;
+# en +0.28, +0.18, +0.22 (each +-0.3) on three blocks, about +0.22 +- 0.18 pooled, with a bb A/A
+# copy at -0.01 +- 0.27; ez +0.53 +- 0.34 on its one clean block. This card is the read.
+#   aa      the baseline (master)
+#   bb      its A/A copy
+#   en      mrace, MEND-6: the final duel races for power once each side has 8 resolved shots
+#   ez      mracex, MEND-6: the same race from its priors at once
+# Each build fights the 46 census fields x 10 fresh seeds alone (3371-3380; 460 battles, 1,840 in
+# all) at the machine's melee width and CPU constant. The read pairs bb with aa (A/A, within
+# +-0.25) and en and ez with the mean of aa and bb (--base2), battle for battle. Melee only: the switch
+# acts in a melee's final duel after the hand-off, so the 1v1 duel and team play are untouched.
+# Verdict: en and ez each pass at +0.0 or more with the 95% low end above 0, Hadur's share of others
+# outlived no more than 1 point lower and the 1-30 endgame wins no more than 3 points lower; if its
+# skipped turns a battle rise more than 20% over aa's it fails whatever its APS. The card ends in a
+# results PR on claude/pc-melee-race-results whatever the verdict; the melee thread reads it.
+#   ./queue.sh run pc-melee-race        (or  .\queue.ps1 run pc-melee-race)
+# Run it from master, one bench queue at a time:
+#   git checkout master && git pull
+# mrprep reads the version from hadur-robot/pom.xml and fixes the width and version in work/, so a
+# resumed card never mixes host profiles or reads another version's battles. Prep clears the arms'
+# battle folders, since it rebuilds their jars.
+# Stop rules (docs/bench/watch.md), halts only, each keeping every battle fought: fails 20 and
+# stall 30m on each arm. A halt leaves that arm's remaining battles and every later arm unrun (the
+# arms under test run last). No futility or skips rule: the paired read needs all three arms whole.
+
+set OUT = ../docs/bench/local
+
+mrprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb en ez; do rm -f bisect/hadur117.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh mrace && bash ./build-ablation.sh mracex && mkdir -p work && rm -rf work/melee-race-"$V"-aa work/melee-race-"$V"-bb work/melee-race-"$V"-en work/melee-race-"$V"-ez && echo "$V" > work/melee-race.version && for a in aa bb en ez; do test -f bisect/hadur117.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-race.args > work/melee-race-$a.args || exit 1; done && rm -f ${OUT}/melee-race-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+mraa   | mvn -q exec:java "-Dexec.args=@work/melee-race-aa.args"
+  after: mrprep
+  watch: battles=460
+  stop: fails 20
+  stop: stall 30m
+mrbb   | mvn -q exec:java "-Dexec.args=@work/melee-race-bb.args"
+  after: mraa
+  watch: battles=460
+  stop: fails 20
+  stop: stall 30m
+mren   | mvn -q exec:java "-Dexec.args=@work/melee-race-en.args"
+  after: mrbb
+  watch: battles=460
+  stop: fails 20
+  stop: stall 30m
+mrez   | mvn -q exec:java "-Dexec.args=@work/melee-race-ez.args"
+  after: mren
+  watch: battles=460
+  stop: fails 20
+  stop: stall 30m
+mrread | V=$(cat work/melee-race.version) && test -n "$V" && W=work/melee-race-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm en="$W"-en --arm ez="$W"-ez --census melee-census-317.txt --seeds 10 --gain 0.0 --survival-slack 1 --out ${OUT}/melee-race-read.md --title "Melee final-duel energy race on $V" || true; } && test -s ${OUT}/melee-race-read.md
+  after: mrez
+mrpr   | bash tools/open_results_pr.sh claude/pc-melee-race-results "Melee final-duel energy race (MEND-6)" ${OUT}/melee-race-read.md $(ls ${OUT}/melee-race-aa.md ${OUT}/melee-race-bb.md ${OUT}/melee-race-en.md ${OUT}/melee-race-ez.md 2>/dev/null)
+  after: mrread

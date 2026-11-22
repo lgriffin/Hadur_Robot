@@ -31,6 +31,26 @@ class AimMembersTest {
     }
 
     @Test
+    @Tag("MOVE-67")
+    @DisplayName("the per-opponent aim weight stands each aim at ten times its share, the views and mimics unchanged")
+    void aimWeight() {
+        AimMembers base = new AimMembers(3, true);
+        AimMembers heavy = base.withAimPrior(AimMembers.AIM_WEIGHT_PRIOR);
+        assertEquals(base.members(), heavy.members());
+        assertEquals(3, heavy.mimics());
+        assertTrue(heavy.pattern());
+        assertEquals(1.0, heavy.weight(0), 1e-12);
+        for (int a = 1; a < AimMembers.MEMBERS; a++) {
+            assertEquals(10 * base.weight(a), heavy.weight(a), 1e-12, "aim " + a);
+        }
+        for (int m = AimMembers.MEMBERS; m < base.members(); m++) {
+            assertEquals(base.weight(m), heavy.weight(m), 1e-12, "mimic " + m);
+        }
+        assertEquals(AimMembers.PRIOR, new AimMembers(0, false, AimMembers.AIM_PRIOR).weight(1), 0.0,
+            "the default prior is exactly MOVE-29's");
+    }
+
+    @Test
     @Tag("MOVE-29")
     @DisplayName("a member that put the bullet where it went gains weight, one that missed loses it")
     void learning() {
