@@ -76,4 +76,12 @@ public class ReplayBot extends JayLexi {
             noFar = true;
         }
     }
+
+    /** The readable JayLexi with 1.2's hit logging, which lost the hits on a just-dropped wave. */
+    public static class Log12 extends ReplayBot {
+        public Log12(ReplayBody b) {
+            super(b);
+            noGone = true;
+        }
+    }
 }

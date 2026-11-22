@@ -289,6 +289,32 @@ Also closed on 1.1: orbit 0.95 or 1.35 by distance band at 200 to 500 px (level)
 +0.23, depth 10 -0.11 on 3 seeds; linear aimers level). Linear aimers do hit JayLexi more than FoilistMC from round 5
 on (3.7% against 2.6%), and the data points at reach: the surf picks only full speed back or forward.
 
+## 13. JayLexi 1.3: hits that were never logged (2026-11-22, seeds 115000 to 115032)
+
+Twelve movement-mechanic prototypes on 1.2 failed overnight: wall rocking, a speed dip, mid-flight reversals, seven
+surf options, leaning in, four danger-estimate tweaks, destination surfing, a timed reversal plan and wave-only
+turn-backs. FoilistMC's movement on JayLexi's gun (the FmJg hybrid) still beat 1.2 by +1.2 to +2.4. Its turn-backs
+landed on spots that were hit less in every reversal class.
+
+Reading what the surf learns from found the cause. 1.2 drops an enemy wave about the tick its bullet reaches it, before
+onHitByBullet runs. On 6 robots (1 seed, 35 rounds) an instrumented 1.2 matched only 93 of 376 hits on it to a live
+wave (25%), and the rest were never logged. Logging on the live waves plus the ones just dropped matched 730 of 746
+(98%).
+
+| Arm (cloud) | Bytes | 24 hybrid-gain robots, 3 seeds: vs 1.2 / enemy hit % | 145 robots, 3 seeds: vs 1.2 |
+|---|---:|---|---|
+| 1.2 | 1,451 | - / 7.16 | - (A/A +0.05 ± 0.12) |
+| wd: log on live + the last six dropped waves | 1,689 | +1.50 / 6.61 | +1.52 ± 0.27 |
+| **wdt = 1.3: log on live + the one dropped last** | **1,482** | | **+1.10 ± 0.11** |
+| k: wd + a hit memory weighted by situation | 2,102 | +3.11 ± 1.22 / 6.02 | +2.29 ± 0.18 |
+| km: k cut to 3 features | 1,725 | | +1.62 ± 0.04 |
+
+1.3 ships wdt, at 1,482 B. Until the first wave is dropped, the dropped-wave slot is null and the search stops there, so
+it plays as the screened wdt. The hit
+memory (k) is the next step (1.4), once it fits the byte limit; its idea is dynamic-clustering surfing (RoboWiki), with
+FoilistMC 1.0 and CunobelinDC 1.2 as the reference, written as JayLexi's own code. The PC confirm is `pc-jaylexi-13`
+(BENCH-274).
+
 ## Where this leaves JayLexi
 
 - The gap to FoilistMC on its gap robots is real, about 1 APS, and it is movement: damage taken.

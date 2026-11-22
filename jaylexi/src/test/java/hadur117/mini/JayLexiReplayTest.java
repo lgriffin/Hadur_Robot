@@ -146,6 +146,15 @@ class JayLexiReplayTest {
     }
 
     @Test
+    @Tag("JAYLEXI-26")
+    @DisplayName("hits on a just-dropped wave are logged: the two agree, and 1.2's logging gives other orders")
+    void droppedWaveHitsAreLogged() throws Exception {
+        String log12 = Replay.run(hadur117.mini.ref.JayLexi.class, hadur117.mini.ref.ReplayBot.Log12::new, 1, 6, 1500);
+        assertEquals(-1, firstDifference(shipped(1), readable(1)));
+        assertNotEquals(-1, firstDifference(shipped(1), log12), "the dropped-wave logging changes the orders");
+    }
+
+    @Test
     @Tag("JAYLEXI-25")
     @DisplayName("against FoilistMC's row the two agree, and 1.1's power 2 from 500 px gives other orders")
     void farPowerRowPlays() throws Exception {
