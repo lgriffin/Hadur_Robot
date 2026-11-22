@@ -1143,6 +1143,121 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             version="${version}ot8"
             edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));'
             ;;
+        ogt11)
+            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM. Suffix ot11.
+            version="${version}ot11"
+            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));'
+            ;;
+        ogt12)
+            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.HUNT, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM. Suffix ot12.
+            version="${version}ot12"
+            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.HUNT, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));'
+            ;;
+        ogt13)
+            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.HUNT, Mode.OWN, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM. Suffix ot13.
+            version="${version}ot13"
+            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.HUNT, Mode.OWN, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));'
+            ;;
+        ogcm)
+            # scratch (OgiTeam dive): team brain part or power variant. Suffix ocm.
+            version="${version}ocm"
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/TeamConcord.java" "MOVE = true, GUN = true;" "MOVE = true, GUN = false;"
+            ;;
+        ogcg)
+            # scratch (OgiTeam dive): team brain part or power variant. Suffix ocg.
+            version="${version}ocg"
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/TeamConcord.java" "MOVE = true, GUN = true;" "MOVE = false, GUN = true;"
+            ;;
+        ogcnp)
+            # scratch (OgiTeam dive): team brain part or power variant. Suffix ocnp.
+            version="${version}ocnp"
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/TeamConcord.java" "POWER = true, POOL = true;" "POWER = false, POOL = true;"
+            ;;
+        ogcp15)
+            # scratch (OgiTeam dive): team brain part or power variant. Suffix ocp15.
+            version="${version}ocp15"
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/FieldGun.java" "CONCORD_POWER = 1.9;" "CONCORD_POWER = 1.5;"
+            ;;
+        ogcp25)
+            # scratch (OgiTeam dive): team brain part or power variant. Suffix ocp25.
+            version="${version}ocp25"
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/FieldGun.java" "CONCORD_POWER = 1.9;" "CONCORD_POWER = 2.5;"
+            ;;
+        nmq1)
+            # scratch (NightmareTeam dive): close quarters sees the chaser from 350 px and keeps 250. Suffix nq1.
+            version="${version}nq1"
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" "QUARTERS_RANGE = 200.0;" "QUARTERS_RANGE = 350.0;"
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" "QUARTERS_KEEP = 150.0;" "QUARTERS_KEEP = 250.0;"
+            ;;
+        nmq2)
+            # scratch (NightmareTeam dive): close quarters cost 30. Suffix nq2.
+            version="${version}nq2"
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" "QUARTERS_K = 10.0;" "QUARTERS_K = 30.0;"
+            ;;
+        nmresc)
+            # scratch (NightmareTeam dive): before the hunt, a member with two enemies inside 250 px runs to its nearest mate and the mates close on it to 150 px. Suffix nrs.
+            version="${version}nrs"
+            python3 - "$trisk" <<'PY'
+import sys
+p=sys.argv[1]; s=open(p).read()
+a="        if (modes.contains(TeamModes.Mode.HUNT) && energy >= PACK_ENERGY) {"
+assert s.count(a)==1
+b="""        {
+            Point2D.Double rn = null, rg = null;
+            for (Roster.Mate m : mates) {
+                Point2D.Double q = m.at(now);
+                if (rn == null || q.distance(me) < rn.distance(me)) rn = q;
+                if (enemiesNear(q, enemies, now) >= GANG_SIZE && (rg == null || q.distance(me) < rg.distance(me))) rg = q;
+            }
+            if (rn != null && enemiesNear(me, enemies, now) >= GANG_SIZE) return new Pull(rn, 0, 1.0, false);
+            if (rg != null) return new Pull(rg, 150, 1.0, false);
+        }
+"""
+open(p,"w").write(s.replace(a,b+a))
+PY
+            ;;
+        nmresc2)
+            # scratch (NightmareTeam dive): before the hunt, a member with two enemies inside 250 px keeps its own drive and the mates close on it to 150 px. Suffix nr2.
+            version="${version}nr2"
+            python3 - "$trisk" <<'PY'
+import sys
+p=sys.argv[1]; s=open(p).read()
+a="        if (modes.contains(TeamModes.Mode.HUNT) && energy >= PACK_ENERGY) {"
+assert s.count(a)==1
+b="""        {
+            Point2D.Double rn = null, rg = null;
+            for (Roster.Mate m : mates) {
+                Point2D.Double q = m.at(now);
+                if (rn == null || q.distance(me) < rn.distance(me)) rn = q;
+                if (enemiesNear(q, enemies, now) >= GANG_SIZE && (rg == null || q.distance(me) < rg.distance(me))) rg = q;
+            }
+            if (rg != null) return new Pull(rg, 150, 1.0, false);
+        }
+"""
+open(p,"w").write(s.replace(a,b+a))
+PY
+            ;;
+        nmresc3)
+            # scratch (NightmareTeam dive): before the hunt, a member with two enemies inside 250 px keeps its own drive and the mates close on it to 150 px. Suffix nr3.
+            version="${version}nr3"
+            python3 - "$trisk" <<'PY'
+import sys
+p=sys.argv[1]; s=open(p).read()
+a="        if (modes.contains(TeamModes.Mode.HUNT) && energy >= PACK_ENERGY) {"
+assert s.count(a)==1
+b="""        {
+            Point2D.Double rn = null, rg = null;
+            for (Roster.Mate m : mates) {
+                Point2D.Double q = m.at(now);
+                if (rn == null || q.distance(me) < rn.distance(me)) rn = q;
+                if (enemiesNear(q, enemies, now) >= GANG_SIZE && (rg == null || q.distance(me) < rg.distance(me))) rg = q;
+            }
+            if (rg != null) return new Pull(rg, 150, 0.3, false);
+        }
+"""
+open(p,"w").write(s.replace(a,b+a))
+PY
+            ;;
         ogt9)
             # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.GANG, Mode.FINISH, Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM. Suffix ot9.
             version="${version}ot9"
