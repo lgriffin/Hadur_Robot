@@ -166,6 +166,16 @@ final class TeamRisk {
     /** As above, with {@code name} this member's name for TMODE-13's order (null: first). */
     static Pull pull(Point2D.Double me, String name, double energy, int others, List<EnemyInfo> enemies,
                      long now, List<Roster.Mate> mates, Set<TeamModes.Mode> modes) {
+        if (TeamModes.mobbing(mates.size(), enemies.size(), now)) {
+            // TMODE-58: the whole team on the weakest enemy left; the bullets' risk stays as it is.
+            EnemyInfo prey = null;
+            for (EnemyInfo e : enemies) {
+                if (e.age(now) >= CAP_MAX_AGE) continue;
+                if (prey == null || e.energy < prey.energy
+                        || (e.energy == prey.energy && e.name.compareTo(prey.name) < 0)) prey = e;
+            }
+            if (prey != null) return new Pull(prey.location, TeamModes.MOB_FLOOR, TeamModes.MOB_PULL, false);
+        }
         // TMODE-47: under LAST the members close on the one enemy left as FINISH would.
         if (modes.contains(TeamModes.Mode.LAST) && others == 1 && enemies.size() == 1
                 && enemies.get(0).age(now) < CAP_MAX_AGE && energy >= FINISH_ENERGY) {

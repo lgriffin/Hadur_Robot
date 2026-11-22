@@ -154,6 +154,25 @@ public final class TeamModes {
     public static final boolean FORCE_SHY = false;
     /** TMODE-57: the lateral term's weight driving at an enemy, and away from it. */
     public static final double SHY_TOWARD = 3.0, SHY_AWAY = 0.3;
+    /**
+     * TMODE-58, mob: once the team outnumbers the enemies left by {@link #MOB_LEAD} or more, every
+     * member closes on the weakest of them to {@link #MOB_FLOOR} px whatever its own energy, fires
+     * full power inside {@link #MOB_NEAR} px and, under {@link #MOB_SAVE} energy, holds its fire
+     * beyond that (against OgiTeam the team led by two or more in half its rounds and won a quarter of
+     * those, its drained members trading light shots from 800 px). Off in the shipped build (ablation
+     * tmmob). Never read off a team.
+     */
+    public static final boolean FORCE_MOB = false;
+    public static final int MOB_LEAD = 2;
+    public static final double MOB_FLOOR = 100.0, MOB_PULL = 1.0, MOB_NEAR = 220.0, MOB_SAVE = 30.0;
+    /** TMODE-58: before this tick the tracker may not have seen every enemy. */
+    public static final long MOB_FROM = 100;
+
+    /** TMODE-58: whether a team of {@code mates} + 1 mobs {@code enemies} enemies on tick {@code now}. */
+    public static boolean mobbing(int mates, int enemies, long now) {
+        return FORCE_MOB && now >= MOB_FROM && enemies >= 1 && mates >= 1 && mates + 1 - enemies >= MOB_LEAD;
+    }
+
     /** TMODE-47: LAST on every team, as pc-team-guard measured it (PR #790). */
     public static final boolean FORCE_LAST = true;
     /** TMODE-49: MOMENTUM on every team, as pc-team-momentum measured it (PR #826). */

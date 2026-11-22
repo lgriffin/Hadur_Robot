@@ -1123,6 +1123,11 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             version="${version}op15"
             edit "$trisk" "static final double HUNT_PULL = 0.3;" "static final double HUNT_PULL = 1.5;"
             ;;
+        tmmob)
+            # TMODE-58: a team two or more up mobs the weakest enemy. Suffix mob.
+            version="${version}mob"
+            edit "$modes" "public static final boolean FORCE_MOB = false;" "public static final boolean FORCE_MOB = true;"
+            ;;
         tmthrottle)
             # TMODE-55: every team member keeps full speed through sharp turns. Suffix th.
             version="${version}th"

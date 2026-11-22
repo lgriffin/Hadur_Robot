@@ -546,6 +546,16 @@ public class MeleeController {
         boolean hold = target.age(s.time) > MAX_FIRE_AGE
             || s.energy < MeleeEnergyPolicy.MIN_OWN_ENERGY
             || s.energy <= power + 0.1;
+        if (onTeam && TeamModes.mobbing(s.teammates.size(), alive.size(), s.time)
+                && target.age(s.time) <= MAX_FIRE_AGE && s.energy >= MeleeEnergyPolicy.MIN_OWN_ENERGY) {
+            // TMODE-58: full power point blank, and a drained member keeps its energy for that.
+            if (target.distance(s.me) <= TeamModes.MOB_NEAR) {
+                power = Math.min(Math.min(3.0, MeleeEnergyPolicy.killPower(target.energy)), Math.max(0.1, s.energy - 0.2));
+                hold = false;
+            } else if (s.energy < TeamModes.MOB_SAVE && target.energy > FINISHER_ENERGY) {
+                hold = true;
+            }
+        }
         if (onTeam && TeamModes.FORCE_PICK && TeamModes.PICK_HOLD > 0 && !hold
                 && target.energy > FINISHER_ENERGY && target.distance(s.me) > TeamModes.PICK_NEAR) {
             // TMODE-56: a shot at an enemy running away (or, at 2, not closing) is energy spent for little.
