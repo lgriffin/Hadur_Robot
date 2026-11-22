@@ -1106,6 +1106,23 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             version="${version}ow25"
             edit "$fgun" "if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);" "if (onTeam) { power = MeleeEnergyPolicy.teamPower(power, energy, e.energy); if (distance > 300 && e.energy > MeleeEnergyPolicy.FINISHER_ENERGY) power = Math.min(power, 2.5); }"
             ;;
+        tmpick3)
+            # TMODE-56 with weights 3.0 closing, 0.33 fleeing. Suffix pk3.
+            version="${version}pk3"
+            edit "$modes" "public static final boolean FORCE_PICK = false;" "public static final boolean FORCE_PICK = true;"
+            edit "$modes" "PICK_CLOSING = 2.0, PICK_FLEEING = 0.5;" "PICK_CLOSING = 3.0, PICK_FLEEING = 0.33;"
+            ;;
+        tmpickc2)
+            # TMODE-56 leaning to closing enemies only (2.0, fleeing 1.0). Suffix pkx.
+            version="${version}pkx"
+            edit "$modes" "public static final boolean FORCE_PICK = false;" "public static final boolean FORCE_PICK = true;"
+            edit "$modes" "PICK_CLOSING = 2.0, PICK_FLEEING = 0.5;" "PICK_CLOSING = 2.0, PICK_FLEEING = 1.0;"
+            ;;
+        ogp15)
+            # scratch (OgiTeam dive): hunt pull 1.5. Suffix op15.
+            version="${version}op15"
+            edit "$trisk" "static final double HUNT_PULL = 0.3;" "static final double HUNT_PULL = 1.5;"
+            ;;
         tmthrottle)
             # TMODE-55: every team member keeps full speed through sharp turns. Suffix th.
             version="${version}th"
