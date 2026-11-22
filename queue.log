@@ -10,3 +10,7 @@
 22:57:11 ttpilot exit=0 in 0 s
 22:57:11 start ttbb
 22:57:11 watching ttbb: 3 stop rule(s)
+23:22:09 progress ttbb: 171/240 (71%) battles, 411/h, ETA 10 min, 0 failed, skips 60.2/battle (last 100)
+23:30:33 ttbb exit=0 in 2002 s
+23:30:33 start tttp
+23:30:33 watching tttp: 3 stop rule(s)
