@@ -8,7 +8,7 @@ Sources: the live TeamRumble pages fetched at 10:05 UTC for HadurTeam 3.15, Hadu
 `data/rumble/pages/2026-10-23T1005Z_teamrumble_botdetails_*.html` and parsed to
 `data/rumble/parsed/2026-10-23T1005Z_*.csv`; the rankings of 09:34 UTC
 (`2026-10-23T0934Z_teamrumble_rankings.tsv`); every team bench report since 2026-10-11
-(`docs/bench/team-lower-half.md`, `docs/bench/combatteam-3.25.md`,
+(`docs/bench/team-lower-half.md`,
 `docs/bench/local/2026-10-1*_team-*.md`). Team changes follow Leigh's isolation rule of
 2026-10-11: team-only code paths, 1v1 and melee bit-identical.
 
@@ -143,7 +143,7 @@ a member has a living teammate); every gate is the whole team field, 46 teams, 6
 | **S1 T3** | team gun depth 3 → 21 (`tk21`) | PC +2.6 ± 0.9 on 3.14, 2 hosts screened +3.5 to +4.3 (k12) | +2.6 | +1.7 to +3.5 | one constant |
 | **S1 TR1** | shoot rammers on a team (`tram`) | cloud screen +15.7 pts on the 3 ramming teams (section 4) | +1.0 | +0.6 to +1.4 | one condition |
 | **Release 3.16 team** | S1 gate passes | | **≈ 71.1** | 7th | release.yml |
-| **S2 T6** | learned team danger: every member logs each enemy bullet that hits or passes it (situation, angle) and broadcasts it; one shared kNN per enemy gun replaces head-on/linear virtual bullets in the team's risk; a detected shot is treated as aimed at the member nearest the shooter (CombatTeam's rule) | top 20 survival gap 15-29 points; CombatTeam's design (combatteam-3.25.md 2.2, 2.3) | +3.0 | +1.5 to +4.5 | 2-3 days build, new link codec field |
+| **S2 T6** | learned team danger: every member logs each enemy bullet that hits or passes it (situation, angle) and broadcasts it; one shared kNN per enemy gun replaces head-on/linear virtual bullets in the team's risk; a detected shot is treated as aimed at the member nearest the shooter (CombatTeam's rule) | top 20 survival gap 15-29 points; CombatTeam's design | +3.0 | +1.5 to +4.5 | 2-3 days build, new link codec field |
 | **S3 T5b** | shared gun *samples*: resolved gun waves (situation, guess factor) broadcast and added to every member's kNN, with catch-up after a death | MGUN-8 (sightings) added nothing over k12; samples are the labels, sightings were only context | +1.0 | 0 to +2.0 | link codec v2 |
 | **S4 T7** | small team rules: attract to a disabled enemy; teammates' bullets in flight as a risk term, then retest firing through teammates (`tlane0` read +0.5 ± 3.4 without it) | CombatTeam does both | +0.5 | 0 to +1.0 | small |
 | **Total** | | | **+8.1** | **+3.8 to +12.4** | |
@@ -236,7 +236,7 @@ all three have met, split by the opponent's rank. APS points are each segment's 
 | A | S4 screens (DISABLED, MATEFIRE, REAR) on the combined PC card | built and queued | 0 to +0.5 | 3 PC hours, already on the card |
 | B | **Lower-half margin read**: bench Aleph itself as the subject against ranks 21-46, with Hadur alongside, and compare the score parts (bullet damage, kill bonus, survival) team by team | Aleph's +1.8 there is the cheapest gap; measure before building | read only | cloud, small teams run fast |
 | C | Fix what B finds: likely kill speed against rammers and weak teams (team fire power and target choice at close range) | the k21 and full-power steps (+2.4, +5.7) show gun-side changes carry live | +1.0 to +1.8 | small build, one PC gate |
-| D | **New team movement: Ogi's waves** (docs/bench/ogi-deep-dive.md port 3): a danger profile per enemy shot weighted by whom it was aimed at, driving to the safest of 8 points over 30 ticks | the stop rule's "new strand": survival against the top 20 is where Nightmare's +5.6 is, and only a different movement can change it | +2 to +4 | 2 to 3 days in the cloud, team-only, one PC gate |
+| D | **New team movement: Ogi-style waves**: a danger profile per enemy shot weighted by whom it was aimed at, driving to the safest of 8 points over 30 ticks | the stop rule's "new strand": survival against the top 20 is where Nightmare's +5.6 is, and only a different movement can change it | +2 to +4 | 2 to 3 days in the cloud, team-only, one PC gate |
 | E | Shared radar arcs (Ogi port 5) | fresher scans for the k21 gun on every member | +0.5 to +1.5 | small |
 
 Central estimate: B+C +1.4, D +3, E +0.8, so about +5 on 72, which is level with 5th. **D is
@@ -267,7 +267,7 @@ from the bench's bullets.log. The tlane0 smoke used seeds 3100-3101.
   2 seeds: **+10.8 ± 4.8** share points, TeamDeath +15.9 ± 2.2.
 
 A second smoke on the top 6 (Combat, Shadow, Aleph, Nightmare, Xmen, Polylunar), seeds 3200-3201:
-`tlane0` **+8.8 ± 7.0**. Then Ogi's own rule (`tlaneo`, docs/bench/ogi-deep-dive.md 4.6: hold only
+`tlane0` **+8.8 ± 7.0**. Then an Ogi-style rule (`tlaneo`: hold only
 for a teammate nearer than the target and within atan2(30, d) of the gun line) against `tlane0`
 on those 11 teams, seeds 3400-3401: **+3.9 ± 3.1** for `tlaneo`, with 3,125 shots held against
 7,400 for the 3.16 lane.
@@ -504,13 +504,13 @@ Together +1.0..+2.5 against +2.6: 2nd only at the top of the range.
 
 ## 11. One counter per opponent (2026-10-27)
 
-Plan doc: "Team rumble: plan from 4th to 2nd" (https://claude.ai/artifact/WJJuSZcEDftxfD7FMLgVbB).
+Plan doc: "Team rumble: plan from 4th to 2nd".
 Gun lines failed (PR #344), and no team gain has landed since 3.17.1. Every flat card since HUNT was
 a tweak to our own movement, and both per-team tables (PR #246, PR #339) only picked among those
 tweaks on 6 seeds. In 1v1, tailoring pays because each mode counters a bot type. This section does
 the same for team: read each costly team's code, then give it a counter that exploits what it does.
 
-- **Reads.** The 16 teams Firestarter beats us on by 5 to 13 points, from their decompiled jars:
+- **Reads.** The 16 teams Firestarter beats us on by 5 to 13 points, from their play:
   10 shoot their closest enemy, 9 cut power with distance, 5 aim only head-on or only linear.
 - **Counters** (team-only table modes; no FORCE switch, `TeamModes.TABLE` ships empty):
   - OWN (TMODE-20): shot ownership via MMOVE-9's nearest rule. It lost globally, but against a team

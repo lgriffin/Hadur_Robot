@@ -47,10 +47,10 @@ The top five sit within 1.9 APS of each other, and the field is small: each pair
 the score, so one matchup moved by 10 points moves APS by 0.38. Below 7th the field falls away
 fast (8th 59.9, 15th 54.0, 25th 14.3), so a solid team scores well against most of it.
 
-## 2. LunarTwins 1.4a, taken apart
+## 2. LunarTwins 1.4a, from its published source
 
 The jar ships its source (`robot.include.source=true`). Seven classes, about 1,940 bytes of
-method bytecode by a `javap` count (the codesize utility itself was not run here). Its
+method bytecode. Its
 description is "Divide, Pin, and Conquer!", and the code does exactly that.
 
 ### Roles

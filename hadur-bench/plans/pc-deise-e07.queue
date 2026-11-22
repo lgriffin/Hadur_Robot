@@ -18,7 +18,7 @@
 #   WV2    the seen-shot waves count double
 #   CONS   conservative power: log10(energy) x 240 / distance, not 325. ScalarR's two biggest
 #          melee survival jumps were energy management (robowiki ScalarR/Version_History).
-#   SCAL   ScalarR's energy shape (PR #459's decompile): range power capped at energy / 6, and at
+#   SCAL   ScalarR's energy shape (PR #459): range power capped at energy / 6, and at
 #          energy / 15 with the target beyond 325 px, so power falls only as Deise's energy does
 #          (about 10 bytes: a winner needs a cut to ship)
 #   RS     a shorter ring: 0.35 of the target's distance, up to 120 px (REACH's longer one lost 0.70)

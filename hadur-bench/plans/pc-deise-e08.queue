@@ -1,7 +1,7 @@
 # Deise's stage E5 (docs/deise.md section 8): harder power at range.
 # pc-deise-e07 (PR #469, seeds from 3700) passed no arm: 0.4's push, wave and ring constants sit at
 # an optimum, and CONS (lighter power at range, -0.37 ± 0.23) lost. ScalarR, 1st in melee, fires
-# about 1300 / d at full energy (PR #459's decompile), about twice Deise's log10(energy) x 325 / d.
+# about 1300 / d at full energy (PR #459), about twice Deise's log10(energy) x 325 / d.
 # E5 walks the coefficient up. Constants only, so a winner ships at no cost in bytes as 0.4.1;
 # HS650 and SR add about 10 bytes (SCAL's cap) and would need a cut.
 #   ./queue.sh run pc-deise-e08        (or  .\queue.ps1 run pc-deise-e08)

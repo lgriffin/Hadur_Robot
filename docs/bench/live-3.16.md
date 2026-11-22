@@ -23,8 +23,8 @@ rankings; jkong.JKHydra 1.4 is new at 5th with 90.99. Top 5 now needs +1.50 APS,
 
 Matching the second-best of Saguaro, ScalarR, Ogi and Diamond on each opponent where two of them lead
 Hadur 3.16 by 5+ points is worth +2.78 APS over 346 opponents; 211 of them (+1.72) are flat movers with
-learning guns. Saguaro's lead over 3.16 is +2.31, and Saguaro's whole lead is per-opponent tailoring
-(rivals-source-read.md). Split by the mode Saguaro locks:
+learning guns. Saguaro's lead over 3.16 is +2.31, and Saguaro's whole lead is per-opponent tailoring.
+Split by the mode Saguaro locks:
 
 | Saguaro's bots | Bots | Saguaro lead over 3.16 |
 |---|---|---|

@@ -1,6 +1,6 @@
 # Hadur: evolution of strategy
 
-As of 2026-09-27 (after S7, release 2.2). The living copy is the [Claude Doc](https://claude.ai/code/artifact/bc581157-b352-49c9-acaf-9f77035202c5); this file is its snapshot for evaluation. The living copy also covers the melee extension, R9, the top-15 plan and the architecture evolution (A0 to A5, releases 3.6 and 3.7). For the stages since this snapshot, see the stage log in [architecture-evolution.md](architecture-evolution.md#stage-log) and [what 3.7 should score](bench/expected-3.7.md).
+As of 2026-09-27 (after S7, release 2.2). This file is a snapshot of the living strategy doc, which also covers the melee extension, R9, the top-15 plan and the architecture evolution (A0 to A5, releases 3.6 and 3.7). For the stages since this snapshot, see the stage log in [architecture-evolution.md](architecture-evolution.md#stage-log) and [what 3.7 should score](bench/expected-3.7.md).
 
 ## Summary
 
@@ -29,7 +29,7 @@ Three weaknesses shaped what came next:
 
 ## Direction: a duelist that remembers
 
-Hadur 2 is a 1v1 duelist that is measured at every step. Its goal is to learn each opponent across battles and adapt. The plan comes from the [Hadur 2 artifact](https://claude.ai/artifact/KDkC1j5Yj8vWH6XQydyYH8). It is staged: each stage has a bench gate and EARS requirements, and each is merged only when its gate is met.
+Hadur 2 is a 1v1 duelist that is measured at every step. Its goal is to learn each opponent across battles and adapt. The plan comes from the Hadur 2 plan doc. It is staged: each stage has a bench gate and EARS requirements, and each is merged only when its gate is met.
 
 | Stage | Focus | State |
 | --- | --- | --- |
@@ -208,8 +208,8 @@ The plan's last gate, reference APS 60, is not met. The next levers are the rada
 
 ## The RoboRumble climb plan (R0-R5)
 
-3.0 placed 64th of 1,216 in the 1v1 RoboRumble on 2026-09-28. The [climb plan
-artifact](https://claude.ai/artifact/RrAnDpngzZjcf9hYL3pLcW) reads that placement against
+3.0 placed 64th of 1,216 in the 1v1 RoboRumble on 2026-09-28. The climb plan
+reads that placement against
 the bench's own results and stages six releases (R0-R5) to close the gap, each still bench-
 gated and EARS-traced like the duel and melee plans. Stage PRs on this plan merge without
 waiting for review, per standing instruction, once CI is green and any bot review findings
@@ -526,7 +526,7 @@ the stored verdict (P6) were level. Re-pinned: `pins/duel.sha256` (`-Dhadur.pin=
 ## 3.13: Nullstride's shield on Nullstride's list
 
 The plan "the road from 87.7 to 90" (docs/plan-90.md) found the gap to 90 APS in bullet
-shielding. It built each difference between Hadur's shield and the decompiled Nullstride 2.3.3's as
+shielding. It built each difference between Hadur's shield and Nullstride 2.3.3's as
 one switch (SHIELD-8 to SHIELD-12, `shieldmode.ShieldDesign`). On the PC at 8 seeds, on the 89 robots
 both lists shield, holding fire while shielding (SHIELD-8) was worth +4 points a robot. Learning from
 intercepted bullets, the most frequent offset, staying in the mode and the body-turn base were each

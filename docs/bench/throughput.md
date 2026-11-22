@@ -1,8 +1,7 @@
 # Bench throughput (2026-10-23)
 
 Why does the bench average about 12 battles a minute when a minimised rumble client runs
-10 battles in seconds? The full read, with every measurement, is the artifact
-https://claude.ai/artifact/7bWonLGQsi7obMGXHXtQEP. This page keeps the findings, the two changes
+10 battles in seconds? This page keeps the findings, the two changes
 they led to, and the PC card that measures the rest.
 
 ## Findings
