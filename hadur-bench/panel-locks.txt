@@ -1,6 +1,10 @@
-# BENCH-253 pc-locks, round 19: AntiRebel, Nicator, AgentSmithRedux, Loki, Dreadnaught and NewTest on qw (MOVE-67, 24 cloud seeds each), WaveRammer on rf (48 cloud seeds, 95% low end above 0 vs c and aa;
+# BENCH-253 pc-locks, round 19 (with round 18, whose lock never ran: Snow, PanzerGeneral and Assertive on pm, SpaceKees on pmx; issue #989): AntiRebel, Nicator, AgentSmithRedux, Loki, Dreadnaught and NewTest on qw (MOVE-67, 24 cloud seeds each), WaveRammer on rf (48 cloud seeds, 95% low end above 0 vs c and aa;
 # coverage/shards/locks.tsv, coverage/shards/briefs.md), and eleven robots whose line is already on master, read only in c
-# and aa, so the A/A check reads 12. name | note | jar
+# and aa, so the A/A check reads 22. name | note | jar
+nova.Snow 1.0 | pm-D | nova.Snow_1.0.jar
+stf.PanzerGeneral 0.1 | pm-D | stf.PanzerGeneral_0.1.jar
+robar.nano.Assertive 0.3 | pm-D-24seeds | robar.nano.Assertive_0.3.jar
+KiraNL.SpaceKees 0.1 | pmx-G | KiraNL.SpaceKees_0.1.jar
 scheronimus.AntiRebel 1.1 | qw-C-24seeds | scheronimus.AntiRebel_1.1.jar
 nic.Nicator 2.4 | qw-C-24seeds | nic.Nicator_2.4.jar
 rdt.AgentSmith.AgentSmithRedux 0.02 | qw-A-24seeds | rdt.AgentSmith.AgentSmithRedux_0.02.jar
