@@ -41,7 +41,8 @@
 # robots +0.57 +- 0.19 (old lines level, the new r3-12 lines +2.46 +- 0.63); flag rechecks on 12 seeds left three
 # small losses worth about 0.005 APS together. This card checks the same thing on the whole field at once.
 
-set V = 3.23
+set V = 3.24
+set REL = 3.23
 set P = --parallel 16 --no-truth-log --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 2G
 set W = work/pc-rc-confirm-r5
@@ -49,7 +50,7 @@ set OUT = ../docs/bench/local
 set ALERT = lgriffin
 set RELSHA = 4d9d10404fe8158efc9d57435d4d4c0a72000c966d1f420378b9ee360861aa94
 
-prep | git checkout -q master && mkdir -p bisect/rel work && (cd .. && mvn -q -DskipTests package) && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && test -f bisect/hadur117.Hadur_${V}bb.jar && (test -f bisect/rel/hadur117.Hadur_${V}.jar || curl -fsSL -o bisect/rel/hadur117.Hadur_${V}.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v${V}/hadur117.Hadur_${V}.jar) && python3 -c "import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1],'rb').read()).hexdigest()!=sys.argv[2])" bisect/rel/hadur117.Hadur_${V}.jar ${RELSHA} && bash tools/fetch_live_jar.sh && (./fetch-opponents.sh --set panel-r31.txt || true) && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && (./fetch-opponents.sh --set census-312.txt || true) && (./fetch-opponents.sh --set panel-ret16.txt || true) && mvn -q compile
+prep | git checkout -q master && mkdir -p bisect/rel work && (cd .. && mvn -q -DskipTests package) && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && test -f bisect/hadur117.Hadur_${V}bb.jar && (test -f bisect/rel/hadur117.Hadur_${REL}.jar || curl -fsSL -o bisect/rel/hadur117.Hadur_${REL}.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v${REL}/hadur117.Hadur_${REL}.jar) && python3 -c "import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1],'rb').read()).hexdigest()!=sys.argv[2])" bisect/rel/hadur117.Hadur_${REL}.jar ${RELSHA} && bash tools/fetch_live_jar.sh && (./fetch-opponents.sh --set panel-r31.txt || true) && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && (./fetch-opponents.sh --set census-312.txt || true) && (./fetch-opponents.sh --set panel-ret16.txt || true) && mvn -q compile
 
 livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out work/pc-livematch-rel-live --label pc-rc-confirm-livematch --shuffle-jobs && python3 tools/live_match.py work/pc-livematch-rel-live/arms.tsv --out ${OUT}/pc-rc-confirm-livematch.md
   after: prep
