@@ -1,13 +1,5 @@
-nova.Snow 1.0	pm	7.96	4.94
-stf.PanzerGeneral 0.1	pm	2.10	0.67
-robar.nano.Assertive 0.3	pm	1.73	0.39
-KiraNL.SpaceKees 0.1	pmx	1.83	0.50
-scheronimus.AntiRebel 1.1	qw	1.04	0.59
-nic.Nicator 2.4	qw	0.87	0.19
-rdt.AgentSmith.AgentSmithRedux 0.02	qw	0.82	0.29
-bvh.loki.Loki 0.5	qw	0.87	0.28
-com.syncleus.robocode.Dreadnaught 0.1	qw	1.90	0.29
-com.arsenic.NewTest 1.0	qw	0.96	0.37
+lrem.micro.MoggFanatic 0.2	qw	0.73	0.03
+alpha.BlackIce 1.0	x0	3.00	0.87
 wiki.WaveRammer 1.0	rf	2.14	0.22
 oog.micro.Maui 1.2	aa	0	0
 sgp.MadHatter 4.13	aa	0	0
@@ -20,3 +12,5 @@ sul.Bicephal 1.2	aa	0	0
 cw.megas.GhostShell GT	aa	0	0
 cw.megas.Gridd 0.4	aa	0	0
 cw.megas.Polar 3.2	aa	0	0
+com.syncleus.robocode.Dreadnaught 0.1	aa	0	0
+nic.Nicator 2.4	aa	0	0
