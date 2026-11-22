@@ -1,6 +1,6 @@
 {
  "plan": "pc-melee-race",
- "updated": 1795366530.2819529,
+ "updated": 1795367075.0111895,
  "steps": {
   "mrprep": {
    "status": "done",
@@ -21,8 +21,11 @@
    "end": "2026-11-22T16:01:47"
   },
   "mren": {
-   "status": "running",
-   "start": "2026-11-22T16:01:47"
+   "status": "halted",
+   "exit": 75,
+   "seconds": 3767,
+   "end": "2026-11-22T17:04:35",
+   "halted_by": "stall 30m: last battle 31 min ago"
   },
   "mrez": {
    "status": "pending"
@@ -112,8 +115,8 @@
   {
    "step": "mren",
    "started": 1795363307.2572033,
-   "updated": 1795366530.2804825,
-   "elapsed": 3223.0232791900635,
+   "updated": 1795367075.0034697,
+   "elapsed": 3767.7462663650513,
    "expected": 460,
    "panel": null,
    "field": null,
@@ -125,10 +128,10 @@
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 289.29359772862375,
-   "eta": 2501.26517033669,
+   "rate": 247.468893625774,
+   "eta": 2924.0038592253873,
    "fraction": 0.5630434782608695,
-   "last_battle_age": 1308.0775592327118,
+   "last_battle_age": 1852.8005464076996,
    "rules": [
     {
      "rule": "fails 20",
@@ -139,8 +142,8 @@
     {
      "rule": "stall 30m",
      "action": "halt",
-     "state": "ok",
-     "detail": "last battle 22 min ago"
+     "state": "TRIPPED",
+     "detail": "last battle 31 min ago"
     }
    ],
    "skips_mean": 36.76061776061776,

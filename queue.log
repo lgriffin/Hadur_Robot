@@ -15,3 +15,6 @@
 16:01:47 start mren
 16:01:47 watching mren: 2 stop rule(s)
 16:28:16 progress mren: 220/460 (48%) battles, 498/h, ETA 29 min, 0 failed, skips 37.8/battle (last 100)
+16:58:31 progress mren: 259/460 (56%) battles, 274/h, ETA 44 min, 0 failed, skips 36.8/battle (last 100)
+17:04:34 STOP mren by rule stall 30m: last battle 31 min ago; 259 battles fought and kept, 201 battles left unrun (about 49 min)
+17:04:35 mren exit=75 in 3767 s (halted, stall 30m)
