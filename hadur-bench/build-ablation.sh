@@ -1128,6 +1128,31 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             version="${version}mob"
             edit "$modes" "public static final boolean FORCE_MOB = false;" "public static final boolean FORCE_MOB = true;"
             ;;
+        ogt6)
+            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM. Suffix ot6.
+            version="${version}ot6"
+            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));'
+            ;;
+        ogt7)
+            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.HUNT, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM. Suffix ot7.
+            version="${version}ot7"
+            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.HUNT, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));'
+            ;;
+        ogt8)
+            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM. Suffix ot8.
+            version="${version}ot8"
+            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));'
+            ;;
+        ogt9)
+            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.GANG, Mode.FINISH, Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM. Suffix ot9.
+            version="${version}ot9"
+            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.GANG, Mode.FINISH, Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));'
+            ;;
+        ogt10)
+            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM. Suffix ot10.
+            version="${version}ot10"
+            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM));'
+            ;;
         tmthrottle)
             # TMODE-55: every team member keeps full speed through sharp turns. Suffix th.
             version="${version}th"
