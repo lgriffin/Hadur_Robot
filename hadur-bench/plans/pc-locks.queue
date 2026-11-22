@@ -1,13 +1,14 @@
 # 1v1, cloud locks to the PC (BENCH-253), round 19. Round 18 (PR #986) carries Snow, PanzerGeneral and Assertive on pm
 # and SpaceKees on pmx; round 19 runs after it and after pc-rc-confirm run 5.
-# Round 19 carries three MOVE-67 locks and one candidate, padded to 15 for the A/A check.
+# Round 19 carries four MOVE-67 locks and one candidate, padded to 16 for the A/A check.
 # Cloud read (Robocode 1.12.0, live turn time, master 053343eaf; coverage/shards/locks.tsv), vs c / vs aa:
 #   rf (RAM-15 ram-flee, shipped) on WaveRammer (box D u7: 36 seeds 87870, 87882, 87894 +2.47 +- 2.23 / +1.93 +- 2.09;
 #      95% low end +0.25 vs c, -0.15 vs aa, so a candidate, not a cloud lock: the PC decides).
 #   qw (MOVE-67 per-opponent aim weight: the simple aim members at standing weight 1.0) on AntiRebel (box C: 24 seeds
 #      88250, 88262 +0.98 +- 0.39 / +1.04 +- 0.45) and Nicator (24 seeds +1.22 +- 0.73 / +0.87 +- 0.68); first read with
 #      the cloud ablation aimp1, then rebuilt as the qw table flavour and checked on 6 seeds 88280 (dzlane/C/blind/q1five);
-#      and AgentSmithRedux (box A: 24 seeds 86680-703 +0.64 +- 0.44 / +0.82 +- 0.53, dzlane/A/q1wide/lock).
+#      AgentSmithRedux (box A: 24 seeds 86680-703 +0.64 +- 0.44 / +0.82 +- 0.53, dzlane/A/q1wide/lock) and Loki
+#      (box G: 24 seeds 87710-33 +0.77 +- 0.71 / +0.87 +- 0.59).
 #   A/A pads: Maui, MadHatter, RammingC, AutoBot, Impact, NanoDeath, Kowari, Bicephal, GhostShell, Gridd and Polar (lines
 #      on master, read only in c and aa), so the A/A check reads 12 robots (round 15 was void on 5).
 #   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live
@@ -20,7 +21,7 @@
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
 #   --fresh because round 18 left this plan's queue state marked complete; the new work directory and seeds mean no
 #   battle is read back from an earlier round (and BENCH-272 refights any whose jar changed).
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 720 lock battles (15 robots, 4 arms, 12 seeds),
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 768 lock battles (16 robots, 4 arms, 12 seeds),
 # about 25 minutes with the live-match check. The prep step stops if any panel robot's jar is missing.
 #
 # Why it should win (the PC card rule of 2026-11-03):
@@ -28,12 +29,14 @@
 #     rf is a table line for RAM-15, already on master; qw needs MOVE-67 (Leigh's OK), and its jar differs from aa only
 #     in the aimWeights() table (javap, dzlane/C/blind/q1five/qwcheck).
 #   - AntiRebel, Nicator: two of the five robots holding 56% of our blind hits (box C blind check,
-#     dzlane/C/blind); AgentSmithRedux from box A's wider aim-prior screen (dzlane/A/q1wide). With the simple aim members at MOVE-29's standing weight 1.0 they count fully from the first
-#     wave instead of earning weight, and all three held on 24 cloud seeds vs c and aa (low ends +0.19 to +0.65).
+#     dzlane/C/blind); AgentSmithRedux and Loki from boxes A
+#     and G's wider aim-prior screens (dzlane/A/q1wide). With the simple aim members at MOVE-29's standing weight 1.0 they count fully from the first
+#     wave instead of earning weight, and all four held on 24 cloud seeds vs c and aa (low ends +0.06 to +0.65).
 #     Round-by-round forensic (box C, aesrec twins, 12 seeds 88290): real hit share on our waves Nicator 3.6% to 2.3%,
 #     AntiRebel 1.1% to 0.7%, lower in every round bucket; blend ranks the hit option top 82% against 76% (views alone
 #     75% against 71%), so the gain is the members'. AgentSmithRedux (24 seeds 88302): 1.7% to 1.3%, lower or level in
-#     every round bucket, blend top 80% against 75% with views alone flat at 70%.
+#     every round bucket, blend top 80% against 75% with views alone flat at 70%. Loki (24 seeds 88326): 2.2% to 1.5%,
+#     lower in every round bucket, blend top 90% against 84%, views alone flat at 78-79%.
 #   - WaveRammer: we let it close in (52% of the time under 250 px against BeepBoop's 42%, mean distance 253 against
 #     305), and under 250 px it hits us 22.6% of the time against 14.1% on BeepBoop (box D u7 truth logs, 4 seeds 87850).
 #     RAM-15's flee backs away from a charger, the way BeepBoop stands off. The rbd bend failed on it (21 Nov). The cloud
@@ -72,5 +75,5 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 8
 gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks19-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks19-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks19-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms rf qw --out ${OUT}/$(date +%Y-%m-%d)_pc-locks19-lock-per-robot.md --out-tsv ${OUT}/pc-locks19-lock-per-robot.tsv
   after: lock
 
-pr | bash tools/open_results_pr.sh claude/pc-locks19-results "1v1 cloud locks, round 19 (3 qw, WaveRammer rf candidate) on 12 fresh PC seeds" ${OUT}/pc-locks19-livematch.md ${OUT}/*_pc-locks19-*.md ${OUT}/pc-locks19-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks19-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks19-results "1v1 cloud locks, round 19 (4 qw, WaveRammer rf candidate) on 12 fresh PC seeds" ${OUT}/pc-locks19-livematch.md ${OUT}/*_pc-locks19-*.md ${OUT}/pc-locks19-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks19-lock-pick.tsv' -size +0c)
   after: gate
