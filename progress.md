@@ -1,6 +1,6 @@
 # Queue pc-team-tight: progress
 
-Updated 2026-11-22 23:04:01 PC time (23:04 UTC), runner pid 37800.
+Updated 2026-11-22 23:19:08 PC time (23:19 UTC), runner pid 37800.
 
 - `ttprep` done, exit 0 in 2 min
 - `ttptp` done, exit 0 in 6 min
@@ -25,16 +25,16 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### ttbb
 
-**39 of 240 battles** (16%), 0 failed. Running 7 min, 342 battles/h, about 35 min left (ends ~23:39 PC time). Last battle 0 min ago.
-Skipped turns a battle: 39.4 overall, first 39 39.4, last 39 39.4.
+**154 of 240 battles** (64%), 0 failed. Running 22 min, 421 battles/h, about 12 min left (ends ~23:31 PC time). Last battle 0 min ago.
+Skipped turns a battle: 55.7 overall, first 100 52.4, last 100 63.4.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 10` | halt | ok | 0 failed of 39 |
+| `fails 10` | halt | ok | 0 failed of 154 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | waiting | 39 of 200 battles to read |
+| `skips 60 over 200` | halt | waiting | 154 of 200 battles to read |
 
-Stopping now would leave 201 battles unrun (about 35 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 86 battles unrun (about 12 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
