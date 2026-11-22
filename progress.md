@@ -49,7 +49,6 @@ Stopping now would leave 201 battles unrun (about 49 min); every battle already 
 ### Queue log (last lines)
 
 ```
-14:27:11 watching mraa: 2 stop rule(s)
 14:27:26 progress mraa: 0/460 (0%) battles, 0 failed
 14:57:38 progress mraa: 260/460 (57%) battles, 512/h, ETA 23 min, 0 failed, skips 36.9/battle (last 100)
 15:14:45 mraa exit=0 in 2853 s
@@ -64,4 +63,5 @@ Stopping now would leave 201 battles unrun (about 49 min); every battle already 
 16:58:31 progress mren: 259/460 (56%) battles, 274/h, ETA 44 min, 0 failed, skips 36.8/battle (last 100)
 17:04:34 STOP mren by rule stall 30m: last battle 31 min ago; 259 battles fought and kept, 201 battles left unrun (about 49 min)
 17:04:35 mren exit=75 in 3767 s (halted, stall 30m)
+17:04:35 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 ```

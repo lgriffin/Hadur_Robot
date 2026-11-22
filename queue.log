@@ -18,3 +18,4 @@
 16:58:31 progress mren: 259/460 (56%) battles, 274/h, ETA 44 min, 0 failed, skips 36.8/battle (last 100)
 17:04:34 STOP mren by rule stall 30m: last battle 31 min ago; 259 battles fought and kept, 201 battles left unrun (about 49 min)
 17:04:35 mren exit=75 in 3767 s (halted, stall 30m)
+17:04:35 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
