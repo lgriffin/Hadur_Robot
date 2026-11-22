@@ -1,6 +1,6 @@
 # Hadur architecture: one robot, three styles
 
-This is the architecture of Hadur as it stands on `master` (2026-10-31, after release 3.20). It
+This is the architecture of Hadur as it stands on `master` at release 3.24 (2026-11-22). It
 covers the three styles of battle Hadur plays, **1v1** (RoboRumble), **melee** (MeleeRumble) and
 **team** (TeamRumble), and the code they share. The diagrams follow the C4 model: context,
 containers, components, and code where it helps. Every switch, mode table and ablation is
@@ -22,7 +22,7 @@ Requirement IDs (ROLE-3, TMODE-34 and so on) are those of [requirements/](requir
 | Who drives | `DuelController` every tick | `MeleeController` while 2+ opponents live, then `DuelController` | the same as melee, with `TeamLink` wrapped round both |
 | Per-opponent table | the 1v1 mode table (`ShieldList`, from the robot jar's data classes) | none | the team mode table (`TeamModes.TABLE`) |
 | Memory shelf written | `.hp` profiles | `.hm` blocks | health record only, by the leader |
-| Standing (3.20 live) | 3rd, 91.82 | 14th, 67.77 | 3rd, 81.51 |
+| Standing (live, 21 Nov, before 3.24's first pass) | 4th, 92.86 (3.23) | 7th (3.22) | 2nd, 83.35 (3.23) |
 
 The one rule that runs through all of it: **team and melee changes must never change how Hadur
 plays a 1v1.** [The isolation rule](#the-isolation-rule) shows the eight mechanisms that hold it.
@@ -38,7 +38,7 @@ C4Context
   title Hadur: system context
   Person(leigh, "Leigh", "Owns Hadur. Approves releases, runs PC bench cards, uploads to the rumble.")
   System(hadur, "Hadur", "One robot for 1v1, melee and team. Java 11 jar.")
-  System_Ext(engine, "Robocode engine", "1.9.x. Runs battles, calls the robot each tick, sandboxes its files.")
+  System_Ext(engine, "Robocode engine", "1.12.0 on the bench and live clients (the jar is built on the 1.9.3 API). Runs battles, calls the robot each tick, sandboxes its files.")
   System_Ext(opp, "Opponent robots", "About 1,200 in 1v1, the melee field, 46 teams.")
   System_Ext(rumble, "RoboRumble server", "LiteRumble: collects battle results, ranks by APS.")
   System(bench, "hadur-bench", "Headless battles in the real engine: paired arms, census, gates.")
@@ -58,7 +58,7 @@ C4Context
 ```
 
 The family's small robots (Saor, TwinSaor, Deise, Sanaro, JayLexi, Eveimear) live in the same repo
-as their own Maven modules and **share no code with Hadur**. They are out of scope here.
+as their own Maven modules and **share no code with Hadur**. Their diagrams are in [The small bots](#the-small-bots).
 
 ## Level 2: containers
 
@@ -66,7 +66,7 @@ as their own Maven modules and **share no code with Hadur**. They are out of sco
 C4Container
   title Hadur: containers
   System_Ext(engine, "Robocode engine", "Java")
-  Container_Boundary(jar, "hadur117.Hadur_3.20.jar (and HadurTeam: the same classes plus HadurTeam.team)") {
+  Container_Boundary(jar, "hadur117.Hadur_3.24.jar (and HadurTeam: the same classes plus HadurTeam.team)") {
     Container(adapter, "Adapter", "hadur-robot, hadur117.Hadur", "TeamRobot. Turns engine events into BotEvent values, applies BotOrders. Only code that sees robocode.*")
     Container(core, "Core", "hadur-core, hadur117.core", "All strategy as plain Java. No engine, no I/O, no clock, no randomness.")
     Container(tables, "Table data classes", "hadur-robot", "ShieldListData, ShieldTableData: the 1v1 mode table as code")
@@ -286,7 +286,7 @@ C4Component
   Container_Boundary(duel, "Duel strand") {
     Component(dc, "DuelController", "duel", "The duel's brain: owns every subsystem below, picks the driver each tick")
     Component(gun, "GunController", "gun", "Main kNN gun, anti-surfer, hybrid, TripHammer, virtual-gun ratings, ShadowAim")
-    Component(mc, "MoveController", "move", "Enemy waves, danger views, AimMembers (MOVE-29..31), BulletShadows")
+    Component(mc, "MoveController", "move", "Enemy waves, danger views, AimMembers (MOVE-29..31) with per-opponent mimics and weights, BulletShadows")
     Component(surf, "SurfMover", "move", "Wave surfing, go-to, ram")
     Component(alt, "Alternative drivers", "move", "StopAndGo, RamEscape (RAM-5), MirrorDrive, ShotDodgePlanner")
     Component(shield, "ShieldMode", "shieldmode", "Stand still, shoot enemy bullets down; ShieldList = the 1v1 mode table")
@@ -317,7 +317,7 @@ C4Component
 |---|---|
 | `DuelController` | Holds the duel: the guns, the surf, waves and state logs, the ledger, the shield, the opening and seeds, the policies, the rammer and mirror responses. Knows nothing of melee; what a melee hands over arrives as a `Baton`. |
 | `GunController` | Picks between the main kNN gun and the anti-surfer gun on their virtual ratings; the opening book can pick first (ADAPT-1). The per-opponent gun stack (TripHammer, free gun, undecayed) is a table slot. |
-| `MoveController` | Keeps the enemy's waves and the danger views, learns from bullets that hit us, and (MOVE-29) mixes the views with simple-aim "members" whose weights follow how well each predicted real bullets. MOVE-30 also scores them on bullets our bullets intercepted. `BulletShadows` removes angles our own bullets protect (MOVE-1). |
+| `MoveController` | Keeps the enemy's waves and the danger views, learns from bullets that hit us, and (MOVE-29) mixes the views with simple-aim "members" whose weights follow how well each predicted real bullets. MOVE-30 also scores them on bullets our bullets intercepted, and MOVE-52 teaches the views from those intercepts as from hits. Per opponent, the table adds learning-gun mimics (MOVE-34), a pattern-matcher mimic in AutoBot's or cw.megas's form (MOVE-56, MOVE-58) or a stronger standing weight for the simple aims (MOVE-67). `BulletShadows` removes angles our own bullets protect (MOVE-1), and keeps a dead bullet's shadows (MOVE-43). |
 | `SurfMover` | Turns danger into orders: three-option surf, go-to surfing, the orbit, the ram on a disabled enemy. |
 | `StopAndGo`, `RamEscape`, `MirrorDrive`, `ShotDodgePlanner` | Drivers that replace the surf against specific kinds of opponent: stop-and-go picks from the table (POISON-2), the escape from a confirmed rammer (RAM-2, with RAM-5 scoring paths against its shots), the planned path against a mirror bot (MIR-1). |
 | `ShieldMode` | For an opponent on the shield list: stand still and shoot its bullets down, with learned predictors, a shipped aim and an opening drive from the table, and an exit if the damage budget runs out (SHIELD-5, SHIELD-6). |
@@ -366,7 +366,7 @@ sequenceDiagram
   participant P as ProfileLibrary
   participant O as OpeningBook
   S->>D: first scan of "pkg.Bot 1.2"
-  D->>L: onStackOffList? dodges? dodgePlan? heatJit? gunStack? stopGo?
+  D->>L: every slot: stop-go? dodge? heat-jit? gun stack? ram-flee? pm-mimic? aim-weight? surf-key? ...
   L-->>D: per-opponent slots
   D->>D: stackOn, shot dodger, heat-jit, gun stack, StopAndGo built or null
   D->>P: load(name) by lineage key
@@ -408,6 +408,7 @@ classDiagram
     +heatJit(name) bool
     +gunStack(name) bool
     +onStackOffList(name) bool
+    ... 30 more slots (ramFlee, patternMimic, aimWeight, surfKey ...)
   }
   class ShieldMode {
     +active() bool
@@ -426,6 +427,8 @@ classDiagram
     <<switches>>
     AIM_MEMBERS = true
     AIM_INTERCEPTS = true
+    INTERCEPT_VIEWS = true
+    KEEP_SHADOWS = true
     FLATTENER_OFF = true
     HEAT_HOLD = true
     RAM_BREAK = true
@@ -619,7 +622,7 @@ A switch is a `public static final boolean` with a requirement ID in its Javadoc
 - **Ablation builds.** `hadur-bench/build-ablation.sh NAME[,NAME...]` checks out the source (or
   `--ref`) into a temporary worktree, edits the switch's source line with `edit()`, which fails
   unless the text occurs exactly once, appends the ablation's suffix to the version
-  (3.20 + `tmnoconcord` = `3.20ncn`), builds, checks the jar's `robot.version`, and drops
+  (3.24 + `tmnoconcord` = `3.24ncn`), builds, checks the jar's `robot.version`, and drops
   `bisect/hadur117.Hadur_<v><suffix>.jar` (and the team jar) for the bench. About 170 ablations
   exist: switch flips, table fills from a file, and A/A copies (`aa`, `bb`) that change nothing
   but the name so a run can price its own noise.
@@ -633,7 +636,7 @@ A switch is a `public static final boolean` with a requirement ID in its Javadoc
 ```mermaid
 flowchart LR
   A["Idea with a requirement ID"] --> B["switch added, default off<br/>(replays bit for bit)"]
-  B --> C["build-ablation.sh NAME<br/>-> 3.20xx jar"]
+  B --> C["build-ablation.sh NAME<br/>-> 3.24xx jar"]
   C --> D["bench card: arm vs base,<br/>A/A control, stop rules"]
   D --> E{"gate passed?"}
   E -- no --> F["stays off; results PR records why"]
@@ -642,7 +645,7 @@ flowchart LR
   H --> I["release when 1v1, melee, team ready"]
 ```
 
-### The switch catalogue (master, 2026-11-04)
+### The switch catalogue (3.24, 2026-11-22)
 
 A switch whose card failed is removed with its code, ablation arm, card and tests, and its
 requirement moves to the retired table, docs/requirements/retired.md; this catalogue lists only what ships
@@ -660,31 +663,34 @@ endgame MEND-1, 2).
 | Switch | Req | State | What it does |
 |---|---|---|---|
 | `MoveDesign.AIM_MEMBERS` | MOVE-29 | **on** (3.20) | The surf's danger mixes the views with simple-aim members weighted by their record on real bullets |
-| `AimMembers.WIDE` | MOVE-31 | **on**, master only | 18 aims (six simple aims at three lags) instead of three |
-| `MoveDesign.AIM_INTERCEPTS` | MOVE-30 | **on**, master only | Intercepted enemy bullets also score the members |
-| `MoveDesign.FLATTENER_OFF` | MOVE-24 | **on** | The flattener never switches on |
+| `AimMembers.WIDE` | MOVE-31 | **on** | 18 aims (six simple aims at three lags) instead of three |
+| `MoveDesign.AIM_INTERCEPTS` | MOVE-30 | **on** | Intercepted enemy bullets also score the members |
+| `MoveDesign.INTERCEPT_VIEWS` | MOVE-52 | **on** (3.24) | Intercepted enemy bullets also teach the danger views, as a hit does |
+| `MoveDesign.KEEP_SHADOWS` | MOVE-43 | **on** | A dead bullet keeps the shadows it cast (pc-shadow, +0.27 APS) |
+| `MoveDesign.FLATTENER_OFF` | MOVE-24 | **on** | The flattener never switches on; per-opponent `flat-on:` (MOVE-32) |
 | `MoveDesign.HEAT_HOLD` | MOVE-11 | **on** | Hold the provisional gun-heat wave |
 | `MoveDesign.RAM_BREAK` | RAM-5 | **on** (3.19) | The rammer escape scores paths against the rammer's shots in flight |
+| `ShotDodgePlanner.KEEP_AWAY` | DODGE-6 | **on** | The planner keeps a close enemy away and drives ahead of RAM-2's escape |
 | `GunController.SHADOW_AIM` | GUN-7 | **on** | Shadow aim, left out once the matchup is won |
-| `ShieldDesign.SHIPPED` | SHIELD-8..16 | `prior,wall,hold,learn,mode,stay,ratio` | Which shield-mode parts run; `ratio` (SHIELD-23) on from 3.21 (pc-shield-power +0.15 APS); `still` (SHIELD-20) and `cheap` (SHIELD-22) off |
+| `ShieldDesign.SHIPPED` | SHIELD-8..16 | `prior,wall,hold,learn,mode,stay,ratio` | Which shield-mode parts run; `ratio` (SHIELD-23) on from 3.21 (pc-shield-power +0.15 APS); `still` (SHIELD-20) and `cheap` (SHIELD-22) off, `still` per opponent through `shield-still:` |
 | `MoveDesign.STOP_AND_GO` | POISON-2 | off | Forces stop-and-go on everyone; per-opponent picks come from the table instead |
-| `MoveDesign.SHOT_DODGE`, `SHOT_DODGE_PLAN` | DODGE-3..6 | off | Force the simple-aim dodge or planner on everyone; table slots exist |
-| `GunDesign.TRIPHAMMER`, `FREE_GUN`, `UNDECAYED` | GUN-8..11 | off | The gun stack; per-opponent `gun-stack:` slot, empty |
-| `MoveDesign.HEAT_WAVE` | MOVE-11 | off | Forces heat-jit on everyone; per-opponent picks come from the table (`heat-jit:`, MOVE-28) |
+| `MoveDesign.SHOT_DODGE`, `SHOT_DODGE_PLAN` | DODGE-3..6 | off | Force the simple-aim dodge or planner on everyone; per-opponent `shot-dodge:`, `shot-dodge2:` |
+| `GunDesign.TRIPHAMMER`, `FREE_GUN`, `UNDECAYED` | GUN-8..11 | off | The gun stack; per-opponent `gun-stack:` |
+| `MoveDesign.HEAT_WAVE` | MOVE-11 | off | Forces heat-jit on everyone; per-opponent `heat-jit:` (MOVE-28) |
 | `MoveDesign.MIMIC_MEMBERS` | MOVE-33 | off | Forces the learning-gun mimics among the aim members; per-opponent `mimic-on:` (MOVE-34) |
-| `MoveDesign.AES_RECORD`, `ORACLE_RECORD` | AES-1, ORACLE-1 | off | Telemetry recorders for the bench's studies |
+| `MoveDesign.AES_RECORD`, `ORACLE_RECORD`, `SURF_KEY_RECORD` | AES-1, ORACLE-1, SKEY-1 | off | Telemetry recorders for the bench's studies |
 
 **Melee (off a team only)**
 
 | Switch | Req | State | What it does |
 |---|---|---|---|
-| `MinimumRiskMovement.MELEE_SURF` | MMOVE-15 | **on**, master only (3.21) | The melee surfer: crowd-weighted shots, learned aims, wave re-rank |
-| `MeleeController.MELEE_CROSS` | MMOVE-19 | **on**, master only (3.21) | Learn a shooter's aim from its hits on others |
+| `MinimumRiskMovement.MELEE_SURF` | MMOVE-15 | **on** (3.21) | The melee surfer: crowd-weighted shots, learned aims, wave re-rank |
+| `MeleeController.MELEE_CROSS` | MMOVE-19 | **on** (3.21) | Learn a shooter's aim from its hits on others |
 | `MeleeEnergyPolicy.CROWD_OGI` | MGUN-13 | **on** | Ogi's crowd power, 3 up close |
 | `MeleeEnergyPolicy.OGI_WIDE` | MGUN-16 | **on** (3.19) | Power 3 out to 300 px |
-| `MeleeEnergyPolicy.FAR_SPARE` | MGUN-25 | **on**, master only (3.22) | At least power 2.5 beyond 300 px while Hadur has 60+ energy |
+| `MeleeEnergyPolicy.FAR_SPARE` | MGUN-25 | **on** (3.22) | At least power 2.5 beyond 300 px while Hadur has 60+ energy |
 | `MeleeEndgame.THREE_FAR` | MEND-3 | **on** | With two left, closest-robot factor 4 |
-| `MinimumRiskMovement.MELEE_DAMAGE_MEMORY` | MMOVE-22 | **on**, master only (3.21) | Each opponent's risk weighs by the damage it has done Hadur this battle (Diamond) |
+| `MinimumRiskMovement.MELEE_DAMAGE_MEMORY` | MMOVE-22 | **on** (3.21) | Each opponent's risk weighs by the damage it has done Hadur this battle (Diamond) |
 
 **Team (only while a teammate lives)**
 
@@ -694,25 +700,32 @@ endgame MEND-1, 2).
 | `TeamModes.FORCE_HUNT` | TMODE-13, -14 | **on** | Packs of two or three per enemy at 350 px |
 | `TeamModes.FORCE_PATH` | TMODE-25, -28 | **on** | Check each drive against teammates' bullets |
 | `TeamModes.FORCE_DODGE` + `TeamDodge.OWN_FIRE` | TMODE-27, -29, -30 | **on** | Ogi's dodge as one piece, own fire kept |
-| `TeamModes.FORCE_CONCORD` | TMODE-33, -34 | **on**, master only (2026-10-31) | The team brain on every team; confirm card `pc-team-concord2` |
+| `TeamModes.FORCE_CONCORD` | TMODE-33, -34 | **on** | The team brain on every team the table does not exempt |
 | `TeamConcord.MOVE`, `GUN`, `RISK`, `POWER`, `POOL` | TMODE-33 | **on** | CONCORD's parts (the group radar and the hunt stand-down failed and are removed) |
+| `TeamModes.FORCE_CLOSE` | TMODE-42 | **on** | Hunt at 250 px instead of 350 (pc-team-close) |
+| `TeamModes.FORCE_QUARTERS` | TMODE-45 | off | Close-quarters dodge; per team in the table (NightmareTeam) |
+| `TeamModes.FORCE_LAST` | TMODE-47 | **on** | Keep the Melee role against the last enemy while a teammate lives (pc-team-guard) |
+| `TeamModes.FORCE_MOMENTUM` | TMODE-49 | **on** (3.23) | The dodge and path check prefer candidates that keep Hadur's momentum |
+| `TeamModes.FORCE_FITTED` | TMODE-50 | **on** (3.24) | Fitted enemy aims (`TeamModes.FITTED`, eight teams) join the dodge's profile |
+| `TeamModes.FORCE_CLOSERERANK` | TMODE-52 | **on** (3.24) | The dodge reranks 40 candidates, not 12, while a wave is within 35 ticks |
 | `TeamLink.NARROW_LANE` | WEAVE-9 | **on** | Ogi's narrow fire lane |
-| table-only modes `OWN`, `HEADON`, `LINEAR`; `GANG`, `FINISH` through CONCORD | TMODE-3, -4, -20..22 | per team | No `FORCE_*` switch; the table or CONCORD names them |
+| table-only modes `OWN`, `HEADON`, `LINEAR`, `QUARTERS`; `GANG`, `FINISH` through CONCORD | TMODE-3, -4, -20..22, -45 | per team | No forcing switch on; the table or CONCORD names them |
 | `RoleResolver.TEAM_BUILT` | ROLE-3 | off | There is no Team role; members play Melee then Duel |
 
 ### Tier 2: the 1v1 mode table
 
 The 1v1 table is per opponent, PC-trained and census-gated: only per-opponent picks have shown
 live gains. It ships as two classes in the robot jar, because the sandbox refuses a robot the
-read of its own jar's resources but lets classes load.
+read of its own jar's resources but lets classes load. In 3.24 it holds 1,148 lines over 37
+slots: 305 on the shield list and 843 in `ShieldTableData`'s 36 other slots.
 
 ```mermaid
 flowchart LR
   subgraph jar["robot jar (hadur-robot)"]
-    SL["ShieldListData.lines()<br/>273 shield entries"]
-    ST["ShieldTableData<br/>moves 39, aims 232,<br/>stopGos 27, stopGoShifts 49,<br/>dodges, dodgePlans, heatJits,<br/>gunStacks, exitLates, exitOffs (empty)"]
+    SL["ShieldListData.lines()<br/>305 shield entries"]
+    ST["ShieldTableData: 36 slots<br/>shield (moves, aims, stills, exits, tiny, floor),<br/>movement (stop-go, dodge, heat-jit, orbit, flat, mimics,<br/>pattern mimics, aim weights, surf keys),<br/>rammers (flee, wait, bend, fan, circ),<br/>power and gun (caps, bands, race, x5, full-off, gun stack)"]
   end
-  SL --> P["Hadur.shieldList():<br/>prefix each line<br/>(shield-move:, shield-aim:, stop-go:, ...)"]
+  SL --> P["Hadur.shieldList():<br/>prefix each line<br/>(shield-move:, stop-go:, ram-flee:, ...)"]
   ST --> P
   P --> Q["ShieldList.parse<br/>(core, no I/O)"]
   Q --> C{"Charter DUEL?"}
@@ -722,21 +735,42 @@ flowchart LR
 
 | Table slot | Line prefix | Req | Entries | Effect on a matched opponent |
 |---|---|---|---|---|
-| shield list | (none) | SHIELD-5 | 273 | Each round opens in shield mode; SHIELD-6 leaves it for the battle if the damage would hold our share under 85% |
-| `moves()` | `shield-move:` | SHIELD-17 | 39 | Saguaro's moving shield opening drive |
-| `aims()` | `shield-aim:` | SHIELD-18 | 232 | The shield starts with this predictor and offset already learned |
-| `stopGos()` | `stop-go:` | POISON-2 | 27 | Stop-and-go, reverse crawl one tick early |
-| `stopGoShifts()` | `stop-go2:` | POISON-2, BENCH-126 | 49 | Stop-and-go, two ticks early |
-| `dodges()`, `dodgePlans()` | `shot-dodge:`, `shot-dodge2:` | DODGE-3, DODGE-4 | 0 | Simple-aim dodge; shot-dodge planner with a shipped expert |
-| `heatJits()` | `heat-jit:` | MOVE-28 | 0 | Stop-and-start surf |
-| `gunStacks()` | `gun-stack:` | GUN-11 | 0 | TripHammer gun stack (never for a shield opponent) |
-| `exitLates()`, `exitOffs()` | `shield-exit4:`, `shield-exit0:` | SHIELD-19 | 0 | Later or no damage exit from shield mode |
+| **Shield** | | | | |
+| shield list | (none) | SHIELD-5 | 305 | Each round opens in shield mode; SHIELD-6 leaves it for the battle if the damage would hold our share under 85% |
+| `moves()` | `shield-move:` | SHIELD-17 | 63 | Saguaro's moving shield opening drive |
+| `aims()` | `shield-aim:` | SHIELD-18 | 231 | The shield starts with this predictor and offset already learned |
+| `stills()` | `shield-still:` | SHIELD-21 | 50 | Shield shots fired from where Hadur stands whenever one casts a shadow |
+| `exitLates()`, `exitOffs()` | `shield-exit4:`, `shield-exit0:` | SHIELD-19 | 1, 11 | Later or no damage exit from shield mode |
+| `tinies()` | `shield-tiny:` | SHIELD-33 | 5 | Tiny unexplained energy drops (0.005 to 0.1) reach shield mode as shots |
+| `shieldFloors()` | `shield-floor:` | SHIELD-25 | 1 | No shield shot under 0.4 power |
+| **Movement** | | | | |
+| `stopGos()`, `stopGoShifts()` | `stop-go:`, `stop-go2:` | POISON-2 | 33, 58 | Stop-and-go, reverse crawl one or two ticks early |
+| `dodges()`, `dodgePlans()` | `shot-dodge:`, `shot-dodge2:` | DODGE-3, DODGE-4 | 1, 17 | Simple-aim dodge; shot-dodge planner with a shipped expert |
+| `heatJits()` | `heat-jit:` | MOVE-28 | 25 | Stop-and-start surf |
+| `flatOns()` | `flat-on:` | MOVE-32 | 9 | The flattener on |
+| `mimicOns()` | `mimic-on:` | MOVE-34 | 25 | Learning-gun mimics join the aim members |
+| `patternMimics()`, `patternMegas()` | `pm-mimic:`, `pm-megas:` | MOVE-56, MOVE-58 | 6, 5 | A pattern-matcher mimic (AutoBot's or cw.megas's form) joins the aim members |
+| `aimWeights()` | `aim-weight:` | MOVE-67 | 3 | The simple aims' standing weight at prior 1.0 instead of 0.1 |
+| `velocityJitters()`, `speedBands()` | `velocity-jitter:`, `speed-band:` | MOVE-44, MOVE-45 | 4, 1 | Never exactly full speed or zero; a random top speed of 7 to 8 |
+| `steadyOrbits()` | `steady-orbit:` | MOVE-47 | 2 | No stop option and reversal hysteresis |
+| `distPins()` | `dist-pin:` | DIST-4 | 2 | A pinned desired distance |
+| `mirrorOffs()` | `mirror-off:` | MIR-2 | 3 | No mirror response |
+| `surfKeys()` | `surf-key:` | SKEY-2 | 176 | Fitted weights for the danger views' search key |
+| **Rammers** | | | | |
+| `ramFlees()` | `ram-flee:` | RAM-15 | 52 | Flee a slow rammer |
+| `ramWaits()` | `ram-wait:` | MOVE-46 | 9 | Against a disabled enemy, keep surfing its live waves before the ram |
+| `ramBends()`, `ramFans()`, `ramCircs()`, `ramHeavies()` | `ram-bend:`, `ram-fan:`, `ram-circ:`, `ram-heavy:` | RAM-18, RAM-17, RAM-11, RAM-14 | 10, 2, 4, 0 | RAM-2 escape variants: the escape bend, fanned and circular aims, heavier path costs |
+| **Power and gun** | | | | |
+| `powerCaps()`, `powerCapHalves()` | `power-cap:`, `power-cap5:` | POW-18 | 6, 2 | Cap fire power |
+| `hardFires()`, `powerBands()` | `hard-fire:`, `power-band:` | POW-19, POW-20 | 1, 1 | At least 0.6 power while we have 60+ energy; a power multiplier per energy band |
+| `fullOffs()`, `x5Powers()`, `racePowers()` | `full-off:`, `x5-power:`, `race-power:` | POW-15, POW-16, POW-17 | 16, 17, 18 | Power policy variants (race power vs strong bots) |
+| `gunStacks()` | `gun-stack:` | GUN-11 | 17 | TripHammer gun stack (never for a shield opponent) |
 
 Matching is by name (SHIELD-26): `pkg.Bot 1.2` and `pkg.Bot` both match every version of the robot, and
-the version records the one benched; never a prefix.
-Entries arrive from bench screens: the table ablations (`smovelist`, `saimlist`, `sgolist`,
-`sgo2list`, `sdodgelist`, `sdplanlist`, `hjlist`, `gslist`, `sx4list`, `sx0list`, `slistadd`,
-`slistdrop`) fill a slot from a pick file for an arm; a pick that passes is pasted into the class.
+the version records the one benched; never a prefix. Lines carry over to a robot's new version by name.
+Entries arrive from bench screens: each slot has a table ablation (`smovelist`, `saimlist`, `sgolist`,
+`rflist`, `aimwlist`, `sx0list` and so on) that fills it from a pick file for an arm; a line that holds
+on 12 fresh PC seeds (`pc-locks` rounds) is pasted into the class.
 
 ### Tier 2: the team mode table
 
@@ -746,11 +780,16 @@ table names, or the default set built from the `FORCE_*` switches.
 
 | Enemy class | Modes | Evidence |
 |---|---|---|
-| default (every other team) | MATEFIRE, HUNT, PATH, DODGE, CONCORD | TMODE-12, -14, -28, -30, -34 |
-| `gh.nano.GrofGroupMember` | MATEFIRE, HUNT, OWN, LINEAR, PATH, DODGE, CONCORD | pc-team-counters PR #370, +2.5 |
-| `myl.micro.Troodon`, `TroodonDroid` | MATEFIRE, HUNT, OWN, HEADON, PATH, DODGE, CONCORD | PR #370, +4.7 |
-| `ustimaw.Nightmare`, `NigitmareDroid` | MATEFIRE, HUNT, PATH, CONCORD (no DODGE) | pc-team-nododge PR #465, +3.9 |
-| `mn.nano.perceptual.Impact` | MATEFIRE, HUNT, PATH, CONCORD (no DODGE) | PR #465, +3.1 |
+| default (every other team) | MATEFIRE, HUNT, PATH, DODGE, CONCORD, CLOSE, LAST, MOMENTUM | TMODE-12, -14, -28, -30, -34, -42, -47, -49 |
+| `gh.nano.GrofGroupMember` | default + OWN, LINEAR | pc-team-counters PR #370, +2.5 |
+| `myl.micro.Troodon`, `TroodonDroid` | default + OWN, HEADON | PR #370, +4.7 |
+| `ustimaw.Nightmare`, `NigitmareDroid` | MATEFIRE, HUNT, PATH, CLOSE, QUARTERS, LAST, MOMENTUM (no DODGE, no CONCORD) | pc-team-nododge PR #465, pc-team-quarters PR #759, +4.0 |
+| `mn.nano.perceptual.Impact` | default without DODGE | PR #465, +3.1 |
+| `cz.libors.Ogi`, `mn.Combat`, `cb.fire.Firestarter` | default without CONCORD | pc-team-noconcord PR #538 (TMODE-35) |
+
+Beside the mode table, `TeamModes.FITTED` (TMODE-50) names the fitted aim of eight teams' members
+(Shiz, GrofGroup, DoctorBob, HOF, TMNR, Polylunar, Troodon, the Prophets): each shot such a
+member fires adds that aim to the dodge's profile.
 
 CONCORD then rewrites the set it is given (`TeamConcord.modes`): HUNT's range variants stand down,
 FINISH plays, and GANG joins once the battle shows ganging. Team ablations (`tmXXX`) force a mode
@@ -772,6 +811,131 @@ into the default and append it to every named entry, so one bench run scores a m
 | `TickBudget` (TIME-1, TIME-2) | all | `TickTime`, skipped turns | waves surfed, k share, virtual guns |
 | `TeamDanger` / `TeamDodge` experts | melee, team | hits on Hadur (and teammates) | learned aims, expert weights |
 | `TeamConcord` gang watch | team | member-turns with 2+ enemies within 250 px | GANG on for the battle |
+
+## The small bots
+
+Six robots enter the size-limited rumbles. None shares code with Hadur or with another: each
+is its own Maven module, ships **one class** (TwinSaor's two robots run one class) and is held to its
+codesize limit by a jar test. Where a readable core exists, the shipped class is that core
+flattened by hand, and a test holds the two to the same orders. Each has its own requirement
+file under [requirements/](requirements/README.md) and its own doc.
+
+| Robot | Rumble | Limit | Shipped class | Reference design | Held to it by | Doc |
+|---|---|---|---|---|---|---|
+| Saor | MicroMelee | under 750 bytes | `hadur117.micro.Saor` | `micro.core` (Movement, Selection, Energy, Targeting) via `SaorLab` | `SaorEquivalenceTest`, `SaorJarIT` | [saor.md](saor.md) |
+| TwinSaor | Twin Duel | under 2,000 bytes for the team | `hadur117.twin.SaorTwin` (×2) | `twin.core` (Gun, Team) | `SaorTwinTest`, core tests, `TwinSaorJarIT` | [twinsaor.md](twinsaor.md) |
+| Deise | MiniMelee | under 1,500 bytes | `hadur117.mini.Deise` | `mini.core` (Move, Gun) via `DeiseLab` | `DeiseEquivalenceTest`, `DeiseJarIT` | [deise.md](deise.md) |
+| Sanaro | NanoMelee | under 250 bytes | `hadur117.nano.Sanaro` | none (the class is the design) | `SanaroTest`, `SanaroTableTest`, `SanaroJarIT` | [sanaro.md](sanaro.md) |
+| JayLexi | MiniRumble (1v1) | under 1,500 bytes | `hadur117.mini.JayLexi` | a readable copy in the tests (`mini.ref.JayLexi`) | `JayLexiReplayTest` (recorded battles), `JayLexiJarIT` | [kitlab.md](kitlab.md) |
+| Eveimear | MicroRumble (1v1) | under 750 bytes | `hadur117.micro.Eveimear` | none (Cotillion's design plus its own mode table) | `EveimearTest`, replay fixtures, `EveimearJarIT` | [kitlab.md](kitlab.md) |
+
+```mermaid
+C4Container
+  title Small bots: containers (one module each)
+  System_Ext(engine, "Robocode engine", "1.12.0 on the live clients")
+  Container_Boundary(m, "A small-bot module (saor, twinsaor, deise, sanaro, jaylexi, eveimear)") {
+    Container(ship, "Shipped class", "Java 8, one AdvancedRobot or TeamRobot", "All play in one class, statics for battle memory; the only class in the rumble jar")
+    Container(core, "Reference core", "plain Java, no robocode.*", "Saor, TwinSaor, Deise: the design as pure statics, unit and property tested")
+    Container(lab, "Lab adapter", "SaorLab, DeiseLab", "Calls the core in the shipped class's order; bench-only jar")
+    Container(tests, "Tests", "JUnit, jqwik, Cucumber (Saor)", "Equivalence or replay, codesize, per-requirement tests through a fake peer")
+  }
+  Container(bench, "hadur-bench", "Java 17, Python tools", "Cards for each bot, the kit lab, census over its rumble")
+  Rel(engine, ship, "events, getters / setters")
+  Rel(tests, ship, "fake peer, isolated class loader")
+  Rel(tests, lab, "same events, same orders")
+  Rel(lab, core, "calls")
+  Rel(bench, ship, "builds arms, runs battles")
+  UpdateLayoutConfig($c4ShapeInRow="2", $c4BoundaryInRow="1")
+```
+
+### Saor (MicroMelee)
+
+```mermaid
+flowchart LR
+  S["onScannedRobot"] --> M["Markov table: record the enemy's<br/>move as a symbol (512 rows by name hash)"]
+  M --> T["Selection: adopt a nearer robot,<br/>keep it until it dies"]
+  T --> G["Targeting: play the table forward,<br/>vote over 1,024 bins"]
+  G --> F["Energy: power by range,<br/>capped at what kills"]
+  ST["onStatus, every tick"] --> MV["Movement: oscillate in the nearest corner,<br/>leg length by target distance, axis flip at the leg end"]
+  F --> O["setFire / setTurnGun"]
+  MV --> O2["setAhead / setTurn"]
+```
+
+The core's four parts are the boxes; the shipped class does them in this order on each event. Saor is built on Figment 1.0 by Kevin Clark (Kev), whose source ships in its jar; the credit is in Saor's README and class.
+
+### TwinSaor (Twin Duel)
+
+```mermaid
+flowchart LR
+  S["onScannedRobot (enemy)"] --> P["pack: name hash, x, y,<br/>heading, velocity, energy, time, state"]
+  P --> B["broadcastMessage"]
+  P --> H["handle(): record the transition,<br/>OR the slot's mode bits"]
+  R["onMessageReceived<br/>(partner's scan)"] --> H
+  SM["onScannedRobot (teammate)"] --> MT["keep mate's position only"]
+  H --> TK["tick()"]
+  TK --> K["Team: target = least energy,<br/>sticky by a margin"]
+  K --> RD["radar: leader on the target,<br/>other twin on the other enemy"]
+  K --> ST["station 45° either side of the target,<br/>leg flips on arrival or the target's shot<br/>(mode bit 1 holds it)"]
+  K --> GN["Gun: shared Markov table,<br/>power capped at what kills"]
+```
+
+Both twins run one code path on their own scans and the partner's, so both tables learn from
+both radars (TWIN-5); statics are per robot, so the message is the only shared state.
+
+### Deise (MiniMelee)
+
+```mermaid
+flowchart LR
+  S["onScannedRobot"] --> L["learn every robot scanned:<br/>Markov row, last state per id"]
+  S --> W["energy drop 0.1-3: a wave<br/>from the shooter, weighed by<br/>whether it likely aims at Deise"]
+  S --> TG["target: least distance × sqrt(shots + 10)<br/>/ (hits + 1.5), sticky (DEISE-17)"]
+  TG --> GN["Gun: graded Markov vote over the target's width;<br/>no fire while the gun turns or energy is short (DEISE-11)"]
+  W --> MV["Move: least risk on a ring of 36 points;<br/>energy pushes, across the shooter's line;<br/>corners while crowded"]
+  GN --> O["setFire / setTurnGun"]
+  MV --> O2["setAhead / setTurn"]
+```
+
+### Sanaro (NanoMelee)
+
+```mermaid
+flowchart LR
+  S["onScannedRobot"] --> AG["anti-gravity: field decays 0.9 a scan,<br/>1/d push from where each robot will be,<br/>wall push on each axis"]
+  S --> TG["target: creeping nearest<br/>(threshold +25 px a scan)"]
+  TG --> RD["radar: sweep while the gun is hot,<br/>flip onto the target near cool"]
+  TG --> GN["gun: flat lead v / 16;<br/>fire only within 18 / d of it"]
+  GN --> PW["power: table by both energies<br/>× 480 / d"]
+  AG --> O["drive ahead 120 less the turn"]
+```
+
+### JayLexi (MiniRumble)
+
+```mermaid
+flowchart LR
+  S["onScannedRobot"] --> WV["one Wave class (a Condition)<br/>for the gun and the surf"]
+  WV --> GN["GuessFactor gun: 47 bins,<br/>segments on velocity history,<br/>lateral velocity, walls, distance"]
+  WV --> SF["true surf on the two nearest waves:<br/>precise prediction back and forward,<br/>stats on lateral speed and orbit room"]
+  SF --> WS["wall smoothing (140 px stick),<br/>flee straight away with no wave"]
+  HB["onHitByBullet / onBulletHitBullet"] --> LG["log the hit into the surf stats"]
+  GN --> O["setFire / setTurnGun"]
+  WS --> O2["setAhead / setTurn"]
+```
+
+JayLexi's code is its own; the ideas it takes from open RoboWiki bots (Komarious, RaikoMicro, PEZ's wall smoothing, Iiley's drive) are credited in its README and class.
+
+### Eveimear (MicroRumble)
+
+```mermaid
+flowchart LR
+  S["onScannedRobot"] --> PM["symbolic pattern matcher:<br/>one char a tick (lateral, advancing<br/>velocity, forward wall); up to 50 matches<br/>voted into 255 bins"]
+  S --> RD["radar locked at twice the bearing"]
+  PM --> PW["power 100 / d + min(2, enemy energy / 4)"]
+  S --> MV["stop-and-go, one step per enemy shot,<br/>until hit enough; then random orbit"]
+  MD["MODES: per-robot table by name hash<br/>(EVEIMEAR-3)"] --> MV
+  HB["onHitByBullet"] --> MV
+```
+
+Eveimear's movement and gun follow Cotillion 0.8 by Skilgannon, whose source ships in its jar
+(credited in the class and README); the per-robot mode table is Eveimear's own.
 
 ## Shared state
 
@@ -824,7 +988,7 @@ flowchart TB
 6. **The pins.** `pins/<owner>.sha256` hash each owner's sources. A team PR shows only `melee` (and
    perhaps `conductor`) pins moving; a moved `duel` or `kernel` pin is a review flag.
    `DuelIdentityTest` additionally pins the nine packages the duel is made of.
-7. **The replays.** Eleven-plus fixtures (six duels, a warm duel, a duress duel, a ten-robot melee, a
+7. **The replays.** Thirteen fixtures (six duels, a warm duel, a duress duel, a ten-robot melee, a
    sentry melee, a hand-off melee, two team members) replay to identical orders, telemetry and store.
    A team or melee change re-records only its own fixtures; the duel fixtures must pass untouched.
 8. **The release rule.** A release ships when 1v1, team and melee are each ready, each census-gated.

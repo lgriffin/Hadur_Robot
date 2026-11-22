@@ -1,5 +1,7 @@
 # Deise: a MiniMelee entry
 
+> Architecture diagrams for every small bot: [architecture-c4.md, The small bots](architecture-c4.md#the-small-bots).
+
 Deise is a MiniMelee robot designed to take 1st, after a study of what Mirage does and how the gap
 to it could be bridged with a mini's byte budget.
 

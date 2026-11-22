@@ -1,5 +1,7 @@
 # JayLexi and Eveimear: the MiniRumble and MicroRumble 1v1 entries
 
+> Architecture diagrams for every small bot: [architecture-c4.md, The small bots](architecture-c4.md#the-small-bots).
+
 Built from the design plan
 "JayLexi & Eveimear — MiniRumble and MicroRumble 1v1 Design Plan"
 (https://claude.ai/artifact/C2YjT4PxhV2AX4WQdE9aWX) and `kitlab.zip` (the J1, E1, E2 and E2b
