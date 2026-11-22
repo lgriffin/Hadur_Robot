@@ -235,14 +235,13 @@ public final class TeamModes {
         t.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         t.put("mn.Combat", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         t.put("cb.fire.Firestarter", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
-        // TMODE-59, tight pack: the default modes with TIGHT, for the teams it held against on 12 fresh
+        // TMODE-59, tight pack: the default modes with TIGHT, written out as the bench's table reader needs, for the teams it held against on 12 fresh
         // cloud seeds each beside the same box's baseline (score share points): ShadowTeam +12.1 ± 4.2,
         // Xmen +9.3 ± 4.7, AlephTeam +6.2 ± 5.5, DemoniacNimrods +5.6 ± 4.4; OgiTeam above +7.4 ± 5.7.
-        for (String m : new String[] {"abc.Shadow", "florent.XSeries.X2", "rz.Aleph", "cx.mini.Nimrod"}) {
-            EnumSet<Mode> tight = EnumSet.copyOf(DEFAULT);
-            tight.add(Mode.TIGHT);
-            t.put(m, Collections.unmodifiableSet(tight));
-        }
+        t.put("abc.Shadow", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
+        t.put("florent.XSeries.X2", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
+        t.put("rz.Aleph", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
+        t.put("cx.mini.Nimrod", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         return Collections.unmodifiableMap(t);
     }
 
