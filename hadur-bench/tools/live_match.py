@@ -156,7 +156,7 @@ def report(res, arms_path, us, bb):
         lines += ["Why it fails:", ""] + [f"- {r}" for r in res["reasons"]] + [""]
     if res.get("notes"):
         lines += ["Marginal:", ""] + [f"- {r}" for r in res["notes"]] + [""]
-    else:
+    if not res["reasons"]:
         lines += ["The bench scores both robots as live does, so A/B results on it carry to live.", ""]
     return "\n".join(lines)
 

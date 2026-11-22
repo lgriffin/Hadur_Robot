@@ -50,7 +50,9 @@ class LiveMatchTest(unittest.TestCase):
                                "c", "bb", 4.0, 3.0, 100.0)
         self.assertEqual("FAIL", res["verdict"])
         self.assertEqual(3, len(res["reasons"]))
-        self.assertEqual(live_match.FAIL_EXIT, self.run_main(p))
+        out = os.path.join(self.d, "f.md")
+        self.assertEqual(live_match.FAIL_EXIT, self.run_main(p, "--out", out))
+        self.assertNotIn("as live does", open(out).read())
 
     def test_noisy_edge_passes_marginal(self):
         """Gap point estimate just past 4 but its interval reaches the tolerance: seed noise, PASS with a note."""
