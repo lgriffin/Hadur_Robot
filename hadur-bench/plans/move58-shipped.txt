@@ -1,0 +1,5 @@
+# MOVE-58 (pm-megas lines, cloud lock dzlane/G/pmx, PC card to follow): robots whose cw.megas-form mimic line is on master
+cw.megas.GhostShell GT
+cw.megas.Gridd 0.4
+cw.megas.Polar 3.2
+cw.megas.Silhouette 1.1

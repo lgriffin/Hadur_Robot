@@ -1,0 +1,8 @@
+# pc-em (BENCH-271): c is master, aa its A/A copy; em and em2 are master plus MOVE-65 built from the experiment commit
+# the queue names (EMX), each with only its own flavour on:
+#   em   the coupled danger mixture, priors views 0.5 and every other member 0.01
+#   em2  the same with DrussGT's prior split (views 1.0, all other members sharing 0.06), a hit learnt once a flight tick
+c | hadur117.Hadur 3.24 | bisect/hadur117.Hadur_3.24.jar
+aa | hadur117.Hadur 3.24aa | bisect/hadur117.Hadur_3.24aa.jar
+em | hadur117.Hadur 3.24em | bisect/hadur117.Hadur_3.24em.jar
+em2 | hadur117.Hadur 3.24em2 | bisect/hadur117.Hadur_3.24em2.jar

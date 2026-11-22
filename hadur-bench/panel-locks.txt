@@ -1,17 +1,19 @@
-# BENCH-253 pc-locks, round 16: robots whose line locked on the cloud (95% low end above 0, live turn time, master;
-# coverage/shards/locks.tsv, coverage/shards/briefs.md). name | note | jar
-radnor.RamRod 1.0 | ram18-A | radnor.RamRod_1.0.jar
-oog.mega.saguaro.Saguaro 1.1.4 | racepower-A | oog.mega.saguaro.Saguaro_1.1.4.jar
-gh.micro.GrubbmThree 1.01 | ram18-L-r14-marginal | gh.micro.GrubbmThree_1.01.jar
-kc.micro.rammer.MaxRisk 0.6 | ram18-L-r14-marginal | kc.micro.rammer.MaxRisk_0.6.jar
-benhorner.PureAggression 0.2.6 | ram18-L-r14-marginal | benhorner.PureAggression_0.2.6.jar
-exauge.Leopard 1.1.019 | ram18-L-r14-cloud | exauge.Leopard_1.1.019.jar
-suh.nano.RammingC 1.00 | ram18-A-rbx | suh.nano.RammingC_1.00.jar
-sgp.MadHatter 4.13 | veljit-A-gapother | sgp.MadHatter_4.13.jar
-jcs.AutoBot 4.2.1 | move56-G-on-master | jcs.AutoBot_4.2.1.jar
-lrem.quickhack.QuickHack 1.0 | shield33-G-on-master | lrem.quickhack.QuickHack_1.0.jar
-wiki.mako.MakoHT 1.2.2.1 | shield33-G-on-master | wiki.mako.MakoHT_1.2.2.1.jar
-dz.Caedo 1.4 | shield33-G-on-master | dz.Caedo_1.4.jar
-kawigi.sbf.FloodSonnet 0.9 | shield33-G-on-master | kawigi.sbf.FloodSonnet_0.9.jar
-oog.micro.SavantMicro 1.1 | shield33-G-on-master | oog.micro.SavantMicro_1.1.jar
-oog.micro.Maui 1.2 | move56-C-maui | oog.micro.Maui_1.2.jar
+# BENCH-253 pc-locks, round 21: Hyperion on x0 (SHIELD-19 exit off, 24 cloud seeds 89600-623 on box L, +6.20 vs c and
+# +5.72 vs aa; coverage/shards/locks.tsv, dzlane/B/exitclass), and fifteen robots whose line is already on master, read only in
+# c and aa, so the A/A check reads 16. name | note | jar
+mue.Hyperion 0.8 | x0-L-24seeds | mue.Hyperion_0.8.jar
+oog.micro.Maui 1.2 | aa-pad-r16-line | oog.micro.Maui_1.2.jar
+sgp.MadHatter 4.13 | aa-pad-r16-line | sgp.MadHatter_4.13.jar
+suh.nano.RammingC 1.00 | aa-pad-r16-line | suh.nano.RammingC_1.00.jar
+jcs.AutoBot 4.2.1 | aa-pad-move56-line | jcs.AutoBot_4.2.1.jar
+mn.nano.perceptual.Impact 1.3.0 | aa-pad-r14-line | mn.nano.perceptual.Impact_1.3.0.jar
+mz.NanoDeath 2.56 | aa-pad-r14-line | mz.NanoDeath_2.56.jar
+wompi.Kowari 1.6 | aa-pad-r14-line | wompi.Kowari_1.6.jar
+sul.Bicephal 1.2 | aa-pad-r14-line | sul.Bicephal_1.2.jar
+cw.megas.GhostShell GT | aa-pad-move58-line | cw.megas.GhostShell_GT.jar
+cw.megas.Gridd 0.4 | aa-pad-move58-line | cw.megas.Gridd_0.4.jar
+cw.megas.Polar 3.2 | aa-pad-move58-line | cw.megas.Polar_3.2.jar
+com.syncleus.robocode.Dreadnaught 0.1 | aa-pad-r19-line | com.syncleus.robocode.Dreadnaught_0.1.jar
+nic.Nicator 2.4 | aa-pad-r19-line | nic.Nicator_2.4.jar
+lrem.micro.MoggFanatic 0.2 | aa-pad-r20-line | lrem.micro.MoggFanatic_0.2.jar
+alpha.BlackIce 1.0 | aa-pad-r20-line | alpha.BlackIce_1.0.jar

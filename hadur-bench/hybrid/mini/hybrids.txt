@@ -1,0 +1,8 @@
+# hybrid class | movement donor (body, radar) | gun donor (gun, fire power); "-" = the movement donor's own gun
+FoilistMoveCunobelinGun | sheldor.mini.FoilistMC | jk.mini.CunobelinDC
+CunobelinMoveFoilistGun | jk.mini.CunobelinDC | sheldor.mini.FoilistMC
+FoilistMoveJayLexiGun | sheldor.mini.FoilistMC | hadur117.mini.JayLexi
+JayLexiMoveFoilistGun | hadur117.mini.JayLexi | sheldor.mini.FoilistMC
+JayLexiMoveCunobelinGun | hadur117.mini.JayLexi | jk.mini.CunobelinDC
+FoilistControl | sheldor.mini.FoilistMC | -
+JayLexiControl | hadur117.mini.JayLexi | -

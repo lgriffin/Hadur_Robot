@@ -60,8 +60,8 @@ class RivalConfirmPlanTest {
             assertTrue(confirm.contains("stop: " + rule), rule);
         }
         String arms = Files.readString(Path.of("plans/rival-confirm.arms"));
-        for (String a : new String[] {"c | hadur117.Hadur 3.23 | ", "aa | hadur117.Hadur 3.23aa | ",
-            "rp | hadur117.Hadur 3.23mtmdzlx0wlwm | bisect/hadur117.Hadur_3.23mtmdzlx0wlwm.jar"}) {
+        for (String a : new String[] {"c | hadur117.Hadur 3.24 | ", "aa | hadur117.Hadur 3.24aa | ",
+            "rp | hadur117.Hadur 3.24mtmdzlx0wlwm | bisect/hadur117.Hadur_3.24mtmdzlx0wlwm.jar"}) {
             assertTrue(arms.contains("\n" + a), a);
         }
         String gate = step(queue, "gate", "pr");

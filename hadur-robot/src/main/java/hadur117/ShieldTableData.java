@@ -634,6 +634,8 @@ final class ShieldTableData {
             // pc-locks round 2 (BENCH-253, PR #845): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "nz.jdc.nano.PralDeGuerre 1.2",   // +6.5
             "ers.nano.meroka.Meroka 1.8a",    // +4.3
+            // pc-locks round 20 (BENCH-253, PR #994): 12 fresh PC seeds at the live turn time; 36-seed cloud lock held first
+            "alpha.BlackIce 1.0",             // +3.5
         };
     }
 
@@ -784,6 +786,8 @@ final class ShieldTableData {
             "apv.AspidReloaded 0.6",         // +18.0
             // pc-locks round 5 (BENCH-253, PR #870): 12 fresh PC seeds at the live turn time; 24-seed cloud lock held first
             "nosteel.Welby 0.0.3",           // +2.7
+            // pc-locks round 16 (BENCH-253, PR #975): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "sgp.MadHatter 4.13",            // +2.7
         };
     }
 
@@ -1169,6 +1173,12 @@ final class ShieldTableData {
             "mz.NanoDeath 2.56",             // +3.1
             "sul.Bicephal 1.2",              // +2.5
             "wompi.Kowari 1.6",              // +2.9
+            // pc-locks round 16 (BENCH-253, PR #975): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
+            "benhorner.PureAggression 0.2.6",// +1.3
+            "gh.micro.GrubbmThree 1.01",     // +3.4
+            "suh.nano.RammingC 1.00",        // +3.0
+            // pc-locks round 17 (BENCH-253, PR #978): +1.24 (low +0.33) on 12 fresh PC seeds; rounds 14/16/17 (-0.59, +1.73, +1.24) pool to +0.79, low end +0.1 to +0.3
+            "exauge.Leopard 1.1.019",        // +1.2
         };
     }
 
@@ -1181,6 +1191,14 @@ final class ShieldTableData {
     static String[] patternMimics() {
         return new String[] {
             "jcs.AutoBot 4.2.1",
+            // pc-locks round 16 (BENCH-253, PR #975): 12 fresh PC seeds at the live turn time, +10.3
+            "oog.micro.Maui 1.2",
+            // pc-locks round 17 (BENCH-253, PR #978): 12 fresh PC seeds at the live turn time, +11.1
+            "arthord.NanoSatan Mu",
+            // pc-locks round 19 (BENCH-253, PR #991): 12 fresh PC seeds at the live turn time, +6.8, +3.6, +1.7
+            "nova.Snow 1.0",
+            "robar.nano.Assertive 0.3",
+            "stf.PanzerGeneral 0.1",
         };
     }
 
@@ -1388,6 +1406,39 @@ final class ShieldTableData {
             "2.828 1.189 0.5 0.7071 1.414 1.414 2 0.25 0.2102 1 pc.Wavelet 1.5",
             // pc-locks round 5 (BENCH-253, PR #870): 12 fresh PC seeds at the live turn time, +3.2; 12-seed cloud lock held first (shard M)
             "0.8409 0.4204 0.2102 0.2973 0.25 1.414 2.828 0.5 0.2973 2.8 cb.nano.Insomnia 1.0",
+        };
+    }
+
+    /**
+     * MOVE-58: opponents whose cw.megas-form pattern matcher a mimic joins the danger for ({@code pm-megas:} lines), each
+     * locked on 12 fresh cloud seeds (build-ablation.sh pmxlist adds candidate lines here).
+     *
+     * @return a fresh array of names
+     */
+    static String[] patternMegas() {
+        return new String[] {
+            "cw.megas.GhostShell GT",
+            "cw.megas.Gridd 0.4",
+            "cw.megas.Polar 3.2",
+            "cw.megas.Silhouette 1.1",
+            // pc-locks round 19 (BENCH-253, PR #991): 12 fresh PC seeds at the live turn time, +2.6
+            "KiraNL.SpaceKees 0.1",
+        };
+    }
+
+    /**
+     * MOVE-67: opponents against which the simple aim members stand at weight 1.0 ({@code aim-weight:} lines), each
+     * locked on fresh cloud seeds (build-ablation.sh aimwlist adds candidate lines here).
+     *
+     * @return a fresh array of names
+     */
+    static String[] aimWeights() {
+        return new String[] {
+            // pc-locks round 19 (BENCH-253, PR #991): 12 fresh PC seeds at the live turn time, +1.6, +1.2
+            "com.syncleus.robocode.Dreadnaught 0.1",
+            "nic.Nicator 2.4",
+            // pc-locks round 20 (BENCH-253, PR #994): 12 fresh PC seeds at the live turn time, +2.4
+            "lrem.micro.MoggFanatic 0.2",
         };
     }
 }

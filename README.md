@@ -21,6 +21,11 @@ learned Java, and it was the original inspiration for everything on this page.
 
 ## Standing
 
+**3.24 was released on 2026-11-22** ([notes](docs/releases/v3.24.md)): 1v1 adds MOVE-52's intercept views and the
+per-opponent lines from pc-locks rounds 3 to 20 (+0.54 ± 0.15 APS over 3.23 on the whole field before rounds 18 to 20),
+and the team adds fitted enemy aims (TMODE-50) and the close-range dodge rerank (TMODE-52). Melee code is unchanged.
+The table below stays on 3.23 until 3.24's first full live pass.
+
 **3.23 was released on 2026-11-16.** The live rankings read on 2026-11-16 at 18:18 UTC
 (rumble.robowiki.net BotDetails pages, saved in [data/rumble/pages/](data/rumble/pages/)):
 

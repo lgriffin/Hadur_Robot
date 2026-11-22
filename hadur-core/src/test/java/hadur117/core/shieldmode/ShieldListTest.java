@@ -399,4 +399,18 @@ class ShieldListTest {
         assertEquals(0, l.size(), "no shield entry");
         assertEquals(null, ShieldList.NONE.surfKeyFor("a.B 1.0"));
     }
+
+    @Test
+    @Tag("MOVE-67")
+    @DisplayName("aim-weight lines name opponents for the 1.0 aim weight, matched as shield entries, and add no shield entry")
+    void aimWeights() {
+        ShieldList l = ShieldList.parse(List.of("aim-weight: a.B 1.0", "pm-megas: c.D 1.0"));
+        assertTrue(l.aimWeight("a.B 1.0"));
+        assertTrue(l.aimWeight("a.B 1.1"), "a line carries over to a new version");
+        assertFalse(l.aimWeight("c.D 1.0"), "another switch's line does not set it");
+        assertFalse(l.patternMegas("a.B 1.0"), "nor does it set another switch");
+        assertFalse(l.aimWeight(null));
+        assertFalse(ShieldList.NONE.aimWeight("a.B 1.0"));
+        assertEquals(0, l.size(), "no shield entry");
+    }
 }
