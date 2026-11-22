@@ -36,7 +36,8 @@ public class JayLexi extends AdvancedRobot {
     static Point2D.Double me, enemy;
     static double orbit, enemyEnergy, distance, lastBearing, lastLateral, vChangeTime, enemySpeed;
     static ArrayList<Wave> waves;
-    static Wave next;
+    // The enemy wave dropped last, still searched when a hit is logged (JAYLEXI-26). Null until the first drop.
+    static Wave next, gone;
     // The robot, for the static prediction (static methods take fewer bytes).
     static JayLexi bot;
     // Where this opponent's row starts in AIM.
@@ -141,6 +142,8 @@ public class JayLexi extends AdvancedRobot {
 
     public void run() {
         waves = new ArrayList<Wave>();
+        // A new round: the last round's dropped wave must not take this round's hits (JAYLEXI-26).
+        gone = null;
         bot = this;
         setAdjustGunForRobotTurn(true);
         setAdjustRadarForGunTurn(true);
@@ -191,15 +194,21 @@ public class JayLexi extends AdvancedRobot {
         log(new Point2D.Double((b = e.getBullet()).getX(), b.getY()));
     }
 
-    /** Log a hit at p on the enemy wave that was passing it (JAYLEXI-6), and drop that wave. */
+    /** Log a hit at p on the enemy wave that was passing it, or the one just dropped (JAYLEXI-6, JAYLEXI-26), and drop that wave. */
     void log(Point2D.Double p) {
         Wave w;
-        for (int i = waves.size(); --i >= 0; ) {
-            if (Math.abs((w = wave(i)).source.distance(p) - w.travelled) < 100) {
-                w.log(p, 0.85);
-                w.done();
+        waves.add(0, gone);
+        try {
+            // Index 0 is searched last; while gone is still null it ends the search there.
+            for (int i = waves.size(); --i >= 0; ) {
+                if (Math.abs((w = wave(i)).source.distance(p) - w.travelled) < 100) {
+                    w.log(p, 0.85);
+                    w.done();
+                }
             }
+        } catch (Exception none) {
         }
+        waves.remove(gone);
     }
 
     public void onBulletHit(BulletHitEvent e) {
@@ -270,6 +279,10 @@ public class JayLexi extends AdvancedRobot {
             if (!theirs) {
                 log(enemy, 600);
 
+            } else {
+                // An enemy wave is dropped about the tick its bullet reaches us, before onHitByBullet:
+                // keep it, so that hit is still logged (JAYLEXI-26; 1.2 logged only ~1 hit in 4).
+                gone = this;
             }
             // Done: off the event list here, so no onCustomEvent is needed (the engine's list is
             // copy-on-write, so removing it inside test is safe).

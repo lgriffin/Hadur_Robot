@@ -169,7 +169,7 @@
 #         ring, a term against ending within 150 px of it, and full speed through a turn. Suffix qt
 #         (pc-team-quarters, BENCH-225).
 #   tmtight (team only) TMODE-59 on: the tight pack, hunt pull 1.0 against the five teams whose table entry
-#              carries TIGHT (pc-team-tight, BENCH-274). Suffix tp.
+#              carries TIGHT (pc-team-tight, BENCH-275). Suffix tp.
 #   tmnocloserr (team only) TMODE-52 off: the team dodge drives 12 candidates even against a close wave, the
 #              build before the close rerank shipped (FORCE_CLOSERERANK). Suffix ncr.
 #   tmnofitted (team only) TMODE-50 off: the fitted enemy aims (TeamModes.FITTED) leave the dodge's profile,

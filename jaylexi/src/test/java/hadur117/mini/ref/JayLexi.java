@@ -60,6 +60,10 @@ public class JayLexi extends AdvancedRobot {
     // The robot, so a wave can take itself off the event list.
     static JayLexi bot;
     static Wave next;
+    // The enemy wave dropped last (JAYLEXI-26): it goes off the list about the tick its bullet reaches
+    // us, before onHitByBullet, so the hit is logged on it. noGone plays 1.2, which lost those hits.
+    static Wave gone;
+    boolean noGone;
     // Surf stats [distance band][walls along our orbit][our lateral speed band][bin] (JAYLEXI-6, JAYLEXI-20). 1.0
     // reads only band 0 (JAYLEXI-23); the bands stay here so the replay can show 0.9's four still play.
     static double[][][][] surf = new double[4][4][5][BINS];
@@ -76,6 +80,7 @@ public class JayLexi extends AdvancedRobot {
 
     public void run() {
         waves = new ArrayList<Wave>();
+        gone = null;
         bot = this;
         setAdjustGunForRobotTurn(true);
         setAdjustRadarForGunTurn(true);
@@ -233,6 +238,11 @@ public class JayLexi extends AdvancedRobot {
                 removeCustomEvent(w);
             }
         }
+        // The dropped wave is searched last, as the shipped build puts it at the head of the list.
+        if (!noGone && (w = gone) != null && Math.abs(w.source.distance(p) - w.travelled) < 100) {
+            w.log(p, 0.85);
+            removeCustomEvent(w);
+        }
     }
 
     public void onBulletHit(BulletHitEvent e) {
@@ -301,6 +311,8 @@ public class JayLexi extends AdvancedRobot {
             }
             if (mine) {
                 log(enemy, 600);
+            } else {
+                gone = this;
             }
             // Done: off the event list here, as the shipped build does.
             bot.removeCustomEvent(this);

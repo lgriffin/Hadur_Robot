@@ -12,11 +12,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-274: the team tight-pack card (plans/pc-team-tight.queue), TMODE-59 on the five TIGHT teams. */
+/** BENCH-275: the team tight-pack card (plans/pc-team-tight.queue), TMODE-59 on the five TIGHT teams. */
 class PcTeamTightPlanTest {
 
     @Test
-    @Tag("BENCH-274")
+    @Tag("BENCH-275")
     @DisplayName("aa/bb/tp on the five TIGHT teams: a 4-seed pilot from 31000 with a stop below 0, a 24-seed screen from 31100 gated at +0.3 APS over 47 pairings, stop rules and a results PR")
     void cardIsComplete() throws IOException {
         String q = Files.readString(Path.of("plans/pc-team-tight.queue"));
@@ -44,7 +44,7 @@ class PcTeamTightPlanTest {
     }
 
     @Test
-    @Tag("BENCH-274")
+    @Tag("BENCH-275")
     @DisplayName("the card's set is the five teams whose table entry carries TIGHT, each a line of the team census")
     void setIsTheFiveTeams() throws IOException {
         List<String> set = Files.readAllLines(Path.of("plans/team-tight-set.txt")).stream()
