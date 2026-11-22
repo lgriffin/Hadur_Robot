@@ -45,7 +45,8 @@ final class Replay {
     /** Every static of the robot class back to zero, as a fresh JVM has it. */
     static void zeroStatics(Class<?> robot) throws Exception {
         for (Field f : robot.getDeclaredFields()) {
-            if (Modifier.isStatic(f.getModifiers()) && !Modifier.isFinal(f.getModifiers())) {
+            // Synthetic fields are the tools', not the robot's: JaCoCo's probe array is one.
+            if (Modifier.isStatic(f.getModifiers()) && !Modifier.isFinal(f.getModifiers()) && !f.isSynthetic()) {
                 f.setAccessible(true);
                 if (f.getType() == double.class) {
                     f.setDouble(null, 0);

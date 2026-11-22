@@ -59,6 +59,8 @@ class WatchPlanTest {
             assertTrue(tests.contains(s), s);
         }
         assertTrue(Files.readString(Path.of("benchqueue.py")).contains("def raise_alert"));
-        assertTrue(Files.readString(Path.of("../.github/workflows/build.yml")).contains("test_benchwatch.py"));
+        // CI runs every test_*.py beside the queue runner by discovery, so this file is run.
+        assertTrue(Files.readString(Path.of("../.github/workflows/build.yml"))
+            .contains("(cd hadur-bench && python3 -m unittest discover -s . -p \"test_*.py\")"));
     }
 }

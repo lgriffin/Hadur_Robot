@@ -43,22 +43,31 @@ named.
 
 ## Traceability
 
-`RequirementsTraceabilityTest` reads the requirements table in `docs/requirements.md` and
-every test source in the three modules. It fails when:
+`RequirementsTraceabilityTest` reads every requirement row in `docs/requirements.md` and
+the test sources of every module of the build (each folder beside the root pom with a pom
+of its own), plus the bench tools' Python tests in `hadur-bench/tools` and `data/tools`.
+It fails when:
 
-- a requirement whose stage is at or before the build's stage is named by no test. The
-  duel plan's S0–S7 are compared with `hadur.stage` (a root pom property, now `S7`) and the
-  melee extension's M0–M6 with `hadur.melee.stage`, the Team plan's T1 with `hadur.team.stage`;
+- an active requirement is named by no test. Every plan has shipped, so stages no longer
+  gate the check (the stage properties left the root pom on 2026-11-22);
 - a tag names an ID that is not a requirement, so IDs cannot drift;
+- an ID opens two rows, or is both active and in the retired table;
 - a jqwik `*Properties` class tags with JUnit's `@Tag`, which would make jqwik skip it.
 
 A JUnit or jqwik test names a requirement with `@Tag("MEM-3")`; a Cucumber scenario with
-`@MEM-3`. The test writes the coverage table, each requirement with the tests that name
+`@MEM-3`; a Python test with a comment `# @Tag("BENCH-156")` above the test, where it names
+the bench gate its tool evaluates. The test writes the coverage table, each requirement with the tests that name
 it, to `hadur-core/target/requirements-coverage.md`, and the `build` workflow adds it to
 the run's summary.
 
-All 56 requirements due by S7 and M6 are covered. At release 3.0 the build runs 504
-tests: 483 in the core, 5 in the robot and 16 in the bench.
+On 2026-11-22 all 550 active requirements are covered.
+
+## Coverage
+
+JaCoCo runs on every module (root pom); each module's report is in
+`target/site/jacoco/`, and the `build` workflow adds a line and branch table to the run's
+summary. `hadur-core` holds a floor of 93% of lines and 82% of branches (`mvn verify`
+fails below it), set just under the 2026-11-22 reading; raise it as coverage rises.
 
 ## Replay fixtures
 

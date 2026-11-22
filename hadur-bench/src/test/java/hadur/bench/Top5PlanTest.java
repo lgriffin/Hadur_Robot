@@ -123,7 +123,10 @@ class Top5PlanTest {
     @DisplayName("the queues end with multiarm.py, which CI tests")
     void analysisIsTested() throws IOException {
         assertTrue(Files.isRegularFile(Path.of("../data/tools/multiarm.py")));
-        assertTrue(Files.readString(Path.of("../.github/workflows/build.yml")).contains("test_multiarm.py"));
+        // CI runs every test_*.py in data/tools by discovery, test_multiarm.py with them.
+        assertTrue(Files.isRegularFile(Path.of("../data/tools/test_multiarm.py")));
+        assertTrue(Files.readString(Path.of("../.github/workflows/build.yml"))
+            .contains("(cd data/tools && python3 -m unittest discover -s . -p \"test_*.py\")"));
         for (String q : List.of("plans/pc-top5.queue", "plans/pc-top5-s2.queue", "plans/pc-top5-s2b.queue")) {
             assertTrue(Files.readString(Path.of(q)).contains("../data/tools/multiarm.py"), q);
         }

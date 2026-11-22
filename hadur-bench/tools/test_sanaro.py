@@ -72,6 +72,10 @@ class SanaroReadTest(unittest.TestCase):
                [("hadur117.nano.SanaroS10 0.1", 300, 21, 0), (Q, 200, 14, 0)])
         self.only = {Q, NS, "nano.X 1"}
 
+    # The read each bench gate of Sanaro's is taken from: the APS margin over NaturalScience (SANARO-10),
+    # how often each leader is outsurvived (SANARO-11), the one-on-one share (SANARO-12) and an arm's
+    # margin over the shipped control in the same battles (SANARO-13).
+    # @Tag("SANARO-10") @Tag("SANARO-11") @Tag("SANARO-12") @Tag("SANARO-13")
     def test_aps_against_the_control_and_the_leaders_in_the_same_battles(self):
         rows = {r["arm"]: r for r in sanaro_read.read(self.root, ["S10", "S0"], "S0", self.only)}
         s10 = rows["S10"]
