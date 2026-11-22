@@ -54,6 +54,7 @@ public final class EnergyRace {
 
     private static final int N = GRID.length;
 
+    private int minShots = MIN_SHOTS;
     private double ourShots, ourHits, ourPowerSum;
     private double theirShots, theirHits, theirPowerSum;
     private final double[][] value = new double[N][N];
@@ -86,9 +87,17 @@ public final class EnergyRace {
         dirty = true;
     }
 
+    /**
+     * MEND-6: the resolved shots each side needs before the race decides, {@link #MIN_SHOTS}
+     * unless a melee endgame arm lowers it (0 decides from the priors at once).
+     */
+    public void minShots(int n) {
+        minShots = Math.max(0, n);
+    }
+
     /** Whether both sides have enough resolved shots for the race to decide. */
     public boolean ready() {
-        return ourShots >= MIN_SHOTS && theirShots >= MIN_SHOTS;
+        return ourShots >= minShots && theirShots >= minShots;
     }
 
     /**
