@@ -510,7 +510,7 @@ a tweak to our own movement, and both per-team tables (PR #246, PR #339) only pi
 tweaks on 6 seeds. In 1v1, tailoring pays because each mode counters a bot type. This section does
 the same for team: read each costly team's code, then give it a counter that exploits what it does.
 
-- **Reads.** The 16 teams Firestarter beats us on by 5 to 13 points, from their play:
+- **Reads.** The 16 teams Firestarter beats us on by 5 to 13 points, from a study of each:
   10 shoot their closest enemy, 9 cut power with distance, 5 aim only head-on or only linear.
 - **Counters** (team-only table modes; no FORCE switch, `TeamModes.TABLE` ships empty):
   - OWN (TMODE-20): shot ownership via MMOVE-9's nearest rule. It lost globally, but against a team

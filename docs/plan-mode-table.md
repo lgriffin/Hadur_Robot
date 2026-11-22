@@ -44,7 +44,7 @@ Each stage is a mode, built duel-only and off by default, chosen per opponent by
    averaged linear from its bullets, then move to where that aim cannot hit. Train on the 429 bots
    Saguaro dodges plus the rammers. Expected +0.2 to +0.4.
 3. **M3, stop-and-go against surfers.** Train on the 148 bots Saguaro poisons. Expected +0.2 to +0.4.
-4. **M4, Saguaro's "moving" shield, which is a small change.** As observed: the moving
+4. **M4, Saguaro's "moving" shield, which is a small change.** In Saguaro 1.0, the moving
    shield is the same standing shield with one addition. At the start of each round, until the
    enemy's first shot, it drives away from walls and the enemy (anti-gravity) while the enemy's gun
    cools, and stands still once that gun is 5 ticks from ready. Saguaro also ships each opponent's
