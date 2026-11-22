@@ -634,6 +634,8 @@ final class ShieldTableData {
             // pc-locks round 2 (BENCH-253, PR #845): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "nz.jdc.nano.PralDeGuerre 1.2",   // +6.5
             "ers.nano.meroka.Meroka 1.8a",    // +4.3
+            // pc-locks round 20 (BENCH-253, PR #994): 12 fresh PC seeds at the live turn time; 36-seed cloud lock held first
+            "alpha.BlackIce 1.0",             // +3.5
         };
     }
 
@@ -1435,6 +1437,8 @@ final class ShieldTableData {
             // pc-locks round 19 (BENCH-253, PR #991): 12 fresh PC seeds at the live turn time, +1.6, +1.2
             "com.syncleus.robocode.Dreadnaught 0.1",
             "nic.Nicator 2.4",
+            // pc-locks round 20 (BENCH-253, PR #994): 12 fresh PC seeds at the live turn time, +2.4
+            "lrem.micro.MoggFanatic 0.2",
         };
     }
 }
