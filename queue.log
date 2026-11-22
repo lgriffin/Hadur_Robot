@@ -32,3 +32,10 @@
 21:57:46 start mrez
 21:57:46 watching mrez: 2 stop rule(s)
 22:08:23 progress mrez: 80/460 (17%) battles, 452/h, ETA 50 min, 0 failed, skips 35.6/battle (last 100)
+22:38:36 progress mrez: 370/460 (80%) battles, 544/h, ETA 10 min, 0 failed, skips 36.5/battle (last 100)
+22:48:11 mrez exit=0 in 3025 s
+22:48:11 start mrread
+22:48:28 mrread exit=0 in 16 s
+22:48:28 start mrpr
+22:48:36 mrpr exit=0 in 7 s
+22:48:36 ALLDONE
