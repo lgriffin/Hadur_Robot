@@ -708,6 +708,7 @@ endgame MEND-1, 2).
 | `TeamModes.FORCE_MOMENTUM` | TMODE-49 | **on** (3.23) | The dodge and path check prefer candidates that keep Hadur's momentum |
 | `TeamModes.FORCE_FITTED` | TMODE-50 | **on** (3.24) | Fitted enemy aims (`TeamModes.FITTED`, eight teams) join the dodge's profile |
 | `TeamModes.FORCE_CLOSERERANK` | TMODE-52 | **on** (3.24) | The dodge reranks 40 candidates, not 12, while a wave is within 35 ticks |
+| `TeamModes.TIGHT_ON` | TMODE-59 | off (pc-team-tight pending) | TIGHT in five table entries makes the hunt pull 1.0, not 0.3, so the pack holds its place round the prey |
 | `TeamLink.NARROW_LANE` | WEAVE-9 | **on** | Ogi's narrow fire lane |
 | table-only modes `OWN`, `HEADON`, `LINEAR`, `QUARTERS`; `GANG`, `FINISH` through CONCORD | TMODE-3, -4, -20..22, -45 | per team | No forcing switch on; the table or CONCORD names them |
 | `RoleResolver.TEAM_BUILT` | ROLE-3 | off | There is no Team role; members play Melee then Duel |

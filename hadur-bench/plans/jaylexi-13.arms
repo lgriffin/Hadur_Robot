@@ -1,0 +1,7 @@
+# BENCH-274 (pc-jaylexi-13): c is JayLexi 1.2's source (master at 4cbd7b3d6), aa its A/A rebuild, t the shipped 1.3
+# source (1.2 plus JAYLEXI-26: hits on the enemy wave dropped the tick before are logged), r6 the released 0.6. All but
+# r6 built with ProGuard by kitlab/build_arm_pg.sh, as a release ships.
+c | hadur117.mini.JayLexi 1.2c | kitlab/jars/hadur117.mini.JayLexi_1.2c.jar
+aa | hadur117.mini.JayLexi 1.2aa | kitlab/jars/hadur117.mini.JayLexi_1.2aa.jar
+t | hadur117.mini.JayLexi 1.3t | kitlab/jars/hadur117.mini.JayLexi_1.3t.jar
+r6 | hadur117.mini.JayLexi 0.6 | kitlab/jars/hadur117.mini.JayLexi_0.6.jar
