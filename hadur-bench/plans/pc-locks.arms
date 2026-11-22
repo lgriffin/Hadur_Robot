@@ -1,6 +1,5 @@
-# pc-locks (BENCH-253) round 18: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots
-# that locked with it (plans/locks-pick.tsv; pm MOVE-56 pattern-matcher mimic, pmx MOVE-58 cw.megas-form mimic).
+# pc-locks (BENCH-253) round 19: c is master, aa its A/A copy; rf is master with its RAM_FLEE line on WaveRammer only
+# (plans/locks-pick.tsv; rf MOVE ram-flee, rflist).
 c | hadur117.Hadur 3.23 | bisect/hadur117.Hadur_3.23.jar
 aa | hadur117.Hadur 3.23aa | bisect/hadur117.Hadur_3.23aa.jar
-pm | hadur117.Hadur 3.23pm | bisect/hadur117.Hadur_3.23pm.jar
-pmx | hadur117.Hadur 3.23pmx | bisect/hadur117.Hadur_3.23pmx.jar
+rf | hadur117.Hadur 3.23rf | bisect/hadur117.Hadur_3.23rf.jar

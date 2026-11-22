@@ -1,36 +1,32 @@
-# 1v1, cloud locks to the PC (BENCH-253), round 18. Round 17 (PR #978; A/A -0.48 +- 0.54, inside its band) held
-# NanoSatan pm and Leopard rbd (banked, PR #980) and kept the four MOVE-58 lines.
-# Round 18 carries the pattern-matcher locks found on 21 Nov evening, 4 robots, padded to 12 for the A/A check.
-# Cloud locks (Robocode 1.12.0, live turn time, master 053343eaf; coverage/shards/locks.tsv), vs c / vs aa:
-#   pm (MOVE-56 AutoBot-form mimic, shipped) on Snow (box D: 12 seeds 87810 +7.06 +- 2.50 / +7.96 +- 3.02),
-#      PanzerGeneral (12 seeds 87810 +1.55 +- 0.79 / +2.10 +- 1.43) and Assertive (24 seeds 87810 + 87822
-#      +2.19 +- 1.24 / +1.73 +- 1.34); pmx was level on all three.
-#   pmx (MOVE-58 cw.megas-form mimic, shipped) on SpaceKees (box G: 12 seeds 87620 +2.46 +- 1.23 / +1.83 +- 1.33;
-#      pm only reached half its cut in real hits).
-#   A/A pads: NanoSatan, Leopard, GhostShell, Gridd, Polar, Sanguijuela, UbaRamLT and ScalpBotC (lines on master, read
-#      only in c and aa), so the A/A check reads 12 robots (round 15 was void on 5).
+# 1v1, cloud locks to the PC (BENCH-253), round 19. Round 18 (PR #986) carries Snow, PanzerGeneral and Assertive on pm
+# and SpaceKees on pmx; round 19 runs after it and after pc-rc-confirm run 5.
+# Round 19 carries one candidate, padded to 12 for the A/A check.
+# Cloud read (Robocode 1.12.0, live turn time, master 053343eaf; coverage/shards/locks.tsv), vs c / vs aa:
+#   rf (RAM-15 ram-flee, shipped) on WaveRammer (box D u7: 36 seeds 87870, 87882, 87894 +2.47 +- 2.23 / +1.93 +- 2.09;
+#      95% low end +0.25 vs c, -0.15 vs aa, so a candidate, not a cloud lock: the PC decides).
+#   A/A pads: Maui, MadHatter, RammingC, AutoBot, Impact, NanoDeath, Kowari, Bicephal, GhostShell, Gridd and Polar (lines
+#      on master, read only in c and aa), so the A/A check reads 12 robots (round 15 was void on 5).
 #   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live
-#   lock       panel-locks.txt  c / aa / pm / pmx, 12 fresh seeds from 85800, --cpu-constant live, in work/pc-locks18
-#              (earlier rounds' battles stay in work/pc-locks to -locks17)
+#   lock       panel-locks.txt  c / aa / rf, 12 fresh seeds from 85900, --cpu-constant live, in work/pc-locks19
+#              (earlier rounds' battles stay in work/pc-locks to -locks18)
 #   gate       each robot judged on its own lever arm only (lock_prep.py --restrict); it keeps its line where the 95%
 #              low end is above 0 (mode_table.py --margin 0).
 # Leigh starts it once the PC is free (one card at a time, from master):
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
-#   --fresh because round 17 left this plan's queue state marked complete; the new work directory and seeds mean no
+#   --fresh because round 18 left this plan's queue state marked complete; the new work directory and seeds mean no
 #   battle is read back from an earlier round (and BENCH-272 refights any whose jar changed).
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 576 lock battles (12 robots, 4 arms, 12 seeds),
-# about 20 minutes with the live-match check. The prep step stops if any panel robot's jar is missing.
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 432 lock battles (12 robots, 3 arms, 12 seeds),
+# about 15 minutes with the live-match check. The prep step stops if any panel robot's jar is missing.
 #
 # Why it should win (the PC card rule of 2026-11-03):
-#   - Per-opponent tailoring: every line names one robot; every other robot, team and melee play bit for bit as master.
-#     No new code: pm and pm-megas are table lines for members already on master.
-#   - Snow, PanzerGeneral, Assertive: pattern matchers on our lateral velocity whose gun the AutoBot form predicts; the
-#     round-by-round forensic (box D, aesrec twins, 12 seeds 87834) cut their real hit share on our waves by
-#     1.65 +- 0.36 points (Snow 8.2% to 6.3%, Assertive 9.4% to 7.8%, PanzerGeneral 7.7% to 6.4%), and the blend ranks
-#     the hit option top 53% of the time against 41%, views alone flat at 40-42%, so the gain is the member's.
-#   - SpaceKees: neither form replays its gun closely, but the cw.megas form cuts its real hit share from 9.2% to 7.2%
-#     (box G forensic, 12 seeds 87680), lower in every round bucket after round 0, blend top-rank 48% against 38%.
+#   - Per-opponent tailoring: the line names one robot; every other robot, team and melee play bit for bit as master.
+#     No new code: rf is a table line for RAM-15, already on master.
+#   - WaveRammer: we let it close in (52% of the time under 250 px against BeepBoop's 42%, mean distance 253 against
+#     305), and under 250 px it hits us 22.6% of the time against 14.1% on BeepBoop (box D u7 truth logs, 4 seeds 87850).
+#     RAM-15's flee backs away from a charger, the way BeepBoop stands off. The rbd bend failed on it (21 Nov). The cloud
+#     lead held over three 12-seed blocks (+3.57, then pooled +2.47 vs c), but the aa low end is -0.15, so the line
+#     ships only if the PC's own 12 seeds clear 0.
 # Stop rules (docs/bench/watch.md): the watcher's A/A rule needs 10 robots read in both c and aa; this lock reads 12, but
 # the gate reads aa (multiarm.py prints aa against c), so no aa stop rule is set. The lock halts on 30 failed battles, an
 # arm scoring nothing in 8, 60+ skipped turns a battle over the last 24 or no battle in 30 minutes. The live-match step
@@ -40,20 +36,20 @@
 set V = 3.23
 set P = --parallel 16 --no-truth-log --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 2G
-set W = work/pc-locks18
+set W = work/pc-locks19
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
 
-prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && python3 tools/lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh && for a in pm pmx; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; done && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set panel-locks.txt && for j in $(grep -v "^#" panel-locks.txt | cut -d"|" -f3); do test -f opponents/$j || { echo "missing jar $j"; exit 1; }; done && mvn -q compile
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && python3 tools/lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh && for a in rf; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; done && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set panel-locks.txt && for j in $(grep -v "^#" panel-locks.txt | cut -d"|" -f3); do test -f opponents/$j || { echo "missing jar $j"; exit 1; }; done && mvn -q compile
 
-livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out work/pc-livematch-rel-live --label pc-locks-livematch --shuffle-jobs && python3 tools/live_match.py work/pc-livematch-rel-live/arms.tsv --out ${OUT}/pc-locks18-livematch.md
+livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out work/pc-livematch-rel-live --label pc-locks-livematch --shuffle-jobs && python3 tools/live_match.py work/pc-livematch-rel-live/arms.tsv --out ${OUT}/pc-locks19-livematch.md
   after: prep
   watch: field=1217
   stop: fails 30
   stop: dead 8
   stop: stall 30m
 
-lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 85800 --arms ${W}-prep/lock.arms --out ${W} --label pc-locks --shuffle-jobs
+lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 85900 --arms ${W}-prep/lock.arms --out ${W} --label pc-locks --shuffle-jobs
   after: livematch
   watch: field=1217
   stop: fails 30
@@ -61,8 +57,8 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 8
   stop: skips 60 over 24
   stop: stall 30m
 
-gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks18-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks18-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks18-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms pm pmx --out ${OUT}/$(date +%Y-%m-%d)_pc-locks18-lock-per-robot.md --out-tsv ${OUT}/pc-locks18-lock-per-robot.tsv
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks19-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks19-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks19-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms rf --out ${OUT}/$(date +%Y-%m-%d)_pc-locks19-lock-per-robot.md --out-tsv ${OUT}/pc-locks19-lock-per-robot.tsv
   after: lock
 
-pr | bash tools/open_results_pr.sh claude/pc-locks18-results "1v1 cloud locks, round 18 (3 pm, 1 pmx) on 12 fresh PC seeds" ${OUT}/pc-locks18-livematch.md ${OUT}/*_pc-locks18-*.md ${OUT}/pc-locks18-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks18-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks19-results "1v1 cloud locks, round 19 (WaveRammer rf candidate) on 12 fresh PC seeds" ${OUT}/pc-locks19-livematch.md ${OUT}/*_pc-locks19-*.md ${OUT}/pc-locks19-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks19-lock-pick.tsv' -size +0c)
   after: gate
