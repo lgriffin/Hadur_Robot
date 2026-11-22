@@ -7,7 +7,7 @@
 #   x0 (SHIELD-19 exitOffs: the shield never leaves the battle) on BlackIce (box B: 36 seeds 89310-12 screen and
 #      89330-53 lock, +3.29 +- 1.38 / +3.00 +- 1.27, A/A +0.29; dzlane/B/shieldclose).
 #   rf (RAM-15 ram-flee, shipped) on WaveRammer: second PC read. Round 19 (#991) read rf +2.05 vs c on 12 seeds with its
-#      95% low end under 0 (docs/bench/local/pc-locks19-lock-per-robot.tsv); the bank judges it on rounds 19 and 20 pooled
+#      95% low end under 0 (the round 19 per-robot table, PR #991); the bank judges it on rounds 19 and 20 pooled
 #      (24 PC seeds), a bar set before this round runs. Cloud: 48 seeds, +2.27 vs c and +2.14 vs aa (low ends +0.37, +0.22).
 #   A/A pads: Maui, MadHatter, RammingC, AutoBot, Impact, NanoDeath, Kowari, Bicephal, GhostShell, Gridd, Polar, Dreadnaught
 #      and Nicator (lines on master, read only in c and aa), so the A/A check reads 16 robots (round 15 was void on 5).
