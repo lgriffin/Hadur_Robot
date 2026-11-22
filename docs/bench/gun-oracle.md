@@ -219,7 +219,7 @@ MOVE-29 stays off; it is not worth a confirm card on its own.
 
 Re-weighting the members Hadur has was spent at step 2: the best fixed mix in hindsight (+0.387) is
 where the rolling blend with aims already stands (+0.386). The next member had to carry information no
-view has. The inquisition of 2026-11-08 ([the 1v1 ledger](https://claude.ai/artifact/SPmKN18Hg3DrhtQNf1LqFS))
+view has. The inquisition of 2026-11-08 (the 1v1 ledger)
 and the replay study pointed at the same place: BeepBoop is hit 30% less than Hadur by the same guns from
 round 1, so part of what it knows, it knows before the battle starts. The shipped blend by round on the
 48 learning guns of `k2.npz` says where that bites:

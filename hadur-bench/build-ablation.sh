@@ -136,13 +136,13 @@
 #         situations per opponent, not 3. MGUN-7 ships it off a team.
 #   tk12, tk21 (team only) T3, the field gun's kNN depth on a team: 12 or 21 situations per opponent,
 #         not 3 (FieldGun.K is read only while a teammate lives; MGUN-7's 12 off a team stays).
-#         CombatTeam takes 21 (docs/bench/combatteam-3.25.md). MGUN-9 ships 21: use --ref v3.15.
+#         CombatTeam takes 21 (CombatTeam's choice). MGUN-9 ships 21: use --ref v3.15.
 #   tshare0 (team only) MGUN-8 off: teammates' sightings no longer reach the field gun's histories
 #         (the World still takes them), so each member learns only from its own radar, as 3.13.
 #   tlane0 (team only) T4, no fire lane: a member fires whatever teammates lie ahead, as CombatTeam does.
 #   tlane4 (team only) T4, WEAVE-4's lane alone: a teammate's last known point still holds the shot,
 #         its predicted track (WEAVE-7) no longer does.
-#   tlaneo (team only) team step C, Ogi's lane (docs/bench/ogi-deep-dive.md 4.6): the shot holds only for a
+#   tlaneo (team only) team step C, Ogi-style lane: the shot holds only for a
 #         teammate nearer than the target (the nearest enemy within atan2(36, d) of the gun line) and
 #         within atan2(30, d) of the gun line; no drift, no predicted track. Suffix lo.
 #   tram  (team only) TR1, shoot rammers: the field gun no longer skips an enemy closing on the member
@@ -287,7 +287,7 @@
 #   rfanlist the robots named in $RAM_FAN get RAM-17, the rammer escape dodging their linear/circular aims as +-4 deg fans at RAM-14's weight. Suffix rfn.
 #   rplist the robots named in $RACE_POWER get the energy race's power pick (POW-17,
 #         ShieldTableData.racePowers()). Suffix rp, or $RACE_POWER_SUFFIX.
-#   snull  all five at once: Nullstride's design as read from its jar.
+#   snull  all five at once: Nullstride-style design.
 #   strim (3.13) the 22 listed robots that 3.13 lost to in both plan90-gate runs come off the shield
 #         list, so they are fought in normal mode: does the shield still pay against them
 #         (docs/bench/local/2026-10-13_plan90-gate-read.md)? Suffix tr.
@@ -914,7 +914,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
         mcross)
-            # ScalarR-inspired learning (docs/bench/scalarr-melee-decompile.md, MMOVE-19): the melee
+            # ScalarR-inspired learning (MMOVE-19): the melee
             # surfer also learns each shooter's aim from its hits on other opponents, off a team
             # only; duel and team fixtures bit for bit. Suffix xh. Ships on from 3.21 (pc-melee-scal
             # +0.19 +- 0.14, PR #484), so on master xh builds the robot as it is.

@@ -433,7 +433,7 @@ DeiseLab over the core (D is 0.4): the push 1.5 times (P3) and 0.75 times (P075)
 split between a likely shooter's push and a stray one's (SHARP: 320,000 and 120,000), the waves
 counted double (WV2), conservative power (CONS: log10(energy) x 240 over the distance, not 325;
 ScalarR's two biggest melee survival jumps came from energy management), and a shorter ring (RS: 0.35 of the target's distance, up to
-120 px, since REACH's longer one lost). SCAL tries ScalarR's actual energy shape, from the decompile in PR #459: range power capped at
+120 px, since REACH's longer one lost). SCAL tries ScalarR's energy shape (PR #459): range power capped at
 energy / 6, and at energy / 15 with the target beyond 325 px, so power falls only as Deise's
 energy does (CONS lowers it at every energy). SCAL adds about 10 bytes, so a winner needs a cut.
 With SAOR, on fresh seeds (from 3700), 9 seats, about 2.6 h. An arm
@@ -442,7 +442,7 @@ at +0.30 or more over D, low end above 0, ships as 0.4.1 on Leigh's go.
 E4's result (PR #469, 2026-10-30): no arm passes. D read 71.28 ± 0.16; against it RS +0.02,
 P3 -0.05, SCAL -0.08, P075 -0.09, SHARP -0.13, WV2 -0.29 ± 0.22 and CONS -0.37 ± 0.23, all seats
 276 of 276 battles clean. 0.4's push, wave and ring constants sit at an optimum. Lighter power
-loses, which fits the decompile: ScalarR fires harder at full energy, not softer.
+loses, which fits ScalarR's shape: ScalarR fires harder at full energy, not softer.
 
 ### Stage E5: harder power at range (card pc-deise-e08)
 

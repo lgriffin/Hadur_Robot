@@ -21,7 +21,7 @@ import robocode.robotinterfaces.peer.ITeamRobotPeer;
 import hadur117.twin.core.Gun;
 
 /**
- * The shipped twin's scan handling (TWIN-4, TWIN-5, TWIN-13) and radar split (TWIN-8), driven one
+ * The shipped twin's scan handling (TWIN-4, TWIN-5, TWIN-13; its bit-2 range is in TeamTest) and radar split (TWIN-8), driven one
  * event at a time through a fake engine peer. The class keeps its battle in statics, so each test
  * starts them as {@code run()} does.
  */
@@ -180,6 +180,7 @@ class SaorTwinTest {
         for (int s = 0; s < SaorTwin.SLOTS && zero < 0; s++) {
             if (SaorTwin.MODES.charAt(s) == 0) zero = s;
         }
+        assertTrue(zero >= 0, "the mode table has no slot with mode 0");
         String name = nameAt(zero);
         // Without bit 1: the target's energy drop of 2 between consecutive scans reverses the leg.
         twin.onScannedRobot(scan(name, 100, 0, 200));

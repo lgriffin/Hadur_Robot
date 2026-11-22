@@ -926,7 +926,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 - **Why.** Stage 2 of docs/plan-team-top5.md. After S1 the gap to 5th is mostly the top 20
   teams, who kill Hadur's members with learning guns. Members dodged only MMOVE-3's head-on and
   linear guesses, took every shot as aimed at themselves, and learnt nothing from the hits on
-  their teammates. CombatTeam (docs/bench/combatteam-3.25.md 2.2, 2.3) does the opposite.
+  their teammates. CombatTeam does the opposite.
 - **Where.** `melee.TeamDanger` keeps, per enemy, up to 1,000 samples of four features
   (distance / 800, |lateral velocity| / 8, advancing velocity / 16, the share of the escape
   angle ahead inside the walls) and the guess factor, clamped to ±1.2. `MeleeController.learn`
@@ -947,7 +947,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 
 ### T7 notes: the team mode table (TMODE-1 to TMODE-4)
 
-- **Why.** There are only 44 teams in the team rumble, so each can have its own strategy. The decompile read (docs/bench/team-top-decompile.md) found that the
+- **Why.** There are only 44 teams in the team rumble, so each can have its own strategy. A study of the top teams found that the
   top teams' movement differs from Hadur's mainly in how much of each enemy shot a member takes as
   its own (Ogi, Firestarter), in regrouping when ganged (Ogi), and in closing on the last enemy
   (Ogi, Combat). Different teams punish different things, so each team gets its own modes.
@@ -961,11 +961,11 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
   positions the team shares, and takes its own place on the arc by its bearing order, so the
   places agree without orders on the link. GANG's regroup comes before the hunt; helping a
   ganged teammate comes after it. The gun still picks its own target.
-- **SCREEN and POOL (TMODE-6, TMODE-7).** From the Ogi deep dive (docs/bench/ogi-deep-dive.md):
+- **SCREEN and POOL (TMODE-6, TMODE-7).** From a study of Ogi's play:
   Ogi divides an enemy's risk by the robots nearer it, teammates included, and keys its danger
   model by class, so one model learns from all five copies of an enemy.
 - **DISABLED, MATEFIRE and REAR (TMODE-8 to TMODE-10).** Team stage S4 of docs/plan-team-top5.md,
-  after the mode table failed its gate (docs/bench/team-top-decompile.md section 6): CombatTeam's
+  after the mode table failed its gate: CombatTeam's
   small rules (finish a disabled enemy, keep out of teammates' fire) and a leader that keeps back,
   since its death costs every teammate energy. Teammates' shots come from the reports already on
   the link. Ablations tmdis (md), tmfire (mb), tmrear (mr), all off in the shipped build.
@@ -980,7 +980,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 ### T5 notes: shared gun learning (MGUN-8)
 
 - **Why.** mn.CombatTeam, first in the TeamRumble, trains every member's gun on all five
-  members' data (docs/bench/combatteam-3.25.md). Hadur's members already share their scans
+  members' data. Hadur's members already share their scans
   (WORLD-4), but only the World took them. Each member's field-gun history (`EnemyHistory`,
   MGUN-1) learnt only from its own radar.
 - **Where.** `TeamLink.merge` keeps each sighting the World takes as a `MateSighting` (as it was
@@ -1050,7 +1050,7 @@ build without it. RES-14 is retired, and with it RES-9's use (see the retired ta
 ## Toward Nullstride's shield (SHIELD-8 to SHIELD-14)
 
 The plan "Hadur: the road from 87.7 to 90 APS" (2026-10-11, docs/plan-90.md) reads Nullstride
-2.3.3's decompiled shield beside Hadur's and lists where they differ. Each difference is one
+2.3.3's shield beside Hadur's and lists where they differ. Each difference is one
 switch of `shieldmode.ShieldDesign`, so each can be benched on its own (step 1 of that plan).
 Each requirement below holds where its switch is on. 3.12 shipped every switch off; since 3.13
 the robot ships hold, learn, mode and stay (SHIELD-13), the build the PC's 8-seed step 3 swept
@@ -1071,8 +1071,8 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
   exits; SHIELD-6's budget still applies. The 150 is Nullstride's. A shot whose power the
   ledger is unsure of (a wall hit inferred on the same interval) builds no wave but still counts
   as the enemy having fired (`ShieldMode.onEnemyFired`).
-- **SHIELD-12** is a reconstruction: the decompiled method is obfuscated, and the tick the
-  enemy's body turn is read from is my reading of it. It is a predictor like the others and is
+- **SHIELD-12** is a reconstruction: the tick the enemy's body turn is read from
+  is an inference. It is a predictor like the others and is
   used only while it has matched the most bullets.
 - **SHIELD-13** (3.13). On the PC at 8 seeds against 3.12, the four step-1 builds were level
   with each other on the 89 robots both lists name (hold alone +4.1 points a robot; learn, mode
@@ -1090,8 +1090,7 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
   this round; it equals `corrected` for a sure reading and when there is no such reference or
   candidate. `corrected` and every WAVE-3 behaviour are unchanged. The uncertain wave skips
   `findWave`'s power filter and measures the hit's distance error at the hit's own speed.
-- **SHIELD-15** (off by default; `strial`, suffix `sy`). Ogi v1's `ShieldTrial`, read from its
-  decompiled jar (docs/bench/rivals-source-read.md): every opponent starts shielded and the
+- **SHIELD-15** (off by default; `strial`, suffix `sy`). Ogi v1's shield trial: every opponent starts shielded and the
   shield is dropped for the battle on the first of the five failures. Counted only for unlisted
   opponents while the mode is on (`ShieldMode.onTrial`): shots from `onEnemyShot`/`onEnemyFired`,
   damage and hits from `onHitByBullet`, shot-down bullets from `onIntercepted`, lost rounds from
@@ -1107,7 +1106,7 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
   (docs/plan-shield-quality.md). Tests: `ShieldDesignTest` (SHIELD-16).
 - **SHIELD-17** (off by default; `smove`, suffix `sv`, every shielded opponent; `smovelist`
   with `SHIELD_MOVE=<file>`, suffix `mv`, per opponent through `ShieldTableData.moves()`).
-  Saguaro's MovingBulletShield as the plan reads its decompile (docs/plan-mode-table.md, M4):
+  Saguaro's moving bullet shield as the plan describes it (docs/plan-mode-table.md, M4):
   the standing shield plus an opening reposition while the enemy's gun cools. `ShieldMode.tick`
   returns `openingDrive` while the opponent is shielded, has not fired this round, no wave or
   plan is open, the field size is known (`Situation`'s 17-argument form, which `DuelController`
@@ -1573,7 +1572,7 @@ failed and are removed (3.22 cleanup); the mimics live on in MOVE-33 and MOVE-34
 ## Saor, a MicroMelee entry (SAOR-1 to SAOR-17, stages U0 to U6)
 
 `hadur117.micro.Saor`, a separate robot in the `saor` module, built from the spec "MicroMelee
-Rumble Entry" (https://claude.ai/artifact/ANvBYVXHDXn3PePmWPu5J1). Its stages U0 to U5 are the
+Rumble Entry". Its stages U0 to U5 are the
 spec's M0 to M5 (the letter M is the melee extension's here). Design, byte budget and bench plan:
 docs/saor.md. Nothing in Hadur's modules depends on it, and it on nothing of Hadur's.
 

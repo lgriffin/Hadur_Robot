@@ -5,7 +5,6 @@
 "pick a suspect, build it, bench it on 15 to 45 bots" with one broad measurement of every
 opponent, a noise budget, and gates set before any candidate is built.
 
-Artifact with the charts: https://claude.ai/artifact/ABHD36QUP4jx69TQDpwSJJ
 Numbers below come from the archived pages in `data/rumble/parsed/` and the bench rows in
 `data/bench/2026-10-0[6-8]*_cold.tsv`; the script is described under "How the numbers were made".
 

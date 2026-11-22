@@ -1,7 +1,7 @@
 # Shield quality: SHIELD-16, Saguaro's body-turn aim base (2026-10-23)
 
-Stage 1 of the 1v1 per-opponent table plan (Claude Doc "Plan: the 1v1 per-opponent table",
-https://claude.ai/artifact/JCvvLxWV5gjrzL5aCSPech; docs/plan-mode-table.md). The better shield
+Stage 1 of the 1v1 per-opponent table plan (Claude Doc "Plan: the 1v1 per-opponent table";
+docs/plan-mode-table.md). The better shield
 comes first (decision of 2026-10-23).
 
 ## Finding

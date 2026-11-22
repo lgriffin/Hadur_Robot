@@ -5,8 +5,8 @@
 #
 # melee: cloud load of the 414-robot melee census (melee-census-317, 46 fields x 3 rounds),
 # 2026-11-02. Notes: docs/bench/melee-broken-1.11.2.md.
-rsalesc.melee.Medina 0.4.5 | melee | verifier: java.awt.AWTKeyStroke (obfuscated rsalesc.a.a.g)
-rsalesc.melee.Monk 0.3.6c | melee | verifier: java.awt.AWTKeyStroke (obfuscated rsalesc.a.a.g)
+rsalesc.melee.Medina 0.4.5 | melee | verifier: java.awt.AWTKeyStroke
+rsalesc.melee.Monk 0.3.6c | melee | verifier: java.awt.AWTKeyStroke
 catcat20.Matcha 0.006 | melee | verifier: bundled gson uses java.sql, java.net.URL, AccessController
 catcat20.Lambda 0.024 | melee | verifier: bundled gson uses java.sql, java.net.URL, AccessController
 catcat20.shape.Theta 0.018 | 1v1, melee | verifier: bundled gson uses java.sql, java.net.URL, AccessController

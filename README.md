@@ -328,7 +328,7 @@ follows is what made that work, and where it did not.
 ### Roles: a planner and implementers
 
 Work was split by kind, not just by size. A planning model (Fable) read the evidence and
-wrote each plan: the [Hadur 2 plan](https://claude.ai/artifact/KDkC1j5Yj8vWH6XQydyYH8)
+wrote each plan: the Hadur 2 plan
 (S0-S7), the melee extension (M0-M6), and the rumble climb ([R4-R6](docs/rumble-climb-r4-r6-plan.md),
 [top 30](docs/rumble-climb-top30-plan.md), [memory at scale](docs/rumble-memory-scale-plan.md)).
 Implementation threads (Sonnet) then built each plan stage by stage, one PR per stage. The
