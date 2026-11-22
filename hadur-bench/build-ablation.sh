@@ -464,6 +464,10 @@ for a in "${list[@]}"; do
             # RAM-20: the rammer escape dodges every rammer's shots by the aims learned from its bullets (the cloud screen's arm).
             edit "$src/hadur-core/src/main/java/$pkg/core/move/RamEscape.java" "static final boolean FORCE_LEARNED = false;" "static final boolean FORCE_LEARNED = true;"
             version="${version}rl" ;;
+        rlc3|rlc6|rlc12)
+            # RAM-20 screen: the learned model's cost for a sure hit, 300, 600 or 1200 px of closest approach (120 shipped).
+            edit "$src/hadur-core/src/main/java/$pkg/core/move/RamEscape.java" "static final double LEARNED_COST = 120.0;" "static final double LEARNED_COST = ${a#rlc}00.0;"
+            version="${version}${a#rl}" ;;
         rambrake)
             # RAM-20: with ramlearn, the escape also weighs braking paths while a shot is in flight.
             edit "$src/hadur-core/src/main/java/$pkg/core/move/RamEscape.java" "static final boolean FORCE_BRAKE = false;" "static final boolean FORCE_BRAKE = true;"
