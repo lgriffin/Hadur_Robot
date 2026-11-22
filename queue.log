@@ -13,3 +13,10 @@
 19:24:30 progress bench: 8916/16032 (56%) battles, 4256/h, ETA 1.7 h, 0 failed, skips 0.0/battle (last 100), aa +0.05, t +0.51, r6 -0.32
 19:54:51 progress bench: 11069/16032 (69%) battles, 4266/h, ETA 1.2 h, 0 failed, skips 0.0/battle (last 100), aa +0.05, t +0.54, r6 -0.33
 20:25:10 progress bench: 13229/16032 (83%) battles, 4280/h, ETA 39 min, 0 failed, skips 0.0/battle (last 100), aa +0.03, t +0.54, r6 -0.34
+20:55:21 progress bench: 15353/16032 (96%) battles, 4230/h, ETA 10 min, 0 failed, skips 0.0/battle (last 100), aa +0.02, t +0.54, r6 -0.32
+21:06:40 bench exit=0 in 11598 s
+21:06:40 start gate
+21:06:41 gate exit=0 in 0 s
+21:06:41 start pr
+21:06:49 pr exit=0 in 7 s
+21:06:49 ALLDONE
