@@ -255,6 +255,12 @@ public class FieldGun {
         if (e.energy <= MeleeEnergyPolicy.FINISHER_ENERGY) w *= FINISHER_BOOST;
         if (isolated(e, alive)) w *= ISOLATED_BOOST;
         if (e.hitsOnHadur(now, SHOOTER_WINDOW) >= 2) w *= SHOOTER_BOOST;
+        if (onTeam && TeamModes.FORCE_PICK) {
+            // TMODE-56: the closing enemy is the one to shoot.
+            double radial = TeamModes.radial(e, me);
+            if (radial < -TeamModes.PICK_SPEED) w *= TeamModes.PICK_CLOSING;
+            else if (radial > TeamModes.PICK_SPEED) w *= TeamModes.PICK_FLEEING;
+        }
         return w;
     }
 

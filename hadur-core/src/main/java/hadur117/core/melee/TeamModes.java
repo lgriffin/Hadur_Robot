@@ -123,6 +123,28 @@ public final class TeamModes {
     public static final boolean THROTTLE_NOBRAKE = false;
     /** TMODE-55: the least distance, in px, a throttled member is told to drive. */
     public static final double THROTTLE_AHEAD = 120.0;
+    /**
+     * TMODE-56, pick: on a team the gun leans to the enemy closing on the member and away from the one
+     * running from it (an enemy closing inside 650 px is hit about twice as often as one fleeing, on
+     * every team read), and may hold a shot at a poor target ({@link #PICK_HOLD}). Off in the shipped
+     * build (ablations tmpick, tmpickh, tmpickc). Never read off a team.
+     */
+    public static final boolean FORCE_PICK = false;
+    /** TMODE-56: 0 never hold; 1 hold a shot at a fleeing enemy beyond {@link #PICK_NEAR}; 2 hold any shot beyond it at an enemy not closing. */
+    public static final int PICK_HOLD = 0;
+    /** TMODE-56: the weight of a closing enemy, and of a fleeing one. */
+    public static final double PICK_CLOSING = 2.0, PICK_FLEEING = 0.5;
+    /** TMODE-56: closing or fleeing means this many px a tick along the line between the two. */
+    public static final double PICK_SPEED = 3.0;
+    /** TMODE-56: inside this range a shot is never held. */
+    public static final double PICK_NEAR = 300.0;
+
+    /** TMODE-56: {@code e}'s speed away from {@code me}, px a tick; negative when it closes. */
+    public static double radial(EnemyInfo e, java.awt.geom.Point2D.Double me) {
+        double bearing = Math.atan2(e.location.x - me.x, e.location.y - me.y);
+        return e.velocity * Math.cos(e.heading - bearing);
+    }
+
     /** TMODE-47: LAST on every team, as pc-team-guard measured it (PR #790). */
     public static final boolean FORCE_LAST = true;
     /** TMODE-49: MOMENTUM on every team, as pc-team-momentum measured it (PR #826). */

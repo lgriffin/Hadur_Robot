@@ -546,6 +546,12 @@ public class MeleeController {
         boolean hold = target.age(s.time) > MAX_FIRE_AGE
             || s.energy < MeleeEnergyPolicy.MIN_OWN_ENERGY
             || s.energy <= power + 0.1;
+        if (onTeam && TeamModes.FORCE_PICK && TeamModes.PICK_HOLD > 0 && !hold
+                && target.energy > FINISHER_ENERGY && target.distance(s.me) > TeamModes.PICK_NEAR) {
+            // TMODE-56: a shot at an enemy running away (or, at 2, not closing) is energy spent for little.
+            double radial = TeamModes.radial(target, s.me);
+            hold = TeamModes.PICK_HOLD >= 2 ? radial >= -TeamModes.PICK_SPEED : radial > TeamModes.PICK_SPEED;
+        }
         c.firePower = hold ? 0 : power;
         return c;
     }

@@ -988,6 +988,48 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             version="${version}osp"
             edit "$trisk" "static final double MATE_K = 0.6;" "static final double MATE_K = 2.4;"
             ;;
+        ogt1)
+            # scratch (OgiTeam dive): OgiTeam's table entry as: no modes. Suffix ot1.
+            version="${version}ot1"
+            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of());'
+            ;;
+        ogt2)
+            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.MATEFIRE, Mode.PATH, Mode.LAST, Mode.MOMENTUM. Suffix ot2.
+            version="${version}ot2"
+            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.PATH, Mode.LAST, Mode.MOMENTUM));'
+            ;;
+        ogt3)
+            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM. Suffix ot3.
+            version="${version}ot3"
+            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));'
+            ;;
+        ogt4)
+            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.MATEFIRE, Mode.PATH, Mode.DODGE, Mode.LAST, Mode.MOMENTUM. Suffix ot4.
+            version="${version}ot4"
+            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.PATH, Mode.DODGE, Mode.LAST, Mode.MOMENTUM));'
+            ;;
+        ogt5)
+            # scratch (OgiTeam dive): OgiTeam's table entry as: Mode.MATEFIRE, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.LAST, Mode.MOMENTUM. Suffix ot5.
+            version="${version}ot5"
+            edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.LAST, Mode.MOMENTUM));'
+            ;;
+        tmpick)
+            # TMODE-56: the team gun leans to closing enemies. Suffix pk.
+            version="${version}pk"
+            edit "$modes" "public static final boolean FORCE_PICK = false;" "public static final boolean FORCE_PICK = true;"
+            ;;
+        tmpickh)
+            # TMODE-56 and holds a shot at a fleeing enemy beyond 300 px. Suffix pkh.
+            version="${version}pkh"
+            edit "$modes" "public static final boolean FORCE_PICK = false;" "public static final boolean FORCE_PICK = true;"
+            edit "$modes" "public static final int PICK_HOLD = 0;" "public static final int PICK_HOLD = 1;"
+            ;;
+        tmpickc)
+            # TMODE-56 and fires beyond 300 px only at a closing enemy. Suffix pkc.
+            version="${version}pkc"
+            edit "$modes" "public static final boolean FORCE_PICK = false;" "public static final boolean FORCE_PICK = true;"
+            edit "$modes" "public static final int PICK_HOLD = 0;" "public static final int PICK_HOLD = 2;"
+            ;;
         tmthrottle)
             # TMODE-55: every team member keeps full speed through sharp turns. Suffix th.
             version="${version}th"
