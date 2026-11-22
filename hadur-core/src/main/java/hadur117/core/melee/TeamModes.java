@@ -92,7 +92,15 @@ public final class TeamModes {
          * 0.43 APS over 45 teams at 12 fresh seeds. Off through {@link #FORCE_MOMENTUM} (ablation
          * tmnomomentum).
          */
-        MOMENTUM
+        MOMENTUM,
+        /**
+         * TMODE-59, tight pack: HUNT's pull to its place is {@link TeamRisk#HUNT_TIGHT_PULL}, not
+         * {@link TeamRisk#HUNT_PULL}, so the members reach and hold their place round the prey and
+         * fire from it instead of from across the field. Only through the table, per team: the
+         * five teams that held on 12 fresh cloud seeds each (OgiTeam, ShadowTeam, Xmen, AlephTeam,
+         * DemoniacNimrods). Means nothing without HUNT, and nothing while {@link #TIGHT_ON} is off.
+         */
+        TIGHT
     }
 
     /**
@@ -113,6 +121,9 @@ public final class TeamModes {
     public static final boolean FORCE_LAST = true;
     /** TMODE-49: MOMENTUM on every team, as pc-team-momentum measured it (PR #826). */
     public static final boolean FORCE_MOMENTUM = true;
+
+    /** TMODE-59: whether TIGHT in a table entry plays; off in the shipped build until pc-team-tight reads (ablation tmtight turns it on). */
+    public static final boolean TIGHT_ON = false;
 
     /**
      * TMODE-50: the fitted enemy aims ({@link #FITTED}) join the dodge's profile. On since pc-team-fitted
@@ -221,9 +232,16 @@ public final class TeamModes {
         t.put("mn.nano.perceptual.Impact", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         // pc-team-noconcord (PR #538), 24 fresh seeds: CONCORD off (TMODE-35), OgiTeam +4.2 ± 3.0,
         // CombatTeam +2.6 ± 3.8, FirestarterTeam +1.7 ± 3.3; +0.24 ± 0.16 APS with NightmareTeam.
-        t.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
+        t.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         t.put("mn.Combat", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         t.put("cb.fire.Firestarter", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
+        // TMODE-59, tight pack: the default modes with TIGHT, written out as the bench's table reader needs, for the teams it held against on 12 fresh
+        // cloud seeds each beside the same box's baseline (score share points): ShadowTeam +12.1 ± 4.2,
+        // Xmen +9.3 ± 4.7, AlephTeam +6.2 ± 5.5, DemoniacNimrods +5.6 ± 4.4; OgiTeam above +7.4 ± 5.7.
+        t.put("abc.Shadow", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
+        t.put("florent.XSeries.X2", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
+        t.put("rz.Aleph", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
+        t.put("cx.mini.Nimrod", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         return Collections.unmodifiableMap(t);
     }
 
