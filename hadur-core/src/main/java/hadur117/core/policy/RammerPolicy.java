@@ -70,6 +70,11 @@ public final class RammerPolicy {
     private int chargeTicks;
     /** RAM-2: whether this battle's opponent has been confirmed as a rammer. */
     private boolean confirmed;
+    /**
+     * RAM-21: every duel opponent counts as a known rammer (the bench's {@code ramknown} arm). Off:
+     * the table's {@code ram-known:} lines name the known rammers.
+     */
+    public static final boolean FORCE_KNOWN = false;
     /** RAM-2: rounds this battle with a ram, this one included once it has had one. */
     private int ramRounds;
     /** RAM-2: whether this round has had a ram. */
@@ -123,6 +128,14 @@ public final class RammerPolicy {
             escaping = false;
         }
         return escaping;
+    }
+
+    /**
+     * RAM-21: the opponent is a rammer the table knows: confirmed from now, without the two rounds
+     * RAM-2 waits for. The escape still starts only once it closes in ({@link #escape}).
+     */
+    public void known() {
+        confirmed = true;
     }
 
     /** RAM-3: whether this round has had a ram (a charge within {@link #RAM_RANGE} px). */

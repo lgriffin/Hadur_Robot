@@ -1172,6 +1172,17 @@ final class ShieldTableData {
     }
 
     /**
+     * RAM-21: the rammers confirmed from the battle's first scan ({@code ram-known:} lines). Empty until
+     * a PC card holds a line (build-ablation.sh rknownlist adds candidate lines here).
+     *
+     * @return a fresh array of names
+     */
+    static String[] ramKnowns() {
+        return new String[] {
+        };
+    }
+
+    /**
      * RAM-18: the rammers the escape bends away from its own line of travel after each of their shots
      * ({@code ram-bend:} lines). Each held a PC card after a cloud class lock (build-ablation.sh rbendlist adds
      * candidate lines here).

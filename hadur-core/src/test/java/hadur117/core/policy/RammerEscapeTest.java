@@ -104,4 +104,27 @@ class RammerEscapeTest {
         assertFalse(r.escaping());
         assertFalse(charge(r, 500, 150, 100, 100));
     }
+
+    @Test
+    @Tag("RAM-21")
+    @DisplayName("RAM-21: a known rammer is confirmed at once, and its first charge of the first round starts the escape")
+    void knownRammerEscapesInTheFirstRound() {
+        RammerPolicy r = new RammerPolicy();
+        r.known();
+        assertTrue(r.confirmed());
+        assertFalse(r.escaping(), "being known is not a charge: the escape waits for it to close in");
+        assertFalse(r.escape(400, 8.0, 100, 100), "one closing scan is not yet a charge");
+        assertTrue(r.escape(392, 8.0, 100, 100), "two closing scans within 500 px start it, in round one");
+    }
+
+    @Test
+    @Tag("RAM-21")
+    @DisplayName("RAM-21: a new opponent is not known because the last one was")
+    void forgetClearsTheKnownRammer() {
+        RammerPolicy r = new RammerPolicy();
+        r.known();
+        r.forget();
+        assertFalse(r.confirmed());
+        assertFalse(charge(r, 500, 150, 100, 100));
+    }
 }
