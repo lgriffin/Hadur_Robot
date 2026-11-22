@@ -1,5 +1,6 @@
-# pc-locks (BENCH-253) round 19: c is master, aa its A/A copy; rf is master with its RAM_FLEE line on WaveRammer only
-# (plans/locks-pick.tsv; rf MOVE ram-flee, rflist).
+# pc-locks (BENCH-253) round 19: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots picked
+# for it (plans/locks-pick.tsv; rf RAM-15 ram-flee, rflist; qw MOVE-67 per-opponent aim weight, aimwlist).
 c | hadur117.Hadur 3.23 | bisect/hadur117.Hadur_3.23.jar
 aa | hadur117.Hadur 3.23aa | bisect/hadur117.Hadur_3.23aa.jar
 rf | hadur117.Hadur 3.23rf | bisect/hadur117.Hadur_3.23rf.jar
+qw | hadur117.Hadur 3.23qw | bisect/hadur117.Hadur_3.23qw.jar
