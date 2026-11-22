@@ -10,3 +10,7 @@
 15:14:45 start mrbb
 15:14:45 watching mrbb: 2 stop rule(s)
 15:27:51 progress mrbb: 120/460 (26%) battles, 549/h, ETA 37 min, 0 failed, skips 35.6/battle (last 100)
+15:58:04 progress mrbb: 420/460 (91%) battles, 582/h, ETA 4 min, 0 failed, skips 35.2/battle (last 100)
+16:01:47 mrbb exit=0 in 2822 s
+16:01:47 start mren
+16:01:47 watching mren: 2 stop rule(s)

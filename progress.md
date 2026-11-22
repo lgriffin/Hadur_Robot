@@ -1,11 +1,11 @@
 # Queue pc-melee-race: progress
 
-Updated 2026-11-22 15:55:03 PC time (15:55 UTC), runner pid 88008.
+Updated 2026-11-22 16:10:08 PC time (16:10 UTC), runner pid 88008.
 
 - `mrprep` done, exit 0 in 3 min
 - `mraa` done, exit 0 in 48 min
-- `mrbb` running
-- `mren` pending
+- `mrbb` done, exit 0 in 47 min
+- `mren` running
 - `mrez` pending
 - `mrread` pending
 - `mrpr` pending
@@ -24,20 +24,31 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### mrbb
 
-**390 of 460 battles** (85%), 0 failed. Running 40 min, 581 battles/h, about 7 min left (ends ~16:02 PC time). Last battle 0 min ago.
-Skipped turns a battle: 36.1 overall, first 100 35.7, last 100 35.0.
+**460 of 460 battles** (100%), 0 failed. Running 47 min, 587 battles/h, about 0 min left (ends ~16:01 PC time). Last battle 0 min ago.
+Skipped turns a battle: 35.5 overall, first 100 35.7, last 100 33.5.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 390 |
+| `fails 20` | halt | ok | 0 failed of 460 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 70 battles unrun (about 7 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### mren
+
+**60 of 460 battles** (13%), 0 failed. Running 8 min, 431 battles/h, about 56 min left (ends ~17:05 PC time). Last battle 0 min ago.
+Skipped turns a battle: 34.1 overall, first 60 34.1, last 60 34.1.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 20` | halt | ok | 0 failed of 60 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 400 battles unrun (about 56 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-14:24:24 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
 14:24:24 start mrprep
 14:24:27 progress pushed to origin claude/pc-melee-race-progress (every 15 min)
 14:27:11 mrprep exit=0 in 166 s
@@ -49,4 +60,8 @@ Stopping now would leave 70 battles unrun (about 7 min); every battle already fo
 15:14:45 start mrbb
 15:14:45 watching mrbb: 2 stop rule(s)
 15:27:51 progress mrbb: 120/460 (26%) battles, 549/h, ETA 37 min, 0 failed, skips 35.6/battle (last 100)
+15:58:04 progress mrbb: 420/460 (91%) battles, 582/h, ETA 4 min, 0 failed, skips 35.2/battle (last 100)
+16:01:47 mrbb exit=0 in 2822 s
+16:01:47 start mren
+16:01:47 watching mren: 2 stop rule(s)
 ```
