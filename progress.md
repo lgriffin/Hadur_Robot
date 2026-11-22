@@ -1,41 +1,16 @@
 # Queue pc-locks: progress
 
-Updated 2026-11-22 07:59:44 PC time (07:59 UTC), runner pid 85196.
+Updated 2026-11-22 09:05:46 PC time (09:05 UTC), runner pid 86484.
 
-- `prep` done, exit 0 in 2 min
-- `livematch` failed, exit 3 in 8 min
-- `lock` skipped
-- `gate` skipped
-- `pr` skipped
-
-### livematch
-
-**124 of 124 battles** (100%), 0 failed. Running 8 min, 942 battles/h, about 0 min left (ends ~07:59 PC time). Last battle 0 min ago.
-Skipped turns a battle: 5.7 overall, first 100 5.1, last 100 5.8; engine disables 0.
-
-| arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| c | 62 | 0 | 70.75 | - | - | - | 10.2 |
-| bb | 62 | 0 | 84.03 | +0.34 (31 robots) | ±0.06 | +0.24 .. +0.44 | 1.1 |
-
-APS = mean difference over the robots read x 31 panel robots / 1217 pairings.
-
-| stop rule | on trip | state | now |
-|---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 124 |
-| `dead 8` | halt | ok | every arm scoring |
-| `stall 30m` | halt | ok | last battle 0 min ago |
-
-Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
-
-> warning: arm c's jar bisect/live/hadur117.Hadur_3.22.jar was built 158 h before this step started: check it is not stale
-
-> warning: arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 145 h before this step started: check it is not stale
+- `prep` pending
+- `livematch` pending
+- `lock` pending
+- `gate` pending
+- `pr` pending
 
 ### Queue log (last lines)
 
 ```
-16:11:43 pr exit=0 in 6 s
 16:11:43 ALLDONE
 07:49:39 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
 07:49:39 start prep
@@ -50,4 +25,5 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 07:59:44 skip gate (after lock, which has not finished exit=0)
 07:59:44 skip pr (after gate, which has not finished exit=0)
 07:59:44 ALLDONE
+09:05:46 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
 ```
