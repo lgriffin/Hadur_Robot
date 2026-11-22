@@ -1026,6 +1026,8 @@ public final class DuelController {
     private boolean mimicOn;
     /** MOVE-56: the pattern-matcher mimic, null unless the table names the opponent. */
     private PatternMimic patternMimic;
+    /** MOVE-67: whether the table put the simple aim members at weight 1.0 for this opponent. */
+    private boolean aimWeightOn;
     /** MOVE-56: the enemy's bearing to us and distance on the last scan, the tick its gun aimed a shot fired now. */
     private double patternLastBearing = Double.NaN;
     private double patternLastDistance = Double.NaN;
@@ -1548,6 +1550,13 @@ public final class DuelController {
             AimMembers members = moveController.aimMembers();
             moveController.setAimMembers(new AimMembers(members == null ? 0 : members.mimics(), true));
             patternMimic = new PatternMimic(megas);
+        }
+        // MOVE-67: the simple aim members stand at weight 1.0 for the opponents the table names. Set once, at the
+        // battle's first scan, before any wave has passed us, keeping the mimics MOVE-34 and MOVE-56 put in.
+        if (duelOnly(MoveDesign.AIM_MEMBERS && stackList.aimWeight(name), enemiesTotal) && !aimWeightOn) {
+            AimMembers members = moveController.aimMembers();
+            if (members != null) moveController.setAimMembers(members.withAimPrior(AimMembers.AIM_WEIGHT_PRIOR));
+            aimWeightOn = true;
         }
         // POW-15: the full-power rules off for the opponents the table names.
         fullOff = duelOnly(stackList.fullOff(name), enemiesTotal);

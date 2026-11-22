@@ -1,15 +1,25 @@
-# BENCH-253 pc-locks, round 18: robots whose line locked on the cloud (95% low end above 0, live turn time, master;
-# coverage/shards/locks.tsv, coverage/shards/briefs.md) and eight robots whose line is already on master, read only in c
-# and aa, so the A/A check reads 12 robots. name | note | jar
+# BENCH-253 pc-locks, round 19 (with round 18, whose lock never ran: Snow, PanzerGeneral and Assertive on pm, SpaceKees on pmx; issue #989): AntiRebel, Nicator, AgentSmithRedux, Loki, Dreadnaught and NewTest on qw (MOVE-67, 24 cloud seeds each), WaveRammer on rf (48 cloud seeds, 95% low end above 0 vs c and aa;
+# coverage/shards/locks.tsv, coverage/shards/briefs.md), and eleven robots whose line is already on master, read only in c
+# and aa, so the A/A check reads 22. name | note | jar
 nova.Snow 1.0 | pm-D | nova.Snow_1.0.jar
 stf.PanzerGeneral 0.1 | pm-D | stf.PanzerGeneral_0.1.jar
 robar.nano.Assertive 0.3 | pm-D-24seeds | robar.nano.Assertive_0.3.jar
 KiraNL.SpaceKees 0.1 | pmx-G | KiraNL.SpaceKees_0.1.jar
-arthord.NanoSatan Mu | aa-pad-r17-line | arthord.NanoSatan_Mu.jar
-exauge.Leopard 1.1.019 | aa-pad-r17-line | exauge.Leopard_1.1.019.jar
+scheronimus.AntiRebel 1.1 | qw-C-24seeds | scheronimus.AntiRebel_1.1.jar
+nic.Nicator 2.4 | qw-C-24seeds | nic.Nicator_2.4.jar
+rdt.AgentSmith.AgentSmithRedux 0.02 | qw-A-24seeds | rdt.AgentSmith.AgentSmithRedux_0.02.jar
+bvh.loki.Loki 0.5 | qw-G-24seeds | bvh.loki.Loki_0.5.jar
+com.syncleus.robocode.Dreadnaught 0.1 | qw-A-24seeds | com.syncleus.robocode.Dreadnaught_0.1.jar
+com.arsenic.NewTest 1.0 | qw-B-36seeds | com.arsenic.NewTest_1.0.jar
+wiki.WaveRammer 1.0 | rf-D-B-48seeds | wiki.WaveRammer_1.0.jar
+oog.micro.Maui 1.2 | aa-pad-r16-line | oog.micro.Maui_1.2.jar
+sgp.MadHatter 4.13 | aa-pad-r16-line | sgp.MadHatter_4.13.jar
+suh.nano.RammingC 1.00 | aa-pad-r16-line | suh.nano.RammingC_1.00.jar
+jcs.AutoBot 4.2.1 | aa-pad-move56-line | jcs.AutoBot_4.2.1.jar
+mn.nano.perceptual.Impact 1.3.0 | aa-pad-r14-line | mn.nano.perceptual.Impact_1.3.0.jar
+mz.NanoDeath 2.56 | aa-pad-r14-line | mz.NanoDeath_2.56.jar
+wompi.Kowari 1.6 | aa-pad-r14-line | wompi.Kowari_1.6.jar
+sul.Bicephal 1.2 | aa-pad-r14-line | sul.Bicephal_1.2.jar
 cw.megas.GhostShell GT | aa-pad-move58-line | cw.megas.GhostShell_GT.jar
 cw.megas.Gridd 0.4 | aa-pad-move58-line | cw.megas.Gridd_0.4.jar
 cw.megas.Polar 3.2 | aa-pad-move58-line | cw.megas.Polar_3.2.jar
-jab.micro.Sanguijuela 0.8 | aa-pad-r14-line | jab.micro.Sanguijuela_0.8.jar
-bayen.UbaRamLT 1.0 | aa-pad-r14-line | bayen.UbaRamLT_1.0.jar
-robin.ScalpBotC 1.0 | aa-pad-r14-line | robin.ScalpBotC_1.0.jar

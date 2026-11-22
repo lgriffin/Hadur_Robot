@@ -50,7 +50,22 @@ class LiveMatchTest(unittest.TestCase):
                                "c", "bb", 4.0, 3.0, 100.0)
         self.assertEqual("FAIL", res["verdict"])
         self.assertEqual(3, len(res["reasons"]))
-        self.assertEqual(live_match.FAIL_EXIT, self.run_main(p))
+        out = os.path.join(self.d, "f.md")
+        self.assertEqual(live_match.FAIL_EXIT, self.run_main(p, "--out", out))
+        self.assertNotIn("as live does", open(out).read())
+
+    def test_noisy_edge_passes_marginal(self):
+        """Gap point estimate just past 4 but its interval reaches the tolerance: seed noise, PASS with a note."""
+        p = self.arms([("c", "a.A", 0.66, 5), ("bb", "a.A", 0.79, 30), ("c", "b.B", 0.72, 5),
+                       ("bb", "b.B", 0.91, 30), ("c", "c.C", 0.55, 5), ("bb", "c.C", 0.70, 30)])
+        res = live_match.check(live_match.read_arms(p, "c", "bb"), live_match.read_live(self.live),
+                               "c", "bb", 4.0, 3.0, 100.0)
+        self.assertGreater(abs(res["d_gap"][0]), 4.0)
+        self.assertEqual("PASS", res["verdict"])
+        self.assertEqual(1, len(res["notes"]))
+        out = os.path.join(self.d, "m.md")
+        self.assertEqual(0, self.run_main(p, "--out", out))
+        self.assertIn("Marginal", open(out).read())
 
     def test_no_overlap_fails(self):
         p = self.arms([("c", "z.Z", 0.6, 0), ("bb", "z.Z", 0.8, 0)])
