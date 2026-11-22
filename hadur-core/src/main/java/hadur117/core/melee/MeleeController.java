@@ -88,6 +88,8 @@ public class MeleeController {
         public boolean learnedAim;
         /** TMODE-45: a chaser is inside close quarters: the drive keeps full speed through a turn. */
         public boolean quarters;
+        /** TMODE-55: on a team with the throttle and no-brake on, the drive goes at least this far (0: to the spot). */
+        public double minAhead;
     }
 
     public final EnemyTracker tracker;
@@ -523,7 +525,8 @@ public class MeleeController {
         mover.motion(s.heading, s.velocity);
         c.destination = alive.isEmpty() ? null
             : mover.chooseDestination(s.me, s.energy, s.others, alive, s.time, plan, s.teammates, modes);
-        c.quarters = c.destination != null && mover.quartered();
+        c.quarters = c.destination != null && (mover.quartered() || mover.throttled());
+        c.minAhead = c.destination != null && mover.throttled() && TeamModes.THROTTLE_NOBRAKE ? TeamModes.THROTTLE_AHEAD : 0;
         gun.onTeam(!s.teammates.isEmpty());
         gun.concord(TeamConcord.GUN && modes.contains(TeamModes.Mode.CONCORD));
         waves.tick(s.me, s.time, s.gunHeat, alive, gun, s.energy, s.others);

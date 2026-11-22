@@ -232,6 +232,8 @@ public class MinimumRiskMovement {
     private final Point2D.Double centre;
     /** TMODE-45: whether the last decision had a chaser. */
     private boolean quartered;
+    /** TMODE-55: this tick's pick was made on a team with the throttle on. */
+    private boolean throttled;
     /** TMODE-49: the member's body heading and velocity, set by the controller each tick. */
     private double heading, velocity;
     private final Deque<VirtualBullet> bullets = new ArrayDeque<>();
@@ -618,11 +620,12 @@ public class MinimumRiskMovement {
         // TMODE-45: a chaser no longer caps the ring, so the far rings are there to flee to.
         v.chaser = !mates.isEmpty() && modes.contains(TeamModes.Mode.QUARTERS) ? chaser(me, enemies, now) : null;
         quartered = v.chaser != null;
+        throttled = TeamModes.FORCE_THROTTLE && !mates.isEmpty();
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.MOMENTUM)) {
             v.momentum = true;
             v.heading = heading;
             v.velocity = velocity;
-            v.fullSpeed = quartered;
+            v.fullSpeed = quartered || throttled;
         }
         List<Point2D.Double> candidates = candidates(me, others, quartered ? without(enemies, v.chaser) : enemies, now, mates);
         lastCandidates = candidates.size();
@@ -1051,6 +1054,11 @@ public class MinimumRiskMovement {
     /** TMODE-45: whether the last decision had a chaser; the drive then keeps full speed through a turn. */
     public boolean quartered() {
         return quartered;
+    }
+
+    /** TMODE-55: whether the last destination was picked on a team with the throttle on. */
+    public boolean throttled() {
+        return throttled;
     }
 
     /** Opponent {@code i}'s term: energy over distance squared, with the closest-robot factor (MMOVE-2). */

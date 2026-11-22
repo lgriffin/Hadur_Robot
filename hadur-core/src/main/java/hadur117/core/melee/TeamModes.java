@@ -109,6 +109,20 @@ public final class TeamModes {
     public static final boolean FORCE_CLOSE = true;
     /** TMODE-45: QUARTERS on every team; off in the shipped build (ablation tmquarters turns it on). */
     public static final boolean FORCE_QUARTERS = false;
+    /**
+     * TMODE-55, throttle: on a team, every member keeps full speed through a sharp turn (as QUARTERS
+     * does with a chaser near), and the dodge's drive is predicted that way. Off in the shipped build
+     * (ablation tmthrottle turns it on). Never read off a team.
+     */
+    public static final boolean FORCE_THROTTLE = false;
+    /**
+     * TMODE-55, no brake: with {@link #FORCE_THROTTLE}, a member also drives at least {@link #THROTTLE_AHEAD}
+     * px past where it is, so it does not brake into the spot it picked. Off in the shipped build
+     * (ablation tmnobrake turns both on).
+     */
+    public static final boolean THROTTLE_NOBRAKE = false;
+    /** TMODE-55: the least distance, in px, a throttled member is told to drive. */
+    public static final double THROTTLE_AHEAD = 120.0;
     /** TMODE-47: LAST on every team, as pc-team-guard measured it (PR #790). */
     public static final boolean FORCE_LAST = true;
     /** TMODE-49: MOMENTUM on every team, as pc-team-momentum measured it (PR #826). */
