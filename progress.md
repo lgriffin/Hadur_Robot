@@ -1,6 +1,6 @@
 # Queue pc-melee-race: progress
 
-Updated 2026-11-22 22:07:23 PC time (22:07 UTC), runner pid 13504.
+Updated 2026-11-22 22:22:29 PC time (22:22 UTC), runner pid 13504.
 
 - `mrprep` done, exit 0 in 3 min
 - `mraa` done, exit 0 in 48 min
@@ -24,20 +24,19 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### mrez
 
-**70 of 460 battles** (15%), 0 failed. Running 10 min, 437 battles/h, about 54 min left (ends ~23:00 PC time). Last battle 0 min ago.
-Skipped turns a battle: 33.4 overall, first 70 33.4, last 70 33.4.
+**209 of 460 battles** (45%), 0 failed. Running 25 min, 507 battles/h, about 30 min left (ends ~22:52 PC time). Last battle 0 min ago.
+Skipped turns a battle: 36.9 overall, first 100 36.2, last 100 37.4.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 70 |
+| `fails 20` | halt | ok | 0 failed of 209 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 390 battles unrun (about 54 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 251 battles unrun (about 30 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-17:04:34 STOP mren by rule stall 30m: last battle 31 min ago; 259 battles fought and kept, 201 battles left unrun (about 49 min)
 17:04:35 mren exit=75 in 3767 s (halted, stall 30m)
 17:04:35 queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)
 21:06:57 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
@@ -52,4 +51,5 @@ Stopping now would leave 390 battles unrun (about 54 min); every battle already 
 21:57:46 mren exit=0 in 3049 s
 21:57:46 start mrez
 21:57:46 watching mrez: 2 stop rule(s)
+22:08:23 progress mrez: 80/460 (17%) battles, 452/h, ETA 50 min, 0 failed, skips 35.6/battle (last 100)
 ```
