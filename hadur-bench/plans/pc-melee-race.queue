@@ -2,9 +2,11 @@
 # Melee final-duel energy race (MEND-6, BENCH-273). In a melee's final duel Hadur fires heavy and
 # loses from behind: against the same survivors ScalarR wins 50% of final duels it enters behind on
 # energy and Hadur 18%, ScalarR firing power 0.16 at a 22% hit rate where Hadur fires 0.66 at 13%
-# (docs/bench/melee-top3.md). en and ez let POW-17's energy race pick the power in that duel. The cloud screen (46 fields x 2 seeds) moved final-duel power 0.91 ->
-# 0.57 and final duels won 72.5% -> 78.6% (from behind 44% -> 53%), +1.3 firsts a battle, which
-# should be worth about +0.2 APS, below what the cloud's battles can resolve; this card is the read.
+# (docs/bench/melee-top3.md). en and ez let POW-17's energy race pick the power in that duel.
+# Cloud screens (46 fields x 2 seeds a block, live timing): final-duel power 0.91 -> 0.57, final
+# duels won 72.5% -> 78.6%, wins against survivors ranked 1-30 +12 to +17 points in every block;
+# en +0.28, +0.18, +0.22 (each +-0.3) on three blocks, about +0.22 +- 0.18 pooled, with a bb A/A
+# copy at -0.01 +- 0.27; ez +0.53 +- 0.34 on its one clean block. This card is the read.
 #   aa      the baseline (master)
 #   bb      its A/A copy
 #   en      mrace, MEND-6: the final duel races for power once each side has 8 resolved shots

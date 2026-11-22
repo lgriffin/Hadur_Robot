@@ -1121,3 +1121,16 @@ A 1v1 battle and a team never read it; fixtures are unchanged.
 
 Cloud screen: aa, en and ez each alone on the melee census, 2 seeds from 29410, one worker each
 (one core left free), read with `melee_pairwise.py` and the endgame wins from the traces.
+
+Cloud screen results (46 fields x 2 seeds a block, live CPU constant, paired with aa battle for battle):
+
+| Block (seeds) | Box load | en APS | ez APS | bb A/A | 1-30 endgame wins, en |
+|---|---|---|---|---|---|
+| 29411-12 | 6 battles on 4 cores (skips ~550 a battle) | +0.05 ± 0.34 | -0.17 ± 0.39 | - | +12.5 |
+| 29421-22 | 3 on 4 | +0.28 ± 0.35 | +0.53 ± 0.34 | (running) | +14.2 |
+| 29431-32 | 2 on 4 | +0.18 ± 0.29 | - | - | +12.3 |
+| 29441-42 | 3 on 4 | +0.22 ± 0.30 | - | -0.01 ± 0.27 | +16.9 |
+
+On the first block, final duels won went from 72.5% to 78.6% (en) and 79.5% (ez); from behind on
+energy, 44% to 53% and 56%. Firsts rose by 1.3 a battle, about +0.2 APS by the scoring. The three
+normal-load blocks pool en at about +0.22 ± 0.18. The PC card `pc-melee-race` (BENCH-273) is the read.
