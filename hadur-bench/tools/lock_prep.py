@@ -50,6 +50,7 @@ LEVERS = {
     "rf": ("rflist", ("RAM_FLEE",)),
     "rfn": ("rfanlist", ("RAM_FAN",)),
     "rbd": ("rbendlist", ("RAM_BEND",)),
+    "rln": ("rlearnlist", ("RAM_LEARN",)),  # RAM-20 learned shot model
     "pm": ("pmlist", ("PM_MIMIC",)),  # MOVE-56 pattern-matcher mimic
     "pmx": ("pmxlist", ("PM_MEGAS",)),  # MOVE-58 cw.megas-form pattern-matcher mimic
     "qw": ("aimwlist", ("AIM_WEIGHT",)),  # MOVE-67 per-opponent aim weight 1.0

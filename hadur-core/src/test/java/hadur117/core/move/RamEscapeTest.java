@@ -216,4 +216,65 @@ class RamEscapeTest {
         twin.setBend(false);
         assertEquals(twin.choose(later, rammerLater), bent.choose(later, rammerLater), 1e-9);
     }
+
+    @Test
+    @Tag("RAM-20")
+    @DisplayName("RAM-20: with the learned model on and taught, the escape leaves the ray the learned aim sends "
+        + "along its line; untaught, or with the switch off, it keeps RAM-5's fixed aims")
+    void learnedModelDodgesTheLearnedAim() {
+        double ene = 5 * Math.PI / 12;
+        RobotState me = state(400, 300, ene, 8, 100);
+        RobotState rammer = state(300, 300, Math.PI / 2, 8, 100);
+        // The state RAM-5's fixed pair is aimed from lies far off our line, so neither fixed aim touches the escape.
+        RobotState elsewhere = state(100, 500, 0, 0, 99);
+        // The wave's aims: every candidate points away north-west except circular two ticks back, which is led
+        // along the plain escape's own line (where a linear lead from our true state would put it).
+        double[] teach = ShotModelTest.aims(1.0, 0.2);
+        int fired = 2 * hadur117.core.physics.SimpleAims.TYPES + hadur117.core.physics.SimpleAims.CIRCULAR;
+        double[] wave = new double[hadur117.core.physics.SimpleAims.COUNT];
+        java.util.Arrays.fill(wave, 7 * Math.PI / 4);
+        for (int lag = 0; lag < hadur117.core.physics.SimpleAims.LAGS; lag++) {
+            wave[lag * hadur117.core.physics.SimpleAims.TYPES + hadur117.core.physics.SimpleAims.TURN_AFTER] = Double.NaN;
+        }
+        double[] trueState = {400 - 8 * Math.sin(ene), 300 - 8 * Math.cos(ene), ene, 8, 0, 8, 300, 300, Math.PI / 2};
+        wave[fired] = hadur117.core.physics.SimpleAims.angles(new double[][] {trueState}, Rules.getBulletSpeed(3.0),
+            800, 600)[hadur117.core.physics.SimpleAims.LINEAR];
+
+        RamEscape off = new RamEscape(FIELD, PREDICTOR);
+        RamEscape untaught = new RamEscape(FIELD, PREDICTOR);
+        untaught.setLearned(true);
+        RamEscape taught = new RamEscape(FIELD, PREDICTOR);
+        taught.setLearned(true);
+        taught.learned().observe(teach, teach[fired]);
+        taught.learned().observe(teach, teach[fired]);
+        assertTrue(taught.learned().ready());
+        for (RamEscape e : new RamEscape[] {off, untaught, taught}) {
+            e.onEnemyShot(99, 300, 300, 3.0, elsewhere, wave);
+            e.move(BotOrders.builder(), me, rammer, true);
+        }
+        assertEquals(ene, off.lastHeading(), 1e-9);
+        assertEquals(ene, untaught.lastHeading(), 1e-9);
+        assertTrue(Math.abs(Angles.normalRelativeAngle(taught.lastHeading() - ene)) > 0.2,
+            "taught pick " + taught.lastHeading());
+        // Turning the switch off drops the model; a new opponent starts it afresh.
+        taught.forgetLearned();
+        assertEquals(0, taught.learned().read());
+        taught.setLearned(false);
+        assertEquals(null, taught.learned());
+    }
+
+    @Test
+    @Tag("RAM-20")
+    @DisplayName("RAM-20: a learned ray counts against a path only on the stretch it flies that tick, within the box")
+    void rayCrossesOnlyItsOwnStretch() {
+        // A ray due north from (100, 100): at 50 to 61 px out it passes (100, 155), and (118, 155) inside the box.
+        assertTrue(RamEscape.crosses(100, 100, 0, 1, 50, 61, 100, 155));
+        assertTrue(RamEscape.crosses(100, 100, 0, 1, 50, 61, 118, 155));
+        assertTrue(!RamEscape.crosses(100, 100, 0, 1, 50, 61, 100 + RamEscape.LEARNED_BOX + 1, 155), "beside the box");
+        assertTrue(!RamEscape.crosses(100, 100, 0, 1, 50, 61, 100, 155 + 2 * RamEscape.LEARNED_BOX), "not there yet");
+        assertTrue(!RamEscape.crosses(100, 100, 0, 1, 150, 161, 100, 100), "long past");
+        // A diagonal ray reaches a point off both axes.
+        double d = Math.sqrt(0.5);
+        assertTrue(RamEscape.crosses(0, 0, d, d, 130, 150, 100, 100));
+    }
 }

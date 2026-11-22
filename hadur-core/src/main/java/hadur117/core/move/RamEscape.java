@@ -74,6 +74,21 @@ public final class RamEscape {
     private long prevTime;
     /** RAM-11: our turn rate at the last move, radians a tick, averaged over the ticks since the move before. */
     private double turnRate;
+    /**
+     * RAM-20: every rammer's shots are dodged by the learned shot model, for the bench's screen only; in the robot
+     * the table's {@code ram-learn:} lines turn it on per opponent ({@link #setLearned}).
+     */
+    static final boolean FORCE_LEARNED = false;
+    /** RAM-20: the closest approach a path loses for a shot the learned model is sure hits it squarely, px. */
+    static final double LEARNED_COST = 240.0;
+    /** RAM-20: each learned ray is tested as three, itself and this far either side, radians. */
+    static final double LEARNED_FAN = Math.toRadians(3);
+    /** RAM-20: where a learned shot's record keeps its rays' sines and cosines, three rays an aim. */
+    private static final int RAY_BASE = 10;
+    /** RAM-20: the learned shot model, null while the switch is off for this opponent. */
+    private ShotModel model;
+    /** RAM-20: a learned ray counts as hitting a path when it passes within this many px of our centre on both axes. */
+    static final double LEARNED_BOX = 22.0;
 
     /**
      * @param battleField the field, for wall smoothing
@@ -142,6 +157,16 @@ public final class RamEscape {
      * @param me our state when it fired (or as near as is known)
      */
     public void onEnemyShot(long fireTime, double enemyX, double enemyY, double power, RobotState me) {
+        onEnemyShot(fireTime, enemyX, enemyY, power, me, null);
+    }
+
+    /**
+     * RAM-20: as {@link #onEnemyShot(long, double, double, double, RobotState)}; with the learned model on and
+     * ready, the shot is kept as the model's rays for the firing wave's simple aims instead of the fixed aims.
+     *
+     * @param aims the firing wave's simple aims ({@code Wave.simpleAims()}), null when it carries none
+     */
+    public void onEnemyShot(long fireTime, double enemyX, double enemyY, double power, RobotState me, double[] aims) {
         double speed = Rules.getBulletSpeed(power);
         double headOn = Math.atan2(me.location.x - enemyX, me.location.y - enemyY);
         double tx = me.location.x;
@@ -170,7 +195,48 @@ public final class RamEscape {
             bendUntil = fireTime + BEND_TICKS;
         }
         if (shots.size() >= MAX_SHOTS) shots.removeFirst();
+        double[] rays = model == null ? null : model.rays(aims);
+        if (rays != null) {
+            // RAM-20: the learned rays, each with its weight; the last entry marks the shot as learned.
+            double[] shot = new double[RAY_BASE + 6 * ShotModel.TOP];
+            shot[0] = fireTime;
+            shot[1] = enemyX;
+            shot[2] = enemyY;
+            shot[3] = speed;
+            for (int a = 0; a < ShotModel.TOP; a++) {
+                shot[4 + a] = rays[2 * a];
+                shot[7 + a] = rays[2 * a + 1];
+                for (int k = -1; k <= 1; k++) {
+                    double angle = rays[2 * a] + k * LEARNED_FAN;
+                    shot[RAY_BASE + 6 * a + 2 * (k + 1)] = Math.sin(angle);
+                    shot[RAY_BASE + 6 * a + 2 * (k + 1) + 1] = Math.cos(angle);
+                }
+            }
+            shots.addLast(shot);
+            return;
+        }
         shots.addLast(new double[] {fireTime, enemyX, enemyY, speed, headOn, Math.atan2(tx - enemyX, ty - enemyY), circAim});
+    }
+
+    /**
+     * RAM-20: dodge this opponent's shots by the aims learned from its own bullets (its {@code ram-learn:} line).
+     * The model lasts the battle; turning the switch off drops it.
+     *
+     * @param on whether the table names this opponent
+     */
+    public void setLearned(boolean on) {
+        if (!(on || FORCE_LEARNED)) model = null;
+        else if (model == null) model = new ShotModel();
+    }
+
+    /** RAM-20: a new opponent: what the model learned is forgotten. */
+    public void forgetLearned() {
+        if (model != null) model = new ShotModel();
+    }
+
+    /** RAM-20: the learned shot model, null while the switch is off. */
+    public ShotModel learned() {
+        return model;
     }
 
     /**
@@ -326,10 +392,13 @@ public final class RamEscape {
         double sum = 0;
         double bent = 0;
         int hits = 0;
+        long learned = 0;
         int ticks = dodge && !shots.isEmpty() ? SHOT_HORIZON : HORIZON;
         for (int t = 0; t < ticks; t++) {
             double go = battleField.wallSmoothing(us.location, raw, orientation, WALL_STICK);
             if (go != raw) bent = 1;
+            double px = us.location.x;
+            double py = us.location.y;
             us = predictor.nextLocation(us, 8.0, go, false);
             // Pure pursuit: turn toward where we are now, at the engine's rate, then move.
             double want = Math.atan2(us.location.x - ex, us.location.y - ey);
@@ -338,14 +407,107 @@ public final class RamEscape {
             ev = Math.min(8.0, ev + 1.0);
             ex = DiaUtils.limit(18.0, ex + Math.sin(eh) * ev, battleField.width - 18.0);
             ey = DiaUtils.limit(18.0, ey + Math.cos(eh) * ev, battleField.height - 18.0);
-            if (dodge) hits |= hits(us.location.x, us.location.y, me.time + t + 1);
+            if (dodge) {
+                hits |= hits(us.location.x, us.location.y, me.time + t + 1);
+                if (model != null) learned |= learnedHits(me.time + t + 1, px, py);
+            }
             if (t >= HORIZON) continue;
             double d = Point2D.distance(us.location.x, us.location.y, ex, ey);
             min = Math.min(min, d);
             if (min < floor) return null;
             sum += d;
         }
-        return new double[] {min - hitCost * Integer.bitCount(hits), sum / HORIZON, bent};
+        return new double[] {min - hitPenalty(hits) - learnedPenalty(learned), sum / HORIZON, bent};
+    }
+
+    /**
+     * RAM-20: whether a ray from {@code (ox, oy)} along the direction {@code (sin, cos)}, between {@code from} and
+     * {@code to} px out, passes within {@link #LEARNED_BOX} px of {@code (x, y)} on both axes.
+     */
+    static boolean crosses(double ox, double oy, double sin, double cos, double from, double to, double x, double y) {
+        double lo = Math.max(0, from);
+        double hi = to;
+        double dx = x - ox;
+        double dy = y - oy;
+        if (Math.abs(sin) < 1e-9) {
+            if (Math.abs(dx) >= LEARNED_BOX) return false;
+        } else {
+            double a = (dx - LEARNED_BOX) / sin;
+            double b = (dx + LEARNED_BOX) / sin;
+            lo = Math.max(lo, Math.min(a, b));
+            hi = Math.min(hi, Math.max(a, b));
+        }
+        if (Math.abs(cos) < 1e-9) {
+            if (Math.abs(dy) >= LEARNED_BOX) return false;
+        } else {
+            double a = (dy - LEARNED_BOX) / cos;
+            double b = (dy + LEARNED_BOX) / cos;
+            lo = Math.max(lo, Math.min(a, b));
+            hi = Math.min(hi, Math.max(a, b));
+        }
+        return lo <= hi;
+    }
+
+    /** RAM-5: the closest approach a path loses for the fixed aims that hit it. */
+    private double hitPenalty(int bits) {
+        if (bits == 0) return 0;
+        double cost = 0;
+        int i = 0;
+        for (double[] s : shots) {
+            for (int a = 0; a < 3; a++) {
+                if ((bits & (1 << (3 * i + a))) != 0) cost += hitCost;
+            }
+            i++;
+        }
+        return cost;
+    }
+
+    /**
+     * RAM-20: which learned rays of the shots in flight pass through us this tick, nine bits a shot (three rays an
+     * aim). A ray is tested as the engine tests a bullet: the stretch it flies this tick against where we stood
+     * before this tick's move.
+     */
+    private long learnedHits(long time, double px, double py) {
+        long bits = 0;
+        int i = 0;
+        for (double[] s : shots) {
+            double flown = (time - s[0]) * s[3];
+            if (flown > 0 && s.length > 7) {
+                for (int a = 0; a < ShotModel.TOP; a++) {
+                    if (Double.isNaN(s[4 + a])) continue;
+                    for (int k = 0; k < 3; k++) {
+                        if (crosses(s[1], s[2], s[RAY_BASE + 6 * a + 2 * k], s[RAY_BASE + 6 * a + 2 * k + 1],
+                                flown - s[3], flown, px, py)) {
+                            bits |= 1L << (9 * i + 3 * a + k);
+                        }
+                    }
+                }
+            }
+            i++;
+        }
+        return bits;
+    }
+
+    /**
+     * RAM-20: the closest approach a path loses for the learned rays that hit it: {@link #LEARNED_COST} by the
+     * aim's weight, half for the aim itself and a quarter for each ray beside it, so that where no path is clear
+     * the one furthest from the aims' centres still scores best.
+     */
+    private double learnedPenalty(long bits) {
+        if (bits == 0) return 0;
+        double cost = 0;
+        int i = 0;
+        for (double[] s : shots) {
+            if (s.length > 7) {
+                for (int a = 0; a < ShotModel.TOP; a++) {
+                    for (int k = 0; k < 3; k++) {
+                        if ((bits & (1L << (9 * i + 3 * a + k))) != 0) cost += LEARNED_COST * s[7 + a] * (k == 1 ? 0.5 : 0.25);
+                    }
+                }
+            }
+            i++;
+        }
+        return cost;
     }
 
     /**
@@ -357,7 +519,7 @@ public final class RamEscape {
         int i = 0;
         for (double[] s : shots) {
             double flown = (time - s[0]) * s[3];
-            if (flown > 0) {
+            if (flown > 0 && s.length <= 7) {
                 for (int a = 0; a < 3; a++) {
                     if (Double.isNaN(s[4 + a])) continue;
                     // RAM-17: with a fan, the linear and circular aims are each three rays, the aim and +-FAN.
