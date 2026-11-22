@@ -30,6 +30,20 @@ class EnergyRaceTest {
     }
 
     @Test
+    @Tag("MEND-6")
+    @DisplayName("MEND-6: a lower shot count lets the race decide sooner, from the priors at zero")
+    void minShotsLowered() {
+        EnergyRace r = new EnergyRace();
+        assertTrue(Double.isNaN(r.choose(60, 60)));
+        r.minShots(0);
+        double p = Double.NaN;
+        for (int i = 0; i < 200 && Double.isNaN(p); i++) p = r.choose(60, 60);
+        assertTrue(!Double.isNaN(p) && p < 60, "pick " + p);
+        r.clear();
+        assertTrue(r.ready(), "a new opponent keeps the lowered count");
+    }
+
+    @Test
     @Tag("POW-17")
     @DisplayName("POW-17: a gun that hits far more than theirs fires heavy")
     void winningGunFiresHeavy() {

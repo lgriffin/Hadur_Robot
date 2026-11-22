@@ -1,45 +1,31 @@
-# 1v1, cloud locks to the PC (BENCH-253), round 20. Round 19 ran as PR #991 (bank PR #992).
-# Round 20 carries one MOVE-67 lock, one shield-exit lock and WaveRammer's second rf read, padded to 16 for the A/A check;
-# exit-class (x0) locks that land later go to round 21.
-# Cloud read (Robocode 1.12.0, live turn time, master 7fbffbcc8; coverage/shards/locks.tsv), vs c / vs aa:
-#   qw (MOVE-67 per-opponent aim weight, on master since #988) on MoggFanatic (L and B: 36 seeds 88900-35
-#      +1.26 +- 0.84 / +0.73 +- 0.70, A/A +0.53; dzlane/L/q1level, B/q1lvl2).
-#   x0 (SHIELD-19 exitOffs: the shield never leaves the battle) on BlackIce (box B: 36 seeds 89310-12 screen and
-#      89330-53 lock, +3.29 +- 1.38 / +3.00 +- 1.27, A/A +0.29; dzlane/B/shieldclose).
-#   rf (RAM-15 ram-flee, shipped) on WaveRammer: second PC read. Round 19 (#991) read rf +2.05 vs c on 12 seeds with its
-#      95% low end under 0 (the round 19 per-robot table, PR #991); the bank judges it on rounds 19 and 20 pooled
-#      (24 PC seeds), a bar set before this round runs. Cloud: 48 seeds, +2.27 vs c and +2.14 vs aa (low ends +0.37, +0.22).
-#   A/A pads: Maui, MadHatter, RammingC, AutoBot, Impact, NanoDeath, Kowari, Bicephal, GhostShell, Gridd, Polar, Dreadnaught
-#      and Nicator (lines on master, read only in c and aa), so the A/A check reads 16 robots (round 15 was void on 5).
+# 1v1, cloud locks to the PC (BENCH-253), round 21. Round 20 ran as PR #994 (bank PR #995, in release 3.24).
+# Round 21 carries one shield-exit lock, padded to 16 for the A/A check.
+# Cloud read (Robocode 1.12.0, live turn time, master 7fbffbcc8 + D's exit0 list; coverage/shards/locks.tsv), vs c / vs aa:
+#   x0 (SHIELD-19 exitOffs: the shield never leaves the battle) on Hyperion (box L: screen 6 seeds 89400 +8.40 / +8.97;
+#      lock 24 fresh seeds 89600-623, +6.20 +- 2.84 / +5.72 +- 4.48, A/A +0.48; dzlane/B/exitclass).
+#   A/A pads: Maui, MadHatter, RammingC, AutoBot, Impact, NanoDeath, Kowari, Bicephal, GhostShell, Gridd, Polar, Dreadnaught,
+#      Nicator, MoggFanatic and BlackIce (lines on master, read only in c and aa), so the A/A check reads 16 robots.
 #   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live
-#   lock       panel-locks.txt  c / aa / qw / x0 / rf, 12 fresh seeds from 86200, --cpu-constant live, in work/pc-locks20
-#              (earlier rounds' battles stay in work/pc-locks to -locks19)
+#   lock       panel-locks.txt  c / aa / x0, 12 fresh seeds from 86300, --cpu-constant live, in work/pc-locks21
+#              (earlier rounds' battles stay in work/pc-locks to -locks20)
 #   gate       each robot judged on its own lever arm only (lock_prep.py --restrict); it keeps its line where the 95%
 #              low end is above 0 (mode_table.py --margin 0).
 # Leigh starts it once the PC is free (one card at a time, from master):
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
-#   --fresh because round 19 left this plan's queue state marked complete; the new work directory and seeds mean no
+#   --fresh because round 20 left this plan's queue state marked complete; the new work directory and seeds mean no
 #   battle is read back from an earlier round (and BENCH-272 refights any whose jar changed).
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 960 lock battles (16 robots, 5 arms, 12 seeds),
-# about 30 minutes with the live-match check. The prep step stops if any panel robot's jar is missing.
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 576 lock battles (16 robots, 3 arms, 12 seeds),
+# about 20 minutes with the live-match check. The prep step stops if any panel robot's jar is missing.
 #
 # Why it should win (the PC card rule of 2026-11-03):
-#   - Per-opponent tailoring: every line names one robot; every other robot, team and melee play bit for bit as master.
-#     No new code: qw (MOVE-67) and x0 (SHIELD-19 exitOffs) are table lines for code already on master.
-#   - MoggFanatic: a circular aimer (its own key, circ1, takes 63% of its bullets) whose aim the simple members model;
-#     at MOVE-29's standing weight 1.0 they count from the first wave. Round-by-round forensic (box C, aesrec twins,
-#     24 seeds 88420): real hit share on our waves 6.2% to 4.8%, lower in every round bucket; on-key hits 4.98% to
-#     3.49% of its bullets with off-key flat at 1.6%, so the whole gain is on the key the members model; blend ranks
-#     the hit option top 85% against 80% with views alone flat or lower. The score lock is the thin side (aa low end
-#     +0.03 over 36 seeds), which the PC's own 12 seeds decide.
-#   - BlackIce: the shield's damage exit is the gate. When it fires (1 of 3 seeds on B's census, 1 of 3 on G's 89000),
-#     the rounds after it cost about 100 damage (seed 2: 102 taken in rounds 31-34 against 147 in the 31 rounds
-#     before), because our normal movement then eats its bullets. exit0 keeps the shield for the whole battle; every
-#     12-seed block read positive (dzlane/B/shieldclose).
-#   - WaveRammer: we let it close in (52% of the time under 250 px against BeepBoop's 42%), and under 250 px it hits us
-#     22.6% of the time against 14.1% on BeepBoop (box D u7 truth logs). RAM-15's flee backs away from a charger, the way
-#     BeepBoop stands off. Round 19's PC read was positive (+2.05) but wide; a second 12 seeds decides it pooled.
+#   - Per-opponent tailoring: the line names one robot; every other robot, team and melee play bit for bit as master.
+#     No new code: x0 (SHIELD-19 exitOffs) is a table line for code already on master.
+#   - Hyperion: the shield's damage exit fires late in the battle, and the ordinary duel after it scores worse than the
+#     shielded rounds before it (box B's exit predictor: post-exit score share 5.5 points under the shielded share; the
+#     predictor separates the x0 winners BlackIce, Hyperion and Che from the harms HedgehogP, NanoLauLectrik and
+#     Exterminator, whose post-exit duel is a rout in our favour). exit0 keeps the shield for the whole battle, as
+#     BlackIce's line (round 20, +3.5 on the PC) does.
 # Stop rules (docs/bench/watch.md): the watcher's A/A rule needs 10 robots read in both c and aa; this lock reads 16, but
 # the gate reads aa (multiarm.py prints aa against c), so no aa stop rule is set. The lock halts on 30 failed battles, an
 # arm scoring nothing in 8, 60+ skipped turns a battle over the last 24 or no battle in 30 minutes. The live-match step
@@ -49,20 +35,20 @@
 set V = 3.24
 set P = --parallel 16 --no-truth-log --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 2G
-set W = work/pc-locks20
+set W = work/pc-locks21
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
 
-prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && python3 tools/lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh && for a in qw x0 rf; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; done && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set panel-locks.txt && for j in $(grep -v "^#" panel-locks.txt | cut -d"|" -f3); do test -f opponents/$j || { echo "missing jar $j"; exit 1; }; done && mvn -q compile
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && python3 tools/lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh && for a in x0; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; done && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set panel-locks.txt && for j in $(grep -v "^#" panel-locks.txt | cut -d"|" -f3); do test -f opponents/$j || { echo "missing jar $j"; exit 1; }; done && mvn -q compile
 
-livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out work/pc-livematch-rel-live --label pc-locks-livematch --shuffle-jobs && python3 tools/live_match.py work/pc-livematch-rel-live/arms.tsv --out ${OUT}/pc-locks20-livematch.md
+livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out work/pc-livematch-rel-live --label pc-locks-livematch --shuffle-jobs && python3 tools/live_match.py work/pc-livematch-rel-live/arms.tsv --out ${OUT}/pc-locks21-livematch.md
   after: prep
   watch: field=1217
   stop: fails 30
   stop: dead 8
   stop: stall 30m
 
-lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 86200 --arms ${W}-prep/lock.arms --out ${W} --label pc-locks --shuffle-jobs
+lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 86300 --arms ${W}-prep/lock.arms --out ${W} --label pc-locks --shuffle-jobs
   after: livematch
   watch: field=1217
   stop: fails 30
@@ -70,8 +56,8 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 8
   stop: skips 60 over 24
   stop: stall 30m
 
-gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks20-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks20-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks20-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms qw x0 rf --out ${OUT}/$(date +%Y-%m-%d)_pc-locks20-lock-per-robot.md --out-tsv ${OUT}/pc-locks20-lock-per-robot.tsv
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks21-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks21-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks21-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms x0 --out ${OUT}/$(date +%Y-%m-%d)_pc-locks21-lock-per-robot.md --out-tsv ${OUT}/pc-locks21-lock-per-robot.tsv
   after: lock
 
-pr | bash tools/open_results_pr.sh claude/pc-locks20-results "1v1 cloud locks, round 20 (MoggFanatic qw, BlackIce x0, WaveRammer rf second read) on 12 fresh PC seeds" ${OUT}/pc-locks20-livematch.md ${OUT}/*_pc-locks20-*.md ${OUT}/pc-locks20-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks20-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks21-results "1v1 cloud locks, round 21 (Hyperion x0) on 12 fresh PC seeds" ${OUT}/pc-locks21-livematch.md ${OUT}/*_pc-locks21-*.md ${OUT}/pc-locks21-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks21-lock-pick.tsv' -size +0c)
   after: gate

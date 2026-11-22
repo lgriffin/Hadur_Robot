@@ -491,6 +491,16 @@ public final class DuelController {
     }
 
     /**
+     * MEND-6: whether this battle is a melee off a team, so its final duel may race for power.
+     *
+     * @param on true in a melee off a team
+     */
+    public void meleeCharter(boolean on) {
+        meleeCharter = on;
+        if (ENDGAME_RACE && on) race.minShots(ENDGAME_RACE_SHOTS);
+    }
+
+    /**
      * The Duel fights {@code name} from this scan on. A different robot from the last one
      * (a melee's survivor can change from round to round) means what the windows and the
      * distance controller learned was about another gun.
@@ -628,7 +638,10 @@ public final class DuelController {
         // POW-17: against the opponents the table names, once both sides have shots resolved, the
         // energy race picks the power in place of the gun's choice, POW-5 and POW-1 to POW-4;
         // SHIELD-4, END-3, RAM-1 and POW-10 below still apply to it.
-        double racePick = racePower && enemiesTotal <= 1 ? race.choose(in.energy(), e.energy()) : Double.NaN;
+        // MEND-6: with the switch on, a melee's final duel after the hand-off races too.
+        boolean endgameRace = ENDGAME_RACE && meleeCharter && enemiesTotal > 1 && in.others() == 1;
+        double racePick = (racePower && enemiesTotal <= 1) || endgameRace
+            ? race.choose(in.energy(), e.energy()) : Double.NaN;
         boolean raceOn = !Double.isNaN(racePick);
         if (raceOn != raceApplied) {
             raceApplied = raceOn;
@@ -1024,6 +1037,16 @@ public final class DuelController {
     private boolean x5Power;
     /** POW-17: the table names this opponent for the energy-race power pick. */
     private boolean racePower;
+    /**
+     * MEND-6: in a melee's final duel (off a team, after the hand-off), the energy race picks the
+     * power as POW-17 does for the opponents the table names. Off: arms {@code mrace} and
+     * {@code mracex} switch it on; a duel and a team never read it.
+     */
+    public static final boolean ENDGAME_RACE = false;
+    /** MEND-6: the resolved shots each side needs before the endgame race decides. */
+    static final int ENDGAME_RACE_SHOTS = 8;
+    /** MEND-6: this battle is a melee off a team, set once by the core. */
+    private boolean meleeCharter;
     /** RAM-11: whether this opponent has a {@code ram-circ:} line. */
     private boolean ramCirc;
     /** RAM-14: whether this opponent has a {@code ram-heavy:} line. */
