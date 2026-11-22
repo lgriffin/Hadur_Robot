@@ -7,6 +7,9 @@
 # read back from run 1's battles, and its reports and results branch carry -324 so run 1's are never replaced. The read
 # adds the field diagnosis (data/tools/diagnose_field.py, BENCH-240) on the same logs, so the morning has one class
 # table for the whole field on 3.24. Run 1's 6 GB under work/learn-trace-pc can be deleted first to free the disk.
+# The diagnosis's Gap column and its row order come from field-ledger.tsv, whose live gaps are from the 3.21 ledger
+# (refreshing it needs all eight rivals' current pages); its Bench column is this run's own 3.24 gap to BeepBoop and is
+# the one to rank by. Rebuild the ledger with this run's read before any card is built from the classes.
 # One bench queue, RoboRumble workers at 0, unpinned, 12 workers, TRUTH LOG ON (the read needs it). Every step resumes;
 # no step needs a decision. About 4 hours of battles (2 arms x 1,212 robots x 1 seed = 2,424 at 35 rounds), and
 # about 6 GB of truth logs under ${W} (2.3 MB a battle on the cloud).
