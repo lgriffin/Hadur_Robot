@@ -1153,6 +1153,21 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             version="${version}ot10"
             edit "$modes" 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' 't.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM));'
             ;;
+        ogpast10)
+            # scratch (OgiTeam dive): past positions repel 10x. Suffix opa10.
+            version="${version}opa10"
+            edit "$mrm" "static final double PAST_K = 0.02;" "static final double PAST_K = 0.2;"
+            ;;
+        ogpast40)
+            # scratch (OgiTeam dive): past positions repel 40x. Suffix opa40.
+            version="${version}opa40"
+            edit "$mrm" "static final double PAST_K = 0.02;" "static final double PAST_K = 0.8;"
+            ;;
+        ogring)
+            # scratch (OgiTeam dive): candidate rings 160-400 px. Suffix orng.
+            version="${version}orng"
+            edit "$mrm" "static final double RING_MIN = 100, RING_MAX = 300;" "static final double RING_MIN = 160, RING_MAX = 400;"
+            ;;
         tmthrottle)
             # TMODE-55: every team member keeps full speed through sharp turns. Suffix th.
             version="${version}th"
