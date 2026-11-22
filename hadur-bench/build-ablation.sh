@@ -1030,6 +1030,11 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$modes" "public static final boolean FORCE_PICK = false;" "public static final boolean FORCE_PICK = true;"
             edit "$modes" "public static final int PICK_HOLD = 0;" "public static final int PICK_HOLD = 2;"
             ;;
+        tmshy)
+            # TMODE-57: driving at an enemy costs more than driving away. Suffix sh.
+            version="${version}sh"
+            edit "$modes" "public static final boolean FORCE_SHY = false;" "public static final boolean FORCE_SHY = true;"
+            ;;
         tmthrottle)
             # TMODE-55: every team member keeps full speed through sharp turns. Suffix th.
             version="${version}th"

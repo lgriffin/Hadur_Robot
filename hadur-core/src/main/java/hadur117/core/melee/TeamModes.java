@@ -145,6 +145,15 @@ public final class TeamModes {
         return e.velocity * Math.cos(e.heading - bearing);
     }
 
+    /**
+     * TMODE-57, shy: on a team, a destination reached by driving at an enemy pays {@link #SHY_TOWARD}
+     * times the lateral term and one reached by driving away {@link #SHY_AWAY} times (a member closing
+     * on its shooter is hit about half again as often as one backing off). Off in the shipped build
+     * (ablation tmshy). Never read off a team.
+     */
+    public static final boolean FORCE_SHY = false;
+    /** TMODE-57: the lateral term's weight driving at an enemy, and away from it. */
+    public static final double SHY_TOWARD = 3.0, SHY_AWAY = 0.3;
     /** TMODE-47: LAST on every team, as pc-team-guard measured it (PR #790). */
     public static final boolean FORCE_LAST = true;
     /** TMODE-49: MOMENTUM on every team, as pc-team-momentum measured it (PR #826). */

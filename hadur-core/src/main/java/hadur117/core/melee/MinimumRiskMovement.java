@@ -1073,7 +1073,13 @@ public class MinimumRiskMovement {
         if (p.distance(v.me) > 1) {
             double lateral = v.others == 2 ? ENDGAME_LATERAL : LATERAL;
             double a = DiaUtils.absoluteBearing(p, e.location) - DiaUtils.absoluteBearing(v.me, p);
-            r *= 1.0 + lateral * Math.abs(Math.cos(a));
+            double c = Math.cos(a);
+            if (TeamModes.FORCE_SHY && onTeam(v.mates)) {
+                // TMODE-57: driving at an enemy costs more than driving away from it.
+                r *= 1.0 + lateral * (c > 0 ? TeamModes.SHY_TOWARD * c : -TeamModes.SHY_AWAY * c);
+            } else {
+                r *= 1.0 + lateral * Math.abs(c);
+            }
         }
         return r;
     }
