@@ -66,21 +66,6 @@ public final class RamEscape {
      * ({@code ram-circ:} lines, {@link #setCircular}); this forces it on every rammer, for the bench's screen only.
      */
     static final boolean FORCE_CIRCULAR = false;
-    /**
-     * RAM-19: the arc escape. The escape's candidates are straight legs at full speed, and a straight leg at constant
-     * speed is exactly what a linear aim predicts (the bench's traces: a linear aim would hit 29% of our escape paths
-     * against 13% of a top rival's, which curves twice as much). With this on, the escape also plays arcs (our direction
-     * of travel turning at a fixed rate) and scores every candidate against the rammer's next shot before it leaves:
-     * an imaginary shot at the tick its gun has cooled, aimed head-on and linear at where the candidate has us then.
-     * Off until a screen holds it.
-     */
-    static final boolean ARC_ESCAPE = false;
-    /** RAM-19: the arcs' turn rates, as fractions of the full-speed turn rate, each side. */
-    static final double[] ARC_RATES = {0.5, 1.0};
-    /** RAM-19: the battle's gun cooling rate (the rumble's default). */
-    static final double COOLING = 0.1;
-    /** RAM-19: the rammer's last shot, {fire tick, power}; null before its first this round. */
-    private double[] lastShot;
     /** RAM-11: whether this opponent's shots are also dodged as circular aims. */
     private boolean circular;
     /** RAM-11: our heading at the last move, for the turn rate a circular aim extrapolates; NaN before the first. */
@@ -107,7 +92,6 @@ public final class RamEscape {
         bendUntil = Long.MIN_VALUE;
         prevHeading = Double.NaN;
         turnRate = 0;
-        lastShot = null;
     }
 
     /** The heading chosen on the last {@link #move}, NaN before the first. */
@@ -185,7 +169,6 @@ public final class RamEscape {
             bendFrom = Angles.normalAbsoluteAngle(me.velocity < 0 ? me.heading + Math.PI : me.heading);
             bendUntil = fireTime + BEND_TICKS;
         }
-        lastShot = new double[] {fireTime, power};
         if (shots.size() >= MAX_SHOTS) shots.removeFirst();
         shots.addLast(new double[] {fireTime, enemyX, enemyY, speed, headOn, Math.atan2(tx - enemyX, ty - enemyY), circAim});
     }
@@ -318,47 +301,9 @@ public final class RamEscape {
                 }
             }
         }
-        if (ARC_ESCAPE && !bending) {
-            // RAM-19: arcs from our direction of travel, each way, at each rate.
-            double travel = me.velocity < 0 ? Angles.normalAbsoluteAngle(me.heading + Math.PI) : me.heading;
-            double full = Rules.getTurnRateRadians(8.0);
-            for (double rate : ARC_RATES) {
-                for (int side = -1; side <= 1; side += 2) {
-                    double turnEach = side * rate * full;
-                    double[] score = play(me, enemy, travel, side, bestMin - TIE, turnEach);
-                    if (score == null) continue;
-                    double first = battleField.wallSmoothing(me.location, travel + turnEach, side, WALL_STICK);
-                    double turn = Double.isNaN(lastHeading) ? 0
-                        : Math.abs(Angles.normalRelativeAngle(first - lastHeading));
-                    boolean better;
-                    if (score[0] > bestMin + TIE) better = true;
-                    else if (score[0] < bestMin - TIE) better = false;
-                    else if (score[1] > bestMean + TIE) better = true;
-                    else if (score[1] < bestMean - TIE) better = false;
-                    else better = turn < bestTurn;
-                    if (better) {
-                        found = true;
-                        bestMin = Math.max(bestMin, score[0]);
-                        bestMean = score[1];
-                        bestTurn = turn;
-                        bestHeading = first;
-                    }
-                }
-            }
-        }
         if (!found && bending) return Double.NaN;
         lastHeading = bestHeading;
         return bestHeading;
-    }
-
-    /**
-     * RAM-19: the tick the rammer's gun has cooled from its last shot (or from the round's start heat of 3), never
-     * before the next tick.
-     */
-    long nextFire(long now) {
-        long t = lastShot == null ? (long) Math.ceil(3.0 / COOLING)
-            : (long) lastShot[0] + (long) Math.ceil(Rules.getGunHeat(lastShot[1]) / COOLING);
-        return Math.max(now + 1, t);
     }
 
     /**
@@ -370,17 +315,6 @@ public final class RamEscape {
      */
     private double[] play(RobotState me, RobotState enemy, double raw, int orientation,
                           double floor) {
-        return play(me, enemy, raw, orientation, floor, Double.NaN);
-    }
-
-    /** As above; with {@code arcTurn} a number, the raw heading turns by it every tick (RAM-19's arcs). */
-    private double[] play(RobotState me, RobotState enemy, double raw, int orientation,
-                          double floor, double arcTurn) {
-        boolean arc = !Double.isNaN(arcTurn);
-        // RAM-19: the imaginary next shot, {fire tick, x, y, speed, head-on, linear}, set on the tick it leaves.
-        double[] imaginary = null;
-        long fire = ARC_ESCAPE && dodge ? nextFire(me.time) : Long.MIN_VALUE;
-        double power = lastShot == null ? 3.0 : lastShot[1];
         RobotState us = me;
         double ex = enemy.location.x;
         double ey = enemy.location.y;
@@ -392,25 +326,10 @@ public final class RamEscape {
         double sum = 0;
         double bent = 0;
         int hits = 0;
-        int imaginaryHit = 0;
-        int ticks = dodge && (!shots.isEmpty() || ARC_ESCAPE) ? SHOT_HORIZON : HORIZON;
+        int ticks = dodge && !shots.isEmpty() ? SHOT_HORIZON : HORIZON;
         for (int t = 0; t < ticks; t++) {
-            double want0 = arc ? raw + arcTurn * (t + 1) : raw;
-            double go = battleField.wallSmoothing(us.location, want0, orientation, WALL_STICK);
-            if (go != want0) bent = 1;
-            if (me.time + t == fire) {
-                // RAM-19: the rammer fires this tick at where we are, from where it is, head-on and linear.
-                double speed = Rules.getBulletSpeed(power);
-                double headOn = Math.atan2(us.location.x - ex, us.location.y - ey);
-                double tx = us.location.x;
-                double ty = us.location.y;
-                for (int k = 1; k < 100; k++) {
-                    tx = DiaUtils.limit(18.0, us.location.x + Math.sin(us.heading) * us.velocity * k, battleField.width - 18.0);
-                    ty = DiaUtils.limit(18.0, us.location.y + Math.cos(us.heading) * us.velocity * k, battleField.height - 18.0);
-                    if (Point2D.distance(ex, ey, tx, ty) <= speed * k) break;
-                }
-                imaginary = new double[] {fire, ex, ey, speed, headOn, Math.atan2(tx - ex, ty - ey)};
-            }
+            double go = battleField.wallSmoothing(us.location, raw, orientation, WALL_STICK);
+            if (go != raw) bent = 1;
             us = predictor.nextLocation(us, 8.0, go, false);
             // Pure pursuit: turn toward where we are now, at the engine's rate, then move.
             double want = Math.atan2(us.location.x - ex, us.location.y - ey);
@@ -420,28 +339,13 @@ public final class RamEscape {
             ex = DiaUtils.limit(18.0, ex + Math.sin(eh) * ev, battleField.width - 18.0);
             ey = DiaUtils.limit(18.0, ey + Math.cos(eh) * ev, battleField.height - 18.0);
             if (dodge) hits |= hits(us.location.x, us.location.y, me.time + t + 1);
-            if (imaginary != null && imaginaryHits(imaginary, us.location.x, us.location.y, me.time + t + 1)) {
-                imaginaryHit = 1;
-            }
             if (t >= HORIZON) continue;
             double d = Point2D.distance(us.location.x, us.location.y, ex, ey);
             min = Math.min(min, d);
             if (min < floor) return null;
             sum += d;
         }
-        return new double[] {min - hitCost * (Integer.bitCount(hits) + imaginaryHit), sum / HORIZON, bent};
-    }
-
-    /** RAM-19: whether the imaginary shot, aimed head-on or linear, would hit us at {@code (x, y)} on {@code time}. */
-    static boolean imaginaryHits(double[] s, double x, double y, long time) {
-        double flown = (time - s[0]) * s[3];
-        if (flown <= 0) return false;
-        for (int a = 0; a < 2; a++) {
-            double bx = s[1] + Math.sin(s[4 + a]) * flown;
-            double by = s[2] + Math.cos(s[4 + a]) * flown;
-            if (Math.abs(bx - x) < HIT_BOX && Math.abs(by - y) < HIT_BOX) return true;
-        }
-        return false;
+        return new double[] {min - hitCost * Integer.bitCount(hits), sum / HORIZON, bent};
     }
 
     /**

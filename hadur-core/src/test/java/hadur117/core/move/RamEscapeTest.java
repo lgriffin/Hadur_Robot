@@ -216,30 +216,4 @@ class RamEscapeTest {
         twin.setBend(false);
         assertEquals(twin.choose(later, rammerLater), bent.choose(later, rammerLater), 1e-9);
     }
-
-    @Test
-    @Tag("RAM-19")
-    @DisplayName("RAM-19: the rammer's next shot is due when its gun has cooled from the last one, never before the next tick")
-    void nextShotFollowsTheGunHeat() {
-        RamEscape escape = new RamEscape(FIELD, PREDICTOR);
-        // Before any shot, the round's start heat of 3 cools in 30 ticks.
-        assertEquals(30, escape.nextFire(5));
-        assertEquals(41, escape.nextFire(40));
-        // A power-3 shot at tick 100 adds 1.6 heat: 16 ticks at the default cooling.
-        escape.onEnemyShot(100, 400, 300, 3.0, state(500, 300, Math.PI / 2, 8, 100));
-        assertEquals(116, escape.nextFire(101));
-        assertEquals(121, escape.nextFire(120));
-    }
-
-    @Test
-    @Tag("RAM-19")
-    @DisplayName("RAM-19: an imaginary shot hits where its head-on or linear aim has flown, and nowhere else")
-    void imaginaryShotHitsAlongItsAims() {
-        // Fired at tick 10 from (400, 300) at 11 px a tick: head-on due north (0 rad), linear due east (pi/2).
-        double[] shot = {10, 400, 300, 11, 0, Math.PI / 2};
-        assertTrue(RamEscape.imaginaryHits(shot, 400, 300 + 55, 15), "on the head-on ray after 5 ticks");
-        assertTrue(RamEscape.imaginaryHits(shot, 400 + 110, 300, 20), "on the linear ray after 10 ticks");
-        assertTrue(!RamEscape.imaginaryHits(shot, 400 + 60, 300 + 60, 15), "between the two aims");
-        assertTrue(!RamEscape.imaginaryHits(shot, 400, 300 + 55, 10), "before it has flown");
-    }
 }
