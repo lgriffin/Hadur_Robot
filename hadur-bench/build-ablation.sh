@@ -463,10 +463,6 @@ for a in "${list[@]}"; do
             # RAM-20: the rammer escape dodges every rammer's shots by the aims learned from its bullets (the cloud screen's arm).
             edit "$src/hadur-core/src/main/java/$pkg/core/move/RamEscape.java" "static final boolean FORCE_LEARNED = false;" "static final boolean FORCE_LEARNED = true;"
             version="${version}rl" ;;
-        rlc3|rlc6|rlc12)
-            # RAM-20 screen: the learned model's cost for a sure hit, 300, 600 or 1200 px of closest approach (240 as built).
-            edit "$src/hadur-core/src/main/java/$pkg/core/move/RamEscape.java" "static final double LEARNED_COST = 240.0;" "static final double LEARNED_COST = ${a#rlc}00.0;"
-            version="${version}${a#rl}" ;;
         shoff)
             # BENCH-246 pc-modes-check: MOVE-43's shadow fix off again, to read what it does to team and melee end games.
             edit "$movedesign" "static final boolean KEEP_SHADOWS = true;" "static final boolean KEEP_SHADOWS = false;"

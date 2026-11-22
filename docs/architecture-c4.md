@@ -319,7 +319,7 @@ C4Component
 | `GunController` | Picks between the main kNN gun and the anti-surfer gun on their virtual ratings; the opening book can pick first (ADAPT-1). The per-opponent gun stack (TripHammer, free gun, undecayed) is a table slot. |
 | `MoveController` | Keeps the enemy's waves and the danger views, learns from bullets that hit us, and (MOVE-29) mixes the views with simple-aim "members" whose weights follow how well each predicted real bullets. MOVE-30 also scores them on bullets our bullets intercepted, and MOVE-52 teaches the views from those intercepts as from hits. Per opponent, the table adds learning-gun mimics (MOVE-34), a pattern-matcher mimic in AutoBot's or cw.megas's form (MOVE-56, MOVE-58) or a stronger standing weight for the simple aims (MOVE-67). `BulletShadows` removes angles our own bullets protect (MOVE-1), and keeps a dead bullet's shadows (MOVE-43). |
 | `SurfMover` | Turns danger into orders: three-option surf, go-to surfing, the orbit, the ram on a disabled enemy. |
-| `StopAndGo`, `RamEscape`, `MirrorDrive`, `ShotDodgePlanner` | Drivers that replace the surf against specific kinds of opponent: stop-and-go picks from the table (POISON-2), the escape from a confirmed rammer (RAM-2, with RAM-5 scoring paths against its shots), the planned path against a mirror bot (MIR-1). |
+| `StopAndGo`, `RamEscape`, `MirrorDrive`, `ShotDodgePlanner` | Drivers that replace the surf against specific kinds of opponent: stop-and-go picks from the table (POISON-2), the escape from a confirmed rammer (RAM-2, with RAM-5 scoring paths against its shots, and per opponent RAM-20's `ShotModel` learning which simple aims its gun really fires), the planned path against a mirror bot (MIR-1). |
 | `ShieldMode` | For an opponent on the shield list: stand still and shoot its bullets down, with learned predictors, a shipped aim and an opening drive from the table, and an exit if the damage budget runs out (SHIELD-5, SHIELD-6). |
 | Policies | Distance controller (DIST-1), power (POW), endgame finish and ram (END-1, END-2), movement flavour (MOVE-2), tick budget levels (TIME-1, TIME-2), rammer and mirror recognition. They see no `BotInput` (DIAL-2) and act through setters. |
 | `OpeningBook`, `SeedTrust` | At first scan, read the `.hp` profile once: gun tier, movement tier, starting distance, seeds replayed at half weight; seeds fade when live data disagrees (RES-4). |
@@ -760,6 +760,7 @@ flowchart LR
 | `ramFlees()` | `ram-flee:` | RAM-15 | 52 | Flee a slow rammer |
 | `ramWaits()` | `ram-wait:` | MOVE-46 | 9 | Against a disabled enemy, keep surfing its live waves before the ram |
 | `ramBends()`, `ramFans()`, `ramCircs()`, `ramHeavies()` | `ram-bend:`, `ram-fan:`, `ram-circ:`, `ram-heavy:` | RAM-18, RAM-17, RAM-11, RAM-14 | 10, 2, 4, 0 | RAM-2 escape variants: the escape bend, fanned and circular aims, heavier path costs |
+| `ramLearns()` | `ram-learn:` | RAM-20 | 0 | The escape dodges the aims learned from the rammer's own bullets (`ShotModel`) in place of RAM-5's fixed pair |
 | **Power and gun** | | | | |
 | `powerCaps()`, `powerCapHalves()` | `power-cap:`, `power-cap5:` | POW-18 | 6, 2 | Cap fire power |
 | `hardFires()`, `powerBands()` | `hard-fire:`, `power-band:` | POW-19, POW-20 | 1, 1 | At least 0.6 power while we have 60+ energy; a power multiplier per energy band |
