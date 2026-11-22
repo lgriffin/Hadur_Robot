@@ -636,6 +636,8 @@ final class ShieldTableData {
             "ers.nano.meroka.Meroka 1.8a",    // +4.3
             // pc-locks round 20 (BENCH-253, PR #994): 12 fresh PC seeds at the live turn time; 36-seed cloud lock held first
             "alpha.BlackIce 1.0",             // +3.5
+            // pc-locks round 21 (BENCH-253, PR #1001): 12 fresh PC seeds at the live turn time; 24-seed cloud lock held first
+            "mue.Hyperion 0.8",               // +8.1
         };
     }
 
