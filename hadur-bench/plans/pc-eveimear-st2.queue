@@ -1,4 +1,4 @@
-# Eveimear mode picks, round 2 (thread "Take 1st with JayLexi and Sanaro"; BENCH-180). Eveimear 0.2 is 9th in
+# Eveimear mode picks, round 2 (thread "Take 1st with JayLexi and Sanaro"; BENCH-283). Eveimear 0.2 is 9th in
 # MicroRumble on 83.39, 2.2 behind WaveShark, the gap spread over ranks 61-450 (-1.4 to -4.2 a robot).
 #   ./queue.sh run pc-eveimear-st2        (or  .\queue.ps1 run pc-eveimear-st2)
 # Run it from master with this card merged: git checkout master && git pull

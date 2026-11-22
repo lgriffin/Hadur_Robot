@@ -6,7 +6,7 @@ away: a spiral read best among nanos but costs 0.88 where NanoMelee is scored), 
 its own threshold, the line's fire gate, a flat lead of its own and its own table of bullet power by
 both robots' energy. The design, the cloud
 screen and the stages are in [docs/sanaro.md](../docs/sanaro.md); the requirements are SANARO-1 to
-SANARO-14 in [docs/requirements.md](../docs/requirements.md).
+SANARO-14 in [docs/requirements/sanaro.md](../docs/requirements/sanaro.md).
 
 0.1 (247 bytes, released 2026-10-28, tag `sanaro-v0.1`) is live 2nd in NanoMelee at 65.21, behind
 Quantum's 66.44. 0.2 is one class of 249 bytes (NanoMelee's limit): it adds the fire gate and

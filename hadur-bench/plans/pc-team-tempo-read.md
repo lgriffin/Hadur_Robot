@@ -1,0 +1,5 @@
+# The `pc-team-tempo-read` card (BENCH-259)
+
+The bench shall carry the `pc-team-tempo-read` card and `tools/team_tempo.py`, a read that ships nothing: it builds master (aa), plays OgiTeam and then HadurTeam aa as the subject team against the six teams of `plans/team-tempo-set.txt` (SittingDroidTeam and five weak teams) at the same 12 seeds from 27000 and 12 rounds with no baseline, declares its stop rules on both battle steps (20 failed battles, no battle in 30 minutes, 60+ skipped turns a battle over the last 200), and reads the battles both subjects finished: for each subject and opposing team the round length, the mean turn of each enemy death, the living guns, the share of their turns after turn 30 spent cooling a fired shot, the hit rate on enemies, mean power, damage a hit, the share of shots that hit nobody and whose target died while they flew, own hits and own damage a round, the first shot's turn and the opening shots' range, and over all teams the four factors of damage a tick (guns alive, shots a gun-tick, hit rate, damage a hit) with each subject's ratio; the card shall end in a results PR.
+
+Stage or check: T7

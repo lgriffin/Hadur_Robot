@@ -1,5 +1,5 @@
 # Mode table M1 (docs/plan-mode-table.md): the 127 robots Saguaro 1.0 locks a shield mode for and
-# Hadur's shield list leaves out, from Saguaro's shipped table (docs/bench/rivals-source-read.md).
+# Hadur's shield list leaves out, from Saguaro's table.
 # Rows from census-312.txt; the comment above each gives Saguaro's mode and both live scores.
 # saguaro bulletShield, live Saguaro 97.55 Hadur 3.15 65.43
 jk.micro.Cotillion 0.8 | rank91-band3 | jk.micro.Cotillion_0.8.jar

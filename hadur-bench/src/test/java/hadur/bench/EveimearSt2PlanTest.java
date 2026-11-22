@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 /**
- * BENCH-180: the Eveimear mode-pick card (plans/pc-eveimear-st2.queue) is complete before it reaches the PC: the forced
+ * BENCH-283: the Eveimear mode-pick card (plans/pc-eveimear-st2.queue) is complete before it reaches the PC: the forced
  * arms built by tools/eveimear_modes.py, a pilot on a fifth of the panel gated against null picks, the screen on the
  * rest, the confirm on fresh seeds, the case for it written on the card, the read and the PR.
  */
@@ -33,7 +33,7 @@ class EveimearSt2PlanTest {
     }
 
     @Test
-    @Tag("BENCH-180")
+    @Tag("BENCH-283")
     @DisplayName("the arms, the pilot and rest panels, the pilot gate, the confirm and the why-it-should-win case are on the card")
     void cardIsComplete() throws IOException {
         String queue = Files.readString(Path.of("plans/pc-eveimear-st2.queue"));

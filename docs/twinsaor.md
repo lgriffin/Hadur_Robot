@@ -1,5 +1,7 @@
 # TwinSaor: a Twin Duel team built on Saor
 
+> Architecture diagrams for every small bot: [architecture-c4.md, The small bots](architecture-c4.md#the-small-bots).
+
 TwinSaor is a Twin Duel team for Saor: 2,000 bytes, so two Saor cores and a small team layer, after a
 read of the leader's team logic. No PC bench runs before a live run.
 
@@ -45,10 +47,10 @@ The top five sit within 1.9 APS of each other, and the field is small: each pair
 the score, so one matchup moved by 10 points moves APS by 0.38. Below 7th the field falls away
 fast (8th 59.9, 15th 54.0, 25th 14.3), so a solid team scores well against most of it.
 
-## 2. LunarTwins 1.4a, taken apart
+## 2. LunarTwins 1.4a, from its published source
 
 The jar ships its source (`robot.include.source=true`). Seven classes, about 1,940 bytes of
-method bytecode by a `javap` count (the codesize utility itself was not run here). Its
+method bytecode. Its
 description is "Divide, Pin, and Conquer!", and the code does exactly that.
 
 ### Roles
@@ -248,7 +250,7 @@ Stages are W0 to W3 (W for Twin; T is the Team plan's letter).
 
 ### Requirements (TWIN-1 to TWIN-12)
 
-These are also in `docs/requirements.md`.
+These are also in `docs/requirements/twinsaor.md`.
 
 | ID | Pattern | Requirement | Stage |
 |---|---|---|---|

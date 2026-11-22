@@ -1,0 +1,5 @@
+# The `pc-portfolio` card (BENCH-230)
+
+The bench shall carry the `pc-portfolio` card: from pc-tailor-near's battles (`work/tnr`, each leaning robot on its own lever as arm ln beside c) and its leans (`docs/bench/local/tnr-lean.tsv`), `tools/x5_card.py portfolio` shall keep every robot whose gain, shrunk toward its lever's mean by the share of the gains' variance that is spread between robots and not noise, is above 0, leaving out the robots the table already carries a lever for and shield-mode robots on gs or fl; the kept robots, each on its lever in one build (xr), shall fight beside master (c) and its A/A copy (aa) at 6 fresh seeds from 14500, every fifth robot first as a pilot that stops the card when xr is under 0 over c and aa; then the group gate for xr (`tools/shield_s2.py gate`, 0.03 bar over 1,217 pairings, 95% low end above 0) with no per-robot margin, per-robot results kept for the next pass; 12 workers, truth log off, stopping on 30 failed battles, an arm scoring nothing in 8, 90+ skipped turns a battle over the last 200 or no battle in 30 minutes; then a results PR.
+
+Stage or check: T7

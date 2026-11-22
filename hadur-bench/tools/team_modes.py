@@ -559,7 +559,7 @@ def main(argv=None):
     gt.add_argument("--min-aps", type=float, default=0.3)
     gt.add_argument("--out-md")
     gt.add_argument("--stop-below", type=float,
-                    help="BENCH-172 pilot: exit 3 when the projected change is under this, so the queue skips the rest")
+                    help="BENCH-290 pilot: exit 3 when the projected change is under this, so the queue skips the rest")
     a = p.parse_args(argv)
     {"pick": cmd_pick, "lock": cmd_lock, "gate": cmd_gate, "screens": cmd_screens, "arms": cmd_arms}[a.cmd](a)
 

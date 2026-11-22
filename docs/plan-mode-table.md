@@ -12,7 +12,7 @@ down, dodge its exact aim, stop-and-go against its learning) and plays each oppo
 battles before locking one. Hadur's own shield list is this idea for one mode, and it was worth
 about +1.4 APS (3.10 and 3.13 releases).
 
-## What Saguaro's table says is available (docs/bench/rivals-source-read.md)
+## What Saguaro's table says is available
 
 Saguaro's lead over Hadur 3.15, grouped by the mode its table locks for each opponent:
 
@@ -44,7 +44,7 @@ Each stage is a mode, built duel-only and off by default, chosen per opponent by
    averaged linear from its bullets, then move to where that aim cannot hit. Train on the 429 bots
    Saguaro dodges plus the rammers. Expected +0.2 to +0.4.
 3. **M3, stop-and-go against surfers.** Train on the 148 bots Saguaro poisons. Expected +0.2 to +0.4.
-4. **M4, Saguaro's "moving" shield, which is a small change.** Read in its decompile: the moving
+4. **M4, Saguaro's "moving" shield, which is a small change.** In Saguaro 1.0, the moving
    shield is the same standing shield with one addition. At the start of each round, until the
    enemy's first shot, it drives away from walls and the enemy (anti-gravity) while the enemy's gun
    cools, and stands still once that gun is 5 ticks from ready. Saguaro also ships each opponent's

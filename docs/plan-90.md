@@ -1,7 +1,6 @@
 # Plan: the road from 87.7 to 90 APS
 
-Leigh's plan of 2026-10-11, "Hadur: the road from 87.7 to 90 APS"
-([the doc](https://claude.ai/code/artifact/fb45cb47-79d4-4d03-894e-1fb7b2f0e0b9)), in brief, and
+Leigh's plan of 2026-10-11, "Hadur: the road from 87.7 to 90 APS", in brief, and
 where each of its steps stands in the repo.
 
 ## The finding
@@ -10,9 +9,9 @@ The 2.3 APS to 90 is in one place: bullet shielding. Nullstride 2.3.3 shields 28
 are in the rumble and scores 96.9% live against them where Hadur 3.12 scores 84.2%; matching it
 there is worth +2.99 APS (87.72 to 90.71). On the 172 opponents both have been benched shielding,
 Hadur's shield mode scores 84.9% and Nullstride's 97.4%, so the opponents are shieldable and the
-shield is what falls short. The decompiled jar shows one design with seven differences:
+shield is what falls short. Nullstride's shield shows one design with seven differences:
 
-| | Hadur 3.12 (`ShieldMode`) | Nullstride (`jd.d`, `jd.br`) | Switch |
+| | Hadur 3.12 (`ShieldMode`) | Nullstride | Switch |
 |---|---|---|---|
 | Firing at the enemy while shielding | between shields, and at tick 32 of a quiet enemy | never | SHIELD-8 `hold` |
 | What the predictors learn from | bullets that hit us | every enemy bullet, intercepted ones too | SHIELD-9 `learn` |

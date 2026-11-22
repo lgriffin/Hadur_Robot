@@ -12,14 +12,14 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 /**
- * BENCH-179: the JayLexi mid-field surf-row card (plans/pc-jaylexi-mid.queue) is complete before it reaches the PC: its
+ * BENCH-282: the JayLexi mid-field surf-row card (plans/pc-jaylexi-mid.queue) is complete before it reaches the PC: its
  * arms built by tools/jaylexi_rows_off.py --skip, one shuffled multi-arm step with the 20% pilot stop (A/A and futility)
  * and the usual halts, the case for it written on the card, the read and the PR.
  */
 class JayLexiMidPlanTest {
 
     @Test
-    @Tag("BENCH-179")
+    @Tag("BENCH-282")
     @DisplayName("the arms, the 80-robot mid-field panel, the 20% pilot stop and the why-it-should-win case are on the card")
     void cardIsComplete() throws IOException {
         String queue = Files.readString(Path.of("plans/pc-jaylexi-mid.queue"));

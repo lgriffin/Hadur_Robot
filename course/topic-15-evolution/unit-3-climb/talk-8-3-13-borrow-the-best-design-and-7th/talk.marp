@@ -42,7 +42,7 @@ An enemy's bullet is predictable when it was aimed head-on or with a simple lead
 
 <style scoped>table { font-size: 0.8em; }</style>
 
-The decompiled Nullstride jar showed one design and a longer list. The design differences became five switches in `shieldmode.ShieldDesign`, off by default, so 3.12 stayed 3.12:
+Nullstride's shield showed one design and a longer list. The design differences became five switches in `shieldmode.ShieldDesign`, off by default, so 3.12 stayed 3.12:
 
 | Switch | Nullstride does |
 |---|---|

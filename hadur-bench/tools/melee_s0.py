@@ -66,7 +66,7 @@ AA_HALF = 0.3
 SCREEN_AA = 0.25
 GAIN = 0.0
 BAND_SLACK = 3.0
-# BENCH-146: an arm whose skipped turns a battle rise more than this share over the baseline's fails
+# BENCH-287: an arm whose skipped turns a battle rise more than this share over the baseline's fails
 # whatever its APS (the card's rule; the live client counts skips against Hadur).
 SKIP_SLACK = 0.20
 

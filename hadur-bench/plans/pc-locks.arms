@@ -1,5 +1,5 @@
-# pc-locks (BENCH-253) round 21: c is master, aa its A/A copy; the lever arm x0 is master with its SHIELD-19 shield-exit0 line
-# on the panel robots picked for it (plans/locks-pick.tsv; build-ablation.sh sx0list).
+# pc-locks (BENCH-253) round 22: c is master, aa its A/A copy; the lever arm qw is master with its MOVE-67 aim-weight line on
+# the panel robots picked for it (plans/locks-pick.tsv; build-ablation.sh aimwlist).
 c | hadur117.Hadur 3.24 | bisect/hadur117.Hadur_3.24.jar
 aa | hadur117.Hadur 3.24aa | bisect/hadur117.Hadur_3.24aa.jar
-x0 | hadur117.Hadur 3.24x0 | bisect/hadur117.Hadur_3.24x0.jar
+qw | hadur117.Hadur 3.24qw | bisect/hadur117.Hadur_3.24qw.jar

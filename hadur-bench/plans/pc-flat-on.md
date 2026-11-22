@@ -1,0 +1,5 @@
+# The `pc-flat-on` card (BENCH-164)
+
+The bench shall carry the `pc-flat-on` card: master (c), its A/A copy (aa) and the duel's flattener views on (fo, ablation flaton) on `panel-learners-flat.txt` (the 232 strong learners of the BeepBoop gap not on the shield list), 2 fresh seeds from 6800, 12 workers, truth log off, stopping on 30 failed battles, an arm scoring nothing in 8, 40+ skipped turns a battle over the last 200, no battle in 30 minutes or the A/A outside its band after 20%; then the robots fo locks at a 5-point margin (`mode_table.py`), their panel (`tools/pick_panel.py`, which stops the card when nothing is picked) and the fq build (MOVE-32's flat-on lines for the picks only, ablation fllist); then c, aa and fq on the picks at 4 fresh seeds from 6900 with the same stop rules but the A/A; then the gate (fq minus pooled c and aa over the picks / 1,217 pairings at +0.03 APS, 95% low end above 0), the confirmed picks at a 5-point margin, per-robot losses and a results PR.
+
+Stage or check: T7

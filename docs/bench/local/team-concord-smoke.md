@@ -1,7 +1,7 @@
 # Team brain CONCORD (TMODE-33): cloud smokes (2026-10-31)
 
 The aim is a large APS shift rather than small steps, adapting Ogi's ideas in our own code, not
-byte for byte. CONCORD takes Ogi's design (docs/bench/ogi-deep-dive.md) as one team brain, written our own way.
+byte for byte. CONCORD takes the idea of one team brain, written our own way.
 
 ## Read
 

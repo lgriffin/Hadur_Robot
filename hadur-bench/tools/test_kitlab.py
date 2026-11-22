@@ -72,6 +72,9 @@ class ReadTest(unittest.TestCase):
             f.write("c.C 1 | band:2.5000 | c.C_1.jar | 2.5000\n")
         self.assertEqual(("c.C 1", 2.5, "c.C_1"), kitlab_read.load_set(self.set)[-1])
 
+    # The paired read against a reference robot's known APS is the pre-submission gate of JayLexi
+    # (paired against Komarious, JAYLEXI-10) and Eveimear (paired against Epeeist, EVEIMEAR-12).
+    # @Tag("JAYLEXI-10") @Tag("EVEIMEAR-12")
     def test_pairs_by_seed_not_file_order(self):
         ours, ref = os.path.join(self.root, "ours"), os.path.join(self.root, "ref")
         battle(ours, "a.A_1", 1, 60, 40)

@@ -1,4 +1,4 @@
-"""Tests for move_lab.py (BENCH-90, the movement lab, docs/bench/move-lab.md): python test_move_lab.py"""
+"""Tests for move_lab.py (BENCH-280, the movement lab, docs/bench/move-lab.md): python test_move_lab.py"""
 
 import io
 import os

@@ -1,11 +1,10 @@
 # Team momentum (TMODE-49): OgiTeam movement read and cloud smoke, 2026-11-15
 
-## What OgiTeam does that we do not (decompiled jar `cz.libors.OgiTeam_v1`, read only, no code taken)
+## What OgiTeam does that we do not (no code taken)
 
 The 13 Nov dodge study (PR #796) found the gap inside 300 px: a member that turned back while an enemy bullet
 flew was hit 17.8% of the time (OgiTeam 6.9%), one that slowed under 2 px a tick 20.2% (11.0%); members that kept
-driving were hit alike (10.4% vs 9.3%). The earlier deep dive (docs/bench/ogi-deep-dive.md) covered OgiTeam's
-whole design, and its parts (dodge re-rank, team brain, path check, gang watch) already ship in our own code.
+driving were hit alike (10.4% vs 9.3%). OgiTeam's ideas (dodge re-rank, team brain, path check, gang watch) already ship in our own code.
 This read looked at how a member actually drives:
 
 | | OgiTeam | HadurTeam (master) |

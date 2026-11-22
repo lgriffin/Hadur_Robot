@@ -187,7 +187,7 @@ graph LR
         E[Engine]
     end
     subgraph "hadur-robot (adapter)"
-        A["hadur2.Hadur (TeamRobot)"]
+        A["hadur117.Hadur (TeamRobot)"]
         FS["FileProfileStore"]
     end
     subgraph "hadur-core (plain Java 11)"
@@ -303,7 +303,7 @@ as data, so the next plan starts from evidence.
 
 ```mermaid
 flowchart LR
-    P["Plan<br/>staged, with gates"] --> REQ["EARS requirements<br/>docs/requirements.md"]
+    P["Plan<br/>staged, with gates"] --> REQ["EARS requirements<br/>docs/requirements/"]
     REQ --> IMP["Implement<br/>one PR per stage"]
     IMP --> TST["Tests: ArchUnit, jqwik, unit,<br/>replay, Cucumber per EARS group,<br/>traceability"]
     TST --> BEN["Bench gate<br/>cold, warm, A/B, client conditions,<br/>300-battle session"]
@@ -328,7 +328,7 @@ follows is what made that work, and where it did not.
 ### Roles: a planner and implementers
 
 Work was split by kind, not just by size. A planning model (Fable) read the evidence and
-wrote each plan: the [Hadur 2 plan](https://claude.ai/artifact/KDkC1j5Yj8vWH6XQydyYH8)
+wrote each plan: the Hadur 2 plan
 (S0-S7), the melee extension (M0-M6), and the rumble climb ([R4-R6](docs/rumble-climb-r4-r6-plan.md),
 [top 30](docs/rumble-climb-top30-plan.md), [memory at scale](docs/rumble-memory-scale-plan.md)).
 Implementation threads (Sonnet) then built each plan stage by stage, one PR per stage. The
@@ -340,7 +340,7 @@ alone on its task and reported back where it was asked.
 
 ### Requirements as the contract between agents
 
-Every behaviour is an [EARS](docs/requirements.md) requirement (Ubiquitous, Event, State,
+Every behaviour is an [EARS](docs/requirements/README.md) requirement (Ubiquitous, Event, State,
 Unwanted, Optional), more than a hundred of them, each with a stable ID that never changes
 meaning. A requirement is the unit an agent is asked to deliver, and the build holds it to
 it: a traceability test fails `mvn verify` if any ID has no test, every Cucumber scenario is
@@ -417,8 +417,8 @@ Java 8, so every RoboRumble client can load them.
 mvn verify                  # all modules: tests, traceability, robot jars
 ```
 
-The jars land in each module's `target/`: `hadur-robot/target/hadur2.Hadur_<version>.jar` with
-`hadur2.HadurTeam_<version>.jar` beside it, and one jar per sibling. Drop a jar into a Robocode
+The jars land in each module's `target/`: `hadur-robot/target/hadur117.Hadur_<version>.jar` with
+`hadur117.HadurTeam_<version>.jar` beside it, and one jar per sibling. Drop a jar into a Robocode
 `robots/` directory to play it. Releases run from GitHub Actions (`release.yml` for Hadur, and one
 workflow per released sibling, such as `release-saor.yml`): each builds, checks the jar matches the version
 (and the size limit for the small bots) and publishes a GitHub release with
@@ -449,7 +449,7 @@ which EARS requirements it implements; `mvn verify` runs doclint over all of it.
 builds the docs site (Javadoc, a requirement map from every EARS ID to the classes and tests that
 cite it, and the design docs), and the `pages` workflow publishes it to
 https://lgriffin.github.io/Hadur_Robot/ on every push to master. The main design documents are
-[docs/architecture.md](docs/architecture.md), [docs/requirements.md](docs/requirements.md) and
+[docs/architecture.md](docs/architecture.md), [docs/requirements/](docs/requirements/README.md) and
 [docs/strategy-evolution.md](docs/strategy-evolution.md). Follow-ups are tracked as
 [GitHub issues](https://github.com/lgriffin/Hadur_Robot/issues).
 
@@ -468,7 +468,7 @@ appended, so older readers keep working.
   energy ledger infers. `rawDrop` is what 1.20 would have used.
 - `R,round,tick,result,...`: once per round, 33 fields: the energies, both hit rates with
   their margins, and every counter the core keeps (RES-5). The field list is in
-  [RoundStats](hadur-core/src/main/java/hadur2/core/RoundStats.java).
+  [RoundStats](hadur-core/src/main/java/hadur117/core/model/RoundStats.java).
 - `MEM,round,tick,what,note`: a profile that failed to load, fold or save (MEM-3, MEM-4).
 - `FAULT,round,tick,exception`: the first time in a round the guard has to cover for the core.
 

@@ -1,6 +1,6 @@
 # The movement lab
 
-Hadur's movement tested apart from its gun (BENCH-90, plan-top3). A silent Hadur fights six reference
+Hadur's movement tested apart from its gun (BENCH-280, plan-top3). A silent Hadur fights six reference
 shooters that differ only in their gun; its only score is the damage it takes. Variants are compared per gun,
 paired on the same seeds.
 
@@ -28,4 +28,4 @@ the second minus the first over the seeds both fought, mean and 95% interval (St
 the opponents. The shooter's hit rate is the headline: damage per round also counts how long the shooter can keep
 firing before it runs dry, so it understates a better mover. Negative means the second label moves better. Seeds are labels, not replays (charter,
 principle 1): read the interval, not the point.
-Tests: `python3 data/tools/test_move_lab.py`; `LabPanelTest` (BENCH-90) loads the set file.
+Tests: `python3 data/tools/test_move_lab.py`; `LabPanelTest` (BENCH-280) loads the set file.
