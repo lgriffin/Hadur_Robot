@@ -1134,3 +1134,9 @@ Cloud screen results (46 fields x 2 seeds a block, live CPU constant, paired wit
 On the first block, final duels won went from 72.5% to 78.6% (en) and 79.5% (ez); from behind on
 energy, 44% to 53% and 56%. Firsts rose by 1.3 a battle, about +0.2 APS by the scoring. The three
 normal-load blocks pool en at about +0.22 ± 0.18. The PC card `pc-melee-race` (BENCH-273) is the read.
+
+PC read (`pc-melee-race`, PR #1013, live CPU constant): ez +0.28 ± 0.13 APS, en +0.15 ± 0.12, A/A
+-0.04; 1-30 endgame wins up about 16 points. In F01 Hadur's final duels won against Diamond went from
+11% to 65%. MEND-6 ships on at ez: the `ENDGAME_RACE` switch, the `mrace`/`mracex` arms and the
+card (BENCH-273) are removed, the three melee replay fixtures re-recorded; duel and team fixtures
+bit for bit.
