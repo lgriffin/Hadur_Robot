@@ -1035,6 +1035,26 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             version="${version}sh"
             edit "$modes" "public static final boolean FORCE_SHY = false;" "public static final boolean FORCE_SHY = true;"
             ;;
+        ogr150)
+            # scratch (OgiTeam dive): hunt place 150 px. Suffix o15.
+            version="${version}o15"
+            edit "$trisk" "static final double HUNT_CLOSE = 250;" "static final double HUNT_CLOSE = 150;"
+            ;;
+        ogsw1)
+            # scratch: swarm, up to five members on one prey at 120 px, pull doubled. Suffix sw1.
+            version="${version}sw1"
+            edit "$trisk" "static final double HUNT_CLOSE = 250;" "static final double HUNT_CLOSE = 120;"
+            edit "$trisk" "static final int HUNT_MAX_GROUP = 3;" "static final int HUNT_MAX_GROUP = 5;"
+            edit "$trisk" "static final double HUNT_PULL = 0.3;" "static final double HUNT_PULL = 0.6;"
+            ;;
+        ogsw2)
+            # scratch: swarm on the weakest enemy (energy weighs 50x), five members at 120 px, pull doubled. Suffix sw2.
+            version="${version}sw2"
+            edit "$trisk" "static final double HUNT_CLOSE = 250;" "static final double HUNT_CLOSE = 120;"
+            edit "$trisk" "static final int HUNT_MAX_GROUP = 3;" "static final int HUNT_MAX_GROUP = 5;"
+            edit "$trisk" "static final double HUNT_PULL = 0.3;" "static final double HUNT_PULL = 0.6;"
+            edit "$trisk" "static final double PACK_ENERGY_WEIGHT = 1.2;" "static final double PACK_ENERGY_WEIGHT = 50;"
+            ;;
         tmthrottle)
             # TMODE-55: every team member keeps full speed through sharp turns. Suffix th.
             version="${version}th"
