@@ -77,6 +77,8 @@ public final class RamEscape {
     static final boolean ARC_ESCAPE = false;
     /** RAM-19: the arcs' turn rates, as fractions of the full-speed turn rate, each side. */
     static final double[] ARC_RATES = {0.5, 1.0};
+    /** RAM-19: the imaginary shot's hit cost, in multiples of the path's {@link #hitCost}. */
+    static final double IMAGINARY_COST = 1.0;
     /** RAM-19: the battle's gun cooling rate (the rumble's default). */
     static final double COOLING = 0.1;
     /** RAM-19: the rammer's last shot, {fire tick, power}; null before its first this round. */
@@ -429,7 +431,7 @@ public final class RamEscape {
             if (min < floor) return null;
             sum += d;
         }
-        return new double[] {min - hitCost * (Integer.bitCount(hits) + imaginaryHit), sum / HORIZON, bent};
+        return new double[] {min - hitCost * (Integer.bitCount(hits) + IMAGINARY_COST * imaginaryHit), sum / HORIZON, bent};
     }
 
     /** RAM-19: whether the imaginary shot, aimed head-on or linear, would hit us at {@code (x, y)} on {@code time}. */
