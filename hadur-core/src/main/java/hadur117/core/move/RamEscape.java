@@ -421,10 +421,6 @@ public final class RamEscape {
     }
 
     /**
-     * RAM-5: which of the shots in flight would hit us at {@code (x, y)} on {@code time}, two bits
-     * a shot (head-on, linear and, with RAM-11, circular).
-     */
-    /**
      * RAM-20: whether a ray from {@code (ox, oy)} along the direction {@code (sin, cos)}, between {@code from} and
      * {@code to} px out, passes within {@link #LEARNED_BOX} px of {@code (x, y)} on both axes.
      */
@@ -514,6 +510,10 @@ public final class RamEscape {
         return cost;
     }
 
+    /**
+     * RAM-5: which of the shots in flight would hit us at {@code (x, y)} on {@code time}, two bits
+     * a shot (head-on, linear and, with RAM-11, circular).
+     */
     private int hits(double x, double y, long time) {
         int bits = 0;
         int i = 0;

@@ -778,8 +778,8 @@ public final class DuelController {
             .setTargetEnergy(in.energy())
             .setSourceEnergy(e.energy());
         moveWave.setWallDistances();
-        // DODGE-1: what the simple aims read, only while the dodge is on.
-        if (moveController.shotDodger() != null || moveController.aimMembers() != null) {
+        // DODGE-1: what the simple aims read, only while the dodge is on (or RAM-20's shot model, which reads them too).
+        if (moveController.shotDodger() != null || moveController.aimMembers() != null || ramEscape.learned() != null) {
             moveWave.aimStates = aimStates(time, myPos, myHead, myVel, enemyPos, enemyHead);
         }
         // MOVE-56: the mimic aims a shot from this tick with the history and geometry of the scan before;

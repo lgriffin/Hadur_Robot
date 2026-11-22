@@ -221,7 +221,6 @@ public class MoveController {
         this.dodgePasses = on;
     }
 
-    /** DODGE-2: the dodger, or null. */
     /** RAM-20: the wave the last {@link #updateFiringWave} marked, null when it found none. */
     private Wave lastFiringWave;
 
@@ -230,6 +229,7 @@ public class MoveController {
         return lastFiringWave;
     }
 
+    /** DODGE-2: the dodger, or null. */
     public ShotDodger shotDodger() {
         return shotDodger;
     }
