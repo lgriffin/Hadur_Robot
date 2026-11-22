@@ -10,7 +10,7 @@
 <header><div class="wrap"><a class="brand" href="index.html">Hadur 2</a><nav><a href="index.html">Home</a><a href="requirements.html" aria-current="page">Requirements</a><a href="docs/architecture.html">Architecture</a><a href="docs/testing.html">Testing</a><a href="bench/index.html">Bench analysis</a><a href="api/index.html">Javadoc</a><a href="https://github.com/lgriffin/Hadur_Robot">GitHub</a></nav></div></header>
 <main class="wrap">
 <h1>EARS requirements</h1>
-<p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
+<p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/tree/master/docs/requirements">docs/requirements/</a>, one file per area, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
 traceability check reads. 552 of 552 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
@@ -2722,7 +2722,7 @@ traceability check reads. 552 of 552 live requirements have a tagged test. The r
 <article class="req-card" id="TWIN-13">
 <div class="req-head"><span class="rid">TWIN-13</span><span class="badge">Event</span><span class="badge stage">W3</span></div>
 <p>When a twin handles a scan of an enemy, it shall OR into its mode the mode table&#x27;s entry at that enemy&#x27;s name-hash slot; mode bit 1 shall stop the leg reversing on the target&#x27;s shot (<a class="req" href="requirements.html#TWIN-10">TWIN-10</a>) and mode bit 2 shall set the two-enemy station range to 180 px.</p>
-<dl><dt>Implemented in</dt><dd><a href="api/hadur117/twin/SaorTwin.html" title="hadur117.twin.SaorTwin">SaorTwin</a>, <a href="api/hadur117/twin/core/Team.html" title="hadur117.twin.core.Team">Team</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/twinsaor/src/test/java/hadur117/twin/SaorTwinTest.java">SaorTwinTest.java</a></dd></dl>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/twin/SaorTwin.html" title="hadur117.twin.SaorTwin">SaorTwin</a>, <a href="api/hadur117/twin/core/Team.html" title="hadur117.twin.core.Team">Team</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/twinsaor/src/test/java/hadur117/twin/SaorTwinTest.java">SaorTwinTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/twinsaor/src/test/java/hadur117/twin/core/TeamTest.java">TeamTest.java</a></dd></dl>
 </article>
 <article class="req-card" id="TWIN-14">
 <div class="req-head"><span class="rid">TWIN-14</span><span class="badge">Unwanted</span><span class="badge stage">W3</span></div>
