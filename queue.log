@@ -23,3 +23,7 @@
 21:06:57 skip mrprep (already exit=0)
 21:06:57 skip mraa (already exit=0)
 21:06:57 skip mrbb (already exit=0)
+21:06:57 start mren
+21:06:57 watching mren: 2 stop rule(s)
+21:07:01 progress pushed to origin claude/pc-melee-race-progress (every 15 min)
+21:07:57 progress mren: 0/460 (0%) battles, 0 failed
