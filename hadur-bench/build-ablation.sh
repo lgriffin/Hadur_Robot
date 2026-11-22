@@ -1055,6 +1055,37 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$trisk" "static final double HUNT_PULL = 0.3;" "static final double HUNT_PULL = 0.6;"
             edit "$trisk" "static final double PACK_ENERGY_WEIGHT = 1.2;" "static final double PACK_ENERGY_WEIGHT = 50;"
             ;;
+        ogp6)
+            # scratch (OgiTeam dive): hunt pull 0.6. Suffix op6.
+            version="${version}op6"
+            edit "$trisk" "static final double HUNT_PULL = 0.3;" "static final double HUNT_PULL = 0.6;"
+            ;;
+        ogp10)
+            # scratch (OgiTeam dive): hunt pull 1.0. Suffix op10.
+            version="${version}op10"
+            edit "$trisk" "static final double HUNT_PULL = 0.3;" "static final double HUNT_PULL = 1.0;"
+            ;;
+        oge0)
+            # scratch (OgiTeam dive): hunt at any energy. Suffix oe0.
+            version="${version}oe0"
+            edit "$trisk" "static final double PACK_ENERGY = 20;" "static final double PACK_ENERGY = 0;"
+            ;;
+        ogg5)
+            # scratch (OgiTeam dive): hunt groups up to five. Suffix og5.
+            version="${version}og5"
+            edit "$trisk" "static final int HUNT_MAX_GROUP = 3;" "static final int HUNT_MAX_GROUP = 5;"
+            ;;
+        ogg5w)
+            # scratch (OgiTeam dive): hunt groups up to five on the weakest enemy. Suffix og5w.
+            version="${version}og5w"
+            edit "$trisk" "static final int HUNT_MAX_GROUP = 3;" "static final int HUNT_MAX_GROUP = 5;"
+            edit "$trisk" "static final double PACK_ENERGY_WEIGHT = 1.2;" "static final double PACK_ENERGY_WEIGHT = 50;"
+            ;;
+        ogg2)
+            # scratch (OgiTeam dive): hunt groups of two. Suffix og2.
+            version="${version}og2"
+            edit "$trisk" "static final int HUNT_MAX_GROUP = 3;" "static final int HUNT_MAX_GROUP = 2;"
+            ;;
         tmthrottle)
             # TMODE-55: every team member keeps full speed through sharp turns. Suffix th.
             version="${version}th"
