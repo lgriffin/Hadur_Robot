@@ -229,6 +229,32 @@ public final class RamEscape {
         if (model != null) model = new ShotModel();
     }
 
+    /**
+     * RAM-20 (measurement): how a bullet that hit us sat against the rays its shot was kept with.
+     *
+     * @param fireTime the shot's fire tick
+     * @param heading the bullet's heading
+     * @return {@code {1 when the shot was kept by the learned model else 0, the nearest ray's distance from the
+     *     heading in radians, that ray's weight}}, null when no such shot is kept
+     */
+    public double[] hitAgainst(long fireTime, double heading) {
+        for (double[] s : shots) {
+            if ((long) s[0] != fireTime) continue;
+            double best = Double.POSITIVE_INFINITY;
+            double weight = 0;
+            for (int a = 0; a < 3; a++) {
+                if (Double.isNaN(s[4 + a])) continue;
+                double d = Math.abs(Angles.normalRelativeAngle(heading - s[4 + a]));
+                if (d < best) {
+                    best = d;
+                    weight = s.length > 7 ? s[7 + a] : 1;
+                }
+            }
+            return new double[] {s.length > 7 ? 1 : 0, best, weight};
+        }
+        return null;
+    }
+
     /** RAM-20: the learned shot model, null while the switch is off. */
     public ShotModel learned() {
         return model;
