@@ -26,5 +26,6 @@ class MeleeBattleTimeoutTest {
     void option() {
         assertEquals(45, Bench.meleeBattleMinutes(Map.of("melee-battle-minutes", "45")));
         assertThrows(IllegalArgumentException.class, () -> Bench.meleeBattleMinutes(Map.of("melee-battle-minutes", "0")));
+        assertThrows(IllegalArgumentException.class, () -> Bench.meleeBattleMinutes(Map.of("melee-battle-minutes", "x")));
     }
 }
