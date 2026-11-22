@@ -70,12 +70,17 @@ public final class AimMembers {
     /** MOVE-56: the pattern-matcher mimic's standing weight, against the views' 1. */
     static final double PATTERN_PRIOR = 1.0;
 
+    /** MOVE-67: the three narrow aims' standing weight for the opponents the table names ({@code aim-weight:} lines). */
+    public static final double AIM_WEIGHT_PRIOR = 1.0;
+
     private final double[] score;
     /** MOVE-33: the mimic members after the aims (0 without them). */
     private final int mimics;
     /** MOVE-56: whether the pattern-matcher mimic is the last member. */
     private final boolean pattern;
     private int bullets;
+    /** Each aim's standing weight: {@link #PRIOR}, or MOVE-67's at {@link #AIM_WEIGHT_PRIOR} shared the same way. */
+    private final double prior;
 
     /** The views and the aims (MOVE-29). */
     public AimMembers() {
@@ -89,9 +94,23 @@ public final class AimMembers {
 
     /** MOVE-56: the views, the aims, {@code mimics} learning-gun mimics, then with {@code pattern} the pattern-matcher mimic. */
     public AimMembers(int mimics, boolean pattern) {
+        this(mimics, pattern, AIM_PRIOR);
+    }
+
+    /**
+     * MOVE-67: as {@link #AimMembers(int, boolean)}, with {@code aimPrior} in place of {@link #AIM_PRIOR} as the three
+     * narrow aims' standing weight (shared out over the wide set the same way).
+     */
+    public AimMembers(int mimics, boolean pattern, double aimPrior) {
         this.mimics = Math.max(0, mimics);
         this.pattern = pattern;
         this.score = new double[MEMBERS + this.mimics + (pattern ? 1 : 0)];
+        this.prior = aimPrior == AIM_PRIOR ? PRIOR : aimPrior * PRIOR / AIM_PRIOR;
+    }
+
+    /** MOVE-67: a fresh set of the same members with the aims' standing weight at {@code aimPrior}. */
+    public AimMembers withAimPrior(double aimPrior) {
+        return new AimMembers(mimics, pattern, aimPrior);
     }
 
     /** MOVE-56: whether the pattern-matcher mimic is a member (the last). */
@@ -111,7 +130,7 @@ public final class AimMembers {
 
     /** Each member's weight now: its standing weight times 2^(POWER x score). */
     public double weight(int member) {
-        double standing = member == 0 ? 1.0 : member < MEMBERS ? PRIOR
+        double standing = member == 0 ? 1.0 : member < MEMBERS ? prior
             : member < MEMBERS + mimics ? MIMIC_PRIOR / mimics : PATTERN_PRIOR;
         return standing * Math.pow(2.0, POWER * score[member]);
     }

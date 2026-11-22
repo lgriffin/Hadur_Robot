@@ -1417,4 +1417,15 @@ final class ShieldTableData {
             "cw.megas.Silhouette 1.1",
         };
     }
+
+    /**
+     * MOVE-67: opponents against which the simple aim members stand at weight 1.0 ({@code aim-weight:} lines), each
+     * locked on fresh cloud seeds (build-ablation.sh aimwlist adds candidate lines here).
+     *
+     * @return a fresh array of names
+     */
+    static String[] aimWeights() {
+        return new String[] {
+        };
+    }
 }
