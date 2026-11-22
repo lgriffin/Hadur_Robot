@@ -1086,6 +1086,26 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             version="${version}og2"
             edit "$trisk" "static final int HUNT_MAX_GROUP = 3;" "static final int HUNT_MAX_GROUP = 2;"
             ;;
+        ogpw19)
+            # scratch (OgiTeam dive): team power capped at 1.92 beyond 300 px. Suffix ow19.
+            version="${version}ow19"
+            edit "$fgun" "if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);" "if (onTeam) { power = MeleeEnergyPolicy.teamPower(power, energy, e.energy); if (distance > 300 && e.energy > MeleeEnergyPolicy.FINISHER_ENERGY) power = Math.min(power, 1.92); }"
+            ;;
+        ogpw15)
+            # scratch (OgiTeam dive): team power capped at 1.5 beyond 300 px. Suffix ow15.
+            version="${version}ow15"
+            edit "$fgun" "if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);" "if (onTeam) { power = MeleeEnergyPolicy.teamPower(power, energy, e.energy); if (distance > 300 && e.energy > MeleeEnergyPolicy.FINISHER_ENERGY) power = Math.min(power, 1.5); }"
+            ;;
+        ogpw10)
+            # scratch (OgiTeam dive): team power capped at 1.0 beyond 300 px. Suffix ow10.
+            version="${version}ow10"
+            edit "$fgun" "if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);" "if (onTeam) { power = MeleeEnergyPolicy.teamPower(power, energy, e.energy); if (distance > 300 && e.energy > MeleeEnergyPolicy.FINISHER_ENERGY) power = Math.min(power, 1.0); }"
+            ;;
+        ogpw25)
+            # scratch (OgiTeam dive): team power capped at 2.5 beyond 300 px. Suffix ow25.
+            version="${version}ow25"
+            edit "$fgun" "if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);" "if (onTeam) { power = MeleeEnergyPolicy.teamPower(power, energy, e.energy); if (distance > 300 && e.energy > MeleeEnergyPolicy.FINISHER_ENERGY) power = Math.min(power, 2.5); }"
+            ;;
         tmthrottle)
             # TMODE-55: every team member keeps full speed through sharp turns. Suffix th.
             version="${version}th"
