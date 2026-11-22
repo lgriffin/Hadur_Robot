@@ -1,6 +1,6 @@
 {
  "plan": "pc-melee-race",
- "updated": 1795386149.962246,
+ "updated": 1795387056.466468,
  "steps": {
   "mrprep": {
    "status": "done",
@@ -78,8 +78,8 @@
   {
    "step": "mrez",
    "started": 1795384666.3332717,
-   "updated": 1795386149.9559393,
-   "elapsed": 1483.6226675510406,
+   "updated": 1795387056.456969,
+   "elapsed": 2390.123697280884,
    "expected": 460,
    "panel": null,
    "field": null,
@@ -87,20 +87,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 209,
+   "battles": 350,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 507.1370345412409,
-   "eta": 1781.7669356713452,
-   "fraction": 0.4543478260869565,
-   "last_battle_age": 0.10715007781982422,
+   "rate": 527.169368444585,
+   "eta": 751.1817334311351,
+   "fraction": 0.7608695652173914,
+   "last_battle_age": 17.061665534973145,
    "rules": [
     {
      "rule": "fails 20",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 209"
+     "detail": "0 failed of 350"
     },
     {
      "rule": "stall 30m",
@@ -109,8 +109,8 @@
      "detail": "last battle 0 min ago"
     }
    ],
-   "skips_mean": 36.92344497607655,
-   "skips_last100": 37.38
+   "skips_mean": 35.668571428571425,
+   "skips_last100": 34.12
   }
  ]
 }
