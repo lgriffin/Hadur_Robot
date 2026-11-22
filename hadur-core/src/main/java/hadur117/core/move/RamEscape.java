@@ -85,18 +85,6 @@ public final class RamEscape {
     static final double LEARNED_FAN = Math.toRadians(3);
     /** RAM-20: where a learned shot's record keeps its rays' sines and cosines, three rays an aim. */
     private static final int RAY_BASE = 10;
-    /** RAM-20 (measurement): the hit bits of the path {@link #play} last scored. */
-    private long lastPlayBits;
-    /** RAM-20 (measurement): the last choice's note, {@code candidates,unhit,chosenBits,chosenScore}; null when none. */
-    private String choiceNote;
-
-    /** RAM-20 (measurement): the note of the last choice, cleared by the read. */
-    public String drainChoiceNote() {
-        String n = choiceNote;
-        choiceNote = null;
-        return n;
-    }
-
     /** RAM-20: the learned shot model, null while the switch is off for this opponent. */
     private ShotModel model;
     /** RAM-20: a learned ray counts as hitting a path when it passes within this many px of our centre on both axes. */
@@ -246,32 +234,6 @@ public final class RamEscape {
         if (model != null) model = new ShotModel();
     }
 
-    /**
-     * RAM-20 (measurement): how a bullet that hit us sat against the rays its shot was kept with.
-     *
-     * @param fireTime the shot's fire tick
-     * @param heading the bullet's heading
-     * @return {@code {1 when the shot was kept by the learned model else 0, the nearest ray's distance from the
-     *     heading in radians, that ray's weight}}, null when no such shot is kept
-     */
-    public double[] hitAgainst(long fireTime, double heading) {
-        for (double[] s : shots) {
-            if ((long) s[0] != fireTime) continue;
-            double best = Double.POSITIVE_INFINITY;
-            double weight = 0;
-            for (int a = 0; a < 3; a++) {
-                if (Double.isNaN(s[4 + a])) continue;
-                double d = Math.abs(Angles.normalRelativeAngle(heading - s[4 + a]));
-                if (d < best) {
-                    best = d;
-                    weight = s.length > 7 ? s[7 + a] : 1;
-                }
-            }
-            return new double[] {s.length > 7 ? 1 : 0, best, weight};
-        }
-        return null;
-    }
-
     /** RAM-20: the learned shot model, null while the switch is off. */
     public ShotModel learned() {
         return model;
@@ -369,9 +331,6 @@ public final class RamEscape {
 
     private double choose(RobotState me, RobotState enemy, boolean bending) {
         boolean found = false;
-        int played = 0;
-        int unhit = 0;
-        long bestBits = 0;
         double bestMin = Double.NEGATIVE_INFINITY;
         double bestMean = Double.NEGATIVE_INFINITY;
         double bestTurn = Double.POSITIVE_INFINITY;
@@ -384,9 +343,6 @@ public final class RamEscape {
                     // Pruned: it came closer than the best's closest approach already.
                     continue;
                 }
-                played++;
-                if (lastPlayBits == 0) unhit++;
-                long bits = lastPlayBits;
                 if (score[2] == 0 && orientation == 1) {
                     // No wall touched this run, so the other orientation would drive the same.
                     orientation = -1;
@@ -408,15 +364,10 @@ public final class RamEscape {
                     bestMean = score[1];
                     bestTurn = turn;
                     bestHeading = first;
-                    bestBits = bits;
                 }
             }
         }
         if (!found && bending) return Double.NaN;
-        if (model != null && !shots.isEmpty()) {
-            choiceNote = played + "," + unhit + "," + bestBits + "," + Math.round(bestMin) + "," + shots.size()
-                + "," + (long) shots.peekLast()[0] + "," + (bending ? 1 : 0);
-        }
         lastHeading = bestHeading;
         return bestHeading;
     }
@@ -466,7 +417,6 @@ public final class RamEscape {
             if (min < floor) return null;
             sum += d;
         }
-        lastPlayBits = learned;
         return new double[] {min - hitPenalty(hits) - learnedPenalty(learned), sum / HORIZON, bent};
     }
 

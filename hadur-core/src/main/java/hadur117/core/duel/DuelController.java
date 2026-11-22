@@ -925,8 +925,6 @@ public final class DuelController {
             if (!planned) {
                 stats.ramEscapeTicks++;
                 ramEscape.move(orders, currentState(in), lastEnemyState, duelOnly(MoveDesign.RAM_BREAK, enemiesTotal));
-                String note = ramEscape.drainChoiceNote();
-                if (note != null) telemetry.emit("RC," + round + "," + in.time() + "," + note);
             }
         } else if (stopAndGo != null) {
             // POISON-1: stop while the enemy's gun cools, go once it has fired; the waves still teach the views.
@@ -1156,15 +1154,6 @@ public final class DuelController {
             hitWave.hitByBullet = true;
             // DODGE-2: the bullet's heading says which simple aim fired it.
             if (moveController.shotDodger() != null) shotDodger.observe(hitWave.simpleAims(), e.heading(), dodgeEscape(hitWave));
-            // RAM-20: RH,round,tick,learned,nearestRayDeg,weight,escaping: how the bullet sat against the rays its shot
-            // was dodged as, read before it teaches the model.
-            if (ramEscape.learned() != null) {
-                double[] h = ramEscape.hitAgainst(hitWave.fireTime, e.heading());
-                if (h != null) {
-                    telemetry.emit(String.format(Locale.ROOT, "RH,%d,%d,%d,%.2f,%.2f,%d", round, in.time(), (int) h[0],
-                        Math.toDegrees(h[1]), h[2], ramEscaping ? 1 : 0));
-                }
-            }
             // RAM-20: and teaches the escape's shot model, where the switch is on.
             if (ramEscape.learned() != null) ramEscape.learned().observe(hitWave.simpleAims(), e.heading());
             moveController.logBulletHit(hitWave, bulletLoc, round, in.time());

@@ -90,8 +90,8 @@ public final class ShotModel {
      * The rays a new shot is dodged as: the {@link #TOP} leading candidates known for this wave.
      *
      * @param aims the firing wave's simple aims
-     * @return {@code {angle, weight}} pairs, the weights summing to 1; null when the model is not ready or
-     *     the wave carries no aims
+     * @return {@code {angle, weight}} pairs, the weights summing to 1; null when the model is not ready, the wave
+     *     carries no aims, or none of the aims known for it clears the bar {@link #ready} sets
      */
     public double[] rays(double[] aims) {
         if (aims == null || aims.length < SimpleAims.COUNT || !ready()) return null;
@@ -109,9 +109,10 @@ public final class ShotModel {
                 }
             }
         }
+        // The leading aim may be unknown for this wave (no body turn read): what is left must clear the bar itself.
+        if (top[0] < 0 || score[top[0]] < MIN_SCORE || score[top[0]] < MIN_SHARE * read) return null;
         double sum = 0;
         for (int k : top) if (k >= 0) sum += score[k];
-        if (!(sum > 0)) return null;
         double[] out = new double[2 * TOP];
         for (int i = 0; i < TOP; i++) {
             out[2 * i] = top[i] < 0 ? Double.NaN : angle(aims, top[i]);
