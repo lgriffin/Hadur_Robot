@@ -1,0 +1,28 @@
+{
+ "plan": "pc-team-tight",
+ "updated": 1795387734.1599379,
+ "steps": {
+  "ttprep": {
+   "status": "pending"
+  },
+  "ttptp": {
+   "status": "pending"
+  },
+  "ttpilot": {
+   "status": "pending"
+  },
+  "ttbb": {
+   "status": "pending"
+  },
+  "tttp": {
+   "status": "pending"
+  },
+  "ttgate": {
+   "status": "pending"
+  },
+  "ttpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
