@@ -456,13 +456,6 @@ for a in "${list[@]}"; do
             # RAM-19: the rammer escape also plays arcs and dodges the rammer's next shot before it leaves (the cloud screen's arm).
             edit "$src/hadur-core/src/main/java/$pkg/core/move/RamEscape.java" "static final boolean ARC_ESCAPE = false;" "static final boolean ARC_ESCAPE = true;"
             version="${version}ae" ;;
-        arcesc2)
-            # RAM-19 variant: arcs also at a quarter rate, and the imaginary shot costs twice RAM-5's hit cost.
-            f="$src/hadur-core/src/main/java/$pkg/core/move/RamEscape.java"
-            edit "$f" "static final boolean ARC_ESCAPE = false;" "static final boolean ARC_ESCAPE = true;"
-            edit "$f" "static final double[] ARC_RATES = {0.5, 1.0};" "static final double[] ARC_RATES = {0.25, 0.5, 1.0};"
-            edit "$f" "static final double IMAGINARY_COST = 1.0;" "static final double IMAGINARY_COST = 2.0;"
-            version="${version}ae2" ;;
         ramcirc)
             # RAM-11: the rammer escape also dodges a circular aim against every rammer (the cloud screen's arm).
             edit "$src/hadur-core/src/main/java/$pkg/core/move/RamEscape.java" "static final boolean FORCE_CIRCULAR = false;" "static final boolean FORCE_CIRCULAR = true;"
@@ -1032,7 +1025,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean THREE_FAR = false;" "public static final boolean THREE_FAR = true;"
             version="${version}ef" ;;
-        *) echo "unknown ablation: $a (aa, bb, tmnocloserr, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, icoff, shoff, ramcirc, arcesc, arcesc2, mrace, mracex, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, rhlist, rwlist, orlist, rflist, rfanlist, rbendlist, pmlist, pmxlist, aimwlist|stinylist)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, tmnocloserr, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, icoff, shoff, ramcirc, arcesc, mrace, mracex, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, rhlist, rwlist, orlist, rflist, rfanlist, rbendlist, pmlist, pmxlist, aimwlist|stinylist)" >&2; exit 2 ;;
     esac
 done
 
