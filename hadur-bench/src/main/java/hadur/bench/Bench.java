@@ -1430,6 +1430,20 @@ public final class Bench {
         return copy;
     }
 
+    /** BENCH-291: minutes a melee battle may run before it is killed and counted as failed. */
+    static final int MELEE_BATTLE_MINUTES = 20;
+
+    /** BENCH-291: {@code --melee-battle-minutes}, else {@link #MELEE_BATTLE_MINUTES}. */
+    int meleeBattleMinutes() {
+        return meleeBattleMinutes(opts);
+    }
+
+    static int meleeBattleMinutes(Map<String, String> opts) {
+        int m = Integer.parseInt(opts.getOrDefault("melee-battle-minutes", String.valueOf(MELEE_BATTLE_MINUTES)));
+        if (m < 1) throw new IllegalArgumentException("--melee-battle-minutes must be 1 or more");
+        return m;
+    }
+
     /**
      * {@code --keep-data} makes each melee battle depend on what the one before it left in
      * the data directory, which several worker homes cannot share: refused with {@code --parallel}.
@@ -1473,7 +1487,13 @@ public final class Bench {
             cmd.addAll(names);
             Process p = new ProcessBuilder(cmd).redirectErrorStream(true)
                 .redirectOutput(dir.resolve("engine.log").toFile()).start();
-            if (!p.waitFor(90, TimeUnit.MINUTES)) p.destroyForcibly();
+            // BENCH-291: a hung melee battle is killed well inside a card's 30-minute stall rule,
+            // so it fails (and is retried) instead of halting the card.
+            if (!p.waitFor(meleeBattleMinutes(), TimeUnit.MINUTES)) {
+                p.destroyForcibly();
+                say("  melee battle " + seed + "/" + runs + (candidate ? "" : " baseline")
+                    + " timed out after " + meleeBattleMinutes() + " min; killed");
+            }
             if (record != null && candidate && Files.exists(transcript)) {
                 saveFixture(melee(opts.getOrDefault("set", "melee")), seed, transcript);
             }
