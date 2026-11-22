@@ -1,5 +1,5 @@
 # 1v1, the field diagnosis (BENCH-240): no battles. It reads the truth logs pc-learn-trace (BENCH-221) left in
-# work/learn-trace-pc, master and BeepBoop against the same 1,188 robots at the same seed, and says for each robot
+# work/learn-trace-324 (run 2 of pc-learn-trace, which now runs this read itself), master and BeepBoop against the same 1,188 robots at the same seed, and says for each robot
 # what BeepBoop does that we do not: bullet power, stand-still share, distance, wall time, round length, their hit
 # rate, damage taken and dealt. Each robot gets a diagnosis and the line type that fits it (data/tools/
 # diagnose_field.py); robots that share a diagnosis form one class, and each class becomes one card that tests
@@ -10,7 +10,7 @@
 # Why: the rolling cards picked robots by gap size and gave them the line that won elsewhere; pc-lines lost 28 of
 # 28 that way. Diagnosis first, then a card per class.
 
-set W = work/learn-trace-pc
+set W = work/learn-trace-324
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
 
