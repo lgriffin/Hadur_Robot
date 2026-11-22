@@ -37,7 +37,7 @@ DOCS = [
     ("docs/rumble-submission.md", "rumble-submission.html", "Rumble entry"),
     ("docs/releases/v3.0.md", "release-3.0.html", "Release 3.0"),
     ("docs/releases/v3.7.md", "release-3.7.html", "Release 3.7"),
-    ("followup.md", "followup.html", "Follow-ups"),
+    ("docs/archive/followup.md", "followup.html", "Follow-ups (archive)"),
 ]
 
 ID = r"[A-Z]+-\d+"

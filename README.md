@@ -187,7 +187,7 @@ graph LR
         E[Engine]
     end
     subgraph "hadur-robot (adapter)"
-        A["hadur2.Hadur (TeamRobot)"]
+        A["hadur117.Hadur (TeamRobot)"]
         FS["FileProfileStore"]
     end
     subgraph "hadur-core (plain Java 11)"
@@ -417,8 +417,8 @@ Java 8, so every RoboRumble client can load them.
 mvn verify                  # all modules: tests, traceability, robot jars
 ```
 
-The jars land in each module's `target/`: `hadur-robot/target/hadur2.Hadur_<version>.jar` with
-`hadur2.HadurTeam_<version>.jar` beside it, and one jar per sibling. Drop a jar into a Robocode
+The jars land in each module's `target/`: `hadur-robot/target/hadur117.Hadur_<version>.jar` with
+`hadur117.HadurTeam_<version>.jar` beside it, and one jar per sibling. Drop a jar into a Robocode
 `robots/` directory to play it. Releases run from GitHub Actions (`release.yml` for Hadur, and one
 workflow per released sibling, such as `release-saor.yml`): each builds, checks the jar matches the version
 (and the size limit for the small bots) and publishes a GitHub release with
@@ -468,7 +468,7 @@ appended, so older readers keep working.
   energy ledger infers. `rawDrop` is what 1.20 would have used.
 - `R,round,tick,result,...`: once per round, 33 fields: the energies, both hit rates with
   their margins, and every counter the core keeps (RES-5). The field list is in
-  [RoundStats](hadur-core/src/main/java/hadur2/core/RoundStats.java).
+  [RoundStats](hadur-core/src/main/java/hadur117/core/model/RoundStats.java).
 - `MEM,round,tick,what,note`: a profile that failed to load, fold or save (MEM-3, MEM-4).
 - `FAULT,round,tick,exception`: the first time in a round the guard has to cover for the core.
 

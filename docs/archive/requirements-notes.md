@@ -511,7 +511,7 @@ tactics, not live-only stalls. See `docs/bench/r9-weak-leak.md`.
 
 ## The architecture evolution (A0–A5)
 
-The plan is [docs/architecture-evolution.md](architecture-evolution.md): one identity kernel
+The plan is [docs/architecture-evolution.md](../architecture-evolution.md): one identity kernel
 and three strands (Duel, Melee, Team) behind one role contract. Its stages are compared with
 `hadur.arch.stage` in the root pom. Six new groups carry it: ROLE, WORLD, WEAVE, LINK, SHELF
 and STRAND. IDs keep their meaning; only the owner of each group is new.
@@ -717,7 +717,7 @@ Every requirement group belongs to one owner, the same owner as the code it gove
 
 ## The DrussGT route (D1 to D6)
 
-The plan is [docs/druss-route-plan.md](druss-route-plan.md): the findings of the 4 and 5 October 2026 probes against DrussGT 3.1.16 and the stages D0 to D6 that follow from them. Its stages are compared with `hadur.druss.stage` in the root pom, which is `D5`. The plan's draft IDs were renumbered here because open PR #83 reserves BENCH-9, BENCH-10, POW-6, RES-12, RES-13, GUN-6 and DIST-2: the plan's POW-6 is **POW-11** and its RES-12 is **RES-14**; POW-7 to POW-10 and ADAPT-5 keep their numbers. The requirements of D2 to D6 stay in the plan until their stages are built.
+The plan is [docs/druss-route-plan.md](../druss-route-plan.md): the findings of the 4 and 5 October 2026 probes against DrussGT 3.1.16 and the stages D0 to D6 that follow from them. Its stages are compared with `hadur.druss.stage` in the root pom, which is `D5`. The plan's draft IDs were renumbered here because open PR #83 reserves BENCH-9, BENCH-10, POW-6, RES-12, RES-13, GUN-6 and DIST-2: the plan's POW-6 is **POW-11** and its RES-12 is **RES-14**; POW-7 to POW-10 and ADAPT-5 keep their numbers. The requirements of D2 to D6 stay in the plan until their stages are built.
 
 ### Requirements
 
@@ -731,7 +731,7 @@ POW-7 to POW-9 apply to a duel only. POW-1 to POW-5, RAM-1 and END-3 keep preced
 - **POW-10.** The duel withheld a shot whenever our energy was not above the power chosen, and the chosen power was capped at our energy, so below 1.95 energy within 325 px every shot was held. `PowerPolicy.payable` lowers a power the energy cannot pay for to 0.1 less than the energy (never below the engine's 0.1), and holds only when even 0.1 would leave nothing (energy at most 0.1). It is applied at the scan, to the wave's power, and again when the shot leaves, since a hit on us in between can make the aimed power dear. The holds that stay are intentional: SHIELD-2's (a shielder predicts the aim the gun settled on), the conductor's fire permission (WEAVE-3), a gun that is hot or off target, and duress. END-4 (D2) adds its hold where the shot leaves (see the D2 notes).
 - **ADAPT-5.** The profile format moves to **version 3**: one u8 after the normalised group, the verdict `OpponentProfile.leadAware`, written at every round fold and so, after a battle's last round, the battle's end. The verdict is what the rule itself holds at that point (`PowerPolicy.applies`): true when this battle's rates satisfy POW-7's condition, or when the profile's verdict stood and this battle never contradicted it. Contradicting means either robot's rate is above 12.5% by more than its margin (the centre less the margin is over the figure). `OpeningBook.read` passes the verdict through as `Opening.leadAware()`, and the Duel applies POW-7 to POW-9 from the first shot while it stands. Under MEM-9 a version keeps its own store names: version 3 files are `<stem>-v3.hp`, a version 2 file is read once, stats only, with the verdict false (its seeds are not carried over, as for any other version), and encoding at version 2 or 1 (MEM-7) leaves the byte out. The profile grows by one byte, so MEM-5, MEM-8's 1 KB stats and MEM-10's 2 KB are unchanged in kind.
 - **RES-14** is `TickBudget.duress()`: three skipped turns in the round and fewer than `DURESS_QUIET_TICKS` (300) ticks since the last. `HadurCore` tells the budget the tick (`tickBegan`) before it asks, so the 300 ticks are engine ticks counted from the last skipped turn, never the round clock (DIAL-2). Another skipped turn after duress has ended starts it again, since the round already holds three. When duress ends, the Duel's view of the enemy is stale (the ledger has missed every energy drop, the logs every state), so the conductor resets it once (`DuelSeam.afterDuress`, `DuelController.resumeAfterDuress`) and the first normal scan starts afresh. That reset also discards both wave managers' outstanding waves (the gun's and the surf's), the gun's virtual bullets and the surf's per-wave state, since they would otherwise be judged against the unobserved interval; the battle-long learning (the trees, ratings and hit rates) stays. The 300 ticks count from the tick the engine skipped (the event's `skippedTime`), not the tick the event is handled on. Duress itself, the level RES-9 defined, is unchanged. ROLE-5 and WORLD-1 still read "(RES-9)" for the same condition; they mean the duress level.
-- **Re-pinned.** This stage changes the duel's play where POW-7 triggers, where POW-10 now fires, and where duress now ends, so the replay fixtures that diverged were re-recorded and the snapshots and source pins re-taken: see the stage notes in [strategy-evolution.md](strategy-evolution.md#d1) for exactly which.
+- **Re-pinned.** This stage changes the duel's play where POW-7 triggers, where POW-10 now fires, and where duress now ends, so the replay fixtures that diverged were re-recorded and the snapshots and source pins re-taken: see the stage notes in [strategy-evolution.md](../strategy-evolution.md#d1) for exactly which.
 
 ### D2 notes
 
@@ -740,7 +740,7 @@ POW-7 to POW-9 apply to a duel only. POW-1 to POW-5, RAM-1 and END-3 keep preced
 - **SHIELD-4** is `PowerPolicy.shieldPower`, applied at the scan after POW-1 to POW-4 and before END-3 (so END-3 caps it, as the requirement asks), and before RAM-1 and POW-10 as everything is. It replaces what the lead-aware regime chose (3.0 against a still shielder wins over POW-7's 0.1): the plan's reasoning is that a shielder's bullet scales with ours, so a heavier shot makes its shield dearer. Like every full-power rule it does not apply at 12 energy or less (`PowerPolicy.MIN_OUR_ENERGY`): a shielder destroys the shot and there is no refund. END-4 also holds shield mode's attack shots and duress's head-on shot (`PowerPolicy.holdsShotAt`), not only the main gun's. SHIELD-3's one-bullet latch needs the round's history known: a first scan after tick 10 (`EnemyStillness.KNOWN_FROM`) counts the enemy as having moved, and a survivor's stored shielder verdict applies at the melee-to-duel handoff. "Not moved in the last 10 ticks" is `EnemyStillness.stillForTenTicks`: ten ticks since the last scan that showed movement, or since the first scan of the round. Duel only.
 - **END-4** is `PowerPolicy.holdsLastShot`, applied where the shot leaves (`fireIfGunTurned`), to the power POW-10 would fire: every scan still makes its wave, which teaches the gun. The smallest bullet power the enemy has fired this battle is the smallest corrected drop the ledger has read as a shot (`DuelController.smallestEnemyPower`), cleared when a different robot becomes the duel opponent. The enemy "can no longer fire" when its energy is below that figure, and the shot is held when it would leave our energy less than `END_4_MARGIN`, 0.3, above the enemy's. One reading is added to the requirement's words: the shot is held only while our energy is above the enemy's. When level or behind there is no lead to keep, and holding would lose to the inactivity rule for certain, so the shot goes (POW-10). A `P,...,power,...,end_4` record marks each change.
 - **The inactivity rule, checked on Robocode 1.9.5.6.** `hadur.bench.InactivityCheck` compiles two tiny robots into a scratch Robocode home and runs one-round battles through the engine the bench uses: an Idler that never acts, and a Spender that waits for a cool gun, fires one bullet of a fixed power at the nearest wall and then idles. Neither can damage the other, so only the inactivity penalty can end the round. Result, run on 5 October 2026: with a gap of 0.1, 0.3, 1.0 or 3.0 energy the robot with more energy survived in every case (the round ended at tick 1,451, 1,449, 1,442 and 1,422, the Spender dying first, the Idler alive); with no gap both died on tick 1,452. So the penalty takes the lower robot first (the round lasts about 1,450 ticks from 100 energy each, which fits 0.1 energy a tick for both robots after 450 ticks without a bullet hit), and a gap of even one penalty step is enough; END-4's 0.3 is conservative, not necessary. Reproduce: see the class's Javadoc.
-- **Re-pinned and re-recorded.** The profile files, the duel and the conductor changed: see [strategy-evolution.md](strategy-evolution.md#d2) for exactly which pins and fixtures.
+- **Re-pinned and re-recorded.** The profile files, the duel and the conductor changed: see [strategy-evolution.md](../strategy-evolution.md#d2) for exactly which pins and fixtures.
 
 ### D3 notes
 
@@ -761,8 +761,8 @@ POW-7 to POW-9 apply to a duel only. POW-1 to POW-5, RAM-1 and END-3 keep preced
 - **The shadow value** is `duel.ShadowAvoidance`, the one seam between gun and movement (the gun and move packages may not depend on each other, so the Duel builds the gun's `ShadowValue` out of movement's published intervals and `move.ShadowGain`). For each interval, a candidate `OurBullet` leaves from where the gun will be on the tick after the aim, along the candidate angle, at the wave's power's speed; `BulletShadows.of` gives its certain and possible shadows on the wave, `ShadowGain.shares` unions them with the shadows of our bullets already in flight (brought up to date before the aim, so a shot fired this very tick counts) and returns the share of the interval newly stopped, the certain part counting fully and the possible part half (MOVE-1's rule). The saving is `danger * damage(wave power) * newlyStopped / (1 - alreadyStopped)`: the surf's danger was computed with the old shadows in place, so it is spread over the part of the interval nothing yet stops. A wave of uncertain power counts half (WAVE-3). Intervals on waves already past the shot's source are dropped. `ShadowValue.ceiling` (every interval wholly newly stopped) lets the gun skip a candidate whose hit value plus the ceiling cannot beat the best so far, before any geometry is run.
 - **Exact when there is nothing to shadow.** With no published interval (no wave in the air, or a tick the surf did not drive), in the head-on warm-up, or with `GunController.SHADOW_AIM` false, the angle returned is the plain aim's, bit for bit; the Duel does not even build the seam. The virtual guns' bullets and ratings are still the guns' own angles, not the shifted one, so the ratings keep saying how good each gun is. The constant `GunController.SHADOW_AIM` ships `true`; setting it false is the A/B the gate may want.
 - **What a shadow looks like.** A bullet exactly collinear with the enemy's has a shadow of one bearing, which has no width; the shadow of a slightly oblique path is a narrow range, a few thousandths of a radian against a bot's 0.08 or so, so one bullet usually stops a few percent of an interval, and the term is small. It matters where the gun's mass is flat over a bot width, which is when the offsets cost little. Nothing here says it moves DrussGT's hit rate: that is the stage's bench gate.
-- **Cost.** One more KNN-free pass per aiming tick at most: up to 13 candidates by at most two waves, each one `BulletShadows.of` (at most 120 turns, with the cheap rejections), and the main gun's mass from the neighbours its aim already searched. `GunController.aim` is called only within three ticks of a cool gun. The measured micro-benchmark is in the stage notes of [strategy-evolution.md](strategy-evolution.md#d4).
-- **Re-pinned and re-recorded.** See [strategy-evolution.md](strategy-evolution.md#d4) for exactly which.
+- **Cost.** One more KNN-free pass per aiming tick at most: up to 13 candidates by at most two waves, each one `BulletShadows.of` (at most 120 turns, with the cheap rejections), and the main gun's mass from the neighbours its aim already searched. `GunController.aim` is called only within three ticks of a cool gun. The measured micro-benchmark is in the stage notes of [strategy-evolution.md](../strategy-evolution.md#d4).
+- **Re-pinned and re-recorded.** See [strategy-evolution.md](../strategy-evolution.md#d4) for exactly which.
 
 ### Stage 3 gun switches (GUN-8 to GUN-10)
 
@@ -841,7 +841,7 @@ strand, in the `shieldmode` package, and applies to a 1v1 battle only.
 ### D7: the route's scope (release 3.8.5)
 
 Live, 3.8 gained on the top 10 and lost about 1.5 points a pairing on the field below the top
-20, with no bench condition yet reproducing the loss ([leak-38-plan.md](leak-38-plan.md), Track
+20, with no bench condition yet reproducing the loss ([leak-38-plan.md](../leak-38-plan.md), Track
 B). The route's parts that act on every duel are scoped to the duels it was built for: those
 whose guns out-hit Hadur's or match them.
 
@@ -860,7 +860,7 @@ whose guns out-hit Hadur's or match them.
 
 ### D8: the rammer trial (release 3.9)
 
-The live-loser bisect ([live-loser-bisect](bench/local/2026-10-07_live-loser-bisect.md)) put the
+The live-loser bisect ([live-loser-bisect](../bench/local/2026-10-07_live-loser-bisect.md)) put the
 one resolved regression since 3.4 in 3.5: 3.5.1 scores 6.4 points below 3.4 on the live losers,
 14 opponents down. Building 3.8.5 with RAM-2 off wins them back (+14 to +25 points on six of
 them, PR #129): close-range fighters such as TopGun, Silver and Ice confirm as rammers, and
@@ -881,8 +881,8 @@ pure rammers (docs/bench/r9-weak-leak.md), so it is tried, not dropped.
 
 ## The Team plan (T1)
 
-[team-plan-t1.md](team-plan-t1.md) answers the A5 baseline's teammate collisions and friendly fire
-([bench/a5-team.md](bench/a5-team.md)). Its stage letter is `T`; the requirements are built
+[team-plan-t1.md](../team-plan-t1.md) answers the A5 baseline's teammate collisions and friendly fire
+([bench/a5-team.md](../bench/a5-team.md)). Its stage letter is `T`; the requirements are built
 from `hadur.team.stage` in the root pom (`T1`). Owners: WORLD-9 the kernel, MMOVE-6 to
 MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 
@@ -1191,7 +1191,7 @@ lines.
 
 Hadur's movement is tested apart from its gun: a silent Hadur (`build-ablation.sh silent`, which
 combines with the other ablations as `silent,<x>`) fights six reference shooters that differ only in
-their gun, and its score is the damage it takes. [docs/bench/move-lab.md](bench/move-lab.md) says how
+their gun, and its score is the damage it takes. [docs/bench/move-lab.md](../bench/move-lab.md) says how
 to build, run and read it.
 
 ## AES: refitting the surf's danger blend (AES-1, MOVE-22)

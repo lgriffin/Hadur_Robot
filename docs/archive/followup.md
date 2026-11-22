@@ -27,11 +27,11 @@ D1, D5, T1, D2 and D3 with D4 merged (#98, #99, #100, #101, #104); D6 stays rese
 All six stages merged (#87, #88, #89, #92, #93, #94), and 3.7 was entered on the RoboRumble,
 MeleeRumble and TeamRumble on 2026-10-05. Open after A5:
 
-- **3.7's passes, read** in [docs/bench/live-3.7.md](docs/bench/live-3.7.md): the 1v1 at
+- **3.7's passes, read** in [docs/bench/live-3.7.md](../bench/live-3.7.md): the 1v1 at
   85.67 (21st) is 0.43 below the predicted range and not yet attributed (L-43); melee 65.25
   (18th) is level; the first team pass reads 39.43 (32nd of 46).
-- **Teammate collisions: done in T1** ([team-plan-t1.md](docs/team-plan-t1.md), 3.8; gate in
-  [docs/bench/t1-team.md](docs/bench/t1-team.md)). Collisions fell from 101,322 to 65 over the
+- **Teammate collisions: done in T1** ([team-plan-t1.md](../team-plan-t1.md), 3.8; gate in
+  [docs/bench/t1-team.md](../bench/t1-team.md)). Collisions fell from 101,322 to 65 over the
   gate suite (-99.9%) and the team's score share rose from 28.8% to 48.2%. Follow-ups the gate
   opened:
   - **Friendly fire.** Our bullets on a teammate fell 1,015 to 328 (-68%), short of the plan's
@@ -46,7 +46,7 @@ MeleeRumble and TeamRumble on 2026-10-05. Open after A5:
   - **Bullet on a teammate's bullet** rose 2,598 to 3,557 (the plan's RC5): the shared-target
     item, with a shared target and formation.
 - **Droids** (a leader with radar-less members) are left to the Team plan.
-- **Team ladder gap, 3.11 (2026-10-11)**, [docs/bench/team-lower-half.md](docs/bench/team-lower-half.md):
+- **Team ladder gap, 3.11 (2026-10-11)**, [docs/bench/team-lower-half.md](../bench/team-lower-half.md):
   the 2.07 APS to 10th is lost to ranks 21-33 (Hadur 65.6% against 75-78% for HOFSwarm, ArmyOfShiz
   and Phoenix), where members die early to simple guns. A shared target scored worse (-2.2); the melee
   posture off (+0.7) and the teammate fence off (-1.1) scored nothing. Next: measure enemy shots detected on a team (the link carries
@@ -122,7 +122,7 @@ MeleeRumble and TeamRumble on 2026-10-05. Open after A5:
 - **BENCH-5** (`hadur.bench.LiveDetails`) reads a saved LiteRumble BotDetails page and
   reports APS/survival by opponent-APS band, by UTC hour, a before/after split, and live
   minus bench share against a given bench report. Run against 3.0's saved page it reproduces
-  the plan's numbers exactly (docs/bench/live-details-3.0.md): 268 pairings at 85.5 APS
+  the plan's numbers exactly (../bench/live-details-3.0.md): 268 pairings at 85.5 APS
   before 08:30 UTC, 239 at 77.2 after. Once 3.1 has 300+ pairings, save its BotDetails page
   and run the same tool against it to see whether R1's client-reliability work touched the
   effect.
@@ -142,7 +142,7 @@ MeleeRumble and TeamRumble on 2026-10-05. Open after A5:
 
 - **3.0's live rating collapsed about 08:30 UTC on 2026-09-28** (85.5 to 77.2 APS, survival
   92.6% to 71.2%) and the bench cannot reproduce it; see
-  [docs/rumble-climb-r4-r6-plan.md](docs/rumble-climb-r4-r6-plan.md). R3.5 ships the merged
+  [docs/rumble-climb-r4-r6-plan.md](../rumble-climb-r4-r6-plan.md). R3.5 ships the merged
   and previously unreleased R1 to R3 work as 3.1 so live battles start on it while R4
   investigates the cause directly.
 - **None of R1, R2 or R3's own bench gates have been run** yet (`hadur-bench/rumble-sample.txt`
@@ -151,14 +151,14 @@ MeleeRumble and TeamRumble on 2026-10-05. Open after A5:
   those gates.
 - **Read with BENCH-5 (2026-09-30): R1 did not touch it.** 3.1's complete pass slides the same
   way (85.7 APS in its first hour to 78.6 in its last; `docs/bench/live-details-3.1.md`).
-  The next plan is [docs/rumble-climb-top30-plan.md](docs/rumble-climb-top30-plan.md): enter
+  The next plan is [docs/rumble-climb-top30-plan.md](../rumble-climb-top30-plan.md): enter
   3.2 now, merge the held R5, then R7 (a one-JVM session bench over 300 rumble bots, the
   one condition never benched) and R6 last.
 
 ## Release 3.0 and the melee extension (M0 to M6)
 
 - **Reference APS 60 is not met** (#44). Four 10-seed runs of the M6 builds range 52.7 to
-  54.6 (docs/bench/m6-gates.md), and the weight sweep found the movement at a local
+  54.6 (../bench/m6-gates.md), and the weight sweep found the movement at a local
   optimum. The next levers are the radar (turn it with the gun and body, an arc sweep; the
   worst scan gap is still 10 to 11 ticks against M2's 8) and the field gun's bullet damage.
 - **The hand-off gate needs a warm bench** (#45). M5 won 31% of hand-off duels against 57%
@@ -206,7 +206,7 @@ MeleeRumble and TeamRumble on 2026-10-05. Open after A5:
 - **Go-to surfing lost the A/B as the default.** Against Shadow cold, the three-option surf
   scored 54.8% +- 3.7 and go-to surfing 51.8% +- 5.1, with their hit rate 8.8% against
   9.5% and more slow ticks (438 against 284) and skipped turns (42 against 12)
-  (docs/bench/s6-2.1-shadow-options-cold.md, s6-2.1-shadow-goto-cold.md). Go-to stays as
+  (../bench/s6-2.1-shadow-options-cold.md, s6-2.1-shadow-goto-cold.md). Go-to stays as
   MOVE-2's second flavour: it is only reached when the base movement is already being hit
   more than the profile says. Its candidates are every second tick along both orbits; a
   finer set, or scoring the second wave for more than the best three, may change the
@@ -222,7 +222,7 @@ MeleeRumble and TeamRumble on 2026-10-05. Open after A5:
 - **MOVE-2 has no measurable effect yet** (#55). Cold it never fires, by design: a stranger has
   no baseline. Warm it fired 8 times over 5 battles against Shadow (all three steps in
   battles 2 and 3), and the warm bench scored 54.6% +- 6.0 with it and 55.2% +- 3.8 with it
-  switched off, their hit rate 8.3% both ways (docs/bench/s6-2.1-warm.md,
+  switched off, their hit rate 8.3% both ways (../bench/s6-2.1-warm.md,
   s6-2.1-shadow-warm-noflavour.md). Part of what triggers it is likely Shadow's gun learning
   within a battle: the profile's rate averages whole battles, cold start included, while
   the live window is the latest 100 waves. A baseline taken from the same part of past
@@ -243,7 +243,7 @@ MeleeRumble and TeamRumble on 2026-10-05. Open after A5:
 - **The gate is only partly measurable.** "Bullet-damage share up against T0-T2" has no
   T1 or T2 opponent in the bench, and the sample bots (T0) already sit at 99-100% share,
   so share cannot rise there. What S5 moved against them is kill speed: rounds 5-13%
-  shorter and 0.3-3 more damage dealt per round (docs/bench/s5-2.1-cold.md). Bench a few
+  shorter and 0.3-3 more damage dealt per round (../bench/s5-2.1-cold.md). Bench a few
   mid-table RoboRumble bots to calibrate T1/T2 and to see whether closing pays against
   them.
 - **DIST-1's floor is 400 px, not 150.** At 150 the sample bots' head-on and linear guns hit

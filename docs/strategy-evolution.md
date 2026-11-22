@@ -1,4 +1,4 @@
-# Hadur 2: evolution of strategy
+# Hadur: evolution of strategy
 
 As of 2026-09-27 (after S7, release 2.2). The living copy is the [Claude Doc](https://claude.ai/code/artifact/bc581157-b352-49c9-acaf-9f77035202c5); this file is its snapshot for evaluation. The living copy also covers the melee extension, R9, the top-15 plan and the architecture evolution (A0 to A5, releases 3.6 and 3.7). For the stages since this snapshot, see the stage log in [architecture-evolution.md](architecture-evolution.md#stage-log) and [what 3.7 should score](bench/expected-3.7.md).
 
@@ -411,7 +411,7 @@ research. The stage gates ran on jars built before the later stages and the revi
 merged, so the shipped build was benched once against 3.7 ([release-check-3.8.md](bench/release-check-3.8.md)):
 DrussGT **+10.5 ± 3.1** points over 10 battles (10 of 10 up), the top-10 set **+7.2 ± 6.3**
 over 20 (14 up). Skipped turns against DrussGT rose from 314 to 447 over 350 rounds (the top 10 was 298 against 335), the cost to watch live.
-Open items are in `followup.md` under the DrussGT route.
+Open items from that time are in `archive/followup.md` under the DrussGT route; open work is tracked as GitHub issues.
 
 ## 3.8 live: the top rose, the field fell
 
