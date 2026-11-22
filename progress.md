@@ -1,6 +1,6 @@
 # Queue pc-locks: progress
 
-Updated 2026-11-22 17:41:02 PC time (17:41 UTC), runner pid 57792.
+Updated 2026-11-22 17:41:56 PC time (17:41 UTC), runner pid 24320.
 
 - `prep` pending
 - `livematch` pending
@@ -11,9 +11,6 @@ Updated 2026-11-22 17:41:02 PC time (17:41 UTC), runner pid 57792.
 ### Queue log (last lines)
 
 ```
-14:16:53 progress pushed to origin claude/pc-locks-progress (every 15 min)
-14:18:34 prep exit=0 in 103 s
-14:18:34 start livematch
 14:18:34 watching livematch: 3 stop rule(s)
 14:18:43 livematch exit=0 in 8 s
 14:18:43 start lock
@@ -26,4 +23,7 @@ Updated 2026-11-22 17:41:02 PC time (17:41 UTC), runner pid 57792.
 14:24:08 pr exit=0 in 6 s
 14:24:08 ALLDONE
 17:41:02 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
+17:41:02 start prep
+17:41:05 progress pushed to origin claude/pc-locks-progress (every 15 min)
+17:41:56 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
 ```
