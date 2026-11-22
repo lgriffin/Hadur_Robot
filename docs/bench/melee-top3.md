@@ -1083,3 +1083,41 @@ six-expert profiles in place of the two guesses and the learned aims do not move
 hits they were built for are either too few to matter or are not dodged any better by the profiles than by the
 learned aims they replace. MMOVE-30 is retired and `MELEE_DODGE`, its arm, the card and the tests are removed. The
 melee plan's card 4 is closed; the keep-moving arm was never built because the states read did not call for it.
+
+## The final duel against the same survivors (MEND-6, 2026-11-22)
+
+Where the remaining melee points sit after the crowd work: the last two robots of a round. On
+the PC census at 3.21 (920 rounds), Hadur reached the final two in 728 rounds and won 73.6% of
+those duels; the lost duels are spread thin over many survivors, so no per-opponent line covers
+them.
+
+The cloud traces with ScalarR seated (12 census fields, 21 runs; final duel per round read from
+the traces and checked against `rounds.csv`, 0 mismatches on 140 duels) compare the two robots
+against the same survivors, split by which side of the energy line they enter the duel on:
+
+| Entering the duel | ScalarR wins | Hadur wins |
+|---|---|---|
+| behind on energy | 50.4% | 18.1% |
+| ahead on energy | 98.6% | 83.7% |
+
+How the duel is fought, per duel from behind:
+
+| | Distance | Shots | Mean power | Hit rate |
+|---|---|---|---|---|
+| ScalarR | 685 px | 69.6 | 0.16 | 22.3% |
+| Hadur | 774 px | 19.5 | 0.66 | 12.7% |
+
+ScalarR fires many light bullets when behind and only raises its power (0.47 mean) when ahead,
+which is what an energy race does: a light bullet costs little and, against a survivor that has
+just come out of a crowd and fires heavy, wins the exchange of energy shot by shot. The earlier
+endgame switches (HAND-1 table, HAND-4 close distance, HAND-5 melee gun) never changed the power.
+Hadur's duel already holds POW-17's energy race for the 1v1 opponents its table names; probed at
+ScalarR-like rates it picks 0.1 at 20/40 and 30/40, 0.5 at 40/40 and 1.5 to 1.95 at 60/30.
+
+MEND-6 (`ENDGAME_RACE`, off) lets the race pick the power in a melee's final duel after the
+hand-off: `mrace` (suffix en) once each side has 8 resolved duel shots, `mracex` (ez) at once
+from the race's priors (which pick 1.5 at even energies, so ez only differs once the counts move).
+A 1v1 battle and a team never read it; fixtures are unchanged.
+
+Cloud screen: aa, en and ez each alone on the melee census, 2 seeds from 29410, one worker each
+(one core left free), read with `melee_pairwise.py` and the endgame wins from the traces.
