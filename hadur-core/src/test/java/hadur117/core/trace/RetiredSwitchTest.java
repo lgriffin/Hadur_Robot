@@ -37,7 +37,7 @@ class RetiredSwitchTest {
     @DisplayName("STRAND-6: no constant of a retired requirement is still declared in the robot")
     void retiredSwitchesAreGone() {
         Path root = root();
-        Map<String, Set<String>> retired = retired(read(root.resolve("docs/requirements.md")));
+        Map<String, Set<String>> retired = retired(requirementLines(root));
         List<String> left = new ArrayList<>();
         for (String dir : MAIN) {
             Path d = root.resolve(dir);
@@ -90,7 +90,7 @@ class RetiredSwitchTest {
 
     static Map<String, Set<String>> retired(List<String> lines) {
         int start = lines.indexOf("## Retired requirements");
-        assertTrue(start >= 0, "docs/requirements.md has no retired table");
+        assertTrue(start >= 0, "no retired table");
         int header = start;
         while (!lines.get(header).startsWith("| ID |")) header++;
         int end = header + 2;
@@ -117,6 +117,39 @@ class RetiredSwitchTest {
             .matcher(src).find();
     }
 
+    /**
+     * The requirement rows as one document, in the shape {@link #retired} reads: every area file
+     * of docs/requirements/ and every bench card's specification (hadur-bench/plans/*.md, as one
+     * row each, since its row in bench.md points there), then the retired table under its heading.
+     */
+    static List<String> requirementLines(Path root) {
+        List<String> lines = new ArrayList<>();
+        Path dir = root.resolve("docs/requirements");
+        try (Stream<Path> s = Files.list(dir)) {
+            s.filter(f -> f.toString().endsWith(".md")).sorted().forEach(f -> {
+                String name = f.getFileName().toString();
+                if (!name.equals("README.md") && !name.equals("retired.md")) lines.addAll(read(f));
+            });
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+        Path plans = root.resolve("hadur-bench/plans");
+        if (Files.isDirectory(plans)) {
+            try (Stream<Path> s = Files.list(plans)) {
+                s.filter(f -> f.toString().endsWith(".md")).sorted().forEach(f -> {
+                    List<String> card = read(f);
+                    Matcher id = Pattern.compile("\\(([A-Z]+-\\d+)\\)").matcher(card.isEmpty() ? "" : card.get(0));
+                    if (id.find()) lines.add("| " + id.group(1) + " | " + String.join(" ", card) + " |");
+                });
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        }
+        lines.add("## Retired requirements");
+        lines.addAll(read(dir.resolve("retired.md")));
+        return lines;
+    }
+
     private static List<String> read(Path p) {
         try {
             return Files.readAllLines(p);
@@ -127,8 +160,8 @@ class RetiredSwitchTest {
 
     private static Path root() {
         Path p = Path.of("").toAbsolutePath();
-        while (p != null && !Files.exists(p.resolve("docs/requirements.md"))) p = p.getParent();
-        assertTrue(p != null, "no docs/requirements.md above " + Path.of("").toAbsolutePath());
+        while (p != null && !Files.isDirectory(p.resolve("docs/requirements"))) p = p.getParent();
+        assertTrue(p != null, "no docs/requirements/ above " + Path.of("").toAbsolutePath());
         return p;
     }
 }

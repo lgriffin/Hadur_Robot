@@ -1,7 +1,7 @@
 # Testing Hadur 2
 
 Hadur 2 is tested in layers, from rules that hold on every build to battles in the real
-engine. Every requirement in [requirements.md](requirements.md) is traced to at least one
+engine. Every requirement in [requirements/](requirements/README.md) is traced to at least one
 test, and the build fails if one is not. The hexagonal core (see
 [architecture.md](architecture.md)) is what makes this possible: the brain sees only
 plain values, so it can be replayed, fuzzed and fault-injected without Robocode.
@@ -43,7 +43,7 @@ named.
 
 ## Traceability
 
-`RequirementsTraceabilityTest` reads every requirement row in `docs/requirements.md` and
+`RequirementsTraceabilityTest` reads every requirement row in `docs/requirements/` (one file per area, plus `retired.md`) and
 the test sources of every module of the build (each folder beside the root pom with a pom
 of its own), plus the bench tools' Python tests in `hadur-bench/tools` and `data/tools`.
 It fails when:

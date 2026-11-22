@@ -21,7 +21,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
- * Keeps docs/requirements.md and the tests in step. Every active requirement must be named
+ * Keeps the requirements (docs/requirements/, one file per area) and the tests in step. Every active requirement must be named
  * by at least one test: an {@code @Tag("ID")} on a JUnit or jqwik test, an {@code @ID} tag
  * on a Cucumber scenario, or a comment {@code @Tag("ID")} in a bench tool's Python test
  * ({@code hadur-bench/tools/test_*.py}, {@code data/tools/test_*.py}), where it names the
@@ -37,7 +37,8 @@ class RequirementsTraceabilityTest {
 
     /** Any table row that opens with a requirement ID; group 2 is its last cell. */
     static final Pattern ROW = Pattern.compile("^\\|\\s*([A-Z]+-\\d+)\\s*\\|.*\\|\\s*([^|]*?)\\s*\\|\\s*$");
-    static final String RETIRED_HEADING = "## Retired requirements";
+    /** The retired table's file in docs/requirements/; every other .md there but README is an area. */
+    static final String RETIRED_FILE = "retired.md";
     static final Pattern JAVA_TAG = Pattern.compile("@Tag\\(\"([A-Z]+-\\d+)\"\\)");
     // Split so this file's own source doesn't match them.
     static final String JQWIK_PROPERTY = "import net.jqwik.api." + "Property;";
@@ -57,7 +58,7 @@ class RequirementsTraceabilityTest {
     @BeforeAll
     static void scan() throws IOException {
         root = findRoot();
-        requirements = readRequirements(root.resolve("docs/requirements.md"));
+        requirements = readRequirements(root.resolve("docs/requirements"));
         coverage = new TreeMap<>();
         junitTaggedProperties = new ArrayList<>();
         for (Path module : modules(root)) {
@@ -148,23 +149,29 @@ class RequirementsTraceabilityTest {
     }
 
     /**
-     * Reads the active rows (ID to last cell) and fills {@link #retired} and {@link #repeated}.
-     * The retired table runs from its heading to the next heading.
+     * Reads the active rows (ID to last cell) of every area file in {@code dir} and fills
+     * {@link #retired} from the retired table and {@link #repeated} over all of them.
      */
-    static Map<String, String> readRequirements(Path file) throws IOException {
+    static Map<String, String> readRequirements(Path dir) throws IOException {
         Map<String, String> reqs = new LinkedHashMap<>();
         retired = new TreeSet<>();
         repeated = new TreeSet<>();
         Set<String> seen = new TreeSet<>();
-        boolean inRetired = false;
-        for (String line : Files.readAllLines(file)) {
-            if (line.startsWith("#")) inRetired = line.startsWith(RETIRED_HEADING);
-            Matcher m = ROW.matcher(line);
-            if (!m.matches()) continue;
-            String id = m.group(1);
-            if (!seen.add(id)) repeated.add(id);
-            if (inRetired) retired.add(id);
-            else reqs.put(id, m.group(2));
+        List<Path> files;
+        try (Stream<Path> s = Files.list(dir)) {
+            files = s.filter(f -> f.toString().endsWith(".md") && !f.getFileName().toString().equals("README.md"))
+                .sorted().toList();
+        }
+        for (Path file : files) {
+            boolean isRetired = file.getFileName().toString().equals(RETIRED_FILE);
+            for (String line : Files.readAllLines(file)) {
+                Matcher m = ROW.matcher(line);
+                if (!m.matches()) continue;
+                String id = m.group(1);
+                if (!seen.add(id)) repeated.add(id);
+                if (isRetired) retired.add(id);
+                else reqs.put(id, m.group(2));
+            }
         }
         return reqs;
     }
@@ -222,12 +229,12 @@ class RequirementsTraceabilityTest {
 
     static Path findRoot() {
         String prop = System.getProperty("hadur.root");
-        if (prop != null && Files.exists(Path.of(prop, "docs/requirements.md"))) {
+        if (prop != null && Files.isDirectory(Path.of(prop, "docs/requirements"))) {
             return Path.of(prop).toAbsolutePath();
         }
         for (Path p = Path.of("").toAbsolutePath(); p != null; p = p.getParent()) {
-            if (Files.exists(p.resolve("docs/requirements.md"))) return p;
+            if (Files.isDirectory(p.resolve("docs/requirements"))) return p;
         }
-        throw new IllegalStateException("docs/requirements.md not found; set hadur.root");
+        throw new IllegalStateException("docs/requirements/ not found; set hadur.root");
     }
 }

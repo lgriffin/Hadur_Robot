@@ -303,7 +303,7 @@ as data, so the next plan starts from evidence.
 
 ```mermaid
 flowchart LR
-    P["Plan<br/>staged, with gates"] --> REQ["EARS requirements<br/>docs/requirements.md"]
+    P["Plan<br/>staged, with gates"] --> REQ["EARS requirements<br/>docs/requirements/"]
     REQ --> IMP["Implement<br/>one PR per stage"]
     IMP --> TST["Tests: ArchUnit, jqwik, unit,<br/>replay, Cucumber per EARS group,<br/>traceability"]
     TST --> BEN["Bench gate<br/>cold, warm, A/B, client conditions,<br/>300-battle session"]
@@ -340,7 +340,7 @@ alone on its task and reported back where it was asked.
 
 ### Requirements as the contract between agents
 
-Every behaviour is an [EARS](docs/requirements.md) requirement (Ubiquitous, Event, State,
+Every behaviour is an [EARS](docs/requirements/README.md) requirement (Ubiquitous, Event, State,
 Unwanted, Optional), more than a hundred of them, each with a stable ID that never changes
 meaning. A requirement is the unit an agent is asked to deliver, and the build holds it to
 it: a traceability test fails `mvn verify` if any ID has no test, every Cucumber scenario is
@@ -449,7 +449,7 @@ which EARS requirements it implements; `mvn verify` runs doclint over all of it.
 builds the docs site (Javadoc, a requirement map from every EARS ID to the classes and tests that
 cite it, and the design docs), and the `pages` workflow publishes it to
 https://lgriffin.github.io/Hadur_Robot/ on every push to master. The main design documents are
-[docs/architecture.md](docs/architecture.md), [docs/requirements.md](docs/requirements.md) and
+[docs/architecture.md](docs/architecture.md), [docs/requirements/](docs/requirements/README.md) and
 [docs/strategy-evolution.md](docs/strategy-evolution.md). Follow-ups are tracked as
 [GitHub issues](https://github.com/lgriffin/Hadur_Robot/issues).
 

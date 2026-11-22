@@ -6,7 +6,7 @@ Built from the design plan
 drafts, API stubs, a codesize counter and RoboRunner scripts). This page records what was built
 from them, how the cloud box measured it, and what stands between each bot and the plan's
 submission gate. The requirements are JAYLEXI-1 to JAYLEXI-10 and EVEIMEAR-1 to EVEIMEAR-12 in
-[requirements.md](requirements.md); the plan's K, J and E statements map onto them there.
+[requirements/](requirements/README.md); the plan's K, J and E statements map onto them there.
 
 Both are separate robots in their own modules (`jaylexi/`, `eveimear/`). Nothing of Hadur, Saor,
 TwinSaor, Deise or Sanaro changes; Hadur's 1v1 build is untouched. Nothing has been submitted or

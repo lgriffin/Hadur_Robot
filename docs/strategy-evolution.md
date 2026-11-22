@@ -155,7 +155,7 @@ Every strategic claim is backed by a requirement, a test that proves it and a be
 
 | Layer | What it guards | Tooling |
 | --- | --- | --- |
-| EARS requirements | What Hadur must do, stage by stage (28 at S1, 29 with RADAR-1) | [requirements.md](requirements.md) |
+| EARS requirements | What Hadur must do, stage by stage (28 at S1, 29 with RADAR-1) | [requirements/](requirements/README.md) |
 | Traceability | Each requirement due by the current stage names a test; unknown tags fail; jqwik tests must use jqwik's own tag, or jqwik silently skips them | RequirementsTraceabilityTest |
 | Architecture | No Robocode, randomness, threads, reflection, I/O or clock in the core; the ledger may depend only on physics | ArchUnit |
 | Properties | Physics equals the engine's bit for bit; the ledger recovers exact shot power under any mix of events | jqwik |
@@ -290,7 +290,7 @@ robot that just drives at us.
 
 ## The DrussGT route (D1 to D6)
 
-The plan is [druss-route-plan.md](druss-route-plan.md); the requirements are in [requirements.md](requirements.md#the-drussgt-route-d1-to-d6).
+The plan is [druss-route-plan.md](druss-route-plan.md); the requirements are in [requirements/](requirements/README.md) (stage notes in [archive/requirements-notes.md](archive/requirements-notes.md#the-drussgt-route-d1-to-d6)).
 
 <a id="d1"></a>
 
@@ -332,7 +332,7 @@ Still release 3.8; `hadur.druss.stage` was `D3` when this stage was built (it st
 
 - **GUN-5** rates the virtual guns separately for bullets under 0.2 and for the rest, and fires the gun rated highest for the class of the shot about to be fired. The duel decides power before it aims (D1), so the gun wave already carries the class when `GunController.aim` runs. Each class keeps GUN-1's decayed ratings and margin gate; the combined table of D2 is now the rest class's.
 - **The new gun** is `SampledGun`, the probe's sampled aim (one neighbour of the hybrid view picked by a golden-ratio phase, its guess factor scaled by the escape angle). It competes for light bullets only, so it is used where it rates highest rather than unconditionally as in the probe. The phase is core state and advances with real shots, so replays are deterministic.
-- **Not kept in the profile:** the format and its size are unchanged; see the D3 notes in `docs/requirements.md` for why.
+- **Not kept in the profile:** the format and its size are unchanged; see the D3 notes in `docs/archive/requirements-notes.md` for why.
 - **Re-recorded fixtures:** none. All 68 replay checks pass unchanged: the fixtures' opponents are fought at ordinary power, where the rest class's table is what D2's single table was, and the sampled gun is never fired before it is rated best.
 - **Re-snapshotted:** nothing.
 - **Re-pinned:** `pins/duel.sha256` (`-Dhadur.pin=duel`) and `duel-sources.sha256` (`-Dhadur.duel.snapshot=write`). The kernel, conductor, melee and team pins did not change.
@@ -367,7 +367,7 @@ ships in robot 3.8 with 14 names, chosen from BENCH-11's paired probe (`--shield
 [d5-probe.md](bench/d5-probe.md), gate in [d5-gate.md](bench/d5-gate.md)): the 8 it shows shield mode
 winning against and 6 more with a mean gain of 9 points or more. It ships as a class, `hadur2.ShieldListData`, because Robocode's
 sandbox kills a robot that reads a resource of its own jar. Requirements are in the D5 subsection of
-`docs/requirements.md`.
+`docs/archive/requirements-notes.md` (the area files in `docs/requirements/` hold the rows).
 
 - **Gate** ([d5-gate.md](bench/d5-gate.md)): 46 panel robots, 3 seeds of 35 rounds, shield mode on against off, paired: weighted mean **+2.9 ± 2.7** points over the panel (stratified APS 86.8 against 83.9). Eight robots win; the list takes those and six more at +9 or better, and leaves off the seven it loses against (Hubris, TimCat, RSK1, ThroxBot, Grofvuil, sample.Fire, OscillatorL). D6 is not built: it stays a research item.
 

@@ -248,7 +248,7 @@ Stages are W0 to W3 (W for Twin; T is the Team plan's letter).
 
 ### Requirements (TWIN-1 to TWIN-12)
 
-These are also in `docs/requirements.md`.
+These are also in `docs/requirements/twinsaor.md`.
 
 | ID | Pattern | Requirement | Stage |
 |---|---|---|---|

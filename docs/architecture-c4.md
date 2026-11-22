@@ -9,7 +9,7 @@ catalogued in [Switches and mode tables](#switches-and-mode-tables).
 It supersedes the diagrams of [architecture.md](architecture.md) (which stays as the detailed
 narrative of each subsystem) and the A0 to A5 plan in
 [architecture-evolution.md](architecture-evolution.md), whose end state this describes.
-Requirement IDs (ROLE-3, TMODE-34 and so on) are those of [requirements.md](requirements.md).
+Requirement IDs (ROLE-3, TMODE-34 and so on) are those of [requirements/](requirements/README.md).
 
 ## The three styles at a glance
 
@@ -645,7 +645,7 @@ flowchart LR
 ### The switch catalogue (master, 2026-11-04)
 
 A switch whose card failed is removed with its code, ablation arm, card and tests, and its
-requirement moves to the retired table in docs/requirements.md; this catalogue lists only what ships
+requirement moves to the retired table, docs/requirements/retired.md; this catalogue lists only what ships
 or what a mode table or ablation still reaches. `RetiredSwitchTest` (STRAND-6) fails the build while a retired
 requirement's switch is still declared in the robot. The 3.22 cleanup removed the melee endgame hand-off
 (HAND-1..5), the failed 1v1 surf, distance and power switches (MOVE-12, 14..21, 23, 25..27, DIST-3, TIME-6, RAM-4,
