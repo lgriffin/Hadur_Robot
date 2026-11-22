@@ -1193,6 +1193,10 @@ final class ShieldTableData {
             "oog.micro.Maui 1.2",
             // pc-locks round 17 (BENCH-253, PR #978): 12 fresh PC seeds at the live turn time, +11.1
             "arthord.NanoSatan Mu",
+            // pc-locks round 19 (BENCH-253, PR #991): 12 fresh PC seeds at the live turn time, +6.8, +3.6, +1.7
+            "nova.Snow 1.0",
+            "robar.nano.Assertive 0.3",
+            "stf.PanzerGeneral 0.1",
         };
     }
 
@@ -1415,6 +1419,8 @@ final class ShieldTableData {
             "cw.megas.Gridd 0.4",
             "cw.megas.Polar 3.2",
             "cw.megas.Silhouette 1.1",
+            // pc-locks round 19 (BENCH-253, PR #991): 12 fresh PC seeds at the live turn time, +2.6
+            "KiraNL.SpaceKees 0.1",
         };
     }
 
@@ -1426,6 +1432,9 @@ final class ShieldTableData {
      */
     static String[] aimWeights() {
         return new String[] {
+            // pc-locks round 19 (BENCH-253, PR #991): 12 fresh PC seeds at the live turn time, +1.6, +1.2
+            "com.syncleus.robocode.Dreadnaught 0.1",
+            "nic.Nicator 2.4",
         };
     }
 }
