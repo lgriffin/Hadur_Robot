@@ -1,4 +1,3 @@
-08:17:35 lock exit=0 in 905 s
 08:17:35 start gate
 08:17:36 gate exit=0 in 0 s
 08:17:36 start pr
@@ -298,3 +297,4 @@
 11:19:40 start pr
 11:19:47 pr exit=0 in 6 s
 11:19:47 ALLDONE
+14:16:50 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
