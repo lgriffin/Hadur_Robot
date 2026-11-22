@@ -36,6 +36,7 @@ class TeamTest {
 
     @Test
     @Tag("TWIN-9")
+    @Tag("TWIN-13")
     @DisplayName("range closes from 250 to 160 once one enemy is left, and mode bit 2 closes 250 to 180")
     void range() {
         assertEquals(250, Team.range(2, 0));

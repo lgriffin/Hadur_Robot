@@ -366,11 +366,11 @@ def build(root, out):
                         % (r["id"], r["id"], inline(r["text"], lambda s: s, page_for_doc), r["stage"], inline(r["by"], linker0, page_for_doc)))
         rows.append("</tbody></table></div>")
     intro = """<h1>EARS requirements</h1>
-<p class="lede">Every requirement from <a href="%s">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
+<p class="lede">Every requirement from <a href="%s">docs/requirements/</a>, one file per area, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
 traceability check reads. %d of %d live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
-<nav class="toc">%s</nav>""" % (BLOB + "docs/requirements.md", covered, len(live),
+<nav class="toc">%s</nav>""" % (BLOB.replace("/blob/", "/tree/") + "docs/requirements", covered, len(live),
                                " ".join('<a href="#group-%s">%s</a>' % (p, esc(n)) for p, n in GROUPS if p in by_group))
     write(os.path.join(out, "requirements.html"), page("Hadur 2 requirements", intro + "\n".join(rows), "requirements.html"))
 
