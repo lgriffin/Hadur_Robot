@@ -79,14 +79,14 @@ public final class RamEscape {
      * the table's {@code ram-learn:} lines turn it on per opponent ({@link #setLearned}).
      */
     static final boolean FORCE_LEARNED = false;
-    /** RAM-20: the closest approach a path loses for a shot the learned model is sure hits it, px. */
-    static final double LEARNED_COST = 120.0;
+    /** RAM-20: the closest approach a path loses for a shot the learned model is sure hits it squarely, px. */
+    static final double LEARNED_COST = 240.0;
     /** RAM-20: each learned ray is tested as three, itself and this far either side, radians. */
     static final double LEARNED_FAN = Math.toRadians(3);
     /** RAM-20: where a learned shot's record keeps its rays' sines and cosines, three rays an aim. */
     private static final int RAY_BASE = 10;
     /** RAM-20 (measurement): the hit bits of the path {@link #play} last scored. */
-    private int lastPlayBits;
+    private long lastPlayBits;
     /** RAM-20 (measurement): the last choice's note, {@code candidates,unhit,chosenBits,chosenScore}; null when none. */
     private String choiceNote;
 
@@ -371,7 +371,7 @@ public final class RamEscape {
         boolean found = false;
         int played = 0;
         int unhit = 0;
-        int bestBits = 0;
+        long bestBits = 0;
         double bestMin = Double.NEGATIVE_INFINITY;
         double bestMean = Double.NEGATIVE_INFINITY;
         double bestTurn = Double.POSITIVE_INFINITY;
@@ -386,7 +386,7 @@ public final class RamEscape {
                 }
                 played++;
                 if (lastPlayBits == 0) unhit++;
-                int bits = lastPlayBits;
+                long bits = lastPlayBits;
                 if (score[2] == 0 && orientation == 1) {
                     // No wall touched this run, so the other orientation would drive the same.
                     orientation = -1;
@@ -441,6 +441,7 @@ public final class RamEscape {
         double sum = 0;
         double bent = 0;
         int hits = 0;
+        long learned = 0;
         int ticks = dodge && !shots.isEmpty() ? SHOT_HORIZON : HORIZON;
         for (int t = 0; t < ticks; t++) {
             double go = battleField.wallSmoothing(us.location, raw, orientation, WALL_STICK);
@@ -455,15 +456,18 @@ public final class RamEscape {
             ev = Math.min(8.0, ev + 1.0);
             ex = DiaUtils.limit(18.0, ex + Math.sin(eh) * ev, battleField.width - 18.0);
             ey = DiaUtils.limit(18.0, ey + Math.cos(eh) * ev, battleField.height - 18.0);
-            if (dodge) hits |= hits(us.location.x, us.location.y, me.time + t + 1, px, py);
+            if (dodge) {
+                hits |= hits(us.location.x, us.location.y, me.time + t + 1);
+                if (model != null) learned |= learnedHits(me.time + t + 1, px, py);
+            }
             if (t >= HORIZON) continue;
             double d = Point2D.distance(us.location.x, us.location.y, ex, ey);
             min = Math.min(min, d);
             if (min < floor) return null;
             sum += d;
         }
-        lastPlayBits = hits;
-        return new double[] {min - hitPenalty(hits), sum / HORIZON, bent};
+        lastPlayBits = learned;
+        return new double[] {min - hitPenalty(hits) - learnedPenalty(learned), sum / HORIZON, bent};
     }
 
     /**
@@ -498,39 +502,74 @@ public final class RamEscape {
         return lo <= hi;
     }
 
-    /** The closest approach a path loses for the aims that hit it: RAM-5's cost an aim, RAM-20's by the ray's weight. */
+    /** RAM-5: the closest approach a path loses for the fixed aims that hit it. */
     private double hitPenalty(int bits) {
         if (bits == 0) return 0;
         double cost = 0;
         int i = 0;
         for (double[] s : shots) {
             for (int a = 0; a < 3; a++) {
-                if ((bits & (1 << (3 * i + a))) != 0) cost += s.length > 7 ? LEARNED_COST * s[7 + a] : hitCost;
+                if ((bits & (1 << (3 * i + a))) != 0) cost += hitCost;
             }
             i++;
         }
         return cost;
     }
 
-    private int hits(double x, double y, long time, double px, double py) {
-        int bits = 0;
+    /**
+     * RAM-20: which learned rays of the shots in flight pass through us this tick, nine bits a shot (three rays an
+     * aim). A ray is tested as the engine tests a bullet: the stretch it flies this tick against where we stood
+     * before this tick's move.
+     */
+    private long learnedHits(long time, double px, double py) {
+        long bits = 0;
         int i = 0;
         for (double[] s : shots) {
             double flown = (time - s[0]) * s[3];
             if (flown > 0 && s.length > 7) {
-                // RAM-20: a learned ray is tested as the engine tests a bullet: the stretch it flies this tick against
-                // where we stood before this tick's move.
                 for (int a = 0; a < ShotModel.TOP; a++) {
                     if (Double.isNaN(s[4 + a])) continue;
                     for (int k = 0; k < 3; k++) {
                         if (crosses(s[1], s[2], s[RAY_BASE + 6 * a + 2 * k], s[RAY_BASE + 6 * a + 2 * k + 1],
                                 flown - s[3], flown, px, py)) {
-                            bits |= 1 << (3 * i + a);
-                            break;
+                            bits |= 1L << (9 * i + 3 * a + k);
                         }
                     }
                 }
-            } else if (flown > 0) {
+            }
+            i++;
+        }
+        return bits;
+    }
+
+    /**
+     * RAM-20: the closest approach a path loses for the learned rays that hit it: {@link #LEARNED_COST} by the
+     * aim's weight, half for the aim itself and a quarter for each ray beside it, so that where no path is clear
+     * the one furthest from the aims' centres still scores best.
+     */
+    private double learnedPenalty(long bits) {
+        if (bits == 0) return 0;
+        double cost = 0;
+        int i = 0;
+        for (double[] s : shots) {
+            if (s.length > 7) {
+                for (int a = 0; a < ShotModel.TOP; a++) {
+                    for (int k = 0; k < 3; k++) {
+                        if ((bits & (1L << (9 * i + 3 * a + k))) != 0) cost += LEARNED_COST * s[7 + a] * (k == 1 ? 0.5 : 0.25);
+                    }
+                }
+            }
+            i++;
+        }
+        return cost;
+    }
+
+    private int hits(double x, double y, long time) {
+        int bits = 0;
+        int i = 0;
+        for (double[] s : shots) {
+            double flown = (time - s[0]) * s[3];
+            if (flown > 0 && s.length <= 7) {
                 for (int a = 0; a < 3; a++) {
                     if (Double.isNaN(s[4 + a])) continue;
                     // RAM-17: with a fan, the linear and circular aims are each three rays, the aim and +-FAN.
