@@ -123,3 +123,7 @@
 01:23:31 progress field: 5727/7248 (79%) battles, 948/h, ETA 1.6 h, 0 failed, skips 39.1/battle (last 100), rel -0.57, aa -0.16
 01:53:41 progress field: 6215/7248 (86%) battles, 970/h, ETA 1.1 h, 0 failed, skips 33.1/battle (last 100), rel -0.56, aa -0.14
 02:23:52 progress field: 6688/7248 (92%) battles, 940/h, ETA 36 min, 0 failed, skips 32.0/battle (last 100), rel -0.54, aa -0.13
+02:54:08 progress field: 7171/7248 (99%) battles, 966/h, ETA 5 min, 0 failed, skips 29.1/battle (last 100), rel -0.54, aa -0.12
+02:59:00 field exit=0 in 23927 s
+02:59:00 start ret
+02:59:00 watching ret: 3 stop rule(s)
