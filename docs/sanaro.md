@@ -1,5 +1,7 @@
 # Sanaro: a NanoMelee entry
 
+> Architecture diagrams for every small bot: [architecture-c4.md, The small bots](architecture-c4.md#the-small-bots).
+
 Sanaro is a NanoMelee robot: built, tested in the cloud against the top bots, then carded for the PC.
 The design is Leigh's doc "Nano Melee: Beating NaturalScience & Quantum"
 (https://claude.ai/artifact/CFF7CDNc8tZZjd8abXnAta); this page records what was built from it,

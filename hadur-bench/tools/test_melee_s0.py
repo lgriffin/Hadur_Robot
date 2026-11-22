@@ -229,7 +229,7 @@ class ScreenTest(unittest.TestCase):
             self.assertIn("others outlived no more than 1 point lower", text)
 
     def test_skipped_turns_bar(self):
-        """BENCH-146: an arm whose skipped turns a battle rise more than 20% over aa's fails whatever its APS."""
+        """BENCH-287: an arm whose skipped turns a battle rise more than 20% over aa's fails whatever its APS."""
         with tempfile.TemporaryDirectory() as tmp:
             sets = os.path.join(tmp, "census")
             write(os.path.join(sets, "f.txt"), "aaa.Big 1.0 | melee-3 | aaa.Big_1.0.jar\n")

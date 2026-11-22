@@ -31,18 +31,18 @@ DOCS = [
     ("docs/testing.md", "testing.html", "Testing"),
     ("docs/strategy-evolution.md", "strategy-evolution.html", "Strategy evolution"),
     ("docs/bullet-shielding.md", "bullet-shielding.html", "Bullet shielding"),
-    ("docs/requirements.md", "requirements-notes.html", "Requirement readings"),
+    ("docs/archive/requirements-notes.md", "requirements-notes.html", "Requirement readings"),
     ("docs/architecture-evolution.md", "architecture-evolution.html", "Architecture evolution"),
     ("docs/bench/expected-3.7.md", "expected-3.7.html", "What 3.7 should score"),
     ("docs/rumble-submission.md", "rumble-submission.html", "Rumble entry"),
     ("docs/releases/v3.0.md", "release-3.0.html", "Release 3.0"),
     ("docs/releases/v3.7.md", "release-3.7.html", "Release 3.7"),
-    ("followup.md", "followup.html", "Follow-ups"),
+    ("docs/archive/followup.md", "followup.html", "Follow-ups (archive)"),
 ]
 
 ID = r"[A-Z]+-\d+"
-ROW = re.compile(r"^\|\s*(" + ID + r")\s*\|\s*([^|]+?)\s*\|\s*(.+?)\s*\|\s*([SMRA]\d+)\s*\|\s*$")
-RETIRED = re.compile(r"^\|\s*(" + ID + r")\s*\|\s*(.+?)\s*\|\s*([SMRA]\d+)\s*\|\s*(.+?)\s*\|\s*$")
+ROW = re.compile(r"^\|\s*(" + ID + r")\s*\|\s*([^|]+?)\s*\|\s*(.+?)\s*\|\s*([^|]*?)\s*\|\s*$")
+RETIRED = re.compile(r"^\|\s*(" + ID + r")\s*\|\s*(.+?)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|\s*$")
 JAVA_TAG = re.compile(r'@Tag\("(' + ID + r')"\)')
 FEATURE_TAG = re.compile(r"@(" + ID + r")\b")
 
@@ -74,23 +74,30 @@ def esc(s):
 # ---------------------------------------------------------------- requirements
 
 def requirements(root):
-    """The live and retired rows of docs/requirements.md, in file order."""
-    live, retired, in_retired = [], [], False
-    for line in read(os.path.join(root, "docs/requirements.md")).splitlines():
-        if line.startswith("## Retired"):
-            in_retired = True
-        m = (RETIRED if in_retired else ROW).match(line)
-        if not m:
+    """The live rows of docs/requirements/<area>.md and the rows of retired.md."""
+    live, retired = [], []
+    base = os.path.join(root, "docs", "requirements")
+    for name in sorted(os.listdir(base)):
+        if not name.endswith(".md") or name in ("README.md", "retired.md"):
             continue
-        if in_retired:
+        for line in read(os.path.join(base, name)).splitlines():
+            m = ROW.match(line)
+            if m:
+                live.append(dict(id=m[1], pattern=m[2], text=m[3], stage=m[4]))
+    for line in read(os.path.join(base, "retired.md")).splitlines():
+        m = RETIRED.match(line)
+        if m:
             retired.append(dict(id=m[1], text=m[2], stage=m[3], by=m[4]))
-        else:
-            live.append(dict(id=m[1], pattern=m[2], text=m[3], stage=m[4]))
     return live, retired
 
 
+def modules(root):
+    """Every Maven module: a folder beside the root pom with its own pom.xml."""
+    return sorted(d for d in os.listdir(root) if os.path.isfile(os.path.join(root, d, "pom.xml")))
+
+
 def java_sources(root, sub):
-    for module in ("hadur-core", "hadur-robot", "hadur-bench"):
+    for module in modules(root):
         base = os.path.join(root, module, sub)
         for d, _, files in os.walk(base):
             for f in sorted(files):
@@ -116,7 +123,14 @@ def verifications(root):
     for module, _, path in java_sources(root, "src/test/java"):
         for rid in JAVA_TAG.findall(read(path)):
             out[rid].add(os.path.relpath(path, root))
-    for module in ("hadur-core", "hadur-robot", "hadur-bench"):
+    for tools in ("hadur-bench/tools", "data/tools"):
+        for d, _, files in os.walk(os.path.join(root, tools)):
+            for f in files:
+                if f.startswith("test_") and f.endswith(".py"):
+                    p = os.path.join(d, f)
+                    for rid in JAVA_TAG.findall(read(p)):
+                        out[rid].add(os.path.relpath(p, root))
+    for module in modules(root):
         base = os.path.join(root, module, "src/test/resources")
         for d, _, files in os.walk(base):
             for f in files:

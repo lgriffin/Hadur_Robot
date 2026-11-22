@@ -1,0 +1,5 @@
+# The `pc-rc-confirm` card (BENCH-264)
+
+The bench shall carry the `pc-rc-confirm` card, a release-candidate read that ships nothing: rel (the released 3.23 jar from the v3.23 GitHub release, checked by sha256, in `bisect/rel/`), c and aa (two A/A builds of master, `build-ablation.sh aa` and `bb`, so no arm shares the release's name); a `livematch` step first (BENCH-245); the 1v1 field `census-312.txt` x rel, c, aa x 2 fresh seeds from 83000 at `--cpu-constant live`; the returners `panel-ret16.txt` on `--engine 1.12.0 --keep-broken` x 6 fresh seeds from 83100 with a `gate112` that fails unless every engine.log names robocode.host/1.12.0; a gate of multiarm on both runs and `shield_s2.py gate --arm rel` over 1,217 pairings (rel minus pooled master: master passes when its 95% high end is below 0); stop rules (30 failed battles, an arm scoring nothing in 8, 90+ skipped turns a battle over the last 200 (Hadur's own skips run near 60 on the whole field, #953), no battle in 30 minutes, aa after 20%); results on claude/pc-rc-confirm-results.
+
+Stage or check: T7

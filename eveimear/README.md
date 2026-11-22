@@ -7,7 +7,7 @@ mode table: stop-and-go, one step per enemy shot, until the enemy has hit it (2 
 mode, then random orbit; a multiple-choice symbolic pattern-matching gun; a locked radar. 0.1 to 0.4 were
 Eveimear's own GuessFactor gun on the same movement. The design, the
 bench and the results are in [docs/kitlab.md](../docs/kitlab.md); the requirements are EVEIMEAR-1 to
-EVEIMEAR-12 in [docs/requirements.md](../docs/requirements.md).
+EVEIMEAR-12 in [docs/requirements/eveimear.md](../docs/requirements/eveimear.md).
 
 0.1 is 722 bytes of 749 (two classes). Released 2026-10-28 (tag `eveimear-v0.1`). It shares the
 `hadur117.micro` package with Saor but never a jar.

@@ -1,10 +1,11 @@
-# Hadur 2 architecture
+# Hadur architecture
 
 > The current C4 view of all three styles (1v1, melee, team), with the switch and mode-table
 > catalogue and the isolation rule, is [architecture-c4.md](architecture-c4.md). This page keeps
-> the detailed narrative of each subsystem; some names here predate the hadur117 rename.
+> the detailed narrative of each subsystem. The package has been `hadur117` since 3.19 (it was
+> `hadur117`); the stage names (A0 to A5, S1 to S6, M0, T1) are those of the plans that built each part.
 
-Hadur 2 is hexagonal: the strategy lives in a core that only sees plain values, and a
+Hadur is hexagonal: the strategy lives in a core that only sees plain values, and a
 thin adapter connects it to Robocode. That split is what makes the rest of the plan
 testable: the core can be replayed, fuzzed and fault-injected without an engine.
 
@@ -14,7 +15,7 @@ graph LR
         E[Engine]
     end
     subgraph hadur-robot
-        A[hadur2.Hadur<br><i>adapter</i>]
+        A[hadur117.Hadur<br><i>adapter</i>]
     end
     subgraph hadur-core
         G[Guard]
@@ -73,16 +74,30 @@ graph LR
 | Module | Holds | Built for |
 |---|---|---|
 | `hadur-core` | the brain, as plain Java: every package listed below | Java 11 |
-| `hadur-robot` | the adapter `hadur2.Hadur` (a `TeamRobot` from A4, so one class plays all three ladders; from A5 a second jar, `hadur2.HadurTeam`, fields five of it as a team), `hadur2.FileProfileStore`, and `hadur2.HadurRecorder` (the robot plus a transcript of its inputs and orders, for replay fixtures) | Java 11 |
+| `hadur-robot` | the adapter `hadur117.Hadur` (a `TeamRobot` from A4, so one class plays all three ladders; from A5 a second jar, `hadur117.HadurTeam`, fields five of it as a team), `hadur117.FileProfileStore`, and `hadur117.HadurRecorder` (the robot plus a transcript of its inputs and orders, for replay fixtures) | Java 11 |
 | `hadur-bench` | headless battles in the real engine, the report, wave fidelity against the engine's truth | Java 17 |
-| `saor` | a separate robot, `hadur117.micro.Saor`, for the MicroMelee rumble: a pure core, the core flattened by hand into one 749-byte class, and a bench adapter held to it by an equivalence test ([saor.md](saor.md)). Shares nothing with Hadur. | Java 8 (shipped class), 17 (tests) |
+| `saor` | a separate robot, `hadur117.micro.Saor`, for the MicroMelee rumble: a pure core, the core flattened by hand into one 749-byte class, and a bench adapter held to it by an equivalence test ([saor.md](saor.md)). | Java 8 (shipped class), 17 (tests) |
+| `twinsaor` | `hadur117.twin.SaorTwin`, the Twin Duel team of two: Saor's movement and a shared Markov gun with a per-opponent mode table, with scans passed between the twins ([twinsaor.md](twinsaor.md)) | Java 8 (shipped class), 17 (tests) |
+| `deise` | `hadur117.mini.Deise`, the MiniMelee entry, with its pure `core` (move, gun) and a bench lab class ([deise.md](deise.md)) | Java 8 (shipped class), 17 (tests) |
+| `sanaro` | `hadur117.nano.Sanaro`, the NanoMelee entry, one class under 250 bytes ([sanaro.md](sanaro.md)) | Java 8 (shipped class), 17 (tests) |
+| `jaylexi` | `hadur117.mini.JayLexi`, the MiniRumble 1v1 entry, one class, with a test-side reference copy and replay fixtures | Java 8 (shipped class), 17 (tests) |
+| `eveimear` | `hadur117.micro.Eveimear`, the MicroRumble 1v1 entry, one class | Java 8 (shipped class), 17 (tests) |
 
-`hadur-robot` shades the core into three jars. `hadur2.Hadur_<version>.jar` is the competition
+The small bots share no code with Hadur or with each other; each is held to its codesize
+limit by its own test, and each one's requirements are in its own file under
+[requirements/](requirements/README.md).
+
+`hadur-robot` shades the core into three jars. `hadur117.Hadur_<version>.jar` is the competition
 jar, with the recorder left out; the `recorder` jar keeps it, and only the bench's
-`--record` mode loads it. From A5 `hadur2.HadurTeam_<version>.jar` is the same classes as
-the competition jar plus `hadur2/HadurTeam.team`, five `hadur2.Hadur` of that version. The Robocode API is `provided`: the engine supplies it at run
-time, and the build compiles against the vendored 1.9.3.0 API in `repo/` (the bench runs
-the 1.9.5.6 engine from Maven Central).
+`--record` mode loads it. From A5 `hadur117.HadurTeam_<version>.jar` is the same classes as
+the competition jar plus `hadur117/HadurTeam.team`, five `hadur117.Hadur` of that version. The Robocode API is `provided`: the engine supplies it at run
+time, and the build compiles against the vendored 1.9.3.0 API in `repo/`, so the jar loads on
+any engine from 1.9.3. The bench runs the 1.12.0 engine from Maven Central, the release every
+live rumble client runs (BENCH-267).
+
+The robot module also carries the per-opponent lines as classes, `hadur117.ShieldListData` and
+`hadur117.ShieldTableData`, because Robocode's sandbox kills a robot that reads a resource of
+its own jar; the adapter passes their lines to the core, which only parses them.
 
 ## The tick
 
@@ -112,14 +127,14 @@ The core and guard are static in the adapter, so learning survives from round to
 | `port.ProfileStore` | both | named byte blobs with a quota: read, write (may be cut short), delete, list, size |
 
 `ProfileStore` has two adapters: `port.MemoryProfileStore` for tests and the bench (it can
-simulate a write killed part way), and `hadur2.FileProfileStore` in the robot, on Robocode's
+simulate a write killed part way), and `hadur117.FileProfileStore` in the robot, on Robocode's
 data directory through `RobocodeFileOutputStream`.
 
 ## Packages in the core
 
 | Package | Holds |
 |---|---|
-| `hadur2.core` | `HadurCore` (the conductor), `Guard` (RES-1), the seams `DuelSeam` and `MeleeSeam` (A2), `MeleeMemory` (the melee blocks in the profile store, MMEM-1), `Archive` (A4: each brain's shelf by charter, behind the store's gate, SHELF-1, SHELF-3; A5: only the scribe writes, SHELF-2), `TeamLink` (A5: the input a role sees on a team, the merge of teammates' reports, the fire lane and our own report) |
+| `hadur117.core` | `HadurCore` (the conductor), `Guard` (RES-1), the seams `DuelSeam` and `MeleeSeam` (A2), `MeleeMemory` (the melee blocks in the profile store, MMEM-1), `Archive` (A4: each brain's shelf by charter, behind the store's gate, SHELF-1, SHELF-3; A5: only the scribe writes, SHELF-2), `TeamLink` (A5: the input a role sees on a team, the merge of teammates' reports, the fire lane and our own report) |
 | `duel` | the Duel's brain (A2): `DuelController`, everything the duel does against one opponent, lifted out of `HadurCore`, and `Duress` (RES-9) |
 | `model` | the port values, robot states and their logs, waves and the wave manager, the battle's facts, the round's counters (`RoundStats`, RES-5) and the baton one role hands the next |
 | `ledger` | `EnergyLedger`: explains the enemy's energy changes between scans so only bullet spending becomes a wave (WAVE-1, WAVE-2) |
@@ -134,6 +149,7 @@ data directory through `RobocodeFileOutputStream`.
 | `adapt` | recognise and adapt (ADAPT-1..3, DIAL-1..2, RES-4): the opening book, the seed loader and the seed trust |
 | `policy` | aggressive (DIST-1, POW-1, POW-2, END-1, END-2): rolling hit-rate windows, the distance controller, the power policy, the endgame states and the enemy gun-heat estimate; unhittable (MOVE-2, TIME-1, TIME-2): the movement flavour and the tick budget; recognising a rammer (`RammerPolicy`, RAM-1, RAM-2) and a mirror mover (`MirrorDetector`, MIR-1) |
 | `shield` | the bullet-shielding counter (SHIELD-1, SHIELD-2): the shield detector and the anti-shield aim jitter |
+| `shieldmode` | Hadur's own bullet shield (D5, SHIELD-5 onward): `ShieldList` (the opponents it applies to, parsed from the adapter's lines), `ShieldMode` (predict each enemy bullet from head-on predictors and shoot it down), `ShieldBudget`, `ShieldGeometry`, `ShieldDesign` and `ModalOffset` |
 | `replay` | the line codec and replay driver for recorded battles (CORE-2) |
 | `link` | teammates' reports as bytes (A4, LINK-1, LINK-2): `Report` and `LinkCodec`, versioned and checksummed |
 | `port` | outbound interfaces, and `GatedProfileStore` (A4), a store with a gate on writes and deletes |
@@ -311,7 +327,7 @@ and each group of counts is halved once it passes its limit, as the 1v1 profile'
 length, payload, CRC-32) and reads only version 1; damage of any kind throws one exception
 type.
 
-`hadur2.core.MeleeMemory` keeps the blocks in the same `ProfileStore`, one file per opponent
+`hadur117.core.MeleeMemory` keeps the blocks in the same `ProfileStore`, one file per opponent
 named like its 1v1 profile with `.hm` for `.hp`, so the 1v1 library, which only touches
 `.hp` files, never evicts one and a block never costs a 1v1 profile anything. A block is
 loaded on the opponent's first scan (never a sentry's), and written with the 1v1 profile's
@@ -337,7 +353,7 @@ melee vetoed by a sentry or a fault hands nothing over.
 
 ## The team baseline
 
-From A5 Hadur can fight as one of five. `hadur2.HadurTeam` is five `hadur2.Hadur` of the
+From A5 Hadur can fight as one of five. `hadur117.HadurTeam` is five `hadur117.Hadur` of the
 same version, and nothing in the strands knows it is on a team. The conductor's `TeamLink`
 does the work around them, so the Team strand is still empty: its tactics come from the
 Team plan.
@@ -515,9 +531,10 @@ store the battle started on, the adapter's round-end, checkpoint, battle-end and
 health-record calls, and the files the battle left; the tests' `FixtureReplay` makes the
 same calls with its own guard, and `ReplayTest` compares orders with the live robot's,
 telemetry with a pinned snapshot (`replay/telemetry/`) and the store with the live robot's
-files. Eleven fixtures cover the six S1 duels, a ten-robot melee, a melee with a border
-sentry, a melee that hands a known survivor to the duel, a warm duel on a seeded store and a
-duel in RES-9's duress (STRAND-4).
+files. Thirteen fixtures cover the six S1 duels, a ten-robot melee, a melee with a border
+sentry, a melee that hands a known survivor to the duel, a warm duel on a seeded store, a
+duel in RES-9's duress (STRAND-4) and two members of a five-robot team against the sample
+team.
 
 ## Bounded growth
 

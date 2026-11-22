@@ -1,7 +1,7 @@
-# Testing Hadur 2
+# Testing Hadur
 
-Hadur 2 is tested in layers, from rules that hold on every build to battles in the real
-engine. Every requirement in [requirements.md](requirements.md) is traced to at least one
+Hadur and the small bots are tested in layers, from rules that hold on every build to battles in the real
+engine. Every requirement in [requirements/](requirements/README.md) is traced to at least one
 test, and the build fails if one is not. The hexagonal core (see
 [architecture.md](architecture.md)) is what makes this possible: the brain sees only
 plain values, so it can be replayed, fuzzed and fault-injected without Robocode.
@@ -33,32 +33,43 @@ database in `target/.jqwik-database` and reports only failures.
 | Unit | per package (`ledger`, `memory`, `adapt`, `policy`, `gun`, `move`, `shield`, `melee`, `model`), plus `GuardTest`, `RoundStatsTest`, `RadarReacquireTest`, `FaithfulPortTest` | each requirement's rules and edge cases; RES-1 safe orders on a fault; RES-2 bounded growth; RES-5 counters in the round record |
 | Release | `release/ReleaseTargetTest` | REL-1: every shipped class loads on Java 11 |
 | Replay | `replay/ReplayTest` | CORE-2: battles recorded from the real robot in the real engine, one per reference opponent, replay to the same orders bit for bit |
-| Behaviour | `features/*.feature` (Cucumber), steps in `steps/` | one feature per EARS group (core, waves, resilience, memory, adapt, aggressive, unhittable, shield, melee); each scenario is tagged `@<ID>` |
+| Behaviour | `features/*.feature` (Cucumber), steps in `steps/` | the living spec in Given/When/Then: core, waves, resilience, memory, adapt, aggressive, unhittable, shield, shield mode, rammer, posture, strands, melee and the DrussGT route; each scenario is tagged `@<ID>`. The newer areas (team modes, per-opponent lines, the small bots) have no feature yet |
 | Traceability | `trace/RequirementsTraceabilityTest` | the requirements file and the tests stay in step (below) |
-| Adapter | `hadur-robot`: `FileProfileStoreTest` | the data-directory store, with a plain file stream in place of Robocode's: MEM-3 saves do not leak the write quota and round-trip through the library; RES-3 a write killed at any byte leaves a loadable profile |
+| Adapter | `hadur-robot`: `FileProfileStoreTest`, `HadurTeamRobotTest`, `HadurTeamFileTest`, `HadurWarmUpTest`, `ShieldListResourceTest`, `PackageNameTest` | the data-directory store, with a plain file stream in place of Robocode's: MEM-3 saves do not leak the write quota and round-trip through the library; RES-3 a write killed at any byte leaves a loadable profile; the team file and team robot; the warm-up; the per-opponent line classes the jar carries; the package name |
+| Small bots | each module's `src/test` | the codesize limit (every bot); the shipped flat class against its pure core or a recorded replay (Saor, Deise, JayLexi, Eveimear); the per-robot requirements, driven event by event through a fake engine peer (a proxy of the robot peer interface; Saor, Deise and TwinSaor) with fresh statics for each test; Sanaro's rules are read by bench tool tests |
+| Bench tools | `hadur-bench/tools/test_*.py`, `data/tools/test_*.py`, `hadur-bench/test_*.py` | the Python readers and gates the PC cards run (mode tables, lock gates, forensics), on small fixture files; CI runs them all by discovery |
 | Bench | `hadur-bench`: `WaveMatcherTest`, `TelemetryReportTest`, and the bench itself | matching inferred waves to the engine's bullets; reading Hadur's records into the report; then whole battles (below) |
 
-Test paths above are under `hadur-core/src/test/java/hadur2/core/` unless a module is
+Test paths above are under `hadur-core/src/test/java/hadur117/core/` unless a module is
 named.
 
 ## Traceability
 
-`RequirementsTraceabilityTest` reads the requirements table in `docs/requirements.md` and
-every test source in the three modules. It fails when:
+`RequirementsTraceabilityTest` reads every requirement row in `docs/requirements/` (one file per area, plus `retired.md`) and
+the test sources of every module of the build (each folder beside the root pom with a pom
+of its own), plus the bench tools' Python tests in `hadur-bench/tools` and `data/tools`.
+It fails when:
 
-- a requirement whose stage is at or before the build's stage is named by no test. The
-  duel plan's S0–S7 are compared with `hadur.stage` (a root pom property, now `S7`) and the
-  melee extension's M0–M6 with `hadur.melee.stage`, the Team plan's T1 with `hadur.team.stage`;
+- an active requirement is named by no test. Every plan has shipped, so stages no longer
+  gate the check (the stage properties left the root pom on 2026-11-22);
 - a tag names an ID that is not a requirement, so IDs cannot drift;
+- an ID opens two rows, or is both active and in the retired table;
 - a jqwik `*Properties` class tags with JUnit's `@Tag`, which would make jqwik skip it.
 
 A JUnit or jqwik test names a requirement with `@Tag("MEM-3")`; a Cucumber scenario with
-`@MEM-3`. The test writes the coverage table, each requirement with the tests that name
+`@MEM-3`; a Python test with a comment `# @Tag("BENCH-156")` above the test, where it names
+the bench gate its tool evaluates. The test writes the coverage table, each requirement with the tests that name
 it, to `hadur-core/target/requirements-coverage.md`, and the `build` workflow adds it to
 the run's summary.
 
-All 56 requirements due by S7 and M6 are covered. At release 3.0 the build runs 504
-tests: 483 in the core, 5 in the robot and 16 in the bench.
+On 2026-11-22 all 550 active requirements are covered.
+
+## Coverage
+
+JaCoCo runs on every module (root pom); each module's report is in
+`target/site/jacoco/`, and the `build` workflow adds a line and branch table to the run's
+summary. `hadur-core` holds a floor of 93% of lines and 82% of branches (`mvn verify`
+fails below it), set just under the 2026-11-22 reading; raise it as coverage rises.
 
 ## Replay fixtures
 
@@ -98,11 +109,13 @@ packages included (they were excluded until M6).
 ## The bench
 
 Unit and replay tests say the code does what it was written to do; the bench says whether
-that wins. Every stage was gated on it: 35 rounds × 5 seeds against the reference set
-(Shadow 3.83c and five sample bots), cold and warm, with the score share given as a mean
-and a 95% interval. The reports are in [bench/](bench/), and
-[strategy-evolution.md](strategy-evolution.md) reads them stage by stage. The bench is
-not part of `mvn verify`: it needs the opponents' jars and takes minutes per opponent.
+that wins. The first stages were gated on 35 rounds × 5 seeds against a reference set
+(Shadow 3.83c and five sample bots); since 3.11 the gates are multi-arm cards over the live
+rumble field on the 1.12.0 engine, read with an A/A control and 95% intervals on fresh seeds
+(see [hadur-bench/README.md](../hadur-bench/README.md) and the card specs in
+`hadur-bench/plans/`). [strategy-evolution.md](strategy-evolution.md) reads them stage by
+stage. The bench is not part of `mvn verify`: it needs the opponents' jars and takes hours
+over the field.
 
 The melee stages are gated on `hadur-bench/melee-gates.txt`, a suite that runs the duel's
 reference bench and the melee benches (sentry safety, the sample challenge, the reference
@@ -121,9 +134,10 @@ whether every enemy bullet ours destroyed fell inside a shadow Hadur computed (M
 
 ## What is not tested
 
-- **The adapter has no unit tests of its own** beyond the profile store. It is covered
-  end to end: the replay fixtures are recorded through it in the real engine, and the
-  bench runs it.
+- **No contract test for the adapter's event mapping.** Each engine event's translation to a
+  `BotEvent` is covered end to end only: the replay fixtures are recorded through it in the
+  real engine, and the bench runs it.
 - **No mutation testing.** The plan named PIT; it was not set up.
-- **Rumble conditions.** The bench runs one host with a 3 ms allowance assumed; rumble
-  clients differ (see [followup.md](../followup.md), S6).
+- **Rumble conditions.** The bench runs the same engine as the live clients (1.12.0) and PC
+  cards pin the live CPU constant, but a live client's host and load still differ; the live
+  pass after each release is the check.

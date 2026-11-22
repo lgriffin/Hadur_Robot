@@ -1,5 +1,7 @@
 # TwinSaor: a Twin Duel team built on Saor
 
+> Architecture diagrams for every small bot: [architecture-c4.md, The small bots](architecture-c4.md#the-small-bots).
+
 TwinSaor is a Twin Duel team for Saor: 2,000 bytes, so two Saor cores and a small team layer, after a
 read of the leader's team logic. No PC bench runs before a live run.
 
@@ -248,7 +250,7 @@ Stages are W0 to W3 (W for Twin; T is the Team plan's letter).
 
 ### Requirements (TWIN-1 to TWIN-12)
 
-These are also in `docs/requirements.md`.
+These are also in `docs/requirements/twinsaor.md`.
 
 | ID | Pattern | Requirement | Stage |
 |---|---|---|---|

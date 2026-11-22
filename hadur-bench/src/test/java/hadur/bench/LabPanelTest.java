@@ -11,13 +11,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-90: the movement lab's panel (lab-panel.txt) loads, and names the shooters lab/ builds. */
+/** BENCH-280: the movement lab's panel (lab-panel.txt) loads, and names the shooters lab/ builds. */
 class LabPanelTest {
 
     static final List<String> SHOOTERS = List.of("HeadOn", "Linear", "Circular", "GFHist", "Knn", "PatternMatch");
 
     @Test
-    @Tag("BENCH-90")
+    @Tag("BENCH-280")
     @DisplayName("lab-panel.txt loads: six lab.<Name> 1.0 shooters, each with a lab.<Name>_1.0.jar and a lab- role")
     void panelLoads() throws IOException {
         List<Opponent> panel = Opponent.load(Path.of("lab-panel.txt"));
@@ -32,7 +32,7 @@ class LabPanelTest {
     }
 
     @Test
-    @Tag("BENCH-90")
+    @Tag("BENCH-280")
     @DisplayName("every shooter has a source, a .properties of the right class and version, and is built by build-lab.sh")
     void shootersAreBuilt() throws IOException {
         String build = Files.readString(Path.of("lab/build-lab.sh"));

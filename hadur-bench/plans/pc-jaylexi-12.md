@@ -1,0 +1,5 @@
+# The `pc-jaylexi-12` card (BENCH-269)
+
+The bench shall carry the `pc-jaylexi-12` card: after `mvn verify` in jaylexi, c (JayLexi 1.0's source, read from master at commit 299c55f3c and checked by grep for its flat 3 degree fire gate), its A/A rebuild aa, n (1.1's source, read from master at commit 65a273240 and checked by grep for its single power row), t (the shipped 1.2: 1.1 with JAYLEXI-25's power rows and orbit 1.35 for Mark8, CannonfodderMicro and Charo, checked by grep for its per-robot power rows) and r6 (the released 0.6), built with ProGuard as a release ships; run them after the BENCH-245 live-match step at `--cpu-constant live` on `kitlab/mini-pw-field.txt` (668 MiniRumble robots), 6 seeds from 62000, shuffled; halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle over the last 200, no battle in 30 minutes or an A/A outside its band after 20%, finish early when t is below -0.5 points at 20%; read with multiarm.py (gate: t against c and aa pooled, 95% low end above 0) and with `tools/arm_pair.py` (t against n on the field and on each of the five line robots, n against c) and open its results PR.
+
+Stage or check: T7
