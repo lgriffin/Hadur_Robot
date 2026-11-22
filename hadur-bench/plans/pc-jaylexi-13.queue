@@ -1,7 +1,7 @@
 # JayLexi 1.3 confirm on the whole MiniRumble field (thread "Rebuild JayLexi movement to win MiniRumble"; BENCH-274).
 # 1.3 is 1.2 with one fix (JAYLEXI-26): JayLexi drops an enemy wave about the tick its bullet reaches it, before
 # onHitByBullet runs, so 1.2's surf stats learned from about 1 hit in 4. 1.3 keeps the wave it dropped last and logs the
-# hit on it. 1,482 B.
+# hit on it. 1,486 B.
 #   ./queue.sh run pc-jaylexi-13        (or  .\queue.ps1 run pc-jaylexi-13)
 # Run it from master with this card merged: git checkout master && git pull
 # One bench queue, RoboRumble workers at 0. Nothing is uploaded or released. About 2 h 45 min to the end.
@@ -18,8 +18,8 @@
 # - c is 1.2's source read from master at 4cbd7b3d6 (checked by grep: per-robot power rows, no dropped-wave logging);
 #   t is the shipped source (checked by grep for the dropped-wave logging); aa is c rebuilt. The replay tests show 1.3
 #   plays the readable reference bit for bit and that the fix changes the orders.
-# - Risk: until the first wave is dropped the dropped-wave slot is null and the search stops there; hits still match
-#   within 100 px of a wave front, as before.
+# - Risk: the dropped-wave slot is cleared each round and null until its first drop, where the search stops; hits still
+#   match within 100 px of a wave front, as before.
 #
 # Timing: --cpu-constant live (BENCH-245). The livematch step is Hadur's and BeepBoop's 1v1 check of the PC's turn time;
 # MiniRumble runs on the same LiteRumble clients, so the same constant holds for it.

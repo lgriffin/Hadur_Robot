@@ -76,7 +76,7 @@ Mark8, CannonfodderMicro and Charo at 1.35 rad (+1.4, +1.2 and about +1.9 points
 1.3 (built 2026-11-22, not released) fixes how hits are logged (JAYLEXI-26). JayLexi drops an enemy wave about the tick
 its bullet reaches it, before the hit event arrives, so 1.2's surf stats learned from only about one hit in four. 1.3
 keeps the wave it dropped last and logs the hit on it: 98% of hits now reach the stats. Cloud, 145 MiniRumble robots x 3
-fresh seeds: +1.10 ± 0.11 over 1.2. 1,482 bytes ([docs/bench/jaylexi-tailoring.md](../docs/bench/jaylexi-tailoring.md)
+fresh seeds: +1.10 ± 0.11 over 1.2. 1,486 bytes ([docs/bench/jaylexi-tailoring.md](../docs/bench/jaylexi-tailoring.md)
 section 13).
 
 ## Standing

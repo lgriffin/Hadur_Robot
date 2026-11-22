@@ -142,6 +142,8 @@ public class JayLexi extends AdvancedRobot {
 
     public void run() {
         waves = new ArrayList<Wave>();
+        // A new round: the last round's dropped wave must not take this round's hits (JAYLEXI-26).
+        gone = null;
         bot = this;
         setAdjustGunForRobotTurn(true);
         setAdjustRadarForGunTurn(true);

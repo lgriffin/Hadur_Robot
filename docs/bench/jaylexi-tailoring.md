@@ -305,12 +305,12 @@ wave (25%), and the rest were never logged. Logging on the live waves plus the o
 |---|---:|---|---|
 | 1.2 | 1,451 | - / 7.16 | - (A/A +0.05 ± 0.12) |
 | wd: log on live + the last six dropped waves | 1,689 | +1.50 / 6.61 | +1.52 ± 0.27 |
-| **wdt = 1.3: log on live + the one dropped last** | **1,482** | | **+1.10 ± 0.11** |
+| **wdt = 1.3: log on live + the one dropped last** | **1,486** | | **+1.10 ± 0.11** |
 | k: wd + a hit memory weighted by situation | 2,102 | +3.11 ± 1.22 / 6.02 | +2.29 ± 0.18 |
 | km: k cut to 3 features | 1,725 | | +1.62 ± 0.04 |
 
-1.3 ships wdt, at 1,482 B. Until the first wave is dropped, the dropped-wave slot is null and the search stops there, so
-it plays as the screened wdt. The hit
+1.3 ships wdt, at 1,486 B. The dropped-wave slot is cleared each round and is null until
+that round's first drop, when the search stops there, so a round never logs on the last round's wave. The hit
 memory (k) is the next step (1.4), once it fits the byte limit; its idea is dynamic-clustering surfing (RoboWiki), with
 FoilistMC 1.0 and CunobelinDC 1.2 as the reference, written as JayLexi's own code. The PC confirm is `pc-jaylexi-13`
 (BENCH-274).

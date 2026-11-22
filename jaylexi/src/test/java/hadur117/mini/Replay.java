@@ -108,6 +108,7 @@ final class Replay {
             AdvancedRobot s = make.apply(b);
             // What run() does before its radar loop.
             setStatic(robot, "waves", new ArrayList<>());
+            setStatic(robot, "gone", null);
             try {
                 setStatic(robot, "bot", s);
             } catch (NoSuchFieldException none) {

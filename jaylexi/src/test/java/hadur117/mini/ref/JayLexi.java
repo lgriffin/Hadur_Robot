@@ -80,6 +80,7 @@ public class JayLexi extends AdvancedRobot {
 
     public void run() {
         waves = new ArrayList<Wave>();
+        gone = null;
         bot = this;
         setAdjustGunForRobotTurn(true);
         setAdjustRadarForGunTurn(true);
