@@ -1,6 +1,6 @@
 # Queue pc-melee-race: progress
 
-Updated 2026-11-22 16:25:14 PC time (16:25 UTC), runner pid 88008.
+Updated 2026-11-22 16:40:22 PC time (16:40 UTC), runner pid 88008.
 
 - `mrprep` done, exit 0 in 3 min
 - `mraa` done, exit 0 in 48 min
@@ -36,20 +36,19 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### mren
 
-**200 of 460 battles** (43%), 0 failed. Running 23 min, 511 battles/h, about 31 min left (ends ~16:55 PC time). Last battle 2 min ago.
-Skipped turns a battle: 37.6 overall, first 100 36.1, last 100 39.1.
+**259 of 460 battles** (56%), 0 failed. Running 39 min, 403 battles/h, about 30 min left (ends ~17:10 PC time). Last battle 7 min ago.
+Skipped turns a battle: 36.8 overall, first 100 36.1, last 100 36.8.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 200 |
-| `stall 30m` | halt | ok | last battle 2 min ago |
+| `fails 20` | halt | ok | 0 failed of 259 |
+| `stall 30m` | halt | ok | last battle 7 min ago |
 
-Stopping now would leave 260 battles unrun (about 31 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 201 battles unrun (about 30 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-14:24:24 start mrprep
 14:24:27 progress pushed to origin claude/pc-melee-race-progress (every 15 min)
 14:27:11 mrprep exit=0 in 166 s
 14:27:11 start mraa
@@ -64,4 +63,5 @@ Stopping now would leave 260 battles unrun (about 31 min); every battle already 
 16:01:47 mrbb exit=0 in 2822 s
 16:01:47 start mren
 16:01:47 watching mren: 2 stop rule(s)
+16:28:16 progress mren: 220/460 (48%) battles, 498/h, ETA 29 min, 0 failed, skips 37.8/battle (last 100)
 ```
