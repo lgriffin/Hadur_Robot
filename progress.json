@@ -1,0 +1,28 @@
+{
+ "plan": "pc-melee-race",
+ "updated": 1795357464.6880763,
+ "steps": {
+  "mrprep": {
+   "status": "pending"
+  },
+  "mraa": {
+   "status": "pending"
+  },
+  "mrbb": {
+   "status": "pending"
+  },
+  "mren": {
+   "status": "pending"
+  },
+  "mrez": {
+   "status": "pending"
+  },
+  "mrread": {
+   "status": "pending"
+  },
+  "mrpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
