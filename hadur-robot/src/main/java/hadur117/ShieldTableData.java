@@ -1160,6 +1160,18 @@ final class ShieldTableData {
     }
 
     /**
+     * RAM-20: the rammers whose shots the escape dodges by the aims learned from their own bullets
+     * ({@code ram-learn:} lines). Empty until a PC card holds a line (build-ablation.sh rlearnlist adds
+     * candidate lines here).
+     *
+     * @return a fresh array of names
+     */
+    static String[] ramLearns() {
+        return new String[] {
+        };
+    }
+
+    /**
      * RAM-18: the rammers the escape bends away from its own line of travel after each of their shots
      * ({@code ram-bend:} lines). Each held a PC card after a cloud class lock (build-ablation.sh rbendlist adds
      * candidate lines here).

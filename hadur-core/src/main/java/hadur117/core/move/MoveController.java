@@ -222,6 +222,14 @@ public class MoveController {
     }
 
     /** DODGE-2: the dodger, or null. */
+    /** RAM-20: the wave the last {@link #updateFiringWave} marked, null when it found none. */
+    private Wave lastFiringWave;
+
+    /** RAM-20: the wave the last {@link #updateFiringWave} marked as the enemy's shot, null when it found none. */
+    public Wave lastFiringWave() {
+        return lastFiringWave;
+    }
+
     public ShotDodger shotDodger() {
         return shotDodger;
     }
@@ -1135,6 +1143,7 @@ public class MoveController {
      */
     public long updateFiringWave(long previousScanTime, long currentTime, double bulletPower,
                                   boolean uncertain) {
+        lastFiringWave = null;
         // Newest first: after missed scans the latest wave in the span is the best guess.
         for (long fireTime = currentTime - 1; fireTime >= previousScanTime; fireTime--) {
             Wave w = waveManager.getWaveByFireTime(fireTime);
@@ -1148,6 +1157,7 @@ public class MoveController {
                 w.setWallDistances();
                 lastBulletPower = bulletPower;
                 lastBulletFireTime = fireTime;
+                lastFiringWave = w;
                 return fireTime;
             }
         }
