@@ -1,6 +1,6 @@
 {
  "plan": "pc-learn-trace",
- "updated": 1795404808.288349,
+ "updated": 1795405714.7071733,
  "steps": {
   "prep": {
    "status": "done",
@@ -9,11 +9,14 @@
    "end": "2026-11-23T00:16:37"
   },
   "trace": {
-   "status": "running",
-   "start": "2026-11-23T00:16:37"
+   "status": "done",
+   "exit": 0,
+   "seconds": 12351,
+   "end": "2026-11-23T03:42:28"
   },
   "read": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-23T03:42:28"
   },
   "pr": {
    "status": "pending"
@@ -23,8 +26,8 @@
   {
    "step": "trace",
    "started": 1795392997.3116279,
-   "updated": 1795404808.1664321,
-   "elapsed": 11810.85480427742,
+   "updated": 1795405348.4852736,
+   "elapsed": 12351.173645734787,
    "expected": 2416,
    "panel": 1208,
    "field": null,
@@ -32,21 +35,21 @@
    "arms": [
     {
      "arm": "c",
-     "battles": 1207,
+     "battles": 1208,
      "failed": 0,
-     "level": 93.52980944490473,
-     "skips": 25.20215410107705,
-     "fresh": 1207,
-     "scored": 1207,
+     "level": 93.5350082781457,
+     "skips": 25.18791390728477,
+     "fresh": 1208,
+     "scored": 1208,
      "diff": null
     },
     {
      "arm": "bb",
-     "battles": 1207,
-     "failed": 7,
+     "battles": 1208,
+     "failed": 8,
      "level": 95.01976666666667,
      "skips": 1.125,
-     "fresh": 1207,
+     "fresh": 1208,
      "scored": 1200,
      "diff": 1.4475750000000003,
      "n": 1200,
@@ -59,20 +62,20 @@
    "warnings": [
     "arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 162 h before this step started: check it is not stale"
    ],
-   "battles": 2414,
+   "battles": 2416,
    "resumed": 0,
-   "failed": 7,
+   "failed": 8,
    "disables": 189,
-   "rate": 24.0,
-   "eta": 300.0,
-   "fraction": 0.9991721854304636,
-   "last_battle_age": 178.88096451759338,
+   "rate": 14.0,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 11.227687120437622,
    "rules": [
     {
      "rule": "fails 30",
      "action": "halt",
      "state": "ok",
-     "detail": "7 failed of 2414"
+     "detail": "8 failed of 2416"
     },
     {
      "rule": "skips 60 over 200 arms c",
@@ -84,11 +87,11 @@
      "rule": "stall 30m",
      "action": "halt",
      "state": "ok",
-     "detail": "last battle 3 min ago"
+     "detail": "last battle 0 min ago"
     }
    ],
-   "skips_mean": 13.198587453261322,
-   "skips_last100": 11.9
+   "skips_mean": 13.196428571428571,
+   "skips_last100": 11.75
   }
  ]
 }
