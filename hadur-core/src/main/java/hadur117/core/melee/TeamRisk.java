@@ -99,6 +99,8 @@ final class TeamRisk {
     static final double HUNT_PULL = 0.3;
     /** TMODE-59: HUNT's pull under {@link TeamModes.Mode#TIGHT}. */
     static final double HUNT_TIGHT_PULL = 1.0;
+    /** TMODE-60: the hunt place's distance from the prey under NEAR. */
+    static final double HUNT_NEAR = 150;
 
     static final double HUNT_CROWD = 1.6;
 
@@ -157,6 +159,16 @@ final class TeamRisk {
         return on && modes.contains(TeamModes.Mode.TIGHT);
     }
 
+    /** TMODE-60: whether the hunt place is the near one: NEAR in {@code modes} and the switch {@code on}. */
+    static boolean near(Set<TeamModes.Mode> modes, boolean on) {
+        return on && modes.contains(TeamModes.Mode.NEAR);
+    }
+
+    /** TMODE-61: whether the pack plays at any energy: EAGER in {@code modes} and the switch {@code on}. */
+    static boolean eager(Set<TeamModes.Mode> modes, boolean on) {
+        return on && modes.contains(TeamModes.Mode.EAGER);
+    }
+
     /**
      * TMODE-3, TMODE-4: the point a team member is drawn to, or null. With
      * {@link TeamModes.Mode#FINISH}, one enemy left by the engine's count ({@code others} less
@@ -173,18 +185,23 @@ final class TeamRisk {
     /** As above, with {@code name} this member's name for TMODE-13's order (null: first). */
     static Pull pull(Point2D.Double me, String name, double energy, int others, List<EnemyInfo> enemies,
                      long now, List<Roster.Mate> mates, Set<TeamModes.Mode> modes) {
+        // TMODE-61: EAGER, while it plays, lifts the energy gates on the hunt and the close-in.
+        boolean eager = eager(modes, TeamModes.PACK2_ON);
+        double finishEnergy = eager ? 0 : FINISH_ENERGY;
+        double packEnergy = eager ? 0 : PACK_ENERGY;
         // TMODE-47: under LAST the members close on the one enemy left as FINISH would.
         if (modes.contains(TeamModes.Mode.LAST) && others == 1 && enemies.size() == 1
-                && enemies.get(0).age(now) < CAP_MAX_AGE && energy >= FINISH_ENERGY) {
+                && enemies.get(0).age(now) < CAP_MAX_AGE && energy >= finishEnergy) {
             return new Pull(enemies.get(0).location, FINISH_FLOOR, FINISH_PULL);
         }
         if (modes.contains(TeamModes.Mode.FINISH) && enemies.size() == 1 && others - mates.size() == 1
-                && enemies.get(0).age(now) < CAP_MAX_AGE && energy >= FINISH_ENERGY) {
+                && enemies.get(0).age(now) < CAP_MAX_AGE && energy >= finishEnergy) {
             return new Pull(enemies.get(0).location, FINISH_FLOOR, FINISH_PULL);
         }
-        if (modes.contains(TeamModes.Mode.HUNT) && energy >= PACK_ENERGY) {
-            // TMODE-42: CLOSE brings the place in.
-            double radius = modes.contains(TeamModes.Mode.CLOSE) ? HUNT_CLOSE : HUNT_RADIUS;
+        if (modes.contains(TeamModes.Mode.HUNT) && energy >= packEnergy) {
+            // TMODE-42: CLOSE brings the place in; TMODE-60: NEAR, while it plays, brings it nearer still.
+            double radius = near(modes, TeamModes.PACK2_ON) ? HUNT_NEAR
+                : modes.contains(TeamModes.Mode.CLOSE) ? HUNT_CLOSE : HUNT_RADIUS;
             Point2D.Double slot = huntSlot(me, name, enemies, now, mates, radius);
             // TMODE-59: TIGHT, while it plays, draws the member to its place at full strength.
             double strength = tight(modes, TeamModes.TIGHT_ON) ? HUNT_TIGHT_PULL : HUNT_PULL;
