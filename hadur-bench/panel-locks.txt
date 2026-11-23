@@ -1,30 +1,21 @@
-# BENCH-253 pc-locks, round 24: 26 robots on RAM-21 (the known rammer, confirmed at the first scan) and RAM-20. Nine already
-# carry a ram-learn line on master and are read on rkn (the ram-known line added); sixteen carry none and are read on rlnrkn
-# (both lines added); Predator is read on rln (the ram-learn line alone). All 26 are read in c and aa, so the A/A check
-# reads 26 and no pad is needed. name | note | jar
-com.syncleus.robocode.Dreadnaught 0.1 | rkn-cloud-12seeds | com.syncleus.robocode.Dreadnaught_0.1.jar
-kc.micro.rammer.MaxRisk 0.6 | rkn-cloud-12seeds | kc.micro.rammer.MaxRisk_0.6.jar
-mn.nano.perceptual.Impact 1.3.0 | rkn-cloud-12seeds | mn.nano.perceptual.Impact_1.3.0.jar
-mz.NanoDeath 2.56 | rkn-cloud-12seeds | mz.NanoDeath_2.56.jar
-sul.Bicephal 1.2 | rkn-cloud-12seeds | sul.Bicephal_1.2.jar
-suzushin7.nano.Galaxy03 1.01 | rkn-cloud-12seeds | suzushin7.nano.Galaxy03_1.01.jar
-kurios.DOSexe .9a | rkn-cloud-12seeds | kurios.DOSexe_.9a.jar
-suh.nano.RammingC 1.00 | rkn-cloud-12seeds | suh.nano.RammingC_1.00.jar
-step.nanoPri 1.0 | rkn-cloud-12seeds | step.nanoPri_1.0.jar
-gh.micro.GrubbmThree 1.01 | rlnrkn-cloud-12seeds | gh.micro.GrubbmThree_1.01.jar
-jk.nano.Machete 2.0 | rlnrkn-cloud-12seeds | jk.nano.Machete_2.0.jar
-wompi.Kowari 1.6 | rlnrkn-cloud-12seeds | wompi.Kowari_1.6.jar
-benhorner.PureAggression 0.2.6 | rlnrkn-cloud-12seeds | benhorner.PureAggression_0.2.6.jar
-exauge.Leopard 1.1.019 | rlnrkn-cloud-12seeds | exauge.Leopard_1.1.019.jar
-EH.Fusion 0.32 | rlnrkn-cloud-12seeds | EH.Fusion_0.32.jar
-bvh.hdr.Hodur 0.4 | rlnrkn-cloud-12seeds | bvh.hdr.Hodur_0.4.jar
-ers.nano.sunderer.Sunderer 1.23a | rlnrkn-cloud-12seeds | ers.nano.sunderer.Sunderer_1.23a.jar
-radnor.RamRod 1.0 | rlnrkn-cloud-12seeds | radnor.RamRod_1.0.jar
-stelo.RamTrackSurfer 1.2 | rlnrkn-cloud-12seeds | stelo.RamTrackSurfer_1.2.jar
-fw.Number1 1.0b | rlnrkn-cloud-12seeds | fw.Number1_1.0b.jar
-jeremyreeder.Bully 1 | rlnrkn-cloud-12seeds | jeremyreeder.Bully_1.jar
-qualidafial.MajorDick 1.0.1 | rlnrkn-cloud-12seeds | qualidafial.MajorDick_1.0.1.jar
-ep.MyFirstRobot 1.0 | rlnrkn-cloud-12seeds | ep.MyFirstRobot_1.0.jar
-zch.Hirkan 0.11 | rlnrkn-cloud-12seeds | zch.Hirkan_0.11.jar
-stranger.nano.TestBot 1.0 | rlnrkn-cloud-12seeds | stranger.nano.TestBot_1.0.jar
-lorneswork.Predator 1.0 | rln-cloud-12seeds | lorneswork.Predator_1.0.jar
+# BENCH-253 pc-locks, round 25: three per-robot lines that locked on the cloud (12 fresh seeds, 95% low end above 0
+# against both c and aa, live turn time; coverage/shards/locks.tsv, dzlane/L): Lindada on hf, Parallax on rp, BulletCatcher on
+# mv; and fifteen robots whose line is already on master, read only in c and aa, so the A/A check reads 18. name | note | jar
+zen.Lindada 0.2 | hf-L-12seeds | zen.Lindada_0.2.jar
+slugzilla.Parallax 0.1 | rp-L-12seeds | slugzilla.Parallax_0.1.jar
+rsim.mini.BulletCatcher 0.4 | mv-L-12seeds | rsim.mini.BulletCatcher_0.4.jar
+oog.micro.Maui 1.2 | aa-pad-line-on-master | oog.micro.Maui_1.2.jar
+sgp.MadHatter 4.13 | aa-pad-line-on-master | sgp.MadHatter_4.13.jar
+suh.nano.RammingC 1.00 | aa-pad-line-on-master | suh.nano.RammingC_1.00.jar
+jcs.AutoBot 4.2.1 | aa-pad-move56-line | jcs.AutoBot_4.2.1.jar
+mn.nano.perceptual.Impact 1.3.0 | aa-pad-r14-line | mn.nano.perceptual.Impact_1.3.0.jar
+mz.NanoDeath 2.56 | aa-pad-r14-line | mz.NanoDeath_2.56.jar
+wompi.Kowari 1.6 | aa-pad-r14-line | wompi.Kowari_1.6.jar
+sul.Bicephal 1.2 | aa-pad-r14-line | sul.Bicephal_1.2.jar
+cw.megas.GhostShell GT | aa-pad-move58-line | cw.megas.GhostShell_GT.jar
+cw.megas.Gridd 0.4 | aa-pad-move58-line | cw.megas.Gridd_0.4.jar
+cw.megas.Polar 3.2 | aa-pad-move58-line | cw.megas.Polar_3.2.jar
+com.syncleus.robocode.Dreadnaught 0.1 | aa-pad-r19-line | com.syncleus.robocode.Dreadnaught_0.1.jar
+nic.Nicator 2.4 | aa-pad-r19-line | nic.Nicator_2.4.jar
+lrem.micro.MoggFanatic 0.2 | aa-pad-r20-line | lrem.micro.MoggFanatic_0.2.jar
+alpha.BlackIce 1.0 | aa-pad-r20-line | alpha.BlackIce_1.0.jar
