@@ -1,6 +1,6 @@
 # Queue pc-learn-trace: progress
 
-Updated 2026-11-23 03:18:20 PC time (03:18 UTC), runner pid 44500.
+Updated 2026-11-23 03:33:28 PC time (03:33 UTC), runner pid 44500.
 
 - `prep` done, exit 0 in 0 min
 - `trace` running
@@ -9,28 +9,27 @@ Updated 2026-11-23 03:18:20 PC time (03:18 UTC), runner pid 44500.
 
 ### trace
 
-**2413 of 2416 battles** (100%), 6 failed. Running 3.0 h, 384 battles/h, about 0 min left (ends ~03:18 PC time). Last battle 1 min ago.
+**2414 of 2416 battles** (100%), 7 failed. Running 3.3 h, 24 battles/h, about 5 min left (ends ~03:38 PC time). Last battle 3 min ago.
 Skipped turns a battle: 13.2 overall, first 100 14.9, last 100 11.9; engine disables 189.
 
 | arm | battles | failed | share | vs control (pts) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | c | 1207 | 0 | 93.53 | - | - | - | 25.2 |
-| bb | 1206 | 6 | 95.02 | +1.45 (1200 robots) | ±0.30 | +0.99 .. +1.91 | 1.1 |
+| bb | 1207 | 7 | 95.02 | +1.45 (1200 robots) | ±0.30 | +0.99 .. +1.91 | 1.1 |
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 6 failed of 2413 |
+| `fails 30` | halt | ok | 7 failed of 2414 |
 | `skips 60 over 200 arms c` | halt | ok | 20.7 a battle over the last 200 (first 200: 26.3) |
-| `stall 30m` | halt | ok | last battle 1 min ago |
+| `stall 30m` | halt | ok | last battle 3 min ago |
 
-Stopping now would leave 3 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 2 battles unrun (about 5 min); every battle already fought is kept and a rerun resumes from it.
 
 > warning: arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 162 h before this step started: check it is not stale
 
 ### Queue log (last lines)
 
 ```
-00:14:01 skip read (after trace, which has not finished exit=0)
 00:14:01 skip pr (after read, which has not finished exit=0)
 00:14:01 ALLDONE
 00:16:26 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
@@ -45,4 +44,5 @@ Stopping now would leave 3 battles unrun (about 0 min); every battle already fou
 01:48:23 progress trace: 1452/2416 (60%) battles, 836/h, ETA 1.2 h, 0 failed, skips 14.5/battle (last 100), bb +1.30
 02:18:42 progress trace: 1847/2416 (76%) battles, 776/h, ETA 44 min, 3 failed, skips 12.2/battle (last 100), bb +1.42
 02:49:03 progress trace: 2231/2416 (92%) battles, 760/h, ETA 15 min, 4 failed, skips 11.1/battle (last 100), bb +1.44
+03:19:20 progress trace: 2413/2416 (100%) battles, 362/h, ETA 0 min, 6 failed, skips 11.9/battle (last 100), bb +1.45
 ```
