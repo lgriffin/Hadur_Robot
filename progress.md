@@ -1,17 +1,54 @@
 # Queue pc-team-pack3: progress
 
-Updated 2026-11-23 17:41:55 PC time (17:41 UTC), runner pid 86648.
+Updated 2026-11-23 17:57:01 PC time (17:57 UTC), runner pid 86648.
 
-- `tkprep` pending
-- `tkpp3` pending
-- `tkpilot` pending
-- `tkbb` pending
+- `tkprep` done, exit 0 in 2 min
+- `tkpp3` done, exit 0 in 8 min
+- `tkpilot` done, exit 0 in 0 min
+- `tkbb` running
 - `tkp3` pending
 - `tkgate` pending
 - `tkpr` pending
+
+### tkpp3
+
+**64 of 64 battles** (100%), 0 failed. Running 8 min, 473 battles/h, about 0 min left (ends ~17:52 PC time). Last battle 0 min ago.
+Skipped turns a battle: 32.6 overall, first 64 32.6, last 64 32.6.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 10` | halt | ok | 0 failed of 64 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 60 over 200` | halt | waiting | 64 of 200 battles to read |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### tkbb
+
+**57 of 192 battles** (30%), 0 failed. Running 5 min, 705 battles/h, about 11 min left (ends ~18:08 PC time). Last battle 0 min ago.
+Skipped turns a battle: 33.6 overall, first 57 33.6, last 57 33.6.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 10` | halt | ok | 0 failed of 57 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 60 over 200` | halt | waiting | 57 of 200 battles to read |
+
+Stopping now would leave 135 battles unrun (about 11 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
 17:41:55 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
+17:41:55 start tkprep
+17:41:58 progress pushed to origin claude/pc-team-pack3-progress (every 15 min)
+17:44:03 tkprep exit=0 in 127 s
+17:44:03 start tkpp3
+17:44:03 watching tkpp3: 3 stop rule(s)
+17:44:56 progress tkpp3: 8/64 (12%) battles, 540/h, ETA 6 min, 0 failed, skips 25.5/battle (last 100)
+17:52:09 tkpp3 exit=0 in 486 s
+17:52:09 start tkpilot
+17:52:10 tkpilot exit=0 in 0 s
+17:52:10 start tkbb
+17:52:10 watching tkbb: 3 stop rule(s)
 ```
