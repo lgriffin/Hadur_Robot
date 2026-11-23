@@ -14,3 +14,9 @@
 18:13:13 start tkp3
 18:13:13 watching tkp3: 3 stop rule(s)
 18:15:09 progress tkp3: 24/192 (12%) battles, 746/h, ETA 14 min, 0 failed, skips 28.5/battle (last 100)
+18:33:47 tkp3 exit=0 in 1233 s
+18:33:47 start tkgate
+18:33:47 tkgate exit=0 in 0 s
+18:33:47 start tkpr
+18:33:55 tkpr exit=0 in 7 s
+18:33:55 ALLDONE
