@@ -415,14 +415,14 @@ class TeamModesTest {
 
     @Test
     @Tag("TMODE-59")
-    @DisplayName("TMODE-59: TIGHT makes the hunt pull 1.0 where the switch is on (off in the shipped build), means nothing without HUNT, and is only in the five locked teams' entries")
+    @DisplayName("TMODE-59: TIGHT makes the hunt pull 1.0 where the switch is on (on in the shipped build), means nothing without HUNT, and is only in the five locked teams' entries")
     void tightPull() {
         Set<TeamModes.Mode> tightHunt = EnumSet.of(TeamModes.Mode.HUNT, TeamModes.Mode.TIGHT);
         assertEquals(1.0, TeamRisk.HUNT_TIGHT_PULL, 0);
         assertTrue(TeamRisk.tight(tightHunt, true));
         assertFalse(TeamRisk.tight(tightHunt, false));
         assertFalse(TeamRisk.tight(EnumSet.of(TeamModes.Mode.HUNT), true));
-        assertFalse(TeamModes.TIGHT_ON, "off until pc-team-tight reads");
+        assertTrue(TeamModes.TIGHT_ON, "on since pc-team-tight passed");
         List<EnemyInfo> prey = enemies(pt(600, 1000)).alive();
         TeamRisk.Pull p = TeamRisk.pull(pt(600, 400), "n", 100, 3, prey, 100, mates(pt(700, 400)), tightHunt);
         assertEquals(TeamRisk.huntSlot(pt(600, 400), "n", prey, 100, mates(pt(700, 400))), p.at);
