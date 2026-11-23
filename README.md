@@ -1,15 +1,14 @@
 # Hadur 2
 
-**Hadur** (named, like the rest of the family, after one of Leigh's World of Warcraft characters) is a [Robocode](https://robocode.sourceforge.io/) robot:
+**Hadur** (named, like the rest of the family, after a World of Warcraft character) is a [Robocode](https://robocode.sourceforge.io/) robot:
 a 1v1 duelist that remembers each opponent across battles, with a melee brain for
 free-for-alls, a five-robot team entry, and a core that has no idea it is inside Robocode.
 
 **Hadur 3.24 is ranked 2nd of 1,213 in the RoboRumble 1v1** (93.44 APS, its best ever), 2nd of 48 in the
 TeamRumble (HadurTeam 3.24, 84.57, its best ever) and 7th of 416 in the MeleeRumble (3.22, 69.65), the highest-ranked
 robot flying the Irish flag. Around it is a [family of smaller robots](#family-of-robots), two of
-three of them 1st in their rumbles and one more 2nd. All of it was designed, written, tested and tuned by Claude agents
-working in a shared project with one human, Leigh Griffin, who set the goals and ran the live
-entries.
+three of them 1st in their rumbles and one more 2nd. All of it was designed, written, tested and tuned by AI
+coding agents ([how it is built](#how-it-is-built)).
 
 ## In homage to Deep7
 
@@ -22,7 +21,7 @@ learned Java, and it was the original inspiration for everything on this page.
 ## Standing
 
 **3.24 was released on 2026-11-22** ([notes](docs/releases/v3.24.md)): 1v1 adds MOVE-52's intercept views and the
-per-opponent lines from pc-locks rounds 3 to 20, and the team adds fitted enemy aims (TMODE-50) and the close-range
+per-opponent lines measured since 3.23, and the team adds fitted enemy aims (TMODE-50) and the close-range
 dodge rerank (TMODE-52). Melee code is unchanged. The live rankings read on 2026-11-22 at 19:31 UTC (1v1 settled at 20:22 UTC, after
 the live client stopped) (rumble.robowiki.net pages, saved in [data/rumble/pages/](data/rumble/pages/)):
 
@@ -42,7 +41,7 @@ the live client stopped) (rumble.robowiki.net pages, saved in [data/rumble/pages
 - **Melee stays on 3.22** (7th at 69.65); the MeleeRumble entry was not moved to 3.24, whose melee code is
   unchanged.
 - **The 1v1 list is about 1,200 robots** since 2026-11-02: the rumble moved to Robocode 1.11.2, whose load-time
-  sandbox blocks 19 old robots; Leigh took them off the participants list and the bench skips them
+  sandbox blocks 19 old robots; they were taken off the participants list and the bench skips them
   ([hadur-bench/broken-1.11.2.txt](hadur-bench/broken-1.11.2.txt)).
 
 3.23's live read (2026-11-16 18:18 UTC) was 3rd of 1,205 at 93.04 in 1v1 and 2nd of 48 at 83.37 in the team
@@ -70,14 +69,14 @@ Each release's live notes are in [docs/bench/](docs/bench/) (`live-*.md`) and it
 | 3.15 | 2026-10-23 | 89.29 | | 8th (15th melee, 9th team) | SHIELD-14, MOVE-24, the melee gun (MGUN-7) and team shared gun learning (MGUN-8) ([live notes](docs/bench/live-3.15.md)) |
 | 3.16 | 2026-10-24 | 89.25 | 95.3% | 8th (17th melee, 7th team) | Per-opponent mode table v1 and team stage 1 ([live notes](docs/bench/live-3.16.md)) |
 | 3.17 | 2026-10-25 | 90.91 | 99.0% | 7th (16th melee, 4th team) | Mode table v2 (stop-and-go), shield parts 2 and 3, team step C ([live notes](docs/bench/live-3.17.md)) |
-| 3.18 | 2026-10-27 | 87.73 | | 10th | TIME-9 (a third less garbage, bit for bit), melee MGUN-7, MEND-3 and MGUN-13; first pass came 98.6% from the PC release watch |
-| 3.18.1 | 2026-10-27 | 91.34 | 96.7% | 4th (13th melee, 5th team) | 3.18's code on a clean page, PC clients off the live rumble ([notes](docs/releases/v3.18.1.md)) |
+| 3.18 | 2026-10-27 | 87.73 | | 10th | TIME-9 (a third less garbage, bit for bit), melee MGUN-7, MEND-3 and MGUN-13; 98.6% of its first pass came from a single client |
+| 3.18.1 | 2026-10-27 | 91.34 | 96.7% | 4th (13th melee, 5th team) | 3.18's code on a clean page ([notes](docs/releases/v3.18.1.md)) |
 | 3.19 | 2026-10-28 | 91.58 | 96.9% | 4th (14th melee, 4th team) | Package `hadur117`; the rammer dodge (RAM-5), stop-and-go re-picks, team counters, melee power 3 to 300 px ([live notes](docs/bench/live-3.19.md)) |
 | 3.20 | 2026-10-30 | 91.82 | 96.9% | 3rd (14th melee, 3rd team) | MOVE-29, the aim members: the surf also rates head-on, linear and circular aims; team PATH and DODGE with own fire ([live notes](docs/bench/live-3.20.md)) |
 | 3.21 | 2026-11-01 | 92.40 | 97.2% | 3rd (7th melee, 2nd team) | Per-opponent rival picks, surf keys and shield lines; melee surfer and crossfire; team CONCORD ([notes](docs/releases/v3.21.md)) |
 | 3.22 | 2026-11-12 | 92.60 | 97.7% | 4th (7th melee, 2nd team) | Start-up stall fix (MEM-15) and per-opponent shield, mirror, race-power and power-cap lines; team CLOSE hunt and last-enemy guard; melee MGUN-25 ([notes](docs/releases/v3.22.md)) |
 | 3.23 | 2026-11-16 | 93.04 | 98.0% | 3rd (7th melee on 3.22, 2nd team) | The shadow fix (MOVE-43) and 48 per-opponent lines (+0.49 APS over 3.22 on the same opponents); team MOMENTUM drive ([live notes](docs/bench/live-3.23.md)) |
-| 3.24 | 2026-11-22 | **93.44** | 98.0% | **2nd** (7th melee on 3.22, **2nd team** at 84.57) | MOVE-52 intercept views and the pc-locks lines of rounds 3 to 20 (+0.58 APS over 3.23 on the same opponents); team fitted enemy aims and close-range dodge rerank |
+| 3.24 | 2026-11-22 | **93.44** | 98.0% | **2nd** (7th melee on 3.22, **2nd team** at 84.57) | MOVE-52 intercept views and per-opponent lines (+0.58 APS over 3.23 on the same opponents); team fitted enemy aims and close-range dodge rerank |
 
 3.0 and 3.1 slid 5 to 8 APS within hours on live clients; a one-JVM session bench traced it to a
 round-end profile save that grew with every opponent on disk, fixed in 3.4
@@ -109,7 +108,7 @@ Live results as of 2026-11-02 16:00 UTC, Hadur and HadurTeam as of 2026-11-22 20
 - **Sanaro** is a nano melee bot: anti-gravity, a branch-free radar, a gun that fires only on its lead
   and a table of bullet power by both robots' energy ([docs/sanaro.md](docs/sanaro.md)).
 - **JayLexi** (a wave surfer with a GuessFactor gun) and **Eveimear** (Cotillion's stop-and-go movement and multiple-choice pattern matcher, with a per-robot mode table)
-  are 1v1 size bots from Leigh's kitlab design ([docs/kitlab.md](docs/kitlab.md)).
+  are 1v1 size bots from the kitlab design ([docs/kitlab.md](docs/kitlab.md)).
 
 ## What it does
 
@@ -316,43 +315,39 @@ flowchart LR
     DATA --> P
 ```
 
-## Built by agents: an exploration of AI and agentic design
+## How it is built
 
-Hadur 2 is as much an experiment in how AI agents build software as it is a robot. Hadur
-1.x (up to 1.20) was evolved release by release, by feel. Hadur 2 was rebuilt from 2026-09-26
-to 2026-10-01 by Claude sessions working in one shared project: 50 merged pull requests, about
-24,000 lines of production Java and 12,000 of tests, from a 64th-place 3.0 to a 20th-place
-3.4 (and, by 2026-10-11, a 9th-place 3.12). Leigh set the goals, made the calls only a human could (what "good" means, when to
-enter the rumble), and carried the live entries; everything else was done by agents. What
-follows is what made that work, and where it did not.
+Hadur 2 is as much an experiment in how AI agents build software as it is a robot. Hadur 1.x (up to
+1.20) was evolved release by release, by feel. Hadur 2 was rebuilt from 2026-09-26 to 2026-10-01 by
+AI coding agents: 50 merged pull requests, about 24,000 lines of production Java and 12,000 of
+tests, from a 64th-place 3.0 to a 20th-place 3.4 (and, by 2026-10-11, a 9th-place 3.12). The
+goals, the judgement of what "good" means and the live rumble entries stayed with the project's
+owner; the design, code, tests and tuning were done by agents. What follows is what made that work,
+and where it did not.
 
-### Roles: a planner and implementers
+### Planners and implementers
 
-Work was split by kind, not just by size. A planning model (Fable) read the evidence and
-wrote each plan: the Hadur 2 plan
-(S0-S7), the melee extension (M0-M6), and the rumble climb ([R4-R6](docs/rumble-climb-r4-r6-plan.md),
-[top 30](docs/rumble-climb-top30-plan.md), [memory at scale](docs/rumble-memory-scale-plan.md)).
-Implementation threads (Sonnet) then built each plan stage by stage, one PR per stage. The
-planner also reviewed: [the skipped-turns plan](docs/skipped-turns-plan.md) checks an
-implementer's diagnosis against the raw session logs and the engine source, confirms the
-cause, and corrects four points before the code was written. A coordinating session watched
-the project chat, started a thread per ask, and kept the shared memory; each thread worked
-alone on its task and reported back where it was asked.
+Work is split by kind, not just by size. A planning model reads the evidence and writes each plan:
+the Hadur 2 plan (S0-S7), the melee extension (M0-M6), and the rumble climb
+([R4-R6](docs/rumble-climb-r4-r6-plan.md), [top 30](docs/rumble-climb-top30-plan.md),
+[memory at scale](docs/rumble-memory-scale-plan.md)). Implementing agents then build each plan
+stage by stage, one PR per stage. The planner also reviews: [the skipped-turns plan](docs/skipped-turns-plan.md)
+checks an implementer's diagnosis against the raw battle logs and the engine source, confirms the
+cause, and corrects four points before the code was written.
 
 ### Requirements as the contract between agents
 
 Every behaviour is an [EARS](docs/requirements/README.md) requirement (Ubiquitous, Event, State,
-Unwanted, Optional), more than a hundred of them, each with a stable ID that never changes
-meaning. A requirement is the unit an agent is asked to deliver, and the build holds it to
-it: a traceability test fails `mvn verify` if any ID has no test, every Cucumber scenario is
-tagged with the IDs it proves, and the Javadoc cites the IDs next to the code that meets
-them. A planner can name `MEM-12` and an implementer days later, in a fresh session with no
-memory of the plan, knows exactly what done means.
+Unwanted, Optional), more than a hundred of them, each with a stable ID that never changes meaning. A
+requirement is the unit an agent is asked to deliver, and the build holds it to it: a traceability
+test fails `mvn verify` if any ID has no test, every Cucumber scenario is tagged with the IDs it
+proves, and the Javadoc cites the IDs next to the code that meets them. A planner can name `MEM-12`
+and an implementer days later, with no memory of the plan, knows exactly what done means.
 
 ### Guardrails that do not depend on the agent remembering them
 
-Agents start cold. Rules that live only in a prompt get lost, so the important ones are
-enforced by the build:
+Agents start cold. Rules that live only in a prompt get lost, so the important ones are enforced by
+the build:
 
 - **ArchUnit** keeps the hexagon intact: no Robocode in the core, no randomness, threads,
   reflection, I/O or clock, and a fixed direction of dependencies between packages.
@@ -364,35 +359,31 @@ enforced by the build:
 
 ### The bench as ground truth
 
-Agents are fluent and confident; a bench is neither. Each stage had a numeric gate (score
-share against Shadow, rounds won against the samples, APS in a reference melee field) with
-95% intervals over seeds, and a stage merged only when the bench showed it. The bench grew
-with the questions: cold and warm modes, a stratum-weighted estimate over the live rankings
-(BENCH-1), paired-seed A/B (BENCH-2), client conditions (BENCH-4), a reader for live pages
-(BENCH-5) and a 300-battle one-JVM session with a control robot (BENCH-6, BENCH-7). Ideas that
-benched badly were dropped on the evidence: TIME-6 was built, measured as harmful, and
-removed ([r8-memory-scale](docs/bench/r8-memory-scale.md)).
+Agents are fluent and confident; a bench is neither. Each stage has a numeric gate (score share
+against Shadow, rounds won against the samples, APS in a reference field) with 95% intervals over
+seeds, and a stage merges only when the bench shows it. The bench grew with the questions: cold and
+warm modes, a stratum-weighted estimate over the live rankings (BENCH-1), paired-seed A/B
+(BENCH-2), client conditions (BENCH-4), a reader for live pages (BENCH-5) and a 300-battle one-JVM
+session with a control robot (BENCH-6, BENCH-7). Ideas that bench badly are dropped on the
+evidence: TIME-6 was built, measured as harmful, and removed
+([r8-memory-scale](docs/bench/r8-memory-scale.md)).
 
-### Memory across sessions
+### Memory that outlives each agent
 
-A session's context ends; the project does not. Three layers carry what one agent learned to
-the next:
+An agent's context ends; the project does not. What one agent learns reaches the next through:
 
 - **The repository itself**: plans, bench reports, release notes and the
   [strategy evolution](docs/strategy-evolution.md).
-- **[`data/`](data/)**: every saved rumble page byte for byte, parsed tables, flat bench
-  history, and [a learnings ledger](data/learnings.md) of findings, each with its evidence
-  and status (open or confirmed).
-- **Project memory**: a shared note store every session reads at start, with decisions,
-  conventions and hand-offs.
+- **[`data/`](data/)**: every saved rumble page byte for byte, parsed tables, flat bench history,
+  and [a learnings ledger](data/learnings.md) of findings, each with its evidence and status.
+- **Shared project notes**: decisions, conventions and hand-offs every agent reads at start.
 
-### Review by agents, for agents
+### Review
 
-Stage PRs went through an automated code review, and the implementing thread treated each
-finding as a bug report. The record shows why: on PR #61 the review caught a power margin so tight the
-rule could never fire live while its tests passed, a kill-power cap that could cost a
-low-energy gun its shot, and a rammer detector reading our own movement as theirs
-([strategy evolution, R2](docs/strategy-evolution.md)).
+Stage PRs go through an automated code review, and each finding is treated as a bug report. On
+PR #61 the review caught a power margin so tight the rule could never fire live while its tests
+passed, a kill-power cap that could cost a low-energy gun its shot, and a rammer detector reading
+our own movement as theirs ([strategy evolution, R2](docs/strategy-evolution.md)).
 
 ### What was hard
 
@@ -401,9 +392,9 @@ low-energy gun its shot, and a rammer detector reading our own movement as their
   300 battles, a control robot) to find the cause: the round-end save grew with the number of
   opponents on disk. Agents can only test what they can simulate; widening the simulation was
   the fix.
-- **Sessions cannot reach everything.** The container could not push tags, reach the
-  rumble's wiki, or play on a real client. Leigh saved the live pages and carried the entries,
-  and releases moved to a workflow the agents can dispatch.
+- **Agents cannot reach everything.** Their sandbox cannot reach the rumble's wiki or play on a
+  real rumble client, so live pages are saved by hand and brought into `data/`, and releases run
+  from a GitHub workflow the agents can dispatch.
 - **Speed against evidence.** When live passes were too slow for three releases, R5, R7 and
   R6 shipped together as 3.3 and their long gates moved to one end-of-plan pass, a trade made
   explicitly in the [3.3 notes](docs/releases/v3.3.md).
@@ -477,6 +468,6 @@ appended, so older readers keep working.
 
 Hadur 1.x (up to 1.20) was a dual-mode duel and melee robot, evolved release by release by
 feel. Hadur 2 started as a pure duelist rebuilt around a measured bench; release 2.1 ported
-the 1.x melee work (from the `claude/project-thread-3j7vn4` branch) into the core's `melee`
+the 1.x melee work into the core's `melee`
 package for the MeleeRumble. The 1.x feature files are kept in
 [docs/legacy-features](docs/legacy-features).

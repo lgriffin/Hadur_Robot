@@ -60,8 +60,7 @@ Every `catalog.tsv` row may also carry six condition columns, `rounds`, `engine`
 them from each report's conditions sentence, and `trend.py` marks any run that differs from the chart's
 usual conditions as an open circle with a footnote.
 
-1. **A saved page** (Leigh saves it in the browser as "Webpage, single file" and uploads it to
-   the project): copy it into `rumble/pages/` under the naming rule, parse it into
+1. **A saved page** (saved from the browser as "Webpage, single file"): copy it into `rumble/pages/` under the naming rule, parse it into
    `rumble/parsed/` with the same stem (`python3 data/tools/parse_rumble_page.py PAGE.mht`
    does both page kinds), and add a row to `catalog.tsv` for each. The pages
    are public rumble data. `.gitattributes` keeps their bytes exact (CRLF, MIME parts).

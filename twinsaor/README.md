@@ -1,10 +1,11 @@
 # TwinSaor
 
-`hadur117.twin.TwinSaor` is a Twin Duel team built on Saor. Twin Duel is 2v2 on an 800 x 800
+`hadur117.twin.TwinSaor` is a Twin Duel team built on Saor. **TwinSaor 0.2 is 1st of 28 in the
+Twin Duel** (70.28 ± 0.50 APS, 2026-10-28), 0.91 ahead of ags.lunartwins.LunarTwins 1.4a. Twin Duel is 2v2 on an 800 x 800
 field, under 2,000 bytes for the team jar. TwinSaor is one class, `hadur117.twin.SaorTwin`, listed
 twice. It keeps Saor's Markov gun, shares every scan between the twins, focuses fire on the
 enemy with the least energy, and puts its twins 90 degrees apart around the target. Design,
-the LunarTwins analysis, the build and the bench card are in [docs/twinsaor.md](../docs/twinsaor.md).
+the LunarTwins analysis, the build and the bench are in [docs/twinsaor.md](../docs/twinsaor.md).
 
 Credit: the Markov gun is Saor's, which is the design of **Figment 1.0 by Kevin Clark (Kev)**,
 `kc.micro.Figment` (state packing, playout and bin vote; no licence stated in its jar, see
@@ -58,5 +59,12 @@ Before release, on the bench:
 | 0.2 | 2026-10-28 | cloud, vs 0.1 on 24 teams, 8 fresh seeds (W5) | +6.66 ± 1.33 share points, about +5.9 APS on the field |
 | 0.1 | 2026-10-27 | cloud, vs LunarTwins 1.4a, 20 x 35 rounds | 58.2% score share, 83.1% rounds won |
 
+## Release history
+
 Releases are tagged `twinsaor-v<version>` by `.github/workflows/release-twinsaor.yml`, with notes
 in `docs/releases/twinsaor-v<version>.md`.
+
+| Version | Released | What changed | Live |
+|---|---|---|---|
+| **0.2** | 2026-10-28 | Tailored per opposing team: a range and mode table per team ([docs/twinsaor.md](../docs/twinsaor.md) sections 9 to 11). | 1st of 28, +5.67 over 0.1 |
+| **0.1** | 2026-10-27 | First release: Saor's Markov gun, shared scans, least-energy focus fire, 90-degree stations. | 7th of 28 |
