@@ -1,6 +1,6 @@
 # Queue pc-team-nmdodge: progress
 
-Updated 2026-11-23 12:38:11 PC time (12:38 UTC), runner pid 70048.
+Updated 2026-11-23 15:56:50 PC time (15:56 UTC), runner pid 67136.
 
 - `tnprep` failed, exit 1 in 2 min
 - `tnbb` skipped
@@ -20,4 +20,5 @@ Updated 2026-11-23 12:38:11 PC time (12:38 UTC), runner pid 70048.
 12:38:11 skip tngate (after tnnd, which has not finished exit=0)
 12:38:11 skip tnpr (after tngate, which has not finished exit=0)
 12:38:11 ALLDONE
+15:56:50 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
 ```
