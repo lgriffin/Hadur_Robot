@@ -1,135 +1,90 @@
 # JayLexi
 
-`hadur117.mini.JayLexi` is Hadur's MiniRumble (1v1, under 1500 bytes) robot, from Leigh's design
-plan "JayLexi & Eveimear — MiniRumble and MicroRumble 1v1 Design Plan" and its kitlab drafts. It is
-a true wave surfer that weighs back and forward with precise prediction, over a GuessFactor
-gun segmented on velocity history, lateral speed, walls ahead and distance. The design, the bench
-and the results are in [docs/kitlab.md](../docs/kitlab.md); the requirements are JAYLEXI-1 to
-JAYLEXI-11 in [docs/requirements/jaylexi.md](../docs/requirements/jaylexi.md).
+`hadur117.mini.JayLexi` is a MiniRumble robot: a 1v1 duelist under the MiniRumble's 1,500-byte
+codesize limit. **JayLexi 1.3 is 1st of 670 in the MiniRumble** (89.26 ± 0.11 APS, 2026-11-23).
 
-0.1 is 1,496 bytes of 1,499 (two classes; 3 spare, as plan K6 asks). Released 2026-10-28 (tag `jaylexi-v0.1`).
+It is a true wave surfer over a segmented GuessFactor gun, with per-opponent tables packed into
+strings. The design and bench method are in [docs/kitlab.md](../docs/kitlab.md), the measurements
+behind each version in [docs/bench/jaylexi-tailoring.md](../docs/bench/jaylexi-tailoring.md), and
+the requirements (JAYLEXI-1 to JAYLEXI-26) in [docs/requirements/jaylexi.md](../docs/requirements/jaylexi.md).
 
-0.2 (released 2026-10-29, tag `jaylexi-v0.2`) also surfs the second nearest wave at a quarter weight, about +0.3 APS
-on the bench. That costs 41 bytes in readable code, so the shipped source is the same play written
-tighter, 1,485 bytes. The readable version is kept with the tests (`hadur117.mini.ref.JayLexi`), and
-`JayLexiReplayTest` (JAYLEXI-11) checks the two give the same orders bit for bit. Change the readable
-one first, bench it, then write the shipped one to match.
+## How it works
 
-0.3 (prepared 2026-11-01, tag `jaylexi-v0.3` on Leigh's go) adds two tables learned from JayLexi's own
-battles, held in constant-pool strings, which Robocode's codesize does not count: the field's
-first-shot bin for each of the gun's 480 segments, and a 47-bin surf danger row for each of the 669
-MiniRumble robots, picked by name hash. Bench: +0.44 ± 0.16 APS over 0.2 on a fresh 112-bot sample (6 seeds)
-(docs/bench/kitlab-priors.md). Written straight it is 1,509 bytes, so the shipped source is
-trimmed to 1,494 bytes with plain javac: waves take themselves off the event list, fire power by
-distance is a lookup string, the bin clamp's offset folds into the double, and the busiest
-double takes a one-byte local slot.
-
-0.4 (prepared 2026-11-02, tag `jaylexi-v0.4` on Leigh's go) gives the top 120 MiniRumble bots
-(by the 2026-11-02 rankings) the field's surf row instead of their own. Live, 0.3's own rows cost
-it 6 to 8 APS against each learning gun at the top. Only the data string changes, so it is still
-1,494 bytes and plays as 0.3 against the rest. Bench (pc-jaylexi-rows, PR #588): +0.72 ± 0.15
-over 0.3 on mini-wide2 (paired estimate 88.65), and +3.05 on the top 60
-(docs/bench/live-kitlab-0.3.md).
-
-0.5 (prepared 2026-11-04, tag `jaylexi-v0.5` on Leigh's go) is 1,487 bytes. A codesize diet (PR #626)
-writes the same play in fewer bytes, and an `ORB` string spends them on a per-robot orbit angle:
-1.35 for 13 robots and 0.95 for 9, 1.15 for the rest (pc-jaylexi-orb, PR #644: +0.06 ± 0.04 APS on
-fresh seeds). Notes in docs/releases/jaylexi-v0.5.md.
-
-0.6 (banked 2026-11-04, prepared for release 2026-11-05, tag `jaylexi-v0.6` on Leigh's go) adds aim jitter against bullet catchers (JAYLEXI-19): BulletCatcher's
-orbit char carries 2 pi more, which switches on up to 0.125 rad of random gun turn; every other robot plays as
-0.5. +57.3 ± 3.3 points against BulletCatcher on 20 fresh seeds, +0.086 APS
-([docs/bench/local/2026-11-04_jaylexi-jit.md](../docs/bench/local/2026-11-04_jaylexi-jit.md)). It is 1,507 bytes
-with javac, so the jar is built through ProGuard again (`jaylexi/proguard.pro`) to 1,494 bytes.
-
-0.7 (built 2026-11-12, not released) adds a walls segment to the surf (JAYLEXI-20): the surf stats are
-also kept by how much of our orbit ahead is still in the field, as the enemy sees it. +0.53, +0.29, +0.31 and +0.48 over 0.6
-on four fresh cloud seed sets, and the fitted build read +0.55 ± 0.49
-([docs/bench/jaylexi-own-movement.md](../docs/bench/jaylexi-own-movement.md)). 1,495 bytes through ProGuard.
-
-0.8 (built 2026-11-16, not released) adds per-robot tailoring (JAYLEXI-21). The orbit table now has a slot per robot per
-50 px of distance at no extra code bytes. RammingC, LightningBug and MirrorMicro get orbits of their own, and Bruce and
-Lifestealer a wider orbit inside 200 px (+3.1 to +5.4 points each on 12 fresh cloud seeds, about +0.03 APS). 1,495 bytes
-([docs/bench/jaylexi-tailoring.md](../docs/bench/jaylexi-tailoring.md)).
-
-0.9 (built 2026-11-19, not released) counts the surf's danger prediction from tick 2 instead of 3 (JAYLEXI-22): each
-predicted spot is taken one tick further along our path. +0.29 ± 0.23 over 0.8 on 12 fresh cloud seeds over 112 MiniRumble
-robots, after +0.50 on its 3-seed screen. 1,495 bytes, the same as 0.8
-([docs/bench/jaylexi-tailoring.md](../docs/bench/jaylexi-tailoring.md)).
-
-1.0 (built 2026-11-20, not released) drops the surf stats' four distance bands for one (JAYLEXI-23): every wave at us
-learns from every other, whatever the range, so the stats fill four times as fast. +0.23 ± 0.20 over 0.9 on its 12-seed
-cloud lock over 112 MiniRumble robots, +0.56 ± 0.24 on a 12-seed head-to-head, about +0.2 pooled over every read.
-1,486 bytes, 9 fewer than 0.9 ([docs/bench/jaylexi-tailoring.md](../docs/bench/jaylexi-tailoring.md)).
-
-1.1 (built 2026-11-20, not released) fires once its gun is within 1200 / distance degrees of the aim instead of a flat 3
-(JAYLEXI-24), so it fires sooner at robots that close in: +0.35 ± 0.26 over 1.0 on a 12-seed cloud lock, +3 to +4 points
-on chargers. It also orbits Leopard 0.4 rad closer inside 200 px and jitters its aim against uCatcher, a bullet catcher
-(per-robot lines, +2.9 and +1.0 points on their own robots). 43 bytes of 1.0 were rewritten with identical play to make
-room: 1,447 bytes ([docs/bench/jaylexi-tailoring.md](../docs/bench/jaylexi-tailoring.md)).
-
-1.2 (built 2026-11-21, not released) fires power 1 from 500 px at FoilistMC and CunobelinDC, the two robots above it in
-the MiniRumble, which out-last it on energy at range (JAYLEXI-25: +6.6 and +2.6 points on their own robots). It orbits
-Mark8, CannonfodderMicro and Charo at 1.35 rad (+1.4, +1.2 and about +1.9 points). Every other robot plays as 1.1.
-1,451 bytes ([docs/bench/jaylexi-tailoring.md](../docs/bench/jaylexi-tailoring.md)).
-
-1.3 (built 2026-11-22, not released) fixes how hits are logged (JAYLEXI-26). JayLexi drops an enemy wave about the tick
-its bullet reaches it, before the hit event arrives, so 1.2's surf stats learned from only about one hit in four. 1.3
-keeps the wave it dropped last and logs the hit on it: 98% of hits now reach the stats. Cloud, 145 MiniRumble robots x 3
-fresh seeds: +1.10 ± 0.11 over 1.2. 1,486 bytes ([docs/bench/jaylexi-tailoring.md](../docs/bench/jaylexi-tailoring.md)
-section 13).
+- **Movement: true wave surfing.** Each enemy shot, seen as an energy drop, becomes a wave. JayLexi
+  predicts its own path precisely for moving forward and back, scores the danger where each path
+  meets the nearest wave (and the second nearest at a quarter weight), and takes the safer one. The
+  surf statistics are segmented by how much of its orbit ahead is still inside the field, and learn
+  from every wave whatever the range. The hit that ends a wave is logged on that wave even when the
+  wave has already been retired, so nearly every hit reaches the statistics.
+- **Gun: GuessFactor.** Segmented on velocity history, lateral speed, walls ahead and distance.
+  It fires once the gun is within 1200 / distance degrees of its aim, so it fires sooner at robots
+  that close in.
+- **Tables in strings.** Robocode's codesize does not count constant-pool strings, so JayLexi
+  carries data there: a first-shot gun bin for each of its 480 gun segments and a surf danger row
+  for MiniRumble robots (learned from its own battles), fire power by distance, and a per-robot
+  orbit angle for each 50 px of distance. A few robots get lines of their own: wider or closer
+  orbits, power 1 at long range against the two robots that out-last it on energy, and random aim
+  jitter against bullet catchers.
+- **Size.** The shipped source is written tight and built through ProGuard (1,486 bytes in 1.3). A
+  readable copy of the same play is kept with the tests (`hadur117.mini.ref.JayLexi`), and
+  `JayLexiReplayTest` checks the two give the same orders bit for bit.
 
 ## Standing
 
-| Version | Date (UTC) | Rumble | Rank | APS | Pairings | Battles | Next up | Gap |
-|---|---|---|---|---|---|---|---|---|
-| 1.3 | 2026-11-23 07:00 (overnight run, API) | **MiniRumble** | **1st of 670** | **89.26 ± 0.11** | 669 | 3,287 | 2nd sheldor.mini.FoilistMC 1.0, 88.94 | −0.32 (ahead) |
-| 0.4 | 2026-11-03 17:35 (first pass, API) | **MiniRumble** | **4th of 670** | **88.21 ± 0.29** | 669 | 773 | 3rd sheldor.mini.Foilist 1.3.1, 88.46; 1st FoilistMC 1.0, 89.00 | +0.25 / +0.79 |
-| 0.3 | 2026-11-02 14:40 (first pass, API) | **MiniRumble** | **4th of 671** | **87.93 ± 0.28** | 669 | 855 | 1st sheldor.mini.FoilistMC 1.0, 89.02 | +1.09 |
-| 0.2 | 2026-10-30 21:50 (API) | **MiniRumble** | **5th of 671** | **87.34** | 670 | 2,040 | 1st sheldor.mini.FoilistMC 1.0, 89.01 | +1.67 |
-| 0.2 | 2026-10-30 19:50 (settled) | **MiniRumble** | **5th of 671** | **87.34** | 670 | 1,965 | 4th voidious.mini.Komarious 1.88, 87.44 | +0.10 |
-| 0.2 | 2026-10-29 20:10 (first pass, API) | **MiniRumble** | **5th of 671** | **87.43 ± 0.29** | 670 | 788 | 1st sheldor.mini.FoilistMC 1.0, 88.99 | +1.57 |
-| 0.1 | 2026-10-29 07:23 | **MiniRumble** | **6th of 671** | **86.95 ± 0.29** | 670 | 742 | simonton.mini.WeeksOnEnd 1.10.4, 87.35 | +0.40 |
+| Version | Read (UTC) | Rumble | Rank | APS | Pairings | Battles | Nearest rival |
+|---|---|---|---|---|---|---|---|
+| 1.3 | 2026-11-23 07:00 | **MiniRumble** | **1st of 670** | **89.26 ± 0.11** | 669 | 3,287 | sheldor.mini.FoilistMC 1.0, 88.94 (2nd) |
+| 0.6 | 2026-11-06 03:05 (first pass) | MiniRumble | 4th of 670 | 88.40 ± 0.29 | 669 | 743 | FoilistMC 1.0, 88.96 (1st) |
+| 0.4 | 2026-11-03 17:35 (first pass) | MiniRumble | 4th of 670 | 88.21 ± 0.29 | 669 | 773 | FoilistMC 1.0, 89.00 (1st) |
+| 0.3 | 2026-11-02 14:40 (first pass) | MiniRumble | 4th of 671 | 87.93 ± 0.28 | 669 | 855 | FoilistMC 1.0, 89.02 (1st) |
+| 0.2 | 2026-10-30 21:50 | MiniRumble | 5th of 671 | 87.34 | 670 | 2,040 | FoilistMC 1.0, 89.01 (1st) |
+| 0.1 | 2026-10-29 07:23 (first pass) | MiniRumble | 6th of 671 | 86.95 ± 0.29 | 670 | 742 | simonton.mini.WeeksOnEnd 1.10.4, 87.35 (5th) |
 
-**JayLexi 1.3 is 1st in MiniRumble** at 89.26 ± 0.11 after an overnight cloud run (3,287 battles,
-2026-11-23 07:00), 0.32 ahead of FoilistMC (88.94) and 0.56 ahead of CunobelinDC (88.70). On the 667
-opponents its page shares with 0.6 it is +0.86 (the PC bench said +0.85). It is also 83.03 in
-RoboRumble over 1,209 pairings. Its weakest pairings are the top minis it meets head on: Foilist
-(39.3), WeeksOnEnd (44.3), Pugilist (47.2) and CunobelinDC (53.1); it takes 62.2 off FoilistMC.
-The page is saved as `data/rumble/parsed/2026-11-23T0702Z_minirumble_botdetails_hadur117.mini.JayLexi_1.3.json`
-with the rankings beside it.
+JayLexi 1.3 leads FoilistMC by 0.32 and jk.mini.CunobelinDC (88.70) by 0.56. On the 667 opponents
+its page shares with 0.6 it is +0.86, in line with the +0.85 the bench predicted. It also scores
+83.03 in the full RoboRumble over 1,209 pairings. Its weakest pairings are the strongest minis:
+Foilist (39.3), WeeksOnEnd (44.3), Pugilist (47.2) and CunobelinDC (53.1).
 
-**JayLexi 0.3 is 4th in MiniRumble** on its first pass (87.93 ± 0.28, 2026-11-02), past
-Komarious and WeeksOnEnd, 0.56 behind Foilist for 3rd and 1.09 behind FoilistMC for 1st. On the 664
-opponents the pages share it is +0.62 over 0.2 (the bench said +0.44). The tables won ranks 121 and
-down (+0.89 of APS) and cost the top 30 (−0.27; −6 to −8 APS a bot against the learning guns), which
-are now half the gap to 1st. The plan for 1st starts with giving the top bots the neutral surf row,
-which costs no bytes: [docs/bench/live-kitlab-0.3.md](../docs/bench/live-kitlab-0.3.md).
+Live reads for earlier versions, with where the points were lost, are in
+[docs/bench/live-kitlab-0.1.md](../docs/bench/live-kitlab-0.1.md),
+[0.2](../docs/bench/live-kitlab-0.2.md), [0.3](../docs/bench/live-kitlab-0.3.md) and
+[0.5/0.6](../docs/bench/live-kitlab-0.5.md). The saved pages are in `data/rumble/pages/` and
+`data/rumble/parsed/`.
 
-**JayLexi 0.2 was 5th in MiniRumble.** It settled at 87.34 on 1,965 battles (2026-10-30), 0.10
-behind Komarious and level with WeeksOnEnd; 1st is FoilistMC on 89.01, 1.67 ahead. At its first
-pass (788 battles) it read 87.43, level with Komarious and past WeeksOnEnd. On the 668 opponents the pages share it is +0.47 over 0.1 (the bench said about +0.3).
-It is 1.57 behind FoilistMC for 1st. Seven tenths of that gap is the weak field, the 477 bots
-FoilistMC beats almost every round: about half from rounds JayLexi loses to them (99.08% survival
-against 99.68%) and half from damage taken in rounds it wins, worst against nanobots (2.34 short
-each). Even and strong opponents cost only 0.09. So 0.3 aims at simple-gun dodging and lost rounds
-to rammers. The full read is in [docs/bench/live-kitlab-0.2.md](../docs/bench/live-kitlab-0.2.md);
-the pages are saved in `data/rumble/pages/` under 2026-10-29T2010Z* (they caught it 5 battles early, at 87.42), and the final API rows in `data/rumble/parsed/2026-10-29T2020Z_*.json`.
+## Release history
 
-0.1 was 6th on its first pass (86.95, 0.40 behind 5th); its read is in
-[docs/bench/live-kitlab-0.1.md](../docs/bench/live-kitlab-0.1.md).
+Released versions are tagged `jaylexi-v<version>`. Bench gains are in APS over the previous
+version unless stated.
+
+| Version | Released | Size | What changed | Bench |
+|---|---|---|---|---|
+| **1.3** | 2026-11-22 | 1,486 B | Everything built since 0.6 (0.7 to 1.2 below), plus a hit-logging fix: JayLexi retires a wave about the tick its bullet arrives, before the hit event, so 1.2's surf learned from only about one hit in four. 1.3 keeps the last retired wave and logs the hit on it; 98% of hits now reach the statistics. | +1.10 ± 0.11 over 1.2 (145 robots × 3 seeds) |
+| 1.2 | built, not released | 1,451 B | Power 1 from 500 px against FoilistMC and CunobelinDC, which out-last it on energy at range; orbit 1.35 rad against Mark8, CannonfodderMicro and Charo. | +6.6 and +2.6 points against the two leaders |
+| 1.1 | built, not released | 1,447 B | Fires within 1200 / distance degrees of the aim instead of a flat 3; closer orbit against Leopard; aim jitter against uCatcher. 43 bytes freed by rewriting 1.0 with identical play. | +0.35 ± 0.26 (12 seeds) |
+| 1.0 | built, not released | 1,486 B | One distance band in the surf statistics instead of four, so they fill four times as fast. | +0.23 ± 0.20 (12 seeds) |
+| 0.9 | built, not released | 1,495 B | The surf's danger prediction starts one tick further along the path. | +0.29 ± 0.23 (12 seeds) |
+| 0.8 | built, not released | 1,495 B | Per-robot orbit per 50 px of distance; own orbits for RammingC, LightningBug and MirrorMicro, wider close-range orbits for Bruce and Lifestealer. | +3.1 to +5.4 points each, about +0.03 |
+| 0.7 | built, not released | 1,495 B | Surf statistics segmented by how much of the orbit ahead is still in the field. | +0.29 to +0.53 on four seed sets |
+| **0.6** | 2026-11-05 | 1,494 B | Random aim jitter (up to 0.125 rad) against BulletCatcher; the jar is built through ProGuard to fit. | +57.3 ± 3.3 points against BulletCatcher, about +0.09 |
+| **0.5** | 2026-11-04 | 1,487 B | Same play in fewer bytes, spent on a per-robot orbit angle. | +0.06 ± 0.04 |
+| **0.4** | 2026-11-02 | 1,494 B | The top 120 MiniRumble robots get the field's surf row instead of their own: their learning guns had punished the self-taught rows. | +0.72 ± 0.15; +3.05 on the top 60 |
+| **0.3** | 2026-11-01 | 1,494 B | String tables learned from its own battles: a first-shot gun bin per segment and a 47-bin surf danger row for each of 669 MiniRumble robots. | +0.44 ± 0.16 (112 robots × 6 seeds) |
+| **0.2** | 2026-10-29 | 1,485 B | Also surfs the second nearest wave at a quarter weight; shipped source written tighter, with a readable reference kept in the tests. | about +0.3 |
+| **0.1** | 2026-10-28 | 1,496 B | First release: true wave surfing over a segmented GuessFactor gun. | |
+
+Release notes for 0.1 to 0.6 are in [docs/releases/](../docs/releases/) (`jaylexi-v<version>.md`).
 
 ## Build
 
     mvn -pl jaylexi verify
 
-The shipped jar is `jaylexi/target/hadur117.mini.JayLexi_<version>.jar` (its classes, properties and
-source, ProGuard-optimised from 0.6); `JayLexiJarIT` prints its codesize, holds 3 bytes spare, and
-replays the jar itself against the readable reference.
+The jar is `jaylexi/target/hadur117.mini.JayLexi_<version>.jar` (classes, properties and source,
+through ProGuard). `JayLexiJarIT` prints its codesize, holds it under the limit, and replays the jar
+against the readable reference.
 
 ## Bench
 
-From `hadur-bench`: `kitlab/run.sh mini <jar> "<name version>" <label>` fights the 48-bot MiniRumble
+From `hadur-bench`: `kitlab/run.sh mini <jar> "<name version>" <label>` fights a 48-robot MiniRumble
 sample (`kitlab/mini-field.txt`, drawn by `tools/kitlab_fields.py`), and
 `python3 tools/kitlab_read.py kitlab/mini-field.txt work/kitlab-<label> --ref work/kitlab-ref-komarious --ref-aps 87.54`
 reads it as a predicted APS, paired against Komarious 1.88 on the same set.
