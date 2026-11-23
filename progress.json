@@ -1,6 +1,6 @@
 {
  "plan": "pc-learn-trace",
- "updated": 1795405714.7071733,
+ "updated": 1795406197.688874,
  "steps": {
   "prep": {
    "status": "done",
@@ -15,11 +15,16 @@
    "end": "2026-11-23T03:42:28"
   },
   "read": {
-   "status": "running",
-   "start": "2026-11-23T03:42:28"
+   "status": "done",
+   "exit": 0,
+   "seconds": 842,
+   "end": "2026-11-23T03:56:30"
   },
   "pr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 7,
+   "end": "2026-11-23T03:56:37"
   }
  },
  "watched": [

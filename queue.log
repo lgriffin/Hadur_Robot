@@ -55,3 +55,7 @@
 03:19:20 progress trace: 2413/2416 (100%) battles, 362/h, ETA 0 min, 6 failed, skips 11.9/battle (last 100), bb +1.45
 03:42:28 trace exit=0 in 12351 s
 03:42:28 start read
+03:56:30 read exit=0 in 842 s
+03:56:30 start pr
+03:56:37 pr exit=0 in 7 s
+03:56:37 ALLDONE

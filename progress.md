@@ -1,11 +1,11 @@
 # Queue pc-learn-trace: progress
 
-Updated 2026-11-23 03:48:34 PC time (03:48 UTC), runner pid 44500.
+Updated 2026-11-23 03:56:37 PC time (03:56 UTC), runner pid 44500.
 
 - `prep` done, exit 0 in 0 min
 - `trace` done, exit 0 in 3.4 h
-- `read` running
-- `pr` pending
+- `read` done, exit 0 in 14 min
+- `pr` done, exit 0 in 0 min
 
 ### trace
 
@@ -30,10 +30,6 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 ### Queue log (last lines)
 
 ```
-00:16:26 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
-00:16:26 start prep
-00:16:29 progress pushed to origin claude/pc-learn-trace-progress (every 15 min)
-00:16:37 prep exit=0 in 10 s
 00:16:37 start trace
 00:16:37 watching trace: 3 stop rule(s)
 00:17:26 progress trace: 5/2416 (0%) battles, 364/h, ETA 6.6 h, 0 failed, skips 10.0/battle (last 100)
@@ -45,4 +41,8 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 03:19:20 progress trace: 2413/2416 (100%) battles, 362/h, ETA 0 min, 6 failed, skips 11.9/battle (last 100), bb +1.45
 03:42:28 trace exit=0 in 12351 s
 03:42:28 start read
+03:56:30 read exit=0 in 842 s
+03:56:30 start pr
+03:56:37 pr exit=0 in 7 s
+03:56:37 ALLDONE
 ```
