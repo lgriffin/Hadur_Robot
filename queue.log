@@ -10,3 +10,7 @@
 17:52:10 tkpilot exit=0 in 0 s
 17:52:10 start tkbb
 17:52:10 watching tkbb: 3 stop rule(s)
+18:13:13 tkbb exit=0 in 1263 s
+18:13:13 start tkp3
+18:13:13 watching tkp3: 3 stop rule(s)
+18:15:09 progress tkp3: 24/192 (12%) battles, 746/h, ETA 14 min, 0 failed, skips 28.5/battle (last 100)

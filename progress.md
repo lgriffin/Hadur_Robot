@@ -1,12 +1,12 @@
 # Queue pc-team-pack3: progress
 
-Updated 2026-11-23 18:12:08 PC time (18:12 UTC), runner pid 86648.
+Updated 2026-11-23 18:27:15 PC time (18:27 UTC), runner pid 86648.
 
 - `tkprep` done, exit 0 in 2 min
 - `tkpp3` done, exit 0 in 8 min
 - `tkpilot` done, exit 0 in 0 min
-- `tkbb` running
-- `tkp3` pending
+- `tkbb` done, exit 0 in 21 min
+- `tkp3` running
 - `tkgate` pending
 - `tkpr` pending
 
@@ -25,21 +25,33 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### tkbb
 
-**180 of 192 battles** (94%), 0 failed. Running 20 min, 541 battles/h, about 1 min left (ends ~18:13 PC time). Last battle 1 min ago.
-Skipped turns a battle: 33.7 overall, first 100 31.0, last 100 35.1.
+**192 of 192 battles** (100%), 0 failed. Running 21 min, 547 battles/h, about 0 min left (ends ~18:13 PC time). Last battle 0 min ago.
+Skipped turns a battle: 34.7 overall, first 100 31.0, last 100 37.7.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 10` | halt | ok | 0 failed of 180 |
-| `stall 30m` | halt | ok | last battle 1 min ago |
-| `skips 60 over 200` | halt | waiting | 180 of 200 battles to read |
+| `fails 10` | halt | ok | 0 failed of 192 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 60 over 200` | halt | waiting | 192 of 200 battles to read |
 
-Stopping now would leave 12 battles unrun (about 1 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### tkp3
+
+**156 of 192 battles** (81%), 0 failed. Running 14 min, 668 battles/h, about 3 min left (ends ~18:30 PC time). Last battle 0 min ago.
+Skipped turns a battle: 28.4 overall, first 100 27.0, last 100 27.7.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 10` | halt | ok | 0 failed of 156 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 60 over 200` | halt | waiting | 156 of 200 battles to read |
+
+Stopping now would leave 36 battles unrun (about 3 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-17:41:55 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
 17:41:55 start tkprep
 17:41:58 progress pushed to origin claude/pc-team-pack3-progress (every 15 min)
 17:44:03 tkprep exit=0 in 127 s
@@ -51,4 +63,8 @@ Stopping now would leave 12 battles unrun (about 1 min); every battle already fo
 17:52:10 tkpilot exit=0 in 0 s
 17:52:10 start tkbb
 17:52:10 watching tkbb: 3 stop rule(s)
+18:13:13 tkbb exit=0 in 1263 s
+18:13:13 start tkp3
+18:13:13 watching tkp3: 3 stop rule(s)
+18:15:09 progress tkp3: 24/192 (12%) battles, 746/h, ETA 14 min, 0 failed, skips 28.5/battle (last 100)
 ```
