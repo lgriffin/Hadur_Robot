@@ -716,5 +716,6 @@ so 0.5 projects about 66.25, still 2nd. In the census, Quantum seated in Sanaro'
 over 0.4, against 0.5's +0.47. 0.5 is not released; the search for the remaining ~0.2 goes on from
 its 3 spare bytes.
 
-The table's generator (`sanaro/table.py`) and its test are retired with the table. Arms in
-`sanaro-arms/arms.txt` with a table column no longer build.
+`SanaroTableTest` is retired with the table. `sanaro/table.py` stays for `tools/distill.py` and now
+needs `--src`. Arms in `sanaro-arms/arms.txt` are written against 0.1-0.4's source and no longer
+apply to 0.5.

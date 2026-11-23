@@ -40,7 +40,8 @@ arm). That projects about 66.25 live, still about 0.2 behind Quantum.
 
 The shipped jar is `sanaro/target/hadur117.nano.Sanaro_<version>.jar` (one class, its properties and
 source); `SanaroJarIT` prints its codesize. 0.1 to 0.4 carried a power table written by
-`sanaro/table.py`; 0.5 has none, and the generator is retired (git history keeps it).
+`sanaro/table.py`; 0.5 has none. The script stays for `hadur-bench/tools/distill.py`, which builds on
+its formula, and now needs `--src`.
 
 ## Bench
 
