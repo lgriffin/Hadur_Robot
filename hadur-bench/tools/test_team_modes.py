@@ -119,7 +119,7 @@ class TeamModesTest(unittest.TestCase):
         for team, modes in table.items():
             self.assertTrue(modes <= set(team_modes.MODES), team)
             self.assertIn("LAST", modes, team)
-        tight = {"cz.libors.Ogi", "abc.Shadow", "florent.XSeries.X2", "rz.Aleph", "cx.mini.Nimrod"}
+        tight = {"cz.libors.Ogi", "abc.Shadow", "florent.XSeries.X2", "rz.Aleph", "cx.mini.Nimrod", "kawigi.micro.Shiz"}
         self.assertEqual(tight, {team for team, modes in table.items() if "TIGHT" in modes})
         self.assertEqual({"cx.mini.Nimrod"}, {team for team, modes in table.items() if "NEAR" in modes})
 

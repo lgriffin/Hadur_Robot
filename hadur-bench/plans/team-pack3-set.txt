@@ -1,4 +1,0 @@
-# pc-team-pack3 (BENCH-278): the three teams of the card (TMODE-60, the tight pack, CONCORD back); lines as in team-census46.txt.
-cx.mini.DemoniacNimrods 0.50 | team-13 | cx.mini.DemoniacNimrods_0.50.jar
-kawigi.micro.ArmyOfShiz 1.1 | team-9 | kawigi.micro.ArmyOfShiz_1.1.jar
-mn.CombatTeam 3.25.0 | team-1 | mn.CombatTeam_3.25.0.jar
