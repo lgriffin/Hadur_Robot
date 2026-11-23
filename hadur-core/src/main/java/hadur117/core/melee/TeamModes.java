@@ -98,7 +98,7 @@ public final class TeamModes {
          * {@link TeamRisk#HUNT_PULL}, so the members reach and hold their place round the prey and
          * fire from it instead of from across the field. Only through the table, per team: the
          * five teams that held on 12 fresh cloud seeds each (OgiTeam, ShadowTeam, Xmen, AlephTeam,
-         * DemoniacNimrods). Means nothing without HUNT, and nothing while {@link #TIGHT_ON} is off.
+         * DemoniacNimrods). Means nothing without HUNT, and nothing where {@link #TIGHT_ON} is off.
          */
         TIGHT
     }
@@ -122,8 +122,8 @@ public final class TeamModes {
     /** TMODE-49: MOMENTUM on every team, as pc-team-momentum measured it (PR #826). */
     public static final boolean FORCE_MOMENTUM = true;
 
-    /** TMODE-59: whether TIGHT in a table entry plays; off in the shipped build until pc-team-tight reads (ablation tmtight turns it on). */
-    public static final boolean TIGHT_ON = false;
+    /** TMODE-59: whether TIGHT in a table entry plays; on as pc-team-tight measured it (PR #1016; ablation tmnotight turns it off). */
+    public static final boolean TIGHT_ON = true;
 
     /**
      * TMODE-50: the fitted enemy aims ({@link #FITTED}) join the dodge's profile. On since pc-team-fitted
