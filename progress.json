@@ -1,18 +1,12 @@
 {
  "plan": "pc-learn-trace",
- "updated": 1794343500.4316947,
+ "updated": 1795392826.0174043,
  "steps": {
   "prep": {
-   "status": "done",
-   "exit": 0,
-   "seconds": 22,
-   "end": "2026-11-10T15:39:49"
+   "status": "pending"
   },
   "trace": {
-   "status": "interrupted",
-   "exit": 130,
-   "seconds": 1829,
-   "end": "2026-11-10T20:45:00"
+   "status": "pending"
   },
   "read": {
    "status": "pending"
@@ -21,76 +15,5 @@
    "status": "pending"
   }
  },
- "watched": [
-  {
-   "step": "trace",
-   "started": 1794341671.0563612,
-   "updated": 1794343500.2772675,
-   "elapsed": 1829.2209062576294,
-   "expected": 2386,
-   "panel": 1193,
-   "field": null,
-   "multiarm": true,
-   "arms": [
-    {
-     "arm": "c",
-     "battles": 1194,
-     "failed": 0,
-     "level": 92.84463986599665,
-     "skips": 53.31658291457286,
-     "fresh": 0,
-     "scored": 0,
-     "diff": null
-    },
-    {
-     "arm": "bb",
-     "battles": 1193,
-     "failed": 5,
-     "level": 94.73659932659933,
-     "skips": 37.677609427609426,
-     "fresh": 1,
-     "scored": 0,
-     "diff": 1.8727861952861948,
-     "n": 1188,
-     "ci95": 0.339568875729435,
-     "half_stop": 0.5197482791777066,
-     "scale": null
-    }
-   ],
-   "aa": null,
-   "warnings": [
-    "arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 847 h before this step started: check it is not stale"
-   ],
-   "battles": 2387,
-   "resumed": 2386,
-   "failed": 1,
-   "disables": 0,
-   "rate": 2.0,
-   "eta": -1800.0,
-   "fraction": 1.0004191114836547,
-   "last_battle_age": 1434.3966619968414,
-   "rules": [
-    {
-     "rule": "fails 30",
-     "action": "halt",
-     "state": "ok",
-     "detail": "1 failed of 2387"
-    },
-    {
-     "rule": "skips 60 over 200 arms c",
-     "action": "halt",
-     "state": "waiting",
-     "detail": "0 of 200 battles to read"
-    },
-    {
-     "rule": "stall 30m",
-     "action": "halt",
-     "state": "ok",
-     "detail": "last battle 24 min ago"
-    }
-   ],
-   "skips_mean": null,
-   "skips_last100": null
-  }
- ]
+ "watched": []
 }
