@@ -21,3 +21,12 @@
 00:02:09 start ttpr
 00:02:15 ttpr exit=0 in 5 s
 00:02:15 ALLDONE
+00:04:58 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
+00:04:58 skip ttprep (already exit=0)
+00:04:58 skip ttptp (already exit=0)
+00:04:58 skip ttpilot (already exit=0)
+00:04:58 skip ttbb (already exit=0)
+00:04:58 skip tttp (already exit=0)
+00:04:58 skip ttgate (already exit=0)
+00:04:58 skip ttpr (already exit=0)
+00:04:58 ALLDONE
