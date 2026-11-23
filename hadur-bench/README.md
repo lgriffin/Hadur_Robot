@@ -101,8 +101,8 @@ mvn -q compile exec:java -Dexec.args="--set top19.txt --rounds 10 --seeds 1"
 ```
 
 `--robot-jar` and `--robot` need not be passed: both follow `robot.release` in
-hadur-robot/pom.xml (3.8 today), so they stay right across a version bump. For the Remote
-Control session that drives these runs, see issue #102. The Claude Code session on Leigh's PC starts from
+hadur-robot/pom.xml (3.8 today), so they stay right across a version bump. Remote-driven
+runs are described in issue #102. An agent running the bench on a local workstation starts from
 `docs/bench/pc-session.md`, its onboarding card (house rules, watching, stops, results PRs).
 
 ### Parallel runs
