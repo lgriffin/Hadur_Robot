@@ -1,0 +1,61 @@
+# battle: team
+# Team: the second pack card, per the 2026-11-22/23 cloud locks on the four teams below (TMODE-60, TMODE-61, BENCH-276).
+# Team thread: team-only, duel and melee untouched (both modes act in the team hunt pull only; off in the shipped build).
+#   aa      the baseline (master, tight pack on); bb its A/A copy
+#   p2      tmpack2: NEAR on DemoniacNimrods (hunt place 150 px, not 250), EAGER on ShadowTeam (hunt and last-enemy
+#           close-in at any energy), and PhoenixTeam and ArmyOfShiz given the tight pull (TIGHT, pull 1.0)
+# Every other pairing plays the same code as aa, so the card fights only the four teams (plans/team-pack2-set.txt)
+# and spreads their gain over the 47 TeamRumble pairings.
+# Pilot: p2 on the four teams, 4 fresh seeds from 33300, 12 rounds, paired with aa. A projected team APS change
+#   under 0 stops the card there (team_modes.py gate --stop-below 0), and the PR carries the pilot.
+# Screen: bb and p2 against aa on the four teams, 24 fresh seeds from 33400, 12 rounds; p2 is gated at +0.15 APS with
+#   the 95% low end above zero over 47 pairings, scored against both baselines.
+# Why it should win: the tight pack card (PR #1016) passed at +0.75 +- 0.17 APS by moving our fire from beyond 650 px
+#   to 200-350 px on five teams. The same lever, tailored, held on four more lines on cloud seeds, each beside the
+#   same box's baseline, 10 rounds, score share points. DemoniacNimrods gains little from its own guns at close
+#   range while ours gain much: with the place at 150 px our first deaths fall to zero in 120 rounds and (5,0)
+#   sweeps double; over the tight pull alone +3.8 +- 3.7, +4.7 +- 2.7 and +5.4 on three boxes' 12 seeds. ShadowTeam
+#   wins rounds from one survivor while our drained members trade from 800 px: lifting the energy gates takes the
+#   endgame to 430 px and turns 13 last-robot losses into wins, +4.4 +- 2.8 on 24 seeds over the tight pull alone.
+#   PhoenixTeam and ArmyOfShiz with the tight pull: +3.4 +- 2.6 and +1.1 +- 1.5, +3.2 +- 2.1 and +3.5 +- 2.6 on two
+#   boxes' 12 seeds each. About +0.3 APS over 47 pairings. The same lines read level or down on the teams left out
+#   (EAGER on Xmen -5.1 +- 4.3 and AlephTeam -1.5 +- 4.2; NEAR on ShadowTeam -1.5 +- 4.5 and OgiTeam level over 48
+#   seeds), so they are table lines and not defaults.
+# Size: pilot 32 battles, screen 2 x 192: about 420 battles, about 20 minutes at the team rate. Every step resumes
+#   where it stopped.
+# Stop rules on every battle step (halt; every battle fought is kept and a rerun resumes): 10 failed battles, no
+# battle in 30 minutes, or 60+ skipped turns a battle over the last 200.
+# The team thread reads claude/pc-team-pack2-results.
+#   ./queue.sh run pc-team-pack2        (or  .\queue.ps1 run pc-team-pack2)
+# Run it from master (one bench queue at a time, RoboRumble workers at 0):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set T = python3 tools/team_modes.py
+
+tkprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && for a in aa bb p2; do rm -f bisect/hadur117.HadurTeam_"$V"$a.jar; done && rm -f ${OUT}/team-pack2-p*.md ${OUT}/team-pack2-bb.md ${OUT}/team-pack2-p2.md ${OUT}/team-pack2-verdict.md && mkdir -p work && rm -rf work/team-pack2-"$V"-* && rm -f work/team-pack2-*.args work/team-pack2-go && ./fetch-opponents.sh --set plans/team-pack2-set.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmpack2 && sed -e "s/@V@/$V/g" plans/team-pack2-pilot.args > work/team-pack2-pep.args && for a in bb p2; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" plans/team-pack2-screen.args > work/team-pack2-$a.args || exit 1; done && for a in aa bb p2; do test -f bisect/hadur117.HadurTeam_"$V"$a.jar || exit 1; done && mvn -q compile
+tkpp2 | mvn -q exec:java "-Dexec.args=@work/team-pack2-pep.args"
+  after: tkprep
+  watch: battles=32
+  stop: fails 10
+  stop: stall 30m
+  stop: skips 60 over 200
+tkpilot | ${T} gate --report ${OUT}/team-pack2-pep.md --set plans/team-pack2-set.txt --seeds 4 --teams 47 --min-aps 0 --stop-below 0 --out-md ${OUT}/team-pack2-pilot.md && touch work/team-pack2-go || test $? -eq 3 || exit 1
+  after: tkpp2
+tkbb | if [ -f work/team-pack2-go ]; then mvn -q exec:java "-Dexec.args=@work/team-pack2-bb.args"; else echo "p2 under 0 on the pilot: no screen"; fi
+  after: tkpilot
+  watch: battles=192
+  stop: fails 10
+  stop: stall 30m
+  stop: skips 60 over 200
+tkp2 | if [ -f work/team-pack2-go ]; then mvn -q exec:java "-Dexec.args=@work/team-pack2-p2.args"; else echo "p2 under 0 on the pilot: no screen"; fi
+  after: tkbb
+  watch: battles=192
+  stop: fails 10
+  stop: stall 30m
+  stop: skips 60 over 200
+tkgate | if [ -f work/team-pack2-go ]; then ${T} gate --report ${OUT}/team-pack2-p2.md --control ${OUT}/team-pack2-bb.md --set plans/team-pack2-set.txt --seeds 24 --teams 47 --min-aps 0.15 --out-md ${OUT}/team-pack2-verdict.md || exit 1; else echo "no screen"; fi
+  after: tkp2
+tkpr | bash tools/open_results_pr.sh claude/pc-team-pack2-results "Team: second pack card (TMODE-60, TMODE-61)" $(ls ${OUT}/team-pack2-*.md 2>/dev/null | grep -v smoke)
+  after: tkgate

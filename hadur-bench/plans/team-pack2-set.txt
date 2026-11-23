@@ -1,0 +1,5 @@
+# pc-team-pack2 (BENCH-276): the four teams of the second pack card (TMODE-60, TMODE-61); lines as in team-census46.txt.
+abc.ShadowTeam 3.83 | team-3 | abc.ShadowTeam_3.83.jar
+cx.mini.DemoniacNimrods 0.50 | team-13 | cx.mini.DemoniacNimrods_0.50.jar
+davidalves.PhoenixTeam 0.54 | team-11 | davidalves.PhoenixTeam_0.54.jar
+kawigi.micro.ArmyOfShiz 1.1 | team-9 | kawigi.micro.ArmyOfShiz_1.1.jar

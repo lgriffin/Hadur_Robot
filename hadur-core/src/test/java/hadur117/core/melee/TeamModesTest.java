@@ -438,7 +438,47 @@ class TeamModesTest {
         }
         EnumSet<TeamModes.Mode> shadow = EnumSet.copyOf(TeamModes.DEFAULT);
         shadow.add(TeamModes.Mode.TIGHT);
+        shadow.add(TeamModes.Mode.EAGER);
         assertEquals(shadow, TeamModes.TABLE.get("abc.Shadow"));
+    }
+
+    @Test
+    @Tag("TMODE-60")
+    @DisplayName("TMODE-60: NEAR puts the hunt place 150 px from the prey where the switch is on (off in the shipped build), and is only in DemoniacNimrods' entry")
+    void nearPlace() {
+        Set<TeamModes.Mode> nearHunt = EnumSet.of(TeamModes.Mode.HUNT, TeamModes.Mode.CLOSE, TeamModes.Mode.NEAR);
+        assertEquals(150, TeamRisk.HUNT_NEAR, 0);
+        assertTrue(TeamRisk.near(nearHunt, true));
+        assertFalse(TeamRisk.near(nearHunt, false));
+        assertFalse(TeamRisk.near(EnumSet.of(TeamModes.Mode.HUNT), true));
+        assertFalse(TeamModes.PACK2_ON, "off until pc-team-pack2 reads");
+        List<EnemyInfo> prey = enemies(pt(600, 1000)).alive();
+        TeamRisk.Pull p = TeamRisk.pull(pt(600, 400), "n", 100, 3, prey, 100, mates(pt(700, 400)), nearHunt);
+        double radius = TeamModes.PACK2_ON ? TeamRisk.HUNT_NEAR : TeamRisk.HUNT_CLOSE;
+        assertEquals(TeamRisk.huntSlot(pt(600, 400), "n", prey, 100, mates(pt(700, 400)), radius), p.at);
+        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.NEAR));
+        for (Map.Entry<String, Set<TeamModes.Mode>> entry : TeamModes.TABLE.entrySet()) {
+            assertEquals(entry.getKey().equals("cx.mini.Nimrod"), entry.getValue().contains(TeamModes.Mode.NEAR), entry.getKey());
+        }
+    }
+
+    @Test
+    @Tag("TMODE-61")
+    @DisplayName("TMODE-61: EAGER lifts the energy gates on the hunt and the close-in where the switch is on (off in the shipped build), and is only in ShadowTeam's entry")
+    void eagerPack() {
+        Set<TeamModes.Mode> eagerHunt = EnumSet.of(TeamModes.Mode.HUNT, TeamModes.Mode.EAGER);
+        assertTrue(TeamRisk.eager(eagerHunt, true));
+        assertFalse(TeamRisk.eager(eagerHunt, false));
+        assertFalse(TeamRisk.eager(EnumSet.of(TeamModes.Mode.HUNT), true));
+        List<EnemyInfo> prey = enemies(pt(600, 1000)).alive();
+        // A member under PACK_ENERGY hunts only while EAGER plays.
+        TeamRisk.Pull drained = TeamRisk.pull(pt(600, 400), "n", TeamRisk.PACK_ENERGY - 1, 3, prey, 100, mates(pt(700, 400)), eagerHunt);
+        assertEquals(TeamModes.PACK2_ON, drained != null);
+        assertNotNull(TeamRisk.pull(pt(600, 400), "n", TeamRisk.PACK_ENERGY, 3, prey, 100, mates(pt(700, 400)), eagerHunt));
+        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.EAGER));
+        for (Map.Entry<String, Set<TeamModes.Mode>> entry : TeamModes.TABLE.entrySet()) {
+            assertEquals(entry.getKey().equals("abc.Shadow"), entry.getValue().contains(TeamModes.Mode.EAGER), entry.getKey());
+        }
     }
 
     @Test

@@ -100,7 +100,21 @@ public final class TeamModes {
          * five teams that held on 12 fresh cloud seeds each (OgiTeam, ShadowTeam, Xmen, AlephTeam,
          * DemoniacNimrods). Means nothing without HUNT, and nothing where {@link #TIGHT_ON} is off.
          */
-        TIGHT
+        TIGHT,
+        /**
+         * TMODE-60, near place: HUNT's place is {@link TeamRisk#HUNT_NEAR} px from the prey, nearer
+         * than CLOSE's, for a team whose guns gain little at that range while ours gain much. Only
+         * through the table, per team (DemoniacNimrods). Means nothing without HUNT, and nothing
+         * where {@link #PACK2_ON} is off.
+         */
+        NEAR,
+        /**
+         * TMODE-61, eager pack: HUNT and the last-enemy close-in (LAST, FINISH) play at any
+         * energy, not from {@link TeamRisk#PACK_ENERGY} and {@link TeamRisk#FINISH_ENERGY} up, so
+         * a drained member still closes instead of trading from across the field. Only through
+         * the table, per team (ShadowTeam). Means nothing where {@link #PACK2_ON} is off.
+         */
+        EAGER
     }
 
     /**
@@ -124,6 +138,8 @@ public final class TeamModes {
 
     /** TMODE-59: whether TIGHT in a table entry plays; on as pc-team-tight measured it (PR #1016; ablation tmnotight turns it off). */
     public static final boolean TIGHT_ON = true;
+    /** TMODE-60, TMODE-61: whether NEAR and EAGER in a table entry play; off in the shipped build until pc-team-pack2 reads (ablation tmpack2 turns it on). */
+    public static final boolean PACK2_ON = false;
 
     /**
      * TMODE-50: the fitted enemy aims ({@link #FITTED}) join the dodge's profile. On since pc-team-fitted
@@ -238,10 +254,13 @@ public final class TeamModes {
         // TMODE-59, tight pack: the default modes with TIGHT, written out as the bench's table reader needs, for the teams it held against on 12 fresh
         // cloud seeds each beside the same box's baseline (score share points): ShadowTeam +12.1 ± 4.2,
         // Xmen +9.3 ± 4.7, AlephTeam +6.2 ± 5.5, DemoniacNimrods +5.6 ± 4.4; OgiTeam above +7.4 ± 5.7.
-        t.put("abc.Shadow", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
+        // TMODE-61, eager pack (off until pc-team-pack2 reads): ShadowTeam with the tight pull, +4.4 ± 2.8 on 24 cloud seeds.
+        t.put("abc.Shadow", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.EAGER, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         t.put("florent.XSeries.X2", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         t.put("rz.Aleph", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
-        t.put("cx.mini.Nimrod", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
+        // TMODE-60, near place (off until pc-team-pack2 reads): DemoniacNimrods with the tight pull, +3.8 ± 3.7, +4.7 ± 2.7
+        // and +5.4 on three boxes' 12 cloud seeds each.
+        t.put("cx.mini.Nimrod", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.NEAR, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         return Collections.unmodifiableMap(t);
     }
 
