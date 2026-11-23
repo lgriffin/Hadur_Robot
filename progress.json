@@ -1,21 +1,28 @@
 {
  "plan": "pc-team-nmdodge",
- "updated": 1795437392.6587396,
+ "updated": 1795437491.1789415,
  "steps": {
   "tnprep": {
-   "status": "pending"
+   "status": "failed",
+   "exit": 1,
+   "seconds": 98,
+   "end": "2026-11-23T12:38:11"
   },
   "tnbb": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after tnprep"
   },
   "tnnd": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after tnbb"
   },
   "tngate": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after tnnd"
   },
   "tnpr": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after tngate"
   }
  },
  "watched": []
