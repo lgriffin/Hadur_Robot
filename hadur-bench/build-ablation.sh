@@ -286,7 +286,7 @@
 #   ramlearn  RAM-20: the rammer escape dodges every rammer's shots by the aims learned in the battle from its own
 #         bullets (ShotModel) in place of RAM-5's fixed head-on and linear pair. Suffix rl.
 #   rlearnlist the robots named in $RAM_LEARN get RAM-20's learned shot model. Suffix rln.
-#   ramknown  RAM-21: every duel opponent is a known rammer, confirmed at the first scan. Suffix rk.
+#   ramknown  RAM-21: every duel opponent is a known rammer, confirmed at the first scan. Suffix rka (rk is rambrk's).
 #   rknownlist the robots named in $RAM_KNOWN are known rammers (ShieldTableData.ramKnowns()). Suffix rkn.
 #   rbendlist the robots named in $RAM_BEND get RAM-18, the rammer escape bending off its line of travel after each of their shots. Suffix rbd.
 #   rfanlist the robots named in $RAM_FAN get RAM-17, the rammer escape dodging their linear/circular aims as +-4 deg fans at RAM-14's weight. Suffix rfn.
@@ -468,7 +468,7 @@ for a in "${list[@]}"; do
         ramknown)
             # RAM-21: every duel opponent is a known rammer: confirmed at the first scan, so rounds 1 and 2 play the escape (the cloud screen's arm).
             edit "$src/hadur-core/src/main/java/$pkg/core/policy/RammerPolicy.java" "public static final boolean FORCE_KNOWN = false;" "public static final boolean FORCE_KNOWN = true;"
-            version="${version}rk" ;;
+            version="${version}rka" ;;
         shoff)
             # BENCH-246 pc-modes-check: MOVE-43's shadow fix off again, to read what it does to team and melee end games.
             edit "$movedesign" "static final boolean KEEP_SHADOWS = true;" "static final boolean KEEP_SHADOWS = false;"

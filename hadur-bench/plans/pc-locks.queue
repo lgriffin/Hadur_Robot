@@ -67,7 +67,7 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 8
   stop: skips 60 over 24
   stop: stall 30m
 
-gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks24-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks24-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks24-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms rln --out ${OUT}/$(date +%Y-%m-%d)_pc-locks24-lock-per-robot.md --out-tsv ${OUT}/pc-locks24-lock-per-robot.tsv
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks24-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks24-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks24-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms rkn rlnrkn --out ${OUT}/$(date +%Y-%m-%d)_pc-locks24-lock-per-robot.md --out-tsv ${OUT}/pc-locks24-lock-per-robot.tsv
   after: lock
 
 pr | bash tools/open_results_pr.sh claude/pc-locks24-results "1v1 cloud locks, round 24 (RAM-21 ram-known, 16 robots) on 12 fresh PC seeds" ${OUT}/pc-locks24-livematch.md ${OUT}/*_pc-locks24-*.md ${OUT}/pc-locks24-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks24-lock-pick.tsv' -size +0c)
