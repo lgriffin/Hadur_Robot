@@ -1,6 +1,6 @@
 # Queue pc-team-pack3: progress
 
-Updated 2026-11-23 17:57:01 PC time (17:57 UTC), runner pid 86648.
+Updated 2026-11-23 18:12:08 PC time (18:12 UTC), runner pid 86648.
 
 - `tkprep` done, exit 0 in 2 min
 - `tkpp3` done, exit 0 in 8 min
@@ -25,16 +25,16 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### tkbb
 
-**57 of 192 battles** (30%), 0 failed. Running 5 min, 705 battles/h, about 11 min left (ends ~18:08 PC time). Last battle 0 min ago.
-Skipped turns a battle: 33.6 overall, first 57 33.6, last 57 33.6.
+**180 of 192 battles** (94%), 0 failed. Running 20 min, 541 battles/h, about 1 min left (ends ~18:13 PC time). Last battle 1 min ago.
+Skipped turns a battle: 33.7 overall, first 100 31.0, last 100 35.1.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 10` | halt | ok | 0 failed of 57 |
-| `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | waiting | 57 of 200 battles to read |
+| `fails 10` | halt | ok | 0 failed of 180 |
+| `stall 30m` | halt | ok | last battle 1 min ago |
+| `skips 60 over 200` | halt | waiting | 180 of 200 battles to read |
 
-Stopping now would leave 135 battles unrun (about 11 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 12 battles unrun (about 1 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 

@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-pack3",
- "updated": 1795456621.7187426,
+ "updated": 1795457528.1266792,
  "steps": {
   "tkprep": {
    "status": "done",
@@ -81,8 +81,8 @@
   {
    "step": "tkbb",
    "started": 1795456330.5997846,
-   "updated": 1795456621.7108326,
-   "elapsed": 291.11104798316956,
+   "updated": 1795457528.1257453,
+   "elapsed": 1197.5259606838226,
    "expected": 192,
    "panel": null,
    "field": null,
@@ -90,36 +90,36 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 57,
+   "battles": 180,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 704.8856490388628,
-   "eta": 689.4735346969806,
-   "fraction": 0.296875,
-   "last_battle_age": 4.1000587940216064,
+   "rate": 541.1156177607816,
+   "eta": 79.83506404558817,
+   "fraction": 0.9375,
+   "last_battle_age": 62.30809235572815,
    "rules": [
     {
      "rule": "fails 10",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 57"
+     "detail": "0 failed of 180"
     },
     {
      "rule": "stall 30m",
      "action": "halt",
      "state": "ok",
-     "detail": "last battle 0 min ago"
+     "detail": "last battle 1 min ago"
     },
     {
      "rule": "skips 60 over 200",
      "action": "halt",
      "state": "waiting",
-     "detail": "57 of 200 battles to read"
+     "detail": "180 of 200 battles to read"
     }
    ],
-   "skips_mean": 33.59649122807018,
-   "skips_last100": 33.59649122807018
+   "skips_mean": 33.74444444444445,
+   "skips_last100": 35.14
   }
  ]
 }
