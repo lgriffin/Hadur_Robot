@@ -1,16 +1,15 @@
 # Queue pc-learn-trace: progress
 
-Updated 2026-11-23 00:14:01 PC time (00:14 UTC), runner pid 89072.
+Updated 2026-11-23 00:16:26 PC time (00:16 UTC), runner pid 44500.
 
-- `prep` failed, exit 1 in 0 min
-- `trace` skipped
-- `read` skipped
-- `pr` skipped
+- `prep` pending
+- `trace` pending
+- `read` pending
+- `pr` pending
 
 ### Queue log (last lines)
 
 ```
-20:14:31 skip prep (already exit=0)
 20:14:31 start trace
 20:14:31 watching trace: 3 stop rule(s)
 20:14:33 progress pushed to origin claude/pc-learn-trace-progress (every 15 min)
@@ -25,4 +24,5 @@ Updated 2026-11-23 00:14:01 PC time (00:14 UTC), runner pid 89072.
 00:14:01 skip read (after trace, which has not finished exit=0)
 00:14:01 skip pr (after read, which has not finished exit=0)
 00:14:01 ALLDONE
+00:16:26 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
 ```

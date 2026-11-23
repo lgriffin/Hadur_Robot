@@ -1,24 +1,18 @@
 {
  "plan": "pc-learn-trace",
- "updated": 1795392841.5218153,
+ "updated": 1795392986.5447822,
  "steps": {
   "prep": {
-   "status": "failed",
-   "exit": 1,
-   "seconds": 15,
-   "end": "2026-11-23T00:14:01"
+   "status": "pending"
   },
   "trace": {
-   "status": "skipped",
-   "reason": "after prep"
+   "status": "pending"
   },
   "read": {
-   "status": "skipped",
-   "reason": "after trace"
+   "status": "pending"
   },
   "pr": {
-   "status": "skipped",
-   "reason": "after read"
+   "status": "pending"
   }
  },
  "watched": []
