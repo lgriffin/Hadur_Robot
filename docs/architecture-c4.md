@@ -827,7 +827,7 @@ file under [requirements/](requirements/README.md) and its own doc.
 | Saor | MicroMelee | under 750 bytes | `hadur117.micro.Saor` | `micro.core` (Movement, Selection, Energy, Targeting) via `SaorLab` | `SaorEquivalenceTest`, `SaorJarIT` | [saor.md](saor.md) |
 | TwinSaor | Twin Duel | under 2,000 bytes for the team | `hadur117.twin.SaorTwin` (×2) | `twin.core` (Gun, Team) | `SaorTwinTest`, core tests, `TwinSaorJarIT` | [twinsaor.md](twinsaor.md) |
 | Deise | MiniMelee | under 1,500 bytes | `hadur117.mini.Deise` | `mini.core` (Move, Gun) via `DeiseLab` | `DeiseEquivalenceTest`, `DeiseJarIT` | [deise.md](deise.md) |
-| Sanaro | NanoMelee | under 250 bytes | `hadur117.nano.Sanaro` | none (the class is the design) | `SanaroTest`, `SanaroTableTest`, `SanaroJarIT` | [sanaro.md](sanaro.md) |
+| Sanaro | NanoMelee | under 250 bytes | `hadur117.nano.Sanaro` | none (the class is the design) | `SanaroTest`, `SanaroJarIT` | [sanaro.md](sanaro.md) |
 | JayLexi | MiniRumble (1v1) | under 1,500 bytes | `hadur117.mini.JayLexi` | a readable copy in the tests (`mini.ref.JayLexi`) | `JayLexiReplayTest` (recorded battles), `JayLexiJarIT` | [kitlab.md](kitlab.md) |
 | Eveimear | MicroRumble (1v1) | under 750 bytes | `hadur117.micro.Eveimear` | none (Cotillion's design plus its own mode table) | `EveimearTest`, replay fixtures, `EveimearJarIT` | [kitlab.md](kitlab.md) |
 

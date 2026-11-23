@@ -668,3 +668,53 @@ blind (survival 0.1%). The fixed arm (`sanaro-arms/arms.txt` QT: the radar stays
 is reset in its own statement) read +1.28 ± 1.34 against S4 on one cloud census seed (13 fields),
 survival 70.1 -> 72.8. That is inside noise; a wider cloud read decides whether it earns a card.
 The card is removed; QTP is dropped with QP.
+
+## 28. 0.5: the held target, paid for by the power table (stage N20)
+
+Every lever measured within 249 bytes after section 27 came out level or lost on the live-shaped
+census: power past 480 px, a gun that never idles, endgame power, holding fire past 800 px and a
+duel hold distance. The gap to Quantum is bullet damage, and Sanaro's survival is bought with the
+same cheap 0.1 shots that lose that damage. One rule did win: QT, the target held by name until a
+nearer robot shows, with the hold dropped whenever any robot dies (section 27's fixed arm). It is
+270 bytes, and golfing that leaves play identical only reaches 268. 0.5 stops keeping the rest of
+0.4 fixed and pays for QT with whichever cut costs least.
+
+**QT on its own.** On the live-shaped census against S4 (0.4), 35 rounds, it read +0.44 ± 0.51
+(4 seeds from 131000), +1.06 ± 0.34 (8 seeds from 131004), +0.67 ± 0.49 (4 from 134000) and +0.35 ±
+0.50 (4 from 133000). That is about +0.7 over 20 seeds.
+
+**What each cut costs** (4 seeds from 132000, against QT at 268 B, A/A +0.02 ± 0.46):
+
+| Cut | Bytes saved | vs QT | Survival (QT 29.2) |
+|---|---|---|---|
+| E: the name kept as `target == (target = name)` | 3 | -4.72 ± 0.47 | 23.5 |
+| L: the radar flips below gun heat 1.0 | 2 | -3.60 ± 0.46 | 17.8 |
+| F: no hold reset at the round's start | 5 | -0.60 ± 0.48 | 28.7 |
+| TO: the power table by own energy only | 9 | -0.27 ± 0.48 | 28.4 |
+| TE: the power table by enemy energy only | 9 | -0.04 ± 0.46 | 30.6 |
+
+The fitted builds that took E or L lost: Z1 (F, E, L, TO, 249 B) -4.96 ± 0.55 and Z3 (F, L, TO, 252 B)
+-2.08 ± 0.51 against S4. The power table is the cheap part, so 0.5 drops it altogether. With no table
+the whole of QT fits, round reset and death reset included.
+
+**The power without a table** (each against S4, 4 seeds): 2 times the integer 480 / distance
+(`BAND / d << 1`, 246 B) +0.63 ± 0.51; 1.5 times it +0.77 ± 0.47, then +0.20 ± 0.43 on 6 more seeds;
+1.925 times it +0.15 ± 0.53; 2.5 times it +0.48 ± 0.50 (survival 25.9). All keep the band, so
+past 480 px the shot is still the engine's 0.1.
+
+**Lock** (12 fresh seeds, 135000 to 135011, two cloud boxes of 6 seeds each, each with an
+identical copy as the A/A arm; 258 battles an arm a box):
+
+| Half | 0.5 vs S4 | Identical copy vs S4 | 0.5 vs copy | Survival (S4) |
+|---|---|---|---|---|
+| 135000-005 | +0.46 ± 0.40 | +0.52 ± 0.41 | -0.07 ± 0.39 | 29.4 (27.8) |
+| 135006-011 | +0.50 ± 0.40 | +0.38 ± 0.38 | +0.12 ± 0.42 | 28.0 (27.9) |
+
+Both halves' low ends are above 0, so 0.5 passes the cloud lock bar at about +0.47. Live on
+2026-11-23, Quantum is 66.44 and Sanaro 0.3 65.57. 0.4 read about +0.23 over 0.3 (section 21),
+so 0.5 projects about 66.25, still 2nd. In the census, Quantum seated in Sanaro's place reads +0.69
+over 0.4, against 0.5's +0.47. 0.5 is not released; the search for the remaining ~0.2 goes on from
+its 3 spare bytes.
+
+The table's generator (`sanaro/table.py`) and its test are retired with the table. Arms in
+`sanaro-arms/arms.txt` with a table column no longer build.

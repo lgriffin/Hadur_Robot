@@ -27,15 +27,20 @@ becomes 480 / distance, so shots drop to 0.1 past 480 px and halve from 240 px. 
 0.33 (pc-sanaro-n09) and +0.30 ± 0.22 (pc-sanaro-n10, fresh seeds), about +0.23 pooled over 1,290
 battles, with survival up from 24 to 27.5. That projects about 65.6 live, still 2nd behind Quantum.
 
+0.5 (prepared 2026-11-23, 246 bytes; not released) holds its target by name until a nearer robot
+shows, and drops it when any robot dies or a round starts (the rule Quantum by d414 plays; section
+27 of docs/sanaro.md measured it at 270 bytes). To make room it has no power table: it fires 2 times
+the integer 480 / distance, so still 0.1 past 480 px. On 12 fresh seeds of the live-shaped census
+it read +0.46 ± 0.40 and +0.50 ± 0.40 over 0.4 (two halves, each with an identical copy as its A/A
+arm). That projects about 66.25 live, still about 0.2 behind Quantum.
+
 ## Build
 
     mvn -pl sanaro verify
 
 The shipped jar is `sanaro/target/hadur117.nano.Sanaro_<version>.jar` (one class, its properties and
-source); `SanaroJarIT` prints its codesize. The power table is written into `Sanaro.java` by
-`python3 sanaro/table.py`; `SanaroTableTest` holds it to the formula outside the cells Hadur taught (0.3). A table distilled from Hadur's own
-shots instead (`hadur-bench/tools/distill.py power`, BENCH-156) goes into an arm's source, never here
-until the census has measured it.
+source); `SanaroJarIT` prints its codesize. 0.1 to 0.4 carried a power table written by
+`sanaro/table.py`; 0.5 has none, and the generator is retired (git history keeps it).
 
 ## Bench
 
