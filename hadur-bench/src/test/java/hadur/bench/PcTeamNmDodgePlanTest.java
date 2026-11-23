@@ -40,6 +40,18 @@ class PcTeamNmDodgePlanTest {
 
     @Test
     @Tag("BENCH-277")
+    @DisplayName("tmtab places the card's table line at the end of the mode table, the last map TeamModes builds")
+    void tableLineGoesAtTheEndOfTheModeTable() throws IOException {
+        String sh = Files.readString(Path.of("build-ablation.sh"));
+        assertTrue(sh.contains("edit_last \"$modes\" \"        return Collections.unmodifiableMap(t);\""));
+        String modes = Files.readString(Path.of("../hadur-core/src/main/java/hadur117/core/melee/TeamModes.java"));
+        String anchor = "        return Collections.unmodifiableMap(t);";
+        int last = modes.lastIndexOf(anchor);
+        assertTrue(last > modes.indexOf("private static Map<String, Set<Mode>> table()"), "the last anchor closes table()");
+    }
+
+    @Test
+    @Tag("BENCH-277")
     @DisplayName("the table is NightmareTeam's shipped entry with DODGE added, and the set is that one team of the census")
     void tableAndSet() throws IOException {
         List<String> table = Files.readAllLines(Path.of("plans/team-nmdodge-table.java")).stream()

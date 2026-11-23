@@ -360,6 +360,13 @@ edit() {
     python3 -c 'import sys; p,a,b=sys.argv[1:]; s=open(p).read(); open(p,"w").write(s.replace(a,b,1))' "$1" "$2" "$3"
 }
 
+# edit_last FILE OLD NEW: replaces the last occurrence of OLD, for an anchor that closes more than one
+# method (the team mode table is the last map TeamModes builds).
+edit_last() {
+    grep -qF -- "$2" "$1" || { echo "ablation does not apply: '$2' not found in $1" >&2; exit 1; }
+    python3 -c 'import sys; p,a,b=sys.argv[1:]; s=open(p).read(); i=s.rindex(a); open(p,"w").write(s[:i]+b+s[i+len(a):])' "$1" "$2" "$3"
+}
+
 base="$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' "$src/hadur-robot/pom.xml")"
 version="$base"
 IFS=, read -ra list <<< "$1"
@@ -638,7 +645,7 @@ for a in "${list[@]}"; do
             [[ -f "$table" ]] || { echo "ablation $a: no table file $table" >&2; exit 1; }
             # After the shipped entries, so a picked line for a team the table already names wins
             # (team_modes.py --shipped keeps that entry's modes in the line).
-            edit "$modes" "        return Collections.unmodifiableMap(t);" "$(cat "$table")
+            edit_last "$modes" "        return Collections.unmodifiableMap(t);" "$(cat "$table")
         return Collections.unmodifiableMap(t);"
             ;;
         tmpath)
