@@ -98,6 +98,8 @@ final class ShieldTableData {
             "maribo.Omicron 1.0",            // +1.4
             // pc-locks round 10 (BENCH-253, PR #922): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "kawigi.nano.ThnikkaBot 0.9",    // +1.7 (with the shield add)
+            // pc-locks round 25 (BENCH-253, PR #1036): 12 fresh PC seeds at the live turn time; cloud lock held first
+            "rsim.mini.BulletCatcher 0.4",   // +4.1
         };
     }
 
@@ -1130,6 +1132,8 @@ final class ShieldTableData {
             "dsekercioglu.mega.WhiteFang 2.8.1", // +4.3
             "Krabb.sliNk.Garm 0.9u",             // +4.2
             "dev.kurtw.KurtBot 0.2",             // +3.7
+            // pc-locks round 25 (BENCH-253, PR #1036): 12 fresh PC seeds at the live turn time; cloud lock held first
+            "slugzilla.Parallax 0.1",            // +2.4
         };
     }
 
