@@ -12,12 +12,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-278: the near place, wider tight pack and CONCORD card (plans/pc-team-pack3.queue), four teams. */
+/** BENCH-278: the near place, wider tight pack and CONCORD card (plans/pc-team-pack3.queue), three teams. */
 class PcTeamPack3PlanTest {
 
     @Test
     @Tag("BENCH-278")
-    @DisplayName("aa/bb/p3 on the four teams: an 8-seed pilot from 36300 with a stop below -0.15, a 24-seed screen from 36400 gated at +0.10 APS over 47 pairings, stop rules and a results PR")
+    @DisplayName("aa/bb/p3 on the three teams: an 8-seed pilot from 36300 with a stop below -0.15, a 24-seed screen from 36400 gated at +0.10 APS over 47 pairings, stop rules and a results PR")
     void cardIsComplete() throws IOException {
         String q = Files.readString(Path.of("plans/pc-team-pack3.queue"));
         assertTrue(q.startsWith("# battle: team\n"), "a team card, outside the 1v1 live-match rule");
@@ -45,14 +45,14 @@ class PcTeamPack3PlanTest {
 
     @Test
     @Tag("BENCH-278")
-    @DisplayName("the card's set is its four teams, each a line of the team census")
+    @DisplayName("the card's set is its three teams, each a line of the team census")
     void setIsTheFourTeams() throws IOException {
         List<String> set = Files.readAllLines(Path.of("plans/team-pack3-set.txt")).stream()
             .filter(l -> !l.startsWith("#") && !l.isBlank()).collect(Collectors.toList());
         List<String> census = Files.readAllLines(Path.of("team-census46.txt"));
-        assertEquals(4, set.size());
+        assertEquals(3, set.size());
         for (String line : set) assertTrue(census.contains(line), line);
-        for (String team : new String[] {"cx.mini.DemoniacNimrods", "davidalves.PhoenixTeam", "kawigi.micro.ArmyOfShiz", "mn.CombatTeam"}) {
+        for (String team : new String[] {"cx.mini.DemoniacNimrods", "kawigi.micro.ArmyOfShiz", "mn.CombatTeam"}) {
             assertTrue(set.stream().anyMatch(l -> l.startsWith(team + " ")), team);
         }
     }
