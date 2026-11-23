@@ -1188,17 +1188,62 @@ final class ShieldTableData {
             "sul.Bicephal 1.2",              // +2.1
             "supersample.SuperRamFire 1.0",  // +3.4
             "suzushin7.nano.Galaxy03 1.01",  // +2.5
+            // pc-locks round 24 (BENCH-253, PR #1024): 12 fresh PC seeds at the live turn time, 95% low end above 0; cloud lock held first.
+            // Gains are with the ram-known line as well (RAM-21), Predator excepted, which holds this line alone.
+            "EH.Fusion 0.32",                       // +5.2
+            "benhorner.PureAggression 0.2.6",       // +2.2
+            "bvh.hdr.Hodur 0.4",                    // +1.3
+            "ep.MyFirstRobot 1.0",                  // +1.5
+            "ers.nano.sunderer.Sunderer 1.23a",     // +2.8
+            "exauge.Leopard 1.1.019",               // +1.1
+            "fw.Number1 1.0b",                      // +3.0
+            "gh.micro.GrubbmThree 1.01",            // +3.9
+            "jeremyreeder.Bully 1",                 // +1.9
+            "jk.nano.Machete 2.0",                  // +2.3
+            "lorneswork.Predator 1.0",              // +1.9
+            "qualidafial.MajorDick 1.0.1",          // +1.1
+            "radnor.RamRod 1.0",                    // +2.9
+            "stelo.RamTrackSurfer 1.2",             // +2.0
+            "stranger.nano.TestBot 1.0",            // +2.6
+            "wompi.Kowari 1.6",                     // +4.1
+            "zch.Hirkan 0.11",                      // +1.4
         };
     }
 
     /**
-     * RAM-21: the rammers confirmed from the battle's first scan ({@code ram-known:} lines). Empty until
-     * a PC card holds a line (build-ablation.sh rknownlist adds candidate lines here).
+     * RAM-21: the rammers confirmed from the battle's first scan ({@code ram-known:} lines). Each held
+     * a PC card after a cloud lock (build-ablation.sh rknownlist adds candidate lines here).
      *
      * @return a fresh array of names
      */
     static String[] ramKnowns() {
         return new String[] {
+            // pc-locks round 24 (BENCH-253, PR #1024): 12 fresh PC seeds at the live turn time, 95% low end above 0; cloud lock held first.
+            // Each also holds a ram-learn line (RAM-20).
+            "EH.Fusion 0.32",                       // +5.2
+            "benhorner.PureAggression 0.2.6",       // +2.2
+            "bvh.hdr.Hodur 0.4",                    // +1.3
+            "com.syncleus.robocode.Dreadnaught 0.1",// +2.2
+            "ep.MyFirstRobot 1.0",                  // +1.5
+            "ers.nano.sunderer.Sunderer 1.23a",     // +2.8
+            "exauge.Leopard 1.1.019",               // +1.1
+            "fw.Number1 1.0b",                      // +3.0
+            "gh.micro.GrubbmThree 1.01",            // +3.9
+            "jeremyreeder.Bully 1",                 // +1.9
+            "jk.nano.Machete 2.0",                  // +2.3
+            "kc.micro.rammer.MaxRisk 0.6",          // +1.7
+            "mn.nano.perceptual.Impact 1.3.0",      // +1.8
+            "mz.NanoDeath 2.56",                    // +2.9
+            "qualidafial.MajorDick 1.0.1",          // +1.1
+            "radnor.RamRod 1.0",                    // +2.9
+            "stelo.RamTrackSurfer 1.2",             // +2.0
+            "step.nanoPri 1.0",                     // +2.0
+            "stranger.nano.TestBot 1.0",            // +2.6
+            "suh.nano.RammingC 1.00",               // +2.2
+            "sul.Bicephal 1.2",                     // +2.5
+            "suzushin7.nano.Galaxy03 1.01",         // +2.6
+            "wompi.Kowari 1.6",                     // +4.1
+            "zch.Hirkan 0.11",                      // +1.4
         };
     }
 
