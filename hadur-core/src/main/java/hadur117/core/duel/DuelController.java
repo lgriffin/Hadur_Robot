@@ -395,6 +395,7 @@ public final class DuelController {
         if (ramFan) on.add("ramfan");
         if (ramBend) on.add("rambend");
         if (ramLearn) on.add("ramlearn");
+        if (ramKnown) on.add("ramknown");
         if (!Double.isNaN(powerCap)) on.add("cap");
         if (shield != null && shield.active()) on.add("shield");
         return on.isEmpty() ? "-" : String.join(",", on);
@@ -1057,6 +1058,8 @@ public final class DuelController {
     private boolean ramBend;
     /** RAM-20: whether this opponent has a {@code ram-learn:} line. */
     private boolean ramLearn;
+    /** RAM-21: whether this opponent has a {@code ram-known:} line. */
+    private boolean ramKnown;
     /** POW-18: the cap the table sets on our power against this opponent, NaN for none. */
     private double powerCap = Double.NaN;
     /**
@@ -1494,6 +1497,14 @@ public final class DuelController {
         opponentName = name;
         // The per-opponent switches are a duel's: every one is duel-only.
         if (enemiesTotal == 1) duelModes(name);
+        // RAM-21: a known rammer is confirmed now, and this round already plays RAM-3's arm.
+        if (ramKnown && !rammer.confirmed()) {
+            rammer.known();
+            trialRound = true;
+            trialArm = escapeTrial.choose();
+            emitPolicy(round, time, "ram-trial", escapeTrial.mean(EscapeTrial.Arm.FIGHT),
+                escapeTrial.mean(EscapeTrial.Arm.ESCAPE), trialArm.name().toLowerCase(Locale.ROOT));
+        }
         // MOVE-32: a P record says the table turned the flattener views on for this opponent.
         if (flatOn) emitPolicy(round, time, "flat-on", Double.NaN, Double.NaN, "flat_on");
         // MIR-2: a P record says the table turned MIR-1 off for this opponent.
@@ -1592,6 +1603,8 @@ public final class DuelController {
         // RAM-20: a ram-learn line makes the escape dodge the aims learned from the rammer's own bullets.
         ramLearn = duelOnly(stackList.ramLearn(name), enemiesTotal);
         ramEscape.setLearned(ramLearn);
+        // RAM-21: a ram-known line confirms the rammer at the battle's first scan, so its first rounds play the escape too.
+        ramKnown = duelOnly(stackList.ramKnown(name) || RammerPolicy.FORCE_KNOWN, enemiesTotal);
         // POW-18: the power cap for the opponents the table names.
         powerCap = duelOnly(stackList.powerCap(name), enemiesTotal) ? CAP_POWER
             : duelOnly(stackList.powerCapHalf(name), enemiesTotal) ? CAP_POWER_HALF : Double.NaN;

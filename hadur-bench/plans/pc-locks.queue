@@ -1,43 +1,51 @@
-# 1v1, cloud locks to the PC (BENCH-253), round 23. Round 22 ran as PR #1007 (Cephalosporin qw +0.48, did not clear 0, not shipped).
-# Round 23 carries the RAM-20 learned shot model (ram-learn lines) on 25 robots; all are read in every arm, so no A/A pad.
-# Cloud read (Robocode 1.12.0, live turn time; c is master before RAM-20, aa its A/A copy), per robot vs c / vs aa (seeds):
-#      Dreadnaught +2.8+-2.2 / +3.4+-1.0 (12); NanoDeath +2.3+-1.4 / +2.6+-1.2 (12); Bicephal +3.0+-1.4 / +2.4+-1.7 (12)
-#      FollowFire +3.0+-2.4 / +2.8+-2.6 (12); MaxRisk +1.8+-1.2 / +5.9+-3.5 (12); Impact +1.4+-0.8 / +1.3+-1.1 (24)
-#      Machete +1.8+-1.1 / +1.3+-0.9 (24); Lifestealer +3.3+-0.5 / +3.1+-0.7 (18); SledgeHammer +4.0+-1.6 / +3.7+-1.5 (18)
-#      Galaxy03 +3.6+-1.0 / +3.2+-1.2 (18); SuperRamFire +3.3+-1.3 / +3.0+-1.2 (18); Bruce +2.7+-0.9 / +2.9+-1.2 (18)
-#      xbots +2.6+-1.0 / +3.5+-1.1 (18); nanoPri +2.8+-0.8 / +2.5+-1.0 (18); DOSexe +3.1+-1.1 / +2.2+-1.0 (18)
-#      RammingC +2.2+-1.1 / +2.1+-1.3 (18); Prototype +1.4+-0.9 / +2.1+-1.2 (18); TopGun +1.5+-0.5 / +1.2+-0.7 (18)
-#      Squaraus +0.9+-0.4 / +1.2+-0.3 (18); Caligula +2.2+-1.8 / +1.7+-1.3 (18); Trinity +0.8+-0.5 / +0.8+-0.4 (12)
-#      KnackOnOne +0.7+-0.6 / +0.7+-0.4 (12); BelajarBot +0.2+-0.2 / +0.2+-0.1 (12); Bender +0.4+-0.2 / +0.3+-0.2 (12)
-#      Roskilde +0.5+-0.4 / +0.3+-0.2 (12)
-#   Class reads with the model on for every rammer: 16 close-range robots, 12 seeds 62601, +1.21 +- 0.43 / +1.40 +- 0.52;
-#      54 more robots with rammer lines, 12 seeds 62701-12 on two boxes, +0.77 +- 0.15 / +0.80 +- 0.16 (A/A level on both).
-#      The list jar on the first five, 12 seeds 62951: +3.10 +- 0.90 / +2.56 +- 0.85. Kuramatron read wholly below 0 and has no line.
+# 1v1, cloud locks to the PC (BENCH-253), round 24. Round 23 ran as PR #1018 (RAM-20 ram-learn: 19 of 25 held and are banked).
+# Round 24 carries RAM-21, the known rammer (ram-known lines), on 25 robots: 9 that hold a ram-learn line on master are read
+# on rkn (the ram-known line added), 16 that hold none on rlnrkn (both lines added); Predator is read on rln (ram-learn
+# alone). All 26 are read in c and aa, so no A/A pad.
+# Cloud read (Robocode 1.12.0, live turn time; c is master before the ram-learn lines were banked, aa its A/A copy), the
+# list jar with both lines on all 16, 12 seeds from 64801, vs c / vs aa: +3.48 +- 0.32 / +3.57 +- 0.28 (A/A -0.09 +- 0.29).
+#   Per robot vs c / vs aa:
+#      Dreadnaught +6.3+-1.2 / +5.6+-1.3; MaxRisk +5.7+-1.3 / +6.7+-0.9; Bicephal +4.9+-1.5 / +3.3+-1.3
+#      Fusion +4.4+-1.6 / +5.4+-1.1; Galaxy03 +4.3+-1.2 / +5.5+-1.6; RammingC +3.9+-1.5 / +4.1+-1.3
+#      GrubbmThree +3.6+-0.9 / +3.3+-1.1; nanoPri +3.6+-1.4 / +3.7+-1.2; NanoDeath +3.4+-1.2 / +3.5+-1.1
+#      DOSexe +2.9+-0.9 / +2.9+-0.6; Impact +2.7+-1.2 / +2.2+-1.3; Machete +2.5+-1.8 / +4.3+-2.6
+#      PureAggression +2.3+-1.3 / +2.7+-1.0; Kowari +2.0+-1.1 / +2.1+-0.8; Hodur +1.4+-0.4 / +1.1+-0.3
+#      Leopard +1.7+-0.9 / +0.6+-0.8 (with the first lock's 12 seeds, vs aa +0.8+-0.6 on 24)
+#   What the ram-known line adds over the ram-learn line alone (the first lock, 16 close-range robots, 12 seeds 64501):
+#      both lines against ram-learn alone +1.43 +- 0.56; both against c +2.63 +- 0.58. On every rammer at once the known
+#      line loses (54 more robots, 18 seeds: -0.67 +- 0.36; URDOS -22, Sighup, Snezhok), so it is per robot only.
+#   Ten more from the 64 robots outside the rammer lines that the escape also meets (43 screened on 6 seeds from 89900,
+#      19 locked on 12 fresh seeds from 89910 and 89930), both lines vs c / vs aa:
+#      Sunderer +3.8+-2.8 / +2.5+-1.4; RamRod +2.6+-1.9 / +3.1+-2.0; RamTrackSurfer +1.1+-0.9 / +2.6+-1.1
+#      Number1 +1.9+-0.6 / +2.8+-1.0; Bully +2.2+-0.7 / +2.4+-0.7; MajorDick +1.9+-1.0 / +1.7+-0.8
+#      MyFirstRobot +1.5+-0.4 / +1.4+-0.4; Hirkan +1.1+-0.7 / +1.5+-0.9; TestBot +2.3+-1.4 / +2.2+-1.3
+#      Predator, ram-learn alone: +2.2+-0.7 / +1.8+-0.8 (the known line adds nothing there, -0.1+-0.7).
+#      Not carded: Ice (known line -9.4), TrackerWO (-2.9), and the candidates that did not clear 0 on the lock.
 #   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live
-#   lock       panel-locks.txt  c / aa / rln, 12 fresh seeds from 86500, --cpu-constant live, in work/pc-locks23
-#              (earlier rounds' battles stay in work/pc-locks to -locks22)
+#   lock       panel-locks.txt  c / aa / rkn / rlnrkn / rln, 12 fresh seeds from 86600, --cpu-constant live, in work/pc-locks24
+#              (earlier rounds' battles stay in work/pc-locks to -locks23)
 #   gate       each robot judged on its own lever arm only (lock_prep.py --restrict); it keeps its line where the 95%
 #              low end is above 0 (mode_table.py --margin 0).
 # Leigh starts it once the PC is free (one card at a time, from master):
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
-#   --fresh because round 22 left this plan's queue state marked complete; the new work directory and seeds mean no
+#   --fresh because round 23 left this plan's queue state marked complete; the new work directory and seeds mean no
 #   battle is read back from an earlier round (and BENCH-272 refights any whose jar changed).
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 900 lock battles (25 robots, 3 arms, 12 seeds),
-# about 30 minutes with the live-match check. The prep step stops if any panel robot's jar is missing.
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 936 lock battles (26 robots in c and aa, 9 in rkn, 16 in rlnrkn, 1 in rln, 12 seeds),
+# about 35 minutes with the live-match check. The prep step stops if any panel robot's jar is missing.
 #
 # Why it should win (the PC card rule of 2026-11-03):
 #   - Per-opponent tailoring: each line names one robot; every other robot, team and melee play bit for bit as master
-#     (ramLearns() is empty on master, the replay fixtures are unchanged, and only the duel strand's pin moved).
-#   - Diagnosis: against close-range robots with simple guns, 85% of the damage we take beyond a reference surfer's comes
-#     from shots a dodge existed for, and distance is not the cause. RAM-5 predicts each bullet with two fixed aims at one
-#     tick; these guns fire about six aim variants over three ticks of lag. Replayed offline the fixed pair reproduces our
-#     real hit rates (45/20/17% at 60-100/100-150/150-250 px); aims learned from the bullets that hit us give 24/10/7%.
-#   - Mechanism measured in battle: with the model on, the hit rate fell in every band (49 to 41%, 26 to 16%, 17 to 9%)
-#     and damage taken fell 13%. The model checks itself (leading aim score 2 and 0.2 of bullets read), so it is silent
-#     against guns that are not simple.
-#   - Cost: about 2 more skipped turns a battle on the cloud (5.8 against 3.7); the lock's skip rule guards it on the PC.
-# Stop rules (docs/bench/watch.md): the watcher's A/A rule needs 10 robots read in both c and aa; this lock reads 25, but
+#     (ramKnowns() is empty on master and the switch is read in duels only).
+#   - Diagnosis: RAM-2 confirms a rammer only after it has rammed us in two rounds, so rounds 1 and 2 of every battle are
+#     fought at point-blank range. On the close-range robots those rounds cost 41.7 damage a round and are won 90% of the
+#     time, against 30.0 and 99% once the escape plays. The line confirms the named robot at the first scan.
+#   - Why per robot: the escape must suit the robot from the first round; where it does not (URDOS, Sighup, Snezhok) the
+#     line costs points, so only robots that cleared 0 against both controls with the line on carry it.
+#   - Why with ram-learn: alone the known line read level on the 16 (-0.35 +- 0.86), because the early escape rounds are
+#     dodged with RAM-5's fixed aims; with the learned shot model on, the same rounds pay (+1.43 +- 0.56 over the model).
+#   - Cost: about 3 more skipped turns a battle on the cloud (6.2 against 3.1); the lock's skip rule guards it on the PC.
+# Stop rules (docs/bench/watch.md): the watcher's A/A rule needs 10 robots read in both c and aa; this lock reads 26, but
 # the gate reads aa (multiarm.py prints aa against c), so no aa stop rule is set. The lock halts on 30 failed battles, an
 # arm scoring nothing in 8, 60+ skipped turns a battle over the last 24 or no battle in 30 minutes. The live-match step
 # stops the card if the PC no longer scores us and BeepBoop as live does (tools/live_match.py exit 3).
@@ -46,20 +54,20 @@
 set V = 3.24
 set P = --parallel 16 --no-truth-log --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 2G
-set W = work/pc-locks23
+set W = work/pc-locks24
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
 
-prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && python3 tools/lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh && for a in rln; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; done && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set panel-locks.txt && for j in $(grep -v "^#" panel-locks.txt | cut -d"|" -f3); do test -f opponents/$j || { echo "missing jar $j"; exit 1; }; done && mvn -q compile
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && python3 tools/lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh && for a in rkn rlnrkn rln; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; done && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set panel-locks.txt && for j in $(grep -v "^#" panel-locks.txt | cut -d"|" -f3); do test -f opponents/$j || { echo "missing jar $j"; exit 1; }; done && mvn -q compile
 
-livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out work/pc-livematch-rel-live --label pc-locks-livematch --shuffle-jobs && python3 tools/live_match.py work/pc-livematch-rel-live/arms.tsv --out ${OUT}/pc-locks23-livematch.md
+livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out work/pc-livematch-rel-live --label pc-locks-livematch --shuffle-jobs && python3 tools/live_match.py work/pc-livematch-rel-live/arms.tsv --out ${OUT}/pc-locks24-livematch.md
   after: prep
   watch: field=1217
   stop: fails 30
   stop: dead 8
   stop: stall 30m
 
-lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 86500 --arms ${W}-prep/lock.arms --out ${W} --label pc-locks --shuffle-jobs
+lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 86600 --arms ${W}-prep/lock.arms --out ${W} --label pc-locks --shuffle-jobs
   after: livematch
   watch: field=1217
   stop: fails 30
@@ -67,8 +75,8 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 12 --seed-base 8
   stop: skips 60 over 24
   stop: stall 30m
 
-gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks23-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks23-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks23-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms rln --out ${OUT}/$(date +%Y-%m-%d)_pc-locks23-lock-per-robot.md --out-tsv ${OUT}/pc-locks23-lock-per-robot.tsv
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks24-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks24-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks24-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms rkn rlnrkn rln --out ${OUT}/$(date +%Y-%m-%d)_pc-locks24-lock-per-robot.md --out-tsv ${OUT}/pc-locks24-lock-per-robot.tsv
   after: lock
 
-pr | bash tools/open_results_pr.sh claude/pc-locks23-results "1v1 cloud locks, round 23 (RAM-20 ram-learn, 25 robots) on 12 fresh PC seeds" ${OUT}/pc-locks23-livematch.md ${OUT}/*_pc-locks23-*.md ${OUT}/pc-locks23-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks23-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks24-results "1v1 cloud locks, round 24 (RAM-21 ram-known, 26 robots) on 12 fresh PC seeds" ${OUT}/pc-locks24-livematch.md ${OUT}/*_pc-locks24-*.md ${OUT}/pc-locks24-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks24-lock-pick.tsv' -size +0c)
   after: gate
