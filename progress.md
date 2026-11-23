@@ -1,6 +1,6 @@
 # Queue pc-learn-trace: progress
 
-Updated 2026-11-23 02:17:42 PC time (02:17 UTC), runner pid 44500.
+Updated 2026-11-23 02:32:52 PC time (02:32 UTC), runner pid 44500.
 
 - `prep` done, exit 0 in 0 min
 - `trace` running
@@ -9,28 +9,27 @@ Updated 2026-11-23 02:17:42 PC time (02:17 UTC), runner pid 44500.
 
 ### trace
 
-**1834 of 2416 battles** (76%), 3 failed. Running 2.0 h, 782 battles/h, about 45 min left (ends ~03:02 PC time). Last battle 0 min ago.
-Skipped turns a battle: 13.5 overall, first 100 14.9, last 100 12.7; engine disables 154.
+**2027 of 2416 battles** (84%), 4 failed. Running 2.3 h, 776 battles/h, about 30 min left (ends ~03:02 PC time). Last battle 0 min ago.
+Skipped turns a battle: 13.6 overall, first 100 14.9, last 100 15.1; engine disables 172.
 
 | arm | battles | failed | share | vs control (pts) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 918 | 0 | 93.51 | - | - | - | 26.0 |
-| bb | 916 | 3 | 95.00 | +1.41 (909 robots) | ±0.35 | +0.88 .. +1.95 | 1.0 |
+| c | 1015 | 0 | 93.54 | - | - | - | 26.0 |
+| bb | 1012 | 4 | 95.01 | +1.42 (1007 robots) | ±0.33 | +0.91 .. +1.93 | 1.0 |
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 3 failed of 1834 |
-| `skips 60 over 200 arms c` | halt | ok | 23.8 a battle over the last 200 (first 200: 26.3) |
+| `fails 30` | halt | ok | 4 failed of 2027 |
+| `skips 60 over 200 arms c` | halt | ok | 24.3 a battle over the last 200 (first 200: 26.3) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 582 battles unrun (about 45 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 389 battles unrun (about 30 min); every battle already fought is kept and a rerun resumes from it.
 
 > warning: arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 162 h before this step started: check it is not stale
 
 ### Queue log (last lines)
 
 ```
-00:14:01 prep exit=1 in 15 s
 00:14:01 skip trace (after prep, which has not finished exit=0)
 00:14:01 skip read (after trace, which has not finished exit=0)
 00:14:01 skip pr (after read, which has not finished exit=0)
@@ -45,4 +44,5 @@ Stopping now would leave 582 battles unrun (about 45 min); every battle already 
 00:47:46 progress trace: 569/2416 (24%) battles, 1114/h, ETA 1.7 h, 0 failed, skips 14.3/battle (last 100), bb +1.25
 01:18:04 progress trace: 1031/2416 (43%) battles, 916/h, ETA 1.5 h, 0 failed, skips 13.2/battle (last 100), bb +1.22
 01:48:23 progress trace: 1452/2416 (60%) battles, 836/h, ETA 1.2 h, 0 failed, skips 14.5/battle (last 100), bb +1.30
+02:18:42 progress trace: 1847/2416 (76%) battles, 776/h, ETA 44 min, 3 failed, skips 12.2/battle (last 100), bb +1.42
 ```
