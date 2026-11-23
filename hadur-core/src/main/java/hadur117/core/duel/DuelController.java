@@ -394,6 +394,7 @@ public final class DuelController {
         if (ramHeavy) on.add("ramheavy");
         if (ramFan) on.add("ramfan");
         if (ramBend) on.add("rambend");
+        if (ramLearn) on.add("ramlearn");
         if (!Double.isNaN(powerCap)) on.add("cap");
         if (shield != null && shield.active()) on.add("shield");
         return on.isEmpty() ? "-" : String.join(",", on);
@@ -497,7 +498,7 @@ public final class DuelController {
      */
     public void meleeCharter(boolean on) {
         meleeCharter = on;
-        if (ENDGAME_RACE && on) race.minShots(ENDGAME_RACE_SHOTS);
+        if (on) race.minShots(0);
     }
 
     /**
@@ -638,8 +639,8 @@ public final class DuelController {
         // POW-17: against the opponents the table names, once both sides have shots resolved, the
         // energy race picks the power in place of the gun's choice, POW-5 and POW-1 to POW-4;
         // SHIELD-4, END-3, RAM-1 and POW-10 below still apply to it.
-        // MEND-6: with the switch on, a melee's final duel after the hand-off races too.
-        boolean endgameRace = ENDGAME_RACE && meleeCharter && enemiesTotal > 1 && in.others() == 1;
+        // MEND-6: a melee's final duel after the hand-off races too.
+        boolean endgameRace = meleeCharter && enemiesTotal > 1 && in.others() == 1;
         double racePick = (racePower && enemiesTotal <= 1) || endgameRace
             ? race.choose(in.energy(), e.energy()) : Double.NaN;
         boolean raceOn = !Double.isNaN(racePick);
@@ -777,8 +778,8 @@ public final class DuelController {
             .setTargetEnergy(in.energy())
             .setSourceEnergy(e.energy());
         moveWave.setWallDistances();
-        // DODGE-1: what the simple aims read, only while the dodge is on.
-        if (moveController.shotDodger() != null || moveController.aimMembers() != null) {
+        // DODGE-1: what the simple aims read, only while the dodge is on (or RAM-20's shot model, which reads them too).
+        if (moveController.shotDodger() != null || moveController.aimMembers() != null || ramEscape.learned() != null) {
             moveWave.aimStates = aimStates(time, myPos, myHead, myVel, enemyPos, enemyHead);
         }
         // MOVE-56: the mimic aims a shot from this tick with the history and geometry of the scan before;
@@ -829,7 +830,10 @@ public final class DuelController {
                 RobotState aimedAt = myStateLog.getState(fireTime - 1);
                 RobotState from = enemyStateLog.getState(fireTime);
                 if (aimedAt != null && from != null) {
-                    ramEscape.onEnemyShot(fireTime, from.location.x, from.location.y, reading.corrected(), aimedAt);
+                    // RAM-20: with the learned model on, the firing wave's simple aims give the shot its rays.
+                    Wave fired = ramEscape.learned() == null ? null : moveController.lastFiringWave();
+                    ramEscape.onEnemyShot(fireTime, from.location.x, from.location.y, reading.corrected(), aimedAt,
+                        fired == null ? null : fired.simpleAims());
                 }
             }
             if (folder != null) folder.enemyShot(e.distance(), reading.corrected(), myVel != 0);
@@ -1038,14 +1042,10 @@ public final class DuelController {
     /** POW-17: the table names this opponent for the energy-race power pick. */
     private boolean racePower;
     /**
-     * MEND-6: in a melee's final duel (off a team, after the hand-off), the energy race picks the
-     * power as POW-17 does for the opponents the table names. Off: arms {@code mrace} and
-     * {@code mracex} switch it on; a duel and a team never read it.
+     * MEND-6: this battle is a melee off a team, set once by the core: its final duel (after the
+     * hand-off) takes its power from the energy race, deciding from the race's priors at once.
+     * A duel and a team never set it.
      */
-    public static final boolean ENDGAME_RACE = false;
-    /** MEND-6: the resolved shots each side needs before the endgame race decides. */
-    static final int ENDGAME_RACE_SHOTS = 8;
-    /** MEND-6: this battle is a melee off a team, set once by the core. */
     private boolean meleeCharter;
     /** RAM-11: whether this opponent has a {@code ram-circ:} line. */
     private boolean ramCirc;
@@ -1055,6 +1055,8 @@ public final class DuelController {
     private boolean ramFan;
     /** RAM-18: whether this opponent has a {@code ram-bend:} line. */
     private boolean ramBend;
+    /** RAM-20: whether this opponent has a {@code ram-learn:} line. */
+    private boolean ramLearn;
     /** POW-18: the cap the table sets on our power against this opponent, NaN for none. */
     private double powerCap = Double.NaN;
     /**
@@ -1148,6 +1150,8 @@ public final class DuelController {
             hitWave.hitByBullet = true;
             // DODGE-2: the bullet's heading says which simple aim fired it.
             if (moveController.shotDodger() != null) shotDodger.observe(hitWave.simpleAims(), e.heading(), dodgeEscape(hitWave));
+            // RAM-20: and teaches the escape's shot model, where the switch is on.
+            if (ramEscape.learned() != null) ramEscape.learned().observe(hitWave.simpleAims(), e.heading());
             moveController.logBulletHit(hitWave, bulletLoc, round, in.time());
         }
         if (folder != null && driving) {
@@ -1249,6 +1253,7 @@ public final class DuelController {
             }
             hitWave.bulletHitBullet = true;
             if (moveController.shotDodger() != null) shotDodger.observe(hitWave.simpleAims(), e.enemyHeading(), dodgeEscape(hitWave));
+            if (ramEscape.learned() != null) ramEscape.learned().observe(hitWave.simpleAims(), e.enemyHeading());
             // MOVE-30: the bullet's angle scores the aim members, where the switch is on.
             if (MoveDesign.AIM_INTERCEPTS) moveController.scoreInterceptAims(hitWave, hitLoc);
             // MOVE-52: and teaches the danger views, where the switch is on.
@@ -1303,6 +1308,13 @@ public final class DuelController {
                 + (pb < 0 ? "0" : String.format(java.util.Locale.ROOT, "%.2f", shotDodger.planScore(pb))) + ","
                 + shotDodger.read() + "," + shotDodger.passes() + "," + (pb < 0 ? 0 : shotDodger.contradictions(pb)) + ","
                 + (shotDodger.planActive() ? 1 : 0) + "," + surfMover.dodgePlanTicks());
+        }
+        // RAM-20: RL,round,tick,best,bestScore,read: what the escape's shot model has learned so far.
+        if (ramEscape.learned() != null) {
+            int lb = ramEscape.learned().best();
+            telemetry.emit("RL," + round + "," + tick + "," + lb + ","
+                + (lb < 0 ? "0" : String.format(java.util.Locale.ROOT, "%.2f", ramEscape.learned().score(lb))) + ","
+                + ramEscape.learned().read());
         }
         if (stopAndGo != null) {
             // POISON-1: WP,round,tick,goTicks,stopTicks,reverseTicks.
@@ -1429,6 +1441,7 @@ public final class DuelController {
         boolean fresh = !survivor.equals(endgameSurvivor);
         endgameSurvivor = survivor;
         if (fresh) shotDodger.reset();
+        if (fresh) ramEscape.forgetLearned();
         moveController.setShotDodger(null);
         moveController.setDodgePasses(false);
         surfMover.setDodgePlanner(false);
@@ -1576,6 +1589,9 @@ public final class DuelController {
         // RAM-18: a ram-bend line makes the escape leave its line of travel after each of the rammer's shots.
         ramBend = duelOnly(stackList.ramBend(name), enemiesTotal);
         ramEscape.setBend(ramBend);
+        // RAM-20: a ram-learn line makes the escape dodge the aims learned from the rammer's own bullets.
+        ramLearn = duelOnly(stackList.ramLearn(name), enemiesTotal);
+        ramEscape.setLearned(ramLearn);
         // POW-18: the power cap for the opponents the table names.
         powerCap = duelOnly(stackList.powerCap(name), enemiesTotal) ? CAP_POWER
             : duelOnly(stackList.powerCapHalf(name), enemiesTotal) ? CAP_POWER_HALF : Double.NaN;

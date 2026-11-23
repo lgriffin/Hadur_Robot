@@ -4,8 +4,8 @@
 a 1v1 duelist that remembers each opponent across battles, with a melee brain for
 free-for-alls, a five-robot team entry, and a core that has no idea it is inside Robocode.
 
-**Hadur 3.23 is ranked 3rd of 1,205 in the RoboRumble 1v1** (93.04 APS, its best ever), 2nd of 48 in the
-TeamRumble (HadurTeam 3.23, 83.37, its best ever) and 7th of 418 in the MeleeRumble (3.22, 69.69), the highest-ranked
+**Hadur 3.24 is ranked 2nd of 1,213 in the RoboRumble 1v1** (93.44 APS, its best ever), 2nd of 48 in the
+TeamRumble (HadurTeam 3.24, 84.57, its best ever) and 7th of 416 in the MeleeRumble (3.22, 69.65), the highest-ranked
 robot flying the Irish flag. Around it is a [family of smaller robots](#family-of-robots), two of
 three of them 1st in their rumbles and one more 2nd. All of it was designed, written, tested and tuned by Claude agents
 working in a shared project with one human, Leigh Griffin, who set the goals and ran the live
@@ -22,31 +22,31 @@ learned Java, and it was the original inspiration for everything on this page.
 ## Standing
 
 **3.24 was released on 2026-11-22** ([notes](docs/releases/v3.24.md)): 1v1 adds MOVE-52's intercept views and the
-per-opponent lines from pc-locks rounds 3 to 20 (+0.54 ± 0.15 APS over 3.23 on the whole field before rounds 18 to 20),
-and the team adds fitted enemy aims (TMODE-50) and the close-range dodge rerank (TMODE-52). Melee code is unchanged.
-The table below stays on 3.23 until 3.24's first full live pass.
-
-**3.23 was released on 2026-11-16.** The live rankings read on 2026-11-16 at 18:18 UTC
-(rumble.robowiki.net BotDetails pages, saved in [data/rumble/pages/](data/rumble/pages/)):
+per-opponent lines from pc-locks rounds 3 to 20, and the team adds fitted enemy aims (TMODE-50) and the close-range
+dodge rerank (TMODE-52). Melee code is unchanged. The live rankings read on 2026-11-22 at 19:31 UTC (1v1 settled at 20:22 UTC, after
+the live client stopped) (rumble.robowiki.net pages, saved in [data/rumble/pages/](data/rumble/pages/)):
 
 | Rumble | Entry | Rank | APS | Pairings | Battles |
 |---|---|---|---|---|---|
-| 1v1 | `hadur117.Hadur 3.23` | **3rd of 1,205** | **93.04** ± 0.19 | 1,204 | 1,892 |
-| Team | `hadur117.HadurTeam 3.23` | **2nd of 48** | **83.37** ± 0.51 | 47 | 213 |
-| Melee | `hadur117.Hadur 3.22` | **7th of 418** | **69.69** ± 0.13 | 412 | 2,802 |
+| 1v1 | `hadur117.Hadur 3.24` | **2nd of 1,213** | **93.44** ± 0.18 | 1,208 | 2,058 |
+| Team | `hadur117.HadurTeam 3.24` | **2nd of 48** | **84.57** ± 0.55 | 47 | 206 |
+| Melee | `hadur117.Hadur 3.22` | **7th of 416** | **69.65** ± 0.13 | 412 | 3,040 |
 
-- **1v1 3rd at 93.04, its best score ever.** Against the same 1,203 opponents 3.23 scores +0.49 ± 0.21 APS
-  over 3.22, matching the +0.48 the release projected: about +0.22 from the 48 new per-opponent lines and
-  +0.27 from the shadow fix (MOVE-43). BeepBoop is 1st at 95.04, Saguaro 1.1.4 2nd at 93.32 and DrussGT
-  3.1.18 4th at 92.93. Survival 97.96%, PWIN 99.67% ([3.23 notes](docs/releases/v3.23.md),
-  [live notes](docs/bench/live-3.23.md)).
-- **Team 2nd at 83.37, its best ever**, +0.8 over 3.22 with MOMENTUM (TMODE-49). OgiTeam is 1st at 88.02 and
-  CombatTeam 3rd at 81.57. Two pairings cannot be played: L337Team gives no result and DeltaSquad's jar is gone.
-- **Melee stays on 3.22** (7th at 69.69); the MeleeRumble entry was not moved to 3.23, whose melee change
-  (the shadow fix) read level. ScalarR is 1st at 72.71.
+- **1v1 2nd at 93.44, its best rank and score ever.** Like for like against 3.23 on the same opponents
+  3.24 scores +0.58 ± 0.15 APS (+0.56 ± 0.21 from the two saved pages over 1,191 common opponents), in line
+  with the +0.54 ± 0.15 the bench measured before release. BeepBoop is 1st
+  at 94.94, DrussGT 3.1.20 3rd at 93.21 and Saguaro 1.1.4 4th at 93.13. Survival 98.04%, PWIN 99.67%.
+  Three pairings cannot be played: the engine rejects two robots and no client runs a third.
+- **Team 2nd at 84.57, its best ever**, +1.20 ± 0.94 over 3.23 on the same 47 teams. OgiTeam is 1st at 88.07
+  and CombatTeam 3rd at 81.56. Survival 90.50%, PWIN 97.87%.
+- **Melee stays on 3.22** (7th at 69.65); the MeleeRumble entry was not moved to 3.24, whose melee code is
+  unchanged.
 - **The 1v1 list is about 1,200 robots** since 2026-11-02: the rumble moved to Robocode 1.11.2, whose load-time
   sandbox blocks 19 old robots; Leigh took them off the participants list and the bench skips them
   ([hadur-bench/broken-1.11.2.txt](hadur-bench/broken-1.11.2.txt)).
+
+3.23's live read (2026-11-16 18:18 UTC) was 3rd of 1,205 at 93.04 in 1v1 and 2nd of 48 at 83.37 in the team
+([live notes](docs/bench/live-3.23.md)).
 
 Each release's live notes are in [docs/bench/](docs/bench/) (`live-*.md`) and its saved pages in
 [data/rumble/](data/rumble/).
@@ -76,7 +76,8 @@ Each release's live notes are in [docs/bench/](docs/bench/) (`live-*.md`) and it
 | 3.20 | 2026-10-30 | 91.82 | 96.9% | 3rd (14th melee, 3rd team) | MOVE-29, the aim members: the surf also rates head-on, linear and circular aims; team PATH and DODGE with own fire ([live notes](docs/bench/live-3.20.md)) |
 | 3.21 | 2026-11-01 | 92.40 | 97.2% | 3rd (7th melee, 2nd team) | Per-opponent rival picks, surf keys and shield lines; melee surfer and crossfire; team CONCORD ([notes](docs/releases/v3.21.md)) |
 | 3.22 | 2026-11-12 | 92.60 | 97.7% | 4th (7th melee, 2nd team) | Start-up stall fix (MEM-15) and per-opponent shield, mirror, race-power and power-cap lines; team CLOSE hunt and last-enemy guard; melee MGUN-25 ([notes](docs/releases/v3.22.md)) |
-| 3.23 | 2026-11-16 | **93.04** | 98.0% | **3rd** (7th melee on 3.22, **2nd team**) | The shadow fix (MOVE-43) and 48 per-opponent lines (+0.49 APS over 3.22 on the same opponents); team MOMENTUM drive ([live notes](docs/bench/live-3.23.md)) |
+| 3.23 | 2026-11-16 | 93.04 | 98.0% | 3rd (7th melee on 3.22, 2nd team) | The shadow fix (MOVE-43) and 48 per-opponent lines (+0.49 APS over 3.22 on the same opponents); team MOMENTUM drive ([live notes](docs/bench/live-3.23.md)) |
+| 3.24 | 2026-11-22 | **93.44** | 98.0% | **2nd** (7th melee on 3.22, **2nd team** at 84.57) | MOVE-52 intercept views and the pc-locks lines of rounds 3 to 20 (+0.58 APS over 3.23 on the same opponents); team fitted enemy aims and close-range dodge rerank |
 
 3.0 and 3.1 slid 5 to 8 APS within hours on live clients; a one-JVM session bench traced it to a
 round-end profile save that grew with every opponent on disk, fixed in 3.4
@@ -86,13 +87,13 @@ round-end profile save that grew with every opponent on disk, fixed in 3.4
 
 Hadur has siblings, one for each size class and format it can win. Each is a separate robot with
 its own folder, build, requirements and README, and none shares code with Hadur.
-Live results as of 2026-11-02 16:00 UTC (each robot's README keeps its full history):
+Live results as of 2026-11-02 16:00 UTC, Hadur and HadurTeam as of 2026-11-22 20:22 / 19:31 UTC (each robot's README keeps its full history):
 
 | Robot | Rumble | Size | Live result | |
 |---|---|---|---|---|
-| [**Hadur**](hadur-robot/) `hadur117.Hadur` | RoboRumble (1v1) | megabot | **3rd of 1,205**, 93.04 ± 0.19 (3.23), 0.28 behind oog.mega.saguaro.Saguaro | [standing](#standing) |
-| | MeleeRumble | | **7th of 418**, 69.69 ± 0.13 (3.22) | |
-| [**HadurTeam**](hadur-robot/) `hadur117.HadurTeam` | TeamRumble | five Hadurs | **2nd of 48**, 83.37 ± 0.51 (3.23), 4.65 behind cz.libors.OgiTeam | [standing](#standing) |
+| [**Hadur**](hadur-robot/) `hadur117.Hadur` | RoboRumble (1v1) | megabot | **2nd of 1,213**, 93.44 ± 0.18 (3.24), 1.50 behind kc.mega.BeepBoop | [standing](#standing) |
+| | MeleeRumble | | **7th of 416**, 69.65 ± 0.13 (3.22) | |
+| [**HadurTeam**](hadur-robot/) `hadur117.HadurTeam` | TeamRumble | five Hadurs | **2nd of 48**, 84.57 ± 0.55 (3.24), 3.50 behind cz.libors.OgiTeam | [standing](#standing) |
 | [**TwinSaor**](twinsaor/) `hadur117.twin.TwinSaor` | Twin Duel (2v2) | 1,995 B of 1,999 | **1st of 28**, 70.28 ± 0.50 (0.2), 0.91 ahead of ags.lunartwins.LunarTwins | [README](twinsaor/README.md) |
 | [**Saor**](saor/) `hadur117.micro.Saor` | MicroMelee | 723 B of 749 | **1st of 158**, 69.51 ± 0.27 (0.3), 0.24 ahead of kc.micro.Figment; 3rd of 206 in MiniMelee | [README](saor/README.md) |
 | [**Deise**](deise/) `hadur117.mini.Deise` | MiniMelee | 1,499 B of 1,499 | **1st of 206**, 71.18 ± 0.22 (0.5), 0.04 ahead of kc.mini.Mirage; 12th of 418 in MeleeRumble | [README](deise/README.md) |

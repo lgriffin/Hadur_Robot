@@ -14,12 +14,12 @@ class PcDiagnosePlanTest {
 
     @Test
     @Tag("BENCH-240")
-    @DisplayName("reads work/learn-trace-pc with diagnose_field.py (c against bb, the ledger's gaps), then a results PR")
+    @DisplayName("reads work/learn-trace-324 with diagnose_field.py (c against bb, the ledger's gaps), then a results PR")
     void cardIsComplete() throws IOException {
         String queue = Files.readString(Path.of("plans/pc-diagnose.queue"));
-        assertTrue(queue.contains("set W = work/learn-trace-pc\n"), "the learn-trace logs pc-learn-trace leaves");
-        assertTrue(queue.contains("set W = work/learn-trace-pc")
-            && Files.readString(Path.of("plans/pc-learn-trace.queue")).contains("set W = work/learn-trace-pc\n"),
+        assertTrue(queue.contains("set W = work/learn-trace-324\n"), "the learn-trace logs pc-learn-trace leaves");
+        assertTrue(queue.contains("set W = work/learn-trace-324")
+            && Files.readString(Path.of("plans/pc-learn-trace.queue")).contains("set W = work/learn-trace-324\n"),
             "the same work directory as pc-learn-trace");
         assertTrue(queue.contains("\nread | test -d ${W}/battles && python3 -I ../data/tools/diagnose_field.py ${W} --base c"
             + " --other bb --ledger field-ledger.tsv "), "the read");
