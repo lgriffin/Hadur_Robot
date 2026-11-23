@@ -988,8 +988,11 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             ;;
         tmnotight)
             # TMODE-59 off (team only): TIGHT in a table entry means nothing, the hunt pull is 0.3 on every team. Suffix ntp.
+            # Source from before it shipped (--ref) already has it off.
             version="${version}ntp"
+            if ! grep -qF "public static final boolean TIGHT_ON = false;" "$modes"; then
             edit "$modes" "public static final boolean TIGHT_ON = true;" "public static final boolean TIGHT_ON = false;"
+            fi
             ;;
         tmnocloserr)
             # TMODE-52 off: the team dodge drives 12 candidates against close waves too. Suffix ncr.
