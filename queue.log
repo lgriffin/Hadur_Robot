@@ -8,3 +8,18 @@
 12:38:11 skip tnpr (after tngate, which has not finished exit=0)
 12:38:11 ALLDONE
 15:56:50 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
+15:56:50 start tnprep
+15:56:52 progress pushed to origin claude/pc-team-nmdodge-progress (every 15 min)
+15:59:05 tnprep exit=0 in 135 s
+15:59:05 start tnbb
+15:59:05 watching tnbb: 3 stop rule(s)
+15:59:52 progress tnbb: 12/48 (25%) battles, 933/h, ETA 2 min, 0 failed, skips 4.9/battle (last 100)
+16:04:22 tnbb exit=0 in 316 s
+16:04:22 start tnnd
+16:04:22 watching tnnd: 3 stop rule(s)
+16:10:12 tnnd exit=0 in 349 s
+16:10:12 start tngate
+16:10:12 tngate exit=0 in 0 s
+16:10:12 start tnpr
+16:10:21 tnpr exit=0 in 8 s
+16:10:21 ALLDONE
