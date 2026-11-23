@@ -76,7 +76,7 @@ class TeamModesTest {
             "cb.fire.Firestarter");
         assertEquals(java.util.Set.of("gh.nano.GrofGroupMember", "myl.micro.Troodon", "myl.micro.TroodonDroid",
                 "ustimaw.Nightmare", "ustimaw.NigitmareDroid", "mn.nano.perceptual.Impact", "cz.libors.Ogi",
-                "mn.Combat", "cb.fire.Firestarter"),
+                "mn.Combat", "cb.fire.Firestarter", "abc.Shadow", "florent.XSeries.X2", "rz.Aleph", "cx.mini.Nimrod"),
             TeamModes.TABLE.keySet());
         for (Map.Entry<String, Set<TeamModes.Mode>> entry : TeamModes.TABLE.entrySet()) {
             assertTrue(entry.getValue().contains(TeamModes.Mode.PATH), entry.getKey());
@@ -411,6 +411,34 @@ class TeamModesTest {
         assertEquals(pt(300, 700), move.rerankBest(candidates, v, 12, List.of(), b, true));
         assertEquals(pt(300, 700), move.rerankBest(candidates, v, 12, List.of(), b, false));
         assertTrue(TeamDodge.OWN_FIRE, "on in the shipped build since TMODE-30");
+    }
+
+    @Test
+    @Tag("TMODE-59")
+    @DisplayName("TMODE-59: TIGHT makes the hunt pull 1.0 where the switch is on (off in the shipped build), means nothing without HUNT, and is only in the five locked teams' entries")
+    void tightPull() {
+        Set<TeamModes.Mode> tightHunt = EnumSet.of(TeamModes.Mode.HUNT, TeamModes.Mode.TIGHT);
+        assertEquals(1.0, TeamRisk.HUNT_TIGHT_PULL, 0);
+        assertTrue(TeamRisk.tight(tightHunt, true));
+        assertFalse(TeamRisk.tight(tightHunt, false));
+        assertFalse(TeamRisk.tight(EnumSet.of(TeamModes.Mode.HUNT), true));
+        assertFalse(TeamModes.TIGHT_ON, "off until pc-team-tight reads");
+        List<EnemyInfo> prey = enemies(pt(600, 1000)).alive();
+        TeamRisk.Pull p = TeamRisk.pull(pt(600, 400), "n", 100, 3, prey, 100, mates(pt(700, 400)), tightHunt);
+        assertEquals(TeamRisk.huntSlot(pt(600, 400), "n", prey, 100, mates(pt(700, 400))), p.at);
+        assertEquals(TeamModes.TIGHT_ON ? TeamRisk.HUNT_TIGHT_PULL : TeamRisk.HUNT_PULL, p.strength, 0);
+        assertFalse(p.scalesBullets);
+        assertNull(TeamRisk.pull(pt(600, 400), "n", 100, 3, prey, 100, mates(pt(700, 400)),
+            EnumSet.of(TeamModes.Mode.TIGHT)));
+        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.TIGHT));
+        Set<String> tight = Set.of("cz.libors.Ogi", "abc.Shadow", "florent.XSeries.X2", "rz.Aleph", "cx.mini.Nimrod");
+        for (Map.Entry<String, Set<TeamModes.Mode>> entry : TeamModes.TABLE.entrySet()) {
+            assertEquals(tight.contains(entry.getKey()), entry.getValue().contains(TeamModes.Mode.TIGHT), entry.getKey());
+            assertTrue(entry.getValue().contains(TeamModes.Mode.HUNT), entry.getKey());
+        }
+        EnumSet<TeamModes.Mode> shadow = EnumSet.copyOf(TeamModes.DEFAULT);
+        shadow.add(TeamModes.Mode.TIGHT);
+        assertEquals(shadow, TeamModes.TABLE.get("abc.Shadow"));
     }
 
     @Test

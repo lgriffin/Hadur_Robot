@@ -39,14 +39,14 @@ class PcLocksPlanTest {
         Set<String> broken = Broken.names(Path.of(Broken.FILE_1112));
         for (String n : panel) assertTrue(!broken.contains(n), n + " loads on 1.11.2");
         String arms = Files.readString(Path.of("plans/pc-locks.arms"));
-        for (String a : new String[] {"c", "aa", "qw"}) {
+        for (String a : new String[] {"c", "aa", "rln"}) {
             String v = a.equals("c") ? version : version + a;
             assertTrue(arms.contains("\n" + a + " | hadur117.Hadur " + v + " |"), a);
         }
-        assertEquals(3, names("plans/pc-locks.arms").size(), "c, aa and the lever arm qw");
+        assertEquals(3, names("plans/pc-locks.arms").size(), "c, aa and the lever arm rln");
         assertTrue(queue.contains("test -f opponents/$j || { echo \"missing jar $j\"; exit 1; }"), "no panel robot silently dropped");
         assertTrue(queue.contains("lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh"), "each arm built with only its robots");
-        assertTrue(queue.contains("--set panel-locks.txt --seeds 12 --seed-base 86400 --arms ${W}-prep/lock.arms --out ${W} "), "the lock");
+        assertTrue(queue.contains("--set panel-locks.txt --seeds 12 --seed-base 86500 --arms ${W}-prep/lock.arms --out ${W} "), "the lock");
         assertTrue(queue.contains("lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0"), "the gate, each robot on its own arm");
         int at = queue.indexOf("\nlock | ");
         String body = queue.substring(at, queue.indexOf("\n\n", at + 1));
@@ -58,10 +58,10 @@ class PcLocksPlanTest {
         assertTrue(queue.substring(atp).contains("  after: gate"), "the results PR waits for the gate");
         assertEquals(List.of(), PcLiveMatchPlanTest.violations("pc-locks.queue", queue), "BENCH-245 timing rule");
         assertTrue(queue.contains("Why it should win") && queue.contains("set ALERT = lgriffin"));
-        assertTrue(queue.contains("run pc-locks --fresh"), "round 21 left the plan state complete, so round 22 starts fresh");
-        assertTrue(!queue.contains("pc-locks21-") && !queue.contains("/pc-locks-livematch.md") && queue.contains("${OUT}/*_pc-locks22-*.md"), "round 22 reports never replace round 21's");
-        assertTrue(queue.contains("set W = work/pc-locks22"), "round 22 has its own work directory");
-        assertTrue(queue.contains("for a in qw; do test -f"), "every lever arm built before the lock");
-        assertTrue(queue.contains("open_results_pr.sh claude/pc-locks22-results") && queue.contains("set P = --parallel 16 --no-truth-log"));
+        assertTrue(queue.contains("run pc-locks --fresh"), "round 22 left the plan state complete, so round 23 starts fresh");
+        assertTrue(!queue.contains("pc-locks22-") && !queue.contains("/pc-locks-livematch.md") && queue.contains("${OUT}/*_pc-locks23-*.md"), "round 23 reports never replace round 22's");
+        assertTrue(queue.contains("set W = work/pc-locks23"), "round 23 has its own work directory");
+        assertTrue(queue.contains("for a in rln; do test -f"), "every lever arm built before the lock");
+        assertTrue(queue.contains("open_results_pr.sh claude/pc-locks23-results") && queue.contains("set P = --parallel 16 --no-truth-log"));
     }
 }

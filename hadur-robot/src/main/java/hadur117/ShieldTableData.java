@@ -1160,6 +1160,38 @@ final class ShieldTableData {
     }
 
     /**
+     * RAM-20: the rammers whose shots the escape dodges by the aims learned from their own bullets
+     * ({@code ram-learn:} lines). Each held a PC card after a cloud lock (build-ablation.sh rlearnlist adds
+     * candidate lines here).
+     *
+     * @return a fresh array of names
+     */
+    static String[] ramLearns() {
+        return new String[] {
+            // pc-locks round 23 (BENCH-253, PR #1018): 12 fresh PC seeds at the live turn time, 95% low end above 0; cloud lock held first
+            "as.xbots 1.0",                  // +3.2
+            "blir.nano.Bruce R1.0.0",        // +2.5
+            "com.syncleus.robocode.Dreadnaught 0.1",// +2.9
+            "demetrix.nano.SledgeHammer 0.22",// +3.7
+            "gg.Squaraus 0.6",               // +1.0
+            "kc.micro.rammer.MaxRisk 0.6",   // +2.5
+            "kurios.DOSexe .9a",             // +2.6
+            "marcinek.TopGun 1.3",           // +1.4
+            "maribo.FollowFire 1.11",        // +2.4
+            "mn.nano.perceptual.Impact 1.3.0",// +1.9
+            "mz.NanoDeath 2.56",             // +2.2
+            "nexus.Prototype 1.0",           // +1.8
+            "oog.nano.Caligula 1.15",        // +2.5
+            "stelo.Lifestealer 1.0",         // +3.5
+            "step.nanoPri 1.0",              // +3.4
+            "suh.nano.RammingC 1.00",        // +1.7
+            "sul.Bicephal 1.2",              // +2.1
+            "supersample.SuperRamFire 1.0",  // +3.4
+            "suzushin7.nano.Galaxy03 1.01",  // +2.5
+        };
+    }
+
+    /**
      * RAM-18: the rammers the escape bends away from its own line of travel after each of their shots
      * ({@code ram-bend:} lines). Each held a PC card after a cloud class lock (build-ablation.sh rbendlist adds
      * candidate lines here).
