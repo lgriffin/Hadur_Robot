@@ -1,9 +1,10 @@
-# BENCH-253 pc-locks, round 25: three per-robot lines that locked on the cloud (12 fresh seeds, 95% low end above 0
-# against both c and aa, live turn time; coverage/shards/locks.tsv, dzlane/L): Lindada on hf, Parallax on rp, BulletCatcher on
-# mv; and fifteen robots whose line is already on master, read only in c and aa, so the A/A check reads 18. name | note | jar
-zen.Lindada 0.2 | hf-L-12seeds | zen.Lindada_0.2.jar
-slugzilla.Parallax 0.1 | rp-L-12seeds | slugzilla.Parallax_0.1.jar
-rsim.mini.BulletCatcher 0.4 | mv-L-12seeds | rsim.mini.BulletCatcher_0.4.jar
+# BENCH-253 pc-locks, round 26: three per-robot movement lines that read positive against both c and aa on the cloud
+# but did not clear the 12-seed bar there (coverage/shards/locks.tsv, dzlane/G and dzlane/L): Midboss and ForceMajeure
+# on fq, RandomBot on vj; and fifteen robots whose line is already on master, read only in c and aa, so the A/A check
+# reads 18. name | note | jar
+ags.Midboss 1q.fast | fq-G-24seeds | ags.Midboss_1q.fast.jar
+demetrix.ForceMajeure 0.75 | fq-L-12seeds | demetrix.ForceMajeure_0.75.jar
+cb.mega.RandomBot 1.0 | vj-G-12seeds | cb.mega.RandomBot_1.0.jar
 oog.micro.Maui 1.2 | aa-pad-line-on-master | oog.micro.Maui_1.2.jar
 sgp.MadHatter 4.13 | aa-pad-line-on-master | sgp.MadHatter_4.13.jar
 suh.nano.RammingC 1.00 | aa-pad-line-on-master | suh.nano.RammingC_1.00.jar

@@ -738,7 +738,7 @@ flowchart LR
 |---|---|---|---|---|
 | **Shield** | | | | |
 | shield list | (none) | SHIELD-5 | 305 | Each round opens in shield mode; SHIELD-6 leaves it for the battle if the damage would hold our share under 85% |
-| `moves()` | `shield-move:` | SHIELD-17 | 63 | Saguaro's moving shield opening drive |
+| `moves()` | `shield-move:` | SHIELD-17 | 64 | Saguaro's moving shield opening drive |
 | `aims()` | `shield-aim:` | SHIELD-18 | 231 | The shield starts with this predictor and offset already learned |
 | `stills()` | `shield-still:` | SHIELD-21 | 50 | Shield shots fired from where Hadur stands whenever one casts a shadow |
 | `exitLates()`, `exitOffs()` | `shield-exit4:`, `shield-exit0:` | SHIELD-19 | 1, 11 | Later or no damage exit from shield mode |
@@ -766,7 +766,7 @@ flowchart LR
 | **Power and gun** | | | | |
 | `powerCaps()`, `powerCapHalves()` | `power-cap:`, `power-cap5:` | POW-18 | 6, 2 | Cap fire power |
 | `hardFires()`, `powerBands()` | `hard-fire:`, `power-band:` | POW-19, POW-20 | 1, 1 | At least 0.6 power while we have 60+ energy; a power multiplier per energy band |
-| `fullOffs()`, `x5Powers()`, `racePowers()` | `full-off:`, `x5-power:`, `race-power:` | POW-15, POW-16, POW-17 | 16, 17, 18 | Power policy variants (race power vs strong bots) |
+| `fullOffs()`, `x5Powers()`, `racePowers()` | `full-off:`, `x5-power:`, `race-power:` | POW-15, POW-16, POW-17 | 16, 17, 19 | Power policy variants (race power vs strong bots) |
 | `gunStacks()` | `gun-stack:` | GUN-11 | 17 | TripHammer gun stack (never for a shield opponent) |
 
 Matching is by name (SHIELD-26): `pkg.Bot 1.2` and `pkg.Bot` both match every version of the robot, and

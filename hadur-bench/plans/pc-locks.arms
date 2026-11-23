@@ -1,8 +1,7 @@
-# pc-locks (BENCH-253) round 25: c is master, aa its A/A copy; each lever arm is master with its line on the panel robot
-# that locked with it on the cloud (plans/locks-pick.tsv; hf POW-19 hard fire, rp POW-17 race power, mv SHIELD-17
-# opening drive; build-ablation.sh hflist, rplist and smovelist).
+# pc-locks (BENCH-253) round 26: c is master, aa its A/A copy; each lever arm is master with its line on the panel robot
+# picked for it (plans/locks-pick.tsv; fq MOVE-32 flattener views, vj MOVE-44 velocity jitter; build-ablation.sh fllist
+# and vjlist).
 c | hadur117.Hadur 3.24 | bisect/hadur117.Hadur_3.24.jar
 aa | hadur117.Hadur 3.24aa | bisect/hadur117.Hadur_3.24aa.jar
-hf | hadur117.Hadur 3.24hf | bisect/hadur117.Hadur_3.24hf.jar
-rp | hadur117.Hadur 3.24rp | bisect/hadur117.Hadur_3.24rp.jar
-mv | hadur117.Hadur 3.24mv | bisect/hadur117.Hadur_3.24mv.jar
+fq | hadur117.Hadur 3.24fq | bisect/hadur117.Hadur_3.24fq.jar
+vj | hadur117.Hadur 3.24vj | bisect/hadur117.Hadur_3.24vj.jar
