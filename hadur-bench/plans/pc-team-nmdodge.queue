@@ -1,0 +1,46 @@
+# battle: team
+# Team: the team dodge back against NightmareTeam, per the 2026-11-23 cloud reads (TMODE-30, BENCH-277).
+# Team thread: team-only, duel and melee untouched (a TeamModes table entry; the shipped build is unchanged).
+#   aa      the baseline (master); bb its A/A copy
+#   nd      tmtab with plans/team-nmdodge-table.java: NightmareTeam's entry with DODGE added, every other mode as shipped
+# Every other pairing plays the same code as aa, so the card fights only NightmareTeam (plans/team-nmdodge-set.txt)
+# and spreads its gain over the 47 TeamRumble pairings.
+# Screen: bb and nd against aa, 48 fresh seeds from 34900, 12 rounds; nd is gated at +0.03 APS with the 95% low end
+#   above zero over 47 pairings, scored against both baselines.
+# Why it should win: pc-team-nododge (PR #465) took the dodge out against NightmareTeam on the code of the time. A
+#   mirror run on current code shows NightmareTeam hitting our members 20-24% at 250-550 px after the opening, from
+#   round 0, against 5-8% on the top team at the same range. With the dodge back in the entry its hit rate on us
+#   in that band falls from 25% to 16% in every block of seeds and in every count state, bullet damage taken falls
+#   about 400 a battle, and a stand-in learning gun trained on our members' movement drops from 18.6% to 15.6%,
+#   the top team's level. Cloud, 10 rounds, same box baseline: +1.8 +- 2.6 share and +0.8 +- 0.6 rounds won per 10
+#   on 36 seeds, then +5.2 +- 2.7 share on 36 more on a second box; 72 seeds together about +3.5 +- 1.9. The wall
+#   margin, a longer dodge horizon and CONCORD on top all read level there and are left out.
+# Size: 2 x 48 battles, about 10 minutes at the team rate. Every step resumes where it stopped.
+# Stop rules on every battle step (halt; every battle fought is kept and a rerun resumes): 10 failed battles, no
+# battle in 30 minutes, or 60+ skipped turns a battle over the last 200.
+# The team thread reads claude/pc-team-nmdodge-results.
+#   ./queue.sh run pc-team-nmdodge        (or  .\queue.ps1 run pc-team-nmdodge)
+# Run it from master (one bench queue at a time, RoboRumble workers at 0):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set T = python3 tools/team_modes.py
+
+tnprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && for a in aa bb nd; do rm -f bisect/hadur117.HadurTeam_"$V"$a.jar; done && rm -f ${OUT}/team-nmdodge-bb.md ${OUT}/team-nmdodge-nd.md ${OUT}/team-nmdodge-verdict.md && mkdir -p work && rm -rf work/team-nmdodge-"$V"-* && rm -f work/team-nmdodge-*.args && ./fetch-opponents.sh --set plans/team-nmdodge-set.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && TEAM_MODE_TABLE="$(pwd)/plans/team-nmdodge-table.java" TEAM_MODE_SUFFIX=nd bash ./build-ablation.sh tmtab && for a in bb nd; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" plans/team-nmdodge-screen.args > work/team-nmdodge-$a.args || exit 1; done && for a in aa bb nd; do test -f bisect/hadur117.HadurTeam_"$V"$a.jar || exit 1; done && mvn -q compile
+tnbb | mvn -q exec:java "-Dexec.args=@work/team-nmdodge-bb.args"
+  after: tnprep
+  watch: battles=48
+  stop: fails 10
+  stop: stall 30m
+  stop: skips 60 over 200
+tnnd | mvn -q exec:java "-Dexec.args=@work/team-nmdodge-nd.args"
+  after: tnbb
+  watch: battles=48
+  stop: fails 10
+  stop: stall 30m
+  stop: skips 60 over 200
+tngate | ${T} gate --report ${OUT}/team-nmdodge-nd.md --control ${OUT}/team-nmdodge-bb.md --set plans/team-nmdodge-set.txt --seeds 48 --teams 47 --min-aps 0.03 --out-md ${OUT}/team-nmdodge-verdict.md || exit 1
+  after: tnnd
+tnpr | bash tools/open_results_pr.sh claude/pc-team-nmdodge-results "Team: dodge back against NightmareTeam (TMODE-30)" $(ls ${OUT}/team-nmdodge-*.md 2>/dev/null | grep -v smoke)
+  after: tngate
