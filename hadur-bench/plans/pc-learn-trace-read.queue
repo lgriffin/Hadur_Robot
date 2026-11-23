@@ -3,15 +3,15 @@
 # stuck queue first, then (from master):
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-learn-trace-read        (or  ./queue.sh run pc-learn-trace-read)
-# No battles. tools/arms_from_battles.py writes work/learn-trace-pc/arms.tsv from the battles' own rows (the bench
+# No battles. tools/arms_from_battles.py writes work/learn-trace-324/arms.tsv from the battles' own rows (the bench
 # writes it only when every battle has run); the read and the results PR are pc-learn-trace's own.
 
 set V = 3.24
-set W = work/learn-trace-pc
+set W = work/learn-trace-324
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
 
-read | python3 tools/arms_from_battles.py ${W} --force --report ${OUT}/$(date +%Y-%m-%d)_learn-trace-field-kept.md && python3 -I ../data/tools/learn_trace.py ${W} --base c --other bb --set census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_learn-trace-field-read.md && python3 ../data/tools/multiarm.py ${W}/arms.tsv --census census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_learn-trace-field.md
+read | python3 tools/arms_from_battles.py ${W} --force --report ${OUT}/$(date +%Y-%m-%d)_learn-trace-324-field-kept.md && python3 -I ../data/tools/learn_trace.py ${W} --base c --other bb --set census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_learn-trace-324-field-read.md && python3 ../data/tools/multiarm.py ${W}/arms.tsv --census census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_learn-trace-324-field.md && python3 -I ../data/tools/diagnose_field.py ${W} --base c --other bb --ledger field-ledger.tsv --out ${OUT}/$(date +%Y-%m-%d)_learn-trace-324-diagnose.md --out-tsv ${OUT}/pc-learn-trace-324-diagnose.tsv
 
-pr | bash tools/open_results_pr.sh claude/pc-learn-trace-results "1v1 trace study over the whole field, on the battles kept (the kept note names any left out)" ${OUT}/*_learn-trace-field*.md
+pr | bash tools/open_results_pr.sh claude/pc-learn-trace-324-results "1v1 trace study over the whole field, on the battles kept (the kept note names any left out)" ${OUT}/*_learn-trace-324-*.md ${OUT}/pc-learn-trace-324-diagnose.tsv
   after: read
