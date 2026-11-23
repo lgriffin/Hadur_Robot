@@ -236,6 +236,22 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("RAM-21")
+    @DisplayName("ram-known lines name the rammers confirmed from the first scan, matched as shield entries")
+    void perOpponentRamKnown() {
+        ShieldList l = ShieldList.parse(List.of("ram-known: a.B 1.0", "ram-known: c.D", "ram-known:", "ram-learn: e.F"));
+        assertTrue(l.ramKnown("a.B 1.0"));
+        assertTrue(l.ramKnown("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertTrue(l.ramKnown("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.ramKnown("e.F 1.0"), "a ram-learn line is not a ram-known line");
+        assertTrue(l.ramLearn("e.F 1.0"));
+        assertFalse(l.ramLearn("a.B 1.0") || l.ramFan("a.B 1.0"), "no other switch");
+        assertFalse(l.ramKnown(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.ramKnown("a.B 1.0"));
+    }
+
+    @Test
     @Tag("RAM-17")
     @DisplayName("ram-fan lines name the rammers whose aims the escape dodges as fans, matched as shield entries")
     void perOpponentRamFan() {

@@ -109,6 +109,8 @@ public final class ShieldList {
     public static final String RAM_BEND_PREFIX = "ram-bend:";
     /** RAM-20: a line starting with this names a rammer whose shots the escape dodges by the aims learned from its own bullets. */
     public static final String RAM_LEARN_PREFIX = "ram-learn:";
+    /** RAM-21: a line starting with this names a rammer confirmed from the battle's first scan. */
+    public static final String RAM_KNOWN_PREFIX = "ram-known:";
     /** MOVE-56: a line starting with this names an opponent whose truncated-lateral-velocity pattern matcher a mimic joins the danger for. */
     public static final String PATTERN_MIMIC_PREFIX = "pm-mimic:";
     /** MOVE-58: a line starting with this names an opponent whose cw.megas-form pattern matcher a mimic joins the danger for. */
@@ -187,6 +189,8 @@ public final class ShieldList {
     static final int RAM_BEND = 16777216;
     /** RAM-20: the per-opponent learned-shot-model switch's bit in {@link #switches}. */
     static final int RAM_LEARN = 67108864;
+    /** RAM-21: the per-opponent known-rammer switch's bit in {@link #switches}. */
+    static final int RAM_KNOWN = 134217728;
     /** MOVE-56: the per-opponent pattern-matcher mimic's bit in {@link #switches}. */
     static final int PATTERN_MIMIC = 33554432;
     /** SHIELD-33: the per-opponent tiny-shot wave switch's bit in {@link #switches}. */
@@ -268,6 +272,7 @@ public final class ShieldList {
                     : entry.startsWith(RAM_FAN_PREFIX) ? RAM_FAN
                     : entry.startsWith(RAM_BEND_PREFIX) ? RAM_BEND
                     : entry.startsWith(RAM_LEARN_PREFIX) ? RAM_LEARN
+                    : entry.startsWith(RAM_KNOWN_PREFIX) ? RAM_KNOWN
                     : entry.startsWith(PATTERN_MIMIC_PREFIX) ? PATTERN_MIMIC
                     : entry.startsWith(PATTERN_MEGAS_PREFIX) ? PATTERN_MEGAS
                     : entry.startsWith(AIM_WEIGHT_PREFIX) ? AIM_WEIGHT
@@ -770,6 +775,16 @@ public final class ShieldList {
      */
     public boolean ramLearn(String robotName) {
         return (switchBits(robotName) & RAM_LEARN) != 0;
+    }
+
+    /**
+     * RAM-21: whether the table names this rammer with a {@link #RAM_KNOWN_PREFIX} line.
+     *
+     * @param robotName the opponent's name as Robocode lists it
+     * @return true when a {@code ram-known:} line matches it
+     */
+    public boolean ramKnown(String robotName) {
+        return (switchBits(robotName) & RAM_KNOWN) != 0;
     }
 
     /**

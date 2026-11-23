@@ -292,6 +292,8 @@
 #   ramlearn  RAM-20: the rammer escape dodges every rammer's shots by the aims learned in the battle from its own
 #         bullets (ShotModel) in place of RAM-5's fixed head-on and linear pair. Suffix rl.
 #   rlearnlist the robots named in $RAM_LEARN get RAM-20's learned shot model. Suffix rln.
+#   ramknown  RAM-21: every duel opponent is a known rammer, confirmed at the first scan. Suffix rka (rk is rambrk's).
+#   rknownlist the robots named in $RAM_KNOWN are known rammers (ShieldTableData.ramKnowns()). Suffix rkn.
 #   rbendlist the robots named in $RAM_BEND get RAM-18, the rammer escape bending off its line of travel after each of their shots. Suffix rbd.
 #   rfanlist the robots named in $RAM_FAN get RAM-17, the rammer escape dodging their linear/circular aims as +-4 deg fans at RAM-14's weight. Suffix rfn.
 #   rplist the robots named in $RACE_POWER get the energy race's power pick (POW-17,
@@ -469,6 +471,10 @@ for a in "${list[@]}"; do
             # RAM-20: the rammer escape dodges every rammer's shots by the aims learned from its bullets (the cloud screen's arm).
             edit "$src/hadur-core/src/main/java/$pkg/core/move/RamEscape.java" "static final boolean FORCE_LEARNED = false;" "static final boolean FORCE_LEARNED = true;"
             version="${version}rl" ;;
+        ramknown)
+            # RAM-21: every duel opponent is a known rammer: confirmed at the first scan, so rounds 1 and 2 play the escape (the cloud screen's arm).
+            edit "$src/hadur-core/src/main/java/$pkg/core/policy/RammerPolicy.java" "public static final boolean FORCE_KNOWN = false;" "public static final boolean FORCE_KNOWN = true;"
+            version="${version}rka" ;;
         shoff)
             # BENCH-246 pc-modes-check: MOVE-43's shadow fix off again, to read what it does to team and melee end games.
             edit "$movedesign" "static final boolean KEEP_SHADOWS = true;" "static final boolean KEEP_SHADOWS = false;"
@@ -823,7 +829,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
                 edit "$movedesign" "static final int STOP_AND_GO_PREFIRE = 1;" "static final int STOP_AND_GO_PREFIRE = 2;"
                 version="${version}ws"
             else version="${version}wp"; fi ;;
-        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist|rclist|mirofflist|sfloorlist|pcaplist|pcap5list|hflist|pblist|vjlist|sblist|dplist|rhlist|rwlist|orlist|rflist|rfanlist|rbendlist|rlearnlist|pmlist|pmxlist|aimwlist|stinylist)
+        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist|rclist|mirofflist|sfloorlist|pcaplist|pcap5list|hflist|pblist|vjlist|sblist|dplist|rhlist|rwlist|orlist|rflist|rfanlist|rbendlist|rlearnlist|rknownlist|pmlist|pmxlist|aimwlist|stinylist)
             # Shield part 2 (docs/plan-shield-quality.md): per-opponent opening drive or shipped aims;
             # the mode table's simple-aim dodge (DODGE-3).
             if [[ "$a" == smovelist ]]; then file="${SHIELD_MOVE:-}"; method="moves"; version="${version}mv"
@@ -856,6 +862,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
             elif [[ "$a" == rfanlist ]]; then file="${RAM_FAN:-}"; method="ramFans"; version="${version}rfn"
             elif [[ "$a" == rbendlist ]]; then file="${RAM_BEND:-}"; method="ramBends"; version="${version}rbd"
             elif [[ "$a" == rlearnlist ]]; then file="${RAM_LEARN:-}"; method="ramLearns"; version="${version}rln"
+            elif [[ "$a" == rknownlist ]]; then file="${RAM_KNOWN:-}"; method="ramKnowns"; version="${version}rkn"
             elif [[ "$a" == pmlist ]]; then file="${PM_MIMIC:-}"; method="patternMimics"; version="${version}pm"
             elif [[ "$a" == pmxlist ]]; then file="${PM_MEGAS:-}"; method="patternMegas"; version="${version}pmx"
             elif [[ "$a" == aimwlist ]]; then file="${AIM_WEIGHT:-}"; method="aimWeights"; version="${version}qw"
