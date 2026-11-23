@@ -78,4 +78,15 @@ class TeamNoDodgePlanTest {
             assertTrue(args.contains("--out\nwork/team-nododge-@V@-" + a + "\n"), a);
         }
     }
+
+    @Test
+    @Tag("BENCH-144")
+    @DisplayName("tmtab places a card's table line at the end of the mode table, the last map TeamModes builds")
+    void tableLineGoesAtTheEndOfTheModeTable() throws IOException {
+        String sh = Files.readString(Path.of("build-ablation.sh"));
+        assertTrue(sh.contains("edit_last \"$modes\" \"        return Collections.unmodifiableMap(t);\""));
+        String modes = Files.readString(Path.of("../hadur-core/src/main/java/hadur117/core/melee/TeamModes.java"));
+        int last = modes.lastIndexOf("        return Collections.unmodifiableMap(t);");
+        assertTrue(last > modes.indexOf("private static Map<String, Set<Mode>> table()"), "the last anchor closes table()");
+    }
 }

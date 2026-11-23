@@ -1,0 +1,59 @@
+# battle: team
+# Team: the near place, a wider tight pack and CONCORD back against CombatTeam, per the 2026-11-23 cloud locks on
+# the four teams below (TMODE-60, BENCH-278).
+# Team thread: team-only, duel and melee untouched (table lines and the hunt place; NEAR is off in the shipped build).
+#   aa      the baseline (master, tight pack on); bb its A/A copy
+#   p3      tmpack3: NEAR on DemoniacNimrods (hunt place 150 px, not 250), PhoenixTeam and ArmyOfShiz given the
+#           tight pull (TIGHT, pull 1.0), and CONCORD back in CombatTeam's entry
+# Every other pairing plays the same code as aa, so the card fights only the four teams (plans/team-pack3-set.txt)
+# and spreads their gain over the 47 TeamRumble pairings.
+# Pilot: p3 on the four teams, 8 fresh seeds from 36300, 12 rounds, paired with aa. A projected team APS change
+#   under -0.15 stops the card there (team_modes.py gate --stop-below), and the PR carries the pilot. The bar is
+#   below zero because an 8-seed pilot's interval is about +-0.2: it stops clear harm, not noise.
+# Screen: bb and p3 against aa on the four teams, 24 fresh seeds from 36400, 12 rounds; p3 is gated at +0.10 APS with
+#   the 95% low end above zero over 47 pairings, scored against both baselines.
+# Why it should win: each line held on 24 or more fresh cloud seeds at this card's 12 rounds on current master,
+#   beside the same box's baseline, score share points. DemoniacNimrods gains little from its own guns at close
+#   range while ours gain much: with the place at 150 px +3.5 +- 2.2, our first deaths fall from 15 rounds to 2 of
+#   288 and members lost a round from 1.24 to 0.86. ArmyOfShiz with the tight pull +3.1 +- 1.4, members lost a
+#   round 0.54 to 0.25. PhoenixTeam with the tight pull +2.1 +- 2.3, rounds won 263 to 279 of 288. CombatTeam with
+#   CONCORD back +4.6 +- 2.1 on 36 seeds, rounds won a battle 3.3 to 5.0: its removal predates the tight pack and
+#   never cleared on its own. About +0.28 APS over 47 pairings.
+# Size: pilot 64 battles, screen 2 x 192: about 450 battles, about 25 minutes at the team rate. Every step resumes
+#   where it stopped.
+# Stop rules on every battle step (halt; every battle fought is kept and a rerun resumes): 10 failed battles, no
+# battle in 30 minutes, or 60+ skipped turns a battle over the last 200.
+# The team thread reads claude/pc-team-pack3-results.
+#   ./queue.sh run pc-team-pack3        (or  .\queue.ps1 run pc-team-pack3)
+# Run it from master (one bench queue at a time, RoboRumble workers at 0):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set T = python3 tools/team_modes.py
+
+tkprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && for a in aa bb p3; do rm -f bisect/hadur117.HadurTeam_"$V"$a.jar; done && rm -f ${OUT}/team-pack3-p*.md ${OUT}/team-pack3-bb.md ${OUT}/team-pack3-p3.md ${OUT}/team-pack3-verdict.md && mkdir -p work && rm -rf work/team-pack3-"$V"-* && rm -f work/team-pack3-*.args work/team-pack3-go && ./fetch-opponents.sh --set plans/team-pack3-set.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmpack3 && sed -e "s/@V@/$V/g" plans/team-pack3-pilot.args > work/team-pack3-pep.args && for a in bb p3; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" plans/team-pack3-screen.args > work/team-pack3-$a.args || exit 1; done && for a in aa bb p3; do test -f bisect/hadur117.HadurTeam_"$V"$a.jar || exit 1; done && mvn -q compile
+tkpp3 | mvn -q exec:java "-Dexec.args=@work/team-pack3-pep.args"
+  after: tkprep
+  watch: battles=64
+  stop: fails 10
+  stop: stall 30m
+  stop: skips 60 over 200
+tkpilot | ${T} gate --report ${OUT}/team-pack3-pep.md --set plans/team-pack3-set.txt --seeds 8 --teams 47 --min-aps 0 --stop-below=-0.15 --out-md ${OUT}/team-pack3-pilot.md && touch work/team-pack3-go || test $? -eq 3 || exit 1
+  after: tkpp3
+tkbb | if [ -f work/team-pack3-go ]; then mvn -q exec:java "-Dexec.args=@work/team-pack3-bb.args"; else echo "p3 under -0.15 on the pilot: no screen"; fi
+  after: tkpilot
+  watch: battles=192
+  stop: fails 10
+  stop: stall 30m
+  stop: skips 60 over 200
+tkp3 | if [ -f work/team-pack3-go ]; then mvn -q exec:java "-Dexec.args=@work/team-pack3-p3.args"; else echo "p3 under -0.15 on the pilot: no screen"; fi
+  after: tkbb
+  watch: battles=192
+  stop: fails 10
+  stop: stall 30m
+  stop: skips 60 over 200
+tkgate | if [ -f work/team-pack3-go ]; then ${T} gate --report ${OUT}/team-pack3-p3.md --control ${OUT}/team-pack3-bb.md --set plans/team-pack3-set.txt --seeds 24 --teams 47 --min-aps 0.10 --out-md ${OUT}/team-pack3-verdict.md || exit 1; else echo "no screen"; fi
+  after: tkp3
+tkpr | bash tools/open_results_pr.sh claude/pc-team-pack3-results "Team: near place, wider tight pack and CONCORD back (TMODE-60)" $(ls ${OUT}/team-pack3-*.md 2>/dev/null | grep -v smoke)
+  after: tkgate

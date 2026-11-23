@@ -169,9 +169,9 @@
 #   tmtight (team only) TMODE-59 on: the tight pack, hunt pull 1.0 against the five teams whose table entry
 #              carries TIGHT (pc-team-tight, BENCH-275). Suffix tp. Ships since PR #1016, so on master
 #              it builds the robot as it is.
-#   tmpack2 (team only) TMODE-60 and TMODE-61 on: NEAR (hunt place 150 px, DemoniacNimrods) and EAGER (hunt and
-#              close-in at any energy, ShadowTeam) play, and PhoenixTeam and ArmyOfShiz join the tight pack
-#              (pc-team-pack2, BENCH-276). Suffix p2.
+#   tmpack3 (team only) TMODE-60 on: NEAR (hunt place 150 px, DemoniacNimrods) plays, PhoenixTeam and
+#              ArmyOfShiz join the tight pack, and CombatTeam plays CONCORD again (pc-team-pack3, BENCH-278).
+#              Suffix p3.
 #   tmnotight (team only) TMODE-59 off: the hunt pull is 0.3 against every team, the build before the tight
 #              pack shipped. Suffix ntp.
 #   tmnocloserr (team only) TMODE-52 off: the team dodge drives 12 candidates even against a close wave, the
@@ -1003,10 +1003,11 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$modes" "public static final boolean TIGHT_ON = false;" "public static final boolean TIGHT_ON = true;"
             fi
             ;;
-        tmpack2)
-            # TMODE-60 and TMODE-61 on (team only): NEAR and EAGER play in the table entries that carry them, and
-            # PhoenixTeam and ArmyOfShiz get the default modes with TIGHT (pc-team-pack2). Suffix p2.
-            version="${version}p2"
+        tmpack3)
+            # TMODE-60 on (team only): NEAR plays in the table entry that carries it, PhoenixTeam and ArmyOfShiz
+            # get the default modes with TIGHT, and CombatTeam's entry gets CONCORD back (pc-team-pack3). Suffix p3.
+            version="${version}p3"
+            edit "$modes" '        t.put("mn.Combat", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' '        t.put("mn.Combat", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));'
             edit "$modes" "public static final boolean PACK2_ON = false;" "public static final boolean PACK2_ON = true;"
             python3 - "$modes" <<'PY'
 import sys
@@ -1072,7 +1073,7 @@ PY
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean THREE_FAR = false;" "public static final boolean THREE_FAR = true;"
             version="${version}ef" ;;
-        *) echo "unknown ablation: $a (aa, bb, tmtight, tmnotight, tmpack2, tmnocloserr, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, icoff, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, rhlist, rwlist, orlist, rflist, rfanlist, rbendlist, pmlist, pmxlist, aimwlist|stinylist)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, tmtight, tmnotight, tmpack3, tmnocloserr, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, icoff, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, rhlist, rwlist, orlist, rflist, rfanlist, rbendlist, pmlist, pmxlist, aimwlist|stinylist)" >&2; exit 2 ;;
     esac
 done
 
