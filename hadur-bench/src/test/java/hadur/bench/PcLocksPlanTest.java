@@ -39,11 +39,11 @@ class PcLocksPlanTest {
         Set<String> broken = Broken.names(Path.of(Broken.FILE_1112));
         for (String n : panel) assertTrue(!broken.contains(n), n + " loads on 1.11.2");
         String arms = Files.readString(Path.of("plans/pc-locks.arms"));
-        for (String a : new String[] {"c", "aa", "rkn", "rlnrkn"}) {
+        for (String a : new String[] {"c", "aa", "rkn", "rlnrkn", "rln"}) {
             String v = a.equals("c") ? version : version + a;
             assertTrue(arms.contains("\n" + a + " | hadur117.Hadur " + v + " |"), a);
         }
-        assertEquals(4, names("plans/pc-locks.arms").size(), "c, aa and the lever arms rkn and rlnrkn");
+        assertEquals(5, names("plans/pc-locks.arms").size(), "c, aa and the lever arms rkn, rlnrkn and rln");
         assertTrue(queue.contains("test -f opponents/$j || { echo \"missing jar $j\"; exit 1; }"), "no panel robot silently dropped");
         assertTrue(queue.contains("lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh"), "each arm built with only its robots");
         assertTrue(queue.contains("--set panel-locks.txt --seeds 12 --seed-base 86600 --arms ${W}-prep/lock.arms --out ${W} "), "the lock");
@@ -61,7 +61,7 @@ class PcLocksPlanTest {
         assertTrue(queue.contains("run pc-locks --fresh"), "round 23 left the plan state complete, so round 24 starts fresh");
         assertTrue(!queue.contains("pc-locks23-") && !queue.contains("/pc-locks-livematch.md") && queue.contains("${OUT}/*_pc-locks24-*.md"), "round 24 reports never replace round 23's");
         assertTrue(queue.contains("set W = work/pc-locks24"), "round 24 has its own work directory");
-        assertTrue(queue.contains("for a in rkn rlnrkn; do test -f"), "every lever arm built before the lock");
+        assertTrue(queue.contains("for a in rkn rlnrkn rln; do test -f"), "every lever arm built before the lock");
         assertTrue(queue.contains("open_results_pr.sh claude/pc-locks24-results") && queue.contains("set P = --parallel 16 --no-truth-log"));
     }
 }

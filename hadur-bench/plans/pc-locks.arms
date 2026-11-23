@@ -1,7 +1,9 @@
 # pc-locks (BENCH-253) round 24: c is master, aa its A/A copy; the lever arm rkn is master with its RAM-21 ram-known line on
 # the panel robots picked for it, and rlnrkn is master with both the RAM-20 ram-learn and the RAM-21 ram-known line on its
-# robots (plans/locks-pick.tsv; build-ablation.sh rknownlist and rlearnlist,rknownlist).
+# robots, and rln is master with the ram-learn line alone on its robot (plans/locks-pick.tsv; build-ablation.sh rknownlist,
+# rlearnlist,rknownlist and rlearnlist).
 c | hadur117.Hadur 3.24 | bisect/hadur117.Hadur_3.24.jar
 aa | hadur117.Hadur 3.24aa | bisect/hadur117.Hadur_3.24aa.jar
 rkn | hadur117.Hadur 3.24rkn | bisect/hadur117.Hadur_3.24rkn.jar
 rlnrkn | hadur117.Hadur 3.24rlnrkn | bisect/hadur117.Hadur_3.24rlnrkn.jar
+rln | hadur117.Hadur 3.24rln | bisect/hadur117.Hadur_3.24rln.jar
