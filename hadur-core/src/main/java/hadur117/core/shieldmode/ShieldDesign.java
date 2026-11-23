@@ -48,6 +48,11 @@ import java.util.Locale;
  *     wins. Not part of {@code all}; the energy ratio is {@code ratio}'s.</li>
  * <li>{@code ratio} (SHIELD-23): no shot plan dearer than the enemy's bullet scaled by our
  *     energy over its energy (never under 0.1). Not part of {@code all}.</li>
+ * <li>{@code standoff} (SHIELD-34): once the enemy comes inside {@link ShieldMode#STANDOFF_NEAR},
+ *     the body drives away (the opening drive's anti-gravity) while the enemy's gun cools and no
+ *     shot plan is near, until the enemy is beyond {@link ShieldMode#STANDOFF_FAR}; it stands still
+ *     from {@link #MOVE_STOP_TICKS} ticks before the enemy's gun is ready. A shot fired from close
+ *     range gives the shield too little flight to meet. Not part of {@code all}.</li>
  * </ul>
  */
 public final class ShieldDesign {
@@ -78,7 +83,7 @@ public final class ShieldDesign {
     public static final int AIM_PRIOR = 3;
 
     /** 3.12's shield: every switch off. */
-    public static final ShieldDesign NONE = new ShieldDesign(false, false, false, false, false, false, false, false, false, false, false, false, false);
+    public static final ShieldDesign NONE = new ShieldDesign(false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
     /**
      * The design the robot ships (SHIELD-13; SHIELD-14's wall since 3.15, +0.19 +/- 0.09 APS in the
@@ -114,10 +119,12 @@ public final class ShieldDesign {
     public final boolean cheap;
     /** SHIELD-23: plans capped at the enemy's power times the energy ratio. */
     public final boolean ratio;
+    /** SHIELD-34: drive out of close range while the enemy's gun cools. */
+    public final boolean standoff;
 
     private ShieldDesign(boolean hold, boolean learn, boolean mode, boolean stay, boolean turn,
                          boolean wall, boolean trial, boolean prior, boolean move, boolean rec,
-                         boolean still, boolean cheap, boolean ratio) {
+                         boolean still, boolean cheap, boolean ratio, boolean standoff) {
         this.hold = hold;
         this.learn = learn;
         this.mode = mode;
@@ -131,11 +138,12 @@ public final class ShieldDesign {
         this.still = still;
         this.cheap = cheap;
         this.ratio = ratio;
+        this.standoff = standoff;
     }
 
     /**
      * The design a comma-separated list of switch names turns on ({@code hold}, {@code learn},
-     * {@code mode}, {@code stay}, {@code turn}, {@code wall}, {@code trial}, {@code prior}, {@code move}, {@code rec}, {@code still}, {@code cheap}, {@code ratio}, or {@code all}); blank
+     * {@code mode}, {@code stay}, {@code turn}, {@code wall}, {@code trial}, {@code prior}, {@code move}, {@code rec}, {@code still}, {@code cheap}, {@code ratio}, {@code standoff}, or {@code all}); blank
      * is {@link #NONE}.
      *
      * @param flags the switches
@@ -145,7 +153,7 @@ public final class ShieldDesign {
     public static ShieldDesign parse(String flags) {
         boolean hold = false, learn = false, mode = false, stay = false, turn = false,
             wall = false, trial = false, prior = false, move = false, rec = false, still = false,
-            cheap = false, ratio = false;
+            cheap = false, ratio = false, standoff = false;
         for (String raw : flags.split(",")) {
             String f = raw.trim().toLowerCase(Locale.ROOT);
             switch (f) {
@@ -163,14 +171,15 @@ public final class ShieldDesign {
                 case "still": still = true; break;
                 case "cheap": cheap = true; break;
                 case "ratio": ratio = true; break;
+                case "standoff": standoff = true; break;
                 case "all": hold = learn = mode = stay = turn = true; break;
                 default: throw new IllegalArgumentException("unknown shield switch: " + raw);
             }
         }
-        if (!(hold || learn || mode || stay || turn || wall || trial || prior || move || rec || still || cheap || ratio)) {
+        if (!(hold || learn || mode || stay || turn || wall || trial || prior || move || rec || still || cheap || ratio || standoff)) {
             return NONE;
         }
-        return new ShieldDesign(hold, learn, mode, stay, turn, wall, trial, prior, move, rec, still, cheap, ratio);
+        return new ShieldDesign(hold, learn, mode, stay, turn, wall, trial, prior, move, rec, still, cheap, ratio, standoff);
     }
 
     /**
@@ -216,6 +225,7 @@ public final class ShieldDesign {
         if (still) b.append(",still");
         if (cheap) b.append(",cheap");
         if (ratio) b.append(",ratio");
+        if (standoff) b.append(",standoff");
         return b.length() == 0 ? "none" : b.substring(1);
     }
 }

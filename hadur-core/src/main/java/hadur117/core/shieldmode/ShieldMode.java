@@ -98,6 +98,12 @@ public final class ShieldMode {
     static final double MOVE_ENEMY_WEIGHT = 3;
     /** SHIELD-17: the distance ordered each tick of the opening drive, px. */
     static final double MOVE_AHEAD = 100;
+    /** SHIELD-34: closer than this, px, the standoff drives away while the enemy's gun cools. */
+    public static final double STANDOFF_NEAR = 150;
+    /** SHIELD-34: the standoff drives until the enemy is this far, px. */
+    public static final double STANDOFF_FAR = 190;
+    /** SHIELD-34: a shot plan firing within this many ticks keeps the body still. */
+    static final int STANDOFF_PLAN_TICKS = 6;
 
     private static final int HISTORY = 8;
     private static final int MAX_WAVES = 16;
@@ -315,6 +321,8 @@ public final class ShieldMode {
     private boolean opening;
     /** SHIELD-17: ticks of opening drive this round, for the round's record. */
     private int openingTicks;
+    /** SHIELD-34: the standoff is driving away (between {@link #STANDOFF_NEAR} and {@link #STANDOFF_FAR}). */
+    private boolean standingOff;
 
     /** SHIELD-15: the opponent is in shield mode only on trial (unlisted, trial switch on). */
     private boolean onTrial;
@@ -406,6 +414,7 @@ public final class ShieldMode {
         enemyShotsThisRound = 0;
         enemyFiredThisRound = false;
         openingTicks = 0;
+        standingOff = false;
     }
 
     /**
@@ -971,6 +980,11 @@ public final class ShieldMode {
             openingTicks++;
             return openingDrive(s);
         }
+        if (design.standoff && standoffDrives(s)) {
+            // SHIELD-34: out of close range while the enemy's gun cools; the plan is rebuilt once still.
+            plan = null;
+            return openingDrive(s);
+        }
         double back = 0;
 
         if (plan != null && s.time == plan.fireTime) {
@@ -1171,6 +1185,22 @@ public final class ShieldMode {
             }
         }
         return Long.MIN_VALUE;
+    }
+
+    /**
+     * SHIELD-34: whether this tick drives out of close range: the enemy came inside
+     * {@link #STANDOFF_NEAR} and is not yet beyond {@link #STANDOFF_FAR}, its gun is not within
+     * {@link ShieldDesign#MOVE_STOP_TICKS} of ready, and no shot plan fires within
+     * {@link #STANDOFF_PLAN_TICKS}.
+     */
+    private boolean standoffDrives(Situation s) {
+        if (Double.isNaN(s.fieldWidth) || Double.isNaN(s.fieldHeight)) return false;
+        double d = Math.hypot(s.enemyX - s.x, s.enemyY - s.y);
+        if (d < STANDOFF_NEAR) standingOff = true;
+        else if (d >= STANDOFF_FAR) standingOff = false;
+        return standingOff
+            && s.time < enemyNextFire - ShieldDesign.MOVE_STOP_TICKS
+            && (plan == null || plan.fireTime - s.time > STANDOFF_PLAN_TICKS);
     }
 
     /**
