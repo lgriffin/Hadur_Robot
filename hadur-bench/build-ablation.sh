@@ -169,8 +169,8 @@
 #   tmtight (team only) TMODE-59 on: the tight pack, hunt pull 1.0 against the five teams whose table entry
 #              carries TIGHT (pc-team-tight, BENCH-275). Suffix tp. Ships since PR #1016, so on master
 #              it builds the robot as it is.
-#   tmpack3 (team only) TMODE-60 on: NEAR (hunt place 150 px, DemoniacNimrods) plays, PhoenixTeam and
-#              ArmyOfShiz join the tight pack, and CombatTeam plays CONCORD again (pc-team-pack3, BENCH-278).
+#   tmpack3 (team only) TMODE-60 on: NEAR (hunt place 150 px, DemoniacNimrods) plays,
+#              ArmyOfShiz joins the tight pack, and CombatTeam plays CONCORD again (pc-team-pack3, BENCH-278).
 #              Suffix p3.
 #   tmnotight (team only) TMODE-59 off: the hunt pull is 0.3 against every team, the build before the tight
 #              pack shipped. Suffix ntp.
@@ -1004,8 +1004,8 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             fi
             ;;
         tmpack3)
-            # TMODE-60 on (team only): NEAR plays in the table entry that carries it, PhoenixTeam and ArmyOfShiz
-            # get the default modes with TIGHT, and CombatTeam's entry gets CONCORD back (pc-team-pack3). Suffix p3.
+            # TMODE-60 on (team only): NEAR plays in the table entry that carries it, ArmyOfShiz
+            # gets the default modes with TIGHT, and CombatTeam's entry gets CONCORD back (pc-team-pack3). Suffix p3.
             version="${version}p3"
             edit "$modes" '        t.put("mn.Combat", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));' '        t.put("mn.Combat", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));'
             edit "$modes" "public static final boolean PACK2_ON = false;" "public static final boolean PACK2_ON = true;"
@@ -1018,7 +1018,7 @@ at = s.index(anchor)
 assert s.count(anchor) == 1
 end = s.index("\n", at) + 1
 tight = "of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));\n"
-add = '        t.put("davidalves.Phoenix", ' + tight + '        t.put("kawigi.micro.Shiz", ' + tight
+add = '        t.put("kawigi.micro.Shiz", ' + tight
 open(p, "w", encoding="utf-8").write(s[:end] + add + s[end:])
 PY
             ;;
