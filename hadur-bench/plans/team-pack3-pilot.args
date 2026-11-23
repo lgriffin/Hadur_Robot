@@ -1,0 +1,31 @@
+# PC card pc-team-pack3 (BENCH-278): the pilot, p3 on the four teams, 8 seeds from 36300, 12 rounds, against master (the aa build). Template: the card's prep writes the work copy with @V@ = the robot.release in hadur-robot/pom.xml.
+--team
+true
+--seeds
+8
+--seed-base
+36300
+--rounds
+12
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+plans/team-pack3-set.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@p3.jar
+--robot
+hadur117.HadurTeam @V@p3
+--member
+hadur117.Hadur
+--out
+work/team-pack3-@V@-pep
+--report
+../docs/bench/local/team-pack3-pep.md
+--baseline
+bisect/hadur117.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur117.HadurTeam @V@aa

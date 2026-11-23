@@ -107,14 +107,7 @@ public final class TeamModes {
          * through the table, per team (DemoniacNimrods). Means nothing without HUNT, and nothing
          * where {@link #PACK2_ON} is off.
          */
-        NEAR,
-        /**
-         * TMODE-61, eager pack: HUNT and the last-enemy close-in (LAST, FINISH) play at any
-         * energy, not from {@link TeamRisk#PACK_ENERGY} and {@link TeamRisk#FINISH_ENERGY} up, so
-         * a drained member still closes instead of trading from across the field. Only through
-         * the table, per team (ShadowTeam). Means nothing where {@link #PACK2_ON} is off.
-         */
-        EAGER
+        NEAR
     }
 
     /**
@@ -138,7 +131,7 @@ public final class TeamModes {
 
     /** TMODE-59: whether TIGHT in a table entry plays; on as pc-team-tight measured it (PR #1016; ablation tmnotight turns it off). */
     public static final boolean TIGHT_ON = true;
-    /** TMODE-60, TMODE-61: whether NEAR and EAGER in a table entry play; off in the shipped build until pc-team-pack2 reads (ablation tmpack2 turns it on). */
+    /** TMODE-60: whether NEAR in a table entry plays; off in the shipped build until pc-team-pack3 reads (ablation tmpack3 turns it on). */
     public static final boolean PACK2_ON = false;
 
     /**
@@ -243,7 +236,9 @@ public final class TeamModes {
         // pc-team-noconcord (PR #538), 24 fresh seeds: CONCORD off too (TMODE-35), NightmareTeam +2.4 ± 4.3.
         // pc-team-quarters (PR #759): QUARTERS (TMODE-45), NightmareTeam +4.0 ± 3.2 on 24 seeds and +4.3 ± 3.7 on
         // 16 fresh ones, aimed damage from under 150 px down 25%; the other four teams screened did not move.
-        t.put("ustimaw.Nightmare", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM));
+        // pc-team-nmdodge (PR #1030), 48 fresh seeds with the tight pack on: DODGE back against the Nightmare class,
+        // NightmareTeam +3.1 ± 1.9 (+2.5 ± 2.1 after the A/A), rounds won 442 to 496 of 576.
+        t.put("ustimaw.Nightmare", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM));
         t.put("ustimaw.NigitmareDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM));
         t.put("mn.nano.perceptual.Impact", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         // pc-team-noconcord (PR #538), 24 fresh seeds: CONCORD off (TMODE-35), OgiTeam +4.2 ± 3.0,
@@ -254,11 +249,10 @@ public final class TeamModes {
         // TMODE-59, tight pack: the default modes with TIGHT, written out as the bench's table reader needs, for the teams it held against on 12 fresh
         // cloud seeds each beside the same box's baseline (score share points): ShadowTeam +12.1 ± 4.2,
         // Xmen +9.3 ± 4.7, AlephTeam +6.2 ± 5.5, DemoniacNimrods +5.6 ± 4.4; OgiTeam above +7.4 ± 5.7.
-        // TMODE-61, eager pack (off until pc-team-pack2 reads): ShadowTeam with the tight pull, +4.4 ± 2.8 on 24 cloud seeds.
-        t.put("abc.Shadow", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.EAGER, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
+        t.put("abc.Shadow", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         t.put("florent.XSeries.X2", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         t.put("rz.Aleph", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
-        // TMODE-60, near place (off until pc-team-pack2 reads): DemoniacNimrods with the tight pull, +3.8 ± 3.7, +4.7 ± 2.7
+        // TMODE-60, near place (off until pc-team-pack3 reads): DemoniacNimrods with the tight pull, +3.8 ± 3.7, +4.7 ± 2.7
         // and +5.4 on three boxes' 12 cloud seeds each.
         t.put("cx.mini.Nimrod", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.NEAR, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         return Collections.unmodifiableMap(t);

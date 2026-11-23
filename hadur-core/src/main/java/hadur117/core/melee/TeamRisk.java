@@ -164,11 +164,6 @@ final class TeamRisk {
         return on && modes.contains(TeamModes.Mode.NEAR);
     }
 
-    /** TMODE-61: whether the pack plays at any energy: EAGER in {@code modes} and the switch {@code on}. */
-    static boolean eager(Set<TeamModes.Mode> modes, boolean on) {
-        return on && modes.contains(TeamModes.Mode.EAGER);
-    }
-
     /**
      * TMODE-3, TMODE-4: the point a team member is drawn to, or null. With
      * {@link TeamModes.Mode#FINISH}, one enemy left by the engine's count ({@code others} less
@@ -185,20 +180,16 @@ final class TeamRisk {
     /** As above, with {@code name} this member's name for TMODE-13's order (null: first). */
     static Pull pull(Point2D.Double me, String name, double energy, int others, List<EnemyInfo> enemies,
                      long now, List<Roster.Mate> mates, Set<TeamModes.Mode> modes) {
-        // TMODE-61: EAGER, while it plays, lifts the energy gates on the hunt and the close-in.
-        boolean eager = eager(modes, TeamModes.PACK2_ON);
-        double finishEnergy = eager ? 0 : FINISH_ENERGY;
-        double packEnergy = eager ? 0 : PACK_ENERGY;
         // TMODE-47: under LAST the members close on the one enemy left as FINISH would.
         if (modes.contains(TeamModes.Mode.LAST) && others == 1 && enemies.size() == 1
-                && enemies.get(0).age(now) < CAP_MAX_AGE && energy >= finishEnergy) {
+                && enemies.get(0).age(now) < CAP_MAX_AGE && energy >= FINISH_ENERGY) {
             return new Pull(enemies.get(0).location, FINISH_FLOOR, FINISH_PULL);
         }
         if (modes.contains(TeamModes.Mode.FINISH) && enemies.size() == 1 && others - mates.size() == 1
-                && enemies.get(0).age(now) < CAP_MAX_AGE && energy >= finishEnergy) {
+                && enemies.get(0).age(now) < CAP_MAX_AGE && energy >= FINISH_ENERGY) {
             return new Pull(enemies.get(0).location, FINISH_FLOOR, FINISH_PULL);
         }
-        if (modes.contains(TeamModes.Mode.HUNT) && energy >= packEnergy) {
+        if (modes.contains(TeamModes.Mode.HUNT) && energy >= PACK_ENERGY) {
             // TMODE-42: CLOSE brings the place in; TMODE-60: NEAR, while it plays, brings it nearer still.
             double radius = near(modes, TeamModes.PACK2_ON) ? HUNT_NEAR
                 : modes.contains(TeamModes.Mode.CLOSE) ? HUNT_CLOSE : HUNT_RADIUS;
