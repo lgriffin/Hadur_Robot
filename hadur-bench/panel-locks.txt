@@ -10,6 +10,11 @@ mcb.Audace 1.3 | qw-B-group | mcb.Audace_1.3.jar
 sam.ChipmunkDuelist 1.0 | qw-B-group | sam.ChipmunkDuelist_1.0.jar
 acid.Bl4ck 1.0 | qw-B-group | acid.Bl4ck_1.0.jar
 ags.Midboss 1q.fast | fq-PC-r26-second-read | ags.Midboss_1q.fast.jar
+ary.Help 1.0 | kb-M-12seeds | ary.Help_1.0.jar
+cjm.Che 1.2 | kb-M-12seeds | cjm.Che_1.2.jar
+starpkg.StarViewerZ 1.26 | kb-M-12seeds | starpkg.StarViewerZ_1.26.jar
+NDH.GuessFactor 1.0 | kb-M-12seeds | NDH.GuessFactor_1.0.jar
+PkKillers.PkAssassin 1.0 | kb-M-12seeds | PkKillers.PkAssassin_1.0.jar
 oog.micro.Maui 1.2 | aa-pad-line-on-master | oog.micro.Maui_1.2.jar
 sgp.MadHatter 4.13 | aa-pad-line-on-master | sgp.MadHatter_4.13.jar
 suh.nano.RammingC 1.00 | aa-pad-line-on-master | suh.nano.RammingC_1.00.jar
