@@ -47,7 +47,16 @@ class PcLocksPlanTest {
         assertTrue(queue.contains("test -f opponents/$j || { echo \"missing jar $j\"; exit 1; }"), "no panel robot silently dropped");
         assertTrue(queue.contains("lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh"), "each arm built with only its robots");
         assertTrue(queue.contains("--set panel-locks.txt --seeds 24 --seed-base 101000 --arms ${W}-prep/ctl.arms --out ${W}-ctl "), "the lock: c and aa on the whole panel");
-        for (String a : new String[] {"sb", "rp", "qw", "fq", "kb"}) assertTrue(queue.contains("\nlock-" + a + " | ./bench-top20.sh ${C} ${P} --set ${W}-prep/" + a + ".panel --seeds 24 --seed-base 101000 --arms ${W}-prep/" + a + ".arms --out ${W}-" + a + " "), "each lever arm on its own robots only: " + a);
+        for (String a : new String[] {"sb", "rp", "qw", "fq", "kb"}) {
+            int at2 = queue.indexOf("\nlock-" + a + " | ");
+            assertTrue(at2 >= 0, a);
+            String step = queue.substring(at2, queue.indexOf("\n", at2 + 1));
+            // Round 27 stopped here: a lever arm alone is a one-arm run, which the bench refuses; c rides with it.
+            assertTrue(step.contains("grep -E \"^(c|" + a + ") [|]\" ${W}-prep/lock.arms > ${W}-prep/" + a + "-c.arms"), "c beside " + a);
+            assertTrue(step.contains("cp -r ${W}-ctl/battles/*-c ${W}-" + a + "/battles/"), "c read back, not fought again: " + a);
+            assertTrue(step.contains("--set ${W}-prep/" + a + ".panel --seeds 24 --seed-base 101000 --arms ${W}-prep/" + a + "-c.arms --out ${W}-" + a + " "), "each lever arm on its own robots only: " + a);
+        }
+        assertTrue(queue.contains("for d in sb rp qw fq kb; do awk -F\"\\t\" -v a=$d 'NR > 1 && $1 == a' ${W}-$d/arms.tsv; done"), "the gate takes only the lever rows from each lever run");
         assertTrue(queue.contains("--out ${W}-livematch ") && !queue.contains("work/pc-livematch-rel-live"), "the live-match check never reads back an earlier card's battles");
         assertTrue(queue.contains("lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0"), "the gate, each robot on its own arm");
         int at = queue.indexOf("\nlock | ");
