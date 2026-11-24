@@ -69,6 +69,8 @@ public final class ShieldList {
     public static final String STILL_PREFIX = "shield-still:";
     /** SHIELD-33: a line starting with this names an opponent whose sub-0.1 shots shield mode builds waves for. */
     public static final String TINY_PREFIX = "shield-tiny:";
+    /** SHIELD-27: a line starting with this names an opponent shield mode breaks off a close start against. */
+    public static final String CLOSE_BREAK_PREFIX = "shield-break:";
     /** MOVE-32: a line starting with this names an opponent the duel surfs with the flattener views on (MOVE-24 undone). */
     public static final String FLAT_ON_PREFIX = "flat-on:";
     /** MOVE-34: a line starting with this names an opponent the duel surfs with the learning-gun mimics as aim members (MOVE-33). */
@@ -223,6 +225,8 @@ public final class ShieldList {
     private Map<String, double[]> powerBands = Collections.emptyMap();
     /** DIST-4: name to its pinned duel distance, in px. */
     private Map<String, Double> distPins = Collections.emptyMap();
+    /** SHIELD-27: the opponents, by name without version, shield mode breaks off a close start against (every int switch bit is taken). */
+    private Set<String> closeBreaks = Collections.emptySet();
 
     private ShieldList(Set<String> entries, Set<String> moves, Map<String, double[]> aims,
                        Set<String> dodges, Map<String, Integer> stopGo) {
@@ -250,6 +254,7 @@ public final class ShieldList {
         Map<String, double[]> surfKeys = new TreeMap<>();
         Map<String, double[]> powerBands = new TreeMap<>();
         Map<String, Double> distPins = new TreeMap<>();
+        Set<String> closeBreaks = new TreeSet<>();
         if (lines != null) {
             for (String line : lines) {
                 if (line == null) continue;
@@ -287,6 +292,11 @@ public final class ShieldList {
                     if (!name.isEmpty() && (switches.containsKey(name) || switches.size() < MAX_ENTRIES)) {
                         switches.merge(name, bit, (a, b) -> a | b);
                     }
+                    continue;
+                }
+                if (entry.startsWith(CLOSE_BREAK_PREFIX)) {
+                    String name = withoutVersion(entry.substring(CLOSE_BREAK_PREFIX.length()).trim());
+                    if (!name.isEmpty() && closeBreaks.size() < MAX_ENTRIES) closeBreaks.add(name);
                     continue;
                 }
                 if (entry.startsWith(DIST_PIN_PREFIX)) {
@@ -386,7 +396,7 @@ public final class ShieldList {
         }
         if (entries.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()
             && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty() && surfKeys.isEmpty()
-            && powerBands.isEmpty() && distPins.isEmpty()) return NONE;
+            && powerBands.isEmpty() && distPins.isEmpty() && closeBreaks.isEmpty()) return NONE;
         ShieldList list = new ShieldList(Collections.unmodifiableSet(entries),
             Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims), Collections.unmodifiableSet(dodges),
             Collections.unmodifiableMap(stopGo));
@@ -395,6 +405,7 @@ public final class ShieldList {
         list.surfKeys = Collections.unmodifiableMap(surfKeys);
         list.powerBands = Collections.unmodifiableMap(powerBands);
         list.distPins = Collections.unmodifiableMap(distPins);
+        list.closeBreaks = Collections.unmodifiableSet(closeBreaks);
         return list;
     }
 
@@ -589,6 +600,18 @@ public final class ShieldList {
      */
     public boolean floor(String robotName) {
         return (switchBits(robotName) & FLOOR) != 0;
+    }
+
+    /**
+     * SHIELD-27: whether shield mode breaks off a round that starts with {@code robotName}
+     * close, by the rule of {@link #matches}.
+     *
+     * @param robotName the scanned robot's name, or null
+     */
+    public boolean closeBreak(String robotName) {
+        if (robotName == null || closeBreaks.isEmpty()) return false;
+        String name = robotName.trim().replaceAll("\\s+", " ");
+        return closeBreaks.contains(name) || closeBreaks.contains(withoutVersion(name));
     }
 
     /**

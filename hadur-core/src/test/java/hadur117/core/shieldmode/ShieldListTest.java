@@ -114,6 +114,22 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("SHIELD-27")
+    @DisplayName("shield-break lines name the opponents shield mode breaks off a close start against, matched as shield entries")
+    void perOpponentCloseBreak() {
+        ShieldList l = ShieldList.parse(List.of("shield-break: a.B 1.0", "shield-break: c.D", "shield-break:"));
+        assertTrue(l.closeBreak("a.B 1.0"));
+        assertTrue(l.closeBreak("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertTrue(l.closeBreak("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.floor("a.B 1.0") || l.tiny("a.B 1.0"), "no other switch");
+        assertFalse(l.closeBreak(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.closeBreak("a.B 1.0"));
+        assertFalse(l.ramLearn("a.B 1.0"), "its own set, not RAM-20's switch bit");
+        assertFalse(ShieldList.parse(List.of("ram-learn: e.F")).closeBreak("e.F 1.0"), "a ram-learn line breaks off nothing");
+    }
+
+    @Test
     @Tag("POW-18")
     @DisplayName("power-cap lines name the opponents the duel caps its power against, matched as shield entries")
     void perOpponentPowerCap() {
