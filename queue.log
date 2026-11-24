@@ -1,1 +1,15 @@
 10:22:53 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
+10:22:53 start tkprep
+10:22:56 progress pushed to origin claude/pc-team-pack4-progress (every 15 min)
+10:25:08 tkprep exit=0 in 134 s
+10:25:08 start tkpp4
+10:25:08 watching tkpp4: 3 stop rule(s)
+10:25:54 progress tkpp4: 3/64 (5%) battles, 233/h, ETA 16 min, 0 failed, skips 14.3/battle (last 100)
+10:28:30 tkpp4 exit=0 in 201 s
+10:28:30 start tkpilot
+10:28:30 tkpilot exit=0 in 0 s
+10:28:30 start tkbb
+10:28:30 watching tkbb: 3 stop rule(s)
+10:37:39 tkbb exit=0 in 548 s
+10:37:39 start tkp4
+10:37:39 watching tkp4: 3 stop rule(s)
