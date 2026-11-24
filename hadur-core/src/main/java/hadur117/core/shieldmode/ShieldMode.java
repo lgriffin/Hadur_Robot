@@ -698,7 +698,7 @@ public final class ShieldMode {
         telemetry.emit(String.format(Locale.ROOT, "SB,%d,%d,%s,%d,%d,%.2f", round, time,
             hitClass(wasActive, w), w == null ? -1 : w.ordinal, predicted ? 1 : 0, power));
         // SHIELD-27: a hit taken while the break-off has the drive is the duel's, not the shield's.
-        if (closeBreak && !opened) return;
+        if (closeBreak && !opened && time <= BREAK_TICKS) return;
         budget.damageTaken(power);
         if (onTrial && !battleOff) {
             trialDamage += Rules.getBulletDamage(power);
