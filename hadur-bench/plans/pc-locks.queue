@@ -23,8 +23,10 @@
 # check reads 28 robots.
 #   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live
 #   lock       panel-locks.txt  c / aa, 24 fresh seeds from 101000, --cpu-constant live, in work/pc-locks27-ctl
-#   lock-X     each lever arm (sb, rp, qw, fq, kb) on its own picked robots only, same seeds, in work/pc-locks27-X;
-#              the gate joins them into work/pc-locks27/arms.tsv (earlier rounds stay in work/pc-locks to -locks26)
+#   lock-X     each lever arm (sb, rp, qw, fq, kb) on its own picked robots only, same seeds, in work/pc-locks27-X,
+#              beside c (a multi-arm run needs two arms): the c battles of those robots are copied from -ctl and read
+#              back (BENCH-95), not fought again; the gate takes c and aa from -ctl and only the lever rows from each
+#              -X, and joins them into work/pc-locks27/arms.tsv (earlier rounds stay in work/pc-locks to -locks26)
 #   livematch  runs in its own folder (work/pc-locks27-livematch), so no earlier round's battle is read back
 #   gate       each robot judged on its own lever arm only (lock_prep.py --restrict); it keeps its line where the 95%
 #              low end is above 0 (mode_table.py --margin 0).
@@ -77,42 +79,45 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 24 --seed-base 1
   stop: skips 60 over 24
   stop: stall 30m
 
-lock-sb | ./bench-top20.sh ${C} ${P} --set ${W}-prep/sb.panel --seeds 24 --seed-base 101000 --arms ${W}-prep/sb.arms --out ${W}-sb --label pc-locks-sb --shuffle-jobs
+stage | for a in sb rp qw fq kb; do grep -E "^(c|$a) [|]" ${W}-prep/lock.arms > ${W}-prep/$a-c.arms && mkdir -p ${W}-$a/battles || exit 1; for s in $(grep -v "^#" ${W}-prep/$a.panel | cut -d"|" -f1 | sed -E "s/^ +| +$//g; s/[^A-Za-z0-9.]+/_/g"); do cp -rp ${W}-ctl/battles/$s-*-c ${W}-$a/battles/ || exit 1; done; done
   after: lock
+
+lock-sb | ./bench-top20.sh ${C} ${P} --set ${W}-prep/sb.panel --seeds 24 --seed-base 101000 --arms ${W}-prep/sb-c.arms --out ${W}-sb --label pc-locks-sb --shuffle-jobs
+  after: stage
   watch: field=1217
   stop: fails 30
   stop: dead 8
   stop: stall 30m
 
-lock-rp | ./bench-top20.sh ${C} ${P} --set ${W}-prep/rp.panel --seeds 24 --seed-base 101000 --arms ${W}-prep/rp.arms --out ${W}-rp --label pc-locks-rp --shuffle-jobs
+lock-rp | ./bench-top20.sh ${C} ${P} --set ${W}-prep/rp.panel --seeds 24 --seed-base 101000 --arms ${W}-prep/rp-c.arms --out ${W}-rp --label pc-locks-rp --shuffle-jobs
   after: lock-sb
   watch: field=1217
   stop: fails 30
   stop: dead 8
   stop: stall 30m
 
-lock-qw | ./bench-top20.sh ${C} ${P} --set ${W}-prep/qw.panel --seeds 24 --seed-base 101000 --arms ${W}-prep/qw.arms --out ${W}-qw --label pc-locks-qw --shuffle-jobs
+lock-qw | ./bench-top20.sh ${C} ${P} --set ${W}-prep/qw.panel --seeds 24 --seed-base 101000 --arms ${W}-prep/qw-c.arms --out ${W}-qw --label pc-locks-qw --shuffle-jobs
   after: lock-rp
   watch: field=1217
   stop: fails 30
   stop: dead 8
   stop: stall 30m
 
-lock-fq | ./bench-top20.sh ${C} ${P} --set ${W}-prep/fq.panel --seeds 24 --seed-base 101000 --arms ${W}-prep/fq.arms --out ${W}-fq --label pc-locks-fq --shuffle-jobs
+lock-fq | ./bench-top20.sh ${C} ${P} --set ${W}-prep/fq.panel --seeds 24 --seed-base 101000 --arms ${W}-prep/fq-c.arms --out ${W}-fq --label pc-locks-fq --shuffle-jobs
   after: lock-qw
   watch: field=1217
   stop: fails 30
   stop: dead 8
   stop: stall 30m
 
-lock-kb | ./bench-top20.sh ${C} ${P} --set ${W}-prep/kb.panel --seeds 24 --seed-base 101000 --arms ${W}-prep/kb.arms --out ${W}-kb --label pc-locks-kb --shuffle-jobs
+lock-kb | ./bench-top20.sh ${C} ${P} --set ${W}-prep/kb.panel --seeds 24 --seed-base 101000 --arms ${W}-prep/kb-c.arms --out ${W}-kb --label pc-locks-kb --shuffle-jobs
   after: lock-fq
   watch: field=1217
   stop: fails 30
   stop: dead 8
   stop: stall 30m
 
-gate | mkdir -p ${W} && (head -1 ${W}-ctl/arms.tsv && for d in ctl sb rp qw fq kb; do tail -n +2 ${W}-$d/arms.tsv; done) > ${W}/arms.tsv && python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks27-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks27-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks27-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms sb rp qw fq kb --out ${OUT}/$(date +%Y-%m-%d)_pc-locks27-lock-per-robot.md --out-tsv ${OUT}/pc-locks27-lock-per-robot.tsv
+gate | mkdir -p ${W} && (cat ${W}-ctl/arms.tsv && for d in sb rp qw fq kb; do awk -F"\t" -v a=$d 'NR > 1 && $1 == a' ${W}-$d/arms.tsv; done) > ${W}/arms.tsv && python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks27-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks27-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks27-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms sb rp qw fq kb --out ${OUT}/$(date +%Y-%m-%d)_pc-locks27-lock-per-robot.md --out-tsv ${OUT}/pc-locks27-lock-per-robot.tsv
   after: lock-kb
 
 pr | bash tools/open_results_pr.sh claude/pc-locks27-results "1v1 cloud locks, round 27 (silverbird sb, Mirage rp, five head-on robots qw, Midboss fq second read, five SHIELD-27 kb) on 24 fresh PC seeds" ${OUT}/pc-locks27-livematch.md ${OUT}/*_pc-locks27-*.md ${OUT}/pc-locks27-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks27-lock-pick.tsv' -size +0c)
