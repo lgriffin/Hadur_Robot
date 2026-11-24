@@ -1,10 +1,14 @@
-# BENCH-253 pc-locks, round 26: three per-robot movement lines that read positive against both c and aa on the cloud
-# but did not clear the 12-seed bar there (coverage/shards/locks.tsv, dzlane/G and dzlane/L): Midboss and ForceMajeure
-# on fq, RandomBot on vj; and fifteen robots whose line is already on master, read only in c and aa, so the A/A check
-# reads 18. name | note | jar
-ags.Midboss 1q.fast | fq-G-24seeds | ags.Midboss_1q.fast.jar
-demetrix.ForceMajeure 0.75 | fq-L-12seeds | demetrix.ForceMajeure_0.75.jar
-cb.mega.RandomBot 1.0 | vj-G-12seeds | cb.mega.RandomBot_1.0.jar
+# BENCH-253 pc-locks, round 27: seven per-robot lines on existing switches, each locked and confirmed on two
+# independent 12-seed cloud sets (coverage/shards/locks.tsv, dzlane/A, dzlane/B, gap324C2, dzlane/L): silverbird on sb,
+# Mirage on rp, five head-on robots on qw; and fifteen robots whose line is already on master, read only in c and aa, so
+# the A/A check reads 22. name | note | jar
+infovk.s_schwarzm16.silverbird 1.0 | sb-A-L-24seeds | infovk.s_schwarzm16.silverbird_1.0.jar
+zen.Mirage 0.9.5 | rp-C-24seeds | zen.Mirage_0.9.5.jar
+kjc.etc.Dharok 1.0 | qw-B-group | kjc.etc.Dharok_1.0.jar
+ms.Ares 0.19 | qw-B-group | ms.Ares_0.19.jar
+mcb.Audace 1.3 | qw-B-group | mcb.Audace_1.3.jar
+sam.ChipmunkDuelist 1.0 | qw-B-group | sam.ChipmunkDuelist_1.0.jar
+acid.Bl4ck 1.0 | qw-B-group | acid.Bl4ck_1.0.jar
 oog.micro.Maui 1.2 | aa-pad-line-on-master | oog.micro.Maui_1.2.jar
 sgp.MadHatter 4.13 | aa-pad-line-on-master | sgp.MadHatter_4.13.jar
 suh.nano.RammingC 1.00 | aa-pad-line-on-master | suh.nano.RammingC_1.00.jar
