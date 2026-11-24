@@ -1,0 +1,5 @@
+# pc-team-pack4 (BENCH-279): the four teams of the card (NEAR, QUARTERS); lines as in team-census46.txt.
+ustimaw.NightmareTeam 3.3 | team-5 | ustimaw.NightmareTeam_3.3.jar
+ags.polylunar.Polylunar 1.6 | team-7 | ags.polylunar.Polylunar_1.6.jar
+amz.TeamDeathTeam 1 | team | amz.TeamDeathTeam_1.jar
+mn.nano.perceptual.ImpactTeam 1.3.0 | team | mn.nano.perceptual.ImpactTeam_1.3.0.jar
