@@ -2330,8 +2330,8 @@ traceability check reads. 558 of 558 live requirements have a tagged test. The r
 </article>
 <article class="req-card" id="SANARO-2">
 <div class="req-head"><span class="rid">SANARO-2</span><span class="badge">Unwanted</span><span class="badge stage">N0</span></div>
-<p>If the class declares a static initialiser, or its power table has no cell at an index the bot can reach for own and enemy energy 0 to 400, then the build shall fail.</p>
-<dl><dt>Implemented in</dt><dd><a href="api/hadur117/nano/Sanaro.html" title="hadur117.nano.Sanaro">Sanaro</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sanaro/src/test/java/hadur117/nano/SanaroJarIT.java">SanaroJarIT.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sanaro/src/test/java/hadur117/nano/SanaroTableTest.java">SanaroTableTest.java</a></dd></dl>
+<p>If the class declares a static initialiser, then the build shall fail (0.1 to 0.4 also held a power table to reach every own and enemy energy 0 to 400; 0.5 has no table).</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sanaro/src/test/java/hadur117/nano/SanaroJarIT.java">SanaroJarIT.java</a></dd></dl>
 </article>
 <article class="req-card" id="SANARO-3">
 <div class="req-head"><span class="rid">SANARO-3</span><span class="badge">Event</span><span class="badge stage">N0</span></div>
@@ -2345,7 +2345,7 @@ traceability check reads. 558 of 558 live requirements have a tagged test. The r
 </article>
 <article class="req-card" id="SANARO-5">
 <div class="req-head"><span class="rid">SANARO-5</span><span class="badge">Event</span><span class="badge stage">N0</span></div>
-<p>When a scanned robot is closer than the target threshold, which creeps out CREEP (25) px every scan, the bot shall take it as the target and snap the threshold to its distance.</p>
+<p>When a scanned robot is the held target, or is closer than the target&#x27;s distance at its last scan, the bot shall take it as the target (held by name) and set that distance to its own; when any robot dies, and at each round&#x27;s start, the bot shall drop the target so the next robot scanned takes it (0.5; 0.1 to 0.4 took any robot inside a threshold that crept out 25 px a scan).</p>
 <dl><dt>Implemented in</dt><dd><a href="api/hadur117/nano/Sanaro.html" title="hadur117.nano.Sanaro">Sanaro</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sanaro/src/test/java/hadur117/nano/SanaroTest.java">SanaroTest.java</a></dd></dl>
 </article>
 <article class="req-card" id="SANARO-6">
@@ -2360,8 +2360,8 @@ traceability check reads. 558 of 558 live requirements have a tagged test. The r
 </article>
 <article class="req-card" id="SANARO-8">
 <div class="req-head"><span class="rid">SANARO-8</span><span class="badge">Event</span><span class="badge stage">N0</span></div>
-<p>When the target is scanned, the bot shall fire the table&#x27;s power for (own energy, target energy) times the integer BAND over the distance (640 to 0.3, 480 from 0.4: pc-sanaro-n09/n10); from 0.3 a cell in a 2 x 2 block taught by Hadur 3.20&#x27;s shots (tools/distill.py, pc-sanaro-n07 HL, 9,529 cells) holds Hadur&#x27;s power, and every other cell is the lesser of 0.1 plus a sixteenth of its own energy (at most 2.5, and 3.0 from 120 energy) and the least power that kills any energy the target&#x27;s truncated energy stands for (up to one more); a target at 128 energy or more reads energy / 128 rows on at its energy mod 128, a limit of the 128 stride.</p>
-<dl><dt>Implemented in</dt><dd><a href="api/hadur117/nano/Sanaro.html" title="hadur117.nano.Sanaro">Sanaro</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sanaro/src/test/java/hadur117/nano/SanaroTableTest.java">SanaroTableTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sanaro/src/test/java/hadur117/nano/SanaroTest.java">SanaroTest.java</a></dd></dl>
+<p>When the target is scanned and the fire gate passes, the bot shall fire 2 times the integer BAND (480) over the distance, which the engine raises to 0.1 past BAND px and caps at 3 inside BAND / 2 (0.5; 0.1 to 0.4 fired a table of power by own and enemy energy times that band).</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/nano/Sanaro.html" title="hadur117.nano.Sanaro">Sanaro</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sanaro/src/test/java/hadur117/nano/SanaroTest.java">SanaroTest.java</a></dd></dl>
 </article>
 <article class="req-card" id="SANARO-9">
 <div class="req-head"><span class="rid">SANARO-9</span><span class="badge">Ubiquitous</span><span class="badge stage">N0</span></div>
