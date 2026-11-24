@@ -69,14 +69,15 @@ class TeamModesTest {
         assertEquals(EnumSet.of(TeamModes.Mode.MATEFIRE, TeamModes.Mode.HUNT, TeamModes.Mode.PATH, TeamModes.Mode.DODGE,
             TeamModes.Mode.CONCORD, TeamModes.Mode.CLOSE, TeamModes.Mode.LAST, TeamModes.Mode.MOMENTUM), TeamModes.DEFAULT);
         // The table names only the teams whose counters passed on fresh seeds (PR #370), and the two
-        // teams DODGE lost to, confirmed on fresh seeds (PR #465).
-        Set<String> dodgeOff = Set.of("ustimaw.Nightmare", "ustimaw.NigitmareDroid", "mn.nano.perceptual.Impact");
-        // and the four teams CONCORD lost to, confirmed on fresh seeds (PR #538).
-        Set<String> concordOff = Set.of("ustimaw.Nightmare", "ustimaw.NigitmareDroid", "cz.libors.Ogi", "mn.Combat",
+        // teams DODGE lost to, confirmed on fresh seeds (PR #465); the Nightmare class plays it again (PR #1030).
+        Set<String> dodgeOff = Set.of("ustimaw.NigitmareDroid", "mn.nano.perceptual.Impact");
+        // and the teams CONCORD lost to, confirmed on fresh seeds (PR #538); CombatTeam plays it again (PR #1033).
+        Set<String> concordOff = Set.of("ustimaw.Nightmare", "ustimaw.NigitmareDroid", "cz.libors.Ogi",
             "cb.fire.Firestarter");
         assertEquals(java.util.Set.of("gh.nano.GrofGroupMember", "myl.micro.Troodon", "myl.micro.TroodonDroid",
                 "ustimaw.Nightmare", "ustimaw.NigitmareDroid", "mn.nano.perceptual.Impact", "cz.libors.Ogi",
-                "mn.Combat", "cb.fire.Firestarter", "abc.Shadow", "florent.XSeries.X2", "rz.Aleph", "cx.mini.Nimrod"),
+                "mn.Combat", "cb.fire.Firestarter", "abc.Shadow", "florent.XSeries.X2", "rz.Aleph", "cx.mini.Nimrod",
+                "kawigi.micro.Shiz"),
             TeamModes.TABLE.keySet());
         for (Map.Entry<String, Set<TeamModes.Mode>> entry : TeamModes.TABLE.entrySet()) {
             assertTrue(entry.getValue().contains(TeamModes.Mode.PATH), entry.getKey());
@@ -415,14 +416,14 @@ class TeamModesTest {
 
     @Test
     @Tag("TMODE-59")
-    @DisplayName("TMODE-59: TIGHT makes the hunt pull 1.0 where the switch is on (off in the shipped build), means nothing without HUNT, and is only in the five locked teams' entries")
+    @DisplayName("TMODE-59: TIGHT makes the hunt pull 1.0 where the switch is on (on in the shipped build), means nothing without HUNT, and is only in the five locked teams' entries")
     void tightPull() {
         Set<TeamModes.Mode> tightHunt = EnumSet.of(TeamModes.Mode.HUNT, TeamModes.Mode.TIGHT);
         assertEquals(1.0, TeamRisk.HUNT_TIGHT_PULL, 0);
         assertTrue(TeamRisk.tight(tightHunt, true));
         assertFalse(TeamRisk.tight(tightHunt, false));
         assertFalse(TeamRisk.tight(EnumSet.of(TeamModes.Mode.HUNT), true));
-        assertFalse(TeamModes.TIGHT_ON, "off until pc-team-tight reads");
+        assertTrue(TeamModes.TIGHT_ON, "on since pc-team-tight passed");
         List<EnemyInfo> prey = enemies(pt(600, 1000)).alive();
         TeamRisk.Pull p = TeamRisk.pull(pt(600, 400), "n", 100, 3, prey, 100, mates(pt(700, 400)), tightHunt);
         assertEquals(TeamRisk.huntSlot(pt(600, 400), "n", prey, 100, mates(pt(700, 400))), p.at);
@@ -431,7 +432,7 @@ class TeamModesTest {
         assertNull(TeamRisk.pull(pt(600, 400), "n", 100, 3, prey, 100, mates(pt(700, 400)),
             EnumSet.of(TeamModes.Mode.TIGHT)));
         assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.TIGHT));
-        Set<String> tight = Set.of("cz.libors.Ogi", "abc.Shadow", "florent.XSeries.X2", "rz.Aleph", "cx.mini.Nimrod");
+        Set<String> tight = Set.of("cz.libors.Ogi", "abc.Shadow", "florent.XSeries.X2", "rz.Aleph", "cx.mini.Nimrod", "kawigi.micro.Shiz");
         for (Map.Entry<String, Set<TeamModes.Mode>> entry : TeamModes.TABLE.entrySet()) {
             assertEquals(tight.contains(entry.getKey()), entry.getValue().contains(TeamModes.Mode.TIGHT), entry.getKey());
             assertTrue(entry.getValue().contains(TeamModes.Mode.HUNT), entry.getKey());
@@ -439,6 +440,23 @@ class TeamModesTest {
         EnumSet<TeamModes.Mode> shadow = EnumSet.copyOf(TeamModes.DEFAULT);
         shadow.add(TeamModes.Mode.TIGHT);
         assertEquals(shadow, TeamModes.TABLE.get("abc.Shadow"));
+    }
+
+    @Test
+    @Tag("TMODE-60")
+    @DisplayName("TMODE-60: NEAR puts the hunt place 150 px from the prey, and is only in DemoniacNimrods' entry")
+    void nearPlace() {
+        Set<TeamModes.Mode> nearHunt = EnumSet.of(TeamModes.Mode.HUNT, TeamModes.Mode.CLOSE, TeamModes.Mode.NEAR);
+        assertEquals(150, TeamRisk.HUNT_NEAR, 0);
+        assertTrue(TeamRisk.near(nearHunt));
+        assertFalse(TeamRisk.near(EnumSet.of(TeamModes.Mode.HUNT)));
+        List<EnemyInfo> prey = enemies(pt(600, 1000)).alive();
+        TeamRisk.Pull p = TeamRisk.pull(pt(600, 400), "n", 100, 3, prey, 100, mates(pt(700, 400)), nearHunt);
+        assertEquals(TeamRisk.huntSlot(pt(600, 400), "n", prey, 100, mates(pt(700, 400)), TeamRisk.HUNT_NEAR), p.at);
+        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.NEAR));
+        for (Map.Entry<String, Set<TeamModes.Mode>> entry : TeamModes.TABLE.entrySet()) {
+            assertEquals(entry.getKey().equals("cx.mini.Nimrod"), entry.getValue().contains(TeamModes.Mode.NEAR), entry.getKey());
+        }
     }
 
     @Test

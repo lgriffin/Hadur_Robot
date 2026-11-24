@@ -167,7 +167,10 @@
 #         ring, a term against ending within 150 px of it, and full speed through a turn. Suffix qt
 #         (pc-team-quarters, BENCH-225).
 #   tmtight (team only) TMODE-59 on: the tight pack, hunt pull 1.0 against the five teams whose table entry
-#              carries TIGHT (pc-team-tight, BENCH-275). Suffix tp.
+#              carries TIGHT (pc-team-tight, BENCH-275). Suffix tp. Ships since PR #1016, so on master
+#              it builds the robot as it is.
+#   tmnotight (team only) TMODE-59 off: the hunt pull is 0.3 against every team, the build before the tight
+#              pack shipped. Suffix ntp.
 #   tmnocloserr (team only) TMODE-52 off: the team dodge drives 12 candidates even against a close wave, the
 #              build before the close rerank shipped (FORCE_CLOSERERANK). Suffix ncr.
 #   tmnofitted (team only) TMODE-50 off: the fitted enemy aims (TeamModes.FITTED) leave the dodge's profile,
@@ -286,6 +289,8 @@
 #   ramlearn  RAM-20: the rammer escape dodges every rammer's shots by the aims learned in the battle from its own
 #         bullets (ShotModel) in place of RAM-5's fixed head-on and linear pair. Suffix rl.
 #   rlearnlist the robots named in $RAM_LEARN get RAM-20's learned shot model. Suffix rln.
+#   ramknown  RAM-21: every duel opponent is a known rammer, confirmed at the first scan. Suffix rka (rk is rambrk's).
+#   rknownlist the robots named in $RAM_KNOWN are known rammers (ShieldTableData.ramKnowns()). Suffix rkn.
 #   rbendlist the robots named in $RAM_BEND get RAM-18, the rammer escape bending off its line of travel after each of their shots. Suffix rbd.
 #   rfanlist the robots named in $RAM_FAN get RAM-17, the rammer escape dodging their linear/circular aims as +-4 deg fans at RAM-14's weight. Suffix rfn.
 #   rplist the robots named in $RACE_POWER get the energy race's power pick (POW-17,
@@ -350,6 +355,13 @@ edit() {
     n="$(grep -cF -- "$2" "$1" || true)"
     [[ "$n" == 1 ]] || { echo "ablation does not apply: found '$2' $n times in $1" >&2; exit 1; }
     python3 -c 'import sys; p,a,b=sys.argv[1:]; s=open(p).read(); open(p,"w").write(s.replace(a,b,1))' "$1" "$2" "$3"
+}
+
+# edit_last FILE OLD NEW: replaces the last occurrence of OLD, for an anchor that closes more than one
+# method (the team mode table is the last map TeamModes builds).
+edit_last() {
+    grep -qF -- "$2" "$1" || { echo "ablation does not apply: '$2' not found in $1" >&2; exit 1; }
+    python3 -c 'import sys; p,a,b=sys.argv[1:]; s=open(p).read(); i=s.rindex(a); open(p,"w").write(s[:i]+b+s[i+len(a):])' "$1" "$2" "$3"
 }
 
 base="$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' "$src/hadur-robot/pom.xml")"
@@ -463,6 +475,10 @@ for a in "${list[@]}"; do
             # RAM-20: the rammer escape dodges every rammer's shots by the aims learned from its bullets (the cloud screen's arm).
             edit "$src/hadur-core/src/main/java/$pkg/core/move/RamEscape.java" "static final boolean FORCE_LEARNED = false;" "static final boolean FORCE_LEARNED = true;"
             version="${version}rl" ;;
+        ramknown)
+            # RAM-21: every duel opponent is a known rammer: confirmed at the first scan, so rounds 1 and 2 play the escape (the cloud screen's arm).
+            edit "$src/hadur-core/src/main/java/$pkg/core/policy/RammerPolicy.java" "public static final boolean FORCE_KNOWN = false;" "public static final boolean FORCE_KNOWN = true;"
+            version="${version}rka" ;;
         shoff)
             # BENCH-246 pc-modes-check: MOVE-43's shadow fix off again, to read what it does to team and melee end games.
             edit "$movedesign" "static final boolean KEEP_SHADOWS = true;" "static final boolean KEEP_SHADOWS = false;"
@@ -626,7 +642,7 @@ for a in "${list[@]}"; do
             [[ -f "$table" ]] || { echo "ablation $a: no table file $table" >&2; exit 1; }
             # After the shipped entries, so a picked line for a team the table already names wins
             # (team_modes.py --shipped keeps that entry's modes in the line).
-            edit "$modes" "        return Collections.unmodifiableMap(t);" "$(cat "$table")
+            edit_last "$modes" "        return Collections.unmodifiableMap(t);" "$(cat "$table")
         return Collections.unmodifiableMap(t);"
             ;;
         tmpath)
@@ -817,7 +833,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
                 edit "$movedesign" "static final int STOP_AND_GO_PREFIRE = 1;" "static final int STOP_AND_GO_PREFIRE = 2;"
                 version="${version}ws"
             else version="${version}wp"; fi ;;
-        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist|rclist|mirofflist|sfloorlist|pcaplist|pcap5list|hflist|pblist|vjlist|sblist|dplist|rhlist|rwlist|orlist|rflist|rfanlist|rbendlist|rlearnlist|pmlist|pmxlist|aimwlist|stinylist)
+        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist|rclist|mirofflist|sfloorlist|pcaplist|pcap5list|hflist|pblist|vjlist|sblist|dplist|rhlist|rwlist|orlist|rflist|rfanlist|rbendlist|rlearnlist|rknownlist|pmlist|pmxlist|aimwlist|stinylist)
             # Shield part 2 (docs/plan-shield-quality.md): per-opponent opening drive or shipped aims;
             # the mode table's simple-aim dodge (DODGE-3).
             if [[ "$a" == smovelist ]]; then file="${SHIELD_MOVE:-}"; method="moves"; version="${version}mv"
@@ -850,6 +866,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
             elif [[ "$a" == rfanlist ]]; then file="${RAM_FAN:-}"; method="ramFans"; version="${version}rfn"
             elif [[ "$a" == rbendlist ]]; then file="${RAM_BEND:-}"; method="ramBends"; version="${version}rbd"
             elif [[ "$a" == rlearnlist ]]; then file="${RAM_LEARN:-}"; method="ramLearns"; version="${version}rln"
+            elif [[ "$a" == rknownlist ]]; then file="${RAM_KNOWN:-}"; method="ramKnowns"; version="${version}rkn"
             elif [[ "$a" == pmlist ]]; then file="${PM_MIMIC:-}"; method="patternMimics"; version="${version}pm"
             elif [[ "$a" == pmxlist ]]; then file="${PM_MEGAS:-}"; method="patternMegas"; version="${version}pmx"
             elif [[ "$a" == aimwlist ]]; then file="${AIM_WEIGHT:-}"; method="aimWeights"; version="${version}qw"
@@ -977,8 +994,19 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             ;;
         tmtight)
             # TMODE-59 on (team only): TIGHT plays in the five table entries that carry it (hunt pull 1.0). Suffix tp.
+            # It ships since pc-team-tight passed (PR #1016); on older source (--ref) force it on.
             version="${version}tp"
+            if ! grep -qF "public static final boolean TIGHT_ON = true;" "$modes"; then
             edit "$modes" "public static final boolean TIGHT_ON = false;" "public static final boolean TIGHT_ON = true;"
+            fi
+            ;;
+        tmnotight)
+            # TMODE-59 off (team only): TIGHT in a table entry means nothing, the hunt pull is 0.3 on every team. Suffix ntp.
+            # Source from before it shipped (--ref) already has it off.
+            version="${version}ntp"
+            if ! grep -qF "public static final boolean TIGHT_ON = false;" "$modes"; then
+            edit "$modes" "public static final boolean TIGHT_ON = true;" "public static final boolean TIGHT_ON = false;"
+            fi
             ;;
         tmnocloserr)
             # TMODE-52 off: the team dodge drives 12 candidates against close waves too. Suffix ncr.
@@ -1023,7 +1051,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean THREE_FAR = false;" "public static final boolean THREE_FAR = true;"
             version="${version}ef" ;;
-        *) echo "unknown ablation: $a (aa, bb, tmtight, tmnocloserr, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, icoff, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, rhlist, rwlist, orlist, rflist, rfanlist, rbendlist, pmlist, pmxlist, aimwlist|stinylist)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, tmtight, tmnotight, tmnocloserr, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, icoff, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, rhlist, rwlist, orlist, rflist, rfanlist, rbendlist, pmlist, pmxlist, aimwlist|stinylist)" >&2; exit 2 ;;
     esac
 done
 

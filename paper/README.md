@@ -30,7 +30,7 @@ data moves:
 
 ## Before submission
 
-- Add the author's affiliation and contact (marked `TODO(Leigh)` in `main.tex`).
+- Add the author's affiliation and contact (marked `TODO(author)` in `main.tex`).
 - Move to the venue's template (Wiley for SPE) and its reference style.
-- Update the history, figures and abstract when Hadur reaches the top 10.
+- Update the history, figures and abstract to the latest release.
 - Check the references in `refs.bib` against the publishers' records.

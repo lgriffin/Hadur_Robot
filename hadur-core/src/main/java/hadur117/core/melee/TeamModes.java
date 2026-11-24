@@ -98,9 +98,16 @@ public final class TeamModes {
          * {@link TeamRisk#HUNT_PULL}, so the members reach and hold their place round the prey and
          * fire from it instead of from across the field. Only through the table, per team: the
          * five teams that held on 12 fresh cloud seeds each (OgiTeam, ShadowTeam, Xmen, AlephTeam,
-         * DemoniacNimrods). Means nothing without HUNT, and nothing while {@link #TIGHT_ON} is off.
+         * DemoniacNimrods), and ArmyOfShiz since pc-team-pack3. Means nothing without HUNT, and
+         * nothing where {@link #TIGHT_ON} is off.
          */
-        TIGHT
+        TIGHT,
+        /**
+         * TMODE-60, near place: HUNT's place is {@link TeamRisk#HUNT_NEAR} px from the prey, nearer
+         * than CLOSE's, for a team whose guns gain little at that range while ours gain much. Only
+         * through the table, per team (DemoniacNimrods). Means nothing without HUNT.
+         */
+        NEAR
     }
 
     /**
@@ -122,8 +129,8 @@ public final class TeamModes {
     /** TMODE-49: MOMENTUM on every team, as pc-team-momentum measured it (PR #826). */
     public static final boolean FORCE_MOMENTUM = true;
 
-    /** TMODE-59: whether TIGHT in a table entry plays; off in the shipped build until pc-team-tight reads (ablation tmtight turns it on). */
-    public static final boolean TIGHT_ON = false;
+    /** TMODE-59: whether TIGHT in a table entry plays; on as pc-team-tight measured it (PR #1016; ablation tmnotight turns it off). */
+    public static final boolean TIGHT_ON = true;
 
     /**
      * TMODE-50: the fitted enemy aims ({@link #FITTED}) join the dodge's profile. On since pc-team-fitted
@@ -227,13 +234,17 @@ public final class TeamModes {
         // pc-team-noconcord (PR #538), 24 fresh seeds: CONCORD off too (TMODE-35), NightmareTeam +2.4 ± 4.3.
         // pc-team-quarters (PR #759): QUARTERS (TMODE-45), NightmareTeam +4.0 ± 3.2 on 24 seeds and +4.3 ± 3.7 on
         // 16 fresh ones, aimed damage from under 150 px down 25%; the other four teams screened did not move.
-        t.put("ustimaw.Nightmare", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM));
+        // pc-team-nmdodge (PR #1030), 48 fresh seeds with the tight pack on: DODGE back against the Nightmare class,
+        // NightmareTeam +3.1 ± 1.9 (+2.5 ± 2.1 after the A/A), rounds won 442 to 496 of 576.
+        t.put("ustimaw.Nightmare", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM));
         t.put("ustimaw.NigitmareDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM));
         t.put("mn.nano.perceptual.Impact", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         // pc-team-noconcord (PR #538), 24 fresh seeds: CONCORD off (TMODE-35), OgiTeam +4.2 ± 3.0,
         // CombatTeam +2.6 ± 3.8, FirestarterTeam +1.7 ± 3.3; +0.24 ± 0.16 APS with NightmareTeam.
         t.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
-        t.put("mn.Combat", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
+        // CombatTeam plays CONCORD again with the tight pack on: +4.6 ± 2.1 on 36 cloud seeds, rounds won 98 to 121 of 288
+        // on pc-team-pack3 (PR #1033).
+        t.put("mn.Combat", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         t.put("cb.fire.Firestarter", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         // TMODE-59, tight pack: the default modes with TIGHT, written out as the bench's table reader needs, for the teams it held against on 12 fresh
         // cloud seeds each beside the same box's baseline (score share points): ShadowTeam +12.1 ± 4.2,
@@ -241,7 +252,11 @@ public final class TeamModes {
         t.put("abc.Shadow", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         t.put("florent.XSeries.X2", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         t.put("rz.Aleph", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
-        t.put("cx.mini.Nimrod", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
+        // TMODE-60, near place: DemoniacNimrods with the tight pull, +3.3 ± 1.9 on pc-team-pack3 (PR #1033, 24 seeds; +3.4 ± 2.1
+        // after the A/A), +3.5 ± 2.2 on 24 cloud seeds.
+        t.put("cx.mini.Nimrod", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.NEAR, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
+        // pc-team-pack3 (PR #1033): ArmyOfShiz joins the tight pack, +2.6 ± 1.2 on 24 seeds (+2.6 ± 1.3 after the A/A).
+        t.put("kawigi.micro.Shiz", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         return Collections.unmodifiableMap(t);
     }
 

@@ -1,10 +1,23 @@
 # 1v1, the trace study over the whole field (BENCH-221, docs/bench/local/2026-11-09_view-rank.md, "Trace study" and
 # "Per gun"; tool data/tools/learn_trace.py, PR #731). Leigh starts it once the PC is free (one card at a time, from master):
 #   git checkout master && git pull
-#   .\queue.ps1 run pc-learn-trace        (or  ./queue.sh run pc-learn-trace)
+#   .\queue.ps1 run pc-learn-trace --fresh        (or  ./queue.sh run pc-learn-trace --fresh)
+# Run 2 (22 Nov, on 3.24 for the 94 target): run 1 (10 Nov) left this plan's state complete,
+# so run 2 needs --fresh; it fights at a new seed (11900) in a new work directory (work/learn-trace-324), so nothing is
+# read back from run 1's battles, and its reports and results branch carry -324 so run 1's are never replaced. The read
+# adds the field diagnosis (data/tools/diagnose_field.py, BENCH-240) on the same logs, so the morning has one class
+# table for the whole field on 3.24. Run 1's 6 GB under work/learn-trace-pc can be deleted first to free the disk.
+# The diagnosis's Gap column and its row order come from field-ledger.tsv, whose live gaps are from the 3.21 ledger
+# (refreshing it needs all eight rivals' current pages); its Bench column is this run's own 3.24 gap to BeepBoop and is
+# the one to rank by. Rebuild the ledger with this run's read before any card is built from the classes.
 # One bench queue, RoboRumble workers at 0, unpinned, 12 workers, TRUTH LOG ON (the read needs it). Every step resumes;
 # no step needs a decision. About 4 hours of battles (2 arms x 1,212 robots x 1 seed = 2,424 at 35 rounds), and
-# about 6 GB of truth logs under work/learn-trace-pc (2.3 MB a battle on the cloud).
+# about 6 GB of truth logs under ${W} (2.3 MB a battle on the cloud).
+# Why run 2 now: the 3.24 settled live read is 93.44, 1.50 behind BeepBoop; the 94 target needs per-opponent lines,
+# and every line must come from a diagnosis. Run 1's diagnosis is twelve releases old (3.21). A 22 Nov cloud pass on six
+# big-gap robots (c against bb, 3 seeds) found two new per-robot causes the old ledger did not name: Neuromancer
+# (we fire 0.42 to BeepBoop's 0.21 and lose 13 more rounds) and PinkPanther (BeepBoop fires 1.70 to our 0.88 and deals
+# twice our damage). This card reads the same thing for every robot at once, overnight.
 #
 # What it is for (the PC card rule of 2026-11-03: this card changes no robot; it finds the per-opponent lines):
 #   - The cloud trace study on 32 learning guns (two seeds, PR #731) found the same guns hit BeepBoop 2.0 27% less per
@@ -30,21 +43,21 @@
 
 set V = 3.24
 set P = --parallel 12 --failed-ok
-set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G
-set W = work/learn-trace-pc
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 2G
+set W = work/learn-trace-324
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
 
 prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && ./fetch-opponents.sh --set census-312.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && mvn -q compile
 
-trace | ./bench-top20.sh ${C} ${P} --set census-312.txt --seeds 1 --seed-base 11800 --arms plans/pc-learn-trace.arms --out ${W} --label learn-trace-pc --shuffle-jobs
+trace | ./bench-top20.sh ${C} ${P} --set census-312.txt --seeds 1 --seed-base 11900 --arms plans/pc-learn-trace.arms --out ${W} --label learn-trace-324 --shuffle-jobs
   after: prep
   stop: fails 30
   stop: skips 60 over 200 arms c
   stop: stall 30m
 
-read | python3 tools/arms_from_battles.py ${W} && python3 -I ../data/tools/learn_trace.py ${W} --base c --other bb --set census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_learn-trace-field-read.md && python3 ../data/tools/multiarm.py ${W}/arms.tsv --census census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_learn-trace-field.md
+read | python3 tools/arms_from_battles.py ${W} && python3 -I ../data/tools/learn_trace.py ${W} --base c --other bb --set census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_learn-trace-324-field-read.md && python3 ../data/tools/multiarm.py ${W}/arms.tsv --census census-312.txt --out ${OUT}/$(date +%Y-%m-%d)_learn-trace-324-field.md && python3 -I ../data/tools/diagnose_field.py ${W} --base c --other bb --ledger field-ledger.tsv --out ${OUT}/$(date +%Y-%m-%d)_learn-trace-324-diagnose.md --out-tsv ${OUT}/pc-learn-trace-324-diagnose.tsv
   after: trace
 
-pr | bash tools/open_results_pr.sh claude/pc-learn-trace-results "1v1 trace study over the whole field: every gun against Hadur and against BeepBoop" ${OUT}/*_learn-trace-field*.md
+pr | bash tools/open_results_pr.sh claude/pc-learn-trace-324-results "1v1 trace study and field diagnosis over the whole field on 3.24: every robot against Hadur and against BeepBoop" ${OUT}/*_learn-trace-324-*.md ${OUT}/pc-learn-trace-324-diagnose.tsv
   after: read

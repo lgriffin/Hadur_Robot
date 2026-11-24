@@ -1,5 +1,7 @@
-# pc-locks (BENCH-253) round 23: c is master, aa its A/A copy; the lever arm rln is master with its RAM-20 ram-learn line on
-# the panel robots picked for it (plans/locks-pick.tsv; build-ablation.sh rlearnlist).
+# pc-locks (BENCH-253) round 26: c is master, aa its A/A copy; each lever arm is master with its line on the panel robot
+# picked for it (plans/locks-pick.tsv; fq MOVE-32 flattener views, vj MOVE-44 velocity jitter; build-ablation.sh fllist
+# and vjlist).
 c | hadur117.Hadur 3.24 | bisect/hadur117.Hadur_3.24.jar
 aa | hadur117.Hadur 3.24aa | bisect/hadur117.Hadur_3.24aa.jar
-rln | hadur117.Hadur 3.24rln | bisect/hadur117.Hadur_3.24rln.jar
+fq | hadur117.Hadur 3.24fq | bisect/hadur117.Hadur_3.24fq.jar
+vj | hadur117.Hadur 3.24vj | bisect/hadur117.Hadur_3.24vj.jar

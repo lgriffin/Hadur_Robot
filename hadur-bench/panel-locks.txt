@@ -1,28 +1,22 @@
-# BENCH-253 pc-locks, round 23: 25 robots on rln (RAM-20, the rammer escape's learned shot model; 12 to 24 cloud seeds each on
-# three boxes, every one above 0 against both c and aa alone). All 25 are read in c, aa and rln, so the A/A check reads 25
-# and no pad is needed. name | note | jar
-com.syncleus.robocode.Dreadnaught 0.1 | rln-cloud-12seeds | com.syncleus.robocode.Dreadnaught_0.1.jar
-mz.NanoDeath 2.56 | rln-cloud-12seeds | mz.NanoDeath_2.56.jar
-sul.Bicephal 1.2 | rln-cloud-12seeds | sul.Bicephal_1.2.jar
-maribo.FollowFire 1.11 | rln-cloud-12seeds | maribo.FollowFire_1.11.jar
-kc.micro.rammer.MaxRisk 0.6 | rln-cloud-12seeds | kc.micro.rammer.MaxRisk_0.6.jar
-mn.nano.perceptual.Impact 1.3.0 | rln-cloud-24seeds | mn.nano.perceptual.Impact_1.3.0.jar
-jk.nano.Machete 2.0 | rln-cloud-24seeds | jk.nano.Machete_2.0.jar
-stelo.Lifestealer 1.0 | rln-cloud-18seeds | stelo.Lifestealer_1.0.jar
-demetrix.nano.SledgeHammer 0.22 | rln-cloud-18seeds | demetrix.nano.SledgeHammer_0.22.jar
-suzushin7.nano.Galaxy03 1.01 | rln-cloud-18seeds | suzushin7.nano.Galaxy03_1.01.jar
-supersample.SuperRamFire 1.0 | rln-cloud-18seeds | supersample.SuperRamFire_1.0.jar
-blir.nano.Bruce R1.0.0 | rln-cloud-18seeds | blir.nano.Bruce_R1.0.0.jar
-as.xbots 1.0 | rln-cloud-18seeds | as.xbots_1.0.jar
-step.nanoPri 1.0 | rln-cloud-18seeds | step.nanoPri_1.0.jar
-kurios.DOSexe .9a | rln-cloud-18seeds | kurios.DOSexe_.9a.jar
-suh.nano.RammingC 1.00 | rln-cloud-18seeds | suh.nano.RammingC_1.00.jar
-nexus.Prototype 1.0 | rln-cloud-18seeds | nexus.Prototype_1.0.jar
-marcinek.TopGun 1.3 | rln-cloud-18seeds | marcinek.TopGun_1.3.jar
-gg.Squaraus 0.6 | rln-cloud-18seeds | gg.Squaraus_0.6.jar
-oog.nano.Caligula 1.15 | rln-cloud-18seeds | oog.nano.Caligula_1.15.jar
-hirataatsushi.Trinity 0.003 | rln-cloud-12seeds | hirataatsushi.Trinity_0.003.jar
-knackibot.KnackOnOne 0.8.1 | rln-cloud-12seeds | knackibot.KnackOnOne_0.8.1.jar
-mbro.BelajarBot 0.0.3 | rln-cloud-12seeds | mbro.BelajarBot_0.0.3.jar
-goblin.Bender 2.4 | rln-cloud-12seeds | goblin.Bender_2.4.jar
-mmb.Roskilde 0.5 | rln-cloud-12seeds | mmb.Roskilde_0.5.jar
+# BENCH-253 pc-locks, round 26: three per-robot movement lines that read positive against both c and aa on the cloud
+# but did not clear the 12-seed bar there (coverage/shards/locks.tsv, dzlane/G and dzlane/L): Midboss and ForceMajeure
+# on fq, RandomBot on vj; and fifteen robots whose line is already on master, read only in c and aa, so the A/A check
+# reads 18. name | note | jar
+ags.Midboss 1q.fast | fq-G-24seeds | ags.Midboss_1q.fast.jar
+demetrix.ForceMajeure 0.75 | fq-L-12seeds | demetrix.ForceMajeure_0.75.jar
+cb.mega.RandomBot 1.0 | vj-G-12seeds | cb.mega.RandomBot_1.0.jar
+oog.micro.Maui 1.2 | aa-pad-line-on-master | oog.micro.Maui_1.2.jar
+sgp.MadHatter 4.13 | aa-pad-line-on-master | sgp.MadHatter_4.13.jar
+suh.nano.RammingC 1.00 | aa-pad-line-on-master | suh.nano.RammingC_1.00.jar
+jcs.AutoBot 4.2.1 | aa-pad-move56-line | jcs.AutoBot_4.2.1.jar
+mn.nano.perceptual.Impact 1.3.0 | aa-pad-r14-line | mn.nano.perceptual.Impact_1.3.0.jar
+mz.NanoDeath 2.56 | aa-pad-r14-line | mz.NanoDeath_2.56.jar
+wompi.Kowari 1.6 | aa-pad-r14-line | wompi.Kowari_1.6.jar
+sul.Bicephal 1.2 | aa-pad-r14-line | sul.Bicephal_1.2.jar
+cw.megas.GhostShell GT | aa-pad-move58-line | cw.megas.GhostShell_GT.jar
+cw.megas.Gridd 0.4 | aa-pad-move58-line | cw.megas.Gridd_0.4.jar
+cw.megas.Polar 3.2 | aa-pad-move58-line | cw.megas.Polar_3.2.jar
+com.syncleus.robocode.Dreadnaught 0.1 | aa-pad-r19-line | com.syncleus.robocode.Dreadnaught_0.1.jar
+nic.Nicator 2.4 | aa-pad-r19-line | nic.Nicator_2.4.jar
+lrem.micro.MoggFanatic 0.2 | aa-pad-r20-line | lrem.micro.MoggFanatic_0.2.jar
+alpha.BlackIce 1.0 | aa-pad-r20-line | alpha.BlackIce_1.0.jar

@@ -1,56 +1,44 @@
-# 1v1 release-candidate confirm (BENCH-264): master against the released 3.23 on the whole 1v1 field, overnight.
-# Nothing ships from this card. It answers one question before the weekend release: does master beat live 3.23 on
-# the full field at the live turn time, with no robot class falling behind? Leigh starts it on a free PC:
+# 1v1 release-candidate confirm (BENCH-264), run 6: master against the released 3.24 on the whole live 1v1 field, overnight.
+# Nothing ships from this card. It answers one question before the next release decision (target 94 APS): what master's
+# banked lines since 3.24 (pc-locks rounds 23 and 24, RAM-20 and RAM-21) are worth on the full field at the live turn
+# time, with no robot class falling behind. Leigh starts it on a free PC, after pc-locks and pc-team-pack3:
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-rc-confirm --fresh        (or  ./queue.sh run pc-rc-confirm --fresh)
-# Fetches tolerate a missing archive jar (Seraphim 2.4.0 and Nullstride 2.3.3 404 there); --failed-ok skips them.
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. About 7,500 battles; run 1 fought 746 an hour at
-# 16 workers, so run 3's ~6,640 unrun battles take about 9 hours:
+# --fresh because run 5 left this plan's queue state marked complete. --fresh only clears the queue's step state;
+# bench-top20.sh still reads back any battle already in the same --out for the same arm label, opponent and seed
+# (BENCH-95), so run 6 has its own work directory (W ends -r6) and fresh seeds (field 95000, ret 95100). Never point
+# a new run of this card at an old run's --out or seeds. A rerun of run 6 itself (no --fresh) resumes, as it should.
+# Fetches tolerate a missing archive jar; --failed-ok skips them. The released jar is always fetched afresh from the
+# v${REL} GitHub release and checked by sha256, so no older local copy of a 3.24 build can stand in for it.
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. Run 6 reads the live field (census-live.txt,
+# 1,212 robots, BENCH-267) at one seed an arm: about 3,640 field battles plus 288 returner battles, about 5.3 hours at
+# the 746 an hour runs 1 to 5 fought:
 #   livematch  the live-match check (BENCH-245) on the 31-robot panel, read against live
-#   field      census-312.txt (the 1,212-robot 1v1 field; broken-1.11.2 robots skipped) x rel, c, aa x 2 fresh
-#              seeds from 83200 (about 7,000 battles)
-#   ret        panel-ret16.txt (the 16 returners, 15 of them 1.12.0-only) x rel, c, aa x 6 fresh seeds from 83300 on
-#              --engine 1.12.0 --keep-broken (288 battles); gate112 checks every engine.log names robocode.host/1.12.0
+#   field      census-live.txt x rel, c, aa x 1 fresh seed from 95000
+#   ret        panel-ret16.txt (the 16 returners) x rel, c, aa x 6 fresh seeds from 95100 on --engine 1.12.0 --keep-broken;
+#              gate112 checks every engine.log names robocode.host/1.12.0
 #   gate       multiarm on both (A/A is aa - c; rel - c is the release minus master, so master's gain is its negative)
-#              and the field read (shield_s2.py gate --arm rel over 1,217 pairings): PASS when rel minus pooled master
-#              has its 95% high end below 0
+#              and the field read (shield_s2.py gate --arm rel over 1,217 pairings)
 # Stop rules (docs/bench/watch.md): 30 failed battles, an arm scoring nothing in 8, 90+ skipped turns a battle over
 # the last 200, no battle in 30 minutes, aa after 20% outside its band; every battle fought is kept and a rerun resumes.
+# Runs 1 to 5 (3.23 against the 3.24 candidate) are in PRs #947, #953 and #987; run 5 passed, +0.54 +- 0.15.
 #
-# Runs 1 and 2 halted on the skips rule, and both read the same thing: the skips count is Hadur's own skipped turns
-# (LogHarvester counts the engine's "<robot> skipped turn" lines for our robot only), and over the whole field
-# it sits near 60 a battle whatever the host does. Run 1 (#947, 16 workers) read 46.1 then 60.6, run 2 (#953,
-# 12 workers) 59.2 then 61.4, with rel (the released 3.23) at 59.4, c 56.3 and aa 51.8, flat from first window to
-# last. Round 13 on the same PC that morning read 15.3 on its 21 short-battle robots, so the host was healthy.
-# 12 workers bought nothing, so run 3 goes back to 16, and the rule is set at 90 over 200: 50% above the field's
-# level, still far under the build-up of hundreds a battle that PR #331's rule was written to catch.
-# A rerun WITHOUT --fresh resumes: prep and livematch are done, and the field keeps its 521 battles.
-#
-# Run 5 (22 Nov release check) uses fresh seeds (field 83200, ret 83300) and its own work directory (W ends -r5).
-# --fresh only clears the queue's step state. bench-top20.sh still reads back any battle already in the same --out
-# for the same arm label, opponent and seed (BENCH-95), whichever build fought it. Run 4 reused run 3's seeds and
-# directory, so it read back 7,152 of 7,248 field battles fought by the older master's c and aa jars. Never point
-# a new run of this card at an old run's --out or seeds. A rerun of run 5 itself still resumes, as it should.
-# Run 5 fights all ~7,500 battles: about 10 hours at 16 workers. The livematch step still reads back, which is
-# fine: its arms are fixed released jars (3.22 and BeepBoop 2.0), not master builds.
-#
-# Why it should win (the PC card rule of 2026-11-03): master carries MOVE-52 intercept views (PC #934 pass) and the
-# round 3-12 per-opponent lines. The cloud release check on 19 Nov (coverage/shards/dzlane, 4-12 seeds a panel at the
-# live turn time, master A/A pair against the released jar) read every panel up: danger44 +0.65 +- 0.32, field-e
-# +0.57 +- 0.44, midfield +0.53 +- 0.28, returners +1.87 +- 1.76, r31 +1.15 +- 1.13 points a robot, and all 471 line
-# robots +0.57 +- 0.19 (old lines level, the new r3-12 lines +2.46 +- 0.63); flag rechecks on 12 seeds left three
-# small losses worth about 0.005 APS together. This card checks the same thing on the whole field at once.
+# Why it should win (the PC card rule of 2026-11-03): it is a read, not a change; master is 3.24 plus the per-opponent
+# lines banked since (pc-locks round 23, 19 ram-learn lines, PR #1019; round 24, 24 ram-known and 17 more ram-learn
+# lines, PR #1026), each held on 12 fresh PC seeds against both c and aa on its own robot, and the melee and team
+# changes, which do not touch duels. Expected about +0.05 to +0.1 APS on the field; the card says how much and that no
+# class lost, which the next release decision toward 94 needs.
 
 set V = 3.24
-set REL = 3.23
+set REL = 3.24
 set P = --parallel 16 --no-truth-log --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 2G
-set W = work/pc-rc-confirm-r5
+set W = work/pc-rc-confirm-r6
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
-set RELSHA = 4d9d10404fe8158efc9d57435d4d4c0a72000c966d1f420378b9ee360861aa94
+set RELSHA = 19a884d9d0af3676ab16cb3634aca8e6cd534bed844edadb4da5df72bede2a0e
 
-prep | git checkout -q master && mkdir -p bisect/rel work && (cd .. && mvn -q -DskipTests package) && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && test -f bisect/hadur117.Hadur_${V}bb.jar && (test -f bisect/rel/hadur117.Hadur_${REL}.jar || curl -fsSL -o bisect/rel/hadur117.Hadur_${REL}.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v${REL}/hadur117.Hadur_${REL}.jar) && python3 -c "import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1],'rb').read()).hexdigest()!=sys.argv[2])" bisect/rel/hadur117.Hadur_${REL}.jar ${RELSHA} && bash tools/fetch_live_jar.sh && (./fetch-opponents.sh --set panel-r31.txt || true) && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && (./fetch-opponents.sh --set census-312.txt || true) && (./fetch-opponents.sh --set panel-ret16.txt || true) && mvn -q compile
+prep | git checkout -q master && mkdir -p bisect/rel work && (cd .. && mvn -q -DskipTests package) && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && test -f bisect/hadur117.Hadur_${V}bb.jar && rm -f bisect/rel/hadur117.Hadur_${REL}.jar && curl -fsSL -o bisect/rel/hadur117.Hadur_${REL}.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v${REL}/hadur117.Hadur_${REL}.jar && python3 -c "import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1],'rb').read()).hexdigest()!=sys.argv[2])" bisect/rel/hadur117.Hadur_${REL}.jar ${RELSHA} && bash tools/fetch_live_jar.sh && (./fetch-opponents.sh --set panel-r31.txt || true) && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && (./fetch-opponents.sh --set census-live.txt || true) && (./fetch-opponents.sh --set panel-ret16.txt || true) && mvn -q compile
 
 livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out work/pc-livematch-rel-live --label pc-rc-confirm-livematch --shuffle-jobs && python3 tools/live_match.py work/pc-livematch-rel-live/arms.tsv --out ${OUT}/pc-rc-confirm-livematch.md
   after: prep
@@ -59,7 +47,7 @@ livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base
   stop: dead 8
   stop: stall 30m
 
-field | ./bench-top20.sh ${C} ${P} --set census-312.txt --seeds 2 --seed-base 83200 --arms plans/pc-rc-confirm.arms --out ${W}-field --label pc-rc-confirm-field --shuffle-jobs
+field | ./bench-top20.sh ${C} ${P} --set census-live.txt --seeds 1 --seed-base 95000 --arms plans/pc-rc-confirm.arms --out ${W}-field --label pc-rc-confirm-field --shuffle-jobs
   after: livematch
   watch: field=1217
   stop: fails 30
@@ -68,7 +56,7 @@ field | ./bench-top20.sh ${C} ${P} --set census-312.txt --seeds 2 --seed-base 83
   stop: stall 30m
   stop: aa after 20%
 
-ret | ./bench-top20.sh ${C} ${P} --engine 1.12.0 --keep-broken --set panel-ret16.txt --seeds 6 --seed-base 83300 --arms plans/pc-rc-confirm.arms --out ${W}-ret --label pc-rc-confirm-ret --shuffle-jobs
+ret | ./bench-top20.sh ${C} ${P} --engine 1.12.0 --keep-broken --set panel-ret16.txt --seeds 6 --seed-base 95100 --arms plans/pc-rc-confirm.arms --out ${W}-ret --label pc-rc-confirm-ret --shuffle-jobs
   after: field
   watch: field=1217
   stop: fails 30
@@ -81,5 +69,5 @@ gate112 | n=$(ls -d ${W}-ret/battles/*/ 2>/dev/null | wc -l); m=$(grep -l "roboc
 gate | python3 ../data/tools/multiarm.py ${W}-field/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-rc-confirm-field.md && python3 tools/shield_s2.py gate ${W}-field/arms.tsv --arm rel --field 1217 --bar -99 --low -99 --out ${OUT}/$(date +%Y-%m-%d)_pc-rc-confirm-field-gate.md
   after: gate112
 
-pr | bash tools/open_results_pr.sh claude/pc-rc-confirm-results "1v1 release-candidate confirm: master against the released 3.23 on the whole field" ${OUT}/pc-rc-confirm-livematch.md ${OUT}/*_pc-rc-confirm-*.md
+pr | bash tools/open_results_pr.sh claude/pc-rc-confirm-results "1v1 release-candidate confirm, run 6: master against the released 3.24 on the whole live field" ${OUT}/pc-rc-confirm-livematch.md ${OUT}/*_pc-rc-confirm-*.md
   after: gate

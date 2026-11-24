@@ -99,6 +99,8 @@ final class TeamRisk {
     static final double HUNT_PULL = 0.3;
     /** TMODE-59: HUNT's pull under {@link TeamModes.Mode#TIGHT}. */
     static final double HUNT_TIGHT_PULL = 1.0;
+    /** TMODE-60: the hunt place's distance from the prey under NEAR. */
+    static final double HUNT_NEAR = 150;
 
     static final double HUNT_CROWD = 1.6;
 
@@ -157,6 +159,11 @@ final class TeamRisk {
         return on && modes.contains(TeamModes.Mode.TIGHT);
     }
 
+    /** TMODE-60: whether the hunt place is the near one: NEAR in {@code modes}. */
+    static boolean near(Set<TeamModes.Mode> modes) {
+        return modes.contains(TeamModes.Mode.NEAR);
+    }
+
     /**
      * TMODE-3, TMODE-4: the point a team member is drawn to, or null. With
      * {@link TeamModes.Mode#FINISH}, one enemy left by the engine's count ({@code others} less
@@ -183,8 +190,9 @@ final class TeamRisk {
             return new Pull(enemies.get(0).location, FINISH_FLOOR, FINISH_PULL);
         }
         if (modes.contains(TeamModes.Mode.HUNT) && energy >= PACK_ENERGY) {
-            // TMODE-42: CLOSE brings the place in.
-            double radius = modes.contains(TeamModes.Mode.CLOSE) ? HUNT_CLOSE : HUNT_RADIUS;
+            // TMODE-42: CLOSE brings the place in; TMODE-60: NEAR brings it nearer still.
+            double radius = near(modes) ? HUNT_NEAR
+                : modes.contains(TeamModes.Mode.CLOSE) ? HUNT_CLOSE : HUNT_RADIUS;
             Point2D.Double slot = huntSlot(me, name, enemies, now, mates, radius);
             // TMODE-59: TIGHT, while it plays, draws the member to its place at full strength.
             double strength = tight(modes, TeamModes.TIGHT_ON) ? HUNT_TIGHT_PULL : HUNT_PULL;
