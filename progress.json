@@ -1,6 +1,6 @@
 {
  "plan": "pc-locks",
- "updated": 1795557758.4227996,
+ "updated": 1795557763.1948566,
  "steps": {
   "prep": {
    "status": "done",
@@ -27,22 +27,28 @@
    "end": "2026-11-24T22:02:38"
   },
   "lock-rp": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after lock-sb"
   },
   "lock-qw": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after lock-rp"
   },
   "lock-fq": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after lock-qw"
   },
   "lock-kb": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after lock-fq"
   },
   "gate": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after lock-kb"
   },
   "pr": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after gate"
   }
  },
  "watched": [

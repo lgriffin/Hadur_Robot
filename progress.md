@@ -1,17 +1,17 @@
 # Queue pc-locks: progress
 
-Updated 2026-11-24 22:02:38 PC time (22:02 UTC), runner pid 88640.
+Updated 2026-11-24 22:02:43 PC time (22:02 UTC), runner pid 88640.
 
 - `prep` done, exit 0 in 4 min
 - `livematch` done, exit 0 in 8 min
 - `lock` done, exit 0 in 18 min
 - `lock-sb` failed, exit 1 in 0 min
-- `lock-rp` pending
-- `lock-qw` pending
-- `lock-fq` pending
-- `lock-kb` pending
-- `gate` pending
-- `pr` pending
+- `lock-rp` skipped
+- `lock-qw` skipped
+- `lock-fq` skipped
+- `lock-kb` skipped
+- `gate` skipped
+- `pr` skipped
 
 ### livematch
 
@@ -80,14 +80,6 @@ Stopping now would leave 24 battles unrun; every battle already fought is kept a
 ### Queue log (last lines)
 
 ```
-23:48:07 ALLDONE
-21:31:54 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
-21:31:54 start prep
-21:31:57 progress pushed to origin claude/pc-locks-progress (every 15 min)
-21:36:02 prep exit=0 in 247 s
-21:36:02 start livematch
-21:36:02 watching livematch: 3 stop rule(s)
-21:36:57 progress livematch: 27/124 (22%) battles, 1755/h, ETA 3 min, 0 failed, skips 5.1/battle (last 100), bb +0.18
 21:44:13 livematch exit=0 in 491 s
 21:44:13 start lock
 21:44:13 watching lock: 4 stop rule(s)
@@ -95,4 +87,12 @@ Stopping now would leave 24 battles unrun; every battle already fought is kept a
 22:02:35 start lock-sb
 22:02:35 watching lock-sb: 3 stop rule(s)
 22:02:38 lock-sb exit=1 in 2 s
+22:02:43 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/1046
+22:02:43 skip lock-rp (after lock-sb, which has not finished exit=0)
+22:02:43 skip lock-qw (after lock-rp, which has not finished exit=0)
+22:02:43 skip lock-fq (after lock-qw, which has not finished exit=0)
+22:02:43 skip lock-kb (after lock-fq, which has not finished exit=0)
+22:02:43 skip gate (after lock-kb, which has not finished exit=0)
+22:02:43 skip pr (after gate, which has not finished exit=0)
+22:02:43 ALLDONE
 ```
