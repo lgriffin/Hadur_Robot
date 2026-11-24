@@ -429,4 +429,18 @@ class ShieldListTest {
         assertFalse(ShieldList.NONE.aimWeight("a.B 1.0"));
         assertEquals(0, l.size(), "no shield entry");
     }
+
+    @Test
+    @Tag("MOVE-71")
+    @DisplayName("head-on-floor lines name opponents for the head-on floor, matched as shield entries, and add no shield entry")
+    void headOnFloors() {
+        ShieldList l = ShieldList.parse(List.of("head-on-floor: a.B 1.0", "aim-weight: c.D 1.0"));
+        assertTrue(l.headOnFloor("a.B 1.0"));
+        assertTrue(l.headOnFloor("a.B 1.1"), "a line carries over to a new version");
+        assertFalse(l.headOnFloor("c.D 1.0"), "another switch's line does not set it");
+        assertFalse(l.aimWeight("a.B 1.0"), "nor does it set another switch");
+        assertFalse(l.headOnFloor(null));
+        assertFalse(ShieldList.NONE.headOnFloor("a.B 1.0"));
+        assertEquals(0, l.size(), "no shield entry");
+    }
 }
