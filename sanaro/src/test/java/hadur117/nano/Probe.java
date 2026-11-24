@@ -18,6 +18,7 @@ class Probe extends Sanaro {
         fx = 0;
         fy = 0;
         range = 0;
+        target = null;
     }
 
     @Override public double getX() { return x; }
@@ -27,6 +28,7 @@ class Probe extends Sanaro {
     @Override public double getGunHeat() { return gunHeat; }
     @Override public double getEnergy() { return energy; }
     @Override public double getRadarTurnRemaining() { return radarRemaining; }
+    @Override public void setAdjustGunForRobotTurn(boolean b) { }
     @Override public double getTurnRemaining() { return turn == null ? turnRemaining : Math.toDegrees(turn); }
 
     @Override public void setTurnRightRadians(double r) { turn = r; orders.add("turn"); }

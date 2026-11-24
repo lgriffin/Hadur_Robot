@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Writes Sanaro's bullet-power table into Sanaro.java (docs/sanaro.md, "Bullet power").
+"""Writes a Sanaro 0.1-0.4 bullet-power table into a source file (docs/sanaro.md, "Bullet power").
+
+Sanaro 0.5 has no table (docs/sanaro.md section 28); this stays for tools/distill.py, which builds
+on its formula, and for the 0.1-0.4 arms, which pass --src an arm's source built from git history.
 
 The table is one string constant, which costs Sanaro two bytes of code however long it is
 (SANARO-8). Cell (own energy E, enemy energy e) sits at E * 128 + e, both truncated to ints, for
@@ -8,9 +11,7 @@ more reads energy // 128 rows on at its energy % 128 and draws that remainder's 
 of the 128 stride. A cell holds the power at 321-640 px in fortieths:
 the lesser of Sanaro's base power for its own energy and the least power that kills the enemy
 (worked out for one more than its truncated energy).
-SanaroTableTest holds the constant to this formula.
-
-  python3 sanaro/table.py            (rewrites sanaro/src/main/java/hadur117/nano/Sanaro.java)
+SanaroTableTest (removed with 0.5) held 0.1-0.4's constant to this formula.
 
 The bench's power arms (hadur-bench/sanaro-arms/arms.txt) write a variant table into an arm's
 source with the options below; the defaults are the shipped table.
@@ -22,12 +23,10 @@ Standard library only; the output is deterministic.
 
 import argparse
 import math
-import os
 import re
 
 STRIDE = 128
 TOP = 400
-SRC = os.path.join(os.path.dirname(os.path.abspath(__file__)), "src/main/java/hadur117/nano/Sanaro.java")
 
 
 FLOOR, DIV, CAP, TOP_AT, TOP_POWER = 0.1, 16.0, 2.5, 120, 3.0
@@ -64,7 +63,7 @@ def main(argv=None):
     p.add_argument("--cap", type=float, default=CAP, help="the most base power below --top-at")
     p.add_argument("--top-at", type=int, default=TOP_AT, help="own energy from which --top-power fires")
     p.add_argument("--top-power", type=float, default=TOP_POWER)
-    p.add_argument("--src", default=SRC, help="the source file whose POWER constant is rewritten")
+    p.add_argument("--src", required=True, help="the source file whose POWER constant is rewritten")
     a = p.parse_args(argv)
     curve = dict(floor=a.floor, div=a.div, cap=a.cap, top_at=a.top_at, top_power=a.top_power)
     with open(a.src, encoding="utf-8") as f:
