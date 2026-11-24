@@ -47,14 +47,25 @@ class PcLocksPlanTest {
         assertTrue(queue.contains("test -f opponents/$j || { echo \"missing jar $j\"; exit 1; }"), "no panel robot silently dropped");
         assertTrue(queue.contains("lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh"), "each arm built with only its robots");
         assertTrue(queue.contains("--set panel-locks.txt --seeds 24 --seed-base 101000 --arms ${W}-prep/ctl.arms --out ${W}-ctl "), "the lock: c and aa on the whole panel");
+        // Round 27 stopped at lock-sb: a lever arm alone is a one-arm run, which the bench refuses. The stage step writes
+        // each c-plus-lever arms file before its step starts (the watcher reads it at start) and copies in only that
+        // step's robots' c battles, times kept, so the bench reads them back and the watcher counts them as resumed.
+        int ats = queue.indexOf("\nstage | ");
+        assertTrue(ats >= 0, "stage step");
+        String stage = queue.substring(ats, queue.indexOf("\n\n", ats + 1));
+        assertTrue(stage.contains("for a in sb rp qw fq kb; do grep -E \"^(c|$a) [|]\" ${W}-prep/lock.arms > ${W}-prep/$a-c.arms"), "c beside every lever arm");
+        assertTrue(stage.contains("grep -v \"^#\" ${W}-prep/$a.panel | cut -d\"|\" -f1 | sed -E \"s/^ +| +$//g; s/[^A-Za-z0-9.]+/_/g\""), "slugs as Opponent.slug() makes them");
+        assertTrue(stage.contains("cp -rp ${W}-ctl/battles/$s-*-c ${W}-$a/battles/ || exit 1"), "only the step's own robots' c battles, read back");
+        assertTrue(stage.contains("  after: lock"), "stage waits for the c battles");
+        assertEquals("infovk.s_schwarzm16.silverbird_1.0", "infovk.s_schwarzm16.silverbird 1.0".replaceAll("[^A-Za-z0-9.]+", "_"));
+        String prev = "stage";
         for (String a : new String[] {"sb", "rp", "qw", "fq", "kb"}) {
             int at2 = queue.indexOf("\nlock-" + a + " | ");
             assertTrue(at2 >= 0, a);
-            String step = queue.substring(at2, queue.indexOf("\n", at2 + 1));
-            // Round 27 stopped here: a lever arm alone is a one-arm run, which the bench refuses; c rides with it.
-            assertTrue(step.contains("grep -E \"^(c|" + a + ") [|]\" ${W}-prep/lock.arms > ${W}-prep/" + a + "-c.arms"), "c beside " + a);
-            assertTrue(step.contains("cp -r ${W}-ctl/battles/*-c ${W}-" + a + "/battles/"), "c read back, not fought again: " + a);
-            assertTrue(step.contains("--set ${W}-prep/" + a + ".panel --seeds 24 --seed-base 101000 --arms ${W}-prep/" + a + "-c.arms --out ${W}-" + a + " "), "each lever arm on its own robots only: " + a);
+            String step = queue.substring(at2, queue.indexOf("\n\n", at2 + 1));
+            assertTrue(step.contains("--set ${W}-prep/" + a + ".panel --seeds 24 --seed-base 101000 --arms ${W}-prep/" + a + "-c.arms --out ${W}-" + a + " "), "each lever arm beside c, on its own robots only: " + a);
+            assertTrue(step.contains("  after: " + prev + "\n"), a + " after " + prev);
+            prev = "lock-" + a;
         }
         assertTrue(queue.contains("for d in sb rp qw fq kb; do awk -F\"\\t\" -v a=$d 'NR > 1 && $1 == a' ${W}-$d/arms.tsv; done"), "the gate takes only the lever rows from each lever run");
         assertTrue(queue.contains("--out ${W}-livematch ") && !queue.contains("work/pc-livematch-rel-live"), "the live-match check never reads back an earlier card's battles");

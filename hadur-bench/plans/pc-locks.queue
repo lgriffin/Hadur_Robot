@@ -79,35 +79,38 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 24 --seed-base 1
   stop: skips 60 over 24
   stop: stall 30m
 
-lock-sb | grep -E "^(c|sb) [|]" ${W}-prep/lock.arms > ${W}-prep/sb-c.arms && mkdir -p ${W}-sb/battles && cp -r ${W}-ctl/battles/*-c ${W}-sb/battles/ && ./bench-top20.sh ${C} ${P} --set ${W}-prep/sb.panel --seeds 24 --seed-base 101000 --arms ${W}-prep/sb-c.arms --out ${W}-sb --label pc-locks-sb --shuffle-jobs
+stage | for a in sb rp qw fq kb; do grep -E "^(c|$a) [|]" ${W}-prep/lock.arms > ${W}-prep/$a-c.arms && mkdir -p ${W}-$a/battles || exit 1; for s in $(grep -v "^#" ${W}-prep/$a.panel | cut -d"|" -f1 | sed -E "s/^ +| +$//g; s/[^A-Za-z0-9.]+/_/g"); do cp -rp ${W}-ctl/battles/$s-*-c ${W}-$a/battles/ || exit 1; done; done
   after: lock
+
+lock-sb | ./bench-top20.sh ${C} ${P} --set ${W}-prep/sb.panel --seeds 24 --seed-base 101000 --arms ${W}-prep/sb-c.arms --out ${W}-sb --label pc-locks-sb --shuffle-jobs
+  after: stage
   watch: field=1217
   stop: fails 30
   stop: dead 8
   stop: stall 30m
 
-lock-rp | grep -E "^(c|rp) [|]" ${W}-prep/lock.arms > ${W}-prep/rp-c.arms && mkdir -p ${W}-rp/battles && cp -r ${W}-ctl/battles/*-c ${W}-rp/battles/ && ./bench-top20.sh ${C} ${P} --set ${W}-prep/rp.panel --seeds 24 --seed-base 101000 --arms ${W}-prep/rp-c.arms --out ${W}-rp --label pc-locks-rp --shuffle-jobs
+lock-rp | ./bench-top20.sh ${C} ${P} --set ${W}-prep/rp.panel --seeds 24 --seed-base 101000 --arms ${W}-prep/rp-c.arms --out ${W}-rp --label pc-locks-rp --shuffle-jobs
   after: lock-sb
   watch: field=1217
   stop: fails 30
   stop: dead 8
   stop: stall 30m
 
-lock-qw | grep -E "^(c|qw) [|]" ${W}-prep/lock.arms > ${W}-prep/qw-c.arms && mkdir -p ${W}-qw/battles && cp -r ${W}-ctl/battles/*-c ${W}-qw/battles/ && ./bench-top20.sh ${C} ${P} --set ${W}-prep/qw.panel --seeds 24 --seed-base 101000 --arms ${W}-prep/qw-c.arms --out ${W}-qw --label pc-locks-qw --shuffle-jobs
+lock-qw | ./bench-top20.sh ${C} ${P} --set ${W}-prep/qw.panel --seeds 24 --seed-base 101000 --arms ${W}-prep/qw-c.arms --out ${W}-qw --label pc-locks-qw --shuffle-jobs
   after: lock-rp
   watch: field=1217
   stop: fails 30
   stop: dead 8
   stop: stall 30m
 
-lock-fq | grep -E "^(c|fq) [|]" ${W}-prep/lock.arms > ${W}-prep/fq-c.arms && mkdir -p ${W}-fq/battles && cp -r ${W}-ctl/battles/*-c ${W}-fq/battles/ && ./bench-top20.sh ${C} ${P} --set ${W}-prep/fq.panel --seeds 24 --seed-base 101000 --arms ${W}-prep/fq-c.arms --out ${W}-fq --label pc-locks-fq --shuffle-jobs
+lock-fq | ./bench-top20.sh ${C} ${P} --set ${W}-prep/fq.panel --seeds 24 --seed-base 101000 --arms ${W}-prep/fq-c.arms --out ${W}-fq --label pc-locks-fq --shuffle-jobs
   after: lock-qw
   watch: field=1217
   stop: fails 30
   stop: dead 8
   stop: stall 30m
 
-lock-kb | grep -E "^(c|kb) [|]" ${W}-prep/lock.arms > ${W}-prep/kb-c.arms && mkdir -p ${W}-kb/battles && cp -r ${W}-ctl/battles/*-c ${W}-kb/battles/ && ./bench-top20.sh ${C} ${P} --set ${W}-prep/kb.panel --seeds 24 --seed-base 101000 --arms ${W}-prep/kb-c.arms --out ${W}-kb --label pc-locks-kb --shuffle-jobs
+lock-kb | ./bench-top20.sh ${C} ${P} --set ${W}-prep/kb.panel --seeds 24 --seed-base 101000 --arms ${W}-prep/kb-c.arms --out ${W}-kb --label pc-locks-kb --shuffle-jobs
   after: lock-fq
   watch: field=1217
   stop: fails 30
