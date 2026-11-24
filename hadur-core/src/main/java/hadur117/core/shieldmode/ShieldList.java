@@ -197,8 +197,6 @@ public final class ShieldList {
     static final int PATTERN_MIMIC = 33554432;
     /** SHIELD-33: the per-opponent tiny-shot wave switch's bit in {@link #switches}. */
     static final int TINY = 268435456;
-    /** SHIELD-27: the per-opponent close-start break-off switch's bit in {@link #switches}. */
-    static final int CLOSE_BREAK = 67108864;
     /** MOVE-58: the cw.megas-form mimic's bit. */
     static final int PATTERN_MEGAS = 536870912;
     /** MOVE-67: the aim-weight bit. */
@@ -223,6 +221,8 @@ public final class ShieldList {
     private Map<String, double[]> powerBands = Collections.emptyMap();
     /** DIST-4: name to its pinned duel distance, in px. */
     private Map<String, Double> distPins = Collections.emptyMap();
+    /** SHIELD-27: the opponents, by name without version, shield mode breaks off a close start against (every int switch bit is taken). */
+    private Set<String> closeBreaks = Collections.emptySet();
 
     private ShieldList(Set<String> entries, Set<String> moves, Map<String, double[]> aims,
                        Set<String> dodges, Map<String, Integer> stopGo) {
@@ -250,6 +250,7 @@ public final class ShieldList {
         Map<String, double[]> surfKeys = new TreeMap<>();
         Map<String, double[]> powerBands = new TreeMap<>();
         Map<String, Double> distPins = new TreeMap<>();
+        Set<String> closeBreaks = new TreeSet<>();
         if (lines != null) {
             for (String line : lines) {
                 if (line == null) continue;
@@ -257,7 +258,7 @@ public final class ShieldList {
                 if (entry.isEmpty() || entry.startsWith("#")) continue;
                 int bit = entry.startsWith(HEAT_JIT_PREFIX) ? HEAT_JIT : entry.startsWith(GUN_STACK_PREFIX) ? GUN_STACK
                     : entry.startsWith(EXIT_LATE_PREFIX) ? EXIT_LATE : entry.startsWith(EXIT_OFF_PREFIX) ? EXIT_OFF
-                    : entry.startsWith(STILL_PREFIX) ? STILL : entry.startsWith(TINY_PREFIX) ? TINY : entry.startsWith(CLOSE_BREAK_PREFIX) ? CLOSE_BREAK : entry.startsWith(FLAT_ON_PREFIX) ? FLAT_ON
+                    : entry.startsWith(STILL_PREFIX) ? STILL : entry.startsWith(TINY_PREFIX) ? TINY : entry.startsWith(FLAT_ON_PREFIX) ? FLAT_ON
                     : entry.startsWith(MIMIC_ON_PREFIX) ? MIMIC_ON
                     : entry.startsWith(FULL_OFF_PREFIX) ? FULL_OFF
                     : entry.startsWith(X5_POWER_PREFIX) ? X5_POWER
@@ -286,6 +287,11 @@ public final class ShieldList {
                     if (!name.isEmpty() && (switches.containsKey(name) || switches.size() < MAX_ENTRIES)) {
                         switches.merge(name, bit, (a, b) -> a | b);
                     }
+                    continue;
+                }
+                if (entry.startsWith(CLOSE_BREAK_PREFIX)) {
+                    String name = withoutVersion(entry.substring(CLOSE_BREAK_PREFIX.length()).trim());
+                    if (!name.isEmpty() && closeBreaks.size() < MAX_ENTRIES) closeBreaks.add(name);
                     continue;
                 }
                 if (entry.startsWith(DIST_PIN_PREFIX)) {
@@ -385,7 +391,7 @@ public final class ShieldList {
         }
         if (entries.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()
             && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty() && surfKeys.isEmpty()
-            && powerBands.isEmpty() && distPins.isEmpty()) return NONE;
+            && powerBands.isEmpty() && distPins.isEmpty() && closeBreaks.isEmpty()) return NONE;
         ShieldList list = new ShieldList(Collections.unmodifiableSet(entries),
             Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims), Collections.unmodifiableSet(dodges),
             Collections.unmodifiableMap(stopGo));
@@ -394,6 +400,7 @@ public final class ShieldList {
         list.surfKeys = Collections.unmodifiableMap(surfKeys);
         list.powerBands = Collections.unmodifiableMap(powerBands);
         list.distPins = Collections.unmodifiableMap(distPins);
+        list.closeBreaks = Collections.unmodifiableSet(closeBreaks);
         return list;
     }
 
@@ -597,7 +604,9 @@ public final class ShieldList {
      * @param robotName the scanned robot's name, or null
      */
     public boolean closeBreak(String robotName) {
-        return (switchBits(robotName) & CLOSE_BREAK) != 0;
+        if (robotName == null || closeBreaks.isEmpty()) return false;
+        String name = robotName.trim().replaceAll("\\s+", " ");
+        return closeBreaks.contains(name) || closeBreaks.contains(withoutVersion(name));
     }
 
     /**

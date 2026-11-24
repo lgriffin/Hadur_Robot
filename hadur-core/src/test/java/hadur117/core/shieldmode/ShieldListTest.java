@@ -125,6 +125,8 @@ class ShieldListTest {
         assertFalse(l.closeBreak(null));
         assertFalse(l.matches("a.B 1.0"), "not a shield entry");
         assertFalse(ShieldList.NONE.closeBreak("a.B 1.0"));
+        assertFalse(l.ramLearn("a.B 1.0"), "its own set, not RAM-20's switch bit");
+        assertFalse(ShieldList.parse(List.of("ram-learn: e.F")).closeBreak("e.F 1.0"), "a ram-learn line breaks off nothing");
     }
 
     @Test
