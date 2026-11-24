@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 
@@ -63,21 +64,25 @@ class SanaroTest {
 
     @Test
     @Tag("SANARO-5")
-    @DisplayName("a robot inside the creeping threshold is the target, and the threshold snaps to it")
-    void creepingNearest() {
+    @DisplayName("the target is held by name; a nearer robot takes it, and any death frees it")
+    void heldTarget() {
         Probe p = new Probe();
         p.onScannedRobot(scan("a", 100, 0, 300, 0, 0));
-        assertNull(p.fire, "the first scan: 300 is not inside 25");
-        Sanaro.range = 400;
+        assertNull(p.fire, "no target and range 0: nothing is nearer");
+        p.run();
+        assertEquals(Integer.MAX_VALUE, Sanaro.range, "each round starts with no target");
         p.onScannedRobot(scan("a", 100, 0, 300, 0, 0));
+        assertEquals("a", Sanaro.target);
         assertEquals(300, Sanaro.range);
-        p.fire = null;
-        p.gunHeading = 1;
         p.onScannedRobot(scan("b", 100, 1, 340, 0, 0));
-        assertNull(p.fire, "340 is not inside 300 + 25");
-        assertEquals(325, Sanaro.range);
+        assertEquals("a", Sanaro.target, "b at 340 is not nearer than a at 300");
+        p.onScannedRobot(scan("a", 100, 0, 500, 0, 0));
+        assertEquals(500, Sanaro.range, "a is held as it draws off");
         p.onScannedRobot(scan("b", 100, 1, 340, 0, 0));
-        assertTrue(p.fire != null && Sanaro.range == 340, "the threshold crept out to 350 and took b");
+        assertEquals("b", Sanaro.target, "b at 340 is now nearer than a at 500");
+        p.onRobotDeath(new RobotDeathEvent("c"));
+        p.onScannedRobot(scan("a", 100, 0, 600, 0, 0));
+        assertEquals("a", Sanaro.target, "any death frees the target: the next robot scanned takes it");
     }
 
     @Test
@@ -123,22 +128,21 @@ class SanaroTest {
             p.onScannedRobot(scan("a", 100, 0.5, 300, 1.0, -8));
             boolean within = Math.abs(off) < (double) Sanaro.GATE / 300;
             assertEquals(within, p.fire != null, "gun " + off + " rad off the lead at 300 px");
-            assertEquals(300, Sanaro.range, "the threshold snaps to the target, fired or not");
+            assertEquals(300, Sanaro.range, "range snaps to the target, fired or not");
             assertEquals(within ? "[turn, ahead, radar, gun, fire]" : "[turn, ahead, radar, gun]", p.orders.toString());
         }
     }
 
     @Test
     @Tag("SANARO-8")
-    @DisplayName("the shot is the table's power times the integer band 480 / distance (0.4; 640 to 0.3)")
+    @DisplayName("the shot is 2 times the integer band 480 / distance: 0.1 past 480 px, 2 to 240, 3 closer")
     void powerBands() {
         for (int d : new int[] {100, 200, 300, 500, 700}) {
             Probe.reset();
             Probe p = new Probe();
             Sanaro.range = 1000;
             p.onScannedRobot(scan("a", 50, 0, d, 0, 0));
-            double table = Sanaro.POWER.charAt(100 * 128 + 50) / 40.0;
-            assertEquals(480 / d * table, p.fire, 1e-12, "at " + d + " px");
+            assertEquals(480 / d * 2, p.fire, 1e-12, "at " + d + " px");
         }
     }
 }
