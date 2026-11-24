@@ -77,7 +77,8 @@ class TeamModesTest {
         assertEquals(java.util.Set.of("gh.nano.GrofGroupMember", "myl.micro.Troodon", "myl.micro.TroodonDroid",
                 "ustimaw.Nightmare", "ustimaw.NigitmareDroid", "mn.nano.perceptual.Impact", "cz.libors.Ogi",
                 "mn.Combat", "cb.fire.Firestarter", "abc.Shadow", "florent.XSeries.X2", "rz.Aleph", "cx.mini.Nimrod",
-                "kawigi.micro.Shiz"),
+                "kawigi.micro.Shiz", "ags.polylunar.Charon", "ags.polylunar.Europa", "ags.polylunar.Io",
+                "ags.polylunar.Luna", "ags.polylunar.Phobos", "amz.TeamDeath"),
             TeamModes.TABLE.keySet());
         for (Map.Entry<String, Set<TeamModes.Mode>> entry : TeamModes.TABLE.entrySet()) {
             assertTrue(entry.getValue().contains(TeamModes.Mode.PATH), entry.getKey());
@@ -444,7 +445,7 @@ class TeamModesTest {
 
     @Test
     @Tag("TMODE-60")
-    @DisplayName("TMODE-60: NEAR puts the hunt place 150 px from the prey, and is only in DemoniacNimrods' entry")
+    @DisplayName("TMODE-60: NEAR puts the hunt place 150 px from the prey, and is only in the entries of DemoniacNimrods and the Nightmare class")
     void nearPlace() {
         Set<TeamModes.Mode> nearHunt = EnumSet.of(TeamModes.Mode.HUNT, TeamModes.Mode.CLOSE, TeamModes.Mode.NEAR);
         assertEquals(150, TeamRisk.HUNT_NEAR, 0);
@@ -455,7 +456,8 @@ class TeamModesTest {
         assertEquals(TeamRisk.huntSlot(pt(600, 400), "n", prey, 100, mates(pt(700, 400)), TeamRisk.HUNT_NEAR), p.at);
         assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.NEAR));
         for (Map.Entry<String, Set<TeamModes.Mode>> entry : TeamModes.TABLE.entrySet()) {
-            assertEquals(entry.getKey().equals("cx.mini.Nimrod"), entry.getValue().contains(TeamModes.Mode.NEAR), entry.getKey());
+            assertEquals(Set.of("cx.mini.Nimrod", "ustimaw.Nightmare", "ustimaw.NigitmareDroid").contains(entry.getKey()),
+                entry.getValue().contains(TeamModes.Mode.NEAR), entry.getKey());
         }
     }
 
