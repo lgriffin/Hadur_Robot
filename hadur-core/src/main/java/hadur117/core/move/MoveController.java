@@ -1058,6 +1058,9 @@ public class MoveController {
     public double dangerPercentile(Wave w, double hitGf) {
         double bandwidth = Math.atan(HitForensics.HALF_WIDTH / Math.max(w.targetDistance, HitForensics.HALF_WIDTH));
         double[] samples = new double[HitForensics.SAMPLES];
+        // MOVE-71: the reading ranks the views' and members' danger, without the head-on floor.
+        double floor = headOnFloor;
+        headOnFloor = 0;
         try {
             double at = getDangerScore(w, new Wave.Intersection(w.firingAngle(hitGf), bandwidth), FORENSICS_CACHE);
             for (int i = 0; i < samples.length; i++) {
@@ -1066,6 +1069,7 @@ public class MoveController {
             }
             return HitForensics.percentile(samples, at);
         } finally {
+            headOnFloor = floor;
             for (KnnView<TimestampedGuessFactor> view : views) view.cachedNeighbors.remove(FORENSICS_CACHE);
             cacheOwners.remove(FORENSICS_CACHE);
         }
