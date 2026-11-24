@@ -115,11 +115,13 @@ class TeamQuartersTest {
 
     @Test
     @Tag("TMODE-45")
-    @DisplayName("TMODE-45: QUARTERS is not in the default; of the shipped entries only NightmareTeam's two member classes play it (PR #759)")
-    void shippedForNightmareOnly() {
+    @DisplayName("TMODE-45: QUARTERS is not in the default; of the shipped entries only those of NightmareTeam (PR #759), Polylunar, TeamDeathTeam and ImpactTeam (PR #1042) play it")
+    void shippedForFourTeamsOnly() {
         assertFalse(TeamModes.FORCE_QUARTERS);
         assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.QUARTERS));
-        Set<String> quarters = Set.of("ustimaw.Nightmare", "ustimaw.NigitmareDroid");
+        Set<String> quarters = Set.of("ustimaw.Nightmare", "ustimaw.NigitmareDroid", "mn.nano.perceptual.Impact",
+            "amz.TeamDeath", "ags.polylunar.Charon", "ags.polylunar.Europa", "ags.polylunar.Io", "ags.polylunar.Luna",
+            "ags.polylunar.Phobos");
         for (Map.Entry<String, Set<TeamModes.Mode>> entry : TeamModes.TABLE.entrySet()) {
             assertEquals(quarters.contains(entry.getKey()), entry.getValue().contains(TeamModes.Mode.QUARTERS), entry.getKey());
         }

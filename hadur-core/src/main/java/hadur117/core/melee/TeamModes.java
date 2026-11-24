@@ -236,9 +236,20 @@ public final class TeamModes {
         // 16 fresh ones, aimed damage from under 150 px down 25%; the other four teams screened did not move.
         // pc-team-nmdodge (PR #1030), 48 fresh seeds with the tight pack on: DODGE back against the Nightmare class,
         // NightmareTeam +3.1 ± 1.9 (+2.5 ± 2.1 after the A/A), rounds won 442 to 496 of 576.
-        t.put("ustimaw.Nightmare", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM));
-        t.put("ustimaw.NigitmareDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM));
-        t.put("mn.nano.perceptual.Impact", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
+        // pc-team-pack4 (PR #1042), 24 fresh seeds, +0.12 ± 0.10 APS over the four teams (+1.3 ± 1.0 score share points
+        // pooled): NEAR (TMODE-60) against the Nightmare class, +1.4 ± 2.7 there and +3.3 ± 1.7 on 48 cloud seeds;
+        // QUARTERS against ImpactTeam, +0.9 ± 1.6.
+        t.put("ustimaw.Nightmare", of(Mode.MATEFIRE, Mode.HUNT, Mode.NEAR, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM));
+        t.put("ustimaw.NigitmareDroid", of(Mode.MATEFIRE, Mode.HUNT, Mode.NEAR, Mode.PATH, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM));
+        t.put("mn.nano.perceptual.Impact", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.CONCORD, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM));
+        // pc-team-pack4 (PR #1042): the default modes with QUARTERS against Polylunar, +1.6 ± 2.6 on 24 seeds and
+        // +3.3 ± 1.8 on 48 cloud seeds, and against TeamDeathTeam, +1.4 ± 1.2 (+1.3 ± 1.3 after the A/A).
+        t.put("ags.polylunar.Charon", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM));
+        t.put("ags.polylunar.Europa", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM));
+        t.put("ags.polylunar.Io", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM));
+        t.put("ags.polylunar.Luna", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM));
+        t.put("ags.polylunar.Phobos", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM));
+        t.put("amz.TeamDeath", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.QUARTERS, Mode.LAST, Mode.MOMENTUM));
         // pc-team-noconcord (PR #538), 24 fresh seeds: CONCORD off (TMODE-35), OgiTeam +4.2 ± 3.0,
         // CombatTeam +2.6 ± 3.8, FirestarterTeam +1.7 ± 3.3; +0.24 ± 0.16 APS with NightmareTeam.
         t.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));

@@ -703,7 +703,7 @@ endgame MEND-1, 2).
 | `TeamModes.FORCE_CONCORD` | TMODE-33, -34 | **on** | The team brain on every team the table does not exempt |
 | `TeamConcord.MOVE`, `GUN`, `RISK`, `POWER`, `POOL` | TMODE-33 | **on** | CONCORD's parts (the group radar and the hunt stand-down failed and are removed) |
 | `TeamModes.FORCE_CLOSE` | TMODE-42 | **on** | Hunt at 250 px instead of 350 (pc-team-close) |
-| `TeamModes.FORCE_QUARTERS` | TMODE-45 | off | Close-quarters dodge; per team in the table (NightmareTeam) |
+| `TeamModes.FORCE_QUARTERS` | TMODE-45 | off | Close-quarters dodge; per team in the table (NightmareTeam, Polylunar, TeamDeathTeam, ImpactTeam) |
 | `TeamModes.FORCE_LAST` | TMODE-47 | **on** | Keep the Melee role against the last enemy while a teammate lives (pc-team-guard) |
 | `TeamModes.FORCE_MOMENTUM` | TMODE-49 | **on** (3.23) | The dodge and path check prefer candidates that keep Hadur's momentum |
 | `TeamModes.FORCE_FITTED` | TMODE-50 | **on** (3.24) | Fitted enemy aims (`TeamModes.FITTED`, eight teams) join the dodge's profile |
@@ -786,9 +786,10 @@ table names, or the default set built from the `FORCE_*` switches.
 | default (every other team) | MATEFIRE, HUNT, PATH, DODGE, CONCORD, CLOSE, LAST, MOMENTUM | TMODE-12, -14, -28, -30, -34, -42, -47, -49 |
 | `gh.nano.GrofGroupMember` | default + OWN, LINEAR | pc-team-counters PR #370, +2.5 |
 | `myl.micro.Troodon`, `TroodonDroid` | default + OWN, HEADON | PR #370, +4.7 |
-| `ustimaw.Nightmare` | MATEFIRE, HUNT, PATH, DODGE, CLOSE, QUARTERS, LAST, MOMENTUM (no CONCORD) | pc-team-quarters PR #759, +4.0; pc-team-nmdodge PR #1030, DODGE back +3.1 |
-| `ustimaw.NigitmareDroid` | MATEFIRE, HUNT, PATH, CLOSE, QUARTERS, LAST, MOMENTUM (no DODGE, no CONCORD) | pc-team-nododge PR #465, pc-team-quarters PR #759 |
-| `mn.nano.perceptual.Impact` | default without DODGE | PR #465, +3.1 |
+| `ustimaw.Nightmare` | MATEFIRE, HUNT, NEAR, PATH, DODGE, CLOSE, QUARTERS, LAST, MOMENTUM (no CONCORD) | pc-team-quarters PR #759, +4.0; pc-team-nmdodge PR #1030, DODGE back +3.1; NEAR pc-team-pack4 PR #1042, +1.4 |
+| `ustimaw.NigitmareDroid` | MATEFIRE, HUNT, NEAR, PATH, CLOSE, QUARTERS, LAST, MOMENTUM (no DODGE, no CONCORD) | pc-team-nododge PR #465, pc-team-quarters PR #759, pc-team-pack4 PR #1042 |
+| `mn.nano.perceptual.Impact` | default without DODGE, + QUARTERS | PR #465, +3.1; QUARTERS pc-team-pack4 PR #1042, +0.9 |
+| `ags.polylunar.Charon`, `Europa`, `Io`, `Luna`, `Phobos`, `amz.TeamDeath` | default + QUARTERS | pc-team-pack4 PR #1042, Polylunar +1.6, TeamDeathTeam +1.4 |
 | `cz.libors.Ogi`, `cb.fire.Firestarter` | default without CONCORD | pc-team-noconcord PR #538 (TMODE-35) |
 | `mn.Combat` | default (CONCORD back) | pc-team-pack3 PR #1033 |
 | `abc.Shadow`, `florent.XSeries.X2`, `rz.Aleph`, `kawigi.micro.Shiz` | default + TIGHT (`cz.libors.Ogi` carries TIGHT too) | pc-team-tight PR #1016; ArmyOfShiz pc-team-pack3 PR #1033, +2.6 |
