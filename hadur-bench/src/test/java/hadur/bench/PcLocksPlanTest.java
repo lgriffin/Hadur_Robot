@@ -46,7 +46,9 @@ class PcLocksPlanTest {
         assertEquals(7, names("plans/pc-locks.arms").size(), "c, aa and the lever arms sb, rp, qw, fq and kb");
         assertTrue(queue.contains("test -f opponents/$j || { echo \"missing jar $j\"; exit 1; }"), "no panel robot silently dropped");
         assertTrue(queue.contains("lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh"), "each arm built with only its robots");
-        assertTrue(queue.contains("--set panel-locks.txt --seeds 24 --seed-base 101000 --arms ${W}-prep/lock.arms --out ${W} "), "the lock");
+        assertTrue(queue.contains("--set panel-locks.txt --seeds 24 --seed-base 101000 --arms ${W}-prep/ctl.arms --out ${W}-ctl "), "the lock: c and aa on the whole panel");
+        for (String a : new String[] {"sb", "rp", "qw", "fq", "kb"}) assertTrue(queue.contains("\nlock-" + a + " | ./bench-top20.sh ${C} ${P} --set ${W}-prep/" + a + ".panel --seeds 24 --seed-base 101000 --arms ${W}-prep/" + a + ".arms --out ${W}-" + a + " "), "each lever arm on its own robots only: " + a);
+        assertTrue(queue.contains("--out ${W}-livematch ") && !queue.contains("work/pc-livematch-rel-live"), "the live-match check never reads back an earlier card's battles");
         assertTrue(queue.contains("lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0"), "the gate, each robot on its own arm");
         int at = queue.indexOf("\nlock | ");
         String body = queue.substring(at, queue.indexOf("\n\n", at + 1));
@@ -56,6 +58,7 @@ class PcLocksPlanTest {
         assertTrue(!body.contains("stop: aa"), "the watcher reads A/A only once 10 robots are read in both arms; aa is read in the gate");
         int atp = queue.indexOf("\npr | ");
         assertTrue(queue.substring(atp).contains("  after: gate"), "the results PR waits for the gate");
+        assertTrue(queue.contains("  after: lock-kb\n\npr |") || queue.substring(queue.indexOf("\ngate | ")).contains("  after: lock-kb"), "the gate waits for the last lever arm");
         assertEquals(List.of(), PcLiveMatchPlanTest.violations("pc-locks.queue", queue), "BENCH-245 timing rule");
         assertTrue(queue.contains("Why it should win") && queue.contains("set ALERT = lgriffin"));
         assertTrue(queue.contains("run pc-locks --fresh"), "round 26 left the plan state complete, so round 27 starts fresh");
