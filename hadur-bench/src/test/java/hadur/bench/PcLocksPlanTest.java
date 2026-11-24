@@ -36,17 +36,19 @@ class PcLocksPlanTest {
             .map(l -> l.split("\t")[0]).toList();
         assertEquals(panel, picks, "one pick per panel robot (the A/A pads on arm aa, which lock_prep leaves out)");
         assertTrue(panel.size() >= 12, "12+ robots, so one bad battle cannot void the A/A check (round 15)");
-        Set<String> broken = Broken.names(Path.of(Broken.FILE_1112));
-        for (String n : panel) assertTrue(!broken.contains(n), n + " loads on 1.11.2");
+        Set<String> broken = Broken.names(Path.of(Broken.FILE));
+        for (String n : panel) assertTrue(!broken.contains(n), n + " loads on the bench engine (BENCH-267)");
         String arms = Files.readString(Path.of("plans/pc-locks.arms"));
-        for (String a : new String[] {"c", "aa", "fq", "vj"}) {
+        for (String a : new String[] {"c", "aa", "sb", "rp", "qw", "fq", "kb"}) {
             String v = a.equals("c") ? version : version + a;
             assertTrue(arms.contains("\n" + a + " | hadur117.Hadur " + v + " |"), a);
         }
-        assertEquals(4, names("plans/pc-locks.arms").size(), "c, aa and the lever arms fq and vj");
+        assertEquals(7, names("plans/pc-locks.arms").size(), "c, aa and the lever arms sb, rp, qw, fq and kb");
         assertTrue(queue.contains("test -f opponents/$j || { echo \"missing jar $j\"; exit 1; }"), "no panel robot silently dropped");
         assertTrue(queue.contains("lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh"), "each arm built with only its robots");
-        assertTrue(queue.contains("--set panel-locks.txt --seeds 24 --seed-base 98300 --arms ${W}-prep/lock.arms --out ${W} "), "the lock");
+        assertTrue(queue.contains("--set panel-locks.txt --seeds 24 --seed-base 101000 --arms ${W}-prep/ctl.arms --out ${W}-ctl "), "the lock: c and aa on the whole panel");
+        for (String a : new String[] {"sb", "rp", "qw", "fq", "kb"}) assertTrue(queue.contains("\nlock-" + a + " | ./bench-top20.sh ${C} ${P} --set ${W}-prep/" + a + ".panel --seeds 24 --seed-base 101000 --arms ${W}-prep/" + a + ".arms --out ${W}-" + a + " "), "each lever arm on its own robots only: " + a);
+        assertTrue(queue.contains("--out ${W}-livematch ") && !queue.contains("work/pc-livematch-rel-live"), "the live-match check never reads back an earlier card's battles");
         assertTrue(queue.contains("lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0"), "the gate, each robot on its own arm");
         int at = queue.indexOf("\nlock | ");
         String body = queue.substring(at, queue.indexOf("\n\n", at + 1));
@@ -56,12 +58,13 @@ class PcLocksPlanTest {
         assertTrue(!body.contains("stop: aa"), "the watcher reads A/A only once 10 robots are read in both arms; aa is read in the gate");
         int atp = queue.indexOf("\npr | ");
         assertTrue(queue.substring(atp).contains("  after: gate"), "the results PR waits for the gate");
+        assertTrue(queue.contains("  after: lock-kb\n\npr |") || queue.substring(queue.indexOf("\ngate | ")).contains("  after: lock-kb"), "the gate waits for the last lever arm");
         assertEquals(List.of(), PcLiveMatchPlanTest.violations("pc-locks.queue", queue), "BENCH-245 timing rule");
         assertTrue(queue.contains("Why it should win") && queue.contains("set ALERT = lgriffin"));
-        assertTrue(queue.contains("run pc-locks --fresh"), "round 25 left the plan state complete, so round 26 starts fresh");
-        assertTrue(!queue.contains("pc-locks25-") && !queue.contains("/pc-locks-livematch.md") && queue.contains("${OUT}/*_pc-locks26-*.md"), "round 26 reports never replace round 25's");
-        assertTrue(queue.contains("set W = work/pc-locks26"), "round 26 has its own work directory");
-        assertTrue(queue.contains("for a in fq vj; do test -f"), "every lever arm built before the lock");
-        assertTrue(queue.contains("open_results_pr.sh claude/pc-locks26-results") && queue.contains("set P = --parallel 16 --no-truth-log"));
+        assertTrue(queue.contains("run pc-locks --fresh"), "round 26 left the plan state complete, so round 27 starts fresh");
+        assertTrue(!queue.contains("pc-locks26-") && !queue.contains("/pc-locks-livematch.md") && queue.contains("${OUT}/*_pc-locks27-*.md"), "round 27 reports never replace round 26's");
+        assertTrue(queue.contains("set W = work/pc-locks27"), "round 27 has its own work directory");
+        assertTrue(queue.contains("for a in sb rp qw fq kb; do test -f"), "every lever arm built before the lock");
+        assertTrue(queue.contains("open_results_pr.sh claude/pc-locks27-results") && queue.contains("set P = --parallel 16 --no-truth-log"));
     }
 }
