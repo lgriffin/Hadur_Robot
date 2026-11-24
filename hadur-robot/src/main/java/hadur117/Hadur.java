@@ -306,6 +306,8 @@ public class Hadur extends TeamRobot {
             for (String name : ShieldTableData.patternMegas()) lines.add(ShieldList.PATTERN_MEGAS_PREFIX + " " + name);
             // MOVE-67: per-opponent aim weight.
             for (String name : ShieldTableData.aimWeights()) lines.add(ShieldList.AIM_WEIGHT_PREFIX + " " + name);
+            // MOVE-71: per-opponent head-on floor.
+            for (String name : ShieldTableData.headOnFloors()) lines.add(ShieldList.HEAD_ON_FLOOR_PREFIX + " " + name);
             // SKEY-2: per-opponent surf keys.
             for (String key : ShieldTableData.surfKeys()) lines.add(ShieldList.SURF_KEY_PREFIX + " " + key);
             return ShieldList.parse(lines);

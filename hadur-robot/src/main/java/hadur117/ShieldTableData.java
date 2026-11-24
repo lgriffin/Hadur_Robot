@@ -1521,6 +1521,17 @@ final class ShieldTableData {
     }
 
     /**
+     * MOVE-71: mostly head-on shooters whose fire bearing gets a danger floor ({@code head-on-floor:} lines;
+     * build-ablation.sh hoflist adds candidate lines here). Empty until a line locks.
+     *
+     * @return a fresh array of names
+     */
+    static String[] headOnFloors() {
+        return new String[] {
+        };
+    }
+
+    /**
      * MOVE-67: opponents against which the simple aim members stand at weight 1.0 ({@code aim-weight:} lines), each
      * locked on fresh cloud seeds (build-ablation.sh aimwlist adds candidate lines here).
      *

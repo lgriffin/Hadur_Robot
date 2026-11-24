@@ -117,6 +117,8 @@ public final class ShieldList {
     public static final String PATTERN_MEGAS_PREFIX = "pm-megas:";
     /** MOVE-67: a line starting with this names an opponent against which the simple aim members stand at weight 1.0. */
     public static final String AIM_WEIGHT_PREFIX = "aim-weight:";
+    /** MOVE-71: a line starting with this names a mostly head-on shooter whose fire bearing gets a danger floor. */
+    public static final String HEAD_ON_FLOOR_PREFIX = "head-on-floor:";
     /**
      * SKEY-2: a line starting with this gives an opponent's surf key: nine multipliers on the hit
      * views' key weights, one on the kernel width, then the name ({@code "m1 ... m9 bw name"}).
@@ -199,6 +201,8 @@ public final class ShieldList {
     static final int PATTERN_MEGAS = 536870912;
     /** MOVE-67: the aim-weight bit. */
     static final int AIM_WEIGHT = 1073741824;
+    /** MOVE-71: the head-on floor bit. */
+    static final int HEAD_ON_FLOOR = 512;
 
     private final Set<String> entries;
     /** SHIELD-17: the opening-drive list. */
@@ -276,6 +280,7 @@ public final class ShieldList {
                     : entry.startsWith(PATTERN_MIMIC_PREFIX) ? PATTERN_MIMIC
                     : entry.startsWith(PATTERN_MEGAS_PREFIX) ? PATTERN_MEGAS
                     : entry.startsWith(AIM_WEIGHT_PREFIX) ? AIM_WEIGHT
+                    : entry.startsWith(HEAD_ON_FLOOR_PREFIX) ? HEAD_ON_FLOOR
                     : entry.startsWith(POWER_CAP_PREFIX) ? POWER_CAP : 0;
                 if (bit != 0) {
                     String name = withoutVersion(entry.substring(entry.indexOf(':') + 1).trim());
@@ -805,6 +810,11 @@ public final class ShieldList {
     /** MOVE-67: whether an {@code aim-weight:} line names this opponent. */
     public boolean aimWeight(String robotName) {
         return (switchBits(robotName) & AIM_WEIGHT) != 0;
+    }
+
+    /** MOVE-71: whether a {@code head-on-floor:} line names this opponent. */
+    public boolean headOnFloor(String robotName) {
+        return (switchBits(robotName) & HEAD_ON_FLOOR) != 0;
     }
 
     private int switchBits(String robotName) {
