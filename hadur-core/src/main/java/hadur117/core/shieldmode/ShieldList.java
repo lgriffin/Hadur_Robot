@@ -69,6 +69,8 @@ public final class ShieldList {
     public static final String STILL_PREFIX = "shield-still:";
     /** SHIELD-33: a line starting with this names an opponent whose sub-0.1 shots shield mode builds waves for. */
     public static final String TINY_PREFIX = "shield-tiny:";
+    /** SHIELD-27: a line starting with this names an opponent shield mode breaks off a close start against. */
+    public static final String CLOSE_BREAK_PREFIX = "shield-break:";
     /** MOVE-32: a line starting with this names an opponent the duel surfs with the flattener views on (MOVE-24 undone). */
     public static final String FLAT_ON_PREFIX = "flat-on:";
     /** MOVE-34: a line starting with this names an opponent the duel surfs with the learning-gun mimics as aim members (MOVE-33). */
@@ -195,6 +197,8 @@ public final class ShieldList {
     static final int PATTERN_MIMIC = 33554432;
     /** SHIELD-33: the per-opponent tiny-shot wave switch's bit in {@link #switches}. */
     static final int TINY = 268435456;
+    /** SHIELD-27: the per-opponent close-start break-off switch's bit in {@link #switches}. */
+    static final int CLOSE_BREAK = 67108864;
     /** MOVE-58: the cw.megas-form mimic's bit. */
     static final int PATTERN_MEGAS = 536870912;
     /** MOVE-67: the aim-weight bit. */
@@ -253,7 +257,7 @@ public final class ShieldList {
                 if (entry.isEmpty() || entry.startsWith("#")) continue;
                 int bit = entry.startsWith(HEAT_JIT_PREFIX) ? HEAT_JIT : entry.startsWith(GUN_STACK_PREFIX) ? GUN_STACK
                     : entry.startsWith(EXIT_LATE_PREFIX) ? EXIT_LATE : entry.startsWith(EXIT_OFF_PREFIX) ? EXIT_OFF
-                    : entry.startsWith(STILL_PREFIX) ? STILL : entry.startsWith(TINY_PREFIX) ? TINY : entry.startsWith(FLAT_ON_PREFIX) ? FLAT_ON
+                    : entry.startsWith(STILL_PREFIX) ? STILL : entry.startsWith(TINY_PREFIX) ? TINY : entry.startsWith(CLOSE_BREAK_PREFIX) ? CLOSE_BREAK : entry.startsWith(FLAT_ON_PREFIX) ? FLAT_ON
                     : entry.startsWith(MIMIC_ON_PREFIX) ? MIMIC_ON
                     : entry.startsWith(FULL_OFF_PREFIX) ? FULL_OFF
                     : entry.startsWith(X5_POWER_PREFIX) ? X5_POWER
@@ -584,6 +588,16 @@ public final class ShieldList {
      */
     public boolean floor(String robotName) {
         return (switchBits(robotName) & FLOOR) != 0;
+    }
+
+    /**
+     * SHIELD-27: whether shield mode breaks off a round that starts with {@code robotName}
+     * close, by the rule of {@link #matches}.
+     *
+     * @param robotName the scanned robot's name, or null
+     */
+    public boolean closeBreak(String robotName) {
+        return (switchBits(robotName) & CLOSE_BREAK) != 0;
     }
 
     /**

@@ -731,6 +731,18 @@ final class ShieldTableData {
     }
 
     /**
+     * SHIELD-27: the opponents shield mode breaks off a close start against: a round that starts
+     * inside 150 px hands the drive to the duel until the gap opens past it or tick 60 passes.
+     * Candidate builds add lines here (build-ablation.sh sbklist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] closeBreaks() {
+        return new String[] {
+        };
+    }
+
+    /**
      * POW-18: the opponents the duel never fires above 0.2 power at, one name each. Shipped by
      * pc-power-cap (BENCH-236); candidate builds add lines here (build-ablation.sh pcaplist).
      *
