@@ -23,6 +23,7 @@ fala.robocode.FalaRobot 1.0 | rwl-r28 | fala.robocode.FalaRobot_1.0.jar
 wiki.BasicGFSurfer 1.02 | rwl-r28 | wiki.BasicGFSurfer_1.02.jar
 lessonz.robocode.Oz 0.5.0 | rwl-r28 | lessonz.robocode.Oz_0.5.0.jar
 jgap.JGAP7958 1.0 | rwl-r28 | jgap.JGAP7958_1.0.jar
+doka.ShinigamiKNN 1.0 | rwl-r28 | doka.ShinigamiKNN_1.0.jar
 deo.virtual.RainbowBot 1.0 | md-r28 | deo.virtual.RainbowBot_1.0.jar
 wiki.nano.RaikoNano 1.1 | x0-r28 | wiki.nano.RaikoNano_1.1.jar
 zyx.nano.RedBull 1.0 | rf-r28 | zyx.nano.RedBull_1.0.jar
