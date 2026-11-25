@@ -1,15 +1,22 @@
 {
  "plan": "pc-locks",
- "updated": 1795640722.1760645,
+ "updated": 1795641630.1743643,
  "steps": {
   "prep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 261,
+   "end": "2026-11-25T21:09:43"
   },
   "livematch": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 477,
+   "end": "2026-11-25T21:17:41"
   },
   "lock": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-25T21:17:41"
   },
   "stage": {
    "status": "pending"
@@ -36,5 +43,158 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "livematch",
+   "started": 1795640983.6478627,
+   "updated": 1795641461.5400743,
+   "elapsed": 477.8922116756439,
+   "expected": 124,
+   "panel": 31,
+   "field": 1217,
+   "multiarm": true,
+   "arms": [
+    {
+     "arm": "c",
+     "battles": 62,
+     "failed": 0,
+     "level": 70.38612903225807,
+     "skips": 10,
+     "fresh": 62,
+     "scored": 62,
+     "diff": null
+    },
+    {
+     "arm": "bb",
+     "battles": 62,
+     "failed": 0,
+     "level": 84.52435483870968,
+     "skips": 0.8064516129032258,
+     "fresh": 62,
+     "scored": 62,
+     "diff": 14.13822580645161,
+     "n": 31,
+     "ci95": 2.5413335022229253,
+     "half_stop": 3.8897961768718243,
+     "scale": 0.025472473294987676
+    }
+   ],
+   "aa": null,
+   "warnings": [
+    "arm c's jar bisect/live/hadur117.Hadur_3.22.jar was built 243 h before this step started: check it is not stale",
+    "arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 230 h before this step started: check it is not stale"
+   ],
+   "battles": 124,
+   "resumed": 0,
+   "failed": 0,
+   "disables": 0,
+   "rate": 934.1018520364204,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 3.9462924003601074,
+   "rules": [
+    {
+     "rule": "fails 30",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 124"
+    },
+    {
+     "rule": "dead 8",
+     "action": "halt",
+     "state": "ok",
+     "detail": "every arm scoring"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    }
+   ],
+   "skips_mean": 5.403225806451613,
+   "skips_last100": 5.44
+  },
+  {
+   "step": "lock",
+   "started": 1795641461.5582538,
+   "updated": 1795641629.6931026,
+   "elapsed": 168.1348488330841,
+   "expected": 576,
+   "panel": 12,
+   "field": 1217,
+   "multiarm": true,
+   "arms": [
+    {
+     "arm": "c",
+     "battles": 105,
+     "failed": 0,
+     "level": 84.40641341991342,
+     "skips": 12.39047619047619,
+     "fresh": 105,
+     "scored": 105,
+     "diff": null
+    },
+    {
+     "arm": "aa",
+     "battles": 106,
+     "failed": 0,
+     "level": 83.80881577681578,
+     "skips": 13.084905660377359,
+     "fresh": 106,
+     "scored": 106,
+     "diff": -0.5975976430976425,
+     "n": 12,
+     "ci95": 0.645970885043432,
+     "half_stop": 0.988730946495049,
+     "scale": 0.009860312243221035
+    }
+   ],
+   "aa": {
+    "diff": -0.5975976430976425,
+    "ci": 0.645970885043432,
+    "n": 12,
+    "band": 1.1367457253954607,
+    "ok": true,
+    "band_stop": 1.321797355111001
+   },
+   "warnings": [],
+   "battles": 211,
+   "resumed": 0,
+   "failed": 0,
+   "disables": 0,
+   "rate": 4517.802259745052,
+   "eta": 290.8493830524915,
+   "fraction": 0.3663194444444444,
+   "last_battle_age": 0.3528413772583008,
+   "rules": [
+    {
+     "rule": "fails 30",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 211"
+    },
+    {
+     "rule": "dead 8",
+     "action": "halt",
+     "state": "ok",
+     "detail": "every arm scoring"
+    },
+    {
+     "rule": "skips 60 over 24",
+     "action": "halt",
+     "state": "ok",
+     "detail": "11.2 a battle over the last 24 (first 24: 16.5)"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    }
+   ],
+   "skips_mean": 12.739336492890995,
+   "skips_last100": 12.07
+  }
+ ]
 }
