@@ -39,12 +39,4 @@ class DuelOnlySwitchesTest {
         assertFalse(GunDesign.FREE_GUN);
         assertFalse(GunDesign.UNDECAYED);
     }
-
-    @Test
-    @Tag("GUN-13")
-    @DisplayName("the ink switch ships off, and only acts in a duel")
-    void inkShipsOffDuelOnly() {
-        assertFalse(GunDesign.INK);
-        assertFalse(DuelController.duelOnly(true, 2), "a table line never turns ink on in melee or team");
-    }
 }

@@ -5,7 +5,7 @@ Hadur's requirements, written in EARS and traced to the tests that prove them. O
 | Area | Requirements | Families |
 |---|---|---|
 | [Core, architecture and resilience](core.md) | 92 | ADAPT CORE DIAL GATE LINK MEM NAME PHYS RADAR REL RES ROLE SHELF STRAND TIME WAVE WEAVE WORLD |
-| [1v1](duel.md) | 122 | AES DIST DODGE END GUN MATCH MIR MOVE ORACLE POISON POW RAM SHIELD SKEY |
+| [1v1](duel.md) | 121 | AES DIST DODGE END GUN MATCH MIR MOVE ORACLE POISON POW RAM SHIELD SKEY |
 | [Melee](melee.md) | 38 | MELEE MEND MGUN MMEM MMOVE MRADAR MSENSE |
 | [Team](team.md) | 30 | TMODE |
 | [Bench](bench.md) | 193 | BENCH |
@@ -18,7 +18,7 @@ Hadur's requirements, written in EARS and traced to the tests that prove them. O
 | [Sepia (1v1)](sepia.md) | 19 | INK JET SEPIA STRIKE SURF |
 | [Retired](retired.md) | 185 | |
 
-586 active requirements, 185 retired.
+585 active requirements, 185 retired.
 
 ## Writing a requirement
 

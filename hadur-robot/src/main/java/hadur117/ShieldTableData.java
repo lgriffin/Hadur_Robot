@@ -1603,17 +1603,6 @@ final class ShieldTableData {
     }
 
     /**
-     * GUN-13: opponents the duel fires ink against ({@code ink:} lines; build-ablation.sh inklist adds
-     * candidate lines here). Empty until a line locks.
-     *
-     * @return a fresh array of names
-     */
-    static String[] inks() {
-        return new String[] {
-        };
-    }
-
-    /**
      * GUN-12: opponents the duel gun fires against with free gun on ({@code free-gun:} lines; build-ablation.sh
      * fglist adds candidate lines here). Empty until a line locks.
      *

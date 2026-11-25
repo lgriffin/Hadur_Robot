@@ -488,18 +488,4 @@ class ShieldListTest {
         assertFalse(ShieldList.NONE.freeGun("a.B 1.0"));
         assertEquals(0, l.size(), "no shield entry");
     }
-
-    @Test
-    @Tag("GUN-13")
-    @DisplayName("ink lines name opponents for the duel's ink, matched as shield entries, and add no shield entry")
-    void inks() {
-        ShieldList l = ShieldList.parse(List.of("ink: a.B 1.0", "free-gun: c.D 1.0"));
-        assertTrue(l.ink("a.B 1.0"));
-        assertTrue(l.ink("a.B 1.1"), "a line carries over to a new version");
-        assertFalse(l.ink("c.D 1.0"), "another switch's line does not set it");
-        assertFalse(l.freeGun("a.B 1.0"), "nor does it set another switch");
-        assertFalse(l.ink(null));
-        assertFalse(ShieldList.NONE.ink("a.B 1.0"));
-        assertEquals(0, l.size(), "no shield entry");
-    }
 }

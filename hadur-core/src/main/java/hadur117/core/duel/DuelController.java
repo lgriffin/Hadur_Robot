@@ -1045,10 +1045,6 @@ public final class DuelController {
     private boolean fullOff;
     /** POW-16: whether the table holds the duel's shots to x.x5 powers for this opponent. */
     private boolean x5Power;
-    /** GUN-13: whether the duel may fire ink against this opponent (the table, or the INK build switch). */
-    private boolean ink;
-    /** GUN-13: whether the aim taken last tick is an ink shot, fired at 0.1 and not a gun shot. */
-    private boolean aimIsInk;
     /** POW-17: the table names this opponent for the energy-race power pick. */
     private boolean racePower;
     /**
@@ -1597,8 +1593,6 @@ public final class DuelController {
         fullOff = duelOnly(stackList.fullOff(name), enemiesTotal);
         // POW-16: x.x5 powers for the opponents the table names.
         x5Power = duelOnly(stackList.x5Power(name), enemiesTotal);
-        // GUN-13: ink for the opponents the table names, or every duel opponent in the INK build (duel only).
-        ink = duelOnly(GunDesign.INK || stackList.ink(name), enemiesTotal);
         // POW-17: the energy-race power pick for the opponents the table names.
         racePower = duelOnly(stackList.racePower(name), enemiesTotal);
         // RAM-11: the rammer escape also dodges circular aims from the opponents the table names.
@@ -2010,7 +2004,6 @@ public final class DuelController {
         }
 
         aimedBulletPower = wavePower;
-        aimIsInk = false;
         double aimAngle;
         // Head-on at a disabled enemy (it cannot move, so head-on is exact), and while the gun
         // is more than 3 ticks from cool, when no shot can use the real aim: the KNN search is
@@ -2033,27 +2026,11 @@ public final class DuelController {
                 stats.shadowAims++;
             }
             aimAngle = gunController.aim(lastGunWave, myNext, in.time(), shadow);
-            // GUN-13: ink in place of the gun's shot when it saves more per tick of reload.
-            if (ink && planTime == in.time() - 1 && !moveController.planIntervals().isEmpty()) {
-                if (shadow == null) {
-                    moveController.updateShadows(in.time());
-                    shadowAvoidance.prepare(moveController.planIntervals(), myNext, in.time());
-                }
-                InkShot.Aim inkAim = shadowAvoidance.active()
-                    ? InkShot.best(moveController.planIntervals(), shadowAvoidance, myNext, in.time() + 1)
-                    : null;
-                if (inkAim != null && lastGunWave.targetEnergy > 0
-                        && InkShot.worthMore(inkAim.saved, gunHitChance(wavePower), wavePower)) {
-                    aimAngle = inkAim.angle;
-                    aimIsInk = true;
-                    aimedBulletPower = InkShot.POWER;
-                }
-            }
         }
         // MIR-1: a mirror bot will be at the reflection of where our plan has us, a few
         // ticks late; the shot leaves next tick from myNext.
         aimIsMirror = false;
-        if (mirrorActive && !aimIsInk && lastGunWave.targetEnergy > 0) {
+        if (mirrorActive && lastGunWave.targetEnergy > 0) {
             double angle = mirrorAim(in, myNext);
             if (!Double.isNaN(angle)) {
                 aimAngle = angle;
@@ -2062,7 +2039,7 @@ public final class DuelController {
         }
         // Recorded with the aim, so the shot fired from it next tick knows whether it carries
         // the offset (the shielded check in fireIfGunTurned).
-        aimCarriesJitter = shieldDetector.shielded() && !aimIsMirror && !aimIsInk;
+        aimCarriesJitter = shieldDetector.shielded() && !aimIsMirror;
         if (aimCarriesJitter) {
             // SHIELD-2: a shielder predicts our heading exactly; move it by an amount it can't.
             aimAngle += aimJitter.offset(myNext.distance(lastGunWave.targetLocation));
@@ -2221,7 +2198,7 @@ public final class DuelController {
         // END-4: the last of our lead is kept once the enemy can no longer fire.
         double firePower = PowerPolicy.payable(bulletPower, in.energy());
         // POW-16: an x.x5 power whose speed the opponent misreads from our energy drop, for an opponent the table names.
-        if (x5Power && !aimIsInk && !Double.isNaN(firePower)) firePower = PowerPolicy.x5(firePower, in.energy());
+        if (x5Power && !Double.isNaN(firePower)) firePower = PowerPolicy.x5(firePower, in.energy());
         boolean end4 = !Double.isNaN(firePower) && PowerPolicy.holdsLastShot(in.energy(), firePower,
             lastEnemyEnergy, smallestEnemyPower);
         if (end4 != end4Holding) {
@@ -2233,8 +2210,6 @@ public final class DuelController {
                 && mayFire && !end4) {
             orders.fire(firePower);
             lastFiredPower = firePower;
-            // GUN-13: an ink shot is not the gun's: its wave stays virtual and the gun learns nothing from it.
-            if (aimIsInk) return true;
             lastGunWave.firingWave = true;
             // POW-10: the wave carries the power really fired, so the virtual guns' bullets
             // and the learning use its speed and arrival, not the aimed power's.
@@ -2256,15 +2231,6 @@ public final class DuelController {
             return true;
         }
         return false;
-    }
-
-    /**
-     * GUN-13: the chance the gun's shot of {@code power} hits, from this battle's hits in its power
-     * class, pulled toward 15% (a typical hit rate against a surfer) while the class has few shots.
-     */
-    private double gunHitChance(double power) {
-        int c = BattleHitRates.classOf(power);
-        return (ourRates.hits(c) + 0.15 * 20) / (ourRates.shots(c) + 20.0);
     }
 
     /**
