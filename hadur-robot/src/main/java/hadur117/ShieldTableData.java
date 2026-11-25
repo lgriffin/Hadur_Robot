@@ -731,6 +731,23 @@ final class ShieldTableData {
     }
 
     /**
+     * SHIELD-27: the opponents shield mode breaks off a close start against: a round that starts
+     * inside 150 px hands the drive to the duel until the gap opens past it or tick 60 passes.
+     * Candidate builds add lines here (build-ablation.sh sbklist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] closeBreaks() {
+        return new String[] {
+            // pc-locks round 27 (BENCH-253, PR #1050): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "NDH.GuessFactor 1.0",           // +6.6
+            "cjm.Che 1.2",                   // +3.5
+            "starpkg.StarViewerZ 1.26",      // +2.0
+            "PkKillers.PkAssassin 1.0",      // +0.9
+        };
+    }
+
+    /**
      * POW-18: the opponents the duel never fires above 0.2 power at, one name each. Shipped by
      * pc-power-cap (BENCH-236); candidate builds add lines here (build-ablation.sh pcaplist).
      *
@@ -805,6 +822,8 @@ final class ShieldTableData {
         return new String[] {
             // pc-locks round 4 (BENCH-253, PR #866): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "ntc.Knowledge 1.1",             // +2.6
+            // pc-locks round 27 (BENCH-253, PR #1050): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "infovk.s_schwarzm16.silverbird 1.0", // +9.6
         };
     }
 
@@ -1134,6 +1153,8 @@ final class ShieldTableData {
             "dev.kurtw.KurtBot 0.2",             // +3.7
             // pc-locks round 25 (BENCH-253, PR #1036): 12 fresh PC seeds at the live turn time; cloud lock held first
             "slugzilla.Parallax 0.1",            // +2.4
+            // pc-locks round 27 (BENCH-253, PR #1050): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "zen.Mirage 0.9.5",                  // +7.4
         };
     }
 
@@ -1521,6 +1542,17 @@ final class ShieldTableData {
     }
 
     /**
+     * MOVE-71: mostly head-on shooters whose fire bearing gets a danger floor ({@code head-on-floor:} lines;
+     * build-ablation.sh hoflist adds candidate lines here). Empty until a line locks.
+     *
+     * @return a fresh array of names
+     */
+    static String[] headOnFloors() {
+        return new String[] {
+        };
+    }
+
+    /**
      * MOVE-67: opponents against which the simple aim members stand at weight 1.0 ({@code aim-weight:} lines), each
      * locked on fresh cloud seeds (build-ablation.sh aimwlist adds candidate lines here).
      *
@@ -1533,6 +1565,8 @@ final class ShieldTableData {
             "nic.Nicator 2.4",
             // pc-locks round 20 (BENCH-253, PR #994): 12 fresh PC seeds at the live turn time, +2.4
             "lrem.micro.MoggFanatic 0.2",
+            // pc-locks round 27 (BENCH-253, PR #1050): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "acid.Bl4ck 1.0",                // +1.1
         };
     }
 }

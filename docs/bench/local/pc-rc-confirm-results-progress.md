@@ -1,10 +1,10 @@
 # Queue pc-rc-confirm: progress
 
-Updated 2026-11-23 22:46:59 PC time (22:46 UTC), runner pid 33592.
+Updated 2026-11-25 01:25:48 PC time (01:25 UTC), runner pid 95668.
 
 - `prep` done, exit 0 in 2 min
-- `livematch` done, exit 0 in 0 min
-- `field` done, exit 0 in 3.1 h
+- `livematch` done, exit 0 in 8 min
+- `field` done, exit 0 in 3.0 h
 - `ret` running
 - `gate112` pending
 - `gate` pending
@@ -12,12 +12,13 @@ Updated 2026-11-23 22:46:59 PC time (22:46 UTC), runner pid 33592.
 
 ### livematch
 
-**124 of 124 battles** (100%), 0 failed, 124 read back from an earlier run. Running 0 min. Last battle 0 min ago.
+**124 of 124 battles** (100%), 0 failed. Running 8 min, 909 battles/h, about 0 min left (ends ~22:12 PC time). Last battle 0 min ago.
+Skipped turns a battle: 5.5 overall, first 100 5.1, last 100 5.6; engine disables 0.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 62 | 0 | 70.75 | - | - | - | 10.2 |
-| bb | 62 | 0 | 84.03 | +0.34 (31 robots) | ±0.06 | +0.24 .. +0.44 | 1.1 |
+| c | 62 | 0 | 70.28 | - | - | - | 10.1 |
+| bb | 62 | 0 | 84.27 | +0.36 (31 robots) | ±0.07 | +0.25 .. +0.46 | 0.9 |
 
 APS = mean difference over the robots read x 31 panel robots / 1217 pairings.
 
@@ -27,74 +28,74 @@ APS = mean difference over the robots read x 31 panel robots / 1217 pairings.
 | `dead 8` | halt | ok | every arm scoring |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 0 battles unrun; every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
-> warning: arm c's jar bisect/live/hadur117.Hadur_3.22.jar was built 194 h before this step started: check it is not stale
+> warning: arm c's jar bisect/live/hadur117.Hadur_3.22.jar was built 220 h before this step started: check it is not stale
 
-> warning: arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 181 h before this step started: check it is not stale
+> warning: arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 207 h before this step started: check it is not stale
 
 ### field
 
-**3636 of 3636 battles** (100%), 0 failed. Running 3.1 h, 802 battles/h, about 0 min left (ends ~22:37 PC time). Last battle 0 min ago.
-Skipped turns a battle: 33.5 overall, first 100 33.0, last 100 34.4; engine disables 962.
+**3636 of 3636 battles** (100%), 0 failed. Running 3.0 h, 1078 battles/h, about 0 min left (ends ~01:14 PC time). Last battle 0 min ago.
+Skipped turns a battle: 36.4 overall, first 100 36.0, last 100 37.9; engine disables 1211.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| rel | 1212 | 0 | 93.71 | -0.12 (1212 robots) | ±0.17 | -0.38 .. +0.14 | 33.1 |
-| c | 1212 | 0 | 93.90 | - | - | - | 34.3 |
-| aa | 1212 | 0 | 93.76 | -0.14 (1212 robots) | ±0.18 | -0.41 .. +0.14 | 33.1 |
+| rel | 1212 | 0 | 93.69 | -0.15 (1212 robots) | ±0.17 | -0.42 .. +0.11 | 36.9 |
+| c | 1212 | 0 | 93.88 | - | - | - | 36.0 |
+| aa | 1212 | 0 | 93.81 | -0.07 (1212 robots) | ±0.19 | -0.36 .. +0.21 | 36.3 |
 
 APS = mean difference over the robots read x 1212 panel robots / 1217 pairings.
-A/A: aa - c -0.14 pts over 1212 robots; 1% band ±0.34 (inside).
+A/A: aa - c -0.07 pts over 1212 robots; 1% band ±0.34 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
 | `fails 30` | halt | ok | 0 failed of 3636 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 90 over 200` | halt | ok | 33.6 a battle over the last 200 (first 200: 34.7) |
+| `skips 90 over 200` | halt | ok | 39.8 a battle over the last 200 (first 200: 37.6) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `aa after 20%` | halt | ok | aa - c -0.14 pts over 1212 robots, stop band ±0.39 |
+| `aa after 20%` | halt | ok | aa - c -0.07 pts over 1212 robots, stop band ±0.39 |
 
 Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 ### ret
 
-**287 of 288 battles** (100%), 0 failed. Running 9 min, 1866 battles/h, about 0 min left (ends ~22:47 PC time). Last battle 0 min ago.
-Skipped turns a battle: 12.4 overall, first 100 14.2, last 100 12.0; engine disables 0.
+**288 of 288 battles** (100%), 0 failed. Running 11 min, 1594 battles/h, about 0 min left (ends ~01:25 PC time). Last battle 0 min ago.
+Skipped turns a battle: 11.6 overall, first 100 12.8, last 100 10.7; engine disables 1.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| rel | 96 | 0 | 80.69 | +0.00 (16 robots) | ±0.01 | -0.02 .. +0.02 | 12.3 |
-| c | 95 | 0 | 80.97 | - | - | - | 12.6 |
-| aa | 96 | 0 | 80.30 | -0.01 (16 robots) | ±0.01 | -0.03 .. +0.01 | 12.4 |
+| rel | 96 | 0 | 80.02 | -0.01 (16 robots) | ±0.01 | -0.03 .. +0.02 | 11.5 |
+| c | 96 | 0 | 80.74 | - | - | - | 11.7 |
+| aa | 96 | 0 | 80.39 | -0.00 (16 robots) | ±0.01 | -0.02 .. +0.01 | 11.6 |
 
 APS = mean difference over the robots read x 16 panel robots / 1217 pairings.
-A/A: aa - c -0.67 pts over 16 robots; 1% band ±1.19 (inside).
+A/A: aa - c -0.35 pts over 16 robots; 1% band ±1.19 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 287 |
+| `fails 30` | halt | ok | 0 failed of 288 |
 | `dead 8` | halt | ok | every arm scoring |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 1 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-19:30:46 start livematch
-19:30:46 watching livematch: 3 stop rule(s)
-19:30:54 livematch exit=0 in 7 s
-19:30:54 start field
-19:30:54 watching field: 5 stop rule(s)
-19:31:00 progress field: 0/3636 (0%) battles, 0 failed
-20:01:18 progress field: 685/3636 (19%) battles, 1370/h, ETA 2.2 h, 0 failed, skips 32.4/battle (last 100), rel -0.47, aa -0.08
-20:31:44 progress field: 1366/3636 (38%) battles, 1356/h, ETA 1.7 h, 0 failed, skips 33.4/battle (last 100), rel -0.42, aa -0.29
-21:01:55 progress field: 1934/3636 (53%) battles, 1136/h, ETA 1.5 h, 0 failed, skips 36.1/battle (last 100), rel -0.27, aa -0.24
-21:32:16 progress field: 2555/3636 (70%) battles, 1238/h, ETA 52 min, 0 failed, skips 34.5/battle (last 100), rel -0.22, aa -0.23
-22:02:36 progress field: 3142/3636 (86%) battles, 1146/h, ETA 26 min, 0 failed, skips 38.4/battle (last 100), rel -0.14, aa -0.16
-22:32:51 progress field: 3634/3636 (100%) battles, 978/h, ETA 0 min, 0 failed, skips 35.4/battle (last 100), rel -0.12, aa -0.14
-22:37:46 field exit=0 in 11211 s
-22:37:46 start ret
-22:37:46 watching ret: 3 stop rule(s)
+22:04:35 start livematch
+22:04:35 watching livematch: 3 stop rule(s)
+22:04:49 progress livematch: 1/124 (1%) battles, 254/h, ETA 29 min, 0 failed, skips 2.0/battle (last 100)
+22:12:46 livematch exit=0 in 491 s
+22:12:46 start field
+22:12:46 watching field: 5 stop rule(s)
+22:35:06 progress field: 483/3636 (13%) battles, 1298/h, ETA 2.4 h, 0 failed, skips 36.2/battle (last 100), rel -0.34, aa +0.00
+23:05:24 progress field: 1121/3636 (31%) battles, 1252/h, ETA 2.0 h, 0 failed, skips 38.3/battle (last 100), rel -0.14, aa +0.22
+23:35:40 progress field: 1746/3636 (48%) battles, 1246/h, ETA 1.5 h, 0 failed, skips 38.8/battle (last 100), rel -0.15, aa +0.14
+00:05:57 progress field: 2360/3636 (65%) battles, 1204/h, ETA 1.1 h, 0 failed, skips 34.6/battle (last 100), rel -0.14, aa +0.02
+00:36:15 progress field: 2952/3636 (81%) battles, 1164/h, ETA 35 min, 0 failed, skips 38.3/battle (last 100), rel -0.17, aa -0.11
+01:06:36 progress field: 3490/3636 (96%) battles, 1056/h, ETA 8 min, 0 failed, skips 38.6/battle (last 100), rel -0.12, aa -0.08
+01:14:58 field exit=0 in 10932 s
+01:14:58 start ret
+01:14:58 watching ret: 3 stop rule(s)
 ```

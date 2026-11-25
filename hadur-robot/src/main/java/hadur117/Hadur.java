@@ -260,6 +260,8 @@ public class Hadur extends TeamRobot {
             for (String name : ShieldTableData.tinies()) lines.add(ShieldList.TINY_PREFIX + " " + name);
             // SHIELD-25: per-opponent shield power floor.
             for (String name : ShieldTableData.shieldFloors()) lines.add(ShieldList.FLOOR_PREFIX + " " + name);
+            // SHIELD-27: per-opponent close-start break-off.
+            for (String name : ShieldTableData.closeBreaks()) lines.add(ShieldList.CLOSE_BREAK_PREFIX + " " + name);
             // POW-18: per-opponent power cap.
             for (String name : ShieldTableData.powerCaps()) lines.add(ShieldList.POWER_CAP_PREFIX + " " + name);
             for (String name : ShieldTableData.powerCapHalves()) lines.add(ShieldList.POWER_CAP5_PREFIX + " " + name);
@@ -306,6 +308,8 @@ public class Hadur extends TeamRobot {
             for (String name : ShieldTableData.patternMegas()) lines.add(ShieldList.PATTERN_MEGAS_PREFIX + " " + name);
             // MOVE-67: per-opponent aim weight.
             for (String name : ShieldTableData.aimWeights()) lines.add(ShieldList.AIM_WEIGHT_PREFIX + " " + name);
+            // MOVE-71: per-opponent head-on floor.
+            for (String name : ShieldTableData.headOnFloors()) lines.add(ShieldList.HEAD_ON_FLOOR_PREFIX + " " + name);
             // SKEY-2: per-opponent surf keys.
             for (String key : ShieldTableData.surfKeys()) lines.add(ShieldList.SURF_KEY_PREFIX + " " + key);
             return ShieldList.parse(lines);

@@ -197,6 +197,40 @@ public class MoveController {
         return aimMembers;
     }
 
+    /**
+     * MOVE-71: the head-on floor, 0 when off (duel only, per opponent). Against an opponent the
+     * table names as a mostly head-on shooter, an intersection's danger is at least this share of
+     * the surf's kernel on the head-on angle (the bearing to us at the wave's tick and the two
+     * before, whichever lies closest), taken as a maximum with the views' and members' danger, so
+     * a wave whose views are cold still keeps us off the fire bearing.
+     */
+    private double headOnFloor;
+
+    /** MOVE-71: sets the head-on floor's share; 0 turns it off. */
+    public void setHeadOnFloor(double share) {
+        this.headOnFloor = Math.max(0.0, Math.min(1.0, share));
+    }
+
+    /** MOVE-71: the head-on floor's share, 0 when off. */
+    public double headOnFloor() {
+        return headOnFloor;
+    }
+
+    /** MOVE-71: the danger with the head-on floor applied, {@code danger} as it is when off. */
+    private double withHeadOnFloor(Wave w, double danger, double dangerAngle, double bandwidth, List<double[]> segments) {
+        if (!(headOnFloor > 0)) return danger;
+        double[] aims = w.simpleAims();
+        if (aims == null) return danger;
+        double best = 0;
+        for (int lag = 0; lag < hadur117.core.physics.SimpleAims.LAGS; lag++) {
+            double angle = aims[lag * hadur117.core.physics.SimpleAims.TYPES + hadur117.core.physics.SimpleAims.HEAD_ON];
+            if (Double.isNaN(angle)) continue;
+            best = Math.max(best, kernel(DiaUtils.normalizeAngle(angle, dangerAngle), bandwidth, segments));
+        }
+        double floor = headOnFloor * best;
+        return Double.isNaN(danger) ? danger : Math.max(danger, floor);
+    }
+
     /** MOVE-33: visit-trained learning-gun mimics as aim members after the aims, or null when off (duel only). */
     private GunMimics memberMimics;
 
@@ -1024,6 +1058,9 @@ public class MoveController {
     public double dangerPercentile(Wave w, double hitGf) {
         double bandwidth = Math.atan(HitForensics.HALF_WIDTH / Math.max(w.targetDistance, HitForensics.HALF_WIDTH));
         double[] samples = new double[HitForensics.SAMPLES];
+        // MOVE-71: the reading ranks the views' and members' danger, without the head-on floor.
+        double floor = headOnFloor;
+        headOnFloor = 0;
         try {
             double at = getDangerScore(w, new Wave.Intersection(w.firingAngle(hitGf), bandwidth), FORENSICS_CACHE);
             for (int i = 0; i < samples.length; i++) {
@@ -1032,6 +1069,7 @@ public class MoveController {
             }
             return HitForensics.percentile(samples, at);
         } finally {
+            headOnFloor = floor;
             for (KnnView<TimestampedGuessFactor> view : views) view.cachedNeighbors.remove(FORENSICS_CACHE);
             cacheOwners.remove(FORENSICS_CACHE);
         }
@@ -1291,12 +1329,14 @@ public class MoveController {
         if (enabledSize == 0 || !(totalScanWeight > 0)) {
             double fallback = defaultDanger(w, segments, bandwidth);
             if (parts != null) parts[2 * views.size()] = fallback;
-            return fallback;
+            return mixAims ? withHeadOnFloor(w, fallback, dangerAngle, bandwidth, segments) : fallback;
         }
         if (parts != null) parts[2 * views.size()] = Double.NaN;
         double viewScore = totalDanger / totalScanWeight;
-        if (!mixAims || aimMembers == null) return viewScore;
-        return aimMembers.danger(viewScore, aimScores(w, dangerAngle, bandwidth, segments));
+        if (!mixAims) return viewScore;
+        double mixed = aimMembers == null ? viewScore
+            : aimMembers.danger(viewScore, aimScores(w, dangerAngle, bandwidth, segments));
+        return withHeadOnFloor(w, mixed, dangerAngle, bandwidth, segments);
     }
 
     /**

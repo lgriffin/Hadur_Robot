@@ -56,7 +56,9 @@ LEVERS = {
     "pm": ("pmlist", ("PM_MIMIC",)),  # MOVE-56 pattern-matcher mimic
     "pmx": ("pmxlist", ("PM_MEGAS",)),  # MOVE-58 cw.megas-form pattern-matcher mimic
     "qw": ("aimwlist", ("AIM_WEIGHT",)),  # MOVE-67 per-opponent aim weight 1.0
+    "hof": ("hoflist", ("HEAD_ON_FLOOR",)),  # MOVE-71 per-opponent head-on floor
     "ty": ("stinylist", ("SHIELD_TINY",)),  # SHIELD-33 tiny-shot shield waves
+    "kb": ("sbklist", ("SHIELD_BREAK",)),  # SHIELD-27 close-start break-off
     "or": ("orlist", ("STEADY_ORBIT",)),
     "sp2": ("sdplanlist", ("SHOT_DODGE_PLAN",)),
 }

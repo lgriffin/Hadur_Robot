@@ -1033,6 +1033,11 @@ public final class DuelController {
     private PatternMimic patternMimic;
     /** MOVE-67: whether the table put the simple aim members at weight 1.0 for this opponent. */
     private boolean aimWeightOn;
+    /**
+     * MOVE-71: the head-on floor's share against the opponents the table names: about the share of
+     * their shots that the five head-on shooters of the B1 forensic fire head-on (44-53%).
+     */
+    static final double HEAD_ON_FLOOR_SHARE = 0.5;
     /** MOVE-56: the enemy's bearing to us and distance on the last scan, the tick its gun aimed a shot fired now. */
     private double patternLastBearing = Double.NaN;
     private double patternLastDistance = Double.NaN;
@@ -1582,6 +1587,8 @@ public final class DuelController {
             if (members != null) moveController.setAimMembers(members.withAimPrior(AimMembers.AIM_WEIGHT_PRIOR));
             aimWeightOn = true;
         }
+        // MOVE-71: the head-on floor for the opponents the table names (duel only).
+        moveController.setHeadOnFloor(duelOnly(stackList.headOnFloor(name), enemiesTotal) ? HEAD_ON_FLOOR_SHARE : 0.0);
         // POW-15: the full-power rules off for the opponents the table names.
         fullOff = duelOnly(stackList.fullOff(name), enemiesTotal);
         // POW-16: x.x5 powers for the opponents the table names.

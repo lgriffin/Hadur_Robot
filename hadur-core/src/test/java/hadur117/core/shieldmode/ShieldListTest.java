@@ -114,6 +114,22 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("SHIELD-27")
+    @DisplayName("shield-break lines name the opponents shield mode breaks off a close start against, matched as shield entries")
+    void perOpponentCloseBreak() {
+        ShieldList l = ShieldList.parse(List.of("shield-break: a.B 1.0", "shield-break: c.D", "shield-break:"));
+        assertTrue(l.closeBreak("a.B 1.0"));
+        assertTrue(l.closeBreak("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertTrue(l.closeBreak("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.floor("a.B 1.0") || l.tiny("a.B 1.0"), "no other switch");
+        assertFalse(l.closeBreak(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.closeBreak("a.B 1.0"));
+        assertFalse(l.ramLearn("a.B 1.0"), "its own set, not RAM-20's switch bit");
+        assertFalse(ShieldList.parse(List.of("ram-learn: e.F")).closeBreak("e.F 1.0"), "a ram-learn line breaks off nothing");
+    }
+
+    @Test
     @Tag("POW-18")
     @DisplayName("power-cap lines name the opponents the duel caps its power against, matched as shield entries")
     void perOpponentPowerCap() {
@@ -427,6 +443,20 @@ class ShieldListTest {
         assertFalse(l.patternMegas("a.B 1.0"), "nor does it set another switch");
         assertFalse(l.aimWeight(null));
         assertFalse(ShieldList.NONE.aimWeight("a.B 1.0"));
+        assertEquals(0, l.size(), "no shield entry");
+    }
+
+    @Test
+    @Tag("MOVE-71")
+    @DisplayName("head-on-floor lines name opponents for the head-on floor, matched as shield entries, and add no shield entry")
+    void headOnFloors() {
+        ShieldList l = ShieldList.parse(List.of("head-on-floor: a.B 1.0", "aim-weight: c.D 1.0"));
+        assertTrue(l.headOnFloor("a.B 1.0"));
+        assertTrue(l.headOnFloor("a.B 1.1"), "a line carries over to a new version");
+        assertFalse(l.headOnFloor("c.D 1.0"), "another switch's line does not set it");
+        assertFalse(l.aimWeight("a.B 1.0"), "nor does it set another switch");
+        assertFalse(l.headOnFloor(null));
+        assertFalse(ShieldList.NONE.headOnFloor("a.B 1.0"));
         assertEquals(0, l.size(), "no shield entry");
     }
 }

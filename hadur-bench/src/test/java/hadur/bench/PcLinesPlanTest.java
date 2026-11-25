@@ -73,6 +73,7 @@ class PcLinesPlanTest {
         later.addAll(names("plans/locks23-shipped.txt")); // pc-locks round 23 (PR #1018) likewise
         later.addAll(names("plans/locks24-shipped.txt")); // pc-locks round 24 (PR #1024) likewise
         later.addAll(names("plans/locks25-shipped.txt")); // pc-locks round 25 (PR #1036) likewise
+        later.addAll(names("plans/locks27-shipped.txt")); // pc-locks round 27 (PR #1050) likewise
         later.addAll(names("plans/move56-shipped.txt")); // MOVE-56 pm-mimic line likewise
         later.addAll(names("plans/shield33-shipped.txt")); // SHIELD-33 shield-tiny lines likewise
         later.addAll(names("plans/move58-shipped.txt")); // MOVE-58 pm-megas lines likewise
