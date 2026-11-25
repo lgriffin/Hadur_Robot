@@ -130,6 +130,21 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("SHIELD-35")
+    @DisplayName("shield-yield lines name the opponents shield mode yields the drive to while close, matched as shield entries")
+    void perOpponentCloseYield() {
+        ShieldList l = ShieldList.parse(List.of("shield-yield: a.B 1.0", "shield-yield: c.D", "shield-yield:"));
+        assertTrue(l.closeYield("a.B 1.0"));
+        assertTrue(l.closeYield("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertTrue(l.closeYield("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.closeBreak("a.B 1.0"), "its own set, not SHIELD-27's");
+        assertFalse(l.closeYield(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.closeYield("a.B 1.0"));
+        assertFalse(ShieldList.parse(List.of("shield-break: e.F")).closeYield("e.F 1.0"), "a shield-break line yields nothing");
+    }
+
+    @Test
     @Tag("POW-18")
     @DisplayName("power-cap lines name the opponents the duel caps its power against, matched as shield entries")
     void perOpponentPowerCap() {

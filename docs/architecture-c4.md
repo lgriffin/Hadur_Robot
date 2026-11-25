@@ -745,6 +745,7 @@ flowchart LR
 | `tinies()` | `shield-tiny:` | SHIELD-33 | 5 | Tiny unexplained energy drops (0.005 to 0.1) reach shield mode as shots |
 | `shieldFloors()` | `shield-floor:` | SHIELD-25 | 1 | No shield shot under 0.4 power |
 | `closeBreaks()` | `shield-break:` | SHIELD-27 | 4 | A start inside 150 px is fought until the gap opens or tick 60, then shielded |
+| `closeYields()` | `shield-yield:` | SHIELD-35 | 0 | Inside 150 px the duel drives and fires until the gap passes 250 px, then shielded |
 | **Movement** | | | | |
 | `stopGos()`, `stopGoShifts()` | `stop-go:`, `stop-go2:` | POISON-2 | 33, 58 | Stop-and-go, reverse crawl one or two ticks early |
 | `dodges()`, `dodgePlans()` | `shot-dodge:`, `shot-dodge2:` | DODGE-3, DODGE-4 | 1, 17 | Simple-aim dodge; shot-dodge planner with a shipped expert |
