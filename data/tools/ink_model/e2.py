@@ -4,38 +4,45 @@ import os, sys; HERE=os.path.dirname(os.path.abspath(__file__)); sys.path.insert
 import numpy as np, shadowsim as ss, json, time
 S=np.array([0.0,0.0])
 POW=(0.1,0.15,0.2,0.3,0.5)
+ACCEL,BRAKE,VMAX=1.0,2.0,8.0     # the engine's limits: px per tick gained, px per tick shed, top speed
+def braking(v):
+    """The speeds, tick by tick, that bring speed v to rest braking as hard as the engine allows."""
+    out=[]
+    while v>0: v=max(0.0,v-BRAKE); out.append(v)
+    return out
+def slot(tail,rem):
+    """A braking tail with one more tick at speed `rem`, put where the speeds either side of it allow."""
+    i=next((j for j,s in enumerate(tail) if s<=rem),len(tail))
+    return tail[:i]+[rem]+tail[i:]
+def dash_speeds(d, mode):
+    """The speed at each tick of a dash of length d that ends at rest, within the engine's limits. None if there
+    is no such dash. 'run' starts at top speed and brakes at the end; the other modes start from rest."""
+    def rest_to_rest(d):
+        # speed up to vmax, cruise, brake (engine order: the speed changes, then the body moves). What is left
+        # over after whole ticks of cruising is one slower tick, taken on the way down.
+        best=None
+        for vmax in range(1,int(VMAX)+1):
+            acc=[float(v) for v in range(1,vmax+1)]; dec=braking(float(vmax))
+            base=sum(acc)+sum(dec)
+            if base>d+1e-9: break
+            n=int(np.floor((d-base)/vmax+1e-9)); rem=d-base-n*vmax
+            steps=acc+[float(vmax)]*n+(slot(dec,rem) if rem>1e-9 else dec)
+            if best is None or len(steps)<len(best): best=steps
+        if best is None: best=[float(d),0.0] if d>0 else []      # under 1 px: one short tick, then rest
+        return best
+    if mode!='run' or d<=0: return rest_to_rest(d)
+    dec=braking(VMAX)
+    if d<sum(dec)-1e-9: return None          # at top speed it cannot stop that soon
+    cruise=d-sum(dec); n=int(np.floor(cruise/VMAX+1e-9)); rem=cruise-VMAX*n
+    return [VMAX]*n+(slot(dec,rem) if rem>1e-9 else dec)
 def dash_profile(d, T, mode):
     """Arc distance still to go at each tick 0..T for a body that ends at rest on its spot by tick T-1.
     mode 'late': waits, then dashes from rest so it stops just in time; 'early': dashes at once, then waits;
     'run': already at speed 8 at tick 0 and brakes at the end (starts d away)."""
-    # build a rest-to-rest move of length d with accel 1, decel 2, vmax 8 (engine order: speed changes, then moves)
-    def rest_to_rest(d):
-        best=None
-        for vmax in (1,2,3,4,5,6,7,8):
-            acc=[v for v in range(1,vmax+1)]
-            dec=[]; v=vmax
-            while v>0:
-                v=max(0,v-2); dec.append(v)
-            base=sum(acc)+sum(dec)
-            if base>d+1e-9: break
-            cruise=(d-base)/vmax
-            n=int(np.floor(cruise+1e-9)); rem=d-base-n*vmax
-            steps=acc+[vmax]*n+([rem] if rem>1e-9 else [])+dec
-            if best is None or len(steps)<len(best): best=steps
-        if best is None: best=[d] if d>0 else []
-        return best
-    if mode=='run':
-        dec=[6,4,2,0]; cruise=max(0.0,d-12)
-        n=int(np.floor(cruise/8+1e-9)); rem=cruise-8*n
-        steps=[8]*n+([rem] if rem>1e-9 else [])+dec
-        if d<12: steps=rest_to_rest(d)
-    else:
-        steps=rest_to_rest(d)
-    steps=[s for s in steps]
-    if len(steps)>T-1: return None
+    steps=dash_speeds(d,mode)
+    if steps is None or len(steps)>T-1: return None
     pad=[0.0]*(T-1-len(steps))
     seq=(pad+steps) if mode=='late' else (steps+pad)
-    if mode=='run': seq=steps+pad
     togo=[d]
     for s in seq: togo.append(togo[-1]-s)
     return np.array(togo)   # togo[t] = distance still to go at tick t

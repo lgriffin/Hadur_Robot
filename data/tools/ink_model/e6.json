@@ -39,6 +39,11 @@
    "continue": 0.713,
    "reverse": 0.287
   },
+  "foresight": {
+   "checked": 0,
+   "off": 0.0,
+   "committed": 0
+  },
   "policy": "run",
   "fire": "ink",
   "ticks": 12000,
@@ -83,6 +88,11 @@
   "picks": {
    "continue": 0.711,
    "reverse": 0.289
+  },
+  "foresight": {
+   "checked": 0,
+   "off": 0.0,
+   "committed": 0
   },
   "policy": "run",
   "fire": "attack",
@@ -129,6 +139,11 @@
    "continue": 0.511,
    "reverse": 0.489
   },
+  "foresight": {
+   "checked": 0,
+   "off": 0.0,
+   "committed": 0
+  },
   "policy": "run",
   "fire": "ink",
   "ticks": 12000,
@@ -173,6 +188,11 @@
   "picks": {
    "continue": 0.514,
    "reverse": 0.486
+  },
+  "foresight": {
+   "checked": 0,
+   "off": 0.0,
+   "committed": 0
   },
   "policy": "run",
   "fire": "attack",
@@ -219,6 +239,11 @@
    "continue": 0.489,
    "hold": 0.252,
    "reverse": 0.259
+  },
+  "foresight": {
+   "checked": 0,
+   "off": 0.0,
+   "committed": 0
   },
   "policy": "three",
   "fire": "ink",
@@ -270,6 +295,11 @@
    "hold": 0.239,
    "reverse": 0.275
   },
+  "foresight": {
+   "checked": 0,
+   "off": 0.0,
+   "committed": 0
+  },
   "policy": "three",
   "fire": "attack",
   "ticks": 12000,
@@ -320,6 +350,11 @@
    "hold": 0.334,
    "reverse": 0.338
   },
+  "foresight": {
+   "checked": 0,
+   "off": 0.0,
+   "committed": 0
+  },
   "policy": "three",
   "fire": "ink",
   "ticks": 12000,
@@ -369,6 +404,11 @@
    "continue": 0.328,
    "hold": 0.319,
    "reverse": 0.353
+  },
+  "foresight": {
+   "checked": 0,
+   "off": 0.0,
+   "committed": 0
   },
   "policy": "three",
   "fire": "attack",
@@ -422,6 +462,11 @@
    "hold": 0.205,
    "reverse": 0.187
   },
+  "foresight": {
+   "checked": 0,
+   "off": 0.0,
+   "committed": 0
+  },
   "policy": "wide",
   "fire": "ink",
   "ticks": 12000
@@ -469,50 +514,60 @@
    "hold": 0.203,
    "reverse": 0.197
   },
+  "foresight": {
+   "checked": 0,
+   "off": 0.0,
+   "committed": 0
+  },
   "policy": "wide",
   "fire": "attack",
   "ticks": 12000
  },
  "belief_seg_ink": {
   "waves": 2559,
-  "cover": 0.481,
-  "width": 51.8,
+  "cover": 0.477,
+  "width": 51.7,
   "headon": {
-   "on": 0.191,
-   "net": 0.13
+   "on": 0.187,
+   "net": 0.127
   },
   "linear": {
-   "on": 0.087,
-   "net": 0.035
+   "on": 0.094,
+   "net": 0.042
   },
   "gf": {
-   "on": 0.136,
-   "net": 0.083
+   "on": 0.13,
+   "net": 0.075
   },
   "seg": {
-   "on": 0.139,
-   "net": 0.071
+   "on": 0.151,
+   "net": 0.081
   },
   "virtual": {
-   "gf": 0.111,
-   "headon": 0.098,
-   "linear": 0.072,
-   "seg": 0.128
+   "gf": 0.109,
+   "headon": 0.097,
+   "linear": 0.08,
+   "seg": 0.131
   },
   "census": {
-   "dwell": 28.524,
+   "dwell": 28.45,
    "off_gf": 0.113,
-   "off_headon": 0.098,
-   "off_linear": 0.072,
-   "off_seg": 0.133,
-   "rev_100": 3.506,
-   "speed": 5.907,
-   "stopped": 0.078
+   "off_headon": 0.097,
+   "off_linear": 0.08,
+   "off_seg": 0.137,
+   "rev_100": 3.514,
+   "speed": 5.836,
+   "stopped": 0.086
   },
   "picks": {
-   "continue": 0.548,
-   "hold": 0.051,
-   "reverse": 0.401
+   "continue": 0.539,
+   "hold": 0.062,
+   "reverse": 0.4
+  },
+  "foresight": {
+   "checked": 2562,
+   "off": 0.0,
+   "committed": 57
   },
   "policy": "belief",
   "fire": "ink",
@@ -522,43 +577,48 @@
  "belief_seg_attack": {
   "waves": 2559,
   "cover": 0.017,
-  "width": 51.0,
+  "width": 50.8,
   "headon": {
-   "on": 0.139,
-   "net": 0.134
+   "on": 0.141,
+   "net": 0.135
   },
   "linear": {
-   "on": 0.172,
-   "net": 0.167
+   "on": 0.165,
+   "net": 0.162
   },
   "gf": {
-   "on": 0.11,
-   "net": 0.108
+   "on": 0.128,
+   "net": 0.126
   },
   "seg": {
-   "on": 0.156,
-   "net": 0.152
+   "on": 0.137,
+   "net": 0.136
   },
   "virtual": {
-   "gf": 0.092,
-   "headon": 0.095,
-   "linear": 0.106,
+   "gf": 0.095,
+   "headon": 0.097,
+   "linear": 0.103,
    "seg": 0.114
   },
   "census": {
-   "dwell": 46.97,
-   "off_gf": 0.101,
-   "off_headon": 0.095,
-   "off_linear": 0.106,
-   "off_seg": 0.122,
-   "rev_100": 2.125,
-   "speed": 4.564,
-   "stopped": 0.275
+   "dwell": 46.14,
+   "off_gf": 0.1,
+   "off_headon": 0.097,
+   "off_linear": 0.103,
+   "off_seg": 0.124,
+   "rev_100": 2.167,
+   "speed": 4.515,
+   "stopped": 0.279
   },
   "picks": {
-   "continue": 0.46,
-   "hold": 0.315,
-   "reverse": 0.225
+   "continue": 0.444,
+   "hold": 0.322,
+   "reverse": 0.235
+  },
+  "foresight": {
+   "checked": 2545,
+   "off": 0.0,
+   "committed": 65
   },
   "policy": "belief",
   "fire": "attack",
@@ -570,41 +630,46 @@
   "cover": 0.479,
   "width": 51.8,
   "headon": {
-   "on": 0.195,
-   "net": 0.139
+   "on": 0.191,
+   "net": 0.136
   },
   "linear": {
-   "on": 0.101,
+   "on": 0.104,
    "net": 0.041
   },
   "gf": {
-   "on": 0.129,
-   "net": 0.076
+   "on": 0.132,
+   "net": 0.078
   },
   "seg": {
-   "on": 0.193,
-   "net": 0.102
+   "on": 0.195,
+   "net": 0.105
   },
   "virtual": {
    "gf": 0.106,
-   "headon": 0.098,
-   "linear": 0.085,
-   "seg": 0.163
+   "headon": 0.099,
+   "linear": 0.086,
+   "seg": 0.16
   },
   "census": {
-   "dwell": 26.859,
+   "dwell": 26.945,
    "off_gf": 0.109,
-   "off_headon": 0.098,
-   "off_linear": 0.085,
-   "off_seg": 0.168,
-   "rev_100": 3.736,
-   "speed": 5.986,
-   "stopped": 0.063
+   "off_headon": 0.099,
+   "off_linear": 0.086,
+   "off_seg": 0.165,
+   "rev_100": 3.725,
+   "speed": 5.968,
+   "stopped": 0.065
   },
   "picks": {
-   "continue": 0.527,
-   "hold": 0.027,
-   "reverse": 0.445
+   "continue": 0.525,
+   "hold": 0.03,
+   "reverse": 0.444
+  },
+  "foresight": {
+   "checked": 2566,
+   "off": 0.0,
+   "committed": 44
   },
   "policy": "belief",
   "fire": "ink",
@@ -613,44 +678,49 @@
  },
  "belief_gf_attack": {
   "waves": 2559,
-  "cover": 0.017,
+  "cover": 0.016,
   "width": 51.2,
   "headon": {
-   "on": 0.134,
-   "net": 0.131
+   "on": 0.13,
+   "net": 0.127
   },
   "linear": {
-   "on": 0.149,
-   "net": 0.146
+   "on": 0.15,
+   "net": 0.148
   },
   "gf": {
-   "on": 0.093,
-   "net": 0.091
+   "on": 0.088,
+   "net": 0.087
   },
   "seg": {
-   "on": 0.168,
-   "net": 0.165
+   "on": 0.163,
+   "net": 0.16
   },
   "virtual": {
-   "gf": 0.085,
-   "headon": 0.096,
-   "linear": 0.095,
-   "seg": 0.117
+   "gf": 0.082,
+   "headon": 0.093,
+   "linear": 0.091,
+   "seg": 0.109
   },
   "census": {
-   "dwell": 43.781,
-   "off_gf": 0.09,
-   "off_headon": 0.096,
-   "off_linear": 0.095,
-   "off_seg": 0.124,
-   "rev_100": 2.275,
-   "speed": 4.91,
-   "stopped": 0.232
+   "dwell": 43.319,
+   "off_gf": 0.087,
+   "off_headon": 0.093,
+   "off_linear": 0.091,
+   "off_seg": 0.116,
+   "rev_100": 2.3,
+   "speed": 4.929,
+   "stopped": 0.23
   },
   "picks": {
-   "continue": 0.48,
-   "hold": 0.268,
-   "reverse": 0.252
+   "continue": 0.482,
+   "hold": 0.263,
+   "reverse": 0.255
+  },
+  "foresight": {
+   "checked": 2547,
+   "off": 0.0,
+   "committed": 75
   },
   "policy": "belief",
   "fire": "attack",
@@ -659,44 +729,49 @@
  },
  "belief_linear_ink": {
   "waves": 2559,
-  "cover": 0.476,
+  "cover": 0.475,
   "width": 51.5,
   "headon": {
-   "on": 0.202,
+   "on": 0.201,
    "net": 0.145
   },
   "linear": {
-   "on": 0.071,
-   "net": 0.03
+   "on": 0.074,
+   "net": 0.031
   },
   "gf": {
-   "on": 0.146,
-   "net": 0.09
+   "on": 0.147,
+   "net": 0.091
   },
   "seg": {
-   "on": 0.189,
+   "on": 0.191,
    "net": 0.108
   },
   "virtual": {
-   "gf": 0.125,
+   "gf": 0.127,
    "headon": 0.093,
    "linear": 0.069,
-   "seg": 0.17
+   "seg": 0.169
   },
   "census": {
-   "dwell": 26.514,
-   "off_gf": 0.127,
+   "dwell": 26.34,
+   "off_gf": 0.129,
    "off_headon": 0.093,
    "off_linear": 0.069,
-   "off_seg": 0.175,
-   "rev_100": 3.778,
-   "speed": 5.921,
-   "stopped": 0.065
+   "off_seg": 0.174,
+   "rev_100": 3.8,
+   "speed": 5.909,
+   "stopped": 0.066
   },
   "picks": {
    "continue": 0.493,
-   "hold": 0.031,
-   "reverse": 0.475
+   "hold": 0.032,
+   "reverse": 0.476
+  },
+  "foresight": {
+   "checked": 2562,
+   "off": 0.0,
+   "committed": 39
   },
   "policy": "belief",
   "fire": "ink",
@@ -705,44 +780,49 @@
  },
  "belief_linear_attack": {
   "waves": 2559,
-  "cover": 0.018,
-  "width": 50.4,
+  "cover": 0.019,
+  "width": 50.3,
   "headon": {
-   "on": 0.102,
-   "net": 0.1
+   "on": 0.118,
+   "net": 0.115
   },
   "linear": {
-   "on": 0.137,
-   "net": 0.136
+   "on": 0.141,
+   "net": 0.139
   },
   "gf": {
-   "on": 0.148,
-   "net": 0.144
-  },
-  "seg": {
    "on": 0.159,
    "net": 0.154
   },
+  "seg": {
+   "on": 0.174,
+   "net": 0.167
+  },
   "virtual": {
-   "gf": 0.102,
-   "headon": 0.09,
-   "linear": 0.091,
-   "seg": 0.126
+   "gf": 0.11,
+   "headon": 0.1,
+   "linear": 0.1,
+   "seg": 0.14
   },
   "census": {
-   "dwell": 42.536,
-   "off_gf": 0.108,
-   "off_headon": 0.09,
-   "off_linear": 0.091,
-   "off_seg": 0.135,
-   "rev_100": 2.347,
-   "speed": 4.45,
-   "stopped": 0.273
+   "dwell": 43.772,
+   "off_gf": 0.118,
+   "off_headon": 0.1,
+   "off_linear": 0.1,
+   "off_seg": 0.148,
+   "rev_100": 2.278,
+   "speed": 4.355,
+   "stopped": 0.286
   },
   "picks": {
-   "continue": 0.425,
-   "hold": 0.307,
-   "reverse": 0.268
+   "continue": 0.416,
+   "hold": 0.326,
+   "reverse": 0.257
+  },
+  "foresight": {
+   "checked": 2560,
+   "off": 0.0,
+   "committed": 53
   },
   "policy": "belief",
   "fire": "attack",
@@ -790,6 +870,11 @@
    "hold": 0.0,
    "reverse": 0.002
   },
+  "foresight": {
+   "checked": 2466,
+   "off": 0.0,
+   "committed": 128
+  },
   "policy": "belief",
   "fire": "ink",
   "ticks": 12000,
@@ -800,43 +885,252 @@
   "cover": 0.018,
   "width": 50.2,
   "headon": {
-   "on": 0.107,
-   "net": 0.104
+   "on": 0.104,
+   "net": 0.101
   },
   "linear": {
-   "on": 0.138,
-   "net": 0.136
+   "on": 0.134,
+   "net": 0.131
   },
   "gf": {
-   "on": 0.176,
-   "net": 0.172
+   "on": 0.177,
+   "net": 0.173
   },
   "seg": {
-   "on": 0.169,
-   "net": 0.165
+   "on": 0.174,
+   "net": 0.17
   },
   "virtual": {
-   "gf": 0.132,
-   "headon": 0.103,
-   "linear": 0.096,
+   "gf": 0.129,
+   "headon": 0.101,
+   "linear": 0.094,
    "seg": 0.13
   },
   "census": {
-   "dwell": 41.025,
-   "off_gf": 0.135,
-   "off_headon": 0.103,
-   "off_linear": 0.096,
-   "off_seg": 0.136,
-   "rev_100": 2.442,
-   "speed": 4.39,
-   "stopped": 0.277
+   "dwell": 40.403,
+   "off_gf": 0.133,
+   "off_headon": 0.101,
+   "off_linear": 0.094,
+   "off_seg": 0.135,
+   "rev_100": 2.472,
+   "speed": 4.445,
+   "stopped": 0.271
   },
   "picks": {
-   "continue": 0.408,
-   "hold": 0.319,
-   "reverse": 0.273
+   "continue": 0.411,
+   "hold": 0.311,
+   "reverse": 0.278
+  },
+  "foresight": {
+   "checked": 2553,
+   "off": 0.0,
+   "committed": 75
   },
   "policy": "belief",
+  "fire": "attack",
+  "ticks": 12000,
+  "enemy": "headon"
+ },
+ "exact_linear_ink": {
+  "waves": 2559,
+  "cover": 0.359,
+  "width": 46.7,
+  "headon": {
+   "on": 0.447,
+   "net": 0.316
+  },
+  "linear": {
+   "on": 0.018,
+   "net": 0.009
+  },
+  "gf": {
+   "on": 0.448,
+   "net": 0.298
+  },
+  "seg": {
+   "on": 0.55,
+   "net": 0.407
+  },
+  "virtual": {
+   "gf": 0.309,
+   "headon": 0.341,
+   "linear": 0.081,
+   "seg": 0.422
+  },
+  "census": {
+   "dwell": 14.915,
+   "off_gf": 0.31,
+   "off_headon": 0.341,
+   "off_linear": 0.081,
+   "off_seg": 0.423,
+   "rev_100": 6.7,
+   "speed": 4.762,
+   "stopped": 0.07
+  },
+  "picks": {
+   "continue": 0.064,
+   "hold": 0.004,
+   "reverse": 0.932
+  },
+  "foresight": {
+   "checked": 2568,
+   "off": 0.0,
+   "committed": 6
+  },
+  "policy": "exact",
+  "fire": "ink",
+  "ticks": 12000,
+  "enemy": "linear"
+ },
+ "exact_linear_attack": {
+  "waves": 2559,
+  "cover": 0.025,
+  "width": 46.7,
+  "headon": {
+   "on": 0.447,
+   "net": 0.436
+  },
+  "linear": {
+   "on": 0.018,
+   "net": 0.017
+  },
+  "gf": {
+   "on": 0.448,
+   "net": 0.437
+  },
+  "seg": {
+   "on": 0.55,
+   "net": 0.529
+  },
+  "virtual": {
+   "gf": 0.309,
+   "headon": 0.341,
+   "linear": 0.081,
+   "seg": 0.422
+  },
+  "census": {
+   "dwell": 14.915,
+   "off_gf": 0.31,
+   "off_headon": 0.341,
+   "off_linear": 0.081,
+   "off_seg": 0.423,
+   "rev_100": 6.7,
+   "speed": 4.762,
+   "stopped": 0.07
+  },
+  "picks": {
+   "continue": 0.064,
+   "hold": 0.004,
+   "reverse": 0.932
+  },
+  "foresight": {
+   "checked": 2568,
+   "off": 0.0,
+   "committed": 6
+  },
+  "policy": "exact",
+  "fire": "attack",
+  "ticks": 12000,
+  "enemy": "linear"
+ },
+ "exact_headon_ink": {
+  "waves": 2559,
+  "cover": 0.607,
+  "width": 55.6,
+  "headon": {
+   "on": 0.002,
+   "net": 0.002
+  },
+  "linear": {
+   "on": 0.322,
+   "net": 0.094
+  },
+  "gf": {
+   "on": 0.257,
+   "net": 0.06
+  },
+  "seg": {
+   "on": 0.428,
+   "net": 0.129
+  },
+  "virtual": {
+   "gf": 0.268,
+   "headon": 0.038,
+   "linear": 0.222,
+   "seg": 0.385
+  },
+  "census": {
+   "dwell": 68.747,
+   "off_gf": 0.267,
+   "off_headon": 0.038,
+   "off_linear": 0.222,
+   "off_seg": 0.376,
+   "rev_100": 1.453,
+   "speed": 7.288,
+   "stopped": 0.016
+  },
+  "picks": {
+   "continue": 0.996,
+   "hold": 0.001,
+   "reverse": 0.003
+  },
+  "foresight": {
+   "checked": 2482,
+   "off": 0.0,
+   "committed": 153
+  },
+  "policy": "exact",
+  "fire": "ink",
+  "ticks": 12000,
+  "enemy": "headon"
+ },
+ "exact_headon_attack": {
+  "waves": 2559,
+  "cover": 0.006,
+  "width": 55.6,
+  "headon": {
+   "on": 0.002,
+   "net": 0.002
+  },
+  "linear": {
+   "on": 0.322,
+   "net": 0.321
+  },
+  "gf": {
+   "on": 0.257,
+   "net": 0.257
+  },
+  "seg": {
+   "on": 0.428,
+   "net": 0.426
+  },
+  "virtual": {
+   "gf": 0.268,
+   "headon": 0.038,
+   "linear": 0.222,
+   "seg": 0.385
+  },
+  "census": {
+   "dwell": 68.747,
+   "off_gf": 0.267,
+   "off_headon": 0.038,
+   "off_linear": 0.222,
+   "off_seg": 0.376,
+   "rev_100": 1.453,
+   "speed": 7.288,
+   "stopped": 0.016
+  },
+  "picks": {
+   "continue": 0.996,
+   "hold": 0.001,
+   "reverse": 0.003
+  },
+  "foresight": {
+   "checked": 2482,
+   "off": 0.0,
+   "committed": 153
+  },
+  "policy": "exact",
   "fire": "attack",
   "ticks": 12000,
   "enemy": "headon"
@@ -880,6 +1174,11 @@
   "picks": {
    "hold": 1.0
   },
+  "foresight": {
+   "checked": 0,
+   "off": 0.0,
+   "committed": 0
+  },
   "policy": "still",
   "fire": "ink",
   "ticks": 12000
@@ -922,6 +1221,11 @@
   },
   "picks": {
    "hold": 1.0
+  },
+  "foresight": {
+   "checked": 0,
+   "off": 0.0,
+   "committed": 0
   },
   "policy": "still",
   "fire": "attack",

@@ -14,7 +14,7 @@ from a battle already fought does:
   the shield list hadur-robot/src/main/java/hadur117/ShieldListData.java: the robots Hadur shields today.
   the lab         docs/bench/local/2026-10-16_lab-first-read.md: how often the six lab shooters hit silent Hadur.
   the gait runs   data/tools/ink_model/e6.json: how often the census's own offline guns find Sepia's modelled path,
-                  and how many of those bullets its ink stops.
+                  how many of those bullets its ink stops, and what a known simple aim still lands.
 
 Method, per robot:
 
@@ -24,6 +24,8 @@ Method, per robot:
      (60 to the survivor, bullet damage, a fifth again on a kill). Rounds are drawn by Monte Carlo.
   2. The check. With Hadur's own numbers (f = 1, its measured hit rates) the model must give back Hadur's measured
      share, robot by robot. What it misses is kept as that robot's residual and added back to every projection.
+     Projections are read off a grid of hit chances, so the grid is checked the same way: read at Hadur's own hit
+     rates it must give back the direct play.
   3. Sepia. On a robot Hadur shields today Sepia plays Hadur's shield, so it takes Hadur 3.24's live score less a
      parity allowance. On every other robot the model is run with the hit chance Sepia's gait would give that
      robot's gun (below), and `f` falls as gun time goes to ink. Four regimes are played (punch only, alternate,
@@ -31,21 +33,34 @@ Method, per robot:
   4. The range. Every assumption is drawn from a stated range (--draws) and the APS read off for each draw: the
      10th, 50th and 90th percentiles are reported, with one-at-a-time sensitivities.
 
-The enemy's hit chance on Sepia. A share `simple` of a robot's bullets is explained by a simple aim (head-on,
-linear, circular): Sepia dodges those as Hadur does, at `m_simple` times Hadur's rate. For the rest:
+The enemy's hit chance on Sepia. The census reads every enemy shot's aim at birth: a share `aimed` of a robot's
+bullets went where a head-on, linear or circular aim would send them. Hadur's forensics class every bullet that hit
+it by where it landed, which gives `sigma`, the share of its hits that simple-aimed bullets made. A bullet on
+Sepia's body is then one of two kinds:
 
-    punching   on the body = max(k_punch * h, floor * spray)        and every bullet on the body hits
-    inking     on the body = max(k_ink * h, 1.5 * floor * spray)    and a share `stop * keep` of those is stopped
+    a simple aim explains it   max(m_simple * sigma * h, exact * what the exact pick let through)
+    no simple aim explains it
+        punching               max(k_punch * (1 - sigma) * h, (1 - aimed) * floor * spray)
+        inking                 max(k_ink * (1 - sigma) * h, (1 - aimed) * 1.5 * floor * spray), less the share
+                               `stop * keep` of those that the ink stops
 
   h      the robot's true hit rate on Hadur (damage over damage a hit over shots).
+  sigma  the forensics have a head-on and a linear class and no circular one, so a circular-aimed bullet that hit
+         is among the "learned" hits unless it landed on the linear aim. `circ` says how likely a circular-aimed
+         bullet is to have made one of those hits, against a bullet no simple aim explains: 0 gives it none of
+         them, 1 its share by count. Under 20 classed hits, sigma is `aimed`.
   k      how much more often the same gun finds Sepia's gait than Hadur's surf. The lab measured its GFHist and
          Knn shooters on Hadur; the gait runs give a guess-factor and a segmented gun on Sepia's two-way lottery
          and on its least-exposed pick. Four ratios punching (their mean is central, their spread the range), two
          inking.
   spray  what an even spread of bullets over the escape angle would hit: the moving body's 52 px over
          2 x asin(8 / bullet speed) x 450 px. A surfer is hit less than this by a gun it can read; a gait that
-         commits one of three paths a wave is not. `floor` scales it (the weakest gun in the gait runs gives 0.98
-         against the least-exposed pick and 1.34 against the lottery).
+         commits one of three paths a wave is not. `floor` scales it (the weakest gun in the gait runs gives 0.93
+         against the least-exposed pick and 1.34 against the lottery). It is owed on the bullets no simple aim
+         explains, so it is weighted by their share of the bullets fired, not of the hits.
+  exact  a simple aim Sepia can reproduce is dodged by picking the option its bullet misses. The gait runs put a
+         head-on and a linear gun against that pick; what still landed, by the share of bullets so aimed, is the
+         least a simple aim gets. `exact` scales it.
   stop   the share of on-body bullets the ink stops: what the gait runs give against aimed guns (high), scaled to
          the Q0 gate (central) and to the Q0 stop rule (low).
 
@@ -80,21 +95,27 @@ SUMS = ("rounds", "firsts", "turns", "enemyShots", "shotsFired", "bulletDamage",
 # model's stream duel (e5.json): all ink 48.3% cover; one ink per enemy shot 41.4% at 22% of the attack rate;
 # alternate 25.0% at 56%.
 REGIMES = (("punch", 1.00, 0.00), ("alternate", 0.56, 0.52), ("ink-first", 0.22, 0.86), ("ink", 0.00, 1.00))
-HITS = (0.0, 0.01, 0.02, 0.035, 0.05, 0.07, 0.095, 0.125, 0.16, 0.21, 0.30, 0.45)   # the grid of enemy hit chances
-GUNS = (0.90, 1.02)
+HIT_CAP = 0.95               # no gun is given more than this chance a bullet, on Hadur or on Sepia
+# The grid of enemy hit chances the round model is played on. It must reach HIT_CAP: a robot is read off the grid at
+# the chance its gun has on Sepia, and one that rams hits with most of its bullets.
+HITS = (0.0, 0.01, 0.02, 0.035, 0.05, 0.07, 0.095, 0.125, 0.16, 0.21, 0.30, 0.45, 0.60, 0.75, HIT_CAP)
+GUNS = (0.90, 1.02)          # ... and of Sepia's damage rate against Hadur 3.13's
 BODY, RANGE = 52.0, 450.0    # the moving body's hit set and the range of the gait runs, px
-INK_FLOOR = 1.5              # the weakest gun on the inking lottery over the weakest on the punching pick (e6.json)
+INK_FLOOR = 1.5              # what the weakest gun gets on the inking lottery, as a multiple of an even spray (e6.json)
 # Cover against an even spread of bullets: what the cloud model gives, the Q0 gate and the Q0 stop rule.
 COVER_MODEL, COVER_GATE, COVER_STOP = 0.483, 0.35, 0.25
 # Assumptions that are not read from the lab and the gait runs: (low, central, high).
 FIXED = {
-    "floor": (0.70, 1.00, 1.34),    # the least any gun gets on the gait, as a multiple of an even spray
+    "floor": (0.70, 1.00, 1.34),    # the least a bullet no simple aim explains gets, as a multiple of an even spray
     "m_simple": (1.0, 1.15, 1.5),   # hits taken from bullets a simple aim explains, against Hadur's
+    "exact": (0.0, 1.0, 2.0),       # the least a simple aim gets, as a multiple of what the exact pick let through
+    "circ": (0.0, 0.5, 1.0),        # a circular-aimed bullet's part in the hits Hadur could not call head-on or linear
     "m_ram": (1.0, 1.5, 2.2),       # what a rammer does to us: Sepia has no ram escape in its first release
     "gun": (0.90, 0.97, 1.02),      # Sepia's damage rate against Hadur 3.13's on the same robot
     "shield": (-2.0, -0.7, 0.0),    # points a robot against Hadur 3.24, on Hadur's shield list
 }
-HARMFUL = ("k_punch", "k_ink", "floor", "m_simple", "m_ram")   # more of these lowers the score
+HARMFUL = ("k_punch", "k_ink", "floor", "m_simple", "exact", "circ", "m_ram")   # more of these lowers the score
+CLASSED = 20                     # hits Hadur's forensics must have classed before their shares are used
 
 
 def fnum(row, key, default=0.0):
@@ -164,7 +185,8 @@ def read_inputs(root):
 
 def rows_of(names, sums, classes, live, ledger, shield):
     keys = ("w", "ticks", "ne", "nu", "h", "hu", "dt", "du", "pe", "dmg_u", "pu", "other", "kill_u", "ram_u", "ram_t",
-            "share313", "live324", "simple", "rammer", "shielded")
+            "share313", "live324", "aimed", "aim_head", "aim_lead", "aim_circ", "aim_other", "hit_simple",
+            "hit_learned", "rammer", "shielded")
     col = {k: [] for k in keys}
     meta = []
     for n in names:
@@ -175,31 +197,48 @@ def rows_of(names, sums, classes, live, ledger, shield):
         dt, du = a["theirBulletDamage"] / R, a["bulletDamage"] / R
         pe = fnum(c, "power", 1.9) or 1.9
         # its true hit rate on Hadur: damage a round over the damage of one hit at its mean power, over its shots
-        h = min(0.95, dt / (float(damage(pe)) * ne)) if ne > 0 else 0.0
+        h = min(HIT_CAP, dt / (float(damage(pe)) * ne)) if ne > 0 else 0.0
         dmg_u = min(max(du / (nu * hu) if nu * hu > 0.05 else 9.7, 0.4), 16.0)
         w = a["firsts"] / R
         # Energy the enemy lost to something other than its own shots and our bullets (walls, rams). It keeps the
         # round as long in the model as it was on the bench. In a round the enemy won, what is left over is energy
         # it still held, not a loss, so only the won share counts.
         other = min(max(100.0 - ne * pe + 3.0 * pe * ne * h - du, 0.0), 80.0) * w
-        still = fnum(c, "aim_still")
-        simple_aim = (fnum(c, "aim_headon") + fnum(c, "aim_linear") + fnum(c, "aim_circular")) / max(1e-9, 1.0 - still)
-        simple_hit = fnum(c, "hit_headon") + fnum(c, "hit_linear")
-        # the share of its bullets a simple aim explains: of those that hit us when 20 did, else of those it fired
-        simple = simple_hit if fnum(c, "hf_hits") >= 20 else simple_aim
-        row = dict(w=w, ticks=a["turns"] / R, ne=ne, nu=nu, h=h, hu=hu, dt=dt, du=du, pe=pe, dmg_u=dmg_u,
+        row = dict(aims_and_hits(c), w=w, ticks=a["turns"] / R, ne=ne, nu=nu, h=h, hu=hu, dt=dt, du=du, pe=pe, dmg_u=dmg_u,
                    pu=float(power_of(np.array(dmg_u))), other=other,
                    kill_u=min(1.0, min(1.0, a["bulletDamageBonus"] / max(0.2 * a["bulletDamage"], 1e-9)) / max(w, 0.02)),
                    ram_u=(a["ramDamage"] + a["ramDamageBonus"]) / R, ram_t=(a["theirRamDamage"] + a["theirRamDamageBonus"]) / R,
                    share313=100.0 * a["score"] / max(a["score"] + a["theirScore"], 1e-9), live324=fnum(live[n], "aps"),
-                   simple=min(1.0, max(0.0, simple)), rammer=1.0 if c.get("move_class") == "rammer" else 0.0,
-                   shielded=1.0 if n in shield else 0.0)
+                   rammer=1.0 if c.get("move_class") == "rammer" else 0.0, shielded=1.0 if n in shield else 0.0)
         for k in keys:
             col[k].append(row[k])
         led = ledger.get(n, {})
         meta.append(dict(name=n, gun_class=c.get("gun_class", ""), move_class=c.get("move_class", ""),
                          rank=fnum(c, "rank", 9999.0), cls=led.get("cls", ""), status=led.get("status", "")))
     return {k: np.array(v, float) for k, v in col.items()}, meta
+
+
+def aims_and_hits(c):
+    """A census class row as the shares the hit rule needs.
+
+    aimed, aim_head, aim_lead, aim_circ, aim_other   of the shots whose aim reads (a shot fired while Hadur was
+        barely moving sideways reads nothing): those a simple aim explains, those head-on, those that lead
+        (linear and circular), those circular, and those no simple aim explains.
+    hit_simple, hit_learned   of the bullets that hit Hadur and that its forensics classed: those that landed on
+        the head-on or the linear aim, and those on neither. A hit on no wave Hadur had seen is not classed.
+        Under CLASSED classed hits the aim shares stand in: hit_simple is `aimed` and hit_learned is 0.
+    """
+    seen = max(1e-9, 1.0 - fnum(c, "aim_still"))
+    head, linear, circ, other = (fnum(c, "aim_" + g) / seen for g in ("headon", "linear", "circular", "other"))
+    aimed = min(1.0, head + linear + circ)
+    classed = 1.0 - fnum(c, "hit_nowave")
+    if fnum(c, "hf_hits") * classed >= CLASSED:
+        hit_simple = min(1.0, (fnum(c, "hit_headon") + fnum(c, "hit_linear")) / classed)
+        hit_learned = min(1.0 - hit_simple, fnum(c, "hit_learned") / classed)
+    else:
+        hit_simple, hit_learned = aimed, 0.0
+    return dict(aimed=aimed, aim_head=head, aim_lead=linear + circ, aim_circ=circ, aim_other=other,
+                hit_simple=hit_simple, hit_learned=hit_learned)
 
 
 def gait_priors(root):
@@ -226,6 +265,8 @@ def gait_priors(root):
                                                 ("run_attack", "headon"))),
                 weakest_gun_on_inking_lottery=weakest((("run_ink", "gf"), ("run_ink", "seg"), ("run_ink", "linear"),
                                                        ("run_ink", "headon"))),
+                simple_gun_on_exact_pick=dict(headon=g["exact_headon_attack"]["headon"]["on"],
+                                              linear=g["exact_linear_attack"]["linear"]["on"]),
                 on_body={k: {x: g[k][x]["on"] for x in ("gf", "seg")} for k in
                          ("run_attack", "belief_gf_attack", "belief_seg_attack", "run_ink")},
                 through_ink={x: g["run_ink"][x]["net"] for x in ("gf", "seg")}, cover_even_spread=g["run_ink"]["cover"])
@@ -256,7 +297,7 @@ def _play(d, f, hit, gun, ram, rounds, seed, step):
     ticks = np.maximum(column(d["ticks"]), 50.0)
     p_fire = np.minimum(1.0, column(d["ne"]) * step / ticks)       # enemy shots a step
     pe = column(d["pe"])
-    h_e = np.minimum(0.95, column(hit))
+    h_e = np.minimum(HIT_CAP, column(hit))
     ours = f * column(d["nu"]) * step / ticks                      # our punches a step
     lam_u = ours * column(d["hu"]) * gun                           # ... that hit
     dmg_u, pu = column(d["dmg_u"]), column(d["pu"])
@@ -322,8 +363,17 @@ def tables(d, rounds, jobs=1):
 
 
 def lookup(grid, regime, gun, hit):
-    """Share at (regime, gun, per-robot enemy hit chance) by linear interpolation in gun and in the hit chance."""
+    """Share at (regime, gun, per-robot enemy hit chance) by linear interpolation in gun and in the hit chance.
+
+    Nothing is read off the edge of the grid: a gun or a hit chance outside it is an error, not the nearest cell.
+    """
     guns, xs = np.array(GUNS), np.array(HITS)
+    hit = np.asarray(hit, float)
+    if not guns[0] - 1e-9 <= gun <= guns[-1] + 1e-9:
+        raise ValueError("gun %.3f is outside the grid %s" % (gun, GUNS))
+    if hit.size and (hit.min() < xs[0] - 1e-9 or hit.max() > xs[-1] + 1e-9):
+        raise ValueError("hit chances %.3f to %.3f are outside the grid %.2f to %.2f"
+                         % (hit.min(), hit.max(), xs[0], xs[-1]))
     g = float(np.clip(gun, guns[0], guns[-1]))
     tg = (g - guns[0]) / (guns[-1] - guns[0])
     h = np.clip(hit, xs[0], xs[-1])
@@ -334,15 +384,38 @@ def lookup(grid, regime, gun, hit):
     return at(0) * (1 - tg) + at(1) * tg
 
 
+def simple_share(d, circ):
+    """sigma: the share of Hadur's hits that simple-aimed bullets made, by robot.
+
+    The hits its forensics put on the head-on or the linear aim, and of the hits they put on neither the part that
+    circular-aimed bullets made. Those hits lie between the circular-aimed bullets and the bullets no simple aim
+    explains, and `circ` is how likely one of the first is to have made a hit against one of the second.
+    """
+    took = circ * d["aim_circ"]
+    return np.clip(d["hit_simple"] + d["hit_learned"] * took / np.maximum(took + d["aim_other"], 1e-9), 0.0, 1.0)
+
+
+def exact_floor(d, refs):
+    """What the exact pick let through in the gait runs, by robot: the head-on and the linear gun's rates on the
+    body, each by the share of this robot's bullets so aimed (a circular aim leads as a linear one does)."""
+    least = refs["simple_gun_on_exact_pick"]
+    return d["aim_head"] * least["headon"] + d["aim_lead"] * least["linear"]
+
+
 def sepia_hit(d, a, keep):
-    """The chance one enemy bullet hits Sepia, by robot, in a regime that keeps `keep` of the all-ink cover."""
-    floor = a["floor"] * spray(d["pe"])
+    """The chance one enemy bullet hits Sepia, by robot, in a regime that keeps `keep` of the all-ink cover.
+
+    `d` carries `exact_floor` (see exact_floor) beside the census columns.
+    """
+    sigma = simple_share(d, a["circ"])
+    simple = np.maximum(a["m_simple"] * sigma * d["h"], a["exact"] * d["exact_floor"])
+    floor = (1.0 - d["aimed"]) * a["floor"] * spray(d["pe"])
     if keep == 0.0:
-        learnt = np.maximum(a["k_punch"] * d["h"], floor)
+        learnt = np.maximum(a["k_punch"] * (1.0 - sigma) * d["h"], floor)
     else:
-        learnt = np.maximum(a["k_ink"] * d["h"], INK_FLOOR * floor) * (1.0 - a["stop"] * keep)
+        learnt = np.maximum(a["k_ink"] * (1.0 - sigma) * d["h"], INK_FLOOR * floor) * (1.0 - a["stop"] * keep)
     ram = 1.0 + (a["m_ram"] - 1.0) * d["rammer"]
-    return np.minimum(0.95, (d["simple"] * a["m_simple"] * d["h"] + (1.0 - d["simple"]) * learnt) * ram)
+    return np.minimum(HIT_CAP, (simple + learnt) * ram)
 
 
 def project(d, grid, resid, a, regimes=None):
@@ -380,6 +453,7 @@ def main(argv=None):
     n = d["w"].size
     priors, refs = gait_priors(args.root)
     priors.update(FIXED)
+    d["exact_floor"] = exact_floor(d, refs)
     log("robots: %d in the census and the live table, %d live only; %d of them on the shield list"
         % (n, len(unmatched), int(d["shielded"].sum())))
 
@@ -398,6 +472,14 @@ def main(argv=None):
     open_ = d["shielded"] == 0
     sub = {k: v[open_] for k, v in d.items()}
     grid = tables(sub, args.rounds, jobs=args.jobs)
+    # ... and the grid must give back the direct play when it is read at Hadur's own hit rates, in its top band too
+    back = lookup(grid, 0, 1.0, sub["h"]) - fit[open_]
+    top = sub["h"] > 0.45
+    check.update(grid_mean_diff=float(back.mean()), grid_mean_abs_diff=float(np.abs(back).mean()),
+                 grid_top_robots=int(top.sum()), grid_top_mean_diff=float(back[top].mean()) if top.any() else 0.0)
+    log("grid: read at Hadur's own hit rates it is %.2f from the direct play on average (mean abs %.2f); "
+        "%.2f on the %d robots that hit over 45%% of the time"
+        % (check["grid_mean_diff"], check["grid_mean_abs_diff"], check["grid_top_mean_diff"], check["grid_top_robots"]))
     central = {k: v[1] for k, v in priors.items()}
 
     def run(a, regimes=None):
@@ -414,12 +496,15 @@ def main(argv=None):
     out = dict(check=check, robots=n, live_only=len(unmatched), shielded=int((~open_).sum()), priors=priors, gait=refs,
                hadur_3_24_live=hadur324, hadur_3_13_census=float(d["share313"].mean()), central=central,
                aps_central=base, rank_central=rank_of(base, ladder), field=len(ladder))
-    h_punch = sepia_hit(sub, central, 0.0)
-    out["hit_rates"] = dict(on_hadur=float(sub["h"].mean()), on_sepia_punching=float(h_punch.mean()),
+    sigma = simple_share(sub, central["circ"])
+    spray_floor = (1.0 - sub["aimed"]) * central["floor"] * spray(sub["pe"])
+    out["hit_rates"] = dict(on_hadur=float(sub["h"].mean()), on_sepia_punching=float(sepia_hit(sub, central, 0.0).mean()),
                             on_sepia_inking=float(sepia_hit(sub, central, 1.0).mean()),
-                            at_the_floor=float((h_punch > 1.001 * (sub["simple"] * central["m_simple"] * sub["h"]
-                                                + (1 - sub["simple"]) * central["k_punch"] * sub["h"])
-                                                * (1.0 + (central["m_ram"] - 1.0) * sub["rammer"])).mean()))
+                            aimed=float(sub["aimed"].mean()), sigma=float(sigma.mean()),
+                            at_the_floor=float((spray_floor > central["k_punch"] * (1.0 - sigma) * sub["h"]).mean()),
+                            at_the_exact_floor=float((central["exact"] * sub["exact_floor"]
+                                                      > central["m_simple"] * sigma * sub["h"]).mean()),
+                            robots_over_45_percent=int((sepia_hit(sub, central, 0.0) > 0.45).sum()))
 
     # 4. the range
     rng = np.random.default_rng(2026)
@@ -435,11 +520,13 @@ def main(argv=None):
     out["corner_low"] = run({k: (v[2] if k in HARMFUL else v[0]) for k, v in priors.items()})[0]
     out["corner_high"] = run({k: (v[0] if k in HARMFUL else v[2]) for k, v in priors.items()})[0]
 
-    surf = dict(central, k_punch=1.0, floor=0.0)     # hit as Hadur is: no more often, and no spray floor
+    bare = dict(floor=0.0, exact=0.0)                # neither floor: every bullet scales from Hadur's own rate
+    surf = dict(central, k_punch=1.0, **bare)        # hit as Hadur is: no more often, and no floors
     ref313 = np.where(open_, d["share313"], d["live324"])
     out["variants"] = {
         "punch_only": run(central, regimes={0})[0],
         "ink_stops_as_modelled": run(dict(central, stop=priors["stop"][2]))[0],
+        "no_floors": run(dict(central, **bare))[0],
         "no_spray_floor": run(dict(central, floor=0.0))[0],
         "gait_hit_like_hadurs_surf": run(surf)[0],
         "gait_hit_like_surf_and_ink_as_modelled": run(dict(surf, stop=priors["stop"][2]))[0],

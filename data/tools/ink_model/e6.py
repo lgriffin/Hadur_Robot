@@ -13,6 +13,14 @@ Gaits (the choice made once per enemy shot, for the stretch of path that shot's 
   three   carry on, turn back or hold, by the probabilities given
   wide    carry on, turn back, hold, or either way at half speed, evenly
   belief  the least exposed of carry on / turn back / hold, by where the enemy's revealed bullets have gone
+  exact   against a simple aim the body can reproduce (`enemy` is 'headon' or 'linear'), so the bullet's own
+          bearing is known: the first option, in that gun's order, whose hit set the bullet passes CLEAR px or
+          more outside; if none does, the one it passes furthest outside
+
+A choice takes over where the path already committed to earlier waves ends, so it moves only the last few ticks
+before its own wave arrives. `foresight` in the output checks that: for every belief or exact choice, the bearing
+the chosen option was expected to be found at against the bearing the wave did find the body at (`off`, radians,
+0 when they agree), and how many waves reached the body on the stretch already committed (`committed`).
 """
 import os, sys; HERE=os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0,HERE)
 import math, json, time
@@ -21,6 +29,9 @@ from e4 import hit_set
 from e5 import death_turn
 HALF=18.0; NB=47; VSPEED=14.0; VESC=math.asin(8.0/VSPEED)
 MODES={'continue':(1,8.0),'reverse':(-1,8.0),'hold':(1,0.0),'half':(1,4.0),'halfrev':(-1,4.0)}
+# The exact pick's order by the gun it knows (keep running from a head-on gun, turn back on one that leads) and the
+# clearance it asks for between the bullet's line and the option's hit set: a tick of the body's travel.
+EXACT={'headon':('continue','reverse','hold'),'linear':('reverse','continue','hold')}; CLEAR=8.0
 def norm(a): return (a+math.pi)%(2*math.pi)-math.pi
 def outward(x,tv,track): return (x>track[1]-40 and tv>0) or (x<track[0]+40 and tv<0)
 def advance(x,v,tv,track):
@@ -29,6 +40,11 @@ def advance(x,v,tv,track):
     else:
         v=math.copysign(min(abs(tv),abs(v)+1.0),tv) if tv!=0 else 0.0
     return min(max(x+v,track[0]),track[1]), v
+def arrival(path,S,tw,ve,y):
+    """The first tick after tw at which the wave fired at tw from S has reached the body on `path`; None if none has."""
+    for k in range(tw+1,len(path)):
+        if ve*(k-tw)>=math.hypot(path[k]-S[0],y-S[1]): return k
+    return None
 def lateral(S,x,y,v):
     rx,ry=x-S[0],y-S[1]; d=math.hypot(rx,ry)
     return d, math.atan2(ry,rx), (-ry*v/d if d>0 else 0.0)
@@ -95,18 +111,35 @@ def run(seed=1,ticks=2400,pe=2.0,fire='ink',policy='run',p_rev=0.3,probs=(0.5,0.
             if sign and last_sign and sign!=last_sign: since=0
             if sign: last_sign=sign
             lats.append(lat); sinces.append(since)
-    def whatif(mode,upto,S,tw):
-        """Where the wave fired at tw from S would find us if this option were taken: the bearing from S."""
+    def foresee(mode,upto,S,tw):
+        """The path if this option were taken, and the tick on which the wave fired at tw from S would reach us on it.
+
+        The path as far as it is committed stays as it is, and the option takes over where it ends: its speed to
+        tick `upto`, then full speed on. The path is carried two ticks past `upto`, as the run itself carries it,
+        and further if the wave has not reached us by then. A wave that reaches us on the committed stretch finds
+        us at the same place whatever the option."""
         d0=direction*MODES[mode][0]; tg=list(target)+[MODES[mode][1]*d0]*max(0,upto+1-len(target))
-        x,vv=xs[-1],v; k=len(xs)-1
-        while True:
+        path=list(xs); x,vv=xs[-1],v; k=len(xs)-1; ka=arrival(path,S,tw,ve,y)
+        while k<upto+2 or (ka is None and k<=tw+200):
             tv=tg[k] if k<len(tg) else 8.0*d0
             if outward(x,tv,track):
                 for q in range(k,len(tg)): tg[q]=-tg[q]
                 d0=-d0; tv=-tv
-            x,vv=advance(x,vv,tv,track); k+=1
-            if ve*(k-tw)>=math.hypot(x-S[0],y-S[1]) or k>tw+200: return math.atan2(y-S[1],x-S[0])
+            x,vv=advance(x,vv,tv,track); k+=1; path.append(x)
+            if ka is None and ve*(k-tw)>=math.hypot(x-S[0],y-S[1]): ka=k
+        return path, (ka if ka is not None else k)
+    def whatif(mode,upto,S,tw):
+        """Where that wave would find us if this option were taken: the bearing from S."""
+        path,ka=foresee(mode,upto,S,tw)
+        return math.atan2(y-S[1],path[ka]-S[0])
+    def clearance(mode,upto,S,tw,aim):
+        """How far outside this option's hit set a bullet on bearing `aim` would pass, px (0 if it is inside)."""
+        path,_=foresee(mode,upto,S,tw)
+        th,_,_,dist=hit_set(S,tw,ve,lambda k:(path[min(k,len(path)-1)],y))
+        dd=np.abs((th-aim+np.pi)%(2*np.pi)-np.pi); sp=abs(th[-1]-th[0])/max(1,th.size-1)
+        return max(0.0,float(dd.min())-sp)*dist
     pending=[]; waves=[]; done=[]; our_heat=0.0; e_heat=3.0-0.1*rng.integers(0,10)
+    fore=dict(checked=0,off=0.0,committed=0)
     tally={g:[0,0.0,0.0] for g in ('headon','linear','gf','seg')}; n_ink=n_att=0; ink_owed=0; picks={}
     for t in range(ticks):
         step_to(t)
@@ -132,23 +165,32 @@ def run(seed=1,ticks=2400,pe=2.0,fire='ink',policy='run',p_rev=0.3,probs=(0.5,0.
             tw,Sw,aims,bw,dirn,esc=item
             if t>=tw+1:
                 pending.remove(item)
-                flight=int(math.hypot(xs[t]-Sw[0],y-Sw[1])/ve)+6
+                dw=math.hypot(xs[t]-Sw[0],y-Sw[1]); flight=int(dw/ve)+6; at=None
                 if policy=='still': mode='hold'
                 elif policy=='run': mode='reverse' if rng.random()<p_rev else 'continue'
                 elif policy=='three': mode=str(rng.choice(['continue','reverse','hold'],p=probs))
                 elif policy=='wide': mode=str(rng.choice(['continue','reverse','hold','half','halfrev']))
                 elif policy=='belief':
-                    ex_={}
-                    for m in ('continue','reverse','hold'):
-                        a=whatif(m,tw+flight,Sw,tw); g=max(-1.0,min(1.0,norm(a-bw)/esc*dirn)); k=int(round((g+1)*23))
+                    ex_={}; at={m:whatif(m,tw+flight,Sw,tw) for m in ('continue','reverse','hold')}
+                    for m,a in at.items():
+                        g=max(-1.0,min(1.0,norm(a-bw)/esc*dirn)); k=int(round((g+1)*23))
                         lo,hi=max(0,k-2),min(NB,k+3)
                         ex_[m]=float(belief[lo:hi].sum())*(1.0-(cov[m][0]/cov[m][1] if fire=='ink' else 0.0))
                     best=min(ex_.values()); mode=str(rng.choice([m for m in ex_ if ex_[m]<=best*1.02+1e-12]))
+                elif policy=='exact':
+                    at={m:whatif(m,tw+flight,Sw,tw) for m in EXACT[enemy]}
+                    miss={m:clearance(m,tw+flight,Sw,tw,aims[enemy]) for m in EXACT[enemy]}
+                    clear=[m for m in EXACT[enemy] if miss[m]>=CLEAR]
+                    mode=clear[0] if clear else max(miss,key=miss.get)
+                if at is not None: fore['committed']+=arrival(xs,Sw,tw,ve,y) is not None
                 picks[mode]=picks.get(mode,0)+1
                 d0=direction*MODES[mode][0]
                 if MODES[mode][0]<0: direction=-direction
                 for k in range(len(target),tw+flight+1): target.append(MODES[mode][1]*d0)
                 step_to(tw+flight+2)
+                k=arrival(xs,Sw,tw,ve,y) if at is not None else None
+                if k is not None:
+                    fore['checked']+=1; fore['off']=max(fore['off'],abs(norm(at[mode]-math.atan2(y-Sw[1],xs[k]-Sw[0]))))
                 pos=lambda k:(xs[min(k,len(xs)-1)],y)
                 th,kh,width,dist=hit_set(Sw,tw,ve,pos)
                 waves.append(dict(S=Sw,tw=tw,ve=ve,th=th,kh=kh,width=width,cert=np.zeros(th.size,bool),poss=np.zeros(th.size,bool),
@@ -190,7 +232,7 @@ def run(seed=1,ticks=2400,pe=2.0,fire='ink',policy='run',p_rev=0.3,probs=(0.5,0.
                 our_heat=1+p/5; n_att+=1
     dn=np.array(done); out=dict(waves=len(dn),cover=float(dn[:,0].mean()),width=float(dn[:,1].mean()),picks=picks)
     for g,(n,on,net) in tally.items(): out[g]=dict(n=n,on=on/max(1,n),net=net/max(1,n))
-    out['virtual']={g:vh[g]/vt[g] for g in vt}
+    out['virtual']={g:vh[g]/vt[g] for g in vt}; out['foresight']=fore
     out['census']=census_rates(xs[:ticks],vel[:ticks],E,y,track)
     return out
 def agg(rs):
@@ -205,6 +247,8 @@ def agg(rs):
     for r in rs:
         for k,c in r['picks'].items(): pk[k]=pk.get(k,0)+c
     tot=sum(pk.values()); out['picks']={k:round(c/tot,3) for k,c in sorted(pk.items())}
+    out['foresight']=dict(checked=sum(r['foresight']['checked'] for r in rs),off=max(r['foresight']['off'] for r in rs),
+                          committed=sum(r['foresight']['committed'] for r in rs))
     return out
 SEEDS=(31,32,33)
 def job(item):
@@ -220,6 +264,7 @@ if __name__=='__main__':
                            ('three','three',dict(probs=(0.5,0.25,0.25))),('three_even','three',dict(probs=(0.34,0.33,0.33))),
                            ('wide','wide',{}),('belief_seg','belief',dict(enemy='seg')),('belief_gf','belief',dict(enemy='gf')),
                            ('belief_linear','belief',dict(enemy='linear')),('belief_headon','belief',dict(enemy='headon')),
+                           ('exact_linear','exact',dict(enemy='linear')),('exact_headon','exact',dict(enemy='headon')),
                            ('still','still',{})):
         for fire in ('ink','attack'):
             jobs.append((name+'_'+fire,dict(policy=policy,fire=fire,ticks=T,**kw)))

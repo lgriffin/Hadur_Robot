@@ -19,10 +19,10 @@ Each takes one to five minutes on a laptop.
 |---|---|---|
 | `shadowsim.py` | Shadow geometry in the engine's order of play, as `hadur117.core.move.BulletShadows` states it: a certain shadow counts 1, a possible one a half, and a meeting only counts before the wave can meet the body | Everything below |
 | `e1.py` | The best cover one ink shot gives a still body, by sidestep angle between firing spot and landing spot | The sidestep chart: 7%, 35%, 63%, 91% at 0, 10, 20, 30 degrees |
-| `e2.py` | Union cover from up to three shots (ticks 2, 13, 24) along a dash to the landing spot, leaving late or early | The "two shots and three" table |
+| `e2.py` | Union cover from up to three shots (ticks 2, 13, 24) along a dash to the landing spot, leaving late or early. The dash keeps the engine's limits: 1 px a tick gained, 2 shed, 8 at most | The "two shots and three" table |
 | `e4.py` | `hit_set`: the bearings that hit a moving body, and their hit turns. Imported by `e5.py` and `e6.py` | Hit-set widths |
 | `e5.py` | The stream duel: 3 seeds of 2,400 ticks, five ways of firing, and the sensitivity runs. Enemy bullets are spread evenly over the hit set | The budget chart, the model table, cover by landing distance, cover by inks |
-| `e6.py` | The same duel with guns that aim: the census's own offline guns (`data/tools/census_classify.py`) learn the path and fire at it. Reports how often each gun's bullet is on the body and how often it gets through the ink | The "Estimated APS" section, through `data/tools/sepia_aps.py` |
+| `e6.py` | The same duel with guns that aim: the census's own offline guns (`data/tools/census_classify.py`) learn the path and fire at it. Reports how often each gun's bullet is on the body and how often it gets through the ink, for gaits that draw lots, that pick the least exposed option, and that know a simple gun's aim exactly | The "Estimated APS" section, through `data/tools/sepia_aps.py` |
 
 ## Reading the results
 
@@ -58,6 +58,7 @@ added shade). `att_hit` is not used in the doc.
 | `three_*`, `three_even_*` | Carry on, turn back or hold, at 50/25/25 and at even odds |
 | `wide_*` | Those three, or either way at half speed, at even odds |
 | `belief_gf_*`, `belief_seg_*`, `belief_linear_*`, `belief_headon_*` | The least exposed of carry on, turn back and hold, by where that gun's revealed bullets have gone |
+| `exact_headon_*`, `exact_linear_*` | The exact pick against a gun whose aim the body can reproduce: the first option whose hit set that gun's bullet passes at least 8 px outside. It carries on first against a head-on gun and turns back first against one that leads. Read that gun's own row: the others are not what it is dodging |
 | `still_*` | Standing still |
 
 `*_ink` fires only ink, `*_attack` only attack shots. Fields: `gf`, `seg`, `linear`, `headon`, each with `on` (the
@@ -65,12 +66,17 @@ share of that gun's real shots that were on the body) and `net` (the share that 
 `cover` (against an even spread, as in `e5.json`); `virtual` (the guns' virtual-shot hit rates as they learn);
 `census` (the census's own definition on the same path: a shot every 4 ticks at a 36 px target, comparable with
 the `off_*` columns of `docs/bench/local/2026-10-18_census-classes.tsv`, plus speed, stopped share, reversals per
-100 ticks and dwell); `picks` (how often each option was taken).
+100 ticks and dwell); `picks` (how often each option was taken); `foresight` (for the gaits that pick: `checked`,
+the choices whose wave had reached the body by the end of the stretch it committed; `off`, the largest gap in
+radians between the bearing the chosen option was forecast to be found at and the bearing the wave found the body
+at, 0 in every saved run; `committed`, the waves that reached the body on the stretch already committed).
 
 ## What the model assumes
 
 - Our robot runs along a straight track, 450 px from an enemy that wanders in a small box and fires on its gun heat.
-- Each enemy shot commits our path until its wave has passed.
+- Each enemy shot commits our path until six ticks after its wave is due. About two waves are in the air when a
+  third is fired, so a choice takes over where the path already committed ends: it moves the last six ticks or so
+  before its own wave arrives, and nothing earlier.
 - A wave is known one tick after it is fired and can be aimed at from the second.
 - When the gun is cool the ink planner takes the aim that newly stops the most hit-set width over all waves in
   flight. It is greedy and looks one shot ahead.
@@ -85,6 +91,12 @@ the `off_*` columns of `docs/bench/local/2026-10-18_census-classes.tsv`, plus sp
   of cover (53% against 48% for the same gait), so the doc's 48% is the lower of the two.
 - **The guns are the census's.** They are simple by design: one guess-factor histogram, and one cut by lateral
   speed, acceleration, distance and time since reversal. A top robot's gun is better than either.
+- **A wave can land on the committed stretch.** When the body is closing on the enemy, a wave can reach it before
+  the path committed to earlier waves runs out: 6 to 153 of about 2,560 waves in the saved runs. No option moves
+  where such a wave finds the body, and the forecast says so. `foresight` holds every forecast to the path as run.
+- **A least-exposed pick is not an exact one.** The `belief_*` gaits read a histogram of where bullets went and
+  break ties by lot, so a head-on gun still lands 10% against `belief_headon_attack`. The `exact_*` gaits test the
+  bullet's own line against each option's hit set: a head-on gun lands 0.2% and a linear gun 1.8%.
 
 ## What it leaves out
 
