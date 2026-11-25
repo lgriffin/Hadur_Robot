@@ -23,6 +23,8 @@ class PcFieldReadPlanTest {
         assertTrue(q.contains("../data/tools/driver_census.py ${W} --arm c --ledger field-ledger.tsv --table "
             + "../hadur-robot/src/main/java/hadur117/ShieldTableData.java"));
         assertTrue(q.contains("--ram-out ${OUT}/field-read-ram-wait.tsv"));
+        assertTrue(q.contains("../data/tools/shield_leak_classes.py \"${W}/battles/*-c/hadur.log\""), "the shield leak classes");
+        assertTrue(Files.isRegularFile(Path.of("../data/tools/shield_leak_classes.py")));
         assertTrue(q.contains("open_results_pr.sh claude/pc-field-read-results") && q.contains("  after: read"));
         assertTrue(Files.isRegularFile(Path.of("../data/tools/driver_census.py")));
         assertTrue(Files.readString(Path.of("plans/timing-legacy.txt")).contains("\npc-field-read.queue\n"),

@@ -5,7 +5,8 @@
 #   - which mover drove us when each bullet hit us (surf plan, endgame ram, finishing approach, rammer policy, shield,
 #     mirror, stop-and-go, other), from data/tools/driver_census.py;
 #   - the ram-wait candidates for the whole field: robots that take 20%+ of their hits on us after our endgame ram on
-#     20+ hits, less those already on the ramWaits list.
+#     20+ hits, less those already on the ramWaits list;
+#   - the shield leak classes of every hit taken in a shield round, from data/tools/shield_leak_classes.py.
 # The read stops with a clear message if work/learn-trace-324 is gone; then run pc-learn-trace again on a new seed and
 # --out first. Stop-and-go is read from master's table lists, so a robot whose line came after 3.24 counts as
 # stop-and-go here though 3.24 surfed it.
@@ -18,7 +19,7 @@ set W = work/learn-trace-324
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
 
-read | test -d ${W}/battles || { echo "pc-field-read: ${W}/battles is gone; run pc-learn-trace on a new seed and --out first"; exit 1; } && python3 -I ../data/tools/driver_census.py ${W} --arm c --ledger field-ledger.tsv --table ../hadur-robot/src/main/java/hadur117/ShieldTableData.java --out ${OUT}/$(date +%Y-%m-%d)_field-read-drivers.md --out-tsv ${OUT}/field-read-drivers.tsv --ram-out ${OUT}/field-read-ram-wait.tsv
+read | test -d ${W}/battles || { echo "pc-field-read: ${W}/battles is gone; run pc-learn-trace on a new seed and --out first"; exit 1; } && python3 -I ../data/tools/driver_census.py ${W} --arm c --ledger field-ledger.tsv --table ../hadur-robot/src/main/java/hadur117/ShieldTableData.java --out ${OUT}/$(date +%Y-%m-%d)_field-read-drivers.md --out-tsv ${OUT}/field-read-drivers.tsv --ram-out ${OUT}/field-read-ram-wait.tsv && TOP=80 python3 -I ../data/tools/shield_leak_classes.py "${W}/battles/*-c/hadur.log" > ${OUT}/$(date +%Y-%m-%d)_field-read-shield-leaks.md
 
-pr | bash tools/open_results_pr.sh claude/pc-field-read-results "1v1 field read: which mover drove us when hit, and ram-wait candidates, over the whole-field trace (no battles)" ${OUT}/*_field-read-drivers.md ${OUT}/field-read-drivers.tsv ${OUT}/field-read-ram-wait.tsv
+pr | bash tools/open_results_pr.sh claude/pc-field-read-results "1v1 field read: which mover drove us when hit, and ram-wait candidates, over the whole-field trace (no battles)" ${OUT}/*_field-read-*.md ${OUT}/field-read-drivers.tsv ${OUT}/field-read-ram-wait.tsv
   after: read
