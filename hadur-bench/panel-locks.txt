@@ -1,12 +1,14 @@
-# BENCH-253 pc-locks, round 31: 16 per-robot lines on existing table switches, each read on 12 or more fresh cloud
+# BENCH-253 pc-locks, round 31: 17 per-robot lines on existing table switches, each read on 12 or more fresh cloud
 # seeds against both c and aa (coverage/shards/locks.tsv, dzlane/L/r29-candidates.txt): YersiniaPestis, Ascendant,
-# Wavelet and Neuromancer on gl (GUN-11 gun stack); QuantumChromodynamics, Gron, Dharok, Buba, RandomLinear and NanoR2
+# Wavelet, Neuromancer and
+# PulsarMax on gl (GUN-11 gun stack); QuantumChromodynamics, Gron, Dharok, Buba, RandomLinear and NanoR2
 # on rwl (MOVE-46 ram wait); LightningStorm on x0 (SHIELD-19 exit off); Blade on ky (SHIELD-35 close-range yield);
 # Sanguijuela, Colossus2 and Alpha on rlnrkn (RAM-20 plus RAM-21); BagPuss on rln (RAM-20). name | note | jar
 zyx.mega.YersiniaPestis 3.0 | gl-L+M-24seeds | zyx.mega.YersiniaPestis_3.0.jar
 mue.Ascendant 1.2.27 | gl-L+M-24seeds | mue.Ascendant_1.2.27.jar
 pc.Wavelet 1.5 | gl-L+M-24seeds | pc.Wavelet_1.5.jar
 jk.melee.Neuromancer 7.12 | gl-M+L+D-48seeds | jk.melee.Neuromancer_7.12.jar
+pulsar.PulsarMax 0.8.9 | gl-L+C-84seeds | pulsar.PulsarMax_0.8.9.jar
 ar.QuantumChromodynamics 1.2.1 | rwl-M+B-24seeds | ar.QuantumChromodynamics_1.2.1.jar
 zzx.Gron 1.14 | rwl-B+L-36seeds | zzx.Gron_1.14.jar
 kjc.etc.Dharok 1.0 | rwl-M-24seeds | kjc.etc.Dharok_1.0.jar

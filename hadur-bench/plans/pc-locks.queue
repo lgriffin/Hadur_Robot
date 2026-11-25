@@ -2,18 +2,18 @@
 # (close-range yield) on GFMicro +6.6 and Fhqwhgads +4.0, rwl (ram wait) on Fe4r +1.6 and LightningBug +1.1, and ty
 # (tiny-shot waves) on Sparrow +1.4 held and were banked (plans/locks30-shipped.txt); PkAssassin ky, TheoryOfEverything
 # rwl, Decepticon ty and DarkHallow x0 did not clear 0.
-# Round 31 carries 16 per-robot lines on existing table switches, each read on 12 to 60 fresh cloud seeds (one to three
+# Round 31 carries 17 per-robot lines on existing table switches, each read on 12 to 60 fresh cloud seeds (one to three
 # independent 12-seed blocks on separate boxes; every single-block line clears 0 by 0.3 points or more) against both c
 # (master) and aa (its A/A twin) at Robocode 1.12.0 and the live turn time (coverage/shards/locks.tsv):
 #   gl (GUN-11 gun stack)              YersiniaPestis +8.9 vs c / +6.6 vs aa, Ascendant +4.3 / +4.6, Wavelet +4.5 / +5.3,
-#                                      Neuromancer +2.4 / +3.0
+#                                      Neuromancer +2.4 / +3.0, PulsarMax +3.9 / +3.6 (84 seeds)
 #   rwl (MOVE-46 ram wait)             QuantumChromodynamics +1.1 / +0.9, Gron +1.0 / +1.0, Dharok +0.8 / +0.7,
 #                                      Buba +1.5 / +1.6, RandomLinear +0.9 / +1.1, NanoR2 +1.6 / +1.3
 #   x0 (SHIELD-19 exit off)            LightningStorm +1.9 / +2.2
 #   ky (SHIELD-35 close-range yield)   Blade +3.8 / +3.3
 #   rlnrkn (RAM-20 + RAM-21)           Sanguijuela +3.0 / +2.9, Colossus2 +3.1 / +3.2, Alpha +2.6 / +2.6
 #   rln (RAM-20 alone)                 BagPuss +1.1 / +1.4
-# Sixteen robots, so the A/A check reads 16 without pads. The PC reads 24 fresh seeds from 110000 and a line ships only
+# Seventeen robots, so the A/A check reads 17 without pads. The PC reads 24 fresh seeds from 110000 and a line ships only
 # on the PC's own read; every robot is judged on its own.
 #
 # Why it should win (the PC card rule of 2026-11-03):
@@ -46,8 +46,8 @@
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
 #   --fresh because round 30 left this plan's queue state marked complete; the new work directory and seeds mean no
 #   battle is read back from an earlier round (and BENCH-272 refights any whose jar changed).
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 1,152 lock battles (16 robots in c and aa, all
-# sixteen again on their own lever arm, 24 seeds), about 2.2 hours with the live-match check. The prep step stops if any
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 1,224 lock battles (17 robots in c and aa, all
+# seventeen again on their own lever arm, 24 seeds), about 2.4 hours with the live-match check. The prep step stops if any
 # panel robot's jar is missing.
 #
 set V = 3.24
@@ -122,5 +122,5 @@ lock-rln | ./bench-top20.sh ${C} ${P} --set ${W}-prep/rln.panel --seeds 24 --see
 gate | mkdir -p ${W} && (cat ${W}-ctl/arms.tsv && for d in gl rwl x0 ky rlnrkn rln; do awk -F"\t" -v a=$d 'NR > 1 && $1 == a' ${W}-$d/arms.tsv || exit 1; done) > ${W}/arms.tsv && python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks31-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks31-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks31-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms gl rwl x0 ky rlnrkn rln --out ${OUT}/$(date +%Y-%m-%d)_pc-locks31-lock-per-robot.md --out-tsv ${OUT}/pc-locks31-lock-per-robot.tsv
   after: lock-rln
 
-pr | bash tools/open_results_pr.sh claude/pc-locks31-results "1v1 cloud locks, round 31 (4 gl, 6 rwl, x0, ky, 3 rlnrkn, rln) on 24 fresh PC seeds" ${OUT}/pc-locks31-livematch.md ${OUT}/*_pc-locks31-*.md ${OUT}/pc-locks31-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks31-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks31-results "1v1 cloud locks, round 31 (5 gl, 6 rwl, x0, ky, 3 rlnrkn, rln) on 24 fresh PC seeds" ${OUT}/pc-locks31-livematch.md ${OUT}/*_pc-locks31-*.md ${OUT}/pc-locks31-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks31-lock-pick.tsv' -size +0c)
   after: gate
