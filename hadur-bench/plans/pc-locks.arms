@@ -1,9 +1,6 @@
-# pc-locks (BENCH-253) round 30: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots
-# picked for it (plans/locks-pick.tsv; ky SHIELD-35 close-range yield, rwl MOVE-46 ram wait, ty SHIELD-33 tiny-shot
-# waves, x0 SHIELD-19 exit off; build-ablation.sh syldlist, rwlist, stinylist and sx0list).
+# pc-locks (BENCH-253) round 31: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots
+# picked for it (plans/locks-pick.tsv; gl GUN-11 gun stack, rwl MOVE-46 ram wait; build-ablation.sh gslist and rwlist).
 c | hadur117.Hadur 3.24 | bisect/hadur117.Hadur_3.24.jar
 aa | hadur117.Hadur 3.24aa | bisect/hadur117.Hadur_3.24aa.jar
-ky | hadur117.Hadur 3.24ky | bisect/hadur117.Hadur_3.24ky.jar
+gl | hadur117.Hadur 3.24gl | bisect/hadur117.Hadur_3.24gl.jar
 rwl | hadur117.Hadur 3.24rwl | bisect/hadur117.Hadur_3.24rwl.jar
-ty | hadur117.Hadur 3.24ty | bisect/hadur117.Hadur_3.24ty.jar
-x0 | hadur117.Hadur 3.24x0 | bisect/hadur117.Hadur_3.24x0.jar
