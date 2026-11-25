@@ -6,7 +6,7 @@
 
 Sepia is a second 1v1 robot on Hadur's kernel that treats its gun as armour. It fires 0.1 "ink" bullets to shoot the enemy's bullets out of the air where its own body is about to be, and it moves so that those shots work. A model built on the engine's collision rule puts that cover at 48% of on-target bullets, against 1.5% to 2.6% for the way every top robot fires today.
 
-**The data puts Sepia as designed at about 86.7 APS, 17th.** The range is 84.6 to 87.6, against Hadur's 93.44 and 10th place at 87.64. Most of the gap is hits taken while Sepia punches, not while it inks ([Estimated APS](#estimated-aps)).
+**The data puts Sepia as designed at about 86.6 APS, 17th.** The range is 84.6 to 87.6, against Hadur's 93.44 and 10th place at 87.64. Most of the gap is hits taken while Sepia punches, not while it inks ([Estimated APS](#estimated-aps)).
 
 - **The defence has three layers.** Against a gun that aims exactly, Sepia stands still and meets each bullet, as Hadur's shield does for 305 listed robots. Against the best of the other guns it runs under its own ink, and against the rest it punches from the same gait. Recognition picks between them from the bullets Sepia shoots down, not only the ones that hit it.
 - **The movement is the new part.** Ink shades about 3 more points of the body for every degree between where it is fired and where the body lands. So Sepia commits one long run per enemy shot, inks from the start of it, and turns back at the rate that leaves a gun nothing better to aim at.
@@ -345,7 +345,7 @@ Energy is priced by the kernel's energy-race model, the value iteration behind P
 
 ## Estimated APS
 
-Sepia as designed is estimated at 86.7 APS, about 17th of 1,213. The 10th-to-90th percentile range is 84.6 to 87.6, which is 27th to 11th. Hadur 3.24 holds 93.44 and 10th place takes 87.64.
+Sepia as designed is estimated at 86.6 APS, about 17th of 1,213. The 10th-to-90th percentile range is 84.6 to 87.6, which is 27th to 11th. Hadur 3.24 holds 93.44 and 10th place takes 87.64.
 
 | Each row changes one thing | APS |
 |---|---|
@@ -366,7 +366,7 @@ Read down the chart. What Hadur has gained since 3.13 on robots it does not shie
 - **A round model, checked on Hadur.** Both robots start at 100, the enemy fires as it did in the 3.13 census, and the scores are Robocode's. Fed Hadur's own numbers it returns 89.95 against a measured 89.66, within 2 points on 82% of 1,192 robots. Each robot's miss is added back to its projection.
 - **Shielded robots score as Hadur's do.** On the 298 robots of today's shield list Sepia plays Hadur's shield, so it takes Hadur 3.24's live score less 0.7.
 - **Strong guns find the jet cycle 1.26 times as often.** The lab measured its GFHist and Knn shooters on silent Hadur at 9.3% and 13.3%. The cloud model puts the same kinds of gun at 9% to 13% and 16% to 20% on the jet cycle.
-- **Weak guns reach a floor.** An even spray over the escape angle finds a moving body 9.5% of the time at power 2. Hadur's surf holds most guns under that. A gait that commits one of three paths per wave does not, unless the aim is simple. The floor binds on 76% of the robots Sepia does not shield. Across those robots, bullets hit Hadur 6.5% of the time and a punching Sepia 10.9%.
+- **Weak guns reach a floor.** An even spray over the escape angle finds a moving body 9.5% of the time at power 2. Hadur's surf holds most guns under that. A gait that commits one of three paths per wave does not, unless the aim is simple. The floor binds on 76% of the robots Sepia does not shield. Across all 894 of those robots, bullets hit Hadur 6.5% of the time and a punching Sepia 10.9%.
 - **Four regimes, the best taken.** Punch only, alternate, ink first and ink only, with ink stopping 49% of the bullets on the body: the model's 67%, scaled to the Q0 gate.
 
 **Where the points go.** The first two rows split the field by defence. The last four cut it by how often a robot hits Hadur and by rank.
@@ -569,7 +569,7 @@ The design rests on one number, cover in the real engine, and Q0 exists to find 
 **What would prove the design wrong.**
 
 - **Cover under 25% in truth logs.** The model's 48% then does not survive the engine's random bullet order, the ledger's ambiguous shots or drift from the committed path. The project stops at Q0, and Hadur keeps the H0 and H1 work.
-- **Cover holds but damage does not fall.** Real guns then put their on-target bullets where the shade is thinnest. The aimed-gun runs say the opposite, 67% stopped against 53% for an even spread, but those guns learn where the body goes, not where the ink is.
+- **Cover holds but damage does not fall.** Real guns then put their on-target bullets where the shade is thinnest. The aimed-gun runs say the opposite: 67% stopped, against 53% for an even spread in the same runs. Those runs turn cleanly at the ends of the track, which puts their even spread 5 points over the 48% above. Their guns learn where the body goes, not where the ink is.
 - **No arm ahead in the mid and close classes at Q2.** Cover then costs more offence than it saves, and Sepia's parts are worth more inside Hadur than as a robot.
 
 | Risk | How it shows | Response |
@@ -588,7 +588,7 @@ The design rests on one number, cover in the real engine, and Q0 exists to find 
 
 - [ ] **The name.** *Sepia*, or *Cudal*, the Irish for cuttlefish in Ó Dónaill's dictionary, which would keep the family's Irish thread.
 - [ ] **Where the brain lives.** Inside `hadur-core` as species packages through H2, the recommended start, or a `sepia-core` module on a split-out kernel from the start.
-- [ ] **The entry bar and the punching gait.** The estimate is 86.7, about 17th. Three ways on: enter there with the jet cycle as designed; give the jet cycle finer landings and hold for 88 and a top-10 place, which the estimate puts near 89 if weak guns are held under the spray floor; or surf with the kernel while punching and jet only while inking, near 90.5 and level with Diamond in 8th, which keeps the new movement for about 20 robots.
+- [ ] **The entry bar and the punching gait.** The estimate is 86.6, about 17th. Three ways on: enter there with the jet cycle as designed; give the jet cycle finer landings and hold for 88 and a top-10 place, which the estimate puts near 89 if weak guns are held under the spray floor; or surf with the kernel while punching and jet only while inking, near 90.5 and level with Diamond in 8th, which keeps the new movement for about 20 robots.
 - [ ] **Ink for Hadur now or later.** If Q0 passes, a Hadur card could give POW-7's 0.1 shots the ink planner straight away, before Sepia has a gun at all. Recommended: it is the cheapest test of the hub's promise.
 - [ ] **A third species.** Whether Hadurling, the course robot, becomes one. If so, the species kit should be written for a student to follow.
 - [ ] **Renaming `hadur-core`.** Not before Q4, if at all.
