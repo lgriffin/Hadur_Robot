@@ -181,3 +181,11 @@
 01:14:58 field exit=0 in 10932 s
 01:14:58 start ret
 01:14:58 watching ret: 3 stop rule(s)
+01:25:52 ret exit=0 in 654 s
+01:25:52 start gate112
+01:25:55 gate112 exit=0 in 3 s
+01:25:55 start gate
+01:25:56 gate exit=0 in 0 s
+01:25:56 start pr
+01:26:06 pr exit=0 in 9 s
+01:26:06 ALLDONE
