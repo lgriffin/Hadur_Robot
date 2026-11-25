@@ -1,10 +1,9 @@
-# pc-locks (BENCH-253) round 31: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots
-# picked for it (plans/locks-pick.tsv; gl GUN-11 gun stack, rwl MOVE-46 ram wait; build-ablation.sh gslist and rwlist; x0 SHIELD-19 exit off, sx0list;
-# ky SHIELD-35 close-range yield, syldlist; rlnrkn RAM-20 learned shot model plus RAM-21 known rammer, rlearnlist and rknownlist).
+# pc-locks (BENCH-253) round 32: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots
+# picked for it (plans/locks-pick.tsv; gl GUN-11 gun stack, rwl MOVE-46 ram wait; build-ablation.sh gslist and rwlist;
+# rlnrkn RAM-20 learned shot model plus RAM-21 known rammer, rlearnlist and rknownlist; rln RAM-20 alone, rlearnlist).
 c | hadur117.Hadur 3.24 | bisect/hadur117.Hadur_3.24.jar
 aa | hadur117.Hadur 3.24aa | bisect/hadur117.Hadur_3.24aa.jar
 gl | hadur117.Hadur 3.24gl | bisect/hadur117.Hadur_3.24gl.jar
 rwl | hadur117.Hadur 3.24rwl | bisect/hadur117.Hadur_3.24rwl.jar
-x0 | hadur117.Hadur 3.24x0 | bisect/hadur117.Hadur_3.24x0.jar
-ky | hadur117.Hadur 3.24ky | bisect/hadur117.Hadur_3.24ky.jar
 rlnrkn | hadur117.Hadur 3.24rlnrkn | bisect/hadur117.Hadur_3.24rlnrkn.jar
+rln | hadur117.Hadur 3.24rln | bisect/hadur117.Hadur_3.24rln.jar

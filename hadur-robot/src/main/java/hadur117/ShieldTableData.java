@@ -581,6 +581,10 @@ final class ShieldTableData {
             // pc-locks round 6 (BENCH-253, PR #890): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "ap.Frederick 1.1",              // +0.7
             "el33t.EL33tGangstarr2 2.0",     // +1.0
+            // pc-locks round 31 (BENCH-253, PR #1076): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "zyx.mega.YersiniaPestis 3.0",   // +5.5
+            "mue.Ascendant 1.2.27",          // +5.2
+            "pc.Wavelet 1.5",                // +4.4
         };
     }
 
@@ -644,6 +648,8 @@ final class ShieldTableData {
             "mue.Hyperion 0.8",               // +8.1
             // pc-locks round 29 (BENCH-253, PR #1062): 24 fresh PC seeds at the live turn time; cloud lock held first
             "oog.micro.MagicD3 0.41",        // +3.6
+            // pc-locks round 31 (BENCH-253, PR #1076): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "EH.kms.LightningStorm 0.11B",   // +2.6
         };
     }
 
@@ -966,6 +972,12 @@ final class ShieldTableData {
             // pc-locks round 30 (BENCH-253, PR #1066): 24 fresh PC seeds at the live turn time; cloud lock held first
             "Krabb.fe4r.Fe4r 0.4",           // +1.6
             "ry.LightningBug 1.0",           // +1.1
+            // pc-locks round 31 (BENCH-253, PR #1076): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "buba.Buba 0.3",                 // +1.1
+            "kjc.etc.Dharok 1.0",            // +0.6
+            "slugzilla.RandomLinear 1.0",    // +0.7
+            "sul.NanoR2 1.32",               // +1.6
+            "zzx.Gron 1.14",                 // +1.1
         };
     }
 
@@ -1283,6 +1295,8 @@ final class ShieldTableData {
             "stranger.nano.TestBot 1.0",            // +2.6
             "wompi.Kowari 1.6",                     // +4.1
             "zch.Hirkan 0.11",                      // +1.4
+            // pc-locks round 31 (BENCH-253, PR #1076): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "jab.micro.Sanguijuela 0.8",     // +2.5
         };
     }
 
@@ -1320,6 +1334,8 @@ final class ShieldTableData {
             "suzushin7.nano.Galaxy03 1.01",         // +2.6
             "wompi.Kowari 1.6",                     // +4.1
             "zch.Hirkan 0.11",                      // +1.4
+            // pc-locks round 31 (BENCH-253, PR #1076): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "jab.micro.Sanguijuela 0.8",     // +2.5
         };
     }
 
