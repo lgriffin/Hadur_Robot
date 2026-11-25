@@ -15,9 +15,10 @@ Hadur's requirements, written in EARS and traced to the tests that prove them. O
 | [Sanaro (NanoMelee)](sanaro.md) | 14 | SANARO |
 | [JayLexi (MiniRumble)](jaylexi.md) | 18 | JAYLEXI |
 | [Eveimear (MicroRumble)](eveimear.md) | 13 | EVEIMEAR |
+| [Sepia (1v1)](sepia.md) | 19 | INK JET SEPIA STRIKE SURF |
 | [Retired](retired.md) | 177 | |
 
-550 active requirements, 177 retired.
+585 active requirements, 177 retired.
 
 ## Writing a requirement
 
