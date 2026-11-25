@@ -1,6 +1,6 @@
 # Queue pc-locks: progress
 
-Updated 2026-11-25 15:55:28 PC time (15:55 UTC), runner pid 100256.
+Updated 2026-11-25 15:57:31 PC time (15:57 UTC), runner pid 36140.
 
 - `prep` done, exit 0 in 4 min
 - `livematch` done, exit 0 in 9 min
@@ -16,19 +16,19 @@ Updated 2026-11-25 15:55:28 PC time (15:55 UTC), runner pid 100256.
 ### Queue log (last lines)
 
 ```
-15:53:03 progress pushed to origin claude/pc-locks-progress (every 15 min)
-15:55:14 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
-15:55:14 skip prep (already exit=0)
-15:55:14 skip livematch (already exit=0)
-15:55:14 skip lock (already exit=0)
-15:55:14 skip stage (already exit=0)
-15:55:14 skip lock-ky (already exit=0)
-15:55:14 skip lock-rwl (already exit=0)
-15:55:14 skip lock-ty (already exit=0)
-15:55:14 skip lock-x0 (already exit=0)
 15:55:14 skip gate (already exit=0)
 15:55:14 start pr
 15:55:23 progress pushed to origin claude/pc-locks-progress (every 15 min)
 15:55:28 pr exit=1 in 14 s
 15:55:28 ALLDONE
+15:57:31 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
+15:57:31 skip prep (already exit=0)
+15:57:31 skip livematch (already exit=0)
+15:57:31 skip lock (already exit=0)
+15:57:31 skip stage (already exit=0)
+15:57:31 skip lock-ky (already exit=0)
+15:57:31 skip lock-rwl (already exit=0)
+15:57:31 skip lock-ty (already exit=0)
+15:57:31 skip lock-x0 (already exit=0)
+15:57:31 skip gate (already exit=0)
 ```
