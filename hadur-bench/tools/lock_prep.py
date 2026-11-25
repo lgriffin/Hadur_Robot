@@ -57,6 +57,7 @@ LEVERS = {
     "pmx": ("pmxlist", ("PM_MEGAS",)),  # MOVE-58 cw.megas-form pattern-matcher mimic
     "qw": ("aimwlist", ("AIM_WEIGHT",)),  # MOVE-67 per-opponent aim weight 1.0
     "hof": ("hoflist", ("HEAD_ON_FLOOR",)),  # MOVE-71 per-opponent head-on floor
+    "fgl": ("fglist", ("FREE_GUN_LIST",)),  # GUN-12 per-opponent free gun
     "ty": ("stinylist", ("SHIELD_TINY",)),  # SHIELD-33 tiny-shot shield waves
     "kb": ("sbklist", ("SHIELD_BREAK",)),  # SHIELD-27 close-start break-off
     "ky": ("syldlist", ("SHIELD_YIELD",)),  # SHIELD-35 close-range yield
