@@ -1,0 +1,1193 @@
+name	gun_class	move_class	cls	status	shielded	hadur_3_24_live	hadur_3_13_census	model_fit_3_13	hit_on_hadur	hit_on_sepia	sepia	regime	sepia_minus_hadur_3_24
+tjk.deBroglie rev0108	learning	flat	low	lever	0	96.19	53.24	57.28	0.0994	0.0988	43.43	ink-first	-52.76
+pez.mini2.Pugilist 2.5.15	learning	flat	low	lever	0	91.33	67.58	77.58	0.0828	0.1233	43.54	punch	-47.79
+xander.cat.XanderCat 12.9	learning	flat	low	lever	0	81.50	56.21	68.09	0.1103	0.1008	37.24	ink	-44.26
+ar.horizon.Horizon 1.2.2	learning	flat	low	lever	0	91.80	61.70	66.56	0.0898	0.1111	47.88	punch	-43.92
+slugzilla.Basilisk 3.9	learning	flat	low	lever	0	93.39	68.47	71.04	0.0743	0.0904	49.90	ink-first	-43.49
+nat.BlackHole 2.0gamma	learning	flat	low	lever	0	96.97	68.10	68.89	0.0752	0.1002	54.65	punch	-42.32
+penguin.Joker .611wr	learning	flat	low	lever	0	94.36	74.39	78.63	0.0790	0.1157	53.28	punch	-41.08
+stelo.Spread 0.9	learning	flat	low	lever	0	96.75	69.65	72.29	0.0795	0.1030	56.67	punch	-40.08
+cb.fire.Firestarter 2.0f	learning	flat	mid	lever	0	63.04	50.76	54.67	0.0957	0.1290	24.68	punch	-38.36
+sheldor.micro.EpeeistDC 3.0	learning	flat	low	lever	0	96.41	72.93	69.90	0.0803	0.1086	59.07	punch	-37.34
+theo.Hydrogen 2.1r	learning	flat	low	lever	0	96.20	77.98	79.45	0.0574	0.0899	59.71	punch	-36.49
+pez.mini.Tityus 0.9.1	learning	flat	low	lever	0	90.52	73.98	75.17	0.0629	0.0943	54.37	punch	-36.15
+davidalves.net.DuelistMicroMkII 1.1	learning	flat	low	lever	0	96.18	79.27	83.50	0.0343	0.0672	60.11	punch	-36.07
+cb.Domogled 1.2	learning	flat	mid	lever	0	74.44	63.90	73.63	0.0911	0.1269	39.17	punch	-35.27
+lxx.Tomcat 3.68	learning	flat	mid	lever	0	74.81	52.84	57.13	0.1055	0.1034	39.79	ink	-35.02
+rh.abs.Xwing 2.1	learning	oscillator	low	lever	0	95.77	68.55	67.64	0.0808	0.1001	60.80	punch	-34.97
+rsalesc.roborio.Roborio 1.2.4	learning	flat	mid	lever	0	73.30	60.61	74.30	0.0978	0.1282	39.18	punch	-34.12
+stelo.Liblix 0.3.1	learning	flat	low	lever	0	95.12	72.72	72.94	0.0874	0.1083	61.21	punch	-33.91
+sheldor.mini.Foilist 1.3.1	learning	flat	mid	lever	0	78.17	62.53	69.67	0.0938	0.0959	44.70	ink	-33.47
+pulsar.PulsarMax 0.8.9	learning	flat	mid	lever	0	80.46	60.03	62.97	0.0791	0.0811	47.58	ink	-32.88
+pez.micro.Aristocles 0.3.9	learning	flat	low	lever	0	96.74	75.10	73.93	0.0713	0.0965	64.77	punch	-31.97
+jam.RaikoMX 0.32	learning	flat	low	lever	0	85.46	69.29	70.03	0.0724	0.0978	53.70	punch	-31.76
+nat.Hikari dev0001	learning	circular-prone	low	lever	0	96.05	83.44	86.86	0.0310	0.0668	64.34	punch	-31.71
+da.NewBGank 1.4	learning	flat	mid	lever	0	93.49	72.52	76.64	0.0971	0.1196	62.94	punch	-30.55
+gh.GrypRepetyf 0.13	mixed	flat	low	untouched	0	97.14	91.93	92.16	0.0292	0.0904	66.62	punch	-30.52
+mn.Combat 3.25.0	learning	flat	mid	lever	0	73.40	56.53	65.34	0.0933	0.0972	42.97	ink	-30.43
+bing2.Melody 1.3.1	learning	flat	low	lever	0	98.87	85.76	84.79	0.0488	0.0899	69.10	punch	-29.77
+justin.DemonicRage 3.20	learning	flat	mid	surfkey	0	82.45	68.29	69.74	0.0769	0.1021	52.83	punch	-29.62
+cw.megas.Silhouette 1.1	learning	flat	mid	untouched	0	97.43	74.01	71.02	0.0808	0.1000	67.92	punch	-29.51
+TCMI.Enyo 0.4	mixed	flat	low	untouched	0	97.06	93.40	93.38	0.0246	0.0825	67.72	punch	-29.34
+voidious.Diamond 1.8.22	learning	flat			0	66.63	49.55	50.64	0.0895	0.1015	37.49	ink	-29.14
+sheldor.mini.FoilistMC 1.0	learning	flat	mid	lever	0	83.95	70.58	70.41	0.0871	0.1170	54.87	punch	-29.08
+rcb.Vanessa03 0	learning	stat-prone	low	lever	0	95.66	80.01	84.43	0.0364	0.0602	66.76	punch	-28.90
+wiki.BasicGFSurfer 1.02	learning	flat	low	lever	0	96.70	78.31	77.26	0.0706	0.0943	67.89	punch	-28.81
+areb.Union 1.06	learning	flat	low	lever	0	92.99	75.29	80.27	0.1086	0.1346	64.41	punch	-28.58
+element.Earth 1.1	learning	flat	low	lever	0	94.73	74.40	78.16	0.0868	0.1073	66.50	punch	-28.23
+mladjo.AIR 0.7	learning	flat	low	lever	0	96.53	83.77	82.67	0.0600	0.0892	68.37	punch	-28.16
+serenity.nonSense 1.39	learning	flat	low	lever	0	96.18	83.15	84.11	0.0596	0.0922	68.21	punch	-27.97
+mladjo.iRobot 0.3	learning	flat	low	lever	0	96.56	77.72	79.57	0.0728	0.0928	68.77	punch	-27.79
+jab.avk.ManuelGallegus 0.6	learning	flat	low	lever	0	97.45	78.36	80.13	0.0678	0.0840	69.97	punch	-27.48
+stelo.PastFuture 2.3.2	learning	flat	low	lever	0	86.18	66.84	65.19	0.0878	0.1084	58.73	punch	-27.45
+sheldor.micro.Epeeist 3.7	learning	flat	mid	lever	0	85.73	69.05	66.79	0.0924	0.1148	58.38	punch	-27.35
+lxx.ConceptA 0.8	learning	flat	low	lever	0	96.43	84.19	84.90	0.0406	0.0681	69.34	punch	-27.09
+toz.Gnome 1.1	learning	flat	low	untouched	0	96.90	90.84	91.07	0.0319	0.0792	69.97	punch	-26.93
+rsalesc.mega.Knight 0.6.28	learning	flat			0	55.73	53.18	58.50	0.1016	0.1304	29.04	punch	-26.69
+jw.Booring 1.11	learning	flat	mid	lever	0	95.30	74.96	75.16	0.0950	0.1171	68.69	punch	-26.61
+sheldor.micro.PointInLineRRAL 1.0	learning	flat	low	untouched	0	89.42	85.66	83.07	0.0471	0.0945	63.07	punch	-26.35
+apv.AspidReloaded 0.6	learning	flat	mid	untouched	0	99.97	78.56	74.20	0.0625	0.0801	73.65	punch	-26.32
+wcsv.Stampede2.Stampede2 1.1.0	learning	flat	mid	surfkey	0	81.29	76.22	77.23	0.0639	0.0980	55.00	punch	-26.29
+Krabb.sliNk.Garm 0.9u	learning	flat			0	75.54	67.14	69.72	0.0725	0.1020	49.33	punch	-26.21
+jk.melee.Neuromancer 7.12	learning	flat	close	surfkey	0	63.57	47.26	50.67	0.1091	0.1041	37.41	ink	-26.16
+EH.Fusion 0.32	mixed	rammer	close	surfkey	0	88.40	78.48	78.48	0.2579	0.4543	62.30	punch	-26.10
+scheronimus.AntiRebel 1.1	linear+learning	flat	low	lever	0	98.57	91.31	89.81	0.0301	0.0799	72.98	punch	-25.59
+suh.mega.WaveSurferGF 1.04	learning	flat	low	lever	0	95.11	77.41	81.55	0.0959	0.1181	69.59	punch	-25.52
+slugzilla.RandomLinear 1.0	linear+learning	flat	low	untouched	0	98.40	96.31	96.52	0.0111	0.0697	72.89	punch	-25.51
+wiki.Wolverine 2.1	learning	rammer	low	lever	0	98.27	91.15	92.35	0.0089	0.0355	72.79	ink	-25.48
+voidious.Dookious 1.573c	learning	flat	mid	lever	0	69.71	60.62	67.91	0.0726	0.0796	44.26	ink	-25.45
+apv.LauLectrik 1.2	learning	flat	low	lever	0	99.20	79.43	78.01	0.0597	0.0778	74.14	punch	-25.06
+slugzilla.Parallax 0.1	learning	flat	low	surfkey	0	87.62	79.00	79.45	0.0532	0.0911	62.61	punch	-25.01
+ary.micro.Weak 1.2	learning	flat	mid	surfkey	0	85.97	75.56	76.42	0.0785	0.1049	61.10	punch	-24.87
+Polkwane.Piyane 0.7b	linear+learning	flat	low	untouched	0	98.18	89.42	90.72	0.0293	0.0640	73.46	punch	-24.72
+stelo.Lifestealer 1.0	mixed	rammer	close	surfkey	0	88.20	81.57	79.93	0.2752	0.4868	64.23	punch	-23.97
+ntc.Cannon 1.12test	learning	flat	low	lever	0	95.73	78.44	75.03	0.0835	0.1033	71.90	punch	-23.83
+cw.megas.Gridd 0.4	learning	flat	mid	untouched	0	92.36	78.29	80.02	0.0846	0.1050	68.54	punch	-23.82
+infovk.s_schwarzm16.silverbird 1.0	learning	flat	mid	untouched	0	84.94	79.53	76.73	0.0725	0.1068	61.15	punch	-23.79
+supersample.SuperRamFire 1.0	mixed	rammer	close	surfkey	0	93.75	83.96	85.73	0.1373	0.2460	69.99	punch	-23.76
+DM.mega.Regicide 2.0rrr	learning	flat	mid	lever	0	74.48	69.37	72.58	0.0809	0.1118	50.88	punch	-23.60
+pe.SandboxLump 1.52	learning	flat	low	lever	0	94.29	78.94	80.09	0.0792	0.0976	70.84	punch	-23.45
+deo.CloudBot 1.3	learning	flat	low	lever	0	96.43	81.54	80.83	0.0692	0.0942	73.16	punch	-23.27
+demetrix.nano.Neutrino 0.27	learning	flat	mid	lever	0	91.67	78.69	76.54	0.0635	0.0897	68.46	punch	-23.21
+apc.botM 3.0	learning	flat	mid	untouched	0	94.52	88.28	87.13	0.0550	0.0972	71.55	punch	-22.97
+florent.FloatingTadpole 1.2.6	learning	flat	mid	surfkey	0	85.06	81.03	84.50	0.0631	0.0948	62.22	punch	-22.84
+deo.virtual.RainbowBot 1.0	learning	flat	low	shield	0	91.75	76.22	78.72	0.0911	0.1121	69.04	punch	-22.71
+wiki.WaveRammer 1.0	mixed	rammer	close	untouched	0	80.76	76.98	74.36	0.2091	0.3773	58.08	punch	-22.68
+mladjo.GnuKlub 0.1	learning	flat	low	lever	0	98.53	86.02	88.48	0.0433	0.0686	75.97	punch	-22.56
+ghent.ArthurPanzergon 1.0.0	mixed	rammer	mid	surfkey	0	90.10	84.07	83.60	0.1182	0.2137	67.56	punch	-22.54
+jk.precise.Wintermute 0.8	learning	flat	mid	lever	0	71.11	63.87	65.75	0.0880	0.1088	48.69	punch	-22.42
+as.xbots 1.0	linear	rammer	close	untouched	0	84.37	75.09	72.19	0.3084	0.5443	62.01	punch	-22.36
+hp.Athena 0.1	learning	flat	low	lever	0	95.65	79.53	82.38	0.0593	0.0735	73.42	punch	-22.23
+gg.Wolverine 2.0	learning	stat-prone	low	lever	0	98.58	89.15	88.59	0.0200	0.0506	76.51	punch	-22.07
+sgp.nano.FurryLeech 1.0	learning	flat	low	untouched	0	99.55	98.94	98.99	0.0033	0.0593	77.76	punch	-21.79
+mz.Movement 1.8	learning	oscillator	low	untouched	0	98.10	94.09	94.29	0.0236	0.0795	76.33	punch	-21.77
+catcat20.atom.Atom 0.51	learning	flat	mid	surfkey	0	86.54	81.80	81.91	0.0777	0.1144	65.00	punch	-21.54
+Krabb.fe4r.Fe4r 0.4	learning	flat	low	untouched	0	93.63	92.60	92.08	0.0248	0.0810	72.28	punch	-21.35
+ab.DengerousRoBatra 1.3	learning	flat	low	lever	0	95.15	81.28	81.82	0.0714	0.0938	73.90	punch	-21.25
+eem.zapper v6.03	learning	flat	mid	lever	0	77.56	68.96	66.56	0.0872	0.1110	56.58	punch	-20.98
+jcs.AutoBot 4.2.1	learning	flat	mid	untouched	0	91.03	78.29	79.90	0.0832	0.1026	70.28	punch	-20.75
+nan.Ihivatar_Mk_1 1.0	linear+learning	flat	low	untouched	0	99.16	91.68	91.39	0.0247	0.0576	78.41	punch	-20.75
+davidalves.net.DuelistNano 1.0	learning	flat	low	surfkey	0	94.02	83.01	83.84	0.0478	0.0703	73.28	punch	-20.74
+arthord.micro.Muffin 0.6.1	learning	flat	low	lever	0	90.15	76.94	77.66	0.0610	0.0768	69.42	punch	-20.73
+tad.Dalek98 0.98	learning	flat	low	untouched	0	88.36	81.41	85.31	0.0516	0.0771	67.64	punch	-20.72
+cw.megas.Polar 3.2	learning	flat	mid	untouched	0	91.29	78.09	78.86	0.0849	0.1053	70.61	punch	-20.68
+serenity.serenityFire 1.29	mixed	flat	low	lever	0	94.62	89.64	89.51	0.0482	0.0936	74.47	punch	-20.15
+oog.micro.Maui 1.2	learning	stat-prone	mid	untouched	0	96.20	82.98	83.09	0.0889	0.1095	76.33	punch	-19.87
+mld.DustBunny 3.8	learning	flat	low	untouched	0	98.24	98.28	98.47	0.0065	0.0735	78.49	punch	-19.75
+janm.Jammy 1.0	mixed	flat	mid	lever	0	98.08	83.15	83.91	0.0528	0.0669	78.43	punch	-19.65
+arthord.MannyPacquiao Delta2	learning	flat	mid	surfkey	0	85.58	79.70	79.09	0.0636	0.0918	66.15	punch	-19.43
+ry.LightningBug 1.0	learning	flat	low	lever	0	93.40	83.90	84.16	0.0717	0.0949	74.30	punch	-19.10
+synapse.Geomancy 15	learning	flat	mid	lever	0	77.52	71.39	74.47	0.0908	0.1125	58.46	punch	-19.06
+stelo.RamTrackSurfer 1.2	learning	flat	close	lever	0	87.74	80.31	81.28	0.0721	0.0993	68.73	punch	-19.01
+ar.QuantumChromodynamics 1.2.1	learning	flat	low	untouched	0	97.17	94.57	93.85	0.0192	0.0633	78.21	punch	-18.96
+eem.EvBotNG v12.8	learning	flat	mid	untouched	0	73.52	67.36	69.46	0.0963	0.1190	54.63	punch	-18.89
+nat.Samekh 0.4	learning	flat	mid	untouched	0	75.33	62.70	60.33	0.0827	0.1024	56.54	punch	-18.79
+cx.Lacrimas 1.36	learning	flat	mid	lever	0	72.38	70.65	72.46	0.0655	0.0945	53.79	punch	-18.59
+pez.mini.VertiLeach 0.4.0	learning	flat	low	lever	0	87.93	78.22	80.08	0.0840	0.1040	69.35	punch	-18.58
+cx.mini.Cigaret 1.31	learning	flat	mid	untouched	0	82.94	74.50	77.28	0.0624	0.0781	64.39	punch	-18.55
+divineomega.PatrollerBot 1.0	learning	flat	mid	untouched	0	94.07	91.06	90.40	0.0386	0.0921	75.60	punch	-18.47
+ds.Versatile RB1.0.1	learning	flat	mid	untouched	0	84.99	84.57	83.26	0.0711	0.1094	66.58	punch	-18.41
+fromHell.BlackBox 0.0.2	learning	oscillator	mid	lever	0	76.35	67.99	73.56	0.0876	0.1084	57.99	punch	-18.36
+oog.nano.SavantVS 1.1	learning	flat	low	untouched	0	98.90	96.02	96.22	0.0140	0.0629	80.74	punch	-18.16
+squidM.SurfinUSA 1.0	linear	flat	low	untouched	0	99.15	97.44	97.33	0.0098	0.0638	81.04	punch	-18.11
+davidalves.net.Duelist 0.1.6src	learning	flat	mid	surfkey	0	85.72	81.27	81.92	0.0565	0.0821	67.73	punch	-17.99
+catcat20.Rabbit 0.001	learning	flat	mid	surfkey	0	90.97	82.19	79.21	0.0880	0.1156	73.01	punch	-17.96
+axeBots.SilverSurfer 2.53.33fix	learning	flat	mid	untouched	0	71.68	67.30	69.28	0.0795	0.0983	53.75	punch	-17.93
+sos.SOS 1.0	mixed	flat	mid	untouched	0	94.99	89.61	88.98	0.0526	0.0945	77.15	punch	-17.84
+dsekercioglu.mega.WhiteFang 2.8.1	learning	flat			0	72.56	67.19	66.00	0.0858	0.0917	54.81	ink	-17.75
+whind.StrengthBee 0.6.4	learning	flat	mid	lever	0	80.25	72.98	72.02	0.0719	0.0950	62.54	punch	-17.71
+wcsv.Stampede 1.3.3	learning	flat	mid	surfkey	0	91.30	82.19	81.58	0.0545	0.0775	73.63	punch	-17.67
+dft.Immortal 1.40	learning	flat	mid	untouched	0	73.46	70.68	72.74	0.0686	0.0942	55.89	punch	-17.57
+voidious.perceptual.RetroGirl 1.0.0	head-on+learning	flat	low	lever	0	97.25	92.60	91.63	0.0444	0.0921	79.69	punch	-17.56
+pa3k.Viper 5.03	learning	flat	mid	lever	0	89.24	80.42	80.74	0.0778	0.0988	71.82	punch	-17.42
+darkcanuck.Gaff 1.50	learning	flat	mid	lever	0	79.62	73.35	75.03	0.0842	0.1043	62.29	punch	-17.33
+damij.mega.Boque aaah	learning	flat	mid	untouched	0	72.35	67.06	64.44	0.0906	0.1140	55.04	punch	-17.31
+arthord.NanoSatan Mu	learning	flat	mid	untouched	0	95.73	84.13	83.99	0.0657	0.0818	78.45	punch	-17.28
+nova.Snow 1.0	learning	flat	mid	surfkey	0	89.58	76.63	75.40	0.0958	0.1181	72.35	punch	-17.23
+xander.cat.SamAxe 1.1	learning	flat	low	lever	0	98.47	85.64	85.07	0.0833	0.1032	81.30	punch	-17.17
+kc.micro.Needle 0.101	mixed	flat	mid	untouched	0	81.35	75.24	75.33	0.0754	0.0960	64.23	punch	-17.12
+am.Miedzix 3.0	mixed	rammer	mid	surfkey	0	93.86	86.84	86.87	0.1198	0.2143	76.82	punch	-17.04
+dz.GalbaMini 0.121	learning	flat	mid	lever	0	76.13	68.75	71.81	0.0853	0.1062	59.10	punch	-17.03
+sheldor.micro.Continuation 1.1	learning	flat	mid	untouched	0	68.76	67.65	72.15	0.0909	0.1125	51.73	punch	-17.03
+apv.Aspid 1.7	learning	flat	mid	surfkey	0	87.07	77.09	76.72	0.0614	0.0766	70.05	punch	-17.02
+deewiant.Anomaly 0.2	mixed	flat	low	lever	0	99.54	95.22	95.40	0.0322	0.0940	82.56	punch	-16.98
+amarok.Rookie 1.1	learning	flat	low	surfkey	0	97.65	93.43	93.42	0.0349	0.0864	80.71	punch	-16.94
+ags.Glacier 0.3.2	learning	flat	close	lever	0	67.88	62.02	60.57	0.1068	0.1319	51.06	punch	-16.82
+serenity.moonlightBat 1.17	linear+learning	flat	low	untouched	0	98.04	95.14	94.64	0.0372	0.1001	81.43	punch	-16.61
+unarmedlad.nano.VirginSteele 2.2	learning	flat	mid	surfkey	0	89.46	85.18	86.36	0.0579	0.0902	72.85	punch	-16.61
+com.syncleus.robocode.Dreadnaught 0.1	mixed	rammer	close	untouched	0	91.49	83.51	82.63	0.3020	0.5398	74.91	punch	-16.58
+cs.PumpkinPie 1.0	learning	flat	mid	surfkey	0	81.05	77.27	75.58	0.0666	0.0905	64.53	punch	-16.52
+ur4n0.UR4NO 1.0	learning	flat	mid	surfkey	0	77.39	72.42	71.85	0.0882	0.1092	60.89	punch	-16.50
+cw.megas.GhostShell GT	learning	oscillator	mid	untouched	0	97.98	86.02	87.44	0.0941	0.1166	81.48	punch	-16.50
+rcp.Kuramatron 1.0	linear+learning	rammer	close	untouched	0	91.96	86.12	84.30	0.2286	0.3966	75.69	punch	-16.27
+penguin.MrFreeze 1.0a	learning	flat	mid	untouched	0	86.70	85.02	82.91	0.0665	0.1071	70.49	punch	-16.21
+elloco.Flower 0.1r1	linear	rammer	low	lever	0	97.94	90.94	93.56	0.0649	0.1139	81.82	punch	-16.12
+stelo.MatchupAGF 1.1	learning	flat	mid	untouched	0	77.60	70.57	72.73	0.0993	0.1228	61.50	punch	-16.10
+dummy.mini.Parakeet 2.40	learning	flat	mid	surfkey	0	84.27	79.61	78.45	0.0703	0.1004	68.20	punch	-16.07
+stelo.MatchupMicro 1.2	learning	flat	mid	lever	0	87.51	80.41	81.84	0.0778	0.0975	71.48	punch	-16.03
+whind.Wisdom 0.5.1	learning	flat	low	lever	0	82.64	75.15	75.37	0.0666	0.0828	66.62	punch	-16.02
+dmh.robocode.robot.GreenDragon 1.0	mixed	flat	low	surfkey	0	95.58	89.78	88.01	0.0479	0.0835	79.67	punch	-15.91
+oog.nano.Caligula 1.15	linear	rammer	close	lever	0	82.77	69.31	69.20	0.4374	0.7583	67.07	punch	-15.70
+rdt.AgentSmith.AgentSmithRedux 0.02	mixed	flat	low	untouched	0	97.87	93.02	92.72	0.0370	0.0774	82.21	punch	-15.66
+kawigi.sbf.Teancum 1.3	learning	flat	mid	surfkey	0	84.47	78.52	79.94	0.0734	0.0950	68.82	punch	-15.65
+alpha.RainingFire 1.0	learning	flat	mid	untouched	0	80.89	73.94	74.70	0.0908	0.1126	65.29	punch	-15.60
+bvh.micro.Freya 0.3	learning	flat	low	untouched	0	97.08	93.45	92.81	0.0307	0.0751	81.55	punch	-15.53
+csm.NthGeneration 0.04	mixed	stat-prone	low	untouched	0	97.82	94.13	93.66	0.0349	0.0848	82.31	punch	-15.51
+And.BasicSurfer FF1.6	mixed	flat	low	untouched	0	99.51	98.03	98.57	0.0078	0.0558	84.03	punch	-15.48
+test.Fuzzer 1.0.1	learning	flat	mid	lever	0	95.32	89.88	89.39	0.0500	0.0938	79.85	punch	-15.47
+pedersen.Ugluk 1.0	learning	flat	mid	untouched	0	80.19	76.25	79.93	0.0787	0.0978	64.78	punch	-15.41
+drm.Magazine 0.39	learning	flat	low	surfkey	0	85.23	77.60	78.43	0.0639	0.0794	69.85	punch	-15.38
+seed.Weed 3.0.2	learning	flat	mid	surfkey	0	92.71	88.76	88.12	0.0645	0.0988	77.36	punch	-15.35
+strider.Festis 1.2.1	learning	flat	low	surfkey	0	94.92	90.21	91.33	0.0358	0.0645	79.64	punch	-15.28
+ags.Midboss 1q.fast	learning	flat	mid	untouched	0	76.60	70.96	70.71	0.0958	0.1186	61.33	punch	-15.27
+lancel.Lynx 1.09	learning	flat	mid	surfkey	0	68.44	66.02	67.24	0.0877	0.1085	53.18	punch	-15.26
+kc.serpent.WaveSerpent 2.11	learning	flat	mid	surfkey	0	63.85	56.43	59.20	0.0797	0.0821	48.65	ink	-15.20
+wit.Chuliath 1.0	linear+learning	flat	low	untouched	0	99.29	97.72	97.35	0.0157	0.0864	84.11	punch	-15.18
+ahr.ice.Ice 1.0	linear+learning	stat-prone	low	lever	0	94.91	82.84	83.54	0.0777	0.0945	79.78	punch	-15.13
+davidalves.PhoenixOS 1.1	learning	flat	mid	untouched	0	71.42	67.26	67.84	0.0788	0.0993	56.29	punch	-15.13
+dsekercioglu.mega.Raven 3.56j8	learning	flat			0	59.71	53.55	62.50	0.1016	0.0953	44.61	ink	-15.10
+synnalagma.test.MiniNeural 1.1	learning	flat	low	untouched	0	89.44	89.55	89.59	0.0415	0.0848	74.36	punch	-15.08
+bigpete.Stewie 1.0	mixed	flat	low	untouched	0	99.50	96.28	95.68	0.0246	0.0825	84.55	punch	-14.95
+md.November 1.0	learning	flat	low	lever	0	91.90	85.87	84.87	0.0534	0.0800	76.98	punch	-14.92
+ags.rougedc.RougeDC willow	learning	flat	mid	lever	0	73.89	69.32	69.37	0.1109	0.1367	58.99	punch	-14.90
+aw.Gilgalad 1.99.5c	learning	flat	close	untouched	0	58.02	48.79	52.99	0.1031	0.1020	43.12	ink	-14.90
+com.cohesiva.robocode.ManOwaR 1.0	learning	flat	low	untouched	0	96.05	93.79	93.07	0.0443	0.1018	81.19	punch	-14.86
+conscience.Idem 1.0a	linear+learning	flat	low	untouched	0	99.52	96.73	96.94	0.0178	0.0727	84.71	punch	-14.81
+rampancy.Durandal 2.2d	learning	oscillator	mid	lever	0	82.11	76.21	78.98	0.0840	0.1036	67.30	punch	-14.81
+catcat20.helios.Helios 1.5	learning	flat	mid	surfkey	0	84.78	80.09	83.14	0.0802	0.1089	69.99	punch	-14.79
+ebo.Sparse 0.02	learning	flat	mid	lever	0	87.75	80.81	82.11	0.0687	0.0883	72.99	punch	-14.76
+muf.CrazyKitten 0.9	mixed	flat	mid	surfkey	0	88.65	85.43	87.34	0.0526	0.0814	74.01	punch	-14.64
+kronenthaler.Basilisk 1.0	linear	flat	low	untouched	0	98.82	98.52	98.39	0.0115	0.0838	84.21	punch	-14.61
+cx.CigaretBH 1.03	learning	flat	mid	untouched	0	81.40	75.97	77.93	0.0701	0.0910	66.82	punch	-14.58
+darkcanuck.Pris 0.92	learning	flat	mid	lever	0	69.85	63.59	62.80	0.0881	0.1092	55.30	punch	-14.55
+blir.nano.Bruce R1.0.0	linear	rammer	close	untouched	0	89.88	79.14	74.75	0.3976	0.6881	75.33	punch	-14.55
+ar.TheoryOfEverything 1.2.1	mixed	flat	low	lever	0	90.80	84.68	85.66	0.0493	0.0656	76.31	punch	-14.49
+sadoner.killer 0.2	mixed	stat-prone	mid	untouched	0	91.61	82.28	81.19	0.0887	0.1087	77.12	punch	-14.49
+wiki.mini.GouldingiHT 1.0	head-on	flat	low	untouched	0	97.97	95.06	95.00	0.0128	0.0485	83.62	punch	-14.35
+ahf.Acero 1.0	head-on	flat	low	untouched	0	97.18	96.59	96.32	0.0111	0.0480	82.88	punch	-14.30
+Legend.Biogon 1.5	mixed	flat	low	untouched	0	99.31	98.21	98.09	0.0094	0.0662	85.17	punch	-14.14
+lessonz.robocode.Oz 0.5.0	linear	flat	low	untouched	0	98.79	97.15	96.86	0.0179	0.0783	84.74	punch	-14.05
+dz.GalbaMicro 0.11	learning	flat	low	lever	0	85.42	83.22	83.73	0.0611	0.0901	71.39	punch	-14.03
+gadsky.Gadsky 1.01	learning	flat	mid	untouched	0	87.03	82.97	82.48	0.0736	0.1003	73.01	punch	-14.02
+pc.Wavelet 1.5	learning	flat			0	52.89	49.25	62.10	0.1000	0.0983	38.92	ink	-13.97
+gh.mini.Grimmig 0.3.6	mixed	flat	mid	lever	0	88.71	88.46	88.40	0.0516	0.0902	74.75	punch	-13.96
+positive.Portia 1.26e	learning	flat	mid	untouched	0	68.69	67.26	64.95	0.0830	0.1081	54.76	punch	-13.93
+pkdeken.Paladin 1.0	learning	stat-prone	low	lever	0	99.02	92.23	92.99	0.0400	0.0668	85.12	punch	-13.90
+pez.nano.Icarus 0.3	mixed	flat	low	untouched	0	99.37	97.06	96.61	0.0146	0.0671	85.53	punch	-13.84
+Ex.Survival 3.7	learning	flat	low	untouched	0	99.37	97.79	97.14	0.0114	0.0672	85.58	punch	-13.79
+suh.mega.WaveSurferPG 1.06	learning	flat	mid	untouched	0	83.81	77.32	82.55	0.0952	0.1171	70.06	punch	-13.75
+lrem.Spectre 0.4.4	learning	flat	mid	surfkey	0	88.88	87.63	88.44	0.0574	0.0944	75.15	punch	-13.73
+spinnercat.haiku.Refrigerator 1.1	learning	mixed	low	surfkey	0	94.03	87.83	87.29	0.0432	0.0685	80.33	punch	-13.70
+abc.Shadow 3.83c	learning	flat	mid	lever	0	59.83	51.56	56.55	0.1011	0.0916	46.19	ink	-13.64
+alk.lap.LoudAndProud 2.23	learning	flat	mid	untouched	0	83.74	76.19	75.10	0.0671	0.0828	70.11	punch	-13.63
+step.nanoPri 1.0	mixed	rammer	close	surfkey	0	86.19	74.56	73.13	0.4693	0.8322	72.58	punch	-13.61
+kvk.HebusLeTroll 0.41	learning	flat	mid	surfkey	0	84.09	81.73	84.08	0.0586	0.0816	70.54	punch	-13.55
+bvh.fry.Freya 0.82	learning	flat	mid	surfkey	0	87.10	81.69	79.70	0.0630	0.0911	73.71	punch	-13.39
+ers.nano.sunderer.Sunderer 1.23a	linear+learning	rammer	close	surfkey	0	83.96	70.06	66.48	0.4803	0.8360	70.63	punch	-13.33
+myl.micro.Predator 1.50	head-on	flat	low	untouched	0	98.58	97.97	98.20	0.0069	0.0397	85.25	punch	-13.33
+oog.nano.SavantWS 0.1	learning	stat-prone	low	surfkey	0	97.34	96.29	96.36	0.0197	0.0776	84.01	punch	-13.33
+sgp.JollyNinja 3.53	learning	oscillator	mid	surfkey	0	91.56	85.92	86.55	0.0472	0.0730	78.30	punch	-13.26
+ara.Shera 0.88	learning	flat	mid	surfkey	0	81.18	76.76	77.95	0.0725	0.0896	67.96	punch	-13.22
+dsekercioglu.mini.Partial 0.1.3	learning	flat	mid	lever	0	84.06	82.14	81.89	0.0763	0.1048	70.85	punch	-13.21
+bvh.mini.Wodan 0.50	learning	flat	mid	lever	0	81.07	75.72	75.47	0.0874	0.1080	67.87	punch	-13.20
+ph.Thinker 0.2.5	learning	flat	low	untouched	0	95.66	94.38	93.95	0.0252	0.0698	82.46	punch	-13.20
+axeBots.Okami 1.04	learning	oscillator	mid	untouched	0	78.71	79.98	79.35	0.0729	0.1012	65.53	punch	-13.18
+amk.ShizzleStiX.ShizzleStiX 0.6	linear+learning	flat	low	untouched	0	95.34	90.22	91.44	0.0395	0.0651	82.32	punch	-13.02
+zyx.mega.YersiniaPestis 3.0	learning	flat	mid	untouched	0	57.85	56.26	62.31	0.0922	0.0846	44.86	ink	-12.99
+vft.Valkyrie 1.0	learning	flat	mid	untouched	0	93.19	86.46	87.43	0.0535	0.0704	80.24	punch	-12.95
+sul.Pinkbot 1.1	learning	stat-prone	low	untouched	0	98.88	95.94	97.61	0.0161	0.0541	85.95	punch	-12.93
+rfj.Sunburn 1.1	learning	flat	mid	untouched	0	94.96	89.92	89.83	0.0742	0.1094	82.04	punch	-12.92
+ratosh.Nobo 0.21	learning	stat-prone	low	untouched	0	98.16	97.39	97.78	0.0121	0.0596	85.25	punch	-12.91
+bzdp.BoxCar 2.0	mixed	rammer	mid	surfkey	0	94.90	90.39	90.36	0.1001	0.1809	82.01	punch	-12.89
+povik.nano.Smilee 0.2.1	learning	oscillator	mid	surfkey	0	92.77	87.52	87.66	0.0695	0.0944	79.95	punch	-12.82
+robar.haiku.Spike 1.0	learning	flat	low	untouched	0	95.01	94.13	93.24	0.0351	0.0904	82.20	punch	-12.81
+Legend.X_FireFly 1.3	mixed	flat	low	surfkey	0	94.35	93.36	93.98	0.0302	0.0675	81.55	punch	-12.80
+doka.ShinigamiKNN 1.0	learning	stat-prone	low	untouched	0	97.00	96.16	96.06	0.0159	0.0604	84.26	punch	-12.74
+seed.Anastasia 1.0	learning	flat	mid	surfkey	0	95.13	91.75	90.25	0.0563	0.1019	82.41	punch	-12.72
+ha2.T2b 0.2b	mixed	stat-prone	low	untouched	0	99.09	96.40	95.81	0.0237	0.0786	86.38	punch	-12.71
+eem.EvBot v4.6.4	learning	flat	mid	untouched	0	89.26	86.98	83.92	0.0679	0.1038	76.55	punch	-12.71
+doka.KillerRabbit 1.0	learning	flat	mid	surfkey	0	85.59	82.15	83.75	0.0634	0.0826	72.89	punch	-12.70
+timmit.mini.TimVA 0.43	learning	flat	mid	surfkey	0	82.42	80.00	81.71	0.0589	0.0791	69.83	punch	-12.59
+bvh.mini.Mjolnir 0.3	mixed	rammer	close	lever	0	77.08	77.63	78.35	0.3207	0.5682	64.49	punch	-12.59
+TCMI.nano.Copper 0.2	learning	linear-prone	low	untouched	0	98.85	96.02	95.59	0.0224	0.0794	86.28	punch	-12.57
+barontrozo.BaronTrozo 1.7.6	learning	flat	close	untouched	0	67.21	64.72	67.49	0.0934	0.1158	54.65	punch	-12.56
+step.NanoBidu 1.0	mixed	flat	low	untouched	0	94.44	92.82	92.19	0.0304	0.0760	81.88	punch	-12.56
+ender.EnderRobot 1.1	mixed	oscillator	low	lever	0	94.34	87.00	86.70	0.0719	0.0921	81.78	punch	-12.56
+DM.Mijit .3	learning	flat	low	lever	0	95.44	89.61	89.69	0.0658	0.0931	82.96	punch	-12.48
+klein.GottesKrieger 1.1	learning	stat-prone	low	lever	0	98.07	94.11	94.68	0.0312	0.0649	85.61	punch	-12.46
+stelo.FretNano 1.1	learning	flat	mid	surfkey	0	90.62	86.44	85.81	0.0646	0.0909	78.18	punch	-12.44
+sgp.SleepingGoat 1.1	learning	flat	low	untouched	0	94.04	91.21	91.58	0.0447	0.0846	81.63	punch	-12.41
+shrub.Vapour v159	learning	flat	mid	surfkey	0	88.17	84.52	85.83	0.0672	0.0915	75.86	punch	-12.31
+ary.Crisis 1.0	learning	flat	mid	lever	0	93.41	87.74	87.70	0.0752	0.1027	81.15	punch	-12.26
+pl.Patton.GeneralPatton 1.54	learning	flat	mid	lever	0	90.12	83.90	83.84	0.0947	0.1163	77.90	punch	-12.22
+EE.LittleBig 1.0	learning	flat	mid	lever	0	95.22	86.25	83.92	0.0626	0.0789	83.01	punch	-12.21
+cx.BlestPain 1.41	learning	flat	mid	untouched	0	75.14	76.27	79.43	0.0624	0.0860	62.96	punch	-12.18
+penguin.Ivy 1.1r	learning	flat	mid	surfkey	0	87.95	87.06	87.02	0.0549	0.0872	75.79	punch	-12.16
+cb.mega.RandomBot 1.0	learning	flat	mid	lever	0	72.09	69.51	72.21	0.0968	0.1201	59.93	punch	-12.16
+lj.Dapps 0.2	learning	flat	mid	untouched	0	84.23	83.17	83.04	0.0809	0.1054	72.11	punch	-12.12
+fromHell.C4H10O 1.5.1	learning	flat	mid	surfkey	0	72.88	73.19	76.13	0.0762	0.0962	60.79	punch	-12.09
+cx.micro.Blur 0.2	learning	flat	low	surfkey	0	90.22	81.73	80.27	0.0564	0.0707	78.17	punch	-12.05
+baal.nano.N 1.42	learning	stat-prone	low	untouched	0	99.38	97.59	96.77	0.0157	0.0721	87.37	punch	-12.01
+velas.Beta_2_0 2.0	mixed	flat	low	surfkey	0	95.99	91.03	90.96	0.0374	0.0644	84.05	punch	-11.94
+dsx724.VSAB_EP3a 1.0	mixed	oscillator	low	untouched	0	99.46	97.35	96.45	0.0296	0.0990	87.55	punch	-11.91
+suh.nano.RammingC 1.00	mixed	rammer	close	untouched	0	90.75	73.05	65.58	0.5783	0.9500	78.86	punch	-11.89
+jdw.Hornet 1.0	learning	mixed	low	untouched	0	98.70	98.87	98.99	0.0041	0.0605	86.81	punch	-11.89
+dz.OthoMini 0.15	learning	flat	mid	surfkey	0	84.08	79.62	78.06	0.0608	0.0781	72.23	punch	-11.85
+marksteam.Phoenix 1.0	mixed	stat-prone	low	lever	0	96.19	92.82	92.65	0.0380	0.0679	84.36	punch	-11.83
+traker.Eraser 1	linear+learning	flat	low	untouched	0	99.84	98.98	98.24	0.0075	0.0611	88.03	punch	-11.81
+pe.SandboxDT 3.02	learning	flat	mid	lever	0	70.19	69.17	72.15	0.0786	0.0988	58.38	punch	-11.81
+doka.Shinigami 2.2	learning	stat-prone	low	surfkey	0	90.51	88.53	87.44	0.0489	0.0794	78.72	punch	-11.79
+yarhoslav.YaroBot 1.2	linear	flat	low	untouched	0	98.18	94.73	94.21	0.0323	0.0759	86.39	punch	-11.79
+bayen.UbaRamLT 1.0	linear	rammer	close	untouched	0	89.27	79.34	74.21	0.4245	0.7364	77.50	punch	-11.77
+hamilton.Hamilton 1.0	learning	flat	mid	surfkey	0	88.98	86.70	86.63	0.0740	0.1060	77.23	punch	-11.75
+simonton.micro.WeeklongObsession 3.4.1	learning	flat	mid	untouched	0	73.64	71.44	75.26	0.0899	0.1116	61.92	punch	-11.72
+supersample.SuperSpinBot 1.0	learning	stat-prone	low	untouched	0	96.06	93.44	93.48	0.0372	0.0803	84.38	punch	-11.68
+paulk.PaulV3 1.7	learning	flat	mid	surfkey	0	77.73	72.87	71.95	0.0890	0.1100	66.05	punch	-11.68
+EFD.AdvancedEFD 0.4.5a	learning	flat	close	untouched	0	67.41	68.21	70.60	0.1123	0.1383	55.78	punch	-11.63
+zzx.Ignohis 8.0	mixed	stat-prone	low	untouched	0	98.85	97.52	97.29	0.0113	0.0592	87.24	punch	-11.61
+Gecko.ultimateGeckoBot 1.0	linear+learning	flat	low	untouched	0	99.15	98.61	98.71	0.0085	0.0680	87.54	punch	-11.61
+doka.Test 1.0	learning	stat-prone	mid	untouched	0	89.17	84.54	83.87	0.0700	0.0934	77.59	punch	-11.58
+robar.nano.Assertive 0.3	learning	flat	mid	untouched	0	88.36	83.37	81.55	0.0949	0.1171	76.80	punch	-11.56
+robar.nano.Breeze 0.3	learning	flat	low	untouched	0	90.85	87.93	86.03	0.0627	0.0982	79.33	punch	-11.52
+yagami.Tidus 0.11	learning	stat-prone	low	untouched	0	100.00	99.95	100.00	0.0003	0.0557	88.51	punch	-11.49
+nat.micro.Reepicheep 0.1a	mixed	flat	mid	lever	0	92.64	86.22	86.24	0.0573	0.0766	81.16	punch	-11.48
+nexus.Prototype 1.0	head-on+learning	rammer	low	untouched	0	97.39	91.09	90.88	0.0806	0.1410	85.94	punch	-11.45
+zyx.micro.Ant 1.1	learning	stat-prone	low	lever	0	96.92	92.25	90.30	0.0454	0.0825	85.55	punch	-11.37
+maribo.melee.BMV 0.1	linear	flat	low	untouched	0	98.78	95.46	95.31	0.0244	0.0651	87.42	punch	-11.36
+grybgoofy.GoofyBot 0.10	learning	flat	low	untouched	0	91.99	89.23	87.97	0.0657	0.0995	80.67	punch	-11.32
+dz.OthoMicro 0.12	learning	flat	mid	untouched	0	85.86	79.15	75.74	0.0633	0.0800	74.60	punch	-11.26
+robar.micro.Topaz 0.25	learning	flat	mid	surfkey	0	78.35	76.07	78.52	0.0831	0.1031	67.13	punch	-11.22
+pl.Drum 0.1	learning	oscillator	close	lever	0	88.52	83.71	84.18	0.1108	0.1361	77.39	punch	-11.13
+adt.Ar2 1.0	learning	rammer	mid	untouched	0	95.19	95.44	95.54	0.0359	0.1020	84.15	punch	-11.04
+av.RobAtHome 1.2	learning	stat-prone	low	surfkey	0	98.22	94.17	93.35	0.0431	0.0841	87.20	punch	-11.02
+mb.Beast 0.4.1	linear+learning	stat-prone	low	untouched	0	99.70	96.56	96.55	0.0244	0.0723	88.69	punch	-11.01
+ebo.Tahoe 1.1.79	learning	flat	mid	lever	0	76.43	69.93	66.16	0.0925	0.1142	65.48	punch	-10.95
+dft.Guppy 1.0	learning	rammer	mid	surfkey	0	95.56	94.56	94.96	0.0405	0.0966	84.69	punch	-10.87
+kinsen.nano.Hoplomachy 1.6	learning	stat-prone	low	untouched	0	99.28	96.58	96.77	0.0254	0.0799	88.43	punch	-10.85
+dans.Cinnamon 1.2	learning	stat-prone	low	untouched	0	94.67	92.16	93.40	0.0361	0.0681	83.85	punch	-10.82
+nz.jdc.nano.NeophyteSRAL 1.3	linear+learning	stat-prone	low	untouched	0	98.90	97.99	97.97	0.0188	0.0819	88.10	punch	-10.80
+rapture.Rapture 2.13	linear+learning	flat	low	untouched	0	99.53	95.84	95.96	0.0447	0.0986	88.75	punch	-10.78
+rdt.Wraith.Wraith 0.3	learning	oscillator	mid	untouched	0	85.65	86.07	84.02	0.0673	0.0984	74.88	punch	-10.77
+jaara.LambdaBot 1.1	learning	flat	mid	surfkey	0	86.71	84.34	82.69	0.0627	0.0919	75.97	punch	-10.74
+arthord.micro.Apoptygma 0.4	learning	flat	low	lever	0	91.43	83.14	82.08	0.0574	0.0716	80.69	punch	-10.74
+sgp.ShiningBeetle 1.1	learning	flat	mid	surfkey	0	94.43	91.46	91.50	0.0540	0.0880	83.70	punch	-10.73
+fire219.cymba.Cymba 1.8	mixed	flat	low	untouched	0	94.22	91.86	90.36	0.0508	0.0891	83.49	punch	-10.73
+qwaker00.Gandhi 1.2	learning	rammer	low	untouched	0	98.41	95.57	94.95	0.0304	0.0892	87.69	punch	-10.72
+supersample.SuperTracker 1.0	learning	rammer	mid	untouched	0	98.93	95.59	95.14	0.0375	0.0893	88.25	punch	-10.68
+cx.nano.Smog 2.6	learning	stat-prone	low	lever	0	96.07	93.20	93.42	0.0298	0.0614	85.39	punch	-10.68
+bts.wiki.RipCurl 0.9b	learning	flat	mid	surfkey	0	82.05	79.08	79.47	0.0580	0.0750	71.39	punch	-10.66
+Legend.BoulderZY 1.4.9	learning	flat	low	untouched	0	97.58	97.60	97.25	0.0170	0.0805	86.93	punch	-10.65
+knackibot.KnackOnOne 0.8.1	head-on	flat	low	untouched	0	98.64	95.61	96.06	0.0187	0.0474	88.02	punch	-10.62
+bayen.nano.Squirrel 0.2	learning	stat-prone	low	surfkey	0	91.64	87.03	87.49	0.0556	0.0707	81.06	punch	-10.58
+kawigi.micro.Shiz 1.1	learning	stat-prone	low	untouched	0	99.89	98.21	98.87	0.0080	0.0592	89.33	punch	-10.56
+tm.Yuugao 1.0	learning	flat	mid	untouched	0	79.26	76.38	76.76	0.0790	0.0980	68.70	punch	-10.56
+supersample.SuperTrackFire 1.0	learning	oscillator	low	untouched	0	97.21	94.80	93.35	0.0239	0.0721	86.65	punch	-10.56
+tobe.Relativity 3.9	learning	flat	low	untouched	0	94.02	91.76	91.53	0.0389	0.0671	83.47	punch	-10.55
+kjc.etc.Dharok 1.0	head-on+learning	flat	low	surfkey	0	95.66	95.17	96.00	0.0234	0.0581	85.12	punch	-10.54
+rh.Intra 2.1DomoKN	learning	flat	mid	untouched	0	67.51	71.66	71.59	0.0830	0.1098	57.04	punch	-10.47
+fushi.PvP1.PvP1 2004-02-16	learning	flat	mid	lever	0	89.35	84.02	85.75	0.1005	0.1243	78.94	punch	-10.41
+sigterm.Sigterm 1.0	learning	flat	low	untouched	0	92.94	91.85	91.42	0.0413	0.0792	82.56	punch	-10.38
+krillr.mini.JointStrike 2.0.0	learning	flat	low	untouched	0	84.97	88.59	86.91	0.0331	0.0667	74.67	punch	-10.30
+dft.Freddie 1.32	learning	stat-prone	low	lever	0	95.80	91.63	91.99	0.0409	0.0655	85.50	punch	-10.30
+bts.mega.Gnarly 1.4	learning	oscillator	close	surfkey	0	87.45	85.44	84.75	0.1197	0.1474	77.16	punch	-10.29
+awesomeness.Elite 1.0	linear+learning	stat-prone	low	untouched	0	99.09	96.88	96.74	0.0193	0.0611	88.83	punch	-10.26
+mdouet.BotKicker 2.0	mixed	stat-prone	low	untouched	0	97.07	95.03	95.45	0.0332	0.0706	86.87	punch	-10.20
+lk.nano.Avesnar 1.1	learning	flat	low	surfkey	0	94.61	96.26	95.89	0.0145	0.0560	84.47	punch	-10.14
+ndn.DyslexicMonkey 1.1	mixed	flat	low	untouched	0	97.55	95.25	94.90	0.0319	0.0793	87.44	punch	-10.11
+sheldor.nano.PointInLineRRAL 1.0.0	learning	stat-prone	mid	surfkey	0	91.04	87.90	87.50	0.0741	0.0927	80.93	punch	-10.11
+projectx.ProjectNano 2.0	mixed	stat-prone	low	lever	0	96.52	92.91	92.44	0.0362	0.0616	86.45	punch	-10.07
+EBBU.Sim2 1.02	learning	circular-prone	mid	lever	0	97.78	92.97	92.44	0.0533	0.0822	87.72	punch	-10.06
+mz.AdeptBSB 1.03	linear	stat-prone	low	untouched	0	99.79	98.29	98.33	0.0109	0.0626	89.79	punch	-10.00
+xander.cat.Fiona 1.4	learning	flat	close	lever	0	89.85	85.55	84.83	0.0844	0.1047	79.86	punch	-9.99
+tobe.Fusion 1.0	learning	flat	mid	surfkey	0	86.20	85.09	85.86	0.0719	0.1018	76.22	punch	-9.98
+myl.micro.Troodon 1.10	learning	stat-prone	low	untouched	0	97.56	99.40	99.42	0.0033	0.0604	87.65	punch	-9.91
+urdos.URDOS 1.3	mixed	stat-prone	mid	lever	0	96.56	90.08	90.66	0.0771	0.1012	86.69	punch	-9.87
+jgap.JGAP6139 1.0	learning	flat	low	surfkey	0	90.39	87.70	87.44	0.0450	0.0683	80.53	punch	-9.86
+kawigi.sbf.FloodNano 1.2	learning	flat	low	surfkey	0	91.32	90.81	90.59	0.0389	0.0710	81.47	punch	-9.85
+sul.NanoR2 1.32	head-on+learning	flat	low	untouched	0	97.71	94.99	95.07	0.0147	0.0369	87.88	punch	-9.83
+zzx.Gron 1.14	learning	flat	low	untouched	0	97.67	96.32	95.85	0.0140	0.0482	87.86	punch	-9.81
+kurios.DOSexe .9a	linear+learning	rammer	close	untouched	0	92.53	90.21	88.71	0.1988	0.3484	82.75	punch	-9.78
+dft.Cardigan 1.09	learning	flat	mid	untouched	0	67.75	71.70	69.07	0.0799	0.1033	58.02	punch	-9.73
+emp.Yngwie 1.11	learning	flat	mid	surfkey	0	86.39	81.64	81.43	0.0862	0.1091	76.69	punch	-9.70
+timmit.nano.TimDog 0.33	linear+learning	stat-prone	low	untouched	0	99.89	98.64	98.57	0.0100	0.0632	90.20	punch	-9.69
+bots.UberBot 1.2c	learning	stat-prone	low	untouched	0	97.91	97.42	97.10	0.0236	0.0932	88.24	punch	-9.67
+cre.Karolos 0.32	linear+learning	stat-prone	low	lever	0	95.49	90.02	91.21	0.0795	0.0957	85.84	punch	-9.65
+dmh.robocode.robot.YellowBird 0.12	learning	stat-prone	low	untouched	0	96.94	96.38	96.13	0.0213	0.0688	87.35	punch	-9.59
+erdnis.Rover 0.3	learning	flat	low	surfkey	0	91.46	88.15	88.21	0.0445	0.0643	81.94	punch	-9.52
+axeBots.HataMoto 3.09	learning	flat	mid	untouched	0	89.56	85.72	85.44	0.0627	0.0875	80.07	punch	-9.49
+radnor.RamRod 1.0	mixed	rammer	close	lever	0	77.91	78.26	74.84	0.3194	0.5630	68.44	punch	-9.47
+ratosh.nano.Debo 1.36	learning	stat-prone	mid	surfkey	0	91.87	88.87	88.20	0.0525	0.0750	82.40	punch	-9.47
+cs.Wren 1.0	learning	flat	low	untouched	0	99.00	98.84	98.52	0.0072	0.0602	89.54	punch	-9.46
+jaybot.adv.bots.JayBot 2.0	linear+learning	stat-prone	low	untouched	0	96.91	94.19	94.21	0.0346	0.0694	87.47	punch	-9.44
+arthord.NanoSatanMelee Beta	learning	flat	low	lever	0	87.18	81.83	80.58	0.0566	0.0706	77.78	punch	-9.40
+robar.nano.Mosquito 1.1	linear+learning	stat-prone	low	untouched	0	99.73	97.53	97.72	0.0137	0.0583	90.33	punch	-9.40
+oog.melee.Mercutio 1.0	mixed	flat	low	untouched	0	98.49	95.97	95.34	0.0394	0.1002	89.10	punch	-9.39
+amk.superstrike.SuperStrike 0.3	linear+learning	oscillator	low	untouched	0	98.86	96.85	96.82	0.0236	0.0788	89.49	punch	-9.37
+nic.Nicator 2.4	mixed	oscillator	low	untouched	0	97.51	94.36	93.97	0.0434	0.0801	88.19	punch	-9.32
+asd.Cthulhu 1.2	mixed	stat-prone	low	untouched	0	93.97	91.14	92.12	0.0434	0.0621	84.65	punch	-9.32
+eld.Hmm 1.0	mixed	flat	mid	lever	0	96.08	92.54	94.55	0.0890	0.1254	86.81	punch	-9.27
+pak.JakeTheTestingRobot .1b	learning	circular-prone	low	untouched	0	97.62	96.72	96.22	0.0187	0.0620	88.36	punch	-9.26
+dragonbyte.Neutrino 4	head-on	flat	low	lever	0	94.25	85.94	99.59	0.0077	0.0178	85.01	punch	-9.24
+ua.kiiv.kosyak.robocode.tn1.Tn1 2.0	learning	stat-prone	low	untouched	0	97.36	93.32	92.33	0.0402	0.0663	88.13	punch	-9.23
+kawigi.sbf.Barracuda 1.0	head-on	flat	low	untouched	0	99.27	96.12	96.34	0.0102	0.0300	90.11	punch	-9.16
+jcs.Seth 1.8	learning	flat	low	untouched	0	99.07	98.01	97.19	0.0358	0.1160	89.92	punch	-9.15
+kinsen.nano.Senticous 1.0	learning	flat	mid	untouched	0	85.01	83.38	83.09	0.0666	0.0910	75.89	punch	-9.12
+jje.BagPuss 1.2	linear+learning	flat	low	surfkey	0	97.84	94.38	94.95	0.0408	0.0764	88.74	punch	-9.10
+patson.PatsonTestBot 1.0	mixed	stat-prone	mid	surfkey	0	96.75	93.19	92.64	0.0527	0.0845	87.65	punch	-9.10
+kinsen.melee.Angsaichmophobia 1.8c	learning	flat	low	surfkey	0	94.74	90.99	91.65	0.0530	0.0766	85.64	punch	-9.10
+dsx724.VSAB_EP3_ATR 1.1	mixed	flat	mid	surfkey	0	97.96	95.22	93.55	0.0622	0.1113	88.89	punch	-9.07
+bots.UnterBot 1.0	learning	flat	low	untouched	0	98.50	96.47	95.94	0.0332	0.0814	89.46	punch	-9.04
+suzushin7.nano.Galaxy02 1.01	linear	stat-prone	low	untouched	0	99.68	97.96	98.30	0.0164	0.0649	90.72	punch	-8.96
+dmh.robocode.robot.PinkPanther 1.1	learning	flat	mid	surfkey	0	67.58	68.77	66.17	0.0633	0.0871	58.67	punch	-8.91
+ntw.Sigsys 1.6	learning	flat	low	untouched	0	97.13	96.37	95.79	0.0244	0.0748	88.27	punch	-8.86
+xander.cat.Mikey 1.2	learning	flat	close	lever	0	89.74	86.25	84.96	0.0808	0.1007	80.91	punch	-8.83
+joe.ADinosaur 1.0	linear+learning	head-on-prone	low	untouched	0	97.78	95.53	95.42	0.0290	0.0613	88.99	punch	-8.79
+jrm.Test0 1.0	linear+learning	flat	low	untouched	0	96.74	96.79	96.48	0.0195	0.0650	87.95	punch	-8.79
+apc.Colossus2 0.12	mixed	rammer	close	lever	0	96.06	93.13	92.48	0.1908	0.3337	87.30	punch	-8.76
+stelo.MoojukNano 1.2	learning	flat	mid	surfkey	0	86.28	83.54	82.85	0.0634	0.0816	77.54	punch	-8.74
+kc.nano.Splinter 1.2	learning	flat	mid	surfkey	0	87.25	84.06	83.84	0.0662	0.0851	78.51	punch	-8.74
+panzer.Panzer 0.2	learning	flat	low	surfkey	0	96.20	90.63	89.48	0.0427	0.0609	87.47	punch	-8.73
+gre.svman4.Morfeas 1.4.3	learning	flat	mid	lever	0	81.38	78.59	74.94	0.0895	0.1107	72.66	punch	-8.72
+fullsail.LaxativeTeaTwo 1.0	mixed	flat	low	surfkey	0	96.66	92.78	90.62	0.0491	0.0891	88.05	punch	-8.61
+omens.CannonfodderMicro 1.4	linear+learning	flat	low	untouched	0	98.37	97.42	97.53	0.0254	0.0813	89.77	punch	-8.60
+banshee.micro.Nexus6 0.3.0	mixed	stat-prone	low	lever	0	96.41	94.76	94.48	0.0324	0.0669	87.82	punch	-8.59
+qohnil.blot.BlotBot 3.61	learning	stat-prone	close	untouched	0	86.28	84.80	83.27	0.1174	0.1445	77.69	punch	-8.59
+alex.Diabolo5 1.1	learning	stat-prone	low	untouched	0	96.61	93.65	93.38	0.0358	0.0656	88.02	punch	-8.59
+suh.nano.AngularMirrorC 1.00	mixed	stat-prone	low	lever	0	99.43	95.11	95.71	0.0370	0.0679	90.85	punch	-8.58
+amk.jointstrike.JointStrike 0.2	linear+learning	circular-prone	low	untouched	0	97.77	94.71	94.23	0.0495	0.0874	89.25	punch	-8.52
+nz.jdc.nano.AralT 1.1	learning	stat-prone	mid	untouched	0	92.05	89.82	89.12	0.0573	0.0807	83.58	punch	-8.47
+mz.NanoDeath 2.56	linear	rammer	close	untouched	0	78.27	65.50	62.98	0.5576	0.9500	69.82	punch	-8.45
+sul.Bicephal 1.2	linear	rammer	close	untouched	0	80.62	67.60	64.70	0.5443	0.9449	72.20	punch	-8.42
+sanyi.mikrobi.Roberto 1.0	mixed	rammer	mid	untouched	0	96.88	93.29	93.50	0.1397	0.2484	88.47	punch	-8.41
+bvh.tyr.Tyr 1.74	mixed	flat	mid	surfkey	0	95.83	91.54	91.53	0.0690	0.0838	87.44	punch	-8.39
+sqTank.waveSurfing.LionWWSVMvoid 0.01	head-on	flat			0	99.95	99.69	99.78	0.0021	0.0327	91.57	punch	-8.38
+apv.ScruchiPu 1.0	learning	flat			0	77.76	78.07	80.34	0.0625	0.0778	69.41	punch	-8.35
+wiki.nano.Flick 1.0	linear	flat	low	lever	0	99.90	95.36	99.53	0.0158	0.1027	91.56	punch	-8.34
+gh.GresSuffurd 0.4.13	learning	flat	mid	lever	0	55.59	60.23	67.78	0.0884	0.1113	47.33	punch	-8.26
+repositorio.NanoStep 1.0	learning	stat-prone	low	untouched	0	99.23	98.61	98.65	0.0153	0.0912	90.98	punch	-8.25
+kano.gamma.KanoGamma 1.8	mixed	flat	mid	lever	0	91.03	88.29	85.99	0.0580	0.0883	82.80	punch	-8.23
+froh.micro.Aversari 0.31	mixed	flat	low	untouched	0	97.79	97.12	95.78	0.0218	0.0651	89.57	punch	-8.22
+EH.Pegasus 0.113	linear	flat	low	untouched	0	98.87	95.14	94.74	0.0430	0.0806	90.69	punch	-8.18
+mc2.enemy.Original 0.9	mixed	flat	mid	surfkey	0	97.03	93.13	93.08	0.0745	0.1182	88.86	punch	-8.17
+lorneswork.Predator 1.0	mixed	rammer	mid	lever	0	95.30	93.17	93.15	0.0883	0.1561	87.13	punch	-8.17
+oog.melee.Capulet 1.2	learning	flat	low	lever	0	93.74	87.97	85.01	0.0937	0.1154	85.58	punch	-8.16
+jaemcrb.nano.M1Abrams 1.0	learning	stat-prone	low	untouched	0	96.65	96.78	96.98	0.0246	0.0771	88.50	punch	-8.15
+supersample.SuperWalls 1.0	mixed	stat-prone	low	untouched	0	99.07	95.52	96.12	0.0228	0.0470	90.94	punch	-8.13
+tjk.AFlatNatural 1.0	mixed	oscillator	close	untouched	0	92.17	88.01	89.10	0.1484	0.1798	84.07	punch	-8.10
+com.arsenic.NewTest 1.0	mixed	stat-prone	low	untouched	0	96.34	92.86	93.95	0.0397	0.0564	88.24	punch	-8.10
+conscience.Bulldozer 1.0a	mixed	rammer	close	untouched	0	88.87	89.70	89.85	0.2547	0.4403	80.77	punch	-8.10
+ha2.T2 0.2	mixed	stat-prone	low	untouched	0	99.26	97.75	97.71	0.0203	0.0760	91.19	punch	-8.07
+jwirde.Gort 2.0	linear	stat-prone	low	untouched	0	99.82	98.82	98.70	0.0130	0.0800	91.77	punch	-8.05
+fala.robocode.FalaRobot 1.0	head-on	rammer	low	lever	0	99.16	95.71	96.18	0.0643	0.1151	91.12	punch	-8.04
+Legend.Qetro 1.6	learning	head-on-prone	low	untouched	0	99.77	98.58	98.78	0.0108	0.0547	91.73	punch	-8.04
+romz.robot.circular.WildRabbit 0.9.6	learning	stat-prone	low	lever	0	97.41	91.85	90.89	0.0717	0.0878	89.38	punch	-8.03
+dz.MostlyHarmlessNano 2.1	mixed	stat-prone	low	lever	0	96.69	93.51	94.41	0.0449	0.0748	88.71	punch	-7.98
+apv.TheBrainPi 0.5fix	learning	flat			0	78.43	77.44	79.38	0.0632	0.0787	70.46	punch	-7.97
+ntc.Knowledge 1.1	learning	stat-prone	mid	surfkey	0	93.72	90.65	91.31	0.0608	0.0815	85.76	punch	-7.96
+kawam.kmBot9 1.0	mixed	flat	low	surfkey	0	97.65	95.27	95.72	0.0365	0.0674	89.70	punch	-7.95
+lazarecki.mega.PinkerStinker 0.7	learning	flat	mid	lever	0	76.19	75.68	76.27	0.0806	0.1009	68.24	punch	-7.95
+casey.Flump 1.0	learning	flat	mid	lever	0	89.49	86.04	84.94	0.0647	0.0817	81.56	punch	-7.93
+bjl.LoneDragon 0.5	mixed	flat	mid	surfkey	0	97.02	92.20	93.41	0.0982	0.1233	89.11	punch	-7.91
+EH.nano.NightBird M	linear	stat-prone	low	untouched	0	99.03	97.37	96.87	0.0172	0.0583	91.15	punch	-7.88
+pulsar.PulsarNano 0.2.4	mixed	stat-prone	low	untouched	0	99.31	97.14	97.25	0.0211	0.0617	91.46	punch	-7.85
+az.Ololobot 0.2.4	learning	flat	mid	surfkey	0	92.50	89.82	90.51	0.0920	0.1182	84.66	punch	-7.84
+steff.Rebel 2.1	mixed	stat-prone	low	lever	0	97.22	94.85	94.25	0.0444	0.0828	89.40	punch	-7.82
+ne.Chimera 1.2	mixed	stat-prone	mid	surfkey	0	89.98	86.32	84.94	0.0816	0.0998	82.21	punch	-7.77
+dcs.PM.Eater_of_Worlds_PM 1.2	learning	flat	mid	untouched	0	77.81	77.87	75.37	0.0690	0.0895	70.09	punch	-7.72
+supersample.SuperCorners 1.0	head-on	stat-prone	mid	untouched	0	96.22	90.50	91.48	0.0672	0.0815	88.58	punch	-7.64
+bvh.micro.Svadilfari 0.2	mixed	flat	low	untouched	0	99.85	98.52	98.39	0.0213	0.0838	92.22	punch	-7.63
+lmk.ACPFinal 0.2	linear	linear-prone	low	untouched	0	99.67	98.83	98.84	0.0109	0.0662	92.07	punch	-7.60
+deith.Czolgzilla 0.11	learning	flat	mid	untouched	0	95.85	92.69	90.24	0.0700	0.1095	88.26	punch	-7.59
+fnc.bandit.Bandit 5.2.0	mixed	stat-prone	low	untouched	0	95.84	94.42	95.14	0.0429	0.0798	88.25	punch	-7.59
+suzushin7.nano.Galaxy01 1.01	learning	rammer	low	untouched	0	100.00	99.86	100.00	0.0000	0.1076	92.42	punch	-7.58
+suzushin7.nano.Galaxy03 1.01	mixed	rammer	close	untouched	0	84.00	74.61	69.88	0.4713	0.8272	76.47	punch	-7.53
+jgap.JGAP7958 1.0	learning	flat	low	untouched	0	91.09	89.40	90.03	0.0434	0.0668	83.58	punch	-7.51
+dks.MicroDanMK2 1.0	head-on	flat	low	untouched	0	98.79	97.36	98.15	0.0135	0.0542	91.29	punch	-7.50
+ntc.Swim 0.9	learning	flat	mid	untouched	0	89.39	90.54	87.58	0.0669	0.1102	81.93	punch	-7.46
+acid.Bl4ck 1.0	head-on+learning	stat-prone	low	surfkey	0	98.15	95.22	95.52	0.0463	0.0816	90.69	punch	-7.46
+mahrgell.mahrram 1.3	linear	rammer	close	untouched	0	85.98	79.70	76.28	0.4549	0.7967	78.64	punch	-7.34
+caimano.Furia_Ceca 0.22	head-on	flat	low	untouched	0	99.49	98.11	98.23	0.0069	0.0266	92.17	punch	-7.32
+synnalagma.NeuralPremier 0.51	learning	flat			0	88.04	83.83	83.02	0.0745	0.0950	80.76	punch	-7.28
+EH.mini.Panther 0.2	linear	flat	low	untouched	0	98.95	98.01	98.37	0.0116	0.0646	91.74	punch	-7.21
+non.mega.NoName 0.0	learning	flat	mid	untouched	0	86.55	84.87	84.73	0.0592	0.0737	79.36	punch	-7.19
+ethdsy.Malacka 2.4	mixed	rammer	mid	surfkey	0	95.50	93.36	92.89	0.0917	0.1639	88.32	punch	-7.18
+vjik.UnViolation 1.1	mixed	stat-prone	mid	lever	0	96.83	91.95	91.75	0.2035	0.2452	89.65	punch	-7.18
+hvilela.HVilela 0.9	linear+learning	linear-prone	low	untouched	0	99.15	95.85	95.44	0.0299	0.0608	92.03	punch	-7.12
+genprog.Zafaran 1.0	learning	mixed	low	untouched	0	98.16	95.31	95.37	0.0334	0.0691	91.05	punch	-7.11
+maribo.FollowFire 1.11	mixed	rammer	close	untouched	0	82.54	70.71	64.24	0.5294	0.9176	75.44	punch	-7.10
+ultra.Defender 1.2	learning	flat	mid	untouched	0	90.77	88.13	86.83	0.0780	0.1051	83.67	punch	-7.10
+xiongan.Xiongan 1.1	linear	stat-prone	low	untouched	0	96.54	93.17	93.83	0.0547	0.0849	89.45	punch	-7.09
+ary.nano.AceSurf 1.2	learning	stat-prone	mid	untouched	0	91.87	89.98	89.05	0.0635	0.0857	84.79	punch	-7.08
+mmb.Roskilde 0.5	linear	flat	low	surfkey	0	99.06	95.99	96.84	0.0394	0.0777	91.99	punch	-7.07
+tornyil.bottomup.BottomUp 1.05	learning	flat	mid	lever	0	76.30	79.86	77.75	0.0736	0.0990	69.24	punch	-7.06
+ICS4U1.Patrick_White_Schrodinger 1.1	linear+learning	oscillator	low	untouched	0	97.09	96.34	96.13	0.0343	0.0834	90.04	punch	-7.05
+pla.Memnoch 0.5	linear+learning	stat-prone	low	untouched	0	98.70	96.65	95.76	0.0303	0.0776	91.66	punch	-7.04
+yk.JahRoslav 1.1	learning	flat	low	surfkey	0	96.14	93.10	92.50	0.0768	0.1024	89.11	punch	-7.03
+pez.mini.ChironexFleckeri 0.5	learning	flat	mid	lever	0	85.08	82.68	80.58	0.0751	0.0933	78.08	punch	-7.00
+suh.nano.Worst 1.02	learning	rammer	low	untouched	0	100.00	100.00	100.00	0.0000	0.1071	93.03	punch	-6.97
+agd.Mooserwirt2 2.7	head-on	flat	low	untouched	0	98.90	94.94	94.83	0.0276	0.0430	91.94	punch	-6.96
+md.Pasta 1.1	learning	flat	mid	untouched	0	92.90	88.16	85.72	0.0649	0.0805	85.96	punch	-6.94
+oog.nano.MagicD2 2.4	learning	stat-prone	mid	untouched	0	94.53	89.79	88.85	0.0753	0.0924	87.59	punch	-6.94
+m3thos.Eva02 0.7.1	learning	stat-prone	mid	untouched	0	93.63	92.72	91.44	0.0672	0.1049	86.71	punch	-6.92
+marcinek.TopGun 1.3	linear	flat	low	untouched	0	96.31	93.62	93.57	0.0410	0.0722	89.42	punch	-6.89
+DTF.Kludgy 1.2b	learning	flat	mid	lever	0	79.78	78.19	79.99	0.0972	0.1200	72.91	punch	-6.87
+pez.nano.LittleEvilBrother 0.1	head-on	flat	low	untouched	0	99.10	95.73	96.66	0.0100	0.0222	92.23	punch	-6.87
+ags.polished.PolishedRuby 1	learning	flat	close	untouched	0	94.56	91.78	92.95	0.1188	0.1472	87.70	punch	-6.86
+shu.nitro.LENIN .T34	learning	flat	mid	surfkey	0	88.97	88.79	89.14	0.0976	0.1202	82.14	punch	-6.83
+dy.LevelOne 2.0	linear	stat-prone	low	untouched	0	99.45	96.99	97.04	0.0304	0.0672	92.64	punch	-6.81
+jgap.JGAP12584 1.0	learning	circular-prone	low	untouched	0	98.86	99.31	99.30	0.0057	0.0714	92.09	punch	-6.77
+ajs.Guessit 1.3	learning	stat-prone	low	lever	0	97.12	93.55	91.91	0.0874	0.1165	90.35	punch	-6.77
+stordy.StordyBot 1.0	linear	oscillator	low	untouched	0	99.72	97.90	97.96	0.0181	0.0605	92.99	punch	-6.73
+dft.Krazy 1.5	learning	flat	mid	untouched	0	90.84	90.82	90.27	0.0564	0.0856	84.12	punch	-6.72
+dsw.StaticD 1.0	linear	stat-prone	low	untouched	0	99.63	98.46	98.74	0.0210	0.0949	92.94	punch	-6.69
+tex.Longbot 0.4	learning	stat-prone	low	untouched	0	98.03	94.92	93.25	0.0360	0.0654	91.35	punch	-6.68
+kneels.ToNoone 0.2	head-on+learning	stat-prone	mid	untouched	0	97.46	94.13	95.35	0.0347	0.0475	90.78	punch	-6.68
+gre.svman4.Leonidas 1.3.2	linear+learning	flat			0	99.81	98.59	98.68	0.0186	0.0680	93.14	punch	-6.67
+test.Podgy 4.0	learning	mixed	low	lever	0	88.65	85.27	84.30	0.0521	0.0698	81.99	punch	-6.66
+vishius.Orbiter 1.0	linear	stat-prone	low	untouched	0	99.42	98.87	98.97	0.0157	0.0972	92.76	punch	-6.66
+vStar.RAFzilla 2.15	learning	stat-prone	low	untouched	0	99.14	96.86	97.16	0.0418	0.0928	92.48	punch	-6.66
+japs.Sjonniebot 0.9.1	learning	stat-prone	low	surfkey	0	92.45	93.83	94.06	0.0414	0.0757	85.80	punch	-6.65
+bots.UnterExBot 1.0	linear+learning	flat	low	untouched	0	99.72	98.42	98.30	0.0152	0.0566	93.08	punch	-6.64
+dukie.Ambassador 1.0	mixed	stat-prone	low	untouched	0	98.45	95.87	95.40	0.0298	0.0573	91.81	punch	-6.64
+jmcd.BeoWulf 2.8	learning	flat	mid	surfkey	0	82.27	83.64	83.22	0.0833	0.1064	75.65	punch	-6.62
+jeremyreeder.Bully 1	head-on	rammer	mid	untouched	0	98.22	95.06	95.25	0.0741	0.1280	91.60	punch	-6.62
+leb.ShootAnArrow 0.1	learning	stat-prone	low	untouched	0	97.41	95.20	94.82	0.0328	0.0623	90.81	punch	-6.60
+ry.Worst 1.0	learning	wall-runner	low	untouched	0	100.00	99.99	99.99	0.0000	0.0710	93.43	punch	-6.57
+microtestbotpack.MicroTestBot 1.0	linear+learning	flat	low	untouched	0	99.62	98.27	97.27	0.0356	0.1072	93.06	punch	-6.56
+suh.nano.CornerRL 1.00	learning	wall-runner	mid	untouched	0	96.74	93.94	93.05	0.0614	0.0958	90.19	punch	-6.55
+fromHell.CHCl3 1.4.2	learning	oscillator	mid	lever	0	71.17	74.12	73.56	0.0754	0.1003	64.63	punch	-6.54
+nosteel.Welby 0.0.3	linear+learning	stat-prone	mid	untouched	0	98.03	93.58	94.06	0.0512	0.0702	91.51	punch	-6.52
+reeder.colin.WallGuy3 1.0	learning	wall-runner	low	untouched	0	98.76	95.94	96.17	0.0320	0.0577	92.25	punch	-6.51
+jep.Terrible 0.4.1	head-on	flat	low	untouched	0	98.18	97.26	97.27	0.0081	0.0286	91.72	punch	-6.46
+dmh.robocode.robot.BlueBerry 0.5	head-on+learning	flat	low	surfkey	0	95.36	93.79	94.31	0.0406	0.0663	88.90	punch	-6.46
+agrach.Dalek 1.0	linear	stat-prone	low	untouched	0	99.20	98.78	98.83	0.0116	0.0620	92.75	punch	-6.45
+DM.Capriite 3.7.2	head-on+learning	flat	low	untouched	0	99.48	98.83	98.90	0.0077	0.0415	93.06	punch	-6.42
+zyx.nano.RedBull 1.0	head-on	rammer	mid	untouched	0	93.34	92.21	92.10	0.1307	0.2264	86.93	punch	-6.41
+agrach.RobotSlayer 1.0	linear	stat-prone	low	untouched	0	99.89	98.71	99.10	0.0119	0.0703	93.48	punch	-6.41
+myl.nano.KomoriNinja 1.1	learning	stat-prone	low	untouched	0	96.51	96.63	95.90	0.0272	0.0768	90.12	punch	-6.39
+gf.Centaur.Centaur 0.6.7	learning	flat	mid	untouched	0	80.24	82.77	81.03	0.0819	0.1124	73.90	punch	-6.34
+romz.robot.guessfactor.TeasingFox 0.2	learning	stat-prone	close	untouched	0	89.90	87.98	86.62	0.1094	0.1348	83.56	punch	-6.34
+stelo.MatchupMini 1.1	learning	flat	mid	lever	0	67.44	69.88	70.80	0.0794	0.0985	61.12	punch	-6.32
+conscience.Electron 1.3g	linear+learning	rammer	mid	untouched	0	97.21	95.23	95.94	0.0570	0.1016	90.92	punch	-6.29
+ruc.nano.Zealot 0.2	learning	stat-prone	low	untouched	0	97.15	96.36	95.70	0.0250	0.0620	90.87	punch	-6.28
+jk.nano.Machete 2.0	linear	rammer	close	untouched	0	80.02	72.65	67.14	0.4894	0.8521	73.75	punch	-6.27
+jeremyreeder.Vincent 2011.12.09	mixed	rammer	mid	untouched	0	98.39	97.57	97.73	0.0247	0.0804	92.15	punch	-6.24
+zzx.Serunyr 2.0.2	mixed	head-on-prone	low	untouched	0	99.36	97.86	98.05	0.0170	0.0534	93.15	punch	-6.21
+robin.ScalpBotC 1.0	learning	wall-runner	low	untouched	0	98.58	96.18	96.22	0.0333	0.0707	92.39	punch	-6.19
+ntw.Sighup 1.5	learning	stat-prone	mid	surfkey	0	93.11	89.32	90.84	0.0696	0.0848	86.92	punch	-6.19
+PK.Twardy 0.4.2	linear+learning	stat-prone	low	untouched	0	96.11	96.79	96.38	0.0222	0.0616	89.93	punch	-6.18
+dggp.haiku.gpBot_0 1.1	learning	stat-prone	low	untouched	0	95.96	95.51	95.87	0.0279	0.0638	89.79	punch	-6.17
+bvh.hdr.Hodur 0.4	learning	rammer	low	untouched	0	96.13	94.00	93.85	0.0732	0.1431	89.98	punch	-6.15
+bayen.UbaMicro 1.4	linear+learning	stat-prone	low	untouched	0	98.04	96.66	96.69	0.0293	0.0620	91.93	punch	-6.11
+timmit.nano.TimCat 0.13	head-on	flat	low	untouched	0	98.73	97.44	97.71	0.0078	0.0249	92.64	punch	-6.09
+drm.CobraBora 1.12	learning	flat	mid	surfkey	0	76.87	76.87	76.57	0.0795	0.0984	70.80	punch	-6.07
+rus.vv.Snezhok 1.1	learning	stat-prone	low	surfkey	0	98.11	95.72	95.98	0.0441	0.0842	92.07	punch	-6.04
+kawigi.robot.Girl 1.2	learning	flat	low	untouched	0	92.29	93.42	93.48	0.0386	0.0705	86.26	punch	-6.03
+matt.BlueMind 0.8.00	learning	stat-prone	low	untouched	0	97.64	96.69	96.44	0.0291	0.0711	91.64	punch	-6.00
+agrach.MicroDalek 1.0	linear	linear-prone	low	untouched	0	99.12	95.13	96.06	0.0445	0.0702	93.14	punch	-5.98
+banshee.mini.Nexus6 0.2.0	linear	stat-prone	low	untouched	0	99.80	99.17	99.36	0.0117	0.0822	93.85	punch	-5.95
+conscience.Suicidal 1.1	learning	head-on-prone	low	untouched	0	100.00	100.00	100.00	0.0000	0.0710	94.06	punch	-5.94
+tobe.calypso.Calypso 4.1	learning	flat	mid	untouched	0	88.30	85.11	84.22	0.0578	0.0717	82.39	punch	-5.91
+sheldor.nano.Retreat 1.0	learning	wall-runner	low	untouched	0	100.00	100.00	100.00	0.0000	0.0710	94.09	punch	-5.91
+jp.Perpy 16.0	mixed	flat	mid	untouched	0	84.22	85.61	85.95	0.0771	0.1029	78.32	punch	-5.90
+sheldor.nano.Sabreur 1.1.2	linear	rammer	close	untouched	0	79.55	69.26	64.05	0.5304	0.9178	73.66	punch	-5.89
+genprog.Rinmorikazu 1.0	learning	stat-prone	low	untouched	0	96.31	95.84	96.29	0.0298	0.0677	90.44	punch	-5.87
+dk.stable.Gorgatron 1.1	mixed	stat-prone	mid	untouched	0	90.05	87.13	86.01	0.0738	0.0893	84.20	punch	-5.85
+suh.nano.CrossC 1.00	mixed	stat-prone	low	untouched	0	99.30	98.00	97.82	0.0285	0.0839	93.45	punch	-5.85
+shrub.Silver v048	linear	flat	low	untouched	0	99.38	95.64	96.46	0.0275	0.0387	93.55	punch	-5.83
+dcs.Eater_of_Worlds 1.1.3-A	head-on+learning	stat-prone	mid	untouched	0	97.58	96.72	96.55	0.0272	0.0656	91.78	punch	-5.80
+ratosh.Wesco 1.4	head-on	flat	low	untouched	0	97.17	95.24	95.33	0.0143	0.0289	91.37	punch	-5.80
+romz.robot.Test 0.1.0	learning	stat-prone	close	lever	0	91.36	88.63	87.91	0.0990	0.1224	85.56	punch	-5.80
+maribo.IotaCT 1.0	mixed	stat-prone	mid	untouched	0	96.18	92.68	92.16	0.0704	0.0852	90.38	punch	-5.80
+nzeemin.Izh 0.5	linear+learning	stat-prone	low	untouched	0	99.76	98.83	99.20	0.0089	0.0545	93.97	punch	-5.79
+jaw.Mouse 0.11	learning	stat-prone	low	untouched	0	98.54	97.21	97.54	0.0272	0.0590	92.77	punch	-5.77
+bons.NanoStalker 1.2	learning	stat-prone	low	untouched	0	99.03	97.33	97.38	0.0253	0.0650	93.26	punch	-5.77
+sheldor.nano.SabreuseNano 1.1	linear	rammer	close	untouched	0	82.38	68.41	61.93	0.5796	0.9500	76.62	punch	-5.76
+Noran.RandomTargeting 0.02	head-on	stat-prone	low	untouched	0	99.93	99.44	99.69	0.0078	0.0731	94.19	punch	-5.74
+GarmBox.Oranges 1.0.1	linear+learning	stat-prone	low	lever	0	94.02	91.09	90.62	0.0680	0.0865	88.28	punch	-5.74
+spinnercat.Limit .01	learning	head-on-prone	low	untouched	0	99.30	98.62	98.56	0.0090	0.0434	93.59	punch	-5.71
+suh.micro.WallPM 1.00	learning	flat	-	surfkey	0	83.40	83.93	86.38	0.0977	0.1209	77.70	punch	-5.70
+slugzilla.OscillateLinear 1.0	linear+learning	head-on-prone	low	untouched	0	99.62	98.94	99.23	0.0125	0.0623	93.93	punch	-5.69
+nz.jdc.nano.NeophytePRAL 1.4	learning	stat-prone	mid	untouched	0	90.63	89.42	85.21	0.1033	0.1270	84.94	punch	-5.69
+non.mega.NaN 0.1	learning	stat-prone	mid	untouched	0	91.95	91.20	90.51	0.0786	0.0983	86.28	punch	-5.67
+tobe.mini.Charon 0.9	learning	flat	low	untouched	0	98.56	98.05	98.12	0.0066	0.0269	92.91	punch	-5.65
+Heal.TekitokaBot 1.0	learning	head-on-prone	low	untouched	0	98.27	97.40	97.52	0.0217	0.0563	92.62	punch	-5.65
+com.timothyveletta.FuzzyBot 1.1	linear+learning	circular-prone	low	untouched	0	99.45	98.56	98.36	0.0155	0.0640	93.87	punch	-5.58
+mb.Monte 0.1.0	learning	stat-prone	mid	lever	0	89.73	87.75	88.50	0.0782	0.0964	84.17	punch	-5.56
+mrm.MightyMoose .2	mixed	stat-prone	low	untouched	0	98.36	96.34	95.67	0.0266	0.0538	92.82	punch	-5.54
+gh.nano.Grofvuil 0.2	mixed	stat-prone	low	untouched	0	99.57	98.53	98.37	0.0186	0.0722	94.06	punch	-5.51
+satan.R0 0.2	learning	stat-prone	mid	untouched	0	91.38	90.45	90.18	0.0921	0.1139	85.88	punch	-5.50
+codemojo.nano.Woot 1.0	learning	stat-prone	low	untouched	0	96.14	94.86	94.96	0.0426	0.0683	90.64	punch	-5.50
+robots.Lucky 1.2	learning	stat-prone	low	untouched	0	97.57	96.57	96.07	0.0511	0.1106	92.08	punch	-5.49
+wiki.nano.DevilFISH 1.0	linear+learning	stat-prone	low	untouched	0	99.23	98.62	98.01	0.0141	0.0641	93.80	punch	-5.43
+slugzilla.SNGGF 1.0	learning	stat-prone	low	lever	0	98.24	95.84	96.36	0.0625	0.0918	92.87	punch	-5.37
+KiraNL.SpaceKees 0.1	learning	oscillator	close	untouched	0	91.44	88.90	88.16	0.1050	0.1295	86.08	punch	-5.36
+ntc.Evader 1.2	linear+learning	stat-prone	low	untouched	0	99.38	98.10	97.63	0.0261	0.0798	94.07	punch	-5.31
+suh.nano.CrossL 1.00	linear	stat-prone	low	untouched	0	99.67	99.21	99.19	0.0109	0.0752	94.37	punch	-5.30
+nexus.Two 0.2	mixed	flat	low	untouched	0	97.52	97.50	97.12	0.0127	0.0411	92.23	punch	-5.29
+hlavko.micro.Flex 1.5	learning	flat	mid	surfkey	0	81.81	80.52	81.09	0.0808	0.0999	76.57	punch	-5.24
+nexus.One 1.0	head-on+learning	wall-runner	low	untouched	0	97.81	97.72	97.51	0.0107	0.0329	92.58	punch	-5.23
+csp.Eagle 3.30	mixed	wall-runner	mid	surfkey	0	98.75	95.88	96.11	0.0433	0.0688	93.53	punch	-5.22
+m3thos.mini.Eva01 0.5.5	learning	stat-prone	mid	surfkey	0	95.77	95.30	94.92	0.0508	0.0902	90.57	punch	-5.20
+sheldor.melee.nano.TestMelee 0.1	learning	stat-prone	low	untouched	0	95.23	94.07	93.89	0.0628	0.0961	90.04	punch	-5.19
+js.PinBall 1.6	linear+learning	stat-prone	low	untouched	0	96.11	96.25	96.60	0.0330	0.0779	90.93	punch	-5.18
+scheronimus.NanoScheroBot 1.0	linear+learning	stat-prone	low	untouched	0	99.68	97.60	97.65	0.0189	0.0427	94.50	punch	-5.18
+discan.mini.Exode 0.25	head-on	stat-prone	low	untouched	0	98.84	97.60	98.17	0.0154	0.0411	93.67	punch	-5.17
+strider.Mer 1.1.0	learning	stat-prone	mid	untouched	0	96.14	93.65	92.94	0.0660	0.0892	90.98	punch	-5.16
+lunchie.Lunchbox 0.93	mixed	stat-prone	low	untouched	0	95.71	93.86	92.78	0.0680	0.0942	90.57	punch	-5.14
+mld.Wisdom 1.0	learning	stat-prone	low	untouched	0	99.11	97.87	98.12	0.0225	0.0615	93.97	punch	-5.14
+md.VelociRaptor 1.3	learning	rammer	mid	lever	0	96.06	95.41	95.41	0.0830	0.1514	90.93	punch	-5.13
+lion.Kresnanano 1.0	learning	stat-prone	low	surfkey	0	91.43	91.54	92.12	0.0440	0.0670	86.30	punch	-5.13
+ms.Ares 0.19	head-on+learning	flat	mid	untouched	0	93.56	93.23	93.82	0.0722	0.1066	88.49	punch	-5.07
+suh.nano.OscillatorL 1.00	linear	stat-prone	low	untouched	0	99.82	98.86	98.83	0.0096	0.0403	94.77	punch	-5.05
+yk.JahMicro 1.0	learning	mixed	mid	surfkey	0	95.80	93.84	94.41	0.0708	0.0990	90.75	punch	-5.05
+matt.UnderDark3 2.4.34	mixed	flat	low	untouched	0	98.98	97.83	97.62	0.0371	0.0905	93.93	punch	-5.05
+scheronimus.ScheroBot 2.3	linear+learning	stat-prone	low	untouched	0	98.96	97.26	96.73	0.0307	0.0719	93.91	punch	-5.05
+jeremyreeder.collective.Prophet 5	learning	linear-prone	low	untouched	0	99.92	97.33	97.76	0.0273	0.0560	94.88	punch	-5.04
+staticline.whiskey.Whiskey 0.6	learning	flat	mid	lever	0	84.25	87.59	88.42	0.0647	0.1040	79.22	punch	-5.03
+suh.nano.StopAndGoL 1.01	linear	stat-prone	low	untouched	0	99.89	98.68	99.40	0.0132	0.0830	94.87	punch	-5.02
+bzdp.Pansy 2.1	learning	wall-runner	low	untouched	0	99.52	99.71	99.60	0.0036	0.0682	94.51	punch	-5.01
+boe.Minerva 0.80	learning	stat-prone	low	surfkey	0	90.21	89.29	88.39	0.0630	0.0811	85.22	punch	-4.99
+suh.nano.MirrorH 1.01	head-on	flat	mid	lever	0	99.94	96.23	96.39	0.0736	0.0849	94.96	punch	-4.98
+acid.Syzygy 1.0.4	head-on+learning	circular-prone	low	untouched	0	96.93	97.41	97.16	0.0407	0.0972	91.96	punch	-4.97
+genprog.Gajeel 1.0	learning	stat-prone	low	untouched	0	98.22	96.97	96.79	0.0232	0.0575	93.26	punch	-4.96
+mld.Infinity 2.2	learning	flat	mid	untouched	0	98.51	96.97	96.65	0.0393	0.0772	93.56	punch	-4.95
+franzor.Lizt 1.3.1	mixed	flat	mid	untouched	0	99.62	98.05	99.21	0.0289	0.0778	94.70	punch	-4.92
+vft.Hrist 1.0	learning	flat	low	untouched	0	91.79	90.22	88.98	0.0486	0.0687	86.88	punch	-4.91
+mz.NanoGod 2.02	linear	stat-prone	low	untouched	0	99.54	97.85	98.23	0.0221	0.0542	94.63	punch	-4.91
+oa.weak.BotherBot 0.1	learning	wall-runner	low	untouched	0	98.80	98.17	97.86	0.0301	0.0921	93.89	punch	-4.91
+radnor.DoctorBob 1.42	linear	stat-prone	low	untouched	0	99.63	98.84	98.91	0.0118	0.0555	94.74	punch	-4.89
+pmc.SniperBot 1.0	head-on+learning	rammer	close	untouched	0	93.17	92.81	92.39	0.0956	0.1659	88.29	punch	-4.88
+hirataatsushi.Trinity 0.003	mixed	rammer	close	untouched	0	97.80	96.08	95.97	0.1073	0.1922	92.92	punch	-4.88
+josago.Jorgito 0.16	mixed	flat	mid	untouched	0	90.04	90.00	89.88	0.0844	0.1075	85.17	punch	-4.87
+ajs.Solveit 1.3	learning	stat-prone	mid	untouched	0	92.12	90.83	88.87	0.1034	0.1269	87.26	punch	-4.86
+bumblebee.Bumblebee 1.0	learning	circular-prone	mid	untouched	0	92.08	90.00	89.16	0.0795	0.0972	87.23	punch	-4.85
+uccc.Scrapple 1.0	learning	head-on-prone	low	untouched	0	100.00	98.92	99.00	0.0114	0.0711	95.17	punch	-4.83
+nanoskank.NanoSkank 1.0	learning	stat-prone	low	untouched	0	93.10	91.96	91.29	0.0455	0.0659	88.28	punch	-4.82
+mme.NikeEnhanced 2.0	head-on	rammer	low	untouched	0	99.03	97.82	98.25	0.0233	0.0576	94.26	punch	-4.77
+apc.Caan 1.0	learning	head-on-prone	mid	surfkey	0	96.35	93.41	92.29	0.0672	0.0885	91.60	punch	-4.75
+bp.Kuma 1.0	head-on	stat-prone	low	untouched	0	99.90	99.58	99.43	0.0077	0.0771	95.16	punch	-4.74
+Grystrion.TrackerWO 1.0	learning	flat	mid	surfkey	0	97.59	94.69	94.46	0.0718	0.0874	92.86	punch	-4.73
+cjk.Merkava 0.1.1	learning	stat-prone	low	untouched	0	97.95	97.16	98.08	0.0189	0.0559	93.24	punch	-4.71
+dummy.micro.HummingBird 2.14	learning	flat	mid	untouched	0	86.01	85.21	82.93	0.0618	0.0766	81.31	punch	-4.70
+quietus.NarrowRadar 0.1	linear	sitting	low	untouched	0	99.56	98.00	98.47	0.0230	0.0533	94.87	punch	-4.69
+ary.nano.ColorNanoP 1.1	learning	stat-prone	mid	untouched	0	88.68	86.93	83.11	0.0855	0.1054	84.02	punch	-4.66
+myl.nano.Kakuru 1.20	learning	flat	mid	surfkey	0	80.21	80.64	80.31	0.0613	0.0761	75.57	punch	-4.64
+cbot.cbot.CBot 0.8	learning	flat	mid	untouched	0	77.92	81.64	83.97	0.0585	0.0746	73.29	punch	-4.63
+labg.Cataclysm 2.05	learning	stat-prone	mid	untouched	0	87.99	88.32	85.37	0.0741	0.1006	83.37	punch	-4.62
+cli.WasteOfAmmo 1.0	learning	sitting	low	untouched	0	100.00	100.00	100.00	0.0000	0.0716	95.38	punch	-4.62
+uccc.RingDing 1.12	linear+learning	stat-prone	low	untouched	0	99.72	99.60	99.49	0.0082	0.0944	95.13	punch	-4.59
+cb.nano.Insomnia 1.0	learning	flat	low	untouched	0	95.61	93.69	92.25	0.0449	0.0677	91.02	punch	-4.59
+jt.SpearmintCT Alpha	learning	wall-runner	mid	untouched	0	97.67	97.81	97.58	0.0216	0.0614	93.13	punch	-4.54
+vort.Chaser 0.0.3	head-on	rammer	close	untouched	0	98.13	96.31	96.04	0.1955	0.3381	93.61	punch	-4.52
+oog.PricklyPear 1.0.6	learning	flat	mid	surfkey	0	74.77	76.94	75.80	0.0898	0.1104	70.28	punch	-4.49
+SK.SimpleKiller 1.0	learning	linear-prone	mid	untouched	0	97.92	96.96	96.98	0.0436	0.0834	93.44	punch	-4.48
+madmath.Cow 0.1.1	learning	stat-prone	low	untouched	0	98.26	97.57	97.62	0.0306	0.0678	93.78	punch	-4.48
+pi.Dark 10	learning	flat	mid	untouched	0	76.99	75.73	73.56	0.0692	0.0860	72.52	punch	-4.47
+fcr.First 1.0	linear+learning	stat-prone	low	untouched	0	98.61	98.61	97.93	0.0168	0.0741	94.16	punch	-4.45
+bvh.loki.Loki 0.5	linear+learning	circular-prone	low	untouched	0	98.11	96.52	96.23	0.0522	0.0943	93.66	punch	-4.45
+testantiswapgun.AntiSwap 1.0	mixed	stat-prone	low	untouched	0	98.20	97.35	96.78	0.0425	0.0937	93.77	punch	-4.43
+DM.Chicken 4.0	mixed	linear-prone	low	untouched	0	99.71	99.12	98.91	0.0189	0.0897	95.29	punch	-4.42
+stranger.nano.TestBot 1.0	learning	stat-prone	mid	lever	0	93.85	91.17	91.12	0.0746	0.0893	89.44	punch	-4.41
+el33t.EL33tGangstarr2 2.0	learning	stat-prone	low	surfkey	0	97.14	95.07	94.82	0.0521	0.0687	92.76	punch	-4.38
+lechu.Lechu 1.1	learning	stat-prone	low	untouched	0	97.97	96.48	96.65	0.0466	0.0853	93.62	punch	-4.35
+uccc.MilkyWay 1.01	linear+learning	circular-prone	low	untouched	0	99.69	98.10	98.05	0.0405	0.0896	95.34	punch	-4.35
+techdude.kombat.FlamingKombat 1.5	linear+learning	circular-prone	low	untouched	0	99.75	99.45	99.50	0.0134	0.0994	95.41	punch	-4.34
+bbo.TheRoof 1.4.3	learning	wall-runner	low	untouched	0	97.36	95.56	95.82	0.0395	0.0631	93.05	punch	-4.31
+cf.OldMan.OldManXP 0.1	learning	flat	mid	untouched	0	87.66	86.78	84.95	0.0713	0.0890	83.37	punch	-4.29
+stelo.Mirror 1.1	learning	flat	close	untouched	0	92.62	91.67	90.59	0.1132	0.1408	88.37	punch	-4.25
+rijteam.SmartDodge 1.1	learning	circular-prone	low	untouched	0	99.11	98.16	97.67	0.0487	0.1087	94.91	punch	-4.20
+sgp.MadHatter 4.13	mixed	stat-prone	mid	untouched	0	98.22	94.75	94.09	0.0710	0.0868	94.05	punch	-4.17
+skm.butterfly 1.0	learning	stat-prone	low	untouched	0	100.00	99.37	99.87	0.0059	0.0603	95.88	punch	-4.12
+FatalFlaw.FatalFlaw 1.0.5	mixed	linear-prone	mid	untouched	0	97.20	95.14	95.22	0.0756	0.0925	93.11	punch	-4.09
+jcz.linio.Linio 2.0.H	learning	stat-prone	close	untouched	0	94.16	91.49	89.62	0.1244	0.1523	90.08	punch	-4.08
+slugzilla.SNGPattern 1.0	learning	stat-prone	mid	untouched	0	96.85	94.90	95.17	0.0769	0.0951	92.80	punch	-4.05
+jgap.JGAP130166 1.0	learning	rammer	low	untouched	0	99.06	96.90	97.12	0.0659	0.1150	95.03	punch	-4.03
+dcs.Eater_of_Worlds_Mini 1.0	head-on	stat-prone	low	untouched	0	98.17	97.12	97.01	0.0177	0.0361	94.17	punch	-4.00
+ntc.Plains 0.9	head-on	flat	low	untouched	0	97.75	96.98	98.01	0.0100	0.0195	93.75	punch	-4.00
+sample.MyFirstJuniorRobot 1.0	head-on	head-on-prone	low	untouched	0	99.36	98.31	98.45	0.0269	0.0682	95.38	punch	-3.98
+ahf.NanoAndrew .4	linear	stat-prone	low	untouched	0	99.98	99.30	99.38	0.0106	0.0567	96.01	punch	-3.97
+logiblocs.Fire 1.0	learning	sitting	low	untouched	0	98.85	98.76	98.97	0.0168	0.0573	94.92	punch	-3.93
+suh.nano.TargetC 1.00	mixed	sitting	low	untouched	0	99.27	97.74	97.79	0.0300	0.0608	95.34	punch	-3.93
+acid.Null 1.0	learning	head-on-prone	low	surfkey	0	96.93	96.09	96.17	0.0634	0.0975	93.01	punch	-3.92
+mue.Ascendant 1.2.27	learning	flat	mid	untouched	0	51.40	57.89	62.05	0.0872	0.1082	47.51	punch	-3.89
+geep.mini.GPBotB 1.1	learning	stat-prone	mid	untouched	0	94.11	92.37	91.75	0.0819	0.1020	90.23	punch	-3.88
+pa.Improved 1.1	head-on	flat	low	untouched	0	99.31	98.46	98.45	0.0175	0.0488	95.46	punch	-3.85
+ayk.WallHugger 1.0	learning	head-on-prone	low	untouched	0	99.69	99.07	99.04	0.0153	0.0629	95.87	punch	-3.82
+krillr.mega.Psyche 0.0.3	head-on	flat	low	untouched	0	95.51	93.85	93.62	0.0152	0.0221	91.69	punch	-3.82
+eat.HumblePieLite 1.0	learning	flat	mid	lever	0	94.27	92.62	91.66	0.0715	0.0886	90.46	punch	-3.81
+nammyung.ModelT 0.23	linear	flat	low	untouched	0	99.97	99.47	99.12	0.0153	0.1044	96.17	punch	-3.80
+kawigi.sbf.FloodMicro 1.5	head-on	flat	low	untouched	0	99.57	98.35	98.74	0.0045	0.0103	95.79	punch	-3.78
+demetrix.nano.SledgeHammer 0.22	linear	rammer	close	untouched	0	77.82	68.61	63.16	0.5832	0.9500	74.05	punch	-3.77
+techdude.Class2C.Class2C 0.1	mixed	head-on-prone	mid	untouched	0	97.65	95.66	94.51	0.0383	0.0617	93.89	punch	-3.76
+divineomega.DivineBot 1.9.5	mixed	flat	low	lever	0	90.93	92.37	92.66	0.0896	0.1184	87.17	punch	-3.76
+robo.PartsBot 1.1	linear+learning	head-on-prone	low	untouched	0	99.33	99.00	98.68	0.0176	0.0795	95.59	punch	-3.74
+stf.PanzerGeneral 0.1	learning	stat-prone	mid	lever	0	90.48	89.12	88.15	0.0775	0.0954	86.76	punch	-3.72
+hirataatsushi.Neo 1.6	mixed	head-on-prone	low	untouched	0	98.36	97.68	98.08	0.0423	0.0941	94.65	punch	-3.71
+nic.SnippetBot 1.0	learning	stat-prone	low	untouched	0	99.31	98.68	98.51	0.0326	0.0986	95.68	punch	-3.63
+tlp.ThreeLeggedPig 1	learning	flat	low	untouched	0	96.17	96.10	96.04	0.0569	0.0997	92.55	punch	-3.62
+slugzilla.SNGLinear 1.0	linear	stat-prone	low	untouched	0	99.76	98.92	98.67	0.0167	0.0671	96.18	punch	-3.58
+amc.ROBv203 1.0	linear+learning	linear-prone	low	untouched	0	99.52	98.03	97.88	0.0271	0.0562	95.96	punch	-3.56
+cyragia.Bot 1.1	linear	linear-prone	low	untouched	0	99.77	98.93	98.91	0.0163	0.0522	96.21	punch	-3.56
+geep.mini.GPBotA 1.0	head-on	stat-prone	low	untouched	0	100.00	97.63	98.05	0.0112	0.0175	96.46	punch	-3.54
+lrem.micro.MoggFanatic 0.2	mixed	rammer	mid	untouched	0	89.38	92.20	91.93	0.0794	0.1414	85.86	punch	-3.52
+squidM.SquidmanNano 1.0	linear	rammer	mid	untouched	0	97.64	96.90	96.45	0.0471	0.0999	94.12	punch	-3.52
+zch.David 0.21	learning	rammer	mid	untouched	0	99.30	97.89	97.72	0.0845	0.1566	95.78	punch	-3.52
+fowl3628800.StopAndGo 1.0.0	linear	head-on-prone	low	untouched	0	99.55	99.31	99.34	0.0173	0.0946	96.04	punch	-3.51
+jgap.JGAP23423 1.0	head-on+learning	stat-prone	mid	untouched	0	96.44	95.65	95.72	0.0361	0.0539	92.93	punch	-3.51
+fowl3628800.SitAndGo 1.0.0	linear	head-on-prone	low	untouched	0	99.82	99.37	99.36	0.0149	0.0809	96.33	punch	-3.49
+demetrix.ForceMajeure 0.75	learning	flat	mid	untouched	0	72.25	74.91	74.71	0.0904	0.1117	68.76	punch	-3.49
+NG.LegatusLegionis 1.2	learning	stat-prone	low	untouched	0	96.59	95.98	96.01	0.0424	0.0691	93.11	punch	-3.48
+gimp.GimpBot 0.1	learning	head-on-prone	low	untouched	0	98.40	97.87	97.95	0.0485	0.1052	94.94	punch	-3.46
+djdjdj.NanoSkunk10 1.0	linear	circular-prone	low	lever	0	98.70	97.93	98.24	0.0350	0.0758	95.25	punch	-3.45
+germ.TheMind .2	head-on	stat-prone	low	untouched	0	99.93	98.33	98.68	0.0065	0.0196	96.48	punch	-3.45
+pulsar.Nanis 0.3	learning	head-on-prone	mid	untouched	0	95.75	93.45	93.14	0.0818	0.1011	92.34	punch	-3.41
+suzushin7.nano.TargetC 1.00	mixed	sitting	low	untouched	0	99.41	98.44	98.02	0.0213	0.0545	96.02	punch	-3.39
+gtf.robocode.Strafer 2.1.1	mixed	stat-prone	low	surfkey	0	94.69	92.99	91.87	0.0828	0.0999	91.31	punch	-3.38
+stelo.MirrorMicro 1.1	learning	flat	mid	untouched	0	93.77	93.18	92.53	0.0616	0.0768	90.40	punch	-3.37
+takeBot.SpiralCrash 1.0	learning	rammer	mid	untouched	0	96.38	95.87	95.14	0.0823	0.1497	93.01	punch	-3.37
+stelo.MirrorNano 1.4	learning	flat	mid	untouched	0	94.29	93.00	92.26	0.0561	0.0703	90.93	punch	-3.36
+populations.TrainStoopidbot 0.01	mixed	stat-prone	mid	lever	0	97.32	95.93	95.96	0.0726	0.0985	93.97	punch	-3.35
+t3.Ripper 1.0	learning	stat-prone	low	untouched	0	99.16	98.69	98.54	0.0200	0.0626	95.82	punch	-3.34
+dam.MogBot 2.9	learning	flat	mid	untouched	0	76.49	82.45	83.03	0.0987	0.1220	73.15	punch	-3.34
+disan.Chair 2.2.0	head-on+learning	stat-prone	low	untouched	0	97.92	97.99	97.74	0.0254	0.0634	94.61	punch	-3.31
+hapiel.Spiral 0.1	mixed	flat	low	untouched	0	96.79	95.74	94.92	0.0621	0.0947	93.48	punch	-3.31
+sch.Simone 0.3d	linear+learning	stat-prone	low	untouched	0	99.20	98.38	98.71	0.0199	0.0498	95.91	punch	-3.29
+mn.micro.perceptual.Mimic 1.0.0	learning	flat	mid	untouched	0	94.63	94.21	94.37	0.0850	0.1054	91.36	punch	-3.27
+cli.Dancer 1.1	linear	stat-prone	low	untouched	0	99.93	99.22	99.40	0.0143	0.0770	96.69	punch	-3.24
+takeBot.WeavingWiggle 1.1	linear+learning	stat-prone	mid	untouched	0	98.16	97.36	97.14	0.0438	0.0803	94.92	punch	-3.24
+elloco.Kabuto 0.2r	learning	flat	mid	surfkey	0	82.84	89.14	89.09	0.0614	0.0970	79.60	punch	-3.24
+Queens_teamrobot.UltraRazor 1.0	linear	stat-prone	low	untouched	0	100.00	99.12	98.69	0.0286	0.0976	96.77	punch	-3.23
+suh.nano.MirrorL 1.00	linear	flat	mid	lever	0	97.77	95.45	94.94	0.0907	0.1091	94.59	punch	-3.18
+matt.advanced.Katana 1.0	learning	stat-prone	mid	untouched	0	95.06	94.21	93.86	0.0766	0.0994	91.91	punch	-3.15
+braaropolis.Abot 1.0	head-on+learning	stat-prone	low	untouched	0	98.58	97.14	96.39	0.0319	0.0532	95.45	punch	-3.13
+pl.robocode.Pacyfista 1.0	head-on+learning	stat-prone	low	untouched	0	99.69	99.12	99.25	0.0127	0.0632	96.56	punch	-3.13
+robin.SCALPBot 1.0	learning	stat-prone	low	surfkey	0	97.86	96.30	95.46	0.0359	0.0607	94.74	punch	-3.12
+exauge.Leopard 1.1.019	mixed	rammer	close	untouched	0	85.32	82.42	78.45	0.4177	0.7353	82.20	punch	-3.12
+jsal.Jsalbot 1.0	learning	stat-prone	mid	untouched	0	98.30	96.86	96.24	0.0708	0.1050	95.20	punch	-3.10
+jp.SineWall 1.0	learning	wall-runner	mid	untouched	0	98.96	97.81	97.62	0.0436	0.0828	95.88	punch	-3.08
+gio.RealGioBot 1.0	head-on	stat-prone	low	lever	0	98.53	96.66	96.98	0.0278	0.0383	95.51	punch	-3.02
+matt.UnderDark4 0.4.00	learning	stat-prone	low	untouched	0	97.85	98.12	97.91	0.0307	0.0791	94.84	punch	-3.01
+nz.A7Ibwenape A7Ibwen1.0	learning	head-on-prone	low	untouched	0	99.65	98.80	99.26	0.0257	0.0792	96.65	punch	-3.00
+apollokidd.ApolloKidd 0.9	mixed	stat-prone	mid	untouched	0	98.77	97.39	96.96	0.0553	0.0963	95.78	punch	-2.99
+winamp32.micro.MicroMacro 1.0	learning	stat-prone	mid	untouched	0	97.71	96.45	96.14	0.0744	0.1093	94.73	punch	-2.98
+bk.Shooter 1.0	head-on	head-on-prone	low	untouched	0	98.75	98.87	98.73	0.0191	0.0597	95.81	punch	-2.94
+fowl3628800.LightningBolt 2.6.0	linear+learning	head-on-prone	low	untouched	0	99.95	99.45	99.43	0.0192	0.0940	97.03	punch	-2.92
+bbo.RamboT 0.3	learning	rammer	mid	untouched	0	98.71	97.51	97.20	0.1020	0.1773	95.82	punch	-2.89
+tvv.micro.Antares 1.1.1	mixed	stat-prone	low	untouched	0	98.65	98.17	97.92	0.0290	0.0652	95.76	punch	-2.89
+dmp.nano.Eve 3.41	learning	stat-prone	low	untouched	0	93.69	93.02	91.82	0.0587	0.0731	90.82	punch	-2.87
+myl.nano.Graviton 1.10	head-on	flat	low	untouched	0	99.56	99.23	99.26	0.0085	0.0381	96.70	punch	-2.86
+takeBot.SpinSpiral 1.2	mixed	stat-prone	low	untouched	0	98.42	97.43	96.75	0.0438	0.0822	95.57	punch	-2.85
+hs.SimpleHBot 1.3	learning	mixed	low	untouched	0	98.33	98.72	98.65	0.0150	0.0551	95.52	punch	-2.81
+sam.ChipmunkDuelist 1.0	head-on+learning	stat-prone	mid	surfkey	0	92.71	95.16	94.51	0.0419	0.0749	89.94	punch	-2.77
+ntc.Lasers.Lasers 0.9	learning	stat-prone	mid	untouched	0	91.49	92.14	92.91	0.0815	0.1001	88.76	punch	-2.73
+whitesquare.robots.SkynetAdvanced 1.1	mixed	rammer	low	untouched	0	95.76	96.89	97.22	0.0605	0.1245	93.05	punch	-2.71
+jgap.JGAP7247_2 1.0	learning	head-on-prone	low	untouched	0	96.07	96.01	95.65	0.0427	0.0683	93.36	punch	-2.71
+blir.nano.Cabbage R1.0.1	mixed	stat-prone	low	untouched	0	97.06	96.13	96.52	0.0453	0.0625	94.36	punch	-2.70
+omens.CannonfodderNano 1.4	linear+learning	linear-prone	low	surfkey	0	97.72	96.12	95.48	0.0809	0.1065	95.04	punch	-2.68
+zyx.nano.EscherichiaColi 1.0	learning	stat-prone	mid	untouched	0	93.01	92.65	92.64	0.0599	0.0739	90.34	punch	-2.67
+rnatest.MendelBot 1.0	learning	head-on-prone	low	untouched	0	97.67	97.71	97.78	0.0295	0.0583	95.01	punch	-2.66
+kcn.percept.PerceptBot 2.3	learning	flat	low	untouched	0	98.20	99.41	99.24	0.0126	0.0815	95.57	punch	-2.63
+stuff.Vlad 0.1	learning	stat-prone	mid	untouched	0	91.17	91.10	88.70	0.0640	0.0849	88.56	punch	-2.61
+fowl3628800.ThunderStruck 3.0.0	linear	stat-prone	low	untouched	0	100.00	99.23	99.42	0.0214	0.0712	97.42	punch	-2.58
+lrem.micro.FalseProphet Alpha	learning	stat-prone	close	untouched	0	88.56	87.09	81.88	0.1109	0.1364	85.98	punch	-2.58
+mbro.Detektor3 0.1.1	head-on	stat-prone	mid	untouched	0	99.36	97.47	97.52	0.0712	0.0852	96.80	punch	-2.56
+kms.Royal 0.15M	learning	wall-runner	close	untouched	0	94.24	93.68	93.47	0.0945	0.1155	91.69	punch	-2.55
+rampancy.micro.Epiphron 1.0	head-on+learning	flat	low	untouched	0	99.41	98.89	99.00	0.0318	0.0739	96.88	punch	-2.53
+donjezza.Muncho 1.0	head-on	wall-runner	low	untouched	0	99.80	99.21	99.38	0.0138	0.0379	97.27	punch	-2.53
+sample.VelociRobot 1.0	learning	stat-prone	low	untouched	0	99.19	99.11	98.93	0.0265	0.0887	96.67	punch	-2.52
+spin.Bugstard 0.012b	learning	head-on-prone	low	untouched	0	94.01	95.50	95.47	0.0416	0.0821	91.51	punch	-2.50
+hlavko.nano.Phoenix 1.0	head-on	stat-prone	low	untouched	0	97.96	97.24	98.08	0.0129	0.0187	95.46	punch	-2.50
+velas.Alpha 1.0	head-on+learning	rammer	mid	untouched	0	96.46	96.51	96.11	0.0703	0.1311	93.99	punch	-2.47
+mbh.Mbh 0.1	head-on	rammer	low	surfkey	0	98.86	97.88	97.91	0.0609	0.1064	96.41	punch	-2.45
+jf.Dodger 1.3	head-on	stat-prone	low	untouched	0	100.00	99.02	99.26	0.0100	0.0228	97.59	punch	-2.41
+jaw.KarenCain 0.11	learning	stat-prone	low	untouched	0	99.70	99.34	99.30	0.0144	0.0587	97.31	punch	-2.39
+zch.Hirkan 0.11	mixed	wall-runner	-	untouched	0	98.20	98.08	97.95	0.0312	0.0737	95.84	punch	-2.36
+kjc.Karaykan 1.0	learning	head-on-prone	mid	surfkey	0	96.52	95.03	94.25	0.0705	0.0910	94.19	punch	-2.33
+sp.AstherNano 1.0	learning	stat-prone	mid	untouched	0	98.13	98.17	98.01	0.0537	0.0953	95.86	punch	-2.27
+suh.nano.TargetR 1.00	learning	sitting	mid	untouched	0	97.02	96.45	96.32	0.0482	0.0691	94.76	punch	-2.26
+WdV.Lesserbee 0.01	learning	sitting	low	untouched	0	97.71	96.93	96.88	0.0433	0.0697	95.45	punch	-2.26
+gwah.GBotMarkIV 1.0	head-on	rammer	low	untouched	0	99.49	99.48	99.32	0.0090	0.0456	97.26	punch	-2.23
+hlavko.nano.Ringo 2.0	head-on	stat-prone	low	untouched	0	98.43	97.57	97.20	0.0125	0.0188	96.21	punch	-2.22
+mld.LittleBlackBook 1.69e	learning	stat-prone	mid	untouched	0	95.21	94.31	93.75	0.0903	0.1109	92.99	punch	-2.22
+Fenix.FenixTrack 1.0	head-on	stat-prone	low	untouched	0	96.18	95.22	94.98	0.0263	0.0343	94.04	punch	-2.14
+suh.nano.TargetL 1.00	linear+learning	sitting	low	untouched	0	99.56	98.99	98.81	0.0147	0.0418	97.42	punch	-2.14
+buba.Buba 0.3	head-on	flat	low	untouched	0	98.08	96.98	96.89	0.0090	0.0141	95.95	punch	-2.13
+gg.Squaraus 0.6	learning	stat-prone	low	untouched	0	96.38	96.64	96.42	0.0534	0.0894	94.26	punch	-2.12
+GarmBox.Anger 1.0	mixed	rammer	close	untouched	0	94.82	96.24	95.89	0.0607	0.1093	92.71	punch	-2.11
+dft.Calliope 5.6	mixed	stat-prone	mid	untouched	0	93.11	94.00	93.71	0.0750	0.1017	91.02	punch	-2.09
+dittman.BlindSquirl Retired	mixed	linear-prone	low	untouched	0	97.06	97.56	97.44	0.0492	0.0924	94.99	punch	-2.07
+blir.micro.blixi.Blixi 1.2	head-on	stat-prone	low	untouched	0	98.60	98.47	98.56	0.0132	0.0277	96.54	punch	-2.06
+apc.LeeroyJenkins2 1.0	learning	flat	mid	surfkey	0	80.39	82.88	80.70	0.0860	0.1064	78.33	punch	-2.06
+tornyil.Lajcsi2.Lajcsi2sm 1.0	learning	stat-prone	mid	surfkey	0	88.90	88.96	88.84	0.0759	0.0940	86.85	punch	-2.05
+amc.ROBv300 1.1	head-on	linear-prone	low	untouched	0	98.93	97.64	97.70	0.0427	0.0553	96.89	punch	-2.04
+extra.LightSauce 0.01	head-on	stat-prone	low	untouched	0	99.94	99.69	99.71	0.0019	0.0107	97.90	punch	-2.04
+dhn.Immortal 1.0	learning	wall-runner	mid	untouched	0	97.71	97.07	97.24	0.0465	0.0846	95.68	punch	-2.03
+robar.nano.Scytodes 0.3	learning	stat-prone	mid	untouched	0	94.33	94.41	94.45	0.0637	0.0795	92.31	punch	-2.02
+pbg.NinjaX 1.2	head-on	stat-prone	low	untouched	0	100.00	99.31	99.52	0.0086	0.0364	97.98	punch	-2.02
+uccc.Dorito 1.12	linear+learning	stat-prone	low	untouched	0	97.65	96.15	95.94	0.1049	0.1257	95.64	punch	-2.01
+mcb.Audace 1.3	mixed	stat-prone	low	untouched	0	94.35	94.21	93.75	0.0463	0.0638	92.34	punch	-2.01
+amc.ROBv400 1.0	head-on	linear-prone	low	untouched	0	98.23	97.41	97.43	0.0439	0.0589	96.24	punch	-1.99
+ola.Puffin 1.0	linear+learning	linear-prone	mid	untouched	0	99.63	97.86	97.59	0.0812	0.0987	97.65	punch	-1.98
+pak.Dargon 1.0b	head-on	head-on-prone	low	untouched	0	98.80	98.99	99.08	0.0078	0.0296	96.83	punch	-1.97
+fullsail.TimbotNoPrediction 1.0	learning	stat-prone	mid	untouched	0	88.35	90.27	88.34	0.0555	0.0762	86.39	punch	-1.96
+donjezza.Jezza 1.0	head-on	flat	low	untouched	0	99.96	99.45	99.32	0.0213	0.0495	98.01	punch	-1.95
+acogdev.alpha 0.2	head-on	wall-runner	low	untouched	0	99.80	98.94	98.82	0.0161	0.0345	97.86	punch	-1.94
+zyx.nano.Ant 1.1	head-on	stat-prone	low	untouched	0	99.35	98.88	98.75	0.0098	0.0215	97.44	punch	-1.91
+mld.jdc.nano.LittleBlackBook 1.0	learning	stat-prone	mid	untouched	0	95.04	93.91	93.11	0.0944	0.1151	93.15	punch	-1.89
+eskimo.micro.Echo 0.1	head-on+learning	stat-prone	low	untouched	0	99.20	99.64	99.76	0.0039	0.0284	97.32	punch	-1.88
+fire219.CatBot 1.0	head-on+learning	rammer	low	untouched	0	98.95	98.65	98.98	0.0140	0.0342	97.13	punch	-1.82
+kjc.MailManX 2.0	learning	stat-prone	mid	surfkey	0	94.78	93.98	94.01	0.1006	0.1242	92.97	punch	-1.81
+fruits.NanoStrawbery 1.3	head-on+learning	head-on-prone	mid	untouched	0	99.50	99.21	99.24	0.0314	0.0803	97.71	punch	-1.79
+blir.mini.oops.Splooshlu 2.0	mixed	stat-prone	low	untouched	0	99.24	98.20	97.96	0.0562	0.0791	97.52	punch	-1.72
+oa.weak.FlyMk1 0.1	linear+learning	linear-prone	low	untouched	0	97.45	98.19	98.07	0.0435	0.0920	95.74	punch	-1.71
+nexus.Experimental 0.2	head-on	flat	low	untouched	0	99.17	98.10	97.81	0.0082	0.0134	97.47	punch	-1.70
+dvogon.GangBang 1.0	head-on	rammer	mid	untouched	0	99.01	98.69	99.11	0.0270	0.0522	97.33	punch	-1.68
+gwah.GerryBotMkII 1.5.1	learning	head-on-prone	low	untouched	0	99.08	98.89	98.88	0.0354	0.0749	97.42	punch	-1.66
+rus.vv.Dzhigit 1.1	head-on	flat	low	untouched	0	98.28	97.82	97.24	0.0108	0.0192	96.64	punch	-1.64
+blir.nano.inch.Inchworm 1.0	mixed	stat-prone	low	untouched	0	98.84	98.31	98.01	0.0317	0.0565	97.22	punch	-1.62
+jab.micro.Sanguijuela 0.8	linear	rammer	close	untouched	0	77.15	70.00	62.55	0.5345	0.9262	75.53	punch	-1.62
+wit.Deep7 2.0	linear+learning	stat-prone	low	untouched	0	99.92	99.48	99.43	0.0315	0.0930	98.31	punch	-1.61
+sam.Samspin 1.0	head-on	mixed	low	untouched	0	97.98	98.33	98.21	0.0096	0.0202	96.40	punch	-1.58
+pl.mskiba.Hilton 0.4	head-on+learning	stat-prone	low	untouched	0	100.00	99.97	99.93	0.0009	0.0385	98.46	punch	-1.54
+extra.Sauce .01	head-on	stat-prone	low	untouched	0	100.00	99.67	99.66	0.0020	0.0084	98.49	punch	-1.51
+qualidafial.MajorDick 1.0.1	head-on	rammer	mid	untouched	0	97.32	97.69	97.15	0.0870	0.1505	95.82	punch	-1.50
+mbro.BelajarBot 0.0.3	head-on	circular-prone	low	untouched	0	99.40	98.65	98.63	0.0424	0.0574	97.96	punch	-1.44
+SFS.SamsSecondRobot 1.0	head-on+learning	head-on-prone	low	untouched	0	99.33	99.31	99.32	0.0205	0.0579	97.94	punch	-1.39
+krzysiek.robbo2.Robbo 1.0.0	learning	stat-prone	mid	untouched	0	89.97	90.34	88.76	0.0598	0.0737	88.62	punch	-1.35
+sng.arco.Arco 0.0	head-on	flat	low	untouched	0	99.46	98.44	98.55	0.0090	0.0110	98.11	punch	-1.35
+mae.Mae1 1.1	mixed	circular-prone	low	untouched	0	100.00	99.99	99.95	0.0002	0.0281	98.72	punch	-1.28
+amc.ROBv301 1.1	head-on	linear-prone	mid	untouched	0	98.25	97.53	97.41	0.0438	0.0533	96.99	punch	-1.26
+adt.Ar1 2.1	head-on	rammer	low	untouched	0	99.38	99.52	99.60	0.0048	0.0174	98.15	punch	-1.23
+de.simpleworks.robocode.bots.swiBot 1.1	mixed	stat-prone	mid	untouched	0	99.66	98.84	98.35	0.0419	0.0660	98.46	punch	-1.20
+m3thos.Eva00 1.1	head-on	stat-prone	low	untouched	0	99.24	99.42	99.47	0.0015	0.0099	98.06	punch	-1.18
+sample.Crazy 1.0	head-on+learning	flat	low	untouched	0	99.19	98.78	99.22	0.0711	0.0946	98.05	punch	-1.14
+suh.nano.MyFirstAdvancedRobot 1.00	head-on	stat-prone	low	untouched	0	99.26	99.54	99.58	0.0100	0.0352	98.14	punch	-1.12
+suh.nano.CrossH 1.00	head-on	stat-prone	low	untouched	0	99.89	99.44	99.56	0.0080	0.0129	98.81	punch	-1.08
+Lo_Ian.Gandalf_V4 4.0	linear	linear-prone	low	untouched	0	100.00	99.09	98.68	0.0162	0.0255	98.94	punch	-1.06
+ao.T100 0.9	head-on	stat-prone	low	untouched	0	99.48	99.34	99.17	0.0295	0.0448	98.43	punch	-1.05
+amk.Punbot.Punbot 0.01	silent	stat-prone	mid	untouched	0	99.68	99.13	99.28	0.0694	0.0842	98.65	punch	-1.03
+sample.SpinBot 1.0	mixed	circular-prone	low	untouched	0	99.99	99.98	99.90	0.0005	0.0221	98.97	punch	-1.02
+AD.CodaFirst 1.1	head-on	head-on-prone	low	untouched	0	99.62	99.05	99.07	0.0114	0.0156	98.60	punch	-1.02
+gh.micro.GrubbmThree 1.01	mixed	rammer	close	untouched	0	76.69	65.31	57.78	0.6557	0.9500	75.70	punch	-0.99
+jaybot.bots.Oddball 4.0	mixed	stat-prone	low	untouched	0	99.54	99.25	99.33	0.0564	0.1069	98.56	punch	-0.98
+lundal.Mark8 2012.09.15	mixed	stat-prone	low	untouched	0	98.97	98.57	98.19	0.0423	0.0613	97.99	punch	-0.98
+goblin.Bender 2.4	head-on	stat-prone	low	untouched	0	99.56	98.74	98.51	0.0487	0.0591	98.59	punch	-0.97
+blr.Chicken001 0.1	head-on	rammer	mid	untouched	0	98.60	98.75	98.68	0.1005	0.1738	97.67	punch	-0.93
+sanja.First 0.1	mixed	flat	low	untouched	0	97.33	98.78	98.78	0.0150	0.0495	96.42	punch	-0.91
+reeder.caden.Elmo 1	head-on	head-on-prone	low	untouched	0	100.00	99.22	98.93	0.0150	0.0220	99.13	punch	-0.87
+jcw.ArcherOne 1.0	head-on	head-on-prone	low	untouched	0	99.66	99.55	99.41	0.0196	0.0512	98.81	punch	-0.85
+aaa.r.ScalarR 0.005h.053-noshield	learning	flat			0	33.54	31.04	29.61	0.1058	0.1053	32.69	ink	-0.85
+jep.nano.Hotspur 0.1	head-on	stat-prone	low	untouched	0	97.62	98.15	98.14	0.0106	0.0198	96.79	punch	-0.83
+jep.nano.Hawkwing 0.4.1	head-on	stat-prone	low	untouched	0	97.08	97.59	97.41	0.0118	0.0189	96.25	punch	-0.83
+kanishk.Fr0z3n 1.1	head-on	stat-prone	low	untouched	0	100.00	99.83	99.85	0.0088	0.0304	99.20	punch	-0.80
+japs.Serenity 1.0	silent	stat-prone	low	untouched	0	100.00	99.21	99.21	0.0000	0.0973	99.21	punch	-0.79
+tk.BotOX 0.3	mixed	rammer	mid	untouched	0	98.36	98.69	97.90	0.0479	0.0926	97.61	punch	-0.75
+suh.nano.TargetH 1.00	head-on	sitting	low	untouched	0	100.00	99.82	100.00	0.0005	0.0070	99.26	punch	-0.74
+el.Attackr 0.1	learning	head-on-prone	mid	untouched	0	99.23	99.30	99.16	0.0279	0.0663	98.49	punch	-0.74
+skm.Ryubot 1.0	head-on	head-on-prone	low	untouched	0	100.00	99.84	99.87	0.0071	0.0268	99.29	punch	-0.71
+pb.Oscillator 1.0	learning	stat-prone	low	untouched	0	96.43	97.21	97.27	0.0585	0.0869	95.73	punch	-0.70
+abud.ThirdRobo 1.0	head-on+learning	stat-prone	close	untouched	0	98.74	98.40	98.45	0.0672	0.0846	98.04	punch	-0.70
+chase.pm.Pytko 1.0	learning	flat	low	shield	1	98.24	76.63	78.47	0.0450		97.54	shield	-0.70
+ins.MobyNano 0.8	learning	stat-prone	low	shield	1	97.86	89.22	90.57	0.0173		97.16	shield	-0.70
+jam.micro.RaikoMicro 1.44	learning	flat	low	shield	1	99.29	99.22	99.42	0.0005		98.59	shield	-0.70
+gu.MicroScoob 1.3	learning	stat-prone	low	shield	1	97.77	91.05	91.06	0.0458		97.07	shield	-0.70
+nat.nano.OcnirpSNG 1.0b	learning	flat	low	shield	1	99.57	90.88	94.16	0.0095		98.87	shield	-0.70
+nat.nano.OcnirpPM 1.0	learning	flat	low	shield	1	99.39	95.83	95.38	0.0058		98.69	shield	-0.70
+ha2.T3 0.2	learning	stat-prone	low	shield	1	98.19	91.69	94.37	0.0056		97.49	shield	-0.70
+mue.Hyperion 0.8	learning	flat	low	shield	1	82.22	70.27	73.36	0.0946		81.52	shield	-0.70
+mz.Adept 2.65	learning	stat-prone	low	shield	1	100.00	97.96	98.96	0.0010		99.30	shield	-0.70
+nat.nano.Ocnirp 1.73	learning	flat	low	shield	1	97.62	92.38	94.74	0.0085		96.92	shield	-0.70
+can.Pookie 1.1	mixed	flat	low	shield	1	98.18	80.78	81.06	0.0633		97.48	shield	-0.70
+intruder.PrairieWolf 2.61	learning	flat	low	shield	1	98.27	84.45	85.19	0.0894		97.57	shield	-0.70
+cf.star.Star2 1.23	learning	flat	low	shield	1	89.57	80.11	78.88	0.0627		88.87	shield	-0.70
+cf.proto.Shiva 2.2	learning	circular-prone	low	shield	1	97.50	79.47	84.29	0.0380		96.80	shield	-0.70
+spinnercat.mega.Tardis 1.2	learning	flat	low	shield	1	99.25	76.01	77.24	0.0664		98.55	shield	-0.70
+spinnercat.Robovirus 2.718	learning	flat	low	shield	1	94.48	86.45	88.01	0.0482		93.78	shield	-0.70
+stelo.Chord 1.0	learning	flat	low	shield	1	99.55	80.14	80.78	0.0598		98.85	shield	-0.70
+stefw.Tigger 0.0.23	learning	circular-prone	low	shield	1	99.24	88.87	92.94	0.0104		98.54	shield	-0.70
+bvh.mini.Freya 0.55	learning	flat	low	shield	1	93.05	93.68	96.44	0.0048		92.35	shield	-0.70
+bvh.mini.Fenrir 0.39	learning	flat	low	shield	1	98.22	95.16	96.52	0.0030		97.52	shield	-0.70
+casey.Flee 1.0	learning	flat	low	shield	1	96.57	89.84	91.50	0.0102		95.87	shield	-0.70
+spinnercat.CopyKat 1.2.3	learning	head-on-prone	mid	shield	1	90.84	92.36	94.08	0.0072		90.14	shield	-0.70
+bndl.LostLion 1.2	linear+learning	oscillator	low	untouched	1	96.46	93.67	93.28	0.0519		95.76	shield	-0.70
+mnt.SurferBot 0.2.5	learning	oscillator	low	shield	1	98.78	99.86	100.00	0.0002		98.08	shield	-0.70
+mnt.AHEB 0.6a	mixed	sitting	low	shield	1	82.82	90.37	92.42	0.0117		82.12	shield	-0.70
+metal.small.dna2.MCoolDNA 1.5	learning	flat	low	shield	1	95.14	98.11	98.92	0.0010		94.44	shield	-0.70
+metal.small.MCool 1.21	learning	flat	low	shield	1	99.86	100.00	100.00	0.0000		99.16	shield	-0.70
+mladjo.Startko 1.0	learning	stat-prone	low	shield	1	97.67	97.33	97.88	0.0035		96.97	shield	-0.70
+mladjo.Grrrrr 0.9	learning	flat	low	shield	1	99.72	65.57	76.90	0.0569		99.02	shield	-0.70
+mk.Alpha 0.2.1	learning	flat	low	shield	1	99.95	99.86	99.70	0.0002		99.25	shield	-0.70
+bvh.frg.Friga 0.112dev	learning	flat	low	shield	1	100.00	99.70	100.00	0.0000		99.30	shield	-0.70
+bvh.fnr.Fenrir 0.36l	learning	flat	low	shield	1	90.91	79.42	82.42	0.0337		90.21	shield	-0.70
+buba.Archivist 0.1	learning	stat-prone	low	shield	1	96.78	94.36	95.25	0.0060		96.08	shield	-0.70
+starpkg.StarViewerZ 1.26	learning	stat-prone	low	shield	1	88.29	90.50	92.65	0.0220		87.59	shield	-0.70
+brainfade.Fallen 0.63	learning	sitting	low	shield	1	99.29	84.93	89.16	0.0186		98.59	shield	-0.70
+suh.nano.AntiGravityL 1.01	learning	stat-prone	low	shield	1	99.83	98.91	99.69	0.0005		99.13	shield	-0.70
+suh.micro.MirrorPM 1.00	learning	sitting	low	shield	1	90.47	87.30	90.95	0.0119		89.77	shield	-0.70
+bayen.nut.Squirrel 1.621	learning	flat	mid	shield	1	91.32	81.26	79.72	0.0715		90.62	shield	-0.70
+stelo.UntouchableNano 1.4	learning	stat-prone	low	shield	1	95.52	93.41	94.14	0.0047		94.82	shield	-0.70
+stelo.UnfoolableNano 1.0	learning	flat	low	shield	1	99.25	81.99	82.97	0.0560		98.55	shield	-0.70
+stelo.SteloTestNano 1.0	learning	stat-prone	low	shield	1	91.36	91.95	95.61	0.0069		90.66	shield	-0.70
+stelo.Randomness 1.1	learning	flat	low	shield	1	99.90	80.01	85.73	0.0254		99.20	shield	-0.70
+stelo.PianistNano 1.3	learning	stat-prone	low	shield	1	96.60	94.71	96.80	0.0052		95.90	shield	-0.70
+myl.micro.Avipes 1.00	learning	flat	low	shield	1	92.56	83.20	83.33	0.0592		91.86	shield	-0.70
+slugzilla.Basilite 0.13	unread	stat-prone	low	shield	1	98.76	99.10	98.83	0.0014		98.06	shield	-0.70
+simonton.nano.WeekendObsession_S 1.7	learning	stat-prone	low	shield	1	99.90	92.54	94.04	0.0114		99.20	shield	-0.70
+cf.mini.Chiva 1.0	learning	stat-prone	low	shield	1	92.89	84.42	86.32	0.0702		92.19	shield	-0.70
+cbot.agile.Nibbler 0.2	learning	flat	low	shield	1	92.19	91.37	92.47	0.0104		91.49	shield	-0.70
+sheldor.nano.PointInLine 1.0	learning	flat	low	shield	1	97.09	80.47	80.42	0.0544		96.39	shield	-0.70
+sheldor.nano.FoilistNano 3.2	learning	flat	low	shield	1	96.51	75.16	70.77	0.1082		95.81	shield	-0.70
+sheldor.nano.Feint 1.2.1	learning	flat	low	shield	1	95.52	76.98	77.71	0.0876		94.82	shield	-0.70
+simonton.micro.GFMicro 1.0	learning	stat-prone	low	shield	1	90.41	92.15	94.58	0.0084		89.71	shield	-0.70
+gh.GrubbmGrb 1.2.4	unread	circular-prone	low	shield	1	96.73	94.15	97.13	0.0042		96.03	shield	-0.70
+myl.micro.NekoNinja 1.30	learning	flat	low	shield	1	82.36	92.09	93.90	0.0114		81.66	shield	-0.70
+shinh.Entangled 0.3	learning	flat	low	shield	1	94.34	84.79	84.05	0.0892		93.64	shield	-0.70
+fromHell.C22H30N2O2S 2.2	learning	stat-prone	low	shield	1	93.58	90.59	93.83	0.0078		92.88	shield	-0.70
+gh.micro.Grinnik 1.0	learning	flat	low	shield	1	98.69	99.51	99.15	0.0006		97.99	shield	-0.70
+nz.jdc.nano.PralDeGuerre 1.2	learning	flat	low	shield	1	83.80	78.13	79.75	0.0840		83.10	shield	-0.70
+nz.jdc.nano.PatternAdept 1.0	learning	stat-prone	low	shield	1	97.05	82.70	82.32	0.0943		96.35	shield	-0.70
+ngf.nano.Sparky 0.1.5	learning	circular-prone	low	shield	1	99.06	93.56	95.04	0.0055		98.36	shield	-0.70
+nz.jdc.nano.NeophytePattern 1.1	learning	flat	low	shield	1	96.60	81.53	76.49	0.1027		95.90	shield	-0.70
+nz.jdc.nano.AralR 1.1	learning	stat-prone	mid	surfkey	1	96.49	90.66	89.49	0.0912		95.79	shield	-0.70
+nz.jdc.micro.HedgehogP 1.2	learning	flat	low	shield	1	90.55	74.71	76.22	0.0848		89.85	shield	-0.70
+nz.jdc.micro.HedgehogGF 1.5	mixed	stat-prone	low	shield	1	98.16	90.91	92.92	0.0113		97.46	shield	-0.70
+com.spp.robocode.MostlyHarmless 010	mixed	stat-prone	low	untouched	1	100.00	95.53	95.32	0.0507		99.30	shield	-0.70
+brainfade.melee.Dusk 0.44	learning	flat	low	shield	1	99.55	97.52	98.59	0.0017		98.85	shield	-0.70
+sm.Devil 7.3	learning	flat	low	shield	1	97.51	82.07	85.66	0.0910		96.81	shield	-0.70
+slugzilla.SquirmyToad 3.9	learning	stat-prone	mid	shield	1	90.63	92.97	95.16	0.0065		89.93	shield	-0.70
+slugzilla.RandomPattern 1.0	learning	flat	low	shield	1	98.59	99.70	99.83	0.0004		97.89	shield	-0.70
+slugzilla.RandomGF 1.0	learning	flat	low	shield	1	99.53	99.53	99.34	0.0006		98.83	shield	-0.70
+spinnercat.Kitten 1.6	learning	stat-prone	low	shield	1	98.18	94.75	94.94	0.0055		97.48	shield	-0.70
+cjm.chalk.Chalk 2.6.Be	learning	circular-prone	low	shield	1	100.00	99.83	99.99	0.0002		99.30	shield	-0.70
+cjm.Chomsky 1.5	learning	circular-prone	low	shield	1	99.15	98.83	99.15	0.0016		98.45	shield	-0.70
+cjm.Che 1.2	learning	flat	mid	shield	1	86.27	76.89	77.43	0.0896		85.57	shield	-0.70
+cjm.Charo 1.1	learning	stat-prone	low	shield	1	99.24	99.72	99.75	0.0003		98.54	shield	-0.70
+mld.Moebius 2.9.3	learning	linear-prone	low	shield	1	98.78	97.09	97.56	0.0036		98.08	shield	-0.70
+simonton.mini.WeeksOnEnd 1.10.4	learning	wall-runner	low	shield	1	99.20	99.47	99.42	0.0008		98.50	shield	-0.70
+slugzilla.OscillatePattern 1.0	learning	head-on-prone	low	shield	1	99.53	99.35	99.75	0.0004		98.83	shield	-0.70
+slugzilla.OscillateGF 1.0	learning	head-on-prone	low	shield	1	99.53	99.99	99.99	0.0000		98.83	shield	-0.70
+slugzilla.OrbitPattern 1.1	learning	wall-runner	low	shield	1	100.00	98.29	98.52	0.0007		99.30	shield	-0.70
+slugzilla.OrbitLinear 1.1	learning	wall-runner	low	shield	1	100.00	99.29	99.36	0.0004		99.30	shield	-0.70
+slugzilla.OrbitGF 1.0	learning	wall-runner	low	shield	1	99.53	98.88	99.20	0.0008		98.83	shield	-0.70
+slugzilla.ButtHead 2.0	linear	rammer	low	shield	1	89.24	70.26	64.81	0.5620		88.54	shield	-0.70
+simonton.beta.LifelongObsession 0.5.1	learning	flat	low	shield	1	98.90	96.95	97.29	0.0033		98.20	shield	-0.70
+simonton.GFNano_D 3.1b	learning	stat-prone	low	shield	1	94.26	97.99	97.85	0.0024		93.56	shield	-0.70
+tw.Exterminator 1.0	learning	stat-prone	low	shield	1	93.70	72.15	82.67	0.0696		93.00	shield	-0.70
+kc.serpent.Hydra 0.21	learning	circular-prone	low	shield	1	99.06	99.92	99.85	0.0001		98.36	shield	-0.70
+kawigi.mini.Coriantumr 1.1	learning	flat	low	shield	1	99.24	97.99	98.81	0.0014		98.54	shield	-0.70
+kawigi.f.FhqwhgadsMicro 1.0	learning	flat	mid	shield	1	97.46	94.56	95.92	0.0040		96.76	shield	-0.70
+kneels.nano.Derp 0.2	learning	flat	mid	shield	1	96.17	76.78	76.98	0.0698		95.47	shield	-0.70
+ak.Fermat 2.0	learning	oscillator	low	shield	1	99.73	98.88	99.09	0.0013		99.03	shield	-0.70
+ahf.r2d2.R2d2 0.86	learning	stat-prone	low	shield	1	100.00	93.23	94.75	0.0046		99.30	shield	-0.70
+alpha.BlackIce 1.0	learning	flat	low	shield	1	94.94	82.13	84.21	0.0716		94.24	shield	-0.70
+ad.Quest 0.10	learning	flat	low	shield	1	83.94	81.52	86.38	0.0262		83.24	shield	-0.70
+ags.micro.Carpet 1.1	learning	flat	low	shield	1	91.93	86.91	89.45	0.0181		91.23	shield	-0.70
+tzu.TheArtOfWar 1.2	learning	head-on-prone	low	shield	1	99.24	99.89	100.00	0.0001		98.54	shield	-0.70
+kawigi.sbf.FloodHT 0.9.2	learning	flat	mid	shield	1	84.11	72.27	72.84	0.0628		83.41	shield	-0.70
+trm.Wrekt 1.1.6.f	unread	head-on-prone	low	shield	1	99.15	95.86	97.88	0.0031		98.45	shield	-0.70
+usa.nano.Nemo 2.0	learning	stat-prone	low	shield	1	97.86	93.23	93.84	0.0334		97.16	shield	-0.70
+tkt.RedShift 1.1.CS.0	learning	linear-prone	mid	untouched	1	99.46	96.69	96.57	0.0771		98.76	shield	-0.70
+trab.nano.AinippeNano 1.3	learning	flat	low	shield	1	97.14	86.56	84.46	0.0837		96.44	shield	-0.70
+trab.Crusader 0.1.7	learning	stat-prone	mid	shield	1	100.00	58.21	68.58	0.0664		99.30	shield	-0.70
+apv.NanoLauLectrikTheCannibal 1.1	learning	head-on-prone	mid	shield	1	87.61	83.22	85.66	0.0437		86.91	shield	-0.70
+timmit.micro.TimXJ 0.22	learning	flat	low	shield	1	87.26	82.66	84.29	0.0532		86.56	shield	-0.70
+timmit.TimmiT 0.22	learning	head-on-prone	low	shield	1	100.00	98.57	99.61	0.0011		99.30	shield	-0.70
+tide.pear.Pear 0.62.1	learning	rammer	low	shield	1	99.00	99.29	99.37	0.0008		98.30	shield	-0.70
+throxbot.ThroxBot 0.1	learning	head-on-prone	low	shield	1	95.72	96.35	97.70	0.0040		95.02	shield	-0.70
+theo.simple.Bones 1.0	learning	head-on-prone	low	shield	1	98.37	81.62	85.55	0.0350		97.67	shield	-0.70
+lrem.magic.TormentedAngel Antiquitie	learning	oscillator	low	shield	1	94.33	96.24	97.16	0.0038		93.63	shield	-0.70
+kawigi.sbf.FloodSonnet 0.9	learning	stat-prone	close	shield	1	97.18	93.00	94.72	0.0090		96.48	shield	-0.70
+kawigi.sbf.FloodMini 1.4	learning	flat	low	shield	1	98.13	93.25	95.27	0.0047		97.43	shield	-0.70
+kms.Golden 0.10	learning	sitting	low	shield	1	100.00	97.17	98.13	0.0023		99.30	shield	-0.70
+learn.ISmart 2.0s	learning	stat-prone	low	shield	1	98.69	93.99	95.61	0.0067		97.99	shield	-0.70
+lechu.Ala 0.0.4	learning	flat	mid	shield	1	91.08	83.76	83.91	0.1010		90.38	shield	-0.70
+lucasslf.Dodger 1.0	learning	flat	low	shield	1	97.90	99.14	99.14	0.0013		97.20	shield	-0.70
+kawigi.nano.ThnikkaBot 0.9	head-on	stat-prone	low	untouched	1	96.11	95.80	96.40	0.0217		95.41	shield	-0.70
+kawigi.nano.FunkyChicken 1.1	learning	flat	mid	shield	1	91.29	84.25	83.07	0.0603		90.59	shield	-0.70
+kawigi.mini.Fhqwhgads 1.1	learning	flat	mid	shield	1	95.68	89.81	90.63	0.0122		94.98	shield	-0.70
+amk.ChumbaWumba 0.3	learning	flat	low	shield	1	98.17	93.00	96.19	0.0051		97.47	shield	-0.70
+kenran.mega.Pantheist 1.1	learning	flat	mid	shield	1	89.84	69.32	75.37	0.0870		89.14	shield	-0.70
+wilson.Chameleon 0.91	learning	head-on-prone	low	shield	1	100.00	93.68	94.43	0.0064		99.30	shield	-0.70
+SHAM.WOW 1.4	learning	flat	low	shield	1	98.45	79.29	80.76	0.0897		97.75	shield	-0.70
+zen.Lindada 0.2	learning	head-on-prone	low	shield	1	97.28	93.49	96.97	0.0048		96.58	shield	-0.70
+zeze2.OperatorZeze 1.05	learning	flat	mid	shield	1	93.81	85.94	87.22	0.0749		93.11	shield	-0.70
+AIR.iRobot 1.0	learning	flat	low	shield	1	99.27	82.78	86.71	0.0296		98.57	shield	-0.70
+CharlieN.Omega.Omega 1.03	learning	flat	low	shield	1	93.76	85.40	84.12	0.0535		93.06	shield	-0.70
+Noran.BitchingElk 0.054	learning	flat	low	shield	1	99.35	99.85	99.90	0.0002		98.65	shield	-0.70
+NDH.GuessFactor 1.0	learning	sitting	mid	shield	1	84.00	92.74	95.35	0.0060		83.30	shield	-0.70
+apv.MicroAspid 1.8	learning	wall-runner	low	shield	1	98.41	93.47	95.80	0.0032		97.71	shield	-0.70
+axeBots.Musashi 2.18	learning	flat	mid	lever	1	89.30	74.11	73.56	0.0825		88.60	shield	-0.70
+awl.Locutus 1.5	linear+learning	stat-prone	low	shield	1	100.00	92.93	90.34	0.0561		99.30	shield	-0.70
+stelo.MatchupWS 1.2c	learning	flat	low	shield	1	88.11	76.07	78.14	0.0715		87.41	shield	-0.70
+syl.Centipede 0.5	learning	oscillator	low	shield	1	100.00	99.90	99.99	0.0001		99.30	shield	-0.70
+ary.SMG 1.01	learning	stat-prone	low	shield	1	99.36	81.73	86.07	0.0229		98.66	shield	-0.70
+ary.Help 1.0	learning	flat	low	shield	1	88.02	78.78	76.89	0.0693		87.32	shield	-0.70
+ary.FourWD 1.3d	learning	stat-prone	low	shield	1	100.00	94.46	96.93	0.0047		99.30	shield	-0.70
+asm.Statistas 0.1	learning	flat	low	shield	1	92.09	96.77	97.49	0.0021		91.39	shield	-0.70
+supersample.SuperMercutio 1.0	learning	flat	low	shield	1	99.76	90.76	91.60	0.0133		99.06	shield	-0.70
+apv.NanoLauLectrik 1.0	learning	flat	low	shield	1	98.96	78.75	80.21	0.0638		98.26	shield	-0.70
+ary.mini.Nimi 1.0	learning	stat-prone	low	shield	1	100.00	89.75	92.28	0.0095		99.30	shield	-0.70
+arthord.KostyaTszyu Beta2	learning	stat-prone	low	shield	1	99.06	98.23	99.58	0.0014		98.36	shield	-0.70
+apv.test.Virus 0.6.1	learning	stat-prone	low	shield	1	99.83	99.53	99.62	0.0006		99.13	shield	-0.70
+suh.nano.RandomPM 1.02	learning	stat-prone	low	shield	1	99.06	92.64	93.15	0.0097		98.36	shield	-0.70
+jcs.Megatron 1.2	learning	wall-runner	low	shield	1	99.48	97.42	98.19	0.0022		98.78	shield	-0.70
+jcs.Decepticon 2.5.3	learning	stat-prone	low	shield	1	98.32	97.24	97.73	0.0032		97.62	shield	-0.70
+jbot.Rabbit2 1.1	learning	stat-prone	low	shield	1	95.38	91.70	93.88	0.0090		94.68	shield	-0.70
+jekl.mini.BlackPearl .91	learning	oscillator	low	shield	1	99.79	87.55	91.22	0.0097		99.09	shield	-0.70
+jasolo.Sonda 0.55	learning	flat	low	shield	1	98.30	98.07	98.75	0.0019		97.60	shield	-0.70
+jam.mini.Raiko 0.43	learning	stat-prone	low	shield	1	99.30	99.64	100.00	0.0000		98.60	shield	-0.70
+tcf.Repat3 2	learning	stat-prone	low	shield	1	98.73	98.66	99.53	0.0012		98.03	shield	-0.70
+amk.ChumbaMini 0.2	learning	flat	low	shield	1	84.55	79.21	79.02	0.0615		83.85	shield	-0.70
+tcf.Drifter 29	learning	head-on-prone	low	shield	1	99.18	98.62	99.92	0.0001		98.48	shield	-0.70
+tango.Recrimpo 2.51	learning	flat	mid	untouched	1	90.40	89.00	87.60	0.0483		89.70	shield	-0.70
+theo.simple.Lucid 1.0	learning	oscillator	low	shield	1	97.58	75.39	80.82	0.0487		96.88	shield	-0.70
+kc.micro.WaveShark 0.5	learning	flat	low	shield	1	95.89	76.78	75.91	0.0675		95.19	shield	-0.70
+theo.real.Ahab 1.0	learning	oscillator	low	shield	1	97.16	85.45	89.20	0.0167		96.46	shield	-0.70
+theo.avenge.Pequod 1.0	learning	oscillator	low	shield	1	94.60	89.38	92.24	0.0099		93.90	shield	-0.70
+theo.Tungsten 1.0a	learning	stat-prone	low	shield	1	95.20	97.39	98.43	0.0020		94.50	shield	-0.70
+theo.QuarkSoup 1.5fga	learning	circular-prone	low	shield	1	97.91	94.41	95.92	0.0042		97.21	shield	-0.70
+synapse.rsim.GeomancyBS 0.11	learning	circular-prone	low	shield	1	98.96	92.02	95.30	0.0068		98.26	shield	-0.70
+SuperSample.SuperCrazy 1.0	learning	flat	low	shield	1	98.87	99.75	99.75	0.0003		98.17	shield	-0.70
+jk.micro.Cotillion 0.8	learning	flat	low	shield	1	97.68	68.39	68.24	0.0744		96.98	shield	-0.70
+jk.sheldor.nano.Yatagan 1.2.3	learning	flat	low	shield	1	81.00	78.05	77.44	0.0972		80.30	shield	-0.70
+jwst.DAD.DarkAndDarker 1.1	learning	flat	mid	shield	1	100.00	84.75	86.99	0.0773		99.30	shield	-0.70
+maribo.Omicron 1.0	linear+learning	stat-prone	low	untouched	1	98.46	94.12	92.31	0.0387		97.76	shield	-0.70
+jk.mini.CunobelinDC 1.2	learning	wall-runner	low	shield	1	94.89	90.66	92.56	0.0146		94.19	shield	-0.70
+lucasslf.Wiggins 0.6	learning	stat-prone	low	shield	1	99.57	98.63	98.35	0.0021		98.87	shield	-0.70
+lucasslf.HariSeldon 0.2.1	learning	stat-prone	low	shield	1	99.81	98.76	99.12	0.0012		99.11	shield	-0.70
+jekl.Jekyl .70	learning	stat-prone	low	shield	1	97.43	95.50	97.28	0.0038		96.73	shield	-0.70
+jekl.DarkHallow .90.9	learning	stat-prone	low	shield	1	95.62	82.19	87.02	0.0184		94.92	shield	-0.70
+ers.micro.speusippus.Speusippus 0.3	learning	flat	low	shield	1	93.73	76.04	78.52	0.1110		93.03	shield	-0.70
+et.Predator 1.8	mixed	flat	low	shield	1	99.62	89.81	89.72	0.0381		98.92	shield	-0.70
+pez.mako.Mako 1.5	learning	flat	low	shield	1	99.90	93.13	96.00	0.0043		99.20	shield	-0.70
+pez.gloom.GloomyDark 0.9.2	learning	flat	low	shield	1	95.66	96.85	98.44	0.0019		94.96	shield	-0.70
+pez.frankie.Frankie 0.9.6.1	mixed	flat	low	shield	1	94.54	78.07	80.27	0.0587		93.84	shield	-0.70
+pez.clean.Swiffer 0.2.9	learning	head-on-prone	low	shield	1	94.00	94.27	95.82	0.0035		93.30	shield	-0.70
+pfvicm.Sobieski 7.2.3b	linear	stat-prone	low	untouched	1	99.62	95.23	95.01	0.0290		98.92	shield	-0.70
+pez.rumble.CassiusClay 2rho.02no	learning	flat	mid	untouched	1	96.90	62.48	71.08	0.0977		96.20	shield	-0.70
+pez.rumble.Ali 0.4.9	learning	circular-prone	low	shield	1	93.50	83.24	88.74	0.0176		92.80	shield	-0.70
+pkbots.BoyTDSurfer 1.0	learning	linear-prone	low	shield	1	99.43	99.96	100.00	0.0000		98.73	shield	-0.70
+ers.nano.gokdeniz.Gokdeniz 1.5b	learning	oscillator	low	shield	1	96.55	78.00	79.56	0.1034		95.85	shield	-0.70
+ph.micro.Pikeman 0.4.5	learning	oscillator	low	shield	1	99.55	99.84	99.84	0.0002		98.85	shield	-0.70
+ers.micro.ISuck.ISuckMicro 0.1f	learning	stat-prone	low	shield	1	97.77	80.91	80.76	0.1139		97.07	shield	-0.70
+pedersen.Hubris 2.4	learning	flat	low	shield	1	94.35	91.01	95.98	0.0068		93.65	shield	-0.70
+pe.minimelee.SandboxMiniMelee 1.1	learning	flat	low	shield	1	98.51	98.75	99.47	0.0009		97.81	shield	-0.70
+pe.mini.SandboxMini 1.2	learning	flat	low	shield	1	97.14	90.88	90.87	0.0142		96.44	shield	-0.70
+pez.mini.Gouldingi 1.5	learning	flat	low	untouched	1	98.88	91.09	90.66	0.0270		98.18	shield	-0.70
+ers.nano.lig.LigMA 1.9	learning	flat	low	shield	1	98.12	88.61	89.09	0.0605		97.42	shield	-0.70
+ers.nano.iSuck.ISuckNano 1.0a	learning	stat-prone	low	shield	1	97.23	79.54	81.07	0.1026		96.53	shield	-0.70
+racso.Crono 1.0	mixed	oscillator	low	shield	1	99.58	93.16	93.13	0.0112		98.88	shield	-0.70
+qwaker00.Ahchoo 1.6	learning	flat	low	shield	1	91.23	88.69	92.34	0.0065		90.53	shield	-0.70
+rdt.AgentSmith.AgentSmith 0.5	learning	flat			1	98.45	99.79	99.77	0.0003		97.75	shield	-0.70
+dmp.micro.Aurora 1.41	learning	flat	low	shield	1	93.85	86.16	84.27	0.0569		93.15	shield	-0.70
+dmh.robocode.robot.BlackDeath 9.2	learning	flat	low	shield	1	99.48	97.13	97.73	0.0025		98.78	shield	-0.70
+robar.nano.BlackWidow 1.3	learning	flat	low	shield	1	99.08	77.50	78.19	0.0777		98.38	shield	-0.70
+robar.micro.Kirbyi 1.0	learning	oscillator	low	shield	1	98.22	93.90	95.77	0.0062		97.52	shield	-0.70
+robar.micro.Gladius 1.15	learning	stat-prone	low	shield	1	98.08	98.42	98.26	0.0014		97.38	shield	-0.70
+robar.nano.Vespa 0.95	learning	stat-prone	low	shield	1	89.86	89.94	90.94	0.0663		89.16	shield	-0.70
+robar.nano.Pugio 1.49	learning	flat	low	shield	1	94.14	77.86	78.94	0.0785		93.44	shield	-0.70
+reaper.Reaper 1.1	learning	flat	low	shield	1	99.24	90.11	91.96	0.0169		98.54	shield	-0.70
+rdt199.Warlord 0.73	learning	flat	low	shield	1	99.39	84.09	83.27	0.0617		98.69	shield	-0.70
+rc.yoda.Yoda 1.0.6c.fix	learning	flat	low	shield	1	96.00	76.32	78.73	0.0881		95.30	shield	-0.70
+rjw.RabidWombat 0.71	mixed	stat-prone	low	shield	1	98.13	95.25	95.38	0.0299		97.43	shield	-0.70
+robar.nano.MosquitoPM 1.0	learning	stat-prone	low	shield	1	97.64	95.12	95.75	0.0053		96.94	shield	-0.70
+dft.Virgin 1.25	learning	flat	low	shield	1	95.66	95.27	96.27	0.0023		94.96	shield	-0.70
+djc.Aardvark 0.3.6	learning	flat	mid	shield	1	95.27	84.98	83.56	0.0572		94.57	shield	-0.70
+ers.nano.nekolh.Nekolh 1.4d	learning	flat	low	shield	1	98.32	79.84	83.25	0.0890		97.62	shield	-0.70
+cx.mini.Nimrod 0.55	learning	flat	low	shield	1	95.62	99.41	99.54	0.0007		94.92	shield	-0.70
+exauge.LemonDrop 1.6.130	learning	flat	low	shield	1	90.73	96.53	98.15	0.0032		90.03	shield	-0.70
+ph.musketeer.Musketeer 0.6	learning	flat	low	shield	1	97.84	98.45	98.60	0.0021		97.14	shield	-0.70
+ph.mini.Archer 0.6.6	learning	flat	low	shield	1	97.19	96.63	97.67	0.0029		96.49	shield	-0.70
+wcsv.Engineer.Engineer 0.5.4	learning	circular-prone	low	shield	1	97.35	98.60	99.09	0.0014		96.65	shield	-0.70
+kc.micro.Thorn 1.252	learning	stat-prone	low	shield	1	99.06	98.70	99.24	0.0016		98.36	shield	-0.70
+kenran.Bakko v1.0.1	learning	flat	low	shield	1	88.75	69.18	72.80	0.0874		88.05	shield	-0.70
+kcn.unnamed.Unnamed 1.21	learning	flat	low	shield	1	99.43	99.30	99.30	0.0009		98.73	shield	-0.70
+whind.Strength 0.6.4	mixed	flat	low	shield	1	98.27	79.89	79.50	0.0552		97.57	shield	-0.70
+whind.Constitution 0.7.1	mixed	flat	mid	shield	1	97.97	85.87	83.60	0.0602		97.27	shield	-0.70
+wcsv.mega.PowerHouse2 0.2	learning	circular-prone	low	shield	1	99.22	98.24	98.84	0.0012		98.52	shield	-0.70
+wiki.mini.BlackDestroyer 0.9.0	learning	flat	low	shield	1	87.94	97.15	97.92	0.0028		87.24	shield	-0.70
+wiki.mako.MakoHT 1.2.2.1	head-on+learning	flat	low	shield	1	99.34	92.02	90.80	0.0294		98.64	shield	-0.70
+tobe.Saturn lambda	learning	oscillator	mid	shield	1	99.26	80.09	81.21	0.0705		98.56	shield	-0.70
+wcsv.PowerHouse.PowerHouse 1.7e3	learning	circular-prone	low	shield	1	98.71	98.58	99.03	0.0019		98.01	shield	-0.70
+kid.Gladiator .7.2	learning	head-on-prone	low	shield	1	99.24	81.14	88.12	0.0220		98.54	shield	-0.70
+vuen.Fractal 0.55	learning	flat	low	shield	1	99.24	99.13	98.95	0.0010		98.54	shield	-0.70
+voidious.mini.Komarious 1.88	learning	wall-runner	low	shield	1	97.02	88.04	91.27	0.0157		96.32	shield	-0.70
+voidious.micro.Jen 1.11	learning	flat	low	shield	1	96.33	80.48	79.01	0.0617		95.63	shield	-0.70
+vic.Locke 0.7.5.5	learning	flat	low	shield	1	100.00	99.70	100.00	0.0000		99.30	shield	-0.70
+Polkwane.Intensive 1.0	learning	flat	low	shield	1	97.59	98.50	99.46	0.0005		96.89	shield	-0.70
+PkKillers.PkAssassin 1.0	learning	flat	low	shield	1	98.04	91.01	90.30	0.0602		97.34	shield	-0.70
+WarfaJibril.Jibril_Warfa_Andromeda 1.11	learning	head-on-prone	low	shield	1	98.87	99.50	100.00	0.0006		98.17	shield	-0.70
+TJ.Exupery 1.39	learning	flat	low	shield	1	93.35	81.55	80.76	0.0689		92.65	shield	-0.70
+lrem.quickhack.QuickHack 1.0	learning	circular-prone	close	shield	1	99.57	94.16	93.34	0.0108		98.87	shield	-0.70
+wompi.Numbat 1.9	learning	flat	low	shield	1	97.77	80.94	80.30	0.0854		97.07	shield	-0.70
+rc.RCBot 2.0	learning	stat-prone	low	shield	1	100.00	99.90	100.00	0.0001		99.30	shield	-0.70
+ejbots.AngryGrandpappy 1.2	unread	sitting	low	shield	1	96.71	98.32	98.76	0.0019		96.01	shield	-0.70
+ej.ChocolateBar 1.1	learning	stat-prone	low	shield	1	99.06	100.00	100.00	0.0000		98.36	shield	-0.70
+projectx.TestNano 1.0	learning	flat	low	shield	1	98.87	90.16	88.97	0.0324		98.17	shield	-0.70
+racso.Frog 0.9	learning	oscillator	low	shield	1	99.88	93.17	94.51	0.0125		99.18	shield	-0.70
+ds.OoV4 0.3b	learning	stat-prone	low	shield	1	99.72	98.54	99.10	0.0008		99.02	shield	-0.70
+dummy.micro.Sparrow 2.5	learning	flat	low	shield	1	98.18	98.61	98.70	0.0019		97.48	shield	-0.70
+wiki.mini.Sedan 1.0	learning	flat	low	shield	1	99.90	99.55	99.46	0.0006		99.20	shield	-0.70
+wiki.mini.Griffon 0.1	learning	stat-prone	low	shield	1	99.13	95.73	97.22	0.0040		98.43	shield	-0.70
+ers.nano.meroka.Meroka 1.8a	learning	stat-prone	low	shield	1	87.59	81.41	79.40	0.1061		86.89	shield	-0.70
+Krabb.krabby.Krabby 1.18b	learning	flat	low	shield	1	97.50	93.47	95.61	0.0052		96.80	shield	-0.70
+KiraNL.Chupacabra 0.5	learning	flat	low	shield	1	99.06	98.60	99.14	0.0005		98.36	shield	-0.70
+KiraNL.ChupaLite 0.4	unread	stat-prone	low	shield	1	99.21	98.94	99.34	0.0007		98.51	shield	-0.70
+KiraNL.Cataris 1.0	learning	flat	low	shield	1	96.42	77.83	76.47	0.0814		95.72	shield	-0.70
+wiki.nano.RaikoNano 1.1	learning	flat	low	shield	1	89.34	77.83	77.84	0.0592		88.64	shield	-0.70
+kinsen.nano.Quarrelet 1.0	learning	flat	low	shield	1	98.88	80.25	80.66	0.0594		98.18	shield	-0.70
+kinsen.nano.Charp 1.0	learning	flat	low	shield	1	97.96	89.04	92.58	0.0138		97.26	shield	-0.70
+EH.kms.LightningStorm 0.11B	learning	flat	low	shield	1	80.44	78.65	82.24	0.0286		79.74	shield	-0.70
+kid.Toa .0.5	learning	oscillator	low	shield	1	95.28	80.30	81.40	0.0488		94.58	shield	-0.70
+rz.Aleph 0.34	learning	stat-prone	low	shield	1	99.39	98.64	98.51	0.0016		98.69	shield	-0.70
+rz.SmallDevil 1.502	learning	flat	low	untouched	1	98.92	93.64	93.66	0.0254		98.22	shield	-0.70
+rz.GlowBlowMelee 1.4	learning	flat	low	shield	1	89.19	80.33	80.34	0.0636		88.49	shield	-0.70
+rz.GlowBlowAPM 1.0	learning	flat	low	shield	1	96.21	93.84	95.81	0.0065		95.51	shield	-0.70
+rz.GlowBlow 2.31	learning	flat	mid	untouched	1	80.89	74.72	73.77	0.0763		80.19	shield	-0.70
+rz.Artist 0.2	learning	flat	low	shield	1	98.18	79.79	79.78	0.0507		97.48	shield	-0.70
+robar.nano.Prestige 1.0	learning	flat	low	shield	1	96.55	92.46	94.40	0.0074		95.85	shield	-0.70
+rsk1.RSK1 4.0	learning	oscillator	low	shield	1	98.73	95.24	96.89	0.0051		98.03	shield	-0.70
+rsim.mini.BulletCatcher 0.4	learning	stat-prone	low	shield	1	99.43	92.08	93.77	0.0097		98.73	shield	-0.70
+deo.FlowerBot 1.0	learning	flat	low	shield	1	80.08	75.60	75.75	0.0805		79.38	shield	-0.70
+ry.VirtualGunExperiment 1.2.0	learning	circular-prone	low	shield	1	99.34	96.98	98.67	0.0028		98.64	shield	-0.70
+rtk.Tachikoma 1.0	unread	stat-prone	low	shield	1	96.70	92.08	97.09	0.0041		96.00	shield	-0.70
+sL300.Mozart life	learning	flat	low	shield	1	99.24	76.32	74.95	0.0745		98.54	shield	-0.70
+pa3k.Quark 1.02	unread	stat-prone	low	shield	1	99.24	97.17	97.53	0.0033		98.54	shield	-0.70
+pa3k.Manta 1.20	learning	flat	mid	untouched	1	96.92	88.41	89.36	0.0516		96.22	shield	-0.70
+nkn.mini.Jskr0 0.1	learning	stat-prone	low	shield	1	98.57	94.88	96.90	0.0029		97.87	shield	-0.70
+ouroboros.Dragon 0.0.3	learning	stat-prone	low	shield	1	99.72	96.88	98.36	0.0024		99.02	shield	-0.70
+origin.SleepSiphon 1.7b	head-on+learning	stat-prone	low	shield	1	99.62	96.44	96.13	0.0148		98.92	shield	-0.70
+cx.Princess 1.0	learning	flat	low	shield	1	62.82	71.22	72.07	0.0904		62.12	shield	-0.70
+davidalves.Phoenix 1.02	unread	stat-prone	low	shield	1	98.59	99.10	99.39	0.0011		97.89	shield	-0.70
+davidalves.Firebird 0.25	learning	stat-prone	low	shield	1	96.98	94.22	96.21	0.0043		96.28	shield	-0.70
+darkcanuck.Holden 1.13a	learning	flat	low	shield	1	82.95	70.27	75.33	0.0651		82.25	shield	-0.70
+davidalves.net.DuelistMini 1.1	learning	flat	low	shield	1	99.72	98.78	99.31	0.0009		99.02	shield	-0.70
+davidalves.net.DuelistMicro 1.22	learning	flat	mid	untouched	1	89.00	79.76	74.64	0.0574		88.30	shield	-0.70
+cx.mini.BlackSwans 0.60	learning	flat	mid	untouched	1	74.21	74.17	78.34	0.0691		73.51	shield	-0.70
+cx.micro.Spark 0.6	learning	flat	low	shield	1	86.08	80.21	80.20	0.0604		85.38	shield	-0.70
+cx.micro.Smoke 0.96	learning	stat-prone	low	shield	1	89.13	67.48	71.80	0.0625		88.43	shield	-0.70
+rz.Apollon 0.23	learning	head-on-prone	low	shield	1	98.84	97.05	97.51	0.0020		98.14	shield	-0.70
+satan.White 0.26	learning	stat-prone	low	shield	1	99.67	88.65	88.22	0.0685		98.97	shield	-0.70
+cw.megas.Blade 0.8	learning	flat	low	shield	1	79.29	83.58	83.82	0.0698		78.59	shield	-0.70
+cuoq.Kakera 1.0	learning	flat	low	shield	1	94.84	74.10	74.21	0.0840		94.14	shield	-0.70
+css.Delitioner 0.11	learning	head-on-prone	low	shield	1	99.32	96.72	98.00	0.0011		98.62	shield	-0.70
+de.erdega.robocode.Polyphemos 0.4	learning	stat-prone	low	shield	1	96.13	96.32	97.70	0.0032		95.43	shield	-0.70
+dft.Cyprus 3.0	learning	flat	low	shield	1	89.95	83.27	87.08	0.0200		89.25	shield	-0.70
+dft.Cyanide 1.90	learning	stat-prone	low	shield	1	99.48	98.53	98.63	0.0013		98.78	shield	-0.70
+exauge.GateKeeper 1.1.121g	learning	flat	low	shield	1	97.75	78.32	76.61	0.0760		97.05	shield	-0.70
+florent.XSeries.X2 0.17	learning	flat	mid	shield	1	68.27	63.92	65.61	0.0789		67.57	shield	-0.70
+florent.small.LittleAngel 1.8	learning	stat-prone	low	shield	1	96.25	90.41	92.55	0.0105		95.55	shield	-0.70
+florent.test.Toad 0.14t	learning	flat			1	63.94	65.08	66.32	0.0814		63.24	shield	-0.70
+fm.claire 1.7	learning	flat	low	shield	1	99.24	92.55	92.52	0.0263		98.54	shield	-0.70
+oog.nano.Fuatisha 1.1	learning	flat	low	shield	1	92.86	76.41	74.01	0.0935		92.16	shield	-0.70
+oog.micro.Claudius 1.11	learning	wall-runner	low	shield	1	93.02	90.82	94.37	0.0110		92.32	shield	-0.70
+oog.micro.MagicD3 0.41	learning	flat	low	shield	1	94.45	72.83	73.21	0.1111		93.75	shield	-0.70
+oog.micro.SavantMicro 1.1	learning	flat	mid	shield	1	99.38	73.92	75.33	0.0978		98.68	shield	-0.70
+fnc.bandit2002.Bandit2002 4.0.2	learning	stat-prone	low	shield	1	93.14	82.12	82.97	0.0842		92.44	shield	-0.70
+oog.mini.AlphaDragon 0.1	learning	stat-prone	low	shield	1	95.69	96.31	96.21	0.0058		94.99	shield	-0.70
+zignd.ZigIndexOutOfRange 1.1	head-on+learning	head-on-prone	low	untouched	0	99.46	99.80	99.86	0.0073	0.0319	98.81	punch	-0.65
+davv.DOne b002	silent	head-on-prone	mid	untouched	0	99.98	99.84	99.78	0.0220	0.0831	99.35	punch	-0.63
+mym.EdgeStalker 1.0	head-on+learning	circular-prone	low	untouched	0	99.72	99.73	99.77	0.0249	0.0621	99.10	punch	-0.62
+sample.Corners 1.0	head-on+learning	wall-runner	low	untouched	0	99.84	99.57	99.73	0.0198	0.0536	99.24	punch	-0.60
+fullsail.SweetTea 1.1	head-on	stat-prone	low	untouched	0	99.96	99.47	99.99	0.0013	0.0019	99.41	punch	-0.55
+ch.rhj.rbc.RHJ1 1.0	linear	linear-prone	low	untouched	0	99.85	99.73	99.72	0.0396	0.0959	99.31	punch	-0.54
+pac.ABC 2.1	linear	stat-prone	low	untouched	0	99.90	99.73	99.78	0.0187	0.0393	99.42	punch	-0.48
+reeder.caden.Grover 1.0	head-on	head-on-prone	low	untouched	0	99.35	99.56	99.87	0.0089	0.0121	98.88	punch	-0.47
+amc.ROBv202 1.01	head-on	linear-prone	close	untouched	0	99.43	99.28	99.39	0.0910	0.1067	98.99	punch	-0.44
+aetos.AetosFirstBot 1.0	head-on	rammer	low	untouched	0	99.88	99.83	99.91	0.0037	0.0098	99.46	punch	-0.42
+daemons.DizzyA 1.0	head-on	rammer	mid	untouched	0	99.96	99.53	99.54	0.4833	0.8556	99.55	punch	-0.41
+paolord.TheHulk 1.0	head-on	head-on-prone	low	untouched	0	99.78	99.89	99.96	0.0026	0.0109	99.38	punch	-0.40
+yarghard.Y101 1.0	head-on	flat	low	untouched	0	99.61	99.71	99.74	0.0014	0.0033	99.21	punch	-0.40
+bh.PencilRain 0.01	head-on	circular-prone	low	untouched	0	99.98	99.62	99.83	0.0288	0.0332	99.59	punch	-0.39
+ep.MyFirstRobot 1.0	head-on	rammer	close	untouched	0	98.71	99.06	98.98	0.1579	0.2724	98.33	punch	-0.38
+ma.is.fon.rs.RobotA 0.01	head-on	sitting	low	untouched	0	100.00	99.96	99.95	0.0005	0.0041	99.62	punch	-0.38
+el.JumpShoot 0.2	head-on	stat-prone	low	untouched	0	99.82	99.82	99.90	0.0038	0.0099	99.45	punch	-0.37
+disan.Ghost .01	silent	stat-prone	low	untouched	0	100.00	99.63	100.00	0.0000	0.0973	99.63	punch	-0.37
+rz.HawkOnFire 0.1	head-on	stat-prone	low	untouched	0	100.00	99.96	99.91	0.0002	0.0021	99.64	punch	-0.36
+com.sociesc.T1000 1.0.0	silent	sitting	low	untouched	0	100.00	99.64	100.00	0.0000	0.0973	99.64	punch	-0.36
+eem.awful v1.2	silent	sitting	low	untouched	0	100.00	99.64	100.00	0.0000	0.0973	99.64	punch	-0.36
+chickenfuego.UrChicken2 1.0	mixed	stat-prone	low	untouched	0	100.00	99.95	99.94	0.0083	0.0566	99.67	punch	-0.33
+sul.BlueBot 1.0	head-on	stat-prone	low	untouched	0	99.44	99.53	99.62	0.0065	0.0117	99.12	punch	-0.32
+is.fon.rs.Kamikaza 1.0	head-on	head-on-prone	low	untouched	0	99.76	99.52	99.61	0.0085	0.0101	99.45	punch	-0.31
+skm.PateranBotlock2 1.0	head-on	head-on-prone	low	untouched	0	99.92	99.94	99.93	0.0025	0.0206	99.62	punch	-0.30
+kawigi.spare.SpareParts 0.7.6nosnd	head-on	flat	low	untouched	0	92.59	94.55	94.24	0.0804	0.1084	92.30	punch	-0.29
+WidowMakersAtWar.EpicCow 1.0	head-on	stat-prone	low	untouched	0	98.28	99.13	98.63	0.0064	0.0158	98.00	punch	-0.28
+etienne72230.Wall_street 1.0	head-on	wall-runner	low	untouched	0	99.31	99.17	99.19	0.0219	0.0307	99.05	punch	-0.26
+kb.PingPong 1.0	head-on	wall-runner	-	untouched	0	99.98	99.76	99.69	0.0136	0.0196	99.73	punch	-0.25
+Grystrion.RandomTrackerNOREV 1.0	learning	flat	mid	untouched	0	91.07	93.14	93.56	0.0822	0.1008	90.83	punch	-0.24
+mwj.A1176183 1.0	head-on	wall-runner	low	untouched	0	99.94	99.89	99.94	0.0026	0.0038	99.73	punch	-0.21
+is.fon.rs.FonDestroyer3084 1.0	head-on+learning	head-on-prone	low	untouched	0	99.94	99.92	99.92	0.0213	0.0787	99.73	punch	-0.21
+elvbot.ElverionBot 0.3	head-on	stat-prone	low	untouched	0	99.99	99.97	99.95	0.0013	0.0074	99.78	punch	-0.21
+ap.Frederick 1.1	silent	flat	low	untouched	0	100.00	99.64	99.83	0.0000	0.0748	99.81	ink	-0.19
+spartancompany.Spartan2 1.0	head-on	head-on-prone	low	untouched	0	99.65	99.70	99.90	0.0039	0.0078	99.46	punch	-0.19
+stelo.PatternRobot 1.0	head-on	stat-prone	low	untouched	0	100.00	99.88	99.99	0.0000	0.0007	99.82	punch	-0.18
+com.blogspot.malinkody.DestrobotMalin 1.0	head-on	stat-prone	-	untouched	0	99.56	99.54	99.49	0.0213	0.0260	99.40	punch	-0.16
+wiki.BasicBulletShielder 1.0	head-on	sitting	low	untouched	0	99.99	100.00	99.99	0.0013	0.0471	99.83	punch	-0.16
+sample.Walls 1.0	head-on	wall-runner	-	untouched	0	99.60	99.63	99.62	0.0127	0.0165	99.44	punch	-0.16
+lw.LuthersTest 0.1	head-on	head-on-prone	low	untouched	0	99.93	99.91	99.92	0.0069	0.0120	99.78	punch	-0.15
+RobotMarco.MarcoV 0.1	head-on	head-on-prone	low	untouched	0	99.97	99.86	99.95	0.0005	0.0023	99.82	punch	-0.15
+sample.Fire 1.0	head-on	head-on-prone	low	untouched	0	100.00	99.88	100.00	0.0000	0.0020	99.86	punch	-0.14
+yabot.YaBot 0.1	head-on	linear-prone	low	untouched	0	99.97	99.89	99.88	0.0105	0.0165	99.84	punch	-0.13
+sample.MyFirstRobot 1.0	head-on	stat-prone	low	untouched	0	99.96	99.90	99.88	0.0084	0.0148	99.83	punch	-0.13
+McS.Spanky_test 0.1a	head-on	stat-prone	low	untouched	0	99.83	99.88	99.87	0.0115	0.0151	99.73	punch	-0.10
+jk.precise.EnergyDome 1.8	head-on	sitting	low	untouched	0	100.00	100.00	100.00	0.0000	0.0026	99.91	punch	-0.09
+paket.MojRobot 1.0	head-on	head-on-prone	low	untouched	0	99.80	99.91	99.89	0.0071	0.0186	99.72	punch	-0.08
+sample.Tracker 1.0	head-on	rammer	mid	untouched	0	100.00	99.95	99.96	0.0062	0.0107	99.93	punch	-0.07
+hfgrobots.HFG 1.0	head-on	head-on-prone	low	untouched	0	99.97	99.97	99.97	0.0021	0.0056	99.90	punch	-0.07
+xander.cat.Spitfire 1.4	head-on	sitting	low	untouched	0	100.00	100.00	100.00	0.0005	0.0094	99.96	punch	-0.04
+ad.last.Bottom 1.0	silent	sitting	close	untouched	0	99.92	99.88	99.88	0.1176	0.1462	99.88	punch	-0.04
+wiki.SuperSampleBot.SuperSittingDuck 1.0	silent	head-on-prone	low	untouched	0	99.92	99.91	99.91	0.0000	0.0973	99.91	punch	-0.01
+ArchAlpha.ArchimedesAlpha 1.0	silent	sitting	low	untouched	0	100.00	100.00	100.00	0.0000	0.0973	100.00	punch	0.00
+sample.TrackFire 1.0	head-on	sitting	low	untouched	0	100.00	100.00	100.00	0.0000	0.0000	100.00	punch	0.00
+sample.Target 1.0	silent	head-on-prone	low	untouched	0	100.00	100.00	100.00	0.0000	0.0973	100.00	punch	0.00
+sample.SittingDuck 1.0	silent	sitting	low	untouched	0	100.00	100.00	100.00	0.0000	0.0973	100.00	punch	0.00
+logiblocs.SittingDroid 1.0	silent	sitting	low	untouched	0	100.00	100.00	100.00	0.0000	0.0973	100.00	punch	0.00
+snowman.Snowman 1.0	silent	head-on-prone	low	untouched	0	100.00	100.00	100.00	0.0000	0.0000	100.00	punch	0.00
+quietus.Invader 0.1	silent	head-on-prone	low	untouched	0	100.00	100.00	100.00	0.0000	0.0973	100.00	punch	0.00
+fm.mammillarias 1.3	head-on	stat-prone	low	untouched	0	100.00	100.00	100.00	0.0000	0.0000	100.00	punch	0.00
+mn.nano.SkippedTurns 1.1.0	silent	sitting	low	untouched	0	100.00	100.00	100.00	0.0000	0.0973	100.00	punch	0.00
+mjhjd.MattHussey1 1.1	silent	stat-prone	mid	untouched	0	99.92	99.99	100.00	0.0014	0.0105	99.94	punch	0.02
+drd.Dreadknoght 0.9	head-on	head-on-prone	low	untouched	0	99.98	100.00	100.00	0.0000	0.0000	100.00	punch	0.02
+homerbots.h1 1.0	head-on	head-on-prone	low	untouched	0	99.81	99.93	99.95	0.0017	0.0026	99.83	punch	0.02
+dsekercioglu.shield.ColdBreath 1.0	head-on	sitting			0	99.91	100.00	100.00	0.0000	0.0000	100.00	punch	0.09
+rsim.micro.uCatcher 0.1	head-on	sitting	low	untouched	0	99.73	99.88	100.00	0.0000	0.0000	99.88	punch	0.15
+maye.SlashBot 1.0	head-on	head-on-prone	low	untouched	0	99.42	99.65	99.67	0.0173	0.0199	99.58	punch	0.16
+divineomega.TrialBot 0.003	mixed	flat	close	untouched	0	81.95	84.13	83.95	0.1213	0.1461	82.15	punch	0.20
+mc.Messapia 0.1.8	head-on	head-on-prone	low	untouched	0	99.62	99.85	99.75	0.0075	0.0092	99.91	punch	0.29
+fw.Number1 1.0b	head-on+learning	rammer	mid	untouched	0	93.86	96.96	96.84	0.0886	0.1602	94.33	punch	0.47
+supersample.SuperBoxBot 1.0	head-on	wall-runner	low	untouched	0	98.51	99.24	99.17	0.0047	0.0054	99.05	punch	0.54
+PSW.Relentless 0.1	head-on	rammer	close	untouched	0	98.42	98.67	97.91	0.0899	0.1559	98.96	punch	0.54
+tvv.nano.Polaris 1.2	learning	stat-prone	mid	untouched	0	94.59	96.94	96.15	0.0569	0.0924	95.36	punch	0.77
+mn.nano.perceptual.Impact 1.3.0	linear	rammer	close	untouched	0	79.24	66.97	59.33	0.7041	0.9500	80.10	punch	0.86
+ncj.MoxieBot 1.0	learning	head-on-prone	close	surfkey	0	98.99	99.87	99.85	0.1114	0.1372	99.86	punch	0.87
+eem.IWillFireNoBullet v2.4	silent	flat	low	lever	0	94.76	95.38	99.47	0.0000	0.0748	95.88	ink	1.12
+kc.micro.rammer.MaxRisk 0.6	linear	rammer	close	untouched	0	73.65	67.76	59.85	0.5846	0.9500	76.21	punch	2.56
+ag.Gir 0.99	silent	flat			0	96.82	99.49	99.66	0.0799	0.1023	99.38	punch	2.56
+jab.DiamondStealer 5	learning	oscillator	mid	surfkey	0	81.78	87.93	87.10	0.0788	0.0975	84.53	punch	2.75
+sample.RamFire 1.0	silent	rammer	close	untouched	0	96.75	99.25	99.13	0.9500	0.9500	99.71	punch	2.96
+benhorner.PureAggression 0.2.6	mixed	rammer	close	untouched	0	78.82	76.13	70.92	0.5602	0.9500	82.08	punch	3.26
+evd.X1 0.01	head-on+learning	stat-prone	low	untouched	0	90.79	96.32	96.37	0.0250	0.0398	94.55	punch	3.76
+bwbaugh.nano.Tirunculus 0.0.0a	linear	rammer	close	untouched	0	85.72	84.86	83.89	0.7715	0.9500	90.51	punch	4.79
+wompi.Kowari 1.6	linear	rammer	close	untouched	0	78.77	73.63	68.97	0.7037	0.9500	84.21	punch	5.44
+kc.mega.BeepBoop 2.0	learning	flat			0	25.55	23.98	18.84	0.0959	0.1010	47.65	ink	22.10

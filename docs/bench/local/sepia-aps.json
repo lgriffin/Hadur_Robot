@@ -1,0 +1,339 @@
+{
+ "aps_central": 86.64709266001383,
+ "aps_mean": 86.20570781670982,
+ "aps_p10": 84.6181471466442,
+ "aps_p25": 85.47383590661363,
+ "aps_p50": 86.29428149205194,
+ "aps_p75": 87.05010136609656,
+ "aps_p90": 87.60797790930607,
+ "by_class": [
+  {
+   "group": "low",
+   "hadur_3_13": 93.1130103135166,
+   "hadur_3_24": 97.15335917312663,
+   "robots": 774,
+   "sepia": 91.22832662316412
+  },
+  {
+   "group": "mid",
+   "hadur_3_13": 84.1386547925846,
+   "hadur_3_24": 88.25792048929664,
+   "robots": 327,
+   "sepia": 78.61955986388395
+  },
+  {
+   "group": "close",
+   "hadur_3_13": 81.41568725110686,
+   "hadur_3_24": 86.62318840579711,
+   "robots": 69,
+   "sepia": 78.77937647586492
+  }
+ ],
+ "by_defence": [
+  {
+   "group": "on Hadur's shield list",
+   "hadur_3_13": 89.23555819132339,
+   "hadur_3_24": 95.76657718120806,
+   "robots": 298,
+   "sepia": 95.06657718120805
+  },
+  {
+   "group": "all other robots",
+   "hadur_3_13": 89.80545850438173,
+   "hadur_3_24": 93.08903803131992,
+   "robots": 894,
+   "sepia": 83.88994278384253
+  },
+  {
+   "group": "the 30 best-ranked robots",
+   "hadur_3_13": 54.10416443784619,
+   "hadur_3_24": 62.408181818181816,
+   "robots": 22,
+   "sepia": 42.8057151444333
+  }
+ ],
+ "by_gun": [
+  {
+   "group": "learning",
+   "hadur_3_13": 86.4362290375152,
+   "hadur_3_24": 91.73956343792634,
+   "robots": 733,
+   "sepia": 83.6682179916278
+  },
+  {
+   "group": "mixed",
+   "hadur_3_13": 91.74378015216155,
+   "hadur_3_24": 95.0792857142857,
+   "robots": 140,
+   "sepia": 86.92838622758904
+  },
+  {
+   "group": "head-on",
+   "hadur_3_13": 98.37549766223027,
+   "hadur_3_24": 99.04648000000002,
+   "robots": 125,
+   "sepia": 96.65022029308396
+  },
+  {
+   "group": "linear+learning",
+   "hadur_3_13": 95.64119259845889,
+   "hadur_3_24": 98.09136363636364,
+   "robots": 66,
+   "sepia": 89.96009857621947
+  },
+  {
+   "group": "linear",
+   "hadur_3_13": 90.96786050960068,
+   "hadur_3_24": 94.76861538461539,
+   "robots": 65,
+   "sepia": 88.56051557437165
+  },
+  {
+   "group": "head-on+learning",
+   "hadur_3_13": 96.82513374053988,
+   "hadur_3_24": 97.6057142857143,
+   "robots": 35,
+   "sepia": 93.81381890495243
+  },
+  {
+   "group": "silent",
+   "hadur_3_13": 99.53148101050023,
+   "hadur_3_24": 99.38750000000002,
+   "robots": 20,
+   "sepia": 99.53098861780501
+  },
+  {
+   "group": "unread",
+   "hadur_3_13": 96.83937307504303,
+   "hadur_3_24": 98.13625,
+   "robots": 8,
+   "sepia": 97.43624999999999
+  }
+ ],
+ "central": {
+  "floor": 1.0,
+  "gun": 0.97,
+  "k_ink": 1.6254749777669981,
+  "k_punch": 1.2605707817931926,
+  "m_ram": 1.5,
+  "m_simple": 1.15,
+  "shield": -0.7,
+  "stop": 0.4878997924538343
+ },
+ "chance_at_least": {
+  "75": 1.0,
+  "80": 1.0,
+  "85": 0.8445,
+  "87.64": 0.0925,
+  "88": 0.03825,
+  "90.06": 0.0
+ },
+ "check": {
+  "corr": 0.982216251644331,
+  "mean_abs_error": 1.1483298871698717,
+  "measured": 89.66298342611714,
+  "model": 89.94964666152532,
+  "robots": 1192,
+  "rounds_won_measured": 0.9609240172579099,
+  "rounds_won_model": 0.9667407718120805,
+  "under_70_mean_abs_error": 4.218610433074053,
+  "under_70_robots": 76,
+  "within_2": 0.8221476510067114,
+  "within_5": 0.9639261744966443
+ },
+ "corner_high": 90.80556977427186,
+ "corner_low": 80.89017993391512,
+ "field": 1213,
+ "gait": {
+  "cover_even_spread": 0.53,
+  "ink_ratios": [
+   1.6344086021505375,
+   1.6165413533834585
+  ],
+  "ink_stops_aimed_model": 0.6733017135862913,
+  "lab_hit_on_hadur": {
+   "Circular": 2.5,
+   "GFHist": 9.3,
+   "HeadOn": 1.0,
+   "Knn": 13.3,
+   "Linear": 0.5,
+   "PatternMatch": 12.5
+  },
+  "on_body": {
+   "belief_gf_attack": {
+    "gf": 0.093,
+    "seg": 0.168
+   },
+   "belief_seg_attack": {
+    "gf": 0.11,
+    "seg": 0.156
+   },
+   "run_attack": {
+    "gf": 0.127,
+    "seg": 0.2
+   },
+   "run_ink": {
+    "gf": 0.152,
+    "seg": 0.215
+   }
+  },
+  "punch_ratios": [
+   1.3655913978494623,
+   1.0,
+   1.5037593984962405,
+   1.1729323308270676
+  ],
+  "spray_at_power_2": 0.09499087174837821,
+  "through_ink": {
+   "gf": 0.047,
+   "seg": 0.074
+  },
+  "weakest_gun_on_inking_lottery": 14.2,
+  "weakest_gun_on_lottery": 12.7,
+  "weakest_gun_on_pick": 9.3
+ },
+ "hadur_3_13_census": 89.66298342611714,
+ "hadur_3_24_live": 93.43996688741721,
+ "hit_rates": {
+  "at_the_floor": 0.7583892617449665,
+  "on_hadur": 0.06523981013718533,
+  "on_sepia_inking": 0.09298274564242667,
+  "on_sepia_punching": 0.10890600215210636
+ },
+ "ladder": {
+  "1": 94.94,
+  "10": 87.64,
+  "100": 77.41,
+  "2": 93.44,
+  "20": 86.43,
+  "200": 68.71,
+  "30": 84.45,
+  "50": 82.31
+ },
+ "live_only": 16,
+ "priors": {
+  "floor": [
+   0.7,
+   1.0,
+   1.34
+  ],
+  "gun": [
+   0.9,
+   0.97,
+   1.02
+  ],
+  "k_ink": [
+   1.3816537311019483,
+   1.6254749777669981,
+   1.8692962244320477
+  ],
+  "k_punch": [
+   1.0,
+   1.2605707817931926,
+   1.5037593984962405
+  ],
+  "m_ram": [
+   1.0,
+   1.5,
+   2.2
+  ],
+  "m_simple": [
+   1.0,
+   1.15,
+   1.5
+  ],
+  "shield": [
+   -2.0,
+   -0.7,
+   0.0
+  ],
+  "stop": [
+   0.3484998517527388,
+   0.4878997924538343,
+   0.6733017135862913
+  ]
+ },
+ "rank_central": 17,
+ "rank_p10": 27,
+ "rank_p50": 21,
+ "rank_p90": 11,
+ "regime_robots": {
+  "alternate": [],
+  "ink": [
+   "aaa.r.ScalarR 0.005h.053-noshield",
+   "abc.Shadow 3.83c",
+   "ap.Frederick 1.1",
+   "aw.Gilgalad 1.99.5c",
+   "dsekercioglu.mega.Raven 3.56j8",
+   "dsekercioglu.mega.WhiteFang 2.8.1",
+   "eem.IWillFireNoBullet v2.4",
+   "jk.melee.Neuromancer 7.12",
+   "kc.mega.BeepBoop 2.0",
+   "kc.serpent.WaveSerpent 2.11",
+   "lxx.Tomcat 3.68",
+   "mn.Combat 3.25.0",
+   "pc.Wavelet 1.5",
+   "pulsar.PulsarMax 0.8.9",
+   "sheldor.mini.Foilist 1.3.1",
+   "voidious.Diamond 1.8.22",
+   "voidious.Dookious 1.573c",
+   "wiki.Wolverine 2.1",
+   "xander.cat.XanderCat 12.9",
+   "zyx.mega.YersiniaPestis 3.0"
+  ],
+  "ink-first": [
+   "slugzilla.Basilisk 3.9",
+   "tjk.deBroglie rev0108"
+  ]
+ },
+ "regimes": {
+  "alternate": 0,
+  "ink": 20,
+  "ink-first": 2,
+  "punch": 872
+ },
+ "robots": 1192,
+ "sensitivity": {
+  "floor": [
+   88.14469228532002,
+   83.47255629837197
+  ],
+  "gun": [
+   85.80925524541335,
+   87.27158980008126
+  ],
+  "k_ink": [
+   86.64916830697679,
+   86.62314342032535
+  ],
+  "k_punch": [
+   86.93220045100769,
+   85.92897130136387
+  ],
+  "m_ram": [
+   86.84436564924778,
+   86.45356964255676
+  ],
+  "m_simple": [
+   87.00084438591442,
+   85.8259074397082
+  ],
+  "shield": [
+   86.32639729577541,
+   86.81977477921912
+  ],
+  "stop": [
+   86.52926192225388,
+   87.40806788262447
+  ]
+ },
+ "shielded": 298,
+ "variants": {
+  "gait_hit_like_hadurs_surf": 90.48914736224381,
+  "gait_hit_like_surf_and_ink_as_modelled": 90.72427668430167,
+  "hadur_3_13_with_todays_shield_list": 91.27599937002266,
+  "ink_stops_as_modelled": 87.40806788262447,
+  "no_spray_floor": 89.00931064935595,
+  "punch_only": 86.5221625530072
+ }
+}

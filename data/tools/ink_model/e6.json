@@ -1,0 +1,930 @@
+{
+ "run_ink": {
+  "waves": 2559,
+  "cover": 0.53,
+  "width": 53.6,
+  "headon": {
+   "on": 0.142,
+   "net": 0.094
+  },
+  "linear": {
+   "on": 0.156,
+   "net": 0.05
+  },
+  "gf": {
+   "on": 0.152,
+   "net": 0.047
+  },
+  "seg": {
+   "on": 0.215,
+   "net": 0.074
+  },
+  "virtual": {
+   "gf": 0.132,
+   "headon": 0.088,
+   "linear": 0.118,
+   "seg": 0.177
+  },
+  "census": {
+   "dwell": 33.721,
+   "off_gf": 0.137,
+   "off_headon": 0.088,
+   "off_linear": 0.118,
+   "off_seg": 0.179,
+   "rev_100": 2.961,
+   "speed": 6.579,
+   "stopped": 0.03
+  },
+  "picks": {
+   "continue": 0.713,
+   "reverse": 0.287
+  },
+  "policy": "run",
+  "fire": "ink",
+  "ticks": 12000,
+  "p_rev": 0.3
+ },
+ "run_attack": {
+  "waves": 2559,
+  "cover": 0.01,
+  "width": 53.3,
+  "headon": {
+   "on": 0.152,
+   "net": 0.149
+  },
+  "linear": {
+   "on": 0.157,
+   "net": 0.156
+  },
+  "gf": {
+   "on": 0.127,
+   "net": 0.127
+  },
+  "seg": {
+   "on": 0.2,
+   "net": 0.2
+  },
+  "virtual": {
+   "gf": 0.108,
+   "headon": 0.098,
+   "linear": 0.108,
+   "seg": 0.173
+  },
+  "census": {
+   "dwell": 33.31,
+   "off_gf": 0.111,
+   "off_headon": 0.098,
+   "off_linear": 0.108,
+   "off_seg": 0.176,
+   "rev_100": 3.0,
+   "speed": 6.562,
+   "stopped": 0.03
+  },
+  "picks": {
+   "continue": 0.711,
+   "reverse": 0.289
+  },
+  "policy": "run",
+  "fire": "attack",
+  "ticks": 12000,
+  "p_rev": 0.3
+ },
+ "run_rev0.5_ink": {
+  "waves": 2559,
+  "cover": 0.478,
+  "width": 51.5,
+  "headon": {
+   "on": 0.211,
+   "net": 0.139
+  },
+  "linear": {
+   "on": 0.104,
+   "net": 0.045
+  },
+  "gf": {
+   "on": 0.198,
+   "net": 0.128
+  },
+  "seg": {
+   "on": 0.175,
+   "net": 0.111
+  },
+  "virtual": {
+   "gf": 0.126,
+   "headon": 0.133,
+   "linear": 0.071,
+   "seg": 0.132
+  },
+  "census": {
+   "dwell": 24.551,
+   "off_gf": 0.13,
+   "off_headon": 0.133,
+   "off_linear": 0.071,
+   "off_seg": 0.133,
+   "rev_100": 4.064,
+   "speed": 6.05,
+   "stopped": 0.041
+  },
+  "picks": {
+   "continue": 0.511,
+   "reverse": 0.489
+  },
+  "policy": "run",
+  "fire": "ink",
+  "ticks": 12000,
+  "p_rev": 0.5
+ },
+ "run_rev0.5_attack": {
+  "waves": 2559,
+  "cover": 0.014,
+  "width": 51.5,
+  "headon": {
+   "on": 0.222,
+   "net": 0.217
+  },
+  "linear": {
+   "on": 0.109,
+   "net": 0.107
+  },
+  "gf": {
+   "on": 0.21,
+   "net": 0.206
+  },
+  "seg": {
+   "on": 0.179,
+   "net": 0.177
+  },
+  "virtual": {
+   "gf": 0.126,
+   "headon": 0.141,
+   "linear": 0.077,
+   "seg": 0.135
+  },
+  "census": {
+   "dwell": 24.214,
+   "off_gf": 0.13,
+   "off_headon": 0.141,
+   "off_linear": 0.077,
+   "off_seg": 0.139,
+   "rev_100": 4.128,
+   "speed": 6.021,
+   "stopped": 0.041
+  },
+  "picks": {
+   "continue": 0.514,
+   "reverse": 0.486
+  },
+  "policy": "run",
+  "fire": "attack",
+  "ticks": 12000,
+  "p_rev": 0.5
+ },
+ "three_ink": {
+  "waves": 2559,
+  "cover": 0.451,
+  "width": 50.8,
+  "headon": {
+   "on": 0.16,
+   "net": 0.112
+  },
+  "linear": {
+   "on": 0.134,
+   "net": 0.077
+  },
+  "gf": {
+   "on": 0.152,
+   "net": 0.103
+  },
+  "seg": {
+   "on": 0.148,
+   "net": 0.091
+  },
+  "virtual": {
+   "gf": 0.103,
+   "headon": 0.112,
+   "linear": 0.09,
+   "seg": 0.102
+  },
+  "census": {
+   "dwell": 40.001,
+   "off_gf": 0.107,
+   "off_headon": 0.112,
+   "off_linear": 0.09,
+   "off_seg": 0.109,
+   "rev_100": 2.497,
+   "speed": 4.867,
+   "stopped": 0.221
+  },
+  "picks": {
+   "continue": 0.489,
+   "hold": 0.252,
+   "reverse": 0.259
+  },
+  "policy": "three",
+  "fire": "ink",
+  "ticks": 12000,
+  "probs": [
+   0.5,
+   0.25,
+   0.25
+  ]
+ },
+ "three_attack": {
+  "waves": 2559,
+  "cover": 0.016,
+  "width": 50.6,
+  "headon": {
+   "on": 0.167,
+   "net": 0.164
+  },
+  "linear": {
+   "on": 0.125,
+   "net": 0.124
+  },
+  "gf": {
+   "on": 0.151,
+   "net": 0.147
+  },
+  "seg": {
+   "on": 0.152,
+   "net": 0.148
+  },
+  "virtual": {
+   "gf": 0.103,
+   "headon": 0.108,
+   "linear": 0.083,
+   "seg": 0.11
+  },
+  "census": {
+   "dwell": 38.549,
+   "off_gf": 0.108,
+   "off_headon": 0.108,
+   "off_linear": 0.083,
+   "off_seg": 0.115,
+   "rev_100": 2.592,
+   "speed": 4.929,
+   "stopped": 0.209
+  },
+  "picks": {
+   "continue": 0.486,
+   "hold": 0.239,
+   "reverse": 0.275
+  },
+  "policy": "three",
+  "fire": "attack",
+  "ticks": 12000,
+  "probs": [
+   0.5,
+   0.25,
+   0.25
+  ]
+ },
+ "three_even_ink": {
+  "waves": 2559,
+  "cover": 0.401,
+  "width": 49.2,
+  "headon": {
+   "on": 0.239,
+   "net": 0.182
+  },
+  "linear": {
+   "on": 0.151,
+   "net": 0.111
+  },
+  "gf": {
+   "on": 0.232,
+   "net": 0.177
+  },
+  "seg": {
+   "on": 0.201,
+   "net": 0.151
+  },
+  "virtual": {
+   "gf": 0.17,
+   "headon": 0.171,
+   "linear": 0.1,
+   "seg": 0.145
+  },
+  "census": {
+   "dwell": 34.908,
+   "off_gf": 0.171,
+   "off_headon": 0.171,
+   "off_linear": 0.1,
+   "off_seg": 0.15,
+   "rev_100": 2.858,
+   "speed": 4.109,
+   "stopped": 0.296
+  },
+  "picks": {
+   "continue": 0.328,
+   "hold": 0.334,
+   "reverse": 0.338
+  },
+  "policy": "three",
+  "fire": "ink",
+  "ticks": 12000,
+  "probs": [
+   0.34,
+   0.33,
+   0.33
+  ]
+ },
+ "three_even_attack": {
+  "waves": 2559,
+  "cover": 0.02,
+  "width": 49.4,
+  "headon": {
+   "on": 0.211,
+   "net": 0.205
+  },
+  "linear": {
+   "on": 0.127,
+   "net": 0.125
+  },
+  "gf": {
+   "on": 0.2,
+   "net": 0.193
+  },
+  "seg": {
+   "on": 0.187,
+   "net": 0.182
+  },
+  "virtual": {
+   "gf": 0.148,
+   "headon": 0.155,
+   "linear": 0.092,
+   "seg": 0.139
+  },
+  "census": {
+   "dwell": 34.243,
+   "off_gf": 0.151,
+   "off_headon": 0.155,
+   "off_linear": 0.092,
+   "off_seg": 0.147,
+   "rev_100": 2.919,
+   "speed": 4.222,
+   "stopped": 0.28
+  },
+  "picks": {
+   "continue": 0.328,
+   "hold": 0.319,
+   "reverse": 0.353
+  },
+  "policy": "three",
+  "fire": "attack",
+  "ticks": 12000,
+  "probs": [
+   0.34,
+   0.33,
+   0.33
+  ]
+ },
+ "wide_ink": {
+  "waves": 2559,
+  "cover": 0.382,
+  "width": 48.2,
+  "headon": {
+   "on": 0.243,
+   "net": 0.187
+  },
+  "linear": {
+   "on": 0.13,
+   "net": 0.085
+  },
+  "gf": {
+   "on": 0.237,
+   "net": 0.178
+  },
+  "seg": {
+   "on": 0.218,
+   "net": 0.154
+  },
+  "virtual": {
+   "gf": 0.171,
+   "headon": 0.178,
+   "linear": 0.093,
+   "seg": 0.152
+  },
+  "census": {
+   "dwell": 30.424,
+   "off_gf": 0.175,
+   "off_headon": 0.178,
+   "off_linear": 0.093,
+   "off_seg": 0.158,
+   "rev_100": 3.286,
+   "speed": 3.801,
+   "stopped": 0.197
+  },
+  "picks": {
+   "continue": 0.188,
+   "half": 0.217,
+   "halfrev": 0.204,
+   "hold": 0.205,
+   "reverse": 0.187
+  },
+  "policy": "wide",
+  "fire": "ink",
+  "ticks": 12000
+ },
+ "wide_attack": {
+  "waves": 2559,
+  "cover": 0.02,
+  "width": 48.2,
+  "headon": {
+   "on": 0.238,
+   "net": 0.232
+  },
+  "linear": {
+   "on": 0.137,
+   "net": 0.134
+  },
+  "gf": {
+   "on": 0.234,
+   "net": 0.228
+  },
+  "seg": {
+   "on": 0.205,
+   "net": 0.199
+  },
+  "virtual": {
+   "gf": 0.174,
+   "headon": 0.181,
+   "linear": 0.096,
+   "seg": 0.158
+  },
+  "census": {
+   "dwell": 29.931,
+   "off_gf": 0.177,
+   "off_headon": 0.181,
+   "off_linear": 0.096,
+   "off_seg": 0.165,
+   "rev_100": 3.331,
+   "speed": 3.832,
+   "stopped": 0.195
+  },
+  "picks": {
+   "continue": 0.188,
+   "half": 0.206,
+   "halfrev": 0.206,
+   "hold": 0.203,
+   "reverse": 0.197
+  },
+  "policy": "wide",
+  "fire": "attack",
+  "ticks": 12000
+ },
+ "belief_seg_ink": {
+  "waves": 2559,
+  "cover": 0.481,
+  "width": 51.8,
+  "headon": {
+   "on": 0.191,
+   "net": 0.13
+  },
+  "linear": {
+   "on": 0.087,
+   "net": 0.035
+  },
+  "gf": {
+   "on": 0.136,
+   "net": 0.083
+  },
+  "seg": {
+   "on": 0.139,
+   "net": 0.071
+  },
+  "virtual": {
+   "gf": 0.111,
+   "headon": 0.098,
+   "linear": 0.072,
+   "seg": 0.128
+  },
+  "census": {
+   "dwell": 28.524,
+   "off_gf": 0.113,
+   "off_headon": 0.098,
+   "off_linear": 0.072,
+   "off_seg": 0.133,
+   "rev_100": 3.506,
+   "speed": 5.907,
+   "stopped": 0.078
+  },
+  "picks": {
+   "continue": 0.548,
+   "hold": 0.051,
+   "reverse": 0.401
+  },
+  "policy": "belief",
+  "fire": "ink",
+  "ticks": 12000,
+  "enemy": "seg"
+ },
+ "belief_seg_attack": {
+  "waves": 2559,
+  "cover": 0.017,
+  "width": 51.0,
+  "headon": {
+   "on": 0.139,
+   "net": 0.134
+  },
+  "linear": {
+   "on": 0.172,
+   "net": 0.167
+  },
+  "gf": {
+   "on": 0.11,
+   "net": 0.108
+  },
+  "seg": {
+   "on": 0.156,
+   "net": 0.152
+  },
+  "virtual": {
+   "gf": 0.092,
+   "headon": 0.095,
+   "linear": 0.106,
+   "seg": 0.114
+  },
+  "census": {
+   "dwell": 46.97,
+   "off_gf": 0.101,
+   "off_headon": 0.095,
+   "off_linear": 0.106,
+   "off_seg": 0.122,
+   "rev_100": 2.125,
+   "speed": 4.564,
+   "stopped": 0.275
+  },
+  "picks": {
+   "continue": 0.46,
+   "hold": 0.315,
+   "reverse": 0.225
+  },
+  "policy": "belief",
+  "fire": "attack",
+  "ticks": 12000,
+  "enemy": "seg"
+ },
+ "belief_gf_ink": {
+  "waves": 2559,
+  "cover": 0.479,
+  "width": 51.8,
+  "headon": {
+   "on": 0.195,
+   "net": 0.139
+  },
+  "linear": {
+   "on": 0.101,
+   "net": 0.041
+  },
+  "gf": {
+   "on": 0.129,
+   "net": 0.076
+  },
+  "seg": {
+   "on": 0.193,
+   "net": 0.102
+  },
+  "virtual": {
+   "gf": 0.106,
+   "headon": 0.098,
+   "linear": 0.085,
+   "seg": 0.163
+  },
+  "census": {
+   "dwell": 26.859,
+   "off_gf": 0.109,
+   "off_headon": 0.098,
+   "off_linear": 0.085,
+   "off_seg": 0.168,
+   "rev_100": 3.736,
+   "speed": 5.986,
+   "stopped": 0.063
+  },
+  "picks": {
+   "continue": 0.527,
+   "hold": 0.027,
+   "reverse": 0.445
+  },
+  "policy": "belief",
+  "fire": "ink",
+  "ticks": 12000,
+  "enemy": "gf"
+ },
+ "belief_gf_attack": {
+  "waves": 2559,
+  "cover": 0.017,
+  "width": 51.2,
+  "headon": {
+   "on": 0.134,
+   "net": 0.131
+  },
+  "linear": {
+   "on": 0.149,
+   "net": 0.146
+  },
+  "gf": {
+   "on": 0.093,
+   "net": 0.091
+  },
+  "seg": {
+   "on": 0.168,
+   "net": 0.165
+  },
+  "virtual": {
+   "gf": 0.085,
+   "headon": 0.096,
+   "linear": 0.095,
+   "seg": 0.117
+  },
+  "census": {
+   "dwell": 43.781,
+   "off_gf": 0.09,
+   "off_headon": 0.096,
+   "off_linear": 0.095,
+   "off_seg": 0.124,
+   "rev_100": 2.275,
+   "speed": 4.91,
+   "stopped": 0.232
+  },
+  "picks": {
+   "continue": 0.48,
+   "hold": 0.268,
+   "reverse": 0.252
+  },
+  "policy": "belief",
+  "fire": "attack",
+  "ticks": 12000,
+  "enemy": "gf"
+ },
+ "belief_linear_ink": {
+  "waves": 2559,
+  "cover": 0.476,
+  "width": 51.5,
+  "headon": {
+   "on": 0.202,
+   "net": 0.145
+  },
+  "linear": {
+   "on": 0.071,
+   "net": 0.03
+  },
+  "gf": {
+   "on": 0.146,
+   "net": 0.09
+  },
+  "seg": {
+   "on": 0.189,
+   "net": 0.108
+  },
+  "virtual": {
+   "gf": 0.125,
+   "headon": 0.093,
+   "linear": 0.069,
+   "seg": 0.17
+  },
+  "census": {
+   "dwell": 26.514,
+   "off_gf": 0.127,
+   "off_headon": 0.093,
+   "off_linear": 0.069,
+   "off_seg": 0.175,
+   "rev_100": 3.778,
+   "speed": 5.921,
+   "stopped": 0.065
+  },
+  "picks": {
+   "continue": 0.493,
+   "hold": 0.031,
+   "reverse": 0.475
+  },
+  "policy": "belief",
+  "fire": "ink",
+  "ticks": 12000,
+  "enemy": "linear"
+ },
+ "belief_linear_attack": {
+  "waves": 2559,
+  "cover": 0.018,
+  "width": 50.4,
+  "headon": {
+   "on": 0.102,
+   "net": 0.1
+  },
+  "linear": {
+   "on": 0.137,
+   "net": 0.136
+  },
+  "gf": {
+   "on": 0.148,
+   "net": 0.144
+  },
+  "seg": {
+   "on": 0.159,
+   "net": 0.154
+  },
+  "virtual": {
+   "gf": 0.102,
+   "headon": 0.09,
+   "linear": 0.091,
+   "seg": 0.126
+  },
+  "census": {
+   "dwell": 42.536,
+   "off_gf": 0.108,
+   "off_headon": 0.09,
+   "off_linear": 0.091,
+   "off_seg": 0.135,
+   "rev_100": 2.347,
+   "speed": 4.45,
+   "stopped": 0.273
+  },
+  "picks": {
+   "continue": 0.425,
+   "hold": 0.307,
+   "reverse": 0.268
+  },
+  "policy": "belief",
+  "fire": "attack",
+  "ticks": 12000,
+  "enemy": "linear"
+ },
+ "belief_headon_ink": {
+  "waves": 2559,
+  "cover": 0.609,
+  "width": 55.6,
+  "headon": {
+   "on": 0.004,
+   "net": 0.003
+  },
+  "linear": {
+   "on": 0.32,
+   "net": 0.092
+  },
+  "gf": {
+   "on": 0.244,
+   "net": 0.056
+  },
+  "seg": {
+   "on": 0.408,
+   "net": 0.12
+  },
+  "virtual": {
+   "gf": 0.264,
+   "headon": 0.039,
+   "linear": 0.223,
+   "seg": 0.395
+  },
+  "census": {
+   "dwell": 68.776,
+   "off_gf": 0.264,
+   "off_headon": 0.039,
+   "off_linear": 0.223,
+   "off_seg": 0.387,
+   "rev_100": 1.45,
+   "speed": 7.296,
+   "stopped": 0.015
+  },
+  "picks": {
+   "continue": 0.998,
+   "hold": 0.0,
+   "reverse": 0.002
+  },
+  "policy": "belief",
+  "fire": "ink",
+  "ticks": 12000,
+  "enemy": "headon"
+ },
+ "belief_headon_attack": {
+  "waves": 2559,
+  "cover": 0.018,
+  "width": 50.2,
+  "headon": {
+   "on": 0.107,
+   "net": 0.104
+  },
+  "linear": {
+   "on": 0.138,
+   "net": 0.136
+  },
+  "gf": {
+   "on": 0.176,
+   "net": 0.172
+  },
+  "seg": {
+   "on": 0.169,
+   "net": 0.165
+  },
+  "virtual": {
+   "gf": 0.132,
+   "headon": 0.103,
+   "linear": 0.096,
+   "seg": 0.13
+  },
+  "census": {
+   "dwell": 41.025,
+   "off_gf": 0.135,
+   "off_headon": 0.103,
+   "off_linear": 0.096,
+   "off_seg": 0.136,
+   "rev_100": 2.442,
+   "speed": 4.39,
+   "stopped": 0.277
+  },
+  "picks": {
+   "continue": 0.408,
+   "hold": 0.319,
+   "reverse": 0.273
+  },
+  "policy": "belief",
+  "fire": "attack",
+  "ticks": 12000,
+  "enemy": "headon"
+ },
+ "still_ink": {
+  "waves": 2559,
+  "cover": 0.162,
+  "width": 43.7,
+  "headon": {
+   "on": 1.0,
+   "net": 0.997
+  },
+  "linear": {
+   "on": 0.95,
+   "net": 0.947
+  },
+  "gf": {
+   "on": 0.998,
+   "net": 0.996
+  },
+  "seg": {
+   "on": 1.0,
+   "net": 0.998
+  },
+  "virtual": {
+   "gf": 0.998,
+   "headon": 0.998,
+   "linear": 0.933,
+   "seg": 1.0
+  },
+  "census": {
+   "dwell": 3879.667,
+   "off_gf": 0.998,
+   "off_headon": 0.998,
+   "off_linear": 0.933,
+   "off_seg": 1.0,
+   "rev_100": 0.017,
+   "speed": 0.086,
+   "stopped": 0.927
+  },
+  "picks": {
+   "hold": 1.0
+  },
+  "policy": "still",
+  "fire": "ink",
+  "ticks": 12000
+ },
+ "still_attack": {
+  "waves": 2559,
+  "cover": 0.05,
+  "width": 43.7,
+  "headon": {
+   "on": 1.0,
+   "net": 0.97
+  },
+  "linear": {
+   "on": 0.95,
+   "net": 0.922
+  },
+  "gf": {
+   "on": 0.998,
+   "net": 0.968
+  },
+  "seg": {
+   "on": 1.0,
+   "net": 0.97
+  },
+  "virtual": {
+   "gf": 0.998,
+   "headon": 0.998,
+   "linear": 0.933,
+   "seg": 1.0
+  },
+  "census": {
+   "dwell": 3879.667,
+   "off_gf": 0.998,
+   "off_headon": 0.998,
+   "off_linear": 0.933,
+   "off_seg": 1.0,
+   "rev_100": 0.017,
+   "speed": 0.086,
+   "stopped": 0.927
+  },
+  "picks": {
+   "hold": 1.0
+  },
+  "policy": "still",
+  "fire": "attack",
+  "ticks": 12000
+ }
+}
