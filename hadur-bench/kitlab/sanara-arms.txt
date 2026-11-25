@@ -1,0 +1,17 @@
+# Sanara step 2 arms (docs/sanara.md): one arm a line, NAME | what it changes | sed over
+# kitlab/arms/Sanara-0.java (empty: the base). Built by kitlab/sanara_arms.sh as
+# hadur117.nano.Sanara <NAME>; all over the 249 B limit on purpose: the screen measures play,
+# the fit (step 3) measures bytes. Read each arm paired against c (the base) and aa (a second copy
+# of the base, the noise floor), on the same field and seeds.
+c | base 0.0: reversal chance 38/64 at every range, ideal 420 px, power 3 inside 200 px else 2, key 30, tick-by-tick replay |
+aa | copy of the base (A/A noise floor) |
+p4 | flat reversal chance 26/64 (0.41) | s/\\u0026/\\u001a/g
+p8 | flat reversal chance 51/64 (0.80) | s/\\u0026/\\u0033/g
+ptab | reversal chance rises with distance: 0.25 near, 0.8 beyond 700 px | s/static final String FLIP = ".*";/static final String FLIP = "\\u0010\\u0010\\u0018\\u0020\\u0026\\u002c\\u0030\\u0033\\u0033\\u0033";/
+tick | also reverse with chance 0.02 on any tick | s/static final double TICK = 0;/static final double TICK = 0.02;/
+d350 | ideal distance 350 px | s/static final double IDEAL = 420;/static final double IDEAL = 350;/
+d520 | ideal distance 520 px | s/static final double IDEAL = 420;/static final double IDEAL = 520;/
+short | fitted gun: hold the matched tick's lateral speed over the flight | s/static final int REPLAY = 1;/static final int REPLAY = 0;/
+key20 | longest pattern key 20 ticks | s/static final int KEY = 30;/static final int KEY = 20;/
+pow2 | power 2 at every range | s/static final String POWER = ".*";/static final String POWER = "\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020";/
+jit | aim jitter of 0.06 rad (bullet catchers) | s/static final double JITTER = 0;/static final double JITTER = 0.06;/
