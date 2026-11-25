@@ -34,6 +34,7 @@ Designs that are written down and estimated but not built.
 
 | Doc | Topic |
 |---|---|
+| [sepia.md](sepia.md) | Sepia as built: the ink planner, the jet cycle and the ink surf, the lab arms and how to run them |
 | [sepia-design.md](sepia-design.md) | Sepia, a second 1v1 robot on Hadur's kernel: ink cover, the jet cycle, the hub of species, its EARS rows, bench cards and an estimated APS |
 
 ## Plans and studies (historical)

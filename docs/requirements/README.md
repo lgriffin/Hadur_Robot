@@ -5,19 +5,20 @@ Hadur's requirements, written in EARS and traced to the tests that prove them. O
 | Area | Requirements | Families |
 |---|---|---|
 | [Core, architecture and resilience](core.md) | 92 | ADAPT CORE DIAL GATE LINK MEM NAME PHYS RADAR REL RES ROLE SHELF STRAND TIME WAVE WEAVE WORLD |
-| [1v1](duel.md) | 116 | AES DIST DODGE END GUN MATCH MIR MOVE ORACLE POISON POW RAM SHIELD SKEY |
-| [Melee](melee.md) | 36 | MELEE MEND MGUN MMEM MMOVE MRADAR MSENSE |
-| [Team](team.md) | 28 | TMODE |
-| [Bench](bench.md) | 187 | BENCH |
+| [1v1](duel.md) | 121 | AES DIST DODGE END GUN MATCH MIR MOVE ORACLE POISON POW RAM SHIELD SKEY |
+| [Melee](melee.md) | 38 | MELEE MEND MGUN MMEM MMOVE MRADAR MSENSE |
+| [Team](team.md) | 30 | TMODE |
+| [Bench](bench.md) | 193 | BENCH |
 | [Saor (MicroMelee)](saor.md) | 15 | SAOR |
 | [TwinSaor (Twin Duel)](twinsaor.md) | 14 | TWIN |
 | [Deise (MiniMelee)](deise.md) | 17 | DEISE |
 | [Sanaro (NanoMelee)](sanaro.md) | 14 | SANARO |
-| [JayLexi (MiniRumble)](jaylexi.md) | 18 | JAYLEXI |
+| [JayLexi (MiniRumble)](jaylexi.md) | 19 | JAYLEXI |
 | [Eveimear (MicroRumble)](eveimear.md) | 13 | EVEIMEAR |
-| [Retired](retired.md) | 177 | |
+| [Sepia (1v1)](sepia.md) | 19 | INK JET SEPIA STRIKE SURF |
+| [Retired](retired.md) | 185 | |
 
-550 active requirements, 177 retired.
+585 active requirements, 185 retired.
 
 ## Writing a requirement
 

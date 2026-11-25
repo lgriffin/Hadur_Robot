@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.lgriffin</groupId>
+        <artifactId>hadur-parent</artifactId>
+        <version>2.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>sepia</artifactId>
+    <name>Sepia</name>
+    <description>hadur117.Sepia, a 1v1 robot on Hadur's kernel that moves so its 0.1 "ink" bullets can shoot the
+        enemy's bullets down where its body will land (docs/sepia.md). Hadur's own play is not changed.</description>
+
+    <properties>
+        <!-- The robot's version: the jar is named for it and Sepia.properties takes it by filtering. -->
+        <sepia.release>0.0.1</sepia.release>
+        <sepia.jar>${project.build.directory}/hadur117.Sepia_${sepia.release}.jar</sepia.jar>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.lgriffin</groupId>
+            <artifactId>hadur-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.tngtech.archunit</groupId>
+            <artifactId>archunit-junit5</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!-- RoboRumble naming: package.BotName_version.jar -->
+        <finalName>hadur117.Sepia_${sepia.release}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <forceCreation>true</forceCreation>
+                </configuration>
+            </plugin>
+            <!-- Robocode loads one jar per robot, so the jar carries the kernel classes Sepia uses.
+                 minimizeJar keeps only the classes reachable from Sepia's own, so Hadur's conductor,
+                 strands and mode table stay out of it. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <id>robot</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <minimizeJar>true</minimizeJar>
+                            <artifactSet>
+                                <includes>
+                                    <include>com.lgriffin:hadur-core</include>
+                                </includes>
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- The gate on the shipped jar (SEPIA-3). -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.5.2</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <sepia.jar>${sepia.jar}</sepia.jar>
+                        <sepia.release>${sepia.release}</sepia.release>
+                    </systemPropertyVariables>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
