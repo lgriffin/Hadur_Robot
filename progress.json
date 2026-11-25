@@ -1,6 +1,6 @@
 {
  "plan": "pc-locks",
- "updated": 1795621975.4201317,
+ "updated": 1795621978.2273245,
  "steps": {
   "prep": {
    "status": "done",
@@ -59,8 +59,8 @@
   "pr": {
    "status": "failed",
    "exit": 1,
-   "seconds": 16,
-   "end": "2026-11-25T15:52:41"
+   "seconds": 2,
+   "end": "2026-11-25T15:52:58"
   }
  },
  "watched": []
