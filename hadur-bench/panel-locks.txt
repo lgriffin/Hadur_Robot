@@ -1,17 +1,17 @@
-# BENCH-253 pc-locks, round 31: 9 per-robot lines on existing table switches, each read on 24 or more fresh cloud seeds
-# against both c and aa (coverage/shards/locks.tsv, dzlane/L/r29-candidates.txt): YersiniaPestis, Ascendant and Wavelet
-# on gl (GUN-11 gun stack); QuantumChromodynamics, Gron and Dharok on rwl (MOVE-46 ram wait); LightningStorm on x0
-# (SHIELD-19 exit off); Blade on ky (SHIELD-35 close-range yield); Sanguijuela on rlnrkn (RAM-20 plus RAM-21); and three
-# robots whose round 30 line is on master, read only in c and aa, so the A/A check reads 12. name | note | jar
+# BENCH-253 pc-locks, round 31: 12 per-robot lines on existing table switches, each read on 12 or more fresh cloud
+# seeds against both c and aa (coverage/shards/locks.tsv, dzlane/L/r29-candidates.txt): YersiniaPestis, Ascendant and
+# Wavelet on gl (GUN-11 gun stack); QuantumChromodynamics, Gron, Dharok, Buba, RandomLinear and NanoR2 on rwl (MOVE-46
+# ram wait); LightningStorm on x0 (SHIELD-19 exit off); Blade on ky (SHIELD-35 close-range yield); Sanguijuela on rlnrkn
+# (RAM-20 plus RAM-21). Twelve robots, so the A/A check needs no pads. name | note | jar
 zyx.mega.YersiniaPestis 3.0 | gl-L+M-24seeds | zyx.mega.YersiniaPestis_3.0.jar
 mue.Ascendant 1.2.27 | gl-L+M-24seeds | mue.Ascendant_1.2.27.jar
 pc.Wavelet 1.5 | gl-L+M-24seeds | pc.Wavelet_1.5.jar
 ar.QuantumChromodynamics 1.2.1 | rwl-M+B-24seeds | ar.QuantumChromodynamics_1.2.1.jar
 zzx.Gron 1.14 | rwl-B+L-36seeds | zzx.Gron_1.14.jar
 kjc.etc.Dharok 1.0 | rwl-M-24seeds | kjc.etc.Dharok_1.0.jar
+buba.Buba 0.3 | rwl-B-12seeds | buba.Buba_0.3.jar
+slugzilla.RandomLinear 1.0 | rwl-B-12seeds | slugzilla.RandomLinear_1.0.jar
+sul.NanoR2 1.32 | rwl-B-12seeds | sul.NanoR2_1.32.jar
 EH.kms.LightningStorm 0.11B | x0-B+A-36seeds | EH.kms.LightningStorm_0.11B.jar
 cw.megas.Blade 0.8 | ky-B+A-36seeds | cw.megas.Blade_0.8.jar
 jab.micro.Sanguijuela 0.8 | rlnrkn-D-12seeds | jab.micro.Sanguijuela_0.8.jar
-simonton.micro.GFMicro 1.0 | aa-pad-r30-line | simonton.micro.GFMicro_1.0.jar
-kawigi.mini.Fhqwhgads 1.1 | aa-pad-r30-line | kawigi.mini.Fhqwhgads_1.1.jar
-Krabb.fe4r.Fe4r 0.4 | aa-pad-r30-line | Krabb.fe4r.Fe4r_0.4.jar
