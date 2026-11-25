@@ -67,7 +67,7 @@ class PcLocksPlanTest {
             assertTrue(step.contains("  after: " + prev + "\n"), a + " after " + prev);
             prev = "lock-" + a;
         }
-        assertTrue(queue.contains("for d in gl rwl x0 ky rlnrkn; do awk -F\"\\t\" -v a=$d 'NR > 1 && $1 == a' ${W}-$d/arms.tsv; done"), "the gate takes only the lever rows from each lever run");
+        assertTrue(queue.contains("for d in gl rwl x0 ky rlnrkn; do awk -F\"\\t\" -v a=$d 'NR > 1 && $1 == a' ${W}-$d/arms.tsv || exit 1; done"), "the gate takes only the lever rows from each lever run");
         assertTrue(queue.contains("--out ${W}-livematch ") && !queue.contains("work/pc-livematch-rel-live"), "the live-match check never reads back an earlier card's battles");
         assertTrue(queue.contains("lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0"), "the gate, each robot on its own arm");
         int at = queue.indexOf("\nlock | ");
