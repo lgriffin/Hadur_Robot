@@ -1,15 +1,22 @@
 {
  "plan": "pc-locks",
- "updated": 1795620542.7710905,
+ "updated": 1795621449.7491753,
  "steps": {
   "prep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 238,
+   "end": "2026-11-25T15:33:00"
   },
   "livematch": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 545,
+   "end": "2026-11-25T15:42:06"
   },
   "lock": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-25T15:42:06"
   },
   "stage": {
    "status": "pending"
@@ -33,5 +40,158 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "livematch",
+   "started": 1795620780.8974943,
+   "updated": 1795621326.6219769,
+   "elapsed": 545.7244825363159,
+   "expected": 124,
+   "panel": 31,
+   "field": 1217,
+   "multiarm": true,
+   "arms": [
+    {
+     "arm": "c",
+     "battles": 62,
+     "failed": 0,
+     "level": 71.14387096774193,
+     "skips": 2.9516129032258065,
+     "fresh": 62,
+     "scored": 62,
+     "diff": null
+    },
+    {
+     "arm": "bb",
+     "battles": 62,
+     "failed": 0,
+     "level": 84.45532258064516,
+     "skips": 0.016129032258064516,
+     "fresh": 62,
+     "scored": 62,
+     "diff": 13.311451612903225,
+     "n": 31,
+     "ci95": 2.634506351648872,
+     "half_stop": 4.032407681095212,
+     "scale": 0.025472473294987676
+    }
+   ],
+   "aa": null,
+   "warnings": [
+    "arm c's jar bisect/live/hadur117.Hadur_3.22.jar was built 238 h before this step started: check it is not stale",
+    "arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 225 h before this step started: check it is not stale"
+   ],
+   "battles": 124,
+   "resumed": 0,
+   "failed": 0,
+   "disables": 0,
+   "rate": 817.9951867383809,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 4.550415277481079,
+   "rules": [
+    {
+     "rule": "fails 30",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 124"
+    },
+    {
+     "rule": "dead 8",
+     "action": "halt",
+     "state": "ok",
+     "detail": "every arm scoring"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    }
+   ],
+   "skips_mean": 1.4838709677419355,
+   "skips_last100": 1.6
+  },
+  {
+   "step": "lock",
+   "started": 1795621326.6519375,
+   "updated": 1795621449.082753,
+   "elapsed": 122.43081545829773,
+   "expected": 624,
+   "panel": 13,
+   "field": 1217,
+   "multiarm": true,
+   "arms": [
+    {
+     "arm": "c",
+     "battles": 90,
+     "failed": 0,
+     "level": 95.3629595959596,
+     "skips": 7.288888888888889,
+     "fresh": 90,
+     "scored": 90,
+     "diff": null
+    },
+    {
+     "arm": "aa",
+     "battles": 92,
+     "failed": 0,
+     "level": 95.29959185259186,
+     "skips": 7.391304347826087,
+     "fresh": 92,
+     "scored": 92,
+     "diff": -0.06336774336774581,
+     "n": 13,
+     "ci95": 0.6748670556850114,
+     "half_stop": 1.0329597791097112,
+     "scale": 0.010682004930156122
+    }
+   ],
+   "aa": {
+    "diff": -0.06336774336774581,
+    "ci": 0.6748670556850114,
+    "n": 13,
+    "band": 1.2240247795161523,
+    "ok": true,
+    "band_stop": 1.4232846273443631
+   },
+   "warnings": [],
+   "battles": 182,
+   "resumed": 0,
+   "failed": 0,
+   "disables": 0,
+   "rate": 5351.593857701402,
+   "eta": 297.33198039872303,
+   "fraction": 0.2916666666666667,
+   "last_battle_age": 0.8549337387084961,
+   "rules": [
+    {
+     "rule": "fails 30",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 182"
+    },
+    {
+     "rule": "dead 8",
+     "action": "halt",
+     "state": "ok",
+     "detail": "every arm scoring"
+    },
+    {
+     "rule": "skips 60 over 24",
+     "action": "halt",
+     "state": "ok",
+     "detail": "7.2 a battle over the last 24 (first 24: 6.1)"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    }
+   ],
+   "skips_mean": 7.34065934065934,
+   "skips_last100": 7.34
+  }
+ ]
 }
