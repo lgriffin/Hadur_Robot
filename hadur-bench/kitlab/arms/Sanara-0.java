@@ -16,6 +16,9 @@ import robocode.util.Utils;
  * over the flight, over distance). Power from a table by distance. Radar: one-call lock.
  * Published techniques used: symbolic pattern matching and the radar lock (RoboWiki).
  *
+ * Known approximation: any drop in the enemy's energy counts as a shot, including the damage of
+ * Sanara's own hits; telling them apart costs bytes the fitted build does not have.
+ *
  * Every constant below is a screen knob; the arms change them with sed (kitlab/sanara-arms.txt).
  */
 public class Sanara extends AdvancedRobot {
@@ -31,6 +34,8 @@ public class Sanara extends AdvancedRobot {
     // Longest pattern key in ticks; REPLAY 1 replays tick by tick, 0 holds the matched tick's speed.
     static final int KEY = 30;
     static final int REPLAY = 1;
+    // Longest history kept, in ticks (0 = all of it, across every round).
+    static final int CAP = 0;
     // Random aim jitter in radians (0 = off).
     static final double JITTER = 0;
 
@@ -60,6 +65,9 @@ public class Sanara extends AdvancedRobot {
 
         // Gun.
         history = (char) Math.round(e.getVelocity() * Math.sin(e.getHeadingRadians() - absBearing)) + history;
+        if (CAP > 0 && history.length() > CAP) {
+            history = history.substring(0, CAP);
+        }
         int i;
         int k = KEY;
         while ((i = history.indexOf(history.substring(0, k--), 1)) < 0) {
@@ -68,8 +76,13 @@ public class Sanara extends AdvancedRobot {
         int ticks = (int) (distance / (20 - 3 * power));
         double offset = 0;
         if (REPLAY == 1) {
-            while (ticks-- > 0 && i > 0) {
-                offset += (short) history.charAt(--i);
+            // The match at i means the history repeats with period i, so the replay wraps back to
+            // i - 1 when it reaches the present instead of stopping short of the flight time.
+            for (int j = i; ticks-- > 0; ) {
+                if (--j < 0) {
+                    j = i - 1;
+                }
+                offset += (short) history.charAt(j);
             }
         } else {
             offset = (short) history.charAt(i - 1) * ticks;

@@ -15,3 +15,4 @@ short | fitted gun: hold the matched tick's lateral speed over the flight | s/st
 key20 | longest pattern key 20 ticks | s/static final int KEY = 30;/static final int KEY = 20;/
 pow2 | power 2 at every range | s/static final String POWER = ".*";/static final String POWER = "\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020";/
 jit | aim jitter of 0.06 rad (bullet catchers) | s/static final double JITTER = 0;/static final double JITTER = 0.06;/
+cap | keep only the last 4,000 ticks of history (CPU in late rounds) | s/static final int CAP = 0;/static final int CAP = 4000;/

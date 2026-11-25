@@ -18,8 +18,11 @@ Nothing is entered yet. The work so far is the over-budget base and the bench pi
 - **Gun.** Symbolic pattern matching: one character a tick holds the enemy's lateral velocity; the
   longest recent match of up to 30 ticks is found by string search, and the lateral speeds that
   followed it are summed over the bullet's flight and divided by distance, giving a bearing offset
-  directly instead of a rebuilt position.
+  directly instead of a rebuilt position. A match i ticks back means the history repeats with
+  period i, so the replay wraps back to the match when it reaches the present.
 - **Energy.** Power 3 inside 200 px, else 2, from a table; never a 0.1 shot.
+- **Known approximation.** Any drop in the enemy's energy counts as a shot, including the damage
+  of Sanara's own hits; telling them apart costs bytes the fitted build does not have.
 
 Published techniques used, credited here and in the source: symbolic pattern matching and the
 one-call radar lock (both described on the RoboWiki), and reacting to an enemy shot from its
@@ -56,7 +59,8 @@ kitlab/run.sh nano-all kitlab/jars/hadur117.nano.Sanara_c.jar "hadur117.nano.San
 ## 4. The plan
 
 1. **Step 0, behaviour profile.** The top 5 and ten rank-band bots against the three probes and
-   Sanara, with the truth log on: their hit rate per motion, shots and power per round, distance.
+   Sanara, with the truth log on (`KITLAB_TRUTH=true kitlab/run.sh ...`): their hit rate per
+   motion, shots and power per round, distance.
 2. **Step 1, the base.** Sanara 0.0 built and smoke-tested (no exceptions, no skipped turns).
 3. **Step 2, the screen.** The arms on a 60-bot sample of the division, 2 seeds, read against `c`
    and `aa`. The best pair must project 74 or better before any golf.
@@ -70,6 +74,7 @@ kitlab/run.sh nano-all kitlab/jars/hadur117.nano.Sanara_c.jar "hadur117.nano.San
 | Run | Field | Result |
 |---|---|---|
 | 0.0 smoke, 1 seed | 8 top nanos | 50.9 ± 9.4 score share; beats LittleBlackBook 1.0 (62%), PatternAdept 1.0 (64%), Caligula, Machete; loses to PralDeGuerre (37%) and ThnikkaBot (35%); 0 skipped turns |
-| 0.0, 1 seed | whole division, 299 bots | 69.1 ± 2.2 score share, about 54th on the live table (Sanaro 0.3: 26.7); by live rank: top 5 53.4%, 6-20 52.6%, 21-50 50.3%, 51-100 57.0%, 101-200 64.1%, 201+ 89.3%; 0.3 skipped turns a battle |
+| 0.0 first build, 1 seed | whole division, 299 bots | 69.1 ± 2.2 score share, about 54th on the live table (Sanaro 0.3: 26.7); by live rank: top 5 53.4%, 6-20 52.6%, 21-50 50.3%, 51-100 57.0%, 101-200 64.1%, 201+ 89.3%; 0.3 skipped turns a battle |
+| 0.0 with the wrapping replay (arm `c`), 1 seed | whole division, 299 bots | 69.8 ± 2.2, about 50th; paired against the first build +0.70 ± 0.67 per bot; 0.3 skipped turns a battle |
 
 The first read says the gun and the reversal already hold the top of the field level, and the points are lost in the middle: ranks 51 to 200 out-shoot the orbit (their score is about half bullet damage, none of them rams). That is the band the reversal arms (`p8`, `tick`, `ptab`) and the distance arms are aimed at.

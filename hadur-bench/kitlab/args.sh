@@ -2,9 +2,10 @@
 # Write the bench args for one robot on a kitlab field: args.sh FIELD JAR "NAME VER" LABEL [SEEDS] [PARALLEL]
 # Writes work/kitlab-<LABEL>.args (results go to work/kitlab-<LABEL>); with no PARALLEL it writes
 # --parallel auto, so the bench takes the host profile's width, as the PC cards want (docs/kitlab.md).
+# KITLAB_TRUTH=true turns the truth log on (hit rates per side), as the Sanara step 0 profile needs.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 field=$1 jar=$2 robot=$3 label=$4 seeds=${5:-2} par=${6:-auto}
 mkdir -p work
 printf '%s\n' --set "kitlab/$field-field.txt" --seeds "$seeds" --rounds 35 --parallel "$par" --unseeded true \
-    --robot-jar "$jar" --robot "$robot" --truth-log false --child-heap 512M --out "work/kitlab-$label" > "work/kitlab-$label.args"
+    --robot-jar "$jar" --robot "$robot" --truth-log "${KITLAB_TRUTH:-false}" --child-heap 512M --out "work/kitlab-$label" > "work/kitlab-$label.args"
