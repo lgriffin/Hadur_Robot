@@ -640,6 +640,8 @@ final class ShieldTableData {
             "alpha.BlackIce 1.0",             // +3.5
             // pc-locks round 21 (BENCH-253, PR #1001): 12 fresh PC seeds at the live turn time; 24-seed cloud lock held first
             "mue.Hyperion 0.8",               // +8.1
+            // pc-locks round 29 (BENCH-253, PR #1072): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "oog.micro.MagicD3 0.41",        // +3.6
         };
     }
 
@@ -948,6 +950,14 @@ final class ShieldTableData {
             "oog.nano.SavantVS 1.1",         // +0.8
             "strider.Festis 1.2.1",          // +1.0
             "wiki.BasicGFSurfer 1.02",       // +0.9
+            // pc-locks round 29 (BENCH-253, PR #1072): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "dcs.Eater_of_Worlds_Mini 1.0",  // +0.6
+            "janm.Jammy 1.0",                // +1.0
+            "Legend.X_FireFly 1.3",          // +1.2
+            "mladjo.iRobot 0.3",             // +1.2
+            "ph.Thinker 0.2.5",              // +1.0
+            "sam.Samspin 1.0",               // +0.8
+            "toz.Gnome 1.1",                 // +0.7
         };
     }
 
