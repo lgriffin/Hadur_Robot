@@ -249,8 +249,8 @@ public final class Gait {
         }
         InkWave prior = plan.get(last).owner;
         List<Segment> before = new ArrayList<>(plan.subList(0, last));
-        List<InkWave> later = new ArrayList<>();
-        for (Segment s : plan.subList(last + 1, plan.size())) later.add(s.owner);
+        // Stretches after it belong to waves already met or hit: kept as they are, in scoring and in the plan.
+        List<Segment> later = new ArrayList<>(plan.subList(last + 1, plan.size()));
         List<Option> opts = options();
         Forecast[] fas = new Forecast[opts.size()];
         double[] eas = new double[opts.size()];
@@ -270,6 +270,7 @@ public final class Gait {
             if (ea >= best) break;
             List<Segment> trial = new ArrayList<>(before);
             trial.add(new Segment(prior, a, fa.orientation, prior.wave.sourceLocation, fa.passed));
+            trial.addAll(later);
             for (Option b : options()) {
                 double e = ea + rater.exposure(wave, forecast(now, trial, b, wave, enemy));
                 if (e < best - 1e-12) {
@@ -281,7 +282,7 @@ public final class Gait {
         }
         plan.subList(last, plan.size()).clear();
         fix(prior, bestPrior, now, enemy, rater);
-        for (InkWave w : later) commit(w, now, enemy, rater);
+        plan.addAll(later);
         fix(wave, bestNew, now, enemy, rater);
     }
 

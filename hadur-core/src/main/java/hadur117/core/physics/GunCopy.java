@@ -109,9 +109,30 @@ public final class GunCopy {
             default:
                 return null;
         }
-        for (String n : need) if (!genes.containsKey(n)) return null;
         try {
-            return new GunCopy(family, genes, width, height);
+            for (String n : need) {
+                String v = genes.get(n);
+                if (v == null) return null;
+                if (n.equals("round")) {
+                    String[] r = v.split("x");
+                    if (r.length != 2 || !(Double.parseDouble(r[0]) > 0) || !(Double.parseDouble(r[1]) > 0)) return null;
+                } else {
+                    double d = Double.parseDouble(v);
+                    if (!(d >= 0) || Double.isInfinite(d)) return null;
+                }
+            }
+            GunCopy c = new GunCopy(family, genes, width, height);
+            boolean ok = c.lag() >= 0 && c.lag() < 10;
+            if (!family.equals("pm")) ok &= c.gi("ticks") == 0 || c.gi("ticks") == 1;
+            if (family.equals("hist")) {
+                ok &= c.bins >= 2 && c.dmax > 0 && c.roll < 1;
+                for (int sl : c.slices) ok &= sl >= 1 && sl <= 16;
+            } else if (family.equals("knn")) {
+                ok &= c.gi("k") >= 1 && c.gi("cap") >= 1 && c.gd("width") > 0;
+            } else {
+                ok &= c.gi("least") >= 1 && c.gi("longest") >= c.gi("least");
+            }
+            return ok ? c : null;
         } catch (RuntimeException e) {
             return null;
         }
@@ -208,32 +229,43 @@ public final class GunCopy {
         if (family.equals("pm")) return;
         // Waves: breaks first (a wave started this tick cannot break on it), then this tick's.
         for (int w = 0; w < flying.size(); w++) {
-            double[] fw = flying.get(w);
-            int t = (int) fw[0];
-            double speed = 20 - 3 * fw[1];
-            double[] o = ticks.get(t);
-            if (speed * (i - t) >= Math.hypot(mx - o[10], my - o[11])) {
-                double b = Math.atan2(mx - o[10], my - o[11]);
-                double esc = Math.asin(Math.min(1.0, 8.0 / speed));
-                double g = Angles.normalRelativeAngle(b - o[13]) * o[14] / esc;
-                broken.add(new double[] {i, t, Math.max(-1, Math.min(1, g))});
-                flying.remove(w--);
-            }
+            if (breaks(flying.get(w), i)) flying.remove(w--);
         }
         if (gi("ticks") == 1) flying.add(new double[] {i, lastPower});
     }
 
     /**
      * A real shot left the enemy on the tick after {@code start}: the copy learns from its wave when
-     * it breaks, if it learns from shots.
+     * it breaks, if it learns from shots, labelled from the scan it was aimed on ({@link #lag} before).
      *
      * @param start the index of the scan the shot was aimed on (the one before it is seen)
      * @param power its power
      */
     public void shot(int start, double power) {
         if (family.equals("pm") || gi("ticks") == 1 || start < 0 || start >= ticks.size()) return;
-        // Kept in start order with the others; it breaks on a later scan.
-        flying.add(new double[] {start, power});
+        // Labelled from the scan it was aimed on, as the breeder labels it (COPY-1).
+        int aimed = start - lag();
+        if (aimed < 0 || ticks.get(aimed)[16] != ticks.get(start)[16]) return;
+        double[] w = {aimed, power};
+        // A shot seen late may already have reached us on a scan observed since: check those first.
+        for (int k = aimed + 1; k < ticks.size(); k++) {
+            if (ticks.get(k)[16] != ticks.get(aimed)[16]) return;
+            if (breaks(w, k)) return;
+        }
+        flying.add(w);
+    }
+
+    /** Whether wave {@code w} reaches us on scan {@code i}; if so, it is learnt. */
+    private boolean breaks(double[] w, int i) {
+        int t = (int) w[0];
+        double speed = 20 - 3 * w[1];
+        double[] o = ticks.get(t), m = ticks.get(i);
+        if (speed * (i - t) < Math.hypot(m[6] - o[10], m[7] - o[11])) return false;
+        double b = Math.atan2(m[6] - o[10], m[7] - o[11]);
+        double esc = Math.asin(Math.min(1.0, 8.0 / speed));
+        double g = Angles.normalRelativeAngle(b - o[13]) * o[14] / esc;
+        broken.add(new double[] {i, t, Math.max(-1, Math.min(1, g))});
+        return true;
     }
 
     private static int clamp(int s) {

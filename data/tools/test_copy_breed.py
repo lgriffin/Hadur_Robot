@@ -112,5 +112,23 @@ class CopyBreedTest(unittest.TestCase):
         self.assertGreater(sum(1 for x in g if x > 0), 0.7 * len(g))
 
 
+    # @Tag("COPY-1"): the copy lines name the robot as Robocode does, one an opponent, and a read is repeatable.
+    def test_lines_and_repeatable(self):
+        g = {"ticks": 0, "bins": 31, "s_lat": 3, "s_dist": 2, "d_max": 900, "s_accel": 1, "s_since": 3,
+             "s_wall": 1, "roll": 0.0, "smooth": 1, "lag": 1}
+        self.battle_with(g, cb.run_hist)
+        self.assertEqual("lab.Hidden 1.0", cb.robot_name("lab.Hidden_1.0"))
+        self.assertEqual("pm;round=2.0x1.0;lag=0", cb.fmt_genome("pm", {"round": (2.0, 1.0), "lag": 0}))
+        out, lines = os.path.join(self.tmp, "o.tsv"), os.path.join(self.tmp, "l.txt")
+        args = [self.tmp, "--jobs", "1", "--generations", "2", "--out", out, "--lines", lines]
+        cb.main(args)
+        first = open(out).read()
+        cb.main(args)
+        self.assertEqual(first, open(out).read())
+        got = open(lines).read().strip().split("\n")
+        self.assertEqual(1, len(got))
+        self.assertTrue(got[0].endswith(" lab.Hidden 1.0") and got[0].split(";")[0] in ("hist", "knn", "pm"), got[0])
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -25,6 +25,12 @@ class GunCopyTest {
         assertNull(GunCopy.parse("tree;depth=3", 800, 600), "no such family");
         assertNull(GunCopy.parse("hist;ticks", 800, 600));
         assertNull(GunCopy.parse(null, 800, 600));
+        assertNull(GunCopy.parse("knn;w_lat=1;w_adv=0;w_dist=1;w_accel=0;w_since=0;w_wall=0;k=x;width=0.1;ticks=0;cap=500;lag=1", 800, 600),
+            "a value that is not a number");
+        assertNull(GunCopy.parse("pm;round=2.0;longest=20;least=1;lag=0", 800, 600), "a rounding with one value");
+        assertNull(GunCopy.parse("pm;round=2.0x2.0;longest=2;least=5;lag=0", 800, 600), "least past longest");
+        assertNull(GunCopy.parse(HIST.replace("lag=0", "lag="), 800, 600), "an empty value");
+        assertNull(GunCopy.parse(HIST.replace("ticks=1", "ticks=3"), 800, 600));
     }
 
     @Test

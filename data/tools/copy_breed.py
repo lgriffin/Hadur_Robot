@@ -22,15 +22,15 @@ the share of the opponent's real bullets it fires within 18 px of, at the body's
 learns from the whole battle as the real gun did; only the shots it is scored on differ.
 
 Usage:
-  python3 copy_breed.py RUN_DIR [RUN_DIR ...] [--arm si] [--out copies.tsv] [--jobs N]
-      [--generations 20] [--sample 400] [--field 800x600] [--trace TRACE_TSV] [--limit N]
+  python3 copy_breed.py RUN_DIR [RUN_DIR ...] [--arm si] [--out copies.tsv] [--lines copy-lines.txt]
+      [--jobs N] [--generations 20] [--sample 400] [--field 800x600] [--limit N] [--only TEXT]
 
 RUN_DIR holds battles/<opponent>-<seed>[-<arm>]/truth.log.gz, as bench-top20.sh writes them.
 One row a battle: opponent, seed, the best family, the held-out share it reproduces (and the
 share of the held-out bullets that hit), each family's best held-out share, and the winning genome
-as a mode-table copy: line carries it ("copy: <genome> <robot name>").
-With --trace, the points at stake are joined from a learn-trace tsv (columns opponent and
-pts_at_stake, when present).
+as a mode-table copy: line carries it. With --lines, one "genome name" line an opponent (its
+battle with the best held-out share), ready for $COPY_LIST (build-ablation.sh copylist) or
+hadur-bench/plans/copy-lines.txt (lock_prep.py cpl).
 """
 
 import argparse
@@ -40,6 +40,7 @@ import os
 import random
 import re
 import sys
+import zlib
 from concurrent.futures import ProcessPoolExecutor
 
 import numpy as np
@@ -174,19 +175,20 @@ class Battle:
             power[i] = last
         self.power = power
 
-    def waves(self, ticks_only):
+    def waves(self, ticks_only, lag=0):
         """Every wave a gun could learn from: (tick, break tick, guess factor). ticks_only=False
-        gives the real shots only, else one a tick (as a gun that learns every tick does)."""
+        gives the real shots only, each labelled from the tick it was aimed on ({lag} before the
+        tick before it shows), else one a tick (as a gun that learns every tick does)."""
         if ticks_only:
             starts = np.arange(self.n)
             powers = self.power
         else:
-            starts = np.array([i - 1 for i, _, _ in self.shots], dtype=np.int64)
+            starts = np.array([i - 1 - lag for i, _, _ in self.shots], dtype=np.int64)
             powers = np.array([p for _, p, _ in self.shots])
         out_t, out_k, out_g = [], [], []
         rnd = self.round
         for t, p in zip(starts, powers):
-            if t < 0:
+            if t < 0 or (not ticks_only and rnd[t] != rnd[min(self.n - 1, t + 1 + lag)]):
                 continue
             speed = bullet_speed(p)
             ox, oy = self.ex[t], self.ey[t]
@@ -261,12 +263,13 @@ class Replay:
             self.fit_sample = self.fit
         self._waves = {}
 
-    def waves(self, ticks):
-        if ticks not in self._waves:
-            t, k, g = self.b.waves(bool(ticks))
+    def waves(self, ticks, lag=0):
+        key = (ticks, 0 if ticks else lag)
+        if key not in self._waves:
+            t, k, g = self.b.waves(bool(ticks), key[1])
             order = np.argsort(k, kind="stable")
-            self._waves[ticks] = (t[order], k[order], g[order])
-        return self._waves[ticks]
+            self._waves[key] = (t[order], k[order], g[order])
+        return self._waves[key]
 
 
 def matched(b, shots, aims):
@@ -285,7 +288,7 @@ def matched(b, shots, aims):
 
 def run_hist(rp, g, shots):
     b = rp.b
-    wt, wk, wg = rp.waves(g["ticks"])
+    wt, wk, wg = rp.waves(g["ticks"], g["lag"])
     slices = [g["s_lat"], 1, g["s_dist"], g["s_accel"], g["s_since"], g["s_wall"]]
     mult = np.cumprod([1] + slices[:-1])
     nseg = int(np.prod(slices))
@@ -332,7 +335,7 @@ def run_hist(rp, g, shots):
 
 def run_knn(rp, g, shots):
     b = rp.b
-    wt, wk, wg = rp.waves(g["ticks"])
+    wt, wk, wg = rp.waves(g["ticks"], g["lag"])
     w = np.array([g["w_lat"], g["w_adv"], g["w_dist"], g["w_accel"], g["w_since"], g["w_wall"]])
     pts = b.features[wt] * w
     grid = np.linspace(-1, 1, 81)
@@ -543,7 +546,7 @@ def held_hits(b, held):
 def job(args):
     path, opp, seed, field, generations, sample = args
     try:
-        res = read_battle(path, field, generations, sample, hash((opp, seed)) & 0xFFFF)
+        res = read_battle(path, field, generations, sample, zlib.crc32(f"{opp}-{seed}".encode()) & 0xFFFF)
     except Exception as e:  # one bad log must not stop a read of a thousand
         return opp, seed, None, repr(e)
     return opp, seed, res, None
@@ -568,6 +571,7 @@ def main(argv=None):
     ap.add_argument("--field", default="800x600")
     ap.add_argument("--limit", type=int, default=0, help="read at most this many battles")
     ap.add_argument("--only", default=None, help="only opponents whose name holds this text")
+    ap.add_argument("--lines", default=None, help="write one 'genome name' copy line an opponent here")
     a = ap.parse_args(argv)
     field = tuple(float(x) for x in a.field.split("x"))
     work = []
@@ -589,6 +593,7 @@ def main(argv=None):
     out.write("opponent\tseed\tshots\theld\theld_hit\tbest\tbest_share\thist\tknn\tpm\tgenome\n")
     out.flush()
     done = 0
+    best_line = {}
     with ProcessPoolExecutor(max_workers=a.jobs) as ex:
         for opp, seed, res, err in ex.map(job, work):
             done += 1
@@ -601,10 +606,22 @@ def main(argv=None):
                     opp, seed, str(res["shots"]), str(res["held"]), f"{res['held_hit']:.3f}", best,
                     f"{fam[best][0]:.3f}", f"{fam['hist'][0]:.3f}", f"{fam['knn'][0]:.3f}",
                     f"{fam['pm'][0]:.3f}", fmt_genome(best, fam[best][1])]) + "\n")
+                if opp not in best_line or fam[best][0] > best_line[opp][0]:
+                    best_line[opp] = (fam[best][0], fmt_genome(best, fam[best][1]))
             out.flush()
             print(f"copy_breed: {done}/{len(work)} {opp}", file=sys.stderr)
     if a.out:
         out.close()
+    if a.lines:
+        with open(a.lines, "w") as f:
+            for opp in sorted(best_line):
+                f.write(f"{best_line[opp][1]} {robot_name(opp)}\n")
+
+
+def robot_name(opp):
+    """A battle directory's robot (lab.Knn_1.0) as Robocode names it (lab.Knn 1.0)."""
+    i = opp.rfind("_")
+    return opp[:i] + " " + opp[i + 1:] if i > 0 else opp
 
 
 if __name__ == "__main__":
