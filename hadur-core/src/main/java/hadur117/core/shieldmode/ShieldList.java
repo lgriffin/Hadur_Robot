@@ -73,6 +73,8 @@ public final class ShieldList {
     public static final String CLOSE_BREAK_PREFIX = "shield-break:";
     /** SHIELD-35: a line starting with this names an opponent shield mode yields the drive to inside 150 px. */
     public static final String CLOSE_YIELD_PREFIX = "shield-yield:";
+    /** GUN-12: a line starting with this names an opponent the duel gun fires against with free gun on (GUN-9). */
+    public static final String FREE_GUN_PREFIX = "free-gun:";
     /** MOVE-32: a line starting with this names an opponent the duel surfs with the flattener views on (MOVE-24 undone). */
     public static final String FLAT_ON_PREFIX = "flat-on:";
     /** MOVE-34: a line starting with this names an opponent the duel surfs with the learning-gun mimics as aim members (MOVE-33). */
@@ -231,6 +233,8 @@ public final class ShieldList {
     private Set<String> closeBreaks = Collections.emptySet();
     /** SHIELD-35: the opponents, by name without version, shield mode yields the drive to while they are close. */
     private Set<String> closeYields = Collections.emptySet();
+    /** GUN-12: the opponents, by name without version, the duel gun fires against with free gun on. */
+    private Set<String> freeGuns = Collections.emptySet();
 
     private ShieldList(Set<String> entries, Set<String> moves, Map<String, double[]> aims,
                        Set<String> dodges, Map<String, Integer> stopGo) {
@@ -260,6 +264,7 @@ public final class ShieldList {
         Map<String, Double> distPins = new TreeMap<>();
         Set<String> closeBreaks = new TreeSet<>();
         Set<String> closeYields = new TreeSet<>();
+        Set<String> freeGuns = new TreeSet<>();
         if (lines != null) {
             for (String line : lines) {
                 if (line == null) continue;
@@ -297,6 +302,11 @@ public final class ShieldList {
                     if (!name.isEmpty() && (switches.containsKey(name) || switches.size() < MAX_ENTRIES)) {
                         switches.merge(name, bit, (a, b) -> a | b);
                     }
+                    continue;
+                }
+                if (entry.startsWith(FREE_GUN_PREFIX)) {
+                    String name = withoutVersion(entry.substring(FREE_GUN_PREFIX.length()).trim());
+                    if (!name.isEmpty() && freeGuns.size() < MAX_ENTRIES) freeGuns.add(name);
                     continue;
                 }
                 if (entry.startsWith(CLOSE_YIELD_PREFIX)) {
@@ -407,7 +417,7 @@ public final class ShieldList {
         if (entries.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()
             && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty() && surfKeys.isEmpty()
             && powerBands.isEmpty() && distPins.isEmpty() && closeBreaks.isEmpty()
-            && closeYields.isEmpty()) return NONE;
+            && closeYields.isEmpty() && freeGuns.isEmpty()) return NONE;
         ShieldList list = new ShieldList(Collections.unmodifiableSet(entries),
             Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims), Collections.unmodifiableSet(dodges),
             Collections.unmodifiableMap(stopGo));
@@ -418,6 +428,7 @@ public final class ShieldList {
         list.distPins = Collections.unmodifiableMap(distPins);
         list.closeBreaks = Collections.unmodifiableSet(closeBreaks);
         list.closeYields = Collections.unmodifiableSet(closeYields);
+        list.freeGuns = Collections.unmodifiableSet(freeGuns);
         return list;
     }
 
@@ -636,6 +647,17 @@ public final class ShieldList {
         if (robotName == null || closeYields.isEmpty()) return false;
         String name = robotName.trim().replaceAll("\\s+", " ");
         return closeYields.contains(name) || closeYields.contains(withoutVersion(name));
+    }
+
+    /**
+     * GUN-12: whether a {@code free-gun:} line names {@code robotName}, by the rule of {@link #matches}.
+     *
+     * @param robotName the scanned robot's name, or null
+     */
+    public boolean freeGun(String robotName) {
+        if (robotName == null || freeGuns.isEmpty()) return false;
+        String name = robotName.trim().replaceAll("\\s+", " ");
+        return freeGuns.contains(name) || freeGuns.contains(withoutVersion(name));
     }
 
     /**

@@ -1603,6 +1603,17 @@ final class ShieldTableData {
     }
 
     /**
+     * GUN-12: opponents the duel gun fires against with free gun on ({@code free-gun:} lines; build-ablation.sh
+     * fglist adds candidate lines here). Empty until a line locks.
+     *
+     * @return a fresh array of names
+     */
+    static String[] freeGuns() {
+        return new String[] {
+        };
+    }
+
+    /**
      * MOVE-67: opponents against which the simple aim members stand at weight 1.0 ({@code aim-weight:} lines), each
      * locked on fresh cloud seeds (build-ablation.sh aimwlist adds candidate lines here).
      *

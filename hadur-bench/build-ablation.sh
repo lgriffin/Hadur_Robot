@@ -289,6 +289,7 @@
 #   rhlist the robots named in $RAM_HEAVY get RAM-14, the rammer escape weighing their shots twice as heavily. Suffix rh.
 #   pmlist the robots named in $PM_MIMIC get MOVE-56, a mimic of a truncated-lateral-velocity pattern matcher among the aim members. Suffix pm.
 #   hoflist the robots named in $HEAD_ON_FLOOR get MOVE-71, a danger floor (half the kernel) on the head-on angle. Suffix hof.
+#   fglist the robots named in $FREE_GUN_LIST get GUN-12, the duel gun with GUN-9's free gun on. Suffix fgl.
 #   aimwlist the robots named in $AIM_WEIGHT get MOVE-67, the simple aim members at standing weight 1.0 (aimp1's, MOVE-29's 0.1 otherwise). Suffix qw.
 #   pmxlist the robots named in $PM_MEGAS get MOVE-58, a mimic of the cw.megas-form pattern matcher (rounded lateral-velocity symbols, flight-time gap, symbol rebuild) among the aim members. Suffix pmx.
 #   ramlearn  RAM-20: the rammer escape dodges every rammer's shots by the aims learned in the battle from its own
@@ -838,7 +839,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
                 edit "$movedesign" "static final int STOP_AND_GO_PREFIRE = 1;" "static final int STOP_AND_GO_PREFIRE = 2;"
                 version="${version}ws"
             else version="${version}wp"; fi ;;
-        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist|rclist|mirofflist|sfloorlist|pcaplist|pcap5list|hflist|pblist|vjlist|sblist|dplist|rhlist|rwlist|orlist|rflist|rfanlist|rbendlist|rlearnlist|rknownlist|pmlist|pmxlist|aimwlist|hoflist|stinylist|sbklist|syldlist)
+        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist|rclist|mirofflist|sfloorlist|pcaplist|pcap5list|hflist|pblist|vjlist|sblist|dplist|rhlist|rwlist|orlist|rflist|rfanlist|rbendlist|rlearnlist|rknownlist|pmlist|pmxlist|aimwlist|hoflist|fglist|stinylist|sbklist|syldlist)
             # Shield part 2 (docs/plan-shield-quality.md): per-opponent opening drive or shipped aims;
             # the mode table's simple-aim dodge (DODGE-3).
             if [[ "$a" == smovelist ]]; then file="${SHIELD_MOVE:-}"; method="moves"; version="${version}mv"
@@ -878,6 +879,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
             elif [[ "$a" == pmxlist ]]; then file="${PM_MEGAS:-}"; method="patternMegas"; version="${version}pmx"
             elif [[ "$a" == aimwlist ]]; then file="${AIM_WEIGHT:-}"; method="aimWeights"; version="${version}qw"
             elif [[ "$a" == hoflist ]]; then file="${HEAD_ON_FLOOR:-}"; method="headOnFloors"; version="${version}hof"
+            elif [[ "$a" == fglist ]]; then file="${FREE_GUN_LIST:-}"; method="freeGuns"; version="${version}fgl"
             elif [[ "$a" == rwlist ]]; then file="${RAM_WAIT:-}"; method="ramWaits"; version="${version}rwl"
             elif [[ "$a" == rflist ]]; then file="${RAM_FLEE:-}"; method="ramFlees"; version="${version}${RAM_FLEE_SUFFIX:-rf}"
             elif [[ "$a" == orlist ]]; then file="${STEADY_ORBIT:-}"; method="steadyOrbits"; version="${version}or"
@@ -1084,7 +1086,7 @@ for row in open(f):
     S[p]=s[:hits[0].start()]+s[hits[0].end():]
 for p in S: open(p,"w").write(S[p])' "$tabledata" "$listdata" "$LINE_DROP" || exit 2
             version="${version}td" ;;
-        *) echo "unknown ablation: $a (aa, bb, tmtight, tmnotight, tmnocloserr, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, icoff, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mlane, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, rhlist, rwlist, orlist, rflist, rfanlist, rbendlist, pmlist, pmxlist, aimwlist, hoflist, tdrop|stinylist, sbklist)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, tmtight, tmnotight, tmnocloserr, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, icoff, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mlane, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, rhlist, rwlist, orlist, rflist, rfanlist, rbendlist, pmlist, pmxlist, aimwlist, hoflist, fglist, tdrop|stinylist, sbklist)" >&2; exit 2 ;;
     esac
 done
 
