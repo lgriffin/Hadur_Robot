@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/tree/master/docs/requirements">docs/requirements/</a>, one file per area, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 563 of 563 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 566 of 566 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -1831,6 +1831,21 @@ traceability check reads. 563 of 563 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">BENCH-292</span><span class="badge">Ubiquitous</span><span class="badge stage">T7</span></div>
 <p>The bench shall carry the <code>pc-field-read</code> card (<code>hadur-bench/plans/pc-field-read.queue</code>), which runs no battles: it reads the whole-field trace in <code>work/learn-trace-324</code> with <code>data/tools/driver_census.py</code>, putting every hit on us in the first mover class that fits it (surf plan, endgame ram, finishing approach, rammer policy, shield, mirror, stop-and-go table line, other) by our score band against each robot in the trace itself, lists the ram-wait candidates (20%+ of hits after our endgame ram on 20+ hits, less the ramWaits list) and the shield leak classes of every hit taken in a shield round (<code>data/tools/shield_leak_classes.py</code>); it stops with a clear message when the trace directory is gone, and opens its results on claude/pc-field-read-results.</p>
 <dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/PcFieldReadPlanTest.java">PcFieldReadPlanTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-293">
+<div class="req-head"><span class="rid">BENCH-293</span><span class="badge">Ubiquitous</span><span class="badge stage">Q0</span></div>
+<p>The bench shall carry the <code>cloud-ink-model</code> card (<code>hadur-bench/plans/cloud-ink-model.md</code>), which plays no battle: the cloud model of Sepia&#x27;s ink in <code>data/tools/ink_model/</code> (shadow geometry in the engine&#x27;s order of play as <code>BulletShadows</code> states it, the single-shot sidestep law, the dash, and the stream duel against an even spread of enemy bullets and against the census&#x27;s offline guns), with the runs <code>docs/sepia-design.md</code> quotes saved beside the scripts and reproduced exactly by running them.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/data/tools/test_ink_model.py">test_ink_model.py</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-294">
+<div class="req-head"><span class="rid">BENCH-294</span><span class="badge">Ubiquitous</span><span class="badge stage">Q0</span></div>
+<p>The bench shall carry <code>data/tools/sepia_aps.py</code>, which plays no battle: it estimates Sepia&#x27;s 1v1 APS robot by robot from the 3.13 census, Hadur 3.24&#x27;s live table, the shield list, the lab&#x27;s hit rates on silent Hadur and the cloud model&#x27;s gait runs; checks its round model against Hadur&#x27;s measured share on every robot and its grid of hit chances against the direct play, and reads no robot off the edge of that grid; and writes <code>docs/bench/local/sepia-aps.tsv</code> and <code>.json</code> with a central value, a 10th-to-90th percentile range and one-at-a-time sensitivities.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/data/tools/test_sepia_aps.py">test_sepia_aps.py</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-295">
+<div class="req-head"><span class="rid">BENCH-295</span><span class="badge">Ubiquitous</span><span class="badge stage">Q0</span></div>
+<p>The bench shall carry the <code>cloud-ink-lab</code> card as [<code>hadur-bench/plans/cloud-ink-lab.md</code>](../../hadur-bench/plans/cloud-ink-lab.md) specifies.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/data/tools/test_ink_model.py">test_ink_model.py</a></dd></dl>
 </article>
 <h2 id="group-DEISE">DEISE</h2>
 <article class="req-card" id="DEISE-1">
