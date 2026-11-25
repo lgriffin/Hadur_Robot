@@ -717,14 +717,14 @@ endgame MEND-1, 2).
 
 The 1v1 table is per opponent, PC-trained and census-gated: only per-opponent picks have shown
 live gains. It ships as two classes in the robot jar, because the sandbox refuses a robot the
-read of its own jar's resources but lets classes load. In 3.24 it holds 1,148 lines over 37
-slots: 304 on the shield list and 843 in `ShieldTableData`'s 36 other slots.
+read of its own jar's resources but lets classes load. On master (3.24 plus the banked lines) it holds 1,277
+lines over 42 slots: 304 on the shield list and 973 in `ShieldTableData`'s 41 other slots.
 
 ```mermaid
 flowchart LR
   subgraph jar["robot jar (hadur-robot)"]
-    SL["ShieldListData.lines()<br/>305 shield entries"]
-    ST["ShieldTableData: 36 slots<br/>shield (moves, aims, stills, exits, tiny, floor),<br/>movement (stop-go, dodge, heat-jit, orbit, flat, mimics,<br/>pattern mimics, aim weights, surf keys),<br/>rammers (flee, wait, bend, fan, circ),<br/>power and gun (caps, bands, race, x5, full-off, gun stack)"]
+    SL["ShieldListData.lines()<br/>304 shield entries"]
+    ST["ShieldTableData: 41 slots<br/>shield (moves, aims, stills, exits, tiny, floor),<br/>movement (stop-go, dodge, heat-jit, orbit, flat, mimics,<br/>pattern mimics, aim weights, surf keys),<br/>rammers (flee, wait, bend, fan, circ),<br/>power and gun (caps, bands, race, x5, full-off, gun stack)"]
   end
   SL --> P["Hadur.shieldList():<br/>prefix each line<br/>(shield-move:, stop-go:, ram-flee:, ...)"]
   ST --> P
@@ -738,10 +738,10 @@ flowchart LR
 |---|---|---|---|---|
 | **Shield** | | | | |
 | shield list | (none) | SHIELD-5 | 304 | Each round opens in shield mode; SHIELD-6 leaves it for the battle if the damage would hold our share under 85% |
-| `moves()` | `shield-move:` | SHIELD-17 | 64 | Saguaro's moving shield opening drive |
-| `aims()` | `shield-aim:` | SHIELD-18 | 231 | The shield starts with this predictor and offset already learned |
+| `moves()` | `shield-move:` | SHIELD-17 | 63 | Saguaro's moving shield opening drive |
+| `aims()` | `shield-aim:` | SHIELD-18 | 230 | The shield starts with this predictor and offset already learned |
 | `stills()` | `shield-still:` | SHIELD-21 | 50 | Shield shots fired from where Hadur stands whenever one casts a shadow |
-| `exitLates()`, `exitOffs()` | `shield-exit4:`, `shield-exit0:` | SHIELD-19 | 1, 11 | Later or no damage exit from shield mode |
+| `exitLates()`, `exitOffs()` | `shield-exit4:`, `shield-exit0:` | SHIELD-19 | 1, 12 | Later or no damage exit from shield mode |
 | `tinies()` | `shield-tiny:` | SHIELD-33 | 5 | Tiny unexplained energy drops (0.005 to 0.1) reach shield mode as shots |
 | `shieldFloors()` | `shield-floor:` | SHIELD-25 | 1 | No shield shot under 0.4 power |
 | `closeBreaks()` | `shield-break:` | SHIELD-27 | 4 | A start inside 150 px is fought until the gap opens or tick 60, then shielded |
