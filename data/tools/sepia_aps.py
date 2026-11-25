@@ -513,7 +513,9 @@ def main(argv=None):
     for p in (10, 25, 50, 75, 90):
         out["aps_p%d" % p] = float(np.percentile(sample, p))
     out["aps_mean"] = float(sample.mean())
-    out["chance_at_least"] = {"%g" % bar: float((sample >= bar).mean()) for bar in (75.0, 80.0, 85.0, 87.64, 88.0, 90.06)}
+    out["aps_max"] = float(sample.max())
+    out["chance_at_least"] = {"%g" % bar: float((sample >= bar).mean())
+                              for bar in (75.0, 80.0, 85.0, 87.64, 88.0, 90.06, ladder[4])}
     out["rank_p10"], out["rank_p50"], out["rank_p90"] = (rank_of(out[k], ladder) for k in ("aps_p10", "aps_p50", "aps_p90"))
     out["sensitivity"] = {k: [run(dict(central, **{k: v[0]}))[0], run(dict(central, **{k: v[2]}))[0]]
                           for k, v in priors.items()}
@@ -532,6 +534,25 @@ def main(argv=None):
         "gait_hit_like_surf_and_ink_as_modelled": run(dict(surf, stop=priors["stop"][2]))[0],
         "hadur_3_13_with_todays_shield_list": float((ref313.sum() + len(unmatched) * d["share313"][open_].mean()) / total),
     }
+
+    # The other way to build it: punch as Hadur plays today, and take an ink regime only where it beats that. On a
+    # robot Hadur does not shield that is Hadur 3.24's live score less what the gun allowance costs a punching
+    # robot, against the best ink regime of the jet cycle. It says what the kernel's own surf, ram escape and
+    # per-robot table are worth to a new robot, and how many robots the ink is then for.
+    gun_cost = lookup(grid, 0, central["gun"], sub["h"]) - lookup(grid, 0, 1.0, sub["h"])
+    as_hadur = np.clip(d["live324"][open_] + gun_cost, 0.0, 100.0)
+    inked = np.clip(np.max([lookup(grid, i, central["gun"], sepia_hit(sub, central, keep))
+                            for i, (_, _, keep) in enumerate(REGIMES) if keep > 0.0], axis=0) + resid[open_], 0.0, 100.0)
+    kept = np.clip(d["live324"][~open_] + central["shield"], 0.0, 100.0).sum() \
+        + np.clip(np.array(unmatched) + gun_cost.mean(), 0.0, 100.0).sum()
+    out["variants"]["hadur_3_24_play_while_punching"] = float((as_hadur.sum() + kept) / total)
+    out["variants"]["hadur_3_24_play_and_ink_where_it_beats_that"] = float((np.maximum(as_hadur, inked).sum() + kept) / total)
+    open_names = [meta[i]["name"] for i in np.where(open_)[0]]
+    out["ink_beats_hadur_3_24_play"] = dict(
+        robots=int((inked > as_hadur).sum()), by_5_points=int((inked > as_hadur + 5.0).sum()),
+        most=[dict(name=open_names[j], hadur_3_24_play=float(as_hadur[j]), ink=float(inked[j]))
+              for j in np.argsort(as_hadur - inked)[:5]])
+    out["rank_as_hadur_play"] = rank_of(out["variants"]["hadur_3_24_play_while_punching"], ladder)
 
     def groups(key, values):
         rows = []
@@ -552,7 +573,7 @@ def main(argv=None):
     out["regimes"] = {REGIMES[i][0]: int((pick == i).sum()) for i in range(len(REGIMES))}
     out["regime_robots"] = {REGIMES[i][0]: [meta[j]["name"] for j in np.where(pick == i)[0]][:40]
                             for i in range(1, len(REGIMES))}
-    out["ladder"] = {str(k): ladder[k - 1] for k in (1, 2, 10, 20, 30, 50, 100, 200)}
+    out["ladder"] = {str(k): ladder[k - 1] for k in (1, 2, 3, 4, 5, 8, 10, 20, 30, 50, 100, 200)}
 
     target = os.path.join(args.root, args.out)
     os.makedirs(os.path.dirname(target), exist_ok=True)

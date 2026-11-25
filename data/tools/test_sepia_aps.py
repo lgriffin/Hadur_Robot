@@ -235,6 +235,16 @@ class RepoDataTest(unittest.TestCase):
         self.assertGreater(out["check"]["grid_top_robots"], 15)
         self.assertEqual(sum(out["regimes"].values()) + out["shielded"], out["robots"])
         self.assertEqual(set(out["priors"]), set(out["sensitivity"]))
+        self.assertTrue(out["aps_p90"] <= out["aps_max"] <= out["corner_high"])
+        # Punching as Hadur plays today costs a new robot only its allowances, and an ink regime taken only where
+        # it beats that play can only add to it.
+        ways = out["variants"]
+        self.assertTrue(out["hadur_3_24_live"] - 1.5 < ways["hadur_3_24_play_while_punching"] < out["hadur_3_24_live"])
+        self.assertGreaterEqual(ways["hadur_3_24_play_and_ink_where_it_beats_that"], ways["hadur_3_24_play_while_punching"])
+        self.assertGreater(ways["hadur_3_24_play_while_punching"], ways["gait_hit_like_hadurs_surf"])
+        beats = out["ink_beats_hadur_3_24_play"]
+        self.assertTrue(0 <= beats["by_5_points"] <= beats["robots"] <= out["robots"] - out["shielded"])
+        self.assertIn("%g" % out["ladder"]["5"], out["chance_at_least"])     # the chance of a top-5 place is stated
         with open(base + ".tsv", encoding="utf-8") as f:
             rows = list(csv.DictReader(f, delimiter="\t"))
         self.assertEqual(len(rows), out["robots"])
