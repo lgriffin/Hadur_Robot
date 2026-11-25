@@ -748,6 +748,18 @@ final class ShieldTableData {
     }
 
     /**
+     * SHIELD-35: the opponents shield mode yields the drive to while they are close: inside 150 px
+     * the duel drives and fires until the gap passes 250 px. Empty until a line locks; candidate
+     * builds add lines here (build-ablation.sh syldlist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] closeYields() {
+        return new String[] {
+        };
+    }
+
+    /**
      * POW-18: the opponents the duel never fires above 0.2 power at, one name each. Shipped by
      * pc-power-cap (BENCH-236); candidate builds add lines here (build-ablation.sh pcaplist).
      *

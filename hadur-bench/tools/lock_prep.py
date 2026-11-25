@@ -59,6 +59,7 @@ LEVERS = {
     "hof": ("hoflist", ("HEAD_ON_FLOOR",)),  # MOVE-71 per-opponent head-on floor
     "ty": ("stinylist", ("SHIELD_TINY",)),  # SHIELD-33 tiny-shot shield waves
     "kb": ("sbklist", ("SHIELD_BREAK",)),  # SHIELD-27 close-start break-off
+    "ky": ("syldlist", ("SHIELD_YIELD",)),  # SHIELD-35 close-range yield
     "or": ("orlist", ("STEADY_ORBIT",)),
     "sp2": ("sdplanlist", ("SHOT_DODGE_PLAN",)),
 }

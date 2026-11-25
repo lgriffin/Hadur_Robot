@@ -262,6 +262,8 @@ public class Hadur extends TeamRobot {
             for (String name : ShieldTableData.shieldFloors()) lines.add(ShieldList.FLOOR_PREFIX + " " + name);
             // SHIELD-27: per-opponent close-start break-off.
             for (String name : ShieldTableData.closeBreaks()) lines.add(ShieldList.CLOSE_BREAK_PREFIX + " " + name);
+            // SHIELD-35: per-opponent close-range yield.
+            for (String name : ShieldTableData.closeYields()) lines.add(ShieldList.CLOSE_YIELD_PREFIX + " " + name);
             // POW-18: per-opponent power cap.
             for (String name : ShieldTableData.powerCaps()) lines.add(ShieldList.POWER_CAP_PREFIX + " " + name);
             for (String name : ShieldTableData.powerCapHalves()) lines.add(ShieldList.POWER_CAP5_PREFIX + " " + name);
