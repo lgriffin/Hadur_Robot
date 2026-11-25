@@ -1,8 +1,8 @@
-# BENCH-253 pc-locks, round 31: 17 per-robot lines on existing table switches, each read on 12 or more fresh cloud
+# BENCH-253 pc-locks, round 31: 20 per-robot lines on existing table switches, each read on 12 or more fresh cloud
 # seeds against both c and aa (coverage/shards/locks.tsv, dzlane/L/r29-candidates.txt): YersiniaPestis, Ascendant,
 # Wavelet, Neuromancer and
-# PulsarMax on gl (GUN-11 gun stack); QuantumChromodynamics, Gron, Dharok, Buba, RandomLinear and NanoR2
-# on rwl (MOVE-46 ram wait); LightningStorm on x0 (SHIELD-19 exit off); Blade on ky (SHIELD-35 close-range yield);
+# PulsarMax on gl (GUN-11 gun stack); QuantumChromodynamics, Gron, Dharok, Buba, RandomLinear, NanoR2,
+# One, Hotspur and Dzhigit on rwl (MOVE-46 ram wait); LightningStorm on x0 (SHIELD-19 exit off); Blade on ky (SHIELD-35 close-range yield);
 # Sanguijuela, Colossus2 and Alpha on rlnrkn (RAM-20 plus RAM-21); BagPuss on rln (RAM-20). name | note | jar
 zyx.mega.YersiniaPestis 3.0 | gl-L+M-24seeds | zyx.mega.YersiniaPestis_3.0.jar
 mue.Ascendant 1.2.27 | gl-L+M-24seeds | mue.Ascendant_1.2.27.jar
@@ -15,6 +15,9 @@ kjc.etc.Dharok 1.0 | rwl-M-24seeds | kjc.etc.Dharok_1.0.jar
 buba.Buba 0.3 | rwl-B-12seeds | buba.Buba_0.3.jar
 slugzilla.RandomLinear 1.0 | rwl-B-12seeds | slugzilla.RandomLinear_1.0.jar
 sul.NanoR2 1.32 | rwl-B-12seeds | sul.NanoR2_1.32.jar
+nexus.One 1.0 | rwl-A+B-24seeds | nexus.One_1.0.jar
+jep.nano.Hotspur 0.1 | rwl-B-12seeds | jep.nano.Hotspur_0.1.jar
+rus.vv.Dzhigit 1.1 | rwl-B-12seeds | rus.vv.Dzhigit_1.1.jar
 EH.kms.LightningStorm 0.11B | x0-B+A-36seeds | EH.kms.LightningStorm_0.11B.jar
 cw.megas.Blade 0.8 | ky-B+A-36seeds | cw.megas.Blade_0.8.jar
 jab.micro.Sanguijuela 0.8 | rlnrkn-D-12seeds | jab.micro.Sanguijuela_0.8.jar
