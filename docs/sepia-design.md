@@ -597,6 +597,14 @@ The design rests on one number, cover in the real engine, and Q0 exists to find 
 
 Every figure about Hadur comes from the repo at commit d0b9439 of 25 November 2026, and the APS estimate from 49b2df3 later that day, where the shield list is one robot shorter. Every model figure comes from the cloud model's scripts in `data/tools/ink_model/`.
 
+**The estimate.**
+
+- Tool and outputs: `data/tools/sepia_aps.py`, its read `docs/bench/local/2026-11-25_sepia-aps.md` and the per-robot `sepia-aps.tsv`.
+- Battles: the 3.13 census, 8 battles of 35 rounds against each of 1,212 robots (`data/bench/2026-10-18_hadur-pc-1018-stack-census-local_cold.tsv`), with its [classes](bench/local/2026-10-18_census-classes.md).
+- Hit rates on Hadur's surf: the movement lab's [first read](bench/local/2026-10-16_lab-first-read.md).
+- Today's scores and shield list: Hadur 3.24's live table saved on 22 November in `data/rumble/parsed/`, and `ShieldListData.java`.
+- The gait: the aimed-gun runs of the cloud model, `data/tools/ink_model/e6.json`.
+
 **The repo.**
 
 - Standing and release history: [README](../README.md), and the rankings saved on 22 November in `data/rumble/parsed/`.
