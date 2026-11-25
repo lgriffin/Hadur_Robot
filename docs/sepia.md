@@ -79,6 +79,26 @@ Every enemy wave writes one line to the robot's console when it is done (INK-6):
 reached the body, `inks` the ink shots that added shade, `met` and `hit` what became of its bullet. Each
 round ends with a `SEPIA` line counting inks, punches and revealed bullets.
 
+## Cover from truth logs
+
+[data/tools/ink_read.py](../data/tools/ink_read.py) measures cover from the bench's truth logs, not from
+Sepia's own records. It follows every enemy bullet turn by turn and sorts each one that vanishes before
+the round ends into hit, met by one of our bullets, or other. It then flies each met bullet on along its
+line against Sepia's actual path, to see whether it would have hit. **Cover** is the share of the bullets
+that would have hit that our bullets met first.
+
+    python3 data/tools/ink_read.py hadur-bench/work/<run> [--arm sp --arm ss] [--md out.md]
+
+The engine moves bullets one at a time and checks each against the others' lines as they stand, so the
+bullet moved first meets the other's line from the turn before. The read counts a meeting when either
+bullet's new segment crosses the other's new or previous one. With that rule its count of bullets met
+equals the count in Sepia's INK records, battle by battle. The same order of play is what the kernel's
+`BulletShadows` counts as a possible shadow, at half weight (INK-5).
+
+Planned shade and cover answer different questions. Planned shade is the share of a landing's bearings
+the ink covers. Cover is weighted by where the bullets really go, so against a learning gun that aims
+where the ink was planned, cover runs above planned shade.
+
 ## Arms
 
 Two constants in [Sepia.java](../sepia/src/main/java/hadur117/Sepia.java) pick the build. The shipped jar is
@@ -114,6 +134,5 @@ surf with ink did best against the learners.
 
 These parts of the design are later stages: Recognition (EXACT, SIMPLE, LEARNER verdicts) and the
 lottery it gates, the hover and exact intercept against head-on guns, the atlas and the per-opponent
-shelf, `ink_read.py` (cover measured from truth logs, the number the design turns on), the hub
-promotions that would let Sepia use Hadur's surf and guns through the kernel, and the ink surf as a
-switch inside Hadur.
+shelf, the hub promotions that would let Sepia use Hadur's surf and guns through the kernel, and the
+ink surf as a switch inside Hadur.
