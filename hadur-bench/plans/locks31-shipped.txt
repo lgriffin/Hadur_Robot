@@ -1,0 +1,11 @@
+# pc-locks round 31 (BENCH-253, PR #1076): robots whose lines shipped on 24 fresh PC seeds at the live turn time
+zyx.mega.YersiniaPestis 3.0
+mue.Ascendant 1.2.27
+pc.Wavelet 1.5
+EH.kms.LightningStorm 0.11B
+buba.Buba 0.3
+kjc.etc.Dharok 1.0
+slugzilla.RandomLinear 1.0
+sul.NanoR2 1.32
+zzx.Gron 1.14
+jab.micro.Sanguijuela 0.8
