@@ -21,5 +21,12 @@ final class GunDesign {
      */
     static final boolean UNDECAYED = false;
 
+    /**
+     * GUN-13: against every duel opponent, ink (0.1 bullets aimed to shoot down the enemy's
+     * bullets on the surf's plan) in place of a gun shot whenever it saves more per tick of
+     * reload. Off: the per-opponent {@code ink:} table lines turn it on one opponent at a time.
+     */
+    static final boolean INK = false;
+
     private GunDesign() { }
 }
