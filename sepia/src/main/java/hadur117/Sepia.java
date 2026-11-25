@@ -10,6 +10,7 @@ import robocode.BulletHitEvent;
 import robocode.BulletMissedEvent;
 import robocode.HitByBulletEvent;
 import robocode.HitRobotEvent;
+import robocode.HitWallEvent;
 import robocode.RoundEndedEvent;
 import robocode.ScannedRobotEvent;
 
@@ -90,6 +91,11 @@ public class Sepia extends AdvancedRobot {
     @Override
     public void onBulletMissed(BulletMissedEvent e) {
         brain.bulletMissed(e.getBullet().getHeadingRadians(), e.getBullet().getPower());
+    }
+
+    @Override
+    public void onHitWall(HitWallEvent e) {
+        brain.hitWall();
     }
 
     @Override

@@ -2,6 +2,7 @@ package hadur117.sepia;
 
 import hadur117.core.model.Wave;
 import hadur117.core.physics.DiaUtils;
+import java.util.List;
 
 /**
  * Where the enemy aims: a belief over guess factors, the chance that a wave's bullet lies on a
@@ -59,7 +60,31 @@ public final class AimBelief {
      * @return a probability in [0, 1]
      */
     public double mass(Wave wave, double lo, double hi) {
+        return massOf(density(wave), wave, lo, hi);
+    }
+
+    /**
+     * The chance that the wave's bullet lies on the shaded part of {@code [lo, hi]}: a bearing in a
+     * certain shadow counts whole, one only in a possible shadow a half (INK-5), each weighted by
+     * this belief rather than by its width, so shade over the likely bearings is worth more.
+     *
+     * @param wave the wave
+     * @param lo the hit set's low bearing, radians
+     * @param hi the hit set's high bearing, radians
+     * @param certain the certain shadows
+     * @param possible every bearing that may be stopped, certain ones included
+     * @return a chance in [0, {@link #mass}]
+     */
+    public double shadedMass(Wave wave, double lo, double hi, List<double[]> certain, List<double[]> possible) {
+        if (!(hi > lo) || possible.isEmpty()) return 0;
         double[] d = density(wave);
+        double sum = 0;
+        for (double[] a : Arcs.merged(lo, hi, certain)) sum += massOf(d, wave, a[0], a[1]);
+        for (double[] a : Arcs.merged(lo, hi, possible)) sum += massOf(d, wave, a[0], a[1]);
+        return sum / 2;
+    }
+
+    private static double massOf(double[] d, Wave wave, double lo, double hi) {
         double g0 = guessFactor(wave, lo), g1 = guessFactor(wave, hi);
         double a = Math.min(g0, g1), b = Math.max(g0, g1);
         // Each bin covers [centre - half, centre + half]; the density is flat inside it.

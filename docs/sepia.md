@@ -36,16 +36,16 @@ Each tick runs in this order ([SepiaBrain](../sepia/src/main/java/hadur117/sepia
    waves ends, until the new wave has passed the body. Each ends in a hit set: the bearings from the
    wave's source that would meet the body there. The least exposed option is fixed and the path holds it
    until the wave has passed (JET-1, JET-3).
-3. **Exposure** (JET-2). The wave's damage, times the chance its bullet is on that hit set, times the share
-   of it left unshaded, counting both our bullets already in the air and the next ink the planner could lay
+3. **Exposure** (JET-2). The wave's damage, times the chance its bullet is on the part of that hit set left
+   unshaded, counting both our bullets already in the air and the next ink the planner could lay
    from where the option puts Sepia when the gun is next cool.
 4. **Ink** ([InkPlanner](../sepia/src/main/java/hadur117/sepia/InkPlanner.java)). For each wave, at the
    middle and near both edges of its hit set, the planner solves for the turn on which a 0.1 bullet can be
    where that bearing's bullet is, and aims there: a handful of candidates a wave, at most 64 a shot
-   (INK-3). Each is scored with the kernel's `BulletShadows` over every wave in flight, counting only
-   meetings before the wave can reach the body (INK-5). The gun turns toward the planned aim during the
-   reload and fires on the cool tick if the aim, rescored from where Sepia actually stands, still adds
-   5% or more of shade (INK-1).
+   (INK-3). Each is scored with the kernel's `BulletShadows` over every wave in flight, each newly shaded
+   bearing weighed by the aim belief, counting only meetings up to the turn the wave reaches the body
+   (INK-5). The gun turns toward the planned aim during the reload and fires on the cool tick if the aim,
+   rescored from where Sepia actually stands, still adds 5% or more of shade (INK-1).
 5. **Ink or punch** (STRIKE-1, STRIKE-3). Each shot is ink or a punch, by what it is worth per tick of
    reload: the ink by the damage and energy return of the bullets it is expected to stop, the punch by
    its hit rate times its damage and return, less its power. With no wave in the air, or an enemy too

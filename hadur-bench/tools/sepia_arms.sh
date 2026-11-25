@@ -18,9 +18,9 @@ set -euo pipefail
 here="$(cd "$(dirname "$0")/.." && pwd)"
 repo="$(dirname "$here")"
 only="${1:-}"
-api=$(find "$HOME/.m2/repository/net/sf/robocode/robocode-api" -name 'robocode-api-*.jar' | head -1)
+api=$(find "$HOME/.m2/repository/net/sf/robocode/robocode-api" -name 'robocode-api-*.jar' 2>/dev/null | head -1 || true)
 [ -n "$api" ] || { echo "sepia_arms: robocode-api jar not in ~/.m2; run mvn install first" >&2; exit 2; }
-core=$(ls "$repo"/hadur-core/target/hadur-core-*.jar 2>/dev/null | grep -v -e sources -e javadoc -e tests | head -1)
+core=$(ls "$repo"/hadur-core/target/hadur-core-*.jar 2>/dev/null | grep -v -e sources -e javadoc -e tests | head -1 || true)
 [ -n "$core" ] || { echo "sepia_arms: build hadur-core first (mvn -pl hadur-core install -DskipTests)" >&2; exit 2; }
 release=$(sed -n 's:.*<sepia.release>\([0-9.]*\)</sepia.release>.*:\1:p' "$repo/sepia/pom.xml" | head -1)
 out="$here/work/sepia-arms"

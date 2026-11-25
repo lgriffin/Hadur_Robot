@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hadur117.core.model.RobotState;
+import hadur117.core.move.OurBullet;
 import hadur117.core.physics.Angles;
 import hadur117.core.physics.BattleField;
 import hadur117.core.physics.MovementPredictor;
@@ -94,11 +95,54 @@ class SepiaBrainTest {
         // At the prior's 12% hit rate a power-1.95 punch is under break-even, so even a small ink wins...
         assertTrue(b.inkWorthMore(small, 1.95, 100));
         // ...and once the punch is landing, the small ink loses to it and the big one still wins.
-        for (int i = 0; i < 4; i++) b.bulletHit(0, 1.95);
+        for (int i = 0; i < 4; i++) {
+            b.punchInAir(new OurBullet(i, p(400, 100), i, 1.95));
+            b.bulletHit(i, 1.95);
+        }
         assertFalse(b.inkWorthMore(small, 1.95, 100));
         assertTrue(b.inkWorthMore(big, 1.95, 100));
         b.scan(400, 500, 0, 0, 0.3);
         b.smallestShot = 0.5;
         assertFalse(b.inkWorthMore(big, 1.95, 100), "the enemy cannot fire again and Sepia leads");
+    }
+
+    @Test
+    @Tag("STRIKE-1")
+    @DisplayName("a punch's hit counts toward its hit rate at any power, and an ink's never does")
+    void punchHitsCounted() {
+        SepiaBrain b = new SepiaBrain(Gait.Kind.JET, SepiaBrain.Fire.FULL, 800, 600, "enemy");
+        b.newRound(0);
+        b.waves().add(Fixtures.land(Fixtures.wave(p(400, 500), p(400, 100), 0, 2.0), p(520, 100)));
+        InkPlanner.Shot small = new InkPlanner.Shot(0, 0.02, 0.2, new double[] {0.02});
+        for (int i = 0; i < 4; i++) b.bulletHit(0.5 + i, 0.1);  // ink hits: not the punch's
+        assertTrue(b.inkWorthMore(small, 1.95, 100), "ink hits taught the punch");
+        for (int i = 0; i < 4; i++) {
+            b.punchInAir(new OurBullet(i, p(400, 100), i, 0.1));  // a weak punch, as low energy fires
+            b.bulletHit(i, 0.1);
+        }
+        assertFalse(b.inkWorthMore(small, 1.95, 100), "0.1 punch hits were not counted");
+    }
+
+    /** Reads the power of the wave seen when the enemy drops 2.0 on the tick Sepia's own energy fell 0.1. */
+    private static double readPower(boolean hitWall) {
+        SepiaBrain b = new SepiaBrain(Gait.Kind.JET, SepiaBrain.Fire.NONE, 800, 600, "enemy");
+        b.newRound(0);
+        b.scan(400, 520, 0, 0, 100);
+        b.tick(10, 400, 100, Math.PI / 2, 0, 100, 0, 3, 0);
+        b.scan(400, 520, 0, 0, 100);
+        b.tick(11, 400, 100, Math.PI / 2, 0, 100, 0, 3, 0);
+        if (hitWall) b.hitWall();
+        b.scan(400, 520, 0, 0, 98.0);
+        b.tick(12, 400, 100, Math.PI / 2, 0, 99.9, 0, 3, 0);
+        assertEquals(1, b.waves().size());
+        return b.waves().get(0).power();
+    }
+
+    @Test
+    @Tag("WAVE-5")
+    @DisplayName("a fall in Sepia's energy from its own wall hit is not taken for the inactivity drain")
+    void wallHitIsNotDrain() {
+        assertEquals(1.9, readPower(false), 1e-6, "an unexplained 0.1 is the drain, taken off the enemy's drop");
+        assertEquals(2.0, readPower(true), 1e-6);
     }
 }

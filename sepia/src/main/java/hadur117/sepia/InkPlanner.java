@@ -19,8 +19,8 @@ import java.util.List;
  * set's middle and both edges, it finds the turn on which our bullet can be where that bearing's
  * bullet is, and aims there (INK-3). Each candidate is then scored with the kernel's
  * {@link BulletShadows} over every wave in flight: the share of each hit set it newly shades,
- * walked only before the wave can meet the body (INK-5), times the chance that wave's bullet is on
- * the body and its damage (INK-1).</p>
+ * walked up to the turn the wave can meet the body (INK-5), with each newly shaded bearing weighed
+ * by the chance that wave's bullet is on it, and by its damage (INK-1).</p>
  *
  * <p>Stateless apart from its inputs; each call builds its candidates afresh.</p>
  */
@@ -51,7 +51,7 @@ public final class InkPlanner {
     public static final class Shot {
         /** The gun heading to fire on, radians. */
         public final double aim;
-        /** The expected bullets stopped: the sum over waves of new shade times aim belief. */
+        /** The expected bullets stopped: the sum over waves of the aim belief on the newly shaded bearings. */
         public final double stopped;
         /** The same, weighted by each bullet's damage plus the energy it would have returned. */
         public final double worth;
@@ -92,17 +92,10 @@ public final class InkPlanner {
             if (w.committed && !w.met && !w.hit && w.arrival > fireTime + 1) live.add(w);
         }
         if (live.isEmpty()) return null;
-        double[] mass = new double[live.size()];
-        double[] before = new double[live.size()];
-        for (int i = 0; i < live.size(); i++) {
-            InkWave w = live.get(i);
-            mass[i] = belief.mass(w.wave, w.lo, w.hi);
-            before[i] = w.shaded();
-        }
         Shot best = null;
         for (double aim : candidates(live, fireTime, from)) {
             if (Math.abs(DiaUtils.normalizeAngle(aim, gunHeading) - gunHeading) > maxGunTurn + 1e-9) continue;
-            Shot s = score(live, mass, before, fireTime, from, aim);
+            Shot s = score(live, belief, fireTime, from, aim);
             if (s.stopped > 0 && (best == null || s.worth > best.worth)) best = s;
         }
         return best;
@@ -110,24 +103,28 @@ public final class InkPlanner {
 
     /**
      * Scores one aim over {@code live}: the share of each hit set it shades that the bullets in the
-     * air do not, walked before the wave meets the body.
+     * air do not, walked up to the turn the wave meets the body. What it is worth weighs each newly
+     * shaded bearing by the aim belief, so shade on the bearings the enemy is likely to use counts
+     * for more than shade on its unlikely edge.
      */
-    Shot score(List<InkWave> live, double[] mass, double[] before, long fireTime,
-               Point2D.Double from, double aim) {
+    Shot score(List<InkWave> live, AimBelief belief, long fireTime, Point2D.Double from, double aim) {
         OurBullet ink = new OurBullet(fireTime, from, aim, INK_POWER);
         List<OurBullet> one = List.of(ink);
         double stopped = 0, worth = 0;
         double[] gains = new double[live.size()];
         for (int i = 0; i < live.size(); i++) {
             InkWave w = live.get(i);
-            long stop = w.arrival;
+            // The cutoff is exclusive: a meeting on the arrival turn itself still stops the bullet.
+            long stop = w.arrival + 1;
             List<List<double[]>> s = BulletShadows.of(w.wave, one, b -> stop, fieldWidth, fieldHeight);
             if (s.get(1).isEmpty()) continue;
-            double after = Arcs.shade(w.lo, w.hi, Arcs.join(w.certain, s.get(0)), Arcs.join(w.possible, s.get(1)));
-            double gain = Math.max(0, after - before[i]);
-            gains[i] = gain;
-            stopped += gain * mass[i];
-            worth += gain * mass[i] * (w.damage + Rules.getBulletHitBonus(w.power()));
+            List<double[]> certain = Arcs.join(w.certain, s.get(0));
+            List<double[]> possible = Arcs.join(w.possible, s.get(1));
+            gains[i] = Math.max(0, Arcs.shade(w.lo, w.hi, certain, possible) - w.shaded());
+            double massGain = Math.max(0, belief.shadedMass(w.wave, w.lo, w.hi, certain, possible)
+                - belief.shadedMass(w.wave, w.lo, w.hi, w.certain, w.possible));
+            stopped += massGain;
+            worth += massGain * (w.damage + Rules.getBulletHitBonus(w.power()));
         }
         return new Shot(aim, stopped, worth, gains);
     }

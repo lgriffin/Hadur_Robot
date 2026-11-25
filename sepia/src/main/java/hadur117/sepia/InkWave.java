@@ -168,7 +168,7 @@ public final class InkWave {
     }
 
     /**
-     * Recasts the shadows of {@code bullets} on this wave, each walked only over the turns before
+     * Recasts the shadows of {@code bullets} on this wave, each walked only up to the turn of
      * {@link #arrival}: a meeting after the wave reaches the body comes too late (INK-5).
      *
      * @param bullets our bullets in flight
@@ -181,7 +181,8 @@ public final class InkWave {
             possible = List.of();
             return;
         }
-        long stop = arrival;
+        // The cutoff is exclusive: a meeting on the arrival turn itself still stops the bullet.
+        long stop = arrival + 1;
         List<List<double[]>> s = BulletShadows.of(wave, bullets, b -> stop, fieldWidth, fieldHeight);
         certain = s.get(0);
         possible = s.get(1);

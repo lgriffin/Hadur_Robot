@@ -43,7 +43,23 @@ public final class Arcs {
      * @return the covered width, between 0 and {@code hi - lo}
      */
     public static double covered(double lo, double hi, List<double[]> arcs) {
-        if (arcs.isEmpty() || !(hi > lo)) return 0;
+        double total = 0;
+        for (double[] a : merged(lo, hi, arcs)) total += a[1] - a[0];
+        return total;
+    }
+
+    /**
+     * The part of {@code [lo, hi]} that the union of {@code arcs} covers, as disjoint intervals in
+     * increasing order, each inside {@code [lo, hi]}.
+     *
+     * @param lo the interval's low end
+     * @param hi the interval's high end
+     * @param arcs the intervals, in any order, overlapping or not
+     * @return the covered intervals; empty when nothing is covered
+     */
+    public static List<double[]> merged(double lo, double hi, List<double[]> arcs) {
+        List<double[]> out = new ArrayList<>();
+        if (arcs.isEmpty() || !(hi > lo)) return out;
         double mid = (lo + hi) / 2;
         List<double[]> clipped = new ArrayList<>(arcs.size());
         for (double[] a : arcs) {
@@ -52,20 +68,21 @@ public final class Arcs {
             double c0 = Math.max(lo, a0), c1 = Math.min(hi, a1);
             if (c1 > c0) clipped.add(new double[] {c0, c1});
         }
-        if (clipped.isEmpty()) return 0;
+        if (clipped.isEmpty()) return out;
         clipped.sort(Comparator.comparingDouble(a -> a[0]));
-        double total = 0, start = clipped.get(0)[0], end = clipped.get(0)[1];
+        double start = clipped.get(0)[0], end = clipped.get(0)[1];
         for (int i = 1; i < clipped.size(); i++) {
             double[] a = clipped.get(i);
             if (a[0] <= end) {
                 end = Math.max(end, a[1]);
             } else {
-                total += end - start;
+                out.add(new double[] {start, end});
                 start = a[0];
                 end = a[1];
             }
         }
-        return total + (end - start);
+        out.add(new double[] {start, end});
+        return out;
     }
 
     /**

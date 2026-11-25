@@ -81,6 +81,12 @@ public final class SepiaBrain {
     private boolean explained;
     /** The smallest power the enemy has fired this battle. */
     double smallestShot = Double.POSITIVE_INFINITY;
+    /** The punches among {@link #bullets}, so a hit is credited to the punch gun at any power. */
+    private final List<OurBullet> punches = new ArrayList<>();
+    /** Whether a shot left on the previous tick, which explains a fall in our energy (WAVE-5). */
+    private boolean firedLastTick;
+    /** The direction Sepia last drove, +1 or -1, kept through a stop. */
+    private int ourDirection = 1;
     /** The tick the gun is next expected to be cool, for the one-shot-ahead ink of JET-2. */
     private long nextCool;
     /** The shot the gun is turning toward: its tick, aim, power, and whether it is ink. */
@@ -120,6 +126,9 @@ public final class SepiaBrain {
         this.round = round;
         waves.clear();
         bullets.clear();
+        punches.clear();
+        firedLastTick = false;
+        ourDirection = 1;
         gait.newRound();
         ledger.newRound();
         punch.newRound();
@@ -181,7 +190,7 @@ public final class SepiaBrain {
     public void bulletHit(double heading, double power) {
         ledger.ourBulletHit(power);
         explained = true;
-        if (power > InkPlanner.INK_POWER + 1e-9) punch.hit();
+        if (isPunch(heading, power)) punch.hit();
         removeBullet(heading, power);
     }
 
@@ -193,6 +202,11 @@ public final class SepiaBrain {
      */
     public void bulletMissed(double heading, double power) {
         removeBullet(heading, power);
+    }
+
+    /** Sepia struck a wall this tick: its own energy fell for a reason the ledger must not read as drain. */
+    public void hitWall() {
+        explained = true;
     }
 
     /** The robots collided this tick. */
@@ -239,7 +253,9 @@ public final class SepiaBrain {
             .setVelocity(velocity).setTime(time).build();
         nextCool = time + Math.max(1, (long) Math.ceil(gunHeat / 0.1 - 1e-9));
         Orders o = new Orders();
-        ledger.ourTick(time, energy, explained);
+        // A shot that left last tick also moves our energy (WAVE-5).
+        ledger.ourTick(time, energy, explained || firedLastTick);
+        firedLastTick = false;
         if (scanned && enemy != null) readShot(time, now);
         retire(time, now);
         if (enemy == null) {
@@ -248,7 +264,7 @@ public final class SepiaBrain {
             finish(now);
             return o;
         }
-        gait.rescue(now, enemy, this::exposure);
+        if (gait.rescue(now, enemy, this::exposure)) recastAll();
         driveOrders(now, o);
         gunOrders(time, now, energy, gunHeading, gunHeat, o);
         double radar = Angles.normalRelativeAngle(DiaUtils.absoluteBearing(now.location, enemy) - radarHeading);
@@ -258,6 +274,8 @@ public final class SepiaBrain {
     }
 
     private void finish(RobotState now) {
+        // At a stop the orbit keeps the direction last driven, so a wave read then is not flipped.
+        if (Math.abs(now.velocity) > 1e-9) ourDirection = now.velocity < 0 ? -1 : 1;
         previous = now;
         scanned = false;
         explained = false;
@@ -270,7 +288,7 @@ public final class SepiaBrain {
         double power = r.corrected();
         smallestShot = Math.min(smallestShot, power);
         Wave w = new Wave(enemyName, enemyBefore, previous.location, round, time - 1, power,
-            previous.heading, previous.velocity, previous.velocity < 0 ? -1 : 1, field, predictor);
+            previous.heading, previous.velocity, ourDirection, field, predictor);
         InkWave iw = new InkWave(w, time);
         waves.add(iw);
         gait.shotRead(iw, now, enemy, this::exposure);
@@ -331,7 +349,10 @@ public final class SepiaBrain {
                 punchesFired++;
             }
             if (o.firePower > 0) {
-                bullets.add(new OurBullet(time, now.location, gunHeading, Math.min(o.firePower, energy)));
+                OurBullet b = new OurBullet(time, now.location, gunHeading, Math.min(o.firePower, energy));
+                if (plannedInk) bullets.add(b);
+                else punchInAir(b);
+                firedLastTick = true;
                 recastAll();
                 gunHeat = Rules.getGunHeat(o.firePower);
             }
@@ -394,13 +415,7 @@ public final class SepiaBrain {
     private InkPlanner.Shot inkOn(long time, Point2D.Double from, double gunHeading) {
         List<InkWave> live = liveForInk(time);
         if (live.isEmpty()) return null;
-        double[] mass = new double[live.size()];
-        double[] before = new double[live.size()];
-        for (int i = 0; i < live.size(); i++) {
-            mass[i] = belief.mass(live.get(i).wave, live.get(i).lo, live.get(i).hi);
-            before[i] = live.get(i).shaded();
-        }
-        return planner.score(live, mass, before, time, from, gunHeading);
+        return planner.score(live, belief, time, from, gunHeading);
     }
 
     private List<InkWave> liveForInk(long time) {
@@ -419,14 +434,15 @@ public final class SepiaBrain {
         InkWave.Landing saved = w.landing();
         w.commit(f.lo, f.hi, f.distance, f.arrival, f.passed, saved.option);
         w.recast(bullets, width, height);
-        double shade = w.shaded();
+        // The chance the bullet is on the landing and not on its shaded part, by the aim belief.
+        double mass = belief.mass(w.wave, f.lo, f.hi);
+        double open = mass - belief.shadedMass(w.wave, f.lo, f.hi, w.certain, w.possible);
         if (fire != Fire.NONE) {
             long t = Math.max(nextCool, f.states.get(0).time + 1);
             InkPlanner.Shot s = planner.best(List.of(w), t, f.at(t).location, 0, Math.PI, belief);
-            if (s != null) shade += s.gains[0];
+            if (s != null) open -= s.stopped;
         }
-        double mass = belief.mass(w.wave, f.lo, f.hi);
-        double e = w.damage * mass * (1 - Math.min(1, shade));
+        double e = w.damage * Math.max(0, open);
         if (f.nearestEnemy < 120) e += w.damage * (120 - f.nearestEnemy) / 120;
         if (f.wallHit) e += w.damage * 0.5;
         w.restore(saved);
@@ -437,7 +453,20 @@ public final class SepiaBrain {
         for (InkWave w : waves) if (w.committed) w.recast(bullets, width, height);
     }
 
+    /** A punch is in the air: it shades like any bullet, and a hit by it teaches the punch gun. */
+    void punchInAir(OurBullet b) {
+        bullets.add(b);
+        punches.add(b);
+    }
+
+    /** Whether the bullet of this heading and power left as a punch; a punch may be 0.1 too. */
+    private boolean isPunch(double heading, double power) {
+        for (OurBullet b : punches) if (b.is(heading, power)) return true;
+        return false;
+    }
+
     private void removeBullet(double heading, double power) {
+        punches.removeIf(b -> b.is(heading, power));
         for (Iterator<OurBullet> it = bullets.iterator(); it.hasNext();) {
             if (it.next().is(heading, power)) {
                 it.remove();
