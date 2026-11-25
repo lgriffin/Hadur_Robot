@@ -52,6 +52,21 @@ class DriverCensusTest(unittest.TestCase):
         self.assertEqual("95+", D.band(95.0))
         self.assertEqual("unknown", D.band(None))
 
+    def test_trace_scores(self):
+        d = tempfile.mkdtemp()
+        with open(os.path.join(d, "arms.tsv"), "w") as f:
+            f.write("arm\topponent\tscore_share\n")
+            f.write("c\ta.B 1.0\t0.90\nc\ta.B 1.0\t0.96\naa\ta.B 1.0\t0.10\n")
+        self.assertAlmostEqual(93.0, D.trace_scores(d, "c")["a.B_1.0"])
+        self.assertEqual({}, D.trace_scores(tempfile.mkdtemp(), "c"))
+
+    def test_trace_scores_skip_failed_battles(self):
+        d = tempfile.mkdtemp()
+        with open(os.path.join(d, "arms.tsv"), "w") as f:
+            f.write("arm\topponent\tok\tscore_share\n")
+            f.write("c\ta.B 1.0\ttrue\t0.96\nc\ta.B 1.0\tfalse\t0.50\nc\tc.D 1.0\tfalse\t0.50\n")
+        self.assertEqual({"a.B_1.0": 96.0}, D.trace_scores(d, "c"))
+
     def test_table_lists(self):
         src = 'static String[] stopGos() {\n        return new String[] {\n            "a.B 1.0",\n        };\n    }\n'
         self.assertEqual({"a.B_1.0"}, D.table_list(src, "stopGos"))

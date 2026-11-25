@@ -14,8 +14,9 @@ first class that fits it:
   mirror        a mirror round (a P mirror record that round)
   stop_go       the opponent carries a stop-and-go table line (stopGos or stopGoShifts), which drives without a plan
   other         none of these
-The endgame state is the one in force at the hit's tick. Bands are by our live score in the ledger (hadur column):
-under 70, 70-90, 90-95, 95 and over.
+The endgame state is the one in force at the hit's tick. Bands are by our score share against the robot in the trace
+itself (WORK_DIR/arms.tsv, the --arm rows), so they match the traced release; --ledger (hadur column) fills robots the
+trace has no score for. Bands: under 70, 70-90, 90-95, 95 and over.
 
 --ram-out writes the ram-wait candidates: robots whose share of hits taken after the ram is --min-share percent
 or more on --min-hits HF records or more, less those already on the ramWaits list.
@@ -43,6 +44,27 @@ def band(score):
     if score is None:
         return "unknown"
     return "<70" if score < 70 else "70-90" if score < 90 else "90-95" if score < 95 else "95+"
+
+
+def trace_scores(work, arm):
+    """Our mean score share (percent) against each opponent in the trace's own arms.tsv, or {} without one."""
+    path = os.path.join(work, "arms.tsv")
+    if not os.path.exists(path):
+        return {}
+    tot = collections.defaultdict(list)
+    with open(path) as f:
+        head = f.readline().rstrip("\n").split("\t")
+        ai, oi, si = head.index("arm"), head.index("opponent"), head.index("score_share")
+        ki = head.index("ok") if "ok" in head else None
+        for line in f:
+            p = line.rstrip("\n").split("\t")
+            try:
+                # A failed battle carries a placeholder share; it says nothing about the robot.
+                if p[ai] == arm and (ki is None or p[ki] == "true"):
+                    tot[slug(p[oi])].append(100.0 * float(p[si]))
+            except (ValueError, IndexError):
+                pass
+    return {k: sum(v) / len(v) for k, v in tot.items() if v}
 
 
 def ledger_scores(path):
@@ -134,7 +156,10 @@ def main():
     src = open(a.table).read()
     stop_go = table_list(src, "stopGos") | table_list(src, "stopGoShifts")
     ram_waits = table_list(src, "ramWaits")
+    # Bands come from the trace's own scores, so they match the release it traced; the ledger only fills robots the
+    # trace has no score for.
     scores = ledger_scores(a.ledger)
+    scores.update(trace_scores(a.work, a.arm))
     per = collections.defaultdict(collections.Counter)
     ram = collections.defaultdict(lambda: [0, 0])
     logs = 0
@@ -161,7 +186,7 @@ def main():
     with open(a.out, "w") as f:
         f.write("# Driver census: which mover drove us when we were hit\n\n")
         f.write("Trace `%s`, arm `%s`, %d battle logs, %d robots. Percent of the hits on us in each band "
-                "(band by our live score).\n\n" % (a.work, a.arm, logs, len(per)))
+                "(band by our score in this trace).\n\n" % (a.work, a.arm, logs, len(per)))
         f.write("| Band | Robots | Hits | " + " | ".join(CLASSES) + " |\n|---|---:|---:|" + "---:|" * len(CLASSES) + "\n")
         for b in BANDS + ["all"]:
             c = by_band[b]
