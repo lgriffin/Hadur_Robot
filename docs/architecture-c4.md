@@ -717,14 +717,14 @@ endgame MEND-1, 2).
 
 The 1v1 table is per opponent, PC-trained and census-gated: only per-opponent picks have shown
 live gains. It ships as two classes in the robot jar, because the sandbox refuses a robot the
-read of its own jar's resources but lets classes load. On master (3.24 plus the banked lines) it holds 1,290
-lines over 43 slots: 304 on the shield list and 986 in `ShieldTableData`'s 42 other slots.
+read of its own jar's resources but lets classes load. On master (3.24 plus the banked lines) it holds 1,292
+lines over 44 slots: 304 on the shield list and 988 in `ShieldTableData`'s 43 other slots.
 
 ```mermaid
 flowchart LR
   subgraph jar["robot jar (hadur-robot)"]
     SL["ShieldListData.lines()<br/>304 shield entries"]
-    ST["ShieldTableData: 42 slots<br/>shield (moves, aims, stills, exits, tiny, floor),<br/>movement (stop-go, dodge, heat-jit, orbit, flat, mimics,<br/>pattern mimics, aim weights, surf keys),<br/>rammers (flee, wait, bend, fan, circ),<br/>power and gun (caps, bands, race, x5, full-off, gun stack)"]
+    ST["ShieldTableData: 43 slots<br/>shield (moves, aims, stills, exits, tiny, floor),<br/>movement (stop-go, dodge, heat-jit, orbit, flat, mimics,<br/>pattern mimics, aim weights, surf keys),<br/>rammers (flee, wait, bend, fan, circ),<br/>power and gun (caps, bands, race, x5, full-off, gun stack, free gun)"]
   end
   SL --> P["Hadur.shieldList():<br/>prefix each line<br/>(shield-move:, stop-go:, ram-flee:, ...)"]
   ST --> P
@@ -755,7 +755,7 @@ flowchart LR
 | `patternMimics()`, `patternMegas()` | `pm-mimic:`, `pm-megas:` | MOVE-56, MOVE-58 | 6, 5 | A pattern-matcher mimic (AutoBot's or cw.megas's form) joins the aim members |
 | `aimWeights()` | `aim-weight:` | MOVE-67 | 4 | The simple aims' standing weight at prior 1.0 instead of 0.1 |
 | `velocityJitters()`, `speedBands()` | `velocity-jitter:`, `speed-band:` | MOVE-44, MOVE-45 | 4, 2 | Never exactly full speed or zero; a random top speed of 7 to 8 |
-| `steadyOrbits()` | `steady-orbit:` | MOVE-47 | 2 | No stop option and reversal hysteresis |
+| `steadyOrbits()` | `steady-orbit:` | MOVE-47 | 4 | No stop option and reversal hysteresis |
 | `headOnFloors()` | `head-on-floor:` | MOVE-71 | 1 | A danger floor on the fire bearing of a mostly head-on shooter |
 | `distPins()` | `dist-pin:` | DIST-4 | 2 | A pinned desired distance |
 | `mirrorOffs()` | `mirror-off:` | MIR-2 | 3 | No mirror response |
@@ -771,6 +771,7 @@ flowchart LR
 | `hardFires()`, `powerBands()` | `hard-fire:`, `power-band:` | POW-19, POW-20 | 1, 1 | At least 0.6 power while we have 60+ energy; a power multiplier per energy band |
 | `fullOffs()`, `x5Powers()`, `racePowers()` | `full-off:`, `x5-power:`, `race-power:` | POW-15, POW-16, POW-17 | 16, 17, 20 | Power policy variants (race power vs strong bots) |
 | `gunStacks()` | `gun-stack:` | GUN-11 | 17 | TripHammer gun stack (never for a shield opponent) |
+| `freeGuns()` | `free-gun:` | GUN-12 | 0 | The duel gun fires with free gun on against this opponent |
 
 Matching is by name (SHIELD-26): `pkg.Bot 1.2` and `pkg.Bot` both match every version of the robot, and
 the version records the one benched; never a prefix. Lines carry over to a robot's new version by name.

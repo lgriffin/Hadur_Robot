@@ -981,6 +981,9 @@ final class ShieldTableData {
             // pc-locks round 6 (BENCH-253, PR #890): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "davidalves.net.DuelistNano 1.0",// +5.1
             "dmh.robocode.robot.GreenDragon 1.0",// +2.9
+            // pc-field-screen round 2 (BENCH-253 tuner, PR #1065): 12 fresh PC seeds at the live turn time after the PC screen
+            "arthord.NanoSatanMelee Beta",   // +4.1
+            "cb.mega.RandomBot 1.0",         // +6.8
         };
     }
 
