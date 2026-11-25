@@ -55,10 +55,12 @@ def trace_scores(work, arm):
     with open(path) as f:
         head = f.readline().rstrip("\n").split("\t")
         ai, oi, si = head.index("arm"), head.index("opponent"), head.index("score_share")
+        ki = head.index("ok") if "ok" in head else None
         for line in f:
             p = line.rstrip("\n").split("\t")
             try:
-                if p[ai] == arm:
+                # A failed battle carries a placeholder share; it says nothing about the robot.
+                if p[ai] == arm and (ki is None or p[ki] == "true"):
                     tot[slug(p[oi])].append(100.0 * float(p[si]))
             except (ValueError, IndexError):
                 pass
