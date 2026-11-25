@@ -43,7 +43,6 @@ final class ShieldTableData {
             "can.Pookie 1.1",
             "cf.mini.Chiva 1.0",
             "cx.micro.Smoke 0.96",
-            "deo.virtual.RainbowBot 1.0",
             "florent.small.LittleAngel 1.8",
             "gu.MicroScoob 1.3",
             "intruder.PrairieWolf 2.61",
@@ -164,7 +163,6 @@ final class ShieldTableData {
             "0 0.000000000 davidalves.Firebird 0.25",
             "0 0.000000000 davidalves.net.DuelistMini 1.1",
             "0 0.000000000 de.erdega.robocode.Polyphemos 0.4",
-            "0 0.000000000 deo.virtual.RainbowBot 1.0",
             "0 0.000000000 dft.Cyanide 1.90",
             "0 0.000000000 dft.Cyprus 3.0",
             "0 0.000000000 dft.Virgin 1.25",
@@ -386,6 +384,8 @@ final class ShieldTableData {
             "-1 Fenix.FenixTrack 1.0",       // +2.0
             "-1 repositorio.NanoStep 1.0",   // +1.1
             "-1 shrub.Silver v048",          // +1.9
+            // pc-locks round 28 (BENCH-253, PR #1057): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "-1 evd.X1 0.01",                // +1.8
         };
     }
 
@@ -894,6 +894,8 @@ final class ShieldTableData {
             "yk.JahRoslav 1.1",              // +1.7
             // pc-locks round 14 (BENCH-253, PR #964): 12 fresh PC seeds at the live turn time; cloud lock held first
             "robin.ScalpBotC 1.0",           // +1.0
+            // pc-locks round 28 (BENCH-253, PR #1057): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "zyx.nano.RedBull 1.0",          // +1.5
         };
     }
 
@@ -918,6 +920,22 @@ final class ShieldTableData {
             "Polkwane.Piyane 0.7b",          // +2.9
             // pc-locks round 12 (BENCH-253, PR #940): 12 fresh PC seeds at the live turn time; 24-seed cloud lock held first
             "nan.Ihivatar_Mk_1 1.0",         // +1.3
+            // pc-locks round 28 (BENCH-253, PR #1057): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "Legend.Qetro 1.6",              // +0.6
+            "TCMI.Enyo 0.4",                 // +0.7
+            "ab.DengerousRoBatra 1.3",       // +0.9
+            "ahf.Acero 1.0",                 // +1.0
+            "deo.CloudBot 1.3",              // +0.8
+            "doka.ShinigamiKNN 1.0",         // +0.7
+            "jep.nano.Hawkwing 0.4.1",       // +0.7
+            "joe.ADinosaur 1.0",             // +0.6
+            "knackibot.KnackOnOne 0.8.1",    // +0.5
+            "krillr.mega.Psyche 0.0.3",      // +1.3
+            "lk.nano.Avesnar 1.1",           // +1.4
+            "mz.Movement 1.8",               // +1.1
+            "oog.nano.SavantVS 1.1",         // +0.8
+            "strider.Festis 1.2.1",          // +1.0
+            "wiki.BasicGFSurfer 1.02",       // +0.9
         };
     }
 
@@ -1549,6 +1567,8 @@ final class ShieldTableData {
      */
     static String[] headOnFloors() {
         return new String[] {
+            // pc-locks round 28 (BENCH-253, PR #1057): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "Legend.X_FireFly 1.3",          // +1.4
         };
     }
 

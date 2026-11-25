@@ -308,7 +308,6 @@ final class ShieldListData {
             "awl.Locutus 1.5",
             "bayen.nut.Squirrel 1.621",
             "can.Pookie 1.1",
-            "deo.virtual.RainbowBot 1.0",
             "gu.MicroScoob 1.3",
             "nz.jdc.micro.HedgehogP 1.2",
             "nz.jdc.nano.PralDeGuerre 1.2",

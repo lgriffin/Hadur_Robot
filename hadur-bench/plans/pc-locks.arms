@@ -1,13 +1,6 @@
-# pc-locks (BENCH-253) round 28: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots
-# picked for it (plans/locks-pick.tsv; rwl MOVE-46 ram wait, md shield-list drop, x0 SHIELD-19 exit off, rf RAM-15 ram
-# flee, hof MOVE-71 head-on floor, ty SHIELD-33 tiny-shot waves, sp2 shot-dodge plan; build-ablation.sh rwlist,
-# slistdrop, sx0list, rflist, hoflist, stinylist and sdplanlist).
+# pc-locks (BENCH-253) round 29: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots
+# picked for it (plans/locks-pick.tsv; rwl MOVE-46 ram wait, x0 SHIELD-19 exit off; build-ablation.sh rwlist and sx0list).
 c | hadur117.Hadur 3.24 | bisect/hadur117.Hadur_3.24.jar
 aa | hadur117.Hadur 3.24aa | bisect/hadur117.Hadur_3.24aa.jar
 rwl | hadur117.Hadur 3.24rwl | bisect/hadur117.Hadur_3.24rwl.jar
-md | hadur117.Hadur 3.24md | bisect/hadur117.Hadur_3.24md.jar
 x0 | hadur117.Hadur 3.24x0 | bisect/hadur117.Hadur_3.24x0.jar
-rf | hadur117.Hadur 3.24rf | bisect/hadur117.Hadur_3.24rf.jar
-hof | hadur117.Hadur 3.24hof | bisect/hadur117.Hadur_3.24hof.jar
-ty | hadur117.Hadur 3.24ty | bisect/hadur117.Hadur_3.24ty.jar
-sp2 | hadur117.Hadur 3.24sp2 | bisect/hadur117.Hadur_3.24sp2.jar
