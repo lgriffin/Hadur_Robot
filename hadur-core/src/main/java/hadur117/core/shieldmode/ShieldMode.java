@@ -968,15 +968,15 @@ public final class ShieldMode {
     public Command tick(Situation s) {
         now = s.time;
         coolingRate = s.coolingRate;
-        if (breaking(s) || yielding(s)) return null;
-        if (design.stay) {
-            // SHIELD-11: no exit inside the round; an enemy that has not fired by tick 300
-            // ends the mode for the battle.
-            if (!enemyFiredThisRound && s.time >= ShieldDesign.SILENT_TICKS) {
-                leaveBattle(s.time, "silent");
-                return null;
-            }
-        } else {
+        if (breaking(s)) return null;
+        // SHIELD-11: no exit inside the round; an enemy that has not fired by tick 300 ends
+        // the mode for the battle. Checked before a SHIELD-35 yield so a yield never defers it.
+        if (design.stay && !enemyFiredThisRound && s.time >= ShieldDesign.SILENT_TICKS) {
+            leaveBattle(s.time, "silent");
+            return null;
+        }
+        if (yielding(s)) return null;
+        if (!design.stay) {
             if (Math.hypot(s.enemyX - s.x, s.enemyY - s.y) < CLOSE_RANGE) {
                 leaveRound(s.time, "close");
                 return null;

@@ -88,6 +88,15 @@ class LockPrepTest(unittest.TestCase):
         posix = os.path.join(out, "mt.list").replace(os.sep, "/")
         self.assertIn("SHIELD_ADD=%s bash ./build-ablation.sh slistadd" % posix, open(os.path.join(out, "build.sh")).read())
 
+    def test_close_yield_pick_builds_its_list(self):
+        # SHIELD-35: a close-range yield pick (arm ky) gets its own list and a syldlist rebuild.
+        with open(self.arms, "a") as f:
+            f.write("ky | hadur117.Hadur 3.24ky | x\n")
+        out = self.run_prep([("a.A 1", "ky", "7.3")])
+        self.assertEqual("a.A 1\n", open(os.path.join(out, "ky.list")).read())
+        posix = os.path.join(out, "ky.list").replace(os.sep, "/")
+        self.assertIn("SHIELD_YIELD=%s bash ./build-ablation.sh syldlist" % posix, open(os.path.join(out, "build.sh")).read())
+
     def test_no_pick_leaves_an_empty_panel(self):
         for rows in ([], None):
             out = self.run_prep(rows)
