@@ -1097,7 +1097,8 @@ public class MinimumRiskMovement {
     /**
      * MMOVE-31: each armed opponent's lanes to every other opponent, weighted by
      * {@code 1/(1+k)^2} of that target's nearness rank k from the shooter, Hadur at {@code v.me}
-     * counted among the targets, so the weights over the others leave Hadur's share out.
+     * counted among the targets, so the weights over the others leave Hadur's share out; each
+     * lane is then discounted by its target's scan freshness.
      */
     static void lanes(View v) {
         int n = v.enemies.size();
@@ -1120,7 +1121,14 @@ public class MinimumRiskMovement {
                 total += w[j];
                 j++;
             }
-            for (int k = 0; k < w.length; k++) w[k] /= total;
+            // A target's lane is only as good as its last scan: discount it by the target's freshness,
+            // after the normalising, so a stale target's share goes to no other lane.
+            j = 0;
+            for (int t = 0; t < n; t++) {
+                if (t == s) continue;
+                w[j] = w[j] / total * v.enemies.get(t).freshness(v.now);
+                j++;
+            }
             v.laneBearing[s] = bearing;
             v.laneWeight[s] = w;
         }

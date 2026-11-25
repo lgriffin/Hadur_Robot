@@ -56,4 +56,30 @@ class FireLanesTest {
     void offByDefault() {
         assertFalse(MinimumRiskMovement.FIRE_LANES);
     }
+
+    @Test
+    @DisplayName("MMOVE-31: a target seen long ago draws a weaker lane, its share given to no other lane")
+    void staleTargetDiscounted() {
+        EnemyTracker fresh = new EnemyTracker();
+        scan(fresh, "s", 500, 200, 100, 40);
+        scan(fresh, "t", 500, 400, 100, 40);
+        scan(fresh, "u", 900, 900, 100, 40);
+        EnemyTracker stale = new EnemyTracker();
+        scan(stale, "s", 500, 200, 100, 40);
+        scan(stale, "t", 500, 400, 100, 2);
+        scan(stale, "u", 900, 900, 100, 40);
+        MinimumRiskMovement.View vf = new MinimumRiskMovement.View(pt(100, 100), 100, 40, 3, fresh.alive(), List.of(),
+            MeleeStrategy.Plan.normal());
+        MinimumRiskMovement.View vs = new MinimumRiskMovement.View(pt(100, 100), 100, 40, 3, stale.alive(), List.of(),
+            MeleeStrategy.Plan.normal());
+        MinimumRiskMovement.lanes(vf);
+        MinimumRiskMovement.lanes(vs);
+        int sf = fresh.alive().indexOf(fresh.get("s"));
+        int ss = stale.alive().indexOf(stale.get("s"));
+        double sumF = 0, sumS = 0;
+        for (double w : vf.laneWeight[sf]) sumF += w;
+        for (double w : vs.laneWeight[ss]) sumS += w;
+        assertTrue(sumS < sumF, "stale " + sumS + " fresh " + sumF);
+        assertTrue(move.laneRisk(pt(500, 650), vs) < move.laneRisk(pt(500, 650), vf));
+    }
 }
