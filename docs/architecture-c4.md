@@ -744,7 +744,7 @@ flowchart LR
 | `exitLates()`, `exitOffs()` | `shield-exit4:`, `shield-exit0:` | SHIELD-19 | 1, 11 | Later or no damage exit from shield mode |
 | `tinies()` | `shield-tiny:` | SHIELD-33 | 5 | Tiny unexplained energy drops (0.005 to 0.1) reach shield mode as shots |
 | `shieldFloors()` | `shield-floor:` | SHIELD-25 | 1 | No shield shot under 0.4 power |
-| `closeBreaks()` | `shield-break:` | SHIELD-27 | 0 | A start inside 150 px is fought until the gap opens or tick 60, then shielded |
+| `closeBreaks()` | `shield-break:` | SHIELD-27 | 4 | A start inside 150 px is fought until the gap opens or tick 60, then shielded |
 | **Movement** | | | | |
 | `stopGos()`, `stopGoShifts()` | `stop-go:`, `stop-go2:` | POISON-2 | 33, 58 | Stop-and-go, reverse crawl one or two ticks early |
 | `dodges()`, `dodgePlans()` | `shot-dodge:`, `shot-dodge2:` | DODGE-3, DODGE-4 | 1, 17 | Simple-aim dodge; shot-dodge planner with a shipped expert |
@@ -752,8 +752,8 @@ flowchart LR
 | `flatOns()` | `flat-on:` | MOVE-32 | 9 | The flattener on |
 | `mimicOns()` | `mimic-on:` | MOVE-34 | 25 | Learning-gun mimics join the aim members |
 | `patternMimics()`, `patternMegas()` | `pm-mimic:`, `pm-megas:` | MOVE-56, MOVE-58 | 6, 5 | A pattern-matcher mimic (AutoBot's or cw.megas's form) joins the aim members |
-| `aimWeights()` | `aim-weight:` | MOVE-67 | 3 | The simple aims' standing weight at prior 1.0 instead of 0.1 |
-| `velocityJitters()`, `speedBands()` | `velocity-jitter:`, `speed-band:` | MOVE-44, MOVE-45 | 4, 1 | Never exactly full speed or zero; a random top speed of 7 to 8 |
+| `aimWeights()` | `aim-weight:` | MOVE-67 | 4 | The simple aims' standing weight at prior 1.0 instead of 0.1 |
+| `velocityJitters()`, `speedBands()` | `velocity-jitter:`, `speed-band:` | MOVE-44, MOVE-45 | 4, 2 | Never exactly full speed or zero; a random top speed of 7 to 8 |
 | `steadyOrbits()` | `steady-orbit:` | MOVE-47 | 2 | No stop option and reversal hysteresis |
 | `distPins()` | `dist-pin:` | DIST-4 | 2 | A pinned desired distance |
 | `mirrorOffs()` | `mirror-off:` | MIR-2 | 3 | No mirror response |
@@ -767,7 +767,7 @@ flowchart LR
 | **Power and gun** | | | | |
 | `powerCaps()`, `powerCapHalves()` | `power-cap:`, `power-cap5:` | POW-18 | 6, 2 | Cap fire power |
 | `hardFires()`, `powerBands()` | `hard-fire:`, `power-band:` | POW-19, POW-20 | 1, 1 | At least 0.6 power while we have 60+ energy; a power multiplier per energy band |
-| `fullOffs()`, `x5Powers()`, `racePowers()` | `full-off:`, `x5-power:`, `race-power:` | POW-15, POW-16, POW-17 | 16, 17, 19 | Power policy variants (race power vs strong bots) |
+| `fullOffs()`, `x5Powers()`, `racePowers()` | `full-off:`, `x5-power:`, `race-power:` | POW-15, POW-16, POW-17 | 16, 17, 20 | Power policy variants (race power vs strong bots) |
 | `gunStacks()` | `gun-stack:` | GUN-11 | 17 | TripHammer gun stack (never for a shield opponent) |
 
 Matching is by name (SHIELD-26): `pkg.Bot 1.2` and `pkg.Bot` both match every version of the robot, and

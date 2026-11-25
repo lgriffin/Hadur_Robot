@@ -739,6 +739,11 @@ final class ShieldTableData {
      */
     static String[] closeBreaks() {
         return new String[] {
+            // pc-locks round 27 (BENCH-253, PR #1050): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "NDH.GuessFactor 1.0",           // +6.6
+            "cjm.Che 1.2",                   // +3.5
+            "starpkg.StarViewerZ 1.26",      // +2.0
+            "PkKillers.PkAssassin 1.0",      // +0.9
         };
     }
 
@@ -817,6 +822,8 @@ final class ShieldTableData {
         return new String[] {
             // pc-locks round 4 (BENCH-253, PR #866): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "ntc.Knowledge 1.1",             // +2.6
+            // pc-locks round 27 (BENCH-253, PR #1050): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "infovk.s_schwarzm16.silverbird 1.0", // +9.6
         };
     }
 
@@ -1146,6 +1153,8 @@ final class ShieldTableData {
             "dev.kurtw.KurtBot 0.2",             // +3.7
             // pc-locks round 25 (BENCH-253, PR #1036): 12 fresh PC seeds at the live turn time; cloud lock held first
             "slugzilla.Parallax 0.1",            // +2.4
+            // pc-locks round 27 (BENCH-253, PR #1050): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "zen.Mirage 0.9.5",                  // +7.4
         };
     }
 
@@ -1556,6 +1565,8 @@ final class ShieldTableData {
             "nic.Nicator 2.4",
             // pc-locks round 20 (BENCH-253, PR #994): 12 fresh PC seeds at the live turn time, +2.4
             "lrem.micro.MoggFanatic 0.2",
+            // pc-locks round 27 (BENCH-253, PR #1050): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "acid.Bl4ck 1.0",                // +1.1
         };
     }
 }
