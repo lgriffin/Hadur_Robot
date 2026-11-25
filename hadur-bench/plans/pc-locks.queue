@@ -1,4 +1,4 @@
-# 1v1, cloud locks to the PC (BENCH-253), round 30. Round 29 ran as PR #1072 (A/A -0.21 +- 0.38 on 14 robots): rwl
+# 1v1, cloud locks to the PC (BENCH-253), round 30. Round 29 ran as PR #1062 (A/A -0.21 +- 0.38 on 14 robots): rwl
 # (ram wait) on X_FireFly, iRobot, Thinker, Jammy, Samspin, Gnome and Eater_of_Worlds_Mini (+0.6 to +1.2) and MagicD3 x0
 # (+3.6) held and were banked (plans/locks29-shipped.txt); Blur, Rover, ROBv300, Ant, GhostShell and gpBot_0 rwl did not
 # clear 0.

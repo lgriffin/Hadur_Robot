@@ -1,4 +1,4 @@
-# pc-locks round 29 (BENCH-253, PR #1072): robots whose lines shipped on 24 fresh PC seeds at the live turn time
+# pc-locks round 29 (BENCH-253, PR #1062): robots whose lines shipped on 24 fresh PC seeds at the live turn time
 dcs.Eater_of_Worlds_Mini 1.0
 janm.Jammy 1.0
 Legend.X_FireFly 1.3
