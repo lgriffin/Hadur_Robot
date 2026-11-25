@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/tree/master/docs/requirements">docs/requirements/</a>, one file per area, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 566 of 566 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 585 of 585 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -86,12 +86,12 @@ traceability check reads. 566 of 566 live requirements have a tagged test. The r
 <article class="req-card" id="WAVE-1">
 <div class="req-head"><span class="rid">WAVE-1</span><span class="badge">Event</span><span class="badge stage">S2</span></div>
 <p>When an enemy energy drop is observed, the core shall subtract damage dealt by our bullets, enemy wall damage and enemy hit refunds before classifying it as a fired bullet.</p>
-<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/BattleResult.java" title="hadur.bench.BattleResult">BattleResult</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/LogHarvester.java" title="hadur.bench.LogHarvester">LogHarvester</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Report.java" title="hadur.bench.Report">Report</a>, <a href="api/hadur117/Hadur.html" title="hadur117.Hadur">Hadur</a>, <a href="api/hadur117/core/DuelSeam.html" title="hadur117.core.DuelSeam">DuelSeam</a>, <a href="api/hadur117/core/duel/DuelController.html" title="hadur117.core.duel.DuelController">DuelController</a>, <a href="api/hadur117/core/ledger/EnergyLedger.html" title="hadur117.core.ledger.EnergyLedger">EnergyLedger</a>, <a href="api/hadur117/core/ledger/package-summary.html" title="hadur117.core.ledger.package-info">ledger (package)</a>, <a href="api/hadur117/core/memory/ProfileFolder.html" title="hadur117.core.memory.ProfileFolder">ProfileFolder</a>, <a href="api/hadur117/core/model/BotEvent.html" title="hadur117.core.model.BotEvent">BotEvent</a>, <a href="api/hadur117/core/model/RoundStats.html" title="hadur117.core.model.RoundStats">RoundStats</a>, <a href="api/hadur117/core/model/Wave.html" title="hadur117.core.model.Wave">Wave</a>, <a href="api/hadur117/core/model/WaveManager.html" title="hadur117.core.model.WaveManager">WaveManager</a>, <a href="api/hadur117/core/move/MoveController.html" title="hadur117.core.move.MoveController">MoveController</a>, <a href="api/hadur117/core/package-summary.html" title="hadur117.core.package-info">core (package)</a>, <a href="api/hadur117/core/physics/Rules.html" title="hadur117.core.physics.Rules">Rules</a>, <a href="api/hadur117/core/physics/package-summary.html" title="hadur117.core.physics.package-info">physics (package)</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/WaveMatcherTest.java">WaveMatcherTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/ledger/EnergyLedgerProperties.java">EnergyLedgerProperties.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/ledger/EnergyLedgerTest.java">EnergyLedgerTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/resources/features/waves.feature">waves.feature</a></dd></dl>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/BattleResult.java" title="hadur.bench.BattleResult">BattleResult</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/LogHarvester.java" title="hadur.bench.LogHarvester">LogHarvester</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Report.java" title="hadur.bench.Report">Report</a>, <a href="api/hadur117/Hadur.html" title="hadur117.Hadur">Hadur</a>, <a href="api/hadur117/core/DuelSeam.html" title="hadur117.core.DuelSeam">DuelSeam</a>, <a href="api/hadur117/core/duel/DuelController.html" title="hadur117.core.duel.DuelController">DuelController</a>, <a href="api/hadur117/core/ledger/EnergyLedger.html" title="hadur117.core.ledger.EnergyLedger">EnergyLedger</a>, <a href="api/hadur117/core/ledger/package-summary.html" title="hadur117.core.ledger.package-info">ledger (package)</a>, <a href="api/hadur117/core/memory/ProfileFolder.html" title="hadur117.core.memory.ProfileFolder">ProfileFolder</a>, <a href="api/hadur117/core/model/BotEvent.html" title="hadur117.core.model.BotEvent">BotEvent</a>, <a href="api/hadur117/core/model/RoundStats.html" title="hadur117.core.model.RoundStats">RoundStats</a>, <a href="api/hadur117/core/model/Wave.html" title="hadur117.core.model.Wave">Wave</a>, <a href="api/hadur117/core/model/WaveManager.html" title="hadur117.core.model.WaveManager">WaveManager</a>, <a href="api/hadur117/core/move/MoveController.html" title="hadur117.core.move.MoveController">MoveController</a>, <a href="api/hadur117/core/package-summary.html" title="hadur117.core.package-info">core (package)</a>, <a href="api/hadur117/core/physics/Rules.html" title="hadur117.core.physics.Rules">Rules</a>, <a href="api/hadur117/core/physics/package-summary.html" title="hadur117.core.physics.package-info">physics (package)</a>, <a href="api/hadur117/sepia/SepiaBrain.html" title="hadur117.sepia.SepiaBrain">SepiaBrain</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/WaveMatcherTest.java">WaveMatcherTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/ledger/EnergyLedgerProperties.java">EnergyLedgerProperties.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/ledger/EnergyLedgerTest.java">EnergyLedgerTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/resources/features/waves.feature">waves.feature</a></dd></dl>
 </article>
 <article class="req-card" id="WAVE-2">
 <div class="req-head"><span class="rid">WAVE-2</span><span class="badge">Unwanted</span><span class="badge stage">S2</span></div>
 <p>If a corrected energy drop is outside [0.1, 3.0], then the core shall not create a firing wave.</p>
-<dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/duel/DuelController.html" title="hadur117.core.duel.DuelController">DuelController</a>, <a href="api/hadur117/core/ledger/EnergyLedger.html" title="hadur117.core.ledger.EnergyLedger">EnergyLedger</a>, <a href="api/hadur117/core/ledger/package-summary.html" title="hadur117.core.ledger.package-info">ledger (package)</a>, <a href="api/hadur117/core/model/BotEvent.html" title="hadur117.core.model.BotEvent">BotEvent</a>, <a href="api/hadur117/core/model/RoundStats.html" title="hadur117.core.model.RoundStats">RoundStats</a>, <a href="api/hadur117/core/model/Wave.html" title="hadur117.core.model.Wave">Wave</a>, <a href="api/hadur117/core/model/WaveManager.html" title="hadur117.core.model.WaveManager">WaveManager</a>, <a href="api/hadur117/core/move/MoveController.html" title="hadur117.core.move.MoveController">MoveController</a>, <a href="api/hadur117/core/package-summary.html" title="hadur117.core.package-info">core (package)</a>, <a href="api/hadur117/core/physics/Rules.html" title="hadur117.core.physics.Rules">Rules</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/ledger/EnergyLedgerProperties.java">EnergyLedgerProperties.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/ledger/EnergyLedgerTest.java">EnergyLedgerTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/resources/features/waves.feature">waves.feature</a></dd></dl>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/duel/DuelController.html" title="hadur117.core.duel.DuelController">DuelController</a>, <a href="api/hadur117/core/ledger/EnergyLedger.html" title="hadur117.core.ledger.EnergyLedger">EnergyLedger</a>, <a href="api/hadur117/core/ledger/package-summary.html" title="hadur117.core.ledger.package-info">ledger (package)</a>, <a href="api/hadur117/core/model/BotEvent.html" title="hadur117.core.model.BotEvent">BotEvent</a>, <a href="api/hadur117/core/model/RoundStats.html" title="hadur117.core.model.RoundStats">RoundStats</a>, <a href="api/hadur117/core/model/Wave.html" title="hadur117.core.model.Wave">Wave</a>, <a href="api/hadur117/core/model/WaveManager.html" title="hadur117.core.model.WaveManager">WaveManager</a>, <a href="api/hadur117/core/move/MoveController.html" title="hadur117.core.move.MoveController">MoveController</a>, <a href="api/hadur117/core/package-summary.html" title="hadur117.core.package-info">core (package)</a>, <a href="api/hadur117/core/physics/Rules.html" title="hadur117.core.physics.Rules">Rules</a>, <a href="api/hadur117/sepia/SepiaBrain.html" title="hadur117.sepia.SepiaBrain">SepiaBrain</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/ledger/EnergyLedgerProperties.java">EnergyLedgerProperties.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/ledger/EnergyLedgerTest.java">EnergyLedgerTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/resources/features/waves.feature">waves.feature</a></dd></dl>
 </article>
 <article class="req-card" id="WAVE-3">
 <div class="req-head"><span class="rid">WAVE-3</span><span class="badge">Unwanted</span><span class="badge stage">R2</span></div>
@@ -106,7 +106,7 @@ traceability check reads. 566 of 566 live requirements have a tagged test. The r
 <article class="req-card" id="WAVE-5">
 <div class="req-head"><span class="rid">WAVE-5</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
 <p>When our own energy falls by exactly 0.1 on a tick of a duel and no shot of ours, bullet hit, wall hit or robot hit explains it, the core shall take 0.1 off the enemy&#x27;s energy drop for that tick (the engine&#x27;s inactivity drain) before classifying the drop as a fired bullet, for every such tick since the last scan.</p>
-<dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/HadurCore.html" title="hadur117.core.HadurCore">HadurCore</a>, <a href="api/hadur117/core/duel/DuelController.html" title="hadur117.core.duel.DuelController">DuelController</a>, <a href="api/hadur117/core/ledger/EnergyLedger.html" title="hadur117.core.ledger.EnergyLedger">EnergyLedger</a>, <a href="api/hadur117/core/physics/Rules.html" title="hadur117.core.physics.Rules">Rules</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/ledger/EnergyLedgerTest.java">EnergyLedgerTest.java</a></dd></dl>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/HadurCore.html" title="hadur117.core.HadurCore">HadurCore</a>, <a href="api/hadur117/core/duel/DuelController.html" title="hadur117.core.duel.DuelController">DuelController</a>, <a href="api/hadur117/core/ledger/EnergyLedger.html" title="hadur117.core.ledger.EnergyLedger">EnergyLedger</a>, <a href="api/hadur117/core/physics/Rules.html" title="hadur117.core.physics.Rules">Rules</a>, <a href="api/hadur117/sepia/SepiaBrain.html" title="hadur117.sepia.SepiaBrain">SepiaBrain</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/ledger/EnergyLedgerTest.java">EnergyLedgerTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/SepiaBrainTest.java">SepiaBrainTest.java</a></dd></dl>
 </article>
 <h2 id="group-RADAR">Radar</h2>
 <article class="req-card" id="RADAR-1">
@@ -2081,6 +2081,32 @@ traceability check reads. 566 of 566 live requirements have a tagged test. The r
 <p>While in a duel against an opponent the table&#x27;s <code>gun-stack: name</code> lines name (matched as the shield list is), and not on the shield list, the gun shall aim with <a class="req" href="requirements.html#GUN-8">GUN-8</a>, <a class="req" href="requirements.html#GUN-9">GUN-9</a> and <a class="req" href="requirements.html#GUN-10">GUN-10</a> on from that opponent&#x27;s first scan; in melee and team, and against any other opponent, it shall aim exactly as before.</p>
 <dl><dt>Implemented in</dt><dd><a href="api/hadur117/Hadur.html" title="hadur117.Hadur">Hadur</a>, <a href="api/hadur117/ShieldTableData.html" title="hadur117.ShieldTableData">ShieldTableData</a>, <a href="api/hadur117/core/duel/DuelController.html" title="hadur117.core.duel.DuelController">DuelController</a>, <a href="api/hadur117/core/shieldmode/ShieldList.html" title="hadur117.core.shieldmode.ShieldList">ShieldList</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/shieldmode/ShieldListTest.java">ShieldListTest.java</a></dd></dl>
 </article>
+<h2 id="group-INK">INK</h2>
+<article class="req-card" id="INK-1">
+<div class="req-head"><span class="rid">INK-1</span><span class="badge">Event</span><span class="badge stage">Q0</span></div>
+<p>When the gun is cool and an enemy wave has a fixed landing, the brain shall score candidate ink aims by the share of each wave&#x27;s hit set they newly shade, weighted by the wave&#x27;s damage and energy return and by the aim belief on the bearings they newly shade, and fire the best only if it newly shades at least 5% of the hit sets in flight.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/sepia/InkPlanner.html" title="hadur117.sepia.InkPlanner">InkPlanner</a>, <a href="api/hadur117/sepia/SepiaBrain.html" title="hadur117.sepia.SepiaBrain">SepiaBrain</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/AimBeliefTest.java">AimBeliefTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/InkPlannerTest.java">InkPlannerTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="INK-2">
+<div class="req-head"><span class="rid">INK-2</span><span class="badge">Ubiquitous</span><span class="badge stage">Q0</span></div>
+<p>An ink shot shall be power 0.1.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/sepia/InkPlanner.html" title="hadur117.sepia.InkPlanner">InkPlanner</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/InkPlannerTest.java">InkPlannerTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="INK-3">
+<div class="req-head"><span class="rid">INK-3</span><span class="badge">Ubiquitous</span><span class="badge stage">Q0</span></div>
+<p>The ink planner shall make its candidates by solving where its bullet can meet the bullet of each wave at the hit set&#x27;s middle and near each edge, and shall evaluate at most 64 a shot.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/sepia/InkPlanner.html" title="hadur117.sepia.InkPlanner">InkPlanner</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/InkPlannerTest.java">InkPlannerTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="INK-5">
+<div class="req-head"><span class="rid">INK-5</span><span class="badge">Ubiquitous</span><span class="badge stage">Q0</span></div>
+<p>The shade credited to a wave shall be its certain shadow plus half its possible shadow, cast up to and including the turn the wave can first meet the body.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/sepia/AimBelief.html" title="hadur117.sepia.AimBelief">AimBelief</a>, <a href="api/hadur117/sepia/Arcs.html" title="hadur117.sepia.Arcs">Arcs</a>, <a href="api/hadur117/sepia/InkPlanner.html" title="hadur117.sepia.InkPlanner">InkPlanner</a>, <a href="api/hadur117/sepia/InkWave.html" title="hadur117.sepia.InkWave">InkWave</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/AimBeliefTest.java">AimBeliefTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/ArcsTest.java">ArcsTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/InkPlannerTest.java">InkPlannerTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="INK-6">
+<div class="req-head"><span class="rid">INK-6</span><span class="badge">Ubiquitous</span><span class="badge stage">Q0</span></div>
+<p>Sepia shall write one INK record per enemy wave: the option fixed, the hit-set width, the share shaded when the wave reached the body, the inks that added shade, and whether its bullet was met or hit.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/sepia/SepiaBrain.html" title="hadur117.sepia.SepiaBrain">SepiaBrain</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/SepiaBrainTest.java">SepiaBrainTest.java</a></dd></dl>
+</article>
 <h2 id="group-JAYLEXI">JAYLEXI</h2>
 <article class="req-card" id="JAYLEXI-1">
 <div class="req-head"><span class="rid">JAYLEXI-1</span><span class="badge">Unwanted</span><span class="badge stage">K6</span></div>
@@ -2176,6 +2202,32 @@ traceability check reads. 566 of 566 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">JAYLEXI-26</span><span class="badge">Event-driven</span><span class="badge stage">1.3</span></div>
 <p>When a bullet hits the bot or one of its bullets, the bot shall log that hit on the enemy wave whose front is within 100 px of the hit, searching the wave it dropped last as well as the live ones: a wave is dropped about the tick its bullet reaches the bot, before onHitByBullet runs, so 1.2 matched only 93 of 376 hits (25%) and its surf stats never saw the rest. (Cloud, 145 MiniRumble robots x 3 fresh seeds: +1.10 +- 0.11 over 1.2, A/A +0.05 +- 0.12; enemy hit rate 7.16% to 6.61% on the 24 robots where FoilistMC&#x27;s movement gains most.)</p>
 <dl><dt>Implemented in</dt><dd><a href="api/hadur117/mini/JayLexi.html" title="hadur117.mini.JayLexi">JayLexi</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/jaylexi/src/test/java/hadur117/mini/JayLexiReplayTest.java">JayLexiReplayTest.java</a></dd></dl>
+</article>
+<h2 id="group-JET">JET</h2>
+<article class="req-card" id="JET-1">
+<div class="req-head"><span class="rid">JET-1</span><span class="badge">Event</span><span class="badge stage">Q0</span></div>
+<p>When an enemy shot is detected, the brain shall commit the path until that shot&#x27;s wave has passed, choosing for the jet cycle among carry on, turn back and hold, from where the path already committed to earlier waves ends.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/sepia/Gait.html" title="hadur117.sepia.Gait">Gait</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/GaitTest.java">GaitTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="JET-2">
+<div class="req-head"><span class="rid">JET-2</span><span class="badge">Ubiquitous</span><span class="badge stage">Q0</span></div>
+<p>The brain shall rate each option by exposure: the wave&#x27;s damage, times the aim belief on the part of the option&#x27;s hit set left unshaded by our bullets in the air and by the next ink the planner could lay from where the option puts Sepia when the gun is next cool.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/sepia/AimBelief.html" title="hadur117.sepia.AimBelief">AimBelief</a>, <a href="api/hadur117/sepia/Gait.html" title="hadur117.sepia.Gait">Gait</a>, <a href="api/hadur117/sepia/SepiaBrain.html" title="hadur117.sepia.SepiaBrain">SepiaBrain</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/GaitTest.java">GaitTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="JET-3">
+<div class="req-head"><span class="rid">JET-3</span><span class="badge">Ubiquitous</span><span class="badge stage">Q0</span></div>
+<p>The brain shall take the least exposed option.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/sepia/Gait.html" title="hadur117.sepia.Gait">Gait</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/GaitTest.java">GaitTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="JET-5">
+<div class="req-head"><span class="rid">JET-5</span><span class="badge">State</span><span class="badge stage">Q0</span></div>
+<p>While driving, the path shall turn away from the wave&#x27;s source below 450 px and shall not turn toward it, so range is regained and never closed.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/sepia/Gait.html" title="hadur117.sepia.Gait">Gait</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/GaitTest.java">GaitTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="JET-6">
+<div class="req-head"><span class="rid">JET-6</span><span class="badge">Unwanted</span><span class="badge stage">Q0</span></div>
+<p>If the committed path would strike a wall or come within 100 px of the enemy within 12 ticks, then the brain shall recommit every landing not yet reached from the present tick.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/sepia/Gait.html" title="hadur117.sepia.Gait">Gait</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/GaitTest.java">GaitTest.java</a></dd></dl>
 </article>
 <h2 id="group-LINK">LINK</h2>
 <article class="req-card" id="LINK-1">
@@ -2509,6 +2561,27 @@ traceability check reads. 566 of 566 live requirements have a tagged test. The r
 <p>Bullet power shall be log10(energy) times 325 over the target&#x27;s distance, with no cap but the engine&#x27;s.</p>
 <dl><dt>Implemented in</dt><dd><a href="api/hadur117/micro/Saor.html" title="hadur117.micro.Saor">Saor</a>, <a href="api/hadur117/micro/core/Energy.html" title="hadur117.micro.core.Energy">Energy</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/saor/src/test/java/hadur117/micro/core/EnergyTest.java">EnergyTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/saor/src/test/resources/features/saor.feature">saor.feature</a></dd></dl>
 </article>
+<h2 id="group-SEPIA">SEPIA</h2>
+<article class="req-card" id="SEPIA-1">
+<div class="req-head"><span class="rid">SEPIA-1</span><span class="badge">Ubiquitous</span><span class="badge stage">Q0</span></div>
+<p>Sepia&#x27;s brain (<code>hadur117.sepia</code>) shall not import Robocode, and shall use nothing of Hadur&#x27;s conductor, strand brains, guns, policies, memory or mode table: from the kernel only its model, physics and ledger, and from the duel strand only the shadow geometry (<code>BulletShadows</code>, <code>OurBullet</code>), so no Hadur file changes for Sepia.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/ArchitectureTest.java">ArchitectureTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="SEPIA-2">
+<div class="req-head"><span class="rid">SEPIA-2</span><span class="badge">Optional</span><span class="badge stage">Q0</span></div>
+<p>Where a build sets Sepia&#x27;s fire mode to ink only, the gun shall fire only 0.1 ink; where it sets it to none, the gun shall not fire; the shipped build shall fire ink or a punch by <a class="req" href="requirements.html#STRIKE-1">STRIKE-1</a>.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/SepiaBrainTest.java">SepiaBrainTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="SEPIA-3">
+<div class="req-head"><span class="rid">SEPIA-3</span><span class="badge">Ubiquitous</span><span class="badge stage">Q0</span></div>
+<p>The shipped jar shall carry Sepia&#x27;s classes, the kernel classes they reach and the robot&#x27;s properties at the release version, and no class of Hadur&#x27;s conductor or strands that Sepia does not reach.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/SepiaJarIT.java">SepiaJarIT.java</a></dd></dl>
+</article>
+<article class="req-card" id="SEPIA-4">
+<div class="req-head"><span class="rid">SEPIA-4</span><span class="badge">Event</span><span class="badge stage">Q0</span></div>
+<p>When an enemy bullet hits Sepia or meets one of its bullets, the brain shall learn the bullet&#x27;s guess factor into its aim belief, which starts from head-on and linear peaks over an even floor and gives the chance that a wave&#x27;s bullet lies on a stretch of bearings.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/AimBeliefTest.java">AimBeliefTest.java</a></dd></dl>
+</article>
 <h2 id="group-SHELF">SHELF</h2>
 <article class="req-card" id="SHELF-1">
 <div class="req-head"><span class="rid">SHELF-1</span><span class="badge">Ubiquitous</span><span class="badge stage">A4</span></div>
@@ -2576,6 +2649,33 @@ traceability check reads. 566 of 566 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">STRAND-6</span><span class="badge">Unwanted</span><span class="badge stage">A5</span></div>
 <p>If a constant that a retired requirement names in backticks (<code>X</code>, or <code>Owner.X</code> to tie it to one source file) is still declared <code>static final</code> in the robot&#x27;s main sources and no live requirement names it, then the build shall fail: a failed card&#x27;s results PR removes the switch, its code, ablation arm, card and tests with its requirement.</p>
 <dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/trace/RetiredSwitchTest.java">RetiredSwitchTest.java</a></dd></dl>
+</article>
+<h2 id="group-STRIKE">STRIKE</h2>
+<article class="req-card" id="STRIKE-1">
+<div class="req-head"><span class="rid">STRIKE-1</span><span class="badge">Event</span><span class="badge stage">Q0</span></div>
+<p>When the gun is cool, the brain shall fire ink or a punch, whichever is worth more per tick of reload: the ink by the damage and energy return of the bullets it is expected to stop over 11 ticks, the punch by its hit rate times its damage and return, less its power, over its reload.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/sepia/PunchGun.html" title="hadur117.sepia.PunchGun">PunchGun</a>, <a href="api/hadur117/sepia/SepiaBrain.html" title="hadur117.sepia.SepiaBrain">SepiaBrain</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/SepiaBrainTest.java">SepiaBrainTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="STRIKE-3">
+<div class="req-head"><span class="rid">STRIKE-3</span><span class="badge">State</span><span class="badge stage">Q0</span></div>
+<p>While no enemy wave is in flight, or the enemy&#x27;s energy is below the smallest power it has fired and Sepia leads, the gun shall punch.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/sepia/SepiaBrain.html" title="hadur117.sepia.SepiaBrain">SepiaBrain</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/SepiaBrainTest.java">SepiaBrainTest.java</a></dd></dl>
+</article>
+<h2 id="group-SURF">SURF</h2>
+<article class="req-card" id="SURF-2">
+<div class="req-head"><span class="rid">SURF-2</span><span class="badge">Event</span><span class="badge stage">Q0</span></div>
+<p>When an enemy shot is detected under the ink surf, the surf shall fix that wave&#x27;s landing among carry on, turn back, either at half speed, and hold, and hold it until the wave has passed.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/sepia/Gait.html" title="hadur117.sepia.Gait">Gait</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/GaitTest.java">GaitTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="SURF-3">
+<div class="req-head"><span class="rid">SURF-3</span><span class="badge">Unwanted</span><span class="badge stage">Q0</span></div>
+<p>If, when a later shot is read, another option leaves a fixed landing not yet reached under half as exposed, then the surf shall fix that wave&#x27;s landing again from the present tick and choose every later landing afresh behind it.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/sepia/Gait.html" title="hadur117.sepia.Gait">Gait</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/GaitTest.java">GaitTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="SURF-4">
+<div class="req-head"><span class="rid">SURF-4</span><span class="badge">Ubiquitous</span><span class="badge stage">Q0</span></div>
+<p>Under the ink surf, each option shall be rated by <a class="req" href="requirements.html#JET-2">JET-2</a>&#x27;s exposure.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur117/sepia/Gait.html" title="hadur117.sepia.Gait">Gait</a>, <a href="api/hadur117/sepia/SepiaBrain.html" title="hadur117.sepia.SepiaBrain">SepiaBrain</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sepia/src/test/java/hadur117/sepia/GaitTest.java">GaitTest.java</a></dd></dl>
 </article>
 <h2 id="group-TMODE">TMODE</h2>
 <article class="req-card" id="TMODE-1">
