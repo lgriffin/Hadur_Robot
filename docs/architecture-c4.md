@@ -575,7 +575,7 @@ C4Component
 | `TeamModes` | Per tick, the modes against this team: the first living enemy whose class the table names, else the default set. |
 | `TeamConcord` | The team brain: risk counts every robot nearer an enemy than the point, FINISH plays, GANG switches itself on once 4% of 200+ member-turns show ganging, the gun pools situations by class and fires at most 1.9 beyond 200 px unless reading that class well. |
 | `TeamDodge` | Each detected shot profiled once from simple aims and the team's learned aims, weighted by each expert's loss against that enemy class; destinations re-ranked by profiles and teammates' bullets crossed (with OWN_FIRE). |
-| `TeamRun` | RUN (TMODE-62, off): six curves round the next shot's source, each driven at full speed through the profiles and the teammates' bullets; the curve held is kept unless another scores better by a margin. |
+| `TeamRun` | RUN (TMODE-62, off): while a shot profile is in the air, six curves round the next shot's source, each driven at full speed through the profiles and the teammates' bullets; the curve held is kept unless another scores better by a margin, and follows the member's motion when the source changes. |
 
 ### Team tick: shared eyes one tick late
 

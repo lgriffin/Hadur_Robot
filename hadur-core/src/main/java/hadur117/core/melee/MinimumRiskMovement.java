@@ -637,14 +637,16 @@ public class MinimumRiskMovement {
             destination = waveBest(candidates, v);
             return destination;
         }
-        if (!mates.isEmpty() && modes.contains(TeamModes.Mode.DODGE) && modes.contains(TeamModes.Mode.RUN)) {
+        boolean runs = !mates.isEmpty() && modes.contains(TeamModes.Mode.DODGE) && modes.contains(TeamModes.Mode.RUN);
+        if (runs && !TeamRun.inAir(me, now, dodge.waves())) run.release();
+        else if (runs) {
             // TMODE-62: a curve flown at full speed, from the member's real heading and velocity.
             v.pathBullets = mateBullets(me, now);
             v.heading = heading;
             v.velocity = velocity;
             v.fullSpeed = true;
             running = true;
-            destination = run.choose(this, v, dodge.waves(), enemies);
+            destination = run.choose(this, v, dodge.waves());
             return destination;
         }
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.DODGE)) {

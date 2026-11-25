@@ -4,6 +4,7 @@ import static hadur117.core.melee.Fixtures.pt;
 import static hadur117.core.melee.Fixtures.scan;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hadur117.core.world.EnemyShot;
@@ -46,14 +47,15 @@ class TeamRunTest {
 
     @Test
     @Tag("TMODE-62")
-    @DisplayName("TMODE-62: the curves run round the source of the profile that arrives first, or the nearest enemy with none to come")
+    @DisplayName("TMODE-62: the curves run round the source of the profile that arrives first, and play only while one is still to come")
     void reference() {
-        EnemyTracker t = enemies();
-        assertEquals(NORTH, TeamRun.reference(ME, 100, List.of(), t.alive()));
+        assertNull(TeamRun.reference(ME, 100, List.of()));
+        assertFalse(TeamRun.inAir(ME, 100, List.of(wave(pt(600, 700), 60, 0))), "already past");
         Point2D.Double west = pt(100, 600);
         // The western shot is older and lands first; a profile already past the member is not followed.
         List<MinimumRiskMovement.Wave> waves = List.of(wave(NORTH, 95, 0), wave(west, 70, 0), wave(pt(600, 700), 60, 0));
-        assertEquals(west, TeamRun.reference(ME, 100, waves, t.alive()));
+        assertEquals(west, TeamRun.reference(ME, 100, waves));
+        assertTrue(TeamRun.inAir(ME, 100, waves));
     }
 
     @Test
@@ -78,21 +80,27 @@ class TeamRunTest {
 
     @Test
     @Tag("TMODE-62")
-    @DisplayName("TMODE-62: the held curve is kept unless another scores better by the margin, a wider one while a profile is in the air")
+    @DisplayName("TMODE-62: the held curve is kept unless another scores better by the margin; on a change of reference it is the one that carries on the member's motion")
     void commitment() {
         TeamRun run = new TeamRun(Fixtures.field(1200, 1200));
         double[] none = new double[6];
-        assertEquals(0, run.pick(new double[] {0, 1, 2, 3, 4, 5}, none, false));
-        // A little better elsewhere: kept, in the air or not.
-        assertEquals(0, run.pick(new double[] {0.2, 0, 2, 3, 4, 5}, none, false));
-        assertEquals(0, run.pick(new double[] {1.2, 0, 2, 3, 4, 5}, none, true));
-        // The same lead with nothing in the air is enough to change.
-        assertEquals(1, run.pick(new double[] {1.2, 0, 2, 3, 4, 5}, none, false));
-        // The held curve is the one predicted to be hit: it is left, even in the air.
-        assertEquals(3, run.pick(new double[] {1, 0, 1, 0.5, 1, 1}, new double[] {1, 1, 0.2, 0, 0.2, 0.2}, true));
+        assertEquals(0, run.pick(new double[] {0, 1, 2, 3, 4, 5}, none));
+        // A little better elsewhere: kept.
+        assertEquals(0, run.pick(new double[] {0.2, 0, 2, 3, 4, 5}, none));
+        assertEquals(0, run.pick(new double[] {1.2, 0, 2, 3, 4, 5}, none));
+        // A curve that crosses a teammate's track pays for it: left for the next best.
+        assertEquals(1, run.pick(new double[] {0.2, 0, 2, 3, 4, 5}, none, new double[] {TeamRun.MATE_BLOCK, 0, 0, 0, 0, 0}));
+        // The held curve is the one predicted to be hit: it is left.
+        assertEquals(3, run.pick(new double[] {1, 0, 1, 0.5, 1, 1}, new double[] {1, 1, 0.2, 0, 0.2, 0.2}));
         assertEquals(3, run.held());
         run.newRound();
         assertEquals(-1, run.held());
+        // Driving east at full speed, or backing east: the eastward curve on the circle carries on the motion.
+        List<Point2D.Double> c = run.candidates(ME, NORTH);
+        assertEquals(3, TeamRun.along(ME, Math.PI / 2, 8, c, -1));
+        assertEquals(3, TeamRun.along(ME, 3 * Math.PI / 2, -8, c, -1));
+        assertEquals(0, TeamRun.along(ME, 3 * Math.PI / 2, 8, c, -1));
+        assertEquals(5, TeamRun.along(ME, Math.PI / 2, 0.5, c, 5), "all but stopped");
     }
 
     @Test
@@ -110,15 +118,16 @@ class TeamRunTest {
         v.fullSpeed = true;
         double heading = hadur117.core.physics.DiaUtils.absoluteBearing(NORTH, pt(470, 610));
         TeamRun run = new TeamRun(Fixtures.field(1200, 1200));
-        Point2D.Double clear = run.choose(m, v, List.of(), t.alive());
-        Point2D.Double dodged = run.choose(m, v, List.of(wave(NORTH, 90, heading)), t.alive());
+        Point2D.Double clear = run.choose(m, v, List.of(wave(NORTH, 90, 0)));
+        run.release();
+        Point2D.Double dodged = run.choose(m, v, List.of(wave(NORTH, 90, heading)));
         assertEquals(TeamRun.REACH, dodged.distance(ME), 1e-9);
         assertTrue(dodged.x > ME.x, "turns back east: " + dodged + " from " + clear);
 
+        // With no profile in the air the dodge's own point choice plays.
         m.motion(3 * Math.PI / 2, 8);
-        Point2D.Double to = m.chooseDestination(ME, 100, 3, t.alive(), 100, normal, mate(900, 300), modes);
-        assertTrue(m.running());
-        assertEquals(TeamRun.REACH, to.distance(ME), 1e-9);
+        m.chooseDestination(ME, 100, 3, t.alive(), 100, normal, mate(900, 300), modes);
+        assertFalse(m.running(), "nothing in the air");
 
         MinimumRiskMovement plain = new MinimumRiskMovement(Fixtures.field(1200, 1200));
         plain.newRound();
