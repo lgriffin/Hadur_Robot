@@ -1,12 +1,12 @@
 # Queue pc-field-screen: progress
 
-Updated 2026-11-25 15:09:47 PC time (15:09 UTC), runner pid 36288.
+Updated 2026-11-25 15:25:00 PC time (15:25 UTC), runner pid 36288.
 
 - `prep` done, exit 0 in 5 min
 - `livematch` done, exit 0 in 8 min
-- `screen` running
-- `pick` pending
-- `lock` pending
+- `screen` done, exit 0 in 3.0 h
+- `pick` done, exit 0 in 3 min
+- `lock` running
 - `gate` pending
 - `pr` pending
 
@@ -36,42 +36,64 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### screen
 
-**5759 of 5760 battles** (100%), 0 failed. Running 2.8 h, 10 battles/h, about 6 min left (ends ~15:15 PC time). Last battle 2 min ago.
-Skipped turns a battle: 15.3 overall, first 100 16.1, last 100 11.8; engine disables 34.
+**5760 of 5760 battles** (100%), 0 failed. Running 3.0 h, 8 battles/h, about 0 min left (ends ~15:19 PC time). Last battle 0 min ago.
+Skipped turns a battle: 15.3 overall, first 100 16.1, last 100 11.7; engine disables 34.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 719 | 0 | 84.91 | - | - | - | 15.6 |
+| c | 720 | 0 | 84.90 | - | - | - | 15.6 |
 | aa | 720 | 0 | 85.11 | +0.02 (120 robots) | ±0.03 | -0.02 .. +0.06 | 15.8 |
-| hof | 720 | 0 | 83.20 | -0.18 (120 robots) | ±0.05 | -0.25 .. -0.11 | 15.3 |
+| hof | 720 | 0 | 83.20 | -0.18 (120 robots) | ±0.05 | -0.25 .. -0.10 | 15.3 |
 | rwl | 720 | 0 | 84.86 | -0.01 (120 robots) | ±0.03 | -0.05 .. +0.02 | 15.4 |
-| qw | 720 | 0 | 84.19 | -0.08 (120 robots) | ±0.03 | -0.13 .. -0.04 | 15.5 |
+| qw | 720 | 0 | 84.19 | -0.08 (120 robots) | ±0.03 | -0.13 .. -0.03 | 15.5 |
 | sb | 720 | 0 | 82.92 | -0.21 (120 robots) | ±0.10 | -0.36 .. -0.06 | 15.4 |
 | vj | 720 | 0 | 84.80 | -0.02 (120 robots) | ±0.03 | -0.06 .. +0.02 | 15.3 |
 | or | 720 | 0 | 75.15 | -0.97 (120 robots) | ±0.22 | -1.30 .. -0.64 | 14.5 |
 
 APS = mean difference over the robots read x 120 panel robots / 1217 pairings.
-A/A: aa - c +0.19 pts over 120 robots; 1% band ±0.44 (inside).
+A/A: aa - c +0.21 pts over 120 robots; 1% band ±0.44 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 5759 |
+| `fails 30` | halt | ok | 0 failed of 5760 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 60 over 200` | halt | ok | 12.8 a battle over the last 200 (first 200: 15.6) |
-| `stall 30m` | halt | ok | last battle 2 min ago |
-| `aa after 20%` | halt | ok | aa - c +0.19 pts over 120 robots, stop band ±0.51 |
+| `skips 60 over 200` | halt | ok | 12.7 a battle over the last 200 (first 200: 15.6) |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `aa after 20%` | halt | ok | aa - c +0.21 pts over 120 robots, stop band ±0.51 |
 
-Stopping now would leave 1 battles unrun (about 6 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### lock
+
+**170 of 360 battles** (47%), 0 failed. Running 3 min, 3501 battles/h, about 3 min left (ends ~15:28 PC time). Last battle 0 min ago.
+Skipped turns a battle: 6.1 overall, first 100 6.3, last 100 6.1; engine disables 0.
+
+| arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| c | 30 | 0 | 79.94 | - | - | - | 6.6 |
+| aa | 30 | 0 | 78.95 | -0.00 (5 robots) | ±0.01 | -0.01 .. +0.01 | 6.0 |
+| rwl | 27 | 0 | 77.37 | -0.01 (5 robots) | ±0.01 | -0.03 .. +0.01 | 6.0 |
+| qw | 28 | 0 | 77.14 | -0.01 (5 robots) | ±0.01 | -0.02 .. +0.00 | 6.3 |
+| sb | 28 | 0 | 78.04 | -0.01 (5 robots) | ±0.01 | -0.02 .. +0.01 | 6.5 |
+| or | 27 | 0 | 81.62 | +0.01 (5 robots) | ±0.01 | -0.01 .. +0.03 | 5.2 |
+
+APS = mean difference over the robots read x 5 panel robots / 1217 pairings.
+A/A: aa - c -0.99 pts over 5 robots; 1% band ±2.13 (inside).
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 30` | halt | ok | 0 failed of 170 |
+| `dead 8` | halt | ok | every arm scoring |
+| `skips 60 over 24` | halt | ok | 5.8 a battle over the last 24 (first 24: 3.5) |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 190 battles unrun (about 3 min); every battle already fought is kept and a rerun resumes from it.
+
+> warning: jobs are in set order (no --shuffle-jobs): running means read the set's first robots
 
 ### Queue log (last lines)
 
 ```
-12:07:49 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
-12:07:49 start prep
-12:07:52 progress pushed to origin claude/pc-field-screen-progress (every 15 min)
-12:12:36 prep exit=0 in 286 s
-12:12:36 start livematch
-12:12:36 watching livematch: 3 stop rule(s)
 12:12:52 progress livematch: 2/124 (2%) battles, 447/h, ETA 16 min, 0 failed, skips 1.0/battle (last 100)
 12:21:06 livematch exit=0 in 510 s
 12:21:06 start screen
@@ -81,4 +103,10 @@ Stopping now would leave 1 battles unrun (about 6 min); every battle already fou
 13:43:43 progress screen: 4627/5760 (80%) battles, 3528/h, ETA 19 min, 0 failed, skips 15.2/battle (last 100), aa +0.01, hof -0.17, rwl -0.01, qw -0.08, sb -0.20, vj -0.01, or -0.94
 14:13:57 progress screen: 5750/5760 (100%) battles, 2220/h, ETA 0 min, 0 failed, skips 12.9/battle (last 100), aa +0.02, hof -0.18, rwl -0.01, qw -0.08, sb -0.20, vj -0.02, or -0.97
 14:44:24 progress screen: 5754/5760 (100%) battles, 8/h, ETA 45 min, 0 failed, skips 12.6/battle (last 100), aa +0.02, hof -0.18, rwl -0.02, qw -0.08, sb -0.20, vj -0.02, or -0.97
+15:14:52 progress screen: 5759/5760 (100%) battles, 10/h, ETA 6 min, 0 failed, skips 11.8/battle (last 100), aa +0.02, hof -0.18, rwl -0.01, qw -0.08, sb -0.21, vj -0.02, or -0.97
+15:19:08 screen exit=0 in 10681 s
+15:19:08 start pick
+15:22:04 pick exit=0 in 176 s
+15:22:04 start lock
+15:22:05 watching lock: 4 stop rule(s)
 ```
