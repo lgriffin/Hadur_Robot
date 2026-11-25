@@ -1,32 +1,37 @@
-# BENCH-253 pc-locks, round 27: seven per-robot lines on existing switches, each locked and confirmed on two
-# independent 12-seed cloud sets (coverage/shards/locks.tsv, dzlane/A, dzlane/B, gap324C2, dzlane/L): silverbird on sb,
-# Mirage on rp, five head-on robots on qw; and fifteen robots whose line is already on master, read only in c and aa, so
-# the A/A check reads 22. name | note | jar
-infovk.s_schwarzm16.silverbird 1.0 | sb-A-L-24seeds | infovk.s_schwarzm16.silverbird_1.0.jar
-zen.Mirage 0.9.5 | rp-C-24seeds | zen.Mirage_0.9.5.jar
-kjc.etc.Dharok 1.0 | qw-B-group | kjc.etc.Dharok_1.0.jar
-ms.Ares 0.19 | qw-B-group | ms.Ares_0.19.jar
-mcb.Audace 1.3 | qw-B-group | mcb.Audace_1.3.jar
-sam.ChipmunkDuelist 1.0 | qw-B-group | sam.ChipmunkDuelist_1.0.jar
-acid.Bl4ck 1.0 | qw-B-group | acid.Bl4ck_1.0.jar
-ags.Midboss 1q.fast | fq-PC-r26-second-read | ags.Midboss_1q.fast.jar
-ary.Help 1.0 | kb-M-12seeds | ary.Help_1.0.jar
-cjm.Che 1.2 | kb-M-12seeds | cjm.Che_1.2.jar
-starpkg.StarViewerZ 1.26 | kb-M-12seeds | starpkg.StarViewerZ_1.26.jar
-NDH.GuessFactor 1.0 | kb-M-12seeds | NDH.GuessFactor_1.0.jar
-PkKillers.PkAssassin 1.0 | kb-M-12seeds | PkKillers.PkAssassin_1.0.jar
-oog.micro.Maui 1.2 | aa-pad-line-on-master | oog.micro.Maui_1.2.jar
-sgp.MadHatter 4.13 | aa-pad-line-on-master | sgp.MadHatter_4.13.jar
-suh.nano.RammingC 1.00 | aa-pad-line-on-master | suh.nano.RammingC_1.00.jar
-jcs.AutoBot 4.2.1 | aa-pad-move56-line | jcs.AutoBot_4.2.1.jar
-mn.nano.perceptual.Impact 1.3.0 | aa-pad-r14-line | mn.nano.perceptual.Impact_1.3.0.jar
-mz.NanoDeath 2.56 | aa-pad-r14-line | mz.NanoDeath_2.56.jar
-wompi.Kowari 1.6 | aa-pad-r14-line | wompi.Kowari_1.6.jar
-sul.Bicephal 1.2 | aa-pad-r14-line | sul.Bicephal_1.2.jar
-cw.megas.GhostShell GT | aa-pad-move58-line | cw.megas.GhostShell_GT.jar
-cw.megas.Gridd 0.4 | aa-pad-move58-line | cw.megas.Gridd_0.4.jar
-cw.megas.Polar 3.2 | aa-pad-move58-line | cw.megas.Polar_3.2.jar
-com.syncleus.robocode.Dreadnaught 0.1 | aa-pad-r19-line | com.syncleus.robocode.Dreadnaught_0.1.jar
-nic.Nicator 2.4 | aa-pad-r19-line | nic.Nicator_2.4.jar
-lrem.micro.MoggFanatic 0.2 | aa-pad-r20-line | lrem.micro.MoggFanatic_0.2.jar
-alpha.BlackIce 1.0 | aa-pad-r20-line | alpha.BlackIce_1.0.jar
+# BENCH-253 pc-locks, round 28: 32 per-robot lines on existing table switches, each locked on 12+ fresh cloud seeds
+# against both c and aa (coverage/shards/locks.tsv): 21 on rwl (MOVE-46 ram wait: their last bullets hit us after our
+# endgame ram starts), RainbowBot on md, RaikoNano on x0, RedBull on rf, six on hof (MOVE-71), FunkyChicken on ty, X1 on
+# sp2. Every robot is read in c and aa, so the A/A check reads 32. name | note | jar
+TCMI.Enyo 0.4 | rwl-r28 | TCMI.Enyo_0.4.jar
+joe.ADinosaur 1.0 | rwl-r28 | joe.ADinosaur_1.0.jar
+Legend.Qetro 1.6 | rwl-r28 | Legend.Qetro_1.6.jar
+mz.Movement 1.8 | rwl-r28 | mz.Movement_1.8.jar
+oog.nano.SavantVS 1.1 | rwl-r28 | oog.nano.SavantVS_1.1.jar
+strider.Festis 1.2.1 | rwl-r28 | strider.Festis_1.2.1.jar
+deo.CloudBot 1.3 | rwl-r28 | deo.CloudBot_1.3.jar
+jep.nano.Hawkwing 0.4.1 | rwl-r28 | jep.nano.Hawkwing_0.4.1.jar
+ahf.Acero 1.0 | rwl-r28 | ahf.Acero_1.0.jar
+nexus.Prototype 1.0 | rwl-r28 | nexus.Prototype_1.0.jar
+acogdev.alpha 0.2 | rwl-r28 | acogdev.alpha_0.2.jar
+krillr.mega.Psyche 0.0.3 | rwl-r28 | krillr.mega.Psyche_0.0.3.jar
+knackibot.KnackOnOne 0.8.1 | rwl-r28 | knackibot.KnackOnOne_0.8.1.jar
+davidalves.net.DuelistNano 1.0 | rwl-r28 | davidalves.net.DuelistNano_1.0.jar
+lk.nano.Avesnar 1.1 | rwl-r28 | lk.nano.Avesnar_1.1.jar
+kurios.DOSexe .9a | rwl-r28 | kurios.DOSexe_.9a.jar
+ab.DengerousRoBatra 1.3 | rwl-r28 | ab.DengerousRoBatra_1.3.jar
+fala.robocode.FalaRobot 1.0 | rwl-r28 | fala.robocode.FalaRobot_1.0.jar
+wiki.BasicGFSurfer 1.02 | rwl-r28 | wiki.BasicGFSurfer_1.02.jar
+lessonz.robocode.Oz 0.5.0 | rwl-r28 | lessonz.robocode.Oz_0.5.0.jar
+jgap.JGAP7958 1.0 | rwl-r28 | jgap.JGAP7958_1.0.jar
+doka.ShinigamiKNN 1.0 | rwl-r28 | doka.ShinigamiKNN_1.0.jar
+deo.virtual.RainbowBot 1.0 | md-r28 | deo.virtual.RainbowBot_1.0.jar
+wiki.nano.RaikoNano 1.1 | x0-r28 | wiki.nano.RaikoNano_1.1.jar
+zyx.nano.RedBull 1.0 | rf-r28 | zyx.nano.RedBull_1.0.jar
+Legend.X_FireFly 1.3 | hof-r28 | Legend.X_FireFly_1.3.jar
+kjc.etc.Dharok 1.0 | hof-r28 | kjc.etc.Dharok_1.0.jar
+ms.Ares 0.19 | hof-r28 | ms.Ares_0.19.jar
+mcb.Audace 1.3 | hof-r28 | mcb.Audace_1.3.jar
+sam.ChipmunkDuelist 1.0 | hof-r28 | sam.ChipmunkDuelist_1.0.jar
+acid.Bl4ck 1.0 | hof-r28 | acid.Bl4ck_1.0.jar
+kawigi.nano.FunkyChicken 1.1 | ty-r28 | kawigi.nano.FunkyChicken_1.1.jar
+evd.X1 0.01 | sp2-r28 | evd.X1_0.01.jar

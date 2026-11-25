@@ -1,0 +1,8 @@
+# pc-locks round 27 (BENCH-253, PR #1050): robots whose lines shipped on 24 fresh PC seeds at the live turn time
+infovk.s_schwarzm16.silverbird 1.0
+zen.Mirage 0.9.5
+NDH.GuessFactor 1.0
+cjm.Che 1.2
+starpkg.StarViewerZ 1.26
+PkKillers.PkAssassin 1.0
+acid.Bl4ck 1.0

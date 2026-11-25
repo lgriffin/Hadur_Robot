@@ -319,7 +319,7 @@ class ShieldListResourceTest {
         java.util.List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
         for (String n : ShieldTableData.racePowers()) lines.add(ShieldList.RACE_POWER_PREFIX + " " + n);
         ShieldList list = ShieldList.parse(lines);
-        assertEquals(8 + 1 + 2 + 1 + 1 + 1 + 4 + 1, ShieldTableData.racePowers().length, "pc-race-power (BENCH-206, PR #695) confirm picks and pc-r31 (BENCH-244, PR #817) and pc-locks rounds 3 (PR #860), 6 (PR #890), 8 (PR #905), 10 (PR #922), 11 (PR #929) and 25 (PR #1036)");
+        assertEquals(8 + 1 + 2 + 1 + 1 + 1 + 4 + 1 + 1, ShieldTableData.racePowers().length, "pc-race-power (BENCH-206, PR #695) confirm picks and pc-r31 (BENCH-244, PR #817) and pc-locks rounds 3 (PR #860), 6 (PR #890), 8 (PR #905), 10 (PR #922), 11 (PR #929), 25 (PR #1036) and 27 (PR #1050)");
         for (String n : ShieldTableData.racePowers()) assertTrue(list.racePower(n), n);
         assertTrue(!list.racePower("abc.Shadow 3.83c"), "a pilot robot that did not hold the 3-point margin");
     }
