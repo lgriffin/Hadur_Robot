@@ -1003,7 +1003,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             # TMODE-62 on every team: the default and every shipped entry play RUN. Suffix rn.
             version="${version}rn"
             edit "$modes" "public static final boolean FORCE_RUN = false;" "public static final boolean FORCE_RUN = true;"
-            sed -i -E '/^        t\.put\(/{/Mode\.RUN/!s/\)\);$/, Mode.RUN));/}' "$modes"
+            sed -i -E '/^        t\.put\(.*, of\(Mode\./{/Mode\.RUN/!s/\)\);$/, Mode.RUN));/}' "$modes"
             ;;
         tmtight)
             # TMODE-59 on (team only): TIGHT plays in the five table entries that carry it (hunt pull 1.0). Suffix tp.
