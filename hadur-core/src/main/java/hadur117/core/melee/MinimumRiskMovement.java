@@ -1089,11 +1089,11 @@ public class MinimumRiskMovement {
         return quartered;
     }
 
-<<<<<<< HEAD
     /** TMODE-62: whether the running dodge chose the last destination, which is then driven to at full speed through any turn. */
     public boolean running() {
         return running;
-=======
+    }
+
     /** MMOVE-31: what {@code p} pays for standing in the other opponents' fire lanes. */
     double laneRisk(Point2D.Double p, View v) {
         if (v.laneBearing == null) lanes(v);
@@ -1164,7 +1164,6 @@ public class MinimumRiskMovement {
             if (t != s && dist[t] < d) k++;
         }
         return k;
->>>>>>> origin/master
     }
 
     /** Opponent {@code i}'s term: energy over distance squared, with the closest-robot factor (MMOVE-2). */
