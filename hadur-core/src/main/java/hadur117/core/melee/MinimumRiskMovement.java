@@ -168,6 +168,21 @@ public class MinimumRiskMovement {
     static final double QUARTERS_K = 10.0;
 
     /** What the movement sees this tick. */
+    /**
+     * MMOVE-31: off a team with three or more opponents, the fire lanes. Each opponent fires
+     * mostly at its nearest robots, and a shot that misses flies on past its target. Every
+     * opponent S and each other opponent T it may aim at make a lane: the ray from S through T,
+     * as wide as S's escape angle at that distance. A candidate inside a lane pays the chance S
+     * aims at T ({@code 1/(1+k)^2} by T's nearness rank k from S, Hadur counted, normalised)
+     * times the share of the lane Hadur's width covers, times {@link #LANE_K}. Hadur's own lane
+     * is left to the surfer. Scored at the destination only. Off: the screen arm {@code mlane}.
+     */
+    public static final boolean FIRE_LANES = false;
+    static final double LANE_K = 1.0;
+    /** MMOVE-31: the crowd shot the lanes assume, for the escape angle. */
+    static final double LANE_POWER = 2.0;
+    static final double LANE_HALF_WIDTH = 18.0;
+
     public static final class View {
         final Point2D.Double me;
         final double energy;
@@ -196,6 +211,8 @@ public class MinimumRiskMovement {
         boolean fullSpeed;
         /** TMODE-49: the member's body heading and velocity this tick. */
         double heading, velocity;
+        /** MMOVE-31: per opponent, its lanes (bearing, weight) to each other opponent; built on first use. */
+        double[][] laneBearing, laneWeight;
 
         View(Point2D.Double me, double energy, long now, int others, List<EnemyInfo> enemies,
              List<VirtualBullet> bullets, MeleeStrategy.Plan plan) {
@@ -1002,6 +1019,7 @@ public class MinimumRiskMovement {
             if (!v.mateBullets.isEmpty()) r += bulletRisk(p, v.me, v.mateBullets, v.now);
         }
         r += centreRisk(p) + wallRisk(p) + cornerRisk(p) + pastRisk(p) + noise(p);
+        if (FIRE_LANES && v.others >= 3 && !onTeam(v.mates)) r += laneRisk(p, v);
         if (v.now < OPENING_TICKS && openingSpot != null) {
             r += OPENING_K * p.distance(openingSpot) / 500.0;
         }
@@ -1051,6 +1069,70 @@ public class MinimumRiskMovement {
     /** TMODE-45: whether the last decision had a chaser; the drive then keeps full speed through a turn. */
     public boolean quartered() {
         return quartered;
+    }
+
+    /** MMOVE-31: what {@code p} pays for standing in the other opponents' fire lanes. */
+    double laneRisk(Point2D.Double p, View v) {
+        if (v.laneBearing == null) lanes(v);
+        double mea = Math.asin(MAX_SPEED / (20 - 3 * LANE_POWER));
+        double r = 0;
+        for (int s = 0; s < v.enemies.size(); s++) {
+            double[] bearing = v.laneBearing[s];
+            if (bearing == null) continue;
+            EnemyInfo shooter = v.enemies.get(s);
+            double d = p.distance(shooter.location);
+            if (d < 1) continue;
+            double half = Math.atan(LANE_HALF_WIDTH / d);
+            double b = DiaUtils.absoluteBearing(shooter.location, p);
+            double cover = Math.min(1.0, half / mea);
+            double sum = 0;
+            for (int t = 0; t < bearing.length; t++) {
+                if (Math.abs(DiaUtils.normalizeAngle(b - bearing[t], 0)) < mea + half) sum += v.laneWeight[s][t];
+            }
+            r += shooter.freshness(v.now) * cover * sum;
+        }
+        return LANE_K * r;
+    }
+
+    /**
+     * MMOVE-31: each armed opponent's lanes to every other opponent, weighted by
+     * {@code 1/(1+k)^2} of that target's nearness rank k from the shooter, Hadur at {@code v.me}
+     * counted among the targets, so the weights over the others leave Hadur's share out.
+     */
+    static void lanes(View v) {
+        int n = v.enemies.size();
+        v.laneBearing = new double[n][];
+        v.laneWeight = new double[n][];
+        for (int s = 0; s < n; s++) {
+            EnemyInfo shooter = v.enemies.get(s);
+            if (shooter.energy <= 0 || n < 2) continue;
+            double[] dist = new double[n];
+            for (int t = 0; t < n; t++) dist[t] = t == s ? Double.NaN : shooter.location.distance(v.enemies.get(t).location);
+            double toMe = shooter.location.distance(v.me);
+            double[] w = new double[n - 1];
+            double[] bearing = new double[n - 1];
+            double total = 1.0 / Math.pow(1 + rank(toMe, dist, toMe, s), 2);
+            int j = 0;
+            for (int t = 0; t < n; t++) {
+                if (t == s) continue;
+                w[j] = 1.0 / Math.pow(1 + rank(dist[t], dist, toMe, s), 2);
+                bearing[j] = DiaUtils.absoluteBearing(shooter.location, v.enemies.get(t).location);
+                total += w[j];
+                j++;
+            }
+            for (int k = 0; k < w.length; k++) w[k] /= total;
+            v.laneBearing[s] = bearing;
+            v.laneWeight[s] = w;
+        }
+    }
+
+    /** MMOVE-31: how many of the shooter {@code s}'s other targets (Hadur at {@code toMe} among them) are nearer than {@code d}. */
+    private static int rank(double d, double[] dist, double toMe, int s) {
+        int k = toMe < d ? 1 : 0;
+        for (int t = 0; t < dist.length; t++) {
+            if (t != s && dist[t] < d) k++;
+        }
+        return k;
     }
 
     /** Opponent {@code i}'s term: energy over distance squared, with the closest-robot factor (MMOVE-2). */
