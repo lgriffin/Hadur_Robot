@@ -28,6 +28,14 @@ read-outs, and are not updated after the fact.
 | [sanaro.md](sanaro.md) | Sanaro, NanoMelee |
 | [kitlab.md](kitlab.md) | JayLexi (MiniRumble) and Eveimear (MicroRumble) |
 
+## Proposals
+
+Designs that are written down and estimated but not built.
+
+| Doc | Topic |
+|---|---|
+| [sepia-design.md](sepia-design.md) | Sepia, a second 1v1 robot on Hadur's kernel: ink cover, the jet cycle, the hub of species, its EARS rows, bench cards and an estimated APS |
+
 ## Plans and studies (historical)
 
 Each is the plan or study as it stood when its work ran; the outcome is in the release notes
