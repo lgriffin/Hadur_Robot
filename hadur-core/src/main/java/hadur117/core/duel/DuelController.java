@@ -1638,6 +1638,8 @@ public final class DuelController {
             gunController.setFreeGun(true);
             gunController.setUndecayed(true);
         }
+        // GUN-12: free gun (GUN-9) alone for the opponents the table names (duel only).
+        if (duelOnly(stackList.freeGun(name), enemiesTotal)) gunController.setFreeGun(true);
         // POISON-2: stop-and-go, forced or by the table's entry and its variant.
         int prefire = MoveDesign.STOP_AND_GO ? MoveDesign.STOP_AND_GO_PREFIRE : stackList.stopGo(name);
         stopAndGo = duelOnly(prefire > 0, enemiesTotal) ? new StopAndGo(battleField, prefire) : null;
