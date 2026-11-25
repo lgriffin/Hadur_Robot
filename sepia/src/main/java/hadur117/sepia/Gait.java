@@ -36,7 +36,9 @@ public final class Gait {
         /** Carry on, turn back or hold: one of three landings per shot. */
         JET,
         /** The jet cycle's options plus half speed both ways, with SURF-3's let-go. */
-        SURF
+        SURF,
+        /** SURF-5: the ink surf's options, each new landing chosen jointly with the one still in flight. */
+        JOINT
     }
 
     /** One choice for a wave's stretch of path: which way round the source, and how fast. */
@@ -88,6 +90,8 @@ public final class Gait {
     public static final double ENEMY_CLEARANCE = 100;
     /** SURF-3: a fixed landing is let go for one under this share of its exposure. */
     public static final double LET_GO = 0.5;
+    /** SURF-5: how many of the wave in flight's least exposed options are tried with the new wave's. */
+    static final int JOINT_PRIORS = 3;
     /** The longest a forecast runs, ticks. */
     static final int HORIZON = 150;
 
@@ -222,8 +226,64 @@ public final class Gait {
      */
     public void shotRead(InkWave wave, RobotState now, Point2D.Double enemy, Rater rater) {
         prune(now.time);
-        if (kind == Kind.SURF) letGo(now, enemy, rater);
-        commit(wave, now, enemy, rater);
+        if (kind != Kind.JET) letGo(now, enemy, rater);
+        if (kind == Kind.JOINT) commitJointly(wave, now, enemy, rater);
+        else commit(wave, now, enemy, rater);
+    }
+
+    /**
+     * SURF-5: the new wave's landing is chosen together with that of the latest wave still in
+     * flight, as the pair of options with the least summed exposure. Behind a wave in flight the
+     * new wave's own stretch is only the end of its flight, so its landing is mostly set by the
+     * option before it; choosing both together gives it the whole flight's reach.
+     */
+    void commitJointly(InkWave wave, RobotState now, Point2D.Double enemy, Rater rater) {
+        int last = -1;
+        for (int i = 0; i < plan.size(); i++) {
+            InkWave w = plan.get(i).owner;
+            if (w.arrival > now.time && !w.met && !w.hit) last = i;
+        }
+        if (last < 0) {
+            commit(wave, now, enemy, rater);
+            return;
+        }
+        InkWave prior = plan.get(last).owner;
+        List<Segment> before = new ArrayList<>(plan.subList(0, last));
+        // Stretches after it belong to waves already met or hit: kept as they are, in scoring and in the plan.
+        List<Segment> later = new ArrayList<>(plan.subList(last + 1, plan.size()));
+        List<Option> opts = options();
+        Forecast[] fas = new Forecast[opts.size()];
+        double[] eas = new double[opts.size()];
+        Integer[] order = new Integer[opts.size()];
+        for (int i = 0; i < opts.size(); i++) {
+            fas[i] = forecast(now, before, opts.get(i), prior, enemy);
+            eas[i] = rater.exposure(prior, fas[i]);
+            order[i] = i;
+        }
+        java.util.Arrays.sort(order, (x, y) -> Double.compare(eas[x], eas[y]));
+        Option bestPrior = null, bestNew = null;
+        double best = Double.POSITIVE_INFINITY;
+        for (int k = 0; k < Math.min(JOINT_PRIORS, order.length); k++) {
+            Option a = opts.get(order[k]);
+            Forecast fa = fas[order[k]];
+            double ea = eas[order[k]];
+            if (ea >= best) break;
+            List<Segment> trial = new ArrayList<>(before);
+            trial.add(new Segment(prior, a, fa.orientation, prior.wave.sourceLocation, fa.passed));
+            trial.addAll(later);
+            for (Option b : options()) {
+                double e = ea + rater.exposure(wave, forecast(now, trial, b, wave, enemy));
+                if (e < best - 1e-12) {
+                    best = e;
+                    bestPrior = a;
+                    bestNew = b;
+                }
+            }
+        }
+        plan.subList(last, plan.size()).clear();
+        fix(prior, bestPrior, now, enemy, rater);
+        plan.addAll(later);
+        fix(wave, bestNew, now, enemy, rater);
     }
 
     /**

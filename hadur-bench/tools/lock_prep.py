@@ -58,6 +58,7 @@ LEVERS = {
     "qw": ("aimwlist", ("AIM_WEIGHT",)),  # MOVE-67 per-opponent aim weight 1.0
     "hof": ("hoflist", ("HEAD_ON_FLOOR",)),  # MOVE-71 per-opponent head-on floor
     "fgl": ("fglist", ("FREE_GUN_LIST",)),  # GUN-12 per-opponent free gun
+    "cpl": ("copylist", ("COPY_LIST",)),  # COPY-2 per-opponent bred gun copy
     "ty": ("stinylist", ("SHIELD_TINY",)),  # SHIELD-33 tiny-shot shield waves
     "kb": ("sbklist", ("SHIELD_BREAK",)),  # SHIELD-27 close-start break-off
     "ky": ("syldlist", ("SHIELD_YIELD",)),  # SHIELD-35 close-range yield
@@ -117,13 +118,32 @@ def _kl_lines(names):
     return [lines[n] for n in names]
 
 
+# COPY-2: a copy pick carries its bred genome ("genome name", as copy_breed.py --lines writes it) from this file,
+# so cpl.list holds whole lines.
+CPL_LINES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "plans", "copy-lines.txt")
+
+
+def _cpl_name(line):
+    p = line.strip().split(" ", 1)
+    return p[1] if len(p) == 2 else line.strip()
+
+
+def _cpl_lines(names):
+    lines = {_cpl_name(l): l.strip() for l in open(CPL_LINES) if l.strip() and not l.startswith("#")}
+    missing = [n for n in names if n not in lines]
+    if missing:
+        raise SystemExit("lock_prep: no copy line for %s in %s" % (", ".join(missing), CPL_LINES))
+    return [lines[n] for n in names]
+
+
 def _list_lines(arm, names):
-    return _pb_lines(names) if arm == "pb" else _dp_lines(names) if arm == "dn" else _kl_lines(names) if arm == "kl" else names
+    return (_pb_lines(names) if arm == "pb" else _dp_lines(names) if arm == "dn" else _kl_lines(names) if arm == "kl"
+            else _cpl_lines(names) if arm == "cpl" else names)
 
 
 def _list_name(arm, line):
     return (_pb_name(line) if arm == "pb" else _dp_name(line) if arm == "dn" else _kl_name(line) if arm == "kl"
-            else line.strip())
+            else _cpl_name(line) if arm == "cpl" else line.strip())
 
 
 def main(pick, panel, base_arms, outdir):
