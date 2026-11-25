@@ -106,4 +106,50 @@ class GunCopyTest {
         double aim = c.aim(c.size() - 1, 2.0);
         assertTrue(!Double.isNaN(aim) && Math.abs(Angles.normalRelativeAngle(aim - ang)) < 1.0, "aim " + aim);
     }
+
+    @Test
+    @Tag("COPY-2")
+    @DisplayName("out-of-range genes leave the copy off, in every family")
+    void rangesChecked() {
+        String knn = "knn;w_lat=1;w_adv=0;w_dist=1;w_accel=0;w_since=0;w_wall=0;k=5;width=0.1;ticks=0;cap=500;lag=1";
+        String pm = "pm;round=2.0x2.0;longest=20;least=1;lag=0";
+        String[] bad = {
+            HIST.replace("bins=31", "bins=1"), HIST.replace("d_max=900", "d_max=0"), HIST.replace("roll=0.0", "roll=1"),
+            HIST.replace("s_lat=1", "s_lat=17"), HIST.replace("lag=0", "lag=10"), HIST.replace("bins=31", "bins=-3"),
+            HIST.replace("d_max=900", "d_max=Infinity"),
+            knn.replace("k=5", "k=0"), knn.replace("cap=500", "cap=0"), knn.replace("width=0.1", "width=0"),
+            pm.replace("round=2.0x2.0", "round=0x2.0"), pm.replace("round=2.0x2.0", "round=2.0x0"), pm.replace("least=1", "least=0"),
+        };
+        for (String g : bad) assertNull(GunCopy.parse(g, 800, 600), g);
+    }
+
+    @Test
+    @Tag("COPY-2")
+    @DisplayName("shots outside the history, or for a copy that does not learn from shots, are ignored")
+    void shotsIgnored() {
+        GunCopy ticks = GunCopy.parse(HIST, 800, 600);
+        GunCopy pm = GunCopy.parse("pm;round=2.0x2.0;longest=20;least=1;lag=0", 800, 600);
+        GunCopy shots = GunCopy.parse(HIST.replace("ticks=1", "ticks=0").replace("lag=0", "lag=2"), 800, 600);
+        for (GunCopy c : new GunCopy[] {ticks, pm, shots}) {
+            c.observe(0, 400, 100, 0, 8, 400, 500, 0);
+            c.observe(1, 400, 108, 0, 8, 400, 500, 2.0);
+            c.shot(-1, 2.0);
+            c.shot(5, 2.0);
+            c.shot(1, 2.0); // aimed two scans back: before the history, or in another round
+            assertTrue(Double.isNaN(c.aim(7, 2.0)));
+            assertTrue(!Double.isNaN(c.aim(1, 2.0)) || c.lag() > 1);
+        }
+    }
+
+    @Test
+    @Tag("COPY-2")
+    @DisplayName("a shot seen late is learnt on the scan it reached us, among the scans already observed")
+    void lateShotLearnt() {
+        GunCopy c = GunCopy.parse(HIST.replace("ticks=1", "ticks=0"), 800, 600);
+        double ex = 400, ey = 300;
+        // Standing still 100 px away: a power-3 bullet (11 px a tick) reaches us within 10 scans.
+        for (int i = 0; i < 30; i++) c.observe(0, 400, 400, 0, 0, ex, ey, 0);
+        c.shot(2, 3.0);
+        assertEquals(Math.PI - Math.PI, Angles.normalRelativeAngle(c.aim(29, 3.0)), 1e-9);
+    }
 }
