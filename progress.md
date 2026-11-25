@@ -1,14 +1,14 @@
 # Queue pc-field-screen: progress
 
-Updated 2026-11-25 15:25:00 PC time (15:25 UTC), runner pid 36288.
+Updated 2026-11-25 15:28:57 PC time (15:28 UTC), runner pid 36288.
 
 - `prep` done, exit 0 in 5 min
 - `livematch` done, exit 0 in 8 min
 - `screen` done, exit 0 in 3.0 h
 - `pick` done, exit 0 in 3 min
-- `lock` running
-- `gate` pending
-- `pr` pending
+- `lock` done, exit 0 in 7 min
+- `gate` done, exit 0 in 0 min
+- `pr` done, exit 0 in 0 min
 
 ### livematch
 
@@ -65,41 +65,35 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### lock
 
-**170 of 360 battles** (47%), 0 failed. Running 3 min, 3501 battles/h, about 3 min left (ends ~15:28 PC time). Last battle 0 min ago.
-Skipped turns a battle: 6.1 overall, first 100 6.3, last 100 6.1; engine disables 0.
+**360 of 360 battles** (100%), 0 failed. Running 7 min, 3229 battles/h, about 0 min left (ends ~15:28 PC time). Last battle 0 min ago.
+Skipped turns a battle: 6.2 overall, first 100 6.3, last 100 6.0; engine disables 0.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 30 | 0 | 79.94 | - | - | - | 6.6 |
-| aa | 30 | 0 | 78.95 | -0.00 (5 robots) | ±0.01 | -0.01 .. +0.01 | 6.0 |
-| rwl | 27 | 0 | 77.37 | -0.01 (5 robots) | ±0.01 | -0.03 .. +0.01 | 6.0 |
-| qw | 28 | 0 | 77.14 | -0.01 (5 robots) | ±0.01 | -0.02 .. +0.00 | 6.3 |
-| sb | 28 | 0 | 78.04 | -0.01 (5 robots) | ±0.01 | -0.02 .. +0.01 | 6.5 |
-| or | 27 | 0 | 81.62 | +0.01 (5 robots) | ±0.01 | -0.01 .. +0.03 | 5.2 |
+| c | 60 | 0 | 78.42 | - | - | - | 6.4 |
+| aa | 60 | 0 | 78.55 | +0.00 (5 robots) | ±0.01 | -0.01 .. +0.01 | 6.0 |
+| rwl | 60 | 0 | 77.82 | -0.00 (5 robots) | ±0.00 | -0.01 .. +0.00 | 6.2 |
+| qw | 60 | 0 | 77.38 | -0.00 (5 robots) | ±0.00 | -0.01 .. +0.00 | 6.3 |
+| sb | 60 | 0 | 78.38 | -0.00 (5 robots) | ±0.01 | -0.01 .. +0.01 | 6.6 |
+| or | 60 | 0 | 80.99 | +0.01 (5 robots) | ±0.01 | -0.01 .. +0.03 | 5.7 |
 
 APS = mean difference over the robots read x 5 panel robots / 1217 pairings.
-A/A: aa - c -0.99 pts over 5 robots; 1% band ±2.13 (inside).
+A/A: aa - c +0.13 pts over 5 robots; 1% band ±1.51 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 170 |
+| `fails 30` | halt | ok | 0 failed of 360 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 60 over 24` | halt | ok | 5.8 a battle over the last 24 (first 24: 3.5) |
+| `skips 60 over 24` | halt | ok | 5.0 a battle over the last 24 (first 24: 3.5) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 190 battles unrun (about 3 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 > warning: jobs are in set order (no --shuffle-jobs): running means read the set's first robots
 
 ### Queue log (last lines)
 
 ```
-12:12:52 progress livematch: 2/124 (2%) battles, 447/h, ETA 16 min, 0 failed, skips 1.0/battle (last 100)
-12:21:06 livematch exit=0 in 510 s
-12:21:06 start screen
-12:21:06 watching screen: 5 stop rule(s)
-12:43:13 progress screen: 1364/5760 (24%) battles, 3702/h, ETA 1.2 h, 0 failed, skips 14.4/battle (last 100), aa -0.00, hof -0.14, rwl +0.03, qw -0.11, sb -0.19, vj -0.03, or -0.88
-13:13:35 progress screen: 2855/5760 (50%) battles, 2944/h, ETA 59 min, 0 failed, skips 15.3/battle (last 100), aa -0.00, hof -0.16, rwl -0.00, qw -0.09, sb -0.19, vj -0.03, or -0.96
 13:43:43 progress screen: 4627/5760 (80%) battles, 3528/h, ETA 19 min, 0 failed, skips 15.2/battle (last 100), aa +0.01, hof -0.17, rwl -0.01, qw -0.08, sb -0.20, vj -0.01, or -0.94
 14:13:57 progress screen: 5750/5760 (100%) battles, 2220/h, ETA 0 min, 0 failed, skips 12.9/battle (last 100), aa +0.02, hof -0.18, rwl -0.01, qw -0.08, sb -0.20, vj -0.02, or -0.97
 14:44:24 progress screen: 5754/5760 (100%) battles, 8/h, ETA 45 min, 0 failed, skips 12.6/battle (last 100), aa +0.02, hof -0.18, rwl -0.02, qw -0.08, sb -0.20, vj -0.02, or -0.97
@@ -109,4 +103,10 @@ Stopping now would leave 190 battles unrun (about 3 min); every battle already f
 15:22:04 pick exit=0 in 176 s
 15:22:04 start lock
 15:22:05 watching lock: 4 stop rule(s)
+15:28:46 lock exit=0 in 401 s
+15:28:46 start gate
+15:28:47 gate exit=0 in 1 s
+15:28:47 start pr
+15:28:57 pr exit=0 in 9 s
+15:28:57 ALLDONE
 ```

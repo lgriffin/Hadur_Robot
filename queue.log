@@ -42,3 +42,9 @@
 15:22:04 pick exit=0 in 176 s
 15:22:04 start lock
 15:22:05 watching lock: 4 stop rule(s)
+15:28:46 lock exit=0 in 401 s
+15:28:46 start gate
+15:28:47 gate exit=0 in 1 s
+15:28:47 start pr
+15:28:57 pr exit=0 in 9 s
+15:28:57 ALLDONE
