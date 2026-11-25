@@ -1,17 +1,18 @@
-# BENCH-253 pc-locks, round 29: 14 per-robot lines on existing table switches, each read on 12+ fresh cloud seeds
-# against both c and aa (coverage/shards/locks.tsv, dzlane/L/r29-candidates.txt): 13 on rwl (MOVE-46 ram wait: their
-# last bullets hit us after our endgame ram starts) and MagicD3 on x0 (SHIELD-19 exit off). name | note | jar
-dcs.Eater_of_Worlds_Mini 1.0 | rwl-B-12seeds | dcs.Eater_of_Worlds_Mini_1.0.jar
-cw.megas.GhostShell GT | rwl-B-12seeds | cw.megas.GhostShell_GT.jar
-dggp.haiku.gpBot_0 1.1 | rwl-B-24seeds | dggp.haiku.gpBot_0_1.1.jar
-zyx.micro.Ant 1.1 | rwl-G-24seeds | zyx.micro.Ant_1.1.jar
-amc.ROBv300 1.1 | rwl-M-24seeds | amc.ROBv300_1.1.jar
-mladjo.iRobot 0.3 | rwl-D-24seeds | mladjo.iRobot_0.3.jar
-janm.Jammy 1.0 | rwl-C-D-24seeds | janm.Jammy_1.0.jar
-erdnis.Rover 0.3 | rwl-G-24seeds | erdnis.Rover_0.3.jar
-cx.micro.Blur 0.2 | rwl-G-L-36seeds | cx.micro.Blur_0.2.jar
-Legend.X_FireFly 1.3 | rwl-B-12seeds-on-hof | Legend.X_FireFly_1.3.jar
-toz.Gnome 1.1 | rwl-near-36seeds | toz.Gnome_1.1.jar
-ph.Thinker 0.2.5 | rwl-near-36seeds | ph.Thinker_0.2.5.jar
-sam.Samspin 1.0 | rwl-near-48seeds | sam.Samspin_1.0.jar
-oog.micro.MagicD3 0.41 | x0-near-D-L-48seeds | oog.micro.MagicD3_0.41.jar
+# BENCH-253 pc-locks, round 30: 9 per-robot lines on existing table switches, each read on 12+ fresh cloud seeds
+# against both c and aa (coverage/shards/locks.tsv, dzlane/L/r29-candidates.txt): GFMicro, PkAssassin and Fhqwhgads on ky
+# (SHIELD-35 close-range yield), TheoryOfEverything, Fe4r and LightningBug on rwl (MOVE-46 ram wait), Sparrow and
+# Decepticon on ty (SHIELD-33 tiny-shot waves) and DarkHallow on x0 (SHIELD-19 exit off); and four robots whose round 29
+# line is on master, read only in c and aa, so the A/A check reads 13. name | note | jar
+simonton.micro.GFMicro 1.0 | ky-L-12seeds | simonton.micro.GFMicro_1.0.jar
+PkKillers.PkAssassin 1.0 | ky-M-12seeds | PkKillers.PkAssassin_1.0.jar
+kawigi.mini.Fhqwhgads 1.1 | ky-M-24seeds | kawigi.mini.Fhqwhgads_1.1.jar
+ar.TheoryOfEverything 1.2.1 | rwl-L-12seeds | ar.TheoryOfEverything_1.2.1.jar
+Krabb.fe4r.Fe4r 0.4 | rwl-L-24seeds | Krabb.fe4r.Fe4r_0.4.jar
+ry.LightningBug 1.0 | rwl-L-24seeds | ry.LightningBug_1.0.jar
+dummy.micro.Sparrow 2.5 | ty-L-18seeds | dummy.micro.Sparrow_2.5.jar
+jcs.Decepticon 2.5.3 | ty-L-18seeds | jcs.Decepticon_2.5.3.jar
+jekl.DarkHallow .90.9 | x0-M-36seeds-near | jekl.DarkHallow_.90.9.jar
+janm.Jammy 1.0 | aa-pad-r29-line | janm.Jammy_1.0.jar
+mladjo.iRobot 0.3 | aa-pad-r29-line | mladjo.iRobot_0.3.jar
+ph.Thinker 0.2.5 | aa-pad-r29-line | ph.Thinker_0.2.5.jar
+sam.Samspin 1.0 | aa-pad-r29-line | sam.Samspin_1.0.jar
