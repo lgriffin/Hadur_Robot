@@ -232,6 +232,9 @@ public class MinimumRiskMovement {
     private final Point2D.Double centre;
     /** TMODE-45: whether the last decision had a chaser. */
     private boolean quartered;
+    /** TMODE-62: the running dodge, and whether it chose this tick's drive point. */
+    private final TeamRun run;
+    private boolean running;
     /** TMODE-49: the member's body heading and velocity, set by the controller each tick. */
     private double heading, velocity;
     private final Deque<VirtualBullet> bullets = new ArrayDeque<>();
@@ -319,6 +322,7 @@ public class MinimumRiskMovement {
         this.field = field;
         this.centre = new Point2D.Double(field.width / 2, field.height / 2);
         this.dodge = new TeamDodge(field);
+        this.run = new TeamRun(field);
     }
 
     /** TMODE-27: the dodge's profiles and experts. */
@@ -362,6 +366,7 @@ public class MinimumRiskMovement {
         weighed.clear();
         past.clear();
         dodge.newRound();
+        run.newRound();
         round++;
     }
 
@@ -618,6 +623,7 @@ public class MinimumRiskMovement {
         // TMODE-45: a chaser no longer caps the ring, so the far rings are there to flee to.
         v.chaser = !mates.isEmpty() && modes.contains(TeamModes.Mode.QUARTERS) ? chaser(me, enemies, now) : null;
         quartered = v.chaser != null;
+        running = false;
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.MOMENTUM)) {
             v.momentum = true;
             v.heading = heading;
@@ -629,6 +635,16 @@ public class MinimumRiskMovement {
         if (surf && !onTeam(mates)) {
             // MMOVE-15: the melee surfer picks by the wave check.
             destination = waveBest(candidates, v);
+            return destination;
+        }
+        if (!mates.isEmpty() && modes.contains(TeamModes.Mode.DODGE) && modes.contains(TeamModes.Mode.RUN)) {
+            // TMODE-62: a curve flown at full speed, from the member's real heading and velocity.
+            v.pathBullets = mateBullets(me, now);
+            v.heading = heading;
+            v.velocity = velocity;
+            v.fullSpeed = true;
+            running = true;
+            destination = run.choose(this, v, dodge.waves(), enemies);
             return destination;
         }
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.DODGE)) {
@@ -1051,6 +1067,11 @@ public class MinimumRiskMovement {
     /** TMODE-45: whether the last decision had a chaser; the drive then keeps full speed through a turn. */
     public boolean quartered() {
         return quartered;
+    }
+
+    /** TMODE-62: whether the running dodge chose the last destination, which is then driven to at full speed through any turn. */
+    public boolean running() {
+        return running;
     }
 
     /** Opponent {@code i}'s term: energy over distance squared, with the closest-robot factor (MMOVE-2). */

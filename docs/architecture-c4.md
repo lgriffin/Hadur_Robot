@@ -575,6 +575,7 @@ C4Component
 | `TeamModes` | Per tick, the modes against this team: the first living enemy whose class the table names, else the default set. |
 | `TeamConcord` | The team brain: risk counts every robot nearer an enemy than the point, FINISH plays, GANG switches itself on once 4% of 200+ member-turns show ganging, the gun pools situations by class and fires at most 1.9 beyond 200 px unless reading that class well. |
 | `TeamDodge` | Each detected shot profiled once from simple aims and the team's learned aims, weighted by each expert's loss against that enemy class; destinations re-ranked by profiles and teammates' bullets crossed (with OWN_FIRE). |
+| `TeamRun` | RUN (TMODE-62, off): six curves round the next shot's source, each driven at full speed through the profiles and the teammates' bullets; the curve held is kept unless another scores better by a margin. |
 
 ### Team tick: shared eyes one tick late
 
@@ -704,6 +705,7 @@ endgame MEND-1, 2).
 | `TeamConcord.MOVE`, `GUN`, `RISK`, `POWER`, `POOL` | TMODE-33 | **on** | CONCORD's parts (the group radar and the hunt stand-down failed and are removed) |
 | `TeamModes.FORCE_CLOSE` | TMODE-42 | **on** | Hunt at 250 px instead of 350 (pc-team-close) |
 | `TeamModes.FORCE_QUARTERS` | TMODE-45 | off | Close-quarters dodge; per team in the table (NightmareTeam, Polylunar, TeamDeathTeam, ImpactTeam) |
+| `TeamModes.FORCE_RUN` | TMODE-62 | off | Running dodge (`TeamRun`): a curve round the next shot's source at full speed, held while the shot flies; in no table entry |
 | `TeamModes.FORCE_LAST` | TMODE-47 | **on** | Keep the Melee role against the last enemy while a teammate lives (pc-team-guard) |
 | `TeamModes.FORCE_MOMENTUM` | TMODE-49 | **on** (3.23) | The dodge and path check prefer candidates that keep Hadur's momentum |
 | `TeamModes.FORCE_FITTED` | TMODE-50 | **on** (3.24) | Fitted enemy aims (`TeamModes.FITTED`, eight teams) join the dodge's profile |

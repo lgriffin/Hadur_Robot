@@ -107,7 +107,17 @@ public final class TeamModes {
          * than CLOSE's, for a team whose guns gain little at that range while ours gain much. Only
          * through the table, per team (DemoniacNimrods). Means nothing without HUNT.
          */
-        NEAR
+        NEAR,
+        /**
+         * TMODE-62, the running dodge ({@link TeamRun}): under DODGE the member flies one of six
+         * curves round the next shot's source at full speed, and keeps the curve it is on unless it
+         * is the one predicted to be hit, instead of driving to a new lowest-risk point each tick.
+         * Our own design after the team forensics: our members drove at full speed on 57% of ticks
+         * where OgiTeam's did on 74%, and were hit more when they slowed or turned back. In no
+         * shipped entry; on every team through {@link #FORCE_RUN} (ablation tmrun). Means nothing
+         * without DODGE.
+         */
+        RUN
     }
 
     /**
@@ -128,6 +138,9 @@ public final class TeamModes {
     public static final boolean FORCE_LAST = true;
     /** TMODE-49: MOMENTUM on every team, as pc-team-momentum measured it (PR #826). */
     public static final boolean FORCE_MOMENTUM = true;
+
+    /** TMODE-62: RUN on every team; off in the shipped build (ablation tmrun turns it on). */
+    public static final boolean FORCE_RUN = false;
 
     /** TMODE-59: whether TIGHT in a table entry plays; on as pc-team-tight measured it (PR #1016; ablation tmnotight turns it off). */
     public static final boolean TIGHT_ON = true;
@@ -204,7 +217,7 @@ public final class TeamModes {
         FORCE_MATEFIRE ? Mode.MATEFIRE : null, FORCE_HUNT ? Mode.HUNT : null, FORCE_PATH ? Mode.PATH : null,
         FORCE_DODGE ? Mode.DODGE : null, FORCE_CONCORD ? Mode.CONCORD : null, FORCE_CLOSE ? Mode.CLOSE : null,
         FORCE_QUARTERS ? Mode.QUARTERS : null, FORCE_LAST ? Mode.LAST : null,
-        FORCE_MOMENTUM ? Mode.MOMENTUM : null);
+        FORCE_MOMENTUM ? Mode.MOMENTUM : null, FORCE_RUN ? Mode.RUN : null);
 
     /** Opposing member class to its team's modes; filled from the per-team screens. */
     static final Map<String, Set<Mode>> TABLE = table();
