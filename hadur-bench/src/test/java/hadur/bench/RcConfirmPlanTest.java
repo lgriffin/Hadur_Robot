@@ -33,7 +33,7 @@ class RcConfirmPlanTest {
         assertTrue(at >= 0);
         String body = queue.substring(at, queue.indexOf("\n\n", at + 1));
         assertTrue(body.contains("--shuffle-jobs") && body.contains("--arms plans/pc-rc-confirm.arms")
-            && body.contains("--set census-live.txt") && body.contains("--seeds 1 --seed-base 102000"));
+            && body.contains("--set census-live.txt") && body.contains("--seeds 1 --seed-base 111000"));
         assertTrue(body.contains("  after: livematch"));
         for (String rule : new String[] {"fails 30", "dead 8", "skips 90 over 200", "stall 30m", "aa after 20%"}) {
             assertTrue(body.contains("stop: " + rule), rule);
@@ -46,7 +46,7 @@ class RcConfirmPlanTest {
         assertTrue(queue.contains("open_results_pr.sh claude/pc-rc-confirm-results"));
         assertTrue(queue.contains("set ALERT = lgriffin"));
         // Run 4 read back run 3's battles (same --out and seeds); every later run has its own directory and fresh seeds.
-        assertTrue(queue.contains("set W = work/pc-rc-confirm-r7"), "run 7 has its own work directory");
-        assertTrue(queue.contains("--seeds 6 --seed-base 102100"), "run 7 returners on fresh seeds");
+        assertTrue(queue.contains("set W = work/pc-rc-confirm-r8"), "run 8 has its own work directory");
+        assertTrue(queue.contains("--seeds 6 --seed-base 111100"), "run 8 returners on fresh seeds");
     }
 }
