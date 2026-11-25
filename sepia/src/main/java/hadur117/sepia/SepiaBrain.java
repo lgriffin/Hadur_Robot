@@ -61,7 +61,7 @@ public final class SepiaBrain {
     private final Gait gait;
     private final Fire fire;
     private final InkPlanner planner;
-    private final AimBelief belief = new AimBelief();
+    private final AimBelief belief;
     private final PunchGun punch = new PunchGun();
     private final EnergyLedger ledger;
     private final BattleField field;
@@ -106,6 +106,7 @@ public final class SepiaBrain {
      */
     public SepiaBrain(Gait.Kind kind, Fire fire, double fieldWidth, double fieldHeight, String enemyName) {
         this.gait = new Gait(kind, fieldWidth, fieldHeight);
+        this.belief = new AimBelief(kind == Gait.Kind.FLOW ? AimBelief.FLATTEN : 0);
         this.fire = fire;
         this.planner = new InkPlanner(fieldWidth, fieldHeight);
         this.ledger = new EnergyLedger(fieldWidth, fieldHeight);
@@ -302,6 +303,7 @@ public final class SepiaBrain {
             if (w.committed && Double.isNaN(w.landedShade) && time >= w.arrival) w.landedShade = w.shaded();
             double d = now.location.distance(w.wave.sourceLocation);
             if (w.met || w.hit || w.pastBody(time, d)) {
+                if (w.committed) belief.visit(w.wave, w.lo, w.hi);
                 records.add(record(w));
                 it.remove();
             }

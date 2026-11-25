@@ -29,10 +29,49 @@ public final class AimBelief {
     /** The smoothing width of a revealed bullet, bins. */
     static final double SPREAD = 1.5;
 
+    /** FLOW-2: the most the belief leans on Sepia's own landings, once {@link #VISITS_FULL} are in. */
+    public static final double FLATTEN = 0.5;
+    /** FLOW-2: the landings after which the lean on them is whole. */
+    static final int VISITS_FULL = 20;
+
     /** The revealed bullets, smoothed, by bin. */
     private final double[] learned = new double[BINS];
+    /** Sepia's own landings, smoothed, by bin: what a learning gun could have learnt of it. */
+    private final double[] visits = new double[BINS];
     /** How many bullets have been revealed. */
     private int revealed;
+    /** How many landings have been recorded. */
+    private int visited;
+    /** How much the belief leans on the landings: 0 for the jet and the ink surf. */
+    private final double flatten;
+
+    /** A belief that does not lean on Sepia's own landings. */
+    public AimBelief() {
+        this(0);
+    }
+
+    /**
+     * A belief that leans on Sepia's own landings by up to {@code flatten} (FLOW-2).
+     *
+     * @param flatten the most the belief leans on the landings, 0 to 1
+     */
+    public AimBelief(double flatten) {
+        this.flatten = flatten;
+    }
+
+    /**
+     * FLOW-2: a wave has passed Sepia with its landing on {@code [lo, hi]}. A learning gun aims at
+     * where Sepia has been, so the flow gait counts its own landings as aim.
+     *
+     * @param wave the wave
+     * @param lo the landing's low bearing, radians
+     * @param hi its high bearing, radians
+     */
+    public void visit(Wave wave, double lo, double hi) {
+        double mid = (lo + DiaUtils.normalizeAngle(hi, lo)) / 2;
+        addAt(guessFactor(wave, mid), 1.0, visits);
+        visited++;
+    }
 
     /** Bullets revealed so far this battle. */
     public int revealed() {
@@ -112,6 +151,11 @@ public final class AimBelief {
             total += d[i];
         }
         for (int i = 0; i < BINS; i++) d[i] /= total;
+        if (flatten <= 0 || visited == 0) return d;
+        double lean = flatten * Math.min(1.0, visited / (double) VISITS_FULL);
+        double v = 0;
+        for (int i = 0; i < BINS; i++) v += visits[i] + FLOOR;
+        for (int i = 0; i < BINS; i++) d[i] = (1 - lean) * d[i] + lean * (visits[i] + FLOOR) / v;
         return d;
     }
 

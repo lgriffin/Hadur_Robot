@@ -42,6 +42,7 @@ class GaitTest {
     void options() {
         assertEquals(List.of(Gait.CARRY, Gait.BACK, Gait.HOLD), new Gait(Gait.Kind.JET, 800, 600).options());
         assertEquals(5, new Gait(Gait.Kind.SURF, 800, 600).options().size());
+        assertEquals(9, new Gait(Gait.Kind.FLOW, 800, 600).options().size());
     }
 
     @Test
