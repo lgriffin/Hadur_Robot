@@ -56,8 +56,8 @@ class ShieldListResourceTest {
         // pc-r31 (PR #817): Musashi. pc-locks (PR #843): GlowBlow, MostlyHarmless and DuelistMicro.
         // pc-shards (PR #840): BlackSwans, Manta, LostLion and AralR.
         // pc-locks round 6 (PR #890): Recrimpo. pc-locks round 8 (PR #905): Omicron, Sobieski and SmallDevil. pc-locks round 9 (PR #913): JayLexi. pc-locks round 10 (PR #922): ThnikkaBot.
-        // pc-locks round 13 (PR #951): RedShift.
-        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1 - 1 + 1 + 1 + 1 + 3 + 4 + 1 + 3 + 1 + 1 + 1, list.size());
+        // pc-locks round 13 (PR #951): RedShift. pc-locks round 28 (PR #1057): RainbowBot leaves (surfed, +3.2).
+        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1 - 1 + 1 + 1 + 1 + 3 + 4 + 1 + 3 + 1 + 1 + 1 - 1, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
@@ -154,11 +154,11 @@ class ShieldListResourceTest {
             assertTrue(list.matches(name), name);
         }
         // pc-shelf (PR #636): 6 more opening drives held on the confirm's fresh seeds. pc-locks round 2 (PR #845): 3 more.
-        assertEquals(31 + 8 + 6 + 3 + 13 + 1 + 1 + 1, ShieldTableData.moves().length); // + pc-locks round 25 (PR #1036)
+        assertEquals(31 + 8 + 6 + 3 + 13 + 1 + 1 + 1 - 1, ShieldTableData.moves().length); // + pc-locks round 25 (PR #1036); RainbowBot left (round 28, PR #1057)
         for (String name : ShieldTableData.moves()) {
             assertTrue(list.moves(name) && list.matches(name), "an opening drive is for a shielded robot: " + name);
         }
-        assertEquals(221 + 11 - 1, ShieldTableData.aims().length, "Seraphim's aim left with its entry");
+        assertEquals(221 + 11 - 1 - 1, ShieldTableData.aims().length, "Seraphim's and RainbowBot's aims left with their entries");
         for (String aim : ShieldTableData.aims()) {
             String name = aim.split(" ", 3)[2];
             assertTrue(list.aimFor(name) != null && list.matches(name), "a shipped aim is for a shielded robot: " + name);

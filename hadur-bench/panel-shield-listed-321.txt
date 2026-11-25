@@ -153,7 +153,6 @@ kawigi.mini.Coriantumr 1.1 | rank319-band4 | kawigi.mini.Coriantumr_1.1.jar
 bvh.frg.Friga 0.112dev | rank322-band4 | bvh.frg.Friga_0.112dev.jar
 kawigi.sbf.FloodSonnet 0.9 | rank323-band4 | kawigi.sbf.FloodSonnet_0.9.jar
 ers.nano.meroka.Meroka 1.8a | rank327-band4 | ers.nano.meroka.Meroka_1.8a.jar
-deo.virtual.RainbowBot 1.0 | rank328-band4 | deo.virtual.RainbowBot_1.0.jar
 mnt.SurferBot 0.2.5 | rank331-band4 | mnt.SurferBot_0.2.5.jar
 ags.micro.Carpet 1.1 | rank333-band4 | ags.micro.Carpet_1.1.jar
 nz.jdc.nano.PatternAdept 1.0 | rank334-band4 | nz.jdc.nano.PatternAdept_1.0.jar
