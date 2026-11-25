@@ -1,22 +1,22 @@
 # Queue pc-locks: progress
 
-Updated 2026-11-25 15:57:49 PC time (15:57 UTC), runner pid 36140.
+Updated 2026-11-25 21:05:22 PC time (21:05 UTC), runner pid 58332.
 
-- `prep` done, exit 0 in 4 min
-- `livematch` done, exit 0 in 9 min
-- `lock` done, exit 0 in 7 min
-- `stage` done, exit 0 in 0 min
-- `lock-ky` done, exit 0 in 1 min
-- `lock-rwl` done, exit 0 in 1 min
-- `lock-ty` done, exit 0 in 1 min
-- `lock-x0` done, exit 0 in 1 min
-- `gate` done, exit 0 in 0 min
-- `pr` done, exit 0 in 0 min
+- `prep` pending
+- `livematch` pending
+- `lock` pending
+- `stage` pending
+- `lock-gl` pending
+- `lock-rwl` pending
+- `lock-x0` pending
+- `lock-ky` pending
+- `lock-rlnrkn` pending
+- `gate` pending
+- `pr` pending
 
 ### Queue log (last lines)
 
 ```
-15:55:28 ALLDONE
 15:57:31 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
 15:57:31 skip prep (already exit=0)
 15:57:31 skip livematch (already exit=0)
@@ -31,4 +31,5 @@ Updated 2026-11-25 15:57:49 PC time (15:57 UTC), runner pid 36140.
 15:57:40 progress pushed to origin claude/pc-locks-progress (every 15 min)
 15:57:49 pr exit=0 in 17 s
 15:57:49 ALLDONE
+21:05:22 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
 ```

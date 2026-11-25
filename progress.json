@@ -1,66 +1,39 @@
 {
  "plan": "pc-locks",
- "updated": 1795622269.491887,
+ "updated": 1795640722.1760645,
  "steps": {
   "prep": {
-   "status": "done",
-   "exit": 0,
-   "seconds": 238,
-   "end": "2026-11-25T15:33:00"
+   "status": "pending"
   },
   "livematch": {
-   "status": "done",
-   "exit": 0,
-   "seconds": 545,
-   "end": "2026-11-25T15:42:06"
+   "status": "pending"
   },
   "lock": {
-   "status": "done",
-   "exit": 0,
-   "seconds": 404,
-   "end": "2026-11-25T15:48:51"
+   "status": "pending"
   },
   "stage": {
-   "status": "done",
-   "exit": 0,
-   "seconds": 4,
-   "end": "2026-11-25T15:48:55"
+   "status": "pending"
   },
-  "lock-ky": {
-   "status": "done",
-   "exit": 0,
-   "seconds": 72,
-   "end": "2026-11-25T15:50:07"
+  "lock-gl": {
+   "status": "pending"
   },
   "lock-rwl": {
-   "status": "done",
-   "exit": 0,
-   "seconds": 49,
-   "end": "2026-11-25T15:50:57"
-  },
-  "lock-ty": {
-   "status": "done",
-   "exit": 0,
-   "seconds": 48,
-   "end": "2026-11-25T15:51:45"
+   "status": "pending"
   },
   "lock-x0": {
-   "status": "done",
-   "exit": 0,
-   "seconds": 36,
-   "end": "2026-11-25T15:52:22"
+   "status": "pending"
+  },
+  "lock-ky": {
+   "status": "pending"
+  },
+  "lock-rlnrkn": {
+   "status": "pending"
   },
   "gate": {
-   "status": "done",
-   "exit": 0,
-   "seconds": 1,
-   "end": "2026-11-25T15:52:24"
+   "status": "pending"
   },
   "pr": {
-   "status": "done",
-   "exit": 0,
-   "seconds": 17,
-   "end": "2026-11-25T15:57:49"
+   "status": "pending"
   }
  },
  "watched": []
