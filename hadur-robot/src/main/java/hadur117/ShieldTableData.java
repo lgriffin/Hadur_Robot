@@ -616,6 +616,8 @@ final class ShieldTableData {
             "dz.Caedo 1.4",
             "kawigi.sbf.FloodSonnet 0.9",
             "oog.micro.SavantMicro 1.1",
+            // pc-locks round 30 (BENCH-253, PR #1066): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "dummy.micro.Sparrow 2.5",       // +1.4
         };
     }
 
@@ -751,13 +753,16 @@ final class ShieldTableData {
 
     /**
      * SHIELD-35: the opponents shield mode yields the drive to while they are close: inside 150 px
-     * the duel drives and fires until the gap passes 250 px. Empty until a line locks; candidate
+     * the duel drives and fires until the gap passes 250 px. Lines ship from pc-locks; candidate
      * builds add lines here (build-ablation.sh syldlist).
      *
      * @return a fresh array of names
      */
     static String[] closeYields() {
         return new String[] {
+            // pc-locks round 30 (BENCH-253, PR #1066): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "kawigi.mini.Fhqwhgads 1.1",     // +4.0
+            "simonton.micro.GFMicro 1.0",    // +6.6
         };
     }
 
@@ -958,6 +963,9 @@ final class ShieldTableData {
             "ph.Thinker 0.2.5",              // +1.0
             "sam.Samspin 1.0",               // +0.8
             "toz.Gnome 1.1",                 // +0.7
+            // pc-locks round 30 (BENCH-253, PR #1066): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "Krabb.fe4r.Fe4r 0.4",           // +1.6
+            "ry.LightningBug 1.0",           // +1.1
         };
     }
 

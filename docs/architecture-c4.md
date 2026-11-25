@@ -717,8 +717,8 @@ endgame MEND-1, 2).
 
 The 1v1 table is per opponent, PC-trained and census-gated: only per-opponent picks have shown
 live gains. It ships as two classes in the robot jar, because the sandbox refuses a robot the
-read of its own jar's resources but lets classes load. On master (3.24 plus the banked lines) it holds 1,285
-lines over 43 slots: 304 on the shield list and 981 in `ShieldTableData`'s 42 other slots.
+read of its own jar's resources but lets classes load. On master (3.24 plus the banked lines) it holds 1,290
+lines over 43 slots: 304 on the shield list and 986 in `ShieldTableData`'s 42 other slots.
 
 ```mermaid
 flowchart LR
@@ -742,10 +742,10 @@ flowchart LR
 | `aims()` | `shield-aim:` | SHIELD-18 | 230 | The shield starts with this predictor and offset already learned |
 | `stills()` | `shield-still:` | SHIELD-21 | 50 | Shield shots fired from where Hadur stands whenever one casts a shadow |
 | `exitLates()`, `exitOffs()` | `shield-exit4:`, `shield-exit0:` | SHIELD-19 | 1, 13 | Later or no damage exit from shield mode |
-| `tinies()` | `shield-tiny:` | SHIELD-33 | 5 | Tiny unexplained energy drops (0.005 to 0.1) reach shield mode as shots |
+| `tinies()` | `shield-tiny:` | SHIELD-33 | 6 | Tiny unexplained energy drops (0.005 to 0.1) reach shield mode as shots |
 | `shieldFloors()` | `shield-floor:` | SHIELD-25 | 1 | No shield shot under 0.4 power |
 | `closeBreaks()` | `shield-break:` | SHIELD-27 | 4 | A start inside 150 px is fought until the gap opens or tick 60, then shielded |
-| `closeYields()` | `shield-yield:` | SHIELD-35 | 0 | Inside 150 px the duel drives and fires until the gap passes 250 px, then shielded |
+| `closeYields()` | `shield-yield:` | SHIELD-35 | 2 | Inside 150 px the duel drives and fires until the gap passes 250 px, then shielded |
 | **Movement** | | | | |
 | `stopGos()`, `stopGoShifts()` | `stop-go:`, `stop-go2:` | POISON-2 | 33, 58 | Stop-and-go, reverse crawl one or two ticks early |
 | `dodges()`, `dodgePlans()` | `shot-dodge:`, `shot-dodge2:` | DODGE-3, DODGE-4 | 1, 18 | Simple-aim dodge; shot-dodge planner with a shipped expert |
@@ -762,7 +762,7 @@ flowchart LR
 | `surfKeys()` | `surf-key:` | SKEY-2 | 176 | Fitted weights for the danger views' search key |
 | **Rammers** | | | | |
 | `ramFlees()` | `ram-flee:` | RAM-15 | 53 | Flee a slow rammer |
-| `ramWaits()` | `ram-wait:` | MOVE-46 | 31 | Against a disabled enemy, keep surfing its live waves before the ram |
+| `ramWaits()` | `ram-wait:` | MOVE-46 | 33 | Against a disabled enemy, keep surfing its live waves before the ram |
 | `ramBends()`, `ramFans()`, `ramCircs()`, `ramHeavies()` | `ram-bend:`, `ram-fan:`, `ram-circ:`, `ram-heavy:` | RAM-18, RAM-17, RAM-11, RAM-14 | 10, 2, 4, 0 | RAM-2 escape variants: the escape bend, fanned and circular aims, heavier path costs |
 | `ramLearns()` | `ram-learn:` | RAM-20 | 36 | The escape dodges the aims learned from the rammer's own bullets (`ShotModel`) in place of RAM-5's fixed pair |
 | `ramKnowns()` | `ram-known:` | RAM-21 | 24 | The rammer is confirmed at the first scan, so rounds 1 and 2 play the escape instead of waiting for two rammed rounds |
