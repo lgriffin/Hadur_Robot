@@ -42,7 +42,7 @@ class GaitTest {
     void options() {
         assertEquals(List.of(Gait.CARRY, Gait.BACK, Gait.HOLD), new Gait(Gait.Kind.JET, 800, 600).options());
         assertEquals(5, new Gait(Gait.Kind.SURF, 800, 600).options().size());
-        assertEquals(9, new Gait(Gait.Kind.FLOW, 800, 600).options().size());
+        assertEquals(Gait.SURF_OPTIONS, new Gait(Gait.Kind.JOINT, 800, 600).options());
     }
 
     @Test
@@ -132,6 +132,27 @@ class GaitTest {
             InkWave second = Fixtures.wave(ENEMY, p(400, 120), 10, 2.0);
             g.shotRead(second, later, ENEMY, table(Map.of(Gait.CARRY, 1.0, Gait.BACK, alt)));
             assertSame(alt < Gait.LET_GO ? Gait.BACK : Gait.CARRY, first.option(), "alternative at " + alt);
+        }
+    }
+
+    @Test
+    @Tag("SURF-5")
+    @DisplayName("the joint surf turns back for the first wave when that frees the second; the ink surf does not")
+    void jointChoice() {
+        for (Gait.Kind kind : new Gait.Kind[] {Gait.Kind.SURF, Gait.Kind.JOINT}) {
+            Gait g = new Gait(kind, 800, 600);
+            InkWave first = shot();
+            InkWave second = Fixtures.wave(ENEMY, p(400, 120), 10, 2.0);
+            RobotState now = start();
+            Gait.Rater r = (w, f) -> {
+                if (w == first) return f.option == Gait.CARRY ? 0.1 : f.option == Gait.BACK ? 0.15 : 9.0;
+                // The second wave is safe only behind a first stretch that turned back (here, east).
+                return f.at(now.time + 15).location.x > now.location.x ? 0.0 : 1.0;
+            };
+            g.shotRead(first, now, ENEMY, r);
+            assertSame(Gait.CARRY, first.option());
+            g.shotRead(second, now, ENEMY, r);
+            assertSame(kind == Gait.Kind.JOINT ? Gait.BACK : Gait.CARRY, first.option(), kind.name());
         }
     }
 }

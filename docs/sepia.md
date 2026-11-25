@@ -64,9 +64,12 @@ never hit, so the belief fills faster than a surfer's.
 |---|---|---|
 | Jet cycle (`JET`, the default) | carry on, turn back, brake and hold | none: a landing is held once fixed, unless the path would strike a wall or come within 100 px of the enemy (JET-6) |
 | Ink surf (`SURF`) | the jet cycle's three, and both directions at half speed | when a later shot is read, a fixed landing not yet reached is let go for one under half as exposed (SURF-3) |
+| Joint surf (`JOINT`) | the ink surf's five | the ink surf's, and each new landing is fixed together with the latest one still in flight, as the pair with the least summed exposure (SURF-5) |
 
 Both orbit the wave's source with the kernel's wall smoothing, turn away below 450 px and never close
-range (JET-5). The movement is deterministic: Sepia takes the least exposed option every time. The
+range (JET-5). Behind a wave in flight a new wave's own stretch is only the end of its flight, so a
+landing chosen one wave at a time is mostly set by the choice before it; the joint surf gives the new
+wave the whole flight's reach. The movement is deterministic: Sepia takes the least exposed option every time. The
 design's turn-back lottery against learning guns waits for Recognition, which is not built yet.
 
 ## Records
@@ -112,6 +115,7 @@ file:
 | `sj` | jet cycle | none | the same with the ink off: how often the gait alone is hit |
 | `ss` | ink surf | ink only | the ink surf, silent, with its ink |
 | `sn` | ink surf | none | the ink surf with the ink off |
+| `sx` | joint surf | ink only | the joint surf, silent, with its ink |
 | `sf` | jet cycle | ink or punch | the shipped build |
 
 ```sh
@@ -129,6 +133,17 @@ measurement, but it points the same way as the design's estimate. With ink, the 
 guns that hit fell from 23-27% to 8-12%, and the planned shade was 29% to 35% of each landing. With the ink
 off the jet cycle is very readable, about twice as hittable as silent Hadur in the lab's first read. The ink
 surf with ink did best against the learners.
+
+## The joint surf
+
+A 12-seed lab card (seeds 174000 to 174011, 35 rounds, the six lab shooters) put silent Hadur (`si`)
+beside the ink surf (`ss`) and the joint surf (`sx`). Mean score share: `si` 62.3%, `ss` 59.0%, `sx`
+68.3%. Against the three learning guns the joint surf was hit less often than silent Hadur (GFHist 7.6%
+against 9.3%, Knn 8.5% against 10.7%, PatternMatch 7.4% against 10.6%), with the ink meeting 56% to 58%
+of the bullets that would have hit. The simple guns still hit Sepia more than Hadur (Circular 1.6%
+against 0.3%, Linear 0.7% against 0.2%). Two other changes tried on the way came out level: nine
+landing speeds in place of five, with the aim belief leaning on Sepia's own past landings, and a random
+draw among the near-best landings. Neither is kept.
 
 ## Not built yet
 

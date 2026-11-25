@@ -49,23 +49,4 @@ class AimBeliefTest {
         assertEquals(b.mass(w.wave, head - 0.05, head + 0.05), peak, 1e-9, "certain counts whole");
         assertEquals(peak / 2, b.shadedMass(w.wave, lo, hi, List.of(), onPeak), 1e-9, "possible only counts half");
     }
-
-    @Test
-    @Tag("FLOW-2")
-    @DisplayName("the flow's belief leans on Sepia's own landings; the other gaits' does not")
-    void flowLeansOnLandings() {
-        InkWave w = Fixtures.wave(p(400, 500), p(400, 100), 0, 2.0);
-        double head = w.wave.absBearing, mea = AimBelief.maxEscape(w.wave);
-        double spot = head + w.wave.orbitDirection * 0.7 * mea;
-        AimBelief flow = new AimBelief(AimBelief.FLATTEN), plain = new AimBelief();
-        double before = flow.mass(w.wave, spot - 0.03, spot + 0.03);
-        for (int i = 0; i < AimBelief.VISITS_FULL; i++) {
-            flow.visit(w.wave, spot - 0.02, spot + 0.02);
-            plain.visit(w.wave, spot - 0.02, spot + 0.02);
-        }
-        double after = flow.mass(w.wave, spot - 0.03, spot + 0.03);
-        assertTrue(after > 3 * before, before + " -> " + after);
-        assertEquals(before, plain.mass(w.wave, spot - 0.03, spot + 0.03), 1e-12);
-        assertEquals(1.0, flow.mass(w.wave, head - mea * 1.05, head + mea * 1.05), 1e-6);
-    }
 }

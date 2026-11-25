@@ -1383,6 +1383,18 @@ final class ShieldTableData {
     }
 
     /**
+     * COPY-2: per-opponent bred copies of the gun, each line {@code "genome name"}: the genome as
+     * {@code data/tools/copy_breed.py} writes it (COPY-1), grown from truth logs of the opponent's
+     * bullets. Empty until a line locks; build-ablation.sh copylist adds candidate lines here.
+     *
+     * @return a fresh array of lines
+     */
+    static String[] copies() {
+        return new String[] {
+        };
+    }
+
+    /**
      * SKEY-2: per-opponent surf keys, each line {@code "m1 ... m9 bw name"}: nine multipliers on the
      * hit views' key weights ({@code MoveFormula}) and one on the kernel width, fitted offline from that
      * opponent's bullets ({@code data/tools/surf_key_fit.py}). The 175 keys of pc-surf-key (BENCH-160,

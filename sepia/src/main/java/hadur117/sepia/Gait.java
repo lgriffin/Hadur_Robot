@@ -37,9 +37,7 @@ public final class Gait {
         JET,
         /** The jet cycle's options plus half speed both ways, with SURF-3's let-go. */
         SURF,
-        /** FLOW-1: the ink surf with five speeds both ways, rated against its own landings too (FLOW-2). */
-        FLOW,
-        /** The ink surf's five options with FLOW-3's joint choice only: the flow's lab control. */
+        /** SURF-5: the ink surf's options, each new landing chosen jointly with the one still in flight. */
         JOINT
     }
 
@@ -75,22 +73,10 @@ public final class Gait {
     /** Turn back at half speed (ink surf only). */
     public static final Option HALF_BACK = new Option("halfback", -1, 4.0);
 
-    /** Carry on at six (flow only). */
-    public static final Option SIX = new Option("six", 1, 6.0);
-    /** Turn back at six (flow only). */
-    public static final Option SIX_BACK = new Option("sixback", -1, 6.0);
-    /** Carry on at two (flow only). */
-    public static final Option TWO = new Option("two", 1, 2.0);
-    /** Turn back at two (flow only). */
-    public static final Option TWO_BACK = new Option("twoback", -1, 2.0);
-
     /** JET-1: the jet cycle's three options, in the order ties go. */
     public static final List<Option> JET_OPTIONS = List.of(CARRY, BACK, HOLD);
     /** The ink surf's five options. */
     public static final List<Option> SURF_OPTIONS = List.of(CARRY, BACK, HALF, HALF_BACK, HOLD);
-    /** FLOW-1: the flow's nine options, every landing speed both ways. */
-    public static final List<Option> FLOW_OPTIONS =
-        List.of(CARRY, BACK, SIX, SIX_BACK, HALF, HALF_BACK, TWO, TWO_BACK, HOLD);
 
     /** JET-5: below this range the path turns away from the source. */
     public static final double MIN_RANGE = 450;
@@ -104,7 +90,7 @@ public final class Gait {
     public static final double ENEMY_CLEARANCE = 100;
     /** SURF-3: a fixed landing is let go for one under this share of its exposure. */
     public static final double LET_GO = 0.5;
-    /** FLOW-3: how many of the wave in flight's least exposed options are tried with the new wave's. */
+    /** SURF-5: how many of the wave in flight's least exposed options are tried with the new wave's. */
     static final int JOINT_PRIORS = 3;
     /** The longest a forecast runs, ticks. */
     static final int HORIZON = 150;
@@ -207,12 +193,7 @@ public final class Gait {
 
     /** The options this gait chooses among. */
     public List<Option> options() {
-        switch (kind) {
-            case JET: return JET_OPTIONS;
-            case SURF:
-            case JOINT: return SURF_OPTIONS;
-            default: return FLOW_OPTIONS;
-        }
+        return kind == Kind.JET ? JET_OPTIONS : SURF_OPTIONS;
     }
 
     /** Which gait this is. */
@@ -246,12 +227,12 @@ public final class Gait {
     public void shotRead(InkWave wave, RobotState now, Point2D.Double enemy, Rater rater) {
         prune(now.time);
         if (kind != Kind.JET) letGo(now, enemy, rater);
-        if (kind == Kind.FLOW || kind == Kind.JOINT) commitJointly(wave, now, enemy, rater);
+        if (kind == Kind.JOINT) commitJointly(wave, now, enemy, rater);
         else commit(wave, now, enemy, rater);
     }
 
     /**
-     * FLOW-3: the new wave's landing is chosen together with that of the latest wave still in
+     * SURF-5: the new wave's landing is chosen together with that of the latest wave still in
      * flight, as the pair of options with the least summed exposure. Behind a wave in flight the
      * new wave's own stretch is only the end of its flight, so its landing is mostly set by the
      * option before it; choosing both together gives it the whole flight's reach.

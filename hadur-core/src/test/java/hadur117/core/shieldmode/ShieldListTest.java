@@ -422,6 +422,22 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("COPY-2")
+    @DisplayName("copy lines give an opponent's bred gun genome, matched as shield entries; a line with no name is skipped")
+    void copies() {
+        ShieldList l = ShieldList.parse(List.of(
+            "copy: hist;ticks=0;bins=31 a.B 1.0",
+            "copy: pm;round=2.0x2.0;longest=20;least=1;lag=0 c.D",
+            "copy: knn;k=3"));
+        assertEquals("hist;ticks=0;bins=31", l.copyFor("a.B 1.0"));
+        assertEquals("hist;ticks=0;bins=31", l.copyFor("a.B 1.1"), "a line carries over to a new version");
+        assertEquals("pm;round=2.0x2.0;longest=20;least=1;lag=0", l.copyFor("c.D 7"));
+        assertEquals(null, l.copyFor("e.F 1"));
+        assertEquals(null, l.copyFor(null));
+        assertEquals(null, ShieldList.NONE.copyFor("a.B 1.0"));
+    }
+
+    @Test
     @Tag("SKEY-2")
     @DisplayName("surf-key lines give an opponent's ten key values, matched as shield entries; malformed lines skipped")
     void surfKeys() {

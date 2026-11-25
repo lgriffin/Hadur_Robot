@@ -11,8 +11,7 @@
 #   sj  JET  NONE       the same robot with the ink off: jet only (the card's sj)
 #   ss  SURF INK_ONLY   silent Sepia on the ink surf with its ink
 #   sn  SURF NONE       the ink surf with the ink off
-#   sw  FLOW INK_ONLY   silent Sepia on the flow (FLOW-1..3: nine speeds, its own landings rated, joint choice) with its ink
-#   sx  JOINT INK_ONLY  the ink surf with only FLOW-3's joint choice, the flow's control
+#   sx  JOINT INK_ONLY  the ink surf with SURF-5's joint choice, and its ink
 #   sf  JET  FULL       the shipped build: ink or punch by STRIKE-1
 # The jar carries the whole of hadur-core's classes beside Sepia's (the shipped jar keeps only those it
 # reaches); the bench does not care. Prints one arms line per jar for an --arms file.
@@ -31,7 +30,6 @@ arms="sp JET INK_ONLY
 sj JET NONE
 ss SURF INK_ONLY
 sn SURF NONE
-sw FLOW INK_ONLY
 sx JOINT INK_ONLY
 sf JET FULL"
 while read -r label gait fire; do

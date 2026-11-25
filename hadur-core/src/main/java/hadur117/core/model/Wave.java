@@ -229,9 +229,23 @@ public class Wave implements Cloneable {
     private double patternAim = Double.NaN;
     private double patternSpeed = Double.NaN;
 
-    /** MOVE-56: where the pattern-matcher mimic sends this wave's bullet, absolute radians; NaN when off or no match. */
+    /** COPY-2: the bred gun copy and this wave's scan index in its history; null when off. */
+    public hadur117.core.physics.GunCopy gunCopy;
+    public int copyIndex;
+
+    /**
+     * MOVE-56: where the pattern-matcher mimic sends this wave's bullet, absolute radians; NaN when off or no match.
+     * COPY-2: with no mimic, where the bred gun copy sends it.
+     */
     public double patternAngle() {
-        if (patternMimic == null) return Double.NaN;
+        if (patternMimic == null) {
+            if (gunCopy == null) return Double.NaN;
+            if (patternSpeed != bulletSpeed) {
+                patternAim = gunCopy.aim(copyIndex, (20 - bulletSpeed) / 3);
+                patternSpeed = bulletSpeed;
+            }
+            return patternAim;
+        }
         if (patternSpeed != bulletSpeed) {
             patternAim = patternBearing + patternMimic.offset(patternHistory, patternDistance, bulletSpeed);
             patternSpeed = bulletSpeed;
@@ -1054,6 +1068,8 @@ public class Wave implements Cloneable {
         w.patternHistory = patternHistory;
         w.patternBearing = patternBearing;
         w.patternDistance = patternDistance;
+        w.gunCopy = gunCopy;
+        w.copyIndex = copyIndex;
         return w;
     }
 

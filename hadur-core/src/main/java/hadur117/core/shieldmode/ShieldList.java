@@ -130,6 +130,11 @@ public final class ShieldList {
      * views' key weights, one on the kernel width, then the name ({@code "m1 ... m9 bw name"}).
      */
     public static final String SURF_KEY_PREFIX = "surf-key:";
+    /**
+     * COPY-2: a line starting with this names an opponent the duel runs a bred copy of the gun against:
+     * the genome ({@code family;gene=value;...}, no spaces) then the name.
+     */
+    public static final String COPY_PREFIX = "copy:";
     /** SKEY-2: the numbers a surf-key line carries before the name. */
     public static final int SURF_KEY_VALUES = 10;
     /**
@@ -225,6 +230,8 @@ public final class ShieldList {
     private Map<String, Integer> switches = Collections.emptyMap();
     /** SKEY-2: name to its surf key (nine weight multipliers, then the kernel width's). */
     private Map<String, double[]> surfKeys = Collections.emptyMap();
+    /** COPY-2: the bred gun copies' genomes by name. */
+    private Map<String, String> copies = Collections.emptyMap();
     /** POW-20: name to its four power-band multipliers. */
     private Map<String, double[]> powerBands = Collections.emptyMap();
     /** DIST-4: name to its pinned duel distance, in px. */
@@ -260,6 +267,7 @@ public final class ShieldList {
         Map<String, Integer> dodgePlans = new TreeMap<>();
         Map<String, Integer> switches = new TreeMap<>();
         Map<String, double[]> surfKeys = new TreeMap<>();
+        Map<String, String> copies = new TreeMap<>();
         Map<String, double[]> powerBands = new TreeMap<>();
         Map<String, Double> distPins = new TreeMap<>();
         Set<String> closeBreaks = new TreeSet<>();
@@ -348,6 +356,13 @@ public final class ShieldList {
                     }
                     continue;
                 }
+                if (entry.startsWith(COPY_PREFIX)) {
+                    String[] p = entry.substring(COPY_PREFIX.length()).trim().split(" ", 2);
+                    if (p.length == 2 && !p[0].isEmpty() && !p[1].isEmpty() && copies.size() < MAX_ENTRIES) {
+                        copies.put(withoutVersion(p[1]), p[0]);
+                    }
+                    continue;
+                }
                 if (entry.startsWith(SURF_KEY_PREFIX)) {
                     String[] p = entry.substring(SURF_KEY_PREFIX.length()).trim().split(" ", SURF_KEY_VALUES + 1);
                     if (p.length == SURF_KEY_VALUES + 1 && !p[SURF_KEY_VALUES].isEmpty() && surfKeys.size() < MAX_ENTRIES) {
@@ -415,7 +430,7 @@ public final class ShieldList {
             }
         }
         if (entries.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()
-            && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty() && surfKeys.isEmpty()
+            && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty() && surfKeys.isEmpty() && copies.isEmpty()
             && powerBands.isEmpty() && distPins.isEmpty() && closeBreaks.isEmpty()
             && closeYields.isEmpty() && freeGuns.isEmpty()) return NONE;
         ShieldList list = new ShieldList(Collections.unmodifiableSet(entries),
@@ -424,6 +439,7 @@ public final class ShieldList {
         list.dodgePlans = Collections.unmodifiableMap(dodgePlans);
         list.switches = Collections.unmodifiableMap(switches);
         list.surfKeys = Collections.unmodifiableMap(surfKeys);
+        list.copies = Collections.unmodifiableMap(copies);
         list.powerBands = Collections.unmodifiableMap(powerBands);
         list.distPins = Collections.unmodifiableMap(distPins);
         list.closeBreaks = Collections.unmodifiableSet(closeBreaks);
@@ -484,6 +500,20 @@ public final class ShieldList {
         double[] k = powerBands.get(name);
         if (k == null) k = powerBands.get(withoutVersion(name));
         return k == null ? null : k.clone();
+    }
+
+    /**
+     * COPY-2: {@code robotName}'s bred gun copy, by the rule of {@link #matches}: the full name's
+     * entry, else the name's without the version.
+     *
+     * @param robotName the scanned robot's name, or null
+     * @return the genome, or null when none is shipped
+     */
+    public String copyFor(String robotName) {
+        if (robotName == null || copies.isEmpty()) return null;
+        String name = robotName.trim().replaceAll("\\s+", " ");
+        String g = copies.get(name);
+        return g != null ? g : copies.get(withoutVersion(name));
     }
 
     /**
