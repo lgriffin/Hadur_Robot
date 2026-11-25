@@ -92,6 +92,23 @@ class InkReadTest(unittest.TestCase):
         table = ir.render(data)
         self.assertIn("| sp | lab.Knn_1.0 | 2 | 50.0% | 100.0% | 50.0%", table)
 
+    def test_meeting_before_the_body_is_not_a_hit(self):
+        # Theirs would cross the body on its next segment, and our ink meets it on that turn.
+        rows = [(1, (100, 300), [bullet("E", 100, 262, 0.0, 2.0), bullet("H", 108, 271, -math.pi / 2, 0.1)]),
+                (2, (100, 300), [])]
+        c = ir.read_round([(t, me, ir.parse_bullets(" ".join(bs))) for t, me, bs in rows])
+        self.assertEqual(0, c["hit"])
+        self.assertEqual(1, c["met"])
+
+
+    def test_dir_names_and_t(self):
+        self.assertEqual(("lab.Knn_1.0", "3", "sp"), ir.DIR_RE.match("lab.Knn_1.0-3-sp").groups())
+        self.assertEqual(("lab.Knn_1.0", "3", "baseline-warm"),
+                         ir.DIR_RE.match("lab.Knn_1.0-3-baseline-warm").groups())
+        self.assertEqual(("lab.Knn_1.0", "3", None), ir.DIR_RE.match("lab.Knn_1.0-3").groups())
+        self.assertAlmostEqual(2.120, ir.t95(16), places=2)
+        self.assertAlmostEqual(2.042, ir.t95(30), places=2)
+
 
 if __name__ == "__main__":
     unittest.main()

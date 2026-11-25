@@ -15,7 +15,7 @@ before the round ends, the turn's segments decide why:
   other   it left the field or struck nothing we can see
 
 A met bullet is then flown on along its line against the subject's actual later path, to see
-whether it would have hit. **Cover** is the share of the bullets that would have hit that our
+whether it would have hit (on an 800x600 field unless --field says otherwise). **Cover** is the share of the bullets that would have hit that our
 bullets met first: met-and-would-hit over (hit + met-and-would-hit). This is the number the design
 turns on (35% or more on the lab card; under 25% stops the project). The table also gives the
 shooter's hit rate (hits over bullets fired), the shooter's hit rate had nothing been met
@@ -165,7 +165,7 @@ def met(e, o):
             or seg_seg(prev_seg(e), next_seg(o)))
 
 
-def would_hit(tr, turns, start):
+def would_hit(tr, turns, start, field=(FIELD_W, FIELD_H)):
     """Flies a met bullet on from its last position against the subject's path from turn index
     {start} (the turn it was met on)."""
     v = speed(tr["power"])
@@ -175,13 +175,13 @@ def would_hit(tr, turns, start):
         mx, my = turns[i][1]
         if seg_box(x, y, nx, ny, mx, my, HALF + TOL):
             return True
-        if not (0 <= nx <= FIELD_W and 0 <= ny <= FIELD_H):
+        if not (0 <= nx <= field[0] and 0 <= ny <= field[1]):
             return False
         x, y = nx, ny
     return False
 
 
-def read_round(turns):
+def read_round(turns, field=(FIELD_W, FIELD_H)):
     """Counts for one round: fired, hit, met, met_would_hit, inks and punches that met."""
     c = defaultdict(int)
     enemy = track(turns, "E")
@@ -198,16 +198,15 @@ def read_round(turns):
             continue
         seg = next_seg(tr)
         mx, my = turns[i + 1][1]
-        if seg_box(*seg, mx, my, HALF + TOL):
-            c["hit"] += 1
-            continue
+        # A meeting is checked first: a bullet our ink stopped on the turn it would have reached
+        # the body was stopped, not a hit.
         met_by = next((o for o in ends[i] if met(tr, o)), None)
         if met_by is None:
-            c["other"] += 1
+            c["hit" if seg_box(*seg, mx, my, HALF + TOL) else "other"] += 1
             continue
         c["met"] += 1
         c["met_ink" if met_by["power"] <= 0.1 + 1e-6 else "met_punch"] += 1
-        if would_hit(tr, turns, i + 1):
+        if would_hit(tr, turns, i + 1, field):
             c["met_would_hit"] += 1
     for tr in ours:
         c["ours"] += 1
@@ -235,10 +234,12 @@ def read_ink_records(path):
     return {"waves": waves, "shaded": shaded, "met": met, "hit": hit} if waves else None
 
 
-DIR_RE = re.compile(r"^(?P<opp>.+)-(?P<seed>\d+)(?:-(?P<arm>[A-Za-z0-9_.]+))?$")
+# <opponent>-<seed>, then the arm's label on a multi-arm run, or the warm-run suffix (warm,
+# baseline-warm), which is read as an arm of its own.
+DIR_RE = re.compile(r"^(?P<opp>.+?)-(?P<seed>\d+)(?:-(?P<arm>.+))?$")
 
 
-def collect(runs, arms_wanted):
+def collect(runs, arms_wanted, field=(FIELD_W, FIELD_H)):
     """{(arm, opponent): {"c": counts summed, "seeds": {seed: counts}, "ink": records summed}}."""
     out = defaultdict(lambda: {"c": defaultdict(int), "seeds": defaultdict(lambda: defaultdict(int)),
                                "ink": defaultdict(float)})
@@ -256,11 +257,13 @@ def collect(runs, arms_wanted):
             if arms_wanted and arm not in arms_wanted:
                 continue
             key = (arm, m.group("opp"))
+            # A seed is a sample within its run: two runs may reuse the same seed numbers.
+            sample = (run, m.group("seed"))
             for turns in read_truth(tp).values():
-                rc = read_round(turns)
+                rc = read_round(turns, field)
                 for k, v in rc.items():
                     out[key]["c"][k] += v
-                    out[key]["seeds"][m.group("seed")][k] += v
+                    out[key]["seeds"][sample][k] += v
             ink = read_ink_records(os.path.join(bdir, name, "hadur.log"))
             if ink:
                 for k, v in ink.items():
@@ -282,10 +285,18 @@ def mean_ci(xs):
     if n < 2:
         return m, float("nan")
     sd = math.sqrt(sum((x - m) ** 2 for x in xs) / (n - 1))
-    # Student's t, two-sided 95%, for the seed counts the bench uses.
-    t = {2: 12.71, 3: 4.30, 4: 3.18, 5: 2.78, 6: 2.57, 7: 2.45, 8: 2.36, 9: 2.31, 10: 2.26,
-         11: 2.23, 12: 2.20, 13: 2.18, 14: 2.16, 15: 2.14, 16: 2.13}.get(n, 1.96)
-    return m, t * sd / math.sqrt(n)
+    return m, t95(n - 1) * sd / math.sqrt(n)
+
+
+def t95(df):
+    """Student's t, two-sided 95%, for {df} degrees of freedom: the table to 15, then the
+    Cornish-Fisher expansion about the normal quantile (within 0.002 from 16 on)."""
+    table = {1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571, 6: 2.447, 7: 2.365, 8: 2.306,
+             9: 2.262, 10: 2.228, 11: 2.201, 12: 2.179, 13: 2.160, 14: 2.145, 15: 2.131}
+    if df in table:
+        return table[df]
+    z = 1.959964
+    return z + (z ** 3 + z) / (4 * df) + (5 * z ** 5 + 16 * z ** 3 + 3 * z) / (96 * df ** 2)
 
 
 def pct(x):
@@ -293,7 +304,7 @@ def pct(x):
 
 
 def render(data):
-    lines = ["| Arm | Shooter | Fired | Hit rate | Hit rate unmet | Cover (95% over seeds) | Met by ink / punch | Inks fired | Planned shade |",
+    lines = ["| Arm | Shooter | Fired | Hit rate | Hit rate unmet | Cover pooled (seed mean +- 95%) | Met by ink / punch | Inks fired | Planned shade |",
              "|---|---|---|---|---|---|---|---|---|"]
     by_arm = defaultdict(lambda: defaultdict(int))
     for (arm, opp) in sorted(data):
@@ -322,8 +333,10 @@ def main(argv=None):
     ap.add_argument("runs", nargs="+", help="bench work dirs")
     ap.add_argument("--arm", action="append", default=[], help="only these arms (repeatable)")
     ap.add_argument("--md", help="also write the table to this file")
+    ap.add_argument("--field", default="800x600", help="the battlefield, WIDTHxHEIGHT (default 800x600)")
     a = ap.parse_args(argv)
-    table = render(collect(a.runs, set(a.arm)))
+    w, h = (float(x) for x in a.field.lower().split("x"))
+    table = render(collect(a.runs, set(a.arm), (w, h)))
     print(table)
     if a.md:
         with open(a.md, "w") as f:
