@@ -587,6 +587,8 @@ final class ShieldTableData {
             "pc.Wavelet 1.5",                // +4.4
             // pc-locks round 32 (BENCH-253, PR #1080): 24 fresh PC seeds at the live turn time; cloud lock held first
             "jk.melee.Neuromancer 7.12",     // +4.6
+            // pc-locks round 33 (BENCH-253, PR #1083): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "fnh.mega.DumDum 1.0.1",         // +7.9
         };
     }
 
@@ -923,6 +925,8 @@ final class ShieldTableData {
             "robin.ScalpBotC 1.0",           // +1.0
             // pc-locks round 28 (BENCH-253, PR #1057): 24 fresh PC seeds at the live turn time; cloud lock held first
             "zyx.nano.RedBull 1.0",          // +1.5
+            // pc-locks round 33 (BENCH-253, PR #1083): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "oa.weak.FlyMk1 0.1",            // +0.6
         };
     }
 
@@ -984,6 +988,8 @@ final class ShieldTableData {
             "jep.nano.Hotspur 0.1",          // +0.7
             "nexus.One 1.0",                 // +0.5
             "rus.vv.Dzhigit 1.1",            // +1.0
+            // pc-locks round 33 (BENCH-253, PR #1083): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "slugzilla.SNGGF 1.0",           // +0.6
         };
     }
 
@@ -1032,6 +1038,8 @@ final class ShieldTableData {
         return new String[] {
             // pc-locks round 2 (BENCH-253, PR #845): 12 fresh PC seeds at the live turn time; 12-seed cloud lock held first
             "0.40 0.30 0.30 0.30 ncj.MoxieBot 1.0",  // +13.4
+            // pc-locks round 33 (BENCH-253, PR #1083): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "0.5 0.5 0.5 0.5 dragonbyte.Neutrino 4", // +3.5
         };
     }
 
@@ -1307,6 +1315,13 @@ final class ShieldTableData {
             "apc.Colossus2 0.12",            // +2.7
             "jje.BagPuss 1.2",               // +1.0
             "velas.Alpha 1.0",               // +2.5
+            // pc-locks round 33 (BENCH-253, PR #1083): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "agrach.MicroDalek 1.0",         // +0.7
+            "blr.Chicken001 0.1",            // +0.8
+            "djdjdj.NanoSkunk10 1.0",        // +1.6
+            "sanyi.mikrobi.Roberto 1.0",     // +0.8
+            "supersample.SuperCorners 1.0",  // +3.4
+            "whitesquare.robots.SkynetAdvanced 1.1", // +0.9
         };
     }
 
@@ -1349,6 +1364,12 @@ final class ShieldTableData {
             // pc-locks round 32 (BENCH-253, PR #1080): 24 fresh PC seeds at the live turn time; cloud lock held first
             "apc.Colossus2 0.12",            // +2.7
             "velas.Alpha 1.0",               // +2.5
+            // pc-locks round 33 (BENCH-253, PR #1083): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "agrach.MicroDalek 1.0",         // +0.7
+            "blr.Chicken001 0.1",            // +0.8
+            "djdjdj.NanoSkunk10 1.0",        // +1.6
+            "sanyi.mikrobi.Roberto 1.0",     // +0.8
+            "supersample.SuperCorners 1.0",  // +3.4
         };
     }
 
@@ -1423,6 +1444,12 @@ final class ShieldTableData {
      */
     static String[] copies() {
         return new String[] {
+            // pc-locks round 33 (BENCH-253, PR #1083): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "hist;bins=61;d_max=750;lag=1;roll=0.3;s_accel=1;s_dist=1;s_lat=1;s_since=1;s_wall=1;smooth=0;ticks=0 dummy.micro.HummingBird 2.14", // +4.9
+            "hist;bins=61;d_max=900;lag=1;roll=0.3;s_accel=1;s_dist=1;s_lat=2;s_since=1;s_wall=1;smooth=0;ticks=1 jaara.LambdaBot 1.1", // +7.4
+            "hist;bins=41;d_max=1200;lag=0;roll=0.3;s_accel=1;s_dist=1;s_lat=1;s_since=1;s_wall=1;smooth=1;ticks=1 stelo.FretNano 1.1", // +2.8
+            "hist;bins=61;d_max=750;lag=1;roll=0.03;s_accel=1;s_dist=3;s_lat=6;s_since=1;s_wall=1;smooth=2;ticks=1 tornyil.bottomup.BottomUp 1.05", // +9.1
+            "knn;cap=20000;k=20;lag=0;ticks=0;w_accel=1;w_adv=0;w_dist=4;w_lat=2;w_since=2;w_wall=1;width=0.1 zen.Ronin 1.0.0", // +3.4
         };
     }
 
