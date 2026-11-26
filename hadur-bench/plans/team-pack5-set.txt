@@ -1,2 +1,0 @@
-# pc-team-pack5 (BENCH-296): the one team of the card (TIGHT); line as in team-census46.txt.
-cb.fire.FirestarterTeam 2.0 | team-2 | cb.fire.FirestarterTeam_2.0.jar

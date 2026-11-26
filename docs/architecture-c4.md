@@ -708,7 +708,7 @@ endgame MEND-1, 2).
 | `TeamModes.FORCE_MOMENTUM` | TMODE-49 | **on** (3.23) | The dodge and path check prefer candidates that keep Hadur's momentum |
 | `TeamModes.FORCE_FITTED` | TMODE-50 | **on** (3.24) | Fitted enemy aims (`TeamModes.FITTED`, eight teams) join the dodge's profile |
 | `TeamModes.FORCE_CLOSERERANK` | TMODE-52 | **on** (3.24) | The dodge reranks 40 candidates, not 12, while a wave is within 35 ticks |
-| `TeamModes.TIGHT_ON` | TMODE-59 | on (pc-team-tight, PR #1016; ablation `tmnotight`) | TIGHT in six table entries makes the hunt pull 1.0, not 0.3, so the pack holds its place round the prey |
+| `TeamModes.TIGHT_ON` | TMODE-59 | on (pc-team-tight, PR #1016; ablation `tmnotight`) | TIGHT in seven table entries makes the hunt pull 1.0, not 0.3, so the pack holds its place round the prey |
 | `TeamLink.NARROW_LANE` | WEAVE-9 | **on** | Ogi's narrow fire lane |
 | table-only modes `OWN`, `HEADON`, `LINEAR`, `QUARTERS`; `GANG`, `FINISH` through CONCORD | TMODE-3, -4, -20..22, -45 | per team | No forcing switch on; the table or CONCORD names them |
 | `RoleResolver.TEAM_BUILT` | ROLE-3 | off | There is no Team role; members play Melee then Duel |
@@ -795,7 +795,8 @@ table names, or the default set built from the `FORCE_*` switches.
 | `ustimaw.NigitmareDroid` | MATEFIRE, HUNT, NEAR, PATH, CLOSE, QUARTERS, LAST, MOMENTUM (no DODGE, no CONCORD) | pc-team-nododge PR #465, pc-team-quarters PR #759, pc-team-pack4 PR #1042 |
 | `mn.nano.perceptual.Impact` | default without DODGE, + QUARTERS | PR #465, +3.1; QUARTERS pc-team-pack4 PR #1042, +0.9 |
 | `ags.polylunar.Charon`, `Europa`, `Io`, `Luna`, `Phobos`, `amz.TeamDeath` | default + QUARTERS | pc-team-pack4 PR #1042, Polylunar +1.6, TeamDeathTeam +1.4 |
-| `cz.libors.Ogi`, `cb.fire.Firestarter` | default without CONCORD | pc-team-noconcord PR #538 (TMODE-35) |
+| `cz.libors.Ogi` | default without CONCORD | pc-team-noconcord PR #538 (TMODE-35) |
+| `cb.fire.Firestarter` | default without CONCORD, + TIGHT | pc-team-noconcord PR #538 (TMODE-35); TIGHT pc-team-pack5 PR #1087, +6.0 |
 | `mn.Combat` | default (CONCORD back) | pc-team-pack3 PR #1033 |
 | `abc.Shadow`, `florent.XSeries.X2`, `rz.Aleph`, `kawigi.micro.Shiz` | default + TIGHT (`cz.libors.Ogi` carries TIGHT too) | pc-team-tight PR #1016; ArmyOfShiz pc-team-pack3 PR #1033, +2.6 |
 | `cx.mini.Nimrod` | default + TIGHT, NEAR | PR #1016; NEAR pc-team-pack3 PR #1033, +3.3 (TMODE-60) |
