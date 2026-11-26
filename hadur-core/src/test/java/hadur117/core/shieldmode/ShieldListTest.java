@@ -504,19 +504,4 @@ class ShieldListTest {
         assertFalse(ShieldList.NONE.freeGun("a.B 1.0"));
         assertEquals(0, l.size(), "no shield entry");
     }
-
-    @Test
-    @Tag("MOVE-73")
-    @DisplayName("half-surf lines name opponents for the surf's half-speed orbits, matched as shield entries, and add no shield entry")
-    void halfSurfs() {
-        ShieldList l = ShieldList.parse(List.of("half-surf: a.B 1.0", "free-gun: c.D 1.0"));
-        assertTrue(l.halfSurf("a.B 1.0"));
-        assertTrue(l.halfSurf("a.B 1.1"), "a line carries over to a new version");
-        assertFalse(l.halfSurf("c.D 1.0"), "another switch's line does not set it");
-        assertFalse(l.freeGun("a.B 1.0"), "nor does it set another switch");
-        assertFalse(l.halfSurf(null));
-        assertFalse(ShieldList.NONE.halfSurf("a.B 1.0"));
-        assertEquals(0, l.size(), "no shield entry");
-        assertTrue(ShieldList.parse(List.of("half-surf: a.B 1.0")).halfSurf("a.B 1.0"), "alone it makes a list");
-    }
 }

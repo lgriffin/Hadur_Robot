@@ -142,42 +142,9 @@ public class SurfMover {
         return way;
     }
 
-    /**
-     * MOVE-73: which half-speed orbit to drive, 0 counter-clockwise or 1 clockwise, when one is
-     * cheaper than {@code taken}, the danger of the option the three-option choice took; -1 to
-     * keep that option.
-     */
-    static int halfPick(double[] halfDangers, double taken) {
-        int k = halfDangers[1] < halfDangers[0] ? 1 : 0;
-        return halfDangers[k] < taken ? k : -1;
-    }
-
     /** MOVE-47: the other way round must be under this share of the current way's danger to reverse. */
     static final double ORBIT_REVERSE_SHARE = 0.5;
     private boolean steadyOrbit;
-
-    /**
-     * MOVE-73: the half-speed surf. Each wave of the two-wave look-ahead also rates the two
-     * orbits at {@link #HALF_SPEED}, and a half-speed orbit is driven when it is cheaper than
-     * the three full options. Off by default.
-     *
-     * @param on true against an opponent the table names with a half-surf line
-     */
-    public void setHalfSpeed(boolean on) {
-        halfSpeed = on;
-    }
-
-    /** MOVE-73: whether the half-speed surf is on. */
-    public boolean halfSpeed() {
-        return halfSpeed;
-    }
-
-    /** MOVE-73: the half-speed orbit's speed cap, px a tick. */
-    static final double HALF_SPEED = 4.0;
-    private boolean halfSpeed;
-    /** MOVE-73: this tick's danger and plan for the half-speed orbits, counter-clockwise first. */
-    private final double[] halfDangers = new double[2];
-    private final List<List<PlanInterval>> halfChains = new ArrayList<>(List.of(List.of(), List.of()));
 
     /**
      * DODGE-6: whether the shot-dodge planner ({@link ShotDodgePlanner}) drives the surfed ticks
@@ -534,22 +501,9 @@ public class SurfMover {
             surfDest = lastSurfDestination;
             stopDestination = null;
         }
-        List<PlanInterval> plan = surfOptionChains.getOrDefault(chosen, List.of());
-
-        // MOVE-73: a half-speed orbit cheaper than the option taken is driven instead.
-        int half = halfSpeed ? halfPick(halfDangers, surfOptionDangers.getOrDefault(chosen, 0.0)) : -1;
-        if (half >= 0) {
-            chosen = half == 0 ? SurfOption.COUNTER_CLOCKWISE : SurfOption.CLOCKWISE;
-            lastSurfOption = chosen;
-            orders.maxVelocity(HALF_SPEED);
-            lastSurfDestination = surfOptionDestinations.get(chosen);
-            surfDest = lastSurfDestination;
-            stopDestination = null;
-            plan = halfChains.get(half);
-        }
 
         // MOVE-8: the plan just chosen, for the gun to read.
-        moveCtrl.publishPlan(plan);
+        moveCtrl.publishPlan(surfOptionChains.getOrDefault(chosen, List.of()));
         // MOVE-10: what each option planned on this wave, for the hit forensics.
         PlanInterval[] firsts = new PlanInterval[SurfOption.values().length];
         for (SurfOption o : SurfOption.values()) {
@@ -609,15 +563,6 @@ public class SurfMover {
             surfOptionChains.put(option, lastChain);
             if (!complete) bestDanger = Math.min(bestDanger, danger);
         }
-        if (halfSpeed) {
-            // MOVE-73: the two orbits at half speed, cut off at the full options' best.
-            SurfOption[] sides = {SurfOption.COUNTER_CLOCKWISE, SurfOption.CLOCKWISE};
-            for (int k = 0; k < 2; k++) {
-                halfDangers[k] = checkDanger(myState, moveCtrl, myState, sides[k],
-                    goingClockwise, 0, wavesToSurf, bestDanger, new RobotStateLog(), HALF_SPEED);
-                halfChains.set(k, lastChain);
-            }
-        }
     }
 
     /**
@@ -650,18 +595,6 @@ public class SurfMover {
                        RobotState startState, SurfOption option,
                        boolean prevClockwise, int surfWaveIndex,
                        int numWaves, double cutoff, RobotStateLog predictedLog) {
-        return checkDanger(myState, moveCtrl, startState, option, prevClockwise, surfWaveIndex,
-            numWaves, cutoff, predictedLog, 8.0);
-    }
-
-    /**
-     * {@link #checkDanger} with an orbit's speed cap: 8 for the three options, or MOVE-73's
-     * {@link #HALF_SPEED}. A stop is always 0.
-     */
-    double checkDanger(RobotState myState, MoveController moveCtrl,
-                       RobotState startState, SurfOption option,
-                       boolean prevClockwise, int surfWaveIndex,
-                       int numWaves, double cutoff, RobotStateLog predictedLog, double speed) {
         // MOVE-8: nothing planned on this wave unless the leg below scores it.
         lastChain = List.of();
         Wave surfWave = moveCtrl.findSurfableWave(surfWaveIndex, myState);
@@ -686,7 +619,7 @@ public class SurfMover {
         SurfOption smoothOption = option == SurfOption.STOP
             ? (predictClockwise ? SurfOption.CLOCKWISE : SurfOption.COUNTER_CLOCKWISE)
             : option;
-        double maxVelocity = option == SurfOption.STOP ? 0 : speed;
+        double maxVelocity = option == SurfOption.STOP ? 0 : 8.0;
 
         // The destination: a stop already under way keeps its point; otherwise the precise
         // escape point for this side (see surfDestination).
@@ -751,22 +684,10 @@ public class SurfMover {
             double nextCw = checkDanger(myState, moveCtrl, passedState,
                 SurfOption.CLOCKWISE, predictClockwise, surfWaveIndex + 1,
                 numWaves, cutoff, (RobotStateLog) predictedLog.clone());
-            List<PlanInterval> chainCw = lastChain;
             double nextMin = Math.min(nextCcw, Math.min(nextStop, nextCw));
-            // MOVE-8: the plan goes on along the cheapest of the three (the first on a tie).
-            nextChain = nextCcw == nextMin ? chainCcw : nextStop == nextMin ? chainStop : chainCw;
-            if (halfSpeed) {
-                // MOVE-73: the next wave's half-speed orbits too.
-                for (SurfOption side : new SurfOption[] {SurfOption.COUNTER_CLOCKWISE, SurfOption.CLOCKWISE}) {
-                    double half = checkDanger(myState, moveCtrl, passedState, side, predictClockwise,
-                        surfWaveIndex + 1, numWaves, cutoff, (RobotStateLog) predictedLog.clone(), HALF_SPEED);
-                    if (half < nextMin) {
-                        nextMin = half;
-                        nextChain = lastChain;
-                    }
-                }
-            }
             danger += nextMin;
+            // MOVE-8: the plan goes on along the cheapest of the three (the first on a tie).
+            nextChain = nextCcw == nextMin ? chainCcw : nextStop == nextMin ? chainStop : lastChain;
         }
         lastChain = chain(own, nextChain);
         return danger;
