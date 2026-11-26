@@ -14,6 +14,13 @@ jobs:
           distribution: temurin
           java-version: '21'
           cache: maven
+          # The cache under the default key (the poms' hash) holds 22 MB and no test plugins: the docs-site
+          # workflow shares that key and builds without tests. Every run here then fetched 143 artifacts from
+          # Maven Central and failed whenever Central answered 429. Hashing this file as well gives the build
+          # its own cache, saved after a whole `mvn verify`.
+          cache-dependency-path: |
+            **/pom.xml
+            .github/workflows/build.yml
       - name: Tests, architecture rules, replay and requirement traceability
         run: mvn -B verify
       - name: Bench tool tests (every test_*.py)

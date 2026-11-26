@@ -95,6 +95,8 @@ public final class ShieldMode {
     public static final double BREAK_RANGE = 150;
     /** SHIELD-27: the last tick of a round the break-off may run; after it the shield stands. */
     public static final long BREAK_TICKS = 60;
+    /** SHIELD-35: the gap, px, past which a yielded drive comes back to the shield. */
+    public static final double YIELD_BACK = 250;
     /** Ticks without an enemy shot after which we fire at it anyway. */
     public static final int IDLE_TICKS = 32;
 
@@ -302,6 +304,10 @@ public final class ShieldMode {
     private boolean closeBreak;
     /** SHIELD-27: the gap has been at least {@link #BREAK_RANGE} px this round, or the break-off is over. */
     private boolean opened;
+    /** SHIELD-35: yield the drive while this enemy is close (per-opponent list). */
+    private boolean closeYield;
+    /** SHIELD-35: the drive is yielded this tick (inside {@link #BREAK_RANGE} px, until past {@link #YIELD_BACK}). */
+    private boolean yielded;
     private boolean listed;
     private boolean battleOff;
     private boolean roundOff;
@@ -404,6 +410,7 @@ public final class ShieldMode {
         enemyMoved = false;
         roundOff = false;
         opened = false;
+        yielded = false;
         exitReason = "-";
         announced = false;
         now = 0;
@@ -556,6 +563,7 @@ public final class ShieldMode {
             tiny = list.tiny(name);
             floor = list.floor(name);
             closeBreak = list.closeBreak(name);
+            closeYield = list.closeYield(name);
             if (listed) seedAim(list.aimFor(name));
         }
         if (!listed) return;
@@ -699,6 +707,8 @@ public final class ShieldMode {
             hitClass(wasActive, w), w == null ? -1 : w.ordinal, predicted ? 1 : 0, power));
         // SHIELD-27: a hit taken while the break-off has the drive is the duel's, not the shield's.
         if (closeBreak && !opened && time <= BREAK_TICKS) return;
+        // SHIELD-35: so is a hit taken while the drive is yielded.
+        if (yielded) return;
         budget.damageTaken(power);
         if (onTrial && !battleOff) {
             trialDamage += Rules.getBulletDamage(power);
@@ -959,14 +969,14 @@ public final class ShieldMode {
         now = s.time;
         coolingRate = s.coolingRate;
         if (breaking(s)) return null;
-        if (design.stay) {
-            // SHIELD-11: no exit inside the round; an enemy that has not fired by tick 300
-            // ends the mode for the battle.
-            if (!enemyFiredThisRound && s.time >= ShieldDesign.SILENT_TICKS) {
-                leaveBattle(s.time, "silent");
-                return null;
-            }
-        } else {
+        // SHIELD-11: no exit inside the round; an enemy that has not fired by tick 300 ends
+        // the mode for the battle. Checked before a SHIELD-35 yield so a yield never defers it.
+        if (design.stay && !enemyFiredThisRound && s.time >= ShieldDesign.SILENT_TICKS) {
+            leaveBattle(s.time, "silent");
+            return null;
+        }
+        if (yielding(s)) return null;
+        if (!design.stay) {
             if (Math.hypot(s.enemyX - s.x, s.enemyY - s.y) < CLOSE_RANGE) {
                 leaveRound(s.time, "close");
                 return null;
@@ -1036,6 +1046,19 @@ public final class ShieldMode {
         if (s.time <= BREAK_TICKS && Math.hypot(s.enemyX - s.x, s.enemyY - s.y) < BREAK_RANGE) return true;
         opened = true;
         return false;
+    }
+
+    /**
+     * SHIELD-35: whether the drive is yielded to the duel this tick: against an enemy on the
+     * per-opponent list, from the tick the gap falls under {@link #BREAK_RANGE} px until it
+     * passes {@link #YIELD_BACK} px. At that range no interception flies in time.
+     */
+    private boolean yielding(Situation s) {
+        if (!closeYield) return yielded = false;
+        double gap = Math.hypot(s.enemyX - s.x, s.enemyY - s.y);
+        if (gap < BREAK_RANGE) yielded = true;
+        else if (gap > YIELD_BACK) yielded = false;
+        return yielded;
     }
 
     private boolean canFire(Plan p, Situation s) {

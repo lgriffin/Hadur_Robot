@@ -1,37 +1,27 @@
-# BENCH-253 pc-locks, round 28: 32 per-robot lines on existing table switches, each locked on 12+ fresh cloud seeds
-# against both c and aa (coverage/shards/locks.tsv): 21 on rwl (MOVE-46 ram wait: their last bullets hit us after our
-# endgame ram starts), RainbowBot on md, RaikoNano on x0, RedBull on rf, six on hof (MOVE-71), FunkyChicken on ty, X1 on
-# sp2. Every robot is read in c and aa, so the A/A check reads 32. name | note | jar
-TCMI.Enyo 0.4 | rwl-r28 | TCMI.Enyo_0.4.jar
-joe.ADinosaur 1.0 | rwl-r28 | joe.ADinosaur_1.0.jar
-Legend.Qetro 1.6 | rwl-r28 | Legend.Qetro_1.6.jar
-mz.Movement 1.8 | rwl-r28 | mz.Movement_1.8.jar
-oog.nano.SavantVS 1.1 | rwl-r28 | oog.nano.SavantVS_1.1.jar
-strider.Festis 1.2.1 | rwl-r28 | strider.Festis_1.2.1.jar
-deo.CloudBot 1.3 | rwl-r28 | deo.CloudBot_1.3.jar
-jep.nano.Hawkwing 0.4.1 | rwl-r28 | jep.nano.Hawkwing_0.4.1.jar
-ahf.Acero 1.0 | rwl-r28 | ahf.Acero_1.0.jar
-nexus.Prototype 1.0 | rwl-r28 | nexus.Prototype_1.0.jar
-acogdev.alpha 0.2 | rwl-r28 | acogdev.alpha_0.2.jar
-krillr.mega.Psyche 0.0.3 | rwl-r28 | krillr.mega.Psyche_0.0.3.jar
-knackibot.KnackOnOne 0.8.1 | rwl-r28 | knackibot.KnackOnOne_0.8.1.jar
-davidalves.net.DuelistNano 1.0 | rwl-r28 | davidalves.net.DuelistNano_1.0.jar
-lk.nano.Avesnar 1.1 | rwl-r28 | lk.nano.Avesnar_1.1.jar
-kurios.DOSexe .9a | rwl-r28 | kurios.DOSexe_.9a.jar
-ab.DengerousRoBatra 1.3 | rwl-r28 | ab.DengerousRoBatra_1.3.jar
-fala.robocode.FalaRobot 1.0 | rwl-r28 | fala.robocode.FalaRobot_1.0.jar
-wiki.BasicGFSurfer 1.02 | rwl-r28 | wiki.BasicGFSurfer_1.02.jar
-lessonz.robocode.Oz 0.5.0 | rwl-r28 | lessonz.robocode.Oz_0.5.0.jar
-jgap.JGAP7958 1.0 | rwl-r28 | jgap.JGAP7958_1.0.jar
-doka.ShinigamiKNN 1.0 | rwl-r28 | doka.ShinigamiKNN_1.0.jar
-deo.virtual.RainbowBot 1.0 | md-r28 | deo.virtual.RainbowBot_1.0.jar
-wiki.nano.RaikoNano 1.1 | x0-r28 | wiki.nano.RaikoNano_1.1.jar
-zyx.nano.RedBull 1.0 | rf-r28 | zyx.nano.RedBull_1.0.jar
-Legend.X_FireFly 1.3 | hof-r28 | Legend.X_FireFly_1.3.jar
-kjc.etc.Dharok 1.0 | hof-r28 | kjc.etc.Dharok_1.0.jar
-ms.Ares 0.19 | hof-r28 | ms.Ares_0.19.jar
-mcb.Audace 1.3 | hof-r28 | mcb.Audace_1.3.jar
-sam.ChipmunkDuelist 1.0 | hof-r28 | sam.ChipmunkDuelist_1.0.jar
-acid.Bl4ck 1.0 | hof-r28 | acid.Bl4ck_1.0.jar
-kawigi.nano.FunkyChicken 1.1 | ty-r28 | kawigi.nano.FunkyChicken_1.1.jar
-evd.X1 0.01 | sp2-r28 | evd.X1_0.01.jar
+# BENCH-253 pc-locks, round 33: 22 per-robot lines on existing table switches, each read on 12 or more fresh cloud
+# seeds against both c and aa (coverage/shards/locks.tsv, dzlane/L/r29-candidates.txt): CHCl3 and DumDum on gl (GUN-11 gun
+# stack); HVilela, SNGGF and BlueBot on rwl (MOVE-46 ram wait); FlyMk1 on rf; SkynetAdvanced on rln (RAM-20); seven
+# rammers on rlnrkn (RAM-20 plus RAM-21); seven on cpl (COPY-2 bred gun copy); Neutrino on pb (POW-20 power band). The A/A
+# check reads all 22. name | note | jar
+fromHell.CHCl3 1.4.2 | rank41-band2 | fromHell.CHCl3_1.4.2.jar
+fnh.mega.DumDum 1.0.1 | rank93-band3 | fnh.mega.DumDum_1.0.1.jar
+hvilela.HVilela 0.9 | rank834-band6 | hvilela.HVilela_0.9.jar
+slugzilla.SNGGF 1.0 | rank558-band5 | slugzilla.SNGGF_1.0.jar
+sul.BlueBot 1.0 | rank866-band6 | sul.BlueBot_1.0.jar
+oa.weak.FlyMk1 0.1 | rank1086-band6 | oa.weak.FlyMk1_0.1.jar
+whitesquare.robots.SkynetAdvanced 1.1 | rank933-band6 | whitesquare.robots.SkynetAdvanced_1.1.jar
+blr.Chicken001 0.1 | rank1130-band6 | blr.Chicken001_0.1.jar
+djdjdj.NanoSkunk10 1.0 | rank867-band6 | djdjdj.NanoSkunk10_1.0.jar
+sanyi.mikrobi.Roberto 1.0 | rank1049-band6 | sanyi.mikrobi.Roberto_1.0.jar
+agrach.MicroDalek 1.0 | rank857-band6 | agrach.MicroDalek_1.0.jar
+supersample.SuperCorners 1.0 | rank766-band6 | supersample.SuperCorners_1.0.jar
+mbro.BelajarBot 0.0.3 | rank1080-band6 | mbro.BelajarBot_0.0.3.jar
+mbro.Detektor3 0.1.1 | rank1074-band6 | mbro.Detektor3_0.1.1.jar
+zen.Ronin 1.0.0 | rank61-band3 | zen.Ronin_1.0.0.jar
+hope.Identity .pope69 | rank82-band3 | hope.Identity_.pope69.jar
+jaara.LambdaBot 1.1 | rank506-band5 | jaara.LambdaBot_1.1.jar
+tornyil.bottomup.BottomUp 1.05 | rank393-band4 | tornyil.bottomup.BottomUp_1.05.jar
+dummy.micro.HummingBird 2.14 | rank610-band5 | dummy.micro.HummingBird_2.14.jar
+stelo.FretNano 1.1 | rank738-band6 | stelo.FretNano_1.1.jar
+cs.PumpkinPie 1.0 | rank377-band4 | cs.PumpkinPie_1.0.jar
+dragonbyte.Neutrino 4 | rank387-band4 | dragonbyte.Neutrino_4.jar

@@ -262,6 +262,8 @@ public class Hadur extends TeamRobot {
             for (String name : ShieldTableData.shieldFloors()) lines.add(ShieldList.FLOOR_PREFIX + " " + name);
             // SHIELD-27: per-opponent close-start break-off.
             for (String name : ShieldTableData.closeBreaks()) lines.add(ShieldList.CLOSE_BREAK_PREFIX + " " + name);
+            // SHIELD-35: per-opponent close-range yield.
+            for (String name : ShieldTableData.closeYields()) lines.add(ShieldList.CLOSE_YIELD_PREFIX + " " + name);
             // POW-18: per-opponent power cap.
             for (String name : ShieldTableData.powerCaps()) lines.add(ShieldList.POWER_CAP_PREFIX + " " + name);
             for (String name : ShieldTableData.powerCapHalves()) lines.add(ShieldList.POWER_CAP5_PREFIX + " " + name);
@@ -310,8 +312,12 @@ public class Hadur extends TeamRobot {
             for (String name : ShieldTableData.aimWeights()) lines.add(ShieldList.AIM_WEIGHT_PREFIX + " " + name);
             // MOVE-71: per-opponent head-on floor.
             for (String name : ShieldTableData.headOnFloors()) lines.add(ShieldList.HEAD_ON_FLOOR_PREFIX + " " + name);
+            // GUN-12: per-opponent free gun.
+            for (String name : ShieldTableData.freeGuns()) lines.add(ShieldList.FREE_GUN_PREFIX + " " + name);
             // SKEY-2: per-opponent surf keys.
             for (String key : ShieldTableData.surfKeys()) lines.add(ShieldList.SURF_KEY_PREFIX + " " + key);
+            // COPY-2: per-opponent bred gun copies.
+            for (String copy : ShieldTableData.copies()) lines.add(ShieldList.COPY_PREFIX + " " + copy);
             return ShieldList.parse(lines);
         } catch (RuntimeException | LinkageError e) {
             out.println("SH," + getRoundNum() + "," + getTime() + ",list-failed," + e);

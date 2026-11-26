@@ -1,0 +1,6 @@
+# pc-locks round 30 (BENCH-253, PR #1066): robots whose lines shipped on 24 fresh PC seeds at the live turn time
+kawigi.mini.Fhqwhgads 1.1
+simonton.micro.GFMicro 1.0
+Krabb.fe4r.Fe4r 0.4
+ry.LightningBug 1.0
+dummy.micro.Sparrow 2.5

@@ -109,6 +109,10 @@ Live results as of 2026-11-02 16:00 UTC, Hadur and HadurTeam as of 2026-11-22 20
   and a table of bullet power by both robots' energy ([docs/sanaro.md](docs/sanaro.md)).
 - **JayLexi** (a wave surfer with a GuessFactor gun) and **Eveimear** (Cotillion's stop-and-go movement and multiple-choice pattern matcher, with a per-robot mode table)
   are 1v1 size bots from the kitlab design ([docs/kitlab.md](docs/kitlab.md)).
+- **Sepia** ([sepia/](sepia/), `hadur117.Sepia`, not yet entered in any rumble) is an experimental 1v1 robot
+  on Hadur's kernel. It fixes a landing for every enemy shot and fires 0.1 "ink" bullets to shoot that shot
+  down before it reaches the landing ([docs/sepia.md](docs/sepia.md), design in
+  [docs/sepia-design.md](docs/sepia-design.md)). Hadur's own play does not change.
 
 ## What it does
 
