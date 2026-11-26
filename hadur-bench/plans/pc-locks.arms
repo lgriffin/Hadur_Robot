@@ -1,8 +1,13 @@
-# pc-locks (BENCH-253) round 34: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots
-# picked for it (plans/locks-pick.tsv; gl GUN-11 gun stack, gslist; cpl COPY-2 bred gun copy, copylist with the genome
-# from plans/copy-lines.txt; rwl MOVE-46 ram wait, rwlist, on the 46-robot class).
+# pc-locks (BENCH-253) round 35: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots
+# picked for it (plans/locks-pick.tsv; gl GUN-11 gslist, cpl COPY-2 copylist with the genome from plans/copy-lines.txt,
+# rwl MOVE-46 rwlist, dn DIST-4 dplist with the distance from plans/dist-pin-lines.txt, hof MOVE-71 hoflist, qw MOVE-67
+# aimwlist, rlnrkn RAM-20 and RAM-21 rlearnlist,rknownlist).
 c | hadur117.Hadur 3.24 | bisect/hadur117.Hadur_3.24.jar
 aa | hadur117.Hadur 3.24aa | bisect/hadur117.Hadur_3.24aa.jar
 gl | hadur117.Hadur 3.24gl | bisect/hadur117.Hadur_3.24gl.jar
 cpl | hadur117.Hadur 3.24cpl | bisect/hadur117.Hadur_3.24cpl.jar
 rwl | hadur117.Hadur 3.24rwl | bisect/hadur117.Hadur_3.24rwl.jar
+dn | hadur117.Hadur 3.24dn | bisect/hadur117.Hadur_3.24dn.jar
+hof | hadur117.Hadur 3.24hof | bisect/hadur117.Hadur_3.24hof.jar
+qw | hadur117.Hadur 3.24qw | bisect/hadur117.Hadur_3.24qw.jar
+rlnrkn | hadur117.Hadur 3.24rlnrkn | bisect/hadur117.Hadur_3.24rlnrkn.jar

@@ -1,0 +1,37 @@
+# pc-locks round 35 skip check (TIME-14, TIME-15): the 30 robots of the cloud skip-cost panel (every band, rammers
+# and learners) and six rammers on the learned escape path. name | note | jar
+TJ.Exupery 1.39 | rank293-band4 | TJ.Exupery_1.39.jar
+acid.Syzygy 1.0.4 | rank1006-band6 | acid.Syzygy_1.0.4.jar
+amk.ShizzleStiX.ShizzleStiX 0.6 | rank971-band6 | amk.ShizzleStiX.ShizzleStiX_0.6.jar
+apc.Colossus2 0.12 | rank920-band6 | apc.Colossus2_0.12.jar
+apv.AspidReloaded 0.6 | rank346-band4 | apv.AspidReloaded_0.6.jar
+ar.TheoryOfEverything 1.2.1 | rank569-band5 | ar.TheoryOfEverything_1.2.1.jar
+ary.nano.AceSurf 1.2 | rank575-band5 | ary.nano.AceSurf_1.2.jar
+asd.Cthulhu 1.2 | rank880-band6 | asd.Cthulhu_1.2.jar
+bayen.UbaRamLT 1.0 | rank621-band5 | bayen.UbaRamLT_1.0.jar
+bbo.RamboT 0.3 | rank1047-band6 | bbo.RamboT_0.3.jar
+benhorner.PureAggression 0.2.6 | rank564-band5 | benhorner.PureAggression_0.2.6.jar
+cw.megas.Silhouette 1.1 | rank182-band3 | cw.megas.Silhouette_1.1.jar
+davidalves.Phoenix 1.02 | rank22-band2 | davidalves.Phoenix_1.02.jar
+djdjdj.NanoSkunk10 1.0 | rank867-band6 | djdjdj.NanoSkunk10_1.0.jar
+dmp.micro.Aurora 1.41 | rank629-band5 | dmp.micro.Aurora_1.41.jar
+eld.Hmm 1.0 | rank917-band6 | eld.Hmm_1.0.jar
+gh.micro.GrubbmThree 1.01 | rank469-band5 | gh.micro.GrubbmThree_1.01.jar
+gre.svman4.Morfeas 1.4.3 | rank181-band3 | gre.svman4.Morfeas_1.4.3.jar
+kc.micro.rammer.MaxRisk 0.6 | rank480-band5 | kc.micro.rammer.MaxRisk_0.6.jar
+kneels.ToNoone 0.2 | rank988-band6 | kneels.ToNoone_0.2.jar
+mahrgell.mahrram 1.3 | rank607-band5 | mahrgell.mahrram_1.3.jar
+mk.Alpha 0.2.1 | rank311-band4 | mk.Alpha_0.2.1.jar
+mn.nano.perceptual.Impact 1.3.0 | rank502-band5 | mn.nano.perceptual.Impact_1.3.0.jar
+myl.micro.Avipes 1.00 | rank296-band4 | myl.micro.Avipes_1.00.jar
+nat.nano.OcnirpPM 1.0 | rank433-band5 | nat.nano.OcnirpPM_1.0.jar
+ncj.MoxieBot 1.0 | rank1180-band6 | ncj.MoxieBot_1.0.jar
+oog.nano.Caligula 1.15 | rank277-band4 | oog.nano.Caligula_1.15.jar
+pa3k.Viper 5.03 | rank390-band4 | pa3k.Viper_5.03.jar
+pez.mini.Tityus 0.9.1 | rank148-band3 | pez.mini.Tityus_0.9.1.jar
+sanyi.mikrobi.Roberto 1.0 | rank1049-band6 | sanyi.mikrobi.Roberto_1.0.jar
+sheldor.nano.FoilistNano 3.2 | rank312-band4 | sheldor.nano.FoilistNano_3.2.jar
+stelo.RamTrackSurfer 1.2 | rank376-band4 | stelo.RamTrackSurfer_1.2.jar
+suh.nano.MirrorH 1.01 | rank921-band6 | suh.nano.MirrorH_1.01.jar
+vuen.Fractal 0.55 | rank652-band5 | vuen.Fractal_0.55.jar
+whind.StrengthBee 0.6.4 | rank139-band3 | whind.StrengthBee_0.6.4.jar
