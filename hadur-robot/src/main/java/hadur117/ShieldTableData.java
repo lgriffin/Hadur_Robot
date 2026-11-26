@@ -585,6 +585,8 @@ final class ShieldTableData {
             "zyx.mega.YersiniaPestis 3.0",   // +5.5
             "mue.Ascendant 1.2.27",          // +5.2
             "pc.Wavelet 1.5",                // +4.4
+            // pc-locks round 32 (BENCH-253, PR #1080): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "jk.melee.Neuromancer 7.12",     // +4.6
         };
     }
 
@@ -978,6 +980,10 @@ final class ShieldTableData {
             "slugzilla.RandomLinear 1.0",    // +0.7
             "sul.NanoR2 1.32",               // +1.6
             "zzx.Gron 1.14",                 // +1.1
+            // pc-locks round 32 (BENCH-253, PR #1080): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "jep.nano.Hotspur 0.1",          // +0.7
+            "nexus.One 1.0",                 // +0.5
+            "rus.vv.Dzhigit 1.1",            // +1.0
         };
     }
 
@@ -1297,6 +1303,10 @@ final class ShieldTableData {
             "zch.Hirkan 0.11",                      // +1.4
             // pc-locks round 31 (BENCH-253, PR #1076): 24 fresh PC seeds at the live turn time; cloud lock held first
             "jab.micro.Sanguijuela 0.8",     // +2.5
+            // pc-locks round 32 (BENCH-253, PR #1080): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "apc.Colossus2 0.12",            // +2.7
+            "jje.BagPuss 1.2",               // +1.0
+            "velas.Alpha 1.0",               // +2.5
         };
     }
 
@@ -1336,6 +1346,9 @@ final class ShieldTableData {
             "zch.Hirkan 0.11",                      // +1.4
             // pc-locks round 31 (BENCH-253, PR #1076): 24 fresh PC seeds at the live turn time; cloud lock held first
             "jab.micro.Sanguijuela 0.8",     // +2.5
+            // pc-locks round 32 (BENCH-253, PR #1080): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "apc.Colossus2 0.12",            // +2.7
+            "velas.Alpha 1.0",               // +2.5
         };
     }
 
