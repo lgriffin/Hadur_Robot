@@ -1,6 +1,6 @@
 # Queue pc-locks: progress
 
-Updated 2026-11-26 23:34:07 PC time (23:34 UTC), runner pid 15568.
+Updated 2026-11-26 23:38:53 PC time (23:38 UTC), runner pid 15568.
 
 - `prep` done, exit 0 in 8 min
 - `livematch` done, exit 0 in 8 min
@@ -16,9 +16,9 @@ Updated 2026-11-26 23:34:07 PC time (23:34 UTC), runner pid 15568.
 - `lock-rf` done, exit 0 in 1 min
 - `lock-mtty` done, exit 0 in 1 min
 - `gate` done, exit 0 in 0 min
-- `skip` running
-- `skipread` pending
-- `pr` pending
+- `skip` done, exit 0 in 29 min
+- `skipread` done, exit 0 in 0 min
+- `pr` done, exit 0 in 0 min
 
 ### livematch
 
@@ -248,35 +248,29 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### skip
 
-**2161 of 2520 battles** (86%), 0 failed. Running 25 min, 5256 battles/h, about 4 min left (ends ~23:38 PC time). Last battle 0 min ago.
-Skipped turns a battle: 13.4 overall, first 100 14.5, last 100 14.4; engine disables 6.
+**2520 of 2520 battles** (100%), 0 failed. Running 29 min, 5160 battles/h, about 0 min left (ends ~23:38 PC time). Last battle 0 min ago.
+Skipped turns a battle: 13.4 overall, first 100 14.5, last 100 12.6; engine disables 6.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 722 | 0 | 92.33 | - | - | - | 13.6 |
-| aa | 720 | 0 | 92.29 | -0.00 (35 robots) | ±0.00 | -0.01 .. +0.00 | 13.2 |
-| sk | 719 | 0 | 92.28 | -0.00 (35 robots) | ±0.00 | -0.01 .. +0.01 | 13.4 |
+| c | 840 | 0 | 92.36 | - | - | - | 13.6 |
+| aa | 840 | 0 | 92.27 | -0.00 (35 robots) | ±0.00 | -0.01 .. +0.00 | 13.2 |
+| sk | 840 | 0 | 92.30 | -0.00 (35 robots) | ±0.00 | -0.01 .. +0.01 | 13.4 |
 
 APS = mean difference over the robots read x 35 panel robots / 1217 pairings.
-A/A: aa - c -0.04 pts over 35 robots; 1% band ±0.43 (inside).
+A/A: aa - c -0.08 pts over 35 robots; 1% band ±0.40 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 2161 |
+| `fails 30` | halt | ok | 0 failed of 2520 |
 | `dead 8` | halt | ok | every arm scoring |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 359 battles unrun (about 4 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-23:07:31 lock-qw exit=0 in 20 s
-23:07:31 start lock-rlnrkn
-23:07:31 watching lock-rlnrkn: 3 stop rule(s)
-23:08:10 lock-rlnrkn exit=0 in 39 s
-23:08:10 start lock-rf
-23:08:10 watching lock-rf: 3 stop rule(s)
 23:08:42 lock-rf exit=0 in 31 s
 23:08:42 start lock-mtty
 23:08:42 watching lock-mtty: 3 stop rule(s)
@@ -286,4 +280,10 @@ Stopping now would leave 359 battles unrun (about 4 min); every battle already f
 23:09:26 start skip
 23:09:26 watching skip: 3 stop rule(s)
 23:13:02 progress skip: 333/2520 (13%) battles, 5574/h, ETA 24 min, 0 failed, skips 14.6/battle (last 100), aa -0.00, sk +0.00
+23:38:45 skip exit=0 in 1758 s
+23:38:45 start skipread
+23:38:46 skipread exit=0 in 1 s
+23:38:46 start pr
+23:38:53 pr exit=0 in 7 s
+23:38:53 ALLDONE
 ```
