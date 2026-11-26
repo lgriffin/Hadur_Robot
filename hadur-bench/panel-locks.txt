@@ -1,18 +1,26 @@
-# BENCH-253 pc-locks, round 32: 9 per-robot lines on existing table switches, each read on 12 or more fresh cloud
-# seeds against both c and aa (coverage/shards/locks.tsv, dzlane/L/r29-candidates.txt): Neuromancer and PulsarMax on gl
-# (GUN-11 gun stack); One, Hotspur, Dzhigit and Phoenix on rwl (MOVE-46 ram wait); Colossus2 and Alpha on rlnrkn (RAM-20 plus
-# RAM-21); BagPuss on rln (RAM-20); and four robots whose round 31 line is on master, read only in c and aa, so the A/A
-# check reads 12. name | note | jar
-jk.melee.Neuromancer 7.12 | gl-M+L+D-48seeds | jk.melee.Neuromancer_7.12.jar
-pulsar.PulsarMax 0.8.9 | gl-L+C-84seeds | pulsar.PulsarMax_0.8.9.jar
-nexus.One 1.0 | rwl-A+B-24seeds | nexus.One_1.0.jar
-jep.nano.Hotspur 0.1 | rwl-B-12seeds | jep.nano.Hotspur_0.1.jar
-rus.vv.Dzhigit 1.1 | rwl-B-12seeds | rus.vv.Dzhigit_1.1.jar
-hlavko.nano.Phoenix 1.0 | rwl-B-24seeds | hlavko.nano.Phoenix_1.0.jar
-apc.Colossus2 0.12 | rlnrkn-A+M-24seeds | apc.Colossus2_0.12.jar
-velas.Alpha 1.0 | rlnrkn-A+M-24seeds | velas.Alpha_1.0.jar
-jje.BagPuss 1.2 | rln-L-12seeds | jje.BagPuss_1.2.jar
-zzx.Gron 1.14 | aa-pad-r31-line | zzx.Gron_1.14.jar
-buba.Buba 0.3 | aa-pad-r31-line | buba.Buba_0.3.jar
-EH.kms.LightningStorm 0.11B | aa-pad-r31-line | EH.kms.LightningStorm_0.11B.jar
-jab.micro.Sanguijuela 0.8 | aa-pad-r31-line | jab.micro.Sanguijuela_0.8.jar
+# BENCH-253 pc-locks, round 33: 21 per-robot lines on existing table switches, each read on 12 or more fresh cloud
+# seeds against both c and aa (coverage/shards/locks.tsv, dzlane/L/r29-candidates.txt): CHCl3 and DumDum on gl (GUN-11 gun
+# stack); HVilela, SNGGF and BlueBot on rwl (MOVE-46 ram wait); FlyMk1 on rf; SkynetAdvanced on rln (RAM-20); seven
+# rammers on rlnrkn (RAM-20 plus RAM-21); six on cpl (COPY-2 bred gun copy); Neutrino on pb (POW-20 power band). The A/A
+# check reads all 21. name | note | jar
+fromHell.CHCl3 1.4.2 | rank41-band2 | fromHell.CHCl3_1.4.2.jar
+fnh.mega.DumDum 1.0.1 | rank93-band3 | fnh.mega.DumDum_1.0.1.jar
+hvilela.HVilela 0.9 | rank834-band6 | hvilela.HVilela_0.9.jar
+slugzilla.SNGGF 1.0 | rank558-band5 | slugzilla.SNGGF_1.0.jar
+sul.BlueBot 1.0 | rank866-band6 | sul.BlueBot_1.0.jar
+oa.weak.FlyMk1 0.1 | rank1086-band6 | oa.weak.FlyMk1_0.1.jar
+whitesquare.robots.SkynetAdvanced 1.1 | rank933-band6 | whitesquare.robots.SkynetAdvanced_1.1.jar
+blr.Chicken001 0.1 | rank1130-band6 | blr.Chicken001_0.1.jar
+djdjdj.NanoSkunk10 1.0 | rank867-band6 | djdjdj.NanoSkunk10_1.0.jar
+sanyi.mikrobi.Roberto 1.0 | rank1049-band6 | sanyi.mikrobi.Roberto_1.0.jar
+agrach.MicroDalek 1.0 | rank857-band6 | agrach.MicroDalek_1.0.jar
+supersample.SuperCorners 1.0 | rank766-band6 | supersample.SuperCorners_1.0.jar
+mbro.BelajarBot 0.0.3 | rank1080-band6 | mbro.BelajarBot_0.0.3.jar
+mbro.Detektor3 0.1.1 | rank1074-band6 | mbro.Detektor3_0.1.1.jar
+zen.Ronin 1.0.0 | rank61-band3 | zen.Ronin_1.0.0.jar
+hope.Identity .pope69 | rank82-band3 | hope.Identity_.pope69.jar
+jaara.LambdaBot 1.1 | rank506-band5 | jaara.LambdaBot_1.1.jar
+tornyil.bottomup.BottomUp 1.05 | rank393-band4 | tornyil.bottomup.BottomUp_1.05.jar
+dummy.micro.HummingBird 2.14 | rank610-band5 | dummy.micro.HummingBird_2.14.jar
+stelo.FretNano 1.1 | rank738-band6 | stelo.FretNano_1.1.jar
+dragonbyte.Neutrino 4 | rank387-band4 | dragonbyte.Neutrino_4.jar
