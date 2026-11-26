@@ -708,7 +708,7 @@ endgame MEND-1, 2).
 | `TeamModes.FORCE_MOMENTUM` | TMODE-49 | **on** (3.23) | The dodge and path check prefer candidates that keep Hadur's momentum |
 | `TeamModes.FORCE_FITTED` | TMODE-50 | **on** (3.24) | Fitted enemy aims (`TeamModes.FITTED`, eight teams) join the dodge's profile |
 | `TeamModes.FORCE_CLOSERERANK` | TMODE-52 | **on** (3.24) | The dodge reranks 40 candidates, not 12, while a wave is within 35 ticks |
-| `TeamModes.TIGHT_ON` | TMODE-59 | on (pc-team-tight, PR #1016; ablation `tmnotight`) | TIGHT in six table entries makes the hunt pull 1.0, not 0.3, so the pack holds its place round the prey |
+| `TeamModes.TIGHT_ON` | TMODE-59 | on (pc-team-tight, PR #1016; ablation `tmnotight`) | TIGHT in seven table entries makes the hunt pull 1.0, not 0.3, so the pack holds its place round the prey |
 | `TeamLink.NARROW_LANE` | WEAVE-9 | **on** | Ogi's narrow fire lane |
 | table-only modes `OWN`, `HEADON`, `LINEAR`, `QUARTERS`; `GANG`, `FINISH` through CONCORD | TMODE-3, -4, -20..22, -45 | per team | No forcing switch on; the table or CONCORD names them |
 | `RoleResolver.TEAM_BUILT` | ROLE-3 | off | There is no Team role; members play Melee then Duel |
@@ -717,8 +717,8 @@ endgame MEND-1, 2).
 
 The 1v1 table is per opponent, PC-trained and census-gated: only per-opponent picks have shown
 live gains. It ships as two classes in the robot jar, because the sandbox refuses a robot the
-read of its own jar's resources but lets classes load. On master (3.24 plus the banked lines) it holds 1,332
-lines over 44 slots: 304 on the shield list and 1,028 in `ShieldTableData`'s 43 other slots.
+read of its own jar's resources but lets classes load. On master (3.24 plus the banked lines) it holds 1,383
+lines over 44 slots: 304 on the shield list and 1,079 in `ShieldTableData`'s 43 other slots.
 
 ```mermaid
 flowchart LR
@@ -762,7 +762,7 @@ flowchart LR
 | `surfKeys()` | `surf-key:` | SKEY-2 | 176 | Fitted weights for the danger views' search key |
 | **Rammers** | | | | |
 | `ramFlees()` | `ram-flee:` | RAM-15 | 54 | Flee a slow rammer |
-| `ramWaits()` | `ram-wait:` | MOVE-46 | 42 | Against a disabled enemy, keep surfing its live waves before the ram |
+| `ramWaits()` | `ram-wait:` | MOVE-46 | 88 | Against a disabled enemy, keep surfing its live waves before the ram |
 | `ramBends()`, `ramFans()`, `ramCircs()`, `ramHeavies()` | `ram-bend:`, `ram-fan:`, `ram-circ:`, `ram-heavy:` | RAM-18, RAM-17, RAM-11, RAM-14 | 10, 2, 4, 0 | RAM-2 escape variants: the escape bend, fanned and circular aims, heavier path costs |
 | `ramLearns()` | `ram-learn:` | RAM-20 | 46 | The escape dodges the aims learned from the rammer's own bullets (`ShotModel`) in place of RAM-5's fixed pair |
 | `ramKnowns()` | `ram-known:` | RAM-21 | 32 | The rammer is confirmed at the first scan, so rounds 1 and 2 play the escape instead of waiting for two rammed rounds |
@@ -770,9 +770,9 @@ flowchart LR
 | `powerCaps()`, `powerCapHalves()` | `power-cap:`, `power-cap5:` | POW-18 | 6, 2 | Cap fire power |
 | `hardFires()`, `powerBands()` | `hard-fire:`, `power-band:` | POW-19, POW-20 | 1, 2 | At least 0.6 power while we have 60+ energy; a power multiplier per energy band |
 | `fullOffs()`, `x5Powers()`, `racePowers()` | `full-off:`, `x5-power:`, `race-power:` | POW-15, POW-16, POW-17 | 16, 17, 20 | Power policy variants (race power vs strong bots) |
-| `gunStacks()` | `gun-stack:` | GUN-11 | 22 | TripHammer gun stack (never for a shield opponent) |
+| `gunStacks()` | `gun-stack:` | GUN-11 | 23 | TripHammer gun stack (never for a shield opponent) |
 | `freeGuns()` | `free-gun:` | GUN-12 | 0 | The duel gun fires with free gun on against this opponent |
-| `copies()` | `copy:` | COPY-2 | 5 | A bred copy of the opponent's learning gun (genome from truth logs) steers the surf's danger |
+| `copies()` | `copy:` | COPY-2 | 9 | A bred copy of the opponent's learning gun (genome from truth logs) steers the surf's danger |
 
 Matching is by name (SHIELD-26): `pkg.Bot 1.2` and `pkg.Bot` both match every version of the robot, and
 the version records the one benched; never a prefix. Lines carry over to a robot's new version by name.
@@ -795,7 +795,8 @@ table names, or the default set built from the `FORCE_*` switches.
 | `ustimaw.NigitmareDroid` | MATEFIRE, HUNT, NEAR, PATH, CLOSE, QUARTERS, LAST, MOMENTUM (no DODGE, no CONCORD) | pc-team-nododge PR #465, pc-team-quarters PR #759, pc-team-pack4 PR #1042 |
 | `mn.nano.perceptual.Impact` | default without DODGE, + QUARTERS | PR #465, +3.1; QUARTERS pc-team-pack4 PR #1042, +0.9 |
 | `ags.polylunar.Charon`, `Europa`, `Io`, `Luna`, `Phobos`, `amz.TeamDeath` | default + QUARTERS | pc-team-pack4 PR #1042, Polylunar +1.6, TeamDeathTeam +1.4 |
-| `cz.libors.Ogi`, `cb.fire.Firestarter` | default without CONCORD | pc-team-noconcord PR #538 (TMODE-35) |
+| `cz.libors.Ogi` | default without CONCORD | pc-team-noconcord PR #538 (TMODE-35) |
+| `cb.fire.Firestarter` | default without CONCORD, + TIGHT | pc-team-noconcord PR #538 (TMODE-35); TIGHT pc-team-pack5 PR #1087, +6.0 |
 | `mn.Combat` | default (CONCORD back) | pc-team-pack3 PR #1033 |
 | `abc.Shadow`, `florent.XSeries.X2`, `rz.Aleph`, `kawigi.micro.Shiz` | default + TIGHT (`cz.libors.Ogi` carries TIGHT too) | pc-team-tight PR #1016; ArmyOfShiz pc-team-pack3 PR #1033, +2.6 |
 | `cx.mini.Nimrod` | default + TIGHT, NEAR | PR #1016; NEAR pc-team-pack3 PR #1033, +3.3 (TMODE-60) |

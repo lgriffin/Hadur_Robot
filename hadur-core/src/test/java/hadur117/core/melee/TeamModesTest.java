@@ -433,7 +433,7 @@ class TeamModesTest {
         assertNull(TeamRisk.pull(pt(600, 400), "n", 100, 3, prey, 100, mates(pt(700, 400)),
             EnumSet.of(TeamModes.Mode.TIGHT)));
         assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.TIGHT));
-        Set<String> tight = Set.of("cz.libors.Ogi", "abc.Shadow", "florent.XSeries.X2", "rz.Aleph", "cx.mini.Nimrod", "kawigi.micro.Shiz");
+        Set<String> tight = Set.of("cz.libors.Ogi", "cb.fire.Firestarter", "abc.Shadow", "florent.XSeries.X2", "rz.Aleph", "cx.mini.Nimrod", "kawigi.micro.Shiz");
         for (Map.Entry<String, Set<TeamModes.Mode>> entry : TeamModes.TABLE.entrySet()) {
             assertEquals(tight.contains(entry.getKey()), entry.getValue().contains(TeamModes.Mode.TIGHT), entry.getKey());
             assertTrue(entry.getValue().contains(TeamModes.Mode.HUNT), entry.getKey());
