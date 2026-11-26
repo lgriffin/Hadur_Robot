@@ -1,9 +1,9 @@
-# BENCH-253 pc-locks, round 35: 13 robots. Ten carry a line read on 12 or more fresh cloud seeds at 0.7x the live
-# turn time against both c and aa (coverage/shards/locks.tsv): PhoenixOS on gl (GUN-11 gun stack); Identity and
+# BENCH-253 pc-locks, round 35: 13 robots. Twelve carry a line read on 12 or more fresh cloud seeds at 0.7x the live
+# turn time against both c and aa (coverage/shards/locks.tsv): PhoenixOS, PinkPanther and MatchupMini on gl (GUN-11 gun stack); Identity and
 # PumpkinPie on cpl (COPY-2 bred gun copy); Phoenix on rwl (MOVE-46 ram wait); GresSuffurd on dn (DIST-4, 400 px);
 # Splooshlu on hof (MOVE-71 head-on floor); LevelOne on qw (MOVE-67 aim weight); SquidmanNano and Ringo on rlnrkn
 # (RAM-20 and RAM-21);
-# TrialBot on rf (RAM-15 ram flee). PinkPanther, Holden and MatchupMini pad the A/A check (c and aa only). name | note | jar
+# TrialBot on rf (RAM-15 ram flee). Holden pads the A/A check (c and aa only). name | note | jar
 davidalves.PhoenixOS 1.1 | rank59-band3 | davidalves.PhoenixOS_1.1.jar
 hope.Identity .pope69 | rank82-band3 | hope.Identity_.pope69.jar
 cs.PumpkinPie 1.0 | rank377-band4 | cs.PumpkinPie_1.0.jar
