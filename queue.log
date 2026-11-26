@@ -13,3 +13,9 @@
 18:51:22 tkbb exit=0 in 801 s
 18:51:22 start tkp5
 18:51:22 watching tkp5: 3 stop rule(s)
+19:04:01 tkp5 exit=0 in 759 s
+19:04:01 start tkgate
+19:04:02 tkgate exit=0 in 0 s
+19:04:02 start tkpr
+19:04:10 tkpr exit=0 in 7 s
+19:04:10 ALLDONE
