@@ -1023,7 +1023,8 @@ public final class HadurCore {
         if (store == null || !archive.scribe()) return;
         int memoryFailures = meleeMemoryFailures() + duel.memoryFailures();
         String record = "HEALTH," + rounds + "," + roundsSurvived + "," + faults + ","
-            + skippedTurns + "," + memoryFailures + "," + budget.learnedAllowanceNanos()
+            // The seventh field held TIME-3's learned allowance; retired by TIME-15, it is always -1.
+            + skippedTurns + "," + memoryFailures + ",-1"
             + (setupMillis < 0 ? "" : "," + setupMillis + "," + firstTurn + "," + longestSkipRun);
         try {
             // RES-6: no java.nio (Charset included), so the ASCII record is encoded by hand.
@@ -1121,13 +1122,9 @@ public final class HadurCore {
             String.format(Locale.ROOT, "%.4f", (double) budget.level()), "-", "level-" + budget.level()));
     }
 
-    /** TIME-2: the engine skipped one of our turns because a tick ran over its time. */
+    /** The engine skipped one of our turns. TIME-15: counted, and nothing is shed for it. */
     private void onSkippedTurn(BotInput in, long skippedTime) {
         stats.skippedTurns++;
-        // TIME-2: one level down for the rest of the round.
-        budget.skippedTurn(skippedTime);
-        stats.computationLevel = budget.maxLevel();
-        emitBudget();
         telemetry.emit("WARNING: Turn skipped at " + in.time());
     }
 
