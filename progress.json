@@ -1,12 +1,16 @@
 {
  "plan": "pc-locks",
- "updated": 1795732420.0248315,
+ "updated": 1795733326.5654266,
  "steps": {
   "prep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 502,
+   "end": "2026-11-26T22:42:02"
   },
   "livematch": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-26T22:42:02"
   },
   "lock": {
    "status": "pending"
@@ -54,5 +58,77 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "livematch",
+   "started": 1795732922.1127872,
+   "updated": 1795733326.537819,
+   "elapsed": 404.4250316619873,
+   "expected": 124,
+   "panel": 31,
+   "field": 1217,
+   "multiarm": true,
+   "arms": [
+    {
+     "arm": "c",
+     "battles": 60,
+     "failed": 0,
+     "level": 70.01677419354839,
+     "skips": 10.516666666666667,
+     "fresh": 60,
+     "scored": 60,
+     "diff": null
+    },
+    {
+     "arm": "bb",
+     "battles": 62,
+     "failed": 0,
+     "level": 84.37725806451613,
+     "skips": 0.8548387096774194,
+     "fresh": 62,
+     "scored": 62,
+     "diff": 14.360483870967741,
+     "n": 31,
+     "ci95": 2.4991615451787927,
+     "half_stop": 3.8252472630287637,
+     "scale": 0.025472473294987676
+    }
+   ],
+   "aa": null,
+   "warnings": [
+    "arm c's jar bisect/live/hadur117.Hadur_3.22.jar was built 269 h before this step started: check it is not stale",
+    "arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 256 h before this step started: check it is not stale"
+   ],
+   "battles": 122,
+   "resumed": 0,
+   "failed": 0,
+   "disables": 0,
+   "rate": 1085.9861917920973,
+   "eta": 6.629918551835858,
+   "fraction": 0.9838709677419355,
+   "last_battle_age": 16.731613397598267,
+   "rules": [
+    {
+     "rule": "fails 30",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 122"
+    },
+    {
+     "rule": "dead 8",
+     "action": "halt",
+     "state": "ok",
+     "detail": "every arm scoring"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    }
+   ],
+   "skips_mean": 5.60655737704918,
+   "skips_last100": 5.72
+  }
+ ]
 }
