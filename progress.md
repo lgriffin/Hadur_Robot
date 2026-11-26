@@ -1,22 +1,22 @@
 # Queue pc-locks: progress
 
-Updated 2026-11-26 23:03:57 PC time (23:03 UTC), runner pid 15568.
+Updated 2026-11-26 23:19:04 PC time (23:19 UTC), runner pid 15568.
 
 - `prep` done, exit 0 in 8 min
 - `livematch` done, exit 0 in 8 min
 - `lock` done, exit 0 in 11 min
 - `stage` done, exit 0 in 0 min
 - `lock-gl` done, exit 0 in 2 min
-- `lock-cpl` running
-- `lock-rwl` pending
-- `lock-dn` pending
-- `lock-hof` pending
-- `lock-qw` pending
-- `lock-rlnrkn` pending
-- `lock-rf` pending
-- `lock-mtty` pending
-- `gate` pending
-- `skip` pending
+- `lock-cpl` done, exit 0 in 2 min
+- `lock-rwl` done, exit 0 in 1 min
+- `lock-dn` done, exit 0 in 1 min
+- `lock-hof` done, exit 0 in 0 min
+- `lock-qw` done, exit 0 in 0 min
+- `lock-rlnrkn` done, exit 0 in 1 min
+- `lock-rf` done, exit 0 in 1 min
+- `lock-mtty` done, exit 0 in 1 min
+- `gate` done, exit 0 in 0 min
+- `skip` running
 - `skipread` pending
 - `pr` pending
 
@@ -88,40 +88,202 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### lock-cpl
 
-**50 of 96 battles** (52%), 0 failed, 48 read back from an earlier run. Running 0 min, 286 battles/h, about 10 min left (ends ~23:13 PC time). Last battle 0 min ago.
-Skipped turns a battle: 13.5 overall, first 2 13.5, last 2 13.5; engine disables 0.
+**96 of 96 battles** (100%), 0 failed, 48 read back from an earlier run. Running 2 min, 1602 battles/h, about 0 min left (ends ~23:05 PC time). Last battle 0 min ago.
+Skipped turns a battle: 10.9 overall, first 48 10.9, last 48 10.9; engine disables 0.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | c | 48 | 0 | 76.48 | - | - | - | 11.5 |
-| cpl | 2 | 0 | 82.33 | +0.00 (1 robots) | - | - | 13.5 |
+| cpl | 48 | 0 | 77.68 | +0.00 (2 robots) | ±0.00 | -0.00 .. +0.01 | 10.9 |
 
 APS = mean difference over the robots read x 2 panel robots / 1217 pairings.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 50 |
+| `fails 30` | halt | ok | 0 failed of 96 |
 | `dead 8` | halt | ok | every arm scoring |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 46 battles unrun (about 10 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### lock-rwl
+
+**48 of 48 battles** (100%), 0 failed, 24 read back from an earlier run. Running 1 min, 2100 battles/h, about 0 min left (ends ~23:06 PC time). Last battle 0 min ago.
+Skipped turns a battle: 16.4 overall, first 24 16.4, last 24 16.4; engine disables 0.
+
+| arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| c | 24 | 0 | 98.93 | - | - | - | 11.6 |
+| rwl | 24 | 0 | 98.82 | -0.00 (1 robots) | - | - | 16.4 |
+
+APS = mean difference over the robots read x 1 panel robots / 1217 pairings.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 30` | halt | ok | 0 failed of 48 |
+| `dead 8` | halt | ok | every arm scoring |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### lock-dn
+
+**48 of 48 battles** (100%), 0 failed, 24 read back from an earlier run. Running 1 min, 1764 battles/h, about 0 min left (ends ~23:06 PC time). Last battle 0 min ago.
+Skipped turns a battle: 12.5 overall, first 24 12.5, last 24 12.5; engine disables 0.
+
+| arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| c | 24 | 0 | 63.87 | - | - | - | 10.0 |
+| dn | 24 | 0 | 64.70 | +0.00 (1 robots) | - | - | 12.5 |
+
+APS = mean difference over the robots read x 1 panel robots / 1217 pairings.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 30` | halt | ok | 0 failed of 48 |
+| `dead 8` | halt | ok | every arm scoring |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### lock-hof
+
+**48 of 48 battles** (100%), 0 failed, 24 read back from an earlier run. Running 0 min, 4393 battles/h, about 0 min left (ends ~23:07 PC time). Last battle 0 min ago.
+Skipped turns a battle: 19.1 overall, first 24 19.1, last 24 19.1; engine disables 0.
+
+| arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| c | 24 | 0 | 98.87 | - | - | - | 12.0 |
+| hof | 24 | 0 | 99.14 | +0.00 (1 robots) | - | - | 19.1 |
+
+APS = mean difference over the robots read x 1 panel robots / 1217 pairings.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 30` | halt | ok | 0 failed of 48 |
+| `dead 8` | halt | ok | every arm scoring |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### lock-qw
+
+**48 of 48 battles** (100%), 0 failed, 24 read back from an earlier run. Running 0 min, 4173 battles/h, about 0 min left (ends ~23:07 PC time). Last battle 0 min ago.
+Skipped turns a battle: 17.8 overall, first 24 17.8, last 24 17.8; engine disables 0.
+
+| arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| c | 24 | 0 | 98.81 | - | - | - | 12.0 |
+| qw | 24 | 0 | 98.42 | -0.00 (1 robots) | - | - | 17.8 |
+
+APS = mean difference over the robots read x 1 panel robots / 1217 pairings.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 30` | halt | ok | 0 failed of 48 |
+| `dead 8` | halt | ok | every arm scoring |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### lock-rlnrkn
+
+**144 of 144 battles** (100%), 0 failed, 72 read back from an earlier run. Running 1 min, 6598 battles/h, about 0 min left (ends ~23:08 PC time). Last battle 0 min ago.
+Skipped turns a battle: 16.1 overall, first 72 16.1, last 72 16.1; engine disables 1.
+
+| arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| c | 72 | 0 | 97.16 | - | - | - | 11.9 |
+| rlnrkn | 72 | 0 | 98.71 | +0.00 (3 robots) | ±0.00 | +0.00 .. +0.00 | 16.1 |
+
+APS = mean difference over the robots read x 3 panel robots / 1217 pairings.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 30` | halt | ok | 0 failed of 144 |
+| `dead 8` | halt | ok | every arm scoring |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### lock-rf
+
+**48 of 48 battles** (100%), 0 failed, 24 read back from an earlier run. Running 1 min, 2707 battles/h, about 0 min left (ends ~23:08 PC time). Last battle 0 min ago.
+Skipped turns a battle: 16.2 overall, first 24 16.2, last 24 16.2; engine disables 0.
+
+| arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| c | 24 | 0 | 86.44 | - | - | - | 12.0 |
+| rf | 24 | 0 | 89.30 | +0.00 (1 robots) | - | - | 16.2 |
+
+APS = mean difference over the robots read x 1 panel robots / 1217 pairings.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 30` | halt | ok | 0 failed of 48 |
+| `dead 8` | halt | ok | every arm scoring |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### lock-mtty
+
+**96 of 96 battles** (100%), 0 failed, 48 read back from an earlier run. Running 1 min, 4021 battles/h, about 0 min left (ends ~23:09 PC time). Last battle 0 min ago.
+Skipped turns a battle: 14.7 overall, first 48 14.7, last 48 14.7; engine disables 0.
+
+| arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| c | 48 | 0 | 96.65 | - | - | - | 12.4 |
+| mtty | 48 | 0 | 97.61 | +0.00 (2 robots) | ±0.00 | -0.00 .. +0.00 | 14.7 |
+
+APS = mean difference over the robots read x 2 panel robots / 1217 pairings.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 30` | halt | ok | 0 failed of 96 |
+| `dead 8` | halt | ok | every arm scoring |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### skip
+
+**862 of 2520 battles** (34%), 0 failed. Running 10 min, 5382 battles/h, about 18 min left (ends ~23:37 PC time). Last battle 0 min ago.
+Skipped turns a battle: 13.6 overall, first 100 14.5, last 100 12.4; engine disables 2.
+
+| arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| c | 287 | 0 | 92.39 | - | - | - | 13.7 |
+| aa | 286 | 0 | 92.09 | -0.01 (35 robots) | ±0.01 | -0.02 .. +0.01 | 13.5 |
+| sk | 289 | 0 | 92.18 | -0.00 (35 robots) | ±0.01 | -0.01 .. +0.01 | 13.6 |
+
+APS = mean difference over the robots read x 35 panel robots / 1217 pairings.
+A/A: aa - c -0.30 pts over 35 robots; 1% band ±0.69 (inside).
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 30` | halt | ok | 0 failed of 862 |
+| `dead 8` | halt | ok | every arm scoring |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 1658 battles unrun (about 18 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-22:42:02 prep exit=0 in 502 s
-22:42:02 start livematch
-22:42:02 watching livematch: 3 stop rule(s)
-22:42:43 progress livematch: 19/124 (15%) battles, 1655/h, ETA 4 min, 0 failed, skips 4.9/battle (last 100), bb +0.19
-22:49:58 livematch exit=0 in 475 s
-22:49:58 start lock
-22:49:58 watching lock: 4 stop rule(s)
-23:01:26 lock exit=0 in 687 s
-23:01:26 start stage
-23:01:32 stage exit=0 in 5 s
-23:01:32 start lock-gl
-23:01:32 watching lock-gl: 3 stop rule(s)
-23:03:32 lock-gl exit=0 in 120 s
-23:03:32 start lock-cpl
-23:03:32 watching lock-cpl: 3 stop rule(s)
+23:07:31 lock-qw exit=0 in 20 s
+23:07:31 start lock-rlnrkn
+23:07:31 watching lock-rlnrkn: 3 stop rule(s)
+23:08:10 lock-rlnrkn exit=0 in 39 s
+23:08:10 start lock-rf
+23:08:10 watching lock-rf: 3 stop rule(s)
+23:08:42 lock-rf exit=0 in 31 s
+23:08:42 start lock-mtty
+23:08:42 watching lock-mtty: 3 stop rule(s)
+23:09:25 lock-mtty exit=0 in 43 s
+23:09:25 start gate
+23:09:26 gate exit=0 in 1 s
+23:09:26 start skip
+23:09:26 watching skip: 3 stop rule(s)
+23:13:02 progress skip: 333/2520 (13%) battles, 5574/h, ETA 24 min, 0 failed, skips 14.6/battle (last 100), aa -0.00, sk +0.00
 ```

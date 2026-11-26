@@ -1,30 +1,3 @@
-01:29:19 lock-rp exit=0 in 139 s
-01:29:19 start lock-qw
-01:29:19 watching lock-qw: 3 stop rule(s)
-01:30:33 lock-qw exit=0 in 74 s
-01:30:33 start lock-fq
-01:30:33 watching lock-fq: 3 stop rule(s)
-01:31:28 lock-fq exit=0 in 54 s
-01:31:28 start lock-kb
-01:31:28 watching lock-kb: 3 stop rule(s)
-01:34:51 lock-kb exit=0 in 202 s
-01:34:51 start gate
-01:34:52 gate exit=0 in 1 s
-01:34:52 start pr
-01:34:59 pr exit=0 in 7 s
-01:34:59 ALLDONE
-07:30:48 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
-07:30:48 start prep
-07:30:51 progress pushed to origin claude/pc-locks-progress (every 15 min)
-07:36:36 prep exit=0 in 348 s
-07:36:36 start livematch
-07:36:36 watching livematch: 3 stop rule(s)
-07:36:51 progress livematch: 2/124 (2%) battles, 475/h, ETA 15 min, 0 failed, skips 1.0/battle (last 100)
-07:45:00 livematch exit=0 in 503 s
-07:45:00 start lock
-07:45:00 watching lock: 4 stop rule(s)
-07:58:56 lock exit=0 in 836 s
-07:58:56 start stage
 07:59:07 stage exit=0 in 11 s
 07:59:07 start lock-rwl
 07:59:07 watching lock-rwl: 3 stop rule(s)
@@ -298,3 +271,30 @@
 23:03:32 lock-gl exit=0 in 120 s
 23:03:32 start lock-cpl
 23:03:32 watching lock-cpl: 3 stop rule(s)
+23:05:20 lock-cpl exit=0 in 107 s
+23:05:20 start lock-rwl
+23:05:20 watching lock-rwl: 3 stop rule(s)
+23:06:01 lock-rwl exit=0 in 41 s
+23:06:01 start lock-dn
+23:06:01 watching lock-dn: 3 stop rule(s)
+23:06:50 lock-dn exit=0 in 49 s
+23:06:50 start lock-hof
+23:06:50 watching lock-hof: 3 stop rule(s)
+23:07:10 lock-hof exit=0 in 19 s
+23:07:10 start lock-qw
+23:07:10 watching lock-qw: 3 stop rule(s)
+23:07:31 lock-qw exit=0 in 20 s
+23:07:31 start lock-rlnrkn
+23:07:31 watching lock-rlnrkn: 3 stop rule(s)
+23:08:10 lock-rlnrkn exit=0 in 39 s
+23:08:10 start lock-rf
+23:08:10 watching lock-rf: 3 stop rule(s)
+23:08:42 lock-rf exit=0 in 31 s
+23:08:42 start lock-mtty
+23:08:42 watching lock-mtty: 3 stop rule(s)
+23:09:25 lock-mtty exit=0 in 43 s
+23:09:25 start gate
+23:09:26 gate exit=0 in 1 s
+23:09:26 start skip
+23:09:26 watching skip: 3 stop rule(s)
+23:13:02 progress skip: 333/2520 (13%) battles, 5574/h, ETA 24 min, 0 failed, skips 14.6/battle (last 100), aa -0.00, sk +0.00
