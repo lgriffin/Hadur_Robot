@@ -589,6 +589,8 @@ final class ShieldTableData {
             "jk.melee.Neuromancer 7.12",     // +4.6
             // pc-locks round 33 (BENCH-253, PR #1083): 24 fresh PC seeds at the live turn time; cloud lock held first
             "fnh.mega.DumDum 1.0.1",         // +7.9
+            // pc-locks round 34 (BENCH-253, PR #1086): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "tornyil.Lajcsi2.Lajcsi2sm 1.0", // +1.9
         };
     }
 
@@ -990,6 +992,53 @@ final class ShieldTableData {
             "rus.vv.Dzhigit 1.1",            // +1.0
             // pc-locks round 33 (BENCH-253, PR #1083): 24 fresh PC seeds at the live turn time; cloud lock held first
             "slugzilla.SNGGF 1.0",           // +0.6
+            // pc-locks round 34 (BENCH-253, PR #1086): ram-wait class of 46 judged pooled on 24 fresh PC seeds (+0.20 +- 0.09 points a robot, gate PASS); the class ships whole
+            "nexus.Prototype 1.0",           // +0.91
+            "zyx.micro.Ant 1.1",             // +0.79
+            "supersample.SuperWalls 1.0",    // +0.72
+            "supersample.SuperBoxBot 1.0",   // +0.55
+            "hvilela.HVilela 0.9",           // +0.52
+            "supersample.SuperTracker 1.0",  // +0.48
+            "amc.ROBv400 1.0",               // +0.44
+            "PK.Twardy 0.4.2",               // +0.44
+            "timmit.nano.TimDog 0.33",       // +0.38
+            "spin.Bugstard 0.012b",          // +0.37
+            "nat.Hikari dev0001",            // +0.36
+            "sng.arco.Arco 0.0",             // +0.35
+            "WidowMakersAtWar.EpicCow 1.0",  // +0.35
+            "nexus.Two 0.2",                 // +0.34
+            "zyx.nano.Ant 1.1",              // +0.31
+            "cs.Wren 1.0",                   // +0.30
+            "pak.JakeTheTestingRobot .1b",   // +0.30
+            "sul.BlueBot 1.0",               // +0.29
+            "mz.AdeptBSB 1.03",              // +0.28
+            "asd.Cthulhu 1.2",               // +0.26
+            "marcinek.TopGun 1.3",           // +0.24
+            "mrm.MightyMoose .2",            // +0.22
+            "stranger.nano.TestBot 1.0",     // +0.21
+            "blir.micro.blixi.Blixi 1.2",    // +0.21
+            "jeremyreeder.Bully 1",          // +0.18
+            "jf.Dodger 1.3",                 // +0.18
+            "And.BasicSurfer FF1.6",         // +0.17
+            "traker.Eraser 1",               // +0.16
+            "bigpete.Stewie 1.0",            // +0.15
+            "zyx.nano.RedBull 1.0",          // +0.13
+            "fcr.First 1.0",                 // +0.12
+            "disan.Chair 2.2.0",             // +0.12
+            "robo.PartsBot 1.1",             // +0.11
+            "myl.nano.Graviton 1.10",        // +0.11
+            "uccc.RingDing 1.12",            // +0.09
+            "ratosh.Nobo 0.21",              // +0.09
+            "extra.Sauce .01",               // +0.07
+            "dsw.StaticD 1.0",               // +0.06
+            "Fenix.FenixTrack 1.0",          // +0.03
+            "Gecko.ultimateGeckoBot 1.0",    // +0.03
+            "pla.Memnoch 0.5",               // +0.00
+            "tvv.micro.Antares 1.1.1",       // -0.16
+            "tobe.mini.Charon 0.9",          // -0.24
+            "pl.robocode.Pacyfista 1.0",     // -0.29
+            "caimano.Furia_Ceca 0.22",       // -0.39
+            "pmc.SniperBot 1.0",             // -1.17
         };
     }
 
@@ -1450,6 +1499,11 @@ final class ShieldTableData {
             "hist;bins=41;d_max=1200;lag=0;roll=0.3;s_accel=1;s_dist=1;s_lat=1;s_since=1;s_wall=1;smooth=1;ticks=1 stelo.FretNano 1.1", // +2.8
             "hist;bins=61;d_max=750;lag=1;roll=0.03;s_accel=1;s_dist=3;s_lat=6;s_since=1;s_wall=1;smooth=2;ticks=1 tornyil.bottomup.BottomUp 1.05", // +9.1
             "knn;cap=20000;k=20;lag=0;ticks=0;w_accel=1;w_adv=0;w_dist=4;w_lat=2;w_since=2;w_wall=1;width=0.1 zen.Ronin 1.0.0", // +3.4
+            // pc-locks round 34 (BENCH-253, PR #1086): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "pm;round=0.5x0.5;longest=20;least=1;lag=1 cjm.Che 1.2", // +1.3
+            "hist;bins=61;d_max=1200;lag=0;roll=0.03;s_accel=3;s_dist=4;s_lat=1;s_since=2;s_wall=1;smooth=3;ticks=1 darkcanuck.Pris 0.92", // +4.3
+            "knn;cap=20000;k=35;lag=1;ticks=1;w_accel=4;w_adv=1;w_dist=2;w_lat=4;w_since=2;w_wall=0.25;width=0.1 lancel.Lynx 1.09", // +5.5
+            "knn;cap=500;k=20;lag=1;ticks=0;w_accel=0;w_adv=2;w_dist=2;w_lat=1;w_since=1;w_wall=0.25;width=0.1 mn.Combat 3.25.0", // +2.4
         };
     }
 
