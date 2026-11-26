@@ -1,9 +1,12 @@
 # 1v1, cloud locks to the PC (BENCH-253), round 35, with a turn-time check of master after TIME-14/15.
 # Round 34 ran as PR #1086 (A/A -0.03 +- 0.07): every line held and was banked (#1088, plans/locks34-shipped.txt):
 # Lajcsi2sm gl +1.9, Lynx +5.5, Pris +4.3, Combat +2.4 and Che +1.3 cpl, and the 46-robot rwl class at +0.20 a robot.
-# Round 35 carries 10 robots on existing table switches, each read on fresh cloud seeds at 0.7x the live turn time (the
+# Round 35 carries 12 robots on existing table switches, each read on fresh cloud seeds at 0.7x the live turn time (the
 # PC's 13-17 skipped turns a battle) against both c and aa, gains vs c / vs aa (coverage/shards/locks.tsv):
 #   gl (GUN-11 gun stack)        PhoenixOS +4.4 +- 2.3 vs mean(c, aa) (12) and +3.3 +- 3.3 on 12 more
+#                                PinkPanther +1.6 +- 2.1 vs mean (24 at 0.7x), pooled with an earlier 24-seed block
+#                                +2.2 +- 1.8; MatchupMini +1.1 +- 1.3 (24 at 0.7x), pooled with an earlier 24 +1.4 +- 1.1
+#                                (we deal both far less than BB does: 898 to its 1,807 on PinkPanther)
 #   cpl (COPY-2 bred gun copy)   Identity +2.2 / +2.7 (36) and +2.4 / +1.8 recheck (12); PumpkinPie +2.4 / +2.8 (24)
 #                                and a recheck at +1.4 / +4.5 (12); both missed in round 33, so the PC reads them again
 #   rwl (MOVE-46 ram wait)       Phoenix +2.3 / +2.2 recheck (12), +1.9 / +1.9 at 0.7x (missed in round 32 at +0.33)
@@ -12,7 +15,7 @@
 #   qw (MOVE-67 aim weight)      LevelOne +0.8 / +0.8 (12)
 #   rlnrkn (RAM-20 and RAM-21)   SquidmanNano +1.8 / +1.3 (12), Ringo +1.2 / +1.4 (12)
 #   rf (RAM-15 ram flee)         TrialBot +2.1 / +2.9 (24), +2.5 +- 0.8 vs mean(c, aa)
-# PinkPanther, Holden and MatchupMini pad the A/A check (13 robots). The PC reads 24 fresh seeds from 115000 and a line
+# Holden pads the A/A check (13 robots). The PC reads 24 fresh seeds from 115000 and a line
 # ships only on the PC's own read.
 #
 # Why it should win (the PC card rule of 2026-11-03):
@@ -54,9 +57,9 @@
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
 #   --fresh because round 34 left this plan's queue state marked complete; the new work directory and seeds mean no
 #   battle is read back from an earlier round (and BENCH-272 refights any whose jar changed).
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 124 live-match battles, 864 lock battles (13
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 124 live-match battles, 912 lock battles (13
 # robots in c and aa, each lever robot again on its own arm, 24 seeds) and 2,520 skip-check battles (35 robots, 3 arms,
-# 24 seeds): 3,508 in all, about 75 minutes (round 34's 3,672 took about 75).
+# 24 seeds): 3,556 in all, about 75 minutes (round 34's 3,672 took about 75).
 # The prep step stops if any panel robot's jar is missing.
 #
 set V = 3.24
@@ -154,5 +157,5 @@ skip | ./bench-top20.sh ${C} ${P} --set panel-skipcheck.txt --seeds 24 --seed-ba
 skipread | python3 ../data/tools/multiarm.py ${W}-skip/arms.tsv --control c --aa aa --census census-live.txt --out ${OUT}/$(date +%Y-%m-%d)_pc-locks35-skip.md && python3 tools/per_robot.py ${W}-skip/arms.tsv --arms sk --out ${OUT}/$(date +%Y-%m-%d)_pc-locks35-skip-per-robot.md --out-tsv ${OUT}/pc-locks35-skip-per-robot.tsv && { printf "opponent\tarm\tbattles\tskips_per_battle\tdisables_per_battle\n"; awk -F"\t" 'NR == 1 {for (i = 1; i <= NF; i++) h[$i] = i; next} $h["ok"] == "true" {k = $h["opponent"] "\t" $h["arm"]; n[k]++; s[k] += $h["skippedTurns"]; d[k] += $h["engineDisables"]} END {for (k in n) printf "%s\t%d\t%.1f\t%.2f\n", k, n[k], s[k] / n[k], d[k] / n[k]}' ${W}-skip/arms.tsv | sort; } > ${OUT}/pc-locks35-skip-load.tsv
   after: skip
 
-pr | bash tools/open_results_pr.sh claude/pc-locks35-results "1v1 cloud locks, round 35 (10 lines on gl, cpl, rwl, dn, hof, qw, rlnrkn, rf) and the turn-time check, 24 fresh PC seeds" ${OUT}/pc-locks35-livematch.md ${OUT}/*_pc-locks35-*.md ${OUT}/pc-locks35-lock-per-robot.tsv ${OUT}/pc-locks35-skip-per-robot.tsv ${OUT}/pc-locks35-skip-load.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks35-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks35-results "1v1 cloud locks, round 35 (12 lines on gl, cpl, rwl, dn, hof, qw, rlnrkn, rf) and the turn-time check, 24 fresh PC seeds" ${OUT}/pc-locks35-livematch.md ${OUT}/*_pc-locks35-*.md ${OUT}/pc-locks35-lock-per-robot.tsv ${OUT}/pc-locks35-skip-per-robot.tsv ${OUT}/pc-locks35-skip-load.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks35-lock-pick.tsv' -size +0c)
   after: skipread
