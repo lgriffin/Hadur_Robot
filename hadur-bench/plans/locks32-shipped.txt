@@ -1,0 +1,8 @@
+# pc-locks round 32 (BENCH-253, PR #1080): robots whose lines shipped on 24 fresh PC seeds at the live turn time
+jk.melee.Neuromancer 7.12
+jep.nano.Hotspur 0.1
+nexus.One 1.0
+rus.vv.Dzhigit 1.1
+apc.Colossus2 0.12
+jje.BagPuss 1.2
+velas.Alpha 1.0

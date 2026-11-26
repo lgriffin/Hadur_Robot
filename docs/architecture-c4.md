@@ -717,8 +717,8 @@ endgame MEND-1, 2).
 
 The 1v1 table is per opponent, PC-trained and census-gated: only per-opponent picks have shown
 live gains. It ships as two classes in the robot jar, because the sandbox refuses a robot the
-read of its own jar's resources but lets classes load. On master (3.24 plus the banked lines) it holds 1,303
-lines over 44 slots: 304 on the shield list and 999 in `ShieldTableData`'s 43 other slots.
+read of its own jar's resources but lets classes load. On master (3.24 plus the banked lines) it holds 1,312
+lines over 44 slots: 304 on the shield list and 1,008 in `ShieldTableData`'s 43 other slots.
 
 ```mermaid
 flowchart LR
@@ -762,15 +762,15 @@ flowchart LR
 | `surfKeys()` | `surf-key:` | SKEY-2 | 176 | Fitted weights for the danger views' search key |
 | **Rammers** | | | | |
 | `ramFlees()` | `ram-flee:` | RAM-15 | 53 | Flee a slow rammer |
-| `ramWaits()` | `ram-wait:` | MOVE-46 | 38 | Against a disabled enemy, keep surfing its live waves before the ram |
+| `ramWaits()` | `ram-wait:` | MOVE-46 | 41 | Against a disabled enemy, keep surfing its live waves before the ram |
 | `ramBends()`, `ramFans()`, `ramCircs()`, `ramHeavies()` | `ram-bend:`, `ram-fan:`, `ram-circ:`, `ram-heavy:` | RAM-18, RAM-17, RAM-11, RAM-14 | 10, 2, 4, 0 | RAM-2 escape variants: the escape bend, fanned and circular aims, heavier path costs |
-| `ramLearns()` | `ram-learn:` | RAM-20 | 37 | The escape dodges the aims learned from the rammer's own bullets (`ShotModel`) in place of RAM-5's fixed pair |
-| `ramKnowns()` | `ram-known:` | RAM-21 | 25 | The rammer is confirmed at the first scan, so rounds 1 and 2 play the escape instead of waiting for two rammed rounds |
+| `ramLearns()` | `ram-learn:` | RAM-20 | 40 | The escape dodges the aims learned from the rammer's own bullets (`ShotModel`) in place of RAM-5's fixed pair |
+| `ramKnowns()` | `ram-known:` | RAM-21 | 27 | The rammer is confirmed at the first scan, so rounds 1 and 2 play the escape instead of waiting for two rammed rounds |
 | **Power and gun** | | | | |
 | `powerCaps()`, `powerCapHalves()` | `power-cap:`, `power-cap5:` | POW-18 | 6, 2 | Cap fire power |
 | `hardFires()`, `powerBands()` | `hard-fire:`, `power-band:` | POW-19, POW-20 | 1, 1 | At least 0.6 power while we have 60+ energy; a power multiplier per energy band |
 | `fullOffs()`, `x5Powers()`, `racePowers()` | `full-off:`, `x5-power:`, `race-power:` | POW-15, POW-16, POW-17 | 16, 17, 20 | Power policy variants (race power vs strong bots) |
-| `gunStacks()` | `gun-stack:` | GUN-11 | 20 | TripHammer gun stack (never for a shield opponent) |
+| `gunStacks()` | `gun-stack:` | GUN-11 | 21 | TripHammer gun stack (never for a shield opponent) |
 | `freeGuns()` | `free-gun:` | GUN-12 | 0 | The duel gun fires with free gun on against this opponent |
 
 Matching is by name (SHIELD-26): `pkg.Bot 1.2` and `pkg.Bot` both match every version of the robot, and
