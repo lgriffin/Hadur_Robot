@@ -10,3 +10,6 @@
 18:38:00 tkpilot exit=0 in 0 s
 18:38:00 start tkbb
 18:38:00 watching tkbb: 3 stop rule(s)
+18:51:22 tkbb exit=0 in 801 s
+18:51:22 start tkp5
+18:51:22 watching tkp5: 3 stop rule(s)

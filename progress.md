@@ -1,12 +1,12 @@
 # Queue pc-team-pack5: progress
 
-Updated 2026-11-26 18:47:28 PC time (18:47 UTC), runner pid 91784.
+Updated 2026-11-26 19:02:35 PC time (19:02 UTC), runner pid 91784.
 
 - `tkprep` done, exit 0 in 2 min
 - `tkpp5` done, exit 0 in 4 min
 - `tkpilot` done, exit 0 in 0 min
-- `tkbb` running
-- `tkp5` pending
+- `tkbb` done, exit 0 in 13 min
+- `tkp5` running
 - `tkgate` pending
 - `tkpr` pending
 
@@ -25,16 +25,29 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### tkbb
 
-**61 of 96 battles** (64%), 0 failed. Running 9 min, 387 battles/h, about 5 min left (ends ~18:52 PC time). Last battle 0 min ago.
-Skipped turns a battle: 27.2 overall, first 61 27.2, last 61 27.2.
+**96 of 96 battles** (100%), 0 failed. Running 13 min, 431 battles/h, about 0 min left (ends ~18:51 PC time). Last battle 0 min ago.
+Skipped turns a battle: 27.4 overall, first 96 27.4, last 96 27.4.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 10` | halt | ok | 0 failed of 61 |
+| `fails 10` | halt | ok | 0 failed of 96 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
-| `skips 60 over 200` | halt | waiting | 61 of 200 battles to read |
+| `skips 60 over 200` | halt | waiting | 96 of 200 battles to read |
 
-Stopping now would leave 35 battles unrun (about 5 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### tkp5
+
+**84 of 96 battles** (88%), 0 failed. Running 11 min, 449 battles/h, about 2 min left (ends ~19:04 PC time). Last battle 0 min ago.
+Skipped turns a battle: 25.6 overall, first 84 25.6, last 84 25.6.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 10` | halt | ok | 0 failed of 84 |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+| `skips 60 over 200` | halt | waiting | 84 of 200 battles to read |
+
+Stopping now would leave 12 battles unrun (about 2 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
@@ -51,4 +64,7 @@ Stopping now would leave 35 battles unrun (about 5 min); every battle already fo
 18:38:00 tkpilot exit=0 in 0 s
 18:38:00 start tkbb
 18:38:00 watching tkbb: 3 stop rule(s)
+18:51:22 tkbb exit=0 in 801 s
+18:51:22 start tkp5
+18:51:22 watching tkp5: 3 stop rule(s)
 ```
