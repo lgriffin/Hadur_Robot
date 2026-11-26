@@ -65,6 +65,7 @@ LEVERS = {
     "ky": ("syldlist", ("SHIELD_YIELD",)),  # SHIELD-35 close-range yield
     "or": ("orlist", ("STEADY_ORBIT",)),
     "sp2": ("sdplanlist", ("SHOT_DODGE_PLAN",)),
+    "wh": ("whlist", ("MOVE_WHEEL",)),  # MOVE-74 movement wheel; wh.list holds whole "profiles name" lines
 }
 
 # POW-20: a power-band pick carries its fitted line ("m20 m40 m60 m80 name") from this file, so pb.list
@@ -137,14 +138,31 @@ def _cpl_lines(names):
     return [lines[n] for n in names]
 
 
+# MOVE-74: a wheel pick carries its profiles ("p1,p2,... name") from this file, so wh.list holds whole lines.
+WH_LINES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "plans", "wheel-lines.txt")
+
+
+def _wh_name(line):
+    p = line.strip().split(" ", 1)
+    return p[1] if len(p) == 2 else line.strip()
+
+
+def _wh_lines(names):
+    lines = {_wh_name(l): l.strip() for l in open(WH_LINES) if l.strip() and not l.startswith("#")}
+    missing = [n for n in names if n not in lines]
+    if missing:
+        raise SystemExit("lock_prep: no wheel line for %s in %s" % (", ".join(missing), WH_LINES))
+    return [lines[n] for n in names]
+
+
 def _list_lines(arm, names):
     return (_pb_lines(names) if arm == "pb" else _dp_lines(names) if arm == "dn" else _kl_lines(names) if arm == "kl"
-            else _cpl_lines(names) if arm == "cpl" else names)
+            else _cpl_lines(names) if arm == "cpl" else _wh_lines(names) if arm == "wh" else names)
 
 
 def _list_name(arm, line):
     return (_pb_name(line) if arm == "pb" else _dp_name(line) if arm == "dn" else _kl_name(line) if arm == "kl"
-            else _cpl_name(line) if arm == "cpl" else line.strip())
+            else _cpl_name(line) if arm == "cpl" else _wh_name(line) if arm == "wh" else line.strip())
 
 
 def main(pick, panel, base_arms, outdir):

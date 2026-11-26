@@ -416,6 +416,8 @@ public final class DuelController {
         roundEnemyShot = Long.MIN_VALUE;
         if (stopAndGo != null) stopAndGo.initRound();
         if (shield != null) shield.newRound(round);
+        // MOVE-74: each round plays one profile of the wheel.
+        if (wheel != null) spinWheel();
         recover();
         // The history of the enemy's movement starts with the round; recover() marked it unknown.
         stillness.newRound();
@@ -1109,6 +1111,16 @@ public final class DuelController {
     private double[] powerBand;
     /** DIST-4: this duel opponent's pinned surf distance in px, or NaN. */
     private double distPin = Double.NaN;
+    /** MOVE-74: this duel opponent's movement wheel, or null when the table names none. */
+    private String[] wheel;
+    /** MOVE-74: the per-opponent settings each wheel profile starts from (the table's own lines). */
+    private double wheelBasePin = Double.NaN;
+    private boolean wheelBaseVj;
+    private boolean wheelBaseSb;
+    private boolean wheelBaseOrbit;
+    private boolean wheelBaseFlatOff;
+    /** MOVE-74: the draw of each round's profile. */
+    private final java.util.Random wheelRandom = new java.util.Random();
     /** POW-17: whether the race picked the last power, for the P record on a change. */
     private boolean raceApplied;
     /** POW-17: the energy race, fed every resolved duel bullet whether or not it is on. */
@@ -1487,6 +1499,7 @@ public final class DuelController {
         ramFleeOn = false;
         steadyOrbitOn = false;
         surfMover.setSteadyOrbit(false);
+        wheel = null;
         stopAndGo = null;
         gunController.setTripHammer(GunDesign.TRIPHAMMER);
         gunController.setFreeGun(GunDesign.FREE_GUN);
@@ -1567,6 +1580,33 @@ public final class DuelController {
     }
 
     /** The duel's per-opponent switches, decided now the opponent is named (MOVE-23, DODGE-3 to DODGE-6, MOVE-28, GUN-11, POISON-2). */
+    /**
+     * MOVE-74: draws this round's profile from the wheel and sets the movement switches it names, each on top of the
+     * table's own setting for this opponent. A P record names the profile.
+     */
+    private void spinWheel() {
+        int pick = wheelRandom.nextInt(wheel.length);
+        double pin = wheelBasePin;
+        boolean vj = wheelBaseVj;
+        boolean sb = wheelBaseSb;
+        boolean orbit = wheelBaseOrbit;
+        boolean flatOff = wheelBaseFlatOff;
+        for (String token : wheel[pick].split("\\+")) {
+            if (token.equals("vj")) vj = true;
+            else if (token.equals("sb")) sb = true;
+            else if (token.equals("or")) orbit = true;
+            else if (token.equals("fq")) flatOff = false;
+            else if (token.startsWith("dn")) pin = Double.parseDouble(token.substring(2));
+        }
+        distPin = pin;
+        velJitterOn = vj;
+        speedBandOn = sb;
+        steadyOrbitOn = orbit;
+        surfMover.setSteadyOrbit(orbit);
+        moveController.setFlattenerOff(flatOff);
+        emitPolicy(round, 0, "wheel", pick, wheel.length, wheel[pick]);
+    }
+
     private void duelModes(String name) {
         // SKEY-2: the opponent's surf key, duel only; none restores the defaults.
         moveController.setSurfKey(duelOnly(true, enemiesTotal) ? stackList.surfKeyFor(name) : null);
@@ -1667,6 +1707,16 @@ public final class DuelController {
         // POW-20: the power bands for the opponents the table names.
         powerBand = enemiesTotal <= 1 ? stackList.powerBandFor(name) : null;
         distPin = enemiesTotal <= 1 ? stackList.distPinFor(name) : Double.NaN;
+        // MOVE-74: the movement wheel for the opponents the table names; this round's profile is drawn now.
+        wheel = enemiesTotal <= 1 ? stackList.wheelFor(name) : null;
+        if (wheel != null) {
+            wheelBasePin = distPin;
+            wheelBaseVj = velJitterOn;
+            wheelBaseSb = speedBandOn;
+            wheelBaseOrbit = steadyOrbitOn;
+            wheelBaseFlatOff = moveController.flattenerOff();
+            spinWheel();
+        }
         // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names, never a shield-mode one
         // (its TripHammer aims break the shield's bullet hits); the gun keeps them 1v1-only.
         if (duelOnly(stackList.gunStack(name) && !stackList.matches(name), enemiesTotal)) {

@@ -1061,6 +1061,18 @@ final class ShieldTableData {
     }
 
     /**
+     * MOVE-74: per-opponent movement wheels, one line each: two or more profiles, comma-separated, then the name
+     * (see ShieldList.WHEEL_PREFIX). Each round of the duel plays one profile drawn at random, so a learning gun's
+     * model of our movement is split across them. Candidate builds add lines here (build-ablation.sh whlist).
+     *
+     * @return a fresh array of lines
+     */
+    static String[] wheels() {
+        return new String[] {
+        };
+    }
+
+    /**
      * DIST-4: per-opponent pinned duel distance, one line each: the surf's desired distance in px, then the name.
      * The pin replaces DIST-1's controller target against that robot in a duel (END-1's finish still closes in).
      * Candidate builds add lines here (build-ablation.sh dplist).

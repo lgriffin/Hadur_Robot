@@ -492,6 +492,23 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("MOVE-74")
+    @DisplayName("wheel lines give an opponent's movement profiles, matched as shield entries; bad lines are skipped")
+    void wheels() {
+        ShieldList l = ShieldList.parse(List.of("wheel: base,dn600+vj,fq a.B 1.0", "wheel: base c.D 1.0",
+            "wheel: base,zz e.F 1.0", "wheel: base,dn90 g.H 1.0", "dist-pin: 500 i.J 1.0"));
+        assertArrayEquals(new String[] {"base", "dn600+vj", "fq"}, l.wheelFor("a.B 1.0"));
+        assertArrayEquals(new String[] {"base", "dn600+vj", "fq"}, l.wheelFor("a.B 1.1"), "a line carries over to a new version");
+        assertNull(l.wheelFor("c.D 1.0"), "a wheel needs two profiles");
+        assertNull(l.wheelFor("e.F 1.0"), "an unknown token skips the line");
+        assertNull(l.wheelFor("g.H 1.0"), "a distance outside DIST-4's range skips the line");
+        assertNull(l.wheelFor("i.J 1.0"), "another table's line does not set it");
+        assertNull(l.wheelFor(null));
+        assertNull(ShieldList.NONE.wheelFor("a.B 1.0"));
+        assertEquals(0, l.size(), "no shield entry");
+    }
+
+    @Test
     @Tag("GUN-12")
     @DisplayName("free-gun lines name opponents for the duel's free gun, matched as shield entries, and add no shield entry")
     void freeGuns() {
