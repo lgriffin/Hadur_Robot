@@ -277,4 +277,28 @@ class RamEscapeTest {
         double d = Math.sqrt(0.5);
         assertTrue(RamEscape.crosses(0, 0, d, d, 130, 150, 100, 100));
     }
+
+    @Test
+    @Tag("RAM-22")
+    @DisplayName("RAM-22: the ring check never drops a crossing the ray test would find, and drops most far points")
+    void ringNeverDropsACrossing() {
+        java.util.Random rnd = new java.util.Random(22);
+        int dropped = 0;
+        for (int n = 0; n < 200_000; n++) {
+            double ox = rnd.nextDouble() * 800;
+            double oy = rnd.nextDouble() * 600;
+            double angle = rnd.nextDouble() * 2 * Math.PI;
+            double v = 11 + rnd.nextDouble() * 8.7;
+            double to = rnd.nextDouble() * 900;
+            double from = to - v;
+            double x = rnd.nextDouble() * 800;
+            double y = rnd.nextDouble() * 600;
+            boolean ring = RamEscape.inRing(ox, oy, from, to, x, y);
+            if (RamEscape.crosses(ox, oy, Math.sin(angle), Math.cos(angle), from, to, x, y)) {
+                assertTrue(ring, "a crossing outside the ring at n=" + n);
+            }
+            if (!ring) dropped++;
+        }
+        assertTrue(dropped > 150_000, "the ring drops most random points: " + dropped);
+    }
 }

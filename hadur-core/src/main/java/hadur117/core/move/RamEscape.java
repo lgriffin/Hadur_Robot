@@ -448,6 +448,23 @@ public final class RamEscape {
         return lo <= hi;
     }
 
+    /** RAM-22: half-diagonal of the learned box plus a pixel of slack, so {@link #inRing} never drops a crossing. */
+    private static final double RING_SLACK = LEARNED_BOX * Math.sqrt(2) + 1.0;
+
+    /**
+     * RAM-22: whether {@code (x, y)} can be crossed by any ray from {@code (ox, oy)} between {@code from} and
+     * {@code to} px out. Every point of the box {@link #crosses} tests lies within {@link #RING_SLACK} of
+     * {@code (x, y)}, and a ray's point at distance t from the origin is t away, so a point outside the ring
+     * [from, to] widened by that slack is crossed by no ray. The check is exact pruning: it drops only tests
+     * {@link #crosses} would reject, and spares the nine ray tests a shot for most candidate positions.
+     */
+    static boolean inRing(double ox, double oy, double from, double to, double x, double y) {
+        double dx = x - ox;
+        double dy = y - oy;
+        double d = Math.sqrt(dx * dx + dy * dy);
+        return d + RING_SLACK >= Math.max(0, from) && d - RING_SLACK <= to;
+    }
+
     /** RAM-5: the closest approach a path loses for the fixed aims that hit it. */
     private double hitPenalty(int bits) {
         if (bits == 0) return 0;
@@ -472,7 +489,7 @@ public final class RamEscape {
         int i = 0;
         for (double[] s : shots) {
             double flown = (time - s[0]) * s[3];
-            if (flown > 0 && s.length > 7) {
+            if (flown > 0 && s.length > 7 && inRing(s[1], s[2], flown - s[3], flown, px, py)) {
                 for (int a = 0; a < ShotModel.TOP; a++) {
                     if (Double.isNaN(s[4 + a])) continue;
                     for (int k = 0; k < 3; k++) {
