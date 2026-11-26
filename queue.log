@@ -1,9 +1,3 @@
-22:02:35 start lock-sb
-22:02:35 watching lock-sb: 3 stop rule(s)
-22:02:38 lock-sb exit=1 in 2 s
-22:02:43 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/1046
-22:02:43 skip lock-rp (after lock-sb, which has not finished exit=0)
-22:02:43 skip lock-qw (after lock-rp, which has not finished exit=0)
 22:02:43 skip lock-fq (after lock-qw, which has not finished exit=0)
 22:02:43 skip lock-kb (after lock-fq, which has not finished exit=0)
 22:02:43 skip gate (after lock-kb, which has not finished exit=0)
@@ -298,3 +292,9 @@
 18:23:01 lock-cpl exit=0 in 277 s
 18:23:01 start lock-rwl
 18:23:01 watching lock-rwl: 3 stop rule(s)
+18:31:55 lock-rwl exit=0 in 533 s
+18:31:55 start gate
+18:31:56 gate exit=0 in 1 s
+18:31:56 start pr
+18:32:05 pr exit=0 in 8 s
+18:32:05 ALLDONE

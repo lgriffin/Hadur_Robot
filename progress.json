@@ -1,6 +1,6 @@
 {
  "plan": "pc-locks",
- "updated": 1795717538.5838804,
+ "updated": 1795717925.4424388,
  "steps": {
   "prep": {
    "status": "done",
@@ -39,14 +39,22 @@
    "end": "2026-11-26T18:23:01"
   },
   "lock-rwl": {
-   "status": "running",
-   "start": "2026-11-26T18:23:01"
+   "status": "done",
+   "exit": 0,
+   "seconds": 533,
+   "end": "2026-11-26T18:31:55"
   },
   "gate": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 1,
+   "end": "2026-11-26T18:31:56"
   },
   "pr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 8,
+   "end": "2026-11-26T18:32:05"
   }
  },
  "watched": [
@@ -341,8 +349,8 @@
   {
    "step": "lock-rwl",
    "started": 1795717381.9208856,
-   "updated": 1795717537.5222487,
-   "elapsed": 155.60136318206787,
+   "updated": 1795717914.9327495,
+   "elapsed": 533.0118639469147,
    "expected": 2208,
    "panel": 46,
    "field": 1217,
@@ -360,35 +368,35 @@
     },
     {
      "arm": "rwl",
-     "battles": 320,
+     "battles": 1104,
      "failed": 0,
-     "level": 98.68087353347136,
-     "skips": 15.13125,
-     "fresh": 320,
-     "scored": 320,
-     "diff": 0.23034817115251927,
+     "level": 98.64718297101449,
+     "skips": 15.069746376811594,
+     "fresh": 1104,
+     "scored": 1104,
+     "diff": 0.1966576086956522,
      "n": 46,
-     "ci95": 0.10341822932916656,
-     "half_stop": 0.15829320815688758,
+     "ci95": 0.08847712568852195,
+     "half_stop": 0.13542417197222748,
      "scale": 0.03779786359901397
     }
    ],
    "aa": null,
    "warnings": [],
-   "battles": 1424,
+   "battles": 2208,
    "resumed": 1104,
    "failed": 0,
    "disables": 0,
-   "rate": 7403.534110765176,
-   "eta": 381.2233397960663,
-   "fraction": 0.644927536231884,
-   "last_battle_age": 0.21157169342041016,
+   "rate": 7456.494440048394,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 7.00005578994751,
    "rules": [
     {
      "rule": "fails 30",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 1424"
+     "detail": "0 failed of 2208"
     },
     {
      "rule": "dead 8",
@@ -403,8 +411,8 @@
      "detail": "last battle 0 min ago"
     }
    ],
-   "skips_mean": 15.13125,
-   "skips_last100": 14.85
+   "skips_mean": 15.069746376811594,
+   "skips_last100": 14.29
   }
  ]
 }
