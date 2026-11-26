@@ -1,14 +1,3 @@
-01:26:18 skip livematch (already exit=0)
-01:26:18 skip lock (already exit=0)
-01:26:18 start stage
-01:26:21 progress pushed to origin claude/pc-locks-progress (every 15 min)
-01:26:23 stage exit=0 in 4 s
-01:26:23 start lock-sb
-01:26:23 watching lock-sb: 3 stop rule(s)
-01:26:59 lock-sb exit=0 in 36 s
-01:26:59 start lock-rp
-01:26:59 watching lock-rp: 3 stop rule(s)
-01:27:18 progress lock-rp: 24/48 (50%) battles, 0 failed
 01:29:19 lock-rp exit=0 in 139 s
 01:29:19 start lock-qw
 01:29:19 watching lock-qw: 3 stop rule(s)
@@ -298,3 +287,14 @@
 22:42:02 start livematch
 22:42:02 watching livematch: 3 stop rule(s)
 22:42:43 progress livematch: 19/124 (15%) battles, 1655/h, ETA 4 min, 0 failed, skips 4.9/battle (last 100), bb +0.19
+22:49:58 livematch exit=0 in 475 s
+22:49:58 start lock
+22:49:58 watching lock: 4 stop rule(s)
+23:01:26 lock exit=0 in 687 s
+23:01:26 start stage
+23:01:32 stage exit=0 in 5 s
+23:01:32 start lock-gl
+23:01:32 watching lock-gl: 3 stop rule(s)
+23:03:32 lock-gl exit=0 in 120 s
+23:03:32 start lock-cpl
+23:03:32 watching lock-cpl: 3 stop rule(s)
