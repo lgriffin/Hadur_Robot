@@ -698,7 +698,9 @@ public class Wave implements Cloneable {
         double dispAngle = effectiveHeading()
             + DiaUtils.absoluteBearing(ORIGIN, dispVector) * orbitDirection;
         double dispDistance = ORIGIN.distance(dispVector);
-        Point2D.Double projectedLocation = targetLocation;
+        // TIME-14: iterated on plain coordinates; one point is built for the answer.
+        double px = targetLocation.x;
+        double py = targetLocation.y;
         long bulletTicks = -1;
         long prevBulletTicks = -1;
         long prevPrevBulletTicks;
@@ -714,11 +716,12 @@ public class Wave implements Cloneable {
             // The bullet needs ceil(distance / speed) ticks to cover the distance; the count
             // of target movement used is one less.
             bulletTicks = DiaUtils.bulletTicksFromSpeed(
-                firingLocation.distance(projectedLocation), bulletSpeed) - 1;
-            projectedLocation = DiaUtils.project(targetLocation, daSin, daCos,
-                (bulletTicks + extraTicks) * dispDistance);
+                firingLocation.distance(px, py), bulletSpeed) - 1;
+            double length = (bulletTicks + extraTicks) * dispDistance;
+            px = targetLocation.x + daSin * length;
+            py = targetLocation.y + daCos * length;
         } while (bulletTicks != prevBulletTicks && bulletTicks != prevPrevBulletTicks);
-        return projectedLocation;
+        return new Point2D.Double(px, py);
     }
 
     // Guess factor from a target location

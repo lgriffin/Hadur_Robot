@@ -76,38 +76,82 @@ public class MovementPredictor {
      */
     public RobotState predict(RobotState startState, double distance, double turn,
                               double maxVelocity, long ticks, boolean ignoreWalls) {
-        RobotState state = startState;
-        for (long t = 0; t < ticks; t++) {
-            double nextHeading = state.heading;
-            // Turn first, limited by the rate at this tick's starting speed: 10 deg/tick
-            // standing, 4 at full speed.
-            double maxTurnRate = Math.abs(Rules.getTurnRateRadians(state.velocity));
-            if (Math.abs(turn) < maxTurnRate) {
-                nextHeading += turn;
-                turn = 0;
-            } else {
-                double turnAmount = maxTurnRate * Math.signum(turn);
-                nextHeading += turnAmount;
-                turn -= turnAmount;
-            }
+        if (ticks <= 0) return startState;
+        // TIME-14: the state is carried in primitives and built once at the end, with the same arithmetic in the
+        // same order as building one per tick did.
+        double[] s = {startState.location.x, startState.location.y, startState.heading, startState.velocity,
+            distance, turn};
+        for (long t = 0; t < ticks; t++) tick(s, maxVelocity, ignoreWalls);
+        return RobotState.newBuilder()
+            .setLocation(new Point2D.Double(s[0], s[1])).setHeading(s[2])
+            .setVelocity(s[3]).setTime(startState.time + ticks)
+            .build();
+    }
 
-            // Then accelerate or brake, and move along the new heading.
-            double nextVelocity = getNewVelocity(state.velocity, distance, maxVelocity);
-            distance -= nextVelocity;
-            Point2D.Double nextLocation = DiaUtils.project(state.location, nextHeading, nextVelocity);
-
-            if (!ignoreWalls && !rect.contains(nextLocation)) {
-                adjustForWalls(nextLocation, nextHeading);
-                // PHYS-1: the engine stops a robot that meets a wall dead.
-                nextVelocity = 0;
-            }
-
-            state = RobotState.newBuilder()
-                .setLocation(nextLocation).setHeading(nextHeading)
-                .setVelocity(nextVelocity).setTime(state.time + 1)
-                .build();
+    /**
+     * TIME-14: one tick of {@link #predict} on {@code {x, y, heading, velocity, distance, turn}}, in place.
+     */
+    private void tick(double[] s, double maxVelocity, boolean ignoreWalls) {
+        double velocity = s[3];
+        double distance = s[4];
+        double turn = s[5];
+        double nextHeading = s[2];
+        // Turn first, limited by the rate at this tick's starting speed: 10 deg/tick
+        // standing, 4 at full speed.
+        double maxTurnRate = Math.abs(Rules.getTurnRateRadians(velocity));
+        if (Math.abs(turn) < maxTurnRate) {
+            nextHeading += turn;
+            turn = 0;
+        } else {
+            double turnAmount = maxTurnRate * Math.signum(turn);
+            nextHeading += turnAmount;
+            turn -= turnAmount;
         }
-        return state;
+
+        // Then accelerate or brake, and move along the new heading.
+        double nextVelocity = getNewVelocity(velocity, distance, maxVelocity);
+        distance -= nextVelocity;
+        double nx = s[0] + Math.sin(nextHeading) * nextVelocity;
+        double ny = s[1] + Math.cos(nextHeading) * nextVelocity;
+
+        if (!ignoreWalls && !rect.contains(nx, ny)) {
+            Point2D.Double nextLocation = new Point2D.Double(nx, ny);
+            adjustForWalls(nextLocation, nextHeading);
+            nx = nextLocation.x;
+            ny = nextLocation.y;
+            // PHYS-1: the engine stops a robot that meets a wall dead.
+            nextVelocity = 0;
+        }
+        s[0] = nx;
+        s[1] = ny;
+        s[2] = nextHeading;
+        s[3] = nextVelocity;
+        s[4] = distance;
+        s[5] = turn;
+    }
+
+    /**
+     * TIME-14: {@link #nextLocation(RobotState, double, double, boolean)} on a primitive state
+     * {@code {x, y, heading, velocity, -, -}} (six slots, the last two scratch), in place: the same tick
+     * with no state or point built, for a caller that plays thousands of steps a tick.
+     *
+     * @param s the robot now, and one tick on after the call
+     * @param maxVelocity the speed cap, in px/tick
+     * @param goAngle the direction to move in, in radians
+     * @param ignoreWallHits true to let the robot drive through walls
+     */
+    public void nextLocation(double[] s, double maxVelocity, double goAngle, boolean ignoreWallHits) {
+        double futureTurn = Angles.normalRelativeAngle(goAngle - s[2]);
+        double futureDistance;
+        if (Math.abs(futureTurn) > HALF_PI) {
+            futureTurn -= Math.signum(futureTurn) * Math.PI;
+            futureDistance = -1000;
+        } else {
+            futureDistance = 1000;
+        }
+        s[4] = futureDistance;
+        s[5] = futureTurn;
+        tick(s, maxVelocity, ignoreWallHits);
     }
 
     /**
@@ -386,25 +430,29 @@ public class MovementPredictor {
     MaxEscapeTarget straightPreciseEscapeAngle(int predictDirection, double absBearing,
             Point2D.Double sourceLocation, long fireTime, double bulletSpeed,
             RobotState startState, double attackAngle) {
-        RobotState predictedState = startState;
+        // TIME-14: stepped in place, as nextPerpendicularLocation would step it (no wall stick: the heading is
+        // the same every tick).
+        double[] st = {startState.location.x, startState.location.y, startState.heading, startState.velocity, 0, 0};
+        long time = startState.time;
+        double goAngle = Angles.normalRelativeAngle(absBearing + predictDirection * (HALF_PI + attackAngle));
         boolean hitWall = false;
         boolean wavePassed = false;
         do {
-            predictedState = nextPerpendicularLocation(
-                predictedState, absBearing, predictDirection, attackAngle, true);
-            if (!rect.contains(predictedState.location)) {
+            nextLocation(st, 8.0, goAngle, true);
+            time++;
+            if (!rect.contains(st[0], st[1])) {
                 hitWall = true;
-            } else if (wavePassed(sourceLocation, fireTime, bulletSpeed, predictedState)) {
+            } else if (wavePassed(sourceLocation, fireTime, bulletSpeed, st[0], st[1], time)) {
                 wavePassed = true;
             }
         } while (!hitWall && !wavePassed);
 
-        Point2D.Double meaLocation = battleField.translateToField(predictedState.location);
+        Point2D.Double meaLocation = battleField.translateToField(new Point2D.Double(st[0], st[1]));
         // The escape angle is the bearing's change seen from the source, signed so that
         // moving in predictDirection is positive.
         double escapeAngle = predictDirection * Angles.normalRelativeAngle(
             DiaUtils.absoluteBearing(sourceLocation, meaLocation) - absBearing);
-        return new MaxEscapeTarget(escapeAngle, meaLocation, predictedState.time, hitWall);
+        return new MaxEscapeTarget(escapeAngle, meaLocation, time, hitWall);
     }
 
     /**
@@ -438,25 +486,34 @@ public class MovementPredictor {
         double goAngle = absBearing + predictDirection * (HALF_PI + attackAngle);
         goAngle = battleField.wallSmoothing(startState.location, goAngle, predictDirection, wallStick);
 
+        // TIME-14: each pass is stepped in place, the point the wall smoothing reads reused.
+        double[] st = new double[6];
+        Point2D.Double at = new Point2D.Double();
         for (int x = 0; x < iterations; x++) {
-            RobotState predictedState = startState;
+            st[0] = startState.location.x;
+            st[1] = startState.location.y;
+            st[2] = startState.heading;
+            st[3] = startState.velocity;
+            long time = startState.time;
             boolean wavePassed = false;
             do {
-                predictedState = nextLocation(predictedState, 8.0, goAngle, true);
-                if (wavePassed(sourceLocation, fireTime, bulletSpeed, predictedState)) {
+                nextLocation(st, 8.0, goAngle, true);
+                time++;
+                if (wavePassed(sourceLocation, fireTime, bulletSpeed, st[0], st[1], time)) {
                     wavePassed = true;
                 } else {
                     // Keep sliding along the wall: smooth the current heading from the new spot.
-                    goAngle = battleField.wallSmoothing(
-                        predictedState.location, goAngle, predictDirection, wallStick);
+                    at.x = st[0];
+                    at.y = st[1];
+                    goAngle = battleField.wallSmoothing(at, goAngle, predictDirection, wallStick);
                 }
             } while (!wavePassed);
 
-            Point2D.Double loc = battleField.translateToField(predictedState.location);
+            Point2D.Double loc = battleField.translateToField(new Point2D.Double(st[0], st[1]));
             double thisAngle = predictDirection * Angles.normalRelativeAngle(
                 DiaUtils.absoluteBearing(sourceLocation, loc) - absBearing);
             if (thisAngle > best.angle) {
-                best = new MaxEscapeTarget(thisAngle, loc, predictedState.time, false);
+                best = new MaxEscapeTarget(thisAngle, loc, time, false);
             }
             if (x + 1 < iterations) {
                 // Next pass: set off straight for where this one ended.
@@ -482,9 +539,11 @@ public class MovementPredictor {
      * @return true once the wave has passed the robot's centre
      */
     private boolean wavePassed(Point2D.Double sourceLocation, long fireTime,
-                               double bulletSpeed, RobotState enemyState) {
-        double threshold = bulletSpeed * (enemyState.time - fireTime) + bulletSpeed;
-        return enemyState.location.distanceSq(sourceLocation) <
-            DiaUtils.square(threshold) * Math.signum(threshold);
+                               double bulletSpeed, double x, double y, long time) {
+        double threshold = bulletSpeed * (time - fireTime) + bulletSpeed;
+        // As Point2D.distanceSq from (x, y) to the source.
+        double dx = sourceLocation.x - x;
+        double dy = sourceLocation.y - y;
+        return dx * dx + dy * dy < DiaUtils.square(threshold) * Math.signum(threshold);
     }
 }

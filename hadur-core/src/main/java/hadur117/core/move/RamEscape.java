@@ -61,6 +61,20 @@ public final class RamEscape {
     /** RAM-5: whether the escape scores paths against the shots in flight. */
     private boolean dodge;
     /**
+     * TIME-14: the shots in flight as an array for this tick's {@link #choose}, which reads them about two thousand
+     * times a tick; {@link #shotCount} of them are live. Filled once a tick, so the deque is not walked per step.
+     */
+    private final double[][] shotArray = new double[MAX_SHOTS][];
+    /** TIME-14: {@link #play}'s stepped state and the point it hands the wall smoothing, reused every step. */
+    private final double[] step = new double[6];
+    private final Point2D.Double stepAt = new Point2D.Double();
+    private int shotCount;
+    /** TIME-14: whether any shot this tick carries the fixed aims (RAM-5) or the learned rays (RAM-20). */
+    private boolean anyFixed;
+    private boolean anyLearned;
+    /** TIME-14: slack on the exact quick-reject distances, px, far above any rounding. */
+    private static final double REJECT_SLACK = 1.0;
+    /**
      * RAM-11: a third aim per shot, circular: the rammers that lead us (RammingC, MaxRisk and their kind) extrapolate
      * our turn rate, and the escape's smooth wall-smoothed arcs are exactly what that aim predicts. On per opponent
      * ({@code ram-circ:} lines, {@link #setCircular}); this forces it on every rammer, for the bench's screen only.
@@ -322,6 +336,14 @@ public final class RamEscape {
      * @return the absolute heading to drive, in radians
      */
     double choose(RobotState me, RobotState enemy) {
+        shotCount = 0;
+        anyFixed = false;
+        anyLearned = false;
+        for (double[] s : shots) {
+            shotArray[shotCount++] = s;
+            if (s.length > 7) anyLearned = true;
+            else anyFixed = true;
+        }
         // RAM-18: while a bend holds, the candidates on the line the rammer's last shot was aimed along are left out;
         // when every candidate is, the escape chooses as it would without the bend.
         boolean bending = bend && !Double.isNaN(bendFrom) && me.time <= bendUntil;
@@ -381,7 +403,13 @@ public final class RamEscape {
      */
     private double[] play(RobotState me, RobotState enemy, double raw, int orientation,
                           double floor) {
-        RobotState us = me;
+        // TIME-14: our state as {x, y, heading, velocity} plus the predictor's two scratch slots, stepped in place.
+        double[] us = step;
+        us[0] = me.location.x;
+        us[1] = me.location.y;
+        us[2] = me.heading;
+        us[3] = me.velocity;
+        Point2D.Double at = stepAt;
         double ex = enemy.location.x;
         double ey = enemy.location.y;
         // The direction of travel: a robot driving backward travels opposite its heading.
@@ -393,28 +421,44 @@ public final class RamEscape {
         double bent = 0;
         int hits = 0;
         long learned = 0;
+        // TIME-14: the penalty the bits so far already cost; a path's closest approach only falls and its penalty
+        // only grows, so once closest approach less penalty is under the floor the path cannot win (the same
+        // verdict the full play gives, reached sooner).
+        int penHits = 0;
+        long penLearned = 0;
+        double penalty = 0;
         int ticks = dodge && !shots.isEmpty() ? SHOT_HORIZON : HORIZON;
         for (int t = 0; t < ticks; t++) {
-            double go = battleField.wallSmoothing(us.location, raw, orientation, WALL_STICK);
+            at.x = us[0];
+            at.y = us[1];
+            double go = battleField.wallSmoothing(at, raw, orientation, WALL_STICK);
             if (go != raw) bent = 1;
-            double px = us.location.x;
-            double py = us.location.y;
-            us = predictor.nextLocation(us, 8.0, go, false);
+            double px = us[0];
+            double py = us[1];
+            predictor.nextLocation(us, 8.0, go, false);
             // Pure pursuit: turn toward where we are now, at the engine's rate, then move.
-            double want = Math.atan2(us.location.x - ex, us.location.y - ey);
+            double want = Math.atan2(us[0] - ex, us[1] - ey);
             double maxTurn = Rules.getTurnRateRadians(ev);
             eh += DiaUtils.limit(-maxTurn, Angles.normalRelativeAngle(want - eh), maxTurn);
             ev = Math.min(8.0, ev + 1.0);
             ex = DiaUtils.limit(18.0, ex + Math.sin(eh) * ev, battleField.width - 18.0);
             ey = DiaUtils.limit(18.0, ey + Math.cos(eh) * ev, battleField.height - 18.0);
             if (dodge) {
-                hits |= hits(us.location.x, us.location.y, me.time + t + 1);
-                if (model != null) learned |= learnedHits(me.time + t + 1, px, py);
+                if (anyFixed) hits |= hits(us[0], us[1], me.time + t + 1);
+                if (model != null && anyLearned) learned |= learnedHits(me.time + t + 1, px, py);
+                if (hits != penHits || learned != penLearned) {
+                    penHits = hits;
+                    penLearned = learned;
+                    penalty = hitPenalty(hits) + learnedPenalty(learned);
+                }
             }
-            if (t >= HORIZON) continue;
-            double d = Point2D.distance(us.location.x, us.location.y, ex, ey);
+            if (t >= HORIZON) {
+                if (min - penalty < floor) return null;
+                continue;
+            }
+            double d = Point2D.distance(us[0], us[1], ex, ey);
             min = Math.min(min, d);
-            if (min < floor) return null;
+            if (min < floor || min - penalty < floor) return null;
             sum += d;
         }
         return new double[] {min - hitPenalty(hits) - learnedPenalty(learned), sum / HORIZON, bent};
@@ -469,9 +513,14 @@ public final class RamEscape {
      */
     private long learnedHits(long time, double px, double py) {
         long bits = 0;
-        int i = 0;
-        for (double[] s : shots) {
+        for (int i = 0; i < shotCount; i++) {
+            double[] s = shotArray[i];
             double flown = (time - s[0]) * s[3];
+            // TIME-14: every point a ray can hit with lies within LEARNED_BOX * sqrt 2 of (px, py) and between
+            // flown - speed and flown from the shot's origin; a shot whose stretch misses that ring hits nothing.
+            double d = Point2D.distance(s[1], s[2], px, py);
+            double reach = LEARNED_BOX * Math.sqrt(2) + REJECT_SLACK;
+            if (flown < d - reach || flown - s[3] > d + reach) continue;
             if (flown > 0 && s.length > 7) {
                 for (int a = 0; a < ShotModel.TOP; a++) {
                     if (Double.isNaN(s[4 + a])) continue;
@@ -483,7 +532,6 @@ public final class RamEscape {
                     }
                 }
             }
-            i++;
         }
         return bits;
     }
@@ -516,9 +564,12 @@ public final class RamEscape {
      */
     private int hits(double x, double y, long time) {
         int bits = 0;
-        int i = 0;
-        for (double[] s : shots) {
+        for (int i = 0; i < shotCount; i++) {
+            double[] s = shotArray[i];
             double flown = (time - s[0]) * s[3];
+            // TIME-14: each aim's bullet is flown px from the shot's origin, and a hit is within HIT_BOX * sqrt 2 of
+            // (x, y): a shot whose distance misses that by more hits with no aim.
+            if (Math.abs(Point2D.distance(s[1], s[2], x, y) - flown) > HIT_BOX * Math.sqrt(2) + REJECT_SLACK) continue;
             if (flown > 0 && s.length <= 7) {
                 for (int a = 0; a < 3; a++) {
                     if (Double.isNaN(s[4 + a])) continue;
@@ -532,7 +583,6 @@ public final class RamEscape {
                     }
                 }
             }
-            i++;
         }
         return bits;
     }
