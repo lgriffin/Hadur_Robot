@@ -148,7 +148,7 @@ public final class HadurCore {
     private int meleeBulletsInFlight;
     /** MMEM-2: the melee has just ended; the next duel scan hands its survivor over. */
     private boolean handOffPending;
-    /** S6: the tick budget (TIME-1, TIME-2), the conductor's; its level goes to the driving role. */
+    /** S6: the tick budget (TIME-1), the conductor's; its level goes to the driving role. */
     private final TickBudget budget = new TickBudget();
     /** WEAVE-3: whether a shot may leave this tick; until A5 always. */
     private Predicate<BotInput> firePermission = in -> true;
@@ -1116,7 +1116,7 @@ public final class HadurCore {
         if (budget.level() != before) emitBudget();
     }
 
-    /** P record for a change of computation level (TIME-1, TIME-2). */
+    /** P record for a change of computation level (TIME-1). */
     private void emitBudget() {
         telemetry.emit(String.format(Locale.ROOT, "P,%d,%d,%s,%s,%s,%s", round, lastTickTime, "budget",
             String.format(Locale.ROOT, "%.4f", (double) budget.level()), "-", "level-" + budget.level()));
@@ -1138,7 +1138,7 @@ public final class HadurCore {
     }
 
     /**
-     * S6: the tick budget's computation level for the next tick (TIME-1, TIME-2).
+     * S6: the tick budget's computation level for the next tick (TIME-1).
      *
      * @return 0 (everything) to 3 (least work)
      */

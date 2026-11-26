@@ -20,7 +20,7 @@
  *
  * <p>Because the tick time reaches the core as a {@code TickTime} event measured by the
  * adapter, not from a clock, it is recorded like any other event and a replay makes the
- * same budget decisions (TIME-1, TIME-2) as the live robot did.</p>
+ * same budget decisions (TIME-1) as the live robot did.</p>
  *
  * <h2>Dependencies</h2>
  *

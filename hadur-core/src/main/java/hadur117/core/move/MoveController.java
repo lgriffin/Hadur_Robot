@@ -21,7 +21,7 @@ import java.util.function.Consumer;
  * {@link #guessBulletPower}); when the energy ledger explains a drop as a shot (WAVE-1,
  * WAVE-2), {@link #updateFiringWave} marks the matching wave as a real bullet, and only
  * firing waves are surfed, scored or counted. Each duel tick then runs
- * {@link #setKShare} (TIME-1, TIME-2), {@link #checkWaves} (break waves that have passed
+ * {@link #setKShare} (TIME-1), {@link #checkWaves} (break waves that have passed
  * us and learn from them), {@link #takeBrokenWaveOutcomes} (read by the distance and flavour
  * policies), {@link #updateShadows} (MOVE-1) and finally {@link SurfMover#move}, which asks
  * {@link #findSurfableWave} and {@link #getDangerScore}. Bullet events arrive through
@@ -636,7 +636,7 @@ public class MoveController {
     }
 
     /**
-     * TIME-1, TIME-2: the share of k every danger view uses; 1 is all of it. The tick budget
+     * TIME-1: the share of k every danger view uses; 1 is all of it. The tick budget
      * sets 0.5 from computation level 2.
      *
      * @param kShare the share, in (0, 1]

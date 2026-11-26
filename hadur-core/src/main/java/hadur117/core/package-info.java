@@ -51,7 +51,7 @@
  *     wave and a candidate enemy wave, and the energy ledger turns only unexplained energy
  *     drops into firing waves (WAVE-1, WAVE-2). Bullet events feed the ledger, the hit
  *     windows, the shield detector and the bullet shadows; the adapter's {@code TickTime}
- *     and skipped turns feed the tick budget (TIME-1, TIME-2).</li>
+ *     and skipped turns feed the tick budget (TIME-1).</li>
  * <li>The driving role's main body, with the conductor's fire permission (WEAVE-3). Melee: the melee brain's radar, destination and aim.
  *     Duel: fire the shot aimed last tick and aim the next, break the waves that have passed
  *     us, check the profile's seeds against live evidence (RES-4), step the distance,
@@ -106,7 +106,7 @@
  *     the seed trust. It sees only memory, the model and the JDK, never
  *     {@code BotInput} or {@code BotEvent} (DIAL-2), and the lower packages never see it.</li>
  * <li>{@code policy}: aggressive and unhittable (DIST-1, POW-1, POW-2, END-1, END-2, MOVE-2,
- *     TIME-1, TIME-2): rolling hit windows, the distance controller, the power policy, the
+ *     TIME-1): rolling hit windows, the distance controller, the power policy, the
  *     endgame and the enemy's gun heat, the movement flavour and the
  *     {@link hadur117.core.policy.TickBudget}. It sees only memory, physics and the JDK
  *     (DIAL-2), and gun, move and the lower packages never see it.</li>

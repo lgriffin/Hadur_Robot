@@ -88,7 +88,7 @@ class ShieldCoreTest {
     void hitAfterSkipsReachesTheBudget() {
         start(1);
         tick(0, 100, 400);
-        // Three skipped turns shed levels for the rest of the round (TIME-2); no duress since 3.11.
+        // Three skipped turns shed nothing (TIME-15); no duress since 3.11.
         tick(0, 100, 400, new BotEvent.SkippedTurn(1), new BotEvent.SkippedTurn(2),
             new BotEvent.SkippedTurn(3));
         // A one-round battle allows about 10.6; a full-power hit is 16.

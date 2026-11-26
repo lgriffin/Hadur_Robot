@@ -6,8 +6,8 @@
 
 Robocode gives each robot one CPU constant of wall time a turn (live 3,272,413 ns, BENCH-245).
 A robot whose thread has not called `execute()` by then loses the turn: no move, no shot. A run of
-30 or more turns in one gap and the engine disables the robot for the round. Each skip also drops
-Hadur's computation level for the rest of the round (TIME-2), so a skip costs more than its turn.
+30 or more turns in one gap and the engine disables the robot for the round. Since TIME-15 a skip
+sheds nothing else: the level stays where the last tick's time put it.
 
 ## Where they come from
 

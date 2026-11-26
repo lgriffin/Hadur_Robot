@@ -1,7 +1,7 @@
 package hadur117.core.policy;
 
 /**
- * The tick budget (TIME-1, TIME-2): how much work the core may do this tick, as a
+ * The tick budget (TIME-1): how much work the core may do this tick, as a
  * computation level from 0 (everything) to {@link #MAX_LEVEL}. Each level sheds more:
  *
  * <ol>

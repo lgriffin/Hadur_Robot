@@ -465,13 +465,13 @@ public class KdTree<T> {
         }
     }
 
+    /** TIME-12: the search heap the root reuses, sized for the last k asked for. */
+    private ResultHeap heap;
+
     /**
      * A node's progress in the current search: not entered, one child (the query's side)
      * visited, or both visited.
      */
-    /** TIME-12: the search heap the root reuses, sized for the last k asked for. */
-    private ResultHeap heap;
-
     private enum Status {
         NONE, LEFTVISITED, RIGHTVISITED, ALLVISITED
     }

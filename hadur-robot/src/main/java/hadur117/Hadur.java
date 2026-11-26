@@ -527,7 +527,7 @@ public class Hadur extends TeamRobot {
         pending.add(new BotEvent.RobotDeath(e.getName()));
     }
 
-    /** The engine skipped one of our turns: the core drops a computation level for the round (TIME-2). */
+    /** The engine skipped one of our turns: the core counts it and sheds nothing (TIME-15). */
     @Override
     public void onSkippedTurn(SkippedTurnEvent e) {
         pending.add(new BotEvent.SkippedTurn(e.getSkippedTurn()));

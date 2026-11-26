@@ -8,7 +8,7 @@
  *     flight and their shadows on each firing wave (MOVE-1). It takes the opening book's
  *     prior, forced flattener and seeds (ADAPT-2, ADAPT-3, DIAL-1), drops them when the
  *     live evidence disagrees (RES-4), and sheds KNN work on the tick budget's say
- *     (TIME-1, TIME-2).</li>
+ *     (TIME-1).</li>
  * <li>{@link hadur117.core.move.SurfMover}: decides where to drive each tick. It predicts
  *     each option with the engine's movement rules, scores the waves it would cross, and
  *     drives the safest; it orbits when no wave is in the air and rams a disabled enemy
