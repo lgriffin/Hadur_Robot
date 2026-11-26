@@ -1010,7 +1010,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             # TMODE-45 on every team: the default and every shipped entry play QUARTERS. Suffix qt.
             version="${version}qt"
             edit "$modes" "public static final boolean FORCE_QUARTERS = false;" "public static final boolean FORCE_QUARTERS = true;"
-            sed -i -E '/^        t\.put\(/{/Mode\.QUARTERS/!s/\)\);$/, Mode.QUARTERS));/}' "$modes"
+            sed -i -E '/^        t\.put\(.*, of\(Mode\./{/Mode\.QUARTERS/!s/\)\);$/, Mode.QUARTERS));/}' "$modes"
             ;;
         tmtight)
             # TMODE-59 on (team only): TIGHT plays in the five table entries that carry it (hunt pull 1.0). Suffix tp.
