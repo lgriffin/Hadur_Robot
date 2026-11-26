@@ -208,3 +208,12 @@
 00:59:37 field exit=0 in 11840 s
 00:59:37 start ret
 00:59:37 watching ret: 3 stop rule(s)
+01:06:57 progress ret: 264/288 (92%) battles, 2162/h, ETA 1 min, 0 failed, skips 11.8/battle (last 100), rel -0.01, aa -0.00
+01:10:06 ret exit=0 in 629 s
+01:10:06 start gate112
+01:10:10 gate112 exit=0 in 3 s
+01:10:10 start gate
+01:10:11 gate exit=0 in 0 s
+01:10:11 start pr
+01:10:19 pr exit=0 in 8 s
+01:10:19 ALLDONE
