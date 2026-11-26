@@ -1,0 +1,16 @@
+# pc-locks round 33 (BENCH-253, PR #1083): robots whose lines shipped on 24 fresh PC seeds at the live turn time
+fnh.mega.DumDum 1.0.1
+slugzilla.SNGGF 1.0
+oa.weak.FlyMk1 0.1
+whitesquare.robots.SkynetAdvanced 1.1
+agrach.MicroDalek 1.0
+blr.Chicken001 0.1
+djdjdj.NanoSkunk10 1.0
+sanyi.mikrobi.Roberto 1.0
+supersample.SuperCorners 1.0
+dummy.micro.HummingBird 2.14
+jaara.LambdaBot 1.1
+stelo.FretNano 1.1
+tornyil.bottomup.BottomUp 1.05
+zen.Ronin 1.0.0
+dragonbyte.Neutrino 4
