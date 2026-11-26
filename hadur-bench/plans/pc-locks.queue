@@ -2,7 +2,7 @@
 # (gun stack) on Neuromancer +4.6, rlnrkn on Colossus2 +2.7 and Alpha +2.5, rln on BagPuss +1.0 and rwl (ram wait) on
 # Dzhigit +1.0, Hotspur +0.7 and One +0.5 held and were banked (#1081, plans/locks32-shipped.txt); PulsarMax gl (+3.1)
 # and Phoenix rwl (+0.3) did not clear 0.
-# Round 33 carries 21 per-robot lines on existing table switches, each read on 12 to 48 fresh cloud seeds (one to three
+# Round 33 carries 22 per-robot lines on existing table switches, each read on 12 to 48 fresh cloud seeds (one to three
 # independent 12-seed blocks on separate boxes) against both c (master) and aa (its A/A twin) at Robocode 1.12.0 and the
 # live turn time (coverage/shards/locks.tsv), gains vs c / vs aa:
 #   gl (GUN-11 gun stack)           CHCl3 +5.8 / +3.0 (24), DumDum +10.8 / +7.3 (12; a second block +2.8 / +4.9)
@@ -12,10 +12,11 @@
 #   rlnrkn (RAM-20 + RAM-21)        SuperCorners +4.0 / +3.3, Chicken001 +0.9 / +1.0, BelajarBot +0.3 / +0.3 and
 #                                   Detektor3 +0.3 / +0.3 (each confirmed by a second box), NanoSkunk10 +1.1 / +1.0 (24),
 #                                   Roberto +0.8 / +0.6 (24), MicroDalek +1.1 / +1.0 (24)
-#   cpl (COPY-2 bred gun copy)      Ronin +3.2 / +3.3 (36), Identity +2.2 / +2.7 (36), LambdaBot +8.3 / +6.6,
-#                                   BottomUp +7.1 / +7.9, HummingBird +4.7 / +5.4, FretNano +2.4 / +2.1 (12 after a screen)
+#   cpl (COPY-2 bred gun copy)      Ronin +3.2 / +3.3 (36), Identity +2.2 / +2.7 (36), LambdaBot +8.2 / +6.4,
+#                                   BottomUp +7.7 / +7.8, HummingBird +4.6 / +5.6, FretNano +3.3 / +2.5,
+#                                   PumpkinPie +2.4 / +2.8 (24, two boxes)
 #   pb (POW-20 power band 0.5)      Neutrino +4.0 / +3.1 (12; a second block +3.8 / +2.6)
-# The A/A check reads all 21 robots. The PC reads 24 fresh seeds from 113000 and a line ships only on the PC's own read;
+# The A/A check reads all 22 robots. The PC reads 24 fresh seeds from 113000 and a line ships only on the PC's own read;
 # every robot is judged on its own.
 #
 # Why it should win (the PC card rule of 2026-11-03):
@@ -44,7 +45,7 @@
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
 #   --fresh because round 32 left this plan's queue state marked complete; the new work directory and seeds mean no
 #   battle is read back from an earlier round (and BENCH-272 refights any whose jar changed).
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 1,512 lock battles (21 robots in c and aa, each
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 1,584 lock battles (22 robots in c and aa, each
 # again on its own arm, 24 seeds), about 70 minutes with the live-match check (round 32's 840 took about 40).
 # The prep step stops if any panel robot's jar is missing.
 #
@@ -127,5 +128,5 @@ lock-pb | ./bench-top20.sh ${C} ${P} --set ${W}-prep/pb.panel --seeds 24 --seed-
 gate | mkdir -p ${W} && (cat ${W}-ctl/arms.tsv && for d in gl rwl rf rln rlnrkn cpl pb; do awk -F"\t" -v a=$d 'NR > 1 && $1 == a' ${W}-$d/arms.tsv || exit 1; done) > ${W}/arms.tsv && python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks33-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks33-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks33-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms gl rwl rf rln rlnrkn cpl pb --out ${OUT}/$(date +%Y-%m-%d)_pc-locks33-lock-per-robot.md --out-tsv ${OUT}/pc-locks33-lock-per-robot.tsv
   after: lock-pb
 
-pr | bash tools/open_results_pr.sh claude/pc-locks33-results "1v1 cloud locks, round 33 (2 gl, 3 rwl, rf, rln, 7 rlnrkn, 6 cpl, pb) on 24 fresh PC seeds" ${OUT}/pc-locks33-livematch.md ${OUT}/*_pc-locks33-*.md ${OUT}/pc-locks33-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks33-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks33-results "1v1 cloud locks, round 33 (2 gl, 3 rwl, rf, rln, 7 rlnrkn, 7 cpl, pb) on 24 fresh PC seeds" ${OUT}/pc-locks33-livematch.md ${OUT}/*_pc-locks33-*.md ${OUT}/pc-locks33-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks33-lock-pick.tsv' -size +0c)
   after: gate

@@ -6,3 +6,4 @@ hist;bins=41;d_max=1200;lag=0;roll=0.3;s_accel=1;s_dist=1;s_lat=1;s_since=1;s_wa
 hist;bins=61;d_max=750;lag=1;roll=0.03;s_accel=1;s_dist=3;s_lat=6;s_since=1;s_wall=1;smooth=2;ticks=1 tornyil.bottomup.BottomUp 1.05
 hist;bins=61;d_max=900;lag=1;roll=0.3;s_accel=1;s_dist=1;s_lat=2;s_since=1;s_wall=1;smooth=0;ticks=1 jaara.LambdaBot 1.1
 hist;bins=61;d_max=750;lag=1;roll=0.3;s_accel=1;s_dist=1;s_lat=1;s_since=1;s_wall=1;smooth=0;ticks=0 dummy.micro.HummingBird 2.14
+pm;round=0.5x0.5;longest=10;least=10;lag=1 cs.PumpkinPie 1.0
