@@ -383,6 +383,7 @@ public final class DuelController {
         if (speedBandOn) on.add("speedband");
         if (ramWaitOn) on.add("ramwait");
         if (steadyOrbitOn) on.add("orbit");
+        if (halfSurfOn) on.add("halfsurf");
         if (flatOn) on.add("flat");
         if (mirrorOff) on.add("mirroff");
         if (mimicOn) on.add("mimic");
@@ -1026,6 +1027,8 @@ public final class DuelController {
     private boolean velJitterOn;
     /** MOVE-47: the surf's steady orbit is on against this opponent. */
     private boolean steadyOrbitOn;
+    /** MOVE-73: whether the surf rates the half-speed orbits against this opponent. */
+    private boolean halfSurfOn;
     /** MOVE-45: the table names this opponent for speed-band jitter. */
     private boolean speedBandOn;
     /** MOVE-46: whether the ram on a disabled enemy waits for its last waves this battle. */
@@ -1487,6 +1490,8 @@ public final class DuelController {
         ramFleeOn = false;
         steadyOrbitOn = false;
         surfMover.setSteadyOrbit(false);
+        halfSurfOn = false;
+        surfMover.setHalfSpeed(false);
         stopAndGo = null;
         gunController.setTripHammer(GunDesign.TRIPHAMMER);
         gunController.setFreeGun(GunDesign.FREE_GUN);
@@ -1664,6 +1669,9 @@ public final class DuelController {
         // MOVE-47: the steady orbit for the opponents the table names.
         steadyOrbitOn = duelOnly(stackList.steadyOrbit(name), enemiesTotal);
         surfMover.setSteadyOrbit(steadyOrbitOn);
+        // MOVE-73: the half-speed orbits in the surf for the opponents the table names.
+        halfSurfOn = duelOnly(stackList.halfSurf(name), enemiesTotal);
+        surfMover.setHalfSpeed(halfSurfOn);
         // POW-20: the power bands for the opponents the table names.
         powerBand = enemiesTotal <= 1 ? stackList.powerBandFor(name) : null;
         distPin = enemiesTotal <= 1 ? stackList.distPinFor(name) : Double.NaN;
