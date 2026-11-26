@@ -1,55 +1,19 @@
-# BENCH-253 pc-locks, round 34: 51 robots, each read on 12 or more fresh cloud seeds against both c and aa
-# (coverage/shards/locks.tsv, dzlane/L/r29-candidates.txt): Lajcsi2sm on gl (GUN-11 gun stack); Pris, Che, Lynx and
-# Combat on cpl (COPY-2 bred gun copy); and a class of 46 robots on rwl (MOVE-46 ram wait), judged as a class by a
-# pooled gate rather than robot by robot. The A/A check reads all 51. name | note | jar
-tornyil.Lajcsi2.Lajcsi2sm 1.0 | rank720-band6 | tornyil.Lajcsi2.Lajcsi2sm_1.0.jar
-darkcanuck.Pris 0.92 | rank28-band2 | darkcanuck.Pris_0.92.jar
-cjm.Che 1.2 | rank256-band4 | cjm.Che_1.2.jar
-lancel.Lynx 1.09 | rank96-band3 | lancel.Lynx_1.09.jar
-mn.Combat 3.25.0 | rank40-band2 | mn.Combat_3.25.0.jar
-mrm.MightyMoose .2 | rank729-band6 | mrm.MightyMoose_.2.jar
-timmit.nano.TimDog 0.33 | rank612-band5 | timmit.nano.TimDog_0.33.jar
-Gecko.ultimateGeckoBot 1.0 | rank740-band6 | Gecko.ultimateGeckoBot_1.0.jar
-caimano.Furia_Ceca 0.22 | rank773-band6 | caimano.Furia_Ceca_0.22.jar
-blir.micro.blixi.Blixi 1.2 | rank782-band6 | blir.micro.blixi.Blixi_1.2.jar
-fcr.First 1.0 | rank682-band5 | fcr.First_1.0.jar
-tvv.micro.Antares 1.1.1 | rank640-band5 | tvv.micro.Antares_1.1.1.jar
-pla.Memnoch 0.5 | rank765-band6 | pla.Memnoch_0.5.jar
-ratosh.Nobo 0.21 | rank681-band5 | ratosh.Nobo_0.21.jar
-marcinek.TopGun 1.3 | rank785-band6 | marcinek.TopGun_1.3.jar
-bigpete.Stewie 1.0 | rank668-band5 | bigpete.Stewie_1.0.jar
-jeremyreeder.Bully 1 | rank937-band6 | jeremyreeder.Bully_1.jar
-jf.Dodger 1.3 | rank976-band6 | jf.Dodger_1.3.jar
-WidowMakersAtWar.EpicCow 1.0 | rank908-band6 | WidowMakersAtWar.EpicCow_1.0.jar
-sul.BlueBot 1.0 | rank866-band6 | sul.BlueBot_1.0.jar
-nexus.Prototype 1.0 | rank974-band6 | nexus.Prototype_1.0.jar
-supersample.SuperTracker 1.0 | rank887-band6 | supersample.SuperTracker_1.0.jar
-sng.arco.Arco 0.0 | rank956-band6 | sng.arco.Arco_0.0.jar
-supersample.SuperBoxBot 1.0 | rank888-band6 | supersample.SuperBoxBot_1.0.jar
-zyx.nano.Ant 1.1 | rank938-band6 | zyx.nano.Ant_1.1.jar
-supersample.SuperWalls 1.0 | rank910-band6 | supersample.SuperWalls_1.0.jar
-cs.Wren 1.0 | rank869-band6 | cs.Wren_1.0.jar
-nexus.Two 0.2 | rank911-band6 | nexus.Two_0.2.jar
-pak.JakeTheTestingRobot .1b | rank935-band6 | pak.JakeTheTestingRobot_.1b.jar
-Fenix.FenixTrack 1.0 | rank997-band6 | Fenix.FenixTrack_1.0.jar
-pl.robocode.Pacyfista 1.0 | rank894-band6 | pl.robocode.Pacyfista_1.0.jar
-hvilela.HVilela 0.9 | rank834-band6 | hvilela.HVilela_0.9.jar
-myl.nano.Graviton 1.10 | rank953-band6 | myl.nano.Graviton_1.10.jar
-extra.Sauce .01 | rank861-band6 | extra.Sauce_.01.jar
-dsw.StaticD 1.0 | rank839-band6 | dsw.StaticD_1.0.jar
-tobe.mini.Charon 0.9 | rank874-band6 | tobe.mini.Charon_0.9.jar
-robo.PartsBot 1.1 | rank828-band6 | robo.PartsBot_1.1.jar
-amc.ROBv400 1.0 | rank979-band6 | amc.ROBv400_1.0.jar
-spin.Bugstard 0.012b | rank901-band6 | spin.Bugstard_0.012b.jar
-asd.Cthulhu 1.2 | rank880-band6 | asd.Cthulhu_1.2.jar
-disan.Chair 2.2.0 | rank871-band6 | disan.Chair_2.2.0.jar
-stranger.nano.TestBot 1.0 | rank820-band6 | stranger.nano.TestBot_1.0.jar
-PK.Twardy 0.4.2 | rank906-band6 | PK.Twardy_0.4.2.jar
-pmc.SniperBot 1.0 | rank832-band6 | pmc.SniperBot_1.0.jar
-zyx.nano.RedBull 1.0 | rank858-band6 | zyx.nano.RedBull_1.0.jar
-uccc.RingDing 1.12 | rank970-band6 | uccc.RingDing_1.12.jar
-zyx.micro.Ant 1.1 | rank439-band5 | zyx.micro.Ant_1.1.jar
-And.BasicSurfer FF1.6 | rank466-band5 | And.BasicSurfer_FF1.6.jar
-traker.Eraser 1 | rank535-band5 | traker.Eraser_1.jar
-mz.AdeptBSB 1.03 | rank594-band5 | mz.AdeptBSB_1.03.jar
-nat.Hikari dev0001 | rank223-band4 | nat.Hikari_dev0001.jar
+# BENCH-253 pc-locks, round 35: 13 robots. Ten carry a line read on 12 or more fresh cloud seeds at 0.7x the live
+# turn time against both c and aa (coverage/shards/locks.tsv): PhoenixOS on gl (GUN-11 gun stack); Identity and
+# PumpkinPie on cpl (COPY-2 bred gun copy); Phoenix on rwl (MOVE-46 ram wait); GresSuffurd on dn (DIST-4, 400 px);
+# Splooshlu on hof (MOVE-71 head-on floor); LevelOne on qw (MOVE-67 aim weight); SquidmanNano and Ringo on rlnrkn
+# (RAM-20 and RAM-21);
+# TrialBot on rf (RAM-15 ram flee). PinkPanther, Holden and MatchupMini pad the A/A check (c and aa only). name | note | jar
+davidalves.PhoenixOS 1.1 | rank59-band3 | davidalves.PhoenixOS_1.1.jar
+hope.Identity .pope69 | rank82-band3 | hope.Identity_.pope69.jar
+cs.PumpkinPie 1.0 | rank377-band4 | cs.PumpkinPie_1.0.jar
+davidalves.Phoenix 1.02 | rank22-band2 | davidalves.Phoenix_1.02.jar
+gh.GresSuffurd 0.4.13 | rank17-band2 | gh.GresSuffurd_0.4.13.jar
+blir.mini.oops.Splooshlu 2.0 | rank680-band5 | blir.mini.oops.Splooshlu_2.0.jar
+dy.LevelOne 2.0 | rank590-band5 | dy.LevelOne_2.0.jar
+squidM.SquidmanNano 1.0 | rank840-band6 | squidM.SquidmanNano_1.0.jar
+hlavko.nano.Ringo 2.0 | rank818-band6 | hlavko.nano.Ringo_2.0.jar
+divineomega.TrialBot 0.003 | rank446-band5 | divineomega.TrialBot_0.003.jar
+dmh.robocode.robot.PinkPanther 1.1 | rank385-band4 | dmh.robocode.robot.PinkPanther_1.1.jar
+darkcanuck.Holden 1.13a | rank54-band3 | darkcanuck.Holden_1.13a.jar
+stelo.MatchupMini 1.1 | rank286-band4 | stelo.MatchupMini_1.1.jar
