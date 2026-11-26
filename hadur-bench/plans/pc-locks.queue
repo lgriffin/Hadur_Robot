@@ -1,71 +1,69 @@
-# 1v1, cloud locks to the PC (BENCH-253), round 33. Round 32 ran as PR #1080 (A/A +0.24 +- 0.21 on 13 robots): gl
-# (gun stack) on Neuromancer +4.6, rlnrkn on Colossus2 +2.7 and Alpha +2.5, rln on BagPuss +1.0 and rwl (ram wait) on
-# Dzhigit +1.0, Hotspur +0.7 and One +0.5 held and were banked (#1081, plans/locks32-shipped.txt); PulsarMax gl (+3.1)
-# and Phoenix rwl (+0.3) did not clear 0.
-# Round 33 carries 22 per-robot lines on existing table switches, each read on 12 to 48 fresh cloud seeds (one to three
-# independent 12-seed blocks on separate boxes) against both c (master) and aa (its A/A twin) at Robocode 1.12.0 and the
-# live turn time (coverage/shards/locks.tsv), gains vs c / vs aa:
-#   gl (GUN-11 gun stack)           CHCl3 +5.8 / +3.0 (24), DumDum +10.8 / +7.3 (12; a second block +2.8 / +4.9)
-#   rwl (MOVE-46 ram wait)          HVilela +0.5 / +0.6 (24), SNGGF +0.5 / +0.5 (24), BlueBot +0.3 / +0.3 (two blocks)
-#   rf                              FlyMk1 +0.8 / +0.7 (24)
-#   rln (RAM-20)                    SkynetAdvanced +0.7 / +0.5 (36)
-#   rlnrkn (RAM-20 + RAM-21)        SuperCorners +4.0 / +3.3, Chicken001 +0.9 / +1.0, BelajarBot +0.3 / +0.3 and
-#                                   Detektor3 +0.3 / +0.3 (each confirmed by a second box), NanoSkunk10 +1.1 / +1.0 (24),
-#                                   Roberto +0.8 / +0.6 (24), MicroDalek +1.1 / +1.0 (24)
-#   cpl (COPY-2 bred gun copy)      Ronin +3.2 / +3.3 (36), Identity +2.2 / +2.7 (36), LambdaBot +8.2 / +6.4,
-#                                   BottomUp +7.7 / +7.8, HummingBird +4.6 / +5.6, FretNano +3.3 / +2.5,
-#                                   PumpkinPie +2.4 / +2.8 (24, two boxes)
-#   pb (POW-20 power band 0.5)      Neutrino +4.0 / +3.1 (12; a second block +3.8 / +2.6)
-# The A/A check reads all 22 robots. The PC reads 24 fresh seeds from 113000 and a line ships only on the PC's own read;
-# every robot is judged on its own.
+# 1v1, cloud locks to the PC (BENCH-253), round 34. Round 33 ran as PR #1083 (A/A -0.11 +- 0.30 on 22 robots): 15 of 22
+# held and were banked (#1084, plans/locks33-shipped.txt): the first five COPY-2 copies (BottomUp +9.1, LambdaBot +7.4,
+# HummingBird +4.9, Ronin +3.4, FretNano +2.8), DumDum gl +7.9, Neutrino pb +3.5, five rlnrkn rammers, SkynetAdvanced rln,
+# FlyMk1 rf and SNGGF rwl; CHCl3 gl, HVilela and BlueBot rwl, BelajarBot and Detektor3 rlnrkn, PumpkinPie and Identity cpl
+# did not clear 0.
+# Round 34 carries 51 robots on existing table switches, each read on fresh cloud seeds against both c (master) and aa
+# (its A/A twin) at Robocode 1.12.0 and the live turn time (coverage/shards/locks.tsv), gains vs c / vs aa:
+#   gl (GUN-11 gun stack)        Lajcsi2sm +2.3 / +3.8 (12) and +2.3 / +2.7 on a second box (12)
+#   cpl (COPY-2 bred gun copy)   Lynx +6.0 / +6.9 (12) and +6.4 / +6.1 on a second box (12); Pris +8.2 / +6.1 (24) and
+#                                +1.8 / +0.4 on a second box (12); Che +3.0 / +2.5 (24) and +1.0 / +2.3 on a second box
+#                                (12); Combat +1.5 / +2.4 (24, both low ends just above 0)
+#   rwl (MOVE-46 ram wait)       a class of 46 robots whose after-ram share of hits is 20% or more (ranks 600-1000 of the
+#                                live field): +0.26 / +0.29 and +0.29 / +0.26 (two blocks on one box), +0.32 / +0.34 and
+#                                +0.11 / +0.16 on two more boxes (6 seeds each), pooled over 46 robots; too small to
+#                                judge robot by robot, so the PC judges it as a class
+# The A/A check reads all 51 robots. The PC reads 24 fresh seeds from 114000 and a line ships only on the PC's own read.
 #
 # Why it should win (the PC card rule of 2026-11-03):
 #   - Per-opponent tailoring: each line names one robot; every other robot, team and melee play bit for bit as master.
-#   - Diagnosis: CHCl3 and DumDum out-deal us at lower power where the gun stack adds the second gun's view; HVilela, SNGGF
-#     and BlueBot land 20% or more of their hits on us after our endgame ram starts; the rlnrkn and rln robots hit us
-#     mostly in rammer rounds; the cpl robots hit us with learning guns at range and a copy of each gun, bred from truth
-#     logs of their battles against us, steers the surf away from where that gun aims; Neutrino out-lasts us on energy
-#     in long rounds with 0.1-power shots, and the power band halves ours there.
+#   - Diagnosis: Lajcsi2sm out-deals us at lower power (a 70-90% band trace) where the gun stack adds the second gun's
+#     view; the cpl robots hit us with learning guns at range, each with a bred copy that fits the copy rule (it
+#     reproduces 20-45% of the real bullets of a gun that hits us 9-16%), and the copy steers the surf away from where
+#     that gun aims; the rwl class lands 20% or more of its hits on us after our endgame ram starts, and ram wait keeps
+#     surfing its live waves before the ram.
 #   - Every line read positive against both controls on fresh cloud seeds; 24 PC seeds settle each one.
 # Stop rules (docs/bench/watch.md): no aa stop rule (aa is read in the gate). The lock halts on 30 failed battles, an arm
 # scoring nothing in 8, 60+ skipped turns a battle over the last 24 or no battle in 30 minutes. The live-match step stops
 # the card if the PC no longer scores us and BeepBoop as live does (tools/live_match.py exit 3).
 # ALERT opens an issue for Leigh on any stop.
 #   livematch  the released jar and BeepBoop 2.0 on the 31-robot panel at the live constant, read against live, in its
-#              own folder (work/pc-locks33-livematch), so no earlier round's battle is read back
-#   lock       panel-locks.txt  c / aa, 24 fresh seeds from 113000, --cpu-constant live, in work/pc-locks33-ctl
+#              own folder (work/pc-locks34-livematch), so no earlier round's battle is read back
+#   lock       panel-locks.txt  c / aa, 24 fresh seeds from 114000, --cpu-constant live, in work/pc-locks34-ctl
 #   stage      writes each lever's two-arm file (c and the lever) and copies in, times kept, the c battles of that lever's
 #              own robots, so the bench reads them back (BENCH-95) and the watcher counts them as resumed
-#   lock-X     each lever arm (gl, rwl, rf, rln, rlnrkn, cpl, pb) on its own picked robots only, same seeds, in
-#              work/pc-locks33-X; the gate takes c and aa from -ctl and only the lever rows from each -X
-#   gate       each robot judged on its own lever arm only (lock_prep.py --restrict); it keeps its line where the 95%
-#              low end is above 0 (mode_table.py --margin 0).
+#   lock-X     each lever arm (gl, cpl, rwl) on its own picked robots only, same seeds, in work/pc-locks34-X; the gate
+#              takes c and aa from -ctl and only the lever rows from each -X
+#   gate       gl and cpl: each robot judged on its own lever arm only (lock_prep.py --restrict); it keeps its line where
+#              the 95% low end is above 0 (mode_table.py --margin 0). rwl: the class judged pooled (shield_s2.py gate:
+#              the sum over its robots of rwl minus pooled c and aa over the field's 1,217 pairings), and the whole
+#              class ships only if that estimate's 95% low end is above 0 with the A/A inside its band.
 # Leigh starts it once the PC is free (one card at a time, from master):
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
-#   --fresh because round 32 left this plan's queue state marked complete; the new work directory and seeds mean no
+#   --fresh because round 33 left this plan's queue state marked complete; the new work directory and seeds mean no
 #   battle is read back from an earlier round (and BENCH-272 refights any whose jar changed).
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 1,584 lock battles (22 robots in c and aa, each
-# again on its own arm, 24 seeds), about 70 minutes with the live-match check (round 32's 840 took about 40).
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 3,672 lock battles (51 robots in c and aa, each
+# again on its own arm, 24 seeds), about 75 minutes with the live-match check (round 33's 1,584 took about 35).
 # The prep step stops if any panel robot's jar is missing.
 #
 set V = 3.24
 set P = --parallel 16 --no-truth-log --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 2G
-set W = work/pc-locks33
+set W = work/pc-locks34
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
 
-prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && python3 tools/lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh && for a in gl rwl rf rln rlnrkn cpl pb; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; awk -F"\t" -v a=$a '$2 == a {print $1 " |"}' plans/locks-pick.tsv > ${W}-prep/$a.names && grep -F -f ${W}-prep/$a.names panel-locks.txt > ${W}-prep/$a.panel && grep "^$a |" ${W}-prep/lock.arms > ${W}-prep/$a.arms || exit 1; done && grep -E "^(c|aa) [|]" ${W}-prep/lock.arms > ${W}-prep/ctl.arms && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set panel-locks.txt && for j in $(grep -v "^#" panel-locks.txt | cut -d"|" -f3); do test -f opponents/$j || { echo "missing jar $j"; exit 1; }; done && mvn -q compile
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && python3 tools/lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh && for a in gl cpl rwl; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; awk -F"\t" -v a=$a '$2 == a {print $1 " |"}' plans/locks-pick.tsv > ${W}-prep/$a.names && grep -F -f ${W}-prep/$a.names panel-locks.txt > ${W}-prep/$a.panel && grep "^$a |" ${W}-prep/lock.arms > ${W}-prep/$a.arms || exit 1; done && grep -E "^(c|aa) [|]" ${W}-prep/lock.arms > ${W}-prep/ctl.arms && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set panel-locks.txt && for j in $(grep -v "^#" panel-locks.txt | cut -d"|" -f3); do test -f opponents/$j || { echo "missing jar $j"; exit 1; }; done && mvn -q compile
 
-livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out ${W}-livematch --label pc-locks-livematch --shuffle-jobs && python3 tools/live_match.py ${W}-livematch/arms.tsv --out ${OUT}/pc-locks33-livematch.md
+livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out ${W}-livematch --label pc-locks-livematch --shuffle-jobs && python3 tools/live_match.py ${W}-livematch/arms.tsv --out ${OUT}/pc-locks34-livematch.md
   after: prep
   watch: field=1217
   stop: fails 30
   stop: dead 8
   stop: stall 30m
 
-lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 24 --seed-base 113000 --arms ${W}-prep/ctl.arms --out ${W}-ctl --label pc-locks --shuffle-jobs
+lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 24 --seed-base 114000 --arms ${W}-prep/ctl.arms --out ${W}-ctl --label pc-locks --shuffle-jobs
   after: livematch
   watch: field=1217
   stop: fails 30
@@ -73,60 +71,32 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 24 --seed-base 1
   stop: skips 60 over 24
   stop: stall 30m
 
-stage | for a in gl rwl rf rln rlnrkn cpl pb; do grep -E "^(c|$a) [|]" ${W}-prep/lock.arms > ${W}-prep/$a-c.arms && mkdir -p ${W}-$a/battles || exit 1; for s in $(grep -v "^#" ${W}-prep/$a.panel | cut -d"|" -f1 | sed -E "s/^ +| +$//g; s/[^A-Za-z0-9.]+/_/g"); do cp -rp ${W}-ctl/battles/$s-*-c ${W}-$a/battles/ || exit 1; done; done
+stage | for a in gl cpl rwl; do grep -E "^(c|$a) [|]" ${W}-prep/lock.arms > ${W}-prep/$a-c.arms && mkdir -p ${W}-$a/battles || exit 1; for s in $(grep -v "^#" ${W}-prep/$a.panel | cut -d"|" -f1 | sed -E "s/^ +| +$//g; s/[^A-Za-z0-9.]+/_/g"); do cp -rp ${W}-ctl/battles/$s-*-c ${W}-$a/battles/ || exit 1; done; done
   after: lock
 
-lock-gl | ./bench-top20.sh ${C} ${P} --set ${W}-prep/gl.panel --seeds 24 --seed-base 113000 --arms ${W}-prep/gl-c.arms --out ${W}-gl --label pc-locks-gl --shuffle-jobs
+lock-gl | ./bench-top20.sh ${C} ${P} --set ${W}-prep/gl.panel --seeds 24 --seed-base 114000 --arms ${W}-prep/gl-c.arms --out ${W}-gl --label pc-locks-gl --shuffle-jobs
   after: stage
   watch: field=1217
   stop: fails 30
   stop: dead 8
   stop: stall 30m
 
-lock-rwl | ./bench-top20.sh ${C} ${P} --set ${W}-prep/rwl.panel --seeds 24 --seed-base 113000 --arms ${W}-prep/rwl-c.arms --out ${W}-rwl --label pc-locks-rwl --shuffle-jobs
+lock-cpl | ./bench-top20.sh ${C} ${P} --set ${W}-prep/cpl.panel --seeds 24 --seed-base 114000 --arms ${W}-prep/cpl-c.arms --out ${W}-cpl --label pc-locks-cpl --shuffle-jobs
   after: lock-gl
   watch: field=1217
   stop: fails 30
   stop: dead 8
   stop: stall 30m
 
-lock-rf | ./bench-top20.sh ${C} ${P} --set ${W}-prep/rf.panel --seeds 24 --seed-base 113000 --arms ${W}-prep/rf-c.arms --out ${W}-rf --label pc-locks-rf --shuffle-jobs
-  after: lock-rwl
-  watch: field=1217
-  stop: fails 30
-  stop: dead 8
-  stop: stall 30m
-
-lock-rln | ./bench-top20.sh ${C} ${P} --set ${W}-prep/rln.panel --seeds 24 --seed-base 113000 --arms ${W}-prep/rln-c.arms --out ${W}-rln --label pc-locks-rln --shuffle-jobs
-  after: lock-rf
-  watch: field=1217
-  stop: fails 30
-  stop: dead 8
-  stop: stall 30m
-
-lock-rlnrkn | ./bench-top20.sh ${C} ${P} --set ${W}-prep/rlnrkn.panel --seeds 24 --seed-base 113000 --arms ${W}-prep/rlnrkn-c.arms --out ${W}-rlnrkn --label pc-locks-rlnrkn --shuffle-jobs
-  after: lock-rln
-  watch: field=1217
-  stop: fails 30
-  stop: dead 8
-  stop: stall 30m
-
-lock-cpl | ./bench-top20.sh ${C} ${P} --set ${W}-prep/cpl.panel --seeds 24 --seed-base 113000 --arms ${W}-prep/cpl-c.arms --out ${W}-cpl --label pc-locks-cpl --shuffle-jobs
-  after: lock-rlnrkn
-  watch: field=1217
-  stop: fails 30
-  stop: dead 8
-  stop: stall 30m
-
-lock-pb | ./bench-top20.sh ${C} ${P} --set ${W}-prep/pb.panel --seeds 24 --seed-base 113000 --arms ${W}-prep/pb-c.arms --out ${W}-pb --label pc-locks-pb --shuffle-jobs
+lock-rwl | ./bench-top20.sh ${C} ${P} --set ${W}-prep/rwl.panel --seeds 24 --seed-base 114000 --arms ${W}-prep/rwl-c.arms --out ${W}-rwl --label pc-locks-rwl --shuffle-jobs
   after: lock-cpl
   watch: field=1217
   stop: fails 30
   stop: dead 8
   stop: stall 30m
 
-gate | mkdir -p ${W} && (cat ${W}-ctl/arms.tsv && for d in gl rwl rf rln rlnrkn cpl pb; do awk -F"\t" -v a=$d 'NR > 1 && $1 == a' ${W}-$d/arms.tsv || exit 1; done) > ${W}/arms.tsv && python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks33-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks33-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks33-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms gl rwl rf rln rlnrkn cpl pb --out ${OUT}/$(date +%Y-%m-%d)_pc-locks33-lock-per-robot.md --out-tsv ${OUT}/pc-locks33-lock-per-robot.tsv
-  after: lock-pb
+gate | mkdir -p ${W} && (cat ${W}-ctl/arms.tsv && for d in gl cpl; do awk -F"\t" -v a=$d 'NR > 1 && $1 == a' ${W}-$d/arms.tsv || exit 1; done) > ${W}/arms.tsv && python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks34-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks34-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks34-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms gl cpl --out ${OUT}/$(date +%Y-%m-%d)_pc-locks34-lock-per-robot.md --out-tsv ${OUT}/pc-locks34-lock-per-robot.tsv && (cat ${W}-ctl/arms.tsv && awk -F"\t" 'NR > 1 && $1 == "rwl"' ${W}-rwl/arms.tsv) > ${W}/arms-rwl.tsv && python3 ../data/tools/multiarm.py ${W}/arms-rwl.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks34-rwl-class.md && python3 tools/per_robot.py ${W}/arms-rwl.tsv --arms rwl --out ${OUT}/$(date +%Y-%m-%d)_pc-locks34-rwl-class-per-robot.md --out-tsv ${OUT}/pc-locks34-rwl-class-per-robot.tsv && python3 tools/shield_s2.py gate ${W}/arms-rwl.tsv --arm rwl --field 1217 --bar 0 --low 0 --out ${OUT}/$(date +%Y-%m-%d)_pc-locks34-rwl-class-gate.md
+  after: lock-rwl
 
-pr | bash tools/open_results_pr.sh claude/pc-locks33-results "1v1 cloud locks, round 33 (2 gl, 3 rwl, rf, rln, 7 rlnrkn, 7 cpl, pb) on 24 fresh PC seeds" ${OUT}/pc-locks33-livematch.md ${OUT}/*_pc-locks33-*.md ${OUT}/pc-locks33-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks33-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks34-results "1v1 cloud locks, round 34 (gl, 4 cpl, 46-robot rwl class) on 24 fresh PC seeds" ${OUT}/pc-locks34-livematch.md ${OUT}/*_pc-locks34-*.md ${OUT}/pc-locks34-lock-per-robot.tsv ${OUT}/pc-locks34-rwl-class-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks34-lock-pick.tsv' -size +0c)
   after: gate
