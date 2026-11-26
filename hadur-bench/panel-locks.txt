@@ -1,8 +1,9 @@
-# BENCH-253 pc-locks, round 35: 12 robots. Nine carry a line read on 12 or more fresh cloud seeds at 0.7x the live
+# BENCH-253 pc-locks, round 35: 13 robots. Ten carry a line read on 12 or more fresh cloud seeds at 0.7x the live
 # turn time against both c and aa (coverage/shards/locks.tsv): PhoenixOS on gl (GUN-11 gun stack); Identity and
 # PumpkinPie on cpl (COPY-2 bred gun copy); Phoenix on rwl (MOVE-46 ram wait); GresSuffurd on dn (DIST-4, 400 px);
 # Splooshlu on hof (MOVE-71 head-on floor); LevelOne on qw (MOVE-67 aim weight); SquidmanNano and Ringo on rlnrkn
-# (RAM-20 and RAM-21). PinkPanther, Holden and MatchupMini pad the A/A check (c and aa only). name | note | jar
+# (RAM-20 and RAM-21);
+# TrialBot on rf (RAM-15 ram flee). PinkPanther, Holden and MatchupMini pad the A/A check (c and aa only). name | note | jar
 davidalves.PhoenixOS 1.1 | rank59-band3 | davidalves.PhoenixOS_1.1.jar
 hope.Identity .pope69 | rank82-band3 | hope.Identity_.pope69.jar
 cs.PumpkinPie 1.0 | rank377-band4 | cs.PumpkinPie_1.0.jar
@@ -12,6 +13,7 @@ blir.mini.oops.Splooshlu 2.0 | rank680-band5 | blir.mini.oops.Splooshlu_2.0.jar
 dy.LevelOne 2.0 | rank590-band5 | dy.LevelOne_2.0.jar
 squidM.SquidmanNano 1.0 | rank840-band6 | squidM.SquidmanNano_1.0.jar
 hlavko.nano.Ringo 2.0 | rank818-band6 | hlavko.nano.Ringo_2.0.jar
+divineomega.TrialBot 0.003 | rank446-band5 | divineomega.TrialBot_0.003.jar
 dmh.robocode.robot.PinkPanther 1.1 | rank385-band4 | dmh.robocode.robot.PinkPanther_1.1.jar
 darkcanuck.Holden 1.13a | rank54-band3 | darkcanuck.Holden_1.13a.jar
 stelo.MatchupMini 1.1 | rank286-band4 | stelo.MatchupMini_1.1.jar
