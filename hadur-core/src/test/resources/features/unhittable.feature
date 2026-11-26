@@ -32,39 +32,24 @@ Feature: Unhittable
     When a tick takes 0.5 ms of its 3 ms allowance
     Then the computation level is 0
 
-  @TIME-2
-  Scenario: A skipped turn sheds a level for the rest of the round
+  @TIME-15
+  Scenario: A skipped turn sheds nothing
     Given Hadur in a duel, 300 px from the enemy
     When the engine skips a turn
     And a tick takes 0.5 ms of its 3 ms allowance
-    Then the computation level is 1
-    When the round ends
-    Then the round record says computation level 1
-    When the next round starts
     Then the computation level is 0
+    When the round ends
+    Then the round record says computation level 0
 
-  @TIME-2
-  Scenario: Three skipped turns shed three levels and the round never enters duress
+  @TIME-15
+  Scenario: Three skipped turns shed nothing and the round never enters duress
     Given Hadur in a duel, 300 px from the enemy
     When the engine skips a turn
     And the engine skips a turn
     And the engine skips a turn
     And Hadur plays 10 ticks with a cool gun
-    Then the computation level is 3
+    Then the computation level is 0
     And 0 ticks of the round ran in duress
-
-  @TIME-2
-  Scenario: Still no duress, and the shed level held, 300 ticks after the last skipped turn
-    Given Hadur in a duel, 300 px from the enemy
-    When the engine skips a turn
-    And the engine skips a turn
-    And the engine skips a turn
-    And Hadur plays 320 ticks with a cool gun
-    Then the computation level is 3
-    And 0 ticks of the round ran in duress
-    When the engine skips a turn
-    And Hadur plays 10 ticks with a cool gun
-    Then 0 ticks of the round ran in duress
 
   @MOVE-2 @DIAL-1
   Scenario: A gun hitting well above its profile's rate changes the movement's flavour

@@ -91,6 +91,31 @@ public final class GunMimics {
             for (Feature f : features) segments *= f.cuts.length + 1;
             buffers = new double[segments][GF_BINS];
             counts = new int[segments];
+            cached = new double[segments][];
+            cachedAt = new int[segments];
+            java.util.Arrays.fill(cachedAt, -1);
+        }
+
+        /** TIME-14: learns so far; a cached profile is good while this has not moved on. */
+        private int learned;
+        /** TIME-14: each segment's {@code profile(w, GF_BINS)}, built at {@link #cachedAt}'s learn count. */
+        private final double[][] cached;
+        private final int[] cachedAt;
+        /** TIME-14: marks a segment whose profile is null (no data), as a cached value. */
+        private static final double[] NO_DATA = new double[0];
+
+        /**
+         * TIME-14: {@code profile(w, GF_BINS)}, built once per segment between learns. The surf asks for it at every
+         * danger point of every wave, and the answer changes only when the mimic learns. Read-only to the caller.
+         */
+        double[] profileFull(Wave w) {
+            int s = segment(w);
+            if (cachedAt[s] != learned) {
+                double[] p = profile(w, GF_BINS);
+                cached[s] = p == null ? NO_DATA : p;
+                cachedAt[s] = learned;
+            }
+            return cached[s] == NO_DATA ? null : cached[s];
         }
 
         int segment(Wave w) {
@@ -103,6 +128,7 @@ public final class GunMimics {
             int s = segment(w);
             counts[s] = roll(buffers[s], counts[s], gf, depth);
             flatCount = roll(flat, flatCount, gf, depth);
+            learned++;
         }
 
         /** The model's probability over {@code bins} equal bins of [-1, 1], or null with no data. */
@@ -197,7 +223,7 @@ public final class GunMimics {
      * wave {@code w} (bins of {@link #GF_BINS}, a partial bin counting its share), or NaN with no data.
      */
     public double mass(int m, Wave w, double gfLo, double gfHi) {
-        double[] p = mimics[m].profile(w, GF_BINS);
+        double[] p = mimics[m].profileFull(w);
         if (p == null) return Double.NaN;
         double lo = Math.max(-1, Math.min(gfLo, gfHi));
         double hi = Math.min(1, Math.max(gfLo, gfHi));

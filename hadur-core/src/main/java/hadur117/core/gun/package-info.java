@@ -17,7 +17,7 @@
  *
  * <p>Each view's seeded neighbours count at the seed's weight, and faded seeds stop
  * counting as data (RES-4); every view is bounded (RES-2); the k share follows the tick
- * budget (TIME-1, TIME-2). The gun sees no clock and no randomness, so the same waves give
+ * budget (TIME-1). The gun sees no clock and no randomness, so the same waves give
  * the same aim (CORE-2).</p>
  *
  * <p>Dependencies: this package uses the model, physics and {@code knn} packages and the

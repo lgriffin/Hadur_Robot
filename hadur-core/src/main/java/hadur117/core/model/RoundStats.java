@@ -33,7 +33,7 @@ public final class RoundStats {
      * assignment replaces them, and they reach the report through the {@code M} record.
      */
     public int faults;
-    /** Skipped-turn events this round (TIME-2). */
+    /** Skipped-turn events this round (TIME-15: counted, shed nothing). */
     public int skippedTurns;
     /**
      * Energy drops 1.20 would have read as shots that the energy ledger explained as hits,
@@ -48,7 +48,7 @@ public final class RoundStats {
     public int bulletsIntercepted;
     /** Shots fired with an anti-shield aim offset (SHIELD-2). */
     public int jitteredShots;
-    /** The highest tick-budget computation level this round used, 0 (full) to 3 (TIME-1, TIME-2). */
+    /** The highest tick-budget computation level this round used, 0 (full) to 1 since TIME-15 (TIME-1). */
     public int computationLevel;
     /** Opponent memory, battle totals so far: profiles that failed to load (MEM-4). */
     public int profileLoadFailures;

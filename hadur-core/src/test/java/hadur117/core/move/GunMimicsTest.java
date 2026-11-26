@@ -140,4 +140,21 @@ class GunMimicsTest {
         assertEquals(0.0, g.mass(0, w, 0.3, 0.3), 1e-12, "an empty range");
         assertEquals(6, g.size());
     }
+
+    @Test
+    @Tag("TIME-14")
+    @DisplayName("TIME-14: a mimic's cached profile equals a fresh one after every learn")
+    void cachedProfileFollowsLearning() {
+        GunMimics g = new GunMimics();
+        Wave w = wave();
+        for (GunMimics.Mimic m : g.mimics) assertEquals(null, m.profileFull(w));
+        for (int i = 0; i < 40; i++) {
+            g.learnVisit(w, -0.9 + 0.045 * i);
+            for (GunMimics.Mimic m : g.mimics) {
+                double[] fresh = m.profile(w, GunMimics.GF_BINS);
+                assertTrue(java.util.Arrays.equals(fresh, m.profileFull(w)), "learn " + i);
+                assertTrue(java.util.Arrays.equals(fresh, m.profileFull(w)), "asked twice, learn " + i);
+            }
+        }
+    }
 }

@@ -661,7 +661,7 @@ public interface BotEvent {
 
     /**
      * The engine skipped one of our turns because the previous tick ran too long. The core
-     * drops one computation level for the rest of the round and records it (TIME-2).
+     * counts it and sheds nothing for it (TIME-15).
      */
     public static final class SkippedTurn implements BotEvent {
         private final long skippedTime;

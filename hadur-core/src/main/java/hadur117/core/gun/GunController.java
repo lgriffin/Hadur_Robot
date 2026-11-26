@@ -246,7 +246,7 @@ public class GunController {
         return point;
     }
 
-    /** TIME-1, TIME-2: the k share every gun view uses, kept for views made later. */
+    /** TIME-1: the k share every gun view uses, kept for views made later. */
     private double kShare = 1.0;
 
     /**
@@ -283,7 +283,7 @@ public class GunController {
     }
 
     /**
-     * TIME-1, TIME-2: the share of k every gun view uses; 1 is all of it.
+     * TIME-1: the share of k every gun view uses; 1 is all of it.
      *
      * @param kShare the share, 1 at full computation and 0.5 from level 2
      */
@@ -553,7 +553,7 @@ public class GunController {
     /**
      * Fires one virtual bullet for each of the three guns along with a real bullet: records
      * the angle each gun would have fired on {@code w}, to be scored when the wave breaks.
-     * Duels only. The core skips this call at its lowest computation level (TIME-1, TIME-2).
+     * Duels only. The core skips this call at its lowest computation level (TIME-1).
      *
      * <p>The hybrid gun is always rated here, whether or not GUN-4's gate is open, so it
      * already has a history by the time the gate opens rather than starting from nothing.</p>
@@ -608,7 +608,7 @@ public class GunController {
      * @param myLocation where the bullet leaves from
      * @param currentTime the present tick
      * @param firedPower the power the real bullet was fired at
-     * @param virtualGuns whether the virtual guns are scored this tick (TIME-1, TIME-2)
+     * @param virtualGuns whether the virtual guns are scored this tick (TIME-1)
      */
     public void shieldAttackFired(Wave w, Point2D.Double myLocation, long currentTime,
                                   double firedPower, boolean virtualGuns) {

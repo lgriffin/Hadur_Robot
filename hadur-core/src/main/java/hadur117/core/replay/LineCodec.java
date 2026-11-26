@@ -40,7 +40,7 @@ import java.util.List;
  * <li>{@code W}: we hit a wall; bearing.</li>
  * <li>{@code R}: we hit a robot; name, bearing, its energy, whether it was our fault.</li>
  * <li>{@code D}: a robot died; name.</li>
- * <li>{@code K}: a skipped turn; the skipped tick (TIME-2).</li>
+ * <li>{@code K}: a skipped turn; the skipped tick (TIME-15).</li>
  * <li>{@code Q}: the last core tick's duration and the allowance, in nanoseconds
  *     (TIME-1).</li>
  * <li>{@code G}: a teammate's message (A4); the sender's name and the bytes in Base64.</li>

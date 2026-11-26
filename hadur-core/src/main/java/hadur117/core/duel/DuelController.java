@@ -885,7 +885,7 @@ public final class DuelController {
 
     /**
      * The Duel's main body, once its opponent has been scanned; before that it only spins the
-     * radar. TIME-1, TIME-2: the computation level sets how much of it runs (k shared out,
+     * radar. TIME-1: the computation level sets how much of it runs (k shared out,
      * virtual guns, waves surfed and go-to surfing).
      *
      * @param in the tick's input
@@ -2054,7 +2054,7 @@ public final class DuelController {
             // The plan is the one published on the tick before: the surf runs after the aim
             // within a tick, so it is the latest there is, and a plan older than that (a
             // tick the shield drove, or the surf did not publish) is not used.
-            // TIME-1, TIME-2: shed at level 2 and up.
+            // TIME-1: shed at level 2 and up (unreached since TIME-15; a slow tick sheds to 1).
             if (GunController.SHADOW_AIM && shadowAim && planTime == in.time() - 1
                     && !moveController.planIntervals().isEmpty()) {
                 moveController.updateShadows(in.time());
