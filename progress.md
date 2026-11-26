@@ -1,14 +1,14 @@
 # Queue pc-locks: progress
 
-Updated 2026-11-26 18:10:33 PC time (18:10 UTC), runner pid 99520.
+Updated 2026-11-26 18:25:38 PC time (18:25 UTC), runner pid 99520.
 
 - `prep` done, exit 0 in 3 min
 - `livematch` done, exit 0 in 8 min
-- `lock` running
-- `stage` pending
-- `lock-gl` pending
-- `lock-cpl` pending
-- `lock-rwl` pending
+- `lock` done, exit 0 in 26 min
+- `stage` done, exit 0 in 0 min
+- `lock-gl` done, exit 0 in 0 min
+- `lock-cpl` done, exit 0 in 5 min
+- `lock-rwl` running
 - `gate` pending
 - `pr` pending
 
@@ -38,42 +38,102 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### lock
 
-**1870 of 2448 battles** (76%), 0 failed. Running 19 min, 5851 battles/h, about 6 min left (ends ~18:16 PC time). Last battle 0 min ago.
-Skipped turns a battle: 15.9 overall, first 100 14.8, last 100 17.4; engine disables 0.
+**2448 of 2448 battles** (100%), 0 failed. Running 26 min, 5572 battles/h, about 0 min left (ends ~18:17 PC time). Last battle 0 min ago.
+Skipped turns a battle: 16.2 overall, first 100 14.8, last 100 15.6; engine disables 0.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 936 | 0 | 96.50 | - | - | - | 15.9 |
-| aa | 934 | 0 | 96.44 | -0.00 (51 robots) | ±0.01 | -0.01 .. +0.01 | 15.9 |
+| c | 1224 | 0 | 96.49 | - | - | - | 16.2 |
+| aa | 1224 | 0 | 96.46 | -0.00 (51 robots) | ±0.00 | -0.01 .. +0.00 | 16.2 |
 
 APS = mean difference over the robots read x 51 panel robots / 1217 pairings.
-A/A: aa - c -0.06 pts over 51 robots; 1% band ±0.38 (inside).
+A/A: aa - c -0.03 pts over 51 robots; 1% band ±0.33 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 1870 |
+| `fails 30` | halt | ok | 0 failed of 2448 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 60 over 24` | halt | ok | 16.9 a battle over the last 24 (first 24: 17.5) |
+| `skips 60 over 24` | halt | ok | 13.8 a battle over the last 24 (first 24: 17.5) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 578 battles unrun (about 6 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### lock-gl
+
+**48 of 48 battles** (100%), 0 failed, 24 read back from an earlier run. Running 0 min, 3580 battles/h, about 0 min left (ends ~18:18 PC time). Last battle 0 min ago.
+Skipped turns a battle: 16.2 overall, first 24 16.2, last 24 16.2; engine disables 0.
+
+| arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| c | 24 | 0 | 89.57 | - | - | - | 16.1 |
+| gl | 24 | 0 | 91.60 | +0.00 (1 robots) | - | - | 16.2 |
+
+APS = mean difference over the robots read x 1 panel robots / 1217 pairings.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 30` | halt | ok | 0 failed of 48 |
+| `dead 8` | halt | ok | every arm scoring |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### lock-cpl
+
+**192 of 192 battles** (100%), 0 failed, 96 read back from an earlier run. Running 5 min, 1246 battles/h, about 0 min left (ends ~18:23 PC time). Last battle 0 min ago.
+Skipped turns a battle: 17.4 overall, first 96 17.4, last 96 17.4; engine disables 0.
+
+| arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| c | 96 | 0 | 75.67 | - | - | - | 15.8 |
+| cpl | 96 | 0 | 78.84 | +0.01 (4 robots) | ±0.01 | +0.00 .. +0.02 | 17.4 |
+
+APS = mean difference over the robots read x 4 panel robots / 1217 pairings.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 30` | halt | ok | 0 failed of 192 |
+| `dead 8` | halt | ok | every arm scoring |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### lock-rwl
+
+**1424 of 2208 battles** (64%), 0 failed, 1104 read back from an earlier run. Running 3 min, 7404 battles/h, about 6 min left (ends ~18:31 PC time). Last battle 0 min ago.
+Skipped turns a battle: 15.1 overall, first 100 16.0, last 100 14.8; engine disables 0.
+
+| arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| c | 1104 | 0 | 98.45 | - | - | - | 16.2 |
+| rwl | 320 | 0 | 98.68 | +0.01 (46 robots) | ±0.00 | +0.00 .. +0.01 | 15.1 |
+
+APS = mean difference over the robots read x 46 panel robots / 1217 pairings.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 30` | halt | ok | 0 failed of 1424 |
+| `dead 8` | halt | ok | every arm scoring |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 784 battles unrun (about 6 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-08:12:48 start gate
-08:12:50 gate exit=0 in 1 s
-08:12:50 start pr
-08:12:57 pr exit=0 in 6 s
-08:12:57 ALLDONE
-17:40:23 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
-17:40:23 start prep
-17:40:26 progress pushed to origin claude/pc-locks-progress (every 15 min)
-17:43:18 prep exit=0 in 174 s
-17:43:18 start livematch
-17:43:18 watching livematch: 3 stop rule(s)
-17:43:24 progress livematch: 0/124 (0%) battles, 0 failed
 17:51:21 livematch exit=0 in 483 s
 17:51:21 start lock
 17:51:21 watching lock: 4 stop rule(s)
+18:13:33 progress lock: 2174/2448 (89%) battles, 5878/h, ETA 3 min, 0 failed, skips 17.7/battle (last 100), aa -0.00
+18:17:43 lock exit=0 in 1581 s
+18:17:43 start stage
+18:18:00 stage exit=0 in 16 s
+18:18:00 start lock-gl
+18:18:00 watching lock-gl: 3 stop rule(s)
+18:18:24 lock-gl exit=0 in 24 s
+18:18:24 start lock-cpl
+18:18:24 watching lock-cpl: 3 stop rule(s)
+18:23:01 lock-cpl exit=0 in 277 s
+18:23:01 start lock-rwl
+18:23:01 watching lock-rwl: 3 stop rule(s)
 ```
