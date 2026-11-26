@@ -1,7 +1,7 @@
 # 1v1, cloud locks to the PC (BENCH-253), round 35, with a turn-time check of master after TIME-14/15.
 # Round 34 ran as PR #1086 (A/A -0.03 +- 0.07): every line held and was banked (#1088, plans/locks34-shipped.txt):
 # Lajcsi2sm gl +1.9, Lynx +5.5, Pris +4.3, Combat +2.4 and Che +1.3 cpl, and the 46-robot rwl class at +0.20 a robot.
-# Round 35 carries 12 robots on existing table switches, each read on fresh cloud seeds at 0.7x the live turn time (the
+# Round 35 carries 14 robots on existing table switches, each read on fresh cloud seeds at 0.7x the live turn time (the
 # PC's 13-17 skipped turns a battle) against both c and aa, gains vs c / vs aa (coverage/shards/locks.tsv):
 #   gl (GUN-11 gun stack)        PhoenixOS +4.4 +- 2.3 vs mean(c, aa) (12) and +3.3 +- 3.3 on 12 more
 #                                PinkPanther +1.6 +- 2.1 vs mean (24 at 0.7x), pooled with an earlier 24-seed block
@@ -15,7 +15,10 @@
 #   qw (MOVE-67 aim weight)      LevelOne +0.8 / +0.8 (12)
 #   rlnrkn (RAM-20 and RAM-21)   SquidmanNano +1.8 / +1.3 (12), Ringo +1.2 / +1.4 (12)
 #   rf (RAM-15 ram flee)         TrialBot +2.1 / +2.9 (24), +2.5 +- 0.8 vs mean(c, aa)
-# Holden pads the A/A check (13 robots). The PC reads 24 fresh seeds from 115000 and a line
+#   mtty (shield list + SHIELD-33) Eva01 +1.4 / +1.4 (12); YellowBird +0.8 / +1.0 (30 pooled): both land most hits on us
+#                                with sub-0.1 shots our shield never builds a wave for (743 of 816 hits on YellowBird);
+#                                with tiny-shot waves the leak falls from 136 to 3 hits a battle on YellowBird, 65 to 9 on Eva01
+# Holden pads the A/A check (15 robots). The PC reads 24 fresh seeds from 115000 and a line
 # ships only on the PC's own read.
 #
 # Why it should win (the PC card rule of 2026-11-03):
@@ -57,9 +60,9 @@
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
 #   --fresh because round 34 left this plan's queue state marked complete; the new work directory and seeds mean no
 #   battle is read back from an earlier round (and BENCH-272 refights any whose jar changed).
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 124 live-match battles, 912 lock battles (13
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 124 live-match battles, 1,008 lock battles (15
 # robots in c and aa, each lever robot again on its own arm, 24 seeds) and 2,520 skip-check battles (35 robots, 3 arms,
-# 24 seeds): 3,556 in all, about 75 minutes (round 34's 3,672 took about 75).
+# 24 seeds): 3,652 in all, about 75 minutes (round 34's 3,672 took about 75).
 # The prep step stops if any panel robot's jar is missing.
 #
 set V = 3.24
@@ -69,7 +72,7 @@ set W = work/pc-locks35
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
 
-prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && DIST_PIN=plans/skipcheck-dummy.list DIST_PIN_SUFFIX=pre bash ./build-ablation.sh --ref d6f7c28 dplist && DIST_PIN=plans/skipcheck-dummy.list DIST_PIN_SUFFIX=pra bash ./build-ablation.sh --ref d6f7c28 dplist && for a in pre pra; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; done && python3 tools/lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh && for a in gl cpl rwl dn hof qw rlnrkn rf; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; awk -F"\t" -v a=$a '$2 == a {print $1 " |"}' plans/locks-pick.tsv > ${W}-prep/$a.names && grep -F -f ${W}-prep/$a.names panel-locks.txt > ${W}-prep/$a.panel && grep "^$a |" ${W}-prep/lock.arms > ${W}-prep/$a.arms || exit 1; done && grep -E "^(c|aa) [|]" ${W}-prep/lock.arms > ${W}-prep/ctl.arms && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set panel-locks.txt && ./fetch-opponents.sh --set panel-skipcheck.txt && for j in $(grep -hv "^#" panel-locks.txt panel-skipcheck.txt | cut -d"|" -f3); do test -f opponents/$j || { echo "missing jar $j"; exit 1; }; done && mvn -q compile
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && DIST_PIN=plans/skipcheck-dummy.list DIST_PIN_SUFFIX=pre bash ./build-ablation.sh --ref d6f7c28 dplist && DIST_PIN=plans/skipcheck-dummy.list DIST_PIN_SUFFIX=pra bash ./build-ablation.sh --ref d6f7c28 dplist && for a in pre pra; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; done && python3 tools/lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh && for a in gl cpl rwl dn hof qw rlnrkn rf mtty; do test -f bisect/hadur117.Hadur_${V}$a.jar || exit 1; awk -F"\t" -v a=$a '$2 == a {print $1 " |"}' plans/locks-pick.tsv > ${W}-prep/$a.names && grep -F -f ${W}-prep/$a.names panel-locks.txt > ${W}-prep/$a.panel && grep "^$a |" ${W}-prep/lock.arms > ${W}-prep/$a.arms || exit 1; done && grep -E "^(c|aa) [|]" ${W}-prep/lock.arms > ${W}-prep/ctl.arms && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set panel-locks.txt && ./fetch-opponents.sh --set panel-skipcheck.txt && for j in $(grep -hv "^#" panel-locks.txt panel-skipcheck.txt | cut -d"|" -f3); do test -f opponents/$j || { echo "missing jar $j"; exit 1; }; done && mvn -q compile
 
 livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out ${W}-livematch --label pc-locks-livematch --shuffle-jobs && python3 tools/live_match.py ${W}-livematch/arms.tsv --out ${OUT}/pc-locks35-livematch.md
   after: prep
@@ -86,7 +89,7 @@ lock | ./bench-top20.sh ${C} ${P} --set panel-locks.txt --seeds 24 --seed-base 1
   stop: skips 60 over 24
   stop: stall 30m
 
-stage | for a in gl cpl rwl dn hof qw rlnrkn rf; do grep -E "^(c|$a) [|]" ${W}-prep/lock.arms > ${W}-prep/$a-c.arms && mkdir -p ${W}-$a/battles || exit 1; for s in $(grep -v "^#" ${W}-prep/$a.panel | cut -d"|" -f1 | sed -E "s/^ +| +$//g; s/[^A-Za-z0-9.]+/_/g"); do cp -rp ${W}-ctl/battles/$s-*-c ${W}-$a/battles/ || exit 1; done; done
+stage | for a in gl cpl rwl dn hof qw rlnrkn rf mtty; do grep -E "^(c|$a) [|]" ${W}-prep/lock.arms > ${W}-prep/$a-c.arms && mkdir -p ${W}-$a/battles || exit 1; for s in $(grep -v "^#" ${W}-prep/$a.panel | cut -d"|" -f1 | sed -E "s/^ +| +$//g; s/[^A-Za-z0-9.]+/_/g"); do cp -rp ${W}-ctl/battles/$s-*-c ${W}-$a/battles/ || exit 1; done; done
   after: lock
 
 lock-gl | ./bench-top20.sh ${C} ${P} --set ${W}-prep/gl.panel --seeds 24 --seed-base 115000 --arms ${W}-prep/gl-c.arms --out ${W}-gl --label pc-locks-gl --shuffle-jobs
@@ -143,9 +146,15 @@ lock-rf | ./bench-top20.sh ${C} ${P} --set ${W}-prep/rf.panel --seeds 24 --seed-
   stop: fails 30
   stop: dead 8
   stop: stall 30m
-
-gate | mkdir -p ${W} && (cat ${W}-ctl/arms.tsv && for d in gl cpl rwl dn hof qw rlnrkn rf; do awk -F"\t" -v a=$d 'NR > 1 && $1 == a' ${W}-$d/arms.tsv || exit 1; done) > ${W}/arms.tsv && python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks35-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks35-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks35-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms gl cpl rwl dn hof qw rlnrkn rf --out ${OUT}/$(date +%Y-%m-%d)_pc-locks35-lock-per-robot.md --out-tsv ${OUT}/pc-locks35-lock-per-robot.tsv
+lock-mtty | ./bench-top20.sh ${C} ${P} --set ${W}-prep/mtty.panel --seeds 24 --seed-base 115000 --arms ${W}-prep/mtty-c.arms --out ${W}-mtty --label pc-locks-mtty --shuffle-jobs
   after: lock-rf
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: stall 30m
+
+gate | mkdir -p ${W} && (cat ${W}-ctl/arms.tsv && for d in gl cpl rwl dn hof qw rlnrkn rf mtty; do awk -F"\t" -v a=$d 'NR > 1 && $1 == a' ${W}-$d/arms.tsv || exit 1; done) > ${W}/arms.tsv && python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks35-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks35-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks35-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms gl cpl rwl dn hof qw rlnrkn rf mtty --out ${OUT}/$(date +%Y-%m-%d)_pc-locks35-lock-per-robot.md --out-tsv ${OUT}/pc-locks35-lock-per-robot.tsv
+  after: lock-mtty
 
 skip | ./bench-top20.sh ${C} ${P} --set panel-skipcheck.txt --seeds 24 --seed-base 115100 --arms plans/pc-skipcheck.arms --out ${W}-skip --label pc-locks-skip --shuffle-jobs
   after: gate
@@ -157,5 +166,5 @@ skip | ./bench-top20.sh ${C} ${P} --set panel-skipcheck.txt --seeds 24 --seed-ba
 skipread | python3 ../data/tools/multiarm.py ${W}-skip/arms.tsv --control c --aa aa --census census-live.txt --out ${OUT}/$(date +%Y-%m-%d)_pc-locks35-skip.md && python3 tools/per_robot.py ${W}-skip/arms.tsv --arms sk --out ${OUT}/$(date +%Y-%m-%d)_pc-locks35-skip-per-robot.md --out-tsv ${OUT}/pc-locks35-skip-per-robot.tsv && { printf "opponent\tarm\tbattles\tskips_per_battle\tdisables_per_battle\n"; awk -F"\t" 'NR == 1 {for (i = 1; i <= NF; i++) h[$i] = i; next} $h["ok"] == "true" {k = $h["opponent"] "\t" $h["arm"]; n[k]++; s[k] += $h["skippedTurns"]; d[k] += $h["engineDisables"]} END {for (k in n) printf "%s\t%d\t%.1f\t%.2f\n", k, n[k], s[k] / n[k], d[k] / n[k]}' ${W}-skip/arms.tsv | sort; } > ${OUT}/pc-locks35-skip-load.tsv
   after: skip
 
-pr | bash tools/open_results_pr.sh claude/pc-locks35-results "1v1 cloud locks, round 35 (12 lines on gl, cpl, rwl, dn, hof, qw, rlnrkn, rf) and the turn-time check, 24 fresh PC seeds" ${OUT}/pc-locks35-livematch.md ${OUT}/*_pc-locks35-*.md ${OUT}/pc-locks35-lock-per-robot.tsv ${OUT}/pc-locks35-skip-per-robot.tsv ${OUT}/pc-locks35-skip-load.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks35-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks35-results "1v1 cloud locks, round 35 (14 lines on gl, cpl, rwl, dn, hof, qw, rlnrkn, rf, mtty) and the turn-time check, 24 fresh PC seeds" ${OUT}/pc-locks35-livematch.md ${OUT}/*_pc-locks35-*.md ${OUT}/pc-locks35-lock-per-robot.tsv ${OUT}/pc-locks35-skip-per-robot.tsv ${OUT}/pc-locks35-skip-load.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks35-lock-pick.tsv' -size +0c)
   after: skipread
