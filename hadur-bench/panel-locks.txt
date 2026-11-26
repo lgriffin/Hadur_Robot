@@ -1,10 +1,10 @@
-# BENCH-253 pc-locks, round 35: 15 robots. Fourteen carry a line read on 12 or more fresh cloud seeds at 0.7x the live
-# turn time against both c and aa (coverage/shards/locks.tsv): PhoenixOS, PinkPanther and MatchupMini on gl (GUN-11 gun stack); Identity and
+# BENCH-253 pc-locks, round 35: 16 robots. Each carries a line read on 12 or more fresh cloud seeds at 0.7x the live
+# turn time against both c and aa (coverage/shards/locks.tsv): PhoenixOS, PinkPanther, MatchupMini and Holden on gl (GUN-11 gun stack); Identity and
 # PumpkinPie on cpl (COPY-2 bred gun copy); Phoenix on rwl (MOVE-46 ram wait); GresSuffurd on dn (DIST-4, 400 px);
-# Splooshlu on hof (MOVE-71 head-on floor); LevelOne on qw (MOVE-67 aim weight); SquidmanNano and Ringo on rlnrkn
+# Splooshlu on hof (MOVE-71 head-on floor); LevelOne on qw (MOVE-67 aim weight); SquidmanNano, Ringo and RedBull on rlnrkn
 # (RAM-20 and RAM-21);
 # TrialBot on rf (RAM-15 ram flee); Eva01 and YellowBird on mtty (shield list plus SHIELD-33 tiny-shot waves).
-# Holden pads the A/A check (c and aa only). name | note | jar
+# c and aa run on every robot, so the A/A check reads all 16. name | note | jar
 davidalves.PhoenixOS 1.1 | rank59-band3 | davidalves.PhoenixOS_1.1.jar
 hope.Identity .pope69 | rank82-band3 | hope.Identity_.pope69.jar
 cs.PumpkinPie 1.0 | rank377-band4 | cs.PumpkinPie_1.0.jar
@@ -20,3 +20,4 @@ dmh.robocode.robot.YellowBird 0.12 | rank617-band5 | dmh.robocode.robot.YellowBi
 dmh.robocode.robot.PinkPanther 1.1 | rank385-band4 | dmh.robocode.robot.PinkPanther_1.1.jar
 darkcanuck.Holden 1.13a | rank54-band3 | darkcanuck.Holden_1.13a.jar
 stelo.MatchupMini 1.1 | rank286-band4 | stelo.MatchupMini_1.1.jar
+zyx.nano.RedBull 1.0 | rank858-band6 | zyx.nano.RedBull_1.0.jar
