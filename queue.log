@@ -1,12 +1,3 @@
-00:13:41 pr exit=0 in 6 s
-00:13:41 ALLDONE
-07:47:51 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
-07:47:51 start prep
-07:47:54 progress pushed to origin claude/pc-locks-progress (every 15 min)
-07:50:44 prep exit=0 in 172 s
-07:50:44 start livematch
-07:50:44 watching livematch: 3 stop rule(s)
-07:50:52 livematch exit=0 in 8 s
 07:50:52 start lock
 07:50:52 watching lock: 4 stop rule(s)
 07:51:54 progress lock: 119/1560 (8%) battles, 7084/h, ETA 12 min, 0 failed, skips 14.2/battle (last 100), aa +0.01, rkn +0.02, rlnrkn +0.05, rln +0.01
@@ -298,3 +289,12 @@
 02:10:36 pr exit=0 in 6 s
 02:10:36 ALLDONE
 07:32:17 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
+07:32:17 start prep
+07:32:20 progress pushed to origin claude/pc-locks-progress (every 15 min)
+07:38:13 prep exit=0 in 355 s
+07:38:13 start livematch
+07:38:13 watching livematch: 3 stop rule(s)
+07:38:20 progress livematch: 0/124 (0%) battles, 0 failed
+07:46:31 livematch exit=0 in 498 s
+07:46:31 start lock
+07:46:31 watching lock: 4 stop rule(s)

@@ -1,15 +1,22 @@
 {
  "plan": "pc-locks",
- "updated": 1795678337.9217055,
+ "updated": 1795679245.322981,
  "steps": {
   "prep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 355,
+   "end": "2026-11-26T07:38:13"
   },
   "livematch": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 498,
+   "end": "2026-11-26T07:46:31"
   },
   "lock": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-26T07:46:31"
   },
   "stage": {
    "status": "pending"
@@ -42,5 +49,158 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "livematch",
+   "started": 1795678693.1174533,
+   "updated": 1795679191.5774162,
+   "elapsed": 498.45996284484863,
+   "expected": 124,
+   "panel": 31,
+   "field": 1217,
+   "multiarm": true,
+   "arms": [
+    {
+     "arm": "c",
+     "battles": 62,
+     "failed": 0,
+     "level": 69.56112903225807,
+     "skips": 10.661290322580646,
+     "fresh": 62,
+     "scored": 62,
+     "diff": null
+    },
+    {
+     "arm": "bb",
+     "battles": 62,
+     "failed": 0,
+     "level": 83.85435483870968,
+     "skips": 0.8709677419354839,
+     "fresh": 62,
+     "scored": 62,
+     "diff": 14.29322580645161,
+     "n": 31,
+     "ci95": 2.6544845132066546,
+     "half_stop": 4.062986499806104,
+     "scale": 0.025472473294987676
+    }
+   ],
+   "aa": null,
+   "warnings": [
+    "arm c's jar bisect/live/hadur117.Hadur_3.22.jar was built 254 h before this step started: check it is not stale",
+    "arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 241 h before this step started: check it is not stale"
+   ],
+   "battles": 124,
+   "resumed": 0,
+   "failed": 0,
+   "disables": 0,
+   "rate": 895.558386379263,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 3.9488399028778076,
+   "rules": [
+    {
+     "rule": "fails 30",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 124"
+    },
+    {
+     "rule": "dead 8",
+     "action": "halt",
+     "state": "ok",
+     "detail": "every arm scoring"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    }
+   ],
+   "skips_mean": 5.766129032258065,
+   "skips_last100": 5.92
+  },
+  {
+   "step": "lock",
+   "started": 1795679191.5941858,
+   "updated": 1795679245.0248437,
+   "elapsed": 53.43065786361694,
+   "expected": 1056,
+   "panel": 22,
+   "field": 1217,
+   "multiarm": true,
+   "arms": [
+    {
+     "arm": "c",
+     "battles": 23,
+     "failed": 0,
+     "level": 91.7804761904762,
+     "skips": 14,
+     "fresh": 23,
+     "scored": 23,
+     "diff": null
+    },
+    {
+     "arm": "aa",
+     "battles": 24,
+     "failed": 0,
+     "level": 92.58797619047618,
+     "skips": 12.916666666666666,
+     "fresh": 24,
+     "scored": 24,
+     "diff": 0.7703846153846121,
+     "n": 13,
+     "ci95": 0.8275266648214888,
+     "half_stop": 1.2666224461553401,
+     "scale": 0.018077239112571898
+    }
+   ],
+   "aa": {
+    "diff": 0.7703846153846121,
+    "ci": 0.8275266648214888,
+    "n": 13,
+    "band": 2.462071623621437,
+    "ok": true,
+    "band_stop": 2.8628739809551593
+   },
+   "warnings": [],
+   "battles": 47,
+   "resumed": 0,
+   "failed": 0,
+   "disables": 0,
+   "rate": 3166.7212563971625,
+   "eta": 1147.0539103061597,
+   "fraction": 0.04450757575757576,
+   "last_battle_age": 0.596947193145752,
+   "rules": [
+    {
+     "rule": "fails 30",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 47"
+    },
+    {
+     "rule": "dead 8",
+     "action": "halt",
+     "state": "ok",
+     "detail": "every arm scoring"
+    },
+    {
+     "rule": "skips 60 over 24",
+     "action": "halt",
+     "state": "ok",
+     "detail": "11.9 a battle over the last 24 (first 24: 14.9)"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    }
+   ],
+   "skips_mean": 13.446808510638299,
+   "skips_last100": 13.446808510638299
+  }
+ ]
 }
