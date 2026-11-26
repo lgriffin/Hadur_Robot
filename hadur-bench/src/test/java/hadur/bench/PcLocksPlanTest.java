@@ -46,6 +46,8 @@ class PcLocksPlanTest {
         assertEquals(9, names("plans/pc-locks.arms").size(), "c, aa and the lever arms gl, rwl, rf, rln, rlnrkn, cpl and pb");
         assertTrue(queue.contains("test -f opponents/$j || { echo \"missing jar $j\"; exit 1; }"), "no panel robot silently dropped");
         assertTrue(queue.contains("lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh"), "each arm built with only its robots");
+        // cpl and pb lists hold whole genome or band lines, so each arm's panel is cut by robot name from the pick file
+        assertTrue(queue.contains("awk -F\"\\t\" -v a=$a '$2 == a {print $1 \" |\"}' plans/locks-pick.tsv > ${W}-prep/$a.names && grep -F -f ${W}-prep/$a.names panel-locks.txt > ${W}-prep/$a.panel"), "each lever panel cut by robot name");
         assertTrue(queue.contains("--set panel-locks.txt --seeds 24 --seed-base 113000 --arms ${W}-prep/ctl.arms --out ${W}-ctl "), "the lock: c and aa on the whole panel");
         // Round 27 stopped at lock-sb: a lever arm alone is a one-arm run, which the bench refuses. The stage step writes
         // each c-plus-lever arms file before its step starts (the watcher reads it at start) and copies in only that
