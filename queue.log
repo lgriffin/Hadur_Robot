@@ -1,4 +1,3 @@
-23:29:13 watching livematch: 3 stop rule(s)
 23:29:21 livematch exit=0 in 7 s
 23:29:21 start lock
 23:29:21 watching lock: 4 stop rule(s)
@@ -298,3 +297,4 @@
 08:12:50 start pr
 08:12:57 pr exit=0 in 6 s
 08:12:57 ALLDONE
+17:40:23 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
