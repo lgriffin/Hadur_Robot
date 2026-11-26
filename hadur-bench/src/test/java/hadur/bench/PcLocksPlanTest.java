@@ -39,11 +39,11 @@ class PcLocksPlanTest {
         Set<String> broken = Broken.names(Path.of(Broken.FILE));
         for (String n : panel) assertTrue(!broken.contains(n), n + " loads on the bench engine (BENCH-267)");
         String arms = Files.readString(Path.of("plans/pc-locks.arms"));
-        for (String a : new String[] {"c", "aa", "gl", "cpl", "rwl", "dn", "hof", "qw", "rlnrkn", "rf"}) {
+        for (String a : new String[] {"c", "aa", "gl", "cpl", "rwl", "dn", "hof", "qw", "rlnrkn", "rf", "mtty"}) {
             String v = a.equals("c") ? version : version + a;
             assertTrue(arms.contains("\n" + a + " | hadur117.Hadur " + v + " |"), a);
         }
-        assertEquals(10, names("plans/pc-locks.arms").size(), "c, aa and the eight lever arms");
+        assertEquals(11, names("plans/pc-locks.arms").size(), "c, aa and the nine lever arms");
         assertTrue(queue.contains("test -f opponents/$j || { echo \"missing jar $j\"; exit 1; }"), "no panel robot silently dropped");
         assertTrue(queue.contains("lock_prep.py plans/locks-pick.tsv panel-locks.txt plans/pc-locks.arms ${W}-prep && bash ${W}-prep/build.sh"), "each arm built with only its robots");
         // cpl and pb lists hold whole genome or band lines, so each arm's panel is cut by robot name from the pick file
@@ -55,13 +55,13 @@ class PcLocksPlanTest {
         int ats = queue.indexOf("\nstage | ");
         assertTrue(ats >= 0, "stage step");
         String stage = queue.substring(ats, queue.indexOf("\n\n", ats + 1));
-        assertTrue(stage.contains("for a in gl cpl rwl dn hof qw rlnrkn rf; do grep -E \"^(c|$a) [|]\" ${W}-prep/lock.arms > ${W}-prep/$a-c.arms"), "c beside every lever arm");
+        assertTrue(stage.contains("for a in gl cpl rwl dn hof qw rlnrkn rf mtty; do grep -E \"^(c|$a) [|]\" ${W}-prep/lock.arms > ${W}-prep/$a-c.arms"), "c beside every lever arm");
         assertTrue(stage.contains("grep -v \"^#\" ${W}-prep/$a.panel | cut -d\"|\" -f1 | sed -E \"s/^ +| +$//g; s/[^A-Za-z0-9.]+/_/g\""), "slugs as Opponent.slug() makes them");
         assertTrue(stage.contains("cp -rp ${W}-ctl/battles/$s-*-c ${W}-$a/battles/ || exit 1"), "only the step's own robots' c battles, read back");
         assertTrue(stage.contains("  after: lock"), "stage waits for the c battles");
         assertEquals("infovk.s_schwarzm16.silverbird_1.0", "infovk.s_schwarzm16.silverbird 1.0".replaceAll("[^A-Za-z0-9.]+", "_"));
         String prev = "stage";
-        for (String a : new String[] {"gl", "cpl", "rwl", "dn", "hof", "qw", "rlnrkn", "rf"}) {
+        for (String a : new String[] {"gl", "cpl", "rwl", "dn", "hof", "qw", "rlnrkn", "rf", "mtty"}) {
             int at2 = queue.indexOf("\nlock-" + a + " | ");
             assertTrue(at2 >= 0, a);
             String step = queue.substring(at2, queue.indexOf("\n\n", at2 + 1));
@@ -69,7 +69,7 @@ class PcLocksPlanTest {
             assertTrue(step.contains("  after: " + prev + "\n"), a + " after " + prev);
             prev = "lock-" + a;
         }
-        assertTrue(queue.contains("for d in gl cpl rwl dn hof qw rlnrkn rf; do awk -F\"\\t\" -v a=$d 'NR > 1 && $1 == a' ${W}-$d/arms.tsv || exit 1; done"), "the gate takes only each lever's own rows from its run");
+        assertTrue(queue.contains("for d in gl cpl rwl dn hof qw rlnrkn rf mtty; do awk -F\"\\t\" -v a=$d 'NR > 1 && $1 == a' ${W}-$d/arms.tsv || exit 1; done"), "the gate takes only each lever's own rows from its run");
         // Round 35's turn-time check: master after TIME-14/15 (sk) against master before it (c and aa from d6f7c28 under
         // their own names), on its own panel and seeds after the gate, read by multiarm with the A/A.
         String skipArms = Files.readString(Path.of("plans/pc-skipcheck.arms"));
@@ -94,13 +94,13 @@ class PcLocksPlanTest {
         assertTrue(panel.size() * 3 * 24 >= 24, "the skips window is reachable within the lock");
         assertTrue(!body.contains("stop: aa"), "the watcher reads A/A only once 10 robots are read in both arms; aa is read in the gate");
         assertTrue(queue.substring(queue.indexOf("\nskip | ")).contains("  after: gate"), "the skip check, and so the results PR, waits for the gate");
-        assertTrue(queue.substring(queue.indexOf("\ngate | ")).contains("  after: lock-rf\n"), "the gate waits for the last lever arm");
+        assertTrue(queue.substring(queue.indexOf("\ngate | ")).contains("  after: lock-mtty\n"), "the gate waits for the last lever arm");
         assertEquals(List.of(), PcLiveMatchPlanTest.violations("pc-locks.queue", queue), "BENCH-245 timing rule");
         assertTrue(queue.contains("Why it should win") && queue.contains("set ALERT = lgriffin"));
         assertTrue(queue.contains("run pc-locks --fresh"), "round 34 left the plan state complete, so round 35 starts fresh");
         assertTrue(!queue.contains("pc-locks34-") && !queue.contains("/pc-locks-livematch.md") && queue.contains("${OUT}/*_pc-locks35-*.md"), "round 35 reports never replace round 34's");
         assertTrue(queue.contains("set W = work/pc-locks35"), "round 35 has its own work directory");
-        assertTrue(queue.contains("for a in gl cpl rwl dn hof qw rlnrkn rf; do test -f"), "every lever arm built before the lock");
+        assertTrue(queue.contains("for a in gl cpl rwl dn hof qw rlnrkn rf mtty; do test -f"), "every lever arm built before the lock");
         assertTrue(queue.contains("open_results_pr.sh claude/pc-locks35-results") && queue.contains("set P = --parallel 16 --no-truth-log"));
     }
 }

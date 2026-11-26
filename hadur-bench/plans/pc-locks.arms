@@ -1,7 +1,7 @@
 # pc-locks (BENCH-253) round 35: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots
 # picked for it (plans/locks-pick.tsv; gl GUN-11 gslist, cpl COPY-2 copylist with the genome from plans/copy-lines.txt,
 # rwl MOVE-46 rwlist, dn DIST-4 dplist with the distance from plans/dist-pin-lines.txt, hof MOVE-71 hoflist, qw MOVE-67
-# aimwlist, rlnrkn RAM-20 and RAM-21 rlearnlist,rknownlist, rf ram flee rflist).
+# aimwlist, rlnrkn RAM-20 and RAM-21 rlearnlist,rknownlist, rf ram flee rflist, mtty shield list plus SHIELD-33 tiny-shot waves, slistadd,stinylist).
 c | hadur117.Hadur 3.24 | bisect/hadur117.Hadur_3.24.jar
 aa | hadur117.Hadur 3.24aa | bisect/hadur117.Hadur_3.24aa.jar
 gl | hadur117.Hadur 3.24gl | bisect/hadur117.Hadur_3.24gl.jar
@@ -12,3 +12,4 @@ hof | hadur117.Hadur 3.24hof | bisect/hadur117.Hadur_3.24hof.jar
 qw | hadur117.Hadur 3.24qw | bisect/hadur117.Hadur_3.24qw.jar
 rlnrkn | hadur117.Hadur 3.24rlnrkn | bisect/hadur117.Hadur_3.24rlnrkn.jar
 rf | hadur117.Hadur 3.24rf | bisect/hadur117.Hadur_3.24rf.jar
+mtty | hadur117.Hadur 3.24mtty | bisect/hadur117.Hadur_3.24mtty.jar
