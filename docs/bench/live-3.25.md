@@ -9,21 +9,22 @@ and parsed in [data/rumble/parsed/](../../data/rumble/parsed/).
 
 | Read (UTC) | Rank | APS | PWIN | Survival | Pairings | Battles |
 |---|---|---|---|---|---|---|
-| 2026-11-27 17:21 | **2nd of 1,213** | **93.95** ± 0.19 | 99.83% | 98.35% | 1,212 | 1,975 |
+| 2026-11-27 17:21 | 2nd of 1,213 | 93.95 ± 0.19 | 99.83% | 98.35% | 1,212 | 1,975 |
+| 2026-11-27 17:39 (client stopped) | **2nd of 1,213** | **93.93** ± 0.18 | 99.83% | 98.33% | 1,212 | 2,126 |
 
 BeepBoop 2.0 is 1st at 94.92, DrussGT 3.1.20 3rd at 93.20 and Saguaro 1.1.4 4th at 93.04.
 
-On the 1,206 opponents both versions met, 3.25 scores **+0.51 ± 0.09 APS over 3.24** (93.44). The release
+The figures below use the settled 17:39 page. On the 1,206 opponents both versions met, 3.25 scores **+0.49 ± 0.09 APS over 3.24** (93.44). The release
 projected about +0.4 (range +0.3 to +0.5).
 
 | Source | Robots | Gain per robot (points) | APS |
 |---|---|---|---|
-| Robots with a new 3.25 per-opponent line | 160 | +2.36 ± 0.27 | +0.31 |
-| All other robots, BeepBoop under 90 against them | 198 | +1.02 ± 0.34 | +0.17 |
-| All other robots, BeepBoop 90 or more against them | 847 | +0.04 ± 0.09 | +0.03 |
+| Robots with a new 3.25 per-opponent line | 160 | +2.30 ± 0.27 | +0.30 |
+| All other robots, BeepBoop under 90 against them | 198 | +0.98 ± 0.34 | +0.16 |
+| All other robots, BeepBoop 90 or more against them | 847 | +0.04 ± 0.08 | +0.03 |
 
 - **The per-opponent lines carried.** Their PC gate reads add up to about +302 points (+0.25 APS) over these
-  160 robots; live they gave +377 (+0.31). The 160 robots are matched by name to the lines added between the
+  160 robots; live they gave +368 (+0.30). The 160 robots are matched by name to the lines added between the
   v3.24 and v3.25 tags, so a few near-namesakes are counted too.
 - **The rest of the gain sits on the hard opponents.** Robots without a new line gained a point each where
   BeepBoop scores under 90, and nothing elsewhere. Those are the heavy learners, where a skipped turn costs
@@ -42,15 +43,15 @@ pairings. Opponents are banded by BeepBoop's score against them.
 
 | Opponent band | Robots | 3.25 over 3.24 | BeepBoop ahead by | (3.24: ahead by) | Saguaro 1.1.4 ahead by | DrussGT 3.1.20 ahead by |
 |---|---|---|---|---|---|---|
-| Under 80 | 34 | +0.12 | +0.16 | (+0.27) | -0.19 | -0.04 |
-| 80 to 90 | 200 | +0.19 | +0.17 | (+0.39) | -0.63 | -0.25 |
-| 90 to 95 | 174 | +0.03 | +0.12 | (+0.15) | -0.07 | -0.07 |
+| Under 80 | 34 | +0.11 | +0.16 | (+0.27) | -0.19 | -0.04 |
+| 80 to 90 | 200 | +0.18 | +0.18 | (+0.39) | -0.62 | -0.24 |
+| 90 to 95 | 174 | +0.02 | +0.13 | (+0.15) | -0.07 | -0.06 |
 | 95 to 98 | 228 | +0.08 | +0.14 | (+0.22) | +0.02 | -0.15 |
-| 98 and up | 575 | +0.09 | +0.33 | (+0.42) | -0.03 | -0.25 |
-| Whole field | 1,211 | +0.51 | **+0.92** | (+1.45) | -0.90 | -0.76 |
+| 98 and up | 575 | +0.09 | +0.33 | (+0.42) | -0.03 | -0.24 |
+| Whole field | 1,211 | +0.49 | **+0.94** | (+1.45) | -0.88 | -0.74 |
 
 - The lead over DrussGT and Saguaro is now about 0.8 to 0.9 APS, most of it on the 80 to 90 band.
-- BeepBoop's lead shrank from 1.45 to 0.92. The largest piece left, 0.33, is on the 575 robots BeepBoop scores
+- BeepBoop's lead shrank from 1.45 to 0.94. The largest piece left, 0.33, is on the 575 robots BeepBoop scores
   98 or more against: a little under a point a robot where both robots win easily. That is the share of
   bullets taken against easy opponents, which a per-opponent line does not reach.
 

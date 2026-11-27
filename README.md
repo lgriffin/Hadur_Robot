@@ -4,7 +4,7 @@
 a 1v1 duelist that remembers each opponent across battles, with a melee brain for
 free-for-alls, a five-robot team entry, and a core that has no idea it is inside Robocode.
 
-**Hadur 3.25 is ranked 2nd of 1,213 in the RoboRumble 1v1** (93.95 APS, its best ever), 2nd of 48 in the
+**Hadur 3.25 is ranked 2nd of 1,213 in the RoboRumble 1v1** (93.93 APS, its best ever), 2nd of 48 in the
 TeamRumble (HadurTeam 3.25.1, 85.77, its best ever) and 7th of 416 in the MeleeRumble (3.25, 69.67), the highest-ranked
 robot flying the Irish flag. Around it is a [family of smaller robots](#family-of-robots), two of
 three of them 1st in their rumbles and one more 2nd. All of it was designed, written, tested and tuned by AI
@@ -24,19 +24,19 @@ learned Java, and it was the original inspiration for everything on this page.
 per-opponent line that held on the PC since 3.24, the bred gun copies and the turn-time cuts (TIME-11 to TIME-15),
 the team adds the tight pack and per-team lines, and melee adds the final-duel energy race (MEND-6). The team entry
 runs as 3.25.1, the same code under a new version ([notes](docs/releases/v3.25.1.md)). The live rankings read on
-2026-11-27 at 17:21 to 17:31 UTC (rumble.robowiki.net pages, saved in [data/rumble/pages/](data/rumble/pages/);
+2026-11-27 at 17:31 UTC (1v1 settled at 17:39 UTC, after the live client stopped) (rumble.robowiki.net pages, saved in [data/rumble/pages/](data/rumble/pages/);
 [live notes](docs/bench/live-3.25.md)):
 
 | Rumble | Entry | Rank | APS | Pairings | Battles |
 |---|---|---|---|---|---|
-| 1v1 | `hadur117.Hadur 3.25` | **2nd of 1,213** | **93.95** ± 0.19 | 1,212 | 1,975 |
+| 1v1 | `hadur117.Hadur 3.25` | **2nd of 1,213** | **93.93** ± 0.18 | 1,212 | 2,126 |
 | Team | `hadur117.HadurTeam 3.25.1` | **2nd of 48** | **85.77** ± 0.42 | 47 | 265 |
 | Melee | `hadur117.Hadur 3.25` | **7th of 416** | **69.67** ± 0.23 | 415 | 1,271 |
 
-- **1v1 2nd at 93.95, its best score ever.** Like for like against 3.24 on the same 1,206 opponents 3.25 scores
-  +0.51 ± 0.09 APS, above the +0.4 projected before release. The new per-opponent lines gave +0.31 of it and
-  the rest came on the hardest opponents. BeepBoop is 1st at 94.92 (0.97 ahead, down from 1.50), DrussGT 3.1.20
-  3rd at 93.20 and Saguaro 1.1.4 4th at 93.04. Survival 98.35%, PWIN 99.83%: only BeepBoop and ScalarR
+- **1v1 2nd at 93.93, its best score ever.** Like for like against 3.24 on the same 1,206 opponents 3.25 scores
+  +0.49 ± 0.09 APS, above the +0.4 projected before release. The new per-opponent lines gave +0.30 of it and
+  the rest came on the hardest opponents. BeepBoop is 1st at 94.92 (0.99 ahead, down from 1.50), DrussGT 3.1.20
+  3rd at 93.20 and Saguaro 1.1.4 4th at 93.04. Survival 98.33%, PWIN 99.83%: only BeepBoop and ScalarR
   noshield still win their pairings.
 - **Team 2nd at 85.77, its best ever**, +1.20 ± 0.44 over 3.24 on the same 47 teams, in line with the +1.2
   projected. OgiTeam is 1st at 87.89 and CombatTeam 3rd at 81.51. Survival 92.43%, PWIN 97.87%.
@@ -74,7 +74,7 @@ Each release's live notes are in [docs/bench/](docs/bench/) (`live-*.md`) and it
 | 3.22 | 2026-11-12 | 92.60 | 97.7% | 4th (7th melee, 2nd team) | Start-up stall fix (MEM-15) and per-opponent shield, mirror, race-power and power-cap lines; team CLOSE hunt and last-enemy guard; melee MGUN-25 ([notes](docs/releases/v3.22.md)) |
 | 3.23 | 2026-11-16 | 93.04 | 98.0% | 3rd (7th melee on 3.22, 2nd team) | The shadow fix (MOVE-43) and 48 per-opponent lines (+0.49 APS over 3.22 on the same opponents); team MOMENTUM drive ([live notes](docs/bench/live-3.23.md)) |
 | 3.24 | 2026-11-22 | 93.44 | 98.0% | 2nd (7th melee on 3.22, 2nd team at 84.57) | MOVE-52 intercept views and per-opponent lines (+0.58 APS over 3.23 on the same opponents); team fitted enemy aims and close-range dodge rerank |
-| 3.25 | 2026-11-27 | **93.95** | 98.4% | **2nd** (7th melee at 69.67, **2nd team** at 85.77 on 3.25.1) | Per-opponent lines from 16 PC rounds, bred gun copies and fewer skipped turns (+0.51 APS over 3.24 on the same opponents); team tight pack; melee final-duel energy race ([live notes](docs/bench/live-3.25.md)) |
+| 3.25 | 2026-11-27 | **93.93** | 98.3% | **2nd** (7th melee at 69.67, **2nd team** at 85.77 on 3.25.1) | Per-opponent lines from 16 PC rounds, bred gun copies and fewer skipped turns (+0.49 APS over 3.24 on the same opponents); team tight pack; melee final-duel energy race ([live notes](docs/bench/live-3.25.md)) |
 
 3.0 and 3.1 slid 5 to 8 APS within hours on live clients; a one-JVM session bench traced it to a
 round-end profile save that grew with every opponent on disk, fixed in 3.4
@@ -88,7 +88,7 @@ Live results as of 2026-11-02 16:00 UTC, Hadur and HadurTeam as of 2026-11-27 17
 
 | Robot | Rumble | Size | Live result | |
 |---|---|---|---|---|
-| [**Hadur**](hadur-robot/) `hadur117.Hadur` | RoboRumble (1v1) | megabot | **2nd of 1,213**, 93.95 ± 0.19 (3.25), 0.97 behind kc.mega.BeepBoop | [standing](#standing) |
+| [**Hadur**](hadur-robot/) `hadur117.Hadur` | RoboRumble (1v1) | megabot | **2nd of 1,213**, 93.93 ± 0.18 (3.25), 0.99 behind kc.mega.BeepBoop | [standing](#standing) |
 | | MeleeRumble | | **7th of 416**, 69.67 ± 0.23 (3.25) | |
 | [**HadurTeam**](hadur-robot/) `hadur117.HadurTeam` | TeamRumble | five Hadurs | **2nd of 48**, 85.77 ± 0.42 (3.25.1), 2.12 behind cz.libors.OgiTeam | [standing](#standing) |
 | [**TwinSaor**](twinsaor/) `hadur117.twin.TwinSaor` | Twin Duel (2v2) | 1,995 B of 1,999 | **1st of 28**, 70.28 ± 0.50 (0.2), 0.91 ahead of ags.lunartwins.LunarTwins | [README](twinsaor/README.md) |
