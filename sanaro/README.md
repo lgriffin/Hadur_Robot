@@ -1,8 +1,8 @@
 # Sanaro
 
 `hadur117.nano.Sanaro` is a NanoMelee robot: a melee robot under the NanoMelee's 250-byte
-codesize limit. **Sanaro 0.3 is 2nd of 90 in the NanoMelee** (65.41 ± 0.29 APS, 2026-11-02),
-1.03 behind d414.nano.Quantum 1.0.0.
+codesize limit. **Sanaro 0.5 is 1st in the NanoMelee** (66.42 ± 0.61 APS, 2026-11-27, about
+0.2 ahead of d414.nano.Quantum 1.0.0, inside the interval while pairings fill in).
 
 The design, the bench screens and each stage are in [docs/sanaro.md](../docs/sanaro.md); the
 requirements are SANARO-1 to SANARO-14 in [docs/requirements/sanaro.md](../docs/requirements/sanaro.md).
@@ -27,7 +27,8 @@ Sanaro is one class of 246 bytes (0.5).
 
 | Version | Read (UTC) | Rumble | Rank | APS | Pairings | Leader |
 |---|---|---|---|---|---|---|
-| 0.3 | 2026-11-02 16:00 | **NanoMelee** | **2nd of 90** | **65.41 ± 0.29** | | d414.nano.Quantum 1.0.0, 66.44 |
+| 0.5 | 2026-11-27 16:30 | **NanoMelee** | **1st** | **66.42 ± 0.61** | | Sanaro; Quantum 1.0.0 about 0.2 behind |
+| 0.3 | 2026-11-02 16:00 | NanoMelee | 2nd of 90 | 65.41 ± 0.29 | | d414.nano.Quantum 1.0.0, 66.44 |
 | 0.2 | 2026-10-30 21:50 | NanoMelee | 2nd | 65.15 | 89 | Quantum 1.0.0, 66.41 |
 | 0.1 | 2026-10-28 | NanoMelee | 2nd | 65.21 | | Quantum 1.0.0, 66.44 |
 
