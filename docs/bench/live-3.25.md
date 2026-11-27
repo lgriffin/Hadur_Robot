@@ -75,6 +75,6 @@ MEND-6. ScalarR leads at 72.63.
 
 ## Sanaro 0.5 (NanoMelee)
 
-Sanaro 0.5 settled at **66.40 ± 0.39** (89 pairings, 455 battles, PWIN 100%) on 2026-11-27 at 18:51 UTC, level
-with d414.nano.Quantum 1.0.0 (66.40 ± 0.08), which is listed 1st. That is +0.99 over Sanaro 0.3 (65.41). In the
+Sanaro 0.5 settled at **66.40 ± 0.39** (89 pairings, 455 battles, PWIN 100%) on 2026-11-27 at 18:51 UTC, **joint
+1st** with d414.nano.Quantum 1.0.0 (66.40 ± 0.08). That is +0.99 over Sanaro 0.3 (65.41). In the
 MeleeRumble Sanaro 0.5 is 61st of 416 at 61.32.
