@@ -364,6 +364,7 @@ final class TeamRisk {
     static double pathDamage(Point2D.Double me, Point2D.Double to, long now, List<VirtualBullet> bullets) {
         if (bullets.isEmpty()) return 0;
         boolean[] done = new boolean[bullets.size()];
+        Point2D.Double fromBuf = new Point2D.Double(), atBuf = new Point2D.Double();
         double total = 0;
         double x = me.x, y = me.y, speed = 0;
         for (int t = 1; t <= PATH_TICKS; t++) {
@@ -377,8 +378,9 @@ final class TeamRisk {
             for (int i = 0; i < bullets.size(); i++) {
                 VirtualBullet b = bullets.get(i);
                 if (done[i] || tick <= b.shot.fireTime) continue;
-                Point2D.Double from = b.position(tick - 1);
-                Point2D.Double at = b.position(tick);
+                // TIME-12: two points reused for every bullet and tick; crossesBox keeps neither.
+                Point2D.Double from = b.position(tick - 1, fromBuf);
+                Point2D.Double at = b.position(tick, atBuf);
                 if (!crossesBox(from, at, x, y, PATH_HALF)) continue;
                 done[i] = true;
                 double p = b.shot.power;
@@ -392,6 +394,7 @@ final class TeamRisk {
     static double pathDamage(double[][] path, long now, List<VirtualBullet> bullets) {
         if (bullets.isEmpty()) return 0;
         boolean[] done = new boolean[bullets.size()];
+        Point2D.Double fromBuf = new Point2D.Double(), atBuf = new Point2D.Double();
         double total = 0;
         for (int t = 1; t <= Math.min(PATH_TICKS, path.length); t++) {
             double x = path[t - 1][0], y = path[t - 1][1];
@@ -399,8 +402,9 @@ final class TeamRisk {
             for (int i = 0; i < bullets.size(); i++) {
                 VirtualBullet b = bullets.get(i);
                 if (done[i] || tick <= b.shot.fireTime) continue;
-                Point2D.Double from = b.position(tick - 1);
-                Point2D.Double at = b.position(tick);
+                // TIME-12: two points reused for every bullet and tick; crossesBox keeps neither.
+                Point2D.Double from = b.position(tick - 1, fromBuf);
+                Point2D.Double at = b.position(tick, atBuf);
                 if (!crossesBox(from, at, x, y, PATH_HALF)) continue;
                 done[i] = true;
                 double p = b.shot.power;
@@ -412,21 +416,50 @@ final class TeamRisk {
 
     /** Whether the segment {@code a}-{@code b} meets the square of half-side {@code half} round ({@code cx}, {@code cy}). */
     static boolean crossesBox(Point2D.Double a, Point2D.Double b, double cx, double cy, double half) {
+        // TIME-12: Liang-Barsky's four edges unrolled over plain doubles, the same tests in the
+        // same order as the loop over p = {-dx, dx, -dy, dy} and q it replaced.
         double t0 = 0, t1 = 1;
         double dx = b.x - a.x, dy = b.y - a.y;
-        double[] p = {-dx, dx, -dy, dy};
-        double[] q = {a.x - (cx - half), (cx + half) - a.x, a.y - (cy - half), (cy + half) - a.y};
-        for (int i = 0; i < 4; i++) {
-            if (p[i] == 0) {
-                if (q[i] < 0) return false;
-            } else {
-                double r = q[i] / p[i];
-                if (p[i] < 0) t0 = Math.max(t0, r);
-                else t1 = Math.min(t1, r);
-                if (t0 > t1) return false;
-            }
+        double p, q, r;
+        p = -dx;
+        q = a.x - (cx - half);
+        if (p == 0) {
+            if (q < 0) return false;
+        } else {
+            r = q / p;
+            if (p < 0) t0 = Math.max(t0, r);
+            else t1 = Math.min(t1, r);
+            if (t0 > t1) return false;
         }
-        return true;
+        p = dx;
+        q = (cx + half) - a.x;
+        if (p == 0) {
+            if (q < 0) return false;
+        } else {
+            r = q / p;
+            if (p < 0) t0 = Math.max(t0, r);
+            else t1 = Math.min(t1, r);
+            if (t0 > t1) return false;
+        }
+        p = -dy;
+        q = a.y - (cy - half);
+        if (p == 0) {
+            if (q < 0) return false;
+        } else {
+            r = q / p;
+            if (p < 0) t0 = Math.max(t0, r);
+            else t1 = Math.min(t1, r);
+            if (t0 > t1) return false;
+        }
+        p = dy;
+        q = (cy + half) - a.y;
+        if (p == 0) {
+            return q >= 0;
+        }
+        r = q / p;
+        if (p < 0) t0 = Math.max(t0, r);
+        else t1 = Math.min(t1, r);
+        return !(t0 > t1);
     }
 
     /**

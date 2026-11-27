@@ -718,8 +718,8 @@ endgame MEND-1, 2).
 
 The 1v1 table is per opponent, PC-trained and census-gated: only per-opponent picks have shown
 live gains. It ships as two classes in the robot jar, because the sandbox refuses a robot the
-read of its own jar's resources but lets classes load. On master (3.24 plus the banked lines) it holds 1,383
-lines over 44 slots: 304 on the shield list and 1,079 in `ShieldTableData`'s 43 other slots.
+read of its own jar's resources but lets classes load. On master (3.24 plus the banked lines) it holds 1,393
+lines over 44 slots: 305 on the shield list and 1,088 in `ShieldTableData`'s 43 other slots.
 
 ```mermaid
 flowchart LR
@@ -743,7 +743,7 @@ flowchart LR
 | `aims()` | `shield-aim:` | SHIELD-18 | 230 | The shield starts with this predictor and offset already learned |
 | `stills()` | `shield-still:` | SHIELD-21 | 50 | Shield shots fired from where Hadur stands whenever one casts a shadow |
 | `exitLates()`, `exitOffs()` | `shield-exit4:`, `shield-exit0:` | SHIELD-19 | 1, 14 | Later or no damage exit from shield mode |
-| `tinies()` | `shield-tiny:` | SHIELD-33 | 6 | Tiny unexplained energy drops (0.005 to 0.1) reach shield mode as shots |
+| `tinies()` | `shield-tiny:` | SHIELD-33 | 7 | Tiny unexplained energy drops (0.005 to 0.1) reach shield mode as shots |
 | `shieldFloors()` | `shield-floor:` | SHIELD-25 | 1 | No shield shot under 0.4 power |
 | `closeBreaks()` | `shield-break:` | SHIELD-27 | 4 | A start inside 150 px is fought until the gap opens or tick 60, then shielded |
 | `closeYields()` | `shield-yield:` | SHIELD-35 | 2 | Inside 150 px the duel drives and fires until the gap passes 250 px, then shielded |
@@ -762,16 +762,16 @@ flowchart LR
 | `mirrorOffs()` | `mirror-off:` | MIR-2 | 3 | No mirror response |
 | `surfKeys()` | `surf-key:` | SKEY-2 | 176 | Fitted weights for the danger views' search key |
 | **Rammers** | | | | |
-| `ramFlees()` | `ram-flee:` | RAM-15 | 54 | Flee a slow rammer |
+| `ramFlees()` | `ram-flee:` | RAM-15 | 55 | Flee a slow rammer |
 | `ramWaits()` | `ram-wait:` | MOVE-46 | 88 | Against a disabled enemy, keep surfing its live waves before the ram |
 | `ramBends()`, `ramFans()`, `ramCircs()`, `ramHeavies()` | `ram-bend:`, `ram-fan:`, `ram-circ:`, `ram-heavy:` | RAM-18, RAM-17, RAM-11, RAM-14 | 10, 2, 4, 0 | RAM-2 escape variants: the escape bend, fanned and circular aims, heavier path costs |
-| `ramLearns()` | `ram-learn:` | RAM-20 | 46 | The escape dodges the aims learned from the rammer's own bullets (`ShotModel`) in place of RAM-5's fixed pair |
-| `ramKnowns()` | `ram-known:` | RAM-21 | 32 | The rammer is confirmed at the first scan, so rounds 1 and 2 play the escape instead of waiting for two rammed rounds |
+| `ramLearns()` | `ram-learn:` | RAM-20 | 49 | The escape dodges the aims learned from the rammer's own bullets (`ShotModel`) in place of RAM-5's fixed pair |
+| `ramKnowns()` | `ram-known:` | RAM-21 | 35 | The rammer is confirmed at the first scan, so rounds 1 and 2 play the escape instead of waiting for two rammed rounds |
 | **Power and gun** | | | | |
 | `powerCaps()`, `powerCapHalves()` | `power-cap:`, `power-cap5:` | POW-18 | 6, 2 | Cap fire power |
 | `hardFires()`, `powerBands()` | `hard-fire:`, `power-band:` | POW-19, POW-20 | 1, 2 | At least 0.6 power while we have 60+ energy; a power multiplier per energy band |
 | `fullOffs()`, `x5Powers()`, `racePowers()` | `full-off:`, `x5-power:`, `race-power:` | POW-15, POW-16, POW-17 | 16, 17, 20 | Power policy variants (race power vs strong bots) |
-| `gunStacks()` | `gun-stack:` | GUN-11 | 23 | TripHammer gun stack (never for a shield opponent) |
+| `gunStacks()` | `gun-stack:` | GUN-11 | 24 | TripHammer gun stack (never for a shield opponent) |
 | `freeGuns()` | `free-gun:` | GUN-12 | 0 | The duel gun fires with free gun on against this opponent |
 | `copies()` | `copy:` | COPY-2 | 9 | A bred copy of the opponent's learning gun (genome from truth logs) steers the surf's danger |
 

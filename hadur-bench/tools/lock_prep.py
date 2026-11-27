@@ -39,6 +39,7 @@ LEVERS = {
     "x0": ("sx0list", ("SHIELD_EXIT0",)),
     "mtx0": ("slistadd,sx0list", ("SHIELD_ADD", "SHIELD_EXIT0")),
     "mtmv": ("slistadd,smovelist", ("SHIELD_ADD", "SHIELD_MOVE")),
+    "mtty": ("slistadd,stinylist", ("SHIELD_ADD", "SHIELD_TINY")),  # shield list plus SHIELD-33 tiny-shot waves
     "mv": ("smovelist", ("SHIELD_MOVE",)),
     "md": ("slistdrop", ("SHIELD_DROP",)),
     "vj": ("vjlist", ("VEL_JITTER",)),

@@ -352,7 +352,7 @@ public class SurfMover {
      * @param moveCtrl the waves and danger views
      * @param enemyLocation the enemy's last known position, in px, for orbiting
      * @param wavesToSurf how many waves to look ahead: 2 at full computation, 1 when the
-     *     tick budget is short (TIME-1, TIME-2)
+     *     tick budget is short (TIME-1)
      * @param goToAllowed whether go-to surfing may run this tick
      */
     public void move(BotOrders.Builder orders, RobotState myState,
@@ -775,7 +775,7 @@ public class SurfMover {
      * Go-to surfing picks a point and drives to it and stops, instead of committing to an
      * orbit direction or a stop. It is MOVE-2's second flavour, not the default: in S6's A/B
      * it lost to the three options (docs/strategy-evolution.md). It costs the most, so the
-     * tick budget turns it off from computation level 1 (TIME-1, TIME-2).
+     * tick budget turns it off from computation level 1 (TIME-1).
      */
 
     /** Candidate stop points are taken every this many ticks along each orbit. */

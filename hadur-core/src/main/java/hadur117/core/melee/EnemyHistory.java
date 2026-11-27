@@ -170,17 +170,26 @@ public final class EnemyHistory {
      * between its samples; past the last sample it holds the last offset.
      */
     static double[] offset(float[] t, double dt) {
+        return offset(t, dt, new double[2]);
+    }
+
+    /** {@link #offset(float[], double)} written into {@code out} (TIME-12). */
+    static double[] offset(float[] t, double dt, double[] out) {
         double pt = 0, pf = 0, ps = 0;
         for (int k = 0; k < t.length; k += 3) {
             double nt = t[k], nf = t[k + 1], ns = t[k + 2];
             if (dt <= nt) {
                 double f = nt == pt ? 1 : (dt - pt) / (nt - pt);
-                return new double[]{pf + f * (nf - pf), ps + f * (ns - ps)};
+                out[0] = pf + f * (nf - pf);
+                out[1] = ps + f * (ns - ps);
+                return out;
             }
             pt = nt;
             pf = nf;
             ps = ns;
         }
-        return new double[]{pf, ps};
+        out[0] = pf;
+        out[1] = ps;
+        return out;
     }
 }
