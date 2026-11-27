@@ -1,6 +1,6 @@
 # Queue pc-locks: progress
 
-Updated 2026-11-27 22:51:40 PC time (22:51 UTC), runner pid 50772.
+Updated 2026-11-27 22:53:16 PC time (22:53 UTC), runner pid 50772.
 
 - `prep` done, exit 0 in 4 min
 - `livematch` done, exit 0 in 8 min
@@ -9,9 +9,9 @@ Updated 2026-11-27 22:51:40 PC time (22:51 UTC), runner pid 50772.
 - `lock-rp` done, exit 0 in 9 min
 - `lock-p5` done, exit 0 in 2 min
 - `lock-fq` done, exit 0 in 1 min
-- `lock-gl` running
-- `gate` pending
-- `pr` pending
+- `lock-gl` done, exit 0 in 3 min
+- `gate` done, exit 0 in 0 min
+- `pr` done, exit 0 in 0 min
 
 ### livematch
 
@@ -121,33 +121,27 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### lock-gl
 
-**25 of 48 battles** (52%), 0 failed, 24 read back from an earlier run. Running 1 min, 44 battles/h, about 31 min left (ends ~23:22 PC time). Last battle 0 min ago.
-Skipped turns a battle: 15.0 overall, first 1 15.0, last 1 15.0; engine disables 0.
+**48 of 48 battles** (100%), 0 failed, 24 read back from an earlier run. Running 3 min, 511 battles/h, about 0 min left (ends ~22:53 PC time). Last battle 0 min ago.
+Skipped turns a battle: 13.8 overall, first 24 13.8, last 24 13.8; engine disables 0.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | c | 24 | 0 | 75.32 | - | - | - | 10.8 |
-| gl | 1 | 0 | 79.48 | +0.00 (1 robots) | - | - | 15.0 |
+| gl | 24 | 0 | 78.23 | +0.00 (1 robots) | - | - | 13.8 |
 
 APS = mean difference over the robots read x 1 panel robots / 1217 pairings.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 25 |
+| `fails 30` | halt | ok | 0 failed of 48 |
 | `dead 8` | halt | ok | every arm scoring |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 23 battles unrun (about 31 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-22:38:05 lock exit=0 in 4839 s
-22:38:05 start stage
-22:38:08 stage exit=0 in 2 s
-22:38:08 start lock-rp
-22:38:08 watching lock-rp: 3 stop rule(s)
-22:40:35 progress lock-rp: 86/144 (60%) battles, 343/h, ETA 10 min, 0 failed, skips 11.6/battle (last 100), rp +0.01
 22:47:08 lock-rp exit=0 in 540 s
 22:47:08 start lock-p5
 22:47:08 watching lock-p5: 3 stop rule(s)
@@ -157,4 +151,10 @@ Stopping now would leave 23 battles unrun (about 31 min); every battle already f
 22:50:18 lock-fq exit=0 in 45 s
 22:50:18 start lock-gl
 22:50:18 watching lock-gl: 3 stop rule(s)
+22:53:08 lock-gl exit=0 in 169 s
+22:53:08 start gate
+22:53:09 gate exit=0 in 1 s
+22:53:09 start pr
+22:53:16 pr exit=0 in 7 s
+22:53:16 ALLDONE
 ```
