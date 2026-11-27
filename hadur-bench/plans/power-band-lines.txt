@@ -10,3 +10,5 @@
 # Tron: fitted toward Saguaro (1.37 against our 0.66 at 20-40 energy; shards/free4/pb-tron.txt).
 2.08 1.00 1.00 1.00 abc.tron3.Tron 3.11
 0.5 0.5 0.5 0.5 dragonbyte.Neutrino 4
+# FlowerBot: fitted on cloud (we fire 1.42 to BB's 1.96 at 60+ energy; locks.tsv 26 Nov G).
+1.00 1.00 1.24 1.25 deo.FlowerBot 1.0

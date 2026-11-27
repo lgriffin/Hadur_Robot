@@ -11,3 +11,4 @@ pm;round=0.5x0.5;longest=20;least=1;lag=1 cjm.Che 1.2
 hist;bins=61;d_max=1200;lag=0;roll=0.03;s_accel=3;s_dist=4;s_lat=1;s_since=2;s_wall=1;smooth=3;ticks=1 darkcanuck.Pris 0.92
 knn;cap=20000;k=35;lag=1;ticks=1;w_accel=4;w_adv=1;w_dist=2;w_lat=4;w_since=2;w_wall=0.25;width=0.1 lancel.Lynx 1.09
 knn;cap=500;k=20;lag=1;ticks=0;w_accel=0;w_adv=2;w_dist=2;w_lat=1;w_since=1;w_wall=0.25;width=0.1 mn.Combat 3.25.0
+knn;cap=500;k=10;lag=1;ticks=0;w_accel=1;w_adv=4;w_dist=2;w_lat=4;w_since=1;w_wall=0;width=0.1 cz.libors.Ogi v1
