@@ -1,7 +1,7 @@
 # pc-rival-picks, list E (BENCH-159): c is master, aa its A/A copy; for the 50 robots of plans/rival-shield-exec.txt
 # zl gives SHIELD-20's still shot plans (SHIELD-21), x0 turns SHIELD-11's battle exit off (SHIELD-19), zlx0 both.
-c | hadur117.Hadur 3.25 | bisect/hadur117.Hadur_3.25.jar
-aa | hadur117.Hadur 3.25aa | bisect/hadur117.Hadur_3.25aa.jar
-zl | hadur117.Hadur 3.25zl | bisect/hadur117.Hadur_3.25zl.jar
-x0 | hadur117.Hadur 3.25x0 | bisect/hadur117.Hadur_3.25x0.jar
-zlx0 | hadur117.Hadur 3.25zlx0 | bisect/hadur117.Hadur_3.25zlx0.jar
+c | hadur117.Hadur 3.25.1 | bisect/hadur117.Hadur_3.25.1.jar
+aa | hadur117.Hadur 3.25.1aa | bisect/hadur117.Hadur_3.25.1aa.jar
+zl | hadur117.Hadur 3.25.1zl | bisect/hadur117.Hadur_3.25.1zl.jar
+x0 | hadur117.Hadur 3.25.1x0 | bisect/hadur117.Hadur_3.25.1x0.jar
+zlx0 | hadur117.Hadur 3.25.1zlx0 | bisect/hadur117.Hadur_3.25.1zlx0.jar

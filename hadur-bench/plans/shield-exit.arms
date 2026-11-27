@@ -1,6 +1,6 @@
 # pc-shield-exit (BENCH-126): c is 3.19, aa its A/A copy, s4 SHIELD-11's battle exit at 400 damage
 # (sdmg400), s0 no damage exit, the SHIELD-6 budget alone (sdmgoff).
-c | hadur117.Hadur 3.25 | bisect/hadur117.Hadur_3.25.jar
-aa | hadur117.Hadur 3.25aa | bisect/hadur117.Hadur_3.25aa.jar
-s4 | hadur117.Hadur 3.25s4 | bisect/hadur117.Hadur_3.25s4.jar
-s0 | hadur117.Hadur 3.25s0 | bisect/hadur117.Hadur_3.25s0.jar
+c | hadur117.Hadur 3.25.1 | bisect/hadur117.Hadur_3.25.1.jar
+aa | hadur117.Hadur 3.25.1aa | bisect/hadur117.Hadur_3.25.1aa.jar
+s4 | hadur117.Hadur 3.25.1s4 | bisect/hadur117.Hadur_3.25.1s4.jar
+s0 | hadur117.Hadur 3.25.1s0 | bisect/hadur117.Hadur_3.25.1s0.jar

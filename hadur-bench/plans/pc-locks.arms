@@ -2,13 +2,13 @@
 # picked for it (plans/locks-pick.tsv; pb POW-20 pblist with the band from plans/power-band-lines.txt, x0 SHIELD-19 sx0list,
 # gl GUN-11 gslist, fq fllist, fgl GUN-12 fglist, dn DIST-4 dplist with the distance from plans/dist-pin-lines.txt, vj
 # vjlist, cpl COPY-2 copylist with the genome from plans/copy-lines.txt).
-c | hadur117.Hadur 3.25 | bisect/hadur117.Hadur_3.25.jar
-aa | hadur117.Hadur 3.25aa | bisect/hadur117.Hadur_3.25aa.jar
-pb | hadur117.Hadur 3.25pb | bisect/hadur117.Hadur_3.25pb.jar
-x0 | hadur117.Hadur 3.25x0 | bisect/hadur117.Hadur_3.25x0.jar
-gl | hadur117.Hadur 3.25gl | bisect/hadur117.Hadur_3.25gl.jar
-fq | hadur117.Hadur 3.25fq | bisect/hadur117.Hadur_3.25fq.jar
-fgl | hadur117.Hadur 3.25fgl | bisect/hadur117.Hadur_3.25fgl.jar
-dn | hadur117.Hadur 3.25dn | bisect/hadur117.Hadur_3.25dn.jar
-vj | hadur117.Hadur 3.25vj | bisect/hadur117.Hadur_3.25vj.jar
-cpl | hadur117.Hadur 3.25cpl | bisect/hadur117.Hadur_3.25cpl.jar
+c | hadur117.Hadur 3.25.1 | bisect/hadur117.Hadur_3.25.1.jar
+aa | hadur117.Hadur 3.25.1aa | bisect/hadur117.Hadur_3.25.1aa.jar
+pb | hadur117.Hadur 3.25.1pb | bisect/hadur117.Hadur_3.25.1pb.jar
+x0 | hadur117.Hadur 3.25.1x0 | bisect/hadur117.Hadur_3.25.1x0.jar
+gl | hadur117.Hadur 3.25.1gl | bisect/hadur117.Hadur_3.25.1gl.jar
+fq | hadur117.Hadur 3.25.1fq | bisect/hadur117.Hadur_3.25.1fq.jar
+fgl | hadur117.Hadur 3.25.1fgl | bisect/hadur117.Hadur_3.25.1fgl.jar
+dn | hadur117.Hadur 3.25.1dn | bisect/hadur117.Hadur_3.25.1dn.jar
+vj | hadur117.Hadur 3.25.1vj | bisect/hadur117.Hadur_3.25.1vj.jar
+cpl | hadur117.Hadur 3.25.1cpl | bisect/hadur117.Hadur_3.25.1cpl.jar

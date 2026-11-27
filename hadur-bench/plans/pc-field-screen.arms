@@ -1,11 +1,11 @@
 # pc-field-screen (BENCH-251) round 2: c is master, aa its A/A copy; each other arm is master with one lever's line on every
 # robot of plans/field-m-add.txt (hof MOVE-71 head-on floor, rwl MOVE-46 ram wait, qw MOVE-67 aim weight, sb speed band,
 # vj velocity jitter, or MOVE-47 steady orbit).
-c | hadur117.Hadur 3.25 | bisect/hadur117.Hadur_3.25.jar
-aa | hadur117.Hadur 3.25aa | bisect/hadur117.Hadur_3.25aa.jar
-hof | hadur117.Hadur 3.25hof | bisect/hadur117.Hadur_3.25hof.jar
-rwl | hadur117.Hadur 3.25rwl | bisect/hadur117.Hadur_3.25rwl.jar
-qw | hadur117.Hadur 3.25qw | bisect/hadur117.Hadur_3.25qw.jar
-sb | hadur117.Hadur 3.25sb | bisect/hadur117.Hadur_3.25sb.jar
-vj | hadur117.Hadur 3.25vj | bisect/hadur117.Hadur_3.25vj.jar
-or | hadur117.Hadur 3.25or | bisect/hadur117.Hadur_3.25or.jar
+c | hadur117.Hadur 3.25.1 | bisect/hadur117.Hadur_3.25.1.jar
+aa | hadur117.Hadur 3.25.1aa | bisect/hadur117.Hadur_3.25.1aa.jar
+hof | hadur117.Hadur 3.25.1hof | bisect/hadur117.Hadur_3.25.1hof.jar
+rwl | hadur117.Hadur 3.25.1rwl | bisect/hadur117.Hadur_3.25.1rwl.jar
+qw | hadur117.Hadur 3.25.1qw | bisect/hadur117.Hadur_3.25.1qw.jar
+sb | hadur117.Hadur 3.25.1sb | bisect/hadur117.Hadur_3.25.1sb.jar
+vj | hadur117.Hadur 3.25.1vj | bisect/hadur117.Hadur_3.25.1vj.jar
+or | hadur117.Hadur 3.25.1or | bisect/hadur117.Hadur_3.25.1or.jar

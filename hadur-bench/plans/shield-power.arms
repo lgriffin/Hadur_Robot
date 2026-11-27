@@ -1,7 +1,7 @@
 # pc-shield-power: c is master, aa its A/A copy, sc SHIELD-22 (the rival's cheapest wide-enough crossing power),
 # sr SHIELD-23 (crossing power capped at the enemy's bullet times the energy ratio).
 # Both act only while shield mode is on, so only shielded robots can move.
-c | hadur117.Hadur 3.25 | bisect/hadur117.Hadur_3.25.jar
-aa | hadur117.Hadur 3.25aa | bisect/hadur117.Hadur_3.25aa.jar
-sc | hadur117.Hadur 3.25sc | bisect/hadur117.Hadur_3.25sc.jar
-sr | hadur117.Hadur 3.25sr | bisect/hadur117.Hadur_3.25sr.jar
+c | hadur117.Hadur 3.25.1 | bisect/hadur117.Hadur_3.25.1.jar
+aa | hadur117.Hadur 3.25.1aa | bisect/hadur117.Hadur_3.25.1aa.jar
+sc | hadur117.Hadur 3.25.1sc | bisect/hadur117.Hadur_3.25.1sc.jar
+sr | hadur117.Hadur 3.25.1sr | bisect/hadur117.Hadur_3.25.1sr.jar
