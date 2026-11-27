@@ -67,6 +67,12 @@ one opposing team leaves behind, so every later battle on that client ran with l
 
 ## Melee
 
-Hadur 3.25 is **7th of 416 at 69.67 ± 0.23** (415 pairings, 1,271 battles, survival 61.48%). On the 411
+Hadur 3.25 is **7th of 416 at 69.67 ± 0.23** (415 pairings, 1,273 battles, survival 61.48%; settled 18:51 UTC). On the 411
 opponents both versions met it scores +0.11 ± 0.12 over 3.22 (69.65), against the +0.28 the bench read for
 MEND-6. ScalarR leads at 72.63.
+
+## Sanaro 0.5 (NanoMelee)
+
+Sanaro 0.5 settled at **66.40 ± 0.39** (89 pairings, 455 battles, PWIN 100%) on 2026-11-27 at 18:51 UTC, level
+with d414.nano.Quantum 1.0.0 (66.40 ± 0.08), which is listed 1st. That is +0.99 over Sanaro 0.3 (65.41). In the
+MeleeRumble Sanaro 0.5 is 61st of 416 at 61.32.

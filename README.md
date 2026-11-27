@@ -24,14 +24,14 @@ learned Java, and it was the original inspiration for everything on this page.
 per-opponent line that held on the PC since 3.24, the bred gun copies and the turn-time cuts (TIME-11 to TIME-15),
 the team adds the tight pack and per-team lines, and melee adds the final-duel energy race (MEND-6). The team entry
 runs as 3.25.1, the same code under a new version ([notes](docs/releases/v3.25.1.md)). The live rankings read on
-2026-11-27 at 17:31 UTC (1v1 settled at 17:39 UTC, after the live client stopped) (rumble.robowiki.net pages, saved in [data/rumble/pages/](data/rumble/pages/);
+2026-11-27 (1v1 settled at 17:39 UTC, team at 17:31 UTC, melee and NanoMelee settled at 18:51 UTC, after the live clients stopped) (rumble.robowiki.net pages, saved in [data/rumble/pages/](data/rumble/pages/);
 [live notes](docs/bench/live-3.25.md)):
 
 | Rumble | Entry | Rank | APS | Pairings | Battles |
 |---|---|---|---|---|---|
 | 1v1 | `hadur117.Hadur 3.25` | **2nd of 1,213** | **93.93** ± 0.18 | 1,212 | 2,126 |
 | Team | `hadur117.HadurTeam 3.25.1` | **2nd of 48** | **85.77** ± 0.42 | 47 | 265 |
-| Melee | `hadur117.Hadur 3.25` | **7th of 416** | **69.67** ± 0.23 | 415 | 1,271 |
+| Melee | `hadur117.Hadur 3.25` | **7th of 416** | **69.67** ± 0.23 | 415 | 1,273 |
 
 - **1v1 2nd at 93.93, its best score ever.** Like for like against 3.24 on the same 1,206 opponents 3.25 scores
   +0.49 ± 0.09 APS, above the +0.4 projected before release. The new per-opponent lines gave +0.30 of it and
@@ -84,7 +84,7 @@ round-end profile save that grew with every opponent on disk, fixed in 3.4
 
 Hadur has siblings, one for each size class and format it can win. Each is a separate robot with
 its own folder, build, requirements and README, and none shares code with Hadur.
-Live results as of 2026-11-02 16:00 UTC, Hadur and HadurTeam as of 2026-11-27 17:31 UTC (each robot's README keeps its full history):
+Live results as of 2026-11-02 16:00 UTC, Hadur, HadurTeam and Sanaro as of 2026-11-27 17:39 / 17:31 / 18:51 UTC (each robot's README keeps its full history):
 
 | Robot | Rumble | Size | Live result | |
 |---|---|---|---|---|
@@ -94,7 +94,7 @@ Live results as of 2026-11-02 16:00 UTC, Hadur and HadurTeam as of 2026-11-27 17
 | [**TwinSaor**](twinsaor/) `hadur117.twin.TwinSaor` | Twin Duel (2v2) | 1,995 B of 1,999 | **1st of 28**, 70.28 ± 0.50 (0.2), 0.91 ahead of ags.lunartwins.LunarTwins | [README](twinsaor/README.md) |
 | [**Saor**](saor/) `hadur117.micro.Saor` | MicroMelee | 723 B of 749 | **1st of 158**, 69.51 ± 0.27 (0.3), 0.24 ahead of kc.micro.Figment; 3rd of 206 in MiniMelee | [README](saor/README.md) |
 | [**Deise**](deise/) `hadur117.mini.Deise` | MiniMelee | 1,499 B of 1,499 | **1st of 206**, 71.18 ± 0.22 (0.5), 0.04 ahead of kc.mini.Mirage; 12th of 418 in MeleeRumble | [README](deise/README.md) |
-| [**Sanaro**](sanaro/) `hadur117.nano.Sanaro` | NanoMelee | 249 B of 249 | **2nd of 90**, 65.41 ± 0.29 (0.3), 1.03 behind d414.nano.Quantum | [README](sanaro/README.md) |
+| [**Sanaro**](sanaro/) `hadur117.nano.Sanaro` | NanoMelee | 249 B of 249 | **2nd of 90**, 66.40 ± 0.39 (0.5), level with d414.nano.Quantum (66.40), PWIN 100% | [README](sanaro/README.md) |
 | [**JayLexi**](jaylexi/) `hadur117.mini.JayLexi` | MiniRumble (1v1) | 1,486 B of 1,499 | **1st of 670**, 89.26 ± 0.11 (1.3), 0.32 ahead of sheldor.mini.FoilistMC | [README](jaylexi/README.md) |
 | [**Eveimear**](eveimear/) `hadur117.micro.Eveimear` | MicroRumble (1v1) | 749 B of 749 | **1st of 515**, 86.20 ± 0.17 (0.6), 0.64 ahead of jk.micro.Cotillion | [README](eveimear/README.md) |
 
