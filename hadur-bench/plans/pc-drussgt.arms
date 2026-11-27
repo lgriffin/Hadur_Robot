@@ -3,8 +3,8 @@
 #   ml16 MOVE-59 danger members also learn from waves that missed us (weight 16)
 #   fb2  FLAT-BLEND-1 the off flatteners join the danger as one member, 0.08 per percent of enemy hit rate, cap 0.4
 #   df1  MOVE-60 wave danger shaped as 0.68 * score^0.61 with a gentle time weight instead of 1 / ticks to impact
-c | hadur117.Hadur 3.25 | bisect/hadur117.Hadur_3.25.jar
-aa | hadur117.Hadur 3.25aa | bisect/hadur117.Hadur_3.25aa.jar
-ml16 | hadur117.Hadur 3.25ml16 | bisect/hadur117.Hadur_3.25ml16.jar
-fb2 | hadur117.Hadur 3.25fb2 | bisect/hadur117.Hadur_3.25fb2.jar
-df1 | hadur117.Hadur 3.25df1 | bisect/hadur117.Hadur_3.25df1.jar
+c | hadur117.Hadur 3.25.1 | bisect/hadur117.Hadur_3.25.1.jar
+aa | hadur117.Hadur 3.25.1aa | bisect/hadur117.Hadur_3.25.1aa.jar
+ml16 | hadur117.Hadur 3.25.1ml16 | bisect/hadur117.Hadur_3.25.1ml16.jar
+fb2 | hadur117.Hadur 3.25.1fb2 | bisect/hadur117.Hadur_3.25.1fb2.jar
+df1 | hadur117.Hadur 3.25.1df1 | bisect/hadur117.Hadur_3.25.1df1.jar

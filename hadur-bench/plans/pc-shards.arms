@@ -1,12 +1,12 @@
 # pc-shards (BENCH-252): c is master, aa its A/A copy; each other arm is master with one lever's line on every robot of
 # plans/shards-add.txt (fq flatteners on, x5 x.x5 power, hl heat jitter, dg simple-aim dodge, gl gun stack, mq mimic
 # members, mtzl shield list + still shot plans).
-c | hadur117.Hadur 3.25 | bisect/hadur117.Hadur_3.25.jar
-aa | hadur117.Hadur 3.25aa | bisect/hadur117.Hadur_3.25aa.jar
-fq | hadur117.Hadur 3.25fq | bisect/hadur117.Hadur_3.25fq.jar
-x5 | hadur117.Hadur 3.25x5 | bisect/hadur117.Hadur_3.25x5.jar
-hl | hadur117.Hadur 3.25hl | bisect/hadur117.Hadur_3.25hl.jar
-dg | hadur117.Hadur 3.25dg | bisect/hadur117.Hadur_3.25dg.jar
-gl | hadur117.Hadur 3.25gl | bisect/hadur117.Hadur_3.25gl.jar
-mq | hadur117.Hadur 3.25mq | bisect/hadur117.Hadur_3.25mq.jar
-mtzl | hadur117.Hadur 3.25mtzl | bisect/hadur117.Hadur_3.25mtzl.jar
+c | hadur117.Hadur 3.25.1 | bisect/hadur117.Hadur_3.25.1.jar
+aa | hadur117.Hadur 3.25.1aa | bisect/hadur117.Hadur_3.25.1aa.jar
+fq | hadur117.Hadur 3.25.1fq | bisect/hadur117.Hadur_3.25.1fq.jar
+x5 | hadur117.Hadur 3.25.1x5 | bisect/hadur117.Hadur_3.25.1x5.jar
+hl | hadur117.Hadur 3.25.1hl | bisect/hadur117.Hadur_3.25.1hl.jar
+dg | hadur117.Hadur 3.25.1dg | bisect/hadur117.Hadur_3.25.1dg.jar
+gl | hadur117.Hadur 3.25.1gl | bisect/hadur117.Hadur_3.25.1gl.jar
+mq | hadur117.Hadur 3.25.1mq | bisect/hadur117.Hadur_3.25.1mq.jar
+mtzl | hadur117.Hadur 3.25.1mtzl | bisect/hadur117.Hadur_3.25.1mtzl.jar

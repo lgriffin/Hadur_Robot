@@ -1,6 +1,6 @@
 # Cloud AES forensic for MOVE-41 kernel width (docs/bench/local/2026-11-09_view-rank.md): c is 3.21 with the AES
 # recorder on (aa,aesrec); kn every danger view's kernel half as wide (kw05,aesrec); kw twice as wide (kw2,aesrec).
 # Scored on real hits by round with the truth logs on.
-c | hadur117.Hadur 3.25aaar | bisect/hadur117.Hadur_3.25aaar.jar
-kn | hadur117.Hadur 3.25knar | bisect/hadur117.Hadur_3.25knar.jar
-kw | hadur117.Hadur 3.25kwar | bisect/hadur117.Hadur_3.25kwar.jar
+c | hadur117.Hadur 3.25.1aaar | bisect/hadur117.Hadur_3.25.1aaar.jar
+kn | hadur117.Hadur 3.25.1knar | bisect/hadur117.Hadur_3.25.1knar.jar
+kw | hadur117.Hadur 3.25.1kwar | bisect/hadur117.Hadur_3.25.1kwar.jar

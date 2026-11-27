@@ -1,5 +1,5 @@
 # Field-prior cloud smoke (MOVE-35, docs/bench/gun-oracle.md): c is master as it stands (built as aa), aa its second
 # copy (bb), pf master with the field prior as the last aim member.
-c | hadur117.Hadur 3.25aa | bisect/hadur117.Hadur_3.25aa.jar
-aa | hadur117.Hadur 3.25bb | bisect/hadur117.Hadur_3.25bb.jar
-pf | hadur117.Hadur 3.25pf | bisect/hadur117.Hadur_3.25pf.jar
+c | hadur117.Hadur 3.25.1aa | bisect/hadur117.Hadur_3.25.1aa.jar
+aa | hadur117.Hadur 3.25.1bb | bisect/hadur117.Hadur_3.25.1bb.jar
+pf | hadur117.Hadur 3.25.1pf | bisect/hadur117.Hadur_3.25.1pf.jar

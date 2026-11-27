@@ -1,5 +1,5 @@
 # MOVE-32 screen (pc-flat-on): c is master, aa its A/A copy, fo the duel's flattener views on against every opponent
 # (ablation flaton, MOVE-24 undone); the screen picks the robots fo locks for at a 5-point margin.
-c | hadur117.Hadur 3.25 | bisect/hadur117.Hadur_3.25.jar
-aa | hadur117.Hadur 3.25aa | bisect/hadur117.Hadur_3.25aa.jar
-fo | hadur117.Hadur 3.25fo | bisect/hadur117.Hadur_3.25fo.jar
+c | hadur117.Hadur 3.25.1 | bisect/hadur117.Hadur_3.25.1.jar
+aa | hadur117.Hadur 3.25.1aa | bisect/hadur117.Hadur_3.25.1aa.jar
+fo | hadur117.Hadur 3.25.1fo | bisect/hadur117.Hadur_3.25.1fo.jar

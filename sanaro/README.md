@@ -9,17 +9,19 @@ requirements are SANARO-1 to SANARO-14 in [docs/requirements/sanaro.md](../docs/
 
 ## How it works
 
-Sanaro is one class of 249 bytes.
+Sanaro is one class of 246 bytes (0.5).
 
 - **Movement: anti-gravity** in the style of the DustBunny line of nanobots, pushing straight away
   from where each robot is about to be. (A spiral read best among nanos in duels but cost 0.88 APS
   in the melee fields where NanoMelee is scored.)
-- **Radar** that flips direction on its own threshold and locks as the gun cools.
+- **Target held by name** until a robot dies or a round starts; meanwhile only a nearer robot can take
+  it over. This rule is the one d414.nano.Quantum plays, credited here; the code is Sanaro's own.
+- **Radar** that sweeps while the gun reloads and locks onto the target as the gun cools.
 - **Gun** with a flat lead of its own and a fire gate: it fires only when the gun is on the lead.
-- **Bullet power from a table** indexed by both robots' energy, held in a string (Robocode's
-  codesize does not count strings). Most cells follow a formula; in 0.3, 9,529 cells hold the
-  power Hadur 3.20 used in the same situations, distilled from its shots in 43 live-shaped
-  NanoMelee fields (every 2 × 2 block of the table where Hadur fired 20 or more shots).
+- **Bullet power by distance:** 2 × (480 / distance) in integers, so 3 inside 240 px, 2 out to
+  480 px and the 0.1 minimum beyond. 0.1 to 0.4 read power from a table held in a string (Robocode's
+  codesize does not count strings); 0.3 and 0.4 filled it with the power Hadur 3.20 used in the same
+  situations.
 
 ## Standing
 
@@ -40,19 +42,13 @@ version, on a census shaped like the live NanoMelee fields.
 
 | Version | Released | Size | What changed | Bench |
 |---|---|---|---|---|
+| **0.5** | 2026-11-27 | 246 B | Target held by name until a robot dies; power 2 × (480 / distance), no table. | +0.47 over 0.4 on 12 seeds (two halves, +0.46 ± 0.40 and +0.50 ± 0.40) |
 | 0.4 | built, not released | 249 B | Weaker fire at range: power falls to 0.1 past 480 px and halves from 240 px (480 / distance instead of 640 / distance). | about +0.23 pooled over 1,290 battles; survival 24% to 27.5% |
 | **0.3** | 2026-11-01 | 249 B | Hadur-taught bullet power in 9,529 cells of the power table; the code is unchanged. | +0.67 ± 0.34; survival 19.0% to 22.9% |
 | **0.2** | 2026-10-30 | 249 B | The fire gate and Sanaro's own flat lead. | +0.55 ± 0.32 |
 | **0.1** | 2026-10-28 | 247 B | First release: anti-gravity, radar flip and the energy power table. | |
 
 Release notes are in [docs/releases/](../docs/releases/) (`sanaro-v<version>.md`).
-
-0.5 (prepared 2026-11-23, 246 bytes; not released) holds its target by name until a nearer robot
-shows, and drops it when any robot dies or a round starts (the rule Quantum by d414 plays; section
-27 of docs/sanaro.md measured it at 270 bytes). To make room it has no power table: it fires 2 times
-the integer 480 / distance, so still 0.1 past 480 px. On 12 fresh seeds of the live-shaped census
-it read +0.46 ± 0.40 and +0.50 ± 0.40 over 0.4 (two halves, each with an identical copy as its A/A
-arm). That projects about 66.25 live, still about 0.2 behind Quantum.
 
 ## Build
 
