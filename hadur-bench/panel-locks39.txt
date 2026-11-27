@@ -1,0 +1,18 @@
+# BENCH-253 pc-locks, round 39 (overnight, 48 seeds): 13 robots. Seven carry a line read on 12 or more fresh cloud seeds at
+# 0.7x the live turn time against both c and aa (coverage/shards/locks.tsv): Help on zl (SHIELD-20 still plans); Diamond on
+# pb (POW-20 bands on top of its race power); Sabreur on rlnrkn (RAM-20 and RAM-21); JKHydra on fgl (GUN-12 free gun on top of
+# its race power); NeophytePRAL on mt (shield list); NanoSatanMelee on rf (RAM flee); Shadow on rp (a re-read of round 37).
+# BeepBoop, DrussGT, ScalarR, Saguaro, Wavelet and Knight pad the A/A check on arm aa. name | note | jar
+ary.Help 1.0 | rank71-band3 | ary.Help_1.0.jar
+voidious.Diamond 1.8.22 | rank8-band1 | voidious.Diamond_1.8.22.jar
+sheldor.nano.Sabreur 1.1.2 | rank249-band4 | sheldor.nano.Sabreur_1.1.2.jar
+jkong.JKHydra 1.4 | rank6-band1 | jkong.JKHydra_1.4.jar
+nz.jdc.nano.NeophytePRAL 1.4 | rank336-band4 | nz.jdc.nano.NeophytePRAL_1.4.jar
+arthord.NanoSatanMelee Beta | rank889-band6 | arthord.NanoSatanMelee_Beta.jar
+abc.Shadow 3.83c | rank27-band2 | abc.Shadow_3.83c.jar
+kc.mega.BeepBoop 2.0 | rank1-band1 | kc.mega.BeepBoop_2.0.jar
+jk.mega.DrussGT 3.1.20 | rank4-band1 | jk.mega.DrussGT_3.1.20.jar
+aaa.r.ScalarR 0.005h.053-noshield | rank5-band1 | aaa.r.ScalarR_0.005h.053-noshield.jar
+oog.mega.saguaro.Saguaro 1.1.4 | rank2-band1 | oog.mega.saguaro.Saguaro_1.1.4.jar
+pc.Wavelet 1.5 | rank16-band2 | pc.Wavelet_1.5.jar
+rsalesc.mega.Knight 0.6.28 | rank11-band2 | rsalesc.mega.Knight_0.6.28.jar
