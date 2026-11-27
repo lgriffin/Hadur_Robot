@@ -1,4 +1,3 @@
-08:04:06 lock-md exit=0 in 22 s
 08:04:06 start lock-x0
 08:04:06 watching lock-x0: 3 stop rule(s)
 08:04:36 lock-x0 exit=0 in 29 s
@@ -298,3 +297,4 @@
 23:38:46 start pr
 23:38:53 pr exit=0 in 7 s
 23:38:53 ALLDONE
+08:38:01 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
