@@ -16,3 +16,7 @@ key20 | longest pattern key 20 ticks | s/static final int KEY = 30;/static final
 pow2 | power 2 at every range | s/static final String POWER = ".*";/static final String POWER = "\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020";/
 jit | aim jitter of 0.06 rad (bullet catchers) | s/static final double JITTER = 0;/static final double JITTER = 0.06;/
 cap | keep only the last 4,000 ticks of history (CPU in late rounds) | s/static final int CAP = 0;/static final int CAP = 4000;/
+p0 | no reversal on shots: plain orbit (beats head-on guns, the probe profile's mid-field finding) | s/static final String FLIP = ".*";/static final String FLIP = "\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000";/
+bandit | per round, play the movement mode (reverse on shots or plain orbit) that took less fire per tick | s/static final int BANDIT = 0;/static final int BANDIT = 1;/
+bd9 | bandit, tallies decay 0.9 a round | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double DECAY = 1;/static final double DECAY = 0.9;/
+bd7 | bandit, tallies decay 0.7 a round | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double DECAY = 1;/static final double DECAY = 0.7;/

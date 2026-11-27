@@ -76,5 +76,10 @@ kitlab/run.sh nano-all kitlab/jars/hadur117.nano.Sanara_c.jar "hadur117.nano.San
 | 0.0 smoke, 1 seed | 8 top nanos | 50.9 ± 9.4 score share; beats LittleBlackBook 1.0 (62%), PatternAdept 1.0 (64%), Caligula, Machete; loses to PralDeGuerre (37%) and ThnikkaBot (35%); 0 skipped turns |
 | 0.0 first build, 1 seed | whole division, 299 bots | 69.1 ± 2.2 score share, about 54th on the live table (Sanaro 0.3: 26.7); by live rank: top 5 53.4%, 6-20 52.6%, 21-50 50.3%, 51-100 57.0%, 101-200 64.1%, 201+ 89.3%; 0.3 skipped turns a battle |
 | 0.0 with the wrapping replay (arm `c`), 1 seed | whole division, 299 bots | 69.8 ± 2.2, about 50th; paired against the first build +0.70 ± 0.67 per bot; 0.3 skipped turns a battle |
+| PatternAdept 1.0 (live 5th) as a reference, 1 seed | whole division | 77.6 ± 2.4; against Sanara 0.0 on each bot it is level or behind in the top 50 and 8.1 APS ahead across ranks 51 to 250 |
+| arm `p0`, 1 seed | whole division | -3.92 ± 2.38 against 0.0 (top 50 -13.9 a bot) |
+| arm `bandit`, 1 seed | whole division | 73.1, +3.29 ± 1.40 against 0.0 (ranks 51 to 250 +5.1 a bot, top 50 -1.2) |
 
 The first read says the gun and the reversal already hold the top of the field level, and the points are lost in the middle: ranks 51 to 200 out-shoot the orbit (their score is about half bullet damage, none of them rams). That is the band the reversal arms (`p8`, `tick`, `ptab`) and the distance arms are aimed at.
+
+The behaviour profile (`kitlab/nano-probe-field.txt`: the live top 5 and the 25 bots ranked 51+ that beat 0.0 hardest) explains it. Many mid-field bots aim roughly head-on, and reversing when they fire steps Sanara back onto their line: they hit a plain orbit 4 to 8% of their bullet damage potential and Sanara 13 to 18%. Learning and linear guns are the other way round: they hit the plain orbit 31 to 63% and the reversing orbit about half that. So the movement is chosen per opponent: `BANDIT` plays each mode for a round, then each round plays the mode that has taken less fire per tick (`DECAY` weights later rounds).

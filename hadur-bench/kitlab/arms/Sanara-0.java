@@ -1,6 +1,7 @@
 package hadur117.nano;
 
 import robocode.AdvancedRobot;
+import robocode.HitByBulletEvent;
 import robocode.HitWallEvent;
 import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
@@ -42,10 +43,27 @@ public class Sanara extends AdvancedRobot {
     static String history = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
     static double enemyEnergy;
     static double dir = 1;
+    // BANDIT 1: two movement modes, 0 = reverse on shots as above, 1 = plain orbit (no reversal on
+    // shots); each round plays the mode with less bullet power taken per tick so far (each mode is
+    // tried once first). 0 = off: always mode 0.
+    static final int BANDIT = 0;
+    // With BANDIT, each round first scales both modes' tallies by DECAY, so later rounds weigh more.
+    static final double DECAY = 1;
+    static double[] taken = new double[2];
+    static double[] seen = new double[2];
+    static int mode;
 
     public void run() {
         setAdjustGunForRobotTurn(true);
         setAdjustRadarForGunTurn(true);
+        if (BANDIT == 1) {
+            taken[0] *= DECAY;
+            taken[1] *= DECAY;
+            seen[0] *= DECAY;
+            seen[1] *= DECAY;
+            mode = seen[0] == 0 ? 0 : seen[1] == 0 ? 1
+                : taken[0] / seen[0] <= taken[1] / seen[1] ? 0 : 1;
+        }
         turnRadarRightRadians(Double.POSITIVE_INFINITY);
     }
 
@@ -56,7 +74,10 @@ public class Sanara extends AdvancedRobot {
         setTurnRadarLeftRadians(getRadarTurnRemainingRadians());
 
         // Movement.
-        if ((enemyEnergy > (enemyEnergy = e.getEnergy()) && Math.random() * 64 < FLIP.charAt(band))
+        if (BANDIT == 1) {
+            seen[mode]++;
+        }
+        if ((enemyEnergy > (enemyEnergy = e.getEnergy()) && mode == 0 && Math.random() * 64 < FLIP.charAt(band))
                 || Math.random() < TICK) {
             dir = -dir;
         }
@@ -90,6 +111,12 @@ public class Sanara extends AdvancedRobot {
         setTurnGunRightRadians(Utils.normalRelativeAngle(absBearing - getGunHeadingRadians()
             + offset / distance + (Math.random() - 0.5) * JITTER));
         setFire(power);
+    }
+
+    public void onHitByBullet(HitByBulletEvent e) {
+        if (BANDIT == 1) {
+            taken[mode] += e.getPower();
+        }
     }
 
     public void onHitWall(HitWallEvent e) {
