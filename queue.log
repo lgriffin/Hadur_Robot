@@ -1,18 +1,3 @@
-15:53:03 progress pushed to origin claude/pc-locks-progress (every 15 min)
-15:55:14 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
-15:55:14 skip prep (already exit=0)
-15:55:14 skip livematch (already exit=0)
-15:55:14 skip lock (already exit=0)
-15:55:14 skip stage (already exit=0)
-15:55:14 skip lock-ky (already exit=0)
-15:55:14 skip lock-rwl (already exit=0)
-15:55:14 skip lock-ty (already exit=0)
-15:55:14 skip lock-x0 (already exit=0)
-15:55:14 skip gate (already exit=0)
-15:55:14 start pr
-15:55:23 progress pushed to origin claude/pc-locks-progress (every 15 min)
-15:55:28 pr exit=1 in 14 s
-15:55:28 ALLDONE
 15:57:31 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1544834; work D:\code\Hadur_Robot\hadur-bench\work
 15:57:31 skip prep (already exit=0)
 15:57:31 skip livematch (already exit=0)
@@ -298,3 +283,18 @@
 21:17:25 watching lock: 4 stop rule(s)
 21:40:06 progress lock: 185/576 (32%) battles, 490/h, ETA 48 min, 0 failed, skips 9.5/battle (last 100), aa +0.01
 22:10:20 progress lock: 418/576 (73%) battles, 466/h, ETA 20 min, 0 failed, skips 8.8/battle (last 100), aa +0.01
+22:38:05 lock exit=0 in 4839 s
+22:38:05 start stage
+22:38:08 stage exit=0 in 2 s
+22:38:08 start lock-rp
+22:38:08 watching lock-rp: 3 stop rule(s)
+22:40:35 progress lock-rp: 86/144 (60%) battles, 343/h, ETA 10 min, 0 failed, skips 11.6/battle (last 100), rp +0.01
+22:47:08 lock-rp exit=0 in 540 s
+22:47:08 start lock-p5
+22:47:08 watching lock-p5: 3 stop rule(s)
+22:49:33 lock-p5 exit=0 in 144 s
+22:49:33 start lock-fq
+22:49:33 watching lock-fq: 3 stop rule(s)
+22:50:18 lock-fq exit=0 in 45 s
+22:50:18 start lock-gl
+22:50:18 watching lock-gl: 3 stop rule(s)
