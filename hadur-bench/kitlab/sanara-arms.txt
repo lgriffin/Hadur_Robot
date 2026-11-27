@@ -20,3 +20,10 @@ p0 | no reversal on shots: plain orbit (beats head-on guns, the probe profile's 
 bandit | per round, play the movement mode (reverse on shots or plain orbit) that took less fire per tick | s/static final int BANDIT = 0;/static final int BANDIT = 1;/
 bd9 | bandit, tallies decay 0.9 a round | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double DECAY = 1;/static final double DECAY = 0.9;/
 bd7 | bandit, tallies decay 0.7 a round | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double DECAY = 1;/static final double DECAY = 0.7;/
+b350 | bandit + ideal distance 350 px | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double IDEAL = 420;/static final double IDEAL = 350;/
+b300 | bandit + ideal distance 300 px | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double IDEAL = 420;/static final double IDEAL = 300;/
+b250 | bandit + ideal distance 250 px | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double IDEAL = 420;/static final double IDEAL = 250;/
+b350p4 | bandit + 350 px + reversal chance 0.41 | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double IDEAL = 420;/static final double IDEAL = 350;/;s/\\u0026/\\u001a/g
+b350pw | bandit + 350 px + power 3 inside 400 px | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double IDEAL = 420;/static final double IDEAL = 350;/;s/static final String POWER = ".*";/static final String POWER = "\\u0030\\u0030\\u0030\\u0030\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020";/
+b200 | bandit + ideal distance 200 px | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double IDEAL = 420;/static final double IDEAL = 200;/
+b150 | bandit + ideal distance 150 px | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double IDEAL = 420;/static final double IDEAL = 150;/
