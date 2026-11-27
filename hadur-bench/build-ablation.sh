@@ -249,9 +249,6 @@
 #   sgo    POISON-2: stop-and-go (POISON-1, WavePoison: reverse crawl 1 tick before the enemy's gun
 #         is ready) against every duel opponent. Suffix wp.
 #   sgo2   the same, WavePoisonShift's variant (2 ticks). Suffix ws.
-#   sguard MOVE-75: against every stop-and-go opponent, the surf rates the mover's intended move while a real
-#         bullet is in the air and takes the tick when it is over twice as dangerous as the surf's best option.
-#         Suffix sgd. sguard15 / sguard3: the ratio 1.5 / 3. Suffix sgf / sgh.
 #   sgolist / sgo2list the robots named in $STOP_GO / $STOP_GO2 get stop-and-go per opponent
 #         (ShieldTableData.stopGos() / stopGoShifts()). Suffix wl / wm.
 #   hjlist / gslist the robots named in $HEAT_JIT / $GUN_STACK get MOVE-13 stop-and-start (MOVE-28) or the gun
@@ -838,16 +835,6 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
                 edit "$movedesign" "static final int STOP_AND_GO_PREFIRE = 1;" "static final int STOP_AND_GO_PREFIRE = 2;"
                 version="${version}ws"
             else version="${version}wp"; fi ;;
-        sguard|sguard15|sguard3)
-            # MOVE-75: the surf guards the stop-and-go mover's moves (ratio 2, or 1.5 / 3).
-            edit "$movedesign" "static final boolean STOP_GUARD = false;" "static final boolean STOP_GUARD = true;"
-            if [[ "$a" == sguard15 ]]; then
-                edit "$movedesign" "static final double STOP_GUARD_RATIO = 2.0;" "static final double STOP_GUARD_RATIO = 1.5;"
-                version="${version}sgf"
-            elif [[ "$a" == sguard3 ]]; then
-                edit "$movedesign" "static final double STOP_GUARD_RATIO = 2.0;" "static final double STOP_GUARD_RATIO = 3.0;"
-                version="${version}sgh"
-            else version="${version}sgd"; fi ;;
         smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist|rclist|mirofflist|sfloorlist|pcaplist|pcap5list|hflist|pblist|vjlist|sblist|dplist|rhlist|rwlist|orlist|rflist|rfanlist|rbendlist|rlearnlist|rknownlist|pmlist|pmxlist|aimwlist|hoflist|fglist|copylist|stinylist|sbklist|syldlist)
             # Shield part 2 (docs/plan-shield-quality.md): per-opponent opening drive or shipped aims;
             # the mode table's simple-aim dodge (DODGE-3).

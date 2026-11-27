@@ -39,20 +39,4 @@ class DuelOnlySwitchesTest {
         assertFalse(GunDesign.FREE_GUN);
         assertFalse(GunDesign.UNDECAYED);
     }
-
-    @Test
-    @Tag("MOVE-75")
-    @DisplayName("MOVE-75: the driver guard ships off, and yields only a move rated over the ratio times the surf's best")
-    void stopGuard() {
-        assertFalse(MoveDesign.STOP_GUARD);
-        // counter-clockwise, stop, clockwise
-        double[] rated = {0.2, 1.0, 0.45};
-        assertTrue(StopGuard.yields(rated, 0, 2.0), "the stop costs five times the best");
-        assertTrue(StopGuard.yields(rated, 1, 2.0), "going clockwise costs over twice the best");
-        assertFalse(StopGuard.yields(rated, -1, 2.0), "the best option itself never yields");
-        assertFalse(StopGuard.yields(rated, 1, 3.0), "inside a ratio of three");
-        assertFalse(StopGuard.yields(new double[] {0, 0, 0}, 0, 2.0), "nothing dangerous: the mover keeps the tick");
-        assertFalse(StopGuard.yields(new double[] {0.2, Double.NaN, 0.4}, 0, 2.0), "an unrated move does not yield");
-        assertFalse(StopGuard.yields(null, 0, 2.0));
-    }
 }
