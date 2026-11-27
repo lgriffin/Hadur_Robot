@@ -591,6 +591,8 @@ final class ShieldTableData {
             "fnh.mega.DumDum 1.0.1",         // +7.9
             // pc-locks round 34 (BENCH-253, PR #1086): 24 fresh PC seeds at the live turn time; cloud lock held first
             "tornyil.Lajcsi2.Lajcsi2sm 1.0", // +1.9
+            // pc-locks round 35 (BENCH-253, PR #1095): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "stelo.MatchupMini 1.1",             // +2.1
         };
     }
 
@@ -628,6 +630,8 @@ final class ShieldTableData {
             "oog.micro.SavantMicro 1.1",
             // pc-locks round 30 (BENCH-253, PR #1066): 24 fresh PC seeds at the live turn time; cloud lock held first
             "dummy.micro.Sparrow 2.5",       // +1.4
+            // pc-locks round 35 (BENCH-253, PR #1095): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "dmh.robocode.robot.YellowBird 0.12", // +1.5 (with the shield list)
         };
     }
 
@@ -929,6 +933,8 @@ final class ShieldTableData {
             "zyx.nano.RedBull 1.0",          // +1.5
             // pc-locks round 33 (BENCH-253, PR #1083): 24 fresh PC seeds at the live turn time; cloud lock held first
             "oa.weak.FlyMk1 0.1",            // +0.6
+            // pc-locks round 35 (BENCH-253, PR #1095): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "divineomega.TrialBot 0.003",        // +2.5
         };
     }
 
@@ -1371,6 +1377,10 @@ final class ShieldTableData {
             "sanyi.mikrobi.Roberto 1.0",     // +0.8
             "supersample.SuperCorners 1.0",  // +3.4
             "whitesquare.robots.SkynetAdvanced 1.1", // +0.9
+            // pc-locks round 35 (BENCH-253, PR #1095): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "squidM.SquidmanNano 1.0",           // +1.5
+            "hlavko.nano.Ringo 2.0",             // +1.5
+            "zyx.nano.RedBull 1.0",              // +1.6 (with its ram flee)
         };
     }
 
@@ -1419,6 +1429,10 @@ final class ShieldTableData {
             "djdjdj.NanoSkunk10 1.0",        // +1.6
             "sanyi.mikrobi.Roberto 1.0",     // +0.8
             "supersample.SuperCorners 1.0",  // +3.4
+            // pc-locks round 35 (BENCH-253, PR #1095): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "squidM.SquidmanNano 1.0",           // +1.5
+            "hlavko.nano.Ringo 2.0",             // +1.5
+            "zyx.nano.RedBull 1.0",              // +1.6 (with its ram flee)
         };
     }
 
