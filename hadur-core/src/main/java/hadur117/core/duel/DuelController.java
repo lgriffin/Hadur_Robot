@@ -946,8 +946,35 @@ public final class DuelController {
             }
         } else if (stopAndGo != null) {
             // POISON-1: stop while the enemy's gun cools, go once it has fired; the waves still teach the views.
-            stopAndGo.move(orders, currentState(in), lastEnemyLocation, enemyGunHeat(in).at(in.time()),
-                in.gunCoolingRate(), roundEnemyShot);
+            RobotState me = currentState(in);
+            if (!MoveDesign.STOP_GUARD) {
+                stopAndGo.move(orders, me, lastEnemyLocation, enemyGunHeat(in).at(in.time()),
+                    in.gunCoolingRate(), roundEnemyShot);
+            } else {
+                // MOVE-75: the mover's intended move is rated by the surf while a real bullet is in the
+                // air; a move the surf rates clearly worse than its own best gives the tick to the surf.
+                BotOrders.Builder mine = BotOrders.builder();
+                StopAndGo.Phase phase = stopAndGo.move(mine, me, lastEnemyLocation,
+                    enemyGunHeat(in).at(in.time()), in.gunCoolingRate(), roundEnemyShot);
+                BotOrders drive = mine.build();
+                Wave ahead = moveController.findSurfableWave(0, me);
+                if (ahead != null && ahead.firingWave) {
+                    BotOrders.Builder surfed = BotOrders.builder();
+                    surfMover.setRateComplete(true);
+                    surfMover.move(surfed, me, moveController, lastEnemyLocation, TickBudget.wavesToSurf(level), false);
+                    if (StopGuard.yields(surfMover.ratedDangers(),
+                            phase == StopAndGo.Phase.GO ? stopAndGo.direction() : 0, MoveDesign.STOP_GUARD_RATIO)) {
+                        drive = surfed.build();
+                        stats.stopGuardTicks++;
+                    } else {
+                        // The surf's plan is not the one driven: the gun must not read it (MOVE-8).
+                        moveController.clearPlan();
+                    }
+                }
+                if (!Double.isNaN(drive.bodyTurn())) orders.turnRight(drive.bodyTurn());
+                if (!Double.isNaN(drive.ahead())) orders.ahead(drive.ahead());
+                if (!Double.isNaN(drive.maxVelocity())) orders.maxVelocity(drive.maxVelocity());
+            }
         } else {
             // MOVE-11: the enemy's gun is cool by now or next tick, and the wave it will leave is surfed too.
             // MOVE-28: an opponent the table names gets heatjit (the gun-heat wave, no hold).
@@ -1353,7 +1380,9 @@ public final class DuelController {
         if (stopAndGo != null) {
             // POISON-1: WP,round,tick,goTicks,stopTicks,reverseTicks.
             telemetry.emit("WP," + round + "," + tick + "," + stopAndGo.ticks(StopAndGo.Phase.GO) + ","
-                + stopAndGo.ticks(StopAndGo.Phase.STOP) + "," + stopAndGo.ticks(StopAndGo.Phase.REVERSE));
+                + stopAndGo.ticks(StopAndGo.Phase.STOP) + "," + stopAndGo.ticks(StopAndGo.Phase.REVERSE)
+                // MOVE-75: with the guard on, the ticks it gave to the surf.
+                + (MoveDesign.STOP_GUARD ? "," + stats.stopGuardTicks : ""));
         }
         // RAM-3: a round the rammer played, before its confirmation (fought) or after (its arm).
         if (trialRound || rammer.rammedThisRound()) {

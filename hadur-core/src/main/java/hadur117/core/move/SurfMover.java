@@ -358,6 +358,7 @@ public class SurfMover {
     public void move(BotOrders.Builder orders, RobotState myState,
                      MoveController moveCtrl, Point2D.Double enemyLocation,
                      int wavesToSurf, boolean goToAllowed) {
+        ratedDangers = null;
         Wave surfWave = moveCtrl.findSurfableWave(0, myState);
         if (surfWave == null) {
                 // DODGE-6: with no wave, the planner keeps a close enemy away while the dodger has its gun.
@@ -447,6 +448,31 @@ public class SurfMover {
         }
     }
 
+    /** MOVE-75: whether every option is rated in full (no early stop once it passes the best). */
+    private boolean rateComplete;
+    /** MOVE-75: the three options' dangers of the last {@link #move}, by ordinal; null when it did not rate them. */
+    private double[] ratedDangers;
+
+    /**
+     * MOVE-75: has the three-option surf rate every option in full, so {@link #ratedDangers} can be
+     * compared across options. Off, an option is dropped as soon as it passes the best so far.
+     *
+     * @param on true to rate in full
+     */
+    public void setRateComplete(boolean on) {
+        rateComplete = on;
+    }
+
+    /**
+     * MOVE-75: the dangers the three-option surf gave counter-clockwise, stop and clockwise on the
+     * last {@link #move}, or null when that move did not rate them (no wave, the planner or go-to drove).
+     *
+     * @return the dangers by {@link SurfOption} ordinal, or null
+     */
+    public double[] ratedDangers() {
+        return ratedDangers == null ? null : ratedDangers.clone();
+    }
+
     /**
      * The three-option surf: rates orbiting counter-clockwise, stopping and orbiting
      * clockwise against the waves ahead, and drives the cheapest. A stop wins ties, then
@@ -470,11 +496,12 @@ public class SurfMover {
             for (int o = 0; o < captures.length; o++) captures[o] = AesRecord.capture(moveCtrl.viewCount());
         }
         updateSurfDangers(myState, moveCtrl, wavesToSurf, goingClockwise,
-            captures != null, captures);
+            captures != null || rateComplete, captures);
 
         double ccwDanger = surfOptionDangers.getOrDefault(SurfOption.COUNTER_CLOCKWISE, 0.0);
         double stopDanger = surfOptionDangers.getOrDefault(SurfOption.STOP, 0.0);
         double cwDanger = surfOptionDangers.getOrDefault(SurfOption.CLOCKWISE, 0.0);
+        ratedDangers = new double[] {ccwDanger, stopDanger, cwDanger};
 
         SurfOption pick = choose(ccwDanger, stopDanger, cwDanger, lastSurfOption, steadyOrbit);
         boolean takeStop = pick == SurfOption.STOP;

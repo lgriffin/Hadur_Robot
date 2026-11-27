@@ -109,4 +109,13 @@ final class MoveDesign {
     static final boolean STOP_AND_GO = false;
     /** POISON-2: the forced stop-and-go's variant: 1 WavePoison, 2 WavePoisonShift. */
     static final int STOP_AND_GO_PREFIRE = 1;
+
+    /**
+     * MOVE-75: the driver guard on the stop-and-go mover: the surf rates the mover's intended move
+     * while a real bullet is in the air and takes the tick when it is clearly the worse one. Off by
+     * default; the ablation {@code sguard} turns it on for the screen.
+     */
+    static final boolean STOP_GUARD = false;
+    /** MOVE-75: the guard yields when the mover's move is rated above this many times the surf's best option. */
+    static final double STOP_GUARD_RATIO = 2.0;
 }
