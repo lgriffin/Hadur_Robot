@@ -149,15 +149,6 @@ public final class ShieldList {
      * distance in px, then the name ({@code "px name"}). Held to [{@link #DIST_PIN_MIN}, {@link #DIST_PIN_MAX}].
      */
     public static final String DIST_PIN_PREFIX = "dist-pin:";
-    /**
-     * MOVE-74: a line starting with this gives an opponent's movement wheel: two or more profiles, comma-separated,
-     * then the name ({@code "base,dn600+vj,fq name"}). A profile joins tokens with {@code +}: {@code base} (no
-     * change), {@code dn<px>} (DIST-4 pin), {@code vj} (MOVE-44), {@code sb} (MOVE-45), {@code or} (MOVE-47),
-     * {@code fq} (MOVE-32 flattener on). Each round of a duel plays one profile, drawn at the round's start.
-     */
-    public static final String WHEEL_PREFIX = "wheel:";
-    /** MOVE-74: the most profiles one wheel may carry. */
-    public static final int WHEEL_MAX = 8;
     /** DIST-4: the closest a pin may ask for, in px. */
     public static final double DIST_PIN_MIN = 150;
     /** DIST-4: the furthest a pin may ask for, in px. */
@@ -245,8 +236,6 @@ public final class ShieldList {
     private Map<String, double[]> powerBands = Collections.emptyMap();
     /** DIST-4: name to its pinned duel distance, in px. */
     private Map<String, Double> distPins = Collections.emptyMap();
-    /** MOVE-74: name to its movement wheel's profiles. */
-    private Map<String, String[]> wheels = Collections.emptyMap();
     /** SHIELD-27: the opponents, by name without version, shield mode breaks off a close start against (every int switch bit is taken). */
     private Set<String> closeBreaks = Collections.emptySet();
     /** SHIELD-35: the opponents, by name without version, shield mode yields the drive to while they are close. */
@@ -281,7 +270,6 @@ public final class ShieldList {
         Map<String, String> copies = new TreeMap<>();
         Map<String, double[]> powerBands = new TreeMap<>();
         Map<String, Double> distPins = new TreeMap<>();
-        Map<String, String[]> wheels = new TreeMap<>();
         Set<String> closeBreaks = new TreeSet<>();
         Set<String> closeYields = new TreeSet<>();
         Set<String> freeGuns = new TreeSet<>();
@@ -337,16 +325,6 @@ public final class ShieldList {
                 if (entry.startsWith(CLOSE_BREAK_PREFIX)) {
                     String name = withoutVersion(entry.substring(CLOSE_BREAK_PREFIX.length()).trim());
                     if (!name.isEmpty() && closeBreaks.size() < MAX_ENTRIES) closeBreaks.add(name);
-                    continue;
-                }
-                if (entry.startsWith(WHEEL_PREFIX)) {
-                    String[] p = entry.substring(WHEEL_PREFIX.length()).trim().split(" ", 2);
-                    if (p.length == 2 && !p[1].isEmpty() && wheels.size() < MAX_ENTRIES) {
-                        String[] profiles = p[0].split(",");
-                        if (profiles.length >= 2 && profiles.length <= WHEEL_MAX && validWheel(profiles)) {
-                            wheels.put(withoutVersion(p[1]), profiles);
-                        }
-                    }
                     continue;
                 }
                 if (entry.startsWith(DIST_PIN_PREFIX)) {
@@ -453,7 +431,7 @@ public final class ShieldList {
         }
         if (entries.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()
             && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty() && surfKeys.isEmpty() && copies.isEmpty()
-            && powerBands.isEmpty() && distPins.isEmpty() && wheels.isEmpty() && closeBreaks.isEmpty()
+            && powerBands.isEmpty() && distPins.isEmpty() && closeBreaks.isEmpty()
             && closeYields.isEmpty() && freeGuns.isEmpty()) return NONE;
         ShieldList list = new ShieldList(Collections.unmodifiableSet(entries),
             Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims), Collections.unmodifiableSet(dodges),
@@ -464,7 +442,6 @@ public final class ShieldList {
         list.copies = Collections.unmodifiableMap(copies);
         list.powerBands = Collections.unmodifiableMap(powerBands);
         list.distPins = Collections.unmodifiableMap(distPins);
-        list.wheels = Collections.unmodifiableMap(wheels);
         list.closeBreaks = Collections.unmodifiableSet(closeBreaks);
         list.closeYields = Collections.unmodifiableSet(closeYields);
         list.freeGuns = Collections.unmodifiableSet(freeGuns);
@@ -509,39 +486,6 @@ public final class ShieldList {
         Double px = distPins.get(name);
         if (px == null) px = distPins.get(withoutVersion(name));
         return px == null ? Double.NaN : px;
-    }
-
-    /**
-     * MOVE-74: {@code robotName}'s movement wheel, by the rule of {@link #matches}.
-     *
-     * @param robotName the scanned robot's name, or null
-     * @return a fresh array of its profiles, or null when none is shipped
-     */
-    public String[] wheelFor(String robotName) {
-        if (robotName == null || wheels.isEmpty()) return null;
-        String name = robotName.trim().replaceAll("\\s+", " ");
-        String[] w = wheels.get(name);
-        if (w == null) w = wheels.get(withoutVersion(name));
-        return w == null ? null : w.clone();
-    }
-
-    /** MOVE-74: whether every profile is made of known tokens (a bad line is skipped whole). */
-    private static boolean validWheel(String[] profiles) {
-        for (String profile : profiles) {
-            if (profile.isEmpty()) return false;
-            for (String token : profile.split("\\+")) {
-                if (token.equals("base") || token.equals("vj") || token.equals("sb") || token.equals("or")
-                    || token.equals("fq")) continue;
-                if (!token.startsWith("dn")) return false;
-                try {
-                    double px = Double.parseDouble(token.substring(2));
-                    if (px < DIST_PIN_MIN || px > DIST_PIN_MAX) return false;
-                } catch (NumberFormatException e) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     /**
