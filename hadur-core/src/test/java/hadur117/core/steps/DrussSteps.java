@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import hadur117.core.model.BattleFacts;
 import hadur117.core.HadurCore;
 import hadur117.core.memory.ProfileLibrary;
 import hadur117.core.memory.Profiles;
@@ -13,7 +12,6 @@ import hadur117.core.model.BotInput;
 import hadur117.core.model.BotOrders;
 import hadur117.core.physics.Rules;
 import hadur117.core.port.MemoryProfileStore;
-import hadur117.core.shieldmode.ShieldList;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -49,11 +47,8 @@ public class DrussSteps {
         last = core.tick(input(gunHeat, events));
     }
 
-    /** GUN-13: the mode table's lines for the duel, none unless a step gives them. */
-    private ShieldList table = ShieldList.NONE;
-
     private void start() {
-        core = new HadurCore(BattleFacts.solo(800, 600, 1), telemetry::add, store, null, table);
+        core = new HadurCore(800, 600, 1, telemetry::add, store);
         core.newRound(0);
         time = 0;
         tick(3, List.of(scan()));
@@ -63,11 +58,6 @@ public class DrussSteps {
     public void duelAtDistance(int px, double ours, int theirs) {
         distance = px;
         duelWithEnergies(ours, theirs);
-    }
-
-    @Given("the mode table keeps the shadow aim against the enemy")
-    public void shadowKeepLine() {
-        table = ShieldList.parse(List.of(ShieldList.SHADOW_KEEP_PREFIX + " " + ENEMY));
     }
 
     @Given("a duel in which Hadur has {double} energy and the enemy {double}")

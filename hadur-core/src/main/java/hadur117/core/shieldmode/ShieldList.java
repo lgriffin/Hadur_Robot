@@ -75,8 +75,6 @@ public final class ShieldList {
     public static final String CLOSE_YIELD_PREFIX = "shield-yield:";
     /** GUN-12: a line starting with this names an opponent the duel gun fires against with free gun on (GUN-9). */
     public static final String FREE_GUN_PREFIX = "free-gun:";
-    /** GUN-13: a line starting with this names an opponent the gun keeps weighing shadows against (GUN-7) once the duel reads as won. */
-    public static final String SHADOW_KEEP_PREFIX = "shadow-keep:";
     /** MOVE-32: a line starting with this names an opponent the duel surfs with the flattener views on (MOVE-24 undone). */
     public static final String FLAT_ON_PREFIX = "flat-on:";
     /** MOVE-34: a line starting with this names an opponent the duel surfs with the learning-gun mimics as aim members (MOVE-33). */
@@ -244,8 +242,6 @@ public final class ShieldList {
     private Set<String> closeYields = Collections.emptySet();
     /** GUN-12: the opponents, by name without version, the duel gun fires against with free gun on. */
     private Set<String> freeGuns = Collections.emptySet();
-    /** GUN-13: the opponents, by name without version, the gun keeps its shadow aim against in a won duel. */
-    private Set<String> shadowKeeps = Collections.emptySet();
 
     private ShieldList(Set<String> entries, Set<String> moves, Map<String, double[]> aims,
                        Set<String> dodges, Map<String, Integer> stopGo) {
@@ -277,7 +273,6 @@ public final class ShieldList {
         Set<String> closeBreaks = new TreeSet<>();
         Set<String> closeYields = new TreeSet<>();
         Set<String> freeGuns = new TreeSet<>();
-        Set<String> shadowKeeps = new TreeSet<>();
         if (lines != null) {
             for (String line : lines) {
                 if (line == null) continue;
@@ -315,11 +310,6 @@ public final class ShieldList {
                     if (!name.isEmpty() && (switches.containsKey(name) || switches.size() < MAX_ENTRIES)) {
                         switches.merge(name, bit, (a, b) -> a | b);
                     }
-                    continue;
-                }
-                if (entry.startsWith(SHADOW_KEEP_PREFIX)) {
-                    String name = withoutVersion(entry.substring(SHADOW_KEEP_PREFIX.length()).trim());
-                    if (!name.isEmpty() && shadowKeeps.size() < MAX_ENTRIES) shadowKeeps.add(name);
                     continue;
                 }
                 if (entry.startsWith(FREE_GUN_PREFIX)) {
@@ -442,7 +432,7 @@ public final class ShieldList {
         if (entries.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()
             && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty() && surfKeys.isEmpty() && copies.isEmpty()
             && powerBands.isEmpty() && distPins.isEmpty() && closeBreaks.isEmpty()
-            && closeYields.isEmpty() && freeGuns.isEmpty() && shadowKeeps.isEmpty()) return NONE;
+            && closeYields.isEmpty() && freeGuns.isEmpty()) return NONE;
         ShieldList list = new ShieldList(Collections.unmodifiableSet(entries),
             Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims), Collections.unmodifiableSet(dodges),
             Collections.unmodifiableMap(stopGo));
@@ -455,7 +445,6 @@ public final class ShieldList {
         list.closeBreaks = Collections.unmodifiableSet(closeBreaks);
         list.closeYields = Collections.unmodifiableSet(closeYields);
         list.freeGuns = Collections.unmodifiableSet(freeGuns);
-        list.shadowKeeps = Collections.unmodifiableSet(shadowKeeps);
         return list;
     }
 
@@ -688,17 +677,6 @@ public final class ShieldList {
         if (robotName == null || closeYields.isEmpty()) return false;
         String name = robotName.trim().replaceAll("\\s+", " ");
         return closeYields.contains(name) || closeYields.contains(withoutVersion(name));
-    }
-
-    /**
-     * GUN-13: whether a {@code shadow-keep:} line names {@code robotName}, by the rule of {@link #matches}.
-     *
-     * @param robotName the scanned robot's name, or null
-     */
-    public boolean shadowKeep(String robotName) {
-        if (robotName == null || shadowKeeps.isEmpty()) return false;
-        String name = robotName.trim().replaceAll("\\s+", " ");
-        return shadowKeeps.contains(name) || shadowKeeps.contains(withoutVersion(name));
     }
 
     /**

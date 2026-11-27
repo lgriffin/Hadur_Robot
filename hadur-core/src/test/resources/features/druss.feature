@@ -327,15 +327,6 @@ Feature: The DrussGT route
     Then the matchup reads as won
     And the last waves were aimed without weighing shadows
 
-  @GUN-13
-  Scenario: In a won duel against an opponent the table names the gun still weighs shadows
-    Given the mode table keeps the shadow aim against the enemy
-    And a duel in which Hadur has 100 energy and the enemy 100
-    And the battle's guns already favour Hadur, its bullets hitting 30 of 100 and the enemy's 8 of 100
-    When for 2 enemy waves Hadur's bullets hit 1 in 2, the enemy's all miss, and the gun is nearly cool
-    Then the matchup reads as won
-    And the last waves were aimed weighing shadows
-
   @MATCH-2
   Scenario: In an open duel the gun still weighs shadows
     Given a duel in which Hadur has 100 energy and the enemy 100
