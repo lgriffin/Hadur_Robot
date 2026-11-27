@@ -1,6 +1,6 @@
 # BENCH-253 pc-locks, round 37: 12 robots. Seven carry a line read on 12 or more fresh cloud seeds at 0.7x the live turn
 # time against both c and aa (coverage/shards/locks.tsv): Quest on zl (SHIELD-20 still shot plans); Viper on vj (velocity
-# jitter); Nene, Wavelet, Knight, JKHydra and Firestarter on rp (POW-17 race power). BeepBoop, DrussGT, Saguaro, ScalarR
+# jitter); Nene, Wavelet, JKHydra and Firestarter on rp (POW-17 race power); Knight on rppb (rp with POW-20 bands). BeepBoop, DrussGT, Saguaro, ScalarR
 # and Ogi pad the A/A check on arm aa. c and aa run on every robot, so the A/A check reads all 12. name | note | jar
 ad.Quest 0.10 | rank171-band3 | ad.Quest_0.10.jar
 pa3k.Viper 5.03 | rank390-band4 | pa3k.Viper_5.03.jar
