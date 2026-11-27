@@ -22,6 +22,7 @@ projected about +0.4 (range +0.3 to +0.5).
 | Robots with a new 3.25 per-opponent line | 160 | +2.30 ± 0.27 | +0.30 |
 | All other robots, BeepBoop under 90 against them | 198 | +0.98 ± 0.34 | +0.16 |
 | All other robots, BeepBoop 90 or more against them | 847 | +0.04 ± 0.08 | +0.03 |
+| BeepBoop itself (no band; 25.6 to 21.0 on one battle) | 1 | -4.6 | -0.00 |
 
 - **The per-opponent lines carried.** Their PC gate reads add up to about +302 points (+0.25 APS) over these
   160 robots; live they gave +368 (+0.30). The 160 robots are matched by name to the lines added between the
@@ -39,7 +40,8 @@ projected about +0.4 (range +0.3 to +0.5).
 ### Gaps to the top three
 
 Each figure is the rival's score minus 3.25's, summed over shared opponents and divided by the 1,212
-pairings. Opponents are banded by BeepBoop's score against them.
+pairings. Opponents are banded by BeepBoop's score against them, so BeepBoop itself, which has no score against
+itself, sits in no band: the bands hold 1,211 of the 1,212 opponents, and the whole-field row covers those 1,211.
 
 | Opponent band | Robots | 3.25 over 3.24 | BeepBoop ahead by | (3.24: ahead by) | Saguaro 1.1.4 ahead by | DrussGT 3.1.20 ahead by |
 |---|---|---|---|---|---|---|

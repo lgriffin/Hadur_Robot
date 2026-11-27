@@ -94,7 +94,7 @@ Live results as of 2026-11-02 16:00 UTC, Hadur, HadurTeam and Sanaro as of 2026-
 | [**TwinSaor**](twinsaor/) `hadur117.twin.TwinSaor` | Twin Duel (2v2) | 1,995 B of 1,999 | **1st of 28**, 70.28 ± 0.50 (0.2), 0.91 ahead of ags.lunartwins.LunarTwins | [README](twinsaor/README.md) |
 | [**Saor**](saor/) `hadur117.micro.Saor` | MicroMelee | 723 B of 749 | **1st of 158**, 69.51 ± 0.27 (0.3), 0.24 ahead of kc.micro.Figment; 3rd of 206 in MiniMelee | [README](saor/README.md) |
 | [**Deise**](deise/) `hadur117.mini.Deise` | MiniMelee | 1,499 B of 1,499 | **1st of 206**, 71.18 ± 0.22 (0.5), 0.04 ahead of kc.mini.Mirage; 12th of 418 in MeleeRumble | [README](deise/README.md) |
-| [**Sanaro**](sanaro/) `hadur117.nano.Sanaro` | NanoMelee | 249 B of 249 | **2nd of 90**, 66.40 ± 0.39 (0.5), level with d414.nano.Quantum (66.40), PWIN 100% | [README](sanaro/README.md) |
+| [**Sanaro**](sanaro/) `hadur117.nano.Sanaro` | NanoMelee | 246 B of 249 | **2nd of 90**, 66.40 ± 0.39 (0.5), level with d414.nano.Quantum (66.40), PWIN 100% | [README](sanaro/README.md) |
 | [**JayLexi**](jaylexi/) `hadur117.mini.JayLexi` | MiniRumble (1v1) | 1,486 B of 1,499 | **1st of 670**, 89.26 ± 0.11 (1.3), 0.32 ahead of sheldor.mini.FoilistMC | [README](jaylexi/README.md) |
 | [**Eveimear**](eveimear/) `hadur117.micro.Eveimear` | MicroRumble (1v1) | 749 B of 749 | **1st of 515**, 86.20 ± 0.17 (0.6), 0.64 ahead of jk.micro.Cotillion | [README](eveimear/README.md) |
 
@@ -104,7 +104,7 @@ Live results as of 2026-11-02 16:00 UTC, Hadur, HadurTeam and Sanaro as of 2026-
 - **Deise** is a least-risk mini melee bot with seen-shot waves that shoots the robot it hits best
   for its distance; 0.5 took MiniMelee 1st from kc.mini.Mirage ([docs/deise.md](docs/deise.md)).
 - **Sanaro** is a nano melee bot: anti-gravity, a branch-free radar, a gun that fires only on its lead
-  and a table of bullet power by both robots' energy ([docs/sanaro.md](docs/sanaro.md)).
+  and holds its target by name until a robot dies, with bullet power falling with distance ([docs/sanaro.md](docs/sanaro.md)).
 - **JayLexi** (a wave surfer with a GuessFactor gun) and **Eveimear** (Cotillion's stop-and-go movement and multiple-choice pattern matcher, with a per-robot mode table)
   are 1v1 size bots from the kitlab design ([docs/kitlab.md](docs/kitlab.md)).
 - **Sepia** ([sepia/](sepia/), `hadur117.Sepia`, not yet entered in any rumble) is an experimental 1v1 robot
