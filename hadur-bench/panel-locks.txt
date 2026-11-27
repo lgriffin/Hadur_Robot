@@ -1,19 +1,16 @@
-# BENCH-253 pc-locks, round 36: 13 robots. Nine carry a line read on 12 or more fresh cloud seeds at 0.7x the live turn
-# time against both c and aa (coverage/shards/locks.tsv): FlowerBot on pb (POW-20 power band); Che on x0 (SHIELD-19 shield
-# exit off, on top of its copy); Dookious on gl (GUN-11 gun stack); YersiniaPestis on fq (flattener on); Neuromancer on fgl
-# (GUN-12 free gun); Blur and Angsaichmophobia on dn (DIST-4, 415 and 533 px); Shera on vj (velocity jitter); Ogi on cpl (COPY-2 bred gun copy).
-# BeepBoop, DrussGT, Saguaro and ScalarR pad the A/A check on arm aa, which also gives a PC read of the four robots we lose to.
-# c and aa run on every robot, so the A/A check reads all 13. name | note | jar
-deo.FlowerBot 1.0 | rank226-band4 | deo.FlowerBot_1.0.jar
-cjm.Che 1.2 | rank256-band4 | cjm.Che_1.2.jar
-voidious.Dookious 1.573c | rank21-band2 | voidious.Dookious_1.573c.jar
-zyx.mega.YersiniaPestis 3.0 | rank34-band2 | zyx.mega.YersiniaPestis_3.0.jar
-jk.melee.Neuromancer 7.12 | rank20-band2 | jk.melee.Neuromancer_7.12.jar
-cx.micro.Blur 0.2 | rank406-band5 | cx.micro.Blur_0.2.jar
-ara.Shera 0.88 | rank290-band4 | ara.Shera_0.88.jar
-kinsen.melee.Angsaichmophobia 1.8c | rank472-band5 | kinsen.melee.Angsaichmophobia_1.8c.jar
-cz.libors.Ogi v1 | rank7-band1 | cz.libors.Ogi_v1.jar
+# BENCH-253 pc-locks, round 37: 12 robots. Five carry a line read on 12 or more fresh cloud seeds at 0.7x the live turn
+# time against both c and aa (coverage/shards/locks.tsv): Quest on zl (SHIELD-20 still shot plans); Viper on vj (velocity
+# jitter); Nene, Wavelet and Knight on rp (POW-17 race power). BeepBoop, DrussGT, Saguaro, ScalarR, Ogi, JKHydra and
+# GresSuffurd pad the A/A check on arm aa. c and aa run on every robot, so the A/A check reads all 12. name | note | jar
+ad.Quest 0.10 | rank171-band3 | ad.Quest_0.10.jar
+pa3k.Viper 5.03 | rank390-band4 | pa3k.Viper_5.03.jar
+cs.Nene 1.1.0 | rank15-band2 | cs.Nene_1.1.0.jar
+pc.Wavelet 1.5 | rank16-band2 | pc.Wavelet_1.5.jar
+rsalesc.mega.Knight 0.6.28 | rank11-band2 | rsalesc.mega.Knight_0.6.28.jar
 kc.mega.BeepBoop 2.0 | rank1-band1 | kc.mega.BeepBoop_2.0.jar
 jk.mega.DrussGT 3.1.20 | rank4-band1 | jk.mega.DrussGT_3.1.20.jar
 oog.mega.saguaro.Saguaro 1.1.4 | rank2-band1 | oog.mega.saguaro.Saguaro_1.1.4.jar
 aaa.r.ScalarR 0.005h.053-noshield | rank5-band1 | aaa.r.ScalarR_0.005h.053-noshield.jar
+cz.libors.Ogi v1 | rank7-band1 | cz.libors.Ogi_v1.jar
+jkong.JKHydra 1.4 | rank6-band1 | jkong.JKHydra_1.4.jar
+gh.GresSuffurd 0.4.13 | rank17-band2 | gh.GresSuffurd_0.4.13.jar

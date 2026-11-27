@@ -25,6 +25,7 @@ import sys
 LEVERS = {
     "mtzl": ("slistadd,szlist", ("SHIELD_ADD", "SHIELD_STILL")),
     "mt": ("slistadd", ("SHIELD_ADD",)),
+    "zl": ("szlist", ("SHIELD_STILL",)),  # SHIELD-20 still shot plans alone
     "fq": ("fllist", ("FLAT_ON",)),
     "gl": ("gslist", ("GUN_STACK",)),
     "mq": ("mmlist", ("MIMIC_ON",)),
