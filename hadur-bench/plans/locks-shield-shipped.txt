@@ -10,3 +10,5 @@ rz.SmallDevil 1.502
 hadur117.mini.JayLexi 0.6
 # round 10 (PR #922)
 kawigi.nano.ThnikkaBot 0.9
+# round 35 (PR #1095)
+dmh.robocode.robot.YellowBird 0.12
