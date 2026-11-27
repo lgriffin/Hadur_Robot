@@ -1,18 +1,19 @@
 # 1v1, cloud locks to the PC (BENCH-253), round 37.
 # Round 36 ran as PR #1100 (A/A -0.08 +- 0.97): Che x0 +2.5 and Ogi cpl +4.3 held and were banked (#1101,
 # plans/locks36-shipped.txt); the other seven lines did not clear 0.
-# Round 37 carries 6 robots on existing table switches, each read on 12 or more fresh cloud seeds at 0.7x the live turn
+# Round 37 carries 7 robots on existing table switches, each read on 12 or more fresh cloud seeds at 0.7x the live turn
 # time against both c and aa, gain vs mean(c, aa) (coverage/shards/locks.tsv):
 #   rp (POW-17 race power)        Wavelet +13.7 +- 3.8 (12; screen +12.1), Knight +4.8 +- 2.6 (12; screen +5.9), Nene
-#                                 +3.9 +- 1.7 (24), JKHydra +3.0 +- 1.0 (24; +1.8 +- 1.6 vs c): BB outlasts these in long energy races that we lose late
+#                                 +3.9 +- 1.7 (24), JKHydra +3.0 +- 1.0 (24; +1.8 +- 1.6 vs c),
+#                                 Firestarter +2.7 +- 1.9 (24): BB outlasts these in long energy races that we lose late
 #   zl (SHIELD-20 still plans)    Quest +3.1 +- 2.8 (24): BB stands still on all its shots, we on 72%
 #   vj (velocity jitter)          Viper +2.4 +- 1.8 (12)
-# BeepBoop, DrussGT, Saguaro, ScalarR, Ogi and GresSuffurd pad the A/A check to 12 robots on arm aa. The PC
+# BeepBoop, DrussGT, Saguaro, ScalarR and Ogi pad the A/A check to 12 robots on arm aa. The PC
 # reads 24 fresh seeds from 117000 and a line ships only on the PC's own read.
 #
 # Why it should win (the PC card rule of 2026-11-03):
 #   - Per-opponent tailoring: each line names one robot; every other robot, team and melee play bit for bit as master.
-#   - Diagnosis: on Wavelet, Knight, Nene and JKHydra we spend our energy early and lose the late race (we spend 43% of ticks
+#   - Diagnosis: on Wavelet, Knight, Nene, JKHydra and Firestarter we spend our energy early and lose the late race (we spend 43% of ticks
 #     under 20 energy against Wavelet), and race power keeps energy for it; Quest fires while we move, where still
 #     shot plans keep the shield on; Viper aims at our velocity stats.
 #   - Every line read positive against both controls at PC-like turn time on fresh cloud seeds; 24 PC seeds settle it.
@@ -35,8 +36,8 @@
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
 #   --fresh because round 36 left this plan's queue state marked complete; the new work directory and seeds mean no
 #   battle is read back from an earlier round (and BENCH-272 refights any whose jar changed).
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 124 live-match battles and 720 lock battles (12
-# robots in c and aa, each lever robot again on its own arm, 24 seeds): 844 in all, about 20 minutes.
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 124 live-match battles and 744 lock battles (12
+# robots in c and aa, each lever robot again on its own arm, 24 seeds): 868 in all, about 20 minutes.
 # The prep step stops if any panel robot's jar is missing.
 #
 set V = 3.25
