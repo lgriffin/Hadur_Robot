@@ -1097,6 +1097,8 @@ final class ShieldTableData {
             "0.40 0.30 0.30 0.30 ncj.MoxieBot 1.0",  // +13.4
             // pc-locks round 33 (BENCH-253, PR #1083): 24 fresh PC seeds at the live turn time; cloud lock held first
             "0.5 0.5 0.5 0.5 dragonbyte.Neutrino 4", // +3.5
+            // pc-locks round 37 (BENCH-253, PR #1109): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "0.77 0.73 0.41 0.12 rsalesc.mega.Knight 0.6.28", // +8.6 (with its race power)
         };
     }
 
@@ -1289,6 +1291,14 @@ final class ShieldTableData {
             "slugzilla.Parallax 0.1",            // +2.4
             // pc-locks round 27 (BENCH-253, PR #1050): 24 fresh PC seeds at the live turn time; cloud lock held first
             "zen.Mirage 0.9.5",                  // +7.4
+            // pc-locks round 37 (BENCH-253, PR #1109): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "gh.GresSuffurd 0.4.13",             // +6.1
+            "pc.Wavelet 1.5",                    // +4.8
+            "jkong.JKHydra 1.4",                 // +3.1
+            "cs.Nene 1.1.0",                     // +2.7
+            "cb.fire.Firestarter 2.0f",          // +2.1
+            "oog.PricklyPear 1.0.6",             // +1.9
+            "rsalesc.mega.Knight 0.6.28",        // +8.6 (with its power bands)
         };
     }
 
