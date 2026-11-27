@@ -1,0 +1,2 @@
+# pc-team-pack6 (BENCH-297): the one team of the card (SWARM); line as in team-census46.txt.
+cz.libors.OgiTeam v1 | team-0 | cz.libors.OgiTeam_v1.jar
