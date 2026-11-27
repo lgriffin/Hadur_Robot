@@ -1,7 +1,7 @@
-# BENCH-253 pc-locks, round 37: 12 robots. Seven carry a line read on 12 or more fresh cloud seeds at 0.7x the live turn
+# BENCH-253 pc-locks, round 37: 12 robots. Eight carry a line read on 12 or more fresh cloud seeds at 0.7x the live turn
 # time against both c and aa (coverage/shards/locks.tsv): Quest on zl (SHIELD-20 still shot plans); Viper on vj (velocity
-# jitter); Nene, Wavelet, JKHydra and Firestarter on rp (POW-17 race power); Knight on rppb (rp with POW-20 bands). BeepBoop, DrussGT, Saguaro, ScalarR
-# and Ogi pad the A/A check on arm aa. c and aa run on every robot, so the A/A check reads all 12. name | note | jar
+# jitter); Nene, Wavelet, JKHydra, Firestarter and PricklyPear on rp (POW-17 race power); Knight on rppb (rp with POW-20 bands). BeepBoop, DrussGT, Saguaro
+# and ScalarR pad the A/A check on arm aa. c and aa run on every robot, so the A/A check reads all 12. name | note | jar
 ad.Quest 0.10 | rank171-band3 | ad.Quest_0.10.jar
 pa3k.Viper 5.03 | rank390-band4 | pa3k.Viper_5.03.jar
 cs.Nene 1.1.0 | rank15-band2 | cs.Nene_1.1.0.jar
@@ -11,6 +11,6 @@ kc.mega.BeepBoop 2.0 | rank1-band1 | kc.mega.BeepBoop_2.0.jar
 jk.mega.DrussGT 3.1.20 | rank4-band1 | jk.mega.DrussGT_3.1.20.jar
 oog.mega.saguaro.Saguaro 1.1.4 | rank2-band1 | oog.mega.saguaro.Saguaro_1.1.4.jar
 aaa.r.ScalarR 0.005h.053-noshield | rank5-band1 | aaa.r.ScalarR_0.005h.053-noshield.jar
-cz.libors.Ogi v1 | rank7-band1 | cz.libors.Ogi_v1.jar
+oog.PricklyPear 1.0.6 | rank95-band3 | oog.PricklyPear_1.0.6.jar
 jkong.JKHydra 1.4 | rank6-band1 | jkong.JKHydra_1.4.jar
 cb.fire.Firestarter 2.0f | rank9-band1 | cb.fire.Firestarter_2.0f.jar
