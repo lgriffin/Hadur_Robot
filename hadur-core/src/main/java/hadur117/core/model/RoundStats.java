@@ -79,8 +79,6 @@ public final class RoundStats {
     public int interceptsShadowed;
     /** MATCH-2: aims that weighed our bullets' shadows (GUN-7) this round; not in the round record. */
     public int shadowAims;
-    /** MOVE-75: ticks the driver guard gave to the surf this round; not in the round record. */
-    public int stopGuardTicks;
     /** S6: movement flavour changes made this round (MOVE-2). */
     public int flavourChanges;
     /**
