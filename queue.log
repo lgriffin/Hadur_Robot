@@ -1,4 +1,3 @@
-08:06:26 start lock-ty
 08:06:26 watching lock-ty: 3 stop rule(s)
 08:06:52 lock-ty exit=0 in 25 s
 08:06:52 start lock-sp2
@@ -298,3 +297,4 @@
 08:52:16 livematch exit=0 in 481 s
 08:52:16 start lock
 08:52:16 watching lock: 4 stop rule(s)
+09:15:19 progress lock: 299/624 (48%) battles, 779/h, ETA 25 min, 0 failed, skips 9.3/battle (last 100), aa +0.00
