@@ -13,3 +13,9 @@
 23:11:24 tkbb exit=0 in 760 s
 23:11:24 start tkp6
 23:11:24 watching tkp6: 3 stop rule(s)
+23:23:46 tkp6 exit=0 in 741 s
+23:23:46 start tkgate
+23:23:47 tkgate exit=0 in 0 s
+23:23:47 start tkpr
+23:23:53 tkpr exit=0 in 6 s
+23:23:53 ALLDONE

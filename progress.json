@@ -1,6 +1,6 @@
 {
  "plan": "pc-team-pack6",
- "updated": 1795821821.5773394,
+ "updated": 1795821833.8750665,
  "steps": {
   "tkprep": {
    "status": "done",
@@ -27,14 +27,22 @@
    "end": "2026-11-27T23:11:24"
   },
   "tkp6": {
-   "status": "running",
-   "start": "2026-11-27T23:11:24"
+   "status": "done",
+   "exit": 0,
+   "seconds": 741,
+   "end": "2026-11-27T23:23:46"
   },
   "tkgate": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 0,
+   "end": "2026-11-27T23:23:47"
   },
   "tkpr": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 6,
+   "end": "2026-11-27T23:23:53"
   }
  },
  "watched": [
@@ -127,8 +135,8 @@
   {
    "step": "tkp6",
    "started": 1795821084.660681,
-   "updated": 1795821821.5713952,
-   "elapsed": 736.9107141494751,
+   "updated": 1795821826.5530357,
+   "elapsed": 741.8923547267914,
    "expected": 96,
    "panel": null,
    "field": null,
@@ -136,20 +144,20 @@
    "arms": [],
    "aa": null,
    "warnings": [],
-   "battles": 95,
+   "battles": 96,
    "resumed": 0,
    "failed": 0,
    "disables": null,
-   "rate": 464.09964386897036,
-   "eta": 7.756954885783949,
-   "fraction": 0.9895833333333334,
-   "last_battle_age": 0.4358377456665039,
+   "rate": 465.83577495857924,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 1.8345329761505127,
    "rules": [
     {
      "rule": "fails 10",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 95"
+     "detail": "0 failed of 96"
     },
     {
      "rule": "stall 30m",
@@ -161,11 +169,11 @@
      "rule": "skips 60 over 200",
      "action": "halt",
      "state": "waiting",
-     "detail": "95 of 200 battles to read"
+     "detail": "96 of 200 battles to read"
     }
    ],
-   "skips_mean": 31.642105263157895,
-   "skips_last100": 31.642105263157895
+   "skips_mean": 31.75,
+   "skips_last100": 31.75
   }
  ]
 }
