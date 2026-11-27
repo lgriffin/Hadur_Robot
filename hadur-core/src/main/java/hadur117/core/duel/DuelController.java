@@ -415,7 +415,6 @@ public final class DuelController {
         aimVelocityCount = 0;
         roundEnemyShot = Long.MIN_VALUE;
         if (stopAndGo != null) stopAndGo.initRound();
-        stopGuardTicks = 0;
         if (shield != null) shield.newRound(round);
         recover();
         // The history of the enemy's movement starts with the round; recover() marked it unknown.
@@ -966,7 +965,7 @@ public final class DuelController {
                     if (StopGuard.yields(surfMover.ratedDangers(),
                             phase == StopAndGo.Phase.GO ? stopAndGo.direction() : 0, MoveDesign.STOP_GUARD_RATIO)) {
                         drive = surfed.build();
-                        stopGuardTicks++;
+                        stats.stopGuardTicks++;
                     } else {
                         // The surf's plan is not the one driven: the gun must not read it (MOVE-8).
                         moveController.clearPlan();
@@ -1156,8 +1155,6 @@ public final class DuelController {
     private int aimVelocityCount;
     /** POISON-2: stop-and-go against this opponent, or null when it is not played. */
     private StopAndGo stopAndGo;
-    /** MOVE-75: ticks the driver guard gave to the surf this round, for the WP record. */
-    private int stopGuardTicks;
     /** POISON-1: the fire tick of the enemy's last shot detected this round. */
     private long roundEnemyShot = Long.MIN_VALUE;
     /** DODGE-1: ticks the averaged linear aim averages our velocity over. */
@@ -1385,7 +1382,7 @@ public final class DuelController {
             telemetry.emit("WP," + round + "," + tick + "," + stopAndGo.ticks(StopAndGo.Phase.GO) + ","
                 + stopAndGo.ticks(StopAndGo.Phase.STOP) + "," + stopAndGo.ticks(StopAndGo.Phase.REVERSE)
                 // MOVE-75: with the guard on, the ticks it gave to the surf.
-                + (MoveDesign.STOP_GUARD ? "," + stopGuardTicks : ""));
+                + (MoveDesign.STOP_GUARD ? "," + stats.stopGuardTicks : ""));
         }
         // RAM-3: a round the rammer played, before its confirmation (fought) or after (its arm).
         if (trialRound || rammer.rammedThisRound()) {
