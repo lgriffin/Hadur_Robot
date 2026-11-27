@@ -1,0 +1,28 @@
+{
+ "plan": "pc-team-pack6",
+ "updated": 1795820009.409559,
+ "steps": {
+  "tkprep": {
+   "status": "pending"
+  },
+  "tkpp6": {
+   "status": "pending"
+  },
+  "tkpilot": {
+   "status": "pending"
+  },
+  "tkbb": {
+   "status": "pending"
+  },
+  "tkp6": {
+   "status": "pending"
+  },
+  "tkgate": {
+   "status": "pending"
+  },
+  "tkpr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
