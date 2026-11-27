@@ -1,16 +1,17 @@
 # 1v1, cloud locks to the PC (BENCH-253), round 37.
 # Round 36 ran as PR #1100 (A/A -0.08 +- 0.97): Che x0 +2.5 and Ogi cpl +4.3 held and were banked (#1101,
 # plans/locks36-shipped.txt); the other seven lines did not clear 0.
-# Round 37 carries 9 robots on existing table switches, each read on 12 or more fresh cloud seeds at 0.7x the live turn
+# Round 37 carries 10 robots on existing table switches, each read on 12 or more fresh cloud seeds at 0.7x the live turn
 # time against both c and aa, gain vs mean(c, aa) (coverage/shards/locks.tsv):
 #   rp (POW-17 race power)        Wavelet +13.7 +- 3.8 (12; screen +12.1), Nene
 #                                 +3.9 +- 1.7 (24), JKHydra +3.0 +- 1.0 (24; +1.8 +- 1.6 vs c),
 #                                 Firestarter +2.7 +- 1.9 (24), PricklyPear +1.9 +- 1.4 (24),
-#                                 GresSuffurd +3.7 (30, three blocks on two boxes): BB outlasts these in long energy races that we lose late
+#                                 GresSuffurd +3.7 (30, three blocks on two boxes),
+#                                 Shadow +4.3 +- 2.6 (12): BB outlasts these in long energy races that we lose late
 #   rppb (rp with POW-20 bands)   Knight +9.1 (24) and +11.3 +- 2.6 on a second box (12); rp alone +4.5 to +6.4 on four blocks; bands 0.77 0.73 0.41 0.12
 #   zl (SHIELD-20 still plans)    Quest +3.1 +- 2.8 (24): BB stands still on all its shots, we on 72%
 #   vj (velocity jitter)          Viper +2.4 +- 1.8 (12)
-# BeepBoop, DrussGT, Saguaro and ScalarR pad the A/A check to 13 robots on arm aa. The PC
+# BeepBoop, DrussGT, Saguaro and ScalarR pad the A/A check to 14 robots on arm aa. The PC
 # reads 24 fresh seeds from 117000 and a line ships only on the PC's own read.
 #
 # Why it should win (the PC card rule of 2026-11-03):
@@ -38,8 +39,8 @@
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
 #   --fresh because round 36 left this plan's queue state marked complete; the new work directory and seeds mean no
 #   battle is read back from an earlier round (and BENCH-272 refights any whose jar changed).
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 124 live-match battles and 840 lock battles (13
-# robots in c and aa, each lever robot again on its own arm, 24 seeds): 964 in all, about 25 minutes.
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 124 live-match battles and 912 lock battles (14
+# robots in c and aa, each lever robot again on its own arm, 24 seeds): 1036 in all, about 25 minutes.
 # The prep step stops if any panel robot's jar is missing.
 #
 set V = 3.25
@@ -100,5 +101,5 @@ lock-rppb | ./bench-top20.sh ${C} ${P} --set ${W}-prep/rppb.panel --seeds 24 --s
 gate | mkdir -p ${W} && (cat ${W}-ctl/arms.tsv && for d in zl vj rp rppb; do awk -F"\t" -v a=$d 'NR > 1 && $1 == a' ${W}-$d/arms.tsv || exit 1; done) > ${W}/arms.tsv && python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks37-lock.md && python3 tools/lock_prep.py --restrict ${W}/arms.tsv ${W}-prep ${W}/arms-picked.tsv && python3 ../data/tools/mode_table.py ${W}/arms-picked.tsv --margin 0 --out-tsv ${OUT}/pc-locks37-lock-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-locks37-lock-pick.md && python3 tools/per_robot.py ${W}/arms-picked.tsv --arms zl vj rp rppb --out ${OUT}/$(date +%Y-%m-%d)_pc-locks37-lock-per-robot.md --out-tsv ${OUT}/pc-locks37-lock-per-robot.tsv
   after: lock-rppb
 
-pr | bash tools/open_results_pr.sh claude/pc-locks37-results "1v1 cloud locks, round 37 (9 lines on zl, vj, rp, rppb), 24 fresh PC seeds" ${OUT}/pc-locks37-livematch.md ${OUT}/*_pc-locks37-*.md ${OUT}/pc-locks37-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks37-lock-pick.tsv' -size +0c)
+pr | bash tools/open_results_pr.sh claude/pc-locks37-results "1v1 cloud locks, round 37 (10 lines on zl, vj, rp, rppb), 24 fresh PC seeds" ${OUT}/pc-locks37-livematch.md ${OUT}/*_pc-locks37-*.md ${OUT}/pc-locks37-lock-per-robot.tsv $(find ${OUT} -maxdepth 1 -name 'pc-locks37-lock-pick.tsv' -size +0c)
   after: gate
