@@ -1,15 +1,22 @@
 {
  "plan": "pc-locks",
- "updated": 1795813550.2037268,
+ "updated": 1795814457.693269,
  "steps": {
   "prep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 214,
+   "end": "2026-11-27T21:09:24"
   },
   "livematch": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 481,
+   "end": "2026-11-27T21:17:25"
   },
   "lock": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-27T21:17:25"
   },
   "stage": {
    "status": "pending"
@@ -33,5 +40,159 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "livematch",
+   "started": 1795813764.5008945,
+   "updated": 1795814245.9523888,
+   "elapsed": 481.45149421691895,
+   "expected": 124,
+   "panel": 31,
+   "field": 1217,
+   "multiarm": true,
+   "arms": [
+    {
+     "arm": "c",
+     "battles": 62,
+     "failed": 0,
+     "level": 70.39758064516128,
+     "skips": 9.709677419354838,
+     "fresh": 62,
+     "scored": 62,
+     "diff": null
+    },
+    {
+     "arm": "bb",
+     "battles": 62,
+     "failed": 0,
+     "level": 84.5466129032258,
+     "skips": 0.7419354838709677,
+     "fresh": 62,
+     "scored": 62,
+     "diff": 14.149032258064517,
+     "n": 31,
+     "ci95": 2.758437619867192,
+     "half_stop": 4.222098397755906,
+     "scale": 0.025472473294987676
+    }
+   ],
+   "aa": null,
+   "warnings": [
+    "arm c's jar bisect/live/hadur117.Hadur_3.22.jar was built 291 h before this step started: check it is not stale",
+    "arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 278 h before this step started: check it is not stale"
+   ],
+   "battles": 124,
+   "resumed": 0,
+   "failed": 0,
+   "disables": 0,
+   "rate": 927.1962084697022,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 3.7700159549713135,
+   "rules": [
+    {
+     "rule": "fails 30",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 124"
+    },
+    {
+     "rule": "dead 8",
+     "action": "halt",
+     "state": "ok",
+     "detail": "every arm scoring"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    }
+   ],
+   "skips_mean": 5.225806451612903,
+   "skips_last100": 5.28
+  },
+  {
+   "step": "lock",
+   "started": 1795814245.9712389,
+   "updated": 1795814457.6268792,
+   "elapsed": 211.65564036369324,
+   "expected": 576,
+   "panel": 12,
+   "field": 1217,
+   "multiarm": true,
+   "arms": [
+    {
+     "arm": "c",
+     "battles": 16,
+     "failed": 0,
+     "level": 59.366145833333334,
+     "skips": 10.9375,
+     "fresh": 16,
+     "scored": 16,
+     "diff": null
+    },
+    {
+     "arm": "aa",
+     "battles": 16,
+     "failed": 0,
+     "level": 58.2765,
+     "skips": 12.6875,
+     "fresh": 16,
+     "scored": 16,
+     "diff": -0.8180208333333336,
+     "n": 8,
+     "ci95": 4.737083690783769,
+     "half_stop": 7.250638302220054,
+     "scale": 0.009860312243221035
+    }
+   ],
+   "aa": {
+    "diff": -0.8180208333333336,
+    "ci": 4.737083690783769,
+    "n": 8,
+    "band": 3.0213866258486584,
+    "ok": true,
+    "band_stop": 7.250638302220054,
+    "band_from": "observed spread"
+   },
+   "warnings": [],
+   "battles": 32,
+   "resumed": 0,
+   "failed": 0,
+   "disables": 0,
+   "rate": 544.2803215735188,
+   "eta": 3598.145886182785,
+   "fraction": 0.05555555555555555,
+   "last_battle_age": 2.5526089668273926,
+   "rules": [
+    {
+     "rule": "fails 30",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 32"
+    },
+    {
+     "rule": "dead 8",
+     "action": "halt",
+     "state": "ok",
+     "detail": "every arm scoring"
+    },
+    {
+     "rule": "skips 60 over 24",
+     "action": "halt",
+     "state": "ok",
+     "detail": "11.4 a battle over the last 24 (first 24: 12.5)"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    }
+   ],
+   "skips_mean": 11.8125,
+   "skips_last100": 11.8125
+  }
+ ]
 }
