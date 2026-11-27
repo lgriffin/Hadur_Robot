@@ -47,6 +47,13 @@ final class MoveDesign {
     static final boolean SURF_KEY_RECORD = false;
 
     /**
+     * MOVE-75: within 62 px of the enemy, centre to centre, the drive is the heading that ends furthest from it,
+     * until 110 px (ClinchBreak). Duel only; the rammer escape, the mirror drive and END-2's ram keep their ticks.
+     * Off: the easy-robot dodge study's candidate (docs/bench/easy-dodge-study.md), awaiting its pooled screen.
+     */
+    static final boolean CLINCH_BREAK = false;
+
+    /**
      * MOVE-29 (K1 of the road to king, docs/bench/gun-oracle.md): the three-option surf's danger
      * mixes the views' score with the head-on, linear and circular aims' (AimMembers), each member
      * weighted by how well it predicted the bullets that hit us. Duel only. On from 3.20:
