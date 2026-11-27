@@ -1,8 +1,8 @@
-# pc-locks (BENCH-253) round 37: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots
-# picked for it (plans/locks-pick.tsv; zl SHIELD-20 szlist, vj vjlist, rp POW-17 rplist, rppb POW-17 with POW-20 bands).
+# pc-locks (BENCH-253) round 38: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots
+# picked for it (plans/locks-pick.tsv; rp POW-17 rplist, p5 POW-18 pcap5list, fq MOVE-32 fllist, gl GUN-11 gslist).
 c | hadur117.Hadur 3.25.1 | bisect/hadur117.Hadur_3.25.1.jar
 aa | hadur117.Hadur 3.25.1aa | bisect/hadur117.Hadur_3.25.1aa.jar
-zl | hadur117.Hadur 3.25.1zl | bisect/hadur117.Hadur_3.25.1zl.jar
-vj | hadur117.Hadur 3.25.1vj | bisect/hadur117.Hadur_3.25.1vj.jar
 rp | hadur117.Hadur 3.25.1rp | bisect/hadur117.Hadur_3.25.1rp.jar
-rppb | hadur117.Hadur 3.25.1rppb | bisect/hadur117.Hadur_3.25.1rppb.jar
+p5 | hadur117.Hadur 3.25.1p5 | bisect/hadur117.Hadur_3.25.1p5.jar
+fq | hadur117.Hadur 3.25.1fq | bisect/hadur117.Hadur_3.25.1fq.jar
+gl | hadur117.Hadur 3.25.1gl | bisect/hadur117.Hadur_3.25.1gl.jar

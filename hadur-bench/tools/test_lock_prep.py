@@ -52,6 +52,15 @@ class LockPrepTest(unittest.TestCase):
         kept = [tuple(l.rstrip("\n").split("\t")[::2]) for l in open(picked)][1:]
         self.assertEqual([("c", "a.A 1"), ("aa", "c.C 3"), ("mtzl", "a.A 1"), ("gl", "c.C 3")], kept)
 
+    def test_half_power_cap_pick_builds_its_list(self):
+        # POW-18: a 0.5 power-cap pick (arm p5) gets its own list and a pcap5list rebuild.
+        with open(self.arms, "a") as f:
+            f.write("p5 | hadur117.Hadur 3.22p5 | x\n")
+        out = self.run_prep([("b.B 2", "p5", "5.7")])
+        self.assertEqual("b.B 2\n", open(os.path.join(out, "p5.list")).read())
+        posix = os.path.join(out, "p5.list").replace(os.sep, "/")
+        self.assertIn("POWER_CAP5=%s bash ./build-ablation.sh pcap5list" % posix, open(os.path.join(out, "build.sh")).read())
+
     def test_ram_wait_pick_builds_its_list(self):
         # MOVE-46: a ram-wait pick (arm rwl) gets its own list and an rwlist rebuild.
         with open(self.arms, "a") as f:
