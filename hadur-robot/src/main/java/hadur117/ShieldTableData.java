@@ -660,6 +660,8 @@ final class ShieldTableData {
             "oog.micro.MagicD3 0.41",        // +3.6
             // pc-locks round 31 (BENCH-253, PR #1076): 24 fresh PC seeds at the live turn time; cloud lock held first
             "EH.kms.LightningStorm 0.11B",   // +2.6
+            // pc-locks round 36 (BENCH-253, PR #1100): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "cjm.Che 1.2",                   // +2.5 (on top of its copy)
         };
     }
 
@@ -1518,6 +1520,8 @@ final class ShieldTableData {
             "hist;bins=61;d_max=1200;lag=0;roll=0.03;s_accel=3;s_dist=4;s_lat=1;s_since=2;s_wall=1;smooth=3;ticks=1 darkcanuck.Pris 0.92", // +4.3
             "knn;cap=20000;k=35;lag=1;ticks=1;w_accel=4;w_adv=1;w_dist=2;w_lat=4;w_since=2;w_wall=0.25;width=0.1 lancel.Lynx 1.09", // +5.5
             "knn;cap=500;k=20;lag=1;ticks=0;w_accel=0;w_adv=2;w_dist=2;w_lat=1;w_since=1;w_wall=0.25;width=0.1 mn.Combat 3.25.0", // +2.4
+            // pc-locks round 36 (BENCH-253, PR #1100): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "knn;cap=500;k=10;lag=1;ticks=0;w_accel=1;w_adv=4;w_dist=2;w_lat=4;w_since=1;w_wall=0;width=0.1 cz.libors.Ogi v1", // +4.3
         };
     }
 
