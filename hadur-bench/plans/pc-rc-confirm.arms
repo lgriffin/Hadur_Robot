@@ -1,5 +1,5 @@
 # pc-rc-confirm (BENCH-264): rel is the released 3.24 jar (live, fetched by sha256 from the v3.24 GitHub release into
 # bisect/rel/); c and aa are two A/A builds of master (build-ablation.sh aa, bb) so their names differ from the release. V is master's version, REL the released one.
 rel | hadur117.Hadur 3.24 | bisect/rel/hadur117.Hadur_3.24.jar
-c | hadur117.Hadur 3.25aa | bisect/hadur117.Hadur_3.25aa.jar
-aa | hadur117.Hadur 3.25bb | bisect/hadur117.Hadur_3.25bb.jar
+c | hadur117.Hadur 3.25.1aa | bisect/hadur117.Hadur_3.25.1aa.jar
+aa | hadur117.Hadur 3.25.1bb | bisect/hadur117.Hadur_3.25.1bb.jar

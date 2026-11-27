@@ -1,6 +1,6 @@
 # pc-locks round 35 skip check: c and aa are master before the turn-time work (TIME-14, TIME-15), built from d6f7c28
 # under their own names (an inert distance pin on a robot no panel holds, plans/skipcheck-dummy.list); sk is master
 # after it. All three carry the same tables, so sk minus mean(c, aa) is the turn-time work alone.
-c | hadur117.Hadur 3.25pre | bisect/hadur117.Hadur_3.25pre.jar
-aa | hadur117.Hadur 3.25pra | bisect/hadur117.Hadur_3.25pra.jar
-sk | hadur117.Hadur 3.25 | bisect/hadur117.Hadur_3.25.jar
+c | hadur117.Hadur 3.25.1pre | bisect/hadur117.Hadur_3.25.1pre.jar
+aa | hadur117.Hadur 3.25.1pra | bisect/hadur117.Hadur_3.25.1pra.jar
+sk | hadur117.Hadur 3.25.1 | bisect/hadur117.Hadur_3.25.1.jar

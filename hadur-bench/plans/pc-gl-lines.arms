@@ -1,4 +1,4 @@
 # BENCH-250 pc-gl-lines: master (c), its A/A copy (aa) and gl, master with the gun-stack line on every panel robot.
-c | hadur117.Hadur 3.25 | bisect/hadur117.Hadur_3.25.jar
-aa | hadur117.Hadur 3.25aa | bisect/hadur117.Hadur_3.25aa.jar
-gl | hadur117.Hadur 3.25gl | bisect/hadur117.Hadur_3.25gl.jar
+c | hadur117.Hadur 3.25.1 | bisect/hadur117.Hadur_3.25.1.jar
+aa | hadur117.Hadur 3.25.1aa | bisect/hadur117.Hadur_3.25.1aa.jar
+gl | hadur117.Hadur 3.25.1gl | bisect/hadur117.Hadur_3.25.1gl.jar
