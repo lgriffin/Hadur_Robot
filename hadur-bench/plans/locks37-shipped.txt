@@ -1,0 +1,8 @@
+# pc-locks round 37 (BENCH-253, PR #1109): robots whose lines shipped on 24 fresh PC seeds at the live turn time (rp on six, Knight rp with power bands)
+gh.GresSuffurd 0.4.13
+pc.Wavelet 1.5
+jkong.JKHydra 1.4
+cs.Nene 1.1.0
+cb.fire.Firestarter 2.0f
+oog.PricklyPear 1.0.6
+rsalesc.mega.Knight 0.6.28
