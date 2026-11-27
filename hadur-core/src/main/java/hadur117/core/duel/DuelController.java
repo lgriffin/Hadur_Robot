@@ -186,6 +186,8 @@ public final class DuelController {
     private final BattleHitRates theirRates = new BattleHitRates();
     /** MATCH-1: whether this battle's duel reads as won on the guns, as of the last tick driven. */
     private boolean matchWon;
+    /** GUN-13: whether the gun keeps its shadow aim (GUN-7) once the duel reads as won; set per opponent by the table. */
+    private boolean shadowKeepOn;
     /** ADAPT-5: whether the profile records POW-7's hit-rate condition as standing; false for a stranger. */
     private boolean leadVerdict;
     /** POW-7: whether the lead-aware regime was in force at the last scan, so a P record marks each change. */
@@ -906,10 +908,11 @@ public final class DuelController {
         // SHIELD-5, SHIELD-6: on a listed opponent the shield drives body and gun until it is left.
         if (shield != null && shield.active() && shieldDrive(in, orders, level, mayFire)) return;
         // MATCH-1, MATCH-2: in a duel the guns already favour us, the route's shadow aim is
-        // left out; it was built for the opponents that out-hit us.
+        // left out; it was built for the opponents that out-hit us. GUN-13 keeps it for the
+        // opponents the table names.
         updateMatchup(in.time());
         double gunHeat = aimAndFire(in, orders, TickBudget.virtualGuns(level),
-            TickBudget.shadowAim(level) && !matchWon, mayFire);
+            TickBudget.shadowAim(level) && (!matchWon || shadowKeepOn), mayFire);
         // Break the enemy waves that have passed us, before the policies read their outcomes.
         moveController.checkWaves(in.time(), in.location());
         checkSurfSeed(in.time());
@@ -1491,6 +1494,7 @@ public final class DuelController {
         gunController.setTripHammer(GunDesign.TRIPHAMMER);
         gunController.setFreeGun(GunDesign.FREE_GUN);
         gunController.setUndecayed(GunDesign.UNDECAYED);
+        shadowKeepOn = false;
         shield = null;
     }
 
@@ -1676,6 +1680,8 @@ public final class DuelController {
         }
         // GUN-12: free gun (GUN-9) alone for the opponents the table names (duel only).
         if (duelOnly(stackList.freeGun(name), enemiesTotal)) gunController.setFreeGun(true);
+        // GUN-13: the shadow aim stays on in a won duel against the opponents the table names (duel only).
+        shadowKeepOn = duelOnly(stackList.shadowKeep(name), enemiesTotal);
         // POISON-2: stop-and-go, forced or by the table's entry and its variant.
         int prefire = MoveDesign.STOP_AND_GO ? MoveDesign.STOP_AND_GO_PREFIRE : stackList.stopGo(name);
         stopAndGo = duelOnly(prefire > 0, enemiesTotal) ? new StopAndGo(battleField, prefire) : null;

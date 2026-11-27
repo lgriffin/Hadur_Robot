@@ -329,6 +329,8 @@ public class Hadur extends TeamRobot {
         for (String name : ShieldTableData.headOnFloors()) lines.add(ShieldList.HEAD_ON_FLOOR_PREFIX + " " + name);
         // GUN-12: per-opponent free gun.
         for (String name : ShieldTableData.freeGuns()) lines.add(ShieldList.FREE_GUN_PREFIX + " " + name);
+        // GUN-13: per-opponent shadow aim kept in a won duel.
+        for (String name : ShieldTableData.shadowKeeps()) lines.add(ShieldList.SHADOW_KEEP_PREFIX + " " + name);
         // SKEY-2: per-opponent surf keys.
         for (String key : ShieldTableData.surfKeys()) lines.add(ShieldList.SURF_KEY_PREFIX + " " + key);
         // COPY-2: per-opponent bred gun copies.

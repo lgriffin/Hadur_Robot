@@ -61,6 +61,7 @@ LEVERS = {
     "qw": ("aimwlist", ("AIM_WEIGHT",)),  # MOVE-67 per-opponent aim weight 1.0
     "hof": ("hoflist", ("HEAD_ON_FLOOR",)),  # MOVE-71 per-opponent head-on floor
     "fgl": ("fglist", ("FREE_GUN_LIST",)),  # GUN-12 per-opponent free gun
+    "shk": ("shklist", ("SHADOW_KEEP",)),  # GUN-13 per-opponent shadow aim kept in a won duel
     "cpl": ("copylist", ("COPY_LIST",)),  # COPY-2 per-opponent bred gun copy
     "ty": ("stinylist", ("SHIELD_TINY",)),  # SHIELD-33 tiny-shot shield waves
     "kb": ("sbklist", ("SHIELD_BREAK",)),  # SHIELD-27 close-start break-off

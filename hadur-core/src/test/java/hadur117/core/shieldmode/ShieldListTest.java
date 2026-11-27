@@ -492,6 +492,20 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("GUN-13")
+    @DisplayName("shadow-keep lines name opponents for the kept shadow aim, matched as shield entries, and add no shield entry")
+    void shadowKeeps() {
+        ShieldList l = ShieldList.parse(List.of("shadow-keep: a.B 1.0", "free-gun: c.D 1.0"));
+        assertTrue(l.shadowKeep("a.B 1.0"));
+        assertTrue(l.shadowKeep("a.B 1.1"), "a line carries over to a new version");
+        assertFalse(l.shadowKeep("c.D 1.0"), "another switch's line does not set it");
+        assertFalse(l.matches("a.B 1.0"), "nor is it a shield entry");
+        assertFalse(l.freeGun("a.B 1.0"), "nor does it set another switch");
+        assertFalse(l.shadowKeep(null));
+        assertFalse(ShieldList.NONE.shadowKeep("a.B 1.0"));
+    }
+
+    @Test
     @Tag("GUN-12")
     @DisplayName("free-gun lines name opponents for the duel's free gun, matched as shield entries, and add no shield entry")
     void freeGuns() {

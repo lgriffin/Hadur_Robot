@@ -773,6 +773,7 @@ flowchart LR
 | `fullOffs()`, `x5Powers()`, `racePowers()` | `full-off:`, `x5-power:`, `race-power:` | POW-15, POW-16, POW-17 | 16, 17, 20 | Power policy variants (race power vs strong bots) |
 | `gunStacks()` | `gun-stack:` | GUN-11 | 24 | TripHammer gun stack (never for a shield opponent) |
 | `freeGuns()` | `free-gun:` | GUN-12 | 0 | The duel gun fires with free gun on against this opponent |
+| `shadowKeeps()` | `shadow-keep:` | GUN-13 | 0 | The gun keeps weighing shadows (GUN-7) once the duel reads as won |
 | `copies()` | `copy:` | COPY-2 | 10 | A bred copy of the opponent's learning gun (genome from truth logs) steers the surf's danger |
 
 Matching is by name (SHIELD-26): `pkg.Bot 1.2` and `pkg.Bot` both match every version of the robot, and
