@@ -41,7 +41,7 @@
 # kept battles: .\queue.ps1 run pc-learn-trace-read (the same read and results PR, with arms.tsv rebuilt from
 # the battles' rows by tools/arms_from_battles.py, since the bench writes it only when every battle has run).
 
-set V = 3.24
+set V = 3.25
 set P = --parallel 12 --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 2G
 set W = work/learn-trace-324

@@ -6,7 +6,7 @@
 # No battles. tools/arms_from_battles.py writes work/learn-trace-324/arms.tsv from the battles' own rows (the bench
 # writes it only when every battle has run); the read and the results PR are pc-learn-trace's own.
 
-set V = 3.24
+set V = 3.25
 set W = work/learn-trace-324
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
