@@ -1,6 +1,6 @@
 # Queue pc-locks: progress
 
-Updated 2026-11-27 18:19:22 PC time (18:19 UTC), runner pid 4952.
+Updated 2026-11-27 18:34:30 PC time (18:34 UTC), runner pid 4952.
 
 - `prep` done, exit 0 in 4 min
 - `livematch` done, exit 0 in 8 min
@@ -39,30 +39,29 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### lock
 
-**510 of 672 battles** (76%), 0 failed. Running 49 min, 602 battles/h, about 16 min left (ends ~18:35 PC time). Last battle 0 min ago.
-Skipped turns a battle: 11.2 overall, first 100 12.5, last 100 9.2; engine disables 9.
+**642 of 672 battles** (96%), 0 failed. Running 1.1 h, 566 battles/h, about 3 min left (ends ~18:37 PC time). Last battle 0 min ago.
+Skipped turns a battle: 10.8 overall, first 100 12.5, last 100 9.4; engine disables 9.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 256 | 0 | 59.56 | - | - | - | 11.3 |
-| aa | 254 | 0 | 59.02 | -0.01 (14 robots) | ±0.01 | -0.02 .. +0.00 | 11.1 |
+| c | 322 | 0 | 59.63 | - | - | - | 10.8 |
+| aa | 320 | 0 | 59.24 | -0.00 (14 robots) | ±0.01 | -0.01 .. +0.00 | 10.8 |
 
 APS = mean difference over the robots read x 14 panel robots / 1217 pairings.
-A/A: aa - c -0.53 pts over 14 robots; 1% band ±0.73 (inside).
+A/A: aa - c -0.39 pts over 14 robots; 1% band ±0.65 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 510 |
+| `fails 30` | halt | ok | 0 failed of 642 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 60 over 24` | halt | ok | 8.9 a battle over the last 24 (first 24: 11.4) |
+| `skips 60 over 24` | halt | ok | 9.3 a battle over the last 24 (first 24: 11.4) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 162 battles unrun (about 16 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 30 battles unrun (about 3 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-09:51:50 gate exit=0 in 1 s
 09:51:50 start pr
 09:51:58 pr exit=0 in 7 s
 09:51:58 ALLDONE
@@ -77,4 +76,5 @@ Stopping now would leave 162 battles unrun (about 16 min); every battle already 
 17:30:24 start lock
 17:30:24 watching lock: 4 stop rule(s)
 17:53:09 progress lock: 253/672 (38%) battles, 667/h, ETA 38 min, 0 failed, skips 11.6/battle (last 100), aa -0.01
+18:23:24 progress lock: 547/672 (81%) battles, 582/h, ETA 13 min, 0 failed, skips 9.2/battle (last 100), aa -0.01
 ```
