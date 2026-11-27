@@ -1029,6 +1029,8 @@ public class MinimumRiskMovement {
         if (apart) r += shots;
         // TMODE-45: after the pull, so FINISH and GANG cannot scale the chaser's term away.
         if (v.chaser != null) r += quartersRisk(p, v.chaser);
+        // TMODE-64: a swarming member takes no posture, whose low-profile term would hold it off the last enemy.
+        if (v.pull != null && v.pull.swarm) return r;
         return r + postureRisk(p, v.enemies, v.plan);
     }
 

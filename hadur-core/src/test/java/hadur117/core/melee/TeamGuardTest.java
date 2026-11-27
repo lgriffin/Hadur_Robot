@@ -46,6 +46,29 @@ class TeamGuardTest {
     }
 
     @Test
+    @Tag("TMODE-64")
+    @DisplayName("TMODE-64: under SWARM, one enemy left draws the member to it at the swarm floor whatever its energy; never with two left or a stale scan, and no team's entry carries it")
+    void swarmPull() {
+        Set<TeamModes.Mode> swarm = EnumSet.of(TeamModes.Mode.HUNT, TeamModes.Mode.LAST, TeamModes.Mode.SWARM);
+        List<EnemyInfo> one = north(100);
+        List<Roster.Mate> m = mates(pt(850, 150));
+        for (double energy : new double[] {100, 10, 0.5}) {
+            TeamRisk.Pull p = TeamRisk.pull(ME, energy, 1, one, NOW, m, swarm);
+            assertNotNull(p);
+            assertEquals(one.get(0).location, p.at);
+            assertEquals(TeamRisk.SWARM_FLOOR, p.floor, 0);
+            assertTrue(p.swarm);
+        }
+        assertFalse(TeamRisk.pull(ME, 100, 1, one, NOW, m, EnumSet.of(TeamModes.Mode.HUNT, TeamModes.Mode.LAST)).swarm, "without SWARM");
+        assertNull(TeamRisk.pull(ME, 100, 1, one, NOW + 1000, m, EnumSet.of(TeamModes.Mode.SWARM)), "stale");
+        assertNull(TeamRisk.pull(ME, 100, 2, one, NOW, m, EnumSet.of(TeamModes.Mode.SWARM)), "two left");
+        assertFalse(TeamModes.DEFAULT.contains(TeamModes.Mode.SWARM));
+        for (Map.Entry<String, Set<TeamModes.Mode>> e : TeamModes.TABLE.entrySet()) {
+            assertFalse(e.getValue().contains(TeamModes.Mode.SWARM), e.getKey());
+        }
+    }
+
+    @Test
     @Tag("TMODE-47")
     @DisplayName("TMODE-47: under LAST, one enemy left by the filtered count draws the member to it at FINISH's floor; never with two left, a stale scan or low energy")
     void lastPull() {

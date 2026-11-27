@@ -107,7 +107,15 @@ public final class TeamModes {
          * than CLOSE's, for a team whose guns gain little at that range while ours gain much. Only
          * through the table, per team (DemoniacNimrods). Means nothing without HUNT.
          */
-        NEAR
+        NEAR,
+        /**
+         * TMODE-64, swarm: with one enemy left and a teammate alive, every member is pulled to
+         * {@link TeamRisk#SWARM_FLOOR} px from it whatever its own energy, and takes no melee
+         * posture, so a drained member fights the last enemy from close in instead of from across
+         * the field. For a team whose 200-energy leader outlasts its members and then outshoots
+         * ours at long range. Only through the table, per team.
+         */
+        SWARM
     }
 
     /**
