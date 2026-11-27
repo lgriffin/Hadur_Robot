@@ -1,0 +1,16 @@
+oog.nano.SavantWS 0.1 | rank955-band6 | oog.nano.SavantWS_0.1.jar
+mrm.MightyMoose .2 | rank729-band6 | mrm.MightyMoose_.2.jar
+Ex.Survival 3.7 | rank780-band6 | Ex.Survival_3.7.jar
+nan.Ihivatar_Mk_1 1.0 | rank489-band5 | nan.Ihivatar_Mk_1_1.0.jar
+Heal.TekitokaBot 1.0 | rank1068-band6 | Heal.TekitokaBot_1.0.jar
+zch.David 0.21 | rank1108-band6 | zch.David_0.21.jar
+Legend.X_FireFly 1.3 | rank591-band5 | Legend.X_FireFly_1.3.jar
+pb.Oscillator 1.0 | rank1128-band6 | pb.Oscillator_1.0.jar
+mz.NanoGod 2.02 | rank618-band5 | mz.NanoGod_2.02.jar
+jep.Terrible 0.4.1 | rank755-band6 | jep.Terrible_0.4.1.jar
+ahf.Acero 1.0 | rank666-band5 | ahf.Acero_1.0.jar
+nosteel.Welby 0.0.3 | rank714-band6 | nosteel.Welby_0.0.3.jar
+genprog.Gajeel 1.0 | rank1070-band6 | genprog.Gajeel_1.0.jar
+hapiel.Spiral 0.1 | rank881-band6 | hapiel.Spiral_0.1.jar
+marksteam.Phoenix 1.0 | rank718-band6 | marksteam.Phoenix_1.0.jar
+xiongan.Xiongan 1.1 | rank1039-band6 | xiongan.Xiongan_1.1.jar
