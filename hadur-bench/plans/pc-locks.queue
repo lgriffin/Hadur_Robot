@@ -1,7 +1,7 @@
 # 1v1, cloud locks to the PC (BENCH-253), round 36.
 # Round 35 ran as PR #1095 (A/A level): 6 of 16 lines held and were banked (#1097, plans/locks35-shipped.txt):
 # MatchupMini gl +2.1, TrialBot rf +2.5, SquidmanNano and Ringo rlnrkn +1.5, RedBull rlnrkn +1.6, YellowBird mtty +1.5.
-# Round 36 carries 8 robots on existing table switches, each read on 12 or more fresh cloud seeds at 0.7x the live turn
+# Round 36 carries 9 robots on existing table switches, each read on 12 or more fresh cloud seeds at 0.7x the live turn
 # time (the PC's skipped turns a battle) against both c and aa, gain vs mean(c, aa) (coverage/shards/locks.tsv):
 #   pb (POW-20 power band)        FlowerBot +4.0 +- 3.6 (24), band 1.00 1.00 1.24 1.25: we shield most of the battle and
 #                                 fire 1.42 to BB's 1.96, so the band lifts power above 60 energy
@@ -11,9 +11,10 @@
 #   fq (flattener on)             YersiniaPestis +2.7 +- 2.4 (12)
 #   fgl (GUN-12 free gun)         Neuromancer +4.4 +- 4.1 (12)
 #   dn (DIST-4, 415 px)           Blur +1.7 +- 1.1 (12): we sit at 354 px to BB's 414 and it hits us 5.5% to 2.7%
+#   dn (DIST-4, 533 px)           Angsaichmophobia +1.9 +- 0.9 (12): we sit at 468 px to BB's 533
 #   vj (velocity jitter)          Shera +2.9 +- 2.6 (12): it hits us 7.3% to BB's 4.3%, most near walls
 #   cpl (COPY-2 bred gun copy)    Ogi +3.2 +- 2.6 (24) and +4.4 +- 3.8 on 12 more (36 fresh, about +3.6); a knn copy of its gun
-# BeepBoop, DrussGT, Saguaro and ScalarR pad the A/A check to 12 robots on arm aa; c and aa run on all 12, which also gives
+# BeepBoop, DrussGT, Saguaro and ScalarR pad the A/A check to 13 robots on arm aa; c and aa run on all 13, which also gives
 # a PC read of the four robots we lose to live. The PC reads 24 fresh seeds from 116000 and a line ships only on the PC's
 # own read.
 #
@@ -22,7 +23,7 @@
 #   - Diagnosis: FlowerBot and Dookious out-fire us (we fire light), so a power band and the gun stack's second view
 #     raise our damage; Che's shots come while it stands, where the shield's battle exit off keeps the shield on;
 #     YersiniaPestis and Shera aim at our stats (flattener, velocity jitter); Neuromancer is best hit by the free gun;
-#     Blur's gun is strongest at our usual range and a 415 px pin keeps us at BB's; Ogi's learning gun is reproduced by
+#     Blur's and Angsaichmophobia's guns are strongest at our usual range and a pin keeps us at BB's; Ogi's learning gun is reproduced by
 #     its bred copy.
 #   - Every line read positive against both controls at PC-like turn time on fresh cloud seeds; 24 PC seeds settle it.
 #
@@ -44,8 +45,8 @@
 #   .\queue.ps1 run pc-locks --fresh        (or  ./queue.sh run pc-locks --fresh)
 #   --fresh because round 35 left this plan's queue state marked complete; the new work directory and seeds mean no
 #   battle is read back from an earlier round (and BENCH-272 refights any whose jar changed).
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 124 live-match battles and 768 lock battles (12
-# robots in c and aa, each lever robot again on its own arm, 24 seeds): 892 in all, about 25 minutes.
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 124 live-match battles and 816 lock battles (13
+# robots in c and aa, each lever robot again on its own arm, 24 seeds): 940 in all, about 25 minutes.
 # The prep step stops if any panel robot's jar is missing.
 #
 set V = 3.24
