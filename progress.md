@@ -1,6 +1,6 @@
 # Queue pc-locks: progress
 
-Updated 2026-11-27 19:04:44 PC time (19:04 UTC), runner pid 4952.
+Updated 2026-11-27 19:11:23 PC time (19:11 UTC), runner pid 4952.
 
 - `prep` done, exit 0 in 4 min
 - `livematch` done, exit 0 in 8 min
@@ -9,9 +9,9 @@ Updated 2026-11-27 19:04:44 PC time (19:04 UTC), runner pid 4952.
 - `lock-zl` done, exit 0 in 0 min
 - `lock-vj` done, exit 0 in 1 min
 - `lock-rp` done, exit 0 in 15 min
-- `lock-rppb` running
-- `gate` pending
-- `pr` pending
+- `lock-rppb` done, exit 0 in 10 min
+- `gate` done, exit 0 in 0 min
+- `pr` done, exit 0 in 0 min
 
 ### livematch
 
@@ -121,32 +121,27 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### lock-rppb
 
-**24 of 48 battles** (50%), 0 failed, 24 read back from an earlier run. Running 4 min. Last battle 4 min ago.
+**48 of 48 battles** (100%), 0 failed, 24 read back from an earlier run. Running 11 min, 137 battles/h, about 0 min left (ends ~19:11 PC time). Last battle 0 min ago.
+Skipped turns a battle: 11.1 overall, first 24 11.1, last 24 11.1; engine disables 0.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | c | 24 | 0 | 57.01 | - | - | - | 9.7 |
-| rppb | 0 | 0 | - | - | - | - | - |
+| rppb | 24 | 0 | 65.66 | +0.01 (1 robots) | - | - | 11.1 |
 
 APS = mean difference over the robots read x 1 panel robots / 1217 pairings.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 24 |
+| `fails 30` | halt | ok | 0 failed of 48 |
 | `dead 8` | halt | ok | every arm scoring |
-| `stall 30m` | halt | ok | last battle 4 min ago |
+| `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 24 battles unrun; every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-18:44:28 lock exit=0 in 4443 s
-18:44:28 start stage
-18:44:31 stage exit=0 in 3 s
-18:44:31 start lock-zl
-18:44:31 watching lock-zl: 3 stop rule(s)
-18:45:02 lock-zl exit=0 in 30 s
 18:45:02 start lock-vj
 18:45:02 watching lock-vj: 3 stop rule(s)
 18:45:37 lock-vj exit=0 in 35 s
@@ -156,4 +151,10 @@ Stopping now would leave 24 battles unrun; every battle already fought is kept a
 19:00:44 lock-rp exit=0 in 906 s
 19:00:44 start lock-rppb
 19:00:44 watching lock-rppb: 3 stop rule(s)
+19:11:15 lock-rppb exit=0 in 630 s
+19:11:15 start gate
+19:11:16 gate exit=0 in 1 s
+19:11:16 start pr
+19:11:23 pr exit=0 in 7 s
+19:11:23 ALLDONE
 ```
