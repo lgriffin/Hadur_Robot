@@ -1,9 +1,9 @@
 # pc-shelf screen U (BENCH-180): c master, aa its A/A copy; each other arm turns one per-opponent switch on
 # against every robot of plans/shelf-u.list: mt shield mode (slistadd), wl stop-and-go (sgolist, POISON-2),
 # hl stop-and-start (hjlist, MOVE-28), gl the gun stack (gslist, GUN-11).
-c | hadur117.Hadur 3.24 | bisect/hadur117.Hadur_3.24.jar
-aa | hadur117.Hadur 3.24aa | bisect/hadur117.Hadur_3.24aa.jar
-mt | hadur117.Hadur 3.24mt | bisect/hadur117.Hadur_3.24mt.jar
-wl | hadur117.Hadur 3.24wl | bisect/hadur117.Hadur_3.24wl.jar
-hl | hadur117.Hadur 3.24hl | bisect/hadur117.Hadur_3.24hl.jar
-gl | hadur117.Hadur 3.24gl | bisect/hadur117.Hadur_3.24gl.jar
+c | hadur117.Hadur 3.25 | bisect/hadur117.Hadur_3.25.jar
+aa | hadur117.Hadur 3.25aa | bisect/hadur117.Hadur_3.25aa.jar
+mt | hadur117.Hadur 3.25mt | bisect/hadur117.Hadur_3.25mt.jar
+wl | hadur117.Hadur 3.25wl | bisect/hadur117.Hadur_3.25wl.jar
+hl | hadur117.Hadur 3.25hl | bisect/hadur117.Hadur_3.25hl.jar
+gl | hadur117.Hadur 3.25gl | bisect/hadur117.Hadur_3.25gl.jar

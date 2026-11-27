@@ -53,8 +53,8 @@ class SurfKeyPlanTest {
         }
         assertTrue(confirm.contains("stop: dead 8"));
         String arms = Files.readString(Path.of("plans/surf-key.arms"));
-        for (String a : new String[] {"c | hadur117.Hadur 3.24 | ", "aa | hadur117.Hadur 3.24aa | ",
-            "kl | hadur117.Hadur 3.24kl | ", "klbb | hadur117.Hadur 3.24klbb | "}) {
+        for (String a : new String[] {"c | hadur117.Hadur 3.25 | ", "aa | hadur117.Hadur 3.25aa | ",
+            "kl | hadur117.Hadur 3.25kl | ", "klbb | hadur117.Hadur 3.25klbb | "}) {
             assertTrue(arms.contains("\n" + a), a);
         }
         String gate = step(queue, "gate", "pr");

@@ -49,7 +49,7 @@
 # robots in c and aa, each lever robot again on its own arm, 24 seeds): 940 in all, about 25 minutes.
 # The prep step stops if any panel robot's jar is missing.
 #
-set V = 3.24
+set V = 3.25
 set P = --parallel 16 --no-truth-log --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 2G
 set W = work/pc-locks36

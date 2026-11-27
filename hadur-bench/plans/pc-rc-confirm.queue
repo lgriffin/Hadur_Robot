@@ -33,7 +33,7 @@
 # changes that do not touch duels. Expected about +0.1 to +0.2 APS on the field; the card says how much and that no
 # class lost, which the next release decision toward 94 needs.
 
-set V = 3.24
+set V = 3.25
 set REL = 3.24
 set P = --parallel 16 --no-truth-log --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 2G

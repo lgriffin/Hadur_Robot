@@ -1,13 +1,13 @@
 # pc-r31 (BENCH-244): c is master, aa its A/A copy; each other arm is master with one lever's line on every robot of
 # plans/r31-add.txt (mtzl shield list + still, fq flatteners on, gl gun stack, mq mimic members, x5 x.x5 power,
 # wl stop-and-go, hl heat jitter, rp race power). Each line acts on its own robot only.
-c | hadur117.Hadur 3.24 | bisect/hadur117.Hadur_3.24.jar
-aa | hadur117.Hadur 3.24aa | bisect/hadur117.Hadur_3.24aa.jar
-mtzl | hadur117.Hadur 3.24mtzl | bisect/hadur117.Hadur_3.24mtzl.jar
-fq | hadur117.Hadur 3.24fq | bisect/hadur117.Hadur_3.24fq.jar
-gl | hadur117.Hadur 3.24gl | bisect/hadur117.Hadur_3.24gl.jar
-mq | hadur117.Hadur 3.24mq | bisect/hadur117.Hadur_3.24mq.jar
-x5 | hadur117.Hadur 3.24x5 | bisect/hadur117.Hadur_3.24x5.jar
-wl | hadur117.Hadur 3.24wl | bisect/hadur117.Hadur_3.24wl.jar
-hl | hadur117.Hadur 3.24hl | bisect/hadur117.Hadur_3.24hl.jar
-rp | hadur117.Hadur 3.24rp | bisect/hadur117.Hadur_3.24rp.jar
+c | hadur117.Hadur 3.25 | bisect/hadur117.Hadur_3.25.jar
+aa | hadur117.Hadur 3.25aa | bisect/hadur117.Hadur_3.25aa.jar
+mtzl | hadur117.Hadur 3.25mtzl | bisect/hadur117.Hadur_3.25mtzl.jar
+fq | hadur117.Hadur 3.25fq | bisect/hadur117.Hadur_3.25fq.jar
+gl | hadur117.Hadur 3.25gl | bisect/hadur117.Hadur_3.25gl.jar
+mq | hadur117.Hadur 3.25mq | bisect/hadur117.Hadur_3.25mq.jar
+x5 | hadur117.Hadur 3.25x5 | bisect/hadur117.Hadur_3.25x5.jar
+wl | hadur117.Hadur 3.25wl | bisect/hadur117.Hadur_3.25wl.jar
+hl | hadur117.Hadur 3.25hl | bisect/hadur117.Hadur_3.25hl.jar
+rp | hadur117.Hadur 3.25rp | bisect/hadur117.Hadur_3.25rp.jar
