@@ -593,6 +593,8 @@ final class ShieldTableData {
             "tornyil.Lajcsi2.Lajcsi2sm 1.0", // +1.9
             // pc-locks round 35 (BENCH-253, PR #1095): 24 fresh PC seeds at the live turn time; cloud lock held first
             "stelo.MatchupMini 1.1",             // +2.1
+            // pc-locks round 38 (BENCH-253, PR #1113): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "cb.Domogled 1.2",                   // +2.7
         };
     }
 
@@ -812,6 +814,8 @@ final class ShieldTableData {
         return new String[] {
             "stelo.MatchupAGF 1.1",
             "suh.mega.WaveSurferPG 1.06",
+            // pc-locks round 38 (BENCH-253, PR #1113): 24 fresh PC seeds at the live turn time; cloud lock held warm and cold first
+            "oog.mega.saguaro.Saguaro 1.1.4",
         };
     }
 
@@ -1299,6 +1303,9 @@ final class ShieldTableData {
             "cb.fire.Firestarter 2.0f",          // +2.1
             "oog.PricklyPear 1.0.6",             // +1.9
             "rsalesc.mega.Knight 0.6.28",        // +8.6 (with its power bands)
+            // pc-locks round 38 (BENCH-253, PR #1113): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "fnh.mega.DumDum 1.2.1",             // +7.3 (on top of its gun-stack line)
+            "sheldor.mini.Foilist 1.3.1",        // +3.0
         };
     }
 

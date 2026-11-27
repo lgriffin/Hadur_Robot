@@ -718,8 +718,8 @@ endgame MEND-1, 2).
 
 The 1v1 table is per opponent, PC-trained and census-gated: only per-opponent picks have shown
 live gains. It ships as two classes in the robot jar, because the sandbox refuses a robot the
-read of its own jar's resources but lets classes load. On master (3.24 plus the banked lines) it holds 1,403
-lines over 44 slots: 305 on the shield list and 1,098 in `ShieldTableData`'s 43 other slots.
+read of its own jar's resources but lets classes load. On master (3.24 plus the banked lines) it holds 1,407
+lines over 44 slots: 305 on the shield list and 1,102 in `ShieldTableData`'s 43 other slots.
 
 ```mermaid
 flowchart LR
@@ -768,10 +768,10 @@ flowchart LR
 | `ramLearns()` | `ram-learn:` | RAM-20 | 49 | The escape dodges the aims learned from the rammer's own bullets (`ShotModel`) in place of RAM-5's fixed pair |
 | `ramKnowns()` | `ram-known:` | RAM-21 | 35 | The rammer is confirmed at the first scan, so rounds 1 and 2 play the escape instead of waiting for two rammed rounds |
 | **Power and gun** | | | | |
-| `powerCaps()`, `powerCapHalves()` | `power-cap:`, `power-cap5:` | POW-18 | 6, 2 | Cap fire power |
+| `powerCaps()`, `powerCapHalves()` | `power-cap:`, `power-cap5:` | POW-18 | 6, 3 | Cap fire power |
 | `hardFires()`, `powerBands()` | `hard-fire:`, `power-band:` | POW-19, POW-20 | 1, 3 | At least 0.6 power while we have 60+ energy; a power multiplier per energy band |
-| `fullOffs()`, `x5Powers()`, `racePowers()` | `full-off:`, `x5-power:`, `race-power:` | POW-15, POW-16, POW-17 | 16, 17, 27 | Power policy variants (race power vs strong bots) |
-| `gunStacks()` | `gun-stack:` | GUN-11 | 24 | TripHammer gun stack (never for a shield opponent) |
+| `fullOffs()`, `x5Powers()`, `racePowers()` | `full-off:`, `x5-power:`, `race-power:` | POW-15, POW-16, POW-17 | 16, 17, 29 | Power policy variants (race power vs strong bots) |
+| `gunStacks()` | `gun-stack:` | GUN-11 | 25 | TripHammer gun stack (never for a shield opponent) |
 | `freeGuns()` | `free-gun:` | GUN-12 | 0 | The duel gun fires with free gun on against this opponent |
 | `copies()` | `copy:` | COPY-2 | 10 | A bred copy of the opponent's learning gun (genome from truth logs) steers the surf's danger |
 
