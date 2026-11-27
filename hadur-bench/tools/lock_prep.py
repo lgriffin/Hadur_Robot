@@ -25,6 +25,7 @@ import sys
 LEVERS = {
     "mtzl": ("slistadd,szlist", ("SHIELD_ADD", "SHIELD_STILL")),
     "mt": ("slistadd", ("SHIELD_ADD",)),
+    "zl": ("szlist", ("SHIELD_STILL",)),  # SHIELD-20 still shot plans alone
     "fq": ("fllist", ("FLAT_ON",)),
     "gl": ("gslist", ("GUN_STACK",)),
     "mq": ("mmlist", ("MIMIC_ON",)),
@@ -34,6 +35,7 @@ LEVERS = {
     "hf": ("hflist", ("HARD_FIRE",)),
     "fp": ("fplist", ("FULL_OFF",)),
     "rp": ("rplist", ("RACE_POWER",)),
+    "rppb": ("rplist,pblist", ("RACE_POWER", "POWER_BAND")),  # POW-17 race power with POW-20 bands (power-band-lines.txt)
     "dg": ("sdodgelist", ("SHOT_DODGE",)),
     "pb": ("pblist", ("POWER_BAND",)),
     "x0": ("sx0list", ("SHIELD_EXIT0",)),
@@ -170,7 +172,16 @@ def main(pick, panel, base_arms, outdir):
             with open(path, "w") as g:
                 g.write("".join(n + "\n" for n in _list_lines(arm, picks[arm])))
             flavours, envs = LEVERS[arm]
-            f.write("%s bash ./build-ablation.sh %s\n" % (" ".join("%s=%s" % (e, path.replace(os.sep, "/")) for e in envs), flavours))
+            paths = {}
+            for e in envs:
+                if e == "POWER_BAND" and arm != "pb":
+                    # a stacked arm's bands come from power-band-lines.txt, its other lists stay plain names
+                    paths[e] = os.path.join(outdir, arm + "-pb.list")
+                    with open(paths[e], "w") as g:
+                        g.write("".join(n + "\n" for n in _pb_lines(picks[arm])))
+                else:
+                    paths[e] = path
+            f.write("%s bash ./build-ablation.sh %s\n" % (" ".join("%s=%s" % (e, paths[e].replace(os.sep, "/")) for e in envs), flavours))
     print("lock_prep: %d robots, arms %s" % (len(rows), ",".join(sorted(picks)) or "none"))
     return 0
 

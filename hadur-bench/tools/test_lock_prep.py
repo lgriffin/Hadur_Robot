@@ -127,5 +127,28 @@ class LockPrepTest(unittest.TestCase):
             lock_prep.PB_LINES = old
 
 
+    def test_race_power_with_bands_builds_both_lists(self):
+        lines = os.path.join(self.d, "pb.txt")
+        with open(lines, "w") as f:
+            f.write("0.77 0.73 0.41 0.12 a.A 1\n")
+        with open(self.arms, "a") as f:
+            f.write("rppb | hadur117.Hadur 3.22rppb | x\n")
+        old, lock_prep.PB_LINES = lock_prep.PB_LINES, lines
+        try:
+            out = self.run_prep([("a.A 1", "rppb", "10.0")])
+            self.assertEqual("a.A 1\n", open(os.path.join(out, "rppb.list")).read())
+            self.assertEqual("0.77 0.73 0.41 0.12 a.A 1\n", open(os.path.join(out, "rppb-pb.list")).read())
+            fwd = lambda n: os.path.join(out, n).replace(os.sep, "/")
+            self.assertIn("RACE_POWER=%s POWER_BAND=%s bash ./build-ablation.sh rplist,pblist" % (fwd("rppb.list"), fwd("rppb-pb.list")),
+                          open(os.path.join(out, "build.sh")).read())
+            arms = os.path.join(self.d, "arms.tsv")
+            with open(arms, "w") as f:
+                f.write("arm\trobot\topponent\nrppb\tH\ta.A 1\nrppb\tH\tb.B 2\n")
+            picked = os.path.join(self.d, "picked.tsv")
+            lock_prep.restrict(arms, out, picked)
+            self.assertEqual(["rppb\tH\ta.A 1\n"], open(picked).readlines()[1:])
+        finally:
+            lock_prep.PB_LINES = old
+
 if __name__ == "__main__":
     unittest.main()
