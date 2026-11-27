@@ -838,6 +838,12 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
                 edit "$movedesign" "static final int STOP_AND_GO_PREFIRE = 1;" "static final int STOP_AND_GO_PREFIRE = 2;"
                 version="${version}ws"
             else version="${version}wp"; fi ;;
+        shwide)
+            # GUN-7 evaluation: the shadow aim reaches twice as far (offsets to 1.8 half-widths, samples within 3).
+            shadowaim="$src/hadur-core/src/main/java/$pkg/core/gun/ShadowAim.java"
+            edit "$shadowaim" "static final double[] OFFSETS = {-0.9, -0.45, 0.45, 0.9};" "static final double[] OFFSETS = {-1.8, -1.35, -0.9, -0.45, 0.45, 0.9, 1.35, 1.8};"
+            edit "$shadowaim" "static final double SAMPLE_REACH = 2.0;" "static final double SAMPLE_REACH = 3.0;"
+            version="${version}shw" ;;
         sguard|sguard15|sguard3)
             # MOVE-75: the surf guards the stop-and-go mover's moves (ratio 2, or 1.5 / 3).
             edit "$movedesign" "static final boolean STOP_GUARD = false;" "static final boolean STOP_GUARD = true;"
