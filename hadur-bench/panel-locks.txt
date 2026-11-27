@@ -1,23 +1,19 @@
-# BENCH-253 pc-locks, round 35: 16 robots. Each carries a line read on 12 or more fresh cloud seeds at 0.7x the live
-# turn time against both c and aa (coverage/shards/locks.tsv): PhoenixOS, PinkPanther, MatchupMini and Holden on gl (GUN-11 gun stack); Identity and
-# PumpkinPie on cpl (COPY-2 bred gun copy); Phoenix on rwl (MOVE-46 ram wait); GresSuffurd on dn (DIST-4, 400 px);
-# Splooshlu on hof (MOVE-71 head-on floor); LevelOne on qw (MOVE-67 aim weight); SquidmanNano, Ringo and RedBull on rlnrkn
-# (RAM-20 and RAM-21);
-# TrialBot on rf (RAM-15 ram flee); Eva01 and YellowBird on mtty (shield list plus SHIELD-33 tiny-shot waves).
-# c and aa run on every robot, so the A/A check reads all 16. name | note | jar
-davidalves.PhoenixOS 1.1 | rank59-band3 | davidalves.PhoenixOS_1.1.jar
-hope.Identity .pope69 | rank82-band3 | hope.Identity_.pope69.jar
-cs.PumpkinPie 1.0 | rank377-band4 | cs.PumpkinPie_1.0.jar
-davidalves.Phoenix 1.02 | rank22-band2 | davidalves.Phoenix_1.02.jar
-gh.GresSuffurd 0.4.13 | rank17-band2 | gh.GresSuffurd_0.4.13.jar
-blir.mini.oops.Splooshlu 2.0 | rank680-band5 | blir.mini.oops.Splooshlu_2.0.jar
-dy.LevelOne 2.0 | rank590-band5 | dy.LevelOne_2.0.jar
-squidM.SquidmanNano 1.0 | rank840-band6 | squidM.SquidmanNano_1.0.jar
-hlavko.nano.Ringo 2.0 | rank818-band6 | hlavko.nano.Ringo_2.0.jar
-divineomega.TrialBot 0.003 | rank446-band5 | divineomega.TrialBot_0.003.jar
-m3thos.mini.Eva01 0.5.5 | rank885-band6 | m3thos.mini.Eva01_0.5.5.jar
-dmh.robocode.robot.YellowBird 0.12 | rank617-band5 | dmh.robocode.robot.YellowBird_0.12.jar
-dmh.robocode.robot.PinkPanther 1.1 | rank385-band4 | dmh.robocode.robot.PinkPanther_1.1.jar
-darkcanuck.Holden 1.13a | rank54-band3 | darkcanuck.Holden_1.13a.jar
-stelo.MatchupMini 1.1 | rank286-band4 | stelo.MatchupMini_1.1.jar
-zyx.nano.RedBull 1.0 | rank858-band6 | zyx.nano.RedBull_1.0.jar
+# BENCH-253 pc-locks, round 36: 13 robots. Nine carry a line read on 12 or more fresh cloud seeds at 0.7x the live turn
+# time against both c and aa (coverage/shards/locks.tsv): FlowerBot on pb (POW-20 power band); Che on x0 (SHIELD-19 shield
+# exit off, on top of its copy); Dookious on gl (GUN-11 gun stack); YersiniaPestis on fq (flattener on); Neuromancer on fgl
+# (GUN-12 free gun); Blur and Angsaichmophobia on dn (DIST-4, 415 and 533 px); Shera on vj (velocity jitter); Ogi on cpl (COPY-2 bred gun copy).
+# BeepBoop, DrussGT, Saguaro and ScalarR pad the A/A check on arm aa, which also gives a PC read of the four robots we lose to.
+# c and aa run on every robot, so the A/A check reads all 13. name | note | jar
+deo.FlowerBot 1.0 | rank226-band4 | deo.FlowerBot_1.0.jar
+cjm.Che 1.2 | rank256-band4 | cjm.Che_1.2.jar
+voidious.Dookious 1.573c | rank21-band2 | voidious.Dookious_1.573c.jar
+zyx.mega.YersiniaPestis 3.0 | rank34-band2 | zyx.mega.YersiniaPestis_3.0.jar
+jk.melee.Neuromancer 7.12 | rank20-band2 | jk.melee.Neuromancer_7.12.jar
+cx.micro.Blur 0.2 | rank406-band5 | cx.micro.Blur_0.2.jar
+ara.Shera 0.88 | rank290-band4 | ara.Shera_0.88.jar
+kinsen.melee.Angsaichmophobia 1.8c | rank472-band5 | kinsen.melee.Angsaichmophobia_1.8c.jar
+cz.libors.Ogi v1 | rank7-band1 | cz.libors.Ogi_v1.jar
+kc.mega.BeepBoop 2.0 | rank1-band1 | kc.mega.BeepBoop_2.0.jar
+jk.mega.DrussGT 3.1.20 | rank4-band1 | jk.mega.DrussGT_3.1.20.jar
+oog.mega.saguaro.Saguaro 1.1.4 | rank2-band1 | oog.mega.saguaro.Saguaro_1.1.4.jar
+aaa.r.ScalarR 0.005h.053-noshield | rank5-band1 | aaa.r.ScalarR_0.005h.053-noshield.jar
