@@ -35,6 +35,7 @@ LEVERS = {
     "hf": ("hflist", ("HARD_FIRE",)),
     "fp": ("fplist", ("FULL_OFF",)),
     "rp": ("rplist", ("RACE_POWER",)),
+    "p5": ("pcap5list", ("POWER_CAP5",)),  # POW-18 0.5 duel power cap
     "rppb": ("rplist,pblist", ("RACE_POWER", "POWER_BAND")),  # POW-17 race power with POW-20 bands (power-band-lines.txt)
     "dg": ("sdodgelist", ("SHOT_DODGE",)),
     "pb": ("pblist", ("POWER_BAND",)),
