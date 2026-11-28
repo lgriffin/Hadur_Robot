@@ -1085,18 +1085,6 @@ final class ShieldTableData {
     }
 
     /**
-     * MOVE-76: per-opponent wall ride ({@code wall-ride:} lines), one line each: the discount on a wave's
-     * danger at a surf option whose point lies within 50 px of a wall, then the name. Ships empty;
-     * candidate builds add lines here (build-ablation.sh wridelist).
-     *
-     * @return a fresh array of lines
-     */
-    static String[] wallRides() {
-        return new String[] {
-        };
-    }
-
-    /**
      * DIST-4: per-opponent pinned duel distance, one line each: the surf's desired distance in px, then the name.
      * The pin replaces DIST-1's controller target against that robot in a duel (END-1's finish still closes in).
      * Candidate builds add lines here (build-ablation.sh dplist).

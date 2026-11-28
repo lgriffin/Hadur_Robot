@@ -398,7 +398,6 @@ public final class DuelController {
         if (ramLearn) on.add("ramlearn");
         if (ramKnown) on.add("ramknown");
         if (ramNever) on.add("ramnever");
-        if (surfMover.wallRide() > 0) on.add("wallride");
         if (!Double.isNaN(powerCap)) on.add("cap");
         if (shield != null && shield.active()) on.add("shield");
         return on.isEmpty() ? "-" : String.join(",", on);
@@ -1679,8 +1678,6 @@ public final class DuelController {
         // MOVE-47: the steady orbit for the opponents the table names.
         steadyOrbitOn = duelOnly(stackList.steadyOrbit(name), enemiesTotal);
         surfMover.setSteadyOrbit(steadyOrbitOn);
-        // MOVE-76: the wall ride for the opponents the table names.
-        surfMover.setWallRide(enemiesTotal <= 1 ? stackList.wallRideFor(name) : 0);
         // POW-20: the power bands for the opponents the table names.
         powerBand = enemiesTotal <= 1 ? stackList.powerBandFor(name) : null;
         distPin = enemiesTotal <= 1 ? stackList.distPinFor(name) : Double.NaN;
