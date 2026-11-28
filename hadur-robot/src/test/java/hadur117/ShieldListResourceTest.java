@@ -322,7 +322,7 @@ class ShieldListResourceTest {
         ShieldList list = ShieldList.parse(lines);
         assertEquals(8 + 1 + 2 + 1 + 1 + 1 + 4 + 1 + 1 + 7 + 2 + 1, ShieldTableData.racePowers().length, "pc-race-power (BENCH-206, PR #695) confirm picks and pc-r31 (BENCH-244, PR #817) and pc-locks rounds 3 (PR #860), 6 (PR #890), 8 (PR #905), 10 (PR #922), 11 (PR #929), 25 (PR #1036), 27 (PR #1050), 37 (PR #1109), 38 (PR #1113) and 39 (PR #1116)");
         for (String n : ShieldTableData.racePowers()) assertTrue(list.racePower(n), n);
-        assertTrue(!list.racePower("abc.Shadow 3.83c"), "a pilot robot that did not hold the 3-point margin");
+        assertTrue(!list.racePower("jk.mega.DrussGT 3.1.20"), "a robot whose race-power arms all failed");
     }
 
     @Test
