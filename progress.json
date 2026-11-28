@@ -1,6 +1,6 @@
 {
  "plan": "pc-locks39",
- "updated": 1795829111.7453692,
+ "updated": 1795830019.533632,
  "steps": {
   "prep": {
    "status": "done",
@@ -124,8 +124,8 @@
   {
    "step": "lock",
    "started": 1795822665.2047434,
-   "updated": 1795829111.575737,
-   "elapsed": 6446.370993614197,
+   "updated": 1795830019.4067776,
+   "elapsed": 7354.202034235001,
    "expected": 1248,
    "panel": 13,
    "field": 1217,
@@ -133,53 +133,53 @@
    "arms": [
     {
      "arm": "c",
-     "battles": 457,
+     "battles": 524,
      "failed": 0,
-     "level": 63.70285855890322,
-     "skips": 9.328227571115974,
-     "fresh": 457,
-     "scored": 457,
+     "level": 63.62061748209851,
+     "skips": 9.288167938931299,
+     "fresh": 524,
+     "scored": 524,
      "diff": null
     },
     {
      "arm": "aa",
-     "battles": 462,
+     "battles": 525,
      "failed": 0,
-     "level": 63.61305291362793,
-     "skips": 9.681818181818182,
-     "fresh": 462,
-     "scored": 462,
-     "diff": -0.08980564527529084,
+     "level": 63.68820167883343,
+     "skips": 9.596190476190475,
+     "fresh": 525,
+     "scored": 525,
+     "diff": 0.06758419673491481,
      "n": 13,
-     "ci95": 0.5326058919305531,
-     "half_stop": 0.8152130998937037,
+     "ci95": 0.4614946215865803,
+     "half_stop": 0.7063693187549698,
      "scale": 0.010682004930156122
     }
    ],
    "aa": {
-    "diff": -0.08980564527529084,
-    "ci": 0.5326058919305531,
+    "diff": 0.06758419673491481,
+    "ci": 0.4614946215865803,
     "n": 13,
-    "band": 0.5446886831697708,
+    "band": 0.5098144410650112,
     "ok": true,
-    "band_stop": 0.8152130998937037,
+    "band_stop": 0.7063693187549698,
     "band_from": "observed spread"
    },
    "warnings": [],
-   "battles": 919,
+   "battles": 1049,
    "resumed": 0,
    "failed": 0,
    "disables": 1,
-   "rate": 528.0,
-   "eta": 2243.181818181818,
-   "fraction": 0.7363782051282052,
-   "last_battle_age": 0.5432629585266113,
+   "rate": 560.0,
+   "eta": 1279.2857142857144,
+   "fraction": 0.8405448717948718,
+   "last_battle_age": 2.5396461486816406,
    "rules": [
     {
      "rule": "fails 30",
      "action": "halt",
      "state": "ok",
-     "detail": "0 failed of 919"
+     "detail": "0 failed of 1049"
     },
     {
      "rule": "dead 8",
@@ -191,7 +191,7 @@
      "rule": "skips 60 over 24",
      "action": "halt",
      "state": "ok",
-     "detail": "10.7 a battle over the last 24 (first 24: 12.3)"
+     "detail": "9.3 a battle over the last 24 (first 24: 12.3)"
     },
     {
      "rule": "stall 30m",
@@ -200,8 +200,8 @@
      "detail": "last battle 0 min ago"
     }
    ],
-   "skips_mean": 9.505984766050055,
-   "skips_last100": 10.07
+   "skips_mean": 9.44232602478551,
+   "skips_last100": 8.79
   }
  ]
 }
