@@ -79,6 +79,7 @@ public final class ClinchBreak {
     public double heading(Point2D.Double me, Point2D.Double enemy) {
         double away = DiaUtils.absoluteBearing(enemy, me);
         double best = away;
+        double bestRun = 0.0;
         double bestScore = Double.NEGATIVE_INFINITY;
         int steps = (int) Math.round(SPREAD / STEP);
         // Straight away first, then alternately either side, so ties keep the most direct heading.
@@ -90,9 +91,33 @@ public final class ClinchBreak {
             if (score > bestScore + 1e-9) {
                 bestScore = score;
                 best = h;
+                bestRun = run;
             }
         }
-        return best;
+        if (bestRun >= 1.0) return best;
+        // Walled into a corner, every heading near straight away is blocked: run along a wall
+        // instead, as far as the enemy's body leaves room.
+        double wallBest = best;
+        double wallScore = Double.NEGATIVE_INFINITY;
+        for (int q = 0; q < 4; q++) {
+            double h = q * Math.PI / 2;
+            double run = bodyRun(me, h, Math.min(RUN, wallRun(me, h)), enemy);
+            double score = DiaUtils.project(me, h, run).distance(enemy);
+            if (run >= 1.0 && score > wallScore) {
+                wallScore = score;
+                wallBest = h;
+            }
+        }
+        return wallBest;
+    }
+
+    /** How far of {@code run} along {@code heading} stays clear of the enemy's body, px. */
+    static double bodyRun(Point2D.Double from, double heading, double run, Point2D.Double enemy) {
+        for (double d = 2.0; d <= run; d += 2.0) {
+            Point2D.Double p = DiaUtils.project(from, heading, d);
+            if (Math.abs(p.x - enemy.x) < 36.0 && Math.abs(p.y - enemy.y) < 36.0) return d - 2.0;
+        }
+        return run;
     }
 
     /** How far a robot's centre can go from {@code from} along {@code heading} before a wall, px. */

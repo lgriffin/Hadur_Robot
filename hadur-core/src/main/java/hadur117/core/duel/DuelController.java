@@ -929,6 +929,9 @@ public final class DuelController {
         if (ramWaitOn && endgame == Endgame.State.RAM) moveController.setProvisionalReady(false, in.time());
         boolean wavesInAir = ramWaitOn
             && moveController.findSurfableWave(0, currentState(in)) != null;
+        // MOVE-75: the latch reads every tick, so a tick another drive takes still releases it.
+        boolean clinchOn = duelOnly(MoveDesign.CLINCH_BREAK, enemiesTotal) && lastEnemyLocation != null
+            && clinchBreak.update(in.location().distance(lastEnemyLocation));
         if (endgame == Endgame.State.RAM && !wavesInAir) {
             surfMover.ram(orders, currentState(in), lastEnemyLocation);
         } else if (mirrorActive) {
@@ -949,8 +952,7 @@ public final class DuelController {
                 stats.ramEscapeTicks++;
                 ramEscape.move(orders, currentState(in), lastEnemyState, duelOnly(MoveDesign.RAM_BREAK, enemiesTotal));
             }
-        } else if (duelOnly(MoveDesign.CLINCH_BREAK, enemiesTotal) && lastEnemyLocation != null
-                && clinchBreak.update(in.location().distance(lastEnemyLocation))) {
+        } else if (clinchOn) {
             // MOVE-75: touching the enemy, nothing can be dodged; leave on the heading that ends furthest from it.
             clinchBreak.move(orders, currentState(in), lastEnemyLocation);
         } else if (stopAndGo != null) {

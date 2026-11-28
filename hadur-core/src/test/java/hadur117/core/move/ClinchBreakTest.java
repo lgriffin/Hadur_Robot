@@ -66,6 +66,20 @@ class ClinchBreakTest {
 
     @Test
     @Tag("MOVE-75")
+    @DisplayName("walled into a corner, the heading runs along a wall clear of the enemy's body")
+    void corner() {
+        ClinchBreak c = new ClinchBreak(FIELD);
+        // Every heading within the spread of straight away points into the south-west corner.
+        Point2D.Double me = new Point2D.Double(18, 18);
+        Point2D.Double enemy = new Point2D.Double(50, 58);
+        double h = c.heading(me, enemy);
+        double run = ClinchBreak.bodyRun(me, h, Math.min(ClinchBreak.RUN, c.wallRun(me, h)), enemy);
+        assertTrue(run > 60, "a real run, not a drive into the corner: " + run);
+        assertEquals(Math.PI / 2, Angles.normalAbsoluteAngle(h), 1e-9, "east along the south wall");
+    }
+
+    @Test
+    @Tag("MOVE-75")
     @DisplayName("the end of the robot that points away from the enemy leads")
     void leadingEnd() {
         ClinchBreak c = new ClinchBreak(FIELD);
