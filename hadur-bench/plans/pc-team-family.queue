@@ -1,0 +1,83 @@
+# battle: team
+# Team: family teams (TMODE-65, BENCH-301). Five members that are not five copies of one robot class, built only
+# for the bench (tmfamily writes thin member classes and the .team file in the build's own worktree): the shipped
+# team, the solo robot, 1v1 and melee are untouched, and every member runs master's brain unchanged.
+#   aa  the baseline (master); bb its A/A copy
+#   fn  five names, one brain: Hadur (leader), HadurB, HadurC, HadurD, HadurE, all plain team robots
+#   fd  spotters and gunners: Hadur (leader) and HadurB keep their radar; HadurDroidC, D and E are Droids
+#       (no radar, 120 energy instead of 100) that aim and dodge on the spotters' shared sightings
+# A family changes what every enemy team sees, so the screen fights the whole field, not one team.
+# Pilot: fn and fd each on the top eight teams (plans/team-family-pilot-set.txt), 8 fresh seeds from 45600,
+#   12 rounds, paired with aa. A projected team APS change under -0.30 stops that arm there (team_modes.py gate
+#   --stop-below); the other arm goes on. The bar is below zero because an 8-seed pilot on eight teams reads
+#   about +-0.35 APS: it stops clear harm (a blind droid pack), not noise.
+# Screen: bb, then each arm that cleared its pilot, on the whole field (team-census46.txt), 12 fresh seeds from
+#   45700, 12 rounds, paired with aa; each arm gated at +0.10 APS over 47 pairings with the 95% low end above
+#   zero, scored against both baselines. The gate's table gives OgiTeam's share on its own row.
+# Why it should win:
+#   fn: OgiTeam is the one pairing we lose (about 45% share on the bench). Its gun pools what it learns by robot
+#   class, and its dodge weighs its aim experts per enemy class (the design our CONCORD and DODGE modes copy in
+#   our own code). Against five members of one class, every shot it sees at any of ours trains one model of one
+#   movement, five times as fast as against a single robot. Under five class names each of our members is a
+#   fresh robot to it, with a fifth of the data. That fits the read of the 5v5 phase: at 200-400 px Ogi hits
+#   the member it aims at 20% of the time against our 8-11%, from the first round and in every range band, and
+#   neither range, power, sidestep nor dodge candidates moved it. Five classes change no decision of ours, so
+#   the arm is a clean read of how much of that gap is pooled learning. TMNR and OmegaSquad already field
+#   differently named members.
+#   fd: the lost Ogi rounds end in an energy race: their 200-energy leader is last standing in nine endgames of
+#   ten, against members we drained at 5v5 (80.6k energy spent against Ogi's 62.2k for the same damage). Three
+#   droids add 60 energy to the team (660 against 600) without a single extra shot. The droids see what the two
+#   spotters see: the members already merge every teammate's sightings and fire on them (MGUN-8, WORLD-4).
+#   The risk is the droids' blindness once both spotters are dead, which the pilot is there to catch. It also
+#   splits the team into classes as fn does (two plain, three droid classes), so fd against fn reads the droids.
+# Size: pilot 2 x 128 battles, screen 3 x 1080 battles (45 teams x 12 seeds, each with its aa battle): about
+#   3,500 battles, about 4 hours at the team rate; about 1.5 hours if both pilots stop. Every step resumes where
+#   it stopped.
+# Stop rules on every battle step (halt; every battle fought is kept and a rerun resumes): 10 failed battles, no
+# battle in 30 minutes, or 60+ skipped turns a battle over the last 200.
+# The team thread reads claude/pc-team-family-results.
+#   ./queue.sh run pc-team-family        (or  .\queue.ps1 run pc-team-family)
+# Run it from master (one bench queue at a time, RoboRumble workers at 0):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set T = python3 tools/team_modes.py
+
+tfprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && for a in aa bb fn fd; do rm -f bisect/hadur117.HadurTeam_"$V"$a.jar; done && rm -f ${OUT}/team-family-*.md && mkdir -p work && rm -rf work/team-family-"$V"-* && rm -f work/team-family-*.args work/team-family-go-* && ./fetch-opponents.sh --set team-census46.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && FAMILY=names bash ./build-ablation.sh tmfamily && FAMILY=droids bash ./build-ablation.sh tmfamily && for a in fn fd; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" plans/team-family-pilot.args > work/team-family-pep-$a.args || exit 1; done && for a in bb fn fd; do sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" plans/team-family-screen.args > work/team-family-$a.args || exit 1; done && for a in aa bb fn fd; do test -f bisect/hadur117.HadurTeam_"$V"$a.jar || exit 1; done && mvn -q compile
+tfpfn | mvn -q exec:java "-Dexec.args=@work/team-family-pep-fn.args"
+  after: tfprep
+  watch: battles=128
+  stop: fails 10
+  stop: stall 30m
+  stop: skips 60 over 200
+tfpfd | mvn -q exec:java "-Dexec.args=@work/team-family-pep-fd.args"
+  after: tfpfn
+  watch: battles=128
+  stop: fails 10
+  stop: stall 30m
+  stop: skips 60 over 200
+tfpilot | for a in fn fd; do ${T} gate --report ${OUT}/team-family-pep-$a.md --set plans/team-family-pilot-set.txt --seeds 8 --teams 47 --min-aps 0 --stop-below=-0.30 --out-md ${OUT}/team-family-pilot-$a.md && touch work/team-family-go-$a || test $? -eq 3 || exit 1; done
+  after: tfpfd
+tfbb | if ls work/team-family-go-* >/dev/null 2>&1; then mvn -q exec:java "-Dexec.args=@work/team-family-bb.args"; else echo "both arms under -0.30 on the pilot: no screen"; fi
+  after: tfpilot
+  watch: battles=1080
+  stop: fails 10
+  stop: stall 30m
+  stop: skips 60 over 200
+tffn | if [ -f work/team-family-go-fn ]; then mvn -q exec:java "-Dexec.args=@work/team-family-fn.args"; else echo "fn under -0.30 on the pilot: no screen"; fi
+  after: tfbb
+  watch: battles=1080
+  stop: fails 10
+  stop: stall 30m
+  stop: skips 60 over 200
+tffd | if [ -f work/team-family-go-fd ]; then mvn -q exec:java "-Dexec.args=@work/team-family-fd.args"; else echo "fd under -0.30 on the pilot: no screen"; fi
+  after: tffn
+  watch: battles=1080
+  stop: fails 10
+  stop: stall 30m
+  stop: skips 60 over 200
+tfgate | for a in fn fd; do if [ -f work/team-family-go-$a ]; then ${T} gate --report ${OUT}/team-family-$a.md --control ${OUT}/team-family-bb.md --set team-census46.txt --seeds 12 --teams 47 --min-aps 0.10 --out-md ${OUT}/team-family-verdict-$a.md || exit 1; else echo "$a: no screen"; fi; done
+  after: tffd
+tfpr | bash tools/open_results_pr.sh claude/pc-team-family-results "Team: family teams, five names and spotters with droids (TMODE-65)" $(ls ${OUT}/team-family-*.md 2>/dev/null | grep -v smoke)
+  after: tfgate
