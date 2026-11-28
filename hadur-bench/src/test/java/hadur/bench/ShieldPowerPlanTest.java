@@ -57,9 +57,9 @@ class ShieldPowerPlanTest {
         }
         assertTrue(!screen.contains("futility"), "the per-robot picks need every battle");
         String arms = Files.readString(Path.of("plans/shield-power.arms"));
-        for (String a : new String[] {"c | hadur117.Hadur 3.24 | ", "aa | hadur117.Hadur 3.24aa | ",
-            "sc | hadur117.Hadur 3.24sc | bisect/hadur117.Hadur_3.24sc.jar",
-            "sr | hadur117.Hadur 3.24sr | bisect/hadur117.Hadur_3.24sr.jar"}) {
+        for (String a : new String[] {"c | hadur117.Hadur 3.25.1 | ", "aa | hadur117.Hadur 3.25.1aa | ",
+            "sc | hadur117.Hadur 3.25.1sc | bisect/hadur117.Hadur_3.25.1sc.jar",
+            "sr | hadur117.Hadur 3.25.1sr | bisect/hadur117.Hadur_3.25.1sr.jar"}) {
             assertTrue(arms.contains("\n" + a), a);
         }
         String gate = step(queue, "gate", "pr");

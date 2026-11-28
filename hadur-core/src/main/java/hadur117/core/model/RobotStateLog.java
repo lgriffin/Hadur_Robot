@@ -5,9 +5,6 @@ import hadur117.core.physics.*;
 import hadur117.core.knn.*;
 
 import java.awt.geom.Point2D;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A robot's {@link RobotState}s keyed by tick, with linear interpolation across the ticks
@@ -33,11 +30,12 @@ import java.util.Map;
 public class RobotStateLog implements Cloneable {
 
     /**
-     * States by tick. A hash map, so iteration is not in time order; for identical inputs
-     * it is still the same order every run (Long keys hash to themselves), so replays stay
-     * identical (CORE-2).
+     * States by tick. Iteration is a hash map's, not time order; for identical inputs it is
+     * still the same order every run, so replays stay identical (CORE-2). TIME-12: a
+     * {@link TickMap}, which keeps HashMap's order without boxing a key or making an entry
+     * per state.
      */
-    private Map<Long, RobotState> robotStates = new HashMap<>();
+    private final TickMap robotStates = new TickMap();
 
     /** Forgets every state, as at the start of a round. */
     public void clear() {
@@ -63,7 +61,7 @@ public class RobotStateLog implements Cloneable {
     private void trim() {
         if (robotStates.size() > MAX_STATES) {
             // A linear scan for the smallest tick; it runs only once the log is full.
-            robotStates.remove(Collections.min(robotStates.keySet()));
+            robotStates.remove(robotStates.minKey());
         }
     }
 
@@ -89,24 +87,15 @@ public class RobotStateLog implements Cloneable {
      *     interpolated (no observed state on one side of it: the log never extrapolates)
      */
     public RobotState getState(long time, boolean interpolate) {
-        if (robotStates.containsKey(time)) {
-            RobotState state = robotStates.get(time);
-            return (interpolate || !state.interpolated) ? state : null;
+        RobotState held = robotStates.get(time);
+        if (held != null) {
+            return (interpolate || !held.interpolated) ? held : null;
         }
         if (!interpolate) return null;
 
         // The closest observed states on either side. Interpolated states are skipped, so a
         // made-up state never becomes the basis of another one.
-        RobotState before = null, after = null;
-        for (RobotState state : robotStates.values()) {
-            if (state.interpolated) continue;
-            if (state.time < time && (before == null || state.time > before.time)) {
-                before = state;
-            }
-            if (state.time > time && (after == null || state.time < after.time)) {
-                after = state;
-            }
-        }
+        RobotState before = robotStates.observedBefore(time), after = robotStates.observedAfter(time);
         if (before == null || after == null) return null;
 
         // How far through the gap the tick lies, in (0, 1); before and after differ in time,
@@ -149,7 +138,7 @@ public class RobotStateLog implements Cloneable {
 
     /** The state with the smallest tick; the log must not be empty. */
     private RobotState getOldestState() {
-        return robotStates.get(Collections.min(robotStates.keySet()));
+        return robotStates.get(robotStates.minKey());
     }
 
     /**
@@ -157,9 +146,7 @@ public class RobotStateLog implements Cloneable {
      * order, which is not time order.
      */
     public void forAllStates(AllStateListener listener) {
-        for (RobotState state : robotStates.values()) {
-            listener.onRobotState(state);
-        }
+        robotStates.forEach((time, state) -> listener.onRobotState(state));
     }
 
     /** States held, interpolated ones included; at most {@link #MAX_STATES}. */
@@ -175,9 +162,7 @@ public class RobotStateLog implements Cloneable {
     @Override
     public Object clone() {
         RobotStateLog copy = new RobotStateLog();
-        for (Map.Entry<Long, RobotState> entry : robotStates.entrySet()) {
-            copy.robotStates.put(entry.getKey(), entry.getValue());
-        }
+        robotStates.forEach(copy.robotStates::put);
         return copy;
     }
 

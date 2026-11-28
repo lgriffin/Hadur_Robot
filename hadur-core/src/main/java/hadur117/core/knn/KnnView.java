@@ -45,7 +45,7 @@ public class KnnView<T> {
      * reads it as the fewest effective points before a view is used.
      */
     public int kDivisor;
-    /** TIME-1, TIME-2: the share of k used while the tick budget is short; 1 is all of it. */
+    /** TIME-1: the share of k used while the tick budget is short; 1 is all of it. */
     private double kShare = 1.0;
     /**
      * The most points the tree keeps, oldest evicted first (RES-2); 0 means
@@ -168,7 +168,7 @@ public class KnnView<T> {
     }
 
     /**
-     * TIME-1, TIME-2: the share of k to use while the tick budget is short; 1 is all of it.
+     * TIME-1: the share of k to use while the tick budget is short; 1 is all of it.
      *
      * @param kShare the share of k, in (0, 1]
      * @return this view
@@ -394,7 +394,7 @@ public class KnnView<T> {
     /**
      * The neighbours of {@code w}'s point, k chosen from the view's size: one neighbour per
      * {@link #kDivisor} points, clamped to [1, {@link #kSize}], then scaled by the k share
-     * (TIME-1, TIME-2) and never below 1.
+     * (TIME-1) and never below 1.
      *
      * @param w the wave to find neighbours for
      * @param aiming passed to the formula; true for a gun query

@@ -215,14 +215,19 @@ public class FieldGun {
         Aim best = null;
         for (Solution s : all) {
             double density = 0;
-            Map<String, Double> byTarget = new LinkedHashMap<>();
             for (Solution o : all) {
                 if (Math.abs(Angles.normalRelativeAngle(s.angle - o.angle)) <= o.tolerance) {
                     density += o.weight;
-                    byTarget.merge(o.target, o.weight, Double::sum);
                 }
             }
             if (best == null || density > best.density + 1e-12) {
+                // TIME-12: the per-target sums only for a new best, the same merges in the same order.
+                Map<String, Double> byTarget = new LinkedHashMap<>();
+                for (Solution o : all) {
+                    if (Math.abs(Angles.normalRelativeAngle(s.angle - o.angle)) <= o.tolerance) {
+                        byTarget.merge(o.target, o.weight, Double::sum);
+                    }
+                }
                 String target = s.target;
                 double top = -1;
                 for (Map.Entry<String, Double> t : byTarget.entrySet()) {
@@ -331,15 +336,21 @@ public class FieldGun {
         double m = e.velocity < 0 ? e.heading + Math.PI : e.heading;
         double sin = Math.sin(m), cos = Math.cos(m);
         long elapsed = Math.max(0, now - e.lastScanTime);
-        Point2D.Double p = e.location;
+        // TIME-12: one offset buffer and plain coordinates; the point is built once, at the end.
+        double[] o = new double[2];
+        boolean moved = false;
+        double px = 0, py = 0;
         for (int tick = 1; tick <= EnemyHistory.HORIZON + MAX_AGE; tick++) {
-            double[] o = EnemyHistory.offset(t, elapsed + tick);
+            EnemyHistory.offset(t, elapsed + tick, o);
             double x = e.location.x + o[0] * sin + o[1] * cos;
             double y = e.location.y + o[0] * cos - o[1] * sin;
-            p = new Point2D.Double(DiaUtils.limit(18, x, field.width - 18),
-                DiaUtils.limit(18, y, field.height - 18));
-            if (tick * speed >= me.distance(p)) break;
+            px = DiaUtils.limit(18, x, field.width - 18);
+            py = DiaUtils.limit(18, y, field.height - 18);
+            moved = true;
+            // me.distance(p), as Point2D computes it.
+            double dx = px - me.x, dy = py - me.y;
+            if (tick * speed >= Math.sqrt(dx * dx + dy * dy)) break;
         }
-        return p;
+        return moved ? new Point2D.Double(px, py) : e.location;
     }
 }

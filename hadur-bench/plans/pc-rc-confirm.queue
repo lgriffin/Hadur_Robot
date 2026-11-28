@@ -1,42 +1,43 @@
-# 1v1 release-candidate confirm (BENCH-264), run 7: master against the released 3.24 on the whole live 1v1 field, overnight.
+# 1v1 release-candidate confirm (BENCH-264), run 8: master against the released 3.24 on the whole live 1v1 field, overnight.
 # Nothing ships from this card. It answers one question before the next release decision (target 94 APS): what master's
-# banked lines since 3.24 (pc-locks rounds 23 to 25, RAM-20 and RAM-21) are worth on the full field at the live turn
-# time, with no robot class falling behind. Leigh starts it on a free PC, after pc-locks round 27:
+# banked lines since 3.24 are worth on the full field at the live turn time, with no robot class falling behind. Since
+# run 7 (PR #1049, +0.15 +- 0.18) master has banked pc-locks rounds 27 to 30 (PRs #1051, #1061, #1064, #1067), the
+# field-screen round 2 steady-orbit lines (PR #1073) and MOVE-71 and GUN-12 (switches off unless a robot is listed).
+# Leigh starts it on a free PC, after pc-locks round 31:
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-rc-confirm --fresh        (or  ./queue.sh run pc-rc-confirm --fresh)
-# --fresh because run 6 left this plan's queue state marked complete. --fresh only clears the queue's step state;
+# --fresh because run 7 left this plan's queue state marked complete. --fresh only clears the queue's step state;
 # bench-top20.sh still reads back any battle already in the same --out for the same arm label, opponent and seed
-# (BENCH-95), so run 7 has its own work directory (W ends -r7) and fresh seeds (field 102000, ret 102100). Never point
-# a new run of this card at an old run's --out or seeds. A rerun of run 7 itself (no --fresh) resumes, as it should.
+# (BENCH-95), so run 8 has its own work directory (W ends -r8) and fresh seeds (field 111000, ret 111100). Never point
+# a new run of this card at an old run's --out or seeds. A rerun of run 8 itself (no --fresh) resumes, as it should.
 # Fetches tolerate a missing archive jar; --failed-ok skips them. The released jar is always fetched afresh from the
 # v${REL} GitHub release and checked by sha256, so no older local copy of a 3.24 build can stand in for it.
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. Run 7 reads the live field (census-live.txt,
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. Run 8 reads the live field (census-live.txt,
 # 1,212 robots, BENCH-267) at one seed an arm: about 3,640 field battles plus 288 returner battles, about 5.3 hours at
 # the 746 an hour runs 1 to 5 fought:
 #   livematch  the live-match check (BENCH-245) on the 31-robot panel, read against live, in its own folder
 #              (W-livematch), so no earlier card's battle is read back
-#   field      census-live.txt x rel, c, aa x 1 fresh seed from 102000
-#   ret        panel-ret16.txt (the 16 returners) x rel, c, aa x 6 fresh seeds from 102100 on --engine 1.12.0 --keep-broken;
+#   field      census-live.txt x rel, c, aa x 1 fresh seed from 111000
+#   ret        panel-ret16.txt (the 16 returners) x rel, c, aa x 6 fresh seeds from 111100 on --engine 1.12.0 --keep-broken;
 #              gate112 checks every engine.log names robocode.host/1.12.0
 #   gate       multiarm on both (A/A is aa - c; rel - c is the release minus master, so master's gain is its negative)
 #              and the field read (shield_s2.py gate --arm rel over 1,217 pairings)
 # Stop rules (docs/bench/watch.md): 30 failed battles, an arm scoring nothing in 8, 90+ skipped turns a battle over
 # the last 200, no battle in 30 minutes, aa after 20% outside its band; every battle fought is kept and a rerun resumes.
-# Runs 1 to 5 (3.23 against the 3.24 candidate) are in PRs #947, #953 and #987; run 5 passed, +0.54 +- 0.15. Run 6
-# (master against 3.24, PR #1038) read +0.12 +- 0.17; run 7 reads the same duel code (master since run 6 changed only
-# team and NanoMelee play) on a second fresh seed, to be pooled with run 6 alone.
+# Runs 1 to 5 (3.23 against the 3.24 candidate) are in PRs #947, #953 and #987; run 5 passed, +0.54 +- 0.15. Runs 6 and
+# 7 (master against 3.24, PRs #1038 and #1049) read +0.12 +- 0.17 and +0.15 +- 0.18; run 8 reads master after four more
+# rounds of banked lines, so it is not pooled with them.
 #
 # Why it should win (the PC card rule of 2026-11-03): it is a read, not a change; master is 3.24 plus the per-opponent
-# lines banked since (pc-locks round 23, 19 ram-learn lines, PR #1019; round 24, 24 ram-known and 17 more ram-learn
-# lines, PR #1026; round 25, BulletCatcher and Parallax, PR #1037), each held on 12 fresh PC seeds against both c and aa on its own robot, and the melee and team
-# changes, which do not touch duels. Expected about +0.05 to +0.1 APS on the field; the card says how much and that no
+# lines banked since, each held on 12 or more fresh PC seeds against both c and aa on its own robot, and melee and team
+# changes that do not touch duels. Expected about +0.1 to +0.2 APS on the field; the card says how much and that no
 # class lost, which the next release decision toward 94 needs.
 
-set V = 3.24
+set V = 3.25.1
 set REL = 3.24
 set P = --parallel 16 --no-truth-log --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 2G
-set W = work/pc-rc-confirm-r7
+set W = work/pc-rc-confirm-r8
 set OUT = ../docs/bench/local
 set ALERT = lgriffin
 set RELSHA = 19a884d9d0af3676ab16cb3634aca8e6cd534bed844edadb4da5df72bede2a0e
@@ -50,7 +51,7 @@ livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base
   stop: dead 8
   stop: stall 30m
 
-field | ./bench-top20.sh ${C} ${P} --set census-live.txt --seeds 1 --seed-base 102000 --arms plans/pc-rc-confirm.arms --out ${W}-field --label pc-rc-confirm-field --shuffle-jobs
+field | ./bench-top20.sh ${C} ${P} --set census-live.txt --seeds 1 --seed-base 111000 --arms plans/pc-rc-confirm.arms --out ${W}-field --label pc-rc-confirm-field --shuffle-jobs
   after: livematch
   watch: field=1217
   stop: fails 30
@@ -59,7 +60,7 @@ field | ./bench-top20.sh ${C} ${P} --set census-live.txt --seeds 1 --seed-base 1
   stop: stall 30m
   stop: aa after 20%
 
-ret | ./bench-top20.sh ${C} ${P} --engine 1.12.0 --keep-broken --set panel-ret16.txt --seeds 6 --seed-base 102100 --arms plans/pc-rc-confirm.arms --out ${W}-ret --label pc-rc-confirm-ret --shuffle-jobs
+ret | ./bench-top20.sh ${C} ${P} --engine 1.12.0 --keep-broken --set panel-ret16.txt --seeds 6 --seed-base 111100 --arms plans/pc-rc-confirm.arms --out ${W}-ret --label pc-rc-confirm-ret --shuffle-jobs
   after: field
   watch: field=1217
   stop: fails 30
@@ -72,5 +73,5 @@ gate112 | n=$(ls -d ${W}-ret/battles/*/ 2>/dev/null | wc -l); m=$(grep -l "roboc
 gate | python3 ../data/tools/multiarm.py ${W}-field/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-rc-confirm-field.md && python3 tools/shield_s2.py gate ${W}-field/arms.tsv --arm rel --field 1217 --bar -99 --low -99 --out ${OUT}/$(date +%Y-%m-%d)_pc-rc-confirm-field-gate.md
   after: gate112
 
-pr | bash tools/open_results_pr.sh claude/pc-rc-confirm-results "1v1 release-candidate confirm, run 7: master against the released 3.24 on the whole live field" ${OUT}/pc-rc-confirm-livematch.md ${OUT}/*_pc-rc-confirm-*.md
+pr | bash tools/open_results_pr.sh claude/pc-rc-confirm-results "1v1 release-candidate confirm, run 8: master against the released 3.24 on the whole live field" ${OUT}/pc-rc-confirm-livematch.md ${OUT}/*_pc-rc-confirm-*.md
   after: gate

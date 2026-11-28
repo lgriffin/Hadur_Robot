@@ -1,0 +1,7 @@
+# pc-locks round 35 (BENCH-253, PR #1095): robots whose lines shipped on 24 fresh PC seeds at the live turn time
+stelo.MatchupMini 1.1
+dmh.robocode.robot.YellowBird 0.12
+divineomega.TrialBot 0.003
+squidM.SquidmanNano 1.0
+hlavko.nano.Ringo 2.0
+zyx.nano.RedBull 1.0

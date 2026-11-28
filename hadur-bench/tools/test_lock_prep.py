@@ -52,6 +52,15 @@ class LockPrepTest(unittest.TestCase):
         kept = [tuple(l.rstrip("\n").split("\t")[::2]) for l in open(picked)][1:]
         self.assertEqual([("c", "a.A 1"), ("aa", "c.C 3"), ("mtzl", "a.A 1"), ("gl", "c.C 3")], kept)
 
+    def test_half_power_cap_pick_builds_its_list(self):
+        # POW-18: a 0.5 power-cap pick (arm p5) gets its own list and a pcap5list rebuild.
+        with open(self.arms, "a") as f:
+            f.write("p5 | hadur117.Hadur 3.22p5 | x\n")
+        out = self.run_prep([("b.B 2", "p5", "5.7")])
+        self.assertEqual("b.B 2\n", open(os.path.join(out, "p5.list")).read())
+        posix = os.path.join(out, "p5.list").replace(os.sep, "/")
+        self.assertIn("POWER_CAP5=%s bash ./build-ablation.sh pcap5list" % posix, open(os.path.join(out, "build.sh")).read())
+
     def test_ram_wait_pick_builds_its_list(self):
         # MOVE-46: a ram-wait pick (arm rwl) gets its own list and an rwlist rebuild.
         with open(self.arms, "a") as f:
@@ -88,6 +97,15 @@ class LockPrepTest(unittest.TestCase):
         posix = os.path.join(out, "mt.list").replace(os.sep, "/")
         self.assertIn("SHIELD_ADD=%s bash ./build-ablation.sh slistadd" % posix, open(os.path.join(out, "build.sh")).read())
 
+    def test_close_yield_pick_builds_its_list(self):
+        # SHIELD-35: a close-range yield pick (arm ky) gets its own list and a syldlist rebuild.
+        with open(self.arms, "a") as f:
+            f.write("ky | hadur117.Hadur 3.24ky | x\n")
+        out = self.run_prep([("a.A 1", "ky", "7.3")])
+        self.assertEqual("a.A 1\n", open(os.path.join(out, "ky.list")).read())
+        posix = os.path.join(out, "ky.list").replace(os.sep, "/")
+        self.assertIn("SHIELD_YIELD=%s bash ./build-ablation.sh syldlist" % posix, open(os.path.join(out, "build.sh")).read())
+
     def test_no_pick_leaves_an_empty_panel(self):
         for rows in ([], None):
             out = self.run_prep(rows)
@@ -117,6 +135,29 @@ class LockPrepTest(unittest.TestCase):
         finally:
             lock_prep.PB_LINES = old
 
+
+    def test_race_power_with_bands_builds_both_lists(self):
+        lines = os.path.join(self.d, "pb.txt")
+        with open(lines, "w") as f:
+            f.write("0.77 0.73 0.41 0.12 a.A 1\n")
+        with open(self.arms, "a") as f:
+            f.write("rppb | hadur117.Hadur 3.22rppb | x\n")
+        old, lock_prep.PB_LINES = lock_prep.PB_LINES, lines
+        try:
+            out = self.run_prep([("a.A 1", "rppb", "10.0")])
+            self.assertEqual("a.A 1\n", open(os.path.join(out, "rppb.list")).read())
+            self.assertEqual("0.77 0.73 0.41 0.12 a.A 1\n", open(os.path.join(out, "rppb-pb.list")).read())
+            fwd = lambda n: os.path.join(out, n).replace(os.sep, "/")
+            self.assertIn("RACE_POWER=%s POWER_BAND=%s bash ./build-ablation.sh rplist,pblist" % (fwd("rppb.list"), fwd("rppb-pb.list")),
+                          open(os.path.join(out, "build.sh")).read())
+            arms = os.path.join(self.d, "arms.tsv")
+            with open(arms, "w") as f:
+                f.write("arm\trobot\topponent\nrppb\tH\ta.A 1\nrppb\tH\tb.B 2\n")
+            picked = os.path.join(self.d, "picked.tsv")
+            lock_prep.restrict(arms, out, picked)
+            self.assertEqual(["rppb\tH\ta.A 1\n"], open(picked).readlines()[1:])
+        finally:
+            lock_prep.PB_LINES = old
 
 if __name__ == "__main__":
     unittest.main()

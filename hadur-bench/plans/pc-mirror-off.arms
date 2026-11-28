@@ -1,5 +1,5 @@
 # pc-mirror-off: c is master, aa its A/A copy, mo master with mirror-off lines (MIR-2) for the three robots of
 # plans/mirror-off-add.txt. Each line acts on its own robot only.
-c | hadur117.Hadur 3.24 | bisect/hadur117.Hadur_3.24.jar
-aa | hadur117.Hadur 3.24aa | bisect/hadur117.Hadur_3.24aa.jar
-mo | hadur117.Hadur 3.24mo | bisect/hadur117.Hadur_3.24mo.jar
+c | hadur117.Hadur 3.25.1 | bisect/hadur117.Hadur_3.25.1.jar
+aa | hadur117.Hadur 3.25.1aa | bisect/hadur117.Hadur_3.25.1aa.jar
+mo | hadur117.Hadur 3.25.1mo | bisect/hadur117.Hadur_3.25.1mo.jar

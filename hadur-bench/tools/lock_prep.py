@@ -25,6 +25,7 @@ import sys
 LEVERS = {
     "mtzl": ("slistadd,szlist", ("SHIELD_ADD", "SHIELD_STILL")),
     "mt": ("slistadd", ("SHIELD_ADD",)),
+    "zl": ("szlist", ("SHIELD_STILL",)),  # SHIELD-20 still shot plans alone
     "fq": ("fllist", ("FLAT_ON",)),
     "gl": ("gslist", ("GUN_STACK",)),
     "mq": ("mmlist", ("MIMIC_ON",)),
@@ -34,11 +35,14 @@ LEVERS = {
     "hf": ("hflist", ("HARD_FIRE",)),
     "fp": ("fplist", ("FULL_OFF",)),
     "rp": ("rplist", ("RACE_POWER",)),
+    "p5": ("pcap5list", ("POWER_CAP5",)),  # POW-18 0.5 duel power cap
+    "rppb": ("rplist,pblist", ("RACE_POWER", "POWER_BAND")),  # POW-17 race power with POW-20 bands (power-band-lines.txt)
     "dg": ("sdodgelist", ("SHOT_DODGE",)),
     "pb": ("pblist", ("POWER_BAND",)),
     "x0": ("sx0list", ("SHIELD_EXIT0",)),
     "mtx0": ("slistadd,sx0list", ("SHIELD_ADD", "SHIELD_EXIT0")),
     "mtmv": ("slistadd,smovelist", ("SHIELD_ADD", "SHIELD_MOVE")),
+    "mtty": ("slistadd,stinylist", ("SHIELD_ADD", "SHIELD_TINY")),  # shield list plus SHIELD-33 tiny-shot waves
     "mv": ("smovelist", ("SHIELD_MOVE",)),
     "md": ("slistdrop", ("SHIELD_DROP",)),
     "vj": ("vjlist", ("VEL_JITTER",)),
@@ -57,8 +61,11 @@ LEVERS = {
     "pmx": ("pmxlist", ("PM_MEGAS",)),  # MOVE-58 cw.megas-form pattern-matcher mimic
     "qw": ("aimwlist", ("AIM_WEIGHT",)),  # MOVE-67 per-opponent aim weight 1.0
     "hof": ("hoflist", ("HEAD_ON_FLOOR",)),  # MOVE-71 per-opponent head-on floor
+    "fgl": ("fglist", ("FREE_GUN_LIST",)),  # GUN-12 per-opponent free gun
+    "cpl": ("copylist", ("COPY_LIST",)),  # COPY-2 per-opponent bred gun copy
     "ty": ("stinylist", ("SHIELD_TINY",)),  # SHIELD-33 tiny-shot shield waves
     "kb": ("sbklist", ("SHIELD_BREAK",)),  # SHIELD-27 close-start break-off
+    "ky": ("syldlist", ("SHIELD_YIELD",)),  # SHIELD-35 close-range yield
     "or": ("orlist", ("STEADY_ORBIT",)),
     "sp2": ("sdplanlist", ("SHOT_DODGE_PLAN",)),
 }
@@ -115,13 +122,32 @@ def _kl_lines(names):
     return [lines[n] for n in names]
 
 
+# COPY-2: a copy pick carries its bred genome ("genome name", as copy_breed.py --lines writes it) from this file,
+# so cpl.list holds whole lines.
+CPL_LINES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "plans", "copy-lines.txt")
+
+
+def _cpl_name(line):
+    p = line.strip().split(" ", 1)
+    return p[1] if len(p) == 2 else line.strip()
+
+
+def _cpl_lines(names):
+    lines = {_cpl_name(l): l.strip() for l in open(CPL_LINES) if l.strip() and not l.startswith("#")}
+    missing = [n for n in names if n not in lines]
+    if missing:
+        raise SystemExit("lock_prep: no copy line for %s in %s" % (", ".join(missing), CPL_LINES))
+    return [lines[n] for n in names]
+
+
 def _list_lines(arm, names):
-    return _pb_lines(names) if arm == "pb" else _dp_lines(names) if arm == "dn" else _kl_lines(names) if arm == "kl" else names
+    return (_pb_lines(names) if arm == "pb" else _dp_lines(names) if arm == "dn" else _kl_lines(names) if arm == "kl"
+            else _cpl_lines(names) if arm == "cpl" else names)
 
 
 def _list_name(arm, line):
     return (_pb_name(line) if arm == "pb" else _dp_name(line) if arm == "dn" else _kl_name(line) if arm == "kl"
-            else line.strip())
+            else _cpl_name(line) if arm == "cpl" else line.strip())
 
 
 def main(pick, panel, base_arms, outdir):
@@ -147,7 +173,16 @@ def main(pick, panel, base_arms, outdir):
             with open(path, "w") as g:
                 g.write("".join(n + "\n" for n in _list_lines(arm, picks[arm])))
             flavours, envs = LEVERS[arm]
-            f.write("%s bash ./build-ablation.sh %s\n" % (" ".join("%s=%s" % (e, path.replace(os.sep, "/")) for e in envs), flavours))
+            paths = {}
+            for e in envs:
+                if e == "POWER_BAND" and arm != "pb":
+                    # a stacked arm's bands come from power-band-lines.txt, its other lists stay plain names
+                    paths[e] = os.path.join(outdir, arm + "-pb.list")
+                    with open(paths[e], "w") as g:
+                        g.write("".join(n + "\n" for n in _pb_lines(picks[arm])))
+                else:
+                    paths[e] = path
+            f.write("%s bash ./build-ablation.sh %s\n" % (" ".join("%s=%s" % (e, paths[e].replace(os.sep, "/")) for e in envs), flavours))
     print("lock_prep: %d robots, arms %s" % (len(rows), ",".join(sorted(picks)) or "none"))
     return 0
 

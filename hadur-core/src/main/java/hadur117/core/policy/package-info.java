@@ -18,8 +18,7 @@
  *     100 px further out, each added when their hit rate on us certainly beats the
  *     profile's (MOVE-2).</li>
  * <li>{@link hadur117.core.policy.TickBudget}: the computation level, one deeper for the
- *     next tick after a slow tick (TIME-1) and for the rest of the round after each skipped
- *     turn (TIME-2).</li>
+ *     next tick after a slow tick (TIME-1); a skipped turn sheds nothing (TIME-15).</li>
  * <li>{@link hadur117.core.policy.RammerPolicy}: a robot driving straight at us, seen from its
  *     own closing speed; full power (RAM-1) and the escape (RAM-2) while it charges.</li>
  * <li>{@link hadur117.core.policy.MirrorDetector}: a robot that drives to a reflection of our

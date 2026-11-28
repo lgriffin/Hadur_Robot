@@ -238,85 +238,102 @@ public class Hadur extends TeamRobot {
      */
     private ShieldList shieldList() {
         try {
-            java.util.List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
-            // SHIELD-17, SHIELD-18: mode table part 2's opening drive and shipped aims, marked the same way.
-            for (String name : ShieldTableData.moves()) lines.add(ShieldList.MOVE_PREFIX + " " + name);
-            for (String aim : ShieldTableData.aims()) lines.add(ShieldList.AIM_PREFIX + " " + aim);
-            // DODGE-3: the mode table's simple-aim dodge entries.
-            for (String name : ShieldTableData.dodges()) lines.add(ShieldList.DODGE_PREFIX + " " + name);
-            // DODGE-4: the shot-dodge planner's entries, each with its shipped expert.
-            for (String plan : ShieldTableData.dodgePlans()) lines.add(ShieldList.DODGE_PLAN_PREFIX + " " + plan);
-            // POISON-2: the mode table's stop-and-go entries, by variant.
-            for (String name : ShieldTableData.stopGos()) lines.add(ShieldList.STOP_GO_PREFIX + " " + name);
-            for (String name : ShieldTableData.stopGoShifts()) lines.add(ShieldList.STOP_GO_SHIFT_PREFIX + " " + name);
-            // MOVE-28, GUN-11: the factorial's per-opponent switches.
-            for (String name : ShieldTableData.heatJits()) lines.add(ShieldList.HEAT_JIT_PREFIX + " " + name);
-            for (String name : ShieldTableData.gunStacks()) lines.add(ShieldList.GUN_STACK_PREFIX + " " + name);
-            // SHIELD-19: per-opponent battle exits for SHIELD-11.
-            for (String name : ShieldTableData.exitLates()) lines.add(ShieldList.EXIT_LATE_PREFIX + " " + name);
-            for (String name : ShieldTableData.exitOffs()) lines.add(ShieldList.EXIT_OFF_PREFIX + " " + name);
-            // SHIELD-21: per-opponent still shot plans (SHIELD-20).
-            for (String name : ShieldTableData.stills()) lines.add(ShieldList.STILL_PREFIX + " " + name);
-            for (String name : ShieldTableData.tinies()) lines.add(ShieldList.TINY_PREFIX + " " + name);
-            // SHIELD-25: per-opponent shield power floor.
-            for (String name : ShieldTableData.shieldFloors()) lines.add(ShieldList.FLOOR_PREFIX + " " + name);
-            // SHIELD-27: per-opponent close-start break-off.
-            for (String name : ShieldTableData.closeBreaks()) lines.add(ShieldList.CLOSE_BREAK_PREFIX + " " + name);
-            // POW-18: per-opponent power cap.
-            for (String name : ShieldTableData.powerCaps()) lines.add(ShieldList.POWER_CAP_PREFIX + " " + name);
-            for (String name : ShieldTableData.powerCapHalves()) lines.add(ShieldList.POWER_CAP5_PREFIX + " " + name);
-            // POW-19: per-opponent hard fire while our energy is high.
-            for (String name : ShieldTableData.hardFires()) lines.add(ShieldList.HARD_FIRE_PREFIX + " " + name);
-            // MOVE-44: per-opponent velocity jitter against exact-velocity pattern matchers.
-            for (String name : ShieldTableData.velocityJitters()) lines.add(ShieldList.VEL_JITTER_PREFIX + " " + name);
-            // MOVE-45: per-opponent speed-band jitter.
-            for (String name : ShieldTableData.speedBands()) lines.add(ShieldList.SPEED_BAND_PREFIX + " " + name);
-            // MOVE-46: per-opponent ram wait on a disabled enemy.
-            for (String name : ShieldTableData.ramWaits()) lines.add(ShieldList.RAM_WAIT_PREFIX + " " + name);
-            for (String name : ShieldTableData.ramFlees()) lines.add(ShieldList.RAM_FLEE_PREFIX + " " + name);
-            // MOVE-47: per-opponent steady orbit.
-            for (String name : ShieldTableData.steadyOrbits()) lines.add(ShieldList.STEADY_ORBIT_PREFIX + " " + name);
-            // DIST-4: per-opponent pinned duel distance.
-            for (String pin : ShieldTableData.distPins()) lines.add(ShieldList.DIST_PIN_PREFIX + " " + pin);
-            // POW-20: per-opponent power bands.
-            for (String band : ShieldTableData.powerBands()) lines.add(ShieldList.POWER_BAND_PREFIX + " " + band);
-            // MOVE-32: per-opponent flattener views on.
-            for (String name : ShieldTableData.flatOns()) lines.add(ShieldList.FLAT_ON_PREFIX + " " + name);
-            // MIR-2: per-opponent MIR-1 off.
-            for (String name : ShieldTableData.mirrorOffs()) lines.add(ShieldList.MIRROR_OFF_PREFIX + " " + name);
-            // MOVE-34: per-opponent learning-gun mimics as aim members.
-            for (String name : ShieldTableData.mimicOns()) lines.add(ShieldList.MIMIC_ON_PREFIX + " " + name);
-            // POW-15: per-opponent full-power rules off.
-            for (String name : ShieldTableData.fullOffs()) lines.add(ShieldList.FULL_OFF_PREFIX + " " + name);
-            // POW-16: per-opponent x.x5 powers.
-            for (String name : ShieldTableData.x5Powers()) lines.add(ShieldList.X5_POWER_PREFIX + " " + name);
-            // POW-17: per-opponent energy-race power.
-            for (String name : ShieldTableData.racePowers()) lines.add(ShieldList.RACE_POWER_PREFIX + " " + name);
-            for (String name : ShieldTableData.ramCircs()) lines.add(ShieldList.RAM_CIRC_PREFIX + " " + name);
-            // RAM-14: per-opponent heavy rammer dodge.
-            for (String name : ShieldTableData.ramHeavies()) lines.add(ShieldList.RAM_HEAVY_PREFIX + " " + name);
-            // RAM-17: per-opponent fan rammer dodge.
-            for (String name : ShieldTableData.ramFans()) lines.add(ShieldList.RAM_FAN_PREFIX + " " + name);
-            // RAM-18: per-opponent escape bend.
-            for (String name : ShieldTableData.ramBends()) lines.add(ShieldList.RAM_BEND_PREFIX + " " + name);
-            // RAM-20: per-opponent learned shot model.
-            for (String name : ShieldTableData.ramLearns()) lines.add(ShieldList.RAM_LEARN_PREFIX + " " + name);
-            // RAM-21: per-opponent known rammer.
-            for (String name : ShieldTableData.ramKnowns()) lines.add(ShieldList.RAM_KNOWN_PREFIX + " " + name);
-            // MOVE-56: per-opponent pattern-matcher mimic.
-            for (String name : ShieldTableData.patternMimics()) lines.add(ShieldList.PATTERN_MIMIC_PREFIX + " " + name);
-            for (String name : ShieldTableData.patternMegas()) lines.add(ShieldList.PATTERN_MEGAS_PREFIX + " " + name);
-            // MOVE-67: per-opponent aim weight.
-            for (String name : ShieldTableData.aimWeights()) lines.add(ShieldList.AIM_WEIGHT_PREFIX + " " + name);
-            // MOVE-71: per-opponent head-on floor.
-            for (String name : ShieldTableData.headOnFloors()) lines.add(ShieldList.HEAD_ON_FLOOR_PREFIX + " " + name);
-            // SKEY-2: per-opponent surf keys.
-            for (String key : ShieldTableData.surfKeys()) lines.add(ShieldList.SURF_KEY_PREFIX + " " + key);
-            return ShieldList.parse(lines);
+            return ShieldList.parse(shieldListLines());
         } catch (RuntimeException | LinkageError e) {
             out.println("SH," + getRoundNum() + "," + getTime() + ",list-failed," + e);
             return ShieldList.NONE;
         }
+    }
+
+    /**
+     * The shipped shield list and mode table as {@link ShieldList#parse} takes them, for
+     * {@link #shieldList()} and for the bench's tick-time replay (TIME-11), which must build
+     * the core exactly as the robot does.
+     *
+     * @return the list's lines, each marked with its table's prefix
+     */
+    static java.util.List<String> shieldListLines() {
+        java.util.List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
+        // SHIELD-17, SHIELD-18: mode table part 2's opening drive and shipped aims, marked the same way.
+        for (String name : ShieldTableData.moves()) lines.add(ShieldList.MOVE_PREFIX + " " + name);
+        for (String aim : ShieldTableData.aims()) lines.add(ShieldList.AIM_PREFIX + " " + aim);
+        // DODGE-3: the mode table's simple-aim dodge entries.
+        for (String name : ShieldTableData.dodges()) lines.add(ShieldList.DODGE_PREFIX + " " + name);
+        // DODGE-4: the shot-dodge planner's entries, each with its shipped expert.
+        for (String plan : ShieldTableData.dodgePlans()) lines.add(ShieldList.DODGE_PLAN_PREFIX + " " + plan);
+        // POISON-2: the mode table's stop-and-go entries, by variant.
+        for (String name : ShieldTableData.stopGos()) lines.add(ShieldList.STOP_GO_PREFIX + " " + name);
+        for (String name : ShieldTableData.stopGoShifts()) lines.add(ShieldList.STOP_GO_SHIFT_PREFIX + " " + name);
+        // MOVE-28, GUN-11: the factorial's per-opponent switches.
+        for (String name : ShieldTableData.heatJits()) lines.add(ShieldList.HEAT_JIT_PREFIX + " " + name);
+        for (String name : ShieldTableData.gunStacks()) lines.add(ShieldList.GUN_STACK_PREFIX + " " + name);
+        // SHIELD-19: per-opponent battle exits for SHIELD-11.
+        for (String name : ShieldTableData.exitLates()) lines.add(ShieldList.EXIT_LATE_PREFIX + " " + name);
+        for (String name : ShieldTableData.exitOffs()) lines.add(ShieldList.EXIT_OFF_PREFIX + " " + name);
+        // SHIELD-21: per-opponent still shot plans (SHIELD-20).
+        for (String name : ShieldTableData.stills()) lines.add(ShieldList.STILL_PREFIX + " " + name);
+        for (String name : ShieldTableData.tinies()) lines.add(ShieldList.TINY_PREFIX + " " + name);
+        // SHIELD-25: per-opponent shield power floor.
+        for (String name : ShieldTableData.shieldFloors()) lines.add(ShieldList.FLOOR_PREFIX + " " + name);
+        // SHIELD-27: per-opponent close-start break-off.
+        for (String name : ShieldTableData.closeBreaks()) lines.add(ShieldList.CLOSE_BREAK_PREFIX + " " + name);
+        // SHIELD-35: per-opponent close-range yield.
+        for (String name : ShieldTableData.closeYields()) lines.add(ShieldList.CLOSE_YIELD_PREFIX + " " + name);
+        // POW-18: per-opponent power cap.
+        for (String name : ShieldTableData.powerCaps()) lines.add(ShieldList.POWER_CAP_PREFIX + " " + name);
+        for (String name : ShieldTableData.powerCapHalves()) lines.add(ShieldList.POWER_CAP5_PREFIX + " " + name);
+        // POW-19: per-opponent hard fire while our energy is high.
+        for (String name : ShieldTableData.hardFires()) lines.add(ShieldList.HARD_FIRE_PREFIX + " " + name);
+        // MOVE-44: per-opponent velocity jitter against exact-velocity pattern matchers.
+        for (String name : ShieldTableData.velocityJitters()) lines.add(ShieldList.VEL_JITTER_PREFIX + " " + name);
+        // MOVE-45: per-opponent speed-band jitter.
+        for (String name : ShieldTableData.speedBands()) lines.add(ShieldList.SPEED_BAND_PREFIX + " " + name);
+        // MOVE-46: per-opponent ram wait on a disabled enemy.
+        for (String name : ShieldTableData.ramWaits()) lines.add(ShieldList.RAM_WAIT_PREFIX + " " + name);
+        for (String name : ShieldTableData.ramFlees()) lines.add(ShieldList.RAM_FLEE_PREFIX + " " + name);
+        // MOVE-47: per-opponent steady orbit.
+        for (String name : ShieldTableData.steadyOrbits()) lines.add(ShieldList.STEADY_ORBIT_PREFIX + " " + name);
+        // DIST-4: per-opponent pinned duel distance.
+        for (String pin : ShieldTableData.distPins()) lines.add(ShieldList.DIST_PIN_PREFIX + " " + pin);
+        // POW-20: per-opponent power bands.
+        for (String band : ShieldTableData.powerBands()) lines.add(ShieldList.POWER_BAND_PREFIX + " " + band);
+        // MOVE-32: per-opponent flattener views on.
+        for (String name : ShieldTableData.flatOns()) lines.add(ShieldList.FLAT_ON_PREFIX + " " + name);
+        // MIR-2: per-opponent MIR-1 off.
+        for (String name : ShieldTableData.mirrorOffs()) lines.add(ShieldList.MIRROR_OFF_PREFIX + " " + name);
+        // MOVE-34: per-opponent learning-gun mimics as aim members.
+        for (String name : ShieldTableData.mimicOns()) lines.add(ShieldList.MIMIC_ON_PREFIX + " " + name);
+        // POW-15: per-opponent full-power rules off.
+        for (String name : ShieldTableData.fullOffs()) lines.add(ShieldList.FULL_OFF_PREFIX + " " + name);
+        // POW-16: per-opponent x.x5 powers.
+        for (String name : ShieldTableData.x5Powers()) lines.add(ShieldList.X5_POWER_PREFIX + " " + name);
+        // POW-17: per-opponent energy-race power.
+        for (String name : ShieldTableData.racePowers()) lines.add(ShieldList.RACE_POWER_PREFIX + " " + name);
+        for (String name : ShieldTableData.ramCircs()) lines.add(ShieldList.RAM_CIRC_PREFIX + " " + name);
+        // RAM-14: per-opponent heavy rammer dodge.
+        for (String name : ShieldTableData.ramHeavies()) lines.add(ShieldList.RAM_HEAVY_PREFIX + " " + name);
+        // RAM-17: per-opponent fan rammer dodge.
+        for (String name : ShieldTableData.ramFans()) lines.add(ShieldList.RAM_FAN_PREFIX + " " + name);
+        // RAM-18: per-opponent escape bend.
+        for (String name : ShieldTableData.ramBends()) lines.add(ShieldList.RAM_BEND_PREFIX + " " + name);
+        // RAM-20: per-opponent learned shot model.
+        for (String name : ShieldTableData.ramLearns()) lines.add(ShieldList.RAM_LEARN_PREFIX + " " + name);
+        // RAM-21: per-opponent known rammer.
+        for (String name : ShieldTableData.ramKnowns()) lines.add(ShieldList.RAM_KNOWN_PREFIX + " " + name);
+        // MOVE-56: per-opponent pattern-matcher mimic.
+        for (String name : ShieldTableData.patternMimics()) lines.add(ShieldList.PATTERN_MIMIC_PREFIX + " " + name);
+        for (String name : ShieldTableData.patternMegas()) lines.add(ShieldList.PATTERN_MEGAS_PREFIX + " " + name);
+        // MOVE-67: per-opponent aim weight.
+        for (String name : ShieldTableData.aimWeights()) lines.add(ShieldList.AIM_WEIGHT_PREFIX + " " + name);
+        // MOVE-71: per-opponent head-on floor.
+        for (String name : ShieldTableData.headOnFloors()) lines.add(ShieldList.HEAD_ON_FLOOR_PREFIX + " " + name);
+        // GUN-12: per-opponent free gun.
+        for (String name : ShieldTableData.freeGuns()) lines.add(ShieldList.FREE_GUN_PREFIX + " " + name);
+        // SKEY-2: per-opponent surf keys.
+        for (String key : ShieldTableData.surfKeys()) lines.add(ShieldList.SURF_KEY_PREFIX + " " + key);
+        // COPY-2: per-opponent bred gun copies.
+        for (String copy : ShieldTableData.copies()) lines.add(ShieldList.COPY_PREFIX + " " + copy);
+        return lines;
     }
 
     /**
@@ -510,7 +527,7 @@ public class Hadur extends TeamRobot {
         pending.add(new BotEvent.RobotDeath(e.getName()));
     }
 
-    /** The engine skipped one of our turns: the core drops a computation level for the round (TIME-2). */
+    /** The engine skipped one of our turns: the core counts it and sheds nothing (TIME-15). */
     @Override
     public void onSkippedTurn(SkippedTurnEvent e) {
         pending.add(new BotEvent.SkippedTurn(e.getSkippedTurn()));

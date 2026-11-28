@@ -71,6 +71,10 @@ public final class ShieldList {
     public static final String TINY_PREFIX = "shield-tiny:";
     /** SHIELD-27: a line starting with this names an opponent shield mode breaks off a close start against. */
     public static final String CLOSE_BREAK_PREFIX = "shield-break:";
+    /** SHIELD-35: a line starting with this names an opponent shield mode yields the drive to inside 150 px. */
+    public static final String CLOSE_YIELD_PREFIX = "shield-yield:";
+    /** GUN-12: a line starting with this names an opponent the duel gun fires against with free gun on (GUN-9). */
+    public static final String FREE_GUN_PREFIX = "free-gun:";
     /** MOVE-32: a line starting with this names an opponent the duel surfs with the flattener views on (MOVE-24 undone). */
     public static final String FLAT_ON_PREFIX = "flat-on:";
     /** MOVE-34: a line starting with this names an opponent the duel surfs with the learning-gun mimics as aim members (MOVE-33). */
@@ -126,6 +130,11 @@ public final class ShieldList {
      * views' key weights, one on the kernel width, then the name ({@code "m1 ... m9 bw name"}).
      */
     public static final String SURF_KEY_PREFIX = "surf-key:";
+    /**
+     * COPY-2: a line starting with this names an opponent the duel runs a bred copy of the gun against:
+     * the genome ({@code family;gene=value;...}, no spaces) then the name.
+     */
+    public static final String COPY_PREFIX = "copy:";
     /** SKEY-2: the numbers a surf-key line carries before the name. */
     public static final int SURF_KEY_VALUES = 10;
     /**
@@ -221,12 +230,18 @@ public final class ShieldList {
     private Map<String, Integer> switches = Collections.emptyMap();
     /** SKEY-2: name to its surf key (nine weight multipliers, then the kernel width's). */
     private Map<String, double[]> surfKeys = Collections.emptyMap();
+    /** COPY-2: the bred gun copies' genomes by name. */
+    private Map<String, String> copies = Collections.emptyMap();
     /** POW-20: name to its four power-band multipliers. */
     private Map<String, double[]> powerBands = Collections.emptyMap();
     /** DIST-4: name to its pinned duel distance, in px. */
     private Map<String, Double> distPins = Collections.emptyMap();
     /** SHIELD-27: the opponents, by name without version, shield mode breaks off a close start against (every int switch bit is taken). */
     private Set<String> closeBreaks = Collections.emptySet();
+    /** SHIELD-35: the opponents, by name without version, shield mode yields the drive to while they are close. */
+    private Set<String> closeYields = Collections.emptySet();
+    /** GUN-12: the opponents, by name without version, the duel gun fires against with free gun on. */
+    private Set<String> freeGuns = Collections.emptySet();
 
     private ShieldList(Set<String> entries, Set<String> moves, Map<String, double[]> aims,
                        Set<String> dodges, Map<String, Integer> stopGo) {
@@ -252,9 +267,12 @@ public final class ShieldList {
         Map<String, Integer> dodgePlans = new TreeMap<>();
         Map<String, Integer> switches = new TreeMap<>();
         Map<String, double[]> surfKeys = new TreeMap<>();
+        Map<String, String> copies = new TreeMap<>();
         Map<String, double[]> powerBands = new TreeMap<>();
         Map<String, Double> distPins = new TreeMap<>();
         Set<String> closeBreaks = new TreeSet<>();
+        Set<String> closeYields = new TreeSet<>();
+        Set<String> freeGuns = new TreeSet<>();
         if (lines != null) {
             for (String line : lines) {
                 if (line == null) continue;
@@ -294,6 +312,16 @@ public final class ShieldList {
                     }
                     continue;
                 }
+                if (entry.startsWith(FREE_GUN_PREFIX)) {
+                    String name = withoutVersion(entry.substring(FREE_GUN_PREFIX.length()).trim());
+                    if (!name.isEmpty() && freeGuns.size() < MAX_ENTRIES) freeGuns.add(name);
+                    continue;
+                }
+                if (entry.startsWith(CLOSE_YIELD_PREFIX)) {
+                    String name = withoutVersion(entry.substring(CLOSE_YIELD_PREFIX.length()).trim());
+                    if (!name.isEmpty() && closeYields.size() < MAX_ENTRIES) closeYields.add(name);
+                    continue;
+                }
                 if (entry.startsWith(CLOSE_BREAK_PREFIX)) {
                     String name = withoutVersion(entry.substring(CLOSE_BREAK_PREFIX.length()).trim());
                     if (!name.isEmpty() && closeBreaks.size() < MAX_ENTRIES) closeBreaks.add(name);
@@ -325,6 +353,13 @@ public final class ShieldList {
                         } catch (NumberFormatException e) {
                             // A malformed power-band line is skipped.
                         }
+                    }
+                    continue;
+                }
+                if (entry.startsWith(COPY_PREFIX)) {
+                    String[] p = entry.substring(COPY_PREFIX.length()).trim().split(" ", 2);
+                    if (p.length == 2 && !p[0].isEmpty() && !p[1].isEmpty() && copies.size() < MAX_ENTRIES) {
+                        copies.put(withoutVersion(p[1]), p[0]);
                     }
                     continue;
                 }
@@ -395,17 +430,21 @@ public final class ShieldList {
             }
         }
         if (entries.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()
-            && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty() && surfKeys.isEmpty()
-            && powerBands.isEmpty() && distPins.isEmpty() && closeBreaks.isEmpty()) return NONE;
+            && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty() && surfKeys.isEmpty() && copies.isEmpty()
+            && powerBands.isEmpty() && distPins.isEmpty() && closeBreaks.isEmpty()
+            && closeYields.isEmpty() && freeGuns.isEmpty()) return NONE;
         ShieldList list = new ShieldList(Collections.unmodifiableSet(entries),
             Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims), Collections.unmodifiableSet(dodges),
             Collections.unmodifiableMap(stopGo));
         list.dodgePlans = Collections.unmodifiableMap(dodgePlans);
         list.switches = Collections.unmodifiableMap(switches);
         list.surfKeys = Collections.unmodifiableMap(surfKeys);
+        list.copies = Collections.unmodifiableMap(copies);
         list.powerBands = Collections.unmodifiableMap(powerBands);
         list.distPins = Collections.unmodifiableMap(distPins);
         list.closeBreaks = Collections.unmodifiableSet(closeBreaks);
+        list.closeYields = Collections.unmodifiableSet(closeYields);
+        list.freeGuns = Collections.unmodifiableSet(freeGuns);
         return list;
     }
 
@@ -461,6 +500,20 @@ public final class ShieldList {
         double[] k = powerBands.get(name);
         if (k == null) k = powerBands.get(withoutVersion(name));
         return k == null ? null : k.clone();
+    }
+
+    /**
+     * COPY-2: {@code robotName}'s bred gun copy, by the rule of {@link #matches}: the full name's
+     * entry, else the name's without the version.
+     *
+     * @param robotName the scanned robot's name, or null
+     * @return the genome, or null when none is shipped
+     */
+    public String copyFor(String robotName) {
+        if (robotName == null || copies.isEmpty()) return null;
+        String name = robotName.trim().replaceAll("\\s+", " ");
+        String g = copies.get(name);
+        return g != null ? g : copies.get(withoutVersion(name));
     }
 
     /**
@@ -612,6 +665,29 @@ public final class ShieldList {
         if (robotName == null || closeBreaks.isEmpty()) return false;
         String name = robotName.trim().replaceAll("\\s+", " ");
         return closeBreaks.contains(name) || closeBreaks.contains(withoutVersion(name));
+    }
+
+    /**
+     * SHIELD-35: whether shield mode yields the drive to the duel while {@code robotName} is
+     * close, by the rule of {@link #matches}.
+     *
+     * @param robotName the scanned robot's name, or null
+     */
+    public boolean closeYield(String robotName) {
+        if (robotName == null || closeYields.isEmpty()) return false;
+        String name = robotName.trim().replaceAll("\\s+", " ");
+        return closeYields.contains(name) || closeYields.contains(withoutVersion(name));
+    }
+
+    /**
+     * GUN-12: whether a {@code free-gun:} line names {@code robotName}, by the rule of {@link #matches}.
+     *
+     * @param robotName the scanned robot's name, or null
+     */
+    public boolean freeGun(String robotName) {
+        if (robotName == null || freeGuns.isEmpty()) return false;
+        String name = robotName.trim().replaceAll("\\s+", " ");
+        return freeGuns.contains(name) || freeGuns.contains(withoutVersion(name));
     }
 
     /**

@@ -4,10 +4,10 @@
 a 1v1 duelist that remembers each opponent across battles, with a melee brain for
 free-for-alls, a five-robot team entry, and a core that has no idea it is inside Robocode.
 
-**Hadur 3.24 is ranked 2nd of 1,213 in the RoboRumble 1v1** (93.44 APS, its best ever), 2nd of 48 in the
-TeamRumble (HadurTeam 3.24, 84.57, its best ever) and 7th of 416 in the MeleeRumble (3.22, 69.65), the highest-ranked
-robot flying the Irish flag. Around it is a [family of smaller robots](#family-of-robots), two of
-three of them 1st in their rumbles and one more 2nd. All of it was designed, written, tested and tuned by AI
+**Hadur 3.25 is ranked 2nd of 1,213 in the RoboRumble 1v1** (93.93 APS, its best ever), 2nd of 48 in the
+TeamRumble (HadurTeam 3.25.1, 85.77, its best ever) and 7th of 416 in the MeleeRumble (3.25, 69.67), the highest-ranked
+robot flying the Irish flag. Around it is a [family of smaller robots](#family-of-robots), all six
+of them 1st in their rumbles (Sanaro joint 1st). All of it was designed, written, tested and tuned by AI
 coding agents ([how it is built](#how-it-is-built)).
 
 ## In homage to Deep7
@@ -20,32 +20,29 @@ learned Java, and it was the original inspiration for everything on this page.
 
 ## Standing
 
-**3.24 was released on 2026-11-22** ([notes](docs/releases/v3.24.md)): 1v1 adds MOVE-52's intercept views and the
-per-opponent lines measured since 3.23, and the team adds fitted enemy aims (TMODE-50) and the close-range
-dodge rerank (TMODE-52). Melee code is unchanged. The live rankings read on 2026-11-22 at 19:31 UTC (1v1 settled at 20:22 UTC, after
-the live client stopped) (rumble.robowiki.net pages, saved in [data/rumble/pages/](data/rumble/pages/)):
+**3.25 was released on 2026-11-27** ([notes](docs/releases/v3.25.md)) for all three rumbles: 1v1 adds every
+per-opponent line that held on the PC since 3.24, the bred gun copies and the turn-time cuts (TIME-11 to TIME-15),
+the team adds the tight pack and per-team lines, and melee adds the final-duel energy race (MEND-6). The team entry
+runs as 3.25.1, the same code under a new version ([notes](docs/releases/v3.25.1.md)). The live rankings read on
+2026-11-27 (1v1 settled at 17:39 UTC, team at 17:31 UTC, melee and NanoMelee settled at 18:51 UTC, after the live clients stopped) (rumble.robowiki.net pages, saved in [data/rumble/pages/](data/rumble/pages/);
+[live notes](docs/bench/live-3.25.md)):
 
 | Rumble | Entry | Rank | APS | Pairings | Battles |
 |---|---|---|---|---|---|
-| 1v1 | `hadur117.Hadur 3.24` | **2nd of 1,213** | **93.44** ± 0.18 | 1,208 | 2,058 |
-| Team | `hadur117.HadurTeam 3.24` | **2nd of 48** | **84.57** ± 0.55 | 47 | 206 |
-| Melee | `hadur117.Hadur 3.22` | **7th of 416** | **69.65** ± 0.13 | 412 | 3,040 |
+| 1v1 | `hadur117.Hadur 3.25` | **2nd of 1,213** | **93.93** ± 0.18 | 1,212 | 2,126 |
+| Team | `hadur117.HadurTeam 3.25.1` | **2nd of 48** | **85.77** ± 0.42 | 47 | 265 |
+| Melee | `hadur117.Hadur 3.25` | **7th of 416** | **69.67** ± 0.23 | 415 | 1,273 |
 
-- **1v1 2nd at 93.44, its best rank and score ever.** Like for like against 3.23 on the same opponents
-  3.24 scores +0.58 ± 0.15 APS (+0.56 ± 0.21 from the two saved pages over 1,191 common opponents), in line
-  with the +0.54 ± 0.15 the bench measured before release. BeepBoop is 1st
-  at 94.94, DrussGT 3.1.20 3rd at 93.21 and Saguaro 1.1.4 4th at 93.13. Survival 98.04%, PWIN 99.67%.
-  Three pairings cannot be played: the engine rejects two robots and no client runs a third.
-- **Team 2nd at 84.57, its best ever**, +1.20 ± 0.94 over 3.23 on the same 47 teams. OgiTeam is 1st at 88.07
-  and CombatTeam 3rd at 81.56. Survival 90.50%, PWIN 97.87%.
-- **Melee stays on 3.22** (7th at 69.65); the MeleeRumble entry was not moved to 3.24, whose melee code is
-  unchanged.
-- **The 1v1 list is about 1,200 robots** since 2026-11-02: the rumble moved to Robocode 1.11.2, whose load-time
-  sandbox blocks 19 old robots; they were taken off the participants list and the bench skips them
-  ([hadur-bench/broken-1.11.2.txt](hadur-bench/broken-1.11.2.txt)).
+- **1v1 2nd at 93.93, its best score ever.** Like for like against 3.24 on the same 1,206 opponents 3.25 scores
+  +0.49 ± 0.09 APS, above the +0.4 projected before release. The new per-opponent lines gave +0.30 of it and
+  the rest came on the hardest opponents. BeepBoop is 1st at 94.92 (0.99 ahead, down from 1.50), DrussGT 3.1.20
+  3rd at 93.20 and Saguaro 1.1.4 4th at 93.04. Survival 98.33%, PWIN 99.83%: only BeepBoop and ScalarR
+  noshield still win their pairings.
+- **Team 2nd at 85.77, its best ever**, +1.20 ± 0.44 over 3.24 on the same 47 teams, in line with the +1.2
+  projected. OgiTeam is 1st at 87.89 and CombatTeam 3rd at 81.51. Survival 92.43%, PWIN 97.87%.
+- **Melee 7th at 69.67**, +0.11 ± 0.12 over 3.22 on the same opponents. ScalarR leads at 72.63.
 
-3.23's live read (2026-11-16 18:18 UTC) was 3rd of 1,205 at 93.04 in 1v1 and 2nd of 48 at 83.37 in the team
-([live notes](docs/bench/live-3.23.md)).
+3.24's live read (2026-11-22 20:22 UTC) was 2nd of 1,213 at 93.44 in 1v1 and 2nd of 48 at 84.57 in the team.
 
 Each release's live notes are in [docs/bench/](docs/bench/) (`live-*.md`) and its saved pages in
 [data/rumble/](data/rumble/).
@@ -76,7 +73,8 @@ Each release's live notes are in [docs/bench/](docs/bench/) (`live-*.md`) and it
 | 3.21 | 2026-11-01 | 92.40 | 97.2% | 3rd (7th melee, 2nd team) | Per-opponent rival picks, surf keys and shield lines; melee surfer and crossfire; team CONCORD ([notes](docs/releases/v3.21.md)) |
 | 3.22 | 2026-11-12 | 92.60 | 97.7% | 4th (7th melee, 2nd team) | Start-up stall fix (MEM-15) and per-opponent shield, mirror, race-power and power-cap lines; team CLOSE hunt and last-enemy guard; melee MGUN-25 ([notes](docs/releases/v3.22.md)) |
 | 3.23 | 2026-11-16 | 93.04 | 98.0% | 3rd (7th melee on 3.22, 2nd team) | The shadow fix (MOVE-43) and 48 per-opponent lines (+0.49 APS over 3.22 on the same opponents); team MOMENTUM drive ([live notes](docs/bench/live-3.23.md)) |
-| 3.24 | 2026-11-22 | **93.44** | 98.0% | **2nd** (7th melee on 3.22, **2nd team** at 84.57) | MOVE-52 intercept views and per-opponent lines (+0.58 APS over 3.23 on the same opponents); team fitted enemy aims and close-range dodge rerank |
+| 3.24 | 2026-11-22 | 93.44 | 98.0% | 2nd (7th melee on 3.22, 2nd team at 84.57) | MOVE-52 intercept views and per-opponent lines (+0.58 APS over 3.23 on the same opponents); team fitted enemy aims and close-range dodge rerank |
+| 3.25 | 2026-11-27 | **93.93** | 98.3% | **2nd** (7th melee at 69.67, **2nd team** at 85.77 on 3.25.1) | Per-opponent lines from 16 PC rounds, bred gun copies and fewer skipped turns (+0.49 APS over 3.24 on the same opponents); team tight pack; melee final-duel energy race ([live notes](docs/bench/live-3.25.md)) |
 
 3.0 and 3.1 slid 5 to 8 APS within hours on live clients; a one-JVM session bench traced it to a
 round-end profile save that grew with every opponent on disk, fixed in 3.4
@@ -86,17 +84,17 @@ round-end profile save that grew with every opponent on disk, fixed in 3.4
 
 Hadur has siblings, one for each size class and format it can win. Each is a separate robot with
 its own folder, build, requirements and README, and none shares code with Hadur.
-Live results as of 2026-11-02 16:00 UTC, Hadur and HadurTeam as of 2026-11-22 20:22 / 19:31 UTC (each robot's README keeps its full history):
+Live results as of 2026-11-02 16:00 UTC, Hadur, HadurTeam and Sanaro as of 2026-11-27 17:39 / 17:31 / 18:51 UTC (each robot's README keeps its full history):
 
 | Robot | Rumble | Size | Live result | |
 |---|---|---|---|---|
-| [**Hadur**](hadur-robot/) `hadur117.Hadur` | RoboRumble (1v1) | megabot | **2nd of 1,213**, 93.44 ± 0.18 (3.24), 1.50 behind kc.mega.BeepBoop | [standing](#standing) |
-| | MeleeRumble | | **7th of 416**, 69.65 ± 0.13 (3.22) | |
-| [**HadurTeam**](hadur-robot/) `hadur117.HadurTeam` | TeamRumble | five Hadurs | **2nd of 48**, 84.57 ± 0.55 (3.24), 3.50 behind cz.libors.OgiTeam | [standing](#standing) |
+| [**Hadur**](hadur-robot/) `hadur117.Hadur` | RoboRumble (1v1) | megabot | **2nd of 1,213**, 93.93 ± 0.18 (3.25), 0.99 behind kc.mega.BeepBoop | [standing](#standing) |
+| | MeleeRumble | | **7th of 416**, 69.67 ± 0.23 (3.25) | |
+| [**HadurTeam**](hadur-robot/) `hadur117.HadurTeam` | TeamRumble | five Hadurs | **2nd of 48**, 85.77 ± 0.42 (3.25.1), 2.12 behind cz.libors.OgiTeam | [standing](#standing) |
 | [**TwinSaor**](twinsaor/) `hadur117.twin.TwinSaor` | Twin Duel (2v2) | 1,995 B of 1,999 | **1st of 28**, 70.28 ± 0.50 (0.2), 0.91 ahead of ags.lunartwins.LunarTwins | [README](twinsaor/README.md) |
 | [**Saor**](saor/) `hadur117.micro.Saor` | MicroMelee | 723 B of 749 | **1st of 158**, 69.51 ± 0.27 (0.3), 0.24 ahead of kc.micro.Figment; 3rd of 206 in MiniMelee | [README](saor/README.md) |
 | [**Deise**](deise/) `hadur117.mini.Deise` | MiniMelee | 1,499 B of 1,499 | **1st of 206**, 71.18 ± 0.22 (0.5), 0.04 ahead of kc.mini.Mirage; 12th of 418 in MeleeRumble | [README](deise/README.md) |
-| [**Sanaro**](sanaro/) `hadur117.nano.Sanaro` | NanoMelee | 249 B of 249 | **2nd of 90**, 65.41 ± 0.29 (0.3), 1.03 behind d414.nano.Quantum | [README](sanaro/README.md) |
+| [**Sanaro**](sanaro/) `hadur117.nano.Sanaro` | NanoMelee | 246 B of 249 | **joint 1st of 90**, 66.40 ± 0.39 (0.5), tied with d414.nano.Quantum (66.40), PWIN 100% | [README](sanaro/README.md) |
 | [**JayLexi**](jaylexi/) `hadur117.mini.JayLexi` | MiniRumble (1v1) | 1,486 B of 1,499 | **1st of 670**, 89.26 ± 0.11 (1.3), 0.32 ahead of sheldor.mini.FoilistMC | [README](jaylexi/README.md) |
 | [**Eveimear**](eveimear/) `hadur117.micro.Eveimear` | MicroRumble (1v1) | 749 B of 749 | **1st of 515**, 86.20 ± 0.17 (0.6), 0.64 ahead of jk.micro.Cotillion | [README](eveimear/README.md) |
 | [**Sanara**](sanara/) `hadur117.nano.Sanara` | NanoRumble (1v1) | 249 B of 249 | not entered; 0.1 benches 78.4 on the whole division | [README](sanara/README.md) |
@@ -107,11 +105,15 @@ Live results as of 2026-11-02 16:00 UTC, Hadur and HadurTeam as of 2026-11-22 20
 - **Deise** is a least-risk mini melee bot with seen-shot waves that shoots the robot it hits best
   for its distance; 0.5 took MiniMelee 1st from kc.mini.Mirage ([docs/deise.md](docs/deise.md)).
 - **Sanaro** is a nano melee bot: anti-gravity, a branch-free radar, a gun that fires only on its lead
-  and a table of bullet power by both robots' energy ([docs/sanaro.md](docs/sanaro.md)).
+  and holds its target by name until a robot dies, with bullet power falling with distance ([docs/sanaro.md](docs/sanaro.md)).
 - **JayLexi** (a wave surfer with a GuessFactor gun) and **Eveimear** (Cotillion's stop-and-go movement and multiple-choice pattern matcher, with a per-robot mode table)
   are 1v1 size bots from the kitlab design ([docs/kitlab.md](docs/kitlab.md)).
 - **Sanara** is a nano duellist: an orbit that reverses on enemy shots or holds its line by opponent,
   and a symbolic pattern matcher replayed as an angle, written as bytecode to fit ([docs/sanara.md](docs/sanara.md)).
+- **Sepia** ([sepia/](sepia/), `hadur117.Sepia`, not yet entered in any rumble) is an experimental 1v1 robot
+  on Hadur's kernel. It fixes a landing for every enemy shot and fires 0.1 "ink" bullets to shoot that shot
+  down before it reaches the landing ([docs/sepia.md](docs/sepia.md), design in
+  [docs/sepia-design.md](docs/sepia-design.md)). Hadur's own play does not change.
 
 ## What it does
 

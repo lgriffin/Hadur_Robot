@@ -387,6 +387,7 @@ public final class DuelController {
         if (mirrorOff) on.add("mirroff");
         if (mimicOn) on.add("mimic");
         if (patternMimic != null) on.add("pm");
+        if (gunCopy != null) on.add("copy");
         if (fullOff) on.add("fulloff");
         if (x5Power) on.add("x5");
         if (racePower) on.add("race");
@@ -797,12 +798,23 @@ public final class DuelController {
             patternLastBearing = fromEnemy;
             patternLastDistance = e.distance();
         }
+        // COPY-2: the wave's bullet as the bred copy fires it, aimed on this scan (its index in the copy's history).
+        if (gunCopy != null) {
+            moveWave.gunCopy = gunCopy;
+            moveWave.copyIndex = gunCopy.size();
+        }
         moveController.addWave(moveWave);
 
         // WAVE-1, WAVE-2: only the part of the drop the ledger can't explain is a shot.
         EnergyLedger.Reading reading = ledger.scan(time, e.energy(), enemyVel, enemyPos.x, enemyPos.y);
         if (reading.phantom()) stats.phantomWaves++;
         if (reading.hidden()) stats.hiddenShots++;
+        // COPY-2: this scan, as the enemy saw us, joins the copy's history (with the power of a shot seen on it).
+        if (gunCopy != null) {
+            copyIndexByTime.put(time, gunCopy.size());
+            gunCopy.observe(round, myPos.x, myPos.y, myHead, myVel, enemyPos.x, enemyPos.y,
+                reading.shot() ? reading.corrected() : 0);
+        }
         if (reading.shot()) {
             // The drop shows on the scan after the shot, so the bullet left on an earlier
             // tick: the latest movement wave from before this scan, back to the previous one,
@@ -824,6 +836,11 @@ public final class DuelController {
                 smallestEnemyPower = reading.corrected();
             }
             enemyGunHeat(in).shot(fireTime, reading.corrected());
+            // COPY-2: a copy that learns from shots learns this one's wave, from the scan it was aimed on.
+            if (gunCopy != null) {
+                Integer at = copyIndexByTime.get(fireTime);
+                if (at != null) gunCopy.shot(at, reading.corrected());
+            }
             roundEnemyShot = fireTime;
             // RAM-5: the escape keeps each shot, aimed at us as we were the tick before it left; a
             // shot from before the logs begin (the round's first scans) has no such state and is left out.
@@ -868,7 +885,7 @@ public final class DuelController {
 
     /**
      * The Duel's main body, once its opponent has been scanned; before that it only spins the
-     * radar. TIME-1, TIME-2: the computation level sets how much of it runs (k shared out,
+     * radar. TIME-1: the computation level sets how much of it runs (k shared out,
      * virtual guns, waves surfed and go-to surfing).
      *
      * @param in the tick's input
@@ -1031,6 +1048,15 @@ public final class DuelController {
     private boolean mimicOn;
     /** MOVE-56: the pattern-matcher mimic, null unless the table names the opponent. */
     private PatternMimic patternMimic;
+    /** COPY-2: the bred copy of the enemy's gun the table names; null when off. */
+    private hadur117.core.physics.GunCopy gunCopy;
+    /** COPY-2: the copy's history index of each recent scan, by tick. */
+    private final java.util.LinkedHashMap<Long, Integer> copyIndexByTime = new java.util.LinkedHashMap<Long, Integer>() {
+        @Override
+        protected boolean removeEldestEntry(java.util.Map.Entry<Long, Integer> eldest) {
+            return size() > 64;
+        }
+    };
     /** MOVE-67: whether the table put the simple aim members at weight 1.0 for this opponent. */
     private boolean aimWeightOn;
     /**
@@ -1580,6 +1606,16 @@ public final class DuelController {
             moveController.setAimMembers(new AimMembers(members == null ? 0 : members.mimics(), true));
             patternMimic = new PatternMimic(megas);
         }
+        // COPY-2: a bred copy of the enemy's gun joins the aim members in the pattern mimic's place, for the
+        // opponents the table names and only where no pattern mimic is on. Set once, at the battle's first scan.
+        String copyGenome = stackList.copyFor(name);
+        if (duelOnly(MoveDesign.AIM_MEMBERS && copyGenome != null, enemiesTotal) && gunCopy == null && patternMimic == null) {
+            gunCopy = hadur117.core.physics.GunCopy.parse(copyGenome, battleField.width, battleField.height);
+            if (gunCopy != null) {
+                AimMembers members = moveController.aimMembers();
+                moveController.setAimMembers(new AimMembers(members == null ? 0 : members.mimics(), true));
+            }
+        }
         // MOVE-67: the simple aim members stand at weight 1.0 for the opponents the table names. Set once, at the
         // battle's first scan, before any wave has passed us, keeping the mimics MOVE-34 and MOVE-56 put in.
         if (duelOnly(MoveDesign.AIM_MEMBERS && stackList.aimWeight(name), enemiesTotal) && !aimWeightOn) {
@@ -1638,6 +1674,8 @@ public final class DuelController {
             gunController.setFreeGun(true);
             gunController.setUndecayed(true);
         }
+        // GUN-12: free gun (GUN-9) alone for the opponents the table names (duel only).
+        if (duelOnly(stackList.freeGun(name), enemiesTotal)) gunController.setFreeGun(true);
         // POISON-2: stop-and-go, forced or by the table's entry and its variant.
         int prefire = MoveDesign.STOP_AND_GO ? MoveDesign.STOP_AND_GO_PREFIRE : stackList.stopGo(name);
         stopAndGo = duelOnly(prefire > 0, enemiesTotal) ? new StopAndGo(battleField, prefire) : null;
@@ -2016,7 +2054,7 @@ public final class DuelController {
             // The plan is the one published on the tick before: the surf runs after the aim
             // within a tick, so it is the latest there is, and a plan older than that (a
             // tick the shield drove, or the surf did not publish) is not used.
-            // TIME-1, TIME-2: shed at level 2 and up.
+            // TIME-1: shed at level 2 and up (unreached since TIME-15; a slow tick sheds to 1).
             if (GunController.SHADOW_AIM && shadowAim && planTime == in.time() - 1
                     && !moveController.planIntervals().isEmpty()) {
                 moveController.updateShadows(in.time());

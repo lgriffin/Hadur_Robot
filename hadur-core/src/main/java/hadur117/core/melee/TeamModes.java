@@ -107,7 +107,15 @@ public final class TeamModes {
          * than CLOSE's, for a team whose guns gain little at that range while ours gain much. Only
          * through the table, per team (DemoniacNimrods). Means nothing without HUNT.
          */
-        NEAR
+        NEAR,
+        /**
+         * TMODE-64, swarm: with one enemy left and a teammate alive, every member is pulled to
+         * {@link TeamRisk#SWARM_FLOOR} px from it whatever its own energy, and takes no melee
+         * posture, so a drained member fights the last enemy from close in instead of from across
+         * the field. For a team whose 200-energy leader outlasts its members and then outshoots
+         * ours at long range. Only through the table, per team.
+         */
+        SWARM
     }
 
     /**
@@ -256,7 +264,8 @@ public final class TeamModes {
         // CombatTeam plays CONCORD again with the tight pack on: +4.6 ± 2.1 on 36 cloud seeds, rounds won 98 to 121 of 288
         // on pc-team-pack3 (PR #1033).
         t.put("mn.Combat", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CONCORD, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
-        t.put("cb.fire.Firestarter", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
+        // pc-team-pack5 (PR #1087): FirestarterTeam joins the tight pack, +6.0 ± 2.1 on 48 seeds (+6.5 ± 2.5 after the A/A).
+        t.put("cb.fire.Firestarter", of(Mode.MATEFIRE, Mode.HUNT, Mode.TIGHT, Mode.PATH, Mode.DODGE, Mode.CLOSE, Mode.LAST, Mode.MOMENTUM));
         // TMODE-59, tight pack: the default modes with TIGHT, written out as the bench's table reader needs, for the teams it held against on 12 fresh
         // cloud seeds each beside the same box's baseline (score share points): ShadowTeam +12.1 ± 4.2,
         // Xmen +9.3 ± 4.7, AlephTeam +6.2 ± 5.5, DemoniacNimrods +5.6 ± 4.4; OgiTeam above +7.4 ± 5.7.

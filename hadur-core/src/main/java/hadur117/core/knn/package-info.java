@@ -10,7 +10,7 @@
  *     packages.</li>
  * <li>{@link hadur117.core.knn.KnnView}: one formula, one bounded tree and the settings that
  *     say which waves it learns from, how many neighbours it returns (scaled down while the
- *     tick budget is short, TIME-1 and TIME-2) and when the surf switches it on. It also
+ *     tick budget is short, TIME-1) and when the surf switches it on. It also
  *     takes the samples an opponent profile replays, at their shared seed weight (ADAPT-3),
  *     and stops counting them once that weight has faded to zero (RES-4).</li>
  * </ul>

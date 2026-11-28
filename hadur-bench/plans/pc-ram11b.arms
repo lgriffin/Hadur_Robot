@@ -1,4 +1,4 @@
 # BENCH-249 pc-ram11b: master (c), its A/A copy (aa) and rcl, master with the RAM-11 line on every panel robot.
-c | hadur117.Hadur 3.24 | bisect/hadur117.Hadur_3.24.jar
-aa | hadur117.Hadur 3.24aa | bisect/hadur117.Hadur_3.24aa.jar
-rcl | hadur117.Hadur 3.24rcl | bisect/hadur117.Hadur_3.24rcl.jar
+c | hadur117.Hadur 3.25.1 | bisect/hadur117.Hadur_3.25.1.jar
+aa | hadur117.Hadur 3.25.1aa | bisect/hadur117.Hadur_3.25.1aa.jar
+rcl | hadur117.Hadur 3.25.1rcl | bisect/hadur117.Hadur_3.25.1rcl.jar

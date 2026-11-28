@@ -20,6 +20,8 @@
 #   tmconcordp: the gun's pooling alone, power as shipped (cnp).
 #   The brain's shipped parts (TeamConcord): movement and gun on, group radar off, hunt kept.
 #   tmnoconcord (team only) TMODE-34 off: CONCORD on no team, as before it shipped. Suffix ncn.
+#   mlane  MMOVE-31: off a team with 3+ opponents, the mover avoids the fire lanes (shooter through its
+#          likely target, as wide as the escape angle). Off on master. Suffix ml.
 #   mdmg   MMOVE-22: each opponent's risk weighs by the damage it has done to Hadur this battle x its mean distance (Diamond). Suffix dm. Ships on from 3.21, so on master dm is the robot as it is.
 #   e3far  MEND-3: with two opponents left off a team, the closest-robot factor 4 (not 2). Suffix ef.
 #   aa    no change: the same robot under another name (suffix aa), the A/A arm of a multi-arm run
@@ -37,8 +39,6 @@
 #   nodur  RES-9 duress never switches on: skipped turns still shed levels (TIME-2) but the
 #         round never drops to the orbit-and-head-on fallback. 3.11 M4 (docs/plan-3.11-census.md):
 #         the census lost 0.62 APS in battles with start-up duress.
-#   nolearn  TIME-3 never learns an allowance from a skipped turn, so a round-0 warm-up skip
-#         does not set the shedding threshold for the rest of the battle.
 #   fin   END-1 finishing keeps the controller's distance instead of closing to 150 px (END-2's
 #         ram on a disabled enemy stays). 3.12 P1 (docs/plan-3.12.md): does closing in to finish
 #         weak bots let their simple guns hit us?
@@ -266,6 +266,7 @@
 #   sblist the robots named in $SPEED_BAND get MOVE-45's speed band (a random top speed of 7 to 8 each tick against rounded-velocity pattern matchers). Suffix sb.
 #   vjlist the robots named in $VEL_JITTER get MOVE-44's velocity jitter (never exactly 8 or 0 against exact-velocity pattern matchers). Suffix vj.
 #   sbklist the robots named in $SHIELD_BREAK get SHIELD-27's close-start break-off. Suffix kb, or $SHIELD_BREAK_SUFFIX.
+#   syldlist the robots named in $SHIELD_YIELD get SHIELD-35's close-range yield (the duel drives inside 150 px until 250 px). Suffix ky.
 #   dplist the lines in $DIST_PIN ("px name") pin DIST-4's per-opponent duel distance. Suffix dn (dp is sdplanlist's), or $DIST_PIN_SUFFIX.
 #   pblist the lines in $POWER_BAND ("m1 m2 m3 m4 name") become POW-20 power bands. Suffix pb.
 #   stinylist the robots named in $SHIELD_TINY get SHIELD-33: shield mode builds waves for their sub-0.1 shots (ShieldTableData.tinies()). Suffix ty.
@@ -286,6 +287,9 @@
 #   rhlist the robots named in $RAM_HEAVY get RAM-14, the rammer escape weighing their shots twice as heavily. Suffix rh.
 #   pmlist the robots named in $PM_MIMIC get MOVE-56, a mimic of a truncated-lateral-velocity pattern matcher among the aim members. Suffix pm.
 #   hoflist the robots named in $HEAD_ON_FLOOR get MOVE-71, a danger floor (half the kernel) on the head-on angle. Suffix hof.
+#   fglist the robots named in $FREE_GUN_LIST get GUN-12, the duel gun with GUN-9's free gun on. Suffix fgl.
+#   copylist the lines of $COPY_LIST ("genome name", as copy_breed.py writes them) give those robots COPY-2, a bred
+#         copy of their gun among the aim members. Suffix cpl.
 #   aimwlist the robots named in $AIM_WEIGHT get MOVE-67, the simple aim members at standing weight 1.0 (aimp1's, MOVE-29's 0.1 otherwise). Suffix qw.
 #   pmxlist the robots named in $PM_MEGAS get MOVE-58, a mimic of the cw.megas-form pattern matcher (rounded lateral-velocity symbols, flight-time gap, symbol rebuild) among the aim members. Suffix pmx.
 #   ramlearn  RAM-20: the rammer escape dodges every rammer's shots by the aims learned in the battle from its own
@@ -411,10 +415,6 @@ for a in "${list[@]}"; do
             edit "$budget" "return skipsThisRound >= DURESS_SKIPS && now - lastSkip < DURESS_QUIET_TICKS;" \
                 "return false && skipsThisRound >= DURESS_SKIPS && now - lastSkip < DURESS_QUIET_TICKS;"
             version="${version}nd" ;;
-        nolearn)
-            edit "$budget" "if (learnedAllowanceNanos <= 0 && lastUsedNanos > 0" \
-                "if (false && learnedAllowanceNanos <= 0 && lastUsedNanos > 0"
-            version="${version}nl" ;;
         fin)
             edit "$dist" "return finishing ? FINISH : target;" "return target;"
             version="${version}ne" ;;
@@ -835,7 +835,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
                 edit "$movedesign" "static final int STOP_AND_GO_PREFIRE = 1;" "static final int STOP_AND_GO_PREFIRE = 2;"
                 version="${version}ws"
             else version="${version}wp"; fi ;;
-        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist|rclist|mirofflist|sfloorlist|pcaplist|pcap5list|hflist|pblist|vjlist|sblist|dplist|rhlist|rwlist|orlist|rflist|rfanlist|rbendlist|rlearnlist|rknownlist|pmlist|pmxlist|aimwlist|hoflist|stinylist|sbklist)
+        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist|rclist|mirofflist|sfloorlist|pcaplist|pcap5list|hflist|pblist|vjlist|sblist|dplist|rhlist|rwlist|orlist|rflist|rfanlist|rbendlist|rlearnlist|rknownlist|pmlist|pmxlist|aimwlist|hoflist|fglist|copylist|stinylist|sbklist|syldlist)
             # Shield part 2 (docs/plan-shield-quality.md): per-opponent opening drive or shipped aims;
             # the mode table's simple-aim dodge (DODGE-3).
             if [[ "$a" == smovelist ]]; then file="${SHIELD_MOVE:-}"; method="moves"; version="${version}mv"
@@ -848,6 +848,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
             elif [[ "$a" == sx0list ]]; then file="${SHIELD_EXIT0:-}"; method="exitOffs"; version="${version}x0"
             elif [[ "$a" == stinylist ]]; then file="${SHIELD_TINY:-}"; method="tinies"; version="${version}ty"
             elif [[ "$a" == sbklist ]]; then file="${SHIELD_BREAK:-}"; method="closeBreaks"; version="${version}${SHIELD_BREAK_SUFFIX:-kb}"
+            elif [[ "$a" == syldlist ]]; then file="${SHIELD_YIELD:-}"; method="closeYields"; version="${version}ky"
             elif [[ "$a" == szlist ]]; then file="${SHIELD_STILL:-}"; method="stills"; version="${version}zl"
             elif [[ "$a" == sklist ]]; then file="${SURF_KEY:-}"; method="surfKeys"; version="${version}kl"
             elif [[ "$a" == fllist ]]; then file="${FLAT_ON:-}"; method="flatOns"; version="${version}fq"
@@ -874,11 +875,13 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
             elif [[ "$a" == pmxlist ]]; then file="${PM_MEGAS:-}"; method="patternMegas"; version="${version}pmx"
             elif [[ "$a" == aimwlist ]]; then file="${AIM_WEIGHT:-}"; method="aimWeights"; version="${version}qw"
             elif [[ "$a" == hoflist ]]; then file="${HEAD_ON_FLOOR:-}"; method="headOnFloors"; version="${version}hof"
+            elif [[ "$a" == fglist ]]; then file="${FREE_GUN_LIST:-}"; method="freeGuns"; version="${version}fgl"
+            elif [[ "$a" == copylist ]]; then file="${COPY_LIST:-}"; method="copies"; version="${version}cpl"
             elif [[ "$a" == rwlist ]]; then file="${RAM_WAIT:-}"; method="ramWaits"; version="${version}rwl"
             elif [[ "$a" == rflist ]]; then file="${RAM_FLEE:-}"; method="ramFlees"; version="${version}${RAM_FLEE_SUFFIX:-rf}"
             elif [[ "$a" == orlist ]]; then file="${STEADY_ORBIT:-}"; method="steadyOrbits"; version="${version}or"
             else file="${STOP_GO2:-}"; method="stopGoShifts"; version="${version}wm"; fi
-            [[ -n "$file" && -f "$file" ]] || { echo "$a needs SHIELD_MOVE / SHIELD_AIM / SHOT_DODGE / STOP_GO / STOP_GO2 / HEAT_JIT / GUN_STACK / SHIELD_EXIT4 / SHIELD_EXIT0 / SHIELD_STILL / SURF_KEY / FLAT_ON / MIMIC_ON / FULL_OFF / X5_POWER / RACE_POWER / MIRROR_OFF / VEL_JITTER / SPEED_BAND / DIST_PIN / RAM_HEAVY / RAM_FAN / RAM_BEND / PM_MIMIC / PM_MEGAS / AIM_WEIGHT / SHIELD_TINY / RAM_WAIT / STEADY_ORBIT=<file>" >&2; exit 2; }
+            [[ -n "$file" && -f "$file" ]] || { echo "$a needs SHIELD_MOVE / SHIELD_AIM / SHOT_DODGE / STOP_GO / STOP_GO2 / HEAT_JIT / GUN_STACK / SHIELD_EXIT4 / SHIELD_EXIT0 / SHIELD_STILL / SURF_KEY / FLAT_ON / MIMIC_ON / FULL_OFF / X5_POWER / RACE_POWER / MIRROR_OFF / VEL_JITTER / SPEED_BAND / DIST_PIN / RAM_HEAVY / RAM_FAN / RAM_BEND / PM_MIMIC / PM_MEGAS / AIM_WEIGHT / COPY_LIST / SHIELD_TINY / RAM_WAIT / STEADY_ORBIT=<file>" >&2; exit 2; }
             add="$(python3 -c 'import sys,json
 lines=[l.split("\t")[0].strip() for l in open(sys.argv[1]) if l.strip() and not l.startswith("#")]
 print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines)), end="")' "$file")"
@@ -952,6 +955,13 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeController.java" \
                 "public static final boolean MELEE_CROSS = false;" "public static final boolean MELEE_CROSS = true;"
             version="${version}xh" ;;
+        mlane)
+            # MMOVE-31 fire lanes (docs/requirements/melee.md): off a team with three or more opponents,
+            # the mover pays for standing in a lane from an opponent through the robot it likely aims
+            # at. Duel and team fixtures bit for bit. Suffix ml.
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java" \
+                "public static final boolean FIRE_LANES = false;" "public static final boolean FIRE_LANES = true;"
+            version="${version}ml" ;;
         msurf)
             # The melee surfer (MMOVE-15), off a team only; duel and team fixtures bit for bit. It ships
             # on from 3.21, so on master msurf builds the robot as it is.
@@ -994,7 +1004,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             # TMODE-45 on every team: the default and every shipped entry play QUARTERS. Suffix qt.
             version="${version}qt"
             edit "$modes" "public static final boolean FORCE_QUARTERS = false;" "public static final boolean FORCE_QUARTERS = true;"
-            sed -i -E '/^        t\.put\(/{/Mode\.QUARTERS/!s/\)\);$/, Mode.QUARTERS));/}' "$modes"
+            sed -i -E '/^        t\.put\(.*, of\(Mode\./{/Mode\.QUARTERS/!s/\)\);$/, Mode.QUARTERS));/}' "$modes"
             ;;
         tmtight)
             # TMODE-59 on (team only): TIGHT plays in the five table entries that carry it (hunt pull 1.0). Suffix tp.
@@ -1073,7 +1083,7 @@ for row in open(f):
     S[p]=s[:hits[0].start()]+s[hits[0].end():]
 for p in S: open(p,"w").write(S[p])' "$tabledata" "$listdata" "$LINE_DROP" || exit 2
             version="${version}td" ;;
-        *) echo "unknown ablation: $a (aa, bb, tmtight, tmnotight, tmnocloserr, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, icoff, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, rhlist, rwlist, orlist, rflist, rfanlist, rbendlist, pmlist, pmxlist, aimwlist, hoflist, tdrop|stinylist, sbklist)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, tmtight, tmnotight, tmnocloserr, nowarm, ram2, mir1, flat, shield-all, nodur, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, icoff, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mlane, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, rhlist, rwlist, orlist, rflist, rfanlist, rbendlist, pmlist, pmxlist, aimwlist, hoflist, fglist, copylist, tdrop|stinylist, sbklist)" >&2; exit 2 ;;
     esac
 done
 

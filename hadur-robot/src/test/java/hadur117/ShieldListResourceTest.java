@@ -56,8 +56,9 @@ class ShieldListResourceTest {
         // pc-r31 (PR #817): Musashi. pc-locks (PR #843): GlowBlow, MostlyHarmless and DuelistMicro.
         // pc-shards (PR #840): BlackSwans, Manta, LostLion and AralR.
         // pc-locks round 6 (PR #890): Recrimpo. pc-locks round 8 (PR #905): Omicron, Sobieski and SmallDevil. pc-locks round 9 (PR #913): JayLexi. pc-locks round 10 (PR #922): ThnikkaBot.
-        // pc-locks round 13 (PR #951): RedShift.
-        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1 - 1 + 1 + 1 + 1 + 3 + 4 + 1 + 3 + 1 + 1 + 1, list.size());
+        // pc-locks round 13 (PR #951): RedShift. pc-locks round 28 (PR #1057): RainbowBot leaves (surfed, +3.2).
+        // pc-locks round 35 (PR #1095): YellowBird joins with SHIELD-33 tiny-shot waves.
+        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1 - 1 + 1 + 1 + 1 + 3 + 4 + 1 + 3 + 1 + 1 + 1 - 1 + 1, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
@@ -154,11 +155,11 @@ class ShieldListResourceTest {
             assertTrue(list.matches(name), name);
         }
         // pc-shelf (PR #636): 6 more opening drives held on the confirm's fresh seeds. pc-locks round 2 (PR #845): 3 more.
-        assertEquals(31 + 8 + 6 + 3 + 13 + 1 + 1 + 1, ShieldTableData.moves().length); // + pc-locks round 25 (PR #1036)
+        assertEquals(31 + 8 + 6 + 3 + 13 + 1 + 1 + 1 - 1, ShieldTableData.moves().length); // + pc-locks round 25 (PR #1036); RainbowBot left (round 28, PR #1057)
         for (String name : ShieldTableData.moves()) {
             assertTrue(list.moves(name) && list.matches(name), "an opening drive is for a shielded robot: " + name);
         }
-        assertEquals(221 + 11 - 1, ShieldTableData.aims().length, "Seraphim's aim left with its entry");
+        assertEquals(221 + 11 - 1 - 1, ShieldTableData.aims().length, "Seraphim's and RainbowBot's aims left with their entries");
         for (String aim : ShieldTableData.aims()) {
             String name = aim.split(" ", 3)[2];
             assertTrue(list.aimFor(name) != null && list.matches(name), "a shipped aim is for a shielded robot: " + name);
@@ -303,13 +304,13 @@ class ShieldListResourceTest {
 
     @Test
     @Tag("POW-18")
-    @DisplayName("the 7 pc-power-cap picks and pc-lines' JKHydra carry power-cap lines (six at 0.2, two at 0.5) and no other robot does")
+    @DisplayName("the 7 pc-power-cap picks and pc-lines' JKHydra carry power-cap lines (six at 0.2, two at 0.5, plus Saguaro at 0.5 from round 38) and no other robot does")
     void powerCapPicks() {
         assertEquals(java.util.Set.of("rsalesc.roborio.Roborio 1.2.4", "cb.fire.Firestarter 2.0f", "aw.Gilgalad 1.99.5c",
             "catcat20.Rabbit 0.001", "cb.Domogled 1.2", "jkong.JKHydra 1.4"), java.util.Set.of(ShieldTableData.powerCaps()),
             "POW-18 0.2 caps held by pc-power-cap (BENCH-236, PR #784) and pc-lines (BENCH-238, PR #798)");
-        assertEquals(java.util.Set.of("suh.mega.WaveSurferPG 1.06", "stelo.MatchupAGF 1.1"),
-            java.util.Set.of(ShieldTableData.powerCapHalves()), "POW-18 0.5 caps held by pc-power-cap (BENCH-236, PR #784)");
+        assertEquals(java.util.Set.of("suh.mega.WaveSurferPG 1.06", "stelo.MatchupAGF 1.1", "oog.mega.saguaro.Saguaro 1.1.4"),
+            java.util.Set.of(ShieldTableData.powerCapHalves()), "POW-18 0.5 caps held by pc-power-cap (BENCH-236, PR #784) and pc-locks round 38 (PR #1113)");
     }
 
     @Test
@@ -319,7 +320,7 @@ class ShieldListResourceTest {
         java.util.List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
         for (String n : ShieldTableData.racePowers()) lines.add(ShieldList.RACE_POWER_PREFIX + " " + n);
         ShieldList list = ShieldList.parse(lines);
-        assertEquals(8 + 1 + 2 + 1 + 1 + 1 + 4 + 1 + 1, ShieldTableData.racePowers().length, "pc-race-power (BENCH-206, PR #695) confirm picks and pc-r31 (BENCH-244, PR #817) and pc-locks rounds 3 (PR #860), 6 (PR #890), 8 (PR #905), 10 (PR #922), 11 (PR #929), 25 (PR #1036) and 27 (PR #1050)");
+        assertEquals(8 + 1 + 2 + 1 + 1 + 1 + 4 + 1 + 1 + 7 + 2, ShieldTableData.racePowers().length, "pc-race-power (BENCH-206, PR #695) confirm picks and pc-r31 (BENCH-244, PR #817) and pc-locks rounds 3 (PR #860), 6 (PR #890), 8 (PR #905), 10 (PR #922), 11 (PR #929), 25 (PR #1036), 27 (PR #1050), 37 (PR #1109) and 38 (PR #1113)");
         for (String n : ShieldTableData.racePowers()) assertTrue(list.racePower(n), n);
         assertTrue(!list.racePower("abc.Shadow 3.83c"), "a pilot robot that did not hold the 3-point margin");
     }

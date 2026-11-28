@@ -148,7 +148,7 @@ public final class HadurCore {
     private int meleeBulletsInFlight;
     /** MMEM-2: the melee has just ended; the next duel scan hands its survivor over. */
     private boolean handOffPending;
-    /** S6: the tick budget (TIME-1, TIME-2), the conductor's; its level goes to the driving role. */
+    /** S6: the tick budget (TIME-1), the conductor's; its level goes to the driving role. */
     private final TickBudget budget = new TickBudget();
     /** WEAVE-3: whether a shot may leave this tick; until A5 always. */
     private Predicate<BotInput> firePermission = in -> true;
@@ -1023,7 +1023,8 @@ public final class HadurCore {
         if (store == null || !archive.scribe()) return;
         int memoryFailures = meleeMemoryFailures() + duel.memoryFailures();
         String record = "HEALTH," + rounds + "," + roundsSurvived + "," + faults + ","
-            + skippedTurns + "," + memoryFailures + "," + budget.learnedAllowanceNanos()
+            // The seventh field held TIME-3's learned allowance; retired by TIME-15, it is always -1.
+            + skippedTurns + "," + memoryFailures + ",-1"
             + (setupMillis < 0 ? "" : "," + setupMillis + "," + firstTurn + "," + longestSkipRun);
         try {
             // RES-6: no java.nio (Charset included), so the ASCII record is encoded by hand.
@@ -1115,19 +1116,15 @@ public final class HadurCore {
         if (budget.level() != before) emitBudget();
     }
 
-    /** P record for a change of computation level (TIME-1, TIME-2). */
+    /** P record for a change of computation level (TIME-1). */
     private void emitBudget() {
         telemetry.emit(String.format(Locale.ROOT, "P,%d,%d,%s,%s,%s,%s", round, lastTickTime, "budget",
             String.format(Locale.ROOT, "%.4f", (double) budget.level()), "-", "level-" + budget.level()));
     }
 
-    /** TIME-2: the engine skipped one of our turns because a tick ran over its time. */
+    /** The engine skipped one of our turns. TIME-15: counted, and nothing is shed for it. */
     private void onSkippedTurn(BotInput in, long skippedTime) {
         stats.skippedTurns++;
-        // TIME-2: one level down for the rest of the round.
-        budget.skippedTurn(skippedTime);
-        stats.computationLevel = budget.maxLevel();
-        emitBudget();
         telemetry.emit("WARNING: Turn skipped at " + in.time());
     }
 
@@ -1141,7 +1138,7 @@ public final class HadurCore {
     }
 
     /**
-     * S6: the tick budget's computation level for the next tick (TIME-1, TIME-2).
+     * S6: the tick budget's computation level for the next tick (TIME-1).
      *
      * @return 0 (everything) to 3 (least work)
      */

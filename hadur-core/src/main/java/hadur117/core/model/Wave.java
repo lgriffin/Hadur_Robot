@@ -229,9 +229,23 @@ public class Wave implements Cloneable {
     private double patternAim = Double.NaN;
     private double patternSpeed = Double.NaN;
 
-    /** MOVE-56: where the pattern-matcher mimic sends this wave's bullet, absolute radians; NaN when off or no match. */
+    /** COPY-2: the bred gun copy and this wave's scan index in its history; null when off. */
+    public hadur117.core.physics.GunCopy gunCopy;
+    public int copyIndex;
+
+    /**
+     * MOVE-56: where the pattern-matcher mimic sends this wave's bullet, absolute radians; NaN when off or no match.
+     * COPY-2: with no mimic, where the bred gun copy sends it.
+     */
     public double patternAngle() {
-        if (patternMimic == null) return Double.NaN;
+        if (patternMimic == null) {
+            if (gunCopy == null) return Double.NaN;
+            if (patternSpeed != bulletSpeed) {
+                patternAim = gunCopy.aim(copyIndex, (20 - bulletSpeed) / 3);
+                patternSpeed = bulletSpeed;
+            }
+            return patternAim;
+        }
         if (patternSpeed != bulletSpeed) {
             patternAim = patternBearing + patternMimic.offset(patternHistory, patternDistance, bulletSpeed);
             patternSpeed = bulletSpeed;
@@ -684,7 +698,9 @@ public class Wave implements Cloneable {
         double dispAngle = effectiveHeading()
             + DiaUtils.absoluteBearing(ORIGIN, dispVector) * orbitDirection;
         double dispDistance = ORIGIN.distance(dispVector);
-        Point2D.Double projectedLocation = targetLocation;
+        // TIME-14: iterated on plain coordinates; one point is built for the answer.
+        double px = targetLocation.x;
+        double py = targetLocation.y;
         long bulletTicks = -1;
         long prevBulletTicks = -1;
         long prevPrevBulletTicks;
@@ -700,11 +716,12 @@ public class Wave implements Cloneable {
             // The bullet needs ceil(distance / speed) ticks to cover the distance; the count
             // of target movement used is one less.
             bulletTicks = DiaUtils.bulletTicksFromSpeed(
-                firingLocation.distance(projectedLocation), bulletSpeed) - 1;
-            projectedLocation = DiaUtils.project(targetLocation, daSin, daCos,
-                (bulletTicks + extraTicks) * dispDistance);
+                firingLocation.distance(px, py), bulletSpeed) - 1;
+            double length = (bulletTicks + extraTicks) * dispDistance;
+            px = targetLocation.x + daSin * length;
+            py = targetLocation.y + daCos * length;
         } while (bulletTicks != prevBulletTicks && bulletTicks != prevPrevBulletTicks);
-        return projectedLocation;
+        return new Point2D.Double(px, py);
     }
 
     // Guess factor from a target location
@@ -927,7 +944,8 @@ public class Wave implements Cloneable {
     public Intersection preciseIntersection(List<RobotState> waveBreakStates) {
         if (waveBreakStates == null || waveBreakStates.isEmpty()) return null;
 
-        List<Double> aimAngles = new ArrayList<>();
+        // TIME-12: the angles in a plain array, not a list of boxed doubles; same values, same order.
+        HitAngles aimAngles = new HitAngles(20 * waveBreakStates.size());
         for (RobotState state : waveBreakStates) {
             // The ring the bullet sweeps during the next tick, as in checkWavePosition.
             double waveStartR = bulletSpeed * (state.time - fireTime);
@@ -945,14 +963,15 @@ public class Wave implements Cloneable {
             addSide(aimAngles, x + 18, y + 18, x - 18, y + 18, waveStartR, waveEndR);
             addSide(aimAngles, x - 18, y + 18, x - 18, y - 18, waveStartR, waveEndR);
         }
-        if (aimAngles.isEmpty()) return null;
+        if (aimAngles.n == 0) return null;
 
         // Angles come from atan2 in (-pi, pi]; a robot straddling south of the source would
         // give angles near both pi and -pi. Normalising each within pi of the first keeps the
         // span contiguous, since a robot covers far less than half a turn.
-        double ref = aimAngles.get(0);
+        double ref = aimAngles.a[0];
         double minAngle = ref, maxAngle = ref;
-        for (double angle : aimAngles) {
+        for (int i = 0; i < aimAngles.n; i++) {
+            double angle = aimAngles.a[i];
             double norm = DiaUtils.normalizeAngle(angle, ref);
             minAngle = Math.min(minAngle, norm);
             maxAngle = Math.max(maxAngle, norm);
@@ -963,21 +982,35 @@ public class Wave implements Cloneable {
         return new Intersection(center, bandwidth);
     }
 
+    /** The angles {@link #preciseIntersection} collects, in the order they are found. */
+    private static final class HitAngles {
+        final double[] a;
+        int n;
+
+        HitAngles(int capacity) {
+            a = new double[capacity];
+        }
+
+        void add(double angle) {
+            a[n++] = angle;
+        }
+    }
+
     /**
      * Adds the bearing of the hit-box corner ({@code cx}, {@code cy}) when it lies in the ring
      * [{@code inner}, {@code outer}] round the source; the distance is Point2D.distance's.
      */
-    private void addCorner(List<Double> angles, double cx, double cy, double inner, double outer) {
+    private void addCorner(HitAngles angles, double cx, double cy, double inner, double outer) {
         double px = sourceLocation.x - cx;
         double py = sourceLocation.y - cy;
         double cornerDist = Math.sqrt(px * px + py * py);
         if (cornerDist <= outer && cornerDist >= inner) {
-            angles.add(DiaUtils.absoluteBearing(sourceLocation, new Point2D.Double(cx, cy)));
+            angles.add(Math.atan2(cx - sourceLocation.x, cy - sourceLocation.y)); // absoluteBearing, no point
         }
     }
 
     /** A hit-box side's crossings of both of the ring's circles, inner first. */
-    private void addSide(List<Double> angles, double x1, double y1, double x2, double y2,
+    private void addSide(HitAngles angles, double x1, double y1, double x2, double y2,
                          double inner, double outer) {
         addCircleLineIntersections(angles, sourceLocation, inner, x1, y1, x2, y2);
         addCircleLineIntersections(angles, sourceLocation, outer, x1, y1, x2, y2);
@@ -987,7 +1020,7 @@ public class Wave implements Cloneable {
      * Adds to {@code angles} the bearing from {@code center} of each point where the circle
      * of {@code radius} about {@code center} crosses the segment {@code line}.
      */
-    private static void addCircleLineIntersections(List<Double> angles,
+    private static void addCircleLineIntersections(HitAngles angles,
             Point2D.Double center, double radius, double x1, double y1, double x2, double y2) {
         // Points on the segment are P(t) = P1 + t * d for t in [0, 1]. Setting
         // |P(t) - center|^2 = radius^2 gives the quadratic a t^2 + b t + c = 0 below, with
@@ -1007,13 +1040,11 @@ public class Wave implements Cloneable {
         double t2 = (-b + disc) / (2 * a);
         // Only roots within [0, 1] lie on the segment itself.
         if (t1 >= 0 && t1 <= 1) {
-            angles.add(DiaUtils.absoluteBearing(center,
-                new Point2D.Double(x1 + t1 * dx, y1 + t1 * dy)));
+            angles.add(Math.atan2((x1 + t1 * dx) - center.x, (y1 + t1 * dy) - center.y));
         }
         // A tangent gives a double root; add its point only once.
         if (t2 >= 0 && t2 <= 1 && Math.abs(t2 - t1) > 1e-10) {
-            angles.add(DiaUtils.absoluteBearing(center,
-                new Point2D.Double(x1 + t2 * dx, y1 + t2 * dy)));
+            angles.add(Math.atan2((x1 + t2 * dx) - center.x, (y1 + t2 * dy) - center.y));
         }
     }
 
@@ -1054,6 +1085,8 @@ public class Wave implements Cloneable {
         w.patternHistory = patternHistory;
         w.patternBearing = patternBearing;
         w.patternDistance = patternDistance;
+        w.gunCopy = gunCopy;
+        w.copyIndex = copyIndex;
         return w;
     }
 

@@ -1,5 +1,5 @@
 # pc-shield-exit (BENCH-126): rp = 3.19 with Wolverine on stop-and-go and Hikari and Melody on
 # stop-and-go shift, all three off the shield list (slistdrop,sgolist,sgo2list).
-c | hadur117.Hadur 3.24 | bisect/hadur117.Hadur_3.24.jar
-aa | hadur117.Hadur 3.24aa | bisect/hadur117.Hadur_3.24aa.jar
-rp | hadur117.Hadur 3.24mdwlwm | bisect/hadur117.Hadur_3.24mdwlwm.jar
+c | hadur117.Hadur 3.25.1 | bisect/hadur117.Hadur_3.25.1.jar
+aa | hadur117.Hadur 3.25.1aa | bisect/hadur117.Hadur_3.25.1aa.jar
+rp | hadur117.Hadur 3.25.1mdwlwm | bisect/hadur117.Hadur_3.25.1mdwlwm.jar

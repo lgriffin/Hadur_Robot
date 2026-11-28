@@ -112,6 +112,15 @@ class TeamModesTest(unittest.TestCase):
                            '        t.put("a.B", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN));\n', encoding="utf-8")
             self.assertEqual({"a.B": {"MATEFIRE", "HUNT", "OWN"}}, team_modes.shipped_table(src))
 
+    def test_a_table_line_with_swarm_reads_with_its_modes(self):
+        with tempfile.TemporaryDirectory() as d:
+            src = Path(d) / "TeamModes.java"
+            src.write_text('        Map<String, Set<Mode>> t = new HashMap<>();\n'
+                           '        t.put("cz.libors.Ogi", of(Mode.MATEFIRE, Mode.HUNT, Mode.LAST, Mode.SWARM));\n', encoding="utf-8")
+            table = team_modes.shipped_table(src)
+            self.assertIn("SWARM", table["cz.libors.Ogi"])
+            self.assertTrue(table["cz.libors.Ogi"] <= set(team_modes.MODES))
+
     def test_every_mode_the_shipped_robot_names_is_known(self):
         src = Path(__file__).resolve().parents[2] / "hadur-core/src/main/java/hadur117/core/melee/TeamModes.java"
         table = team_modes.shipped_table(src)
@@ -119,7 +128,8 @@ class TeamModesTest(unittest.TestCase):
         for team, modes in table.items():
             self.assertTrue(modes <= set(team_modes.MODES), team)
             self.assertIn("LAST", modes, team)
-        tight = {"cz.libors.Ogi", "abc.Shadow", "florent.XSeries.X2", "rz.Aleph", "cx.mini.Nimrod", "kawigi.micro.Shiz"}
+        tight = {"cz.libors.Ogi", "abc.Shadow", "florent.XSeries.X2", "rz.Aleph", "cx.mini.Nimrod", "kawigi.micro.Shiz",
+                 "cb.fire.Firestarter"}
         self.assertEqual(tight, {team for team, modes in table.items() if "TIGHT" in modes})
         self.assertEqual({"cx.mini.Nimrod", "ustimaw.Nightmare", "ustimaw.NigitmareDroid"}, {team for team, modes in table.items() if "NEAR" in modes})
 

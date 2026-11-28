@@ -28,7 +28,7 @@
 # disagree; halt on 30 failed battles, an arm scoring nothing in 8, 60+ skipped turns a battle over the last 200, or no
 # battle in 30 minutes. The live-match step stops the card if the PC no longer scores us and BeepBoop as live does.
 # ALERT opens an issue on any stop. Nothing is released or banked by the card.
-set V = 3.24
+set V = 3.25.1
 set DRX = 8b1a7a9973bda1e5c39f8dfcbb39740f0c926f58
 set P = --parallel 16 --no-truth-log --failed-ok
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 2G

@@ -363,7 +363,14 @@ public class KdTree<T> {
         cursor.status = Status.NONE;
         // The k-th best distance so far; infinite until the heap holds count points.
         double range = Double.POSITIVE_INFINITY;
-        ResultHeap resultHeap = new ResultHeap(count);
+        // TIME-12: the root keeps one heap per k and reuses it; the search is never re-entered.
+        ResultHeap resultHeap = root.heap;
+        if (resultHeap == null || resultHeap.size != count) {
+            resultHeap = new ResultHeap(count);
+            root.heap = resultHeap;
+        } else {
+            resultHeap.values = 0;
+        }
 
         do {
             // Both children done: back up.
@@ -430,6 +437,7 @@ public class KdTree<T> {
         for (int i = 0; i < resultHeap.values; i++) {
             results.add(new Entry<>((double) resultHeap.distance[i],
                     (T) resultHeap.data[i]));
+            resultHeap.data[i] = null;
         }
         return results;
     }
@@ -456,6 +464,9 @@ public class KdTree<T> {
             this.value = value;
         }
     }
+
+    /** TIME-12: the search heap the root reuses, sized for the last k asked for. */
+    private ResultHeap heap;
 
     /**
      * A node's progress in the current search: not entered, one child (the query's side)

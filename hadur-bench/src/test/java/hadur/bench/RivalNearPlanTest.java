@@ -77,8 +77,8 @@ class RivalNearPlanTest {
             assertTrue(confirm.contains("stop: " + rule), rule);
         }
         String arms = Files.readString(Path.of("plans/rival-near.arms"));
-        for (String a : new String[] {"c | hadur117.Hadur 3.24 | ", "aa | hadur117.Hadur 3.24aa | ",
-            "rp | hadur117.Hadur 3.24mtmdzlx0wlwm | bisect/hadur117.Hadur_3.24mtmdzlx0wlwm.jar"}) {
+        for (String a : new String[] {"c | hadur117.Hadur 3.25.1 | ", "aa | hadur117.Hadur 3.25.1aa | ",
+            "rp | hadur117.Hadur 3.25.1mtmdzlx0wlwm | bisect/hadur117.Hadur_3.25.1mtmdzlx0wlwm.jar"}) {
             assertTrue(arms.contains("\n" + a), a);
         }
         String gate = step(queue, "gate", "pr");

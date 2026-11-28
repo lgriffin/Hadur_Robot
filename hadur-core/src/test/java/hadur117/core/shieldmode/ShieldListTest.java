@@ -130,6 +130,21 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("SHIELD-35")
+    @DisplayName("shield-yield lines name the opponents shield mode yields the drive to while close, matched as shield entries")
+    void perOpponentCloseYield() {
+        ShieldList l = ShieldList.parse(List.of("shield-yield: a.B 1.0", "shield-yield: c.D", "shield-yield:"));
+        assertTrue(l.closeYield("a.B 1.0"));
+        assertTrue(l.closeYield("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertTrue(l.closeYield("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.closeBreak("a.B 1.0"), "its own set, not SHIELD-27's");
+        assertFalse(l.closeYield(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.closeYield("a.B 1.0"));
+        assertFalse(ShieldList.parse(List.of("shield-break: e.F")).closeYield("e.F 1.0"), "a shield-break line yields nothing");
+    }
+
+    @Test
     @Tag("POW-18")
     @DisplayName("power-cap lines name the opponents the duel caps its power against, matched as shield entries")
     void perOpponentPowerCap() {
@@ -407,6 +422,22 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("COPY-2")
+    @DisplayName("copy lines give an opponent's bred gun genome, matched as shield entries; a line with no name is skipped")
+    void copies() {
+        ShieldList l = ShieldList.parse(List.of(
+            "copy: hist;ticks=0;bins=31 a.B 1.0",
+            "copy: pm;round=2.0x2.0;longest=20;least=1;lag=0 c.D",
+            "copy: knn;k=3"));
+        assertEquals("hist;ticks=0;bins=31", l.copyFor("a.B 1.0"));
+        assertEquals("hist;ticks=0;bins=31", l.copyFor("a.B 1.1"), "a line carries over to a new version");
+        assertEquals("pm;round=2.0x2.0;longest=20;least=1;lag=0", l.copyFor("c.D 7"));
+        assertEquals(null, l.copyFor("e.F 1"));
+        assertEquals(null, l.copyFor(null));
+        assertEquals(null, ShieldList.NONE.copyFor("a.B 1.0"));
+    }
+
+    @Test
     @Tag("SKEY-2")
     @DisplayName("surf-key lines give an opponent's ten key values, matched as shield entries; malformed lines skipped")
     void surfKeys() {
@@ -457,6 +488,20 @@ class ShieldListTest {
         assertFalse(l.aimWeight("a.B 1.0"), "nor does it set another switch");
         assertFalse(l.headOnFloor(null));
         assertFalse(ShieldList.NONE.headOnFloor("a.B 1.0"));
+        assertEquals(0, l.size(), "no shield entry");
+    }
+
+    @Test
+    @Tag("GUN-12")
+    @DisplayName("free-gun lines name opponents for the duel's free gun, matched as shield entries, and add no shield entry")
+    void freeGuns() {
+        ShieldList l = ShieldList.parse(List.of("free-gun: a.B 1.0", "head-on-floor: c.D 1.0"));
+        assertTrue(l.freeGun("a.B 1.0"));
+        assertTrue(l.freeGun("a.B 1.1"), "a line carries over to a new version");
+        assertFalse(l.freeGun("c.D 1.0"), "another switch's line does not set it");
+        assertFalse(l.headOnFloor("a.B 1.0"), "nor does it set another switch");
+        assertFalse(l.freeGun(null));
+        assertFalse(ShieldList.NONE.freeGun("a.B 1.0"));
         assertEquals(0, l.size(), "no shield entry");
     }
 }

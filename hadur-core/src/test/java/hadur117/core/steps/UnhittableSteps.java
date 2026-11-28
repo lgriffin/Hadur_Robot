@@ -20,7 +20,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Drives the S6 scenarios: MOVE-1, MOVE-2, TIME-1, TIME-2. */
+/** Drives the S6 scenarios: MOVE-1, MOVE-2, TIME-1, TIME-15. */
 public class UnhittableSteps {
 
     private static final String ENEMY = "abc.Shadow 3.83c";

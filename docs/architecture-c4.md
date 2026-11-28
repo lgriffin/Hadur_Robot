@@ -708,23 +708,24 @@ endgame MEND-1, 2).
 | `TeamModes.FORCE_MOMENTUM` | TMODE-49 | **on** (3.23) | The dodge and path check prefer candidates that keep Hadur's momentum |
 | `TeamModes.FORCE_FITTED` | TMODE-50 | **on** (3.24) | Fitted enemy aims (`TeamModes.FITTED`, eight teams) join the dodge's profile |
 | `TeamModes.FORCE_CLOSERERANK` | TMODE-52 | **on** (3.24) | The dodge reranks 40 candidates, not 12, while a wave is within 35 ticks |
-| `TeamModes.TIGHT_ON` | TMODE-59 | on (pc-team-tight, PR #1016; ablation `tmnotight`) | TIGHT in six table entries makes the hunt pull 1.0, not 0.3, so the pack holds its place round the prey |
+| `TeamModes.TIGHT_ON` | TMODE-59 | on (pc-team-tight, PR #1016; ablation `tmnotight`) | TIGHT in seven table entries makes the hunt pull 1.0, not 0.3, so the pack holds its place round the prey |
 | `TeamLink.NARROW_LANE` | WEAVE-9 | **on** | Ogi's narrow fire lane |
 | table-only modes `OWN`, `HEADON`, `LINEAR`, `QUARTERS`; `GANG`, `FINISH` through CONCORD | TMODE-3, -4, -20..22, -45 | per team | No forcing switch on; the table or CONCORD names them |
+| table-only mode `SWARM` | TMODE-64 | off (no entry carries it; card `pc-team-pack6`) | With one enemy left, every member closes to 150 px of it whatever its energy and takes no posture |
 | `RoleResolver.TEAM_BUILT` | ROLE-3 | off | There is no Team role; members play Melee then Duel |
 
 ### Tier 2: the 1v1 mode table
 
 The 1v1 table is per opponent, PC-trained and census-gated: only per-opponent picks have shown
 live gains. It ships as two classes in the robot jar, because the sandbox refuses a robot the
-read of its own jar's resources but lets classes load. In 3.24 it holds 1,148 lines over 37
-slots: 305 on the shield list and 843 in `ShieldTableData`'s 36 other slots.
+read of its own jar's resources but lets classes load. On master (3.24 plus the banked lines) it holds 1,407
+lines over 44 slots: 305 on the shield list and 1,102 in `ShieldTableData`'s 43 other slots.
 
 ```mermaid
 flowchart LR
   subgraph jar["robot jar (hadur-robot)"]
-    SL["ShieldListData.lines()<br/>305 shield entries"]
-    ST["ShieldTableData: 36 slots<br/>shield (moves, aims, stills, exits, tiny, floor),<br/>movement (stop-go, dodge, heat-jit, orbit, flat, mimics,<br/>pattern mimics, aim weights, surf keys),<br/>rammers (flee, wait, bend, fan, circ),<br/>power and gun (caps, bands, race, x5, full-off, gun stack)"]
+    SL["ShieldListData.lines()<br/>304 shield entries"]
+    ST["ShieldTableData: 43 slots<br/>shield (moves, aims, stills, exits, tiny, floor),<br/>movement (stop-go, dodge, heat-jit, orbit, flat, mimics,<br/>pattern mimics, aim weights, surf keys),<br/>rammers (flee, wait, bend, fan, circ),<br/>power and gun (caps, bands, race, x5, full-off, gun stack, free gun)"]
   end
   SL --> P["Hadur.shieldList():<br/>prefix each line<br/>(shield-move:, stop-go:, ram-flee:, ...)"]
   ST --> P
@@ -737,38 +738,42 @@ flowchart LR
 | Table slot | Line prefix | Req | Entries | Effect on a matched opponent |
 |---|---|---|---|---|
 | **Shield** | | | | |
-| shield list | (none) | SHIELD-5 | 305 | Each round opens in shield mode; SHIELD-6 leaves it for the battle if the damage would hold our share under 85% |
-| `moves()` | `shield-move:` | SHIELD-17 | 64 | Saguaro's moving shield opening drive |
-| `aims()` | `shield-aim:` | SHIELD-18 | 231 | The shield starts with this predictor and offset already learned |
+| shield list | (none) | SHIELD-5 | 304 | Each round opens in shield mode; SHIELD-6 leaves it for the battle if the damage would hold our share under 85% |
+| `moves()` | `shield-move:` | SHIELD-17 | 63 | Saguaro's moving shield opening drive |
+| `aims()` | `shield-aim:` | SHIELD-18 | 230 | The shield starts with this predictor and offset already learned |
 | `stills()` | `shield-still:` | SHIELD-21 | 50 | Shield shots fired from where Hadur stands whenever one casts a shadow |
-| `exitLates()`, `exitOffs()` | `shield-exit4:`, `shield-exit0:` | SHIELD-19 | 1, 11 | Later or no damage exit from shield mode |
-| `tinies()` | `shield-tiny:` | SHIELD-33 | 5 | Tiny unexplained energy drops (0.005 to 0.1) reach shield mode as shots |
+| `exitLates()`, `exitOffs()` | `shield-exit4:`, `shield-exit0:` | SHIELD-19 | 1, 15 | Later or no damage exit from shield mode |
+| `tinies()` | `shield-tiny:` | SHIELD-33 | 7 | Tiny unexplained energy drops (0.005 to 0.1) reach shield mode as shots |
 | `shieldFloors()` | `shield-floor:` | SHIELD-25 | 1 | No shield shot under 0.4 power |
 | `closeBreaks()` | `shield-break:` | SHIELD-27 | 4 | A start inside 150 px is fought until the gap opens or tick 60, then shielded |
+| `closeYields()` | `shield-yield:` | SHIELD-35 | 2 | Inside 150 px the duel drives and fires until the gap passes 250 px, then shielded |
 | **Movement** | | | | |
 | `stopGos()`, `stopGoShifts()` | `stop-go:`, `stop-go2:` | POISON-2 | 33, 58 | Stop-and-go, reverse crawl one or two ticks early |
-| `dodges()`, `dodgePlans()` | `shot-dodge:`, `shot-dodge2:` | DODGE-3, DODGE-4 | 1, 17 | Simple-aim dodge; shot-dodge planner with a shipped expert |
+| `dodges()`, `dodgePlans()` | `shot-dodge:`, `shot-dodge2:` | DODGE-3, DODGE-4 | 1, 18 | Simple-aim dodge; shot-dodge planner with a shipped expert |
 | `heatJits()` | `heat-jit:` | MOVE-28 | 25 | Stop-and-start surf |
 | `flatOns()` | `flat-on:` | MOVE-32 | 9 | The flattener on |
 | `mimicOns()` | `mimic-on:` | MOVE-34 | 25 | Learning-gun mimics join the aim members |
 | `patternMimics()`, `patternMegas()` | `pm-mimic:`, `pm-megas:` | MOVE-56, MOVE-58 | 6, 5 | A pattern-matcher mimic (AutoBot's or cw.megas's form) joins the aim members |
 | `aimWeights()` | `aim-weight:` | MOVE-67 | 4 | The simple aims' standing weight at prior 1.0 instead of 0.1 |
 | `velocityJitters()`, `speedBands()` | `velocity-jitter:`, `speed-band:` | MOVE-44, MOVE-45 | 4, 2 | Never exactly full speed or zero; a random top speed of 7 to 8 |
-| `steadyOrbits()` | `steady-orbit:` | MOVE-47 | 2 | No stop option and reversal hysteresis |
+| `steadyOrbits()` | `steady-orbit:` | MOVE-47 | 4 | No stop option and reversal hysteresis |
+| `headOnFloors()` | `head-on-floor:` | MOVE-71 | 1 | A danger floor on the fire bearing of a mostly head-on shooter |
 | `distPins()` | `dist-pin:` | DIST-4 | 2 | A pinned desired distance |
 | `mirrorOffs()` | `mirror-off:` | MIR-2 | 3 | No mirror response |
 | `surfKeys()` | `surf-key:` | SKEY-2 | 176 | Fitted weights for the danger views' search key |
 | **Rammers** | | | | |
-| `ramFlees()` | `ram-flee:` | RAM-15 | 52 | Flee a slow rammer |
-| `ramWaits()` | `ram-wait:` | MOVE-46 | 9 | Against a disabled enemy, keep surfing its live waves before the ram |
+| `ramFlees()` | `ram-flee:` | RAM-15 | 55 | Flee a slow rammer |
+| `ramWaits()` | `ram-wait:` | MOVE-46 | 88 | Against a disabled enemy, keep surfing its live waves before the ram |
 | `ramBends()`, `ramFans()`, `ramCircs()`, `ramHeavies()` | `ram-bend:`, `ram-fan:`, `ram-circ:`, `ram-heavy:` | RAM-18, RAM-17, RAM-11, RAM-14 | 10, 2, 4, 0 | RAM-2 escape variants: the escape bend, fanned and circular aims, heavier path costs |
-| `ramLearns()` | `ram-learn:` | RAM-20 | 36 | The escape dodges the aims learned from the rammer's own bullets (`ShotModel`) in place of RAM-5's fixed pair |
-| `ramKnowns()` | `ram-known:` | RAM-21 | 24 | The rammer is confirmed at the first scan, so rounds 1 and 2 play the escape instead of waiting for two rammed rounds |
+| `ramLearns()` | `ram-learn:` | RAM-20 | 49 | The escape dodges the aims learned from the rammer's own bullets (`ShotModel`) in place of RAM-5's fixed pair |
+| `ramKnowns()` | `ram-known:` | RAM-21 | 35 | The rammer is confirmed at the first scan, so rounds 1 and 2 play the escape instead of waiting for two rammed rounds |
 | **Power and gun** | | | | |
-| `powerCaps()`, `powerCapHalves()` | `power-cap:`, `power-cap5:` | POW-18 | 6, 2 | Cap fire power |
-| `hardFires()`, `powerBands()` | `hard-fire:`, `power-band:` | POW-19, POW-20 | 1, 1 | At least 0.6 power while we have 60+ energy; a power multiplier per energy band |
-| `fullOffs()`, `x5Powers()`, `racePowers()` | `full-off:`, `x5-power:`, `race-power:` | POW-15, POW-16, POW-17 | 16, 17, 20 | Power policy variants (race power vs strong bots) |
-| `gunStacks()` | `gun-stack:` | GUN-11 | 17 | TripHammer gun stack (never for a shield opponent) |
+| `powerCaps()`, `powerCapHalves()` | `power-cap:`, `power-cap5:` | POW-18 | 6, 3 | Cap fire power |
+| `hardFires()`, `powerBands()` | `hard-fire:`, `power-band:` | POW-19, POW-20 | 1, 3 | At least 0.6 power while we have 60+ energy; a power multiplier per energy band |
+| `fullOffs()`, `x5Powers()`, `racePowers()` | `full-off:`, `x5-power:`, `race-power:` | POW-15, POW-16, POW-17 | 16, 17, 29 | Power policy variants (race power vs strong bots) |
+| `gunStacks()` | `gun-stack:` | GUN-11 | 25 | TripHammer gun stack (never for a shield opponent) |
+| `freeGuns()` | `free-gun:` | GUN-12 | 0 | The duel gun fires with free gun on against this opponent |
+| `copies()` | `copy:` | COPY-2 | 10 | A bred copy of the opponent's learning gun (genome from truth logs) steers the surf's danger |
 
 Matching is by name (SHIELD-26): `pkg.Bot 1.2` and `pkg.Bot` both match every version of the robot, and
 the version records the one benched; never a prefix. Lines carry over to a robot's new version by name.
@@ -791,7 +796,8 @@ table names, or the default set built from the `FORCE_*` switches.
 | `ustimaw.NigitmareDroid` | MATEFIRE, HUNT, NEAR, PATH, CLOSE, QUARTERS, LAST, MOMENTUM (no DODGE, no CONCORD) | pc-team-nododge PR #465, pc-team-quarters PR #759, pc-team-pack4 PR #1042 |
 | `mn.nano.perceptual.Impact` | default without DODGE, + QUARTERS | PR #465, +3.1; QUARTERS pc-team-pack4 PR #1042, +0.9 |
 | `ags.polylunar.Charon`, `Europa`, `Io`, `Luna`, `Phobos`, `amz.TeamDeath` | default + QUARTERS | pc-team-pack4 PR #1042, Polylunar +1.6, TeamDeathTeam +1.4 |
-| `cz.libors.Ogi`, `cb.fire.Firestarter` | default without CONCORD | pc-team-noconcord PR #538 (TMODE-35) |
+| `cz.libors.Ogi` | default without CONCORD | pc-team-noconcord PR #538 (TMODE-35) |
+| `cb.fire.Firestarter` | default without CONCORD, + TIGHT | pc-team-noconcord PR #538 (TMODE-35); TIGHT pc-team-pack5 PR #1087, +6.0 |
 | `mn.Combat` | default (CONCORD back) | pc-team-pack3 PR #1033 |
 | `abc.Shadow`, `florent.XSeries.X2`, `rz.Aleph`, `kawigi.micro.Shiz` | default + TIGHT (`cz.libors.Ogi` carries TIGHT too) | pc-team-tight PR #1016; ArmyOfShiz pc-team-pack3 PR #1033, +2.6 |
 | `cx.mini.Nimrod` | default + TIGHT, NEAR | PR #1016; NEAR pc-team-pack3 PR #1033, +3.3 (TMODE-60) |

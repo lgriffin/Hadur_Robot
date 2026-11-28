@@ -308,7 +308,6 @@ final class ShieldListData {
             "awl.Locutus 1.5",
             "bayen.nut.Squirrel 1.621",
             "can.Pookie 1.1",
-            "deo.virtual.RainbowBot 1.0",
             "gu.MicroScoob 1.3",
             "nz.jdc.micro.HedgehogP 1.2",
             "nz.jdc.nano.PralDeGuerre 1.2",
@@ -385,6 +384,8 @@ final class ShieldListData {
             "kawigi.nano.ThnikkaBot 0.9",    // +1.7 (with the moving shield)
             // pc-locks round 13 (BENCH-253, PR #951): 12 fresh PC seeds at the live turn time; 24-seed cloud lock held first
             "tkt.RedShift 1.1.CS.0",         // +1.1
+            // pc-locks round 35 (BENCH-253, PR #1095): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "dmh.robocode.robot.YellowBird 0.12", // +1.5 (with SHIELD-33 tiny-shot waves)
         };
     }
 }
