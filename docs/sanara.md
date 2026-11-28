@@ -115,8 +115,8 @@ The chance costs no bytes. The reversal test is `Math.random() * 58000 > CHANCE.
 | Read | Field | Result |
 |---|---|---|
 | Yatagan 1.2.3 and LittleBlackBook 1.0 as references, 1 seed | whole division | live ranks 61-150: damage taken a round Yatagan 23-31, LittleBlackBook 20-28, PatternAdept 28-38, Sanara 0.1 27-39 |
-| `p6` (chances 0 to 1), 2 fresh seeds | whole division | 81.48 ± 1.04 paired against PatternAdept; +3.04 ± 0.84 a bot against 0.1; by live rank: 1-20 +14.7, 21-50 +10.2, 51-100 +3.3, 101-250 +2.5 against PatternAdept |
+| `p6` (chances 0 to 1), 4 fresh seeds | whole division | 81.54 ± 1.02 paired against PatternAdept (the last two seeds alone 81.60); +3.09 ± 0.81 a bot against 0.1; by live rank: 1-20 +14.8, 21-50 +10.3, 51-100 +3.5, 101-250 +2.6 against PatternAdept |
 | `p3` (chances 0, 0.6, 1 only), 2 fresh seeds | whole division | 81.26 ± 1.03; +2.81 ± 0.82 against 0.1 |
-| `p6` against Yatagan on the same bench, 1 Yatagan seed | whole division | -0.13 ± 0.89 a bot: level |
+| `p6` against Yatagan on the same bench, 2 Yatagan seeds | whole division | +0.05 ± 0.76 a bot: level. 0.1 reads -3.05 ± 1.08 against Yatagan here and -2.65 live, so the bench may undersell Sanara against Yatagan by about 0.4 |
 
-Sanara 0.2 is `p6`.
+Sanara 0.2 is `p6`: the module build writes the same class as the benched `p6`, chance string included, 248 bytes by Robocode's codesize tool.
