@@ -1,0 +1,7 @@
+# pc-locks round 39 (BENCH-253, PR #1116): robots whose lines shipped on 48 fresh PC seeds at the live turn time (zl Help, rlnrkn Sabreur, fgl JKHydra, mt NeophytePRAL, rf NanoSatanMelee, rp Shadow)
+ary.Help 1.0
+sheldor.nano.Sabreur 1.1.2
+jkong.JKHydra 1.4
+nz.jdc.nano.NeophytePRAL 1.4
+arthord.NanoSatanMelee Beta
+abc.Shadow 3.83c
