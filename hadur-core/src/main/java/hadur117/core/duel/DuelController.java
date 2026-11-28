@@ -1109,6 +1109,8 @@ public final class DuelController {
     private double[] powerBand;
     /** DIST-4: this duel opponent's pinned surf distance in px, or NaN. */
     private double distPin = Double.NaN;
+    /** POW-21: the least gap between real shots against this opponent, in ticks; 0 for none. */
+    private int fireGap;
     /** POW-17: whether the race picked the last power, for the P record on a change. */
     private boolean raceApplied;
     /** POW-17: the energy race, fed every resolved duel bullet whether or not it is on. */
@@ -1667,6 +1669,8 @@ public final class DuelController {
         // POW-20: the power bands for the opponents the table names.
         powerBand = enemiesTotal <= 1 ? stackList.powerBandFor(name) : null;
         distPin = enemiesTotal <= 1 ? stackList.distPinFor(name) : Double.NaN;
+        // POW-21: the least gap between real shots for the opponents the table names.
+        fireGap = enemiesTotal <= 1 ? stackList.fireGapFor(name) : 0;
         // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names, never a shield-mode one
         // (its TripHammer aims break the shield's bullet hits); the gun keeps them 1v1-only.
         if (duelOnly(stackList.gunStack(name) && !stackList.matches(name), enemiesTotal)) {
@@ -2241,9 +2245,14 @@ public final class DuelController {
             end4Holding = end4;
             emitPolicy(round, in.time(), "power", firePower, Double.NaN, end4 ? "end_4" : "end_4_off");
         }
+        // POW-21: against an opponent the table names, a shot waits until the gap since our last real shot is
+        // spent (a disabled enemy is shot at once): fewer shots in a long low-power war where both hit rates sit
+        // under 1/7, so each shot costs its shooter more energy than it takes.
+        boolean gapHold = fireGap > 0 && lastEnemyEnergy > 0 && lastRealBulletFireTime > 0
+            && in.time() >= lastRealBulletFireTime && in.time() - lastRealBulletFireTime < fireGap;
         if (in.gunHeat() == 0 && Math.abs(Math.toDegrees(in.gunTurnRemaining())) < 0.05
                 && !Double.isNaN(firePower) && lastGunWave != null && !predictable
-                && mayFire && !end4) {
+                && mayFire && !end4 && !gapHold) {
             orders.fire(firePower);
             lastFiredPower = firePower;
             lastGunWave.firingWave = true;
