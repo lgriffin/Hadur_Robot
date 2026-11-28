@@ -1,0 +1,22 @@
+{
+ "plan": "pc-clinch",
+ "updated": 1795877498.2673378,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "livematch": {
+   "status": "pending"
+  },
+  "census": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
