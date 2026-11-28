@@ -711,7 +711,6 @@ endgame MEND-1, 2).
 | `TeamModes.TIGHT_ON` | TMODE-59 | on (pc-team-tight, PR #1016; ablation `tmnotight`) | TIGHT in seven table entries makes the hunt pull 1.0, not 0.3, so the pack holds its place round the prey |
 | `TeamLink.NARROW_LANE` | WEAVE-9 | **on** | Ogi's narrow fire lane |
 | table-only modes `OWN`, `HEADON`, `LINEAR`, `QUARTERS`; `GANG`, `FINISH` through CONCORD | TMODE-3, -4, -20..22, -45 | per team | No forcing switch on; the table or CONCORD names them |
-| table-only mode `SWARM` | TMODE-64 | off (no entry carries it; card `pc-team-pack6`) | With one enemy left, every member closes to 150 px of it whatever its energy and takes no posture |
 | `RoleResolver.TEAM_BUILT` | ROLE-3 | off | There is no Team role; members play Melee then Duel |
 
 ### Tier 2: the 1v1 mode table
