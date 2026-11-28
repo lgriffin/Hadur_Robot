@@ -135,6 +135,28 @@ class LockPrepTest(unittest.TestCase):
         finally:
             lock_prep.PB_LINES = old
 
+    def test_fire_gap_picks_carry_their_gap_lines(self):
+        lines = os.path.join(self.d, "fg.txt")
+        with open(lines, "w") as f:
+            f.write("# gaps\n45 a.A 1\n60 b.B 2\n")
+        with open(self.arms, "a") as f:
+            f.write("fgp | hadur117.Hadur 3.22fgp | x\n")
+        old, lock_prep.FG_LINES = lock_prep.FG_LINES, lines
+        try:
+            out = self.run_prep([("a.A 1", "fgp", "12.0")])
+            self.assertEqual("45 a.A 1\n", open(os.path.join(out, "fgp.list")).read())
+            self.assertIn("FIRE_GAP=%s bash ./build-ablation.sh fgaplist" % os.path.join(out, "fgp.list").replace(os.sep, "/"),
+                          open(os.path.join(out, "build.sh")).read())
+            arms = os.path.join(self.d, "arms.tsv")
+            with open(arms, "w") as f:
+                f.write("arm\trobot\topponent\nfgp\tH\ta.A 1\nfgp\tH\tb.B 2\n")
+            picked = os.path.join(self.d, "picked.tsv")
+            lock_prep.restrict(arms, out, picked)
+            self.assertEqual(["fgp\tH\ta.A 1\n"], open(picked).readlines()[1:])
+            with self.assertRaises(SystemExit):
+                self.run_prep([("c.C 3", "fgp", "5.0")])
+        finally:
+            lock_prep.FG_LINES = old
 
     def test_race_power_with_bands_builds_both_lists(self):
         lines = os.path.join(self.d, "pb.txt")

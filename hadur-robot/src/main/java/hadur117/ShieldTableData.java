@@ -1077,6 +1077,18 @@ final class ShieldTableData {
     }
 
     /**
+     * POW-21: per-opponent least gap between the duel's real shots, one line each: the gap in ticks, then the name.
+     * For opponents that fight a long low-power war in which both hit rates sit under 1/7, so every shot costs its
+     * shooter more energy than it takes. Empty on master; candidate builds add lines here (build-ablation.sh fgaplist).
+     *
+     * @return a fresh array of lines
+     */
+    static String[] fireGaps() {
+        return new String[] {
+        };
+    }
+
+    /**
      * DIST-4: per-opponent pinned duel distance, one line each: the surf's desired distance in px, then the name.
      * The pin replaces DIST-1's controller target against that robot in a duel (END-1's finish still closes in).
      * Candidate builds add lines here (build-ablation.sh dplist).
