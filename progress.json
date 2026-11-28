@@ -1,0 +1,37 @@
+{
+ "plan": "pc-locks40",
+ "updated": 1795866206.270336,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "livematch": {
+   "status": "pending"
+  },
+  "lock": {
+   "status": "pending"
+  },
+  "stage": {
+   "status": "pending"
+  },
+  "lock-fgp": {
+   "status": "pending"
+  },
+  "lock-zl": {
+   "status": "pending"
+  },
+  "lock-gl": {
+   "status": "pending"
+  },
+  "lock-pb": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
