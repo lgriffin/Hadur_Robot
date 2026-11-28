@@ -15,3 +15,4 @@
 # Knight: stacked on POW-17 race power (rppb), M's fitted bands; 12 fresh cloud seeds +10.2 +- 3.1 vs mean(c, aa), rp alone +5.9.
 0.77 0.73 0.41 0.12 rsalesc.mega.Knight 0.6.28
 0.77 0.53 0.71 2.65 voidious.Diamond 1.8.22
+0.74 1.18 0.98 0.95 hope.Identity .pope69
