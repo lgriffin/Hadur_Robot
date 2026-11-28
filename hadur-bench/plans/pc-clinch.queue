@@ -1,0 +1,66 @@
+# 1v1, MOVE-75 contact break over the live field (BENCH-299, docs/bench/easy-dodge-study.md). Leigh starts it once the PC
+# is free (one card at a time, from master):
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-clinch        (or  ./queue.sh run pc-clinch)
+# One bench queue, RoboRumble workers at 0, unpinned, 16 workers, truth log off. Every step resumes; no step needs a
+# decision. 1,212 robots x 4 arms x 2 fresh seeds from 125000 = 9,696 battles, about 10 hours: an overnight card.
+#
+# Why it should win (the PC card rule):
+#   - A fix for a defect, not a tuning: in contact (centres within about 50 px) the surf and the orbit can bend their
+#     heading back into the enemy near a wall; the engine stops a robot that drives into another, so both stand still
+#     while the enemy fires point blank. Against the robots BeepBoop 2.0 scores 98%+ on, master spends 23 ticks a
+#     battle within 60 px of a live enemy and BeepBoop 8, and master takes 86 hits inside 100 px to its 8 (trace of
+#     52 robots x 2 seeds). The contact break leaves on the heading that ends furthest from the enemy.
+#   - Cloud reads at 0.7x the live turn time, 54 random easy robots (98%+ for BeepBoop), paired by robot and seed:
+#     cb +0.08 +- 0.05 points a robot vs aa, +0.11 +- 0.05 vs c over 30 seeds (1,620 pairs; ticks in contact 23 -> 12,
+#     their bullet damage -3.3 a battle). A holdout of 54 other easy robots, 12 seeds: +0.12 +- 0.09 vs aa, +0.02 +- 0.08
+#     vs c. Guards with no harm shown: 30 robots of the 80-98% band and 12 rammers with ram lines
+#     over 18 seeds (+0.09 +- 0.28 and +0.12 +- 0.21 vs aa in two blocks), 40 more of the 85-98% band over 24 seeds
+#     (+0.11 [-0.06, +0.28] vs aa), 40 rammers with ram lines over 12 seeds (+0.00 +- 0.12; ram damage taken -2.4,
+#     bullet damage +1.2).
+#   - cbe adds two existing switches that read level alone (fin: no close-in to finish; rwall: wait for the last
+#     waves before ramming a disabled enemy). Stacked on the contact break, on the easy panel in two blocks of 12 fresh
+#     seeds: +0.19 +- 0.07 and +0.17 +- 0.08 vs aa, +0.16 +- 0.07 and +0.13 +- 0.07 vs cb, their bullet damage about
+#     -8 a battle.
+#   - Risk: the effect is about 0.1 point a robot, so it shows only pooled over the field; per-robot reads are noise.
+#     The card measures it where it counts, on every robot live clients play.
+# gate: cb and cbe each at +0.02 APS, the arm minus pooled c and aa over the 1,212 robots / 1,217 pairings, 95% low end
+# above 0, A/A inside its band; per-robot differences beside it.
+# Stop rules (docs/bench/watch.md): the census step halts on 30 failed battles, an arm scoring nothing in 8, 60+ skipped
+# turns a battle over the last 200 for c and aa, no battle in 30 minutes, or an A/A outside its z 3 band after 20%;
+# every battle fought is kept and a rerun resumes. It finishes early once neither cb nor cbe can reach +0.02 APS at
+# z 3 after 30% (2,909 of 9,696 battles): that leaves at most 6,787 battles (about 7 hours) unrun, the gate reads the
+# rows so far and the results PR says it stopped early. ALERT opens an issue for Leigh on any stop.
+# Nothing here ships: on a pass a PR turns the passing switch on for the next release; the release rule stands.
+
+set V = 3.25.1
+set P = --parallel 16 --no-truth-log --failed-ok
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant live --child-heap 2G
+set W = work/pc-clinch
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_${V}.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh clinch && bash ./build-ablation.sh clinch,fin,rwall && test -f bisect/hadur117.Hadur_${V}cb.jar && test -f bisect/hadur117.Hadur_${V}cbnerwa.jar && bash tools/fetch_live_jar.sh && ./fetch-opponents.sh --set panel-r31.txt && ./fetch-opponents.sh --set livematch-bb.txt && test -f opponents/kc.mega.BeepBoop_2.0.jar && ./fetch-opponents.sh --set census-live.txt && mvn -q compile
+
+livematch | ./bench-top20.sh ${C} ${P} --set panel-r31.txt --seeds 2 --seed-base 21700 --arms plans/livematch.arms --out ${W}-livematch --label pc-clinch-livematch --shuffle-jobs && python3 tools/live_match.py ${W}-livematch/arms.tsv --out ${OUT}/pc-clinch-livematch.md
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: stall 30m
+
+census | ./bench-top20.sh ${C} ${P} --set census-live.txt --seeds 2 --seed-base 125000 --arms plans/pc-clinch.arms --out ${W} --label pc-clinch --shuffle-jobs
+  after: livematch
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 60 over 200 arms c aa
+  stop: stall 30m
+  stop: aa after 20%
+  stop: futility cb,cbe below 0.02 after 30%
+
+gate | python3 ../data/tools/multiarm.py ${W}/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_pc-clinch.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm cb --panel census-live.txt --field 1217 --bar 0.02 --out ${OUT}/$(date +%Y-%m-%d)_pc-clinch-gate-cb.md && python3 tools/shield_s2.py gate ${W}/arms.tsv --arm cbe --panel census-live.txt --field 1217 --bar 0.02 --out ${OUT}/$(date +%Y-%m-%d)_pc-clinch-gate-cbe.md && python3 tools/per_robot.py ${W}/arms.tsv --arms cb cbe --out ${OUT}/$(date +%Y-%m-%d)_pc-clinch-per-robot.md --out-tsv ${OUT}/pc-clinch-per-robot.tsv
+  after: census
+
+pr | bash tools/open_results_pr.sh claude/pc-clinch-results "1v1 contact break (MOVE-75) alone and with the endgame switches, over the live field" ${OUT}/*_pc-clinch*.md ${OUT}/pc-clinch-livematch.md ${OUT}/pc-clinch-per-robot.tsv $(find ${W} -maxdepth 1 -name EARLY-STOP.md)
+  after: gate

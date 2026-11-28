@@ -42,6 +42,17 @@
 #   fin   END-1 finishing keeps the controller's distance instead of closing to 150 px (END-2's
 #         ram on a disabled enemy stays). 3.12 P1 (docs/plan-3.12.md): does closing in to finish
 #         weak bots let their simple guns hit us?
+#   rwall MOVE-46's ram wait against every duel opponent, not only the robots the table names: a disabled
+#         enemy is rammed only after its last waves pass. Suffix rwa. The easy-robot dodge study
+#         (docs/bench/easy-dodge-study.md): bullets fired just before the enemy ran dry hit the straight
+#         charge, score, and hand it energy back.
+#   burn  an enemy under 20 energy is shot at power 0.1 only, so it runs itself dry by firing. Suffix bo.
+#         Screened with fin,rwall as the "let it burn out" endgame of the easy-robot dodge study.
+#   clinch  MOVE-75 on: within 62 px of the enemy the drive leaves on the heading that ends furthest from it,
+#         until 110 px. Suffix cb. The easy-robot dodge study: we sit touching the enemy near walls.
+#   clinch100  the same from 100 px until 160 px. Suffix cc.
+#   clinch50  the same from 50 px until 90 px. Suffix cs.
+#   clinchlong  from 62 px (as clinch) until 160 px. Suffix cl.
 #   fl5   DIST-1 never walks in closer than 500 px (the floor is 400). 3.12 P1: does the walk-in
 #         against bots we out-hit cost more bullets than it wins?
 #   mfire SHIELD-2's hold of the settled aim skips a MIR-1 mirror aim, which carries no jitter and
@@ -419,6 +430,30 @@ for a in "${list[@]}"; do
         fin)
             edit "$dist" "return finishing ? FINISH : target;" "return target;"
             version="${version}ne" ;;
+        rwall)
+            edit "$duel" "ramWaitOn = duelOnly(stackList.ramWait(name), enemiesTotal);" "ramWaitOn = duelOnly(true, enemiesTotal);"
+            version="${version}rwa" ;;
+        burn)
+            edit "$duel" "        if (end3) bulletPower = killPower;" "        if (end3) bulletPower = killPower;
+        if (enemiesTotal <= 1 && e.energy() > 0 && e.energy() < 20) bulletPower = Math.min(bulletPower, 0.1);"
+            version="${version}bo" ;;
+        clinch)
+            edit "$movedesign" "static final boolean CLINCH_BREAK = false;" "static final boolean CLINCH_BREAK = true;"
+            version="${version}cb" ;;
+        clinch50)
+            edit "$movedesign" "static final boolean CLINCH_BREAK = false;" "static final boolean CLINCH_BREAK = true;"
+            edit "$src/hadur-core/src/main/java/$pkg/core/move/ClinchBreak.java" "public static final double START = 62.0;" "public static final double START = 50.0;"
+            edit "$src/hadur-core/src/main/java/$pkg/core/move/ClinchBreak.java" "public static final double RELEASE = 110.0;" "public static final double RELEASE = 90.0;"
+            version="${version}cs" ;;
+        clinchlong)
+            edit "$movedesign" "static final boolean CLINCH_BREAK = false;" "static final boolean CLINCH_BREAK = true;"
+            edit "$src/hadur-core/src/main/java/$pkg/core/move/ClinchBreak.java" "public static final double RELEASE = 110.0;" "public static final double RELEASE = 160.0;"
+            version="${version}cl" ;;
+        clinch100)
+            edit "$movedesign" "static final boolean CLINCH_BREAK = false;" "static final boolean CLINCH_BREAK = true;"
+            edit "$src/hadur-core/src/main/java/$pkg/core/move/ClinchBreak.java" "public static final double START = 62.0;" "public static final double START = 100.0;"
+            edit "$src/hadur-core/src/main/java/$pkg/core/move/ClinchBreak.java" "public static final double RELEASE = 110.0;" "public static final double RELEASE = 160.0;"
+            version="${version}cc" ;;
         fl5)
             edit "$dist" "target = Math.max(FLOOR, target - STEP);" "target = Math.max(Math.max(FLOOR, 500), target - STEP);"
             version="${version}f5" ;;
@@ -1085,7 +1120,7 @@ for row in open(f):
     S[p]=s[:hits[0].start()]+s[hits[0].end():]
 for p in S: open(p,"w").write(S[p])' "$tabledata" "$listdata" "$LINE_DROP" || exit 2
             version="${version}td" ;;
-        *) echo "unknown ablation: $a (aa, bb, tmtight, tmnotight, tmnocloserr, nowarm, ram2, mir1, flat, shield-all, nodur, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, icoff, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mlane, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, fgaplist, rhlist, rwlist, orlist, rflist, rfanlist, rbendlist, pmlist, pmxlist, aimwlist, hoflist, fglist, copylist, tdrop|stinylist, sbklist)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, rwall, burn, clinch, clinch100, clinch50, clinchlong, tmtight, tmnotight, tmnocloserr, nowarm, ram2, mir1, flat, shield-all, nodur, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, icoff, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mlane, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, fgaplist, rhlist, rwlist, orlist, rflist, rfanlist, rbendlist, pmlist, pmxlist, aimwlist, hoflist, fglist, copylist, tdrop|stinylist, sbklist)" >&2; exit 2 ;;
     esac
 done
 

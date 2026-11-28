@@ -23,6 +23,7 @@ import hadur117.core.move.MoveController;
 import hadur117.core.move.OurBullet;
 import hadur117.core.move.PlanInterval;
 import hadur117.core.move.MirrorDrive;
+import hadur117.core.move.ClinchBreak;
 import hadur117.core.move.RamEscape;
 import hadur117.core.move.ShotDodgePlanner;
 import hadur117.core.move.SurfMover;
@@ -222,6 +223,8 @@ public final class DuelController {
     private double lastOurEnergy = Double.NaN;
     /** RAM-2: the movement while the rammer response is active. */
     private final RamEscape ramEscape;
+    /** MOVE-75: the drive that leaves contact with the enemy; used only while the switch is on. */
+    private final ClinchBreak clinchBreak;
     /** RAM-2: the enemy as last scanned, for the escape's pursuit model; null before a scan. */
     private RobotState lastEnemyState;
     /** MIR-1: recognising an enemy that drives to the mirror image of our position. */
@@ -331,6 +334,7 @@ public final class DuelController {
         this.surfMover.setSurfKeyRecord(MoveDesign.SURF_KEY_RECORD);
         this.shadowAvoidance = new ShadowAvoidance(fieldWidth, fieldHeight);
         this.ramEscape = new RamEscape(battleField, predictor);
+        this.clinchBreak = new ClinchBreak(battleField);
         this.mirror = new MirrorDetector(fieldWidth, fieldHeight);
         this.mirrorDrive = new MirrorDrive(battleField, predictor);
         this.gunWaveManager = new WaveManager();
@@ -447,6 +451,7 @@ public final class DuelController {
         ramActive = false;
         ramEscaping = false;
         ramEscape.initRound();
+        clinchBreak.initRound();
         fleeing = false;
         lastEnemyState = null;
         // MOVE-56: the history spans rounds, but a new round has no scan before its first.
@@ -924,6 +929,9 @@ public final class DuelController {
         if (ramWaitOn && endgame == Endgame.State.RAM) moveController.setProvisionalReady(false, in.time());
         boolean wavesInAir = ramWaitOn
             && moveController.findSurfableWave(0, currentState(in)) != null;
+        // MOVE-75: the latch reads every tick, so a tick another drive takes still releases it.
+        boolean clinchOn = duelOnly(MoveDesign.CLINCH_BREAK, enemiesTotal) && lastEnemyLocation != null
+            && clinchBreak.update(in.location().distance(lastEnemyLocation));
         if (endgame == Endgame.State.RAM && !wavesInAir) {
             surfMover.ram(orders, currentState(in), lastEnemyLocation);
         } else if (mirrorActive) {
@@ -944,6 +952,9 @@ public final class DuelController {
                 stats.ramEscapeTicks++;
                 ramEscape.move(orders, currentState(in), lastEnemyState, duelOnly(MoveDesign.RAM_BREAK, enemiesTotal));
             }
+        } else if (clinchOn) {
+            // MOVE-75: touching the enemy, nothing can be dodged; leave on the heading that ends furthest from it.
+            clinchBreak.move(orders, currentState(in), lastEnemyLocation);
         } else if (stopAndGo != null) {
             // POISON-1: stop while the enemy's gun cools, go once it has fired; the waves still teach the views.
             stopAndGo.move(orders, currentState(in), lastEnemyLocation, enemyGunHeat(in).at(in.time()),
