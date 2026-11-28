@@ -27,3 +27,5 @@ b350p4 | bandit + 350 px + reversal chance 0.41 | s/static final int BANDIT = 0;
 b350pw | bandit + 350 px + power 3 inside 400 px | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double IDEAL = 420;/static final double IDEAL = 350;/;s/static final String POWER = ".*";/static final String POWER = "\\u0030\\u0030\\u0030\\u0030\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020";/
 b200 | bandit + ideal distance 200 px | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double IDEAL = 420;/static final double IDEAL = 200;/
 b150 | bandit + ideal distance 150 px | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double IDEAL = 420;/static final double IDEAL = 150;/
+r300 | ideal distance 300 px, always reverse on shots (mode 0) | s/static final double IDEAL = 420;/static final double IDEAL = 300;/
+o300 | ideal distance 300 px, always plain orbit (mode 1) | s/static final double IDEAL = 420;/static final double IDEAL = 300;/;s/static int mode;/static int mode = 1;/

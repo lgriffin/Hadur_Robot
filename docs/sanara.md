@@ -79,7 +79,15 @@ kitlab/run.sh nano-all kitlab/jars/hadur117.nano.Sanara_c.jar "hadur117.nano.San
 | PatternAdept 1.0 (live 5th) as a reference, 1 seed | whole division | 77.6 ± 2.4; against Sanara 0.0 on each bot it is level or behind in the top 50 and 8.1 APS ahead across ranks 51 to 250 |
 | arm `p0`, 1 seed | whole division | -3.92 ± 2.38 against 0.0 (top 50 -13.9 a bot) |
 | arm `bandit`, 1 seed | whole division | 73.1, +3.29 ± 1.40 against 0.0 (ranks 51 to 250 +5.1 a bot, top 50 -1.2) |
+| bandit with a closer distance, 1 seed | whole division | ideal 150 px 75.7, 200 px 76.4, 250 px 77.7, 300 px 77.5, 350 px 76.2; 520 px without bandit -5.7 against 0.0 |
+| `b250`, `b300`, `c` and PatternAdept, second seed | whole division | `b250` 77.0, `b300` 77.5, `c` 69.9, PatternAdept 77.7 |
+| two seeds pooled, paired against PatternAdept (live 77.69) | whole division | `b300` 77.58 (95% low 76.27), `b250` 77.46 (low 76.05), `c` 69.96; `b300` against PatternAdept by live rank: 1-20 +11.3, 21-50 +5.7, 51-100 -2.6, 101-250 -1.8 |
+| other single changes, 1 seed, against 0.0 | whole division | tick-by-tick replay replaced by the matched tick held (`short`) -13.4; power 2 flat -2.5; reversal chance 8/64 -2.4; key 20 -0.6; aim jitter -0.9; history cap -0.2 |
 
 The first read says the gun and the reversal already hold the top of the field level, and the points are lost in the middle: ranks 51 to 200 out-shoot the orbit (their score is about half bullet damage, none of them rams). That is the band the reversal arms (`p8`, `tick`, `ptab`) and the distance arms are aimed at.
 
 The behaviour profile (`kitlab/nano-probe-field.txt`: the live top 5 and the 25 bots ranked 51+ that beat 0.0 hardest) explains it. Many mid-field bots aim roughly head-on, and reversing when they fire steps Sanara back onto their line: they hit a plain orbit 4 to 8% of their bullet damage potential and Sanara 13 to 18%. Learning and linear guns are the other way round: they hit the plain orbit 31 to 63% and the reversing orbit about half that. So the movement is chosen per opponent: `BANDIT` plays each mode for a round, then each round plays the mode that has taken less fire per tick (`DECAY` weights later rounds).
+
+The chooser and a closer orbit carry the base to PatternAdept's level: `b300`, pooled over two seeds, projects 77.6, above the top 10 line (76.6). The tick-by-tick replay and the power table both pay, so neither is a free cut.
+
+The bytes are the open problem. A lean build of `b300` (no screen knobs) is 416 bytes, 95 of them the round-by-round chooser. Replacing the chooser with a per-opponent list of plain-orbit bots in a string constant costs about 10 bytes, and a first golf pass brings that build to 317. The arms `r300` (always reverse) and `o300` (always plain orbit) measure which mode each bot needs, to build that list and to bound what it can gain. About 70 bytes still have to come from golf or from a cut that costs the least score.
