@@ -1,15 +1,22 @@
 {
  "plan": "pc-locks40",
- "updated": 1795866206.270336,
+ "updated": 1795867113.884335,
  "steps": {
   "prep": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 225,
+   "end": "2026-11-28T11:47:11"
   },
   "livematch": {
-   "status": "pending"
+   "status": "done",
+   "exit": 0,
+   "seconds": 472,
+   "end": "2026-11-28T11:55:04"
   },
   "lock": {
-   "status": "pending"
+   "status": "running",
+   "start": "2026-11-28T11:55:04"
   },
   "stage": {
    "status": "pending"
@@ -33,5 +40,159 @@
    "status": "pending"
   }
  },
- "watched": []
+ "watched": [
+  {
+   "step": "livematch",
+   "started": 1795866431.8386233,
+   "updated": 1795866904.3105588,
+   "elapsed": 472.4719355106354,
+   "expected": 124,
+   "panel": 31,
+   "field": 1217,
+   "multiarm": true,
+   "arms": [
+    {
+     "arm": "c",
+     "battles": 62,
+     "failed": 0,
+     "level": 69.84451612903226,
+     "skips": 9.903225806451612,
+     "fresh": 62,
+     "scored": 62,
+     "diff": null
+    },
+    {
+     "arm": "bb",
+     "battles": 62,
+     "failed": 0,
+     "level": 84.42516129032258,
+     "skips": 0.6290322580645161,
+     "fresh": 62,
+     "scored": 62,
+     "diff": 14.58064516129032,
+     "n": 31,
+     "ci95": 2.688240453009103,
+     "half_stop": 4.11465375460577,
+     "scale": 0.025472473294987676
+    }
+   ],
+   "aa": null,
+   "warnings": [
+    "arm c's jar bisect/live/hadur117.Hadur_3.22.jar was built 306 h before this step started: check it is not stale",
+    "arm bb's jar opponents/kc.mega.BeepBoop_2.0.jar was built 293 h before this step started: check it is not stale"
+   ],
+   "battles": 124,
+   "resumed": 0,
+   "failed": 0,
+   "disables": 0,
+   "rate": 944.8180229319705,
+   "eta": 0.0,
+   "fraction": 1.0,
+   "last_battle_age": 3.8018267154693604,
+   "rules": [
+    {
+     "rule": "fails 30",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 124"
+    },
+    {
+     "rule": "dead 8",
+     "action": "halt",
+     "state": "ok",
+     "detail": "every arm scoring"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    }
+   ],
+   "skips_mean": 5.266129032258065,
+   "skips_last100": 5.34
+  },
+  {
+   "step": "lock",
+   "started": 1795866904.3346674,
+   "updated": 1795867113.8578815,
+   "elapsed": 209.52321410179138,
+   "expected": 1152,
+   "panel": 12,
+   "field": 1217,
+   "multiarm": true,
+   "arms": [
+    {
+     "arm": "c",
+     "battles": 17,
+     "failed": 0,
+     "level": 71.75869047619048,
+     "skips": 14.235294117647058,
+     "fresh": 17,
+     "scored": 17,
+     "diff": null
+    },
+    {
+     "arm": "aa",
+     "battles": 18,
+     "failed": 0,
+     "level": 66.08739583333333,
+     "skips": 12.38888888888889,
+     "fresh": 18,
+     "scored": 18,
+     "diff": -1.903095238095236,
+     "n": 7,
+     "ci95": 2.434194290306955,
+     "half_stop": 3.7258075872045233,
+     "scale": 0.009860312243221035
+    }
+   ],
+   "aa": {
+    "diff": -1.903095238095236,
+    "ci": 2.434194290306955,
+    "n": 7,
+    "band": 2.831784637873106,
+    "ok": true,
+    "band_stop": 3.7258075872045233,
+    "band_from": "observed spread"
+   },
+   "warnings": [],
+   "battles": 35,
+   "resumed": 0,
+   "failed": 0,
+   "disables": 1,
+   "rate": 601.3653453157997,
+   "eta": 6686.783718620028,
+   "fraction": 0.030381944444444444,
+   "last_battle_age": 0.3210301399230957,
+   "rules": [
+    {
+     "rule": "fails 30",
+     "action": "halt",
+     "state": "ok",
+     "detail": "0 failed of 35"
+    },
+    {
+     "rule": "dead 8",
+     "action": "halt",
+     "state": "ok",
+     "detail": "every arm scoring"
+    },
+    {
+     "rule": "skips 60 over 24",
+     "action": "halt",
+     "state": "ok",
+     "detail": "11.2 a battle over the last 24 (first 24: 14.0)"
+    },
+    {
+     "rule": "stall 30m",
+     "action": "halt",
+     "state": "ok",
+     "detail": "last battle 0 min ago"
+    }
+   ],
+   "skips_mean": 13.285714285714286,
+   "skips_last100": 13.285714285714286
+  }
+ ]
 }
