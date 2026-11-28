@@ -23,6 +23,7 @@ import hadur117.core.move.MoveController;
 import hadur117.core.move.OurBullet;
 import hadur117.core.move.PlanInterval;
 import hadur117.core.move.MirrorDrive;
+import hadur117.core.move.ClinchBreak;
 import hadur117.core.move.RamEscape;
 import hadur117.core.move.ShotDodgePlanner;
 import hadur117.core.move.SurfMover;
@@ -222,6 +223,8 @@ public final class DuelController {
     private double lastOurEnergy = Double.NaN;
     /** RAM-2: the movement while the rammer response is active. */
     private final RamEscape ramEscape;
+    /** MOVE-75: the drive that leaves contact with the enemy; used only while the switch is on. */
+    private final ClinchBreak clinchBreak;
     /** RAM-2: the enemy as last scanned, for the escape's pursuit model; null before a scan. */
     private RobotState lastEnemyState;
     /** MIR-1: recognising an enemy that drives to the mirror image of our position. */
@@ -331,6 +334,7 @@ public final class DuelController {
         this.surfMover.setSurfKeyRecord(MoveDesign.SURF_KEY_RECORD);
         this.shadowAvoidance = new ShadowAvoidance(fieldWidth, fieldHeight);
         this.ramEscape = new RamEscape(battleField, predictor);
+        this.clinchBreak = new ClinchBreak(battleField);
         this.mirror = new MirrorDetector(fieldWidth, fieldHeight);
         this.mirrorDrive = new MirrorDrive(battleField, predictor);
         this.gunWaveManager = new WaveManager();
@@ -447,6 +451,7 @@ public final class DuelController {
         ramActive = false;
         ramEscaping = false;
         ramEscape.initRound();
+        clinchBreak.initRound();
         fleeing = false;
         lastEnemyState = null;
         // MOVE-56: the history spans rounds, but a new round has no scan before its first.
@@ -924,6 +929,9 @@ public final class DuelController {
         if (ramWaitOn && endgame == Endgame.State.RAM) moveController.setProvisionalReady(false, in.time());
         boolean wavesInAir = ramWaitOn
             && moveController.findSurfableWave(0, currentState(in)) != null;
+        // MOVE-75: the latch reads every tick, so a tick another drive takes still releases it.
+        boolean clinchOn = duelOnly(MoveDesign.CLINCH_BREAK, enemiesTotal) && lastEnemyLocation != null
+            && clinchBreak.update(in.location().distance(lastEnemyLocation));
         if (endgame == Endgame.State.RAM && !wavesInAir) {
             surfMover.ram(orders, currentState(in), lastEnemyLocation);
         } else if (mirrorActive) {
@@ -944,6 +952,9 @@ public final class DuelController {
                 stats.ramEscapeTicks++;
                 ramEscape.move(orders, currentState(in), lastEnemyState, duelOnly(MoveDesign.RAM_BREAK, enemiesTotal));
             }
+        } else if (clinchOn) {
+            // MOVE-75: touching the enemy, nothing can be dodged; leave on the heading that ends furthest from it.
+            clinchBreak.move(orders, currentState(in), lastEnemyLocation);
         } else if (stopAndGo != null) {
             // POISON-1: stop while the enemy's gun cools, go once it has fired; the waves still teach the views.
             stopAndGo.move(orders, currentState(in), lastEnemyLocation, enemyGunHeat(in).at(in.time()),
@@ -1109,6 +1120,8 @@ public final class DuelController {
     private double[] powerBand;
     /** DIST-4: this duel opponent's pinned surf distance in px, or NaN. */
     private double distPin = Double.NaN;
+    /** POW-21: the least gap between real shots against this opponent, in ticks; 0 for none. */
+    private int fireGap;
     /** POW-17: whether the race picked the last power, for the P record on a change. */
     private boolean raceApplied;
     /** POW-17: the energy race, fed every resolved duel bullet whether or not it is on. */
@@ -1667,6 +1680,8 @@ public final class DuelController {
         // POW-20: the power bands for the opponents the table names.
         powerBand = enemiesTotal <= 1 ? stackList.powerBandFor(name) : null;
         distPin = enemiesTotal <= 1 ? stackList.distPinFor(name) : Double.NaN;
+        // POW-21: the least gap between real shots for the opponents the table names.
+        fireGap = enemiesTotal <= 1 ? stackList.fireGapFor(name) : 0;
         // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names, never a shield-mode one
         // (its TripHammer aims break the shield's bullet hits); the gun keeps them 1v1-only.
         if (duelOnly(stackList.gunStack(name) && !stackList.matches(name), enemiesTotal)) {
@@ -2241,9 +2256,14 @@ public final class DuelController {
             end4Holding = end4;
             emitPolicy(round, in.time(), "power", firePower, Double.NaN, end4 ? "end_4" : "end_4_off");
         }
+        // POW-21: against an opponent the table names, a shot waits until the gap since our last real shot is
+        // spent (a disabled enemy is shot at once): fewer shots in a long low-power war where both hit rates sit
+        // under 1/7, so each shot costs its shooter more energy than it takes.
+        boolean gapHold = fireGap > 0 && lastEnemyEnergy > 0 && lastRealBulletFireTime > 0
+            && in.time() >= lastRealBulletFireTime && in.time() - lastRealBulletFireTime < fireGap;
         if (in.gunHeat() == 0 && Math.abs(Math.toDegrees(in.gunTurnRemaining())) < 0.05
                 && !Double.isNaN(firePower) && lastGunWave != null && !predictable
-                && mayFire && !end4) {
+                && mayFire && !end4 && !gapHold) {
             orders.fire(firePower);
             lastFiredPower = firePower;
             lastGunWave.firingWave = true;

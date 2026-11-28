@@ -68,6 +68,7 @@ LEVERS = {
     "ky": ("syldlist", ("SHIELD_YIELD",)),  # SHIELD-35 close-range yield
     "or": ("orlist", ("STEADY_ORBIT",)),
     "sp2": ("sdplanlist", ("SHOT_DODGE_PLAN",)),
+    "fgp": ("fgaplist", ("FIRE_GAP",)),  # POW-21 per-opponent least gap between real shots (fire-gap-lines.txt)
 }
 
 # POW-20: a power-band pick carries its fitted line ("m20 m40 m60 m80 name") from this file, so pb.list
@@ -140,14 +141,26 @@ def _cpl_lines(names):
     return [lines[n] for n in names]
 
 
+# POW-21: a fire-gap pick carries its gap in ticks ("ticks name") from this file, so fgp.list holds whole lines.
+FG_LINES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "plans", "fire-gap-lines.txt")
+
+
+def _fg_lines(names):
+    lines = {_dp_name(l): l.strip() for l in open(FG_LINES) if l.strip() and not l.startswith("#")}
+    missing = [n for n in names if n not in lines]
+    if missing:
+        raise SystemExit("lock_prep: no fire-gap line for %s in %s" % (", ".join(missing), FG_LINES))
+    return [lines[n] for n in names]
+
+
 def _list_lines(arm, names):
     return (_pb_lines(names) if arm == "pb" else _dp_lines(names) if arm == "dn" else _kl_lines(names) if arm == "kl"
-            else _cpl_lines(names) if arm == "cpl" else names)
+            else _cpl_lines(names) if arm == "cpl" else _fg_lines(names) if arm == "fgp" else names)
 
 
 def _list_name(arm, line):
     return (_pb_name(line) if arm == "pb" else _dp_name(line) if arm == "dn" else _kl_name(line) if arm == "kl"
-            else _cpl_name(line) if arm == "cpl" else line.strip())
+            else _cpl_name(line) if arm == "cpl" else _dp_name(line) if arm == "fgp" else line.strip())
 
 
 def main(pick, panel, base_arms, outdir):

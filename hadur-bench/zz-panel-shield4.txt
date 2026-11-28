@@ -1,0 +1,4 @@
+lw.LuthersTest 0.1 | rank1191-band6 | lw.LuthersTest_0.1.jar
+maye.SlashBot 1.0 | rank1183-band6 | maye.SlashBot_1.0.jar
+sample.Tracker 1.0 | rank1170-band6 | sample.Tracker_1.0.jar
+homerbots.h1 1.0 | rank1148-band6 | homerbots.h1_1.0.jar

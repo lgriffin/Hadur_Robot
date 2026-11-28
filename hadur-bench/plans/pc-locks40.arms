@@ -1,0 +1,8 @@
+# pc-locks40 (BENCH-253) round 40: c is master, aa its A/A copy; each lever arm is master with its line on the panel robots
+# picked for it (plans/locks40-pick.tsv).
+c | hadur117.Hadur 3.25.1 | bisect/hadur117.Hadur_3.25.1.jar
+aa | hadur117.Hadur 3.25.1aa | bisect/hadur117.Hadur_3.25.1aa.jar
+fgp | hadur117.Hadur 3.25.1fgp | bisect/hadur117.Hadur_3.25.1fgp.jar
+zl | hadur117.Hadur 3.25.1zl | bisect/hadur117.Hadur_3.25.1zl.jar
+gl | hadur117.Hadur 3.25.1gl | bisect/hadur117.Hadur_3.25.1gl.jar
+pb | hadur117.Hadur 3.25.1pb | bisect/hadur117.Hadur_3.25.1pb.jar

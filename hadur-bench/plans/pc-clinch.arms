@@ -1,0 +1,6 @@
+# pc-clinch (BENCH-299): c is master, aa its A/A copy, cb MOVE-75's contact break, cbe the contact break with END-1
+# keeping the controller's distance and MOVE-46's ram wait against every duel opponent.
+c | hadur117.Hadur 3.25.1 | bisect/hadur117.Hadur_3.25.1.jar
+aa | hadur117.Hadur 3.25.1aa | bisect/hadur117.Hadur_3.25.1aa.jar
+cb | hadur117.Hadur 3.25.1cb | bisect/hadur117.Hadur_3.25.1cb.jar
+cbe | hadur117.Hadur 3.25.1cbnerwa | bisect/hadur117.Hadur_3.25.1cbnerwa.jar

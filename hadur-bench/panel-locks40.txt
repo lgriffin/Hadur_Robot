@@ -1,0 +1,16 @@
+# BENCH-253 pc-locks, round 40 (48 seeds): 12 robots. Four carry a line read on 12 or more fresh cloud seeds against both c
+# and aa (coverage/shards/locks.tsv): BeepBoop on fgp (POW-21 fire gap 45, at the live constant); AlphaDragon on zl (SHIELD-20
+# still plans); Gaff on gl (gun stack); Identity on pb (POW-20 bands on top of its race power). DrussGT, ScalarR, Saguaro,
+# Wavelet, Knight, JKHydra, Shadow and Diamond pad the A/A check on arm aa. name | note | jar
+kc.mega.BeepBoop 2.0 | rank1-band1 | kc.mega.BeepBoop_2.0.jar
+oog.mini.AlphaDragon 0.1 | rank175-band3 | oog.mini.AlphaDragon_0.1.jar
+darkcanuck.Gaff 1.50 | rank81-band3 | darkcanuck.Gaff_1.50.jar
+hope.Identity .pope69 | rank82-band3 | hope.Identity_.pope69.jar
+voidious.Diamond 1.8.22 | rank8-band1 | voidious.Diamond_1.8.22.jar
+jkong.JKHydra 1.4 | rank6-band1 | jkong.JKHydra_1.4.jar
+abc.Shadow 3.83c | rank27-band2 | abc.Shadow_3.83c.jar
+jk.mega.DrussGT 3.1.20 | rank4-band1 | jk.mega.DrussGT_3.1.20.jar
+aaa.r.ScalarR 0.005h.053-noshield | rank5-band1 | aaa.r.ScalarR_0.005h.053-noshield.jar
+pc.Wavelet 1.5 | rank16-band2 | pc.Wavelet_1.5.jar
+rsalesc.mega.Knight 0.6.28 | rank11-band2 | rsalesc.mega.Knight_0.6.28.jar
+oog.mega.saguaro.Saguaro 1.1.4 | rank2-band1 | oog.mega.saguaro.Saguaro_1.1.4.jar
