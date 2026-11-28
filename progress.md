@@ -1,17 +1,17 @@
 # Queue pc-locks40: progress
 
-Updated 2026-11-28 14:44:55 PC time (14:44 UTC), runner pid 12896.
+Updated 2026-11-28 14:51:34 PC time (14:51 UTC), runner pid 12896.
 
 - `prep` done, exit 0 in 4 min
 - `livematch` done, exit 0 in 8 min
 - `lock` done, exit 0 in 2.6 h
 - `stage` done, exit 0 in 0 min
-- `lock-fgp` running
-- `lock-zl` pending
-- `lock-gl` pending
-- `lock-pb` pending
-- `gate` pending
-- `pr` pending
+- `lock-fgp` done, exit 0 in 14 min
+- `lock-zl` done, exit 0 in 1 min
+- `lock-gl` done, exit 0 in 2 min
+- `lock-pb` done, exit 0 in 2 min
+- `gate` done, exit 0 in 0 min
+- `pr` done, exit 0 in 0 min
 
 ### livematch
 
@@ -61,40 +61,100 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### lock-fgp
 
-**83 of 96 battles** (86%), 0 failed, 48 read back from an earlier run. Running 13 min, 166 battles/h, about 5 min left (ends ~14:49 PC time). Last battle 0 min ago.
-Skipped turns a battle: 8.9 overall, first 35 8.9, last 35 8.9; engine disables 0.
+**96 of 96 battles** (100%), 0 failed, 48 read back from an earlier run. Running 14 min, 199 battles/h, about 0 min left (ends ~14:46 PC time). Last battle 0 min ago.
+Skipped turns a battle: 8.9 overall, first 48 8.9, last 48 8.9; engine disables 0.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | c | 48 | 0 | 21.53 | - | - | - | 6.4 |
-| fgp | 35 | 0 | 33.54 | +0.01 (1 robots) | - | - | 8.9 |
+| fgp | 48 | 0 | 33.23 | +0.01 (1 robots) | - | - | 8.9 |
 
 APS = mean difference over the robots read x 1 panel robots / 1217 pairings.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 83 |
+| `fails 30` | halt | ok | 0 failed of 96 |
 | `dead 8` | halt | ok | every arm scoring |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 13 battles unrun (about 5 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### lock-zl
+
+**96 of 96 battles** (100%), 0 failed, 48 read back from an earlier run. Running 1 min, 3254 battles/h, about 0 min left (ends ~14:47 PC time). Last battle 0 min ago.
+Skipped turns a battle: 18.6 overall, first 48 18.6, last 48 18.6; engine disables 0.
+
+| arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| c | 48 | 0 | 96.56 | - | - | - | 10.9 |
+| zl | 48 | 0 | 98.82 | +0.00 (1 robots) | - | - | 18.6 |
+
+APS = mean difference over the robots read x 1 panel robots / 1217 pairings.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 30` | halt | ok | 0 failed of 96 |
+| `dead 8` | halt | ok | every arm scoring |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### lock-gl
+
+**96 of 96 battles** (100%), 0 failed, 48 read back from an earlier run. Running 2 min, 1905 battles/h, about 0 min left (ends ~14:49 PC time). Last battle 0 min ago.
+Skipped turns a battle: 13.0 overall, first 48 13.0, last 48 13.0; engine disables 0.
+
+| arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| c | 48 | 0 | 76.11 | - | - | - | 9.2 |
+| gl | 48 | 0 | 75.78 | -0.00 (1 robots) | - | - | 13.0 |
+
+APS = mean difference over the robots read x 1 panel robots / 1217 pairings.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 30` | halt | ok | 0 failed of 96 |
+| `dead 8` | halt | ok | every arm scoring |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
+
+### lock-pb
+
+**96 of 96 battles** (100%), 0 failed, 48 read back from an earlier run. Running 2 min, 1266 battles/h, about 0 min left (ends ~14:51 PC time). Last battle 0 min ago.
+Skipped turns a battle: 12.9 overall, first 48 12.9, last 48 12.9; engine disables 0.
+
+| arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| c | 48 | 0 | 73.72 | - | - | - | 10.2 |
+| pb | 48 | 0 | 75.02 | +0.00 (1 robots) | - | - | 12.9 |
+
+APS = mean difference over the robots read x 1 panel robots / 1217 pairings.
+
+| stop rule | on trip | state | now |
+|---|---|---|---|
+| `fails 30` | halt | ok | 0 failed of 96 |
+| `dead 8` | halt | ok | every arm scoring |
+| `stall 30m` | halt | ok | last battle 0 min ago |
+
+Stopping now would leave 0 battles unrun (about 0 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-11:47:11 watching livematch: 3 stop rule(s)
-11:47:27 progress livematch: 2/124 (2%) battles, 446/h, ETA 16 min, 0 failed, skips 1.0/battle (last 100)
-11:55:04 livematch exit=0 in 472 s
-11:55:04 start lock
-11:55:04 watching lock: 4 stop rule(s)
-12:17:42 progress lock: 161/1152 (14%) battles, 427/h, ETA 2.3 h, 0 failed, skips 9.1/battle (last 100), aa -0.01
-12:47:56 progress lock: 428/1152 (37%) battles, 530/h, ETA 1.4 h, 0 failed, skips 7.2/battle (last 100), aa +0.00
-13:18:13 progress lock: 655/1152 (57%) battles, 450/h, ETA 1.1 h, 0 failed, skips 10.4/battle (last 100), aa +0.00
-13:48:28 progress lock: 902/1152 (78%) battles, 486/h, ETA 31 min, 0 failed, skips 9.2/battle (last 100), aa +0.00
-14:18:43 progress lock: 1095/1152 (95%) battles, 380/h, ETA 9 min, 0 failed, skips 9.6/battle (last 100), aa +0.00
-14:32:13 lock exit=0 in 9429 s
-14:32:13 start stage
-14:32:17 stage exit=0 in 3 s
-14:32:17 start lock-fgp
-14:32:17 watching lock-fgp: 3 stop rule(s)
+14:46:45 start lock-zl
+14:46:45 watching lock-zl: 3 stop rule(s)
+14:47:38 lock-zl exit=0 in 53 s
+14:47:38 start lock-gl
+14:47:38 watching lock-gl: 3 stop rule(s)
+14:48:57 progress lock-gl: 80/96 (83%) battles, 1467/h, ETA 1 min, 0 failed, skips 14.4/battle (last 100), gl +0.00
+14:49:09 lock-gl exit=0 in 90 s
+14:49:09 start lock-pb
+14:49:09 watching lock-pb: 3 stop rule(s)
+14:51:25 lock-pb exit=0 in 136 s
+14:51:25 start gate
+14:51:27 gate exit=0 in 1 s
+14:51:27 start pr
+14:51:34 pr exit=0 in 7 s
+14:51:34 ALLDONE
 ```

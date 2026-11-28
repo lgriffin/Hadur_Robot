@@ -18,3 +18,19 @@
 14:32:17 stage exit=0 in 3 s
 14:32:17 start lock-fgp
 14:32:17 watching lock-fgp: 3 stop rule(s)
+14:46:45 lock-fgp exit=0 in 868 s
+14:46:45 start lock-zl
+14:46:45 watching lock-zl: 3 stop rule(s)
+14:47:38 lock-zl exit=0 in 53 s
+14:47:38 start lock-gl
+14:47:38 watching lock-gl: 3 stop rule(s)
+14:48:57 progress lock-gl: 80/96 (83%) battles, 1467/h, ETA 1 min, 0 failed, skips 14.4/battle (last 100), gl +0.00
+14:49:09 lock-gl exit=0 in 90 s
+14:49:09 start lock-pb
+14:49:09 watching lock-pb: 3 stop rule(s)
+14:51:25 lock-pb exit=0 in 136 s
+14:51:25 start gate
+14:51:27 gate exit=0 in 1 s
+14:51:27 start pr
+14:51:34 pr exit=0 in 7 s
+14:51:34 ALLDONE
