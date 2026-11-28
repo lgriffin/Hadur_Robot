@@ -97,7 +97,7 @@ Live results as of 2026-11-02 16:00 UTC, Hadur, HadurTeam and Sanaro as of 2026-
 | [**Sanaro**](sanaro/) `hadur117.nano.Sanaro` | NanoMelee | 246 B of 249 | **joint 1st of 90**, 66.40 ± 0.39 (0.5), tied with d414.nano.Quantum (66.40), PWIN 100% | [README](sanaro/README.md) |
 | [**JayLexi**](jaylexi/) `hadur117.mini.JayLexi` | MiniRumble (1v1) | 1,486 B of 1,499 | **1st of 670**, 89.26 ± 0.11 (1.3), 0.32 ahead of sheldor.mini.FoilistMC | [README](jaylexi/README.md) |
 | [**Eveimear**](eveimear/) `hadur117.micro.Eveimear` | MicroRumble (1v1) | 749 B of 749 | **1st of 515**, 86.20 ± 0.17 (0.6), 0.64 ahead of jk.micro.Cotillion | [README](eveimear/README.md) |
-| [**Sanara**](sanara/) `hadur117.nano.Sanara` | NanoRumble (1v1) | 249 B of 249 | not entered; 0.1 benches 78.4 on the whole division | [README](sanara/README.md) |
+| [**Sanara**](sanara/) `hadur117.nano.Sanara` | NanoRumble (1v1) | 249 B of 249 | **5th of 300**, 78.08 ± 0.44 (0.1, first battles), 2.65 behind jk.sheldor.nano.Yatagan; PWIN 91.97% | [README](sanara/README.md) |
 
 - **TwinSaor** is two copies of one Saor-derived robot sharing radar and targets, with a range and
   mode table per opposing team ([docs/twinsaor.md](docs/twinsaor.md)).
