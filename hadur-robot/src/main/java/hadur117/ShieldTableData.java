@@ -1101,6 +1101,18 @@ final class ShieldTableData {
     }
 
     /**
+     * GUN-28: per-opponent static guess-factor gun, one line each: the broken firing waves before it aims, then the
+     * name. For opponents whose movement leaves one all-history guess-factor peak that our segmented, decaying guns
+     * miss. Empty on master; candidate builds add lines here (build-ablation.sh sgflist).
+     *
+     * @return a fresh array of lines
+     */
+    static String[] staticGfs() {
+        return new String[] {
+        };
+    }
+
+    /**
      * DIST-4: per-opponent pinned duel distance, one line each: the surf's desired distance in px, then the name.
      * The pin replaces DIST-1's controller target against that robot in a duel (END-1's finish still closes in).
      * Candidate builds add lines here (build-ablation.sh dplist).

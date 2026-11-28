@@ -160,6 +160,16 @@ public final class ShieldList {
     public static final int FIRE_GAP_MIN = 12;
     /** POW-21: the longest gap a line may ask for, in ticks. */
     public static final int FIRE_GAP_MAX = 200;
+    /**
+     * GUN-28: a line starting with this names an opponent the duel aims at with the static guess-factor histogram,
+     * after the given number of broken firing waves ({@code "waves name"}). Held to [{@link #STATIC_GF_MIN},
+     * {@link #STATIC_GF_MAX}].
+     */
+    public static final String STATIC_GF_PREFIX = "static-gf:";
+    /** GUN-28: the fewest broken firing waves a line may ask for before the histogram aims. */
+    public static final int STATIC_GF_MIN = 10;
+    /** GUN-28: the most broken firing waves a line may ask for before the histogram aims. */
+    public static final int STATIC_GF_MAX = 500;
     /** DIST-4: the closest a pin may ask for, in px. */
     public static final double DIST_PIN_MIN = 150;
     /** DIST-4: the furthest a pin may ask for, in px. */
@@ -249,6 +259,8 @@ public final class ShieldList {
     private Map<String, Double> distPins = Collections.emptyMap();
     /** POW-21: name to its least gap between real shots, in ticks. */
     private Map<String, Integer> fireGaps = Collections.emptyMap();
+    /** GUN-28: name to the broken firing waves before the static histogram aims. */
+    private Map<String, Integer> staticGfs = Collections.emptyMap();
     /** SHIELD-27: the opponents, by name without version, shield mode breaks off a close start against (every int switch bit is taken). */
     private Set<String> closeBreaks = Collections.emptySet();
     /** SHIELD-35: the opponents, by name without version, shield mode yields the drive to while they are close. */
@@ -286,6 +298,7 @@ public final class ShieldList {
         Map<String, double[]> powerBands = new TreeMap<>();
         Map<String, Double> distPins = new TreeMap<>();
         Map<String, Integer> fireGaps = new TreeMap<>();
+        Map<String, Integer> staticGfs = new TreeMap<>();
         Set<String> closeBreaks = new TreeSet<>();
         Set<String> closeYields = new TreeSet<>();
         Set<String> roundBails = new TreeSet<>();
@@ -347,6 +360,18 @@ public final class ShieldList {
                 if (entry.startsWith(CLOSE_BREAK_PREFIX)) {
                     String name = withoutVersion(entry.substring(CLOSE_BREAK_PREFIX.length()).trim());
                     if (!name.isEmpty() && closeBreaks.size() < MAX_ENTRIES) closeBreaks.add(name);
+                    continue;
+                }
+                if (entry.startsWith(STATIC_GF_PREFIX)) {
+                    String[] p = entry.substring(STATIC_GF_PREFIX.length()).trim().split(" ", 2);
+                    if (p.length == 2 && !p[1].isEmpty() && staticGfs.size() < MAX_ENTRIES) {
+                        try {
+                            int waves = Integer.parseInt(p[0]);
+                            if (waves >= STATIC_GF_MIN && waves <= STATIC_GF_MAX) staticGfs.put(withoutVersion(p[1]), waves);
+                        } catch (NumberFormatException e) {
+                            // A malformed static-gf line is skipped.
+                        }
+                    }
                     continue;
                 }
                 if (entry.startsWith(FIRE_GAP_PREFIX)) {
@@ -465,7 +490,7 @@ public final class ShieldList {
         }
         if (entries.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()
             && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty() && surfKeys.isEmpty() && copies.isEmpty()
-            && powerBands.isEmpty() && distPins.isEmpty() && fireGaps.isEmpty() && closeBreaks.isEmpty()
+            && powerBands.isEmpty() && distPins.isEmpty() && fireGaps.isEmpty() && staticGfs.isEmpty() && closeBreaks.isEmpty()
             && closeYields.isEmpty() && roundBails.isEmpty() && freeGuns.isEmpty()) return NONE;
         ShieldList list = new ShieldList(Collections.unmodifiableSet(entries),
             Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims), Collections.unmodifiableSet(dodges),
@@ -477,6 +502,7 @@ public final class ShieldList {
         list.powerBands = Collections.unmodifiableMap(powerBands);
         list.distPins = Collections.unmodifiableMap(distPins);
         list.fireGaps = Collections.unmodifiableMap(fireGaps);
+        list.staticGfs = Collections.unmodifiableMap(staticGfs);
         list.closeBreaks = Collections.unmodifiableSet(closeBreaks);
         list.closeYields = Collections.unmodifiableSet(closeYields);
         list.roundBails = Collections.unmodifiableSet(roundBails);
@@ -522,6 +548,21 @@ public final class ShieldList {
         Integer ticks = fireGaps.get(name);
         if (ticks == null) ticks = fireGaps.get(withoutVersion(name));
         return ticks == null ? 0 : ticks;
+    }
+
+    /**
+     * GUN-28: the broken firing waves before the static histogram aims at {@code robotName}, by the rule of
+     * {@link #matches}.
+     *
+     * @param robotName the scanned robot's name, or null
+     * @return the wave count, or 0 when none is shipped
+     */
+    public int staticGfFor(String robotName) {
+        if (robotName == null || staticGfs.isEmpty()) return 0;
+        String name = robotName.trim().replaceAll("\\s+", " ");
+        Integer waves = staticGfs.get(name);
+        if (waves == null) waves = staticGfs.get(withoutVersion(name));
+        return waves == null ? 0 : waves;
     }
 
     /**

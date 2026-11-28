@@ -1682,6 +1682,8 @@ public final class DuelController {
         distPin = enemiesTotal <= 1 ? stackList.distPinFor(name) : Double.NaN;
         // POW-21: the least gap between real shots for the opponents the table names.
         fireGap = enemiesTotal <= 1 ? stackList.fireGapFor(name) : 0;
+        // GUN-28: the static guess-factor gun for the opponents the table names (the gun keeps it 1v1-only).
+        if (enemiesTotal <= 1) gunController.setStaticGf(stackList.staticGfFor(name));
         // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names, never a shield-mode one
         // (its TripHammer aims break the shield's bullet hits); the gun keeps them 1v1-only.
         if (duelOnly(stackList.gunStack(name) && !stackList.matches(name), enemiesTotal)) {

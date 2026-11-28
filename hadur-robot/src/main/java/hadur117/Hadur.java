@@ -297,6 +297,8 @@ public class Hadur extends TeamRobot {
         // DIST-4: per-opponent pinned duel distance.
         for (String pin : ShieldTableData.distPins()) lines.add(ShieldList.DIST_PIN_PREFIX + " " + pin);
         for (String gap : ShieldTableData.fireGaps()) lines.add(ShieldList.FIRE_GAP_PREFIX + " " + gap);
+        // GUN-28: per-opponent static guess-factor gun.
+        for (String sgf : ShieldTableData.staticGfs()) lines.add(ShieldList.STATIC_GF_PREFIX + " " + sgf);
         // POW-20: per-opponent power bands.
         for (String band : ShieldTableData.powerBands()) lines.add(ShieldList.POWER_BAND_PREFIX + " " + band);
         // MOVE-32: per-opponent flattener views on.

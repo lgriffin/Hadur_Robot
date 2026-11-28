@@ -760,6 +760,7 @@ flowchart LR
 | `headOnFloors()` | `head-on-floor:` | MOVE-71 | 1 | A danger floor on the fire bearing of a mostly head-on shooter |
 | `distPins()` | `dist-pin:` | DIST-4 | 2 | A pinned desired distance |
 | `fireGaps()` | `fire-gap:` | POW-21 | 0 | A least gap between real duel shots |
+| `staticGfs()` | `static-gf:` | GUN-28 | 0 | The static guess-factor gun aims after that many broken firing waves |
 | `mirrorOffs()` | `mirror-off:` | MIR-2 | 3 | No mirror response |
 | `surfKeys()` | `surf-key:` | SKEY-2 | 176 | Fitted weights for the danger views' search key |
 | **Rammers** | | | | |

@@ -1,0 +1,2 @@
+# GUN-28 static guess-factor gun for pc-locks picks: waves name (box C; dzlane/C/newlever-PinkPanther.md)
+40 dmh.robocode.robot.PinkPanther 1.1
