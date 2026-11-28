@@ -1,0 +1,65 @@
+# battle: melee
+# Melee: the fire lanes (MMOVE-31) and the low-power opening (MGUN-28), BENCH-300.
+# Fire lanes: against ScalarR in the same crowds Hadur takes about 13 more damage a round from
+# bullets aimed at other robots (44% of its crowd damage against ScalarR's 27%), more than the whole
+# damage gap; a bullet aimed at Hadur hits it no more often than one aimed at ScalarR. ml adds a
+# risk term for standing in a lane from an opponent through the robot it likely aims at.
+# Low-power opening: shoot at power 0.1 (lo) or 0.5 (lo5), finishers excepted, until three of the
+# round's opponents have died, then engage as normal. The measured priors argue against it (holding
+# fire until two die lost -5.7 APS with crowd deaths +10 points; the opening's fire nets energy and
+# deals ~59 damage a round), so the card prices it on the whole field rather than argue it.
+#   aa      the baseline (master)
+#   bb      its A/A copy
+#   ml      mlane, MMOVE-31 on
+#   lo      mlow, MGUN-28 on (3 dead, power 0.1)
+#   lo5     mlow5, MGUN-28 on (3 dead, power 0.5)
+# Each build fights the 46 census fields x 6 fresh seeds alone (3381-3386; 276 battles, 1,380 in
+# all) at the machine's melee width and CPU constant. The read pairs bb with aa (A/A) and ml, lo and
+# lo5 with the mean of aa and bb (--base2), battle for battle. Melee only: both switches act off a
+# team with three or more opponents, so the 1v1 duel and team play are untouched.
+# Verdict: an arm passes at +0.0 or more with the 95% low end above 0, Hadur's share of others
+# outlived no more than 1 point lower and the 1-30 endgame wins no more than 3 points lower; if its
+# skipped turns a battle rise more than 20% over aa's it fails whatever its APS. The card ends in a
+# results PR on claude/pc-melee-open-results whatever the verdict; the melee thread reads it.
+#   ./queue.sh run pc-melee-open        (or  .\queue.ps1 run pc-melee-open)
+# Run it from master, one bench queue at a time:
+#   git checkout master && git pull
+# moprep reads the version from hadur-robot/pom.xml and fixes the width and version in work/, so a
+# resumed card never mixes host profiles or reads another version's battles. Prep clears the arms'
+# battle folders, since it rebuilds their jars.
+# Stop rules (docs/bench/watch.md), halts only, each keeping every battle fought: fails 20 and
+# stall 30m on each arm (a hung battle is killed after 20 minutes, BENCH-291). A halt leaves that
+# arm's remaining battles and every later arm unrun; ml runs first of the arms under test.
+
+set OUT = ../docs/bench/local
+
+moprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb ml lo lo5; do rm -f bisect/hadur117.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh mlane && bash ./build-ablation.sh mlow && bash ./build-ablation.sh mlow5 && mkdir -p work && rm -rf work/melee-open-"$V"-aa work/melee-open-"$V"-bb work/melee-open-"$V"-ml work/melee-open-"$V"-lo work/melee-open-"$V"-lo5 && echo "$V" > work/melee-open.version && for a in aa bb ml lo lo5; do test -f bisect/hadur117.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-open.args > work/melee-open-$a.args || exit 1; done && rm -f ${OUT}/melee-open-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+moaa   | mvn -q exec:java "-Dexec.args=@work/melee-open-aa.args"
+  after: moprep
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+mobb   | mvn -q exec:java "-Dexec.args=@work/melee-open-bb.args"
+  after: moaa
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+moml   | mvn -q exec:java "-Dexec.args=@work/melee-open-ml.args"
+  after: mobb
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+molo   | mvn -q exec:java "-Dexec.args=@work/melee-open-lo.args"
+  after: moml
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+molo5  | mvn -q exec:java "-Dexec.args=@work/melee-open-lo5.args"
+  after: molo
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+moread | V=$(cat work/melee-open.version) && test -n "$V" && W=work/melee-open-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm ml="$W"-ml --arm lo="$W"-lo --arm lo5="$W"-lo5 --census melee-census-317.txt --seeds 6 --gain 0.0 --survival-slack 1 --out ${OUT}/melee-open-read.md --title "Melee fire lanes and low-power opening on $V" || true; } && test -s ${OUT}/melee-open-read.md
+  after: molo5
+mopr   | bash tools/open_results_pr.sh claude/pc-melee-open-results "Melee fire lanes and low-power opening (MMOVE-31, MGUN-28)" ${OUT}/melee-open-read.md $(ls ${OUT}/melee-open-aa.md ${OUT}/melee-open-bb.md ${OUT}/melee-open-ml.md ${OUT}/melee-open-lo.md ${OUT}/melee-open-lo5.md 2>/dev/null)
+  after: moread
