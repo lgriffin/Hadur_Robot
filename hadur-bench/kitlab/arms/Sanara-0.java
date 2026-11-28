@@ -49,6 +49,9 @@ public class Sanara extends AdvancedRobot {
     static final int BANDIT = 0;
     // With BANDIT, each round first scales both modes' tallies by DECAY, so later rounds weigh more.
     static final double DECAY = 1;
+    // Bots to meet with the plain orbit (mode 1) whatever BANDIT says, as "name version" entries
+    // (kitlab/sanara-orbit-*.txt); empty = none.
+    static final String ORBIT = "";
     static double[] taken = new double[2];
     static double[] seen = new double[2];
     static int mode;
@@ -77,7 +80,7 @@ public class Sanara extends AdvancedRobot {
         if (BANDIT == 1) {
             seen[mode]++;
         }
-        if ((enemyEnergy > (enemyEnergy = e.getEnergy()) && mode == 0 && Math.random() * 64 < FLIP.charAt(band))
+        if ((enemyEnergy > (enemyEnergy = e.getEnergy()) && mode == 0 && ORBIT.indexOf(e.getName()) < 0 && Math.random() * 64 < FLIP.charAt(band))
                 || Math.random() < TICK) {
             dir = -dir;
         }
