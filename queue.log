@@ -12,3 +12,12 @@
 00:30:42 progress lock: 434/1248 (35%) battles, 500/h, ETA 1.6 h, 0 failed, skips 9.2/battle (last 100), aa -0.00
 01:00:59 progress lock: 698/1248 (56%) battles, 524/h, ETA 1.0 h, 0 failed, skips 8.9/battle (last 100), aa +0.00
 01:31:15 progress lock: 982/1248 (79%) battles, 564/h, ETA 28 min, 0 failed, skips 9.5/battle (last 100), aa +0.00
+02:01:30 progress lock: 1241/1248 (99%) battles, 518/h, ETA 1 min, 0 failed, skips 9.0/battle (last 100), aa +0.00
+02:06:02 lock exit=0 in 8897 s
+02:06:02 start stage
+02:06:07 stage exit=0 in 4 s
+02:06:07 start lock-zl
+02:06:07 watching lock-zl: 3 stop rule(s)
+02:07:00 lock-zl exit=0 in 52 s
+02:07:00 start lock-pb
+02:07:00 watching lock-pb: 3 stop rule(s)
