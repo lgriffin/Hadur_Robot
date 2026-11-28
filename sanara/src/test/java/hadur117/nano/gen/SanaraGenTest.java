@@ -8,7 +8,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -35,6 +37,29 @@ class SanaraGenTest {
             checked++;
         }
         assertTrue(checked > 0, "no robots listed");
+    }
+
+    @Test
+    @Tag("SANARA-4")
+    @DisplayName("every robot in the bench's NanoRumble field that is not listed is not found, so it reverses on every shot")
+    void unlistedFieldRobotsAlwaysReverse() throws Exception {
+        List<String> lines = Files.readAllLines(Paths.get("src/main/gen/sanara-chance.txt"), StandardCharsets.UTF_8);
+        String list = SanaraGen.layout(lines);
+        Set<String> listed = new HashSet<String>();
+        for (String s : lines) {
+            if (!s.startsWith("#") && !s.trim().isEmpty()) {
+                listed.add(s.split("\t")[1].trim());
+            }
+        }
+        int checked = 0;
+        for (String s : Files.readAllLines(Paths.get("../hadur-bench/kitlab/nano-all-field.txt"), StandardCharsets.UTF_8)) {
+            int bar = s.indexOf(" | ");
+            if (bar > 0 && !listed.contains(s.substring(0, bar))) {
+                assertEquals(-1, list.indexOf(s.substring(0, bar)), s.substring(0, bar));
+                checked++;
+            }
+        }
+        assertTrue(checked > 0 || listed.size() >= 299, "field not read");
     }
 
     @Test
