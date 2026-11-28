@@ -739,6 +739,8 @@ final class ShieldTableData {
             "pa3k.Manta 1.20",                     // +4.2
             "bndl.LostLion 1.2",                   // +3.5
             "nz.jdc.nano.AralR 1.1",               // +3.0
+            // pc-locks round 39 (BENCH-253, PR #1116): 48 fresh PC seeds at the live turn time; cloud lock held first
+            "ary.Help 1.0",                         // +5.7
         };
     }
 
@@ -941,6 +943,8 @@ final class ShieldTableData {
             "oa.weak.FlyMk1 0.1",            // +0.6
             // pc-locks round 35 (BENCH-253, PR #1095): 24 fresh PC seeds at the live turn time; cloud lock held first
             "divineomega.TrialBot 0.003",        // +2.5
+            // pc-locks round 39 (BENCH-253, PR #1116): 48 fresh PC seeds at the live turn time; cloud lock held first
+            "arthord.NanoSatanMelee Beta",   // +2.4
         };
     }
 
@@ -1306,6 +1310,8 @@ final class ShieldTableData {
             // pc-locks round 38 (BENCH-253, PR #1113): 24 fresh PC seeds at the live turn time; cloud lock held first
             "fnh.mega.DumDum 1.2.1",             // +7.3 (on top of its gun-stack line)
             "sheldor.mini.Foilist 1.3.1",        // +3.0
+            // pc-locks round 39 (BENCH-253, PR #1116): 48 fresh PC seeds at the live turn time; cloud lock held first
+            "abc.Shadow 3.83c",                   // +2.5 (48 seeds; pooled with round 37's 24, about +1.4)
         };
     }
 
@@ -1400,6 +1406,8 @@ final class ShieldTableData {
             "squidM.SquidmanNano 1.0",           // +1.5
             "hlavko.nano.Ringo 2.0",             // +1.5
             "zyx.nano.RedBull 1.0",              // +1.6 (with its ram flee)
+            // pc-locks round 39 (BENCH-253, PR #1116): 48 fresh PC seeds at the live turn time; cloud lock held first
+            "sheldor.nano.Sabreur 1.1.2",         // +2.2 (with its ram-known line)
         };
     }
 
@@ -1452,6 +1460,8 @@ final class ShieldTableData {
             "squidM.SquidmanNano 1.0",           // +1.5
             "hlavko.nano.Ringo 2.0",             // +1.5
             "zyx.nano.RedBull 1.0",              // +1.6 (with its ram flee)
+            // pc-locks round 39 (BENCH-253, PR #1116): 48 fresh PC seeds at the live turn time; cloud lock held first
+            "sheldor.nano.Sabreur 1.1.2",         // +2.2 (with its ram-learn line)
         };
     }
 
@@ -1764,12 +1774,14 @@ final class ShieldTableData {
 
     /**
      * GUN-12: opponents the duel gun fires against with free gun on ({@code free-gun:} lines; build-ablation.sh
-     * fglist adds candidate lines here). Empty until a line locks.
+     * fglist adds candidate lines here). JKHydra held in pc-locks round 39 (PR #1116).
      *
      * @return a fresh array of names
      */
     static String[] freeGuns() {
         return new String[] {
+            // pc-locks round 39 (BENCH-253, PR #1116): 48 fresh PC seeds at the live turn time; cloud lock held first
+            "jkong.JKHydra 1.4",                // +1.4 (on top of its race power)
         };
     }
 

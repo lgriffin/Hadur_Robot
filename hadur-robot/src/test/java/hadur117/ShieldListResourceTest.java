@@ -237,7 +237,7 @@ class ShieldListResourceTest {
         // pc-ala-shield (PR #733): Ala. pc-shield-rescreen (PR #739): Saturn and OperatorZeze.
         // pc-still-field (PR #746): X2, Che and Aardvark. pc-shield-floor (PR #781): CassiusClay. pc-class-1 (PR #803): Eveimear. pc-class-2 (PR #806): Gouldingi. pc-r31 (PR #817): Musashi.
         // pc-locks (PR #843): GlowBlow, MostlyHarmless, DuelistMicro and Devil. pc-shards (PR #840): BlackSwans, Manta, LostLion, AralR.
-        assertEquals(17 + 9 + 5 - 1 + 1 + 1 + 1 + 2 + 3 + 1 + 1 + 1 + 1 + 4 + 4, ShieldTableData.stills().length);
+        assertEquals(17 + 9 + 5 - 1 + 1 + 1 + 1 + 2 + 3 + 1 + 1 + 1 + 1 + 4 + 4 + 1, ShieldTableData.stills().length);
         assertTrue(list.matches("lechu.Ala 0.0.4") && list.still("lechu.Ala 0.0.4"));
         assertTrue(list.matches("cx.Princess 1.0") && Arrays.asList(ShieldTableData.exitOffs()).contains("cx.Princess 1.0"));
         for (String n : ShieldTableData.stills()) {
@@ -320,7 +320,7 @@ class ShieldListResourceTest {
         java.util.List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
         for (String n : ShieldTableData.racePowers()) lines.add(ShieldList.RACE_POWER_PREFIX + " " + n);
         ShieldList list = ShieldList.parse(lines);
-        assertEquals(8 + 1 + 2 + 1 + 1 + 1 + 4 + 1 + 1 + 7 + 2, ShieldTableData.racePowers().length, "pc-race-power (BENCH-206, PR #695) confirm picks and pc-r31 (BENCH-244, PR #817) and pc-locks rounds 3 (PR #860), 6 (PR #890), 8 (PR #905), 10 (PR #922), 11 (PR #929), 25 (PR #1036), 27 (PR #1050), 37 (PR #1109) and 38 (PR #1113)");
+        assertEquals(8 + 1 + 2 + 1 + 1 + 1 + 4 + 1 + 1 + 7 + 2 + 1, ShieldTableData.racePowers().length, "pc-race-power (BENCH-206, PR #695) confirm picks and pc-r31 (BENCH-244, PR #817) and pc-locks rounds 3 (PR #860), 6 (PR #890), 8 (PR #905), 10 (PR #922), 11 (PR #929), 25 (PR #1036), 27 (PR #1050), 37 (PR #1109), 38 (PR #1113) and 39 (PR #1116)");
         for (String n : ShieldTableData.racePowers()) assertTrue(list.racePower(n), n);
         assertTrue(!list.racePower("abc.Shadow 3.83c"), "a pilot robot that did not hold the 3-point margin");
     }

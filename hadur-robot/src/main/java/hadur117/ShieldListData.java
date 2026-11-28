@@ -386,6 +386,8 @@ final class ShieldListData {
             "tkt.RedShift 1.1.CS.0",         // +1.1
             // pc-locks round 35 (BENCH-253, PR #1095): 24 fresh PC seeds at the live turn time; cloud lock held first
             "dmh.robocode.robot.YellowBird 0.12", // +1.5 (with SHIELD-33 tiny-shot waves)
+            // pc-locks round 39 (BENCH-253, PR #1116): 48 fresh PC seeds at the live turn time; cloud lock held first
+            "nz.jdc.nano.NeophytePRAL 1.4",       // +1.3
         };
     }
 }
