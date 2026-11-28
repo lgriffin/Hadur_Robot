@@ -117,14 +117,6 @@ public class FieldGun {
         for (EnemyHistory h : histories.values()) h.newRound();
     }
 
-    /**
-     * MGUN-28: the most opponents seen alive this round, so the dead are counted from it; reset
-     * when the clock runs back (a new round), not by {@link #newRound}, which a fault recovery may
-     * call mid-round.
-     */
-    private int roundOthers;
-    private long roundClock = Long.MIN_VALUE;
-
     public EnemyHistory history(String name) {
         EnemyHistory h = histories.get(name);
         if (h == null && histories.size() < MAX_OPPONENTS) {
@@ -171,9 +163,6 @@ public class FieldGun {
     /** Every firing solution this tick, for every opponent fresh enough to shoot at. */
     public List<Solution> solutions(Point2D.Double me, double energy, int others,
                                     List<EnemyInfo> alive, long now) {
-        if (now < roundClock) roundOthers = 0;
-        roundClock = now;
-        roundOthers = Math.max(roundOthers, others);
         List<Solution> out = new ArrayList<>();
         for (EnemyInfo e : alive) {
             if (e.age(now) > MAX_AGE) continue;
@@ -183,10 +172,7 @@ public class FieldGun {
             double power = MeleeEnergyPolicy.power(distance, energy, e.energy, others);
             if (power <= 0) continue;
             if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);
-            else {
-                power = MeleeEnergyPolicy.crowdPower(power, distance, energy, e.energy, others);
-                power = MeleeEnergyPolicy.openingPower(power, roundOthers - others, others, e.energy);
-            }
+            else power = MeleeEnergyPolicy.crowdPower(power, distance, energy, e.energy, others);
             if (onTeam && concord && TeamConcord.POWER && power > CONCORD_POWER && distance > CONCORD_CLOSE && !readsWell(e.name)) {
                 power = CONCORD_POWER;
             }

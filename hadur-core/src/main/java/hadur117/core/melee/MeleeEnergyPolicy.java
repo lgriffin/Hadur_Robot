@@ -159,24 +159,4 @@ public final class MeleeEnergyPolicy {
         double p = energy <= 4.0 ? energy / 4.0 : (energy + 2.0) / 6.0;
         return Math.max(MIN_POWER, p + 0.01);
     }
-
-    /**
-     * MGUN-28: off a team with three or more opponents alive, until {@link #OPENING_LOW_DEAD} of the round's starting opponents have
-     * died, every shot but a finisher's is capped at {@link #OPENING_LOW_POWER}: the low-power
-     * opening, keep shooting but stay as harmless as possible until the crowd thins. Off: the
-     * screen arms {@code mlow} (3 dead, 0.1), {@code mlow2} (2 dead, 0.1), {@code mlow5} (3 dead, 0.5).
-     */
-    public static final boolean OPENING_LOW = false;
-    static final int OPENING_LOW_DEAD = 3;
-    static final double OPENING_LOW_POWER = 0.1;
-
-    /** MGUN-28: {@code p} capped while fewer than {@link #OPENING_LOW_DEAD} opponents have died this round. */
-    public static double openingPower(double p, int dead, int others, double targetEnergy) {
-        return openingPower(p, dead, others, targetEnergy, OPENING_LOW, OPENING_LOW_DEAD, OPENING_LOW_POWER);
-    }
-
-    static double openingPower(double p, int dead, int others, double targetEnergy, boolean on, int until, double power) {
-        if (!on || p <= 0 || others < 3 || dead >= until || targetEnergy <= FINISHER_ENERGY) return p;
-        return Math.min(p, power);
-    }
 }
