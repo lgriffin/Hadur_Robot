@@ -17,7 +17,7 @@
 
     <properties>
         <!-- The robot's version: the jar is named for it and Sanara.properties takes it by filtering. -->
-        <sanara.release>0.1</sanara.release>
+        <sanara.release>0.2</sanara.release>
         <!-- NanoRumble's limit, as Robocode's codesize tool counts the shipped jar (SANARA-1). -->
         <sanara.codesize.limit>249</sanara.codesize.limit>
         <!-- Rating clients still run Java 8; the generator targets it, the shipped class is version 49. -->
@@ -66,7 +66,7 @@
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>3.1.0</version>
                 <executions>
-                    <!-- The shipped class: SanaraGen writes it from the orbit list. -->
+                    <!-- The shipped class: SanaraGen writes it from the chance list. -->
                     <execution>
                         <id>robot-class</id>
                         <phase>process-classes</phase>
@@ -78,7 +78,7 @@
                                 <java classname="hadur117.nano.gen.SanaraGen" classpathref="maven.compile.classpath"
                                       fork="true" failonerror="true">
                                     <arg value="${project.build.outputDirectory}/hadur117/nano/Sanara.class"/>
-                                    <arg value="${project.basedir}/src/main/gen/sanara-orbit.txt"/>
+                                    <arg value="${project.basedir}/src/main/gen/sanara-chance.txt"/>
                                 </java>
                             </target>
                         </configuration>

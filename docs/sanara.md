@@ -102,4 +102,21 @@ Whole division, paired against PatternAdept: `h1` (the hand-written class with `
 
 Power 800/d (`g800`) and 1000/d (`g1000`) on two seeds: 78.44 and 77.67. Four seeds each settle it: `g800` 78.41 ± 1.35 (the two new seeds alone 78.39), `g600` 78.05 ± 1.50. `g800` is the entry candidate: 249 bytes, about fifth on the live table. Its orbit list was fitted on the javac build, so `r800` (always reverse) and `o800` (always orbit) refit it on the fitted build itself.
 
-Refitting the orbit list on `g800` itself (`r800` always reverse 72.35, `o800` always orbit 65.53, two seeds each) cross-validates at 78.26, against 78.14 for the current list on the same battles: no real gain, so the list stays. Sanara 0.1 is `g800`: module `sanara/`, where `hadur117.nano.gen.SanaraGen` writes the class from `src/main/gen/sanara-orbit.txt` during the build (byte for byte the benched `g800` code, 249 bytes by Robocode's codesize tool), and `src/main/source/hadur117/nano/Sanara.java` is the readable form shipped in the jar. Release notes: `docs/releases/sanara-v0.1.md`; workflow `release-sanara.yml`. Not released.
+Refitting the orbit list on `g800` itself (`r800` always reverse 72.35, `o800` always orbit 65.53, two seeds each) cross-validates at 78.26, against 78.14 for the current list on the same battles: no real gain, so the list stays. Sanara 0.1 is `g800`: module `sanara/`, where `hadur117.nano.gen.SanaraGen` writes the class from `src/main/gen/sanara-orbit.txt` during the build (byte for byte the benched `g800` code, 249 bytes by Robocode's codesize tool), and `src/main/source/hadur117/nano/Sanara.java` is the readable form shipped in the jar. Release notes: `docs/releases/sanara-v0.1.md`; workflow `release-sanara.yml`.
+
+## 0.2: a reversal chance per bot
+
+Sanara 0.1 entered at 78.08, 5th, and the live table tracks the bench (78.28 on the same bots). Against the leader, jk.sheldor.nano.Yatagan 1.2.3 (80.73), almost the whole gap sits in live ranks 61 to 150 (2.55 of 2.85 APS); Sanara is level or ahead against the top 60. Benching Yatagan and LittleBlackBook 1.0 on the whole division shows why: they deal about what Sanara deals there, but take far less. Linear-aiming mid-field bots (TimDog, Gnome, AdeptBSB, DoctorBob, Mosquito, Elite and others) do 30 to 50 damage a round to 0.1 and 5 to 18 to the leaders.
+
+Reversing on every shot (`c100`) cuts those bots' damage two to three times (DoctorBob 51 to 18 a round, AdeptBSB 53 to 20, Gnome 35 to 11), but costs 9 to 14 points a bot against the top 60, where pattern and learning guns read a reversal that always comes. So the chance is set per bot. The screens at chance 0 (`o800`), 0.45, 0.6 (`g800`), 0.75, 0.9 and 1 (`c45` to `c100`) give each bot's best, kept only when it leads 0.1's mode by more than 2 points; picking on one half of the seeds and scoring on the other projects 81.0 to 81.3.
+
+The chance costs no bytes. The reversal test is `Math.random() * 58000 > CHANCE.indexOf(name)`: a bot's place in the chance string is its chance, `1 - index / 58000`, padding `|` sets each group's place, chance-0 bots sit past 58000, and a bot not in the string reverses on every shot. That replaces the orbit-list test and the 0.6 compare and is one byte shorter: 248 bytes. `SanaraGen` lays the string out from `src/main/gen/sanara-chance.txt` and fails the build if any listed bot would land more than 0.03 from its chance (SANARA-4); the bench builds use `kitlab/sanara-gen/layout.py`, which also checks every bot in the field.
+
+| Read | Field | Result |
+|---|---|---|
+| Yatagan 1.2.3 and LittleBlackBook 1.0 as references, 1 seed | whole division | live ranks 61-150: damage taken a round Yatagan 23-31, LittleBlackBook 20-28, PatternAdept 28-38, Sanara 0.1 27-39 |
+| `p6` (chances 0 to 1), 4 fresh seeds | whole division | 81.54 ± 1.02 paired against PatternAdept (the last two seeds alone 81.60); +3.09 ± 0.81 a bot against 0.1; by live rank: 1-20 +14.8, 21-50 +10.3, 51-100 +3.5, 101-250 +2.6 against PatternAdept |
+| `p3` (chances 0, 0.6, 1 only), 2 fresh seeds | whole division | 81.26 ± 1.03; +2.81 ± 0.82 against 0.1 |
+| `p6` against Yatagan on the same bench, 2 Yatagan seeds | whole division | +0.05 ± 0.76 a bot: level. 0.1 reads -3.05 ± 1.08 against Yatagan here and -2.65 live, so the bench may undersell Sanara against Yatagan by about 0.4 |
+
+Sanara 0.2 is `p6`: the module build writes the same class as the benched `p6`, chance string included, 248 bytes by Robocode's codesize tool.

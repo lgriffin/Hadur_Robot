@@ -10,14 +10,17 @@ The design, the bench screens and how the class was fitted are in
 
 ## How it works
 
-Sanara is one class of 249 bytes. javac cannot write its play in fewer than about 300 bytes, so
+Sanara is one class of 248 bytes. javac cannot write its play in fewer than about 300 bytes, so
 `hadur117.nano.gen.SanaraGen` writes the class as bytecode during the build;
 [Sanara.java](src/main/source/hadur117/nano/Sanara.java), shipped in the jar, is the readable form.
 
 - **Radar:** the one-call lock.
 - **Movement:** a perpendicular orbit at full speed, tilted toward 300 px. When the enemy's energy
-  drops (it fired), Sanara reverses with chance 0.6, except against the bots on its orbit list,
-  which the bench found hit a reversing orbit harder than a plain one. It also reverses on a wall.
+  drops (it fired), Sanara reverses with a chance set for that opponent, from 0 (a plain orbit) to 1.
+  The chance is the opponent's place in a string constant, so it costs no bytes: at index i the
+  chance is 1 - i / 58000, and an opponent not in the string reverses on every shot. The chances
+  come from bench screens per opponent ([sanara-chance.txt](src/main/gen/sanara-chance.txt)). It
+  also reverses on a wall.
 - **Gun:** symbolic pattern matching over the enemy's lateral velocity, one character a tick. The
   longest recent match of up to 30 ticks is replayed as an angle: the lateral speeds that followed
   it, summed over the bullet's flight and divided by the distance, wrapping back to the match when

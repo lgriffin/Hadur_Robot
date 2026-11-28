@@ -1,17 +1,19 @@
 // Writes the fitted Sanara class as bytecode (docs/sanara.md, "The fit"). Build: javac -cp asm-9.7.1.jar Gen.java
-// Run: java -cp asm-9.7.1.jar:. Gen OUT.class kitlab/sanara-orbit-300.txt ROUND POWER N14 NOADJ K
+// Run: java -cp asm-9.7.1.jar:. Gen OUT.class LIST ROUND POWER N14 NOADJ K [IDEAL CHANCE [SCALE]]; with SCALE, LIST is the chance string from layout.py
 import org.objectweb.asm.*;
 import java.nio.file.*;
 import static org.objectweb.asm.Opcodes.*;
 
-/** Hand-written bytecode for the fitted Sanara (list build at 300 px). Args: out.class listfile round(0/1) power(0/1) */
+/** Hand-written bytecode for the fitted Sanara screens. */
 public class Gen {
     static final int I = 2, N = 3, K = 3, D = 4, A = 6;
     static final String C = "hadur117/nano/Sanara", SRE = "robocode/ScannedRobotEvent", AR = "robocode/AdvancedRobot";
     public static void main(String[] a) throws Exception {
-        String list = String.join("|", Files.readAllLines(Paths.get(a[1])).stream().filter(s -> !s.startsWith("#") && !s.isEmpty()).toArray(String[]::new));
+        double scale = a.length > 9 ? Double.parseDouble(a[9]) : 0;
+        String list = scale > 0 ? new String(Files.readAllBytes(Paths.get(a[1])), "UTF-8")
+            : String.join("|", Files.readAllLines(Paths.get(a[1])).stream().filter(s -> !s.startsWith("#") && !s.isEmpty()).toArray(String[]::new));
         boolean round = a[2].equals("1"), power = a[3].equals("1"), n14 = a.length > 4 && a[4].equals("1"), adj = !(a.length > 5 && a[5].equals("1"));
-        int k = a.length > 6 ? Integer.parseInt(a[6]) : 0; // power k / d (clamped to 3 by the engine), flight from d / 14
+        int k = a.length > 6 ? Integer.parseInt(a[6]) : 0; double ideal = a.length > 7 ? Double.parseDouble(a[7]) : 300, chance = a.length > 8 ? Double.parseDouble(a[8]) : 0.6; // power k / d (clamped to 3 by the engine), flight from d / 14
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         cw.visit(V1_5, ACC_PUBLIC | ACC_SUPER, C, null, AR, null);
         cw.visitField(ACC_STATIC, "h", "Ljava/lang/String;", null, null);
@@ -43,15 +45,22 @@ public class Gen {
         // reverse on an energy drop, if this bot is not on the orbit list, with chance 0.6
         m.visitFieldInsn(GETSTATIC, C, "E", "D"); m.visitVarInsn(ALOAD, 1); m.visitMethodInsn(INVOKEVIRTUAL, SRE, "getEnergy", "()D", false);
         m.visitInsn(DUP2); m.visitFieldInsn(PUTSTATIC, C, "E", "D"); m.visitInsn(DCMPL); m.visitJumpInsn(IFLE, skip);
+        if (scale > 0) {
+            // chance by position: reverse when random * scale > list.indexOf(name) (absent: always)
+            m.visitMethodInsn(INVOKESTATIC, "java/lang/Math", "random", "()D", false); m.visitLdcInsn(scale); m.visitInsn(DMUL);
+            m.visitLdcInsn(list); m.visitVarInsn(ALOAD, 1); m.visitMethodInsn(INVOKEVIRTUAL, SRE, "getName", "()Ljava/lang/String;", false);
+            m.visitMethodInsn(INVOKEVIRTUAL, "java/lang/String", "indexOf", "(Ljava/lang/String;)I", false); m.visitInsn(I2D); m.visitInsn(DCMPL); m.visitJumpInsn(IFLE, skip);
+        } else {
         m.visitLdcInsn(list); m.visitVarInsn(ALOAD, 1); m.visitMethodInsn(INVOKEVIRTUAL, SRE, "getName", "()Ljava/lang/String;", false);
         m.visitMethodInsn(INVOKEVIRTUAL, "java/lang/String", "indexOf", "(Ljava/lang/String;)I", false); m.visitJumpInsn(IFGE, skip);
-        m.visitMethodInsn(INVOKESTATIC, "java/lang/Math", "random", "()D", false); m.visitLdcInsn(0.6); m.visitInsn(DCMPG); m.visitJumpInsn(IFGE, skip);
+        m.visitMethodInsn(INVOKESTATIC, "java/lang/Math", "random", "()D", false); m.visitLdcInsn(chance); m.visitInsn(DCMPG); m.visitJumpInsn(IFGE, skip);
+        }
         m.visitFieldInsn(GETSTATIC, C, "dir", "D"); m.visitInsn(DNEG); m.visitFieldInsn(PUTSTATIC, C, "dir", "D");
         m.visitLabel(skip);
         // orbit: turn by cos(bearing + dir*(300-d)/72000), ahead dir
         m.visitVarInsn(ALOAD, 0);
         m.visitVarInsn(ALOAD, 1); m.visitMethodInsn(INVOKEVIRTUAL, SRE, "getBearingRadians", "()D", false);
-        m.visitLdcInsn(300.0); m.visitVarInsn(ALOAD, 1); m.visitMethodInsn(INVOKEVIRTUAL, SRE, "getDistance", "()D", false);
+        m.visitLdcInsn(ideal); m.visitVarInsn(ALOAD, 1); m.visitMethodInsn(INVOKEVIRTUAL, SRE, "getDistance", "()D", false);
         m.visitInsn(DUP2); m.visitVarInsn(DSTORE, D); m.visitInsn(DSUB); m.visitFieldInsn(GETSTATIC, C, "dir", "D"); m.visitInsn(DDIV); m.visitInsn(DADD);
         m.visitMethodInsn(INVOKESTATIC, "java/lang/Math", "cos", "(D)D", false); m.visitMethodInsn(INVOKEVIRTUAL, C, "setTurnRightRadians", "(D)V", false);
         m.visitVarInsn(ALOAD, 0); m.visitFieldInsn(GETSTATIC, C, "dir", "D"); m.visitMethodInsn(INVOKEVIRTUAL, C, "setAhead", "(D)V", false);
