@@ -320,6 +320,8 @@ public class Hadur extends TeamRobot {
         for (String name : ShieldTableData.ramLearns()) lines.add(ShieldList.RAM_LEARN_PREFIX + " " + name);
         // RAM-21: per-opponent known rammer.
         for (String name : ShieldTableData.ramKnowns()) lines.add(ShieldList.RAM_KNOWN_PREFIX + " " + name);
+        for (String name : ShieldTableData.ramNevers()) lines.add(ShieldList.RAM_NEVER_PREFIX + " " + name);
+        for (String ride : ShieldTableData.wallRides()) lines.add(ShieldList.WALL_RIDE_PREFIX + " " + ride);
         // MOVE-56: per-opponent pattern-matcher mimic.
         for (String name : ShieldTableData.patternMimics()) lines.add(ShieldList.PATTERN_MIMIC_PREFIX + " " + name);
         for (String name : ShieldTableData.patternMegas()) lines.add(ShieldList.PATTERN_MEGAS_PREFIX + " " + name);
