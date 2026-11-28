@@ -1,6 +1,6 @@
 # Queue pc-locks39: progress
 
-Updated 2026-11-28 01:10:03 PC time (01:10 UTC), runner pid 29436.
+Updated 2026-11-28 01:25:11 PC time (01:25 UTC), runner pid 29436.
 
 - `prep` done, exit 0 in 6 min
 - `livematch` done, exit 0 in 8 min
@@ -42,25 +42,25 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### lock
 
-**765 of 1248 battles** (61%), 0 failed. Running 1.5 h, 472 battles/h, about 1.0 h left (ends ~02:11 PC time). Last battle 0 min ago.
-Skipped turns a battle: 9.5 overall, first 100 10.3, last 100 8.7; engine disables 1.
+**919 of 1248 battles** (74%), 0 failed. Running 1.8 h, 528 battles/h, about 37 min left (ends ~02:02 PC time). Last battle 0 min ago.
+Skipped turns a battle: 9.5 overall, first 100 10.3, last 100 10.1; engine disables 1.
 
 | arm | battles | failed | share | vs control (APS) | 95% | stop-rule bound (z 3) | skips |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| c | 383 | 0 | 63.48 | - | - | - | 9.3 |
-| aa | 382 | 0 | 63.41 | -0.00 (13 robots) | ±0.01 | -0.01 .. +0.01 | 9.6 |
+| c | 457 | 0 | 63.70 | - | - | - | 9.3 |
+| aa | 462 | 0 | 63.61 | -0.00 (13 robots) | ±0.01 | -0.01 .. +0.01 | 9.7 |
 
 APS = mean difference over the robots read x 13 panel robots / 1217 pairings.
-A/A: aa - c -0.07 pts over 13 robots; 1% band ±0.60 (inside).
+A/A: aa - c -0.09 pts over 13 robots; 1% band ±0.54 (inside).
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 30` | halt | ok | 0 failed of 765 |
+| `fails 30` | halt | ok | 0 failed of 919 |
 | `dead 8` | halt | ok | every arm scoring |
-| `skips 60 over 24` | halt | ok | 10.2 a battle over the last 24 (first 24: 12.3) |
+| `skips 60 over 24` | halt | ok | 10.7 a battle over the last 24 (first 24: 12.3) |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 
-Stopping now would leave 483 battles unrun (about 1.0 h); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 329 battles unrun (about 37 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
