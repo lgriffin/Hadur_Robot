@@ -115,7 +115,11 @@ public class FieldGun {
     /** Ends the round's logs; the situations learned stay for the battle. */
     public void newRound() {
         for (EnemyHistory h : histories.values()) h.newRound();
+        roundOthers = 0;
     }
+
+    /** MGUN-28: the most opponents seen alive this round, so the dead are counted from it. */
+    private int roundOthers;
 
     public EnemyHistory history(String name) {
         EnemyHistory h = histories.get(name);
@@ -163,6 +167,7 @@ public class FieldGun {
     /** Every firing solution this tick, for every opponent fresh enough to shoot at. */
     public List<Solution> solutions(Point2D.Double me, double energy, int others,
                                     List<EnemyInfo> alive, long now) {
+        roundOthers = Math.max(roundOthers, others);
         List<Solution> out = new ArrayList<>();
         for (EnemyInfo e : alive) {
             if (e.age(now) > MAX_AGE) continue;
@@ -172,7 +177,10 @@ public class FieldGun {
             double power = MeleeEnergyPolicy.power(distance, energy, e.energy, others);
             if (power <= 0) continue;
             if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);
-            else power = MeleeEnergyPolicy.crowdPower(power, distance, energy, e.energy, others);
+            else {
+                power = MeleeEnergyPolicy.crowdPower(power, distance, energy, e.energy, others);
+                power = MeleeEnergyPolicy.openingPower(power, roundOthers - others, e.energy);
+            }
             if (onTeam && concord && TeamConcord.POWER && power > CONCORD_POWER && distance > CONCORD_CLOSE && !readsWell(e.name)) {
                 power = CONCORD_POWER;
             }
