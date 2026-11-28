@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-300: the pc-melee-open card (MMOVE-31, MGUN-28) is complete before it reaches the PC. */
+/** BENCH-300: the pc-melee-open card (MMOVE-31) is complete before it reaches the PC. */
 class MeleeOpenPlanTest {
 
     private static final Path QUEUE = Path.of("plans/pc-melee-open.queue");
@@ -21,7 +21,7 @@ class MeleeOpenPlanTest {
     @DisplayName("the steps chain from prep through every arm to a results PR, on the version the pom names")
     void stepsChain() throws IOException {
         String queue = Files.readString(QUEUE);
-        String[] steps = {"moprep", "moaa", "mobb", "moml", "molo", "molo5", "moread", "mopr"};
+        String[] steps = {"moprep", "moaa", "mobb", "moml", "moread", "mopr"};
         for (int i = 1; i < steps.length; i++) {
             int at = queue.indexOf("\n" + steps[i] + " ");
             assertTrue(at >= 0, steps[i]);
@@ -31,12 +31,12 @@ class MeleeOpenPlanTest {
         }
         assertTrue(queue.contains("<robot.release>"), "the version comes from the pom");
         assertFalse(queue.matches("(?s).*Hadur_3\\.\\d.*"), "no robot version is hard-coded");
-        for (String a : List.of("aa", "bb", "mlane", "mlow", "mlow5")) {
+        for (String a : List.of("aa", "bb", "mlane")) {
             assertTrue(queue.contains("bash ./build-ablation.sh " + a + " "), a + " is built");
         }
         assertTrue(queue.contains("echo \"$V\" > work/melee-open.version") && queue.contains("V=$(cat work/melee-open.version)"));
         assertTrue(queue.contains("C=${MELEE_WORKERS}"));
-        assertTrue(queue.contains("screen \"$W\"-aa --base2 \"$W\"-bb --arm bb=\"$W\"-bb --arm ml=\"$W\"-ml --arm lo=\"$W\"-lo --arm lo5=\"$W\"-lo5 --census"));
+        assertTrue(queue.contains("screen \"$W\"-aa --base2 \"$W\"-bb --arm bb=\"$W\"-bb --arm ml=\"$W\"-ml --census"));
         assertTrue(queue.contains("--seeds 6 --gain 0.0 --survival-slack 1"));
         assertTrue(queue.contains("open_results_pr.sh claude/pc-melee-open-results"));
     }
@@ -46,7 +46,7 @@ class MeleeOpenPlanTest {
     @DisplayName("every arm step declares its stop rules")
     void stopRules() throws IOException {
         String queue = Files.readString(QUEUE);
-        for (String step : List.of("moaa", "mobb", "moml", "molo", "molo5")) {
+        for (String step : List.of("moaa", "mobb", "moml")) {
             int at = queue.indexOf("\n" + step + " ");
             int next = queue.indexOf("\nmo", at + 1);
             String body = queue.substring(at, next);
@@ -70,13 +70,11 @@ class MeleeOpenPlanTest {
 
     @Test
     @Tag("BENCH-300")
-    @DisplayName("the arms switch on MMOVE-31 and MGUN-28, both off on master")
+    @DisplayName("the ml arm switches on MMOVE-31, off on master")
     void ablation() throws IOException {
         String script = Files.readString(Path.of("build-ablation.sh"));
         assertTrue(script.contains("\"public static final boolean FIRE_LANES = false;\" \"public static final boolean FIRE_LANES = true;\""));
-        assertTrue(script.contains("\"public static final boolean OPENING_LOW = false;\" \"public static final boolean OPENING_LOW = true;\""));
         String melee = "../hadur-core/src/main/java/hadur117/core/melee/";
         assertTrue(Files.readString(Path.of(melee + "MinimumRiskMovement.java")).contains("public static final boolean FIRE_LANES = false;"));
-        assertTrue(Files.readString(Path.of(melee + "MeleeEnergyPolicy.java")).contains("public static final boolean OPENING_LOW = false;"));
     }
 }

@@ -1140,3 +1140,23 @@ PC read (`pc-melee-race`, PR #1013, live CPU constant): ez +0.28 ± 0.13 APS, en
 11% to 65%. MEND-6 ships on at ez: the `ENDGAME_RACE` switch, the `mrace`/`mracex` arms and the
 card (BENCH-273) are removed, the three melee replay fixtures re-recorded; duel and team fixtures
 bit for bit.
+
+## Shoot almost nothing until three opponents die (MGUN-28, 2026-11-28)
+
+The question: if Hadur fires only power-0.1 shots (finishers excepted) until three of the round's
+opponents have died, then engages as normal, does it reach the endgame with more energy and win
+more of it? MGUN-28 capped every non-finisher shot at the power set until that many opponents were
+dead, with three or more still alive. Cloud screen: 12 of the census fields x 2 seeds (29491-92),
+35 rounds, each arm paired battle for battle with aa.
+
+| Arm | Dead before engaging | Opening power | APS vs aa | 1-30 endgame wins | Energy into the endgame | Others outlived |
+|---|---|---|---|---|---|---|
+| lo | 3 | 0.1 | -5.66 ± 0.74 | -12.8 points | -9.8 | -5.3 points |
+| lo2 | 2 | 0.1 | -4.30 ± 0.90 | - | - | - |
+| lo5 | 3 | 0.5 | -3.88 ± 0.80 | -5.4 points | -4.5 | -3.3 points |
+
+All three fail, by margins far outside the noise, and the opening at 0.5 fails too. Holding fire
+does not keep Hadur out of the crowd's aim: it still takes the stray fire, but it no longer gains
+energy back from hits or bullet damage score, so it arrives in the endgame weaker, not stronger.
+This matches MGUN-27 above (-5.7). The `OPENING_LOW` switch, its arms and its test are removed
+(retired.md), and the `pc-melee-open` card (BENCH-300) is trimmed to the fire lanes (MMOVE-31) alone.
