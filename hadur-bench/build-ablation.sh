@@ -192,6 +192,16 @@
 #         the build before LAST shipped (FORCE_LAST, and Mode.LAST off every shipped entry). Suffix nla.
 #   tmnoclose (team only) TMODE-42 off: the hunt place 350 px on every team, the build before CLOSE
 #         shipped. Suffix ncl.
+#   tmfamily (team only) T7, TMODE-65: a family team in place of five identical members, chosen by $FAMILY.
+#         The build writes thin member classes (no code of their own, Hadur's brain unchanged) and
+#         rewrites the .team file; the shipped jar and the solo robot are untouched.
+#           names   five classes, one brain: hadur117.Hadur (leader), HadurB, HadurC, HadurD, HadurE.
+#                   Suffix fn. An enemy gun that pools what it learns by robot class sees five
+#                   robots instead of one.
+#           droids  two spotters and three gunners: hadur117.Hadur (leader), HadurB, and HadurDroidC,
+#                   HadurDroidD, HadurDroidE, which implement robocode.Droid (no radar, 120 energy
+#                   instead of 100). Suffix fd. The droids aim and dodge on the spotters' shared
+#                   sightings (MGUN-8, WORLD-4).
 #   tmlock (team only) the confirmed table, $TEAM_MODE_LOCKED (default work/team-modes-locked.java,
 #         written by tools/team_modes.py lock). Suffix mk.
 #   mrate (melee and team) fire more often: the controller fires on a scan up to 8 ticks old (was 5;
@@ -386,6 +396,8 @@ edit_last() {
 base="$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' "$src/hadur-robot/pom.xml")"
 version="$base"
 IFS=, read -ra list <<< "$1"
+# tmfamily: the member classes' properties files, versioned with Hadur.properties below.
+family_props=()
 # The fire seam's turn tolerance, which gtol widens; gwhy reads the same one.
 gtolerance="0.05"
 [[ ",$1," == *,gtol,* ]] && gtolerance="(in.others() >= 3 && core.livingTeammates().isEmpty() ? 2.0 : 0.05)"
@@ -674,6 +686,27 @@ for a in "${list[@]}"; do
             if grep -qF "static final double HUNT_CLOSE = 250;" "$trisk"; then
             edit "$trisk" "static final double HUNT_CLOSE = 250;" "static final double HUNT_CLOSE = $r;"
             fi
+            ;;
+        tmfamily)
+            fam="${FAMILY:-names}"
+            case "$fam" in
+                names)  version="${version}fn"; family=(HadurB HadurC HadurD HadurE); droids=() ;;
+                droids) version="${version}fd"; family=(HadurB); droids=(HadurDroidC HadurDroidD HadurDroidE) ;;
+                *) echo "tmfamily: unknown FAMILY $fam (names, droids)" >&2; exit 2 ;;
+            esac
+            members="$pkg.Hadur $base"
+            for m in "${family[@]}" "${droids[@]}"; do
+                impl=""
+                for d in "${droids[@]}"; do [[ "$m" == "$d" ]] && impl=" implements robocode.Droid"; done
+                printf '%s\n' "package $pkg;" "" \
+                    "/** TMODE-65 family member (bench build only): Hadur under its own class name${impl:+, as a Droid}. */" \
+                    "public class $m extends Hadur${impl} {}" > "$src/hadur-robot/src/main/java/$pkg/$m.java"
+                sed -e "s/^robot.classname=.*/robot.classname=$pkg.$m/" "$src/hadur-robot/src/main/resources/$pkg/Hadur.properties" \
+                    > "$src/hadur-robot/src/main/resources/$pkg/$m.properties"
+                family_props+=("$m.properties")
+                members="$members,$pkg.$m $base"
+            done
+            sed -i "s/^team.members=.*/team.members=$members/" "$src/hadur-robot/src/team/HadurTeam.team"
             ;;
         tmtab|tmlock)
             if [[ "$a" == tmtab ]]; then table="${TEAM_MODE_TABLE:-$here/work/team-modes-screen.java}"; version="${version}${TEAM_MODE_SUFFIX:-mt}"
@@ -1122,12 +1155,12 @@ for row in open(f):
     S[p]=s[:hits[0].start()]+s[hits[0].end():]
 for p in S: open(p,"w").write(S[p])' "$tabledata" "$listdata" "$LINE_DROP" || exit 2
             version="${version}td" ;;
-        *) echo "unknown ablation: $a (aa, bb, rwall, burn, clinch, clinch100, clinch50, clinchlong, tmtight, tmnotight, tmnocloserr, nowarm, ram2, mir1, flat, shield-all, nodur, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, icoff, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mlane, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, fgaplist, rhlist, rwlist, orlist, rflist, rfanlist, rbendlist, pmlist, pmxlist, aimwlist, hoflist, fglist, copylist, tdrop|stinylist, sbklist, srblist)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, rwall, burn, clinch, clinch100, clinch50, clinchlong, tmtight, tmnotight, tmnocloserr, nowarm, ram2, mir1, flat, shield-all, nodur, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, tmfamily, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, icoff, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mlane, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, fgaplist, rhlist, rwlist, orlist, rflist, rfanlist, rbendlist, pmlist, pmxlist, aimwlist, hoflist, fglist, copylist, tdrop|stinylist, sbklist, srblist)" >&2; exit 2 ;;
     esac
 done
 
 edit "$src/hadur-robot/pom.xml" "<robot.release>$base</robot.release>" "<robot.release>$version</robot.release>"
-for f in Hadur.properties HadurRecorder.properties; do
+for f in Hadur.properties HadurRecorder.properties "${family_props[@]}"; do
     edit "$src/hadur-robot/src/main/resources/$pkg/$f" "robot.version=$base" "robot.version=$version"
 done
 team="$src/hadur-robot/src/team/HadurTeam.team"

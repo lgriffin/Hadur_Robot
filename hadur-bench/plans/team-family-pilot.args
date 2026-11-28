@@ -1,0 +1,31 @@
+# PC card pc-team-family (BENCH-301): the pilot, arm @A@ (fn or fd) on the top eight teams, 8 seeds from 45600, 12 rounds, against master (the aa build). Template: the card's prep writes the work copy with @V@ and @A@.
+--team
+true
+--seeds
+8
+--seed-base
+45600
+--rounds
+12
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+plans/team-family-pilot-set.txt
+--robot-jar
+bisect/hadur117.HadurTeam_@V@@A@.jar
+--robot
+hadur117.HadurTeam @V@@A@
+--member
+hadur117.Hadur
+--out
+work/team-family-@V@-pep-@A@
+--report
+../docs/bench/local/team-family-pep-@A@.md
+--baseline
+bisect/hadur117.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur117.HadurTeam @V@aa
