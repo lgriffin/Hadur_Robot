@@ -49,13 +49,18 @@ enemy; the end of the robot pointing away leads, so the first tick moves. `MoveD
 | Panel | Arm | Pairs | vs c | vs aa |
 |---|---|---|---|---|
 | 54 easy robots, 30 seeds | contact break | 1,620 | +0.11 +- 0.05 | +0.08 +- 0.05 |
+| 54 easy robots, 12 more seeds (second box) | contact break | 648 | +0.06 +- 0.07 | +0.09 +- 0.08 |
 | 54 other easy robots, 12 seeds | contact break | 648 | +0.02 +- 0.08 | +0.12 +- 0.09 |
 | 54 easy robots, 12 seeds | contact break + fin + rwall | 648 | +0.21 +- 0.08 | +0.19 +- 0.07 |
+| 54 easy robots, 12 more seeds | contact break + fin + rwall | 648 | +0.18 +- 0.08 | +0.17 +- 0.08 |
 | 30 band 80-98% + 12 rammers, 6 seeds | contact break | 252 | +0.28 +- 0.25 | +0.09 +- 0.28 |
-| 40 band 85-98%, 12 seeds | contact break | 480 | +0.26 +- 0.23 | +0.05 +- 0.22 |
+| 40 band 85-98%, 24 seeds | contact break | 960 | +0.15 +- 0.16 | +0.11 +- 0.17 |
+| 30 band 80-98% + 12 rammers, 12 more seeds | contact break | 504 | +0.06 +- 0.18 | +0.12 +- 0.21 |
 | 40 robots with ram lines, 12 seeds | contact break | 480 | +0.03 +- 0.12 | +0.00 +- 0.12 |
 
-Ticks in contact on the easy panel fall from 23 to 12 a battle. Wider triggers (100 px until 160) read level.
+fin keeps normal distance when finishing a weak enemy; rwall waits out the last waves before ramming a disabled one. Stacked on the contact break they add +0.16 +- 0.07 and +0.13 +- 0.07 against the contact break alone in the two blocks, and their bullet damage falls about 8 a battle.
+
+Ticks in contact on the easy panel fall from 23 to 12 a battle. Other triggers read level with it or worse: 50 px until 90 (+0.01 +- 0.07 against it), 62 until 160 (-0.05 +- 0.07), 100 until 160 (level with master).
 
 Closed on the way: the simple-aim prior for every opponent (AIM_PRIOR 1.0) did not replicate on fresh seeds;
 END-1 and MOVE-46 for all, each alone, read level; power 0.1 against an enemy under 20 energy cost 0.19 against

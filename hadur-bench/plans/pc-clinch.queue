@@ -14,12 +14,14 @@
 #   - Cloud reads at 0.7x the live turn time, 54 random easy robots (98%+ for BeepBoop), paired by robot and seed:
 #     cb +0.08 +- 0.05 points a robot vs aa, +0.11 +- 0.05 vs c over 30 seeds (1,620 pairs; ticks in contact 23 -> 12,
 #     their bullet damage -3.3 a battle). A holdout of 54 other easy robots, 12 seeds: +0.12 +- 0.09 vs aa, +0.02 +- 0.08
-#     vs c. Guards with no harm shown: 30 robots of the 80-98% band and 12 rammers with ram lines (+0.09 +- 0.28), 40
-#     more of the 85-98% band over 12 seeds (+0.16 [-0.04, +0.35] vs mean(c, aa)), 40 rammers with ram lines over 12
-#     seeds (+0.00 +- 0.12; ram damage taken -2.4, bullet damage +1.2).
+#     vs c. Guards with no harm shown: 30 robots of the 80-98% band and 12 rammers with ram lines
+#     over 18 seeds (+0.09 +- 0.28 and +0.12 +- 0.21 vs aa in two blocks), 40 more of the 85-98% band over 24 seeds
+#     (+0.11 [-0.06, +0.28] vs aa), 40 rammers with ram lines over 12 seeds (+0.00 +- 0.12; ram damage taken -2.4,
+#     bullet damage +1.2).
 #   - cbe adds two existing switches that read level alone (fin: no close-in to finish; rwall: wait for the last
-#     waves before ramming a disabled enemy). Stacked on the contact break, 12 seeds on the easy panel: +0.19 +- 0.07
-#     vs aa, +0.16 +- 0.07 vs cb, their bullet damage -7.9 a battle.
+#     waves before ramming a disabled enemy). Stacked on the contact break, on the easy panel in two blocks of 12 fresh
+#     seeds: +0.19 +- 0.07 and +0.17 +- 0.08 vs aa, +0.16 +- 0.07 and +0.13 +- 0.07 vs cb, their bullet damage about
+#     -8 a battle.
 #   - Risk: the effect is about 0.1 point a robot, so it shows only pooled over the field; per-robot reads are noise.
 #     The card measures it where it counts, on every robot live clients play.
 # gate: cb and cbe each at +0.02 APS, the arm minus pooled c and aa over the 1,212 robots / 1,217 pairings, 95% low end
