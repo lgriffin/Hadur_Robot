@@ -149,6 +149,15 @@ public final class ShieldList {
      * distance in px, then the name ({@code "px name"}). Held to [{@link #DIST_PIN_MIN}, {@link #DIST_PIN_MAX}].
      */
     public static final String DIST_PIN_PREFIX = "dist-pin:";
+    /**
+     * POW-21: a line starting with this gives an opponent's least gap between the duel's real shots, in ticks, then the
+     * name ({@code "ticks name"}). Held to [{@link #FIRE_GAP_MIN}, {@link #FIRE_GAP_MAX}].
+     */
+    public static final String FIRE_GAP_PREFIX = "fire-gap:";
+    /** POW-21: the shortest gap a line may ask for, in ticks (about the gun's own cooling at 0.1 power). */
+    public static final int FIRE_GAP_MIN = 12;
+    /** POW-21: the longest gap a line may ask for, in ticks. */
+    public static final int FIRE_GAP_MAX = 200;
     /** DIST-4: the closest a pin may ask for, in px. */
     public static final double DIST_PIN_MIN = 150;
     /** DIST-4: the furthest a pin may ask for, in px. */
@@ -236,6 +245,8 @@ public final class ShieldList {
     private Map<String, double[]> powerBands = Collections.emptyMap();
     /** DIST-4: name to its pinned duel distance, in px. */
     private Map<String, Double> distPins = Collections.emptyMap();
+    /** POW-21: name to its least gap between real shots, in ticks. */
+    private Map<String, Integer> fireGaps = Collections.emptyMap();
     /** SHIELD-27: the opponents, by name without version, shield mode breaks off a close start against (every int switch bit is taken). */
     private Set<String> closeBreaks = Collections.emptySet();
     /** SHIELD-35: the opponents, by name without version, shield mode yields the drive to while they are close. */
@@ -270,6 +281,7 @@ public final class ShieldList {
         Map<String, String> copies = new TreeMap<>();
         Map<String, double[]> powerBands = new TreeMap<>();
         Map<String, Double> distPins = new TreeMap<>();
+        Map<String, Integer> fireGaps = new TreeMap<>();
         Set<String> closeBreaks = new TreeSet<>();
         Set<String> closeYields = new TreeSet<>();
         Set<String> freeGuns = new TreeSet<>();
@@ -325,6 +337,18 @@ public final class ShieldList {
                 if (entry.startsWith(CLOSE_BREAK_PREFIX)) {
                     String name = withoutVersion(entry.substring(CLOSE_BREAK_PREFIX.length()).trim());
                     if (!name.isEmpty() && closeBreaks.size() < MAX_ENTRIES) closeBreaks.add(name);
+                    continue;
+                }
+                if (entry.startsWith(FIRE_GAP_PREFIX)) {
+                    String[] p = entry.substring(FIRE_GAP_PREFIX.length()).trim().split(" ", 2);
+                    if (p.length == 2 && !p[1].isEmpty() && fireGaps.size() < MAX_ENTRIES) {
+                        try {
+                            int ticks = Integer.parseInt(p[0]);
+                            if (ticks >= FIRE_GAP_MIN && ticks <= FIRE_GAP_MAX) fireGaps.put(withoutVersion(p[1]), ticks);
+                        } catch (NumberFormatException e) {
+                            // A malformed fire-gap line is skipped.
+                        }
+                    }
                     continue;
                 }
                 if (entry.startsWith(DIST_PIN_PREFIX)) {
@@ -431,7 +455,7 @@ public final class ShieldList {
         }
         if (entries.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()
             && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty() && surfKeys.isEmpty() && copies.isEmpty()
-            && powerBands.isEmpty() && distPins.isEmpty() && closeBreaks.isEmpty()
+            && powerBands.isEmpty() && distPins.isEmpty() && fireGaps.isEmpty() && closeBreaks.isEmpty()
             && closeYields.isEmpty() && freeGuns.isEmpty()) return NONE;
         ShieldList list = new ShieldList(Collections.unmodifiableSet(entries),
             Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims), Collections.unmodifiableSet(dodges),
@@ -442,6 +466,7 @@ public final class ShieldList {
         list.copies = Collections.unmodifiableMap(copies);
         list.powerBands = Collections.unmodifiableMap(powerBands);
         list.distPins = Collections.unmodifiableMap(distPins);
+        list.fireGaps = Collections.unmodifiableMap(fireGaps);
         list.closeBreaks = Collections.unmodifiableSet(closeBreaks);
         list.closeYields = Collections.unmodifiableSet(closeYields);
         list.freeGuns = Collections.unmodifiableSet(freeGuns);
@@ -472,6 +497,20 @@ public final class ShieldList {
         if (robotName == null || moves.isEmpty()) return false;
         String name = robotName.trim().replaceAll("\\s+", " ");
         return moves.contains(name) || moves.contains(withoutVersion(name));
+    }
+
+    /**
+     * POW-21: {@code robotName}'s least gap between the duel's real shots, by the rule of {@link #matches}.
+     *
+     * @param robotName the scanned robot's name, or null
+     * @return the gap in ticks, or 0 when none is shipped
+     */
+    public int fireGapFor(String robotName) {
+        if (robotName == null || fireGaps.isEmpty()) return 0;
+        String name = robotName.trim().replaceAll("\\s+", " ");
+        Integer ticks = fireGaps.get(name);
+        if (ticks == null) ticks = fireGaps.get(withoutVersion(name));
+        return ticks == null ? 0 : ticks;
     }
 
     /**

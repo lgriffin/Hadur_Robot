@@ -68,8 +68,6 @@ final class TeamRisk {
 
     static final double FINISH_ENERGY = 30;
 
-    /** TMODE-64: under SWARM the last enemy pulls every member down to this distance. */
-    static final double SWARM_FLOOR = 150;
 
     /** TMODE-5: the prey's cost weighs its energy this much against its distance (NightmareTeam's 1.2). */
     static final double PACK_ENERGY_WEIGHT = 1.2;
@@ -124,8 +122,6 @@ final class TeamRisk {
         final double strength;
         /** Whether the pull scales the bullets' risk too; TMODE-13's leaves it as it is. */
         final boolean scalesBullets;
-        /** TMODE-64: whether the melee posture's term is left out of the risk while this pull plays. */
-        boolean swarm;
 
         Pull(Point2D.Double at, double floor, double strength) {
             this(at, floor, strength, true);
@@ -185,13 +181,6 @@ final class TeamRisk {
     /** As above, with {@code name} this member's name for TMODE-13's order (null: first). */
     static Pull pull(Point2D.Double me, String name, double energy, int others, List<EnemyInfo> enemies,
                      long now, List<Roster.Mate> mates, Set<TeamModes.Mode> modes) {
-        // TMODE-64: under SWARM every member closes on the one enemy left, whatever its own energy.
-        if (modes.contains(TeamModes.Mode.SWARM) && others == 1 && enemies.size() == 1
-                && enemies.get(0).age(now) < CAP_MAX_AGE) {
-            Pull swarm = new Pull(enemies.get(0).location, SWARM_FLOOR, FINISH_PULL);
-            swarm.swarm = true;
-            return swarm;
-        }
         // TMODE-47: under LAST the members close on the one enemy left as FINISH would.
         if (modes.contains(TeamModes.Mode.LAST) && others == 1 && enemies.size() == 1
                 && enemies.get(0).age(now) < CAP_MAX_AGE && energy >= FINISH_ENERGY) {

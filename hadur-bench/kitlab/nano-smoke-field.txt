@@ -1,0 +1,10 @@
+# kitlab_fields.py: smoke: 8 nanos
+# name | role (top:weight or band:weight) | jar | weight; the weighted mean of score share estimates APS
+jk.sheldor.nano.Yatagan 1.2.3 | top:1 | jk.sheldor.nano.Yatagan_1.2.3.jar | 1.0000
+nz.jdc.nano.PralDeGuerre 1.2 | top:1 | nz.jdc.nano.PralDeGuerre_1.2.jar | 1.0000
+mld.jdc.nano.LittleBlackBook 1.0 | top:1 | mld.jdc.nano.LittleBlackBook_1.0.jar | 1.0000
+nz.jdc.nano.PatternAdept 1.0 | top:1 | nz.jdc.nano.PatternAdept_1.0.jar | 1.0000
+oog.nano.Caligula 1.15 | top:1 | oog.nano.Caligula_1.15.jar | 1.0000
+robar.nano.Pugio 1.49 | top:1 | robar.nano.Pugio_1.49.jar | 1.0000
+jk.nano.Machete 2.0 | top:1 | jk.nano.Machete_2.0.jar | 1.0000
+kawigi.nano.ThnikkaBot 0.9 | top:1 | kawigi.nano.ThnikkaBot_0.9.jar | 1.0000

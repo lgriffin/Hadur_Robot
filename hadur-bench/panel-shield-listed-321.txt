@@ -304,3 +304,4 @@ hadur117.mini.JayLexi 0.6 | pc-locks9 | hadur117.mini.JayLexi_0.6.jar
 kawigi.nano.ThnikkaBot 0.9 | pc-locks10 | kawigi.nano.ThnikkaBot_0.9.jar
 tkt.RedShift 1.1.CS.0 | pc-locks13 | tkt.RedShift_1.1.CS.0.jar
 dmh.robocode.robot.YellowBird 0.12 | pc-locks35 | dmh.robocode.robot.YellowBird_0.12.jar
+nz.jdc.nano.NeophytePRAL 1.4 | pc-locks39 | nz.jdc.nano.NeophytePRAL_1.4.jar

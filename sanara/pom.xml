@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.lgriffin</groupId>
+        <artifactId>hadur-parent</artifactId>
+        <version>2.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>sanara</artifactId>
+    <name>Sanara</name>
+    <description>hadur117.nano.Sanara, a NanoRumble 1v1 entry: one class within 249 bytes, written as
+        bytecode by SanaraGen (docs/sanara.md). Separate from Hadur and the other small bots.</description>
+
+    <properties>
+        <!-- The robot's version: the jar is named for it and Sanara.properties takes it by filtering. -->
+        <sanara.release>0.1</sanara.release>
+        <!-- NanoRumble's limit, as Robocode's codesize tool counts the shipped jar (SANARA-1). -->
+        <sanara.codesize.limit>249</sanara.codesize.limit>
+        <!-- Rating clients still run Java 8; the generator targets it, the shipped class is version 49. -->
+        <maven.compiler.release>8</maven.compiler.release>
+        <sanara.jar>${project.build.directory}/hadur117.nano.Sanara_${sanara.release}.jar</sanara.jar>
+        <codesize.version>1.3.1</codesize.version>
+        <asm.version>9.7.1</asm.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Only the generator uses ASM; the robot does not. -->
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>${asm.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>codesize</artifactId>
+            <version>${codesize.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <!-- The shipped class: SanaraGen writes it from the orbit list. -->
+                    <execution>
+                        <id>robot-class</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <java classname="hadur117.nano.gen.SanaraGen" classpathref="maven.compile.classpath"
+                                      fork="true" failonerror="true">
+                                    <arg value="${project.build.outputDirectory}/hadur117/nano/Sanara.class"/>
+                                    <arg value="${project.basedir}/src/main/gen/sanara-orbit.txt"/>
+                                </java>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <!-- The jar the rumble takes: the class, its properties and its readable source. -->
+                    <execution>
+                        <id>robot-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <jar destfile="${sanara.jar}">
+                                    <fileset dir="${project.build.outputDirectory}">
+                                        <include name="hadur117/nano/Sanara.class"/>
+                                        <include name="hadur117/nano/Sanara.properties"/>
+                                    </fileset>
+                                    <fileset dir="${project.basedir}/src/main/source">
+                                        <include name="hadur117/nano/Sanara.java"/>
+                                    </fileset>
+                                </jar>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- The gate on the shipped jar (SANARA-1 to SANARA-3). -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.5.2</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <sanara.jar>${sanara.jar}</sanara.jar>
+                        <sanara.release>${sanara.release}</sanara.release>
+                        <sanara.codesize.limit>${sanara.codesize.limit}</sanara.codesize.limit>
+                    </systemPropertyVariables>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

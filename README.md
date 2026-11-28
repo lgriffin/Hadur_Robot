@@ -97,6 +97,7 @@ Live results as of 2026-11-02 16:00 UTC, Hadur, HadurTeam and Sanaro as of 2026-
 | [**Sanaro**](sanaro/) `hadur117.nano.Sanaro` | NanoMelee | 246 B of 249 | **joint 1st of 90**, 66.40 ± 0.39 (0.5), tied with d414.nano.Quantum (66.40), PWIN 100% | [README](sanaro/README.md) |
 | [**JayLexi**](jaylexi/) `hadur117.mini.JayLexi` | MiniRumble (1v1) | 1,486 B of 1,499 | **1st of 670**, 89.26 ± 0.11 (1.3), 0.32 ahead of sheldor.mini.FoilistMC | [README](jaylexi/README.md) |
 | [**Eveimear**](eveimear/) `hadur117.micro.Eveimear` | MicroRumble (1v1) | 749 B of 749 | **1st of 515**, 86.20 ± 0.17 (0.6), 0.64 ahead of jk.micro.Cotillion | [README](eveimear/README.md) |
+| [**Sanara**](sanara/) `hadur117.nano.Sanara` | NanoRumble (1v1) | 249 B of 249 | not entered; 0.1 benches 78.4 on the whole division | [README](sanara/README.md) |
 
 - **TwinSaor** is two copies of one Saor-derived robot sharing radar and targets, with a range and
   mode table per opposing team ([docs/twinsaor.md](docs/twinsaor.md)).
@@ -107,6 +108,8 @@ Live results as of 2026-11-02 16:00 UTC, Hadur, HadurTeam and Sanaro as of 2026-
   and holds its target by name until a robot dies, with bullet power falling with distance ([docs/sanaro.md](docs/sanaro.md)).
 - **JayLexi** (a wave surfer with a GuessFactor gun) and **Eveimear** (Cotillion's stop-and-go movement and multiple-choice pattern matcher, with a per-robot mode table)
   are 1v1 size bots from the kitlab design ([docs/kitlab.md](docs/kitlab.md)).
+- **Sanara** is a nano duellist: an orbit that reverses on enemy shots or holds its line by opponent,
+  and a symbolic pattern matcher replayed as an angle, written as bytecode to fit ([docs/sanara.md](docs/sanara.md)).
 - **Sepia** ([sepia/](sepia/), `hadur117.Sepia`, not yet entered in any rumble) is an experimental 1v1 robot
   on Hadur's kernel. It fixes a landing for every enemy shot and fires 0.1 "ink" bullets to shoot that shot
   down before it reaches the landing ([docs/sepia.md](docs/sepia.md), design in

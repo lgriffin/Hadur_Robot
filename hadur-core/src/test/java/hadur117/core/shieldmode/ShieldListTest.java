@@ -298,6 +298,23 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("POW-21")
+    @DisplayName("fire-gap lines set one least gap between real duel shots per opponent, held to 12-200 ticks")
+    void perOpponentFireGap() {
+        ShieldList l = ShieldList.parse(List.of("fire-gap: 45 a.B 1.0", "fire-gap: 90 c.D", "fire-gap: 5 e.F",
+            "fire-gap: 300 i.J", "fire-gap: x g.H", "fire-gap: 45", "fire-gap:"));
+        assertEquals(45, l.fireGapFor("a.B 1.0"));
+        assertEquals(45, l.fireGapFor("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertEquals(90, l.fireGapFor("c.D 2.3"), "a bare name matches every version");
+        assertEquals(0, l.fireGapFor("e.F 1.0"), "a gap under 12 ticks is refused");
+        assertEquals(0, l.fireGapFor("i.J 1.0"), "a gap over 200 ticks is refused");
+        assertEquals(0, l.fireGapFor("g.H 1.0"), "a malformed line is skipped");
+        assertEquals(0, l.fireGapFor(null));
+        assertEquals(0, ShieldList.NONE.fireGapFor("a.B 1.0"));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+    }
+
+    @Test
     @Tag("DIST-4")
     @DisplayName("dist-pin lines pin one duel distance per opponent, matched as shield entries, held to 150-900 px")
     void perOpponentDistPin() {

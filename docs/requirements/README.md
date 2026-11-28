@@ -13,12 +13,13 @@ Hadur's requirements, written in EARS and traced to the tests that prove them. O
 | [TwinSaor (Twin Duel)](twinsaor.md) | 14 | TWIN |
 | [Deise (MiniMelee)](deise.md) | 17 | DEISE |
 | [Sanaro (NanoMelee)](sanaro.md) | 14 | SANARO |
+| [Sanara (NanoRumble)](sanara.md) | 3 | SANARA |
 | [JayLexi (MiniRumble)](jaylexi.md) | 19 | JAYLEXI |
 | [Eveimear (MicroRumble)](eveimear.md) | 13 | EVEIMEAR |
 | [Sepia (1v1)](sepia.md) | 20 | INK JET SEPIA STRIKE SURF |
 | [Retired](retired.md) | 185 | |
 
-589 active requirements, 185 retired.
+592 active requirements, 185 retired.
 
 ## Writing a requirement
 

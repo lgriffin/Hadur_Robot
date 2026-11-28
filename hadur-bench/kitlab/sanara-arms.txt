@@ -1,0 +1,31 @@
+# Sanara step 2 arms (docs/sanara.md): one arm a line, NAME | what it changes | sed over
+# kitlab/arms/Sanara-0.java (empty: the base). Built by kitlab/sanara_arms.sh as
+# hadur117.nano.Sanara <NAME>; all over the 249 B limit on purpose: the screen measures play,
+# the fit (step 3) measures bytes. Read each arm paired against c (the base) and aa (a second copy
+# of the base, the noise floor), on the same field and seeds.
+c | base 0.0: reversal chance 38/64 at every range, ideal 420 px, power 3 inside 200 px else 2, key 30, tick-by-tick replay |
+aa | copy of the base (A/A noise floor) |
+p4 | flat reversal chance 26/64 (0.41) | s/\\u0026/\\u001a/g
+p8 | flat reversal chance 51/64 (0.80) | s/\\u0026/\\u0033/g
+ptab | reversal chance rises with distance: 0.25 near, 0.8 beyond 700 px | s/static final String FLIP = ".*";/static final String FLIP = "\\u0010\\u0010\\u0018\\u0020\\u0026\\u002c\\u0030\\u0033\\u0033\\u0033";/
+tick | also reverse with chance 0.02 on any tick | s/static final double TICK = 0;/static final double TICK = 0.02;/
+d350 | ideal distance 350 px | s/static final double IDEAL = 420;/static final double IDEAL = 350;/
+d520 | ideal distance 520 px | s/static final double IDEAL = 420;/static final double IDEAL = 520;/
+short | fitted gun: hold the matched tick's lateral speed over the flight | s/static final int REPLAY = 1;/static final int REPLAY = 0;/
+key20 | longest pattern key 20 ticks | s/static final int KEY = 30;/static final int KEY = 20;/
+pow2 | power 2 at every range | s/static final String POWER = ".*";/static final String POWER = "\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020";/
+jit | aim jitter of 0.06 rad (bullet catchers) | s/static final double JITTER = 0;/static final double JITTER = 0.06;/
+cap | keep only the last 4,000 ticks of history (CPU in late rounds) | s/static final int CAP = 0;/static final int CAP = 4000;/
+p0 | no reversal on shots: plain orbit (beats head-on guns, the probe profile's mid-field finding) | s/static final String FLIP = ".*";/static final String FLIP = "\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000";/
+bandit | per round, play the movement mode (reverse on shots or plain orbit) that took less fire per tick | s/static final int BANDIT = 0;/static final int BANDIT = 1;/
+bd9 | bandit, tallies decay 0.9 a round | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double DECAY = 1;/static final double DECAY = 0.9;/
+bd7 | bandit, tallies decay 0.7 a round | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double DECAY = 1;/static final double DECAY = 0.7;/
+b350 | bandit + ideal distance 350 px | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double IDEAL = 420;/static final double IDEAL = 350;/
+b300 | bandit + ideal distance 300 px | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double IDEAL = 420;/static final double IDEAL = 300;/
+b250 | bandit + ideal distance 250 px | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double IDEAL = 420;/static final double IDEAL = 250;/
+b350p4 | bandit + 350 px + reversal chance 0.41 | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double IDEAL = 420;/static final double IDEAL = 350;/;s/\\u0026/\\u001a/g
+b350pw | bandit + 350 px + power 3 inside 400 px | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double IDEAL = 420;/static final double IDEAL = 350;/;s/static final String POWER = ".*";/static final String POWER = "\\u0030\\u0030\\u0030\\u0030\\u0020\\u0020\\u0020\\u0020\\u0020\\u0020";/
+b200 | bandit + ideal distance 200 px | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double IDEAL = 420;/static final double IDEAL = 200;/
+b150 | bandit + ideal distance 150 px | s/static final int BANDIT = 0;/static final int BANDIT = 1;/;s/static final double IDEAL = 420;/static final double IDEAL = 150;/
+r300 | ideal distance 300 px, always reverse on shots (mode 0) | s/static final double IDEAL = 420;/static final double IDEAL = 300;/
+o300 | ideal distance 300 px, always plain orbit (mode 1) | s/static final double IDEAL = 420;/static final double IDEAL = 300;/;s/static int mode;/static int mode = 1;/
