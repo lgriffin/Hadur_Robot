@@ -57,8 +57,8 @@ class ShieldListResourceTest {
         // pc-shards (PR #840): BlackSwans, Manta, LostLion and AralR.
         // pc-locks round 6 (PR #890): Recrimpo. pc-locks round 8 (PR #905): Omicron, Sobieski and SmallDevil. pc-locks round 9 (PR #913): JayLexi. pc-locks round 10 (PR #922): ThnikkaBot.
         // pc-locks round 13 (PR #951): RedShift. pc-locks round 28 (PR #1057): RainbowBot leaves (surfed, +3.2).
-        // pc-locks round 35 (PR #1095): YellowBird joins with SHIELD-33 tiny-shot waves.
-        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1 - 1 + 1 + 1 + 1 + 3 + 4 + 1 + 3 + 1 + 1 + 1 - 1 + 1, list.size());
+        // pc-locks round 35 (PR #1095): YellowBird joins with SHIELD-33 tiny-shot waves. pc-locks round 39 (PR #1116): NeophytePRAL.
+        assertEquals(14 + 83 + 103 + 49 + 16 + 11 - 3 + 7 + 3 - 2 + 3 - 3 + 1 + 1 + 2 + 3 + 1 - 1 + 1 + 1 + 1 + 3 + 4 + 1 + 3 + 1 + 1 + 1 - 1 + 1 + 1, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
