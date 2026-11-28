@@ -768,6 +768,7 @@ flowchart LR
 | `ramLearns()` | `ram-learn:` | RAM-20 | 49 | The escape dodges the aims learned from the rammer's own bullets (`ShotModel`) in place of RAM-5's fixed pair |
 | `ramKnowns()` | `ram-known:` | RAM-21 | 35 | The rammer is confirmed at the first scan, so rounds 1 and 2 play the escape instead of waiting for two rammed rounds |
 | `ramNevers()` | `ram-never:` | RAM-22 | 0 | Never confirm the opponent as a rammer, so RAM-1 to RAM-3 never take the drive |
+| `wallRides()` | `wall-ride:` | MOVE-76 | 0 | Discount a wave's danger at surf options within 50 px of a wall |
 | **Power and gun** | | | | |
 | `powerCaps()`, `powerCapHalves()` | `power-cap:`, `power-cap5:` | POW-18 | 6, 3 | Cap fire power |
 | `hardFires()`, `powerBands()` | `hard-fire:`, `power-band:` | POW-19, POW-20 | 1, 3 | At least 0.6 power while we have 60+ energy; a power multiplier per energy band |
