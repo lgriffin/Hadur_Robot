@@ -330,6 +330,23 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("GUN-28")
+    @DisplayName("static-gf lines set one wave count per opponent, matched as shield entries, held to 10-500")
+    void perOpponentStaticGf() {
+        ShieldList l = ShieldList.parse(List.of("static-gf: 40 a.B 1.0", "static-gf: 90 c.D", "static-gf: 5 e.F",
+            "static-gf: 600 i.J", "static-gf: x g.H", "static-gf: 40", "static-gf:"));
+        assertEquals(40, l.staticGfFor("a.B 1.0"));
+        assertEquals(40, l.staticGfFor("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertEquals(90, l.staticGfFor("c.D 2.3"), "a bare name matches every version");
+        assertEquals(0, l.staticGfFor("e.F 1.0"), "fewer than 10 waves is refused");
+        assertEquals(0, l.staticGfFor("i.J 1.0"), "more than 500 waves is refused");
+        assertEquals(0, l.staticGfFor("g.H 1.0"), "a malformed line is skipped");
+        assertEquals(0, l.staticGfFor(null));
+        assertEquals(0, ShieldList.NONE.staticGfFor("a.B 1.0"));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+    }
+
+    @Test
     @Tag("DIST-4")
     @DisplayName("dist-pin lines pin one duel distance per opponent, matched as shield entries, held to 150-900 px")
     void perOpponentDistPin() {

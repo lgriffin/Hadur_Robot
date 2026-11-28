@@ -168,6 +168,23 @@ class LockPrepTest(unittest.TestCase):
         finally:
             lock_prep.FG_LINES = old
 
+    def test_static_gf_picks_carry_their_wave_lines(self):
+        lines = os.path.join(self.d, "sgf.txt")
+        with open(lines, "w") as f:
+            f.write("# waves\n40 a.A 1\n60 b.B 2\n")
+        with open(self.arms, "a") as f:
+            f.write("sgf | hadur117.Hadur 3.22sgf | x\n")
+        old, lock_prep.SGF_LINES = lock_prep.SGF_LINES, lines
+        try:
+            out = self.run_prep([("a.A 1", "sgf", "12.0")])
+            self.assertEqual("40 a.A 1\n", open(os.path.join(out, "sgf.list")).read())
+            self.assertIn("STATIC_GF=%s bash ./build-ablation.sh sgflist" % os.path.join(out, "sgf.list").replace(os.sep, "/"),
+                          open(os.path.join(out, "build.sh")).read())
+            with self.assertRaises(SystemExit):
+                self.run_prep([("c.C 3", "sgf", "5.0")])
+        finally:
+            lock_prep.SGF_LINES = old
+
     def test_race_power_with_bands_builds_both_lists(self):
         lines = os.path.join(self.d, "pb.txt")
         with open(lines, "w") as f:

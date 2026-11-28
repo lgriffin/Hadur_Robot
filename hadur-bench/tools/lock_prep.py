@@ -69,6 +69,7 @@ LEVERS = {
     "or": ("orlist", ("STEADY_ORBIT",)),
     "sp2": ("sdplanlist", ("SHOT_DODGE_PLAN",)),
     "fgp": ("fgaplist", ("FIRE_GAP",)),  # POW-21 per-opponent least gap between real shots (fire-gap-lines.txt)
+    "sgf": ("sgflist", ("STATIC_GF",)),  # GUN-28 per-opponent static guess-factor gun (static-gf-lines.txt)
     "rb": ("srblist", ("SHIELD_BAIL",)),  # SHIELD-36 round bail from the stay
     "rbx4": ("srblist,sx4list", ("SHIELD_BAIL", "SHIELD_EXIT4")),  # SHIELD-36 round bail with SHIELD-19's 400 exit
 }
@@ -155,14 +156,28 @@ def _fg_lines(names):
     return [lines[n] for n in names]
 
 
+# GUN-28: a static-gf pick carries its wave count ("waves name") from this file, so sgf.list holds whole lines.
+SGF_LINES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "plans", "static-gf-lines.txt")
+
+
+def _sgf_lines(names):
+    lines = {_dp_name(l): l.strip() for l in open(SGF_LINES) if l.strip() and not l.startswith("#")}
+    missing = [n for n in names if n not in lines]
+    if missing:
+        raise SystemExit("lock_prep: no static-gf line for %s in %s" % (", ".join(missing), SGF_LINES))
+    return [lines[n] for n in names]
+
+
 def _list_lines(arm, names):
     return (_pb_lines(names) if arm == "pb" else _dp_lines(names) if arm == "dn" else _kl_lines(names) if arm == "kl"
-            else _cpl_lines(names) if arm == "cpl" else _fg_lines(names) if arm == "fgp" else names)
+            else _cpl_lines(names) if arm == "cpl" else _fg_lines(names) if arm == "fgp"
+            else _sgf_lines(names) if arm == "sgf" else names)
 
 
 def _list_name(arm, line):
     return (_pb_name(line) if arm == "pb" else _dp_name(line) if arm == "dn" else _kl_name(line) if arm == "kl"
-            else _cpl_name(line) if arm == "cpl" else _dp_name(line) if arm == "fgp" else line.strip())
+            else _cpl_name(line) if arm == "cpl" else _dp_name(line) if arm in ("fgp", "sgf")
+            else line.strip())
 
 
 def main(pick, panel, base_arms, outdir):

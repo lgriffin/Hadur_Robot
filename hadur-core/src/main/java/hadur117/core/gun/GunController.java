@@ -120,6 +120,12 @@ public class GunController {
     private boolean freeGun;
     /** GUN-10: ratings without the 100-shot half-life (duel only; off by default). */
     private boolean undecayed;
+    /** GUN-28: the broken firing waves before the static histogram aims (duel only; 0, off, by default). */
+    private int staticGfMin;
+    /** GUN-28: per opponent, every broken firing wave's hit range in {@link #STATIC_GF_BINS} guess-factor bins, then the count. */
+    private final Map<String, double[]> staticGf = new HashMap<>();
+    /** GUN-28: guess-factor bins across [-1, 1]. */
+    private static final int STATIC_GF_BINS = 61;
     private Consumer<double[]> sampleSink;
     /** Seeded samples so far; their time, so they keep their order. */
     private int seedsLoaded;
@@ -175,6 +181,22 @@ public class GunController {
      */
     public void setUndecayed(boolean on) {
         this.undecayed = on && is1v1;
+    }
+
+    /**
+     * GUN-28: in a duel, once this many of our firing waves have broken, the gun aims at the peak of a histogram of
+     * every broken firing wave's precise hit range, in guess factors, with no segmentation and no decay. Before that,
+     * and with 0 (the default), the gun aims as it always has. The virtual guns are rated as before.
+     *
+     * <p>As measured: the peak is turned into a bearing from the aim wave's own source and zero-GF bearing
+     * ({@link Wave#absBearing}), not re-based on our next location as the other guns are, and the shot skips GUN-7's
+     * shadow choice (no gun is named as aiming, so {@link #aim(Wave, Point2D.Double, long, ShadowValue)} keeps the
+     * plain angle). Changing either changes the line's measured play.</p>
+     *
+     * @param minWaves the broken firing waves needed before the histogram aims; 0 for off
+     */
+    public void setStaticGf(int minWaves) {
+        this.staticGfMin = is1v1 ? Math.max(0, minWaves) : 0;
     }
 
     /**
@@ -343,6 +365,10 @@ public class GunController {
     private boolean wantMass;
 
     private double plainAim(Wave w, Point2D.Double myNextLocation, long currentTime) {
+        if (staticGfMin > 0) {
+            double angle = staticGfAim(w);
+            if (!Double.isNaN(angle)) return angle;
+        }
         Map<String, KnnView<TimestampedFiringAngle>> views = getOrCreateViews(w.botName);
         KnnView<TimestampedFiringAngle> mainView = views.get(MainGun.viewName());
         // GUN-5: the wave carries the power the shot will go at (D1 decides power before aim),
@@ -640,6 +666,7 @@ public class GunController {
 
         if (is1v1 && w.firingWave) {
             scoreVirtualGuns(w, waveBreakStates);
+            if (staticGfMin > 0) logStaticGf(w, waveBreakStates);
         }
 
         logWaveData(w, waveBreakStates, views);
@@ -681,6 +708,50 @@ public class GunController {
         score(table.antiSurfer, vb.antiSurfer, hitAngle, tolerance, hitWeight);
         score(table.hybrid, vb.hybrid, hitAngle, tolerance, hitWeight);
         if (vb.light) score(table.sampled, vb.sampled, hitAngle, tolerance, hitWeight);
+    }
+
+    /**
+     * GUN-28: adds one broken firing wave's precise hit range to its opponent's histogram: every bin whose guess
+     * factor (the wave's orbit direction, over its maximum escape angle) a bullet could have hit with.
+     */
+    private void logStaticGf(Wave w, List<RobotState> waveBreakStates) {
+        Wave.Intersection in = w.preciseIntersection(waveBreakStates);
+        if (in == null || in.bandwidth <= 0) return;
+        double mea = w.maxEscapeAngle();
+        double a = Angles.normalRelativeAngle(in.angle - in.bandwidth - w.absBearing) * w.orbitDirection / mea;
+        double b = Angles.normalRelativeAngle(in.angle + in.bandwidth - w.absBearing) * w.orbitDirection / mea;
+        double lo = Math.min(a, b), hi = Math.max(a, b);
+        double[] h = staticGf.computeIfAbsent(w.botName, k -> new double[STATIC_GF_BINS + 1]);
+        for (int i = 0; i < STATIC_GF_BINS; i++) {
+            double gf = -1.0 + 2.0 * i / (STATIC_GF_BINS - 1);
+            if (gf >= lo && gf <= hi) h[i] += 1.0;
+        }
+        h[STATIC_GF_BINS] += 1.0;
+    }
+
+    /**
+     * GUN-28: the bearing to the histogram's peak (each bin with half of each neighbour; a tie keeps guess factor 0
+     * or the lower guess factor), or NaN while fewer than the line's broken firing waves are in.
+     */
+    private double staticGfAim(Wave w) {
+        double[] h = staticGf.get(w.botName);
+        if (h == null || h[STATIC_GF_BINS] < staticGfMin) return Double.NaN;
+        int best = STATIC_GF_BINS / 2;
+        double bestValue = smoothedBin(h, best);
+        for (int i = 0; i < STATIC_GF_BINS; i++) {
+            double v = smoothedBin(h, i);
+            if (v > bestValue) {
+                bestValue = v;
+                best = i;
+            }
+        }
+        double gf = -1.0 + 2.0 * best / (STATIC_GF_BINS - 1);
+        return Angles.normalAbsoluteAngle(w.absBearing + gf * w.orbitDirection * w.maxEscapeAngle());
+    }
+
+    /** GUN-28: bin {@code i} plus half of each neighbour. */
+    private static double smoothedBin(double[] h, int i) {
+        return h[i] + 0.5 * ((i > 0 ? h[i - 1] : 0) + (i < STATIC_GF_BINS - 1 ? h[i + 1] : 0));
     }
 
     /** Scores one gun's virtual bullet against the precise intersection; see {@link #scoreVirtualGuns}. */
