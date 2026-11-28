@@ -593,6 +593,8 @@ final class ShieldTableData {
             "tornyil.Lajcsi2.Lajcsi2sm 1.0", // +1.9
             // pc-locks round 35 (BENCH-253, PR #1095): 24 fresh PC seeds at the live turn time; cloud lock held first
             "stelo.MatchupMini 1.1",             // +2.1
+            // pc-locks round 38 (BENCH-253, PR #1113): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "cb.Domogled 1.2",                   // +2.7
         };
     }
 
@@ -812,6 +814,8 @@ final class ShieldTableData {
         return new String[] {
             "stelo.MatchupAGF 1.1",
             "suh.mega.WaveSurferPG 1.06",
+            // pc-locks round 38 (BENCH-253, PR #1113): 24 fresh PC seeds at the live turn time; cloud lock held warm and cold first
+            "oog.mega.saguaro.Saguaro 1.1.4",
         };
     }
 
@@ -1097,6 +1101,8 @@ final class ShieldTableData {
             "0.40 0.30 0.30 0.30 ncj.MoxieBot 1.0",  // +13.4
             // pc-locks round 33 (BENCH-253, PR #1083): 24 fresh PC seeds at the live turn time; cloud lock held first
             "0.5 0.5 0.5 0.5 dragonbyte.Neutrino 4", // +3.5
+            // pc-locks round 37 (BENCH-253, PR #1109): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "0.77 0.73 0.41 0.12 rsalesc.mega.Knight 0.6.28", // +8.6 (with its race power)
         };
     }
 
@@ -1289,6 +1295,17 @@ final class ShieldTableData {
             "slugzilla.Parallax 0.1",            // +2.4
             // pc-locks round 27 (BENCH-253, PR #1050): 24 fresh PC seeds at the live turn time; cloud lock held first
             "zen.Mirage 0.9.5",                  // +7.4
+            // pc-locks round 37 (BENCH-253, PR #1109): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "gh.GresSuffurd 0.4.13",             // +6.1
+            "pc.Wavelet 1.5",                    // +4.8
+            "jkong.JKHydra 1.4",                 // +3.1
+            "cs.Nene 1.1.0",                     // +2.7
+            "cb.fire.Firestarter 2.0f",          // +2.1
+            "oog.PricklyPear 1.0.6",             // +1.9
+            "rsalesc.mega.Knight 0.6.28",        // +8.6 (with its power bands)
+            // pc-locks round 38 (BENCH-253, PR #1113): 24 fresh PC seeds at the live turn time; cloud lock held first
+            "fnh.mega.DumDum 1.2.1",             // +7.3 (on top of its gun-stack line)
+            "sheldor.mini.Foilist 1.3.1",        // +3.0
         };
     }
 

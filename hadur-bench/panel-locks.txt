@@ -1,18 +1,17 @@
-# BENCH-253 pc-locks, round 37: 14 robots. Ten carry a line read on 12 or more fresh cloud seeds at 0.7x the live turn
-# time against both c and aa (coverage/shards/locks.tsv): Quest on zl (SHIELD-20 still shot plans); Viper on vj (velocity
-# jitter); Nene, Wavelet, JKHydra, Firestarter, PricklyPear, GresSuffurd and Shadow on rp (POW-17 race power); Knight on rppb (rp with POW-20 bands). BeepBoop, DrussGT, Saguaro
-# and ScalarR pad the A/A check on arm aa. c and aa run on every robot, so the A/A check reads all 14. name | note | jar
-ad.Quest 0.10 | rank171-band3 | ad.Quest_0.10.jar
-pa3k.Viper 5.03 | rank390-band4 | pa3k.Viper_5.03.jar
-cs.Nene 1.1.0 | rank15-band2 | cs.Nene_1.1.0.jar
-pc.Wavelet 1.5 | rank16-band2 | pc.Wavelet_1.5.jar
-rsalesc.mega.Knight 0.6.28 | rank11-band2 | rsalesc.mega.Knight_0.6.28.jar
+# BENCH-253 pc-locks, round 38: 12 robots. Six carry a line read on 12 or more fresh cloud seeds at 0.7x the live turn
+# time against both c and aa (coverage/shards/locks.tsv): DumDum, Foilist and Neuromancer on rp (POW-17 race power);
+# Saguaro on p5 (POW-18 0.5 power cap); Seraphim on fq (MOVE-32 flattener on); Domogled on gl (GUN-11 gun stack).
+# BeepBoop, DrussGT, ScalarR, Wavelet, Knight and JKHydra pad the A/A check on arm aa. c and aa run on every robot,
+# so the A/A check reads all 12. name | note | jar
+fnh.mega.DumDum 1.2.1 | rank93-band3 | fnh.mega.DumDum_1.2.1.jar
+sheldor.mini.Foilist 1.3.1 | rank42-band2 | sheldor.mini.Foilist_1.3.1.jar
+jk.melee.Neuromancer 7.12 | rank18-band2 | jk.melee.Neuromancer_7.12.jar
+oog.mega.saguaro.Saguaro 1.1.4 | rank2-band1 | oog.mega.saguaro.Saguaro_1.1.4.jar
+cs.s2.Seraphim 2.4.0 | rank26-band2 | cs.s2.Seraphim_2.4.0.jar
+cb.Domogled 1.2 | rank23-band2 | cb.Domogled_1.2.jar
 kc.mega.BeepBoop 2.0 | rank1-band1 | kc.mega.BeepBoop_2.0.jar
 jk.mega.DrussGT 3.1.20 | rank4-band1 | jk.mega.DrussGT_3.1.20.jar
-oog.mega.saguaro.Saguaro 1.1.4 | rank2-band1 | oog.mega.saguaro.Saguaro_1.1.4.jar
 aaa.r.ScalarR 0.005h.053-noshield | rank5-band1 | aaa.r.ScalarR_0.005h.053-noshield.jar
-oog.PricklyPear 1.0.6 | rank95-band3 | oog.PricklyPear_1.0.6.jar
+pc.Wavelet 1.5 | rank16-band2 | pc.Wavelet_1.5.jar
+rsalesc.mega.Knight 0.6.28 | rank11-band2 | rsalesc.mega.Knight_0.6.28.jar
 jkong.JKHydra 1.4 | rank6-band1 | jkong.JKHydra_1.4.jar
-cb.fire.Firestarter 2.0f | rank9-band1 | cb.fire.Firestarter_2.0f.jar
-gh.GresSuffurd 0.4.13 | rank17-band2 | gh.GresSuffurd_0.4.13.jar
-abc.Shadow 3.83c | rank27-band2 | abc.Shadow_3.83c.jar
