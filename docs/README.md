@@ -26,7 +26,7 @@ read-outs, and are not updated after the fact.
 | [twinsaor.md](twinsaor.md) | TwinSaor, Twin Duel |
 | [deise.md](deise.md) | Deise, MiniMelee |
 | [sanaro.md](sanaro.md) | Sanaro, NanoMelee |
-| [sanara.md](sanara.md) | Sanara, NanoRumble 1v1 (0.1 built, not entered) |
+| [sanara.md](sanara.md) | Sanara, NanoRumble 1v1 (0.1 entered, 5th) |
 | [kitlab.md](kitlab.md) | JayLexi (MiniRumble) and Eveimear (MicroRumble) |
 
 ## Proposals

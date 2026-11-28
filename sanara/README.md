@@ -1,7 +1,8 @@
 # Sanara
 
 `hadur117.nano.Sanara` is a NanoRumble robot: a one-on-one robot under the NanoRumble's 250-byte
-codesize limit. It is not entered yet.
+codesize limit. Version 0.1 entered the NanoRumble on 28 November 2026 and placed 5th of 300 at
+78.08 APS (PWIN 91.97%) after its first battles, close to its bench read of 78.4.
 
 The design, the bench screens and how the class was fitted are in
 [docs/sanara.md](../docs/sanara.md); the requirements are SANARA-1 to SANARA-3 in

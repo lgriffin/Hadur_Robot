@@ -308,6 +308,8 @@ public final class ShieldMode {
     private boolean closeYield;
     /** SHIELD-35: the drive is yielded this tick (inside {@link #BREAK_RANGE} px, until past {@link #YIELD_BACK}). */
     private boolean yielded;
+    /** SHIELD-36: leave the round after {@link #MAX_UNPREDICTED_HITS} unpredicted hits, with stay on (per-opponent list). */
+    private boolean roundBail;
     private boolean listed;
     private boolean battleOff;
     private boolean roundOff;
@@ -564,6 +566,7 @@ public final class ShieldMode {
             floor = list.floor(name);
             closeBreak = list.closeBreak(name);
             closeYield = list.closeYield(name);
+            roundBail = onList && list.roundBail(name); // a bail line acts only on a shield-listed opponent, never on one on trial
             if (listed) seedAim(list.aimFor(name));
         }
         if (!listed) return;
@@ -724,10 +727,12 @@ public final class ShieldMode {
             return;
         }
         if (!active()) return;
-        // SHIELD-11: no exit inside the round.
+        // SHIELD-11: no exit inside the round, unless SHIELD-36 names the opponent: then its
+        // unpredicted hits hand the rest of the round to the duel, and the next round shields again.
         if (design.stay) {
             hitsThisRound++;
             if (!predicted) unpredictedThisRound++;
+            if (roundBail && unpredictedThisRound >= MAX_UNPREDICTED_HITS) leaveRound(time, "unpredicted");
             return;
         }
         hitsThisRound++;

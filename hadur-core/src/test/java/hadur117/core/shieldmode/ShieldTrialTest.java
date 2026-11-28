@@ -126,6 +126,26 @@ class ShieldTrialTest {
     }
 
     @Test
+    @Tag("SHIELD-36")
+    @DisplayName("a shield-bail line alone never ends an unlisted opponent's trial round; on a listed one it does")
+    void bailNeedsTheShieldList() {
+        ShieldMode m = new ShieldMode(ShieldList.parse(List.of("list.Target", "shield-bail: list.Target",
+            "shield-bail: other.Robot")), records::add, 35, ShieldDesign.parse("stay,trial"));
+        scan(m, UNLISTED, 1);
+        m.onHitByBullet(30, 0.5, MY_X, MY_Y, Math.PI);
+        m.onHitByBullet(50, 0.5, MY_X, MY_Y, Math.PI);
+        scan(m, UNLISTED, 51);
+        assertTrue(m.active(), "the trial opponent keeps its round");
+        ShieldMode l = new ShieldMode(ShieldList.parse(List.of("list.Target", "shield-bail: list.Target")),
+            records::add, 35, ShieldDesign.parse("stay"));
+        scan(l, LISTED, 1);
+        l.onHitByBullet(30, 0.5, MY_X, MY_Y, Math.PI);
+        l.onHitByBullet(50, 0.5, MY_X, MY_Y, Math.PI);
+        scan(l, LISTED, 51);
+        assertFalse(l.active(), "the listed opponent's round goes to the duel");
+    }
+
+    @Test
     @Tag("SHIELD-15")
     @DisplayName("the same hits against a listed opponent leave the trial out")
     void listedIgnoresTrial() {

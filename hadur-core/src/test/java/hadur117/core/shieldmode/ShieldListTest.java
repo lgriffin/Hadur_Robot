@@ -145,6 +145,21 @@ class ShieldListTest {
     }
 
     @Test
+    @Tag("SHIELD-36")
+    @DisplayName("shield-bail lines name the opponents shield mode leaves the round against after unpredicted hits")
+    void perOpponentRoundBail() {
+        ShieldList l = ShieldList.parse(List.of("shield-bail: a.B 1.0", "shield-bail: c.D"));
+        assertTrue(l.roundBail("a.B 1.0"));
+        assertTrue(l.roundBail("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
+        assertTrue(l.roundBail("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.closeBreak("a.B 1.0") || l.closeYield("a.B 1.0"), "its own set");
+        assertFalse(l.roundBail(null));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertFalse(ShieldList.NONE.roundBail("a.B 1.0"));
+        assertFalse(ShieldList.parse(List.of("shield-yield: e.F")).roundBail("e.F 1.0"), "a shield-yield line bails nothing");
+    }
+
+    @Test
     @Tag("POW-18")
     @DisplayName("power-cap lines name the opponents the duel caps its power against, matched as shield entries")
     void perOpponentPowerCap() {
