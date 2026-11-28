@@ -6,7 +6,7 @@ NanoMelee entry: Sanaro 0.3 benched 26.7 ± 3.2 APS in this division, because me
 backs away from a single enemy along a line any gun reads, its wall push is tuned for the 1000 px
 melee field, and its far 0.1 shots only cost energy in a duel.
 
-Nothing is entered yet. The work so far is the over-budget base and the bench pieces to screen it.
+Nothing is entered yet. Sanara 0.1 is built in its own module, `sanara/` (249 bytes, `mvn -pl sanara verify`), and benches 78.4 on the whole division; the sections below record how it got there.
 
 ## 1. The design
 
@@ -101,3 +101,5 @@ Fresh seeds confirm the list: `t300` 79.52 ± 1.34 paired against PatternAdept o
 Whole division, paired against PatternAdept: `h1` (the hand-written class with `t300`'s play, 270 bytes) 79.61 on one seed, so the bytecode plays like the javac build; `h14` (flight time d/14 whatever the power) 79.51, free. Fitted builds on two seeds: `g600` 78.30 ± 1.49, `f2` 77.71 ± 1.27, `f1` 77.57 ± 1.26, `g450` 75.70 ± 1.51. Lower power at range loses, so `g800` and `g1000` are next.
 
 Power 800/d (`g800`) and 1000/d (`g1000`) on two seeds: 78.44 and 77.67. Four seeds each settle it: `g800` 78.41 ± 1.35 (the two new seeds alone 78.39), `g600` 78.05 ± 1.50. `g800` is the entry candidate: 249 bytes, about fifth on the live table. Its orbit list was fitted on the javac build, so `r800` (always reverse) and `o800` (always orbit) refit it on the fitted build itself.
+
+Refitting the orbit list on `g800` itself (`r800` always reverse 72.35, `o800` always orbit 65.53, two seeds each) cross-validates at 78.26, against 78.14 for the current list on the same battles: no real gain, so the list stays. Sanara 0.1 is `g800`: module `sanara/`, where `hadur117.nano.gen.SanaraGen` writes the class from `src/main/gen/sanara-orbit.txt` during the build (byte for byte the benched `g800` code, 249 bytes by Robocode's codesize tool), and `src/main/source/hadur117/nano/Sanara.java` is the readable form shipped in the jar. Release notes: `docs/releases/sanara-v0.1.md`; workflow `release-sanara.yml`. Not released.
