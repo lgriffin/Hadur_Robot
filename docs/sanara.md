@@ -6,7 +6,7 @@ NanoMelee entry: Sanaro 0.3 benched 26.7 ± 3.2 APS in this division, because me
 backs away from a single enemy along a line any gun reads, its wall push is tuned for the 1000 px
 melee field, and its far 0.1 shots only cost energy in a duel.
 
-Nothing is entered yet. Sanara 0.1 is built in its own module, `sanara/` (249 bytes, `mvn -pl sanara verify`), and benches 78.4 on the whole division; the sections below record how it got there.
+Sanara 0.1 is built in its own module, `sanara/` (249 bytes, `mvn -pl sanara verify`). It benched 78.4 on the whole division and entered the NanoRumble on 28 November 2026 at 5th of 300, 78.08 APS (PWIN 91.97%), 2.65 behind 1st; the sections below record how it got there.
 
 ## 1. The design
 
