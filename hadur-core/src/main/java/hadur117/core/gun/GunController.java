@@ -188,6 +188,11 @@ public class GunController {
      * every broken firing wave's precise hit range, in guess factors, with no segmentation and no decay. Before that,
      * and with 0 (the default), the gun aims as it always has. The virtual guns are rated as before.
      *
+     * <p>As measured: the peak is turned into a bearing from the aim wave's own source and zero-GF bearing
+     * ({@link Wave#absBearing}), not re-based on our next location as the other guns are, and the shot skips GUN-7's
+     * shadow choice (no gun is named as aiming, so {@link #aim(Wave, Point2D.Double, long, ShadowValue)} keeps the
+     * plain angle). Changing either changes the line's measured play.</p>
+     *
      * @param minWaves the broken firing waves needed before the histogram aims; 0 for off
      */
     public void setStaticGf(int minWaves) {
