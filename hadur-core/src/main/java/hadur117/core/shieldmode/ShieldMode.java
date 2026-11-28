@@ -566,7 +566,7 @@ public final class ShieldMode {
             floor = list.floor(name);
             closeBreak = list.closeBreak(name);
             closeYield = list.closeYield(name);
-            roundBail = list.roundBail(name);
+            roundBail = onList && list.roundBail(name); // a bail line acts only on a shield-listed opponent, never on one on trial
             if (listed) seedAim(list.aimFor(name));
         }
         if (!listed) return;
