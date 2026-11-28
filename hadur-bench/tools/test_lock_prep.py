@@ -106,6 +106,16 @@ class LockPrepTest(unittest.TestCase):
         posix = os.path.join(out, "ky.list").replace(os.sep, "/")
         self.assertIn("SHIELD_YIELD=%s bash ./build-ablation.sh syldlist" % posix, open(os.path.join(out, "build.sh")).read())
 
+    def test_round_bail_with_exit_late_builds_both_lists(self):
+        # SHIELD-36 with SHIELD-19: a round-bail pick (arm rbx4) names the robot in both lists and rebuilds with both flavours.
+        with open(self.arms, "a") as f:
+            f.write("rbx4 | hadur117.Hadur 3.25rbx4 | x\n")
+        out = self.run_prep([("b.B 2", "rbx4", "8.5")])
+        build = open(os.path.join(out, "build.sh")).read()
+        self.assertIn("bash ./build-ablation.sh srblist,sx4list", build)
+        self.assertIn("SHIELD_BAIL=", build)
+        self.assertIn("SHIELD_EXIT4=", build)
+
     def test_no_pick_leaves_an_empty_panel(self):
         for rows in ([], None):
             out = self.run_prep(rows)
