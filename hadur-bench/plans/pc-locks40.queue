@@ -34,9 +34,9 @@
 # Leigh starts it once the PC is free:
 #   git checkout master && git pull
 #   .\queue.ps1 run pc-locks40
-# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 124 live-match battles and 768 lock battles (12
-# robots in c and aa, each lever robot again on its own arm, 48 seeds): about 890 in all. BeepBoop rounds run long
-# (~7,500 ticks), so allow 3 to 4 hours.
+# One bench queue, RoboRumble workers at 0, 16 workers, truth log off. 124 live-match battles and 1344 lock battles (12
+# robots in c and aa = 1152, each lever robot again on its own arm = 192, 48 seeds): 1468 in all. BeepBoop rounds run
+# long (~7,500 ticks), so allow 3 to 4 hours.
 # The prep step stops if any panel robot's jar is missing.
 #
 set V = 3.25.1
