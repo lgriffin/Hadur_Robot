@@ -45,6 +45,7 @@ class PcTeamFamilyPlanTest {
 
     @Test
     @Tag("BENCH-301")
+    @Tag("TMODE-65")
     @DisplayName("tmfamily builds both families: names (fn) and droids (fd), three of them Droids")
     void ablationKnowsTheFamilies() throws IOException {
         String b = Files.readString(Path.of("build-ablation.sh"));
