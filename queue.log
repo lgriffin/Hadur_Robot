@@ -21,3 +21,24 @@
 02:07:00 lock-zl exit=0 in 52 s
 02:07:00 start lock-pb
 02:07:00 watching lock-pb: 3 stop rule(s)
+02:13:33 lock-pb exit=0 in 392 s
+02:13:33 start lock-rlnrkn
+02:13:33 watching lock-rlnrkn: 3 stop rule(s)
+02:14:00 lock-rlnrkn exit=0 in 27 s
+02:14:00 start lock-fgl
+02:14:00 watching lock-fgl: 3 stop rule(s)
+02:18:47 lock-fgl exit=0 in 286 s
+02:18:47 start lock-mt
+02:18:47 watching lock-mt: 3 stop rule(s)
+02:19:26 lock-mt exit=0 in 39 s
+02:19:26 start lock-rf
+02:19:26 watching lock-rf: 3 stop rule(s)
+02:20:03 lock-rf exit=0 in 36 s
+02:20:03 start lock-rp
+02:20:03 watching lock-rp: 3 stop rule(s)
+02:21:18 lock-rp exit=0 in 74 s
+02:21:18 start gate
+02:21:19 gate exit=0 in 1 s
+02:21:19 start pr
+02:21:28 pr exit=0 in 8 s
+02:21:28 ALLDONE
