@@ -397,8 +397,6 @@ public final class DuelController {
         if (ramBend) on.add("rambend");
         if (ramLearn) on.add("ramlearn");
         if (ramKnown) on.add("ramknown");
-        if (ramNever) on.add("ramnever");
-        if (surfMover.wallRide() > 0) on.add("wallride");
         if (!Double.isNaN(powerCap)) on.add("cap");
         if (shield != null && shield.active()) on.add("shield");
         return on.isEmpty() ? "-" : String.join(",", on);
@@ -423,7 +421,7 @@ public final class DuelController {
         stillness.newRound();
         if (enemyGunHeat != null) enemyGunHeat.newRound();
         // RAM-3: a confirmed rammer's round plays one arm from its start.
-        trialRound = rammer.confirmed() && !ramNever;
+        trialRound = rammer.confirmed();
         trialArm = trialRound ? escapeTrial.choose() : EscapeTrial.Arm.FIGHT;
         lastOurEnergy = Double.NaN;
         if (trialRound) {
@@ -694,11 +692,6 @@ public final class DuelController {
         lastOurEnergy = in.energy();
         ramEscaping = rammer.escape(e.distance(), enemyClosingSpeed, in.energy(), e.energy())
             && trialRound && trialArm == EscapeTrial.Arm.ESCAPE;
-        // RAM-22: an opponent the table names is never a rammer: no RAM-1 fire or orbit reversal, no escape.
-        if (ramNever) {
-            ramActive = false;
-            ramEscaping = false;
-        }
         // RAM-15: a slow charger the table names (one that closes in under RAM-1's 6 px/tick, so it is never
         // confirmed) is backed away from at full speed while it closes in, by the same escape; the power stays RAM-1's.
         boolean escapeByPolicy = ramEscaping;
@@ -1098,8 +1091,6 @@ public final class DuelController {
     private boolean ramLearn;
     /** RAM-21: whether this opponent has a {@code ram-known:} line. */
     private boolean ramKnown;
-    /** RAM-22: whether this opponent has a {@code ram-never:} line. */
-    private boolean ramNever;
     /** POW-18: the cap the table sets on our power against this opponent, NaN for none. */
     private double powerCap = Double.NaN;
     /**
@@ -1657,12 +1648,6 @@ public final class DuelController {
         ramEscape.setLearned(ramLearn);
         // RAM-21: a ram-known line confirms the rammer at the battle's first scan, so its first rounds play the escape too.
         ramKnown = duelOnly(stackList.ramKnown(name) || RammerPolicy.FORCE_KNOWN, enemiesTotal);
-        // RAM-22: a ram-never line keeps the opponent from ever counting as a rammer (it beats a ram-known line).
-        ramNever = duelOnly(stackList.ramNever(name), enemiesTotal);
-        if (ramNever) {
-            ramKnown = false;
-            trialRound = false;
-        }
         // POW-18: the power cap for the opponents the table names.
         powerCap = duelOnly(stackList.powerCap(name), enemiesTotal) ? CAP_POWER
             : duelOnly(stackList.powerCapHalf(name), enemiesTotal) ? CAP_POWER_HALF : Double.NaN;
@@ -1679,8 +1664,6 @@ public final class DuelController {
         // MOVE-47: the steady orbit for the opponents the table names.
         steadyOrbitOn = duelOnly(stackList.steadyOrbit(name), enemiesTotal);
         surfMover.setSteadyOrbit(steadyOrbitOn);
-        // MOVE-76: the wall ride for the opponents the table names.
-        surfMover.setWallRide(enemiesTotal <= 1 ? stackList.wallRideFor(name) : 0);
         // POW-20: the power bands for the opponents the table names.
         powerBand = enemiesTotal <= 1 ? stackList.powerBandFor(name) : null;
         distPin = enemiesTotal <= 1 ? stackList.distPinFor(name) : Double.NaN;

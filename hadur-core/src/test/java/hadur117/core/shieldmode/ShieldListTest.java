@@ -283,38 +283,6 @@ class ShieldListTest {
     }
 
     @Test
-    @Tag("RAM-22")
-    @DisplayName("ram-never lines name the opponents never confirmed as rammers, matched as shield entries")
-    void perOpponentRamNever() {
-        ShieldList l = ShieldList.parse(List.of("ram-never: a.B 1.0", "ram-never: c.D", "ram-never:", "ram-known: e.F"));
-        assertTrue(l.ramNever("a.B 1.0"));
-        assertTrue(l.ramNever("a.B 1.1"), "a line carries over to a new version (SHIELD-26)");
-        assertTrue(l.ramNever("c.D 2.3"), "a bare name matches every version");
-        assertFalse(l.ramNever("e.F 1.0"), "a ram-known line is not a ram-never line");
-        assertFalse(l.ramKnown("a.B 1.0"), "no other switch");
-        assertFalse(l.ramNever(null));
-        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
-        assertFalse(ShieldList.NONE.ramNever("a.B 1.0"));
-    }
-
-    @Test
-    @Tag("MOVE-76")
-    @DisplayName("wall-ride lines carry a discount in (0, 0.9] and a name, matched as shield entries")
-    void perOpponentWallRide() {
-        ShieldList l = ShieldList.parse(List.of("wall-ride: 0.3 a.B 1.0", "wall-ride: 0.5 c.D", "wall-ride: 0 e.F",
-            "wall-ride: 0.95 g.H", "wall-ride: x i.J", "wall-ride: 0.4"));
-        assertEquals(0.3, l.wallRideFor("a.B 1.0"), 1e-12);
-        assertEquals(0.3, l.wallRideFor("a.B 1.1"), 1e-12, "a line carries over to a new version (SHIELD-26)");
-        assertEquals(0.5, l.wallRideFor("c.D 2.3"), 1e-12, "a bare name matches every version");
-        assertEquals(0, l.wallRideFor("e.F 1.0"), 1e-12, "a zero discount is skipped");
-        assertEquals(0, l.wallRideFor("g.H 1.0"), 1e-12, "a discount over 0.9 is skipped");
-        assertEquals(0, l.wallRideFor("i.J 1.0"), 1e-12, "a malformed discount is skipped");
-        assertEquals(0, l.wallRideFor(null), 1e-12);
-        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
-        assertEquals(0, ShieldList.NONE.wallRideFor("a.B 1.0"), 1e-12);
-    }
-
-    @Test
     @Tag("RAM-17")
     @DisplayName("ram-fan lines name the rammers whose aims the escape dodges as fans, matched as shield entries")
     void perOpponentRamFan() {

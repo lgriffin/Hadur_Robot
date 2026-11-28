@@ -284,8 +284,6 @@
 #   rflist the robots named in $RAM_FLEE get RAM-15's flee (back away at full speed from a charger). Suffix rf, or $RAM_FLEE_SUFFIX.
 #   rwlist the robots named in $RAM_WAIT get MOVE-46's ram wait (a disabled enemy is rammed only after its last waves pass). Suffix rwl.
 #   orlist the robots named in $STEADY_ORBIT get MOVE-47's steady orbit (no stop option, reversal only when the other way is under half as dangerous). Suffix or.
-#   rneverlist the robots named in $RAM_NEVER are never confirmed as rammers (RAM-22, ShieldTableData.ramNevers()). Suffix rnv.
-#   wridelist the lines in $WALL_RIDE ("discount name") give MOVE-76's wall ride (ShieldTableData.wallRides()). Suffix wr, or $WALL_RIDE_SUFFIX.
 #   rhlist the robots named in $RAM_HEAVY get RAM-14, the rammer escape weighing their shots twice as heavily. Suffix rh.
 #   pmlist the robots named in $PM_MIMIC get MOVE-56, a mimic of a truncated-lateral-velocity pattern matcher among the aim members. Suffix pm.
 #   hoflist the robots named in $HEAD_ON_FLOOR get MOVE-71, a danger floor (half the kernel) on the head-on angle. Suffix hof.
@@ -837,7 +835,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
                 edit "$movedesign" "static final int STOP_AND_GO_PREFIRE = 1;" "static final int STOP_AND_GO_PREFIRE = 2;"
                 version="${version}ws"
             else version="${version}wp"; fi ;;
-        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist|rclist|mirofflist|sfloorlist|pcaplist|pcap5list|hflist|pblist|vjlist|sblist|dplist|rhlist|rwlist|orlist|rneverlist|wridelist|rflist|rfanlist|rbendlist|rlearnlist|rknownlist|pmlist|pmxlist|aimwlist|hoflist|fglist|copylist|stinylist|sbklist|syldlist)
+        smovelist|saimlist|sdodgelist|sgolist|sgo2list|hjlist|gslist|sx4list|sx0list|szlist|sklist|fllist|mmlist|fplist|x5list|rplist|rclist|mirofflist|sfloorlist|pcaplist|pcap5list|hflist|pblist|vjlist|sblist|dplist|rhlist|rwlist|orlist|rflist|rfanlist|rbendlist|rlearnlist|rknownlist|pmlist|pmxlist|aimwlist|hoflist|fglist|copylist|stinylist|sbklist|syldlist)
             # Shield part 2 (docs/plan-shield-quality.md): per-opponent opening drive or shipped aims;
             # the mode table's simple-aim dodge (DODGE-3).
             if [[ "$a" == smovelist ]]; then file="${SHIELD_MOVE:-}"; method="moves"; version="${version}mv"
@@ -882,8 +880,6 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(out)), 
             elif [[ "$a" == rwlist ]]; then file="${RAM_WAIT:-}"; method="ramWaits"; version="${version}rwl"
             elif [[ "$a" == rflist ]]; then file="${RAM_FLEE:-}"; method="ramFlees"; version="${version}${RAM_FLEE_SUFFIX:-rf}"
             elif [[ "$a" == orlist ]]; then file="${STEADY_ORBIT:-}"; method="steadyOrbits"; version="${version}or"
-            elif [[ "$a" == rneverlist ]]; then file="${RAM_NEVER:-}"; method="ramNevers"; version="${version}rnv"
-            elif [[ "$a" == wridelist ]]; then file="${WALL_RIDE:-}"; method="wallRides"; version="${version}${WALL_RIDE_SUFFIX:-wr}"
             else file="${STOP_GO2:-}"; method="stopGoShifts"; version="${version}wm"; fi
             [[ -n "$file" && -f "$file" ]] || { echo "$a needs SHIELD_MOVE / SHIELD_AIM / SHOT_DODGE / STOP_GO / STOP_GO2 / HEAT_JIT / GUN_STACK / SHIELD_EXIT4 / SHIELD_EXIT0 / SHIELD_STILL / SURF_KEY / FLAT_ON / MIMIC_ON / FULL_OFF / X5_POWER / RACE_POWER / MIRROR_OFF / VEL_JITTER / SPEED_BAND / DIST_PIN / RAM_HEAVY / RAM_FAN / RAM_BEND / PM_MIMIC / PM_MEGAS / AIM_WEIGHT / COPY_LIST / SHIELD_TINY / RAM_WAIT / STEADY_ORBIT=<file>" >&2; exit 2; }
             add="$(python3 -c 'import sys,json

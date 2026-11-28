@@ -75,16 +75,6 @@ public final class ShieldList {
     public static final String CLOSE_YIELD_PREFIX = "shield-yield:";
     /** GUN-12: a line starting with this names an opponent the duel gun fires against with free gun on (GUN-9). */
     public static final String FREE_GUN_PREFIX = "free-gun:";
-    /** RAM-22: a line starting with this names an opponent the duel never confirms as a rammer. */
-    public static final String RAM_NEVER_PREFIX = "ram-never:";
-    /**
-     * MOVE-76: a line starting with this names an opponent the surf rides the walls against: the
-     * discount on a wave's danger at an option that ends near a wall, then the name ({@code "discount name"}).
-     * Held to (0, {@link #WALL_RIDE_MAX}].
-     */
-    public static final String WALL_RIDE_PREFIX = "wall-ride:";
-    /** MOVE-76: the largest discount a wall-ride line may carry. */
-    public static final double WALL_RIDE_MAX = 0.9;
     /** MOVE-32: a line starting with this names an opponent the duel surfs with the flattener views on (MOVE-24 undone). */
     public static final String FLAT_ON_PREFIX = "flat-on:";
     /** MOVE-34: a line starting with this names an opponent the duel surfs with the learning-gun mimics as aim members (MOVE-33). */
@@ -252,10 +242,6 @@ public final class ShieldList {
     private Set<String> closeYields = Collections.emptySet();
     /** GUN-12: the opponents, by name without version, the duel gun fires against with free gun on. */
     private Set<String> freeGuns = Collections.emptySet();
-    /** RAM-22: the opponents, by name without version, the duel never confirms as rammers. */
-    private Set<String> ramNevers = Collections.emptySet();
-    /** MOVE-76: name to its wall-ride discount. */
-    private Map<String, Double> wallRides = Collections.emptyMap();
 
     private ShieldList(Set<String> entries, Set<String> moves, Map<String, double[]> aims,
                        Set<String> dodges, Map<String, Integer> stopGo) {
@@ -287,8 +273,6 @@ public final class ShieldList {
         Set<String> closeBreaks = new TreeSet<>();
         Set<String> closeYields = new TreeSet<>();
         Set<String> freeGuns = new TreeSet<>();
-        Set<String> ramNevers = new TreeSet<>();
-        Map<String, Double> wallRides = new TreeMap<>();
         if (lines != null) {
             for (String line : lines) {
                 if (line == null) continue;
@@ -341,23 +325,6 @@ public final class ShieldList {
                 if (entry.startsWith(CLOSE_BREAK_PREFIX)) {
                     String name = withoutVersion(entry.substring(CLOSE_BREAK_PREFIX.length()).trim());
                     if (!name.isEmpty() && closeBreaks.size() < MAX_ENTRIES) closeBreaks.add(name);
-                    continue;
-                }
-                if (entry.startsWith(RAM_NEVER_PREFIX)) {
-                    String name = withoutVersion(entry.substring(RAM_NEVER_PREFIX.length()).trim());
-                    if (!name.isEmpty() && ramNevers.size() < MAX_ENTRIES) ramNevers.add(name);
-                    continue;
-                }
-                if (entry.startsWith(WALL_RIDE_PREFIX)) {
-                    String[] p = entry.substring(WALL_RIDE_PREFIX.length()).trim().split(" ", 2);
-                    if (p.length == 2 && !p[1].isEmpty() && wallRides.size() < MAX_ENTRIES) {
-                        try {
-                            double d = Double.parseDouble(p[0]);
-                            if (d > 0 && d <= WALL_RIDE_MAX) wallRides.put(withoutVersion(p[1]), d);
-                        } catch (NumberFormatException e) {
-                            // A malformed wall-ride line is skipped.
-                        }
-                    }
                     continue;
                 }
                 if (entry.startsWith(DIST_PIN_PREFIX)) {
@@ -465,7 +432,7 @@ public final class ShieldList {
         if (entries.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()
             && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty() && surfKeys.isEmpty() && copies.isEmpty()
             && powerBands.isEmpty() && distPins.isEmpty() && closeBreaks.isEmpty()
-            && closeYields.isEmpty() && freeGuns.isEmpty() && ramNevers.isEmpty() && wallRides.isEmpty()) return NONE;
+            && closeYields.isEmpty() && freeGuns.isEmpty()) return NONE;
         ShieldList list = new ShieldList(Collections.unmodifiableSet(entries),
             Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims), Collections.unmodifiableSet(dodges),
             Collections.unmodifiableMap(stopGo));
@@ -478,8 +445,6 @@ public final class ShieldList {
         list.closeBreaks = Collections.unmodifiableSet(closeBreaks);
         list.closeYields = Collections.unmodifiableSet(closeYields);
         list.freeGuns = Collections.unmodifiableSet(freeGuns);
-        list.ramNevers = Collections.unmodifiableSet(ramNevers);
-        list.wallRides = Collections.unmodifiableMap(wallRides);
         return list;
     }
 
@@ -700,32 +665,6 @@ public final class ShieldList {
         if (robotName == null || closeBreaks.isEmpty()) return false;
         String name = robotName.trim().replaceAll("\\s+", " ");
         return closeBreaks.contains(name) || closeBreaks.contains(withoutVersion(name));
-    }
-
-    /**
-     * RAM-22: whether the duel never confirms {@code robotName} as a rammer, by the rule of {@link #matches}.
-     *
-     * @param robotName the scanned robot's name, or null
-     * @return true when a {@code ram-never:} line matches it
-     */
-    public boolean ramNever(String robotName) {
-        if (robotName == null || ramNevers.isEmpty()) return false;
-        String name = robotName.trim().replaceAll("\\s+", " ");
-        return ramNevers.contains(name) || ramNevers.contains(withoutVersion(name));
-    }
-
-    /**
-     * MOVE-76: {@code robotName}'s wall-ride discount, by the rule of {@link #matches}.
-     *
-     * @param robotName the scanned robot's name, or null
-     * @return the discount, above 0, or 0 when none is shipped
-     */
-    public double wallRideFor(String robotName) {
-        if (robotName == null || wallRides.isEmpty()) return 0;
-        String name = robotName.trim().replaceAll("\\s+", " ");
-        Double d = wallRides.get(name);
-        if (d == null) d = wallRides.get(withoutVersion(name));
-        return d == null ? 0 : d;
     }
 
     /**

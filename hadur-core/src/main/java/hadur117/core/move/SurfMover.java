@@ -116,21 +116,6 @@ public class SurfMover {
         steadyOrbit = on;
     }
 
-    /**
-     * MOVE-76: the wall ride's discount, 0 for none: a wave's danger at an option whose point as the
-     * wave passes lies within {@link #WALL_RIDE_REACH} px of a wall is scaled by {@code 1 - discount}.
-     *
-     * @param discount the discount, in [0, 1)
-     */
-    public void setWallRide(double discount) {
-        wallRide = discount > 0 && discount < 1 ? discount : 0;
-    }
-
-    /** MOVE-76: the wall ride's discount, 0 when off. */
-    public double wallRide() {
-        return wallRide;
-    }
-
     /** MOVE-47: whether the steady orbit is on. */
     public boolean steadyOrbit() {
         return steadyOrbit;
@@ -179,10 +164,6 @@ public class SurfMover {
 
     /** The distance, in px, the attack angles steer toward. */
     private double desiredDistance = DEFAULT_DISTANCE;
-    /** MOVE-76: the wall ride's reach, in px from the field's edge to our centre (as the truth logs measure wall time). */
-    static final double WALL_RIDE_REACH = 50.0;
-    /** MOVE-76: the wall ride's discount, 0 when off. */
-    private double wallRide;
     /** The surf mode for the wave being surfed, and the one the next wave starts with (MOVE-2). */
     private Mode mode = Mode.OPTIONS;
     private Mode nextMode = Mode.OPTIONS;
@@ -770,9 +751,6 @@ public class SurfMover {
 
         Point2D.Double distancingFrom = surfWave.sourceLocation;
         danger *= distancingDanger(start, passed, distancingFrom);
-        // MOVE-76: against an opponent the table names, a point near a wall is safer: the wall caps our
-        // forward escape there, so the forward guess factors its gun out-hits us on go unused.
-        if (wallRide > 0 && passed != null && nearWall(passed)) danger *= 1 - wallRide;
         double escape = 1.0;
         if (cap != null) {
             cap[AesRecord.LOW] = intersection == null ? Double.NaN : intersection.angle - intersection.bandwidth;
@@ -1108,11 +1086,6 @@ public class SurfMover {
             DiaUtils.absoluteBearing(state.location, surfDest),
             smoothOption.direction, WALL_STICK);
         return predictor.nextLocation(state, maxVelocity, goAngle, false);
-    }
-
-    /** MOVE-76: whether {@code p} lies within {@link #WALL_RIDE_REACH} px of the field's edge. */
-    boolean nearWall(Point2D.Double p) {
-        return Math.min(Math.min(p.x, p.y), Math.min(battleField.width - p.x, battleField.height - p.y)) < WALL_RIDE_REACH;
     }
 
     /**
