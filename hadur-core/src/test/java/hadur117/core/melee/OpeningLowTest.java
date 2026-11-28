@@ -13,11 +13,13 @@ class OpeningLowTest {
     @Test
     @DisplayName("MGUN-28: capped until enough have died, a finisher and a hold excepted, off by default")
     void cap() {
-        assertEquals(0.1, MeleeEnergyPolicy.openingPower(2.5, 2, 80, true, 3, 0.1), 1e-12);
-        assertEquals(2.5, MeleeEnergyPolicy.openingPower(2.5, 3, 80, true, 3, 0.1), 1e-12);
-        assertEquals(2.5, MeleeEnergyPolicy.openingPower(2.5, 0, 10, true, 3, 0.1), 1e-12);
-        assertEquals(0.0, MeleeEnergyPolicy.openingPower(0.0, 0, 80, true, 3, 0.1), 1e-12);
-        assertEquals(2.5, MeleeEnergyPolicy.openingPower(2.5, 0, 80, false, 3, 0.1), 1e-12);
+        assertEquals(0.1, MeleeEnergyPolicy.openingPower(2.5, 2, 7, 80, true, 3, 0.1), 1e-12);
+        assertEquals(2.5, MeleeEnergyPolicy.openingPower(2.5, 3, 6, 80, true, 3, 0.1), 1e-12);
+        assertEquals(2.5, MeleeEnergyPolicy.openingPower(2.5, 0, 9, 10, true, 3, 0.1), 1e-12);
+        assertEquals(0.0, MeleeEnergyPolicy.openingPower(0.0, 0, 9, 80, true, 3, 0.1), 1e-12);
+        assertEquals(2.5, MeleeEnergyPolicy.openingPower(2.5, 0, 9, 80, false, 3, 0.1), 1e-12);
+        // A melee of two never caps, whatever the dead count.
+        assertEquals(2.5, MeleeEnergyPolicy.openingPower(2.5, 0, 2, 80, true, 3, 0.1), 1e-12);
         assertFalse(MeleeEnergyPolicy.OPENING_LOW);
     }
 }
