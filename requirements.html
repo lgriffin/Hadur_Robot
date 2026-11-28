@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/tree/master/docs/requirements">docs/requirements/</a>, one file per area, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 594 of 594 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 597 of 597 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -2449,6 +2449,22 @@ traceability check reads. 594 of 594 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">ROLE-6</span><span class="badge">Ubiquitous</span><span class="badge stage">A3</span></div>
 <p>The core shall hold no role outside its charter.</p>
 <dl><dt>Implemented in</dt><dd><a href="api/hadur117/core/HadurCore.html" title="hadur117.core.HadurCore">HadurCore</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur117/core/StrandContractTest.java">StrandContractTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/resources/features/strands.feature">strands.feature</a></dd></dl>
+</article>
+<h2 id="group-SANARA">SANARA</h2>
+<article class="req-card" id="SANARA-1">
+<div class="req-head"><span class="rid">SANARA-1</span><span class="badge">Unwanted</span><span class="badge stage">0.1</span></div>
+<p>If Robocode&#x27;s codesize tool reports more than NanoRumble&#x27;s 249 bytes for the shipped jar, or more than one class in it, then the build shall fail.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sanara/src/test/java/hadur117/nano/SanaraJarIT.java">SanaraJarIT.java</a></dd></dl>
+</article>
+<article class="req-card" id="SANARA-2">
+<div class="req-head"><span class="rid">SANARA-2</span><span class="badge">Ubiquitous</span><span class="badge stage">0.1</span></div>
+<p>The shipped jar shall carry the robot&#x27;s properties at the release version and its readable source.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sanara/src/test/java/hadur117/nano/SanaraJarIT.java">SanaraJarIT.java</a></dd></dl>
+</article>
+<article class="req-card" id="SANARA-3">
+<div class="req-head"><span class="rid">SANARA-3</span><span class="badge">Unwanted</span><span class="badge stage">0.1</span></div>
+<p>If the class SanaraGen writes fails the JVM&#x27;s verifier or its static initialiser fails, then the build shall fail.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/sanara/src/test/java/hadur117/nano/SanaraJarIT.java">SanaraJarIT.java</a></dd></dl>
 </article>
 <h2 id="group-SANARO">SANARO</h2>
 <article class="req-card" id="SANARO-1">
