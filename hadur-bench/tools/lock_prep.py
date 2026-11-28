@@ -69,6 +69,8 @@ LEVERS = {
     "or": ("orlist", ("STEADY_ORBIT",)),
     "sp2": ("sdplanlist", ("SHOT_DODGE_PLAN",)),
     "fgp": ("fgaplist", ("FIRE_GAP",)),  # POW-21 per-opponent least gap between real shots (fire-gap-lines.txt)
+    "rb": ("srblist", ("SHIELD_BAIL",)),  # SHIELD-36 round bail from the stay
+    "rbx4": ("srblist,sx4list", ("SHIELD_BAIL", "SHIELD_EXIT4")),  # SHIELD-36 round bail with SHIELD-19's 400 exit
 }
 
 # POW-20: a power-band pick carries its fitted line ("m20 m40 m60 m80 name") from this file, so pb.list

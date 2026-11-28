@@ -71,6 +71,8 @@ public final class ShieldList {
     public static final String TINY_PREFIX = "shield-tiny:";
     /** SHIELD-27: a line starting with this names an opponent shield mode breaks off a close start against. */
     public static final String CLOSE_BREAK_PREFIX = "shield-break:";
+    /** SHIELD-36: a line starting with this names an opponent shield mode leaves the round against after unpredicted hits. */
+    public static final String ROUND_BAIL_PREFIX = "shield-bail:";
     /** SHIELD-35: a line starting with this names an opponent shield mode yields the drive to inside 150 px. */
     public static final String CLOSE_YIELD_PREFIX = "shield-yield:";
     /** GUN-12: a line starting with this names an opponent the duel gun fires against with free gun on (GUN-9). */
@@ -251,6 +253,8 @@ public final class ShieldList {
     private Set<String> closeBreaks = Collections.emptySet();
     /** SHIELD-35: the opponents, by name without version, shield mode yields the drive to while they are close. */
     private Set<String> closeYields = Collections.emptySet();
+    /** SHIELD-36: the opponents, by name without version, shield mode leaves the round against after unpredicted hits. */
+    private Set<String> roundBails = Collections.emptySet();
     /** GUN-12: the opponents, by name without version, the duel gun fires against with free gun on. */
     private Set<String> freeGuns = Collections.emptySet();
 
@@ -284,6 +288,7 @@ public final class ShieldList {
         Map<String, Integer> fireGaps = new TreeMap<>();
         Set<String> closeBreaks = new TreeSet<>();
         Set<String> closeYields = new TreeSet<>();
+        Set<String> roundBails = new TreeSet<>();
         Set<String> freeGuns = new TreeSet<>();
         if (lines != null) {
             for (String line : lines) {
@@ -332,6 +337,11 @@ public final class ShieldList {
                 if (entry.startsWith(CLOSE_YIELD_PREFIX)) {
                     String name = withoutVersion(entry.substring(CLOSE_YIELD_PREFIX.length()).trim());
                     if (!name.isEmpty() && closeYields.size() < MAX_ENTRIES) closeYields.add(name);
+                    continue;
+                }
+                if (entry.startsWith(ROUND_BAIL_PREFIX)) {
+                    String name = withoutVersion(entry.substring(ROUND_BAIL_PREFIX.length()).trim());
+                    if (!name.isEmpty() && roundBails.size() < MAX_ENTRIES) roundBails.add(name);
                     continue;
                 }
                 if (entry.startsWith(CLOSE_BREAK_PREFIX)) {
@@ -456,7 +466,7 @@ public final class ShieldList {
         if (entries.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()
             && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty() && surfKeys.isEmpty() && copies.isEmpty()
             && powerBands.isEmpty() && distPins.isEmpty() && fireGaps.isEmpty() && closeBreaks.isEmpty()
-            && closeYields.isEmpty() && freeGuns.isEmpty()) return NONE;
+            && closeYields.isEmpty() && roundBails.isEmpty() && freeGuns.isEmpty()) return NONE;
         ShieldList list = new ShieldList(Collections.unmodifiableSet(entries),
             Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims), Collections.unmodifiableSet(dodges),
             Collections.unmodifiableMap(stopGo));
@@ -469,6 +479,7 @@ public final class ShieldList {
         list.fireGaps = Collections.unmodifiableMap(fireGaps);
         list.closeBreaks = Collections.unmodifiableSet(closeBreaks);
         list.closeYields = Collections.unmodifiableSet(closeYields);
+        list.roundBails = Collections.unmodifiableSet(roundBails);
         list.freeGuns = Collections.unmodifiableSet(freeGuns);
         return list;
     }
@@ -704,6 +715,19 @@ public final class ShieldList {
         if (robotName == null || closeBreaks.isEmpty()) return false;
         String name = robotName.trim().replaceAll("\\s+", " ");
         return closeBreaks.contains(name) || closeBreaks.contains(withoutVersion(name));
+    }
+
+    /**
+     * SHIELD-36: whether shield mode leaves the round against {@code robotName} once its
+     * unpredicted hits reach {@link ShieldMode#MAX_UNPREDICTED_HITS}, with SHIELD-11 on, by the
+     * rule of {@link #matches}.
+     *
+     * @param robotName the scanned robot's name, or null
+     */
+    public boolean roundBail(String robotName) {
+        if (robotName == null || roundBails.isEmpty()) return false;
+        String name = robotName.trim().replaceAll("\\s+", " ");
+        return roundBails.contains(name) || roundBails.contains(withoutVersion(name));
     }
 
     /**

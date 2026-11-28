@@ -774,6 +774,18 @@ final class ShieldTableData {
     }
 
     /**
+     * SHIELD-36: the opponents shield mode leaves the round against once two of their bullets
+     * hit us that no predictor matched; the duel plays the rest of the round and the next
+     * round shields again. Candidate builds add lines here (build-ablation.sh srblist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] roundBails() {
+        return new String[] {
+        };
+    }
+
+    /**
      * SHIELD-35: the opponents shield mode yields the drive to while they are close: inside 150 px
      * the duel drives and fires until the gap passes 250 px. Lines ship from pc-locks; candidate
      * builds add lines here (build-ablation.sh syldlist).
