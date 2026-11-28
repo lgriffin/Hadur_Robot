@@ -54,6 +54,17 @@ public final class MeleeEnergyPolicy {
     public static final boolean FAR_SPARE = true;
     static final double FAR_SPARE_POWER = 2.5;
     static final double FAR_SPARE_ENERGY = 60.0;
+    /**
+     * MGUN-29 (off): hit harder while the field is full. Off a team with {@link #OPENING_HARD_OTHERS}
+     * or more opponents alive and {@link #OPENING_HARD_ENERGY} or more own energy, a shot that is not
+     * a finisher fires {@link #OPENING_HARD_POWER} (or what kills the target) at any distance and
+     * without the lead cap. In the crowd the top bots fire heavier bullets than Hadur (Diamond 2.54,
+     * Firestarter 2.72, Glacier 2.90 a shot against Hadur's 2.20) at a similar hit rate.
+     */
+    public static final boolean OPENING_HARD = false;
+    static final int OPENING_HARD_OTHERS = 5;
+    static final double OPENING_HARD_ENERGY = 50.0;
+    static final double OPENING_HARD_POWER = 3.0;
 
     private MeleeEnergyPolicy() {}
 
@@ -139,6 +150,27 @@ public final class MeleeEnergyPolicy {
         if (ownEnergy > targetEnergy) p = Math.min(p, ownEnergy - targetEnergy);
         p = Math.max(p, MIN_POWER);
         return Math.min(p, ownEnergy);
+    }
+
+    /** MGUN-29 with the switch and thresholds as set. */
+    public static double openingHard(double p, double ownEnergy, double targetEnergy, int others) {
+        return openingHard(p, ownEnergy, targetEnergy, others, OPENING_HARD, OPENING_HARD_OTHERS,
+            OPENING_HARD_ENERGY, OPENING_HARD_POWER);
+    }
+
+    /**
+     * MGUN-29: {@code p} raised to {@code power} (capped by what kills the target and by own energy,
+     * not by the lead) where the switch is {@code on}, {@code minOthers} or more opponents are alive,
+     * Hadur has {@code minEnergy} or more and the target is not a finisher. A hold (0) stands and it
+     * never lowers {@code p}.
+     */
+    static double openingHard(double p, double ownEnergy, double targetEnergy, int others, boolean on,
+                              int minOthers, double minEnergy, double power) {
+        if (!on || p <= 0 || others < minOthers || ownEnergy < minEnergy || targetEnergy <= FINISHER_ENERGY) {
+            return p;
+        }
+        double q = Math.min(Math.min(power, killPower(targetEnergy)), ownEnergy);
+        return Math.max(p, q);
     }
 
     /** The duel gun's 1v1 table, mirrored here: melee code does not reach into the duel. */

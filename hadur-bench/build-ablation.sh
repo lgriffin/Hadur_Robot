@@ -20,6 +20,8 @@
 #   tmconcordp: the gun's pooling alone, power as shipped (cnp).
 #   The brain's shipped parts (TeamConcord): movement and gun on, group radar off, hunt kept.
 #   tmnoconcord (team only) TMODE-34 off: CONCORD on no team, as before it shipped. Suffix ncn.
+#   mhard  MGUN-29: off a team with 5+ opponents alive and 50+ energy, non-finisher shots fire 3 with no
+#          lead cap. Off on master. Suffix hd; mhard7 (7+ alive) hd7, mhard3 (3+ alive) hd3.
 #   mlane  MMOVE-31: off a team with 3+ opponents, the mover avoids the fire lanes (shooter through its
 #          likely target, as wide as the escape angle). Off on master. Suffix ml.
 #   mdmg   MMOVE-22: each opponent's risk weighs by the damage it has done to Hadur this battle x its mean distance (Diamond). Suffix dm. Ships on from 3.21, so on master dm is the robot as it is.
@@ -994,6 +996,19 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeController.java" \
                 "public static final boolean MELEE_CROSS = false;" "public static final boolean MELEE_CROSS = true;"
             version="${version}xh" ;;
+        mhard|mhard7|mhard3)
+            # MGUN-29 hit harder while the field is full (docs/requirements/melee.md): off a team with
+            # 5+ opponents alive (mhard, suffix hd), 7+ (mhard7, hd7) or 3+ (mhard3, hd3) and 50+ own
+            # energy, non-finisher shots fire 3 with no lead cap. Duel and team fixtures bit for bit.
+            f="$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEnergyPolicy.java"
+            edit "$f" "public static final boolean OPENING_HARD = false;" "public static final boolean OPENING_HARD = true;"
+            case "$a" in
+                mhard) version="${version}hd" ;;
+                mhard7) edit "$f" "static final int OPENING_HARD_OTHERS = 5;" "static final int OPENING_HARD_OTHERS = 7;"
+                        version="${version}hd7" ;;
+                mhard3) edit "$f" "static final int OPENING_HARD_OTHERS = 5;" "static final int OPENING_HARD_OTHERS = 3;"
+                        version="${version}hd3" ;;
+            esac ;;
         mlane)
             # MMOVE-31 fire lanes (docs/requirements/melee.md): off a team with three or more opponents,
             # the mover pays for standing in a lane from an opponent through the robot it likely aims
@@ -1122,7 +1137,7 @@ for row in open(f):
     S[p]=s[:hits[0].start()]+s[hits[0].end():]
 for p in S: open(p,"w").write(S[p])' "$tabledata" "$listdata" "$LINE_DROP" || exit 2
             version="${version}td" ;;
-        *) echo "unknown ablation: $a (aa, bb, rwall, burn, clinch, clinch100, clinch50, clinchlong, tmtight, tmnotight, tmnocloserr, nowarm, ram2, mir1, flat, shield-all, nodur, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, icoff, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mlane, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, fgaplist, rhlist, rwlist, orlist, rflist, rfanlist, rbendlist, pmlist, pmxlist, aimwlist, hoflist, fglist, copylist, tdrop|stinylist, sbklist, srblist)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, rwall, burn, clinch, clinch100, clinch50, clinchlong, tmtight, tmnotight, tmnocloserr, nowarm, ram2, mir1, flat, shield-all, nodur, fin, fl5, mfire, s50, away, heat, heatjit, flaton, nowall, flt59, flt8, thgun, freegun, nodecay, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, tmfire, tmnofire, tmhunt, tmnohunt, tmpath, tmnopath, thunt250, thunt200, tmdodge, tmdodgef, tmnododge, tmnoof, tmnoconcord, tmclose, tmnoclose, tmquarters, tmnofitted, tmnomomentum, tmnolast, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, oracle, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, sstill, scheap, sratio, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, szlist, skrec, sklist, fllist, mmlist, fplist, notier, lukewarm, seedall, mimmem, icoff, shoff, ramcirc, e3far, g24, pogi, ogi300, msurf, mlane, mhard, mhard7, mhard3, mcross, mdmg, x5list, rplist, rclist, mirofflist, sfloorlist, pcaplist, pcap5list, hflist, pblist, vjlist, sblist, dplist, fgaplist, rhlist, rwlist, orlist, rflist, rfanlist, rbendlist, pmlist, pmxlist, aimwlist, hoflist, fglist, copylist, tdrop|stinylist, sbklist, srblist)" >&2; exit 2 ;;
     esac
 done
 
